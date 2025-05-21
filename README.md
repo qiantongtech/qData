@@ -143,7 +143,7 @@ qData 平台采用前后端分离架构，后端基于 Spring Boot，前端基�
 ## 👥 QQ交流群
 欢迎加入 qData 官方 QQ 交流群，获取最新动态、技术支持与使用交流。
 
-[![加入QQ群](https://img.shields.io/badge/QQ群-277328475-blue.svg)](https://qm.qq.com/cgi-bin/qm/qr?k=fOuDDH-dLk4lhYezFO_Vg1IwSD58SxP2&jump_from=webapi&authKey=eCpXabAvZN5rc6jK/ukudn7G0mhMLQOjD7ov03xAfO5OqHNI7uvzujMqdXUwmNlK)
+[![加入QQ群](https://img.shields.io/badge/QQ群-814145903-blue.svg)](https://qm.qq.com/cgi-bin/qm/qr?k=fOuDDH-dLk4lhYezFO_Vg1IwSD58SxP2&jump_from=webapi&authKey=eCpXabAvZN5rc6jK/ukudn7G0mhMLQOjD7ov03xAfO5OqHNI7uvzujMqdXUwmNlK)
 
 ## 🖼️ 系统配图
 <table>

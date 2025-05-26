@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.qiantong.qdata.module.da.dal.mapper.assetchild.video.DaAssetVideoMapper">
+
+    <resultMap type="DaAssetVideoDO" id="DaAssetVideoResult">
+        <result property="id"    column="ID"    />
+        <result property="assetId"    column="ASSET_ID"    />
+        <result property="ip"    column="IP"    />
+        <result property="port"    column="PORT"    />
+        <result property="protocol"    column="PROTOCOL"    />
+        <result property="platform"    column="PLATFORM"    />
+        <result property="config"    column="CONFIG"    />
+        <result property="validFlag"    column="VALID_FLAG"    />
+        <result property="delFlag"    column="DEL_FLAG"    />
+        <result property="createBy"    column="CREATE_BY"    />
+        <result property="creatorId"    column="CREATOR_ID"    />
+        <result property="createTime"    column="CREATE_TIME"    />
+        <result property="updateBy"    column="UPDATE_BY"    />
+        <result property="updaterId"    column="UPDATER_ID"    />
+        <result property="updateTime"    column="UPDATE_TIME"    />
+        <result property="remark"    column="REMARK"    />
+    </resultMap>
+
+    <sql id="selectDaAssetVideoVo">
+        select ID, ASSET_ID, IP, PORT, PROTOCOL, PLATFORM, CONFIG, VALID_FLAG, DEL_FLAG, CREATE_BY, CREATOR_ID, CREATE_TIME, UPDATE_BY, UPDATER_ID, UPDATE_TIME, REMARK from DA_ASSET_VIDEO
+    </sql>
+
+    <select id="selectDaAssetVideoList" parameterType="DaAssetVideoDO" resultMap="DaAssetVideoResult">
+        <include refid="selectDaAssetVideoVo"/>
+        <where>
+            <if test="assetId != null "> and ASSET_ID = #{assetId}</if>
+            <if test="ip != null  and ip != ''"> and IP = #{ip}</if>
+            <if test="port != null "> and PORT = #{port}</if>
+            <if test="protocol != null  and protocol != ''"> and PROTOCOL = #{protocol}</if>
+            <if test="platform != null  and platform != ''"> and PLATFORM = #{platform}</if>
+            <if test="config != null  and config != ''"> and CONFIG = #{config}</if>
+            <if test="createTime != null "> and CREATE_TIME = #{createTime}</if>
+        </where>
+    </select>
+
+    <select id="selectDaAssetVideoById" parameterType="Long" resultMap="DaAssetVideoResult">
+        <include refid="selectDaAssetVideoVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertDaAssetVideo" parameterType="DaAssetVideoDO">
+        insert into DA_ASSET_VIDEO
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="assetId != null">ASSET_ID,</if>
+            <if test="ip != null">IP,</if>
+            <if test="port != null">PORT,</if>
+            <if test="protocol != null">PROTOCOL,</if>
+            <if test="platform != null">PLATFORM,</if>
+            <if test="config != null">CONFIG,</if>
+            <if test="validFlag != null">VALID_FLAG,</if>
+            <if test="delFlag != null">DEL_FLAG,</if>
+            <if test="createBy != null">CREATE_BY,</if>
+            <if test="creatorId != null">CREATOR_ID,</if>
+            <if test="createTime != null">CREATE_TIME,</if>
+            <if test="updateBy != null">UPDATE_BY,</if>
+            <if test="updaterId != null">UPDATER_ID,</if>
+            <if test="updateTime != null">UPDATE_TIME,</if>
+            <if test="remark != null">REMARK,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="assetId != null">#{assetId},</if>
+            <if test="ip != null">#{ip},</if>
+            <if test="port != null">#{port},</if>
+            <if test="protocol != null">#{protocol},</if>
+            <if test="platform != null">#{platform},</if>
+            <if test="config != null">#{config},</if>
+            <if test="validFlag != null">#{validFlag},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updaterId != null">#{updaterId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDaAssetVideo" parameterType="DaAssetVideoDO">
+        update DA_ASSET_VIDEO
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="assetId != null">ASSET_ID = #{assetId},</if>
+            <if test="ip != null">IP = #{ip},</if>
+            <if test="port != null">PORT = #{port},</if>
+            <if test="protocol != null">PROTOCOL = #{protocol},</if>
+            <if test="platform != null">PLATFORM = #{platform},</if>
+            <if test="config != null">CONFIG = #{config},</if>
+            <if test="validFlag != null">VALID_FLAG = #{validFlag},</if>
+            <if test="delFlag != null">DEL_FLAG = #{delFlag},</if>
+            <if test="createBy != null">CREATE_BY = #{createBy},</if>
+            <if test="creatorId != null">CREATOR_ID = #{creatorId},</if>
+            <if test="createTime != null">CREATE_TIME = #{createTime},</if>
+            <if test="updateBy != null">UPDATE_BY = #{updateBy},</if>
+            <if test="updaterId != null">UPDATER_ID = #{updaterId},</if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime},</if>
+            <if test="remark != null">REMARK = #{remark},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteDaAssetVideoById" parameterType="Long">
+        delete from DA_ASSET_VIDEO where ID = #{id}
+    </delete>
+
+    <delete id="deleteDaAssetVideoByIds" parameterType="String">
+        delete from DA_ASSET_VIDEO where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

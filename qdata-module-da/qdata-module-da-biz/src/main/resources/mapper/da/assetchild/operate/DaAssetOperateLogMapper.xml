@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.qiantong.qdata.module.da.dal.mapper.assetchild.operate.DaAssetOperateLogMapper">
+
+    <resultMap type="DaAssetOperateLogDO" id="DaAssetOperateLogResult">
+        <result property="id"    column="ID"    />
+        <result property="assetId"    column="ASSET_ID"    />
+        <result property="datasourceId"    column="DATASOURCE_ID"    />
+        <result property="tableName"    column="TABLE_NAME"    />
+        <result property="tableComment"    column="TABLE_COMMENT"    />
+        <result property="operateType"    column="OPERATE_TYPE"    />
+        <result property="operateTime"    column="OPERATE_TIME"    />
+        <result property="executeTime"    column="EXECUTE_TIME"    />
+        <result property="updateBefore"    column="UPDATE_BEFORE"    />
+        <result property="updateWhereMd5"    column="UPDATE_WHERE_MD5"    />
+        <result property="updateAfter"    column="UPDATE_AFTER"    />
+        <result property="fieldNames"    column="FIELD_NAMES"    />
+        <result property="fileUrl"    column="FILE_URL"    />
+        <result property="fileName"    column="FILE_NAME"    />
+        <result property="status"    column="STATUS"    />
+        <result property="validFlag"    column="VALID_FLAG"    />
+        <result property="delFlag"    column="DEL_FLAG"    />
+        <result property="createBy"    column="CREATE_BY"    />
+        <result property="creatorId"    column="CREATOR_ID"    />
+        <result property="createTime"    column="CREATE_TIME"    />
+        <result property="updateBy"    column="UPDATE_BY"    />
+        <result property="updaterId"    column="UPDATER_ID"    />
+        <result property="updateTime"    column="UPDATE_TIME"    />
+        <result property="remark"    column="REMARK"    />
+    </resultMap>
+
+    <sql id="selectDaAssetOperateLogVo">
+        select ID, ASSET_ID, DATASOURCE_ID, TABLE_NAME,UPDATE_WHERE_MD5, TABLE_COMMENT, OPERATE_TYPE, OPERATE_TIME, EXECUTE_TIME, UPDATE_BEFORE, UPDATE_AFTER, FIELD_NAMES, FILE_URL, FILE_NAME, STATUS, VALID_FLAG, DEL_FLAG, CREATE_BY, CREATOR_ID, CREATE_TIME, UPDATE_BY, UPDATER_ID, UPDATE_TIME, REMARK from DA_ASSET_OPERATE_LOG
+    </sql>
+
+    <select id="selectDaAssetOperateLogList" parameterType="DaAssetOperateLogDO" resultMap="DaAssetOperateLogResult">
+        <include refid="selectDaAssetOperateLogVo"/>
+        <where>
+            <if test="assetId != null "> and ASSET_ID = #{assetId}</if>
+            <if test="datasourceId != null "> and DATASOURCE_ID = #{datasourceId}</if>
+            <if test="tableName != null  and tableName != ''"> and TABLE_NAME like concat('%', #{tableName}, '%')</if>
+            <if test="tableComment != null  and tableComment != ''"> and TABLE_COMMENT = #{tableComment}</if>
+            <if test="operateType != null  and operateType != ''"> and OPERATE_TYPE = #{operateType}</if>
+            <if test="operateTime != null "> and OPERATE_TIME = #{operateTime}</if>
+            <if test="executeTime != null "> and EXECUTE_TIME = #{executeTime}</if>
+            <if test="updateWhereMd5 != null "> and UPDATE_WHERE_MD5 = #{updateWhereMd5}</if>
+            <if test="updateBefore != null  and updateBefore != ''"> and UPDATE_BEFORE = #{updateBefore}</if>
+            <if test="updateAfter != null  and updateAfter != ''"> and UPDATE_AFTER = #{updateAfter}</if>
+            <if test="fieldNames != null  and fieldNames != ''"> and FIELD_NAMES = #{fieldNames}</if>
+            <if test="fileUrl != null  and fileUrl != ''"> and FILE_URL = #{fileUrl}</if>
+            <if test="fileName != null  and fileName != ''"> and FILE_NAME like concat('%', #{fileName}, '%')</if>
+            <if test="status != null  and status != ''"> and STATUS = #{status}</if>
+            <if test="createTime != null "> and CREATE_TIME = #{createTime}</if>
+        </where>
+    </select>
+
+    <select id="selectDaAssetOperateLogById" parameterType="Long" resultMap="DaAssetOperateLogResult">
+        <include refid="selectDaAssetOperateLogVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertDaAssetOperateLog" parameterType="DaAssetOperateLogDO">
+        insert into DA_ASSET_OPERATE_LOG
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="assetId != null">ASSET_ID,</if>
+            <if test="datasourceId != null">DATASOURCE_ID,</if>
+            <if test="tableName != null">TABLE_NAME,</if>
+            <if test="tableComment != null">TABLE_COMMENT,</if>
+            <if test="operateType != null">OPERATE_TYPE,</if>
+            <if test="operateTime != null">OPERATE_TIME,</if>
+            <if test="executeTime != null">EXECUTE_TIME,</if>
+            <if test="updateBefore != null">UPDATE_BEFORE,</if>
+            <if test="updateAfter != null">UPDATE_AFTER,</if>
+            <if test="updateWhereMd5 != null">UPDATE_WHERE_MD5,</if>
+            <if test="fieldNames != null">FIELD_NAMES,</if>
+            <if test="fileUrl != null">FILE_URL,</if>
+            <if test="fileName != null">FILE_NAME,</if>
+            <if test="status != null">STATUS,</if>
+            <if test="validFlag != null">VALID_FLAG,</if>
+            <if test="delFlag != null">DEL_FLAG,</if>
+            <if test="createBy != null">CREATE_BY,</if>
+            <if test="creatorId != null">CREATOR_ID,</if>
+            <if test="createTime != null">CREATE_TIME,</if>
+            <if test="updateBy != null">UPDATE_BY,</if>
+            <if test="updaterId != null">UPDATER_ID,</if>
+            <if test="updateTime != null">UPDATE_TIME,</if>
+            <if test="remark != null">REMARK,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="assetId != null">#{assetId},</if>
+            <if test="datasourceId != null">#{datasourceId},</if>
+            <if test="tableName != null">#{tableName},</if>
+            <if test="tableComment != null">#{tableComment},</if>
+            <if test="operateType != null">#{operateType},</if>
+            <if test="operateTime != null">#{operateTime},</if>
+            <if test="executeTime != null">#{executeTime},</if>
+            <if test="updateBefore != null">#{updateBefore},</if>
+            <if test="updateAfter != null">#{updateAfter},</if>
+            <if test="updateWhereMd5 != null">#{updateWhereMd5},</if>
+            <if test="fieldNames != null">#{fieldNames},</if>
+            <if test="fileUrl != null">#{fileUrl},</if>
+            <if test="fileName != null">#{fileName},</if>
+            <if test="status != null">#{status},</if>
+            <if test="validFlag != null">#{validFlag},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updaterId != null">#{updaterId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDaAssetOperateLog" parameterType="DaAssetOperateLogDO">
+        update DA_ASSET_OPERATE_LOG
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="assetId != null">ASSET_ID = #{assetId},</if>
+            <if test="datasourceId != null">DATASOURCE_ID = #{datasourceId},</if>
+            <if test="tableName != null">TABLE_NAME = #{tableName},</if>
+            <if test="tableComment != null">TABLE_COMMENT = #{tableComment},</if>
+            <if test="operateType != null">OPERATE_TYPE = #{operateType},</if>
+            <if test="operateTime != null">OPERATE_TIME = #{operateTime},</if>
+            <if test="executeTime != null">EXECUTE_TIME = #{executeTime},</if>
+            <if test="updateBefore != null">UPDATE_BEFORE = #{updateBefore},</if>
+            <if test="updateAfter != null">UPDATE_AFTER = #{updateAfter},</if>
+            <if test="updateWhereMd5 != null">UPDATE_WHERE_MD5 = #{updateWhereMd5},</if>
+            <if test="fieldNames != null">FIELD_NAMES = #{fieldNames},</if>
+            <if test="fileUrl != null">FILE_URL = #{fileUrl},</if>
+            <if test="fileName != null">FILE_NAME = #{fileName},</if>
+            <if test="status != null">STATUS = #{status},</if>
+            <if test="validFlag != null">VALID_FLAG = #{validFlag},</if>
+            <if test="delFlag != null">DEL_FLAG = #{delFlag},</if>
+            <if test="createBy != null">CREATE_BY = #{createBy},</if>
+            <if test="creatorId != null">CREATOR_ID = #{creatorId},</if>
+            <if test="createTime != null">CREATE_TIME = #{createTime},</if>
+            <if test="updateBy != null">UPDATE_BY = #{updateBy},</if>
+            <if test="updaterId != null">UPDATER_ID = #{updaterId},</if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime},</if>
+            <if test="remark != null">REMARK = #{remark},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteDaAssetOperateLogById" parameterType="Long">
+        delete from DA_ASSET_OPERATE_LOG where ID = #{id}
+    </delete>
+
+    <delete id="deleteDaAssetOperateLogByIds" parameterType="String">
+        delete from DA_ASSET_OPERATE_LOG where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

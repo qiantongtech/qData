@@ -1,0 +1,40 @@
+{
+  "config": {
+    "resourceUrl": "静态资源前缀",
+    "rabbitmq": {
+      "host": "127.0.0.1",
+      "port": 5672,
+      "username": "admin",
+      "password": "密码"
+    },
+    "taskInfo": {
+      "projectCode":"项目编码",
+      "taskCode": "1",//任务编码
+      "taskVersion": 1,//任务版本
+      "name":"任务名称"
+    }
+  },
+  "reader": {
+  },
+  "transition": [{
+    "projectCode": "项目编码",
+    "nodeCode": "节点编码",
+    "nodeVersion": 1,//节点版本
+    "componentType": "类型 31:Spark清洗",
+    "parameter": {
+      "cleanRuleList": [//清洗规则列表
+        {
+          "columns": "code",//清洗字段
+          "cleanRules": [
+            {
+              "ruleId": 10,//清洗规则id
+              "data": {}//清洗配置
+            }
+          ]
+        }
+      ]
+    }
+  }],
+  "writer": {
+  }
+}

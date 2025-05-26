@@ -1,0 +1,25 @@
+payment:
+  alipay:
+    # 应用ID
+    appId: 9021000140626549
+    # 应用私钥
+    appPrivateKey: MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCeLIpuahJarHGG54t4sI/nLyIJuRWhRJkqZpngFtZiqyEq1rk9pEgGVZ9/9dWHAEvz6mdwixwxeFIFYLquDtjiu8NXgfWcvx1PTcCu1QELB7DHhWxRuwvJkf5DbLgEpPgy8plIjz+w4Hzmlo6fFKYOufKJpbUb1ocO7Jw9JI6KskCeiSxxiYzvRRhyDeZivtKKqMjwLIepvj/bpOtRGFXEhIO74LN9/50vYYUDqN7dQKKgFJwDwMaS1QiOpOB3oCoD6t0yxUOh4yXD5khExyLW697+/0fCWvvxfpCj5vyqFF95eJNSx7btm1O5NCXHwayd+bFxLwE4wj2oi86tZeV/AgMBAAECggEANxc4V+Cl5+Lr35rB3xVP6atm5ZALUpH77uKxcXVC0jbcZHlJJ4kSdPJZjU3oQw79ZUUdJfutpCVOHAVmv7z4GXBgRxhCnYeLA9YG6F3T8S2KitOTuJu3LUumDYHOTf/PWp9YeAc8nbRyjDWgExQ0CikFqp+Ght2fSLlsaXdUFkYVZ7ikeLdnGgKAuTd2XLpo3HL8lTMZid94VIrwCrGH03T8A9Rooh1K1Qdkdu5px2LDJsOQd9Vi8phx7Am4Pk54O+Emn/DlePtj7WJIjupFWtJy2lBq4vQY1tc3jXw4cVjMmxgrTDoh4V9h00Cn7QjtAzy1WZZIG+fmX/gUI8dzUQKBgQDswXy0XLl4bn6oYdC38n6UuR4aPS5/JscAD2I8MCVmdgWW6usdyX6BpqBI0GHDzoKOrPJupc24EOIBiMQ99Nn3C84Z/6g1bfEA/IHISEibm0RDxzKzE2cA3PGREA1Q+JoudNbhaNr/QcIkXigGnAriBCZIVXuyTFskQVOh47+xEwKBgQCrB+P60FVui7+FWmoujGpCLs9JMuUayBXjF5zqarSYLN0BOAug+1dDkbO81gBrRYMI39XPTMqsQw+TY1PEiacDufyRqSYDCKrqm5VU+TXIbSlCNHcVnw+plFwHLHKrm8AnJlvGRrnu99n05P1qoXFHUB9Dn5ikSsSb7ZiJEZDzZQKBgQCiKfFZtL1RERXuDXmh1RYAlj9ZJ5jmfNAHaYIWyb+ES8iOU4ARmgbtlQzqctjT/moMgcdYJHcg4Wd8N4p7CXAWN97GjgdP+Wr/CvV2EpSxCIuchR9j6yE9RRitDLqiQHWS5nKcWG7QMeFheaCezljh8IesOekM+iHfVmOLWmzdQwKBgCLXhasn2++cSpT5GV6IPnFjJdlMo/2zuzm7Kr1apZXGtfM0nrHZ4ioiuZIDqqwvygT5zI3hn/w94SNufbcxL7QDpJ9r7RF7J46JyX85EarWCiyxkXz3HXK3hZP0ixvIq/mNx+55pBE5rs5EBBg/8VrMyMG29pqpnKoDWiq6SGQ9AoGBAKI674BDAZxHHMmoSLzqKNpvlfXyI77YePxCwSrZxGQkX5kG5yytCqHc6nzvD8TADz4xYuuYLpB6P0EjCDU8cl5ubTwWwPCCXIUbzcCqI31M98tY7aa6HQyQX1Tse0qh950xj0oOpcZ1jMVqN1V5+nM+r9hBpzpZfNhHAchj6HvP
+    # 支付宝公钥
+    alipayPublicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjPasNwRfyJjMLYYz4v0vgxSbiWQGHdDElP3culKbXwt0Nlk5gLCJ40QPBqW1Nwf7LnnsOKGvgjNrKdLdY5zfMD8U3RCbybYYJzOjneHcpEzJsDMuAWiPf7VmSs8jF3ApyQZbnHYwMiXhS/N6VM91VvA41M0F9KhcpH+iJkotli6TCbZWBtEzn3zIaULmrEDa608IP4UJBznxIye/gADv5yJQSdh4xX/BhgpN1IYyuE230Mg6qVRrYr6b/peQOlxykFX4RBl5555ZmKaDv3qqHLDy1oGb/3ieW6lUxa4jrKJ3HFSqjHFvyRkTqwV3TUKBX35rvjDdQh6jEAihz6AAnQIDAQAB
+    # 回调接口
+    notifyUrl: http://ssh.mingzhu.online:18080/payment/alipay/notify
+    # 重定向回来路径
+    returnUrl: http://localhost/admin/example/pay
+    # 沙箱环境支付网地址 正式环境：openapi.alipay.com
+    gatewayHost: openapi.alipaydev.com
+    # 沙箱环境支付网地址 正式环境：https://openapi.alipay.com/gateway.do
+    gatewayUrl: https://openapi-sandbox.dl.alipaydev.com/gateway.do
+  wechat:
+    # 应用ID
+    appId: XXXXXX
+    # 应用私钥
+    appPrivateKey: XXXXXX
+    # 支付宝公钥
+    alipayPublicKey: XXXXXX
+    # 回调接口
+    notifyUrl:  http://bxbunc.natappfree.cc/alipay/notify

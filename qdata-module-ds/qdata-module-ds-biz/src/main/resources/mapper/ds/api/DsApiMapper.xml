@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.qiantong.qdata.module.ds.dal.mapper.api.DsApiMapper">
+
+    <resultMap type="DsApiDO" id="DsApiResult">
+        <result property="id"    column="ID"    />
+        <result property="catId"    column="CAT_ID"    />
+        <result property="catCode"    column="CAT_CODE"    />
+        <result property="name"    column="NAME"    />
+        <result property="apiVersion"    column="API_VERSION"    />
+        <result property="apiUrl"    column="API_URL"    />
+        <result property="reqMethod"    column="REQ_METHOD"    />
+        <result property="apiServiceType"    column="API_SERVICE_TYPE"    />
+        <result property="resDataType"    column="RES_DATA_TYPE"    />
+        <result property="denyIp"    column="DENY_IP"    />
+        <result property="configJson"    column="CONFIG_JSON"    />
+        <result property="transmitType"    column="TRANSMIT_TYPE"    />
+        <result property="apiId"    column="API_ID"    />
+        <result property="headerJson"    column="HEADER_JSON"    />
+        <result property="limitJson"    column="LIMIT_JSON"    />
+        <result property="reqParams"    column="REQ_PARAMS"    />
+        <result property="resParams"    column="RES_PARAMS"    />
+        <result property="description"    column="DESCRIPTION"    />
+        <result property="status"    column="STATUS"    />
+        <result property="validFlag"    column="VALID_FLAG"    />
+        <result property="delFlag"    column="DEL_FLAG"    />
+        <result property="createBy"    column="CREATE_BY"    />
+        <result property="creatorId"    column="CREATOR_ID"    />
+        <result property="createTime"    column="CREATE_TIME"    />
+        <result property="updateBy"    column="UPDATE_BY"    />
+        <result property="updaterId"    column="UPDATER_ID"    />
+        <result property="updateTime"    column="UPDATE_TIME"    />
+        <result property="remark"    column="REMARK"    />
+    </resultMap>
+
+    <sql id="selectDsApiVo">
+        select ID,CAT_ID,CAT_CODE, NAME, API_VERSION, API_URL, TRANSMIT_TYPE, API_ID, HEADER_JSON, REQ_METHOD, API_SERVICE_TYPE, RES_DATA_TYPE, DENY_IP, CONFIG_JSON, LIMIT_JSON, REQ_PARAMS, RES_PARAMS, DESCRIPTION, STATUS, VALID_FLAG, DEL_FLAG, CREATE_BY, CREATOR_ID, CREATE_TIME, UPDATE_BY, UPDATER_ID, UPDATE_TIME, REMARK from DS_API
+    </sql>
+
+    <select id="selectDsApiList" parameterType="DsApiDO" resultMap="DsApiResult">
+        <include refid="selectDsApiVo"/>
+        <where>
+            <if test="NAME != null  and NAME != ''"> and NAME like concat('%', #{NAME}, '%')</if>
+            <if test="STATUS != null  and STATUS != ''"> and STATUS = #{STATUS}</if>
+            <if test="transmitType != null  and transmitType != ''"> and TRANSMIT_TYPE = #{transmitType}</if>
+            <if test="apiId != null  and apiId != ''"> and API_ID = #{apiId}</if>
+            <if test="headerJson != null  and headerJson != ''"> and HEADER_JSON = #{headerJson}</if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and CREATE_TIME between #{params.beginCreateTime} and #{params.endCreateTime}</if>
+        </where>
+    </select>
+
+    <select id="selectDsApiByID" parameterType="Long" resultMap="DsApiResult">
+        <include refid="selectDsApiVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertDsApi" parameterType="DsApiDO">
+        insert into DS_API
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ID != null">id,</if>
+            <if test="catId != null">CAT_ID,</if>
+            <if test="catCode != null">CAT_CODE,</if>
+            <if test="name != null">NAME,</if>
+            <if test="apiVersion != null">API_VERSION,</if>
+            <if test="apiUrl != null">API_URL,</if>
+            <if test="transmitType != null">TRANSMIT_TYPE,</if>
+            <if test="apiId != null">API_ID,</if>
+            <if test="headerJson != null">HEADER_JSON,</if>
+            <if test="reqMethod != null">REQ_METHOD,</if>
+            <if test="apiServiceType != null">API_SERVICE_TYPE,</if>
+            <if test="resDataType != null">RES_DATA_TYPE,</if>
+            <if test="denyIp != null">DENY_IP,</if>
+            <if test="configJson != null">CONFIG_JSON,</if>
+            <if test="limitJson != null">LIMIT_JSON,</if>
+            <if test="reqParams != null">REQ_PARAMS,</if>
+            <if test="resParams != null">RES_PARAMS,</if>
+            <if test="description != null">DESCRIPTION,</if>
+            <if test="status != null">STATUS,</if>
+            <if test="validFlag != null">VALID_FLAG,</if>
+            <if test="delFlag != null">DEL_FLAG,</if>
+            <if test="createBy != null">CREATE_BY,</if>
+            <if test="creatorId != null">CREATOR_ID,</if>
+            <if test="createTime != null">CREATE_TIME,</if>
+            <if test="updateBy != null">UPDATE_BY,</if>
+            <if test="updaterId != null">UPDATER_ID,</if>
+            <if test="updateTime != null">UPDATE_TIME,</if>
+            <if test="remark != null">REMARK,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ID != null">#{id},</if>
+            <if test="catId != null">#{catId},</if>
+            <if test="catCode != null">#{catCode},</if>
+            <if test="name != null">#{name},</if>
+            <if test="apiVersion != null">#{apiVersion},</if>
+            <if test="apiUrl != null">#{apiUrl},</if>
+            <if test="transmitType != null">#{transmitType},</if>
+            <if test="apiId != null">#{apiId},</if>
+            <if test="headerJson != null">#{headerJson},</if>
+            <if test="reqMethod != null">#{reqMethod},</if>
+            <if test="apiServiceType != null">#{apiServiceType},</if>
+            <if test="resDataType != null">#{resDataType},</if>
+            <if test="denyIp != null">#{denyIp},</if>
+            <if test="configJson != null">#{configJson},</if>
+            <if test="limitJson != null">#{limitJson},</if>
+            <if test="reqParams != null">#{reqParams},</if>
+            <if test="resParams != null">#{resParams},</if>
+            <if test="description != null">#{description},</if>
+            <if test="status != null">#{status},</if>
+            <if test="validFlag != null">#{validFlag},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updaterId != null">#{updaterId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDsApi" parameterType="DsApiDO">
+        update DS_API
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="catId != null">CAT_ID = #{catId},</if>
+            <if test="catCode != null">CAT_CODE = #{catCode},</if>
+            <if test="name != null">NAME = #{name},</if>
+            <if test="apiVersion != null">API_VERSION = #{apiVersion},</if>
+            <if test="apiUrl != null">API_URL = #{apiUrl},</if>
+            <if test="transmitType != null">TRANSMIT_TYPE = #{transmitType},</if>
+            <if test="apiId != null">API_ID = #{apiId},</if>
+            <if test="headerJson != null">HEADER_JSON = #{headerJson},</if>
+            <if test="reqMethod != null">REQ_METHOD = #{reqMethod},</if>
+            <if test="apiServiceType != null">API_SERVICE_TYPE = #{apiServiceType},</if>
+            <if test="resDataType != null">RES_DATA_TYPE = #{resDataType},</if>
+            <if test="denyIp != null">DENY_IP = #{denyIp},</if>
+            <if test="configJson != null">CONFIG_JSON = #{configJson},</if>
+            <if test="limitJson != null">LIMIT_JSON = #{limitJson},</if>
+            <if test="reqParams != null">REQ_PARAMS = #{reqParams},</if>
+            <if test="resParams != null">RES_PARAMS = #{resParams},</if>
+            <if test="description != null">DESCRIPTION = #{DESCRIPTION},</if>
+            <if test="status != null">STATUS = #{STATUS},</if>
+            <if test="validFlag != null">VALID_FLAG = #{validFlag},</if>
+            <if test="delFlag != null">DEL_FLAG = #{delFlag},</if>
+            <if test="createBy != null">CREATE_BY = #{createBy},</if>
+            <if test="creatorId != null">CREATOR_ID = #{creatorId},</if>
+            <if test="createTime != null">CREATE_TIME = #{createTime},</if>
+            <if test="updateBy != null">UPDATE_BY = #{updateBy},</if>
+            <if test="updaterId != null">UPDATER_ID = #{updaterId},</if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime},</if>
+            <if test="remark != null">REMARK = #{REMARK},</if>
+        </trim>
+        where ID = #{ID}
+    </update>
+
+    <delete id="deleteDsApiByID" parameterType="Long">
+        delete from DS_API where ID = #{id}
+    </delete>
+
+    <delete id="deleteDsApiByIDs" parameterType="String">
+        delete from DS_API where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

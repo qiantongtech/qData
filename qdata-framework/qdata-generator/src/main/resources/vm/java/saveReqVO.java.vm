@@ -1,0 +1,96 @@
+package ${packageName}.controller.admin.${moduleName}.vo;
+
+#foreach ($import in $importList)
+import ${import};
+#end
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.Date;
+import tech.qiantong.qdata.common.core.domain.BaseEntity;
+#if($table.crud || $table.sub)
+#elseif($table.tree)
+#end
+
+/**
+ * ${functionName} 创建/修改 Request VO ${tableName}
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+#if($table.crud || $table.sub)
+#set($Entity="BaseEntity")
+#elseif($table.tree)
+#set($Entity="TreeEntity")
+#end
+@Schema(description = "${functionName} Response VO")
+@Data
+public class ${ClassName}SaveReqVO extends BaseEntity {
+
+    private static final long serialVersionUID = 1L;
+
+    @Schema(description = "ID")
+    private Long id;
+
+#foreach ($column in $columns)
+#if($column.edit)
+    #if($column.javaField == "id")
+    #else
+#if($column.edit)
+#set($parentheseIndex=$column.columnComment.indexOf("（"))
+#if($parentheseIndex != -1)
+#set($comment=$column.columnComment.substring(0, $parentheseIndex))
+#else
+#set($comment=$column.columnComment)
+#end
+#end
+#if($column.isRequired == '1')
+#if($column.javaType == 'String' )
+    @Schema(description = "${comment}", example = "")
+    @NotBlank(message = "${comment}不能为空")
+    @Size(max = 256, message = "${comment}长度不能超过256个字符")
+    private $column.javaType $column.javaField;
+#elseif($column.javaType == 'Long' || $column.javaType == 'Integer' || $column.javaType == 'Double' || $column.javaType == 'Date' || $column.javaType == 'Boolean')
+    @Schema(description = "${comment}", example = "")
+    @NotNull(message = "${comment}不能为空")
+    private $column.javaType $column.javaField;
+#else
+    @Schema(description = "${comment}", example = "")
+    private $column.javaType $column.javaField;
+#end
+#else
+#if($column.javaType == 'String' )
+    @Schema(description = "${comment}", example = "")
+    @Size(max = 256, message = "${comment}长度不能超过256个字符")
+    private $column.javaType $column.javaField;
+#else
+    @Schema(description = "${comment}", example = "")
+    private $column.javaType $column.javaField;
+#end
+#end
+
+    #end
+#end
+#end
+#if($table.sub)
+    /** $table.subTable.functionName信息 */
+    private List<${subClassName}> ${subclassName}List;
+
+#end
+
+#if($table.sub)
+    public List<${subClassName}> get${subClassName}List()
+    {
+        return ${subclassName}List;
+    }
+
+    public void set${subClassName}List(List<${subClassName}> ${subclassName}List)
+    {
+        this.${subclassName}List = ${subclassName}List;
+    }
+
+#end
+}

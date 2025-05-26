@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.qiantong.qdata.module.dp.dal.mapper.dataElem.DpDataElemMapper">
+
+    <resultMap type="DpDataElemDO" id="DpDataElemResult">
+        <result property="id" column="ID"/>
+        <result property="code" column="CODE"/>
+        <result property="name" column="NAME"/>
+        <result property="engName" column="ENG_NAME"/>
+        <result property="catCode" column="CAT_CODE"/>
+        <result property="type" column="TYPE"/>
+        <result property="personCharge" column="PERSON_CHARGE"/>
+        <result property="contactNumber" column="CONTACT_NUMBER"/>
+        <result property="columnType" column="COLUMN_TYPE"/>
+        <result property="status" column="STATUS"/>
+        <result property="description" column="DESCRIPTION"/>
+        <result property="validFlag" column="VALID_FLAG"/>
+        <result property="delFlag" column="DEL_FLAG"/>
+        <result property="createBy" column="CREATE_BY"/>
+        <result property="creatorId" column="CREATOR_ID"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="updateBy" column="UPDATE_BY"/>
+        <result property="updaterId" column="UPDATER_ID"/>
+        <result property="updateTime" column="UPDATE_TIME"/>
+        <result property="remark" column="REMARK"/>
+    </resultMap>
+
+
+    <sql id="selectDpDataElemVo">
+        select ID,
+               CODE,
+               NAME,
+               ENG_NAME,
+               CAT_CODE,
+               TYPE,
+               PERSON_CHARGE,
+               CONTACT_NUMBER,
+               COLUMN_TYPE,
+               STATUS,
+               DESCRIPTION,
+               VALID_FLAG,
+               DEL_FLAG,
+               CREATE_BY,
+               CREATOR_ID,
+               CREATE_TIME,
+               UPDATE_BY,
+               UPDATER_ID,
+               UPDATE_TIME,
+               REMARK
+        from DP_DATA_ELEM
+    </sql>
+
+    <select id="selectDpDataElemList" parameterType="DpDataElemDO" resultMap="DpDataElemResult">
+        <include refid="selectDpDataElemVo"/>
+        <where>
+            <if test="name != null  and name != ''">and NAME like concat('%', #{name}, '%')</if>
+            <if test="engName != null  and engName != ''">and ENG_NAME like concat('%', #{engName}, '%')</if>
+            <if test="catCode != null  and catCode != ''">and CAT_CODE = #{catCode}</if>
+            <if test="type != null  and type != ''">and TYPE = #{type}</if>
+            <if test="personCharge != null  and personCharge != ''">and PERSON_CHARGE = #{personCharge}</if>
+            <if test="contactNumber != null  and contactNumber != ''">and CONTACT_NUMBER = #{contactNumber}</if>
+            <if test="columnType != null  and columnType != ''">and COLUMN_TYPE = #{columnType}</if>
+            <if test="status != null  and status != ''">and STATUS = #{status}</if>
+            <if test="description != null  and description != ''">and DESCRIPTION = #{description}</if>
+            <if test="createTime != null ">and CREATE_TIME = #{createTime}</if>
+        </where>
+    </select>
+
+    <select id="selectDpDataElemById" parameterType="Long" resultMap="DpDataElemResult">
+        select ID,
+               CODE,
+               NAME,
+               ENG_NAME,
+               CAT_CODE,
+               TYPE,
+               PERSON_CHARGE,
+               CONTACT_NUMBER,
+               COLUMN_TYPE,
+               STATUS,
+               DESCRIPTION,
+               VALID_FLAG,
+               DEL_FLAG,
+               CREATE_BY,
+               CREATOR_ID,
+               CREATE_TIME,
+               UPDATE_BY,
+               UPDATER_ID,
+               UPDATE_TIME,
+               REMARK
+        from DP_DATA_ELEM
+        where ID = #{id}
+    </select>
+
+    <insert id="insertDpDataElem" parameterType="DpDataElemDO">
+        insert into DP_DATA_ELEM
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="code != null">CODE,</if>
+            <if test="name != null">NAME,</if>
+            <if test="engName != null">ENG_NAME,</if>
+            <if test="catCode != null">CAT_CODE,</if>
+            <if test="type != null">TYPE,</if>
+            <if test="personCharge != null">PERSON_CHARGE,</if>
+            <if test="contactNumber != null">CONTACT_NUMBER,</if>
+            <if test="columnType != null">COLUMN_TYPE,</if>
+            <if test="status != null">STATUS,</if>
+            <if test="description != null">DESCRIPTION,</if>
+            <if test="validFlag != null">VALID_FLAG,</if>
+            <if test="delFlag != null">DEL_FLAG,</if>
+            <if test="createBy != null">CREATE_BY,</if>
+            <if test="creatorId != null">CREATOR_ID,</if>
+            <if test="createTime != null">CREATE_TIME,</if>
+            <if test="updateBy != null">UPDATE_BY,</if>
+            <if test="updaterId != null">UPDATER_ID,</if>
+            <if test="updateTime != null">UPDATE_TIME,</if>
+            <if test="remark != null">REMARK,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="code != null">#{code},</if>
+            <if test="name != null">#{name},</if>
+            <if test="engName != null">#{engName},</if>
+            <if test="catCode != null">#{catCode},</if>
+            <if test="type != null">#{type},</if>
+            <if test="personCharge != null">#{personCharge},</if>
+            <if test="contactNumber != null">#{contactNumber},</if>
+            <if test="columnType != null">#{columnType},</if>
+            <if test="status != null">#{status},</if>
+            <if test="description != null">#{description},</if>
+            <if test="validFlag != null">#{validFlag},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updaterId != null">#{updaterId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateDpDataElem" parameterType="DpDataElemDO">
+        update DP_DATA_ELEM
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null">CODE = #{code},</if>
+            <if test="name != null">NAME = #{name},</if>
+            <if test="engName != null">ENG_NAME = #{engName},</if>
+            <if test="catCode != null">CAT_CODE = #{catCode},</if>
+            <if test="type != null">TYPE = #{type},</if>
+            <if test="personCharge != null">PERSON_CHARGE = #{personCharge},</if>
+            <if test="contactNumber != null">CONTACT_NUMBER = #{contactNumber},</if>
+            <if test="columnType != null">COLUMN_TYPE = #{columnType},</if>
+            <if test="status != null">STATUS = #{status},</if>
+            <if test="description != null">DESCRIPTION = #{description},</if>
+            <if test="validFlag != null">VALID_FLAG = #{validFlag},</if>
+            <if test="delFlag != null">DEL_FLAG = #{delFlag},</if>
+            <if test="createBy != null">CREATE_BY = #{createBy},</if>
+            <if test="creatorId != null">CREATOR_ID = #{creatorId},</if>
+            <if test="createTime != null">CREATE_TIME = #{createTime},</if>
+            <if test="updateBy != null">UPDATE_BY = #{updateBy},</if>
+            <if test="updaterId != null">UPDATER_ID = #{updaterId},</if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime},</if>
+            <if test="remark != null">REMARK = #{remark},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteDpDataElemById" parameterType="Long">
+        delete
+        from DP_DATA_ELEM
+        where ID = #{id}
+    </delete>
+
+    <delete id="deleteDpDataElemByIds" parameterType="String">
+        delete from DP_DATA_ELEM where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteDpDataElemRuleRelByDataElemIds" parameterType="String">
+        delete from DP_DATA_ELEM_RULE_REL where DATA_ELEM_ID in
+        <foreach item="dataElemId" collection="array" open="(" separator="," close=")">
+            #{dataElemId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteDpDataElemRuleRelByDataElemId" parameterType="Long">
+        delete
+        from DP_DATA_ELEM_RULE_REL
+        where DATA_ELEM_ID = #{dataElemId}
+    </delete>
+
+    <insert id="batchDpDataElemRuleRel">
+        insert into DP_DATA_ELEM_RULE_REL( ID, DATA_ELEM_ID, RULE_TYPE, RULE_ID, RULE_CONFIG, VALID_FLAG, DEL_FLAG,
+        CREATE_BY, CREATOR_ID, CREATE_TIME, UPDATE_BY, UPDATER_ID, UPDATE_TIME, REMARK) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.id}, #{item.dataElemId}, #{item.ruleType}, #{item.ruleId}, #{item.ruleConfig}, #{item.validFlag},
+            #{item.delFlag}, #{item.createBy}, #{item.creatorId}, #{item.createTime}, #{item.updateBy},
+            #{item.updaterId}, #{item.updateTime}, #{item.remark})
+        </foreach>
+    </insert>
+</mapper>

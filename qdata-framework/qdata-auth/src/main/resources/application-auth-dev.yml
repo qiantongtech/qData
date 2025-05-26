@@ -1,0 +1,46 @@
+sa-token:
+  # token 名称（同时也是 cookie 名称）
+  token-name: qdataToken
+  # token 有效期（单位：秒） 默认30天，-1 代表永久有效
+  timeout: 2592000
+  # token 最低活跃频率（单位：秒），如果 token 超过此时间没有访问系统就会被冻结，默认-1 代表不限制，永不冻结
+  active-timeout: -1
+  # 是否允许同一账号多地同时登录 （为 true 时允许一起登录, 为 false 时新登录挤掉旧登录）
+  is-concurrent: true
+  # 在多人登录同一账号时，是否共用一个 token （为 true 时所有登录共用一个 token, 为 false 时每次登录新建一个 token）
+  is-share: true
+  # token 风格（默认可取值：uuid、simple-uuid、random-32、random-64、random-128、tik）
+  token-style: uuid
+  # 是否输出操作日志
+  is-log: true
+  # oauth2服务配置
+  oauth2-server:
+    # 是否打开模式：授权码（Authorization Code）
+    enable-authorization-code: true
+    # 是否打开模式：隐藏式（Implicit）
+    enable-implicit: true
+    # 是否打开模式：密码式（Password）
+    enable-password: true
+    # 是否打开模式：凭证式（Client Credentials）
+    enable-client-credentials: true
+    # 是否在每次 Refresh-Token 刷新 Access-Token 时，产生一个新的 Refresh-Token
+    is-new-refresh: false
+    # Code授权码 保存的时间(单位：秒) 默认五分钟
+    code-timeout: 300
+    # Access-Token 保存的时间(单位：秒) 默认两个小时
+    access-token-timeout: 7200
+    # Refresh-Token 保存的时间(单位：秒) 默认30 天
+    refresh-token-timeout: 2592000
+    # Client-Token 保存的时间(单位：秒) 默认两个小时
+    client-token-timeout: 7200
+    # Lower-Client-Token 保存的时间(单位：秒) 默认为 -1，代表延续 Client-Token 有效期
+    lower-client-token-timeout: -1
+    # 指定高级权限，多个用逗号隔开
+    higher-scope: admin
+    # 指定低级权限，多个用逗号隔开
+    lower-scope: userinfo
+    # 模式4是否返回 AccessToken 字段
+    mode4-return-access-token: false
+    # 是否在返回值中隐藏默认的状态字段 (code、msg、data)
+    hide-status-field: false
+

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>tech.qiantong</groupId>
+        <artifactId>qData</artifactId>
+        <version>3.8.8</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <modules>
+        <module>qdata-config</module>
+        <module>qdata-websocket</module>
+        <module>qdata-mybatis</module>
+        <module>qdata-redis</module>
+        <module>qdata-quartz</module>
+        <module>qdata-security</module>
+        <module>qdata-generator</module>
+        <module>qdata-common</module>
+        <module>qdata-file</module>
+        <module>qdata-es</module>
+        <module>qdata-pay</module>
+        <module>qdata-auth</module>
+    </modules>
+    <packaging>pom</packaging>
+
+    <artifactId>qdata-framework</artifactId>
+
+    <description>
+        qdata-framework模块
+    </description>
+
+</project>

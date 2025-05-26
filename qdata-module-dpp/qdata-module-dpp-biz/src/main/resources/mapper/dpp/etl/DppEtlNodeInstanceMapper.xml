@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.qiantong.qdata.module.dpp.dal.mapper.etl.DppEtlNodeInstanceMapper">
+
+    <resultMap type="DppEtlNodeInstanceDO" id="DppEtlNodeInstanceResult">
+        <result property="id"    column="ID"    />
+        <result property="name"    column="NAME"    />
+        <result property="nodeType"    column="NODE_TYPE"    />
+        <result property="nodeId"    column="NODE_ID"    />
+        <result property="nodeCode"    column="NODE_CODE"    />
+        <result property="nodeVersion"    column="NODE_VERSION"    />
+        <result property="taskInstanceId"    column="TASK_INSTANCE_ID"    />
+        <result property="taskInstanceName"    column="TASK_INSTANCE_NAME"    />
+        <result property="projectId"    column="PROJECT_ID"    />
+        <result property="projectCode"    column="PROJECT_CODE"    />
+        <result property="submitTime"    column="SUBMIT_TIME"    />
+        <result property="startTime"    column="START_TIME"    />
+        <result property="endTime"    column="END_TIME"    />
+        <result property="executePath"    column="EXECUTE_PATH"    />
+        <result property="logPath"    column="LOG_PATH"    />
+        <result property="parameters"    column="PARAMETERS"    />
+        <result property="priority"    column="PRIORITY"    />
+        <result property="retryTimes"    column="RETRY_TIMES"    />
+        <result property="fretryInterval"    column="FRETRY_INTERVAL"    />
+        <result property="delayTime"    column="DELAY_TIME"    />
+        <result property="cpuQuota"    column="CPU_QUOTA"    />
+        <result property="memoryMax"    column="MEMORY_MAX"    />
+        <result property="status"    column="STATUS"    />
+        <result property="dsId"    column="DS_ID"    />
+        <result property="dsTaskInstanceId"    column="DS_TASK_INSTANCE_ID"    />
+        <result property="validFlag"    column="VALID_FLAG"    />
+        <result property="delFlag"    column="DEL_FLAG"    />
+        <result property="createBy"    column="CREATE_BY"    />
+        <result property="creatorId"    column="CREATOR_ID"    />
+        <result property="createTime"    column="CREATE_TIME"    />
+        <result property="updateBy"    column="UPDATE_BY"    />
+        <result property="updaterId"    column="UPDATER_ID"    />
+        <result property="updateTime"    column="UPDATE_TIME"    />
+        <result property="remark"    column="REMARK"    />
+    </resultMap>
+
+    <sql id="selectDppEtlNodeInstanceVo">
+        select ID, NAME, NODE_TYPE, NODE_ID, NODE_CODE, NODE_VERSION, TASK_INSTANCE_ID, TASK_INSTANCE_NAME, PROJECT_ID, PROJECT_CODE, SUBMIT_TIME, START_TIME, END_TIME, EXECUTE_PATH, LOG_PATH, PARAMETERS, PRIORITY, RETRY_TIMES, FRETRY_INTERVAL, DELAY_TIME, CPU_QUOTA, MEMORY_MAX, STATUS, DS_ID, DS_TASK_INSTANCE_ID, VALID_FLAG, DEL_FLAG, CREATE_BY, CREATOR_ID, CREATE_TIME, UPDATE_BY, UPDATER_ID, UPDATE_TIME, REMARK from DPP_ETL_NODE_INSTANCE
+    </sql>
+
+    <select id="selectDppEtlNodeInstanceList" parameterType="DppEtlNodeInstanceDO" resultMap="DppEtlNodeInstanceResult">
+        <include refid="selectDppEtlNodeInstanceVo"/>
+        <where>
+            <if test="name != null  and name != ''"> and NAME like concat('%', #{name}, '%')</if>
+            <if test="nodeType != null  and nodeType != ''"> and NODE_TYPE = #{nodeType}</if>
+            <if test="nodeId != null "> and NODE_ID = #{nodeId}</if>
+            <if test="nodeCode != null  and nodeCode != ''"> and NODE_CODE = #{nodeCode}</if>
+            <if test="nodeVersion != null "> and NODE_VERSION = #{nodeVersion}</if>
+            <if test="taskInstanceId != null "> and TASK_INSTANCE_ID = #{taskInstanceId}</if>
+            <if test="taskInstanceName != null  and taskInstanceName != ''"> and TASK_INSTANCE_NAME like concat('%', #{taskInstanceName}, '%')</if>
+            <if test="projectId != null "> and PROJECT_ID = #{projectId}</if>
+            <if test="projectCode != null  and projectCode != ''"> and PROJECT_CODE = #{projectCode}</if>
+            <if test="submitTime != null "> and SUBMIT_TIME = #{submitTime}</if>
+            <if test="startTime != null "> and START_TIME = #{startTime}</if>
+            <if test="endTime != null "> and END_TIME = #{endTime}</if>
+            <if test="executePath != null  and executePath != ''"> and EXECUTE_PATH = #{executePath}</if>
+            <if test="logPath != null  and logPath != ''"> and LOG_PATH = #{logPath}</if>
+            <if test="parameters != null  and parameters != ''"> and PARAMETERS = #{parameters}</if>
+            <if test="priority != null  and priority != ''"> and PRIORITY = #{priority}</if>
+            <if test="retryTimes != null "> and RETRY_TIMES = #{retryTimes}</if>
+            <if test="fretryInterval != null "> and FRETRY_INTERVAL = #{fretryInterval}</if>
+            <if test="delayTime != null "> and DELAY_TIME = #{delayTime}</if>
+            <if test="cpuQuota != null "> and CPU_QUOTA = #{cpuQuota}</if>
+            <if test="memoryMax != null "> and MEMORY_MAX = #{memoryMax}</if>
+            <if test="status != null  and status != ''"> and STATUS = #{status}</if>
+            <if test="dsId != null "> and DS_ID = #{dsId}</if>
+            <if test="dsTaskInstanceId != null "> and DS_TASK_INSTANCE_ID = #{dsTaskInstanceId}</if>
+            <if test="createTime != null "> and CREATE_TIME = #{createTime}</if>
+        </where>
+    </select>
+
+    <select id="selectDppEtlNodeInstanceById" parameterType="Long" resultMap="DppEtlNodeInstanceResult">
+        <include refid="selectDppEtlNodeInstanceVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertDppEtlNodeInstance" parameterType="DppEtlNodeInstanceDO">
+        insert into DPP_ETL_NODE_INSTANCE
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="name != null">NAME,</if>
+            <if test="nodeType != null">NODE_TYPE,</if>
+            <if test="nodeId != null">NODE_ID,</if>
+            <if test="nodeCode != null">NODE_CODE,</if>
+            <if test="nodeVersion != null">NODE_VERSION,</if>
+            <if test="taskInstanceId != null">TASK_INSTANCE_ID,</if>
+            <if test="taskInstanceName != null">TASK_INSTANCE_NAME,</if>
+            <if test="projectId != null">PROJECT_ID,</if>
+            <if test="projectCode != null">PROJECT_CODE,</if>
+            <if test="submitTime != null">SUBMIT_TIME,</if>
+            <if test="startTime != null">START_TIME,</if>
+            <if test="endTime != null">END_TIME,</if>
+            <if test="executePath != null">EXECUTE_PATH,</if>
+            <if test="logPath != null">LOG_PATH,</if>
+            <if test="parameters != null">PARAMETERS,</if>
+            <if test="priority != null">PRIORITY,</if>
+            <if test="retryTimes != null">RETRY_TIMES,</if>
+            <if test="fretryInterval != null">FRETRY_INTERVAL,</if>
+            <if test="delayTime != null">DELAY_TIME,</if>
+            <if test="cpuQuota != null">CPU_QUOTA,</if>
+            <if test="memoryMax != null">MEMORY_MAX,</if>
+            <if test="status != null">STATUS,</if>
+            <if test="dsId != null">DS_ID,</if>
+            <if test="dsTaskInstanceId != null">DS_TASK_INSTANCE_ID,</if>
+            <if test="validFlag != null">VALID_FLAG,</if>
+            <if test="delFlag != null">DEL_FLAG,</if>
+            <if test="createBy != null">CREATE_BY,</if>
+            <if test="creatorId != null">CREATOR_ID,</if>
+            <if test="createTime != null">CREATE_TIME,</if>
+            <if test="updateBy != null">UPDATE_BY,</if>
+            <if test="updaterId != null">UPDATER_ID,</if>
+            <if test="updateTime != null">UPDATE_TIME,</if>
+            <if test="remark != null">REMARK,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="nodeType != null">#{nodeType},</if>
+            <if test="nodeId != null">#{nodeId},</if>
+            <if test="nodeCode != null">#{nodeCode},</if>
+            <if test="nodeVersion != null">#{nodeVersion},</if>
+            <if test="taskInstanceId != null">#{taskInstanceId},</if>
+            <if test="taskInstanceName != null">#{taskInstanceName},</if>
+            <if test="projectId != null">#{projectId},</if>
+            <if test="projectCode != null">#{projectCode},</if>
+            <if test="submitTime != null">#{submitTime},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="executePath != null">#{executePath},</if>
+            <if test="logPath != null">#{logPath},</if>
+            <if test="parameters != null">#{parameters},</if>
+            <if test="priority != null">#{priority},</if>
+            <if test="retryTimes != null">#{retryTimes},</if>
+            <if test="fretryInterval != null">#{fretryInterval},</if>
+            <if test="delayTime != null">#{delayTime},</if>
+            <if test="cpuQuota != null">#{cpuQuota},</if>
+            <if test="memoryMax != null">#{memoryMax},</if>
+            <if test="status != null">#{status},</if>
+            <if test="dsId != null">#{dsId},</if>
+            <if test="dsTaskInstanceId != null">#{dsTaskInstanceId},</if>
+            <if test="validFlag != null">#{validFlag},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updaterId != null">#{updaterId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDppEtlNodeInstance" parameterType="DppEtlNodeInstanceDO">
+        update DPP_ETL_NODE_INSTANCE
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">NAME = #{name},</if>
+            <if test="nodeType != null">NODE_TYPE = #{nodeType},</if>
+            <if test="nodeId != null">NODE_ID = #{nodeId},</if>
+            <if test="nodeCode != null">NODE_CODE = #{nodeCode},</if>
+            <if test="nodeVersion != null">NODE_VERSION = #{nodeVersion},</if>
+            <if test="taskInstanceId != null">TASK_INSTANCE_ID = #{taskInstanceId},</if>
+            <if test="taskInstanceName != null">TASK_INSTANCE_NAME = #{taskInstanceName},</if>
+            <if test="projectId != null">PROJECT_ID = #{projectId},</if>
+            <if test="projectCode != null">PROJECT_CODE = #{projectCode},</if>
+            <if test="submitTime != null">SUBMIT_TIME = #{submitTime},</if>
+            <if test="startTime != null">START_TIME = #{startTime},</if>
+            <if test="endTime != null">END_TIME = #{endTime},</if>
+            <if test="executePath != null">EXECUTE_PATH = #{executePath},</if>
+            <if test="logPath != null">LOG_PATH = #{logPath},</if>
+            <if test="parameters != null">PARAMETERS = #{parameters},</if>
+            <if test="priority != null">PRIORITY = #{priority},</if>
+            <if test="retryTimes != null">RETRY_TIMES = #{retryTimes},</if>
+            <if test="fretryInterval != null">FRETRY_INTERVAL = #{fretryInterval},</if>
+            <if test="delayTime != null">DELAY_TIME = #{delayTime},</if>
+            <if test="cpuQuota != null">CPU_QUOTA = #{cpuQuota},</if>
+            <if test="memoryMax != null">MEMORY_MAX = #{memoryMax},</if>
+            <if test="status != null">STATUS = #{status},</if>
+            <if test="dsId != null">DS_ID = #{dsId},</if>
+            <if test="dsTaskInstanceId != null">DS_TASK_INSTANCE_ID = #{dsTaskInstanceId},</if>
+            <if test="validFlag != null">VALID_FLAG = #{validFlag},</if>
+            <if test="delFlag != null">DEL_FLAG = #{delFlag},</if>
+            <if test="createBy != null">CREATE_BY = #{createBy},</if>
+            <if test="creatorId != null">CREATOR_ID = #{creatorId},</if>
+            <if test="createTime != null">CREATE_TIME = #{createTime},</if>
+            <if test="updateBy != null">UPDATE_BY = #{updateBy},</if>
+            <if test="updaterId != null">UPDATER_ID = #{updaterId},</if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime},</if>
+            <if test="remark != null">REMARK = #{remark},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteDppEtlNodeInstanceById" parameterType="Long">
+        delete from DPP_ETL_NODE_INSTANCE where ID = #{id}
+    </delete>
+
+    <delete id="deleteDppEtlNodeInstanceByIds" parameterType="String">
+        delete from DPP_ETL_NODE_INSTANCE where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

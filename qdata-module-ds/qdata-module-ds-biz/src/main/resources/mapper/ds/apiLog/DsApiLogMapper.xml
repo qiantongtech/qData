@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.qiantong.qdata.module.ds.dal.mapper.apiLog.DsApiLogMapper">
+
+    <resultMap type="DsApiLogDO" id="DsApiLogResult">
+        <result property="id"    column="ID"    />
+        <result property="apiId"    column="API_ID"    />
+        <result property="callerId"    column="CALLER_ID"    />
+        <result property="callerBy"    column="CALLER_BY"    />
+        <result property="callerIp"    column="CALLER_IP"    />
+        <result property="callerUrl"    column="CALLER_URL"    />
+        <result property="callerParams"    column="CALLER_PARAMS"    />
+        <result property="callerStartDate"    column="CALLER_START_DATE"    />
+        <result property="callerEndDate"    column="CALLER_END_DATE"    />
+        <result property="callerSize"    column="CALLER_SIZE"    />
+        <result property="callerTime"    column="CALLER_TIME"    />
+        <result property="MSG"    column="MSG"    />
+        <result property="STATUS"    column="STATUS"    />
+        <result property="validFlag"    column="VALID_FLAG"    />
+        <result property="delFlag"    column="DEL_FLAG"    />
+        <result property="createBy"    column="CREATE_BY"    />
+        <result property="creatorId"    column="CREATOR_ID"    />
+        <result property="createTime"    column="CREATE_TIME"    />
+        <result property="updateBy"    column="UPDATE_BY"    />
+        <result property="updaterId"    column="UPDATER_ID"    />
+        <result property="updateTime"    column="UPDATE_TIME"    />
+        <result property="REMARK"    column="REMARK"    />
+    </resultMap>
+
+    <sql id="selectDsApiLogVo">
+        select ID, API_ID, CALLER_ID, CALLER_BY, CALLER_IP, CALLER_URL, CALLER_PARAMS, CALLER_START_DATE, CALLER_END_DATE, CALLER_SIZE, CALLER_TIME, MSG, STATUS, VALID_FLAG, DEL_FLAG, CREATE_BY, CREATOR_ID, CREATE_TIME, UPDATE_BY, UPDATER_ID, UPDATE_TIME, REMARK from DS_API_LOG
+    </sql>
+
+    <select id="selectDsApiLogList" parameterType="DsApiLogDO" resultMap="DsApiLogResult">
+        <include refid="selectDsApiLogVo"/>
+        <where>
+            <if test="apiId != null  and apiId != ''"> and API_ID = #{apiId}</if>
+            <if test="callerId != null  and callerId != ''"> and CALLER_ID = #{callerId}</if>
+            <if test="createTime != null "> and CREATE_TIME = #{createTime}</if>
+        </where>
+    </select>
+
+    <select id="selectDsApiLogByID" parameterType="Long" resultType="tech.qiantong.qdata.module.ds.dal.dataobject.apiLog.DsApiLogDO">
+        select dal.*, ds.NAME as apiName,ds.REQ_METHOD as reqMethod  from DS_API_LOG dal
+               join  DS_API ds on ds.ID = dal.API_ID
+        where dal.ID = #{id}
+    </select>
+
+    <insert id="insertDsApiLog" parameterType="DsApiLogDO">
+        insert into DS_API_LOG
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ID != null">id,</if>
+            <if test="apiId != null">API_ID,</if>
+            <if test="callerId != null">CALLER_ID,</if>
+            <if test="callerBy != null">CALLER_BY,</if>
+            <if test="callerIp != null">CALLER_IP,</if>
+            <if test="callerUrl != null">CALLER_URL,</if>
+            <if test="callerParams != null">CALLER_PARAMS,</if>
+            <if test="callerStartDate != null">CALLER_START_DATE,</if>
+            <if test="callerEndDate != null">CALLER_END_DATE,</if>
+            <if test="callerSize != null">CALLER_SIZE,</if>
+            <if test="callerTime != null">CALLER_TIME,</if>
+            <if test="MSG != null">MSG,</if>
+            <if test="STATUS != null">STATUS,</if>
+            <if test="validFlag != null">VALID_FLAG,</if>
+            <if test="delFlag != null">DEL_FLAG,</if>
+            <if test="createBy != null">CREATE_BY,</if>
+            <if test="creatorId != null">CREATOR_ID,</if>
+            <if test="createTime != null">CREATE_TIME,</if>
+            <if test="updateBy != null">UPDATE_BY,</if>
+            <if test="updaterId != null">UPDATER_ID,</if>
+            <if test="updateTime != null">UPDATE_TIME,</if>
+            <if test="REMARK != null">REMARK,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ID != null">#{id},</if>
+            <if test="apiId != null">#{apiId},</if>
+            <if test="callerId != null">#{callerId},</if>
+            <if test="callerBy != null">#{callerBy},</if>
+            <if test="callerIp != null">#{callerIp},</if>
+            <if test="callerUrl != null">#{callerUrl},</if>
+            <if test="callerParams != null">#{callerParams},</if>
+            <if test="callerStartDate != null">#{callerStartDate},</if>
+            <if test="callerEndDate != null">#{callerEndDate},</if>
+            <if test="callerSize != null">#{callerSize},</if>
+            <if test="callerTime != null">#{callerTime},</if>
+            <if test="MSG != null">#{MSG},</if>
+            <if test="STATUS != null">#{STATUS},</if>
+            <if test="validFlag != null">#{validFlag},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updaterId != null">#{updaterId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="REMARK != null">#{REMARK},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDsApiLog" parameterType="DsApiLogDO">
+        update DS_API_LOG
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="apiId != null">API_ID = #{apiId},</if>
+            <if test="callerId != null">CALLER_ID = #{callerId},</if>
+            <if test="callerBy != null">CALLER_BY = #{callerBy},</if>
+            <if test="callerIp != null">CALLER_IP = #{callerIp},</if>
+            <if test="callerUrl != null">CALLER_URL = #{callerUrl},</if>
+            <if test="callerParams != null">CALLER_PARAMS = #{callerParams},</if>
+            <if test="callerStartDate != null">CALLER_START_DATE = #{callerStartDate},</if>
+            <if test="callerEndDate != null">CALLER_END_DATE = #{callerEndDate},</if>
+            <if test="callerSize != null">CALLER_SIZE = #{callerSize},</if>
+            <if test="callerTime != null">CALLER_TIME = #{callerTime},</if>
+            <if test="MSG != null">MSG = #{MSG},</if>
+            <if test="STATUS != null">STATUS = #{STATUS},</if>
+            <if test="validFlag != null">VALID_FLAG = #{validFlag},</if>
+            <if test="delFlag != null">DEL_FLAG = #{delFlag},</if>
+            <if test="createBy != null">CREATE_BY = #{createBy},</if>
+            <if test="creatorId != null">CREATOR_ID = #{creatorId},</if>
+            <if test="createTime != null">CREATE_TIME = #{createTime},</if>
+            <if test="updateBy != null">UPDATE_BY = #{updateBy},</if>
+            <if test="updaterId != null">UPDATER_ID = #{updaterId},</if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime},</if>
+            <if test="REMARK != null">REMARK = #{REMARK},</if>
+        </trim>
+        where ID = #{ID}
+    </update>
+
+    <delete id="deleteDsApiLogByID" parameterType="Long">
+        delete from DS_API_LOG where ID = #{id}
+    </delete>
+
+    <delete id="deleteDsApiLogByIDs" parameterType="String">
+        delete from DS_API_LOG where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

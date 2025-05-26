@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.qiantong.qdata.module.da.dal.mapper.datasource.DaDatasourceProjectRelMapper">
+
+    <resultMap type="DaDatasourceProjectRelDO" id="DaDatasourceProjectRelResult">
+        <result property="id"    column="ID"    />
+        <result property="projectId"    column="PROJECT_ID"    />
+        <result property="projectCode"    column="PROJECT_CODE"    />
+        <result property="datasourceId"    column="DATASOURCE_ID"    />
+        <result property="description"    column="DESCRIPTION"    />
+        <result property="validFlag"    column="VALID_FLAG"    />
+        <result property="createBy"    column="CREATE_BY"    />
+        <result property="creatorId"    column="CREATOR_ID"    />
+        <result property="createTime"    column="CREATE_TIME"    />
+        <result property="updateBy"    column="UPDATE_BY"    />
+        <result property="updaterId"    column="UPDATER_ID"    />
+        <result property="updateTime"    column="UPDATE_TIME"    />
+        <result property="remark"    column="REMARK"    />
+        <result property="dppAssigned"    column="DPP_ASSIGNED"    />
+    </resultMap>
+
+    <sql id="selectDaDatasourceProjectRelVo">
+        select ID, PROJECT_ID, PROJECT_CODE, DATASOURCE_ID,DPP_ASSIGNED ,DESCRIPTION, VALID_FLAG, CREATE_BY, CREATOR_ID, CREATE_TIME, UPDATE_BY, UPDATER_ID, UPDATE_TIME, REMARK from DA_DATASOURCE_PROJECT_REL
+    </sql>
+
+    <select id="selectDaDatasourceProjectRelList" parameterType="DaDatasourceProjectRelDO" resultMap="DaDatasourceProjectRelResult">
+        <include refid="selectDaDatasourceProjectRelVo"/>
+        <where>
+            <if test="projectId != null "> and PROJECT_ID = #{projectId}</if>
+            <if test="projectCode != null  and projectCode != ''"> and PROJECT_CODE = #{projectCode}</if>
+            <if test="datasourceId != null "> and DATASOURCE_ID = #{datasourceId}</if>
+            <if test="description != null  and description != ''"> and DESCRIPTION = #{description}</if>
+            <if test="createTime != null "> and CREATE_TIME = #{createTime}</if>
+            <if test="dppAssigned != null "> and DPP_ASSIGNED = #{dppAssigned}</if>
+        </where>
+    </select>
+
+    <select id="selectDaDatasourceProjectRelById" parameterType="Long" resultMap="DaDatasourceProjectRelResult">
+        <include refid="selectDaDatasourceProjectRelVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertDaDatasourceProjectRel" parameterType="DaDatasourceProjectRelDO">
+        insert into DA_DATASOURCE_PROJECT_REL
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="projectId != null">PROJECT_ID,</if>
+            <if test="projectCode != null">PROJECT_CODE,</if>
+            <if test="datasourceId != null">DATASOURCE_ID,</if>
+            <if test="description != null">DESCRIPTION,</if>
+            <if test="validFlag != null">VALID_FLAG,</if>
+            <if test="createBy != null">CREATE_BY,</if>
+            <if test="creatorId != null">CREATOR_ID,</if>
+            <if test="createTime != null">CREATE_TIME,</if>
+            <if test="updateBy != null">UPDATE_BY,</if>
+            <if test="updaterId != null">UPDATER_ID,</if>
+            <if test="updateTime != null">UPDATE_TIME,</if>
+            <if test="remark != null">REMARK,</if>
+            <if test="dppAssigned != null">DPP_ASSIGNED,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="projectId != null">#{projectId},</if>
+            <if test="projectCode != null">#{projectCode},</if>
+            <if test="datasourceId != null">#{datasourceId},</if>
+            <if test="description != null">#{description},</if>
+            <if test="validFlag != null">#{validFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updaterId != null">#{updaterId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="dppAssigned != null">#{dppAssigned},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDaDatasourceProjectRel" parameterType="DaDatasourceProjectRelDO">
+        update DA_DATASOURCE_PROJECT_REL
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="projectId != null">PROJECT_ID = #{projectId},</if>
+            <if test="projectCode != null">PROJECT_CODE = #{projectCode},</if>
+            <if test="datasourceId != null">DATASOURCE_ID = #{datasourceId},</if>
+            <if test="description != null">DESCRIPTION = #{description},</if>
+            <if test="validFlag != null">VALID_FLAG = #{validFlag},</if>
+            <if test="createBy != null">CREATE_BY = #{createBy},</if>
+            <if test="creatorId != null">CREATOR_ID = #{creatorId},</if>
+            <if test="createTime != null">CREATE_TIME = #{createTime},</if>
+            <if test="updateBy != null">UPDATE_BY = #{updateBy},</if>
+            <if test="updaterId != null">UPDATER_ID = #{updaterId},</if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime},</if>
+            <if test="remark != null">REMARK = #{remark},</if>
+            <if test="dppAssigned != null">DPP_ASSIGNED = #{dppAssigned},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteDaDatasourceProjectRelById" parameterType="Long">
+        delete from DA_DATASOURCE_PROJECT_REL where ID = #{id}
+    </delete>
+
+    <delete id="deleteDaDatasourceProjectRelByIds" parameterType="String">
+        delete from DA_DATASOURCE_PROJECT_REL where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

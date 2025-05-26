@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.qiantong.qdata.module.dpp.dal.mapper.etl.DppEtlNodeMapper">
+
+    <resultMap type="DppEtlNodeDO" id="DppEtlNodeResult">
+        <result property="id"    column="ID"    />
+        <result property="type"    column="TYPE"    />
+        <result property="name"    column="NAME"    />
+        <result property="code"    column="CODE"    />
+        <result property="version"    column="VERSION"    />
+        <result property="projectId"    column="PROJECT_ID"    />
+        <result property="projectCode"    column="PROJECT_CODE"    />
+        <result property="parameters"    column="PARAMETERS"    />
+        <result property="priority"    column="PRIORITY"    />
+        <result property="failRetryTimes"    column="FAIL_RETRY_TIMES"    />
+        <result property="failRetryInterval"    column="FAIL_RETRY_INTERVAL"    />
+        <result property="timeout"    column="TIMEOUT"    />
+        <result property="delayTime"    column="DELAY_TIME"    />
+        <result property="cpuQuota"    column="CPU_QUOTA"    />
+        <result property="memoryMax"    column="MEMORY_MAX"    />
+        <result property="description"    column="DESCRIPTION"    />
+        <result property="dsId"    column="DS_ID"    />
+        <result property="validFlag"    column="VALID_FLAG"    />
+        <result property="delFlag"    column="DEL_FLAG"    />
+        <result property="createBy"    column="CREATE_BY"    />
+        <result property="creatorId"    column="CREATOR_ID"    />
+        <result property="createTime"    column="CREATE_TIME"    />
+        <result property="updateBy"    column="UPDATE_BY"    />
+        <result property="updaterId"    column="UPDATER_ID"    />
+        <result property="updateTime"    column="UPDATE_TIME"    />
+        <result property="remark"    column="REMARK"    />
+    </resultMap>
+
+    <sql id="selectDppEtlNodeVo">
+        select ID, TYPE, NAME, CODE, VERSION, PROJECT_ID, PROJECT_CODE, PARAMETERS, PRIORITY, FAIL_RETRY_TIMES, FAIL_RETRY_INTERVAL, TIMEOUT, DELAY_TIME, CPU_QUOTA, MEMORY_MAX, DESCRIPTION, DS_ID, VALID_FLAG, DEL_FLAG, CREATE_BY, CREATOR_ID, CREATE_TIME, UPDATE_BY, UPDATER_ID, UPDATE_TIME, REMARK from DPP_ETL_NODE
+    </sql>
+
+    <select id="selectDppEtlNodeList" parameterType="DppEtlNodeDO" resultMap="DppEtlNodeResult">
+        <include refid="selectDppEtlNodeVo"/>
+        <where>
+            <if test="type != null  and type != ''"> and TYPE = #{type}</if>
+            <if test="name != null  and name != ''"> and NAME like concat('%', #{name}, '%')</if>
+            <if test="code != null  and code != ''"> and CODE = #{code}</if>
+            <if test="version != null "> and VERSION = #{version}</if>
+            <if test="projectId != null "> and PROJECT_ID = #{projectId}</if>
+            <if test="projectCode != null  and projectCode != ''"> and PROJECT_CODE = #{projectCode}</if>
+            <if test="parameters != null  and parameters != ''"> and PARAMETERS = #{parameters}</if>
+            <if test="priority != null  and priority != ''"> and PRIORITY = #{priority}</if>
+            <if test="failRetryTimes != null "> and FAIL_RETRY_TIMES = #{failRetryTimes}</if>
+            <if test="failRetryInterval != null "> and FAIL_RETRY_INTERVAL = #{failRetryInterval}</if>
+            <if test="timeout != null "> and TIMEOUT = #{timeout}</if>
+            <if test="delayTime != null "> and DELAY_TIME = #{delayTime}</if>
+            <if test="cpuQuota != null "> and CPU_QUOTA = #{cpuQuota}</if>
+            <if test="memoryMax != null "> and MEMORY_MAX = #{memoryMax}</if>
+            <if test="description != null  and description != ''"> and DESCRIPTION = #{description}</if>
+            <if test="dsId != null "> and DS_ID = #{dsId}</if>
+            <if test="createTime != null "> and CREATE_TIME = #{createTime}</if>
+        </where>
+    </select>
+
+    <select id="selectDppEtlNodeById" parameterType="Long" resultMap="DppEtlNodeResult">
+        <include refid="selectDppEtlNodeVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertDppEtlNode" parameterType="DppEtlNodeDO">
+        insert into DPP_ETL_NODE
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="type != null">TYPE,</if>
+            <if test="name != null">NAME,</if>
+            <if test="code != null">CODE,</if>
+            <if test="version != null">VERSION,</if>
+            <if test="projectId != null">PROJECT_ID,</if>
+            <if test="projectCode != null">PROJECT_CODE,</if>
+            <if test="parameters != null">PARAMETERS,</if>
+            <if test="priority != null">PRIORITY,</if>
+            <if test="failRetryTimes != null">FAIL_RETRY_TIMES,</if>
+            <if test="failRetryInterval != null">FAIL_RETRY_INTERVAL,</if>
+            <if test="timeout != null">TIMEOUT,</if>
+            <if test="delayTime != null">DELAY_TIME,</if>
+            <if test="cpuQuota != null">CPU_QUOTA,</if>
+            <if test="memoryMax != null">MEMORY_MAX,</if>
+            <if test="description != null">DESCRIPTION,</if>
+            <if test="dsId != null">DS_ID,</if>
+            <if test="validFlag != null">VALID_FLAG,</if>
+            <if test="delFlag != null">DEL_FLAG,</if>
+            <if test="createBy != null">CREATE_BY,</if>
+            <if test="creatorId != null">CREATOR_ID,</if>
+            <if test="createTime != null">CREATE_TIME,</if>
+            <if test="updateBy != null">UPDATE_BY,</if>
+            <if test="updaterId != null">UPDATER_ID,</if>
+            <if test="updateTime != null">UPDATE_TIME,</if>
+            <if test="remark != null">REMARK,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="type != null">#{type},</if>
+            <if test="name != null">#{name},</if>
+            <if test="code != null">#{code},</if>
+            <if test="version != null">#{version},</if>
+            <if test="projectId != null">#{projectId},</if>
+            <if test="projectCode != null">#{projectCode},</if>
+            <if test="parameters != null">#{parameters},</if>
+            <if test="priority != null">#{priority},</if>
+            <if test="failRetryTimes != null">#{failRetryTimes},</if>
+            <if test="failRetryInterval != null">#{failRetryInterval},</if>
+            <if test="timeout != null">#{timeout},</if>
+            <if test="delayTime != null">#{delayTime},</if>
+            <if test="cpuQuota != null">#{cpuQuota},</if>
+            <if test="memoryMax != null">#{memoryMax},</if>
+            <if test="description != null">#{description},</if>
+            <if test="dsId != null">#{dsId},</if>
+            <if test="validFlag != null">#{validFlag},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updaterId != null">#{updaterId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDppEtlNode" parameterType="DppEtlNodeDO">
+        update DPP_ETL_NODE
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="type != null">TYPE = #{type},</if>
+            <if test="name != null">NAME = #{name},</if>
+            <if test="code != null">CODE = #{code},</if>
+            <if test="version != null">VERSION = #{version},</if>
+            <if test="projectId != null">PROJECT_ID = #{projectId},</if>
+            <if test="projectCode != null">PROJECT_CODE = #{projectCode},</if>
+            <if test="parameters != null">PARAMETERS = #{parameters},</if>
+            <if test="priority != null">PRIORITY = #{priority},</if>
+            <if test="failRetryTimes != null">FAIL_RETRY_TIMES = #{failRetryTimes},</if>
+            <if test="failRetryInterval != null">FAIL_RETRY_INTERVAL = #{failRetryInterval},</if>
+            <if test="timeout != null">TIMEOUT = #{timeout},</if>
+            <if test="delayTime != null">DELAY_TIME = #{delayTime},</if>
+            <if test="cpuQuota != null">CPU_QUOTA = #{cpuQuota},</if>
+            <if test="memoryMax != null">MEMORY_MAX = #{memoryMax},</if>
+            <if test="description != null">DESCRIPTION = #{description},</if>
+            <if test="dsId != null">DS_ID = #{dsId},</if>
+            <if test="validFlag != null">VALID_FLAG = #{validFlag},</if>
+            <if test="delFlag != null">DEL_FLAG = #{delFlag},</if>
+            <if test="createBy != null">CREATE_BY = #{createBy},</if>
+            <if test="creatorId != null">CREATOR_ID = #{creatorId},</if>
+            <if test="createTime != null">CREATE_TIME = #{createTime},</if>
+            <if test="updateBy != null">UPDATE_BY = #{updateBy},</if>
+            <if test="updaterId != null">UPDATER_ID = #{updaterId},</if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime},</if>
+            <if test="remark != null">REMARK = #{remark},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteDppEtlNodeById" parameterType="Long">
+        delete from DPP_ETL_NODE where ID = #{id}
+    </delete>
+
+    <delete id="deleteDppEtlNodeByIds" parameterType="String">
+        delete from DPP_ETL_NODE where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="removeOldDppEtlNode" parameterType="java.util.List">
+        delete from DPP_ETL_NODE where CODE in
+        <foreach item="code" collection="list" open="(" separator="," close=")">
+            #{code}
+        </foreach>
+    </delete>
+</mapper>

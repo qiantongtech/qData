@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.qiantong.qdata.module.da.dal.mapper.assetchild.api.DaAssetApiMapper">
+
+    <resultMap type="DaAssetApiDO" id="DaAssetApiResult">
+        <result property="id"    column="ID"    />
+        <result property="assetId"    column="ASSET_ID"    />
+        <result property="url"    column="URL"    />
+        <result property="httpMethod"    column="HTTP_METHOD"    />
+        <result property="validFlag"    column="VALID_FLAG"    />
+        <result property="developerName"    column="DEVELOPER_NAME"    />
+        <result property="appName"    column="APP_NAME"    />
+        <result property="delFlag"    column="DEL_FLAG"    />
+        <result property="createBy"    column="CREATE_BY"    />
+        <result property="creatorId"    column="CREATOR_ID"    />
+        <result property="createTime"    column="CREATE_TIME"    />
+        <result property="updateBy"    column="UPDATE_BY"    />
+        <result property="updaterId"    column="UPDATER_ID"    />
+        <result property="updateTime"    column="UPDATE_TIME"    />
+        <result property="remark"    column="REMARK"    />
+    </resultMap>
+
+    <sql id="selectDaAssetApiVo">
+        select ID, ASSET_ID, URL, HTTP_METHOD,DEVELOPER_NAME,APP_NAME, VALID_FLAG, DEL_FLAG, CREATE_BY, CREATOR_ID, CREATE_TIME, UPDATE_BY, UPDATER_ID, UPDATE_TIME, REMARK from DA_ASSET_API
+    </sql>
+
+    <select id="selectDaAssetApiList" parameterType="DaAssetApiDO" resultMap="DaAssetApiResult">
+        <include refid="selectDaAssetApiVo"/>
+        <where>
+            <if test="assetId != null "> and ASSET_ID = #{assetId}</if>
+            <if test="url != null  and url != ''"> and URL = #{url}</if>
+            <if test="appName != null  and appName != ''"> and APP_NAME = #{appName}</if>
+            <if test="developerName != null  and developerName != ''"> and DEVELOPER_NAME = #{developerName}</if>
+            <if test="httpMethod != null  and httpMethod != ''"> and HTTP_METHOD = #{httpMethod}</if>
+            <if test="createTime != null "> and CREATE_TIME = #{createTime}</if>
+        </where>
+    </select>
+
+    <select id="selectDaAssetApiById" parameterType="Long" resultMap="DaAssetApiResult">
+        <include refid="selectDaAssetApiVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertDaAssetApi" parameterType="DaAssetApiDO">
+        insert into DA_ASSET_API
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="assetId != null">ASSET_ID,</if>
+            <if test="url != null">URL,</if>
+            <if test="httpMethod != null">HTTP_METHOD,</if>
+            <if test="developerName != null">DEVELOPER_NAME,</if>
+            <if test="appName != null">APP_NAME,</if>
+            <if test="validFlag != null">VALID_FLAG,</if>
+            <if test="delFlag != null">DEL_FLAG,</if>
+            <if test="createBy != null">CREATE_BY,</if>
+            <if test="creatorId != null">CREATOR_ID,</if>
+            <if test="createTime != null">CREATE_TIME,</if>
+            <if test="updateBy != null">UPDATE_BY,</if>
+            <if test="updaterId != null">UPDATER_ID,</if>
+            <if test="updateTime != null">UPDATE_TIME,</if>
+            <if test="remark != null">REMARK,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="assetId != null">#{assetId},</if>
+            <if test="url != null">#{url},</if>
+            <if test="httpMethod != null">#{httpMethod},</if>
+            <if test="developerName != null">#{developerName},</if>
+            <if test="appName != null">#{appName},</if>
+            <if test="validFlag != null">#{validFlag},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updaterId != null">#{updaterId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDaAssetApi" parameterType="DaAssetApiDO">
+        update DA_ASSET_API
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="assetId != null">ASSET_ID = #{assetId},</if>
+            <if test="url != null">URL = #{url},</if>
+            <if test="httpMethod != null">HTTP_METHOD = #{httpMethod},</if>
+            <if test="developerName != null">DEVELOPER_NAME = #{developerName},</if>
+            <if test="appName != null">APP_NAME = #{appName},</if>
+            <if test="validFlag != null">VALID_FLAG = #{validFlag},</if>
+            <if test="delFlag != null">DEL_FLAG = #{delFlag},</if>
+            <if test="createBy != null">CREATE_BY = #{createBy},</if>
+            <if test="creatorId != null">CREATOR_ID = #{creatorId},</if>
+            <if test="createTime != null">CREATE_TIME = #{createTime},</if>
+            <if test="updateBy != null">UPDATE_BY = #{updateBy},</if>
+            <if test="updaterId != null">UPDATER_ID = #{updaterId},</if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime},</if>
+            <if test="remark != null">REMARK = #{remark},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteDaAssetApiById" parameterType="Long">
+        delete from DA_ASSET_API where ID = #{id}
+    </delete>
+
+    <delete id="deleteDaAssetApiByIds" parameterType="String">
+        delete from DA_ASSET_API where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

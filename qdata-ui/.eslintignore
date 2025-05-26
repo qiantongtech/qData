@@ -1,0 +1,32 @@
+*.sh
+# node_modules
+# dist
+# /public
+# /docs
+*.md
+*.woff
+*.ttf
+.vscode
+.idea
+.husky
+.local
+/bin
+/src/mock/*
+stats.html
+
+
+docs
+dist
+public
+node_modules
+
+.versionrc
+auto-imports.d.ts
+components.d.ts
+
+**/dist/**
+**/public/**
+**/docs/**
+**/node_modules/**
+**/.versionrc/**
+**/types/**/*

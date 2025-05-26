@@ -1,0 +1,76 @@
+package ${packageName}.controller.admin.${moduleName}.vo;
+
+#foreach ($import in $importList)
+import ${import};
+#end
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.*;
+import io.swagger.v3.oas.annotations.media.Schema;
+import tech.qiantong.qdata.common.annotation.Excel;
+import java.util.Date;
+import java.io.Serializable;
+#if($table.crud || $table.sub)
+#elseif($table.tree)
+#end
+
+/**
+ * ${functionName} Response VO 对象 ${tableName}
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+#if($table.crud || $table.sub)
+#set($Entity="BaseEntity")
+#elseif($table.tree)
+#set($Entity="TreeEntity")
+#end
+@Schema(description = "${functionName} Response VO")
+@Data
+public class ${ClassName}RespVO implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+#foreach ($column in $columns)
+    #if($column.javaField == "id")
+    @Excel(name = "ID")
+    @Schema(description = "ID")
+    private $column.javaType $column.javaField;
+    #else
+
+#set($parentheseIndex=$column.columnComment.indexOf("（"))
+#if($parentheseIndex != -1)
+#set($comment=$column.columnComment.substring(0, $parentheseIndex))
+#else
+#set($comment=$column.columnComment)
+#end
+#if($parentheseIndex != -1)
+    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+#elseif($column.javaType == 'Date')
+    @Excel(name = "${comment}", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+#else
+    @Excel(name = "${comment}")
+#end
+    @Schema(description = "${comment}", example = "")
+    private $column.javaType $column.javaField;
+    #end
+#end
+#if($table.sub)
+    /** $table.subTable.functionName信息 */
+    private List<${subClassName}> ${subclassName}List;
+
+#end
+
+#if($table.sub)
+    public List<${subClassName}> get${subClassName}List()
+    {
+        return ${subclassName}List;
+    }
+
+    public void set${subClassName}List(List<${subClassName}> ${subclassName}List)
+    {
+        this.${subclassName}List = ${subclassName}List;
+    }
+
+#end
+}

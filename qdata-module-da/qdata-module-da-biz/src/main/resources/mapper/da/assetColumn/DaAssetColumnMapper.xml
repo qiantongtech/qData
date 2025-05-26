@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.qiantong.qdata.module.da.dal.mapper.assetColumn.DaAssetColumnMapper">
+
+    <resultMap type="DaAssetColumnDO" id="DaAssetColumnResult">
+        <result property="id"    column="ID"    />
+        <result property="assetId"    column="ASSET_ID"    />
+        <result property="columnName"    column="COLUMN_NAME"    />
+        <result property="columnComment"    column="COLUMN_COMMENT"    />
+        <result property="columnType"    column="COLUMN_TYPE"    />
+        <result property="columnLength"    column="COLUMN_LENGTH"    />
+        <result property="columnScale"    column="COLUMN_SCALE"    />
+        <result property="nullableFlag"    column="NULLABLE_FLAG"    />
+        <result property="pkFlag"    column="PK_FLAG"    />
+        <result property="defaultValue"    column="DEFAULT_VALUE"    />
+        <result property="dataElemCodeFlag"    column="DATA_ELEM_CODE_FLAG"    />
+        <result property="dataElemCodeId"    column="DATA_ELEM_CODE_ID"    />
+        <result property="sensitiveLevelId"    column="SENSITIVE_LEVEL_ID"    />
+        <result property="relDataElmeFlag"    column="REL_DATA_ELME_FLAG"    />
+        <result property="relCleanFlag"    column="REL_CLEAN_FLAG"    />
+        <result property="relAuditFlag"    column="REL_AUDIT_FLAG"    />
+        <result property="description"    column="DESCRIPTION"    />
+        <result property="validFlag"    column="VALID_FLAG"    />
+        <result property="delFlag"    column="DEL_FLAG"    />
+        <result property="createBy"    column="CREATE_BY"    />
+        <result property="creatorId"    column="CREATOR_ID"    />
+        <result property="createTime"    column="CREATE_TIME"    />
+        <result property="updateBy"    column="UPDATE_BY"    />
+        <result property="updaterId"    column="UPDATER_ID"    />
+        <result property="updateTime"    column="UPDATE_TIME"    />
+        <result property="remark"    column="REMARK"    />
+    </resultMap>
+
+    <sql id="selectDaAssetColumnVo">
+        select ID, ASSET_ID, COLUMN_NAME, COLUMN_COMMENT, COLUMN_TYPE, COLUMN_LENGTH, COLUMN_SCALE, NULLABLE_FLAG, PK_FLAG, DEFAULT_VALUE, DATA_ELEM_CODE_FLAG, DATA_ELEM_CODE_ID, SENSITIVE_LEVEL_ID, REL_DATA_ELME_FLAG, REL_CLEAN_FLAG, REL_AUDIT_FLAG, DESCRIPTION, VALID_FLAG, DEL_FLAG, CREATE_BY, CREATOR_ID, CREATE_TIME, UPDATE_BY, UPDATER_ID, UPDATE_TIME, REMARK from DA_ASSET_COLUMN
+    </sql>
+
+    <select id="selectDaAssetColumnList" parameterType="DaAssetColumnDO" resultMap="DaAssetColumnResult">
+        <include refid="selectDaAssetColumnVo"/>
+        <where>
+            <if test="assetId != null  and assetId != ''"> and ASSET_ID = #{assetId}</if>
+            <if test="columnName != null  and columnName != ''"> and COLUMN_NAME like concat('%', #{columnName}, '%')</if>
+            <if test="columnComment != null  and columnComment != ''"> and COLUMN_COMMENT = #{columnComment}</if>
+            <if test="columnType != null  and columnType != ''"> and COLUMN_TYPE = #{columnType}</if>
+            <if test="columnLength != null "> and COLUMN_LENGTH = #{columnLength}</if>
+            <if test="columnScale != null "> and COLUMN_SCALE = #{columnScale}</if>
+            <if test="nullableFlag != null  and nullableFlag != ''"> and NULLABLE_FLAG = #{nullableFlag}</if>
+            <if test="pkFlag != null  and pkFlag != ''"> and PK_FLAG = #{pkFlag}</if>
+            <if test="defaultValue != null  and defaultValue != ''"> and DEFAULT_VALUE = #{defaultValue}</if>
+            <if test="dataElemCodeFlag != null  and dataElemCodeFlag != ''"> and DATA_ELEM_CODE_FLAG = #{dataElemCodeFlag}</if>
+            <if test="dataElemCodeId != null  and dataElemCodeId != ''"> and DATA_ELEM_CODE_ID = #{dataElemCodeId}</if>
+            <if test="sensitiveLevelId != null  and sensitiveLevelId != ''"> and SENSITIVE_LEVEL_ID = #{sensitiveLevelId}</if>
+            <if test="relDataElmeFlag != null  and relDataElmeFlag != ''"> and REL_DATA_ELME_FLAG = #{relDataElmeFlag}</if>
+            <if test="relCleanFlag != null  and relCleanFlag != ''"> and REL_CLEAN_FLAG = #{relCleanFlag}</if>
+            <if test="relAuditFlag != null  and relAuditFlag != ''"> and REL_AUDIT_FLAG = #{relAuditFlag}</if>
+            <if test="description != null  and description != ''"> and DESCRIPTION = #{description}</if>
+            <if test="createTime != null "> and CREATE_TIME = #{createTime}</if>
+        </where>
+    </select>
+
+    <select id="selectDaAssetColumnById" parameterType="Long" resultMap="DaAssetColumnResult">
+        <include refid="selectDaAssetColumnVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertDaAssetColumn" parameterType="DaAssetColumnDO">
+        insert into DA_ASSET_COLUMN
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="assetId != null">ASSET_ID,</if>
+            <if test="columnName != null">COLUMN_NAME,</if>
+            <if test="columnComment != null">COLUMN_COMMENT,</if>
+            <if test="columnType != null">COLUMN_TYPE,</if>
+            <if test="columnLength != null">COLUMN_LENGTH,</if>
+            <if test="columnScale != null">COLUMN_SCALE,</if>
+            <if test="nullableFlag != null">NULLABLE_FLAG,</if>
+            <if test="pkFlag != null">PK_FLAG,</if>
+            <if test="defaultValue != null">DEFAULT_VALUE,</if>
+            <if test="dataElemCodeFlag != null">DATA_ELEM_CODE_FLAG,</if>
+            <if test="dataElemCodeId != null">DATA_ELEM_CODE_ID,</if>
+            <if test="sensitiveLevelId != null">SENSITIVE_LEVEL_ID,</if>
+            <if test="relDataElmeFlag != null">REL_DATA_ELME_FLAG,</if>
+            <if test="relCleanFlag != null">REL_CLEAN_FLAG,</if>
+            <if test="relAuditFlag != null">REL_AUDIT_FLAG,</if>
+            <if test="description != null">DESCRIPTION,</if>
+            <if test="validFlag != null">VALID_FLAG,</if>
+            <if test="delFlag != null">DEL_FLAG,</if>
+            <if test="createBy != null">CREATE_BY,</if>
+            <if test="creatorId != null">CREATOR_ID,</if>
+            <if test="createTime != null">CREATE_TIME,</if>
+            <if test="updateBy != null">UPDATE_BY,</if>
+            <if test="updaterId != null">UPDATER_ID,</if>
+            <if test="updateTime != null">UPDATE_TIME,</if>
+            <if test="remark != null">REMARK,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="assetId != null">#{assetId},</if>
+            <if test="columnName != null">#{columnName},</if>
+            <if test="columnComment != null">#{columnComment},</if>
+            <if test="columnType != null">#{columnType},</if>
+            <if test="columnLength != null">#{columnLength},</if>
+            <if test="columnScale != null">#{columnScale},</if>
+            <if test="nullableFlag != null">#{nullableFlag},</if>
+            <if test="pkFlag != null">#{pkFlag},</if>
+            <if test="defaultValue != null">#{defaultValue},</if>
+            <if test="dataElemCodeFlag != null">#{dataElemCodeFlag},</if>
+            <if test="dataElemCodeId != null">#{dataElemCodeId},</if>
+            <if test="sensitiveLevelId != null">#{sensitiveLevelId},</if>
+            <if test="relDataElmeFlag != null">#{relDataElmeFlag},</if>
+            <if test="relCleanFlag != null">#{relCleanFlag},</if>
+            <if test="relAuditFlag != null">#{relAuditFlag},</if>
+            <if test="description != null">#{description},</if>
+            <if test="validFlag != null">#{validFlag},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updaterId != null">#{updaterId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDaAssetColumn" parameterType="DaAssetColumnDO">
+        update DA_ASSET_COLUMN
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="assetId != null">ASSET_ID = #{assetId},</if>
+            <if test="columnName != null">COLUMN_NAME = #{columnName},</if>
+            <if test="columnComment != null">COLUMN_COMMENT = #{columnComment},</if>
+            <if test="columnType != null">COLUMN_TYPE = #{columnType},</if>
+            <if test="columnLength != null">COLUMN_LENGTH = #{columnLength},</if>
+            <if test="columnScale != null">COLUMN_SCALE = #{columnScale},</if>
+            <if test="nullableFlag != null">NULLABLE_FLAG = #{nullableFlag},</if>
+            <if test="pkFlag != null">PK_FLAG = #{pkFlag},</if>
+            <if test="defaultValue != null">DEFAULT_VALUE = #{defaultValue},</if>
+            <if test="dataElemCodeFlag != null">DATA_ELEM_CODE_FLAG = #{dataElemCodeFlag},</if>
+            DATA_ELEM_CODE_ID = #{dataElemCodeId},
+            <if test="sensitiveLevelId != null">SENSITIVE_LEVEL_ID = #{sensitiveLevelId},</if>
+            <if test="relDataElmeFlag != null">REL_DATA_ELME_FLAG = #{relDataElmeFlag},</if>
+            <if test="relCleanFlag != null">REL_CLEAN_FLAG = #{relCleanFlag},</if>
+            <if test="relAuditFlag != null">REL_AUDIT_FLAG = #{relAuditFlag},</if>
+            <if test="description != null">DESCRIPTION = #{description},</if>
+            <if test="validFlag != null">VALID_FLAG = #{validFlag},</if>
+            <if test="delFlag != null">DEL_FLAG = #{delFlag},</if>
+            <if test="createBy != null">CREATE_BY = #{createBy},</if>
+            <if test="creatorId != null">CREATOR_ID = #{creatorId},</if>
+            <if test="createTime != null">CREATE_TIME = #{createTime},</if>
+            <if test="updateBy != null">UPDATE_BY = #{updateBy},</if>
+            <if test="updaterId != null">UPDATER_ID = #{updaterId},</if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime},</if>
+            <if test="remark != null">REMARK = #{remark},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteDaAssetColumnById" parameterType="Long">
+        delete from DA_ASSET_COLUMN where ID = #{id}
+    </delete>
+
+    <delete id="deleteDaAssetColumnByIds" parameterType="String">
+        delete from DA_ASSET_COLUMN where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+    <delete id="deleteAssetColumnByAssetId" parameterType="Long">
+        update DA_ASSET_COLUMN
+        set DEL_FLAG = '1'
+        where ID = #{id}
+    </delete>
+</mapper>

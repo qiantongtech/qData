@@ -1,0 +1,50 @@
+
+/**
+ * ${dictName}模型枚举
+ *
+ * @date ${datetime}
+ **/
+public enum ${DictType}Enum {
+    #foreach($dictData in $sysDictData)
+        /**
+         * ${dictData.dictLabel}
+         */
+        ENUM${foreach.index}($dictData.dictCode,"$dictData.dictLabel")#if($foreach.count != $sysDictData.size()), #else;#end
+
+    #end
+
+        private Integer code;
+
+        private String info;
+
+        ${DictType}Enum(Integer code, String info) {
+        this.code = code;
+        this.info = info;
+    }
+
+    public static ${DictType}Enum get(Integer code) {
+        for (${DictType}Enum v : values()) {
+            if (v.eq(code)) {
+                return v;
+            }
+        }
+        return null;
+    }
+    public Integer getCode() {
+        return code;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+
+    public static String getInfo(Integer code) {
+        return ${DictType}Enum.get(code).getInfo();
+    }
+
+    public boolean eq(Integer code) {
+        return this.code.equals(code);
+    }
+
+}

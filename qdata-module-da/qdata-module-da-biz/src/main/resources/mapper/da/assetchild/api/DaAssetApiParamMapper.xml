@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.qiantong.qdata.module.da.dal.mapper.assetchild.api.DaAssetApiParamMapper">
+
+    <resultMap type="DaAssetApiParamDO" id="DaAssetApiParamResult">
+        <result property="id"    column="ID"    />
+        <result property="apiId"    column="API_ID"    />
+        <result property="parentId"    column="PARENT_ID"    />
+        <result property="name"    column="NAME"    />
+        <result property="type"    column="TYPE"    />
+        <result property="requestFlag"    column="REQUEST_FLAG"    />
+        <result property="columnType"    column="COLUMN_TYPE"    />
+        <result property="defaultValue"    column="DEFAULT_VALUE"    />
+        <result property="exampleValue"    column="EXAMPLE_VALUE"    />
+        <result property="description"    column="DESCRIPTION"    />
+        <result property="validFlag"    column="VALID_FLAG"    />
+        <result property="delFlag"    column="DEL_FLAG"    />
+        <result property="createBy"    column="CREATE_BY"    />
+        <result property="creatorId"    column="CREATOR_ID"    />
+        <result property="createTime"    column="CREATE_TIME"    />
+        <result property="updateBy"    column="UPDATE_BY"    />
+        <result property="updaterId"    column="UPDATER_ID"    />
+        <result property="updateTime"    column="UPDATE_TIME"    />
+        <result property="remark"    column="REMARK"    />
+    </resultMap>
+
+    <sql id="selectDaAssetApiParamVo">
+        select ID, API_ID, PARENT_ID, NAME, TYPE, REQUEST_FLAG, DEFAULT_VALUE, EXAMPLE_VALUE, DESCRIPTION, COLUMN_TYPE, VALID_FLAG, DEL_FLAG, CREATE_BY, CREATOR_ID, CREATE_TIME, UPDATE_BY, UPDATER_ID, UPDATE_TIME, REMARK from DA_ASSET_API_PARAM
+    </sql>
+
+    <select id="selectDaAssetApiParamList" parameterType="DaAssetApiParamDO" resultMap="DaAssetApiParamResult">
+        <include refid="selectDaAssetApiParamVo"/>
+        <where>
+            <if test="apiId != null "> and API_ID = #{apiId}</if>
+            <if test="parentId != null "> and PARENT_ID = #{parentId}</if>
+            <if test="name != null  and name != ''"> and NAME like concat('%', #{name}, '%')</if>
+            <if test="type != null  and type != ''"> and TYPE = #{type}</if>
+            <if test="requestFlag != null  and requestFlag != ''"> and REQUEST_FLAG = #{requestFlag}</if>
+            <if test="defaultValue != null  and defaultValue != ''"> and DEFAULT_VALUE = #{defaultValue}</if>
+            <if test="exampleValue != null  and exampleValue != ''"> and EXAMPLE_VALUE = #{exampleValue}</if>
+            <if test="description != null  and description != ''"> and DESCRIPTION = #{description}</if>
+            <if test="columnType != null  and columnType != ''"> and COLUMN_TYPE = #{columnType}</if>
+            <if test="createTime != null "> and CREATE_TIME = #{createTime}</if>
+        </where>
+    </select>
+
+    <select id="selectDaAssetApiParamById" parameterType="Long" resultMap="DaAssetApiParamResult">
+        <include refid="selectDaAssetApiParamVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertDaAssetApiParam" parameterType="DaAssetApiParamDO">
+        insert into DA_ASSET_API_PARAM
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="apiId != null">API_ID,</if>
+            <if test="parentId != null">PARENT_ID,</if>
+            <if test="name != null">NAME,</if>
+            <if test="type != null">TYPE,</if>
+            <if test="requestFlag != null">REQUEST_FLAG,</if>
+            <if test="defaultValue != null">DEFAULT_VALUE,</if>
+            <if test="exampleValue != null">EXAMPLE_VALUE,</if>
+            <if test="description != null">DESCRIPTION,</if>
+            <if test="columnType != null">COLUMN_TYPE,</if>
+            <if test="validFlag != null">VALID_FLAG,</if>
+            <if test="delFlag != null">DEL_FLAG,</if>
+            <if test="createBy != null">CREATE_BY,</if>
+            <if test="creatorId != null">CREATOR_ID,</if>
+            <if test="createTime != null">CREATE_TIME,</if>
+            <if test="updateBy != null">UPDATE_BY,</if>
+            <if test="updaterId != null">UPDATER_ID,</if>
+            <if test="updateTime != null">UPDATE_TIME,</if>
+            <if test="remark != null">REMARK,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="apiId != null">#{apiId},</if>
+            <if test="parentId != null">#{parentId},</if>
+            <if test="name != null">#{name},</if>
+            <if test="type != null">#{type},</if>
+            <if test="requestFlag != null">#{requestFlag},</if>
+            <if test="defaultValue != null">#{defaultValue},</if>
+            <if test="exampleValue != null">#{exampleValue},</if>
+            <if test="description != null">#{description},</if>
+            <if test="columnType != null">#{columnType},</if>
+            <if test="validFlag != null">#{validFlag},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updaterId != null">#{updaterId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDaAssetApiParam" parameterType="DaAssetApiParamDO">
+        update DA_ASSET_API_PARAM
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="apiId != null">API_ID = #{apiId},</if>
+            <if test="parentId != null">PARENT_ID = #{parentId},</if>
+            <if test="name != null">NAME = #{name},</if>
+            <if test="type != null">TYPE = #{type},</if>
+            <if test="requestFlag != null">REQUEST_FLAG = #{requestFlag},</if>
+            <if test="defaultValue != null">DEFAULT_VALUE = #{defaultValue},</if>
+            <if test="exampleValue != null">REQUEST_FLAG = #{exampleValue},</if>
+            <if test="description != null">DESCRIPTION = #{description},</if>
+            <if test="columnType != null">COLUMN_TYPE = #{columnType},</if>
+            <if test="validFlag != null">VALID_FLAG = #{validFlag},</if>
+            <if test="delFlag != null">DEL_FLAG = #{delFlag},</if>
+            <if test="createBy != null">CREATE_BY = #{createBy},</if>
+            <if test="creatorId != null">CREATOR_ID = #{creatorId},</if>
+            <if test="createTime != null">CREATE_TIME = #{createTime},</if>
+            <if test="updateBy != null">UPDATE_BY = #{updateBy},</if>
+            <if test="updaterId != null">UPDATER_ID = #{updaterId},</if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime},</if>
+            <if test="remark != null">REMARK = #{remark},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteDaAssetApiParamById" parameterType="Long">
+        delete from DA_ASSET_API_PARAM where ID = #{id}
+    </delete>
+
+    <delete id="deleteDaAssetApiParamByIds" parameterType="String">
+        delete from DA_ASSET_API_PARAM where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="removeThemeRelByAssetApiId" parameterType="Long">
+        update DA_ASSET_API_PARAM
+        set DEL_FLAG = '1'
+        where API_ID = #{id}
+    </delete>
+</mapper>

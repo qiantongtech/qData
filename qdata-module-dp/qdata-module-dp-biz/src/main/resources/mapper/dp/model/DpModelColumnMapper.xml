@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.qiantong.qdata.module.dp.dal.mapper.model.DpModelColumnMapper">
+
+    <resultMap type="DpModelColumnDO" id="DpModelColumnResult">
+        <result property="id"    column="ID"    />
+        <result property="modelId"    column="MODEL_ID"    />
+        <result property="engName"    column="ENG_NAME"    />
+        <result property="cnName"    column="CN_NAME"    />
+        <result property="columnType"    column="COLUMN_TYPE"    />
+        <result property="columnLength"    column="COLUMN_LENGTH"    />
+        <result property="columnScale"    column="COLUMN_SCALE"    />
+        <result property="defaultValue"    column="DEFAULT_VALUE"    />
+        <result property="pkFlag"    column="PK_FLAG"    />
+        <result property="nullableFlag"    column="NULLABLE_FLAG"    />
+        <result property="sortOrder"    column="SORT_ORDER"    />
+        <result property="authorityDept"    column="AUTHORITY_DEPT"    />
+        <result property="dataElemId"    column="DATA_ELEM_ID"    />
+        <result property="validFlag"    column="VALID_FLAG"    />
+        <result property="delFlag"    column="DEL_FLAG"    />
+        <result property="createBy"    column="CREATE_BY"    />
+        <result property="creatorId"    column="CREATOR_ID"    />
+        <result property="createTime"    column="CREATE_TIME"    />
+        <result property="updateBy"    column="UPDATE_BY"    />
+        <result property="updaterId"    column="UPDATER_ID"    />
+        <result property="updateTime"    column="UPDATE_TIME"    />
+        <result property="remark"    column="REMARK"    />
+    </resultMap>
+
+    <sql id="selectDpModelColumnVo">
+        select ID, MODEL_ID, ENG_NAME, CN_NAME, COLUMN_TYPE, COLUMN_LENGTH, COLUMN_SCALE, DEFAULT_VALUE, PK_FLAG, NULLABLE_FLAG, SORT_ORDER, AUTHORITY_DEPT, DATA_ELEM_ID, VALID_FLAG, DEL_FLAG, CREATE_BY, CREATOR_ID, CREATE_TIME, UPDATE_BY, UPDATER_ID, UPDATE_TIME, REMARK from DP_MODEL_COLUMN
+    </sql>
+
+    <select id="selectDpModelColumnList" parameterType="DpModelColumnDO" resultMap="DpModelColumnResult">
+        <include refid="selectDpModelColumnVo"/>
+        <where>
+            <if test="modelId != null "> and MODEL_ID = #{modelId}</if>
+            <if test="engName != null  and engName != ''"> and ENG_NAME like concat('%', #{engName}, '%')</if>
+            <if test="cnName != null  and cnName != ''"> and CN_NAME like concat('%', #{cnName}, '%')</if>
+            <if test="columnType != null  and columnType != ''"> and COLUMN_TYPE = #{columnType}</if>
+            <if test="columnLength != null "> and COLUMN_LENGTH = #{columnLength}</if>
+            <if test="columnScale != null "> and COLUMN_SCALE = #{columnScale}</if>
+            <if test="defaultValue != null  and defaultValue != ''"> and DEFAULT_VALUE = #{defaultValue}</if>
+            <if test="pkFlag != null  and pkFlag != ''"> and PK_FLAG = #{pkFlag}</if>
+            <if test="nullableFlag != null  and nullableFlag != ''"> and NULLABLE_FLAG = #{nullableFlag}</if>
+            <if test="sortOrder != null "> and SORT_ORDER = #{sortOrder}</if>
+            <if test="authorityDept != null  and authorityDept != ''"> and AUTHORITY_DEPT = #{authorityDept}</if>
+            <if test="dataElemId != null "> and DATA_ELEM_ID = #{dataElemId}</if>
+            <if test="createTime != null "> and CREATE_TIME = #{createTime}</if>
+        </where>
+    </select>
+
+    <select id="selectDpModelColumnById" parameterType="Long" resultMap="DpModelColumnResult">
+        <include refid="selectDpModelColumnVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertDpModelColumn" parameterType="DpModelColumnDO">
+        insert into DP_MODEL_COLUMN
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="modelId != null">MODEL_ID,</if>
+            <if test="engName != null">ENG_NAME,</if>
+            <if test="cnName != null">CN_NAME,</if>
+            <if test="columnType != null">COLUMN_TYPE,</if>
+            <if test="columnLength != null">COLUMN_LENGTH,</if>
+            <if test="columnScale != null">COLUMN_SCALE,</if>
+            <if test="defaultValue != null">DEFAULT_VALUE,</if>
+            <if test="pkFlag != null">PK_FLAG,</if>
+            <if test="nullableFlag != null">NULLABLE_FLAG,</if>
+            <if test="sortOrder != null">SORT_ORDER,</if>
+            <if test="authorityDept != null">AUTHORITY_DEPT,</if>
+            <if test="dataElemId != null">DATA_ELEM_ID,</if>
+            <if test="validFlag != null">VALID_FLAG,</if>
+            <if test="delFlag != null">DEL_FLAG,</if>
+            <if test="createBy != null">CREATE_BY,</if>
+            <if test="creatorId != null">CREATOR_ID,</if>
+            <if test="createTime != null">CREATE_TIME,</if>
+            <if test="updateBy != null">UPDATE_BY,</if>
+            <if test="updaterId != null">UPDATER_ID,</if>
+            <if test="updateTime != null">UPDATE_TIME,</if>
+            <if test="remark != null">REMARK,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="modelId != null">#{modelId},</if>
+            <if test="engName != null">#{engName},</if>
+            <if test="cnName != null">#{cnName},</if>
+            <if test="columnType != null">#{columnType},</if>
+            <if test="columnLength != null">#{columnLength},</if>
+            <if test="columnScale != null">#{columnScale},</if>
+            <if test="defaultValue != null">#{defaultValue},</if>
+            <if test="pkFlag != null">#{pkFlag},</if>
+            <if test="nullableFlag != null">#{nullableFlag},</if>
+            <if test="sortOrder != null">#{sortOrder},</if>
+            <if test="authorityDept != null">#{authorityDept},</if>
+            <if test="dataElemId != null">#{dataElemId},</if>
+            <if test="validFlag != null">#{validFlag},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updaterId != null">#{updaterId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDpModelColumn" parameterType="DpModelColumnDO">
+        update DP_MODEL_COLUMN
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="modelId != null">MODEL_ID = #{modelId},</if>
+            <if test="engName != null">ENG_NAME = #{engName},</if>
+            <if test="cnName != null">CN_NAME = #{cnName},</if>
+            <if test="columnType != null">COLUMN_TYPE = #{columnType},</if>
+            <if test="columnLength != null">COLUMN_LENGTH = #{columnLength},</if>
+            <if test="columnScale != null">COLUMN_SCALE = #{columnScale},</if>
+            <if test="defaultValue != null">DEFAULT_VALUE = #{defaultValue},</if>
+            <if test="pkFlag != null">PK_FLAG = #{pkFlag},</if>
+            <if test="nullableFlag != null">NULLABLE_FLAG = #{nullableFlag},</if>
+            <if test="sortOrder != null">SORT_ORDER = #{sortOrder},</if>
+            <if test="authorityDept != null">AUTHORITY_DEPT = #{authorityDept},</if>
+            <if test="dataElemId != null">DATA_ELEM_ID = #{dataElemId},</if>
+            <if test="validFlag != null">VALID_FLAG = #{validFlag},</if>
+            <if test="delFlag != null">DEL_FLAG = #{delFlag},</if>
+            <if test="createBy != null">CREATE_BY = #{createBy},</if>
+            <if test="creatorId != null">CREATOR_ID = #{creatorId},</if>
+            <if test="createTime != null">CREATE_TIME = #{createTime},</if>
+            <if test="updateBy != null">UPDATE_BY = #{updateBy},</if>
+            <if test="updaterId != null">UPDATER_ID = #{updaterId},</if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime},</if>
+            <if test="remark != null">REMARK = #{remark},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteDpModelColumnById" parameterType="Long">
+        delete from DP_MODEL_COLUMN where ID = #{id}
+    </delete>
+
+    <delete id="deleteDpModelColumnByIds" parameterType="String">
+        delete from DP_MODEL_COLUMN where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

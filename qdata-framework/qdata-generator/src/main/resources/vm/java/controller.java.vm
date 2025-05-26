@@ -1,0 +1,136 @@
+package ${packageName}.controller.admin.${moduleName};
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.util.Arrays;
+import cn.hutool.core.date.DateUtil;
+import java.util.List;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import tech.qiantong.qdata.common.core.page.PageParam;
+import tech.qiantong.qdata.common.annotation.Log;
+import tech.qiantong.qdata.common.core.controller.BaseController;
+import tech.qiantong.qdata.common.core.domain.CommonResult;
+import tech.qiantong.qdata.common.core.page.PageResult;
+import tech.qiantong.qdata.common.enums.BusinessType;
+import tech.qiantong.qdata.common.utils.object.BeanUtils;
+import tech.qiantong.qdata.common.utils.poi.ExcelUtil;
+import tech.qiantong.qdata.common.exception.enums.GlobalErrorCodeConstants;
+import ${packageName}.controller.admin.${moduleName}.vo.${ClassName}PageReqVO;
+import ${packageName}.controller.admin.${moduleName}.vo.${ClassName}RespVO;
+import ${packageName}.controller.admin.${moduleName}.vo.${ClassName}SaveReqVO;
+import ${packageName}.convert.${moduleName}.${ClassName}Convert;
+import ${packageName}.dal.dataobject.${moduleName}.${ClassName}DO;
+import ${packageName}.service.${moduleName}.I${ClassName}Service;
+#if($table.sub)
+#elseif($table.tree)
+#end
+
+/**
+ * ${functionName}Controller
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Tag(name = "${functionName}")
+@RestController
+@RequestMapping("/${controllerPrefix}/${businessName}")
+@Validated
+public class ${ClassName}Controller extends BaseController {
+    @Resource
+    private I${ClassName}Service ${className}Service;
+
+    @Operation(summary = "查询${functionName}列表")
+    @PreAuthorize("@ss.hasPermi('${permissionPrefix}:list')")
+    @GetMapping("/list")
+    #if($table.crud || $table.sub)
+    public CommonResult<PageResult<${ClassName}RespVO>> list(${ClassName}PageReqVO ${className}) {
+        PageResult<${ClassName}DO> page = ${className}Service.get${ClassName}Page(${className});
+        return CommonResult.success(BeanUtils.toBean(page, ${ClassName}RespVO.class));
+    }
+    #elseif($table.tree)
+    public CommonResult<List<${ClassName}RespVO>> list(${ClassName}PageReqVO ${className}) {
+        ${className}.setPageSize(PageParam.PAGE_SIZE_NONE);
+        List<${ClassName}DO> list = (List<${ClassName}DO>) ${className}Service.get${ClassName}Page(${className}).getRows();
+        return CommonResult.success(BeanUtils.toBean(list, ${ClassName}RespVO.class));
+    }
+    #end
+
+    @Operation(summary = "导出${functionName}列表")
+    @PreAuthorize("@ss.hasPermi('${permissionPrefix}:export')")
+    @Log(title = "${functionName}", businessType = BusinessType.EXPORT)
+    @PostMapping("/export")
+    public void export(HttpServletResponse response, ${ClassName}PageReqVO exportReqVO) {
+        exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
+        List<${ClassName}DO> list = (List<${ClassName}DO>) ${className}Service.get${ClassName}Page(exportReqVO).getRows();
+        ExcelUtil<${ClassName}RespVO> util = new ExcelUtil<>(${ClassName}RespVO.class);
+        util.exportExcel(response, ${ClassName}Convert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+    }
+
+    #if($table.crud || $table.sub)
+    @Operation(summary = "导入${functionName}列表")
+    @PreAuthorize("@ss.hasPermi('${permissionPrefix}:import')")
+    @Log(title = "${functionName}", businessType = BusinessType.IMPORT)
+    @PostMapping("/importData")
+    public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
+        ExcelUtil<${ClassName}RespVO> util = new ExcelUtil<>(${ClassName}RespVO.class);
+        List<${ClassName}RespVO> importExcelList = util.importExcel(file.getInputStream());
+        String operName = getUsername();
+        String message = ${className}Service.import${ClassName}(importExcelList, updateSupport, operName);
+        return success(message);
+    }
+    #end
+
+    @Operation(summary = "获取${functionName}详细信息")
+    @PreAuthorize("@ss.hasPermi('${permissionPrefix}:query')")
+    @GetMapping(value = "/{${pkColumn.javaField}}")
+    public CommonResult<${ClassName}RespVO> getInfo(@PathVariable("${pkColumn.javaField}") ${pkColumn.javaType} ${pkColumn.javaField}) {
+        ${ClassName}DO ${className}DO = ${className}Service.get${ClassName}ById(${pkColumn.javaField});
+        return CommonResult.success(BeanUtils.toBean(${className}DO, ${ClassName}RespVO.class));
+    }
+
+    @Operation(summary = "新增${functionName}")
+    @PreAuthorize("@ss.hasPermi('${permissionPrefix}:add')")
+    @Log(title = "${functionName}", businessType = BusinessType.INSERT)
+    @PostMapping
+    public CommonResult<Long> add(@Valid @RequestBody ${ClassName}SaveReqVO ${className}) {
+        ${className}.setCreatorId(getUserId());
+        ${className}.setCreateBy(getNickName());
+        ${className}.setCreateTime(DateUtil.date());
+        return CommonResult.toAjax(${className}Service.create${ClassName}(${className}));
+    }
+
+    @Operation(summary = "修改${functionName}")
+    @PreAuthorize("@ss.hasPermi('${permissionPrefix}:edit')")
+    @Log(title = "${functionName}", businessType = BusinessType.UPDATE)
+    @PutMapping
+    public CommonResult<Integer> edit(@Valid @RequestBody ${ClassName}SaveReqVO ${className}) {
+        ${className}.setUpdatorId(getUserId());
+        ${className}.setUpdateBy(getNickName());
+        ${className}.setUpdateTime(DateUtil.date());
+        return CommonResult.toAjax(${className}Service.update${ClassName}(${className}));
+    }
+
+    @Operation(summary = "删除${functionName}")
+    @PreAuthorize("@ss.hasPermi('${permissionPrefix}:remove')")
+    @Log(title = "${functionName}", businessType = BusinessType.DELETE)
+    #if($table.crud || $table.sub)
+    @DeleteMapping("/{${pkColumn.javaField}s}")
+    public CommonResult<Integer> remove(@PathVariable Long[] ids) {
+        return CommonResult.toAjax(${className}Service.remove${ClassName}(Arrays.asList(ids)));
+    }
+    #elseif($table.tree)
+    @DeleteMapping("/{${pkColumn.javaField}}")
+    public CommonResult<Integer> remove(@PathVariable Long id) {
+        if (${className}Service.hasChildBy${ClassName}Id(id)) {
+            return CommonResult.error(GlobalErrorCodeConstants.ERROR.getCode(),"存在子${functionName}，无法删除。");
+        }
+        return CommonResult.toAjax(${className}Service.remove${ClassName}(id));
+    }
+    #end
+
+}

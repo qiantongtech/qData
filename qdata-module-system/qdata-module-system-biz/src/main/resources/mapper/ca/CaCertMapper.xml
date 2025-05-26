@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.qiantong.qdata.module.system.ca.mapper.CaCertMapper">
+
+    <resultMap type="CaCert" id="CaCertResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="subjectId"    column="subject_id"    />
+        <result property="subjectName"    column="subject_name"    />
+        <result property="certificate"    column="certificate"    />
+        <result property="privateKey"    column="private_key"    />
+        <result property="issuer"    column="issuer"    />
+        <result property="possessor"    column="possessor"    />
+        <result property="validTime"    column="valid_time"    />
+        <result property="validFlag"    column="valid_flag"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectCaCertVo">
+        select id, name, subject_id, subject_name, certificate, private_key, issuer, possessor, valid_time, valid_flag, del_flag, create_by, creator_id, create_time, update_by, update_time, remark from ca_cert
+    </sql>
+
+    <select id="selectCaCertList" parameterType="CaCert" resultMap="CaCertResult">
+        <include refid="selectCaCertVo"/>
+        <where>
+            <if test="subjectId != null "> and subject_id = #{subjectId}</if>
+            <choose>
+                <!-- 如果数据库是 kingBase -->
+                <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'kingbase8'">
+                    <if test="name != null  and name != ''"> and name like '%' || #{name} || '%'</if>
+                    <if test="subjectName != null  and subjectName != ''"> and subject_name like '%' || #{subjectName} || '%'</if>
+                </when>
+
+                <!-- 如果是其他数据库（如 MySQL、 DM） -->
+                <otherwise>
+                    <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+                    <if test="subjectName != null  and subjectName != ''"> and subject_name like concat('%', #{subjectName}, '%')</if>
+                </otherwise>
+            </choose>
+            <if test="certificate != null  and certificate != ''"> and certificate = #{certificate}</if>
+            <if test="privateKey != null  and privateKey != ''"> and private_key = #{privateKey}</if>
+            <if test="issuer != null  and issuer != ''"> and issuer = #{issuer}</if>
+            <if test="possessor != null  and possessor != ''"> and possessor = #{possessor}</if>
+            <if test="validTime != null  and validTime != ''"> and valid_time = #{validTime}</if>
+            <if test="validFlag != null "> and valid_flag = #{validFlag}</if>
+            <if test="creatorId != null "> and creator_id = #{creatorId}</if>
+        </where>
+    </select>
+
+    <select id="selectCaCertById" parameterType="Long" resultMap="CaCertResult">
+        <include refid="selectCaCertVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertCaCert" parameterType="CaCert" useGeneratedKeys="true" keyProperty="id">
+        insert into ca_cert
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="subjectId != null">subject_id,</if>
+            <if test="subjectName != null and subjectName != ''">subject_name,</if>
+            <if test="certificate != null and certificate != ''">certificate,</if>
+            <if test="privateKey != null and privateKey != ''">private_key,</if>
+            <if test="issuer != null and issuer != ''">issuer,</if>
+            <if test="possessor != null and possessor != ''">possessor,</if>
+            <if test="validTime != null and validTime != ''">valid_time,</if>
+            <if test="validFlag != null">valid_flag,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="subjectId != null">#{subjectId},</if>
+            <if test="subjectName != null and subjectName != ''">#{subjectName},</if>
+            <if test="certificate != null and certificate != ''">#{certificate},</if>
+            <if test="privateKey != null and privateKey != ''">#{privateKey},</if>
+            <if test="issuer != null and issuer != ''">#{issuer},</if>
+            <if test="possessor != null and possessor != ''">#{possessor},</if>
+            <if test="validTime != null and validTime != ''">#{validTime},</if>
+            <if test="validFlag != null">#{validFlag},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCaCert" parameterType="CaCert">
+        update ca_cert
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="subjectId != null">subject_id = #{subjectId},</if>
+            <if test="subjectName != null and subjectName != ''">subject_name = #{subjectName},</if>
+            <if test="certificate != null and certificate != ''">certificate = #{certificate},</if>
+            <if test="privateKey != null and privateKey != ''">private_key = #{privateKey},</if>
+            <if test="issuer != null and issuer != ''">issuer = #{issuer},</if>
+            <if test="possessor != null and possessor != ''">possessor = #{possessor},</if>
+            <if test="validTime != null and validTime != ''">valid_time = #{validTime},</if>
+            <if test="validFlag != null">valid_flag = #{validFlag},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCaCertById" parameterType="Long">
+        delete from ca_cert where id = #{id}
+    </delete>
+
+    <delete id="deleteCaCertByIds" parameterType="String">
+        delete from ca_cert where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

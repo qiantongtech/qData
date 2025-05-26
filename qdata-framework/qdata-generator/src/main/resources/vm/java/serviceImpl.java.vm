@@ -1,0 +1,179 @@
+package ${packageName}.service.${moduleName}.impl;
+
+    #foreach ($column in $columns)
+#if($column.javaField == 'createTime' || $column.javaField == 'updateTime')
+    #break
+#end
+#end
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
+import javax.annotation.Resource;
+import tech.qiantong.qdata.common.core.page.PageResult;
+import tech.qiantong.qdata.common.utils.object.BeanUtils;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ${packageName}.controller.admin.${moduleName}.vo.${ClassName}PageReqVO;
+import ${packageName}.controller.admin.${moduleName}.vo.${ClassName}RespVO;
+import ${packageName}.controller.admin.${moduleName}.vo.${ClassName}SaveReqVO;
+#if($table.sub)
+import org.springframework.transaction.annotation.Transactional;
+import ${packageName}.domain.${subClassName};
+#end
+import ${packageName}.dal.dataobject.${moduleName}.${ClassName}DO;
+import ${packageName}.dal.mapper.${moduleName}.${ClassName}Mapper;
+import ${packageName}.service.${moduleName}.I${ClassName}Service;
+#if($table.sub)
+#elseif($table.tree)
+#end
+/**
+ * ${functionName}Service业务层处理
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Slf4j
+@Service
+@Transactional(rollbackFor = Exception.class)
+public class ${ClassName}ServiceImpl  extends ServiceImpl<${ClassName}Mapper,${ClassName}DO> implements I${ClassName}Service {
+    @Resource
+    private ${ClassName}Mapper ${className}Mapper;
+
+    @Override
+    public PageResult<${ClassName}DO> get${ClassName}Page(${ClassName}PageReqVO pageReqVO) {
+        return ${className}Mapper.selectPage(pageReqVO);
+    }
+
+    @Override
+    public Long create${ClassName}(${ClassName}SaveReqVO createReqVO) {
+        ${ClassName}DO dictType = BeanUtils.toBean(createReqVO, ${ClassName}DO.class);
+        ${className}Mapper.insert(dictType);
+        return dictType.getId();
+    }
+
+    @Override
+    public int update${ClassName}(${ClassName}SaveReqVO updateReqVO) {
+        // 相关校验
+
+        // 更新${functionName}
+        ${ClassName}DO updateObj = BeanUtils.toBean(updateReqVO, ${ClassName}DO.class);
+        return ${className}Mapper.updateById(updateObj);
+    }
+    #if($table.crud || $table.sub)
+    @Override
+    public int remove${ClassName}(Collection<Long> idList) {
+        // 批量删除${functionName}
+        return ${className}Mapper.deleteBatchIds(idList);
+    }
+    #elseif($table.tree)
+    @Override
+    public int remove${ClassName}(Long id) {
+        // 单独删除${functionName}
+        return ${className}Mapper.deleteById(id);
+    }
+    #end
+
+    @Override
+    public ${ClassName}DO get${ClassName}ById(Long id) {
+        return ${className}Mapper.selectById(id);
+    }
+
+    @Override
+    public List<${ClassName}DO> get${ClassName}List() {
+        return ${className}Mapper.selectList();
+    }
+
+    @Override
+    public Map<Long, ${ClassName}DO> get${ClassName}Map() {
+        List<${ClassName}DO> ${className}List = ${className}Mapper.selectList();
+        return ${className}List.stream()
+                .collect(Collectors.toMap(
+                        ${ClassName}DO::getId,
+                        ${className}DO -> ${className}DO,
+                        // 保留已存在的值
+                        (existing, replacement) -> existing
+                ));
+    }
+
+    #if($table.tree)
+    @Override
+    public boolean hasChildBy${ClassName}Id(Long id) {
+        return ${className}Mapper.selectCount(${ClassName}DO::getParentId, id) > 0;
+    }
+    #end
+
+    #if($table.crud || $table.sub)
+        /**
+         * 导入${functionName}数据
+         *
+         * @param importExcelList ${functionName}数据列表
+         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
+         * @param operName 操作用户
+         * @return 结果
+         */
+        @Override
+        public String import${ClassName}(List<${ClassName}RespVO> importExcelList, boolean isUpdateSupport, String operName) {
+            if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
+                throw new ServiceException("导入数据不能为空！");
+            }
+
+            int successNum = 0;
+            int failureNum = 0;
+            List<String> successMessages = new ArrayList<>();
+            List<String> failureMessages = new ArrayList<>();
+
+            for (${ClassName}RespVO respVO : importExcelList) {
+                try {
+                    ${ClassName}DO ${className}DO = BeanUtils.toBean(respVO, ${ClassName}DO.class);
+                    Long ${className}Id = respVO.getId();
+                    if (isUpdateSupport) {
+                        if (${className}Id != null) {
+                            ${ClassName}DO existing${ClassName} = ${className}Mapper.selectById(${className}Id);
+                            if (existing${ClassName} != null) {
+                                ${className}Mapper.updateById(${className}DO);
+                                successNum++;
+                                successMessages.add("数据更新成功，ID为 " + ${className}Id + " 的${functionName}记录。");
+                            } else {
+                                failureNum++;
+                                failureMessages.add("数据更新失败，ID为 " + ${className}Id + " 的${functionName}记录不存在。");
+                            }
+                        } else {
+                            failureNum++;
+                            failureMessages.add("数据更新失败，某条记录的ID不存在。");
+                        }
+                    } else {
+                        QueryWrapper<${ClassName}DO> queryWrapper = new QueryWrapper<>();
+                        queryWrapper.eq("id", ${className}Id);
+                        ${ClassName}DO existing${ClassName} = ${className}Mapper.selectOne(queryWrapper);
+                        if (existing${ClassName} == null) {
+                            ${className}Mapper.insert(${className}DO);
+                            successNum++;
+                            successMessages.add("数据插入成功，ID为 " + ${className}Id + " 的${functionName}记录。");
+                        } else {
+                            failureNum++;
+                            failureMessages.add("数据插入失败，ID为 " + ${className}Id + " 的${functionName}记录已存在。");
+                        }
+                    }
+                } catch (Exception e) {
+                    failureNum++;
+                    String errorMsg = "数据导入失败，错误信息：" + e.getMessage();
+                    failureMessages.add(errorMsg);
+                    log.error(errorMsg, e);
+                }
+            }
+            StringBuilder resultMsg = new StringBuilder();
+            if (failureNum > 0) {
+                resultMsg.append("很抱歉，导入失败！共 ").append(failureNum).append(" 条数据格式不正确，错误如下：");
+                resultMsg.append("<br/>").append(String.join("<br/>", failureMessages));
+                throw new ServiceException(resultMsg.toString());
+            } else {
+                resultMsg.append("恭喜您，数据已全部导入成功！共 ").append(successNum).append(" 条。");
+            }
+            return resultMsg.toString();
+        }
+    #end
+}

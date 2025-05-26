@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.qiantong.qdata.module.att.dal.mapper.project.AttProjectMapper">
+
+    <resultMap type="AttProjectDO" id="AttProjectResult">
+        <result property="id"    column="ID"    />
+        <result property="name"    column="NAME"    />
+        <result property="code"    column="CODE"    />
+        <result property="managerId"    column="MANAGER_ID"    />
+        <result property="managerName"    column="managerName"    />
+        <result property="managerPhone"    column="managerPhone"    />
+        <result property="description"    column="DESCRIPTION"    />
+        <result property="validFlag"    column="VALID_FLAG"    />
+        <result property="delFlag"    column="DEL_FLAG"    />
+        <result property="createBy"    column="CREATE_BY"    />
+        <result property="creatorId"    column="CREATOR_ID"    />
+        <result property="createTime"    column="CREATE_TIME"    />
+        <result property="updateBy"    column="UPDATE_BY"    />
+        <result property="updaterId"    column="UPDATER_ID"    />
+        <result property="updateTime"    column="UPDATE_TIME"    />
+        <result property="remark"    column="REMARK"    />
+    </resultMap>
+
+    <sql id="selectAttProjectVo">
+        select ID, NAME,CODE, MANAGER_ID, DESCRIPTION, VALID_FLAG, DEL_FLAG, CREATE_BY, CREATOR_ID, CREATE_TIME, UPDATE_BY, UPDATER_ID, UPDATE_TIME, REMARK from ATT_PROJECT
+    </sql>
+
+    <select id="selectAttProjectList" parameterType="AttProjectDO" resultMap="AttProjectResult">
+        <include refid="selectAttProjectVo"/>
+        <where>
+            <if test="name != null  and name != ''"> and NAME like concat('%', #{name}, '%')</if>
+        </where>
+    </select>
+    <select id="selectAttProjectListByPage" parameterType="AttProjectDO" resultMap="AttProjectResult">
+        select p.ID, p.NAME,p.CODE, p.MANAGER_ID, u.NICK_NAME as nickName, u.PHONENUMBER as managerPhone ,p.DESCRIPTION, p.VALID_FLAG, p.DEL_FLAG, p.CREATE_BY, p.CREATOR_ID, p.CREATE_TIME, p.UPDATE_BY, p.UPDATER_ID, p.UPDATE_TIME, p.REMARK from ATT_PROJECT p
+
+        LEFT JOIN SYSTEM_USER u ON p.MANAGER_ID = u.USER_ID
+        <where>
+            <if test="params.name != null  and params.name != ''"> and p.NAME like concat('%', #{params.name}, '%')</if>
+            <if test="params.managerId != null  and params.managerId != ''"> and p.MANAGER_ID = #{params.managerId}</if>
+         AND p.DEL_FLAG = 0
+        </where>
+        order by p.CREATE_TIME desc
+    </select>
+
+    <select id="selectAttProjectById" parameterType="Long" resultMap="AttProjectResult">
+        <include refid="selectAttProjectVo"/>
+        where ID = #{id}
+    </select>
+    <select id="selectById" resultMap="AttProjectResult">
+        select p.ID, p.NAME,p.CODE, p.MANAGER_ID, u.NICK_NAME as nickName, u.PHONENUMBER as managerPhone ,p.DESCRIPTION, p.VALID_FLAG, p.DEL_FLAG, p.CREATE_BY, p.CREATOR_ID, p.CREATE_TIME, p.UPDATE_BY, p.UPDATER_ID, p.UPDATE_TIME, p.REMARK from ATT_PROJECT p
+
+        LEFT JOIN SYSTEM_USER u ON p.MANAGER_ID = u.USER_ID
+        where ID = #{id}
+    </select>
+
+    <insert id="insertAttProject" parameterType="AttProjectDO">
+        insert into ATT_PROJECT
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="name != null">NAME,</if>
+            <if test="code != null">CODE,</if>
+            <if test="managerId != null">MANAGER_ID,</if>
+            <if test="description != null">DESCRIPTION,</if>
+            <if test="validFlag != null">VALID_FLAG,</if>
+            <if test="delFlag != null">DEL_FLAG,</if>
+            <if test="createBy != null">CREATE_BY,</if>
+            <if test="creatorId != null">CREATOR_ID,</if>
+            <if test="createTime != null">CREATE_TIME,</if>
+            <if test="updateBy != null">UPDATE_BY,</if>
+            <if test="updaterId != null">UPDATER_ID,</if>
+            <if test="updateTime != null">UPDATE_TIME,</if>
+            <if test="remark != null">REMARK,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="code != null">#{code},</if>
+            <if test="managerId != null">#{managerId},</if>
+            <if test="description != null">#{description},</if>
+            <if test="validFlag != null">#{validFlag},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updaterId != null">#{updaterId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAttProject" parameterType="AttProjectDO">
+        update ATT_PROJECT
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">NAME = #{name},</if>
+            <if test="code != null">CODE = #{code},</if>
+            <if test="managerId != null">MANAGER_ID = #{managerId},</if>
+            <if test="description != null">DESCRIPTION = #{description},</if>
+            <if test="validFlag != null">VALID_FLAG = #{validFlag},</if>
+            <if test="delFlag != null">DEL_FLAG = #{delFlag},</if>
+            <if test="createBy != null">CREATE_BY = #{createBy},</if>
+            <if test="creatorId != null">CREATOR_ID = #{creatorId},</if>
+            <if test="createTime != null">CREATE_TIME = #{createTime},</if>
+            <if test="updateBy != null">UPDATE_BY = #{updateBy},</if>
+            <if test="updaterId != null">UPDATER_ID = #{updaterId},</if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime},</if>
+            <if test="remark != null">REMARK = #{remark},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteAttProjectById" parameterType="Long">
+        delete from ATT_PROJECT where ID = #{id}
+    </delete>
+
+    <delete id="deleteAttProjectByIds" parameterType="String">
+        delete from ATT_PROJECT where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

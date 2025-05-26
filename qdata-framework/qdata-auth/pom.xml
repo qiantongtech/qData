@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>qdata-framework</artifactId>
+        <groupId>tech.qiantong</groupId>
+        <version>3.8.8</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>qdata-auth</artifactId>
+
+    <description>
+        auth模块
+    </description>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
+        <!-- 核心模块-->
+        <dependency>
+            <groupId>tech.qiantong</groupId>
+            <artifactId>qdata-security</artifactId>
+            <version>3.8.8</version>
+        </dependency>
+
+        <!-- 通用工具-->
+        <dependency>
+            <groupId>tech.qiantong</groupId>
+            <artifactId>qdata-common</artifactId>
+        </dependency>
+
+        <!-- Sa-Token 权限认证, 在线文档：https://sa-token.cc -->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-spring-boot-starter</artifactId>
+            <version>1.40.0</version>
+        </dependency>
+
+        <!-- Sa-Token OAuth2.0 模块 -->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-oauth2</artifactId>
+            <version>1.40.0</version>
+        </dependency>
+
+        <!-- Sa-Token 整合 Redis (可选) -->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-redis-jackson</artifactId>
+            <version>1.40.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+        </dependency>
+
+    </dependencies>
+
+</project>

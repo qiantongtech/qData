@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.qiantong.qdata.module.da.dal.mapper.assetchild.theme.DaAssetThemeRelMapper">
+
+    <resultMap type="DaAssetThemeRelDO" id="DaAssetThemeRelResult">
+        <result property="id"    column="ID"    />
+        <result property="assetId"    column="ASSET_ID"    />
+        <result property="themeId"    column="THEME_ID"    />
+        <result property="validFlag"    column="VALID_FLAG"    />
+        <result property="delFlag"    column="DEL_FLAG"    />
+        <result property="createBy"    column="CREATE_BY"    />
+        <result property="creatorId"    column="CREATOR_ID"    />
+        <result property="createTime"    column="CREATE_TIME"    />
+        <result property="updateBy"    column="UPDATE_BY"    />
+        <result property="updaterId"    column="UPDATER_ID"    />
+        <result property="updateTime"    column="UPDATE_TIME"    />
+        <result property="remark"    column="REMARK"    />
+    </resultMap>
+
+    <sql id="selectDaAssetThemeRelVo">
+        select ID, ASSET_ID, THEME_ID, VALID_FLAG, DEL_FLAG, CREATE_BY, CREATOR_ID, CREATE_TIME, UPDATE_BY, UPDATER_ID, UPDATE_TIME, REMARK from DA_ASSET_THEME_REL
+    </sql>
+
+    <select id="selectDaAssetThemeRelList" parameterType="DaAssetThemeRelDO" resultMap="DaAssetThemeRelResult">
+        <include refid="selectDaAssetThemeRelVo"/>
+        <where>
+            <if test="assetId != null "> and ASSET_ID = #{assetId}</if>
+            <if test="themeId != null "> and THEME_ID = #{themeId}</if>
+            <if test="createTime != null "> and CREATE_TIME = #{createTime}</if>
+        </where>
+    </select>
+
+    <select id="selectDaAssetThemeRelById" parameterType="Long" resultMap="DaAssetThemeRelResult">
+        <include refid="selectDaAssetThemeRelVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertDaAssetThemeRel" parameterType="DaAssetThemeRelDO">
+        insert into DA_ASSET_THEME_REL
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="assetId != null">ASSET_ID,</if>
+            <if test="themeId != null">THEME_ID,</if>
+            <if test="validFlag != null">VALID_FLAG,</if>
+            <if test="delFlag != null">DEL_FLAG,</if>
+            <if test="createBy != null">CREATE_BY,</if>
+            <if test="creatorId != null">CREATOR_ID,</if>
+            <if test="createTime != null">CREATE_TIME,</if>
+            <if test="updateBy != null">UPDATE_BY,</if>
+            <if test="updaterId != null">UPDATER_ID,</if>
+            <if test="updateTime != null">UPDATE_TIME,</if>
+            <if test="remark != null">REMARK,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="assetId != null">#{assetId},</if>
+            <if test="themeId != null">#{themeId},</if>
+            <if test="validFlag != null">#{validFlag},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updaterId != null">#{updaterId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDaAssetThemeRel" parameterType="DaAssetThemeRelDO">
+        update DA_ASSET_THEME_REL
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="assetId != null">ASSET_ID = #{assetId},</if>
+            <if test="themeId != null">THEME_ID = #{themeId},</if>
+            <if test="validFlag != null">VALID_FLAG = #{validFlag},</if>
+            <if test="delFlag != null">DEL_FLAG = #{delFlag},</if>
+            <if test="createBy != null">CREATE_BY = #{createBy},</if>
+            <if test="creatorId != null">CREATOR_ID = #{creatorId},</if>
+            <if test="createTime != null">CREATE_TIME = #{createTime},</if>
+            <if test="updateBy != null">UPDATE_BY = #{updateBy},</if>
+            <if test="updaterId != null">UPDATER_ID = #{updaterId},</if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime},</if>
+            <if test="remark != null">REMARK = #{remark},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteDaAssetThemeRelById" parameterType="Long">
+        delete from DA_ASSET_THEME_REL where ID = #{id}
+    </delete>
+
+    <delete id="deleteDaAssetThemeRelByIds" parameterType="String">
+        delete from DA_ASSET_THEME_REL where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+    <delete id="deleteDaAssetThemeRelByAssetId" parameterType="Long">
+        update DA_ASSET_THEME_REL
+        set DEL_FLAG = '1'
+        where ASSET_ID = #{id}
+    </delete>
+
+    <select id="getDaAssetIdList" resultType="java.lang.Long">
+        SELECT ASSET_ID
+        FROM DA_ASSET_THEME_REL
+        WHERE THEME_ID IN
+        <foreach collection="themeIdList" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        GROUP BY ASSET_ID
+    </select>
+
+
+
+
+</mapper>

@@ -1,4 +1,4 @@
-![banner.png](images%2Fbanner.png)
+![banner.png](images/banner.png)
 <p align="center">
   <img src="https://img.shields.io/badge/JDK-1.8+-brightgreen.svg" alt="JDK">
  <img src="https://img.shields.io/badge/Spring%20Boot-2.5.15-blue.svg" alt="Downloads">
@@ -124,7 +124,7 @@ qData 平台采用前后端分离架构，后端基于 Spring Boot，前端基�
 | Maven         | 3.6+         | 项目构建与依赖管理           |
 | 达梦8           |  8.0   | 关系型数据库（可切至MySQL）    |
 | Redis         | 5.0+         | 缓存与消息功能支持           |
-| rabbitmq | 可选         | RabbitMQ 作为消息中间件，用于任务调度、异步通信等功能。           |
+| RabbitMQ | 可选         |用于任务调度、异步通信等功能。           |
 | 操作系统          | Windows / Linux / Mac | 通用环境均可运行            |
 
 ### 🌐 前端环境要求（可选，若需本地构建）

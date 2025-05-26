@@ -1,0 +1,66 @@
+// base color
+$blue: #324157;
+$light-blue: #3A71A8;
+$red: #C03639;
+$pink: #E65D6E;
+$green: #30B08F;
+$tiffany: #4AB7BD;
+$yellow: #FEC171;
+$panGreen: #30B08F;
+
+// 默认菜单主题风格
+$base-menu-color: #ffffffb3; // 菜单全部字体颜色
+$base-menu-color-active: #fff; // 父级菜单激活的字体颜色
+$base-menu-color-sub-active: rgba(38, 102, 251, 0); // 父级菜单激活的字体颜色
+$base-menu-background: #001529; // 菜单栏背景颜色（非激活状态）
+$base-logo-title-color: #fff; // 系统标题颜色
+
+$base-menu-light-color: rgba(0, 0, 0, 0.7);
+$base-menu-light-background: #fff; // 选中菜单的字体颜色
+$base-logo-light-title-color: #fff; // 对应base-logo-title-color
+
+$base-sub-menu-background: rgba(0, 130, 255, 0); // 选中的菜单的子菜单背景颜色
+$base-sub-menu-hover: rgba(12, 33, 53, 0);
+
+// 自定义暗色菜单风格
+/**
+$base-menu-color:hsla(0,0%,100%,.65);
+$base-menu-color-active:#fff;
+$base-menu-background:#001529;
+$base-logo-title-color: #ffffff;
+
+$base-menu-light-color:rgba(0,0,0,.70);
+$base-menu-light-background:#ffffff;
+$base-logo-light-title-color: #001529;
+
+$base-sub-menu-background:#000c17;
+$base-sub-menu-hover:#001528;
+*/
+
+$--color-primary: #2666FB;
+$--color-success: #67C23A;
+$--color-warning: #E6A23C;
+$--color-danger: #F56C6C;
+$--color-info: #909399;
+
+$base-sidebar-width: 210px;
+
+// the :export directive is the magic sauce for webpack
+// https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
+:export {
+  menuColor: $base-menu-color;
+  menuLightColor: $base-menu-light-color;
+  menuColorActive: $base-menu-color-active;
+  menuBackground: $base-menu-background;
+  menuLightBackground: $base-menu-light-background;
+  subMenuBackground: $base-sub-menu-background;
+  subMenuHover: $base-sub-menu-hover;
+  sideBarWidth: $base-sidebar-width;
+  logoTitleColor: $base-logo-title-color;
+  logoLightTitleColor: $base-logo-light-title-color;
+  primaryColor: $--color-primary;
+  successColor: $--color-success;
+  dangerColor: $--color-danger;
+  infoColor: $--color-info;
+  warningColor: $--color-warning;
+}

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.qiantong.qdata.module.dp.dal.mapper.codeMap.DpCodeMapMapper">
+
+    <resultMap type="DpCodeMapDO" id="DpCodeMapResult">
+        <result property="id"    column="ID"    />
+        <result property="dataElemId"    column="DATA_ELEM_ID"    />
+        <result property="originalValue"    column="ORIGINAL_VALUE"    />
+        <result property="codeName"    column="CODE_NAME"    />
+        <result property="codeValue"    column="CODE_VALUE"    />
+        <result property="validFlag"    column="VALID_FLAG"    />
+        <result property="delFlag"    column="DEL_FLAG"    />
+        <result property="createBy"    column="CREATE_BY"    />
+        <result property="creatorId"    column="CREATOR_ID"    />
+        <result property="createTime"    column="CREATE_TIME"    />
+        <result property="updateBy"    column="UPDATE_BY"    />
+        <result property="updaterId"    column="UPDATER_ID"    />
+        <result property="updateTime"    column="UPDATE_TIME"    />
+        <result property="remark"    column="REMARK"    />
+    </resultMap>
+
+    <sql id="selectDpCodeMapVo">
+        select ID, DATA_ELEM_ID, ORIGINAL_VALUE, CODE_NAME, CODE_VALUE, VALID_FLAG, DEL_FLAG, CREATE_BY, CREATOR_ID, CREATE_TIME, UPDATE_BY, UPDATER_ID, UPDATE_TIME, REMARK from DP_CODE_MAP
+    </sql>
+
+    <select id="selectDpCodeMapList" parameterType="DpCodeMapDO" resultMap="DpCodeMapResult">
+        <include refid="selectDpCodeMapVo"/>
+        <where>
+            <if test="dataElemId != null  and dataElemId != ''"> and DATA_ELEM_ID = #{dataElemId}</if>
+            <if test="originalValue != null  and originalValue != ''"> and ORIGINAL_VALUE = #{originalValue}</if>
+            <if test="codeName != null  and codeName != ''"> and CODE_NAME like concat('%', #{codeName}, '%')</if>
+            <if test="codeValue != null  and codeValue != ''"> and CODE_VALUE = #{codeValue}</if>
+            <if test="createTime != null "> and CREATE_TIME = #{createTime}</if>
+        </where>
+    </select>
+
+    <select id="selectDpCodeMapById" parameterType="Long" resultMap="DpCodeMapResult">
+        <include refid="selectDpCodeMapVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertDpCodeMap" parameterType="DpCodeMapDO">
+        insert into DP_CODE_MAP
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="dataElemId != null">DATA_ELEM_ID,</if>
+            <if test="originalValue != null">ORIGINAL_VALUE,</if>
+            <if test="codeName != null">CODE_NAME,</if>
+            <if test="codeValue != null">CODE_VALUE,</if>
+            <if test="validFlag != null">VALID_FLAG,</if>
+            <if test="delFlag != null">DEL_FLAG,</if>
+            <if test="createBy != null">CREATE_BY,</if>
+            <if test="creatorId != null">CREATOR_ID,</if>
+            <if test="createTime != null">CREATE_TIME,</if>
+            <if test="updateBy != null">UPDATE_BY,</if>
+            <if test="updaterId != null">UPDATER_ID,</if>
+            <if test="updateTime != null">UPDATE_TIME,</if>
+            <if test="remark != null">REMARK,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="dataElemId != null">#{dataElemId},</if>
+            <if test="originalValue != null">#{originalValue},</if>
+            <if test="codeName != null">#{codeName},</if>
+            <if test="codeValue != null">#{codeValue},</if>
+            <if test="validFlag != null">#{validFlag},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updaterId != null">#{updaterId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDpCodeMap" parameterType="DpCodeMapDO">
+        update DP_CODE_MAP
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="dataElemId != null">DATA_ELEM_ID = #{dataElemId},</if>
+            <if test="originalValue != null">ORIGINAL_VALUE = #{originalValue},</if>
+            <if test="codeName != null">CODE_NAME = #{codeName},</if>
+            <if test="codeValue != null">CODE_VALUE = #{codeValue},</if>
+            <if test="validFlag != null">VALID_FLAG = #{validFlag},</if>
+            <if test="delFlag != null">DEL_FLAG = #{delFlag},</if>
+            <if test="createBy != null">CREATE_BY = #{createBy},</if>
+            <if test="creatorId != null">CREATOR_ID = #{creatorId},</if>
+            <if test="createTime != null">CREATE_TIME = #{createTime},</if>
+            <if test="updateBy != null">UPDATE_BY = #{updateBy},</if>
+            <if test="updaterId != null">UPDATER_ID = #{updaterId},</if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime},</if>
+            <if test="remark != null">REMARK = #{remark},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteDpCodeMapById" parameterType="Long">
+        delete from DP_CODE_MAP where ID = #{id}
+    </delete>
+
+    <delete id="deleteDpCodeMapByIds" parameterType="String">
+        delete from DP_CODE_MAP where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

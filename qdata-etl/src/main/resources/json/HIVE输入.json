@@ -1,0 +1,64 @@
+{
+  "config": {
+    "resourceUrl": "静态资源前缀",
+    "rabbitmq": {
+      "host": "127.0.0.1",
+      "port": 5672,
+      "username": "admin",
+      "password": "密码"
+    },
+    "taskInfo": {
+      "projectCode":"项目编码",
+      "taskCode": "1",//任务编码
+      "taskVersion": 1,//任务版本
+      "name":"任务名称"
+    }
+  },
+  "reader": {
+    "projectCode": "项目编码",
+    "nodeCode": "节点编码",
+    "nodeVersion": 1,//节点版本
+    "componentType": "类型 1:数据库输入 2:EXCEL输入 3:kafka输入 4:CSV输入 5:Hive输入",
+    "parameter": {
+      "batchSize": 1024, //读取数量，空时默认1024
+      "username": "账号",
+      "password": "密码",
+      "dbType":"DM8",//数据库类型 DM8、Oracle、Oracle11、MySql、Kingbase8
+      "dbName":"dbName",//数据库名称 可空
+      "column": [
+        "字段1",
+        "字段2",
+        "字段3"
+      ],
+      "where": "where条件",
+      "readModeType": "1",//读取方式 1:全量 2:id增量 3:时间范围增量 默认全量
+      "idIncrementConfig": {
+        "incrementColumn": "ID",//增量字段
+        "incrementStart": 1 //开始值
+      },
+      "dateIncrementConfig": {
+        "logic": "and",//逻辑运算符 1:and 2:or 默认and
+        "dateFormat": "yyyy-MM-dd",//时间格式 yyyy-MM-dd 或 yyyy-MM-dd HH:mm:ss（手动输入）
+        "column": [
+          {
+            "type": "1",//类型  1:固定值 2:自动(当前时间) 3:SQL表达式
+            "incrementColumn": "CREATE_TIME",//增量字段
+            "operator": ">",//时间 运算符 > 、=>、< 、<=
+            "data": "xxx"//固定值：为 2023-01-01  SQL表达式：为sql函数
+          }
+        ]
+      },
+      "connection": [
+        {
+          "jdbcUrl": "jdbc连接",
+          "querySql": "sql",//该值不为空时 column where不能有值，jdbcUrl或querySql只能存在一个
+          "table": "表名"
+        }
+      ]
+    }
+  },
+  "transition": [],
+  "writer": {
+
+  }
+}

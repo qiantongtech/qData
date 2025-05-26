@@ -1,0 +1,94 @@
+package ${packageName}.dal.dataobject.${moduleName};
+
+#foreach ($import in $importList)
+import ${import};
+#end
+import lombok.*;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableName;
+#if($table.crud || $table.sub)
+import tech.qiantong.qdata.common.core.domain.BaseEntity;
+#elseif($table.tree)
+##import tech.qiantong.qdata.common.core.domain.TreeEntity;
+import tech.qiantong.qdata.common.core.domain.BaseEntity;
+#end
+
+/**
+ * ${functionName} DO 对象 ${tableName}
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Data
+@TableName(value = "${tableName}")
+// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// @KeySequence("${tableName}_seq")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+#if($table.crud || $table.sub)
+    #set($Entity = "BaseEntity")
+#end
+#set($hasAuditFields = false)
+#foreach($column in $columns)
+    #if($column.javaField == "createBy" || $column.javaField == "creatorId" || $column.javaField == "createTime" ||
+        $column.javaField == "updateBy" || $column.javaField == "updatorId" || $column.javaField == "updateTime")
+        #set($hasAuditFields = true)
+    #end
+#end
+#if(!$hasAuditFields)
+public class ${ClassName}DO {
+#else
+@EqualsAndHashCode(callSuper = true)
+public class ${ClassName}DO extends ${Entity} {
+#end
+    @TableField(exist = false)
+    private static final long serialVersionUID = 1L;
+
+#foreach ($column in $columns)
+#if(!$table.isSuperColumn($column.javaField))
+    /** $column.columnComment */
+    #if($column.javaField == "id")
+    @TableId(type = IdType.AUTO)
+    private $column.javaType $column.javaField;
+
+    #elseif($column.javaField == "delFlag")
+    @TableLogic
+    private $column.javaType $column.javaField;
+
+    #else
+#if($column.list)
+#set($parentheseIndex=$column.columnComment.indexOf("（"))
+#if($parentheseIndex != -1)
+#set($comment=$column.columnComment.substring(0, $parentheseIndex))
+#else
+#set($comment=$column.columnComment)
+#end
+#end
+    private $column.javaType $column.javaField;
+
+    #end
+#end
+#end
+#if($table.sub)
+    /** $table.subTable.functionName信息 */
+    private List<${subClassName}> ${subclassName}List;
+
+#end
+
+#if($table.sub)
+    public List<${subClassName}> get${subClassName}List()
+    {
+        return ${subclassName}List;
+    }
+
+    public void set${subClassName}List(List<${subClassName}> ${subclassName}List)
+    {
+        this.${subclassName}List = ${subclassName}List;
+    }
+
+#end
+}

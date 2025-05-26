@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.qiantong.qdata.module.system.mapper.SysUserMapper">
+
+    <resultMap type="SysUser" id="SysUserResult">
+        <id     property="userId"       column="user_id"      />
+        <id     property="authId"       column="auth_id"      />
+        <result property="deptId"       column="dept_id"      />
+        <result property="userName"     column="user_name"    />
+        <result property="nickName"     column="nick_name"    />
+        <result property="email"        column="email"        />
+        <result property="phonenumber"  column="phonenumber"  />
+        <result property="sex"          column="sex"          />
+        <result property="avatar"       column="avatar"       />
+        <result property="password"     column="password"     />
+        <result property="status"       column="status"       />
+        <result property="delFlag"      column="del_flag"     />
+        <result property="loginIp"      column="login_ip"     />
+        <result property="loginDate"    column="login_date"   />
+        <result property="createBy"     column="create_by"    />
+        <result property="createTime"   column="create_time"  />
+        <result property="updateBy"     column="update_by"    />
+        <result property="updateTime"   column="update_time"  />
+        <result property="remark"       column="remark"       />
+        <association property="dept"    javaType="SysDept"         resultMap="deptResult" />
+        <collection  property="roles"   javaType="java.util.List"  resultMap="RoleResult" />
+    </resultMap>
+
+    <resultMap id="deptResult" type="SysDept">
+        <id     property="deptId"    column="dept_id"     />
+        <result property="parentId"  column="parent_id"   />
+        <result property="deptName"  column="dept_name"   />
+        <result property="ancestors" column="ancestors"   />
+        <result property="orderNum"  column="order_num"   />
+        <result property="leader"    column="leader"      />
+        <result property="status"    column="dept_status" />
+    </resultMap>
+
+    <resultMap id="RoleResult" type="SysRole">
+        <id     property="roleId"       column="role_id"        />
+		<id     property="projectId"       column="project_id"      />
+        <result property="roleName"     column="role_name"      />
+        <result property="roleKey"      column="role_key"       />
+        <result property="roleSort"     column="role_sort"      />
+        <result property="dataScope"    column="data_scope"     />
+        <result property="status"       column="role_status"    />
+    </resultMap>
+
+	<sql id="selectUserVo">
+        select u.user_id, u.dept_id, u.user_name, u.nick_name, u.email, u.avatar, u.phonenumber, u.password, u.sex, u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark,
+        d.dept_id, d.parent_id, d.ancestors, d.dept_name, d.order_num, d.leader, d.status as dept_status,
+        r.role_id, r.role_name, r.role_key, r.role_sort, r.data_scope, r.status as role_status,r.project_id as project_id
+        from system_user u
+		    left join system_dept d on u.dept_id = d.dept_id
+		    left join system_user_role ur on u.user_id = ur.user_id
+		    left join system_role r on r.role_id = ur.role_id
+    </sql>
+
+    <select id="selectUserList" parameterType="SysUser" resultMap="SysUserResult">
+		select u.user_id, u.dept_id, u.nick_name, u.user_name, u.email, u.avatar, u.phonenumber, u.sex, u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark, d.dept_name, d.leader from system_user u
+		left join system_dept d on u.dept_id = d.dept_id
+		where u.del_flag = '0'
+		<if test="userId != null and userId != 0">
+			AND u.user_id = #{userId}
+		</if>
+		<if test="status != null and status != ''">
+			AND u.status = #{status}
+		</if>
+		<choose>
+			<!-- 如果数据库是 kingBase -->
+			<when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'kingbase8'">
+				<if test="userName != null and userName != ''">
+					AND u.user_name LIKE '%' || #{userName} || '%'
+				</if>
+				<if test="phonenumber != null and phonenumber != ''">
+					AND u.phonenumber LIKE '%' || #{phonenumber} || '%'
+				</if>
+				<if test="params.beginTime != null and params.beginTime != ''">
+					<!-- 开始时间检索 -->
+					AND u.create_time &gt;= #{params.beginTime}
+				</if>
+				<if test="params.endTime != null and params.endTime != ''">
+					<!-- 结束时间检索 -->
+					AND u.create_time &lt;= #{params.endTime}
+				</if>
+				<if test="deptId != null and deptId != 0">
+					AND (u.dept_id = #{deptId}
+					OR u.dept_id IN (
+					SELECT t.dept_id
+					FROM system_dept t
+					WHERE position(#{deptId}::text in t.ancestors) > 0
+					))
+				</if>
+
+			</when>
+
+			<!-- 如果是其他数据库（如 MySQL、 DM） -->
+			<otherwise>
+				<if test="userName != null and userName != ''">
+					AND u.user_name like concat('%', #{userName}, '%')
+				</if>
+				<if test="phonenumber != null and phonenumber != ''">
+					AND u.phonenumber like concat('%', #{phonenumber}, '%')
+				</if>
+				<if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+					AND date_format(u.create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+				</if>
+				<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+					AND date_format(u.create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+				</if>
+				<if test="deptId != null and deptId != 0">
+					AND (u.dept_id = #{deptId} OR u.dept_id IN ( SELECT t.dept_id FROM system_dept t WHERE find_in_set(#{deptId}, ancestors) ))
+				</if>
+			</otherwise>
+		</choose>
+		<!-- 数据范围过滤 -->
+		${params.dataScope}
+	</select>
+
+	<select id="selectUserAllList" parameterType="SysUser" resultMap="SysUserResult">
+		select u.user_id, u.dept_id, u.nick_name, u.user_name, u.email, u.avatar, u.phonenumber, u.sex, u.status, u.del_flag,
+		u.login_ip, u.login_date, u.create_by, u.create_time, u.remark, d.dept_name, d.leader , u.auth_id
+		from system_user u
+		left join system_dept d on u.dept_id = d.dept_id
+		<choose>
+			<!-- 如果数据库是 kingBase -->
+			<when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'kingbase8'">
+				<if test="userName != null and userName != ''">
+					AND u.user_name LIKE '%' || #{userName} || '%'
+				</if>
+				<if test="phonenumber != null and phonenumber != ''">
+					AND u.phonenumber LIKE '%' || #{phonenumber} || '%'
+				</if>
+				<if test="params.beginTime != null and params.beginTime != ''">
+					<!-- 开始时间检索 -->
+					AND u.create_time &gt;= #{params.beginTime}
+				</if>
+				<if test="params.endTime != null and params.endTime != ''">
+					<!-- 结束时间检索 -->
+					AND u.create_time &lt;= #{params.endTime}
+				</if>
+				<if test="deptId != null and deptId != 0">
+					AND (u.dept_id = #{deptId}
+					OR u.dept_id IN (
+					SELECT t.dept_id
+					FROM system_dept t
+					WHERE position(#{deptId}::text in t.ancestors) > 0
+					))
+				</if>
+
+			</when>
+
+			<!-- 如果是其他数据库（如 MySQL、 DM） -->
+			<otherwise>
+				<if test="userName != null and userName != ''">
+					AND u.user_name like concat('%', #{userName}, '%')
+				</if>
+				<if test="phonenumber != null and phonenumber != ''">
+					AND u.phonenumber like concat('%', #{phonenumber}, '%')
+				</if>
+				<if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+					AND date_format(u.create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+				</if>
+				<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+					AND date_format(u.create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+				</if>
+				<if test="deptId != null and deptId != 0">
+					AND (u.dept_id = #{deptId} OR u.dept_id IN ( SELECT t.dept_id FROM system_dept t WHERE find_in_set(#{deptId}, ancestors) ))
+				</if>
+			</otherwise>
+		</choose>
+		<!-- 数据范围过滤 -->
+		${params.dataScope}
+	</select>
+
+	<select id="selectAllocatedList" parameterType="SysUser" resultMap="SysUserResult">
+	    select distinct u.user_id, u.dept_id, u.user_name, u.nick_name, u.email, u.phonenumber, u.status, u.create_time
+	    from system_user u
+			 left join system_dept d on u.dept_id = d.dept_id
+			 left join system_user_role ur on u.user_id = ur.user_id
+			 left join system_role r on r.role_id = ur.role_id
+	    where u.del_flag = '0' and r.role_id = #{roleId}
+	    <if test="userName != null and userName != ''">
+			AND u.user_name like concat('%', #{userName}, '%')
+		</if>
+		<if test="phonenumber != null and phonenumber != ''">
+			AND u.phonenumber like concat('%', #{phonenumber}, '%')
+		</if>
+		<!-- 数据范围过滤 -->
+		${params.dataScope}
+	</select>
+
+	<select id="selectNoProjectUserList" parameterType="SysUser" resultMap="SysUserResult">
+		select distinct u.user_id, u.dept_id, u.user_name, u.nick_name, u.email, u.avatar, u.phonenumber, u.password, u.sex, u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark,
+		d.dept_id, d.parent_id, d.ancestors, d.dept_name, d.order_num, d.leader, d.status as dept_status,
+		r.role_id, r.role_name, r.role_key, r.role_sort, r.data_scope, r.status as role_status
+		from system_user u
+		left join system_dept d on u.dept_id = d.dept_id
+		left join system_user_role ur on u.user_id = ur.user_id
+		left join system_role r on r.role_id = ur.role_id
+		where u.del_flag = '0'
+		<if test="userName != null and userName != ''">
+			AND u.user_name like concat('%', #{userName}, '%')
+		</if>
+		<if test="phonenumber != null and phonenumber != ''">
+			AND u.phonenumber like concat('%', #{phonenumber}, '%')
+		</if>
+		<if test="status != null and status != ''">
+			AND u.status = #{status}
+		</if>
+		<if test="userIdList != null and userIdList.size() > 0">
+			and u.user_id not in
+			<foreach collection="userIdList" item="userId" open="(" separator="," close=")">
+				#{userId}
+			</foreach>
+		</if>
+	</select>
+
+	<select id="selectUnallocatedList" parameterType="SysUser" resultMap="SysUserResult">
+	    select distinct u.user_id, u.dept_id, u.user_name, u.nick_name, u.email, u.phonenumber, u.status, u.create_time
+	    from system_user u
+			 left join system_dept d on u.dept_id = d.dept_id
+			 left join system_user_role ur on u.user_id = ur.user_id
+			 left join system_role r on r.role_id = ur.role_id
+	    where u.del_flag = '0' and (r.role_id != #{roleId} or r.role_id IS NULL)
+	    and u.user_id not in (select u.user_id from system_user u inner join system_user_role ur on u.user_id = ur.user_id and ur.role_id = #{roleId})
+	    <if test="userName != null and userName != ''">
+			AND u.user_name like concat('%', #{userName}, '%')
+		</if>
+		<if test="phonenumber != null and phonenumber != ''">
+			AND u.phonenumber like concat('%', #{phonenumber}, '%')
+		</if>
+		<!-- 数据范围过滤 -->
+		${params.dataScope}
+	</select>
+
+	<select id="selectUserByUserName" parameterType="String" resultMap="SysUserResult">
+	    <include refid="selectUserVo"/>
+		where u.user_name = #{userName} and u.del_flag = '0'
+	</select>
+
+	<select id="selectUserById" parameterType="Long" resultMap="SysUserResult">
+		<include refid="selectUserVo"/>
+		where u.user_id = #{userId}
+	</select>
+
+	<select id="selectUserByUserIdAndProjectId" parameterType="Long" resultMap="SysUserResult">
+		<include refid="selectUserVo"/>
+		where u.user_id = #{userId} and r.project_id = #{projectId}
+	</select>
+
+	<select id="checkUserNameUnique" parameterType="String" resultMap="SysUserResult">
+		select user_id, user_name from system_user where user_name = #{userName} and del_flag = '0' limit 1
+	</select>
+
+	<select id="checkPhoneUnique" parameterType="String" resultMap="SysUserResult">
+		select user_id, phonenumber from system_user where phonenumber = #{phonenumber} and del_flag = '0' limit 1
+	</select>
+
+	<select id="checkEmailUnique" parameterType="String" resultMap="SysUserResult">
+		select user_id, email from system_user where email = #{email} and del_flag = '0' limit 1
+	</select>
+
+	<select id="selectUserListByDeptId" parameterType="SysUser" resultMap="SysUserResult">
+		select u.user_id, u.dept_id, u.nick_name, u.user_name, u.email, u.avatar, u.phonenumber, u.sex, u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark, d.dept_name, d.leader from system_user u
+		left join system_dept d on u.dept_id = d.dept_id
+		where u.del_flag = '0'
+		<if test="userId != null and userId != 0">
+			AND u.user_id = #{userId}
+		</if>
+		<if test="userName != null and userName != ''">
+			AND u.user_name like concat('%', #{userName}, '%')
+		</if>
+		<if test="nickName != null and nickName != ''">
+			AND u.nick_name like concat('%', #{nickName}, '%')
+		</if>
+		<if test="status != null and status != ''">
+			AND u.status = #{status}
+		</if>
+		<if test="phonenumber != null and phonenumber != ''">
+			AND u.phonenumber like concat('%', #{phonenumber}, '%')
+		</if>
+		<if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+			AND date_format(u.create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+		</if>
+		<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+			AND date_format(u.create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+		</if>
+		<if test="deptId != null">
+			AND (u.dept_id = #{deptId})
+		</if>
+		<!-- 数据范围过滤 -->
+		${params.dataScope}
+	</select>
+
+	<select id="queryUserIdListByRoleIdListAndDeptIdList"   resultType="java.lang.Long">
+		select a.user_id from system_user a INNER JOIN system_user_role b on b.user_id=a.user_id
+		where a.del_flag=0
+		<if test="deptIdSet != null and deptIdSet.size() > 0">
+			and a.dept_id in
+			<foreach collection="deptIdSet" item="deptId" open="(" separator="," close=")">
+				#{deptId}
+			</foreach>
+		</if>
+		<if test="roleIdSet != null and roleIdSet.size() > 0">
+			and b.role_id in
+			<foreach collection="roleIdSet" item="deptId" open="(" separator="," close=")">
+				#{deptId}
+			</foreach>
+		</if>
+	</select>
+    <select id="selectUserListByNameOrPhone" parameterType="string" resultMap="SysUserResult">
+		select u.user_id, u.dept_id, u.nick_name, u.user_name, u.email, u.avatar, u.phonenumber, u.password, u.sex, u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark, d.dept_name, d.leader from system_user u
+		left join system_dept d on u.dept_id = d.dept_id
+		where u.del_flag = '0' AND u.status = '0' AND ( u.user_name = #{str} or u.phonenumber = #{str})
+	</select>
+
+    <insert id="insertUser" parameterType="SysUser" useGeneratedKeys="true" keyProperty="userId">
+ 		insert into system_user(
+ 			<if test="userId != null and userId != 0">user_id,</if>
+ 			<if test="authId != null and authId != ''">auth_id,</if>
+ 			<if test="deptId != null and deptId != 0">dept_id,</if>
+ 			<if test="userName != null and userName != ''">user_name,</if>
+ 			<if test="nickName != null and nickName != ''">nick_name,</if>
+ 			<if test="email != null and email != ''">email,</if>
+ 			<if test="avatar != null and avatar != ''">avatar,</if>
+ 			<if test="phonenumber != null and phonenumber != ''">phonenumber,</if>
+ 			<if test="sex != null and sex != ''">sex,</if>
+ 			<if test="password != null and password != ''">password,</if>
+ 			<if test="status != null and status != ''">status,</if>
+ 			<if test="createBy != null and createBy != ''">create_by,</if>
+ 			<if test="remark != null and remark != ''">remark,</if>
+ 			create_time
+ 		)values(
+ 			<if test="userId != null and userId != ''">#{userId},</if>
+			<if test="authId != null and authId != ''">#{authId},</if>
+ 			<if test="deptId != null and deptId != ''">#{deptId},</if>
+ 			<if test="userName != null and userName != ''">#{userName},</if>
+ 			<if test="nickName != null and nickName != ''">#{nickName},</if>
+ 			<if test="email != null and email != ''">#{email},</if>
+ 			<if test="avatar != null and avatar != ''">#{avatar},</if>
+ 			<if test="phonenumber != null and phonenumber != ''">#{phonenumber},</if>
+ 			<if test="sex != null and sex != ''">#{sex},</if>
+ 			<if test="password != null and password != ''">#{password},</if>
+ 			<if test="status != null and status != ''">#{status},</if>
+ 			<if test="createBy != null and createBy != ''">#{createBy},</if>
+ 			<if test="remark != null and remark != ''">#{remark},</if>
+ 			sysdate()
+ 		)
+	</insert>
+
+	<update id="updateUser" parameterType="SysUser">
+ 		update system_user
+ 		<set>
+ 			<if test="deptId != null and deptId != 0">dept_id = #{deptId},</if>
+			<if test="authId != null and authId != ''">auth_id = #{authId},</if>
+ 			<if test="userName != null and userName != ''">user_name = #{userName},</if>
+ 			<if test="nickName != null and nickName != ''">nick_name = #{nickName},</if>
+ 			<if test="email != null ">email = #{email},</if>
+ 			<if test="phonenumber != null ">phonenumber = #{phonenumber},</if>
+ 			<if test="sex != null and sex != ''">sex = #{sex},</if>
+ 			<if test="avatar != null and avatar != ''">avatar = #{avatar},</if>
+ 			<if test="password != null and password != ''">password = #{password},</if>
+ 			<if test="status != null and status != ''">status = #{status},</if>
+ 			<if test="loginIp != null and loginIp != ''">login_ip = #{loginIp},</if>
+ 			<if test="loginDate != null">login_date = #{loginDate},</if>
+ 			<if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+ 			<if test="remark != null">remark = #{remark},</if>
+ 			update_time = sysdate()
+ 		</set>
+ 		where user_id = #{userId}
+	</update>
+
+	<update id="updateUserStatus" parameterType="SysUser">
+ 		update system_user set status = #{status} where user_id = #{userId}
+	</update>
+
+	<update id="updateUserAvatar" parameterType="SysUser">
+ 		update system_user set avatar = #{avatar} where user_name = #{userName}
+	</update>
+
+	<update id="resetUserPwd" parameterType="SysUser">
+ 		update system_user set password = #{password} where user_name = #{userName}
+	</update>
+
+	<delete id="deleteUserById" parameterType="Long">
+ 		update system_user set del_flag = '2' where user_id = #{userId}
+ 	</delete>
+
+ 	<delete id="deleteUserByIds" parameterType="Long">
+ 		update system_user set del_flag = '2' where user_id in
+ 		<foreach collection="array" item="userId" open="(" separator="," close=")">
+ 			#{userId}
+        </foreach>
+ 	</delete>
+
+</mapper>

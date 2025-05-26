@@ -1,0 +1,7 @@
+# 统一认证中心
+oauth2:
+  redis-prefix: "idhub-clientToken"
+  clientId: 9d04db60ab904313a43ebb78c9f027c1
+  clientSecret: 82e25a80db5f4a13afb2ee8b2cf6d08b
+  serverUrl: http://127.0.0.1:8899
+  redirect401Url: http://127.0.0.1/401

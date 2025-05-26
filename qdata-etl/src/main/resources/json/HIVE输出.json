@@ -1,0 +1,56 @@
+{
+  "config": {
+    "resourceUrl": "静态资源前缀",
+    "rabbitmq": {
+      "host": "127.0.0.1",
+      "port": 5672,
+      "username": "admin",
+      "password": "密码"
+    },
+    "taskInfo": {
+      "projectCode":"项目编码",
+      "taskCode": "1",//任务编码
+      "taskVersion": 1,//任务版本
+      "name":"任务名称"
+    }
+  },
+  "reader": {
+
+  },
+  "transition": [],
+  "writer": {
+    "projectCode": "项目编码",
+    "nodeCode": "节点编码",
+    "nodeVersion": 1,//节点版本
+    "componentType": "类型 92:数据库输出",
+    "parameter": {
+      "batchSize": 1024, //读取数量，空时默认1024
+      "username": "账号",
+      "password": "密码",
+      "dbType":"DM8",//数据库类型 DM8、Oracle、Oracle11、MySql、Kingbase8
+      "dbName":"dbName",//数据库名称 可空
+      "column": [//输入字段
+        "字段1",
+        "字段2",
+        "字段3"
+      ],
+      "target_column": [//输出字段
+        "字段1",
+        "字段2",
+        "字段3"
+      ],
+      "preSql": [],//前置sql
+      "postSql": [],//后置置sql
+      "writeModeType": //写入类型 1 全量，2 追加写，3 增量更新（hive不支持）
+      "writerProperty",:{//冗余字段用于封装工具嘞
+
+      },
+      "connection": [
+        {
+          "jdbcUrl": "jdbc连接",
+          "table": "表名"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.qiantong.qdata.module.att.dal.mapper.rule.AttCleanRuleMapper">
+
+    <resultMap type="AttCleanRuleDO" id="AttCleanRuleResult">
+        <result property="id"    column="ID"    />
+        <result property="name"    column="NAME"    />
+        <result property="type"    column="TYPE"    />
+        <result property="level"    column="LEVEL"    />
+        <result property="description"    column="DESCRIPTION"    />
+        <result property="validFlag"    column="VALID_FLAG"    />
+        <result property="delFlag"    column="DEL_FLAG"    />
+        <result property="createBy"    column="CREATE_BY"    />
+        <result property="creatorId"    column="CREATOR_ID"    />
+        <result property="createTime"    column="CREATE_TIME"    />
+        <result property="updateBy"    column="UPDATE_BY"    />
+        <result property="updaterId"    column="UPDATER_ID"    />
+        <result property="updateTime"    column="UPDATE_TIME"    />
+        <result property="remark"    column="REMARK"    />
+    </resultMap>
+
+    <sql id="selectAttCleanRuleVo">
+        select ID, NAME, TYPE, LEVEL, DESCRIPTION, VALID_FLAG, DEL_FLAG, CREATE_BY, CREATOR_ID, CREATE_TIME, UPDATE_BY, UPDATER_ID, UPDATE_TIME, REMARK from ATT_CLEAN_RULE
+    </sql>
+
+    <select id="selectAttCleanRuleList" parameterType="Long"  resultMap="AttCleanRuleResult">
+        select
+            a.ID,
+            a.NAME,
+            a.TYPE,
+            a.LEVEL,
+            a.DESCRIPTION,
+            r.ID AS "ruleRelId",
+            r.RULE_CONFIG AS "ruleConfig"
+        from
+            ATT_CLEAN_RULE a
+            LEFT JOIN DP_DATA_ELEM_RULE_REL r ON a.ID = r.RULE_ID AND r.RULE_TYPE = '2' AND r.DATA_ELEM_ID = #{dataElemId} AND r.DEL_FLAG = '0'
+        WHERE
+            a.DEL_FLAG = '0'
+    </select>
+
+
+<!--    <select id="getCleaningRuleTreeIds" parameterType="Long" resultMap="AttCleanRuleResult">-->
+<!--        select-->
+<!--            a.NAME,-->
+<!--            a.TYPE,-->
+<!--            a.LEVEL,-->
+<!--            a.DESCRIPTION,-->
+<!--            r.ID AS "ruleRelId",-->
+<!--            r.RULE_CONFIG AS "ruleConfig"-->
+<!--        from-->
+<!--            ATT_CLEAN_RULE a-->
+<!--            LEFT JOIN DP_DATA_ELEM_RULE_REL r-->
+<!--                ON a.ID = r.RULE_ID AND r.RULE_TYPE = '2'  AND r.DEL_FLAG = '0'-->
+<!--                 AND r.DATA_ELEM_ID in-->
+<!--            <foreach collection="array" item="roleId" open="(" separator="," close=")">-->
+<!--                #{roleId}-->
+<!--            </foreach>-->
+<!--        WHERE-->
+<!--            a.DEL_FLAG = '0'-->
+<!--    </select>-->
+
+    <select id="getCleaningRuleTreeIds" parameterType="Long" resultMap="AttCleanRuleResult">
+        select
+            a.ID,
+            a.NAME,
+            a.TYPE,
+            a.LEVEL,
+            a.DESCRIPTION,
+            r.ID AS "ruleRelId",
+            r.RULE_CONFIG AS "ruleConfig"
+        from
+            DP_DATA_ELEM_RULE_REL r
+            LEFT JOIN ATT_CLEAN_RULE a
+            ON a.ID = r.RULE_ID AND a.DEL_FLAG = '0'
+        where
+            r.RULE_TYPE = '2'
+            AND r.DEL_FLAG = '0'
+            AND r.DATA_ELEM_ID in
+            <foreach collection="array" item="roleId" open="(" separator="," close=")">
+                #{roleId}
+            </foreach>
+    </select>
+
+
+    <select id="selectAttCleanRuleById" parameterType="Long" resultMap="AttCleanRuleResult">
+        <include refid="selectAttCleanRuleVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertAttCleanRule" parameterType="AttCleanRuleDO">
+        insert into ATT_CLEAN_RULE
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="name != null">NAME,</if>
+            <if test="type != null">TYPE,</if>
+            <if test="level != null">LEVEL,</if>
+            <if test="description != null">DESCRIPTION,</if>
+            <if test="validFlag != null">VALID_FLAG,</if>
+            <if test="delFlag != null">DEL_FLAG,</if>
+            <if test="createBy != null">CREATE_BY,</if>
+            <if test="creatorId != null">CREATOR_ID,</if>
+            <if test="createTime != null">CREATE_TIME,</if>
+            <if test="updateBy != null">UPDATE_BY,</if>
+            <if test="updaterId != null">UPDATER_ID,</if>
+            <if test="updateTime != null">UPDATE_TIME,</if>
+            <if test="remark != null">REMARK,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="type != null">#{type},</if>
+            <if test="level != null">#{level},</if>
+            <if test="description != null">#{description},</if>
+            <if test="validFlag != null">#{validFlag},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updaterId != null">#{updaterId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAttCleanRule" parameterType="AttCleanRuleDO">
+        update ATT_CLEAN_RULE
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">NAME = #{name},</if>
+            <if test="type != null">TYPE = #{type},</if>
+            <if test="level != null">LEVEL = #{level},</if>
+            <if test="description != null">DESCRIPTION = #{description},</if>
+            <if test="validFlag != null">VALID_FLAG = #{validFlag},</if>
+            <if test="delFlag != null">DEL_FLAG = #{delFlag},</if>
+            <if test="createBy != null">CREATE_BY = #{createBy},</if>
+            <if test="creatorId != null">CREATOR_ID = #{creatorId},</if>
+            <if test="createTime != null">CREATE_TIME = #{createTime},</if>
+            <if test="updateBy != null">UPDATE_BY = #{updateBy},</if>
+            <if test="updaterId != null">UPDATER_ID = #{updaterId},</if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime},</if>
+            <if test="remark != null">REMARK = #{remark},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteAttCleanRuleById" parameterType="Long">
+        delete from ATT_CLEAN_RULE where ID = #{id}
+    </delete>
+
+    <delete id="deleteAttCleanRuleByIds" parameterType="String">
+        delete from ATT_CLEAN_RULE where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

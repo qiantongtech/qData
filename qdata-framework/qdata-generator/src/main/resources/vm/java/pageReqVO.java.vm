@@ -1,0 +1,75 @@
+package ${packageName}.controller.admin.${moduleName}.vo;
+
+#foreach ($import in $importList)
+import ${import};
+#end
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+import tech.qiantong.qdata.common.core.page.PageParam;
+#if($table.crud || $table.sub)
+#elseif($table.tree)
+#end
+
+/**
+ * ${functionName} Request VO 对象 ${tableName}
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+#if($table.crud || $table.sub)
+#set($Entity="BaseEntity")
+#elseif($table.tree)
+#set($Entity="TreeEntity")
+#end
+@Schema(description = "${functionName} Request VO")
+@Data
+public class ${ClassName}PageReqVO extends PageParam {
+
+    private static final long serialVersionUID = 1L;
+#foreach ($column in $columns)
+#if(!$table.isSuperColumn($column.javaField) && $column.javaField != "creatorId" && $column.javaField != "updatorId")
+    #if($column.javaField == "id")
+        @Schema(description = "ID", example = "")
+        private $column.javaType $column.javaField;
+        #else
+#if($column.query)
+#set($parentheseIndex=$column.columnComment.indexOf("（"))
+#if($parentheseIndex != -1)
+#set($comment=$column.columnComment.substring(0, $parentheseIndex))
+#else
+#set($comment=$column.columnComment)
+#end
+###if($parentheseIndex != -1)
+##    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+###elseif($column.javaType == 'Date')
+##    @JsonFormat(pattern = "yyyy-MM-dd")
+##    @Excel(name = "${comment}", width = 30, dateFormat = "yyyy-MM-dd")
+###else
+##    @Excel(name = "${comment}")
+###end
+    @Schema(description = "${comment}", example = "")
+    private $column.javaType $column.javaField;
+#end
+
+    #end
+#end
+#end
+#if($table.sub)
+    /** $table.subTable.functionName信息 */
+    private List<${subClassName}> ${subclassName}List;
+
+#end
+
+#if($table.sub)
+    public List<${subClassName}> get${subClassName}List()
+    {
+        return ${subclassName}List;
+    }
+
+    public void set${subClassName}List(List<${subClassName}> ${subclassName}List)
+    {
+        this.${subclassName}List = ${subclassName}List;
+    }
+
+#end
+}

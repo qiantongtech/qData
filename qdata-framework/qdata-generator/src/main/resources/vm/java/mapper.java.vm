@@ -1,0 +1,78 @@
+package ${packageName}.dal.mapper.${moduleName};
+
+import ${packageName}.dal.dataobject.${moduleName}.${ClassName}DO;
+import java.util.Arrays;
+import com.github.yulichang.base.MPJBaseMapper;
+import tech.qiantong.qdata.common.core.page.PageResult;
+import java.util.HashSet;
+import java.util.Set;
+import ${packageName}.controller.admin.${moduleName}.vo.${ClassName}PageReqVO;
+import tech.qiantong.qdata.mybatis.core.mapper.BaseMapperX;
+import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
+#if($table.sub)
+import ${packageName}.domain.${subClassName};
+#end
+
+/**
+ * ${functionName}Mapper接口
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+public interface ${ClassName}Mapper extends BaseMapperX<${ClassName}DO> {
+
+    default PageResult<${ClassName}DO> selectPage(${ClassName}PageReqVO reqVO) {
+        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
+
+        // 构造动态查询条件
+        return selectPage(reqVO, new LambdaQueryWrapperX<${ClassName}DO>()
+                #foreach($column in $columns)
+                #if($column.htmlType == "datetime" && $column.queryType == "BETWEEN")
+                #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
+                .betweenIfPresent(${ClassName}DO::get${AttrName}, reqVO.getParamByKey("begin${AttrName}"), reqVO.getParamByKey("end${AttrName}"))
+                #end
+                #if($column.query && $column.queryType == "EQ")
+                #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
+                .eqIfPresent(${ClassName}DO::get${AttrName}, reqVO.get${AttrName}())
+                #end
+                #if($column.query && $column.queryType == "LIKE")
+                #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
+                .likeIfPresent(${ClassName}DO::get${AttrName}, reqVO.get${AttrName}())
+                #end
+                #if($column.query && $column.queryType == "NE")
+                #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
+                .neIfPresent(${ClassName}DO::get${AttrName}, reqVO.get${AttrName}())
+                #end
+                #if($column.query && $column.queryType == "NE")
+                #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
+                .neIfPresent(${ClassName}DO::get${AttrName}, reqVO.get${AttrName}())
+                #end
+                #if($column.query && $column.queryType == "GT")
+                #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
+                .gtIfPresent(${ClassName}DO::get${AttrName}, reqVO.get${AttrName}())
+                #end
+                #if($column.query && $column.queryType == "GT")
+                #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
+                .gtIfPresent(${ClassName}DO::get${AttrName}, reqVO.get${AttrName}())
+                #end
+                #if($column.query && $column.queryType == "GTE")
+                #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
+                .geIfPresent(${ClassName}DO::get${AttrName}, reqVO.get${AttrName}())
+                #end
+                #if($column.query && $column.queryType == "LT")
+                #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
+                .ltIfPresent(${ClassName}DO::get${AttrName}, reqVO.get${AttrName}())
+                #end
+                #if($column.query && $column.queryType == "LTE")
+                #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
+                .leIfPresent(${ClassName}DO::get${AttrName}, reqVO.get${AttrName}())
+                #end
+                #end
+##                .betweenIfPresent(${ClassName}DO::getCreateTime,reqVO.getParams().get("beginCreateTime"), reqVO.getParams().get("endCreateTime"))
+                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+                // .likeIfPresent(${ClassName}DO::getName, reqVO.getName())
+                // 按照 createTime 字段降序排序
+                .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(), allowedColumns));
+    }
+}

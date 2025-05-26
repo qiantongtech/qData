@@ -1,0 +1,51 @@
+package ${packageName}.convert.${moduleName};
+
+import java.util.List;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
+import ${packageName}.controller.admin.${moduleName}.vo.${ClassName}PageReqVO;
+import ${packageName}.controller.admin.${moduleName}.vo.${ClassName}RespVO;
+import ${packageName}.controller.admin.${moduleName}.vo.${ClassName}SaveReqVO;
+import ${packageName}.dal.dataobject.${moduleName}.${ClassName}DO;
+#if($table.sub)
+import ${packageName}.domain.${subClassName};
+#end
+
+/**
+ * ${functionName} Convert
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Mapper
+public interface ${ClassName}Convert {
+    ${ClassName}Convert INSTANCE = Mappers.getMapper(${ClassName}Convert.class);
+
+    /**
+     * PageReqVO 转换为 DO
+     * @param ${className}PageReqVO 请求参数
+     * @return ${ClassName}DO
+     */
+     ${ClassName}DO convertToDO(${ClassName}PageReqVO ${className}PageReqVO);
+
+    /**
+     * SaveReqVO 转换为 DO
+     * @param ${className}SaveReqVO 保存请求参数
+     * @return ${ClassName}DO
+     */
+     ${ClassName}DO convertToDO(${ClassName}SaveReqVO ${className}SaveReqVO);
+
+    /**
+     * DO 转换为 RespVO
+     * @param ${className}DO 实体对象
+     * @return ${ClassName}RespVO
+     */
+     ${ClassName}RespVO convertToRespVO(${ClassName}DO ${className}DO);
+
+    /**
+     * DOList 转换为 RespVOList
+     * @param ${className}DOList 实体对象列表
+     * @return List<${ClassName}RespVO>
+     */
+     List<${ClassName}RespVO> convertToRespVOList(List<${ClassName}DO> ${className}DOList);
+}

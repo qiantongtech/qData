@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>qdata-module-da</artifactId>
+        <groupId>tech.qiantong</groupId>
+        <version>3.8.8</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>qdata-module-da-biz</artifactId>
+
+    <description>
+        system系统模块
+    </description>
+
+    <dependencies>
+        <!-- 核心模块 config-->
+        <dependency>
+            <groupId>tech.qiantong</groupId>
+            <artifactId>qdata-config</artifactId>
+            <version>3.8.8</version>
+        </dependency>
+
+        <!-- 定时任务 config-->
+        <dependency>
+            <groupId>tech.qiantong</groupId>
+            <artifactId>qdata-quartz</artifactId>
+            <version>3.8.8</version>
+        </dependency>
+
+        <!-- 系統模块 websocket-->
+        <dependency>
+            <groupId>tech.qiantong</groupId>
+            <artifactId>qdata-websocket</artifactId>
+            <version>3.8.8</version>
+        </dependency>
+
+        <!-- 系统模块 qdata-security -->
+        <dependency>
+            <groupId>tech.qiantong</groupId>
+            <artifactId>qdata-security</artifactId>
+            <version>3.8.8</version>
+        </dependency>
+
+        <!-- 系统模块 mybatis -->
+        <dependency>
+            <groupId>tech.qiantong</groupId>
+            <artifactId>qdata-mybatis</artifactId>
+            <version>3.8.8</version>
+        </dependency>
+
+        <!-- 系统模块 redis -->
+        <dependency>
+            <groupId>tech.qiantong</groupId>
+            <artifactId>qdata-redis</artifactId>
+            <version>3.8.8</version>
+        </dependency>
+
+        <!-- 通用工具-->
+        <dependency>
+            <groupId>tech.qiantong</groupId>
+            <artifactId>qdata-common</artifactId>
+        </dependency>
+
+        <!-- 文件上传-->
+        <dependency>
+            <groupId>tech.qiantong</groupId>
+            <artifactId>qdata-file</artifactId>
+            <version>3.8.8</version>
+        </dependency>
+
+        <!-- es-->
+        <dependency>
+            <groupId>tech.qiantong</groupId>
+            <artifactId>qdata-es</artifactId>
+            <version>3.8.8</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>tech.qiantong</groupId>
+            <artifactId>qdata-module-da-api</artifactId>
+            <version>3.8.8</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>tech.qiantong</groupId>
+            <artifactId>qdata-module-dp-api</artifactId>
+            <version>3.8.8</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>tech.qiantong</groupId>
+            <artifactId>qdata-api-ds-api</artifactId>
+            <version>3.8.8</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>tech.qiantong</groupId>
+            <artifactId>qdata-module-ds-api</artifactId>
+            <version>3.8.8</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>tech.qiantong</groupId>
+            <artifactId>qdata-module-att-api</artifactId>
+            <version>3.8.8</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>tech.qiantong</groupId>
+            <artifactId>qdata-module-dpp-api</artifactId>
+            <version>3.8.8</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.hikvision.ga</groupId>
+            <artifactId>artemis-http-client</artifactId>
+            <version>1.1.8</version>
+            <systemPath>${project.basedir}/src/lib/artemis-http-client-1.1.8.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
+    </dependencies>
+
+</project>

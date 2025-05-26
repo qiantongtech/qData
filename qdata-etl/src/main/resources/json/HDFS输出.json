@@ -1,0 +1,53 @@
+{
+  "config": {
+    "resourceUrl": "静态资源前缀",
+    "rabbitmq": {
+      "host": "127.0.0.1",
+      "port": 5672,
+      "username": "admin",
+      "password": "密码"
+    },
+    "taskInfo": {
+      "projectCode":"项目编码",
+      "taskCode": "1",//任务编码
+      "taskVersion": 1,//任务版本
+      "name":"任务名称"
+    }
+  },
+  "reader": {
+
+  },
+  "transition": [],
+  "writer": {
+    "nodeCode": "节点编码",
+    "componentType": "类型 93:HDFS输出",
+    "parameter": {
+      "defaultFS": "hdfs://xxx:port",
+      "path": "/user/hive/warehouse/",//文件路径
+      "fileName": "mytable01.csv",//文件名称
+      "column": [//输入字段
+        "ID",
+        "WAT_ENG_NAME"
+      ],
+      "target_column": [//输出字段 不支持对部分列写入必须全部选中
+        {
+          "name": "id",
+          "type": "long"
+        },
+        {
+          "name": "name",
+          "type": "string"
+        }
+      ],
+      "fileType": "csv",//文件类型 "csv"、"text"
+      "encoding": "UTF-8",
+      "fieldDelimiter": ","//分隔符 默认","
+      "writeModeType": 1,//写入类型 1 全量，2 追加写
+      "haveKerberos": false,//是否有Kerberos认证，默认false,true，则配置项kerberosKeytabFilePath，kerberosPrincipal为必填
+      "kerberosKeytabFilePath": "Kerberos认证 keytab文件路径，绝对路径",
+      "kerberosPrincipal": "Kerberos认证Principal名，如xxxx/hadoopclient@xxx.xxx",
+      "compression":"",//当fileType（文件类型）为csv下的文件压缩方式，目前仅支持 gzip、bzip2、lzo、snappy
+      "hadoopConfig": {}//hadoop配置项
+    }
+  }
+}

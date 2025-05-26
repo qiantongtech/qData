@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.qiantong.qdata.module.da.dal.mapper.assetchild.projectRel.DaAssetProjectRelMapper">
+
+    <resultMap type="DaAssetProjectRelDO" id="DaAssetProjectRelResult">
+        <result property="id"    column="ID"    />
+        <result property="assetId"    column="ASSET_ID"    />
+        <result property="projectId"    column="PROJECT_ID"    />
+        <result property="projectCode"    column="PROJECT_CODE"    />
+        <result property="validFlag"    column="VALID_FLAG"    />
+        <result property="delFlag"    column="DEL_FLAG"    />
+        <result property="createBy"    column="CREATE_BY"    />
+        <result property="creatorId"    column="CREATOR_ID"    />
+        <result property="createTime"    column="CREATE_TIME"    />
+        <result property="updateBy"    column="UPDATE_BY"    />
+        <result property="updaterId"    column="UPDATER_ID"    />
+        <result property="updateTime"    column="UPDATE_TIME"    />
+        <result property="remark"    column="REMARK"    />
+    </resultMap>
+
+    <sql id="selectDaAssetProjectRelVo">
+        select ID, ASSET_ID, PROJECT_ID, PROJECT_CODE, VALID_FLAG, DEL_FLAG, CREATE_BY, CREATOR_ID, CREATE_TIME, UPDATE_BY, UPDATER_ID, UPDATE_TIME, REMARK from DA_ASSET_PROJECT_REL
+    </sql>
+
+    <select id="selectDaAssetProjectRelList" parameterType="DaAssetProjectRelDO" resultMap="DaAssetProjectRelResult">
+        <include refid="selectDaAssetProjectRelVo"/>
+        <where>
+            <if test="assetId != null "> and ASSET_ID = #{assetId}</if>
+            <if test="projectId != null "> and PROJECT_ID = #{projectId}</if>
+            <if test="projectCode != null  and projectCode != ''"> and PROJECT_CODE = #{projectCode}</if>
+            <if test="createTime != null "> and CREATE_TIME = #{createTime}</if>
+        </where>
+    </select>
+
+    <select id="selectDaAssetProjectRelById" parameterType="Long" resultMap="DaAssetProjectRelResult">
+        <include refid="selectDaAssetProjectRelVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertDaAssetProjectRel" parameterType="DaAssetProjectRelDO">
+        insert into DA_ASSET_PROJECT_REL
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="assetId != null">ASSET_ID,</if>
+            <if test="projectId != null">PROJECT_ID,</if>
+            <if test="projectCode != null">PROJECT_CODE,</if>
+            <if test="validFlag != null">VALID_FLAG,</if>
+            <if test="delFlag != null">DEL_FLAG,</if>
+            <if test="createBy != null">CREATE_BY,</if>
+            <if test="creatorId != null">CREATOR_ID,</if>
+            <if test="createTime != null">CREATE_TIME,</if>
+            <if test="updateBy != null">UPDATE_BY,</if>
+            <if test="updaterId != null">UPDATER_ID,</if>
+            <if test="updateTime != null">UPDATE_TIME,</if>
+            <if test="remark != null">REMARK,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="assetId != null">#{assetId},</if>
+            <if test="projectId != null">#{projectId},</if>
+            <if test="projectCode != null">#{projectCode},</if>
+            <if test="validFlag != null">#{validFlag},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updaterId != null">#{updaterId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDaAssetProjectRel" parameterType="DaAssetProjectRelDO">
+        update DA_ASSET_PROJECT_REL
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="assetId != null">ASSET_ID = #{assetId},</if>
+            <if test="projectId != null">PROJECT_ID = #{projectId},</if>
+            <if test="projectCode != null">PROJECT_CODE = #{projectCode},</if>
+            <if test="validFlag != null">VALID_FLAG = #{validFlag},</if>
+            <if test="delFlag != null">DEL_FLAG = #{delFlag},</if>
+            <if test="createBy != null">CREATE_BY = #{createBy},</if>
+            <if test="creatorId != null">CREATOR_ID = #{creatorId},</if>
+            <if test="createTime != null">CREATE_TIME = #{createTime},</if>
+            <if test="updateBy != null">UPDATE_BY = #{updateBy},</if>
+            <if test="updaterId != null">UPDATER_ID = #{updaterId},</if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime},</if>
+            <if test="remark != null">REMARK = #{remark},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteDaAssetProjectRelById" parameterType="Long">
+        delete from DA_ASSET_PROJECT_REL where ID = #{id}
+    </delete>
+
+    <delete id="deleteDaAssetProjectRelByIds" parameterType="String">
+        delete from DA_ASSET_PROJECT_REL where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+
+
+    <delete id="removeProjectRelByAssetId" parameterType="Long">
+        update DA_ASSET_PROJECT_REL
+        set DEL_FLAG = '1'
+        where ASSET_ID = #{id}
+    </delete>
+
+</mapper>

@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.qiantong.qdata.module.dpp.dal.mapper.etl.DppEtlTaskInstanceMapper">
+
+    <resultMap type="DppEtlTaskInstanceDO" id="DppEtlTaskInstanceResult">
+        <result property="id" column="ID"/>
+        <result property="name" column="NAME"/>
+        <result property="taskId" column="TASK_ID"/>
+        <result property="taskCode" column="TASK_CODE"/>
+        <result property="taskVersion" column="TASK_VERSION"/>
+        <result property="statusHistory" column="STATUS_HISTORY"/>
+        <result property="personCharge" column="PERSON_CHARGE"/>
+        <result property="projectId" column="PROJECT_ID"/>
+        <result property="projectCode" column="PROJECT_CODE"/>
+        <result property="startTime" column="START_TIME"/>
+        <result property="endTime" column="END_TIME"/>
+        <result property="commandType" column="COMMAND_TYPE"/>
+        <result property="maxTryTimes" column="MAX_TRY_TIMES"/>
+        <result property="failureStrategy" column="FAILURE_STRATEGY"/>
+        <result property="subTaskFlag" column="SUB_TASK_FLAG"/>
+        <result property="status" column="STATUS"/>
+        <result property="dsId" column="DS_ID"/>
+        <result property="validFlag" column="VALID_FLAG"/>
+        <result property="delFlag" column="DEL_FLAG"/>
+        <result property="createBy" column="CREATE_BY"/>
+        <result property="creatorId" column="CREATOR_ID"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="updateBy" column="UPDATE_BY"/>
+        <result property="updaterId" column="UPDATER_ID"/>
+        <result property="updateTime" column="UPDATE_TIME"/>
+        <result property="remark" column="REMARK"/>
+    </resultMap>
+
+    <sql id="selectDppEtlTaskInstanceVo">
+        select ID,
+               NAME,
+               TASK_ID,
+               TASK_CODE,
+               TASK_VERSION,
+               STATUS_HISTORY,
+               PERSON_CHARGE,
+               PROJECT_ID,
+               PROJECT_CODE,
+               START_TIME,
+               END_TIME,
+               COMMAND_TYPE,
+               MAX_TRY_TIMES,
+               FAILURE_STRATEGY,
+               SUB_TASK_FLAG,
+               STATUS,
+               DS_ID,
+               VALID_FLAG,
+               DEL_FLAG,
+               CREATE_BY,
+               CREATOR_ID,
+               CREATE_TIME,
+               UPDATE_BY,
+               UPDATER_ID,
+               UPDATE_TIME,
+               REMARK
+        from DPP_ETL_TASK_INSTANCE
+    </sql>
+
+    <select id="selectDppEtlTaskInstanceList" parameterType="DppEtlTaskInstanceDO" resultMap="DppEtlTaskInstanceResult">
+        <include refid="selectDppEtlTaskInstanceVo"/>
+        <where>
+            <if test="name != null  and name != ''">and NAME like concat('%', #{name}, '%')</if>
+            <if test="taskId != null ">and TASK_ID = #{taskId}</if>
+            <if test="taskCode != null  and taskCode != ''">and TASK_CODE = #{taskCode}</if>
+            <if test="taskVersion != null ">and TASK_VERSION = #{taskVersion}</if>
+            <if test="statusHistory != null  and statusHistory != ''">and STATUS_HISTORY = #{statusHistory}</if>
+            <if test="personCharge != null  and personCharge != ''">and PERSON_CHARGE = #{personCharge}</if>
+            <if test="projectId != null ">and PROJECT_ID = #{projectId}</if>
+            <if test="projectCode != null  and projectCode != ''">and PROJECT_CODE = #{projectCode}</if>
+            <if test="startTime != null ">and START_TIME = #{startTime}</if>
+            <if test="endTime != null ">and END_TIME = #{endTime}</if>
+            <if test="commandType != null  and commandType != ''">and COMMAND_TYPE = #{commandType}</if>
+            <if test="maxTryTimes != null ">and MAX_TRY_TIMES = #{maxTryTimes}</if>
+            <if test="failureStrategy != null  and failureStrategy != ''">and FAILURE_STRATEGY = #{failureStrategy}</if>
+            <if test="subTaskFlag != null  and subTaskFlag != ''">and SUB_TASK_FLAG = #{subTaskFlag}</if>
+            <if test="status != null  and status != ''">and STATUS = #{status}</if>
+            <if test="dsId != null ">and DS_ID = #{dsId}</if>
+            <if test="createTime != null ">and CREATE_TIME = #{createTime}</if>
+        </where>
+    </select>
+
+    <select id="selectDppEtlTaskInstanceById" parameterType="Long" resultMap="DppEtlTaskInstanceResult">
+        <include refid="selectDppEtlTaskInstanceVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertDppEtlTaskInstance" parameterType="DppEtlTaskInstanceDO">
+        insert into DPP_ETL_TASK_INSTANCE
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="name != null">NAME,</if>
+            <if test="taskId != null">TASK_ID,</if>
+            <if test="taskCode != null">TASK_CODE,</if>
+            <if test="taskVersion != null">TASK_VERSION,</if>
+            <if test="statusHistory != null">STATUS_HISTORY,</if>
+            <if test="personCharge != null">PERSON_CHARGE,</if>
+            <if test="projectId != null">PROJECT_ID,</if>
+            <if test="projectCode != null">PROJECT_CODE,</if>
+            <if test="startTime != null">START_TIME,</if>
+            <if test="endTime != null">END_TIME,</if>
+            <if test="commandType != null">COMMAND_TYPE,</if>
+            <if test="maxTryTimes != null">MAX_TRY_TIMES,</if>
+            <if test="failureStrategy != null">FAILURE_STRATEGY,</if>
+            <if test="subTaskFlag != null">SUB_TASK_FLAG,</if>
+            <if test="status != null">STATUS,</if>
+            <if test="dsId != null">DS_ID,</if>
+            <if test="validFlag != null">VALID_FLAG,</if>
+            <if test="delFlag != null">DEL_FLAG,</if>
+            <if test="createBy != null">CREATE_BY,</if>
+            <if test="creatorId != null">CREATOR_ID,</if>
+            <if test="createTime != null">CREATE_TIME,</if>
+            <if test="updateBy != null">UPDATE_BY,</if>
+            <if test="updaterId != null">UPDATER_ID,</if>
+            <if test="updateTime != null">UPDATE_TIME,</if>
+            <if test="remark != null">REMARK,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="taskId != null">#{taskId},</if>
+            <if test="taskCode != null">#{taskCode},</if>
+            <if test="taskVersion != null">#{taskVersion},</if>
+            <if test="statusHistory != null">#{statusHistory},</if>
+            <if test="personCharge != null">#{personCharge},</if>
+            <if test="projectId != null">#{projectId},</if>
+            <if test="projectCode != null">#{projectCode},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="commandType != null">#{commandType},</if>
+            <if test="maxTryTimes != null">#{maxTryTimes},</if>
+            <if test="failureStrategy != null">#{failureStrategy},</if>
+            <if test="subTaskFlag != null">#{subTaskFlag},</if>
+            <if test="status != null">#{status},</if>
+            <if test="dsId != null">#{dsId},</if>
+            <if test="validFlag != null">#{validFlag},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updaterId != null">#{updaterId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateDppEtlTaskInstance" parameterType="DppEtlTaskInstanceDO">
+        update DPP_ETL_TASK_INSTANCE
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">NAME = #{name},</if>
+            <if test="taskId != null">TASK_ID = #{taskId},</if>
+            <if test="taskCode != null">TASK_CODE = #{taskCode},</if>
+            <if test="taskVersion != null">TASK_VERSION = #{taskVersion},</if>
+            <if test="statusHistory != null">STATUS_HISTORY = #{statusHistory},</if>
+            <if test="personCharge != null">PERSON_CHARGE = #{personCharge},</if>
+            <if test="projectId != null">PROJECT_ID = #{projectId},</if>
+            <if test="projectCode != null">PROJECT_CODE = #{projectCode},</if>
+            <if test="startTime != null">START_TIME = #{startTime},</if>
+            <if test="endTime != null">END_TIME = #{endTime},</if>
+            <if test="commandType != null">COMMAND_TYPE = #{commandType},</if>
+            <if test="maxTryTimes != null">MAX_TRY_TIMES = #{maxTryTimes},</if>
+            <if test="failureStrategy != null">FAILURE_STRATEGY = #{failureStrategy},</if>
+            <if test="subTaskFlag != null">SUB_TASK_FLAG = #{subTaskFlag},</if>
+            <if test="status != null">STATUS = #{status},</if>
+            <if test="dsId != null">DS_ID = #{dsId},</if>
+            <if test="validFlag != null">VALID_FLAG = #{validFlag},</if>
+            <if test="delFlag != null">DEL_FLAG = #{delFlag},</if>
+            <if test="createBy != null">CREATE_BY = #{createBy},</if>
+            <if test="creatorId != null">CREATOR_ID = #{creatorId},</if>
+            <if test="createTime != null">CREATE_TIME = #{createTime},</if>
+            <if test="updateBy != null">UPDATE_BY = #{updateBy},</if>
+            <if test="updaterId != null">UPDATER_ID = #{updaterId},</if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime},</if>
+            <if test="remark != null">REMARK = #{remark},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteDppEtlTaskInstanceById" parameterType="Long">
+        delete
+        from DPP_ETL_TASK_INSTANCE
+        where ID = #{id}
+    </delete>
+
+    <delete id="deleteDppEtlTaskInstanceByIds" parameterType="String">
+        delete from DPP_ETL_TASK_INSTANCE where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectOneNew" parameterType="DppEtlTaskInstanceDO" resultMap="DppEtlTaskInstanceResult">
+        <include refid="selectDppEtlTaskInstanceVo"/>
+        <where>
+            <if test="reqVO.taskCode != null and reqVO.taskCode != ''">and TASK_CODE = #{reqVO.taskCode}</if>
+        </where>
+        order by CREATE_TIME desc, ID desc
+        limit 1
+    </select>
+
+    <resultMap id="treeListMap"
+               type="tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlTaskInstanceTreeListRespVO">
+        <result property="id" column="ID"/>
+        <collection property="children" column="ID"
+                    select="tech.qiantong.qdata.module.dpp.dal.mapper.etl.DppEtlTaskInstanceMapper.nodeListByTaskInstanceId"/>
+    </resultMap>
+
+    <select id="treeList" resultMap="treeListMap">
+        SELECT
+        ti.ID,
+        ti.NAME,
+        tl.NAME AS taskName,
+        ti.TASK_CODE AS code,
+        ti.SCHEDULE_TIME,
+        ti.START_TIME,
+        ti.END_TIME,
+        ti.RUN_TIMES,
+        ti.COMMAND_TYPE,
+        ti.SUB_TASK_FLAG,
+        ti.STATUS,
+        '1' AS "dataType"
+        FROM
+        DPP_ETL_TASK_INSTANCE ti
+        LEFT JOIN DPP_ETL_TASK_LOG tl ON tl.CODE = ti.TASK_CODE AND tl.VERSION = ti.TASK_VERSION AND tl.DEL_FLAG = 0
+        WHERE
+        ti.TASK_TYPE = '4'
+        AND ti.DEL_FLAG = 0
+        <if test="params.projectCode!=null and params.projectCode!=''">
+            AND ti.PROJECT_CODE = #{params.projectCode}
+        </if>
+        <if test="params.catCode!=null and params.catCode!=''">
+            AND ti.CAT_CODE LIKE CONCAT(#{params.catCode}, '%')
+        </if>
+        <if test="params.name!=null and params.name!=''">
+            AND ti.NAME LIKE CONCAT('%',CONCAT(#{params.name}, '%'))
+        </if>
+        <if test="params.jobName!=null and params.jobName!=''">
+            AND ti.NAME LIKE CONCAT(#{params.jobName}, '%')
+        </if>
+        <if test="params.status!=null and params.status!=''">
+            AND ti.status = #{params.status}
+        </if>
+        <if test="params.startTime!=null and params.startTime!=''">
+            <choose>
+                <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'mysql'">
+                    AND ti.START_TIME >= STR_TO_DATE(#{params.startTime},'%Y-%m-%d %H:%i:%s')
+                </when>
+                <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'dm8'">
+                    AND ti.START_TIME >= TO_DATE(#{params.startTime},'YYYY-MM-DD HH24:MI:SS')
+                </when>
+                <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'kingbase8'">
+                    AND ti.START_TIME >= to_timestamp(#{params.startTime},'YYYY-MM-DD HH24:MI:SS')
+                </when>
+            </choose>
+        </if>
+        <if test="params.endTime!=null and params.endTime!=''">
+            <choose>
+                <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'mysql'">
+                    AND STR_TO_DATE(#{params.endTime},'%Y-%m-%d %H:%i:%s') >= ti.END_TIME
+                </when>
+                <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'dm8'">
+                    AND TO_DATE(#{params.endTime},'YYYY-MM-DD HH24:MI:SS') >= ti.END_TIME
+                </when>
+                <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'kingbase8'">
+                    AND to_timestamp(#{params.endTime},'YYYY-MM-DD HH24:MI:SS') >= ti.END_TIME
+                </when>
+            </choose>
+        </if>
+        ORDER BY ti.START_TIME DESC
+    </select>
+    <select id="nodeListByTaskInstanceId"
+            resultType="tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlTaskInstanceTreeListRespVO"
+            parameterType="java.lang.Long">
+        SELECT *
+        FROM (
+                 SELECT ni.ID,
+                        ni.NAME,
+                        il.NAME      AS taskName,
+                        ni.NODE_CODE AS code,
+                        null         AS scheduleTime,
+                        ni.START_TIME,
+                        ni.END_TIME,
+                        null         AS runTimes,
+                        null         AS commandType,
+                        ni.STATUS,
+                        ni.NODE_TYPE AS nodeType,
+                        ni.LOG_PATH  AS logPath,
+                        null         AS taskInstanceId,
+                        null         AS nodeInstanceId,
+                        '2'          AS "dataType"
+                 FROM DPP_ETL_NODE_INSTANCE ni
+                          LEFT JOIN DPP_ETL_NODE_LOG il
+                                    ON il.CODE = ni.NODE_CODE AND il.VERSION = ni.NODE_VERSION AND il.DEL_FLAG = 0
+                 WHERE ni.TASK_INSTANCE_ID = #{taskInstanceId}
+                   AND ni.DEL_FLAG = 0
+                   AND ni.NODE_TYPE != 'SUB_PROCESS'
+
+                 UNION ALL
+
+                 SELECT
+                     ti.ID,
+                     ti.NAME,
+                     tl.NAME AS taskName,
+                     ti.TASK_CODE AS code,
+                     ti.SCHEDULE_TIME AS scheduleTime,
+                     ti.START_TIME,
+                     ti.END_TIME,
+                     ti.RUN_TIMES AS runTimes,
+                     ti.COMMAND_TYPE AS commandType,
+                     ti.STATUS,
+                     'SUB_PROCESS' AS nodeType,
+                     null AS logPath,
+                     ti.PARENT_TASK_INSTANCE_ID AS taskInstanceId,
+                     ti.PARENT_NODE_INSTANCE_ID AS nodeInstanceId,
+                     '5' AS "dataType"
+                 FROM
+                     DPP_ETL_NODE_INSTANCE ni
+                     JOIN DPP_ETL_TASK_INSTANCE ti
+                 ON ti.PARENT_TASK_INSTANCE_ID = ni.TASK_INSTANCE_ID AND ti.PARENT_NODE_INSTANCE_ID = ni.ID AND ti.DEL_FLAG = 0
+                     LEFT JOIN DPP_ETL_TASK_LOG tl ON tl.CODE = ti.TASK_CODE AND tl.VERSION = ti.TASK_VERSION AND tl.DEL_FLAG = 0
+                 WHERE
+                     ni.TASK_INSTANCE_ID = #{taskInstanceId}
+                   AND ni.DEL_FLAG = 0
+                   AND ni.NODE_TYPE = 'SUB_PROCESS'
+             ) d
+        ORDER BY d.START_TIME DESC
+    </select>
+    <select id="listSubNodeInstance"
+            resultType="tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlTaskInstanceTreeListRespVO">
+        SELECT ni.ID,
+               ni.NAME,
+               il.NAME      AS taskName,
+               ni.NODE_CODE AS code,
+               ni.START_TIME,
+               ni.END_TIME,
+               ni.STATUS,
+               ni.NODE_TYPE,
+               ni.LOG_PATH,
+               '3'          AS "dataType"
+        FROM DPP_ETL_TASK_INSTANCE ti
+                 JOIN DPP_ETL_NODE_INSTANCE ni ON ti.ID = ni.TASK_INSTANCE_ID AND ni.DEL_FLAG = 0
+                 LEFT JOIN DPP_ETL_NODE_LOG il
+                           ON il.CODE = ni.NODE_CODE AND il.VERSION = ni.NODE_VERSION AND il.DEL_FLAG = 0
+        WHERE ti.PARENT_TASK_INSTANCE_ID = #{taskInstanceId}
+          AND ti.PARENT_NODE_INSTANCE_ID = #{nodeInstanceId}
+          AND ti.DEL_FLAG = 0
+        ORDER BY ni.START_TIME DESC
+    </select>
+</mapper>

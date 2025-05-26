@@ -1,0 +1,164 @@
+:root {
+  line-height: 1.5;
+  font-weight: 400;
+  // color-scheme: light dark;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  /* display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh; */
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+.card {
+  padding: 2em;
+}
+
+#app {
+  /* max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center; */
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+
+.cu_html_container {
+  display: flex; /* 水平排列 */
+  flex-direction: row; /* 图片在左，文字在右 */
+  align-items: center; /* 垂直居中对齐 */
+  justify-content: flex-start;
+  background: white;
+  border: 1px solid #ddd; /* 添加边框 */
+  border-radius: 2px; /* 圆角 */
+  padding: 8px;
+  height: 50px; /* 高度固定 */
+  box-shadow: 0 5px 8px rgba(128, 145, 165, 0.1);
+  overflow: hidden;
+}
+
+/* 左侧图片 */
+.cu_html_top {
+  width: 30px; /* 图片大小 */
+  height: 30px;
+  // border-radius: 50%;
+  margin-right: 10px; /* 图片和文字间距 */
+}
+
+/* 右侧文字区域 */
+.cu_html_text {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex: 1; /* 占满剩余空间 */
+  white-space: nowrap; /* 防止换行 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 标题 */
+.cu_html_title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cu_html_tag {
+  position: absolute;
+  top: 0px;
+  right: 5px;
+  width: 50px;
+  height: 20px;
+  line-height: 20px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
+  transform: skewX(-20deg);
+  border-radius: 4px;
+}
+
+/* 1111 */
+.div-menu-container {
+  position: absolute;
+  z-index: 999;
+  background: #fff;
+  border: 1px solid #cfcfcf;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.div-menu-item {
+  font-size: 14px;
+  font-weight: 400;
+  color: #333;
+  background-color: transparent;
+  line-height: 20px;
+  cursor: pointer;
+  padding: 8px 10px;
+}
+.div-menu-item:hover {
+  color: #fff;
+  background-color: rgba(64, 158, 255, 0.8);
+}

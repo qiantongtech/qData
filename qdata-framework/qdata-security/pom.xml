@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>qdata-framework</artifactId>
+        <groupId>tech.qiantong</groupId>
+        <version>3.8.8</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>qdata-security</artifactId>
+
+    <description>
+        qdata-security 框架核心
+    </description>
+
+    <dependencies>
+        <!-- SpringBoot Web容器 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- spring security 安全认证 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <!-- 阿里JSON解析器 -->
+        <dependency>
+            <groupId>com.alibaba.fastjson2</groupId>
+            <artifactId>fastjson2</artifactId>
+        </dependency>
+
+        <!--常用工具类 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+
+        <!--redis -->
+        <dependency>
+            <groupId>tech.qiantong</groupId>
+            <artifactId>qdata-redis</artifactId>
+            <version>3.8.8</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.8.31</version>
+        </dependency>
+
+        <dependency>
+            <groupId>tech.qiantong</groupId>
+            <artifactId>qdata-common</artifactId>
+        </dependency>
+
+        <!-- system-api模块 -->
+        <dependency>
+            <groupId>tech.qiantong</groupId>
+            <artifactId>qdata-module-system-api</artifactId>
+            <version>3.8.8</version>
+        </dependency>
+    </dependencies>
+
+</project>

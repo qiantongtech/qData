@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.qiantong.qdata.module.dpp.dal.mapper.etl.DppEtlTaskNodeRelMapper">
+
+    <resultMap type="DppEtlTaskNodeRelDO" id="DppEtlTaskNodeRelResult">
+        <result property="id"    column="ID"    />
+        <result property="projectId"    column="PROJECT_ID"    />
+        <result property="projectCode"    column="PROJECT_CODE"    />
+        <result property="taskId"    column="TASK_ID"    />
+        <result property="taskCode"    column="TASK_CODE"    />
+        <result property="taskVersion"    column="TASK_VERSION"    />
+        <result property="preNodeId"    column="PRE_NODE_ID"    />
+        <result property="preNodeCode"    column="PRE_NODE_CODE"    />
+        <result property="preNodeVersion"    column="PRE_NODE_VERSION"    />
+        <result property="postNodeId"    column="POST_NODE_ID"    />
+        <result property="postNodeCode"    column="POST_NODE_CODE"    />
+        <result property="postNodeVersion"    column="POST_NODE_VERSION"    />
+        <result property="validFlag"    column="VALID_FLAG"    />
+        <result property="delFlag"    column="DEL_FLAG"    />
+        <result property="createBy"    column="CREATE_BY"    />
+        <result property="creatorId"    column="CREATOR_ID"    />
+        <result property="createTime"    column="CREATE_TIME"    />
+        <result property="updateBy"    column="UPDATE_BY"    />
+        <result property="updaterId"    column="UPDATER_ID"    />
+        <result property="updateTime"    column="UPDATE_TIME"    />
+        <result property="remark"    column="REMARK"    />
+    </resultMap>
+
+    <sql id="selectDppEtlTaskNodeRelVo">
+        select ID, PROJECT_ID, PROJECT_CODE, TASK_ID, TASK_CODE, TASK_VERSION, PRE_NODE_ID, PRE_NODE_CODE, PRE_NODE_VERSION, POST_NODE_ID, POST_NODE_CODE, POST_NODE_VERSION, VALID_FLAG, DEL_FLAG, CREATE_BY, CREATOR_ID, CREATE_TIME, UPDATE_BY, UPDATER_ID, UPDATE_TIME, REMARK from DPP_ETL_TASK_NODE_REL
+    </sql>
+
+    <select id="selectDppEtlTaskNodeRelList" parameterType="DppEtlTaskNodeRelDO" resultMap="DppEtlTaskNodeRelResult">
+        <include refid="selectDppEtlTaskNodeRelVo"/>
+        <where>
+            <if test="projectId != null "> and PROJECT_ID = #{projectId}</if>
+            <if test="projectCode != null  and projectCode != ''"> and PROJECT_CODE = #{projectCode}</if>
+            <if test="taskId != null "> and TASK_ID = #{taskId}</if>
+            <if test="taskCode != null  and taskCode != ''"> and TASK_CODE = #{taskCode}</if>
+            <if test="taskVersion != null "> and TASK_VERSION = #{taskVersion}</if>
+            <if test="preNodeId != null "> and PRE_NODE_ID = #{preNodeId}</if>
+            <if test="preNodeCode != null  and preNodeCode != ''"> and PRE_NODE_CODE = #{preNodeCode}</if>
+            <if test="preNodeVersion != null "> and PRE_NODE_VERSION = #{preNodeVersion}</if>
+            <if test="postNodeId != null "> and POST_NODE_ID = #{postNodeId}</if>
+            <if test="postNodeCode != null  and postNodeCode != ''"> and POST_NODE_CODE = #{postNodeCode}</if>
+            <if test="postNodeVersion != null "> and POST_NODE_VERSION = #{postNodeVersion}</if>
+            <if test="createTime != null "> and CREATE_TIME = #{createTime}</if>
+        </where>
+    </select>
+
+    <select id="selectDppEtlTaskNodeRelById" parameterType="Long" resultMap="DppEtlTaskNodeRelResult">
+        <include refid="selectDppEtlTaskNodeRelVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertDppEtlTaskNodeRel" parameterType="DppEtlTaskNodeRelDO">
+        insert into DPP_ETL_TASK_NODE_REL
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="projectId != null">PROJECT_ID,</if>
+            <if test="projectCode != null">PROJECT_CODE,</if>
+            <if test="taskId != null">TASK_ID,</if>
+            <if test="taskCode != null">TASK_CODE,</if>
+            <if test="taskVersion != null">TASK_VERSION,</if>
+            <if test="preNodeId != null">PRE_NODE_ID,</if>
+            <if test="preNodeCode != null">PRE_NODE_CODE,</if>
+            <if test="preNodeVersion != null">PRE_NODE_VERSION,</if>
+            <if test="postNodeId != null">POST_NODE_ID,</if>
+            <if test="postNodeCode != null">POST_NODE_CODE,</if>
+            <if test="postNodeVersion != null">POST_NODE_VERSION,</if>
+            <if test="validFlag != null">VALID_FLAG,</if>
+            <if test="delFlag != null">DEL_FLAG,</if>
+            <if test="createBy != null">CREATE_BY,</if>
+            <if test="creatorId != null">CREATOR_ID,</if>
+            <if test="createTime != null">CREATE_TIME,</if>
+            <if test="updateBy != null">UPDATE_BY,</if>
+            <if test="updaterId != null">UPDATER_ID,</if>
+            <if test="updateTime != null">UPDATE_TIME,</if>
+            <if test="remark != null">REMARK,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="projectId != null">#{projectId},</if>
+            <if test="projectCode != null">#{projectCode},</if>
+            <if test="taskId != null">#{taskId},</if>
+            <if test="taskCode != null">#{taskCode},</if>
+            <if test="taskVersion != null">#{taskVersion},</if>
+            <if test="preNodeId != null">#{preNodeId},</if>
+            <if test="preNodeCode != null">#{preNodeCode},</if>
+            <if test="preNodeVersion != null">#{preNodeVersion},</if>
+            <if test="postNodeId != null">#{postNodeId},</if>
+            <if test="postNodeCode != null">#{postNodeCode},</if>
+            <if test="postNodeVersion != null">#{postNodeVersion},</if>
+            <if test="validFlag != null">#{validFlag},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updaterId != null">#{updaterId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDppEtlTaskNodeRel" parameterType="DppEtlTaskNodeRelDO">
+        update DPP_ETL_TASK_NODE_REL
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="projectId != null">PROJECT_ID = #{projectId},</if>
+            <if test="projectCode != null">PROJECT_CODE = #{projectCode},</if>
+            <if test="taskId != null">TASK_ID = #{taskId},</if>
+            <if test="taskCode != null">TASK_CODE = #{taskCode},</if>
+            <if test="taskVersion != null">TASK_VERSION = #{taskVersion},</if>
+            <if test="preNodeId != null">PRE_NODE_ID = #{preNodeId},</if>
+            <if test="preNodeCode != null">PRE_NODE_CODE = #{preNodeCode},</if>
+            <if test="preNodeVersion != null">PRE_NODE_VERSION = #{preNodeVersion},</if>
+            <if test="postNodeId != null">POST_NODE_ID = #{postNodeId},</if>
+            <if test="postNodeCode != null">POST_NODE_CODE = #{postNodeCode},</if>
+            <if test="postNodeVersion != null">POST_NODE_VERSION = #{postNodeVersion},</if>
+            <if test="validFlag != null">VALID_FLAG = #{validFlag},</if>
+            <if test="delFlag != null">DEL_FLAG = #{delFlag},</if>
+            <if test="createBy != null">CREATE_BY = #{createBy},</if>
+            <if test="creatorId != null">CREATOR_ID = #{creatorId},</if>
+            <if test="createTime != null">CREATE_TIME = #{createTime},</if>
+            <if test="updateBy != null">UPDATE_BY = #{updateBy},</if>
+            <if test="updaterId != null">UPDATER_ID = #{updaterId},</if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime},</if>
+            <if test="remark != null">REMARK = #{remark},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteDppEtlTaskNodeRelById" parameterType="Long">
+        delete from DPP_ETL_TASK_NODE_REL where ID = #{id}
+    </delete>
+
+    <delete id="deleteDppEtlTaskNodeRelByIds" parameterType="String">
+        delete from DPP_ETL_TASK_NODE_REL where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

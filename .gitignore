@@ -1,32 +1,82 @@
-# Editor directories and files
+######################################################################
+# Build Tools
+
+.gradle
+/build/
+!gradle/wrapper/gradle-wrapper.jar
+
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+######################################################################
+# IDE
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+
+### IntelliJ IDEA ###
 .idea
-.vscode
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.local
+*.iws
+*.iml
+*.ipr
 
-# Compiled class file
-*.class
+### JRebel ###
+rebel.xml
 
-# Log file
+### NetBeans ###
+nbproject/private/
+build/*
+nbbuild/
+dist/
+!*/anivia-ui/dist/
+!*/sso-ui/dist/
+!*/sso-ui/node_modules/
+!*/anivia-ui/node_modules/
+/anivia-ui/dist/
+/sso-ui/dist/
+/anivia-ui/node_modules/
+/sso-ui/node_modules/
+!*/resources/static
+nbdist/
+.nb-gradle/
+
+######################################################################
+# Others
 *.log
+*.xml.versionsBackup
+*.swp
 
-# BlueJ files
-*.ctxt
+!*/build/*.java
+!*/build/*.html
+!*/build/*.xml
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
 
-# Package Files #
-*.jar
-*.war
-*.nar
-*.ear
-*.zip
-*.tar.gz
-*.rar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+### 组件库编译后的文件 ###
+storybook-static/
+
+### pdman 备份文件 ###
+/sql/pdman/.back_anivia/
+sql/pdman/.back_数据中台
+
+### Anivia-App ###
+######################################################################
+# Build Tools
+
+Anivia-App/unpackage/*
+Anivia-App/node_modules/*
+
+######################################################################
+# Development Tools
+
+Anivia-App/.idea/*
+Anivia-App/.vscode/*
+Anivia-App/.hbuilderx/*
+Anivia-App/uni_modules/*
+Anivia-App/package-lock.json
+/.gitee/

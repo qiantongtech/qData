@@ -1,0 +1,55 @@
+{
+  "config": {
+    "resourceUrl": "静态资源前缀",
+    "rabbitmq": {
+      "host": "127.0.0.1",
+      "port": 5672,
+      "username": "admin",
+      "password": "密码"
+    },
+    "taskInfo": {
+      "projectCode":"项目编码",
+      "taskCode": "1",//任务编码
+      "taskVersion": 1,//任务版本
+      "name":"任务名称"
+    }
+  },
+  "reader": {
+    "nodeName": "节点名称",
+    "nodeCode": "节点编码",
+    "projectCode":"项目编码",
+    "nodeVersion": 1,//节点版本号
+    "componentType": "类型 1:数据库输入 2:EXCEL输入 3:kafka输入 4:CSV输入",
+    "parameter": {
+      "path": "文件路径",
+      "startColumn":1,//字段行
+      "startData":2,//数据行
+      "column": [
+        {
+          "value": "id",
+          "type": "long"
+        },
+        {
+          "value": "name",
+          "type": "string"
+        },
+        {
+          "value": "time",
+          "type": "date"
+        },
+        {
+          "value": "delFlag",
+          "type": "bool"
+        },
+        {
+          "value": "test",
+          "type": "bytes"
+        }
+      ]
+    }
+  },
+  "transition": [],
+  "writer": {
+
+  }
+}

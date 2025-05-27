@@ -136,8 +136,6 @@ import Hamburger from '@/components/Hamburger';
 import Screenfull from '@/components/Screenfull';
 import SizeSelect from '@/components/SizeSelect';
 import HeaderSearch from '@/components/HeaderSearch';
-import QDataGit from '@/components/QData/Git';
-import QDataDoc from '@/components/QData/Doc';
 import useAppStore from '@/store/system/app';
 import useUserStore from '@/store/system/user';
 import useSettingsStore from '@/store/system/settings';

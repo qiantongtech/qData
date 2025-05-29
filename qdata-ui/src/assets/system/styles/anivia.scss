@@ -32,13 +32,7 @@
   }
    //页面底部
   .pagecont-bottoms {
-    flex: 1;
     min-height: calc(100vh - 250px);
-    //margin-top: 15px;
-    padding: 13px 15px;
-    background-color: #ffffff;
-    border-radius: 2px;
-    box-shadow: 0 5px 8px rgba(128, 145, 165, 0.1);
   }
   // 左侧树表
   .left-tree {
@@ -122,6 +116,24 @@
   .el-table .el-table__footer-wrapper tbody td {
     height: 50px;
   }
+.el-table th .cell {
+  white-space: nowrap !important;
+  overflow: visible !important;
+  text-overflow: initial !important;
+  padding:  0  10px !important;
+}
+// 表格内容超过2行...
+// .el-table td .cell {
+//   max-width: 300px;         
+//   white-space: normal;      
+//   overflow: hidden;         
+//   display: -webkit-box;     
+//   -webkit-line-clamp: 2;   
+//   -webkit-box-orient: vertical;
+//   text-overflow: ellipsis;  
+//   word-break: break-word;   
+// }
+
   //一级标题
   .firsttitle {
     display: flex;

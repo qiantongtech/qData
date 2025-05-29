@@ -63,46 +63,41 @@
             </div>
           </div>
         </div>
-
         <el-row :gutter="20">
           <el-col :xs="24" :sm="24" :md="24" :lg="24">
-            <!-- 模块4 饼图 -->
-            <div class="module-4 border-item">
+            <div class="border-item module-4">
               <div class="border-item-head">
-                <span class="head-title">监控状态 </span>
+                <span class="head-title">监控状态</span>
               </div>
-              <el-row :gutter="20" class="monitor-status">
-                <el-col :span="8" v-for="(item, index) in statusList" :key="item.name"
-                  :style="index >= 3 ? { marginTop: '20px' } : {}">
-                  <el-card shadow="hover" class="status-card">
-                    <div class="card-body">
-                      <!-- 左侧区域 -->
-                      <div class="left-info">
-                        <el-icon :size="24" class="icon">
-                          <component :is="item.icon" />
-                        </el-icon>
-                        <span class="name">{{ item.name }}</span>
-                      </div>
-                      <!-- 分隔线 -->
-                      <div class="divider"></div>
-                      <!-- 右侧状态 -->
-                      <div class="right-status">
-                        <div class="status-line">
-                          <span class="count normal">{{
-                            item.normal
-                          }}</span>
-                          <span class="label">正常</span>
+              <div class="border-item-body monitor-status">
+                <el-row :gutter="20" class="status-row">
+                  <el-col v-for="(item, index) in statusList" :key="item.name" :xs="24" :sm="12" :md="8" :lg="8">
+                    <el-card shadow="hover" class="status-card">
+                      <div class="card-body">
+                        <div class="left-info">
+                          <el-icon :size="24" class="icon">
+                            <component :is="item.icon" />
+                          </el-icon>
+                          <span class="name">{{ item.name }}</span>
                         </div>
-                        <div class="status-line">
-                          <span class="count " :class="{ normal: item.error == 0, error: item.error != 0 }">{{
-                            item.error }}</span>
-                          <span class="label">异常</span>
+                        <div class="divider"></div>
+                        <div class="right-status">
+                          <div class="status-line">
+                            <span class="count normal">{{ item.normal }}</span>
+                            <span class="label">正常</span>
+                          </div>
+                          <div class="status-line">
+                            <span class="count" :class="{ normal: item.error === 0, error: item.error !== 0 }">
+                              {{ item.error }}
+                            </span>
+                            <span class="label">异常</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </el-card>
-                </el-col>
-              </el-row>
+                    </el-card>
+                  </el-col>
+                </el-row>
+              </div>
             </div>
           </el-col>
         </el-row>
@@ -122,7 +117,7 @@
                 {{ item.noticeTitle }}
               </div>
               <div class="time">
-                {{ parseTime(item.createTime, "{y}-{m}-{d}") }}
+                {{ timeAgo(item.createTime) }}
               </div>
             </div>
           </div>
@@ -184,7 +179,7 @@ import useUserStore from "@/store/system/user";
 import { listNotice } from "@/api/system/system/notice.js";
 import useAppStore from "@/store/system/app";
 import * as echarts from "echarts";
-
+import { timeAgo } from '@/utils/time'
 // eslint-disable-next-line no-unused-vars
 import {
   onBeforeUnmount,
@@ -308,7 +303,7 @@ const module1 = ref([
     img: getAssetsFile("2.png"),
   },
   {
-    name: "资产目录",
+    name: "数据作业任务",
     value: 164,
     up: true,
     speed: 9,
@@ -343,18 +338,16 @@ const xljtcont = ref("");
 function getxljtcont() {
   let num = Math.floor(Math.random() * 9);
   let xljtlist = [
-    { value: "🌞 新的一天，从数据开始，美好从分析启程！" },
-    { value: "📚 数据每天都有新故事，等你来发现~" },
-    { value: "✨ 欢迎登录，愿数据赋能每一个决策瞬间。" },
-    { value: "🎯 用数据发现问题，用智慧解决问题，今天也要加油哦！" },
-    { value: "📡 数据连接你我，价值正在悄然发生。" },
-    { value: "🔍 数据的细节里，藏着决策的大智慧。" },
-    { value: "🌈 欢迎回来，数据中台持续为你保驾护航！" },
-    { value: "🚀 数据已就绪，一起向价值出发吧！" },
-    { value: "☕ 稳定、清晰、有序，是我们对每条数据的坚持。" },
-    { value: "📦 数据不止是存储，更是价值的沉淀。" },
-    { value: "🧩 平凡的数据，藏着不平凡的意义。" },
-];
+    { value: "起风的日子，学会依风起舞，下雨的是时候，学会为自己撑伞。" },
+    { value: "别让鸡零狗碎的破事，耗尽你对美好生活的所有向往。" },
+    { value: "管好身体，照顾好父母和老婆孩子，要自己感受生活的美好。" },
+    { value: "我希望你过普通的生活，有稳定的收入平凡的爱人。" },
+    { value: "一定要努力赚钱，好好经营自己。" },
+    { value: "我们穷极一生追求的幸福，眼中景，盘中餐，身边人。" },
+    { value: "日出有盼，日落有思，平平安安，所遇皆甜。" },
+    { value: "不要慌，太阳下山有月光。" },
+    { value: "几经波折见风雪，再见是我也非我。" },
+  ];
   xljtcont.value = xljtlist[num].value;
 }
 
@@ -722,8 +715,8 @@ function initModule8() {
         fontWeight: "bold",
       },
     },
-    //
-    //
+    // 
+    // 
     legend: {
       show: true,
       itemGap: 50,
@@ -961,25 +954,49 @@ onMounted(() => {
   .monitor-status {
     padding: 20px;
 
+    .status-row {
+      margin-bottom: -20px; // 抵消最后一行 gutter 影响
+
+      .el-col {
+        margin-bottom: 20px;
+      }
+    }
+
     .status-card {
-      padding: 8px;
       border-radius: 2px;
+      min-height: 50px;
+      display: flex;
+      flex-direction: column;
 
       .card-body {
         display: flex;
         align-items: center;
+        height: 100%;
+        gap: 16px;
+
+        @media (max-width: 768px) {
+          flex-direction: column;
+          align-items: stretch;
+          gap: 12px;
+        }
       }
 
       .left-info {
         background-color: #eaf3fe;
-        width: 150px;
-        height: 100%;
+        flex: 0 0 30%;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         padding: 10px 0;
-        flex-shrink: 0;
+        min-height: 80px;
+
+        @media (max-width: 768px) {
+          flex: none;
+          width: 100%;
+          padding: 16px 0;
+          min-height: 40px;
+        }
 
         .icon {
           color: #409eff;
@@ -996,15 +1013,30 @@ onMounted(() => {
 
       .divider {
         width: 1px;
-        height: 60px;
         background-color: #8fc7ff;
         margin: 0 20px;
+        align-self: stretch;
+
+        @media (max-width: 768px) {
+          width: 100%;
+          height: 1px;
+          margin: 0;
+        }
       }
 
       .right-status {
+        flex: 1;
         display: flex;
         flex-direction: column;
         gap: 20px;
+
+        @media (max-width: 768px) {
+          flex: none;
+          width: 100%;
+          flex-direction: row;
+          justify-content: space-around;
+          gap: 12px;
+        }
 
         .status-line {
           display: flex;
@@ -1037,8 +1069,10 @@ onMounted(() => {
           }
         }
       }
-
     }
+
+
+
   }
 
   .news {
@@ -1185,8 +1219,9 @@ onMounted(() => {
 .module-8,
 .module-9 {
   height: 350px !important;
-  //   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
 }
+
+
 
 .module-6,
 .module-7 {
@@ -1577,7 +1612,7 @@ onMounted(() => {
   }
 
   .time {
-    width: 90px;
+    width: 55px;
     text-align: right;
     font-size: 14px;
     color: #888888;
@@ -1713,6 +1748,11 @@ onMounted(() => {
       margin-bottom: 15px;
     }
   }
+
+  .module-4 {
+    min-height: 480px !important;
+  }
+
 }
 
 @media screen and (max-width: 768px) {
@@ -1761,6 +1801,10 @@ onMounted(() => {
       margin-bottom: 15px;
     }
   }
+
+  .module-4 {
+    min-height: 1150px !important;
+  }
 }
 
 @media screen and (max-width: 576px) {
@@ -1808,6 +1852,10 @@ onMounted(() => {
       width: 100%;
       margin-bottom: 15px;
     }
+  }
+
+  .module-4 {
+    min-height: 1140px !important;
   }
 }
 </style>

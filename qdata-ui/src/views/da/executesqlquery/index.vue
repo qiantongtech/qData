@@ -1,65 +1,32 @@
 <template>
-  <div
-    class="app-container"
-    ref="app-container"
-    style="overflow: hidden !important"
-  >
+  <div class="app-container" ref="app-container" style="overflow: hidden !important">
     <!-- 头部区域 -->
     <div class="head-container">
       <div class="head-title">
         {{ nodeData.name != "" ? nodeData.name : "数据查询" }}
       </div>
       <div class="head-btns">
-        <el-form
-          ref="daDiscoveryTaskRef"
-          :model="queryParams"
-          label-width="0px"
-          @submit.prevent
-        >
+        <el-form ref="daDiscoveryTaskRef" :model="queryParams" label-width="0px" @submit.prevent>
           <el-form-item label="" prop="datasourceId">
-            <el-select
-              class="head-select"
-              v-model="queryParams.id"
-              placeholder="请选择数据源"
-              filterable
-              size="default"
-              style="width: 210px"
-              :loading="loading"
-            >
-              <el-option
-                v-for="dict in createTypeList"
-                :key="dict.id"
-                :label="dict.datasourceName"
-                :value="dict.id"
-              ></el-option>
+            <el-select class="head-select" v-model="queryParams.id" placeholder="请选择数据源" filterable size="default"
+              style="width: 210px" :loading="loading">
+              <el-option v-for="dict in createTypeList" :key="dict.id" :label="dict.datasourceName"
+                :value="dict.id"></el-option>
             </el-select>
           </el-form-item>
         </el-form>
-        <el-button plain type="primary" size="small" @click="handleQuery"
-          ><i class="iconfont-mini icon-a-zu22377 mr5"></i>查询</el-button
-        >
-        <el-button type="primary" size="small" @click="handleClear"
-          >清除</el-button
-        >
+        <el-button plain type="primary" size="small" @click="handleQuery"><i
+            class="iconfont-mini icon-a-zu22377 mr5"></i>查询</el-button>
+        <el-button type="primary" size="small" @click="handleClear">清除</el-button>
       </div>
     </div>
     <!-- 编辑区域 -->
     <el-row>
-      <sql-editor
-        ref="editorRef"
-        :value="queryParams.sqlText"
-        class="sql-editor"
-        :height="'calc(100vh - 180px)'"
-        @changeTextarea="handleChangeTextarea"
-        placeholder="select * FROM log_table"
-      />
+      <sql-editor ref="editorRef" :value="queryParams.sqlText" class="sql-editor" :height="'calc(100vh - 180px)'"
+        @changeTextarea="handleChangeTextarea" placeholder="select * FROM log_table" />
     </el-row>
-    <TableInfoDialog
-      :visible="dialogVisible"
-      title="查询结果"
-      @update:visible="dialogVisible = $event"
-      :queryParams="queryParams"
-    />
+    <TableInfoDialog :visible="dialogVisible" title="查询结果" @update:visible="dialogVisible = $event"
+      :queryParams="queryParams" />
   </div>
 </template>
 
@@ -70,7 +37,10 @@ const userStore = useUserStore();
 import SqlEditor from "@/components/SqlEditor/index1.vue";
 import { listDaDatasourceNoKafkaByProjectCode } from "@/api/da/datasource/daDatasource";
 import TableInfoDialog from "./components/TableInfoDialog";
-
+import {
+  getDaDatasourceList,
+} from "@/api/dp/model/dpModel";
+import { executeSqlQuery } from "@/api/da/datasource/daDatasource";
 // 定义查询参数、下拉数据以及加载状态
 let queryParams = ref({
   pageNum: 1,
@@ -104,14 +74,20 @@ async function handleQuery() {
   }
 
   if (errors.length) {
-    // 使用 Element Plus 全局消息提示
     ElMessage.error(errors.join("，"));
     return;
   }
-
   queryResult.value = "正在查询，请稍后...";
-  dialogVisible.value = true;
+  const response = await executeSqlQuery({ ...queryParams.value });
+  if (response.code === 200) {
+    queryResult.value = response.data;
+    dialogVisible.value = true;
+  } else {
+    ElMessage.error(response.msg || "查询失败");
+    queryResult.value = "";
+  }
 }
+
 
 // 清除 SQL 编辑器内容
 function handleClear() {
@@ -120,15 +96,10 @@ function handleClear() {
 
 // 获取数据源函数
 function getDaDatasource() {
-  console.log(
-    "调用 getDaDatasource",
-    userStore.projectCode,
-    userStore.projectId
-  );
   loading.value = true;
-  listDaDatasourceNoKafkaByProjectCode({
-    projectCode: userStore.projectCode,
-    projectId: userStore.projectId,
+  getDaDatasourceList({
+    // projectCode: userStore.projectCode,
+    // projectId: userStore.projectId,
   })
     .then((response) => {
       createTypeList.value = response.data;
@@ -138,17 +109,16 @@ function getDaDatasource() {
       loading.value = false;
     });
 }
-
-// 监听 userStore 中 projectCode 与 projectId 的变化，确保其有值后才调用获取数据源
-watch(
-  () => [userStore.projectCode, userStore.projectId],
-  ([newCode, newId]) => {
-    if (newCode && newId) {
-      getDaDatasource();
-    }
-  },
-  { immediate: true }
-);
+// watch(
+//   () => [userStore.projectCode, userStore.projectId],
+//   ([newCode, newId]) => {
+//     if (newCode && newId) {
+//       getDaDatasource();
+//     }
+//   },
+//   { immediate: true }
+// );
+getDaDatasource();
 </script>
 
 <style scoped lang="less">

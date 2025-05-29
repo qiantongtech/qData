@@ -238,7 +238,7 @@ defineExpose({
     float: left;
     height: 40px !important;
     line-height: 40px !important;
-    color: #999093 !important;
+    color: #333 !important;
     padding: 0 15px !important;
     margin: 0 10px !important;
     border-radius: 5px;
@@ -249,7 +249,7 @@ defineExpose({
     float: left;
     height: 40px !important;
     line-height: 40px !important;
-    color: #999093 !important;
+    color: #333 !important;
     padding: 0 15px !important;
     margin: 0 10px !important;
     border-radius: 5px;

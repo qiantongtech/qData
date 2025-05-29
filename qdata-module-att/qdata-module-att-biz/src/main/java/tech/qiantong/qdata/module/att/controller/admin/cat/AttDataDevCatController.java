@@ -43,7 +43,6 @@ public class AttDataDevCatController extends BaseController {
     private IAttDataDevCatService attDataDevCatService;
 
     @Operation(summary = "查询数据开发类目管理列表")
-    @PreAuthorize("@ss.hasPermi('att:cat:attdatadevcat:list')")
     @GetMapping("/list")
     public CommonResult<List<AttDataDevCatRespVO>> list(AttDataDevCatPageReqVO attDataDevCat) {
         List<AttDataDevCatDO> attDataDevCatDOList = attDataDevCatService.getAttDataDevCatList(attDataDevCat);

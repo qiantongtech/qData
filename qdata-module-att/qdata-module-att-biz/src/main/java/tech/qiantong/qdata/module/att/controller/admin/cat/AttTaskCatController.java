@@ -43,7 +43,6 @@ public class AttTaskCatController extends BaseController {
     private IAttTaskCatService attTaskCatService;
 
     @Operation(summary = "查询数据集成任务类目管理列表")
-    @PreAuthorize("@ss.hasPermi('att:cat:atttaskcat:list')")
     @GetMapping("/list")
     public CommonResult<List<AttTaskCatRespVO>> list(AttTaskCatPageReqVO attTaskCat) {
         List<AttTaskCatDO> attTaskCatDOList = attTaskCatService.getAttTaskCatList(attTaskCat);

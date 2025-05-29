@@ -146,6 +146,9 @@ public class IAttProjectServiceImpl extends ServiceImpl<AttProjectMapper, AttPro
                     Map<Long, List<SysRoleMenu>> roleIdListMap = roleMenuList.stream().collect(Collectors.groupingBy(SysRoleMenu::getRoleId));
                     List<SysRoleMenu> rMenusList = new ArrayList<>();
                     for (SysRole role : sysRoleList) {
+                        if (roleIdListMap.get(role.getOldRoleId()) == null || roleIdListMap.get(role.getOldRoleId()).size() == 0){
+                            continue;
+                        }
                         for (SysRoleMenu sysRoleMenu : roleIdListMap.get(role.getOldRoleId())) {
                             SysRoleMenu roleMenu = new SysRoleMenu();
                             roleMenu.setRoleId(role.getRoleId());

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>box-3-line</title>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="box-3-line">
+            <polygon id="路径" points="0 0 16 0 16 16 0 16"></polygon>
+            <path d="M8,0.666666667 L14.3333333,4.33333333 L14.3333333,11.6666667 L8,15.3333333 L1.66666667,11.6666667 L1.66666667,4.33333333 L8,0.666666667 Z M3.66258667,4.71846667 L8.00006667,7.2296 L12.3374667,4.71849333 L8,2.20733333 L3.66258667,4.71846667 Z M3,5.87552667 L3,10.8979333 L7.3334,13.4067333 L7.3334,8.38433333 L3,5.87552667 Z M8.66673333,13.4066667 L13,10.8979333 L13,5.87558 L8.66673333,8.38433333 L8.66673333,13.4066667 Z" id="形状" fill="#1D2945" fill-rule="nonzero"></path>
+        </g>
+    </g>
+</svg>

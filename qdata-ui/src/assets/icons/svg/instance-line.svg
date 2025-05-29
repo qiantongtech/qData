@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>instance-line</title>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="instance-line">
+            <polygon id="路径" points="0 0 16 0 16 16 0 16"></polygon>
+            <path d="M3,5.10207333 L3,10.8979333 L8,13.7926667 L13,10.8979333 L13,5.10207333 L8,2.20733333 L3,5.10207333 Z M8,0.666666667 L14.3333333,4.33333333 L14.3333333,11.6666667 L8,15.3333333 L1.66666667,11.6666667 L1.66666667,4.33333333 L8,0.666666667 Z M4.33264,6.6471 L7.33333333,8.38433333 L7.33333333,11.75 L8.66666667,11.75 L8.66666667,8.38433333 L11.6673333,6.64710667 L10.9993333,5.4932 L8,7.22966667 L5.00069333,5.4932 L4.33264,6.6471 Z" id="形状" fill="#1D2945" fill-rule="nonzero"></path>
+        </g>
+    </g>
+</svg>

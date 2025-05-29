@@ -26,187 +26,185 @@
             <div>
                 <div class="greeting">
                     <div class="entry_period">亲爱的朋友，{{ greetingsTitle }}！</div>
-                    <div class="entry_greeting">🌟 每一次登录，都是向数据价值更进一步！
-                        <div class="login-panel">
-                            <el-form ref="loginRef" :model="loginForm" :rules="loginRules">
-                                <p class="titles">账号登录</p>
-                                <div class="titles-bar"></div>
-                                <el-form-item prop="username">
-                                    <el-input v-model="loginForm.username" type="text" auto-complete="off"
-                                        placeholder="账号">
-                                        <template #prefix>
-                                            <i class="iconfont">&#xebc0;</i>
-                                        </template>
-                                    </el-input>
-                                </el-form-item>
-                                <el-form-item prop="password">
-                                    <el-input v-model="loginForm.password" type="password" auto-complete="off"
-                                        placeholder="密码" @keyup.enter="handleLogin">
-                                        <template #prefix>
-                                            <i class="iconfont">&#xeb8d;</i>
-                                        </template>
-                                    </el-input>
-                                </el-form-item>
-                                <el-form-item prop="code" v-if="captchaEnabled">
-                                    <el-input v-model="loginForm.code" auto-complete="off" placeholder="验证码"
-                                        class="code-class" @keyup.enter.native="handleLogin">
-                                        <template #prefix>
-                                            <i class="iconfont">&#xeb9e;</i>
-                                        </template>
-                                    </el-input>
-                                    <div class="login-code">
-                                        <img :src="codeUrl" @click="getCode" class="login-code-img" />
-                                    </div>
-                                </el-form-item>
+                    <div class="entry_greeting"> 🌟 每一次登录，都是向数据价值更进一步！</div>
+                </div>
+                <div class="login-panel">
+                    <el-form ref="loginRef" :model="loginForm" :rules="loginRules">
+                        <p class="titles">账号登录</p>
+                        <div class="titles-bar"></div>
+                        <el-form-item prop="username">
+                            <el-input v-model="loginForm.username" type="text" auto-complete="off" placeholder="账号">
+                                <template #prefix>
+                                    <i class="iconfont">&#xebc0;</i>
+                                </template>
+                            </el-input>
+                        </el-form-item>
+                        <el-form-item prop="password">
+                            <el-input v-model="loginForm.password" type="password" auto-complete="off" placeholder="密码"
+                                @keyup.enter="handleLogin">
+                                <template #prefix>
+                                    <i class="iconfont">&#xeb8d;</i>
+                                </template>
+                            </el-input>
+                        </el-form-item>
+                        <el-form-item prop="code" v-if="captchaEnabled">
+                            <el-input v-model="loginForm.code" auto-complete="off" placeholder="验证码" class="code-class"
+                                @keyup.enter.native="handleLogin">
+                                <template #prefix>
+                                    <i class="iconfont">&#xeb9e;</i>
+                                </template>
+                            </el-input>
+                            <div class="login-code">
+                                <img :src="codeUrl" @click="getCode" class="login-code-img" />
+                            </div>
+                        </el-form-item>
 
-                                <el-form-item style="width: 100%">
-                                    <el-button :loading="loading" type="primary" style="width: 100%"
-                                        @click.native.prevent="handleLogin">
-                                        <span v-if="!loading">登 录</span>
-                                        <span v-else>登 录 中...</span>
-                                    </el-button>
-                                </el-form-item>
+                        <el-form-item style="width: 100%">
+                            <el-button :loading="loading" type="primary" style="width: 100%"
+                                @click.native.prevent="handleLogin">
+                                <span v-if="!loading">登 录</span>
+                                <span v-else>登 录 中...</span>
+                            </el-button>
+                        </el-form-item>
 
-                                <div class="form-actions">
-                                    <el-checkbox v-model="loginForm.rememberMe">记住密码</el-checkbox>
-                                    <el-text type="primary" @click="dialogVisible = true">忘记密码</el-text>
-                                </div>
-                            </el-form>
+                        <div class="form-actions">
+                            <el-checkbox v-model="loginForm.rememberMe">记住密码</el-checkbox>
+                            <el-text type="primary" @click="dialogVisible = true">忘记密码</el-text>
+                        </div>
+                    </el-form>
+                </div>
+            </div>
+            <div>
+                <div class="description">
+                    <div class="contact" style="float: left">
+                        <img src="@/assets/system/images/login/phone.png" />
+                        <div>
+                            <p>联系电话：</p>
+                            <!--              <p>400-660-8208</p>-->
+                            <p>
+                                {{
+                                    contentDetail && contentDetail.contactNumber
+                                        ? contentDetail.contactNumber
+                                        : '400-660-8208'
+                                }}
+                            </p>
                         </div>
                     </div>
-                    <div>
-                        <div class="description">
-                            <div class="contact" style="float: left">
-                                <img src="@/assets/system/images/login/phone.png" />
-                                <div>
-                                    <p>联系电话：</p>
-                                    <!--              <p>400-660-8208</p>-->
-                                    <p>
-                                        {{
-                                            contentDetail && contentDetail.contactNumber
-                                                ? contentDetail.contactNumber
-                                                : '400-660-8208'
-                                        }}
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="contact" style="margin-left: 24px">
-                                <img src="@/assets/system/images/login/email.png" />
-                                <div>
-                                    <p>电子邮箱：</p>
-                                    <!--              <p>sales@qiantong.tech</p>-->
-                                    <p>
-                                        {{
-                                            contentDetail && contentDetail.email
-                                                ? contentDetail.email
-                                                : 'sales@qiantong.tech'
-                                        }}
-                                    </p>
-                                </div>
-                            </div>
+                    <div class="contact" style="margin-left: 24px">
+                        <img src="@/assets/system/images/login/email.png" />
+                        <div>
+                            <p>电子邮箱：</p>
+                            <!--              <p>sales@qiantong.tech</p>-->
+                            <p>
+                                {{
+                                    contentDetail && contentDetail.email
+                                        ? contentDetail.email
+                                        : 'sales@qiantong.tech'
+                                }}
+                            </p>
                         </div>
-                        <div class="chrome-wrap">
-                            <img src="@/assets/system/images/login/goge-icon.png" style="height: 20px" />
-                            <span
-                                style="color: #888; font-size: 12px; line-height: 0; margin-left: 10px">为保证最佳浏览效果，请使用</span>
-                            <span style="color: #ee2223; font-size: 12px; line-height: 0">Chrome</span>
-                            <span style="color: #888; font-size: 12px; line-height: 0">浏览器，点击下载安装</span>
-                            <a href="https://www.google.cn/chrome/" target="_blank">
-                                <div style="
+                    </div>
+                </div>
+                <div class="chrome-wrap">
+                    <img src="@/assets/system/images/login/goge-icon.png" style="height: 20px" />
+                    <span style="color: #888; font-size: 12px; line-height: 0; margin-left: 10px">为保证最佳浏览效果，请使用</span>
+                    <span style="color: #ee2223; font-size: 12px; line-height: 0">Chrome</span>
+                    <span style="color: #888; font-size: 12px; line-height: 0">浏览器，点击下载安装</span>
+                    <a href="https://www.google.cn/chrome/" target="_blank">
+                        <div style="
                                 margin-left: 15px;
                                 display: flex;
                                 flex-direction: column;
                                 align-items: center;
                             ">
-                                    <img id="window_img" src="@/assets/system/images/login/window-icon.svg"
-                                        style="height: 25px" />
-                                    <span style="
+                            <img id="window_img" src="@/assets/system/images/login/window-icon.svg"
+                                style="height: 25px" />
+                            <span style="
                                     color: #888;
                                     font-size: 12px;
                                     line-height: 0;
                                     margin-top: 7px;
                                 ">Window</span>
-                                </div>
-                            </a>
-                            <a href="https://www.google.cn/chrome/" target="_blank">
-                                <div style="
+                        </div>
+                    </a>
+                    <a href="https://www.google.cn/chrome/" target="_blank">
+                        <div style="
                                 margin-left: 15px;
                                 display: flex;
                                 flex-direction: column;
                                 align-items: center;
                             ">
-                                    <img id="mac_img" src="@/assets/system/images/login/mac-icon.svg"
-                                        style="height: 25px" />
-                                    <span style="
+                            <img id="mac_img" src="@/assets/system/images/login/mac-icon.svg" style="height: 25px" />
+                            <span style="
                                     color: #888;
                                     font-size: 12px;
                                     line-height: 0;
                                     margin-top: 7px;
                                 ">Mac</span>
-                                </div>
-                            </a>
                         </div>
-                        <div class="bottom-info">
-                            <div class="copy-right" style="cursor: pointer;">
-                                <a href="https://qiantong.tech/" target="_blank">
-                                    Copyright© {{ new Date().getFullYear() }}
-                                    江苏千桐科技有限公司
-                                    版权所有
-                                </a>
-                            </div>
+                    </a>
+                </div>
+                <div class="bottom-info">
+                    <div class="copy-right" style="cursor: pointer;">
+                        <a href="https://qiantong.tech/" target="_blank">
+                            Copyright© {{ new Date().getFullYear() }}
+                            江苏千桐科技有限公司
+                            版权所有
+                        </a>
+                    </div>
 
-                            <div class="record" @click="goKtPage()">
-                                <img src="https://www.asktempo.com/statics/images/an.png" alt="" />
-                                <!--            &nbsp;&nbsp; 苏ICP备2022008519号-1-->
-                                &nbsp;&nbsp;
-                                {{
-                                    contentDetail && contentDetail.recordNumber
-                                        ? contentDetail.recordNumber
-                                        : '苏ICP备2022008519号-3'
-                                }}
-                            </div>
-                        </div>
+                    <div class="record" @click="goKtPage()">
+                        <img src="https://www.asktempo.com/statics/images/an.png" alt="" />
+                        <!--            &nbsp;&nbsp; 苏ICP备2022008519号-1-->
+                        &nbsp;&nbsp;
+                        {{
+                            contentDetail && contentDetail.recordNumber
+                                ? contentDetail.recordNumber
+                                : '苏ICP备2022008519号-3'
+                        }}
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <el-dialog v-model="dialogVisible" title="忘记密码" class="fp-form-dialog" width="650px"
-                :append-to="$refs['app-container']" draggable destroy-on-close>
-                <el-form :model="fpForm" label-width="auto" style="padding: 10px 60px 0">
-                    <el-row :gutter="20">
-                        <el-col :span="24">
-                            <el-form-item label="用户名">
-                                <el-input v-model="fpForm.name" placeholder="请输入手机号或用户名" />
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="24">
-                            <el-form-item label="验证码">
-                                <div class="wrapper">
-                                    <el-input v-model="fpForm.code" placeholder="请输入验证码" />
-                                    <el-button type="primary" :disabled="codeFlag" style="margin-left: 10px"
-                                        @click="handleFPCodeClick">{{ codeFlag ? `${codeTime}s` : '获取验证码' }}</el-button>
-                                </div>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="24">
-                            <el-form-item label="新密码">
-                                <el-input v-model="fpForm.password" placeholder="请输入新密码" />
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="24">
-                            <el-form-item label="确认密码">
-                                <el-input v-model="fpForm.password2" placeholder="请输入确认密码" />
-                            </el-form-item>
-                        </el-col>
-                    </el-row>
-                </el-form>
-                <template #footer>
-                    <div class="dialog-footer">
-                        <el-button type="primary" @click="dialogVisible = false"> 重置密码 </el-button>
-                    </div>
-                </template>
-            </el-dialog>
-            <!-- </div> -->
+    <el-dialog v-model="dialogVisible" title="忘记密码" class="fp-form-dialog" width="650px"
+        :append-to="$refs['app-container']" draggable destroy-on-close>
+        <el-form :model="fpForm" label-width="auto" style="padding: 10px 60px 0">
+            <el-row :gutter="20">
+                <el-col :span="24">
+                    <el-form-item label="用户名">
+                        <el-input v-model="fpForm.name" placeholder="请输入手机号或用户名" />
+                    </el-form-item>
+                </el-col>
+                <el-col :span="24">
+                    <el-form-item label="验证码">
+                        <div class="wrapper">
+                            <el-input v-model="fpForm.code" placeholder="请输入验证码" />
+                            <el-button type="primary" :disabled="codeFlag" style="margin-left: 10px"
+                                @click="handleFPCodeClick">{{ codeFlag ? `${codeTime}s` : '获取验证码' }}</el-button>
+                        </div>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="24">
+                    <el-form-item label="新密码">
+                        <el-input v-model="fpForm.password" placeholder="请输入新密码" />
+                    </el-form-item>
+                </el-col>
+                <el-col :span="24">
+                    <el-form-item label="确认密码">
+                        <el-input v-model="fpForm.password2" placeholder="请输入确认密码" />
+                    </el-form-item>
+                </el-col>
+            </el-row>
+        </el-form>
+        <template #footer>
+            <div class="dialog-footer">
+                <el-button type="primary" @click="dialogVisible = false"> 重置密码 </el-button>
+            </div>
+        </template>
+    </el-dialog>
+    <!-- </div> -->
 </template>
 
 <script setup>

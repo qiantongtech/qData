@@ -19,10 +19,12 @@
       <div class="justify-between mb15">
         <el-row :gutter="10" class="btn-style">
           <el-col :span="1.5">
-            <el-button type="primary" plain icon="Plus" @click="openSelectUser" v-hasPermi="['system:role:add']">新增用户</el-button>
+            <el-button type="primary" plain icon="Plus" @click="openSelectUser"
+              v-hasPermi="['system:role:add']">新增用户</el-button>
           </el-col>
           <el-col :span="1.5">
-            <el-button type="danger" plain icon="CircleClose" :disabled="multiple" @click="cancelAuthUserAll" v-hasPermi="['system:role:remove']">批量取消授权</el-button>
+            <el-button type="danger" plain icon="CircleClose" :disabled="multiple" @click="cancelAuthUserAll"
+              v-hasPermi="['system:role:remove']">批量取消授权</el-button>
           </el-col>
           <el-col :span="1.5">
             <el-button type="warning" plain icon="Close" @click="handleClose">关闭</el-button>
@@ -34,7 +36,7 @@
       <el-table stripe height="60vh" v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center" />
         <el-table-column label="用户名称" prop="userName" :show-overflow-tooltip="true" />
-        <el-table-column label="用户昵称" prop="nickName" :show-overflow-tooltip="true" />
+        <el-table-column label="用户名称" prop="nickName" :show-overflow-tooltip="true" />
         <el-table-column label="邮箱" prop="email" :show-overflow-tooltip="true" />
         <el-table-column label="手机" prop="phonenumber" :show-overflow-tooltip="true" />
         <el-table-column label="状态" align="center" prop="status">
@@ -49,12 +51,14 @@
         </el-table-column>
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
           <template #default="scope">
-            <el-button link type="primary" icon="CircleClose" @click="cancelAuthUser(scope.row)" v-hasPermi="['system:role:remove']">取消授权</el-button>
+            <el-button link type="primary" icon="CircleClose" @click="cancelAuthUser(scope.row)"
+              v-hasPermi="['system:role:remove']">取消授权</el-button>
           </template>
         </el-table-column>
       </el-table>
 
-      <pagination :total="total" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" @pagination="getList" />
+      <pagination :total="total" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize"
+        @pagination="getList" />
     </div>
     <select-user ref="selectRef" :roleId="queryParams.roleId" @ok="handleQuery" />
   </div>
@@ -133,7 +137,7 @@ function cancelAuthUser(row) {
       getList();
       proxy.$modal.msgSuccess("取消授权成功");
     })
-    .catch(() => {});
+    .catch(() => { });
 }
 
 /** 批量取消授权按钮操作 */
@@ -149,7 +153,7 @@ function cancelAuthUserAll(row) {
       getList();
       proxy.$modal.msgSuccess("取消授权成功");
     })
-    .catch(() => {});
+    .catch(() => { });
 }
 
 getList();

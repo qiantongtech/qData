@@ -80,3 +80,4 @@ Anivia-App/.hbuilderx/*
 Anivia-App/uni_modules/*
 Anivia-App/package-lock.json
 /.gitee/
+/qdata-etl/src/main/java/tech/qiantong/qdata/spark/etl/EtlApplication2.java

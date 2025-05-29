@@ -219,8 +219,8 @@ public class MySqlDialect extends AbstractDbDialect {
             // 添加表备注
             if (StringUtils.isNotEmpty(tableComment)) {
                 sql.append("COMMENT='").append(MD5Util.escapeSingleQuotes(tableComment));
+                sql.append("'\n");
             }
-            sql.append("'\n");
             sqlList.add(sql.toString());
         }
 

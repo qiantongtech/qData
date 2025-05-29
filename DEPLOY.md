@@ -120,7 +120,7 @@ cd spark/sbin
 ```
 cd spark/sbin
 
-./start-slave.sh \<Master URL>  # 替换为上一步记录的URL
+./start-slave.sh <Master URL>  # 替换为上一步记录的URL
 ```
 
 ✅ 验证：刷新 Spark 管理页面，检查 "Workers" 列表是否新增节点（如图示）。
@@ -164,12 +164,12 @@ rabbitmq:
 
 #  DS调度器配置
 ds:
- base\_url: http://127.0.0.1:40018/dolphinscheduler
+ base_url: http://127.0.0.1:40018/dolphinscheduler
  token: <调度器令牌>  # 在调度器-安全中心-令牌管理中创建
  spark:
-   master\_url: spark://127.0.0.1:7077  # 与Spark Master地址一致
-   main\_jar: file:/dolphinscheduler/default/resources/spark-jar/qdata-etl-3.8.8.jar  # 上传etl包后路径
-   main\_class: tech.qiantong.qdata.spark.etl.EtlApplication
+   master_url: spark://127.0.0.1:7077  # 与Spark Master地址一致
+   main_jar: file:/dolphinscheduler/default/resources/spark-jar/qdata-etl-3.8.8.jar  # 上传etl包后路径
+   main_class: tech.qiantong.qdata.spark.etl.EtlApplication
 ```
 
 ### 3.4. 初始化数据库

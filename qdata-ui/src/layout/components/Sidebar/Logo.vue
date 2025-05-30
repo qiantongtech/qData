@@ -87,7 +87,7 @@ const sideTheme = computed(() => settingsStore.sideTheme);
 
     & .sidebar-logo {
       height: 60px;
-      margin-top: 4px;
+      margin-top: 0px;
       vertical-align: middle;
       margin-right: 12px;
     }

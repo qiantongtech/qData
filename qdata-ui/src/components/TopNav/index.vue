@@ -235,6 +235,7 @@ defineExpose({
 }
 
 .topmenu-container.el-menu--horizontal>.el-menu-item {
+    font-size: 16px;
     float: left;
     height: 40px !important;
     line-height: 40px !important;
@@ -246,6 +247,7 @@ defineExpose({
 
 /* sub-menu item */
 .topmenu-container.el-menu--horizontal>.el-sub-menu .el-sub-menu__title {
+    font-size: 16px;
     float: left;
     height: 40px !important;
     line-height: 40px !important;

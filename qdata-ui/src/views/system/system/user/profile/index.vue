@@ -36,11 +36,11 @@
                            {{ state.postGroup }}
                         </div>
                      </li>
-                     <li class="list-group-item vertical-center">
-                        <i class="iconfont icon-a-suoshujiaosexianxing mr5"></i>
-                        所属角色
-                        <div class="pull-right label-text">{{ state.roleGroup }}</div>
-                     </li>
+<!--                     <li class="list-group-item vertical-center">-->
+<!--                        <i class="iconfont icon-a-suoshujiaosexianxing mr5"></i>-->
+<!--                        所属角色-->
+<!--                        <div class="pull-right label-text">{{ state.roleGroup }}</div>-->
+<!--                     </li>-->
                      <li class="list-group-item vertical-center">
                         <i class="iconfont icon-a-riqixianxing mr5"></i>
                         创建日期
@@ -119,6 +119,8 @@ getUser();
    }
 
    .el-card {
+     height: 100%;
+     border-radius: 2px !important;
       .el-card__header {
          padding: 14px !important;
       }

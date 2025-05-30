@@ -2,15 +2,15 @@
   <div class="app-container" ref="app-container">
     <el-container style="90%">
       <DeptTree :deptOptions="deptOptions" :leftWidth="leftWidth" :placeholder="'请输入资产类目名称'" ref="DeptTreeRef"
-        @node-click="handleNodeClick" />
+                @node-click="handleNodeClick" />
 
       <el-main>
         <div class="pagecont-top" v-show="showSearch">
           <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="75px"
-            v-show="showSearch" @submit.prevent>
+                   v-show="showSearch" @submit.prevent>
             <el-form-item label="资产名称" prop="name">
               <el-input class="el-form-input-width" v-model="queryParams.name" placeholder="请输入资产名称" clearable
-                @keyup.enter="handleQuery" />
+                        @keyup.enter="handleQuery" />
             </el-form-item>
             <el-form-item label="发布状态" prop="status">
               <el-select class="el-form-input-width" v-model="queryParams.status" placeholder="请选择发布状态" clearable>
@@ -26,7 +26,7 @@
 
             <el-form-item label="所属主题" prop="themeIdList">
               <el-select v-model="queryParams.themeIdList" collapse-tags multiple placeholder="请选择主题名称"
-                style="width: 240px">
+                         style="width: 240px">
                 <el-option v-for="dict in themeList" :key="dict.id" :label="dict.name" :value="dict.id" />
               </el-select>
             </el-form-item>
@@ -45,12 +45,12 @@
             </el-form-item>
           </el-form>
         </div>
-        <div class="pagecont-bottoms">
+        <div class="pagecont-bottom pagecont-bottoms">
           <div class="justify-between mb15">
             <el-row :gutter="15" class="btn-style">
               <el-col :span="1.5">
                 <el-button type="primary" plain @click="handleAdd" v-hasPermi="['da:asset:asset:add']"
-                  @mousedown="(e) => e.preventDefault()">
+                           @mousedown="(e) => e.preventDefault()">
                   <i class="iconfont-mini icon-xinzeng mr5"></i>新增
                 </el-button>
               </el-col>
@@ -91,7 +91,7 @@
             </div>
           </div>
           <el-table stripe height="58vh" v-loading="loading" :data="daAssetList"
-            @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
+                    @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
             <!--       <el-table-column type="selection" width="55" align="center" />-->
             <el-table-column v-if="getColumnVisibility(0)" width="80" label="编号" align="center" prop="id">
               <template #default="scope">
@@ -104,19 +104,19 @@
               </template>
             </el-table-column>
             <el-table-column v-if="getColumnVisibility(2)" label="资产描述" align="left" prop="description"
-              show-overflow-tooltip>
+                             show-overflow-tooltip>
               <template #default="scope">
                 {{ scope.row.description || '-' }}
               </template>
             </el-table-column>
             <el-table-column v-if="getColumnVisibility(3)" label="资产类目" align="left" prop="catName" width="120"
-              show-overflow-tooltip>
+                             show-overflow-tooltip>
               <template #default="scope">
                 {{ scope.row.catName || '-' }}
               </template>
             </el-table-column>
             <el-table-column v-if="getColumnVisibility(8)" label="资产类型" align="center" prop="type" width="120"
-              show-overflow-tooltip>
+                             show-overflow-tooltip>
               <template #default="scope">
                 <dict-tag :options="da_asset_type" :value="scope.row.type" />
               </template>
@@ -125,8 +125,8 @@
               <template #default="scope">
                 {{
                   scope.row.daAssetThemeRelList?.length
-                    ? scope.row.daAssetThemeRelList.map(item => item.themeName).join(', ')
-                    : '-'
+                      ? scope.row.daAssetThemeRelList.map(item => item.themeName).join(', ')
+                      : '-'
                 }}
               </template>
             </el-table-column>
@@ -151,8 +151,8 @@
             <el-table-column v-if="getColumnVisibility(7)" label="状态" align="center" prop="status" width="80">
               <template #default="scope">
                 <el-switch :disabled="scope.row.projectId != null" v-model="scope.row.status" active-color="#13ce66"
-                  inactive-color="#ff4949" active-value="1" inactive-value="0"
-                  @change="handleStatusChange(scope.row)" />
+                           inactive-color="#ff4949" active-value="1" inactive-value="0"
+                           @change="handleStatusChange(scope.row)" />
               </template>
             </el-table-column>
 
@@ -174,8 +174,8 @@
             <el-table-column v-if="getColumnVisibility(9)" label="更新时间" align="center" prop="updateTime" width="160">
               <template #default="scope">
                 <span>{{
-                  parseTime(scope.row.updateTime, '{y}-{m}-{d} {h}:{i}:{s}')
-                }}</span>
+                    parseTime(scope.row.updateTime, '{y}-{m}-{d} {h}:{i}:{s}')
+                  }}</span>
               </template>
             </el-table-column>
             <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" width="190">
@@ -185,7 +185,7 @@
                 <!--           <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"-->
                 <!--                      v-hasPermi="['da:asset:asset:remove']">删除</el-button>-->
                 <el-button link type="primary" icon="Edit" style="padding-left: 14px" :disabled="scope.row.status == 1"
-                  @click="handleUpdate(scope.row)" v-hasPermi="['da:asset:asset:edit']">修改</el-button>
+                           @click="handleUpdate(scope.row)" v-hasPermi="['da:asset:asset:edit']">修改</el-button>
                 <el-button link type="primary" icon="view" @click="
                   routeTo(
                     type == 1
@@ -201,7 +201,7 @@
                   </template>
                   <div style="width: 100px" class="butgdlist">
                     <el-button link v-if="type != 1" type="primary" @click="handleApply(scope.row)"
-                      v-hasPermi="['da:asset:asset:add']">
+                               v-hasPermi="['da:asset:asset:add']">
                       <span class="button-inner">
                         <el-icon>
                           <Pointer />
@@ -210,8 +210,8 @@
                       </span>
                     </el-button>
                     <el-button link type="danger" :disabled="scope.row.status == 1"
-                      v-if="type != 1 || scope.row.sourceType == 1" @click="handleDelete(scope.row)"
-                      v-hasPermi="['da:asset:asset:remove']">
+                               v-if="type != 1 || scope.row.sourceType == 1" @click="handleDelete(scope.row)"
+                               v-hasPermi="['da:asset:asset:remove']">
                       <span class="button-inner">
                         <el-icon class="fix-icon">
                           <Delete />
@@ -234,7 +234,7 @@
           </el-table>
 
           <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum"
-            v-model:limit="queryParams.pageSize" @pagination="getList" />
+                      v-model:limit="queryParams.pageSize" @pagination="getList" />
         </div>
       </el-main>
     </el-container>
@@ -343,13 +343,13 @@
       </template>
     </el-dialog>
     <CreateEditModal :deptOptions="deptOptions" :visible="open" :title="title" @update:visible="open = $event"
-      @confirm="getList" :data="form" />
+                     @confirm="getList" :data="form" />
     <!-- 用户导入对话框 -->
     <el-dialog :title="upload.title" v-model="upload.open" width="800px" :append-to="$refs['app-container']" draggable
-      destroy-on-close>
+               destroy-on-close>
       <el-upload ref="uploadRef" :limit="1" accept=".xlsx, .xls" :headers="upload.headers"
-        :action="upload.url + '?updateSupport=' + upload.updateSupport" :disabled="upload.isUploading"
-        :on-progress="handleFileUploadProgress" :on-success="handleFileSuccess" :auto-upload="false" drag>
+                 :action="upload.url + '?updateSupport=' + upload.updateSupport" :disabled="upload.isUploading"
+                 :on-progress="handleFileUploadProgress" :on-success="handleFileSuccess" :auto-upload="false" drag>
         <el-icon class="el-icon--upload"><upload-filled /></el-icon>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         <template #tip>
@@ -359,7 +359,7 @@
             </div>
             <span>仅允许导入xls、xlsx格式文件。</span>
             <el-link type="primary" :underline="false" style="font-size: 12px; vertical-align: baseline"
-              @click="importTemplate">下载模板</el-link>
+                     @click="importTemplate">下载模板</el-link>
           </div>
         </template>
       </el-upload>
@@ -468,8 +468,8 @@ import useUserStore from '@/store/system/user';
 import { getThemeList } from "@/api/att/theme/attTheme.js";
 const { proxy } = getCurrentInstance();
 const { da_assets_status, da_asset_source, da_asset_type } = proxy.useDict(
-  'da_assets_status',
-  'da_asset_source', "da_asset_type"
+    'da_assets_status',
+    'da_asset_source', "da_asset_type"
 );
 
 const daAssetList = ref([]);
@@ -589,11 +589,11 @@ const data = reactive({
 const { queryParams, form, formApply, rules, rulesApply } = toRefs(data);
 
 watch(
-  () => userStore.projectCode,
-  (newCode) => {
-    getList();
-  },
-  { immediate: true } // `immediate` 为 true 表示页面加载时也会立即执行一次 watch
+    () => userStore.projectCode,
+    (newCode) => {
+      getList();
+    },
+    { immediate: true } // `immediate` 为 true 表示页面加载时也会立即执行一次 watch
 );
 
 function submitApplyForm() {
@@ -792,20 +792,20 @@ function submitForm() {
     if (valid) {
       if (form.value.id != null) {
         updateDaAsset(form.value)
-          .then((response) => {
-            proxy.$modal.msgSuccess('修改成功');
-            open.value = false;
-            getList();
-          })
-          .catch((error) => { });
+            .then((response) => {
+              proxy.$modal.msgSuccess('修改成功');
+              open.value = false;
+              getList();
+            })
+            .catch((error) => { });
       } else {
         addDaAsset(form.value)
-          .then((response) => {
-            proxy.$modal.msgSuccess('新增成功');
-            open.value = false;
-            getList();
-          })
-          .catch((error) => { });
+            .then((response) => {
+              proxy.$modal.msgSuccess('新增成功');
+              open.value = false;
+              getList();
+            })
+            .catch((error) => { });
       }
     }
   });
@@ -816,25 +816,25 @@ function handleDelete(row) {
   // proxy.$message.error("功能开发中....");
   const _ids = row.id || ids.value;
   proxy.$modal
-    .confirm('是否确认删除数据资产编号为"' + _ids + '"的数据项？')
-    .then(function () {
-      return delDaAsset(_ids);
-    })
-    .then(() => {
-      getList();
-      proxy.$modal.msgSuccess('删除成功');
-    })
-    .catch(() => { });
+      .confirm('是否确认删除数据资产编号为"' + _ids + '"的数据项？')
+      .then(function () {
+        return delDaAsset(_ids);
+      })
+      .then(() => {
+        getList();
+        proxy.$modal.msgSuccess('删除成功');
+      })
+      .catch(() => { });
 }
 
 /** 导出按钮操作 */
 function handleExport() {
   proxy.download(
-    'da/daAsset/export',
-    {
-      ...queryParams.value
-    },
-    `daAsset_${new Date().getTime()}.xlsx`
+      'da/daAsset/export',
+      {
+        ...queryParams.value
+      },
+      `daAsset_${new Date().getTime()}.xlsx`
   );
 }
 
@@ -848,9 +848,9 @@ function handleImport() {
 /** 下载模板操作 */
 function importTemplate() {
   proxy.download(
-    'system/user/importTemplate',
-    {},
-    `daAsset_template_${new Date().getTime()}.xlsx`
+      'system/user/importTemplate',
+      {},
+      `daAsset_template_${new Date().getTime()}.xlsx`
   );
 }
 
@@ -875,11 +875,11 @@ const handleFileSuccess = (response, file, fileList) => {
   upload.isUploading = false;
   proxy.$refs['uploadRef'].handleRemove(file);
   proxy.$alert(
-    "<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +
-    response.msg +
-    '</div>',
-    '导入结果',
-    { dangerouslyUseHTMLString: true }
+      "<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +
+      response.msg +
+      '</div>',
+      '导入结果',
+      { dangerouslyUseHTMLString: true }
   );
   getList();
 };
@@ -908,20 +908,20 @@ function routeTo(link, row) {
 function handleStatusChange(row) {
   const text = row.status === '1' ? '启用' : '停用';
   proxy.$modal
-    .confirm('确认要' + text + '"' + row.name + '"资产吗？')
-    .then(function () {
-      updateDaAsset({ id: row.id, status: row.status }).then((response) => {
-        proxy.$modal.msgSuccess(text + '成功');
-        getList();
+      .confirm('确认要' + text + '"' + row.name + '"资产吗？')
+      .then(function () {
+        updateDaAsset({ id: row.id, status: row.status }).then((response) => {
+          proxy.$modal.msgSuccess(text + '成功');
+          getList();
+        });
+      })
+      .catch(function () {
+        if (row.status === '1') {
+          row.status = '0';
+        } else {
+          row.status = '1';
+        }
       });
-    })
-    .catch(function () {
-      if (row.status === '1') {
-        row.status = '0';
-      } else {
-        row.status = '1';
-      }
-    });
 }
 queryParams.value.orderByColumn = defaultSort.value.prop;
 queryParams.value.isAsc = defaultSort.value.order;

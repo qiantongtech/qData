@@ -148,7 +148,7 @@
                     <div class="copy-right" style="cursor: pointer;">
                         <a href="https://qiantong.tech/" target="_blank">
                             Copyright© {{ new Date().getFullYear() }}
-                            江苏千桐科技有限公司
+                            <span style="color: #2666fb">江苏千桐科技有限公司</span>
                             版权所有
                         </a>
                     </div>

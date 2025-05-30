@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="52px" height="45px" viewBox="0 0 52 45" version="1.1" 
-    xmlns="http://www.w3.org/2000/svg" 
+<svg width="52px" height="45px" viewBox="0 0 52 45" version="1.1"
+    xmlns="http://www.w3.org/2000/svg"
     xmlns:xlink="http://www.w3.org/1999/xlink">
     <defs>
         <filter x="-9.4%" y="-6.2%" width="118.8%" height="122.5%" filterUnits="objectBoundingBox" id="filter-1">
@@ -19,7 +19,7 @@
             <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.1 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
         </filter>
     </defs>
-    <g id="配置面板" width="48" height="40" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="配置面板" width="48" height="40" stroke="none" stroke-width="0" fill="none" fill-rule="evenodd">
         <g id="setting-copy-2" width="48" height="40" transform="translate(-1190.000000, -136.000000)">
             <g id="Group-8" width="48" height="40" transform="translate(1167.000000, 0.000000)">
                 <g id="Group-5-Copy-5" filter="url(#filter-1)" transform="translate(25.000000, 137.000000)">

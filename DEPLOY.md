@@ -130,8 +130,9 @@ cd spark/sbin
 ### 3.2 DS 调度器启动 
 
 **1. 获取代码**  
-加入 QQ 群获取：[![加入QQ群](https://img.shields.io/badge/QQ群-814145903-blue.svg)](https://qm.qq.com/cgi-bin/qm/qr?k=fOuDDH-dLk4lhYezFO_Vg1IwSD58SxP2&jump_from=webapi&authKey=eCpXabAvZN5rc6jK/ukudn7G0mhMLQOjD7ov03xAfO5OqHNI7uvzujMqdXUwmNlK)
-解压密码：qData123
+- 加入 QQ 群获取：[![加入QQ群](https://img.shields.io/badge/QQ群-814145903-blue.svg)](https://qm.qq.com/cgi-bin/qm/qr?k=fOuDDH-dLk4lhYezFO_Vg1IwSD58SxP2&jump_from=webapi&authKey=eCpXabAvZN5rc6jK/ukudn7G0mhMLQOjD7ov03xAfO5OqHNI7uvzujMqdXUwmNlK)
+- 🔗 [百度网盘](https://pan.baidu.com/s/1DjZVd_Gp_ptXZJjQ1Y8sQg?pwd=wa7v) 提取码: wa7v
+- 解压密码：qData123 解压后查看 deploy/Ds部署手册v1.0.0.docx 文档进行部署即可
 
 **2. 启动指南**  
 🔗 [DolphinScheduler 开发环境搭建](https://dolphinscheduler.apache.org/zh-cn/docs/3.2.2/contribute/development-environment-setup)

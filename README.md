@@ -1,4 +1,4 @@
-![banner.png](images/banner.png)
+![banner.png](images/banner2.png)
 <p align="center">
   <img src="https://img.shields.io/badge/JDK-1.8+-brightgreen.svg" alt="JDK">
  <img src="https://img.shields.io/badge/Spring%20Boot-2.5.15-blue.svg" alt="Downloads">

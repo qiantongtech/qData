@@ -2,6 +2,7 @@ package tech.qiantong.qdata.spark.etl.utils.db;
 
 import com.alibaba.fastjson2.JSONObject;
 import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.spark.sql.jdbc.JdbcDialects;
 import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
 import tech.qiantong.qdata.common.database.constants.DbType;
@@ -45,6 +46,7 @@ public class DBUtils {
                     options.put("driver", "dm.jdbc.driver.DmDriver");
                     break;
                 case ORACLE:
+                case ORACLE_12C:
                     Class.forName("oracle.jdbc.OracleDriver");
                     options.put("driver", "oracle.jdbc.OracleDriver");
                     break;
@@ -66,8 +68,13 @@ public class DBUtils {
         options.put("user", parameter.getString("username"));
         options.put("password", parameter.getString("password"));
         if (connection.containsKey("table")) {
+            String dbName = parameter.getString("dbName");
             //表查询
-            options.put("dbtable", connection.getString("table"));
+            if (StringUtils.isNotBlank(dbName)) {
+                options.put("dbtable", dbName + "." + connection.getString("table"));
+            } else {
+                options.put("dbtable", connection.getString("table"));
+            }
         } else {
             //sql查询
             options.put("query", connection.getString("querySql"));

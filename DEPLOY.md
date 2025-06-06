@@ -164,7 +164,7 @@ dm8:
 # MySQL配置文件
 mysql:
   driver-class-name: com.mysql.cj.jdbc.Driver
-  url: jdbc:mysql://127.0.0.1:3306/qdata2?characterEncoding=UTF-8&useUnicode=true&useSSL=false&tinyInt1isBit=false&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true&serverTimezone=Asia/Shanghai
+  url: jdbc:mysql://127.0.0.1:3306/qdata?characterEncoding=UTF-8&useUnicode=true&useSSL=false&tinyInt1isBit=false&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true&serverTimezone=Asia/Shanghai
   username: <数据库账号>  # 替换为实际账号
   password: <数据库密码>  # 替换为实际密码
 

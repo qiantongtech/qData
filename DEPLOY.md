@@ -152,21 +152,21 @@ spring:
 ```
 # 主数据源选择
 datasource:
-  type: dm8 #目前已支持dm8、mysql
+  type: mysql #目前已支持mysql、dm8
   
-#  达梦数据库配置
-dm8:
- driver-class-name: dm.jdbc.driver.DmDriver
- url: jdbc:dm://127.0.0.1:5236/QDATA?STU\&zeroDateTimeBehavior=convertToNull\&useUnicode=true\&characterEncoding=utf-8\&schema=QDATA\&serverTimezone=Asia/Shanghai
- username: <数据库账号>  # 替换为实际账号
- password: <数据库密码>  # 替换为实际密码
-
 # MySQL配置文件
 mysql:
   driver-class-name: com.mysql.cj.jdbc.Driver
   url: jdbc:mysql://127.0.0.1:3306/qdata?characterEncoding=UTF-8&useUnicode=true&useSSL=false&tinyInt1isBit=false&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true&serverTimezone=Asia/Shanghai
   username: <数据库账号>  # 替换为实际账号
   password: <数据库密码>  # 替换为实际密码
+
+#  达梦数据库配置
+dm8:
+ driver-class-name: dm.jdbc.driver.DmDriver
+ url: jdbc:dm://127.0.0.1:5236/QDATA?STU\&zeroDateTimeBehavior=convertToNull\&useUnicode=true\&characterEncoding=utf-8\&schema=QDATA\&serverTimezone=Asia/Shanghai
+ username: <数据库账号>  # 替换为实际账号
+ password: <数据库密码>  # 替换为实际密码
 
 #  RabbitMQ配置
 rabbitmq:

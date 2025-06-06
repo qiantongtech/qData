@@ -360,7 +360,7 @@ public class IAttProjectServiceImpl extends ServiceImpl<AttProjectMapper, AttPro
             return new ArrayList<>();
         }
         QueryWrapper<AttProjectDO> projectWrapper = new QueryWrapper<>();
-        projectWrapper.in(!CollectionUtils.isEmpty(projectIds), "id", projectIds);
+        projectWrapper.in(!CollectionUtils.isEmpty(projectIds), "id", projectIds).eq("valid_flag", "1");
         return attProjectMapper.selectList(projectWrapper);
     }
 

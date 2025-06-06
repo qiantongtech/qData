@@ -152,7 +152,7 @@ spring:
 ```
 # 主数据源选择
 datasource:
-  type: dm8 #目前以支持dm8、mysql
+  type: dm8 #目前已支持dm8、mysql
   
 #  达梦数据库配置
 dm8:

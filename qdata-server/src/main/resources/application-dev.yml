@@ -1,6 +1,6 @@
 # 主数据源选择
 datasource:
-  type: dm8
+  type: mysql
 
 # Spring配置
 spring:
@@ -101,7 +101,7 @@ mysql:
   # JDBC驱动类名
   driver-class-name: com.mysql.cj.jdbc.Driver
   # 主库JDBC连接URL
-  url: jdbc:mysql://dm:3306/qdata_dev?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+  url: jdbc:mysql://dm:3306/qdata?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
   # 主库用户名
   username: root
   # 主库密码

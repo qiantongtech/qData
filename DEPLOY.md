@@ -187,13 +187,17 @@ ds:
 
 ### 3.4. 初始化数据库
 1. **创建数据库模式**
-    - 默认模式名称：`QDATA`
-    - 如需修改：编辑 `sql/dm/qdata-dm.sql` 文件中的模式名称
+    - 默认模式名称：`QDATA` (mysql默认模式为`qdata`)
+    - 如需修改：编辑 `sql/dm/dm.sql`或`sql/mysql/mysql.sql` 文件中的模式名称
 
 2. **执行初始化脚本**
    ```bash
    # 使用达梦命令行工具执行
-   disql SYSDBA/SYSDBA@127.0.0.1:5236 -f sql/dm/qdata-dm.sql
+   disql SYSDBA/SYSDBA@127.0.0.1:5236 -f sql/dm/dm.sql
+   
+   # 使用Navicat工具执行
+   sql/mysql/mysql.sql
+   ```
 
 ### 3.5. 启动后端服务
 ```

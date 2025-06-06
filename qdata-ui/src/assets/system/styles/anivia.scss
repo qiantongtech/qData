@@ -20,6 +20,14 @@
     margin-bottom: 15px;
     box-shadow: 0 5px 8px rgba(128, 145, 165, 0.1);
   }
+  .el-popper.is-dark {
+  max-width: 50% !important;
+  max-height: 400px;
+  white-space: normal !important;
+  word-break: break-word;
+  font-size: 14px;
+  text-align: start;
+}
   //页面底部
   .pagecont-bottom {
     flex: 1;

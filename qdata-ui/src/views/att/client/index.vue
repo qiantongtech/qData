@@ -1,71 +1,29 @@
 <template>
   <div class="app-container" ref="app-container">
     <div class="pagecont-top" v-show="showSearch">
-      <el-form
-        class="btn-style"
-        :model="queryParams"
-        ref="queryRef"
-        :inline="true"
-        label-width="75px"
-        v-show="showSearch"
-        @submit.prevent
-      >
+      <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="75px"
+        v-show="showSearch" @submit.prevent>
         <el-form-item label="应用编号" prop="id">
-          <el-input
-            class="el-form-input-width"
-            v-model="queryParams.id"
-            placeholder="请输入应用编号"
-            clearable
-            @keyup.enter="handleQuery"
-          />
+          <el-input class="el-form-input-width" v-model="queryParams.id" placeholder="请输入应用编号" clearable
+            @keyup.enter="handleQuery" />
         </el-form-item>
         <el-form-item label="应用名称" prop="name">
-          <el-input
-            class="el-form-input-width"
-            v-model="queryParams.name"
-            placeholder="请输入应用名称"
-            clearable
-            @keyup.enter="handleQuery"
-          />
+          <el-input class="el-form-input-width" v-model="queryParams.name" placeholder="请输入应用名称" clearable
+            @keyup.enter="handleQuery" />
         </el-form-item>
         <el-form-item label="应用类型" prop="type">
-          <el-select
-            class="el-form-input-width"
-            v-model="queryParams.type"
-            placeholder="请选择应用类型"
-            clearable
-          >
-            <el-option
-              v-for="dict in auth_app_type"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            />
+          <el-select class="el-form-input-width" v-model="queryParams.type" placeholder="请选择应用类型" clearable>
+            <el-option v-for="dict in auth_app_type" :key="dict.value" :label="dict.label" :value="dict.value" />
           </el-select>
         </el-form-item>
         <el-form-item label="是否公开" prop="publicFlag">
-          <el-select
-            class="el-form-input-width"
-            v-model="queryParams.publicFlag"
-            placeholder="请选择是否公开"
-            clearable
-          >
-            <el-option
-              v-for="dict in auth_public"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            />
+          <el-select class="el-form-input-width" v-model="queryParams.publicFlag" placeholder="请选择是否公开" clearable>
+            <el-option v-for="dict in auth_public" :key="dict.value" :label="dict.label" :value="dict.value" />
           </el-select>
         </el-form-item>
 
         <el-form-item>
-          <el-button
-            plain
-            type="primary"
-            @click="handleQuery"
-            @mousedown="(e) => e.preventDefault()"
-          >
+          <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
             <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
           </el-button>
           <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
@@ -79,13 +37,8 @@
       <div class="justify-between mb15">
         <el-row :gutter="15" class="btn-style">
           <el-col :span="1.5">
-            <el-button
-              type="primary"
-              plain
-              @click="handleAdd"
-              v-hasPermi="['att:client:client:add']"
-              @mousedown="(e) => e.preventDefault()"
-            >
+            <el-button type="primary" plain @click="handleAdd" v-hasPermi="['att:client:client:add']"
+              @mousedown="(e) => e.preventDefault()">
               <i class="iconfont-mini icon-xinzeng mr5"></i>新增
             </el-button>
           </el-col>
@@ -115,37 +68,14 @@
          </el-col>-->
         </el-row>
         <div class="justify-end top-right-btn">
-          <right-toolbar
-            v-model:showSearch="showSearch"
-            @queryTable="getList"
-            :columns="columns"
-          ></right-toolbar>
+          <right-toolbar v-model:showSearch="showSearch" @queryTable="getList" :columns="columns"></right-toolbar>
         </div>
       </div>
-      <el-table
-        stripe
-        height="60vh"
-        v-loading="loading"
-        :data="clientList"
-        @selection-change="handleSelectionChange"
-        :default-sort="defaultSort"
-        @sort-change="handleSortChange"
-      >
-        <el-table-column
-          v-if="getColumnVisibility(0)"
-          width="80"
-          label="编号"
-          align="center"
-          prop="id"
-        />
-        <el-table-column
-          v-if="getColumnVisibility(1)"
-          width="350"
-          label="应用名称"
-          show-overflow-tooltip
-          align="left"
-          prop="name"
-        >
+      <el-table stripe height="60vh" v-loading="loading" :data="clientList" @selection-change="handleSelectionChange"
+        :default-sort="defaultSort" @sort-change="handleSortChange">
+        <el-table-column v-if="getColumnVisibility(0)" width="80" label="编号" align="center" prop="id" />
+        <el-table-column v-if="getColumnVisibility(1)" width="350" label="应用名称" show-overflow-tooltip align="left"
+          prop="name">
           <template #default="scope">
             <div class="clientInfo">
               <div>
@@ -157,35 +87,18 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column
-          v-if="getColumnVisibility(8)"
-          show-overflow-tooltip
-          label="应用描述"
-          align="left"
-          prop="description"
-        >
+        <el-table-column v-if="getColumnVisibility(8)" show-overflow-tooltip label="应用描述" align="left"
+          prop="description">
           <template #default="scope">
             {{ scope.row.description || "-" }}
           </template>
         </el-table-column>
-        <el-table-column
-          width="100"
-          v-if="getColumnVisibility(2)"
-          label="应用类型"
-          align="center"
-          prop="type"
-        >
+        <el-table-column width="100" v-if="getColumnVisibility(2)" label="应用类型" align="center" prop="type">
           <template #default="scope">
             <dict-tag :options="auth_app_type" :value="scope.row.type" />
           </template>
         </el-table-column>
-        <el-table-column
-          width="100"
-          v-if="getColumnVisibility(9)"
-          label="是否公开"
-          align="center"
-          prop="publicFlag"
-        >
+        <el-table-column width="100" v-if="getColumnVisibility(9)" label="是否公开" align="center" prop="publicFlag">
           <template #default="scope">
             <dict-tag :options="auth_public" :value="scope.row.publicFlag" />
           </template>
@@ -206,75 +119,33 @@
          </template>
        </el-table-column>-->
 
-        <el-table-column
-          v-if="getColumnVisibility(12)"
-          label="创建人"
-          align="center"
-          prop="createBy"
-        >
+        <el-table-column v-if="getColumnVisibility(12)" label="创建人" align="center" prop="createBy">
           <template #default="scope">
             {{ scope.row.createBy || "-" }}
           </template>
         </el-table-column>
-        <el-table-column
-          v-if="getColumnVisibility(14)"
-          label="创建时间"
-          align="center"
-          prop="createTime"
-          width="180"
-        >
+        <el-table-column v-if="getColumnVisibility(14)" label="创建时间" align="center" prop="createTime" width="180">
           <template #default="scope">
             <span>{{
               parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}:{s}")
             }}</span>
           </template>
         </el-table-column>
-        <el-table-column
-          label="操作"
-          align="center"
-          class-name="small-padding fixed-width"
-          fixed="right"
-          width="280"
-        >
+        <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" width="280">
           <template #default="scope">
-            <el-button
-              link
-              type="primary"
-              icon="Edit"
-              @click="handleUpdate(scope.row)"
-              v-hasPermi="['att:client:client:edit']"
-              >修改</el-button
-            >
-            <el-button
-              link
-              type="danger"
-              icon="Delete"
-              @click="handleDelete(scope.row)"
-              v-hasPermi="['att:client:client:remove']"
-              >删除</el-button
-            >
+            <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
+              v-hasPermi="['att:client:client:edit']">修改</el-button>
+            <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
+              v-hasPermi="['att:client:client:remove']">删除</el-button>
             <el-popover placement="bottom" :width="150" trigger="click">
               <template #reference>
                 <el-button link type="primary" icon="ArrowDown">更多</el-button>
               </template>
               <div style="width: 100px" class="butgdlist">
-                <el-button
-                  link
-                  style="padding-left: 14px"
-                  type="primary"
-                  icon="Refresh"
-                  @click="handleReset(scope.row)"
-                  v-hasPermi="['att:client:client:edit']"
-                  >重置秘钥</el-button
-                >
-                <el-button
-                  link
-                  type="primary"
-                  icon="view"
-                  @click="handleDetail(scope.row)"
-                  v-hasPermi="['att:client:client:edit']"
-                  >详情</el-button
-                >
+                <el-button link style="padding-left: 14px" type="primary" icon="Refresh" @click="handleReset(scope.row)"
+                  v-hasPermi="['att:client:client:edit']">重置秘钥</el-button>
+                <el-button link type="primary" icon="view" @click="handleDetail(scope.row)"
+                  v-hasPermi="['att:client:client:edit']">详情</el-button>
               </div>
             </el-popover>
           </template>
@@ -288,35 +159,18 @@
         </template>
       </el-table>
 
-      <pagination
-        v-show="total > 0"
-        :total="total"
-        v-model:page="queryParams.pageNum"
-        v-model:limit="queryParams.pageSize"
-        @pagination="getList"
-      />
+      <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum"
+        v-model:limit="queryParams.pageSize" @pagination="getList" />
     </div>
 
     <!-- 新增或修改应用对话框 -->
-    <el-dialog
-      :title="title"
-      v-model="open"
-      width="800px"
-      :append-to="$refs['app-container']"
-      draggable
-    >
+    <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable>
       <template #header="{ close, titleId, titleClass }">
         <span role="heading" aria-level="2" class="el-dialog__title">
           {{ title }}
         </span>
       </template>
-      <el-form
-        ref="clientRef"
-        :model="form"
-        :rules="rules"
-        label-width="80px"
-        @submit.prevent
-      >
+      <el-form ref="clientRef" :model="form" :rules="rules" label-width="80px" @submit.prevent>
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="应用名称" prop="name">
@@ -326,12 +180,8 @@
           <el-col :span="12">
             <el-form-item label="应用类型" prop="type">
               <el-select v-model="form.type" placeholder="请选择应用类型">
-                <el-option
-                  v-for="dict in auth_app_type"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                ></el-option>
+                <el-option v-for="dict in auth_app_type" :key="dict.value" :label="dict.label"
+                  :value="dict.value"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -339,10 +189,7 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="主页地址" prop="homepageUrl">
-              <el-input
-                v-model="form.homepageUrl"
-                placeholder="请输入主页地址"
-              />
+              <el-input v-model="form.homepageUrl" placeholder="请输入主页地址" />
             </el-form-item>
           </el-col>
           <!--            <el-col :span="24">
@@ -367,12 +214,7 @@
           <el-col :span="12">
             <el-form-item label="是否公开" prop="publicFlag">
               <el-radio-group v-model="form.publicFlag">
-                <el-radio
-                  v-for="dict in auth_public"
-                  :key="dict.value"
-                  :label="dict.value"
-                  >{{ dict.label }}</el-radio
-                >
+                <el-radio v-for="dict in auth_public" :key="dict.value" :label="dict.value">{{ dict.label }}</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -380,11 +222,7 @@
         <el-row :gutter="20">
           <el-col :span="24">
             <el-form-item label="应用描述" prop="description">
-              <el-input
-                v-model="form.description"
-                type="textarea"
-                placeholder="请输入内容"
-              />
+              <el-input v-model="form.description" type="textarea" placeholder="请输入内容" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -392,21 +230,13 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button size="mini" @click="cancel">取 消</el-button>
-          <el-button type="primary" size="mini" @click="submitForm"
-            >确 定</el-button
-          >
+          <el-button type="primary" size="mini" @click="submitForm">确 定</el-button>
         </div>
       </template>
     </el-dialog>
 
     <!-- 应用详情对话框 -->
-    <el-dialog
-      :title="title"
-      v-model="openDetail"
-      width="800px"
-      :append-to="$refs['app-container']"
-      draggable
-    >
+    <el-dialog :title="title" v-model="openDetail" width="800px" :append-to="$refs['app-container']" draggable>
       <template #header="{ close, titleId, titleClass }">
         <span role="heading" aria-level="2" class="el-dialog__title">
           {{ title }}
@@ -482,43 +312,21 @@
     </el-dialog>
 
     <!-- 用户导入对话框 -->
-    <el-dialog
-      :title="upload.title"
-      v-model="upload.open"
-      width="800px"
-      :append-to="$refs['app-container']"
-      draggable
-      destroy-on-close
-    >
-      <el-upload
-        ref="uploadRef"
-        :limit="1"
-        accept=".xlsx, .xls"
-        :headers="upload.headers"
-        :action="upload.url + '?updateSupport=' + upload.updateSupport"
-        :disabled="upload.isUploading"
-        :on-progress="handleFileUploadProgress"
-        :on-success="handleFileSuccess"
-        :auto-upload="false"
-        drag
-      >
+    <el-dialog :title="upload.title" v-model="upload.open" width="800px" :append-to="$refs['app-container']" draggable
+      destroy-on-close>
+      <el-upload ref="uploadRef" :limit="1" accept=".xlsx, .xls" :headers="upload.headers"
+        :action="upload.url + '?updateSupport=' + upload.updateSupport" :disabled="upload.isUploading"
+        :on-progress="handleFileUploadProgress" :on-success="handleFileSuccess" :auto-upload="false" drag>
         <el-icon class="el-icon--upload"><upload-filled /></el-icon>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         <template #tip>
           <div class="el-upload__tip text-center">
             <div class="el-upload__tip">
-              <el-checkbox
-                v-model="upload.updateSupport"
-              />是否更新已经存在的应用数据
+              <el-checkbox v-model="upload.updateSupport" />是否更新已经存在的应用数据
             </div>
             <span>仅允许导入xls、xlsx格式文件。</span>
-            <el-link
-              type="primary"
-              :underline="false"
-              style="font-size: 12px; vertical-align: baseline"
-              @click="importTemplate"
-              >下载模板</el-link
-            >
+            <el-link type="primary" :underline="false" style="font-size: 12px; vertical-align: baseline"
+              @click="importTemplate">下载模板</el-link>
           </div>
         </template>
       </el-upload>
@@ -751,7 +559,7 @@ function submitForm() {
             open.value = false;
             getList();
           })
-          .catch((error) => {});
+          .catch((error) => { });
       } else {
         addClient(form.value)
           .then((response) => {
@@ -759,7 +567,7 @@ function submitForm() {
             open.value = false;
             getList();
           })
-          .catch((error) => {});
+          .catch((error) => { });
       }
     }
   });
@@ -777,7 +585,7 @@ function handleDelete(row) {
       getList();
       proxy.$modal.msgSuccess("删除成功");
     })
-    .catch(() => {});
+    .catch(() => { });
 }
 
 /** 导出按钮操作 */
@@ -824,8 +632,8 @@ const handleFileSuccess = (response, file, fileList) => {
   proxy.$refs["uploadRef"].handleRemove(file);
   proxy.$alert(
     "<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +
-      response.msg +
-      "</div>",
+    response.msg +
+    "</div>",
     "导入结果",
     { dangerouslyUseHTMLString: true }
   );
@@ -860,14 +668,5 @@ getList();
   display: flex;
   align-items: center;
   justify-content: flex-start;
-}
-
-:deep {
-  .el-popper.is-dark {
-    max-width: 900px !important;
-    max-height: 400px;
-    font-size: 14px;
-    text-align: start;
-  }
 }
 </style>

@@ -57,7 +57,7 @@ public class DpModelColumnDO extends BaseEntity {
     private Long sortOrder;
 
     /** 权威部门 */
-    private String authorityDept;
+    private Long authorityDept;
 
     /** 数据元id */
     private Long dataElemId;

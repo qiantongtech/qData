@@ -110,7 +110,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
      */
     @Override
     public List<DaDatasourceDO> getDataSourceByAsset(DaDatasourceRespVO daAsset) {
-        return daDatasourceMapper.getDataSourceByAsset();
+        return daDatasourceMapper.selectList();
     }
 
     @Override

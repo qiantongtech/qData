@@ -20,6 +20,8 @@
 
 ✨✨✨**演示地址**✨✨✨ <a href="https://qdata-demo.qiantong.tech" target="_blank">点击跳转</a> ，账号：qData 密码：qData123
 
+✨✨✨**演示视频**✨✨✨ <a href="https://www.bilibili.com/video/BV1d6TxziEdX" target="_blank">https://www.bilibili.com/video/BV1d6TxziEdX</a> 
+
 ## 🍱 使用场景
 
 | 场景                 | 描述                                                                 |

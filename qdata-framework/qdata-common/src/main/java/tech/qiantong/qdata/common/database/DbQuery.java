@@ -182,7 +182,7 @@ public interface DbQuery {
      */
     Boolean copyTable(Connection conn,DbQueryProperty dbQueryProperty, String tableName, String newTableName);
 
-    String getInsertOrUpdateSql(String tableName, List<String> selectedColumns, List<String> column);
+    String getInsertOrUpdateSql(DbQueryProperty property,String tableName, List<String> selectedColumns, List<String> column);
 
 
     /**

@@ -605,6 +605,7 @@ function submitApplyForm() {
       formApply.value.updateTime = null;
       formApply.value.validFlag = null;
       formApply.value.delFlag = null;
+      formApply.value.status = null;
       addDaAssetApply(formApply.value).then((response) => {
         proxy.$modal.msgSuccess('申请成功');
         openApply.value = false;

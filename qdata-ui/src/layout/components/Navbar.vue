@@ -8,16 +8,33 @@
         <!--      {{userStore}}-->
         <div class="right-menu">
             <template v-if="appStore.device !== 'mobile'">
-                <div style="width: 250px; margin-top: 10px" v-if="isFlag">
+                <div style="width: 250px; margin-top: 10px" v-if="showProjectSelector">
                     <el-form class="btn-style" :model="userStore" ref="queryRef" :inline="true" label-width="93px">
                         <el-form-item label="所属项目" prop="projectId" :rules="[
                             { required: true, message: '请选择所属项目', trigger: 'change' }
                         ]">
-                            <el-select style="width: 150px" class="el-form-input-width" v-model="userStore.projectId"
+                            <el-select style="width: 150px;" :fit-input-width="true" v-model="userStore.projectId"
+                                @change="projectIdChange" placeholder="请选择所属项目" clearable
+                                popper-class="custom-option-style">
+                                <el-option v-for="item in projectOptions" :key="item.id" :label="item.name"
+                                    :value="item.id">
+                                    <template #default>
+                                        <template v-if="item.name.length > 6">
+                                            <el-tooltip placement="left" :content="item.name" effect="dark">
+                                                <div class="ellipsis-option">{{ item.name }}</div>
+                                            </el-tooltip>
+                                        </template>
+                                        <template v-else>
+                                            <div class="ellipsis-option">{{ item.name }}</div>
+                                        </template>
+                                    </template>
+                                </el-option>
+                            </el-select>
+                            <!-- <el-select style="width: 150px" class="el-form-input-width" v-model="userStore.projectId"
                                 @change="projectIdChange" placeholder="请选择所属项目" clearable>
                                 <el-option v-for="item in projectOptions" :key="item.id" :label="item.name"
                                     :value="item.id" />
-                            </el-select>
+                            </el-select> -->
                         </el-form-item>
                     </el-form>
                 </div>
@@ -129,6 +146,7 @@
 </template>
 
 <script setup name="Navbar">
+import { useWindowSize } from '@vueuse/core'
 import { ElMessageBox } from 'element-plus';
 import Breadcrumb from '@/components/Breadcrumb';
 import TopNav from '@/components/TopNav';
@@ -178,7 +196,8 @@ const data = reactive({
         reportExperience: [{ required: true, message: '工作心得不能为空', trigger: 'blur' }]
     }
 });
-
+const { width } = useWindowSize()
+const showProjectSelector = computed(() => width.value >= 1200 && isFlag.value)
 const open = ref(false);
 const title = ref(null);
 const form = ref({});
@@ -618,6 +637,18 @@ function clearNotification() {
 </script>
 
 <style lang="scss" scoped>
+.ellipsis-option {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+.custom-option-style .el-select-dropdown__item {
+    display: flex;
+    align-items: center;
+}
+
 ::v-deep {
     .el-select__wrapper {
         box-shadow: 0 0 0 1px #dcdfe6 inset;

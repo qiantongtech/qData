@@ -175,11 +175,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             FROM DPP_ETL_TASK_NODE_REL rel
                      JOIN DPP_ETL_NODE node
                           ON (node.CODE = rel.PRE_NODE_CODE OR node.CODE = rel.POST_NODE_CODE)
-            WHERE TO_NUMBER(
-                          REGEXP_SUBSTR(node.PARAMETERS,
-                                        '"subTaskId"[[:space:]]*:[[:space:]]*([0-9]+)',
-                                        1, 1, NULL, 1)
-                  ) = #{id}
+            WHERE
+                <choose>
+                    <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'mysql'">
+                        CAST(
+                            SUBSTRING_INDEX(
+                                SUBSTRING_INDEX(
+                                    node.PARAMETERS,
+                                    '"subTaskId":',
+                                    -1
+                                ),
+                                ',',
+                                1
+                            ) AS UNSIGNED
+                        )
+                    </when>
+                    <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'dm8'">
+                        TO_NUMBER(
+                        REGEXP_SUBSTR(node.PARAMETERS,
+                        '"subTaskId"[[:space:]]*:[[:space:]]*([0-9]+)',
+                        1, 1, NULL, 1)
+                        )
+                    </when>
+                </choose> = #{id}
         );
     </select>
 
@@ -199,11 +217,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             FROM DPP_ETL_TASK_NODE_REL rel
                      JOIN DPP_ETL_NODE node
                           ON (node.CODE = rel.PRE_NODE_CODE OR node.CODE = rel.POST_NODE_CODE)
-            WHERE TO_NUMBER(
-                    REGEXP_SUBSTR(node.PARAMETERS,
-                    '"datasourceId"[[:space:]]*:[[:space:]]*([0-9]+)',
-                    1, 1, NULL, 1)
-                    ) in
+            WHERE
+                <choose>
+                    <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'mysql'">
+                        CAST(
+                            SUBSTRING_INDEX(
+                                SUBSTRING_INDEX(
+                                    node.PARAMETERS,
+                                    '"datasourceId":',
+                                    -1
+                                ),
+                                ',',
+                                1
+                            ) AS UNSIGNED
+                        )
+                    </when>
+                    <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'dm8'">
+                                TO_NUMBER(
+                                REGEXP_SUBSTR(node.PARAMETERS,
+                                '"datasourceId"[[:space:]]*:[[:space:]]*([0-9]+)',
+                                1, 1, NULL, 1)
+                                )
+                    </when>
+                </choose>
+                        in
                         <foreach item="id" collection="datasourceIdList" open="(" separator="," close=")">
                             #{id}
                         </foreach>
@@ -213,25 +250,57 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         SELECT COUNT(1)
         FROM DPP_ETL_TASK dt
         WHERE dt.DEL_FLAG = '0'
-            AND dt.TYPE == '1'
+            AND dt.TYPE = '1'
             AND dt.id IN (
                 SELECT rel.TASK_ID
                 FROM DPP_ETL_TASK_NODE_REL rel
                     JOIN DPP_ETL_NODE node
                         ON (node.CODE = rel.PRE_NODE_CODE OR node.CODE = rel.POST_NODE_CODE)
-                WHERE TO_NUMBER(
+                WHERE
+                <choose>
+                    <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'mysql'">
+                        CAST(
+                            SUBSTRING_INDEX(
+                                SUBSTRING_INDEX(
+                                    node.PARAMETERS,
+                                    '"clmt":',
+                                    -1
+                                ),
+                                ',',
+                                1
+                            ) AS UNSIGNED
+                        ) = 1
+                        AND
+                            CAST(
+                            SUBSTRING_INDEX(
+                                SUBSTRING_INDEX(
+                                    node.PARAMETERS,
+                                    '"asset_id_cpoy":',
+                                    -1
+                                ),
+                                ',',
+                                1
+                            ) AS UNSIGNED
+                        )
+                    </when>
+                    <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'dm8'">
+                        TO_NUMBER(
                         REGEXP_SUBSTR(node.PARAMETERS,
                         '"clmt"[[:space:]]*:[[:space:]]*"?([0-9]+)"?',
                         1, 1, NULL, 1)
                         )=1 AND
-                      TO_NUMBER(
-                          REGEXP_SUBSTR(node.PARAMETERS,
-                          '"asset_id_cpoy"[[:space:]]*:[[:space:]]*([0-9]+)',
-                          1, 1, NULL, 1)
-                          ) in
+                        TO_NUMBER(
+                        REGEXP_SUBSTR(node.PARAMETERS,
+                        '"asset_id_cpoy"[[:space:]]*:[[:space:]]*([0-9]+)',
+                        1, 1, NULL, 1)
+                        )
+                    </when>
+                </choose>
+                           in
                           <foreach item="id" collection="assetIdList" open="(" separator="," close=")">
                               #{id}
                           </foreach>
+
             );
     </select>
 

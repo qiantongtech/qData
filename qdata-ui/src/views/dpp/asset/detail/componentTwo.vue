@@ -9,7 +9,7 @@
                     </el-button>
                 </el-col>
                 <el-button style="margin-left: 7px" plain type="primary" @click="handleQuery"
-                    @mousedown="(e) => e.preventDefault()">
+                    @mousedown="(e) => e.preventDefault()" :loading="loading">
                     <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
                 </el-button>
             </el-row>

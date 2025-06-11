@@ -150,13 +150,24 @@ spring:
 
 ##### 2. 配置关键参数（application-dev.yml）
 ```
+# 主数据源选择
+datasource:
+  type: mysql #目前已支持mysql、dm8
+  
+# MySQL配置文件
+mysql:
+  driver-class-name: com.mysql.cj.jdbc.Driver
+  url: jdbc:mysql://127.0.0.1:3306/qdata?characterEncoding=UTF-8&useUnicode=true&useSSL=false&tinyInt1isBit=false&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true&serverTimezone=Asia/Shanghai
+  username: <数据库账号>  # 替换为实际账号
+  password: <数据库密码>  # 替换为实际密码
+
 #  达梦数据库配置
 dm8:
  driver-class-name: dm.jdbc.driver.DmDriver
  url: jdbc:dm://127.0.0.1:5236/QDATA?STU\&zeroDateTimeBehavior=convertToNull\&useUnicode=true\&characterEncoding=utf-8\&schema=QDATA\&serverTimezone=Asia/Shanghai
  username: <数据库账号>  # 替换为实际账号
  password: <数据库密码>  # 替换为实际密码
- 
+
 #  RabbitMQ配置
 rabbitmq:
  host: 127.0.0.1
@@ -176,13 +187,17 @@ ds:
 
 ### 3.4. 初始化数据库
 1. **创建数据库模式**
-    - 默认模式名称：`QDATA`
-    - 如需修改：编辑 `sql/dm/qdata-dm.sql` 文件中的模式名称
+    - 默认模式名称：`QDATA` (mysql默认模式为`qdata`)
+    - 如需修改：编辑 `sql/dm/dm.sql`或`sql/mysql/mysql.sql` 文件中的模式名称
 
 2. **执行初始化脚本**
    ```bash
    # 使用达梦命令行工具执行
-   disql SYSDBA/SYSDBA@127.0.0.1:5236 -f sql/dm/qdata-dm.sql
+   disql SYSDBA/SYSDBA@127.0.0.1:5236 -f sql/dm/dm.sql
+   
+   # 使用Navicat工具执行
+   sql/mysql/mysql.sql
+   ```
 
 ### 3.5. 启动后端服务
 ```

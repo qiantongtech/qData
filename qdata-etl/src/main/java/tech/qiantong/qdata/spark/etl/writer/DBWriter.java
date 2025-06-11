@@ -1,20 +1,21 @@
 package tech.qiantong.qdata.spark.etl.writer;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.io.FileUtil;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
-import org.apache.spark.sql.Column;
-import org.apache.spark.sql.Dataset;
-import org.apache.spark.sql.Row;
+import org.apache.spark.sql.*;
+import org.apache.spark.sql.types.StructType;
 import tech.qiantong.qdata.common.database.DbQuery;
 import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
 import tech.qiantong.qdata.common.database.constants.DbType;
 import tech.qiantong.qdata.common.database.datasource.AbstractDataSourceFactory;
 import tech.qiantong.qdata.common.database.datasource.DefaultDataSourceFactoryBean;
+import tech.qiantong.qdata.common.database.exception.DataQueryException;
 import tech.qiantong.qdata.common.enums.TaskComponentTypeEnum;
 import tech.qiantong.qdata.spark.etl.utils.LogUtils;
 import tech.qiantong.qdata.spark.etl.utils.db.DBUtils;
@@ -24,10 +25,8 @@ import tech.qiantong.qdata.spark.etl.utils.db.exception.DBException;
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.sql.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.alibaba.fastjson2.JSONWriter.Feature.PrettyFormat;
@@ -46,7 +45,7 @@ public class DBWriter implements Writer {
     AbstractDataSourceFactory dataSourceFactory = new DefaultDataSourceFactoryBean();
 
     @Override
-    public Boolean writer(JSONObject config,Dataset<Row> dataset, JSONObject writer, String logPath) {
+    public Boolean writer(JSONObject config, Dataset<Row> dataset, JSONObject writer, String logPath) {
         LogUtils.writeLog(logPath, "*********************************  Initialize task context  ***********************************");
         LogUtils.writeLog(logPath, "开始数据库输出节点");
         LogUtils.writeLog(logPath, "开始任务时间: " + DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"));
@@ -158,6 +157,8 @@ public class DBWriter implements Writer {
 
             //判断是否存在临时表
             if (StringUtils.isNotBlank(tmpTableName)) {
+                tableName = StringUtils.isNotBlank(writerProperty.getDbName()) ? writerProperty.getDbName() + "." + tableName : tableName;
+                tmpTableName = StringUtils.isNotBlank(writerProperty.getDbName()) ? writerProperty.getDbName() + "." + tmpTableName : tmpTableName;
                 if (flag) {
                     //删除目标
                     dbQuery.execute("DROP TABLE " + tableName);
@@ -207,9 +208,12 @@ public class DBWriter implements Writer {
      * @param tableName
      * @return
      */
-    Triple<List<String>, List<Integer>, List<String>> getColumnMetaData(Connection conn, List<String> columns, String tableName) {
+    Triple<List<String>, List<Integer>, List<String>> getColumnMetaData(Connection conn, List<String> columns, DbQueryProperty writerProperty, String tableName) {
         Statement statement = null;
         ResultSet rs = null;
+        if (StringUtils.isNotBlank(writerProperty.getDbName())) {
+            tableName = writerProperty.getDbName() + "." + tableName;
+        }
 
         Triple<List<String>, List<Integer>, List<String>> columnMetaData = new ImmutableTriple<List<String>, List<Integer>, List<String>>(
                 new ArrayList<String>(), new ArrayList<Integer>(),
@@ -422,7 +426,7 @@ public class DBWriter implements Writer {
     boolean updateOrInsertModeType(Dataset<Row> dataset, DbQuery dbQuery, DbQueryProperty writerProperty, Integer batchSize, List<Object> selectedColumns, List<Object> column, String tableName) {
         List<String> selectedColumnList = selectedColumns.stream().map(Object::toString).collect(Collectors.toList());
         List<String> columnList = column.stream().map(Object::toString).collect(Collectors.toList());
-        String updateSql = dbQuery.getInsertOrUpdateSql(tableName, selectedColumnList, columnList);
+        String updateSql = dbQuery.getInsertOrUpdateSql(writerProperty, tableName, selectedColumnList, columnList);
         if (!writerProperty.getDbType().equals(DbType.MYSQL.getDb())) {
             List<String> recordOne = new ArrayList<>();
             for (int j = 0; j < columnList.size(); j++) {
@@ -456,7 +460,7 @@ public class DBWriter implements Writer {
             conn.setAutoCommit(false); // 禁用自动提交
             List<Row> writeBuffer = new ArrayList<>(batchSize);
             //获取目标库字段类型列表
-            Triple<List<String>, List<Integer>, List<String>> resultSetMetaData = getColumnMetaData(conn, columnList, tableName);
+            Triple<List<String>, List<Integer>, List<String>> resultSetMetaData = getColumnMetaData(conn, columnList, writerProperty, tableName);
             for (Row row : rows) {
                 writeBuffer.add(row);
                 if (writeBuffer.size() >= batchSize) {

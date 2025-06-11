@@ -66,7 +66,7 @@ public class DpModelColumnRespVO implements Serializable {
 
     @Excel(name = "权威部门")
     @Schema(description = "权威部门", example = "")
-    private String authorityDept;
+    private Long authorityDept;
 
     @Excel(name = "数据元id")
     @Schema(description = "数据元id", example = "")

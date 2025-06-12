@@ -90,6 +90,7 @@ const sideTheme = computed(() => settingsStore.sideTheme);
       margin-top: 0px;
       vertical-align: middle;
       margin-right: 12px;
+      transform: scale(0.8);
     }
 
     & .sidebar-title {

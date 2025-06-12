@@ -45,13 +45,13 @@
           <el-table stripe height="58vh" v-loading="loading" :data="dppEtlTaskList" :default-sort="defaultSort">
             <el-table-column v-if="getColumnVisibility(0)" label="编号" width="100" align="center" prop="id" />
             <el-table-column v-if="getColumnVisibility(2)" label="任务名称" :show-overflow-tooltip="true" align="left"
-              prop="name" width="200">
+              prop="name" width="380">
               <template #default="scope">
                 {{ scope.row.name || "-" }}
               </template>
             </el-table-column>
             <el-table-column v-if="getColumnVisibility(3)" label="任务描述" :show-overflow-tooltip="true" align="left"
-              prop="description" width="240">
+              prop="description" width="340">
               <template #default="scope">
                 {{ scope.row.description || "-" }}
               </template>

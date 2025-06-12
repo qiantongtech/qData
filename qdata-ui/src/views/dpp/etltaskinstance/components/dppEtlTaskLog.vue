@@ -41,7 +41,7 @@
     </div>
     <el-table stripe height="500px" v-loading="loading" :data="dppEtlTaskLogList"
       @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
-      <el-table-column v-if="getColumnVisibility(0)" width="80" label="编号" align="center" prop="id" />
+      <el-table-column v-if="getColumnVisibility(0)" width="100" show-overflow-tooltip label="编号" align="center" prop="id" />
       <el-table-column v-if="getColumnVisibility(1)" show-overflow-tooltip label="节点实例名称" align="left" prop="name">
         <template #default="scope">
           {{ scope.row.name || "-" }}

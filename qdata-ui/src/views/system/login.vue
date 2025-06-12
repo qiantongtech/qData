@@ -604,8 +604,8 @@ function goKtPage() {
         justify-content: space-between;
 
         .logo {
-            width: 300px;
-            height: 75px;
+            width: 100px;
+            height: 33px;
             margin-left: 20%;
 
             img {

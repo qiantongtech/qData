@@ -825,6 +825,9 @@ function handleUpdate(row) {
             form.value.password = config.password;
             form.value.dbname = config.dbname;
             form.value.sid = config.sid;
+            if (form.value.datasourceType !== null && (form.value.datasourceType === 'Kafka' || form.value.datasourceType === 'HDFS')){
+              form.value.config = form.value.datasourceConfig;
+            }
         }
         form.value.projectListOld = form.value.projectIdList;
         queryParamsProject.value.datasourceId = form.value.id;
@@ -881,6 +884,9 @@ function submitForm() {
                         projectListOld.push(item);
                     }
                 });
+                if (form.value.datasourceType !== null && (form.value.datasourceType === 'Kafka' || form.value.datasourceType === 'HDFS')){
+                  form.value.datasourceConfig = form.value.config;
+                }
                 form.value.projectListOld = projectListOld;
                 updateDaDatasource(form.value)
                     .then((response) => {
@@ -896,6 +902,9 @@ function submitForm() {
                     dbname: form.value.dbname,
                     sid: form.value.sid
                 });
+              if (form.value.datasourceType !== null && (form.value.datasourceType === 'Kafka' || form.value.datasourceType === 'HDFS')){
+                form.value.datasourceConfig = form.value.config;
+              }
                 addDaDatasource(form.value)
                     .then((response) => {
                         proxy.$modal.msgSuccess('新增成功');

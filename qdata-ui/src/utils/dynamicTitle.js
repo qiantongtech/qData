@@ -9,8 +9,8 @@ export function useDynamicTitle() {
   const settingsStore = useSettingsStore();
   if (settingsStore.dynamicTitle) {
     // document.title = settingsStore.title + ' - ' + defaultSettings.title;
-    document.title = settingsStore.title + ' - ' + '千数平台';
+    document.title = settingsStore.title + ' - ' + 'qData开源数据中台';
   } else {
-    document.title = '千数平台';
+    document.title = 'qData开源数据中台';
   }
 }

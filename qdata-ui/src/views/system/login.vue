@@ -216,7 +216,7 @@ import Swiper from 'swiper';
 import 'swiper/swiper-bundle.min.css';
 import useUserStore from '@/store/system/user.js';
 import { getContent } from '@/api/system/system/content';
-import defaultLogo from '@/assets/system/images/login/qianshu-logo.png';
+import defaultLogo from '@/assets/system/images/login/qData-logo.png';
 const userStore = useUserStore();
 const dialogVisible = ref(false);
 const { proxy } = getCurrentInstance();

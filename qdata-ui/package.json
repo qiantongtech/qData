@@ -1,7 +1,7 @@
 {
   "name": "anivia",
   "version": "3.8.8",
-  "description": "千数平台",
+  "description": "qData开源数据中台",
   "author": "冰凤",
   "license": "MIT",
   "type": "module",

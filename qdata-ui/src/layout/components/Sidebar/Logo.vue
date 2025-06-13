@@ -19,8 +19,8 @@
 
 <script setup>
 import variables from '@/assets/system/styles/variables.module.scss'
-import logo from '@/assets/system/logo/qianshu-logo.png'
-import simpLogo from '@/assets/system/logo/qianshu-simlogo.png'  //千数
+import logo from '@/assets/system/logo/qData-logo.png'
+import simpLogo from '@/assets/system/logo/qData-simlogo.png'  //千数
 
 import useSettingsStore from '@/store/system/settings'
 import { getContent } from "@/api/system/system/content";
@@ -86,11 +86,12 @@ const sideTheme = computed(() => settingsStore.sideTheme);
     width: 100%;
 
     & .sidebar-logo {
-      height: 60px;
-      margin-top: 0px;
+      height: 48px;
+      margin-top: 8px;
       vertical-align: middle;
-      margin-right: 12px;
-      transform: scale(0.8);
+      // margin-right: 12px;
+      transform: scale(0.7);
+      margin-left: -30px;
     }
 
     & .sidebar-title {
@@ -107,9 +108,10 @@ const sideTheme = computed(() => settingsStore.sideTheme);
 
   &.collapse {
     .sidebar-logo {
-      height: 40px;
-      margin-top: 10px;
+      height: 60px;
+      margin-top: 0px;
       margin-right: 0px;
+      margin-left: 0px;
     }
   }
 }

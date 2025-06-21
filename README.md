@@ -18,9 +18,9 @@
 ## 🌈平台简介
 **千数平台（qData）** 是一款一**站式开源数据中台**，覆盖**中台基础建设、数据治理、数据开发、监控告警、数据服务**与**数据可视化**等核心能力，致力于高效赋能数据前台，为各类业务系统提供**统一、高效、安全**的数据支撑服务。
 
-✨✨✨**演示地址**✨✨✨ <a href="https://qdata-demo.qiantong.tech" target="_blank">点击跳转</a> ，账号：qData 密码：qData123
+✨✨✨**在线文档**✨✨✨ <a href="https://qdata.qiantong.tech" target="_blank">https://qdata.qiantong.tech</a> 
 
-✨✨✨**演示视频**✨✨✨ <a href="https://www.bilibili.com/video/BV1d6TxziEdX" target="_blank">https://www.bilibili.com/video/BV1d6TxziEdX</a> 
+✨✨✨**演示地址**✨✨✨ <a href="https://qdata-demo.qiantong.tech" target="_blank">https://qdata-demo.qiantong.tech</a> ，账号：qData 密码：qData123
 
 ## 🍱 使用场景
 

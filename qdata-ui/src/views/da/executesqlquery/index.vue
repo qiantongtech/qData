@@ -41,6 +41,7 @@ import {
   getDaDatasourceList,
 } from "@/api/dp/model/dpModel";
 import { executeSqlQuery } from "@/api/da/datasource/daDatasource";
+import { encrypt } from "@/utils/aesEncrypt";
 // 定义查询参数、下拉数据以及加载状态
 let queryParams = ref({
   pageNum: 1,
@@ -78,7 +79,11 @@ async function handleQuery() {
     return;
   }
   queryResult.value = "正在查询，请稍后...";
-  const response = await executeSqlQuery({ ...queryParams.value });
+  const response = await executeSqlQuery({
+    ...queryParams.value,
+    sqlText: encrypt(queryParams.value.sqlText),
+  });
+
   if (response.code === 200) {
     queryResult.value = response.data;
     dialogVisible.value = true;

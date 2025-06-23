@@ -24,11 +24,8 @@ const whiteList = ["/login", "/register", "/sso/login", "/sso",];
 // 计算水印文本，动态获取当前路由的名称
 const watermarkText = computed(() => {
   if (localStorage.getItem("username")) {
-    // if (rpWhiteList.indexOf(route.path) !== -1) {
-    //   return userRpStore.nickName || ""; //需要水印赋值不需要给空
-    // }
-    if (whiteList.indexOf(route.path) == -1) {
-      return userStore.nickName || ""; //需要水印赋值不需要给空
+    if (route.path != "/login" && route.path != "/sso/login") {
+      return localStorage.getItem("username") || "默认水印"; //需要水印赋值不需要给空
     } else {
       return "";
     }

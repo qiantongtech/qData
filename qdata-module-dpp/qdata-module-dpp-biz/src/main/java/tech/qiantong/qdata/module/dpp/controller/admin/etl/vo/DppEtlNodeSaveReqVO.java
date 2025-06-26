@@ -98,12 +98,22 @@ public class DppEtlNodeSaveReqVO extends BaseEntity {
         if (o == null) {
             return false;
         }
-        DppEtlNodeLogDO that = (DppEtlNodeLogDO) o;
-        return Objects.equals(name, that.getName())
-                && Objects.equals(taskType, that.getTaskType())
-                && Objects.equals(type, that.getType())
-                && Objects.equals(priority, that.getPriority())
-                && Objects.equals(parameters, that.getParameters())
-                && Objects.equals(description, that.getDescription());
+        if(o instanceof DppEtlNodeLogDO){
+            DppEtlNodeLogDO that = (DppEtlNodeLogDO) o;
+            return Objects.equals(name, that.getName())
+                    && Objects.equals(taskType, that.getTaskType())
+                    && Objects.equals(type, that.getType())
+                    && Objects.equals(priority, that.getPriority())
+                    && Objects.equals(parameters, that.getParameters())
+                    && Objects.equals(description, that.getDescription());
+        }else{
+            DppEtlNodeSaveReqVO that = (DppEtlNodeSaveReqVO) o;
+            return Objects.equals(name, that.getName())
+                    && Objects.equals(taskType, that.getTaskType())
+                    && Objects.equals(type, that.getType())
+                    && Objects.equals(priority, that.getPriority())
+                    && Objects.equals(parameters, that.getParameters())
+                    && Objects.equals(description, that.getDescription());
+        }
     }
 }

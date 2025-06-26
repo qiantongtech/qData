@@ -177,7 +177,7 @@ rabbitmq:
 
 #  DS调度器配置
 ds:
- base_url: http://127.0.0.1:40018/dolphinscheduler
+ base_url: http://127.0.0.1:12345/dolphinscheduler
  token: <调度器令牌>  # 在调度器-安全中心-令牌管理中创建
  spark:
    master_url: spark://127.0.0.1:7077  # 与Spark Master地址一致

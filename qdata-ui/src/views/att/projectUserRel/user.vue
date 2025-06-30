@@ -2,8 +2,8 @@
     <div class="pagecont-top" v-show="showSearch">
         <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="68"
             v-show="showSearch" @submit.prevent>
-            <el-form-item label="用户名称" prop="nickName">
-                <el-input class="el-form-input-width" v-model="queryParams.nickName" placeholder="请输入用户名称" clearable
+            <el-form-item label="用户昵称" prop="nickName">
+                <el-input class="el-form-input-width" v-model="queryParams.nickName" placeholder="请输入用户昵称" clearable
                     @keyup.enter="handleQuery" />
             </el-form-item>
             <el-form-item label="手机号码" prop="phoneNumber">
@@ -56,7 +56,7 @@
                     {{ scope.row.userId || '-' }}
                 </template>
             </el-table-column>
-            <el-table-column label="用户名称" align="center" prop="nickName">
+            <el-table-column label="用户昵称" align="center" prop="nickName">
                 <template #default="scope">
                     {{ scope.row.nickName || '-' }}
                 </template>
@@ -176,8 +176,8 @@
             @selection-change="handleSelectionChangeUser">
             <el-table-column type="selection" width="70" align="center" />
             <el-table-column label="用户编号" width="80" align="center" key="userId" prop="userId" />
-            <el-table-column label="用户昵称" align="center" key="userName" prop="userName" :show-overflow-tooltip="true" />
-            <el-table-column label="用户名称" align="center" key="nickName" prop="nickName" :show-overflow-tooltip="true" />
+            <el-table-column label="用户名称" align="center" key="userName" prop="userName" :show-overflow-tooltip="true" />
+            <el-table-column label="用户昵称" align="center" key="nickName" prop="nickName" :show-overflow-tooltip="true" />
             <el-table-column label="部门" width="180" align="center" key="deptName" prop="dept.deptName"
                 :show-overflow-tooltip="true" />
             <el-table-column label="手机号码" width="180" align="center" key="phonenumber" prop="phonenumber" />

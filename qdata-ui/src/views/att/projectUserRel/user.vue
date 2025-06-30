@@ -176,7 +176,7 @@
             @selection-change="handleSelectionChangeUser">
             <el-table-column type="selection" width="70" align="center" />
             <el-table-column label="用户编号" width="80" align="center" key="userId" prop="userId" />
-            <el-table-column label="用户名称" align="center" key="userName" prop="userName" :show-overflow-tooltip="true" />
+            <el-table-column label="用户昵称" align="center" key="userName" prop="userName" :show-overflow-tooltip="true" />
             <el-table-column label="用户名称" align="center" key="nickName" prop="nickName" :show-overflow-tooltip="true" />
             <el-table-column label="部门" width="180" align="center" key="deptName" prop="dept.deptName"
                 :show-overflow-tooltip="true" />

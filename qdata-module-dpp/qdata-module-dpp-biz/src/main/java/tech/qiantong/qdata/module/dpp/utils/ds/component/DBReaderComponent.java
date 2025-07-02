@@ -111,6 +111,9 @@ public class DBReaderComponent implements ComponentItem {
         if (StringUtils.isNotBlank(readerProperty.getDbName())) {
             parameter.put("dbName", readerProperty.getDbName());
         }
+        if (StringUtils.isNotBlank(readerProperty.getSid())) {
+            parameter.put("sid", readerProperty.getSid());
+        }
         parameter.put("column", taskParams.get("columns"));
 
         parameter.put("where", taskParams.get("where"));

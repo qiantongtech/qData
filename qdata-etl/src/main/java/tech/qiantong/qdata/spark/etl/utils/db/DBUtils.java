@@ -69,8 +69,11 @@ public class DBUtils {
         options.put("password", parameter.getString("password"));
         if (connection.containsKey("table")) {
             String dbName = parameter.getString("dbName");
+            String sid = parameter.getString("sid");
             //表查询
-            if (StringUtils.isNotBlank(dbName)) {
+            if (StringUtils.equals(DbType.KINGBASE8.getDb(), parameter.getString("dbType"))) {
+                options.put("dbtable", dbName + "." + sid + "." + connection.getString("table"));
+            } else if (StringUtils.isNotBlank(dbName)) {
                 options.put("dbtable", dbName + "." + connection.getString("table"));
             } else {
                 options.put("dbtable", connection.getString("table"));

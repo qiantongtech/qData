@@ -80,6 +80,9 @@ public class DBWriterComponent implements ComponentItem {
         if (StringUtils.isNotBlank(writerProperty.getDbName())) {
             parameter.put("dbName", writerProperty.getDbName());
         }
+        if (StringUtils.isNotBlank(writerProperty.getSid())) {
+            parameter.put("sid", writerProperty.getSid());
+        }
         //输入字段
         parameter.put("column", taskParams.get("columns"));
         //输出字段

@@ -157,16 +157,27 @@ public class DBWriter implements Writer {
 
             //判断是否存在临时表
             if (StringUtils.isNotBlank(tmpTableName)) {
-                tableName = StringUtils.isNotBlank(writerProperty.getDbName()) ? writerProperty.getDbName() + "." + tableName : tableName;
-                tmpTableName = StringUtils.isNotBlank(writerProperty.getDbName()) ? writerProperty.getDbName() + "." + tmpTableName : tmpTableName;
                 if (flag) {
+                    if (StringUtils.equals(DbType.KINGBASE8.getDb(), writerProperty.getDbType())) {
+                        tableName = StringUtils.isNotBlank(writerProperty.getDbName()) ? writerProperty.getDbName() + "." + writerProperty.getSid() + "." + tableName : tableName;
+                        tmpTableName = StringUtils.isNotBlank(writerProperty.getDbName()) ? writerProperty.getDbName() + "." + writerProperty.getSid() + "." + tmpTableName : tmpTableName;
+                    } else {
+                        tableName = StringUtils.isNotBlank(writerProperty.getDbName()) ? writerProperty.getDbName() + "." + tableName : tableName;
+                        tmpTableName = StringUtils.isNotBlank(writerProperty.getDbName()) ? writerProperty.getDbName() + "." + tmpTableName : tmpTableName;
+                    }
+                    writerOptions.put("dbtable", tmpTableName);
+
                     //删除目标
                     dbQuery.execute("DROP TABLE " + tableName);
                     log.info("删除目标表:{}", tableName);
                     LogUtils.writeLog(logPath, "删除目标表:" + tableName);
 
                     //临时表名改为正式表
-                    dbQuery.execute("ALTER TABLE " + tmpTableName + " RENAME TO " + (StringUtils.isNotBlank(writerProperty.getDbName()) ? StringUtils.replace(tableName, writerProperty.getDbName() + ".", "") : tableName));
+                    String repTableName = (StringUtils.isNotBlank(writerProperty.getDbName()) ? StringUtils.replace(tableName, writerProperty.getDbName() + ".", "") : tableName);
+                    if (StringUtils.isNotBlank(writerProperty.getSid())) {
+                        repTableName = StringUtils.replace(repTableName, writerProperty.getSid() + ".", "");
+                    }
+                    dbQuery.execute("ALTER TABLE " + tmpTableName + " RENAME TO " + repTableName);
                     log.info("临时表：{}改为目标表:{}", tmpTableName, tableName);
                     LogUtils.writeLog(logPath, "临时表：" + tmpTableName + "改为目标表:" + tableName);
                 } else {

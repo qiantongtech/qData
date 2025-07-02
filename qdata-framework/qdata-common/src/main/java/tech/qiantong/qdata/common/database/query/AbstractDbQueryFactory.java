@@ -332,7 +332,9 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
 
     @Override
     public String getInsertOrUpdateSql(DbQueryProperty writerProperty, String tableName, List<String> selectedColumns, List<String> column) {
-        if (!StringUtils.isEmpty(writerProperty.getDbName())) {
+        if (org.apache.commons.lang3.StringUtils.equals(DbType.KINGBASE8.getDb(), writerProperty.getDbType())) {
+            tableName = writerProperty.getDbName() + "." + writerProperty.getSid() + "." + tableName;
+        } else if (!StringUtils.isEmpty(writerProperty.getDbName())) {
             tableName = writerProperty.getDbName() + "." + tableName;
         }
         List<String> valueHolders = new ArrayList<String>(column.size());

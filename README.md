@@ -76,6 +76,7 @@
 | **离线数据开发**         | 支持基于 Spark、Hive、SQL 等任务类型的离线数据处理，适用于大规模数据的周期性加工与分析，提供统一的作业管理入口与执行调度机制，提升批量处理效率与稳定性。 | ⏳ 规划中 |
 | **数据可视化**           | 提供 BI 报表、数据看板、大屏展示等多种可视化能力，支持拖拽式配置、权限控制与图表联动，助力业务人员快速洞察数据价值。                          | ⏳ 规划中 |
 | **AI 辅助开发与治理**     | 引入 AI 技术，支持离线与实时数据开发中的 SQL 智能补全、自动优化、异常检测与调试辅助，显著提升开发效率、代码质量与问题响应能力。                | ⏳ 规划中 |
+
 💡 如您有好的建议或功能需求，欢迎 [提交Issue](https://gitee.com/qiantongtech/qData/issues)，与我们共同完善数据中台功能。
 
 **访问地址**：127.0.0.1:81，账号：qData 密码：qData123
@@ -138,14 +139,14 @@ qData 平台采用前后端分离架构，后端基于 Spring Boot，前端基�
 ## 🏗️ 部署要求
 在部署 qData 之前，请确保以下环境和工具已正确安装：
 
-### 🖥️ 服务端环境要求（后端）
+### 🖥️ 服务端环境要求
 
 <table>
   <tr>
-    <th>项目</th><th>推荐版本</th><th>说明</th>
+    <th>环境</th><th>项目</th><th>推荐版本</th><th>说明</th>
   </tr>
   <tr>
-    <td>JDK</td><td>1.8 或以上</td><td>建议使用 OpenJDK 8 或 11</td>
+    <td rowspan="6">后端</td><td>JDK</td><td>1.8 或以上</td><td>建议使用 OpenJDK 8 或 11</td>
   </tr>
   <tr>
     <td>Maven</td><td>3.6+</td><td>项目构建与依赖管理</td>
@@ -162,14 +163,9 @@ qData 平台采用前后端分离架构，后端基于 Spring Boot，前端基�
   <tr>
     <td>操作系统</td><td>Windows / Linux / Mac</td><td>通用环境均可运行</td>
   </tr>
-</table>
 
-<table>
   <tr>
-    <th>项目</th><th>推荐版本</th><th>说明</th>
-  </tr>
-  <tr>
-    <td>Node.js</td><td>16+</td><td>构建工具依赖</td>
+    <td rowspan="3">前端</td><td>Node.js</td><td>16+</td><td>构建工具依赖</td>
   </tr>
   <tr>
     <td>npm</td><td>10+</td><td>包管理器</td>
@@ -178,6 +174,7 @@ qData 平台采用前后端分离架构，后端基于 Spring Boot，前端基�
     <td>Vite</td><td>最新版</td><td>脚手架工具</td>
   </tr>
 </table>
+
 
 ## 🚨 商用授权
 

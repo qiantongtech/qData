@@ -22,7 +22,7 @@
 
 ✨✨✨**演示地址**✨✨✨ <a href="https://qdata-demo.qiantong.tech" target="_blank">https://qdata-demo.qiantong.tech</a> ，账号：qData 密码：qData123
 
-✨✨✨**商业版演示地址**✨✨✨ <a href="https://qdata-pro.qiantong.tech" target="_blank">点击跳转</a> ，演示账号请联系客服获取
+✨✨✨**商业版演示地址**✨✨✨ <a href="https://qdata-pro.qiantong.tech" target="_blank">https://qdata-pro.qiantong.tech</a> ，演示账号请联系客服获取
 ## 🍱 使用场景
 适用于希望通过整合、治理和**分析多源数据，打破孤岛、提升质量与效率**，实现数据驱动与业务创新的企业和机构。无论是大型企业、中小企业，还是政府机构，均可通过千数平台（qData）实现数据资产化与价值释放。
 

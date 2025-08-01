@@ -101,6 +101,7 @@ const open = ref(false);
 const title = ref('');
 // 表单和验证规则
 const data = reactive({
+    oldOriginalValue: null,
     form: {
         originalValue: null,
         dictName: null,
@@ -113,11 +114,12 @@ const data = reactive({
     }
 });
 
-const { form, rules } = toRefs(data);
+const { oldOriginalValue, form, rules } = toRefs(data);
 const emit = defineEmits(["dpCodeMapList",]);
 /** 表单重置 */
 function reset() {
     form.value = { index: null, id: null, originalValue: null, dictName: null, dictValue: null };
+    oldOriginalValue.value = null;
     // proxy.resetForm('dpCodeMapRef');
 }
 
@@ -132,6 +134,7 @@ function handleAdd() {
 function handleUpdate(row, index) {
     reset();
     form.value = { ...row, index };
+    oldOriginalValue.value = row.originalValue;
     open.value = true;
     title.value = '修改';
 }
@@ -154,7 +157,7 @@ function submitForm() {
         if (valid) {
             // 检查 originalValue 是否已经存在
             const isDuplicate = dpCodeMapList.value.some(item => item.originalValue === form.value.originalValue);
-            if (isDuplicate) {
+            if (!(oldOriginalValue.value !== null  && oldOriginalValue.value === form.value.originalValue) && isDuplicate) {
                 proxy.$modal.msgError('原始值已存在，不能新增');
                 return; // 阻止继续执行
             }

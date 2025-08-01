@@ -2,6 +2,7 @@
     <el-dialog v-model="visibleDialog" :draggable="true" class="medium-dialog" :title="currentNode?.data?.name"
         showCancelButton :show-close="false" destroy-on-close :close-on-click-modal="false">
         <el-form ref="dpModelRefs" :model="form" label-width="110px" @submit.prevent v-loading="loading">
+
             <el-row :gutter="20">
                 <el-col :span="12">
                     <el-form-item label="节点名称" prop="name"
@@ -214,11 +215,14 @@
                     <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right"
                         width="240">
                         <template #default="scope">
+                            <!-- <el-button link type="primary" icon="Edit"
+                @click="openDialog({ ...scope.row, index: scope.$index + 1 })">修改</el-button> -->
                             <el-button type="danger" link icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
             </template>
+
             <inputEditModel :visible="open" title="属性字段编辑" @update:visible="open = $event" @confirm="handletaskConfig"
                 :data="row" :ColumnByAssettab="ColumnByAssettab" />
             <el-row :gutter="20" v-if="form.taskParams.clmt != '2'">
@@ -229,7 +233,6 @@
                     </el-form-item>
                 </el-col>
             </el-row>
-
             <template v-if="form.taskParams.readModeType == 1">
                 <el-divider content-position="center">
                     <span class="blue-text">属性字段</span>
@@ -273,6 +276,7 @@
                     </el-table-column>
                 </el-table>
             </template>
+
         </el-form>
         <template #footer>
             <div style="text-align: right">
@@ -304,8 +308,9 @@ const props = defineProps({
     visible: { type: Boolean, default: true },
     title: { type: String, default: '表单标题' },
     currentNode: { type: Object, default: () => ({}) },
-    info: { type: Boolean, default: false }
+    info: { type: Boolean, default: false },
 });
+
 const emit = defineEmits(['update', 'confirm']);
 const visibleDialog = computed({
     get() {
@@ -386,6 +391,7 @@ const getColumnByAssetIdList = async (id, data) => {
     );
     form.value.taskParams.dateIncrementConfig.column = [];
     form.value.taskParams.idIncrementConfig.incrementColumn = [];
+    form.value.taskParams.inputFields = ColumnByAssettab.value;
 };
 // 通用的获取数据的函数
 const fetchData = async (requestFn, params, loadingState) => {
@@ -495,12 +501,17 @@ const handleDelete = (row) => {
         });
 };
 const handleAssetTableChange = (value) => {
+    // 找到对应的选中项
     const selectedItem = dppNoPageListList.value.find((item) => item.id == value);
+
     form.value.taskParams.asset_id = selectedItem.tableName;
     form.value.taskParams.table_name = selectedItem.tableName;
+
+    // 调用 API 获取数据源信息
     getDaDatasource(selectedItem.datasourceId).then((response) => {
         let { datasourceType, datasourceConfig, ip, port, id } = response.data;
         let code = JSON.parse(datasourceConfig);
+        // 更新 readerDatasource
         form.value.taskParams.readerDatasource = {
             datasourceType,
             datasourceConfig,
@@ -510,6 +521,7 @@ const handleAssetTableChange = (value) => {
             datasource_id: id,
             datasourceId: id
         };
+        // setTableName(response.data);
         // 获取列数据
         ColumnByAssettab.value = [];
         getColumnByAssetIdList(id, value);
@@ -518,6 +530,7 @@ const handleAssetTableChange = (value) => {
 
 const off = () => {
     proxy.resetForm('dpModelRefs');
+    // 清空表格字段数据
     ColumnByAssettab.value = [];
     TablesByDataSource.value = [];
     tableFields.value = [];
@@ -525,7 +538,7 @@ const off = () => {
 // 保存数据
 const saveData = async () => {
     try {
-
+        // 异步验证表单
         const valid = await dpModelRefs.value.validate();
         if (!valid) return;
         if (
@@ -551,9 +564,11 @@ const saveData = async () => {
             dataType: columnType,
         }));
         taskParams.columns = taskParams.tableFields.map(({ columnName }) => columnName);
+        taskParams.inputFields = form.value.taskParams.inputFields;
+        console.log("🚀 ~ saveData ~ askParams.inputFields:", form.value)
 
-        emit('confirm', form.value);
-        emit('update', false);
+        emit("confirm", form.value);
+
     } catch (error) {
         console.error('保存数据失败:', error);
         loading.value = false;
@@ -561,19 +576,19 @@ const saveData = async () => {
 };
 const closeDialog = () => {
     off();
-
+    // 关闭对话框
     emit('update', false);
 };
 
 // 监听属性变化
 function deepCopy(data) {
     if (data === undefined || data === null) {
-        return {};
+        return {}; // 或者返回一个默认值
     }
     try {
         return JSON.parse(JSON.stringify(data));
     } catch (e) {
-        return {};
+        return {}; // 或者返回一个默认值
     }
 }
 function sqlParseFunction() {
@@ -584,6 +599,7 @@ function sqlParseFunction() {
         sql: form.value.taskParams.querySql
     }).then((res) => {
         ColumnByAssettab.value = res.data;
+        form.value.taskParams.inputFields = res.data;
         loadingList.value = false;
     });
 }
@@ -601,7 +617,8 @@ watchEffect(() => {
         }
         form.value = deepCopy(props.currentNode.data);
         const taskParams = form.value?.taskParams;
-        ColumnByAssettab.value = taskParams?.tableFields || [];
+        ColumnByAssettab.value = deepCopy(props.currentNode.data.taskParams.tableFields) || [];
+
     } else {
         off();
     }

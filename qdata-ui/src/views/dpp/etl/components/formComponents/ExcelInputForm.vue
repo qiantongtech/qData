@@ -30,8 +30,10 @@
           <el-form-item label="上传附件" prop="taskParams.excelFile" :rules="[
             { required: true, message: '请上传附件', trigger: 'change' },
           ]">
-            <FileUploadbtn :limit="1" v-model="form.taskParams.excelFile" :dragFlag="false" :file-type="['xlsx', 'xls']"
-              :fileSize="50" @handleRemove="handleRemove" />
+            <!-- <FileUploadbtn :limit="1" v-model="form.taskParams.excelFile" :dragFlag="false" :file-type="['xlsx', 'xls']"
+              :fileSize="50" @handleRemove="handleRemove" /> -->
+            <FileUploadbtn :limit="1" v-model="form.taskParams.excelFile" :dragFlag="false" :fileSize="50"
+              @handleRemove="handleRemove" :file-type="['xlsx', 'xls']" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -104,6 +106,7 @@ import { getToken } from "@/utils/auth.js";
 import { typeList } from "@/utils/graph";
 import { getNodeUniqueKey, getExcelColumn } from "@/api/dpp/etl/dppEtlTask";
 import ExcelUploadDialog from "./components/ExcelUploadDialog";
+import FileUploadbtn from '@/components/FileUploadbtn/index1.vue'
 const { proxy } = getCurrentInstance();
 import useUserStore from "@/store/system/user";
 const userStore = useUserStore();
@@ -201,7 +204,7 @@ const parseExcel = async (id) => {
 
 const off = () => {
   proxy.resetForm("dpModelRefs");
-
+  // 清空表格字段数据
   ColumnByAssettab.value = [];
   TablesByDataSource.value = [];
   tableFields.value = [];
@@ -209,7 +212,7 @@ const off = () => {
 // 保存数据
 const saveData = async () => {
   try {
-
+    // 异步验证表单
     const valid = await dpModelRefs.value.validate();
     if (!valid) return;
     if (
@@ -222,10 +225,10 @@ const saveData = async () => {
     if (!form.value.code) {
       loading.value = true;
       const response = await getNodeUniqueKey({
-        projectCode: userStore.projectCode,
+        projectCode: userStore.projectCode || "133545087166112",
         projectId: userStore.projectId,
       });
-      loading.value = false;
+      loading.value = false; // 结束加载状态
       form.value.code = response.data; // 设置唯一的 code
     }
     const taskParams = form.value?.taskParams;
@@ -243,26 +246,26 @@ const saveData = async () => {
       };
     });
     emit("confirm", form.value);
-    emit("update", false);
+
   } finally {
     loadingList.value = false;
   }
 };
 const closeDialog = () => {
   off();
-
+  // 关闭对话框
   emit("update", false);
 };
 
 // 监听属性变化
 function deepCopy(data) {
   if (data === undefined || data === null) {
-    return {};
+    return {}; // 或者返回一个默认值
   }
   try {
     return JSON.parse(JSON.stringify(data));
   } catch (e) {
-    return {};
+    return {}; // 或者返回一个默认值
   }
 }
 // 监听属性变化

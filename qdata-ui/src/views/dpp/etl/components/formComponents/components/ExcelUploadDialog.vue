@@ -104,7 +104,9 @@ let daDiscoveryTaskRef = ref();
 const saveData = () => {
     daDiscoveryTaskRef.value.validate((valid) => {
         if (valid) {
-
+            if (form.value.columnType !== 'date') {
+                form.value.format = '';
+            }
             emit('confirm', form.value);
             emit('update:visible', false);
         } else {

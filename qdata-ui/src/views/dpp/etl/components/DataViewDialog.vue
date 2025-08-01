@@ -109,11 +109,13 @@ let queryParams = ref({
     taskId: undefined
 });
 const formattedText = computed(() => {
-    return msg.value ? msg.value.replace(/\n/g, '<br>') : '';
+    return msg.value ? msg.value.replace(/\n/g, '<br>') : ''; // 将换行符替换为 <br> 标签
 });
 /** 导出按钮操作 */
 async function handleExport(row) {
     const response = await logDetailCat(row.id);
+    console.log(response, 'response');
+
     if (response) {
         proxy.download(
             '/dpp/dppEtlNodeInstance/downloadLog',
@@ -145,6 +147,7 @@ function getList() {
         ...queryParams.value
     }).then((response) => {
         jobLogList.value = response.data.rows;
+        console.log('🚀 ~ listDppEtlNodeInstance ~ jobLogList.value:', jobLogList.value);
         total.value = response.data.total;
         loading.value = false;
     });

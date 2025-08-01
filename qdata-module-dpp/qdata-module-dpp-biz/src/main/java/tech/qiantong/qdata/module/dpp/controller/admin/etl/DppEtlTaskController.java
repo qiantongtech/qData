@@ -68,6 +68,11 @@ public class DppEtlTaskController extends BaseController {
         return CommonResult.toAjax(dppEtlTaskService.removeDppEtlTask(Arrays.asList(ids)));
     }
 
+    /**
+     *  2025-06-18改版，此为历史版本
+     * @param dppEtlNewNodeSaveReqVO
+     * @return
+     */
     @Operation(summary = "新增节点")
     @PostMapping("/createProcessDefinitionEx")
     @ResponseStatus(HttpStatus.CREATED)
@@ -181,6 +186,35 @@ public class DppEtlTaskController extends BaseController {
         dppEtlNewNodeSaveReqVO.setType("1");//默认离线数据集成
         DppEtlTaskSaveReqVO result = dppEtlTaskService.updateEtlTask(dppEtlNewNodeSaveReqVO);
         return CommonResult.success(result);
+    }
+
+    @Operation(summary = "新增数据汇聚任务")
+    @PostMapping("/createEtlTaskFront")
+    @ResponseStatus(HttpStatus.CREATED)
+    public CommonResult createEtlTaskFront(@Valid @RequestBody DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO) {
+        if (StringUtils.isBlank(dppEtlNewNodeSaveReqVO.getType())) {
+            dppEtlNewNodeSaveReqVO.setType("1");//默认离线数据集成
+        }
+        DppEtlNewNodeSaveReqVO result = dppEtlTaskService.createEtlTaskFront(dppEtlNewNodeSaveReqVO);
+        return CommonResult.success(result);
+    }
+
+    @Operation(summary = "新增数据汇聚任务")
+    @PostMapping("/createEtlTaskFrontPostposition")
+    @ResponseStatus(HttpStatus.CREATED)
+    public CommonResult createEtlTaskFrontPostposition(@Valid @RequestBody DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO) {
+        if (StringUtils.isBlank(dppEtlNewNodeSaveReqVO.getType())) {
+            dppEtlNewNodeSaveReqVO.setType("1");//默认离线数据集成
+        }
+        DppEtlTaskSaveReqVO result = dppEtlTaskService.createEtlTaskFrontPostposition(dppEtlNewNodeSaveReqVO);
+        return CommonResult.success(result);
+    }
+
+    @Operation(summary = "获取数据集成任务详细信息--前置草稿任务")
+    @PreAuthorize("@ss.hasPermi('dpp:etl:etltask:query')")
+    @GetMapping(value = "/updateQueryFront/{id}")
+    public CommonResult<DppEtlTaskUpdateQueryRespVO> getupdateQueryFront(@PathVariable("id") Long id) {
+        return CommonResult.success(dppEtlTaskService.getupdateQueryFront(id));
     }
 
 }

@@ -17,6 +17,7 @@ import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlNodePageReqV
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlNodeRespVO;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlNodeSaveReqVO;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlNodeDO;
+import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlTaskNodeRelDO;
 import tech.qiantong.qdata.module.dpp.dal.mapper.etl.DppEtlNodeMapper;
 import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlNodeService;
 
@@ -51,6 +52,16 @@ public class DppEtlNodeServiceImpl extends ServiceImpl<DppEtlNodeMapper, DppEtlN
         MPJLambdaWrapper<DppEtlNodeDO> wrapper = new MPJLambdaWrapper<>();
         wrapper.selectAll(DppEtlNodeDO.class)
                 .in(CollectionUtils.isNotEmpty(reqVO.getCodeList()), DppEtlNodeDO::getCode, reqVO.getCodeList());
+        List<DppEtlNodeDO> dppEtlTaskNodeRelDOS = dppEtlNodeMapper.selectList(wrapper);
+        return BeanUtils.toBean(dppEtlTaskNodeRelDOS, DppEtlNodeRespVO.class);
+    }
+
+    @Override
+    public List<DppEtlNodeRespVO> listNodeByTaskId(Long taskId) {
+        MPJLambdaWrapper<DppEtlNodeDO> wrapper = new MPJLambdaWrapper();
+        wrapper.selectAll(DppEtlNodeDO.class)
+                .innerJoin(DppEtlTaskNodeRelDO.class, DppEtlTaskNodeRelDO::getPostNodeCode, DppEtlNodeDO::getCode)
+                .eq(DppEtlTaskNodeRelDO::getTaskId, taskId);
         List<DppEtlNodeDO> dppEtlTaskNodeRelDOS = dppEtlNodeMapper.selectList(wrapper);
         return BeanUtils.toBean(dppEtlTaskNodeRelDOS, DppEtlNodeRespVO.class);
     }

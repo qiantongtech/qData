@@ -30,6 +30,14 @@ public interface IDppEtlNodeService extends IService<DppEtlNodeDO> {
 
     List<DppEtlNodeRespVO> getDppEtlNodeRespList(DppEtlNodePageReqVO pageReqVO);
 
+    /**
+     * 通过任务id获取节点列表
+     *
+     * @param taskId
+     * @return
+     */
+    List<DppEtlNodeRespVO> listNodeByTaskId(Long taskId);
+
     DppEtlNodeRespVO getDppEtlNodeRespVOByReqVO(DppEtlNodePageReqVO reqVOPre);
 
     /**

@@ -22,7 +22,6 @@ public class ComponentRegistry {
 
         this.componentItemMap.put(TaskComponentTypeEnum.EXCEL_READER.getCode(), new ExcelReaderComponent());
         this.componentItemMap.put(TaskComponentTypeEnum.CSV_READER.getCode(), new CsvReaderComponent());
-        this.componentItemMap.put(TaskComponentTypeEnum.KAFKA_READER.getCode(), new KafkaReaderComponent());
 
 
         this.componentItemMap.put(TaskComponentTypeEnum.SPARK_CLEAN.getCode(), new SparkCleanComponent());

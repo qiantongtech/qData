@@ -2,9 +2,10 @@ package tech.qiantong.qdata.module.dpp.controller.admin.etl.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 import javax.validation.constraints.Size;
+
+import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
  * 数据集成任务 创建/修改 Request VO DPP_ETL_TASK
@@ -89,4 +90,7 @@ public class DppEtlTaskSaveReqVO extends BaseEntity {
     @Schema(description = "备注", example = "")
     @Size(max = 256, message = "备注长度不能超过256个字符")
     private String remark;
+
+    @Schema(description = "草稿任务配置信息", example = "")
+    private String draftJson;
 }

@@ -17,13 +17,14 @@ public enum TaskComponentTypeEnum {
 
     //输入
     DB_READER("1", "数据库输入"),
-    EXCEL_READER("2", "Execl输入"),
-    KAFKA_READER("3", "Kafka输入"),
-    CSV_READER("4", "Kafka输入"),
+    EXCEL_READER("2", "Excel输入"),
+    CSV_READER("4", "csv输入"),
 
 
     //清洗
     SPARK_CLEAN("31", "SPARK清洗"),
+    SORT_RECORD("34", "排序记录"),
+    FIELD_DERIVATION("39", "字段派生器"),
 
     //开发
     SQL_DEV("51", "SQL开发"),

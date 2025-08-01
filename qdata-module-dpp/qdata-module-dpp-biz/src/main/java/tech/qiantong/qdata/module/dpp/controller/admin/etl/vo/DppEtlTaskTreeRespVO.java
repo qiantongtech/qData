@@ -43,6 +43,10 @@ public class DppEtlTaskTreeRespVO implements Serializable {
     @Schema(description = "任务编码", example = "")
     private String code;
 
+    @Excel(name = "扩展任务编码")
+    @Schema(description = "扩展任务编码", example = "")
+    private String extCode;
+
     @Excel(name = "任务版本")
     @Schema(description = "任务版本", example = "")
     private Long version;
@@ -87,4 +91,7 @@ public class DppEtlTaskTreeRespVO implements Serializable {
 
     /** 任务id */
     private Long treeId;
+
+    @Schema(description = "草稿任务配置信息", example = "")
+    private String draftJson;
 }

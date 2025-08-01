@@ -1,7 +1,7 @@
 package tech.qiantong.qdata.module.dpp.controller.admin.etl.vo;
 
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.Data;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
@@ -75,8 +75,38 @@ public class DppEtlNewNodeSaveReqVO extends BaseEntity {
     private String releaseState;
     //上下限  0:未上线，1:已上线
     private String schedulerState;
+    private String status;
     private String code;
     private String crontab;
     private String id;
+
+    /**
+     * taskType（SPARK、FINK）
+     * taskPriority任务优先级
+     * workerGroup分组
+     * failRetryTimes失败重试次数
+     * delayTime延时执行时间
+     * failRetryInterval失败重试间隔
+     *
+     *
+     * SPARK如下：
+     * driverCores驱动核心数
+     * driverMemory驱动内存
+     * numExecutors执行器数量
+     * executorMemory执行器内存数
+     * executorCores执行器核心数
+     * yarnQueue    -----yarm队列
+     *
+     *
+     * FINK如下：
+     * jobManagerMemory----JobManager内存数
+     * taskManagerMemory------TaskManager内存数
+     * slot-----Slot数量
+     * taskManager-----TaskManager数量
+     * parallelism并行度
+     * yarnQueue    -----yarm队列
+     */
+    @Schema(description = "草稿任务配置信息", example = "")
+    private String draftJson;
 
 }

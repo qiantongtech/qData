@@ -79,11 +79,18 @@ public class TaskConverter {
     private static final String DEFAULT_SQL_EXECUTION_TYPE = "SCRIPT"; // 默认SQL执行类型
     private static final String DEFAULT_CONDITION_TYPE = "NONE"; // 默认条件类型为 "NONE"
 
+    private static final int DEFAULT_TASK_failRetryTimes = 0; // failRetryTimes失败重试次数
+    private static final int DEFAULT_TASK_delayTime = 0; // delayTime延时执行时间
+    private static final int DEFAULT_TASK_failRetryInterval = 1; // failRetryInterval失败重试间隔
+
     public static DsTaskSaveReqDTO buildDsTaskSaveReq(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO) {//名字
         //创建返回实体
         DsTaskSaveReqDTO dsTaskSaveReqDTO = new DsTaskSaveReqDTO();
         //1、封装基础参数
         dsTaskSaveReqDTO.setName(dppEtlNewNodeSaveReqVO.getName());
+        if(StringUtils.isNotEmpty(dppEtlNewNodeSaveReqVO.getCode())){
+            dsTaskSaveReqDTO.setProcessDefinitionCode(Long.parseLong(dppEtlNewNodeSaveReqVO.getCode()));
+        }
         dsTaskSaveReqDTO.setDescription(dppEtlNewNodeSaveReqVO.getDescription());
         dsTaskSaveReqDTO.setExecutionType(dppEtlNewNodeSaveReqVO.getExecutionType());
 
@@ -164,6 +171,10 @@ public class TaskConverter {
 
         List<Map<String, Object>> result = new ArrayList<>();
 
+        //自定义参数
+//        Map<String, Object> definitionJsonMap = JSONUtils.convertTaskDefinitionJsonMap(draftJson);
+
+
         // 遍历每个任务定义
         for (Map<String, Object> task : list) {
             // 处理每个 task 的默认值和必要字段
@@ -179,9 +190,14 @@ public class TaskConverter {
             taskMap.put("environmentCode", task.getOrDefault("environmentCode", DEFAULT_ENVIRONMENT_CODE)); // 默认环境编码
             taskMap.put("flag", DEFAULT_FLAG); // 默认 flag 为 "YES"
             taskMap.put("isCache", task.getOrDefault("isCache", DEFAULT_IS_CACHE)); // 默认 isCache 为 "NO"
-            taskMap.put("taskPriority", task.getOrDefault("priority", DEFAULT_TASK_PRIORITY)); // 默认任务优先级为 "MEDIUM"
+            taskMap.put("taskPriority", task.getOrDefault("taskPriority", DEFAULT_TASK_PRIORITY)); // 默认任务优先级为 "MEDIUM"
             taskMap.put("taskType", task.getOrDefault("taskType", DEFAULT_TASK_TYPE)); // 默认任务类型为 "SPARK"
             taskMap.put("taskExecuteType", "BATCH");
+
+            //2025-06-25 新增配置项默认值
+            taskMap.put("failRetryTimes", MapUtils.getObject(task,"failRetryTimes",DEFAULT_TASK_failRetryTimes));
+            taskMap.put("delayTime", MapUtils.getObject(task,"delayTime",DEFAULT_TASK_delayTime));
+            taskMap.put("failRetryInterval", MapUtils.getObject(task,"failRetryInterval",DEFAULT_TASK_failRetryInterval));
 
             //组件taskParams的封装
             String componentType = String.valueOf(task.get("componentType")); //组件类型
@@ -194,6 +210,13 @@ public class TaskConverter {
                 params.put("resourceName", resourceName);
                 params.put("master", defaultMaster);
             }
+            // 提取参数
+//            params.put("driverCores", MapUtils.getObject(definitionJsonMap, "driverCores", DEFAULT_DRIVER_CORES));
+//            params.put("driverMemory", MapUtils.getObject(definitionJsonMap, "driverMemory", DEFAULT_DRIVER_MEMORY));
+//            params.put("numExecutors", MapUtils.getObject(definitionJsonMap, "numExecutors", DEFAULT_NUM_EXECUTORS));
+//            params.put("executorMemory", MapUtils.getObject(definitionJsonMap, "executorMemory", DEFAULT_EXECUTOR_MEMORY));
+//            params.put("executorCores", MapUtils.getObject(definitionJsonMap, "executorCores", DEFAULT_EXECUTOR_CORES));
+//            params.put("yarnQueue", MapUtils.getObject(definitionJsonMap, "yarnQueue", ""));
 
             // 将任务的taskParams加入到taskMap中
             taskMap.put("taskParams", ComponentFactory.getComponentItem(componentType).parse(params));
@@ -818,15 +841,18 @@ public class TaskConverter {
     /**
      * 构建etl节点定义json数据
      *
-     * @param id       etl节点id
-     * @param name     etl节点美年广场
-     * @param code     etl节点编码
-     * @param version  etl节点版本
-     * @param mainArgs etl节点参数
+     * @param id        etl节点id
+     * @param name      etl节点美年广场
+     * @param code      etl节点编码
+     * @param version   etl节点版本
+     * @param mainArgs  etl节点参数
+     * @param draftJson
      * @return
      */
-    public static String buildEtlTaskDefinitionJson(Long id, String name, String code, Integer version, Map<String, Object> mainArgs) {
+    public static String buildEtlTaskDefinitionJson(Long id, String name, String code, Integer version, Map<String, Object> mainArgs, String draftJson) {
         List<Map<String, Object>> result = new ArrayList<>();
+        //自定义参数
+        Map<String, Object> definitionJsonMap = JSONUtils.convertTaskDefinitionJsonMap(draftJson);
 
         // 处理每个 task 的默认值和必要字段
         Map<String, Object> taskMap = new HashMap<>();
@@ -837,13 +863,18 @@ public class TaskConverter {
         taskMap.put("code", code); // 默认 code 为 0L
         taskMap.put("version", version); // 默认版本号为1
         taskMap.put("description", ""); // 默认描述为空
-        taskMap.put("workerGroup", DEFAULT_WORKER_GROUP); // 默认 workerGroup 为 "default"
+        taskMap.put("workerGroup", MapUtils.getObject(definitionJsonMap,"workerGroup",DEFAULT_WORKER_GROUP) ); // 默认 workerGroup 为 "default"
         taskMap.put("environmentCode", DEFAULT_ENVIRONMENT_CODE); // 默认环境编码
         taskMap.put("flag", DEFAULT_FLAG); // 默认 flag 为 "YES"
         taskMap.put("isCache", DEFAULT_IS_CACHE); // 默认 isCache 为 "NO"
-        taskMap.put("taskPriority", DEFAULT_TASK_PRIORITY); // 默认任务优先级为 "MEDIUM"
+        taskMap.put("taskPriority", MapUtils.getObject(definitionJsonMap,"taskPriority",DEFAULT_TASK_PRIORITY)); // 默认任务优先级为 "MEDIUM"
         taskMap.put("taskType", DEFAULT_TASK_TYPE); // 默认任务类型为 "SPARK"
         taskMap.put("taskExecuteType", "BATCH");
+
+        //2025-06-25 新增配置项默认值
+        taskMap.put("failRetryTimes", MapUtils.getObject(definitionJsonMap,"failRetryTimes",DEFAULT_TASK_failRetryTimes));
+        taskMap.put("delayTime", MapUtils.getObject(definitionJsonMap,"delayTime",DEFAULT_TASK_delayTime));
+        taskMap.put("failRetryInterval", MapUtils.getObject(definitionJsonMap,"failRetryInterval",DEFAULT_TASK_failRetryInterval));
 
         Map<String, Object> taskParams = new LinkedHashMap<>();
 
@@ -860,11 +891,12 @@ public class TaskConverter {
         taskParams.put("deployMode", DEFAULT_DEPLOY_MODE); // 默认部署模式为 "client"
         taskParams.put("mainArgs", Base64.encode(JSON.toJSONString(mainArgs))); // 默认空字符串
         taskParams.put("master", defaultMaster); // 默认Spark master URL
-        taskParams.put("driverCores", DEFAULT_DRIVER_CORES); // 默认驱动核心数
-        taskParams.put("driverMemory", DEFAULT_DRIVER_MEMORY); // 默认驱动内存
-        taskParams.put("numExecutors", DEFAULT_NUM_EXECUTORS); // 默认执行器数量
-        taskParams.put("executorMemory", DEFAULT_EXECUTOR_MEMORY); // 默认执行器内存
-        taskParams.put("executorCores", DEFAULT_EXECUTOR_CORES); // 默认执行器核心数
+        taskParams.put("driverCores",MapUtils.getObject(definitionJsonMap,"driverCores",DEFAULT_DRIVER_CORES) ); // 默认驱动核心数
+        taskParams.put("driverMemory",MapUtils.getObject(definitionJsonMap,"driverMemory",DEFAULT_DRIVER_MEMORY) ); // 默认驱动内存
+        taskParams.put("numExecutors", MapUtils.getObject(definitionJsonMap,"numExecutors",DEFAULT_NUM_EXECUTORS)); // 默认执行器数量
+        taskParams.put("executorMemory",MapUtils.getObject(definitionJsonMap,"executorMemory",DEFAULT_EXECUTOR_MEMORY) ); // 默认执行器内存
+        taskParams.put("executorCores",MapUtils.getObject(definitionJsonMap,"executorCores",DEFAULT_EXECUTOR_CORES) ); // 默认执行器核心数
+        taskParams.put("yarnQueue",MapUtils.getObject(definitionJsonMap,"yarnQueue","") ); // 默认执行器核心数
         taskParams.put("sqlExecutionType", DEFAULT_SQL_EXECUTION_TYPE); // 默认SQL执行类型为 "SCRIPT"
 
         // 将任务的taskParams加入到taskMap中
@@ -994,11 +1026,12 @@ public class TaskConverter {
             switch (taskComponentTypeEnum) {
                 case DB_READER:
                 case EXCEL_READER:
-                case KAFKA_READER:
                 case CSV_READER:
                     result.put("reader", data);
                     break;
                 case SPARK_CLEAN:
+                case SORT_RECORD:
+                case FIELD_DERIVATION:
                     transitionList.add(data);
                     break;
                 case DB_WRITER:

@@ -2,12 +2,12 @@ package tech.qiantong.qdata.module.dpp.controller.admin.etl.vo;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
 import tech.qiantong.qdata.common.annotation.Excel;
 
-import java.io.Serializable;
 import java.util.Date;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -141,6 +141,9 @@ public class DppEtlTaskRespVO implements Serializable {
     @TableField(exist = false)
     private Date lastExecuteTime;
 
+
+    @Schema(description = "草稿任务配置信息", example = "")
+    private String draftJson;
 
     /** cron表达式 */
     @TableField(exist = false)

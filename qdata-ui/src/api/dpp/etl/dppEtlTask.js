@@ -52,7 +52,7 @@ export function delDppEtlTask(id) {
 //   })
 // }
 export function getTablesByDataSourceId(ID) {
-  console.log("🚀 ~ tableList ~ ID:",)
+  console.log("🚀 ~ tableList ~ ID:", ID)
   return request({
     url: '/da/daDatasource/tableList/' + ID.datasourceId,
     method: 'get'
@@ -115,6 +115,14 @@ export function createProcessDefinitions(data) {
     data: data
   })
 }
+// 新增接口 数据集成dag
+export function createEtlTaskFrontPostposition(data) {
+  return request({
+    url: '/dpp/dppEtlTask/createEtlTaskFrontPostposition',
+    method: 'post',
+    data: data
+  })
+}
 // 上线下线
 export function updateReleaseTask(data) {
   return request({
@@ -140,7 +148,6 @@ export function updateReleaseJobTask(data) {
   })
 }
 
-
 // 详情
 export function dppEtlTask(id) {
   return request({
@@ -149,7 +156,6 @@ export function dppEtlTask(id) {
 
   })
 }
-
 
 // 修改
 export function updateProcessDefinition(data) {
@@ -234,5 +240,50 @@ export function startDppEtlTask(data) {
   return request({
     url: '/dpp/dppEtlTask/startDppEtlTask/' + data,
     method: 'put',
+  })
+}
+
+// 新增任务
+export function createEtlTaskFront(data) {
+  return request({
+    url: '/dpp/dppEtlTask/createEtlTaskFront',
+    method: 'post',
+    data: data
+  })
+}
+
+// 使用模板
+export function dppEtlSqlTemp(query) {
+  return request({
+    url: '/dpp/dppEtlSqlTemp/list',
+    method: 'get',
+    params: query
+  })
+}
+
+// 获取实例id
+export function getRunTaskInstance(query) {
+  return request({
+    url: '/dpp/dppEtlTaskInstance/getRunTaskInstance',
+    method: 'get',
+    params: query
+  })
+}
+
+// 获取控制台日志
+export function getLogByTaskInstanceId(query) {
+  return request({
+    url: '/dpp/dppEtlTaskInstance/getLogByTaskInstanceId',
+    method: 'get',
+    params: query
+  })
+}
+
+// api输入组件-从结果JSON中自动分析
+export function getResponseColumnReqVO(data) {
+  return request({
+    url: '/common/getResponseColumnReqVO',
+    method: 'post',
+    data: data
   })
 }

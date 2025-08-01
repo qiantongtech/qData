@@ -1,6 +1,6 @@
 <template>
   <div class="app-container" ref="app-container">
-    <el-container style="90%">
+    <el-container>
       <DeptTree :deptOptions="deptOptions" :leftWidth="leftWidth" :placeholder="'请输入数据集成类目名称'" ref="DeptTreeRef"
         @node-click="handleNodeClick" />
       <el-main>
@@ -32,8 +32,7 @@
           <div class="justify-between mb15">
             <el-row :gutter="15" class="btn-style">
               <el-col :span="1.5">
-                <el-button type="primary" plain @click="routeTo('/dpp/etl/add', '1')"
-                  v-hasPermi="['dpp:etl:etltask:add']">
+                <el-button type="primary" plain @click="openTaskConfigDialog" v-hasPermi="['dpp:etl:etltask:add']">
                   <i class="iconfont-mini icon-xinzeng mr5"></i>新增
                 </el-button>
               </el-col>
@@ -45,13 +44,16 @@
           <el-table stripe height="58vh" v-loading="loading" :data="dppEtlTaskList" :default-sort="defaultSort">
             <el-table-column v-if="getColumnVisibility(0)" label="编号" width="100" align="center" prop="id" />
             <el-table-column v-if="getColumnVisibility(2)" label="任务名称" :show-overflow-tooltip="true" align="left"
-              prop="name" width="380">
+              prop="name" width="200">
               <template #default="scope">
-                {{ scope.row.name || "-" }}
+                <div class="justify">
+                  <img :src="getDatasourceIcon(scope.row.draftJson)" alt="" :style="getDatasourceIcon(scope.row.draftJson)?'width: 20px;margin-right: 5px;':''">
+                  <span>{{ scope.row.name || "-" }}</span>
+                </div>
               </template>
             </el-table-column>
             <el-table-column v-if="getColumnVisibility(3)" label="任务描述" :show-overflow-tooltip="true" align="left"
-              prop="description" width="340">
+              prop="description" width="240">
               <template #default="scope">
                 {{ scope.row.description || "-" }}
               </template>
@@ -65,7 +67,8 @@
             <el-table-column v-if="getColumnVisibility(3)" label="任务状态" width="80" align="center" prop="releaseState">
               <template #default="scope">
                 <el-switch v-model="scope.row.status" active-color="#13ce66" inactive-color="#ff4949" active-value="1"
-                  inactive-value="0" @change="handleStatusChange(scope.row.id, scope.row)" />
+                  :inactive-value="getStatus(scope.row.status)" @change="handleStatusChange(scope.row.id, scope.row)"
+                  :disabled="scope.row.status == '-1'" />
               </template>
             </el-table-column>
             <el-table-column v-if="getColumnVisibility(7)" label="调度状态" width="80" align="center" prop="schedulerState">
@@ -87,6 +90,13 @@
                 {{ cronToZh(scope.row.cronExpression) || "-" }}
               </template>
             </el-table-column>
+            <el-table-column v-if="getColumnVisibility(7)" label="配置状态" :show-overflow-tooltip="true" align="center"
+              prop="status" width="80">
+              <template #default="scope">
+                <el-tag :type="scope.row.status == -1 ? 'warning' : 'success'">{{ scope.row.status == -1 ? "草稿" : "完成"
+                }}</el-tag>
+              </template>
+            </el-table-column>
             <el-table-column v-if="getColumnVisibility(6)" label="最近运行时间" align="center" width="160"
               :show-overflow-tooltip="true" prop="lastExecuteTime">
               <template #default="scope">
@@ -98,11 +108,11 @@
                 }}</span>
               </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" width="200">
+            <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" width="220">
               <template #default="scope">
                 <el-button link type="primary" icon="Edit" :disabled="scope.row.status == 1"
                   @click="routeTo('/dpp/etl/lntegratio', scope.row)"
-                  v-hasPermi="['dpp:etl:etltask:edit']">修改</el-button>
+                  v-hasPermi="['dpp:etl:etltask:edit']">配置转化</el-button>
                 <el-button link type="primary" icon="view" @click="
                   routeTo('/dpp/etl/indodeev', {
                     ...scope.row,
@@ -155,6 +165,10 @@
       <!--      >-->
       <!--      </crontab>-->
     </el-dialog>
+    <!-- 新增 -->
+    <taskConfigDialog :visible="taskConfigDialogVisible" title="新增任务" @update:visible="taskConfigDialogVisible = $event"
+      @save="handleSave" @confirm="handleConfirm" :data="nodeData" :userList="userList" :deptOptions="deptOptions"
+      :info="route.query.info" />
   </div>
 </template>
 
@@ -168,6 +182,7 @@ import {
   updateReleaseJobTask,
   releaseTaskCrontab,
   startDppEtlTask,
+  createEtlTaskFront
 } from "@/api/dpp/etl/dppEtlTask";
 import { cronToZh } from "@/utils/cronUtils";
 import Crontab from "@/components/Crontab/index.vue";
@@ -177,6 +192,70 @@ import { useRoute, useRouter } from "vue-router";
 import useUserStore from "@/store/system/user";
 import { listAttTaskCat } from "@/api/att/cat/attTaskCat/attTaskCat";
 import DeptTree from "@/components/DeptTree";
+import taskConfigDialog from "./components/taskConfigDialog.vue";
+import { deptUserTree } from "@/api/system/system/user.js";
+
+// 图标
+const getDatasourceIcon = (json) => {
+  let type = json && JSON.parse(json).taskType;
+  switch (type) {
+    case "FLINK":
+      return new URL("@/assets/system/images/dpp/Flink.svg", import.meta.url).href;
+    case "SPARK":
+      return new URL("@/assets/system/images/dpp/Spark.svg", import.meta.url).href;
+    default:
+      return null;
+  }
+};
+const getStatus = (status) => {
+  if (status == '-1') {
+    return '-1'
+  } else {
+    return '0'
+  }
+}
+// 任务配置
+const taskConfigDialogVisible = ref(false);
+let nodeData = ref({ taskConfig: {}, name: null });//新增无id时为空数据
+let userList = ref([]);
+// 保存并关闭
+const handleSave = (form) => {
+  const parms = {
+    ...form,
+    projectId: userStore.projectId,
+    projectCode: userStore.projectCode,
+    draftJson: JSON.stringify({
+      ...form,
+    }),
+  }
+  createEtlTaskFront(parms).then((res) => {
+    if (res.code == 200) {
+      proxy.$modal.msgSuccess("操作成功");
+      getList();
+    }
+  })
+}
+// 保存并完善
+const handleConfirm = (form) => {
+  const parms = {
+    ...form,
+    projectId: userStore.projectId,
+    projectCode: userStore.projectCode,
+    draftJson: JSON.stringify({
+      ...form,
+    }),
+  }
+  createEtlTaskFront(parms).then((res) => {
+    if (res.code == 200) {
+      proxy.$modal.msgSuccess("操作成功");
+      getList();
+      routeTo('/dpp/etl/lntegratio', res.data);
+    }
+  })
+};
+const openTaskConfigDialog = () => {
+  taskConfigDialogVisible.value = true;
+};
 
 const { proxy } = getCurrentInstance();
 const { dpp_etl_task_status, dpp_etl_task_execution_type } = proxy.useDict(
@@ -219,9 +298,13 @@ function getDeptTree() {
       {
         name: "数据集成类目",
         value: "",
+        id: 0,
         children: deptOptions.value,
       },
     ];
+  });
+  deptUserTree().then((res) => {
+    userList.value = res.data;
   });
 }
 function handleNodeClick(data) {
@@ -254,7 +337,7 @@ function handleschedulerState(id, row, e) {
       updateReleaseSchedule({
         id,
         schedulerState: row.schedulerState,
-        projectCode: userStore.projectCode,
+        projectCode: userStore.projectCode || "133545087166112",
         projectId: userStore.projectId,
       })
         .then((response) => {
@@ -286,7 +369,7 @@ function handleStatusChange(id, row, e) {
       updateReleaseJobTask({
         id,
         releaseState: row.status,
-        projectCode: userStore.projectCode,
+        projectCode: userStore.projectCode || "133545087166112",
         projectId: userStore.projectId,
       })
         .then((response) => {
@@ -338,6 +421,7 @@ const columns = ref([
   { key: 3, label: "任务状态", visible: true },
   { key: 4, label: "执行策略", visible: true },
   { key: 5, label: "调度周期", visible: true },
+  { key: 7, label: "配置状态", visible: true },
   { key: 6, label: "最近运行时间", visible: true },
 ]);
 

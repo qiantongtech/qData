@@ -113,13 +113,13 @@
                       <el-form-item label="替换内容" prop="ruleConfig.regexValidate.replacement">
                         <el-input v-model="form.ruleConfig.regexValidate.replacement" placeholder="请输入替换内容" clearable />
                       </el-form-item>
-                      <el-form-item label="替换状态" prop="ruleConfig.regexValidate.resultType">
-                        <el-radio-group v-model="form.ruleConfig.regexValidate.resultType">
-                          <el-radio label="1">替换成功的</el-radio>
-                          <el-radio label="2">替换失败的</el-radio>
-                        </el-radio-group>
+<!--                      <el-form-item label="替换状态" prop="ruleConfig.regexValidate.resultType">-->
+<!--                        <el-radio-group v-model="form.ruleConfig.regexValidate.resultType">-->
+<!--                          <el-radio label="1">替换成功的</el-radio>-->
+<!--                          <el-radio label="2">替换失败的</el-radio>-->
+<!--                        </el-radio-group>-->
 
-                      </el-form-item>
+<!--                      </el-form-item>-->
                     </el-col>
                     <!-- <el-col :span="12">
                       <el-form-item label="替换内容" prop="ruleConfig.regexValidate.pattern">

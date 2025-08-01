@@ -2,61 +2,48 @@
   <div class="app-container" ref="app-container">
     <div class="head-container">
       <div class="head-title">
+        <img :src="getDatasourceIcon(nodeData.draftJson)" alt="" :style="getDatasourceIcon(nodeData.draftJson) ? 'width: 20px;margin-right: 5px;' : ''" />
         {{ nodeData.name !== null ? nodeData.name : "集成任务" }}
       </div>
       <div class="head-btns">
         <el-button type="primary" size="small" @click="handleExportData" v-if="!route.query.info">保存</el-button>
         <el-button type="primary" size="small" @click="routeTo('/dpp/tasker/dppEtlTask', '')">取消</el-button>
         <el-button type="primary" size="small" @click="openTaskConfigDialog">任务配置</el-button>
-        <el-button v-if="!route.query.info" type="primary" size="small"
-          @click="selectTab('checkMessage')">任务检查</el-button>
-        <!--        <el-button type="primary" size="small" @click="selectTab('log')"
-          >执行一下</el-button
-        >-->
+        <el-button v-if="!route.query.info" type="primary" size="small" @click="selectTab('checkMessage')">任务检查</el-button>
+        <!-- <el-button type="primary" size="small" @click="selectTab('log')">执行一下</el-button> -->
       </div>
     </div>
 
-    <el-row>
-      <el-col :span="4">
-        <div class="left-pane">
-          <div class="left-tree">
-            <div class="">
-              <el-tree :data="treeData" :props="{ label: 'label', children: 'children' }" ref="deptTreeRef"
-                default-expand-all>
-                <template #default="{ node, data }">
-                  <div class="custom-tree-node" @mousedown="startDrag($event, node, data)">
-                    <img v-if="node.level === 1 && data.type == '1'" src="@/assets/system/images/dpp/tsr.png" alt="icon"
-                      class="icon-img" />
-                    <img v-if="node.level === 1 && data.type == '3'" src="@/assets/system/images/dpp/tzh.png" alt="icon"
-                      class="icon-img" />
-                    <img v-if="node.level === 1 && data.type == '2'" src="@/assets/system/images/dpp/tsc.png" alt="icon"
-                      class="icon-img" />
-                    <img v-if="data.icon" :src="data.icon" alt="icon" class="icon-img" />
-                    <span class="treelable"> {{ data.label }}</span>
-                  </div>
-                </template>
-              </el-tree>
-            </div>
-          </div>
-        </div>
-      </el-col>
-      <el-col :span="20" v-loading="loading">
-        <!-- 右侧部分 -->
-        <div class="right-pane">
-          <div id="graphContainer" class="graph-container" ref="graphContainer"></div>
-
-          <div class="toolbar">
-            <template v-for="item in toolbar" :key="item.id">
-              <el-tooltip class="box-item" effect="light" :content="item.tip" placement="bottom">
-                <div class="toolbar-item" @click="toolbarClick(item)">
-                  <img :src="getAssetsFile(item.icon)" alt="" />
-                </div>
-              </el-tooltip>
+    <div class="flex-container">
+      <!-- 左侧树 -->
+      <div class="left-pane">
+        <div class="left-tree">
+          <el-tree :data="treeData" :props="{ label: 'label', children: 'children' }" ref="deptTreeRef" default-expand-all>
+            <template #default="{ node, data }">
+              <div class="custom-tree-node" @mousedown="startDrag($event, node, data)">
+                <img v-if="node.level === 1 && data.type == '1'" src="@/assets/system/images/dpp/srz.svg" alt="icon" class="icon-img" />
+                <img v-if="node.level === 1 && data.type == '3'" src="@/assets/system/images/dpp/zh1.svg" alt="icon" class="icon-img" />
+                <img v-if="node.level === 1 && data.type == '2'" src="@/assets/system/images/dpp/sc.svg" alt="icon" class="icon-img" />
+                <img v-if="data.icon" :src="data.icon" alt="icon" class="icon-img" />
+                <span class="treelable"> {{ data.label }}</span>
+              </div>
             </template>
-          </div>
+          </el-tree>
         </div>
-        <div class="tabs-container" v-bind:style="tabAreaStyle">
-          <!-- 图标放置在最右侧 -->
+      </div>
+      <!-- 右侧主内容 -->
+      <div class="right-pane" v-loading="loading">
+        <div id="graphContainer" class="graph-container" ref="graphContainer"></div>
+        <div class="toolbar">
+          <template v-for="item in toolbar" :key="item.id">
+            <el-tooltip class="box-item" effect="light" :content="item.tip" placement="bottom">
+              <div class="toolbar-item" @click="toolbarClick(item)">
+                <img :src="getAssetsFile(item.icon)" alt="" />
+              </div>
+            </el-tooltip>
+          </template>
+        </div>
+        <div class="tabs-container" :style="tabAreaStyle">
           <el-icon class="icon-right" @click="minimizeAction">
             <Minus />
           </el-icon>
@@ -69,20 +56,36 @@
             </el-tab-pane>
           </el-tabs>
         </div>
-      </el-col>
-    </el-row>
-    <component :is="currentFormComponent" :visible="drawer" :key="currentNode?.id || Date.now()" :title="title"
-      @update="closeDialog" @confirm="handleFormSubmit" :currentNode="currentNode" :info="route.query.info"
-      :graph="graph" />
-    <taskConfigDialog :visible="taskConfigDialogVisible" title="任务配置" @update:visible="taskConfigDialogVisible = $event"
-      @confirm="handletaskConfig" :data="nodeData" :userList="userList" :deptOptions="deptOptions"
-      :info="route.query.info" />
+      </div>
+    </div>
+    <component
+      :is="currentFormComponent"
+      :visible="drawer"
+      :key="currentNode?.id || Date.now()"
+      :title="title"
+      @update="closeDialog"
+      @confirm="handleFormSubmit"
+      :currentNode="currentNode"
+      :info="route.query.info"
+      :graph="graph"
+    />
+    <taskConfigDialog
+      :visible="taskConfigDialogVisible"
+      title="修改配置"
+      @update:visible="taskConfigDialogVisible = $event"
+      @save="handletaskConfig"
+      :data="nodeData"
+      :userList="userList"
+      :deptOptions="deptOptions"
+      :info="true"
+    />
+    <FieldPreviewDialog ref="fieldPreviewDialog" />
   </div>
 </template>
 <script setup>
 import { Graph } from "@antv/x6";
 import { Dnd } from "@antv/x6-plugin-dnd";
-import { baseConfig, cuPort, typeList, toolbar } from "@/utils/graph";
+import { baseConfig, toolbar } from "@/utils/graph";
 import { ref, computed, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import InputForm from "../components/formComponents/InputForm.vue";
@@ -90,19 +93,20 @@ import OutputForm from "../components/formComponents/OutputForm.vue";
 import csvForm from "../components/formComponents/csvForm.vue";
 import TransformForm from "../components/formComponents/TransformForm.vue";
 import ExcelInputForm from "../components/formComponents/ExcelInputForm.vue";
-import KafkaForm from "../components/formComponents/KafkaForm.vue";
+import OrderConfig from "../components/formComponents/OrderConfig.vue";
+import FieldPreviewDialog from "../components/formComponents/components/FieldPreviewDialog.vue";
+import FieldBuilder from "../components/formComponents/FieldBuilder.vue";
+
 import taskConfigDialog from "../components//taskConfigDialog.vue";
 import useUserStore from "@/store/system/user";
 import { deptUserTree } from "@/api/system/system/user.js";
+import { Export } from "@antv/x6-plugin-export";
 import { listAttTaskCat } from "@/api/att/cat/attTaskCat/attTaskCat";
 const userStore = useUserStore();
-import {
-  dppEtlTask,
-  updateProcessDefinitions,
-  createProcessDefinitions
-} from "@/api/dpp/etl/dppEtlTask";
+import { createEtlTaskFrontPostposition, dppEtlTask, updateProcessDefinitions, getNodeUniqueKey } from "@/api/dpp/etl/dppEtlTask";
 import { treeData } from "../components/data";
 import { Selection } from "@antv/x6-plugin-selection";
+import { Keyboard } from "@antv/x6-plugin-keyboard";
 import {
   useHtmlNode,
   showPorts,
@@ -110,12 +114,33 @@ import {
   transNodeData,
   renderGraph,
   validateGraph,
-  getAllChildNodes
+  getAllChildNodes,
+  createDataNode,
+  fetchNodeUniqueKey,
+  getParentNode,
+  getDefaultTaskParams,
+  createMenuDom,
+  areFieldNamesEqual,
+  shouldAbortByName,
+  exportGraphAsPNG,
 } from "../components/opBase";
 const { proxy } = getCurrentInstance();
 const route = useRoute();
 const router = useRouter();
 let id = route.query.id || 1;
+// "edit"：编辑，"input"：只看输入字段，"output"：只看输出字段
+// 图标
+const getDatasourceIcon = (json) => {
+  let type = json && JSON.parse(json).taskType;
+  switch (type) {
+    case "FLINK":
+      return new URL("@/assets/system/images/dpp/Flink.svg", import.meta.url).href;
+    case "SPARK":
+      return new URL("@/assets/system/images/dpp/Spark.svg", import.meta.url).href;
+    default:
+      return null;
+  }
+};
 // 监听 id 变化
 watch(
   () => route.query.id,
@@ -149,16 +174,18 @@ const currentFormComponent = computed(() => {
       return InputForm;
     case "2":
       return ExcelInputForm;
-    case "3":
-      return KafkaForm;
     case "4":
       return csvForm;
     case "31":
       return TransformForm;
+    case "34":
+      return OrderConfig;
+    case "39":
+      return FieldBuilder;
     case "91":
       return OutputForm;
     default:
-      return OutputForm;
+      return null;
   }
 });
 
@@ -171,6 +198,7 @@ function getList() {
   loading.value = true;
   dppEtlTask(route.query.id).then((response) => {
     nodeData.value = response.data;
+    nodeData.value.taskConfig = { ...nodeData.value.taskConfig, draftJson: nodeData.value.draftJson };
     renderGraph(graph, nodeData.value);
     loading.value = false;
   });
@@ -184,6 +212,7 @@ function getDeptTree() {
       {
         name: "数据集成类目",
         value: "",
+        id: 0,
         children: deptOptions.value,
       },
     ];
@@ -196,104 +225,146 @@ if (route.query.id) {
   getList();
 }
 // 保存 没有code
-const closeDialog = (node) => {
+const closeDialog = () => {
   if (!currentNode.value.data.code) {
     graph.removeNode(currentNode.value.id); // 根据组件 ID 删除组件
   }
   drawer.value = false;
 };
-// 检查 节点是否一致
-const areArraysEqual = (array1, array2) => {
-  // 检查长度是否相等
-  if (array1.length !== array2.length) {
-    return false;
-  }
-
-  // 遍历数组，逐个比较元素
-  for (let i = 0; i < array1.length; i++) {
-    const item1 = array1[i];
-    const item2 = array2[i];
-
-    // 如果元素是对象，比较对象的属性
-    if (typeof item1 === "object" && typeof item2 === "object") {
-      // 假设对象有 'columnName' 和 'isChecked' 属性
-      if (
-        item1.columnName !== item2.columnName ||
-        item1.isChecked !== item2.isChecked
-      ) {
-        return false;
-      }
-    } else {
-      // 如果元素是原始类型，直接比较值
-      if (item1 !== item2) {
-        return false;
-      }
-    }
-  }
-
-  // 如果通过了所有检查，数组内容相同
-  return true;
-};
-// 连线 创建
-const createEdge = (sourceId, targetId) => {
-  const sourcePort = "port-bottom"; // 源节点的下桩
-  const targetPort = "port-top"; // 目标节点的上桩
-
-  graph.addEdge({
-    source: {
-      cell: sourceId,
-      port: sourcePort, // 指定连接端口为下桩
-    },
-    target: {
-      cell: targetId,
-      port: targetPort, // 指定连接端口为上桩
-    },
-
-    attrs: {
-      line: {
-        stroke: "#2666FB", // 边的颜色
-        strokeWidth: 1,
-        targetMarker: { name: "block", width: 12, height: 8 },
-      },
-    },
-  });
-};
-
 // 弹窗保存
-const handleFormSubmit = (nodeData) => {
+const handleFormSubmit = async (nodeData = {}) => {
+  if (!currentNode?.value?.id) return;
   const node = graph.getCellById(currentNode.value.id);
-  if (node) {
-    const result = areArraysEqual(
-      nodeData.taskParams.tableFields,
-      node.data.taskParams.tableFields
-    );
-
-    if (nodeData.taskParams.parentId != node.data.taskParams.parentId) {
-      createEdge(nodeData.taskParams.parentId, currentNode.value.id);
-    }
-    if (!result) {
-      const childNodes = getAllChildNodes(node, graph);
-      for (let i = 0; i < childNodes.length; i++) {
-        const childNode = childNodes[i];
-        if (childNode.data?.taskParams) {
-          childNode.data.taskParams.csvFile = nodeData.taskParams.csvFile;
-          childNode.data.taskParams.tableFields =
-            nodeData.taskParams.tableFields;
-          childNode.data = { ...childNode.data };
-        }
-      }
-    }
-    node.setProp(
-      "data",
-      JSON.parse(JSON.stringify({ ...node.getProp("data"), ...nodeData }))
-    );
+  if (!node) return;
+  if (shouldAbortByName(graph, nodeData)) {
+    drawer.value = true;
+    proxy.$message.warning(`节点名称“${currentNode.value.data.name}”已存在，请修改后再保存`);
+    return;
   }
-  // 关闭抽屉（表单）
+  const oldData = node.getProp("data") || {};
+  const parent = getParentNode(currentNode.value, graph);
+  const childNodes = getAllChildNodes(node, graph) || [];
+
+  const taskParams = nodeData.taskParams || {};
+  const type = taskParams.type;
+  const tableFields = taskParams.tableFields || [];
+  let inputFields = [];
+  let outputFields = [];
+  if (type == 1) {
+    // type 1：自身生成 input/outputFields
+    inputFields = tableFields.map((field) => ({
+      ...field,
+      source: nodeData.name || "",
+    }));
+    outputFields = inputFields;
+  } else if (nodeData.componentType == 31) {
+    // 特殊类型：取父节点的输出字段
+    if (parent?.data?.taskParams?.outputFields) {
+      inputFields = parent.data.taskParams.outputFields || [];
+      outputFields = parent.data.taskParams.outputFields || [];
+    }
+  } else if (type == 2) {
+    // type 2：有输入和独立输出
+    if (parent?.data?.taskParams?.outputFields) {
+      inputFields = parent.data.taskParams.outputFields || [];
+      outputFields = (taskParams.outputFields || []).map((field) => ({
+        ...field,
+        source: nodeData.name || "",
+      }));
+    }
+  } else {
+    // 其他类型，通用处理
+    if (parent?.data?.taskParams?.outputFields) {
+      inputFields = parent.data.taskParams.outputFields || [];
+      outputFields = taskParams.outputFields || [];
+    }
+  }
+
+  const oldOutputs = oldData.taskParams?.outputFields || [];
+  const outputsChanged = !areFieldNamesEqual(outputFields, oldOutputs);
+
+  // 合并更新当前节点数据
+  const newData = {
+    ...oldData,
+    ...nodeData,
+    taskParams: {
+      ...oldData.taskParams,
+      ...taskParams,
+      inputFields,
+      outputFields,
+    },
+  };
+
+  const needConfirm = outputsChanged && oldOutputs.length > 0 && childNodes.length > 0;
+  console.log("🚀 ~ handleFormSubmit ~ type:", type);
+  if (needConfirm && type == 1) {
+    try {
+      await ElMessageBox.confirm("修改字段将会同时清空所有子节点的字段配置，是否确认继续？", { type: "warning", distinguishCancelAndClose: true });
+    } catch (e) {
+      return (drawer.value = true);
+    }
+  }
+
+  node.setProp("data", newData);
+
+  // 打印调试信息
+  console.log("=== 当前节点完整信息 ===");
+  console.log("节点ID:", currentNode.value.id);
+  console.log("节点data:", node.getProp("data"));
+  console.log("inputFields:", inputFields);
+  console.log("outputFields:", outputFields);
+  console.log("tableFields:", newData.taskParams.tableFields);
+  console.log("taskParams:", newData.taskParams);
+
+  // 更新子节点 inputFields，如果字段不一致则清空 tableFields
+  const currentOutputFields = outputFields;
+  const newInputFields = currentOutputFields;
+
+  if (outputsChanged) {
+    childNodes.forEach((n) => {
+      if (!n?.data?.taskParams || typeof n.setProp !== "function") return;
+      const defaultParams = getDefaultTaskParams(n.data);
+      n.setProp("data", {
+        ...n.data,
+        taskParams: {
+          ...n.data.taskParams,
+          ...defaultParams,
+          inputFields: newInputFields,
+        },
+      });
+    });
+  } else {
+    for (const childNode of childNodes) {
+      if (!childNode?.getProp || !childNode.getProp) continue;
+      const childData = childNode.getProp("data") || {};
+      if (!childData?.taskParams) continue;
+
+      const shouldKeepTableFields = areFieldNamesEqual(childData.taskParams.tableFields || [], newInputFields);
+
+      const updatedTaskParams = {
+        ...childData.taskParams,
+        inputFields: newInputFields,
+        tableFields: childData.taskParams.type === 2 && !shouldKeepTableFields ? [] : childData.taskParams.tableFields || [],
+      };
+
+      childNode.setProp("data", {
+        ...childData,
+        taskParams: updatedTaskParams,
+      });
+    }
+  }
+
   drawer.value = false;
 };
 // 运行实例保存
 const handletaskConfig = (form) => {
-  nodeData.value.taskConfig = { ...form };
+  console.log("🚀 ~ handletaskConfig ~ form:", form);
+  nodeData.value.taskConfig = {
+    ...form,
+    draftJson: JSON.stringify({
+      ...form,
+    }),
+  };
 };
 // 大保存
 const handleExportData = async () => {
@@ -311,7 +382,6 @@ const handleExportData = async () => {
     }
     // 转换节点数据
     exportData2.value = await transNodeData(graph);
-    console.log("🚀 ~ handleExportData ~ exportData2.value:", exportData2.value)
     // 将任务相关的配置整合到 exportData2 中
     exportData2.value = {
       ...exportData2.value,
@@ -322,12 +392,16 @@ const handleExportData = async () => {
       ...nodeData.value?.taskConfig,
     };
     // 根据 nodeData.id 判断是更新还是创建
-    const res = nodeData.value?.id
-      ? await updateProcessDefinitions({
-        ...exportData2.value,
-        id: nodeData.value.id,
-      })
-      : await createProcessDefinitions(exportData2.value);
+    const res =
+      nodeData.value?.status != "-1"
+        ? await updateProcessDefinitions({
+            ...exportData2.value,
+            id: nodeData.value.id,
+          })
+        : await createEtlTaskFrontPostposition({
+            ...exportData2.value,
+            id: nodeData.value.id,
+          });
     // 成功后处理
     if (res.code == "200") {
       handleSuccess();
@@ -346,11 +420,10 @@ const hasTaskConfig = (nodeData) => {
 const handleSuccess = () => {
   taskConfigDialogVisible.value = false;
   hasUnsavedChanges.value = false;
-  const message = nodeData.value.id ? "修改成功" : "新增成功";
+  const message = "操作成功";
   router.push("/dpp/tasker/dppEtlTask");
   proxy.$modal.msgSuccess(message);
 };
-
 
 // 任务配置弹窗
 const openTaskConfigDialog = () => {
@@ -366,163 +439,18 @@ const startDrag = (e, treeNode, data) => {
   if (treeNode.level === 2) {
     if (route.query?.info) return proxy.$modal.msgWarning("详情页面只能查看");
     if (!data.componentType) return proxy.$modal.msgWarning("正在开发中");
-    const node = graph.createNode({
-      shape: "cu-data-node",
-      width: 180,
-      height: 50,
-      label: data?.label,
-      data: {
-        id: "",
-        code: "", // 组件的 code
-        taskType: data.taskType,
-        name: data?.label, // 名字
-        version: "0", // 版本号
-        componentType: data?.componentType || "",
-        taskParams: {
-          ...(data.type == 1 && {
-            querySql: "",
-            csvFile: "",
-            topic: "", //主題
-            clmt: "0", //连接状态
-            logicOperator: "and", //表輸入逻辑连接符
-            datasource_id: "", // 源表数据源id 输出
-            asset_id: "", // 源表资产id 输入
-            table_name: "", // 源表名 输入
-            columns: "", // 源表同步字段列表 输入
-            readerDatasource: {
-              datasourceId: "",
-              datasourceType: "",
-              dbname: "",
-            },
-            readModeType: "1", // 读取方式：1:全量 2:id增量 3:时间范围增量 默认全量
-            idIncrementConfig: {//id增量
-              incrementColumn: "", // 增量字段
-              incrementStart: "", // 开始值
-            },
-            dateIncrementConfig: {//时间范围增量
-              logic: "and", // 逻辑运算符：1: and 2: or 默认and
-              dateFormat: "yyyy-MM-dd", // 时间格式：yyyy-MM-dd 或 yyyy-MM-dd HH:mm:ss（手动输入）
-              column: [
-
-              ],
-            },
-          }),
-          parentId: "", //上級节点的id
-          config: "", //配置参数
-          typeName: data?.label, //组件类型
-          icon: data.icon,
-          taskType: data.taskType,
-          type: data.type, // 组件类型 1:输入组件 2:输出组件
-          batchSize: "1024", // 一次性写入量
-          tableFields: "", // 源表同步字段列表 输入
-          ...(data.type == 2 && {
-            target_datasource_id: "", // 目标数据源id 输出
-            target_asset_id: "", // 目标资产id 输出
-            target_table_name: "", // 目标表名 输出
-            target_columns: "", // 目标表同步字段列表 输出
-            writerDatasource: {
-              datasourceId: "",
-              datasourceType: "",
-              dbname: "",
-            },
-            toColumnsList: [], // 表输入 表字段
-            postSql: "", // 后置 SQL
-            selectedColumns: [], // 更新主键
-            selectedColumn: "",
-            writeModeType: 2,//写入模式
-            preSql: "",//前置 SQL
-          }),
-          ...(data.type == 3 && {
-            mainArgs: {},
-          }),
-          tableFields: [], // 表输出 源表字段
-          where: "", // where
-          datasourceId: "",
-        },
-      },
-      ports: {
-        ...cuPort, // 其他连接桩配置
-        items: [
-          { group: "top", id: "port-top" },
-          { group: "bottom", id: "port-bottom" },
-        ],
-      },
-      options: {
-        maxConnections: Infinity, // 最大连接数
-      },
-    });
-    dnd.start(node, e); // 启动拖拽操作
+    const node = createDataNode(graph, data);
+    dnd.start(node, e);
   }
 };
-
-let divMenuContainer = null;
+const fieldPreviewDialog = ref();
+const openDialog = (node, data, title) => {
+  fieldPreviewDialog.value.show(node, data, title);
+};
 /**
  * 组件右键删除
  * @param {*}
  */
-const createMenuDom = ({ x, y, node, edge, type }) => {
-  if (route?.query?.info) return;
-  hasUnsavedChanges.value = true;
-  // 清理现有的菜单容器
-  if (divMenuContainer) {
-    document.getElementById("graphContainer").removeChild(divMenuContainer);
-  }
-  // 创建新的菜单容器
-  divMenuContainer = document.createElement("div");
-  divMenuContainer.setAttribute("class", "div-menu-container");
-  divMenuContainer.style.left = `${x + 30}px`;
-  divMenuContainer.style.top = `${y}px`;
-  // 创建菜单项
-  const divMenuItem = document.createElement("div");
-  divMenuItem.setAttribute("class", "div-menu-item");
-  divMenuItem.innerText = type === 0 ? "删除组件" : "删除连接线";
-
-  divMenuItem.addEventListener("click", () => {
-    if (type === 0) {
-      // 获取当前节点的所有子节点（包括下级的下级节点）
-      const childNodes = getAllChildNodes(node, graph);
-      childNodes.forEach((childNode) => {
-        if (childNode.data?.taskParams) {
-          childNode.data.taskParams.tableFields = [];
-          childNode.data = { ...childNode.data };
-        }
-      });
-      // 删除当前组件
-      graph.removeNode(node);
-    } else {
-      // 获取边的源节点和目标节点的所有下级节点
-      const sourceNode = edge.getSourceCell();
-      const childNodes = getAllChildNodes(sourceNode, graph);
-      childNodes.forEach((childNode) => {
-        if (childNode.data?.taskParams) {
-          childNode.data.taskParams.tableFields = [];
-          childNode.data = { ...childNode.data };
-        }
-      });
-      // 删除连接线
-      graph.removeEdge(edge);
-    }
-    // 隐藏菜单
-    divMenuContainer.style.display = "none";
-  });
-
-  divMenuContainer.appendChild(divMenuItem);
-  document.getElementById("graphContainer").appendChild(divMenuContainer);
-
-  // 点击其他地方隐藏菜单
-  const hideMenu = () => {
-    if (divMenuContainer) {
-      divMenuContainer.style.display = "none";
-    }
-  };
-  document.body.addEventListener("click", hideMenu);
-
-  // 移除菜单监听器时要清理
-  divMenuItem.addEventListener("click", () => {
-    document.body.removeEventListener("click", hideMenu);
-  });
-};
-
 let selectedEdge = ref(); // 外部变量，用于记录当前选中的边
 // 定义方法来清空当前选中边的颜色
 function clearSelectedEdge() {
@@ -532,7 +460,17 @@ function clearSelectedEdge() {
   }
 }
 const title = ref("");
-// 初始化图表
+function bindShortcuts(graph) {
+  graph.use(new Keyboard());
+  graph.bindKey(["delete", "backspace"], () => {
+    const cells = graph.getSelectedCells();
+    if (cells.length > 0) {
+      handleDeleteCells(graph, cells);
+      console.log("444");
+    }
+    return false;
+  });
+}
 function initializeGraph() {
   graph = new Graph({
     container: proxy.$refs.graphContainer,
@@ -571,9 +509,12 @@ function initializeGraph() {
       pointerEvents: "none",
     })
   );
+  graph.use(new Export());
+
   // 插件
-  baseConfig.bindShortcuts(graph);
+  bindShortcuts(graph);
   usePlugins(graph);
+
   undoDisabled.value = graph.canUndo();
 }
 
@@ -612,29 +553,35 @@ function handleEdgeClick({ cell }) {
 }
 
 // / 处理节点添加事件
-function handleNodeAdded({ node }) {
+async function handleNodeAdded({ node }) {
+  if (!node.data.code) {
+    node.data.code = await fetchNodeUniqueKey();
+  }
+
   if (!loading.value) {
     hasUnsavedChanges.value = true;
     currentNode.value = {};
     sourceNode.value = {};
     const nodeData = graph.getNodes();
     const nodeType = node.data.taskParams.type;
-    const existingNode =
-      nodeType != "3" &&
-      nodeData.find(
-        (item) => item.data.taskParams.type === nodeType && item.id !== node.id
-      );
-    if (existingNode) {
-      handleExistingNode(node);
-      return;
+
+    if (nodeType == "1" || nodeType == "2") {
+      const existingNode = nodeData.find((item) => item.data.taskParams.type === nodeType && item.id !== node.id);
+      if (existingNode) {
+        handleExistingNode(node);
+        return;
+      }
     }
-    if (nodeType != "1") {
+
+    if (nodeType !== "1") {
       handleNonInputNode(node);
     }
-    currentNode.value = node;
-    drawer.value = true; // 控制抽屉显示
+
+    // currentNode.value = node;
+    // drawer.value = true;
   }
 }
+
 // 处理已有节点的情况
 function handleExistingNode(node) {
   if (node.data.taskParams.type == 2) {
@@ -650,10 +597,10 @@ function handleNonInputNode(node) {
   edges.forEach((edge) => {
     if (edge.getTargetNode() == node) {
       sourceNode.value = edge.getSourceNode(); // 获取上级组件的数据
-      drawer.value = true; // 控制抽屉显示
+      // drawer.value = true; // 控制抽屉显示
     }
   });
-  drawer.value = true; // 控制抽屉显示
+  // drawer.value = true; // 控制抽屉显示
 }
 
 // 切换端口的显示状态
@@ -662,11 +609,134 @@ function togglePortsVisibility(visible) {
   const ports = container.querySelectorAll(".x6-port-body");
   showPorts(ports, visible);
 }
-// 处理节点右键菜单事件
-function handleNodeContextMenu({ e, node }) {
-  const pos = graph.clientToGraph(e.clientX, e.clientY);
-  createMenuDom({ x: pos.x, y: pos.y, node, type: 0 });
+/**
+ * 统一处理删除节点或连接线的逻辑
+ */
+function handleDeleteCells(graph, cells, menuController) {
+  if (!cells || cells.length === 0) {
+    ElMessageBox.warning("没有选中要删除的节点或连线");
+    return;
+  }
+
+  const target = cells[0];
+  const isEdge = target.isEdge?.();
+  const isNode = target.isNode?.();
+
+  let message = "删除该连线将同时清空其所有子节点的字段配置，是否确认继续？";
+
+  let sourceNode = null;
+
+  if (isNode) {
+    sourceNode = target;
+
+    const childNodes = getAllChildNodes(sourceNode, graph);
+    const hasChildNodes = childNodes.length > 0;
+
+    message = hasChildNodes ? "删除该节点将同时清空其所有子节点的字段配置，是否确认继续？" : "是否确认删除该节点？";
+  }
+
+  if (isEdge) {
+    sourceNode = target.getSourceCell?.();
+  }
+
+  ElMessageBox.confirm(message, "确认删除", {
+    confirmButtonText: "确认",
+    cancelButtonText: "取消",
+    type: "warning",
+  })
+    .then(() => {
+      // 重置子节点配置（无论节点还是边）
+      if (sourceNode) {
+        const childNodes = getAllChildNodes(sourceNode, graph);
+        childNodes.forEach((n) => {
+          if (n.data?.taskParams) {
+            const defaultParams = getDefaultTaskParams(n.data);
+            n.data.taskParams = {
+              ...n.data.taskParams,
+              ...defaultParams,
+            };
+          }
+        });
+      }
+
+      // 执行删除操作
+      cells.forEach((cell) => {
+        if (cell.isNode?.()) {
+          graph.removeNode(cell);
+        } else if (cell.isEdge?.()) {
+          graph.removeEdge(cell);
+        }
+      });
+
+      menuController?.hide?.();
+    })
+    .catch(() => {
+      menuController?.hide?.();
+    });
 }
+
+// 处理节点右键菜单事件
+function handleNodeContextMenu({ e, node, edge, type = 0 }) {
+  e.preventDefault();
+
+  const pos = graph.clientToGraph(e.clientX, e.clientY);
+  const container = document.getElementById("graphContainer");
+
+  let menuController = null;
+
+  const menuItems = [
+    {
+      label: "删除节点",
+      action: () => {
+        // 这里传入单个节点或边的数组，menuController 传进去供关闭菜单用
+        handleDeleteCells(graph, [type === 0 ? node : edge], menuController);
+      },
+    },
+    {
+      label: "编辑节点",
+      action: () => {
+        handleNodeDblClick({ node }, "edit");
+        menuController?.hide();
+      },
+    },
+  ];
+
+  if (node.data.taskParams.type != 1) {
+    menuItems.push({
+      label: "显示输入字段",
+      action: () => {
+        const input = node.data.taskParams.inputFields;
+        if (!Array.isArray(input) || input.length == 0) {
+          ElMessage.warning("无法找到输入字段");
+        } else {
+          openDialog(input, node, "输入字段");
+        }
+        menuController?.hide();
+      },
+    });
+  }
+
+  menuItems.push({
+    label: "显示输出字段",
+    action: () => {
+      const output = node.data.taskParams.outputFields;
+      if (!Array.isArray(output) || output.length === 0) {
+        ElMessage.warning("无法找到输出字段");
+      } else {
+        openDialog(output, node, "输出字段");
+      }
+      menuController?.hide();
+    },
+  });
+
+  menuController = createMenuDom({
+    x: pos.x,
+    y: pos.y,
+    menuItems,
+    container,
+  });
+}
+
 // 处理连接边事件
 function handleEdgeConnected({ edge }) {
   if (!loading.value) {
@@ -685,24 +755,22 @@ function handleEdgeConnected({ edge }) {
     const targetType = target.data?.taskParams?.type;
 
     // 类型 1 不能作为目标节点
-    if (targetType === 1) {
+    if (targetType == 1) {
       graph.removeEdge(edge); // 移除边
       proxy.$modal.msgWarning("输入组件不能被连接");
       return;
     }
 
     // 类型 2 不能作为输入节点（源节点）
-    if (sourceType === 2) {
+    if (sourceType == 2) {
       graph.removeEdge(edge); // 移除边
       proxy.$modal.msgWarning("输出组件不能连接到其他组件");
       return;
     }
 
     // 类型 2 节点只能作为输出节点连接一次
-    if (targetType === 2) {
-      const targetEdges = graph
-        .getEdges()
-        .filter((e) => e.getTargetCell() === target);
+    if (targetType == 2) {
+      const targetEdges = graph.getEdges().filter((e) => e.getTargetCell() === target);
       if (targetEdges.length > 1) {
         graph.removeEdge(edge); // 移除边
         proxy.$modal.msgWarning("目标节点只能作为输出连接一次");
@@ -716,10 +784,12 @@ function handleEdgeConnected({ edge }) {
 // 更新目标节点的数据
 function updateTargetNodeData(source, target, edge) {
   const childNodes = getAllChildNodes(source, graph);
+
   childNodes.forEach((childNode) => {
     if (childNode.data?.taskParams) {
-      childNode.data.taskParams.tableFields =
-        source.data.taskParams.tableFields;
+      childNode.data.taskParams.inputFields = source.data.taskParams.outputFields;
+      childNode.data.taskParams.tableFields = [];
+      childNode.data.taskParams.outputFields = source.data.taskParams.inputFields;
       childNode.data = { ...childNode.data };
     }
   });
@@ -728,17 +798,38 @@ function updateTargetNodeData(source, target, edge) {
 function handleEdgeContextMenu(event) {
   const edge = event.edge;
   const { x, y } = event;
-  createMenuDom({ x: x, y: y, edge, type: 1 });
+  let menuController = null;
+  const menuItems = [
+    {
+      label: "删除连接线",
+      action: () => {
+        handleDeleteCells(graph, [edge], menuController);
+      },
+    },
+  ];
+  const container = document.getElementById("graphContainer");
+
+  createMenuDom({
+    x,
+    y,
+    menuItems,
+    container,
+  });
 }
-// 处理节点双击事件
-function handleNodeDblClick({ node }) {
-  graph.cleanSelection(); // 清除所有选中的元素
+function handleNodeDblClick({ node }, type = "edit") {
+  graph.cleanSelection();
   clearSelectedEdge();
   hasUnsavedChanges.value = true;
-  currentNode.value = {};
   currentNode.value = node;
-  drawer.value = true; // 控制抽屉显示
+  drawer.value = true;
 }
+// 重置操作逻辑
+const handleCancel = () => {
+  proxy.$modal.confirm(`点击重置将清除所有未保存的更改，您确定要继续吗？`).then(() => {
+    // 刷新当前页签
+    proxy.$tab.refreshPage(route);
+  });
+};
 const toolbarClick = (item) => {
   switch (item.id) {
     // case "full-screen": {
@@ -767,12 +858,7 @@ const toolbarClick = (item) => {
       graph.zoomTo(1);
       break;
     case "export": {
-      graph.exportPNG("流程图", {
-        width: 1920,
-        height: 1080,
-        padding: 20,
-        quality: 0.9,
-      });
+      exportGraphAsPNG(graph);
       break;
     }
     case "reset": {
@@ -845,7 +931,7 @@ const tabs = ref([
 const tabAreaStyle = ref({
   position: "absolute",
   height: "300px",
-  width: "83%",
+  width: "100%",
   transition: "bottom 0.3s",
   bottom: "-9999px",
   "background-color": "rgb(255, 255, 255)",
@@ -854,7 +940,7 @@ const tabAreaStyle = ref({
 // 任务检查
 const minimizeAction = () => {
   tabAreaStyle.value.bottom = "-9999px";
-};// 切换到任务检查标签
+}; // 切换到任务检查标签
 const selectTab = (tabName) => {
   activeTab.value = tabName;
   if (activeTab.value == "checkMessage") {
@@ -870,10 +956,7 @@ const isValidClick = (tab) => {
   } else {
     message += "检查通过";
   }
-  if (
-    !nodeData.value?.taskConfig ||
-    Object.keys(nodeData.value.taskConfig).length === 0
-  ) {
+  if (!nodeData.value?.taskConfig || Object.keys(nodeData.value.taskConfig).length === 0) {
     message += "<br>任务配置未填写";
   }
 
@@ -882,7 +965,6 @@ const isValidClick = (tab) => {
 const getAssetsFile = (url) => {
   return new URL(`/src/assets/dpp/etl/${url}`, import.meta.url).href;
 };
-
 </script>
 
 <style scoped lang="less">
@@ -892,10 +974,6 @@ const getAssetsFile = (url) => {
 
   .tabs-container {
     position: relative;
-  }
-
-  .right-pane {
-    min-height: 864px;
   }
 
   .icon-right {
@@ -924,16 +1002,6 @@ const getAssetsFile = (url) => {
       color: var(--el-color-primary);
       display: flex;
       align-items: center;
-
-      &::before {
-        content: "";
-        display: inline-block;
-        background: var(--el-color-primary);
-        width: 6px;
-        height: 16px;
-        border-radius: 2px;
-        margin-right: 10px;
-      }
     }
 
     .head-btns {
@@ -944,14 +1012,23 @@ const getAssetsFile = (url) => {
   }
 }
 
-.left-pane {
-  box-shadow: 0 5px 8px rgba(128, 145, 165, 0.1) !important;
-  background-color: #fff;
-  height: 80vh;
+.flex-container {
+  display: flex;
+  height: calc(87vh - 60px);
   overflow: hidden;
+}
+
+.left-pane {
+  background-color: #fff;
+  box-shadow: 0 5px 8px rgba(128, 145, 165, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 
   .left-tree {
-    padding: 15px 15px 15px 15px;
+    padding: 15px;
+    flex: 1;
+    overflow-y: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
   }
@@ -959,6 +1036,77 @@ const getAssetsFile = (url) => {
   .icon-img {
     width: 15px;
     height: 15px;
+  }
+}
+
+.right-pane {
+  min-height: 864px;
+  width: 20vw;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  .toolbar {
+    position: absolute;
+    top: 16px;
+    right: unset;
+    bottom: unset;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    // opacity: 0.65;
+    z-index: 100;
+
+    .toolbar-item {
+      display: inline-block;
+      width: 34px;
+      height: 32px;
+      cursor: pointer;
+      box-sizing: content-box;
+      margin-right: 5px;
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .search {
+      :deep(.el-input__wrapper) {
+        background: transparent;
+
+        .el-input__inner {
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  .graph-container {
+    flex: 1;
+    margin-left: 15px;
+    min-height: 70vh;
+    box-shadow: 0 5px 8px rgba(128, 145, 165, 0.1);
+  }
+
+  .tabs-container {
+    position: relative;
+
+    .icon-right {
+      position: absolute;
+      top: 10px;
+      right: 30px;
+      font-size: 20px;
+      color: #666;
+      z-index: 10000;
+      cursor: pointer;
+    }
   }
 }
 
@@ -997,47 +1145,6 @@ const getAssetsFile = (url) => {
 
 #graphContainer {
   margin-left: 15px;
-}
-
-.toolbar {
-  position: absolute;
-  top: 16px;
-  right: unset;
-  bottom: unset;
-  left: 18.9%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  // opacity: 0.65;
-  z-index: 100;
-
-  .toolbar-item {
-    display: inline-block;
-    width: 34px;
-    height: 32px;
-    cursor: pointer;
-    box-sizing: content-box;
-    margin-right: 5px;
-
-    &:hover {
-      background-color: rgba(255, 255, 255, 0.2);
-    }
-
-    img {
-      width: 100%;
-      height: 100%;
-    }
-  }
-
-  .search {
-    :deep(.el-input__wrapper) {
-      background: transparent;
-
-      .el-input__inner {
-        color: #fff;
-      }
-    }
-  }
 }
 
 .graph-container {

@@ -217,6 +217,7 @@ const submitForm = (value) => {
 const childComponent = ref(null); // 表字段
 const tableFields = ref([]); // 来源表格
 const createTypeList = ref([]); // 数据源列表
+
 // 获取数据源列表
 const getDatasourceList = async () => {
   try {
@@ -318,7 +319,7 @@ const handleChange = (value) => {
 
 const off = () => {
   proxy.resetForm("dpModelRefs");
-
+  // 清空表格字段数据
   ColumnByAssettab.value = [];
   TablesByDataSource.value = [];
   tableFields.value = [];
@@ -334,7 +335,7 @@ const saveData = async () => {
       loading.value = true;
       try {
         const { data } = await getNodeUniqueKey({
-          projectCode: userStore.projectCode,
+          projectCode: userStore.projectCode || "133545087166112",
           projectId: userStore.projectId,
         });
         form.value.code = data;
@@ -347,15 +348,18 @@ const saveData = async () => {
     const { fromColumns = [], toColumns = [] } = getColumns() || {};
 
     taskParams.tableFields = fromColumns.length ? fromColumns : taskParams.tableFields;
+    console.log("🚀 ~ saveData ~ fromColumns:", fromColumns)
     taskParams.toColumnsList = toColumns.length ? toColumns : ColumnByAssettab.value;
     const { target_columns, columns } = handleType2TaskParams(taskParams.tableFields, taskParams.toColumnsList);
     taskParams.target_columns = target_columns;
     taskParams.columns = columns;
+    console.log("🚀 ~ saveData ~ taskParams.tableFields :", taskParams.tableFields)
+
+    taskParams.outputFields = ColumnByAssettab.value;
     console.log("🚀 ~ saveData ~ form.value:", form.value)
     form.value.taskParams = { ...form.value.taskParams, ...taskParams }
     emit("confirm", form.value);
-    console.log("form.value: ", form.value);
-    emit("update", false);
+
   } catch (error) {
     console.error("保存数据失败:", error);
     loading.value = false;
@@ -365,19 +369,19 @@ const saveData = async () => {
 
 const closeDialog = () => {
   off();
-
+  // 关闭对话框
   emit("update", false);
 };
 
 // 监听属性变化
 function deepCopy(data) {
   if (data === undefined || data === null) {
-    return {};
+    return {}; // 或者返回一个默认值
   }
   try {
     return JSON.parse(JSON.stringify(data));
   } catch (e) {
-    return {};
+    return {}; // 或者返回一个默认值
   }
 }
 
@@ -400,8 +404,12 @@ watchEffect(() => {
   getDatasourceList();
 
   form.value = deepCopy(props.currentNode?.data || {});
+  console.log("🚀 ~ watchEffect ~ form.value :", form.value)
+
   const taskParams = form.value?.taskParams || {};
-  tableFields.value = taskParams.tableFields || [];
+  tableFields.value = taskParams.tableFields?.length
+    ? deepCopy(taskParams.tableFields)
+    : deepCopy(taskParams.inputFields);
   ColumnByAssettab.value = taskParams.toColumnsList || [];
 });
 handleDatasource(form.value?.taskParams.writerDatasource || "");

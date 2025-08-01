@@ -2,6 +2,7 @@
   <el-dialog v-model="visibleDialog" :draggable="true" class="medium-dialog" :title="currentNode?.data?.name"
     showCancelButton :show-close="false" destroy-on-close>
     <el-form ref="dpModelRefs" :model="form" label-width="110px" @submit.prevent v-loading="loading">
+
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item label="节点名称" prop="name" :rules="[
@@ -84,6 +85,7 @@
           </template>
         </el-table-column>
       </el-table>
+
     </el-form>
     <template #footer>
       <div style="text-align: right">
@@ -103,7 +105,7 @@ import { getNodeUniqueKey } from "@/api/dpp/etl/dppEtlTask";
 const { proxy } = getCurrentInstance();
 import useUserStore from "@/store/system/user";
 import {
-  transformColumnsData, createNodeSelect
+  transformColumnsData, createNodeSelect, getParentNode
 } from "@/views/dpp/etl/components/opBase.js";
 const userStore = useUserStore();
 const props = defineProps({
@@ -113,6 +115,9 @@ const props = defineProps({
   info: { type: Boolean, default: false },
   graph: { type: Object, default: () => ({}) },
 });
+
+// 输入字段
+let inputFields = ref([]);
 const emit = defineEmits(["update", "confirm"]);
 const visibleDialog = computed({
   get() {
@@ -152,7 +157,7 @@ const submitForm = (value) => {
 
 const off = () => {
   proxy.resetForm("dpModelRefs");
-
+  // 清空表格字段数据
   ColumnByAssettab.value = [];
   TablesByDataSource.value = [];
   tableFields.value = [];
@@ -167,11 +172,10 @@ const saveData = async () => {
     if (!form.value.code) {
       loading.value = true;
       const response = await getNodeUniqueKey({
-        projectCode: userStore.projectCode,
+        projectCode: userStore.projectCode || "133545087166112",
         projectId: userStore.projectId,
       });
-      loading.value = false;
-
+      loading.value = false; // 结束加载状态
       form.value.code = response.data; // 设置唯一的 code
     }
     const taskParams = form.value?.taskParams;
@@ -179,7 +183,7 @@ const saveData = async () => {
     taskParams.mainArgs.cleanRuleList = transformColumnsData(taskParams.tableFields)
     console.log("🚀 ~ saveData ~ form.value:", form.value)
     emit("confirm", form.value);
-    emit("update", false);
+
   } catch (error) {
     console.error("保存数据失败:", error);
     loading.value = false;
@@ -187,22 +191,23 @@ const saveData = async () => {
 };
 const closeDialog = () => {
   off();
-
+  // 关闭对话框
   emit("update", false);
 };
 
 // 监听属性变化
 function deepCopy(data) {
   if (data === undefined || data === null) {
-    return {};
+    return {}; // 或者返回一个默认值
   }
   try {
     return JSON.parse(JSON.stringify(data));
   } catch (e) {
-    return {};
+    return {}; // 或者返回一个默认值
   }
 }
 let nodeOptions = ref([]);
+
 // 监听属性变化
 watchEffect(() => {
   if (!props.visible) {
@@ -210,20 +215,15 @@ watchEffect(() => {
     return;
   }
   form.value = deepCopy(props.currentNode?.data || {});
+  console.log("2", props.currentNode?.data.taskParams)
   nodeOptions.value = createNodeSelect(props.graph, props.currentNode.id);
-  tableFields.value = props.currentNode?.data.taskParams.tableFields || [];
+  const taskParams = props.currentNode?.data?.taskParams || {};
+  tableFields.value = Array.isArray(taskParams.tableFields) && taskParams.tableFields.length > 0
+    ? taskParams.tableFields
+    : taskParams.inputFields || [];
+  inputFields.value = props.currentNode?.data.taskParams.inputFields || [];
 });
-// 选择节点
-const handleNodeChange = (selectedNodeId) => {
-  // 根据 selectedNodeId 获取节点数据
-  const selectedNode = props.graph.getCellById(selectedNodeId); // 获取选中的节点
-  if (selectedNode) {
-    const nodeData = selectedNode.getProp("data"); // 获取节点的 data 数据
-    console.log("选中的节点数据:", nodeData.taskParams.tableFields);
-    tableFields.value = nodeData.taskParams.tableFields;
 
-  }
-};
 </script>
 
 

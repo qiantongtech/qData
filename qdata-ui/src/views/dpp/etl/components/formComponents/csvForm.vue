@@ -44,6 +44,20 @@
       <el-divider content-position="center">
         <span class="blue-text">属性字段</span>
       </el-divider>
+      <!-- <div class="justify-between mb15">
+        <el-row :gutter="15" class="btn-style">
+          <el-col :span="1.5">
+            <el-button
+              type="primary"
+              plain
+              @click="parseExcel"
+              v-hasPermi="['dpp:etl:etltask:add']"
+            >
+              <i class="iconfont-mini icon-xinzeng mr5"></i> 解析Excel
+            </el-button>
+          </el-col>
+        </el-row>
+      </div> -->
       <el-table stripe height="310px" v-loading="loadingList" :data="ColumnByAssettab">
         <el-table-column label="序号" type="index" width="80" align="center">
           <template #default="scope">
@@ -91,6 +105,7 @@ import {
   getCsvColumn,
 } from "@/api/dpp/etl/dppEtlTask";
 import ExcelUploadDialog from "./components/ExcelUploadDialog";
+import FileUploadbtn from '@/components/FileUploadbtn/index1.vue'
 const { proxy } = getCurrentInstance();
 import useUserStore from "@/store/system/user";
 const userStore = useUserStore();
@@ -114,6 +129,14 @@ let loading = ref(false);
 let loadingList = ref(false);
 let TablesByDataSource = ref([]);
 let ColumnByAssettab = ref();
+const uploadFileUrl = ref(import.meta.env.VITE_APP_BASE_API + "/upload"); // 上传文件服务器地址
+/*** 用户导入参数 */
+const upload = reactive({
+  // 是否禁用上传
+  isUploading: false,
+  // 设置上传的请求头部
+  headers: { Authorization: "Bearer " + getToken() },
+});
 // 修改
 const open = ref(false);
 let row = ref({});
@@ -122,11 +145,13 @@ const openDialog = (obj) => {
   open.value = true;
 };
 const handletaskConfig = (form) => {
+  // 找到对应的 id 并更新 ColumnByAssettab 中的相应项
   ColumnByAssettab.value = ColumnByAssettab.value.map((column) => {
     if (column.id == form.id) {
-      return { ...column, ...form };
+      // 更新匹配 id 的项
+      return { ...column, ...form }; // 或者根据需要做其他的合并方式
     }
-    return column;
+    return column; // 对于不匹配的项，保持不变
   });
 };
 
@@ -144,7 +169,7 @@ const parseExcel = async (id) => {
     return;
   }
 
-  loading.value = true;
+  loading.value = true; // Assuming 'loading' is a global loading state variable
   try {
     let res = await getCsvColumn({
       file: form.value.taskParams.file,
@@ -161,13 +186,17 @@ const parseExcel = async (id) => {
     } else {
       ElMessage.error("CSV 解析失败，未获取到有效数据！");
     }
+  } catch (error) {
+    ElMessage.error("解析文件时发生错误！");
+    console.error(error);
   } finally {
-    loading.value = false;
+    loading.value = false; // Ensure loading is turned off regardless of success or failure
   }
 };
 
 const off = () => {
   proxy.resetForm("dpModelRefs");
+  // 清空表格字段数据
   ColumnByAssettab.value = [];
   TablesByDataSource.value = [];
   tableFields.value = [];
@@ -175,7 +204,7 @@ const off = () => {
 // 保存数据
 const saveData = async () => {
   try {
-
+    // 异步验证表单
     const valid = await dpModelRefs.value.validate();
     if (!valid) return;
     if (
@@ -188,11 +217,11 @@ const saveData = async () => {
     if (!form.value.code) {
       loading.value = true;
       const response = await getNodeUniqueKey({
-        projectCode: userStore.projectCode,
+        projectCode: userStore.projectCode || "133545087166112",
         projectId: userStore.projectId,
       });
-      loading.value = false;
-      form.value.code = response.data;
+      loading.value = false; // 结束加载状态
+      form.value.code = response.data; // 设置唯一的 code
     }
     const taskParams = form.value?.taskParams;
     taskParams.tableFields = ColumnByAssettab.value;
@@ -209,26 +238,27 @@ const saveData = async () => {
       };
     });
     emit("confirm", form.value);
-    emit("update", false);
-  } finally {
-    loading.value = false;
+
+  } catch (error) {
+    console.error("保存数据失败:", error);
+    loading.value = false; // 确保错误发生时也结束加载状态
   }
-}
+};
 const closeDialog = () => {
   off();
-
+  // 关闭对话框
   emit("update", false);
 };
 
 // 监听属性变化
 function deepCopy(data) {
   if (data === undefined || data === null) {
-    return {};
+    return {}; // 或者返回一个默认值
   }
   try {
     return JSON.parse(JSON.stringify(data));
   } catch (e) {
-    return {};
+    return {}; // 或者返回一个默认值
   }
 }
 // 监听属性变化
@@ -241,6 +271,43 @@ watchEffect(() => {
     off();
   }
 });
+// 上传前校验文件类型
+function handleBeforeUpload(file) {
+  // 校检文件类型
+  let fileType = ["csv"];
+  const fileName = file.name.split(".");
+  const fileExt = fileName[fileName.length - 1];
+  const isTypeOk = fileType.indexOf(fileExt) >= 0;
+  if (!isTypeOk) {
+    proxy.$modal.msgError(`文件格式不正确, 请上传csv格式文件!`);
+    return false;
+  }
+  // 校验文件大小
+  const maxSize = 50; // 最大文件大小，单位MB
+  const fileSize = file.size / 1024 / 1024;
+  if (fileSize > maxSize) {
+    proxy.$modal.msgError(`文件大小不能超过 ${maxSize}MB!`);
+    return false;
+  }
+  return true;
+}
+
+// 文件个数超出
+function handleExceed() {
+  proxy.$modal.msgError(`上传文件数量不能超过1个!`);
+}
+
+// 上传失败
+function handleUploadError(err) {
+  proxy.$modal.msgError("上传文件失败");
+}
+
+// 上传成功回调
+function handleUploadSuccess(res, file) {
+  if (res.url) {
+    form.value.taskParams.file = res.url;
+  }
+}
 
 // 文件删除
 function handleRemove() {

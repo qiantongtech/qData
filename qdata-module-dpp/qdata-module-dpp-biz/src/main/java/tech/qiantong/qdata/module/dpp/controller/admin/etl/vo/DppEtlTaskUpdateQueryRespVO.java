@@ -151,6 +151,9 @@ public class DppEtlTaskUpdateQueryRespVO implements Serializable {
     @TableField(exist = false)
     List<Map<String, Object>> taskRelationJson;
 
+    @Schema(description = "草稿任务配置信息", example = "")
+    private String draftJson;
+
 
     public DppEtlTaskUpdateQueryRespVO(DppEtlTaskDO dppEtlTaskDO) {
         this.id = dppEtlTaskDO.getId();
@@ -174,6 +177,7 @@ public class DppEtlTaskUpdateQueryRespVO implements Serializable {
         this.dsId = dppEtlTaskDO.getDsId();
         this.validFlag = dppEtlTaskDO.getValidFlag();
         this.delFlag = dppEtlTaskDO.getDelFlag();
+        this.draftJson = dppEtlTaskDO.getDraftJson();
     }
 
     private List<Map<String, Object>> parseList(String string) {

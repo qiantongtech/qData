@@ -1,8 +1,12 @@
 package tech.qiantong.qdata.module.dpp.dal.dataobject.etl;
 
-import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableName;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 import java.util.Date;
@@ -109,4 +113,7 @@ public class DppEtlTaskDO extends BaseEntity {
     /** 最后执行时间 */
     @TableField(exist = false)
     private Date lastExecuteTime;
+
+    @Schema(description = "草稿任务配置信息", example = "")
+    private String draftJson;
 }

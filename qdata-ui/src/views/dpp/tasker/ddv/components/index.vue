@@ -2,89 +2,96 @@
   <div class="app-container" ref="app-container" v-loading="loading" style="overflow: hidden !important">
     <div class="head-container">
       <div class="head-title">
+        <img :src="getDatasourceIcon(nodeData.typaCode)" alt="" :style="getDatasourceIcon(nodeData.typaCode)?'width: 20px;margin-right: 5px;':''">
         {{ nodeData.name != "" ? nodeData.name : "数据开发任务" }}
       </div>
       <div class="head-btns">
-        <el-button type="primary" size="small" @click="handleExportData" v-if="!route.query.info">保存</el-button>
-        <el-button type="primary" size="small" @click="routeTo('/dpp/tasker/dpptaskerddv', '')">取消</el-button>
-        <el-button type="primary" size="small" @click="openTaskConfigDialog">任务配置</el-button>
-        <el-button type="primary" size="small" v-if="!route.query.info"
-          @click="selectTab('checkMessage')">任务检查</el-button>
+        <el-button type="primary" icon="CircleCheck" @click="handleExportData" v-if="!route.query.info">保存</el-button>
+        <el-button icon="Back" @click="routeTo('/dpp/tasker/dpptaskerddv', '')">取消</el-button>
+        <el-button icon="Setting" @click="openTaskConfigDialog">任务配置</el-button>
+        <el-button icon="Coin" v-if="!route.query.info" @click="selectTab('checkMessage')">任务检查</el-button>
+        <el-button icon="VideoPlay" v-if="formStatus == 1" @click="handleRun">运行</el-button>
       </div>
     </div>
-    <el-row>
-      <sql-editor ref="editorRef" :value="form.taskParams.sql" class="sql-editor" :height="'calc(100vh - 180px)'"
-        :readonly="route.query?.info" @changeTextarea="changeTextarea($event)" />
-      <div class="tabs-container" v-bind:style="tabAreaStyle">
-        <!-- 图标放置在最右侧 -->
-        <el-icon class="icon-right" @click="minimizeAction">
-          <Minus />
-        </el-icon>
-        <el-tabs v-model="activeTab" class="custom-tabs">
-          <el-tab-pane v-for="(tab, index) in tabs" :key="index" :name="tab.name">
-            <template #label>
-              <span>{{ tab.label }}</span>
-            </template>
-            <div class="tab-content" v-html="tab.content"></div>
-          </el-tab-pane>
-        </el-tabs>
+    <!-- <sql-editor ref="editorRef" :value="form.taskParams.sql" class="sql-editor" :height="'calc(100vh - 180px)'"
+        :readonly="route.query?.info" @changeTextarea="changeTextarea($event)" /> -->
+    <div class="sql-row">
+      <div class="sideConfig">
+        <div class="icon" :class="{ act: activeValue.name == item.name }" v-for="item in iconList" :key="item" @click="handleIcon(item)" :title="item.name">
+          <el-icon><component :is="item.icon" /></el-icon>
+        </div>
       </div>
-    </el-row>
-    <taskConfigDialog :visible="taskConfigDialogVisible" title="任务配置" @update:visible="taskConfigDialogVisible = $event"
-      @confirm="handletaskConfig" :data="form" :userList="userList" :deptOptions="deptOptions"
-      :info="route.query.info" />
+      <div class="editor-warp">
+        <div class="editor-con" :style="`width: calc(100%  - ${configWidth}px);`">
+          <div class="editor-main" ref="editorMain" :style="`height: calc(100% - ${consoleHeight}px);`">
+            <Editor ref="editorRef" :model-value="form.sql" @update:model-value="changeTextarea" :style="{ borderBottom: activeValue.type ? 'none' : '' }" />
+            <div v-if="false" class="full-screen" :title="isFullscreen ? '退出全屏' : '全屏'" @click="fullScreenCallBack">
+              <i :class="isFullscreen ? 'iconfont icon-fullscreen-exit-line' : 'iconfont icon-a-quanpingxianxing'" style="font-size: 20px"></i>
+            </div>
+          </div>
+          <Console ref="consoleRef" :currValue="activeValue" @close="closeConsoleDialog" v-if="activeValue.type" />
+        </div>
+        <ConfigView ref="configViewRef" :currValue="activeValueR" @close="closeConsoleDialogR" v-if="activeValueR.type" />
+      </div>
+      <div class="sideConfig sideConfig-r">
+        <div class="icon" :class="{ act: activeValueR.name == item.name }" v-for="item in iconListR" :key="item" @click="handleIconR(item)" :title="item.name">
+          <el-icon><component :is="item.icon" /></el-icon>
+        </div>
+      </div>
+    </div>
+    <div class="tabs-container" v-bind:style="tabAreaStyle">
+      <!-- 图标放置在最右侧 -->
+      <el-icon class="icon-right" @click="minimizeAction">
+        <Minus />
+      </el-icon>
+      <el-tabs v-model="activeTab" class="custom-tabs">
+        <el-tab-pane v-for="(tab, index) in tabs" :key="index" :name="tab.name">
+          <template #label>
+            <span>{{ tab.label }}</span>
+          </template>
+          <div class="tab-content" v-html="tab.content"></div>
+        </el-tab-pane>
+      </el-tabs>
+    </div>
+    <taskConfigDialog
+      :visible="taskConfigDialogVisible"
+      title="修改配置"
+      @update:visible="taskConfigDialogVisible = $event"
+      @save="handletaskConfig"
+      :data="nodeData"
+      :userList="userList"
+      :deptOptions="deptOptions"
+      :info="true"
+    />
   </div>
 </template>
 <script setup>
 import { ref, computed, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import SqlEditor from "@/components/SqlEditor/index1.vue";
+// import SqlEditor from "@/components/SqlEditor/index1.vue";
+// import SqlEditor from "@/components/SqlEditor/index3.vue";
 import taskConfigDialog from "./taskConfigDialog.vue";
 import useUserStore from "@/store/system/user";
 import { deptUserTree } from "@/api/system/system/user.js";
 import { listAttDataDevCat } from "@/api/att/cat/attDataDevCat/attDataDevCat";
+// sqlEditor
+import { useFullscreen } from "@vueuse/core";
+import Console from "@/components/SqlEditor/console/index.vue";
+import Editor from "@/components/SqlEditor/editor/index.vue";
+import ConfigView from "@/components/SqlEditor/configView/index.vue";
 
 const userStore = useUserStore();
-import {
-  createProcessDefinition,
-  dppEtlTask,
-  updateProcessDefinition,
-} from "@/api/dpp/etl/dppEtlTask";
-import { treeData } from "../components/data";
-
-import { right } from "@antv/x6/lib/registry/port-layout/line";
+import { createProcessDefinition, dppEtlTask, updateProcessDefinition, startDppEtlTask } from "@/api/dpp/etl/dppEtlTask";
+// import { treeData } from "../components/data";
+// import { renderGraph } from "@/utils/opBase";
+// import { right } from "@antv/x6/lib/registry/port-layout/line";
 
 const { proxy } = getCurrentInstance();
 const route = useRoute();
 const router = useRouter();
 let loading = ref(false);
 let form = ref({
-  id: "",
-  code: "", // 组件的 code
-  taskType: "",
-  name: "name", // 名字
-  version: "", // 版本号
-  componentType: "",
-  taskConfig: {
-    name: "",
-    catCode: "",
-    personCharge: "",
-    contactNumber: "",
-    releaseState: "0",
-    description: "",
-  },
-  taskParams: {
-    sqlType: "0",
-    type: "",
-    sql: "",
-    typaCode: "DM", // 默认值
-    localParams: [],
-    datasources: {
-      datasourceId: "", // 默认值
-      datasourceType: "",
-      dbname: "",
-    },
-  },
+  sql: "",
 });
 
 let id = route.query.id || 1;
@@ -100,38 +107,67 @@ watch(
     }
   }
 );
+// 图标
+const getDatasourceIcon = (type) => {
+  switch (type) {
+    case "DM":
+      return new URL("@/assets/system/images/dpp/DM.png", import.meta.url).href;
+    case "Oracle":
+      return new URL("@/assets/system/images/dpp/oracle.png", import.meta.url).href;
+    case "MYSQL":
+      return new URL("@/assets/system/images/dpp/mysql.png", import.meta.url).href;
+    case "Kingbase":
+      return new URL("@/assets/system/images/dpp/kingBase.png", import.meta.url).href;
+    case "Sqlerver":
+      return new URL("@/assets/system/images/dpp/sqlServer.png", import.meta.url).href;
+    case "PostgreSql":
+      return new URL("@/assets/system/images/dpp/kafka.png", import.meta.url).href;
+    default:
+      return null;
+  }
+};
 let hasUnsavedChanges = ref(false);
-let nodeData = ref({ name: "", taskConfig: {} });
+let nodeData = ref({ name: "" });
 // 任务配置
 const taskConfigDialogVisible = ref(false);
 let editorRef = ref("");
 function changeTextarea(val) {
-  form.value.taskParams.sql = val;
+  form.value.sql = val;
   hasUnsavedChanges.value = true;
 }
-let deptTreeRef = ref();
-const handleNodeClick = (checkedNodes, checkedKeys, data, event) => {
-  if (checkedKeys.disabled) {
-    event.preventDefault();
-    return;
-  }
-  form.value.taskParams.typaCode = checkedKeys.data.label;
-  form.value.taskParams.datasources.datasourceId = "";
-  taskConfigDialogVisible.value = true;
-};
-
+const formStatus = ref(null);
 function getList() {
   loading.value = true;
-  dppEtlTask(route.query.id).then((response) => {
-    nodeData.value = response.data.taskConfig;
-    form.value = {
-      ...response.data.taskDefinitionList[0],
-      taskConfig: response.data.taskConfig,
-      id: response.data.id,
-    };
-    loading.value = false;
-    // 部门
-  });
+  dppEtlTask(route.query.id)
+    .then((response) => {
+      // 任务配置
+      nodeData.value = {
+        ...response.data.taskConfig,
+        draftJson: response.data.draftJson,
+        status: response.data.status,
+        typaCode: response.data.draftJson ? JSON.parse(response.data.draftJson).typaCode : "",
+      };
+      // 修改或新增标记
+      formStatus.value = response.data.status;
+      iconListR.value[0].data = JSON.parse(JSON.stringify(response.data));
+      iconList.value[0].data = JSON.parse(JSON.stringify(response.data));
+      // 默认选中-控制台
+      // activeValue.value = iconList.value[0];
+      activeValueR.value = iconListR.value[0];
+      form.value = {
+        ...response.data,
+      };
+      if (response.data.taskDefinitionList.length == 0) {
+        let sql = JSON.parse(response.data.draftJson);
+        form.value.sql = sql.sqlData.content;
+      } else {
+        form.value.sql = response.data.taskDefinitionList[0].taskParams.sql;
+      }
+      // 部门
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 }
 
 let userList = ref([]);
@@ -151,7 +187,7 @@ function getDeptTree() {
       // 处理部门类别数据
       deptOptions.value = [
         {
-          id: "",
+          id: 0,
           name: "数据开发类目",
           value: "",
           children: proxy.handleTree(taskCatRes.data, "id", "parentId"),
@@ -169,13 +205,61 @@ function getDeptTree() {
 if (route.query.id) {
   getList();
 }
+const handleRun = async () => {
+  let id = route.query.id;
+  if (!id) {
+    proxy.$modal.msgError("无效的任务 ID");
+    return;
+  }
+  loading.value = true;
+  try {
+    const res = await startDppEtlTask(id);
+    if (res.code == 200) {
+      proxy.$modal.msgSuccess("操作成功");
+      // 打开控制台
+      activeValue.value = iconList.value[0];
+    } else {
+      proxy.$modal.msgError(res?.msg || "执行失败");
+    }
+  } finally {
+    loading.value = false;
+  }
+};
 // 运行实例保存
 const handletaskConfig = (obj) => {
-  form.value = { ...obj };
-  form.value.name = obj.taskConfig.name;
+  nodeData.value = {
+    ...obj,
+  };
 };
 const dataJson = () => {
-  const { taskConfig, ...taskDefinition } = form.value;
+  const taskParams = configViewRef.value.form;
+  const taskDefinitionList = {
+    taskParams: taskParams,
+    // 任务配置
+    id: form.value.id,
+    name: nodeData.value.name,
+    code: form.value.code,
+    version: form.value.version,
+    description: nodeData.value.description,
+    // environmentCode: taskParams.environmentCode,
+    // flag: taskParams.flag,
+    // isCache: taskParams.isCache,
+    // taskExecuteType: taskParams.taskExecuteType,
+    // 基本配置
+    taskPriority: taskParams.taskPriority,
+    workerGroup: taskParams.workerGroup,
+    failRetryTimes: taskParams.failRetryTimes,
+    failRetryInterval: taskParams.failRetryInterval,
+    delayTime: taskParams.delayTime,
+    // 其他配置
+    taskType: taskParams.taskType,
+    componentType: taskParams.componentType,
+  };
+  taskDefinitionList.taskParams.sql = form.value.sql;
+  // 任务配置
+  nodeData.value.componentType = taskParams.componentType;
+  nodeData.value.taskType = taskParams.taskType;
+  nodeData.value.executionType = "PARALLEL";
   // 准备需要返回的数据
   const taskRelationData = {
     name: "",
@@ -186,18 +270,17 @@ const dataJson = () => {
     conditionType: "NONE",
     conditionParams: {},
   };
-  console.log("🚀 ~ dataJson ~ taskRelationData:", taskRelationData);
-
   const locations = [{ taskCode: form.value?.code, x: 0, y: 0 }];
   // 返回这三个值
   return {
+    ...form.value,
     taskRelationJson: JSON.stringify([taskRelationData]),
     locations,
-    taskDefinitionList: JSON.stringify([taskDefinition]),
-    projectCode: userStore.projectCode,
+    taskDefinitionList: JSON.stringify([taskDefinitionList]),
+    projectCode: userStore.projectCode || "133545087166112",
     projectId: userStore.projectId,
-    ...taskConfig,
     type: "3",
+    ...nodeData.value,
   };
 };
 let exportData2 = ref();
@@ -205,21 +288,27 @@ let exportData2 = ref();
 const handleExportData = async () => {
   loading.value = true;
   try {
-    if (!form.value.taskParams.sql) {
+    if (!form.value.sql) {
       return proxy.$modal.msgError("请输入sql语句");
     }
-    if (!form.value?.taskConfig?.name) {
+    if (!nodeData.value?.name) {
       taskConfigDialogVisible.value = true;
       return;
     }
+    let valid = await configViewRef.value.configRef.validate();
+    if (!valid) {
+      return proxy.$modal.msgError("请检查属性配置必填项");
+    }
     exportData2.value = dataJson();
+    console.log("🚀 ~ handleExportData ~ exportData2.value:", exportData2.value);
     // 根据 nodeData.id 判断是更新还是创建
-    const res = form.value?.id
-      ? await updateProcessDefinition({
-        ...exportData2.value,
-        id: form.value?.id,
-      })
-      : await createProcessDefinition(exportData2.value);
+    const res =
+      formStatus.value != "-1"
+        ? await updateProcessDefinition({
+            ...exportData2.value,
+            id: form.value?.id,
+          })
+        : await createProcessDefinition(exportData2.value);
 
     // 成功后处理
     if (res.code == "200") {
@@ -237,14 +326,14 @@ const handleExportData = async () => {
 const handleSuccess = () => {
   taskConfigDialogVisible.value = false;
   hasUnsavedChanges.value = false;
-  const message = form.value?.id ? "修改成功" : "新增成功";
+  const message = form.value?.id ? "操作成功" : "操作成功";
   router.push("/dpp/tasker/dpptaskerddv");
   proxy.$modal.msgSuccess(message);
 };
 
 const handleError = (error) => {
   console.error("操作失败:", error);
-  proxy.$modal.msgError(error.message || "发生错误");
+  proxy.$modal.msgError(error.message || "操作失败，请检查必填项");
 };
 
 const openTaskConfigDialog = () => {
@@ -259,6 +348,7 @@ const minimizeAction = () => {
 onMounted(() => {
   getDeptTree();
 });
+// eslint-disable-next-line no-unused-vars
 function routeTo(link, row) {
   hasUnsavedChanges.value = false;
   if (link !== "" && link.indexOf("http") !== -1) {
@@ -299,14 +389,14 @@ const selectTab = (tabName) => {
   activeTab.value = tabName;
 
   if (activeTab.value == "checkMessage") {
-    let res = isValidClick();
+    isValidClick();
   }
   tabAreaStyle.value.bottom = "0px";
 };
 const validateGraph = () => {
   let errors = [];
 
-  if (!form.value.taskParams.sql) {
+  if (!form.value.sql) {
     errors.push("请输入sql语句");
   }
   if (!form.value?.taskConfig?.name) {
@@ -325,7 +415,7 @@ const validateGraph = () => {
     };
   }
 };
-const isValidClick = (tab) => {
+const isValidClick = () => {
   const { isValid, errorMessages } = validateGraph();
   console.log("🚀 ~ isValidClick ~ errorMessages:", errorMessages);
   let message = "";
@@ -371,10 +461,80 @@ onBeforeRouteLeave((to, from, next) => {
     next();
   }
 });
+
+// #region sql编辑器
+// 左侧图标
+const iconList = ref([
+  {
+    name: "日志控制台",
+    type: "console",
+    icon: "Tickets",
+    data: {},
+  },
+  {
+    name: "查询结果",
+    type: "result",
+    icon: "Odometer",
+    data: [],
+  },
+  {
+    name: "执行历史记录",
+    type: "history",
+    icon: "Timer",
+    data: [],
+  },
+]);
+const activeValue = ref({ name: "" });
+const handleIcon = (item) => {
+  if (activeValue.value.name == item.name) {
+    activeValue.value = { name: "" };
+  } else {
+    activeValue.value = item;
+  }
+};
+const closeConsoleDialog = () => {
+  activeValue.value = { name: "" };
+};
+// 右侧图标
+const iconListR = ref([
+  {
+    name: "属性配置",
+    type: "attrConfig",
+    icon: "Operation",
+    data: {
+      taskDefinitionList: [],
+    },
+  },
+]);
+const activeValueR = ref({ name: "" });
+const handleIconR = (item) => {
+  if (activeValueR.value.name == item.name) {
+    activeValueR.value = { name: "" };
+  } else {
+    activeValueR.value = item;
+  }
+};
+const closeConsoleDialogR = () => {
+  activeValueR.value = { name: "" };
+};
+// 控制台和配置页的自定义宽高
+const consoleRef = ref(null);
+const consoleHeight = computed(() => consoleRef.value && consoleRef.value.currHeight);
+const configViewRef = ref(null);
+const configWidth = computed(() => configViewRef.value && configViewRef.value.currWidth);
+
+// 全屏
+const editorMain = ref(null);
+const { isFullscreen, toggle } = useFullscreen(editorMain);
+const fullScreenCallBack = () => {
+  toggle();
+};
+// #endregion
 </script>
 
-<style scoped lang="less">
+<style lang="less" scoped>
 .app-container {
+  position: relative;
   height: calc(87vh - 7px);
   overflow: hidden !important;
 
@@ -415,18 +575,19 @@ onBeforeRouteLeave((to, from, next) => {
 
       &::before {
         content: "";
-        display: inline-block;
-        background: var(--el-color-primary);
-        width: 6px;
-        height: 16px;
-        border-radius: 2px;
+        display: none;
+      }
+      .head-icon {
+        width: 30px;
+        margin-left: 5px;
         margin-right: 10px;
       }
     }
 
     .head-btns {
       .el-button {
-        height: 28px;
+        height: 32px;
+        padding: 8px 18px;
       }
     }
   }
@@ -566,5 +727,87 @@ onBeforeRouteLeave((to, from, next) => {
 
 :deep(.x6-graph-grid) {
   display: none;
+}
+</style>
+<style lang="scss" scoped>
+.sql-row {
+  width: 100%;
+  height: calc(100vh - 190px);
+  display: flex;
+  background: #fff;
+  .sideConfig {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    // border-top: 1px solid rgba(0, 0, 0, 0.06);
+    .icon {
+      cursor: pointer;
+      width: 30px;
+      height: 30px;
+      border-radius: 2px;
+      border: 1px solid var(--el-color-primary);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 16px;
+      &:hover {
+        background-color: var(--el-color-primary);
+        .el-icon {
+          color: #fff;
+        }
+      }
+      &.act {
+        background-color: var(--el-color-primary);
+        .el-icon {
+          color: #fff;
+        }
+      }
+      .el-icon {
+        color: var(--el-color-primary);
+      }
+    }
+    &.sideConfig-r {
+      justify-content: flex-start;
+      .icon {
+        margin-top: 0;
+        margin-bottom: 15px;
+      }
+    }
+  }
+  .editor-warp {
+    width: calc(100% - 100px);
+    height: 100%;
+    position: relative;
+    background: #fff;
+    display: flex;
+    .editor-con {
+      width: 100%;
+      height: 100%;
+      border-left: 1px solid rgba(0, 0, 0, 0.06);
+      border-right: 1px solid rgba(0, 0, 0, 0.06);
+      .editor-main {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        // padding: 15px 0;
+        .json-editor {
+          padding: 15px 0;
+        }
+      }
+    }
+  }
+}
+.full-screen {
+  cursor: pointer;
+  position: absolute;
+  top: 30px;
+  right: 10%;
+  z-index: 10;
+  box-shadow: rgb(204, 204, 204) 0px 0px 10px;
+  padding: 5px 5px;
+  border-radius: 4px;
 }
 </style>

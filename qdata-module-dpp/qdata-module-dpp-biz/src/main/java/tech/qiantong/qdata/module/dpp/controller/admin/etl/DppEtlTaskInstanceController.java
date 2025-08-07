@@ -1,6 +1,14 @@
 package tech.qiantong.qdata.module.dpp.controller.admin.etl;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.util.Arrays;
+
 import cn.hutool.core.date.DateUtil;
+
+import java.util.List;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang3.StringUtils;
@@ -8,25 +16,20 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import tech.qiantong.qdata.common.core.domain.AjaxResult;
+import tech.qiantong.qdata.common.core.page.PageParam;
 import tech.qiantong.qdata.common.annotation.Log;
 import tech.qiantong.qdata.common.core.controller.BaseController;
-import tech.qiantong.qdata.common.core.domain.AjaxResult;
 import tech.qiantong.qdata.common.core.domain.CommonResult;
-import tech.qiantong.qdata.common.core.page.PageParam;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.enums.BusinessType;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.common.utils.poi.ExcelUtil;
+import tech.qiantong.qdata.module.dpp.api.etl.dto.DppEtlTaskInstanceLogRespDTO;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.*;
 import tech.qiantong.qdata.module.dpp.convert.etl.DppEtlTaskInstanceConvert;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlTaskInstanceDO;
 import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlTaskInstanceService;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * 数据集成任务实例Controller
@@ -113,4 +116,29 @@ public class DppEtlTaskInstanceController extends BaseController {
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dppEtlTaskInstanceService.removeDppEtlTaskInstance(Arrays.asList(ids)));
     }
+
+    @Operation(summary = "获取数据集成任务实例列表")
+    @GetMapping("/treeList")
+    public CommonResult<PageResult<DppEtlTaskInstanceTreeListRespVO>> treeList(DppEtlTaskInstanceTreeListReqVO dppEtlTaskInstance) {
+        return CommonResult.success(dppEtlTaskInstanceService.treeList(dppEtlTaskInstance));
+    }
+
+    @Operation(summary = "获取子任务列表")
+    @GetMapping("/subNodeList")
+    public CommonResult<List<DppEtlTaskInstanceTreeListRespVO>> subNodelist(@RequestParam Long taskInstanceId, @RequestParam Long nodeInstanceId) {
+        return CommonResult.success(dppEtlTaskInstanceService.subNodelist(taskInstanceId, nodeInstanceId));
+    }
+
+    @Operation(summary = "获取正在运行的实例")
+    @GetMapping("/getRunTaskInstance")
+    public CommonResult<Long> getRunTaskInstance(@RequestParam Long taskId) {
+        return CommonResult.success(dppEtlTaskInstanceService.getRunTaskInstance(taskId));
+    }
+
+    @Operation(summary = "通过实例id获取日志")
+    @GetMapping("/getLogByTaskInstanceId")
+    public CommonResult<DppEtlTaskInstanceLogRespDTO> getLogByTaskInstanceId(@RequestParam Long taskInstanceId) {
+        return CommonResult.success(dppEtlTaskInstanceService.getLogByTaskInstanceId(taskInstanceId));
+    }
+
 }

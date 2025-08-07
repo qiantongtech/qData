@@ -1,5 +1,7 @@
 package tech.qiantong.qdata.module.dpp.service.etl.impl;
 
+import cn.hutool.core.io.FileUtil;
+import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -24,18 +26,21 @@ import tech.qiantong.qdata.common.utils.DateUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.module.att.api.project.IAttProjectApi;
+import tech.qiantong.qdata.module.dpp.api.etl.dto.DppEtlTaskInstanceLogRespDTO;
 import tech.qiantong.qdata.module.dpp.api.etl.dto.DppEtlTaskRespDTO;
+import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlTaskInstanceTreeListRespVO;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.*;
+import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlNodeInstanceDO;
+import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlTaskDO;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlTaskInstanceDO;
 import tech.qiantong.qdata.module.dpp.dal.mapper.etl.DppEtlTaskInstanceMapper;
+import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlNodeInstanceService;
 import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlTaskInstanceService;
+import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlTaskLogService;
 import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlTaskService;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static tech.qiantong.qdata.common.core.domain.AjaxResult.error;
@@ -61,7 +66,16 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
     private IDppEtlTaskService dppEtlTaskService;
 
     @Resource
+    private IDppEtlTaskLogService dppEtlTaskLogService;
+
+    @Resource
     private IDsEtlExecutorService dsEtlExecutorService;
+
+    @Resource
+    private IDppEtlNodeInstanceService dppEtlTNodeInstanceService;
+
+    @Value("${ds.http_projectCode}")
+    private String httpProjectCode;
 
     @Override
     public PageResult<DppEtlTaskInstanceDO> getDppEtlTaskInstancePage(DppEtlTaskInstancePageReqVO pageReqVO) {
@@ -205,6 +219,10 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
     @Override
     public Boolean createTaskInstance(ProcessInstance processInstance) {
         log.info(JSONObject.toJSONString(processInstance));
+        //判断是否是数据发现 是直接抛弃
+        if (StringUtils.equals(httpProjectCode, String.valueOf(processInstance.getProjectCode()))) {
+            return true;
+        }
         DppEtlTaskRespDTO dppEtlTaskRespDTO = dppEtlTaskService.getTaskByTaskCode(String.valueOf(processInstance.getProcessDefinitionCode()));
         if (dppEtlTaskRespDTO == null) {
             return true;
@@ -249,6 +267,10 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
     @Override
     public Boolean updateTaskInstance(ProcessInstance processInstance) {
         log.info(JSONObject.toJSONString(processInstance));
+        //判断是否是数据发现 是直接抛弃
+        if (StringUtils.equals(httpProjectCode, String.valueOf(processInstance.getProjectCode()))) {
+            return true;
+        }
         DppEtlTaskInstanceDO old = this.getById(processInstance.getId());
         if (old == null) {
             return true;
@@ -293,22 +315,123 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
     }
 
     @Override
+    public PageResult<DppEtlTaskInstanceTreeListRespVO> treeList(DppEtlTaskInstanceTreeListReqVO reqVO) {
+        if (StringUtils.isNotEmpty(reqVO.getStartTime())) {
+            reqVO.setStartTime(reqVO.getStartTime() + " 00:00:00");
+        }
+        if (StringUtils.isNotEmpty(reqVO.getEndTime())) {
+            reqVO.setEndTime(reqVO.getEndTime() + " 23:59:59");
+        }
+        IPage<DppEtlTaskInstanceTreeListRespVO> page = baseMapper.treeList(new Page(reqVO.getPageNum(), reqVO.getPageSize()), reqVO);
+        if (page != null && page.getRecords() != null && page.getRecords().size() > 0) {
+            for (DppEtlTaskInstanceTreeListRespVO record : page.getRecords()) {
+                record.setDataId("1_" + record.getId());
+                if (record.getStartTime() != null && record.getEndTime() != null) {
+                    record.setDuration(DateUtils.format2Duration(record.getEndTime().getTime() - record.getStartTime().getTime()));
+                }
+                if (record.getChildren() != null && record.getChildren().size() > 0) {
+                    for (DppEtlTaskInstanceTreeListRespVO child : record.getChildren()) {
+                        child.setDataId(child.getDataType() + "_" + child.getId());
+                        if (child.getStartTime() != null && child.getEndTime() != null) {
+                            child.setDuration(DateUtils.format2Duration(child.getEndTime().getTime() - child.getStartTime().getTime()));
+                        }
+                        //判断是否是子任务
+                        if (StringUtils.equals(String.valueOf(TaskComponentTypeEnum.SUB_PROCESS), child.getNodeType())) {
+                            child.setHasChildren(true);
+                        }
+                    }
+
+                }
+            }
+        }
+        return new PageResult<>(page.getRecords(), page.getTotal());
+    }
+
+    @Override
     public AjaxResult execute(Long taskInstanceId, ExecuteType executeType) {
         DppEtlTaskInstanceDO dppEtlTaskInstanceDO = this.getById(taskInstanceId);
         if (dppEtlTaskInstanceDO == null) {
             return error("任务实例不存在，请刷新后重试！");
         }
         String status = dppEtlTaskInstanceDO.getStatus();
-        if (!StringUtils.equals(status, "7") &&
-                !StringUtils.equals(status, "3") &&
+        if (ExecuteType.REPEAT_RUNNING.getCode() == executeType.getCode() && !StringUtils.equals(status, "3") &&
+                !StringUtils.equals(status, "5") &&
                 !StringUtils.equals(status, "6") &&
-                !StringUtils.equals(status, "5")) {
+                !StringUtils.equals(status, "7")) {
             return error("当前状态无法重跑，请刷新后重试！");
+        }
+        if (ExecuteType.STOP.getCode() == executeType.getCode() &&
+                !StringUtils.equals(status, "0") &&
+                !StringUtils.equals(status, "1") &&
+                !StringUtils.equals(status, "2") &&
+                !StringUtils.equals(status, "3") &&
+                !StringUtils.equals(status, "12") &&
+                !StringUtils.equals(status, "14")) {
+            return error("当前状态无法停止，请刷新后重试！");
         }
         DsStatusRespDTO dsStatusRespDTO = dsEtlExecutorService.execute(DSExecuteDTO.builder()
                 .processInstanceId(taskInstanceId)
                 .executeType(executeType)
                 .build(), dppEtlTaskInstanceDO.getProjectCode());
         return dsStatusRespDTO.getSuccess() ? success() : error(dsStatusRespDTO.getMsg());
+    }
+
+    @Override
+    public List<DppEtlTaskInstanceTreeListRespVO> subNodelist(Long taskInstanceId, Long nodeInstanceId) {
+        List<DppEtlTaskInstanceTreeListRespVO> list = baseMapper.listSubNodeInstance(taskInstanceId, nodeInstanceId);
+        if (list != null && list.size() > 0) {
+            list.stream().forEach(e -> {
+                e.setDataId("3_" + e.getId());
+                if (e.getStartTime() != null && e.getEndTime() != null) {
+                    e.setDuration(DateUtils.format2Duration(e.getEndTime().getTime() - e.getStartTime().getTime()));
+                }
+            });
+        }
+        return list;
+    }
+
+    @Override
+    public DppEtlTaskInstanceLogRespDTO getLogByTaskInstanceId(Long taskInstanceId) {
+        String log = "";
+        DppEtlTaskInstanceDO dppEtlTaskInstanceDO = this.getById(taskInstanceId);
+        //获取任务信息
+        DppEtlTaskLogRespVO dppEtlTaskLogRespVO = dppEtlTaskLogService.getDppEtlTaskLogById(DppEtlTaskLogPageReqVO.builder()
+                .code(dppEtlTaskInstanceDO.getTaskCode())
+                .version(dppEtlTaskInstanceDO.getTaskVersion())
+                .build());
+        if (dppEtlTaskLogRespVO == null) {
+            throw new RuntimeException("任务不存在");
+        }
+        JSONArray locations = JSONArray.parse(dppEtlTaskLogRespVO.getLocations());
+        List<DppEtlNodeInstanceDO> dppEtlNodeInstanceDOList = dppEtlTNodeInstanceService.list(Wrappers.lambdaQuery(DppEtlNodeInstanceDO.class)
+                .eq(DppEtlNodeInstanceDO::getTaskInstanceId, taskInstanceId));
+        Map<String, DppEtlNodeInstanceDO> nodeInstanceMap = dppEtlNodeInstanceDOList.stream().collect(Collectors.toMap(key -> key.getNodeCode(), value -> value));
+        for (int i = 0; i < locations.size(); i++) {
+            JSONObject location = (JSONObject) locations.get(i);
+            String code = String.valueOf(location.getLong("taskCode"));
+            DppEtlNodeInstanceDO dppEtlNodeInstanceDO = nodeInstanceMap.get(code);
+            if (dppEtlNodeInstanceDO != null) {
+//                dppEtlNodeInstanceDO.setLogPath("D:\\idea\\open\\xx.log");
+                if (FileUtil.exist(dppEtlNodeInstanceDO.getLogPath())) {
+                    log += FileUtil.readUtf8String(dppEtlNodeInstanceDO.getLogPath()) + "\n";
+                }
+            }
+        }
+        return DppEtlTaskInstanceLogRespDTO.builder()
+                .log(log)
+                .status(dppEtlTaskInstanceDO.getStatus())
+                .build();
+    }
+
+    @Override
+    public Long getRunTaskInstance(Long taskId) {
+        List<DppEtlTaskInstanceDO> dppEtlTaskInstanceDO = this.list(Wrappers.lambdaQuery(DppEtlTaskInstanceDO.class)
+                .eq(DppEtlTaskInstanceDO::getTaskId, taskId)
+                .in(DppEtlTaskInstanceDO::getStatus, "0", "1", "12")
+                .orderByDesc(DppEtlTaskInstanceDO::getStartTime));
+        if (dppEtlTaskInstanceDO.size() > 0) {
+            return dppEtlTaskInstanceDO.get(0).getId();
+        }
+        return null;
     }
 }

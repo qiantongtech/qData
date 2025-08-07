@@ -1,7 +1,10 @@
 package tech.qiantong.qdata.module.dpp.controller.admin.etl.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
@@ -10,13 +13,16 @@ import tech.qiantong.qdata.common.core.page.PageParam;
  * @author qdata
  * @date 2025-02-13
  */
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Schema(description = "数据集成任务-日志 Request VO")
 @Data
 public class DppEtlTaskLogPageReqVO extends PageParam {
 
     private static final long serialVersionUID = 1L;
-        @Schema(description = "ID", example = "")
-        private Long id;
+    @Schema(description = "ID", example = "")
+    private Long id;
     @Schema(description = "任务类型", example = "")
     private String type;
 

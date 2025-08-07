@@ -1,16 +1,21 @@
 package tech.qiantong.qdata.module.dpp.service.etl;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Collection;
+
 import com.baomidou.mybatisplus.extension.service.IService;
 import tech.qiantong.qdata.api.ds.api.etl.ds.ProcessInstance;
 import tech.qiantong.qdata.common.core.domain.AjaxResult;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.enums.ExecuteType;
-import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.*;
+import tech.qiantong.qdata.module.dpp.api.etl.dto.DppEtlTaskInstanceLogRespDTO;
+import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlTaskInstanceTreeListRespVO;
+import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlTaskInstanceRespVO;
+import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlTaskInstanceSaveReqVO;
+import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlTaskInstancePageReqVO;
+import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlTaskInstanceTreeListReqVO;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlTaskInstanceDO;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 数据集成任务实例Service接口
@@ -116,6 +121,8 @@ public interface IDppEtlTaskInstanceService extends IService<DppEtlTaskInstanceD
      */
     Long getIdByDsId(Long dsId);
 
+    PageResult<DppEtlTaskInstanceTreeListRespVO> treeList(DppEtlTaskInstanceTreeListReqVO reqVO);
+
     /**
      * 执行命令
      *
@@ -124,4 +131,27 @@ public interface IDppEtlTaskInstanceService extends IService<DppEtlTaskInstanceD
      * @return
      */
     AjaxResult execute(Long taskInstanceId, ExecuteType executeType);
+
+    /**
+     * 获取子任务列表
+     *
+     * @param taskInstanceId
+     * @param nodeInstanceId
+     * @return
+     */
+    List<DppEtlTaskInstanceTreeListRespVO> subNodelist(Long taskInstanceId, Long nodeInstanceId);
+
+    /**
+     * 通过实例id获取日志
+     * @param taskInstanceId
+     * @return
+     */
+    DppEtlTaskInstanceLogRespDTO getLogByTaskInstanceId(Long taskInstanceId);
+
+    /**
+     * 获取正在运行的任务实例
+     * @param taskId
+     * @return
+     */
+    Long getRunTaskInstance(Long taskId);
 }

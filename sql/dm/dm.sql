@@ -7573,3 +7573,788 @@ COMMENT ON COLUMN "QDATA"."QRTZ_TRIGGERS"."MISFIRE_INSTR" IS '补偿执行的策
 
 COMMENT ON COLUMN "QDATA"."QRTZ_TRIGGERS"."JOB_DATA" IS '存放持久化job对象';
 
+CREATE TABLE "QDATA"."DPP_ETL_SQL_TEMP"
+(
+ "ID" BIGINT IDENTITY(1,1) NOT NULL,
+ "NAME" VARCHAR2(256) NOT NULL,
+ "TYPE" VARCHAR2(256) NOT NULL,
+ "CONTENT" TEXT NOT NULL,
+ "DESCRIPTION" VARCHAR2(512) NULL,
+ "VALID_FLAG" VARCHAR2(1) DEFAULT 1
+ NOT NULL,
+ "DEL_FLAG" VARCHAR2(1) DEFAULT 0
+ NOT NULL,
+ "CREATE_BY" VARCHAR2(32) NULL,
+ "CREATOR_ID" BIGINT NULL,
+ "CREATE_TIME" DATETIME(6) DEFAULT CURRENT_TIMESTAMP
+ NULL,
+ "UPDATE_BY" VARCHAR2(32) NULL,
+ "UPDATER_ID" BIGINT NULL,
+ "UPDATE_TIME" DATETIME(6) DEFAULT CURRENT_TIMESTAMP
+ NULL,
+ "REMARK" VARCHAR2(512) NULL
+);
+
+ALTER TABLE "QDATA"."DPP_ETL_SQL_TEMP" ADD CONSTRAINT  NOT CLUSTER  PRIMARY KEY("ID") ;
+COMMENT ON TABLE "QDATA"."DPP_ETL_SQL_TEMP" IS '数据集成SQL模版';
+COMMENT ON COLUMN "QDATA"."DPP_ETL_SQL_TEMP"."CONTENT" IS '内容';
+COMMENT ON COLUMN "QDATA"."DPP_ETL_SQL_TEMP"."CREATE_BY" IS '创建人';
+COMMENT ON COLUMN "QDATA"."DPP_ETL_SQL_TEMP"."CREATE_TIME" IS '创建时间';
+COMMENT ON COLUMN "QDATA"."DPP_ETL_SQL_TEMP"."CREATOR_ID" IS '创建人id';
+COMMENT ON COLUMN "QDATA"."DPP_ETL_SQL_TEMP"."DEL_FLAG" IS '删除标志;1：已删除，0：未删除';
+COMMENT ON COLUMN "QDATA"."DPP_ETL_SQL_TEMP"."DESCRIPTION" IS '描述';
+COMMENT ON COLUMN "QDATA"."DPP_ETL_SQL_TEMP"."ID" IS 'ID';
+COMMENT ON COLUMN "QDATA"."DPP_ETL_SQL_TEMP"."NAME" IS '名称';
+COMMENT ON COLUMN "QDATA"."DPP_ETL_SQL_TEMP"."REMARK" IS '备注';
+COMMENT ON COLUMN "QDATA"."DPP_ETL_SQL_TEMP"."TYPE" IS '类型;2：DM 3：ORACLE 4：MYSQL 5：KINGBASE 6：Sqlerver  7：PostgreSql 8：Hive 9：SparkSql 10：FLINK流 11：FLINK批';
+COMMENT ON COLUMN "QDATA"."DPP_ETL_SQL_TEMP"."UPDATE_BY" IS '更新人';
+COMMENT ON COLUMN "QDATA"."DPP_ETL_SQL_TEMP"."UPDATE_TIME" IS '更新时间';
+COMMENT ON COLUMN "QDATA"."DPP_ETL_SQL_TEMP"."UPDATER_ID" IS '更新人id';
+COMMENT ON COLUMN "QDATA"."DPP_ETL_SQL_TEMP"."VALID_FLAG" IS '是否有效;0：无效，1：有效';
+
+SET IDENTITY_INSERT "QDATA"."DPP_ETL_SQL_TEMP" ON;
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(1,'create.table.kafka','10','CREATE TABLE Kafka_Table (
+  `event_time` TIMESTAMP(3) METADATA FROM ''timestamp'',
+  `partition` BIGINT METADATA VIRTUAL,
+  `offset` BIGINT METADATA VIRTUAL,
+  `user_id` BIGINT,
+  `item_id` BIGINT,
+  `behavior` STRING
+) WITH (
+  ''connector'' = ''kafka'',
+  ''topic'' = ''user_behavior'',
+  ''properties.bootstrap.servers'' = ''localhost:9092'',
+  ''properties.group.id'' = ''testGroup'',
+  ''scan.startup.mode'' = ''earliest-offset'',
+  ''format'' = ''csv''
+);
+--可选: ''value.fields-include'' = ''ALL'',
+--可选: ''json.ignore-parse-errors'' = ''true'',
+--可选: ''key.fields-prefix'' = ''k_'',','kafka快速建表格式','1','0',null,null,'2025-06-25 14:19:31.069989000',null,null,'2025-06-25 14:19:31.069996000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(2,'create.table.doris','10','CREATE TABLE doris_table (
+    cid INT,
+    sid INT,
+    name STRING,
+    cls STRING,
+    score INT,
+    PRIMARY KEY (cid) NOT ENFORCED
+) WITH (
+''connector'' = ''doris'',
+''fenodes'' = ''127.0.0.1:8030'' ,
+''table.identifier'' = ''test.scoreinfo'',
+''username'' = ''root'',
+''password''=''''
+);','Doris快速建表','1','0',null,null,'2025-06-25 14:19:31.330943000',null,null,'2025-06-25 14:19:31.330947000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(3,'create.table.jdbc','10','CREATE TABLE JDBC_table (
+  id BIGINT,
+  name STRING,
+  age INT,
+  status BOOLEAN,
+  PRIMARY KEY (id) NOT ENFORCED
+) WITH (
+   ''connector'' = ''jdbc'',
+   ''url'' = ''jdbc:mysql://localhost:3306/mydatabase'',
+   ''table-name'' = ''users'',
+   ''username'' = ''root'',
+   ''password'' = ''123456''
+);
+--可选: ''sink.parallelism''=''1'',
+--可选: ''lookup.cache.ttl''=''1000s'',','JDBC建表语句','1','0',null,null,'2025-06-25 14:19:31.591293000',null,null,'2025-06-25 14:19:31.591300000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(4,'create.catalog.hive','10','CREATE CATALOG hive WITH (
+    ''type'' = ''hive'',
+    ''default-database'' = ''default'',
+    ''hive-conf-dir'' = ''/app/wwwroot/MBDC/hive/conf/'', --hive配置文件
+    ''hadoop-conf-dir''=''/app/wwwroot/MBDC/hadoop/etc/hadoop/'' --hadoop配置文件，配了环境变量则不需要。
+);','创建HIVE的catalog','1','0',null,null,'2025-06-25 14:19:32.144597000',null,null,'2025-06-25 14:19:32.144603000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(6,'use.catalog.hive','10','USE CATALOG hive;','使用hive的catalog','1','0',null,null,'2025-06-25 14:20:16.680791000',null,null,'2025-06-25 14:20:16.680798000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(7,'use.catalog.default','10','USE CATALOG default_catalog;','使用default的catalog','1','0',null,null,'2025-06-25 14:20:16.913053000',null,null,'2025-06-25 14:20:16.913059000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(8,'create.stream.table.hive','10','CREATE CATALOG hive WITH ( --创建hive的catalog
+    ''type'' = ''hive'',
+    ''hive-conf-dir'' = ''/app/wwwroot/MBDC/hive/conf/'',
+    ''hadoop-conf-dir''=''/app/wwwroot/MBDC/hadoop/etc/hadoop/''
+);
+
+USE CATALOG hive;
+USE offline_db; --选择库
+set table.sql-dialect=hive; --设置方言
+
+CREATE TABLE hive_stream_table (
+  user_id STRING,
+  order_amount DOUBLE
+) PARTITIONED BY (dt STRING, hr STRING) STORED AS parquet TBLPROPERTIES (
+  ''partition.time-extractor.timestamp-pattern''=''$dt $hr:00:00'',
+  ''sink.partition-commit.trigger''=''partition-time'',
+  ''sink.partition-commit.delay''=''1min'',
+  ''sink.semantic'' = ''exactly-once'',
+  ''sink.rolling-policy.rollover-interval'' =''1min'',
+  ''sink.rolling-policy.check-interval''=''1min'',
+  ''sink.partition-commit.policy.kind''=''metastore,success-file''
+);','创建流式HIVE表','1','0',null,null,'2025-06-25 14:20:17.502491000',null,null,'2025-06-25 14:20:17.502498000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(9,'create.table.mysql_cdc','10','CREATE TABLE mysql_cdc_table(
+    cid INT,
+    sid INT,
+    cls STRING,
+    score INT,
+    PRIMARY KEY (cid) NOT ENFORCED
+) WITH (
+''connector'' = ''mysql-cdc'',
+''hostname'' = ''127.0.0.1'',
+''port'' = ''3306'',
+''username'' = ''test'',
+''password'' = ''123456'',
+''database-name'' = ''test'',
+''server-time-zone'' = ''UTC'',
+''scan.incremental.snapshot.enabled'' = ''true'',
+''debezium.snapshot.mode''=''latest-offset'' ,-- 或者key是scan.startup.mode，initial表示要历史数据，latest-offset表示不要历史数据
+''debezium.datetime.format.date''=''yyyy-MM-dd'',
+''debezium.datetime.format.time''=''HH-mm-ss'',
+''debezium.datetime.format.datetime''=''yyyy-MM-dd HH-mm-ss'',
+''debezium.datetime.format.timestamp''=''yyyy-MM-dd HH-mm-ss'',
+''debezium.datetime.format.timestamp.zone''=''UTC+8'',
+''table-name'' = ''mysql_cdc_table'');','创建Mysql_CDC表','1','0',null,null,'2025-06-25 14:20:17.733771000',null,null,'2025-06-25 14:20:17.733778000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(10,'create.table.hudi','10','CREATE TABLE hudi_table
+(
+    `goods_order_id`  bigint COMMENT ''自增主键id'',
+    `goods_order_uid` string COMMENT ''订单uid'',
+    `customer_uid`    string COMMENT ''客户uid'',
+    `customer_name`   string COMMENT ''客户name'',
+    `create_time`     timestamp(3) COMMENT ''创建时间'',
+    `update_time`     timestamp(3) COMMENT ''更新时间'',
+    `create_by`       string COMMENT ''创建人uid（唯一标识）'',
+    `update_by`       string COMMENT ''更新人uid（唯一标识）'',
+    PRIMARY KEY (goods_order_id) NOT ENFORCED
+) COMMENT ''hudi_table''
+WITH (
+''connector'' = ''hudi'',
+''path'' = ''hdfs://cluster1/data/bizdata/cdc/mysql/order/goods_order'', -- 路径会自动创建
+''hoodie.datasource.write.recordkey.field'' = ''goods_order_id'', -- 主键
+''write.precombine.field'' = ''update_time'', -- 相同的键值时，取此字段最大值，默认ts字段
+''read.streaming.skip_compaction'' = ''true'', -- 避免重复消费问题
+''write.bucket_assign.tasks'' = ''2'', -- 并发写的 bucekt 数
+''write.tasks'' = ''2'',
+''compaction.tasks'' = ''1'',
+''write.operation'' = ''upsert'', -- UPSERT（插入更新）\INSERT（插入）\BULK_INSERT（批插入）（upsert性能会低些，不适合埋点上报）
+''write.rate.limit'' = ''20000'', -- 限制每秒多少条
+''table.type'' = ''COPY_ON_WRITE'', -- 默认COPY_ON_WRITE ，
+''compaction.async.enabled'' = ''true'', -- 在线压缩
+''compaction.trigger.strategy'' = ''num_or_time'', -- 按次数压缩
+''compaction.delta_commits'' = ''20'', -- 默认为5
+''compaction.delta_seconds'' = ''60'', -- 默认为1小时
+''hive_sync.enable'' = ''true'', -- 启用hive同步
+''hive_sync.mode'' = ''hms'', -- 启用hive hms同步，默认jdbc
+''hive_sync.metastore.uris'' = ''thrift://cdh2.vision.com:9083'', -- required, metastore的端口
+''hive_sync.jdbc_url'' = ''jdbc:hive2://cdh1.vision.com:10000'', -- required, hiveServer地址
+''hive_sync.table'' = ''order_mysql_goods_order'', -- required, hive 新建的表名 会自动同步hudi的表结构和数据到hive
+''hive_sync.db'' = ''cdc_ods'', -- required, hive 新建的数据库名
+''hive_sync.username'' = ''hive'', -- required, HMS 用户名
+''hive_sync.password'' = ''123456'', -- required, HMS 密码
+''hive_sync.skip_ro_suffix'' = ''true'' -- 去除ro后缀
+);','创建hudi表','1','0',null,null,'2025-06-25 14:20:18.252652000',null,null,'2025-06-25 14:20:18.252658000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(11,'CREATE TABLE Like','10','DROP TABLE IF EXISTS sink_table;
+CREATE TABLE IF not EXISTS sink_table
+WITH (
+    ''topic'' = ''motor_vehicle_error''
+)
+LIKE source_table;','CREATE TABLE Like source table','1','0',null,null,'2025-06-25 14:20:18.483135000',null,null,'2025-06-25 14:20:18.483141000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(12,'CREATE TABLE like source_table EXCLUDING','10','DROP TABLE IF EXISTS sink_table;
+CREATE TABLE IF not EXISTS sink_table(
+     -- Add watermark definition
+    WATERMARK FOR order_time AS order_time - INTERVAL ''5'' SECOND
+)
+WITH (
+    ''topic'' = ''motor_vehicle_error''
+)
+LIKE source_table (
+     -- Exclude everything besides the computed columns which we need to generate the watermark for.
+    -- We do not want to have the partitions or filesystem options as those do not apply to kafka.
+    EXCLUDING ALL
+    INCLUDING GENERATED
+);','CREATE TABLE like source_table EXCLUDING','1','0',null,null,'2025-06-25 14:20:54.175254000',null,null,'2025-06-25 14:20:54.175259000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(13,'CREATE TABLE ctas_kafka','10','CREATE TABLE my_ctas_table
+WITH (
+    ''connector'' = ''kafka''
+)
+AS SELECT id, name, age FROM source_table WHERE mod(id, 10) = 0;','CREATE TABLE ctas_kafka','1','0',null,null,'2025-06-25 14:20:54.401989000',null,null,'2025-06-25 14:20:54.401994000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(14,'CREATE TABLE rtas_kafka','10','CREATE OR REPLACE TABLE my_ctas_table
+WITH (
+    ''connector'' = ''kafka''
+)
+AS SELECT id, name, age FROM source_table WHERE mod(id, 10) = 0;','CREATE TABLE rtas_kafka','1','0',null,null,'2025-06-25 14:20:54.632580000',null,null,'2025-06-25 14:20:54.632587000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(15,'datagen job demo','10','DROP TABLE IF EXISTS source_table3;
+CREATE TABLE IF NOT EXISTS source_table3(
+--订单id
+`order_id` BIGINT,
+--产品
+
+`product` BIGINT,
+--金额
+`amount` BIGINT,
+
+--支付时间
+`order_time` as CAST(CURRENT_TIMESTAMP AS TIMESTAMP(3)), -- `在这里插入代码片`
+--WATERMARK
+WATERMARK FOR order_time AS order_time - INTERVAL ''2'' SECOND
+) WITH(
+''connector'' = ''datagen'',
+ ''rows-per-second'' = ''1'',
+ ''fields.order_id.min'' = ''1'',
+ ''fields.order_id.max'' = ''2'',
+ ''fields.amount.min'' = ''1'',
+ ''fields.amount.max'' = ''10'',
+ ''fields.product.min'' = ''1'',
+ ''fields.product.max'' = ''2''
+);
+
+-- SELECT * FROM source_table3 LIMIT 10;
+
+DROP TABLE IF EXISTS sink_table5;
+CREATE TABLE IF NOT EXISTS sink_table5(
+--产品
+`product` BIGINT,
+--金额
+`amount` BIGINT,
+--支付时间
+`order_time` TIMESTAMP(3),
+--1分钟时间聚合总数
+`one_minute_sum` BIGINT
+) WITH(
+''connector''=''print''
+);
+
+INSERT INTO sink_table5
+SELECT
+product,
+amount,
+order_time,
+SUM(amount) OVER(
+PARTITION BY product
+ORDER BY order_time
+-- 标识统计范围是1个 product 的最近 1 分钟的数据
+RANGE BETWEEN INTERVAL ''1'' MINUTE PRECEDING AND CURRENT ROW
+) as one_minute_sum
+FROM source_table3;','datagen job demo','1','0',null,null,'2025-06-25 14:20:54.878145000',null,null,'2025-06-25 14:20:54.878152000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(16,'checkpoint config','10','-- 声明一些调优参数 (checkpoint 等相关配置)
+set ''execution.checkpointing.checkpoints-after-tasks-finish.enabled'' =''true'';
+SET ''pipeline.operator-chaining'' = ''false'';
+set ''state.savepoints.dir''=''file:///opt/data/flink_cluster/savepoints''; -- 目录自行修改
+set ''state.checkpoints.dir''= ''file:///opt/data/flink_cluster/checkpoints''; -- 目录自行修改
+-- set state.checkpoint-storage=''filesystem'';
+set ''state.backend.type''=''rocksdb'';
+set ''execution.checkpointing.interval''=''60 s'';
+set ''state.checkpoints.num-retained''=''100'';
+-- 使 solt 均匀分布在 各个 TM ','checkpoint config','1','0',null,null,'2025-06-25 14:20:55.393192000',null,null,'2025-06-25 14:20:55.393200000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(17,'note template','10','-- -----------------------------------------------------------------
+-- @Description(作业描述): ${1:}
+-- @Creator(创建人): ${2:}
+-- @Create DateTime(创建时间): ${3:}
+-- -----------------------------------------------------------------
+
+${4:}','note template','1','0',null,null,'2025-06-25 14:20:55.608252000',null,null,'2025-06-25 14:20:55.608259000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(18,'dinky_paimon_auto_create_table','10','-- -----------------------------------------------------------------
+-- 该 demo 用于创建 mysql-cdc 到 paimon 的整库同步案例 并使用自动建表,注意 #{schemaName} 和 #{tableName} 为固定写法,不要修改,用于动态获取库名和表名
+-- -----------------------------------------------------------------
+
+
+EXECUTE CDCSOURCE dinky_paimon_auto_create_table
+WITH
+  (
+    ''connector'' = ''mysql-cdc'',
+    ''hostname'' = '''',
+    ''port'' = '''',
+    ''username'' = '''',
+    ''password'' = '''',
+    ''checkpoint'' = ''10000'',
+    ''parallelism'' = ''1'',
+    ''scan.startup.mode'' = ''initial'',
+    ''database-name'' = ''dinky'',
+    ''sink.connector'' = ''paimon'',
+    ''sink.path'' = ''hdfs:/tmp/paimon/#{schemaName}.db/#{tableName}'',
+    ''sink.auto-create'' = ''true'',
+  );','dinky_paimon_auto_create_table','1','0',null,null,'2025-06-25 14:20:55.840366000',null,null,'2025-06-25 14:20:55.840370000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(19,'create.table.kafka','11','CREATE TABLE Kafka_Table (
+  `event_time` TIMESTAMP(3) METADATA FROM ''timestamp'',
+  `partition` BIGINT METADATA VIRTUAL,
+  `offset` BIGINT METADATA VIRTUAL,
+  `user_id` BIGINT,
+  `item_id` BIGINT,
+  `behavior` STRING
+) WITH (
+  ''connector'' = ''kafka'',
+  ''topic'' = ''user_behavior'',
+  ''properties.bootstrap.servers'' = ''localhost:9092'',
+  ''properties.group.id'' = ''testGroup'',
+  ''scan.startup.mode'' = ''earliest-offset'',
+  ''format'' = ''csv''
+);
+--可选: ''value.fields-include'' = ''ALL'',
+--可选: ''json.ignore-parse-errors'' = ''true'',
+--可选: ''key.fields-prefix'' = ''k_'',','kafka快速建表格式','1','0',null,null,'2025-06-25 14:19:31.069989000',null,null,'2025-06-25 14:19:31.069996000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(20,'create.table.doris','11','CREATE TABLE doris_table (
+    cid INT,
+    sid INT,
+    name STRING,
+    cls STRING,
+    score INT,
+    PRIMARY KEY (cid) NOT ENFORCED
+) WITH (
+''connector'' = ''doris'',
+''fenodes'' = ''127.0.0.1:8030'' ,
+''table.identifier'' = ''test.scoreinfo'',
+''username'' = ''root'',
+''password''=''''
+);','Doris快速建表','1','0',null,null,'2025-06-25 14:19:31.330943000',null,null,'2025-06-25 14:19:31.330947000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(21,'create.table.jdbc','11','CREATE TABLE JDBC_table (
+  id BIGINT,
+  name STRING,
+  age INT,
+  status BOOLEAN,
+  PRIMARY KEY (id) NOT ENFORCED
+) WITH (
+   ''connector'' = ''jdbc'',
+   ''url'' = ''jdbc:mysql://localhost:3306/mydatabase'',
+   ''table-name'' = ''users'',
+   ''username'' = ''root'',
+   ''password'' = ''123456''
+);
+--可选: ''sink.parallelism''=''1'',
+--可选: ''lookup.cache.ttl''=''1000s'',','JDBC建表语句','1','0',null,null,'2025-06-25 14:19:31.591293000',null,null,'2025-06-25 14:19:31.591300000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(22,'create.catalog.hive','11','CREATE CATALOG hive WITH (
+    ''type'' = ''hive'',
+    ''default-database'' = ''default'',
+    ''hive-conf-dir'' = ''/app/wwwroot/MBDC/hive/conf/'', --hive配置文件
+    ''hadoop-conf-dir''=''/app/wwwroot/MBDC/hadoop/etc/hadoop/'' --hadoop配置文件，配了环境变量则不需要。
+);','创建HIVE的catalog','1','0',null,null,'2025-06-25 14:19:32.144597000',null,null,'2025-06-25 14:19:32.144603000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(23,'use.catalog.hive','11','USE CATALOG hive;','使用hive的catalog','1','0',null,null,'2025-06-25 14:20:16.680791000',null,null,'2025-06-25 14:20:16.680798000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(24,'use.catalog.default','11','USE CATALOG default_catalog;','使用default的catalog','1','0',null,null,'2025-06-25 14:20:16.913053000',null,null,'2025-06-25 14:20:16.913059000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(25,'create.stream.table.hive','11','CREATE CATALOG hive WITH ( --创建hive的catalog
+    ''type'' = ''hive'',
+    ''hive-conf-dir'' = ''/app/wwwroot/MBDC/hive/conf/'',
+    ''hadoop-conf-dir''=''/app/wwwroot/MBDC/hadoop/etc/hadoop/''
+);
+
+USE CATALOG hive;
+USE offline_db; --选择库
+set table.sql-dialect=hive; --设置方言
+
+CREATE TABLE hive_stream_table (
+  user_id STRING,
+  order_amount DOUBLE
+) PARTITIONED BY (dt STRING, hr STRING) STORED AS parquet TBLPROPERTIES (
+  ''partition.time-extractor.timestamp-pattern''=''$dt $hr:00:00'',
+  ''sink.partition-commit.trigger''=''partition-time'',
+  ''sink.partition-commit.delay''=''1min'',
+  ''sink.semantic'' = ''exactly-once'',
+  ''sink.rolling-policy.rollover-interval'' =''1min'',
+  ''sink.rolling-policy.check-interval''=''1min'',
+  ''sink.partition-commit.policy.kind''=''metastore,success-file''
+);','创建流式HIVE表','1','0',null,null,'2025-06-25 14:20:17.502491000',null,null,'2025-06-25 14:20:17.502498000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(26,'create.table.mysql_cdc','11','CREATE TABLE mysql_cdc_table(
+    cid INT,
+    sid INT,
+    cls STRING,
+    score INT,
+    PRIMARY KEY (cid) NOT ENFORCED
+) WITH (
+''connector'' = ''mysql-cdc'',
+''hostname'' = ''127.0.0.1'',
+''port'' = ''3306'',
+''username'' = ''test'',
+''password'' = ''123456'',
+''database-name'' = ''test'',
+''server-time-zone'' = ''UTC'',
+''scan.incremental.snapshot.enabled'' = ''true'',
+''debezium.snapshot.mode''=''latest-offset'' ,-- 或者key是scan.startup.mode，initial表示要历史数据，latest-offset表示不要历史数据
+''debezium.datetime.format.date''=''yyyy-MM-dd'',
+''debezium.datetime.format.time''=''HH-mm-ss'',
+''debezium.datetime.format.datetime''=''yyyy-MM-dd HH-mm-ss'',
+''debezium.datetime.format.timestamp''=''yyyy-MM-dd HH-mm-ss'',
+''debezium.datetime.format.timestamp.zone''=''UTC+8'',
+''table-name'' = ''mysql_cdc_table'');','创建Mysql_CDC表','1','0',null,null,'2025-06-25 14:20:17.733771000',null,null,'2025-06-25 14:20:17.733778000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(27,'create.table.hudi','11','CREATE TABLE hudi_table
+(
+    `goods_order_id`  bigint COMMENT ''自增主键id'',
+    `goods_order_uid` string COMMENT ''订单uid'',
+    `customer_uid`    string COMMENT ''客户uid'',
+    `customer_name`   string COMMENT ''客户name'',
+    `create_time`     timestamp(3) COMMENT ''创建时间'',
+    `update_time`     timestamp(3) COMMENT ''更新时间'',
+    `create_by`       string COMMENT ''创建人uid（唯一标识）'',
+    `update_by`       string COMMENT ''更新人uid（唯一标识）'',
+    PRIMARY KEY (goods_order_id) NOT ENFORCED
+) COMMENT ''hudi_table''
+WITH (
+''connector'' = ''hudi'',
+''path'' = ''hdfs://cluster1/data/bizdata/cdc/mysql/order/goods_order'', -- 路径会自动创建
+''hoodie.datasource.write.recordkey.field'' = ''goods_order_id'', -- 主键
+''write.precombine.field'' = ''update_time'', -- 相同的键值时，取此字段最大值，默认ts字段
+''read.streaming.skip_compaction'' = ''true'', -- 避免重复消费问题
+''write.bucket_assign.tasks'' = ''2'', -- 并发写的 bucekt 数
+''write.tasks'' = ''2'',
+''compaction.tasks'' = ''1'',
+''write.operation'' = ''upsert'', -- UPSERT（插入更新）\INSERT（插入）\BULK_INSERT（批插入）（upsert性能会低些，不适合埋点上报）
+''write.rate.limit'' = ''20000'', -- 限制每秒多少条
+''table.type'' = ''COPY_ON_WRITE'', -- 默认COPY_ON_WRITE ，
+''compaction.async.enabled'' = ''true'', -- 在线压缩
+''compaction.trigger.strategy'' = ''num_or_time'', -- 按次数压缩
+''compaction.delta_commits'' = ''20'', -- 默认为5
+''compaction.delta_seconds'' = ''60'', -- 默认为1小时
+''hive_sync.enable'' = ''true'', -- 启用hive同步
+''hive_sync.mode'' = ''hms'', -- 启用hive hms同步，默认jdbc
+''hive_sync.metastore.uris'' = ''thrift://cdh2.vision.com:9083'', -- required, metastore的端口
+''hive_sync.jdbc_url'' = ''jdbc:hive2://cdh1.vision.com:10000'', -- required, hiveServer地址
+''hive_sync.table'' = ''order_mysql_goods_order'', -- required, hive 新建的表名 会自动同步hudi的表结构和数据到hive
+''hive_sync.db'' = ''cdc_ods'', -- required, hive 新建的数据库名
+''hive_sync.username'' = ''hive'', -- required, HMS 用户名
+''hive_sync.password'' = ''123456'', -- required, HMS 密码
+''hive_sync.skip_ro_suffix'' = ''true'' -- 去除ro后缀
+);','创建hudi表','1','0',null,null,'2025-06-25 14:20:18.252652000',null,null,'2025-06-25 14:20:18.252658000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(28,'CREATE TABLE Like','11','DROP TABLE IF EXISTS sink_table;
+CREATE TABLE IF not EXISTS sink_table
+WITH (
+    ''topic'' = ''motor_vehicle_error''
+)
+LIKE source_table;','CREATE TABLE Like source table','1','0',null,null,'2025-06-25 14:20:18.483135000',null,null,'2025-06-25 14:20:18.483141000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(29,'CREATE TABLE like source_table EXCLUDING','11','DROP TABLE IF EXISTS sink_table;
+CREATE TABLE IF not EXISTS sink_table(
+     -- Add watermark definition
+    WATERMARK FOR order_time AS order_time - INTERVAL ''5'' SECOND
+)
+WITH (
+    ''topic'' = ''motor_vehicle_error''
+)
+LIKE source_table (
+     -- Exclude everything besides the computed columns which we need to generate the watermark for.
+    -- We do not want to have the partitions or filesystem options as those do not apply to kafka.
+    EXCLUDING ALL
+    INCLUDING GENERATED
+);','CREATE TABLE like source_table EXCLUDING','1','0',null,null,'2025-06-25 14:20:54.175254000',null,null,'2025-06-25 14:20:54.175259000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(30,'CREATE TABLE ctas_kafka','11','CREATE TABLE my_ctas_table
+WITH (
+    ''connector'' = ''kafka''
+)
+AS SELECT id, name, age FROM source_table WHERE mod(id, 10) = 0;','CREATE TABLE ctas_kafka','1','0',null,null,'2025-06-25 14:20:54.401989000',null,null,'2025-06-25 14:20:54.401994000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(31,'CREATE TABLE rtas_kafka','11','CREATE OR REPLACE TABLE my_ctas_table
+WITH (
+    ''connector'' = ''kafka''
+)
+AS SELECT id, name, age FROM source_table WHERE mod(id, 10) = 0;','CREATE TABLE rtas_kafka','1','0',null,null,'2025-06-25 14:20:54.632580000',null,null,'2025-06-25 14:20:54.632587000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(32,'datagen job demo','11','DROP TABLE IF EXISTS source_table3;
+CREATE TABLE IF NOT EXISTS source_table3(
+--订单id
+`order_id` BIGINT,
+--产品
+
+`product` BIGINT,
+--金额
+`amount` BIGINT,
+
+--支付时间
+`order_time` as CAST(CURRENT_TIMESTAMP AS TIMESTAMP(3)), -- `在这里插入代码片`
+--WATERMARK
+WATERMARK FOR order_time AS order_time - INTERVAL ''2'' SECOND
+) WITH(
+''connector'' = ''datagen'',
+ ''rows-per-second'' = ''1'',
+ ''fields.order_id.min'' = ''1'',
+ ''fields.order_id.max'' = ''2'',
+ ''fields.amount.min'' = ''1'',
+ ''fields.amount.max'' = ''10'',
+ ''fields.product.min'' = ''1'',
+ ''fields.product.max'' = ''2''
+);
+
+-- SELECT * FROM source_table3 LIMIT 10;
+
+DROP TABLE IF EXISTS sink_table5;
+CREATE TABLE IF NOT EXISTS sink_table5(
+--产品
+`product` BIGINT,
+--金额
+`amount` BIGINT,
+--支付时间
+`order_time` TIMESTAMP(3),
+--1分钟时间聚合总数
+`one_minute_sum` BIGINT
+) WITH(
+''connector''=''print''
+);
+
+INSERT INTO sink_table5
+SELECT
+product,
+amount,
+order_time,
+SUM(amount) OVER(
+PARTITION BY product
+ORDER BY order_time
+-- 标识统计范围是1个 product 的最近 1 分钟的数据
+RANGE BETWEEN INTERVAL ''1'' MINUTE PRECEDING AND CURRENT ROW
+) as one_minute_sum
+FROM source_table3;','datagen job demo','1','0',null,null,'2025-06-25 14:20:54.878145000',null,null,'2025-06-25 14:20:54.878152000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(33,'checkpoint config','11','-- 声明一些调优参数 (checkpoint 等相关配置)
+set ''execution.checkpointing.checkpoints-after-tasks-finish.enabled'' =''true'';
+SET ''pipeline.operator-chaining'' = ''false'';
+set ''state.savepoints.dir''=''file:///opt/data/flink_cluster/savepoints''; -- 目录自行修改
+set ''state.checkpoints.dir''= ''file:///opt/data/flink_cluster/checkpoints''; -- 目录自行修改
+-- set state.checkpoint-storage=''filesystem'';
+set ''state.backend.type''=''rocksdb'';
+set ''execution.checkpointing.interval''=''60 s'';
+set ''state.checkpoints.num-retained''=''100'';
+-- 使 solt 均匀分布在 各个 TM ','checkpoint config','1','0',null,null,'2025-06-25 14:20:55.393192000',null,null,'2025-06-25 14:20:55.393200000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(34,'note template','11','-- -----------------------------------------------------------------
+-- @Description(作业描述): ${1:}
+-- @Creator(创建人): ${2:}
+-- @Create DateTime(创建时间): ${3:}
+-- -----------------------------------------------------------------
+
+${4:}','note template','1','0',null,null,'2025-06-25 14:20:55.608252000',null,null,'2025-06-25 14:20:55.608259000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(35,'dinky_paimon_auto_create_table','11','-- -----------------------------------------------------------------
+-- 该 demo 用于创建 mysql-cdc 到 paimon 的整库同步案例 并使用自动建表,注意 #{schemaName} 和 #{tableName} 为固定写法,不要修改,用于动态获取库名和表名
+-- -----------------------------------------------------------------
+
+
+EXECUTE CDCSOURCE dinky_paimon_auto_create_table
+WITH
+  (
+    ''connector'' = ''mysql-cdc'',
+    ''hostname'' = '''',
+    ''port'' = '''',
+    ''username'' = '''',
+    ''password'' = '''',
+    ''checkpoint'' = ''10000'',
+    ''parallelism'' = ''1'',
+    ''scan.startup.mode'' = ''initial'',
+    ''database-name'' = ''dinky'',
+    ''sink.connector'' = ''paimon'',
+    ''sink.path'' = ''hdfs:/tmp/paimon/#{schemaName}.db/#{tableName}'',
+    ''sink.auto-create'' = ''true'',
+  );','dinky_paimon_auto_create_table','1','0',null,null,'2025-06-25 14:20:55.840366000',null,null,'2025-06-25 14:20:55.840370000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(36,'create.table.dm8','2','-- 1. 建表
+CREATE TABLE t_user
+(
+    id          INT IDENTITY(1,1) PRIMARY KEY,                      -- 自增主键
+    username    VARCHAR(50) NOT NULL UNIQUE,                        -- 登录名，唯一
+    password    VARCHAR(64) NOT NULL,                               -- 密码密文
+    real_name   VARCHAR(50),                                        -- 真实姓名
+    email       VARCHAR(100) UNIQUE,                                -- 邮箱，唯一
+    phone       VARCHAR(20),                                        -- 手机号
+    status      CHAR(1)   DEFAULT ''1'' CHECK (status IN (''0'', ''1'')), -- 状态 1=启用 0=禁用
+    create_time TIMESTAMP DEFAULT SYSDATE,                          -- 创建时间
+    update_time TIMESTAMP DEFAULT SYSDATE                           -- 更新时间
+);
+
+-- 2. 插入示例数据
+INSERT INTO t_user (username, password, real_name, email, phone, status)
+VALUES (''zhangsan'', ''e10adc3949ba59abbe56e057f20f883e'', ''张三'', ''zhangsan@demo.com'', ''13800000001'', ''1''),
+       (''lisi'', ''25d55ad283aa400af464c76d713c07ad'', ''李四'', ''lisi@demo.com'', ''13800000002'', ''1''),
+       (''wangwu'', ''5f4dcc3b5aa765d61d8327deb882cf99'', ''王五'', ''wangwu@demo.com'', ''13800000003'', ''0'');
+','Dm8快速建表','1','0',null,null,'2025-07-21 09:53:14.961747000',null,null,'2025-07-21 09:53:14.961755000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(37,'create.procedure.dm8','2','-- 创建（或替换）存储过程
+CREATE OR REPLACE PROCEDURE sp_get_user_info(
+    p_username   IN  VARCHAR2,      -- 输入参数：用户名
+    o_id         OUT INT,           -- 输出参数：用户ID
+    o_real_name  OUT VARCHAR2,      -- 输出参数：真实姓名
+    o_email      OUT VARCHAR2,      -- 输出参数：邮箱
+    o_phone      OUT VARCHAR2,      -- 输出参数：手机号
+    o_status     OUT CHAR,          -- 输出参数：状态
+    o_msg        OUT VARCHAR2       -- 输出参数：结果消息
+) AS
+BEGIN
+    -- 初始化输出
+    o_msg := ''SUCCESS'';
+
+    -- 查询
+SELECT id, real_name, email, phone, status
+INTO o_id, o_real_name, o_email, o_phone, o_status
+FROM t_user
+WHERE username = p_username
+  AND ROWNUM = 1;
+
+-- 若未找到，抛出异常
+IF o_id IS NULL THEN
+        RAISE_APPLICATION_ERROR(-20001, ''用户不存在'');
+END IF;
+
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        o_msg := ''用户不存在'';
+        o_id := NULL;
+WHEN OTHERS THEN
+        o_msg := SQLERRM;
+        o_id := NULL;
+END;','创建Dm8存储过程','1','0',null,null,'2025-07-21 09:53:15.145920000',null,null,'2025-07-21 09:53:15.145927000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(38,'create.table.oracle','3','-- 1. 建表
+CREATE TABLE t_user
+(
+    id          NUMBER NOT NULL PRIMARY KEY,
+    username    VARCHAR2(50) NOT NULL UNIQUE,
+    password    VARCHAR2(64) NOT NULL,
+    real_name   VARCHAR2(50),
+    email       VARCHAR2(100) UNIQUE,
+    phone       VARCHAR2(20),
+    status      CHAR(1)   DEFAULT ''1'' CHECK (status IN (''0'', ''1'')),
+    create_time TIMESTAMP DEFAULT SYSTIMESTAMP,
+    update_time TIMESTAMP DEFAULT SYSTIMESTAMP
+);
+
+-- 2. 插入示例数据
+INSERT INTO t_user (id, username, password, real_name, email, phone, status)
+VALUES (''zhangsan'', ''e10adc3949ba59abbe56e057f20f883e'', ''张三'', ''zhangsan@demo.com'', ''13800000001'', ''1'');
+
+INSERT INTO t_user (id, username, password, real_name, email, phone, status)
+VALUES (1, ''lisi'', ''25d55ad283aa400af464c76d713c07ad'', ''李四'', ''lisi@demo.com'', ''13800000002'', ''1'');
+
+INSERT INTO t_user (id, username, password, real_name, email, phone, status)
+VALUES (1, ''wangwu'', ''5f4dcc3b5aa765d61d8327deb882cf99'', ''王五'', ''wangwu@demo.com'', ''13800000003'', ''0'');','Oracle快速建表','1','0',null,null,'2025-07-21 09:53:15.320110000',null,null,'2025-07-21 09:53:15.320116000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(39,'create.procedure.oracle','3','--  存储过程：根据用户名返回用户完整信息
+CREATE OR REPLACE PROCEDURE sp_get_user_info(
+    p_username  IN  VARCHAR2,
+    o_id        OUT NUMBER,
+    o_real_name OUT VARCHAR2,
+    o_email     OUT VARCHAR2,
+    o_phone     OUT VARCHAR2,
+    o_status    OUT CHAR,
+    o_msg       OUT VARCHAR2
+) IS
+BEGIN
+SELECT id, real_name, email, phone, status
+INTO o_id, o_real_name, o_email, o_phone, o_status
+FROM t_user
+WHERE username = p_username
+  AND ROWNUM = 1;
+
+o_msg := ''SUCCESS'';
+
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        o_msg := ''用户不存在'';
+        o_id := NULL;
+WHEN OTHERS THEN
+        o_msg := SQLERRM;
+        o_id := NULL;
+END sp_get_user_info;','创建Oracle存储过程','1','0',null,null,'2025-07-21 09:53:15.494035000',null,null,'2025-07-21 09:53:15.494045000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(40,'create.table.mysql','4','-- 1. 建表
+CREATE TABLE IF NOT EXISTS t_user (
+                                      id          INT AUTO_INCREMENT PRIMARY KEY,
+                                      username    VARCHAR(50)  NOT NULL UNIQUE,
+    password    VARCHAR(64)  NOT NULL,
+    real_name   VARCHAR(50),
+    email       VARCHAR(100) UNIQUE,
+    phone       VARCHAR(20),
+    status      CHAR(1)      DEFAULT ''1'' CHECK (status IN (''0'',''1'')),
+    create_time TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
+    update_time TIMESTAMP    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    ) ENGINE = InnoDB
+    DEFAULT CHARSET = utf8mb4;
+-- 2. 插入示例数据
+INSERT INTO t_user (username, password, real_name, email, phone, status) VALUES
+(''zhangsan'', ''e10adc3949ba59abbe56e057f20f883e'', ''张三'', ''zhangsan@demo.com'', ''13800000001'', ''1''),
+(''lisi'',     ''25d55ad283aa400af464c76d713c07ad'', ''李四'', ''lisi@demo.com'',     ''13800000002'', ''1''),
+(''wangwu'',   ''5f4dcc3b5aa765d61d8327deb882cf99'', ''王五'', ''wangwu@demo.com'',   ''13800000003'', ''0'');','Mysql快速建表','1','0',null,null,'2025-07-21 09:53:15.654161000',null,null,'2025-07-21 09:53:15.654168000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(41,'create.procedure.mysql','4','-- 存储过程：根据用户名返回用户信息
+DELIMITER $$
+CREATE OR REPLACE PROCEDURE sp_get_user_info(
+    IN  p_username  VARCHAR(50),
+    OUT o_id        INT,
+    OUT o_real_name VARCHAR(50),
+    OUT o_email     VARCHAR(100),
+    OUT o_phone     VARCHAR(20),
+    OUT o_status    CHAR(1),
+    OUT o_msg       VARCHAR(100)
+)
+BEGIN
+    DECLARE EXIT HANDLER FOR NOT FOUND
+BEGIN
+        SET o_msg = ''用户不存在'';
+        SET o_id = NULL;
+END;
+
+SELECT id, real_name, email, phone, status
+INTO o_id, o_real_name, o_email, o_phone, o_status
+FROM t_user
+WHERE username = p_username
+    LIMIT 1;
+
+SET o_msg = ''SUCCESS'';
+END$$
+DELIMITER ;','创建Mysql存储过程','1','0',null,null,'2025-07-21 09:53:15.842468000',null,null,'2025-07-21 09:53:15.842474000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(42,'create.table.kingbase','5','-- 1. 建表
+CREATE TABLE t_user
+(
+    id          NUMBER NOT NULL PRIMARY KEY,
+    username    VARCHAR2(50) NOT NULL UNIQUE,
+    password    VARCHAR2(64) NOT NULL,
+    real_name   VARCHAR2(50),
+    email       VARCHAR2(100) UNIQUE,
+    phone       VARCHAR2(20),
+    status      CHAR(1)   DEFAULT ''1'' CHECK (status IN (''0'', ''1'')),
+    create_time TIMESTAMP DEFAULT SYSDATE,
+    update_time TIMESTAMP DEFAULT SYSDATE
+);
+
+-- 2. 插入示例数据
+INSERT INTO t_user (username, password, real_name, email, phone, status)
+VALUES (''zhangsan'', ''e10adc3949ba59abbe56e057f20f883e'', ''张三'', ''zhangsan@demo.com'', ''13800000001'', ''1''),
+       (''lisi'', ''25d55ad283aa400af464c76d713c07ad'', ''李四'', ''lisi@demo.com'', ''13800000002'', ''1''),
+       (''wangwu'', ''5f4dcc3b5aa765d61d8327deb882cf99'', ''王五'', ''wangwu@demo.com'', ''13800000003'', ''0'');
+','Kingbase快速建表','1','0',null,null,'2025-07-21 09:53:16.011167000',null,null,'2025-07-21 09:53:16.011175000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(43,'create.procedure.kingbase','5','--  存储过程：按用户名返回用户信息
+CREATE OR REPLACE PROCEDURE sp_get_user_info(
+    p_username  IN  VARCHAR2,
+    o_id        OUT NUMBER,
+    o_real_name OUT VARCHAR2,
+    o_email     OUT VARCHAR2,
+    o_phone     OUT VARCHAR2,
+    o_status    OUT CHAR,
+    o_msg       OUT VARCHAR2
+) AS
+BEGIN
+BEGIN
+SELECT id, real_name, email, phone, status
+INTO o_id, o_real_name, o_email, o_phone, o_status
+FROM t_user
+WHERE username = p_username AND ROWNUM = 1;
+o_msg := ''SUCCESS'';
+EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            o_msg := ''用户不存在'';
+            o_id := NULL;
+WHEN OTHERS THEN
+            o_msg := SQLERRM;
+            o_id := NULL;
+END;
+END sp_get_user_info;','创建Kingbase存储过程','1','0',null,null,'2025-07-21 09:53:16.211364000',null,null,'2025-07-21 09:53:16.211370000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(44,'create.table.hive','8','-- 1.建表
+CREATE TABLE IF NOT EXISTS t_user (
+    id          BIGINT,
+    username    STRING,
+    password    STRING,
+    real_name   STRING,
+    email       STRING,
+    phone       STRING,
+    status      CHAR(1),
+    create_time TIMESTAMP,
+    update_time TIMESTAMP
+) CLUSTERED BY (id) INTO 4 BUCKETS STORED AS ORC
+TBLPROPERTIES (''transactional''=''true'',''orc.compress''=''ZLIB'');
+
+
+-- 2. 插入示例数据
+INSERT INTO TABLE t_user VALUES
+(1, ''zhangsan'', ''e10adc3949ba59abbe56e057f20f883e'', ''张三'', ''zhangsan@demo.com'', ''13800000001'', ''1'', current_timestamp, current_timestamp),
+(2, ''lisi'',     ''25d55ad283aa400af464c76d713c07ad'', ''李四'', ''lisi@demo.com'',     ''13800000002'', ''1'', current_timestamp, current_timestamp),
+(3, ''wangwu'',   ''5f4dcc3b5aa765d61d8327deb882cf99'', ''王五'', ''wangwu@demo.com'',   ''13800000003'', ''0'', current_timestamp, current_timestamp);
+','Hive快速建表','1','0',null,null,'2025-07-21 09:53:16.392448000',null,null,'2025-07-21 09:53:16.392454000',null);
+INSERT INTO "QDATA"."DPP_ETL_SQL_TEMP"("ID","NAME","TYPE","CONTENT","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(46,'spark sql','9','-- 注册 MySQL 表为临时视图
+CREATE OR REPLACE TEMPORARY VIEW v_user
+USING JDBC
+OPTIONS (
+  url "jdbc:mysql://localhost:3306/demo?useSSL=false&serverTimezone=UTC",
+  dbtable "t_user",
+  user "账号",
+  password "密码",
+  driver "com.mysql.cj.jdbc.Driver"
+);','spark sql','1','0',null,null,'2025-07-21 10:43:14.914442000',null,null,'2025-07-21 10:43:14.914450000',null);
+
+SET IDENTITY_INSERT "QDATA"."DPP_ETL_SQL_TEMP" OFF;
+

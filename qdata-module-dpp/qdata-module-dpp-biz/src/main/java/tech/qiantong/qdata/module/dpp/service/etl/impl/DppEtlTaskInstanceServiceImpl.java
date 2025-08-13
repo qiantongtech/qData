@@ -74,9 +74,6 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
     @Resource
     private IDppEtlNodeInstanceService dppEtlTNodeInstanceService;
 
-    @Value("${ds.http_projectCode}")
-    private String httpProjectCode;
-
     @Override
     public PageResult<DppEtlTaskInstanceDO> getDppEtlTaskInstancePage(DppEtlTaskInstancePageReqVO pageReqVO) {
         return dppEtlTaskInstanceMapper.selectPage(pageReqVO);
@@ -219,10 +216,6 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
     @Override
     public Boolean createTaskInstance(ProcessInstance processInstance) {
         log.info(JSONObject.toJSONString(processInstance));
-        //判断是否是数据发现 是直接抛弃
-        if (StringUtils.equals(httpProjectCode, String.valueOf(processInstance.getProjectCode()))) {
-            return true;
-        }
         DppEtlTaskRespDTO dppEtlTaskRespDTO = dppEtlTaskService.getTaskByTaskCode(String.valueOf(processInstance.getProcessDefinitionCode()));
         if (dppEtlTaskRespDTO == null) {
             return true;
@@ -267,10 +260,6 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
     @Override
     public Boolean updateTaskInstance(ProcessInstance processInstance) {
         log.info(JSONObject.toJSONString(processInstance));
-        //判断是否是数据发现 是直接抛弃
-        if (StringUtils.equals(httpProjectCode, String.valueOf(processInstance.getProjectCode()))) {
-            return true;
-        }
         DppEtlTaskInstanceDO old = this.getById(processInstance.getId());
         if (old == null) {
             return true;

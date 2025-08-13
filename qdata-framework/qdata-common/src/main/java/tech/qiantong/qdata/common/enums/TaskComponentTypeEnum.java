@@ -18,6 +18,7 @@ public enum TaskComponentTypeEnum {
     //输入
     DB_READER("1", "数据库输入"),
     EXCEL_READER("2", "Excel输入"),
+    KAFKA_READER("3", "Kafka输入"),
     CSV_READER("4", "csv输入"),
 
 

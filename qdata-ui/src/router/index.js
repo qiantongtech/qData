@@ -12,6 +12,8 @@ import systemDynamicRouter from './system/dynamic/index.js';
 import examplePublicRouter from './example/public/index.js';
 /* 示例模块动态路由 */
 import exampleDynamicRouter from './example/dynamic/index.js';
+/* 数据质量 */
+import daDataQuality from './da/dataQuality/index.js';
 
 /* 示例模块动态路由 */
 import daDynamicRouter from './da/dynamic/index.js';
@@ -63,7 +65,8 @@ export const constantRoutes = [
     ...dpPublicRouter,
     ...dsPublicRouter,
     ...deeEtlRouter,
-    ...daPublicRouter
+    ...daPublicRouter,
+    ...daDataQuality
 ];
 
 // 动态路由，基于用户权限动态去加载

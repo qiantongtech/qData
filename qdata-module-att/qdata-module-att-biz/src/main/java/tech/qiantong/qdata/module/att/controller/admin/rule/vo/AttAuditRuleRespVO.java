@@ -1,11 +1,12 @@
 package tech.qiantong.qdata.module.att.controller.admin.rule.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.*;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
 import tech.qiantong.qdata.common.annotation.Excel;
 
-import java.io.Serializable;
 import java.util.Date;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -105,4 +106,19 @@ public class AttAuditRuleRespVO implements Serializable {
      * 子节点列表
      */
     private List<AttAuditRuleRespVO> children;
+
+    @Schema(description = "规则编码", example = "101")
+    private String code;
+
+    @Schema(description = "使用场景", example = "用于身份证号非空检查")
+    private String useCase;
+
+    @Schema(description = "示例", example = "字段值不能为空，如：ID=123456")
+    private String example;
+
+    @Schema(description = "图标地址", example = "/images/icon.png")
+    private String iconPath;
+
+    @Schema(description = "策略标识", example = "NOT_NULL_ID_CHECK")
+    private String strategyKey;
 }

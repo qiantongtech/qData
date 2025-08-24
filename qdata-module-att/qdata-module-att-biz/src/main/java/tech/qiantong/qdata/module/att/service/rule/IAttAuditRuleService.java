@@ -1,15 +1,14 @@
 package tech.qiantong.qdata.module.att.service.rule;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import tech.qiantong.qdata.common.core.page.PageResult;
-import tech.qiantong.qdata.module.att.controller.admin.rule.vo.AttAuditRulePageReqVO;
-import tech.qiantong.qdata.module.att.controller.admin.rule.vo.AttAuditRuleRespVO;
-import tech.qiantong.qdata.module.att.controller.admin.rule.vo.AttAuditRuleSaveReqVO;
-import tech.qiantong.qdata.module.att.dal.dataobject.rule.AttAuditRuleDO;
-
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Collection;
+import com.baomidou.mybatisplus.extension.service.IService;
+import tech.qiantong.qdata.common.core.page.PageResult;
+import tech.qiantong.qdata.module.att.controller.admin.rule.vo.AttAuditRuleRespVO;
+import tech.qiantong.qdata.module.att.controller.admin.rule.vo.AttAuditRuleSaveReqVO;
+import tech.qiantong.qdata.module.att.controller.admin.rule.vo.AttAuditRulePageReqVO;
+import tech.qiantong.qdata.module.att.dal.dataobject.rule.AttAuditRuleDO;
 
 /**
  * 稽查规则Service接口

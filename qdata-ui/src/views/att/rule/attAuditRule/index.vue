@@ -12,7 +12,11 @@
                             <el-input class="el-form-input-width" v-model="queryParams.name" placeholder="请输入规则名称"
                                 clearable @keyup.enter="handleQuery" />
                         </el-form-item>
-                        <el-form-item label="规则级别" prop="level">
+                        <el-form-item label="规则编码" prop="code">
+                            <el-input class="el-form-input-width" v-model="queryParams.code" placeholder="请输入规则编码"
+                                clearable @keyup.enter="handleQuery" />
+                        </el-form-item>
+                        <!-- <el-form-item label="规则级别" prop="level">
                             <el-select class="el-form-input-width" v-model="queryParams.level" placeholder="请选择规则类型"
                                 clearable>
                                 <el-option v-for="dict in att_rule_level" :key="dict.value" :label="dict.label"
@@ -25,7 +29,7 @@
                                 <el-option v-for="dict in att_rule_audit_q_dimension" :key="dict.value"
                                     :label="dict.label" :value="dict.value" />
                             </el-select>
-                        </el-form-item>
+                        </el-form-item> -->
 
                         <el-form-item>
                             <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
@@ -42,87 +46,90 @@
                     <div class="justify-between mb15">
                         <el-row :gutter="15" class="btn-style">
                             <el-col :span="1.5">
-                                <el-button type="primary" plain @click="handleAdd"
+                                <!-- <el-button type="primary" plain @click="handleAdd"
                                     v-hasPermi="['att:rule:auditrule:add']" @mousedown="(e) => e.preventDefault()">
                                     <i class="iconfont-mini icon-xinzeng mr5"></i>新增
-                                </el-button>
+                                </el-button> -->
                             </el-col>
-                            <el-col :span="1.5">
-                                <el-button type="primary" plain :disabled="single" @click="handleUpdate"
-                                    v-hasPermi="['att:rule:auditrule:edit']" @mousedown="(e) => e.preventDefault()">
-                                    <i class="iconfont-mini icon-xiugai--copy mr5"></i>修改
-                                </el-button>
-                            </el-col>
-                            <el-col :span="1.5">
-                                <el-button type="danger" plain :disabled="multiple" @click="handleDelete"
-                                    v-hasPermi="['att:rule:auditrule:remove']" @mousedown="(e) => e.preventDefault()">
-                                    <i class="iconfont-mini icon-shanchu-huise mr5"></i>删除
-                                </el-button>
-                            </el-col>
+                            <!--                            <el-col :span="1.5">-->
+                            <!--                                <el-button type="primary" plain :disabled="single" @click="handleUpdate"-->
+                            <!--                                    v-hasPermi="['att:rule:auditrule:edit']" @mousedown="(e) => e.preventDefault()">-->
+                            <!--                                    <i class="iconfont-mini icon-xiugai&#45;&#45;copy mr5"></i>修改-->
+                            <!--                                </el-button>-->
+                            <!--                            </el-col>-->
+                            <!--                            <el-col :span="1.5">-->
+                            <!--                                <el-button type="danger" plain :disabled="multiple" @click="handleDelete"-->
+                            <!--                                    v-hasPermi="['att:rule:auditrule:remove']" @mousedown="(e) => e.preventDefault()">-->
+                            <!--                                    <i class="iconfont-mini icon-shanchu-huise mr5"></i>删除-->
+                            <!--                                </el-button>-->
+                            <!--                            </el-col>-->
                         </el-row>
                         <div class="justify-end top-right-btn">
                             <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"
                                 :columns="columns"></right-toolbar>
                         </div>
                     </div>
-                    <el-table stripe height="58vh" v-loading="loading" :data="attAuditRuleList"
+                    <el-table stripe height="60vh" v-loading="loading" :data="attAuditRuleList"
                         @selection-change="handleSelectionChange" :default-sort="defaultSort"
                         @sort-change="handleSortChange">
-                        <el-table-column type="selection" width="55" align="center" />
-                        <el-table-column v-if="getColumnVisibility(0)" label="编号" align="center" prop="id" width="80" />
-                        <el-table-column v-if="getColumnVisibility(1)" label="规则名称" width="200" align="left"
-                            prop="name">
+                        <el-table-column v-if="getColumnVisibility(6)" label="规则编码" align="left" prop="code" width="80">
+                            <template #default="scope">
+                                {{ scope.row.code || '-' }}
+                            </template>
+                        </el-table-column>
+                        <el-table-column v-if="getColumnVisibility(1)" label="规则名称" align="left" prop="name"
+                            show-overflow-tooltip width="200">
                             <template #default="scope">
                                 {{ scope.row.name || '-' }}
                             </template>
                         </el-table-column>
-                        <el-table-column show-overflow-tooltip v-if="getColumnVisibility(5)" label="规则描述" align="left"
-                            prop="description">
-                            <template #default="scope">
-                                {{ scope.row.description || '-' }}
-                            </template>
-                        </el-table-column>
-                        <el-table-column v-if="getColumnVisibility(4)" label="规则级别" width="120" align="center"
-                            prop="level">
-                            <template #default="scope">
-                                <dict-tag :options="att_rule_level" :value="scope.row.level" />
-                            </template>
-                        </el-table-column>
-
-                        <el-table-column v-if="getColumnVisibility(3)" label="规则类型" width="120" align="center"
-                            prop="type">
-                            <template #default="scope">
-                                <dict-tag :options="att_rule_audit_type" :value="scope.row.type" />
-                            </template>
-                        </el-table-column>
-
-                        <el-table-column v-if="getColumnVisibility(2)" label="质量维度" width="120" align="center"
-                            prop="qualityDim">
+                        <el-table-column v-if="getColumnVisibility(2)" label="质量维度" align="left" prop="qualityDim"
+                            show-overflow-tooltip width="80">
                             <template #default="scope">
                                 <dict-tag :options="att_rule_audit_q_dimension" :value="scope.row.qualityDim" />
                             </template>
                         </el-table-column>
+                        <el-table-column show-overflow-tooltip v-if="getColumnVisibility(5)" label="规则描述" width="400"
+                            align="left" prop="description">
+                            <template #default="scope">
+                                {{ scope.row.description || '-' }}
+                            </template>
+                        </el-table-column>
+                        <el-table-column v-if="getColumnVisibility(3)" label="使用场景" width="500" align="left"
+                            prop="level" show-overflow-tooltip>
+                            <template #default="scope">
+                                {{ scope.row.useCase || '-' }}
+                            </template>
+                        </el-table-column>
+                        <el-table-column v-if="getColumnVisibility(4)" label="示例" width="700" align="left" prop="type"
+                            show-overflow-tooltip>
+                            <template #default="scope">
+                                {{ scope.row.example || '-' }}
+                            </template>
+                        </el-table-column>
+
+
 
                         <!-- <el-table-column
                             show-overflow-tooltip
                             v-if="getColumnVisibility(14)"
                             label="备注"
-                            align="center"
+                            align="left"
                             prop="remark"
                         >
                             <template #default="scope">
                                 {{ scope.row.remark || '-' }}
                             </template>
                         </el-table-column> -->
-                        <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right"
-                            width="240">
+                        <!-- <el-table-column label="操作" align="left" class-name="small-padding fixed-width" fixed="right"
+                            width="120">
                             <template #default="scope">
                                 <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
                                     v-hasPermi="['att:rule:auditrule:edit']">修改</el-button>
                                 <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
                                     v-hasPermi="['att:rule:auditrule:remove']">删除</el-button>
                             </template>
-                        </el-table-column>
+                        </el-table-column> -->
 
                         <template #empty>
                             <div class="emptyBg">
@@ -152,6 +159,11 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
+                        <el-form-item label="规则编码" prop="code">
+                            <el-input v-model="form.code" placeholder="请输入规则编码" />
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
                         <el-form-item label="质量维度" prop="qualityDim">
                             <el-select v-model="form.qualityDim" placeholder="请选择质量维度">
                                 <el-option v-for="dict in att_rule_audit_q_dimension" :key="dict.value"
@@ -160,7 +172,7 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row :gutter="20">
+                <!-- <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item label="规则类型" prop="type">
                             <el-select v-model="form.type" placeholder="请选择规则类型">
@@ -177,18 +189,25 @@
                             </el-select>
                         </el-form-item>
                     </el-col>
+                </el-row> -->
+                <el-row :gutter="20">
+                    <el-col :span="24">
+                        <el-form-item label="场景" prop="useCase">
+                            <el-input type="textarea" v-model="form.useCase" placeholder="请输入场景" />
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row :gutter="20">
+                    <el-col :span="24">
+                        <el-form-item label="示例" prop="example">
+                            <el-input type="textarea" v-model="form.example" placeholder="请输入示例" />
+                        </el-form-item>
+                    </el-col>
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="24">
                         <el-form-item label="规则描述" prop="description">
                             <el-input type="textarea" v-model="form.description" placeholder="请输入规则描述" />
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-col :span="24">
-                        <el-form-item label="备注" prop="remark">
-                            <el-input type="textarea" v-model="form.remark" placeholder="请输入备注" />
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -201,90 +220,8 @@
             </template>
         </el-dialog>
 
-        <!-- 稽查规则详情对话框 -->
-        <el-dialog :title="title" v-model="openDetail" width="800px" :append-to="$refs['app-container']" draggable>
-            <template #header="{ close, titleId, titleClass }">
-                <span role="heading" aria-level="2" class="el-dialog__title">
-                    {{ title }}
-                </span>
-            </template>
-            <el-form ref="attAuditRuleRef" :model="form" label-width="80px">
-                <el-row :gutter="20">
-                    <el-col :span="12">
-                        <el-form-item label="规则名称" prop="name">
-                            <div>
-                                {{ form.name }}
-                            </div>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                        <el-form-item label="质量维度" prop="qualityDim">
-                            <dict-tag :options="att_rule_audit_q_dimension" :value="form.qualityDim" />
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-row :gutter="20">
-                    <el-col :span="12">
-                        <el-form-item label="规则类型" prop="type">
-                            <dict-tag :options="att_rule_audit_type" :value="form.type" />
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                        <el-form-item label="规则级别" prop="level">
-                            <dict-tag :options="att_rule_level" :value="form.level" />
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-row :gutter="20">
-                    <el-col :span="12">
-                        <el-form-item label="规则描述" prop="description">
-                            <div>
-                                {{ form.description }}
-                            </div>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                        <el-form-item label="备注" prop="remark">
-                            <div>
-                                {{ form.remark }}
-                            </div>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-            </el-form>
-            <template #footer>
-                <div class="dialog-footer">
-                    <el-button size="mini" @click="cancel">关 闭</el-button>
-                </div>
-            </template>
-        </el-dialog>
 
-        <!-- 用户导入对话框 -->
-        <el-dialog :title="upload.title" v-model="upload.open" width="800px" :append-to="$refs['app-container']"
-            draggable destroy-on-close>
-            <el-upload ref="uploadRef" :limit="1" accept=".xlsx, .xls" :headers="upload.headers"
-                :action="upload.url + '?updateSupport=' + upload.updateSupport" :disabled="upload.isUploading"
-                :on-progress="handleFileUploadProgress" :on-success="handleFileSuccess" :auto-upload="false" drag>
-                <el-icon class="el-icon--upload"><upload-filled /></el-icon>
-                <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                <template #tip>
-                    <div class="el-upload__tip text-center">
-                        <div class="el-upload__tip">
-                            <el-checkbox v-model="upload.updateSupport" />是否更新已经存在的稽查规则数据
-                        </div>
-                        <span>仅允许导入xls、xlsx格式文件。</span>
-                        <el-link type="primary" :underline="false" style="font-size: 12px; vertical-align: baseline"
-                            @click="importTemplate">下载模板</el-link>
-                    </div>
-                </template>
-            </el-upload>
-            <template #footer>
-                <div class="dialog-footer">
-                    <el-button @click="upload.open = false">取 消</el-button>
-                    <el-button type="primary" @click="submitFileForm">确 定</el-button>
-                </div>
-            </template>
-        </el-dialog>
+
     </div>
 </template>
 
@@ -333,9 +270,9 @@ const processedData = ref([]);
 processedData.value = computed(() => {
     return [
         {
-            name: '稽查规则',
-            children: Array.isArray(att_rule_audit_type.value)
-                ? att_rule_audit_type.value.map((item) => ({
+            name: '质量维度',
+            children: Array.isArray(att_rule_audit_q_dimension.value)
+                ? att_rule_audit_q_dimension.value.map((item) => ({
                     name: item.label,
                     id: item.value
                 }))
@@ -347,18 +284,18 @@ processedData.value = computed(() => {
 const attAuditRuleList = ref([]);
 
 function handleNodeClick(data) {
-    queryParams.value.type = data.id;
+    queryParams.value.qualityDim = data.id;
     queryParams.value.pageNum = 1;
     handleQuery();
 }
 // 列显隐信息
 const columns = ref([
+    { key: 6, label: '规则编码', visible: true },
     { key: 1, label: '规则名称', visible: true },
     { key: 2, label: '质量维度', visible: true },
-    { key: 3, label: '规则类型', visible: true },
-    { key: 4, label: '规则级别', visible: true },
     { key: 5, label: '规则描述', visible: true },
-    { key: 14, label: '备注', visible: true }
+    { key: 3, label: '使用场景', visible: true },
+    { key: 4, label: '示例', visible: true },
 ]);
 
 const getColumnVisibility = (key) => {
@@ -403,14 +340,16 @@ const data = reactive({
         pageNum: 1,
         pageSize: 10,
         name: null,
-        qualityDim: null,
-        type: null
+        qualityDim: '',
+        type: '',
+        code: ""
     },
     rules: {
         name: [{ required: true, message: '规则名称不能为空', trigger: 'blur' }],
         qualityDim: [{ required: true, message: '质量维度不能为空', trigger: 'change' }],
-        type: [{ required: true, message: '规则类型不能为空', trigger: 'change' }],
-        level: [{ required: true, message: '规则级别不能为空', trigger: 'change' }]
+        // type: [{ required: true, message: '规则类型不能为空', trigger: 'change' }],
+        code: [{ required: true, message: '规则编码不能为空', trigger: 'change' }],
+        // level: [{ required: true, message: '规则级别不能为空', trigger: 'change' }]
     }
 });
 
@@ -419,7 +358,7 @@ const { queryParams, form, rules } = toRefs(data);
 /** 查询稽查规则列表 */
 function getList() {
     loading.value = true;
-    listAttAuditRule(queryParams.value).then((response) => {
+    listAttAuditRule({ ...queryParams.value, validFlag: 1 }).then((response) => {
         attAuditRuleList.value = response.data.rows;
         total.value = response.data.total;
         loading.value = false;
@@ -439,8 +378,6 @@ function reset() {
         id: null,
         name: null,
         qualityDim: null,
-        type: null,
-        level: null,
         description: null,
         validFlag: null,
         delFlag: null,
@@ -450,7 +387,8 @@ function reset() {
         updateBy: null,
         updaterId: null,
         updateTime: null,
-        remark: null
+        remark: null,
+        type: '5', level: '1'
     };
     proxy.resetForm('attAuditRuleRef');
 }
@@ -489,7 +427,9 @@ function handleSortChange(column, prop, order) {
 /** 新增按钮操作 */
 function handleAdd() {
     reset();
-    form.value.type = queryParams.value.type;
+    form.value.qualityDim = queryParams.value.qualityDim;
+    form.value.type = '5';
+    form.value.level = '1';
     open.value = true;
     title.value = '新增稽查规则';
 }

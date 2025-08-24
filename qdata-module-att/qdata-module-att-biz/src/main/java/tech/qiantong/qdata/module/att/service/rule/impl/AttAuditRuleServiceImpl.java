@@ -1,14 +1,23 @@
 package tech.qiantong.qdata.module.att.service.rule.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.exception.ServiceException;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tech.qiantong.qdata.module.att.controller.admin.rule.vo.AttAuditRulePageReqVO;
 import tech.qiantong.qdata.module.att.controller.admin.rule.vo.AttAuditRuleRespVO;
 import tech.qiantong.qdata.module.att.controller.admin.rule.vo.AttAuditRuleSaveReqVO;
@@ -16,13 +25,6 @@ import tech.qiantong.qdata.module.att.dal.dataobject.rule.AttAuditRuleDO;
 import tech.qiantong.qdata.module.att.dal.dataobject.rule.enums.RuleTypeEnum;
 import tech.qiantong.qdata.module.att.dal.mapper.rule.AttAuditRuleMapper;
 import tech.qiantong.qdata.module.att.service.rule.IAttAuditRuleService;
-
-import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * 稽查规则Service业务层处理

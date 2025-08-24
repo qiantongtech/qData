@@ -1,16 +1,16 @@
 package tech.qiantong.qdata.module.att.dal.mapper.rule;
 
 import org.apache.ibatis.annotations.Param;
-import tech.qiantong.qdata.common.core.page.PageResult;
-import tech.qiantong.qdata.module.att.controller.admin.rule.vo.AttAuditRulePageReqVO;
 import tech.qiantong.qdata.module.att.dal.dataobject.rule.AttAuditRuleDO;
-import tech.qiantong.qdata.mybatis.core.mapper.BaseMapperX;
-import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
-
 import java.util.Arrays;
+import com.github.yulichang.base.MPJBaseMapper;
+import tech.qiantong.qdata.common.core.page.PageResult;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import tech.qiantong.qdata.module.att.controller.admin.rule.vo.AttAuditRulePageReqVO;
+import tech.qiantong.qdata.mybatis.core.mapper.BaseMapperX;
+import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
 
 /**
  * 稽查规则Mapper接口
@@ -29,7 +29,11 @@ public interface AttAuditRuleMapper extends BaseMapperX<AttAuditRuleDO> {
                 .likeIfPresent(AttAuditRuleDO::getName, reqVO.getName())
                 .eqIfPresent(AttAuditRuleDO::getQualityDim, reqVO.getQualityDim())
                 .eqIfPresent(AttAuditRuleDO::getType, reqVO.getType())
-                        .eqIfPresent(AttAuditRuleDO::getLevel, reqVO.getLevel())
+                .eqIfPresent(AttAuditRuleDO::getLevel, reqVO.getLevel())
+                .eqIfPresent(AttAuditRuleDO::getValidFlag, reqVO.getValidFlag())
+                .eqIfPresent(AttAuditRuleDO::getCode, reqVO.getCode())
+                .likeIfPresent(AttAuditRuleDO::getUseCase, reqVO.getUseCase())
+                .likeIfPresent(AttAuditRuleDO::getExample, reqVO.getExample())
                 // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
                 // .likeIfPresent(AttAuditRuleDO::getName, reqVO.getName())
                 // 按照 createTime 字段降序排序

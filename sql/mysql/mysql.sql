@@ -5113,7 +5113,7 @@ CREATE TABLE ATT_QUALITY_CAT(
     `UPDATE_TIME` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
     `REMARK` VARCHAR(512) COMMENT '备注',
     PRIMARY KEY (`ID`)
-) COMMENT '数据质量类目表';
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT '数据质量类目表';
 
 DROP TABLE IF EXISTS DPP_QUALITY_TASK;
 CREATE TABLE DPP_QUALITY_TASK(
@@ -5149,7 +5149,7 @@ CREATE TABLE DPP_QUALITY_TASK(
     `ASSET_FLAG` VARCHAR(1) NOT NULL DEFAULT '0' COMMENT '是否是资产质量任务;0：否。 1是',
     `ASSET_ID` BIGINT COMMENT '资产id',
     PRIMARY KEY (`ID`)
-) COMMENT '数据质量任务';
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT '数据质量任务';
 
 
 DROP TABLE IF EXISTS DPP_QUALITY_TASK_OBJ;
@@ -5169,7 +5169,7 @@ CREATE TABLE DPP_QUALITY_TASK_OBJ(
     `UPDATE_TIME` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
     `REMARK` VARCHAR(512) COMMENT '',
     PRIMARY KEY (`ID`)
-) COMMENT '数据质量任务-稽查对象';
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT '数据质量任务-稽查对象';
 
 DROP TABLE IF EXISTS DPP_QUALITY_TASK_EVALUATE;
 CREATE TABLE DPP_QUALITY_TASK_EVALUATE(
@@ -5201,8 +5201,7 @@ CREATE TABLE DPP_QUALITY_TASK_EVALUATE(
     `REMARK` VARCHAR(512) COMMENT '',
     `RULE_TYPE` VARCHAR(32) COMMENT '',
     PRIMARY KEY (`ID`)
-) COMMENT '数据质量任务-评测规则';
-
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT '数据质量任务-评测规则';
 
 DROP TABLE IF EXISTS DPP_QUALITY_LOG;
 CREATE TABLE DPP_QUALITY_LOG(
@@ -5225,17 +5224,17 @@ CREATE TABLE DPP_QUALITY_LOG(
     `REMARK` VARCHAR(512) COMMENT '备注',
     `PATH` VARCHAR(1024) COMMENT '',
     PRIMARY KEY (`ID`)
-) COMMENT '数据质量日志表';
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT '数据质量日志表';
 
-INSERT INTO SYSTEM_MENU VALUES(2629, '数据质量类目导入', 2623, 6, '#', '', NULL, 1, 0, NULL, 'F', '0', '0', 'att:cat:attqualitycat:import', '#', 'admin', '2025-07-19 17:11:51.000', '', NULL, '');
-INSERT INTO SYSTEM_MENU VALUES(2628, '数据质量类目导出', 2623, 5, '#', '', NULL, 1, 0, NULL, 'F', '0', '0', 'att:cat:attqualitycat:export', '#', 'admin', '2025-07-19 17:11:50.000', '', NULL, '');
-INSERT INTO SYSTEM_MENU VALUES(2627, '数据质量类目删除', 2623, 4, '#', '', NULL, 1, 0, NULL, 'F', '0', '0', 'att:cat:attqualitycat:remove', '#', 'admin', '2025-07-19 17:11:50.000', '', NULL, '');
-INSERT INTO SYSTEM_MENU VALUES(2626, '数据质量类目修改', 2623, 3, '#', '', NULL, 1, 0, NULL, 'F', '0', '0', 'att:cat:attqualitycat:edit', '#', 'admin', '2025-07-19 17:11:50.000', '', NULL, '');
-INSERT INTO SYSTEM_MENU VALUES(2625, '数据质量类目新增', 2623, 2, '#', '', NULL, 1, 0, NULL, 'F', '0', '0', 'att:cat:attqualitycat:add', '#', 'admin', '2025-07-19 17:11:49.000', '', NULL, '');
-INSERT INTO SYSTEM_MENU VALUES(2624, '数据质量类目查询', 2623, 1, '#', '', NULL, 1, 0, NULL, 'F', '0', '0', 'att:cat:attqualitycat:query', '#', 'admin', '2025-07-19 17:11:49.000', '', NULL, '');
-INSERT INTO SYSTEM_MENU VALUES(2623, '数据质量类目', 2352, 1, 'AttQualityCat', 'att/cat/attQualityCat/index', NULL, 1, 0, NULL, 'C', '0', '0', 'att:cat:attqualitycat:list', '#', 'admin', '2025-07-19 17:10:44.000', 'admin', '2025-07-19 17:12:53.000', '数据质量类目菜单');
-INSERT INTO SYSTEM_MENU VALUES(2622, '质量任务日志', 2621, 11, 'dataQualityTaskLogs', 'da/dataQuality/dataQualityTaskLogs/index', NULL, 1, 0, NULL, 'C', '0', '0', 'da:dataQuality:dataQualityTaskLogs:index', '#', 'admin', '2025-07-18 13:34:57.000', 'admin', '2025-07-24 11:21:32.000', '');
-INSERT INTO SYSTEM_MENU VALUES(2621, '数据质量', 2314, 8, 'dataQuality', '', NULL, 1, 0, NULL, 'M', '0', '0', '', 'ztgl', 'admin', '2025-07-18 11:24:17.000', 'admin', '2025-07-23 15:42:33.000', '');
-INSERT INTO SYSTEM_MENU VALUES(2605, '数据质量任务', 2621, 10, 'dataQualityTasks', 'da/dataQuality/dataQualityTasks/index', NULL, 1, 0, NULL, 'C', '0', '0', 'da:dataQuality:dataQualityTasks:index', '#', 'admin', '2025-07-11 11:25:35.000', 'admin', '2025-07-24 11:21:23.000', '');
+INSERT INTO `system_menu` VALUES(2629, '数据质量类目导入', 2623, 6, '#', '', NULL, 1, 0, NULL, 'F', '0', '0', 'att:cat:attqualitycat:import', '#', 'admin', '2025-07-19 17:11:51.000', '', NULL, '');
+INSERT INTO `system_menu` VALUES(2628, '数据质量类目导出', 2623, 5, '#', '', NULL, 1, 0, NULL, 'F', '0', '0', 'att:cat:attqualitycat:export', '#', 'admin', '2025-07-19 17:11:50.000', '', NULL, '');
+INSERT INTO `system_menu` VALUES(2627, '数据质量类目删除', 2623, 4, '#', '', NULL, 1, 0, NULL, 'F', '0', '0', 'att:cat:attqualitycat:remove', '#', 'admin', '2025-07-19 17:11:50.000', '', NULL, '');
+INSERT INTO `system_menu` VALUES(2626, '数据质量类目修改', 2623, 3, '#', '', NULL, 1, 0, NULL, 'F', '0', '0', 'att:cat:attqualitycat:edit', '#', 'admin', '2025-07-19 17:11:50.000', '', NULL, '');
+INSERT INTO `system_menu` VALUES(2625, '数据质量类目新增', 2623, 2, '#', '', NULL, 1, 0, NULL, 'F', '0', '0', 'att:cat:attqualitycat:add', '#', 'admin', '2025-07-19 17:11:49.000', '', NULL, '');
+INSERT INTO `system_menu` VALUES(2624, '数据质量类目查询', 2623, 1, '#', '', NULL, 1, 0, NULL, 'F', '0', '0', 'att:cat:attqualitycat:query', '#', 'admin', '2025-07-19 17:11:49.000', '', NULL, '');
+INSERT INTO `system_menu` VALUES(2623, '数据质量类目', 2352, 1, 'AttQualityCat', 'att/cat/attQualityCat/index', NULL, 1, 0, NULL, 'C', '0', '0', 'att:cat:attqualitycat:list', '#', 'admin', '2025-07-19 17:10:44.000', 'admin', '2025-07-19 17:12:53.000', '数据质量类目菜单');
+INSERT INTO `system_menu` VALUES(2622, '质量任务日志', 2621, 11, 'dataQualityTaskLogs', 'da/dataQuality/dataQualityTaskLogs/index', NULL, 1, 0, NULL, 'C', '0', '0', 'da:dataQuality:dataQualityTaskLogs:index', '#', 'admin', '2025-07-18 13:34:57.000', 'admin', '2025-07-24 11:21:32.000', '');
+INSERT INTO `system_menu` VALUES(2621, '数据质量', 2314, 8, 'dataQuality', '', NULL, 1, 0, NULL, 'M', '0', '0', '', 'ztgl', 'admin', '2025-07-18 11:24:17.000', 'admin', '2025-07-23 15:42:33.000', '');
+INSERT INTO `system_menu` VALUES(2605, '数据质量任务', 2621, 10, 'dataQualityTasks', 'da/dataQuality/dataQualityTasks/index', NULL, 1, 0, NULL, 'C', '0', '0', 'da:dataQuality:dataQualityTasks:index', '#', 'admin', '2025-07-11 11:25:35.000', 'admin', '2025-07-24 11:21:23.000', '');
 
 SET FOREIGN_KEY_CHECKS = 1;

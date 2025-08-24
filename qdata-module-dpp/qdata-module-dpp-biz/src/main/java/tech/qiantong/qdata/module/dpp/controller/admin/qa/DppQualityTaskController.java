@@ -1,33 +1,34 @@
 package tech.qiantong.qdata.module.dpp.controller.admin.qa;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.util.Arrays;
 import cn.hutool.core.date.DateUtil;
+import java.util.List;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.quartz.SchedulerException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import tech.qiantong.qdata.common.core.domain.AjaxResult;
+import tech.qiantong.qdata.common.core.page.PageParam;
 import tech.qiantong.qdata.common.annotation.Log;
 import tech.qiantong.qdata.common.core.controller.BaseController;
-import tech.qiantong.qdata.common.core.domain.AjaxResult;
 import tech.qiantong.qdata.common.core.domain.CommonResult;
-import tech.qiantong.qdata.common.core.page.PageParam;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.enums.BusinessType;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.common.utils.poi.ExcelUtil;
+import tech.qiantong.qdata.common.exception.enums.GlobalErrorCodeConstants;
+import tech.qiantong.qdata.module.dpp.controller.admin.qa.vo.DppQualityTaskAssetReqVO;
 import tech.qiantong.qdata.module.dpp.controller.admin.qa.vo.DppQualityTaskPageReqVO;
 import tech.qiantong.qdata.module.dpp.controller.admin.qa.vo.DppQualityTaskRespVO;
 import tech.qiantong.qdata.module.dpp.controller.admin.qa.vo.DppQualityTaskSaveReqVO;
 import tech.qiantong.qdata.module.dpp.convert.qa.DppQualityTaskConvert;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.qa.DppQualityTaskDO;
 import tech.qiantong.qdata.module.dpp.service.qa.IDppQualityTaskService;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * 数据质量任务Controller
@@ -75,6 +76,13 @@ public class DppQualityTaskController extends BaseController {
     @GetMapping(value = "/{id}")
     public CommonResult<DppQualityTaskRespVO> getInfo(@PathVariable("id") Long id) {
         DppQualityTaskRespVO dppQualityTaskDO = dppQualityTaskService.getDppQualityTaskById(id);
+        return CommonResult.success(dppQualityTaskDO);
+    }
+
+    @Operation(summary = "获取数据质量任务详细信息")
+    @GetMapping( "/getQualityTaskAsset")
+    public CommonResult<DppQualityTaskRespVO> getQualityTaskAsset(DppQualityTaskAssetReqVO dppQualityTaskAssetReqVO) {
+        DppQualityTaskRespVO dppQualityTaskDO = dppQualityTaskService.getQualityTaskAsset(dppQualityTaskAssetReqVO);
         return CommonResult.success(dppQualityTaskDO);
     }
 

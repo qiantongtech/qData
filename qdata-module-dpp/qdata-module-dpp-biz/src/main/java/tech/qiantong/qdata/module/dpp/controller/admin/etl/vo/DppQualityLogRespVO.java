@@ -1,5 +1,7 @@
-package tech.qiantong.qdata.module.dpp.controller.admin.qa.vo;
+package tech.qiantong.qdata.module.dpp.controller.admin.etl.vo;
 
+import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -8,14 +10,14 @@ import java.util.Date;
 import java.io.Serializable;
 
 /**
- * 数据质量任务-稽查对象 Response VO 对象 DPP_QUALITY_TASK_OBJ
+ * 数据质量日志 Response VO 对象 DPP_QUALITY_LOG
  *
- * @author Chaos
- * @date 2025-07-21
+ * @author qdata
+ * @date 2025-07-19
  */
-@Schema(description = "数据质量任务-稽查对象 Response VO")
+@Schema(description = "数据质量日志 Response VO")
 @Data
-public class DppQualityTaskObjRespVO implements Serializable {
+public class DppQualityLogRespVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -23,21 +25,35 @@ public class DppQualityTaskObjRespVO implements Serializable {
     @Schema(description = "ID")
     private Long id;
 
-    @Excel(name = "数据质量任务ID")
-    @Schema(description = "数据质量任务ID", example = "")
-    private Long taskId;
-
-    @Excel(name = "稽查对象名称")
-    @Schema(description = "稽查对象名称", example = "")
+    @Excel(name = "名称")
+    @Schema(description = "名称", example = "")
     private String name;
 
-    @Excel(name = "数据源id")
-    @Schema(description = "数据源id", example = "")
-    private Long datasourceId;
+    @Excel(name = "状态")
+    @Schema(description = "状态", example = "")
+    private String successFlag;
 
-    @Excel(name = "表名称")
-    @Schema(description = "表名称", example = "")
-    private String tableName;
+    @Excel(name = "开始时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Schema(description = "开始时间", example = "")
+    private Date startTime;
+
+    @Excel(name = "结束时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Schema(description = "结束时间", example = "")
+    private Date endTime;
+
+    @Excel(name = "任务id")
+    @Schema(description = "任务id", example = "")
+    private String qualityId;
+
+    @Excel(name = "评分")
+    @Schema(description = "评分", example = "")
+    private Long score;
+
+    @Excel(name = "问题数据")
+    @Schema(description = "问题数据", example = "")
+    private Long problemData;
 
     @Excel(name = "是否有效")
     @Schema(description = "是否有效", example = "")
@@ -72,15 +88,14 @@ public class DppQualityTaskObjRespVO implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Schema(description = "更新时间", example = "")
     private Date updateTime;
-    /** 数据源名称 */
-    private String datasourceType;
-    private String datasourceConfig;
-    private String datasourceName;
 
+    @Excel(name = "备注")
+    @Schema(description = "备注", example = "")
+    private String remark;
 
+    private String path;
 
-
-    // 规则对象
-    private DppQualityTaskEvaluateRespVO dppQualityTaskEvaluateSaveReqVO;
+    //总数
+    private Long totalSum;
 
 }

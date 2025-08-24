@@ -2,12 +2,12 @@ package tech.qiantong.qdata.module.dpp.controller.admin.qa.vo;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.*;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
 import tech.qiantong.qdata.common.annotation.Excel;
 
-import java.io.Serializable;
 import java.util.Date;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -174,5 +174,22 @@ public class DppQualityTaskRespVO implements Serializable {
 
     @Schema(description = "定时任务调度表id", example = "")
     private Long systemJobId;
+
+    @Schema(description = "是否是资产质量任务;0：否。1是")
+    private String assetFlag;
+
+    @Schema(description = "资产id")
+    private Long assetId;
+
+
+    @Schema(description = "最新一次的执行记录id")
+    private Long logId;
+
+    /** 最新一次的执行记录评分 */
+    private Long score;
+
+    /** 最新一次的执行记录问题数据 */
+    private Long problemData;
+
 
 }

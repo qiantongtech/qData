@@ -2,10 +2,14 @@ package tech.qiantong.qdata.module.dpp.controller.admin.qa.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Date;
 import java.util.List;
+
+import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
  * 数据质量任务 创建/修改 Request VO DPP_QUALITY_TASK
@@ -104,6 +108,12 @@ public class DppQualityTaskSaveReqVO extends BaseEntity {
     private Long systemJobId;
 
 
+
+    @Schema(description = "是否是资产质量任务;0：否。1是")
+    private String assetFlag;
+
+    @Schema(description = "资产id")
+    private Long assetId;
 
 
 

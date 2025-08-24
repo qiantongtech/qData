@@ -1,5 +1,8 @@
-package tech.qiantong.qdata.module.dpp.controller.admin.qa.vo;
+package tech.qiantong.qdata.module.dpp.controller.admin.etl.vo;
 
+import java.math.BigDecimal;
+import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -8,14 +11,14 @@ import java.util.Date;
 import java.io.Serializable;
 
 /**
- * 数据质量任务-评测规则 Response VO 对象 DPP_QUALITY_TASK_EVALUATE
+ * 评测规则结果 Response VO 对象 DPP_EVALUATE_LOG
  *
- * @author Chaos
+ * @author qdata
  * @date 2025-07-21
  */
-@Schema(description = "数据质量任务-评测规则 Response VO")
+@Schema(description = "评测规则结果 Response VO")
 @Data
-public class DppQualityTaskEvaluateRespVO implements Serializable {
+public class DppEvaluateLogRespVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -23,13 +26,14 @@ public class DppQualityTaskEvaluateRespVO implements Serializable {
     @Schema(description = "ID")
     private Long id;
 
-    @Excel(name = "数据质量任务ID")
-    @Schema(description = "数据质量任务ID", example = "")
-    private Long taskId;
+    @Excel(name = "表名称")
+    @Schema(description = "表名称", example = "")
+    private String tableName;
+    private Long datasourceId;
 
-    @Excel(name = "评测名称")
-    @Schema(description = "评测名称", example = "")
-    private String name;
+    @Excel(name = "字段名")
+    @Schema(description = "字段名", example = "")
+    private String columnName;
 
     @Excel(name = "稽查规则编号")
     @Schema(description = "稽查规则编号", example = "")
@@ -39,57 +43,34 @@ public class DppQualityTaskEvaluateRespVO implements Serializable {
     @Schema(description = "稽查规则名称", example = "")
     private String ruleName;
 
-    @Excel(name = "告警等级")
-    @Schema(description = "告警等级", example = "")
-    private String warningLevel;
-
     @Excel(name = "质量维度")
     @Schema(description = "质量维度", example = "")
     private String dimensionType;
-
-    @Excel(name = "规则类型")
-    @Schema(description = "规则类型", example = "")
-    private String ruleType;
-
-    @Excel(name = "状态")
-    @Schema(description = "状态", example = "")
-    private String status;
 
     @Excel(name = "规则描述")
     @Schema(description = "规则描述", example = "")
     private String ruleDescription;
 
-    @Excel(name = "错误描述")
-    @Schema(description = "错误描述", example = "")
-    private String errDescription;
+    @Excel(name = "数据质量记录id")
+    @Schema(description = "数据质量记录id", example = "")
+    private String taskLogId;
 
-    @Excel(name = "修复建议")
-    @Schema(description = "修复建议", example = "")
-    private String suggestion;
+    @Excel(name = "评测id")
+    @Schema(description = "评测id", example = "")
+    private String evaluateId;
 
-    @Excel(name = "where条件")
-    @Schema(description = "where条件", example = "")
-    private String whereClause;
+    @Excel(name = "总数")
+    @Schema(description = "总数", example = "")
+    private Long total;
 
-    @Excel(name = "评测对象ID")
-    @Schema(description = "评测对象ID", example = "")
-    private Long objId;
+    @Excel(name = "问题总数")
+    @Schema(description = "问题总数", example = "")
+    private Long problemTotal;
 
-    @Excel(name = "稽查对象名称")
-    @Schema(description = "稽查对象名称", example = "")
-    private String objName;
-
-    @Excel(name = "表名称")
-    @Schema(description = "表名称", example = "")
-    private String tableName;
-
-    @Excel(name = "检查字段，多个时逗号隔开")
-    @Schema(description = "检查字段，多个时逗号隔开", example = "")
-    private String evaColumn;
-
-    @Excel(name = "不同规则的自定义,JSON形式")
-    @Schema(description = "不同规则的自定义,JSON形式", example = "")
-    private String rule;
+    @Excel(name = "核查时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Schema(description = "核查时间", example = "")
+    private Date checkDate;
 
     @Excel(name = "是否有效")
     @Schema(description = "是否有效", example = "")
@@ -124,5 +105,20 @@ public class DppQualityTaskEvaluateRespVO implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Schema(description = "更新时间", example = "")
     private Date updateTime;
+
+    @Excel(name = "备注")
+    @Schema(description = "备注", example = "")
+    private String remark;
+
+    @Excel(name = "不同规则的自定义,JSON形式")
+    @Schema(description = "不同规则的自定义,JSON形式", example = "")
+    private String rule;
+    // 占比
+    private BigDecimal proportion;
+
+    /** 数据源名称 */
+    private String datasourceType;
+    private String datasourceName;
+
 
 }

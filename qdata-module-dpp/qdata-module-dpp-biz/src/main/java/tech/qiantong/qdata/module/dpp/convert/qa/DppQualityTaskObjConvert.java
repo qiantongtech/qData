@@ -1,13 +1,12 @@
 package tech.qiantong.qdata.module.dpp.convert.qa;
 
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 import tech.qiantong.qdata.module.dpp.controller.admin.qa.vo.DppQualityTaskObjPageReqVO;
 import tech.qiantong.qdata.module.dpp.controller.admin.qa.vo.DppQualityTaskObjRespVO;
 import tech.qiantong.qdata.module.dpp.controller.admin.qa.vo.DppQualityTaskObjSaveReqVO;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.qa.DppQualityTaskObjDO;
-
-import java.util.List;
 
 /**
  * 数据质量任务-稽查对象 Convert

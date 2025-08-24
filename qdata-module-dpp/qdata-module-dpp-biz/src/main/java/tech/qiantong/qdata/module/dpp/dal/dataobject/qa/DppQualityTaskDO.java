@@ -1,7 +1,12 @@
 package tech.qiantong.qdata.module.dpp.dal.dataobject.qa;
 
-import com.baomidou.mybatisplus.annotation.*;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableName;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
@@ -99,4 +104,10 @@ public class DppQualityTaskDO extends BaseEntity {
     /** 任务编码 */
     private String taskCode;
 
+
+    @Schema(description = "是否是资产质量任务;0：否。1是")
+    private String assetFlag;
+
+    @Schema(description = "资产id")
+    private Long assetId;
 }

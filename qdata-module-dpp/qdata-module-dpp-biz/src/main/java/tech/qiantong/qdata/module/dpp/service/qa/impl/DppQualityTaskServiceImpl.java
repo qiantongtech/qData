@@ -1,13 +1,20 @@
 package tech.qiantong.qdata.module.dpp.service.qa.impl;
 
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 import com.alibaba.fastjson2.JSONObject;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import lombok.extern.slf4j.Slf4j;
+import javax.annotation.Resource;
+
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import tech.qiantong.qdata.api.ds.api.base.DsStatusRespDTO;
 import tech.qiantong.qdata.api.ds.api.etl.*;
 import tech.qiantong.qdata.api.ds.api.etl.ds.ProcessDefinition;
@@ -24,25 +31,26 @@ import tech.qiantong.qdata.common.httpClient.HttpUtils;
 import tech.qiantong.qdata.common.utils.JSONUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tech.qiantong.qdata.module.da.api.datasource.dto.DaDatasourceRespDTO;
 import tech.qiantong.qdata.module.da.api.service.asset.IDaDatasourceApiService;
 import tech.qiantong.qdata.module.dpp.controller.admin.qa.vo.*;
+import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppQualityLogDO;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.qa.DppQualityTaskDO;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.qa.DppQualityTaskEvaluateDO;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.qa.DppQualityTaskObjDO;
 import tech.qiantong.qdata.module.dpp.dal.mapper.qa.DppQualityTaskMapper;
+import tech.qiantong.qdata.module.dpp.service.etl.IDppEvaluateLogService;
+import tech.qiantong.qdata.module.dpp.service.etl.IDppQualityLogService;
 import tech.qiantong.qdata.module.dpp.service.qa.IDppQualityTaskEvaluateService;
 import tech.qiantong.qdata.module.dpp.service.qa.IDppQualityTaskObjService;
 import tech.qiantong.qdata.module.dpp.service.qa.IDppQualityTaskService;
 import tech.qiantong.qdata.module.dpp.utils.DppTaskConverter;
 import tech.qiantong.qdata.module.dpp.utils.model.TaskSaveReqInput;
 import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
-
-import javax.annotation.Resource;
-import java.io.IOException;
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static tech.qiantong.qdata.common.core.domain.AjaxResult.error;
 import static tech.qiantong.qdata.common.core.domain.AjaxResult.success;
@@ -60,10 +68,10 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
 
     private static String projectCode;
 
-    @Value("${path.quality_url:}")
+    @Value("${path.quality_url}")
     private String url;
 
-    @Value("${ds.http_quality_projectCode:}")
+    @Value("${ds.http_quality_projectCode}")
     private void setDefaultProjectCode(String projectCode) {
         this.projectCode = projectCode;
     }
@@ -87,6 +95,12 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
     @Resource
     private IDsEtlNodeService dsEtlNodeService;
 
+    @Resource
+    private IDppQualityLogService dppQualityLogService;
+
+    @Resource
+    private IDppEvaluateLogService dppEvaluateLogService;
+
     @Override
     public PageResult<DppQualityTaskDO> getDppQualityTaskPage(DppQualityTaskPageReqVO pageReqVO) {
         return dppQualityTaskMapper.selectPage(pageReqVO);
@@ -94,6 +108,18 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
 
     @Override
     public Long createDppQualityTask(DppQualityTaskSaveReqVO createReqVO) {
+        String assetFlag = createReqVO.getAssetFlag();
+        if(StringUtils.equals("1",assetFlag)){
+            MPJLambdaWrapper<DppQualityTaskDO> wrapper = new MPJLambdaWrapper<>();
+            wrapper.selectAll(DppQualityTaskDO.class)
+                    .eq(DppQualityTaskDO::getAssetFlag,"1")
+                    .eq(DppQualityTaskDO::getAssetId,createReqVO.getAssetId());
+            List<DppQualityTaskDO> taskDO = dppQualityTaskMapper.selectList(wrapper);
+            if(CollectionUtils.isNotEmpty(taskDO)){
+                return taskDO.get(0).getId();
+            }
+        }
+
         DppQualityTaskDO dictType = BeanUtils.toBean(createReqVO, DppQualityTaskDO.class);
         dppQualityTaskMapper.insert(dictType);
         List<DppQualityTaskObjSaveReqVO> dppQualityTaskObjSaveReqVO = createReqVO.getDppQualityTaskObjSaveReqVO();
@@ -111,14 +137,7 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
                     qualityTaskEvaluateSaveReqVO.setTaskId(dictType.getId());
                     qualityTaskEvaluateSaveReqVO.setObjId(dppQualityTaskObjSaveReqVO1.getId());
                     qualityTaskEvaluateSaveReqVO.setObjName(dppQualityTaskObjSaveReqVO1.getName());
-                    // 处理正则
-                    if ("CHARACTER_VALIDATION".equals(qualityTaskEvaluateSaveReqVO.getRuleType())) {
-                        JSONObject jsonObject = JSONObject.parseObject(qualityTaskEvaluateSaveReqVO.getRule());
-                        List<String> lists = jsonObject.getList("allowedChars", String.class);
-                        String s = this.validateInputWithRegex(lists);
-                        jsonObject.put("allowedCalue" , s);
-                        qualityTaskEvaluateSaveReqVO.setRule(jsonObject.toJSONString());
-                    }
+                    handleCharacterValidationRule(qualityTaskEvaluateSaveReqVO);
                     dppQualityTaskEvaluateService.createDppQualityTaskEvaluate(qualityTaskEvaluateSaveReqVO);
                 }
             }
@@ -149,14 +168,7 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
                     qualityTaskEvaluateSaveReqVO.setObjId(dppQualityTaskObjSaveReqVO1.getId());
                     qualityTaskEvaluateSaveReqVO.setObjName(dppQualityTaskObjSaveReqVO1.getName());
                 }
-                // 处理正则
-                if ("CHARACTER_VALIDATION".equals(qualityTaskEvaluateSaveReqVO.getRuleType())) {
-                    JSONObject jsonObject = JSONObject.parseObject(qualityTaskEvaluateSaveReqVO.getRule());
-                    List<String> lists = jsonObject.getList("allowedChars", String.class);
-                    String s = this.validateInputWithRegex(lists);
-                    jsonObject.put("allowedCalue" , s);
-                    qualityTaskEvaluateSaveReqVO.setRule(jsonObject.toJSONString());
-                }
+                handleCharacterValidationRule(qualityTaskEvaluateSaveReqVO);
                 if (qualityTaskEvaluateSaveReqVO.getId() != null) {
                     dppQualityTaskEvaluateService.updateDppQualityTaskEvaluate(qualityTaskEvaluateSaveReqVO);
                 } else {
@@ -186,47 +198,89 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
     }
 
     @Override
-    public DppQualityTaskRespVO getDppQualityTaskById(Long id) {
-        DppQualityTaskDO dppQualityTaskDO = dppQualityTaskMapper.selectById(id);
-        // 获取数据表
-        LambdaQueryWrapperX<DppQualityTaskObjDO> objectLambdaQueryWrapperX = new LambdaQueryWrapperX<>();
-        objectLambdaQueryWrapperX.eqIfPresent(DppQualityTaskObjDO::getTaskId , dppQualityTaskDO.getId());
-        List<DppQualityTaskObjDO> list = dppQualityTaskObjService.list(objectLambdaQueryWrapperX);
-        List<DppQualityTaskObjRespVO> newList = new ArrayList<>();
-        for (DppQualityTaskObjDO dppQualityTaskObjDO : list) {
-            DaDatasourceRespDTO datasourceById = daDatasourceApiService.getDatasourceById(dppQualityTaskObjDO.getDatasourceId());
-            DppQualityTaskObjRespVO bean = BeanUtils.toBean(dppQualityTaskObjDO, DppQualityTaskObjRespVO.class);
-            if (datasourceById != null) {
-                bean.setDatasourceType(datasourceById.getDatasourceType());
-                bean.setDatasourceConfig(datasourceById.getDatasourceConfig());
-            }
-            newList.add(bean);
+    public DppQualityTaskRespVO getQualityTaskAsset(DppQualityTaskAssetReqVO dppQualityTaskAssetReqVO) {
+        MPJLambdaWrapper<DppQualityTaskDO> wrapper = new MPJLambdaWrapper<>();
+        wrapper.selectAll(DppQualityTaskDO.class)
+                .eq(DppQualityTaskDO::getAssetFlag,"1")
+                .eq(DppQualityTaskDO::getAssetId,dppQualityTaskAssetReqVO.getAssetId());
+        DppQualityTaskDO taskDO = dppQualityTaskMapper.selectOne(wrapper);
+        if(taskDO == null){
+            return null;
         }
-        // 获取数据表规则信息
-        LambdaQueryWrapperX<DppQualityTaskEvaluateDO> eva = new LambdaQueryWrapperX<>();
-        eva.eqIfPresent(DppQualityTaskEvaluateDO::getTaskId , dppQualityTaskDO.getId());
-        List<DppQualityTaskEvaluateDO> list1 = dppQualityTaskEvaluateService.list(eva);
-        List<DppQualityTaskEvaluateRespVO> evaList = new ArrayList<>();
-        for (DppQualityTaskEvaluateDO dppQualityTaskObjDO : list1) {
-            // 处理正则
-            if ("CHARACTER_VALIDATION".equals(dppQualityTaskObjDO.getRuleType())) {
-                JSONObject jsonObject = JSONObject.parseObject(dppQualityTaskObjDO.getRule());
-                List<String> lists = jsonObject.getList("allowedChars", String.class);
-                String s = this.validateInputWithRegex(lists);
-                jsonObject.put("allowedCalue" , s);
-                dppQualityTaskObjDO.setRule(jsonObject.toJSONString());
-            }
-
-
-            evaList.add(BeanUtils.toBean(dppQualityTaskObjDO, DppQualityTaskEvaluateRespVO.class));
+        DppQualityTaskRespVO dppQualityTaskRespVO = buildQualityTaskDetail(taskDO);
+        dppQualityTaskAssetReqVO.setId(taskDO.getId());
+        DppQualityLogDO log = dppQualityLogService.getDppQualityLogById(dppQualityTaskAssetReqVO);
+        if(log == null){
+            // 设置评分与问题数
+            dppQualityTaskRespVO.setScore(0L);
+            dppQualityTaskRespVO.setProblemData(0L);
+            dppQualityTaskRespVO.setLogId(null);
+            dppQualityTaskRespVO.setLastExecuteTime(null);
+            return dppQualityTaskRespVO;
         }
 
-        DppQualityTaskRespVO bean = BeanUtils.toBean(dppQualityTaskDO, DppQualityTaskRespVO.class);
-        bean.setDppQualityTaskObjSaveReqVO(newList);
-        bean.setDppQualityTaskEvaluateRespVOS(evaList);
-        return bean;
+        Map<String, Object> map = dppEvaluateLogService.sumTotalAndProblemTotalByTaskLogId(String.valueOf(log.getId()));
+
+        // 获取总数与问题数（确保 null 安全）
+        Long total = map.get("total") == null ? 0L : (Long) map.get("total");
+        Long problemTotal = map.get("problemTotal") == null ? 0L : (Long) map.get("problemTotal");
+
+        // 计算质量评分（百分比，保留两位小数）
+        BigDecimal score = BigDecimal.ZERO;
+        if (total > 0) {
+            score = BigDecimal.valueOf(total - problemTotal)
+                    .multiply(BigDecimal.valueOf(100))
+                    .divide(BigDecimal.valueOf(total), 2, RoundingMode.HALF_UP);
+        }
+
+        // 设置评分与问题数
+        dppQualityTaskRespVO.setScore(score.longValue());
+        dppQualityTaskRespVO.setProblemData(problemTotal);
+        dppQualityTaskRespVO.setLogId(log.getId());
+        dppQualityTaskRespVO.setLastExecuteTime(log.getStartTime());
+        return dppQualityTaskRespVO;
     }
 
+    @Override
+    public DppQualityTaskRespVO getDppQualityTaskById(Long id) {
+        DppQualityTaskDO taskDO = dppQualityTaskMapper.selectById(id);
+        return taskDO != null ? buildQualityTaskDetail(taskDO) : null;
+    }
+
+    private DppQualityTaskRespVO buildQualityTaskDetail(DppQualityTaskDO dppQualityTaskDO) {
+        DppQualityTaskRespVO bean = BeanUtils.toBean(dppQualityTaskDO, DppQualityTaskRespVO.class);
+
+        // 数据对象列表
+        LambdaQueryWrapperX<DppQualityTaskObjDO> objectLambdaQueryWrapperX = new LambdaQueryWrapperX<>();
+        objectLambdaQueryWrapperX.eq(DppQualityTaskObjDO::getTaskId , dppQualityTaskDO.getId());
+        List<DppQualityTaskObjDO> list = dppQualityTaskObjService.list(objectLambdaQueryWrapperX);
+
+        List<DppQualityTaskObjRespVO> newList = new ArrayList<>();
+        for (DppQualityTaskObjDO obj : list) {
+            DaDatasourceRespDTO ds = daDatasourceApiService.getDatasourceById(obj.getDatasourceId());
+            DppQualityTaskObjRespVO vo = BeanUtils.toBean(obj, DppQualityTaskObjRespVO.class);
+            if (ds != null) {
+                vo.setDatasourceType(ds.getDatasourceType());
+                vo.setDatasourceConfig(ds.getDatasourceConfig());
+            }
+            newList.add(vo);
+        }
+
+        // 规则列表
+        LambdaQueryWrapperX<DppQualityTaskEvaluateDO> evaWrapper = new LambdaQueryWrapperX<>();
+        evaWrapper.eq(DppQualityTaskEvaluateDO::getTaskId , dppQualityTaskDO.getId());
+        List<DppQualityTaskEvaluateDO> evaList = dppQualityTaskEvaluateService.list(evaWrapper);
+
+        List<DppQualityTaskEvaluateRespVO> evaRespList = new ArrayList<>();
+        for (DppQualityTaskEvaluateDO eva : evaList) {
+            handleCharacterValidationRule(eva);
+            evaRespList.add(BeanUtils.toBean(eva, DppQualityTaskEvaluateRespVO.class));
+        }
+
+        bean.setDppQualityTaskObjSaveReqVO(newList);
+        bean.setDppQualityTaskEvaluateRespVOS(evaRespList);
+        return bean;
+    }
 
     public DppQualityTaskRespVO getDaDiscoveryTaskById(Long id) {
 
@@ -681,7 +735,7 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
      * @param value
      * @return
      */
-    public String validateInputWithRegex(List<String> value) {
+    public static String validateInputWithRegex(List<String> value) {
         Map<String, String> map = new HashMap<>();
         // 数字
         map.put("1", "0-9");
@@ -690,7 +744,11 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
         // 空格
         map.put("3", "\\s");
         // 特殊符号
-        map.put("4", "!@#$%^&*(),.?" +'"' +":{}|<>");
+//        map.put("4", "!@#$%^&*(),.?" +'"' +":{}|<>");
+//        map.put("4", "!\"#$%&'()*+,\\-./:;<=>?@[\\\\]^_`{|}~");
+//        map.put("4", "!\"#$%&'()*+,\\-./:;<=>?@\\[\\]\\^_`{|}~");
+        map.put("4", "[:punct:]");
+//        map.put("4", "\\p{P}\\p{S}");
         // !@#$%^&*(),.?":{}|<>
         String s1 = "";
         for (String s : value) {
@@ -721,8 +779,11 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
         paramMap.put("pageNum", dppQualityTaskEvaluate.getPageNum());
         paramMap.put("pageSize", dppQualityTaskEvaluate.getPageSize());
 
+
+        String stringObjectMap = buildCharacterValidationRule(dppQualityTaskEvaluate.getRule(), dppQualityTaskEvaluate.getRuleType());
+
         // 5. 规则配置
-        paramMap.put("config", JSONUtils.convertTaskDefinitionJsonMap(dppQualityTaskEvaluate.getRule()));
+        paramMap.put("config",  JSONUtils.convertTaskDefinitionJsonMap(stringObjectMap));
 
         // 6. 评估字段
         paramMap.put("evaColumn", dppQualityTaskEvaluate.getEvaColumn());
@@ -731,5 +792,57 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
         paramMap.put("whereClause", dppQualityTaskEvaluate.getWhereClause());
 
         return paramMap;
+    }
+    /**
+     * 处理 CHARACTER_VALIDATION 规则
+     * 兼容 SaveReqVO 与 DO 两种类型
+     */
+    public static void handleCharacterValidationRule(DppQualityTaskEvaluateSaveReqVO qualityTaskEvaluateSaveReqVO) {
+        if (qualityTaskEvaluateSaveReqVO == null) {
+            return;
+        }
+        String newRule = buildCharacterValidationRule(
+                qualityTaskEvaluateSaveReqVO.getRule(),
+                qualityTaskEvaluateSaveReqVO.getRuleType()
+        );
+        if (newRule != null) {
+            qualityTaskEvaluateSaveReqVO.setRule(newRule);
+        }
+    }
+
+    public static void handleCharacterValidationRule(DppQualityTaskEvaluateDO evaluateDO) {
+        if (evaluateDO == null) {
+            return;
+        }
+        String newRule = buildCharacterValidationRule(
+                evaluateDO.getRule(),
+                evaluateDO.getRuleType()
+        );
+        if (newRule != null) {
+            evaluateDO.setRule(newRule);
+        }
+    }
+
+    /**
+     * 公共内部逻辑
+     */
+    private static String buildCharacterValidationRule(String ruleJson, String ruleType) {
+        if (StringUtils.isBlank(ruleJson) || !"CHARACTER_VALIDATION".equals(ruleType)) {
+            return ruleJson;
+        }
+
+        JSONObject jsonObject = JSONObject.parseObject(ruleJson);
+        String useRegexFlag = MapUtils.getString(jsonObject, "useRegexFlag", "0");
+
+        if (StringUtils.equals("0",useRegexFlag)) {
+            List<String> lists = jsonObject.getJSONArray("allowedChars").toJavaList(String.class);
+            String regex = validateInputWithRegex(lists);
+
+            jsonObject.put("regex", regex);
+            jsonObject.put("allowedCalue", regex);
+
+            return jsonObject.toJSONString();
+        }
+        return jsonObject.toJSONString();
     }
 }

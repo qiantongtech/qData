@@ -1,18 +1,15 @@
 package tech.qiantong.qdata.module.dpp.service.qa;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Collection;
+
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.extension.service.IService;
 import tech.qiantong.qdata.common.core.domain.AjaxResult;
 import tech.qiantong.qdata.common.core.page.PageResult;
-import tech.qiantong.qdata.module.dpp.controller.admin.qa.vo.DppQualityTaskEvaluateSaveReqVO;
-import tech.qiantong.qdata.module.dpp.controller.admin.qa.vo.DppQualityTaskPageReqVO;
-import tech.qiantong.qdata.module.dpp.controller.admin.qa.vo.DppQualityTaskRespVO;
-import tech.qiantong.qdata.module.dpp.controller.admin.qa.vo.DppQualityTaskSaveReqVO;
+import tech.qiantong.qdata.module.dpp.controller.admin.qa.vo.*;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.qa.DppQualityTaskDO;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 /**
  * 数据质量任务Service接口
  *
@@ -58,6 +55,8 @@ public interface IDppQualityTaskService extends IService<DppQualityTaskDO> {
      * @return 数据质量任务
      */
     DppQualityTaskRespVO getDppQualityTaskById(Long id);
+
+    DppQualityTaskRespVO getQualityTaskAsset(DppQualityTaskAssetReqVO dppQualityTaskAssetReqVO);
 
     /**
      * 获得全部数据质量任务列表

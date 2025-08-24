@@ -59,6 +59,12 @@ public class DppQualityTaskPageReqVO extends PageParam {
     @Schema(description = "调度周期", example = "")
     private String cycle;
 
+    @Schema(description = "是否是资产质量任务;0：否。1是")
+    private String assetFlag;
+
+    @Schema(description = "资产id")
+    private Long assetId;
+
 
     /** 节点id */
     @Schema(description = "节点id", example = "")

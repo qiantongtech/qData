@@ -23,8 +23,8 @@ public interface DppQualityTaskMapper extends BaseMapperX<DppQualityTaskDO> {
         MPJLambdaWrapperX<DppQualityTaskDO> lambdaWrapperX = new MPJLambdaWrapperX<>();
         lambdaWrapperX.selectAll(DppQualityTaskDO.class)
                 .select("t2.NAME AS catName")
-                .select("(SELECT COUNT (*) FROM DPP_QUALITY_TASK_OBJ o WHERE o.TASK_ID = t.ID ) taskObjNum")
-                .select("(SELECT COUNT (*) FROM DPP_QUALITY_TASK_EVALUATE e WHERE e.TASK_ID = t.ID ) taskEvaluateNum");
+                .select("(SELECT COUNT(*) FROM DPP_QUALITY_TASK_OBJ o WHERE o.TASK_ID = t.ID ) taskObjNum")
+                .select("(SELECT COUNT(*) FROM DPP_QUALITY_TASK_EVALUATE e WHERE e.TASK_ID = t.ID ) taskEvaluateNum");
         lambdaWrapperX.leftJoin(leftJoin);
         lambdaWrapperX.likeIfPresent(DppQualityTaskDO::getTaskName, reqVO.getTaskName())
                 .eqIfPresent(DppQualityTaskDO::getCatCode, reqVO.getCatCode())

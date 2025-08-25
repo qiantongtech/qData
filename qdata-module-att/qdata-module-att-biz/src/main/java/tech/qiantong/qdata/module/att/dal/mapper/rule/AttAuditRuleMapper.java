@@ -29,7 +29,11 @@ public interface AttAuditRuleMapper extends BaseMapperX<AttAuditRuleDO> {
                 .likeIfPresent(AttAuditRuleDO::getName, reqVO.getName())
                 .eqIfPresent(AttAuditRuleDO::getQualityDim, reqVO.getQualityDim())
                 .eqIfPresent(AttAuditRuleDO::getType, reqVO.getType())
-                        .eqIfPresent(AttAuditRuleDO::getLevel, reqVO.getLevel())
+                .eqIfPresent(AttAuditRuleDO::getLevel, reqVO.getLevel())
+                .eqIfPresent(AttAuditRuleDO::getValidFlag, reqVO.getValidFlag())
+                .eqIfPresent(AttAuditRuleDO::getCode, reqVO.getCode())
+                .likeIfPresent(AttAuditRuleDO::getUseCase, reqVO.getUseCase())
+                .likeIfPresent(AttAuditRuleDO::getExample, reqVO.getExample())
                 // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
                 // .likeIfPresent(AttAuditRuleDO::getName, reqVO.getName())
                 // 按照 createTime 字段降序排序

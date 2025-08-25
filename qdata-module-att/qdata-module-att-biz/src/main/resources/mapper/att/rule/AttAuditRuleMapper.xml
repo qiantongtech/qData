@@ -20,10 +20,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updaterId"    column="UPDATER_ID"    />
         <result property="updateTime"    column="UPDATE_TIME"    />
         <result property="remark"    column="REMARK"    />
+        <result property="code" column="CODE"/>
+        <result property="useCase" column="USE_CASE"/>
+        <result property="example" column="EXAMPLE"/>
+        <result property="iconPath" column="ICON_PATH"/>
+        <result property="strategyKey" column="STRATEGY_KEY"/>
     </resultMap>
 
     <sql id="selectAttAuditRuleVo">
-        select ID, NAME, QUALITY_DIM, TYPE, LEVEL, DESCRIPTION, VALID_FLAG, DEL_FLAG, CREATE_BY, CREATOR_ID, CREATE_TIME, UPDATE_BY, UPDATER_ID, UPDATE_TIME, REMARK from ATT_AUDIT_RULE
+        select ID, NAME, QUALITY_DIM, TYPE, LEVEL, DESCRIPTION, CODE, USE_CASE, EXAMPLE,  ICON_PATH, STRATEGY_KEY,VALID_FLAG, DEL_FLAG, CREATE_BY, CREATOR_ID, CREATE_TIME, UPDATE_BY, UPDATER_ID, UPDATE_TIME, REMARK from ATT_AUDIT_RULE
     </sql>
 
     <select id="selectAttAuditRuleList" parameterType="Long" resultMap="AttAuditRuleResult">
@@ -66,6 +71,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updaterId != null">UPDATER_ID,</if>
             <if test="updateTime != null">UPDATE_TIME,</if>
             <if test="remark != null">REMARK,</if>
+            <if test="code != null">CODE,</if>
+            <if test="useCase != null">USE_CASE,</if>
+            <if test="example != null">EXAMPLE,</if>
+            <if test="iconPath != null">ICON_PATH,</if>
+            <if test="strategyKey != null">STRATEGY_KEY,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">#{id},</if>
@@ -83,6 +93,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updaterId != null">#{updaterId},</if>
             <if test="updateTime != null">#{updateTime},</if>
             <if test="remark != null">#{remark},</if>
+            <if test="code != null">#{code},</if>
+            <if test="useCase != null">#{useCase},</if>
+            <if test="example != null">#{example},</if>
+            <if test="iconPath != null">#{iconPath},</if>
+            <if test="strategyKey != null">#{strategyKey},</if>
          </trim>
     </insert>
 
@@ -103,6 +118,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updaterId != null">UPDATER_ID = #{updaterId},</if>
             <if test="updateTime != null">UPDATE_TIME = #{updateTime},</if>
             <if test="remark != null">REMARK = #{remark},</if>
+            <if test="code != null">CODE = #{code},</if>
+            <if test="useCase != null">USE_CASE = #{useCase},</if>
+            <if test="example != null">EXAMPLE = #{example},</if>
+            <if test="iconPath != null">ICON_PATH = #{iconPath},</if>
+            <if test="strategyKey != null">STRATEGY_KEY = #{strategyKey},</if>
         </trim>
         where ID = #{id}
     </update>

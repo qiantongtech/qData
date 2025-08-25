@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>qData</artifactId>
+        <groupId>tech.qiantong</groupId>
+        <version>3.8.8</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>qdata-quality</artifactId>
+
+    <description>
+        数据质量服务入口
+    </description>
+
+    <!-- 设置 jitpack.io 插件仓库 -->
+    <pluginRepositories>
+        <pluginRepository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>tech.qiantong</groupId>
+            <artifactId>qdata-module-da-api</artifactId>
+            <version>3.8.8</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>tech.qiantong</groupId>
+            <artifactId>qdata-module-att-api</artifactId>
+            <version>3.8.8</version>
+        </dependency>
+
+        <!-- 核心模块 config-->
+        <dependency>
+            <groupId>tech.qiantong</groupId>
+            <artifactId>qdata-config</artifactId>
+            <version>3.8.8</version>
+        </dependency>
+
+        <!-- 系统模块 mybatis -->
+        <dependency>
+            <groupId>tech.qiantong</groupId>
+            <artifactId>qdata-mybatis</artifactId>
+            <version>3.8.8</version>
+        </dependency>
+
+        <!-- 系统模块 redis -->
+        <dependency>
+            <groupId>tech.qiantong</groupId>
+            <artifactId>qdata-redis</artifactId>
+            <version>3.8.8</version>
+        </dependency>
+
+        <!-- 通用工具-->
+        <dependency>
+            <groupId>tech.qiantong</groupId>
+            <artifactId>qdata-common</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>kafka-clients</artifactId>
+                    <groupId>org.apache.kafka</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
+        <!-- 文件上传-->
+        <dependency>
+            <groupId>tech.qiantong</groupId>
+            <artifactId>qdata-file</artifactId>
+            <version>3.8.8</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- Maven依赖 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+        </dependency>
+
+        <!-- hadoop-common -->
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-common</artifactId>
+            <version>${hadoop.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-reload4j</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <!-- 将所有的模块打包在一个jar中-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <!-- 限制只处理 tech.qiantong 相关的依赖 -->
+                            <artifactSet>
+                                <includes>
+                                    <include>tech.qiantong:*:*</include> <!-- 只包括 tech.qiantong 开头的所有依赖 -->
+                                </includes>
+                            </artifactSet>
+
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <!-- 排除 JAR 中的签名文件等不必要的文件 -->
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- maven-compiler-plugin 配置 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <annotationProcessorPaths>
+                        <!-- 引入 mapstruct-processor -->
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>1.5.5.Final</version>
+                        </path>
+                        <!-- 引入 lombok-processor -->
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.36</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+
+            <!-- Spring Boot Maven 插件配置 -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.5.15</version>
+                <configuration>
+                    <fork>true</fork> <!-- 如果没有该配置，devtools不会生效 -->
+                    <!-- 排除 `tech.qiantong` 下的所有模块 -->
+                    <excludeGroupIds>tech.qiantong</excludeGroupIds>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- 其他需要的插件配置，如 maven-war-plugin 等 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <warName>${project.artifactId}</warName>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>com.github.core-lib</groupId>
+                <artifactId>xjar-maven-plugin</artifactId>
+                <version>4.0.2</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <password>io.xjar</password> <!-- 设置密码 -->
+                            <algorithm>AES/CBC/PKCS5Padding</algorithm> <!-- 加密算法 -->
+                            <keySize>128</keySize> <!-- 密钥长度 -->
+                            <ivSize>128</ivSize> <!-- 密钥向量长度 -->
+                            <!-- 加密的资源路径 -->
+                            <includes>
+                                <include>tech/qiantong/**</include> <!-- 所有 tech.qiantong 包 -->
+                            </includes>
+                            <!-- 无需加密的资源路径 -->
+                            <excludes>
+                                <exclude>static/**</exclude> <!-- 示例：排除 static 包 -->
+                                <exclude>META-INF/resources/**</exclude> <!-- 示例：排除 META-INF 下的资源 -->
+                            </excludes>
+                            <!-- 可选：指定源文件所在的目录 -->
+                            <sourceDir>${project.build.directory}</sourceDir>
+                            <!-- 可选：指定源 JAR 文件名称 -->
+                            <sourceJar>${project.build.finalName}.jar</sourceJar>
+                            <!-- 可选：指定目标 JAR 文件存放目录 -->
+                            <targetDir>${project.build.directory}</targetDir>
+                            <!-- 可选：指定目标加密后的 JAR 文件名称 -->
+                            <targetJar>${project.build.finalName}.xjar</targetJar>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+        <finalName>${project.artifactId}</finalName>
+    </build>
+</project>

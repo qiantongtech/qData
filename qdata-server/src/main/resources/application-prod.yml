@@ -13,7 +13,7 @@ spring:
     # 数据库索引
     database: 0
     # 密码
-    password: 密码
+    password:
     # 连接超时时间
     timeout: 10s
     lettuce:
@@ -32,7 +32,10 @@ spring:
     username: 账号
     password: 密码
     listener:
+      direct:
+        auto-startup: false
       simple:
+        auto-startup: false
         acknowledge-mode: manual
         concurrency: 1
         max-concurrency: 10
@@ -40,7 +43,7 @@ spring:
     druid:
       stat-view-servlet:
         # 是否启用Druid的监控统计功能
-        enabled: true
+        enabled: false
         # 访问Druid监控页面的用户名
         loginUsername: qdata
         # 访问Druid监控页面的密码
@@ -98,11 +101,11 @@ mysql:
   # JDBC驱动类名
   driver-class-name: com.mysql.cj.jdbc.Driver
   # 主库JDBC连接URL
-  url: jdbc:mysql://127.0.0.1:3306/qdata?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+  url: jdbc:mysql://dm:3306/qdata?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
   # 主库用户名
   username: root
   # 主库密码
-  password: 密码
+  password: wangming1114
 
 # 达梦配置文件
 dm8:
@@ -120,7 +123,7 @@ kingbase8:
   # JDBC驱动类名
   driver-class-name: com.kingbase8.Driver
   # 主库JDBC连接URL
-  url: jdbc:kingbase8://127.0.0.1:54321/qdata_plus_dev?characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useUnicode=true&useSSL=false&serverTimezone=UTC&currentSchema=qdata
+  url: jdbc:kingbase8://127.0.0.1:54321/qdata_dev?characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useUnicode=true&useSSL=false&serverTimezone=UTC&currentSchema=qdata
   # 主库用户名
   username: kingbase
   # 主库密码
@@ -141,6 +144,10 @@ oracle:
 ds:
   # 调度器api前缀
   base_url: http://127.0.0.1:12345/dolphinscheduler
+  # 数据质量服务组件HTTP地址
+  quality_url: http://127.0.0.1:8083/quality/qualityTaskExecutor/runExecuteTask
+  # 数据质量任务dolphinscheduler项目编码
+  http_quality_projectCode: 134799536571008
   # 调度器令牌（可以自行修改）
   token: b07f0e57c4818043a57ba05a28da291a
   # 资源中心路径
@@ -153,3 +160,7 @@ ds:
     main_jar: file:/dolphinscheduler/default/resources/spark-jar/qdata-etl-3.8.8.jar
     #jar main入口
     main_class: tech.qiantong.qdata.spark.etl.EtlApplication
+
+# 数据质量任务回调
+path:
+  quality_url: http://127.0.0.1:8083/quality/qualityTaskExecutor

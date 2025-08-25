@@ -32,9 +32,4 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
     public Long getCountByCatCode(String catCode) {
         return null;
     }
-
-    @Override
-    public PageResult<DaAssetRespDTO> daAssetListPage(DaAssetReqDTO daAssetReqDTO) {
-        return null;
-    }
 }

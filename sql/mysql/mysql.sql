@@ -6,23 +6,23 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `att_api_cat`;
 CREATE TABLE `att_api_cat`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '类别名称',
-  `parent_id` bigint(20) NULL DEFAULT NULL COMMENT '关联上级ID',
-  `sort_order` int(11) NOT NULL DEFAULT 0 COMMENT '类别排序',
-  `description` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
-  `code` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '层级编码',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90028463113800`(`id`) USING BTREE
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '类别名称',
+  `PARENT_ID` bigint(20) NULL DEFAULT NULL COMMENT '关联上级ID',
+  `SORT_ORDER` int(11) NOT NULL DEFAULT 0 COMMENT '类别排序',
+  `DESCRIPTION` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `CODE` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '层级编码',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974738367845300`(`ID`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 65 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据服务类目管理' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -89,23 +89,23 @@ INSERT INTO `att_api_cat` VALUES (64, '示例目录', 0, 0, '千数开源示例'
 -- ----------------------------
 DROP TABLE IF EXISTS `att_asset_cat`;
 CREATE TABLE `att_asset_cat`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '类别名称',
-  `parent_id` bigint(20) NULL DEFAULT NULL COMMENT '关联上级ID',
-  `sort_order` int(11) NOT NULL DEFAULT 0 COMMENT '类别排序',
-  `description` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
-  `code` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '层级编码',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90028827681500`(`id`) USING BTREE
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '类别名称',
+  `PARENT_ID` bigint(20) NULL DEFAULT NULL COMMENT '关联上级ID',
+  `SORT_ORDER` int(11) NOT NULL DEFAULT 0 COMMENT '类别排序',
+  `DESCRIPTION` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `CODE` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '层级编码',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974738789540300`(`ID`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 229 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据资产类目管理' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -304,58 +304,83 @@ INSERT INTO `att_asset_cat` VALUES (227, '系统运行安全数据', 159, 1, '�
 -- ----------------------------
 DROP TABLE IF EXISTS `att_audit_rule`;
 CREATE TABLE `att_audit_rule`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '规则ID',
-  `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '规则名称',
-  `quality_dim` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '质量维度;1：完整性，2：准确性，3：一致性，4：规范性，5：时效性',
-  `type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '规则类型;1：字符校验，2：数值校验，3：空值校验，4：长度校验，5：重复检查，6：格式检查',
-  `level` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '规则级别;1：字段级，2：表级',
-  `description` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '规则描述',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90029221152100`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '稽查规则表' ROW_FORMAT = Dynamic;
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '规则ID',
+  `NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '规则名称',
+  `QUALITY_DIM` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '质量维度：1-完整性，2-唯一性，3-有效性，4-一致性，5-时效性',
+  `TYPE` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '规则类型;1：字符校验，2：数值校验，3：空值校验，4：长度校验，5：重复检查，6：格式检查',
+  `LEVEL` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '规则级别;1：字段级，2：表级',
+  `DESCRIPTION` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '规则描述',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `CODE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '规则编码',
+  `USE_CASE` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '使用场景',
+  `EXAMPLE` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '示例',
+  `ICON_PATH` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '图标地址',
+  `STRATEGY_KEY` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '策略标识',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974739117382400`(`ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 37 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '稽查规则表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of att_audit_rule
 -- ----------------------------
-INSERT INTO `att_audit_rule` VALUES (1, '空值个数，固定值', '1', '3', '1', '取该字段的空值数与固定值进行比较。', '1', '0', NULL, NULL, '2025-01-21 11:35:36', NULL, NULL, '2025-01-21 11:35:36', NULL);
-INSERT INTO `att_audit_rule` VALUES (2, '空值校验', '1', '3', '1', '空值校验(用于检测数据是否符合稽查规则)', '1', '0', NULL, NULL, '2025-01-22 16:30:09', '小桐', 2, '2025-06-11 02:43:03', '');
-INSERT INTO `att_audit_rule` VALUES (3, '枚举值不匹配行数，固定值', '3', '2', '1', '查找所有字段值不在枚举值范围之内的数据，并统计行数，与固定值进行比较。', '1', '0', '小桐', 2, '2025-06-04 08:12:31', '小桐', 2, '2025-06-11 02:41:09', NULL);
-INSERT INTO `att_audit_rule` VALUES (4, '枚举值不匹配唯一值个数，固定值', '3', '2', '1', '查找所有字段值不在枚举值范围之内的数据，并取字段的唯一值个数，与固定值进行比较。', '1', '0', '小桐', 2, '2025-06-04 08:12:35', '小桐', 2, '2025-06-11 02:40:45', NULL);
-INSERT INTO `att_audit_rule` VALUES (5, '空值个数/总行数，固定值', '1', '2', '1', '空值的个数与行总数的比率与一个固定值进行比较', '1', '0', '小桐', 2, '2025-06-06 08:27:26', '小桐', 2, '2025-06-11 02:39:45', NULL);
-INSERT INTO `att_audit_rule` VALUES (6, '时间格式校验', '4', '6', '1', '时间格式yyyy-MM-dd', '1', '0', '小桐', 2, '2025-06-06 09:00:06', '小桐', 2, '2025-06-06 09:00:06', NULL);
-INSERT INTO `att_audit_rule` VALUES (7, '空值记录数为0', '1', '2', '1', '取该字段的空值数，要求空值数不能大于0。', '1', '0', '小桐', 2, '2025-06-09 03:14:03', '小桐', 2, '2025-06-11 02:39:17', NULL);
-INSERT INTO `att_audit_rule` VALUES (8, '空值个数，固定值', '1', '3', '1', '取该字段的空值数与固定值进行比较。', '1', '0', '小桐', 2, '2025-06-09 05:16:44', '小桐', 2, '2025-06-11 06:23:53', '稽查规则用于检测数据的质量如何');
+INSERT INTO `att_audit_rule` VALUES (9, '字段字符类型校验', '1', '5', '1', '检查字段值是否为期望的字符组成（字母、数字等）', '1', '0', '千桐科技', 1, '2025-07-17 11:25:00', '千桐科技', 1, '2025-07-17 11:25:00', NULL, '107', '检查字段值是否为期望的字符组成（字母、数字等）', '• 手机号字段应为纯数字，出现“+86-138****”或“138x123”触发告警\n• 物流单号字段要求仅含字母+数字，禁止中文或特殊符号\n• 身份证字段只允许18位数字或带X的合法身份证号', NULL, 'CHARACTER_VALIDATION');
+INSERT INTO `att_audit_rule` VALUES (10, '字段长度范围校验', '1', '5', '1', '检查字段长度是否在定义范围内（如11位手机号）', '0', '0', '千桐科技', 1, '2025-07-17 11:33:55', '千桐科技', 1, '2025-07-17 11:33:55', NULL, '108', '检查字段长度是否在定义范围内（如11位手机号）', '• 手机号字段必须为11位，过长/过短为非法\\n• 银行卡号字段不得超过19位\\n• 姓名字段超过50字符为异常（如自动抓取异常数据）', NULL, 'LENGTH_VALIDATION');
+INSERT INTO `att_audit_rule` VALUES (11, '日期时间格式校验', '1', '5', '1', '检查字段是否为合法的时间格式（如yyyy-MM-dd）', '0', '0', '千桐科技', 1, '2025-07-17 11:33:55', '千桐科技', 1, '2025-07-17 11:33:55', NULL, '109', '检查字段是否为合法的时间格式（如yyyy-MM-dd）', '• 日期字段要求格式为yyyy-MM-dd，禁止yyyy/MM/dd或中文日期格式\\n• 日期时间字段必须为yyyy-MM-dd HH:mm:ss，缺失秒或用12小时制视为非法\\n• 禁止出现“0000-00-00”或“1970-01-01”作为默认占位', NULL, NULL);
+INSERT INTO `att_audit_rule` VALUES (12, '数值字段精度校验', '1', '5', '1', '检查小数位数是否符合业务定义（如保留2位）', '1', '0', '千桐科技', 1, '2025-07-17 11:33:55', '千桐科技', 1, '2025-07-17 11:33:55', NULL, '110', '检查小数位数是否符合业务定义（如保留2位）', '• 金额字段小数点后最多保留2位，保留3位或更多为异常\\n• 利率字段精度需为4位，如0.0523，不能为0.052312', NULL, 'DECIMAL_PRECISION_VALIDATION');
+INSERT INTO `att_audit_rule` VALUES (13, '枚举值校验', '1', '5', '1', '检查字段值是否在字典或枚举集中', '0', '0', '千桐科技', 1, '2025-07-17 11:33:55', '千桐科技', 1, '2025-07-17 11:33:55', NULL, '111', '检查字段值是否在字典或枚举集中', '• 性别字段仅允许“男/女/未知”，出现“female”、“1”视为非法\\n• 订单状态字段必须在“已下单/已付款/已发货/已取消”内', NULL, 'ENUM_VALIDATION');
+INSERT INTO `att_audit_rule` VALUES (14, '主数据引用一致性校验', '1', '5', '1', '检查引用字段是否在主数据中存在', '0', '0', '千桐科技', 1, '2025-07-17 11:33:55', '千桐科技', 1, '2025-07-17 11:33:55', NULL, '112', '检查引用字段是否在主数据中存在', '• 客户ID字段在客户主数据中找不到对应记录则视为无效\\n• 门店编码未能在门店主数据中匹配成功时标记为脏数据', NULL, NULL);
+INSERT INTO `att_audit_rule` VALUES (15, '逻辑模型一致性校验', '1', '5', '1', '检查表结构是否与数据模型一致', '0', '0', '千桐科技', 1, '2025-07-17 11:36:22', '千桐科技', 1, '2025-07-17 11:36:22', NULL, '113', '检查表结构是否与数据模型一致', '• 数据集字段数量多于模型定义（如多出“备用字段1~3”）则为冗余字段\\n• 数据类型与模型不符，如应为decimal结果为varchar', NULL, NULL);
+INSERT INTO `att_audit_rule` VALUES (16, '字段元信息完整性校验', '1', '5', '1', '检查字段是否配置必要的元信息（类型、说明等）', '0', '0', '千桐科技', 1, '2025-07-17 11:36:22', '千桐科技', 1, '2025-07-17 11:36:22', NULL, '114', '检查字段是否配置必要的元信息（类型、说明等）', '• 字段未配置中文名称或业务定义，不利于后续治理与血缘追踪\\n• 缺失字段类型定义，影响自动校验与建模', NULL, NULL);
+INSERT INTO `att_audit_rule` VALUES (17, '时间字段顺序逻辑校验', '1', '5', '1', '检查多个时间字段之间的前后逻辑', '0', '0', '千桐科技', 1, '2025-07-17 11:36:22', '千桐科技', 1, '2025-07-17 11:36:22', NULL, '115', '检查多个时间字段之间的前后逻辑', '• 订单完成时间早于创建时间为异常\\n• 上岗时间应早于离职时间', NULL, 'TIME_ORDER_VALIDATION');
+INSERT INTO `att_audit_rule` VALUES (18, '数值字段逻辑关系校验', '1', '5', '1', '检查多个数值字段之间的业务逻辑关系', '0', '0', '千桐科技', 1, '2025-07-17 11:36:22', '千桐科技', 1, '2025-07-17 11:36:22', NULL, '116', '检查多个数值字段之间的业务逻辑关系', '• 实际付款金额不得超过应付款，否则为溢付错误\\n• 销售数量不得超过库存数量', NULL, NULL);
+INSERT INTO `att_audit_rule` VALUES (19, '状态字段依赖项校验', '1', '5', '1', '检查某状态下是否填写了必须字段', '0', '0', '千桐科技', 1, '2025-07-17 11:36:22', '千桐科技', 1, '2025-07-17 11:36:22', NULL, '117', '检查某状态下是否填写了必须字段', '• 状态=已取消时，取消原因字段不能为空\\n• 状态=完成时，必须填写完成时间、操作人', NULL, NULL);
+INSERT INTO `att_audit_rule` VALUES (20, '互斥字段冲突校验', '1', '5', '1', '检查不能同时存在的字段值是否冲突', '0', '0', '千桐科技', 1, '2025-07-17 11:36:22', '千桐科技', 1, '2025-07-17 11:36:22', NULL, '118', '检查不能同时存在的字段值是否冲突', '• 内部客户标志与外部客户标志只能选其一\\n• 线上订单标识与线下订单标识不能同时为“是”', NULL, NULL);
+INSERT INTO `att_audit_rule` VALUES (21, '敏感字段脱敏校验', '1', '5', '1', '检查敏感字段是否存在明文泄露风险', '0', '0', '千桐科技', 1, '2025-07-17 11:36:22', '千桐科技', 1, '2025-07-17 11:36:22', NULL, '119', '检查敏感字段是否存在明文泄露风险', '• 客户手机号展示为“138****1234”\\n• 身份证号仅展示前6位和最后4位，中间脱敏\\n• 银行卡号仅展示后四位，其余使用“*”替代', NULL, NULL);
+INSERT INTO `att_audit_rule` VALUES (22, '必填字段非空校验', '2', '5', '1', '检查强制必填字段是否存在空值', '0', '0', '千桐科技', 1, '2025-07-17 11:40:25', '千桐科技', 1, '2025-07-17 11:40:25', NULL, '203', '检查强制必填字段是否存在空值', '• 用户ID、订单号、收件地址等字段不能为空\\n• 财务系统中凭证编号为强制必填项', NULL, NULL);
+INSERT INTO `att_audit_rule` VALUES (23, '非法占位值识别', '2', '5', '1', '检查是否使用非法占位（如N/A、-999）替代有效值', '0', '0', '千桐科技', 1, '2025-07-17 11:40:25', '千桐科技', 1, '2025-07-17 11:40:25', NULL, '204', '检查是否使用非法占位（如N/A、-999）替代有效值', '• 年龄字段为-1、“N/A”、NULL等值视为缺失\\n• 数量字段为“-999”、“未知”表示错误占位值，需清洗', NULL, NULL);
+INSERT INTO `att_audit_rule` VALUES (24, '字段组完整性校验', '2', '5', '1', '检查逻辑上应成对出现的字段是否齐全', '0', '0', '千桐科技', 1, '2025-07-17 11:40:25', '千桐科技', 1, '2025-07-17 11:40:25', NULL, '205', '检查逻辑上应成对出现的字段是否齐全', '• 经纬度缺一不可，否则无法定位\\n• 邮箱和邮箱类型需同时填写，缺任一视为不完整', NULL, 'GROUP_FIELD_COMPLETENESS');
+INSERT INTO `att_audit_rule` VALUES (25, '整记录缺失检查校验', '2', '5', '1', '检查是否存在除主键外字段全为空的记录', '0', '0', '千桐科技', 1, '2025-07-17 11:40:25', '千桐科技', 1, '2025-07-17 11:40:25', NULL, '206', '检查是否存在除主键外字段全为空的记录', '• 某条记录仅有主键，其他字段全为空，应标记为垃圾数据\\n• 批量导入后出现内容空壳行（仅有ID），视为无效', NULL, NULL);
+INSERT INTO `att_audit_rule` VALUES (26, '条件字段完整性校验', '2', '5', '1', '检查满足某条件时，相关字段是否已填写', '0', '0', '千桐科技', 1, '2025-07-17 11:40:25', '千桐科技', 1, '2025-07-17 11:40:25', NULL, '207', '检查满足某条件时，相关字段是否已填写', '• 是否加班=是，则加班工时不能为空\\n• 是否出差=是，则必须填写出差地点', NULL, NULL);
+INSERT INTO `att_audit_rule` VALUES (27, '数值字段范围校验', '3', '5', '1', '检查字段值是否落在业务定义的合理区间', '0', '0', '千桐科技', 1, '2025-07-17 11:41:45', '千桐科技', 1, '2025-07-17 11:41:45', NULL, '306', '检查字段值是否落在业务定义的合理区间', '• 年龄字段不得小于0或大于120\\n• 折扣字段不得超过100%，小于0也不合法', NULL, 'NUMERIC_RANGE_VALIDATION');
+INSERT INTO `att_audit_rule` VALUES (28, '数值字段逻辑值合法校验', '3', '5', '1', '校验字段值是否违反业务规则（如库存不为负，销售额不能小于0）', '0', '0', '千桐科技', 1, '2025-07-17 11:41:45', '千桐科技', 1, '2025-07-17 11:41:45', NULL, '307', '校验字段值是否违反业务规则（如库存不为负，销售额不能小于0）', '• 销售额出现负值为异常，需判断是否退款未记录\\n• 库存为负说明有异常出库操作', NULL, NULL);
+INSERT INTO `att_audit_rule` VALUES (29, '数值字段异常值识别', '3', '5', '1', '检测异常的极端数值或明显错误数据', '0', '0', '千桐科技', 1, '2025-07-17 11:41:45', '千桐科技', 1, '2025-07-17 11:41:45', NULL, '308', '检测异常的极端数值或明显错误数据', '• 薪资字段为“99999999”视为默认或错误写入\\n• 年龄=200、商品价格=0.01等为极端可疑值', NULL, NULL);
+INSERT INTO `att_audit_rule` VALUES (30, '脏数据识别', '3', '5', '1', '标记无意义、无效或错误占位的数据值', '0', '0', '千桐科技', 1, '2025-07-17 11:41:45', '千桐科技', 1, '2025-07-17 11:41:45', NULL, '309', '标记无意义、无效或错误占位的数据值', '• 性别字段为“unknown”、错误拼写如“Unkown”应纠正或剔除\\n• 组织名称字段为“test”、“123”等为无效数据', NULL, NULL);
+INSERT INTO `att_audit_rule` VALUES (31, '单字段唯一性校验', '3', '5', '1', '检查字段值是否唯一（如订单号）', '0', '0', '千桐科技', 1, '2025-07-17 11:41:45', '千桐科技', 1, '2025-07-17 11:41:45', NULL, '310', '检查字段值是否唯一（如订单号）', '• 订单号重复会导致资金、库存重复记录\\n• 员工编号重复会干扰排班与考勤', NULL, NULL);
+INSERT INTO `att_audit_rule` VALUES (32, '多字段组合唯一性校验', '3', '5', '1', '检查字段组合在全表中是否唯一', '1', '0', '千桐科技', 1, '2025-07-17 11:41:45', '千桐科技', 1, '2025-07-17 11:41:45', NULL, '311', '检查字段组合在全表中是否唯一', '• 同一用户在某一天只能有一条签到记录\\n• [门店+SKU+日期] 不得重复出现', NULL, 'COMPOSITE_UNIQUENESS_VALIDATION');
+INSERT INTO `att_audit_rule` VALUES (33, '跨表字段值一致性校验', '4', '5', '1', '检查同一字段在不同表间是否值一致', '0', '0', '千桐科技', 1, '2025-07-17 11:42:54', '千桐科技', 1, '2025-07-17 11:42:54', NULL, '403', '检查同一字段在不同表间是否值一致', '• 用户表中姓名与订单表中收件人姓名需一致\\n• 员工信息在HR表与考勤表中性别字段不能冲突', NULL, NULL);
+INSERT INTO `att_audit_rule` VALUES (34, '外键有效性校验', '4', '5', '1', '检查外键值是否存在于目标主表中', '0', '0', '千桐科技', 1, '2025-07-17 11:42:54', '千桐科技', 1, '2025-07-17 11:42:54', NULL, '404', '检查外键值是否存在于目标主表中', '• 订单表中商品ID必须能在商品主表中找到\\n• 工单记录引用的操作人ID必须在员工表中存在', NULL, NULL);
+INSERT INTO `att_audit_rule` VALUES (35, '状态字段一致性校验', '4', '5', '1', '检查状态与其他字段值是否存在逻辑冲突', '0', '0', '千桐科技', 1, '2025-07-17 11:42:54', '千桐科技', 1, '2025-07-17 11:42:54', NULL, '405', '检查状态与其他字段值是否存在逻辑冲突', '• 状态=未审核但存在审核时间，说明数据录入异常\\n• 状态=草稿但存在付款金额不应出现', NULL, NULL);
+INSERT INTO `att_audit_rule` VALUES (36, '时间字段先后顺序校验', '5', '5', '1', '检查时间字段是否有逻辑上的早晚关系', '0', '0', '千桐科技', 1, '2025-07-17 11:44:00', '千桐科技', 1, '2025-07-17 11:44:12', NULL, '504', '流程控制、事件日志、审批流程等\n', '• 项目开始时间不能晚于结束时间\n• 发货时间不能早于下单时间', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for att_clean_rule
 -- ----------------------------
 DROP TABLE IF EXISTS `att_clean_rule`;
 CREATE TABLE `att_clean_rule`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '规则ID',
-  `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '规则名称',
-  `type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '规则类型;1：字符串转化，2：数值处理，3：时间处理，4：重复值处理，5：空值处理',
-  `level` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '规则级别;1：字段级，2：表级',
-  `description` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '规则描述',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90030177089800`(`id`) USING BTREE
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '规则ID',
+  `NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '规则名称',
+  `TYPE` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '规则类型;1：字符串转化，2：数值处理，3：时间处理，4：重复值处理，5：空值处理',
+  `LEVEL` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '规则级别;1：字段级，2：表级',
+  `DESCRIPTION` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '规则描述',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974739923433300`(`ID`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '清洗规则表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -364,38 +389,38 @@ CREATE TABLE `att_clean_rule`  (
 INSERT INTO `att_clean_rule` VALUES (8, '大小写转换', '1', '1', '把大写字符串数据转换成小写字符串数据', '1', '0', '舒月鑫', 733, '2025-02-25 10:47:40', '舒月鑫', 733, '2025-02-25 10:47:40', NULL);
 INSERT INTO `att_clean_rule` VALUES (9, '空值替换', '1', '1', '空值用别的数据进行替换', '1', '0', '舒月鑫', 733, '2025-02-25 10:48:10', '舒月鑫', 733, '2025-02-25 10:48:10', NULL);
 INSERT INTO `att_clean_rule` VALUES (10, '首尾移除空格', '1', '1', '首位的空格进行移除', '1', '0', '舒月鑫', 733, '2025-02-25 10:48:36', '孟繁明', 731, '2025-03-07 14:00:58', NULL);
-INSERT INTO `att_clean_rule` VALUES (14, '正则表达式替换', '1', '1', '正则表达式替换', '1', '0', '超级管理员', 1, '2025-04-11 10:30:13', '超级管理员', 1, '2025-04-11 10:30:13', NULL);
 INSERT INTO `att_clean_rule` VALUES (11, '填充默认值', '5', '1', '填充默认值', '1', '0', '小桐', 2, '2025-06-07 01:39:49', '小桐', 2, '2025-06-11 02:45:28', NULL);
 INSERT INTO `att_clean_rule` VALUES (12, '数值计算', '2', '1', '数值计算(清洗规则用于后续在数据同步的时候对数据进行处理)', '1', '0', '小桐', 2, '2025-06-07 04:26:45', '小桐', 2, '2025-06-11 02:46:18', NULL);
 INSERT INTO `att_clean_rule` VALUES (13, '字典值标准化', '2', '1', '字典值标准化', '1', '0', '小桐', 2, '2025-06-09 07:42:59', '小桐', 2, '2025-06-11 06:47:49', NULL);
+INSERT INTO `att_clean_rule` VALUES (14, '正则表达式替换', '1', '1', '正则表达式替换', '1', '0', '超级管理员', 1, '2025-04-11 10:30:13', '超级管理员', 1, '2025-04-11 10:30:13', NULL);
 
 -- ----------------------------
 -- Table structure for att_client
 -- ----------------------------
 DROP TABLE IF EXISTS `att_client`;
 CREATE TABLE `att_client`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '应用名称',
-  `type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '应用类型',
-  `secret` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '应用秘钥',
-  `homepage_url` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '主页地址',
-  `allow_url` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '允许授权的url',
-  `sync_url` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '同步地址',
-  `logo` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '应用图标',
-  `description` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '应用描述',
-  `public_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否公开',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90030681894600`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '应用管理' ROW_FORMAT = Dynamic;
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '应用名称',
+  `TYPE` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '应用类型',
+  `SECRET` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '应用秘钥',
+  `HOMEPAGE_URL` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '主页地址',
+  `ALLOW_URL` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '允许授权的url',
+  `SYNC_URL` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '同步地址',
+  `LOGO` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '应用图标',
+  `DESCRIPTION` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '应用描述',
+  `PUBLIC_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否公开',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974741067914200`(`ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '应用管理' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of att_client
@@ -408,26 +433,26 @@ INSERT INTO `att_client` VALUES (9, '水利信息化平台', '0', '411d6de669494
 -- ----------------------------
 DROP TABLE IF EXISTS `att_data_dev_cat`;
 CREATE TABLE `att_data_dev_cat`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '类别名称',
-  `parent_id` bigint(20) NULL DEFAULT NULL COMMENT '关联上级ID',
-  `sort_order` int(11) NOT NULL DEFAULT 0 COMMENT '类别排序',
-  `description` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
-  `code` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '层级编码',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `project_id` bigint(20) NOT NULL COMMENT '项目id',
-  `project_code` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '项目编码',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90031083379600`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据开发类目管理' ROW_FORMAT = Dynamic;
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '类别名称',
+  `PARENT_ID` bigint(20) NULL DEFAULT NULL COMMENT '关联上级ID',
+  `SORT_ORDER` int(11) NOT NULL DEFAULT 0 COMMENT '类别排序',
+  `DESCRIPTION` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `CODE` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '层级编码',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `PROJECT_ID` bigint(20) NOT NULL COMMENT '项目id',
+  `PROJECT_CODE` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '项目编码',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974741587329100`(`ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 606 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据开发类目管理' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of att_data_dev_cat
@@ -475,24 +500,24 @@ INSERT INTO `att_data_dev_cat` VALUES (605, '水生态修复', 600, 5, '水生�
 -- ----------------------------
 DROP TABLE IF EXISTS `att_data_elem_cat`;
 CREATE TABLE `att_data_elem_cat`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '类别名称',
-  `parent_id` bigint(20) NULL DEFAULT 0 COMMENT '关联上级ID',
-  `sort_order` int(11) NOT NULL DEFAULT 0 COMMENT '类别排序',
-  `description` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
-  `code` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '层级编码',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90031545195400`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 31 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据元类目管理' ROW_FORMAT = Dynamic;
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '类别名称',
+  `PARENT_ID` bigint(20) NULL DEFAULT 0 COMMENT '关联上级ID',
+  `SORT_ORDER` int(11) NOT NULL DEFAULT 0 COMMENT '类别排序',
+  `DESCRIPTION` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `CODE` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '层级编码',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974741972708600`(`ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 60506 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据元类目管理' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of att_data_elem_cat
@@ -689,24 +714,24 @@ INSERT INTO `att_data_elem_cat` VALUES (60505, '保护规划', 605, 5, '河湖�
 -- ----------------------------
 DROP TABLE IF EXISTS `att_model_cat`;
 CREATE TABLE `att_model_cat`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '类别名称',
-  `parent_id` bigint(20) NULL DEFAULT 0 COMMENT '关联上级ID',
-  `sort_order` int(11) NOT NULL DEFAULT 0 COMMENT '类别排序',
-  `description` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
-  `code` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '层级编码',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90032032628000`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 34 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '逻辑模型类目管理' ROW_FORMAT = Dynamic;
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '类别名称',
+  `PARENT_ID` bigint(20) NULL DEFAULT 0 COMMENT '关联上级ID',
+  `SORT_ORDER` int(11) NOT NULL DEFAULT 0 COMMENT '类别排序',
+  `DESCRIPTION` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `CODE` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '层级编码',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974742467497800`(`ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 48 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '逻辑模型类目管理' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of att_model_cat
@@ -744,23 +769,23 @@ INSERT INTO `att_model_cat` VALUES (47, '基础数据', 16, 0, '水利的基础�
 -- ----------------------------
 DROP TABLE IF EXISTS `att_project`;
 CREATE TABLE `att_project`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '项目名称',
-  `manager_id` bigint(20) NOT NULL COMMENT '项目管理员id',
-  `description` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '项目描述',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90032445363400`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 85 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '项目表' ROW_FORMAT = Dynamic;
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '项目名称',
+  `MANAGER_ID` bigint(20) NOT NULL COMMENT '项目管理员id',
+  `DESCRIPTION` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '项目描述',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `CODE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974742885470900`(`ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 102 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '项目表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of att_project
@@ -786,21 +811,21 @@ INSERT INTO `att_project` VALUES (101, '长江口咸潮预警与应对工程', 1
 -- ----------------------------
 DROP TABLE IF EXISTS `att_project_user_rel`;
 CREATE TABLE `att_project_user_rel`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `project_id` bigint(20) NOT NULL COMMENT '项目空间ID',
-  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90032869014200`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '项目表与用户表关联关系表' ROW_FORMAT = Dynamic;
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `PROJECT_ID` bigint(20) NOT NULL COMMENT '项目空间ID',
+  `USER_ID` bigint(20) NOT NULL COMMENT '用户ID',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974743338956600`(`ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '项目表与用户表关联关系表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of att_project_user_rel
@@ -811,30 +836,59 @@ INSERT INTO `att_project_user_rel` VALUES (3, 87, 2, '1', '0', '管理员', 1, '
 INSERT INTO `att_project_user_rel` VALUES (4, 87, 732, '1', '0', '管理员', 1, '2025-06-11 21:15:04', '管理员', 1, '2025-06-11 21:15:04', NULL);
 
 -- ----------------------------
+-- Table structure for att_quality_cat
+-- ----------------------------
+DROP TABLE IF EXISTS `att_quality_cat`;
+CREATE TABLE `att_quality_cat`  (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '类别名称',
+  `PARENT_ID` bigint(20) NULL DEFAULT NULL COMMENT '关联上级ID',
+  `SORT_ORDER` int(11) NOT NULL DEFAULT 0 COMMENT '类别排序',
+  `DESCRIPTION` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `CODE` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '层级编码',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974743720105900`(`ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据质量类目表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of att_quality_cat
+-- ----------------------------
+INSERT INTO `att_quality_cat` VALUES (1, '数据值', 0, 0, NULL, 'A01', '0', '管理员', 1, '2025-08-25 20:30:36', '管理员', 1, '2025-08-25 20:30:36', NULL, '0');
+
+-- ----------------------------
 -- Table structure for att_task_cat
 -- ----------------------------
 DROP TABLE IF EXISTS `att_task_cat`;
 CREATE TABLE `att_task_cat`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '类别名称',
-  `parent_id` bigint(20) NULL DEFAULT NULL COMMENT '关联上级ID',
-  `sort_order` int(11) NOT NULL DEFAULT 0 COMMENT '类别排序',
-  `description` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
-  `code` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '层级编码',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `project_id` bigint(20) NOT NULL COMMENT '项目id',
-  `project_code` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '项目编码',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90033373321800`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据集成任务类目管理' ROW_FORMAT = Dynamic;
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '类别名称',
+  `PARENT_ID` bigint(20) NULL DEFAULT NULL COMMENT '关联上级ID',
+  `SORT_ORDER` int(11) NOT NULL DEFAULT 0 COMMENT '类别排序',
+  `DESCRIPTION` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `CODE` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '层级编码',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `PROJECT_ID` bigint(20) NOT NULL COMMENT '项目id',
+  `PROJECT_CODE` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '项目编码',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974744192145600`(`ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1006 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据集成任务类目管理' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of att_task_cat
@@ -882,23 +936,23 @@ INSERT INTO `att_task_cat` VALUES (1005, '网络安全保障', 1000, 5, '水利�
 -- ----------------------------
 DROP TABLE IF EXISTS `att_theme`;
 CREATE TABLE `att_theme`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主题名称',
-  `icon` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '图标url',
-  `sort_order` int(11) NULL DEFAULT 0 COMMENT '排序',
-  `description` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90033691760400`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '主题' ROW_FORMAT = Dynamic;
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `NAME` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主题名称',
+  `ICON` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '图标url',
+  `SORT_ORDER` int(11) NULL DEFAULT 0 COMMENT '排序',
+  `DESCRIPTION` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974745106674300`(`ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 30 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '主题' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of att_theme
@@ -924,26 +978,26 @@ INSERT INTO `att_theme` VALUES (29, '海洋与海岸带水利', NULL, 15, '海�
 -- ----------------------------
 DROP TABLE IF EXISTS `auth_client`;
 CREATE TABLE `auth_client`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '应用ID',
-  `secret_key` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '应用秘钥',
-  `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '应用名称',
-  `type` int(11) NOT NULL COMMENT '应用类型;0：Web，1：App，2：小程序',
-  `icon` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '应用图标',
-  `home_url` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '应用首页',
-  `sync_url` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '同步地址',
-  `redirect_url` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '允许授权的url',
-  `public_flag` tinyint(4) NOT NULL DEFAULT 1 COMMENT '是否公开',
-  `valid_flag` tinyint(4) NOT NULL DEFAULT 1 COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` tinyint(4) NOT NULL DEFAULT 0 COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id;创建者的sys_user_id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人id;更新者的sys_user_id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90034015323000`(`id`) USING BTREE
+  `ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '应用ID',
+  `SECRET_KEY` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '应用秘钥',
+  `NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '应用名称',
+  `TYPE` int(11) NOT NULL COMMENT '应用类型;0：Web，1：App，2：小程序',
+  `ICON` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '应用图标',
+  `HOME_URL` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '应用首页',
+  `SYNC_URL` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '同步地址',
+  `REDIRECT_URL` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '允许授权的url',
+  `PUBLIC_FLAG` tinyint(4) NOT NULL DEFAULT 1 COMMENT '是否公开',
+  `VALID_FLAG` tinyint(4) NOT NULL DEFAULT 1 COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` tinyint(4) NOT NULL DEFAULT 0 COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id;创建者的sys_user_id',
+  `CREATE_TIME` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人id;更新者的sys_user_id',
+  `UPDATE_TIME` timestamp NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974745661624200`(`ID`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 39 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '应用管理' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -955,9 +1009,9 @@ CREATE TABLE `auth_client`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `auth_client_user`;
 CREATE TABLE `auth_client_user`  (
-  `client_id` bigint(20) NOT NULL COMMENT '应用ID',
-  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
-  `open_id` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'open_id'
+  `CLIENT_ID` bigint(20) NOT NULL COMMENT '应用ID',
+  `USER_ID` bigint(20) NOT NULL COMMENT '用户ID',
+  `OPEN_ID` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'open_id'
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '应用和用户关联表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -969,30 +1023,30 @@ CREATE TABLE `auth_client_user`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `da_asset`;
 CREATE TABLE `da_asset`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `name` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '资产名称',
-  `cat_code` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '类目编码',
-  `datasource_id` bigint(20) NOT NULL COMMENT '数据连接id',
-  `table_name` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '表名称',
-  `table_comment` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '表描述;表注释',
-  `data_count` int(11) NOT NULL DEFAULT 0 COMMENT '数据量',
-  `field_count` int(11) NOT NULL DEFAULT 0 COMMENT '字段量',
-  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '状态;1:未发布 2:已发布 3:审核中(审核预留字典)',
-  `description` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `source` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '来源;1:数据发现；2:数据模型；',
-  `type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '资产类型;1:数据库表  2:外部API 3: 地理空间服务 4:矢量数据 5:视频数据',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90027993769800`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 180 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据资产表' ROW_FORMAT = Dynamic;
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `NAME` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '资产名称',
+  `CAT_CODE` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '类目编码',
+  `DATASOURCE_ID` bigint(20) NOT NULL COMMENT '数据连接id',
+  `TABLE_NAME` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '表名称',
+  `TABLE_COMMENT` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '表描述;表注释',
+  `DATA_COUNT` int(11) NOT NULL DEFAULT 0 COMMENT '数据量',
+  `FIELD_COUNT` int(11) NOT NULL DEFAULT 0 COMMENT '字段量',
+  `STATUS` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '状态;1:未发布 2:已发布 3:审核中(审核预留字典)',
+  `DESCRIPTION` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `SOURCE` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '来源;1:数据发现；2:数据模型；',
+  `TYPE` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '资产类型;1:数据库表  2:外部API 3: 地理空间服务 4:矢量数据 5:视频数据',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974828480968800`(`ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 190 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据资产表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of da_asset
@@ -1027,24 +1081,24 @@ INSERT INTO `da_asset` VALUES (189, '水闸基础信息表', 'A05', 4, 'ATT_WAGA
 -- ----------------------------
 DROP TABLE IF EXISTS `da_asset_api`;
 CREATE TABLE `da_asset_api`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `asset_id` bigint(20) NOT NULL COMMENT '资产id',
-  `url` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'API路径',
-  `http_method` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '请求方式;GET、POST',
-  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '状态;1:未发布 2:已发布',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `developer_name` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '开发者',
-  `app_name` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '应用名称',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90072173106000`(`id`) USING BTREE
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `ASSET_ID` bigint(20) NOT NULL COMMENT '资产id',
+  `URL` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'API路径',
+  `HTTP_METHOD` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '请求方式;GET、POST',
+  `STATUS` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '状态;1:未发布 2:已发布',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `DEVELOPER_NAME` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '开发者',
+  `APP_NAME` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '应用名称',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974828975444000`(`ID`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据资产-外部API表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -1057,27 +1111,27 @@ INSERT INTO `da_asset_api` VALUES (14, 166, 'https://www.baidu.com/', 'GET', '1'
 -- ----------------------------
 DROP TABLE IF EXISTS `da_asset_api_param`;
 CREATE TABLE `da_asset_api_param`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `api_id` bigint(20) NOT NULL COMMENT 'API id',
-  `parent_id` bigint(20) NULL DEFAULT NULL COMMENT '父级id',
-  `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '参数名称',
-  `type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '参数类型;1:入参 2:出参 3:Herder',
-  `request_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '是否必填;0：否，1：是',
-  `column_type` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '字段类型;1:String 2:Integer 3: Long 4:Double 5:Boolean 6:Date 7:Object 8:Array',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `default_value` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '数据默认值',
-  `example_value` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '示例值',
-  `description` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90073689556400`(`id`) USING BTREE
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `API_ID` bigint(20) NOT NULL COMMENT 'API id',
+  `PARENT_ID` bigint(20) NULL DEFAULT NULL COMMENT '父级id',
+  `NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '参数名称',
+  `TYPE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '参数类型;1:入参 2:出参 3:Herder',
+  `REQUEST_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '是否必填;0：否，1：是',
+  `COLUMN_TYPE` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '字段类型;1:String 2:Integer 3: Long 4:Double 5:Boolean 6:Date 7:Object 8:Array',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `DEFAULT_VALUE` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '数据默认值',
+  `EXAMPLE_VALUE` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '示例值',
+  `DESCRIPTION` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974829476233100`(`ID`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据资产-外部API-参数表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -1089,26 +1143,26 @@ CREATE TABLE `da_asset_api_param`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `da_asset_apply`;
 CREATE TABLE `da_asset_apply`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `asset_id` bigint(20) NOT NULL COMMENT '资产id',
-  `project_id` bigint(20) NOT NULL COMMENT '项目id',
-  `project_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '项目编码',
-  `apply_reason` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '申请理由',
-  `approval_reason` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '审批理由',
-  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '状态;1:待审批 2:审批不通过 9:审批通过',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `source_type` varchar(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '是申请过来的资产还是项目自己生成的资产0：申请，1：自创',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90075349207500`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 31 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据资产申请表' ROW_FORMAT = Dynamic;
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `ASSET_ID` bigint(20) NOT NULL COMMENT '资产id',
+  `PROJECT_ID` bigint(20) NOT NULL COMMENT '项目id',
+  `PROJECT_CODE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '项目编码',
+  `APPLY_REASON` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '申请理由',
+  `APPROVAL_REASON` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '审批理由',
+  `STATUS` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '状态;1:待审批 2:审批不通过 9:审批通过',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `SOURCE_TYPE` varchar(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '是申请过来的资产还是项目自己生成的资产0：申请，1：自创',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974830073964300`(`ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 36 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据资产申请表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of da_asset_apply
@@ -1125,35 +1179,35 @@ INSERT INTO `da_asset_apply` VALUES (35, 182, 84, '141883958809440', NULL, NULL,
 -- ----------------------------
 DROP TABLE IF EXISTS `da_asset_column`;
 CREATE TABLE `da_asset_column`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `asset_id` bigint(20) NOT NULL COMMENT '资产id',
-  `column_name` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '字段名称/英文名称',
-  `column_comment` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '字段注释/中文名称',
-  `column_type` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '数据类型',
-  `column_length` int(11) NULL DEFAULT NULL COMMENT '长度',
-  `column_scale` int(11) NULL DEFAULT 0 COMMENT '小数位;精度',
-  `nullable_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '是否必填;0:否 1:是',
-  `pk_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '是否主键;0:否 1:是',
-  `default_value` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '默认值',
-  `data_elem_code_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '是否代码;0:否 1:是',
-  `data_elem_code_id` bigint(20) NULL DEFAULT NULL COMMENT '代码id',
-  `sensitive_level_id` bigint(20) NULL DEFAULT NULL COMMENT '敏感等级id',
-  `rel_data_elme_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '关联数据元;0:否 1:是',
-  `rel_clean_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '关联清洗规则;0:否 1:是',
-  `rel_audit_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '关联稽查规则;0:否 1:是',
-  `description` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90076493363200`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 740 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据资产字段表' ROW_FORMAT = Dynamic;
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `ASSET_ID` bigint(20) NOT NULL COMMENT '资产id',
+  `COLUMN_NAME` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '字段名称/英文名称',
+  `COLUMN_COMMENT` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '字段注释/中文名称',
+  `COLUMN_TYPE` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '数据类型',
+  `COLUMN_LENGTH` int(11) NULL DEFAULT NULL COMMENT '长度',
+  `COLUMN_SCALE` int(11) NULL DEFAULT 0 COMMENT '小数位;精度',
+  `NULLABLE_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '是否必填;0:否 1:是',
+  `PK_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '是否主键;0:否 1:是',
+  `DEFAULT_VALUE` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '默认值',
+  `DATA_ELEM_CODE_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '是否代码;0:否 1:是',
+  `DATA_ELEM_CODE_ID` bigint(20) NULL DEFAULT NULL COMMENT '代码id',
+  `SENSITIVE_LEVEL_ID` bigint(20) NULL DEFAULT NULL COMMENT '敏感等级id',
+  `REL_DATA_ELME_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '关联数据元;0:否 1:是',
+  `REL_CLEAN_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '关联清洗规则;0:否 1:是',
+  `REL_AUDIT_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '关联稽查规则;0:否 1:是',
+  `DESCRIPTION` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974830481091200`(`ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 776 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据资产字段表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of da_asset_column
@@ -1234,25 +1288,25 @@ INSERT INTO `da_asset_column` VALUES (775, 189, 'WAGA_NAME', '水闸名称', 'VA
 -- ----------------------------
 DROP TABLE IF EXISTS `da_asset_geo`;
 CREATE TABLE `da_asset_geo`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `asset_id` bigint(20) NOT NULL COMMENT '资产id',
-  `file_name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '文件名称',
-  `file_url` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '文件路径',
-  `element_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '要素类型;1:点 2:线 3:面 (混合多选一逗号隔开)',
-  `coordinate_system` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '坐标系',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '1' COMMENT '状态;1:未发布 2:已发布',
-  `file_type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '文件类型;例如 pdf/doc/txt等',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90077468043400`(`id`) USING BTREE
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `ASSET_ID` bigint(20) NOT NULL COMMENT '资产id',
+  `FILE_NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '文件名称',
+  `FILE_URL` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '文件路径',
+  `ELEMENT_TYPE` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '要素类型;1:点 2:线 3:面 (混合多选一逗号隔开)',
+  `COORDINATE_SYSTEM` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '坐标系',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `STATUS` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '1' COMMENT '状态;1:未发布 2:已发布',
+  `FILE_TYPE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '文件类型;例如 pdf/doc/txt等',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974831194026700`(`ID`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据资产-矢量表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -1266,24 +1320,24 @@ INSERT INTO `da_asset_geo` VALUES (2, 141, '', '/profile/2025/04/21/6805a768c2ae
 -- ----------------------------
 DROP TABLE IF EXISTS `da_asset_gis`;
 CREATE TABLE `da_asset_gis`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `asset_id` bigint(20) NULL DEFAULT NULL COMMENT '资产id',
-  `url` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '服务地址',
-  `type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '服务类型;1:数据服务 2:地图服务',
-  `http_method` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '请求方式;GET、POST',
-  `coordinate_system` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '坐标系;例如 EPSG:4326',
-  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '1' COMMENT '状态;1:未发布 2:已发布',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90078639538100`(`id`) USING BTREE
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `ASSET_ID` bigint(20) NULL DEFAULT NULL COMMENT '资产id',
+  `URL` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '服务地址',
+  `TYPE` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '服务类型;1:数据服务 2:地图服务',
+  `HTTP_METHOD` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '请求方式;GET、POST',
+  `COORDINATE_SYSTEM` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '坐标系;例如 EPSG:4326',
+  `STATUS` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '1' COMMENT '状态;1:未发布 2:已发布',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974831673300600`(`ID`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据资产-地理空间服务表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -1302,27 +1356,27 @@ INSERT INTO `da_asset_gis` VALUES (7, 172, 'https://cn.bing.com/', '1', 'GET', '
 -- ----------------------------
 DROP TABLE IF EXISTS `da_asset_operate_apply`;
 CREATE TABLE `da_asset_operate_apply`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `asset_id` bigint(20) NOT NULL COMMENT '资产id',
-  `datasource_id` bigint(20) NOT NULL COMMENT '数据连接id',
-  `table_name` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '表名称',
-  `table_comment` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '表注释/表描述',
-  `operate_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '操作类型;1: 新增 2:修改 3:删除 4:导入',
-  `operate_json` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '操作JSON数据;每个操作类型 新增：{\"data\":{}} 修改:{\"oldData\":{},\"newData\":{}} 删除：{\"data\":{}} 导入：{\"fileUrl\":\"excel文件的路径\",\"fileName\":\"excel文件的名称\"}',
-  `operate_time` datetime NULL DEFAULT NULL COMMENT '操作时间',
-  `execute_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '是否已执行;0：否，1：是',
-  `execute_time` datetime NULL DEFAULT NULL COMMENT '执行时间',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90080119653400`(`id`) USING BTREE
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `ASSET_ID` bigint(20) NOT NULL COMMENT '资产id',
+  `DATASOURCE_ID` bigint(20) NOT NULL COMMENT '数据连接id',
+  `TABLE_NAME` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '表名称',
+  `TABLE_COMMENT` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '表注释/表描述',
+  `OPERATE_TYPE` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '操作类型;1: 新增 2:修改 3:删除 4:导入',
+  `OPERATE_JSON` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '操作JSON数据;每个操作类型 新增：{\"data\":{}} 修改:{\"oldData\":{},\"newData\":{}} 删除：{\"data\":{}} 导入：{\"fileUrl\":\"excel文件的路径\",\"fileName\":\"excel文件的名称\"}',
+  `OPERATE_TIME` datetime NULL DEFAULT NULL COMMENT '操作时间',
+  `EXECUTE_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '是否已执行;0：否，1：是',
+  `EXECUTE_TIME` datetime NULL DEFAULT NULL COMMENT '执行时间',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974832150581400`(`ID`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据资产操作申请表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -1334,32 +1388,32 @@ CREATE TABLE `da_asset_operate_apply`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `da_asset_operate_log`;
 CREATE TABLE `da_asset_operate_log`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `asset_id` bigint(20) NOT NULL COMMENT '资产id',
-  `datasource_id` bigint(20) NOT NULL COMMENT '数据连接id',
-  `table_name` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '表名称',
-  `table_comment` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '表注释/表描述',
-  `operate_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '操作类型;1: 新增 2:修改 3:删除 4:导入',
-  `operate_time` datetime NULL DEFAULT NULL COMMENT '操作时间',
-  `execute_time` datetime NULL DEFAULT NULL COMMENT '执行时间',
-  `update_before` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '修改前数据(JSON数据);新增、导入该数据为空',
-  `update_after` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '修改后数据(JSON数据);删除数据为空',
-  `field_names` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '字段',
-  `file_url` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '导入文件URL',
-  `file_name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '导入文件名称',
-  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '状态;1:执行中  2:失败  3:成功',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `ASSET_ID` bigint(20) NOT NULL COMMENT '资产id',
+  `DATASOURCE_ID` bigint(20) NOT NULL COMMENT '数据连接id',
+  `TABLE_NAME` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '表名称',
+  `TABLE_COMMENT` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '表注释/表描述',
+  `OPERATE_TYPE` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '操作类型;1: 新增 2:修改 3:删除 4:导入',
+  `OPERATE_TIME` datetime NULL DEFAULT NULL COMMENT '操作时间',
+  `EXECUTE_TIME` datetime NULL DEFAULT NULL COMMENT '执行时间',
+  `UPDATE_BEFORE` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '修改前数据(JSON数据);新增、导入该数据为空',
+  `UPDATE_AFTER` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '修改后数据(JSON数据);删除数据为空',
+  `FIELD_NAMES` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '字段',
+  `FILE_URL` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '导入文件URL',
+  `FILE_NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '导入文件名称',
+  `STATUS` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '状态;1:执行中  2:失败  3:成功',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
   `UPDATE_WHERE_MD5` varchar(4000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新条件 JSON MD5 字符串',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90081736673600`(`id`) USING BTREE
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974832511327800`(`ID`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据资产操作记录表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -1371,21 +1425,21 @@ CREATE TABLE `da_asset_operate_log`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `da_asset_project_rel`;
 CREATE TABLE `da_asset_project_rel`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `asset_id` bigint(20) NOT NULL COMMENT '资产id',
-  `project_id` bigint(20) NOT NULL COMMENT '项目id',
-  `project_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '项目编码',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90085115893900`(`id`) USING BTREE
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `ASSET_ID` bigint(20) NOT NULL COMMENT '资产id',
+  `PROJECT_ID` bigint(20) NOT NULL COMMENT '项目id',
+  `PROJECT_CODE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '项目编码',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974832906361000`(`ID`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据资产与项目关联关系表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -1397,21 +1451,21 @@ CREATE TABLE `da_asset_project_rel`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `da_asset_theme_rel`;
 CREATE TABLE `da_asset_theme_rel`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `asset_id` bigint(20) NOT NULL COMMENT '资产id',
-  `theme_id` bigint(20) NOT NULL COMMENT '主题id',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90089975734400`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 101 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据资产-主题关联关系表' ROW_FORMAT = Dynamic;
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `ASSET_ID` bigint(20) NOT NULL COMMENT '资产id',
+  `THEME_ID` bigint(20) NOT NULL COMMENT '主题id',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974833561578000`(`ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 201 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据资产-主题关联关系表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of da_asset_theme_rel
@@ -1527,25 +1581,25 @@ INSERT INTO `da_asset_theme_rel` VALUES (200, 180, 26, '1', '0', '管理员', 1,
 -- ----------------------------
 DROP TABLE IF EXISTS `da_asset_video`;
 CREATE TABLE `da_asset_video`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `asset_id` bigint(20) NOT NULL COMMENT '资产id',
-  `ip` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'IP;例如 127.0.0.1:443',
-  `port` int(11) NOT NULL COMMENT '端口号',
-  `protocol` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '协议',
-  `platform` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '平台;1:海康 2:大华',
-  `config` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '配置JSON;海康：{\"appKey\":\"xxx\",\"appSecret\":\"xxx\",\"cameraIndexCode\":\"监控点唯一标识\"} 大华：{\"username\":\"账号\",\"password\":\"密码\",\"channel\":\"通道号\"}',
-  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '状态;1:未发布 2:已发布',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90092558566600`(`id`) USING BTREE
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `ASSET_ID` bigint(20) NOT NULL COMMENT '资产id',
+  `IP` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'IP;例如 127.0.0.1:443',
+  `PORT` int(11) NOT NULL COMMENT '端口号',
+  `PROTOCOL` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '协议',
+  `PLATFORM` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '平台;1:海康 2:大华',
+  `CONFIG` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '配置JSON;海康：{\"appKey\":\"xxx\",\"appSecret\":\"xxx\",\"cameraIndexCode\":\"监控点唯一标识\"} 大华：{\"username\":\"账号\",\"password\":\"密码\",\"channel\":\"通道号\"}',
+  `STATUS` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '状态;1:未发布 2:已发布',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974833921190300`(`ID`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据资产-视频数据表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -1559,27 +1613,27 @@ INSERT INTO `da_asset_video` VALUES (2, 151, '1', 9090, '', '1', '{\"cameraCode\
 -- ----------------------------
 DROP TABLE IF EXISTS `da_datasource`;
 CREATE TABLE `da_datasource`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `datasource_name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '数据源名称',
-  `datasource_type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '数据源类型',
-  `datasource_config` varchar(3072) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '数据源配置(json字符串)',
-  `ip` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'IP',
-  `port` int(11) NOT NULL COMMENT '端口号',
-  `list_count` int(11) NULL DEFAULT 0 COMMENT '数据库表数（预留）',
-  `sync_count` int(11) NULL DEFAULT 0 COMMENT '同步记录数（预留）',
-  `data_size` int(11) NULL DEFAULT 0 COMMENT '同步数据量大小（预留）',
-  `description` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90093795537900`(`id`) USING BTREE
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `DATASOURCE_NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '数据源名称',
+  `DATASOURCE_TYPE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '数据源类型',
+  `DATASOURCE_CONFIG` varchar(3072) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '数据源配置(json字符串)',
+  `IP` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'IP',
+  `PORT` int(11) NOT NULL COMMENT '端口号',
+  `LIST_COUNT` int(11) NULL DEFAULT 0 COMMENT '数据库表数（预留）',
+  `SYNC_COUNT` int(11) NULL DEFAULT 0 COMMENT '同步记录数（预留）',
+  `DATA_SIZE` int(11) NULL DEFAULT 0 COMMENT '同步数据量大小（预留）',
+  `DESCRIPTION` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974834532716100`(`ID`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 49 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据源表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -1606,23 +1660,23 @@ INSERT INTO `da_datasource` VALUES (48, '小山口-水文基础库-中间库', '
 -- ----------------------------
 DROP TABLE IF EXISTS `da_datasource_project_rel`;
 CREATE TABLE `da_datasource_project_rel`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `project_id` bigint(20) NOT NULL COMMENT '项目id',
-  `project_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '项目编码',
-  `datasource_id` bigint(20) NOT NULL COMMENT '数据源id',
-  `description` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `dpp_assigned` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '0：分配到数据研发，1：数据研发的新增',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90095409115500`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据源与项目关联关系表' ROW_FORMAT = Dynamic;
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `PROJECT_ID` bigint(20) NOT NULL COMMENT '项目id',
+  `PROJECT_CODE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '项目编码',
+  `DATASOURCE_ID` bigint(20) NOT NULL COMMENT '数据源id',
+  `DESCRIPTION` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `DPP_ASSIGNED` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '0：分配到数据研发，1：数据研发的新增',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974835183263800`(`ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据源与项目关联关系表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of da_datasource_project_rel
@@ -1637,25 +1691,25 @@ INSERT INTO `da_datasource_project_rel` VALUES (18, 84, '141883958809440', 4, NU
 -- ----------------------------
 DROP TABLE IF EXISTS `da_sensitive_level`;
 CREATE TABLE `da_sensitive_level`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `sensitive_level` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `sensitive_rule` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '敏感规则',
-  `start_char_loc` int(11) NULL DEFAULT NULL COMMENT '起始字符位置',
-  `end_char_loc` int(11) NULL DEFAULT NULL COMMENT '截止字符位置',
-  `mask_character` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '遮盖字符',
-  `online_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '上下线标识;0：下线，1：上线',
-  `description` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90099918903600`(`id`) USING BTREE
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `SENSITIVE_LEVEL` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `SENSITIVE_RULE` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '敏感规则',
+  `START_CHAR_LOC` int(11) NULL DEFAULT NULL COMMENT '起始字符位置',
+  `END_CHAR_LOC` int(11) NULL DEFAULT NULL COMMENT '截止字符位置',
+  `MASK_CHARACTER` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '遮盖字符',
+  `ONLINE_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '上下线标识;0：下线，1：上线',
+  `DESCRIPTION` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974836438500100`(`ID`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '敏感等级表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -1674,23 +1728,23 @@ INSERT INTO `da_sensitive_level` VALUES (13, '1级', '1', NULL, NULL, '***', '1'
 -- ----------------------------
 DROP TABLE IF EXISTS `dp_code_map`;
 CREATE TABLE `dp_code_map`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `data_elem_id` bigint(20) NOT NULL COMMENT '数据元id',
-  `original_value` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '原始值',
-  `code_name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '代码名',
-  `code_value` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '代码值',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90101069373800`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据元代码映射表' ROW_FORMAT = Dynamic;
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `DATA_ELEM_ID` bigint(20) NOT NULL COMMENT '数据元id',
+  `ORIGINAL_VALUE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '原始值',
+  `CODE_NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '代码名',
+  `CODE_VALUE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '代码值',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974836924381000`(`ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据元代码映射表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of dp_code_map
@@ -1714,29 +1768,29 @@ INSERT INTO `dp_code_map` VALUES (19, 41, 'e', '水闸工程', '5', '1', '0', '�
 -- ----------------------------
 DROP TABLE IF EXISTS `dp_data_elem`;
 CREATE TABLE `dp_data_elem`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `code` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '编码',
-  `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '名称',
-  `eng_name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '英文名称',
-  `cat_code` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '类目编码',
-  `type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '类型;1:数据元 2:代码表',
-  `person_charge` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '责任人',
-  `contact_number` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '联系电话',
-  `column_type` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '字段类型',
-  `status` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '状态;0:禁用  1:启用',
-  `description` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90101809430700`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据元表' ROW_FORMAT = Dynamic;
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `CODE` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '编码',
+  `NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '名称',
+  `ENG_NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '英文名称',
+  `CAT_CODE` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '类目编码',
+  `TYPE` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '类型;1:数据元 2:代码表',
+  `PERSON_CHARGE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '责任人',
+  `CONTACT_NUMBER` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '联系电话',
+  `COLUMN_TYPE` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '字段类型',
+  `STATUS` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '状态;0:禁用  1:启用',
+  `DESCRIPTION` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974837351402000`(`ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 46 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据元表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of dp_data_elem
@@ -1773,24 +1827,24 @@ INSERT INTO `dp_data_elem` VALUES (45, NULL, '取水许可类型', 'WATER_PERMIT
 -- ----------------------------
 DROP TABLE IF EXISTS `dp_data_elem_asset_rel`;
 CREATE TABLE `dp_data_elem_asset_rel`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `data_elem_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '数据元类型;1:数据元 2:代码表',
-  `data_elem_id` bigint(20) NOT NULL COMMENT '数据元id',
-  `asset_id` bigint(20) NOT NULL COMMENT '资产id(数据表id)',
-  `table_name` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '数据表',
-  `column_id` bigint(20) NOT NULL COMMENT '关联字段id',
-  `column_name` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '关联字段',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90103512542700`(`id`) USING BTREE
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `DATA_ELEM_TYPE` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '数据元类型;1:数据元 2:代码表',
+  `DATA_ELEM_ID` bigint(20) NOT NULL COMMENT '数据元id',
+  `ASSET_ID` bigint(20) NOT NULL COMMENT '资产id(数据表id)',
+  `TABLE_NAME` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '数据表',
+  `COLUMN_ID` bigint(20) NOT NULL COMMENT '关联字段id',
+  `COLUMN_NAME` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '关联字段',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974837830566300`(`ID`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据元数据资产关联信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -1802,22 +1856,22 @@ CREATE TABLE `dp_data_elem_asset_rel`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `dp_data_elem_code`;
 CREATE TABLE `dp_data_elem_code`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `data_elem_id` bigint(20) NOT NULL COMMENT '数据元id',
-  `code_value` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '代码值',
-  `code_name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '代码名称',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90104431096000`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据元代码表' ROW_FORMAT = Dynamic;
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `DATA_ELEM_ID` bigint(20) NOT NULL COMMENT '数据元id',
+  `CODE_VALUE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '代码值',
+  `CODE_NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '代码名称',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974838215098000`(`ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 62 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据元代码表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of dp_data_elem_code
@@ -1870,23 +1924,23 @@ INSERT INTO `dp_data_elem_code` VALUES (61, 45, '9', '其他取水', '1', '0', '
 -- ----------------------------
 DROP TABLE IF EXISTS `dp_data_elem_rule_rel`;
 CREATE TABLE `dp_data_elem_rule_rel`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `data_elem_id` bigint(20) NOT NULL COMMENT '数据元id',
-  `rule_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '规则类型;1:稽核规则 2:清洗规则',
-  `rule_id` bigint(20) NOT NULL COMMENT '规则id',
-  `rule_config` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '规则配置;json字符串',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90104743817000`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 57 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据元数据规则关联信息表' ROW_FORMAT = Dynamic;
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `DATA_ELEM_ID` bigint(20) NOT NULL COMMENT '数据元id',
+  `RULE_TYPE` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '规则类型;1:稽核规则 2:清洗规则',
+  `RULE_ID` bigint(20) NOT NULL COMMENT '规则id',
+  `RULE_CONFIG` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '规则配置;json字符串',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974838625113200`(`ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 60 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据元数据规则关联信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of dp_data_elem_rule_rel
@@ -1903,28 +1957,28 @@ INSERT INTO `dp_data_elem_rule_rel` VALUES (59, 19, '1', 3, '{\"nullCheck\":{\"t
 -- ----------------------------
 DROP TABLE IF EXISTS `dp_model`;
 CREATE TABLE `dp_model`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `model_name` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '模型编码;表名称',
-  `model_comment` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '模型名称;表注释/表描述',
-  `cat_code` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '类目编码',
-  `status` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '状态;0:未发布，1:已发布',
-  `create_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '创建方式;1:手动录入,2:物化表生成',
-  `datasource_id` bigint(20) NULL DEFAULT NULL COMMENT '数据源id',
-  `contact` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '联系人',
-  `contact_number` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '联系电话',
-  `description` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90105842552000`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 68 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '逻辑模型表' ROW_FORMAT = Dynamic;
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `MODEL_NAME` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '模型编码;表名称',
+  `MODEL_COMMENT` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '模型名称;表注释/表描述',
+  `CAT_CODE` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '类目编码',
+  `STATUS` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '状态;0:未发布，1:已发布',
+  `CREATE_TYPE` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '创建方式;1:手动录入,2:物化表生成',
+  `DATASOURCE_ID` bigint(20) NULL DEFAULT NULL COMMENT '数据源id',
+  `CONTACT` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '联系人',
+  `CONTACT_NUMBER` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '联系电话',
+  `DESCRIPTION` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974839136261500`(`ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 78 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '逻辑模型表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of dp_model
@@ -1945,31 +1999,31 @@ INSERT INTO `dp_model` VALUES (77, 'ATT_WAGA_BASE', '水闸基础信息表', 'A0
 -- ----------------------------
 DROP TABLE IF EXISTS `dp_model_column`;
 CREATE TABLE `dp_model_column`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `model_id` bigint(20) NOT NULL COMMENT '逻辑模型表ID',
-  `eng_name` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '英文名称;表字段名称',
-  `cn_name` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '中文名称;表字段备注',
-  `column_type` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '数据类型',
-  `column_length` int(11) NULL DEFAULT NULL COMMENT '属性长度',
-  `column_scale` int(11) NULL DEFAULT NULL COMMENT '小数长度',
-  `default_value` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '默认值',
-  `pk_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '是否主键;是否主键（0否，1是）',
-  `nullable_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '是否必填;是否必填（0否，1是）',
-  `sort_order` int(11) NULL DEFAULT NULL COMMENT '排序',
-  `authority_dept` bigint(20) NULL DEFAULT NULL COMMENT '权威部门',
-  `data_elem_id` bigint(20) NULL DEFAULT NULL COMMENT '数据元id',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90106678773800`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 429 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '逻辑模型属性信息表' ROW_FORMAT = Dynamic;
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `MODEL_ID` bigint(20) NOT NULL COMMENT '逻辑模型表ID',
+  `ENG_NAME` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '英文名称;表字段名称',
+  `CN_NAME` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '中文名称;表字段备注',
+  `COLUMN_TYPE` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '数据类型',
+  `COLUMN_LENGTH` int(11) NULL DEFAULT NULL COMMENT '属性长度',
+  `COLUMN_SCALE` int(11) NULL DEFAULT NULL COMMENT '小数长度',
+  `DEFAULT_VALUE` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '默认值',
+  `PK_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '是否主键;是否主键（0否，1是）',
+  `NULLABLE_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '是否必填;是否必填（0否，1是）',
+  `SORT_ORDER` int(11) NULL DEFAULT NULL COMMENT '排序',
+  `AUTHORITY_DEPT` bigint(20) NULL DEFAULT NULL COMMENT '权威部门',
+  `DATA_ELEM_ID` bigint(20) NULL DEFAULT NULL COMMENT '数据元id',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974839764122800`(`ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 478 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '逻辑模型属性信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of dp_model_column
@@ -2016,28 +2070,28 @@ INSERT INTO `dp_model_column` VALUES (477, 77, 'WAGA_NAME', '水闸名称', 'VAR
 -- ----------------------------
 DROP TABLE IF EXISTS `dp_model_materialized`;
 CREATE TABLE `dp_model_materialized`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `model_name` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '模型编码;表名',
-  `model_alias` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '模型名称;表描述、名称',
-  `model_id` bigint(20) NOT NULL COMMENT '模型表id',
-  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '状态;1未创建，2创建中，3成功，4失败，5已存在。',
-  `message` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '执行日志信息',
-  `sql_command` varchar(3072) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '执行sql备份',
-  `datasource_id` bigint(20) NOT NULL COMMENT '数据源id',
-  `datasource_type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '数据源类型',
-  `datasource_name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '数据源名称',
-  `asset_id` bigint(20) NULL DEFAULT NULL COMMENT '资产表id',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90108344914500`(`id`) USING BTREE
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `MODEL_NAME` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '模型编码;表名',
+  `MODEL_ALIAS` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '模型名称;表描述、名称',
+  `MODEL_ID` bigint(20) NOT NULL COMMENT '模型表id',
+  `STATUS` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '状态;1未创建，2创建中，3成功，4失败，5已存在。',
+  `MESSAGE` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '执行日志信息',
+  `SQL_COMMAND` varchar(3072) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '执行sql备份',
+  `DATASOURCE_ID` bigint(20) NOT NULL COMMENT '数据源id',
+  `DATASOURCE_TYPE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '数据源类型',
+  `DATASOURCE_NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '数据源名称',
+  `ASSET_ID` bigint(20) NULL DEFAULT NULL COMMENT '资产表id',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974840343968200`(`ID`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '物化模型记录表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -2049,121 +2103,121 @@ CREATE TABLE `dp_model_materialized`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `dpp_etl_node`;
 CREATE TABLE `dpp_etl_node`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `task_type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '任务类型;1：离线任务 2：实时任务 3：数据开发任务 4：作业任务',
-  `type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '节点类型;DATAX、SPARK及SUB_PROCESS等',
-  `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '节点名称',
-  `code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '节点编码',
-  `version` bigint(20) NOT NULL DEFAULT 1 COMMENT '节点版本',
-  `project_id` bigint(20) NOT NULL COMMENT '项目id',
-  `project_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '项目编码',
-  `parameters` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '节点参数',
-  `priority` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'MEDIUM' COMMENT '任务优先级;HIGHEST,HIGH,MEDIUM,LOW,LOWEST',
-  `fail_retry_times` int(11) NULL DEFAULT 0 COMMENT '失败重试次数',
-  `fail_retry_interval` int(11) NULL DEFAULT 1 COMMENT '失败重试间隔（分钟）',
-  `timeout` int(11) NULL DEFAULT 0 COMMENT '超时时间',
-  `delay_time` int(11) NULL DEFAULT 0 COMMENT '延迟执行时间（分钟）',
-  `cpu_quota` int(11) NULL DEFAULT -1 COMMENT 'CPU配额',
-  `memory_max` int(11) NULL DEFAULT -1 COMMENT '最大内存',
-  `description` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
-  `ds_id` bigint(20) NULL DEFAULT NULL COMMENT 'DolphinScheduler的id',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `component_type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '组件类型',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90109803313800`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1230 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据集成节点' ROW_FORMAT = Dynamic;
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `TASK_TYPE` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '任务类型;1：离线任务 2：实时任务 3：数据开发任务 4：作业任务',
+  `TYPE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '节点类型;DATAX、SPARK及SUB_PROCESS等',
+  `NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '节点名称',
+  `CODE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '节点编码',
+  `VERSION` bigint(20) NOT NULL DEFAULT 1 COMMENT '节点版本',
+  `PROJECT_ID` bigint(20) NOT NULL COMMENT '项目id',
+  `PROJECT_CODE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '项目编码',
+  `PARAMETERS` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '节点参数',
+  `PRIORITY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'MEDIUM' COMMENT '任务优先级;HIGHEST,HIGH,MEDIUM,LOW,LOWEST',
+  `FAIL_RETRY_TIMES` int(11) NULL DEFAULT 0 COMMENT '失败重试次数',
+  `FAIL_RETRY_INTERVAL` int(11) NULL DEFAULT 1 COMMENT '失败重试间隔（分钟）',
+  `TIMEOUT` int(11) NULL DEFAULT 0 COMMENT '超时时间',
+  `DELAY_TIME` int(11) NULL DEFAULT 0 COMMENT '延迟执行时间（分钟）',
+  `CPU_QUOTA` int(11) NULL DEFAULT -1 COMMENT 'CPU配额',
+  `MEMORY_MAX` int(11) NULL DEFAULT -1 COMMENT '最大内存',
+  `DESCRIPTION` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `DS_ID` bigint(20) NULL DEFAULT NULL COMMENT 'DolphinScheduler的id',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `COMPONENT_TYPE` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '组件类型',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974840684125500`(`ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1272 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据集成节点' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of dpp_etl_node
 -- ----------------------------
-INSERT INTO `dpp_etl_node` VALUES (1225, '1', 'DATAX', '表输入组件', '141951029426016', 1, 84, '141883958809440', '{\"tableFields\":[{\"columnName\":\"ID\",\"columnComment\":\"ID\",\"columnType\":\"INT\",\"columnLength\":4,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TITLE\",\"columnComment\":\"消息标题\",\"columnType\":\"VARCHAR\",\"columnLength\":128,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\"},{\"columnName\":\"CONTENT\",\"columnComment\":\"消息模板内容\",\"columnType\":\"VARCHAR\",\"columnLength\":3072,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\"},{\"columnName\":\"CATEGORY\",\"columnComment\":\"消息类别\",\"columnType\":\"INT\",\"columnLength\":4,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\"},{\"columnName\":\"MSG_LEVEL\",\"columnComment\":\"消息等级\",\"columnType\":\"INT\",\"columnLength\":4,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"defaultValue\":\"0\"},{\"columnName\":\"VALID_FLAG\",\"columnComment\":\"是否有效;0：无效，1：有效\",\"columnType\":\"TINYINT\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"defaultValue\":\"1\"},{\"columnName\":\"DEL_FLAG\",\"columnComment\":\"删除标志;1：已删除，0：未删除\",\"columnType\":\"TINYINT\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"defaultValue\":\"0\"},{\"columnName\":\"CREATE_BY\",\"columnComment\":\"创建人\",\"columnType\":\"VARCHAR\",\"columnLength\":32,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\"},{\"columnName\":\"CREATOR_ID\",\"columnComment\":\"创建人id\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\"},{\"columnName\":\"CREATE_TIME\",\"columnComment\":\"创建时间\",\"columnType\":\"TIMESTAMP\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"defaultValue\":\"CURRENT_TIMESTAMP()\"},{\"columnName\":\"UPDATE_BY\",\"columnComment\":\"更新人\",\"columnType\":\"VARCHAR\",\"columnLength\":32,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\"},{\"columnName\":\"UPDATER_ID\",\"columnComment\":\"更新人id\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\"},{\"columnName\":\"UPDATE_TIME\",\"columnComment\":\"更新时间\",\"columnType\":\"TIMESTAMP\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"defaultValue\":\"CURRENT_TIMESTAMP()\"},{\"columnName\":\"REMARK\",\"columnComment\":\"备注\",\"columnType\":\"VARCHAR\",\"columnLength\":512,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\"}],\"datasource_id\":\"\",\"csvFile\":\"\",\"columns\":[\"ID\",\"TITLE\",\"CONTENT\",\"CATEGORY\",\"MSG_LEVEL\",\"VALID_FLAG\",\"DEL_FLAG\",\"CREATE_BY\",\"CREATOR_ID\",\"CREATE_TIME\",\"UPDATE_BY\",\"UPDATER_ID\",\"UPDATE_TIME\",\"REMARK\"],\"typeName\":\"表输入组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAXNJREFUWEftlz1LA0EQhp+52J3hYqOVhSklYCMINl7+gYUgWImdlY2lCBb+ABs7rUT0F1iJB1ZiIfjRBtIpgjFfWog7EsR4u2ISQZIr7sqXZee5mXd2Z4WEfRLnyYX1cBB8z1E2+oprAQVhUwcBVI38NscPoIyYwtNZ9q4fYCNhvWDwbjoCoeyK8NgPIBVGUVY7Agm6DFpuA4mXR1kBsxGHVLxFVGoi7ye2ntkU0QPUlOyf8g7BLFmayoSK7P+pZLliY8qobNUifz6+WRA21kEq1cjfs/S5xrE3xHbldPjaXt8sVSM/H9d6KpnroRTISasmLkPAJejLN6j4wATorWPIcUTewNzb5pVJoAzadPQZ0AtHa+09nZq6lZUgTLvs0x3Bf59DiTup0y7rdtsn7mBMgbqVLHld5kyMCmMgRUGP7EGMWVVePeEqrhtYEDgXeHDWrwnsWFovE2PqoW4eSjPULUP9eP64MX4d0BL3lB5EdtyYH6YFnD0Rf7InAAAAAElFTkSuQmCC\",\"asset_id\":\"MESSAGE_TEMPLATE\",\"type\":1,\"table_name\":\"MESSAGE_TEMPLATE\",\"logicOperator\":\"and\",\"parentId\":\"\",\"querySql\":\"\",\"taskType\":\"DATAX\",\"dateIncrementConfig\":{\"logic\":\"and\",\"dateFormat\":\"yyyy-MM-dd\",\"column\":[]},\"idIncrementConfig\":{\"incrementColumn\":[],\"incrementStart\":\"\"},\"readerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"Iqo0tpF$~8R$Zn1yvhJA\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"datasourceId\":\"\",\"topic\":\"\",\"where\":\"\",\"readModeType\":\"1\",\"batchSize\":\"1024\",\"config\":\"\",\"columnsList\":[{\"colName\":\"ID\",\"dataType\":\"INT\"},{\"colName\":\"TITLE\",\"dataType\":\"VARCHAR\"},{\"colName\":\"CONTENT\",\"dataType\":\"VARCHAR\"},{\"colName\":\"CATEGORY\",\"dataType\":\"INT\"},{\"colName\":\"MSG_LEVEL\",\"dataType\":\"INT\"},{\"colName\":\"VALID_FLAG\",\"dataType\":\"TINYINT\"},{\"colName\":\"DEL_FLAG\",\"dataType\":\"TINYINT\"},{\"colName\":\"CREATE_BY\",\"dataType\":\"VARCHAR\"},{\"colName\":\"CREATOR_ID\",\"dataType\":\"BIGINT\"},{\"colName\":\"CREATE_TIME\",\"dataType\":\"TIMESTAMP\"},{\"colName\":\"UPDATE_BY\",\"dataType\":\"VARCHAR\"},{\"colName\":\"UPDATER_ID\",\"dataType\":\"BIGINT\"},{\"colName\":\"UPDATE_TIME\",\"dataType\":\"TIMESTAMP\"},{\"colName\":\"REMARK\",\"dataType\":\"VARCHAR\"}],\"clmt\":\"0\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:41:50', 'qData', 1, '2025-05-24 10:41:50', NULL, '1');
-INSERT INTO `dpp_etl_node` VALUES (1226, '1', 'DATAX', '表输出组件', '141951044262752', 1, 84, '141883958809440', '{\"postSql\":\"\",\"tableFields\":[{\"columnName\":\"ID\",\"columnComment\":\"ID\",\"columnType\":\"INT\",\"columnLength\":4,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TITLE\",\"columnComment\":\"消息标题\",\"columnType\":\"VARCHAR\",\"columnLength\":128,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"CONTENT\",\"columnComment\":\"消息模板内容\",\"columnType\":\"VARCHAR\",\"columnLength\":3072,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"CATEGORY\",\"columnComment\":\"消息类别\",\"columnType\":\"INT\",\"columnLength\":4,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"MSG_LEVEL\",\"columnComment\":\"消息等级\",\"columnType\":\"INT\",\"columnLength\":4,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"defaultValue\":\"0\",\"isChecked\":true},{\"columnName\":\"VALID_FLAG\",\"columnComment\":\"是否有效;0：无效，1：有效\",\"columnType\":\"TINYINT\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"defaultValue\":\"1\",\"isChecked\":true},{\"columnName\":\"DEL_FLAG\",\"columnComment\":\"删除标志;1：已删除，0：未删除\",\"columnType\":\"TINYINT\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"defaultValue\":\"0\",\"isChecked\":true},{\"columnName\":\"CREATE_BY\",\"columnComment\":\"创建人\",\"columnType\":\"VARCHAR\",\"columnLength\":32,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"CREATOR_ID\",\"columnComment\":\"创建人id\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"CREATE_TIME\",\"columnComment\":\"创建时间\",\"columnType\":\"TIMESTAMP\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"defaultValue\":\"CURRENT_TIMESTAMP()\",\"isChecked\":true},{\"columnName\":\"UPDATE_BY\",\"columnComment\":\"更新人\",\"columnType\":\"VARCHAR\",\"columnLength\":32,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"UPDATER_ID\",\"columnComment\":\"更新人id\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"UPDATE_TIME\",\"columnComment\":\"更新时间\",\"columnType\":\"TIMESTAMP\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"defaultValue\":\"CURRENT_TIMESTAMP()\",\"isChecked\":true},{\"columnName\":\"REMARK\",\"columnComment\":\"备注\",\"columnType\":\"VARCHAR\",\"columnLength\":512,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"selectedColumn\":\"\",\"target_columns\":[\"SCHED_NAME\",\"ENTRY_ID\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\",\"INSTANCE_NAME\",\"FIRED_TIME\",\"SCHED_TIME\",\"PRIORITY\",\"STATE\",\"JOB_NAME\",\"JOB_GROUP\",\"IS_NONCONCURRENT\",\"REQUESTS_RECOVERY\"],\"target_table_name\":\"QRTZ_FIRED_TRIGGERS\",\"columns\":[\"ID\",\"TITLE\",\"CONTENT\",\"CATEGORY\",\"MSG_LEVEL\",\"VALID_FLAG\",\"DEL_FLAG\",\"CREATE_BY\",\"CREATOR_ID\",\"CREATE_TIME\",\"UPDATE_BY\",\"UPDATER_ID\",\"UPDATE_TIME\"],\"typeName\":\"表输出组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAW9JREFUWEftl71LA0EQxd+Lpb1WFkkpAZuQEyvtTbQQBCuxs7KxlNxdwD/Axk4rEW29gK1g45lC8KMNpFMsBEEtxHsiknC7Yi6CJFfclo9l58fMm9ldImWLcR4vmJ4dBp9XuTjrxDWA/MDRMIDcStjl+AFERcVatXk3CDCvUSpSIzc9gUTsUnwcBBAQjQFc7wkEalXKtTtAOaogYE3ilgW5DOAZwGlcJ1QjcRCJLUs/FLhiaXkA+38qWT0oT4n03flwMX5Y/cTZFPTkVi/3jMZolI/xwW1vIbyO637gtNxKWDD39lEy20MZkJVWpS5DAJtA9NoFFUdB5AHdmqbmBIB3QPeW2SchtkG9WPsdQKGhfZ9dykz9lZWsyzre8P57DqVuUmddlnTbp24wZkBJJUtdl9kvRgHjhOYAHhn3EDVD4U3glXlnaUngOYEHS98AuGNqfbwYMw8leSjLUFKGBvP9MaP8+kBL3Vd6GNmxY34CUyDPPWNEMvYAAAAASUVORK5CYII=\",\"target_asset_id\":\"QRTZ_FIRED_TRIGGERS\",\"type\":2,\"parentId\":\"\",\"taskType\":\"DATAX\",\"selectedColumns\":[],\"writerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"Iqo0tpF$~8R$Zn1yvhJA\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"target_asset_id\":48,\"datasourceId\":48},\"toColumnsList\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"ENTRY_ID\",\"columnComment\":\"调度器实例id\",\"columnType\":\"VARCHAR\",\"columnLength\":95,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"INSTANCE_NAME\",\"columnComment\":\"调度器实例名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"FIRED_TIME\",\"columnComment\":\"触发的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"SCHED_TIME\",\"columnComment\":\"定时器制定的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"PRIORITY\",\"columnComment\":\"优先级\",\"columnType\":\"INT\",\"columnLength\":4,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"STATE\",\"columnComment\":\"状态\",\"columnType\":\"VARCHAR\",\"columnLength\":16,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_NAME\",\"columnComment\":\"任务名称\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_GROUP\",\"columnComment\":\"任务组名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"IS_NONCONCURRENT\",\"columnComment\":\"是否并发\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"REQUESTS_RECOVERY\",\"columnComment\":\"是否接受恢复执行\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"target_datasource_id\":\"\",\"datasourceId\":\"\",\"where\":\"\",\"batchSize\":\"1024\",\"config\":\"\",\"writeModeType\":2,\"preSql\":\"\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:41:50', 'qData', 1, '2025-05-24 10:41:50', NULL, '91');
-INSERT INTO `dpp_etl_node` VALUES (1227, '1', 'DATAX', '表输入组件', '141951101460320', 1, 84, '141883958809440', '{\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\"}],\"datasource_id\":\"\",\"csvFile\":\"\",\"columns\":[\"SCHED_NAME\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\",\"BLOB_DATA\"],\"typeName\":\"表输入组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAXNJREFUWEftlz1LA0EQhp+52J3hYqOVhSklYCMINl7+gYUgWImdlY2lCBb+ABs7rUT0F1iJB1ZiIfjRBtIpgjFfWog7EsR4u2ISQZIr7sqXZee5mXd2Z4WEfRLnyYX1cBB8z1E2+oprAQVhUwcBVI38NscPoIyYwtNZ9q4fYCNhvWDwbjoCoeyK8NgPIBVGUVY7Agm6DFpuA4mXR1kBsxGHVLxFVGoi7ye2ntkU0QPUlOyf8g7BLFmayoSK7P+pZLliY8qobNUifz6+WRA21kEq1cjfs/S5xrE3xHbldPjaXt8sVSM/H9d6KpnroRTISasmLkPAJejLN6j4wATorWPIcUTewNzb5pVJoAzadPQZ0AtHa+09nZq6lZUgTLvs0x3Bf59DiTup0y7rdtsn7mBMgbqVLHld5kyMCmMgRUGP7EGMWVVePeEqrhtYEDgXeHDWrwnsWFovE2PqoW4eSjPULUP9eP64MX4d0BL3lB5EdtyYH6YFnD0Rf7InAAAAAElFTkSuQmCC\",\"asset_id\":\"QRTZ_BLOB_TRIGGERS\",\"type\":1,\"table_name\":\"QRTZ_BLOB_TRIGGERS\",\"logicOperator\":\"and\",\"parentId\":\"\",\"querySql\":\"\",\"taskType\":\"DATAX\",\"dateIncrementConfig\":{\"logic\":\"and\",\"dateFormat\":\"yyyy-MM-dd\",\"column\":[]},\"idIncrementConfig\":{\"incrementColumn\":[],\"incrementStart\":\"\"},\"readerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"Iqo0tpF$~8R$Zn1yvhJA\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"datasourceId\":\"\",\"topic\":\"\",\"where\":\"\",\"readModeType\":\"1\",\"batchSize\":\"1024\",\"config\":\"\",\"columnsList\":[{\"colName\":\"SCHED_NAME\",\"dataType\":\"VARCHAR\"},{\"colName\":\"TRIGGER_NAME\",\"dataType\":\"VARCHAR\"},{\"colName\":\"TRIGGER_GROUP\",\"dataType\":\"VARCHAR\"},{\"colName\":\"BLOB_DATA\",\"dataType\":\"BLOB\"}],\"clmt\":\"0\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '1');
+INSERT INTO `dpp_etl_node` VALUES (1225, '1', 'DATAX', '表输入组件', '141951029426016', 1, 84, '141883958809440', '{\"tableFields\":[{\"columnName\":\"ID\",\"columnComment\":\"ID\",\"columnType\":\"INT\",\"columnLength\":4,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TITLE\",\"columnComment\":\"消息标题\",\"columnType\":\"VARCHAR\",\"columnLength\":128,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\"},{\"columnName\":\"CONTENT\",\"columnComment\":\"消息模板内容\",\"columnType\":\"VARCHAR\",\"columnLength\":3072,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\"},{\"columnName\":\"CATEGORY\",\"columnComment\":\"消息类别\",\"columnType\":\"INT\",\"columnLength\":4,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\"},{\"columnName\":\"MSG_LEVEL\",\"columnComment\":\"消息等级\",\"columnType\":\"INT\",\"columnLength\":4,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"defaultValue\":\"0\"},{\"columnName\":\"VALID_FLAG\",\"columnComment\":\"是否有效;0：无效，1：有效\",\"columnType\":\"TINYINT\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"defaultValue\":\"1\"},{\"columnName\":\"DEL_FLAG\",\"columnComment\":\"删除标志;1：已删除，0：未删除\",\"columnType\":\"TINYINT\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"defaultValue\":\"0\"},{\"columnName\":\"CREATE_BY\",\"columnComment\":\"创建人\",\"columnType\":\"VARCHAR\",\"columnLength\":32,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\"},{\"columnName\":\"CREATOR_ID\",\"columnComment\":\"创建人id\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\"},{\"columnName\":\"CREATE_TIME\",\"columnComment\":\"创建时间\",\"columnType\":\"TIMESTAMP\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"defaultValue\":\"CURRENT_TIMESTAMP()\"},{\"columnName\":\"UPDATE_BY\",\"columnComment\":\"更新人\",\"columnType\":\"VARCHAR\",\"columnLength\":32,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\"},{\"columnName\":\"UPDATER_ID\",\"columnComment\":\"更新人id\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\"},{\"columnName\":\"UPDATE_TIME\",\"columnComment\":\"更新时间\",\"columnType\":\"TIMESTAMP\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"defaultValue\":\"CURRENT_TIMESTAMP()\"},{\"columnName\":\"REMARK\",\"columnComment\":\"备注\",\"columnType\":\"VARCHAR\",\"columnLength\":512,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\"}],\"datasource_id\":\"\",\"csvFile\":\"\",\"columns\":[\"ID\",\"TITLE\",\"CONTENT\",\"CATEGORY\",\"MSG_LEVEL\",\"VALID_FLAG\",\"DEL_FLAG\",\"CREATE_BY\",\"CREATOR_ID\",\"CREATE_TIME\",\"UPDATE_BY\",\"UPDATER_ID\",\"UPDATE_TIME\",\"REMARK\"],\"typeName\":\"表输入组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAXNJREFUWEftlz1LA0EQhp+52J3hYqOVhSklYCMINl7+gYUgWImdlY2lCBb+ABs7rUT0F1iJB1ZiIfjRBtIpgjFfWog7EsR4u2ISQZIr7sqXZee5mXd2Z4WEfRLnyYX1cBB8z1E2+oprAQVhUwcBVI38NscPoIyYwtNZ9q4fYCNhvWDwbjoCoeyK8NgPIBVGUVY7Agm6DFpuA4mXR1kBsxGHVLxFVGoi7ye2ntkU0QPUlOyf8g7BLFmayoSK7P+pZLliY8qobNUifz6+WRA21kEq1cjfs/S5xrE3xHbldPjaXt8sVSM/H9d6KpnroRTISasmLkPAJejLN6j4wATorWPIcUTewNzb5pVJoAzadPQZ0AtHa+09nZq6lZUgTLvs0x3Bf59DiTup0y7rdtsn7mBMgbqVLHld5kyMCmMgRUGP7EGMWVVePeEqrhtYEDgXeHDWrwnsWFovE2PqoW4eSjPULUP9eP64MX4d0BL3lB5EdtyYH6YFnD0Rf7InAAAAAElFTkSuQmCC\",\"asset_id\":\"MESSAGE_TEMPLATE\",\"type\":1,\"table_name\":\"MESSAGE_TEMPLATE\",\"logicOperator\":\"and\",\"parentId\":\"\",\"querySql\":\"\",\"taskType\":\"DATAX\",\"dateIncrementConfig\":{\"logic\":\"and\",\"dateFormat\":\"yyyy-MM-dd\",\"column\":[]},\"idIncrementConfig\":{\"incrementColumn\":[],\"incrementStart\":\"\"},\"readerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"datasourceId\":\"\",\"topic\":\"\",\"where\":\"\",\"readModeType\":\"1\",\"batchSize\":\"1024\",\"config\":\"\",\"columnsList\":[{\"colName\":\"ID\",\"dataType\":\"INT\"},{\"colName\":\"TITLE\",\"dataType\":\"VARCHAR\"},{\"colName\":\"CONTENT\",\"dataType\":\"VARCHAR\"},{\"colName\":\"CATEGORY\",\"dataType\":\"INT\"},{\"colName\":\"MSG_LEVEL\",\"dataType\":\"INT\"},{\"colName\":\"VALID_FLAG\",\"dataType\":\"TINYINT\"},{\"colName\":\"DEL_FLAG\",\"dataType\":\"TINYINT\"},{\"colName\":\"CREATE_BY\",\"dataType\":\"VARCHAR\"},{\"colName\":\"CREATOR_ID\",\"dataType\":\"BIGINT\"},{\"colName\":\"CREATE_TIME\",\"dataType\":\"TIMESTAMP\"},{\"colName\":\"UPDATE_BY\",\"dataType\":\"VARCHAR\"},{\"colName\":\"UPDATER_ID\",\"dataType\":\"BIGINT\"},{\"colName\":\"UPDATE_TIME\",\"dataType\":\"TIMESTAMP\"},{\"colName\":\"REMARK\",\"dataType\":\"VARCHAR\"}],\"clmt\":\"0\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:41:50', 'qData', 1, '2025-05-24 10:41:50', NULL, '1');
+INSERT INTO `dpp_etl_node` VALUES (1226, '1', 'DATAX', '表输出组件', '141951044262752', 1, 84, '141883958809440', '{\"postSql\":\"\",\"tableFields\":[{\"columnName\":\"ID\",\"columnComment\":\"ID\",\"columnType\":\"INT\",\"columnLength\":4,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TITLE\",\"columnComment\":\"消息标题\",\"columnType\":\"VARCHAR\",\"columnLength\":128,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"CONTENT\",\"columnComment\":\"消息模板内容\",\"columnType\":\"VARCHAR\",\"columnLength\":3072,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"CATEGORY\",\"columnComment\":\"消息类别\",\"columnType\":\"INT\",\"columnLength\":4,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"MSG_LEVEL\",\"columnComment\":\"消息等级\",\"columnType\":\"INT\",\"columnLength\":4,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"defaultValue\":\"0\",\"isChecked\":true},{\"columnName\":\"VALID_FLAG\",\"columnComment\":\"是否有效;0：无效，1：有效\",\"columnType\":\"TINYINT\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"defaultValue\":\"1\",\"isChecked\":true},{\"columnName\":\"DEL_FLAG\",\"columnComment\":\"删除标志;1：已删除，0：未删除\",\"columnType\":\"TINYINT\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"defaultValue\":\"0\",\"isChecked\":true},{\"columnName\":\"CREATE_BY\",\"columnComment\":\"创建人\",\"columnType\":\"VARCHAR\",\"columnLength\":32,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"CREATOR_ID\",\"columnComment\":\"创建人id\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"CREATE_TIME\",\"columnComment\":\"创建时间\",\"columnType\":\"TIMESTAMP\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"defaultValue\":\"CURRENT_TIMESTAMP()\",\"isChecked\":true},{\"columnName\":\"UPDATE_BY\",\"columnComment\":\"更新人\",\"columnType\":\"VARCHAR\",\"columnLength\":32,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"UPDATER_ID\",\"columnComment\":\"更新人id\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"UPDATE_TIME\",\"columnComment\":\"更新时间\",\"columnType\":\"TIMESTAMP\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"defaultValue\":\"CURRENT_TIMESTAMP()\",\"isChecked\":true},{\"columnName\":\"REMARK\",\"columnComment\":\"备注\",\"columnType\":\"VARCHAR\",\"columnLength\":512,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"selectedColumn\":\"\",\"target_columns\":[\"SCHED_NAME\",\"ENTRY_ID\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\",\"INSTANCE_NAME\",\"FIRED_TIME\",\"SCHED_TIME\",\"PRIORITY\",\"STATE\",\"JOB_NAME\",\"JOB_GROUP\",\"IS_NONCONCURRENT\",\"REQUESTS_RECOVERY\"],\"target_table_name\":\"QRTZ_FIRED_TRIGGERS\",\"columns\":[\"ID\",\"TITLE\",\"CONTENT\",\"CATEGORY\",\"MSG_LEVEL\",\"VALID_FLAG\",\"DEL_FLAG\",\"CREATE_BY\",\"CREATOR_ID\",\"CREATE_TIME\",\"UPDATE_BY\",\"UPDATER_ID\",\"UPDATE_TIME\"],\"typeName\":\"表输出组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAW9JREFUWEftl71LA0EQxd+Lpb1WFkkpAZuQEyvtTbQQBCuxs7KxlNxdwD/Axk4rEW29gK1g45lC8KMNpFMsBEEtxHsiknC7Yi6CJFfclo9l58fMm9ldImWLcR4vmJ4dBp9XuTjrxDWA/MDRMIDcStjl+AFERcVatXk3CDCvUSpSIzc9gUTsUnwcBBAQjQFc7wkEalXKtTtAOaogYE3ilgW5DOAZwGlcJ1QjcRCJLUs/FLhiaXkA+38qWT0oT4n03flwMX5Y/cTZFPTkVi/3jMZolI/xwW1vIbyO637gtNxKWDD39lEy20MZkJVWpS5DAJtA9NoFFUdB5AHdmqbmBIB3QPeW2SchtkG9WPsdQKGhfZ9dykz9lZWsyzre8P57DqVuUmddlnTbp24wZkBJJUtdl9kvRgHjhOYAHhn3EDVD4U3glXlnaUngOYEHS98AuGNqfbwYMw8leSjLUFKGBvP9MaP8+kBL3Vd6GNmxY34CUyDPPWNEMvYAAAAASUVORK5CYII=\",\"target_asset_id\":\"QRTZ_FIRED_TRIGGERS\",\"type\":2,\"parentId\":\"\",\"taskType\":\"DATAX\",\"selectedColumns\":[],\"writerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"target_asset_id\":48,\"datasourceId\":48},\"toColumnsList\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"ENTRY_ID\",\"columnComment\":\"调度器实例id\",\"columnType\":\"VARCHAR\",\"columnLength\":95,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"INSTANCE_NAME\",\"columnComment\":\"调度器实例名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"FIRED_TIME\",\"columnComment\":\"触发的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"SCHED_TIME\",\"columnComment\":\"定时器制定的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"PRIORITY\",\"columnComment\":\"优先级\",\"columnType\":\"INT\",\"columnLength\":4,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"STATE\",\"columnComment\":\"状态\",\"columnType\":\"VARCHAR\",\"columnLength\":16,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_NAME\",\"columnComment\":\"任务名称\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_GROUP\",\"columnComment\":\"任务组名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"IS_NONCONCURRENT\",\"columnComment\":\"是否并发\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"REQUESTS_RECOVERY\",\"columnComment\":\"是否接受恢复执行\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"target_datasource_id\":\"\",\"datasourceId\":\"\",\"where\":\"\",\"batchSize\":\"1024\",\"config\":\"\",\"writeModeType\":2,\"preSql\":\"\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:41:50', 'qData', 1, '2025-05-24 10:41:50', NULL, '91');
+INSERT INTO `dpp_etl_node` VALUES (1227, '1', 'DATAX', '表输入组件', '141951101460320', 1, 84, '141883958809440', '{\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\"}],\"datasource_id\":\"\",\"csvFile\":\"\",\"columns\":[\"SCHED_NAME\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\",\"BLOB_DATA\"],\"typeName\":\"表输入组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAXNJREFUWEftlz1LA0EQhp+52J3hYqOVhSklYCMINl7+gYUgWImdlY2lCBb+ABs7rUT0F1iJB1ZiIfjRBtIpgjFfWog7EsR4u2ISQZIr7sqXZee5mXd2Z4WEfRLnyYX1cBB8z1E2+oprAQVhUwcBVI38NscPoIyYwtNZ9q4fYCNhvWDwbjoCoeyK8NgPIBVGUVY7Agm6DFpuA4mXR1kBsxGHVLxFVGoi7ye2ntkU0QPUlOyf8g7BLFmayoSK7P+pZLliY8qobNUifz6+WRA21kEq1cjfs/S5xrE3xHbldPjaXt8sVSM/H9d6KpnroRTISasmLkPAJejLN6j4wATorWPIcUTewNzb5pVJoAzadPQZ0AtHa+09nZq6lZUgTLvs0x3Bf59DiTup0y7rdtsn7mBMgbqVLHld5kyMCmMgRUGP7EGMWVVePeEqrhtYEDgXeHDWrwnsWFovE2PqoW4eSjPULUP9eP64MX4d0BL3lB5EdtyYH6YFnD0Rf7InAAAAAElFTkSuQmCC\",\"asset_id\":\"QRTZ_BLOB_TRIGGERS\",\"type\":1,\"table_name\":\"QRTZ_BLOB_TRIGGERS\",\"logicOperator\":\"and\",\"parentId\":\"\",\"querySql\":\"\",\"taskType\":\"DATAX\",\"dateIncrementConfig\":{\"logic\":\"and\",\"dateFormat\":\"yyyy-MM-dd\",\"column\":[]},\"idIncrementConfig\":{\"incrementColumn\":[],\"incrementStart\":\"\"},\"readerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"datasourceId\":\"\",\"topic\":\"\",\"where\":\"\",\"readModeType\":\"1\",\"batchSize\":\"1024\",\"config\":\"\",\"columnsList\":[{\"colName\":\"SCHED_NAME\",\"dataType\":\"VARCHAR\"},{\"colName\":\"TRIGGER_NAME\",\"dataType\":\"VARCHAR\"},{\"colName\":\"TRIGGER_GROUP\",\"dataType\":\"VARCHAR\"},{\"colName\":\"BLOB_DATA\",\"dataType\":\"BLOB\"}],\"clmt\":\"0\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '1');
 INSERT INTO `dpp_etl_node` VALUES (1228, '1', 'SPARK', '转换组件', '141951104758624', 1, 84, '141883958809440', '{\"mainArgs\":{\"cleanRuleList\":[{\"columns\":\"SCHED_NAME\",\"cleanRules\":[{\"ruleId\":10,\"data\":\"{\\\"toggleCase\\\":{\\\"type\\\":\\\"1\\\"},\\\"nullReplace\\\":{\\\"value\\\":null},\\\"trimSpace\\\":{},\\\"regexValidate\\\":{\\\"pattern\\\":\\\"\\\",\\\"replacement\\\":\\\"\\\",\\\"resultType\\\":\\\"1\\\"},\\\"defaultValueFill\\\":{\\\"value\\\":\\\"\\\"},\\\"dictValueList\\\":[],\\\"tokens\\\":[{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"operator\\\",\\\"value\\\":\\\"+\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"}]}\",\"ruleName\":\"首尾移除空格\"}]},{\"columns\":\"TRIGGER_NAME\",\"cleanRules\":[]},{\"columns\":\"TRIGGER_GROUP\",\"cleanRules\":[]},{\"columns\":\"BLOB_DATA\",\"cleanRules\":[]}]},\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"elementId\":[10],\"cleanRuleList\":[{\"ruleId\":10,\"ruleName\":\"首尾移除空格\",\"ruleConfig\":\"{\\\"toggleCase\\\":{\\\"type\\\":\\\"1\\\"},\\\"nullReplace\\\":{\\\"value\\\":null},\\\"trimSpace\\\":{},\\\"regexValidate\\\":{\\\"pattern\\\":\\\"\\\",\\\"replacement\\\":\\\"\\\",\\\"resultType\\\":\\\"1\\\"},\\\"defaultValueFill\\\":{\\\"value\\\":\\\"\\\"},\\\"dictValueList\\\":[],\\\"tokens\\\":[{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"operator\\\",\\\"value\\\":\\\"+\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"}]}\"}]},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\"}],\"taskType\":\"SPARK\",\"typeName\":\"转换组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAjCAYAAAD8BaggAAAAAXNSR0IArs4c6QAAAtpJREFUWEfN2E1PE1EUBuD3tKVQqbICTYwbjXHlChNDZcrcwYAgC0VpoivFuDAEDP4QQUNY6cKNiaBijHzU2JnSKdVEwh8gRlfE0IUmILVAOWbsNJamdVqdgXbZe+85T9+5c5sZQpV9qMo8qH7Q/Hzw5M4O3wdwFkCjQwkmAfoAuIaEiH7J77EroXA40FRb615mxiGHIIVlkx4Pn5Kk+LfcwC6QpgXvAjxqDq4BWHII1gzAb9Rm5gFFiY8XBamq9JAIg9lBuiFE7IkTIE0L3gL4URaEEUXR75UCjRPhzm8OcUiW45NOgFQ1GCLiZ9k+NC7LsQFHQJFI4ER7e+KT1Y/YE5CqSk+JcI2IX25sHLze3T2bLgXbE5CmSat5x8S7VMrfUwq1V6BLAJ4DcGf3BlSvd7snEHifKkxqT0BGU1WVLhLhFQCPiUp4vdvnC1G2gYxT3GrDMrPMDONcyaGWmN1tQkTXc2ttAWmaNAvgghWo2DgRVmVZP2wbaGKiz93Y+HX7XzC5NamUvy63yW1JKBqVhplxpTIUNwCuY0Q8Jcv6TdsSqgxhPduWhDStdYyI+phpBeAf1m3/zCDCC1nWR2xLaGamq9bnW/9ZCaJwbjJ5xBMKTWayx4MN/2UFJ3Gltjkh9C7bEjIKaZrsBzIJAKfNwsZdd9vlogUrXVtbbDl/ji0J5VBEmTAzAmaDLWZcVhR92grlCMgoGg531Hu9qTkArWaTDDP1Kkrsdbko2xLKNUwkWnzptHsaIGF+lxRCb9o3kHn56oDMGwDtAE0JEevdV5DRfHGxuWZtzXduc/PAx87Ot2WfTbZfsnKTKDWvbFA0GnzAzEPZQs49dahqaz8RPTbBo0Lowzn8357LjEuw+L9plFh/BkC9OTYohD5WFBSJtBx1uTyfAdQ4BCksm97a2jne0bGwUhSUvXukqwCMh7gGh1HfibhfluNT+X2q/+2Hw6lYlq+6hH4BXF3bMxTlLUAAAAAASUVORK5CYII=\",\"datasourceId\":\"\",\"where\":\"\",\"type\":3,\"batchSize\":\"1024\",\"config\":\"\",\"parentId\":\"\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '31');
-INSERT INTO `dpp_etl_node` VALUES (1229, '1', 'DATAX', '表输出组件', '141951127567200', 1, 84, '141883958809440', '{\"postSql\":\"\",\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"elementId\":[10],\"cleanRuleList\":[{\"ruleId\":10,\"ruleName\":\"首尾移除空格\",\"ruleConfig\":\"{\\\"toggleCase\\\":{\\\"type\\\":\\\"1\\\"},\\\"nullReplace\\\":{\\\"value\\\":null},\\\"trimSpace\\\":{},\\\"regexValidate\\\":{\\\"pattern\\\":\\\"\\\",\\\"replacement\\\":\\\"\\\",\\\"resultType\\\":\\\"1\\\"},\\\"defaultValueFill\\\":{\\\"value\\\":\\\"\\\"},\\\"dictValueList\\\":[],\\\"tokens\\\":[{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"operator\\\",\\\"value\\\":\\\"+\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"}]}\"}],\"isChecked\":true},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"selectedColumn\":\"\",\"target_columns\":[\"SCHED_NAME\",\"ENTRY_ID\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\"],\"target_table_name\":\"QRTZ_FIRED_TRIGGERS\",\"columns\":[\"SCHED_NAME\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\",\"BLOB_DATA\"],\"typeName\":\"表输出组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAW9JREFUWEftl71LA0EQxd+Lpb1WFkkpAZuQEyvtTbQQBCuxs7KxlNxdwD/Axk4rEW29gK1g45lC8KMNpFMsBEEtxHsiknC7Yi6CJFfclo9l58fMm9ldImWLcR4vmJ4dBp9XuTjrxDWA/MDRMIDcStjl+AFERcVatXk3CDCvUSpSIzc9gUTsUnwcBBAQjQFc7wkEalXKtTtAOaogYE3ilgW5DOAZwGlcJ1QjcRCJLUs/FLhiaXkA+38qWT0oT4n03flwMX5Y/cTZFPTkVi/3jMZolI/xwW1vIbyO637gtNxKWDD39lEy20MZkJVWpS5DAJtA9NoFFUdB5AHdmqbmBIB3QPeW2SchtkG9WPsdQKGhfZ9dykz9lZWsyzre8P57DqVuUmddlnTbp24wZkBJJUtdl9kvRgHjhOYAHhn3EDVD4U3glXlnaUngOYEHS98AuGNqfbwYMw8leSjLUFKGBvP9MaP8+kBL3Vd6GNmxY34CUyDPPWNEMvYAAAAASUVORK5CYII=\",\"target_asset_id\":\"QRTZ_FIRED_TRIGGERS\",\"type\":2,\"parentId\":\"\",\"taskType\":\"DATAX\",\"selectedColumns\":[],\"writerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"Iqo0tpF$~8R$Zn1yvhJA\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"target_asset_id\":48,\"datasourceId\":48},\"toColumnsList\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"ENTRY_ID\",\"columnComment\":\"调度器实例id\",\"columnType\":\"VARCHAR\",\"columnLength\":95,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"INSTANCE_NAME\",\"columnComment\":\"调度器实例名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"FIRED_TIME\",\"columnComment\":\"触发的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"SCHED_TIME\",\"columnComment\":\"定时器制定的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"PRIORITY\",\"columnComment\":\"优先级\",\"columnType\":\"INT\",\"columnLength\":4,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"STATE\",\"columnComment\":\"状态\",\"columnType\":\"VARCHAR\",\"columnLength\":16,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_NAME\",\"columnComment\":\"任务名称\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_GROUP\",\"columnComment\":\"任务组名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"IS_NONCONCURRENT\",\"columnComment\":\"是否并发\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"REQUESTS_RECOVERY\",\"columnComment\":\"是否接受恢复执行\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"target_datasource_id\":\"\",\"datasourceId\":\"\",\"where\":\"\",\"batchSize\":\"1024\",\"config\":\"\",\"writeModeType\":2,\"preSql\":\"\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '91');
-INSERT INTO `dpp_etl_node` VALUES (1233, '1', 'DATAX', '表输入组件', '141951101460321', 1, 84, '141883958809440', '{\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\"}],\"datasource_id\":\"\",\"csvFile\":\"\",\"columns\":[\"SCHED_NAME\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\",\"BLOB_DATA\"],\"typeName\":\"表输入组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAXNJREFUWEftlz1LA0EQhp+52J3hYqOVhSklYCMINl7+gYUgWImdlY2lCBb+ABs7rUT0F1iJB1ZiIfjRBtIpgjFfWog7EsR4u2ISQZIr7sqXZee5mXd2Z4WEfRLnyYX1cBB8z1E2+oprAQVhUwcBVI38NscPoIyYwtNZ9q4fYCNhvWDwbjoCoeyK8NgPIBVGUVY7Agm6DFpuA4mXR1kBsxGHVLxFVGoi7ye2ntkU0QPUlOyf8g7BLFmayoSK7P+pZLliY8qobNUifz6+WRA21kEq1cjfs/S5xrE3xHbldPjaXt8sVSM/H9d6KpnroRTISasmLkPAJejLN6j4wATorWPIcUTewNzb5pVJoAzadPQZ0AtHa+09nZq6lZUgTLvs0x3Bf59DiTup0y7rdtsn7mBMgbqVLHld5kyMCmMgRUGP7EGMWVVePeEqrhtYEDgXeHDWrwnsWFovE2PqoW4eSjPULUP9eP64MX4d0BL3lB5EdtyYH6YFnD0Rf7InAAAAAElFTkSuQmCC\",\"asset_id\":\"QRTZ_BLOB_TRIGGERS\",\"type\":1,\"table_name\":\"QRTZ_BLOB_TRIGGERS\",\"logicOperator\":\"and\",\"parentId\":\"\",\"querySql\":\"\",\"taskType\":\"DATAX\",\"dateIncrementConfig\":{\"logic\":\"and\",\"dateFormat\":\"yyyy-MM-dd\",\"column\":[]},\"idIncrementConfig\":{\"incrementColumn\":[],\"incrementStart\":\"\"},\"readerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"Iqo0tpF$~8R$Zn1yvhJA\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"datasourceId\":\"\",\"topic\":\"\",\"where\":\"\",\"readModeType\":\"1\",\"batchSize\":\"1024\",\"config\":\"\",\"columnsList\":[{\"colName\":\"SCHED_NAME\",\"dataType\":\"VARCHAR\"},{\"colName\":\"TRIGGER_NAME\",\"dataType\":\"VARCHAR\"},{\"colName\":\"TRIGGER_GROUP\",\"dataType\":\"VARCHAR\"},{\"colName\":\"BLOB_DATA\",\"dataType\":\"BLOB\"}],\"clmt\":\"0\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '1');
+INSERT INTO `dpp_etl_node` VALUES (1229, '1', 'DATAX', '表输出组件', '141951127567200', 1, 84, '141883958809440', '{\"postSql\":\"\",\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"elementId\":[10],\"cleanRuleList\":[{\"ruleId\":10,\"ruleName\":\"首尾移除空格\",\"ruleConfig\":\"{\\\"toggleCase\\\":{\\\"type\\\":\\\"1\\\"},\\\"nullReplace\\\":{\\\"value\\\":null},\\\"trimSpace\\\":{},\\\"regexValidate\\\":{\\\"pattern\\\":\\\"\\\",\\\"replacement\\\":\\\"\\\",\\\"resultType\\\":\\\"1\\\"},\\\"defaultValueFill\\\":{\\\"value\\\":\\\"\\\"},\\\"dictValueList\\\":[],\\\"tokens\\\":[{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"operator\\\",\\\"value\\\":\\\"+\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"}]}\"}],\"isChecked\":true},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"selectedColumn\":\"\",\"target_columns\":[\"SCHED_NAME\",\"ENTRY_ID\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\"],\"target_table_name\":\"QRTZ_FIRED_TRIGGERS\",\"columns\":[\"SCHED_NAME\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\",\"BLOB_DATA\"],\"typeName\":\"表输出组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAW9JREFUWEftl71LA0EQxd+Lpb1WFkkpAZuQEyvtTbQQBCuxs7KxlNxdwD/Axk4rEW29gK1g45lC8KMNpFMsBEEtxHsiknC7Yi6CJFfclo9l58fMm9ldImWLcR4vmJ4dBp9XuTjrxDWA/MDRMIDcStjl+AFERcVatXk3CDCvUSpSIzc9gUTsUnwcBBAQjQFc7wkEalXKtTtAOaogYE3ilgW5DOAZwGlcJ1QjcRCJLUs/FLhiaXkA+38qWT0oT4n03flwMX5Y/cTZFPTkVi/3jMZolI/xwW1vIbyO637gtNxKWDD39lEy20MZkJVWpS5DAJtA9NoFFUdB5AHdmqbmBIB3QPeW2SchtkG9WPsdQKGhfZ9dykz9lZWsyzre8P57DqVuUmddlnTbp24wZkBJJUtdl9kvRgHjhOYAHhn3EDVD4U3glXlnaUngOYEHS98AuGNqfbwYMw8leSjLUFKGBvP9MaP8+kBL3Vd6GNmxY34CUyDPPWNEMvYAAAAASUVORK5CYII=\",\"target_asset_id\":\"QRTZ_FIRED_TRIGGERS\",\"type\":2,\"parentId\":\"\",\"taskType\":\"DATAX\",\"selectedColumns\":[],\"writerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"target_asset_id\":48,\"datasourceId\":48},\"toColumnsList\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"ENTRY_ID\",\"columnComment\":\"调度器实例id\",\"columnType\":\"VARCHAR\",\"columnLength\":95,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"INSTANCE_NAME\",\"columnComment\":\"调度器实例名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"FIRED_TIME\",\"columnComment\":\"触发的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"SCHED_TIME\",\"columnComment\":\"定时器制定的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"PRIORITY\",\"columnComment\":\"优先级\",\"columnType\":\"INT\",\"columnLength\":4,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"STATE\",\"columnComment\":\"状态\",\"columnType\":\"VARCHAR\",\"columnLength\":16,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_NAME\",\"columnComment\":\"任务名称\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_GROUP\",\"columnComment\":\"任务组名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"IS_NONCONCURRENT\",\"columnComment\":\"是否并发\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"REQUESTS_RECOVERY\",\"columnComment\":\"是否接受恢复执行\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"target_datasource_id\":\"\",\"datasourceId\":\"\",\"where\":\"\",\"batchSize\":\"1024\",\"config\":\"\",\"writeModeType\":2,\"preSql\":\"\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '91');
+INSERT INTO `dpp_etl_node` VALUES (1233, '1', 'DATAX', '表输入组件', '141951101460321', 1, 84, '141883958809440', '{\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\"}],\"datasource_id\":\"\",\"csvFile\":\"\",\"columns\":[\"SCHED_NAME\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\",\"BLOB_DATA\"],\"typeName\":\"表输入组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAXNJREFUWEftlz1LA0EQhp+52J3hYqOVhSklYCMINl7+gYUgWImdlY2lCBb+ABs7rUT0F1iJB1ZiIfjRBtIpgjFfWog7EsR4u2ISQZIr7sqXZee5mXd2Z4WEfRLnyYX1cBB8z1E2+oprAQVhUwcBVI38NscPoIyYwtNZ9q4fYCNhvWDwbjoCoeyK8NgPIBVGUVY7Agm6DFpuA4mXR1kBsxGHVLxFVGoi7ye2ntkU0QPUlOyf8g7BLFmayoSK7P+pZLliY8qobNUifz6+WRA21kEq1cjfs/S5xrE3xHbldPjaXt8sVSM/H9d6KpnroRTISasmLkPAJejLN6j4wATorWPIcUTewNzb5pVJoAzadPQZ0AtHa+09nZq6lZUgTLvs0x3Bf59DiTup0y7rdtsn7mBMgbqVLHld5kyMCmMgRUGP7EGMWVVePeEqrhtYEDgXeHDWrwnsWFovE2PqoW4eSjPULUP9eP64MX4d0BL3lB5EdtyYH6YFnD0Rf7InAAAAAElFTkSuQmCC\",\"asset_id\":\"QRTZ_BLOB_TRIGGERS\",\"type\":1,\"table_name\":\"QRTZ_BLOB_TRIGGERS\",\"logicOperator\":\"and\",\"parentId\":\"\",\"querySql\":\"\",\"taskType\":\"DATAX\",\"dateIncrementConfig\":{\"logic\":\"and\",\"dateFormat\":\"yyyy-MM-dd\",\"column\":[]},\"idIncrementConfig\":{\"incrementColumn\":[],\"incrementStart\":\"\"},\"readerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"datasourceId\":\"\",\"topic\":\"\",\"where\":\"\",\"readModeType\":\"1\",\"batchSize\":\"1024\",\"config\":\"\",\"columnsList\":[{\"colName\":\"SCHED_NAME\",\"dataType\":\"VARCHAR\"},{\"colName\":\"TRIGGER_NAME\",\"dataType\":\"VARCHAR\"},{\"colName\":\"TRIGGER_GROUP\",\"dataType\":\"VARCHAR\"},{\"colName\":\"BLOB_DATA\",\"dataType\":\"BLOB\"}],\"clmt\":\"0\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '1');
 INSERT INTO `dpp_etl_node` VALUES (1234, '1', 'SPARK', '转换组件', '141951104758625', 1, 84, '141883958809440', '{\"mainArgs\":{\"cleanRuleList\":[{\"columns\":\"SCHED_NAME\",\"cleanRules\":[{\"ruleId\":10,\"data\":\"{\\\"toggleCase\\\":{\\\"type\\\":\\\"1\\\"},\\\"nullReplace\\\":{\\\"value\\\":null},\\\"trimSpace\\\":{},\\\"regexValidate\\\":{\\\"pattern\\\":\\\"\\\",\\\"replacement\\\":\\\"\\\",\\\"resultType\\\":\\\"1\\\"},\\\"defaultValueFill\\\":{\\\"value\\\":\\\"\\\"},\\\"dictValueList\\\":[],\\\"tokens\\\":[{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"operator\\\",\\\"value\\\":\\\"+\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"}]}\",\"ruleName\":\"首尾移除空格\"}]},{\"columns\":\"TRIGGER_NAME\",\"cleanRules\":[]},{\"columns\":\"TRIGGER_GROUP\",\"cleanRules\":[]},{\"columns\":\"BLOB_DATA\",\"cleanRules\":[]}]},\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"elementId\":[10],\"cleanRuleList\":[{\"ruleId\":10,\"ruleName\":\"首尾移除空格\",\"ruleConfig\":\"{\\\"toggleCase\\\":{\\\"type\\\":\\\"1\\\"},\\\"nullReplace\\\":{\\\"value\\\":null},\\\"trimSpace\\\":{},\\\"regexValidate\\\":{\\\"pattern\\\":\\\"\\\",\\\"replacement\\\":\\\"\\\",\\\"resultType\\\":\\\"1\\\"},\\\"defaultValueFill\\\":{\\\"value\\\":\\\"\\\"},\\\"dictValueList\\\":[],\\\"tokens\\\":[{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"operator\\\",\\\"value\\\":\\\"+\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"}]}\"}]},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\"}],\"taskType\":\"SPARK\",\"typeName\":\"转换组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAjCAYAAAD8BaggAAAAAXNSR0IArs4c6QAAAtpJREFUWEfN2E1PE1EUBuD3tKVQqbICTYwbjXHlChNDZcrcwYAgC0VpoivFuDAEDP4QQUNY6cKNiaBijHzU2JnSKdVEwh8gRlfE0IUmILVAOWbsNJamdVqdgXbZe+85T9+5c5sZQpV9qMo8qH7Q/Hzw5M4O3wdwFkCjQwkmAfoAuIaEiH7J77EroXA40FRb615mxiGHIIVlkx4Pn5Kk+LfcwC6QpgXvAjxqDq4BWHII1gzAb9Rm5gFFiY8XBamq9JAIg9lBuiFE7IkTIE0L3gL4URaEEUXR75UCjRPhzm8OcUiW45NOgFQ1GCLiZ9k+NC7LsQFHQJFI4ER7e+KT1Y/YE5CqSk+JcI2IX25sHLze3T2bLgXbE5CmSat5x8S7VMrfUwq1V6BLAJ4DcGf3BlSvd7snEHifKkxqT0BGU1WVLhLhFQCPiUp4vdvnC1G2gYxT3GrDMrPMDONcyaGWmN1tQkTXc2ttAWmaNAvgghWo2DgRVmVZP2wbaGKiz93Y+HX7XzC5NamUvy63yW1JKBqVhplxpTIUNwCuY0Q8Jcv6TdsSqgxhPduWhDStdYyI+phpBeAf1m3/zCDCC1nWR2xLaGamq9bnW/9ZCaJwbjJ5xBMKTWayx4MN/2UFJ3Gltjkh9C7bEjIKaZrsBzIJAKfNwsZdd9vlogUrXVtbbDl/ji0J5VBEmTAzAmaDLWZcVhR92grlCMgoGg531Hu9qTkArWaTDDP1Kkrsdbko2xLKNUwkWnzptHsaIGF+lxRCb9o3kHn56oDMGwDtAE0JEevdV5DRfHGxuWZtzXduc/PAx87Ot2WfTbZfsnKTKDWvbFA0GnzAzEPZQs49dahqaz8RPTbBo0Lowzn8357LjEuw+L9plFh/BkC9OTYohD5WFBSJtBx1uTyfAdQ4BCksm97a2jne0bGwUhSUvXukqwCMh7gGh1HfibhfluNT+X2q/+2Hw6lYlq+6hH4BXF3bMxTlLUAAAAAASUVORK5CYII=\",\"datasourceId\":\"\",\"where\":\"\",\"type\":3,\"batchSize\":\"1024\",\"config\":\"\",\"parentId\":\"\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '31');
-INSERT INTO `dpp_etl_node` VALUES (1235, '1', 'DATAX', '表输出组件', '141951127567201', 1, 84, '141883958809440', '{\"postSql\":\"\",\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"elementId\":[10],\"cleanRuleList\":[{\"ruleId\":10,\"ruleName\":\"首尾移除空格\",\"ruleConfig\":\"{\\\"toggleCase\\\":{\\\"type\\\":\\\"1\\\"},\\\"nullReplace\\\":{\\\"value\\\":null},\\\"trimSpace\\\":{},\\\"regexValidate\\\":{\\\"pattern\\\":\\\"\\\",\\\"replacement\\\":\\\"\\\",\\\"resultType\\\":\\\"1\\\"},\\\"defaultValueFill\\\":{\\\"value\\\":\\\"\\\"},\\\"dictValueList\\\":[],\\\"tokens\\\":[{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"operator\\\",\\\"value\\\":\\\"+\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"}]}\"}],\"isChecked\":true},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"selectedColumn\":\"\",\"target_columns\":[\"SCHED_NAME\",\"ENTRY_ID\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\"],\"target_table_name\":\"QRTZ_FIRED_TRIGGERS\",\"columns\":[\"SCHED_NAME\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\",\"BLOB_DATA\"],\"typeName\":\"表输出组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAW9JREFUWEftl71LA0EQxd+Lpb1WFkkpAZuQEyvtTbQQBCuxs7KxlNxdwD/Axk4rEW29gK1g45lC8KMNpFMsBEEtxHsiknC7Yi6CJFfclo9l58fMm9ldImWLcR4vmJ4dBp9XuTjrxDWA/MDRMIDcStjl+AFERcVatXk3CDCvUSpSIzc9gUTsUnwcBBAQjQFc7wkEalXKtTtAOaogYE3ilgW5DOAZwGlcJ1QjcRCJLUs/FLhiaXkA+38qWT0oT4n03flwMX5Y/cTZFPTkVi/3jMZolI/xwW1vIbyO637gtNxKWDD39lEy20MZkJVWpS5DAJtA9NoFFUdB5AHdmqbmBIB3QPeW2SchtkG9WPsdQKGhfZ9dykz9lZWsyzre8P57DqVuUmddlnTbp24wZkBJJUtdl9kvRgHjhOYAHhn3EDVD4U3glXlnaUngOYEHS98AuGNqfbwYMw8leSjLUFKGBvP9MaP8+kBL3Vd6GNmxY34CUyDPPWNEMvYAAAAASUVORK5CYII=\",\"target_asset_id\":\"QRTZ_FIRED_TRIGGERS\",\"type\":2,\"parentId\":\"\",\"taskType\":\"DATAX\",\"selectedColumns\":[],\"writerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"Iqo0tpF$~8R$Zn1yvhJA\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"target_asset_id\":48,\"datasourceId\":48},\"toColumnsList\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"ENTRY_ID\",\"columnComment\":\"调度器实例id\",\"columnType\":\"VARCHAR\",\"columnLength\":95,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"INSTANCE_NAME\",\"columnComment\":\"调度器实例名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"FIRED_TIME\",\"columnComment\":\"触发的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"SCHED_TIME\",\"columnComment\":\"定时器制定的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"PRIORITY\",\"columnComment\":\"优先级\",\"columnType\":\"INT\",\"columnLength\":4,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"STATE\",\"columnComment\":\"状态\",\"columnType\":\"VARCHAR\",\"columnLength\":16,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_NAME\",\"columnComment\":\"任务名称\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_GROUP\",\"columnComment\":\"任务组名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"IS_NONCONCURRENT\",\"columnComment\":\"是否并发\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"REQUESTS_RECOVERY\",\"columnComment\":\"是否接受恢复执行\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"target_datasource_id\":\"\",\"datasourceId\":\"\",\"where\":\"\",\"batchSize\":\"1024\",\"config\":\"\",\"writeModeType\":2,\"preSql\":\"\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '91');
-INSERT INTO `dpp_etl_node` VALUES (1236, '1', 'DATAX', '表输入组件', '141951101460322', 1, 84, '141883958809440', '{\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\"}],\"datasource_id\":\"\",\"csvFile\":\"\",\"columns\":[\"SCHED_NAME\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\",\"BLOB_DATA\"],\"typeName\":\"表输入组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAXNJREFUWEftlz1LA0EQhp+52J3hYqOVhSklYCMINl7+gYUgWImdlY2lCBb+ABs7rUT0F1iJB1ZiIfjRBtIpgjFfWog7EsR4u2ISQZIr7sqXZee5mXd2Z4WEfRLnyYX1cBB8z1E2+oprAQVhUwcBVI38NscPoIyYwtNZ9q4fYCNhvWDwbjoCoeyK8NgPIBVGUVY7Agm6DFpuA4mXR1kBsxGHVLxFVGoi7ye2ntkU0QPUlOyf8g7BLFmayoSK7P+pZLliY8qobNUifz6+WRA21kEq1cjfs/S5xrE3xHbldPjaXt8sVSM/H9d6KpnroRTISasmLkPAJejLN6j4wATorWPIcUTewNzb5pVJoAzadPQZ0AtHa+09nZq6lZUgTLvs0x3Bf59DiTup0y7rdtsn7mBMgbqVLHld5kyMCmMgRUGP7EGMWVVePeEqrhtYEDgXeHDWrwnsWFovE2PqoW4eSjPULUP9eP64MX4d0BL3lB5EdtyYH6YFnD0Rf7InAAAAAElFTkSuQmCC\",\"asset_id\":\"QRTZ_BLOB_TRIGGERS\",\"type\":1,\"table_name\":\"QRTZ_BLOB_TRIGGERS\",\"logicOperator\":\"and\",\"parentId\":\"\",\"querySql\":\"\",\"taskType\":\"DATAX\",\"dateIncrementConfig\":{\"logic\":\"and\",\"dateFormat\":\"yyyy-MM-dd\",\"column\":[]},\"idIncrementConfig\":{\"incrementColumn\":[],\"incrementStart\":\"\"},\"readerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"Iqo0tpF$~8R$Zn1yvhJA\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"datasourceId\":\"\",\"topic\":\"\",\"where\":\"\",\"readModeType\":\"1\",\"batchSize\":\"1024\",\"config\":\"\",\"columnsList\":[{\"colName\":\"SCHED_NAME\",\"dataType\":\"VARCHAR\"},{\"colName\":\"TRIGGER_NAME\",\"dataType\":\"VARCHAR\"},{\"colName\":\"TRIGGER_GROUP\",\"dataType\":\"VARCHAR\"},{\"colName\":\"BLOB_DATA\",\"dataType\":\"BLOB\"}],\"clmt\":\"0\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '1');
+INSERT INTO `dpp_etl_node` VALUES (1235, '1', 'DATAX', '表输出组件', '141951127567201', 1, 84, '141883958809440', '{\"postSql\":\"\",\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"elementId\":[10],\"cleanRuleList\":[{\"ruleId\":10,\"ruleName\":\"首尾移除空格\",\"ruleConfig\":\"{\\\"toggleCase\\\":{\\\"type\\\":\\\"1\\\"},\\\"nullReplace\\\":{\\\"value\\\":null},\\\"trimSpace\\\":{},\\\"regexValidate\\\":{\\\"pattern\\\":\\\"\\\",\\\"replacement\\\":\\\"\\\",\\\"resultType\\\":\\\"1\\\"},\\\"defaultValueFill\\\":{\\\"value\\\":\\\"\\\"},\\\"dictValueList\\\":[],\\\"tokens\\\":[{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"operator\\\",\\\"value\\\":\\\"+\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"}]}\"}],\"isChecked\":true},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"selectedColumn\":\"\",\"target_columns\":[\"SCHED_NAME\",\"ENTRY_ID\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\"],\"target_table_name\":\"QRTZ_FIRED_TRIGGERS\",\"columns\":[\"SCHED_NAME\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\",\"BLOB_DATA\"],\"typeName\":\"表输出组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAW9JREFUWEftl71LA0EQxd+Lpb1WFkkpAZuQEyvtTbQQBCuxs7KxlNxdwD/Axk4rEW29gK1g45lC8KMNpFMsBEEtxHsiknC7Yi6CJFfclo9l58fMm9ldImWLcR4vmJ4dBp9XuTjrxDWA/MDRMIDcStjl+AFERcVatXk3CDCvUSpSIzc9gUTsUnwcBBAQjQFc7wkEalXKtTtAOaogYE3ilgW5DOAZwGlcJ1QjcRCJLUs/FLhiaXkA+38qWT0oT4n03flwMX5Y/cTZFPTkVi/3jMZolI/xwW1vIbyO637gtNxKWDD39lEy20MZkJVWpS5DAJtA9NoFFUdB5AHdmqbmBIB3QPeW2SchtkG9WPsdQKGhfZ9dykz9lZWsyzre8P57DqVuUmddlnTbp24wZkBJJUtdl9kvRgHjhOYAHhn3EDVD4U3glXlnaUngOYEHS98AuGNqfbwYMw8leSjLUFKGBvP9MaP8+kBL3Vd6GNmxY34CUyDPPWNEMvYAAAAASUVORK5CYII=\",\"target_asset_id\":\"QRTZ_FIRED_TRIGGERS\",\"type\":2,\"parentId\":\"\",\"taskType\":\"DATAX\",\"selectedColumns\":[],\"writerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"target_asset_id\":48,\"datasourceId\":48},\"toColumnsList\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"ENTRY_ID\",\"columnComment\":\"调度器实例id\",\"columnType\":\"VARCHAR\",\"columnLength\":95,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"INSTANCE_NAME\",\"columnComment\":\"调度器实例名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"FIRED_TIME\",\"columnComment\":\"触发的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"SCHED_TIME\",\"columnComment\":\"定时器制定的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"PRIORITY\",\"columnComment\":\"优先级\",\"columnType\":\"INT\",\"columnLength\":4,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"STATE\",\"columnComment\":\"状态\",\"columnType\":\"VARCHAR\",\"columnLength\":16,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_NAME\",\"columnComment\":\"任务名称\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_GROUP\",\"columnComment\":\"任务组名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"IS_NONCONCURRENT\",\"columnComment\":\"是否并发\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"REQUESTS_RECOVERY\",\"columnComment\":\"是否接受恢复执行\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"target_datasource_id\":\"\",\"datasourceId\":\"\",\"where\":\"\",\"batchSize\":\"1024\",\"config\":\"\",\"writeModeType\":2,\"preSql\":\"\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '91');
+INSERT INTO `dpp_etl_node` VALUES (1236, '1', 'DATAX', '表输入组件', '141951101460322', 1, 84, '141883958809440', '{\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\"}],\"datasource_id\":\"\",\"csvFile\":\"\",\"columns\":[\"SCHED_NAME\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\",\"BLOB_DATA\"],\"typeName\":\"表输入组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAXNJREFUWEftlz1LA0EQhp+52J3hYqOVhSklYCMINl7+gYUgWImdlY2lCBb+ABs7rUT0F1iJB1ZiIfjRBtIpgjFfWog7EsR4u2ISQZIr7sqXZee5mXd2Z4WEfRLnyYX1cBB8z1E2+oprAQVhUwcBVI38NscPoIyYwtNZ9q4fYCNhvWDwbjoCoeyK8NgPIBVGUVY7Agm6DFpuA4mXR1kBsxGHVLxFVGoi7ye2ntkU0QPUlOyf8g7BLFmayoSK7P+pZLliY8qobNUifz6+WRA21kEq1cjfs/S5xrE3xHbldPjaXt8sVSM/H9d6KpnroRTISasmLkPAJejLN6j4wATorWPIcUTewNzb5pVJoAzadPQZ0AtHa+09nZq6lZUgTLvs0x3Bf59DiTup0y7rdtsn7mBMgbqVLHld5kyMCmMgRUGP7EGMWVVePeEqrhtYEDgXeHDWrwnsWFovE2PqoW4eSjPULUP9eP64MX4d0BL3lB5EdtyYH6YFnD0Rf7InAAAAAElFTkSuQmCC\",\"asset_id\":\"QRTZ_BLOB_TRIGGERS\",\"type\":1,\"table_name\":\"QRTZ_BLOB_TRIGGERS\",\"logicOperator\":\"and\",\"parentId\":\"\",\"querySql\":\"\",\"taskType\":\"DATAX\",\"dateIncrementConfig\":{\"logic\":\"and\",\"dateFormat\":\"yyyy-MM-dd\",\"column\":[]},\"idIncrementConfig\":{\"incrementColumn\":[],\"incrementStart\":\"\"},\"readerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"datasourceId\":\"\",\"topic\":\"\",\"where\":\"\",\"readModeType\":\"1\",\"batchSize\":\"1024\",\"config\":\"\",\"columnsList\":[{\"colName\":\"SCHED_NAME\",\"dataType\":\"VARCHAR\"},{\"colName\":\"TRIGGER_NAME\",\"dataType\":\"VARCHAR\"},{\"colName\":\"TRIGGER_GROUP\",\"dataType\":\"VARCHAR\"},{\"colName\":\"BLOB_DATA\",\"dataType\":\"BLOB\"}],\"clmt\":\"0\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '1');
 INSERT INTO `dpp_etl_node` VALUES (1237, '1', 'SPARK', '转换组件', '141951104758626', 1, 84, '141883958809440', '{\"mainArgs\":{\"cleanRuleList\":[{\"columns\":\"SCHED_NAME\",\"cleanRules\":[{\"ruleId\":10,\"data\":\"{\\\"toggleCase\\\":{\\\"type\\\":\\\"1\\\"},\\\"nullReplace\\\":{\\\"value\\\":null},\\\"trimSpace\\\":{},\\\"regexValidate\\\":{\\\"pattern\\\":\\\"\\\",\\\"replacement\\\":\\\"\\\",\\\"resultType\\\":\\\"1\\\"},\\\"defaultValueFill\\\":{\\\"value\\\":\\\"\\\"},\\\"dictValueList\\\":[],\\\"tokens\\\":[{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"operator\\\",\\\"value\\\":\\\"+\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"}]}\",\"ruleName\":\"首尾移除空格\"}]},{\"columns\":\"TRIGGER_NAME\",\"cleanRules\":[]},{\"columns\":\"TRIGGER_GROUP\",\"cleanRules\":[]},{\"columns\":\"BLOB_DATA\",\"cleanRules\":[]}]},\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"elementId\":[10],\"cleanRuleList\":[{\"ruleId\":10,\"ruleName\":\"首尾移除空格\",\"ruleConfig\":\"{\\\"toggleCase\\\":{\\\"type\\\":\\\"1\\\"},\\\"nullReplace\\\":{\\\"value\\\":null},\\\"trimSpace\\\":{},\\\"regexValidate\\\":{\\\"pattern\\\":\\\"\\\",\\\"replacement\\\":\\\"\\\",\\\"resultType\\\":\\\"1\\\"},\\\"defaultValueFill\\\":{\\\"value\\\":\\\"\\\"},\\\"dictValueList\\\":[],\\\"tokens\\\":[{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"operator\\\",\\\"value\\\":\\\"+\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"}]}\"}]},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\"}],\"taskType\":\"SPARK\",\"typeName\":\"转换组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAjCAYAAAD8BaggAAAAAXNSR0IArs4c6QAAAtpJREFUWEfN2E1PE1EUBuD3tKVQqbICTYwbjXHlChNDZcrcwYAgC0VpoivFuDAEDP4QQUNY6cKNiaBijHzU2JnSKdVEwh8gRlfE0IUmILVAOWbsNJamdVqdgXbZe+85T9+5c5sZQpV9qMo8qH7Q/Hzw5M4O3wdwFkCjQwkmAfoAuIaEiH7J77EroXA40FRb615mxiGHIIVlkx4Pn5Kk+LfcwC6QpgXvAjxqDq4BWHII1gzAb9Rm5gFFiY8XBamq9JAIg9lBuiFE7IkTIE0L3gL4URaEEUXR75UCjRPhzm8OcUiW45NOgFQ1GCLiZ9k+NC7LsQFHQJFI4ER7e+KT1Y/YE5CqSk+JcI2IX25sHLze3T2bLgXbE5CmSat5x8S7VMrfUwq1V6BLAJ4DcGf3BlSvd7snEHifKkxqT0BGU1WVLhLhFQCPiUp4vdvnC1G2gYxT3GrDMrPMDONcyaGWmN1tQkTXc2ttAWmaNAvgghWo2DgRVmVZP2wbaGKiz93Y+HX7XzC5NamUvy63yW1JKBqVhplxpTIUNwCuY0Q8Jcv6TdsSqgxhPduWhDStdYyI+phpBeAf1m3/zCDCC1nWR2xLaGamq9bnW/9ZCaJwbjJ5xBMKTWayx4MN/2UFJ3Gltjkh9C7bEjIKaZrsBzIJAKfNwsZdd9vlogUrXVtbbDl/ji0J5VBEmTAzAmaDLWZcVhR92grlCMgoGg531Hu9qTkArWaTDDP1Kkrsdbko2xLKNUwkWnzptHsaIGF+lxRCb9o3kHn56oDMGwDtAE0JEevdV5DRfHGxuWZtzXduc/PAx87Ot2WfTbZfsnKTKDWvbFA0GnzAzEPZQs49dahqaz8RPTbBo0Lowzn8357LjEuw+L9plFh/BkC9OTYohD5WFBSJtBx1uTyfAdQ4BCksm97a2jne0bGwUhSUvXukqwCMh7gGh1HfibhfluNT+X2q/+2Hw6lYlq+6hH4BXF3bMxTlLUAAAAAASUVORK5CYII=\",\"datasourceId\":\"\",\"where\":\"\",\"type\":3,\"batchSize\":\"1024\",\"config\":\"\",\"parentId\":\"\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '31');
-INSERT INTO `dpp_etl_node` VALUES (1238, '1', 'DATAX', '表输出组件', '141951127567202', 1, 84, '141883958809440', '{\"postSql\":\"\",\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"elementId\":[10],\"cleanRuleList\":[{\"ruleId\":10,\"ruleName\":\"首尾移除空格\",\"ruleConfig\":\"{\\\"toggleCase\\\":{\\\"type\\\":\\\"1\\\"},\\\"nullReplace\\\":{\\\"value\\\":null},\\\"trimSpace\\\":{},\\\"regexValidate\\\":{\\\"pattern\\\":\\\"\\\",\\\"replacement\\\":\\\"\\\",\\\"resultType\\\":\\\"1\\\"},\\\"defaultValueFill\\\":{\\\"value\\\":\\\"\\\"},\\\"dictValueList\\\":[],\\\"tokens\\\":[{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"operator\\\",\\\"value\\\":\\\"+\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"}]}\"}],\"isChecked\":true},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"selectedColumn\":\"\",\"target_columns\":[\"SCHED_NAME\",\"ENTRY_ID\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\"],\"target_table_name\":\"QRTZ_FIRED_TRIGGERS\",\"columns\":[\"SCHED_NAME\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\",\"BLOB_DATA\"],\"typeName\":\"表输出组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAW9JREFUWEftl71LA0EQxd+Lpb1WFkkpAZuQEyvtTbQQBCuxs7KxlNxdwD/Axk4rEW29gK1g45lC8KMNpFMsBEEtxHsiknC7Yi6CJFfclo9l58fMm9ldImWLcR4vmJ4dBp9XuTjrxDWA/MDRMIDcStjl+AFERcVatXk3CDCvUSpSIzc9gUTsUnwcBBAQjQFc7wkEalXKtTtAOaogYE3ilgW5DOAZwGlcJ1QjcRCJLUs/FLhiaXkA+38qWT0oT4n03flwMX5Y/cTZFPTkVi/3jMZolI/xwW1vIbyO637gtNxKWDD39lEy20MZkJVWpS5DAJtA9NoFFUdB5AHdmqbmBIB3QPeW2SchtkG9WPsdQKGhfZ9dykz9lZWsyzre8P57DqVuUmddlnTbp24wZkBJJUtdl9kvRgHjhOYAHhn3EDVD4U3glXlnaUngOYEHS98AuGNqfbwYMw8leSjLUFKGBvP9MaP8+kBL3Vd6GNmxY34CUyDPPWNEMvYAAAAASUVORK5CYII=\",\"target_asset_id\":\"QRTZ_FIRED_TRIGGERS\",\"type\":2,\"parentId\":\"\",\"taskType\":\"DATAX\",\"selectedColumns\":[],\"writerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"Iqo0tpF$~8R$Zn1yvhJA\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"target_asset_id\":48,\"datasourceId\":48},\"toColumnsList\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"ENTRY_ID\",\"columnComment\":\"调度器实例id\",\"columnType\":\"VARCHAR\",\"columnLength\":95,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"INSTANCE_NAME\",\"columnComment\":\"调度器实例名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"FIRED_TIME\",\"columnComment\":\"触发的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"SCHED_TIME\",\"columnComment\":\"定时器制定的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"PRIORITY\",\"columnComment\":\"优先级\",\"columnType\":\"INT\",\"columnLength\":4,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"STATE\",\"columnComment\":\"状态\",\"columnType\":\"VARCHAR\",\"columnLength\":16,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_NAME\",\"columnComment\":\"任务名称\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_GROUP\",\"columnComment\":\"任务组名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"IS_NONCONCURRENT\",\"columnComment\":\"是否并发\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"REQUESTS_RECOVERY\",\"columnComment\":\"是否接受恢复执行\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"target_datasource_id\":\"\",\"datasourceId\":\"\",\"where\":\"\",\"batchSize\":\"1024\",\"config\":\"\",\"writeModeType\":2,\"preSql\":\"\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '91');
-INSERT INTO `dpp_etl_node` VALUES (1239, '1', 'DATAX', '表输入组件', '141951101460323', 1, 84, '141883958809440', '{\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\"}],\"datasource_id\":\"\",\"csvFile\":\"\",\"columns\":[\"SCHED_NAME\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\",\"BLOB_DATA\"],\"typeName\":\"表输入组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAXNJREFUWEftlz1LA0EQhp+52J3hYqOVhSklYCMINl7+gYUgWImdlY2lCBb+ABs7rUT0F1iJB1ZiIfjRBtIpgjFfWog7EsR4u2ISQZIr7sqXZee5mXd2Z4WEfRLnyYX1cBB8z1E2+oprAQVhUwcBVI38NscPoIyYwtNZ9q4fYCNhvWDwbjoCoeyK8NgPIBVGUVY7Agm6DFpuA4mXR1kBsxGHVLxFVGoi7ye2ntkU0QPUlOyf8g7BLFmayoSK7P+pZLliY8qobNUifz6+WRA21kEq1cjfs/S5xrE3xHbldPjaXt8sVSM/H9d6KpnroRTISasmLkPAJejLN6j4wATorWPIcUTewNzb5pVJoAzadPQZ0AtHa+09nZq6lZUgTLvs0x3Bf59DiTup0y7rdtsn7mBMgbqVLHld5kyMCmMgRUGP7EGMWVVePeEqrhtYEDgXeHDWrwnsWFovE2PqoW4eSjPULUP9eP64MX4d0BL3lB5EdtyYH6YFnD0Rf7InAAAAAElFTkSuQmCC\",\"asset_id\":\"QRTZ_BLOB_TRIGGERS\",\"type\":1,\"table_name\":\"QRTZ_BLOB_TRIGGERS\",\"logicOperator\":\"and\",\"parentId\":\"\",\"querySql\":\"\",\"taskType\":\"DATAX\",\"dateIncrementConfig\":{\"logic\":\"and\",\"dateFormat\":\"yyyy-MM-dd\",\"column\":[]},\"idIncrementConfig\":{\"incrementColumn\":[],\"incrementStart\":\"\"},\"readerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"Iqo0tpF$~8R$Zn1yvhJA\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"datasourceId\":\"\",\"topic\":\"\",\"where\":\"\",\"readModeType\":\"1\",\"batchSize\":\"1024\",\"config\":\"\",\"columnsList\":[{\"colName\":\"SCHED_NAME\",\"dataType\":\"VARCHAR\"},{\"colName\":\"TRIGGER_NAME\",\"dataType\":\"VARCHAR\"},{\"colName\":\"TRIGGER_GROUP\",\"dataType\":\"VARCHAR\"},{\"colName\":\"BLOB_DATA\",\"dataType\":\"BLOB\"}],\"clmt\":\"0\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '1');
+INSERT INTO `dpp_etl_node` VALUES (1238, '1', 'DATAX', '表输出组件', '141951127567202', 1, 84, '141883958809440', '{\"postSql\":\"\",\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"elementId\":[10],\"cleanRuleList\":[{\"ruleId\":10,\"ruleName\":\"首尾移除空格\",\"ruleConfig\":\"{\\\"toggleCase\\\":{\\\"type\\\":\\\"1\\\"},\\\"nullReplace\\\":{\\\"value\\\":null},\\\"trimSpace\\\":{},\\\"regexValidate\\\":{\\\"pattern\\\":\\\"\\\",\\\"replacement\\\":\\\"\\\",\\\"resultType\\\":\\\"1\\\"},\\\"defaultValueFill\\\":{\\\"value\\\":\\\"\\\"},\\\"dictValueList\\\":[],\\\"tokens\\\":[{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"operator\\\",\\\"value\\\":\\\"+\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"}]}\"}],\"isChecked\":true},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"selectedColumn\":\"\",\"target_columns\":[\"SCHED_NAME\",\"ENTRY_ID\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\"],\"target_table_name\":\"QRTZ_FIRED_TRIGGERS\",\"columns\":[\"SCHED_NAME\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\",\"BLOB_DATA\"],\"typeName\":\"表输出组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAW9JREFUWEftl71LA0EQxd+Lpb1WFkkpAZuQEyvtTbQQBCuxs7KxlNxdwD/Axk4rEW29gK1g45lC8KMNpFMsBEEtxHsiknC7Yi6CJFfclo9l58fMm9ldImWLcR4vmJ4dBp9XuTjrxDWA/MDRMIDcStjl+AFERcVatXk3CDCvUSpSIzc9gUTsUnwcBBAQjQFc7wkEalXKtTtAOaogYE3ilgW5DOAZwGlcJ1QjcRCJLUs/FLhiaXkA+38qWT0oT4n03flwMX5Y/cTZFPTkVi/3jMZolI/xwW1vIbyO637gtNxKWDD39lEy20MZkJVWpS5DAJtA9NoFFUdB5AHdmqbmBIB3QPeW2SchtkG9WPsdQKGhfZ9dykz9lZWsyzre8P57DqVuUmddlnTbp24wZkBJJUtdl9kvRgHjhOYAHhn3EDVD4U3glXlnaUngOYEHS98AuGNqfbwYMw8leSjLUFKGBvP9MaP8+kBL3Vd6GNmxY34CUyDPPWNEMvYAAAAASUVORK5CYII=\",\"target_asset_id\":\"QRTZ_FIRED_TRIGGERS\",\"type\":2,\"parentId\":\"\",\"taskType\":\"DATAX\",\"selectedColumns\":[],\"writerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"target_asset_id\":48,\"datasourceId\":48},\"toColumnsList\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"ENTRY_ID\",\"columnComment\":\"调度器实例id\",\"columnType\":\"VARCHAR\",\"columnLength\":95,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"INSTANCE_NAME\",\"columnComment\":\"调度器实例名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"FIRED_TIME\",\"columnComment\":\"触发的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"SCHED_TIME\",\"columnComment\":\"定时器制定的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"PRIORITY\",\"columnComment\":\"优先级\",\"columnType\":\"INT\",\"columnLength\":4,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"STATE\",\"columnComment\":\"状态\",\"columnType\":\"VARCHAR\",\"columnLength\":16,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_NAME\",\"columnComment\":\"任务名称\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_GROUP\",\"columnComment\":\"任务组名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"IS_NONCONCURRENT\",\"columnComment\":\"是否并发\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"REQUESTS_RECOVERY\",\"columnComment\":\"是否接受恢复执行\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"target_datasource_id\":\"\",\"datasourceId\":\"\",\"where\":\"\",\"batchSize\":\"1024\",\"config\":\"\",\"writeModeType\":2,\"preSql\":\"\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '91');
+INSERT INTO `dpp_etl_node` VALUES (1239, '1', 'DATAX', '表输入组件', '141951101460323', 1, 84, '141883958809440', '{\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\"}],\"datasource_id\":\"\",\"csvFile\":\"\",\"columns\":[\"SCHED_NAME\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\",\"BLOB_DATA\"],\"typeName\":\"表输入组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAXNJREFUWEftlz1LA0EQhp+52J3hYqOVhSklYCMINl7+gYUgWImdlY2lCBb+ABs7rUT0F1iJB1ZiIfjRBtIpgjFfWog7EsR4u2ISQZIr7sqXZee5mXd2Z4WEfRLnyYX1cBB8z1E2+oprAQVhUwcBVI38NscPoIyYwtNZ9q4fYCNhvWDwbjoCoeyK8NgPIBVGUVY7Agm6DFpuA4mXR1kBsxGHVLxFVGoi7ye2ntkU0QPUlOyf8g7BLFmayoSK7P+pZLliY8qobNUifz6+WRA21kEq1cjfs/S5xrE3xHbldPjaXt8sVSM/H9d6KpnroRTISasmLkPAJejLN6j4wATorWPIcUTewNzb5pVJoAzadPQZ0AtHa+09nZq6lZUgTLvs0x3Bf59DiTup0y7rdtsn7mBMgbqVLHld5kyMCmMgRUGP7EGMWVVePeEqrhtYEDgXeHDWrwnsWFovE2PqoW4eSjPULUP9eP64MX4d0BL3lB5EdtyYH6YFnD0Rf7InAAAAAElFTkSuQmCC\",\"asset_id\":\"QRTZ_BLOB_TRIGGERS\",\"type\":1,\"table_name\":\"QRTZ_BLOB_TRIGGERS\",\"logicOperator\":\"and\",\"parentId\":\"\",\"querySql\":\"\",\"taskType\":\"DATAX\",\"dateIncrementConfig\":{\"logic\":\"and\",\"dateFormat\":\"yyyy-MM-dd\",\"column\":[]},\"idIncrementConfig\":{\"incrementColumn\":[],\"incrementStart\":\"\"},\"readerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"datasourceId\":\"\",\"topic\":\"\",\"where\":\"\",\"readModeType\":\"1\",\"batchSize\":\"1024\",\"config\":\"\",\"columnsList\":[{\"colName\":\"SCHED_NAME\",\"dataType\":\"VARCHAR\"},{\"colName\":\"TRIGGER_NAME\",\"dataType\":\"VARCHAR\"},{\"colName\":\"TRIGGER_GROUP\",\"dataType\":\"VARCHAR\"},{\"colName\":\"BLOB_DATA\",\"dataType\":\"BLOB\"}],\"clmt\":\"0\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '1');
 INSERT INTO `dpp_etl_node` VALUES (1240, '1', 'SPARK', '转换组件', '141951104758627', 1, 84, '141883958809440', '{\"mainArgs\":{\"cleanRuleList\":[{\"columns\":\"SCHED_NAME\",\"cleanRules\":[{\"ruleId\":10,\"data\":\"{\\\"toggleCase\\\":{\\\"type\\\":\\\"1\\\"},\\\"nullReplace\\\":{\\\"value\\\":null},\\\"trimSpace\\\":{},\\\"regexValidate\\\":{\\\"pattern\\\":\\\"\\\",\\\"replacement\\\":\\\"\\\",\\\"resultType\\\":\\\"1\\\"},\\\"defaultValueFill\\\":{\\\"value\\\":\\\"\\\"},\\\"dictValueList\\\":[],\\\"tokens\\\":[{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"operator\\\",\\\"value\\\":\\\"+\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"}]}\",\"ruleName\":\"首尾移除空格\"}]},{\"columns\":\"TRIGGER_NAME\",\"cleanRules\":[]},{\"columns\":\"TRIGGER_GROUP\",\"cleanRules\":[]},{\"columns\":\"BLOB_DATA\",\"cleanRules\":[]}]},\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"elementId\":[10],\"cleanRuleList\":[{\"ruleId\":10,\"ruleName\":\"首尾移除空格\",\"ruleConfig\":\"{\\\"toggleCase\\\":{\\\"type\\\":\\\"1\\\"},\\\"nullReplace\\\":{\\\"value\\\":null},\\\"trimSpace\\\":{},\\\"regexValidate\\\":{\\\"pattern\\\":\\\"\\\",\\\"replacement\\\":\\\"\\\",\\\"resultType\\\":\\\"1\\\"},\\\"defaultValueFill\\\":{\\\"value\\\":\\\"\\\"},\\\"dictValueList\\\":[],\\\"tokens\\\":[{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"operator\\\",\\\"value\\\":\\\"+\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"}]}\"}]},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\"}],\"taskType\":\"SPARK\",\"typeName\":\"转换组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAjCAYAAAD8BaggAAAAAXNSR0IArs4c6QAAAtpJREFUWEfN2E1PE1EUBuD3tKVQqbICTYwbjXHlChNDZcrcwYAgC0VpoivFuDAEDP4QQUNY6cKNiaBijHzU2JnSKdVEwh8gRlfE0IUmILVAOWbsNJamdVqdgXbZe+85T9+5c5sZQpV9qMo8qH7Q/Hzw5M4O3wdwFkCjQwkmAfoAuIaEiH7J77EroXA40FRb615mxiGHIIVlkx4Pn5Kk+LfcwC6QpgXvAjxqDq4BWHII1gzAb9Rm5gFFiY8XBamq9JAIg9lBuiFE7IkTIE0L3gL4URaEEUXR75UCjRPhzm8OcUiW45NOgFQ1GCLiZ9k+NC7LsQFHQJFI4ER7e+KT1Y/YE5CqSk+JcI2IX25sHLze3T2bLgXbE5CmSat5x8S7VMrfUwq1V6BLAJ4DcGf3BlSvd7snEHifKkxqT0BGU1WVLhLhFQCPiUp4vdvnC1G2gYxT3GrDMrPMDONcyaGWmN1tQkTXc2ttAWmaNAvgghWo2DgRVmVZP2wbaGKiz93Y+HX7XzC5NamUvy63yW1JKBqVhplxpTIUNwCuY0Q8Jcv6TdsSqgxhPduWhDStdYyI+phpBeAf1m3/zCDCC1nWR2xLaGamq9bnW/9ZCaJwbjJ5xBMKTWayx4MN/2UFJ3Gltjkh9C7bEjIKaZrsBzIJAKfNwsZdd9vlogUrXVtbbDl/ji0J5VBEmTAzAmaDLWZcVhR92grlCMgoGg531Hu9qTkArWaTDDP1Kkrsdbko2xLKNUwkWnzptHsaIGF+lxRCb9o3kHn56oDMGwDtAE0JEevdV5DRfHGxuWZtzXduc/PAx87Ot2WfTbZfsnKTKDWvbFA0GnzAzEPZQs49dahqaz8RPTbBo0Lowzn8357LjEuw+L9plFh/BkC9OTYohD5WFBSJtBx1uTyfAdQ4BCksm97a2jne0bGwUhSUvXukqwCMh7gGh1HfibhfluNT+X2q/+2Hw6lYlq+6hH4BXF3bMxTlLUAAAAAASUVORK5CYII=\",\"datasourceId\":\"\",\"where\":\"\",\"type\":3,\"batchSize\":\"1024\",\"config\":\"\",\"parentId\":\"\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '31');
-INSERT INTO `dpp_etl_node` VALUES (1241, '1', 'DATAX', '表输出组件', '141951127567203', 1, 84, '141883958809440', '{\"postSql\":\"\",\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"elementId\":[10],\"cleanRuleList\":[{\"ruleId\":10,\"ruleName\":\"首尾移除空格\",\"ruleConfig\":\"{\\\"toggleCase\\\":{\\\"type\\\":\\\"1\\\"},\\\"nullReplace\\\":{\\\"value\\\":null},\\\"trimSpace\\\":{},\\\"regexValidate\\\":{\\\"pattern\\\":\\\"\\\",\\\"replacement\\\":\\\"\\\",\\\"resultType\\\":\\\"1\\\"},\\\"defaultValueFill\\\":{\\\"value\\\":\\\"\\\"},\\\"dictValueList\\\":[],\\\"tokens\\\":[{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"operator\\\",\\\"value\\\":\\\"+\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"}]}\"}],\"isChecked\":true},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"selectedColumn\":\"\",\"target_columns\":[\"SCHED_NAME\",\"ENTRY_ID\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\"],\"target_table_name\":\"QRTZ_FIRED_TRIGGERS\",\"columns\":[\"SCHED_NAME\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\",\"BLOB_DATA\"],\"typeName\":\"表输出组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAW9JREFUWEftl71LA0EQxd+Lpb1WFkkpAZuQEyvtTbQQBCuxs7KxlNxdwD/Axk4rEW29gK1g45lC8KMNpFMsBEEtxHsiknC7Yi6CJFfclo9l58fMm9ldImWLcR4vmJ4dBp9XuTjrxDWA/MDRMIDcStjl+AFERcVatXk3CDCvUSpSIzc9gUTsUnwcBBAQjQFc7wkEalXKtTtAOaogYE3ilgW5DOAZwGlcJ1QjcRCJLUs/FLhiaXkA+38qWT0oT4n03flwMX5Y/cTZFPTkVi/3jMZolI/xwW1vIbyO637gtNxKWDD39lEy20MZkJVWpS5DAJtA9NoFFUdB5AHdmqbmBIB3QPeW2SchtkG9WPsdQKGhfZ9dykz9lZWsyzre8P57DqVuUmddlnTbp24wZkBJJUtdl9kvRgHjhOYAHhn3EDVD4U3glXlnaUngOYEHS98AuGNqfbwYMw8leSjLUFKGBvP9MaP8+kBL3Vd6GNmxY34CUyDPPWNEMvYAAAAASUVORK5CYII=\",\"target_asset_id\":\"QRTZ_FIRED_TRIGGERS\",\"type\":2,\"parentId\":\"\",\"taskType\":\"DATAX\",\"selectedColumns\":[],\"writerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"Iqo0tpF$~8R$Zn1yvhJA\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"target_asset_id\":48,\"datasourceId\":48},\"toColumnsList\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"ENTRY_ID\",\"columnComment\":\"调度器实例id\",\"columnType\":\"VARCHAR\",\"columnLength\":95,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"INSTANCE_NAME\",\"columnComment\":\"调度器实例名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"FIRED_TIME\",\"columnComment\":\"触发的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"SCHED_TIME\",\"columnComment\":\"定时器制定的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"PRIORITY\",\"columnComment\":\"优先级\",\"columnType\":\"INT\",\"columnLength\":4,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"STATE\",\"columnComment\":\"状态\",\"columnType\":\"VARCHAR\",\"columnLength\":16,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_NAME\",\"columnComment\":\"任务名称\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_GROUP\",\"columnComment\":\"任务组名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"IS_NONCONCURRENT\",\"columnComment\":\"是否并发\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"REQUESTS_RECOVERY\",\"columnComment\":\"是否接受恢复执行\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"target_datasource_id\":\"\",\"datasourceId\":\"\",\"where\":\"\",\"batchSize\":\"1024\",\"config\":\"\",\"writeModeType\":2,\"preSql\":\"\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '91');
-INSERT INTO `dpp_etl_node` VALUES (1242, '1', 'DATAX', '表输入组件', '141951101460324', 1, 84, '141883958809440', '{\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\"}],\"datasource_id\":\"\",\"csvFile\":\"\",\"columns\":[\"SCHED_NAME\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\",\"BLOB_DATA\"],\"typeName\":\"表输入组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAXNJREFUWEftlz1LA0EQhp+52J3hYqOVhSklYCMINl7+gYUgWImdlY2lCBb+ABs7rUT0F1iJB1ZiIfjRBtIpgjFfWog7EsR4u2ISQZIr7sqXZee5mXd2Z4WEfRLnyYX1cBB8z1E2+oprAQVhUwcBVI38NscPoIyYwtNZ9q4fYCNhvWDwbjoCoeyK8NgPIBVGUVY7Agm6DFpuA4mXR1kBsxGHVLxFVGoi7ye2ntkU0QPUlOyf8g7BLFmayoSK7P+pZLliY8qobNUifz6+WRA21kEq1cjfs/S5xrE3xHbldPjaXt8sVSM/H9d6KpnroRTISasmLkPAJejLN6j4wATorWPIcUTewNzb5pVJoAzadPQZ0AtHa+09nZq6lZUgTLvs0x3Bf59DiTup0y7rdtsn7mBMgbqVLHld5kyMCmMgRUGP7EGMWVVePeEqrhtYEDgXeHDWrwnsWFovE2PqoW4eSjPULUP9eP64MX4d0BL3lB5EdtyYH6YFnD0Rf7InAAAAAElFTkSuQmCC\",\"asset_id\":\"QRTZ_BLOB_TRIGGERS\",\"type\":1,\"table_name\":\"QRTZ_BLOB_TRIGGERS\",\"logicOperator\":\"and\",\"parentId\":\"\",\"querySql\":\"\",\"taskType\":\"DATAX\",\"dateIncrementConfig\":{\"logic\":\"and\",\"dateFormat\":\"yyyy-MM-dd\",\"column\":[]},\"idIncrementConfig\":{\"incrementColumn\":[],\"incrementStart\":\"\"},\"readerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"Iqo0tpF$~8R$Zn1yvhJA\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"datasourceId\":\"\",\"topic\":\"\",\"where\":\"\",\"readModeType\":\"1\",\"batchSize\":\"1024\",\"config\":\"\",\"columnsList\":[{\"colName\":\"SCHED_NAME\",\"dataType\":\"VARCHAR\"},{\"colName\":\"TRIGGER_NAME\",\"dataType\":\"VARCHAR\"},{\"colName\":\"TRIGGER_GROUP\",\"dataType\":\"VARCHAR\"},{\"colName\":\"BLOB_DATA\",\"dataType\":\"BLOB\"}],\"clmt\":\"0\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '1');
+INSERT INTO `dpp_etl_node` VALUES (1241, '1', 'DATAX', '表输出组件', '141951127567203', 1, 84, '141883958809440', '{\"postSql\":\"\",\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"elementId\":[10],\"cleanRuleList\":[{\"ruleId\":10,\"ruleName\":\"首尾移除空格\",\"ruleConfig\":\"{\\\"toggleCase\\\":{\\\"type\\\":\\\"1\\\"},\\\"nullReplace\\\":{\\\"value\\\":null},\\\"trimSpace\\\":{},\\\"regexValidate\\\":{\\\"pattern\\\":\\\"\\\",\\\"replacement\\\":\\\"\\\",\\\"resultType\\\":\\\"1\\\"},\\\"defaultValueFill\\\":{\\\"value\\\":\\\"\\\"},\\\"dictValueList\\\":[],\\\"tokens\\\":[{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"operator\\\",\\\"value\\\":\\\"+\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"}]}\"}],\"isChecked\":true},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"selectedColumn\":\"\",\"target_columns\":[\"SCHED_NAME\",\"ENTRY_ID\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\"],\"target_table_name\":\"QRTZ_FIRED_TRIGGERS\",\"columns\":[\"SCHED_NAME\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\",\"BLOB_DATA\"],\"typeName\":\"表输出组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAW9JREFUWEftl71LA0EQxd+Lpb1WFkkpAZuQEyvtTbQQBCuxs7KxlNxdwD/Axk4rEW29gK1g45lC8KMNpFMsBEEtxHsiknC7Yi6CJFfclo9l58fMm9ldImWLcR4vmJ4dBp9XuTjrxDWA/MDRMIDcStjl+AFERcVatXk3CDCvUSpSIzc9gUTsUnwcBBAQjQFc7wkEalXKtTtAOaogYE3ilgW5DOAZwGlcJ1QjcRCJLUs/FLhiaXkA+38qWT0oT4n03flwMX5Y/cTZFPTkVi/3jMZolI/xwW1vIbyO637gtNxKWDD39lEy20MZkJVWpS5DAJtA9NoFFUdB5AHdmqbmBIB3QPeW2SchtkG9WPsdQKGhfZ9dykz9lZWsyzre8P57DqVuUmddlnTbp24wZkBJJUtdl9kvRgHjhOYAHhn3EDVD4U3glXlnaUngOYEHS98AuGNqfbwYMw8leSjLUFKGBvP9MaP8+kBL3Vd6GNmxY34CUyDPPWNEMvYAAAAASUVORK5CYII=\",\"target_asset_id\":\"QRTZ_FIRED_TRIGGERS\",\"type\":2,\"parentId\":\"\",\"taskType\":\"DATAX\",\"selectedColumns\":[],\"writerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"target_asset_id\":48,\"datasourceId\":48},\"toColumnsList\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"ENTRY_ID\",\"columnComment\":\"调度器实例id\",\"columnType\":\"VARCHAR\",\"columnLength\":95,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"INSTANCE_NAME\",\"columnComment\":\"调度器实例名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"FIRED_TIME\",\"columnComment\":\"触发的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"SCHED_TIME\",\"columnComment\":\"定时器制定的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"PRIORITY\",\"columnComment\":\"优先级\",\"columnType\":\"INT\",\"columnLength\":4,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"STATE\",\"columnComment\":\"状态\",\"columnType\":\"VARCHAR\",\"columnLength\":16,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_NAME\",\"columnComment\":\"任务名称\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_GROUP\",\"columnComment\":\"任务组名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"IS_NONCONCURRENT\",\"columnComment\":\"是否并发\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"REQUESTS_RECOVERY\",\"columnComment\":\"是否接受恢复执行\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"target_datasource_id\":\"\",\"datasourceId\":\"\",\"where\":\"\",\"batchSize\":\"1024\",\"config\":\"\",\"writeModeType\":2,\"preSql\":\"\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '91');
+INSERT INTO `dpp_etl_node` VALUES (1242, '1', 'DATAX', '表输入组件', '141951101460324', 1, 84, '141883958809440', '{\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\"}],\"datasource_id\":\"\",\"csvFile\":\"\",\"columns\":[\"SCHED_NAME\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\",\"BLOB_DATA\"],\"typeName\":\"表输入组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAXNJREFUWEftlz1LA0EQhp+52J3hYqOVhSklYCMINl7+gYUgWImdlY2lCBb+ABs7rUT0F1iJB1ZiIfjRBtIpgjFfWog7EsR4u2ISQZIr7sqXZee5mXd2Z4WEfRLnyYX1cBB8z1E2+oprAQVhUwcBVI38NscPoIyYwtNZ9q4fYCNhvWDwbjoCoeyK8NgPIBVGUVY7Agm6DFpuA4mXR1kBsxGHVLxFVGoi7ye2ntkU0QPUlOyf8g7BLFmayoSK7P+pZLliY8qobNUifz6+WRA21kEq1cjfs/S5xrE3xHbldPjaXt8sVSM/H9d6KpnroRTISasmLkPAJejLN6j4wATorWPIcUTewNzb5pVJoAzadPQZ0AtHa+09nZq6lZUgTLvs0x3Bf59DiTup0y7rdtsn7mBMgbqVLHld5kyMCmMgRUGP7EGMWVVePeEqrhtYEDgXeHDWrwnsWFovE2PqoW4eSjPULUP9eP64MX4d0BL3lB5EdtyYH6YFnD0Rf7InAAAAAElFTkSuQmCC\",\"asset_id\":\"QRTZ_BLOB_TRIGGERS\",\"type\":1,\"table_name\":\"QRTZ_BLOB_TRIGGERS\",\"logicOperator\":\"and\",\"parentId\":\"\",\"querySql\":\"\",\"taskType\":\"DATAX\",\"dateIncrementConfig\":{\"logic\":\"and\",\"dateFormat\":\"yyyy-MM-dd\",\"column\":[]},\"idIncrementConfig\":{\"incrementColumn\":[],\"incrementStart\":\"\"},\"readerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"datasourceId\":\"\",\"topic\":\"\",\"where\":\"\",\"readModeType\":\"1\",\"batchSize\":\"1024\",\"config\":\"\",\"columnsList\":[{\"colName\":\"SCHED_NAME\",\"dataType\":\"VARCHAR\"},{\"colName\":\"TRIGGER_NAME\",\"dataType\":\"VARCHAR\"},{\"colName\":\"TRIGGER_GROUP\",\"dataType\":\"VARCHAR\"},{\"colName\":\"BLOB_DATA\",\"dataType\":\"BLOB\"}],\"clmt\":\"0\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '1');
 INSERT INTO `dpp_etl_node` VALUES (1243, '1', 'SPARK', '转换组件', '141951104758628', 1, 84, '141883958809440', '{\"mainArgs\":{\"cleanRuleList\":[{\"columns\":\"SCHED_NAME\",\"cleanRules\":[{\"ruleId\":10,\"data\":\"{\\\"toggleCase\\\":{\\\"type\\\":\\\"1\\\"},\\\"nullReplace\\\":{\\\"value\\\":null},\\\"trimSpace\\\":{},\\\"regexValidate\\\":{\\\"pattern\\\":\\\"\\\",\\\"replacement\\\":\\\"\\\",\\\"resultType\\\":\\\"1\\\"},\\\"defaultValueFill\\\":{\\\"value\\\":\\\"\\\"},\\\"dictValueList\\\":[],\\\"tokens\\\":[{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"operator\\\",\\\"value\\\":\\\"+\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"}]}\",\"ruleName\":\"首尾移除空格\"}]},{\"columns\":\"TRIGGER_NAME\",\"cleanRules\":[]},{\"columns\":\"TRIGGER_GROUP\",\"cleanRules\":[]},{\"columns\":\"BLOB_DATA\",\"cleanRules\":[]}]},\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"elementId\":[10],\"cleanRuleList\":[{\"ruleId\":10,\"ruleName\":\"首尾移除空格\",\"ruleConfig\":\"{\\\"toggleCase\\\":{\\\"type\\\":\\\"1\\\"},\\\"nullReplace\\\":{\\\"value\\\":null},\\\"trimSpace\\\":{},\\\"regexValidate\\\":{\\\"pattern\\\":\\\"\\\",\\\"replacement\\\":\\\"\\\",\\\"resultType\\\":\\\"1\\\"},\\\"defaultValueFill\\\":{\\\"value\\\":\\\"\\\"},\\\"dictValueList\\\":[],\\\"tokens\\\":[{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"operator\\\",\\\"value\\\":\\\"+\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"}]}\"}]},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\"}],\"taskType\":\"SPARK\",\"typeName\":\"转换组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAjCAYAAAD8BaggAAAAAXNSR0IArs4c6QAAAtpJREFUWEfN2E1PE1EUBuD3tKVQqbICTYwbjXHlChNDZcrcwYAgC0VpoivFuDAEDP4QQUNY6cKNiaBijHzU2JnSKdVEwh8gRlfE0IUmILVAOWbsNJamdVqdgXbZe+85T9+5c5sZQpV9qMo8qH7Q/Hzw5M4O3wdwFkCjQwkmAfoAuIaEiH7J77EroXA40FRb615mxiGHIIVlkx4Pn5Kk+LfcwC6QpgXvAjxqDq4BWHII1gzAb9Rm5gFFiY8XBamq9JAIg9lBuiFE7IkTIE0L3gL4URaEEUXR75UCjRPhzm8OcUiW45NOgFQ1GCLiZ9k+NC7LsQFHQJFI4ER7e+KT1Y/YE5CqSk+JcI2IX25sHLze3T2bLgXbE5CmSat5x8S7VMrfUwq1V6BLAJ4DcGf3BlSvd7snEHifKkxqT0BGU1WVLhLhFQCPiUp4vdvnC1G2gYxT3GrDMrPMDONcyaGWmN1tQkTXc2ttAWmaNAvgghWo2DgRVmVZP2wbaGKiz93Y+HX7XzC5NamUvy63yW1JKBqVhplxpTIUNwCuY0Q8Jcv6TdsSqgxhPduWhDStdYyI+phpBeAf1m3/zCDCC1nWR2xLaGamq9bnW/9ZCaJwbjJ5xBMKTWayx4MN/2UFJ3Gltjkh9C7bEjIKaZrsBzIJAKfNwsZdd9vlogUrXVtbbDl/ji0J5VBEmTAzAmaDLWZcVhR92grlCMgoGg531Hu9qTkArWaTDDP1Kkrsdbko2xLKNUwkWnzptHsaIGF+lxRCb9o3kHn56oDMGwDtAE0JEevdV5DRfHGxuWZtzXduc/PAx87Ot2WfTbZfsnKTKDWvbFA0GnzAzEPZQs49dahqaz8RPTbBo0Lowzn8357LjEuw+L9plFh/BkC9OTYohD5WFBSJtBx1uTyfAdQ4BCksm97a2jne0bGwUhSUvXukqwCMh7gGh1HfibhfluNT+X2q/+2Hw6lYlq+6hH4BXF3bMxTlLUAAAAAASUVORK5CYII=\",\"datasourceId\":\"\",\"where\":\"\",\"type\":3,\"batchSize\":\"1024\",\"config\":\"\",\"parentId\":\"\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '31');
-INSERT INTO `dpp_etl_node` VALUES (1244, '1', 'DATAX', '表输出组件', '141951127567204', 1, 84, '141883958809440', '{\"postSql\":\"\",\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"elementId\":[10],\"cleanRuleList\":[{\"ruleId\":10,\"ruleName\":\"首尾移除空格\",\"ruleConfig\":\"{\\\"toggleCase\\\":{\\\"type\\\":\\\"1\\\"},\\\"nullReplace\\\":{\\\"value\\\":null},\\\"trimSpace\\\":{},\\\"regexValidate\\\":{\\\"pattern\\\":\\\"\\\",\\\"replacement\\\":\\\"\\\",\\\"resultType\\\":\\\"1\\\"},\\\"defaultValueFill\\\":{\\\"value\\\":\\\"\\\"},\\\"dictValueList\\\":[],\\\"tokens\\\":[{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"operator\\\",\\\"value\\\":\\\"+\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"}]}\"}],\"isChecked\":true},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"selectedColumn\":\"\",\"target_columns\":[\"SCHED_NAME\",\"ENTRY_ID\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\"],\"target_table_name\":\"QRTZ_FIRED_TRIGGERS\",\"columns\":[\"SCHED_NAME\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\",\"BLOB_DATA\"],\"typeName\":\"表输出组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAW9JREFUWEftl71LA0EQxd+Lpb1WFkkpAZuQEyvtTbQQBCuxs7KxlNxdwD/Axk4rEW29gK1g45lC8KMNpFMsBEEtxHsiknC7Yi6CJFfclo9l58fMm9ldImWLcR4vmJ4dBp9XuTjrxDWA/MDRMIDcStjl+AFERcVatXk3CDCvUSpSIzc9gUTsUnwcBBAQjQFc7wkEalXKtTtAOaogYE3ilgW5DOAZwGlcJ1QjcRCJLUs/FLhiaXkA+38qWT0oT4n03flwMX5Y/cTZFPTkVi/3jMZolI/xwW1vIbyO637gtNxKWDD39lEy20MZkJVWpS5DAJtA9NoFFUdB5AHdmqbmBIB3QPeW2SchtkG9WPsdQKGhfZ9dykz9lZWsyzre8P57DqVuUmddlnTbp24wZkBJJUtdl9kvRgHjhOYAHhn3EDVD4U3glXlnaUngOYEHS98AuGNqfbwYMw8leSjLUFKGBvP9MaP8+kBL3Vd6GNmxY34CUyDPPWNEMvYAAAAASUVORK5CYII=\",\"target_asset_id\":\"QRTZ_FIRED_TRIGGERS\",\"type\":2,\"parentId\":\"\",\"taskType\":\"DATAX\",\"selectedColumns\":[],\"writerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"Iqo0tpF$~8R$Zn1yvhJA\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"target_asset_id\":48,\"datasourceId\":48},\"toColumnsList\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"ENTRY_ID\",\"columnComment\":\"调度器实例id\",\"columnType\":\"VARCHAR\",\"columnLength\":95,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"INSTANCE_NAME\",\"columnComment\":\"调度器实例名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"FIRED_TIME\",\"columnComment\":\"触发的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"SCHED_TIME\",\"columnComment\":\"定时器制定的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"PRIORITY\",\"columnComment\":\"优先级\",\"columnType\":\"INT\",\"columnLength\":4,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"STATE\",\"columnComment\":\"状态\",\"columnType\":\"VARCHAR\",\"columnLength\":16,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_NAME\",\"columnComment\":\"任务名称\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_GROUP\",\"columnComment\":\"任务组名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"IS_NONCONCURRENT\",\"columnComment\":\"是否并发\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"REQUESTS_RECOVERY\",\"columnComment\":\"是否接受恢复执行\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"target_datasource_id\":\"\",\"datasourceId\":\"\",\"where\":\"\",\"batchSize\":\"1024\",\"config\":\"\",\"writeModeType\":2,\"preSql\":\"\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '91');
-INSERT INTO `dpp_etl_node` VALUES (1245, '1', 'DATAX', '表输入组件', '141951101460325', 1, 84, '141883958809440', '{\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\"}],\"datasource_id\":\"\",\"csvFile\":\"\",\"columns\":[\"SCHED_NAME\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\",\"BLOB_DATA\"],\"typeName\":\"表输入组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAXNJREFUWEftlz1LA0EQhp+52J3hYqOVhSklYCMINl7+gYUgWImdlY2lCBb+ABs7rUT0F1iJB1ZiIfjRBtIpgjFfWog7EsR4u2ISQZIr7sqXZee5mXd2Z4WEfRLnyYX1cBB8z1E2+oprAQVhUwcBVI38NscPoIyYwtNZ9q4fYCNhvWDwbjoCoeyK8NgPIBVGUVY7Agm6DFpuA4mXR1kBsxGHVLxFVGoi7ye2ntkU0QPUlOyf8g7BLFmayoSK7P+pZLliY8qobNUifz6+WRA21kEq1cjfs/S5xrE3xHbldPjaXt8sVSM/H9d6KpnroRTISasmLkPAJejLN6j4wATorWPIcUTewNzb5pVJoAzadPQZ0AtHa+09nZq6lZUgTLvs0x3Bf59DiTup0y7rdtsn7mBMgbqVLHld5kyMCmMgRUGP7EGMWVVePeEqrhtYEDgXeHDWrwnsWFovE2PqoW4eSjPULUP9eP64MX4d0BL3lB5EdtyYH6YFnD0Rf7InAAAAAElFTkSuQmCC\",\"asset_id\":\"QRTZ_BLOB_TRIGGERS\",\"type\":1,\"table_name\":\"QRTZ_BLOB_TRIGGERS\",\"logicOperator\":\"and\",\"parentId\":\"\",\"querySql\":\"\",\"taskType\":\"DATAX\",\"dateIncrementConfig\":{\"logic\":\"and\",\"dateFormat\":\"yyyy-MM-dd\",\"column\":[]},\"idIncrementConfig\":{\"incrementColumn\":[],\"incrementStart\":\"\"},\"readerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"Iqo0tpF$~8R$Zn1yvhJA\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"datasourceId\":\"\",\"topic\":\"\",\"where\":\"\",\"readModeType\":\"1\",\"batchSize\":\"1024\",\"config\":\"\",\"columnsList\":[{\"colName\":\"SCHED_NAME\",\"dataType\":\"VARCHAR\"},{\"colName\":\"TRIGGER_NAME\",\"dataType\":\"VARCHAR\"},{\"colName\":\"TRIGGER_GROUP\",\"dataType\":\"VARCHAR\"},{\"colName\":\"BLOB_DATA\",\"dataType\":\"BLOB\"}],\"clmt\":\"0\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '1');
+INSERT INTO `dpp_etl_node` VALUES (1244, '1', 'DATAX', '表输出组件', '141951127567204', 1, 84, '141883958809440', '{\"postSql\":\"\",\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"elementId\":[10],\"cleanRuleList\":[{\"ruleId\":10,\"ruleName\":\"首尾移除空格\",\"ruleConfig\":\"{\\\"toggleCase\\\":{\\\"type\\\":\\\"1\\\"},\\\"nullReplace\\\":{\\\"value\\\":null},\\\"trimSpace\\\":{},\\\"regexValidate\\\":{\\\"pattern\\\":\\\"\\\",\\\"replacement\\\":\\\"\\\",\\\"resultType\\\":\\\"1\\\"},\\\"defaultValueFill\\\":{\\\"value\\\":\\\"\\\"},\\\"dictValueList\\\":[],\\\"tokens\\\":[{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"operator\\\",\\\"value\\\":\\\"+\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"}]}\"}],\"isChecked\":true},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"selectedColumn\":\"\",\"target_columns\":[\"SCHED_NAME\",\"ENTRY_ID\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\"],\"target_table_name\":\"QRTZ_FIRED_TRIGGERS\",\"columns\":[\"SCHED_NAME\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\",\"BLOB_DATA\"],\"typeName\":\"表输出组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAW9JREFUWEftl71LA0EQxd+Lpb1WFkkpAZuQEyvtTbQQBCuxs7KxlNxdwD/Axk4rEW29gK1g45lC8KMNpFMsBEEtxHsiknC7Yi6CJFfclo9l58fMm9ldImWLcR4vmJ4dBp9XuTjrxDWA/MDRMIDcStjl+AFERcVatXk3CDCvUSpSIzc9gUTsUnwcBBAQjQFc7wkEalXKtTtAOaogYE3ilgW5DOAZwGlcJ1QjcRCJLUs/FLhiaXkA+38qWT0oT4n03flwMX5Y/cTZFPTkVi/3jMZolI/xwW1vIbyO637gtNxKWDD39lEy20MZkJVWpS5DAJtA9NoFFUdB5AHdmqbmBIB3QPeW2SchtkG9WPsdQKGhfZ9dykz9lZWsyzre8P57DqVuUmddlnTbp24wZkBJJUtdl9kvRgHjhOYAHhn3EDVD4U3glXlnaUngOYEHS98AuGNqfbwYMw8leSjLUFKGBvP9MaP8+kBL3Vd6GNmxY34CUyDPPWNEMvYAAAAASUVORK5CYII=\",\"target_asset_id\":\"QRTZ_FIRED_TRIGGERS\",\"type\":2,\"parentId\":\"\",\"taskType\":\"DATAX\",\"selectedColumns\":[],\"writerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"target_asset_id\":48,\"datasourceId\":48},\"toColumnsList\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"ENTRY_ID\",\"columnComment\":\"调度器实例id\",\"columnType\":\"VARCHAR\",\"columnLength\":95,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"INSTANCE_NAME\",\"columnComment\":\"调度器实例名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"FIRED_TIME\",\"columnComment\":\"触发的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"SCHED_TIME\",\"columnComment\":\"定时器制定的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"PRIORITY\",\"columnComment\":\"优先级\",\"columnType\":\"INT\",\"columnLength\":4,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"STATE\",\"columnComment\":\"状态\",\"columnType\":\"VARCHAR\",\"columnLength\":16,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_NAME\",\"columnComment\":\"任务名称\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_GROUP\",\"columnComment\":\"任务组名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"IS_NONCONCURRENT\",\"columnComment\":\"是否并发\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"REQUESTS_RECOVERY\",\"columnComment\":\"是否接受恢复执行\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"target_datasource_id\":\"\",\"datasourceId\":\"\",\"where\":\"\",\"batchSize\":\"1024\",\"config\":\"\",\"writeModeType\":2,\"preSql\":\"\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '91');
+INSERT INTO `dpp_etl_node` VALUES (1245, '1', 'DATAX', '表输入组件', '141951101460325', 1, 84, '141883958809440', '{\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\"}],\"datasource_id\":\"\",\"csvFile\":\"\",\"columns\":[\"SCHED_NAME\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\",\"BLOB_DATA\"],\"typeName\":\"表输入组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAXNJREFUWEftlz1LA0EQhp+52J3hYqOVhSklYCMINl7+gYUgWImdlY2lCBb+ABs7rUT0F1iJB1ZiIfjRBtIpgjFfWog7EsR4u2ISQZIr7sqXZee5mXd2Z4WEfRLnyYX1cBB8z1E2+oprAQVhUwcBVI38NscPoIyYwtNZ9q4fYCNhvWDwbjoCoeyK8NgPIBVGUVY7Agm6DFpuA4mXR1kBsxGHVLxFVGoi7ye2ntkU0QPUlOyf8g7BLFmayoSK7P+pZLliY8qobNUifz6+WRA21kEq1cjfs/S5xrE3xHbldPjaXt8sVSM/H9d6KpnroRTISasmLkPAJejLN6j4wATorWPIcUTewNzb5pVJoAzadPQZ0AtHa+09nZq6lZUgTLvs0x3Bf59DiTup0y7rdtsn7mBMgbqVLHld5kyMCmMgRUGP7EGMWVVePeEqrhtYEDgXeHDWrwnsWFovE2PqoW4eSjPULUP9eP64MX4d0BL3lB5EdtyYH6YFnD0Rf7InAAAAAElFTkSuQmCC\",\"asset_id\":\"QRTZ_BLOB_TRIGGERS\",\"type\":1,\"table_name\":\"QRTZ_BLOB_TRIGGERS\",\"logicOperator\":\"and\",\"parentId\":\"\",\"querySql\":\"\",\"taskType\":\"DATAX\",\"dateIncrementConfig\":{\"logic\":\"and\",\"dateFormat\":\"yyyy-MM-dd\",\"column\":[]},\"idIncrementConfig\":{\"incrementColumn\":[],\"incrementStart\":\"\"},\"readerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"datasourceId\":\"\",\"topic\":\"\",\"where\":\"\",\"readModeType\":\"1\",\"batchSize\":\"1024\",\"config\":\"\",\"columnsList\":[{\"colName\":\"SCHED_NAME\",\"dataType\":\"VARCHAR\"},{\"colName\":\"TRIGGER_NAME\",\"dataType\":\"VARCHAR\"},{\"colName\":\"TRIGGER_GROUP\",\"dataType\":\"VARCHAR\"},{\"colName\":\"BLOB_DATA\",\"dataType\":\"BLOB\"}],\"clmt\":\"0\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '1');
 INSERT INTO `dpp_etl_node` VALUES (1246, '1', 'SPARK', '转换组件', '141951104758629', 1, 84, '141883958809440', '{\"mainArgs\":{\"cleanRuleList\":[{\"columns\":\"SCHED_NAME\",\"cleanRules\":[{\"ruleId\":10,\"data\":\"{\\\"toggleCase\\\":{\\\"type\\\":\\\"1\\\"},\\\"nullReplace\\\":{\\\"value\\\":null},\\\"trimSpace\\\":{},\\\"regexValidate\\\":{\\\"pattern\\\":\\\"\\\",\\\"replacement\\\":\\\"\\\",\\\"resultType\\\":\\\"1\\\"},\\\"defaultValueFill\\\":{\\\"value\\\":\\\"\\\"},\\\"dictValueList\\\":[],\\\"tokens\\\":[{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"operator\\\",\\\"value\\\":\\\"+\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"}]}\",\"ruleName\":\"首尾移除空格\"}]},{\"columns\":\"TRIGGER_NAME\",\"cleanRules\":[]},{\"columns\":\"TRIGGER_GROUP\",\"cleanRules\":[]},{\"columns\":\"BLOB_DATA\",\"cleanRules\":[]}]},\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"elementId\":[10],\"cleanRuleList\":[{\"ruleId\":10,\"ruleName\":\"首尾移除空格\",\"ruleConfig\":\"{\\\"toggleCase\\\":{\\\"type\\\":\\\"1\\\"},\\\"nullReplace\\\":{\\\"value\\\":null},\\\"trimSpace\\\":{},\\\"regexValidate\\\":{\\\"pattern\\\":\\\"\\\",\\\"replacement\\\":\\\"\\\",\\\"resultType\\\":\\\"1\\\"},\\\"defaultValueFill\\\":{\\\"value\\\":\\\"\\\"},\\\"dictValueList\\\":[],\\\"tokens\\\":[{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"operator\\\",\\\"value\\\":\\\"+\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"}]}\"}]},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\"}],\"taskType\":\"SPARK\",\"typeName\":\"转换组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAjCAYAAAD8BaggAAAAAXNSR0IArs4c6QAAAtpJREFUWEfN2E1PE1EUBuD3tKVQqbICTYwbjXHlChNDZcrcwYAgC0VpoivFuDAEDP4QQUNY6cKNiaBijHzU2JnSKdVEwh8gRlfE0IUmILVAOWbsNJamdVqdgXbZe+85T9+5c5sZQpV9qMo8qH7Q/Hzw5M4O3wdwFkCjQwkmAfoAuIaEiH7J77EroXA40FRb615mxiGHIIVlkx4Pn5Kk+LfcwC6QpgXvAjxqDq4BWHII1gzAb9Rm5gFFiY8XBamq9JAIg9lBuiFE7IkTIE0L3gL4URaEEUXR75UCjRPhzm8OcUiW45NOgFQ1GCLiZ9k+NC7LsQFHQJFI4ER7e+KT1Y/YE5CqSk+JcI2IX25sHLze3T2bLgXbE5CmSat5x8S7VMrfUwq1V6BLAJ4DcGf3BlSvd7snEHifKkxqT0BGU1WVLhLhFQCPiUp4vdvnC1G2gYxT3GrDMrPMDONcyaGWmN1tQkTXc2ttAWmaNAvgghWo2DgRVmVZP2wbaGKiz93Y+HX7XzC5NamUvy63yW1JKBqVhplxpTIUNwCuY0Q8Jcv6TdsSqgxhPduWhDStdYyI+phpBeAf1m3/zCDCC1nWR2xLaGamq9bnW/9ZCaJwbjJ5xBMKTWayx4MN/2UFJ3Gltjkh9C7bEjIKaZrsBzIJAKfNwsZdd9vlogUrXVtbbDl/ji0J5VBEmTAzAmaDLWZcVhR92grlCMgoGg531Hu9qTkArWaTDDP1Kkrsdbko2xLKNUwkWnzptHsaIGF+lxRCb9o3kHn56oDMGwDtAE0JEevdV5DRfHGxuWZtzXduc/PAx87Ot2WfTbZfsnKTKDWvbFA0GnzAzEPZQs49dahqaz8RPTbBo0Lowzn8357LjEuw+L9plFh/BkC9OTYohD5WFBSJtBx1uTyfAdQ4BCksm97a2jne0bGwUhSUvXukqwCMh7gGh1HfibhfluNT+X2q/+2Hw6lYlq+6hH4BXF3bMxTlLUAAAAAASUVORK5CYII=\",\"datasourceId\":\"\",\"where\":\"\",\"type\":3,\"batchSize\":\"1024\",\"config\":\"\",\"parentId\":\"\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '31');
-INSERT INTO `dpp_etl_node` VALUES (1247, '1', 'DATAX', '表输出组件', '141951127567205', 1, 84, '141883958809440', '{\"postSql\":\"\",\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"elementId\":[10],\"cleanRuleList\":[{\"ruleId\":10,\"ruleName\":\"首尾移除空格\",\"ruleConfig\":\"{\\\"toggleCase\\\":{\\\"type\\\":\\\"1\\\"},\\\"nullReplace\\\":{\\\"value\\\":null},\\\"trimSpace\\\":{},\\\"regexValidate\\\":{\\\"pattern\\\":\\\"\\\",\\\"replacement\\\":\\\"\\\",\\\"resultType\\\":\\\"1\\\"},\\\"defaultValueFill\\\":{\\\"value\\\":\\\"\\\"},\\\"dictValueList\\\":[],\\\"tokens\\\":[{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"operator\\\",\\\"value\\\":\\\"+\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"}]}\"}],\"isChecked\":true},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"selectedColumn\":\"\",\"target_columns\":[\"SCHED_NAME\",\"ENTRY_ID\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\"],\"target_table_name\":\"QRTZ_FIRED_TRIGGERS\",\"columns\":[\"SCHED_NAME\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\",\"BLOB_DATA\"],\"typeName\":\"表输出组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAW9JREFUWEftl71LA0EQxd+Lpb1WFkkpAZuQEyvtTbQQBCuxs7KxlNxdwD/Axk4rEW29gK1g45lC8KMNpFMsBEEtxHsiknC7Yi6CJFfclo9l58fMm9ldImWLcR4vmJ4dBp9XuTjrxDWA/MDRMIDcStjl+AFERcVatXk3CDCvUSpSIzc9gUTsUnwcBBAQjQFc7wkEalXKtTtAOaogYE3ilgW5DOAZwGlcJ1QjcRCJLUs/FLhiaXkA+38qWT0oT4n03flwMX5Y/cTZFPTkVi/3jMZolI/xwW1vIbyO637gtNxKWDD39lEy20MZkJVWpS5DAJtA9NoFFUdB5AHdmqbmBIB3QPeW2SchtkG9WPsdQKGhfZ9dykz9lZWsyzre8P57DqVuUmddlnTbp24wZkBJJUtdl9kvRgHjhOYAHhn3EDVD4U3glXlnaUngOYEHS98AuGNqfbwYMw8leSjLUFKGBvP9MaP8+kBL3Vd6GNmxY34CUyDPPWNEMvYAAAAASUVORK5CYII=\",\"target_asset_id\":\"QRTZ_FIRED_TRIGGERS\",\"type\":2,\"parentId\":\"\",\"taskType\":\"DATAX\",\"selectedColumns\":[],\"writerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"Iqo0tpF$~8R$Zn1yvhJA\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"target_asset_id\":48,\"datasourceId\":48},\"toColumnsList\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"ENTRY_ID\",\"columnComment\":\"调度器实例id\",\"columnType\":\"VARCHAR\",\"columnLength\":95,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"INSTANCE_NAME\",\"columnComment\":\"调度器实例名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"FIRED_TIME\",\"columnComment\":\"触发的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"SCHED_TIME\",\"columnComment\":\"定时器制定的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"PRIORITY\",\"columnComment\":\"优先级\",\"columnType\":\"INT\",\"columnLength\":4,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"STATE\",\"columnComment\":\"状态\",\"columnType\":\"VARCHAR\",\"columnLength\":16,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_NAME\",\"columnComment\":\"任务名称\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_GROUP\",\"columnComment\":\"任务组名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"IS_NONCONCURRENT\",\"columnComment\":\"是否并发\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"REQUESTS_RECOVERY\",\"columnComment\":\"是否接受恢复执行\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"target_datasource_id\":\"\",\"datasourceId\":\"\",\"where\":\"\",\"batchSize\":\"1024\",\"config\":\"\",\"writeModeType\":2,\"preSql\":\"\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '91');
-INSERT INTO `dpp_etl_node` VALUES (1248, '1', 'DATAX', '表输入组件', '141951101460326', 1, 84, '141883958809440', '{\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\"}],\"datasource_id\":\"\",\"csvFile\":\"\",\"columns\":[\"SCHED_NAME\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\",\"BLOB_DATA\"],\"typeName\":\"表输入组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAXNJREFUWEftlz1LA0EQhp+52J3hYqOVhSklYCMINl7+gYUgWImdlY2lCBb+ABs7rUT0F1iJB1ZiIfjRBtIpgjFfWog7EsR4u2ISQZIr7sqXZee5mXd2Z4WEfRLnyYX1cBB8z1E2+oprAQVhUwcBVI38NscPoIyYwtNZ9q4fYCNhvWDwbjoCoeyK8NgPIBVGUVY7Agm6DFpuA4mXR1kBsxGHVLxFVGoi7ye2ntkU0QPUlOyf8g7BLFmayoSK7P+pZLliY8qobNUifz6+WRA21kEq1cjfs/S5xrE3xHbldPjaXt8sVSM/H9d6KpnroRTISasmLkPAJejLN6j4wATorWPIcUTewNzb5pVJoAzadPQZ0AtHa+09nZq6lZUgTLvs0x3Bf59DiTup0y7rdtsn7mBMgbqVLHld5kyMCmMgRUGP7EGMWVVePeEqrhtYEDgXeHDWrwnsWFovE2PqoW4eSjPULUP9eP64MX4d0BL3lB5EdtyYH6YFnD0Rf7InAAAAAElFTkSuQmCC\",\"asset_id\":\"QRTZ_BLOB_TRIGGERS\",\"type\":1,\"table_name\":\"QRTZ_BLOB_TRIGGERS\",\"logicOperator\":\"and\",\"parentId\":\"\",\"querySql\":\"\",\"taskType\":\"DATAX\",\"dateIncrementConfig\":{\"logic\":\"and\",\"dateFormat\":\"yyyy-MM-dd\",\"column\":[]},\"idIncrementConfig\":{\"incrementColumn\":[],\"incrementStart\":\"\"},\"readerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"Iqo0tpF$~8R$Zn1yvhJA\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"datasourceId\":\"\",\"topic\":\"\",\"where\":\"\",\"readModeType\":\"1\",\"batchSize\":\"1024\",\"config\":\"\",\"columnsList\":[{\"colName\":\"SCHED_NAME\",\"dataType\":\"VARCHAR\"},{\"colName\":\"TRIGGER_NAME\",\"dataType\":\"VARCHAR\"},{\"colName\":\"TRIGGER_GROUP\",\"dataType\":\"VARCHAR\"},{\"colName\":\"BLOB_DATA\",\"dataType\":\"BLOB\"}],\"clmt\":\"0\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '1');
+INSERT INTO `dpp_etl_node` VALUES (1247, '1', 'DATAX', '表输出组件', '141951127567205', 1, 84, '141883958809440', '{\"postSql\":\"\",\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"elementId\":[10],\"cleanRuleList\":[{\"ruleId\":10,\"ruleName\":\"首尾移除空格\",\"ruleConfig\":\"{\\\"toggleCase\\\":{\\\"type\\\":\\\"1\\\"},\\\"nullReplace\\\":{\\\"value\\\":null},\\\"trimSpace\\\":{},\\\"regexValidate\\\":{\\\"pattern\\\":\\\"\\\",\\\"replacement\\\":\\\"\\\",\\\"resultType\\\":\\\"1\\\"},\\\"defaultValueFill\\\":{\\\"value\\\":\\\"\\\"},\\\"dictValueList\\\":[],\\\"tokens\\\":[{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"operator\\\",\\\"value\\\":\\\"+\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"}]}\"}],\"isChecked\":true},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"selectedColumn\":\"\",\"target_columns\":[\"SCHED_NAME\",\"ENTRY_ID\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\"],\"target_table_name\":\"QRTZ_FIRED_TRIGGERS\",\"columns\":[\"SCHED_NAME\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\",\"BLOB_DATA\"],\"typeName\":\"表输出组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAW9JREFUWEftl71LA0EQxd+Lpb1WFkkpAZuQEyvtTbQQBCuxs7KxlNxdwD/Axk4rEW29gK1g45lC8KMNpFMsBEEtxHsiknC7Yi6CJFfclo9l58fMm9ldImWLcR4vmJ4dBp9XuTjrxDWA/MDRMIDcStjl+AFERcVatXk3CDCvUSpSIzc9gUTsUnwcBBAQjQFc7wkEalXKtTtAOaogYE3ilgW5DOAZwGlcJ1QjcRCJLUs/FLhiaXkA+38qWT0oT4n03flwMX5Y/cTZFPTkVi/3jMZolI/xwW1vIbyO637gtNxKWDD39lEy20MZkJVWpS5DAJtA9NoFFUdB5AHdmqbmBIB3QPeW2SchtkG9WPsdQKGhfZ9dykz9lZWsyzre8P57DqVuUmddlnTbp24wZkBJJUtdl9kvRgHjhOYAHhn3EDVD4U3glXlnaUngOYEHS98AuGNqfbwYMw8leSjLUFKGBvP9MaP8+kBL3Vd6GNmxY34CUyDPPWNEMvYAAAAASUVORK5CYII=\",\"target_asset_id\":\"QRTZ_FIRED_TRIGGERS\",\"type\":2,\"parentId\":\"\",\"taskType\":\"DATAX\",\"selectedColumns\":[],\"writerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"target_asset_id\":48,\"datasourceId\":48},\"toColumnsList\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"ENTRY_ID\",\"columnComment\":\"调度器实例id\",\"columnType\":\"VARCHAR\",\"columnLength\":95,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"INSTANCE_NAME\",\"columnComment\":\"调度器实例名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"FIRED_TIME\",\"columnComment\":\"触发的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"SCHED_TIME\",\"columnComment\":\"定时器制定的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"PRIORITY\",\"columnComment\":\"优先级\",\"columnType\":\"INT\",\"columnLength\":4,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"STATE\",\"columnComment\":\"状态\",\"columnType\":\"VARCHAR\",\"columnLength\":16,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_NAME\",\"columnComment\":\"任务名称\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_GROUP\",\"columnComment\":\"任务组名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"IS_NONCONCURRENT\",\"columnComment\":\"是否并发\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"REQUESTS_RECOVERY\",\"columnComment\":\"是否接受恢复执行\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"target_datasource_id\":\"\",\"datasourceId\":\"\",\"where\":\"\",\"batchSize\":\"1024\",\"config\":\"\",\"writeModeType\":2,\"preSql\":\"\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '91');
+INSERT INTO `dpp_etl_node` VALUES (1248, '1', 'DATAX', '表输入组件', '141951101460326', 1, 84, '141883958809440', '{\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\"}],\"datasource_id\":\"\",\"csvFile\":\"\",\"columns\":[\"SCHED_NAME\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\",\"BLOB_DATA\"],\"typeName\":\"表输入组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAXNJREFUWEftlz1LA0EQhp+52J3hYqOVhSklYCMINl7+gYUgWImdlY2lCBb+ABs7rUT0F1iJB1ZiIfjRBtIpgjFfWog7EsR4u2ISQZIr7sqXZee5mXd2Z4WEfRLnyYX1cBB8z1E2+oprAQVhUwcBVI38NscPoIyYwtNZ9q4fYCNhvWDwbjoCoeyK8NgPIBVGUVY7Agm6DFpuA4mXR1kBsxGHVLxFVGoi7ye2ntkU0QPUlOyf8g7BLFmayoSK7P+pZLliY8qobNUifz6+WRA21kEq1cjfs/S5xrE3xHbldPjaXt8sVSM/H9d6KpnroRTISasmLkPAJejLN6j4wATorWPIcUTewNzb5pVJoAzadPQZ0AtHa+09nZq6lZUgTLvs0x3Bf59DiTup0y7rdtsn7mBMgbqVLHld5kyMCmMgRUGP7EGMWVVePeEqrhtYEDgXeHDWrwnsWFovE2PqoW4eSjPULUP9eP64MX4d0BL3lB5EdtyYH6YFnD0Rf7InAAAAAElFTkSuQmCC\",\"asset_id\":\"QRTZ_BLOB_TRIGGERS\",\"type\":1,\"table_name\":\"QRTZ_BLOB_TRIGGERS\",\"logicOperator\":\"and\",\"parentId\":\"\",\"querySql\":\"\",\"taskType\":\"DATAX\",\"dateIncrementConfig\":{\"logic\":\"and\",\"dateFormat\":\"yyyy-MM-dd\",\"column\":[]},\"idIncrementConfig\":{\"incrementColumn\":[],\"incrementStart\":\"\"},\"readerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"datasourceId\":\"\",\"topic\":\"\",\"where\":\"\",\"readModeType\":\"1\",\"batchSize\":\"1024\",\"config\":\"\",\"columnsList\":[{\"colName\":\"SCHED_NAME\",\"dataType\":\"VARCHAR\"},{\"colName\":\"TRIGGER_NAME\",\"dataType\":\"VARCHAR\"},{\"colName\":\"TRIGGER_GROUP\",\"dataType\":\"VARCHAR\"},{\"colName\":\"BLOB_DATA\",\"dataType\":\"BLOB\"}],\"clmt\":\"0\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '1');
 INSERT INTO `dpp_etl_node` VALUES (1249, '1', 'SPARK', '转换组件', '141951104758630', 1, 84, '141883958809440', '{\"mainArgs\":{\"cleanRuleList\":[{\"columns\":\"SCHED_NAME\",\"cleanRules\":[{\"ruleId\":10,\"data\":\"{\\\"toggleCase\\\":{\\\"type\\\":\\\"1\\\"},\\\"nullReplace\\\":{\\\"value\\\":null},\\\"trimSpace\\\":{},\\\"regexValidate\\\":{\\\"pattern\\\":\\\"\\\",\\\"replacement\\\":\\\"\\\",\\\"resultType\\\":\\\"1\\\"},\\\"defaultValueFill\\\":{\\\"value\\\":\\\"\\\"},\\\"dictValueList\\\":[],\\\"tokens\\\":[{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"operator\\\",\\\"value\\\":\\\"+\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"}]}\",\"ruleName\":\"首尾移除空格\"}]},{\"columns\":\"TRIGGER_NAME\",\"cleanRules\":[]},{\"columns\":\"TRIGGER_GROUP\",\"cleanRules\":[]},{\"columns\":\"BLOB_DATA\",\"cleanRules\":[]}]},\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"elementId\":[10],\"cleanRuleList\":[{\"ruleId\":10,\"ruleName\":\"首尾移除空格\",\"ruleConfig\":\"{\\\"toggleCase\\\":{\\\"type\\\":\\\"1\\\"},\\\"nullReplace\\\":{\\\"value\\\":null},\\\"trimSpace\\\":{},\\\"regexValidate\\\":{\\\"pattern\\\":\\\"\\\",\\\"replacement\\\":\\\"\\\",\\\"resultType\\\":\\\"1\\\"},\\\"defaultValueFill\\\":{\\\"value\\\":\\\"\\\"},\\\"dictValueList\\\":[],\\\"tokens\\\":[{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"operator\\\",\\\"value\\\":\\\"+\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"}]}\"}]},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\"}],\"taskType\":\"SPARK\",\"typeName\":\"转换组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAjCAYAAAD8BaggAAAAAXNSR0IArs4c6QAAAtpJREFUWEfN2E1PE1EUBuD3tKVQqbICTYwbjXHlChNDZcrcwYAgC0VpoivFuDAEDP4QQUNY6cKNiaBijHzU2JnSKdVEwh8gRlfE0IUmILVAOWbsNJamdVqdgXbZe+85T9+5c5sZQpV9qMo8qH7Q/Hzw5M4O3wdwFkCjQwkmAfoAuIaEiH7J77EroXA40FRb615mxiGHIIVlkx4Pn5Kk+LfcwC6QpgXvAjxqDq4BWHII1gzAb9Rm5gFFiY8XBamq9JAIg9lBuiFE7IkTIE0L3gL4URaEEUXR75UCjRPhzm8OcUiW45NOgFQ1GCLiZ9k+NC7LsQFHQJFI4ER7e+KT1Y/YE5CqSk+JcI2IX25sHLze3T2bLgXbE5CmSat5x8S7VMrfUwq1V6BLAJ4DcGf3BlSvd7snEHifKkxqT0BGU1WVLhLhFQCPiUp4vdvnC1G2gYxT3GrDMrPMDONcyaGWmN1tQkTXc2ttAWmaNAvgghWo2DgRVmVZP2wbaGKiz93Y+HX7XzC5NamUvy63yW1JKBqVhplxpTIUNwCuY0Q8Jcv6TdsSqgxhPduWhDStdYyI+phpBeAf1m3/zCDCC1nWR2xLaGamq9bnW/9ZCaJwbjJ5xBMKTWayx4MN/2UFJ3Gltjkh9C7bEjIKaZrsBzIJAKfNwsZdd9vlogUrXVtbbDl/ji0J5VBEmTAzAmaDLWZcVhR92grlCMgoGg531Hu9qTkArWaTDDP1Kkrsdbko2xLKNUwkWnzptHsaIGF+lxRCb9o3kHn56oDMGwDtAE0JEevdV5DRfHGxuWZtzXduc/PAx87Ot2WfTbZfsnKTKDWvbFA0GnzAzEPZQs49dahqaz8RPTbBo0Lowzn8357LjEuw+L9plFh/BkC9OTYohD5WFBSJtBx1uTyfAdQ4BCksm97a2jne0bGwUhSUvXukqwCMh7gGh1HfibhfluNT+X2q/+2Hw6lYlq+6hH4BXF3bMxTlLUAAAAAASUVORK5CYII=\",\"datasourceId\":\"\",\"where\":\"\",\"type\":3,\"batchSize\":\"1024\",\"config\":\"\",\"parentId\":\"\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '31');
-INSERT INTO `dpp_etl_node` VALUES (1250, '1', 'DATAX', '表输出组件', '141951127567206', 1, 84, '141883958809440', '{\"postSql\":\"\",\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"elementId\":[10],\"cleanRuleList\":[{\"ruleId\":10,\"ruleName\":\"首尾移除空格\",\"ruleConfig\":\"{\\\"toggleCase\\\":{\\\"type\\\":\\\"1\\\"},\\\"nullReplace\\\":{\\\"value\\\":null},\\\"trimSpace\\\":{},\\\"regexValidate\\\":{\\\"pattern\\\":\\\"\\\",\\\"replacement\\\":\\\"\\\",\\\"resultType\\\":\\\"1\\\"},\\\"defaultValueFill\\\":{\\\"value\\\":\\\"\\\"},\\\"dictValueList\\\":[],\\\"tokens\\\":[{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"operator\\\",\\\"value\\\":\\\"+\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"}]}\"}],\"isChecked\":true},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"selectedColumn\":\"\",\"target_columns\":[\"SCHED_NAME\",\"ENTRY_ID\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\"],\"target_table_name\":\"QRTZ_FIRED_TRIGGERS\",\"columns\":[\"SCHED_NAME\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\",\"BLOB_DATA\"],\"typeName\":\"表输出组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAW9JREFUWEftl71LA0EQxd+Lpb1WFkkpAZuQEyvtTbQQBCuxs7KxlNxdwD/Axk4rEW29gK1g45lC8KMNpFMsBEEtxHsiknC7Yi6CJFfclo9l58fMm9ldImWLcR4vmJ4dBp9XuTjrxDWA/MDRMIDcStjl+AFERcVatXk3CDCvUSpSIzc9gUTsUnwcBBAQjQFc7wkEalXKtTtAOaogYE3ilgW5DOAZwGlcJ1QjcRCJLUs/FLhiaXkA+38qWT0oT4n03flwMX5Y/cTZFPTkVi/3jMZolI/xwW1vIbyO637gtNxKWDD39lEy20MZkJVWpS5DAJtA9NoFFUdB5AHdmqbmBIB3QPeW2SchtkG9WPsdQKGhfZ9dykz9lZWsyzre8P57DqVuUmddlnTbp24wZkBJJUtdl9kvRgHjhOYAHhn3EDVD4U3glXlnaUngOYEHS98AuGNqfbwYMw8leSjLUFKGBvP9MaP8+kBL3Vd6GNmxY34CUyDPPWNEMvYAAAAASUVORK5CYII=\",\"target_asset_id\":\"QRTZ_FIRED_TRIGGERS\",\"type\":2,\"parentId\":\"\",\"taskType\":\"DATAX\",\"selectedColumns\":[],\"writerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"Iqo0tpF$~8R$Zn1yvhJA\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"target_asset_id\":48,\"datasourceId\":48},\"toColumnsList\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"ENTRY_ID\",\"columnComment\":\"调度器实例id\",\"columnType\":\"VARCHAR\",\"columnLength\":95,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"INSTANCE_NAME\",\"columnComment\":\"调度器实例名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"FIRED_TIME\",\"columnComment\":\"触发的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"SCHED_TIME\",\"columnComment\":\"定时器制定的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"PRIORITY\",\"columnComment\":\"优先级\",\"columnType\":\"INT\",\"columnLength\":4,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"STATE\",\"columnComment\":\"状态\",\"columnType\":\"VARCHAR\",\"columnLength\":16,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_NAME\",\"columnComment\":\"任务名称\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_GROUP\",\"columnComment\":\"任务组名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"IS_NONCONCURRENT\",\"columnComment\":\"是否并发\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"REQUESTS_RECOVERY\",\"columnComment\":\"是否接受恢复执行\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"target_datasource_id\":\"\",\"datasourceId\":\"\",\"where\":\"\",\"batchSize\":\"1024\",\"config\":\"\",\"writeModeType\":2,\"preSql\":\"\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '91');
-INSERT INTO `dpp_etl_node` VALUES (1251, '1', 'DATAX', '表输入组件', '141951101460327', 1, 84, '141883958809440', '{\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\"}],\"datasource_id\":\"\",\"csvFile\":\"\",\"columns\":[\"SCHED_NAME\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\",\"BLOB_DATA\"],\"typeName\":\"表输入组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAXNJREFUWEftlz1LA0EQhp+52J3hYqOVhSklYCMINl7+gYUgWImdlY2lCBb+ABs7rUT0F1iJB1ZiIfjRBtIpgjFfWog7EsR4u2ISQZIr7sqXZee5mXd2Z4WEfRLnyYX1cBB8z1E2+oprAQVhUwcBVI38NscPoIyYwtNZ9q4fYCNhvWDwbjoCoeyK8NgPIBVGUVY7Agm6DFpuA4mXR1kBsxGHVLxFVGoi7ye2ntkU0QPUlOyf8g7BLFmayoSK7P+pZLliY8qobNUifz6+WRA21kEq1cjfs/S5xrE3xHbldPjaXt8sVSM/H9d6KpnroRTISasmLkPAJejLN6j4wATorWPIcUTewNzb5pVJoAzadPQZ0AtHa+09nZq6lZUgTLvs0x3Bf59DiTup0y7rdtsn7mBMgbqVLHld5kyMCmMgRUGP7EGMWVVePeEqrhtYEDgXeHDWrwnsWFovE2PqoW4eSjPULUP9eP64MX4d0BL3lB5EdtyYH6YFnD0Rf7InAAAAAElFTkSuQmCC\",\"asset_id\":\"QRTZ_BLOB_TRIGGERS\",\"type\":1,\"table_name\":\"QRTZ_BLOB_TRIGGERS\",\"logicOperator\":\"and\",\"parentId\":\"\",\"querySql\":\"\",\"taskType\":\"DATAX\",\"dateIncrementConfig\":{\"logic\":\"and\",\"dateFormat\":\"yyyy-MM-dd\",\"column\":[]},\"idIncrementConfig\":{\"incrementColumn\":[],\"incrementStart\":\"\"},\"readerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"Iqo0tpF$~8R$Zn1yvhJA\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"datasourceId\":\"\",\"topic\":\"\",\"where\":\"\",\"readModeType\":\"1\",\"batchSize\":\"1024\",\"config\":\"\",\"columnsList\":[{\"colName\":\"SCHED_NAME\",\"dataType\":\"VARCHAR\"},{\"colName\":\"TRIGGER_NAME\",\"dataType\":\"VARCHAR\"},{\"colName\":\"TRIGGER_GROUP\",\"dataType\":\"VARCHAR\"},{\"colName\":\"BLOB_DATA\",\"dataType\":\"BLOB\"}],\"clmt\":\"0\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '1');
+INSERT INTO `dpp_etl_node` VALUES (1250, '1', 'DATAX', '表输出组件', '141951127567206', 1, 84, '141883958809440', '{\"postSql\":\"\",\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"elementId\":[10],\"cleanRuleList\":[{\"ruleId\":10,\"ruleName\":\"首尾移除空格\",\"ruleConfig\":\"{\\\"toggleCase\\\":{\\\"type\\\":\\\"1\\\"},\\\"nullReplace\\\":{\\\"value\\\":null},\\\"trimSpace\\\":{},\\\"regexValidate\\\":{\\\"pattern\\\":\\\"\\\",\\\"replacement\\\":\\\"\\\",\\\"resultType\\\":\\\"1\\\"},\\\"defaultValueFill\\\":{\\\"value\\\":\\\"\\\"},\\\"dictValueList\\\":[],\\\"tokens\\\":[{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"operator\\\",\\\"value\\\":\\\"+\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"}]}\"}],\"isChecked\":true},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"selectedColumn\":\"\",\"target_columns\":[\"SCHED_NAME\",\"ENTRY_ID\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\"],\"target_table_name\":\"QRTZ_FIRED_TRIGGERS\",\"columns\":[\"SCHED_NAME\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\",\"BLOB_DATA\"],\"typeName\":\"表输出组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAW9JREFUWEftl71LA0EQxd+Lpb1WFkkpAZuQEyvtTbQQBCuxs7KxlNxdwD/Axk4rEW29gK1g45lC8KMNpFMsBEEtxHsiknC7Yi6CJFfclo9l58fMm9ldImWLcR4vmJ4dBp9XuTjrxDWA/MDRMIDcStjl+AFERcVatXk3CDCvUSpSIzc9gUTsUnwcBBAQjQFc7wkEalXKtTtAOaogYE3ilgW5DOAZwGlcJ1QjcRCJLUs/FLhiaXkA+38qWT0oT4n03flwMX5Y/cTZFPTkVi/3jMZolI/xwW1vIbyO637gtNxKWDD39lEy20MZkJVWpS5DAJtA9NoFFUdB5AHdmqbmBIB3QPeW2SchtkG9WPsdQKGhfZ9dykz9lZWsyzre8P57DqVuUmddlnTbp24wZkBJJUtdl9kvRgHjhOYAHhn3EDVD4U3glXlnaUngOYEHS98AuGNqfbwYMw8leSjLUFKGBvP9MaP8+kBL3Vd6GNmxY34CUyDPPWNEMvYAAAAASUVORK5CYII=\",\"target_asset_id\":\"QRTZ_FIRED_TRIGGERS\",\"type\":2,\"parentId\":\"\",\"taskType\":\"DATAX\",\"selectedColumns\":[],\"writerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"target_asset_id\":48,\"datasourceId\":48},\"toColumnsList\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"ENTRY_ID\",\"columnComment\":\"调度器实例id\",\"columnType\":\"VARCHAR\",\"columnLength\":95,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"INSTANCE_NAME\",\"columnComment\":\"调度器实例名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"FIRED_TIME\",\"columnComment\":\"触发的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"SCHED_TIME\",\"columnComment\":\"定时器制定的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"PRIORITY\",\"columnComment\":\"优先级\",\"columnType\":\"INT\",\"columnLength\":4,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"STATE\",\"columnComment\":\"状态\",\"columnType\":\"VARCHAR\",\"columnLength\":16,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_NAME\",\"columnComment\":\"任务名称\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_GROUP\",\"columnComment\":\"任务组名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"IS_NONCONCURRENT\",\"columnComment\":\"是否并发\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"REQUESTS_RECOVERY\",\"columnComment\":\"是否接受恢复执行\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"target_datasource_id\":\"\",\"datasourceId\":\"\",\"where\":\"\",\"batchSize\":\"1024\",\"config\":\"\",\"writeModeType\":2,\"preSql\":\"\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '91');
+INSERT INTO `dpp_etl_node` VALUES (1251, '1', 'DATAX', '表输入组件', '141951101460327', 1, 84, '141883958809440', '{\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\"}],\"datasource_id\":\"\",\"csvFile\":\"\",\"columns\":[\"SCHED_NAME\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\",\"BLOB_DATA\"],\"typeName\":\"表输入组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAXNJREFUWEftlz1LA0EQhp+52J3hYqOVhSklYCMINl7+gYUgWImdlY2lCBb+ABs7rUT0F1iJB1ZiIfjRBtIpgjFfWog7EsR4u2ISQZIr7sqXZee5mXd2Z4WEfRLnyYX1cBB8z1E2+oprAQVhUwcBVI38NscPoIyYwtNZ9q4fYCNhvWDwbjoCoeyK8NgPIBVGUVY7Agm6DFpuA4mXR1kBsxGHVLxFVGoi7ye2ntkU0QPUlOyf8g7BLFmayoSK7P+pZLliY8qobNUifz6+WRA21kEq1cjfs/S5xrE3xHbldPjaXt8sVSM/H9d6KpnroRTISasmLkPAJejLN6j4wATorWPIcUTewNzb5pVJoAzadPQZ0AtHa+09nZq6lZUgTLvs0x3Bf59DiTup0y7rdtsn7mBMgbqVLHld5kyMCmMgRUGP7EGMWVVePeEqrhtYEDgXeHDWrwnsWFovE2PqoW4eSjPULUP9eP64MX4d0BL3lB5EdtyYH6YFnD0Rf7InAAAAAElFTkSuQmCC\",\"asset_id\":\"QRTZ_BLOB_TRIGGERS\",\"type\":1,\"table_name\":\"QRTZ_BLOB_TRIGGERS\",\"logicOperator\":\"and\",\"parentId\":\"\",\"querySql\":\"\",\"taskType\":\"DATAX\",\"dateIncrementConfig\":{\"logic\":\"and\",\"dateFormat\":\"yyyy-MM-dd\",\"column\":[]},\"idIncrementConfig\":{\"incrementColumn\":[],\"incrementStart\":\"\"},\"readerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"datasourceId\":\"\",\"topic\":\"\",\"where\":\"\",\"readModeType\":\"1\",\"batchSize\":\"1024\",\"config\":\"\",\"columnsList\":[{\"colName\":\"SCHED_NAME\",\"dataType\":\"VARCHAR\"},{\"colName\":\"TRIGGER_NAME\",\"dataType\":\"VARCHAR\"},{\"colName\":\"TRIGGER_GROUP\",\"dataType\":\"VARCHAR\"},{\"colName\":\"BLOB_DATA\",\"dataType\":\"BLOB\"}],\"clmt\":\"0\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '1');
 INSERT INTO `dpp_etl_node` VALUES (1252, '1', 'SPARK', '转换组件', '141951104758631', 1, 84, '141883958809440', '{\"mainArgs\":{\"cleanRuleList\":[{\"columns\":\"SCHED_NAME\",\"cleanRules\":[{\"ruleId\":10,\"data\":\"{\\\"toggleCase\\\":{\\\"type\\\":\\\"1\\\"},\\\"nullReplace\\\":{\\\"value\\\":null},\\\"trimSpace\\\":{},\\\"regexValidate\\\":{\\\"pattern\\\":\\\"\\\",\\\"replacement\\\":\\\"\\\",\\\"resultType\\\":\\\"1\\\"},\\\"defaultValueFill\\\":{\\\"value\\\":\\\"\\\"},\\\"dictValueList\\\":[],\\\"tokens\\\":[{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"operator\\\",\\\"value\\\":\\\"+\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"}]}\",\"ruleName\":\"首尾移除空格\"}]},{\"columns\":\"TRIGGER_NAME\",\"cleanRules\":[]},{\"columns\":\"TRIGGER_GROUP\",\"cleanRules\":[]},{\"columns\":\"BLOB_DATA\",\"cleanRules\":[]}]},\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"elementId\":[10],\"cleanRuleList\":[{\"ruleId\":10,\"ruleName\":\"首尾移除空格\",\"ruleConfig\":\"{\\\"toggleCase\\\":{\\\"type\\\":\\\"1\\\"},\\\"nullReplace\\\":{\\\"value\\\":null},\\\"trimSpace\\\":{},\\\"regexValidate\\\":{\\\"pattern\\\":\\\"\\\",\\\"replacement\\\":\\\"\\\",\\\"resultType\\\":\\\"1\\\"},\\\"defaultValueFill\\\":{\\\"value\\\":\\\"\\\"},\\\"dictValueList\\\":[],\\\"tokens\\\":[{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"operator\\\",\\\"value\\\":\\\"+\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"}]}\"}]},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\"}],\"taskType\":\"SPARK\",\"typeName\":\"转换组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAjCAYAAAD8BaggAAAAAXNSR0IArs4c6QAAAtpJREFUWEfN2E1PE1EUBuD3tKVQqbICTYwbjXHlChNDZcrcwYAgC0VpoivFuDAEDP4QQUNY6cKNiaBijHzU2JnSKdVEwh8gRlfE0IUmILVAOWbsNJamdVqdgXbZe+85T9+5c5sZQpV9qMo8qH7Q/Hzw5M4O3wdwFkCjQwkmAfoAuIaEiH7J77EroXA40FRb615mxiGHIIVlkx4Pn5Kk+LfcwC6QpgXvAjxqDq4BWHII1gzAb9Rm5gFFiY8XBamq9JAIg9lBuiFE7IkTIE0L3gL4URaEEUXR75UCjRPhzm8OcUiW45NOgFQ1GCLiZ9k+NC7LsQFHQJFI4ER7e+KT1Y/YE5CqSk+JcI2IX25sHLze3T2bLgXbE5CmSat5x8S7VMrfUwq1V6BLAJ4DcGf3BlSvd7snEHifKkxqT0BGU1WVLhLhFQCPiUp4vdvnC1G2gYxT3GrDMrPMDONcyaGWmN1tQkTXc2ttAWmaNAvgghWo2DgRVmVZP2wbaGKiz93Y+HX7XzC5NamUvy63yW1JKBqVhplxpTIUNwCuY0Q8Jcv6TdsSqgxhPduWhDStdYyI+phpBeAf1m3/zCDCC1nWR2xLaGamq9bnW/9ZCaJwbjJ5xBMKTWayx4MN/2UFJ3Gltjkh9C7bEjIKaZrsBzIJAKfNwsZdd9vlogUrXVtbbDl/ji0J5VBEmTAzAmaDLWZcVhR92grlCMgoGg531Hu9qTkArWaTDDP1Kkrsdbko2xLKNUwkWnzptHsaIGF+lxRCb9o3kHn56oDMGwDtAE0JEevdV5DRfHGxuWZtzXduc/PAx87Ot2WfTbZfsnKTKDWvbFA0GnzAzEPZQs49dahqaz8RPTbBo0Lowzn8357LjEuw+L9plFh/BkC9OTYohD5WFBSJtBx1uTyfAdQ4BCksm97a2jne0bGwUhSUvXukqwCMh7gGh1HfibhfluNT+X2q/+2Hw6lYlq+6hH4BXF3bMxTlLUAAAAAASUVORK5CYII=\",\"datasourceId\":\"\",\"where\":\"\",\"type\":3,\"batchSize\":\"1024\",\"config\":\"\",\"parentId\":\"\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '31');
-INSERT INTO `dpp_etl_node` VALUES (1253, '1', 'DATAX', '表输出组件', '141951127567207', 1, 84, '141883958809440', '{\"postSql\":\"\",\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"elementId\":[10],\"cleanRuleList\":[{\"ruleId\":10,\"ruleName\":\"首尾移除空格\",\"ruleConfig\":\"{\\\"toggleCase\\\":{\\\"type\\\":\\\"1\\\"},\\\"nullReplace\\\":{\\\"value\\\":null},\\\"trimSpace\\\":{},\\\"regexValidate\\\":{\\\"pattern\\\":\\\"\\\",\\\"replacement\\\":\\\"\\\",\\\"resultType\\\":\\\"1\\\"},\\\"defaultValueFill\\\":{\\\"value\\\":\\\"\\\"},\\\"dictValueList\\\":[],\\\"tokens\\\":[{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"operator\\\",\\\"value\\\":\\\"+\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"}]}\"}],\"isChecked\":true},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"selectedColumn\":\"\",\"target_columns\":[\"SCHED_NAME\",\"ENTRY_ID\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\"],\"target_table_name\":\"QRTZ_FIRED_TRIGGERS\",\"columns\":[\"SCHED_NAME\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\",\"BLOB_DATA\"],\"typeName\":\"表输出组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAW9JREFUWEftl71LA0EQxd+Lpb1WFkkpAZuQEyvtTbQQBCuxs7KxlNxdwD/Axk4rEW29gK1g45lC8KMNpFMsBEEtxHsiknC7Yi6CJFfclo9l58fMm9ldImWLcR4vmJ4dBp9XuTjrxDWA/MDRMIDcStjl+AFERcVatXk3CDCvUSpSIzc9gUTsUnwcBBAQjQFc7wkEalXKtTtAOaogYE3ilgW5DOAZwGlcJ1QjcRCJLUs/FLhiaXkA+38qWT0oT4n03flwMX5Y/cTZFPTkVi/3jMZolI/xwW1vIbyO637gtNxKWDD39lEy20MZkJVWpS5DAJtA9NoFFUdB5AHdmqbmBIB3QPeW2SchtkG9WPsdQKGhfZ9dykz9lZWsyzre8P57DqVuUmddlnTbp24wZkBJJUtdl9kvRgHjhOYAHhn3EDVD4U3glXlnaUngOYEHS98AuGNqfbwYMw8leSjLUFKGBvP9MaP8+kBL3Vd6GNmxY34CUyDPPWNEMvYAAAAASUVORK5CYII=\",\"target_asset_id\":\"QRTZ_FIRED_TRIGGERS\",\"type\":2,\"parentId\":\"\",\"taskType\":\"DATAX\",\"selectedColumns\":[],\"writerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"Iqo0tpF$~8R$Zn1yvhJA\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"target_asset_id\":48,\"datasourceId\":48},\"toColumnsList\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"ENTRY_ID\",\"columnComment\":\"调度器实例id\",\"columnType\":\"VARCHAR\",\"columnLength\":95,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"INSTANCE_NAME\",\"columnComment\":\"调度器实例名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"FIRED_TIME\",\"columnComment\":\"触发的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"SCHED_TIME\",\"columnComment\":\"定时器制定的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"PRIORITY\",\"columnComment\":\"优先级\",\"columnType\":\"INT\",\"columnLength\":4,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"STATE\",\"columnComment\":\"状态\",\"columnType\":\"VARCHAR\",\"columnLength\":16,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_NAME\",\"columnComment\":\"任务名称\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_GROUP\",\"columnComment\":\"任务组名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"IS_NONCONCURRENT\",\"columnComment\":\"是否并发\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"REQUESTS_RECOVERY\",\"columnComment\":\"是否接受恢复执行\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"target_datasource_id\":\"\",\"datasourceId\":\"\",\"where\":\"\",\"batchSize\":\"1024\",\"config\":\"\",\"writeModeType\":2,\"preSql\":\"\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '91');
-INSERT INTO `dpp_etl_node` VALUES (1254, '1', 'DATAX', '表输入组件', '141951101460328', 1, 84, '141883958809440', '{\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\"}],\"datasource_id\":\"\",\"csvFile\":\"\",\"columns\":[\"SCHED_NAME\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\",\"BLOB_DATA\"],\"typeName\":\"表输入组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAXNJREFUWEftlz1LA0EQhp+52J3hYqOVhSklYCMINl7+gYUgWImdlY2lCBb+ABs7rUT0F1iJB1ZiIfjRBtIpgjFfWog7EsR4u2ISQZIr7sqXZee5mXd2Z4WEfRLnyYX1cBB8z1E2+oprAQVhUwcBVI38NscPoIyYwtNZ9q4fYCNhvWDwbjoCoeyK8NgPIBVGUVY7Agm6DFpuA4mXR1kBsxGHVLxFVGoi7ye2ntkU0QPUlOyf8g7BLFmayoSK7P+pZLliY8qobNUifz6+WRA21kEq1cjfs/S5xrE3xHbldPjaXt8sVSM/H9d6KpnroRTISasmLkPAJejLN6j4wATorWPIcUTewNzb5pVJoAzadPQZ0AtHa+09nZq6lZUgTLvs0x3Bf59DiTup0y7rdtsn7mBMgbqVLHld5kyMCmMgRUGP7EGMWVVePeEqrhtYEDgXeHDWrwnsWFovE2PqoW4eSjPULUP9eP64MX4d0BL3lB5EdtyYH6YFnD0Rf7InAAAAAElFTkSuQmCC\",\"asset_id\":\"QRTZ_BLOB_TRIGGERS\",\"type\":1,\"table_name\":\"QRTZ_BLOB_TRIGGERS\",\"logicOperator\":\"and\",\"parentId\":\"\",\"querySql\":\"\",\"taskType\":\"DATAX\",\"dateIncrementConfig\":{\"logic\":\"and\",\"dateFormat\":\"yyyy-MM-dd\",\"column\":[]},\"idIncrementConfig\":{\"incrementColumn\":[],\"incrementStart\":\"\"},\"readerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"Iqo0tpF$~8R$Zn1yvhJA\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"datasourceId\":\"\",\"topic\":\"\",\"where\":\"\",\"readModeType\":\"1\",\"batchSize\":\"1024\",\"config\":\"\",\"columnsList\":[{\"colName\":\"SCHED_NAME\",\"dataType\":\"VARCHAR\"},{\"colName\":\"TRIGGER_NAME\",\"dataType\":\"VARCHAR\"},{\"colName\":\"TRIGGER_GROUP\",\"dataType\":\"VARCHAR\"},{\"colName\":\"BLOB_DATA\",\"dataType\":\"BLOB\"}],\"clmt\":\"0\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '1');
+INSERT INTO `dpp_etl_node` VALUES (1253, '1', 'DATAX', '表输出组件', '141951127567207', 1, 84, '141883958809440', '{\"postSql\":\"\",\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"elementId\":[10],\"cleanRuleList\":[{\"ruleId\":10,\"ruleName\":\"首尾移除空格\",\"ruleConfig\":\"{\\\"toggleCase\\\":{\\\"type\\\":\\\"1\\\"},\\\"nullReplace\\\":{\\\"value\\\":null},\\\"trimSpace\\\":{},\\\"regexValidate\\\":{\\\"pattern\\\":\\\"\\\",\\\"replacement\\\":\\\"\\\",\\\"resultType\\\":\\\"1\\\"},\\\"defaultValueFill\\\":{\\\"value\\\":\\\"\\\"},\\\"dictValueList\\\":[],\\\"tokens\\\":[{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"operator\\\",\\\"value\\\":\\\"+\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"}]}\"}],\"isChecked\":true},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"selectedColumn\":\"\",\"target_columns\":[\"SCHED_NAME\",\"ENTRY_ID\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\"],\"target_table_name\":\"QRTZ_FIRED_TRIGGERS\",\"columns\":[\"SCHED_NAME\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\",\"BLOB_DATA\"],\"typeName\":\"表输出组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAW9JREFUWEftl71LA0EQxd+Lpb1WFkkpAZuQEyvtTbQQBCuxs7KxlNxdwD/Axk4rEW29gK1g45lC8KMNpFMsBEEtxHsiknC7Yi6CJFfclo9l58fMm9ldImWLcR4vmJ4dBp9XuTjrxDWA/MDRMIDcStjl+AFERcVatXk3CDCvUSpSIzc9gUTsUnwcBBAQjQFc7wkEalXKtTtAOaogYE3ilgW5DOAZwGlcJ1QjcRCJLUs/FLhiaXkA+38qWT0oT4n03flwMX5Y/cTZFPTkVi/3jMZolI/xwW1vIbyO637gtNxKWDD39lEy20MZkJVWpS5DAJtA9NoFFUdB5AHdmqbmBIB3QPeW2SchtkG9WPsdQKGhfZ9dykz9lZWsyzre8P57DqVuUmddlnTbp24wZkBJJUtdl9kvRgHjhOYAHhn3EDVD4U3glXlnaUngOYEHS98AuGNqfbwYMw8leSjLUFKGBvP9MaP8+kBL3Vd6GNmxY34CUyDPPWNEMvYAAAAASUVORK5CYII=\",\"target_asset_id\":\"QRTZ_FIRED_TRIGGERS\",\"type\":2,\"parentId\":\"\",\"taskType\":\"DATAX\",\"selectedColumns\":[],\"writerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"target_asset_id\":48,\"datasourceId\":48},\"toColumnsList\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"ENTRY_ID\",\"columnComment\":\"调度器实例id\",\"columnType\":\"VARCHAR\",\"columnLength\":95,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"INSTANCE_NAME\",\"columnComment\":\"调度器实例名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"FIRED_TIME\",\"columnComment\":\"触发的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"SCHED_TIME\",\"columnComment\":\"定时器制定的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"PRIORITY\",\"columnComment\":\"优先级\",\"columnType\":\"INT\",\"columnLength\":4,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"STATE\",\"columnComment\":\"状态\",\"columnType\":\"VARCHAR\",\"columnLength\":16,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_NAME\",\"columnComment\":\"任务名称\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_GROUP\",\"columnComment\":\"任务组名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"IS_NONCONCURRENT\",\"columnComment\":\"是否并发\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"REQUESTS_RECOVERY\",\"columnComment\":\"是否接受恢复执行\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"target_datasource_id\":\"\",\"datasourceId\":\"\",\"where\":\"\",\"batchSize\":\"1024\",\"config\":\"\",\"writeModeType\":2,\"preSql\":\"\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '91');
+INSERT INTO `dpp_etl_node` VALUES (1254, '1', 'DATAX', '表输入组件', '141951101460328', 1, 84, '141883958809440', '{\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\"}],\"datasource_id\":\"\",\"csvFile\":\"\",\"columns\":[\"SCHED_NAME\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\",\"BLOB_DATA\"],\"typeName\":\"表输入组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAXNJREFUWEftlz1LA0EQhp+52J3hYqOVhSklYCMINl7+gYUgWImdlY2lCBb+ABs7rUT0F1iJB1ZiIfjRBtIpgjFfWog7EsR4u2ISQZIr7sqXZee5mXd2Z4WEfRLnyYX1cBB8z1E2+oprAQVhUwcBVI38NscPoIyYwtNZ9q4fYCNhvWDwbjoCoeyK8NgPIBVGUVY7Agm6DFpuA4mXR1kBsxGHVLxFVGoi7ye2ntkU0QPUlOyf8g7BLFmayoSK7P+pZLliY8qobNUifz6+WRA21kEq1cjfs/S5xrE3xHbldPjaXt8sVSM/H9d6KpnroRTISasmLkPAJejLN6j4wATorWPIcUTewNzb5pVJoAzadPQZ0AtHa+09nZq6lZUgTLvs0x3Bf59DiTup0y7rdtsn7mBMgbqVLHld5kyMCmMgRUGP7EGMWVVePeEqrhtYEDgXeHDWrwnsWFovE2PqoW4eSjPULUP9eP64MX4d0BL3lB5EdtyYH6YFnD0Rf7InAAAAAElFTkSuQmCC\",\"asset_id\":\"QRTZ_BLOB_TRIGGERS\",\"type\":1,\"table_name\":\"QRTZ_BLOB_TRIGGERS\",\"logicOperator\":\"and\",\"parentId\":\"\",\"querySql\":\"\",\"taskType\":\"DATAX\",\"dateIncrementConfig\":{\"logic\":\"and\",\"dateFormat\":\"yyyy-MM-dd\",\"column\":[]},\"idIncrementConfig\":{\"incrementColumn\":[],\"incrementStart\":\"\"},\"readerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"datasourceId\":\"\",\"topic\":\"\",\"where\":\"\",\"readModeType\":\"1\",\"batchSize\":\"1024\",\"config\":\"\",\"columnsList\":[{\"colName\":\"SCHED_NAME\",\"dataType\":\"VARCHAR\"},{\"colName\":\"TRIGGER_NAME\",\"dataType\":\"VARCHAR\"},{\"colName\":\"TRIGGER_GROUP\",\"dataType\":\"VARCHAR\"},{\"colName\":\"BLOB_DATA\",\"dataType\":\"BLOB\"}],\"clmt\":\"0\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '1');
 INSERT INTO `dpp_etl_node` VALUES (1255, '1', 'SPARK', '转换组件', '141951104758632', 1, 84, '141883958809440', '{\"mainArgs\":{\"cleanRuleList\":[{\"columns\":\"SCHED_NAME\",\"cleanRules\":[{\"ruleId\":10,\"data\":\"{\\\"toggleCase\\\":{\\\"type\\\":\\\"1\\\"},\\\"nullReplace\\\":{\\\"value\\\":null},\\\"trimSpace\\\":{},\\\"regexValidate\\\":{\\\"pattern\\\":\\\"\\\",\\\"replacement\\\":\\\"\\\",\\\"resultType\\\":\\\"1\\\"},\\\"defaultValueFill\\\":{\\\"value\\\":\\\"\\\"},\\\"dictValueList\\\":[],\\\"tokens\\\":[{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"operator\\\",\\\"value\\\":\\\"+\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"}]}\",\"ruleName\":\"首尾移除空格\"}]},{\"columns\":\"TRIGGER_NAME\",\"cleanRules\":[]},{\"columns\":\"TRIGGER_GROUP\",\"cleanRules\":[]},{\"columns\":\"BLOB_DATA\",\"cleanRules\":[]}]},\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"elementId\":[10],\"cleanRuleList\":[{\"ruleId\":10,\"ruleName\":\"首尾移除空格\",\"ruleConfig\":\"{\\\"toggleCase\\\":{\\\"type\\\":\\\"1\\\"},\\\"nullReplace\\\":{\\\"value\\\":null},\\\"trimSpace\\\":{},\\\"regexValidate\\\":{\\\"pattern\\\":\\\"\\\",\\\"replacement\\\":\\\"\\\",\\\"resultType\\\":\\\"1\\\"},\\\"defaultValueFill\\\":{\\\"value\\\":\\\"\\\"},\\\"dictValueList\\\":[],\\\"tokens\\\":[{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"operator\\\",\\\"value\\\":\\\"+\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"}]}\"}]},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\"},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\"}],\"taskType\":\"SPARK\",\"typeName\":\"转换组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAjCAYAAAD8BaggAAAAAXNSR0IArs4c6QAAAtpJREFUWEfN2E1PE1EUBuD3tKVQqbICTYwbjXHlChNDZcrcwYAgC0VpoivFuDAEDP4QQUNY6cKNiaBijHzU2JnSKdVEwh8gRlfE0IUmILVAOWbsNJamdVqdgXbZe+85T9+5c5sZQpV9qMo8qH7Q/Hzw5M4O3wdwFkCjQwkmAfoAuIaEiH7J77EroXA40FRb615mxiGHIIVlkx4Pn5Kk+LfcwC6QpgXvAjxqDq4BWHII1gzAb9Rm5gFFiY8XBamq9JAIg9lBuiFE7IkTIE0L3gL4URaEEUXR75UCjRPhzm8OcUiW45NOgFQ1GCLiZ9k+NC7LsQFHQJFI4ER7e+KT1Y/YE5CqSk+JcI2IX25sHLze3T2bLgXbE5CmSat5x8S7VMrfUwq1V6BLAJ4DcGf3BlSvd7snEHifKkxqT0BGU1WVLhLhFQCPiUp4vdvnC1G2gYxT3GrDMrPMDONcyaGWmN1tQkTXc2ttAWmaNAvgghWo2DgRVmVZP2wbaGKiz93Y+HX7XzC5NamUvy63yW1JKBqVhplxpTIUNwCuY0Q8Jcv6TdsSqgxhPduWhDStdYyI+phpBeAf1m3/zCDCC1nWR2xLaGamq9bnW/9ZCaJwbjJ5xBMKTWayx4MN/2UFJ3Gltjkh9C7bEjIKaZrsBzIJAKfNwsZdd9vlogUrXVtbbDl/ji0J5VBEmTAzAmaDLWZcVhR92grlCMgoGg531Hu9qTkArWaTDDP1Kkrsdbko2xLKNUwkWnzptHsaIGF+lxRCb9o3kHn56oDMGwDtAE0JEevdV5DRfHGxuWZtzXduc/PAx87Ot2WfTbZfsnKTKDWvbFA0GnzAzEPZQs49dahqaz8RPTbBo0Lowzn8357LjEuw+L9plFh/BkC9OTYohD5WFBSJtBx1uTyfAdQ4BCksm97a2jne0bGwUhSUvXukqwCMh7gGh1HfibhfluNT+X2q/+2Hw6lYlq+6hH4BXF3bMxTlLUAAAAAASUVORK5CYII=\",\"datasourceId\":\"\",\"where\":\"\",\"type\":3,\"batchSize\":\"1024\",\"config\":\"\",\"parentId\":\"\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '31');
-INSERT INTO `dpp_etl_node` VALUES (1256, '1', 'DATAX', '表输出组件', '141951127567208', 1, 84, '141883958809440', '{\"postSql\":\"\",\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"elementId\":[10],\"cleanRuleList\":[{\"ruleId\":10,\"ruleName\":\"首尾移除空格\",\"ruleConfig\":\"{\\\"toggleCase\\\":{\\\"type\\\":\\\"1\\\"},\\\"nullReplace\\\":{\\\"value\\\":null},\\\"trimSpace\\\":{},\\\"regexValidate\\\":{\\\"pattern\\\":\\\"\\\",\\\"replacement\\\":\\\"\\\",\\\"resultType\\\":\\\"1\\\"},\\\"defaultValueFill\\\":{\\\"value\\\":\\\"\\\"},\\\"dictValueList\\\":[],\\\"tokens\\\":[{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"operator\\\",\\\"value\\\":\\\"+\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"}]}\"}],\"isChecked\":true},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"selectedColumn\":\"\",\"target_columns\":[\"SCHED_NAME\",\"ENTRY_ID\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\"],\"target_table_name\":\"QRTZ_FIRED_TRIGGERS\",\"columns\":[\"SCHED_NAME\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\",\"BLOB_DATA\"],\"typeName\":\"表输出组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAW9JREFUWEftl71LA0EQxd+Lpb1WFkkpAZuQEyvtTbQQBCuxs7KxlNxdwD/Axk4rEW29gK1g45lC8KMNpFMsBEEtxHsiknC7Yi6CJFfclo9l58fMm9ldImWLcR4vmJ4dBp9XuTjrxDWA/MDRMIDcStjl+AFERcVatXk3CDCvUSpSIzc9gUTsUnwcBBAQjQFc7wkEalXKtTtAOaogYE3ilgW5DOAZwGlcJ1QjcRCJLUs/FLhiaXkA+38qWT0oT4n03flwMX5Y/cTZFPTkVi/3jMZolI/xwW1vIbyO637gtNxKWDD39lEy20MZkJVWpS5DAJtA9NoFFUdB5AHdmqbmBIB3QPeW2SchtkG9WPsdQKGhfZ9dykz9lZWsyzre8P57DqVuUmddlnTbp24wZkBJJUtdl9kvRgHjhOYAHhn3EDVD4U3glXlnaUngOYEHS98AuGNqfbwYMw8leSjLUFKGBvP9MaP8+kBL3Vd6GNmxY34CUyDPPWNEMvYAAAAASUVORK5CYII=\",\"target_asset_id\":\"QRTZ_FIRED_TRIGGERS\",\"type\":2,\"parentId\":\"\",\"taskType\":\"DATAX\",\"selectedColumns\":[],\"writerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"Iqo0tpF$~8R$Zn1yvhJA\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"target_asset_id\":48,\"datasourceId\":48},\"toColumnsList\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"ENTRY_ID\",\"columnComment\":\"调度器实例id\",\"columnType\":\"VARCHAR\",\"columnLength\":95,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"INSTANCE_NAME\",\"columnComment\":\"调度器实例名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"FIRED_TIME\",\"columnComment\":\"触发的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"SCHED_TIME\",\"columnComment\":\"定时器制定的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"PRIORITY\",\"columnComment\":\"优先级\",\"columnType\":\"INT\",\"columnLength\":4,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"STATE\",\"columnComment\":\"状态\",\"columnType\":\"VARCHAR\",\"columnLength\":16,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_NAME\",\"columnComment\":\"任务名称\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_GROUP\",\"columnComment\":\"任务组名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"IS_NONCONCURRENT\",\"columnComment\":\"是否并发\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"REQUESTS_RECOVERY\",\"columnComment\":\"是否接受恢复执行\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"target_datasource_id\":\"\",\"datasourceId\":\"\",\"where\":\"\",\"batchSize\":\"1024\",\"config\":\"\",\"writeModeType\":2,\"preSql\":\"\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '91');
-INSERT INTO `dpp_etl_node` VALUES (1262, '3', 'PROCEDURE', '小山口数据开发', '141951009362784', 3, 84, '141883958809440', '{\"sqlType\":\"2\",\"typaCode\":\"DM\",\"datasources\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"Iqo0tpF$~8R$Zn1yvhJA\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"type\":\"DM8\",\"localParams\":[],\"sql\":\"SELECT \\n    s.small_mouth_id,\\n    s.mouth_name,\\n    s.elevation,\\n    s.geo_coordinates,\\n    s.watershed_area,\\n    s.average_annual_flow,\\n    b.basin_name,\\n    r.river_name,\\n    LISTAGG(w.weather_type, \', \') WITHIN GROUP (ORDER BY w.record_date DESC) AS recent_weather_conditions,\\n    AVG(h.water_level) AS avg_water_level,\\n    MAX(h.water_level) AS max_water_level\\nFROM \\n    small_mouths s\\nJOIN \\n    river_basins b ON s.basin_id = b.basin_id\\nJOIN \\n    rivers r ON s.river_id = r.river_id\\nLEFT JOIN \\n    hydrological_data h ON s.small_mouth_id = h.location_id AND h.data_type = \'small_mouth\'\\nLEFT JOIN \\n    weather_records w ON s.small_mouth_id = w.location_id \\n        AND w.record_date BETWEEN ADD_MONTHS(SYSDATE, -3) AND SYSDATE\\nGROUP BY \\n    s.small_mouth_id, s.mouth_name, s.elevation, s.geo_coordinates, \\n    s.watershed_area, s.average_annual_flow, b.basin_name, r.river_name\\nHAVING \\n    AVG(h.water_level) > 5 OR MAX(h.water_level) > 8\\nORDER BY \\n    s.watershed_area DESC;\"}', 'MEDIUM', 0, 0, 0, 0, -1, -1, '', 554, '1', '0', '管理员', 1, '2025-06-11 21:55:43', '管理员', 1, '2025-06-11 21:55:43', NULL, '52');
+INSERT INTO `dpp_etl_node` VALUES (1256, '1', 'DATAX', '表输出组件', '141951127567208', 1, 84, '141883958809440', '{\"postSql\":\"\",\"tableFields\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"elementId\":[10],\"cleanRuleList\":[{\"ruleId\":10,\"ruleName\":\"首尾移除空格\",\"ruleConfig\":\"{\\\"toggleCase\\\":{\\\"type\\\":\\\"1\\\"},\\\"nullReplace\\\":{\\\"value\\\":null},\\\"trimSpace\\\":{},\\\"regexValidate\\\":{\\\"pattern\\\":\\\"\\\",\\\"replacement\\\":\\\"\\\",\\\"resultType\\\":\\\"1\\\"},\\\"defaultValueFill\\\":{\\\"value\\\":\\\"\\\"},\\\"dictValueList\\\":[],\\\"tokens\\\":[{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"operator\\\",\\\"value\\\":\\\"+\\\",\\\"valueType\\\":\\\"\\\"},{\\\"type\\\":\\\"field\\\",\\\"value\\\":\\\"SCHED_NAME\\\",\\\"valueType\\\":\\\"\\\"}]}\"}],\"isChecked\":true},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"BLOB_DATA\",\"columnComment\":\"存放持久化Trigger对象\",\"columnType\":\"BLOB\",\"columnLength\":2147483647,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"selectedColumn\":\"\",\"target_columns\":[\"SCHED_NAME\",\"ENTRY_ID\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\"],\"target_table_name\":\"QRTZ_FIRED_TRIGGERS\",\"columns\":[\"SCHED_NAME\",\"TRIGGER_NAME\",\"TRIGGER_GROUP\",\"BLOB_DATA\"],\"typeName\":\"表输出组件\",\"icon\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAeCAYAAABE4bxTAAAAAXNSR0IArs4c6QAAAW9JREFUWEftl71LA0EQxd+Lpb1WFkkpAZuQEyvtTbQQBCuxs7KxlNxdwD/Axk4rEW29gK1g45lC8KMNpFMsBEEtxHsiknC7Yi6CJFfclo9l58fMm9ldImWLcR4vmJ4dBp9XuTjrxDWA/MDRMIDcStjl+AFERcVatXk3CDCvUSpSIzc9gUTsUnwcBBAQjQFc7wkEalXKtTtAOaogYE3ilgW5DOAZwGlcJ1QjcRCJLUs/FLhiaXkA+38qWT0oT4n03flwMX5Y/cTZFPTkVi/3jMZolI/xwW1vIbyO637gtNxKWDD39lEy20MZkJVWpS5DAJtA9NoFFUdB5AHdmqbmBIB3QPeW2SchtkG9WPsdQKGhfZ9dykz9lZWsyzre8P57DqVuUmddlnTbp24wZkBJJUtdl9kvRgHjhOYAHhn3EDVD4U3glXlnaUngOYEHS98AuGNqfbwYMw8leSjLUFKGBvP9MaP8+kBL3Vd6GNmxY34CUyDPPWNEMvYAAAAASUVORK5CYII=\",\"target_asset_id\":\"QRTZ_FIRED_TRIGGERS\",\"type\":2,\"parentId\":\"\",\"taskType\":\"DATAX\",\"selectedColumns\":[],\"writerDatasource\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"target_asset_id\":48,\"datasourceId\":48},\"toColumnsList\":[{\"columnName\":\"SCHED_NAME\",\"columnComment\":\"调度名称\",\"columnType\":\"VARCHAR\",\"columnLength\":120,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"ENTRY_ID\",\"columnComment\":\"调度器实例id\",\"columnType\":\"VARCHAR\",\"columnLength\":95,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"1\",\"isChecked\":true},{\"columnName\":\"TRIGGER_NAME\",\"columnComment\":\"qrtz_triggers表trigger_name的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"TRIGGER_GROUP\",\"columnComment\":\"qrtz_triggers表trigger_group的外键\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"INSTANCE_NAME\",\"columnComment\":\"调度器实例名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"FIRED_TIME\",\"columnComment\":\"触发的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"SCHED_TIME\",\"columnComment\":\"定时器制定的时间\",\"columnType\":\"BIGINT\",\"columnLength\":8,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"PRIORITY\",\"columnComment\":\"优先级\",\"columnType\":\"INT\",\"columnLength\":4,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"STATE\",\"columnComment\":\"状态\",\"columnType\":\"VARCHAR\",\"columnLength\":16,\"columnScale\":0,\"nullableFlag\":\"0\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_NAME\",\"columnComment\":\"任务名称\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"JOB_GROUP\",\"columnComment\":\"任务组名\",\"columnType\":\"VARCHAR\",\"columnLength\":200,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"IS_NONCONCURRENT\",\"columnComment\":\"是否并发\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true},{\"columnName\":\"REQUESTS_RECOVERY\",\"columnComment\":\"是否接受恢复执行\",\"columnType\":\"VARCHAR\",\"columnLength\":1,\"columnScale\":0,\"nullableFlag\":\"1\",\"pkFlag\":\"0\",\"isChecked\":true}],\"target_datasource_id\":\"\",\"datasourceId\":\"\",\"where\":\"\",\"batchSize\":\"1024\",\"config\":\"\",\"writeModeType\":2,\"preSql\":\"\"}', 'MEDIUM', 0, 1, 0, 0, -1, -1, NULL, NULL, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '91');
+INSERT INTO `dpp_etl_node` VALUES (1262, '3', 'PROCEDURE', '小山口数据开发', '141951009362784', 3, 84, '141883958809440', '{\"sqlType\":\"2\",\"typaCode\":\"DM\",\"datasources\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"type\":\"DM8\",\"localParams\":[],\"sql\":\"SELECT \\n    s.small_mouth_id,\\n    s.mouth_name,\\n    s.elevation,\\n    s.geo_coordinates,\\n    s.watershed_area,\\n    s.average_annual_flow,\\n    b.basin_name,\\n    r.river_name,\\n    LISTAGG(w.weather_type, \', \') WITHIN GROUP (ORDER BY w.record_date DESC) AS recent_weather_conditions,\\n    AVG(h.water_level) AS avg_water_level,\\n    MAX(h.water_level) AS max_water_level\\nFROM \\n    small_mouths s\\nJOIN \\n    river_basins b ON s.basin_id = b.basin_id\\nJOIN \\n    rivers r ON s.river_id = r.river_id\\nLEFT JOIN \\n    hydrological_data h ON s.small_mouth_id = h.location_id AND h.data_type = \'small_mouth\'\\nLEFT JOIN \\n    weather_records w ON s.small_mouth_id = w.location_id \\n        AND w.record_date BETWEEN ADD_MONTHS(SYSDATE, -3) AND SYSDATE\\nGROUP BY \\n    s.small_mouth_id, s.mouth_name, s.elevation, s.geo_coordinates, \\n    s.watershed_area, s.average_annual_flow, b.basin_name, r.river_name\\nHAVING \\n    AVG(h.water_level) > 5 OR MAX(h.water_level) > 8\\nORDER BY \\n    s.watershed_area DESC;\"}', 'MEDIUM', 0, 0, 0, 0, -1, -1, '', 554, '1', '0', '管理员', 1, '2025-06-11 21:55:43', '管理员', 1, '2025-06-11 21:55:43', NULL, '52');
 INSERT INTO `dpp_etl_node` VALUES (1263, '3', 'SQL', '泵站数据开发', '143585058469728', 1, 84, '141883958809440', '{\"sqlType\":\"0\",\"type\":\"DM8\",\"sql\":\"SELECT \\n    p.pump_station_id,\\n    p.station_name,\\n    p.location,\\n    p.installed_capacity,\\n    p.design_lift,\\n    p.annual_pumping_volume,\\n    p.commissioning_date,\\n    DATEDIFF(YEAR, p.commissioning_date, CURRENT_DATE) AS years_in_operation,\\n    i.intake_name,\\n    r.reservoir_name,\\n    (SELECT COUNT(m.maintenance_id) \\n     FROM pump_maintenance m \\n     WHERE m.pump_station_id = p.pump_station_id \\n     AND m.maintenance_date > ADD_MONTHS(CURRENT_DATE, -12)) AS annual_maintenance_count,\\n    (SELECT SUM(e.energy_consumption) \\n     FROM pump_energy_usage e \\n     WHERE e.pump_station_id = p.pump_station_id \\n     AND EXTRACT(YEAR FROM e.usage_date) = EXTRACT(YEAR FROM CURRENT_DATE)) AS annual_energy_consumption\\nFROM \\n    pump_stations p\\nLEFT JOIN \\n    water_intakes i ON p.intake_id = i.intake_id\\nLEFT JOIN \\n    reservoirs r ON p.reservoir_id = r.reservoir_id\\nWHERE \\n    p.status = \'operational\'\\n    AND p.installed_capacity > 1000\\n    AND p.commissioning_date < ADD_MONTHS(CURRENT_DATE, -60)\\nORDER BY \\n    annual_energy_consumption DESC NULLS LAST, \\n    years_in_operation DESC;\",\"typaCode\":\"DM\",\"localParams\":[],\"datasources\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_TEST\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_TEST\\\"}\",\"ip\":\"127.0.0.1\",\"port\":5236,\"dbname\":\"QDATA_TEST\",\"datasource_id\":48,\"datasourceId\":48}}', 'MEDIUM', 0, 0, 0, 0, -1, -1, '', 567, '1', '0', '管理员', 1, '2025-06-11 21:56:25', '管理员', 1, '2025-06-11 21:56:25', NULL, '51');
 INSERT INTO `dpp_etl_node` VALUES (1265, '3', 'SQL', '水库基本信息数据开发', '143585127993184', 1, 84, '141883958809440', '{\"sqlType\":\"0\",\"type\":\"DM8\",\"sql\":\"WITH reservoir_stats AS (\\n    SELECT \\n        r.reservoir_id,\\n        r.reservoir_name,\\n        r.total_capacity,\\n        r.normal_water_level,\\n        r.dead_storage_level,\\n        r.watershed_area,\\n        b.basin_name,\\n        r.completion_year,\\n        (SELECT AVG(s.storage) \\n         FROM reservoir_storage s \\n         WHERE s.reservoir_id = r.reservoir_id\\n         AND EXTRACT(YEAR FROM s.record_date) = EXTRACT(YEAR FROM CURRENT_DATE)) AS current_year_avg_storage,\\n        (SELECT MAX(s.storage) \\n         FROM reservoir_storage s \\n         WHERE s.reservoir_id = r.reservoir_id) AS historical_max_storage,\\n        (SELECT MIN(s.storage) \\n         FROM reservoir_storage s \\n         WHERE s.reservoir_id = r.reservoir_id) AS historical_min_storage\\n    FROM \\n        reservoirs r\\n    JOIN \\n        river_basins b ON r.basin_id = b.basin_id\\n    WHERE \\n        r.status = \'operational\'\\n)\\nSELECT \\n    rs.*,\\n    rs.current_year_avg_storage / rs.total_capacity * 100 AS current_year_utilization_rate,\\n    (SELECT COUNT(*) \\n     FROM dam_safety_inspections d \\n     WHERE d.reservoir_id = rs.reservoir_id\\n     AND d.inspection_date > ADD_MONTHS(CURRENT_DATE, -12)) AS annual_inspections,\\n    (SELECT SUM(r.release_volume) \\n     FROM reservoir_releases r \\n     WHERE r.reservoir_id = rs.reservoir_id\\n     AND EXTRACT(YEAR FROM r.release_date) = EXTRACT(YEAR FROM CURRENT_DATE)) AS annual_release_volume\\nFROM \\n    reservoir_stats rs\\nWHERE \\n    rs.current_year_avg_storage IS NOT NULL\\n    AND rs.total_capacity > 10000000\\nORDER BY \\n    rs.total_capacity DESC,\\n    current_year_utilization_rate DESC;\",\"typaCode\":\"DM\",\"localParams\":[],\"datasources\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_TEST\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_TEST\\\"}\",\"ip\":\"127.0.0.1\",\"port\":5236,\"dbname\":\"QDATA_TEST\",\"datasource_id\":48,\"datasourceId\":48}}', 'MEDIUM', 0, 0, 0, 0, -1, -1, '', 569, '1', '0', '管理员', 1, '2025-06-11 21:57:32', '管理员', 1, '2025-06-11 21:57:32', NULL, '51');
 INSERT INTO `dpp_etl_node` VALUES (1266, '3', 'SQL', '水闸数据开发', '143585088345952', 2, 84, '141883958809440', '{\"sqlType\":\"0\",\"typaCode\":\"DM\",\"datasources\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_TEST\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_TEST\\\"}\",\"ip\":\"127.0.0.1\",\"port\":5236,\"dbname\":\"QDATA_TEST\",\"datasource_id\":48,\"datasourceId\":48},\"type\":\"DM8\",\"localParams\":[],\"sql\":\"SELECT \\n    g.gate_id,\\n    g.gate_name,\\n    g.location,\\n    g.gate_type,\\n    g.design_flow_capacity,\\n    g.max_opening_height,\\n    r.river_name,\\n    b.basin_name,\\n    (SELECT MAX(h.water_level) \\n     FROM hydrological_data h \\n     WHERE h.location_id = g.gate_id \\n     AND h.data_type = \'gate\'\\n     AND h.record_date BETWEEN ADD_MONTHS(CURRENT_DATE, -12) AND CURRENT_DATE) AS max_water_level_12m,\\n    (SELECT COUNT(o.operation_id) \\n     FROM gate_operations o \\n     WHERE o.gate_id = g.gate_id\\n     AND o.operation_date BETWEEN ADD_MONTHS(CURRENT_DATE, -3) AND CURRENT_DATE) AS recent_operations,\\n    (SELECT AVG(o.opening_percentage) \\n     FROM gate_operations o \\n     WHERE o.gate_id = g.gate_id\\n     AND o.operation_date BETWEEN ADD_MONTHS(CURRENT_DATE, -3) AND CURRENT_DATE) AS avg_opening_percentage\\nFROM \\n    water_gates g\\nJOIN \\n    rivers r ON g.river_id = r.river_id\\nJOIN \\n    river_basins b ON r.basin_id = b.basin_id\\nWHERE \\n    g.status = \'active\'\\n    AND g.design_flow_capacity > 500\\nORDER BY \\n    g.design_flow_capacity DESC,\\n    recent_operations DESC;\"}', 'MEDIUM', 0, 0, 0, 0, -1, -1, '', 568, '1', '0', '管理员', 1, '2025-06-11 21:57:51', '管理员', 1, '2025-06-11 21:57:51', NULL, '51');
 INSERT INTO `dpp_etl_node` VALUES (1269, '3', 'SQL', '雨量站数据开发', '143585176487776', 3, 84, '141883958809440', '{\"sqlType\":\"0\",\"typaCode\":\"DM\",\"datasources\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_TEST\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_TEST\\\"}\",\"ip\":\"127.0.0.1\",\"port\":5236,\"dbname\":\"QDATA_TEST\",\"datasource_id\":48,\"datasourceId\":48},\"type\":\"DM8\",\"localParams\":[],\"sql\":\"SELECT \\n    r.rainfall_station_id,\\n    r.station_name,\\n    r.location,\\n    r.elevation,\\n    r.installation_date,\\n    b.basin_name,\\n    c.county_name,\\n    p.province_name,\\n    (SELECT AVG(rd.rainfall) \\n     FROM rainfall_data rd \\n     WHERE rd.station_id = r.rainfall_station_id\\n     AND EXTRACT(YEAR FROM rd.record_date) = EXTRACT(YEAR FROM CURRENT_DATE)) AS current_year_avg_rainfall,\\n    (SELECT MAX(rd.rainfall) \\n     FROM rainfall_data rd \\n     WHERE rd.station_id = r.rainfall_station_id\\n     AND EXTRACT(YEAR FROM rd.record_date) = EXTRACT(YEAR FROM CURRENT_DATE)) AS current_year_max_rainfall,\\n    (SELECT PERCENTILE_CONT(0.9) WITHIN GROUP (ORDER BY rd.rainfall)\\n     FROM rainfall_data rd \\n     WHERE rd.station_id = r.rainfall_station_id\\n     AND EXTRACT(YEAR FROM rd.record_date) = EXTRACT(YEAR FROM CURRENT_DATE)) AS current_year_90th_percentile,\\n    (SELECT COUNT(*) \\n     FROM rainfall_data rd \\n     WHERE rd.station_id = r.rainfall_station_id\\n     AND rd.rainfall > 50\\n     AND EXTRACT(YEAR FROM rd.record_date) = EXTRACT(YEAR FROM CURRENT_DATE)) AS heavy_rain_days\\nFROM \\n    rainfall_stations r\\nJOIN \\n    river_basins b ON r.basin_id = b.basin_id\\nLEFT JOIN \\n    counties c ON r.county_id = c.county_id\\nLEFT JOIN \\n    provinces p ON c.province_id = p.province_id\\nWHERE \\n    r.status = \'active\'\\n    AND r.installation_date < ADD_MONTHS(CURRENT_DATE, -60)\\nORDER BY \\n    current_year_avg_rainfall DESC,\\n    heavy_rain_days DESC;\"}', 'MEDIUM', 0, 0, 0, 0, -1, -1, '', 570, '1', '0', '管理员', 1, '2025-06-11 21:58:56', '管理员', 1, '2025-06-11 21:58:56', NULL, '51');
-INSERT INTO `dpp_etl_node` VALUES (1270, '3', 'SQL', '取水口基础信息数据开发', '141950767490912', 4, 84, '141883958809440', '{\"sqlType\":\"0\",\"typaCode\":\"DM\",\"datasources\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"Iqo0tpF$~8R$Zn1yvhJA\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"type\":\"DM8\",\"localParams\":[],\"sql\":\"SELECT \\n    w.intake_id,\\n    w.intake_name,\\n    w.location,\\n    w.design_capacity,\\n    w.current_capacity,\\n    w.water_source_type,\\n    w.construction_date,\\n    b.basin_name,\\n    r.river_name,\\n    COUNT(o.operation_id) AS operation_count\\nFROM \\n    water_intakes w\\nJOIN \\n    river_basins b ON w.basin_id = b.basin_id\\nLEFT JOIN \\n    rivers r ON w.river_id = r.river_id\\nLEFT JOIN \\n    intake_operations o ON w.intake_id = o.intake_id\\nWHERE \\n    w.status = \'active\'\\n    AND w.design_capacity > 10\\n    AND w.construction_date BETWEEN TO_DATE(\'2010-01-01\', \'YYYY-MM-DD\') AND SYSDATE\\nGROUP BY \\n    w.intake_id, w.intake_name, w.location, w.design_capacity, \\n    w.current_capacity, w.water_source_type, w.construction_date,\\n    b.basin_name, r.river_name\\nHAVING \\n    COUNT(o.operation_id) > 5\\nORDER BY \\n    w.current_capacity DESC, operation_count DESC;\"}', 'MEDIUM', 0, 0, 0, 0, -1, -1, '', 552, '1', '0', '管理员', 1, '2025-06-11 22:10:51', '管理员', 1, '2025-06-11 22:10:51', NULL, '51');
-INSERT INTO `dpp_etl_node` VALUES (1271, '3', 'SQL', '灌区相关的数据开发', '141950875765600', 4, 84, '141883958809440', '{\"sqlType\":\"0\",\"typaCode\":\"DM\",\"datasources\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"Iqo0tpF$~8R$Zn1yvhJA\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"type\":\"DM8\",\"localParams\":[{\"prop\":\"id\",\"type\":\"TINYINT\",\"value\":\"1\",\"direct\":\"IN\"}],\"sql\":\"WITH irrigated_areas AS (\\n    SELECT \\n        i.area_id,\\n        i.area_name,\\n        i.total_area,\\n        i.effective_irrigated_area,\\n        i.water_source,\\n        i.annual_water_usage,\\n        c.county_name,\\n        p.province_name,\\n        RANK() OVER (PARTITION BY p.province_name ORDER BY i.effective_irrigated_area DESC) AS area_rank\\n    FROM \\n        irrigation_areas i\\n    JOIN \\n        counties c ON i.county_id = c.county_id\\n    JOIN \\n        provinces p ON c.province_id = p.province_id\\n    WHERE \\n        i.status = \'operational\'\\n        AND i.effective_irrigated_area > 5000\\n)\\nSELECT \\n    a.*,\\n    (SELECT COUNT(*) FROM irrigation_crops ic WHERE ic.area_id = a.area_id) AS crop_types,\\n    (SELECT SUM(ic.area) FROM irrigation_crops ic WHERE ic.area_id = a.area_id) AS total_crop_area,\\n    ROUND(a.effective_irrigated_area / a.total_area * 100, 2) AS efficiency_rate\\nFROM \\n    irrigated_areas a\\nWHERE \\n    a.area_rank <= 10\\nORDER BY \\n    a.province_name, a.area_rank;\"}', 'MEDIUM', 0, 0, 0, 0, -1, -1, '', 553, '1', '0', '管理员', 1, '2025-06-11 22:11:09', '管理员', 1, '2025-06-11 22:11:09', NULL, '51');
+INSERT INTO `dpp_etl_node` VALUES (1270, '3', 'SQL', '取水口基础信息数据开发', '141950767490912', 4, 84, '141883958809440', '{\"sqlType\":\"0\",\"typaCode\":\"DM\",\"datasources\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"type\":\"DM8\",\"localParams\":[],\"sql\":\"SELECT \\n    w.intake_id,\\n    w.intake_name,\\n    w.location,\\n    w.design_capacity,\\n    w.current_capacity,\\n    w.water_source_type,\\n    w.construction_date,\\n    b.basin_name,\\n    r.river_name,\\n    COUNT(o.operation_id) AS operation_count\\nFROM \\n    water_intakes w\\nJOIN \\n    river_basins b ON w.basin_id = b.basin_id\\nLEFT JOIN \\n    rivers r ON w.river_id = r.river_id\\nLEFT JOIN \\n    intake_operations o ON w.intake_id = o.intake_id\\nWHERE \\n    w.status = \'active\'\\n    AND w.design_capacity > 10\\n    AND w.construction_date BETWEEN TO_DATE(\'2010-01-01\', \'YYYY-MM-DD\') AND SYSDATE\\nGROUP BY \\n    w.intake_id, w.intake_name, w.location, w.design_capacity, \\n    w.current_capacity, w.water_source_type, w.construction_date,\\n    b.basin_name, r.river_name\\nHAVING \\n    COUNT(o.operation_id) > 5\\nORDER BY \\n    w.current_capacity DESC, operation_count DESC;\"}', 'MEDIUM', 0, 0, 0, 0, -1, -1, '', 552, '1', '0', '管理员', 1, '2025-06-11 22:10:51', '管理员', 1, '2025-06-11 22:10:51', NULL, '51');
+INSERT INTO `dpp_etl_node` VALUES (1271, '3', 'SQL', '灌区相关的数据开发', '141950875765600', 4, 84, '141883958809440', '{\"sqlType\":\"0\",\"typaCode\":\"DM\",\"datasources\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"type\":\"DM8\",\"localParams\":[{\"prop\":\"id\",\"type\":\"TINYINT\",\"value\":\"1\",\"direct\":\"IN\"}],\"sql\":\"WITH irrigated_areas AS (\\n    SELECT \\n        i.area_id,\\n        i.area_name,\\n        i.total_area,\\n        i.effective_irrigated_area,\\n        i.water_source,\\n        i.annual_water_usage,\\n        c.county_name,\\n        p.province_name,\\n        RANK() OVER (PARTITION BY p.province_name ORDER BY i.effective_irrigated_area DESC) AS area_rank\\n    FROM \\n        irrigation_areas i\\n    JOIN \\n        counties c ON i.county_id = c.county_id\\n    JOIN \\n        provinces p ON c.province_id = p.province_id\\n    WHERE \\n        i.status = \'operational\'\\n        AND i.effective_irrigated_area > 5000\\n)\\nSELECT \\n    a.*,\\n    (SELECT COUNT(*) FROM irrigation_crops ic WHERE ic.area_id = a.area_id) AS crop_types,\\n    (SELECT SUM(ic.area) FROM irrigation_crops ic WHERE ic.area_id = a.area_id) AS total_crop_area,\\n    ROUND(a.effective_irrigated_area / a.total_area * 100, 2) AS efficiency_rate\\nFROM \\n    irrigated_areas a\\nWHERE \\n    a.area_rank <= 10\\nORDER BY \\n    a.province_name, a.area_rank;\"}', 'MEDIUM', 0, 0, 0, 0, -1, -1, '', 553, '1', '0', '管理员', 1, '2025-06-11 22:11:09', '管理员', 1, '2025-06-11 22:11:09', NULL, '51');
 
 -- ----------------------------
 -- Table structure for dpp_etl_node_instance
 -- ----------------------------
 DROP TABLE IF EXISTS `dpp_etl_node_instance`;
 CREATE TABLE `dpp_etl_node_instance`  (
-  `id` bigint(20) NOT NULL COMMENT 'ID',
-  `task_type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '任务类型;1：离线任务 2：实时任务 3：数据开发任务 4：	作业任务',
-  `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '节点实例名称',
-  `node_type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '节点类型;DATAX、SPARK及SUB_PROCESS等',
-  `node_id` bigint(20) NOT NULL COMMENT '节点id',
-  `node_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '节点编码',
-  `node_version` int(11) NOT NULL COMMENT '节点版本',
-  `task_instance_id` bigint(20) NOT NULL COMMENT '任务实例id',
-  `task_instance_name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务实例名称',
-  `project_id` bigint(20) NOT NULL COMMENT '项目id',
-  `project_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '项目编码',
-  `submit_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '提交时间',
-  `start_time` datetime NULL DEFAULT NULL COMMENT '开始时间',
-  `end_time` datetime NULL DEFAULT NULL COMMENT '结束时间',
-  `execute_path` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '执行路径',
-  `log_path` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '日志路径',
-  `parameters` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '节点参数',
-  `priority` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '2' COMMENT '节点优先级;0 Highest,1 High,2 Medium,3 Low,4 Lowest',
-  `retry_times` int(11) NULL DEFAULT 0 COMMENT '重试次数',
-  `fretry_interval` int(11) NULL DEFAULT 1 COMMENT '重试间隔（分钟）',
-  `delay_time` int(11) NULL DEFAULT 0 COMMENT '延迟执行时间（分钟）',
-  `cpu_quota` int(11) NULL DEFAULT -1 COMMENT 'CPU配额',
-  `memory_max` int(11) NULL DEFAULT -1 COMMENT '最大内存',
-  `status` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '状态;0 提交成功,1 正在运行,3 暂停,5 停止,6 失败,7 成功,8 需要容错,9 Kill,12 延时执行,13 强制成功 17派发',
-  `ds_id` bigint(20) NOT NULL COMMENT 'DolphinScheduler的id',
-  `ds_task_instance_id` bigint(20) NOT NULL COMMENT 'DolphinScheduler的任务实例id',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `component_type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '组件类型',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `dpp_etl_node_instance_task_instance_id_idx`(`task_instance_id`) USING BTREE
+  `ID` bigint(20) NOT NULL COMMENT 'ID',
+  `TASK_TYPE` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '任务类型;1：离线任务 2：实时任务 3：数据开发任务 4：	作业任务',
+  `NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '节点实例名称',
+  `NODE_TYPE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '节点类型;DATAX、SPARK及SUB_PROCESS等',
+  `NODE_ID` bigint(20) NOT NULL COMMENT '节点id',
+  `NODE_CODE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '节点编码',
+  `NODE_VERSION` int(11) NOT NULL COMMENT '节点版本',
+  `TASK_INSTANCE_ID` bigint(20) NOT NULL COMMENT '任务实例id',
+  `TASK_INSTANCE_NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务实例名称',
+  `PROJECT_ID` bigint(20) NOT NULL COMMENT '项目id',
+  `PROJECT_CODE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '项目编码',
+  `SUBMIT_TIME` datetime NOT NULL COMMENT '提交时间',
+  `START_TIME` datetime NULL DEFAULT NULL COMMENT '开始时间',
+  `END_TIME` datetime NULL DEFAULT NULL COMMENT '结束时间',
+  `EXECUTE_PATH` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '执行路径',
+  `LOG_PATH` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '日志路径',
+  `PARAMETERS` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '节点参数',
+  `PRIORITY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '2' COMMENT '节点优先级;0 Highest,1 High,2 Medium,3 Low,4 Lowest',
+  `RETRY_TIMES` int(11) NULL DEFAULT 0 COMMENT '重试次数',
+  `FRETRY_INTERVAL` int(11) NULL DEFAULT 1 COMMENT '重试间隔（分钟）',
+  `DELAY_TIME` int(11) NULL DEFAULT 0 COMMENT '延迟执行时间（分钟）',
+  `CPU_QUOTA` int(11) NULL DEFAULT -1 COMMENT 'CPU配额',
+  `MEMORY_MAX` int(11) NULL DEFAULT -1 COMMENT '最大内存',
+  `STATUS` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '状态;0 提交成功,1 正在运行,3 暂停,5 停止,6 失败,7 成功,8 需要容错,9 Kill,12 延时执行,13 强制成功 17派发',
+  `DS_ID` bigint(20) NOT NULL COMMENT 'DolphinScheduler的id',
+  `DS_TASK_INSTANCE_ID` bigint(20) NOT NULL COMMENT 'DolphinScheduler的任务实例id',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `COMPONENT_TYPE` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '组件类型',
+  PRIMARY KEY (`ID`) USING BTREE,
+  INDEX `DPP_ETL_NODE_INSTANCE_TASK_INSTANCE_ID_IDX`(`TASK_INSTANCE_ID`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据集成节点实例' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -2196,47 +2250,47 @@ INSERT INTO `dpp_etl_node_instance` VALUES (140400436095242, '1', '表输出组�
 -- ----------------------------
 DROP TABLE IF EXISTS `dpp_etl_node_log`;
 CREATE TABLE `dpp_etl_node_log`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `task_type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '任务类型;1：离线任务 2：实时任务 3：数据开发任务 4：	作业任务',
-  `type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '节点类型;DATAX、SPARK及SUB_PROCESS等',
-  `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '节点名称',
-  `code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '节点编码',
-  `version` bigint(20) NOT NULL DEFAULT 1 COMMENT '节点版本',
-  `project_id` bigint(20) NOT NULL COMMENT '项目id',
-  `project_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '项目编码',
-  `parameters` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '节点参数',
-  `priority` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'MEDIUM' COMMENT '任务优先级;HIGHEST,HIGH,MEDIUM,LOW,LOWEST',
-  `fail_retry_times` int(11) NULL DEFAULT 0 COMMENT '失败重试次数',
-  `fail_retry_interval` int(11) NULL DEFAULT 1 COMMENT '失败重试间隔（分钟）',
-  `timeout` int(11) NULL DEFAULT 0 COMMENT '超时时间',
-  `delay_time` int(11) NULL DEFAULT 0 COMMENT '延迟执行时间（分钟）',
-  `cpu_quota` int(11) NULL DEFAULT -1 COMMENT 'CPU配额',
-  `memory_max` int(11) NULL DEFAULT -1 COMMENT '最大内存',
-  `description` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
-  `ds_id` bigint(20) NULL DEFAULT NULL COMMENT 'DolphinScheduler的id',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `component_type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '组件类型',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90111825819100`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 284 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据集成节点-日志表' ROW_FORMAT = Dynamic;
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `TASK_TYPE` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '任务类型;1：离线任务 2：实时任务 3：数据开发任务 4：	作业任务',
+  `TYPE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '节点类型;DATAX、SPARK及SUB_PROCESS等',
+  `NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '节点名称',
+  `CODE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '节点编码',
+  `VERSION` bigint(20) NOT NULL DEFAULT 1 COMMENT '节点版本',
+  `PROJECT_ID` bigint(20) NOT NULL COMMENT '项目id',
+  `PROJECT_CODE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '项目编码',
+  `PARAMETERS` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '节点参数',
+  `PRIORITY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'MEDIUM' COMMENT '任务优先级;HIGHEST,HIGH,MEDIUM,LOW,LOWEST',
+  `FAIL_RETRY_TIMES` int(11) NULL DEFAULT 0 COMMENT '失败重试次数',
+  `FAIL_RETRY_INTERVAL` int(11) NULL DEFAULT 1 COMMENT '失败重试间隔（分钟）',
+  `TIMEOUT` int(11) NULL DEFAULT 0 COMMENT '超时时间',
+  `DELAY_TIME` int(11) NULL DEFAULT 0 COMMENT '延迟执行时间（分钟）',
+  `CPU_QUOTA` int(11) NULL DEFAULT -1 COMMENT 'CPU配额',
+  `MEMORY_MAX` int(11) NULL DEFAULT -1 COMMENT '最大内存',
+  `DESCRIPTION` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `DS_ID` bigint(20) NULL DEFAULT NULL COMMENT 'DolphinScheduler的id',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `COMPONENT_TYPE` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '组件类型',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974841701245300`(`ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 299 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据集成节点-日志表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of dpp_etl_node_log
 -- ----------------------------
-INSERT INTO `dpp_etl_node_log` VALUES (284, '3', 'SQL', '取水口基础信息数据开发', '141950767490912', 2, 84, '141883958809440', '{\"sqlType\":\"0\",\"typaCode\":\"DM\",\"datasources\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"Iqo0tpF$~8R$Zn1yvhJA\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"type\":\"DM8\",\"localParams\":[],\"sql\":\"SELECT * QDATA_OPEN.DS_API\"}', 'MEDIUM', 0, 0, 0, 0, -1, -1, '', 552, '1', '0', '管理员', 1, '2025-06-11 20:41:13', '管理员', 1, '2025-06-11 20:41:13', NULL, '51');
-INSERT INTO `dpp_etl_node_log` VALUES (285, '3', 'SQL', '灌区相关的数据开发', '141950875765600', 2, 84, '141883958809440', '{\"sqlType\":\"0\",\"typaCode\":\"DM\",\"datasources\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"Iqo0tpF$~8R$Zn1yvhJA\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"type\":\"DM8\",\"localParams\":[{\"prop\":\"id\",\"type\":\"TINYINT\",\"value\":\"1\",\"direct\":\"IN\"}],\"sql\":\"SELECT * QDATA_OPEN.DS_API WHERE id > ${id}\"}', 'MEDIUM', 0, 0, 0, 0, -1, -1, '', 553, '1', '0', '管理员', 1, '2025-06-11 20:41:46', '管理员', 1, '2025-06-11 20:41:46', NULL, '51');
-INSERT INTO `dpp_etl_node_log` VALUES (286, '3', 'PROCEDURE', '小山口数据开发', '141951009362784', 2, 84, '141883958809440', '{\"sqlType\":\"2\",\"typaCode\":\"DM\",\"datasources\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"Iqo0tpF$~8R$Zn1yvhJA\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"type\":\"DM8\",\"localParams\":[],\"sql\":\"INSERT INTO table_name (column1, column2, column3)\\nVALUES (value1, value2, value3)\"}', 'MEDIUM', 0, 0, 0, 0, -1, -1, '', 554, '1', '0', '管理员', 1, '2025-06-11 20:42:16', '管理员', 1, '2025-06-11 20:42:16', NULL, '52');
-INSERT INTO `dpp_etl_node_log` VALUES (287, '3', 'SQL', '取水口基础信息数据开发', '141950767490912', 3, 84, '141883958809440', '{\"sqlType\":\"0\",\"typaCode\":\"DM\",\"datasources\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"Iqo0tpF$~8R$Zn1yvhJA\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"type\":\"DM8\",\"localParams\":[],\"sql\":\"SELECT \\n    w.intake_id,\\n    w.intake_name,\\n    w.location,\\n    w.design_capacity,\\n    w.current_capacity,\\n    w.water_source_type,\\n    w.construction_date,\\n    b.basin_name,\\n    r.river_name,\\n    COUNT(o.operation_id) AS operation_count\\nFROM \\n    water_intakes w\\nJOIN \\n    river_basins b ON w.basin_id = b.basin_id\\nLEFT JOIN \\n    rivers r ON w.river_id = r.river_id\\nLEFT JOIN \\n    intake_operations o ON w.intake_id = o.intake_id\\nWHERE \\n    w.status = \'active\'\\n    AND w.design_capacity > 10\\n    AND w.construction_date BETWEEN TO_DATE(\'2010-01-01\', \'YYYY-MM-DD\') AND SYSDATE\\nGROUP BY \\n    w.intake_id, w.intake_name, w.location, w.design_capacity, \\n    w.current_capacity, w.water_source_type, w.construction_date,\\n    b.basin_name, r.river_name\\nHAVING \\n    COUNT(o.operation_id) > 5\\nORDER BY \\n    w.current_capacity DESC, operation_count DESC;\"}', 'MEDIUM', 0, 0, 0, 0, -1, -1, '', 552, '1', '0', '管理员', 1, '2025-06-11 21:55:12', '管理员', 1, '2025-06-11 21:55:12', NULL, '51');
-INSERT INTO `dpp_etl_node_log` VALUES (288, '3', 'SQL', '灌区相关的数据开发', '141950875765600', 3, 84, '141883958809440', '{\"sqlType\":\"0\",\"typaCode\":\"DM\",\"datasources\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"Iqo0tpF$~8R$Zn1yvhJA\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"type\":\"DM8\",\"localParams\":[{\"prop\":\"id\",\"type\":\"TINYINT\",\"value\":\"1\",\"direct\":\"IN\"}],\"sql\":\"WITH irrigated_areas AS (\\n    SELECT \\n        i.area_id,\\n        i.area_name,\\n        i.total_area,\\n        i.effective_irrigated_area,\\n        i.water_source,\\n        i.annual_water_usage,\\n        c.county_name,\\n        p.province_name,\\n        RANK() OVER (PARTITION BY p.province_name ORDER BY i.effective_irrigated_area DESC) AS area_rank\\n    FROM \\n        irrigation_areas i\\n    JOIN \\n        counties c ON i.county_id = c.county_id\\n    JOIN \\n        provinces p ON c.province_id = p.province_id\\n    WHERE \\n        i.status = \'operational\'\\n        AND i.effective_irrigated_area > 5000\\n)\\nSELECT \\n    a.*,\\n    (SELECT COUNT(*) FROM irrigation_crops ic WHERE ic.area_id = a.area_id) AS crop_types,\\n    (SELECT SUM(ic.area) FROM irrigation_crops ic WHERE ic.area_id = a.area_id) AS total_crop_area,\\n    ROUND(a.effective_irrigated_area / a.total_area * 100, 2) AS efficiency_rate\\nFROM \\n    irrigated_areas a\\nWHERE \\n    a.area_rank <= 10\\nORDER BY \\n    a.province_name, a.area_rank;\"}', 'MEDIUM', 0, 0, 0, 0, -1, -1, '', 553, '1', '0', '管理员', 1, '2025-06-11 21:55:29', '管理员', 1, '2025-06-11 21:55:29', NULL, '51');
-INSERT INTO `dpp_etl_node_log` VALUES (289, '3', 'PROCEDURE', '小山口数据开发', '141951009362784', 3, 84, '141883958809440', '{\"sqlType\":\"2\",\"typaCode\":\"DM\",\"datasources\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"Iqo0tpF$~8R$Zn1yvhJA\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"type\":\"DM8\",\"localParams\":[],\"sql\":\"SELECT \\n    s.small_mouth_id,\\n    s.mouth_name,\\n    s.elevation,\\n    s.geo_coordinates,\\n    s.watershed_area,\\n    s.average_annual_flow,\\n    b.basin_name,\\n    r.river_name,\\n    LISTAGG(w.weather_type, \', \') WITHIN GROUP (ORDER BY w.record_date DESC) AS recent_weather_conditions,\\n    AVG(h.water_level) AS avg_water_level,\\n    MAX(h.water_level) AS max_water_level\\nFROM \\n    small_mouths s\\nJOIN \\n    river_basins b ON s.basin_id = b.basin_id\\nJOIN \\n    rivers r ON s.river_id = r.river_id\\nLEFT JOIN \\n    hydrological_data h ON s.small_mouth_id = h.location_id AND h.data_type = \'small_mouth\'\\nLEFT JOIN \\n    weather_records w ON s.small_mouth_id = w.location_id \\n        AND w.record_date BETWEEN ADD_MONTHS(SYSDATE, -3) AND SYSDATE\\nGROUP BY \\n    s.small_mouth_id, s.mouth_name, s.elevation, s.geo_coordinates, \\n    s.watershed_area, s.average_annual_flow, b.basin_name, r.river_name\\nHAVING \\n    AVG(h.water_level) > 5 OR MAX(h.water_level) > 8\\nORDER BY \\n    s.watershed_area DESC;\"}', 'MEDIUM', 0, 0, 0, 0, -1, -1, '', 554, '1', '0', '管理员', 1, '2025-06-11 21:55:44', '管理员', 1, '2025-06-11 21:55:44', NULL, '52');
+INSERT INTO `dpp_etl_node_log` VALUES (284, '3', 'SQL', '取水口基础信息数据开发', '141950767490912', 2, 84, '141883958809440', '{\"sqlType\":\"0\",\"typaCode\":\"DM\",\"datasources\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"type\":\"DM8\",\"localParams\":[],\"sql\":\"SELECT * QDATA_OPEN.DS_API\"}', 'MEDIUM', 0, 0, 0, 0, -1, -1, '', 552, '1', '0', '管理员', 1, '2025-06-11 20:41:13', '管理员', 1, '2025-06-11 20:41:13', NULL, '51');
+INSERT INTO `dpp_etl_node_log` VALUES (285, '3', 'SQL', '灌区相关的数据开发', '141950875765600', 2, 84, '141883958809440', '{\"sqlType\":\"0\",\"typaCode\":\"DM\",\"datasources\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"type\":\"DM8\",\"localParams\":[{\"prop\":\"id\",\"type\":\"TINYINT\",\"value\":\"1\",\"direct\":\"IN\"}],\"sql\":\"SELECT * QDATA_OPEN.DS_API WHERE id > ${id}\"}', 'MEDIUM', 0, 0, 0, 0, -1, -1, '', 553, '1', '0', '管理员', 1, '2025-06-11 20:41:46', '管理员', 1, '2025-06-11 20:41:46', NULL, '51');
+INSERT INTO `dpp_etl_node_log` VALUES (286, '3', 'PROCEDURE', '小山口数据开发', '141951009362784', 2, 84, '141883958809440', '{\"sqlType\":\"2\",\"typaCode\":\"DM\",\"datasources\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"type\":\"DM8\",\"localParams\":[],\"sql\":\"INSERT INTO table_name (column1, column2, column3)\\nVALUES (value1, value2, value3)\"}', 'MEDIUM', 0, 0, 0, 0, -1, -1, '', 554, '1', '0', '管理员', 1, '2025-06-11 20:42:16', '管理员', 1, '2025-06-11 20:42:16', NULL, '52');
+INSERT INTO `dpp_etl_node_log` VALUES (287, '3', 'SQL', '取水口基础信息数据开发', '141950767490912', 3, 84, '141883958809440', '{\"sqlType\":\"0\",\"typaCode\":\"DM\",\"datasources\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"type\":\"DM8\",\"localParams\":[],\"sql\":\"SELECT \\n    w.intake_id,\\n    w.intake_name,\\n    w.location,\\n    w.design_capacity,\\n    w.current_capacity,\\n    w.water_source_type,\\n    w.construction_date,\\n    b.basin_name,\\n    r.river_name,\\n    COUNT(o.operation_id) AS operation_count\\nFROM \\n    water_intakes w\\nJOIN \\n    river_basins b ON w.basin_id = b.basin_id\\nLEFT JOIN \\n    rivers r ON w.river_id = r.river_id\\nLEFT JOIN \\n    intake_operations o ON w.intake_id = o.intake_id\\nWHERE \\n    w.status = \'active\'\\n    AND w.design_capacity > 10\\n    AND w.construction_date BETWEEN TO_DATE(\'2010-01-01\', \'YYYY-MM-DD\') AND SYSDATE\\nGROUP BY \\n    w.intake_id, w.intake_name, w.location, w.design_capacity, \\n    w.current_capacity, w.water_source_type, w.construction_date,\\n    b.basin_name, r.river_name\\nHAVING \\n    COUNT(o.operation_id) > 5\\nORDER BY \\n    w.current_capacity DESC, operation_count DESC;\"}', 'MEDIUM', 0, 0, 0, 0, -1, -1, '', 552, '1', '0', '管理员', 1, '2025-06-11 21:55:12', '管理员', 1, '2025-06-11 21:55:12', NULL, '51');
+INSERT INTO `dpp_etl_node_log` VALUES (288, '3', 'SQL', '灌区相关的数据开发', '141950875765600', 3, 84, '141883958809440', '{\"sqlType\":\"0\",\"typaCode\":\"DM\",\"datasources\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"type\":\"DM8\",\"localParams\":[{\"prop\":\"id\",\"type\":\"TINYINT\",\"value\":\"1\",\"direct\":\"IN\"}],\"sql\":\"WITH irrigated_areas AS (\\n    SELECT \\n        i.area_id,\\n        i.area_name,\\n        i.total_area,\\n        i.effective_irrigated_area,\\n        i.water_source,\\n        i.annual_water_usage,\\n        c.county_name,\\n        p.province_name,\\n        RANK() OVER (PARTITION BY p.province_name ORDER BY i.effective_irrigated_area DESC) AS area_rank\\n    FROM \\n        irrigation_areas i\\n    JOIN \\n        counties c ON i.county_id = c.county_id\\n    JOIN \\n        provinces p ON c.province_id = p.province_id\\n    WHERE \\n        i.status = \'operational\'\\n        AND i.effective_irrigated_area > 5000\\n)\\nSELECT \\n    a.*,\\n    (SELECT COUNT(*) FROM irrigation_crops ic WHERE ic.area_id = a.area_id) AS crop_types,\\n    (SELECT SUM(ic.area) FROM irrigation_crops ic WHERE ic.area_id = a.area_id) AS total_crop_area,\\n    ROUND(a.effective_irrigated_area / a.total_area * 100, 2) AS efficiency_rate\\nFROM \\n    irrigated_areas a\\nWHERE \\n    a.area_rank <= 10\\nORDER BY \\n    a.province_name, a.area_rank;\"}', 'MEDIUM', 0, 0, 0, 0, -1, -1, '', 553, '1', '0', '管理员', 1, '2025-06-11 21:55:29', '管理员', 1, '2025-06-11 21:55:29', NULL, '51');
+INSERT INTO `dpp_etl_node_log` VALUES (289, '3', 'PROCEDURE', '小山口数据开发', '141951009362784', 3, 84, '141883958809440', '{\"sqlType\":\"2\",\"typaCode\":\"DM\",\"datasources\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"type\":\"DM8\",\"localParams\":[],\"sql\":\"SELECT \\n    s.small_mouth_id,\\n    s.mouth_name,\\n    s.elevation,\\n    s.geo_coordinates,\\n    s.watershed_area,\\n    s.average_annual_flow,\\n    b.basin_name,\\n    r.river_name,\\n    LISTAGG(w.weather_type, \', \') WITHIN GROUP (ORDER BY w.record_date DESC) AS recent_weather_conditions,\\n    AVG(h.water_level) AS avg_water_level,\\n    MAX(h.water_level) AS max_water_level\\nFROM \\n    small_mouths s\\nJOIN \\n    river_basins b ON s.basin_id = b.basin_id\\nJOIN \\n    rivers r ON s.river_id = r.river_id\\nLEFT JOIN \\n    hydrological_data h ON s.small_mouth_id = h.location_id AND h.data_type = \'small_mouth\'\\nLEFT JOIN \\n    weather_records w ON s.small_mouth_id = w.location_id \\n        AND w.record_date BETWEEN ADD_MONTHS(SYSDATE, -3) AND SYSDATE\\nGROUP BY \\n    s.small_mouth_id, s.mouth_name, s.elevation, s.geo_coordinates, \\n    s.watershed_area, s.average_annual_flow, b.basin_name, r.river_name\\nHAVING \\n    AVG(h.water_level) > 5 OR MAX(h.water_level) > 8\\nORDER BY \\n    s.watershed_area DESC;\"}', 'MEDIUM', 0, 0, 0, 0, -1, -1, '', 554, '1', '0', '管理员', 1, '2025-06-11 21:55:44', '管理员', 1, '2025-06-11 21:55:44', NULL, '52');
 INSERT INTO `dpp_etl_node_log` VALUES (290, '3', 'SQL', '泵站数据开发', '143585058469728', 1, 84, '141883958809440', '{\"sqlType\":\"0\",\"type\":\"DM8\",\"sql\":\"SELECT \\n    p.pump_station_id,\\n    p.station_name,\\n    p.location,\\n    p.installed_capacity,\\n    p.design_lift,\\n    p.annual_pumping_volume,\\n    p.commissioning_date,\\n    DATEDIFF(YEAR, p.commissioning_date, CURRENT_DATE) AS years_in_operation,\\n    i.intake_name,\\n    r.reservoir_name,\\n    (SELECT COUNT(m.maintenance_id) \\n     FROM pump_maintenance m \\n     WHERE m.pump_station_id = p.pump_station_id \\n     AND m.maintenance_date > ADD_MONTHS(CURRENT_DATE, -12)) AS annual_maintenance_count,\\n    (SELECT SUM(e.energy_consumption) \\n     FROM pump_energy_usage e \\n     WHERE e.pump_station_id = p.pump_station_id \\n     AND EXTRACT(YEAR FROM e.usage_date) = EXTRACT(YEAR FROM CURRENT_DATE)) AS annual_energy_consumption\\nFROM \\n    pump_stations p\\nLEFT JOIN \\n    water_intakes i ON p.intake_id = i.intake_id\\nLEFT JOIN \\n    reservoirs r ON p.reservoir_id = r.reservoir_id\\nWHERE \\n    p.status = \'operational\'\\n    AND p.installed_capacity > 1000\\n    AND p.commissioning_date < ADD_MONTHS(CURRENT_DATE, -60)\\nORDER BY \\n    annual_energy_consumption DESC NULLS LAST, \\n    years_in_operation DESC;\",\"typaCode\":\"DM\",\"localParams\":[],\"datasources\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_TEST\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_TEST\\\"}\",\"ip\":\"127.0.0.1\",\"port\":5236,\"dbname\":\"QDATA_TEST\",\"datasource_id\":48,\"datasourceId\":48}}', 'MEDIUM', 0, 0, 0, 0, -1, -1, '', 567, '1', '0', '管理员', 1, '2025-06-11 21:56:25', '管理员', 1, '2025-06-11 21:56:25', NULL, '51');
 INSERT INTO `dpp_etl_node_log` VALUES (291, '3', 'SQL', '水闸数据开发', '143585088345952', 1, 84, '141883958809440', '{\"sqlType\":\"0\",\"type\":\"DM8\",\"sql\":\"SELECT \\n    g.gate_id,\\n    g.gate_name,\\n    g.location,\\n    g.gate_type,\\n    g.design_flow_capacity,\\n    g.max_opening_height,\\n    r.river_name,\\n    b.basin_name,\\n    (SELECT MAX(h.water_level) \\n     FROM hydrological_data h \\n     WHERE h.location_id = g.gate_id \\n     AND h.data_type = \'gate\'\\n     AND h.record_date BETWEEN ADD_MONTHS(CURRENT_DATE, -12) AND CURRENT_DATE) AS max_water_level_12m,\\n    (SELECT COUNT(o.operation_id) \\n     FROM gate_operations o \\n     WHERE o.gate_id = g.gate_id\\n     AND o.operation_date BETWEEN ADD_MONTHS(CURRENT_DATE, -3) AND CURRENT_DATE) AS recent_operations,\\n    (SELECT AVG(o.opening_percentage) \\n     FROM gate_operations o \\n     WHERE o.gate_id = g.gate_id\\n     AND o.operation_date BETWEEN ADD_MONTHS(CURRENT_DATE, -3) AND CURRENT_DATE) AS avg_opening_percentage\\nFROM \\n    water_gates g\\nJOIN \\n    rivers r ON g.river_id = r.river_id\\nJOIN \\n    river_basins b ON r.basin_id = b.basin_id\\nWHERE \\n    g.status = \'active\'\\n    AND g.design_flow_capacity > 500\\nORDER BY \\n    g.design_flow_capacity DESC,\\n    recent_operations DESC;\",\"typaCode\":\"DM\",\"localParams\":[],\"datasources\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_TEST\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_TEST\\\"}\",\"ip\":\"127.0.0.1\",\"port\":5236,\"dbname\":\"QDATA_TEST\",\"datasource_id\":48,\"datasourceId\":48}}', 'MEDIUM', 0, 0, 0, 0, -1, -1, '', 568, '1', '0', '管理员', 1, '2025-06-11 21:56:53', '管理员', 1, '2025-06-11 21:56:53', NULL, '51');
 INSERT INTO `dpp_etl_node_log` VALUES (292, '3', 'SQL', '水库基本信息数据开发', '143585127993184', 1, 84, '141883958809440', '{\"sqlType\":\"0\",\"type\":\"DM8\",\"sql\":\"WITH reservoir_stats AS (\\n    SELECT \\n        r.reservoir_id,\\n        r.reservoir_name,\\n        r.total_capacity,\\n        r.normal_water_level,\\n        r.dead_storage_level,\\n        r.watershed_area,\\n        b.basin_name,\\n        r.completion_year,\\n        (SELECT AVG(s.storage) \\n         FROM reservoir_storage s \\n         WHERE s.reservoir_id = r.reservoir_id\\n         AND EXTRACT(YEAR FROM s.record_date) = EXTRACT(YEAR FROM CURRENT_DATE)) AS current_year_avg_storage,\\n        (SELECT MAX(s.storage) \\n         FROM reservoir_storage s \\n         WHERE s.reservoir_id = r.reservoir_id) AS historical_max_storage,\\n        (SELECT MIN(s.storage) \\n         FROM reservoir_storage s \\n         WHERE s.reservoir_id = r.reservoir_id) AS historical_min_storage\\n    FROM \\n        reservoirs r\\n    JOIN \\n        river_basins b ON r.basin_id = b.basin_id\\n    WHERE \\n        r.status = \'operational\'\\n)\\nSELECT \\n    rs.*,\\n    rs.current_year_avg_storage / rs.total_capacity * 100 AS current_year_utilization_rate,\\n    (SELECT COUNT(*) \\n     FROM dam_safety_inspections d \\n     WHERE d.reservoir_id = rs.reservoir_id\\n     AND d.inspection_date > ADD_MONTHS(CURRENT_DATE, -12)) AS annual_inspections,\\n    (SELECT SUM(r.release_volume) \\n     FROM reservoir_releases r \\n     WHERE r.reservoir_id = rs.reservoir_id\\n     AND EXTRACT(YEAR FROM r.release_date) = EXTRACT(YEAR FROM CURRENT_DATE)) AS annual_release_volume\\nFROM \\n    reservoir_stats rs\\nWHERE \\n    rs.current_year_avg_storage IS NOT NULL\\n    AND rs.total_capacity > 10000000\\nORDER BY \\n    rs.total_capacity DESC,\\n    current_year_utilization_rate DESC;\",\"typaCode\":\"DM\",\"localParams\":[],\"datasources\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_TEST\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_TEST\\\"}\",\"ip\":\"127.0.0.1\",\"port\":5236,\"dbname\":\"QDATA_TEST\",\"datasource_id\":48,\"datasourceId\":48}}', 'MEDIUM', 0, 0, 0, 0, -1, -1, '', 569, '1', '0', '管理员', 1, '2025-06-11 21:57:32', '管理员', 1, '2025-06-11 21:57:32', NULL, '51');
@@ -2244,45 +2298,45 @@ INSERT INTO `dpp_etl_node_log` VALUES (293, '3', 'SQL', '水闸数据开发', '1
 INSERT INTO `dpp_etl_node_log` VALUES (294, '3', 'SQL', '雨量站数据开发', '143585176487776', 1, 84, '141883958809440', '{\"sqlType\":\"0\",\"type\":\"DM8\",\"sql\":\"SELECT \\n    r.rainfall_station_id,\\n    r.station_name,\\n    r.location,\\n    r.elevation,\\n    r.installation_date,\\n    b.basin_name,\\n    c.county_name,\\n    p.province_name,\\n    (SELECT AVG(rd.rainfall) \\n     FROM rainfall_data rd \\n     WHERE rd.station_id = r.rainfall_station_id\\n     AND EXTRACT(YEAR FROM rd.record_date) = EXTRACT(YEAR FROM CURRENT_DATE)) AS current_year_avg_rainfall,\\n    (SELECT MAX(rd.rainfall) \\n     FROM rainfall_data rd \\n     WHERE rd.station_id = r.rainfall_station_id\\n     AND EXTRACT(YEAR FROM rd.record_date) = EXTRACT(YEAR FROM CURRENT_DATE)) AS current_year_max_rainfall,\\n    (SELECT PERCENTILE_CONT(0.9) WITHIN GROUP (ORDER BY rd.rainfall)\\n     FROM rainfall_data rd \\n     WHERE rd.station_id = r.rainfall_station_id\\n     AND EXTRACT(YEAR FROM rd.record_date) = EXTRACT(YEAR FROM CURRENT_DATE)) AS current_year_90th_percentile,\\n    (SELECT COUNT(*) \\n     FROM rainfall_data rd \\n     WHERE rd.station_id = r.rainfall_station_id\\n     AND rd.rainfall > 50\\n     AND EXTRACT(YEAR FROM rd.record_date) = EXTRACT(YEAR FROM CURRENT_DATE)) AS heavy_rain_days\\nFROM \\n    rainfall_stations r\\nJOIN \\n    river_basins b ON r.basin_id = b.basin_id\\nLEFT JOIN \\n    counties c ON r.county_id = c.county_id\\nLEFT JOIN \\n    provinces p ON c.province_id = p.province_id\\nWHERE \\n    r.status = \'active\'\\n    AND r.installation_date < ADD_MONTHS(CURRENT_DATE, -60)\\nORDER BY \\n    current_year_avg_rainfall DESC,\\n    heavy_rain_days DESC;\",\"typaCode\":\"DM\",\"localParams\":[],\"datasources\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_TEST\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_TEST\\\"}\",\"ip\":\"127.0.0.1\",\"port\":5236,\"dbname\":\"QDATA_TEST\",\"datasource_id\":48,\"datasourceId\":48}}', 'MEDIUM', 0, 0, 0, 0, -1, -1, '', 570, '1', '0', '管理员', 1, '2025-06-11 21:58:19', '管理员', 1, '2025-06-11 21:58:19', NULL, '51');
 INSERT INTO `dpp_etl_node_log` VALUES (295, '3', 'SQL', '雨量站数据开发', '143585176487776', 2, 84, '141883958809440', '{\"sqlType\":\"0\",\"typaCode\":\"DM\",\"datasources\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_TEST\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_TEST\\\"}\",\"ip\":\"127.0.0.1\",\"port\":5236,\"dbname\":\"QDATA_TEST\",\"datasource_id\":48,\"datasourceId\":48},\"type\":\"DM8\",\"localParams\":[],\"sql\":\"SELECT \\n    r.rainfall_station_id,\\n    r.station_name,\\n    r.location,\\n    r.elevation,\\n    r.installation_date,\\n    b.basin_name,\\n    c.county_name,\\n    p.province_name,\\n    (SELECT AVG(rd.rainfall) \\n     FROM rainfall_data rd \\n     WHERE rd.station_id = r.rainfall_station_id\\n     AND EXTRACT(YEAR FROM rd.record_date) = EXTRACT(YEAR FROM CURRENT_DATE)) AS current_year_avg_rainfall,\\n    (SELECT MAX(rd.rainfall) \\n     FROM rainfall_data rd \\n     WHERE rd.station_id = r.rainfall_station_id\\n     AND EXTRACT(YEAR FROM rd.record_date) = EXTRACT(YEAR FROM CURRENT_DATE)) AS current_year_max_rainfall,\\n    (SELECT PERCENTILE_CONT(0.9) WITHIN GROUP (ORDER BY rd.rainfall)\\n     FROM rainfall_data rd \\n     WHERE rd.station_id = r.rainfall_station_id\\n     AND EXTRACT(YEAR FROM rd.record_date) = EXTRACT(YEAR FROM CURRENT_DATE)) AS current_year_90th_percentile,\\n    (SELECT COUNT(*) \\n     FROM rainfall_data rd \\n     WHERE rd.station_id = r.rainfall_station_id\\n     AND rd.rainfall > 50\\n     AND EXTRACT(YEAR FROM rd.record_date) = EXTRACT(YEAR FROM CURRENT_DATE)) AS heavy_rain_days\\nFROM \\n    rainfall_stations r\\nJOIN \\n    river_basins b ON r.basin_id = b.basin_id\\nLEFT JOIN \\n    counties c ON r.county_id = c.county_id\\nLEFT JOIN \\n    provinces p ON c.province_id = p.province_id\\nWHERE \\n    r.status = \'active\'\\n    AND r.installation_date < ADD_MONTHS(CURRENT_DATE, -60)\\nORDER BY \\n    current_year_avg_rainfall DESC,\\n    heavy_rain_days DESC;\"}', 'MEDIUM', 0, 0, 0, 0, -1, -1, '', 570, '1', '0', '管理员', 1, '2025-06-11 21:58:43', '管理员', 1, '2025-06-11 21:58:43', NULL, '51');
 INSERT INTO `dpp_etl_node_log` VALUES (296, '3', 'SQL', '雨量站数据开发', '143585176487776', 3, 84, '141883958809440', '{\"sqlType\":\"0\",\"typaCode\":\"DM\",\"datasources\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_TEST\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_TEST\\\"}\",\"ip\":\"127.0.0.1\",\"port\":5236,\"dbname\":\"QDATA_TEST\",\"datasource_id\":48,\"datasourceId\":48},\"type\":\"DM8\",\"localParams\":[],\"sql\":\"SELECT \\n    r.rainfall_station_id,\\n    r.station_name,\\n    r.location,\\n    r.elevation,\\n    r.installation_date,\\n    b.basin_name,\\n    c.county_name,\\n    p.province_name,\\n    (SELECT AVG(rd.rainfall) \\n     FROM rainfall_data rd \\n     WHERE rd.station_id = r.rainfall_station_id\\n     AND EXTRACT(YEAR FROM rd.record_date) = EXTRACT(YEAR FROM CURRENT_DATE)) AS current_year_avg_rainfall,\\n    (SELECT MAX(rd.rainfall) \\n     FROM rainfall_data rd \\n     WHERE rd.station_id = r.rainfall_station_id\\n     AND EXTRACT(YEAR FROM rd.record_date) = EXTRACT(YEAR FROM CURRENT_DATE)) AS current_year_max_rainfall,\\n    (SELECT PERCENTILE_CONT(0.9) WITHIN GROUP (ORDER BY rd.rainfall)\\n     FROM rainfall_data rd \\n     WHERE rd.station_id = r.rainfall_station_id\\n     AND EXTRACT(YEAR FROM rd.record_date) = EXTRACT(YEAR FROM CURRENT_DATE)) AS current_year_90th_percentile,\\n    (SELECT COUNT(*) \\n     FROM rainfall_data rd \\n     WHERE rd.station_id = r.rainfall_station_id\\n     AND rd.rainfall > 50\\n     AND EXTRACT(YEAR FROM rd.record_date) = EXTRACT(YEAR FROM CURRENT_DATE)) AS heavy_rain_days\\nFROM \\n    rainfall_stations r\\nJOIN \\n    river_basins b ON r.basin_id = b.basin_id\\nLEFT JOIN \\n    counties c ON r.county_id = c.county_id\\nLEFT JOIN \\n    provinces p ON c.province_id = p.province_id\\nWHERE \\n    r.status = \'active\'\\n    AND r.installation_date < ADD_MONTHS(CURRENT_DATE, -60)\\nORDER BY \\n    current_year_avg_rainfall DESC,\\n    heavy_rain_days DESC;\"}', 'MEDIUM', 0, 0, 0, 0, -1, -1, '', 570, '1', '0', '管理员', 1, '2025-06-11 21:58:57', '管理员', 1, '2025-06-11 21:58:57', NULL, '51');
-INSERT INTO `dpp_etl_node_log` VALUES (297, '3', 'SQL', '取水口基础信息数据开发', '141950767490912', 4, 84, '141883958809440', '{\"sqlType\":\"0\",\"typaCode\":\"DM\",\"datasources\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"Iqo0tpF$~8R$Zn1yvhJA\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"type\":\"DM8\",\"localParams\":[],\"sql\":\"SELECT \\n    w.intake_id,\\n    w.intake_name,\\n    w.location,\\n    w.design_capacity,\\n    w.current_capacity,\\n    w.water_source_type,\\n    w.construction_date,\\n    b.basin_name,\\n    r.river_name,\\n    COUNT(o.operation_id) AS operation_count\\nFROM \\n    water_intakes w\\nJOIN \\n    river_basins b ON w.basin_id = b.basin_id\\nLEFT JOIN \\n    rivers r ON w.river_id = r.river_id\\nLEFT JOIN \\n    intake_operations o ON w.intake_id = o.intake_id\\nWHERE \\n    w.status = \'active\'\\n    AND w.design_capacity > 10\\n    AND w.construction_date BETWEEN TO_DATE(\'2010-01-01\', \'YYYY-MM-DD\') AND SYSDATE\\nGROUP BY \\n    w.intake_id, w.intake_name, w.location, w.design_capacity, \\n    w.current_capacity, w.water_source_type, w.construction_date,\\n    b.basin_name, r.river_name\\nHAVING \\n    COUNT(o.operation_id) > 5\\nORDER BY \\n    w.current_capacity DESC, operation_count DESC;\"}', 'MEDIUM', 0, 0, 0, 0, -1, -1, '', 552, '1', '0', '管理员', 1, '2025-06-11 22:10:51', '管理员', 1, '2025-06-11 22:10:51', NULL, '51');
-INSERT INTO `dpp_etl_node_log` VALUES (298, '3', 'SQL', '灌区相关的数据开发', '141950875765600', 4, 84, '141883958809440', '{\"sqlType\":\"0\",\"typaCode\":\"DM\",\"datasources\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"Iqo0tpF$~8R$Zn1yvhJA\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"type\":\"DM8\",\"localParams\":[{\"prop\":\"id\",\"type\":\"TINYINT\",\"value\":\"1\",\"direct\":\"IN\"}],\"sql\":\"WITH irrigated_areas AS (\\n    SELECT \\n        i.area_id,\\n        i.area_name,\\n        i.total_area,\\n        i.effective_irrigated_area,\\n        i.water_source,\\n        i.annual_water_usage,\\n        c.county_name,\\n        p.province_name,\\n        RANK() OVER (PARTITION BY p.province_name ORDER BY i.effective_irrigated_area DESC) AS area_rank\\n    FROM \\n        irrigation_areas i\\n    JOIN \\n        counties c ON i.county_id = c.county_id\\n    JOIN \\n        provinces p ON c.province_id = p.province_id\\n    WHERE \\n        i.status = \'operational\'\\n        AND i.effective_irrigated_area > 5000\\n)\\nSELECT \\n    a.*,\\n    (SELECT COUNT(*) FROM irrigation_crops ic WHERE ic.area_id = a.area_id) AS crop_types,\\n    (SELECT SUM(ic.area) FROM irrigation_crops ic WHERE ic.area_id = a.area_id) AS total_crop_area,\\n    ROUND(a.effective_irrigated_area / a.total_area * 100, 2) AS efficiency_rate\\nFROM \\n    irrigated_areas a\\nWHERE \\n    a.area_rank <= 10\\nORDER BY \\n    a.province_name, a.area_rank;\"}', 'MEDIUM', 0, 0, 0, 0, -1, -1, '', 553, '1', '0', '管理员', 1, '2025-06-11 22:11:09', '管理员', 1, '2025-06-11 22:11:09', NULL, '51');
+INSERT INTO `dpp_etl_node_log` VALUES (297, '3', 'SQL', '取水口基础信息数据开发', '141950767490912', 4, 84, '141883958809440', '{\"sqlType\":\"0\",\"typaCode\":\"DM\",\"datasources\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"type\":\"DM8\",\"localParams\":[],\"sql\":\"SELECT \\n    w.intake_id,\\n    w.intake_name,\\n    w.location,\\n    w.design_capacity,\\n    w.current_capacity,\\n    w.water_source_type,\\n    w.construction_date,\\n    b.basin_name,\\n    r.river_name,\\n    COUNT(o.operation_id) AS operation_count\\nFROM \\n    water_intakes w\\nJOIN \\n    river_basins b ON w.basin_id = b.basin_id\\nLEFT JOIN \\n    rivers r ON w.river_id = r.river_id\\nLEFT JOIN \\n    intake_operations o ON w.intake_id = o.intake_id\\nWHERE \\n    w.status = \'active\'\\n    AND w.design_capacity > 10\\n    AND w.construction_date BETWEEN TO_DATE(\'2010-01-01\', \'YYYY-MM-DD\') AND SYSDATE\\nGROUP BY \\n    w.intake_id, w.intake_name, w.location, w.design_capacity, \\n    w.current_capacity, w.water_source_type, w.construction_date,\\n    b.basin_name, r.river_name\\nHAVING \\n    COUNT(o.operation_id) > 5\\nORDER BY \\n    w.current_capacity DESC, operation_count DESC;\"}', 'MEDIUM', 0, 0, 0, 0, -1, -1, '', 552, '1', '0', '管理员', 1, '2025-06-11 22:10:51', '管理员', 1, '2025-06-11 22:10:51', NULL, '51');
+INSERT INTO `dpp_etl_node_log` VALUES (298, '3', 'SQL', '灌区相关的数据开发', '141950875765600', 4, 84, '141883958809440', '{\"sqlType\":\"0\",\"typaCode\":\"DM\",\"datasources\":{\"datasourceType\":\"DM8\",\"datasourceConfig\":\"{\\\"username\\\":\\\"QDATA_OPEN\\\",\\\"password\\\":\\\"123456\\\",\\\"dbname\\\":\\\"QDATA_OPEN\\\"}\",\"ip\":\"110.42.38.62\",\"port\":40013,\"dbname\":\"QDATA\",\"datasource_id\":48,\"datasourceId\":48},\"type\":\"DM8\",\"localParams\":[{\"prop\":\"id\",\"type\":\"TINYINT\",\"value\":\"1\",\"direct\":\"IN\"}],\"sql\":\"WITH irrigated_areas AS (\\n    SELECT \\n        i.area_id,\\n        i.area_name,\\n        i.total_area,\\n        i.effective_irrigated_area,\\n        i.water_source,\\n        i.annual_water_usage,\\n        c.county_name,\\n        p.province_name,\\n        RANK() OVER (PARTITION BY p.province_name ORDER BY i.effective_irrigated_area DESC) AS area_rank\\n    FROM \\n        irrigation_areas i\\n    JOIN \\n        counties c ON i.county_id = c.county_id\\n    JOIN \\n        provinces p ON c.province_id = p.province_id\\n    WHERE \\n        i.status = \'operational\'\\n        AND i.effective_irrigated_area > 5000\\n)\\nSELECT \\n    a.*,\\n    (SELECT COUNT(*) FROM irrigation_crops ic WHERE ic.area_id = a.area_id) AS crop_types,\\n    (SELECT SUM(ic.area) FROM irrigation_crops ic WHERE ic.area_id = a.area_id) AS total_crop_area,\\n    ROUND(a.effective_irrigated_area / a.total_area * 100, 2) AS efficiency_rate\\nFROM \\n    irrigated_areas a\\nWHERE \\n    a.area_rank <= 10\\nORDER BY \\n    a.province_name, a.area_rank;\"}', 'MEDIUM', 0, 0, 0, 0, -1, -1, '', 553, '1', '0', '管理员', 1, '2025-06-11 22:11:09', '管理员', 1, '2025-06-11 22:11:09', NULL, '51');
 
 -- ----------------------------
 -- Table structure for dpp_etl_scheduler
 -- ----------------------------
 DROP TABLE IF EXISTS `dpp_etl_scheduler`;
 CREATE TABLE `dpp_etl_scheduler`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `task_id` bigint(20) NOT NULL COMMENT '任务id',
-  `task_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务编码;DolphinScheduler任务的编码',
-  `start_time` datetime NULL DEFAULT NULL COMMENT '开始时间',
-  `end_time` datetime NULL DEFAULT NULL COMMENT '结束时间',
-  `timezone_id` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'Asia/Shanghai' COMMENT '时区;直接默认 Asia/Shanghai',
-  `cron_expression` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'cron表达式',
-  `failure_strategy` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '失败策略;是否继续 0:否 1:是',
-  `ds_id` bigint(20) NOT NULL COMMENT 'DolphinScheduler的id',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `status` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '-1' COMMENT '调度状态;-1:草稿，0:未上线，1:已上线',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90112286383000`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 284 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据集成调度信息' ROW_FORMAT = Dynamic;
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `TASK_ID` bigint(20) NOT NULL COMMENT '任务id',
+  `TASK_CODE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务编码;DolphinScheduler任务的编码',
+  `START_TIME` datetime NULL DEFAULT NULL COMMENT '开始时间',
+  `END_TIME` datetime NULL DEFAULT NULL COMMENT '结束时间',
+  `TIMEZONE_ID` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'Asia/Shanghai' COMMENT '时区;直接默认 Asia/Shanghai',
+  `CRON_EXPRESSION` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'cron表达式',
+  `FAILURE_STRATEGY` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '失败策略;是否继续 0:否 1:是',
+  `DS_ID` bigint(20) NOT NULL COMMENT 'DolphinScheduler的id',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `STATUS` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '-1' COMMENT '调度状态;-1:草稿，0:未上线，1:已上线',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974842137041100`(`ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 296 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据集成调度信息' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of dpp_etl_scheduler
 -- ----------------------------
-INSERT INTO `dpp_etl_scheduler` VALUES (279, 244, '141950771024736', '2025-05-24 10:36:39', '2125-04-30 10:36:39', 'Asia/Shanghai', '0 0 0 1 * ?', '1', -1, '1', '0', 'qData', 1, '2025-05-24 10:36:39', 'qData', 1, '2025-05-24 10:36:39', 'NULL', '0');
-INSERT INTO `dpp_etl_scheduler` VALUES (280, 245, '141950878896992', '2025-05-24 10:38:25', '2125-04-30 10:38:25', 'Asia/Shanghai', '0 0 0 1 * ?', '1', -1, '1', '0', 'qData', 1, '2025-05-24 10:38:25', 'qData', 1, '2025-05-24 10:38:25', 'NULL', '0');
-INSERT INTO `dpp_etl_scheduler` VALUES (281, 246, '141951011072864', '2025-05-24 10:40:34', '2125-04-30 10:40:34', 'Asia/Shanghai', '0 0 0 1 * ?', '1', -1, '1', '0', 'qData', 1, '2025-05-24 10:40:34', 'qData', 1, '2025-05-24 10:40:34', 'NULL', '0');
-INSERT INTO `dpp_etl_scheduler` VALUES (282, 247, '141951088294752', '2025-05-24 10:41:49', '2125-04-30 10:41:49', 'Asia/Shanghai', '0 0 0 1 * ?', '1', -1, '1', '0', 'qData', 1, '2025-05-24 10:41:49', 'qData', 1, '2025-05-24 10:41:49', 'NULL', '0');
-INSERT INTO `dpp_etl_scheduler` VALUES (283, 248, '141951225860960', '2025-05-24 10:44:04', '2125-04-30 10:44:04', 'Asia/Shanghai', '0 0 0 1 * ?', '1', -1, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', 'NULL', '0');
+INSERT INTO `dpp_etl_scheduler` VALUES (279, 244, '141950771024736', '2025-05-24 10:36:39', '2125-04-30 10:36:39', 'Asia/Shanghai', '0 0 0 1 * ?', '1', -1, '1', '0', 'qData', 1, '2025-05-24 10:36:40', 'qData', 1, '2025-05-24 10:36:40', NULL, '0');
+INSERT INTO `dpp_etl_scheduler` VALUES (280, 245, '141950878896992', '2025-05-24 10:38:25', '2125-04-30 10:38:25', 'Asia/Shanghai', '0 0 0 1 * ?', '1', -1, '1', '0', 'qData', 1, '2025-05-24 10:38:25', 'qData', 1, '2025-05-24 10:38:25', NULL, '0');
+INSERT INTO `dpp_etl_scheduler` VALUES (281, 246, '141951011072864', '2025-05-24 10:40:34', '2125-04-30 10:40:34', 'Asia/Shanghai', '0 0 0 1 * ?', '1', -1, '1', '0', 'qData', 1, '2025-05-24 10:40:34', 'qData', 1, '2025-05-24 10:40:34', NULL, '0');
+INSERT INTO `dpp_etl_scheduler` VALUES (282, 247, '141951088294752', '2025-05-24 10:41:49', '2125-04-30 10:41:49', 'Asia/Shanghai', '0 0 0 1 * ?', '1', -1, '1', '0', 'qData', 1, '2025-05-24 10:41:50', 'qData', 1, '2025-05-24 10:41:50', NULL, '0');
+INSERT INTO `dpp_etl_scheduler` VALUES (283, 248, '141951225860960', '2025-05-24 10:44:04', '2125-04-30 10:44:04', 'Asia/Shanghai', '0 0 0 1 * ?', '1', -1, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '0');
 INSERT INTO `dpp_etl_scheduler` VALUES (284, 249, '141951088294752', '2025-05-24 10:44:04', '2125-04-30 10:44:04', 'Asia/Shanghai', '0 0 0 1 * ?', '1', -1, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '0');
 INSERT INTO `dpp_etl_scheduler` VALUES (285, 250, '141951225860960', '2025-05-24 10:44:04', '2125-04-30 10:44:04', 'Asia/Shanghai', '0 0 0 1 * ?', '1', -1, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '0');
 INSERT INTO `dpp_etl_scheduler` VALUES (286, 251, '141951088294752', '2025-05-24 10:44:04', '2125-04-30 10:44:04', 'Asia/Shanghai', '0 0 0 1 * ?', '1', -1, '1', '0', 'qData', 1, '2025-05-24 10:44:04', 'qData', 1, '2025-05-24 10:44:04', NULL, '0');
@@ -2297,48 +2351,119 @@ INSERT INTO `dpp_etl_scheduler` VALUES (294, 259, '143585128999776', '2025-06-11
 INSERT INTO `dpp_etl_scheduler` VALUES (295, 260, '143585177230176', '2025-06-11 21:58:19', '2125-05-18 21:58:19', 'Asia/Shanghai', '0 0 0 1 * ?', '1', -1, '1', '0', '管理员', 1, '2025-06-11 21:58:19', '管理员', 1, '2025-06-11 21:58:19', NULL, '0');
 
 -- ----------------------------
+-- Table structure for dpp_etl_sql_temp
+-- ----------------------------
+DROP TABLE IF EXISTS `dpp_etl_sql_temp`;
+CREATE TABLE `dpp_etl_sql_temp`  (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `NAME` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '名称',
+  `TYPE` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '类型;2：DM 3：ORACLE 4：MYSQL 5：KINGBASE 6：Sqlerver  7：PostgreSql 8：Hive 9：SparkSql 10：FLINK流 11：FLINK批',
+  `CONTENT` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '内容',
+  `DESCRIPTION` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974842844225600`(`ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 47 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据集成SQL模版' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of dpp_etl_sql_temp
+-- ----------------------------
+INSERT INTO `dpp_etl_sql_temp` VALUES (1, 'create.table.kafka', '10', 'CREATE TABLE Kafka_Table (\n  `event_time` TIMESTAMP(3) METADATA FROM \'timestamp\',\n  `partition` BIGINT METADATA VIRTUAL,\n  `offset` BIGINT METADATA VIRTUAL,\n  `user_id` BIGINT,\n  `item_id` BIGINT,\n  `behavior` STRING\n) WITH (\n  \'connector\' = \'kafka\',\n  \'topic\' = \'user_behavior\',\n  \'properties.bootstrap.servers\' = \'localhost:9092\',\n  \'properties.group.id\' = \'testGroup\',\n  \'scan.startup.mode\' = \'earliest-offset\',\n  \'format\' = \'csv\'\n);\n--可选: \'value.fields-include\' = \'ALL\',\n--可选: \'json.ignore-parse-errors\' = \'true\',\n--可选: \'key.fields-prefix\' = \'k_\',', 'kafka快速建表格式', '1', '0', NULL, NULL, '2025-06-25 14:19:31', NULL, NULL, '2025-06-25 14:19:31', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (2, 'create.table.doris', '10', 'CREATE TABLE doris_table (\n    cid INT,\n    sid INT,\n    name STRING,\n    cls STRING,\n    score INT,\n    PRIMARY KEY (cid) NOT ENFORCED\n) WITH (\n\'connector\' = \'doris\',\n\'fenodes\' = \'127.0.0.1:8030\' ,\n\'table.identifier\' = \'test.scoreinfo\',\n\'username\' = \'root\',\n\'password\'=\'\'\n);', 'Doris快速建表', '1', '0', NULL, NULL, '2025-06-25 14:19:31', NULL, NULL, '2025-06-25 14:19:31', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (3, 'create.table.jdbc', '10', 'CREATE TABLE JDBC_table (\n  id BIGINT,\n  name STRING,\n  age INT,\n  status BOOLEAN,\n  PRIMARY KEY (id) NOT ENFORCED\n) WITH (\n   \'connector\' = \'jdbc\',\n   \'url\' = \'jdbc:mysql://localhost:3306/mydatabase\',\n   \'table-name\' = \'users\',\n   \'username\' = \'root\',\n   \'password\' = \'123456\'\n);\n--可选: \'sink.parallelism\'=\'1\',\n--可选: \'lookup.cache.ttl\'=\'1000s\',', 'JDBC建表语句', '1', '0', NULL, NULL, '2025-06-25 14:19:32', NULL, NULL, '2025-06-25 14:19:32', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (4, 'create.catalog.hive', '10', 'CREATE CATALOG hive WITH (\n    \'type\' = \'hive\',\n    \'default-database\' = \'default\',\n    \'hive-conf-dir\' = \'/app/wwwroot/MBDC/hive/conf/\', --hive配置文件\n    \'hadoop-conf-dir\'=\'/app/wwwroot/MBDC/hadoop/etc/hadoop/\' --hadoop配置文件，配了环境变量则不需要。\n);', '创建HIVE的catalog', '1', '0', NULL, NULL, '2025-06-25 14:19:32', NULL, NULL, '2025-06-25 14:19:32', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (6, 'use.catalog.hive', '10', 'USE CATALOG hive;', '使用hive的catalog', '1', '0', NULL, NULL, '2025-06-25 14:20:17', NULL, NULL, '2025-06-25 14:20:17', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (7, 'use.catalog.default', '10', 'USE CATALOG default_catalog;', '使用default的catalog', '1', '0', NULL, NULL, '2025-06-25 14:20:17', NULL, NULL, '2025-06-25 14:20:17', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (8, 'create.stream.table.hive', '10', 'CREATE CATALOG hive WITH ( --创建hive的catalog\n    \'type\' = \'hive\',\n    \'hive-conf-dir\' = \'/app/wwwroot/MBDC/hive/conf/\',\n    \'hadoop-conf-dir\'=\'/app/wwwroot/MBDC/hadoop/etc/hadoop/\'\n);\n\nUSE CATALOG hive;\nUSE offline_db; --选择库\nset table.sql-dialect=hive; --设置方言\n\nCREATE TABLE hive_stream_table (\n  user_id STRING,\n  order_amount DOUBLE\n) PARTITIONED BY (dt STRING, hr STRING) STORED AS parquet TBLPROPERTIES (\n  \'partition.time-extractor.timestamp-pattern\'=\'$dt $hr:00:00\',\n  \'sink.partition-commit.trigger\'=\'partition-time\',\n  \'sink.partition-commit.delay\'=\'1min\',\n  \'sink.semantic\' = \'exactly-once\',\n  \'sink.rolling-policy.rollover-interval\' =\'1min\',\n  \'sink.rolling-policy.check-interval\'=\'1min\',\n  \'sink.partition-commit.policy.kind\'=\'metastore,success-file\'\n);', '创建流式HIVE表', '1', '0', NULL, NULL, '2025-06-25 14:20:18', NULL, NULL, '2025-06-25 14:20:18', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (9, 'create.table.mysql_cdc', '10', 'CREATE TABLE mysql_cdc_table(\n    cid INT,\n    sid INT,\n    cls STRING,\n    score INT,\n    PRIMARY KEY (cid) NOT ENFORCED\n) WITH (\n\'connector\' = \'mysql-cdc\',\n\'hostname\' = \'127.0.0.1\',\n\'port\' = \'3306\',\n\'username\' = \'test\',\n\'password\' = \'123456\',\n\'database-name\' = \'test\',\n\'server-time-zone\' = \'UTC\',\n\'scan.incremental.snapshot.enabled\' = \'true\',\n\'debezium.snapshot.mode\'=\'latest-offset\' ,-- 或者key是scan.startup.mode，initial表示要历史数据，latest-offset表示不要历史数据\n\'debezium.datetime.format.date\'=\'yyyy-MM-dd\',\n\'debezium.datetime.format.time\'=\'HH-mm-ss\',\n\'debezium.datetime.format.datetime\'=\'yyyy-MM-dd HH-mm-ss\',\n\'debezium.datetime.format.timestamp\'=\'yyyy-MM-dd HH-mm-ss\',\n\'debezium.datetime.format.timestamp.zone\'=\'UTC+8\',\n\'table-name\' = \'mysql_cdc_table\');', '创建Mysql_CDC表', '1', '0', NULL, NULL, '2025-06-25 14:20:18', NULL, NULL, '2025-06-25 14:20:18', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (10, 'create.table.hudi', '10', 'CREATE TABLE hudi_table\n(\n    `goods_order_id`  bigint COMMENT \'自增主键id\',\n    `goods_order_uid` string COMMENT \'订单uid\',\n    `customer_uid`    string COMMENT \'客户uid\',\n    `customer_name`   string COMMENT \'客户name\',\n    `create_time`     timestamp(3) COMMENT \'创建时间\',\n    `update_time`     timestamp(3) COMMENT \'更新时间\',\n    `create_by`       string COMMENT \'创建人uid（唯一标识）\',\n    `update_by`       string COMMENT \'更新人uid（唯一标识）\',\n    PRIMARY KEY (goods_order_id) NOT ENFORCED\n) COMMENT \'hudi_table\'\nWITH (\n\'connector\' = \'hudi\',\n\'path\' = \'hdfs://cluster1/data/bizdata/cdc/mysql/order/goods_order\', -- 路径会自动创建\n\'hoodie.datasource.write.recordkey.field\' = \'goods_order_id\', -- 主键\n\'write.precombine.field\' = \'update_time\', -- 相同的键值时，取此字段最大值，默认ts字段\n\'read.streaming.skip_compaction\' = \'true\', -- 避免重复消费问题\n\'write.bucket_assign.tasks\' = \'2\', -- 并发写的 bucekt 数\n\'write.tasks\' = \'2\',\n\'compaction.tasks\' = \'1\',\n\'write.operation\' = \'upsert\', -- UPSERT（插入更新）\\INSERT（插入）\\BULK_INSERT（批插入）（upsert性能会低些，不适合埋点上报）\n\'write.rate.limit\' = \'20000\', -- 限制每秒多少条\n\'table.type\' = \'COPY_ON_WRITE\', -- 默认COPY_ON_WRITE ，\n\'compaction.async.enabled\' = \'true\', -- 在线压缩\n\'compaction.trigger.strategy\' = \'num_or_time\', -- 按次数压缩\n\'compaction.delta_commits\' = \'20\', -- 默认为5\n\'compaction.delta_seconds\' = \'60\', -- 默认为1小时\n\'hive_sync.enable\' = \'true\', -- 启用hive同步\n\'hive_sync.mode\' = \'hms\', -- 启用hive hms同步，默认jdbc\n\'hive_sync.metastore.uris\' = \'thrift://cdh2.vision.com:9083\', -- required, metastore的端口\n\'hive_sync.jdbc_url\' = \'jdbc:hive2://cdh1.vision.com:10000\', -- required, hiveServer地址\n\'hive_sync.table\' = \'order_mysql_goods_order\', -- required, hive 新建的表名 会自动同步hudi的表结构和数据到hive\n\'hive_sync.db\' = \'cdc_ods\', -- required, hive 新建的数据库名\n\'hive_sync.username\' = \'hive\', -- required, HMS 用户名\n\'hive_sync.password\' = \'123456\', -- required, HMS 密码\n\'hive_sync.skip_ro_suffix\' = \'true\' -- 去除ro后缀\n);', '创建hudi表', '1', '0', NULL, NULL, '2025-06-25 14:20:18', NULL, NULL, '2025-06-25 14:20:18', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (11, 'CREATE TABLE Like', '10', 'DROP TABLE IF EXISTS sink_table;\nCREATE TABLE IF not EXISTS sink_table\nWITH (\n    \'topic\' = \'motor_vehicle_error\'\n)\nLIKE source_table;', 'CREATE TABLE Like source table', '1', '0', NULL, NULL, '2025-06-25 14:20:18', NULL, NULL, '2025-06-25 14:20:18', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (12, 'CREATE TABLE like source_table EXCLUDING', '10', 'DROP TABLE IF EXISTS sink_table;\nCREATE TABLE IF not EXISTS sink_table(\n     -- Add watermark definition\n    WATERMARK FOR order_time AS order_time - INTERVAL \'5\' SECOND\n)\nWITH (\n    \'topic\' = \'motor_vehicle_error\'\n)\nLIKE source_table (\n     -- Exclude everything besides the computed columns which we need to generate the watermark for.\n    -- We do not want to have the partitions or filesystem options as those do not apply to kafka.\n    EXCLUDING ALL\n    INCLUDING GENERATED\n);', 'CREATE TABLE like source_table EXCLUDING', '1', '0', NULL, NULL, '2025-06-25 14:20:54', NULL, NULL, '2025-06-25 14:20:54', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (13, 'CREATE TABLE ctas_kafka', '10', 'CREATE TABLE my_ctas_table\nWITH (\n    \'connector\' = \'kafka\'\n)\nAS SELECT id, name, age FROM source_table WHERE mod(id, 10) = 0;', 'CREATE TABLE ctas_kafka', '1', '0', NULL, NULL, '2025-06-25 14:20:54', NULL, NULL, '2025-06-25 14:20:54', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (14, 'CREATE TABLE rtas_kafka', '10', 'CREATE OR REPLACE TABLE my_ctas_table\nWITH (\n    \'connector\' = \'kafka\'\n)\nAS SELECT id, name, age FROM source_table WHERE mod(id, 10) = 0;', 'CREATE TABLE rtas_kafka', '1', '0', NULL, NULL, '2025-06-25 14:20:55', NULL, NULL, '2025-06-25 14:20:55', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (15, 'datagen job demo', '10', 'DROP TABLE IF EXISTS source_table3;\nCREATE TABLE IF NOT EXISTS source_table3(\n--订单id\n`order_id` BIGINT,\n--产品\n\n`product` BIGINT,\n--金额\n`amount` BIGINT,\n\n--支付时间\n`order_time` as CAST(CURRENT_TIMESTAMP AS TIMESTAMP(3)), -- `在这里插入代码片`\n--WATERMARK\nWATERMARK FOR order_time AS order_time - INTERVAL \'2\' SECOND\n) WITH(\n\'connector\' = \'datagen\',\n \'rows-per-second\' = \'1\',\n \'fields.order_id.min\' = \'1\',\n \'fields.order_id.max\' = \'2\',\n \'fields.amount.min\' = \'1\',\n \'fields.amount.max\' = \'10\',\n \'fields.product.min\' = \'1\',\n \'fields.product.max\' = \'2\'\n);\n\n-- SELECT * FROM source_table3 LIMIT 10;\n\nDROP TABLE IF EXISTS sink_table5;\nCREATE TABLE IF NOT EXISTS sink_table5(\n--产品\n`product` BIGINT,\n--金额\n`amount` BIGINT,\n--支付时间\n`order_time` TIMESTAMP(3),\n--1分钟时间聚合总数\n`one_minute_sum` BIGINT\n) WITH(\n\'connector\'=\'print\'\n);\n\nINSERT INTO sink_table5\nSELECT\nproduct,\namount,\norder_time,\nSUM(amount) OVER(\nPARTITION BY product\nORDER BY order_time\n-- 标识统计范围是1个 product 的最近 1 分钟的数据\nRANGE BETWEEN INTERVAL \'1\' MINUTE PRECEDING AND CURRENT ROW\n) as one_minute_sum\nFROM source_table3;', 'datagen job demo', '1', '0', NULL, NULL, '2025-06-25 14:20:55', NULL, NULL, '2025-06-25 14:20:55', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (16, 'checkpoint config', '10', '-- 声明一些调优参数 (checkpoint 等相关配置)\nset \'execution.checkpointing.checkpoints-after-tasks-finish.enabled\' =\'true\';\nSET \'pipeline.operator-chaining\' = \'false\';\nset \'state.savepoints.dir\'=\'file:///opt/data/flink_cluster/savepoints\'; -- 目录自行修改\nset \'state.checkpoints.dir\'= \'file:///opt/data/flink_cluster/checkpoints\'; -- 目录自行修改\n-- set state.checkpoint-storage=\'filesystem\';\nset \'state.backend.type\'=\'rocksdb\';\nset \'execution.checkpointing.interval\'=\'60 s\';\nset \'state.checkpoints.num-retained\'=\'100\';\n-- 使 solt 均匀分布在 各个 TM ', 'checkpoint config', '1', '0', NULL, NULL, '2025-06-25 14:20:55', NULL, NULL, '2025-06-25 14:20:55', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (17, 'note template', '10', '-- -----------------------------------------------------------------\n-- @Description(作业描述): ${1:}\n-- @Creator(创建人): ${2:}\n-- @Create DateTime(创建时间): ${3:}\n-- -----------------------------------------------------------------\n\n${4:}', 'note template', '1', '0', NULL, NULL, '2025-06-25 14:20:56', NULL, NULL, '2025-06-25 14:20:56', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (18, 'dinky_paimon_auto_create_table', '10', '-- -----------------------------------------------------------------\n-- 该 demo 用于创建 mysql-cdc 到 paimon 的整库同步案例 并使用自动建表,注意 #{schemaName} 和 #{tableName} 为固定写法,不要修改,用于动态获取库名和表名\n-- -----------------------------------------------------------------\n\n\nEXECUTE CDCSOURCE dinky_paimon_auto_create_table\nWITH\n  (\n    \'connector\' = \'mysql-cdc\',\n    \'hostname\' = \'\',\n    \'port\' = \'\',\n    \'username\' = \'\',\n    \'password\' = \'\',\n    \'checkpoint\' = \'10000\',\n    \'parallelism\' = \'1\',\n    \'scan.startup.mode\' = \'initial\',\n    \'database-name\' = \'dinky\',\n    \'sink.connector\' = \'paimon\',\n    \'sink.path\' = \'hdfs:/tmp/paimon/#{schemaName}.db/#{tableName}\',\n    \'sink.auto-create\' = \'true\',\n  );', 'dinky_paimon_auto_create_table', '1', '0', NULL, NULL, '2025-06-25 14:20:56', NULL, NULL, '2025-06-25 14:20:56', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (19, 'create.table.kafka', '11', 'CREATE TABLE Kafka_Table (\n  `event_time` TIMESTAMP(3) METADATA FROM \'timestamp\',\n  `partition` BIGINT METADATA VIRTUAL,\n  `offset` BIGINT METADATA VIRTUAL,\n  `user_id` BIGINT,\n  `item_id` BIGINT,\n  `behavior` STRING\n) WITH (\n  \'connector\' = \'kafka\',\n  \'topic\' = \'user_behavior\',\n  \'properties.bootstrap.servers\' = \'localhost:9092\',\n  \'properties.group.id\' = \'testGroup\',\n  \'scan.startup.mode\' = \'earliest-offset\',\n  \'format\' = \'csv\'\n);\n--可选: \'value.fields-include\' = \'ALL\',\n--可选: \'json.ignore-parse-errors\' = \'true\',\n--可选: \'key.fields-prefix\' = \'k_\',', 'kafka快速建表格式', '1', '0', NULL, NULL, '2025-06-25 14:19:31', NULL, NULL, '2025-06-25 14:19:31', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (20, 'create.table.doris', '11', 'CREATE TABLE doris_table (\n    cid INT,\n    sid INT,\n    name STRING,\n    cls STRING,\n    score INT,\n    PRIMARY KEY (cid) NOT ENFORCED\n) WITH (\n\'connector\' = \'doris\',\n\'fenodes\' = \'127.0.0.1:8030\' ,\n\'table.identifier\' = \'test.scoreinfo\',\n\'username\' = \'root\',\n\'password\'=\'\'\n);', 'Doris快速建表', '1', '0', NULL, NULL, '2025-06-25 14:19:31', NULL, NULL, '2025-06-25 14:19:31', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (21, 'create.table.jdbc', '11', 'CREATE TABLE JDBC_table (\n  id BIGINT,\n  name STRING,\n  age INT,\n  status BOOLEAN,\n  PRIMARY KEY (id) NOT ENFORCED\n) WITH (\n   \'connector\' = \'jdbc\',\n   \'url\' = \'jdbc:mysql://localhost:3306/mydatabase\',\n   \'table-name\' = \'users\',\n   \'username\' = \'root\',\n   \'password\' = \'123456\'\n);\n--可选: \'sink.parallelism\'=\'1\',\n--可选: \'lookup.cache.ttl\'=\'1000s\',', 'JDBC建表语句', '1', '0', NULL, NULL, '2025-06-25 14:19:32', NULL, NULL, '2025-06-25 14:19:32', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (22, 'create.catalog.hive', '11', 'CREATE CATALOG hive WITH (\n    \'type\' = \'hive\',\n    \'default-database\' = \'default\',\n    \'hive-conf-dir\' = \'/app/wwwroot/MBDC/hive/conf/\', --hive配置文件\n    \'hadoop-conf-dir\'=\'/app/wwwroot/MBDC/hadoop/etc/hadoop/\' --hadoop配置文件，配了环境变量则不需要。\n);', '创建HIVE的catalog', '1', '0', NULL, NULL, '2025-06-25 14:19:32', NULL, NULL, '2025-06-25 14:19:32', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (23, 'use.catalog.hive', '11', 'USE CATALOG hive;', '使用hive的catalog', '1', '0', NULL, NULL, '2025-06-25 14:20:17', NULL, NULL, '2025-06-25 14:20:17', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (24, 'use.catalog.default', '11', 'USE CATALOG default_catalog;', '使用default的catalog', '1', '0', NULL, NULL, '2025-06-25 14:20:17', NULL, NULL, '2025-06-25 14:20:17', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (25, 'create.stream.table.hive', '11', 'CREATE CATALOG hive WITH ( --创建hive的catalog\n    \'type\' = \'hive\',\n    \'hive-conf-dir\' = \'/app/wwwroot/MBDC/hive/conf/\',\n    \'hadoop-conf-dir\'=\'/app/wwwroot/MBDC/hadoop/etc/hadoop/\'\n);\n\nUSE CATALOG hive;\nUSE offline_db; --选择库\nset table.sql-dialect=hive; --设置方言\n\nCREATE TABLE hive_stream_table (\n  user_id STRING,\n  order_amount DOUBLE\n) PARTITIONED BY (dt STRING, hr STRING) STORED AS parquet TBLPROPERTIES (\n  \'partition.time-extractor.timestamp-pattern\'=\'$dt $hr:00:00\',\n  \'sink.partition-commit.trigger\'=\'partition-time\',\n  \'sink.partition-commit.delay\'=\'1min\',\n  \'sink.semantic\' = \'exactly-once\',\n  \'sink.rolling-policy.rollover-interval\' =\'1min\',\n  \'sink.rolling-policy.check-interval\'=\'1min\',\n  \'sink.partition-commit.policy.kind\'=\'metastore,success-file\'\n);', '创建流式HIVE表', '1', '0', NULL, NULL, '2025-06-25 14:20:18', NULL, NULL, '2025-06-25 14:20:18', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (26, 'create.table.mysql_cdc', '11', 'CREATE TABLE mysql_cdc_table(\n    cid INT,\n    sid INT,\n    cls STRING,\n    score INT,\n    PRIMARY KEY (cid) NOT ENFORCED\n) WITH (\n\'connector\' = \'mysql-cdc\',\n\'hostname\' = \'127.0.0.1\',\n\'port\' = \'3306\',\n\'username\' = \'test\',\n\'password\' = \'123456\',\n\'database-name\' = \'test\',\n\'server-time-zone\' = \'UTC\',\n\'scan.incremental.snapshot.enabled\' = \'true\',\n\'debezium.snapshot.mode\'=\'latest-offset\' ,-- 或者key是scan.startup.mode，initial表示要历史数据，latest-offset表示不要历史数据\n\'debezium.datetime.format.date\'=\'yyyy-MM-dd\',\n\'debezium.datetime.format.time\'=\'HH-mm-ss\',\n\'debezium.datetime.format.datetime\'=\'yyyy-MM-dd HH-mm-ss\',\n\'debezium.datetime.format.timestamp\'=\'yyyy-MM-dd HH-mm-ss\',\n\'debezium.datetime.format.timestamp.zone\'=\'UTC+8\',\n\'table-name\' = \'mysql_cdc_table\');', '创建Mysql_CDC表', '1', '0', NULL, NULL, '2025-06-25 14:20:18', NULL, NULL, '2025-06-25 14:20:18', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (27, 'create.table.hudi', '11', 'CREATE TABLE hudi_table\n(\n    `goods_order_id`  bigint COMMENT \'自增主键id\',\n    `goods_order_uid` string COMMENT \'订单uid\',\n    `customer_uid`    string COMMENT \'客户uid\',\n    `customer_name`   string COMMENT \'客户name\',\n    `create_time`     timestamp(3) COMMENT \'创建时间\',\n    `update_time`     timestamp(3) COMMENT \'更新时间\',\n    `create_by`       string COMMENT \'创建人uid（唯一标识）\',\n    `update_by`       string COMMENT \'更新人uid（唯一标识）\',\n    PRIMARY KEY (goods_order_id) NOT ENFORCED\n) COMMENT \'hudi_table\'\nWITH (\n\'connector\' = \'hudi\',\n\'path\' = \'hdfs://cluster1/data/bizdata/cdc/mysql/order/goods_order\', -- 路径会自动创建\n\'hoodie.datasource.write.recordkey.field\' = \'goods_order_id\', -- 主键\n\'write.precombine.field\' = \'update_time\', -- 相同的键值时，取此字段最大值，默认ts字段\n\'read.streaming.skip_compaction\' = \'true\', -- 避免重复消费问题\n\'write.bucket_assign.tasks\' = \'2\', -- 并发写的 bucekt 数\n\'write.tasks\' = \'2\',\n\'compaction.tasks\' = \'1\',\n\'write.operation\' = \'upsert\', -- UPSERT（插入更新）\\INSERT（插入）\\BULK_INSERT（批插入）（upsert性能会低些，不适合埋点上报）\n\'write.rate.limit\' = \'20000\', -- 限制每秒多少条\n\'table.type\' = \'COPY_ON_WRITE\', -- 默认COPY_ON_WRITE ，\n\'compaction.async.enabled\' = \'true\', -- 在线压缩\n\'compaction.trigger.strategy\' = \'num_or_time\', -- 按次数压缩\n\'compaction.delta_commits\' = \'20\', -- 默认为5\n\'compaction.delta_seconds\' = \'60\', -- 默认为1小时\n\'hive_sync.enable\' = \'true\', -- 启用hive同步\n\'hive_sync.mode\' = \'hms\', -- 启用hive hms同步，默认jdbc\n\'hive_sync.metastore.uris\' = \'thrift://cdh2.vision.com:9083\', -- required, metastore的端口\n\'hive_sync.jdbc_url\' = \'jdbc:hive2://cdh1.vision.com:10000\', -- required, hiveServer地址\n\'hive_sync.table\' = \'order_mysql_goods_order\', -- required, hive 新建的表名 会自动同步hudi的表结构和数据到hive\n\'hive_sync.db\' = \'cdc_ods\', -- required, hive 新建的数据库名\n\'hive_sync.username\' = \'hive\', -- required, HMS 用户名\n\'hive_sync.password\' = \'123456\', -- required, HMS 密码\n\'hive_sync.skip_ro_suffix\' = \'true\' -- 去除ro后缀\n);', '创建hudi表', '1', '0', NULL, NULL, '2025-06-25 14:20:18', NULL, NULL, '2025-06-25 14:20:18', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (28, 'CREATE TABLE Like', '11', 'DROP TABLE IF EXISTS sink_table;\nCREATE TABLE IF not EXISTS sink_table\nWITH (\n    \'topic\' = \'motor_vehicle_error\'\n)\nLIKE source_table;', 'CREATE TABLE Like source table', '1', '0', NULL, NULL, '2025-06-25 14:20:18', NULL, NULL, '2025-06-25 14:20:18', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (29, 'CREATE TABLE like source_table EXCLUDING', '11', 'DROP TABLE IF EXISTS sink_table;\nCREATE TABLE IF not EXISTS sink_table(\n     -- Add watermark definition\n    WATERMARK FOR order_time AS order_time - INTERVAL \'5\' SECOND\n)\nWITH (\n    \'topic\' = \'motor_vehicle_error\'\n)\nLIKE source_table (\n     -- Exclude everything besides the computed columns which we need to generate the watermark for.\n    -- We do not want to have the partitions or filesystem options as those do not apply to kafka.\n    EXCLUDING ALL\n    INCLUDING GENERATED\n);', 'CREATE TABLE like source_table EXCLUDING', '1', '0', NULL, NULL, '2025-06-25 14:20:54', NULL, NULL, '2025-06-25 14:20:54', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (30, 'CREATE TABLE ctas_kafka', '11', 'CREATE TABLE my_ctas_table\nWITH (\n    \'connector\' = \'kafka\'\n)\nAS SELECT id, name, age FROM source_table WHERE mod(id, 10) = 0;', 'CREATE TABLE ctas_kafka', '1', '0', NULL, NULL, '2025-06-25 14:20:54', NULL, NULL, '2025-06-25 14:20:54', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (31, 'CREATE TABLE rtas_kafka', '11', 'CREATE OR REPLACE TABLE my_ctas_table\nWITH (\n    \'connector\' = \'kafka\'\n)\nAS SELECT id, name, age FROM source_table WHERE mod(id, 10) = 0;', 'CREATE TABLE rtas_kafka', '1', '0', NULL, NULL, '2025-06-25 14:20:55', NULL, NULL, '2025-06-25 14:20:55', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (32, 'datagen job demo', '11', 'DROP TABLE IF EXISTS source_table3;\nCREATE TABLE IF NOT EXISTS source_table3(\n--订单id\n`order_id` BIGINT,\n--产品\n\n`product` BIGINT,\n--金额\n`amount` BIGINT,\n\n--支付时间\n`order_time` as CAST(CURRENT_TIMESTAMP AS TIMESTAMP(3)), -- `在这里插入代码片`\n--WATERMARK\nWATERMARK FOR order_time AS order_time - INTERVAL \'2\' SECOND\n) WITH(\n\'connector\' = \'datagen\',\n \'rows-per-second\' = \'1\',\n \'fields.order_id.min\' = \'1\',\n \'fields.order_id.max\' = \'2\',\n \'fields.amount.min\' = \'1\',\n \'fields.amount.max\' = \'10\',\n \'fields.product.min\' = \'1\',\n \'fields.product.max\' = \'2\'\n);\n\n-- SELECT * FROM source_table3 LIMIT 10;\n\nDROP TABLE IF EXISTS sink_table5;\nCREATE TABLE IF NOT EXISTS sink_table5(\n--产品\n`product` BIGINT,\n--金额\n`amount` BIGINT,\n--支付时间\n`order_time` TIMESTAMP(3),\n--1分钟时间聚合总数\n`one_minute_sum` BIGINT\n) WITH(\n\'connector\'=\'print\'\n);\n\nINSERT INTO sink_table5\nSELECT\nproduct,\namount,\norder_time,\nSUM(amount) OVER(\nPARTITION BY product\nORDER BY order_time\n-- 标识统计范围是1个 product 的最近 1 分钟的数据\nRANGE BETWEEN INTERVAL \'1\' MINUTE PRECEDING AND CURRENT ROW\n) as one_minute_sum\nFROM source_table3;', 'datagen job demo', '1', '0', NULL, NULL, '2025-06-25 14:20:55', NULL, NULL, '2025-06-25 14:20:55', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (33, 'checkpoint config', '11', '-- 声明一些调优参数 (checkpoint 等相关配置)\nset \'execution.checkpointing.checkpoints-after-tasks-finish.enabled\' =\'true\';\nSET \'pipeline.operator-chaining\' = \'false\';\nset \'state.savepoints.dir\'=\'file:///opt/data/flink_cluster/savepoints\'; -- 目录自行修改\nset \'state.checkpoints.dir\'= \'file:///opt/data/flink_cluster/checkpoints\'; -- 目录自行修改\n-- set state.checkpoint-storage=\'filesystem\';\nset \'state.backend.type\'=\'rocksdb\';\nset \'execution.checkpointing.interval\'=\'60 s\';\nset \'state.checkpoints.num-retained\'=\'100\';\n-- 使 solt 均匀分布在 各个 TM ', 'checkpoint config', '1', '0', NULL, NULL, '2025-06-25 14:20:55', NULL, NULL, '2025-06-25 14:20:55', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (34, 'note template', '11', '-- -----------------------------------------------------------------\n-- @Description(作业描述): ${1:}\n-- @Creator(创建人): ${2:}\n-- @Create DateTime(创建时间): ${3:}\n-- -----------------------------------------------------------------\n\n${4:}', 'note template', '1', '0', NULL, NULL, '2025-06-25 14:20:56', NULL, NULL, '2025-06-25 14:20:56', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (35, 'dinky_paimon_auto_create_table', '11', '-- -----------------------------------------------------------------\n-- 该 demo 用于创建 mysql-cdc 到 paimon 的整库同步案例 并使用自动建表,注意 #{schemaName} 和 #{tableName} 为固定写法,不要修改,用于动态获取库名和表名\n-- -----------------------------------------------------------------\n\n\nEXECUTE CDCSOURCE dinky_paimon_auto_create_table\nWITH\n  (\n    \'connector\' = \'mysql-cdc\',\n    \'hostname\' = \'\',\n    \'port\' = \'\',\n    \'username\' = \'\',\n    \'password\' = \'\',\n    \'checkpoint\' = \'10000\',\n    \'parallelism\' = \'1\',\n    \'scan.startup.mode\' = \'initial\',\n    \'database-name\' = \'dinky\',\n    \'sink.connector\' = \'paimon\',\n    \'sink.path\' = \'hdfs:/tmp/paimon/#{schemaName}.db/#{tableName}\',\n    \'sink.auto-create\' = \'true\',\n  );', 'dinky_paimon_auto_create_table', '1', '0', NULL, NULL, '2025-06-25 14:20:56', NULL, NULL, '2025-06-25 14:20:56', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (36, 'create.table.dm8', '2', '-- 1. 建表\nCREATE TABLE t_user\n(\n    id          INT IDENTITY(1,1) PRIMARY KEY,                      -- 自增主键\n    username    VARCHAR(50) NOT NULL UNIQUE,                        -- 登录名，唯一\n    password    VARCHAR(64) NOT NULL,                               -- 密码密文\n    real_name   VARCHAR(50),                                        -- 真实姓名\n    email       VARCHAR(100) UNIQUE,                                -- 邮箱，唯一\n    phone       VARCHAR(20),                                        -- 手机号\n    status      CHAR(1)   DEFAULT \'1\' CHECK (status IN (\'0\', \'1\')), -- 状态 1=启用 0=禁用\n    create_time TIMESTAMP DEFAULT SYSDATE,                          -- 创建时间\n    update_time TIMESTAMP DEFAULT SYSDATE                           -- 更新时间\n);\n\n-- 2. 插入示例数据\nINSERT INTO t_user (username, password, real_name, email, phone, status)\nVALUES (\'zhangsan\', \'e10adc3949ba59abbe56e057f20f883e\', \'张三\', \'zhangsan@demo.com\', \'13800000001\', \'1\'),\n       (\'lisi\', \'25d55ad283aa400af464c76d713c07ad\', \'李四\', \'lisi@demo.com\', \'13800000002\', \'1\'),\n       (\'wangwu\', \'5f4dcc3b5aa765d61d8327deb882cf99\', \'王五\', \'wangwu@demo.com\', \'13800000003\', \'0\');\n', 'Dm8快速建表', '1', '0', NULL, NULL, '2025-07-21 09:53:15', NULL, NULL, '2025-07-21 09:53:15', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (37, 'create.procedure.dm8', '2', '-- 创建（或替换）存储过程\nCREATE OR REPLACE PROCEDURE sp_get_user_info(\n    p_username   IN  VARCHAR2,      -- 输入参数：用户名\n    o_id         OUT INT,           -- 输出参数：用户ID\n    o_real_name  OUT VARCHAR2,      -- 输出参数：真实姓名\n    o_email      OUT VARCHAR2,      -- 输出参数：邮箱\n    o_phone      OUT VARCHAR2,      -- 输出参数：手机号\n    o_status     OUT CHAR,          -- 输出参数：状态\n    o_msg        OUT VARCHAR2       -- 输出参数：结果消息\n) AS\nBEGIN\n    -- 初始化输出\n    o_msg := \'SUCCESS\';\n\n    -- 查询\nSELECT id, real_name, email, phone, status\nINTO o_id, o_real_name, o_email, o_phone, o_status\nFROM t_user\nWHERE username = p_username\n  AND ROWNUM = 1;\n\n-- 若未找到，抛出异常\nIF o_id IS NULL THEN\n        RAISE_APPLICATION_ERROR(-20001, \'用户不存在\');\nEND IF;\n\nEXCEPTION\n    WHEN NO_DATA_FOUND THEN\n        o_msg := \'用户不存在\';\n        o_id := NULL;\nWHEN OTHERS THEN\n        o_msg := SQLERRM;\n        o_id := NULL;\nEND;', '创建Dm8存储过程', '1', '0', NULL, NULL, '2025-07-21 09:53:15', NULL, NULL, '2025-07-21 09:53:15', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (38, 'create.table.oracle', '3', '-- 1. 建表\nCREATE TABLE t_user\n(\n    id          NUMBER NOT NULL PRIMARY KEY,\n    username    VARCHAR2(50) NOT NULL UNIQUE,\n    password    VARCHAR2(64) NOT NULL,\n    real_name   VARCHAR2(50),\n    email       VARCHAR2(100) UNIQUE,\n    phone       VARCHAR2(20),\n    status      CHAR(1)   DEFAULT \'1\' CHECK (status IN (\'0\', \'1\')),\n    create_time TIMESTAMP DEFAULT SYSTIMESTAMP,\n    update_time TIMESTAMP DEFAULT SYSTIMESTAMP\n);\n\n-- 2. 插入示例数据\nINSERT INTO t_user (id, username, password, real_name, email, phone, status)\nVALUES (\'zhangsan\', \'e10adc3949ba59abbe56e057f20f883e\', \'张三\', \'zhangsan@demo.com\', \'13800000001\', \'1\');\n\nINSERT INTO t_user (id, username, password, real_name, email, phone, status)\nVALUES (1, \'lisi\', \'25d55ad283aa400af464c76d713c07ad\', \'李四\', \'lisi@demo.com\', \'13800000002\', \'1\');\n\nINSERT INTO t_user (id, username, password, real_name, email, phone, status)\nVALUES (1, \'wangwu\', \'5f4dcc3b5aa765d61d8327deb882cf99\', \'王五\', \'wangwu@demo.com\', \'13800000003\', \'0\');', 'Oracle快速建表', '1', '0', NULL, NULL, '2025-07-21 09:53:15', NULL, NULL, '2025-07-21 09:53:15', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (39, 'create.procedure.oracle', '3', '--  存储过程：根据用户名返回用户完整信息\nCREATE OR REPLACE PROCEDURE sp_get_user_info(\n    p_username  IN  VARCHAR2,\n    o_id        OUT NUMBER,\n    o_real_name OUT VARCHAR2,\n    o_email     OUT VARCHAR2,\n    o_phone     OUT VARCHAR2,\n    o_status    OUT CHAR,\n    o_msg       OUT VARCHAR2\n) IS\nBEGIN\nSELECT id, real_name, email, phone, status\nINTO o_id, o_real_name, o_email, o_phone, o_status\nFROM t_user\nWHERE username = p_username\n  AND ROWNUM = 1;\n\no_msg := \'SUCCESS\';\n\nEXCEPTION\n    WHEN NO_DATA_FOUND THEN\n        o_msg := \'用户不存在\';\n        o_id := NULL;\nWHEN OTHERS THEN\n        o_msg := SQLERRM;\n        o_id := NULL;\nEND sp_get_user_info;', '创建Oracle存储过程', '1', '0', NULL, NULL, '2025-07-21 09:53:15', NULL, NULL, '2025-07-21 09:53:15', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (40, 'create.table.mysql', '4', '-- 1. 建表\nCREATE TABLE IF NOT EXISTS t_user (\n                                      id          INT AUTO_INCREMENT PRIMARY KEY,\n                                      username    VARCHAR(50)  NOT NULL UNIQUE,\n    password    VARCHAR(64)  NOT NULL,\n    real_name   VARCHAR(50),\n    email       VARCHAR(100) UNIQUE,\n    phone       VARCHAR(20),\n    status      CHAR(1)      DEFAULT \'1\' CHECK (status IN (\'0\',\'1\')),\n    create_time TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,\n    update_time TIMESTAMP    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP\n    ) ENGINE = InnoDB\n    DEFAULT CHARSET = utf8mb4;\n-- 2. 插入示例数据\nINSERT INTO t_user (username, password, real_name, email, phone, status) VALUES\n(\'zhangsan\', \'e10adc3949ba59abbe56e057f20f883e\', \'张三\', \'zhangsan@demo.com\', \'13800000001\', \'1\'),\n(\'lisi\',     \'25d55ad283aa400af464c76d713c07ad\', \'李四\', \'lisi@demo.com\',     \'13800000002\', \'1\'),\n(\'wangwu\',   \'5f4dcc3b5aa765d61d8327deb882cf99\', \'王五\', \'wangwu@demo.com\',   \'13800000003\', \'0\');', 'Mysql快速建表', '1', '0', NULL, NULL, '2025-07-21 09:53:16', NULL, NULL, '2025-07-21 09:53:16', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (41, 'create.procedure.mysql', '4', '-- 存储过程：根据用户名返回用户信息\nDELIMITER $$\nCREATE OR REPLACE PROCEDURE sp_get_user_info(\n    IN  p_username  VARCHAR(50),\n    OUT o_id        INT,\n    OUT o_real_name VARCHAR(50),\n    OUT o_email     VARCHAR(100),\n    OUT o_phone     VARCHAR(20),\n    OUT o_status    CHAR(1),\n    OUT o_msg       VARCHAR(100)\n)\nBEGIN\n    DECLARE EXIT HANDLER FOR NOT FOUND\nBEGIN\n        SET o_msg = \'用户不存在\';\n        SET o_id = NULL;\nEND;\n\nSELECT id, real_name, email, phone, status\nINTO o_id, o_real_name, o_email, o_phone, o_status\nFROM t_user\nWHERE username = p_username\n    LIMIT 1;\n\nSET o_msg = \'SUCCESS\';\nEND$$\nDELIMITER ;', '创建Mysql存储过程', '1', '0', NULL, NULL, '2025-07-21 09:53:16', NULL, NULL, '2025-07-21 09:53:16', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (42, 'create.table.kingbase', '5', '-- 1. 建表\nCREATE TABLE t_user\n(\n    id          NUMBER NOT NULL PRIMARY KEY,\n    username    VARCHAR2(50) NOT NULL UNIQUE,\n    password    VARCHAR2(64) NOT NULL,\n    real_name   VARCHAR2(50),\n    email       VARCHAR2(100) UNIQUE,\n    phone       VARCHAR2(20),\n    status      CHAR(1)   DEFAULT \'1\' CHECK (status IN (\'0\', \'1\')),\n    create_time TIMESTAMP DEFAULT SYSDATE,\n    update_time TIMESTAMP DEFAULT SYSDATE\n);\n\n-- 2. 插入示例数据\nINSERT INTO t_user (username, password, real_name, email, phone, status)\nVALUES (\'zhangsan\', \'e10adc3949ba59abbe56e057f20f883e\', \'张三\', \'zhangsan@demo.com\', \'13800000001\', \'1\'),\n       (\'lisi\', \'25d55ad283aa400af464c76d713c07ad\', \'李四\', \'lisi@demo.com\', \'13800000002\', \'1\'),\n       (\'wangwu\', \'5f4dcc3b5aa765d61d8327deb882cf99\', \'王五\', \'wangwu@demo.com\', \'13800000003\', \'0\');\n', 'Kingbase快速建表', '1', '0', NULL, NULL, '2025-07-21 09:53:16', NULL, NULL, '2025-07-21 09:53:16', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (43, 'create.procedure.kingbase', '5', '--  存储过程：按用户名返回用户信息\nCREATE OR REPLACE PROCEDURE sp_get_user_info(\n    p_username  IN  VARCHAR2,\n    o_id        OUT NUMBER,\n    o_real_name OUT VARCHAR2,\n    o_email     OUT VARCHAR2,\n    o_phone     OUT VARCHAR2,\n    o_status    OUT CHAR,\n    o_msg       OUT VARCHAR2\n) AS\nBEGIN\nBEGIN\nSELECT id, real_name, email, phone, status\nINTO o_id, o_real_name, o_email, o_phone, o_status\nFROM t_user\nWHERE username = p_username AND ROWNUM = 1;\no_msg := \'SUCCESS\';\nEXCEPTION\n        WHEN NO_DATA_FOUND THEN\n            o_msg := \'用户不存在\';\n            o_id := NULL;\nWHEN OTHERS THEN\n            o_msg := SQLERRM;\n            o_id := NULL;\nEND;\nEND sp_get_user_info;', '创建Kingbase存储过程', '1', '0', NULL, NULL, '2025-07-21 09:53:16', NULL, NULL, '2025-07-21 09:53:16', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (44, 'create.table.hive', '8', '-- 1.建表\nCREATE TABLE IF NOT EXISTS t_user (\n    id          BIGINT,\n    username    STRING,\n    password    STRING,\n    real_name   STRING,\n    email       STRING,\n    phone       STRING,\n    status      CHAR(1),\n    create_time TIMESTAMP,\n    update_time TIMESTAMP\n) CLUSTERED BY (id) INTO 4 BUCKETS STORED AS ORC\nTBLPROPERTIES (\'transactional\'=\'true\',\'orc.compress\'=\'ZLIB\');\n\n\n-- 2. 插入示例数据\nINSERT INTO TABLE t_user VALUES\n(1, \'zhangsan\', \'e10adc3949ba59abbe56e057f20f883e\', \'张三\', \'zhangsan@demo.com\', \'13800000001\', \'1\', current_timestamp, current_timestamp),\n(2, \'lisi\',     \'25d55ad283aa400af464c76d713c07ad\', \'李四\', \'lisi@demo.com\',     \'13800000002\', \'1\', current_timestamp, current_timestamp),\n(3, \'wangwu\',   \'5f4dcc3b5aa765d61d8327deb882cf99\', \'王五\', \'wangwu@demo.com\',   \'13800000003\', \'0\', current_timestamp, current_timestamp);\n', 'Hive快速建表', '1', '0', NULL, NULL, '2025-07-21 09:53:16', NULL, NULL, '2025-07-21 09:53:16', NULL);
+INSERT INTO `dpp_etl_sql_temp` VALUES (46, 'spark sql', '9', '-- 注册 MySQL 表为临时视图\nCREATE OR REPLACE TEMPORARY VIEW v_user\nUSING JDBC\nOPTIONS (\n  url \"jdbc:mysql://localhost:3306/demo?useSSL=false&serverTimezone=UTC\",\n  dbtable \"t_user\",\n  user \"账号\",\n  password \"密码\",\n  driver \"com.mysql.cj.jdbc.Driver\"\n);', 'spark sql', '1', '0', NULL, NULL, '2025-07-21 10:43:15', NULL, NULL, '2025-07-21 10:43:15', NULL);
+
+-- ----------------------------
 -- Table structure for dpp_etl_task
 -- ----------------------------
 DROP TABLE IF EXISTS `dpp_etl_task`;
 CREATE TABLE `dpp_etl_task`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `cat_id` bigint(20) NULL DEFAULT NULL COMMENT '类目id',
-  `cat_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '类目编码',
-  `type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务类型;1：离线任务 2：实时任务 3：数据开发任务 4：	作业任务',
-  `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务名称',
-  `code` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务编码;DolphinScheduler中的编码',
-  `version` int(11) NOT NULL DEFAULT 1 COMMENT '任务版本',
-  `project_id` bigint(20) NOT NULL COMMENT '项目id',
-  `project_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '项目编码',
-  `person_charge` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '责任人',
-  `contact_number` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '联系电话',
-  `locations` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '节点坐标信息',
-  `description` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
-  `timeout` int(11) NOT NULL DEFAULT 0 COMMENT '超时时间',
-  `extraction_count` int(11) NULL DEFAULT NULL COMMENT '抽取量',
-  `write_count` int(11) NULL DEFAULT NULL COMMENT '写入量',
-  `execution_type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '执行策略;任务的执行策略：PARALLEL (并行)、SERIAL_WAIT (串行等待)、SERIAL_DISCARD (串行抛弃)、SERIAL_PRIORITY (串行优先)',
-  `status` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '-1' COMMENT '任务状态;-1:草稿，0:未上线，1:已上线',
-  `ds_id` bigint(20) NOT NULL COMMENT 'DolphinScheduler的id',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `etl_node_code` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'ETL在调度器中的节点编码',
-  `draft_json` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '草稿任务配置信息',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90112705237800`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 249 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据集成任务' ROW_FORMAT = Dynamic;
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `CAT_ID` bigint(20) NULL DEFAULT NULL COMMENT '类目id',
+  `CAT_CODE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '类目编码',
+  `TYPE` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务类型;1：离线任务 2：实时任务 3：数据开发任务 4：	作业任务',
+  `NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务名称',
+  `CODE` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务编码;DolphinScheduler中的编码',
+  `VERSION` int(11) NOT NULL DEFAULT 1 COMMENT '任务版本',
+  `PROJECT_ID` bigint(20) NOT NULL COMMENT '项目id',
+  `PROJECT_CODE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '项目编码',
+  `PERSON_CHARGE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '责任人',
+  `CONTACT_NUMBER` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '联系电话',
+  `LOCATIONS` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '节点坐标信息',
+  `DESCRIPTION` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `TIMEOUT` int(11) NOT NULL DEFAULT 0 COMMENT '超时时间',
+  `EXTRACTION_COUNT` int(11) NULL DEFAULT NULL COMMENT '抽取量',
+  `WRITE_COUNT` int(11) NULL DEFAULT NULL COMMENT '写入量',
+  `EXECUTION_TYPE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '执行策略;任务的执行策略：PARALLEL (并行)、SERIAL_WAIT (串行等待)、SERIAL_DISCARD (串行抛弃)、SERIAL_PRIORITY (串行优先)',
+  `STATUS` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '-1' COMMENT '任务状态;-1:草稿，0:未上线，1:已上线',
+  `DS_ID` bigint(20) NOT NULL COMMENT 'DolphinScheduler的id',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `ETL_NODE_CODE` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '草稿任务配置信息',
+  `DRAFT_JSON` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974843276593500`(`ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 261 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据集成任务' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of dpp_etl_task
 -- ----------------------------
-INSERT INTO `dpp_etl_task` VALUES (244, 12, 'WATER_MONITOR', '3', '特克斯县取水口流量监测数据交换任务', '141950771024736', 3, 84, '141883958809440', '1', '19951942682', '[{\"taskCode\":141950767490912,\"x\":0,\"y\":0}]', '定时交换取水口流量监测数据。', 0, NULL, NULL, 'PARALLEL', '0', 807, '1', '0', 'qData', 1, '2025-05-24 10:36:40', '管理员', 1, '2025-06-11 22:10:50', '', NULL,  NULL);
+INSERT INTO `dpp_etl_task` VALUES (244, 12, 'WATER_MONITOR', '3', '特克斯县取水口流量监测数据交换任务', '141950771024736', 3, 84, '141883958809440', '1', '19951942682', '[{\"taskCode\":141950767490912,\"x\":0,\"y\":0}]', '定时交换取水口流量监测数据。', 0, NULL, NULL, 'PARALLEL', '0', 807, '1', '0', 'qData', 1, '2025-05-24 10:36:40', '管理员', 1, '2025-06-11 22:10:50', '', NULL, NULL);
 INSERT INTO `dpp_etl_task` VALUES (245, 12, 'WATER_MONITOR', '3', '尼勒克县水文站月降雨量数据上报任务', '141950878896992', 3, 84, '141883958809440', '1', '19951942682', '[{\"taskCode\":141950875765600,\"x\":0,\"y\":0}]', '每月上报水文站降雨量监测数据。', 0, NULL, NULL, 'PARALLEL', '0', 808, '1', '0', 'qData', 1, '2025-05-24 10:38:25', '管理员', 1, '2025-06-11 22:11:08', '', NULL, NULL);
 INSERT INTO `dpp_etl_task` VALUES (246, 12, 'WATER_MONITOR', '3', '奎屯市水利设施运行异常检测开发任务', '141951011072864', 2, 84, '141883958809440', '1', '19951942682', '[{\"taskCode\":141951009362784,\"x\":0,\"y\":0}]', '开发水利设施运行异常检测算法。', 0, NULL, NULL, 'PARALLEL', '0', 809, '1', '0', 'qData', 1, '2025-05-24 10:40:34', '管理员', 1, '2025-06-11 21:55:43', '', NULL, NULL);
 INSERT INTO `dpp_etl_task` VALUES (247, 11, 'A01', '1', '巩留县水闸月流量数据同步至水利厅中间库任务', '141951088294752', 1, 84, '141883958809440', '1', '19951942682', '[{\"taskCode\":141951029426016,\"x\":280,\"y\":160},{\"taskCode\":141951044262752,\"x\":300,\"y\":350}]', '同步辖区内水闸月度流量数据至水利厅中间库。', 0, NULL, NULL, 'PARALLEL', '0', 810, '1', '0', 'qData', 1, '2025-05-24 10:41:50', 'qData', 1, '2025-05-24 10:41:50', '', NULL, NULL);
@@ -2361,27 +2486,27 @@ INSERT INTO `dpp_etl_task` VALUES (260, 12, 'WATER_MONITOR', '3', '昭苏县水�
 -- ----------------------------
 DROP TABLE IF EXISTS `dpp_etl_task_ext`;
 CREATE TABLE `dpp_etl_task_ext`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `task_id` bigint(20) NOT NULL COMMENT '数据汇聚任务id',
-  `etl_node_id` bigint(20) NULL DEFAULT NULL COMMENT '数据汇聚节点id;ds的数据',
-  `etl_node_name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '数据汇聚节点名称;ds的数据',
-  `etl_node_code` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '数据汇聚节点编码;ds的数据',
-  `etl_node_version` int(11) NULL DEFAULT NULL COMMENT '数据汇聚节点版本;ds的数据',
-  `etl_relation_id` bigint(20) NULL DEFAULT NULL COMMENT '数据汇聚节点关系id;ds的数据',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `etl_task_code` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '数据汇聚任务编码',
-  `etl_task_version` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '数据汇聚任务版本',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90113147045600`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 58 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据集成任务-扩展数据' ROW_FORMAT = Dynamic;
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `TASK_ID` bigint(20) NOT NULL COMMENT '数据汇聚任务id',
+  `ETL_NODE_ID` bigint(20) NULL DEFAULT NULL COMMENT '数据汇聚节点id;ds的数据',
+  `ETL_NODE_NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '数据汇聚节点名称;ds的数据',
+  `ETL_NODE_CODE` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '数据汇聚节点编码;ds的数据',
+  `ETL_NODE_VERSION` int(11) NULL DEFAULT NULL COMMENT '数据汇聚节点版本;ds的数据',
+  `ETL_RELATION_ID` bigint(20) NULL DEFAULT NULL COMMENT '数据汇聚节点关系id;ds的数据',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `ETL_TASK_CODE` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '数据汇聚任务编码',
+  `ETL_TASK_VERSION` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '数据汇聚任务版本',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974843636228600`(`ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 59 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据集成任务-扩展数据' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of dpp_etl_task_ext
@@ -2395,42 +2520,42 @@ INSERT INTO `dpp_etl_task_ext` VALUES (58, 249, 556, '示例-表到表(带转换
 -- ----------------------------
 DROP TABLE IF EXISTS `dpp_etl_task_instance`;
 CREATE TABLE `dpp_etl_task_instance`  (
-  `id` bigint(20) NOT NULL COMMENT 'ID',
-  `cat_id` bigint(20) NOT NULL COMMENT '类目id',
-  `cat_code` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '类目编码',
-  `task_type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '任务类型;1：离线任务 2：实时任务 3：数据开发任务 4：	作业任务',
-  `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务实例名称;任务名称_任务版本_时间',
-  `task_id` bigint(20) NOT NULL COMMENT '任务id',
-  `task_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务编码;DolphinScheduler中的编码',
-  `task_version` bigint(20) NOT NULL COMMENT '任务版本',
-  `status_history` varchar(4000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '状态历史(json列表)',
-  `person_charge` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '责任人',
-  `contact_number` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '联系电话',
-  `project_id` bigint(20) NOT NULL COMMENT '项目id',
-  `project_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '项目编码',
-  `schedule_time` datetime NULL DEFAULT NULL COMMENT '调度时间',
-  `start_time` datetime NULL DEFAULT NULL COMMENT '开始时间',
-  `end_time` datetime NULL DEFAULT NULL COMMENT '结束时间',
-  `run_times` int(11) NULL DEFAULT 1 COMMENT '运行次数',
-  `command_type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '运行类型;0 启动工作流,1 从当前节点开始执行,2 恢复被容错的工作流,3 恢复暂停流程,4 从失败节点开始执行,5 补数,6 调度,7 重跑,8 暂停,9 停止,10 恢复等待线程',
-  `max_try_times` int(11) NULL DEFAULT 0 COMMENT '最大重试次数',
-  `failure_strategy` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '失败策略;0 失败后结束，1 失败后继续',
-  `sub_task_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '是否是子任务;0:不是 ，1:是',
-  `status` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '状态;0：提交成功 1：正在执行 2:准备暂停 3：暂停 4：准备停止 5：停止 6：失败 7：成功 12：延时执行  14：串行等待  15 ：准备锁定 16：锁定',
-  `parent_task_instance_id` bigint(20) NULL DEFAULT NULL COMMENT '父任务实例id;只有为子任务时才有该值',
-  `parent_node_instance_id` bigint(20) NULL DEFAULT NULL COMMENT '父任务节点实例id;只有为子任务时才有该值',
-  `ds_id` bigint(20) NOT NULL COMMENT 'DolphinScheduler的id',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `dpp_etl_task_instance_parent_task_instance_id_idx`(`parent_task_instance_id`, `parent_node_instance_id`) USING BTREE
+  `ID` bigint(20) NOT NULL COMMENT 'ID',
+  `CAT_ID` bigint(20) NOT NULL COMMENT '类目id',
+  `CAT_CODE` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '类目编码',
+  `TASK_TYPE` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '任务类型;1：离线任务 2：实时任务 3：数据开发任务 4：	作业任务',
+  `NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务实例名称;任务名称_任务版本_时间',
+  `TASK_ID` bigint(20) NOT NULL COMMENT '任务id',
+  `TASK_CODE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务编码;DolphinScheduler中的编码',
+  `TASK_VERSION` bigint(20) NOT NULL COMMENT '任务版本',
+  `STATUS_HISTORY` varchar(4000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '状态历史(json列表)',
+  `PERSON_CHARGE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '责任人',
+  `CONTACT_NUMBER` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '联系电话',
+  `PROJECT_ID` bigint(20) NOT NULL COMMENT '项目id',
+  `PROJECT_CODE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '项目编码',
+  `SCHEDULE_TIME` datetime NULL DEFAULT NULL COMMENT '调度时间',
+  `START_TIME` datetime NULL DEFAULT NULL COMMENT '开始时间',
+  `END_TIME` datetime NULL DEFAULT NULL COMMENT '结束时间',
+  `RUN_TIMES` int(11) NULL DEFAULT 1 COMMENT '运行次数',
+  `COMMAND_TYPE` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '运行类型;0 启动工作流,1 从当前节点开始执行,2 恢复被容错的工作流,3 恢复暂停流程,4 从失败节点开始执行,5 补数,6 调度,7 重跑,8 暂停,9 停止,10 恢复等待线程',
+  `MAX_TRY_TIMES` int(11) NULL DEFAULT 0 COMMENT '最大重试次数',
+  `FAILURE_STRATEGY` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '失败策略;0 失败后结束，1 失败后继续',
+  `SUB_TASK_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '是否是子任务;0:不是 ，1:是',
+  `STATUS` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '状态;0：提交成功 1：正在执行 2:准备暂停 3：暂停 4：准备停止 5：停止 6：失败 7：成功 12：延时执行  14：串行等待  15 ：准备锁定 16：锁定',
+  `PARENT_TASK_INSTANCE_ID` bigint(20) NULL DEFAULT NULL COMMENT '父任务实例id;只有为子任务时才有该值',
+  `PARENT_NODE_INSTANCE_ID` bigint(20) NULL DEFAULT NULL COMMENT '父任务节点实例id;只有为子任务时才有该值',
+  `DS_ID` bigint(20) NOT NULL COMMENT 'DolphinScheduler的id',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`ID`) USING BTREE,
+  INDEX `DPP_ETL_TASK_INSTANCE_PARENT_TASK_INSTANCE_ID_IDX`(`PARENT_TASK_INSTANCE_ID`, `PARENT_NODE_INSTANCE_ID`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据集成任务实例' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -2462,35 +2587,35 @@ INSERT INTO `dpp_etl_task_instance` VALUES (140400312253705, 6, 'A02A01', '1', '
 -- ----------------------------
 DROP TABLE IF EXISTS `dpp_etl_task_log`;
 CREATE TABLE `dpp_etl_task_log`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '任务类型;1：离线任务 2：实时任务 3：数据开发任务 4：	作业任务',
-  `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务名称',
-  `code` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务编码;DolphinScheduler中的编码',
-  `version` int(11) NOT NULL DEFAULT 1 COMMENT '任务版本',
-  `project_id` bigint(20) NOT NULL COMMENT '项目id',
-  `project_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '项目编码',
-  `person_charge` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '责任人',
-  `contact_number` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '联系电话',
-  `locations` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '节点坐标信息',
-  `description` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
-  `timeout` int(11) NOT NULL DEFAULT 0 COMMENT '超时时间',
-  `extraction_count` int(11) NULL DEFAULT NULL COMMENT '抽取量',
-  `write_count` int(11) NULL DEFAULT NULL COMMENT '写入量',
-  `execution_type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '任务的执行策略;：PARALLEL (并行)、SERIAL_WAIT (串行等待)、SERIAL_DISCARD (串行抛弃)、SERIAL_PRIORITY (串行优先)',
-  `status` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '-1' COMMENT '任务状态;-1:草稿，0:未上线，1:已上线',
-  `ds_id` bigint(20) NOT NULL COMMENT 'DolphinScheduler的id',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90114761686300`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 520 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据集成任务-日志表' ROW_FORMAT = Dynamic;
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `TYPE` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '任务类型;1：离线任务 2：实时任务 3：数据开发任务 4：	作业任务',
+  `NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务名称',
+  `CODE` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务编码;DolphinScheduler中的编码',
+  `VERSION` int(11) NOT NULL DEFAULT 1 COMMENT '任务版本',
+  `PROJECT_ID` bigint(20) NOT NULL COMMENT '项目id',
+  `PROJECT_CODE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '项目编码',
+  `PERSON_CHARGE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '责任人',
+  `CONTACT_NUMBER` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '联系电话',
+  `LOCATIONS` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '节点坐标信息',
+  `DESCRIPTION` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `TIMEOUT` int(11) NOT NULL DEFAULT 0 COMMENT '超时时间',
+  `EXTRACTION_COUNT` int(11) NULL DEFAULT NULL COMMENT '抽取量',
+  `WRITE_COUNT` int(11) NULL DEFAULT NULL COMMENT '写入量',
+  `EXECUTION_TYPE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '任务的执行策略;：PARALLEL (并行)、SERIAL_WAIT (串行等待)、SERIAL_DISCARD (串行抛弃)、SERIAL_PRIORITY (串行优先)',
+  `STATUS` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '-1' COMMENT '任务状态;-1:草稿，0:未上线，1:已上线',
+  `DS_ID` bigint(20) NOT NULL COMMENT 'DolphinScheduler的id',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974844671223100`(`ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 530 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据集成任务-日志表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of dpp_etl_task_log
@@ -2516,30 +2641,30 @@ INSERT INTO `dpp_etl_task_log` VALUES (529, '3', '灌区相关的数据开发', 
 -- ----------------------------
 DROP TABLE IF EXISTS `dpp_etl_task_node_rel`;
 CREATE TABLE `dpp_etl_task_node_rel`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `project_id` bigint(20) NOT NULL COMMENT '项目id',
-  `project_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '项目编码',
-  `task_id` bigint(20) NOT NULL COMMENT '任务id',
-  `task_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务编码',
-  `task_version` bigint(20) NULL DEFAULT NULL COMMENT '任务版本',
-  `pre_node_id` bigint(20) NULL DEFAULT NULL COMMENT '前节点id',
-  `pre_node_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '前节点编码',
-  `pre_node_version` bigint(20) NULL DEFAULT NULL COMMENT '前节点版本',
-  `post_node_id` bigint(20) NOT NULL COMMENT '后节点id',
-  `post_node_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '后节点编码',
-  `post_node_version` bigint(20) NULL DEFAULT NULL COMMENT '后节点版本',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90115152591000`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1865 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据集成任务节点关系表' ROW_FORMAT = Dynamic;
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `PROJECT_ID` bigint(20) NOT NULL COMMENT '项目id',
+  `PROJECT_CODE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '项目编码',
+  `TASK_ID` bigint(20) NOT NULL COMMENT '任务id',
+  `TASK_CODE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务编码',
+  `TASK_VERSION` bigint(20) NULL DEFAULT NULL COMMENT '任务版本',
+  `PRE_NODE_ID` bigint(20) NULL DEFAULT NULL COMMENT '前节点id',
+  `PRE_NODE_CODE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '前节点编码',
+  `PRE_NODE_VERSION` bigint(20) NULL DEFAULT NULL COMMENT '前节点版本',
+  `POST_NODE_ID` bigint(20) NOT NULL COMMENT '后节点id',
+  `POST_NODE_CODE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '后节点编码',
+  `POST_NODE_VERSION` bigint(20) NULL DEFAULT NULL COMMENT '后节点版本',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974845827055600`(`ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1904 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据集成任务节点关系表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of dpp_etl_task_node_rel
@@ -2597,30 +2722,30 @@ INSERT INTO `dpp_etl_task_node_rel` VALUES (1903, 84, '141883958809440', 245, '1
 -- ----------------------------
 DROP TABLE IF EXISTS `dpp_etl_task_node_rel_log`;
 CREATE TABLE `dpp_etl_task_node_rel_log`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `project_id` bigint(20) NOT NULL COMMENT '项目id',
-  `project_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '项目编码',
-  `task_id` bigint(20) NOT NULL COMMENT '任务id',
-  `task_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务编码',
-  `task_version` bigint(20) NULL DEFAULT NULL COMMENT '任务版本',
-  `pre_node_id` bigint(20) NULL DEFAULT NULL COMMENT '前节点id',
-  `pre_node_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '前节点编码',
-  `pre_node_version` bigint(20) NULL DEFAULT NULL COMMENT '前节点版本',
-  `post_node_id` bigint(20) NOT NULL COMMENT '后节点id',
-  `post_node_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '后节点编码',
-  `post_node_version` bigint(20) NULL DEFAULT NULL COMMENT '后节点版本',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90115720298800`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1102 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据集成任务节点关系表-日志' ROW_FORMAT = Dynamic;
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `PROJECT_ID` bigint(20) NOT NULL COMMENT '项目id',
+  `PROJECT_CODE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '项目编码',
+  `TASK_ID` bigint(20) NOT NULL COMMENT '任务id',
+  `TASK_CODE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务编码',
+  `TASK_VERSION` bigint(20) NULL DEFAULT NULL COMMENT '任务版本',
+  `PRE_NODE_ID` bigint(20) NULL DEFAULT NULL COMMENT '前节点id',
+  `PRE_NODE_CODE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '前节点编码',
+  `PRE_NODE_VERSION` bigint(20) NULL DEFAULT NULL COMMENT '前节点版本',
+  `POST_NODE_ID` bigint(20) NOT NULL COMMENT '后节点id',
+  `POST_NODE_CODE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '后节点编码',
+  `POST_NODE_VERSION` bigint(20) NULL DEFAULT NULL COMMENT '后节点版本',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974846376227600`(`ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1112 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据集成任务节点关系表-日志' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of dpp_etl_task_node_rel_log
@@ -2645,41 +2770,221 @@ INSERT INTO `dpp_etl_task_node_rel_log` VALUES (1110, 84, '141883958809440', 528
 INSERT INTO `dpp_etl_task_node_rel_log` VALUES (1111, 84, '141883958809440', 529, '141950878896992', 3, -1, '0', 0, -1, '141950875765600', 4, '1', '0', '管理员', 1, '2025-06-11 22:11:09', '管理员', 1, '2025-06-11 22:11:09', NULL);
 
 -- ----------------------------
+-- Table structure for dpp_evaluate_log
+-- ----------------------------
+DROP TABLE IF EXISTS `dpp_evaluate_log`;
+CREATE TABLE `dpp_evaluate_log`  (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `TABLE_NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '表名称',
+  `COLUMN_NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '字段名',
+  `RULE_CODE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '稽查规则编号',
+  `RULE_NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '稽查规则名称',
+  `DIMENSION_TYPE` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '质量维度',
+  `RULE_DESCRIPTION` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '规则描述',
+  `TASK_LOG_ID` bigint(20) NOT NULL COMMENT '数据质量记录id',
+  `EVALUATE_ID` bigint(20) NOT NULL COMMENT '评测id',
+  `TOTAL` int(11) NULL DEFAULT 0 COMMENT '总数',
+  `PROBLEM_TOTAL` int(11) NULL DEFAULT 0 COMMENT '问题总数',
+  `CHECK_DATE` datetime NULL DEFAULT NULL COMMENT '核查时间',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `RULE` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '规则json',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974847029075900`(`ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '评测规则结果表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of dpp_evaluate_log
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for dpp_quality_log
+-- ----------------------------
+DROP TABLE IF EXISTS `dpp_quality_log`;
+CREATE TABLE `dpp_quality_log`  (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '名称',
+  `SUCCESS_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '状态;0：成功，1：失败,2：进行中',
+  `START_TIME` datetime NOT NULL COMMENT '开始时间',
+  `END_TIME` datetime NOT NULL COMMENT '结束时间',
+  `QUALITY_ID` varchar(8188) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务id',
+  `SCORE` decimal(10, 0) NULL DEFAULT NULL COMMENT '评分',
+  `PROBLEM_DATA` int(11) NULL DEFAULT NULL COMMENT '问题数据',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `PATH` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974847377925000`(`ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据质量日志表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of dpp_quality_log
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for dpp_quality_task
+-- ----------------------------
+DROP TABLE IF EXISTS `dpp_quality_task`;
+CREATE TABLE `dpp_quality_task`  (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `TASK_NAME` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务名称',
+  `CAT_CODE` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '类目编码',
+  `CONTACT` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '联系人',
+  `CONTACT_ID` varchar(8188) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '联系人ID',
+  `CONTACT_NUMBER` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '联系电话',
+  `STATUS` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '任务状态;0:下线，1:上线',
+  `DESCRIPTION` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '任务描述',
+  `PRIORITY` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务优先级',
+  `WORKER_GROUP` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Worker分组',
+  `RETRY_TIMES` int(11) NOT NULL DEFAULT 0 COMMENT '失败重试次数',
+  `RETRY_INTERVAL` int(11) NOT NULL DEFAULT 0 COMMENT '失败重试间隔(秒)',
+  `STRATEGY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '执行策略',
+  `CYCLE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '调度周期',
+  `DELAY_TIME` int(11) NOT NULL DEFAULT 0 COMMENT '延时执行时间(秒)',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `SYSTEM_JOB_ID` bigint(20) NULL DEFAULT NULL,
+  `NODE_ID` bigint(20) NULL DEFAULT NULL,
+  `NODE_CODE` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `TASK_ID` bigint(20) NULL DEFAULT NULL,
+  `TASK_CODE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `ASSET_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '是否是资产质量任务;0：否。 1是',
+  `ASSET_ID` bigint(20) NULL DEFAULT NULL COMMENT '资产id',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974847777271900`(`ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据质量任务' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of dpp_quality_task
+-- ----------------------------
+INSERT INTO `dpp_quality_task` VALUES (1, '1', 'A01', NULL, '1', NULL, '1', '', 'high', 'default', 0, 0, 'PARALLEL', '0 * * * * ?', 0, '1', '1', '管理员', 1, '2025-08-25 20:55:23', '管理员', 1, '2025-08-25 20:55:23', NULL, NULL, NULL, NULL, NULL, NULL, '0', NULL);
+
+-- ----------------------------
+-- Table structure for dpp_quality_task_evaluate
+-- ----------------------------
+DROP TABLE IF EXISTS `dpp_quality_task_evaluate`;
+CREATE TABLE `dpp_quality_task_evaluate`  (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `TASK_ID` bigint(20) NOT NULL COMMENT '数据质量任务ID',
+  `NAME` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '评测名称',
+  `RULE_CODE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '稽查规则编号',
+  `RULE_NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '稽查规则名称',
+  `WARNING_LEVEL` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '告警等级',
+  `DIMENSION_TYPE` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '质量维度',
+  `STATUS` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '状态;0下线1上线',
+  `RULE_DESCRIPTION` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '规则描述',
+  `ERR_DESCRIPTION` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '错误描述',
+  `SUGGESTION` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '修复建议',
+  `WHERE_CLAUSE` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'where条件',
+  `OBJ_ID` bigint(20) NOT NULL COMMENT '评测对象ID',
+  `OBJ_NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '稽查对象名称',
+  `TABLE_NAME` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '表名称',
+  `EVA_COLUMN` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '检查字段，多个时逗号隔开',
+  `RULE` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '不同规则的自定义,JSON形式',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `RULE_TYPE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974848475550200`(`ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据质量任务-评测规则' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of dpp_quality_task_evaluate
+-- ----------------------------
+INSERT INTO `dpp_quality_task_evaluate` VALUES (1, 1, 'asd ', '311', '多字段组合唯一性校验', '2', '3', '1', '', '', '', '', 1, '阿水大', 'DA_ASSET', 'ID', '{\"evaColumns\":[{\"name\":\"ID\",\"label\":\"ID/ID\"},{\"name\":\"NAME\",\"label\":\"NAME/资产名称\"},{\"name\":\"CAT_CODE\",\"label\":\"CAT_CODE/类目编码\"},{\"name\":\"DATASOURCE_ID\",\"label\":\"DATASOURCE_ID/数据连接id\"},{\"name\":\"TABLE_NAME\",\"label\":\"TABLE_NAME/表名称\"},{\"name\":\"TABLE_COMMENT\",\"label\":\"TABLE_COMMENT/表描述;表注释\"},{\"name\":\"DATA_COUNT\",\"label\":\"DATA_COUNT/数据量\"},{\"name\":\"FIELD_COUNT\",\"label\":\"FIELD_COUNT/字段量\"},{\"name\":\"STATUS\",\"label\":\"STATUS/状态;1:未发布 2:已发布 3:审核中(审核预留字典)\"},{\"name\":\"DESCRIPTION\",\"label\":\"DESCRIPTION/描述\"},{\"name\":\"VALID_FLAG\",\"label\":\"VALID_FLAG/是否有效;0：无效，1：有效\"},{\"name\":\"DEL_FLAG\",\"label\":\"DEL_FLAG/删除标志;1：已删除，0：未删除\"},{\"name\":\"CREATE_BY\",\"label\":\"CREATE_BY/创建人\"},{\"name\":\"CREATOR_ID\",\"label\":\"CREATOR_ID/创建人id\"},{\"name\":\"CREATE_TIME\",\"label\":\"CREATE_TIME/创建时间\"},{\"name\":\"UPDATE_BY\",\"label\":\"UPDATE_BY/更新人\"},{\"name\":\"UPDATER_ID\",\"label\":\"UPDATER_ID/更新人id\"},{\"name\":\"UPDATE_TIME\",\"label\":\"UPDATE_TIME/更新时间\"},{\"name\":\"REMARK\",\"label\":\"REMARK/备注\"},{\"name\":\"SOURCE\",\"label\":\"SOURCE/来源;1:数据发现；2:数据模型；\"},{\"name\":\"TYPE\",\"label\":\"TYPE/资产类型;1:数据库表  2:外部API 3: 地理空间服务 4:矢量数据 5:视频数据 6:文件类型\"},{\"name\":\"TYPE\",\"label\":\"TYPE/资产类型;1:数据库表  2:外部API 3: 地理空间服务 4:矢量数据 5:视频数据\"},{\"name\":\"CREATE_TYPE\",\"label\":\"CREATE_TYPE/创建类型；1：虚拟资产创建，2：完整资产创建\"}]}', '1', '0', '管理员', 1, '2025-08-25 20:55:23', '管理员', 1, '2025-08-25 20:55:23', NULL, 'COMPOSITE_UNIQUENESS_VALIDATION');
+
+-- ----------------------------
+-- Table structure for dpp_quality_task_obj
+-- ----------------------------
+DROP TABLE IF EXISTS `dpp_quality_task_obj`;
+CREATE TABLE `dpp_quality_task_obj`  (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `TASK_ID` bigint(20) NOT NULL COMMENT '数据质量任务ID',
+  `NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '稽查对象名称',
+  `DATASOURCE_ID` bigint(20) NOT NULL COMMENT '数据源id',
+  `TABLE_NAME` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '表名称',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`ID`, `TASK_ID`) USING BTREE,
+  UNIQUE INDEX `ID_974849038837800`(`ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据质量任务-稽查对象' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of dpp_quality_task_obj
+-- ----------------------------
+INSERT INTO `dpp_quality_task_obj` VALUES (1, 1, '阿水大', 49, 'DA_ASSET', '1', '0', '管理员', 1, '2025-08-25 20:55:23', '管理员', 1, '2025-08-25 20:55:23', NULL);
+
+-- ----------------------------
 -- Table structure for ds_api
 -- ----------------------------
 DROP TABLE IF EXISTS `ds_api`;
 CREATE TABLE `ds_api`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `cat_id` bigint(20) NOT NULL COMMENT '类目id',
-  `cat_code` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '类目编码',
-  `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'API服务名称',
-  `api_version` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'API版本',
-  `api_url` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'API路径',
-  `req_method` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '请求方式;1：get，2：post',
-  `api_service_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '服务提供类型;1：单表向导式，2：SQL脚本式，3：三方转发',
-  `res_data_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '返回结果类型;1：详情，2：列表，3：分页',
-  `deny_ip` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT 'IP黑名单多个，隔开',
-  `config_json` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '执行配置JSON',
-  `limit_json` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '限流配置JSON',
-  `req_params` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '请求参数',
-  `res_params` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '返回参数',
-  `description` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
-  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '状态;0：不启用，1启用',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `transmit_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '转发类型;1:API 2:地理空间数据',
-  `api_id` bigint(20) NULL DEFAULT NULL COMMENT 'API id',
-  `header_json` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT 'Header配置json',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90116106443200`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'API服务' ROW_FORMAT = Dynamic;
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `CAT_ID` bigint(20) NOT NULL COMMENT '类目id',
+  `CAT_CODE` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '类目编码',
+  `NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'API服务名称',
+  `API_VERSION` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'API版本',
+  `API_URL` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'API路径',
+  `REQ_METHOD` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '请求方式;1：get，2：post',
+  `API_SERVICE_TYPE` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '服务提供类型;1：单表向导式，2：SQL脚本式，3：三方转发',
+  `RES_DATA_TYPE` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '返回结果类型;1：详情，2：列表，3：分页',
+  `DENY_IP` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT 'IP黑名单多个，隔开',
+  `CONFIG_JSON` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '执行配置JSON',
+  `LIMIT_JSON` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '限流配置JSON',
+  `REQ_PARAMS` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '请求参数',
+  `RES_PARAMS` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '返回参数',
+  `DESCRIPTION` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `STATUS` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '状态;0：不启用，1启用',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `TRANSMIT_TYPE` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '转发类型;1:API 2:地理空间数据',
+  `API_ID` bigint(20) NULL DEFAULT NULL COMMENT 'API id',
+  `HEADER_JSON` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT 'Header配置json',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974849477162000`(`ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'API服务' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ds_api
@@ -2703,76 +3008,67 @@ INSERT INTO `ds_api` VALUES (15, 10, 'A01A01', '水利基础信息服务', 'v1.0
 -- ----------------------------
 DROP TABLE IF EXISTS `ds_api_log`;
 CREATE TABLE `ds_api_log`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `api_id` bigint(20) NOT NULL COMMENT '调用API服务Id',
-  `caller_id` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调用者id',
-  `caller_by` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调用者',
-  `caller_ip` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调用者ip',
-  `caller_url` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调用url',
-  `caller_params` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '调用参数',
-  `caller_start_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '调用开始时间',
-  `caller_end_date` datetime NULL DEFAULT NULL COMMENT '调用结束时间',
-  `caller_size` int(11) NULL DEFAULT 0 COMMENT '调用数据量',
-  `caller_time` int(11) NULL DEFAULT 0 COMMENT '调用耗时(毫秒)',
-  `msg` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '信息记录',
-  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '状态;0：失败，1：成功',
-  `valid_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `field_parameters` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '返回参数',
-  `cat_id` bigint(20) NOT NULL COMMENT '类目id',
-  `cat_code` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '类目编码',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90116884495900`(`id`) USING BTREE
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `API_ID` bigint(20) NOT NULL COMMENT '调用API服务Id',
+  `CALLER_ID` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调用者id',
+  `CALLER_BY` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调用者',
+  `CALLER_IP` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调用者ip',
+  `CALLER_URL` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调用url',
+  `CALLER_PARAMS` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '调用参数',
+  `CALLER_START_DATE` datetime NOT NULL COMMENT '调用开始时间',
+  `CALLER_END_DATE` datetime NULL DEFAULT NULL COMMENT '调用结束时间',
+  `CALLER_SIZE` int(11) NULL DEFAULT 0 COMMENT '调用数据量',
+  `CALLER_TIME` int(11) NULL DEFAULT 0 COMMENT '调用耗时(毫秒)',
+  `MSG` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '信息记录',
+  `STATUS` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '状态;0：失败，1：成功',
+  `VALID_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `FIELD_PARAMETERS` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '返回参数',
+  `CAT_ID` bigint(20) NOT NULL COMMENT '类目id',
+  `CAT_CODE` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '类目编码',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974849802463400`(`ID`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'API服务调用日志' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ds_api_log
 -- ----------------------------
-INSERT INTO `ds_api_log` VALUES (1, 8, '', '', '127.0.0.1', '/services/v1.0.0/getUserById', '\"[{\\\"paramId\\\":null,\\\"paramName\\\":\\\"id\\\",\\\"nullable\\\":\\\"0\\\",\\\"paramComment\\\":null,\\\"whereType\\\":null,\\\"paramType\\\":null,\\\"exampleValue\\\":null,\\\"defaultValue\\\":null,\\\"reqParamlist\\\":null}]\"', '2025-03-24 16:26:00', NULL, 1, 106, NULL, '1', '1', '0', NULL, NULL, '2025-03-24 16:26:00', NULL, NULL, '2025-03-24 16:26:00', NULL, NULL, 3, 'A01');
-INSERT INTO `ds_api_log` VALUES (2, 8, '', '', '127.0.0.1', '/services/v1.0.0/getUserById', '\"[{\\\"paramId\\\":null,\\\"paramName\\\":\\\"id\\\",\\\"nullable\\\":\\\"0\\\",\\\"paramComment\\\":null,\\\"whereType\\\":null,\\\"paramType\\\":null,\\\"exampleValue\\\":null,\\\"defaultValue\\\":null,\\\"reqParamlist\\\":null}]\"', '2025-03-24 16:26:10', NULL, 1, 7, NULL, '1', '1', '0', NULL, NULL, '2025-03-24 16:26:10', NULL, NULL, '2025-03-24 16:26:10', NULL, NULL, 3, 'A01');
-INSERT INTO `ds_api_log` VALUES (3, 8, '', '', '127.0.0.1', '/services/v1.0.0/getUserById', '\"[{\\\"paramId\\\":null,\\\"paramName\\\":\\\"id\\\",\\\"nullable\\\":\\\"0\\\",\\\"paramComment\\\":null,\\\"whereType\\\":null,\\\"paramType\\\":null,\\\"exampleValue\\\":null,\\\"defaultValue\\\":null,\\\"reqParamlist\\\":null}]\"', '2025-03-24 16:26:17', NULL, 1, 4, NULL, '1', '1', '0', NULL, NULL, '2025-03-24 16:26:17', NULL, NULL, '2025-03-24 16:26:17', NULL, NULL, 3, 'A01');
-INSERT INTO `ds_api_log` VALUES (4, 8, '', '', '127.0.0.1', '/services/v1.0.0/getUserById', '\"[{\\\"paramId\\\":null,\\\"paramName\\\":\\\"id\\\",\\\"nullable\\\":\\\"0\\\",\\\"paramComment\\\":null,\\\"whereType\\\":null,\\\"paramType\\\":null,\\\"exampleValue\\\":null,\\\"defaultValue\\\":null,\\\"reqParamlist\\\":null}]\"', '2025-03-24 16:45:47', NULL, 0, 9390, '参数值[1]不是字符串数据类型]', '0', '1', '0', NULL, NULL, '2025-03-24 16:45:56', NULL, NULL, '2025-03-24 16:45:56', NULL, NULL, 3, 'A01');
-INSERT INTO `ds_api_log` VALUES (5, 8, '', '', '127.0.0.1', '/services/v1.0.0/getUserById', '\"[{\\\"paramId\\\":null,\\\"paramName\\\":\\\"id\\\",\\\"nullable\\\":\\\"0\\\",\\\"paramComment\\\":null,\\\"whereType\\\":null,\\\"paramType\\\":null,\\\"exampleValue\\\":null,\\\"defaultValue\\\":null,\\\"reqParamlist\\\":null}]\"', '2025-03-24 16:46:42', NULL, 1, 4, NULL, '1', '1', '0', NULL, NULL, '2025-03-24 16:46:42', NULL, NULL, '2025-03-24 16:46:42', NULL, NULL, 4, 'A02');
-INSERT INTO `ds_api_log` VALUES (6, 12, '', '', '127.0.0.1', '/services/v1.0.0/getDeptInfo', '\"[{\\\"paramName\\\":\\\"DEPT_ID\\\",\\\"paramComment\\\":\\\"部门id\\\",\\\"nullable\\\":\\\"0\\\",\\\"creatorId\\\":737,\\\"createBy\\\":\\\"刘豪升\\\",\\\"createTime\\\":\\\"2025-02-28 18:38:05\\\",\\\"updatorId\\\":737,\\\"updateBy\\\":\\\"刘豪升\\\",\\\"updateTime\\\":\\\"2025-02-28 18:38:05\\\",\\\"remark\\\":null,\\\"id\\\":168,\\\"assetId\\\":37,\\\"columnName\\\":\\\"DEPT_ID\\\",\\\"columnComment\\\":\\\"部门id\\\",\\\"columnType\\\":\\\"BIGINT\\\",\\\"columnLength\\\":8,\\\"columnScale\\\":0,\\\"nullableFlag\\\":\\\"0\\\",\\\"pkFlag\\\":\\\"1\\\",\\\"defaultValue\\\":null,\\\"dataElemCodeFlag\\\":\\\"0\\\",\\\"dataElemCodeId\\\":null,\\\"sensitiveLevelId\\\":null,\\\"relDataElmeFlag\\\":\\\"0\\\",\\\"relCleanFlag\\\":\\\"0\\\",\\\"relAuditFlag\\\":\\\"0\\\",\\\"description\\\":null,\\\"validFlag\\\":true,\\\"delFlag\\\":false,\\\"elementId\\\":[],\\\"relDataElmeName\\\":null,\\\"sensitiveLevelName\\\":null,\\\"dataElemCodeName\\\":null,\\\"paramValue\\\":\\\"\\\"},{\\\"paramName\\\":\\\"PARENT_ID\\\",\\\"paramComment\\\":\\\"父部门id\\\",\\\"nullable\\\":\\\"0\\\",\\\"creatorId\\\":737,\\\"createBy\\\":\\\"刘豪升\\\",\\\"createTime\\\":\\\"2025-02-28 18:38:05\\\",\\\"updatorId\\\":737,\\\"updateBy\\\":\\\"刘豪升\\\",\\\"updateTime\\\":\\\"2025-02-28 18:38:05\\\",\\\"remark\\\":null,\\\"id\\\":169,\\\"assetId\\\":37,\\\"columnName\\\":\\\"PARENT_ID\\\",\\\"columnComment\\\":\\\"父部门id\\\",\\\"columnType\\\":\\\"BIGINT\\\",\\\"columnLength\\\":8,\\\"columnScale\\\":0,\\\"nullableFlag\\\":\\\"1\\\",\\\"pkFlag\\\":\\\"0\\\",\\\"defaultValue\\\":\\\"0\\\",\\\"dataElemCodeFlag\\\":\\\"0\\\",\\\"dataElemCodeId\\\":null,\\\"sensitiveLevelId\\\":null,\\\"relDataElmeFlag\\\":\\\"0\\\",\\\"relCleanFlag\\\":\\\"0\\\",\\\"relAuditFlag\\\":\\\"0\\\",\\\"description\\\":null,\\\"validFlag\\\":true,\\\"delFlag\\\":false,\\\"elementId\\\":[],\\\"relDataElmeName\\\":null,\\\"sensitiveLevelName\\\":null,\\\"dataElemCodeName\\\":null}]\"', '2025-06-09 16:11:32', NULL, 0, 331, '密码解密错误，请联系管理员！', '0', '1', '0', NULL, NULL, '2025-06-09 16:11:32', NULL, NULL, '2025-06-09 16:11:32', NULL, NULL, 1, 'A01');
-INSERT INTO `ds_api_log` VALUES (7, 12, '', '', '127.0.0.1', '/services/v1.0.0/getDeptInfo', '\"[{\\\"paramName\\\":\\\"DEPT_ID\\\",\\\"paramComment\\\":\\\"部门id\\\",\\\"nullable\\\":\\\"0\\\",\\\"creatorId\\\":737,\\\"createBy\\\":\\\"刘豪升\\\",\\\"createTime\\\":\\\"2025-02-28 18:38:05\\\",\\\"updatorId\\\":737,\\\"updateBy\\\":\\\"刘豪升\\\",\\\"updateTime\\\":\\\"2025-02-28 18:38:05\\\",\\\"remark\\\":null,\\\"id\\\":168,\\\"assetId\\\":37,\\\"columnName\\\":\\\"DEPT_ID\\\",\\\"columnComment\\\":\\\"部门id\\\",\\\"columnType\\\":\\\"BIGINT\\\",\\\"columnLength\\\":8,\\\"columnScale\\\":0,\\\"nullableFlag\\\":\\\"0\\\",\\\"pkFlag\\\":\\\"1\\\",\\\"defaultValue\\\":null,\\\"dataElemCodeFlag\\\":\\\"0\\\",\\\"dataElemCodeId\\\":null,\\\"sensitiveLevelId\\\":null,\\\"relDataElmeFlag\\\":\\\"0\\\",\\\"relCleanFlag\\\":\\\"0\\\",\\\"relAuditFlag\\\":\\\"0\\\",\\\"description\\\":null,\\\"validFlag\\\":true,\\\"delFlag\\\":false,\\\"elementId\\\":[],\\\"relDataElmeName\\\":null,\\\"sensitiveLevelName\\\":null,\\\"dataElemCodeName\\\":null,\\\"paramValue\\\":\\\"\\\"},{\\\"paramName\\\":\\\"PARENT_ID\\\",\\\"paramComment\\\":\\\"父部门id\\\",\\\"nullable\\\":\\\"0\\\",\\\"creatorId\\\":737,\\\"createBy\\\":\\\"刘豪升\\\",\\\"createTime\\\":\\\"2025-02-28 18:38:05\\\",\\\"updatorId\\\":737,\\\"updateBy\\\":\\\"刘豪升\\\",\\\"updateTime\\\":\\\"2025-02-28 18:38:05\\\",\\\"remark\\\":null,\\\"id\\\":169,\\\"assetId\\\":37,\\\"columnName\\\":\\\"PARENT_ID\\\",\\\"columnComment\\\":\\\"父部门id\\\",\\\"columnType\\\":\\\"BIGINT\\\",\\\"columnLength\\\":8,\\\"columnScale\\\":0,\\\"nullableFlag\\\":\\\"1\\\",\\\"pkFlag\\\":\\\"0\\\",\\\"defaultValue\\\":\\\"0\\\",\\\"dataElemCodeFlag\\\":\\\"0\\\",\\\"dataElemCodeId\\\":null,\\\"sensitiveLevelId\\\":null,\\\"relDataElmeFlag\\\":\\\"0\\\",\\\"relCleanFlag\\\":\\\"0\\\",\\\"relAuditFlag\\\":\\\"0\\\",\\\"description\\\":null,\\\"validFlag\\\":true,\\\"delFlag\\\":false,\\\"elementId\\\":[],\\\"relDataElmeName\\\":null,\\\"sensitiveLevelName\\\":null,\\\"dataElemCodeName\\\":null}]\"', '2025-06-09 16:11:33', NULL, 0, 140, '密码解密错误，请联系管理员！', '0', '1', '0', NULL, NULL, '2025-06-09 16:11:33', NULL, NULL, '2025-06-09 16:11:33', NULL, NULL, 1, 'A01');
-INSERT INTO `ds_api_log` VALUES (8, 12, '', '', '127.0.0.1', '/services/v1.0.0/getDeptInfo', '\"[{\\\"paramName\\\":\\\"DEPT_ID\\\",\\\"paramComment\\\":\\\"部门id\\\",\\\"nullable\\\":\\\"0\\\",\\\"creatorId\\\":737,\\\"createBy\\\":\\\"刘豪升\\\",\\\"createTime\\\":\\\"2025-02-28 18:38:05\\\",\\\"updatorId\\\":737,\\\"updateBy\\\":\\\"刘豪升\\\",\\\"updateTime\\\":\\\"2025-02-28 18:38:05\\\",\\\"remark\\\":null,\\\"id\\\":168,\\\"assetId\\\":37,\\\"columnName\\\":\\\"DEPT_ID\\\",\\\"columnComment\\\":\\\"部门id\\\",\\\"columnType\\\":\\\"BIGINT\\\",\\\"columnLength\\\":8,\\\"columnScale\\\":0,\\\"nullableFlag\\\":\\\"0\\\",\\\"pkFlag\\\":\\\"1\\\",\\\"defaultValue\\\":null,\\\"dataElemCodeFlag\\\":\\\"0\\\",\\\"dataElemCodeId\\\":null,\\\"sensitiveLevelId\\\":null,\\\"relDataElmeFlag\\\":\\\"0\\\",\\\"relCleanFlag\\\":\\\"0\\\",\\\"relAuditFlag\\\":\\\"0\\\",\\\"description\\\":null,\\\"validFlag\\\":true,\\\"delFlag\\\":false,\\\"elementId\\\":[],\\\"relDataElmeName\\\":null,\\\"sensitiveLevelName\\\":null,\\\"dataElemCodeName\\\":null,\\\"paramValue\\\":\\\"\\\"},{\\\"paramName\\\":\\\"PARENT_ID\\\",\\\"paramComment\\\":\\\"父部门id\\\",\\\"nullable\\\":\\\"0\\\",\\\"creatorId\\\":737,\\\"createBy\\\":\\\"刘豪升\\\",\\\"createTime\\\":\\\"2025-02-28 18:38:05\\\",\\\"updatorId\\\":737,\\\"updateBy\\\":\\\"刘豪升\\\",\\\"updateTime\\\":\\\"2025-02-28 18:38:05\\\",\\\"remark\\\":null,\\\"id\\\":169,\\\"assetId\\\":37,\\\"columnName\\\":\\\"PARENT_ID\\\",\\\"columnComment\\\":\\\"父部门id\\\",\\\"columnType\\\":\\\"BIGINT\\\",\\\"columnLength\\\":8,\\\"columnScale\\\":0,\\\"nullableFlag\\\":\\\"1\\\",\\\"pkFlag\\\":\\\"0\\\",\\\"defaultValue\\\":\\\"0\\\",\\\"dataElemCodeFlag\\\":\\\"0\\\",\\\"dataElemCodeId\\\":null,\\\"sensitiveLevelId\\\":null,\\\"relDataElmeFlag\\\":\\\"0\\\",\\\"relCleanFlag\\\":\\\"0\\\",\\\"relAuditFlag\\\":\\\"0\\\",\\\"description\\\":null,\\\"validFlag\\\":true,\\\"delFlag\\\":false,\\\"elementId\\\":[],\\\"relDataElmeName\\\":null,\\\"sensitiveLevelName\\\":null,\\\"dataElemCodeName\\\":null}]\"', '2025-06-09 16:11:35', NULL, 0, 141, '密码解密错误，请联系管理员！', '0', '1', '0', NULL, NULL, '2025-06-09 16:11:35', NULL, NULL, '2025-06-09 16:11:35', NULL, NULL, 1, 'A01');
-INSERT INTO `ds_api_log` VALUES (9, 12, '', '', '127.0.0.1', '/services/v1.0.0/getDeptInfo', '\"[{\\\"paramName\\\":\\\"DEPT_ID\\\",\\\"paramComment\\\":\\\"部门id\\\",\\\"nullable\\\":\\\"0\\\",\\\"creatorId\\\":737,\\\"createBy\\\":\\\"刘豪升\\\",\\\"createTime\\\":\\\"2025-02-28 18:38:05\\\",\\\"updatorId\\\":737,\\\"updateBy\\\":\\\"刘豪升\\\",\\\"updateTime\\\":\\\"2025-02-28 18:38:05\\\",\\\"remark\\\":null,\\\"id\\\":168,\\\"assetId\\\":37,\\\"columnName\\\":\\\"DEPT_ID\\\",\\\"columnComment\\\":\\\"部门id\\\",\\\"columnType\\\":\\\"BIGINT\\\",\\\"columnLength\\\":8,\\\"columnScale\\\":0,\\\"nullableFlag\\\":\\\"0\\\",\\\"pkFlag\\\":\\\"1\\\",\\\"defaultValue\\\":null,\\\"dataElemCodeFlag\\\":\\\"0\\\",\\\"dataElemCodeId\\\":null,\\\"sensitiveLevelId\\\":null,\\\"relDataElmeFlag\\\":\\\"0\\\",\\\"relCleanFlag\\\":\\\"0\\\",\\\"relAuditFlag\\\":\\\"0\\\",\\\"description\\\":null,\\\"validFlag\\\":true,\\\"delFlag\\\":false,\\\"elementId\\\":[],\\\"relDataElmeName\\\":null,\\\"sensitiveLevelName\\\":null,\\\"dataElemCodeName\\\":null,\\\"paramValue\\\":\\\"\\\"},{\\\"paramName\\\":\\\"PARENT_ID\\\",\\\"paramComment\\\":\\\"父部门id\\\",\\\"nullable\\\":\\\"0\\\",\\\"creatorId\\\":737,\\\"createBy\\\":\\\"刘豪升\\\",\\\"createTime\\\":\\\"2025-02-28 18:38:05\\\",\\\"updatorId\\\":737,\\\"updateBy\\\":\\\"刘豪升\\\",\\\"updateTime\\\":\\\"2025-02-28 18:38:05\\\",\\\"remark\\\":null,\\\"id\\\":169,\\\"assetId\\\":37,\\\"columnName\\\":\\\"PARENT_ID\\\",\\\"columnComment\\\":\\\"父部门id\\\",\\\"columnType\\\":\\\"BIGINT\\\",\\\"columnLength\\\":8,\\\"columnScale\\\":0,\\\"nullableFlag\\\":\\\"1\\\",\\\"pkFlag\\\":\\\"0\\\",\\\"defaultValue\\\":\\\"0\\\",\\\"dataElemCodeFlag\\\":\\\"0\\\",\\\"dataElemCodeId\\\":null,\\\"sensitiveLevelId\\\":null,\\\"relDataElmeFlag\\\":\\\"0\\\",\\\"relCleanFlag\\\":\\\"0\\\",\\\"relAuditFlag\\\":\\\"0\\\",\\\"description\\\":null,\\\"validFlag\\\":true,\\\"delFlag\\\":false,\\\"elementId\\\":[],\\\"relDataElmeName\\\":null,\\\"sensitiveLevelName\\\":null,\\\"dataElemCodeName\\\":null}]\"', '2025-06-09 16:11:36', NULL, 0, 127, '密码解密错误，请联系管理员！', '0', '1', '0', NULL, NULL, '2025-06-09 16:11:37', NULL, NULL, '2025-06-09 16:11:37', NULL, NULL, 1, 'A01');
 
 -- ----------------------------
 -- Table structure for gen_table
 -- ----------------------------
 DROP TABLE IF EXISTS `gen_table`;
 CREATE TABLE `gen_table`  (
-  `table_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '编号',
-  `table_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '表名称',
-  `table_comment` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '表描述',
-  `sub_table_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '关联子表的表名',
-  `sub_table_fk_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '子表关联的外键名',
-  `class_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '实体类名称',
-  `tpl_category` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'crud' COMMENT '使用的模板（crud单表操作 tree树表操作）',
-  `tpl_web_type` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '前端模板类型（element-ui模版 element-plus模版）',
-  `package_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '生成包路径',
-  `module_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '生成模块名',
-  `business_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '生成业务名',
-  `function_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '生成功能名',
-  `function_author` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '生成功能作者',
-  `gen_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '生成代码方式（0zip压缩包 1自定义路径）',
-  `gen_path` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '/' COMMENT '生成路径（不填默认项目路径）',
-  `options` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '其它生成选项',
-  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`table_id`) USING BTREE,
-  UNIQUE INDEX `TABLE_ID_90117249456300`(`table_id`) USING BTREE
+  `TABLE_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `TABLE_NAME` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '表名称',
+  `TABLE_COMMENT` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '表描述',
+  `SUB_TABLE_NAME` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '关联子表的表名',
+  `SUB_TABLE_FK_NAME` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '子表关联的外键名',
+  `CLASS_NAME` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '实体类名称',
+  `TPL_CATEGORY` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'crud' COMMENT '使用的模板（crud单表操作 tree树表操作）',
+  `TPL_WEB_TYPE` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '前端模板类型（element-ui模版 element-plus模版）',
+  `PACKAGE_NAME` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '生成包路径',
+  `MODULE_NAME` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '生成模块名',
+  `BUSINESS_NAME` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '生成业务名',
+  `FUNCTION_NAME` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '生成功能名',
+  `FUNCTION_AUTHOR` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '生成功能作者',
+  `GEN_TYPE` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '生成代码方式（0zip压缩包 1自定义路径）',
+  `GEN_PATH` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '/' COMMENT '生成路径（不填默认项目路径）',
+  `OPTIONS` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '其它生成选项',
+  `CREATE_BY` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
+  `CREATE_TIME` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
+  `UPDATE_TIME` timestamp NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`TABLE_ID`) USING BTREE,
+  UNIQUE INDEX `TABLE_ID_974850452659000`(`TABLE_ID`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '代码生成业务表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -2784,30 +3080,30 @@ CREATE TABLE `gen_table`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `gen_table_column`;
 CREATE TABLE `gen_table_column`  (
-  `column_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '编号',
-  `table_id` bigint(20) NULL DEFAULT NULL COMMENT '归属表编号',
-  `column_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '列名称',
-  `column_comment` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '列描述',
-  `column_type` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '列类型',
-  `java_type` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'JAVA类型',
-  `java_field` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'JAVA字段名',
-  `is_pk` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '是否主键（1是）',
-  `is_increment` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '是否自增（1是）',
-  `is_required` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '是否必填（1是）',
-  `is_insert` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '是否为插入字段（1是）',
-  `is_edit` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '是否编辑字段（1是）',
-  `is_list` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '是否列表字段（1是）',
-  `is_query` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '是否查询字段（1是）',
-  `query_type` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'EQ' COMMENT '查询方式（等于、不等于、大于、小于、范围）',
-  `html_type` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '显示类型（文本框、文本域、下拉框、复选框、单选框、日期控件）',
-  `dict_type` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '字典类型',
-  `sort` int(11) NULL DEFAULT NULL COMMENT '排序',
-  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`column_id`) USING BTREE,
-  UNIQUE INDEX `COLUMN_ID_90117630446000`(`column_id`) USING BTREE
+  `COLUMN_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `TABLE_ID` bigint(20) NULL DEFAULT NULL COMMENT '归属表编号',
+  `COLUMN_NAME` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '列名称',
+  `COLUMN_COMMENT` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '列描述',
+  `COLUMN_TYPE` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '列类型',
+  `JAVA_TYPE` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'JAVA类型',
+  `JAVA_FIELD` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'JAVA字段名',
+  `IS_PK` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '是否主键（1是）',
+  `IS_INCREMENT` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '是否自增（1是）',
+  `IS_REQUIRED` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '是否必填（1是）',
+  `IS_INSERT` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '是否为插入字段（1是）',
+  `IS_EDIT` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '是否编辑字段（1是）',
+  `IS_LIST` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '是否列表字段（1是）',
+  `IS_QUERY` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '是否查询字段（1是）',
+  `QUERY_TYPE` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'EQ' COMMENT '查询方式（等于、不等于、大于、小于、范围）',
+  `HTML_TYPE` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '显示类型（文本框、文本域、下拉框、复选框、单选框、日期控件）',
+  `DICT_TYPE` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '字典类型',
+  `SORT` int(11) NULL DEFAULT NULL COMMENT '排序',
+  `CREATE_BY` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
+  `CREATE_TIME` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
+  `UPDATE_TIME` timestamp NULL DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`COLUMN_ID`) USING BTREE,
+  UNIQUE INDEX `COLUMN_ID_974850914132900`(`COLUMN_ID`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '代码生成业务表字段' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -2819,67 +3115,65 @@ CREATE TABLE `gen_table_column`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `message`;
 CREATE TABLE `message`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `sender_id` bigint(20) NULL DEFAULT NULL COMMENT '发送人',
-  `receiver_id` bigint(20) NULL DEFAULT NULL COMMENT '接收人',
-  `title` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '消息标题',
-  `content` varchar(3072) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '消息模板内容',
-  `category` int(11) NOT NULL COMMENT '消息类别',
-  `msg_level` int(11) NOT NULL DEFAULT 0 COMMENT '消息等级',
-  `module` int(11) NOT NULL DEFAULT 0 COMMENT '消息模块',
-  `entity_type` int(11) NULL DEFAULT NULL COMMENT '实体类型',
-  `entity_id` bigint(20) NULL DEFAULT NULL COMMENT '实体id',
-  `entity_url` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '消息链接',
-  `has_read` tinyint(4) NULL DEFAULT 0 COMMENT '是否已读',
-  `has_retraction` tinyint(4) NULL DEFAULT 0 COMMENT '是否撤回',
-  `valid_flag` tinyint(4) NOT NULL DEFAULT 1 COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` tinyint(4) NOT NULL DEFAULT 0 COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90118031620800`(`id`) USING BTREE
+  `ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `SENDER_ID` bigint(20) NULL DEFAULT NULL COMMENT '发送人',
+  `RECEIVER_ID` bigint(20) NULL DEFAULT NULL COMMENT '接收人',
+  `TITLE` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '消息标题',
+  `CONTENT` varchar(3072) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '消息模板内容',
+  `CATEGORY` int(11) NOT NULL COMMENT '消息类别',
+  `MSG_LEVEL` int(11) NOT NULL DEFAULT 0 COMMENT '消息等级',
+  `MODULE` int(11) NOT NULL DEFAULT 0 COMMENT '消息模块',
+  `ENTITY_TYPE` int(11) NULL DEFAULT NULL COMMENT '实体类型',
+  `ENTITY_ID` bigint(20) NULL DEFAULT NULL COMMENT '实体id',
+  `ENTITY_URL` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '消息链接',
+  `HAS_READ` tinyint(4) NULL DEFAULT 0 COMMENT '是否已读',
+  `HAS_RETRACTION` tinyint(4) NULL DEFAULT 0 COMMENT '是否撤回',
+  `VALID_FLAG` tinyint(4) NOT NULL DEFAULT 1 COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` tinyint(4) NOT NULL DEFAULT 0 COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATE_TIME` timestamp NULL DEFAULT NULL COMMENT '更新时间',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974851311751400`(`ID`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '消息' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of message
 -- ----------------------------
-INSERT INTO `message` VALUES (1, 1, 1, '资产申请审批通过通知', '您申请的资产水闸基础信息表,已于2025-06-12 14:27:58被管理员所通过', 0, 0, 0, NULL, NULL, NULL, 1, 0, 1, 0, '管理员', 1, '2025-06-12 14:27:58', '管理员', '2025-06-12 14:27:58', 1, NULL);
-INSERT INTO `message` VALUES (2, 1, 1, '资产申请审批通过通知', '您申请的资产灌区基础信息表,已于2025-06-12 14:28:02被管理员所通过', 0, 0, 0, NULL, NULL, NULL, 1, 0, 1, 0, '管理员', 1, '2025-06-12 14:28:02', '管理员', '2025-06-12 14:28:02', 1, NULL);
-INSERT INTO `message` VALUES (3, 1, 1, '资产申请审批通过通知', '您申请的资产渠（沟）道基础信息表,已于2025-06-12 14:28:05被管理员所通过', 0, 0, 0, NULL, NULL, NULL, 1, 0, 1, 0, '管理员', 1, '2025-06-12 14:28:06', '管理员', '2025-06-12 14:28:06', 1, NULL);
-INSERT INTO `message` VALUES (4, 1, 1, '资产申请审批通过通知', '您申请的资产水库大坝基础信息表,已于2025-06-12 14:28:08被管理员所通过', 0, 0, 0, NULL, NULL, NULL, 1, 0, 1, 0, '管理员', 1, '2025-06-12 14:28:09', '管理员', '2025-06-12 14:28:09', 1, NULL);
-INSERT INTO `message` VALUES (5, 1, 1, '资产申请审批通过通知', '您申请的资产湖泊基础信息表,已于2025-06-12 14:28:12被管理员所通过', 0, 0, 0, NULL, NULL, NULL, 1, 0, 1, 0, '管理员', 1, '2025-06-12 14:28:12', '管理员', '2025-06-12 14:28:12', 1, NULL);
 
 -- ----------------------------
 -- Table structure for message_template
 -- ----------------------------
 DROP TABLE IF EXISTS `message_template`;
 CREATE TABLE `message_template`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `title` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '消息标题',
-  `content` varchar(3072) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '消息模板内容',
-  `category` int(11) NOT NULL COMMENT '消息类别',
-  `msg_level` int(11) NOT NULL DEFAULT 0 COMMENT '消息等级',
-  `valid_flag` tinyint(4) NOT NULL DEFAULT 1 COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` tinyint(4) NOT NULL DEFAULT 0 COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updater_id` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `ID_90118424296500`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '消息模板' ROW_FORMAT = Dynamic;
+  `ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `TITLE` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '消息标题',
+  `CONTENT` varchar(3072) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '消息模板内容',
+  `CATEGORY` int(11) NOT NULL COMMENT '消息类别',
+  `MSG_LEVEL` int(11) NOT NULL DEFAULT 0 COMMENT '消息等级',
+  `VALID_FLAG` tinyint(4) NOT NULL DEFAULT 1 COMMENT '是否有效;0：无效，1：有效',
+  `DEL_FLAG` tinyint(4) NOT NULL DEFAULT 0 COMMENT '删除标志;1：已删除，0：未删除',
+  `CREATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `UPDATER_ID` bigint(20) NULL DEFAULT NULL COMMENT '更新人id',
+  `UPDATE_TIME` timestamp NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `ID_974851782336000`(`ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '消息模板' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of message_template
 -- ----------------------------
+INSERT INTO `message_template` VALUES (1, '测试模版', '${test}测试模版', 0, 0, 1, 0, '', 1, '2024-11-01 10:35:16', 'admin', 1, '2025-01-13 10:10:59', NULL);
+INSERT INTO `message_template` VALUES (2, '测试', '2', 0, 0, 1, 0, 'admin', 1, '2024-11-20 11:12:52', NULL, NULL, '2024-11-20 11:12:52', NULL);
+INSERT INTO `message_template` VALUES (3, '数据发现任务执行结果通知', '您负责的数据发现任务${taskName}，已于${executionTime}执行完毕。本次共发现${totalTables}张表，其中新增表${newTables}张，修改表${modifiedTables}张，删除表${deletedTables}张，请及时登录系统处理。', 0, 0, 1, 0, '超级管理员', 1, '2025-02-11 10:56:41', '超级管理员', 1, '2025-02-11 10:56:41', '');
 INSERT INTO `message_template` VALUES (5, '资产申请审批通过通知', '您申请的资产${assetName},已于${time}被${userName}所${statusName}', 0, 0, 1, 0, '超级管理员', 1, '2025-03-21 09:29:41', '超级管理员', 1, '2025-03-21 09:29:41', NULL);
 INSERT INTO `message_template` VALUES (6, '资产申请审批拒绝通知', '您申请的资产${assetName},已于${time}被${userName}所${statusName},驳回原因：${approvalReason}', 0, 0, 1, 0, '超级管理员', 1, '2025-03-21 09:29:41', '超级管理员', 1, '2025-03-21 09:29:41', NULL);
 
@@ -2888,11 +3182,11 @@ INSERT INTO `message_template` VALUES (6, '资产申请审批拒绝通知', '您
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_blob_triggers`;
 CREATE TABLE `qrtz_blob_triggers`  (
-  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调度名称',
-  `trigger_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'qrtz_triggers表trigger_name的外键',
-  `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'qrtz_triggers表trigger_group的外键',
-  `blob_data` longblob NULL COMMENT '存放持久化Trigger对象',
-  PRIMARY KEY (`sched_name`, `trigger_name`, `trigger_group`) USING BTREE
+  `SCHED_NAME` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调度名称',
+  `TRIGGER_NAME` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'qrtz_triggers表trigger_name的外键',
+  `TRIGGER_GROUP` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'qrtz_triggers表trigger_group的外键',
+  `BLOB_DATA` longblob NULL COMMENT '存放持久化Trigger对象',
+  PRIMARY KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'Blob类型的触发器表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -2904,10 +3198,10 @@ CREATE TABLE `qrtz_blob_triggers`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_calendars`;
 CREATE TABLE `qrtz_calendars`  (
-  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调度名称',
-  `calendar_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '日历名称',
-  `calendar` longblob NOT NULL COMMENT '存放持久化calendar对象',
-  PRIMARY KEY (`sched_name`, `calendar_name`) USING BTREE
+  `SCHED_NAME` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调度名称',
+  `CALENDAR_NAME` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '日历名称',
+  `CALENDAR` longblob NOT NULL COMMENT '存放持久化calendar对象',
+  PRIMARY KEY (`SCHED_NAME`, `CALENDAR_NAME`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '日历信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -2919,12 +3213,12 @@ CREATE TABLE `qrtz_calendars`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_cron_triggers`;
 CREATE TABLE `qrtz_cron_triggers`  (
-  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调度名称',
-  `trigger_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'qrtz_triggers表trigger_name的外键',
-  `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'qrtz_triggers表trigger_group的外键',
-  `cron_expression` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'cron表达式',
-  `time_zone_id` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '时区',
-  PRIMARY KEY (`sched_name`, `trigger_name`, `trigger_group`) USING BTREE
+  `SCHED_NAME` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调度名称',
+  `TRIGGER_NAME` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'qrtz_triggers表trigger_name的外键',
+  `TRIGGER_GROUP` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'qrtz_triggers表trigger_group的外键',
+  `CRON_EXPRESSION` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'cron表达式',
+  `TIME_ZONE_ID` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '时区',
+  PRIMARY KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'Cron类型的触发器表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -2936,20 +3230,20 @@ CREATE TABLE `qrtz_cron_triggers`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_fired_triggers`;
 CREATE TABLE `qrtz_fired_triggers`  (
-  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调度名称',
-  `entry_id` varchar(95) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调度器实例id',
-  `trigger_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'qrtz_triggers表trigger_name的外键',
-  `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'qrtz_triggers表trigger_group的外键',
-  `instance_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调度器实例名',
-  `fired_time` bigint(20) NOT NULL COMMENT '触发的时间',
-  `sched_time` bigint(20) NOT NULL COMMENT '定时器制定的时间',
-  `priority` int(11) NOT NULL COMMENT '优先级',
-  `state` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '状态',
-  `job_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '任务名称',
-  `job_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '任务组名',
-  `is_nonconcurrent` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '是否并发',
-  `requests_recovery` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '是否接受恢复执行',
-  PRIMARY KEY (`sched_name`, `entry_id`) USING BTREE
+  `SCHED_NAME` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调度名称',
+  `ENTRY_ID` varchar(95) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调度器实例id',
+  `TRIGGER_NAME` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'qrtz_triggers表trigger_name的外键',
+  `TRIGGER_GROUP` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'qrtz_triggers表trigger_group的外键',
+  `INSTANCE_NAME` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调度器实例名',
+  `FIRED_TIME` bigint(20) NOT NULL COMMENT '触发的时间',
+  `SCHED_TIME` bigint(20) NOT NULL COMMENT '定时器制定的时间',
+  `PRIORITY` int(11) NOT NULL COMMENT '优先级',
+  `STATE` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '状态',
+  `JOB_NAME` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '任务名称',
+  `JOB_GROUP` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '任务组名',
+  `IS_NONCONCURRENT` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '是否并发',
+  `REQUESTS_RECOVERY` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '是否接受恢复执行',
+  PRIMARY KEY (`SCHED_NAME`, `ENTRY_ID`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '已触发的触发器表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -2961,17 +3255,17 @@ CREATE TABLE `qrtz_fired_triggers`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_job_details`;
 CREATE TABLE `qrtz_job_details`  (
-  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调度名称',
-  `job_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务名称',
-  `job_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务组名',
-  `description` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '相关介绍',
-  `job_class_name` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '执行任务类名称',
-  `is_durable` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '是否持久化',
-  `is_nonconcurrent` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '是否并发',
-  `is_update_data` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '是否更新数据',
-  `requests_recovery` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '是否接受恢复执行',
-  `job_data` longblob NULL COMMENT '存放持久化job对象',
-  PRIMARY KEY (`sched_name`, `job_name`, `job_group`) USING BTREE
+  `SCHED_NAME` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调度名称',
+  `JOB_NAME` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务名称',
+  `JOB_GROUP` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务组名',
+  `DESCRIPTION` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '相关介绍',
+  `JOB_CLASS_NAME` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '执行任务类名称',
+  `IS_DURABLE` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '是否持久化',
+  `IS_NONCONCURRENT` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '是否并发',
+  `IS_UPDATE_DATA` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '是否更新数据',
+  `REQUESTS_RECOVERY` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '是否接受恢复执行',
+  `JOB_DATA` longblob NULL COMMENT '存放持久化job对象',
+  PRIMARY KEY (`SCHED_NAME`, `JOB_NAME`, `JOB_GROUP`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '任务详细信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -2983,9 +3277,9 @@ CREATE TABLE `qrtz_job_details`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_locks`;
 CREATE TABLE `qrtz_locks`  (
-  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调度名称',
-  `lock_name` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '悲观锁名称',
-  PRIMARY KEY (`sched_name`, `lock_name`) USING BTREE
+  `SCHED_NAME` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调度名称',
+  `LOCK_NAME` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '悲观锁名称',
+  PRIMARY KEY (`SCHED_NAME`, `LOCK_NAME`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '存储的悲观锁信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -2997,9 +3291,9 @@ CREATE TABLE `qrtz_locks`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_paused_trigger_grps`;
 CREATE TABLE `qrtz_paused_trigger_grps`  (
-  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调度名称',
-  `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'qrtz_triggers表trigger_group的外键',
-  PRIMARY KEY (`sched_name`, `trigger_group`) USING BTREE
+  `SCHED_NAME` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调度名称',
+  `TRIGGER_GROUP` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'qrtz_triggers表trigger_group的外键',
+  PRIMARY KEY (`SCHED_NAME`, `TRIGGER_GROUP`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '暂停的触发器表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -3011,11 +3305,11 @@ CREATE TABLE `qrtz_paused_trigger_grps`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_scheduler_state`;
 CREATE TABLE `qrtz_scheduler_state`  (
-  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调度名称',
-  `instance_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '实例名称',
-  `last_checkin_time` bigint(20) NOT NULL COMMENT '上次检查时间',
-  `checkin_interval` bigint(20) NOT NULL COMMENT '检查间隔时间',
-  PRIMARY KEY (`sched_name`, `instance_name`) USING BTREE
+  `SCHED_NAME` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调度名称',
+  `INSTANCE_NAME` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '实例名称',
+  `LAST_CHECKIN_TIME` bigint(20) NOT NULL COMMENT '上次检查时间',
+  `CHECKIN_INTERVAL` bigint(20) NOT NULL COMMENT '检查间隔时间',
+  PRIMARY KEY (`SCHED_NAME`, `INSTANCE_NAME`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '调度器状态表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -3027,13 +3321,13 @@ CREATE TABLE `qrtz_scheduler_state`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_simple_triggers`;
 CREATE TABLE `qrtz_simple_triggers`  (
-  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调度名称',
-  `trigger_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'qrtz_triggers表trigger_name的外键',
-  `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'qrtz_triggers表trigger_group的外键',
-  `repeat_count` bigint(20) NOT NULL COMMENT '重复的次数统计',
-  `repeat_interval` bigint(20) NOT NULL COMMENT '重复的间隔时间',
-  `times_triggered` bigint(20) NOT NULL COMMENT '已经触发的次数',
-  PRIMARY KEY (`sched_name`, `trigger_name`, `trigger_group`) USING BTREE
+  `SCHED_NAME` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调度名称',
+  `TRIGGER_NAME` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'qrtz_triggers表trigger_name的外键',
+  `TRIGGER_GROUP` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'qrtz_triggers表trigger_group的外键',
+  `REPEAT_COUNT` bigint(20) NOT NULL COMMENT '重复的次数统计',
+  `REPEAT_INTERVAL` bigint(20) NOT NULL COMMENT '重复的间隔时间',
+  `TIMES_TRIGGERED` bigint(20) NOT NULL COMMENT '已经触发的次数',
+  PRIMARY KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '简单触发器的信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -3045,9 +3339,9 @@ CREATE TABLE `qrtz_simple_triggers`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_simprop_triggers`;
 CREATE TABLE `qrtz_simprop_triggers`  (
-  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调度名称',
-  `trigger_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'qrtz_triggers表trigger_name的外键',
-  `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'qrtz_triggers表trigger_group的外键',
+  `SCHED_NAME` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调度名称',
+  `TRIGGER_NAME` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'qrtz_triggers表trigger_name的外键',
+  `TRIGGER_GROUP` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'qrtz_triggers表trigger_group的外键',
   `STR_PROP_1` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'String类型的trigger的第一个参数',
   `STR_PROP_2` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'String类型的trigger的第二个参数',
   `STR_PROP_3` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'String类型的trigger的第三个参数',
@@ -3059,7 +3353,7 @@ CREATE TABLE `qrtz_simprop_triggers`  (
   `DEC_PROP_2` decimal(13, 4) NULL DEFAULT NULL COMMENT 'decimal类型的trigger的第二个参数',
   `BOOL_PROP_1` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'Boolean类型的trigger的第一个参数',
   `BOOL_PROP_2` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'Boolean类型的trigger的第二个参数',
-  PRIMARY KEY (`sched_name`, `trigger_name`, `trigger_group`) USING BTREE
+  PRIMARY KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '同步机制的行锁表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -3071,24 +3365,24 @@ CREATE TABLE `qrtz_simprop_triggers`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_triggers`;
 CREATE TABLE `qrtz_triggers`  (
-  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调度名称',
-  `trigger_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '触发器的名字',
-  `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '触发器所属组的名字',
-  `job_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'qrtz_job_details表job_name的外键',
-  `job_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'qrtz_job_details表job_group的外键',
-  `description` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '相关介绍',
-  `next_fire_time` bigint(20) NULL DEFAULT NULL COMMENT '上一次触发时间（毫秒）',
-  `prev_fire_time` bigint(20) NULL DEFAULT NULL COMMENT '下一次触发时间（默认为-1表示不触发）',
-  `priority` int(11) NULL DEFAULT NULL COMMENT '优先级',
-  `trigger_state` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '触发器状态',
-  `trigger_type` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '触发器的类型',
-  `start_time` bigint(20) NOT NULL COMMENT '开始时间',
-  `end_time` bigint(20) NULL DEFAULT NULL COMMENT '结束时间',
-  `calendar_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '日程表名称',
-  `misfire_instr` smallint(6) NULL DEFAULT NULL COMMENT '补偿执行的策略',
-  `job_data` longblob NULL COMMENT '存放持久化job对象',
-  PRIMARY KEY (`sched_name`, `trigger_name`, `trigger_group`) USING BTREE,
-  INDEX `sched_name`(`sched_name`, `job_name`, `job_group`) USING BTREE
+  `SCHED_NAME` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调度名称',
+  `TRIGGER_NAME` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '触发器的名字',
+  `TRIGGER_GROUP` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '触发器所属组的名字',
+  `JOB_NAME` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'qrtz_job_details表job_name的外键',
+  `JOB_GROUP` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'qrtz_job_details表job_group的外键',
+  `DESCRIPTION` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '相关介绍',
+  `NEXT_FIRE_TIME` bigint(20) NULL DEFAULT NULL COMMENT '上一次触发时间（毫秒）',
+  `PREV_FIRE_TIME` bigint(20) NULL DEFAULT NULL COMMENT '下一次触发时间（默认为-1表示不触发）',
+  `PRIORITY` int(11) NULL DEFAULT NULL COMMENT '优先级',
+  `TRIGGER_STATE` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '触发器状态',
+  `TRIGGER_TYPE` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '触发器的类型',
+  `START_TIME` bigint(20) NOT NULL COMMENT '开始时间',
+  `END_TIME` bigint(20) NULL DEFAULT NULL COMMENT '结束时间',
+  `CALENDAR_NAME` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '日程表名称',
+  `MISFIRE_INSTR` smallint(6) NULL DEFAULT NULL COMMENT '补偿执行的策略',
+  `JOB_DATA` longblob NULL COMMENT '存放持久化job对象',
+  PRIMARY KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) USING BTREE,
+  INDEX `SCHED_NAME`(`SCHED_NAME`, `JOB_NAME`, `JOB_GROUP`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '触发器详细信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -3100,18 +3394,18 @@ CREATE TABLE `qrtz_triggers`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `system_config`;
 CREATE TABLE `system_config`  (
-  `config_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '参数主键',
-  `config_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '参数名称',
-  `config_key` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '参数键名',
-  `config_value` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '参数键值',
-  `config_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'N' COMMENT '系统内置（Y是 N否）',
-  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`config_id`) USING BTREE,
-  UNIQUE INDEX `CONFIG_ID_90124158453200`(`config_id`) USING BTREE
+  `CONFIG_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '参数主键',
+  `CONFIG_NAME` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '参数名称',
+  `CONFIG_KEY` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '参数键名',
+  `CONFIG_VALUE` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '参数键值',
+  `CONFIG_TYPE` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'N' COMMENT '系统内置（Y是 N否）',
+  `CREATE_BY` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
+  `CREATE_TIME` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
+  `UPDATE_TIME` timestamp NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`CONFIG_ID`) USING BTREE,
+  UNIQUE INDEX `CONFIG_ID_974728952063000`(`CONFIG_ID`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '参数配置表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -3129,25 +3423,25 @@ INSERT INTO `system_config` VALUES (6, '用户登录-黑名单列表', 'sys.logi
 -- ----------------------------
 DROP TABLE IF EXISTS `system_content`;
 CREATE TABLE `system_content`  (
-  `id` int(11) NOT NULL COMMENT 'id',
-  `sys_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '系统名称',
-  `logo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '系统logo',
-  `login_logo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '登录页面logo',
-  `carousel_image` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '轮播图',
-  `contact_number` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '联系电话',
-  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '电子邮箱',
-  `copyright` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '版权方',
-  `record_number` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备案号',
-  `del_flag` int(11) NULL DEFAULT NULL COMMENT '删除标记',
-  `status` int(11) NULL DEFAULT NULL COMMENT '状态',
-  `create_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `creator_id` int(11) NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '修改人',
-  `updater_id` int(11) NULL DEFAULT NULL COMMENT '修改人id',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '修改时间',
-  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE
+  `ID` int(11) NOT NULL COMMENT 'id',
+  `SYS_NAME` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '系统名称',
+  `LOGO` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '系统logo',
+  `LOGIN_LOGO` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '登录页面logo',
+  `CAROUSEL_IMAGE` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '轮播图',
+  `CONTACT_NUMBER` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '联系电话',
+  `EMAIL` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '电子邮箱',
+  `COPYRIGHT` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '版权方',
+  `RECORD_NUMBER` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备案号',
+  `DEL_FLAG` int(11) NULL DEFAULT NULL COMMENT '删除标记',
+  `STATUS` int(11) NULL DEFAULT NULL COMMENT '状态',
+  `CREATE_BY` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `CREATOR_ID` int(11) NULL DEFAULT NULL COMMENT '创建人id',
+  `CREATE_TIME` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '修改人',
+  `UPDATER_ID` int(11) NULL DEFAULT NULL COMMENT '修改人id',
+  `UPDATE_TIME` timestamp NULL DEFAULT NULL COMMENT '修改时间',
+  `REMARK` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`ID`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统配置' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -3160,28 +3454,28 @@ INSERT INTO `system_content` VALUES (1, NULL, '', '', '', '400-660-8208', 'suppo
 -- ----------------------------
 DROP TABLE IF EXISTS `system_dept`;
 CREATE TABLE `system_dept`  (
-  `dept_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '部门id',
-  `parent_id` bigint(20) NULL DEFAULT 0 COMMENT '父部门id',
-  `ancestors` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '祖级列表',
-  `dept_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '部门名称',
-  `order_num` int(11) NULL DEFAULT 0 COMMENT '显示顺序',
-  `leader` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '负责人',
-  `phone` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '联系电话',
-  `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '邮箱',
-  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '部门状态（0正常 1停用）',
-  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
-  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`dept_id`) USING BTREE,
-  UNIQUE INDEX `DEPT_ID_90021236426200`(`dept_id`) USING BTREE
+  `DEPT_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '部门id',
+  `PARENT_ID` bigint(20) NULL DEFAULT 0 COMMENT '父部门id',
+  `ANCESTORS` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '祖级列表',
+  `DEPT_NAME` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '部门名称',
+  `ORDER_NUM` int(11) NULL DEFAULT 0 COMMENT '显示顺序',
+  `LEADER` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '负责人',
+  `PHONE` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '联系电话',
+  `EMAIL` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '邮箱',
+  `STATUS` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '部门状态（0正常 1停用）',
+  `DEL_FLAG` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
+  `CREATE_BY` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
+  `CREATE_TIME` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
+  `UPDATE_TIME` timestamp NULL DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`DEPT_ID`) USING BTREE,
+  UNIQUE INDEX `DEPT_ID_974729671662100`(`DEPT_ID`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 855 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '部门表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of system_dept
 -- ----------------------------
-INSERT INTO `system_dept` VALUES (100, 0, '0', ' 江苏千桐科技有限公司 ', 0, '千桐', '15888888888', 'qdata@qq.com', '0', '0', 'qData', '2024-05-06 06:12:17', 'admin', '2025-06-12 15:15:45');
+INSERT INTO `system_dept` VALUES (100, 0, '0', '千桐科技有限公司', 0, '千桐', '15888888888', 'qdata@qq.com', '0', '0', 'qData', '2024-05-06 06:12:17', 'qData', '2025-04-15 13:47:07');
 INSERT INTO `system_dept` VALUES (101, 100, '0,100', '南京总部', 1, '千数', '15888888888', 'qdata@qq.com', '0', '0', 'qData', '2024-05-06 06:12:17', 'qData', '2025-04-15 13:47:21');
 INSERT INTO `system_dept` VALUES (102, 100, '0,100', '郑州总部', 2, '千数', '15888888888', 'qdata@qq.com', '0', '0', 'qData', '2024-05-06 06:12:17', 'qData', '2025-04-15 13:47:31');
 INSERT INTO `system_dept` VALUES (103, 101, '0,100,101', '研发部门', 1, '千数', '15888888888', 'qdata@qq.com', '0', '0', 'qData', '2024-05-06 06:12:17', '', NULL);
@@ -3200,23 +3494,23 @@ INSERT INTO `system_dept` VALUES (854, 102, '0,100,102', '产品部门', 4, NULL
 -- ----------------------------
 DROP TABLE IF EXISTS `system_dict_data`;
 CREATE TABLE `system_dict_data`  (
-  `dict_code` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '字典编码',
-  `dict_sort` int(11) NULL DEFAULT 0 COMMENT '字典排序',
-  `dict_label` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '字典标签',
-  `dict_value` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '字典键值',
-  `dict_type` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '字典类型',
-  `css_class` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '样式属性（其他样式扩展）',
-  `list_class` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '表格回显样式',
-  `is_default` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'N' COMMENT '是否默认（Y是 N否）',
-  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '状态（0正常 1停用）',
-  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`dict_code`) USING BTREE,
-  UNIQUE INDEX `DICT_CODE_90021707714100`(`dict_code`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 344 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '字典数据表' ROW_FORMAT = Dynamic;
+  `DICT_CODE` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '字典编码',
+  `DICT_SORT` int(11) NULL DEFAULT 0 COMMENT '字典排序',
+  `DICT_LABEL` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '字典标签',
+  `DICT_VALUE` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '字典键值',
+  `DICT_TYPE` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '字典类型',
+  `CSS_CLASS` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '样式属性（其他样式扩展）',
+  `LIST_CLASS` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '表格回显样式',
+  `IS_DEFAULT` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'N' COMMENT '是否默认（Y是 N否）',
+  `STATUS` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '状态（0正常 1停用）',
+  `CREATE_BY` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
+  `CREATE_TIME` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
+  `UPDATE_TIME` timestamp NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`DICT_CODE`) USING BTREE,
+  UNIQUE INDEX `DICT_CODE_974730058384700`(`DICT_CODE`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 387 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '字典数据表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of system_dict_data
@@ -3541,22 +3835,22 @@ INSERT INTO `system_dict_data` VALUES (340, 2, '失败', '2', 'da_asset_operate_
 INSERT INTO `system_dict_data` VALUES (341, 3, '成功', '3', 'da_asset_operate_status', NULL, 'success', 'N', '0', 'qData', '2025-05-20 11:02:26', '', NULL, NULL);
 INSERT INTO `system_dict_data` VALUES (342, 4, '回滚失败', '4', 'da_asset_operate_status', NULL, 'danger', 'N', '0', 'qData', '2025-05-20 11:02:42', 'qData', '2025-05-20 11:02:48', NULL);
 INSERT INTO `system_dict_data` VALUES (343, 5, '回滚成功', '5', 'da_asset_operate_status', NULL, 'success', 'N', '0', 'qData', '2025-05-20 11:03:00', '', NULL, NULL);
-INSERT INTO `system_dict_data` VALUES (346, 0, 'Flink', '0', 'dpp_etl_task_engine', NULL, 'primary', 'N', '0', 'admin', '2025-06-23 16:40:39.000', 'admin', '2025-06-26 10:45:21.000', NULL);
-INSERT INTO `system_dict_data` VALUES (347, 1, 'Spark', '1', 'dpp_etl_task_engine', NULL, 'primary', 'N', '0', 'admin', '2025-06-23 16:40:55.000', 'admin', '2025-06-23 16:41:16.000', NULL);
-INSERT INTO `system_dict_data` VALUES (348, 0, '批处理', '0', 'dpp_etl_task_process_type', NULL, 'primary', 'N', '0', 'admin', '2025-06-23 17:47:57.000', 'admin', '2025-06-23 17:49:53.000', NULL);
-INSERT INTO `system_dict_data` VALUES (349, 1, '流处理', '1', 'dpp_etl_task_process_type', NULL, 'success', 'N', '0', 'admin', '2025-06-23 17:48:06.000', 'admin', '2025-06-23 17:49:58.000', NULL);
-INSERT INTO `system_dict_data` VALUES (350, 0, 'DM8', 'DM8', 'dpp_etl_task_type', NULL, 'primary', 'N', '0', 'admin', '2025-06-23 17:52:45.000', 'admin', '2025-06-23 17:53:20.000', NULL);
-INSERT INTO `system_dict_data` VALUES (351, 1, 'Mysql', 'Mysql', 'dpp_etl_task_type', NULL, 'primary', 'N', '0', 'admin', '2025-06-23 17:53:15.000', 'admin', '2025-06-23 17:53:26.000', NULL);
-INSERT INTO `system_dict_data` VALUES (352, 2, 'Oracle', 'Oracle', 'dpp_etl_task_type', NULL, 'primary', 'N', '0', 'admin', '2025-06-23 17:53:34.000', 'admin', '2025-06-23 17:53:59.000', NULL);
-INSERT INTO `system_dict_data` VALUES (353, 3, 'Kingbase8', 'Kingbase8', 'dpp_etl_task_type', NULL, 'primary', 'N', '0', 'admin', '2025-06-23 17:53:47.000', 'admin', '2025-06-23 17:54:04.000', NULL);
-INSERT INTO `system_dict_data` VALUES (354, 4, 'Hive', 'Hive', 'dpp_etl_task_type', NULL, 'primary', 'N', '0', 'admin', '2025-06-23 17:53:56.000', '', NULL, NULL);
-INSERT INTO `system_dict_data` VALUES (355, 5, 'Fink', 'Fink', 'dpp_etl_task_type', NULL, 'primary', 'N', '0', 'admin', '2025-06-23 17:54:13.000', '', NULL, NULL);
-INSERT INTO `system_dict_data` VALUES (356, 0, 'Spark', 'Spark', 'dpp_etl_task_type', NULL, 'primary', 'N', '0', 'admin', '2025-06-23 17:54:21.000', '', NULL, NULL);
-INSERT INTO `system_dict_data` VALUES (359, 1, 'HIGHEST', 'HIGHEST', 'dpp_etl_task_priority', NULL, 'primary', 'N', '0', 'admin', '2025-06-24 16:16:17.000', '', NULL, NULL);
-INSERT INTO `system_dict_data` VALUES (360, 0, 'HIGH', 'HIGH', 'dpp_etl_task_priority', NULL, 'primary', 'N', '0', 'admin', '2025-06-24 16:16:29.000', '', NULL, NULL);
-INSERT INTO `system_dict_data` VALUES (361, 3, 'LOW', 'LOW', 'dpp_etl_task_priority', NULL, 'primary', 'N', '0', 'admin', '2025-06-24 16:16:47.000', 'admin', '2025-06-24 16:17:12.000', NULL);
-INSERT INTO `system_dict_data` VALUES (362, 2, 'MEDIUM', 'MEDIUM', 'dpp_etl_task_priority', NULL, 'primary', 'N', '0', 'admin', '2025-06-24 16:17:07.000', '', NULL, NULL);
-INSERT INTO `system_dict_data` VALUES (363, 5, 'LOWEST', 'LOWEST', 'dpp_etl_task_priority', NULL, 'primary', 'N', '0', 'admin', '2025-06-24 16:17:24.000', '', NULL, NULL);
+INSERT INTO `system_dict_data` VALUES (346, 0, 'Flink', '0', 'dpp_etl_task_engine', NULL, 'primary', 'N', '0', 'admin', '2025-06-23 16:40:39', 'admin', '2025-06-26 10:45:21', NULL);
+INSERT INTO `system_dict_data` VALUES (347, 1, 'Spark', '1', 'dpp_etl_task_engine', NULL, 'primary', 'N', '0', 'admin', '2025-06-23 16:40:55', 'admin', '2025-06-23 16:41:16', NULL);
+INSERT INTO `system_dict_data` VALUES (348, 0, '批处理', '0', 'dpp_etl_task_process_type', NULL, 'primary', 'N', '0', 'admin', '2025-06-23 17:47:57', 'admin', '2025-06-23 17:49:53', NULL);
+INSERT INTO `system_dict_data` VALUES (349, 1, '流处理', '1', 'dpp_etl_task_process_type', NULL, 'success', 'N', '0', 'admin', '2025-06-23 17:48:06', 'admin', '2025-06-23 17:49:58', NULL);
+INSERT INTO `system_dict_data` VALUES (350, 0, 'DM8', 'DM8', 'dpp_etl_task_type', NULL, 'primary', 'N', '0', 'admin', '2025-06-23 17:52:45', 'admin', '2025-06-23 17:53:20', NULL);
+INSERT INTO `system_dict_data` VALUES (351, 1, 'Mysql', 'Mysql', 'dpp_etl_task_type', NULL, 'primary', 'N', '0', 'admin', '2025-06-23 17:53:15', 'admin', '2025-06-23 17:53:26', NULL);
+INSERT INTO `system_dict_data` VALUES (352, 2, 'Oracle', 'Oracle', 'dpp_etl_task_type', NULL, 'primary', 'N', '0', 'admin', '2025-06-23 17:53:34', 'admin', '2025-06-23 17:53:59', NULL);
+INSERT INTO `system_dict_data` VALUES (353, 3, 'Kingbase8', 'Kingbase8', 'dpp_etl_task_type', NULL, 'primary', 'N', '0', 'admin', '2025-06-23 17:53:47', 'admin', '2025-06-23 17:54:04', NULL);
+INSERT INTO `system_dict_data` VALUES (354, 4, 'Hive', 'Hive', 'dpp_etl_task_type', NULL, 'primary', 'N', '0', 'admin', '2025-06-23 17:53:56', '', NULL, NULL);
+INSERT INTO `system_dict_data` VALUES (355, 5, 'Fink', 'Fink', 'dpp_etl_task_type', NULL, 'primary', 'N', '0', 'admin', '2025-06-23 17:54:13', '', NULL, NULL);
+INSERT INTO `system_dict_data` VALUES (356, 0, 'Spark', 'Spark', 'dpp_etl_task_type', NULL, 'primary', 'N', '0', 'admin', '2025-06-23 17:54:21', '', NULL, NULL);
+INSERT INTO `system_dict_data` VALUES (359, 1, 'HIGHEST', 'HIGHEST', 'dpp_etl_task_priority', NULL, 'primary', 'N', '0', 'admin', '2025-06-24 16:16:17', '', NULL, NULL);
+INSERT INTO `system_dict_data` VALUES (360, 0, 'HIGH', 'HIGH', 'dpp_etl_task_priority', NULL, 'primary', 'N', '0', 'admin', '2025-06-24 16:16:29', '', NULL, NULL);
+INSERT INTO `system_dict_data` VALUES (361, 3, 'LOW', 'LOW', 'dpp_etl_task_priority', NULL, 'primary', 'N', '0', 'admin', '2025-06-24 16:16:47', 'admin', '2025-06-24 16:17:12', NULL);
+INSERT INTO `system_dict_data` VALUES (362, 2, 'MEDIUM', 'MEDIUM', 'dpp_etl_task_priority', NULL, 'primary', 'N', '0', 'admin', '2025-06-24 16:17:07', '', NULL, NULL);
+INSERT INTO `system_dict_data` VALUES (363, 5, 'LOWEST', 'LOWEST', 'dpp_etl_task_priority', NULL, 'primary', 'N', '0', 'admin', '2025-06-24 16:17:24', '', NULL, NULL);
 INSERT INTO `system_dict_data` VALUES (364, 0, 'FLINK流', '10', 'dpp_etl_sql_temp_type', NULL, NULL, 'N', '0', '', NULL, '', NULL, NULL);
 INSERT INTO `system_dict_data` VALUES (365, 0, 'FLINK批', '11', 'dpp_etl_sql_temp_type', NULL, NULL, 'N', '0', '', NULL, '', NULL, NULL);
 INSERT INTO `system_dict_data` VALUES (366, 0, 'DM', '2', 'dpp_etl_sql_temp_type', NULL, NULL, 'N', '0', '', NULL, '', NULL, NULL);
@@ -3567,34 +3861,34 @@ INSERT INTO `system_dict_data` VALUES (370, 0, 'Sqlerver', '6', 'dpp_etl_sql_tem
 INSERT INTO `system_dict_data` VALUES (371, 0, 'PostgreSql', '7', 'dpp_etl_sql_temp_type', NULL, NULL, 'N', '0', '', NULL, '', NULL, NULL);
 INSERT INTO `system_dict_data` VALUES (372, 0, 'Hive', '8', 'dpp_etl_sql_temp_type', NULL, NULL, 'N', '0', '', NULL, '', NULL, NULL);
 INSERT INTO `system_dict_data` VALUES (373, 0, 'SparkSql', '9', 'dpp_etl_sql_temp_type', NULL, NULL, 'N', '0', '', NULL, '', NULL, NULL);
-INSERT INTO `system_dict_data` VALUES (378, 0, '一般', '0', 'quality_warning_status', NULL, 'info', 'N', '0', 'admin', '2025-07-25 10:51:11.000', 'admin', '2025-07-25 10:51:43.000', NULL);
-INSERT INTO `system_dict_data` VALUES (379, 0, '告警', '1', 'quality_warning_status', NULL, 'warning', 'N', '0', 'admin', '2025-07-25 10:51:21.000', '', NULL, NULL);
-INSERT INTO `system_dict_data` VALUES (380, 0, '严重', '2', 'quality_warning_status', NULL, 'danger', 'N', '0', 'admin', '2025-07-25 10:51:30.000', '', NULL, NULL);
-INSERT INTO `system_dict_data` VALUES (381, 0, '成功', '0', 'quality_log_success_flag', NULL, 'success', 'N', '0', 'admin', '2025-07-25 13:50:00.000', '', NULL, NULL);
-INSERT INTO `system_dict_data` VALUES (382, 1, '失败', '1', 'quality_log_success_flag', NULL, 'danger', 'N', '0', 'admin', '2025-07-25 13:50:18.000', 'admin', '2025-07-25 13:50:57.000', NULL);
-INSERT INTO `system_dict_data` VALUES (383, 2, '进行中', '2', 'quality_log_success_flag', NULL, 'primary', 'N', '0', 'admin', '2025-07-25 13:50:34.000', 'admin', '2025-07-25 13:50:45.000', NULL);
-INSERT INTO `system_dict_data` VALUES (384, 0, '未修改', '0', 'quality_log_data_repair', NULL, 'primary', 'N', '0', 'admin', '2025-08-04 14:23:08.000', 'admin', '2025-08-04 14:23:45.000', NULL);
-INSERT INTO `system_dict_data` VALUES (385, 1, '已修改', '1', 'quality_log_data_repair', NULL, 'primary', 'N', '0', 'admin', '2025-08-04 14:23:33.000', '', NULL, NULL);
-INSERT INTO `system_dict_data` VALUES (386, 2, '已忽略', '2', 'quality_log_data_repair', NULL, 'primary', 'N', '0', 'admin', '2025-08-04 14:24:02.000', '', NULL, NULL);
+INSERT INTO `system_dict_data` VALUES (378, 0, '一般', '0', 'quality_warning_status', NULL, 'info', 'N', '0', 'admin', '2025-07-25 10:51:11', 'admin', '2025-07-25 10:51:43', NULL);
+INSERT INTO `system_dict_data` VALUES (379, 0, '告警', '1', 'quality_warning_status', NULL, 'warning', 'N', '0', 'admin', '2025-07-25 10:51:21', '', NULL, NULL);
+INSERT INTO `system_dict_data` VALUES (380, 0, '严重', '2', 'quality_warning_status', NULL, 'danger', 'N', '0', 'admin', '2025-07-25 10:51:30', '', NULL, NULL);
+INSERT INTO `system_dict_data` VALUES (381, 0, '成功', '0', 'quality_log_success_flag', NULL, 'success', 'N', '0', 'admin', '2025-07-25 13:50:00', '', NULL, NULL);
+INSERT INTO `system_dict_data` VALUES (382, 1, '失败', '1', 'quality_log_success_flag', NULL, 'danger', 'N', '0', 'admin', '2025-07-25 13:50:18', 'admin', '2025-07-25 13:50:57', NULL);
+INSERT INTO `system_dict_data` VALUES (383, 2, '进行中', '2', 'quality_log_success_flag', NULL, 'primary', 'N', '0', 'admin', '2025-07-25 13:50:34', 'admin', '2025-07-25 13:50:45', NULL);
+INSERT INTO `system_dict_data` VALUES (384, 0, '未修改', '0', 'quality_log_data_repair', NULL, 'primary', 'N', '0', 'admin', '2025-08-04 14:23:08', 'admin', '2025-08-04 14:23:45', NULL);
+INSERT INTO `system_dict_data` VALUES (385, 1, '已修改', '1', 'quality_log_data_repair', NULL, 'primary', 'N', '0', 'admin', '2025-08-04 14:23:33', '', NULL, NULL);
+INSERT INTO `system_dict_data` VALUES (386, 2, '已忽略', '2', 'quality_log_data_repair', NULL, 'primary', 'N', '0', 'admin', '2025-08-04 14:24:02', '', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for system_dict_type
 -- ----------------------------
 DROP TABLE IF EXISTS `system_dict_type`;
 CREATE TABLE `system_dict_type`  (
-  `dict_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '字典主键',
-  `dict_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '字典名称',
-  `dict_type` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '字典类型',
-  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '状态（0正常 1停用）',
-  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`dict_id`) USING BTREE,
-  UNIQUE INDEX `DICT_ID_90022127184400`(`dict_id`) USING BTREE,
-  UNIQUE INDEX `dict_type`(`dict_type`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 95 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '字典类型表' ROW_FORMAT = Dynamic;
+  `DICT_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '字典主键',
+  `DICT_NAME` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '字典名称',
+  `DICT_TYPE` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '字典类型',
+  `STATUS` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '状态（0正常 1停用）',
+  `CREATE_BY` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
+  `CREATE_TIME` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
+  `UPDATE_TIME` timestamp NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`DICT_ID`) USING BTREE,
+  UNIQUE INDEX `DICT_ID_974730811579100`(`DICT_ID`) USING BTREE,
+  UNIQUE INDEX `DICT_TYPE`(`DICT_TYPE`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 103 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '字典类型表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of system_dict_type
@@ -3685,36 +3979,35 @@ INSERT INTO `system_dict_type` VALUES (91, '区域类型', 'rp_area_type', '0', 
 INSERT INTO `system_dict_type` VALUES (92, '部门类型', 'rp_dept_type', '0', 'liuhaosheng', '2025-04-30 17:48:56', '', NULL, NULL);
 INSERT INTO `system_dict_type` VALUES (93, '数据资产-数据操作类型', 'da_asset_operate_type', '0', 'qData', '2025-05-09 15:09:56', '', NULL, NULL);
 INSERT INTO `system_dict_type` VALUES (94, '数据资产操作记录状态', 'da_asset_operate_status', '0', 'qData', '2025-05-20 11:01:25', '', NULL, NULL);
-INSERT INTO `system_dict_type` VALUES (95, '数据集成执行引擎', 'dpp_etl_task_engine', '0', 'admin', '2025-06-23 16:39:58.000', '', NULL, '新增弹框使用');
-INSERT INTO `system_dict_type` VALUES (96, '数据开发处理类型', 'dpp_etl_task_process_type', '0', 'admin', '2025-06-23 17:47:35.000', '', NULL, '列表用');
-INSERT INTO `system_dict_type` VALUES (97, '数据开发任务类型', 'dpp_etl_task_type', '0', 'admin', '2025-06-23 17:52:23.000', '', NULL, NULL);
-INSERT INTO `system_dict_type` VALUES (98, '数据研发-任务优先级', 'dpp_etl_task_priority', '0', 'admin', '2025-06-24 16:15:25.000', '', NULL, NULL);
+INSERT INTO `system_dict_type` VALUES (95, '数据集成执行引擎', 'dpp_etl_task_engine', '0', 'admin', '2025-06-23 16:39:58', '', NULL, '新增弹框使用');
+INSERT INTO `system_dict_type` VALUES (96, '数据开发处理类型', 'dpp_etl_task_process_type', '0', 'admin', '2025-06-23 17:47:35', '', NULL, '列表用');
+INSERT INTO `system_dict_type` VALUES (97, '数据开发任务类型', 'dpp_etl_task_type', '0', 'admin', '2025-06-23 17:52:23', '', NULL, NULL);
+INSERT INTO `system_dict_type` VALUES (98, '数据研发-任务优先级', 'dpp_etl_task_priority', '0', 'admin', '2025-06-24 16:15:25', '', NULL, NULL);
 INSERT INTO `system_dict_type` VALUES (99, '数据集成SQL模-类型', 'dpp_etl_sql_temp_type', '0', '', NULL, '', NULL, NULL);
-INSERT INTO `system_dict_type` VALUES (100, '数据质量告警等级', 'quality_warning_status', '0', 'admin', '2025-07-25 10:50:44.000', '', NULL, NULL);
-INSERT INTO `system_dict_type` VALUES (101, '数据质量执行日志状态', 'quality_log_success_flag', '0', 'admin', '2025-07-25 13:49:29.000', '', NULL, NULL);
-INSERT INTO `system_dict_type` VALUES (102, '数据质量历史数据状态', 'quality_log_data_repair', '0', 'admin', '2025-08-04 14:22:43.000', '', NULL, NULL);
-
+INSERT INTO `system_dict_type` VALUES (100, '数据质量告警等级', 'quality_warning_status', '0', 'admin', '2025-07-25 10:50:44', '', NULL, NULL);
+INSERT INTO `system_dict_type` VALUES (101, '数据质量执行日志状态', 'quality_log_success_flag', '0', 'admin', '2025-07-25 13:49:29', '', NULL, NULL);
+INSERT INTO `system_dict_type` VALUES (102, '数据质量历史数据状态', 'quality_log_data_repair', '0', 'admin', '2025-08-04 14:22:43', '', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for system_job
 -- ----------------------------
 DROP TABLE IF EXISTS `system_job`;
 CREATE TABLE `system_job`  (
-  `job_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '任务ID',
-  `job_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '任务名称',
-  `job_group` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'DEFAULT' COMMENT '任务组名',
-  `invoke_target` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调用目标字符串',
-  `cron_expression` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT 'cron执行表达式',
-  `misfire_policy` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '3' COMMENT '计划执行错误策略（1立即执行 2执行一次 3放弃执行）',
-  `concurrent` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '1' COMMENT '是否并发执行（0允许 1禁止）',
-  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '状态（0正常 1暂停）',
-  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '备注信息',
-  PRIMARY KEY (`job_id`, `job_name`, `job_group`) USING BTREE,
-  UNIQUE INDEX `JOB_ID_90022634483400`(`job_id`) USING BTREE
+  `JOB_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '任务ID',
+  `JOB_NAME` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '任务名称',
+  `JOB_GROUP` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'DEFAULT' COMMENT '任务组名',
+  `INVOKE_TARGET` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调用目标字符串',
+  `CRON_EXPRESSION` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT 'cron执行表达式',
+  `MISFIRE_POLICY` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '3' COMMENT '计划执行错误策略（1立即执行 2执行一次 3放弃执行）',
+  `CONCURRENT` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '1' COMMENT '是否并发执行（0允许 1禁止）',
+  `STATUS` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '状态（0正常 1暂停）',
+  `CREATE_BY` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
+  `CREATE_TIME` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
+  `UPDATE_TIME` timestamp NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '备注信息',
+  PRIMARY KEY (`JOB_ID`, `JOB_NAME`, `JOB_GROUP`) USING BTREE,
+  UNIQUE INDEX `JOB_ID_974731450362600`(`JOB_ID`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '定时任务调度表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -3726,16 +4019,16 @@ CREATE TABLE `system_job`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `system_job_log`;
 CREATE TABLE `system_job_log`  (
-  `job_log_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '任务日志ID',
-  `job_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务名称',
-  `job_group` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务组名',
-  `invoke_target` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调用目标字符串',
-  `job_message` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '日志信息',
-  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '执行状态（0正常 1失败）',
-  `exception_info` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '异常信息',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  PRIMARY KEY (`job_log_id`) USING BTREE,
-  UNIQUE INDEX `JOB_LOG_ID_90023008430000`(`job_log_id`) USING BTREE
+  `JOB_LOG_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '任务日志ID',
+  `JOB_NAME` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务名称',
+  `JOB_GROUP` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务组名',
+  `INVOKE_TARGET` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调用目标字符串',
+  `JOB_MESSAGE` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '日志信息',
+  `STATUS` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '执行状态（0正常 1失败）',
+  `EXCEPTION_INFO` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '异常信息',
+  `CREATE_TIME` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`JOB_LOG_ID`) USING BTREE,
+  UNIQUE INDEX `JOB_LOG_ID_974731958791200`(`JOB_LOG_ID`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '定时任务调度日志表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -3747,63 +4040,53 @@ CREATE TABLE `system_job_log`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `system_logininfor`;
 CREATE TABLE `system_logininfor`  (
-  `info_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '访问ID',
-  `user_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户账号',
-  `ipaddr` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '登录IP地址',
-  `login_location` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '登录地点',
-  `browser` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '浏览器类型',
-  `os` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '操作系统',
-  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '登录状态（0成功 1失败）',
-  `msg` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '提示消息',
-  `login_time` datetime NULL DEFAULT NULL COMMENT '访问时间',
-  PRIMARY KEY (`info_id`) USING BTREE,
-  UNIQUE INDEX `INFO_ID_90023379342600`(`info_id`) USING BTREE,
-  INDEX `idx_sys_logininfor_lt`(`login_time`) USING BTREE,
-  INDEX `idx_sys_logininfor_s`(`status`) USING BTREE
+  `INFO_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '访问ID',
+  `USER_NAME` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户账号',
+  `IPADDR` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '登录IP地址',
+  `LOGIN_LOCATION` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '登录地点',
+  `BROWSER` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '浏览器类型',
+  `OS` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '操作系统',
+  `STATUS` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '登录状态（0成功 1失败）',
+  `MSG` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '提示消息',
+  `LOGIN_TIME` timestamp NULL DEFAULT NULL COMMENT '访问时间',
+  PRIMARY KEY (`INFO_ID`) USING BTREE,
+  UNIQUE INDEX `INFO_ID_974732582270900`(`INFO_ID`) USING BTREE,
+  INDEX `IDX_SYS_LOGININFOR_LT`(`LOGIN_TIME`) USING BTREE,
+  INDEX `IDX_SYS_LOGININFOR_S`(`STATUS`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统访问记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of system_logininfor
 -- ----------------------------
-INSERT INTO `system_logininfor` VALUES (1, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-06-11 19:20:30');
-INSERT INTO `system_logininfor` VALUES (2, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-06-12 09:02:09');
-INSERT INTO `system_logininfor` VALUES (3, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '退出成功', '2025-06-12 13:38:04');
-INSERT INTO `system_logininfor` VALUES (4, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '1', '验证码已失效', '2025-06-12 13:41:19');
-INSERT INTO `system_logininfor` VALUES (5, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-06-12 13:41:22');
-INSERT INTO `system_logininfor` VALUES (6, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-06-12 13:53:47');
-INSERT INTO `system_logininfor` VALUES (7, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '退出成功', '2025-06-12 15:15:16');
-INSERT INTO `system_logininfor` VALUES (8, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-06-12 15:15:33');
-INSERT INTO `system_logininfor` VALUES (9, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '退出成功', '2025-06-12 16:01:04');
-INSERT INTO `system_logininfor` VALUES (10, 'qData', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-06-12 16:01:11');
 
 -- ----------------------------
 -- Table structure for system_menu
 -- ----------------------------
 DROP TABLE IF EXISTS `system_menu`;
 CREATE TABLE `system_menu`  (
-  `menu_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '菜单ID',
-  `menu_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '菜单名称',
-  `parent_id` bigint(20) NULL DEFAULT 0 COMMENT '父菜单ID',
-  `order_num` int(11) NULL DEFAULT 0 COMMENT '显示顺序',
-  `path` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '路由地址',
-  `component` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '组件路径',
-  `query` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '路由参数',
-  `is_frame` int(11) NULL DEFAULT 1 COMMENT '是否为外链（0是 1否）',
-  `is_cache` int(11) NULL DEFAULT 0 COMMENT '是否缓存（0缓存 1不缓存）',
-  `route_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '路由名称',
-  `menu_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '菜单类型（M目录 C菜单 F按钮）',
-  `visible` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '菜单状态（0显示 1隐藏）',
-  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '菜单状态（0正常 1停用）',
-  `perms` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '权限标识',
-  `icon` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '#' COMMENT '菜单图标',
-  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '备注',
-  PRIMARY KEY (`menu_id`) USING BTREE,
-  UNIQUE INDEX `MENU_ID_90023726248500`(`menu_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2555 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单权限表' ROW_FORMAT = Dynamic;
+  `MENU_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '菜单ID',
+  `MENU_NAME` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '菜单名称',
+  `PARENT_ID` bigint(20) NULL DEFAULT 0 COMMENT '父菜单ID',
+  `ORDER_NUM` int(11) NULL DEFAULT 0 COMMENT '显示顺序',
+  `PATH` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '路由地址',
+  `COMPONENT` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '组件路径',
+  `QUERY` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '路由参数',
+  `IS_FRAME` int(11) NULL DEFAULT 1 COMMENT '是否为外链（0是 1否）',
+  `IS_CACHE` int(11) NULL DEFAULT 0 COMMENT '是否缓存（0缓存 1不缓存）',
+  `ROUTE_NAME` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '路由名称',
+  `MENU_TYPE` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '菜单类型（M目录 C菜单 F按钮）',
+  `VISIBLE` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '菜单状态（0显示 1隐藏）',
+  `STATUS` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '菜单状态（0正常 1停用）',
+  `PERMS` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '权限标识',
+  `ICON` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '#' COMMENT '菜单图标',
+  `CREATE_BY` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
+  `CREATE_TIME` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
+  `UPDATE_TIME` timestamp NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '备注',
+  PRIMARY KEY (`MENU_ID`) USING BTREE,
+  UNIQUE INDEX `MENU_ID_974732878531500`(`MENU_ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2572 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单权限表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of system_menu
@@ -4142,25 +4425,41 @@ INSERT INTO `system_menu` VALUES (2548, '数据开发详情', 2511, 0, '', NULL,
 INSERT INTO `system_menu` VALUES (2549, '数据开发执行一次', 2511, 0, '', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'dpp:etl:ddv::once', '#', 'qData', '2025-03-28 14:49:11', '', NULL, '');
 INSERT INTO `system_menu` VALUES (2552, '项目基础管理', 2397, 9, 'dpp', NULL, NULL, 1, 0, NULL, 'M', '0', '0', '', 'lifebuoy-line', 'qData', '2025-03-31 09:29:41', 'admin', '2025-05-30 16:13:58', '');
 INSERT INTO `system_menu` VALUES (2554, '数据查询', 2314, 5, 'executeSqlQuery', 'da/executesqlquery/index', NULL, 1, 0, NULL, 'C', '0', '0', 'da:datasource:executesqlquery:list', 'safe-line', 'qData', '2025-04-09 15:56:05', 'admin', '2025-05-30 15:49:11', '');
-INSERT INTO `system_menu` VALUES (2555, '数据集成-调度状态开关', 2426, 7, '', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'dpp:etl:etltask:schedulerState', '#', 'admin', '2025-06-05 03:38:21', '', NULL, '');
+INSERT INTO `system_menu` VALUES (2555, '数据质量', 2314, 8, 'dataQuality', '', NULL, 1, 0, NULL, 'M', '0', '0', '', 'ztgl', 'admin', '2025-07-18 11:24:17', 'admin', '2025-07-23 15:42:33', '');
+INSERT INTO `system_menu` VALUES (2556, '数据质量类目', 2352, 1, 'AttQualityCat', 'att/cat/attQualityCat/index', NULL, 1, 0, NULL, 'C', '0', '0', 'att:cat:attqualitycat:list', '#', 'admin', '2025-07-19 17:10:44', 'admin', '2025-07-19 17:12:53', '数据质量类目菜单');
+INSERT INTO `system_menu` VALUES (2557, '数据质量类目导入', 2556, 6, '#', '', NULL, 1, 0, NULL, 'F', '0', '0', 'att:cat:attqualitycat:import', '#', 'admin', '2025-07-19 17:11:51', '', NULL, '');
+INSERT INTO `system_menu` VALUES (2558, '数据质量类目导出', 2556, 5, '#', '', NULL, 1, 0, NULL, 'F', '0', '0', 'att:cat:attqualitycat:export', '#', 'admin', '2025-07-19 17:11:50', '', NULL, '');
+INSERT INTO `system_menu` VALUES (2559, '数据质量类目删除', 2556, 4, '#', '', NULL, 1, 0, NULL, 'F', '0', '0', 'att:cat:attqualitycat:remove', '#', 'admin', '2025-07-19 17:11:50', '', NULL, '');
+INSERT INTO `system_menu` VALUES (2560, '数据质量类目修改', 2556, 3, '#', '', NULL, 1, 0, NULL, 'F', '0', '0', 'att:cat:attqualitycat:edit', '#', 'admin', '2025-07-19 17:11:50', '', NULL, '');
+INSERT INTO `system_menu` VALUES (2561, '数据质量类目新增', 2556, 2, '#', '', NULL, 1, 0, NULL, 'F', '0', '0', 'att:cat:attqualitycat:add', '#', 'admin', '2025-07-19 17:11:49', '', NULL, '');
+INSERT INTO `system_menu` VALUES (2562, '数据质量类目查询', 2556, 1, '#', '', NULL, 1, 0, NULL, 'F', '0', '0', 'att:cat:attqualitycat:query', '#', 'admin', '2025-07-19 17:11:49', '', NULL, '');
+INSERT INTO `system_menu` VALUES (2563, '质量任务日志', 2555, 11, 'dataQualityTaskLogs', 'da/dataQuality/dataQualityTaskLogs/index', NULL, 1, 0, NULL, 'C', '0', '0', 'da:dataQuality:dataQualityTaskLogs:index', '#', 'admin', '2025-07-18 13:34:57', 'admin', '2025-07-24 11:21:32', '');
+INSERT INTO `system_menu` VALUES (2564, '质量任务日志详情', 2563, 0, '', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'dp:dppQualityLog:dppqualitylog:edit', '#', 'admin', '2025-08-18 15:04:28', '', NULL, '');
+INSERT INTO `system_menu` VALUES (2565, '数据质量任务', 2555, 10, 'dataQualityTasks', 'da/dataQuality/dataQualityTasks/index', NULL, 1, 0, NULL, 'C', '0', '0', 'da:dataQuality:dataQualityTasks:index', '#', 'admin', '2025-07-11 11:25:35', 'admin', '2025-07-24 11:21:23', '');
+INSERT INTO `system_menu` VALUES (2566, '数据质量任务执行一次', 2565, 0, '', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'da:qa:dataQualityTasks:once', '#', 'admin', '2025-08-18 14:50:02', '', NULL, '');
+INSERT INTO `system_menu` VALUES (2567, '数据质量任务调度周期', 2565, 0, '', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'da:dataQualityTasks:schedule', '#', 'admin', '2025-08-18 14:48:55', '', NULL, '');
+INSERT INTO `system_menu` VALUES (2568, '数据质量任务删除', 2565, 0, '', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'da:qa:discoverytask:remove', '#', 'admin', '2025-08-18 14:46:13', 'admin', '2025-08-18 15:02:58', '');
+INSERT INTO `system_menu` VALUES (2569, '数据质量任务详情', 2565, 0, '', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'da:dataQualityTasks:info', '#', 'admin', '2025-08-18 14:44:08', 'admin', '2025-08-18 14:47:42', '');
+INSERT INTO `system_menu` VALUES (2570, '数据质量任务配置', 2565, 0, '', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'da:dataQualityTasks:edit', '#', 'admin', '2025-08-18 14:42:31', 'admin', '2025-08-18 14:47:16', '');
+INSERT INTO `system_menu` VALUES (2571, '数据质量任务新增', 2565, 0, '', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'da:dataQualityTasks:add', '#', 'admin', '2025-08-18 14:41:55', 'admin', '2025-08-18 14:47:26', '');
 
 -- ----------------------------
 -- Table structure for system_notice
 -- ----------------------------
 DROP TABLE IF EXISTS `system_notice`;
 CREATE TABLE `system_notice`  (
-  `notice_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '公告ID',
-  `notice_title` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '公告标题',
-  `notice_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '公告类型（1通知 2公告）',
-  `notice_content` longblob NULL COMMENT '公告内容',
-  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '公告状态（0正常 1关闭）',
-  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`notice_id`) USING BTREE,
-  UNIQUE INDEX `NOTICE_ID_90024528315100`(`notice_id`) USING BTREE
+  `NOTICE_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '公告ID',
+  `NOTICE_TITLE` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '公告标题',
+  `NOTICE_TYPE` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '公告类型（1通知 2公告）',
+  `NOTICE_CONTENT` longblob NULL COMMENT '公告内容',
+  `STATUS` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '公告状态（0正常 1关闭）',
+  `CREATE_BY` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
+  `CREATE_TIME` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
+  `UPDATE_TIME` timestamp NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`NOTICE_ID`) USING BTREE,
+  UNIQUE INDEX `NOTICE_ID_974733507522300`(`NOTICE_ID`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '通知公告表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -4174,24 +4473,28 @@ INSERT INTO `system_notice` VALUES (12, 'qData期待与您携手共建数据生�
 -- ----------------------------
 DROP TABLE IF EXISTS `system_oper_log`;
 CREATE TABLE `system_oper_log`  (
-  `oper_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '日志主键',
-  `title` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '模块标题',
-  `business_type` int(11) NULL DEFAULT 0 COMMENT '业务类型（0其它 1新增 2修改 3删除）',
-  `method` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '方法名称',
-  `request_method` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '请求方式',
-  `operator_type` int(11) NULL DEFAULT 0 COMMENT '操作类别（0其它 1后台用户 2手机端用户）',
-  `oper_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '操作人员',
-  `dept_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '部门名称',
-  `oper_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '请求URL',
-  `oper_ip` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '主机地址',
-  `oper_location` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '操作地点',
-  `oper_param` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '请求参数',
-  `json_result` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '返回参数',
-  `status` int(11) NULL DEFAULT 0 COMMENT '操作状态（0正常 1异常）',
-  `error_msg` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '错误消息',
-  `oper_time` datetime NULL DEFAULT NULL COMMENT '操作时间',
-  `cost_time` bigint(20) NULL DEFAULT 0 COMMENT '消耗时间',
-  UNIQUE INDEX `OPER_ID_26035488445100`(`oper_id`) USING BTREE
+  `OPER_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '日志主键',
+  `TITLE` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '模块标题',
+  `BUSINESS_TYPE` int(11) NULL DEFAULT 0 COMMENT '业务类型（0其它 1新增 2修改 3删除）',
+  `METHOD` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '方法名称',
+  `REQUEST_METHOD` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '请求方式',
+  `OPERATOR_TYPE` int(11) NULL DEFAULT 0 COMMENT '操作类别（0其它 1后台用户 2手机端用户）',
+  `OPER_NAME` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '操作人员',
+  `DEPT_NAME` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '部门名称',
+  `OPER_URL` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '请求URL',
+  `OPER_IP` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '主机地址',
+  `OPER_LOCATION` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '操作地点',
+  `OPER_PARAM` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '请求参数',
+  `JSON_RESULT` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '返回参数',
+  `STATUS` int(11) NULL DEFAULT 0 COMMENT '操作状态（0正常 1异常）',
+  `ERROR_MSG` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '错误消息',
+  `OPER_TIME` timestamp NULL DEFAULT NULL COMMENT '操作时间',
+  `COST_TIME` bigint(20) NULL DEFAULT 0 COMMENT '消耗时间',
+  PRIMARY KEY (`OPER_ID`) USING BTREE,
+  UNIQUE INDEX `OPER_ID_974733821963500`(`OPER_ID`) USING BTREE,
+  INDEX `IDX_SYS_OPER_LOG_BT`(`BUSINESS_TYPE`) USING BTREE,
+  INDEX `IDX_SYS_OPER_LOG_OT`(`OPER_TIME`) USING BTREE,
+  INDEX `IDX_SYS_OPER_LOG_S`(`STATUS`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 922 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '操作日志记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -4203,18 +4506,18 @@ CREATE TABLE `system_oper_log`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `system_post`;
 CREATE TABLE `system_post`  (
-  `post_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '岗位ID',
-  `post_code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '岗位编码',
-  `post_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '岗位名称',
-  `post_sort` int(11) NOT NULL COMMENT '显示顺序',
-  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '状态（0正常 1停用）',
-  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`post_id`) USING BTREE,
-  UNIQUE INDEX `POST_ID_90024906430300`(`post_id`) USING BTREE
+  `POST_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '岗位ID',
+  `POST_CODE` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '岗位编码',
+  `POST_NAME` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '岗位名称',
+  `POST_SORT` int(11) NOT NULL COMMENT '显示顺序',
+  `STATUS` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '状态（0正常 1停用）',
+  `CREATE_BY` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
+  `CREATE_TIME` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
+  `UPDATE_TIME` timestamp NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`POST_ID`) USING BTREE,
+  UNIQUE INDEX `POST_ID_974734124495600`(`POST_ID`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '岗位信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -4230,23 +4533,23 @@ INSERT INTO `system_post` VALUES (4, 'user', '普通员工', 4, '0', 'qData', '2
 -- ----------------------------
 DROP TABLE IF EXISTS `system_role`;
 CREATE TABLE `system_role`  (
-  `role_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '角色ID',
-  `role_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '角色名称',
-  `role_key` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '角色权限字符串',
-  `role_sort` int(11) NOT NULL COMMENT '显示顺序',
-  `data_scope` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '1' COMMENT '数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限）',
-  `menu_check_strictly` tinyint(4) NULL DEFAULT 1 COMMENT '菜单树选择项是否关联显示',
-  `dept_check_strictly` tinyint(4) NULL DEFAULT 1 COMMENT '部门树选择项是否关联显示',
-  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '角色状态（0正常 1停用）',
-  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
-  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `project_id` bigint(20) NULL DEFAULT NULL COMMENT '项目空间ID',
-  PRIMARY KEY (`role_id`) USING BTREE,
-  UNIQUE INDEX `ROLE_ID_90025418482400`(`role_id`) USING BTREE
+  `ROLE_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '角色ID',
+  `ROLE_NAME` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '角色名称',
+  `ROLE_KEY` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '角色权限字符串',
+  `ROLE_SORT` int(11) NOT NULL COMMENT '显示顺序',
+  `DATA_SCOPE` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '1' COMMENT '数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限）',
+  `MENU_CHECK_STRICTLY` tinyint(4) NULL DEFAULT 1 COMMENT '菜单树选择项是否关联显示',
+  `DEPT_CHECK_STRICTLY` tinyint(4) NULL DEFAULT 1 COMMENT '部门树选择项是否关联显示',
+  `STATUS` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '角色状态（0正常 1停用）',
+  `DEL_FLAG` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
+  `CREATE_BY` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
+  `CREATE_TIME` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
+  `UPDATE_TIME` timestamp NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `PROJECT_ID` bigint(20) NULL DEFAULT NULL COMMENT '项目空间ID',
+  PRIMARY KEY (`ROLE_ID`) USING BTREE,
+  UNIQUE INDEX `ROLE_ID_974734684084600`(`ROLE_ID`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 190 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -4267,16 +4570,15 @@ INSERT INTO `system_role` VALUES (186, '数据开发人员', 'sjkf', 2, '1', 1, 
 INSERT INTO `system_role` VALUES (187, '质量评估人员', 'zlpg', 3, '1', 1, 1, '0', '0', '', NULL, '', NULL, NULL, 84);
 INSERT INTO `system_role` VALUES (188, '数据分析人员', 'sjfx', 4, '1', 1, 1, '0', '0', '', NULL, '', NULL, NULL, 84);
 INSERT INTO `system_role` VALUES (189, '运维人员', 'yw', 5, '1', 1, 1, '0', '0', '', NULL, '', NULL, NULL, 84);
-INSERT INTO `system_role` VALUES (190, '管理员', 'guanlyuan', 0, '1', 1, 1, '0', '0', 'admin', '2025-06-11 21:14:56', '', NULL, NULL, 87);
 
 -- ----------------------------
 -- Table structure for system_role_dept
 -- ----------------------------
 DROP TABLE IF EXISTS `system_role_dept`;
 CREATE TABLE `system_role_dept`  (
-  `role_id` bigint(20) NOT NULL COMMENT '角色ID',
-  `dept_id` bigint(20) NOT NULL COMMENT '部门ID',
-  PRIMARY KEY (`role_id`, `dept_id`) USING BTREE
+  `ROLE_ID` bigint(20) NOT NULL COMMENT '角色ID',
+  `DEPT_ID` bigint(20) NOT NULL COMMENT '部门ID',
+  PRIMARY KEY (`ROLE_ID`, `DEPT_ID`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色和部门关联表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -4293,10 +4595,10 @@ INSERT INTO `system_role_dept` VALUES (2, 107);
 -- ----------------------------
 DROP TABLE IF EXISTS `system_role_menu`;
 CREATE TABLE `system_role_menu`  (
-  `role_id` bigint(20) NOT NULL COMMENT '角色ID',
-  `menu_id` bigint(20) NOT NULL COMMENT '菜单ID',
-  `project_id` bigint(20) NULL DEFAULT 0 COMMENT '项目id',
-  PRIMARY KEY (`role_id`, `menu_id`) USING BTREE
+  `ROLE_ID` bigint(20) NOT NULL COMMENT '角色ID',
+  `MENU_ID` bigint(20) NOT NULL COMMENT '菜单ID',
+  `PROJECT_ID` bigint(20) NULL DEFAULT 0 COMMENT '项目id',
+  PRIMARY KEY (`ROLE_ID`, `MENU_ID`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色和菜单关联表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -4885,112 +5187,41 @@ INSERT INTO `system_role_menu` VALUES (189, 2474, 84);
 INSERT INTO `system_role_menu` VALUES (189, 2475, 84);
 INSERT INTO `system_role_menu` VALUES (189, 2476, 84);
 INSERT INTO `system_role_menu` VALUES (189, 2477, 84);
-INSERT INTO `system_role_menu` VALUES (190, 2397, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2398, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2399, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2400, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2401, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2402, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2403, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2404, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2426, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2444, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2445, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2446, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2447, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2448, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2449, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2464, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2465, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2466, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2467, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2468, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2469, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2470, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2471, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2472, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2473, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2474, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2475, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2476, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2477, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2487, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2488, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2489, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2490, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2491, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2492, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2493, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2501, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2502, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2503, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2504, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2505, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2506, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2507, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2510, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2511, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2513, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2519, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2520, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2521, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2522, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2523, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2524, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2525, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2526, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2527, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2528, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2529, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2537, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2538, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2539, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2540, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2541, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2542, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2543, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2544, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2545, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2546, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2547, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2548, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2549, 87);
-INSERT INTO `system_role_menu` VALUES (190, 2552, 87);
 
 -- ----------------------------
 -- Table structure for system_user
 -- ----------------------------
 DROP TABLE IF EXISTS `system_user`;
 CREATE TABLE `system_user`  (
-  `user_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
-  `dept_id` bigint(20) NULL DEFAULT NULL COMMENT '部门ID',
-  `user_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户账号',
-  `nick_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户昵称',
-  `user_type` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '00' COMMENT '用户类型（00系统用户）',
-  `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户邮箱',
-  `phonenumber` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '手机号码',
-  `sex` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '用户性别（0男 1女 2未知）',
-  `avatar` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '头像地址',
-  `password` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '密码',
-  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '帐号状态（0正常 1停用）',
-  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
-  `login_ip` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '最后登录IP',
-  `login_date` datetime NULL DEFAULT NULL COMMENT '最后登录时间',
-  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `auth_id` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '认证平台id',
-  PRIMARY KEY (`user_id`) USING BTREE,
-  UNIQUE INDEX `USER_ID_90026803063700`(`user_id`) USING BTREE
+  `USER_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
+  `DEPT_ID` bigint(20) NULL DEFAULT NULL COMMENT '部门ID',
+  `USER_NAME` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户账号',
+  `NICK_NAME` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户昵称',
+  `USER_TYPE` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '00' COMMENT '用户类型（00系统用户）',
+  `EMAIL` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户邮箱',
+  `PHONENUMBER` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '手机号码',
+  `SEX` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '用户性别（0男 1女 2未知）',
+  `AVATAR` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '头像地址',
+  `PASSWORD` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '密码',
+  `STATUS` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '帐号状态（0正常 1停用）',
+  `DEL_FLAG` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
+  `LOGIN_IP` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '最后登录IP',
+  `LOGIN_DATE` timestamp NULL DEFAULT NULL COMMENT '最后登录时间',
+  `CREATE_BY` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
+  `CREATE_TIME` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
+  `UPDATE_TIME` timestamp NULL DEFAULT NULL COMMENT '更新时间',
+  `REMARK` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `AUTH_ID` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '认证平台id',
+  PRIMARY KEY (`USER_ID`) USING BTREE,
+  UNIQUE INDEX `USER_ID_974736386235200`(`USER_ID`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 741 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
-INSERT INTO `system_user` VALUES (1, 103, 'admin', '管理员', '00', '', '19951942681', '1', '', '$2a$10$LOgcmTijb/krLwReokOD5.24moLGwspqbfBzXMKykmJse/ETUHQwS', '0', '0', '127.0.0.1', '2025-06-12 15:15:33', 'qData', '2024-05-06 06:12:17', '', '2025-06-12 15:15:33', '管理员', NULL);
-INSERT INTO `system_user` VALUES (2, 103, 'qData', '小桐', '00', 'support@qiantong.tech', '19951942682', '1', '', '$2a$10$3dzj0nGSmlNjPw4iuZNHse5.lxrNzumTCQ8aEaV7nNEtn2pXmmimW', '0', '0', '127.0.0.1', '2025-06-12 16:01:11', 'qData', '2025-02-13 14:37:54', 'admin', '2025-06-12 16:01:11', NULL, NULL);
+INSERT INTO `system_user` VALUES (1, 103, 'admin', '管理员', '00', '', '19951942681', '1', '', '$2a$10$LOgcmTijb/krLwReokOD5.24moLGwspqbfBzXMKykmJse/ETUHQwS', '0', '0', '125.42.97.139', '2025-05-29 07:15:08', 'qData', '2024-05-06 06:12:17', '', '2025-05-29 07:15:08', '管理员', NULL);
+INSERT INTO `system_user` VALUES (2, 103, 'qData', '小桐', '00', 'support@qiantong.tech', '19951942682', '1', '', '$2a$10$3dzj0nGSmlNjPw4iuZNHse5.lxrNzumTCQ8aEaV7nNEtn2pXmmimW', '0', '0', '140.207.49.186', '2025-05-29 08:05:46', 'qData', '2025-02-13 14:37:54', 'admin', '2025-05-29 08:05:45', NULL, NULL);
 INSERT INTO `system_user` VALUES (732, 854, 'yanshi', '演示账号', '00', '', '18878909876', '2', '', '$2a$10$8kofmE.RuwIB0ddqO7j9luspbU/GYG84CWMoshTmgd5Re/drPHD9S', '0', '0', '172.23.0.1', '2025-05-09 17:18:41', 'qData', '2025-02-05 17:12:47', 'qData', '2025-05-09 17:18:40', NULL, NULL);
 INSERT INTO `system_user` VALUES (738, 101, 'yanfaceshi', '研发模块测试人员', '00', '', '18225806566', '0', '', '$2a$10$AXwgtxDwPO0f1/Gi.G3Gr.uO7LUtSVLcz9rAYFJv3lsyvkCCkxyca', '1', '0', '127.0.0.1', '2025-02-20 18:06:23', 'liuhaosheng', '2025-02-13 14:37:54', 'qData', '2025-02-27 10:19:52', NULL, NULL);
 INSERT INTO `system_user` VALUES (740, 100, 'rmt1', 'rmt1', '00', '', '', '0', '', '$2a$10$TtKdji.U5LRrnt1bxg2vTuv6t0du4gU4GBkgfK1ZJKtFtZOgbqXAe', '0', '2', '127.0.0.1', '2025-05-24 18:50:19', 'qData', '2025-05-24 18:50:09', '', '2025-05-24 18:50:18', NULL, NULL);
@@ -5000,9 +5231,9 @@ INSERT INTO `system_user` VALUES (740, 100, 'rmt1', 'rmt1', '00', '', '', '0', '
 -- ----------------------------
 DROP TABLE IF EXISTS `system_user_post`;
 CREATE TABLE `system_user_post`  (
-  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
-  `post_id` bigint(20) NOT NULL COMMENT '岗位ID',
-  PRIMARY KEY (`user_id`, `post_id`) USING BTREE
+  `USER_ID` bigint(20) NOT NULL COMMENT '用户ID',
+  `POST_ID` bigint(20) NOT NULL COMMENT '岗位ID',
+  PRIMARY KEY (`USER_ID`, `POST_ID`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户与岗位关联表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -5017,9 +5248,9 @@ INSERT INTO `system_user_post` VALUES (738, 4);
 -- ----------------------------
 DROP TABLE IF EXISTS `system_user_role`;
 CREATE TABLE `system_user_role`  (
-  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
-  `role_id` bigint(20) NOT NULL COMMENT '角色ID',
-  PRIMARY KEY (`user_id`, `role_id`) USING BTREE
+  `USER_ID` bigint(20) NOT NULL COMMENT '用户ID',
+  `ROLE_ID` bigint(20) NOT NULL COMMENT '角色ID',
+  PRIMARY KEY (`USER_ID`, `ROLE_ID`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户和角色关联表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -5037,33 +5268,11 @@ INSERT INTO `system_user_role` VALUES (2, 186);
 INSERT INTO `system_user_role` VALUES (2, 187);
 INSERT INTO `system_user_role` VALUES (2, 188);
 INSERT INTO `system_user_role` VALUES (2, 189);
-INSERT INTO `system_user_role` VALUES (2, 190);
 INSERT INTO `system_user_role` VALUES (732, 4);
 INSERT INTO `system_user_role` VALUES (732, 130);
 INSERT INTO `system_user_role` VALUES (732, 159);
 INSERT INTO `system_user_role` VALUES (732, 168);
 INSERT INTO `system_user_role` VALUES (732, 175);
-INSERT INTO `system_user_role` VALUES (732, 190);
 INSERT INTO `system_user_role` VALUES (738, 12);
-
-
-DROP TABLE IF EXISTS `dpp_etl_sql_temp`;
-CREATE TABLE `dpp_etl_sql_temp` (
-  `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `name` VARCHAR(256) NOT NULL COMMENT '名称',
-  `type` VARCHAR(256) NOT NULL COMMENT '类型;2：DM 3：ORACLE 4：MYSQL 5：KINGBASE 6：Sqlerver  7：PostgreSql 8：Hive 9：SparkSql 10：FLINK流 11：FLINK批',
-  `content` LONGTEXT NOT NULL COMMENT '内容',
-  `description` VARCHAR(512) DEFAULT NULL COMMENT '描述',
-  `valid_flag` VARCHAR(1) NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
-  `del_flag` VARCHAR(1) NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
-  `create_by` VARCHAR(32) DEFAULT NULL COMMENT '创建人',
-  `creator_id` BIGINT DEFAULT NULL COMMENT '创建人id',
-  `create_time` DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '创建时间',
-  `update_by` VARCHAR(32) DEFAULT NULL COMMENT '更新人',
-  `updater_id` BIGINT DEFAULT NULL COMMENT '更新人id',
-  `update_time` DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '更新时间',
-  `remark` VARCHAR(512) DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='数据集成SQL模版';
 
 SET FOREIGN_KEY_CHECKS = 1;

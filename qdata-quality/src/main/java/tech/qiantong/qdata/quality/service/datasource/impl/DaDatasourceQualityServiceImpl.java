@@ -15,7 +15,6 @@ import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
 import tech.qiantong.qdata.common.database.core.DbColumn;
 import tech.qiantong.qdata.common.database.core.DbTable;
 import tech.qiantong.qdata.common.database.exception.DataQueryException;
-import tech.qiantong.qdata.common.database.utils.AesEncryptUtil;
 import tech.qiantong.qdata.common.exception.ServiceException;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
@@ -275,50 +274,6 @@ public class DaDatasourceQualityServiceImpl extends ServiceImpl<DaDatasourceMapp
         return tableColumns;
     }
 
-
-
-    /**
-     * 解密传入的 SQL 语句
-     */
-    private String decryptSqlText(String encryptedSqlText) {
-        String sqlText = "";
-        try {
-//            sqlText =  encryptedSqlText;
-            sqlText = AesEncryptUtil.desEncrypt(encryptedSqlText).trim();
-        } catch (Exception e) {
-            throw new RuntimeException("执行语句解密异常，请联系管理员！", e);
-        }
-
-        if (sqlText == null || sqlText.isEmpty()) {
-            throw new DataQueryException("SQL语句不能为空");
-        }
-
-        // 检查是否包含分隔符';'
-        int semicolonCount = sqlText.length() - sqlText.replace(";", "").length();
-        if (semicolonCount > 0) {
-            int firstIndex = sqlText.indexOf(";");
-            int lastIndex = sqlText.lastIndexOf(";");
-            // 若';'不只出现在末尾，则视为存在多个SQL语句
-            if (firstIndex != lastIndex || lastIndex != sqlText.length() - 1) {
-                throw new DataQueryException("仅支持单个查询SQL语句，不允许存在多个语句或中间使用';'分隔");
-            }
-            // 移除末尾的';'
-            sqlText = sqlText.substring(0, sqlText.length() - 1).trim();
-            if (sqlText.contains(";")) {
-                throw new DataQueryException("仅支持单个查询SQL语句，不允许存在多个语句或中间使用';'分隔");
-            }
-        }
-
-        // 确保SQL以"select"开头（忽略大小写）
-        if (!sqlText.toLowerCase().startsWith("select")) {
-            throw new DataQueryException("仅允许执行查询操作的SQL语句");
-        }
-
-        // 进一步检测是否包含非查询的SQL标识
-//        validateQueryOnly(sqlText);
-
-        return sqlText;
-    }
 
 
 }

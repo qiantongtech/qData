@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.qiantong.qdata.module.da.dal.mapper.asset.DaAssetMapper">
+
+    <resultMap type="DaAssetDO" id="DaAssetResult">
+        <result property="id"    column="ID"    />
+        <result property="name"    column="NAME"    />
+        <result property="type"    column="TYPE"    />
+        <result property="catCode"    column="CAT_CODE"    />
+        <result property="datasourceId"    column="DATASOURCE_ID"    />
+        <result property="tableName"    column="TABLE_NAME"    />
+        <result property="tableComment"    column="TABLE_COMMENT"    />
+        <result property="dataCount"    column="DATA_COUNT"    />
+        <result property="fieldCount"    column="FIELD_COUNT"    />
+        <result property="source"    column="SOURCE"    />
+        <result property="status"    column="STATUS"    />
+        <result property="description"    column="DESCRIPTION"    />
+        <result property="validFlag"    column="VALID_FLAG"    />
+        <result property="delFlag"    column="DEL_FLAG"    />
+        <result property="createBy"    column="CREATE_BY"    />
+        <result property="creatorId"    column="CREATOR_ID"    />
+        <result property="createTime"    column="CREATE_TIME"    />
+        <result property="updateBy"    column="UPDATE_BY"    />
+        <result property="updaterId"    column="UPDATER_ID"    />
+        <result property="updateTime"    column="UPDATE_TIME"    />
+        <result property="remark"    column="REMARK"    />
+    </resultMap>
+
+    <sql id="selectDaAssetVo">
+        select ID, NAME, CAT_CODE,  DATASOURCE_ID, TABLE_NAME, TYPE, TABLE_COMMENT, DATA_COUNT, FIELD_COUNT, SOURCE,STATUS, DESCRIPTION, VALID_FLAG, DEL_FLAG, CREATE_BY, CREATOR_ID, CREATE_TIME, UPDATE_BY, UPDATER_ID, UPDATE_TIME, REMARK from DA_ASSET
+    </sql>
+
+    <select id="selectDaAssetList" parameterType="DaAssetDO" resultMap="DaAssetResult">
+        <include refid="selectDaAssetVo"/>
+        <where>
+            <if test="name != null  and name != ''"> and NAME like concat('%', #{name}, '%')</if>
+            <if test="catCode != null  and catCode != ''"> and CAT_CODE = #{catCode}</if>
+            <if test="type != null  and type != ''"> and TYPE = #{type}</if>
+            <if test="datasourceId != null  and datasourceId != ''"> and DATASOURCE_ID = #{datasourceId}</if>
+            <if test="tableName != null  and tableName != ''"> and TABLE_NAME like concat('%', #{tableName}, '%')</if>
+            <if test="tableComment != null  and tableComment != ''"> and TABLE_COMMENT = #{tableComment}</if>
+            <if test="dataCount != null "> and DATA_COUNT = #{dataCount}</if>
+            <if test="fieldCount != null "> and FIELD_COUNT = #{fieldCount}</if>
+            <if test="source != null  and source != ''"> and SOURCE = #{source}</if>
+            <if test="status != null  and STATUS != ''"> and STATUS = #{STATUS}</if>
+            <if test="description != null  and description != ''"> and DESCRIPTION = #{description}</if>
+            <if test="createTime != null "> and CREATE_TIME = #{createTime}</if>
+        </where>
+    </select>
+
+    <select id="selectDaAssetById" parameterType="Long" resultMap="DaAssetResult">
+        <include refid="selectDaAssetVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertDaAsset" parameterType="DaAssetDO">
+        insert into DA_ASSET
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="name != null">NAME,</if>
+            <if test="type != null">TYPE,</if>
+            <if test="catCode != null">CAT_CODE,</if>
+            <if test="datasourceId != null">DATASOURCE_ID,</if>
+            <if test="tableName != null">TABLE_NAME,</if>
+            <if test="tableComment != null">TABLE_COMMENT,</if>
+            <if test="dataCount != null">DATA_COUNT,</if>
+            <if test="fieldCount != null">FIELD_COUNT,</if>
+            <if test="source != null">SOURCE,</if>
+            <if test="status != null">STATUS,</if>
+            <if test="description != null">DESCRIPTION,</if>
+            <if test="validFlag != null">VALID_FLAG,</if>
+            <if test="delFlag != null">DEL_FLAG,</if>
+            <if test="createBy != null">CREATE_BY,</if>
+            <if test="creatorId != null">CREATOR_ID,</if>
+            <if test="createTime != null">CREATE_TIME,</if>
+            <if test="updateBy != null">UPDATE_BY,</if>
+            <if test="updaterId != null">UPDATER_ID,</if>
+            <if test="updateTime != null">UPDATE_TIME,</if>
+            <if test="remark != null">REMARK,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="type != null">#{type},</if>
+            <if test="catCode != null">#{catCode},</if>
+            <if test="datasourceId != null">#{datasourceId},</if>
+            <if test="tableName != null">#{tableName},</if>
+            <if test="tableComment != null">#{tableComment},</if>
+            <if test="dataCount != null">#{dataCount},</if>
+            <if test="fieldCount != null">#{fieldCount},</if>
+            <if test="source != null">#{source},</if>
+            <if test="status != null">#{status},</if>
+            <if test="description != null">#{description},</if>
+            <if test="validFlag != null">#{validFlag},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updaterId != null">#{updaterId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDaAsset" parameterType="DaAssetDO">
+        update DA_ASSET
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">NAME = #{name},</if>
+            <if test="type != null">TYPE = #{type},</if>
+            <if test="catCode != null">CAT_CODE = #{catCode},</if>
+            <if test="datasourceId != null">DATASOURCE_ID = #{datasourceId},</if>
+            <if test="tableName != null">TABLE_NAME = #{tableName},</if>
+            <if test="tableComment != null">TABLE_COMMENT = #{tableComment},</if>
+            <if test="dataCount != null">DATA_COUNT = #{dataCount},</if>
+            <if test="fieldCount != null">FIELD_COUNT = #{fieldCount},</if>
+            <if test="source != null">SOURCE = #{source},</if>
+            <if test="status != null">STATUS = #{status},</if>
+            <if test="description != null">DESCRIPTION = #{description},</if>
+            <if test="validFlag != null">VALID_FLAG = #{validFlag},</if>
+            <if test="delFlag != null">DEL_FLAG = #{delFlag},</if>
+            <if test="createBy != null">CREATE_BY = #{createBy},</if>
+            <if test="creatorId != null">CREATOR_ID = #{creatorId},</if>
+            <if test="createTime != null">CREATE_TIME = #{createTime},</if>
+            <if test="updateBy != null">UPDATE_BY = #{updateBy},</if>
+            <if test="updaterId != null">UPDATER_ID = #{updaterId},</if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime},</if>
+            <if test="remark != null">REMARK = #{remark},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteDaAssetById" parameterType="Long">
+        delete from DA_ASSET where ID = #{id}
+    </delete>
+
+    <delete id="deleteDaAssetByIds" parameterType="String">
+        delete from DA_ASSET where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+    <delete id="deleteAssetById" parameterType="Long">
+        update DA_ASSET
+        set DEL_FLAG = '1'
+        where ID = #{id}
+    </delete>
+</mapper>

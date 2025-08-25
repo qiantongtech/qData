@@ -3,6 +3,7 @@ package tech.qiantong.qdata.module.att.dal.dataobject.rule;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
@@ -36,7 +37,10 @@ public class AttAuditRuleDO extends BaseEntity {
     /** 规则类型 */
     private String type;
 
-    /** 规则级别 */
+    /**
+     * 规则级别
+     * 1：字段级，2：表级
+     */
     private String level;
 
     /** 规则描述 */
@@ -60,4 +64,19 @@ public class AttAuditRuleDO extends BaseEntity {
      */
     @TableField(exist = false)
     private String ruleConfig;
+
+    @Schema(description = "规则编码", example = "101")
+    private String code;
+
+    @Schema(description = "使用场景", example = "用于身份证号非空检查")
+    private String useCase;
+
+    @Schema(description = "示例", example = "字段值不能为空，如：ID=123456")
+    private String example;
+
+    @Schema(description = "图标地址", example = "/images/icon.png")
+    private String iconPath;
+
+    @Schema(description = "策略标识", example = "NOT_NULL_ID_CHECK")
+    private String strategyKey;
 }

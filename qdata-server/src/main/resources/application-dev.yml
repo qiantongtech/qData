@@ -143,7 +143,11 @@ oracle:
 # 调度器相关配置
 ds:
   # 调度器api前缀
-  base_url: http://127.0.0.1:40018/dolphinscheduler
+  base_url: http://127.0.0.1:12345/dolphinscheduler
+  # 数据质量服务组件HTTP地址
+  quality_url: http://127.0.0.1:8083/quality/qualityTaskExecutor/runExecuteTask
+  # 数据质量任务dolphinscheduler项目编码
+  http_quality_projectCode: 134799536571008
   # 调度器令牌（可以自行修改）
   token: b07f0e57c4818043a57ba05a28da291a
   # 资源中心路径
@@ -156,3 +160,7 @@ ds:
     main_jar: file:/dolphinscheduler/default/resources/spark-jar/qdata-etl-3.8.8.jar
     #jar main入口
     main_class: tech.qiantong.qdata.spark.etl.EtlApplication
+
+# 数据质量任务回调
+path:
+  quality_url: http://127.0.0.1:8083/quality/qualityTaskExecutor

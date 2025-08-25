@@ -1,0 +1,243 @@
+# 项目相关配置
+qdata:
+  # 名称
+  name: qData
+  # 版本
+  version: 3.8.8
+  # 版权年份
+  copyrightYear: 2024
+  # 文件路径 示例（ Windows配置D:/qdata/uploadPath，Linux配置 /home/qdata/uploadPath） -- 需要和 file 模块保持一致
+  profile: ${user.dir}/upload/ # 存储路径
+  # 获取ip地址开关
+  addressEnabled: false
+  # 验证码类型 math 数字计算 char 字符验证
+  captchaType: math
+
+# 开发环境配置
+server:
+  # 服务器的HTTP端口，默认为8083
+  port: 8083
+  servlet:
+    # 应用的访问路径
+    context-path: /
+  tomcat:
+    # tomcat的URI编码
+    uri-encoding: UTF-8
+    # 连接数满后的排队数，默认为100
+    accept-count: 1000
+    threads:
+      # tomcat最大线程数，默认为200
+      max: 800
+      # Tomcat启动初始化的线程数，默认值10
+      min-spare: 100
+
+# 日志配置
+logging:
+  level:
+    tech.qiantong: debug
+    org.springframework: warn
+
+# 用户配置
+user:
+  password:
+    # 密码最大错误次数
+    maxRetryCount: 5
+    # 密码锁定时间（默认10分钟）
+    lockTime: 10
+    #万能密码 配置为空则不生效
+    universalPassword: gfh78h23789#$gfdy845
+
+# Spring配置
+spring:
+  cache:
+    type: jcache
+    jcache:
+      config: classpath:ehcache.xml
+  thymeleaf:
+    prefix: classpath:/dist/
+    mode: HTML
+    encoding: utf-8
+    cache: false
+  # 资源信息
+  messages:
+    # 国际化资源文件路径
+    basename: i18n/messages
+  profiles:
+    active: dev  # 默认激活的环境，可以在启动时覆盖
+  config:
+    import:
+      - "application-${spring.profiles.active}.yml"
+      - "classpath:application-file-${spring.profiles.active}.yml"
+  # 文件上传
+  servlet:
+    multipart:
+      # 单个文件大小
+      max-file-size: 3000MB
+      # 设置总上传的文件大小
+      max-request-size: 3000MB
+  # 服务模块
+  devtools:
+    restart:
+      # 热部署开关
+      enabled: true
+
+# token配置
+token:
+  # 令牌自定义标识
+  header: Authorization
+  # 令牌自定义标识
+  rpHeader: token
+  # 令牌密钥
+  secret: abcdefghijklmnopqrstuvwxyz
+  # 令牌有效期（默认30分钟）
+  expireTime: 600
+
+# MyBatis配置
+# mybatis:
+  # 搜索指定包别名
+  # typeAliasesPackage: tech.qiantong.**.domain
+  # 配置mapper的扫描，找到所有的mapper.xml映射文件
+  # mapperLocations: classpath*:mapper/**/*Mapper.xml
+  # 加载全局的配置文件
+  # configLocation: classpath:mybatis/mybatis-config.xml
+
+# MyBatis Plus配置
+mybatis-plus:
+  # 搜索指定包别名
+  typeAliasesPackage: tech.qiantong.**.dataobject,tech.qiantong.**.dataobject.assetchild, tech.qiantong.**.domain
+  # 配置mapper的扫描，找到所有的mapper.xml映射文件
+  mapperLocations: classpath*:mapper/**/*Mapper.xml
+  # 加载全局的配置文件
+  configLocation: classpath:mybatis/mybatis-config.xml
+  global-config:
+    # 关闭 MyBatis-Plus 的 Banner
+    banner: false
+    db-config:
+      # 主键类型 AUTO 自增 NONE 空 INPUT 用户输入 ASSIGN_ID 雪花 ASSIGN_UUID 唯一 UUID
+      idType: AUTO
+      # 全局逻辑删除字段名
+      logic-delete-field: delFlag
+      # 逻辑已删除值（默认为1）
+      logic-delete-value: 1
+      # 逻辑未删除值（默认为0）
+      logic-not-delete-value: 0
+      # 字段验证策略之 insert,在 insert 的时候的字段验证策略 IGNORED 忽略 NOT_NULL 非NULL NOT_EMPTY 非空 DEFAULT 默认 NEVER 不加入 SQL
+      insertStrategy: NOT_NULL
+      # 字段验证策略之 update,在 update 的时候的字段验证策略
+      updateStrategy: NOT_NULL
+      # 字段验证策略之 select,在 select 的时候的字段验证策略既 wrapper 根据内部 entity 生成的 where 条件
+      where-strategy: NOT_NULL
+
+mybatis-plus-join:
+  # 是否打印 mybatis plus join banner，默认true
+  banner: false
+  # 全局启用副表逻辑删除，默认true。关闭后关联查询不会加副表逻辑删除
+  sub-table-logic: true
+  # 拦截器MappedStatement缓存，默认 true
+  ms-cache: true
+  # 表别名(默认 t)
+  table-alias: t
+  # 副表逻辑删除条件的位置，支持 WHERE、ON，默认 ON
+  logic-del-type: on
+
+# PageHelper分页插件
+pagehelper:
+  helperDialect: mysql
+  supportMethodsArguments: true
+  params: count=countSql
+
+# 防止XSS攻击
+xss:
+  # 过滤开关
+  enabled: true
+  # 排除链接（多个用逗号分隔）
+  excludes: /system/notice
+  # 匹配链接
+  urlPatterns: /system/*,/monitor/*,/tool/*
+
+# Swagger 分组配置
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: 'system'
+      paths-to-match: '/**'
+      packages-to-scan: tech.qiantong.qdata.module.system.controller
+    - group: 'example'
+      paths-to-match: '/**'
+      packages-to-scan: tech.qiantong.qdata.module.example.controller
+    - group: 'ai'
+      paths-to-match: '/**'
+      packages-to-scan: tech.qiantong.qdata.module.ai.controller
+# Swagger 增强配置
+knife4j:
+  enable: true
+  documents:
+    -
+      group: 2.X版本
+      name: 接口签名
+      locations: classpath:sign/*
+  setting:
+    language: zh-CN
+    enable-swagger-models: true
+    enable-document-manage: true
+    swagger-model-name: 实体类列表
+    enable-version: false
+    enable-reload-cache-parameter: false
+    enable-after-script: true
+    enable-filter-multipart-api-method-type: POST
+    enable-filter-multipart-apis: false
+    enable-request-cache: true
+    enable-host: false
+    enable-host-text: 127.0.0.1:8083
+    enable-home-custom: true
+    home-custom-path: classpath:markdown/home.md
+    enable-search: false
+    enable-footer: false
+    enable-footer-custom: true
+    footer-custom-content: Apache License 2.0 | Copyright  2025-[江苏千桐科技有限公司])
+    enable-dynamic-parameter: false
+    enable-debug: true
+    enable-open-api: true
+    enable-group: true
+  cors: false
+  production: false
+  basic:
+    enable: true
+    username: test
+    password: 12313
+
+## 工作流模块的访问地址
+flyflow:
+  url: http://127.0.0.1:26859/
+
+#ID生成器使用 为以后分布式不重复ID做应用
+#工作机器ID(0~31)
+id.workerId: 1
+#数据中心ID(0~31)
+id.datacenterId: 1
+
+
+minidao:
+  base-package: org.jeecg.modules.jmreport.*,org.jeecg.modules.drag.*
+
+jeecg :
+  jmreport:
+    #多租户模式，默认值为空(created:按照创建人隔离、tenant:按照租户隔离) (v1.6.2+ 新增)
+    saasMode: created
+    # 平台上线安全配置(v1.6.2+ 新增)
+    firewall:
+      # 数据源安全 (开启后，不允许使用平台数据源、SQL解析不允许select * 查询、禁止测试数据源连接是否正确)
+      # 数据源安全下，预留角色有权限使用 select * 和测试数据源链接
+      dataSourceSafe: false
+      # 低代码开发模式（dev:开发模式，prod:发布模式关闭报表设计，预留角色admin、lowdeveloper可设计, prodsf:发布安全模式 彻底关闭报表设计）
+      lowCodeMode: dev
+      # api数据集内网ip白名单，在发布模式下只只能向设置了白名单的内网服务器发送请求。
+      apiDsIpWhite:
+        - 192.168.0.0/24
+      # sql注入检查级别（strict:严格, basic:简单校验, none:不校验）
+      sqlInjectionLevel: none

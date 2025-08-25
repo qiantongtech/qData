@@ -31,10 +31,10 @@ spring:
         # #连接池最大阻塞等待时间（使用负值表示没有限制）
         max-wait: -1ms
   rabbitmq:
-    host: 110.42.38.62
+    host: 127.0.0.1
     port: 40003
     username: admin
-    password: Ej^iUNFLp9MQouc1
+    password: 密码
     #    listener:
     #      simple:
     #        acknowledge-mode: manual

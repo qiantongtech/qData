@@ -26,10 +26,7 @@
             <div class="infotop-row border-top">
               <div class="infotop-row-lable">类型</div>
               <div class="infotop-row-value">
-                <dict-tag
-                  :options="dp_data_elem_code_type"
-                  :value="form.type"
-                />
+                <dict-tag :options="dp_data_elem_code_type" :value="form.type" />
               </div>
             </div>
           </el-col>
@@ -96,21 +93,16 @@
     <!-- 标签页部分 -->
     <div class="pagecont-bottom">
       <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
-        <el-tab-pane label="关联清洗规则" name="1">
-          <rule-clean-index
-            :dataElemId="dataElemId"
-            dataType="2"
-          ></rule-clean-index>
+        <el-tab-pane label="关联清洗规则" name="1" lazy>
+          <rule-clean-index :dataElemId="dataElemId" dataType="2" />
         </el-tab-pane>
-        <el-tab-pane label="关联稽查规则" name="2">
-          <rule-audit-index
-            :dataElemId="dataElemId"
-            dataType="1"
-          ></rule-audit-index>
+        <el-tab-pane label="关联稽查规则" name="2" lazy>
+          <rule-audit-index :dataElemId="dataElemId" dataType="1" />
         </el-tab-pane>
-        <el-tab-pane label="关联信息" name="3">
+        <el-tab-pane label="关联信息" name="3" lazy>
           <dp-data-elem-asset-rel />
         </el-tab-pane>
+
       </el-tabs>
     </div>
   </div>
@@ -167,6 +159,7 @@ function goBack() {
 <style scoped lang="scss">
 .app-container {
   margin: 15px 15px 0px 15px;
+
   .pagecont-bottom {
     min-height: calc(100vh - 414px) !important;
   }

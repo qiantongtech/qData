@@ -234,7 +234,7 @@
    */
   function confirm() {
     if (!single.value) {
-      proxy.$modal.msgWarning("请选择数据！");
+      proxy.$modal.msgWarning("未选择数据，请选择完成后重试");
       return;
     }
     emit("confirm", single.value);

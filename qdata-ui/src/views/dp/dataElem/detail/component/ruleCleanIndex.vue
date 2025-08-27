@@ -2,7 +2,7 @@
     <div class="justify-between mb15">
         <el-row :gutter="15" class="btn-style">
             <el-col :span="1.5">
-                <el-button type="primary" plain @click="handleAdd" @mousedown="(e) => e.preventDefault()">
+                <el-button type="primary" plain @click="openRuleSelector" @mousedown="(e) => e.preventDefault()">
                     <i class="iconfont-mini icon-xinzeng mr5"></i>关联
                 </el-button>
             </el-col>
@@ -12,7 +12,7 @@
         </div>
     </div>
 
-    <el-table stripe height="33.5vh" v-loading="loading" :data="dataList" :default-sort="defaultSort">
+    <el-table stripe height="33.5vh" v-loading="loading" :data="dataList">
         <el-table-column label="序号" type="index" width="80" align="center">
             <template #default="scope">
                 <span>{{
@@ -20,165 +20,66 @@
                     }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="规则名称" prop="name" align="left" width="200">
+        <el-table-column label="清洗名称" prop="name" align="left" width="200">
             <template #default="scope">
                 {{ scope.row.name || '-' }}
             </template>
         </el-table-column>
-        <el-table-column label="规则描述" prop="description" align="left" :show-overflow-tooltip="true">
+        <el-table-column label="清洗规则" align="center" prop="ruleName" show-overflow-tooltip width="300">
             <template #default="scope">
-                {{ scope.row.description || '-' }}
+                {{ scope.row.ruleName || '-' }}
             </template>
         </el-table-column>
-        <el-table-column label="规则级别" prop="level" align="center" width="100">
+        <el-table-column label="规则描述" prop="description" align="left" :show-overflow-tooltip="true">
+            <template #default="scope">
+                {{ scope.row.ruleDescription || '-' }}
+            </template>
+        </el-table-column>
+        <el-table-column label="维度" align="center" prop="dimensionTypeension" show-overflow-tooltip width="150">
+            <template #default="scope">
+                {{ scope.row.dimensionType || '-' }}
+            </template>
+        </el-table-column>
+        <el-table-column label="状态" align="center" prop="status">
+            <template #default="scope">
+                {{ scope.row.status == '1' ? '上线' : '下线' }}
+            </template>
+        </el-table-column>
+        <!-- <el-table-column label="规则级别" prop="level" align="center" width="100">
             <template #default="scope">
                 {{ formatValue(scope.row.level, att_rule_level) || '-' }}
             </template>
-        </el-table-column>
-        <el-table-column label="规则类型" prop="type" align="center" width="100">
+        </el-table-column> -->
+        <!-- <el-table-column label="规则类型" prop="type" align="center" width="100">
             <template #default="scope">
                 {{ formatValue(scope.row.type, att_rule_clean_type) || '-' }}
             </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column label="关联时间" prop="createTime" align="center" width="180">
             <template #default="scope">
                 {{ scope.row.createTime || '-' }}
+            </template>
+        </el-table-column>
+        <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" width="180">
+            <template #default="scope">
+                <el-button link type="primary" icon="view"
+                    @click="openRuleDialog(scope.row, scope.$index + 1, true)">查看</el-button>
+                <el-button link type="primary" icon="Edit"
+                    @click="openRuleDialog(scope.row, scope.$index + 1)">修改</el-button>
+                <el-button link type="danger" icon="Delete" @click="handleRuleDelete(scope.row)">删除</el-button>
             </template>
         </el-table-column>
     </el-table>
 
     <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum"
         v-model:limit="queryParams.pageSize" @pagination="getList" />
-
-    <!-- 新增或修改数据元对话框 -->
-    <el-dialog class="medium-dialog" :title="title" v-model="open" width="900px" :append-to="$refs['app-container']"
-        draggable>
-        <template #header="{ close, titleId, titleClass }">
-            <span role="heading" aria-level="2" class="el-dialog__title">
-                {{ title }}
-            </span>
-        </template>
-        <el-form label-width="80px">
-            <el-row :gutter="24">
-                <el-col :span="8">
-                    <div class="head-container">
-                        <el-input v-model="sourceName" placeholder="请输入关键词搜索" clearable :prefix-icon="Search"
-                            style="margin-bottom: 20px"></el-input>
-                    </div>
-                    <div class="head-div">
-                        <div class="head-container">
-                            <el-tree ref="tree" :data="filteredTreeOptionslist" node-key="id" :props="defaultProps"
-                                highlight-current style="font-size: 14px" default-expand-all
-                                :default-checked-keys="[...checkedKeys]" :current-node-key="currentNodeKey"
-                                :expand-on-click-node="false" :check-strictly="true" :filter-node-method="filterNode"
-                                @node-click="handleNodeClick" @check="handleNodeCheckChange" show-checkbox />
-                        </div>
-                    </div>
-                </el-col>
-                <el-col :span="15" :offset="1">
-                    <div>
-                        <div class="base-info">
-                            <div class="type-name">
-                                <span>{{ typeName }}</span>
-                            </div>
-                            <div class="base-content">
-                                <el-form label-position="left">
-                                    <el-row :gutter="20">
-                                        <el-col :span="12">
-                                            <el-form-item label="规则编号：" prop="id" label-width="70px">
-                                                <div>{{ form.id }}</div>
-                                            </el-form-item>
-                                        </el-col>
-                                        <el-col :span="12">
-                                            <el-form-item label="规则名称：" prop="name" label-width="70px">
-                                                <div>{{ form.name }}</div>
-                                            </el-form-item>
-                                        </el-col>
-                                    </el-row>
-                                    <el-row :gutter="20">
-                                        <el-col :span="12">
-                                            <el-form-item label="规则级别：" prop="level" label-width="70px">
-                                                <div>
-                                                    {{
-                                                        formatValue(form.level, att_rule_level) ||
-                                                        '-'
-                                                    }}
-                                                </div>
-                                            </el-form-item>
-                                        </el-col>
-                                        <el-col :span="12">
-                                            <el-form-item label="规则类型：" prop="type" label-width="70px">
-                                                <div>
-                                                    {{
-                                                        formatValue(
-                                                            form.type,
-                                                            att_rule_clean_type
-                                                        ) || '-'
-                                                    }}
-                                                </div>
-                                            </el-form-item>
-                                        </el-col>
-                                    </el-row>
-                                    <el-row :gutter="20">
-                                        <el-col :span="23">
-                                            <el-form-item label="描述：" prop="description" label-width="45px">
-                                                <div>{{ form.description }}</div>
-                                            </el-form-item>
-                                        </el-col>
-                                    </el-row>
-                                </el-form>
-                            </div>
-                        </div>
-                        <div class="hint-div">
-                            <el-icon color="#2A7BFD" size="16px">
-                                <InfoFilled />
-                            </el-icon>
-                            <span>请根据数据元的属性信息，给选择的规则设置参数信息</span>
-                        </div>
-                        <div>
-                            <el-form ref="dpDataElemRef" label-position="top" label-width="auto" :model="form"
-                                :rules="rules" @submit.prevent>
-                                <el-row :gutter="20" v-if="form.id == 8">
-                                    <el-col :span="24">
-                                        <el-form-item label="转换类型" prop="ruleConfig.toggleCase.type">
-                                            <el-select v-model="form.ruleConfig.toggleCase.type" placeholder="请选择转换类型"
-                                                clearable class="el-form-input-width">
-                                                <el-option label="大写转换" value="1" />
-                                                <el-option label="小写转换" value="2" />
-                                            </el-select>
-                                        </el-form-item>
-                                    </el-col>
-                                </el-row>
-
-                                <el-row :gutter="20" v-if="form.id == 9">
-                                    <el-col :span="24">
-                                        <el-form-item label="替换内容" prop="ruleConfig.nullReplace.value">
-                                            <el-input v-model="form.ruleConfig.nullReplace.value" placeholder="请输入替换内容"
-                                                clearable />
-                                        </el-form-item>
-                                    </el-col>
-                                </el-row>
-                                <el-row :gutter="20" v-if="form.id == 10">
-                                    <el-col :span="24"> 无需设置参数 </el-col>
-                                </el-row>
-                            </el-form>
-                        </div>
-                    </div>
-                </el-col>
-            </el-row>
-        </el-form>
-        <template #footer>
-            <div class="dialog-footer">
-                <el-button size="mini" @click="cancel">取 消</el-button>
-                <el-button type="primary" size="mini" @click="submitForm">确 定</el-button>
-            </div>
-        </template>
-    </el-dialog>
+    <!-- <RuleSelectorDialog ref="ruleSelectorDialog" @confirm="RuleSelectorconfirm" :type="3" /> -->
 </template>
 
 <script setup name="dataElemClean">
 import { ref, watch } from 'vue';
-
+// import RuleSelectorDialog from '@/views/dpp/etl/components/formComponents/components/Rule/RuleSelectorDialog.vue';
+import { listDpDataElemRuleRel, dpDataElemRuleRel, putDpDataElemRuleRel, DlEPutDpDataElemRuleRel } from '@/api/dp/dataElem/dpDataElemRuleRel';
 const { proxy } = getCurrentInstance();
 
 const props = defineProps({
@@ -192,11 +93,6 @@ const props = defineProps({
         default: 2
     }
 });
-
-import { listDpDataElemRuleRel, save } from '@/api/dp/dataElem/dpDataElemRuleRel';
-import { treeAttCleanRule } from '@/api/att/rule/attCleanRule';
-import { Search } from '@element-plus/icons-vue';
-
 const { att_rule_clean_type, att_rule_level } = proxy.useDict(
     'att_rule_clean_type',
     'att_rule_level'
@@ -204,12 +100,8 @@ const { att_rule_clean_type, att_rule_level } = proxy.useDict(
 
 const loading = ref(true);
 const showSearch = ref(true);
-const defaultSort = ref({ prop: 'createTime', order: 'desc' });
 const total = ref(0);
 const dataList = ref([]);
-const filteredTreeOptionslist = ref([]);
-const checkedKeys = ref([]);
-const currentNodeKey = ref(null);
 const typeName = ref(null);
 
 const data = reactive({
@@ -217,157 +109,49 @@ const data = reactive({
         name: null,
         level: null,
         type: null,
-        ruleConfig: {
-            //大小写转换
-            toggleCase: {
-                type: '1' //1:大写转换，2:小写转换
-            },
-            //空值替换
-            nullReplace: {
-                value: null //替换字符
-            },
-            //首尾移除空格
-            trimSpace: {}
-        }
     },
     queryParams: {
         pageNum: 1,
         pageSize: 10,
         dataElemId: null,
-        ruleType: 2
+        type: 2
     },
-    rules: {
-        'ruleConfig.toggleCase.type': [
-            { required: true, message: '请选择转换类型', trigger: 'change' }
-        ],
-        'ruleConfig.nullReplace.value': [
-            { required: true, message: '请输入空值替换内容', trigger: 'blur' }
-        ]
-    },
-    defaultProps: {
-        children: 'children',
-        label: 'name',
-        isLeaf: 'isLeaf' // 指定是否是叶子节点的字段名
-    }
 });
-const { queryParams, form, rules, defaultProps } = toRefs(data);
-const open = ref(false);
-const title = ref('');
-const sourceName = ref('');
+const { queryParams, form, } = toRefs(data);
 queryParams.value.dataElemId = props.dataElemId;
-
-watch(sourceName, (val) => {
-    proxy.$refs.tree.filter(val);
-});
-
-//表单提交
-function submitForm() {
-    //获取选中后的节点
-    var nodes = proxy.$refs.tree.getCheckedNodes();
-
-    var saveData = [];
-    nodes.forEach((node) => {
-        var data = {
-            id: node.ruleRelId || null,
-            dataElemId: props.dataElemId,
-            ruleType: props.ruleType,
-            ruleId: node.id,
-            ruleConfig: JSON.stringify(node.ruleConfig)
-        };
-        saveData.push(data);
-    });
-    //保存数据
-    save(props.dataElemId, props.ruleType, saveData).then((res) => {
+/** 删除按钮操作 */
+function handleRuleDelete(row) {
+    const _ids = row.id;
+    proxy.$modal
+        .confirm('是否确认删除关联的清洗规则数据？')
+        .then(function () {
+            return DlEPutDpDataElemRuleRel(_ids);
+        })
+        .then(() => {
+            getList();
+            proxy.$modal.msgSuccess("删除成功");
+        })
+        .catch(() => { });
+}
+let ruleSelectorDialog = ref()
+const openRuleSelector = (row) => {
+    ruleSelectorDialog.value.openDialog(row,);
+};
+function RuleSelectorconfirm(obj, mode) {
+    let api = obj?.id ? putDpDataElemRuleRel : dpDataElemRuleRel;
+    loading.value = true;
+    api({ ...obj, rule: obj.ruleConfig, dataElemId: props.dataElemId, type: 2, ruleId: obj.ruleCode, ruleDescription: obj.ruleDesc, dimensionType: obj.parentName }).then((res) => {
         if (res.code == 200) {
-            proxy.$message.success('保存成功');
+            proxy.$message.success(res.msg);
             open.value = false;
             getList();
         } else {
-            proxy.$message.error(res.msg);
+            proxy.$message.warning(res.msg);
         }
     });
+    loading.value = false;
+    ruleSelectorDialog.value.closeDialog();
 }
-
-//节点选中事件
-async function handleNodeClick(data) {
-    if (data.dataType != '2') {
-        return;
-    }
-    //判断当前节点是否被选中
-    var flag = false;
-    var nodes = proxy.$refs.tree.getCheckedNodes();
-    if (nodes.filter((node) => node.id === form.value.id).length > 0) {
-        //校验表单
-        await proxy.$refs.dpDataElemRef.validate((valid) => {
-            if (valid) {
-                flag = true;
-            }
-        });
-    } else {
-        flag = true;
-    }
-
-    if (!flag) {
-        proxy.$message.error('请完善规则');
-        return;
-    }
-    //保存上一个规则的数据
-    var oldData = form.value;
-    if (oldData) {
-        updateTreeData(
-            filteredTreeOptionslist.value,
-            oldData.id,
-            JSON.parse(JSON.stringify(oldData)).ruleConfig
-        );
-    }
-    typeName.value = data.name;
-    form.value = data;
-    updateTreeDisable(filteredTreeOptionslist.value, data.id);
-}
-
-function updateTreeDisable(list, id) {
-    list.forEach((item) => {
-        if (item.children != null && item.children.length > 0) {
-            updateTreeDisable(item.children, id);
-            return;
-        }
-        if (item.id == id) {
-            item.disabled = false;
-        }
-    });
-}
-
-function updateTreeData(list, id, ruleConfig) {
-    list.forEach((item) => {
-        if (item.children != null && item.children.length > 0) {
-            updateTreeData(item.children, id, ruleConfig);
-            return;
-        }
-        if (item.id == id) {
-            item.ruleConfig = ruleConfig;
-        }
-    });
-}
-
-/** 字典翻译 */
-function formatValue(value, dict) {
-    return proxy.selectDictLabel(dict, value);
-}
-
-/** 新增按钮操作 */
-function handleAdd() {
-    reset();
-    getTree();
-    open.value = true;
-    title.value = '关联清洗规则';
-}
-
-// 取消按钮
-function cancel() {
-    open.value = false;
-    reset();
-}
-
 // 表单重置
 function reset() {
     form.value = {
@@ -375,22 +159,13 @@ function reset() {
         level: null,
         type: null,
         qualityDim: null,
-        ruleConfig: {
-            //大小写转换
-            toggleCase: {
-                type: '1' //1:大写转换，2:小写转换
-            },
-            //空值替换
-            nullReplace: {
-                value: null //替换字符
-            },
-            //首尾移除空格
-            trimSpace: {}
-        }
     };
     typeName.value = null;
 }
+const openRuleDialog = (row, index, falg) => {
 
+    ruleSelectorDialog.value.openDialog({ ...row, ruleDesc: row.ruleDescription, dimensionType: row.parentName, ruleConfig: row.rule, }, index, falg);
+};
 /** 查询数据元列表 */
 function getList() {
     loading.value = true;
@@ -401,60 +176,8 @@ function getList() {
     });
 }
 
-//获取tree数据
-function getTree() {
-    treeAttCleanRule({ dataElemId: queryParams.value.dataElemId }).then((response) => {
-        const tree = {};
-        tree.id = 0;
-        tree.dataType = '0';
-        tree.name = '规则类型';
-        if (response.data == undefined || response.data == null) {
-            response.data = [];
-        }
-        var checkedKeyArr = [];
-        buildTree(response.data, checkedKeyArr);
-        tree.children = response.data;
-        filteredTreeOptionslist.value = [];
-        filteredTreeOptionslist.value.push(tree);
-        checkedKeys.value = checkedKeyArr;
-    });
-}
 
-function buildTree(list, checkedKeyArr) {
-    list.forEach((item) => {
-        if (item.children != null && item.children.length > 0) {
-            buildTree(item.children, checkedKeyArr);
-            return;
-        }
-        if (item.dataType != '2') {
-            return;
-        }
-        if (!item.ruleRelId) {
-            item.disabled = true;
-        }
-        if (item.ruleConfig) {
-            item.ruleConfig = JSON.parse(item.ruleConfig);
-        } else {
-            item.ruleConfig = JSON.parse(JSON.stringify(form.value.ruleConfig));
-        }
-        if (!typeName.value) {
-            typeName.value = item.name;
-            nextTick(() => {
-                form.value = item;
-                currentNodeKey.value = item.id;
-                updateTreeDisable(filteredTreeOptionslist.value, item.id);
-            });
-        }
-        if (item.ruleRelId) {
-            checkedKeyArr.push(item.id);
-        }
-    });
-}
 
-function filterNode(value, data) {
-    if (!value) return true;
-    return data.name.indexOf(value) !== -1;
-}
 
 getList();
 </script>

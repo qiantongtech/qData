@@ -44,10 +44,43 @@ export function delDpDataElemRuleRel(id) {
 }
 
 // 保存关联信息
-export function save(dataElemId,ruleType,data) {
+export function save(dataElemId, ruleType, data) {
   return request({
     url: `/dp/dpDataElemRuleRel/save/${dataElemId}/${ruleType}`,
     method: 'post',
     data
+  })
+}
+
+// 数据源清洗 稽查规则
+export function dpDataElemRuleRel(data) {
+  return request({
+    url: '/dp/dpDataElemRuleRel',
+    method: 'post',
+    data: data
+  });
+}
+// 数据源清洗 稽查规则 修改
+export function putDpDataElemRuleRel(data) {
+  return request({
+    url: '/dp/dpDataElemRuleRel',
+    method: 'put',
+    data: data
+  });
+}
+// 数据源清洗 稽查规则 删除
+export function DlEPutDpDataElemRuleRel(id) {
+  return request({
+    url: '/dp/dpDataElemRuleRel/' + id,
+    method: 'DELETE',
+  });
+}
+
+// 数据集成 查询 
+export function listDpDataElemRuleRelV2(query) {
+  return request({
+    url: '/da/daAsset/listRelRule/v2',
+    method: 'get',
+    params: query
   })
 }

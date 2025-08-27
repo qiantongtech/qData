@@ -13,34 +13,28 @@
                 <span style="color: var(--el-color-primary)"> 系统管理员 </span>
                 <el-divider direction="vertical" />
                 {{ xljtcont }}
-                <!-- 不要再纠缠于“长期”和“短期”，很多时候长期已经成为了现在不做事情的借口 -->
               </div>
             </div>
             <div class="info-btns">
               <!-- <a href="/user/profile" class=""> -->
-              <el-button type="primary" class="info-btn-dft" plain size="large" @click="goprofile">
+              <el-button type="primary" class="info-btn-dft" plain size="large" @click="goprofile"
+                style="background: #135afb; color: #fff; font-size: 14px">
                 个人中心
               </el-button>
-              <!-- </a> -->
-
-              <!--                            <el-button type="primary" class="info-btn-dft" plain size="large">
-                                  退出登录
-                              </el-button>-->
+              <el-button auto-insert-space @click="logout" type="primary" class="info-btn-dft info-btn-dfts" plain
+                size="large" style="color: #135afb">
+                退出登录
+              </el-button>
             </div>
           </div>
         </div>
       </el-col>
       <el-col :xs="24" :sm="24" :md="6" :lg="6" class="home-gutter">
-        <!-- 模块2 -->
-        <!-- <div class="module-2">
-                      <img src="@/assets/system/images/index/weather.png" alt="" srcset="" />
-                  </div> -->
         <div class="module-2">
           <iframe width="100%" scrolling="no" height="150" frameborder="0" allowtransparency="true"
             src="https://i.tianqi.com?c=code&id=21&icon=1&site=12"></iframe>
         </div>
       </el-col>
-
       <el-col :xs="24" :sm="24" :md="18" :lg="18" class="home-gutter">
         <!-- 模块3 -->
         <div class="module-3">
@@ -57,52 +51,37 @@
 
             <div class="module-item-border"></div>
             <div class="module-item-data">
-              <span>周同比：</span>
+              <span class="data-label">周同比：</span>
               <span :class="[item.up ? 'data-up' : 'data-down']">{{ item.speed }}%
               </span>
             </div>
           </div>
         </div>
-        <el-row :gutter="20">
-          <el-col :xs="24" :sm="24" :md="24" :lg="24">
-            <div class="border-item module-4">
+        <el-row :gutter="16">
+          <el-col :xs="24" :sm="24" :md="12" :lg="12">
+            <div class="module-9 border-item">
               <div class="border-item-head">
-                <span class="head-title">监控状态</span>
+                <span class="head-title"> API数据调用量变化趋势 </span>
+                <!-- <el-link type="primary" :underline="false">查看更多 </el-link> -->
               </div>
-              <div class="border-item-body monitor-status">
-                <el-row :gutter="20" class="status-row">
-                  <el-col v-for="(item, index) in statusList" :key="item.name" :xs="24" :sm="12" :md="8" :lg="8">
-                    <el-card shadow="hover" class="status-card">
-                      <div class="card-body">
-                        <div class="left-info">
-                          <el-icon :size="24" class="icon">
-                            <component :is="item.icon" />
-                          </el-icon>
-                          <span class="name">{{ item.name }}</span>
-                        </div>
-                        <div class="divider"></div>
-                        <div class="right-status">
-                          <div class="status-line">
-                            <span class="count normal">{{ item.normal }}</span>
-                            <span class="label">正常</span>
-                          </div>
-                          <div class="status-line">
-                            <span class="count" :class="{ normal: item.error === 0, error: item.error !== 0 }">
-                              {{ item.error }}
-                            </span>
-                            <span class="label">异常</span>
-                          </div>
-                        </div>
-                      </div>
-                    </el-card>
-                  </el-col>
-                </el-row>
+              <div class="border-item-body">
+                <div class="chart-container" ref="module5ChartRef"></div>
+              </div>
+            </div>
+          </el-col>
+          <el-col :xs="24" :sm="24" :md="12" :lg="12">
+            <div class="module-8 border-item">
+              <div class="border-item-head">
+                <span class="head-title">治理数据量变化趋势 </span>
+                <!-- <el-link type="primary" :underline="false">查看更多 </el-link> -->
+              </div>
+              <div class="border-item-body">
+                <div class="chart-container" ref="module8ChartRef"></div>
               </div>
             </div>
           </el-col>
         </el-row>
       </el-col>
-
       <el-col :xs="24" :sm="24" :md="6" :lg="6" class="home-gutter">
         <div class="border-item module-6 home-gutter">
           <div class="border-item-head">
@@ -129,13 +108,13 @@
                 <span class="head-title">快捷功能入口</span>
                 <router-link to="/"> </router-link>
               </div>
-              <div class="border-item-body" style="padding-top: 8px; padding-left: 5px">
+              <div class="border-item-body" style="padding-top: 10px; padding-left: 5px">
                 <div class="all-entrance">
                   <div class="entrance-item" v-for="item in entranceList" :key="item.name" v-hasPermi="item.perm"
                     @click="routeTo(item.path, item.query)">
                     <div class="image">
                       <div class="icon-background" :class="item.color">
-                        <i class="icon iconfont">&#xe6d6;</i>
+                        <img :src="item.icon" class="module-item-t-r" />
                       </div>
                     </div>
                     <div class="name">{{ item.name }}</div>
@@ -146,27 +125,30 @@
           </div>
         </div>
       </el-col>
-
-      <el-col :xs="24" :sm="24" :md="12" :lg="12">
-        <div class="module-8 border-item">
+      <el-col :xs="24" :sm="24" :md="24" :lg="24">
+        <div class="module-10 border-item">
           <div class="border-item-head">
-            <span class="head-title">治理数据量变化趋势 </span>
+            <span class="head-title"> 监控状态 </span>
             <!-- <el-link type="primary" :underline="false">查看更多 </el-link> -->
           </div>
-          <div class="border-item-body">
-            <div class="chart-container" ref="module8ChartRef"></div>
-          </div>
-        </div>
-      </el-col>
+          <div class="cards">
+            <div v-for="item in statusList" :key="item.title" class="card">
+              <div class="icon-title">
+                <img :src="item.icon" class="module-item-t-r" />
+                <div class="title-text">{{ item.name }}</div>
+              </div>
+              <div class="stats">
+                <div class="stat-box normal-box">
+                  <div class="num">{{ item.normal }}</div>
+                  <div class="label">正常</div>
+                </div>
 
-      <el-col :xs="24" :sm="24" :md="12" :lg="12">
-        <div class="module-9 border-item">
-          <div class="border-item-head">
-            <span class="head-title"> API数据调用量变化趋势 </span>
-            <!-- <el-link type="primary" :underline="false">查看更多 </el-link> -->
-          </div>
-          <div class="border-item-body">
-            <div class="chart-container" ref="module5ChartRef"></div>
+                <div class="stat-box abnormal-box">
+                  <div class="num">{{ item.error }}</div>
+                  <div class="label">异常</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </el-col>
@@ -179,7 +161,8 @@ import useUserStore from "@/store/system/user";
 import { listNotice } from "@/api/system/system/notice.js";
 import useAppStore from "@/store/system/app";
 import * as echarts from "echarts";
-import { timeAgo } from '@/utils/time'
+import { timeAgo } from "@/utils/time";
+import { loginOut } from "@/api/system/sso-auth.js";
 // eslint-disable-next-line no-unused-vars
 import {
   onBeforeUnmount,
@@ -200,48 +183,10 @@ import {
 
 let { proxy } = getCurrentInstance();
 const { sys_notice_type } = proxy.useDict("sys_notice_type");
-import { useRouter } from 'vue-router';
+import { useRouter } from "vue-router";
 const router = useRouter();
-const entranceList = [
-  {
-    name: '数据连接',
-    path: '/da/daDatasource',
-    query: { type: '0' },
-    perm: ['da:datasource:datasource:list'],
-    color: 'color-primary'
-  },
-  {
-    name: '资产地图',
-    path: '/da/daAsset',
-    query: {},
-    perm: ['da:asset:asset:list'],
-    color: 'color-pale-blue'
-  },
-  {
-    name: '数据集成',
-    path: '/dpp/tasker/dppEtlTask',
-    query: {},
-    perm: ['dpp:etl:etltask:list'],
-    color: 'color-orange'
-  },
-  {
-    name: '数据开发',
-    path: '/dpp/tasker/dpptaskerddv',
-    query: {},
-    perm: ['dpp:tasker:ddv:list'],
-    color: 'color-pink'
-  },
-  {
-    name: 'API 管理',
-    path: '/ds/dsApi',
-    query: {},
-    perm: ['ds:api:api:list'],
-    color: 'color-pale-blue'
-  }
-];
-
 async function routeTo(link, query = {}) {
-  if (link && link.indexOf('http') !== -1) {
+  if (link && link.indexOf("http") !== -1) {
     window.location.href = link;
     return;
   }
@@ -255,7 +200,7 @@ async function routeTo(link, query = {}) {
         // 跳转成功后再刷新
         window.location.reload();
       } catch (err) {
-        console.error('路由跳转失败:', err);
+        console.error("路由跳转失败:", err);
       }
     }
   }
@@ -272,13 +217,31 @@ const prevSlide = () => {
   carousel.value.prev();
 };
 const statusList = [
-  { name: "数据库", icon: Folder, normal: 0, error: 0, highlight: true },
-  { name: "批量归集", icon: Files, normal: 2, error: 8 },
-  { name: "任务编排", icon: Operation, normal: 0, error: 0 },
-  { name: "实时归集", icon: Timer, normal: 1, error: 0 },
-  { name: "api测试集", icon: DataLine, normal: 4, error: 0 },
-  { name: "数据开发", icon: Tickets, normal: 0, error: 0, highlight: true },
+  {
+    name: "数据库",
+    icon: getAssetsFile("db.svg"),
+    normal: 0,
+    error: 0,
+    highlight: true,
+  },
+  { name: "批量归集", icon: getAssetsFile("batch.svg"), normal: 2, error: 8 },
+  { name: "任务编排", icon: getAssetsFile("task.svg"), normal: 0, error: 0 },
+  {
+    name: "实时归集",
+    icon: getAssetsFile("realtime.svg"),
+    normal: 1,
+    error: 0,
+  },
+  { name: "api测试集", icon: getAssetsFile("api1.svg"), normal: 4, error: 0 },
+  {
+    name: "数据开发",
+    icon: getAssetsFile("dev.svg"),
+    normal: 0,
+    error: 0,
+    highlight: true,
+  },
 ];
+
 const nextSlide = () => {
   carousel.value.next();
 };
@@ -324,6 +287,48 @@ const module1 = ref([
     img: getAssetsFile("5.png"),
   },
 ]);
+const entranceList = [
+  {
+    name: "数据连接",
+    path: "/da/daDatasource",
+    query: { type: "0" },
+    perm: ["da:datasource:datasource:list"],
+    color: "color-primary",
+    icon: getAssetsFile("connect.png"),
+  },
+  {
+    name: "资产地图",
+    path: "/da/daAsset",
+    query: {},
+    perm: ["da:asset:asset:list"],
+    color: "color-pale-blue",
+    icon: getAssetsFile("map.png"),
+  },
+  {
+    name: "数据集成",
+    path: "/dpp/tasker/dppEtlTask",
+    query: {},
+    perm: ["dpp:etl:etltask:list"],
+    color: "color-orange",
+    icon: getAssetsFile("integration.png"),
+  },
+  {
+    name: "数据开发",
+    path: "/dpp/tasker/dpptaskerddv",
+    query: {},
+    perm: ["dpp:tasker:ddv:list"],
+    color: "color-pink",
+    icon: getAssetsFile("develop.png"),
+  },
+  {
+    name: "API 管理",
+    path: "/ds/dsApi",
+    query: {},
+    perm: ["ds:api:api:list"],
+    color: "color-pale-blue",
+    icon: getAssetsFile("api.png"),
+  },
+];
 
 //新闻跳转
 function goxinwen() {
@@ -574,120 +579,113 @@ function initModule4() {
   //     intance.resize();
   // });
 }
-
+// 认证模式
+const authType = import.meta.env.VITE_APP_AUTH_TYPE;
+function logout() {
+  ElMessageBox.confirm('确定注销并退出系统吗？', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  })
+    .then(() => {
+      userStore.logOut().then(() => {
+        if (authType === 'sso') {
+          // 退出统一认证中心的登录状态
+          loginOut(userStore.userId).then(() => {
+            location.href = '/index';
+          });
+        } else {
+          location.href = '/index';
+        }
+      });
+    })
+    .catch(() => { });
+}
 const module5ChartRef = ref(null);
 function initModule5() {
   const intance = echarts.init(module5ChartRef.value, "macarons");
-
   intance.setOption({
-    title: {
-      text: "单位：次",
-      left: "6%",      // 放在左上角
-      top: 10,
-      textStyle: {
-        fontSize: 14,
-        color: "#000",
-        fontWeight: "bold",
-      },
-    },
     grid: {
-      top: "18%",
-      bottom: "10%",
+      top: "20%",
+      bottom: 40,
+      right: "4%",
+    },
+    legend: {
+      show: false,
+      itemGap: 50,
+      icon: "circle",
+      itemWidth: 8,
+      itemHeight: 8,
       right: "5%",
+      top: "0%",
+      textStyle: {
+        color: "rgba(0,0,0,0.65)",
+        fontSize: 14,
+        lineHeight: 30,
+        fontFamily: "PingFangSC, PingFang SC",
+      },
     },
     xAxis: {
       type: "category",
-      data: [
-        "2025-04-01",
-        "2025-04-02",
-        "2025-04-03",
-        "2025-04-04",
-        "2025-04-05",
-        "2025-04-06",
-        "2025-04-07",
-        "2025-04-08",
-        "2025-04-09",
-        "2025-04-10",
-      ],
-      boundaryGap: false, // 禁止左右间隙，确保折线从最左端开始
+      data: ["04.01", "04.2", "04.03", "04.04", "04.05", "04.06", "04.07"],
+      axisTick: {
+        show: false,
+      },
+      axisLine: {
+        show: true,
+        lineStyle: {
+          color: "rgba(0,0,0,0.15)",
+          width: 1,
+          type: "solid",
+        },
+      },
       axisLabel: {
-        rotate: 0, // 不旋转
-        interval: "auto", // 自动间隔显示
+        margin: 14,
+        fontSize: 12,
+        color: "rgba(0,0,0,0.65)",
+        fontFamily: "PingFangSC, PingFang SC",
       },
     },
     yAxis: {
       type: "value",
-      axisLabel: {
-        formatter: "{value}",
+      max: 1000,
+      name: "单位：次",
+      nameLocation: "end",
+      interval: 250,
+      nameTextStyle: {
+        color: "rgba(0,0,0,0.85)",
+        fontSize: 14,
+        padding: [0, 0, 10, -20],
+        fontFamily: "PingFangSC, PingFang SC",
       },
     },
     series: [
       {
-        type: "line",
-        symbolSize: 8,
-        lineStyle: {
-          color: "#4e85f3",
-        },
+        type: "bar",
+        name: "调用次数",
+        barWidth: 20,
         itemStyle: {
-          color: "#4e85f3",
-          borderColor: "#4e85f3",
+          borderRadius: [2, 2, 0, 0],
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            {
+              offset: 0,
+              color: "#5D8EFE",
+            },
+            {
+              offset: 1,
+              color: "#1E60FB",
+            },
+          ]),
         },
-        areaStyle: {
-          color: new echarts.graphic.LinearGradient(
-            0, 0, 0, 1,
-            [
-              { offset: 0, color: "rgba(78, 133, 243, 0.2)" },
-              { offset: 1, color: "rgba(78, 133, 243, 0)" },
-            ]
-          ),
-        },
-        data: [68, 68, 68, 68, 68, 68, 68, 68, 68, 68],
+        data: [800, 550, 740, 450, 800, 730, 600],
       },
     ],
   });
-
   chartIntances.push(intance);
-
-  window.addEventListener("resize", () => {
-    intance.resize();
-  });
 }
 
-
-
-
-
 const module6 = ref([
-  {
-    date: "2016-05-05",
-    title: "置顶",
-    value: "XXXXXxxx科技有限公司",
-    type: "danger",
-  },
-  {
-    date: "2016-05-03",
-    title: "新闻",
-    value: "XXXXXxxx科技有限公司",
-    type: "success",
-  },
-  {
-    date: "2016-05-02",
-    title: "其他",
-    value: "XXXXXxxx科技有限公司",
-    type: "primary",
-  },
-  {
-    date: "2016-05-04",
-    title: "其他",
-    value: "XXXXXxxx科技有限公司",
-    type: "info",
-  },
-  {
-    date: "2016-05-06",
-    title: "公告",
-    value: "XXXXXxxx科技有限公司",
-    type: "warning",
-  },
+
 ]);
 
 function initModule6() {
@@ -701,212 +699,141 @@ function initModule6() {
 }
 
 const module8ChartRef = ref(null);
-function initModule8() {
-  const intance = echarts.init(module8ChartRef.value, "macarons");
 
-  intance.setOption({
-    title: {
-      text: "单位：万条",
-      left: "6%",   // 放在左上角
-      top: 10,
-      textStyle: {
-        fontSize: 14,
-        color: "#000",
-        fontWeight: "bold",
-      },
-    },
-    // 
-    // 
+function initModule8() {
+  const instance = echarts.init(module8ChartRef.value, "macarons");
+
+  instance.setOption({
     legend: {
       show: true,
-      itemGap: 50,
+      itemGap: 20, // 缩小图例间距
       data: ["数据归集", "数据清洗", "数据共享"],
       icon: "circle",
-      itemWidth: 6, // 设置图例项的宽度
-      itemHeight: 6, // 设置图例项的高度
-      right: "5%",
-      top: "1%",
+      itemWidth: 6,
+      itemHeight: 6,
+      right: "4%",
+      top: "2%",
       textStyle: {
         color: "rgba(0,0,0,0.65)",
-        fontSize: 15,
-        lineHeight: 30, // 设置行高，以确保文本垂直居中
+        fontSize: 14,
+        lineHeight: 30,
+        fontFamily: "PingFangSC, PingFang SC",
+        padding: [5, 0, 0, 10],
+      },
+      selected: {
+        数据归集: true,
+        数据清洗: false,
+        数据共享: false,
       },
     },
     grid: {
-      top: "18%",
-      bottom: "10%",
-      right: "5%",
+      top: "20%",
+      bottom: 40,
+      right: "4%",
     },
     xAxis: {
       type: "category",
-      data: [
-        "2025-04-01",
-        "2025-04-02",
-        "2025-04-03",
-        "2025-04-04",
-        "2025-04-05",
-        "2025-04-06",
-        "2025-04-07",
-      ],
-      boundaryGap: false, // 禁止左右间隙，确保折线从最左端开始
+      data: ["04.01", "04.02", "04.03", "04.04", "04.05", "04.06", "04.07"],
+      axisTick: {
+        show: false,
+      },
+      splitLine: {
+        show: false,
+      },
+      axisLine: {
+        show: true,
+        lineStyle: {
+          color: "rgba(0,0,0,0.15)",
+          width: 1,
+          type: "solid",
+        },
+      },
+      axisLabel: {
+        margin: 14,
+        fontSize: 12,
+        color: "rgba(0,0,0,0.65)",
+        fontFamily: "PingFangSC, PingFang SC",
+      },
     },
     yAxis: {
       type: "value",
-      min: 0,
-      axisLabel: {
-        formatter: "{value}", // 不加单位
+      max: 1000,
+      name: "单位：万条",
+      nameLocation: "end",
+      interval: 250,
+      nameTextStyle: {
+        color: "rgba(0,0,0,0.85)",
+        fontSize: 14,
+        padding: [0, 0, 10, -18],
+        fontFamily: "PingFangSC, PingFang SC",
       },
     },
     series: [
       {
         name: "数据归集",
         type: "line",
-        data: [0, 0, 0, 0, 0, 0, 0], // 确保没有 null 值
+        data: [250, 100, 780, 60, 760, 200, 260],
         symbolSize: 8,
-        lineStyle: {
-          normal: {
-            color: "#108a4a",
-          },
-        },
         itemStyle: {
-          color: "#108a4a",
-          borderColor: "#108a4a",
+          color: "#427afd",
+          borderColor: "#427afd",
           borderWidth: 1,
         },
+        lineStyle: {
+          color: "#5285fd",
+        },
         areaStyle: {
-          normal: {
-            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-              { offset: 0, color: "rgba(16, 138, 74, 0.2)" },
-              { offset: 1, color: "rgba(16, 138, 74, 0)" },
-            ]),
-          },
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            { offset: 0, color: "rgba(204, 220, 254,1)" },
+            { offset: 1, color: "rgba(204, 220, 254,0)" },
+          ]),
         },
       },
       {
         name: "数据清洗",
         type: "line",
-        data: [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2],
+        data: [0, 0, 0, 0, 0, 0, 0], // 用0占位，避免图例变灰
         symbolSize: 8,
-        lineStyle: {
-          normal: {
-            color: "#f1db1e",
-          },
-        },
         itemStyle: {
-          color: "#f1db1e",
-          borderColor: "#f1db1e",
+          color: "#fa7f6f",
+          borderColor: "#fa7f6f",
           borderWidth: 1,
         },
+        lineStyle: {
+          color: "#fa7f6f",
+        },
         areaStyle: {
-          normal: {
-            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-              { offset: 0, color: "rgba(241, 219, 30, 0.2)" },
-              { offset: 1, color: "rgba(241, 219, 30, 0)" },
-            ]),
-          },
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            { offset: 0, color: "rgba(250, 127, 111,1)" },
+            { offset: 1, color: "rgba(250, 127, 111,0)" },
+          ]),
         },
       },
       {
         name: "数据共享",
         type: "line",
-        data: [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5],
+        data: [0, 0, 0, 0, 0, 0, 0], // 同上
         symbolSize: 8,
-        lineStyle: {
-          normal: {
-            color: "#0abcff",
-          },
-        },
         itemStyle: {
-          color: "#0abcff",
-          borderColor: "#0abcff",
+          color: "#72cddc",
+          borderColor: "#72cddc",
           borderWidth: 1,
         },
+        lineStyle: {
+          color: "#72cddc",
+        },
         areaStyle: {
-          normal: {
-            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-              { offset: 0, color: "rgba(10, 188, 255, 0.2)" },
-              { offset: 1, color: "rgba(10, 188, 255, 0)" },
-            ]),
-          },
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            { offset: 0, color: "rgba(114, 205, 220,1)" },
+            { offset: 1, color: "rgba(114, 205, 220,0)" },
+          ]),
         },
       },
     ],
   });
 
-  chartIntances.push(intance);
-
-  // 自动适应容器尺寸
-  window.addEventListener("resize", () => {
-    intance.resize();
-  });
+  chartIntances.push(instance);
 }
-
-
-const module9 = ref([
-  {
-    date: "2016-05-03",
-    name: "矿泉水 550ml",
-    state: "California",
-    city: "Los Angeles",
-    address: "No. 189, Grove St, Los Angeles",
-    zip: "CA 90036",
-    type: "success",
-  },
-  {
-    date: "2016-05-02",
-    name: "Tom",
-    state: "California",
-    city: "Los Angeles",
-    address: "No. 189, Grove St, Los Angeles",
-    zip: "CA 90036",
-    type: "success",
-  },
-  {
-    date: "2016-05-04",
-    name: "Tom",
-    state: "California",
-    city: "Los Angeles",
-    address: "No. 189, Grove St, Los Angeles",
-    zip: "CA 90036",
-    type: "primary",
-  },
-  {
-    date: "2016-05-01",
-    name: "Tom",
-    state: "California",
-    city: "Los Angeles",
-    address: "No. 189, Grove St, Los Angeles",
-    zip: "CA 90036",
-    type: "danger",
-  },
-  {
-    date: "2016-05-08",
-    name: "Tom",
-    state: "California",
-    city: "Los Angeles",
-    address: "No. 189, Grove St, Los Angeles",
-    zip: "CA 90036",
-    type: "primary",
-  },
-  {
-    date: "2016-05-06",
-    name: "Tom",
-    state: "California",
-    city: "Los Angeles",
-    address: "No. 189, Grove St, Los Angeles",
-    zip: "CA 90036",
-    type: "success",
-  },
-  {
-    date: "2016-05-07",
-    name: "Tom",
-    state: "California",
-    city: "Los Angeles",
-    address: "No. 189, Grove St, Los Angeles",
-    zip: "CA 90036",
-    type: "warning",
-  },
-]);
 
 function chartIntancesResize() {
   console.log(chartIntances);
@@ -1070,9 +997,6 @@ onMounted(() => {
         }
       }
     }
-
-
-
   }
 
   .news {
@@ -1098,12 +1022,16 @@ onMounted(() => {
       grid-template-columns: repeat(4, 1fr);
 
       .entrance-item {
-        padding: 7px;
+        padding: 10px;
         text-align: center;
 
         .name {
           margin-top: 5px;
-          color: #5a5e66;
+          font-family: PingFangSC, PingFang SC;
+          font-weight: 400;
+          font-size: 14px;
+          color: rgba(0, 0, 0, 0.85);
+          font-style: normal;
         }
 
         .image {
@@ -1221,7 +1149,121 @@ onMounted(() => {
   height: 350px !important;
 }
 
+.module-10 {
+  height: 254px !important;
 
+  .monitor-status {
+    padding: 10px 20px;
+  }
+
+  .title {
+    border-left: 3px solid #409eff;
+    padding-left: 8px;
+    margin-bottom: 12px;
+    color: #409eff;
+    font-weight: 600;
+    font-size: 16px;
+  }
+
+  .cards {
+    display: flex;
+    // flex-wrap: wrap;
+    flex-wrap: nowrap;
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .card {
+    flex: 1;
+    min-width: 220px;
+    max-width: calc(25% - 13px);
+    height: 170px;
+    box-sizing: border-box;
+    background: #fff;
+    border-radius: 2px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+    .icon-title {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(29, 96, 251, 0.04);
+      border-radius: 2px;
+      padding: 4px 8px;
+      gap: 10px;
+      width: 100%;
+      height: 40px;
+
+      .icon {
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .title-text {
+        font-size: 14px;
+        font-weight: 600;
+        white-space: nowrap;
+        font-family: REEJI-HongGuangGB, REEJI-HongGuangGB;
+        font-weight: bold;
+        color: #2666fb;
+      }
+    }
+
+    .stats {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      width: 100%;
+      box-sizing: border-box;
+
+      .stat-box {
+        flex: 1;
+        height: 82px;
+        border: 1px solid rgba(0, 0, 0, 0.04);
+        padding: 15px 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 2px;
+        background: #fff;
+
+        .num {
+          font-size: 20px;
+          font-weight: 500;
+          margin-bottom: 5px;
+          line-height: 1;
+          font-family: YouSheBiaoTiHei;
+          font-size: 24px;
+          color: #40cfc1;
+        }
+
+        .label {
+          font-family: PingFangSC, PingFang SC;
+          font-weight: 500;
+          font-size: 14px;
+          width: 28px;
+          color: rgba(0, 0, 0, 0.45);
+        }
+      }
+
+      .normal-box .num {
+        color: #3dc47f;
+      }
+
+      .abnormal-box .num {
+        color: #f8b34a;
+      }
+    }
+  }
+}
 
 .module-6,
 .module-7 {
@@ -1247,7 +1289,7 @@ onMounted(() => {
 
 .userInfo {
   height: 150px;
-  padding: 35px 60px 0 32px;
+  padding: 40px 40px 0 32px;
   background-image: -webkit-gradient(linear,
       left top,
       right top,
@@ -1298,6 +1340,10 @@ onMounted(() => {
   height: 72px;
   margin-right: 24px;
   border-radius: 50%;
+  border-radius: 50%;
+  // border: 3px solid #fff;
+  object-fit: cover;
+  // box-shadow: 0 0 4px rgba(0, 0, 0, 0.1); /* 可选，加点阴影提升层次感 */
 }
 
 .userInfo .info-main .info-con {
@@ -1340,10 +1386,24 @@ onMounted(() => {
 }
 
 .userInfo .info-main .info-btns .info-btn-dft {
+  font-family: PingFangSC, PingFang SC !important;
+  font-weight: 500 !important;
   width: 100px;
   height: 40px;
-  border-radius: 4px !important;
+  border-radius: 2px !important;
   margin-left: 20px;
+}
+
+.userInfo .info-main .info-btns .info-btn-dfts {
+
+  &:hover,
+  &:focus,
+  &:active {
+    color: #135afb !important;
+    border-color: #135afb !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+  }
 }
 
 .module-2 {
@@ -1376,7 +1436,7 @@ onMounted(() => {
   flex: 1;
   height: 100%;
   border-radius: 2px;
-  padding: 20px;
+  padding: 22px 24px;
   background: #fff;
   margin-right: 15px;
   //   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
@@ -1403,17 +1463,26 @@ onMounted(() => {
 }
 
 .module-3 .module-item .module-item-t .module-item-t-l .name {
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+  font-family: PingFangSC, PingFang SC;
+  font-weight: 400;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.45);
+  line-height: 22px;
+  text-align: left;
+  font-style: normal;
 }
 
 .module-3 .module-item .module-item-t .module-item-t-l span {
-  font-family: Sharp;
-  // font-size: 34px;
-  font-size: 30px;
+  // font-family: Sharp;
+  // font-size: 30px;
   color: #000;
+  font-family: YouSheBiaoTiHei;
+  font-size: 36px;
+  color: rgba(0, 0, 0, 0.85);
 }
 
 .module-3 .module-item .module-item-t .module-item-t-r {
@@ -1424,21 +1493,26 @@ onMounted(() => {
 .module-3 .module-item .module-item-border {
   height: 1px;
   background: #e2e2e2;
-  margin: 20px 0 12px;
+  margin: 20px 0 14px;
 }
 
 .module-3 .module-item .module-item-data {
   display: flex;
-
   align-items: center;
-  // color: #666;
   color: rgba(0, 0, 0, 0.65);
   font-size: 14px;
+
+  .data-label {
+    font-family: PingFangSC, PingFang SC;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.65);
+  }
 }
 
 .module-3 .module-item .module-item-data .data-up {
   font-size: 14px;
-  margin: 0 10px;
+  margin-left: 8;
+  margin-right: 4;
   // color: #000;
   color: rgba(0, 0, 0, 0.85);
   position: relative;
@@ -1447,8 +1521,8 @@ onMounted(() => {
 .module-3 .module-item .module-item-data .data-up:after {
   content: "";
   position: absolute;
-  top: -2px;
-  right: -16px;
+  top: -1px;
+  right: -20px;
   width: 0;
   height: 12px;
   border: 6px solid #f5222d;
@@ -1456,17 +1530,18 @@ onMounted(() => {
 }
 
 .module-3 .module-item .module-item-data .data-down {
+  color: rgba(0, 0, 0, 0.85);
   font-size: 14px;
-  margin: 0 10px;
-  color: #000;
+  margin-left: 8;
+  margin-right: 10;
   position: relative;
 }
 
 .module-3 .module-item .module-item-data .data-down:after {
   content: "";
   position: absolute;
-  top: 4px;
-  right: -16px;
+  top: 5px;
+  right: -20px;
   width: 0;
   height: 12px;
   border: 6px solid #f5222d;
@@ -1494,14 +1569,22 @@ onMounted(() => {
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #e8e8e8;
+
+  :deep(.el-link__inner) {
+    color: rgba(0, 0, 0, 0.85) !important;
+    font-family: PingFangSC, PingFang SC;
+    font-weight: 400;
+    font-size: 14px;
+  }
 }
 
 .border-item .border-item-head .head-title {
   font-size: 16px;
   color: var(--el-color-primary);
-  font-weight: 700;
   display: flex;
   align-items: center;
+  font-family: PingFangSC, PingFang SC;
+  font-weight: 500;
 }
 
 .border-item .border-item-head .head-title-seach {
@@ -1515,8 +1598,8 @@ onMounted(() => {
 .border-item .border-item-head .head-title:before {
   display: inline-block;
   content: "";
-  width: 6px;
-  height: 16px;
+  width: 3px;
+  height: 20px;
   border-radius: 2px 2px 2px 2px;
   background: var(--el-color-primary);
   margin-right: 10px;
@@ -1559,7 +1642,6 @@ onMounted(() => {
   min-width: 60px;
   height: 22px;
   font-size: 14px;
-  font-family: HelveticaNeue;
   color: #888888;
   line-height: 22px;
 }
@@ -1601,21 +1683,22 @@ onMounted(() => {
   // }
 
   .value {
-    margin: 0 10px;
+    margin: 0 0 0 10px;
     font-size: 14px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
     flex: 1;
     font-size: 14px;
-    color: rgba(0, 0, 0, 0.65);
+    color: rgba(0, 0, 0, 0.85);
+    font-weight: 400;
   }
 
   .time {
-    width: 55px;
+    width: 66px;
     text-align: right;
     font-size: 14px;
-    color: #888888;
+    color: rgba(0, 0, 0, 0.45);
   }
 }
 
@@ -1753,7 +1836,21 @@ onMounted(() => {
     min-height: 480px !important;
   }
 
+  .module-10 {
+    height: auto !important;
+
+
+    .cards {
+      flex-wrap: wrap !important;
+      gap: 12px;
+    }
+
+    .card {
+      max-width: calc(50% - 8px); // 每行2个
+    }
+  }
 }
+
 
 @media screen and (max-width: 768px) {
   .stagingIndex {
@@ -1805,6 +1902,15 @@ onMounted(() => {
   .module-4 {
     min-height: 1150px !important;
   }
+
+  .module-10 {
+    height: auto !important;
+
+    .cards {
+      flex-wrap: wrap !important;
+    }
+  }
+
 }
 
 @media screen and (max-width: 576px) {
@@ -1856,6 +1962,32 @@ onMounted(() => {
 
   .module-4 {
     min-height: 1140px !important;
+  }
+
+  .module-10 {
+    height: auto !important;
+
+
+    .cards {
+      flex-direction: column; // 改为一列
+      flex-wrap: wrap !important;
+      gap: 12px;
+    }
+
+    .card {
+      max-width: 100%;
+      width: 100%;
+    }
+
+    .stats {
+      flex-direction: column;
+      gap: 10px;
+
+      .stat-box {
+        width: 100%;
+        padding: 12px;
+      }
+    }
   }
 }
 </style>

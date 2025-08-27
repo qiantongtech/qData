@@ -1,5 +1,6 @@
 package tech.qiantong.qdata.module.att.api.rule.dto;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 
 /**
@@ -25,6 +26,9 @@ public class AttCleanRuleRespDTO {
     /** 规则级别 */
     private String level;
 
+    /** 示例 */
+    private String example;
+
     /** 规则描述 */
     private String description;
 
@@ -34,5 +38,13 @@ public class AttCleanRuleRespDTO {
     /** 删除标志 */
     private Boolean delFlag;
 
+    /** 类目编码 */
+    private String catCode;
+
+    @TableField(exist = false)
+    private String catID;
+
+    @TableField(exist = false)
+    private String catName;
 
 }

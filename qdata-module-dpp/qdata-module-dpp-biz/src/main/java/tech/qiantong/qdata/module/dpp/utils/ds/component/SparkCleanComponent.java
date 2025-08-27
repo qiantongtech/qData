@@ -58,9 +58,11 @@ public class SparkCleanComponent implements ComponentItem {
 
         //参数
         Map<String, Object> parameter = new HashMap<>();
-        reader.put("parameter", parameter);
         Map<String, Object> mainArgs = (Map<String, Object>) taskParams.get("mainArgs");
         parameter.put("cleanRuleList", mainArgs.get("cleanRuleList"));
+        parameter.put("tableFields", taskParams.get("tableFields"));
+        parameter.put("where", taskParams.get("where"));
+        reader.put("parameter", parameter);
         return reader;
     }
 }

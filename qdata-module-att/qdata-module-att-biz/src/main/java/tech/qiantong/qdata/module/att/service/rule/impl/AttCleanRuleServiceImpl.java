@@ -1,11 +1,14 @@
 package tech.qiantong.qdata.module.att.service.rule.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.qiantong.qdata.common.core.page.PageResult;
+import tech.qiantong.qdata.common.core.text.Convert;
 import tech.qiantong.qdata.common.exception.ServiceException;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
@@ -15,6 +18,7 @@ import tech.qiantong.qdata.module.att.controller.admin.rule.vo.AttCleanRuleSaveR
 import tech.qiantong.qdata.module.att.dal.dataobject.rule.AttCleanRuleDO;
 import tech.qiantong.qdata.module.att.dal.dataobject.rule.enums.CleanRuleTypeEnum;
 import tech.qiantong.qdata.module.att.dal.mapper.rule.AttCleanRuleMapper;
+import tech.qiantong.qdata.module.att.service.cat.IAttCleanCatService;
 import tech.qiantong.qdata.module.att.service.rule.IAttCleanRuleService;
 
 import javax.annotation.Resource;
@@ -37,6 +41,8 @@ public class AttCleanRuleServiceImpl extends ServiceImpl<AttCleanRuleMapper, Att
         implements IAttCleanRuleService {
     @Resource
     private AttCleanRuleMapper attCleanRuleMapper;
+    @Resource
+    private IAttCleanCatService attCleanCatService;
 
     @Override
     public PageResult<AttCleanRuleDO> getAttCleanRulePage(AttCleanRulePageReqVO pageReqVO) {
@@ -45,6 +51,10 @@ public class AttCleanRuleServiceImpl extends ServiceImpl<AttCleanRuleMapper, Att
 
     @Override
     public Long createAttCleanRule(AttCleanRuleSaveReqVO createReqVO) {
+        List<AttCleanRuleDO> code = attCleanRuleMapper.selectList("code", createReqVO.getCode());
+        if (code.size() > 0) {
+            throw new RuntimeException("规则编码重复请重新输入");
+        }
         AttCleanRuleDO dictType = BeanUtils.toBean(createReqVO, AttCleanRuleDO.class);
         attCleanRuleMapper.insert(dictType);
         return dictType.getId();
@@ -53,7 +63,10 @@ public class AttCleanRuleServiceImpl extends ServiceImpl<AttCleanRuleMapper, Att
     @Override
     public int updateAttCleanRule(AttCleanRuleSaveReqVO updateReqVO) {
         // 相关校验
-
+        List<AttCleanRuleDO> code = attCleanRuleMapper.selectList("code", updateReqVO.getCode());
+        if (code.size() > 0) {
+            throw new RuntimeException("规则编码重复请重新输入");
+        }
         // 更新清洗规则
         AttCleanRuleDO updateObj = BeanUtils.toBean(updateReqVO, AttCleanRuleDO.class);
         return attCleanRuleMapper.updateById(updateObj);
@@ -73,6 +86,27 @@ public class AttCleanRuleServiceImpl extends ServiceImpl<AttCleanRuleMapper, Att
     @Override
     public List<AttCleanRuleDO> getAttCleanRuleList() {
         return attCleanRuleMapper.selectList();
+    }
+
+    @Override
+    public List<AttCleanRuleRespVO> getAttCleanRuleList(AttCleanRulePageReqVO attCleanRule) {
+
+        MPJLambdaWrapper<AttCleanRuleDO> lambdaWrapper = new MPJLambdaWrapper();
+        lambdaWrapper.selectAll(AttCleanRuleDO.class)
+                .select("t2.NAME AS catName")
+                .leftJoin("ATT_CLEAN_CAT t2 on t.CAT_CODE = t2.CODE AND t2.DEL_FLAG = '0'")
+                .likeRight(org.apache.commons.lang3.StringUtils.isNotBlank(attCleanRule.getCatCode()), AttCleanRuleDO::getCatCode, attCleanRule.getCatCode());
+//        LambdaQueryWrapperX<AttCleanRuleDO> x = new LambdaQueryWrapperX<>();
+//        x.eqIfPresent(AttCleanRuleDO::getType , attCleanRule.getType());
+//        x.eqIfPresent(AttCleanRuleDO::getValidFlag , attCleanRule.getValidFlag());
+        List<AttCleanRuleDO> attCleanRuleDOS = attCleanRuleMapper.selectList(lambdaWrapper);
+        List<AttCleanRuleRespVO> bean = BeanUtils.toBean(attCleanRuleDOS, AttCleanRuleRespVO.class);
+        for (AttCleanRuleRespVO respVO : bean) {
+
+            respVO.setParentType(Convert.toStr(respVO.getCatID()));
+            respVO.setParentName(respVO.getCatName());
+        }
+        return bean;
     }
 
     @Override
@@ -179,6 +213,12 @@ public class AttCleanRuleServiceImpl extends ServiceImpl<AttCleanRuleMapper, Att
         List<AttCleanRuleRespVO> voList = BeanUtils.toBean(list, AttCleanRuleRespVO.class);
         // 3. 构建树形结构
         return buildTreeByType(voList);
+    }
+
+    @Override
+    public Long getCount(AttCleanRulePageReqVO vo) {
+        return attCleanRuleMapper.selectCount(Wrappers.lambdaQuery(AttCleanRuleDO.class)
+                .likeRight(AttCleanRuleDO::getType, vo.getType()));
     }
 
     /**

@@ -51,3 +51,12 @@ export function treeAttCleanRule(params) {
     params
   })
 }
+
+// 数据集成用到的 清洗规则
+export function listAll(params) {
+  return request({
+    url: '/att/attCleanRule/listAll',
+    method: 'get',
+    params
+  })
+}

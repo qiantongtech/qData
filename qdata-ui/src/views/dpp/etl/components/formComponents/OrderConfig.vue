@@ -142,7 +142,7 @@ import { defineProps, defineEmits, ref, computed, watchEffect, getCurrentInstanc
 import { typeList } from "@/utils/graph";
 import { getNodeUniqueKey } from "@/api/dpp/etl/dppEtlTask";
 import useUserStore from "@/store/system/user";
-import { transformColumnsData, createNodeSelect, getParentNode } from "@/views/dpp/etl/components/opBase.js";
+import { createNodeSelect, getParentNode } from "@/views/dpp/etl/components/opBase.js";
 import draggable from "vuedraggable";
 import Sortable from "sortablejs";
 const { proxy } = getCurrentInstance();

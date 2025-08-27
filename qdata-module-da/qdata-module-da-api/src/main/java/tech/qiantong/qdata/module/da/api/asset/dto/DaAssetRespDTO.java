@@ -55,6 +55,8 @@ public class DaAssetRespDTO {
 
     /** 删除标志 */
     private Boolean delFlag;
+    @Schema(description = "创建类型", example = "")
+    private String createType;
 
 
 }

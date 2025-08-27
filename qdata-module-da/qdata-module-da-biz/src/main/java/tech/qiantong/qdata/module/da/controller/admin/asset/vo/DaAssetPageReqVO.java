@@ -73,4 +73,7 @@ public class DaAssetPageReqVO extends PageParam {
 
     @Schema(description = "资产id集合(主题筛选)", example = "")
     private List<Long> themeAssetIdList;
+
+    @Schema(description = "创建类型", example = "")
+    private String createType;
 }

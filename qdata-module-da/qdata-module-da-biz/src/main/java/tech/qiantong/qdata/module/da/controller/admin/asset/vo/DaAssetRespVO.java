@@ -166,4 +166,7 @@ public class DaAssetRespVO implements Serializable {
     @Schema(description = "项目编码", example = "")
     private String projectCode;
 
+    @Schema(description = "创建类型", example = "")
+    private String createType;
+
 }

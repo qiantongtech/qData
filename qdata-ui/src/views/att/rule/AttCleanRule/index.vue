@@ -1,8 +1,8 @@
 <template>
     <div class="app-container" ref="app-container">
         <el-container style="90%">
-            <DeptTree :deptOptions="processedData" ref="DeptTreeRef" :leftWidth="leftWidth" :placeholder="'请输入规则类型'"
-                @node-click="handleNodeClick" :default-expand="true" />
+            <DeptTree :deptOptions="processedData" ref="DeptTreeRef" :leftWidth="leftWidth" :placeholder="'请输入清洗规则类型'"
+                @node-click="handleNodeClick" />
 
             <el-main>
                 <div class="pagecont-top" v-show="showSearch">
@@ -12,12 +12,9 @@
                             <el-input class="el-form-input-width" v-model="queryParams.name" placeholder="请输入规则名称"
                                 clearable @keyup.enter="handleQuery" />
                         </el-form-item>
-                        <el-form-item label="规则级别" prop="level">
-                            <el-select class="el-form-input-width" v-model="queryParams.level" placeholder="请选择规则类型"
-                                clearable>
-                                <el-option v-for="dict in att_rule_level" :key="dict.value" :label="dict.label"
-                                    :value="dict.value" />
-                            </el-select>
+                        <el-form-item label="规则编码" prop="code">
+                            <el-input class="el-form-input-width" v-model="queryParams.code" placeholder="请输入规则名称"
+                                clearable @keyup.enter="handleQuery" />
                         </el-form-item>
 
                         <el-form-item>
@@ -34,25 +31,12 @@
                 <div class="pagecont-bottom">
                     <div class="justify-between mb15">
                         <el-row :gutter="15" class="btn-style">
-                            <el-col :span="1.5">
-                                <el-button type="primary" plain @click="handleAdd"
-                                    v-hasPermi="['att:rule:attcleanrule:add']" @mousedown="(e) => e.preventDefault()">
-                                    <i class="iconfont-mini icon-xinzeng mr5"></i>新增
-                                </el-button>
-                            </el-col>
-                            <el-col :span="1.5">
-                                <el-button type="primary" plain :disabled="single" @click="handleUpdate"
-                                    v-hasPermi="['att:rule:attcleanrule:edit']" @mousedown="(e) => e.preventDefault()">
-                                    <i class="iconfont-mini icon-xiugai--copy mr5"></i>修改
-                                </el-button>
-                            </el-col>
-                            <el-col :span="1.5">
-                                <el-button type="danger" plain :disabled="multiple" @click="handleDelete"
-                                    v-hasPermi="['att:rule:attcleanrule:remove']"
-                                    @mousedown="(e) => e.preventDefault()">
-                                    <i class="iconfont-mini icon-shanchu-huise mr5"></i>删除
-                                </el-button>
-                            </el-col>
+                            <!--                            <el-col :span="1.5">-->
+                            <!--                                <el-button type="primary" plain @click="handleAdd"-->
+                            <!--                                    v-hasPermi="['att:rule:attcleanrule:add']" @mousedown="(e) => e.preventDefault()">-->
+                            <!--                                    <i class="iconfont-mini icon-xinzeng mr5"></i>新增-->
+                            <!--                                </el-button>-->
+                            <!--                            </el-col>-->
                         </el-row>
                         <div class="justify-end top-right-btn">
                             <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"
@@ -62,50 +46,68 @@
                     <el-table stripe height="58vh" v-loading="loading" :data="attCleanRuleList"
                         @selection-change="handleSelectionChange" :default-sort="defaultSort"
                         @sort-change="handleSortChange">
-                        <el-table-column type="selection" width="55" align="center" />
-                        <el-table-column v-if="getColumnVisibility(0)" label="编号" align="center" prop="id" width="80" />
-                        <el-table-column v-if="getColumnVisibility(1)" label="规则名称" width="200" align="left"
-                            prop="name">
+                        <!--                        <el-table-column type="selection" width="55" align="center" />-->
+                        <el-table-column v-if="getColumnVisibility(0)" label="规则编码" align="left" prop="code"
+                            width="80" />
+                        <el-table-column v-if="getColumnVisibility(1)" label="规则名称" width="200" align="left" prop="name"
+                            show-overflow-tooltip>
                             <template #default="scope">
                                 {{ scope.row.name || '-' }}
                             </template>
                         </el-table-column>
+                        <!--                      <el-table-column label="状态" align="left" prop="validFlag" width="80" >-->
+                        <!--                        <template #default="scope">-->
+                        <!--                          &lt;!&ndash;              <dict-tag :options="sys_valid" :value="scope.row.validFlag"/>&ndash;&gt;-->
 
-                        <el-table-column show-overflow-tooltip v-if="getColumnVisibility(4)" label="规则描述" align="left"
+                        <!--                          <el-switch-->
+                        <!--                              v-model="scope.row.validFlag"-->
+                        <!--                              active-color="#13ce66"-->
+                        <!--                              inactive-color="#ff4949"-->
+                        <!--                              @change="handleStatusChange(scope.row)"-->
+                        <!--                          >-->
+                        <!--                          </el-switch>-->
+                        <!--                        </template>-->
+                        <!--                      </el-table-column>-->
+                        <el-table-column v-if="getColumnVisibility(2)" label="规则类型" width="180" align="left"
+                            prop="type">
+                            <template #default="scope">
+                                {{ scope.row.catName || '-' }}
+                            </template>
+                        </el-table-column>
+                        <el-table-column v-if="getColumnVisibility(4)" label="规则描述" width="480" align="left"
                             prop="description">
                             <template #default="scope">
                                 {{ scope.row.description || '-' }}
                             </template>
                         </el-table-column>
-                        <el-table-column v-if="getColumnVisibility(3)" label="规则级别" width="120" align="center"
+                        <!--                        <el-table-column v-if="getColumnVisibility(3)" label="规则级别" width="120" align="center"-->
+                        <!--                            prop="level">-->
+                        <!--                            <template #default="scope">-->
+                        <!--                                <dict-tag :options="att_rule_level" :value="scope.row.level" />-->
+                        <!--                            </template>-->
+                        <!--                        </el-table-column>-->
+
+
+                        <el-table-column v-if="getColumnVisibility(6)" label="使用场景" width="500" align="left"
                             prop="level">
                             <template #default="scope">
-                                <dict-tag :options="att_rule_level" :value="scope.row.level" />
+                                {{ scope.row.useCase || '-' }}
                             </template>
                         </el-table-column>
-
-                        <el-table-column v-if="getColumnVisibility(2)" label="规则类型" width="120" align="center"
-                            prop="type">
+                        <el-table-column v-if="getColumnVisibility(5)" label="示例" width="600" align="left" prop="type">
                             <template #default="scope">
-                                <dict-tag :options="att_rule_clean_type" :value="scope.row.type" />
+                                {{ scope.row.example || '-' }}
                             </template>
                         </el-table-column>
-
-                        <!-- <el-table-column show-overflow-tooltip v-if="getColumnVisibility(13)" label="备注" align="center"
-              prop="remark">
-              <template #default="scope">
-                {{ scope.row.remark || '-' }}
-              </template>
-            </el-table-column> -->
-                        <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right"
-                            width="240">
-                            <template #default="scope">
-                                <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-                                    v-hasPermi="['att:rule:attcleanrule:edit']">修改</el-button>
-                                <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
-                                    v-hasPermi="['att:rule:attcleanrule:remove']">删除</el-button>
-                            </template>
-                        </el-table-column>
+                        <!--                        <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right"-->
+                        <!--                            width="120">-->
+                        <!--                            <template #default="scope">-->
+                        <!--                                <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"-->
+                        <!--                                    v-hasPermi="['att:rule:attcleanrule:edit']">修改</el-button>-->
+                        <!--                                <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"-->
+                        <!--                                    v-hasPermi="['att:rule:attcleanrule:remove']">删除</el-button>-->
+                        <!--                            </template>-->
+                        <!--                        </el-table-column>-->
 
                         <template #empty>
                             <div class="emptyBg">
@@ -136,36 +138,64 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="规则类型" prop="type">
-                            <el-select v-model="form.type" placeholder="请选择规则类型">
-                                <el-option v-for="dict in att_rule_clean_type" :key="dict.value" :label="dict.label"
-                                    :value="dict.value"></el-option>
-                            </el-select>
+                        <el-form-item label="规则编码" prop="code">
+                            <el-input v-model="form.code" placeholder="请输入规则编码" />
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item label="规则级别" prop="level">
-                            <el-select v-model="form.level" placeholder="请选择规则级别">
-                                <el-option v-for="dict in att_rule_level" :key="dict.value" :label="dict.label"
-                                    :value="dict.value"></el-option>
-                            </el-select>
+                        <el-form-item label="规则类型" prop="type">
+                            <el-tree-select v-model="form.type" :data="processedData"
+                                :props="{ value: 'id', label: 'name', children: 'children' }" value-key="id"
+                                placeholder="请选择规则类型" check-strictly />
+
+                        </el-form-item>
+
+                    </el-col>
+                    <el-col :span="12">
+                        <el-form-item label="状态" prop="validFlag">
+                            <el-radio v-model="form.validFlag" :label="true">启用</el-radio>
+                            <el-radio v-model="form.validFlag" :label="false">禁用</el-radio>
+                        </el-form-item>
+
+                    </el-col>
+                </el-row>
+                <el-row :gutter="20">
+                    <el-col :span="24">
+                        <el-form-item label="场景" prop="useCase">
+                            <el-input type="textarea" v-model="form.useCase" placeholder="请输入场景" />
                         </el-form-item>
                     </el-col>
+                    <!--                    <el-col :span="12">-->
+                    <!--                        <el-form-item label="规则级别" prop="level">-->
+                    <!--                            <el-select v-model="form.level" placeholder="请选择规则级别">-->
+                    <!--                                <el-option v-for="dict in att_rule_level" :key="dict.value" :label="dict.label"-->
+                    <!--                                    :value="dict.value"></el-option>-->
+                    <!--                            </el-select>-->
+                    <!--                        </el-form-item>-->
+                    <!--                    </el-col>-->
+                    <el-col :span="24">
+                        <el-form-item label="示例" prop="example">
+                            <el-input type="textarea" v-model="form.example" placeholder="请输入示例" />
+                        </el-form-item>
+                    </el-col>
+
+                </el-row>
+                <el-row :gutter="20">
                     <el-col :span="24">
                         <el-form-item label="规则描述" prop="description">
                             <el-input type="textarea" v-model="form.description" placeholder="请输入规则描述" />
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row :gutter="20">
-                    <el-col :span="24">
-                        <el-form-item label="备注" prop="remark">
-                            <el-input type="textarea" v-model="form.remark" placeholder="请输入备注" />
-                        </el-form-item>
-                    </el-col>
-                </el-row>
+                <!--                <el-row :gutter="20">-->
+                <!--                    <el-col :span="24">-->
+                <!--                        <el-form-item label="备注" prop="remark">-->
+                <!--                            <el-input type="textarea" v-model="form.remark" placeholder="请输入备注" />-->
+                <!--                        </el-form-item>-->
+                <!--                    </el-col>-->
+                <!--                </el-row>-->
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
@@ -193,7 +223,7 @@
                     </el-col>
                     <el-col :span="12">
                         <el-form-item label="规则类型" prop="type">
-                            <dict-tag :options="att_rule_clean_type" :value="form.type" />
+                            <dict-tag :options="processedData" :value="form.type" />
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -268,6 +298,7 @@ import {
 import { getToken } from '@/utils/auth.js';
 import DeptTree from '@/components/DeptTree';
 import { computed } from 'vue';
+import { listAttCleanCat } from "@/api/att/cat/attCleanCat/attCleanCat.js";
 const { proxy } = getCurrentInstance();
 const { att_rule_level, att_rule_clean_type } = proxy.useDict(
     'att_rule_level',
@@ -299,22 +330,13 @@ const updateResize = (event) => {
 };
 const attCleanRuleList = ref([]);
 const processedData = ref([]);
-processedData.value = computed(() => {
-    return [
-        {
-            name: '清洗规则',
-            level: 2,
-            children: Array.isArray(att_rule_clean_type.value)
-                ? att_rule_clean_type.value.map((item) => ({
-                    name: item.label,
-                    id: item.value
-                }))
-                : []
-        }
-    ];
-});
+const dataMapCat = new Map();
+
 function handleNodeClick(data) {
-    queryParams.value.type = data.id;
+    if (data.id == 0) {
+        data.id = null;
+    }
+    queryParams.value.catCode = data.code;
     queryParams.value.pageNum = 1;
     handleQuery();
 }
@@ -369,12 +391,14 @@ const data = reactive({
         pageNum: 1,
         pageSize: 10,
         name: null,
-        type: null
+        validFlag: true,
+        code: null
     },
     rules: {
         name: [{ required: true, message: '规则名称不能为空', trigger: 'blur' }],
         type: [{ required: true, message: '规则类型不能为空', trigger: 'change' }],
-        level: [{ required: true, message: '规则级别不能为空', trigger: 'change' }]
+        level: [{ required: true, message: '规则级别不能为空', trigger: 'change' }],
+        code: [{ required: true, message: '规则编码不能为空', trigger: 'change' }],
     }
 });
 
@@ -384,6 +408,10 @@ const { queryParams, form, rules } = toRefs(data);
 function getList() {
     loading.value = true;
     listAttCleanRule(queryParams.value).then((response) => {
+        response.data.rows.forEach(obj => {
+            let name = dataMapCat.get(obj.type);
+            obj.catName = name;
+        });
         attCleanRuleList.value = response.data.rows;
         total.value = response.data.total;
         loading.value = false;
@@ -403,9 +431,9 @@ function reset() {
         id: null,
         name: null,
         type: null,
-        level: null,
+        level: 1,
         description: null,
-        validFlag: null,
+        validFlag: false,
         delFlag: null,
         createBy: null,
         creatorId: null,
@@ -434,6 +462,22 @@ function resetQuery() {
     queryParams.value.pageNum = 1;
     proxy.resetForm('queryRef');
     handleQuery();
+}
+
+/** 改变启用状态值 */
+function handleStatusChange(row) {
+    const text = row.validFlag === true ? '启用' : '禁用';
+    proxy.$modal
+        .confirm('确认要"' + text + '","' + row.name + '"数据文档吗？')
+        .then(function () {
+            updateAttCleanRule({ id: row.id, validFlag: row.validFlag }).then((response) => {
+                proxy.$modal.msgSuccess(text + '成功');
+                getList();
+            });
+        })
+        .catch(function () {
+            row.validFlag = !row.validFlag;
+        });
 }
 
 // 多选框选中数据
@@ -597,8 +641,25 @@ function routeTo(link, row) {
         }
     }
 }
-
-getList();
+function getDeptTree() {
+    listAttCleanCat().then((response) => {
+        response.data.forEach(obj => {
+            dataMapCat.set(obj.id + "", obj.name);
+        });
+        getList();
+        processedData.value = proxy.handleTree(response.data, "id", "parentId");
+        processedData.value = [
+            {
+                name: "清洗规则类目",
+                value: "",
+                id: 0,
+                children: processedData.value,
+            },
+        ];
+        console.log(processedData.value, "safsdfsd")
+    });
+};
+getDeptTree();
 </script>
 <style scoped lang="scss">
 .app-container {

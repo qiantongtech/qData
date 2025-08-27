@@ -129,8 +129,8 @@
       v-model:limit="queryParams.pageSize" @pagination="getList" />
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="small" @click="cancel">取 消</el-button>
-        <el-button type="primary" size="small" @click="confirm">
+        <el-button @click="cancel">取 消</el-button>
+        <el-button type="primary" @click="confirm">
           确 定
         </el-button>
       </div>
@@ -294,7 +294,7 @@ function cancel() {
  */
 function confirm() {
   if (multiple.value.length == 0) {
-    proxy.$modal.msgWarning("未选择数据！");
+    proxy.$modal.msgWarning("未选择数据，请选择完成后重试");
     return;
   }
   emit("confirm", [...multiple.value]);

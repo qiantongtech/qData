@@ -37,11 +37,11 @@
                 <template v-if="form.taskParams.clmt == '1'">
                     <el-col :span="12">
                         <el-form-item label="资产表" prop="taskParams.asset_id_cpoy" :rules="[
-                            { required: true, message: '请选择资产表', trigger: 'change' }
+                            { required: true, message: '请选择资产表', trigger: 'blur' }
                         ]">
                             <el-select v-model="form.taskParams.asset_id_cpoy" filterable
-                                @change="handleAssetTableChange">
-                                <el-option v-for="item in dppNoPageListList" :key="item.id" :label="item.tableName"
+                                @change="handleAssetTableChange" :loading="dppLoading">
+                                <el-option v-for="item in dppNoPageListList" :key="item.id" :label="item.name"
                                     :value="item.id" />
                             </el-select>
                         </el-form-item>
@@ -67,16 +67,16 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="数据源类型" prop="taskParams.readerDatasource.datasourceType">
-                            <el-input v-model="form.taskParams.readerDatasource.datasourceType" placeholder="请输入数据源类型"
+                        <el-form-item label="数据连接类型" prop="taskParams.readerDatasource.datasourceType">
+                            <el-input v-model="form.taskParams.readerDatasource.datasourceType" placeholder="请输入数据连接类型"
                                 disabled />
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item label="数据源实例" prop="taskParams.readerDatasource.dbname">
-                            <el-input v-model="form.taskParams.readerDatasource.dbname" placeholder="请输入数据源实例"
+                        <el-form-item label="数据连接实例" prop="taskParams.readerDatasource.dbname">
+                            <el-input v-model="form.taskParams.readerDatasource.dbname" placeholder="请输入数据连接实例"
                                 disabled />
                         </el-form-item>
                     </el-col>
@@ -173,8 +173,7 @@
                     </el-col>
                     <el-col :span="12">
                         <el-form-item label="时间格式" prop="taskParams.dateIncrementConfig.dateFormat">
-                            <el-select v-model="form.taskParams.dateIncrementConfig.dateFormat" placeholder="请选择时间格式"
-                                style="width: 240px">
+                            <el-select v-model="form.taskParams.dateIncrementConfig.dateFormat" placeholder="请选择时间格式">
                                 <el-option v-for="item in dateFormatOptions" :key="item.value" :label="item.label"
                                     :value="item.value" />
                             </el-select>
@@ -299,7 +298,7 @@ import {
     getDaDatasource,
     sqlParse
 } from '@/api/da/datasource/daDatasource';
-import { dppNoPageList } from '@/api/da/asset/daAsset';
+import { listDppAsset } from '@/api/da/asset/daAsset';
 const { proxy } = getCurrentInstance();
 import useUserStore from '@/store/system/user';
 const userStore = useUserStore();
@@ -363,7 +362,7 @@ const getDatasourceList = async () => {
             pageSize: 9999,
             projectCode: userStore.projectCode,
             projectId: userStore.projectId,
-            datasourceType: "DM8,Oracle11,MySql,Oracle,Kingbase8,Hive,HDFS",
+            datasourceType: "DM8,Oracle11,MySql,Oracle,Kingbase8,Doris,SQL_Server",
         });
         createTypeList.value = response.data.rows;
     } finally {
@@ -384,6 +383,7 @@ const getColumnByAssetIdList = async (id, data) => {
     ColumnByAssettab.value = await fetchData(
         getColumnByAssetId,
         {
+            withRule: 2,
             id: form.value.taskParams.readerDatasource.datasourceId,
             tableName: form.value.taskParams.asset_id
         },
@@ -456,13 +456,24 @@ const handleChange = (value) => {
     }
 };
 let dppNoPageListList = ref([]);
+const dppLoading = ref(false);
 const getdppNoPageListList = async (id) => {
-    dppNoPageList({
+    dppLoading.value = true;
+    listDppAsset({
+        pageNum: 1,
+        pageSize: 9999,
         projectCode: userStore.projectCode,
-        projectId: userStore.projectId
+        projectId: userStore.projectId,
+        params: {
+            sourceType: [0, 1],
+        },
+        orderByColumn: "create_time",
+        isAsc: "desc",
     }).then((response) => {
-        dppNoPageListList.value = response.data;
+        dppNoPageListList.value = response.data.rows;
         loading.value = false;
+    }).finally(() => {
+        dppLoading.value = false
     });
 };
 
@@ -545,7 +556,7 @@ const saveData = async () => {
             form.value?.taskParams.type == '1' &&
             (!ColumnByAssettab.value || ColumnByAssettab.value.length == 0)
         ) {
-            return proxy.$message.error('请选择属性字段');
+            return proxy.$message.warning('校验未通过，请选择属性字段');
         }
         // 如果没有 code，就调用接口获取唯一的 code
         if (!form.value.code) {

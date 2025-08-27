@@ -2,14 +2,16 @@
   <div class="app-container" ref="app-container">
     <div class="head-container">
       <div class="head-title">
-        <img :src="getDatasourceIcon(nodeData.draftJson)" alt="" :style="getDatasourceIcon(nodeData.draftJson) ? 'width: 20px;margin-right: 5px;' : ''" />
+        <img :src="getDatasourceIcon(nodeData.draftJson)" alt=""
+          :style="getDatasourceIcon(nodeData.draftJson) ? 'width: 20px;margin-right: 5px;' : ''" />
         {{ nodeData.name !== null ? nodeData.name : "集成任务" }}
       </div>
       <div class="head-btns">
         <el-button type="primary" size="small" @click="handleExportData" v-if="!route.query.info">保存</el-button>
         <el-button type="primary" size="small" @click="routeTo('/dpp/tasker/dppEtlTask', '')">取消</el-button>
         <el-button type="primary" size="small" @click="openTaskConfigDialog">任务配置</el-button>
-        <el-button v-if="!route.query.info" type="primary" size="small" @click="selectTab('checkMessage')">任务检查</el-button>
+        <el-button v-if="!route.query.info" type="primary" size="small"
+          @click="selectTab('checkMessage')">任务检查</el-button>
         <!-- <el-button type="primary" size="small" @click="selectTab('log')">执行一下</el-button> -->
       </div>
     </div>
@@ -18,12 +20,16 @@
       <!-- 左侧树 -->
       <div class="left-pane">
         <div class="left-tree">
-          <el-tree :data="treeData" :props="{ label: 'label', children: 'children' }" ref="deptTreeRef" default-expand-all>
+          <el-tree :data="treeData" :props="{ label: 'label', children: 'children' }" ref="deptTreeRef"
+            default-expand-all>
             <template #default="{ node, data }">
               <div class="custom-tree-node" @mousedown="startDrag($event, node, data)">
-                <img v-if="node.level === 1 && data.type == '1'" src="@/assets/system/images/dpp/srz.svg" alt="icon" class="icon-img" />
-                <img v-if="node.level === 1 && data.type == '3'" src="@/assets/system/images/dpp/zh1.svg" alt="icon" class="icon-img" />
-                <img v-if="node.level === 1 && data.type == '2'" src="@/assets/system/images/dpp/sc.svg" alt="icon" class="icon-img" />
+                <img v-if="node.level === 1 && data.type == '1'" src="@/assets/system/images/dpp/srz.svg" alt="icon"
+                  class="icon-img" />
+                <img v-if="node.level === 1 && data.type == '3'" src="@/assets/system/images/dpp/zh1.svg" alt="icon"
+                  class="icon-img" />
+                <img v-if="node.level === 1 && data.type == '2'" src="@/assets/system/images/dpp/sc.svg" alt="icon"
+                  class="icon-img" />
                 <img v-if="data.icon" :src="data.icon" alt="icon" class="icon-img" />
                 <span class="treelable"> {{ data.label }}</span>
               </div>
@@ -58,27 +64,11 @@
         </div>
       </div>
     </div>
-    <component
-      :is="currentFormComponent"
-      :visible="drawer"
-      :key="currentNode?.id || Date.now()"
-      :title="title"
-      @update="closeDialog"
-      @confirm="handleFormSubmit"
-      :currentNode="currentNode"
-      :info="route.query.info"
-      :graph="graph"
-    />
-    <taskConfigDialog
-      :visible="taskConfigDialogVisible"
-      title="修改配置"
-      @update:visible="taskConfigDialogVisible = $event"
-      @save="handletaskConfig"
-      :data="nodeData"
-      :userList="userList"
-      :deptOptions="deptOptions"
-      :info="true"
-    />
+    <component :is="currentFormComponent" :visible="drawer" :key="currentNode?.id || Date.now()" :title="title"
+      @update="closeDialog" @confirm="handleFormSubmit" :currentNode="currentNode" :info="route.query.info"
+      :graph="graph" />
+    <taskConfigDialog :visible="taskConfigDialogVisible" title="修改配置" @update:visible="taskConfigDialogVisible = $event"
+      @save="handletaskConfig" :data="nodeData" :userList="userList" :deptOptions="deptOptions" :info="true" />
     <FieldPreviewDialog ref="fieldPreviewDialog" />
   </div>
 </template>
@@ -123,6 +113,7 @@ import {
   areFieldNamesEqual,
   shouldAbortByName,
   exportGraphAsPNG,
+  renameRuleToRuleConfig
 } from "../components/opBase";
 const { proxy } = getCurrentInstance();
 const route = useRoute();
@@ -395,13 +386,13 @@ const handleExportData = async () => {
     const res =
       nodeData.value?.status != "-1"
         ? await updateProcessDefinitions({
-            ...exportData2.value,
-            id: nodeData.value.id,
-          })
+          ...exportData2.value,
+          id: nodeData.value.id,
+        })
         : await createEtlTaskFrontPostposition({
-            ...exportData2.value,
-            id: nodeData.value.id,
-          });
+          ...exportData2.value,
+          id: nodeData.value.id,
+        });
     // 成功后处理
     if (res.code == "200") {
       handleSuccess();
@@ -782,17 +773,50 @@ function handleEdgeConnected({ edge }) {
   }
 }
 // 更新目标节点的数据
+// 更新目标节点的数据
 function updateTargetNodeData(source, target, edge) {
   const childNodes = getAllChildNodes(source, graph);
 
+  // 更新子节点的数据
   childNodes.forEach((childNode) => {
     if (childNode.data?.taskParams) {
-      childNode.data.taskParams.inputFields = source.data.taskParams.outputFields;
+      childNode.data.taskParams.inputFields =
+        source.data.taskParams.outputFields;
       childNode.data.taskParams.tableFields = [];
-      childNode.data.taskParams.outputFields = source.data.taskParams.inputFields;
+      childNode.data.taskParams.outputFields =
+        source.data.taskParams.inputFields;
       childNode.data = { ...childNode.data };
     }
   });
+
+  const needBindCleanRule =
+    source.data.componentType == 1 &&
+    source.data.taskParams?.clmt != 2 &&
+    target.data.componentType == 31 &&
+    edge;
+
+  if (needBindCleanRule) {
+    ElMessageBox.confirm(
+      '是否要给转换组件添加输入组件绑定的清洗规则？',
+      '提示',
+      {
+        confirmButtonText: '是',
+        cancelButtonText: '否',
+        type: 'warning'
+      }
+    ).then(() => {
+      // 调用方法生成规则配置
+      const result = renameRuleToRuleConfig(target.data.taskParams.inputFields);
+      console.log("🚀 ~ updateTargetNodeData ~ result:", result)
+      proxy.$message.success(`添加清洗规则 ${result?.length || 0} 条`);
+      // 给目标节点赋值
+      if (target.data?.taskParams) {
+        target.data.taskParams.tableFields = result;
+        target.data = { ...target.data };
+      }
+    }).catch(() => {
+    });
+  }
 }
 // 处理边右键菜单事件
 function handleEdgeContextMenu(event) {

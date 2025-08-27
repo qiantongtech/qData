@@ -228,8 +228,8 @@
         </el-form>
         <template #footer>
             <div class="dialog-footer">
-                <el-button size="small" @click="cancel">取 消</el-button>
-                <el-button type="primary" size="small" @click="submitForm">确 定</el-button>
+                <el-button @click="cancel">取 消</el-button>
+                <el-button type="primary" @click="submitForm">确 定</el-button>
             </div>
         </template>
     </el-dialog>
@@ -435,10 +435,10 @@ let assetId = route.query.id || 1;
 watch(
     () => route.query.id,
     (newId) => {
-        assetId = newId || 1; // 如果 id 为空，使用默认值 1
+        assetId = newId || 1;
         getList();
     },
-    { immediate: true } // `immediate` 为 true 表示页面加载时也会立即执行一次 watch
+    { immediate: true }
 );
 
 /** 查询数据资产列表 */

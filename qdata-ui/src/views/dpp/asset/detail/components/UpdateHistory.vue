@@ -11,8 +11,8 @@
                     align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"
                     @change="handleDateChange" />
             </el-form-item>
-            <el-form-item label="修改人" prop="creatorId">
-                <el-input v-model="queryParams.creatorId" placeholder="请输入修改人" style="width: 180px; margin-right: 10px"
+            <el-form-item label="修改人" prop="createBy">
+                <el-input v-model="queryParams.createBy" placeholder="请输入修改人" style="width: 180px; margin-right: 10px"
                     class="filter-item" />
             </el-form-item>
             <el-form-item>
@@ -33,8 +33,19 @@
                 </template>
             </el-table-column>
 
-            <el-table-column v-for="(item, index) in tableColumns" :key="index" :prop="item.prop" :label="item.label"
-                show-overflow-tooltip align="center" />
+            <!-- <el-table-column v-for="(item, index) in tableColumns" :key="index" :prop="item.prop" :label="item.label"
+                show-overflow-tooltip align="center" /> -->
+
+            <el-table-column label="修改时间" align="center">
+                <template #default="scope">
+                    <div>{{ scope.row.updateTime || '-' }}</div>
+                </template>
+            </el-table-column>
+            <el-table-column label="修改人" align="center">
+                <template #default="scope">
+                    <div>{{ scope.row.createBy || '-' }}</div>
+                </template>
+            </el-table-column>
             <el-table-column label="状态" align="center">
                 <template #default="scope">
                     <dict-tag :options="da_asset_operate_status" :value="scope.row.status" />
@@ -84,7 +95,7 @@ const queryForm = ref(null);
 const dataDiff = ref(null);
 const tableColumns = reactive([
     { prop: "updateTime", label: "修改时间", show: true, width: 150 },
-    { prop: "updateBy ", label: "修改人", show: true, width: 150 },
+    { prop: "createBy ", label: "修改人", show: true, width: 150 },
 ]);
 
 const queryParams = reactive({

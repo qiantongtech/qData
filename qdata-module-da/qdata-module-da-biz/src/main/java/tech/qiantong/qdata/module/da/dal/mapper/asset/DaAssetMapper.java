@@ -1,15 +1,22 @@
 package tech.qiantong.qdata.module.da.dal.mapper.asset;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import org.apache.commons.lang3.StringUtils;
-import tech.qiantong.qdata.common.core.page.PageResult;
-import tech.qiantong.qdata.module.da.controller.admin.asset.vo.DaAssetPageReqVO;
 import tech.qiantong.qdata.module.da.dal.dataobject.asset.DaAssetDO;
-import tech.qiantong.qdata.mybatis.core.mapper.BaseMapperX;
 
 import java.util.Arrays;
+
+import tech.qiantong.qdata.common.core.page.PageResult;
+
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
+import tech.qiantong.qdata.module.da.controller.admin.asset.vo.DaAssetPageReqVO;
+import tech.qiantong.qdata.mybatis.core.mapper.BaseMapperX;
 
 /**
  * 数据资产Mapper接口
@@ -39,7 +46,7 @@ public interface DaAssetMapper extends BaseMapperX<DaAssetDO> {
                 .eq(StringUtils.isNotBlank(reqVO.getStatus()), DaAssetDO::getStatus, reqVO.getStatus())
                 .eq(StringUtils.isNotBlank(reqVO.getDescription()), DaAssetDO::getDescription, reqVO.getDescription())
                 .in(reqVO.getThemeAssetIdList() != null && !reqVO.getThemeAssetIdList().isEmpty(), DaAssetDO::getId, reqVO.getThemeAssetIdList())
-                .in(reqVO.getAssetIdList() != null && reqVO.getAssetIdList().size() > 0,DaAssetDO::getId,reqVO.getAssetIdList())
+                .in(reqVO.getAssetIdList() != null && reqVO.getAssetIdList().size() > 0, DaAssetDO::getId, reqVO.getAssetIdList())
                 .and(wrapper -> wrapper
                         .isNull("t3.PROJECT_CODE")
                         .or(inner -> inner.isNotNull("t3.PROJECT_CODE").eq("t.STATUS", "1"))
@@ -48,6 +55,7 @@ public interface DaAssetMapper extends BaseMapperX<DaAssetDO> {
 
         return selectJoinPage(reqVO, DaAssetDO.class, lambdaWrapper);
     }
+
     default PageResult<DaAssetDO> selectPageDpp(DaAssetPageReqVO reqVO) {
         // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
@@ -80,4 +88,12 @@ public interface DaAssetMapper extends BaseMapperX<DaAssetDO> {
     }
 
     void deleteAssetById(Long id);
+
+    default List<DaAssetDO> findByDatasourceIdAndTableName(Long datasourceId, String tableName) {
+        LambdaQueryWrapper<DaAssetDO> queryWrapper = Wrappers.<DaAssetDO>lambdaQuery()
+                .eq(DaAssetDO::getDatasourceId, datasourceId)
+                .eq(DaAssetDO::getTableName, tableName);
+        return selectList(queryWrapper);
+    }
+
 }

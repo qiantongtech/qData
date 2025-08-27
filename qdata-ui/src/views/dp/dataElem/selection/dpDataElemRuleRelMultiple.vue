@@ -256,7 +256,7 @@
    */
   function confirm() {
     if (multiple.value.length == 0) {
-      proxy.$modal.msgWarning("未选择数据！");
+      proxy.$modal.msgWarning("未选择数据，请选择完成后重试");
       return;
     }
     emit("confirm", [...multiple.value]);

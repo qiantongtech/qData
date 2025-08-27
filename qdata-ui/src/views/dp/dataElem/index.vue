@@ -41,7 +41,7 @@
                   <i class="iconfont-mini icon-xinzeng mr5"></i>新增
                 </el-button>
               </el-col>
-              <el-col :span="1.5">
+              <!-- <el-col :span="1.5">
                 <el-button type="primary" plain :disabled="single" @click="handleUpdate"
                   v-hasPermi="['dp:dataElem:dataelem:edit']" @mousedown="(e) => e.preventDefault()">
                   <i class="iconfont-mini icon-xiugai--copy mr5"></i>修改
@@ -52,7 +52,7 @@
                   v-hasPermi="['dp:dataElem:dataelem:remove']" @mousedown="(e) => e.preventDefault()">
                   <i class="iconfont-mini icon-shanchu-huise mr5"></i>删除
                 </el-button>
-              </el-col>
+              </el-col> -->
               <!--          <el-col :span="1.5">-->
               <!--            <el-button type="info" plain @click="handleImport" v-hasPermi="['dp:dataElem:dataelem:export']"-->
               <!--                       @mousedown="(e) => e.preventDefault()">-->
@@ -72,32 +72,31 @@
           </div>
           <el-table stripe height="58vh" v-loading="loading" :data="dpDataElemList"
             @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
-            <el-table-column type="selection" width="55" align="center" />
             <el-table-column v-if="getColumnVisibility(0)" label="编号" align="center" prop="id" width="80" />
             <el-table-column v-if="getColumnVisibility(1)" label="中文名称" :show-overflow-tooltip="true" align="left"
-              prop="name">
+              prop="name" width="320">
               <template #default="scope">
                 {{ scope.row.name || "-" }}
               </template>
             </el-table-column>
             <el-table-column v-if="getColumnVisibility(2)" label="英文名称" :show-overflow-tooltip="true" align="left"
-              prop="engName">
+              prop="engName" width="320">
               <template #default="scope">
                 {{ scope.row.engName || "-" }}
               </template>
             </el-table-column>
             <el-table-column v-if="getColumnVisibility(3)" width="100" label="类型" align="center" prop="type">
               <template #default="scope">
-                {{ typeFormat(scope.row) }}
+                <dict-tag :options="dp_data_elem_code_type" :value="scope.row.type" />
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(4)" label="数据元类目" width="140" :show-overflow-tooltip="true"
+            <el-table-column v-if="getColumnVisibility(4)" label="数据元类目" width="120" :show-overflow-tooltip="true"
               align="left" prop="catCode">
               <template #default="scope">
                 {{ scope.row.catName || "-" }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(5)" width="100" label="状态" align="center" prop="status">
+            <el-table-column v-if="getColumnVisibility(5)" width="80" label="状态" align="center" prop="status">
               <template #default="scope">
                 <el-switch v-model="scope.row.status" active-color="#13ce66" inactive-color="#ff4949" active-value="1"
                   inactive-value="0" @change="
@@ -111,7 +110,7 @@
                 {{ scope.row.description || "-" }}
               </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
+            <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" width="200">
               <template #default="scope">
                 <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
                   v-hasPermi="['dp:dataElem:dataelem:edit']">修改
@@ -170,7 +169,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="数据元类目" prop="catCode">
-              <el-tree-select v-model="form.catCode" :data="deptOptions"
+              <el-tree-select filterable v-model="form.catCode" :data="deptOptions"
                 :props="{ value: 'code', label: 'name', children: 'children' }" value-key="id" placeholder="请选择所属类目"
                 check-strictly />
             </el-form-item>
@@ -194,6 +193,7 @@
             </el-form-item>
           </el-col>
         </el-row>
+
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="负责人" prop="personCharge">
@@ -211,6 +211,7 @@
             </el-form-item>
           </el-col>
         </el-row>
+
         <el-row :gutter="20">
           <el-col :span="24">
             <el-form-item label="元描述" prop="description">
@@ -279,19 +280,21 @@ import { deptUserTree } from "@/api/system/system/user.js";
 import { listAttDataElemCat } from "@/api/att/cat/attDataElemCat/attDataElemCat";
 import { getToken } from "@/utils/auth.js";
 const { proxy } = getCurrentInstance();
-const { column_type, sys_disable, dp_data_elem_code_type } = proxy.useDict(
+const { column_type, sys_disable, dp_data_elem_code_type, dp_document_type } = proxy.useDict(
   "column_type",
   "sys_disable",
-  "dp_data_elem_code_type"
+  "dp_data_elem_code_type",
+  "dp_document_type"
 );
+
 const deptOptions = ref(undefined);
 const leftWidth = ref(300); // 初始左侧宽度
 const isResizing = ref(false); // 判断是否正在拖拽
 let startX = 0; // 鼠标按下时的初始位置// 初始左侧宽度
 /** 类型字典翻译 */
-function typeFormat(row) {
-  return proxy.selectDictLabel(dp_data_elem_code_type.value, row.type);
-}
+// function typeFormat(row) {
+//   return proxy.selectDictLabel(dp_data_elem_code_type.value, row.type);
+// }
 
 const dpDataElemList = ref([]);
 const dpDataElemRuleRelList = ref([]);
@@ -305,6 +308,23 @@ const columns = ref([
   { key: 5, label: "当前状态", visible: true },
   { key: 6, label: "元描述", visible: true },
 ]);
+let secondLevelDocs = ref([]);
+const btnloading = ref(false); // 🔹 loading 状态
+
+const fetchSecondLevelDocs = async (type) => {
+  console.log("🚀 ~ fetchSecondLevelDocs ~ type:", type)
+  try {
+    btnloading.value = true;
+    const res = await listDpDocument({ type });
+    secondLevelDocs.value = (res.data.rows || []).map(d => ({
+      label: d.name,
+      value: d.id,
+    }));
+  } catch (error) {
+    [];
+  }
+  btnloading.value = false;
+};
 
 const getColumnVisibility = (key) => {
   const column = columns.value.find((col) => col.key === key);
@@ -351,6 +371,7 @@ const data = reactive({
     engName: null,
     catCode: null,
     type: null,
+    description: "",
   },
   rules: {
     name: [{ required: true, message: "中文不能为空", trigger: "blur" }],
@@ -486,6 +507,7 @@ function getDeptTree() {
       {
         name: "数据元类目",
         value: "",
+        id: 0,
         children: deptOptions.value,
       },
     ];
@@ -582,7 +604,7 @@ function handleAddDpDataElemRuleRel() {
 /** 数据元数据规则关联信息删除按钮操作 */
 function handleDeleteDpDataElemRuleRel() {
   if (checkedDpDataElemRuleRel.value.length == 0) {
-    proxy.$modal.msgError("请先选择要删除的数据元数据规则关联信息数据");
+    proxy.$modal.msgWarning("未选择要删除的数据元数据规则关联信息，请选择后重试");
   } else {
     const dpDataElemRuleRels = dpDataElemRuleRelList.value;
     const checkedDpDataElemRuleRels = checkedDpDataElemRuleRel.value;

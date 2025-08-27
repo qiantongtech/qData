@@ -51,6 +51,13 @@ public class AttCleanRuleController extends BaseController {
         return CommonResult.success(BeanUtils.toBean(page, AttCleanRuleRespVO.class));
     }
 
+    @Operation(summary = "查询清洗规则列表")
+    @GetMapping("/listAll")
+    public CommonResult<List<AttCleanRuleRespVO>> listAll(AttCleanRulePageReqVO attCleanRule) {
+        List<AttCleanRuleRespVO> page = attCleanRuleService.getAttCleanRuleList(attCleanRule);
+        return CommonResult.success(page);
+    }
+
     @Operation(summary = "导出清洗规则列表")
     @PreAuthorize("@ss.hasPermi('att:rule:attcleanrule:export')")
     @Log(title = "清洗规则", businessType = BusinessType.EXPORT)

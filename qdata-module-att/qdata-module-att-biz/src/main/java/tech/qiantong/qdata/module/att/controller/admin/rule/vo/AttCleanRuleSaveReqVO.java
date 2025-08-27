@@ -1,5 +1,6 @@
 package tech.qiantong.qdata.module.att.controller.admin.rule.vo;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
@@ -41,5 +42,28 @@ public class AttCleanRuleSaveReqVO extends BaseEntity {
     @Size(max = 256, message = "备注长度不能超过256个字符")
     private String remark;
 
+    @Schema(description = "规则编码", example = "101")
+    private String code;
 
+    @Schema(description = "使用场景", example = "用于身份证号非空检查")
+    private String useCase;
+
+    @Schema(description = "示例", example = "字段值不能为空，如：ID=123456")
+    private String example;
+
+
+    @Schema(description = "策略标识", example = "NOT_NULL_ID_CHECK")
+    private String strategyKey;
+
+    @Schema(description = "是否有效", example = "")
+    private Boolean validFlag;
+
+    /** 类目编码 */
+    private String catCode;
+
+    @TableField(exist = false)
+    private String catID;
+
+    @TableField(exist = false)
+    private String catName;
 }

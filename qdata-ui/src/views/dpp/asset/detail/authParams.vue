@@ -204,7 +204,7 @@ const handleCall = () => {
     // 参数校验
     const isNull = inputList.value.some(param => {
         if (isParamInvalid(param)) {
-            proxy.$message.error(`输入参数‘${param.name}’不能为空`);
+            proxy.$message.warning(`校验未通过，输入参数‘${param.name}’不能为空`);
             return true;
         }
         return false;

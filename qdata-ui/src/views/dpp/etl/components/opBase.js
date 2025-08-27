@@ -105,26 +105,7 @@ export const showPorts = (ports, show) => {
 export const handleRmNodes = (graph) => {
   graph.clearCells();
 };
-// 装换组件规则的封装
-export const transformColumnsData = (columnsList) => {
-  if (!Array.isArray(columnsList)) return [];
-  return columnsList.map((item) => {
-    // 提取 columnName 作为 columns 字段的值
-    const columns = item.columnName;
 
-    // 处理 data 字段，转换为 cleanRules 数组
-    const cleanRules =
-      item && item.cleanRuleList
-        ? item.cleanRuleList.map((rule) => ({
-          ruleId: rule.ruleId,
-          data: rule.ruleConfig,
-          ruleName: rule.ruleName,
-        }))
-        : [];
-    // 返回转换后的对象
-    return { columns, cleanRules };
-  });
-};
 //输出组件字段处理
 export const handleType2TaskParams = (fromColumns, toColumns) => {
   // 目标列和源列数组
@@ -270,37 +251,6 @@ function getAllConnectedEdges(graph, node) {
   }
   return edges;
 }
-export const getEdgesForType2Nodes = (graph) => {
-  const nodes = graph.getNodes(); // 获取所有节点
-  const edges = graph.getEdges(); // 获取所有边
-  const type2Nodes = nodes.filter((node) => node.data.taskParams && node.data.taskParams.type == "2"); // 获取所有type == 2的节点
-  // 用于存储type == 2的节点的相关边和符合条件的节点data
-  let relatedEdges = [];
-  let type1NodeData = []; // 存储所有type == 1节点的data
-
-  // 遍历所有type == 2的节点
-  type2Nodes.forEach((node) => {
-    // 获取与当前type == 2的节点相关的边（包括输入边）
-    let incomingEdges = getAllConnectedEdges(graph, node);
-
-    // 遍历每条输入边，检查其源节点的type是否为1
-    incomingEdges.forEach((edge) => {
-      // 获取源节点的ID
-      const sourceNodeId = edge.source.cell;
-      // 查找源节点
-      const sourceNode = nodes.find((n) => n.id == sourceNodeId);
-      if (sourceNode && sourceNode.data.taskParams && sourceNode.data.taskParams.type == "1" && sourceNode.data.componentType == 1) {
-        type1NodeData.push(sourceNode.data);
-      }
-    });
-
-    // 将相关的边加入结果数组
-    relatedEdges = [...relatedEdges, ...incomingEdges];
-  });
-
-  return { relatedEdges, type1NodeData };
-};
-
 export const validateGraph = (graph, flag) => {
   const nodes = graph.getNodes(); // 获取所有节点
   const edges = graph.getEdges(); // 获取所有边
@@ -309,7 +259,7 @@ export const validateGraph = (graph, flag) => {
 
   if (nodes.length === 0) {
     const msg = "当前任务缺少输入、转换、输出组件，请设置相关组件";
-    if (!flag) ElMessage.error(msg);
+    if (!flag) ElMessage.warning(msg);
     return { isValid: false, errorMessages: [msg] };
   }
 
@@ -334,19 +284,7 @@ export const validateGraph = (graph, flag) => {
     }
   };
 
-  // 转换组件校验（componentType == 31）
-  const validateType3TaskParams = (taskParams, node) => {
-    if (!taskParams.tableFields || taskParams.tableFields.length === 0) {
-      valid = false;
-      addErrorMessage(`${node.data.name} 未设置转换规则，请设置转换规则`);
-    } else {
-      const hasValidRule = taskParams.tableFields.some((item) => Array.isArray(item.cleanRuleList) && item.cleanRuleList.length > 0);
-      if (!hasValidRule) {
-        valid = false;
-        addErrorMessage(`${node.data.name} 缺少转换规则`);
-      }
-    }
-  };
+
 
   // 所有节点循环校验
   nodes.forEach((node) => {
@@ -355,7 +293,13 @@ export const validateGraph = (graph, flag) => {
     const componentType = data?.componentType;
 
     if (!taskParams) return;
-
+    if (componentType == 41) {
+      if (!taskParams.sequenceFieldName) {
+        valid = false;
+        addErrorMessage(`${data.name} 节点信息不完善，请完善`);
+      }
+      return;
+    }
     if (componentType == 44 || componentType == 45) {
       if (!taskParams.plaintextField) {
         valid = false;
@@ -363,7 +307,6 @@ export const validateGraph = (graph, flag) => {
       }
       return;
     }
-
     if (!Array.isArray(taskParams.tableFields) || taskParams.tableFields.length == 0) {
       valid = false;
       addErrorMessage(`${data.name} 节点信息不完善，请完善`);
@@ -372,9 +315,6 @@ export const validateGraph = (graph, flag) => {
     // 特定类型组件额外校验
     if (taskParams.type == "2") {
       validateType2TaskParams(taskParams, node);
-    }
-    if (componentType == 31) {
-      validateType3TaskParams(taskParams, node);
     }
     // 标记输入/输出组件
     if (taskParams.type == "1") inputNodeExists = data;
@@ -390,20 +330,10 @@ export const validateGraph = (graph, flag) => {
     valid = false;
     addErrorMessage("当前任务缺少输出组件，请设置输出节点");
   }
-  // 输入输出不能为同一个表
-  const { relatedEdges, type1NodeData } = getEdgesForType2Nodes(graph);
-  const sourceNodeData = type1NodeData[0];
-  if (
-    sourceNodeData?.taskParams &&
-    outputNodeExists?.taskParams &&
-    sourceNodeData.taskParams.table_name === outputNodeExists.taskParams.target_table_name &&
-    sourceNodeData.taskParams.readerDatasource?.datasourceId === outputNodeExists.taskParams.writerDatasource?.datasourceId
-  ) {
-    // addErrorMessage(`${sourceNodeData.name} 与 ${outputNodeExists.name} 的输入输出不能为同一个数据源的同一个表`);
-  }
+
 
   if (errorMessages.length > 0 && !flag) {
-    ElMessage.error(errorMessages[0]);
+    ElMessage.warning(errorMessages[0]);
   }
 
   return { isValid: errorMessages.length === 0, errorMessages };
@@ -574,7 +504,10 @@ export const createDataNode = (graph, data) => {
           },
           interval: 0, //间隔时间 单位毫秒(默认0)
           description: "",
-          apiHeaders: [], //header
+          apiHeaders: [{
+            "name": "Accept",
+            "value": "*/*"
+          }], //header
           inParams: {
             urlParams: [],
             type: 1,
@@ -583,10 +516,10 @@ export const createDataNode = (graph, data) => {
           outParams: [],
           outputFields: [],
         }),
-        ...(data.componentType == 81 && {}),
-        ...(data.componentType == 82 && {}),
-        ...(data.componentType == 83 && {}),
-        ...(data.componentType == 84 && {}),
+        ...(data.componentType == 50 && {}),
+        ...(data.componentType == 21 && {}),
+        ...(data.componentType == 22 && {}),
+        ...(data.componentType == 23 && {}),
         ...(data.componentType == 42 && {
           keyField: null,
           groupFields: [],
@@ -608,7 +541,7 @@ export const createDataNode = (graph, data) => {
           encryptedField: "",
         }),
 
-        ...(data.componentType == 37 && {
+        ...(data.componentType == 48 && {
           columnName: null,
           columnType: "string",
           format: null,
@@ -620,7 +553,7 @@ export const createDataNode = (graph, data) => {
           defaultValue: null,
           nullIf: null,
         }),
-        ...(data.componentType == 38 && {
+        ...(data.componentType == 49 && {
           input: "", //输入字段
           output: "", //输出字段
           unKnown: "", //缺省值
@@ -631,7 +564,7 @@ export const createDataNode = (graph, data) => {
           fieldDerivationPrefix: "", //前缀
           fieldDerivationSuffix: "", //前缀
         }),
-        ...(data.componentType == 36 && {
+        ...(data.componentType == 47 && {
           selectedSourceField: "", //字段名称
           targetFieldName: "", //目标字段
           defaultValueWhenUnmatched: "", //不匹配时的默认值
@@ -785,22 +718,22 @@ export const getDefaultTaskParams = (data) => {
       outputFields: [],
     };
   }
-  if (data.componentType == 81) {
+  if (data.componentType == 50) {
     return {
       ...base,
     };
   }
-  if (data.componentType == 82) {
+  if (data.componentType == 21) {
     return {
       ...base,
     };
   }
-  if (data.componentType == 83) {
+  if (data.componentType == 22) {
     return {
       ...base,
     };
   }
-  if (data.componentType == 84) {
+  if (data.componentType == 23) {
     return {
       ...base,
     };
@@ -828,7 +761,7 @@ export const getDefaultTaskParams = (data) => {
       encryptedField: "",
     };
   }
-  if (data.componentType == 37) {
+  if (data.componentType == 48) {
     return {
       ...base,
       columnName: null,
@@ -844,7 +777,7 @@ export const getDefaultTaskParams = (data) => {
     };
   }
 
-  if (data.componentType == 38) {
+  if (data.componentType == 49) {
     return {
       ...base,
       input: "", //输入字段
@@ -852,7 +785,7 @@ export const getDefaultTaskParams = (data) => {
       unKnown: "", //缺省值
     };
   }
-  if (data.componentType == 36) {
+  if (data.componentType == 47) {
     return {
       ...base,
       selectedSourceField: "", //字段名称
@@ -1095,9 +1028,15 @@ export function createMenuDom({
 }
 // 判断数组是否一样
 export function areFieldNamesEqual(fieldsA = [], fieldsB = []) {
+  const namesA = new Set(fieldsA.map((f) => f.columnName));
   const namesB = new Set(fieldsB.map((f) => f.columnName));
-  return fieldsA.every((f) => namesB.has(f.columnName));
+  if (namesA.size !== namesB.size) return false;
+  for (const name of namesA) {
+    if (!namesB.has(name)) return false;
+  }
+  return true;
 }
+
 /**
  * 校验节点名称
  */
@@ -1194,3 +1133,34 @@ export const exportGraphAsPNG = (
     stylesheet: stylesheet || defaultStylesheet
   });
 };
+// 表输入的规则
+// 表输入的规则
+export function renameRuleToRuleConfig(data) {
+  return data
+    .filter(col => Array.isArray(col.cleanRuleList) && col.cleanRuleList.length > 0)
+    .map(col => {
+      return col.cleanRuleList.map(rule => {
+        let parsedRule = {};
+        try {
+          parsedRule = JSON.parse(rule.rule); // 原来的 rule 解析成对象
+        } catch (e) {
+          console.warn(`rule JSON 解析失败: ${rule.rule}`, e);
+        }
+        const ruleConfig = {
+          ...parsedRule,
+          columns: [col.columnName]
+        };
+        const { rule: _, ...rest } = rule;
+        return {
+          ...rest,
+          columns: [col.columnName],
+          ruleConfig
+        };
+      });
+    })
+    .flat();
+}
+
+
+
+

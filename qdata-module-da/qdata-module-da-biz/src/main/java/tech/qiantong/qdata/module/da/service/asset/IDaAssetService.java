@@ -2,6 +2,7 @@ package tech.qiantong.qdata.module.da.service.asset;
 
 import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.extension.service.IService;
+import tech.qiantong.qdata.common.core.domain.AjaxResult;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.module.da.controller.admin.asset.vo.DaAssetPageReqVO;
 import tech.qiantong.qdata.module.da.controller.admin.asset.vo.DaAssetRespVO;
@@ -121,4 +122,6 @@ public interface IDaAssetService extends IService<DaAssetDO> {
     Long createDaAssetNew(DaAssetSaveReqVO daAsset);
 
     int updateDaAssetNew(DaAssetSaveReqVO daAsset);
+
+    AjaxResult startDaAssetDatasourceTask(Long id);
 }

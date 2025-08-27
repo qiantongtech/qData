@@ -2,19 +2,19 @@
     <div style="padding: 5px">
         <div class="justify-between mb15">
             <el-row :gutter="15" class="btn-style">
-                <el-col :span="1.5">
+                <el-col :span="1.5" v-if="form1.type != '6'">
                     <el-button type="primary" plain @click="handleAdd" v-hasPermi="['da:assetColumn:assetcolumn:add']"
-                        @mousedown="(e) => e.preventDefault()">
+                        :loading="loading" @mousedown="(e) => e.preventDefault()">
                         <i class="iconfont-mini icon-xinzeng mr5"></i>新增
                     </el-button>
                 </el-col>
-                <el-button style="margin-left: 7px" plain type="primary" @click="handleQuery"
-                    @mousedown="(e) => e.preventDefault()" :loading="loading">
+                <el-button style="margin-left: 7px" plain type="primary" :loading="loading" @click="handleQuery"
+                    @mousedown="(e) => e.preventDefault()">
                     <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
                 </el-button>
             </el-row>
         </div>
-        <el-row :gutter="24" v-if="!formVisible">
+        <el-row :gutter="24" v-if="!formVisible && form1.type != '6'">
             <el-col :span="1">
                 <el-button style="" @click="toggleForm(true)" type="primary" size="small">+</el-button>
             </el-col>
@@ -70,22 +70,22 @@
             </el-form>
         </div>
     </div>
-    <el-table :data="tableData" height="374px" border v-loading="loading">
+    <el-table :data="tableData" height="60vh" border v-loading="loading">
         <el-table-column v-for="col in tableColumns" :key="col.field" :prop="col.field" :min-width="'150px'"
             show-overflow-tooltip>
             <template #header>
                 <div class="column-header">
                     <div class="column-item">
-                        {{ col.en }}
+                        {{ col.en || '-' }}
                     </div>
                     <div class="column-item">
-                        {{ col.cn }}
+                        {{ col.cn || '-' }}
                     </div>
                 </div>
             </template>
         </el-table-column>
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right"
-            v-if="tableColumns" width="150px">
+            v-if="tableColumns && form1.type != '6'" width="150px">
             <template #default="scope">
                 <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
                     v-hasPermi="['da:asset:asset:edit']">修改</el-button>
@@ -113,13 +113,13 @@
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { preview } from '@/api/da/assetColumn/daAssetColumn';
-import UpdateDataDaiol from './components/UpdateDataDaiol.vue'
-import UpdateHistory from "./components/UpdateHistory.vue";
+import UpdateDataDaiol from './components/UpdateDataDaiol.vue';
+import UpdateHistory from './components/UpdateHistory.vue';
 const props = defineProps({
     form1: {
         type: Object,
-        default: {},
-    },
+        default: {}
+    }
 });
 const route = useRoute();
 let assetId = route.query.id || 1;
@@ -128,13 +128,25 @@ const tableColumns = ref([]);
 const total = ref(0);
 const pageNum = ref(1);
 const pageSize = ref(10);
+const loading = ref(false);
+const query = ref();
 const operators = ref(['=', '>']);
 const formData = ref({
     rows: []
 });
-const updateDialogRef = ref(null) // 组件的 ref 引用
+const updateDialogRef = ref(null); // 组件的 ref 引用
 const formVisible = ref(false); // 表单默认隐藏
-
+watch(
+    () => route.query.id,
+    (newId) => {
+        // 解决数据发现详情和当前界面同时打开报错问题
+        if(route.path == '/da/asset/daAssetDetail' || route.path == '/dpp/asset/daAssetDetail') {
+            assetId = newId || 1; // 如果 id 为空，使用默认值 1
+            getListss();
+        }
+    },
+    { immediate: true } // `immediate` 为 true 表示页面加载时也会立即执行一次 watch
+);
 // 显示或隐藏表单
 const toggleForm = (falg) => {
     formVisible.value = !formVisible.value;
@@ -156,7 +168,7 @@ const generateSqlQuery = () => {
     console.log('生成的 SQL 查询语句：', query);
     return query;
 };
-let query = ref();
+
 // 查询按钮点击事件
 const handleQuery = () => {
     let falg = validateFields();
@@ -168,7 +180,7 @@ const handleQuery = () => {
 const validateFields = () => {
     for (let row of formData.value.rows) {
         if (!row.field || !row.operator) {
-            ElMessage.error('查询条件请输入完整');
+            ElMessage.warning('校验未通过，查询条件请输入完整');
             return false;
         }
     }
@@ -204,31 +216,34 @@ const addRow = (index) => {
         formData.value.rows.push(newRow);
     }
 };
-let loading = ref(false);
+
 const tableData = ref();
 
 function handleUpdate(row) {
+    console.log('🚀 ~ handleUpdate ~ row:', row);
     // proxy.$message.error('功能开发中....');
-    updateDialogRef.value?.addRow(row, props.form1)
+    updateDialogRef.value?.addRow(row, props.form1);
 }
 function handleAdd() {
     // proxy.$message.error('功能开发中....');
-    updateDialogRef.value?.addRow({}, props.form1)
+    updateDialogRef.value?.addRow(undefined, props.form1);
 }
 
 const updateHistoryRef = ref(null);
 function openHistory(row) {
     // 调用子组件的 show 方法，传入你想要的参数，触发弹窗显示
     if (updateHistoryRef.value) {
-        updateHistoryRef.value.show(row,
-            props.form1);
+        updateHistoryRef.value.show(row, props.form1);
     }
 }
 function handleDelete() {
-    proxy.$message.error('功能开发中....');
+    proxy.$message.warning('功能开发中....');
 }
 
 function getListss() {
+    if (route.query.id == null || route.query.id == undefined) {
+        return;
+    }
     loading.value = true;
     preview({
         id: assetId,
@@ -246,7 +261,6 @@ function getListss() {
             loading.value = false;
         });
 }
-getListss();
 </script>
 
 <style scoped lang="scss">

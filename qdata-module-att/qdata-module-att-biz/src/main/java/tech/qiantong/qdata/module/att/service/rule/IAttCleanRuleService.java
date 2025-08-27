@@ -63,6 +63,7 @@ public interface IAttCleanRuleService extends IService<AttCleanRuleDO> {
      * @return 清洗规则列表
      */
     List<AttCleanRuleDO> getAttCleanRuleList();
+    List<AttCleanRuleRespVO> getAttCleanRuleList(AttCleanRulePageReqVO attCleanRule);
 
     /**
      * 获得全部清洗规则 Map
@@ -89,4 +90,6 @@ public interface IAttCleanRuleService extends IService<AttCleanRuleDO> {
     List<AttCleanRuleRespVO> getAttCleanRuleTree(Long dataElemId);
 
     List<AttCleanRuleRespVO> getCleaningRuleTree(Long[] dataElemId);
+
+    Long getCount(AttCleanRulePageReqVO vo);
 }

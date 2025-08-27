@@ -3,10 +3,30 @@
     <div class="pagecont-top" v-show="showSearch" style="padding-bottom: 15px">
       <div class="infotop">
         <div class="infotop-title mb15">
-          {{ daAssetDetail?.name
-          }}
+          {{ daAssetDetail?.name }}
         </div>
         <el-row :gutter="20">
+          <el-col :span="desc.span || 8" v-for="desc in descList" :key="desc.label">
+            <div class="infotop-row border-top">
+              <div class="infotop-row-lable">{{ desc.label }}</div>
+              <div class="infotop-row-value">
+                <span v-if="desc.key == 'daAssetThemeRelList'">{{desc.value.length > 0 ? desc.value.map((ele) =>
+                  ele.themeName).join(", ") : "-"}}</span>
+                <span v-else-if="desc.key == 'status'"><dict-tag :options="da_assets_status"
+                    :value="desc.value" /></span>
+                <span class="li-type" v-else-if="desc.key == 'type'"
+                  :style="{ color: desc.value == 2 ? '#c0d043' : desc.value == 1 ? '#21a3dd' : desc.value == 7 ? '#edce2e' : '' }">
+                  <img v-if="desc.value == 2" src="@/assets/da/asset/api (1).svg" alt="" />
+                  <img v-if="desc.value == 1" src="@/assets/da/asset/api (3).svg" alt="" />
+                  <img v-if="desc.value == 7" src="@/assets/da/asset/api (5).svg" alt="" />
+                  {{ desc.value == 2 ? "api" : desc.value == 1 ? "库表" : desc.value == 7 ? "文件" : "-" }}
+                </span>
+                <span v-else>{{ desc.value || "-" }}</span>
+              </div>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" v-if="false">
           <el-col :span="8" v-if="daAssetDetail.type == 1">
             <div class="infotop-row border-top">
               <div class="infotop-row-lable">英文名称</div>
@@ -17,11 +37,8 @@
             <div class="infotop-row border-top">
               <div class="infotop-row-lable">主题名称</div>
               <div class="infotop-row-value">
-                {{
-                  daAssetDetail.daAssetThemeRelList?.length
-                    ? daAssetDetail.daAssetThemeRelList.map(item => item.themeName).join(', ')
-                    : '-'
-                }}
+                {{daAssetDetail.daAssetThemeRelList?.length ? daAssetDetail.daAssetThemeRelList.map((item) =>
+                  item.themeName).join(", ") : "-"}}
               </div>
             </div>
           </el-col>
@@ -216,15 +233,13 @@
             <div class="infotop-row border-top">
               <div class="infotop-row-lable">创建时间</div>
               <div class="infotop-row-value">
-                {{
-                  parseTime(daAssetDetail.createTime, "{y}-{m}-{d} {h}:{i}:{s}")
-                }}
+                {{ parseTime(daAssetDetail.createTime, "{y}-{m}-{d} {h}:{i}:{s}") }}
               </div>
             </div>
           </el-col>
           <el-col :span="24">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">备注 </div>
+              <div class="infotop-row-lable">备注</div>
               <div class="infotop-row-value">
                 {{ daAssetDetail.remark || "-" }}
               </div>
@@ -234,20 +249,17 @@
       </div>
     </div>
     <div class="pagecont-bottom">
-      <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
-        <template v-for="pane in tabPanes" :key="pane.name">
-          <el-tab-pane :label="pane.label" :name="pane.name">
-            <component :is="pane.component" :form1="daAssetDetail" v-if="activeName === pane.name">
-            </component>
-          </el-tab-pane>
-        </template>
+      <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick"
+        v-if="!daAssetDetail.daAssetFiles || ['.xlsx', '.xls', '.csv'].includes(daAssetDetail.daAssetFiles.type)">
+        <el-tab-pane v-for="pane in tabPanes" :key="pane.name" :label="pane.label" :name="pane.name">
+          <component v-if="activeName === pane.name" :is="pane.component" :form1="daAssetDetail" />
+        </el-tab-pane>
       </el-tabs>
     </div>
   </div>
 </template>
 <script setup name="DaAsset">
 import { getDaAsset } from "@/api/da/asset/daAsset";
-import { listDaAssetColumn } from "@/api/da/assetColumn/daAssetColumn";
 import { useRoute } from "vue-router";
 import ComponentOne from "@/views/dpp/asset/detail/componentOne.vue";
 import ComponentTwo from "@/views/dpp/asset/detail/componentTwo.vue";
@@ -255,32 +267,78 @@ import ComponentThree from "@/views/dpp/asset/detail/componentThree";
 import authParams from "@/views/dpp/asset/detail/authParams";
 import RequestParamsForm from "@/views/dpp/asset/detail/RequestParamsForm";
 import ResponseFormatConfig from "@/views/dpp/asset/detail/ResponseFormatConfig";
+import BasicInfo from "@/views/dpp/asset/detail/basicInfo.vue";
+import DataQualityControl from "@/views/dpp/asset/detail/DataQualityControl";
 
 const { proxy } = getCurrentInstance();
 const { da_assets_status, da_asset_gis_type, da_asset_api_method } = proxy.useDict("da_assets_status", "da_asset_gis_type", "da_asset_api_method");
-const activeName = ref("1");
+const activeName = ref("0");
 function handleClick(tab) {
   // 可根据需要自定义逻辑
   console.log("Tab clicked:", tab);
 }
 
+const descList = ref([
+  {
+    key: "type",
+    label: "类型",
+    value: "",
+  },
+  {
+    key: "tableName",
+    label: "标识",
+    value: "",
+  },
+  {
+    key: "status",
+    label: "状态",
+    value: "",
+  },
+  {
+    key: "daAssetThemeRelList",
+    label: "所属主题",
+    value: "",
+    span: 24,
+  },
+]);
+
 // 计算属性生成 tab pane 数组
 const tabPanes = computed(() => {
-  console.log("🚀 ~ tabPanes ~ daAssetDetail.value.type:", daAssetDetail.value.type)
+  console.log("🚀 ~ tabPanes ~ daAssetDetail.value.type:", daAssetDetail.value.type);
   switch (daAssetDetail.value.type) {
-    case '1':
+    case "1":
       return [
-        { label: "属性字段", name: "1", component: ComponentOne },
-        { label: "数据预览", name: "2", component: ComponentTwo },
+        { label: "资产概览", name: "0", component: BasicInfo },
+        { label: "资产字段", name: "1", component: ComponentOne },
+        { label: "资产预览", name: "2", component: ComponentTwo },
+        { label: '资产质量', name: '3', component: DataQualityControl },
+
       ];
-    case '2':
-      return [{ label: "鉴权参数", name: "1", component: authParams }, { label: "请求参数", name: "2", component: RequestParamsForm }, { label: "返回格式", name: "3", component: ResponseFormatConfig }, { label: "预览数据", name: "4", component: ComponentThree }];
-    case '3':
-      return [];
-    case '4':
-      return [{ label: "数据预览", name: "1", component: ComponentTwo }];
-    case '5':
-      return [];
+    case "2":
+      return [
+        { label: "资产概览", name: "0", component: BasicInfo },
+        { label: "鉴权参数", name: "1", component: authParams },
+        { label: "请求参数", name: "2", component: RequestParamsForm },
+        { label: "返回格式", name: "3", component: ResponseFormatConfig },
+        { label: "预览数据", name: "4", component: ComponentThree },
+      ];
+    case "3":
+      return [{ label: "资产概览", name: "0", component: BasicInfo }];
+    case "4":
+      return [
+        { label: "资产概览", name: "0", component: BasicInfo },
+        { label: "资产预览", name: "1", component: ComponentTwo },
+      ];
+    case "5":
+      return [{ label: "资产概览", name: "0", component: BasicInfo }];
+    case "6":
+      return [
+        { label: "资产概览", name: "0", component: BasicInfo },
+        { label: "资产字段", name: "1", component: ComponentOne },
+        { label: "资产预览", name: "2", component: ComponentTwo },
+      ];
+    case "7":
+      return [{ label: "资产概览", name: "0", component: BasicInfo }];
     default:
   }
 });
@@ -301,7 +359,7 @@ const data = reactive({
   form: {},
 });
 
-const { daAssetDetail, rules } = toRefs(data);
+const { daAssetDetail } = toRefs(data);
 
 /** 复杂详情页面上方表单查询 */
 function getDaAssetDetailById() {
@@ -311,19 +369,36 @@ function getDaAssetDetailById() {
   const _id = id;
   getDaAsset(_id).then((response) => {
     daAssetDetail.value = response.data;
-    if (response.data.type == '5') {
-      daAssetDetail.value.daAssetVideo.config = JSON.parse(response.data.daAssetVideo.config)
+    descList.value.forEach((item) => {
+      item.value = response.data[item.key];
+    });
+    if (response.data.type == "5") {
+      daAssetDetail.value.daAssetVideo.config = JSON.parse(response.data.daAssetVideo.config);
     }
   });
 }
 
 onActivated(() => {
-  activeName.value = "1";
+  activeName.value = "0";
   getDaAssetDetailById();
   // listDaAssetColumn();
 });
-activeName.value = "1";
-getDaAssetDetailById();
-tabPanes.value = []
+onBeforeUnmount(() => {
+  // 清空参数或重置状态
+  data.daAssetDetail = {};
+  data.form = {};
+  activeName.value = "0"; // 重置tab页
+});
 // listDaAssetColumn();
 </script>
+<style lang="scss" scoped>
+.li-type {
+  display: flex;
+  align-items: center;
+
+  img {
+    width: 18px;
+    margin: 0 5px;
+  }
+}
+</style>

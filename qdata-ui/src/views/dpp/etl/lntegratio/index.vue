@@ -86,7 +86,6 @@ import ExcelInputForm from "../components/formComponents/ExcelInputForm.vue";
 import OrderConfig from "../components/formComponents/OrderConfig.vue";
 import FieldPreviewDialog from "../components/formComponents/components/FieldPreviewDialog.vue";
 import FieldBuilder from "../components/formComponents/FieldBuilder.vue";
-
 import taskConfigDialog from "../components//taskConfigDialog.vue";
 import useUserStore from "@/store/system/user";
 import { deptUserTree } from "@/api/system/system/user.js";
@@ -776,13 +775,47 @@ function handleEdgeConnected({ edge }) {
 // 更新目标节点的数据
 function updateTargetNodeData(source, target, edge) {
   const childNodes = getAllChildNodes(source, graph);
+
+  // 更新子节点的数据
   childNodes.forEach((childNode) => {
     if (childNode.data?.taskParams) {
-      childNode.data.taskParams.tableFields =
-        source.data.taskParams.tableFields;
+      childNode.data.taskParams.inputFields =
+        source.data.taskParams.outputFields;
+      childNode.data.taskParams.tableFields = [];
+      childNode.data.taskParams.outputFields =
+        source.data.taskParams.inputFields;
       childNode.data = { ...childNode.data };
     }
   });
+
+  const needBindCleanRule =
+    source.data.componentType == 1 &&
+    source.data.taskParams?.clmt != 2 &&
+    target.data.componentType == 31 && (target.data?.taskParams?.inputFields?.length ?? 0) > 0
+  edge;
+
+  if (needBindCleanRule) {
+    ElMessageBox.confirm(
+      '是否要给转换组件添加输入组件绑定的清洗规则？',
+      '提示',
+      {
+        confirmButtonText: '是',
+        cancelButtonText: '否',
+        type: 'warning'
+      }
+    ).then(() => {
+      // 调用方法生成规则配置
+      const result = renameRuleToRuleConfig(target.data.taskParams.inputFields);
+      console.log("🚀 ~ updateTargetNodeData ~ result:", result)
+      proxy.$message.success(`添加清洗规则 ${result?.length || 0} 条`);
+      // 给目标节点赋值
+      if (target.data?.taskParams) {
+        target.data.taskParams.tableFields = result;
+        target.data = { ...target.data };
+      }
+    }).catch(() => {
+    });
+  }
 }
 // 处理边右键菜单事件
 function handleEdgeContextMenu(event) {

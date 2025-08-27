@@ -76,11 +76,3 @@ export function DlEPutDpDataElemRuleRel(id) {
   });
 }
 
-// 数据集成 查询 
-export function listDpDataElemRuleRelV2(query) {
-  return request({
-    url: '/da/daAsset/listRelRule/v2',
-    method: 'get',
-    params: query
-  })
-}

@@ -119,14 +119,14 @@
       <div style="text-align: right">
         <el-button @click="closeDialog">关闭</el-button>
         <el-button type="primary" @click="saveData" v-if="!info">保存</el-button>
-        <!-- <el-tooltip content="会自动获取资产关联的数据元中的清洗规则" placement="top">
+        <el-tooltip content="会自动获取资产关联的数据元中的清洗规则" placement="top">
           <el-button type="warning" @click="renameRuleToRule">
             <el-icon style="margin-right: 4px;">
               <Refresh />
             </el-icon>
             获取清洗规则
           </el-button>
-        </el-tooltip> -->
+        </el-tooltip>
 
       </div>
     </template>

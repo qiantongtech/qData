@@ -73,12 +73,12 @@
 
     <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum"
         v-model:limit="queryParams.pageSize" @pagination="getList" />
-    <!-- <RuleSelectorDialog ref="ruleSelectorDialog" @confirm="RuleSelectorconfirm" :type="3" /> -->
+    <RuleSelectorDialog ref="ruleSelectorDialog" @confirm="RuleSelectorconfirm" :type="3" />
 </template>
 
 <script setup name="dataElemClean">
 import { ref, watch } from 'vue';
-// import RuleSelectorDialog from '@/views/dpp/etl/components/formComponents/components/Rule/RuleSelectorDialog.vue';
+import RuleSelectorDialog from '@/views/dpp/etl/components/formComponents/components/Rule/RuleSelectorDialog.vue';
 import { listDpDataElemRuleRel, dpDataElemRuleRel, putDpDataElemRuleRel, DlEPutDpDataElemRuleRel } from '@/api/dp/dataElem/dpDataElemRuleRel';
 const { proxy } = getCurrentInstance();
 

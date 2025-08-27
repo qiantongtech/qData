@@ -193,7 +193,6 @@
             </el-form-item>
           </el-col>
         </el-row>
-
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="负责人" prop="personCharge">
@@ -286,7 +285,6 @@ const { column_type, sys_disable, dp_data_elem_code_type, dp_document_type } = p
   "dp_data_elem_code_type",
   "dp_document_type"
 );
-
 const deptOptions = ref(undefined);
 const leftWidth = ref(300); // 初始左侧宽度
 const isResizing = ref(false); // 判断是否正在拖拽
@@ -531,6 +529,7 @@ function handleUpdate(row) {
     form.value = response.data;
     dpDataElemRuleRelList.value = response.data.dpDataElemRuleRelList;
     form.value.personCharge = Number(response.data.personCharge);
+    // fetchSecondLevelDocs(form.value.documentType);
     open.value = true;
     title.value = "修改数据元";
   });

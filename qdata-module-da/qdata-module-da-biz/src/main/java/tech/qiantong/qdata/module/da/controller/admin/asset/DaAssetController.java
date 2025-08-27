@@ -176,4 +176,11 @@ public class DaAssetController extends BaseController {
         return CommonResult.toAjax(daAssetService.removeDaAsset(ID));
     }
 
+    @Log(title = "触发一次定时任务", businessType = BusinessType.UPDATE)
+    @PutMapping("/startDaDiscoveryTask")
+    public AjaxResult startDaDiscoveryTask(@Valid @RequestBody DaAssetSaveReqVO daAsset)
+    {
+        return daAssetService.startDaAssetDatasourceTask(daAsset.getId());
+    }
+
 }

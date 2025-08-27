@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.qiantong.qdata.common.constant.CacheConstants;
+import tech.qiantong.qdata.common.core.domain.AjaxResult;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.core.redis.RedisCache;
 import tech.qiantong.qdata.common.database.DataSourceFactory;
@@ -1065,4 +1066,114 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
     private void updateDaAssetColumnNew(DaAssetSaveReqVO daAsset) {
         return;
     }
+
+
+
+    @Override
+    public AjaxResult startDaAssetDatasourceTask(Long id) {
+        if (id != null) {
+            DaAssetRespVO daAssetById = this.getDaAssetById(id);
+            if (StringUtils.equals("1", daAssetById.getType())) {
+                // 如需特殊处理，填写逻辑
+            }
+
+            DaDatasourceDO daDatasourceById = iDaDatasourceService.getDaDatasourceById(daAssetById.getDatasourceId());
+            DbQueryProperty dbQueryProperty = new DbQueryProperty(
+                    daDatasourceById.getDatasourceType(),
+                    daDatasourceById.getIp(),
+                    daDatasourceById.getPort(),
+                    daDatasourceById.getDatasourceConfig()
+            );
+            if (!isCountSupported(dbQueryProperty.getDbType())) {
+                throw new DataQueryException("暂不支持此类型数据源，请联系管理员！");
+            }
+
+            DbQuery dbQuery = dataSourceFactory.createDbQuery(dbQueryProperty);
+            if (!dbQuery.valid()) {
+                throw new DataQueryException("数据库连接失败");
+            }
+
+            updateAssetFieldAndDataCount(dbQuery, dbQueryProperty, daAssetById);
+            dbQuery.close();
+
+        } else {
+            DaAssetPageReqVO daAsset = new DaAssetPageReqVO();
+            daAsset.setType("1");
+            List<DaAssetDO> daAssetList = this.getDaAssetList(daAsset);
+
+            Map<Long, List<DaAssetDO>> datasourceGroupMap = daAssetList.stream()
+                    .collect(Collectors.groupingBy(DaAssetDO::getDatasourceId));
+
+            for (Map.Entry<Long, List<DaAssetDO>> entry : datasourceGroupMap.entrySet()) {
+                Long datasourceId = entry.getKey();
+                List<DaAssetDO> assets = entry.getValue();
+
+                DaDatasourceDO datasource = iDaDatasourceService.getDaDatasourceById(datasourceId);
+                if (datasource == null) {
+                    continue;
+                }
+                DbQueryProperty dbQueryProperty = new DbQueryProperty(
+                        datasource.getDatasourceType(),
+                        datasource.getIp(),
+                        datasource.getPort(),
+                        datasource.getDatasourceConfig()
+                );
+                if (!isCountSupported(dbQueryProperty.getDbType())) {
+                    continue;
+                }
+
+                DbQuery dbQuery = dataSourceFactory.createDbQuery(dbQueryProperty);
+                try {
+                    if (!dbQuery.valid()) {
+                        // 记录日志并跳过该数据源
+                        continue;
+                    }
+                } catch (Exception e) {
+                    continue;
+                }
+
+                for (DaAssetDO asset : assets) {
+                    updateAssetFieldAndDataCount(dbQuery, dbQueryProperty, asset);
+                }
+
+                dbQuery.close();
+            }
+        }
+
+        return AjaxResult.success("任务完成");
+    }
+
+
+    private void updateAssetFieldAndDataCount(DbQuery dbQuery, DbQueryProperty dbQueryProperty, DaAssetDO assetDO) {
+        List<DbColumn> tableColumns = dbQuery.getTableColumns(dbQueryProperty, assetDO.getTableName());
+        int tableColumnsSize = CollectionUtils.isEmpty(tableColumns) ? 0 : tableColumns.size();
+
+        int dataCount = dbQuery.countNew(assetDO.getTableName(), new HashMap<>());
+
+        DaAssetSaveReqVO updateObj = BeanUtils.toBean(assetDO, DaAssetSaveReqVO.class);
+        updateObj.setFieldCount((long) tableColumnsSize);
+        updateObj.setDataCount((long) dataCount);
+
+        this.updateDaAsset(updateObj);
+    }
+
+    private void updateAssetFieldAndDataCount(DbQuery dbQuery, DbQueryProperty dbQueryProperty, DaAssetRespVO assetVO) {
+        DaAssetDO assetDO = BeanUtils.toBean(assetVO, DaAssetDO.class);
+        updateAssetFieldAndDataCount(dbQuery, dbQueryProperty, assetDO);
+    }
+
+
+    private boolean isCountSupported(String datasourceType) {
+        return StringUtils.isNotBlank(datasourceType)
+                && COUNT_SUPPORTED_TYPES.contains(datasourceType);
+    }
+
+    private static final Set<String> COUNT_SUPPORTED_TYPES = new HashSet<>(Arrays.asList(
+            DbType.MYSQL.getDb()
+            , DbType.ORACLE.getDb()
+            , DbType.ORACLE_12C.getDb()
+            , DbType.DM8.getDb()
+            , DbType.KINGBASE8.getDb()
+    ));
+
 }

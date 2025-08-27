@@ -3,11 +3,13 @@ package tech.qiantong.qdata.spark.etl.transition;
 import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.spark.sql.Column;
-import org.apache.spark.sql.Dataset;
-import org.apache.spark.sql.Row;
-import org.apache.spark.sql.functions;
+import org.apache.spark.sql.*;
+import org.apache.spark.sql.expressions.Window;
+import org.apache.spark.sql.expressions.WindowSpec;
+import org.apache.spark.sql.types.DataType;
+import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.StructType;
 import tech.qiantong.qdata.spark.etl.utils.LogUtils;
 
@@ -27,6 +29,13 @@ import static org.apache.spark.sql.functions.*;
  **/
 public class CleanTransition {
 
+    /**
+     * 新
+     * @param dataset
+     * @param transition
+     * @param logPath
+     * @return
+     */
     public static Dataset<Row> transition(Dataset<Row> dataset, JSONObject transition, String logPath) {
         LogUtils.writeLog(logPath, "*********************************  Initialize task context  ***********************************");
         LogUtils.writeLog(logPath, "开始转换节点");
@@ -35,98 +44,120 @@ public class CleanTransition {
 
         JSONObject parameter = transition.getJSONObject("parameter");
         // 获取需要处理的列名
-        List<Map<String, Object>> columnList = (List<Map<String, Object>>) parameter.get("cleanRuleList");
+        List<Map<String, Object>> tableFieldList = (List<Map<String, Object>>) parameter.get("tableFields");
 
+        if (tableFieldList == null || tableFieldList.isEmpty()) {
+            return transitionOld(dataset,transition,logPath);
+        }
+
+        String where = parameter.getString("where");
+        if(StringUtils.isNotEmpty(where)){
+            dataset = safeFilter(dataset, where, logPath);
+        }
         // 对每个列应用数据处理
-        for (Map<String, Object> columnConfig : columnList) {
-            String columnName = (String) columnConfig.get("columns");
-            List<Map<String, Object>> cleanRules = (List<Map<String, Object>>) columnConfig.get("cleanRules");
+        for (Map<String, Object> rule : tableFieldList) {
+            String ruleCode = MapUtils.getString(rule, "ruleCode");
+            String ruleType = MapUtils.getString(rule, "ruleType");
+            JSONObject ruleConfig = JSONObject.parseObject((String) rule.get("ruleConfig"));
+//            JSONObject ruleConfig = (JSONObject)rule.get("ruleConfig");
+            String whereClause = MapUtils.getString(rule, "whereClause");
+            if(StringUtils.isNotEmpty(whereClause)){
+                dataset = safeFilter(dataset, whereClause, logPath);
+            }
 
-            // 应用数据处理规则
-            for (Map<String, Object> rule : cleanRules) {
-                JSONObject ruleConfig = null;
-                if (rule.containsKey("data") && rule.get("data") != null) {
-                    ruleConfig = JSONObject.parseObject(String.valueOf(rule.get("data")));
-                }
-                switch (Integer.valueOf(rule.get("ruleId").toString())) {
-                    case 8:
-                        dataset = convertCase(dataset, columnName, ruleConfig);
-                        break;
-                    case 9:
-                        dataset = replaceNull(dataset, columnName, ruleConfig);
-                        break;
-                    case 10:
-                        dataset = trimSpace(dataset, columnName);
-                        break;
-                    case 11:
-                        dataset = applyDefaultValue(dataset, columnName, ruleConfig);
-                        break;
-                    case 12:
-                        dataset = computeFieldValue(dataset, columnName, ruleConfig);
-                        break;
-                    case 13:
-                        dataset = normalizeDictValue(dataset, columnName, ruleConfig);
-                        break;
-                    case 14:
-                        dataset = applyRegexReplace(dataset, columnName, ruleConfig);
-                        break;
-                }
+            // 执行前检查字段是否存在
+            if (!checkColumnsExist(dataset, ruleConfig)) {
+                LogUtils.writeLog(logPath, String.format("跳过规则 %s（字段不存在）", ruleCode));
+                continue;
+            }
+
+            switch (ruleType) {
+                case "WITHIN_BOUNDARY": // 数值边界调整
+                    dataset = applyNumericBoundary(dataset, ruleConfig);
+                    break;
+                case "REMOVE_EMPTY_COMBINATION": // 组合字段为空删除
+                    dataset = applyDeleteIfAllNull(dataset, ruleConfig);
+                case "ADD_PREFIX_SUFFIX": // 字段前/后缀统一
+                    dataset = applyPrefixSuffix(dataset, ruleConfig);
+                    break;
+                case "MENU_CUSTOM": // 枚举值映射标准化
+                    dataset = normalizeEnumMapping(dataset, ruleConfig);
+                    break;
+                case "KEEP_LATEST_OR_FIRST": // 按组合字段去重（保留最新或首条）
+                    dataset = deduplicateByFieldsKeepFirst(dataset, ruleConfig);
+                    break;
+                default:
+                    LogUtils.writeLog(logPath, "未知规则：" + ruleCode);
             }
         }
         return dataset;
     }
 
-    /**
-     * 通过正则表达式对字段值进行替换
-     *
-     * @param dataset
-     * @param columnName
-     * @param ruleConfig
-     * @return
-     */
-    private static Dataset<Row> applyRegexReplace(Dataset<Row> dataset, String columnName, JSONObject ruleConfig) {
-        JSONObject config = ruleConfig.getJSONObject("regexValidate");
-        String pattern = config.getString("pattern");         // 正则表达式
-        String replacement = config.getString("replacement"); // 替换内容
-        String resultType = config.getString("resultType"); // 替换type：1-替换成功的，2-替换失败的
-
-        String replaceExpr = String.format("regexp_replace(%s, '%s', '%s')", columnName, pattern, replacement);
-        Column originalCol = functions.col(columnName);
-        Column replacedCol = functions.expr(replaceExpr);
-
-        if ("1".equals(resultType)) {
-            // 替换成功的，保留替换成功的行
-            return dataset.withColumn(columnName, replacedCol)
-                    .filter(originalCol.notEqual(replacedCol));
-        } else if ("2".equals(resultType)) {
-            // 替换失败的，保留未替换行
-            return dataset.withColumn(columnName, replacedCol)
-                    .filter(originalCol.equalTo(replacedCol));
-        } else {
-            // 默认全部替换
-            return dataset.withColumn(columnName, replacedCol);
+    private static Dataset<Row> deduplicateByFieldsKeepFirst(Dataset<Row> ds, JSONObject cfg) {
+        // 1) 读取配置
+        List<String> allCols = Optional.ofNullable(cfg.getJSONArray("columns"))
+                .map(a -> a.toJavaList(String.class))
+                .orElse(Collections.emptyList());
+        if (allCols.isEmpty()) {
+            throw new IllegalArgumentException("规则029配置缺失：columns 不能为空");
         }
+
+        JSONArray sv = cfg == null ? null : cfg.getJSONArray("stringValue");
+        List<JSONObject> sortRules = sv == null ? Collections.emptyList() : sv.toJavaList(JSONObject.class);
+
+        // 2) 无排序规则：直接 dropDuplicates
+        if (sortRules.isEmpty()) {
+            // 仅按分组键去重，保留任意一条（通常是首条），最简也最高效
+            return ds.dropDuplicates(allCols.toArray(new String[0]));
+        }
+
+        // 3) 有排序规则：构建分组键 = columns - 排序字段（防止把排序键也分组进去）
+        Set<String> sortCols = sortRules.stream()
+                .map(o -> o.getString("columns"))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+        List<String> groupCols = allCols.stream()
+                .filter(c -> !sortCols.contains(c))
+                .collect(Collectors.toList());
+        if (groupCols.isEmpty()) {
+            // 全被剔除了就用原 columns 兜底
+            groupCols = allCols;
+        }
+
+        // 4) 构建窗口：按 sort 升序表示优先级；type: 0=desc(最新)，1=asc(最早)
+        Column[] partCols = groupCols.stream().map(functions::col).toArray(Column[]::new);
+        WindowSpec spec = Window.partitionBy(partCols);
+
+        sortRules.sort(Comparator.comparingInt(o -> o.getIntValue("sort"))); // 安全取整，避免NPE
+        List<Column> orders = new ArrayList<>();
+        for (JSONObject r : sortRules) {
+            String c = r.getString("columns");
+            int t = r.getIntValue("type"); // "0"/"1" 也能解析
+            orders.add(t == 0 ? functions.col(c).desc() : functions.col(c).asc());
+        }
+        spec = spec.orderBy(orders.toArray(new Column[0]));
+
+        // 5) 取第一条
+        Dataset<Row> withRN = ds.withColumn("__rn", functions.row_number().over(spec));
+        return withRN.filter(functions.col("__rn").equalTo(1)).drop("__rn");
     }
 
-    /**
-     * 将字段值根据字典转换为标准值
-     *
-     * @param dataset
-     * @param columnName
-     * @param ruleConfig
-     * @return
-     */
-    private static Dataset<Row> normalizeDictValue(Dataset<Row> dataset, String columnName, JSONObject ruleConfig) {
-        JSONArray dictValueList = ruleConfig.getJSONArray("dictValueList");
+    private static Dataset<Row> normalizeEnumMapping(Dataset<Row> dataset, JSONObject cfg) {
+        String col = cfg.getJSONArray("columns").getString(0);
+        List<JSONObject> list = cfg.getList("stringValue", JSONObject.class);
+//        String handleType = cfg.getString("handleType"); // "1-加前缀" / "2-加后缀"
 
+        if (StringUtils.isBlank(col) || list == null || list.size() < 1) {
+            throw new IllegalArgumentException("规则024配置缺失：columns/stringValue 不能为空");
+        }
         // 构建 when...otherwise 的表达式
         Column mappedColumn = null;
-        for (int i = 0; i < dictValueList.size(); i++) {
-            JSONObject dict = dictValueList.getJSONObject(i);
-            String originalValue = dict.getString("originalValue");
-            String dictValue = dict.getString("dictValue");
+        for (int i = 0; i < list.size(); i++) {
+            JSONObject dict = list.get(i);
+            String originalValue = dict.getString("value");
+            String dictValue = dict.getString("name");
 
-            Column condition = functions.col(columnName).equalTo(originalValue);
+            Column condition = functions.col(col).equalTo(originalValue);
             Column result = functions.lit(dictValue);
 
             if (mappedColumn == null) {
@@ -137,139 +168,199 @@ public class CleanTransition {
         }
 
         // 所有都不匹配则返回原值
-        mappedColumn = mappedColumn.otherwise(functions.col(columnName));
+        mappedColumn = mappedColumn.otherwise(functions.col(col));
 
         // 替换列
-        return dataset.withColumn(columnName, mappedColumn);
+        return dataset.withColumn(col, mappedColumn);
     }
 
-    /**
-     * 根据规则进行数值字段的计算
-     *
-     * @param dataset
-     * @param columnName 计算后存储的字段
-     * @param ruleConfig
-     * @return
-     */
-    private static Dataset<Row> computeFieldValue(Dataset<Row> dataset, String columnName, JSONObject ruleConfig) {
-        JSONArray tokens = ruleConfig.getJSONArray("tokens");
-        StructType schema = dataset.schema();
-        Set<String> columnNames = Arrays.stream(schema.fieldNames()).collect(Collectors.toSet());
+    private static Dataset<Row> applyPrefixSuffix(Dataset<Row> dataset, JSONObject cfg) {
+        String colName = cfg.getJSONArray("columns").getString(0);
+        String stringValue = cfg.getString("stringValue");
+        String handleType = cfg.getString("handleType"); // "1" 前缀；"2" 后缀；
 
-        StringBuilder exprBuilder = new StringBuilder();
+        if (StringUtils.isBlank(colName) || StringUtils.isBlank(stringValue) || StringUtils.isBlank(handleType)) {
+            throw new IllegalArgumentException("规则107配置缺失：columns/stringValue/handleType 不能为空");
+        }
 
-        for (int i = 0; i < tokens.size(); i++) {
-            JSONObject token = tokens.getJSONObject(i);
-            String type = token.getString("type");
+        if (!("1".equals(handleType) || "2".equals(handleType) || "3".equals(handleType) || "4".equals(handleType))) {
+            throw new IllegalArgumentException("规则107 handleType 非法：" + handleType);
+        }
 
-            switch (type) {
-                case "leftParen":
-                    exprBuilder.append("(");
-                    break;
-                case "rightParen":
-                    exprBuilder.append(")");
-                    break;
-                case "field":
-                    String fieldName = token.getString("value");
-                    String fieldType = token.getString("valueType"); // 每个字段自己的类型
+        Column c = col(colName).cast("string");
+        String sv = stringValue;
 
-                    if (columnNames.contains(fieldName)) {
-                        if ("string".equalsIgnoreCase(fieldType)) {
-                            exprBuilder.append("coalesce(cast(`").append(fieldName).append("` as string), '')");
-                        } else {
-                            exprBuilder.append("coalesce(`").append(fieldName).append("`, 0)");
-                        }
-                    } else {
-                        exprBuilder.append("string".equalsIgnoreCase(fieldType) ? "''" : "0");
-                    }
-                    break;
-                case "constant":
-                    String constantValue = token.getString("value");
-                    String constType = token.getString("valueType");
-                    if ("string".equalsIgnoreCase(constType)) {
-                        exprBuilder.append("'").append(constantValue.replace("'", "\\'")).append("'");
-                    } else {
-                        exprBuilder.append(constantValue);
-                    }
-                    break;
-                case "operator":
-                    exprBuilder.append(" ").append(token.getString("value")).append(" ");
-                    break;
-                default:
-                    throw new IllegalArgumentException("不支持的 token 类型: " + type);
+        //以下是检验发小写，如果前缀大写，库里小写，依旧拼接
+        switch (handleType) {
+            case "1": // 加前缀
+                dataset = dataset.withColumn(
+                        colName,
+                        when(c.isNull(), lit(null))
+                                .when(c.startsWith(sv), c) // 区分大小写判断已有前缀
+                                .otherwise(concat(lit(sv), c))
+                );
+                break;
+
+            case "2": // 加后缀
+                dataset = dataset.withColumn(
+                        colName,
+                        when(c.isNull(), lit(null))
+                                .when(c.endsWith(sv), c) // 区分大小写判断已有后缀
+                                .otherwise(concat(c, lit(sv)))
+                );
+                break;
+
+            case "3": // 去除匹配上的前缀
+                dataset = dataset.withColumn(
+                        colName,
+                        when(c.isNull(), lit(null))
+                                .when(c.startsWith(sv), overlay(c, lit(""), lit(1), lit(sv.length()))) // 删掉开头 sv.length() 个字符
+                                .otherwise(c)
+                );
+                break;
+
+            case "4": // 去除匹配上的后缀
+                dataset = dataset.withColumn(
+                        colName,
+                        when(c.isNull(), lit(null))
+                                .when(c.endsWith(sv),
+                                        overlay(
+                                                c,
+                                                lit(""),
+                                                length(c).minus(lit(sv.length())).plus(lit(1)), // 起始位置：len - svLen + 1
+                                                lit(sv.length())                               // 删除长度：svLen
+                                        ))// 从头截取到后缀前
+                                .otherwise(c)
+                );
+                break;
+        }
+
+        return dataset;
+    }
+
+    private static Dataset<Row> safeFilter(Dataset<Row> dataset, String where, String logPath) {
+        if (StringUtils.isBlank(where)) {
+            return dataset;
+        }
+
+        // 获取所有列名（转小写方便比较）
+        Set<String> columnSet = Arrays.stream(dataset.columns())
+                .map(String::toLowerCase)
+                .collect(Collectors.toSet());
+
+        // 简单提取 where 中出现的字段名（按空格、符号拆分）
+        String[] tokens = where.replaceAll("[()><=!,]", " ")
+                .trim()
+                .split("\\s+");
+        for (String token : tokens) {
+            if (token.matches("^[a-zA-Z_][a-zA-Z0-9_]*$") && !columnSet.contains(token.toLowerCase())) {
+                String msg = "过滤条件字段不存在: " + token;
+                LogUtils.writeLog(logPath, msg);
+                throw new IllegalArgumentException(msg);
             }
         }
 
-        return dataset.withColumn(columnName, functions.expr(exprBuilder.toString()));
+        try {
+            dataset.selectExpr("*").filter(where).limit(1).count();
+        } catch (Exception e) {
+            String msg = "过滤条件解析失败: " + where + "，错误信息：" + e.getMessage();
+            LogUtils.writeLog(logPath, msg);
+            throw new IllegalArgumentException(msg, e);
+        }
+
+        // 通过校验后执行
+        return dataset.filter(where);
+    }
+
+
+    /**
+     * 检查字段是否存在
+     */
+    private static boolean checkColumnsExist(Dataset<Row> dataset, JSONObject ruleConfig) {
+        List<String> allColumns = Arrays.asList(dataset.columns());
+        List<String> targetCols = new ArrayList<>();
+
+        if (ruleConfig.containsKey("columns")) {
+            targetCols.addAll(ruleConfig.getJSONArray("columns").toJavaList(String.class));
+        } else if (ruleConfig.containsKey("columnName")) {
+            targetCols.add(ruleConfig.getString("columnName"));
+        }
+
+        return allColumns.containsAll(targetCols);
     }
 
     /**
-     * 为空字段填入默认值
-     *
-     * @param dataset
-     * @param columnName
-     * @param ruleConfig
-     * @return
+     * 数值边界调整
      */
-    private static Dataset<Row> applyDefaultValue(Dataset<Row> dataset, String columnName, JSONObject ruleConfig) {
-        JSONObject config = ruleConfig.getJSONObject("defaultValueFill");
-        return dataset.withColumn(
-                columnName,
-                lit(config.getString("value"))
-        );
-    }
+    private static Dataset<Row> applyNumericBoundary(Dataset<Row> dataset, JSONObject cfg) {
+        String col = cfg.getJSONArray("columns").getString(0);
+        double min = cfg.getDoubleValue("min");
+        double max = cfg.getDoubleValue("max");
+        int handleType = cfg.getIntValue("handleType");
 
-    /**
-     * 字符串大小写转换
-     *
-     * @param dataset    输入数据集
-     * @param columnName 需要转换的列名
-     * @param ruleConfig 规则配置
-     *                   {
-     *                   "toggleCase": {
-     *                   "type": "1"//1:大写转换，2:小写转换
-     *                   }
-     *                   }
-     * @return 处理后的数据集
-     */
-    public static Dataset<Row> convertCase(Dataset<Row> dataset, String columnName, JSONObject ruleConfig) {
-        JSONObject config = ruleConfig.getJSONObject("toggleCase");
-        if (StringUtils.equals("1", config.getString("type"))) {
-            return dataset.withColumn(columnName, upper(col(columnName)));
-        } else {
-            return dataset.withColumn(columnName, lower(col(columnName)));
+        Column target = dataset.col(col);
+        switch (handleType) {
+            case 1:
+                return dataset.withColumn(col,
+                        functions.when(target.lt(min), min)
+                                .when(target.gt(max), max)
+                                .otherwise(target)
+                );
+            case 2:
+                return dataset.withColumn(col,
+                        functions.when(target.lt(min).or(target.gt(max)), min).otherwise(target)
+                );
+            case 3:
+                return dataset.withColumn(col,
+                        functions.when(target.lt(min).or(target.gt(max)), max).otherwise(target)
+                );
+            default:
+                return dataset;
         }
     }
 
-
     /**
-     * 移除字符串首尾空格
-     *
-     * @param dataset    输入数据集
-     * @param columnName 需要处理的列名
-     * @return 处理后的数据集
+     * 组合字段为空删除
      */
-    public static Dataset<Row> trimSpace(Dataset<Row> dataset, String columnName) {
-        return dataset.withColumn(columnName, trim(col(columnName)));
+    private static Dataset<Row> applyDeleteIfAllNull(Dataset<Row> dataset, JSONObject cfg) {
+        List<String> cols = cfg.getJSONArray("columns").toJavaList(String.class);
+        if (cols == null || cols.isEmpty()) return dataset;
+
+        // 列存在性校验
+        Set<String> exists = new HashSet<>(Arrays.asList(dataset.columns()));
+        List<String> missing = cols.stream().filter(c -> !exists.contains(c)).collect(Collectors.toList());
+        if (!missing.isEmpty()) {
+            throw new IllegalArgumentException("组合判空配置包含不存在的列：" + missing);
+        }
+
+        StructType schema = dataset.schema();
+        Column allNullCond = functions.lit(true);
+
+        for (String c : cols) {
+            DataType t = schema.apply(c).dataType();
+
+            // NULL 判定
+            Column isNull = functions.col(c).isNull();
+
+            // 空白串判定（先统一转 string 再 trim）
+            Column isBlank = functions.trim(functions.col(c).cast("string")).equalTo("");
+
+            // 数值 NaN 判定
+            Column isEmpty = isNull.or(isBlank);
+            if (t.sameType(DataTypes.FloatType) || t.sameType(DataTypes.DoubleType)) {
+                isEmpty = isEmpty.or(functions.isnan(functions.col(c)));
+            }
+
+            allNullCond = allNullCond.and(isEmpty);
+        }
+
+        return dataset.filter(functions.not(allNullCond));
     }
 
-    /**
-     * 空值替换
-     *
-     * @param dataset    输入数据集
-     * @param columnName 需要处理的列名
-     * @param ruleConfig 规则配置
-     *                   {
-     *                   "nullReplace": {
-     *                   "value": "1"//替换内容
-     *                   }
-     *                   }
-     * @return 处理后的数据集
-     */
-    public static Dataset<Row> replaceNull(Dataset<Row> dataset, String columnName, JSONObject ruleConfig) {
-        JSONObject config = ruleConfig.getJSONObject("nullReplace");
-        return dataset.withColumn(columnName,
-                coalesce(col(columnName), lit(config.getString("value"))));
+    public static Dataset<Row> transitionOld(Dataset<Row> dataset, JSONObject transition, String logPath) {
+        LogUtils.writeLog(logPath, "*********************************  Initialize task context  ***********************************");
+        LogUtils.writeLog(logPath, "版本重构，历史版本不再做支撑，可查看最新逻辑重新配置");
+        return dataset;
     }
 
 }

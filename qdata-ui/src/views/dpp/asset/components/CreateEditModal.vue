@@ -82,8 +82,8 @@
       <!-- <el-divider content-position="center" v-if="form.id != undefined || form.createType == '2'">
         <span class="blue-text">参数配置</span>
       </el-divider> -->
-      <component :is="currentFormComponent" v-model:form="form" ref="ApiConfigRef"
-        v-if="form.createType == '2'" :isRegister="props.isRegister" :type="props.type"/>
+      <component :is="currentFormComponent" v-model:form="form" ref="ApiConfigRef" v-if="form.createType == '2'"
+        :isRegister="props.isRegister" :type="props.type" />
       <el-row :gutter="20" v-if="form.type == '111' && (form.id != undefined || form.createType == '2')">
         <el-col :span="12">
           <el-form-item label="服务类型" prop="daAssetGis.type"
@@ -149,10 +149,8 @@ import { defineProps, defineEmits, ref, computed, watch } from "vue";
 // import { getDaDiscoveryTask } from "@/api/da/discovery/daDiscoveryTask";
 
 import TableConfigForm from "./TableConfigForm";
-import ApiConfigForm from "./ApiConfigForm";
 import daAssetVideo from "./daAssetVideo.vue";
 import excelAdd from "./excelAdd.vue";
-import Unstructured from "./unstructured.vue";
 import { getThemeList } from "@/api/att/theme/attTheme";
 import useUserStore from "@/store/system/user";
 const userStore = useUserStore();
@@ -183,14 +181,7 @@ const currentFormComponent = computed(() => {
   switch (form.value.type) {
     case "1":
       return TableConfigForm;
-    case "2":
-      return ApiConfigForm;
-    // case "5":
-    //   return daAssetVideo;
-    // case "6":
-    //   return excelAdd;
-    case "7":
-      return Unstructured;
+
     default:
       return null;
   }

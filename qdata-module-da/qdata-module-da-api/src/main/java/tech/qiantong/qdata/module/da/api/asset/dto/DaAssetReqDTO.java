@@ -62,6 +62,8 @@ public class DaAssetReqDTO {
     private Long modelId;
 
 
+    @Schema(description = "创建类型", example = "")
+    private String createType;
 
 
 }

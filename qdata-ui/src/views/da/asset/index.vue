@@ -535,7 +535,7 @@ import { getToken } from "@/utils/auth.js";
 import { addDaAssetApply } from "@/api/da/daAssetApply/daAssetApply";
 import useUserStore from "@/store/system/user";
 import { getThemeList } from "@/api/att/theme/attTheme.js";
-import { listAttTag, listDict } from "@/api/att/cat/attTag/AttTag.js";
+// import { listAttTag, listDict } from "@/api/att/cat/attTag/AttTag.js";
 import { addAttTagAssetRel } from "@/api/att/cat/Rel/AttTagAssetRel.js";
 const { proxy } = getCurrentInstance();
 const { da_assets_status, da_asset_source, da_asset_type } = proxy.useDict(
@@ -816,7 +816,7 @@ function getList() {
       loading.value = false;
     });
   }
-  getListTag();
+  // getListTag();
 }
 
 // 取消按钮
@@ -1085,11 +1085,11 @@ function routeTo(link, row) {
 /**
  * 标签管理
  */
-function getListTag() {
-  listDict().then((response) => {
-    AttTagList.value = response.data;
-  });
-}
+// function getListTag() {
+//   listDict().then((response) => {
+//     AttTagList.value = response.data;
+//   });
+// }
 
 function submitTag() {
   let map = {

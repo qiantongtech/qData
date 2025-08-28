@@ -121,4 +121,6 @@ public class DaAssetDO extends BaseEntity {
     @Schema(description = "项目编码", example = "")
     @TableField(exist = false)
     private String projectCode;
+    @Schema(description = "创建类型", example = "")
+    private String createType;
 }

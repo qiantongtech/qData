@@ -7,6 +7,7 @@ import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.module.da.controller.admin.asset.vo.DaAssetPageReqVO;
 import tech.qiantong.qdata.module.da.controller.admin.asset.vo.DaAssetRespVO;
 import tech.qiantong.qdata.module.da.controller.admin.asset.vo.DaAssetSaveReqVO;
+import tech.qiantong.qdata.module.da.controller.admin.assetColumn.vo.DaAssetColumnRelRuleVO;
 import tech.qiantong.qdata.module.da.controller.admin.assetColumn.vo.DaAssetColumnSaveReqVO;
 import tech.qiantong.qdata.module.da.dal.dataobject.asset.DaAssetDO;
 
@@ -124,4 +125,8 @@ public interface IDaAssetService extends IService<DaAssetDO> {
     int updateDaAssetNew(DaAssetSaveReqVO daAsset);
 
     AjaxResult startDaAssetDatasourceTask(Long id);
+
+    List<DaAssetColumnRelRuleVO> listRelRule(Long id, String type);
+
+    List<DaAssetColumnRelRuleVO> listRelRule(Long datasourceId, String tableName, String type);
 }

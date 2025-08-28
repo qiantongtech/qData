@@ -21,6 +21,7 @@ import tech.qiantong.qdata.common.utils.poi.ExcelUtil;
 import tech.qiantong.qdata.module.da.controller.admin.asset.vo.DaAssetPageReqVO;
 import tech.qiantong.qdata.module.da.controller.admin.asset.vo.DaAssetRespVO;
 import tech.qiantong.qdata.module.da.controller.admin.asset.vo.DaAssetSaveReqVO;
+import tech.qiantong.qdata.module.da.controller.admin.assetColumn.vo.DaAssetColumnRelRuleVO;
 import tech.qiantong.qdata.module.da.convert.asset.DaAssetConvert;
 import tech.qiantong.qdata.module.da.dal.dataobject.asset.DaAssetDO;
 import tech.qiantong.qdata.module.da.service.asset.IDaAssetService;
@@ -183,4 +184,17 @@ public class DaAssetController extends BaseController {
         return daAssetService.startDaAssetDatasourceTask(daAsset.getId());
     }
 
+    @GetMapping("/listRelRule")
+    public CommonResult<List<DaAssetColumnRelRuleVO>> listRelRule(@RequestParam Long id, @RequestParam String type) {
+        List<DaAssetColumnRelRuleVO> vos = daAssetService.listRelRule(id, type);
+        return CommonResult.success(vos);
+    }
+
+    @GetMapping("/listRelRule/v2")
+    public CommonResult<List<DaAssetColumnRelRuleVO>> listRelRule(@RequestParam Long datasourceId,
+                                                                  @RequestParam String tableName,
+                                                                  @RequestParam String type) {
+        List<DaAssetColumnRelRuleVO> vos = daAssetService.listRelRule(datasourceId, tableName, type);
+        return CommonResult.success(vos);
+    }
 }

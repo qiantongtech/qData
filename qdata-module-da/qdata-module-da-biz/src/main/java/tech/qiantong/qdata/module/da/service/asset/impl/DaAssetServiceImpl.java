@@ -31,6 +31,7 @@ import tech.qiantong.qdata.module.da.controller.admin.asset.vo.DaAssetPageReqVO;
 import tech.qiantong.qdata.module.da.controller.admin.asset.vo.DaAssetRespVO;
 import tech.qiantong.qdata.module.da.controller.admin.asset.vo.DaAssetSaveReqVO;
 import tech.qiantong.qdata.module.da.controller.admin.assetColumn.vo.DaAssetColumnPageReqVO;
+import tech.qiantong.qdata.module.da.controller.admin.assetColumn.vo.DaAssetColumnRelRuleVO;
 import tech.qiantong.qdata.module.da.controller.admin.assetColumn.vo.DaAssetColumnSaveReqVO;
 import tech.qiantong.qdata.module.da.controller.admin.assetchild.api.vo.DaAssetApiParamRespVO;
 import tech.qiantong.qdata.module.da.controller.admin.assetchild.api.vo.DaAssetApiParamSaveReqVO;
@@ -66,9 +67,12 @@ import tech.qiantong.qdata.module.da.service.assetchild.theme.IDaAssetThemeRelSe
 import tech.qiantong.qdata.module.da.service.assetchild.video.IDaAssetVideoService;
 import tech.qiantong.qdata.module.da.service.datasource.IDaDatasourceService;
 import tech.qiantong.qdata.module.dp.api.dataElem.dto.DpDataElemAssetRelReqDTO;
+import tech.qiantong.qdata.module.dp.api.dataElem.dto.DpDataElemAssetRelRespDTO;
 import tech.qiantong.qdata.module.dp.api.dataElem.dto.DpDataElemRespDTO;
+import tech.qiantong.qdata.module.dp.api.dataElem.dto.DpDataElemRuleRelRespDTO;
 import tech.qiantong.qdata.module.dp.api.model.dto.DpModelColumnRespDTO;
 import tech.qiantong.qdata.module.dp.api.model.dto.DpModelRespDTO;
+import tech.qiantong.qdata.module.dp.api.service.dataElem.IDataElemRuleRelService;
 import tech.qiantong.qdata.module.dp.api.service.model.IDpModelApiService;
 import tech.qiantong.qdata.module.dpp.api.service.etl.DppEtlTaskService;
 import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
@@ -96,6 +100,9 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
 
     @Resource
     private IDpModelApiService iDpModelApiService;
+
+    @Resource
+    private IDataElemRuleRelService elemRuleRelService;
 
     @Resource
     private IDaAssetColumnService iDaAssetColumnService;
@@ -1176,4 +1183,46 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
             , DbType.KINGBASE8.getDb()
     ));
 
+
+
+    @Override
+    public List<DaAssetColumnRelRuleVO> listRelRule(Long id, String type) {
+        List<DaAssetColumnDO> assetColumns = daAssetColumnMapper.findByAssetId(id);
+        if (assetColumns.isEmpty()) {
+            return Collections.emptyList();
+        }
+        Set<Long> columnIds = assetColumns.stream().map(DaAssetColumnDO::getId).collect(Collectors.toSet());
+        List<DpDataElemAssetRelRespDTO> assetRelRespDTOS = iDpModelApiService.getDpDataElemListByColumnIdInApi(columnIds);
+        if (assetRelRespDTOS.isEmpty()) {
+            return Collections.emptyList();
+        }
+        Set<Long> dataElemIds = assetRelRespDTOS.stream().map(DpDataElemAssetRelRespDTO::getDataElemId)
+                .map(Long::valueOf)
+                .collect(Collectors.toSet());
+        List<DpDataElemRuleRelRespDTO> ruleRelRespDTOS = elemRuleRelService.listByDataElemIdList(dataElemIds, type);
+        if (ruleRelRespDTOS.isEmpty()) {
+            return Collections.emptyList();
+        }
+        Map<Long, List<Long>> map = assetRelRespDTOS.stream()
+                .filter(i -> StringUtils.isNotEmpty(i.getColumnId()))
+                .collect(Collectors.groupingBy(i -> Long.valueOf(i.getColumnId()),
+                        Collectors.mapping(i -> Long.valueOf(i.getDataElemId()), Collectors.toList())));
+        return assetColumns.stream()
+                .filter(assetColumn -> CollectionUtils.isNotEmpty(map.get(assetColumn.getId())))
+                .map(assetColumn -> {
+                    List<Long> temp = map.get(assetColumn.getId());
+                    return ruleRelRespDTOS.stream().filter(i -> temp.contains(i.getDataElemId()))
+                            .map(i -> new DaAssetColumnRelRuleVO(assetColumn, i))
+                            .collect(Collectors.toList());
+                }).flatMap(Collection::stream).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<DaAssetColumnRelRuleVO> listRelRule(Long datasourceId, String tableName, String type) {
+        List<DaAssetDO> daAssetDOS = daAssetMapper.findByDatasourceIdAndTableName(datasourceId, tableName);
+        if(daAssetDOS.isEmpty()){
+            return Collections.emptyList();
+        }
+        return daAssetDOS.stream().map(i->listRelRule(i.getId(), type)).flatMap(Collection::stream).collect(Collectors.toList());
+    }
 }

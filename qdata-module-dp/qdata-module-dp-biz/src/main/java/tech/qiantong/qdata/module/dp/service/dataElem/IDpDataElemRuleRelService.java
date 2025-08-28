@@ -82,10 +82,4 @@ public interface IDpDataElemRuleRelService extends IService<DpDataElemRuleRelDO>
      */
     String importDpDataElemRuleRel(List<DpDataElemRuleRelRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
-    /**
-     * 保存关联信息
-     *
-     * @param list
-     */
-    void saveDpDataElemRuleRel(Long dataElemId,String ruleType, List<DpDataElemRuleRelSaveReqVO> list);
 }

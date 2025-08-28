@@ -4,6 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.json.JSONObject;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -23,12 +24,15 @@ import tech.qiantong.qdata.common.utils.poi.ExcelUtil;
 import tech.qiantong.qdata.module.att.api.project.dto.AttProjectReqDTO;
 import tech.qiantong.qdata.module.att.api.project.dto.AttProjectRespDTO;
 import tech.qiantong.qdata.module.da.api.datasource.dto.DatasourceCreaTeTableReqDTO;
+import tech.qiantong.qdata.module.da.controller.admin.assetColumn.vo.DaAssetColumnRelRuleVO;
 import tech.qiantong.qdata.module.da.controller.admin.datasource.vo.DaDatasourcePageReqVO;
 import tech.qiantong.qdata.module.da.controller.admin.datasource.vo.DaDatasourceRespVO;
 import tech.qiantong.qdata.module.da.controller.admin.datasource.vo.DaDatasourceSaveReqVO;
+import tech.qiantong.qdata.module.da.controller.admin.datasource.vo.DaDatasourceTableVO;
 import tech.qiantong.qdata.module.da.convert.datasource.DaDatasourceConvert;
 import tech.qiantong.qdata.module.da.dal.dataobject.assetColumn.DaAssetColumnDO;
 import tech.qiantong.qdata.module.da.dal.dataobject.datasource.DaDatasourceDO;
+import tech.qiantong.qdata.module.da.service.asset.IDaAssetService;
 import tech.qiantong.qdata.module.da.service.datasource.IDaDatasourceService;
 import tech.qiantong.qdata.module.da.service.datasource.impl.DaDatasourceServiceImpl;
 import tech.qiantong.qdata.module.dp.api.model.dto.DpModelColumnReqDTO;
@@ -36,6 +40,7 @@ import tech.qiantong.qdata.module.dp.api.model.dto.DpModelColumnReqDTO;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -50,11 +55,10 @@ import java.util.Map;
 @RestController
 @RequestMapping("/da/daDatasource")
 @Validated
+@RequiredArgsConstructor
 public class DaDatasourceController extends BaseController {
-    @Resource
-    private IDaDatasourceService daDatasourceService;
-    @Resource
-    private DaDatasourceServiceImpl daDatasourceServiceImpl;
+    private final IDaDatasourceService daDatasourceService;
+    private final IDaAssetService daAssetService;
 
     @Operation(summary = "查询数据源列表")
     @PreAuthorize("@ss.hasPermi('da:datasource:datasource:list')")
@@ -219,14 +223,34 @@ public class DaDatasourceController extends BaseController {
     }
 
 
+
+
     @Operation(summary = "获取数据源里面的数据表的数据字段")
     @PreAuthorize("@ss.hasPermi('da:datasource:datasource:query')")
     @PostMapping(value = "/columnsAsAssetColumnList")
-    public AjaxResult columnsAsAssetColumnList(@RequestBody JSONObject jsonObject) {
-        List<DaAssetColumnDO> columns = daDatasourceService.columnsAsAssetColumnList(jsonObject);
-        return success(columns);
+    public CommonResult<List<DaAssetColumnDO>> columnsAsAssetColumnList(@RequestBody @Valid DaDatasourceTableVO param) {
+        List<DaAssetColumnDO> columns = daDatasourceService.columnsAsAssetColumnList(param.getId(), param.getTableName());
+        if (param.getWithRule() == null) {
+            return CommonResult.success(columns);
+        }
+        if (param.getWithRule() != 2 && param.getWithRule() != 1) {
+            return CommonResult.success(columns);
+        }
+        List<DaAssetColumnRelRuleVO> assetColumnRelRuleVOS = daAssetService.listRelRule(param.getId(), param.getTableName(), param.getWithRule().toString());
+        if (assetColumnRelRuleVOS.isEmpty()) {
+            return CommonResult.success(columns);
+        }
+        columns.forEach(i -> i.setCleanRuleList(new ArrayList<>()));
+        for (DaAssetColumnRelRuleVO vo : assetColumnRelRuleVOS) {
+            for (DaAssetColumnDO column : columns) {
+                if (column.getColumnName().equalsIgnoreCase(vo.getAssetColumn().getColumnName())) {
+                    column.getCleanRuleList().add(vo.getElemRuleRel());
+                    break;
+                }
+            }
+        }
+        return CommonResult.success(columns);
     }
-
     @Operation(summary = "")
     @PreAuthorize("@ss.hasPermi('da:datasource:executesqlquery:list')")
     @GetMapping(value = "/executeSqlQuery")

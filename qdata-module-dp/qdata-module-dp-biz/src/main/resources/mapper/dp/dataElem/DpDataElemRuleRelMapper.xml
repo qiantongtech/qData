@@ -53,40 +53,6 @@
         <include refid="selectDpDataElemRuleRelVo"/>
         where ID = #{id}
     </select>
-    <select id="listByDataElemIdList"
-            resultType="tech.qiantong.qdata.module.dp.api.dataElem.dto.DpDataElemRuleRelRespDTO">
-        SELECT
-            rel.ID,
-            rel.DATA_ELEM_ID,
-            rel.RULE_TYPE,
-            rel.RULE_ID,
-            rel.RULE_CONFIG,
-            rel.VALID_FLAG,
-            rel.DEL_FLAG,
-            rel.CREATE_BY,
-            rel.CREATOR_ID,
-            rel.CREATE_TIME,
-            rel.UPDATE_BY,
-            rel.UPDATER_ID,
-            rel.UPDATE_TIME,
-            rel.REMARK,
-            r.NAME as ruleName
-        from
-            DP_DATA_ELEM_RULE_REL rel
-            <if test="ruleType == '1'.toString()">
-                LEFT JOIN ATT_AUDIT_RULE r on rel.RULE_ID = r.ID AND r.DEL_FLAG = 0
-            </if>
-            <if test="ruleType == '2'.toString()">
-                LEFT JOIN ATT_CLEAN_RULE r on rel.RULE_ID = r.ID AND r.DEL_FLAG = 0
-            </if>
-        where
-              rel.RULE_TYPE = #{ruleType}
-              AND rel.DEL_FLAG = 0
-              AND rel.DATA_ELEM_ID in
-             <foreach collection="dataElemIdList" item="id"  open="(" separator="," close=")">
-                #{id}
-             </foreach>
-    </select>
 
     <insert id="insertDpDataElemRuleRel" parameterType="DpDataElemRuleRelDO">
         insert into DP_DATA_ELEM_RULE_REL

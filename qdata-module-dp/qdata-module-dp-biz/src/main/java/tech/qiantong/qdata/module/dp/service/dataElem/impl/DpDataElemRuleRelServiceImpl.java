@@ -1,7 +1,7 @@
 package tech.qiantong.qdata.module.dp.service.dataElem.impl;
 
+import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -46,6 +46,12 @@ public class DpDataElemRuleRelServiceImpl extends ServiceImpl<DpDataElemRuleRelM
 
     @Override
     public Long createDpDataElemRuleRel(DpDataElemRuleRelSaveReqVO createReqVO) {
+        if ("1".equals(createReqVO.getType())) {
+            Assert.notNull(createReqVO.getRuleType(), "ruleType null");
+        }
+        if (createReqVO.getStatus() == null) {
+            createReqVO.setStatus("1");
+        }
         DpDataElemRuleRelDO dictType = BeanUtils.toBean(createReqVO, DpDataElemRuleRelDO.class);
         dpDataElemRuleRelMapper.insert(dictType);
         return dictType.getId();
@@ -53,8 +59,12 @@ public class DpDataElemRuleRelServiceImpl extends ServiceImpl<DpDataElemRuleRelM
 
     @Override
     public int updateDpDataElemRuleRel(DpDataElemRuleRelSaveReqVO updateReqVO) {
-        // 相关校验
-
+        if ("1".equals(updateReqVO.getType())) {
+            Assert.notNull(updateReqVO.getRuleType(), "ruleType null");
+        }
+        if (updateReqVO.getStatus() == null) {
+            updateReqVO.setStatus("1");
+        }
         // 更新数据元数据规则关联信息
         DpDataElemRuleRelDO updateObj = BeanUtils.toBean(updateReqVO, DpDataElemRuleRelDO.class);
         return dpDataElemRuleRelMapper.updateById(updateObj);
@@ -159,41 +169,9 @@ public class DpDataElemRuleRelServiceImpl extends ServiceImpl<DpDataElemRuleRelM
     }
 
     @Override
-    public void saveDpDataElemRuleRel(Long dataElemId, String ruleType, List<DpDataElemRuleRelSaveReqVO> list) {
-        //根据数据元id及规则类型获取数据
-        List<DpDataElemRuleRelDO> oldList = dpDataElemRuleRelMapper.selectList(Wrappers.lambdaQuery(DpDataElemRuleRelDO.class)
-                .select(DpDataElemRuleRelDO::getId)
-                .eq(DpDataElemRuleRelDO::getDataElemId, dataElemId)
-                .eq(DpDataElemRuleRelDO::getRuleType, ruleType));
-
-        List<Long> oldIdList = oldList.stream()
-                .map(e -> e.getId())
-                .collect(Collectors.toList());
-
-        List<Long> updateIdList = list.stream().filter(e -> e.getId() != null)
-                .map(e -> e.getId())
-                .collect(Collectors.toList());
-
-        if (oldIdList.size() > 0) {
-            List<Long> delIdList = new ArrayList<>();
-            for (Long id : oldIdList) {
-                if (updateIdList.indexOf(id) == -1) {
-                    delIdList.add(id);
-                }
-            }
-            //找出需要删除的数据
-            if (delIdList.size() > 0) {
-                dpDataElemRuleRelMapper.deleteBatchIds(delIdList);
-            }
-        }
-
-        //更新或插入数据
-        List<DpDataElemRuleRelDO> saveOrUpdateList = BeanUtils.toBean(list, DpDataElemRuleRelDO.class);
-        this.saveOrUpdateBatch(saveOrUpdateList);
+    public List<DpDataElemRuleRelRespDTO> listByDataElemIdList(Collection<Long> dataElemIdList, String type) {
+        List<DpDataElemRuleRelDO> dpDataElemRuleRelDOS = baseMapper.listByDataElemIdList(dataElemIdList, type);
+        return BeanUtils.toBean(dpDataElemRuleRelDOS, DpDataElemRuleRelRespDTO.class);
     }
 
-    @Override
-    public List<DpDataElemRuleRelRespDTO> listByDataElemIdList(List<Long> dataElemIdList,String ruleType) {
-        return baseMapper.listByDataElemIdList(dataElemIdList,ruleType);
-    }
 }

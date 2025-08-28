@@ -28,25 +28,63 @@ public class DpDataElemRuleRelDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
+    private String name;
+
+    /**
+     * 状态;0下线1上线
+     */
+    private String status;
+
     /**
      * 数据元id
      */
-    private String dataElemId;
+    private Long dataElemId;
 
     /**
-     * 规则类型
+     * 规则类型 1:稽核规则 2:清洗规则
      */
-    private String ruleType;
+    private String type;
 
     /**
      * 规则id
+     *
+     * @see tech.qiantong.qdata.module.att.dal.dataobject.rule.AttCleanRuleDO#id
+     * @see tech.qiantong.qdata.module.att.dal.dataobject.rule.AttAuditRuleDO#id
      */
-    private String ruleId;
+    private Long ruleId;
+
+    /**
+     * @see tech.qiantong.qdata.module.att.dal.dataobject.rule.AttCleanRuleDO#code
+     * @see tech.qiantong.qdata.module.att.dal.dataobject.rule.AttAuditRuleDO#code
+     */
+    private String ruleCode;
+
+    /**
+     * @see tech.qiantong.qdata.module.att.dal.dataobject.rule.AttCleanRuleDO#name
+     * @see tech.qiantong.qdata.module.att.dal.dataobject.rule.AttAuditRuleDO#name
+     */
+    private String ruleName;
+
+    /**
+     * @see tech.qiantong.qdata.module.att.dal.dataobject.rule.AttAuditRuleDO#qualityDim
+     */
+    private String dimensionType;
+
+    private String ruleDescription;
+    private String errDescription;
+    private String suggestion;
+    private String whereClause;
 
     /**
      * 规则配置
      */
-    private String ruleConfig;
+    private String rule;
+
+    /**
+     * @see tech.qiantong.qdata.module.att.dal.dataobject.rule.AttAuditRuleDO#strategyKey
+     *
+     */
+    private String ruleType;
 
     /**
      * 是否有效
@@ -59,33 +97,4 @@ public class DpDataElemRuleRelDO extends BaseEntity {
     @TableLogic
     private Boolean delFlag;
 
-    /**
-     * 规则名称
-     */
-    @TableField(exist = false)
-    private String name;
-
-    /**
-     * 规则类别
-     */
-    @TableField(exist = false)
-    private String type;
-
-    /**
-     * 规则级别
-     */
-    @TableField(exist = false)
-    private String level;
-
-    /**
-     * 质量维度
-     */
-    @TableField(exist = false)
-    private String qualityDim;
-
-    /**
-     * 规则描述
-     */
-    @TableField(exist = false)
-    private String description;
 }

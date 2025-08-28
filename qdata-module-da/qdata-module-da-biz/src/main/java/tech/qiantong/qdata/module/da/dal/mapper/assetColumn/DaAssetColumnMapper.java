@@ -1,5 +1,7 @@
 package tech.qiantong.qdata.module.da.dal.mapper.assetColumn;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.utils.StringUtils;
@@ -9,6 +11,7 @@ import tech.qiantong.qdata.mybatis.core.mapper.BaseMapperX;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -36,4 +39,17 @@ public interface DaAssetColumnMapper extends BaseMapperX<DaAssetColumnDO> {
     int updateDaAssetColumn(DaAssetColumnDO daAssetColumnDO);
 
     void deleteAssetColumnByAssetId(Long assetId);
+
+
+    /**
+     * 根据资产详情进行查询字段属性
+     */
+    default List<DaAssetColumnDO> findByAssetId(Long assetId) {
+        LambdaQueryWrapper<DaAssetColumnDO> queryWrapper = Wrappers.<DaAssetColumnDO>lambdaQuery()
+                .eq(DaAssetColumnDO::getAssetId, assetId)
+                .eq(DaAssetColumnDO::getDelFlag, 0)
+                .orderByAsc(DaAssetColumnDO::getId);
+        return selectList(queryWrapper);
+    }
+
 }

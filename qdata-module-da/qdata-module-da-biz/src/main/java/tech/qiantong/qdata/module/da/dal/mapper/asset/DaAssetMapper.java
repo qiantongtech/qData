@@ -1,5 +1,7 @@
 package tech.qiantong.qdata.module.da.dal.mapper.asset;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import org.apache.commons.lang3.StringUtils;
 import tech.qiantong.qdata.common.core.page.PageResult;
@@ -9,6 +11,7 @@ import tech.qiantong.qdata.mybatis.core.mapper.BaseMapperX;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -80,4 +83,12 @@ public interface DaAssetMapper extends BaseMapperX<DaAssetDO> {
     }
 
     void deleteAssetById(Long id);
+
+
+    default List<DaAssetDO> findByDatasourceIdAndTableName(Long datasourceId, String tableName) {
+        LambdaQueryWrapper<DaAssetDO> queryWrapper = Wrappers.<DaAssetDO>lambdaQuery()
+                .eq(DaAssetDO::getDatasourceId, datasourceId)
+                .eq(DaAssetDO::getTableName, tableName);
+        return selectList(queryWrapper);
+    }
 }

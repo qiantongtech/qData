@@ -450,6 +450,12 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
         return this.convertDbColumns(columnsList);
     }
 
+    @Override
+    public List<DaAssetColumnDO> columnsAsAssetColumnList(Long id, String tableName) {
+        List<DbColumn> columnsList = this.getDbTableColumns(id, tableName);
+        return convertDbColumns(columnsList);
+    }
+
 
     /**
      * 将 List<DpModelColumnReqDTO> 转换为 List<DaAssetColumnDO>

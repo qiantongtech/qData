@@ -16,6 +16,7 @@ import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.module.da.api.datasource.dto.DaDatasourceRespDTO;
 import tech.qiantong.qdata.module.da.api.service.asset.IDaDatasourceApiService;
 import tech.qiantong.qdata.module.dp.api.dataElem.dto.DpDataElemAssetRelReqDTO;
+import tech.qiantong.qdata.module.dp.api.dataElem.dto.DpDataElemAssetRelRespDTO;
 import tech.qiantong.qdata.module.dp.api.dataElem.dto.DpDataElemRespDTO;
 import tech.qiantong.qdata.module.dp.api.model.dto.DpModelColumnRespDTO;
 import tech.qiantong.qdata.module.dp.api.model.dto.DpModelRespDTO;
@@ -430,5 +431,16 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
         return this.update(Wrappers.lambdaUpdate(DpModelDO.class)
                 .eq(DpModelDO::getId, id)
                 .set(DpModelDO::getStatus, status));
+    }
+
+
+
+    @Override
+    public List<DpDataElemAssetRelRespDTO> getDpDataElemListByColumnIdInApi(Collection<Long> columnIds) {
+        List<DpDataElemAssetRelDO> list = iDpDataElemAssetRelService.lambdaQuery()
+                .in(DpDataElemAssetRelDO::getColumnId, columnIds)
+                .eq(DpDataElemAssetRelDO::getDelFlag, "0")
+                .list();
+        return BeanUtils.toBean(list, DpDataElemAssetRelRespDTO.class);
     }
 }

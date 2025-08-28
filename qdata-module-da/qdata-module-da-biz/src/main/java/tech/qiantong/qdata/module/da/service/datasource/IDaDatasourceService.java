@@ -156,6 +156,9 @@ public interface IDaDatasourceService extends IService<DaDatasourceDO> {
     List<DaAssetColumnDO> columnsAsAssetColumnList(JSONObject jsonObject);
 
 
+    List<DaAssetColumnDO> columnsAsAssetColumnList(Long id, String tableName);
+
+
     /**
      * 建表工具方法
      *

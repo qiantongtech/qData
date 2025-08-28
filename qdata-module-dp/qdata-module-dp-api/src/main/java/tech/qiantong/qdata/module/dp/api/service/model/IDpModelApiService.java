@@ -1,10 +1,12 @@
 package tech.qiantong.qdata.module.dp.api.service.model;
 
 import tech.qiantong.qdata.module.dp.api.dataElem.dto.DpDataElemAssetRelReqDTO;
+import tech.qiantong.qdata.module.dp.api.dataElem.dto.DpDataElemAssetRelRespDTO;
 import tech.qiantong.qdata.module.dp.api.dataElem.dto.DpDataElemRespDTO;
 import tech.qiantong.qdata.module.dp.api.model.dto.DpModelColumnRespDTO;
 import tech.qiantong.qdata.module.dp.api.model.dto.DpModelRespDTO;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -47,6 +49,8 @@ public interface IDpModelApiService {
      * @return
      */
     Set<Long> getDpDataElemListByAssetIdApi(Long assetId);
+
+    List<DpDataElemAssetRelRespDTO> getDpDataElemListByColumnIdInApi(Collection<Long> columnIds);
 
     /**
      * 根据资产id及字段id获取数据元id集合

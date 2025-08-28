@@ -2,6 +2,7 @@ package tech.qiantong.qdata.module.dp.api.service.dataElem;
 
 import tech.qiantong.qdata.module.dp.api.dataElem.dto.DpDataElemRuleRelRespDTO;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -19,5 +20,5 @@ public interface IDataElemRuleRelService {
      * @param dataElemIdList
      * @return
      */
-    List<DpDataElemRuleRelRespDTO> listByDataElemIdList(List<Long> dataElemIdList,String ruleType);
+    List<DpDataElemRuleRelRespDTO> listByDataElemIdList(Collection<Long> dataElemIdList, String type);
 }

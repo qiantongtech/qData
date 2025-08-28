@@ -46,9 +46,9 @@ public class DpDataElemRuleRelController extends BaseController {
     @Operation(summary = "查询数据元数据规则关联信息列表")
     @PreAuthorize("@ss.hasPermi('dp:dataElem:dataelemrulerel:list')")
     @GetMapping("/list")
-    public CommonResult<PageResult<DpDataElemRuleRelRespVO>> list(DpDataElemRuleRelPageReqVO dpDataElemRuleRel) {
+    public CommonResult<PageResult<DpDataElemRuleRelDO>> list(DpDataElemRuleRelPageReqVO dpDataElemRuleRel) {
         PageResult<DpDataElemRuleRelDO> page = dpDataElemRuleRelService.getDpDataElemRuleRelPage(dpDataElemRuleRel);
-        return CommonResult.success(BeanUtils.toBean(page, DpDataElemRuleRelRespVO.class));
+        return CommonResult.success(page);
     }
 
     @Operation(summary = "导出数据元数据规则关联信息列表")
@@ -90,7 +90,7 @@ public class DpDataElemRuleRelController extends BaseController {
         dpDataElemRuleRel.setCreatorId(getUserId());
         dpDataElemRuleRel.setCreateBy(getNickName());
         dpDataElemRuleRel.setCreateTime(DateUtil.date());
-        return CommonResult.toAjax(dpDataElemRuleRelService.createDpDataElemRuleRel(dpDataElemRuleRel));
+        return CommonResult.success(dpDataElemRuleRelService.createDpDataElemRuleRel(dpDataElemRuleRel));
     }
 
     @Operation(summary = "修改数据元数据规则关联信息")
@@ -101,7 +101,7 @@ public class DpDataElemRuleRelController extends BaseController {
         dpDataElemRuleRel.setUpdatorId(getUserId());
         dpDataElemRuleRel.setUpdateBy(getNickName());
         dpDataElemRuleRel.setUpdateTime(DateUtil.date());
-        return CommonResult.toAjax(dpDataElemRuleRelService.updateDpDataElemRuleRel(dpDataElemRuleRel));
+        return CommonResult.success(dpDataElemRuleRelService.updateDpDataElemRuleRel(dpDataElemRuleRel));
     }
 
     @Operation(summary = "删除数据元数据规则关联信息")
@@ -110,16 +110,6 @@ public class DpDataElemRuleRelController extends BaseController {
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dpDataElemRuleRelService.removeDpDataElemRuleRel(Arrays.asList(ids)));
-    }
-
-
-    @Operation(summary = "保存关联信息")
-    @PreAuthorize("@ss.hasPermi('dp:dataElem:dataelemrulerel:add')")
-    @Log(title = "数据元数据规则关联信息的保存", businessType = BusinessType.INSERT)
-    @PostMapping("/save/{dataElemId}/{ruleType}")
-    public CommonResult<Long> save(@PathVariable Long dataElemId,@PathVariable String ruleType,@Valid @RequestBody List<DpDataElemRuleRelSaveReqVO> list) {
-        dpDataElemRuleRelService.saveDpDataElemRuleRel(dataElemId,ruleType,list);
-        return CommonResult.success(null);
     }
 
 }

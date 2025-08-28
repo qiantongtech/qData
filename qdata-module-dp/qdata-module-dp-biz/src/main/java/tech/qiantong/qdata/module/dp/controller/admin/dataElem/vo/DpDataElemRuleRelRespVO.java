@@ -1,6 +1,5 @@
 package tech.qiantong.qdata.module.dp.controller.admin.dataElem.vo;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -79,34 +78,17 @@ public class DpDataElemRuleRelRespVO implements Serializable {
     @Schema(description = "备注", example = "")
     private String remark;
 
+    @Schema(description = "规则描述")
+    private String ruleDescription;
 
-    /**
-     * 规则名称
-     */
-    @TableField(exist = false)
-    private String name;
+    @Schema(description = "错误描述")
+    private String errDescription;
 
-    /**
-     * 规则类别
-     */
-    @TableField(exist = false)
-    private String type;
+    @Schema(description = "修复建议")
+    private String suggestion;
 
-    /**
-     * 规则级别
-     */
-    @TableField(exist = false)
-    private String level;
+    @Schema(description = "where条件")
+    private String whereClause;
 
-    /**
-     * 质量维度
-     */
-    @TableField(exist = false)
-    private String qualityDim;
 
-    /**
-     * 规则描述
-     */
-    @TableField(exist = false)
-    private String description;
 }

@@ -20,11 +20,12 @@ public class DpDataElemRuleRelPageReqVO extends PageParam {
     private Long id;
 
     @Schema(description = "数据元id", example = "")
-    private String dataElemId;
+    private Long dataElemId;
 
     @Schema(description = "规则类型", example = "")
-    private String ruleType;
+    private String type;
 
     @Schema(description = "规则id", example = "")
-    private String ruleId;
+    private Long ruleId;
+
 }

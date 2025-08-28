@@ -13,29 +13,77 @@ public class DpDataElemRuleRelRespDTO {
 
     private static final long serialVersionUID = 1L;
 
-    /** ID */
+
+    /**
+     * ID
+     */
     private Long id;
 
-    /** 数据元id */
-    private String dataElemId;
+    private String name;
 
-    /** 规则类型 */
-    private String ruleType;
+    /**
+     * 状态;0下线1上线
+     */
+    private Integer status;
 
-    /** 规则id */
-    private String ruleId;
+    /**
+     * 数据元id
+     */
+    private Long dataElemId;
 
-    /** 规则配置 */
-    private String ruleConfig;
+    /**
+     * 规则类型 1:稽核规则 2:清洗规则
+     */
+    private String type;
 
-    /** 规则名称 */
+    /**
+     * 规则id
+     *
+     * @see tech.qiantong.qdata.module.att.dal.dataobject.rule.AttCleanRuleDO#id
+     * @see tech.qiantong.qdata.module.att.dal.dataobject.rule.AttAuditRuleDO#id
+     */
+    private Long ruleId;
+
+    /**
+     * @see tech.qiantong.qdata.module.att.dal.dataobject.rule.AttCleanRuleDO#code
+     * @see tech.qiantong.qdata.module.att.dal.dataobject.rule.AttAuditRuleDO#code
+     */
+    private String ruleCode;
+
+    /**
+     * @see tech.qiantong.qdata.module.att.dal.dataobject.rule.AttCleanRuleDO#name
+     * @see tech.qiantong.qdata.module.att.dal.dataobject.rule.AttAuditRuleDO#name
+     */
     private String ruleName;
 
-    /** 是否有效 */
+    /**
+     * @see tech.qiantong.qdata.module.att.dal.dataobject.rule.AttAuditRuleDO#qualityDim
+     */
+    private String dimensionType;
+
+    private String ruleDescription;
+    private String errDescription;
+    private String suggestion;
+    private String whereClause;
+
+    /**
+     * 规则配置
+     */
+    private String rule;
+
+    /**
+     * @see tech.qiantong.qdata.module.att.dal.dataobject.rule.AttAuditRuleDO#strategyKey
+     */
+    private String ruleType;
+
+    /**
+     * 是否有效
+     */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /**
+     * 删除标志
+     */
     private Boolean delFlag;
-
 
 }

@@ -196,8 +196,7 @@ const openRuleDialog = (row, index, falg) => {
 };
 const renameRuleToRule = () => {
   if (!Array.isArray(inputFields.value) || inputFields.value.length === 0) {
-    return ElMessage.error(`⚠️ 未传入任何字段数据，无法获取清洗规则`);
-
+    return ElMessage.error(`未传入任何字段数据，无法获取清洗规则`);
   }
   const result = renameRuleToRuleConfig(inputFields.value || []);
   let coverCount = 0;

@@ -43,7 +43,7 @@
                                             v-if="!route.query.info">新增</el-button>
                                     </el-col>
                                     <el-col :span="1.5">
-                                        <!-- <el-tooltip content="会自动获取资产关联的数据元中的稽查规则" placement="top">
+                                        <el-tooltip content="会自动获取资产关联的数据元中的稽查规则" placement="top">
                                             <el-button type="warning" @click="selectInspectionRule(undefined)"
                                                 v-if="!route.query.info">
                                                 <el-icon style="margin-right: 4px;">
@@ -51,7 +51,7 @@
                                                 </el-icon>
                                                 获取稽查规则
                                             </el-button>
-                                        </el-tooltip> -->
+                                        </el-tooltip>
                                     </el-col>
                                 </el-row>
                             </div>

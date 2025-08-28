@@ -995,9 +995,11 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
 
         daAsset.setFieldCount(Long.valueOf(daAssetColumnDOS.size()));
 
-
-        Long assetId = createDaAsset(daAsset);
-        daAsset.setId(assetId);
+        Long assetId = daAsset.getId();
+        if ( assetId == null) {
+             assetId = createDaAsset(daAsset);
+            daAsset.setId(assetId);
+        }
         List<DaAssetColumnSaveReqVO> daAssetColumnSaveReqVOList = BeanUtils.toBean(daAssetColumnDOS, DaAssetColumnSaveReqVO.class);
         for (DaAssetColumnSaveReqVO daAssetColumnSaveReqVO : daAssetColumnSaveReqVOList) {
             daAssetColumnSaveReqVO.setAssetId(String.valueOf(assetId));
@@ -1011,7 +1013,10 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
         //1:数据库表  2:外部API 3: 地理空间服务 4:矢量数据 5:视频数据
         String type = daAsset.getType();
         if(StringUtils.equals("1",type)){
-            updateDaAssetColumnNew(daAsset);
+            DaAssetRespVO daAssetById = getDaAssetById(daAsset.getId());
+            if(StringUtils.equals("1",daAssetById.getCreateType()) && StringUtils.equals("2",daAsset.getCreateType())){
+                createDaAssetColumnNew(daAsset);
+            }
         } else if (StringUtils.equals("2",type)){
             setDaAssetDefaultValues(daAsset);
             updateDaAssetApiNew(daAsset);

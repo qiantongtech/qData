@@ -31,11 +31,11 @@ import static com.alibaba.fastjson2.JSONWriter.Feature.PrettyFormat;
 public class DBReader implements Reader {
 
     @Override
-    public Dataset<Row> read(SparkSession spark, JSONObject reader, List<String> readerColumns, String logPath) {
-        LogUtils.writeLog(logPath, "*********************************  Initialize task context  ***********************************");
-        LogUtils.writeLog(logPath, "开始数据库输入节点");
-        LogUtils.writeLog(logPath, "开始任务时间: " + DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"));
-        LogUtils.writeLog(logPath, "任务参数：" + reader.toJSONString(PrettyFormat));
+    public Dataset<Row> read(SparkSession spark, JSONObject reader, List<String> readerColumns, LogUtils.Params logParams) {
+        LogUtils.writeLog(logParams, "*********************************  Initialize task context  ***********************************");
+        LogUtils.writeLog(logParams, "开始数据库输入节点");
+        LogUtils.writeLog(logParams, "开始任务时间: " + DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"));
+        LogUtils.writeLog(logParams, "任务参数：" + reader.toJSONString(PrettyFormat));
         //参数信息
         JSONObject parameter = reader.getJSONObject("parameter");
         //读取条件
@@ -98,9 +98,9 @@ public class DBReader implements Reader {
             dataset = dataset.where(where);
         }
         dataset = dataset.select(column.stream().map(c -> new Column((String) c)).toArray(Column[]::new));
-        LogUtils.writeLog(logPath, "输入数据量为：" + dataset.count());
+        LogUtils.writeLog(logParams, "输入数据量为：" + dataset.count());
         log.info("部分数据如下>>>>>>>>>>>>>>");
-        LogUtils.writeLog(logPath, "部分数据：\n" + dataset.na().fill("Unknown").showString(10, 0, false));
+        LogUtils.writeLog(logParams, "部分数据：\n" + dataset.na().fill("Unknown").showString(10, 0, false));
         return dataset;
     }
 

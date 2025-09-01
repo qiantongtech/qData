@@ -281,18 +281,13 @@ function handleExecute(taskInstanceId, executeType) {
 
 /** 下载按钮操作 */
 async function downloadLog(row) {
-  const response = await logDetailCat(row.id);
-  console.log(response, "response");
-
-  if (response) {
-    proxy.download(
-      "/dpp/dppEtlNodeInstance/downloadLog",
+  proxy.download(
+      '/dpp/dppEtlNodeInstance/downloadLog',
       {
-        handleMsg: row.logPath,
+        nodeInstanceId: row.id
       },
-      `${new Date().getTime()}.log`
-    );
-  }
+      `${row.name}.log`
+  );
 }
 
 let msg = ref();

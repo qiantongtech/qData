@@ -1,11 +1,11 @@
 <template>
     <el-dialog v-model="visibleDialog" draggable class="dialog" :title="title" style="width: 1500px" destroy-on-close>
         <el-table stripe height="380px" v-loading="loading" :data="jobLogList">
-            <el-table-column width="80" label="编号" align="center" prop="id" />
-            <el-table-column width="120" show-overflow-tooltip label="节点实例名称" align="center" prop="name">
-                <template #default="scope">
-                    {{ scope.row.name || '-' }}
-                </template>
+            <el-table-column width="150" label="编号" align="center" prop="id" />
+            <el-table-column show-overflow-tooltip label="任务名称" align="center" prop="taskInstanceName">
+              <template #default="scope">
+                {{ scope.row.name || '-' }}
+              </template>
             </el-table-column>
             <el-table-column show-overflow-tooltip label="任务名称" align="center" prop="taskInstanceName">
                 <template #default="scope">
@@ -43,10 +43,10 @@
                     {{ '-' }}
                 </template>
             </el-table-column>
-            <el-table-column label="责任人" align="center" prop="createBy" width="80">
-                <template #default="scope">
-                    {{ scope.row.createBy || '-' }}
-                </template>
+            <el-table-column label="责任人" align="center" prop="personChargeName" width="80">
+              <template #default="scope">
+                {{ scope.row.personChargeName || '-' }}
+              </template>
             </el-table-column>
             <el-table-column label="操作" header-align="center" class-name="small-padding fixed-width" fixed="right"
                 width="200">
@@ -86,8 +86,8 @@
 
 <script setup>
 import { defineProps, defineEmits, ref, computed, watch } from 'vue';
-import { listDppEtlNodeInstance, logDetailCat } from '@/api/dpp/etl/dppEtlNodeInstance';
-import request from '@/utils/request';
+import { getLogByTaskInstanceId } from "@/api/dpp/etl/dppEtlTask";
+import { listDppEtlTaskInstance } from '@/api/dpp/etl/dppEtlTaskInstance';
 const { proxy } = getCurrentInstance();
 const { dpp_etl_node_instance } = proxy.useDict('dpp_etl_node_instance');
 const { dpp_etl_node_type, dpp_etl_task_instance_command_type } = proxy.useDict(
@@ -113,25 +113,20 @@ const formattedText = computed(() => {
 });
 /** 导出按钮操作 */
 async function handleExport(row) {
-    const response = await logDetailCat(row.id);
-    console.log(response, 'response');
-
-    if (response) {
-        proxy.download(
-            '/dpp/dppEtlNodeInstance/downloadLog',
-            {
-                handleMsg: row.logPath
-            },
-            `${new Date().getTime()}.log`
-        );
-    }
+  proxy.download(
+      '/dpp/dppEtlTaskInstance/downloadLog',
+      {
+        taskInstanceId: row.id
+      },
+      `${row.name}.log`
+  );
 }
 let msg = ref();
 async function logDetailCatList(row) {
-    msg.value = {};
-    const response = await logDetailCat(row.id);
-    msg.value = response.msg;
-    open.value = true;
+  msg.value = {};
+  const response = await getLogByTaskInstanceId({taskInstanceId:row.id});
+  msg.value = response.data.log;
+  open.value = true;
 }
 
 const total = ref(0);
@@ -140,17 +135,17 @@ let jobLogList = ref([]);
 let loading = ref(false);
 /** 查询调度日志列表 */
 function getList() {
-    loading.value = true;
-    queryParams.value.jobName = props.data.name;
-    queryParams.value.taskType = props.taskType;
-    listDppEtlNodeInstance({
-        ...queryParams.value
-    }).then((response) => {
-        jobLogList.value = response.data.rows;
-        console.log('🚀 ~ listDppEtlNodeInstance ~ jobLogList.value:', jobLogList.value);
-        total.value = response.data.total;
-        loading.value = false;
-    });
+  loading.value = true;
+  queryParams.value.taskId = props.data.id;
+  queryParams.value.taskType = props.taskType;
+  listDppEtlTaskInstance({
+    ...queryParams.value
+  }).then((response) => {
+    jobLogList.value = response.data.rows;
+    console.log('🚀 ~ listDppEtlTaskInstance ~ jobLogList.value:', jobLogList.value);
+    total.value = response.data.total;
+    loading.value = false;
+  });
 }
 const emit = defineEmits(['update:visible', 'confirm']);
 

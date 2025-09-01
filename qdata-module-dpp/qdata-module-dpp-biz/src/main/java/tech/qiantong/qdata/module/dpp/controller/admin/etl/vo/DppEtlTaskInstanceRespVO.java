@@ -48,6 +48,10 @@ public class DppEtlTaskInstanceRespVO implements Serializable {
     @Schema(description = "责任人", example = "")
     private String personCharge;
 
+    @Excel(name = "责任人名称")
+    @Schema(description = "责任人名称", example = "")
+    private String personChargeName;
+
     @Excel(name = "项目id")
     @Schema(description = "项目id", example = "")
     private Long projectId;

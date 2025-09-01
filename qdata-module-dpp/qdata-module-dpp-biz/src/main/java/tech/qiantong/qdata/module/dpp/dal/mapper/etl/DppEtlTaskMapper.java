@@ -1,11 +1,14 @@
 package tech.qiantong.qdata.module.dpp.dal.mapper.etl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Param;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.enums.TaskCatEnum;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlTaskPageReqVO;
+import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlTaskRespVO;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlTaskDO;
 import tech.qiantong.qdata.mybatis.core.mapper.BaseMapperX;
 
@@ -21,6 +24,8 @@ import java.util.Set;
  * @date 2025-02-13
  */
 public interface DppEtlTaskMapper extends BaseMapperX<DppEtlTaskDO> {
+
+    IPage<DppEtlTaskRespVO> getDppEtlTaskPage(Page page, @Param("params") DppEtlTaskPageReqVO reqVO);
 
     default PageResult<DppEtlTaskDO> selectPage(DppEtlTaskPageReqVO reqVO) {
         // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）

@@ -32,10 +32,7 @@ spring:
     username: 账号
     password: 密码
     listener:
-      direct:
-        auto-startup: false
       simple:
-        auto-startup: false
         acknowledge-mode: manual
         concurrency: 1
         max-concurrency: 10
@@ -160,6 +157,8 @@ ds:
     main_jar: file:/dolphinscheduler/default/resources/spark-jar/qdata-etl-3.8.8.jar
     #jar main入口
     main_class: tech.qiantong.qdata.spark.etl.EtlApplication
+  hdfs:
+    url: hdfs://127.0.0.1:8020
 
 # 数据质量任务回调
 path:

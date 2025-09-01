@@ -1,28 +1,22 @@
 package tech.qiantong.qdata.module.dpp.api.etl.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 /**
- * 数据集成任务实例-日志 DTO 对象 DPP_ETL_TASK_INSTANCE_LOG
+ * 数据集成节点实例-日志 DTO 对象 DPP_ETL_NODE_INSTANCE_LOG
  *
  * @author qdata
  * @date 2025-08-05
  */
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
-public class DppEtlTaskInstanceLogRespDTO {
+public class DppEtlNodeInstanceLogRespDTO {
 
     private static final long serialVersionUID = 1L;
 
-    /** 任务实例id */
-    private Long taskInstanceId;
+    /** ID节点实例id */
+    private Long nodeInstanceId;
 
     /** 时间 */
     private Date tm;
@@ -30,11 +24,14 @@ public class DppEtlTaskInstanceLogRespDTO {
     /** 任务类型 */
     private String taskType;
 
-    /** 任务id */
-    private Long taskId;
+    /** 节点id */
+    private Long nodeId;
 
-    /** 任务编码 */
-    private String taskCode;
+    /** 节点编码 */
+    private String nodeCode;
+
+    /** 任务实例id */
+    private Long taskInstanceId;
 
     /** 日志内容 */
     private String logContent;

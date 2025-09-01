@@ -1198,30 +1198,34 @@ CREATE TABLE `da_asset`  (
 -- ----------------------------
 -- Records of da_asset
 -- ----------------------------
-INSERT INTO `da_asset` VALUES (166, '取水口基础信息外部API', 'A05', -1, '-1', NULL, 0, 0, '1', '外部API类型的数据资产，外链到了取水口基础信息接口', '1', '0', 'qData', 1, '2025-05-23 16:45:56', '管理员', 1, '2025-06-12 13:57:05', NULL, '3', '2', '2');
+INSERT INTO `da_asset` VALUES (166, '取水口基础信息外部API', 'A05', -1, '-1', NULL, 0, 0, '0', '外部API类型的数据资产，外链到了取水口基础信息接口', '1', '0', 'qData', 1, '2025-05-23 16:45:56', '管理员', 1, '2025-06-12 13:57:05', NULL, '3', '2', '2');
 INSERT INTO `da_asset` VALUES (167, 'api', 'A05', -1, '-1', '', 0, 0, '0', '', '1', '1', '超级管理员', 1, '2025-04-21 10:03:30', '超级管理员', 1, '2025-04-24 09:26:01', NULL, '3', '4', '2');
 INSERT INTO `da_asset` VALUES (168, '视频2', 'A05', -1, '-1', '', 0, 0, '0', '', '1', '1', '超级管理员', 1, '2025-04-21 10:58:48', '超级管理员', 1, '2025-04-23 17:43:24', NULL, '3', '5', '2');
 INSERT INTO `da_asset` VALUES (169, '地理空间', 'A05', -1, '-1', '', 0, 0, '0', '', '1', '1', '超级管理员', 1, '2025-04-21 10:59:23', '超级管理员', 1, '2025-04-23 17:43:21', NULL, '3', '3', '2');
 INSERT INTO `da_asset` VALUES (170, '表', 'A05', -1, '-1', NULL, 0, 0, '0', '1', '1', '1', '超级管理员', 1, '2025-04-30 19:09:18', '超级管理员', 1, '2025-04-30 19:09:18', NULL, '3', '3', '2');
-INSERT INTO `da_asset` VALUES (171, '水利地图信息-超图', 'A05', -1, '-1', NULL, 0, 0, '1', '水利地图信息-超图', '1', '1', '超级管理员', 1, '2025-05-06 11:10:29', '超级管理员', 1, '2025-05-06 11:19:55', NULL, '3', '3', '2');
-INSERT INTO `da_asset` VALUES (172, '水利地理空间服务', 'A05', -1, '-1', NULL, 0, 0, '1', '地理空间服务相关数据，可以获取地理空间数据', '1', '0', 'qData', 1, '2025-05-23 17:01:54', '管理员', 1, '2025-06-12 13:57:26', NULL, '3', '3', '2');
-INSERT INTO `da_asset` VALUES (173, '小山口基础信息表', 'A05', 48, 'MESSAGE', '消息', 0, 22, '0', '小山口基础信息表', '1', '1', 'qData', 1, '2025-05-23 17:42:18', '管理员', 1, '2025-06-12 13:57:34', NULL, '3', '1', '2');
-INSERT INTO `da_asset` VALUES (174, '水库基础信息表', 'A05', 1001, 'DP_USER_INFO', '存储用户基础信息的表', 1000, 8, '1', '水库基础的信息资产，包含编码等', '1', '0', 'admin', 1, '2025-05-30 10:30:00', '管理员', 1, '2025-06-12 13:57:40', '初始版本', '0', '1', '2');
-INSERT INTO `da_asset` VALUES (175, '灌区基础信息表', 'A05', 1002, 'DP_ORDER', '存储订单信息的表', 5000, 10, '1', '包含灌区基础信息资产，比如编码，名称，类别等', '1', '0', 'admin', 1, '2025-05-30 10:35:00', '管理员', 1, '2025-06-12 13:57:50', '初始版本', '0', '1', '2');
-INSERT INTO `da_asset` VALUES (176, '取水口基础信息表', 'A05', 1003, 'DP_PRODUCT', '存储产品信息的表', 200, 6, '1', '包含取水口的基础信息资产，编码，名称，类型等等', '1', '0', 'admin', 1, '2025-05-30 10:40:00', '管理员', 1, '2025-06-12 13:57:55', '初始版本', '0', '1', '2');
-INSERT INTO `da_asset` VALUES (177, '涵洞基础信息表', 'A05', 1004, 'DP_INVENTORY', '存储库存信息的表', 800, 7, '1', '包含涵洞基础信息资产，比如编码，名称等', '1', '0', 'admin', 1, '2025-05-30 10:45:00', '管理员', 1, '2025-06-12 13:58:11', '初始版本', '0', '1', '2');
-INSERT INTO `da_asset` VALUES (178, '泵站基础信息表', 'A05', 1005, 'DP_CUSTOMER', '存储客户信息的表', 1200, 9, '1', '包含泵站的资产信息，比如编码，名称等', '1', '0', 'admin', 1, '2025-05-30 10:50:00', '管理员', 1, '2025-06-12 13:58:17', '初始版本', '0', '1', '2');
-INSERT INTO `da_asset` VALUES (179, '水闸基础信息表', 'A05', 1006, 'DP_PAYMENT', '存储支付信息的表', 3000, 8, '1', '包含水闸的基础信息，名称，编码等', '1', '0', 'admin', 1, '2025-05-30 10:55:00', '管理员', 1, '2025-06-12 13:58:25', '初始版本', '0', '1', '2');
-INSERT INTO `da_asset` VALUES (180, '流域基础信息表', 'A05', 4, 'ATT_BAS_BASE', '流域基础信息表', 0, 13, '1', '流域基础信息表', '1', '0', '管理员', 1, '2025-06-12 10:17:37', '管理员', 1, '2025-06-12 13:59:19', NULL, '2', '1', '2');
-INSERT INTO `da_asset` VALUES (181, '河流基础信息表', 'A05', 4, 'ATT_RV_BASE', '河流基础信息表', 0, 5, '1', '河流基础信息表', '1', '0', '管理员', 1, '2025-06-12 10:17:39', '管理员', 1, '2025-06-12 13:59:08', NULL, '2', '1', '2');
-INSERT INTO `da_asset` VALUES (182, '湖泊基础信息表', 'A05', 4, 'ATT_LK_BASE', '湖泊基础信息表', 0, 3, '1', '湖泊基础信息表', '1', '0', '管理员', 1, '2025-06-12 10:17:40', '管理员', 1, '2025-06-12 13:59:01', NULL, '2', '1', '2');
-INSERT INTO `da_asset` VALUES (183, '水库基础信息表', 'A05', 4, 'ATT_RES_BASE', '水库基础信息表', 0, 3, '1', '水库基础信息表', '1', '0', '管理员', 1, '2025-06-12 10:17:42', '管理员', 1, '2025-06-12 13:58:52', NULL, '2', '1', '2');
-INSERT INTO `da_asset` VALUES (184, '水库大坝基础信息表', 'A05', 4, 'ATT_DAM_BASE', '水库大坝基础信息表', 0, 2, '1', '水库大坝基础信息表', '1', '0', '管理员', 1, '2025-06-12 10:17:43', '管理员', 1, '2025-06-12 13:58:44', NULL, '2', '1', '2');
-INSERT INTO `da_asset` VALUES (185, '水电站基础信息表', 'A05', 4, 'ATT_HYST_BASE', '水电站基础信息表', 0, 2, '1', '水电站基础信息表', '1', '0', '管理员', 1, '2025-06-12 10:17:44', '管理员', 1, '2025-06-12 13:58:37', NULL, '2', '1', '2');
-INSERT INTO `da_asset` VALUES (186, '灌区基础信息表', 'A05', 4, 'ATT_IRR_BASE', '灌区基础信息表', 0, 2, '1', '灌区基础信息表', '1', '0', '管理员', 1, '2025-06-12 10:17:45', '管理员', 1, '2025-06-12 13:55:07', NULL, '2', '1', '2');
-INSERT INTO `da_asset` VALUES (187, '渠（沟）道基础信息表', 'A05', 4, 'ATT_CHAN_BASE', '渠（沟）道基础信息表', 0, 2, '1', '渠（沟）道基础信息表', '1', '0', '管理员', 1, '2025-06-12 10:17:46', '管理员', 1, '2025-06-12 13:54:57', NULL, '2', '1', '2');
-INSERT INTO `da_asset` VALUES (188, '取水井基础信息表', 'A05', 4, 'ATT_WELL_BASE', '取水井基础信息表', 0, 2, '1', '取水井基础信息表', '1', '0', '管理员', 1, '2025-06-12 10:17:47', '管理员', 1, '2025-06-12 13:54:47', NULL, '2', '1', '2');
-INSERT INTO `da_asset` VALUES (189, '水闸基础信息表', 'A05', 4, 'ATT_WAGA_BASE', '水闸基础信息表', 0, 2, '1', '水闸基础信息表', '1', '0', '管理员', 1, '2025-06-12 10:17:48', '管理员', 1, '2025-06-12 13:54:27', NULL, '2', '1', '2');
+INSERT INTO `da_asset` VALUES (171, '水利地图信息-超图', 'A05', -1, '-1', NULL, 0, 0, '0', '水利地图信息-超图', '1', '1', '超级管理员', 1, '2025-05-06 11:10:29', '超级管理员', 1, '2025-05-06 11:19:55', NULL, '3', '3', '2');
+INSERT INTO `da_asset` VALUES (172, '水利地理空间服务', 'A05', -1, '-1', NULL, 0, 0, '0', '地理空间服务相关数据，可以获取地理空间数据', '1', '0', 'qData', 1, '2025-05-23 17:01:54', '管理员', 1, '2025-06-12 13:57:26', NULL, '3', '3', '2');
+INSERT INTO `da_asset` VALUES (173, '小山口基础信息表', 'A05', 48, 'MESSAGE', '消息', 0, 22, '0', '小山口基础信息表', '1', '0', 'qData', 1, '2025-05-23 17:42:18', '管理员', 1, '2025-06-12 13:57:34', NULL, '3', '1', '2');
+INSERT INTO `da_asset` VALUES (174, '水库基础信息表', 'A05', 1001, 'DP_USER_INFO', '存储用户基础信息的表', 1000, 8, '0', '水库基础的信息资产，包含编码等', '1', '0', 'admin', 1, '2025-05-30 10:30:00', '管理员', 1, '2025-06-12 13:57:40', '初始版本', '0', '1', '2');
+INSERT INTO `da_asset` VALUES (175, '灌区基础信息表', 'A05', 1002, 'DP_ORDER', '存储订单信息的表', 5000, 10, '0', '包含灌区基础信息资产，比如编码，名称，类别等', '1', '0', 'admin', 1, '2025-05-30 10:35:00', '管理员', 1, '2025-06-12 13:57:50', '初始版本', '0', '1', '2');
+INSERT INTO `da_asset` VALUES (176, '取水口基础信息表', 'A05', 1003, 'DP_PRODUCT', '存储产品信息的表', 200, 6, '0', '包含取水口的基础信息资产，编码，名称，类型等等', '1', '0', 'admin', 1, '2025-05-30 10:40:00', '管理员', 1, '2025-06-12 13:57:55', '初始版本', '0', '1', '2');
+INSERT INTO `da_asset` VALUES (177, '涵洞基础信息表', 'A05', 1004, 'DP_INVENTORY', '存储库存信息的表', 800, 7, '0', '包含涵洞基础信息资产，比如编码，名称等', '1', '0', 'admin', 1, '2025-05-30 10:45:00', '管理员', 1, '2025-06-12 13:58:11', '初始版本', '0', '1', '2');
+INSERT INTO `da_asset` VALUES (178, '泵站基础信息表', 'A05', 1005, 'DP_CUSTOMER', '存储客户信息的表', 1200, 9, '0', '包含泵站的资产信息，比如编码，名称等', '1', '0', 'admin', 1, '2025-05-30 10:50:00', '管理员', 1, '2025-06-12 13:58:17', '初始版本', '0', '1', '2');
+INSERT INTO `da_asset` VALUES (179, '水闸基础信息表', 'A05', 1006, 'DP_PAYMENT', '存储支付信息的表', 3000, 8, '0', '包含水闸的基础信息，名称，编码等', '1', '0', 'admin', 1, '2025-05-30 10:55:00', '管理员', 1, '2025-06-12 13:58:25', '初始版本', '0', '1', '2');
+INSERT INTO `da_asset` VALUES (180, '流域基础信息表', 'A05', 4, 'ATT_BAS_BASE', '流域基础信息表', 0, 13, '0', '流域基础信息表', '1', '0', '管理员', 1, '2025-06-12 10:17:37', '管理员', 1, '2025-06-12 13:59:19', NULL, '2', '1', '2');
+INSERT INTO `da_asset` VALUES (181, '河流基础信息表', 'A05', 4, 'ATT_RV_BASE', '河流基础信息表', 0, 5, '0', '河流基础信息表', '1', '0', '管理员', 1, '2025-06-12 10:17:39', '管理员', 1, '2025-06-12 13:59:08', NULL, '2', '1', '2');
+INSERT INTO `da_asset` VALUES (182, '湖泊基础信息表', 'A05', 4, 'ATT_LK_BASE', '湖泊基础信息表', 0, 3, '0', '湖泊基础信息表', '1', '0', '管理员', 1, '2025-06-12 10:17:40', '管理员', 1, '2025-06-12 13:59:01', NULL, '2', '1', '2');
+INSERT INTO `da_asset` VALUES (183, '水库基础信息表', 'A05', 4, 'ATT_RES_BASE', '水库基础信息表', 0, 3, '0', '水库基础信息表', '1', '0', '管理员', 1, '2025-06-12 10:17:42', '管理员', 1, '2025-06-12 13:58:52', NULL, '2', '1', '2');
+INSERT INTO `da_asset` VALUES (184, '水库大坝基础信息表', 'A05', 4, 'ATT_DAM_BASE', '水库大坝基础信息表', 0, 2, '0', '水库大坝基础信息表', '1', '0', '管理员', 1, '2025-06-12 10:17:43', '管理员', 1, '2025-06-12 13:58:44', NULL, '2', '1', '2');
+INSERT INTO `da_asset` VALUES (185, '水电站基础信息表', 'A05', 4, 'ATT_HYST_BASE', '水电站基础信息表', 0, 2, '0', '水电站基础信息表', '1', '0', '管理员', 1, '2025-06-12 10:17:44', '管理员', 1, '2025-06-12 13:58:37', NULL, '2', '1', '2');
+INSERT INTO `da_asset` VALUES (186, '灌区基础信息表', 'A05', 4, 'ATT_IRR_BASE', '灌区基础信息表', 0, 2, '0', '灌区基础信息表', '1', '0', '管理员', 1, '2025-06-12 10:17:45', '管理员', 1, '2025-06-12 13:55:07', NULL, '2', '1', '2');
+INSERT INTO `da_asset` VALUES (187, '渠（沟）道基础信息表', 'A05', 4, 'ATT_CHAN_BASE', '渠（沟）道基础信息表', 0, 2, '0', '渠（沟）道基础信息表', '1', '0', '管理员', 1, '2025-06-12 10:17:46', '管理员', 1, '2025-06-12 13:54:57', NULL, '2', '1', '2');
+INSERT INTO `da_asset` VALUES (188, '取水井基础信息表', 'A05', 4, 'ATT_WELL_BASE', '取水井基础信息表', 0, 2, '0', '取水井基础信息表', '1', '0', '管理员', 1, '2025-06-12 10:17:47', '管理员', 1, '2025-06-12 13:54:47', NULL, '2', '1', '2');
+INSERT INTO `da_asset` VALUES (189, '水闸基础信息表', 'A05', 4, 'ATT_WAGA_BASE', '水闸基础信息表', 0, 2, '0', '水闸基础信息表', '1', '0', '管理员', 1, '2025-06-12 10:17:48', '管理员', 1, '2025-06-12 13:54:27', NULL, '2', '1', '2');
+INSERT INTO `da_asset` VALUES (190, '资产', 'A05A05', 51, 'user8', '用户信息表', 130, 7, '2', '', '1', '1', '管理员', 1, '2025-08-27 17:38:52', '管理员', 1, '2025-08-27 17:41:10', NULL, '3', '1', '2');
+INSERT INTO `da_asset` VALUES (191, '资产', 'A05', 51, 'user8', '用户信息表', 130, 7, '2', '', '1', '1', '管理员', 1, '2025-08-27 17:49:20', '管理员', 1, '2025-08-27 17:49:39', NULL, '3', '1', '2');
+INSERT INTO `da_asset` VALUES (192, '资产', 'A05', 51, 'user8', '用户信息表', 130, 7, '2', '', '1', '0', '管理员', 1, '2025-08-27 18:03:51', '管理员', 1, '2025-08-27 18:04:18', NULL, '3', '1', '2');
+INSERT INTO `da_asset` VALUES (193, 'as ', 'A05A05', 51, 'user8', '用户信息表', 0, 0, '2', '', '1', '1', '千桐科技', 1, '2025-08-27 18:25:51', '千桐科技', 1, '2025-08-27 18:26:09', NULL, '3', '1', '2');
 
 -- ----------------------------
 -- Table structure for da_asset_api
@@ -1830,6 +1834,7 @@ INSERT INTO `da_datasource` VALUES (45, '地下水基础信息库', 'Oracle11', 
 INSERT INTO `da_datasource` VALUES (46, '水利厅', 'Oracle11', '{\"username\":\"admin\",\"password\":\"admin123\",\"dbname\":\"USER\",\"sid\":\"orcl\"}', '127.0.0.1', 1521, 0, 0, 0, '水利厅当中所相关的所有的数据表库', '1', '超级管理员', 1, '2025-05-25 02:00:37', '管理员', 1, '2025-06-11 20:30:29', NULL, '1');
 INSERT INTO `da_datasource` VALUES (47, '测试-Hive', 'Hive', '{\"username\":\"hadoop\",\"dbname\":\"test\"}', '127.0.0.1', 10000, 0, 0, 0, NULL, '1', '超级管理员', 1, '2025-05-27 02:20:49', '超级管理员', 1, '2025-05-27 02:20:49', NULL, '1');
 INSERT INTO `da_datasource` VALUES (48, '小山口-水文基础库-中间库', 'DM8', '{\"username\":\"QDATA_TEST\",\"password\":\"123456\",\"dbname\":\"QDATA_TEST\"}', '127.0.0.1', 5236, 0, 0, 0, '小山口与水文库的中间关联库', '1', 'qData', 1, '2025-05-30 06:28:58', 'qData', 1, '2025-05-30 06:28:58', '', '0');
+INSERT INTO `da_datasource` VALUES (51, '房哥的专属mysql', 'MySql', '{\"username\":\"root\",\"password\":\"6988be6266113fdc\",\"dbname\":\"test\"}', '60.205.169.125', 3306, 0, 0, 0, NULL, '1', '管理员', 1, '2025-08-27 16:06:44', '千桐科技', 1, '2025-08-27 17:48:14', NULL, '0');
 
 -- ----------------------------
 -- Table structure for da_datasource_project_rel
@@ -2125,7 +2130,7 @@ CREATE TABLE `dp_data_elem_rule_rel`  (
   `RULE` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '规则配置;json字符串',
   `RULE_CODE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '规则code',
   `RULE_NAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '规则名称',
-  `DIMENSION_TYPE` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '规则维度',
+  `DIMENSION_TYPE` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '规则维度',
   `RULE_DESCRIPTION` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '规则描述',
   `ERR_DESCRIPTION` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '错误描述',
   `SUGGESTION` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '修复建议',
@@ -3885,8 +3890,8 @@ INSERT INTO `system_dict_data` VALUES (98, 1, '否', '0', 'dp_model_column_pk_fl
 INSERT INTO `system_dict_data` VALUES (99, 1, '是', '1', 'dp_model_column_pk_flag', NULL, 'default', 'N', '0', 'qData', '2025-01-21 11:21:58', '', NULL, NULL);
 INSERT INTO `system_dict_data` VALUES (100, 1, '否', '0', 'dp_model_column_nullable_flag', NULL, 'default', 'N', '0', 'qData', '2025-01-21 11:22:44', '', NULL, NULL);
 INSERT INTO `system_dict_data` VALUES (101, 1, '是', '1', 'dp_model_column_nullable_flag', NULL, 'default', 'N', '0', 'qData', '2025-01-21 11:22:53', '', NULL, NULL);
-INSERT INTO `system_dict_data` VALUES (102, 0, '未发布', '1', 'da_assets_status', NULL, 'info', 'N', '0', '', NULL, 'qData', '2025-01-22 14:05:30', NULL);
-INSERT INTO `system_dict_data` VALUES (103, 1, '已发布', '2', 'da_assets_status', NULL, NULL, 'N', '0', '', NULL, 'qData', '2025-01-22 14:05:34', NULL);
+INSERT INTO `system_dict_data` VALUES (102, 0, '未发布', '0', 'da_assets_status', NULL, 'info', 'N', '0', '', NULL, 'qData', '2025-01-22 14:05:30', NULL);
+INSERT INTO `system_dict_data` VALUES (103, 1, '已发布', '1', 'da_assets_status', NULL, NULL, 'N', '0', '', NULL, 'qData', '2025-01-22 14:05:34', NULL);
 INSERT INTO `system_dict_data` VALUES (105, 0, '完整性', '1', 'att_rule_audit_q_dimension', NULL, NULL, 'N', '0', '', NULL, '', NULL, NULL);
 INSERT INTO `system_dict_data` VALUES (106, 0, '准确性', '2', 'att_rule_audit_q_dimension', NULL, NULL, 'N', '0', '', NULL, '', NULL, NULL);
 INSERT INTO `system_dict_data` VALUES (107, 0, '一致性', '3', 'att_rule_audit_q_dimension', NULL, NULL, 'N', '0', '', NULL, '', NULL, NULL);
@@ -4055,6 +4060,10 @@ INSERT INTO `system_dict_data` VALUES (276, 0, '成功', '7', 'dpp_etl_task_inst
 INSERT INTO `system_dict_data` VALUES (277, 0, '数据发现', '1', 'da_asset_source', NULL, 'primary', 'N', '0', 'shuyexin', '2025-03-27 17:43:45', '', NULL, NULL);
 INSERT INTO `system_dict_data` VALUES (278, 0, '数据模型', '2', 'da_asset_source', NULL, 'success', 'N', '0', 'shuyexin', '2025-03-27 17:43:57', '', NULL, NULL);
 INSERT INTO `system_dict_data` VALUES (288, 1, '数据库表', '1', 'da_asset_type', NULL, 'primary', 'N', '0', 'qData', '2025-04-14 11:24:26', '', NULL, NULL);
+INSERT INTO `system_dict_data` VALUES (289, 2, '外部API', '2', 'da_asset_type', NULL, 'primary', 'N', '0', 'qData', '2025-04-14 11:24:54', '', NULL, NULL);
+INSERT INTO `system_dict_data` VALUES (290, 3, '地理空间服务', '3', 'da_asset_type', NULL, 'primary', 'N', '0', 'qData', '2025-04-14 11:25:42', '', NULL, NULL);
+INSERT INTO `system_dict_data` VALUES (291, 4, '矢量数据', '4', 'da_asset_type', NULL, 'primary', 'N', '0', 'qData', '2025-04-14 11:25:56', '', NULL, NULL);
+INSERT INTO `system_dict_data` VALUES (292, 5, '视频数据', '5', 'da_asset_type', NULL, 'primary', 'N', '0', 'qData', '2025-04-14 11:26:22', '', NULL, NULL);
 INSERT INTO `system_dict_data` VALUES (293, 0, '行政区划', '1', 'att_perm_tier_type', NULL, 'primary', 'N', '0', 'qData', '2025-04-14 14:07:23', '', NULL, NULL);
 INSERT INTO `system_dict_data` VALUES (294, 0, '流域机构', '2', 'att_perm_tier_type', NULL, 'success', 'N', '0', 'qData', '2025-04-14 14:07:41', '', NULL, NULL);
 INSERT INTO `system_dict_data` VALUES (295, 1, 'String', 'String', 'da_asset_api_column_type', NULL, 'primary', 'N', '0', 'qData', '2025-04-18 14:53:15', '', NULL, NULL);

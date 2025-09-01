@@ -160,6 +160,8 @@ ds:
     main_jar: file:/dolphinscheduler/default/resources/spark-jar/qdata-etl-3.8.8.jar
     #jar main入口
     main_class: tech.qiantong.qdata.spark.etl.EtlApplication
+  hdfs:
+    url: hdfs://127.0.0.1:8020
 
 # 数据质量任务回调
 path:

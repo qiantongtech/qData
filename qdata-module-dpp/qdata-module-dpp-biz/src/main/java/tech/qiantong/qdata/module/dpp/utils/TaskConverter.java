@@ -83,6 +83,12 @@ public class TaskConverter {
     private static final int DEFAULT_TASK_delayTime = 0; // delayTime延时执行时间
     private static final int DEFAULT_TASK_failRetryInterval = 1; // failRetryInterval失败重试间隔
 
+
+
+    public static final String TASK_INSTANCE_LOG_KEY = "log:taskInstanceLog:";//任务实例日志key
+
+    public static final String PROCESS_INSTANCE_LOG_KEY = "log:processInstanceLog:";//流程实例日志key
+
     public static DsTaskSaveReqDTO buildDsTaskSaveReq(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO) {//名字
         //创建返回实体
         DsTaskSaveReqDTO dsTaskSaveReqDTO = new DsTaskSaveReqDTO();

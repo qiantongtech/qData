@@ -14,10 +14,14 @@
           class="demo-tabs"
           @tab-click="handleClick"
         >
-          <el-tab-pane label="数据集成" name="1"></el-tab-pane>
-          <el-tab-pane label="实时集成" disabled name="2"></el-tab-pane>
-          <el-tab-pane label="数据开发" name="3"></el-tab-pane>
-          <dppEtlTaskLog ref="taskLog" @resetCat="resetCat" />
+          <el-tab-pane label="数据集成" name="1">
+            <dppEtlTaskLog ref="taskLog" @resetCat="resetCat" />
+          </el-tab-pane>
+          <el-tab-pane label="实时集成" disabled name="2">
+          </el-tab-pane>
+          <el-tab-pane label="数据开发" name="3">
+            <dppEtlDevTaskLog ref="taskLog" @resetCat="resetCat" />
+          </el-tab-pane>
         </el-tabs>
       </el-main>
     </el-container>
@@ -30,6 +34,7 @@ import { useRoute, useRouter } from "vue-router";
 import useUserStore from "@/store/system/user";
 
 import dppEtlTaskLog from "./components/dppEtlTaskLog.vue";
+import dppEtlDevTaskLog from "./components/dppEtlDevTaskLog.vue";
 
 import { listAttTaskCat } from "@/api/att/cat/attTaskCat/attTaskCat";
 import { listAttDataDevCat } from "@/api/att/cat/attDataDevCat/attDataDevCat";

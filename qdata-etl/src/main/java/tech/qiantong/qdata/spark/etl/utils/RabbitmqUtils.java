@@ -77,17 +77,4 @@ public class RabbitmqUtils {
         }
         return true;
     }
-
-    public static void main(String[] args) {
-        JSONObject config = new JSONObject();
-        config.put("host", "110.42.38.62"); // RabbitMQ服务器地址
-        config.put("port", 40003);        // 默认端口
-        config.put("username", "admin"); // 默认用户名
-        config.put("password", "Ej^iUNFLp9MQouc1"); // 默认密码
-        Map<String, Object> data = new HashMap<>();
-        data.put("ddd", "1");
-        // 发布mqtt消息
-        RabbitmqUtils.convertAndSend(config, "ds.exchange.test2", "ds.queue.test2", data);
-    }
-
 }

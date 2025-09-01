@@ -1,5 +1,32 @@
 package tech.qiantong.qdata.module.system.controller.admin.common;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.math.BigDecimal;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import cn.hutool.http.HttpRequest;
+import cn.hutool.http.HttpUtil;
+import cn.hutool.http.Method;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
+import com.alibaba.fastjson2.JSONWriter;
+import com.jayway.jsonpath.JsonPath;
+import org.apache.commons.io.IOUtils;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FSDataOutputStream;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,21 +37,15 @@ import org.springframework.web.multipart.MultipartFile;
 import tech.qiantong.qdata.common.config.AniviaConfig;
 import tech.qiantong.qdata.common.constant.Constants;
 import tech.qiantong.qdata.common.core.domain.AjaxResult;
+import tech.qiantong.qdata.common.exception.ServiceException;
 import tech.qiantong.qdata.common.utils.ExcelToCsvUtil;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.file.FileUploadUtils;
 import tech.qiantong.qdata.common.utils.file.FileUtils;
 import tech.qiantong.qdata.config.ServerConfig;
-import tech.qiantong.qdata.module.system.domain.vo.ColumnRespVO;
 import tech.qiantong.qdata.module.system.domain.vo.CsvColumnReqVO;
 import tech.qiantong.qdata.module.system.domain.vo.ExcelColumnReqVO;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import tech.qiantong.qdata.module.system.domain.vo.ColumnRespVO;
 
 /**
  * 通用请求处理
@@ -41,6 +62,9 @@ public class CommonController {
 
     @Value("${ds.resource_url}")
     private String resourceUrl;
+
+    @Value("${ds.hdfs.url}")
+    private String hdfsUrl;
 
     private static final String FILE_DELIMETER = ",";
 
@@ -161,15 +185,18 @@ public class CommonController {
         excelFile = excelFile.replace("/", File.separator);
         Integer startColumn = excelColumnReqVO.getStartColumn();
         Integer startData = excelColumnReqVO.getStartData();
-        String csvFile = resourceUrl + "csv" + File.separator + UUID.randomUUID().toString().replace("-", "") + ".csv";
+        String fileName = UUID.randomUUID().toString().replace("-", "") + ".csv";
+        String csvFile = resourceUrl + "csv" + File.separator + fileName;
         List<String> columnList = ExcelToCsvUtil.convertExcelToCsv(excelFile, csvFile, startColumn, startData);
         if (columnList.size() > 0) {
             if (!ExcelToCsvUtil.verifyColumn(columnList)) {
                 return AjaxResult.error("附件中列名格式有误，请检查!");
             }
         }
+        String hdfsPath = "/tmp/etl";
+        uploadHdfs(hdfsUrl, hdfsPath, csvFile, fileName);
         return AjaxResult.success(ColumnRespVO.builder()
-                .csvFile(csvFile)
+                .csvFile(hdfsUrl + "/" + hdfsPath + "/" + fileName)
                 .columnList(columnList).build());
     }
 
@@ -183,23 +210,50 @@ public class CommonController {
         String file = csvColumnReqVO.getFile();
         file = AniviaConfig.getProfile() + file.replace(Constants.RESOURCE_PREFIX + "/", "");
         file = file.replace("/", File.separator);
-        String csvFile = resourceUrl + "csv" + File.separator + UUID.randomUUID().toString().replace("-", "") + ".csv";
+        String fileName = UUID.randomUUID().toString().replace("-", "") + ".csv";
+        String csvFile = resourceUrl + "csv" + File.separator + fileName;
         List<String> columnList = ExcelToCsvUtil.parseCsv(file, csvFile);
         if (columnList.size() > 0) {
             if (!ExcelToCsvUtil.verifyColumn(columnList)) {
                 return AjaxResult.error("附件中列名格式有误，请检查!");
             }
         }
+        String hdfsPath = "/tmp/etl";
+        uploadHdfs(hdfsUrl, hdfsPath, csvFile, fileName);
         return AjaxResult.success(ColumnRespVO.builder()
-                .csvFile(csvFile)
+                .csvFile(hdfsUrl + "/" + hdfsPath + "/" + fileName)
                 .columnList(columnList).build());
     }
 
+    /**
+     * 上传文件至hdfs
+     *
+     * @param hdfsUrl  hdfs地址
+     * @param pathStr  上传的路径
+     * @param file     文件路径
+     * @param filename 文件名称
+     */
+    public void uploadHdfs(String hdfsUrl, String pathStr, String file, String filename) {
+        pathStr = pathStr == null ? "" : pathStr;
+        pathStr = resolvePath(pathStr, filename);
+        // 1. 创建 Hadoop 配置对象
+        Configuration conf = new Configuration();
+        conf.set("fs.defaultFS", hdfsUrl);
+        conf.set("dfs.client.use.datanode.hostname", "true");
+        // 如果只有1台DN，确保副本数别比节点数大
+        conf.set("dfs.replication", "1");
+        Path path = new Path(pathStr);
+        try (FileSystem fs = FileSystem.get(new URI(hdfsUrl), conf, "hadoop");
+             InputStream inputStream = new FileInputStream(file);
+             FSDataOutputStream outputStream = fs.create(path)) {
+            IOUtils.copy(inputStream, outputStream);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-    public static void main(String[] args) {
-        String inputPath = "C:\\Users\\Administrator\\Desktop\\数据中台\\ATT_WR_INFO_BASE.xlsx";
-        String outputPath = "C:\\Users\\Administrator\\Desktop\\数据中台\\ATT_WR_INFO_BASE.csv";
-        ExcelToCsvUtil.convertExcelToCsv(inputPath, outputPath, 1, 2);
-        System.out.println("转换成功！");
+    private String resolvePath(String path, String filename) {
+        String str = path + "/" + filename;
+        return str.replaceAll("/+", "/");
     }
 }

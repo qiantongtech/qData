@@ -26,18 +26,17 @@ import tech.qiantong.qdata.common.utils.DateUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.module.att.api.project.IAttProjectApi;
-import tech.qiantong.qdata.module.dpp.api.etl.dto.DppEtlTaskInstanceLogRespDTO;
+import tech.qiantong.qdata.module.dpp.api.etl.dto.DppEtlNodeInstanceRespDTO;
+import tech.qiantong.qdata.module.dpp.api.etl.dto.DppEtlTaskInstanceLogStatusRespDTO;
 import tech.qiantong.qdata.module.dpp.api.etl.dto.DppEtlTaskRespDTO;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlTaskInstanceTreeListRespVO;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.*;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlNodeInstanceDO;
-import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlTaskDO;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlTaskInstanceDO;
 import tech.qiantong.qdata.module.dpp.dal.mapper.etl.DppEtlTaskInstanceMapper;
-import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlNodeInstanceService;
-import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlTaskInstanceService;
-import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlTaskLogService;
-import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlTaskService;
+import tech.qiantong.qdata.module.dpp.service.etl.*;
+import tech.qiantong.qdata.module.dpp.utils.TaskConverter;
+import tech.qiantong.qdata.redis.service.IRedisService;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -73,6 +72,16 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
 
     @Resource
     private IDppEtlNodeInstanceService dppEtlTNodeInstanceService;
+
+
+    @Resource
+    private IRedisService redisService;
+
+    @Resource
+    private IDppEtlTaskInstanceLogService dppEtlTaskInstanceLogService;
+
+    @Resource
+    private IDppEtlNodeInstanceLogService dppEtlNodeInstanceLogService;
 
     @Override
     public PageResult<DppEtlTaskInstanceDO> getDppEtlTaskInstancePage(DppEtlTaskInstancePageReqVO pageReqVO) {
@@ -380,7 +389,7 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
     }
 
     @Override
-    public DppEtlTaskInstanceLogRespDTO getLogByTaskInstanceId(Long taskInstanceId) {
+    public DppEtlTaskInstanceLogStatusRespDTO getLogByTaskInstanceId(Long taskInstanceId) {
         String log = "";
         DppEtlTaskInstanceDO dppEtlTaskInstanceDO = this.getById(taskInstanceId);
         //获取任务信息
@@ -391,22 +400,46 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
         if (dppEtlTaskLogRespVO == null) {
             throw new RuntimeException("任务不存在");
         }
-        JSONArray locations = JSONArray.parse(dppEtlTaskLogRespVO.getLocations());
-        List<DppEtlNodeInstanceDO> dppEtlNodeInstanceDOList = dppEtlTNodeInstanceService.list(Wrappers.lambdaQuery(DppEtlNodeInstanceDO.class)
-                .eq(DppEtlNodeInstanceDO::getTaskInstanceId, taskInstanceId));
-        Map<String, DppEtlNodeInstanceDO> nodeInstanceMap = dppEtlNodeInstanceDOList.stream().collect(Collectors.toMap(key -> key.getNodeCode(), value -> value));
-        for (int i = 0; i < locations.size(); i++) {
-            JSONObject location = (JSONObject) locations.get(i);
-            String code = String.valueOf(location.getLong("taskCode"));
-            DppEtlNodeInstanceDO dppEtlNodeInstanceDO = nodeInstanceMap.get(code);
-            if (dppEtlNodeInstanceDO != null) {
-//                dppEtlNodeInstanceDO.setLogPath("D:\\idea\\open\\xx.log");
-                if (FileUtil.exist(dppEtlNodeInstanceDO.getLogPath())) {
-                    log += FileUtil.readUtf8String(dppEtlNodeInstanceDO.getLogPath()) + "\n";
+
+        String processInstanceLogKey = TaskConverter.PROCESS_INSTANCE_LOG_KEY + taskInstanceId;
+        if (StringUtils.equals("1", dppEtlTaskInstanceDO.getTaskType())) {//判断是否是离线任务
+            if (redisService.hasKey(processInstanceLogKey)) {
+                log = redisService.get(processInstanceLogKey);
+            } else {
+                //获取表中的日志
+                String logContent = dppEtlTaskInstanceLogService.getLog(taskInstanceId);
+                if (logContent != null) {
+                    log = logContent;
+                }
+            }
+        } else {
+            JSONArray locations = JSONArray.parse(dppEtlTaskLogRespVO.getLocations());
+            List<DppEtlNodeInstanceDO> dppEtlNodeInstanceDOList = dppEtlTNodeInstanceService.list(Wrappers.lambdaQuery(DppEtlNodeInstanceDO.class)
+                    .eq(DppEtlNodeInstanceDO::getTaskInstanceId, taskInstanceId));
+            Map<String, DppEtlNodeInstanceDO> nodeInstanceMap = dppEtlNodeInstanceDOList.stream().collect(Collectors.toMap(key -> key.getNodeCode(), value -> value));
+
+            for (int i = 0; i < locations.size(); i++) {
+                JSONObject location = (JSONObject) locations.get(i);
+                String code = String.valueOf(location.getLong("taskCode"));
+                DppEtlNodeInstanceDO dppEtlNodeInstanceDO = nodeInstanceMap.get(code);
+
+                if (dppEtlNodeInstanceDO != null) {
+                    String taskInstanceLogKey = TaskConverter.TASK_INSTANCE_LOG_KEY + dppEtlNodeInstanceDO.getId();
+                    if (redisService.hasKey(taskInstanceLogKey)) {
+                        log += redisService.get(taskInstanceLogKey) + "\n";
+                    } else {
+                        //获取表中的日志
+                        String logContent = dppEtlNodeInstanceLogService.getLog(dppEtlNodeInstanceDO.getId());
+                        if (logContent != null) {
+                            log += logContent + "\n";
+                        }
+                    }
                 }
             }
         }
-        return DppEtlTaskInstanceLogRespDTO.builder()
+
+
+        return DppEtlTaskInstanceLogStatusRespDTO.builder()
                 .log(log)
                 .status(dppEtlTaskInstanceDO.getStatus())
                 .build();

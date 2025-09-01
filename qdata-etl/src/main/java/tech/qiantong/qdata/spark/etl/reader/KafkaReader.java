@@ -36,11 +36,11 @@ import static com.alibaba.fastjson2.JSONWriter.Feature.PrettyFormat;
 @Slf4j
 public class KafkaReader implements Reader {
     @Override
-    public Dataset<Row> read(SparkSession spark, JSONObject reader, List<String> readerColumns, String logPath) {
-        LogUtils.writeLog(logPath, "*********************************  Initialize task context  ***********************************");
-        LogUtils.writeLog(logPath, "开始Kafka输入节点");
-        LogUtils.writeLog(logPath, "开始任务时间: " + DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"));
-        LogUtils.writeLog(logPath, "任务参数：" + reader.toJSONString(PrettyFormat));
+    public Dataset<Row> read(SparkSession spark, JSONObject reader, List<String> readerColumns, LogUtils.Params logParams) {
+        LogUtils.writeLog(logParams, "*********************************  Initialize task context  ***********************************");
+        LogUtils.writeLog(logParams, "开始Kafka输入节点");
+        LogUtils.writeLog(logParams, "开始任务时间: " + DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"));
+        LogUtils.writeLog(logParams, "任务参数：" + reader.toJSONString(PrettyFormat));
         //参数信息
         JSONObject parameter = reader.getJSONObject("parameter");
         //连接信息
@@ -110,10 +110,10 @@ public class KafkaReader implements Reader {
         dataset = dataset.select(column.stream().map(c -> new Column(((JSONObject) c).getString("name"))).toArray(Column[]::new));
         readerColumns.addAll(column.stream().map(c -> ((JSONObject) c).getString("name")).collect(Collectors.toList()));
         dataset.na().fill("Unknown").show(10);
-        LogUtils.writeLog(logPath, "输入数据量为：" + rows.size());
+        LogUtils.writeLog(logParams, "输入数据量为：" + rows.size());
         log.info("部分数据如下>>>>>>>>>>>>>>");
         dataset.na().fill("Unknown").show(10);
-        LogUtils.writeLog(logPath, "部分数据：\n" + dataset.na().fill("Unknown").showString(10, 0, false));
+        LogUtils.writeLog(logParams, "部分数据：\n" + dataset.na().fill("Unknown").showString(10, 0, false));
         return dataset;
     }
 
@@ -205,7 +205,7 @@ public class KafkaReader implements Reader {
                     break;
             }
             // 定义字段结构，例如：
-            fields.add(DataTypes.createStructField(name, dataType, false));
+            fields.add(DataTypes.createStructField(name, dataType, true));
         }
         return fields;
     }

@@ -9,7 +9,7 @@ import tech.qiantong.qdata.api.ds.api.etl.ds.ProcessInstance;
 import tech.qiantong.qdata.common.core.domain.AjaxResult;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.enums.ExecuteType;
-import tech.qiantong.qdata.module.dpp.api.etl.dto.DppEtlTaskInstanceLogRespDTO;
+import tech.qiantong.qdata.module.dpp.api.etl.dto.DppEtlTaskInstanceLogStatusRespDTO;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlTaskInstanceTreeListRespVO;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlTaskInstanceRespVO;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlTaskInstanceSaveReqVO;
@@ -146,7 +146,7 @@ public interface IDppEtlTaskInstanceService extends IService<DppEtlTaskInstanceD
      * @param taskInstanceId
      * @return
      */
-    DppEtlTaskInstanceLogRespDTO getLogByTaskInstanceId(Long taskInstanceId);
+    DppEtlTaskInstanceLogStatusRespDTO getLogByTaskInstanceId(Long taskInstanceId);
 
     /**
      * 获取正在运行的任务实例

@@ -45,11 +45,11 @@ public class DBWriter implements Writer {
     AbstractDataSourceFactory dataSourceFactory = new DefaultDataSourceFactoryBean();
 
     @Override
-    public Boolean writer(JSONObject config, Dataset<Row> dataset, JSONObject writer, String logPath) {
-        LogUtils.writeLog(logPath, "*********************************  Initialize task context  ***********************************");
-        LogUtils.writeLog(logPath, "开始数据库输出节点");
-        LogUtils.writeLog(logPath, "开始任务时间: " + DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"));
-        LogUtils.writeLog(logPath, "任务参数：" + writer.toJSONString(PrettyFormat));
+    public Boolean writer(JSONObject config, Dataset<Row> dataset, JSONObject writer, LogUtils.Params logParams) {
+        LogUtils.writeLog(logParams, "*********************************  Initialize task context  ***********************************");
+        LogUtils.writeLog(logParams, "开始数据库输出节点");
+        LogUtils.writeLog(logParams, "开始任务时间: " + DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"));
+        LogUtils.writeLog(logParams, "任务参数：" + writer.toJSONString(PrettyFormat));
         JSONObject parameter = writer.getJSONObject("parameter");
         //封装读取信息
         Map<String, String> writerOptions = DBUtils.getDbOptions(parameter);
@@ -86,7 +86,7 @@ public class DBWriter implements Writer {
                 writeMode = "";
                 break;
         }
-        LogUtils.writeLog(logPath, "写入方式为：" + writeMode);
+        LogUtils.writeLog(logParams, "写入方式为：" + writeMode);
         //增量更新主键
         List<Object> selectedColumns = parameter.getJSONArray("selectedColumns");
         //目标表名称
@@ -104,16 +104,17 @@ public class DBWriter implements Writer {
         log.info(JSON.toJSONString(writerProperty));
         if (!dbQuery.valid()) {
             log.info(JSON.toJSONString(writerProperty));
-            LogUtils.writeLog(logPath, "数据库连接失败：" + JSON.toJSONString(writerProperty));
+            LogUtils.writeLog(logParams, "数据库连接失败：" + JSON.toJSONString(writerProperty));
             return false;
         }
+        Boolean success = true;
         try {
             //创建临时表
             if (StringUtils.isNotBlank(tmpTableName)) {
-                LogUtils.writeLog(logPath, "创建临时表：" + tmpTableName);
+                LogUtils.writeLog(logParams, "创建临时表：" + tmpTableName);
                 log.info("创建临时表");
                 if (!dbQuery.copyTable(null, writerProperty, tableName, tmpTableName)) {
-                    LogUtils.writeLog(logPath, "创建临时表失败：" + tmpTableName);
+                    LogUtils.writeLog(logParams, "创建临时表失败：" + tmpTableName);
                     log.error("创建临时表失败");
                     return false;
                 }
@@ -124,7 +125,7 @@ public class DBWriter implements Writer {
                 preSql.forEach(sql -> {
                     dbQuery.execute(sql.toString());
                 });
-                LogUtils.writeLog(logPath, "执行前置sql：" + JSON.toJSONString(preSql));
+                LogUtils.writeLog(logParams, "执行前置sql：" + JSON.toJSONString(preSql));
             }
 
             //字段设置对应关系
@@ -138,15 +139,16 @@ public class DBWriter implements Writer {
             //全量写或追加写
             if (writeModeType == 1 || writeModeType == 2) {
                 try {
-                    dataset.repartition(batchSize).write()
+                    dataset.write()
                             .format("jdbc")
                             .options(writerOptions)
                             .mode("append")
                             .save();
                     flag = true;
                 } catch (Exception e) {
+                    success = false;
                     log.info("保存失败:{}", e.getMessage());
-                    LogUtils.writeLog(logPath, "保存失败:" + e.getMessage());
+                    LogUtils.writeLog(logParams, "保存失败:" + e.getMessage());
                 }
             }
 
@@ -170,7 +172,7 @@ public class DBWriter implements Writer {
                     //删除目标
                     dbQuery.execute("DROP TABLE " + tableName);
                     log.info("删除目标表:{}", tableName);
-                    LogUtils.writeLog(logPath, "删除目标表:" + tableName);
+                    LogUtils.writeLog(logParams, "删除目标表:" + tableName);
 
                     //临时表名改为正式表
                     String repTableName = (StringUtils.isNotBlank(writerProperty.getDbName()) ? StringUtils.replace(tableName, writerProperty.getDbName() + ".", "") : tableName);
@@ -179,12 +181,12 @@ public class DBWriter implements Writer {
                     }
                     dbQuery.execute("ALTER TABLE " + tmpTableName + " RENAME TO " + repTableName);
                     log.info("临时表：{}改为目标表:{}", tmpTableName, tableName);
-                    LogUtils.writeLog(logPath, "临时表：" + tmpTableName + "改为目标表:" + tableName);
+                    LogUtils.writeLog(logParams, "临时表：" + tmpTableName + "改为目标表:" + tableName);
                 } else {
                     //删除临时表
                     dbQuery.execute("DROP TABLE " + tmpTableName);
                     log.info("删除临时表:{}", tableName);
-                    LogUtils.writeLog(logPath, "删除临时表:" + tmpTableName);
+                    LogUtils.writeLog(logParams, "删除临时表:" + tmpTableName);
                 }
             }
             //执行后置sql
@@ -195,15 +197,15 @@ public class DBWriter implements Writer {
             }
         } catch (Exception e) {
             log.error(e.getMessage());
-            LogUtils.writeLog(logPath, "失败原因:" + e.getMessage());
+            LogUtils.writeLog(logParams, "失败原因:" + e.getMessage());
             e.printStackTrace();
-            return false;
+            success = false;
         } finally {
             if (dbQuery != null) {
                 dbQuery.close();
             }
         }
-        return true;
+        return success;
     }
 
     @Override

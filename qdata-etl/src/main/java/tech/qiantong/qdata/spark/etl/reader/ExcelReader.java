@@ -32,29 +32,32 @@ import static com.alibaba.fastjson2.JSONWriter.Feature.PrettyFormat;
 @Slf4j
 public class ExcelReader implements Reader {
     @Override
-    public Dataset<Row> read(SparkSession spark, JSONObject reader, List<String> readerColumns, String logPath) {
-        LogUtils.writeLog(logPath, "*********************************  Initialize task context  ***********************************");
-        LogUtils.writeLog(logPath, "开始Excel输入节点");
-        LogUtils.writeLog(logPath, "开始任务时间: " + DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"));
-        LogUtils.writeLog(logPath, "任务参数：" + reader.toJSONString(PrettyFormat));
+    public Dataset<Row> read(SparkSession spark, JSONObject reader, List<String> readerColumns, LogUtils.Params logParams) {
+        LogUtils.writeLog(logParams, "*********************************  Initialize task context  ***********************************");
+        LogUtils.writeLog(logParams, "开始Excel输入节点");
+        LogUtils.writeLog(logParams, "开始任务时间: " + DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"));
+        LogUtils.writeLog(logParams, "任务参数：" + reader.toJSONString(PrettyFormat));
         //参数信息
         JSONObject parameter = reader.getJSONObject("parameter");
         //字段
         List<Object> column = parameter.getJSONArray("column");
         //csv 文件路径
         String path = parameter.getString("path");
-//        String path = "D:\\dolphinscheduler\\9babc7facff848f29f34629b21682a8a.csv";
+
+        spark.conf().set("dfs.client.use.datanode.hostname", "true");
         Dataset<Row> dataset = spark.read()
                 .format("csv")
                 .option("header", "true") // 如果 CSV 文件有表头
                 .option("inferSchema", "true") // 自动推断数据类型
+                .option("multiLine", "true")
+                .option("escape", "\"")
                 .load(path);
         dataset = dataset.select(column.stream().map(c -> new Column(((JSONObject) c).getString("columnName"))).toArray(Column[]::new));
         readerColumns.addAll(column.stream().map(c -> ((JSONObject) c).getString("columnName")).collect(Collectors.toList()));
-        LogUtils.writeLog(logPath, "输入数据量为：" + dataset.count());
+        LogUtils.writeLog(logParams, "输入数据量为：" + dataset.count());
         log.info("部分数据如下>>>>>>>>>>>>>>");
         dataset.na().fill("Unknown").show(10);
-        LogUtils.writeLog(logPath, "部分数据：\n" + dataset.na().fill("Unknown").showString(10, 0, false));
+        LogUtils.writeLog(logParams, "部分数据：\n" + dataset.na().fill("Unknown").showString(10, 0, false));
         return dataset;
     }
 
@@ -149,7 +152,7 @@ public class ExcelReader implements Reader {
                     break;
             }
             // 定义字段结构，例如：
-            fields.add(DataTypes.createStructField(value, dataType, false));
+            fields.add(DataTypes.createStructField(value, dataType, true));
         }
         return fields;
     }

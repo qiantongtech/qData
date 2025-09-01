@@ -3,6 +3,7 @@ package tech.qiantong.qdata.module.dpp.controller.admin.etl;
 import cn.hutool.core.date.DateUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,10 @@ import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlNodeInstance
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlNodeInstanceSaveReqVO;
 import tech.qiantong.qdata.module.dpp.convert.etl.DppEtlNodeInstanceConvert;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlNodeInstanceDO;
+import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlNodeInstanceLogService;
 import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlNodeInstanceService;
+import tech.qiantong.qdata.module.dpp.utils.TaskConverter;
+import tech.qiantong.qdata.redis.service.IRedisService;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -45,6 +49,12 @@ import java.util.List;
 public class DppEtlNodeInstanceController extends BaseController {
     @Resource
     private IDppEtlNodeInstanceService dppEtlNodeInstanceService;
+
+    @Resource
+    private IRedisService redisService;
+
+    @Resource
+    private IDppEtlNodeInstanceLogService dppEtlNodeInstanceLogService;
 
     @Operation(summary = "查询数据集成节点实例列表")
     @PreAuthorize("@ss.hasPermi('dpp:etl:etlnodeinstance:list')")
@@ -121,48 +131,40 @@ public class DppEtlNodeInstanceController extends BaseController {
     public AjaxResult getLogInfo(@PathVariable("id") Long id) {
         DppEtlNodeInstanceDO dppEtlNodeInstanceDO = dppEtlNodeInstanceService.getDppEtlNodeInstanceById(id);
         String content = "";
-        try {
-            InputStream in = new FileInputStream(dppEtlNodeInstanceDO.getLogPath());
-            content = new String(Files.readAllBytes(Paths.get(dppEtlNodeInstanceDO.getLogPath())));
-        } catch (IOException e) {
-            logger.error(e.getMessage(), e);
-            return AjaxResult.error("暂未找到日志文件信息");
+        String taskInstanceLogKey = TaskConverter.TASK_INSTANCE_LOG_KEY+ dppEtlNodeInstanceDO.getId();
+        if (redisService.hasKey(taskInstanceLogKey)) {
+            content += redisService.get(taskInstanceLogKey) + "\n";
+        } else {
+            //获取表中的日志
+            String logContent = dppEtlNodeInstanceLogService.getLog(dppEtlNodeInstanceDO.getId());
+            if (logContent != null) {
+                content += logContent + "\n";
+            }
         }
         return AjaxResult.success(content);
     }
 
-    @PreAuthorize("@ss.hasPermi('dpp:etl:etlnodeinstance:query')")
     @RequestMapping(value = "/downloadLog", method = RequestMethod.POST)
     @Operation(summary = "下载日志文件")
-    public void downloadLog(HttpServletResponse response, String handleMsg) {
-        // 添加日志审计功能
+    public void downloadLog(HttpServletResponse response, Long nodeInstanceId,String name) {
         try {
-            // 获取文件路径
-            File logFile = new File(handleMsg);
-
+            // 获取日志
+            String log = dppEtlNodeInstanceService.getLogByNodeInstanceId(nodeInstanceId);
             // 如果文件存在
-            if (logFile.exists()) {
-                // 设置响应的内容类型为文件下载
-                response.setContentType("application/octet-stream");
-                // 设置下载文件名
-                String fileName = logFile.getName();
-                response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+            // 设置响应的内容类型为文件下载
+            response.setContentType("application/octet-stream");
+            // 设置下载文件名
+            response.setHeader("Content-Disposition", "attachment;filename=" + name + ".log");
 
-                // 创建文件输入流
-                try (InputStream in = new FileInputStream(logFile);
-                     OutputStream out = response.getOutputStream()) {
-
-                    byte[] buffer = new byte[1024];
-                    int length;
-                    // 将文件内容写入输出流
-                    while ((length = in.read(buffer)) != -1) {
-                        out.write(buffer, 0, length);
-                    }
+            // 创建文件输入流
+            try (InputStream in = new ByteArrayInputStream(log.getBytes("UTF-8"));
+                 OutputStream out = response.getOutputStream()) {
+                byte[] buffer = new byte[1024];
+                int length;
+                // 将文件内容写入输出流
+                while ((length = in.read(buffer)) != -1) {
+                    out.write(buffer, 0, length);
                 }
-            } else {
-                // 如果文件不存在，返回404或自定义错误
-                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                response.getWriter().write("日志文件未找到");
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

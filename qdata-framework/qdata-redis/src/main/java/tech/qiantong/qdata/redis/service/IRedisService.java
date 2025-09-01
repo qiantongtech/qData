@@ -26,6 +26,8 @@ public interface IRedisService {
 
     boolean delete(String key);
 
+    boolean hasKey(String key);
+
     void leftPush(String key, String value);
 
     void rightPush(String key, String value);

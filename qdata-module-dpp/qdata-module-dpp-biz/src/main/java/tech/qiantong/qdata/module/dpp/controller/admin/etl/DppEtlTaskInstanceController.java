@@ -3,6 +3,10 @@ package tech.qiantong.qdata.module.dpp.controller.admin.etl;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Arrays;
 
 import cn.hutool.core.date.DateUtil;
@@ -25,7 +29,7 @@ import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.enums.BusinessType;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.common.utils.poi.ExcelUtil;
-import tech.qiantong.qdata.module.dpp.api.etl.dto.DppEtlTaskInstanceLogRespDTO;
+import tech.qiantong.qdata.module.dpp.api.etl.dto.DppEtlTaskInstanceLogStatusRespDTO;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.*;
 import tech.qiantong.qdata.module.dpp.convert.etl.DppEtlTaskInstanceConvert;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlTaskInstanceDO;
@@ -137,8 +141,41 @@ public class DppEtlTaskInstanceController extends BaseController {
 
     @Operation(summary = "通过实例id获取日志")
     @GetMapping("/getLogByTaskInstanceId")
-    public CommonResult<DppEtlTaskInstanceLogRespDTO> getLogByTaskInstanceId(@RequestParam Long taskInstanceId) {
+    public CommonResult<DppEtlTaskInstanceLogStatusRespDTO> getLogByTaskInstanceId(@RequestParam Long taskInstanceId) {
         return CommonResult.success(dppEtlTaskInstanceService.getLogByTaskInstanceId(taskInstanceId));
+    }
+
+    @RequestMapping(value = "/downloadLog", method = RequestMethod.POST)
+    @Operation(summary = "下载日志文件")
+    public void downloadLog(HttpServletResponse response, Long taskInstanceId, String name) {
+        try {
+            // 获取文件路径
+            DppEtlTaskInstanceLogStatusRespDTO dto = dppEtlTaskInstanceService.getLogByTaskInstanceId(taskInstanceId);
+            // 如果文件存在
+            // 设置响应的内容类型为文件下载
+            response.setContentType("application/octet-stream");
+            // 设置下载文件名
+            response.setHeader("Content-Disposition", "attachment;filename=" + name + ".log");
+
+            // 创建文件输入流
+            try (InputStream in = new ByteArrayInputStream(dto.getLog().getBytes("UTF-8"));
+                 OutputStream out = response.getOutputStream()) {
+                byte[] buffer = new byte[1024];
+                int length;
+                // 将文件内容写入输出流
+                while ((length = in.read(buffer)) != -1) {
+                    out.write(buffer, 0, length);
+                }
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            try {
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                response.getWriter().write("文件下载失败：" + e.getMessage());
+            } catch (IOException ioException) {
+                logger.error("写入错误信息失败", ioException);
+            }
+        }
     }
 
 }

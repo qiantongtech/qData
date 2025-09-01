@@ -73,6 +73,14 @@
             <version>${spark.version}</version>
         </dependency>
 
+        <!-- hadoop-hdfs -->
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-hdfs</artifactId>
+            <version>${hadoop.version}</version>
+        </dependency>
+
+
         <!-- mysql驱动包 -->
         <dependency>
             <groupId>com.mysql</groupId>

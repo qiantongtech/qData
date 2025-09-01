@@ -17,19 +17,14 @@ import tech.qiantong.qdata.module.att.api.project.IAttProjectApi;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlNodeInstancePageReqVO;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlNodeInstanceRespVO;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlNodeInstanceSaveReqVO;
-import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlNodeInstanceDO;
-import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlNodeLogDO;
+import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.*;
 import tech.qiantong.qdata.module.dpp.dal.mapper.etl.DppEtlNodeInstanceMapper;
-import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlNodeInstanceService;
-import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlNodeLogService;
-import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlNodeService;
-import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlTaskInstanceService;
+import tech.qiantong.qdata.module.dpp.service.etl.*;
+import tech.qiantong.qdata.module.dpp.utils.TaskConverter;
+import tech.qiantong.qdata.redis.service.IRedisService;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -56,6 +51,15 @@ public class DppEtlNodeInstanceServiceImpl extends ServiceImpl<DppEtlNodeInstanc
 
     @Resource
     private IAttProjectApi attProjectApi;
+
+    @Resource
+    private IRedisService redisService;
+
+    @Resource
+    private IDppEtlTaskInstanceLogService dppEtlTaskInstanceLogService;
+
+    @Resource
+    private IDppEtlNodeInstanceLogService dppEtlNodeInstanceLogService;
 
     @Override
     public PageResult<DppEtlNodeInstanceDO> getDppEtlNodeInstancePage(DppEtlNodeInstancePageReqVO pageReqVO) {
@@ -236,5 +240,83 @@ public class DppEtlNodeInstanceServiceImpl extends ServiceImpl<DppEtlNodeInstanc
     public DppEtlNodeInstanceDO getByDsId(Long dsId) {
         return baseMapper.selectOne(Wrappers.lambdaQuery(DppEtlNodeInstanceDO.class)
                 .eq(DppEtlNodeInstanceDO::getDsId, dsId));
+    }
+
+    @Override
+    public void taskInstanceLogInsert(String taskInstanceId, String processInstanceId, String logStr) {
+        String taskInstanceLogKey = TaskConverter.TASK_INSTANCE_LOG_KEY + taskInstanceId;
+        String processInstanceLogKey = TaskConverter.PROCESS_INSTANCE_LOG_KEY + processInstanceId;
+        //判断当前任务实例是否存在
+        if (processInstanceId == null || StringUtils.equals("null", processInstanceId) || (!redisService.hasKey(processInstanceLogKey) && dppEtlTaskInstanceService.count(Wrappers.lambdaQuery(DppEtlTaskInstanceDO.class)
+                .eq(DppEtlTaskInstanceDO::getId, Long.parseLong(processInstanceId))) == 0)) {
+            return;
+        }
+        String taskInstanceLog = redisService.get(taskInstanceLogKey);
+        String processInstanceLog = redisService.get(processInstanceLogKey);
+        if (taskInstanceLog == null) {
+            taskInstanceLog = "";
+        }
+        if (processInstanceLog == null) {
+            processInstanceLog = "";
+        }
+        taskInstanceLog += logStr + (logStr.matches(".*\r?\n.*") ? "" : "\n");
+        processInstanceLog += logStr + (logStr.matches(".*\r?\n.*") ? "" : "\n");
+        redisService.set(taskInstanceLogKey, taskInstanceLog);
+        redisService.set(processInstanceLogKey, processInstanceLog);
+
+        //判断会话是否结束
+        if (StringUtils.indexOf(logStr, "FINALIZE_SESSION") > -1) {
+            //判断当前任务实例是否结束
+            DppEtlTaskInstanceDO dppEtlTaskInstanceDO = dppEtlTaskInstanceService.getById(Long.parseLong(processInstanceId));
+            //判断状态  5：停止 6：失败 7：成功
+            if (dppEtlTaskInstanceDO != null && Arrays.asList("5", "6", "7").contains(dppEtlTaskInstanceDO.getStatus())) {
+                //写入日志
+                redisService.delete(processInstanceLogKey);
+                //判断是否是数据集成
+                if (StringUtils.equals("1", dppEtlTaskInstanceDO.getTaskType())) {
+                    //写入日志
+                    dppEtlTaskInstanceLogService.saveOrUpdate(DppEtlTaskInstanceLogDO.builder()
+                            .taskInstanceId(dppEtlTaskInstanceDO.getId())
+                            .tm(new Date())
+                            .taskType(dppEtlTaskInstanceDO.getTaskType())
+                            .taskId(dppEtlTaskInstanceDO.getTaskId())
+                            .taskCode(dppEtlTaskInstanceDO.getTaskCode())
+                            .logContent(processInstanceLog)
+                            .build());
+                }
+            }
+
+            //获取当前节点实例
+            DppEtlNodeInstanceDO dppEtlNodeInstanceDO = this.getById(Long.parseLong(taskInstanceId));
+            //写入日志,5分钟过期用于兼容节点状态未改变时可以正常查询日志
+            redisService.delete(taskInstanceLogKey);
+            redisService.set(taskInstanceLogKey, taskInstanceLog, 60 * 5);
+            dppEtlNodeInstanceLogService.save(DppEtlNodeInstanceLogDO.builder()
+                    .nodeInstanceId(dppEtlNodeInstanceDO.getId())
+                    .tm(new Date())
+                    .taskType(dppEtlNodeInstanceDO.getTaskType())
+                    .nodeId(dppEtlNodeInstanceDO.getNodeId())
+                    .nodeCode(dppEtlNodeInstanceDO.getNodeCode())
+                    .taskInstanceId(dppEtlNodeInstanceDO.getTaskInstanceId())
+                    .logContent(taskInstanceLog)
+                    .build());
+        }
+    }
+
+    @Override
+    public String getLogByNodeInstanceId(Long nodeInstanceId) {
+        DppEtlNodeInstanceDO dppEtlNodeInstanceDO = this.getDppEtlNodeInstanceById(nodeInstanceId);
+        String content = "";
+        String processInstanceLogKey = TaskConverter.PROCESS_INSTANCE_LOG_KEY + dppEtlNodeInstanceDO.getId();
+        if (redisService.hasKey(processInstanceLogKey)) {
+            content += redisService.get(processInstanceLogKey) + "\n";
+        } else {
+            //获取表中的日志
+            String logContent = dppEtlNodeInstanceLogService.getLog(dppEtlNodeInstanceDO.getId());
+            if (logContent != null) {
+                content += logContent + "\n";
+            }
+        }
+        return content;
     }
 }

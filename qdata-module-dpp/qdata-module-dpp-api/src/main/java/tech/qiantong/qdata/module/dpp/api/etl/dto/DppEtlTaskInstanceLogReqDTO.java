@@ -1,9 +1,6 @@
 package tech.qiantong.qdata.module.dpp.api.etl.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
@@ -13,11 +10,8 @@ import java.util.Date;
  * @author qdata
  * @date 2025-08-05
  */
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
-public class DppEtlTaskInstanceLogRespDTO {
+public class DppEtlTaskInstanceLogReqDTO {
 
     private static final long serialVersionUID = 1L;
 

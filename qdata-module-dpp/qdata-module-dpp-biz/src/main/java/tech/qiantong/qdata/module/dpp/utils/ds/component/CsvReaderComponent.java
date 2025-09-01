@@ -145,11 +145,11 @@ public class CsvReaderComponent implements ComponentItem {
         reader.put("parameter", parameter);
 
         //复制文件到静态资源中
-        String path = resourceUrl + DateUtil.format(new Date(), "yyyyMMdd") + File.separator + nodeCode + ".csv";
-        String csvFile = (String) taskParams.get("csvFile");
-        FileUtil.copy(csvFile, path, true);
+//        String path = resourceUrl + DateUtil.format(new Date(), "yyyyMMdd") + File.separator + nodeCode + ".csv";
+//        String csvFile = (String) taskParams.get("csvFile");
+//        FileUtil.copy(csvFile, path, true);
 
-        parameter.put("path", path);
+        parameter.put("path", taskParams.get("csvFile"));
         parameter.put("startColumn", taskParams.getOrDefault("startColumn", 1));
         parameter.put("startData", taskParams.getOrDefault("startData", 2));
         parameter.put("column", taskParams.get("columns"));

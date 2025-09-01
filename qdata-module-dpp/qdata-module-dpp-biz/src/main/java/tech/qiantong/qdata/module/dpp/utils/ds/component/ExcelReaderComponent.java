@@ -4,9 +4,13 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
+import tech.qiantong.qdata.common.config.AniviaConfig;
+import tech.qiantong.qdata.common.constant.Constants;
 import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
 import tech.qiantong.qdata.common.database.utils.MD5Util;
 import tech.qiantong.qdata.common.enums.TaskComponentTypeEnum;
+import tech.qiantong.qdata.module.dpp.utils.datax.FlinkxJson;
 import tech.qiantong.qdata.module.dpp.utils.model.DsResource;
 
 import java.io.File;
@@ -145,11 +149,11 @@ public class ExcelReaderComponent implements ComponentItem {
         reader.put("parameter", parameter);
 
         //复制文件到静态资源中
-        String path = resourceUrl + DateUtil.format(new Date(), "yyyyMMdd") + File.separator + nodeCode + ".csv";
-        String csvFile = (String) taskParams.get("csvFile");
-        FileUtil.copy(csvFile, path, true);
+//        String path = resourceUrl + DateUtil.format(new Date(), "yyyyMMdd") + File.separator + nodeCode + ".csv";
+//        String csvFile = (String) taskParams.get("csvFile");
+//        FileUtil.copy(csvFile, path, true);
 
-        parameter.put("path", path);
+        parameter.put("path", taskParams.get("csvFile"));
         parameter.put("startColumn", taskParams.getOrDefault("startColumn", 1));
         parameter.put("startData", taskParams.getOrDefault("startData", 2));
         parameter.put("column", taskParams.get("columns"));

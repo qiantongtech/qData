@@ -31,28 +31,29 @@ public class CleanTransition {
 
     /**
      * 新
+     *
      * @param dataset
      * @param transition
-     * @param logPath
+     * @param logParams
      * @return
      */
-    public static Dataset<Row> transition(Dataset<Row> dataset, JSONObject transition, String logPath) {
-        LogUtils.writeLog(logPath, "*********************************  Initialize task context  ***********************************");
-        LogUtils.writeLog(logPath, "开始转换节点");
-        LogUtils.writeLog(logPath, "开始任务时间: " + DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"));
-        LogUtils.writeLog(logPath, "任务参数：" + transition.toJSONString(PrettyFormat));
+    public static Dataset<Row> transition(Dataset<Row> dataset, JSONObject transition, LogUtils.Params logParams) {
+        LogUtils.writeLog(logParams, "*********************************  Initialize task context  ***********************************");
+        LogUtils.writeLog(logParams, "开始转换节点");
+        LogUtils.writeLog(logParams, "开始任务时间: " + DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"));
+        LogUtils.writeLog(logParams, "任务参数：" + transition.toJSONString(PrettyFormat));
 
         JSONObject parameter = transition.getJSONObject("parameter");
         // 获取需要处理的列名
         List<Map<String, Object>> tableFieldList = (List<Map<String, Object>>) parameter.get("tableFields");
 
         if (tableFieldList == null || tableFieldList.isEmpty()) {
-            return transitionOld(dataset,transition,logPath);
+            return transitionOld(dataset, transition, logParams);
         }
 
         String where = parameter.getString("where");
-        if(StringUtils.isNotEmpty(where)){
-            dataset = safeFilter(dataset, where, logPath);
+        if (StringUtils.isNotEmpty(where)) {
+            dataset = safeFilter(dataset, where, logParams);
         }
         // 对每个列应用数据处理
         for (Map<String, Object> rule : tableFieldList) {
@@ -61,13 +62,13 @@ public class CleanTransition {
             JSONObject ruleConfig = JSONObject.parseObject((String) rule.get("ruleConfig"));
 //            JSONObject ruleConfig = (JSONObject)rule.get("ruleConfig");
             String whereClause = MapUtils.getString(rule, "whereClause");
-            if(StringUtils.isNotEmpty(whereClause)){
-                dataset = safeFilter(dataset, whereClause, logPath);
+            if (StringUtils.isNotEmpty(whereClause)) {
+                dataset = safeFilter(dataset, whereClause, logParams);
             }
 
             // 执行前检查字段是否存在
             if (!checkColumnsExist(dataset, ruleConfig)) {
-                LogUtils.writeLog(logPath, String.format("跳过规则 %s（字段不存在）", ruleCode));
+                LogUtils.writeLog(logParams, String.format("跳过规则 %s（字段不存在）", ruleCode));
                 continue;
             }
 
@@ -87,7 +88,7 @@ public class CleanTransition {
                     dataset = deduplicateByFieldsKeepFirst(dataset, ruleConfig);
                     break;
                 default:
-                    LogUtils.writeLog(logPath, "未知规则：" + ruleCode);
+                    LogUtils.writeLog(logParams, "未知规则：" + ruleCode);
             }
         }
         return dataset;
@@ -238,7 +239,7 @@ public class CleanTransition {
         return dataset;
     }
 
-    private static Dataset<Row> safeFilter(Dataset<Row> dataset, String where, String logPath) {
+    private static Dataset<Row> safeFilter(Dataset<Row> dataset, String where, LogUtils.Params logParams) {
         if (StringUtils.isBlank(where)) {
             return dataset;
         }
@@ -255,7 +256,7 @@ public class CleanTransition {
         for (String token : tokens) {
             if (token.matches("^[a-zA-Z_][a-zA-Z0-9_]*$") && !columnSet.contains(token.toLowerCase())) {
                 String msg = "过滤条件字段不存在: " + token;
-                LogUtils.writeLog(logPath, msg);
+                LogUtils.writeLog(logParams, msg);
                 throw new IllegalArgumentException(msg);
             }
         }
@@ -264,7 +265,7 @@ public class CleanTransition {
             dataset.selectExpr("*").filter(where).limit(1).count();
         } catch (Exception e) {
             String msg = "过滤条件解析失败: " + where + "，错误信息：" + e.getMessage();
-            LogUtils.writeLog(logPath, msg);
+            LogUtils.writeLog(logParams, msg);
             throw new IllegalArgumentException(msg, e);
         }
 
@@ -357,9 +358,9 @@ public class CleanTransition {
         return dataset.filter(functions.not(allNullCond));
     }
 
-    public static Dataset<Row> transitionOld(Dataset<Row> dataset, JSONObject transition, String logPath) {
-        LogUtils.writeLog(logPath, "*********************************  Initialize task context  ***********************************");
-        LogUtils.writeLog(logPath, "版本重构，历史版本不再做支撑，可查看最新逻辑重新配置");
+    public static Dataset<Row> transitionOld(Dataset<Row> dataset, JSONObject transition, LogUtils.Params logParams) {
+        LogUtils.writeLog(logParams, "*********************************  Initialize task context  ***********************************");
+        LogUtils.writeLog(logParams, "版本重构，历史版本不再做支撑，可查看最新逻辑重新配置");
         return dataset;
     }
 

@@ -10,6 +10,6 @@
         FROM
             ${tableName}
         WHERE
-            CODE = #{catCode}
+            CODE = #{catCode} AND DEL_FLAG = 0
     </select>
 </mapper>

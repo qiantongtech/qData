@@ -70,6 +70,14 @@ public class DppEtlTaskInstanceDO extends BaseEntity {
      * 责任人
      */
     private String personCharge;
+
+    /**
+     * 责任人名称
+     */
+    @TableField(exist = false)
+    private String personChargeName;
+
+
     /**
      * 联系电话
      */

@@ -45,6 +45,11 @@ public class RedisServiceImpl implements IRedisService {
     }
 
     @Override
+    public boolean hasKey(String key) {
+        return stringRedisTemplate.hasKey(key);
+    }
+
+    @Override
     public void leftPush(String key, String value) {
         stringRedisTemplate.opsForList().leftPush(key, value);
     }

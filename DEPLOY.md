@@ -130,8 +130,7 @@ cd spark/sbin
 ### 3.2 DS 调度器启动 
 
 **1. 获取代码**  
-- 加入 QQ 群获取：[![加入QQ群](https://img.shields.io/badge/QQ群-814145903-blue.svg)](https://qm.qq.com/cgi-bin/qm/qr?k=fOuDDH-dLk4lhYezFO_Vg1IwSD58SxP2&jump_from=webapi&authKey=eCpXabAvZN5rc6jK/ukudn7G0mhMLQOjD7ov03xAfO5OqHNI7uvzujMqdXUwmNlK)
-- 🔗 [百度网盘](https://pan.baidu.com/s/13ANynrHdlYJyuqslAT6zSQ) 提取码: mc1d
+- 🔗 [百度网盘](https://pan.baidu.com/s/5A7-TUZ_EujpsWO93RektIg)
   
 **2. 启动指南**  
 🔗 [DolphinScheduler 开发环境搭建](https://dolphinscheduler.apache.org/zh-cn/docs/3.2.2/contribute/development-environment-setup)

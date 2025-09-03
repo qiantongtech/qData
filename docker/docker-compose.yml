@@ -1,0 +1,20 @@
+include:
+  - path: ./docker-compose-base.yml
+  - path: ./docker-compose-dolphinscheduler.yml
+  - path: ./docker-compose-spark.yml
+  - path: ./docker-compose-qdata.yml
+  - path: ./docker-compose-hadoop.yml
+
+version: "1.0.5"
+
+networks:
+  qdatanet:
+    driver: bridge
+
+volumes:
+  dolphinscheduler-postgresql:
+  dolphinscheduler-zookeeper:
+  dolphinscheduler-worker-data:
+#  dolphinscheduler-logs:
+#  dolphinscheduler-shared-local:
+#  dolphinscheduler-resource-local:

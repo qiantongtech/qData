@@ -1,0 +1,68 @@
+version: "1.0.5"
+
+services:
+  namenode:
+    image: apache/hadoop:3.3.6
+    hostname: namenode
+    container_name: namenode
+    restart: always
+    profiles: [ "all" , "hadoop" ]
+    ports:
+      - "9870:9870"       # NameNode Web UI
+      - "8020:8020"       # HDFS RPC
+      - "9000:9000"
+    env_file: .env
+    environment:
+      ENSURE_NAMENODE_DIR: "/tmp/hadoop-root/dfs/name"
+    command: [ "hdfs", "namenode" ]
+    networks:
+      - qdatanet
+
+  datanode:
+    image: apache/hadoop:3.3.6
+    hostname: datanode
+    container_name: datanode
+    restart: always
+    profiles: [ "all" , "hadoop" ]
+    ports:
+      - "9864:9864"
+      - "9866:9866"
+      - "9867:9867"
+    env_file: .env
+    command: >
+      /bin/bash -c "
+        hdfs datanode &
+        sleep 10 &&
+        hdfs dfs -mkdir -p /tmp/etl &&
+        hdfs dfs -chmod -R 777 / &&
+        tail -f /dev/null
+      "
+    user: "1000:1000"
+    networks:
+      - qdatanet
+#    volumes:
+#      - ./hadoop/data:/data/dfs #挂载数据
+
+  resourcemanager:
+    image: apache/hadoop:3.3.6
+    hostname: resourcemanager
+    container_name: resourcemanager
+    restart: always
+    profiles: [ "all" , "hadoop" ]
+    ports:
+      - "8088:8088"       # YARN Web UI
+    env_file: .env
+    command: [ "yarn", "resourcemanager" ]
+    networks:
+      - qdatanet
+
+  nodemanager:
+    image: apache/hadoop:3.3.6
+    hostname: nodemanager
+    container_name: nodemanager
+    env_file: .env
+    restart: always
+    profiles: [ "all" , "hadoop" ]
+    command: [ "yarn", "nodemanager" ]
+    networks:
+      - qdatanet

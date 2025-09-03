@@ -1,0 +1,110 @@
+version: "1.0.5"
+
+services:
+  redis:
+    image: redis:6-alpine
+    profiles: ["all"]
+    env_file: .env
+    restart: always
+    environment:
+      REDISCLI_AUTH: ${REDIS_PASSWORD:-J98%FHF#9h@e88h9fre9}
+#    volumes:
+#      # Mount the redis data directory to the container.
+#      - ./redis/data:/data
+    # Set the redis password when startup redis server.
+    command: redis-server --requirepass ${REDIS_PASSWORD:-J98%FHF#9h@e88h9fre9}
+    ports:
+      - "${EXPOSE_REDIS_PORT:-6379}:6379"
+    healthcheck:
+      test: [ 'CMD', 'redis-cli', 'ping' ]
+    networks:
+      - qdatanet
+
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    restart: always
+    ports:
+      - 5672:5672
+      - 15672:15672
+    healthcheck:
+      test: [ "CMD-SHELL", "rabbitmq-diagnostics -q ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    profiles: ["all"]
+    env_file: .env
+    environment:
+#      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+#      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+      - WORKER_GROUPS=default
+    volumes:
+      - ./rabbitmq/definitions.json:/etc/rabbitmq/definitions.json:ro
+      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+    networks:
+      - qdatanet
+
+  nginx:
+    image: nginx:1.24.0
+    restart: always
+    profiles: [ "all" ]
+    env_file: .env
+    ports:
+      - '${EXPOSE_NGINX_PORT:-80}:${NGINX_PORT:-80}'
+    networks:
+      - qdatanet
+    volumes:
+      - ./nginx/dist:/usr/share/nginx
+      - ./nginx/logs:/var/log/nginx
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/sites/:/etc/nginx/http_vhost/:ro
+
+  dm8:
+    image: dm8:dm8_20250506_x86_rh7_64
+    profiles: [ "all", "schema" ]
+    env_file: .env
+    privileged: true
+    hostname: dm8
+    restart: always
+    ports:
+      - "5236:5236"
+    volumes:
+      - ./database/dm8/init-qdata.sql:/home/dmdba/initdata/init-qdata.sql
+      - ./database/dm8/entrypoint.sh:/entrypoint.sh
+    environment:
+      - TZ=${TZ}
+      - CASE_SENSITIVE=${CASE_SENSITIVE}
+      - SYSDBA_PWD=${SYSDBA_PWD}
+      - SYSAUDITOR_PWD=${SYSAUDITOR_PWD}
+      - QDATA_USER=${QDATA_USER}
+      - QDATA_PWD=${QDATA_PWD}
+    healthcheck:
+      test: [ "CMD-SHELL", "echo > /dev/tcp/127.0.0.1/5236" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+    networks:
+      - qdatanet
+
+  mongodb:
+    container_name: mongodb
+    restart: always
+    profiles: [ "all", "schema" ]
+    env_file: .env
+    image: mongo:4.4
+    ports:
+      - 27017:27017
+#    volumes:
+#      - ./database/mongoDB:/data/db
+    environment:
+#      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      retries: 3
+      start_period: 30s
+      timeout: 10s
+    networks:
+      - qdatanet

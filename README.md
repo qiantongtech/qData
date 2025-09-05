@@ -16,9 +16,7 @@
 
 
 ## 🌈 平台简介
-**qData 数据中台**是一套集数据集成、标准管理、资产治理、质量控制、服务开放与智能分析于一体的企业级数据管理平台，致力于帮助企业实现数据资源的统一管理、高效治理与价值释放。我们秉承“高效、安全、灵活、开放”的理念，持续引入前沿技术，让数据真正成为企业发展的核心驱动力。
-
-qData 提供 **商业版** 与 **开源版** 两种形态，满足不同规模与场景下的用户需求。两者既各具特色，又形成互补：开源版更像启蒙老师，帮助低成本起步；商业版更像专家顾问，提供深度与保障。无论选择哪种版本，qData 都将成为可靠的伙伴，帮助企业释放数据价值，加速数字化进程。
+**qData 数据中台**是一套集**数据集成**、**标准管理**、**资产治理**、**质量控制**、**服务开放**与**智能分析**于一体的企业级数据管理平台，致力于帮助企业实现数据资源的统一管理、高效治理与价值释放。我们秉承“高效、安全、灵活、开放”的理念，持续引入前沿技术，让数据真正成为企业发展的核心驱动力。
 
 ✨✨✨**在线文档**✨✨✨ <a href="https://qdata.qiantong.tech" target="_blank">https://qdata.qiantong.tech</a> 
 
@@ -187,19 +185,19 @@ qData 平台采用前后端分离架构，后端基于 Spring Boot，前端基�
 
 ## 🚨 商用授权
 
-👉 如需 **开源版品牌授权** 或 **咨询商业版**，请点击下方按钮查看详情：
+qData 提供 **商业版** 与 **开源版** 两种形态，满足不同规模与场景下的用户需求。两者既各具特色，又形成互补：开源版更像启蒙老师，帮助低成本起步；商业版更像专家顾问，提供深度与保障。无论选择哪种版本，qData 都将成为可靠的伙伴，帮助企业释放数据价值，加速数字化进程。
 
-[💼 了解授权详情](https://qdata.qiantong.tech/business.html)
+👉 如需 **开源版品牌授权** 或 **咨询商业版**，请点击按钮查看详情：[💼 了解授权详情](https://qdata.qiantong.tech/business.html)
 
 ## 🚀 快速开始
 
 | 部署方式                    | 说明                                                              | 适用场景               |
 | ----------------------- | --------------------------------------------------------------- | ------------------ |
-| [**Docker Compose 部署**](https://qdata.qiantong.tech/docs/install/Docker%20Compose%20%E9%83%A8%E7%BD%B2.html) | 所有组件（调度器、数据库、消息队列、Spark、Flink 等）以及 qData 数据中台源码都通过 Docker Compose 一键启动 | **初学者快速上手**、功能演示、测试环境  |
-| [**使用源代码本地启动**](https://qdata.qiantong.tech/docs/install/%E4%BD%BF%E7%94%A8%E6%BA%90%E4%BB%A3%E7%A0%81%E6%9C%AC%E5%9C%B0%E5%90%AF%E5%8A%A8.html)  | qData 数据中台源码由开发者本地运行，依赖组件通过 Docker Compose 启动  | **日常开发**、功能联调          |
-| [**自主部署（纯手工安装）**](https://qdata.qiantong.tech/docs/install/%E8%87%AA%E4%B8%BB%E9%83%A8%E7%BD%B2/)  | 所有依赖组件及 qData 数据中台服务均需手工安装和配置  | **生产环境**、大规模部署、个性化定制场景 |
+| [Docker Compose 部署](https://qdata.qiantong.tech/docs/install/Docker%20Compose%20%E9%83%A8%E7%BD%B2.html) | 所有组件（调度器、数据库、消息队列、Spark、Flink 等）以及 qData 数据中台源码都通过 Docker Compose 一键启动 | **初学者快速上手**、功能演示、测试环境  |
+| [使用源代码本地启动](https://qdata.qiantong.tech/docs/install/%E4%BD%BF%E7%94%A8%E6%BA%90%E4%BB%A3%E7%A0%81%E6%9C%AC%E5%9C%B0%E5%90%AF%E5%8A%A8.html)  | qData 数据中台源码由开发者本地运行，依赖组件通过 Docker Compose 启动  | **日常开发**、功能联调          |
+| [自主部署（纯手工安装）](https://qdata.qiantong.tech/docs/install/%E8%87%AA%E4%B8%BB%E9%83%A8%E7%BD%B2/)  | 所有依赖组件及 qData 数据中台服务均需手工安装和配置  | **生产环境**、大规模部署、个性化定制场景 |
 
-👉 查看完整的安装与部署指南：<a href="https://qdata.qiantong.tech/docs/install/%E9%83%A8%E7%BD%B2%E5%BC%80%E6%BA%90%E7%89%88.html">🧭 查看部署 qData 开源版文档</a>
+👉 查看完整的安装与部署指南：<a href="https://qdata.qiantong.tech/docs/install/%E9%83%A8%E7%BD%B2%E5%BC%80%E6%BA%90%E7%89%88.html">🧭 点击查看详细部署步骤</a>
 
 ## 👥 QQ交流群
 欢迎加入 qData 官方 QQ 交流群，获取最新动态、技术支持与使用交流。

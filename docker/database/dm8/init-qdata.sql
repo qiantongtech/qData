@@ -1545,7 +1545,7 @@ INSERT INTO "QDATA"."SYSTEM_MENU"("MENU_ID","MENU_NAME","PARENT_ID","ORDER_NUM",
 INSERT INTO "QDATA"."SYSTEM_MENU"("MENU_ID","MENU_NAME","PARENT_ID","ORDER_NUM","PATH","COMPONENT","QUERY","IS_FRAME","IS_CACHE","ROUTE_NAME","MENU_TYPE","VISIBLE","STATUS","PERMS","ICON","CREATE_BY","CREATE_TIME","UPDATE_BY","UPDATE_TIME","REMARK") VALUES(2467,'数据集成任务删除',2426,4,'#','',null,1,0,null,'F','0','0','dpp:etl:etltask:remove','#','qData',TO_DATE('2025-02-19 11:32:10','YYYY-MM-DD HH24:MI:SS.FF'),'',null,'');
 INSERT INTO "QDATA"."SYSTEM_MENU"("MENU_ID","MENU_NAME","PARENT_ID","ORDER_NUM","PATH","COMPONENT","QUERY","IS_FRAME","IS_CACHE","ROUTE_NAME","MENU_TYPE","VISIBLE","STATUS","PERMS","ICON","CREATE_BY","CREATE_TIME","UPDATE_BY","UPDATE_TIME","REMARK") VALUES(2468,'数据集成任务导出',2426,5,'#','',null,1,0,null,'F','0','0','dpp:etl:etltask:export','#','qData',TO_DATE('2025-02-19 11:32:10','YYYY-MM-DD HH24:MI:SS.FF'),'',null,'');
 INSERT INTO "QDATA"."SYSTEM_MENU"("MENU_ID","MENU_NAME","PARENT_ID","ORDER_NUM","PATH","COMPONENT","QUERY","IS_FRAME","IS_CACHE","ROUTE_NAME","MENU_TYPE","VISIBLE","STATUS","PERMS","ICON","CREATE_BY","CREATE_TIME","UPDATE_BY","UPDATE_TIME","REMARK") VALUES(2469,'数据集成任务导入',2426,6,'#','',null,1,0,null,'F','0','0','dpp:etl:etltask:import','#','qData',TO_DATE('2025-02-19 11:32:11','YYYY-MM-DD HH24:MI:SS.FF'),'',null,'');
-INSERT INTO "QDATA"."SYSTEM_MENU"("MENU_ID","MENU_NAME","PARENT_ID","ORDER_NUM","PATH","COMPONENT","QUERY","IS_FRAME","IS_CACHE","ROUTE_NAME","MENU_TYPE","VISIBLE","STATUS","PERMS","ICON","CREATE_BY","CREATE_TIME","UPDATE_BY","UPDATE_TIME","REMARK") VALUES(2470,'任务实例',2477,1,'dppEtlTaskInstance','dpp/etltaskinstance/index',null,1,0,null,'C','0','0','dpp:etl:etlnodeinstance:list','#','qData',TO_DATE('2025-02-21 21:08:31','YYYY-MM-DD HH24:MI:SS.FF'),'qData',TO_DATE('2025-03-31 09:39:42','YYYY-MM-DD HH24:MI:SS.FF'),'数据集成任务实例菜单');
+INSERT INTO "QDATA"."SYSTEM_MENU"("MENU_ID","MENU_NAME","PARENT_ID","ORDER_NUM","PATH","COMPONENT","QUERY","IS_FRAME","IS_CACHE","ROUTE_NAME","MENU_TYPE","VISIBLE","STATUS","PERMS","ICON","CREATE_BY","CREATE_TIME","UPDATE_BY","UPDATE_TIME","REMARK") VALUES(2470,'任务实例',2477,1,'dppEtlTaskInstance','dpp/etltaskinstance/index',null,1,0,null,'C','0','0','dpp:etl:etltaskinstance:list','#','qData',TO_DATE('2025-02-21 21:08:31','YYYY-MM-DD HH24:MI:SS.FF'),'qData',TO_DATE('2025-03-31 09:39:42','YYYY-MM-DD HH24:MI:SS.FF'),'数据集成任务实例菜单');
 INSERT INTO "QDATA"."SYSTEM_MENU"("MENU_ID","MENU_NAME","PARENT_ID","ORDER_NUM","PATH","COMPONENT","QUERY","IS_FRAME","IS_CACHE","ROUTE_NAME","MENU_TYPE","VISIBLE","STATUS","PERMS","ICON","CREATE_BY","CREATE_TIME","UPDATE_BY","UPDATE_TIME","REMARK") VALUES(2471,'数据集成任务实例查询',2470,1,'#','',null,1,0,null,'F','0','0','dpp:etl:etlnodeinstance:query','#','qData',TO_DATE('2025-02-21 21:09:17','YYYY-MM-DD HH24:MI:SS.FF'),'qData',TO_DATE('2025-02-27 10:20:40','YYYY-MM-DD HH24:MI:SS.FF'),'');
 INSERT INTO "QDATA"."SYSTEM_MENU"("MENU_ID","MENU_NAME","PARENT_ID","ORDER_NUM","PATH","COMPONENT","QUERY","IS_FRAME","IS_CACHE","ROUTE_NAME","MENU_TYPE","VISIBLE","STATUS","PERMS","ICON","CREATE_BY","CREATE_TIME","UPDATE_BY","UPDATE_TIME","REMARK") VALUES(2472,'数据集成任务实例新增',2470,2,'#','',null,1,0,null,'F','0','0','dpp:etl:etlnodeinstance:add','#','qData',TO_DATE('2025-02-21 21:09:17','YYYY-MM-DD HH24:MI:SS.FF'),'qData',TO_DATE('2025-02-27 10:20:48','YYYY-MM-DD HH24:MI:SS.FF'),'');
 INSERT INTO "QDATA"."SYSTEM_MENU"("MENU_ID","MENU_NAME","PARENT_ID","ORDER_NUM","PATH","COMPONENT","QUERY","IS_FRAME","IS_CACHE","ROUTE_NAME","MENU_TYPE","VISIBLE","STATUS","PERMS","ICON","CREATE_BY","CREATE_TIME","UPDATE_BY","UPDATE_TIME","REMARK") VALUES(2473,'数据集成任务实例修改',2470,3,'#','',null,1,0,null,'F','0','0','dpp:etl:etlnodeinstance:edit','#','qData',TO_DATE('2025-02-21 21:09:17','YYYY-MM-DD HH24:MI:SS.FF'),'qData',TO_DATE('2025-02-27 10:20:53','YYYY-MM-DD HH24:MI:SS.FF'),'');
@@ -5155,7 +5155,7 @@ INTERVAL(NUMTOYMINTERVAL(1, 'MONTH'))
 SUBPARTITION BY HASH("NODE_INSTANCE_ID") SUBPARTITION TEMPLATE
 SUBPARTITIONS 8
 (
-PARTITION  "P_INITIAL"  VALUES LESS THAN(DATETIME'2025-08-01 00:00:00')   
+PARTITION  "P_INITIAL"  VALUES LESS THAN(DATETIME'2025-08-01 00:00:00')
 );
 CREATE TABLE "QDATA"."DPP_ETL_NODE_LOG"
 (
@@ -5382,7 +5382,7 @@ INTERVAL(NUMTOYMINTERVAL(1, 'MONTH'))
 SUBPARTITION BY HASH("TASK_INSTANCE_ID") SUBPARTITION TEMPLATE
 SUBPARTITIONS 8
 (
-PARTITION  "P_INITIAL"  VALUES LESS THAN(DATETIME'2025-08-01 00:00:00')   
+PARTITION  "P_INITIAL"  VALUES LESS THAN(DATETIME'2025-08-01 00:00:00')
 );
 CREATE TABLE "QDATA"."DPP_ETL_TASK_LOG"
 (
@@ -6695,7 +6695,7 @@ INSERT INTO "QDATA"."DPP_ETL_NODE_INSTANCE_LOG"("NODE_INSTANCE_ID","TM","TASK_TY
 	"parameter":{
 		"password":"6988be6266113fdc",
 		"selectedColumns":[
-			
+
 		],
 		"writerProperty":{
 			"dbName":"test",
@@ -7024,7 +7024,7 @@ INSERT INTO "QDATA"."DPP_ETL_NODE_INSTANCE_LOG"("NODE_INSTANCE_ID","TM","TASK_TY
 	"parameter":{
 		"password":"6988be6266113fdc",
 		"selectedColumns":[
-			
+
 		],
 		"writerProperty":{
 			"dbName":"test",
@@ -7072,12 +7072,12 @@ INSERT INTO "QDATA"."DPP_ETL_NODE_INSTANCE_LOG"("NODE_INSTANCE_ID","TM","TASK_TY
 			"logic":"and",
 			"dateFormat":"yyyy-MM-dd",
 			"column":[
-				
+
 			]
 		},
 		"idIncrementConfig":{
 			"incrementColumn":[
-				
+
 			],
 			"incrementStart":""
 		},
@@ -7133,7 +7133,7 @@ INSERT INTO "QDATA"."DPP_ETL_NODE_INSTANCE_LOG"("NODE_INSTANCE_ID","TM","TASK_TY
 	"parameter":{
 		"password":"6988be6266113fdc",
 		"selectedColumns":[
-			
+
 		],
 		"writerProperty":{
 			"dbName":"test",
@@ -8266,7 +8266,7 @@ only showing top 10 rows
 	"parameter":{
 		"password":"6988be6266113fdc",
 		"selectedColumns":[
-			
+
 		],
 		"writerProperty":{
 			"dbName":"test",
@@ -8594,7 +8594,7 @@ only showing top 10 rows
 	"parameter":{
 		"password":"6988be6266113fdc",
 		"selectedColumns":[
-			
+
 		],
 		"writerProperty":{
 			"dbName":"test",

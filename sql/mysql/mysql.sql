@@ -4640,7 +4640,7 @@ INSERT INTO `system_menu` VALUES (2466, '数据集成任务修改', 2426, 3, '#'
 INSERT INTO `system_menu` VALUES (2467, '数据集成任务删除', 2426, 4, '#', '', NULL, 1, 0, NULL, 'F', '0', '0', 'dpp:etl:etltask:remove', '#', 'qData', '2025-02-19 11:32:10', '', NULL, '');
 INSERT INTO `system_menu` VALUES (2468, '数据集成任务导出', 2426, 5, '#', '', NULL, 1, 0, NULL, 'F', '0', '0', 'dpp:etl:etltask:export', '#', 'qData', '2025-02-19 11:32:10', '', NULL, '');
 INSERT INTO `system_menu` VALUES (2469, '数据集成任务导入', 2426, 6, '#', '', NULL, 1, 0, NULL, 'F', '0', '0', 'dpp:etl:etltask:import', '#', 'qData', '2025-02-19 11:32:11', '', NULL, '');
-INSERT INTO `system_menu` VALUES (2470, '任务实例', 2477, 1, 'dppEtlTaskInstance', 'dpp/etltaskinstance/index', NULL, 1, 0, NULL, 'C', '0', '0', 'dpp:etl:etlnodeinstance:list', '#', 'qData', '2025-02-21 21:08:31', 'qData', '2025-03-31 09:39:42', '数据集成任务实例菜单');
+INSERT INTO `system_menu` VALUES (2470, '任务实例', 2477, 1, 'dppEtlTaskInstance', 'dpp/etltaskinstance/index', NULL, 1, 0, NULL, 'C', '0', '0', 'dpp:etl:etltaskinstance:list', '#', 'qData', '2025-02-21 21:08:31', 'qData', '2025-03-31 09:39:42', '数据集成任务实例菜单');
 INSERT INTO `system_menu` VALUES (2471, '数据集成任务实例查询', 2470, 1, '#', '', NULL, 1, 0, NULL, 'F', '0', '0', 'dpp:etl:etlnodeinstance:query', '#', 'qData', '2025-02-21 21:09:17', 'qData', '2025-02-27 10:20:40', '');
 INSERT INTO `system_menu` VALUES (2472, '数据集成任务实例新增', 2470, 2, '#', '', NULL, 1, 0, NULL, 'F', '0', '0', 'dpp:etl:etlnodeinstance:add', '#', 'qData', '2025-02-21 21:09:17', 'qData', '2025-02-27 10:20:48', '');
 INSERT INTO `system_menu` VALUES (2473, '数据集成任务实例修改', 2470, 3, '#', '', NULL, 1, 0, NULL, 'F', '0', '0', 'dpp:etl:etlnodeinstance:edit', '#', 'qData', '2025-02-21 21:09:17', 'qData', '2025-02-27 10:20:53', '');

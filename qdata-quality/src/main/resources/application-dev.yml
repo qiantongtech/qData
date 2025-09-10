@@ -35,16 +35,8 @@ spring:
     port: 40003
     username: admin
     password: 密码
-#    listener:
-#      simple:
-#        acknowledge-mode: manual
-#        concurrency: 1
-#        max-concurrency: 10
     listener:
-      direct:
-        auto-startup: false
       simple:
-        auto-startup: false
         acknowledge-mode: manual
         concurrency: 1
         max-concurrency: 10

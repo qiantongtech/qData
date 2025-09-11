@@ -10,19 +10,13 @@
                 v-show="showSearch"
                 @submit.prevent
             >
-                <el-form-item label="类别名称" prop="name">
-                    <el-input
-                        class="el-form-input-width"
-                        v-model="queryParams.name"
-                        placeholder="请输入类别名称"
-                        clearable
+                <el-form-item label="任务类目名称" prop="name" label-width="130">
+                    <el-input class="el-form-input-width" v-model="queryParams.name" placeholder="请输入任务类目名称" clearable
                         @keyup.enter="handleQuery"
                     />
                 </el-form-item>
                 <el-form-item label="上级类目" prop="code">
-                    <el-tree-select
-                        class="el-form-input-width"
-                        v-model="queryParams.code"
+                    <el-tree-select filterable class="el-form-input-width" v-model="queryParams.code"
                         :data="attTaskCatOptions"
                         :props="{ value: 'code', label: 'name', children: 'children' }"
                         value-key="id"
@@ -62,17 +56,15 @@
                         </el-button>
                     </el-col>
                     <el-col :span="1.5">
-                        <el-button type="info" plain icon="Sort" @click="toggleExpandAll"
-                            >展开/折叠</el-button
-                        >
+                        <el-button class="toggle-expand-all" type="primary" plain @click="toggleExpandAll">
+                            <svg-icon v-if="isExpandAll" icon-class="toggle" />
+                            <svg-icon v-else icon-class="expand" />
+                            <span>{{ isExpandAll ? "折叠" : "展开" }}</span>
+                        </el-button>
                     </el-col>
                 </el-row>
                 <div class="justify-end top-right-btn">
-                    <right-toolbar
-                        v-model:showSearch="showSearch"
-                        @queryTable="getList"
-                        :columns="columns"
-                    ></right-toolbar>
+                    <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
                 </div>
             </div>
             <el-table
@@ -84,24 +76,34 @@
                 :default-expand-all="isExpandAll"
                 :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
             >
-                <el-table-column
-                    label="任务类目名称"
-                    align="left"
-                    prop="name"
-                    width="400"
-                    show-overflow-tooltip
-                >
+                <el-table-column label="任务类目名称" align="left" prop="name" width="400" :show-overflow-tooltip="{effect: 'light'}">
                     <template #default="scope">
                         {{ scope.row.name || '-' }}
                     </template>
                 </el-table-column>
 
-                <el-table-column label="描述" align="left" prop="description" show-overflow-tooltip>
+                <el-table-column label="描述" align="left" prop="description" :show-overflow-tooltip="{effect: 'light'}" width="250">
                     <template #default="scope">
                         {{ scope.row.description || '-' }}
                     </template>
                 </el-table-column>
-
+                <el-table-column label="排序" align="left" prop="sortOrder" :show-overflow-tooltip="{effect: 'light'}">
+                    <template #default="scope">
+                        {{ scope.row.sortOrder }}
+                    </template>
+                </el-table-column>
+                <el-table-column label="创建人" align="center" prop="createBy">
+                    <template #default="scope">
+                        {{ scope.row.createBy || "-" }}
+                    </template>
+                </el-table-column>
+                <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+                    <template #default="scope">
+                        <span>{{
+                            parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}")
+                        }}</span>
+                    </template>
+                </el-table-column>
                 <el-table-column label="状态" align="center" prop="validFlag">
                     <template #default="scope">
                         <!--              <dict-tag :options="sys_valid" :value="scope.row.validFlag"/>-->
@@ -116,12 +118,13 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column label="备注" align="left" prop="remark" show-overflow-tooltip>
+                <el-table-column label="备注" align="left" prop="remark" :show-overflow-tooltip="{effect: 'light'}">
                     <template #default="scope">
                         {{ scope.row.remark || '-' }}
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+                <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right"
+                    width="240">
                     <template #default="scope">
                         <el-button
                             link
@@ -183,14 +186,12 @@
                 <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item label="类目名称" prop="name">
-                            <el-input v-model="form.name" placeholder="请输入类别名称" />
+                            <el-input v-model="form.name" placeholder="请输入任务类目名称" />
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
                         <el-form-item label="上级类目" prop="parentId">
-                            <el-tree-select
-                                :disabled="form.id"
-                                v-model="form.parentId"
+                            <el-tree-select filterable :disabled="form.id" v-model="form.parentId"
                                 :data="attTaskCatOptions"
                                 :props="{ value: 'id', label: 'name', children: 'children' }"
                                 value-key="id"
@@ -203,7 +204,7 @@
                 <el-row :gutter="20"> </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item label="显示排序" prop="sortOrder">
+                        <el-form-item label="排序" prop="sortOrder">
                             <el-input-number
                                 style="width: 100%"
                                 v-model="form.sortOrder"
@@ -453,7 +454,7 @@
             createTime: null
         },
         rules: {
-            name: [{ required: true, message: '数据集成任务类目名称不能为空', trigger: 'blur' }],
+        name: [{ required: true, message: '任务类目名称不能为空', trigger: 'blur' }],
             parentId: [{ required: true, message: '上级类目不能为空', trigger: 'blur' }]
         }
     });
@@ -507,7 +508,7 @@
             sortOrder: 0,
             description: null,
             code: null,
-            validFlag: false,
+            validFlag: true,
             delFlag: null,
             createBy: null,
             creatorId: null,

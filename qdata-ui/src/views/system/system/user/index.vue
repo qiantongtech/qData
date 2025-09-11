@@ -264,8 +264,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="角色">
-              <el-select v-model="form.roleIds" multiple placeholder="请选择" class="selectlist">
+            <el-form-item label="角色" prop="roleIds">
+            <el-select v-model="form.roleIds" multiple placeholder="请选择" class="selectlist">
                 <el-option v-for="item in roleOptions" :key="item.roleId" :label="item.roleName" :value="item.roleId"
                   :disabled="item.status == 1"></el-option>
               </el-select>
@@ -377,6 +377,7 @@ const rules = computed(() => ({
     },
   ],
   nickName: [{ required: true, message: "用户昵称不能为空", trigger: "blur" }],
+  roleIds: [{ required: true, message: "角色不能为空", trigger: "blur" }],
   password: [
     { required: true, message: "用户密码不能为空", trigger: "blur" },
     {

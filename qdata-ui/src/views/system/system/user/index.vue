@@ -129,9 +129,9 @@
           <el-table stripe height="58vh" v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="50" align="center" />
             <el-table-column label="用户编号" align="center" key="userId" prop="userId" v-if="columns[0].visible" />
-            <el-table-column label="用户昵称" align="center" key="userName" prop="userName" v-if="columns[1].visible"
+            <el-table-column label="用户名称" align="center" key="userName" prop="userName" v-if="columns[1].visible"
               :show-overflow-tooltip="true" />
-            <el-table-column label="用户名称" align="center" key="nickName" prop="nickName" v-if="columns[2].visible"
+            <el-table-column label="用户昵称" align="center" key="nickName" prop="nickName" v-if="columns[2].visible"
               :show-overflow-tooltip="true" />
             <el-table-column label="部门" align="center" key="deptName" prop="dept.deptName" v-if="columns[3].visible"
               :show-overflow-tooltip="true" />
@@ -656,6 +656,7 @@ function handleResetPwd(row) {
       confirmButtonText: "确定",
       cancelButtonText: "取消",
       closeOnClickModal: false,
+      inputType: 'password',
       inputPattern: /^.{8,20}$/, // 密码长度要求在 8 到 20 之间
       inputErrorMessage: "用户密码长度必须介于 8 和 20 之间",
       inputValidator: (value) => {

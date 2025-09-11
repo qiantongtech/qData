@@ -838,11 +838,15 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
         queryWrapperX.eqIfPresent(DaAssetApplyDO::getProjectCode,daAsset.getProjectCode());
         queryWrapperX.inIfPresent(DaAssetApplyDO::getSourceType,sourceTypeArr);
         List<DaAssetApplyDO> applyDOList = daAssetApplyMapper.selectList(queryWrapperX);
+        List<Long> assetIdList;
+        Map<Long, DaAssetApplyDO> daAssetApplyDOMap;
         if (applyDOList.isEmpty()) {
-            return new PageResult<DaAssetDO>();
+            assetIdList =  new ArrayList<>();
+            daAssetApplyDOMap = new HashMap<>();
+        }else {
+            daAssetApplyDOMap = applyDOList.stream().collect(Collectors.toMap(DaAssetApplyDO::getAssetId, daAssetApplyDO -> daAssetApplyDO));
+            assetIdList = daAssetApplyDOMap.keySet().stream().collect(Collectors.toList());
         }
-        Map<Long, DaAssetApplyDO> daAssetApplyDOMap = applyDOList.stream().collect(Collectors.toMap(DaAssetApplyDO::getAssetId, daAssetApplyDO -> daAssetApplyDO));
-        List<Long> assetIdList = daAssetApplyDOMap.keySet().stream().collect(Collectors.toList());
         daAsset.setAssetIdList(assetIdList);
         PageResult<DaAssetDO> daAssetPage = this.getDaAssetPage(daAsset,"2");
         if(CollectionUtils.isEmpty(daAssetPage.getRows())){

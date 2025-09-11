@@ -100,6 +100,7 @@ public class DBReader implements Reader {
         dataset = dataset.select(column.stream().map(c -> new Column((String) c)).toArray(Column[]::new));
         LogUtils.writeLog(logParams, "输入数据量为：" + dataset.count());
         log.info("部分数据如下>>>>>>>>>>>>>>");
+        dataset.na().fill("Unknown").show(10);
         LogUtils.writeLog(logParams, "部分数据：\n" + dataset.na().fill("Unknown").showString(10, 0, false));
         return dataset;
     }

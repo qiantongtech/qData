@@ -1,7 +1,6 @@
 package tech.qiantong.qdata.spark.etl.writer;
 
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.io.FileUtil;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import lombok.extern.slf4j.Slf4j;
@@ -9,13 +8,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
 import org.apache.spark.sql.*;
-import org.apache.spark.sql.types.StructType;
 import tech.qiantong.qdata.common.database.DbQuery;
 import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
 import tech.qiantong.qdata.common.database.constants.DbType;
 import tech.qiantong.qdata.common.database.datasource.AbstractDataSourceFactory;
 import tech.qiantong.qdata.common.database.datasource.DefaultDataSourceFactoryBean;
-import tech.qiantong.qdata.common.database.exception.DataQueryException;
 import tech.qiantong.qdata.common.enums.TaskComponentTypeEnum;
 import tech.qiantong.qdata.spark.etl.utils.LogUtils;
 import tech.qiantong.qdata.spark.etl.utils.db.DBUtils;
@@ -224,7 +221,9 @@ public class DBWriter implements Writer {
     Triple<List<String>, List<Integer>, List<String>> getColumnMetaData(Connection conn, List<String> columns, DbQueryProperty writerProperty, String tableName) {
         Statement statement = null;
         ResultSet rs = null;
-        if (StringUtils.isNotBlank(writerProperty.getDbName())) {
+        if (StringUtils.equals(DbType.KINGBASE8.getDb(), writerProperty.getDbType())) {
+            tableName = writerProperty.getDbName() + "." + writerProperty.getSid() + "." + tableName;
+        } else if (StringUtils.isNotBlank(writerProperty.getDbName())) {
             tableName = writerProperty.getDbName() + "." + tableName;
         }
 
@@ -283,6 +282,8 @@ public class DBWriter implements Writer {
             col = new DoubleDataColumn(BigDecimal.valueOf((Double) value));
         } else if (value instanceof Float) {
             col = new DoubleDataColumn(BigDecimal.valueOf(((Float) value).doubleValue()));
+        } else if (value instanceof BigDecimal) {
+            col = new DoubleDataColumn((BigDecimal) value);
         } else if (value instanceof Date) {
             col = new DateDataColumn((Date) value);
         } else if (value instanceof Boolean) {
@@ -486,14 +487,14 @@ public class DBWriter implements Writer {
                 writeBuffer.clear();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("写入失败",e);
             return false;
         } finally {
             if (conn != null) {
                 try {
                     conn.close();
                 } catch (SQLException throwables) {
-                    throwables.printStackTrace();
+                    log.error("关闭数据库连接失败", throwables);
                 }
             }
         }

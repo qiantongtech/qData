@@ -15,6 +15,7 @@ import tech.qiantong.qdata.api.ds.api.etl.ds.TaskInstance;
 import tech.qiantong.qdata.common.enums.*;
 import tech.qiantong.qdata.spark.etl.reader.ReaderFactory;
 import tech.qiantong.qdata.spark.etl.transition.CleanTransition;
+import tech.qiantong.qdata.spark.etl.transition.TransitionFactory;
 import tech.qiantong.qdata.spark.etl.utils.IDGeneratorUtils;
 import tech.qiantong.qdata.spark.etl.utils.LogUtils;
 import tech.qiantong.qdata.spark.etl.utils.RabbitmqUtils;
@@ -110,30 +111,34 @@ public class EtlApplication {
         if (taskParams.getJSONArray("transition") != null && taskParams.getJSONArray("transition").size() > 0) {
             //读取配置
             JSONArray transitionArr = taskParams.getJSONArray("transition");
-            JSONObject transition = (JSONObject) transitionArr.get(0);
+            for (int i = 0; i < transitionArr.size(); i++) {
+                JSONObject transition = (JSONObject) transitionArr.get(i);
+                //转换类型
+                TaskComponentTypeEnum transitionComponentType = TaskComponentTypeEnum.findEnumByType(transition.getString("componentType"));
 
+                //创建转换节点实例
+                TaskInstance transitionTaskInstance = createTask(processInstance, transition, now, rabbitmq);
+                LogUtils.Params transitionLogParams = new LogUtils.Params(rabbitmq, transitionTaskInstance.getProcessInstanceId(), transitionTaskInstance.getId());
 
-            //创建清洗节点实例
-            TaskInstance transitionTaskInstance = createTask(processInstance, transition, now, rabbitmq);
-            LogUtils.Params transitionLogParams = new LogUtils.Params(rabbitmq, transitionTaskInstance.getProcessInstanceId(), transitionTaskInstance.getId());
-
-            try {
-                data = CleanTransition.transition(data, transition, transitionLogParams);
+                try {
+                    data = TransitionFactory.getTransition(transitionComponentType.getCode())
+                            .transition(spark, data, transition, transitionLogParams);
+                } catch (Exception e) {
+                    //更新清洗节点实例执行失败
+                    updateProcess(processInstance, WorkflowExecutionStatus.FAILURE, rabbitmq);
+                    updateTask(transitionTaskInstance, TaskExecutionStatus.FAILURE, rabbitmq);
+                    spark.stop();
+                    LogUtils.writeLog(transitionLogParams, "任务失败");
+                    LogUtils.writeLog(transitionLogParams, "FINALIZE_SESSION");
+                    spark.stop();
+                    return;
+                }
+                //更新输入节点实例执行成功
+                updateTask(transitionTaskInstance, TaskExecutionStatus.SUCCESS, rabbitmq);
                 LogUtils.writeLog(transitionLogParams, "任务成功");
                 LogUtils.writeLog(transitionLogParams, "FINALIZE_SESSION");
-            } catch (Exception e) {
-                //更新清洗节点实例执行失败
-                updateProcess(processInstance, WorkflowExecutionStatus.FAILURE, rabbitmq);
-                updateTask(transitionTaskInstance, TaskExecutionStatus.FAILURE, rabbitmq);
-                spark.stop();
-                LogUtils.writeLog(transitionLogParams, "任务失败");
-                LogUtils.writeLog(transitionLogParams, "FINALIZE_SESSION");
-                return;
             }
-            //更新输入节点实例执行成功
-            updateTask(transitionTaskInstance, TaskExecutionStatus.SUCCESS, rabbitmq);
         }
-
         //写入配置
         JSONObject writer = taskParams.getJSONObject("writer");
         //输出类型

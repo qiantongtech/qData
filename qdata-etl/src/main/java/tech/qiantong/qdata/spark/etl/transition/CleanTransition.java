@@ -11,6 +11,7 @@ import org.apache.spark.sql.expressions.WindowSpec;
 import org.apache.spark.sql.types.DataType;
 import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.StructType;
+import tech.qiantong.qdata.common.enums.TaskComponentTypeEnum;
 import tech.qiantong.qdata.spark.etl.utils.LogUtils;
 
 import java.util.*;
@@ -27,7 +28,7 @@ import static org.apache.spark.sql.functions.*;
  * @author: FXB
  * @create: 2025-04-22 13:39
  **/
-public class CleanTransition {
+public class CleanTransition implements Transition {
 
     /**
      * 新
@@ -37,7 +38,8 @@ public class CleanTransition {
      * @param logParams
      * @return
      */
-    public static Dataset<Row> transition(Dataset<Row> dataset, JSONObject transition, LogUtils.Params logParams) {
+    @Override
+    public  Dataset<Row> transition(SparkSession spark,Dataset<Row> dataset, JSONObject transition, LogUtils.Params logParams) {
         LogUtils.writeLog(logParams, "*********************************  Initialize task context  ***********************************");
         LogUtils.writeLog(logParams, "开始转换节点");
         LogUtils.writeLog(logParams, "开始任务时间: " + DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"));
@@ -94,7 +96,12 @@ public class CleanTransition {
         return dataset;
     }
 
-    private static Dataset<Row> deduplicateByFieldsKeepFirst(Dataset<Row> ds, JSONObject cfg) {
+    @Override
+    public String code() {
+        return TaskComponentTypeEnum.SPARK_CLEAN.getCode();
+    }
+
+    private Dataset<Row> deduplicateByFieldsKeepFirst(Dataset<Row> ds, JSONObject cfg) {
         // 1) 读取配置
         List<String> allCols = Optional.ofNullable(cfg.getJSONArray("columns"))
                 .map(a -> a.toJavaList(String.class))
@@ -143,7 +150,7 @@ public class CleanTransition {
         return withRN.filter(functions.col("__rn").equalTo(1)).drop("__rn");
     }
 
-    private static Dataset<Row> normalizeEnumMapping(Dataset<Row> dataset, JSONObject cfg) {
+    private Dataset<Row> normalizeEnumMapping(Dataset<Row> dataset, JSONObject cfg) {
         String col = cfg.getJSONArray("columns").getString(0);
         List<JSONObject> list = cfg.getList("stringValue", JSONObject.class);
 //        String handleType = cfg.getString("handleType"); // "1-加前缀" / "2-加后缀"
@@ -175,7 +182,7 @@ public class CleanTransition {
         return dataset.withColumn(col, mappedColumn);
     }
 
-    private static Dataset<Row> applyPrefixSuffix(Dataset<Row> dataset, JSONObject cfg) {
+    private Dataset<Row> applyPrefixSuffix(Dataset<Row> dataset, JSONObject cfg) {
         String colName = cfg.getJSONArray("columns").getString(0);
         String stringValue = cfg.getString("stringValue");
         String handleType = cfg.getString("handleType"); // "1" 前缀；"2" 后缀；
@@ -190,6 +197,26 @@ public class CleanTransition {
 
         Column c = col(colName).cast("string");
         String sv = stringValue;
+
+        //以下是不看大小写，如果一样就不拼接
+//        String svLower = sv.toLowerCase();
+//        if (StringUtils.equals("1", handleType)) {
+//            // 前缀
+//            dataset = dataset.withColumn(
+//                    colName,
+//                    when(c.isNull(), lit(null))
+//                            .when(lower(c).like(svLower + "%"), c) // 用 like 判断前缀
+//                            .otherwise(concat(lit(sv), c))
+//            );
+//        } else {
+//            // 后缀
+//            dataset = dataset.withColumn(
+//                    colName,
+//                    when(c.isNull(), lit(null))
+//                            .when(lower(c).like("%" + svLower), c) // 用 like 判断后缀
+//                            .otherwise(concat(c, lit(sv)))
+//            );
+//        }
 
         //以下是检验发小写，如果前缀大写，库里小写，依旧拼接
         switch (handleType) {
@@ -293,7 +320,7 @@ public class CleanTransition {
     /**
      * 数值边界调整
      */
-    private static Dataset<Row> applyNumericBoundary(Dataset<Row> dataset, JSONObject cfg) {
+    private Dataset<Row> applyNumericBoundary(Dataset<Row> dataset, JSONObject cfg) {
         String col = cfg.getJSONArray("columns").getString(0);
         double min = cfg.getDoubleValue("min");
         double max = cfg.getDoubleValue("max");
@@ -323,7 +350,7 @@ public class CleanTransition {
     /**
      * 组合字段为空删除
      */
-    private static Dataset<Row> applyDeleteIfAllNull(Dataset<Row> dataset, JSONObject cfg) {
+    private Dataset<Row> applyDeleteIfAllNull(Dataset<Row> dataset, JSONObject cfg) {
         List<String> cols = cfg.getJSONArray("columns").toJavaList(String.class);
         if (cols == null || cols.isEmpty()) return dataset;
 

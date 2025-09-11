@@ -341,15 +341,6 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
                 String arr[] = entryKey.split("\\.");
                 String tableName;
                 String dbName;
-                if (arr.length == 1) {
-                    ResParam resParam = new ResParam();
-                    resParam.setFieldName(arr[0]);
-                    resParam.setFieldComment(null);
-                    resParam.setDataType(null);
-                    resParam.setFieldAliasName(null);
-                    resParams.add(resParam);
-                    continue;
-                }
                 if (arr.length > 1) {
                     tableName = arr[1];
                     dbName = arr[0];
@@ -357,13 +348,12 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
                     tableName = arr[0];
                     dbName = null;
                 }
-
-                if (org.apache.commons.lang3.StringUtils.isBlank(dbName)
-                        && org.apache.commons.lang3.StringUtils.isNotBlank(datasourceById.getDatasourceName())) {
-                    dbName = datasourceById.getDatasourceName();
+                List<DbColumn> columns;
+                if (org.apache.commons.lang3.StringUtils.isBlank(dbName)) {
+                    columns = dbQuery.getTableColumns(dbQueryProperty, tableName);
+                }else {
+                    columns = dbQuery.getTableColumns(dbName, tableName);
                 }
-
-                List<DbColumn> columns = dbQuery.getTableColumns(dbName, tableName);
                 Map<String, DbColumn> columnMap = columns.stream()
                         .collect(Collectors.toMap(k -> org.apache.commons.lang3.StringUtils
                                 .replace(k.getColName(), "_", "").toUpperCase(Locale.ROOT), e -> e));

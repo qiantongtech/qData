@@ -85,6 +85,11 @@ public class SysUser extends BaseEntity
     })
     private SysDept dept;
 
+    /**
+     * 角色字符串
+     */
+    private String roleStr;
+
     /** 角色对象 */
     private List<SysRole> roles;
 
@@ -356,5 +361,13 @@ public class SysUser extends BaseEntity
             .append("remark", getRemark())
             .append("dept", getDept())
             .toString();
+    }
+
+    public String getRoleStr() {
+        return roleStr;
+    }
+
+    public void setRoleStr(String roleStr) {
+        this.roleStr = roleStr;
     }
 }

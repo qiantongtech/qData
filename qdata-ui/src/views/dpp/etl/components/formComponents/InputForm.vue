@@ -206,7 +206,9 @@
                     </el-table-column>
                     <el-table-column label="基准类型" align="center" prop="type">
                         <template #default="scope">
-                            {{ scope.row.type || '-' }}
+                          <span v-if="scope.row.type === 1">固定值</span>
+                          <span v-else-if="scope.row.type === 3">SQL表达式</span>
+                          <span v-else>自动(当前时间)</span>
                         </template>
                     </el-table-column>
                     <el-table-column label="基准值" align="center" prop="data">

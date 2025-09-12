@@ -73,7 +73,7 @@
               :data="deptOptions"
               :props="{ value: 'code', label: 'name', children: 'children' }"
               value-key="ID"
-              placeholder="请选择所属类目"
+              placeholder="请选择逻辑模型类目"
               check-strictly
             />
           </el-form-item>

@@ -404,7 +404,7 @@ const getColumnByAssetIdList = async (id, data) => {
         loadingList
     );
     form.value.taskParams.dateIncrementConfig.column = [];
-    form.value.taskParams.idIncrementConfig.incrementColumn = [];
+    form.value.taskParams.idIncrementConfig.incrementColumn = null;
     form.value.taskParams.inputFields = ColumnByAssettab.value;
 };
 // 通用的获取数据的函数
@@ -434,7 +434,7 @@ const resetAndFetchTables = async (selectedDatasource) => {
         datasourceId: id
     };
     form.value.taskParams.dateIncrementConfig.column = [];
-    form.value.taskParams.idIncrementConfig.incrementColumn = [];
+    form.value.taskParams.idIncrementConfig.incrementColumn = null;
 
     await getTablesByDatasourceId(id);
 };
@@ -505,7 +505,8 @@ const handleReleaseStateChange = (value) => {
     TablesByDataSource.value = [];
     form.value.taskParams.readerDatasource = {};
     form.value.taskParams.dateIncrementConfig.column = [];
-    form.value.taskParams.idIncrementConfig.incrementColumn = [];
+    form.value.taskParams.idIncrementConfig.incrementColumn = null;
+    form.value.taskParams.readModeType = 1;
 };
 const handleDelete = (row) => {
     ElMessageBox.confirm('确定要删除这条数据吗?', '提示', {

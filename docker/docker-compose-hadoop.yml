@@ -6,7 +6,7 @@ services:
     hostname: namenode
     container_name: namenode
     restart: always
-    profiles: [ "all" , "hadoop" ]
+    profiles: [ "all" , "hadoop" , "local" ]
     ports:
       - "9870:9870"       # NameNode Web UI
       - "8020:8020"       # HDFS RPC
@@ -23,7 +23,7 @@ services:
     hostname: datanode
     container_name: datanode
     restart: always
-    profiles: [ "all" , "hadoop" ]
+    profiles: [ "all" , "hadoop" , "local" ]
     ports:
       - "9864:9864"
       - "9866:9866"
@@ -48,7 +48,7 @@ services:
     hostname: resourcemanager
     container_name: resourcemanager
     restart: always
-    profiles: [ "all" , "hadoop" ]
+    profiles: [ "all" , "hadoop" , "local" ]
     ports:
       - "8088:8088"       # YARN Web UI
     env_file: .env
@@ -62,7 +62,7 @@ services:
     container_name: nodemanager
     env_file: .env
     restart: always
-    profiles: [ "all" , "hadoop" ]
+    profiles: [ "all" , "hadoop" , "local" ]
     command: [ "yarn", "nodemanager" ]
     networks:
       - qdatanet

@@ -42,7 +42,7 @@
                 </el-col>
                 <el-col :span="12">
                     <el-form-item label="是否主键" prop="pkFlag">
-                        <el-radio-group v-model="form.pkFlag">
+                        <el-radio-group v-model="form.pkFlag" @change="handlePkFlagChange">
                             <el-radio v-for="dict in dp_model_column_pk_flag" :key="dict.value" :value="dict.value">{{
                                 dict.label }}</el-radio>
                         </el-radio-group>
@@ -78,7 +78,7 @@
                 </el-col>
                 <el-col :span="12">
                     <el-form-item label="是否必填" prop="nullableFlag">
-                        <el-radio-group v-model="form.nullableFlag">
+                        <el-radio-group v-model="form.nullableFlag" :disabled="form.pkFlag == 1">
                             <el-radio v-for="dict in dp_model_column_nullable_flag" :key="dict.value"
                                 :value="dict.value">{{ dict.label }}</el-radio>
                         </el-radio-group>
@@ -162,6 +162,11 @@ watch(
     { immediate: true } // 新增immediate属性，确保组件挂载时就执行一次
 );
 let DpData = ref([]);
+const handlePkFlagChange = (value) => {
+    if (value == 1) {
+        form.value.nullableFlag = '1';
+    }
+}
 const getDpDataElem = async () => {
     try {
         const response = await getDpDataElemList();

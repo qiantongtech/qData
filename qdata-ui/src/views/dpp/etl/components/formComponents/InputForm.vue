@@ -226,7 +226,7 @@
             </template>
 
             <inputEditModel :visible="open" title="属性字段编辑" @update:visible="open = $event" @confirm="handletaskConfig"
-                :data="row" :ColumnByAssettab="ColumnByAssettab" />
+                :data="row" :ColumnByAssettab="ColumnByAssettab" :dateIncrementConfig_dateFormat="form.taskParams.dateIncrementConfig.dateFormat"/>
             <el-row :gutter="20" v-if="form.taskParams.clmt != '2'">
                 <el-col :span="24">
                     <el-form-item label="where条件" prop="where">

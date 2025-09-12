@@ -41,7 +41,13 @@
         <el-col :span="24">
           <el-form-item label="基准值" prop="data" :rules="dataRules">
             <template v-if="form.type === '1'">
-              <el-input v-model="form.data" placeholder="请输入基准值" />
+              <el-date-picker clearable
+                              v-model="form.data"
+                              :type="pickerType"
+                              :format="dateIncrementConfig_dateFormat2"
+                              :value-format="dateIncrementConfig_dateFormat2"
+                              placeholder="请选择固定时间">
+              </el-date-picker>
             </template>
             <template v-else-if="form.type === '3'">
               <sql-editor placeholder="请输入sql" ref="editorRef" :value="form.data" class="sql-editor" :height="'300px'"
@@ -74,7 +80,20 @@ const props = defineProps({
   title: { type: String, default: "表单标题" },
   data: { type: Object, default: () => ({}) },
   ColumnByAssettab: { type: Array, default: () => [] },
+  dateIncrementConfig_dateFormat: { type: String, default: 'YYYY-MM-DD' },
 });
+
+// day.js与java的日期格式不兼容，需要处理
+const dateIncrementConfig_dateFormat2 = computed(() => {
+  return props.dateIncrementConfig_dateFormat
+      .replace(/yyyy/g, 'YYYY')
+      .replace(/dd/g, 'DD')
+});
+const pickerType = computed(() => {
+  const format = props.dateIncrementConfig_dateFormat;
+  return format.includes('HH') ? 'datetime' : 'date';
+});
+
 const emit = defineEmits(["update:visible", "confirm"]);
 
 const form = ref({

@@ -137,7 +137,7 @@
                                 trigger: 'blur'
                             }
                         ]">
-                            <el-select v-model="form.taskParams.idIncrementConfig.incrementColumn" multiple
+                            <el-select v-model="form.taskParams.idIncrementConfig.incrementColumn"
                                 collapse-tags collapse-tags-tooltip filterable placeholder="请选择id字段">
                                 <el-option v-for="item in ColumnByAssettab" :key="item.columnName"
                                     :label="item.columnName" :value="item.columnName" />
@@ -146,8 +146,11 @@
                     </el-col>
 
                     <el-col :span="12">
-                        <el-form-item label="开始值" prop="taskParams.idIncrementConfig.incrementStart">
-                            <el-input v-model="form.taskParams.idIncrementConfig.incrementStart" placeholder="请输入开始值"
+                      <el-form-item label="开始值" prop="taskParams.idIncrementConfig.incrementStart" :rules="[
+                            { required: true, message: '请输入开始值', trigger: 'change' },
+                            { validator: checkInteger, trigger: 'change' }
+                       ]">
+                            <el-input v-model.number="form.taskParams.idIncrementConfig.incrementStart" placeholder="请输入开始值"
                                 type="number">
                             </el-input>
                         </el-form-item>
@@ -354,6 +357,15 @@ const handlereadModeTypeChange = (val) => {
         ],
     }
 }
+
+const checkInteger = (rule, value, callback) => {
+  if (!Number.isInteger(value)) {
+    callback(new Error('开始值必须为整数'))
+  } else {
+      callback()
+  }
+}
+
 // 获取数据源列表
 const getDatasourceList = async () => {
     try {

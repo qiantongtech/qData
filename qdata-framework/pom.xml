@@ -18,7 +18,6 @@
         <module>qdata-generator</module>
         <module>qdata-common</module>
         <module>qdata-file</module>
-        <module>qdata-es</module>
         <module>qdata-pay</module>
         <module>qdata-auth</module>
     </modules>

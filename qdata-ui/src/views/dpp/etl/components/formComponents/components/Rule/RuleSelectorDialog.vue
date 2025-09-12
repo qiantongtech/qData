@@ -14,7 +14,7 @@
                 <el-row>
                     <el-col :span="8">
                         <el-form-item label="清洗名称" prop="name"
-                            :rules="[{ required: true, message: '请输入清洗名称名称', trigger: 'blur' }]">
+                            :rules="[{ required: true, message: '请输入清洗名称', trigger: 'blur' }]">
                             <el-input v-model="form.name" placeholder="请输入清洗名称" :disabled="falg" />
                         </el-form-item>
                     </el-col>

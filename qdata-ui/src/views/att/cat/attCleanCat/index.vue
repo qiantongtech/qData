@@ -216,7 +216,7 @@ const data = reactive({
     createTime: null,
   },
   rules: {
-    name: [{ required: true, message: '数据质量类目名称不能为空', trigger: 'blur' }],
+    name: [{ required: true, message: '清洗规则类目名称不能为空', trigger: 'blur' }],
     parentId: [{ required: true, message: '上级类目不能为空', trigger: 'blur' }]
   }
 });
@@ -249,7 +249,7 @@ function reset() {
     sortOrder: 0,
     description: null,
     code: null,
-    validFlag: false,
+    validFlag: true,
     delFlag: null,
     createBy: null,
     creatorId: null,

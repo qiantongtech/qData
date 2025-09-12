@@ -68,7 +68,6 @@ spring:
     import:
       - "application-${spring.profiles.active}.yml"
       - "classpath:application-auth-${spring.profiles.active}.yml"
-      - "classpath:application-es-${spring.profiles.active}.yml"
       - "classpath:application-file-${spring.profiles.active}.yml"
       # 示意：引入业务模块配置文件（请按照项目情况调整）
       - "classpath:application-system-${spring.profiles.active}.yml"

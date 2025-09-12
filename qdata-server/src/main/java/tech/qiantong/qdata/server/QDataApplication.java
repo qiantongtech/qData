@@ -1,6 +1,5 @@
 package tech.qiantong.qdata.server;
 
-import org.dromara.easyes.starter.register.EsMapperScan;
 import org.dromara.x.file.storage.spring.EnableFileStorage;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,7 +14,6 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
  * @author qdata
  */
 @EnableFileStorage
-@EsMapperScan("tech.qiantong.**.esmapper")
 @ComponentScan(basePackages = {"tech.qiantong"})
 @ServletComponentScan(basePackages = {"tech.qiantong"})
 @SpringBootApplication(exclude = { DataSourceAutoConfiguration.class })

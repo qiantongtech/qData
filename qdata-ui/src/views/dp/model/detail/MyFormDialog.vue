@@ -337,7 +337,7 @@ watch(
           datasourceConfig: "",
           ip: "",
           port: "",
-          status: "0",
+          status: "1",
           datasourceId: "",
           datasourceType: "",
           ip: "",
@@ -460,7 +460,7 @@ const form = ref({
   dbType: "",
   dbAddress: "",
   dataTable: "",
-  status: "0",
+  status: "1",
 });
 
 const rules = ref({

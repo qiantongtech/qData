@@ -170,7 +170,7 @@
           <el-col :span="12">
             <el-form-item label="数据元类目" prop="catCode">
               <el-tree-select filterable v-model="form.catCode" :data="deptOptions"
-                :props="{ value: 'code', label: 'name', children: 'children' }" value-key="id" placeholder="请选择所属类目"
+                :props="{ value: 'code', label: 'name', children: 'children' }" value-key="id" placeholder="请选择数据元类目"
                 check-strictly />
             </el-form-item>
           </el-col>
@@ -361,7 +361,7 @@ const upload = reactive({
 });
 
 const data = reactive({
-  form: { status: "0" },
+  form: { status: "1" },
   queryParams: {
     pageNum: 1,
     pageSize: 10,
@@ -372,16 +372,16 @@ const data = reactive({
     description: "",
   },
   rules: {
-    name: [{ required: true, message: "中文不能为空", trigger: "blur" }],
+    name: [{ required: true, message: "中文名称不能为空", trigger: "blur" }],
     engName: [
-      { required: true, message: "英文不能为空", trigger: "blur" },
+      { required: true, message: "英文名称不能为空", trigger: "blur" },
       {
         pattern: /^[a-zA-Z_]+$/,
         message: "只能包含英文字母和下划线",
         trigger: "blur",
       },
     ],
-    catCode: [{ required: true, message: "类目编码不能为空", trigger: "blur" }],
+    catCode: [{ required: true, message: "数据元类目不能为空", trigger: "blur" }],
     status: [{ required: true, message: "状态不能为空", trigger: "change" }],
     type: [{ required: true, message: "类型不能为空", trigger: "change" }],
     columnType: [
@@ -451,7 +451,7 @@ function reset() {
     personCharge: null,
     contactNumber: null,
     columnType: null,
-    status: "0",
+    status: "1",
     description: null,
     validFlag: null,
     delFlag: null,

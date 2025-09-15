@@ -24,6 +24,8 @@
 
 ✨✨✨**商业版演示地址**✨✨✨ <a href="https://qdata-pro.qiantong.tech" target="_blank">https://qdata-pro.qiantong.tech</a> ，演示账号请 [联系客服获取](https://qdata.qiantong.tech/business.html)
 
+> 如果 qData 对您有帮助，请点个 **Star ⭐️**，这是我们持续更新的最大动力！ 🚀
+
 ## 🍱 使用场景
 
 适用于希望通过整合、治理和分析多源数据，打破孤岛、提升质量与效率，实现数据驱动与业务创新的大型企业、中小企业与政府机构。

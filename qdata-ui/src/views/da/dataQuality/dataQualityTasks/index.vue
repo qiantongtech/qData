@@ -33,7 +33,7 @@
               <el-col :span="1.5">
                 <el-button type="primary" plain
                   @click="routeTo('/da/dataQuality/dataQualityTasks/components/qualityTask', { row: null, })"
-                  v-hasPermi="['da:qa:dppqualitytaskevaluate:add']" @mousedown="(e) => e.preventDefault()">
+                  v-hasPermi="['da:dataQualityTasks:add']" @mousedown="(e) => e.preventDefault()">
                   <i class="iconfont-mini icon-xinzeng mr5"></i>新增
                 </el-button>
               </el-col>

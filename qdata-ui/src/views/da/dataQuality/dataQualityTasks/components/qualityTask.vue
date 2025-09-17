@@ -70,7 +70,7 @@
                                 <el-form-item label="任务状态" prop="status">
                                     <el-radio-group v-model="form.status" class="el-form-input-width">
                                         <el-radio v-for="dict in da_discovery_task_status" :key="dict.value"
-                                            :label="dict.value" :disabled="!form.id">
+                                            :label="dict.value" disabled>
                                             {{ dict.label }}
                                         </el-radio>
                                     </el-radio-group>

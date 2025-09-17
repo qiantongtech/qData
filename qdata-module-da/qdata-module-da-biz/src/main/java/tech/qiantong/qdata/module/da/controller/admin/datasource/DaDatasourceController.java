@@ -260,7 +260,7 @@ public class DaDatasourceController extends BaseController {
 
 
     @Operation(summary = "")
-    @PreAuthorize("@ss.hasPermi('da:datasource:executesqlquery:export')")
+    @PreAuthorize("@ss.hasPermi('da:datasource:executesqlquery:list')")
     @GetMapping(value = "/exportSqlQueryResult/export")
     public void exportSqlQueryResult(HttpServletResponse response,DaDatasourcePageReqVO daDatasource) {
         daDatasourceService.exportSqlQueryResult(response,daDatasource);

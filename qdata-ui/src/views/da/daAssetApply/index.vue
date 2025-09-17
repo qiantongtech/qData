@@ -569,6 +569,7 @@ function resetQuery() {
   if (DeptTreeRef.value?.resetTree) {
     DeptTreeRef.value.resetTree();
   }
+  queryParams.value.catAssetCode = "";
   proxy.resetForm("queryRef");
   handleQuery();
 }

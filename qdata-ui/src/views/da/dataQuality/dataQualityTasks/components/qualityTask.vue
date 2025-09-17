@@ -97,15 +97,17 @@
                                 </el-form-item>
                             </el-col>
                             <el-col :span="12">
-                                <el-form-item label="失败重试次数" prop="retryTimes">
-                                    <el-input type="number" v-model="form.retryTimes" placeholder="请输入失败重试次数">
+                                <el-form-item label="失败重试次数" prop="retryTimes"
+                                              :rules="[{ validator: createNatureIntegerValidator('失败重试次数'), trigger: 'change' }]">
+                                    <el-input type="number" v-model.number="form.retryTimes" placeholder="请输入失败重试次数" :min="0">
                                         <template #append>次</template>
                                     </el-input>
                                 </el-form-item>
                             </el-col>
                             <el-col :span="12">
-                                <el-form-item label="延迟执行时间" prop="delayTime">
-                                    <el-input type="number" v-model="form.delayTime" placeholder="请输入延迟执行时间">
+                                <el-form-item label="延迟执行时间" prop="delayTime"
+                                              :rules="[{ validator: createNatureIntegerValidator('延迟执行时间'), trigger: 'change' }]">
+                                    <el-input type="number" v-model.number="form.delayTime" placeholder="请输入延迟执行时间">
                                         <template #append>分</template>
                                     </el-input>
                                 </el-form-item>
@@ -301,6 +303,7 @@ import Crontab from "@/components/Crontab/index.vue";
 import {
     getColumnByAssetId,
 } from '@/api/dpp/etl/dppEtlTask';
+import {createNatureIntegerValidator} from '@/utils/validator'
 import { treeData } from "./data.js"
 const { proxy } = getCurrentInstance();
 const route = useRoute();
@@ -650,7 +653,6 @@ async function submitForm() {
 function code(obj) {
     dppQualityTaskObjSaveReqVO.value = [...obj];
 }
-
 
 async function getDppQualityTaskinfo() {
     loadingInstance.value = true

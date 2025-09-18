@@ -47,17 +47,29 @@ public class DaAssetApplyServiceImpl extends ServiceImpl<DaAssetApplyMapper, DaA
 
     @Override
     public PageResult<DaAssetApplyDO> getDaAssetApplyPage(DaAssetApplyPageReqVO pageReqVO) {
+        if (StringUtils.isNotEmpty(pageReqVO.getThemeName())) {
+            DaAssetThemeRelPageReqVO rel = new DaAssetThemeRelPageReqVO();
+            rel.setThemeName(pageReqVO.getThemeName());
+            List<DaAssetThemeRelRespVO> daAssetThemeRelList = daAssetThemeRelService.getDaAssetThemeRelList(rel);
+            if (daAssetThemeRelList.isEmpty()) {
+                return PageResult.empty();
+            }
+            Set<Long> assetIds = daAssetThemeRelList.stream().map(DaAssetThemeRelRespVO::getAssetId).collect(Collectors.toSet());
+            pageReqVO.setAssetIds(assetIds);
+        }
         PageResult<DaAssetApplyDO> daAssetApplyDOPageResult = daAssetApplyMapper.selectPage(pageReqVO);
 
-        List<DaAssetApplyDO> daAssetDOList = (List<DaAssetApplyDO> )daAssetApplyDOPageResult.getRows();
-        for (DaAssetApplyDO daAssetDO : daAssetDOList) {
-            DaAssetThemeRelPageReqVO daAssetThemeRelPageReqVO= new DaAssetThemeRelPageReqVO();
-            daAssetThemeRelPageReqVO.setAssetId(daAssetDO.getId());
+        List<DaAssetApplyDO> daAssetApplyDOList = (List<DaAssetApplyDO>) daAssetApplyDOPageResult.getRows();
+        for (DaAssetApplyDO daAssetApplyDO : daAssetApplyDOList) {
+            DaAssetThemeRelPageReqVO daAssetThemeRelPageReqVO = new DaAssetThemeRelPageReqVO();
+            daAssetThemeRelPageReqVO.setAssetId(daAssetApplyDO.getAssetId());
             List<DaAssetThemeRelRespVO> daAssetThemeRelList = daAssetThemeRelService.getDaAssetThemeRelList(daAssetThemeRelPageReqVO);
-            daAssetDO.setDaAssetThemeRelList(daAssetThemeRelList);
+            if (!daAssetThemeRelList.isEmpty()) {
+                String themeName = daAssetThemeRelList.stream().map(DaAssetThemeRelRespVO::getThemeName).collect(Collectors.joining(","));
+                daAssetApplyDO.setThemeName(themeName);
+                daAssetApplyDO.setDaAssetThemeRelList(daAssetThemeRelList);
+            }
         }
-        daAssetApplyDOPageResult.setRows(daAssetDOList);
-
         return daAssetApplyDOPageResult;
     }
 
@@ -69,7 +81,7 @@ public class DaAssetApplyServiceImpl extends ServiceImpl<DaAssetApplyMapper, DaA
                 .eq(true, DaAssetApplyDO::getProjectId, dictType.getProjectId())
                 .eq(true, DaAssetApplyDO::getProjectCode, dictType.getProjectCode());
         DaAssetApplyDO daAssetApplyDO = daAssetApplyMapper.selectOne(queryWrapperX);
-        if (daAssetApplyDO != null && "2".equals(daAssetApplyDO.getStatus())){
+        if (daAssetApplyDO != null && "2".equals(daAssetApplyDO.getStatus())) {
             daAssetApplyDO.setStatus("1");
             int updateById = daAssetApplyMapper.updateById(daAssetApplyDO);
             return daAssetApplyDO.getId();
@@ -126,7 +138,7 @@ public class DaAssetApplyServiceImpl extends ServiceImpl<DaAssetApplyMapper, DaA
                 .eq(true, DaAssetApplyDO::getId, id);
         DaAssetApplyDO daAssetApplyDO = daAssetApplyMapper.selectOne(lambdaWrapper);
 
-        DaAssetThemeRelPageReqVO daAssetThemeRelPageReqVO= new DaAssetThemeRelPageReqVO();
+        DaAssetThemeRelPageReqVO daAssetThemeRelPageReqVO = new DaAssetThemeRelPageReqVO();
         daAssetThemeRelPageReqVO.setAssetId(daAssetApplyDO.getId());
         List<DaAssetThemeRelRespVO> daAssetThemeRelList = daAssetThemeRelService.getDaAssetThemeRelList(daAssetThemeRelPageReqVO);
         daAssetApplyDO.setDaAssetThemeRelList(daAssetThemeRelList);

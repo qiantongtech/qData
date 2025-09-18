@@ -25,9 +25,8 @@ public class DaAssetThemeRelPageReqVO extends PageParam {
     @Schema(description = "主题id", example = "")
     private Long themeId;
 
+    private String themeName;
 
     private List<String> themeIdList;
-
-
 
 }

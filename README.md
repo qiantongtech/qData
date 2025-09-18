@@ -24,6 +24,8 @@
 
 ✨✨✨**商业版演示地址**✨✨✨ <a href="https://qdata-pro.qiantong.tech" target="_blank">https://qdata-pro.qiantong.tech</a> ，演示账号请 [联系客服获取](https://qdata.qiantong.tech/business.html)
 
+> 如果 qData 对您有帮助，请点个 **Star ⭐️**，这是我们持续更新的最大动力！ 🚀
+
 ## 🍱 使用场景
 
 适用于希望通过整合、治理和分析多源数据，打破孤岛、提升质量与效率，实现数据驱动与业务创新的大型企业、中小企业与政府机构。
@@ -41,16 +43,16 @@
 
 | 优势点           | 描述                             |
 | ------------- | ------------------------------ |
-| **高效数据集成**    | 数据集成模块对标 **Kettle**，兼容性强，使用成本更低。       |
-| **全生命周期覆盖**   | 覆盖数据采集、治理、建模、共享，支持端到端业务闭环。     |
-| **轻量部署，弹性扩展** | 默认单体架构，简单易用；可快速切换微服务，支持横向扩展。     |
+| **高效数据集成**    | 数据集成模块对标 **Kettle**，兼容性强，迁移与使用成本更低。       |
+| **全生命周期覆盖**   | 覆盖数据采集、治理、建模、共享服务，支持完整的端到端业务闭环。     |
+| **轻量部署，弹性扩展** | 默认单体架构，简单易用；可快速切换微服务模式，满足横向扩展的需求。     |
 | **高性能处理**     | 单节点即可支撑千万级/分钟数据处理，性能强劲。        |
-| **批流一体，多引擎**  | 同时支持批处理与流处理，兼容多种执行引擎。          |
-| **全类型数据资产管理** | 结构化与非结构化数据统一管理，资产清晰可视。         |
-| **数据质量合规**    | 符合 **GB/T 36344** 国家标准，保障质量与一致性。   |
-| **开发生产一体化**   | 任务配置跨环境复用，开发、测试、上线更高效。         |
-| **开源友好体验**    | 开箱即用，部署简单，上手门槛低，社区活跃。          |
-| **商业版平滑升级**   | 开源版先用，复杂需求可升级商业版，获得全链路保障。 |
+| **批流一体，多引擎**  | 同时支持批处理与流处理，兼容多种执行引擎，实现不同场景下的数据处理需求一体化。          |
+| **全类型数据资产管理** | 支持结构化与非结构化数据的统一管理，资产清晰可视。         |
+| **数据质量合规**    | 符合 **GB/T 36344** 国家标准，确保数据准确、完整、一致并满足合规要求。   |
+| **开发生产一体化**   | 任务配置可跨开发、测试和生产环境复用，简化运维流程。         |
+| **开源友好体验**    | 开箱即用，支持快速部署与示例引导，上手门槛低，社区活跃。          |
+| **商业版平滑升级**   | 先使用开源版进行探索与验证，复杂需求可平滑过渡至商业版，获得全链路保障。 |
 
 
 ## ✅ 已有功能一览
@@ -68,7 +70,7 @@
 | 数据查询 | 数据查询模块提供灵活且高效的交互式查询工具，让用户能够迅速分析和挖掘结构化数据中的深层价值，提升数据探索与决策辅助能力。                              |
 | 系统管理 | 系统管理涵盖系统配置、用户与权限管理、运行监控、日志管理和服务器资源监控等核心功能，同时提供工作空间管理，实现任务在不同项目组间的高效拆分与协作，适应前店后厂式组织流程。     |
 
-👉 qData 数据中台采用模块化设计，涵盖12大核心功能模块。**最新完整版**功能清单参见：[qData 功能清单总览](https://qdata.qiantong.tech/docs/start/functions.html)
+👉 qData 数据中台采用模块化设计，涵盖12大核心功能模块。**最新完整版**功能清单参见：[qData 功能清单总览](https://qdata.qiantong.tech/docs/start/features.html)
 
 ## 🚧 未来开发计划
 
@@ -193,17 +195,18 @@ qData 提供 **商业版** 与 **开源版** 两种形态，满足不同规模�
 
 | 部署方式                    | 说明                                                              | 适用场景               |
 | ----------------------- | --------------------------------------------------------------- | ------------------ |
-| [Docker Compose 部署](https://qdata.qiantong.tech/docs/install/Docker%20Compose%20%E9%83%A8%E7%BD%B2.html) | 所有组件（调度器、数据库、消息队列、Spark、Flink 等）以及 qData 数据中台源码都通过 Docker Compose 一键启动 | **初学者快速上手**、功能演示、测试环境  |
-| [使用源代码本地启动](https://qdata.qiantong.tech/docs/install/%E4%BD%BF%E7%94%A8%E6%BA%90%E4%BB%A3%E7%A0%81%E6%9C%AC%E5%9C%B0%E5%90%AF%E5%8A%A8.html)  | qData 数据中台源码由开发者本地运行，依赖组件通过 Docker Compose 启动  | **日常开发**、功能联调          |
-| [自主部署（纯手工安装）](https://qdata.qiantong.tech/docs/install/%E8%87%AA%E4%B8%BB%E9%83%A8%E7%BD%B2/)  | 所有依赖组件及 qData 数据中台服务均需手工安装和配置  | **生产环境**、大规模部署、个性化定制场景 |
+| [Docker Compose 部署](https://qdata.qiantong.tech/docs/deploy/docker-compose-deployment.html) | 所有组件（调度器、数据库、消息队列、Spark、Flink 等）以及 qData 数据中台源码都通过 Docker Compose 一键启动 | **初学者快速上手**、功能演示、测试环境  |
+| [使用源代码本地启动](https://qdata.qiantong.tech/docs/deploy/build-from-source.html)  | qData 数据中台源码由开发者本地运行，依赖组件通过 Docker Compose 启动  | **日常开发**、功能联调          |
+| [自主部署（纯手工安装）](https://qdata.qiantong.tech/docs/deploy/manual-deployment/)  | 所有依赖组件及 qData 数据中台服务均需手工安装和配置  | **生产环境**、大规模部署、个性化定制场景 |
 
-👉 查看完整的安装与部署指南：<a href="https://qdata.qiantong.tech/docs/install/%E9%83%A8%E7%BD%B2%E5%BC%80%E6%BA%90%E7%89%88.html">🧭 点击查看详细部署步骤</a>
+👉 查看完整的安装与部署指南：<a href="https://qdata.qiantong.tech/docs/deploy/deploy-open-source.html">🧭 点击查看详细部署步骤</a>
 
 ## 👥 QQ交流群
 欢迎加入 qData 官方 QQ 交流群，获取最新动态、技术支持与使用交流。
 
-[![加入QQ群](https://img.shields.io/badge/QQ群-814145903-blue.svg)](https://qm.qq.com/q/Qz5NJut20y)
+[![加入QQ群](https://img.shields.io/badge/QQ群-814145903（已满）-blue.svg)](https://qm.qq.com/q/Qz5NJut20y)
 [![加入QQ群](https://img.shields.io/badge/QQ群-236734346-blue.svg)](https://qm.qq.com/q/Bpml33lTWK)
+[![加入QQ群](https://img.shields.io/badge/QQ群-675093323-blue.svg)](https://qm.qq.com/q/VIq5vtICo6)
 
 ## 🖼️ 系统配图
 <table>

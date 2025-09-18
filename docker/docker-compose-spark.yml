@@ -3,7 +3,7 @@ version: "1.0.5"
 services:
   spark:
     image: docker.io/bitnami/spark:3
-    profiles: ["all"]
+    profiles: ["all", "local" ]
     environment:
       - SPARK_MASTER_HOST=spark         # 关键：让 master 对外广播服务名
       - SPARK_MODE=master
@@ -24,7 +24,7 @@ services:
       - qdatanet
 
   spark-worker-1:
-    profiles: ["all"]
+    profiles: ["all", "local" ]
     image: docker.io/bitnami/spark:3
     environment:
       - SPARK_MODE=worker

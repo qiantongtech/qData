@@ -60,7 +60,7 @@ services:
 
   dm8:
     image: dm8:dm8_20250506_x86_rh7_64
-    profiles: [ "all", "schema" ]
+    profiles: [ "all", "schema", "local"  ]
     env_file: .env
     privileged: true
     hostname: dm8
@@ -89,7 +89,7 @@ services:
   mongodb:
     container_name: mongodb
     restart: always
-    profiles: [ "all", "schema" ]
+    profiles: [ "all", "schema", "local"  ]
     env_file: .env
     image: mongo:4.4
     ports:

@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
+import java.util.Set;
+
 /**
  * 数据资产申请 Request VO 对象 DA_ASSET_APPLY
  *
@@ -58,5 +60,6 @@ public class DaAssetApplyPageReqVO extends PageParam {
     @Schema(description = "状态", example = "")
     private String status;
 
+    private Set<Long> assetIds;
 
 }

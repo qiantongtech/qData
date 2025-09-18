@@ -58,13 +58,13 @@
                 {{ scope.row.assetTableName || "-" }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(3)" label="资产类目" align="left" prop="catAssetName" width="160"
+            <el-table-column v-if="getColumnVisibility(3)" label="资产类目" align="left" prop="catAssetName" width="100"
               :show-overflow-tooltip="true">
               <template #default="scope">
                 {{ scope.row.catAssetName || "-" }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(4)" label="主题名称" align="left" prop="themeName"
+            <el-table-column v-if="getColumnVisibility(4)" label="主题名称" align="left" prop="themeName" width="100"
               :show-overflow-tooltip="true">
               <template #default="scope">
                 {{ scope.row.themeName || "-" }}

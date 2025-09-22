@@ -228,8 +228,8 @@ const { greeting, message } = useTimeGreeting()
 const captchaEnabled = ref(true);
 const codeFlag = ref(false);
 const loginForm = ref({
-    username: '',
-    password: '',
+    username: 'qData',
+    password: 'qData123',
     rememberMe: false,
     code: '',
     uuid: ''

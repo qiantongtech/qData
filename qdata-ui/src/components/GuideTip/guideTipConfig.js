@@ -114,8 +114,8 @@ export const guideTipConfig = {
     },
     // 数据资源类目
     'cat/attApiCat.list': {
-        title: '数据资源目录是什么？',
-        content: `数据资源目录是 <u>数据服务</u> 模块中 API 服务的逻辑分类与目录化管理视图，实现接口资产的结构化组织、便捷检索和统一呈现。
+        title: '数据API服务目录是什么？',
+        content: `数据API服务目录是 <u>数据服务</u> 模块中 API 服务的逻辑分类与目录化管理视图，实现接口资产的结构化组织、便捷检索和统一呈现。
         <a href="${DOCS_BASE_URL}/docs/user/basic-management/category-management/api-category.html" target="_blank">查看帮助文档</a>
     `,
         type: 'remind', version: '1.0'

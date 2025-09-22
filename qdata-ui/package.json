@@ -64,7 +64,7 @@
     "swiper": "8.4.7",
     "uuid": "^11.1.0",
     "v-code-diff": "^1.13.1",
-    "vue": "3.4.31",
+    "vue": "^3.5.21",
     "vue-clipboard3": "^2.0.0",
     "vue-codemirror": "^4.0.6",
     "vue-cropper": "1.1.1",

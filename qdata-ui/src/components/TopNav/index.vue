@@ -117,9 +117,29 @@ const activeMenu = computed(() => {
     return activePath;
 });
 
-function setVisibleNumber() {
-    const width = document.body.getBoundingClientRect().width / 3;
-    visibleNumber.value = parseInt(width / 85);
+// function setVisibleNumber() {
+//     const width = document.body.getBoundingClientRect().width / 3;
+//     visibleNumber.value = parseInt(width / 85);
+// }
+
+// 计算可用宽度下的顶部导航栏可显示菜单数量
+function calculateVisibleMenus() {
+    const bodyWidth = document.body.getBoundingClientRect().width;
+    const leftWidth = 210 + 50; // Logo + 小图标，左边最大宽度
+    const rightWidth = 606;     // 右侧功能区，右边最大宽度
+    const menuWidth = 124;      // 每个菜单项宽度
+
+    const availableWidth = bodyWidth - leftWidth - rightWidth;
+
+    if (availableWidth < 0) {
+        visibleNumber.value = 0;
+        return;
+    }
+
+    const rawCount = Math.floor(availableWidth / menuWidth);
+    const finalCount = Math.max(0, rawCount - 1); // 减1留给“更多菜单”
+
+    visibleNumber.value = finalCount;
 }
 
 function closePageExclusion(key) {
@@ -215,14 +235,14 @@ function activeRoutes(key) {
 }
 
 onMounted(() => {
-    window.addEventListener('resize', setVisibleNumber);
+    window.addEventListener('resize', calculateVisibleMenus);
 });
 onBeforeUnmount(() => {
-    window.removeEventListener('resize', setVisibleNumber);
+    window.removeEventListener('resize', calculateVisibleMenus);
 });
 
 onMounted(() => {
-    setVisibleNumber();
+    calculateVisibleMenus();
 });
 // 如果需要暴露给父组件使用，可以使用 defineExpose
 defineExpose({

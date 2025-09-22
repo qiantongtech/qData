@@ -1,5 +1,9 @@
 <template>
   <div class="app-container" ref="app-container">
+
+    <!-- 新用户引导内容展示 -->
+    <GuideTip tip-id="da/dataQuality/dataQualityTasks.list" />
+
     <el-container style="90%">
       <DeptTree :deptOptions="deptOptions" :leftWidth="leftWidth" :placeholder="'请输入数据质量类目名称'" ref="DeptTreeRef"
         @node-click="handleNodeClick" />

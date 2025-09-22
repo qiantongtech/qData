@@ -25,7 +25,7 @@
             </div>
             <div>
                 <div class="greeting">
-                    <div class="entry_period">亲爱的朋友，{{ greetingsTitle }}！</div>
+                    <div class="entry_period">亲爱的朋友，{{ greeting }}！</div>
                     <div class="entry_greeting"> 🌟 每一次登录，都是向数据价值更进一步！</div>
                 </div>
                 <div class="login-panel">
@@ -217,12 +217,14 @@ import 'swiper/swiper-bundle.min.css';
 import useUserStore from '@/store/system/user.js';
 import { getContent } from '@/api/system/system/content';
 import defaultLogo from '@/assets/system/images/login/qData-logo.png';
+import { useTimeGreeting } from '@/composables/useTimeGreeting';
 const userStore = useUserStore();
 const dialogVisible = ref(false);
 const { proxy } = getCurrentInstance();
 const loading = ref(false);
 const codeUrl = ref('');
-const greetingsTitle = ref('');
+// const greetingsTitle = ref('');
+const { greeting, message } = useTimeGreeting()
 const captchaEnabled = ref(true);
 const codeFlag = ref(false);
 const loginForm = ref({
@@ -327,18 +329,18 @@ const fetchContent = async () => {
     }
 };
 
-function judgeDate() {
-    var currentTime = new Date();
-    var currentHour = currentTime.getHours();
-    if (currentHour < 12) {
-        greetingsTitle.value = '上午好';
-    } else if (currentHour < 18) {
-        greetingsTitle.value = '下午好';
-    } else {
-        greetingsTitle.value = '晚上好';
-    }
-}
-judgeDate();
+// function judgeDate() {
+//     var currentTime = new Date();
+//     var currentHour = currentTime.getHours();
+//     if (currentHour < 12) {
+//         greetingsTitle.value = '上午好';
+//     } else if (currentHour < 18) {
+//         greetingsTitle.value = '下午好';
+//     } else {
+//         greetingsTitle.value = '晚上好';
+//     }
+// }
+// judgeDate();
 
 function getCookie() {
     const username = Cookies.get('username');

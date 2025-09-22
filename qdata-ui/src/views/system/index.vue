@@ -1,14 +1,16 @@
 <template>
   <div class="app-container stagingIndex">
+
+    <!-- 演示环境重要提醒 -->
+    <GuideTip tip-id="index" />
+
     <el-row :gutter="15">
       <el-col :xs="24" :sm="24" :md="18" :lg="18" class="home-gutter">
         <div class="userInfo module-1">
           <div class="info-main">
             <img :src="userStore.avatar" alt="" class="avatar" />
             <div class="info-con">
-              <div class="info-con-name">
-                上午好，{{ userStore.nickName }} ，祝你开心每一天！
-              </div>
+              <div class="info-con-name">{{ greeting }}，{{ userStore.nickName }} ，{{ message }}</div>
               <div class="info-con-desc">
                 <span style="color: var(--el-color-primary)"> 系统管理员 </span>
                 <el-divider direction="vertical" />
@@ -163,6 +165,10 @@ import useAppStore from "@/store/system/app";
 import * as echarts from "echarts";
 import { timeAgo } from "@/utils/time";
 import { loginOut } from "@/api/system/sso-auth.js";
+
+import { useTimeGreeting } from '@/composables/useTimeGreeting'
+const { greeting, message } = useTimeGreeting()
+
 // eslint-disable-next-line no-unused-vars
 import {
   onBeforeUnmount,
@@ -343,15 +349,21 @@ const xljtcont = ref("");
 function getxljtcont() {
   let num = Math.floor(Math.random() * 9);
   let xljtlist = [
-    { value: "起风的日子，学会依风起舞，下雨的是时候，学会为自己撑伞。" },
-    { value: "别让鸡零狗碎的破事，耗尽你对美好生活的所有向往。" },
-    { value: "管好身体，照顾好父母和老婆孩子，要自己感受生活的美好。" },
-    { value: "我希望你过普通的生活，有稳定的收入平凡的爱人。" },
-    { value: "一定要努力赚钱，好好经营自己。" },
-    { value: "我们穷极一生追求的幸福，眼中景，盘中餐，身边人。" },
-    { value: "日出有盼，日落有思，平平安安，所遇皆甜。" },
-    { value: "不要慌，太阳下山有月光。" },
-    { value: "几经波折见风雪，再见是我也非我。" },
+    { value: "在数据有序中，愿您也能感受到内心的安定。" },
+    { value: "数据清晰，思路清晰；心情舒展，工作自然顺畅。" },
+    { value: "每一次整理与沉淀，都是一种成长。" },
+    { value: "愿今天的您，不止高效，更能从容。" },
+    { value: "愿您的每一次决策，都带来笃定与安心。" },
+    { value: "治理有序，决策有据，让数据成为您可靠的伙伴。" },
+    { value: "数据驱动价值，愿您每天的工作更高效、更轻松。" },
+    { value: "数据能整理，心情也值得被安放。" },
+    { value: "数据赋能决策，筑业务新高度。" },
+    { value: "稳中求进，行稳致远，与您共筑数字未来。" },
+    { value: "在变化中把握趋势，在数据中预见未来。" },
+    { value: "每一份数据背后，都承载着责任与期待。" },
+    { value: "洞察从数据开始，决策从这里出发。" },
+    { value: "让数据多跑路，让您少操心。" },
+    { value: "数据为舟破迷雾，伴您高效前行。" },
   ];
   xljtcont.value = xljtlist[num].value;
 }

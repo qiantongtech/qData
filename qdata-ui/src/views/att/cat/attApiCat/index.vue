@@ -1,5 +1,9 @@
 <template>
     <div class="app-container" ref="app-container">
+
+        <!-- 新用户引导内容展示 -->
+        <GuideTip tip-id="cat/attApiCat.list" />
+
         <div class="pagecont-top" v-show="showSearch">
             <el-form
                 class="btn-style"

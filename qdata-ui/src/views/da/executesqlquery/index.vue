@@ -1,5 +1,9 @@
 <template>
   <div class="app-container" ref="app-container" style="overflow: hidden !important">
+
+    <!-- 新用户引导内容展示 -->
+    <GuideTip tip-id="da/executeSqlQuery" />
+
     <!-- 头部区域 -->
     <div class="head-container">
       <div class="head-title">

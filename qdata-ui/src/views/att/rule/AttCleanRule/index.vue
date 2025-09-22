@@ -1,5 +1,8 @@
 <template>
     <div class="app-container" ref="app-container">
+
+        <GuideTip tip-id="att/attCleanRule.list" />
+
         <el-container style="90%">
             <DeptTree :deptOptions="processedData" ref="DeptTreeRef" :leftWidth="leftWidth" :placeholder="'请输入清洗规则类型'"
                 @node-click="handleNodeClick" />

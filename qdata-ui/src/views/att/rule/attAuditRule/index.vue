@@ -1,5 +1,8 @@
 <template>
     <div class="app-container" ref="app-container">
+
+        <GuideTip tip-id="att/attAuditRule.list" />
+
         <el-container style="90%">
             <DeptTree :deptOptions="processedData" :leftWidth="leftWidth" :placeholder="'请输入规则类型'"
                 @node-click="handleNodeClick" ref="DeptTreeRef" :default-expand="true" />

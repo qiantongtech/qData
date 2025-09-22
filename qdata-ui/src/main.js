@@ -45,7 +45,8 @@ import Editor from "@/components/Editor"
 import FileUpload from "@/components/FileUpload2"
 // 文件上传按钮组件
 import FileUploadbtn from "@/components/FileUploadbtn"
-
+// 提示组件
+import GuideTip from "@/components/GuideTip"
 // 图片上传组件
 import ImageUpload from "@/components/ImageUpload"
 // 图片预览组件
@@ -81,6 +82,7 @@ app.component('Pagination', Pagination)
 app.component('TreeSelect', TreeSelect)
 app.component('FileUpload', FileUpload)
 app.component('FileUploadbtn', FileUploadbtn)
+app.component('GuideTip', GuideTip)
 app.component('ImageUpload', ImageUpload)
 app.component('ImagePreview', ImagePreview)
 app.component('RightToolbar', RightToolbar)

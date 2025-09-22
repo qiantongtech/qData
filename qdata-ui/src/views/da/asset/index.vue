@@ -1,5 +1,9 @@
 <template>
   <div class="app-container" ref="app-container">
+
+    <!-- 新用户引导内容展示 -->
+    <GuideTip tip-id="da/daAsset.list" />
+
     <el-container>
       <DeptTree :deptOptions="deptOptions" :leftWidth="leftWidth" :placeholder="'请输入资产类目名称'" ref="DeptTreeRef"
         @node-click="handleNodeClick" />

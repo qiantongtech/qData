@@ -1,5 +1,9 @@
 <template>
   <div class="app-container" ref="app-container">
+
+    <!-- 新用户引导内容展示 -->
+    <GuideTip tip-id="dp/dpModel.list" />
+
     <el-container style="90%">
       <DeptTree ref="DeptTreeRef" :deptOptions="deptOptions" :leftWidth="leftWidth" :placeholder="'请输入逻辑模型类目'"
         @node-click="handleNodeClick" />

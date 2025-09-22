@@ -1,5 +1,9 @@
 <template>
   <div class="app-container" ref="app-container">
+
+    <!-- 新用户引导内容展示 -->
+    <GuideTip tip-id="dpp/etltaskinstance/dppEtlTaskInstance.list" />
+
     <el-container style="90%">
       <DeptTree
         :deptOptions="deptOptions"

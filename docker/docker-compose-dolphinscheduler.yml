@@ -12,6 +12,7 @@ services:
       POSTGRESQL_DATABASE: ${POSTGRESQL_DATABASE}
     volumes:
       - dolphinscheduler-postgresql:/bitnami/postgresql
+      - ./dolphinscheduler/sql/dolphinscheduler_dump.sql:/docker-entrypoint-initdb.d/01_dolphinscheduler.sql:ro
     healthcheck:
       test: ["CMD", "bash", "-c", "cat < /dev/null > /dev/tcp/127.0.0.1/5432"]
       interval: 5s
@@ -19,6 +20,8 @@ services:
       retries: 120
     networks:
       - qdatanet
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   dolphinscheduler-zookeeper:
     image: bitnami/zookeeper:3.7.1
@@ -36,6 +39,8 @@ services:
       retries: 120
     networks:
       - qdatanet
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   dolphinscheduler-schema-initializer:
     image: ${HUB}/dolphinscheduler-tools:${TAG}
@@ -51,6 +56,8 @@ services:
       - ./dolphinscheduler/resource:/dolphinscheduler
     networks:
       - qdatanet
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   dolphinscheduler-api:
     image: ${HUB}/dolphinscheduler-api:${TAG}
@@ -75,6 +82,8 @@ services:
       - ./dolphinscheduler/resource:/dolphinscheduler
     networks:
       - qdatanet
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   dolphinscheduler-alert:
     image: ${HUB}/dolphinscheduler-alert-server:${TAG}
@@ -94,6 +103,8 @@ services:
       - ./dolphinscheduler/logs:/opt/dolphinscheduler/logs
     networks:
       - qdatanet
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   dolphinscheduler-master:
     image: ${HUB}/dolphinscheduler-master:${TAG}
@@ -114,6 +125,8 @@ services:
       - ./dolphinscheduler/soft:/opt/soft
     networks:
       - qdatanet
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   dolphinscheduler-worker:
     image: ${HUB}/dolphinscheduler-worker:${TAG}
@@ -136,3 +149,5 @@ services:
       - ./dolphinscheduler/resource:/dolphinscheduler
     networks:
       - qdatanet
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

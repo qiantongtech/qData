@@ -22,6 +22,8 @@ services:
       timeout: 5s
     networks:
       - qdatanet
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   spark-worker-1:
     profiles: ["all", "local" ]
@@ -42,3 +44,5 @@ services:
         condition: service_healthy
     networks:
       - qdatanet
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

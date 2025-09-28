@@ -4,12 +4,16 @@ include:
   - path: ./docker-compose-spark.yml
   - path: ./docker-compose-qdata.yml
   - path: ./docker-compose-hadoop.yml
+  - path: ./docker-compose-demo-env.yml
 
 version: "1.0.5"
 
 networks:
   qdatanet:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16
 
 volumes:
   dolphinscheduler-postgresql:

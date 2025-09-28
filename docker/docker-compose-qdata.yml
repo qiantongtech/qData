@@ -3,7 +3,7 @@ version: "1.0.5"
 services:
   # qdata 后端服务
   qdata-api:
-    image: qiantong/qdata:1.0.5
+    image: qiantong/qdata:1.0.6
     restart: always
     profiles: [ "all" ]
     env_file: .env
@@ -29,7 +29,7 @@ services:
 
   # qdata 质控服务
   qdata-quality:
-    image: qiantong/qdata-quality:1.0.5
+    image: qiantong/qdata-quality:1.0.6
     restart: always
     profiles: [ "all" ]
     env_file: .env

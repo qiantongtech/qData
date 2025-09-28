@@ -87,5 +87,8 @@ docker/dolphinscheduler/soft/flink
 docker/dolphinscheduler/soft/spark
 docker/nginx/dist
 docker/qdata-quality/job-log
+docker/qdata-server/logs
+docker/qdata-server/upload
+
 qdata-server/docker/qdata-server.jar
 qdata-quality/docker/qdata-quality.jar

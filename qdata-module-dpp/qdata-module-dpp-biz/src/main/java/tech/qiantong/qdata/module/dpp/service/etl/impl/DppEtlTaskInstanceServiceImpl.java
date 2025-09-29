@@ -411,6 +411,15 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
         if (dppEtlTaskLogRespVO == null) {
             throw new RuntimeException("任务不存在");
         }
+        //获取节点关系数据
+        JSONArray locations = JSONArray.parse(dppEtlTaskLogRespVO.getLocations());
+        //获取节点数据
+        List<DppEtlNodeInstanceDO> dppEtlNodeInstanceDOList = dppEtlTNodeInstanceService.list(Wrappers.lambdaQuery(DppEtlNodeInstanceDO.class)
+                .select(DppEtlNodeInstanceDO::getId,
+                        DppEtlNodeInstanceDO::getNodeCode,
+                        DppEtlNodeInstanceDO::getName,
+                        DppEtlNodeInstanceDO::getStatus)
+                .eq(DppEtlNodeInstanceDO::getTaskInstanceId, taskInstanceId));
 
         String processInstanceLogKey = TaskConverter.PROCESS_INSTANCE_LOG_KEY + taskInstanceId;
         if (StringUtils.equals("1", dppEtlTaskInstanceDO.getTaskType())) {//判断是否是离线任务
@@ -424,9 +433,6 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
                 }
             }
         } else {
-            JSONArray locations = JSONArray.parse(dppEtlTaskLogRespVO.getLocations());
-            List<DppEtlNodeInstanceDO> dppEtlNodeInstanceDOList = dppEtlTNodeInstanceService.list(Wrappers.lambdaQuery(DppEtlNodeInstanceDO.class)
-                    .eq(DppEtlNodeInstanceDO::getTaskInstanceId, taskInstanceId));
             Map<String, DppEtlNodeInstanceDO> nodeInstanceMap = dppEtlNodeInstanceDOList.stream().collect(Collectors.toMap(key -> key.getNodeCode(), value -> value));
 
             for (int i = 0; i < locations.size(); i++) {
@@ -453,6 +459,7 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
         return DppEtlTaskInstanceLogStatusRespDTO.builder()
                 .log(log)
                 .status(dppEtlTaskInstanceDO.getStatus())
+                .nodeInstanceList(BeanUtils.toBean(dppEtlNodeInstanceDOList, DppEtlNodeInstanceRespDTO.class))
                 .build();
     }
 

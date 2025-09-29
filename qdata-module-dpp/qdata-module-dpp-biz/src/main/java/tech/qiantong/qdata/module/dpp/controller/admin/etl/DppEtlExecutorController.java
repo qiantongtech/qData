@@ -2,12 +2,18 @@ package tech.qiantong.qdata.module.dpp.controller.admin.etl;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import tech.qiantong.qdata.api.ds.api.service.etl.IDsEtlExecutorService;
 import tech.qiantong.qdata.common.core.domain.AjaxResult;
+import tech.qiantong.qdata.common.core.domain.CommonResult;
+import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.enums.ExecuteType;
+import tech.qiantong.qdata.common.utils.object.BeanUtils;
+import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlNodePageReqVO;
+import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlNodeRespVO;
+import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlNodeDO;
 import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlTaskInstanceService;
 
 import javax.annotation.Resource;
@@ -22,7 +28,7 @@ import javax.annotation.Resource;
  **/
 @Tag(name = "调度执行")
 @RestController
-@RequestMapping("/dpp/dppEtlExecutors")
+@RequestMapping("/dpp/etlExecutors")
 public class DppEtlExecutorController {
 
     @Resource

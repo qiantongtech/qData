@@ -1,18 +1,31 @@
 package tech.qiantong.qdata.module.dpp.controller.admin.qa;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.io.IOException;
+import java.util.*;
+
 import cn.hutool.core.date.DateUtil;
+
+import com.alibaba.fastjson2.JSONObject;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import tech.qiantong.qdata.common.core.domain.AjaxResult;
+import tech.qiantong.qdata.common.core.page.PageParam;
 import tech.qiantong.qdata.common.annotation.Log;
 import tech.qiantong.qdata.common.core.controller.BaseController;
-import tech.qiantong.qdata.common.core.domain.AjaxResult;
 import tech.qiantong.qdata.common.core.domain.CommonResult;
-import tech.qiantong.qdata.common.core.page.PageParam;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.enums.BusinessType;
+import tech.qiantong.qdata.common.httpClient.HeaderEntity;
+import tech.qiantong.qdata.common.httpClient.HttpUtils;
+import tech.qiantong.qdata.common.utils.JSONUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.common.utils.poi.ExcelUtil;
 import tech.qiantong.qdata.module.dpp.controller.admin.qa.vo.DppQualityTaskEvaluatePageReqVO;
@@ -23,12 +36,6 @@ import tech.qiantong.qdata.module.dpp.dal.dataobject.qa.DppQualityTaskEvaluateDO
 import tech.qiantong.qdata.module.dpp.service.qa.IDppQualityTaskEvaluateService;
 import tech.qiantong.qdata.module.dpp.service.qa.IDppQualityTaskService;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * 数据质量任务-评测规则Controller
  *
@@ -37,7 +44,7 @@ import java.util.List;
  */
 @Tag(name = "数据质量任务-评测规则")
 @RestController
-@RequestMapping("/dpp/DppQualityTaskEvaluate")
+@RequestMapping("/dpp/qualityTaskEvaluate")
 @Validated
 public class DppQualityTaskEvaluateController extends BaseController {
     @Resource

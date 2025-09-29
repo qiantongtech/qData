@@ -40,7 +40,7 @@ import java.util.Map;
  */
 @Tag(name = "数据资产")
 @RestController
-@RequestMapping("/da/daAsset")
+@RequestMapping("/da/asset")
 @Validated
 public class DaAssetController extends BaseController {
     @Resource

@@ -175,4 +175,10 @@ public class DppEtlTaskInstanceController extends BaseController {
         }
     }
 
+    @Operation(summary = "根据任务实例id获取数据集成任务详细信息")
+    @GetMapping(value = "/getTaskInfo/{id}")
+    public CommonResult<DppEtlTaskUpdateQueryRespVO> getTaskInfo(@PathVariable("id") Long id) {
+        return CommonResult.success(dppEtlTaskInstanceService.getTaskInfo(id));
+    }
+
 }

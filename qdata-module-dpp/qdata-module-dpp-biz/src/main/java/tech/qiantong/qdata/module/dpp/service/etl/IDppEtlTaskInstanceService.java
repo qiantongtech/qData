@@ -10,11 +10,7 @@ import tech.qiantong.qdata.common.core.domain.AjaxResult;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.enums.ExecuteType;
 import tech.qiantong.qdata.module.dpp.api.etl.dto.DppEtlTaskInstanceLogStatusRespDTO;
-import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlTaskInstanceTreeListRespVO;
-import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlTaskInstanceRespVO;
-import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlTaskInstanceSaveReqVO;
-import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlTaskInstancePageReqVO;
-import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlTaskInstanceTreeListReqVO;
+import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.*;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlTaskInstanceDO;
 
 /**
@@ -154,4 +150,18 @@ public interface IDppEtlTaskInstanceService extends IService<DppEtlTaskInstanceD
      * @return
      */
     Long getRunTaskInstance(Long taskId);
+
+    /**
+     * 根据任务实例id获取数据集成任务详细信息
+     * @param id
+     * @return
+     */
+    DppEtlTaskUpdateQueryRespVO getTaskInfo(Long id);
+
+    /**
+     * 根据任务code获取最后一次任务实例
+     * @param code
+     * @return
+     */
+    DppEtlTaskInstanceDO getLastTaskInstanceByTaskCode(String code);
 }

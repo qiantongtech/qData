@@ -638,7 +638,7 @@ function messageDetail() {
     if (activeMsg.value == 'first') {
         router.push({ path: '/bases/message' });
     } else {
-        router.push({ path: '/system/notice' });
+        router.push({ path: '/system/notice/detail' });
     }
 }
 

@@ -201,4 +201,14 @@ public class DppEtlNodeLogServiceImpl extends ServiceImpl<DppEtlNodeLogMapper, D
     public Integer getMaxVersionByNodeCode(String nodeCode) {
         return baseMapper.getMaxVersionByNodeCode(nodeCode);
     }
+
+    @Override
+    public List<DppEtlNodeLogDO> listByTaskCode(String taskCode, Integer version) {
+        MPJLambdaWrapper<DppEtlNodeLogDO> wrapper = new MPJLambdaWrapper<>();
+        wrapper.selectAll(DppEtlNodeLogDO.class)
+                .innerJoin("DPP_ETL_TASK_NODE_REL_LOG t2 ON ((t.CODE = t2.PRE_NODE_CODE AND t.VERSION = t2.PRE_NODE_VERSION) OR (t.CODE = t2.POST_NODE_CODE AND t.VERSION = t2.POST_NODE_VERSION)) AND t2.DEL_FLAG = '0' AND t2.TASK_CODE =" + taskCode + " AND  t2.TASK_VERSION  =" + version)
+                .distinct();
+        List<DppEtlNodeLogDO> dppEtlTaskNodeRelDOS = dppEtlNodeLogMapper.selectList(wrapper);
+        return dppEtlTaskNodeRelDOS;
+    }
 }

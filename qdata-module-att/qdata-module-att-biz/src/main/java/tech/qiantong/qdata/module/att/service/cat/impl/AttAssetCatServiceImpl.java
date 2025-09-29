@@ -59,8 +59,22 @@ public class AttAssetCatServiceImpl extends ServiceImpl<AttAssetCatMapper, AttAs
 
     @Override
     public int updateAttAssetCat(AttAssetCatSaveReqVO updateReqVO) {
-        // 相关校验
-
+        AttAssetCatDO catDO = baseMapper.selectById(updateReqVO.getId());
+        if (catDO == null) {
+            return 0;
+        }
+        if (Boolean.FALSE.equals(updateReqVO.getValidFlag())) {
+            Long countData = daAssetApiService.getCountByCatCode(catDO.getCode());
+            if (countData > 0) {
+                throw new ServiceException("存在数据资产，不允许禁用");
+            }
+            baseMapper.updateValidFlag(catDO.getCode(), updateReqVO.getValidFlag());
+        } else if (Boolean.TRUE.equals(updateReqVO.getValidFlag())) {
+            AttAssetCatDO parent = baseMapper.selectById(catDO.getParentId());
+            if (parent != null && Boolean.FALSE.equals(parent.getValidFlag())) {
+                throw new ServiceException("须先启用父级");
+            }
+        }
         // 更新数据资产类目管理
         AttAssetCatDO updateObj = BeanUtils.toBean(updateReqVO, AttAssetCatDO.class);
         return attAssetCatMapper.updateById(updateObj);
@@ -99,6 +113,7 @@ public class AttAssetCatServiceImpl extends ServiceImpl<AttAssetCatMapper, AttAs
         LambdaQueryWrapperX<AttAssetCatDO> queryWrapperX = new LambdaQueryWrapperX<>();
         queryWrapperX.likeIfPresent(AttAssetCatDO::getName, reqVO.getName())
                 .likeRightIfPresent(AttAssetCatDO::getCode, reqVO.getCode())
+                .eqIfPresent(AttAssetCatDO::getValidFlag, reqVO.getValidFlag())
                 .orderByAsc(AttAssetCatDO::getSortOrder);
         return attAssetCatMapper.selectList(queryWrapperX);
     }

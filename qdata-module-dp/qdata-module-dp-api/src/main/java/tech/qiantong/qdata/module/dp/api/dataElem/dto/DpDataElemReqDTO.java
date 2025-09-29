@@ -51,4 +51,6 @@ public class DpDataElemReqDTO {
 
     /** 删除标志 */
     private Boolean delFlag;
+
+    private Long documentId;
 }

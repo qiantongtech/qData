@@ -5,6 +5,7 @@ import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.module.att.controller.admin.rule.vo.AttCleanRulePageReqVO;
 import tech.qiantong.qdata.module.att.controller.admin.rule.vo.AttCleanRuleRespVO;
 import tech.qiantong.qdata.module.att.controller.admin.rule.vo.AttCleanRuleSaveReqVO;
+import tech.qiantong.qdata.module.att.dal.dataobject.cat.AttCleanCatDO;
 import tech.qiantong.qdata.module.att.dal.dataobject.rule.AttCleanRuleDO;
 
 import java.util.Collection;
@@ -91,5 +92,8 @@ public interface IAttCleanRuleService extends IService<AttCleanRuleDO> {
 
     List<AttCleanRuleRespVO> getCleaningRuleTree(Long[] dataElemId);
 
-    Long getCount(AttCleanRulePageReqVO vo);
+    /**
+     * @param type {@link AttCleanCatDO#id}
+     */
+    Long getCount(String type);
 }

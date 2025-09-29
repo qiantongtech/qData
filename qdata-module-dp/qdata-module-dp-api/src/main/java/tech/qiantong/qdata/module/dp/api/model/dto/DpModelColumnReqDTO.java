@@ -41,10 +41,7 @@ public class DpModelColumnReqDTO {
     /** 是否主键 */
     private String pkFlag;
 
-    /**
-     * 是否必填 1必填 0非必填
-     *
-     */
+    /** 是否必填 */
     private String nullableFlag;
 
     /** 排序 */
@@ -72,11 +69,7 @@ public class DpModelColumnReqDTO {
             this.columnScale = (column.getDataScale() != null) ? Long.valueOf(column.getDataScale()) : null;
             this.defaultValue = column.getDataDefault();
             this.pkFlag = column.getColKey() ? "1" : "0";
-            if ("1".equals(this.pkFlag)) {
-                this.nullableFlag = "1";
-            } else {
-                this.nullableFlag = column.getNullable() ? "0" : "1";
-            }
+            this.nullableFlag = column.getNullable() ? "0" : "1";
             this.sortOrder = (column.getColPosition() != null) ? Long.valueOf(column.getColPosition()) : null;
         }
     }

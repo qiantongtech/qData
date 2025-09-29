@@ -88,7 +88,6 @@ import Base from '@/views/ds/api/edit/components/base.vue';
 import Parameter from '@/views/ds/api/edit/components/parameter.vue';
 import Test from '@/views/ds/api/edit/components/simulation.vue';
 import { getCurrentInstance, reactive, ref, toRefs, watch } from 'vue';
-import { useStore } from '../../../flyflow/stores/index.js';
 import testapi from '@/views/ds/api/edit/components/testApi.vue';
 const components = { Base, Parameter, Test };
 const { proxy } = getCurrentInstance();
@@ -112,7 +111,6 @@ const activeName = ref('1');
 
 const showSearch = ref(true);
 const route = useRoute();
-const store = useStore();
 let id = route.query.id || null;
 const loading = ref(false);
 

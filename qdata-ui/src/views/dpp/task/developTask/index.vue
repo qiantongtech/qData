@@ -381,7 +381,7 @@ const handleConfirm = (form) => {
     if (res.code == 200) {
       proxy.$modal.msgSuccess("操作成功");
       getList();
-      routeTo('/dpp/tasker/ddv/lntegratiosdeev', {
+      routeTo('/dpp/task/developTask', {
         ...res.data,
       })
     }

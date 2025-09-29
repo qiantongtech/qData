@@ -489,7 +489,7 @@ function handleMaterialization() {
 }
 /** 详情按钮操作 */
 function handleDetail(row) {
-    routeTo("/dp/model/dpModelDetail", row);
+    routeTo("/dp/model/detail", row);
 }
 
 /** 提交按钮 */

@@ -134,7 +134,7 @@ export function updateReleaseTask(data) {
 // 上线下线 調度
 export function updateReleaseSchedule(data) {
     return request({
-        url: '/dpp/etlTaskLog/updateReleaseSchedule',
+        url: '/dpp/etlTask/updateReleaseSchedule',
         method: 'post',
         data: data
     })

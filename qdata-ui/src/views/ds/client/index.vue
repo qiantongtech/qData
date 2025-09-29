@@ -40,31 +40,31 @@
       <div class="justify-between mb15">
         <el-row :gutter="15" class="btn-style">
           <el-col :span="1.5">
-            <el-button type="primary" plain @click="handleAdd" v-hasPermi="['att:client:client:add']"
+            <el-button type="primary" plain @click="handleAdd" v-hasPermi="['att:client:add']"
               @mousedown="(e) => e.preventDefault()">
               <i class="iconfont-mini icon-xinzeng mr5"></i>新增
             </el-button>
           </el-col>
           <!--         <el-col :span="1.5">
-           <el-button type="primary" plain :disabled="single" @click="handleUpdate" v-hasPermi="['att:client:client:edit']"
+           <el-button type="primary" plain :disabled="single" @click="handleUpdate" v-hasPermi="['att:client:edit']"
                       @mousedown="(e) => e.preventDefault()">
              <i class="iconfont-mini icon-xiugai&#45;&#45;copy mr5"></i>修改
            </el-button>
          </el-col>
          <el-col :span="1.5">
-           <el-button type="danger" plain :disabled="multiple" @click="handleDelete" v-hasPermi="['att:client:client:remove']"
+           <el-button type="danger" plain :disabled="multiple" @click="handleDelete" v-hasPermi="['att:client:remove']"
                       @mousedown="(e) => e.preventDefault()">
              <i class="iconfont-mini icon-shanchu-huise mr5"></i>删除
            </el-button>
          </el-col>
          <el-col :span="1.5">
-           <el-button type="info" plain  @click="handleImport" v-hasPermi="['att:client:client:export']"
+           <el-button type="info" plain  @click="handleImport" v-hasPermi="['att:client:export']"
                       @mousedown="(e) => e.preventDefault()">
              <i class="iconfont-mini icon-upload-cloud-line mr5"></i>导入
            </el-button>
          </el-col>
          <el-col :span="1.5">
-           <el-button type="warning" plain @click="handleExport" v-hasPermi="['att:client:client:export']"
+           <el-button type="warning" plain @click="handleExport" v-hasPermi="['att:client:export']"
                       @mousedown="(e) => e.preventDefault()">
              <i class="iconfont-mini icon-download-line mr5"></i>导出
            </el-button>

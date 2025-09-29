@@ -69,7 +69,6 @@ export const treeData = [
                 icon: new URL('@/assets/system/images/dpp/pxjl.svg', import.meta.url).href, // 动态获取路径
                 icons: '@/assets/system/images/dpp/SHELL.png'
             },
-
             {
                 label: '字段派生器',
                 key: 'transform-cleaning',
@@ -81,7 +80,6 @@ export const treeData = [
                 icon: new URL('@/assets/system/images/dpp/zdpf.svg', import.meta.url).href, // 动态获取路径
                 icons: '@/assets/system/images/dpp/SHELL.png'
             },
-
         ]
     },
     {
@@ -101,7 +99,6 @@ export const treeData = [
                 icon: new URL('@/assets/system/images/dpp/bsc.svg', import.meta.url).href, // 动态获取路径
                 icons: '@/assets/system/images/dpp/sc.png'
             },
-
         ]
     }
 ];

@@ -1218,21 +1218,34 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
 
     @Override
     public DppEtlTaskUpdateQueryRespVO getuUpdateQueryInfo(Long id) {
+        MPJLambdaWrapper<DppEtlTaskDO> lambdaWrapper = new MPJLambdaWrapper();
+        lambdaWrapper.selectAll(DppEtlTaskDO.class)
+                .select("t3.NICK_NAME AS personChargeName")
+                .leftJoin("SYSTEM_USER t3 on t.PERSON_CHARGE = t3.USER_ID AND t3.DEL_FLAG = '0'")
+                .eq(DppEtlTaskDO::getId, id);
 
-        DppEtlTaskDO dppEtlTaskDO = dppEtlTaskMapper.selectById(id);
+        DppEtlTaskDO dppEtlTaskDO = dppEtlTaskMapper.selectJoinOne(DppEtlTaskDO.class, lambdaWrapper);
         List<DppEtlTaskNodeRelRespVO> dppEtlTaskNodeRelRespVOList = this.getTaskNodeRelList(BeanUtils.toBean(dppEtlTaskDO, DppEtlTaskRespVO.class));
 
         DppEtlTaskUpdateQueryRespVO bean = new DppEtlTaskUpdateQueryRespVO(dppEtlTaskDO);
         bean.setTaskRelationJsonFromNodeRelList(dppEtlTaskNodeRelRespVOList);
         String type = bean.getType();
 
+        //获取调度信息
         DppEtlSchedulerPageReqVO dppEtlSchedulerPageReqVO = new DppEtlSchedulerPageReqVO();
         dppEtlSchedulerPageReqVO.setTaskCode(bean.getCode());
         dppEtlSchedulerPageReqVO.setTaskId(bean.getId());
         DppEtlSchedulerDO dppEtlSchedulerById = iDppEtlSchedulerService.getDppEtlSchedulerById(dppEtlSchedulerPageReqVO);
         dppEtlSchedulerById = dppEtlSchedulerById == null ? new DppEtlSchedulerDO() : dppEtlSchedulerById;
         bean.setCrontab(dppEtlSchedulerById.getCronExpression());
+        bean.setSchedulerState(dppEtlSchedulerById.getStatus());
 
+        //获取最后一次执行的实例
+        DppEtlTaskInstanceDO dppEtlTaskInstanceDO = dppEtlTaskInstanceService.getLastTaskInstanceByTaskCode(bean.getCode());
+        if (dppEtlTaskInstanceDO != null) {
+            bean.setLastExecuteTime(dppEtlTaskInstanceDO.getStartTime());
+            bean.setLastExecuteStatus(dppEtlTaskInstanceDO.getStatus());
+        }
         List<DppEtlNodeRespVO> etlNodeLogRespVOList = this.getNodeRespListByTaskNodeRelList(dppEtlTaskNodeRelRespVOList);
 
         bean.setTaskDefinitionList(removeDuplicateById(etlNodeLogRespVOList, type));

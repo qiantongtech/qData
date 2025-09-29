@@ -157,7 +157,8 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
             if (qualityTaskObjSaveReqVO.getId() != null) {
                 dppQualityTaskObjService.updateDppQualityTaskObj(qualityTaskObjSaveReqVO);
             } else {
-                dppQualityTaskObjService.createDppQualityTaskObj(qualityTaskObjSaveReqVO);
+                Long dppQualityTaskObj = dppQualityTaskObjService.createDppQualityTaskObj(qualityTaskObjSaveReqVO);
+                qualityTaskObjSaveReqVO.setId(dppQualityTaskObj);
             }
         }
         Map<String, DppQualityTaskObjSaveReqVO> collect = dppQualityTaskObjSaveReqVO.stream().collect(Collectors.toMap(s -> s.getDatasourceId() + s.getTableName(), Function.identity()));

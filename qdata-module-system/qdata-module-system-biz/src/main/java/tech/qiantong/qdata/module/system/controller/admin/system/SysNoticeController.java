@@ -1,5 +1,10 @@
 package tech.qiantong.qdata.module.system.controller.admin.system;
 
+import java.util.Date;
+import java.util.List;
+
+import cn.hutool.core.date.DateUtil;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -7,18 +12,24 @@ import org.springframework.web.bind.annotation.*;
 import tech.qiantong.qdata.common.annotation.Log;
 import tech.qiantong.qdata.common.core.controller.BaseController;
 import tech.qiantong.qdata.common.core.domain.AjaxResult;
+import tech.qiantong.qdata.common.core.page.PageDomain;
 import tech.qiantong.qdata.common.core.page.TableDataInfo;
+import tech.qiantong.qdata.common.core.page.TableSupport;
 import tech.qiantong.qdata.common.enums.BusinessType;
+import tech.qiantong.qdata.common.utils.object.BeanUtils;
+import tech.qiantong.qdata.common.utils.sql.SqlUtil;
 import tech.qiantong.qdata.module.system.controller.admin.system.message.vo.MessagePageReqVO;
 import tech.qiantong.qdata.module.system.controller.admin.system.message.websocket.WebSocketMessageServer;
 import tech.qiantong.qdata.module.system.dal.dataobject.message.MessageDO;
+import tech.qiantong.qdata.module.system.dal.mapper.message.MessageTemplateMapper;
 import tech.qiantong.qdata.module.system.domain.SysNotice;
 import tech.qiantong.qdata.module.system.service.ISysNoticeService;
 import tech.qiantong.qdata.module.system.service.message.IMessageService;
+import tech.qiantong.qdata.module.system.service.message.impl.MessageServiceImpl;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.List;
+
+import static tech.qiantong.qdata.common.utils.SecurityUtils.getLoginUser;
 
 /**
  * 公告 信息操作处理
@@ -39,7 +50,6 @@ public class SysNoticeController extends BaseController
     /**
      * 获取通知公告列表
      */
-//    @PreAuthorize("@ss.hasPermi('system:notice:list')")
     @GetMapping("/list")
     public TableDataInfo list(SysNotice notice)
     {
@@ -48,16 +58,53 @@ public class SysNoticeController extends BaseController
         return getDataTable(list);
     }
 
+
+    /**
+     * 获取通知公告列表(排序后)
+     */
+//    @PreAuthorize("@ss.hasPermi('system:notice:list')")
+    @GetMapping("/sortList")
+    public TableDataInfo sortList(SysNotice notice)
+    {
+        PageDomain var0 = TableSupport.buildPageRequest();
+        Integer var1 = var0.getPageNum();
+        Integer var2 = var0.getPageSize();
+        String var3 = SqlUtil.escapeOrderBySql("top_flag desc, create_time desc");
+        Boolean var4 = var0.getReasonable();
+        PageHelper.startPage(var1, var2, var3).setReasonable(var4);
+        List<SysNotice> list = noticeService.selectNoticeList(notice);
+        return getDataTable(list);
+    }
+
+
+    /**
+     * 获取弹框公告
+     * @return
+     */
+    @GetMapping("/alertNotice")
+    public AjaxResult alertNotice()
+    {
+        SysNotice noticeQo = new SysNotice();
+        noticeQo.setAlertFlag(1);
+        noticeQo.setStatus("1");
+        noticeQo.getParams().put("efftectTime", DateUtil.now());
+        List<SysNotice> list = noticeService.selectNoticeList(noticeQo);
+        if (list.size() > 0){
+            return success(list.get(0));
+        }
+        return success();
+    }
+
+
     /**
      * 根据通知公告编号获取详细信息
      */
     @PreAuthorize("@ss.hasPermi('system:notice:query')")
-    @GetMapping(value = "/{noticeId}")
-    public AjaxResult getInfo(@PathVariable Long noticeId)
+    @GetMapping(value = "/one")
+    public AjaxResult getInfo(@RequestParam Long noticeId)
     {
         return success(noticeService.selectNoticeById(noticeId));
     }
-
     /**
      * 新增通知公告
      */

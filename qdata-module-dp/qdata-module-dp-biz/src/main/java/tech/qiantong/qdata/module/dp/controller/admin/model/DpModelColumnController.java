@@ -13,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import tech.qiantong.qdata.common.core.domain.AjaxResult;
+import tech.qiantong.qdata.common.core.domain.R;
 import tech.qiantong.qdata.common.core.page.PageParam;
 import tech.qiantong.qdata.common.annotation.Log;
 import tech.qiantong.qdata.common.core.controller.BaseController;
@@ -43,7 +44,7 @@ public class DpModelColumnController extends BaseController {
     private IDpModelColumnService dpModelColumnService;
 
     @Operation(summary = "查询逻辑模型属性信息列表")
-    @PreAuthorize("@ss.hasPermi('dp:modelColumn:list')")
+//    @PreAuthorize("@ss.hasPermi('dp:modelColumn:list')")
     @GetMapping("/list")
     public CommonResult<PageResult<DpModelColumnRespVO>> list(DpModelColumnPageReqVO dpModelColumn) {
         PageResult<DpModelColumnDO> page = dpModelColumnService.getDpModelColumnPage(dpModelColumn);
@@ -51,7 +52,7 @@ public class DpModelColumnController extends BaseController {
     }
 
     @Operation(summary = "查询逻辑模型属性信息列表")
-    @PreAuthorize("@ss.hasPermi('dp:modelColumn:list')")
+//    @PreAuthorize("@ss.hasPermi('dp:modelColumn:list')")
     @GetMapping("/getDpModelColumnList")
     public AjaxResult getDpModelColumnList(DpModelColumnSaveReqVO dpModelColumn) {
         List<DpModelColumnDO> dpModelColumnList = dpModelColumnService.getDpModelColumnList(dpModelColumn);
@@ -59,7 +60,7 @@ public class DpModelColumnController extends BaseController {
     }
 
     @Operation(summary = "导出逻辑模型属性信息列表")
-    @PreAuthorize("@ss.hasPermi('dp:modelColumn:export')")
+//    @PreAuthorize("@ss.hasPermi('dp:modelColumn:export')")
     @Log(title = "逻辑模型属性信息", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DpModelColumnPageReqVO exportReqVO) {
@@ -70,7 +71,7 @@ public class DpModelColumnController extends BaseController {
     }
 
     @Operation(summary = "导入逻辑模型属性信息列表")
-    @PreAuthorize("@ss.hasPermi('dp:modelColumn:import')")
+//    @PreAuthorize("@ss.hasPermi('dp:modelColumn:import')")
     @Log(title = "逻辑模型属性信息", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
@@ -82,7 +83,7 @@ public class DpModelColumnController extends BaseController {
     }
 
     @Operation(summary = "获取逻辑模型属性信息详细信息")
-    @PreAuthorize("@ss.hasPermi('dp:modelColumn:query')")
+//    @PreAuthorize("@ss.hasPermi('dp:modelColumn:query')")
     @GetMapping(value = "/{id}")
     public CommonResult<DpModelColumnRespVO> getInfo(@PathVariable("id") Long id) {
         DpModelColumnDO dpModelColumnDO = dpModelColumnService.getDpModelColumnById(id);
@@ -90,7 +91,7 @@ public class DpModelColumnController extends BaseController {
     }
 
     @Operation(summary = "新增逻辑模型属性信息")
-    @PreAuthorize("@ss.hasPermi('dp:modelColumn:add')")
+//    @PreAuthorize("@ss.hasPermi('dp:modelColumn:add')")
     @Log(title = "逻辑模型属性信息", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DpModelColumnSaveReqVO dpModelColumn) {
@@ -101,7 +102,7 @@ public class DpModelColumnController extends BaseController {
     }
 
     @Operation(summary = "修改逻辑模型属性信息")
-    @PreAuthorize("@ss.hasPermi('dp:modelColumn:edit')")
+//    @PreAuthorize("@ss.hasPermi('dp:modelColumn:edit')")
     @Log(title = "逻辑模型属性信息", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DpModelColumnSaveReqVO dpModelColumn) {
@@ -112,7 +113,7 @@ public class DpModelColumnController extends BaseController {
     }
 
     @Operation(summary = "批量新增逻辑模型属性信息")
-    @PreAuthorize("@ss.hasPermi('dp:modelColumn:add')")
+//    @PreAuthorize("@ss.hasPermi('dp:modelColumn:add')")
     @Log(title = "逻辑模型属性信息", businessType = BusinessType.INSERT)
     @PostMapping(value = "/addList")
     public CommonResult<Boolean> addList(@Valid @RequestBody List<DpModelColumnSaveReqVO> dpModelColumnList) {
@@ -125,7 +126,7 @@ public class DpModelColumnController extends BaseController {
     }
 
     @Operation(summary = "批量修改逻辑模型属性信息")
-    @PreAuthorize("@ss.hasPermi('dp:modelColumn:edit')")
+//    @PreAuthorize("@ss.hasPermi('dp:modelColumn:edit')")
     @Log(title = "逻辑模型属性信息", businessType = BusinessType.UPDATE)
     @PutMapping(value = "/editList")
     public CommonResult<Boolean> editList(@Valid @RequestBody List<DpModelColumnSaveReqVO> dpModelColumnList) {
@@ -138,7 +139,7 @@ public class DpModelColumnController extends BaseController {
     }
 
     @Operation(summary = "删除逻辑模型属性信息")
-    @PreAuthorize("@ss.hasPermi('dp:modelColumn:remove')")
+//    @PreAuthorize("@ss.hasPermi('dp:modelColumn:remove')")
     @Log(title = "逻辑模型属性信息", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {

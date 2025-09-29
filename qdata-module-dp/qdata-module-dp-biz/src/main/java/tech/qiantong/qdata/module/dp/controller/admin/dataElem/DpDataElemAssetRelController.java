@@ -43,7 +43,7 @@ public class DpDataElemAssetRelController extends BaseController {
     private IDpDataElemAssetRelService dpDataElemAssetRelService;
 
     @Operation(summary = "查询数据元数据资产关联信息列表")
-    @PreAuthorize("@ss.hasPermi('dp:dataElemAssetRel:list')")
+//    @PreAuthorize("@ss.hasPermi('dp:dataElemAssetRel:list')")
     @GetMapping("/list")
     public CommonResult<PageResult<DpDataElemAssetRelRespVO>> list(DpDataElemAssetRelPageReqVO dpDataElemAssetRel) {
         PageResult<DpDataElemAssetRelDO> page = dpDataElemAssetRelService.getDpDataElemAssetRelPage(dpDataElemAssetRel);
@@ -51,7 +51,7 @@ public class DpDataElemAssetRelController extends BaseController {
     }
 
     @Operation(summary = "导出数据元数据资产关联信息列表")
-    @PreAuthorize("@ss.hasPermi('dp:dataElemAssetRel:export')")
+//    @PreAuthorize("@ss.hasPermi('dp:dataElemAssetRel:export')")
     @Log(title = "数据元数据资产关联信息", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DpDataElemAssetRelPageReqVO exportReqVO) {
@@ -62,7 +62,7 @@ public class DpDataElemAssetRelController extends BaseController {
     }
 
     @Operation(summary = "导入数据元数据资产关联信息列表")
-    @PreAuthorize("@ss.hasPermi('dp:dataElemAssetRel:import')")
+//    @PreAuthorize("@ss.hasPermi('dp:dataElemAssetRel:import')")
     @Log(title = "数据元数据资产关联信息", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
@@ -74,7 +74,7 @@ public class DpDataElemAssetRelController extends BaseController {
     }
 
     @Operation(summary = "获取数据元数据资产关联信息详细信息")
-    @PreAuthorize("@ss.hasPermi('dp:dataElemAssetRel:query')")
+//    @PreAuthorize("@ss.hasPermi('dp:dataElemAssetRel:query')")
     @GetMapping(value = "/{id}")
     public CommonResult<DpDataElemAssetRelRespVO> getInfo(@PathVariable("id") Long id) {
         DpDataElemAssetRelDO dpDataElemAssetRelDO = dpDataElemAssetRelService.getDpDataElemAssetRelById(id);
@@ -82,7 +82,7 @@ public class DpDataElemAssetRelController extends BaseController {
     }
 
     @Operation(summary = "新增数据元数据资产关联信息")
-    @PreAuthorize("@ss.hasPermi('dp:dataElemAssetRel:add')")
+//    @PreAuthorize("@ss.hasPermi('dp:dataElemAssetRel:add')")
     @Log(title = "数据元数据资产关联信息", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DpDataElemAssetRelSaveReqVO dpDataElemAssetRel) {
@@ -93,7 +93,7 @@ public class DpDataElemAssetRelController extends BaseController {
     }
 
     @Operation(summary = "修改数据元数据资产关联信息")
-    @PreAuthorize("@ss.hasPermi('dp:dataElemAssetRel:edit')")
+//    @PreAuthorize("@ss.hasPermi('dp:dataElemAssetRel:edit')")
     @Log(title = "数据元数据资产关联信息", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DpDataElemAssetRelSaveReqVO dpDataElemAssetRel) {
@@ -104,7 +104,7 @@ public class DpDataElemAssetRelController extends BaseController {
     }
 
     @Operation(summary = "删除数据元数据资产关联信息")
-    @PreAuthorize("@ss.hasPermi('dp:dataElemAssetRel:remove')")
+//    @PreAuthorize("@ss.hasPermi('dp:dataElemAssetRel:remove')")
     @Log(title = "数据元数据资产关联信息", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {

@@ -1,6 +1,12 @@
 package tech.qiantong.qdata.module.att.controller.admin.client;
 
+import javax.annotation.Resource;
+import javax.validation.Valid;
+import java.util.Arrays;
+
 import cn.hutool.core.date.DateUtil;
+
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,10 +23,6 @@ import tech.qiantong.qdata.module.att.controller.admin.client.vo.AttClientApiRel
 import tech.qiantong.qdata.module.att.controller.admin.client.vo.AttClientApiRelSaveReqVO;
 import tech.qiantong.qdata.module.att.dal.dataobject.client.AttClientApiRelDO;
 import tech.qiantong.qdata.module.att.service.client.IAttClientApiRelService;
-
-import javax.annotation.Resource;
-import javax.validation.Valid;
-import java.util.Arrays;
 
 /**
  * 应用API服务关联Controller
@@ -44,7 +46,7 @@ public class AttClientApiRelController extends BaseController {
     }
 
     @Operation(summary = "新增应用API服务关联")
-    @PreAuthorize("@ss.hasPermi('att:clientApiRel:add')")
+//    @PreAuthorize("@ss.hasPermi('att:clientApiRel:add')")
     @Log(title = "应用API服务关联", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AttClientApiRelSaveReqVO attClientApiRel) {
@@ -55,7 +57,7 @@ public class AttClientApiRelController extends BaseController {
     }
 
     @Operation(summary = "修改应用API服务关联")
-    @PreAuthorize("@ss.hasPermi('att:clientApiRel:edit')")
+//    @PreAuthorize("@ss.hasPermi('att:clientApiRel:edit')")
     @Log(title = "应用API服务关联", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AttClientApiRelSaveReqVO attClientApiRel) {
@@ -66,7 +68,7 @@ public class AttClientApiRelController extends BaseController {
     }
 
     @Operation(summary = "删除应用API服务关联")
-    @PreAuthorize("@ss.hasPermi('att:clientApiRel:remove')")
+//    @PreAuthorize("@ss.hasPermi('att:clientApiRel:remove')")
     @Log(title = "应用API服务关联", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {

@@ -256,6 +256,7 @@ public class TaskConverter {
         createReqVO.setProjectCode(String.valueOf(data.getProjectCode())); // 项目编码
         createReqVO.setDescription(dppEtlNewNodeSaveReqVO.getDescription()); // 描述
         createReqVO.setLocations(data.getLocations()); // 节点坐标信息
+        createReqVO.setLocations(data.getLocations()); // 节点坐标信息
         createReqVO.setDsId(data.getId()); // DolphinScheduler的ID
 
         String releaseState = dppEtlNewNodeSaveReqVO.getReleaseState();
@@ -941,6 +942,36 @@ public class TaskConverter {
         }
         return resultList;
     }
+
+    public static List<DppEtlNodeSaveReqVO> convertToDppEtlNodeSaveReqVOList(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO, Integer nodeVersion) {
+        List<DppEtlNodeSaveReqVO> resultList = new ArrayList<>();
+        //取出入参数的信息
+        List<DppEtlNodeSaveReqVO> list = JSON.parseArray(dppEtlNewNodeSaveReqVO.getTaskDefinitionList(), DppEtlNodeSaveReqVO.class);
+
+        // 遍历 ProcessDefinition 中的 taskDefinitionList
+        for (DppEtlNodeSaveReqVO createReqVO : list) {
+            // 1. 任务相关信息
+            createReqVO.setType(createReqVO.getTaskType());//节点类型
+            createReqVO.setTaskType(dppEtlNewNodeSaveReqVO.getType());//任务类型
+            createReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // 项目ID
+            createReqVO.setProjectCode(String.valueOf(dppEtlNewNodeSaveReqVO.getProjectCode())); // 项目编码
+            // 填充创建者和更新时间信息
+            createReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // 假设项目ID为创建者ID（根据需求调整）
+            createReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // 假设任务名称为创建者（根据需求调整）
+            createReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // 设置当前时间为创建时间
+            createReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // 假设项目ID为更新者ID（根据需求调整）
+            createReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // 假设任务名称为更新者（根据需求调整）
+            createReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // 设置当前时间为更新时间
+            createReqVO.setParameters(JSON.toJSONString(createReqVO.getTaskParams()));
+            // 添加到结果列表
+            resultList.add(createReqVO);
+        }
+        if (nodeVersion != null) {
+            list.forEach(i -> i.setVersion(nodeVersion));
+        }
+        return resultList;
+    }
+
 
     public static List<DppEtlNodeLogSaveReqVO> convertToDppEtlNodeLogSaveReqVOList(List<DppEtlNodeSaveReqVO> dppEtlNodeSaveReqVOList) {
         List<DppEtlNodeLogSaveReqVO> resultList = new ArrayList<>();

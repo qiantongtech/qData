@@ -9,11 +9,7 @@
         <div v-if="item.key == 'status'">
           <dict-tag :options="da_discovery_task_status" :value="daDiscoveryTaskDetail.status" />
         </div>
-        <div v-else-if="item.key == 'countSubmitted'">
-          <ProgressBar :completed="daDiscoveryTaskDetail.countSubmitted"
-            :inProgress="daDiscoveryTaskDetail.countPending" :notStarted="daDiscoveryTaskDetail.countIgnoreFlag"
-            :total="21" />
-        </div>
+
         <div v-else-if="item.key == 'createTime'">
           {{
             parseTime(
@@ -39,7 +35,6 @@
   </div>
 </template>
 <script setup name="BasicInfo">
-import ProgressBar from "@/views/da/discovery/components/progressBar.vue";
 import moment from "moment";
 import { cronToZh } from "@/utils/cronUtils";
 const { proxy } = getCurrentInstance();

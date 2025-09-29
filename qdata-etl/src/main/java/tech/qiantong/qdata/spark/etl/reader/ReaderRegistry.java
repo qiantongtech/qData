@@ -21,7 +21,6 @@ public class ReaderRegistry {
         this.readerMap.put(TaskComponentTypeEnum.DB_READER.getCode(), new DBReader());
         this.readerMap.put(TaskComponentTypeEnum.EXCEL_READER.getCode(), new ExcelReader());
         this.readerMap.put(TaskComponentTypeEnum.CSV_READER.getCode(), new CsvReader());
-        this.readerMap.put(TaskComponentTypeEnum.KAFKA_READER.getCode(), new KafkaReader());
     }
 
     public Reader getReader(String code) {

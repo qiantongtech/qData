@@ -999,7 +999,7 @@ function routeTo(link, row) {
 
 /** 启用禁用开关 */
 function handleStatusChange(row) {
-  const text = row.status === "2" ? "发布" : "撤销发布";
+  const text = row.status === "2" ? "撤销发布" : "发布";
   const status = row.status === "2" ? "1" : "2";
   proxy.$modal
     .confirm("确认要" + text + '"' + row.name + '"资产吗？')

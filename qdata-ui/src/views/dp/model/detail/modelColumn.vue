@@ -594,7 +594,7 @@ function handleDelete(row) {
 /** 导出按钮操作 */
 function handleExport() {
     proxy.download(
-        'dp/dpModelColumn/export',
+        'dp/modelColumn/export',
         {
             ...queryParams.value
         },

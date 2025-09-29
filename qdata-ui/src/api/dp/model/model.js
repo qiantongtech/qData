@@ -44,7 +44,7 @@ export function updateDpModel(data) {
 // 修改逻辑模型
 // export function updateDpModel(data) {
 //   return request({
-//     url: '/dp/modelColumn/editList',
+//     url: '/dp/dpModelColumn/editList',
 //     method: 'put',
 //     data: data
 //   })
@@ -92,7 +92,7 @@ export function updateDpModelColumn(data) {
 // 物化
 export function createMaterializedTable(data) {
     return request({
-        url: '/dp/model/createMaterializedTable',
+        url: '/dp/modelMaterialized/createMaterializedTable',
         method: 'post',
         data: data
     });
@@ -132,7 +132,7 @@ export function columnsList(data) {
 // 查询逻辑模型属性信息列表
 export function listDpModelColumn(query) {
     return request({
-        url: '/dp/model/list',
+        url: '/dp/modelColumn/list',
         method: 'get',
         params: query
     })
@@ -141,7 +141,7 @@ export function listDpModelColumn(query) {
 // 查询逻辑模型属性信息详细
 export function getDpModelColumn(id) {
     return request({
-        url: '/dp/model/' + id,
+        url: '/dp/modelColumn/' + id,
         method: 'get'
     })
 }
@@ -149,7 +149,7 @@ export function getDpModelColumn(id) {
 // 新增逻辑模型属性信息
 export function addDpModelColumn(data) {
     return request({
-        url: '/dp/model',
+        url: '/dp/modelColumn',
         method: 'post',
         data: data
     })
@@ -158,7 +158,7 @@ export function addDpModelColumn(data) {
 // 修改逻辑模型属性信息
 export function updateDpModelColumns(data) {
     return request({
-        url: '/dp/model',
+        url: '/dp/modelColumn',
         method: 'put',
         data: data
     })
@@ -167,14 +167,14 @@ export function updateDpModelColumns(data) {
 // 删除逻辑模型属性信息
 export function delDpModelColumns(id) {
     return request({
-        url: '/dp/model/' + id,
+        url: '/dp/modelColumn/' + id,
         method: 'delete'
     })
 }
 // 查询物化模型记录列表
 export function listDpModelMaterialized(query) {
     return request({
-        url: '/dp/model/list',
+        url: '/dp/modelMaterialized/list',
         method: 'get',
         params: query
     })
@@ -183,7 +183,7 @@ export function listDpModelMaterialized(query) {
 // 查询物化模型记录详细
 export function getDpModelMaterialized(id) {
     return request({
-        url: '/dp/model/' + id,
+        url: '/dp/modelMaterialized/' + id,
         method: 'get'
     })
 }
@@ -191,7 +191,7 @@ export function getDpModelMaterialized(id) {
 // 新增物化模型记录
 export function addDpModelMaterialized(data) {
     return request({
-        url: '/dp/model',
+        url: '/dp/modelMaterialized',
         method: 'post',
         data: data
     })
@@ -200,7 +200,7 @@ export function addDpModelMaterialized(data) {
 // 修改物化模型记录
 export function updateDpModelMaterialized(data) {
     return request({
-        url: '/dp/model',
+        url: '/dp/modelMaterialized',
         method: 'put',
         data: data
     })
@@ -209,7 +209,7 @@ export function updateDpModelMaterialized(data) {
 // 删除物化模型记录
 export function delDpModelMaterialized(id) {
     return request({
-        url: '/dp/model/' + id,
+        url: '/dp/modelMaterialized/' + id,
         method: 'delete'
     })
 }

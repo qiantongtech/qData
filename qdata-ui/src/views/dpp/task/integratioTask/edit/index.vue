@@ -89,7 +89,7 @@
             </div>
         </div>
         <component :is="currentFormComponent" :visible="drawer" :key="currentNode?.id || Date.now()" :title="title"
-            @update="closeDialog" @confirm="handleFormSubmit" :taskExecuteType="taskExecuteType"
+            @update="closeDialog" @confirm="handleFormSubmit"
             :currentNode="currentNode" :info="route.query.info" :graph="graph" />
         <add :visible="taskConfigDialogVisible" :title="!route.query.info ? '修改任务配置' : '任务详情'"
             @update:visible="taskConfigDialogVisible = $event" @save="handletaskConfig" :data="nodeData"
@@ -185,15 +185,6 @@ const getTaskType = (json) => {
         return 'SPARK'
     }
     let type = json && JSON.parse(json).taskType;
-    return type;
-};
-
-// 获取执行类型 STREAM：流模式  BATCH：批模式
-const getTaskExecuteType = (json) => {
-    if (!json) {
-        return 'BATCH'
-    }
-    let type = json && JSON.parse(json).taskExecuteType;
     return type;
 };
 
@@ -308,7 +299,6 @@ const undoDisabled = ref(null);
 // 导出的数据
 const exportData2 = ref("");
 let loading = ref(false);
-const taskExecuteType = ref("BATCH");
 function getList() {
     loading.value = true;
     etlTask(route.query.id).then((response) => {
@@ -316,7 +306,6 @@ function getList() {
         nodeData.value.taskConfig = { ...nodeData.value.taskConfig, draftJson: nodeData.value.draftJson };
         renderGraph(graph, nodeData.value);
         treeData.value = [...getTreeData(getTaskType(nodeData.value.draftJson))];
-        taskExecuteType.value = getTaskExecuteType(nodeData.value.draftJson)
         loading.value = false;
     });
 }

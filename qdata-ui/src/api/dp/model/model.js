@@ -28,7 +28,7 @@ export function addDpModel(data) {
 // 新增逻辑模型
 export function dpModelColumn(data) {
     return request({
-        url: '/dp/dpModelColumn/addList',
+        url: '/dp/modelColumn/addList',
         method: 'post',
         data: data
     });
@@ -44,7 +44,7 @@ export function updateDpModel(data) {
 // 修改逻辑模型
 // export function updateDpModel(data) {
 //   return request({
-//     url: '/dp/dpModelColumn/editList',
+//     url: '/dp/modelColumn/editList',
 //     method: 'put',
 //     data: data
 //   })
@@ -76,7 +76,7 @@ export function listAttModelCat(query) {
 // 获取 表信息
 export function getDpModelColumnList(query) {
     return request({
-        url: '/dp/dpModelColumn/getDpModelColumnList',
+        url: '/dp/modelColumn/getDpModelColumnList',
         method: 'get',
         params: query
     });
@@ -84,7 +84,7 @@ export function getDpModelColumnList(query) {
 // 修改逻辑模型
 export function updateDpModelColumn(data) {
     return request({
-        url: '/dp/dpModelColumn/editList',
+        url: '/dp/modelColumn/editList',
         method: 'put',
         data: data
     });

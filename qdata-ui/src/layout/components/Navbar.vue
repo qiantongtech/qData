@@ -80,7 +80,7 @@
                                 <!--                <message-list :msg-category="'first'"></message-list>-->
                                 <div class="message-list">
                                     <div class="msg-item" v-for="(msg, index) in noticeList" :key="index"
-                                        v-show="msg.entityType == 1">
+                                        v-show="msg.entityType == 1" @click="handleMessage(msg)">
                                         <img class="icon" src="@/assets/system/images/layout/msg/icon1.png" alt="" />
                                         <div class="content">
                                             <div class="title">{{ msg.title }}</div>
@@ -93,7 +93,7 @@
                                 <!--                <message-list :msg-category="'second'"></message-list>-->
                                 <div class="message-list">
                                     <div class="msg-item" v-for="(msg, index) in noticeList" :key="index"
-                                        v-show="msg.entityType == 2">
+                                        v-show="msg.entityType == 2" @click="handleMessage(msg)">
                                         <img class="icon" src="@/assets/system/images/layout/msg/icon1.png" alt="" />
                                         <div class="content">
                                             <div class="title">{{ msg.title }}</div>
@@ -196,6 +196,10 @@ const permissionStore = usePermissionStore();
 // 所有的路由信息
 const routers = computed(() => permissionStore.topbarRouters);
 //-----------------------以下报工内容-------------------------
+const handleMessage = (msg) => {
+    console.log('接收到的消息:', msg);
+    router.push({ path: "/system/notice/detail", query: { id: msg.noticeId } });
+}
 const data = reactive({
     form: {
         reportExperience: null

@@ -62,4 +62,13 @@ public interface IDsEtlTaskService {
      */
     DsStatusRespDTO startTask(DsStartTaskReqDTO dsStartTaskReqDTO, String projectCode);
 
+
+    /**
+     *
+     * @param code
+     * @param projectCode
+     * @return
+     */
+    DsTaskSaveRespDTO batchCopy(String code, String projectCode);
+
 }

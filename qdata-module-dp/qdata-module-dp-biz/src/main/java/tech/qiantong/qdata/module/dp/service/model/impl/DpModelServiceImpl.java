@@ -1,18 +1,25 @@
 package tech.qiantong.qdata.module.dp.service.model.impl;
 
+import java.util.*;
+import java.util.stream.Collectors;
+
 import cn.hutool.core.bean.BeanUtil;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import lombok.extern.slf4j.Slf4j;
+
+import javax.annotation.Resource;
+
 import org.apache.commons.collections4.CollectionUtils;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import tech.qiantong.qdata.common.core.page.PageResult;
+import tech.qiantong.qdata.common.database.core.DbTable;
 import tech.qiantong.qdata.common.exception.ServiceException;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tech.qiantong.qdata.module.da.api.datasource.dto.DaDatasourceRespDTO;
 import tech.qiantong.qdata.module.da.api.service.asset.IDaDatasourceApiService;
 import tech.qiantong.qdata.module.dp.api.dataElem.dto.DpDataElemAssetRelReqDTO;
@@ -21,23 +28,21 @@ import tech.qiantong.qdata.module.dp.api.dataElem.dto.DpDataElemRespDTO;
 import tech.qiantong.qdata.module.dp.api.model.dto.DpModelColumnRespDTO;
 import tech.qiantong.qdata.module.dp.api.model.dto.DpModelRespDTO;
 import tech.qiantong.qdata.module.dp.api.service.model.IDpModelApiService;
-import tech.qiantong.qdata.module.dp.controller.admin.model.vo.DpModelColumnSaveReqVO;
-import tech.qiantong.qdata.module.dp.controller.admin.model.vo.DpModelPageReqVO;
-import tech.qiantong.qdata.module.dp.controller.admin.model.vo.DpModelRespVO;
-import tech.qiantong.qdata.module.dp.controller.admin.model.vo.DpModelSaveReqVO;
+import tech.qiantong.qdata.module.dp.controller.admin.model.vo.*;
+import tech.qiantong.qdata.module.dp.convert.model.DpModelColumnConvert;
+import tech.qiantong.qdata.module.dp.convert.model.DpModelConvert;
+import tech.qiantong.qdata.module.dp.convert.model.DpModelMaterializedConvert;
 import tech.qiantong.qdata.module.dp.dal.dataobject.dataElem.DpDataElemAssetRelDO;
 import tech.qiantong.qdata.module.dp.dal.dataobject.dataElem.DpDataElemDO;
+import tech.qiantong.qdata.module.dp.dal.dataobject.document.DpDocumentDO;
 import tech.qiantong.qdata.module.dp.dal.dataobject.model.DpModelColumnDO;
 import tech.qiantong.qdata.module.dp.dal.dataobject.model.DpModelDO;
 import tech.qiantong.qdata.module.dp.dal.mapper.model.DpModelMapper;
 import tech.qiantong.qdata.module.dp.service.dataElem.IDpDataElemAssetRelService;
 import tech.qiantong.qdata.module.dp.service.dataElem.IDpDataElemService;
+import tech.qiantong.qdata.module.dp.service.document.IDpDocumentService;
 import tech.qiantong.qdata.module.dp.service.model.IDpModelColumnService;
 import tech.qiantong.qdata.module.dp.service.model.IDpModelService;
-
-import javax.annotation.Resource;
-import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * 逻辑模型Service业务层处理
@@ -61,11 +66,15 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
     @Resource
     private IDaDatasourceApiService daDatasourceApiService;
 
+    @Resource
+    private IDpDocumentService dpDocumentService;
+
 
     /**
      * 根据资产id和代码表id查询数据元信息
+     *
      * @param assetId 资产id
-     * @param codeId 代码表id
+     * @param codeId  代码表id
      * @return
      */
     @Override
@@ -82,7 +91,7 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
         }
         ids.addAll(codeId);
         List<DpDataElemDO> dpDataElemDOS = new ArrayList<>();
-        if(StringUtils.isNotEmpty(ids)){
+        if (StringUtils.isNotEmpty(ids)) {
             dpDataElemDOS = iDpDataElemService.lambdaQuery()
                     .in(DpDataElemDO::getId, ids)
                     .list();
@@ -116,6 +125,7 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
 
     /**
      * 根据字段id获取数据元id集合
+     *
      * @param columnId
      * @return
      */
@@ -137,6 +147,15 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
     }
 
     @Override
+    public List<DpDataElemAssetRelRespDTO> getDpDataElemListByColumnIdInApi(Collection<Long> columnIds) {
+        List<DpDataElemAssetRelDO> list = iDpDataElemAssetRelService.lambdaQuery()
+                .in(DpDataElemAssetRelDO::getColumnId, columnIds)
+                .eq(DpDataElemAssetRelDO::getDelFlag, "0")
+                .list();
+        return BeanUtils.toBean(list, DpDataElemAssetRelRespDTO.class);
+    }
+
+    @Override
     public Set<Long> getDpDataElemListByAssetIdAndColumnId(Long assetId, Long columnId) {
         Set<Long> result = new HashSet<>();
         List<DpDataElemAssetRelDO> list = iDpDataElemAssetRelService.lambdaQuery()
@@ -153,9 +172,9 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
     }
 
 
-
     /**
      * 更新数据元和资产关系数据
+     *
      * @param dpDataElemAssetRel
      * @return
      */
@@ -307,7 +326,10 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
                 .leftJoin("ATT_MODEL_CAT t2 on t.CAT_CODE = t2.CODE AND t2.DEL_FLAG = '0'")
                 .eq(DpModelDO::getId, id);
         DpModelDO dpModelDO = dpModelMapper.selectJoinOne(DpModelDO.class, mpjLambdaWrapper);
-        if (dpModelDO != null && "2".equals(dpModelDO.getCreateType())){
+        if (dpModelDO == null) {
+            return null;
+        }
+        if ("2".equals(dpModelDO.getCreateType())) {
             DaDatasourceRespDTO datasource = daDatasourceApiService.getDatasourceById(dpModelDO.getDatasourceId());
             dpModelDO.setPort(datasource.getPort());
             dpModelDO.setIp(datasource.getIp());
@@ -315,11 +337,19 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
             dpModelDO.setDatasourceType(datasource.getDatasourceType());
             dpModelDO.setDatasourceName(datasource.getDatasourceName());
         }
+        if(dpModelDO.getDocumentId() != null){
+            DpDocumentDO dpDocumentById = dpDocumentService.getDpDocumentById(dpModelDO.getDocumentId());
+            dpDocumentById = dpDocumentById == null ? new DpDocumentDO():dpDocumentById;
+            dpModelDO.setDocumentCode(dpDocumentById.getCode());
+            dpModelDO.setDocumentName(dpDocumentById.getName());
+            dpModelDO.setDocumentType(dpDocumentById.getType());
+        }
         return dpModelDO;
     }
 
     /**
      * 根据逻辑模型ID获取逻辑模型信息
+     *
      * @param id
      * @return
      */
@@ -431,16 +461,5 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
         return this.update(Wrappers.lambdaUpdate(DpModelDO.class)
                 .eq(DpModelDO::getId, id)
                 .set(DpModelDO::getStatus, status));
-    }
-
-
-
-    @Override
-    public List<DpDataElemAssetRelRespDTO> getDpDataElemListByColumnIdInApi(Collection<Long> columnIds) {
-        List<DpDataElemAssetRelDO> list = iDpDataElemAssetRelService.lambdaQuery()
-                .in(DpDataElemAssetRelDO::getColumnId, columnIds)
-                .eq(DpDataElemAssetRelDO::getDelFlag, "0")
-                .list();
-        return BeanUtils.toBean(list, DpDataElemAssetRelRespDTO.class);
     }
 }

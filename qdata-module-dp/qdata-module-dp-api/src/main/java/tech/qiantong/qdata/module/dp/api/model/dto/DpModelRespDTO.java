@@ -34,6 +34,8 @@ public class DpModelRespDTO {
     /** 数据源id */
     private Long datasourceId;
 
+    private Long documentId;
+
     /** 联系人 */
     private String contact;
 

@@ -2,14 +2,13 @@ package tech.qiantong.qdata.module.dp.dal.mapper.model;
 
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import org.apache.commons.lang3.StringUtils;
-import tech.qiantong.qdata.common.core.page.PageResult;
-import tech.qiantong.qdata.module.dp.controller.admin.model.vo.DpModelPageReqVO;
 import tech.qiantong.qdata.module.dp.dal.dataobject.model.DpModelDO;
-import tech.qiantong.qdata.mybatis.core.mapper.BaseMapperX;
-
 import java.util.Arrays;
+import tech.qiantong.qdata.common.core.page.PageResult;
 import java.util.HashSet;
 import java.util.Set;
+import tech.qiantong.qdata.module.dp.controller.admin.model.vo.DpModelPageReqVO;
+import tech.qiantong.qdata.mybatis.core.mapper.BaseMapperX;
 
 /**
  * 逻辑模型Mapper接口
@@ -31,6 +30,7 @@ public interface DpModelMapper extends BaseMapperX<DpModelDO> {
                 .likeRight(StringUtils.isNotBlank(reqVO.getCatCode()), DpModelDO::getCatCode, reqVO.getCatCode())
                 .like(StringUtils.isNotBlank(reqVO.getModelComment()), DpModelDO::getModelComment, reqVO.getModelComment())
                 .eq(StringUtils.isNotBlank(reqVO.getStatus()), DpModelDO::getStatus, reqVO.getStatus())
+                .eq(reqVO.getDocumentId()!= null, DpModelDO::getDocumentId, reqVO.getDocumentId())
                 .orderByStr(StringUtils.isNotBlank(reqVO.getOrderByColumn()), StringUtils.equals("asc", reqVO.getIsAsc()), StringUtils.isNotBlank(reqVO.getOrderByColumn()) ? Arrays.asList(reqVO.getOrderByColumn().split(",")) : null);
 
         return selectJoinPage(reqVO, DpModelDO.class, lambdaWrapper);

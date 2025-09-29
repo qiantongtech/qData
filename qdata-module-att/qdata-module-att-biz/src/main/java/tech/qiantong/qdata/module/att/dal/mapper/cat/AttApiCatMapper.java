@@ -1,14 +1,16 @@
 package tech.qiantong.qdata.module.att.dal.mapper.cat;
 
-import tech.qiantong.qdata.common.core.page.PageResult;
-import tech.qiantong.qdata.module.att.controller.admin.cat.vo.AttApiCatPageReqVO;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 import tech.qiantong.qdata.module.att.dal.dataobject.cat.AttApiCatDO;
-import tech.qiantong.qdata.mybatis.core.mapper.BaseMapperX;
-import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
-
 import java.util.Arrays;
+
+import tech.qiantong.qdata.common.core.page.PageResult;
 import java.util.HashSet;
 import java.util.Set;
+import tech.qiantong.qdata.module.att.controller.admin.cat.vo.AttApiCatPageReqVO;
+import tech.qiantong.qdata.mybatis.core.mapper.BaseMapperX;
+import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
 
 /**
  * 数据服务类目管理Mapper接口
@@ -35,4 +37,8 @@ public interface AttApiCatMapper extends BaseMapperX<AttApiCatDO> {
                 // 按照 createTime 字段降序排序
                 .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(), allowedColumns));
     }
+
+    @Update(value = "update ATT_API_CAT set VALID_FLAG=#{validFlag} where code like concat(#{prefixCode}, '%')")
+    int updateValidFlag(@Param("prefixCode") String prefixCode, @Param("validFlag") Boolean validFlag);
+
 }

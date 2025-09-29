@@ -1,8 +1,9 @@
 package tech.qiantong.qdata.module.att.dal.mapper.cat;
 
+import org.apache.ibatis.annotations.Param;
+import tech.qiantong.qdata.module.att.dal.dataobject.cat.AttModelCatDO;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.module.att.controller.admin.cat.vo.AttModelCatPageReqVO;
-import tech.qiantong.qdata.module.att.dal.dataobject.cat.AttModelCatDO;
 import tech.qiantong.qdata.mybatis.core.mapper.BaseMapperX;
 import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
 
@@ -28,4 +29,7 @@ public interface AttModelCatMapper extends BaseMapperX<AttModelCatDO> {
 //                .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(), allowedColumns));
                 .orderByAsc(AttModelCatDO::getSortOrder));
     }
+
+    int updateValidFlag(@Param("prefixCode") String prefixCode, @Param("validFlag") Boolean validFlag);
+
 }

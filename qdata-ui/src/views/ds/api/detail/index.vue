@@ -5,7 +5,7 @@
         <div class="infotop-title mb15">
           {{ dsApiDetail.name }}
         </div>
-        <el-row :gutter="20">
+        <el-row :gutter="2">
           <el-col :span="8">
             <div class="infotop-row border-top">
               <div class="infotop-row-lable">编号</div>
@@ -13,14 +13,22 @@
             </div>
           </el-col>
           <el-col :span="8">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">API地址</div>
-              <div class="infotop-row-value">
-                {{ dsApiDetail.apiUrl || '-' }}
+              <div class="infotop-row border-top">
+                  <div class="infotop-row-lable">所属类目</div>
+                  <div class="infotop-row-value">
+                      {{ dsApiDetail.catName || '-' }}
+                  </div>
               </div>
-            </div>
           </el-col>
           <el-col :span="8">
+              <div class="infotop-row border-top">
+                  <div class="infotop-row-lable">状态</div>
+                  <div class="infotop-row-value">
+                      <dict-tag :options="sys_disable" :value="dsApiDetail.status" />
+                  </div>
+              </div>
+          </el-col>
+          <el-col :span="8" style="margin: 2px 0;">
             <div class="infotop-row border-top">
               <div class="infotop-row-lable">API版本</div>
               <div class="infotop-row-value">
@@ -28,7 +36,7 @@
               </div>
             </div>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="8" style="margin: 2px 0;">
             <div class="infotop-row border-top">
               <div class="infotop-row-lable">请求方式</div>
               <div class="infotop-row-value">
@@ -36,7 +44,7 @@
               </div>
             </div>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="8" >
             <div class="infotop-row border-top">
               <div class="infotop-row-lable">返回结果类型</div>
               <div class="infotop-row-value">
@@ -44,14 +52,30 @@
               </div>
             </div>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="24" >
+              <div class="infotop-row border-top">
+                  <div class="infotop-row-lable">描述</div>
+                  <div class="infotop-row-value">
+                     <span class="ellipsis-2">
+                         {{ dsApiDetail.description || '-' }}
+                     </span>
+                  </div>
+              </div>
+          </el-col>
+          <el-col :span="8" style="margin: 2px 0;">
+              <div class="infotop-row border-top">
+                  <div class="infotop-row-lable">创建人</div>
+                  <div class="infotop-row-value">{{ dsApiDetail.createBy || '-' }}</div>
+              </div>
+          </el-col>
+          <el-col :span="8" style="margin: 2px 0;">
             <div class="infotop-row border-top">
               <div class="infotop-row-lable">创建时间</div>
-              <div class="infotop-row-value">{{ parseTime(dsApiDetail.createTime, '{y}-{m}-{d} {h}:{i}:{s}') }}</div>
+              <div class="infotop-row-value">{{ parseTime(dsApiDetail.createTime, '{y}-{m}-{d} {h}:{i}') }}</div>
             </div>
           </el-col>
 
-          <el-col :span="16">
+          <el-col :span="8" style="margin: 2px 0;">
             <div class="infotop-row border-top">
               <div class="infotop-row-lable">API请求地址</div>
               <div class="infotop-row-value">
@@ -59,11 +83,11 @@
               </div>
             </div>
           </el-col>
-          <el-col :span="16">
+          <el-col :span="24" >
             <div class="infotop-row border-top">
               <div class="infotop-row-lable">备注</div>
               <div class="infotop-row-value">
-                {{ dsApiDetail.REMARK || '-' }}
+                {{ dsApiDetail.remark || '-' }}
               </div>
             </div>
           </el-col>
@@ -75,10 +99,10 @@
     <div class="pagecont-bottom">
       <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
         <el-tab-pane label="参数信息" name="1">
-          <component-one :form2="form2" v-if="activeName == '1'"></component-one>
+          <component-one :form2="form2" v-if="activeName === '1'"></component-one>
         </el-tab-pane>
         <el-tab-pane label="测试信息" name="2">
-          <component-two :form1="form1" v-if="activeName == '2'"></component-two>
+          <component-two :form1="form1" v-if="activeName === '2'"></component-two>
         </el-tab-pane>
         <!--        <el-tab-pane label="授权信息" name="2">-->
         <!--          <component-two ></component-two>-->
@@ -91,15 +115,18 @@
 </template>
 
 <script setup name="DsApi">
-import { getDsApi } from "@/api/ds/api/dsApi";
+import { getDsApi } from "@/api/ds/api/api.js";
 import { onBeforeRouteLeave, useRoute } from 'vue-router';
-import ComponentOne from "@/views/ds/api/detail/componentOne.vue";
-import ComponentTwo from "@/views/ds/api/detail/componentTwo.vue";
+import ComponentOne from "@/views/ds/api/detail/parameter.vue";
+import ComponentTwo from "@/views/ds/api/detail/simulation.vue";
 
 
 
 const { proxy } = getCurrentInstance();
-const { ds_api_log_status, ds_api_bas_info_api_service_type, ds_api_bas_info_api_method_type, ds_api_bas_info_res_data_type } = proxy.useDict('ds_api_log_status', 'ds_api_bas_info_api_service_type', 'ds_api_bas_info_api_method_type', 'ds_api_bas_info_res_data_type');
+const { ds_api_log_status, ds_api_bas_info_api_service_type,
+    ds_api_bas_info_api_method_type, ds_api_bas_info_res_data_type,sys_disable }
+    = proxy.useDict('ds_api_log_status', 'ds_api_bas_info_api_service_type',
+    'ds_api_bas_info_api_method_type', 'ds_api_bas_info_res_data_type','sys_disable');
 
 const activeName = ref('1')
 

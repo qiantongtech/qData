@@ -1,35 +1,41 @@
 <template>
     <el-dialog :title="dialogTitle" v-model="dialogVisible" width="70%" style="min-height:600px;"
         :close-on-click-modal="false" append-to-body @close="handleClose">
-        <el-table :height="tableHeight" :data="tableData" ref="multipleTable" stripe border tooltip-effect="dark"
+        <el-table :height="tableHeight" :data="tableData" ref="multipleTable" stripe tooltip-effect="dark"
             style="width: 100%; margin: 15px 0;" @selection-change="handleSelectionChange" show-selection>
             <el-table-column type="selection" width="55" :reserve-selection="true">
             </el-table-column>
-            <el-table-column prop="columnPosition" label="序号" width="80" align="center" />
-            <el-table-column prop="columnName" label="列名" align="center" show-overflow-tooltip />
-            <el-table-column prop="columnType" label="数据类型" align="center" show-overflow-tooltip />
-            <el-table-column prop="columnLength" label="数据长度" align="center" show-overflow-tooltip />
-            <!--            <el-table-column prop="dataPrecision" label="数据精度" align="center" show-overflow-tooltip />-->
-            <el-table-column prop="columnScale" label="数据小数位" align="center" show-overflow-tooltip />
-            <el-table-column prop="pkFlag" label="是否主键" align="center" show-overflow-tooltip>
+            <el-table-column prop="sortOrder" label="序号" width="80" align="center" />
+            <el-table-column prop="engName" label="列名" align="center" width="200" :show-overflow-tooltip="{effect: 'light'}" />
+            <el-table-column prop="columnType" label="数据类型" align="center" width="120" :show-overflow-tooltip="{effect: 'light'}" />
+            <el-table-column prop="columnLength" label="数据长度" width="90" align="center" :show-overflow-tooltip="{effect: 'light'}" />
+            <!--            <el-table-column prop="dataPrecision" label="数据精度" align="center" :show-overflow-tooltip="{effect: 'light'}" />-->
+            <el-table-column prop="columnScale" label="数据小数位" width="100" align="center" :show-overflow-tooltip="{effect: 'light'}" />
+            <el-table-column prop="pkFlag" label="主键" align="center" width="100" :show-overflow-tooltip="{effect: 'light'}">
                 <template #default="scope">
                     <span v-if="scope.row.pkFlag === '1'">是</span>
                     <span v-if="scope.row.pkFlag === '0'">否</span>
                 </template>
             </el-table-column>
-            <el-table-column prop="nullableFlag" label="是否允许为空" align="center" show-overflow-tooltip>
+            <el-table-column prop="nullableFlag" label="允许为空" align="center" width="100" :show-overflow-tooltip="{effect: 'light'}">
                 <template #default="scope">
                     <span v-if="scope.row.nullableFlag === '1'">是</span>
                     <span v-if="scope.row.nullableFlag === '0'">否</span>
                 </template>
             </el-table-column>
-            <el-table-column prop="defaultValue" label="列默认值" align="center" show-overflow-tooltip />
-            <el-table-column prop="columnComment" label="列备注" align="center" show-overflow-tooltip />
+            <el-table-column prop="defaultValue" label="列默认值" width="100" align="center" :show-overflow-tooltip="{effect: 'light'}" >
+                <template #default="scope">
+                    {{scope.row.defaultValue || "-"}}
+                </template>
+            </el-table-column>
+            <el-table-column prop="cnName" label="列备注" align="center" :show-overflow-tooltip="{effect: 'light'}" />
         </el-table>
-        <span slot="footer" class="dialog-footer">
-            <el-button @click="handleClose">取消</el-button>
-            <el-button type="primary" @click="confirm">确定</el-button>
-        </span>
+        <template #footer>
+            <div class="dialog-footer">
+                <el-button @click="handleClose">取消</el-button>
+                <el-button type="primary" @click="confirm">确定</el-button>
+            </div>
+        </template>
     </el-dialog>
 </template>
 

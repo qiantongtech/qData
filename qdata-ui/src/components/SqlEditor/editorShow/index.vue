@@ -1,5 +1,5 @@
 <template>
-  <div ref="monacoDom" class="read-json-editor"></div>
+  <div ref="monacoDom" class="read-json-editor monaco-editor-container"></div>
 </template>
 <script setup>
 import beautify from "js-beautify";
@@ -112,7 +112,9 @@ onMounted(() => {
     fixedOverflowWidgets: true,
     autoClosingDelete: "always",
     lineNumbers: props.lineNumbers,
-    minimap: { enabled: props.enableMiniMap },
+    minimap: {
+      enabled: false, // 是否开启右侧代码小窗
+    },
     // 控制台
     scrollbar: {
       // Subtle shadows to the left & top. Defaults to true.
@@ -201,7 +203,10 @@ function convertCodeEditTheme(editorInstance) {
         { token: "custom-date", foreground: "#008800" },
         { token: "custom-process", foreground: "#07f313" },
       ],
-      colors: {},
+      colors: {
+        "editor.background": "#fcfcfc",
+        "minimap.selectionHighlight": "#FFFFFF",
+      },
       encodedTokensColors: [],
     });
 
@@ -246,9 +251,15 @@ defineExpose({
 .read-json-editor {
   width: 100%;
   height: 100%;
-  // border: 1px solid rgba(0, 0, 0, 0.06);
+  background-color: #FCFCFC;
+
   :deep(.monaco-scrollable-element > .scrollbar > .slider) {
     background: var(--el-color-primary) !important;
   }
+
+  :deep(.el-tree) {
+    background-color: #FCFCFC;
+  }
+
 }
 </style>

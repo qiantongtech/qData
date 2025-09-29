@@ -174,7 +174,7 @@ watch(searchPool, (list) => {
 
   &.show {
     .header-search-select {
-      width: 210px;
+      width: 150px;
       margin-left: 10px;
     }
   }

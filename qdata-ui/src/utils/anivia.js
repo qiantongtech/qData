@@ -2,7 +2,7 @@
 
 /**
  * 通用js方法封装处理
- * Copyright (c) 2019 qdata
+ * Copyright (c) 2019 qData
  */
 
 // 日期格式化
@@ -168,7 +168,7 @@ export function handleTree(data, id, parentId, children) {
   var nodeIds = {};
   var tree = [];
   for (let d of data) {
-    console.log(data, "data")
+    // console.log(data, "data")
     let parentId = d[config.parentId];
     if (childrenListMap[parentId] == null) {
       childrenListMap[parentId] = [];

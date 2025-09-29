@@ -1,15 +1,15 @@
 <template>
   <div>
     <el-form ref="form2" :model="form2" :rules="rules" label-width="120px" v-loading="loading">
-      <div class="clearfix">
-        <span>
+      <div class="header-container" style="margin-top: -10px;">
+        <div class="header-left">
           <div class="blue-bar"></div>
           数据源配置
-        </span>
+        </div>
       </div>
       <el-row :gutter="20">
         <el-col :span="8">
-          <el-form-item label="配置方式：" prop="apiServiceType">
+          <el-form-item label="配置方式" prop="apiServiceType">
             <el-select v-model="form2.apiServiceType" placeholder="请选择配置方式" @change="configTypeSelectChanged"
               class="select-width">
               <el-option v-for="dict in ds_api_bas_info_api_service_type" :key="dict.id" :label="dict.label"
@@ -18,7 +18,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="8" v-if="form2.apiServiceType != '3'">
-          <el-form-item label="数据源：" prop="sourceId">
+          <el-form-item label="数据源" prop="sourceId">
             <el-select v-model="form2.sourceId" placeholder="请选择数据源" @change="sourceSelectChanged" class="select-width">
               <el-option v-for="source in sourceOptions" :key="source.id" :label="source.datasourceName"
                 :value="source.id" :disabled="source.status === '0'" />
@@ -41,22 +41,16 @@
           </el-form-item>
         </el-col>
         <el-col :span="8" v-if="form2.apiServiceType === '1'" :gutter="20">
-          <el-form-item label="数据库表：" prop="table">
-            <el-select v-model="form2.table" value-key="id" placeholder="请选择数据库表" @change="tableSelectChanged"
+          <el-form-item label="数据库表" prop="table">
+            <el-select v-model="form2.table" value-key="tableName" placeholder="请选择数据库表" @change="tableSelectChanged"
               filterable :filter-method="filterTable" class="select-width">
-              <el-option v-for="item in form2.filteredTableOptions" :key="item.id"
-                :label="item.tableComment ? item.tableComment : item.name" :value="item">
-                <el-tooltip effect="light" :disabled="isShowTooltip" :content="item.name +
-                  '(' +
-                  (item.tableComment ? item.tableComment : '') +
-                  ')'
-                  ">
+              <el-option v-for="item in form2.filteredTableOptions" :key="item.tableName"
+                :label="item.tableComment ? item.tableComment : item.tableName" :value="item">
+                <el-tooltip effect="light" :disabled="isShowTooltip"
+                  :content="item.tableName + (item.tableComment ? `(${item.tableComment})` : '')">
                   <div class="option-item" @mouseover="spanMouseenter($event)">
                     {{
-                      item.name +
-                      "(" +
-                      (item.tableComment ? item.tableComment : "") +
-                      ")"
+                      item.tableName + (item.tableComment ? `(${item.tableComment})` : '')
                     }}
                   </div>
                 </el-tooltip>
@@ -75,23 +69,29 @@
           <el-button size="mini" type="primary" @click="sqlParseFunction" class="sql-parse-btn">SQL解析</el-button>
         </el-form-item>
       </el-row>
-      <div class="clearfix">
-        <span>
+      <!--      <div class="clearfix header-text">-->
+      <!--          <div class="header-left">-->
+      <!--              <div class="blue-bar"></div>-->
+      <!--              参数配置-->
+      <!--          </div>-->
+      <!--      </div>-->
+      <div class="header-container">
+        <div class="header-left">
           <div class="blue-bar"></div>
           参数配置
-        </span>
+        </div>
       </div>
-      <div class="tableForm" v-if="form2.apiServiceType == '3'">
+      <div v-if="form2.apiServiceType == '3'">
         <!--入参字段（type == 1） -->
         <el-form :model="props.form2.reqParams" :rules="rules" ref="inputForm" label-width="0">
-          <el-row :gutter="24" class="mb8">
+          <el-row :gutter="24" class="mb8" style="margin-left: 0px;!important;margin-right: 0px;!important;">
             <div class="header-text">
               请求参数
               <el-link type="primary" class="add-link" icon="el-icon-circle-plus-outline" @click="openDialog('four')">
                 新增参数
               </el-link>
             </div>
-            <el-table :data="props.form2.reqParams" class="tableStyle" row-key="id" border default-expand-all
+            <el-table :data="props.form2.reqParams" class="tableStyle" row-key="id" stripe default-expand-all
               height="200px" :tree-props="{ children: 'daAssetApiParamList', hasChildren: 'hasChildren' }">
               <el-table-column label="序号" width="100" align="center" fixed="left">
                 <template #default="{ $index }">
@@ -99,7 +99,8 @@
                 </template>
               </el-table-column>
 
-              <el-table-column label="参数名称" fixed="left" align="center" prop="name" :show-overflow-tooltip="true">
+              <el-table-column label="参数名称" fixed="left" align="center" prop="name"
+                :show-overflow-tooltip="{ effect: 'light' }">
                 <template #default="{ row, $index }">
                   <el-form-item :prop="`props.form2.reqParams[${findPosi(props.form2.reqParams, row.id)}].name`"
                     :rules="rules.name">
@@ -109,7 +110,8 @@
                 </template>
               </el-table-column>
 
-              <el-table-column label="描述" fixed="left" align="center" prop="remark" :show-overflow-tooltip="true">
+              <el-table-column label="描述" fixed="left" align="center" prop="remark"
+                :show-overflow-tooltip="{ effect: 'light' }">
                 <template #default="{ row, $index }">
                   <!-- <el-form-item :prop="`props.form2.reqParams[${findPosi(props.form2.reqParams, row.id)}].remark`"
                     :rules="rules.fieldDefault">
@@ -120,7 +122,7 @@
               </el-table-column>
 
               <el-table-column label="是否为空" fixed="left" align="center" prop="requestFlag"
-                :show-overflow-tooltip="true">
+                :show-overflow-tooltip="{ effect: 'light' }">
                 <template #default="{ row, $index }">
                   <el-form-item :prop="`props.form2.reqParams[${findPosi(props.form2.reqParams, row.id)}].requestFlag`"
                     :rules="rules.requestFlag">
@@ -129,7 +131,8 @@
                 </template>
               </el-table-column>
 
-              <el-table-column label="参数类型" fixed="left" align="center" prop="columnType" :show-overflow-tooltip="true">
+              <el-table-column label="参数类型" fixed="left" align="center" prop="columnType"
+                :show-overflow-tooltip="{ effect: 'light' }">
                 <template #default="{ row, $index }">
                   <!-- <el-form-item :prop="`props.form2.reqParams[${findPosi(props.form2.reqParams, row.id)}].columnType`"
                     :rules="rules.columnType">
@@ -143,7 +146,7 @@
               </el-table-column>
 
               <el-table-column label="示例值" fixed="left" align="center" prop="exampleValue"
-                :show-overflow-tooltip="true">
+                :show-overflow-tooltip="{ effect: 'light' }">
                 <template #default="{ row, $index }">
                   <!-- <el-form-item :prop="`props.form2.reqParams[${findPosi(props.form2.reqParams, row.id)}].exampleValue`"
                     :rules="rules.fieldDefault">
@@ -154,7 +157,7 @@
               </el-table-column>
 
               <el-table-column label="默认值" fixed="left" align="center" prop="defaultValue"
-                :show-overflow-tooltip="true">
+                :show-overflow-tooltip="{ effect: 'light' }">
                 <template #default="{ row, $index }">
                   <el-form-item :prop="`props.form2.reqParams[${findPosi(props.form2.reqParams, row.id)}].defaultValue`"
                     :rules="rules.defaultValue">
@@ -172,10 +175,11 @@
 
             </el-table>
           </el-row>
+
         </el-form>
         <!-- 出参字段（type == 2） -->
         <el-form :model="props.form2.resParams" :rules="rules" ref="outputForm" label-width="0">
-          <el-row :gutter="24" class="mb8">
+          <el-row :gutter="24" class="mb8" style="margin-left: 0px;!important;margin-right: 0px;!important;">
             <div class="header-text">
               返回参数
               <!-- <el-link type="primary" class="add-link" icon="el-icon-circle-plus-outline" @click="handleAdd(2)">
@@ -192,7 +196,8 @@
                 </template>
               </el-table-column>
 
-              <el-table-column label="参数名称" fixed="left" align="center" prop="name" :show-overflow-tooltip="true">
+              <el-table-column label="参数名称" fixed="left" align="center" prop="name"
+                :show-overflow-tooltip="{ effect: 'light' }">
                 <template #default="{ row, $index }">
                   <!-- <el-form-item :prop="`props.form2.resParams[${findPosi(props.form2.resParams, row.id)}].name`"
                     :rules="rules.name">
@@ -202,7 +207,8 @@
                 </template>
               </el-table-column>
 
-              <el-table-column label="描述" fixed="left" align="center" prop="remark" :show-overflow-tooltip="true">
+              <el-table-column label="描述" fixed="left" align="center" prop="remark"
+                :show-overflow-tooltip="{ effect: 'light' }">
                 <template #default="{ row, $index }">
                   <el-form-item :prop="`props.form2.resParams[${findPosi(props.form2.resParams, row.id)}].remark`"
                     :rules="rules.fieldDefault">
@@ -211,7 +217,8 @@
                 </template>
               </el-table-column>
 
-              <el-table-column label="数据类型" fixed="left" align="center" prop="columnType" :show-overflow-tooltip="true">
+              <el-table-column label="数据类型" fixed="left" align="center" prop="columnType"
+                :show-overflow-tooltip="{ effect: 'light' }">
                 <template #default="{ row, $index }">
                   <!-- <el-select v-model="row.columnType" placeholder="请选择数据类型">
                     <el-option v-for="dict in da_asset_api_column_type" :key="dict.value" :label="dict.label"
@@ -222,7 +229,7 @@
               </el-table-column>
 
               <el-table-column label="示例值" fixed="left" align="center" prop="exampleValue"
-                :show-overflow-tooltip="true">
+                :show-overflow-tooltip="{ effect: 'light' }">
                 <template #default="{ row, $index }">
                   <el-form-item :prop="`props.form2.resParams[${findPosi(props.form2.resParams, row.id)}].exampleValue`"
                     :rules="rules.fieldDefault">
@@ -234,8 +241,6 @@
             </el-table>
           </el-row>
         </el-form>
-
-
       </div>
       <el-form ref="form2" :model="form2" label-width="100px" label="字段列表：" v-if="form2.apiServiceType != '3'">
         <div class="header-text">
@@ -245,14 +250,14 @@
             新增参数
           </el-link>
         </div>
-        <el-table :data="form2.reqParams" max-height="250" class="tableStyle" stripe border>
+        <el-table :data="form2.reqParams" max-height="250" class="tableStyle" stripe>
           <el-table-column label="序号" width="80" align="center">
             <template #default="scope">
               <span>{{ scope.$index + 1 }}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="paramName" label="参数名称" align="center" show-overflow-tooltip />
-          <el-table-column prop="nullable" label="是否允许为空" align="center" show-overflow-tooltip>
+          <el-table-column prop="paramName" label="参数名称" align="center" :show-overflow-tooltip="{ effect: 'light' }" />
+          <el-table-column prop="nullable" label="是否允许为空" align="center" :show-overflow-tooltip="{ effect: 'light' }">
             <template #default="scope">
               <el-checkbox v-model="scope.row.nullable" true-label="1" false-label="0" />
             </template>
@@ -289,17 +294,18 @@
           <!--              </el-select>-->
           <!--            </template>-->
           <!--          </el-table-column>-->
-          <el-table-column prop="exampleValue" label="示例值" align="center" show-overflow-tooltip>
+          <el-table-column prop="exampleValue" label="示例值" align="center" :show-overflow-tooltip="{ effect: 'light' }">
             <template #default="scope">
               <el-input v-model="scope.row.exampleValue" placeholder="请输入示例值" />
             </template>
           </el-table-column>
-          <el-table-column prop="defaultValue" label="默认值" align="center" show-overflow-tooltip>
+          <el-table-column prop="defaultValue" label="默认值" align="center" :show-overflow-tooltip="{ effect: 'light' }">
             <template #default="scope">
               <el-input v-model="scope.row.defaultValue" placeholder="请输入默认值" />
             </template>
           </el-table-column>
-          <el-table-column label="操作" align="center" show-overflow-tooltip v-if="form2.apiServiceType !== '2'">
+          <el-table-column label="操作" align="center" width="150" :show-overflow-tooltip="{ effect: 'light' }"
+            v-if="form2.apiServiceType !== '2'">
             <template #default="scope">
               <el-button type="text" size="mini" icon="el-icon-edit" @click="handleDelete(scope.$index)">
                 删除
@@ -314,29 +320,38 @@
             新增参数
           </el-link>
         </div>
-        <el-table class="tableStyle" max-height="250" :data="form2.resParams" stripe border>
+        <el-table class="tableStyle" max-height="250" :data="form2.resParams" stripe>
           <el-table-column label="序号" width="80" align="center">
             <template #default="scope">
               <span>{{ scope.$index + 1 }}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="fieldName" label="中文名称" align="center" show-overflow-tooltip />
-          <el-table-column prop="fieldComment" label="描述" align="center" show-overflow-tooltip>
+          <el-table-column prop="fieldName" label="中文名称" align="center" :show-overflow-tooltip="{ effect: 'light' }" />
+          <el-table-column prop="fieldComment" label="描述" align="center" :show-overflow-tooltip="{ effect: 'light' }">
             <template #default="scope">
               <el-input v-model="scope.row.fieldComment" placeholder="请输入描述" />
             </template>
           </el-table-column>
-          <el-table-column prop="dataType" label="数据类型" align="center" show-overflow-tooltip>
+          <el-table-column prop="dataType" label="数据类型" align="center" :show-overflow-tooltip="{ effect: 'light' }">
             <template #default="scope">
-              <el-input v-model="scope.row.dataType" placeholder="请输入数据类型" />
+              <el-select v-model="scope.row.dataType" clearable placeholder="请选择数据类型">
+                <el-option v-for="dict in ds_api_param_type" :key="dict.id" :label="dict.label" :value="dict.value" />
+              </el-select>
             </template>
           </el-table-column>
-          <el-table-column prop="exampleValue" label="示例值" align="center" show-overflow-tooltip>
+          <el-table-column prop="dataType" label="时间格式" align="center" :show-overflow-tooltip="{ effect: 'light' }">
+            <template #default="scope">
+              <el-input v-if="scope.row.dataType == '4'" v-model="scope.row.dateFormat" placeholder="请输入时间格式" />
+              <span v-else>-</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="exampleValue" label="示例值" align="center" :show-overflow-tooltip="{ effect: 'light' }">
             <template #default="scope">
               <el-input v-model="scope.row.exampleValue" placeholder="请输入示例值" />
             </template>
           </el-table-column>
-          <el-table-column label="操作" align="center" show-overflow-tooltip v-if="form2.apiServiceType !== '2'">
+          <el-table-column label="操作" align="center" width="150" :show-overflow-tooltip="{ effect: 'light' }"
+            v-if="form2.apiServiceType !== '2'">
             <template #default="scope">
               <el-button type="text" size="mini" icon="el-icon-edit" @click="handleDelete(scope.$index, true)">
                 删除
@@ -366,8 +381,9 @@
               <span>{{ scope.$index + 1 }}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="fieldName" label="中文名称" align="center" show-overflow-tooltip />
-          <el-table-column label="操作" align="center" show-overflow-tooltip v-if="form2.apiServiceType !== '2'">
+          <el-table-column prop="fieldName" label="中文名称" align="center" :show-overflow-tooltip="{ effect: 'light' }" />
+          <el-table-column label="操作" align="center" :show-overflow-tooltip="{ effect: 'light' }"
+            v-if="form2.apiServiceType !== '2'">
             <template #default="scope">
               <el-button type="text" size="mini" icon="el-icon-edit" @click="handlesortDelete(scope.$index, true)">
                 删除
@@ -385,13 +401,13 @@
     <TableDialogapi v-if="fourVisible" :visible="fourVisible" dialog-title="请求参数" :tableData="inputList"
       @confirm="handleFirstConfirm" @close="fourVisible = false" :list="form2.reqParams"
       :apiServiceType="form2.apiServiceType" :inputList="inputList" />
-    <TableDialog v-if="firstDialogVisible" :visible="firstDialogVisible" dialog-title="请求参数"
+    <tableDialog v-if="firstDialogVisible" :visible="firstDialogVisible" dialog-title="请求参数"
       :tableData="form2.fieldParams" @confirm="handleFirstConfirm" @close="firstDialogVisible = false"
       :list="form2.reqParams" :apiServiceType="form2.apiServiceType" :inputList="inputList" />
-    <TableDialog v-if="secondDialogVisible" :visible="secondDialogVisible" dialog-title="返回字段"
+    <tableDialog v-if="secondDialogVisible" :visible="secondDialogVisible" dialog-title="返回字段"
       :tableData="form2.fieldParams" @confirm="handleSecondConfirm" @close="secondDialogVisible = false"
       :list="form2.resParams" />
-    <TableDialog :visible="sortDialogVisible" dialog-title="返回字段" :tableData="form2.fieldParams"
+    <tableDialog :visible="sortDialogVisible" dialog-title="返回字段" :tableData="form2.fieldParams"
       @confirm="handlesortConfirm" @close="sortDialogVisible = false" :list="form2.sortParams" />
   </div>
 </template>
@@ -399,17 +415,17 @@
 <script setup name="parameter">
 import Sortable from "sortablejs";
 import SqlEditor from "@/components/SqlEditor";
-import TableDialog from "./TableDialog.vue";
-import TableDialogapi from "./TableDialogapi.vue";
+import tableDialog from "./tableDialog.vue";
+import TableDialogapi from "./tableDialogApi.vue";
 import {
   getDaAsset,
-} from "@/api/da/asset/daAsset";
+} from "@/api/da/asset/asset";
 import {
-  getTablesByDataSourceId,
-  getColumnByAssetId,
+  tableList,
+  columnsList,
   getDaAssetRespList
-} from "@/api/da/datasource/daDatasource.js";
-import { sqlParse } from "@/api/ds/api/dsApi.js";
+} from "@/api/da/dataSource/dataSource.js";
+import { sqlParse } from "@/api/ds/api/api.js";
 
 const { proxy } = getCurrentInstance();
 const {
@@ -489,18 +505,18 @@ function handleTransmitTypeChange(id, falg) {
   }
 
   if (id == '1') {
-    getDaAssetRespList({ type: 2, status: 1 }).then((response) => {
+    getDaAssetRespList({ type: 2, status: 2 }).then((response) => {
       console.log("🚀 ~ getDaAssetRespList ~ response:", response)
       apiList.value = response.data;
     });
   } else {
-    getDaAssetRespList({ type: 3, status: 1 }).then((response) => {
+    getDaAssetRespList({ type: 3, status: 2 }).then((response) => {
       apiList.value = response.data;
     });
   }
 }
 function getTableInfo(sourceId) {
-  getTablesByDataSourceId({ datasourceId: sourceId }).then((response) => {
+  tableList(sourceId).then((response) => {
     props.form2.filteredTableOptions = response.data;
   });
 
@@ -575,11 +591,11 @@ watch(
 
 function sqlParseFunction() {
   if (!props.form2.sourceId) {
-    props.$message.error("数据源不能为空");
+    props.$message.warning("数据源不能为空");
     return;
   }
   if (!props.form2.sqlText) {
-    props.$message.error("解析SQL不能为空");
+    props.$message.warning("解析SQL不能为空");
     return;
   }
   const data = {};
@@ -594,7 +610,7 @@ function sqlParseFunction() {
       props.splReult = true;
       proxy.$modal.msgSuccess("解析成功，请进行下一步");
     } else {
-      proxy.$modal.msgError(response.msg);
+      proxy.$modal.msgWarning(response.msg || "解析失败，请重试");
     }
   });
 }
@@ -619,7 +635,7 @@ function validateFormParameter(formName, callback) {
   proxy.$refs[formName].validate((valid) => {
     if (valid) {
       if (props.form2.resParams.length <= 0 && props.form2.apiServiceType != 3) {
-        proxy.$message.error("返回字段不能为空");
+        proxy.$message.warning("验证失败，返回字段不能为空");
       } else if (
         props.form2.apiServiceType !== 1 &&
         props.form2.lastSqlText &&
@@ -630,7 +646,7 @@ function validateFormParameter(formName, callback) {
         callback(props.form2);
       }
     } else {
-      proxy.$message.error("表单验证失败");
+      proxy.$message.warning("验证失败，请检查后重试");
       return false;
     }
   });
@@ -649,11 +665,11 @@ function handleFirstConfirm(val) {
   if (props.form2.apiServiceType != '3') {
     let params = [];
     val.forEach((item) => {
-      const exists = props.form2.reqParams.some(param => param.columnName === item.columnName);
+      const exists = props.form2.reqParams.some(param => param.columnName === item.engName);
       if (!exists) {
         params.push({
-          paramName: item.columnName,
-          paramComment: item.columnComment || undefined,
+          paramName: item.engName,
+          paramComment: item.cnName || undefined,
           nullable: "0",
           ...item,
         });
@@ -679,8 +695,8 @@ function handleSecondConfirm(val) {
   props.form2.resParams = [];
   props.form2.resParams = val.map((row) => {
     return {
-      fieldName: row.columnName,
-      fieldComment: row.columnComment || undefined,
+      fieldName: row.engName,
+      fieldComment: row.cnName || undefined,
       dataType: row.dataType || undefined,
       ...row,
     };
@@ -747,11 +763,15 @@ const inputList = computed(() =>
 
 function tableSelectChanged(item) {
   loading.value = true;
-  const data = {};
-  data.assetId = item.id;
+  let type = props.sourceOptions.filter(i => i.id == props.form2.sourceId)[0]?.datasourceType
+  const data = {
+    id: props.form2.sourceId,
+    tableName: item.tableName,
+    type
+  };
   props.form2.tableId = item.id;
   props.form2.tableName = item.tableName;
-  getColumnByAssetId(data)
+  columnsList(data)
     .then((response) => {
       props.form2.fieldParams = response.data;
     })
@@ -886,27 +906,36 @@ if (props?.form2?.transmitType && props?.form2?.apiServiceType == '3') {
   flex-direction: column;
   height: 88vh;
 
-  .clearfix {
-    width: 100%;
-    height: 36px;
-    background-color: #f8f8f9;
-    display: flex;
-    align-items: center;
-    padding-left: 10px;
-    margin-bottom: 10px;
-  }
+}
 
-  .clearfix span {
-    display: flex;
-    align-items: center;
-  }
+.header-container {
+  height: 36px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+  margin: 10px 0;
+  border-radius: 4px;
+}
 
-  .blue-bar {
-    background-color: #2666fb;
-    width: 5px;
-    height: 20px;
-    margin-right: 10px;
-  }
+.blue-bar {
+  background-color: #2666fb;
+  width: 5px;
+  height: 20px;
+  margin-right: 10px;
+  border-radius: 2px;
+}
+
+.header-text {
+  margin: 12px 0
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  line-height: 24px;
+  font-style: normal;
 }
 
 .option-item {

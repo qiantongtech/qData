@@ -196,13 +196,6 @@
                                 </el-icon>更新数据
                               </el-text>
                             </el-dropdown-item>
-                            <el-dropdown-item v-if="unregistered(item)">
-                              <el-text type="primary" @click="addAttTagData(item)">
-                                <el-icon>
-                                  <Pointer />
-                                </el-icon>打标
-                              </el-text>
-                            </el-dropdown-item>
                             <el-dropdown-item v-if="unregistered(item) && type != 1">
                               <el-text type="primary" @click="handleApply(item)">
                                 <el-icon>
@@ -342,24 +335,6 @@
     <CreateEditModal :deptOptions="deptOptions" :visible="open" :title="title" @update:visible="open = $event"
       @confirm="getList" :data="form" :isRegister="isRegister" type="0" />
     <!-- 用户导入对话框 -->
-    <el-dialog title="新增标签" class="tag-view" v-model="tagMultiple" width="600px" :append-to="$refs['app-container']"
-      draggable destroy-on-close>
-      <el-col :span="24">
-        <el-form-item label="标签">
-          <el-select v-model="tagIds" placeholder="请输选择标签" filterable multiple collapse-tags collapse-tags-tooltip
-            :max-collapse-tags="5" @change="handleTypeChange">
-            <el-option v-for="dict in AttTagList" :key="dict.id + ''" :label="dict.name"
-              :value="dict.id + ''"></el-option>
-          </el-select>
-        </el-form-item>
-      </el-col>
-      <template #footer>
-        <div class="dialog-footer">
-          <el-button @click="tagMultiple = false">取 消</el-button>
-          <el-button type="primary" @click="submitTag">确 定</el-button>
-        </div>
-      </template>
-    </el-dialog>
     <el-dialog :title="upload.title" v-model="upload.open" width="800px" :append-to="$refs['app-container']" draggable
       destroy-on-close>
       <el-upload ref="uploadRef" :limit="1" accept=".xlsx, .xls" :headers="upload.headers"
@@ -482,8 +457,6 @@ import { getToken } from "@/utils/auth.js";
 import { addDaAssetApply } from "@/api/da/assetApply/assetApply";
 import useUserStore from "@/store/system/user";
 import { getThemeList } from "@/api/att/theme/theme.js";
-import { listAttTag, listDict } from "@/api/att/tag/tag.js";
-import { addAttTagAssetRel } from "@/api/att/tag/tagAssetRel.js";
 const { proxy } = getCurrentInstance();
 const { da_assets_status, da_asset_source, da_asset_type } = proxy.useDict(
   "da_assets_status",
@@ -779,7 +752,6 @@ function getList() {
       loading.value = false;
     });
   }
-  getListTag();
 }
 
 // 取消按钮
@@ -1044,40 +1016,6 @@ function routeTo(link, row) {
     }
   }
 }
-
-/**
- * 标签管理
- */
-function getListTag() {
-  listDict().then((response) => {
-    AttTagList.value = response.data;
-  });
-}
-
-function submitTag() {
-  let map = {
-    tagIds: tagIds.value,
-    assetId: assetId.value,
-  };
-
-  addAttTagAssetRel(map).then((res) => {
-    tagMultiple.value = false;
-    proxy.$modal.msgSuccess("操作成功");
-    getList();
-  });
-  // proxy.$modal
-  //   .confirm("是否确定打标该资产？")
-  //   .then(function () {
-  //
-  //   })
-  //   .then(() => {
-  //
-  //   })
-  //   .catch(() => {
-  //     tagMultiple.value = false;
-  //   });
-}
-
 /** 启用禁用开关 */
 function handleStatusChange(row) {
   const text = row.status === "2" ? "发布" : "撤销发布";

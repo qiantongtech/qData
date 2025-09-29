@@ -138,17 +138,7 @@ function routeTo(link, row) {
     }
   }
 }
-/** 导出按钮操作 */
-async function handleExport(row) {
-  const response = await logDetailCat({ handleMsg: row.path });
-  if (response && response.content) {
-    proxy.download(
-      'da/daDiscoveryTaskLog/downloadLog',
-      { handleMsg: row.path },
-      `${new Date().getTime()}.log`
-    );
-  }
-}
+
 async function logDetailCatList(row) {
   try {
     if (!row.path) {

@@ -84,7 +84,7 @@ public class MappingHandlerMapping {
         mappings.put(mappingKey, api);
         requestMappingHandlerMapping.registerMapping(requestMapping, handler, method);
         mappings.keySet().forEach(key -> {
-            log.info("已注册接口:{}", mappings.get(key));
+//            log.info("已注册接口:{}", mappings.get(key));
         });
     }
 

@@ -35,14 +35,14 @@ import java.util.List;
  */
 @Tag(name = "逻辑模型类目管理")
 @RestController
-@RequestMapping("/att/attModelCat")
+@RequestMapping("/att/modelCat")
 @Validated
 public class AttModelCatController extends BaseController {
     @Resource
     private IAttModelCatService attModelCatService;
 
     @Operation(summary = "查询逻辑模型类目管理列表")
-    @PreAuthorize("@ss.hasPermi('att:cat:modelcat:list')")
+    @PreAuthorize("@ss.hasPermi('att:modelCat:list')")
     @GetMapping("/list")
     public CommonResult<List<AttModelCatRespVO>> list(AttModelCatPageReqVO attModelCat) {
         List<AttModelCatDO> attModelCatDOList = attModelCatService.getAttModelCatList(attModelCat);
@@ -50,7 +50,7 @@ public class AttModelCatController extends BaseController {
     }
 
     @Operation(summary = "导出逻辑模型类目管理列表")
-    @PreAuthorize("@ss.hasPermi('att:cat:modelcat:export')")
+    @PreAuthorize("@ss.hasPermi('att:modelCat:export')")
     @Log(title = "逻辑模型类目管理", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AttModelCatPageReqVO exportReqVO) {
@@ -61,7 +61,7 @@ public class AttModelCatController extends BaseController {
     }
 
     @Operation(summary = "导入逻辑模型类目管理列表")
-    @PreAuthorize("@ss.hasPermi('att:cat:modelcat:import')")
+    @PreAuthorize("@ss.hasPermi('att:modelCat:import')")
     @Log(title = "逻辑模型类目管理", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
@@ -73,7 +73,7 @@ public class AttModelCatController extends BaseController {
     }
 
     @Operation(summary = "获取逻辑模型类目管理详细信息")
-    @PreAuthorize("@ss.hasPermi('att:cat:modelcat:query')")
+    @PreAuthorize("@ss.hasPermi('att:modelCat:query')")
     @GetMapping(value = "/{ID}")
     public CommonResult<AttModelCatRespVO> getInfo(@PathVariable("ID") Long ID) {
         AttModelCatDO attModelCatDO = attModelCatService.getAttModelCatById(ID);
@@ -81,7 +81,7 @@ public class AttModelCatController extends BaseController {
     }
 
     @Operation(summary = "新增逻辑模型类目管理")
-    @PreAuthorize("@ss.hasPermi('att:cat:modelcat:add')")
+    @PreAuthorize("@ss.hasPermi('att:modelCat:add')")
     @Log(title = "逻辑模型类目管理", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AttModelCatSaveReqVO attModelCat) {
@@ -92,7 +92,7 @@ public class AttModelCatController extends BaseController {
     }
 
     @Operation(summary = "修改逻辑模型类目管理")
-    @PreAuthorize("@ss.hasPermi('att:cat:modelcat:edit')")
+    @PreAuthorize("@ss.hasPermi('att:modelCat:edit')")
     @Log(title = "逻辑模型类目管理", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AttModelCatSaveReqVO attModelCat) {
@@ -103,16 +103,16 @@ public class AttModelCatController extends BaseController {
     }
 
     //    @Operation(summary = "删除逻辑模型类目管理")
-//    @PreAuthorize("@ss.hasPermi('att:cat:modelcat:remove')")
+//    @PreAuthorize("@ss.hasPermi('att:modelCat:remove')")
 //    @Log(title = "逻辑模型类目管理", businessType = BusinessType.DELETE)
 //    @DeleteMapping("/{IDs}")
 //    public CommonResult<Integer> remove(@PathVariable Long[] ids) {
 //        return CommonResult.toAjax(attModelCatService.removeAttModelCat(Arrays.asList(ids)));
 //    }
     //删除
-    @Operation(summary = "删除数据资产类目管理")
-    @PreAuthorize("@ss.hasPermi('att:cat:assetcat:remove')")
-    @Log(title = "数据资产类目管理", businessType = BusinessType.DELETE)
+    @Operation(summary = "删除逻辑模型类目管理")
+    @PreAuthorize("@ss.hasPermi('att:modelCat:remove')")
+    @Log(title = "逻辑模型类目管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ID}")
     public CommonResult<Integer> remove(@PathVariable Long ID) {
         return CommonResult.toAjax(attModelCatService.removeAttModelCat(ID));

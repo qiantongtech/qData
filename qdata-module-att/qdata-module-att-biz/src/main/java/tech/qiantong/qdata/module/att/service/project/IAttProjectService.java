@@ -7,6 +7,7 @@ import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.module.att.controller.admin.project.vo.AttProjectPageReqVO;
 import tech.qiantong.qdata.module.att.controller.admin.project.vo.AttProjectRespVO;
 import tech.qiantong.qdata.module.att.controller.admin.project.vo.AttProjectSaveReqVO;
+import tech.qiantong.qdata.module.att.controller.admin.project.vo.AttSysUserReqVO;
 import tech.qiantong.qdata.module.att.dal.dataobject.project.AttProjectDO;
 
 import java.util.Collection;
@@ -103,7 +104,7 @@ public interface IAttProjectService extends IService<AttProjectDO> {
     /**
      * 获取用户列表排除当前项目已经存在的用户
      */
-    List<SysUser> selectNoProjectUserList(JSONObject jsonObject);
+    List<SysUser> selectNoProjectUserList(AttSysUserReqVO user);
 
     Boolean editProjectStatus(Long id,Long status);
 }

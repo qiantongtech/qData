@@ -1,12 +1,12 @@
 package tech.qiantong.qdata.module.dp.controller.admin.model.vo;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.*;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
 import tech.qiantong.qdata.common.annotation.Excel;
-
-import java.io.Serializable;
 import java.util.Date;
+import java.io.Serializable;
 
 /**
  * 逻辑模型 Response VO 对象 DP_MODEL
@@ -49,6 +49,8 @@ public class DpModelRespVO implements Serializable {
     @Excel(name = "数据源id")
     @Schema(description = "数据源id", example = "")
     private Long datasourceId;
+
+    private Long documentId;
 
     @Excel(name = "联系人")
     @Schema(description = "联系人", example = "")
@@ -119,4 +121,16 @@ public class DpModelRespVO implements Serializable {
     @Excel(name = "端口号")
     @Schema(description = "端口号", example = "")
     private Long port;
+
+    /** 名称 */
+    @TableField(exist = false)
+    private String documentName;
+
+    /** 名称 */
+    @TableField(exist = false)
+    private String documentCode;
+
+    /** 文件标准类型字段， */
+    @TableField(exist = false)
+    private String documentType;
 }

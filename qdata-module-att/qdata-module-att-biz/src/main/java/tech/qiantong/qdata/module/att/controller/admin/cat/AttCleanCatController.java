@@ -1,17 +1,21 @@
 package tech.qiantong.qdata.module.att.controller.admin.cat;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import cn.hutool.core.date.DateUtil;
+import java.util.List;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import tech.qiantong.qdata.common.core.domain.AjaxResult;
+import tech.qiantong.qdata.common.core.page.PageParam;
 import tech.qiantong.qdata.common.annotation.Log;
 import tech.qiantong.qdata.common.core.controller.BaseController;
-import tech.qiantong.qdata.common.core.domain.AjaxResult;
 import tech.qiantong.qdata.common.core.domain.CommonResult;
-import tech.qiantong.qdata.common.core.page.PageParam;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.enums.BusinessType;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
@@ -23,11 +27,6 @@ import tech.qiantong.qdata.module.att.convert.cat.AttCleanCatConvert;
 import tech.qiantong.qdata.module.att.dal.dataobject.cat.AttCleanCatDO;
 import tech.qiantong.qdata.module.att.service.cat.IAttCleanCatService;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import java.util.List;
-
 /**
  * 清洗规则类目Controller
  *
@@ -36,7 +35,7 @@ import java.util.List;
  */
 @Tag(name = "清洗规则类目")
 @RestController
-@RequestMapping("/att/attCleanCat")
+@RequestMapping("/att/cleanCat")
 @Validated
 public class AttCleanCatController extends BaseController {
     @Resource
@@ -56,7 +55,7 @@ public class AttCleanCatController extends BaseController {
     }
 
     @Operation(summary = "导出清洗规则类目列表")
-    @PreAuthorize("@ss.hasPermi('att:cat:attcleancat:export')")
+    @PreAuthorize("@ss.hasPermi('att:cleanCat:export')")
     @Log(title = "清洗规则类目", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AttCleanCatPageReqVO exportReqVO) {
@@ -67,7 +66,7 @@ public class AttCleanCatController extends BaseController {
     }
 
     @Operation(summary = "导入清洗规则类目列表")
-    @PreAuthorize("@ss.hasPermi('att:cat:attcleancat:import')")
+    @PreAuthorize("@ss.hasPermi('att:cleanCat:import')")
     @Log(title = "清洗规则类目", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
@@ -86,7 +85,7 @@ public class AttCleanCatController extends BaseController {
     }
 
     @Operation(summary = "新增清洗规则类目")
-    @PreAuthorize("@ss.hasPermi('att:cat:attcleancat:add')")
+    @PreAuthorize("@ss.hasPermi('att:cleanCat:add')")
     @Log(title = "清洗规则类目", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AttCleanCatSaveReqVO attCleanCat) {
@@ -97,7 +96,7 @@ public class AttCleanCatController extends BaseController {
     }
 
     @Operation(summary = "修改清洗规则类目")
-    @PreAuthorize("@ss.hasPermi('att:cat:attcleancat:edit')")
+    @PreAuthorize("@ss.hasPermi('att:cleanCat:edit')")
     @Log(title = "清洗规则类目", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AttCleanCatSaveReqVO attCleanCat) {
@@ -108,7 +107,7 @@ public class AttCleanCatController extends BaseController {
     }
 
     @Operation(summary = "删除清洗规则类目")
-    @PreAuthorize("@ss.hasPermi('att:cat:attcleancat:remove')")
+    @PreAuthorize("@ss.hasPermi('att:cleanCat:remove')")
     @Log(title = "清洗规则类目", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long ids) {

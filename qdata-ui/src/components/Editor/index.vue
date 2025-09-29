@@ -87,8 +87,8 @@ const options = ref({
       ["blockquote", "code-block"],                   // 引用  代码块
       [{ list: "ordered" }, { list: "bullet" }],      // 有序、无序列表
       [{ indent: "-1" }, { indent: "+1" }],           // 缩进
-      // [{ size: ["small", false, "large", "huge"] }],  // 字体大小
-      [{ header: [1, 2, 3, 4, false] }],        // 标题
+      [{ size: ["small", false, "large", "huge"] }],  // 字体大小
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],        // 标题
       [{ color: [] }, { background: [] }],            // 字体颜色、字体背景颜色
       [{ align: [] }],                                // 对齐方式
       ["clean"],                                      // 清除文本格式
@@ -138,14 +138,14 @@ function handleBeforeUpload(file) {
   const isJPG = type.includes(file.type);
   //检验文件格式
   if (!isJPG) {
-    proxy.$modal.msgWarning(`格式错误, 请上传正确格式文件`);
+    proxy.$modal.msgError(`图片格式错误!`);
     return false;
   }
   // 校检文件大小
   if (props.fileSize) {
     const isLt = file.size / 1024 / 1024 < props.fileSize;
     if (!isLt) {
-      proxy.$modal.msgWarning(`大小超出限制，文件大小不能超过 ${props.fileSize} MB`);
+      proxy.$modal.msgError(`上传文件大小不能超过 ${props.fileSize} MB!`);
       return false;
     }
   }
@@ -165,13 +165,13 @@ function handleUploadSuccess(res, file) {
     // 调整光标到最后
     quill.setSelection(length + 1);
   } else {
-    proxy.$modal.msgWarning("图片插入失败，请联系管理员");
+    proxy.$modal.msgError("图片插入失败");
   }
 }
 
 // 上传失败处理
 function handleUploadError() {
-  proxy.$modal.msgWarning("图片插入失败，请联系管理员");
+  proxy.$modal.msgError("图片插入失败");
 }
 </script>
 
@@ -252,36 +252,5 @@ function handleUploadError() {
 .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="monospace"]::before,
 .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="monospace"]::before {
   content: "等宽字体";
-}
-
-/* 自定义编辑器内容样式 */
-.ql-snow .ql-editor {
-
-  h1, h2, h3, h4 {
-    font-weight: 600;
-    margin: 0.67em 0;
-  }
-
-  h1 { font-size: 2em; }
-  h2 { font-size: 1.5em; margin: 0.83em 0; }
-  h3 { font-size: 1.17em; margin: 1em 0; }
-
-  p {
-    margin: 1em 0;
-  }
-
-  ul, ol {
-    margin: 1em 0;
-    padding-left: 2em;
-  }
-
-  img {
-    display: block;
-    max-width: 100%;
-    height: auto;
-    margin: 1em 0;
-    border-radius: 2px;
-    text-align: center;
-  }
 }
 </style>

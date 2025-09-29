@@ -1,5 +1,5 @@
 <template>
-    <div class="upload-file" :class="{ 'has-file': fileList.length > 0 }">
+    <div class="upload-file">
         <el-upload :limit="limit" :action="uploadFileUrl" :before-upload="handleBeforeUpload"
             :on-success="handleUploadSuccess" :on-error="handleUploadError" :on-exceed="handleExceed" :headers="headers"
             :data="uploadData" :drag="dragFlag" :file-list="fileList"
@@ -23,7 +23,7 @@
                 <el-icon>
                     <Document />
                 </el-icon>
-                <span class="file-name" @click="handleFilePreview(file.url)">
+                <span class="file-name" @click="handleView(file)">
                     {{ getFileName(file.name || file.url) }}
                 </span>
                 <span class="file-date">{{ file.uploadDate || formatDate(file.uid) }}</span>
@@ -42,7 +42,6 @@
 import { ref, watch } from 'vue'
 import { ElMessage } from 'element-plus'
 import { getToken } from '@/utils/auth'
-import handleFilePreview from '@/utils/filePreview.js'
 import { Document, Download, Delete } from '@element-plus/icons-vue'
 
 const props = defineProps({
@@ -56,13 +55,12 @@ const props = defineProps({
     platForm: { type: String, default: '' },
 })
 
-const emit = defineEmits(['update:modelValue', 'update:filename'])
+const emit = defineEmits(['update:modelValue'])
 
 const fileList = ref([])
 const uploadFileUrl = import.meta.env.VITE_APP_BASE_API + '/upload'
 const headers = { Authorization: 'Bearer ' + getToken() }
 const uploadData = { platForm: props.platForm }
-
 function handleRemove(file) {
     const index = fileList.value.findIndex(f => f.uid === file.uid)
     if (index !== -1) {
@@ -71,7 +69,6 @@ function handleRemove(file) {
     }
     emit("handleRemove");
 }
-
 watch(
     () => props.modelValue,
     (val) => {
@@ -95,12 +92,12 @@ watch(
 function handleBeforeUpload(file) {
     const ext = file.name.split('.').pop().toLowerCase()
     if (!props.fileType.includes(ext)) {
-        ElMessage.warning(`文件格式不正确，请上传 ${props.fileType.join('/')} 格式文件`)
+        ElMessage.error(`文件格式不正确，请上传 ${props.fileType.join('/')} 格式文件`)
         return false
     }
     const size = file.size / 1024 / 1024
     if (size > props.fileSize) {
-        ElMessage.warning(`大小超出限制，文件大小不能超过 ${props.fileSize}MB`)
+        ElMessage.error(`文件大小不能超过 ${props.fileSize}MB`)
         return false
     }
     return true
@@ -116,9 +113,6 @@ function handleUploadSuccess(res, file) {
         if (res.size) {
             emit("update:fileSize", res.size); // 更新文件大小
         }
-        if (res.filename) {
-            emit('update:filename', res.filename)
-        }
         if (res.ext) {
             emit("update:fileExt", res.ext); // 更新文件后缀名
         }
@@ -126,24 +120,50 @@ function handleUploadSuccess(res, file) {
     } else {
         number.value--;
         proxy.$modal.closeLoading();
-        proxy.$modal.msgWarning("上传文件失败，请重试");
+        proxy.$modal.msgError(res.msg);
         proxy.$refs.fileUpload.handleRemove(file);
         uploadedSuccessfully();
     }
 }
 function handleUploadError() {
-    ElMessage.warning('上传文件失败，请重试')
+    ElMessage.error('上传文件失败')
 }
 
 function handleExceed() {
-    ElMessage.warning(`数量超过限制，最多只能上传 ${props.limit} 个文件`)
+    ElMessage.warning(`最多只能上传 ${props.limit} 个文件`)
 }
 
 function handleDelete(index) {
     fileList.value.splice(index, 1)
     emit('update:modelValue', fileList.value.map((f) => f.url).join(','))
 }
-
+const base64Encode = (str) => {
+    return btoa(
+        encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function (match, p1) {
+            return String.fromCharCode("0x" + p1);
+        })
+    );
+};
+const handleView = (row) => {
+    const rpUrl = import.meta.env.VITE_RP_VIEW_URL;
+    const baseUrl = import.meta.env.VITE_APP_BASE_API;
+    const fullUrl = `${baseUrl}${row.url.trim()}`;
+    console.log(fullUrl);
+    // 获取屏幕尺寸
+    const screenWidth = window.screen.width;
+    const screenHeight = window.screen.height;
+    // 设置窗口尺寸为屏幕尺寸的一部分，例如60%
+    const width = screenWidth * 0.7;
+    const height = screenHeight * 0.7;
+    // 计算窗口居中时的左上角位置
+    const left = (screenWidth - width) / 2;
+    const top = (screenHeight - height) / 2;
+    // 打开新窗口并居中
+    const newWindow = window.open(rpUrl + "/onlinePreview?url=" + encodeURIComponent(base64Encode(fullUrl)), "", `scrollbars=yes, width=${width}, height=${height}, top=${top}, left=${left}`);
+    if (window.focus) {
+        newWindow.focus();
+    }
+};
 function handleDownload(file) {
     const baseUrl = import.meta.env.VITE_APP_BASE_API;
     const fullUrl = `${baseUrl}${file.url.trim()}`;
@@ -169,24 +189,13 @@ function formatDate(uid) {
 <style scoped>
 .upload-file {
     width: 100%;
-    margin-top: -3px;
-    margin-bottom: -7px;
-
-}
-
-.has-file {
-    margin-top: 0px;
-    margin-bottom: -17px;
 }
 
 .custom-file-list {
     list-style: none;
     padding: 0;
-    margin: 0;
-    margin-top: -5px;
+    margin: 10px 0;
 }
-
-
 
 .file-item {
     display: flex;

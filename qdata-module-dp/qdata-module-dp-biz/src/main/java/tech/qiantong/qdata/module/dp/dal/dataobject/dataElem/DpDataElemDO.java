@@ -1,10 +1,15 @@
 package tech.qiantong.qdata.module.dp.dal.dataobject.dataElem;
 
-import com.baomidou.mybatisplus.annotation.*;
-import lombok.*;
-import tech.qiantong.qdata.common.core.domain.BaseEntity;
-
+import java.util.List;
 import java.util.Set;
+
+import lombok.*;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableName;
+import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
  * 数据元 DO 对象 DP_DATA_ELEM
@@ -102,4 +107,18 @@ public class DpDataElemDO extends BaseEntity {
 
     @TableField(exist = false)
     private Set<Long> columnId;
+
+    private Long documentId;
+
+    /** 名称 */
+    @TableField(exist = false)
+    private String documentName;
+
+    /** 名称 */
+    @TableField(exist = false)
+    private String documentCode;
+
+    /** 文件标准类型字段， */
+    @TableField(exist = false)
+    private String documentType;
 }

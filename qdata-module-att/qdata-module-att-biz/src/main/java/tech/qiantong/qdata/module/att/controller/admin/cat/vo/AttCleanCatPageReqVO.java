@@ -32,6 +32,8 @@ public class AttCleanCatPageReqVO extends PageParam {
     private String code;
 
 
+    private Boolean validFlag;
+
 
 
 }

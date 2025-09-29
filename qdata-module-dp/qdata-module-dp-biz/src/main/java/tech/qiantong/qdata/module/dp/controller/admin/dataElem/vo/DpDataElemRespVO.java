@@ -1,12 +1,14 @@
 package tech.qiantong.qdata.module.dp.controller.admin.dataElem.vo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-import tech.qiantong.qdata.common.annotation.Excel;
+import java.util.List;
 
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.*;
+import io.swagger.v3.oas.annotations.media.Schema;
+import tech.qiantong.qdata.common.annotation.Excel;
 import java.util.Date;
+import java.io.Serializable;
 
 /**
  * 数据元 Response VO 对象 DP_DATA_ELEM
@@ -110,4 +112,18 @@ public class DpDataElemRespVO implements Serializable {
     @Excel(name = "备注")
     @Schema(description = "备注", example = "")
     private String remark;
+
+    private Long documentId;
+
+    /** 名称 */
+    @TableField(exist = false)
+    private String documentName;
+
+    /** 名称 */
+    @TableField(exist = false)
+    private String documentCode;
+
+    /** 文件标准类型字段， */
+    @TableField(exist = false)
+    private String documentType;
 }

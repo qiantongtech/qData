@@ -1,6 +1,6 @@
 package tech.qiantong.qdata.module.dp.api.dataElem.dto;
 
-import lombok.Data;
+import lombok.*;
 
 /**
  * 数据元代码 DTO 对象 DP_DATA_ELEM_CODE

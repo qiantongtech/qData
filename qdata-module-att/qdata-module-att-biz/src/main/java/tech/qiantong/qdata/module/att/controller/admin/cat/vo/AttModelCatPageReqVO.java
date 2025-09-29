@@ -22,6 +22,8 @@ public class AttModelCatPageReqVO extends PageParam {
     private String code;
 
 
+    private Boolean validFlag;
+
 
 
 

@@ -1,17 +1,22 @@
 package tech.qiantong.qdata.module.att.controller.admin.cat;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.util.Arrays;
 import cn.hutool.core.date.DateUtil;
+import java.util.List;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import tech.qiantong.qdata.common.core.domain.AjaxResult;
+import tech.qiantong.qdata.common.core.page.PageParam;
 import tech.qiantong.qdata.common.annotation.Log;
 import tech.qiantong.qdata.common.core.controller.BaseController;
-import tech.qiantong.qdata.common.core.domain.AjaxResult;
 import tech.qiantong.qdata.common.core.domain.CommonResult;
-import tech.qiantong.qdata.common.core.page.PageParam;
 import tech.qiantong.qdata.common.enums.BusinessType;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.common.utils.poi.ExcelUtil;
@@ -22,12 +27,6 @@ import tech.qiantong.qdata.module.att.convert.cat.AttQualityCatConvert;
 import tech.qiantong.qdata.module.att.dal.dataobject.cat.AttQualityCatDO;
 import tech.qiantong.qdata.module.att.service.cat.IAttQualityCatService;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * 数据质量类目Controller
  *
@@ -36,7 +35,7 @@ import java.util.List;
  */
 @Tag(name = "数据质量类目")
 @RestController
-@RequestMapping("/att/AttQualityCat")
+@RequestMapping("/att/qualityCat")
 @Validated
 public class AttQualityCatController extends BaseController {
     @Resource
@@ -60,7 +59,7 @@ public class AttQualityCatController extends BaseController {
     }
 
     @Operation(summary = "导入数据质量类目列表")
-    @PreAuthorize("@ss.hasPermi('att:cat:attqualitycat:import')")
+    @PreAuthorize("@ss.hasPermi('att:qualityCat:import')")
     @Log(title = "数据质量类目", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
@@ -79,7 +78,7 @@ public class AttQualityCatController extends BaseController {
     }
 
     @Operation(summary = "新增数据质量类目")
-    @PreAuthorize("@ss.hasPermi('att:cat:attqualitycat:add')")
+    @PreAuthorize("@ss.hasPermi('att:qualityCat:add')")
     @Log(title = "数据质量类目", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AttQualityCatSaveReqVO attQualityCat) {
@@ -90,7 +89,7 @@ public class AttQualityCatController extends BaseController {
     }
 
     @Operation(summary = "修改数据质量类目")
-    @PreAuthorize("@ss.hasPermi('att:cat:attqualitycat:edit')")
+    @PreAuthorize("@ss.hasPermi('att:qualityCat:edit')")
     @Log(title = "数据质量类目", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AttQualityCatSaveReqVO attQualityCat) {
@@ -101,7 +100,7 @@ public class AttQualityCatController extends BaseController {
     }
 
     @Operation(summary = "删除数据质量类目")
-    @PreAuthorize("@ss.hasPermi('att:cat:attqualitycat:remove')")
+    @PreAuthorize("@ss.hasPermi('att:qualityCat:remove')")
     @Log(title = "数据质量类目", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {

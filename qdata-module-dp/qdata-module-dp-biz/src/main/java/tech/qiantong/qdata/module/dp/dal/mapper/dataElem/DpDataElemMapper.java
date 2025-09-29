@@ -2,14 +2,20 @@ package tech.qiantong.qdata.module.dp.dal.mapper.dataElem;
 
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import org.apache.commons.lang3.StringUtils;
-import tech.qiantong.qdata.common.core.page.PageResult;
-import tech.qiantong.qdata.module.dp.controller.admin.dataElem.vo.DpDataElemPageReqVO;
 import tech.qiantong.qdata.module.dp.dal.dataobject.dataElem.DpDataElemDO;
-import tech.qiantong.qdata.mybatis.core.mapper.BaseMapperX;
 
 import java.util.Arrays;
+
+import com.github.yulichang.base.MPJBaseMapper;
+import tech.qiantong.qdata.common.core.page.PageResult;
+
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
+import tech.qiantong.qdata.module.dp.controller.admin.dataElem.vo.DpDataElemPageReqVO;
+import tech.qiantong.qdata.mybatis.core.mapper.BaseMapperX;
+import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
 
 /**
  * 数据元Mapper接口
@@ -33,6 +39,7 @@ public interface DpDataElemMapper extends BaseMapperX<DpDataElemDO> {
                 .eq(StringUtils.isNotBlank(reqVO.getType()), DpDataElemDO::getType, reqVO.getType())
                 .eq(StringUtils.isNotBlank(reqVO.getColumnType()), DpDataElemDO::getColumnType, reqVO.getColumnType())
                 .eq(StringUtils.isNotBlank(reqVO.getStatus()), DpDataElemDO::getStatus, reqVO.getStatus())
+                .eq(reqVO.getDocumentId()!= null, DpDataElemDO::getDocumentId, reqVO.getDocumentId())
                 .orderByStr(StringUtils.isNotBlank(reqVO.getOrderByColumn()), StringUtils.equals("asc", reqVO.getIsAsc()), StringUtils.isNotBlank(reqVO.getOrderByColumn()) ? Arrays.asList(reqVO.getOrderByColumn().split(",")) : null);
         return selectJoinPage(reqVO, DpDataElemDO.class, lambdaWrapper);
     }

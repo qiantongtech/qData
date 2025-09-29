@@ -1,23 +1,30 @@
 <template>
   <div class="editor-warp">
     <div class="sideConfig">
-      <div class="icon" :class="{ act: activeValue.name == item.name }" v-for="item in iconList" :key="item" @click="handleIcon(item)" :title="item.name">
-        <el-icon><component :is="item.icon" /></el-icon>
+      <div class="icon" :class="{ act: activeValue.name == item.name }" v-for="item in iconList" :key="item"
+        @click="handleIcon(item)" :title="item.name">
+        <el-icon>
+          <component :is="item.icon" />
+        </el-icon>
       </div>
     </div>
     <div class="editor-con" :style="`width: calc(100% - ${configWidth}px);`">
       <div class="editor-main" ref="editorMain" :style="`height: calc(100% - ${consoleHeight}px);`">
         <Editor ref="editorRef" :model-value="props.value" @update:model-value="handleChange" />
         <div class="full-screen" :title="isFullscreen ? '退出全屏' : '全屏'" @click="fullScreenCallBack">
-          <i :class="isFullscreen ? 'iconfont icon-fullscreen-exit-line' : 'iconfont icon-a-quanpingxianxing'" style="font-size: 20px"></i>
+          <i :class="isFullscreen ? 'iconfont icon-fullscreen-exit-line' : 'iconfont icon-a-quanpingxianxing'"
+            style="font-size: 20px"></i>
         </div>
       </div>
       <Console ref="consoleRef" :currValue="activeValue" @close="closeConsoleDialog" v-if="activeValue.type" />
     </div>
     <ConfigView ref="configViewRef" :configValue="activeValueR" @close="closeConsoleDialogR" v-if="activeValueR.type" />
     <div class="sideConfig sideConfig-r">
-      <div class="icon" :class="{ act: activeValueR.name == item.name }" v-for="item in iconListR" :key="item" @click="handleIconR(item)" :title="item.name">
-        <el-icon><component :is="item.icon" /></el-icon>
+      <div class="icon" :class="{ act: activeValueR.name == item.name }" v-for="item in iconListR" :key="item"
+        @click="handleIconR(item)" :title="item.name">
+        <el-icon>
+          <component :is="item.icon" />
+        </el-icon>
       </div>
     </div>
   </div>
@@ -137,48 +144,58 @@ const handleChange = (value) => {
   height: 100%;
   position: relative;
   padding: 15px 0px 15px 0px;
-  background: #fff;
+  background: #F9F9F9;
   display: flex;
+
   .sideConfig {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     padding: 0 4px;
+
     .icon {
       font-size: 16px;
       padding: 6px;
       border-radius: 6px;
       margin-top: 4px;
+
       &:hover {
         background-color: #e6f7ff;
       }
+
       &.act {
         background-color: #e6f7ff;
       }
     }
+
     &.sideConfig-r {
       justify-content: flex-start;
+
       .icon {
         margin-top: 0px;
         margin-bottom: 4px;
       }
     }
   }
+
   .editor-con {
     width: 100%;
     height: 100%;
+
     .editor-main {
       position: relative;
       width: 100%;
       height: 100%;
       display: flex;
       flex-direction: column;
+
       .json-editor {
         border-bottom: none;
       }
     }
   }
 }
+
 .full-screen {
   cursor: pointer;
   position: absolute;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="tech.qiantong.qdata.module.dp.dal.mapper.model.DpModelMapper">
 
     <resultMap type="DpModelDO" id="DpModelResult">
@@ -12,6 +12,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="status"    column="STATUS"    />
         <result property="createType"    column="CREATE_TYPE"    />
         <result property="datasourceId"    column="DATASOURCE_ID"    />
+        <result property="documentId"    column="DOCUMENT_ID"    />
         <result property="contact"    column="CONTACT"    />
         <result property="contactNumber"    column="CONTACT_NUMBER"    />
         <result property="description"    column="DESCRIPTION"    />
@@ -27,7 +28,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectDpModelVo">
-        select ID, MODEL_NAME, MODEL_COMMENT, CAT_CODE, STATUS, CREATE_TYPE, DATASOURCE_ID, CONTACT, CONTACT_NUMBER, DESCRIPTION, VALID_FLAG, DEL_FLAG, CREATE_BY, CREATOR_ID, CREATE_TIME, UPDATE_BY, UPDATER_ID, UPDATE_TIME, REMARK from DP_MODEL
+        select ID, MODEL_NAME, MODEL_COMMENT, CAT_CODE, STATUS, CREATE_TYPE, DATASOURCE_ID, DOCUMENT_ID, CONTACT, CONTACT_NUMBER, DESCRIPTION, VALID_FLAG, DEL_FLAG, CREATE_BY, CREATOR_ID, CREATE_TIME, UPDATE_BY, UPDATER_ID, UPDATE_TIME, REMARK from DP_MODEL
     </sql>
 
     <select id="selectDpModelList" parameterType="DpModelDO" resultMap="DpModelResult">
@@ -36,6 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="modelName != null  and modelName != ''"> and MODEL_NAME like concat('%', #{modelName}, '%')</if>
             <if test="modelComment != null  and modelComment != ''"> and MODEL_COMMENT = #{modelComment}</if>
             <if test="status != null  and status != ''"> and STATUS = #{status}</if>
+            <if test="documentId != null  and documentId != ''"> and DOCUMENT_ID = #{documentId}</if>
         </where>
     </select>
 
@@ -54,6 +56,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="status != null and status != ''">STATUS,</if>
             <if test="createType != null and createType != ''">CREATE_TYPE,</if>
             <if test="datasourceId != null">DATASOURCE_ID,</if>
+            <if test="documentId != null">DOCUMENT_ID,</if>
             <if test="contact != null">CONTACT,</if>
             <if test="contactNumber != null">CONTACT_NUMBER,</if>
             <if test="description != null">DESCRIPTION,</if>
@@ -66,7 +69,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updaterId != null">UPDATER_ID,</if>
             <if test="updateTime != null">UPDATE_TIME,</if>
             <if test="remark != null">REMARK,</if>
-         </trim>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="ID != null">#{ID},</if>
             <if test="modelName != null and modelName != ''">#{modelName},</if>
@@ -75,6 +78,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="status != null and status != ''">#{status},</if>
             <if test="createType != null and createType != ''">#{createType},</if>
             <if test="datasourceId != null">#{datasourceId},</if>
+            <if test="documentId != null">#{documentId},</if>
             <if test="contact != null">#{contact},</if>
             <if test="contactNumber != null">#{contactNumber},</if>
             <if test="description != null">#{description},</if>
@@ -87,7 +91,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updaterId != null">#{updaterId},</if>
             <if test="updateTime != null">#{updateTime},</if>
             <if test="remark != null">#{remark},</if>
-         </trim>
+        </trim>
     </insert>
 
     <update id="updateDpModel" parameterType="DpModelDO">
@@ -99,6 +103,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="status != null and status != ''">STATUS = #{status},</if>
             <if test="createType != null and createType != ''">CREATE_TYPE = #{createType},</if>
             <if test="datasourceId != null">DATASOURCE_ID = #{datasourceId},</if>
+            <if test="documentId != null">DOCUMENT_ID = #{documentId},</if>
             <if test="contact != null">CONTACT = #{contact},</if>
             <if test="contactNumber != null">CONTACT_NUMBER = #{contactNumber},</if>
             <if test="description != null">DESCRIPTION = #{description},</if>

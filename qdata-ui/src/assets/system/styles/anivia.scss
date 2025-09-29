@@ -1131,7 +1131,7 @@
 
     .el-dialog__body {
       overflow: auto;
-      height: 550px;
+      // height: 550px;
       padding: 20px 40px !important;
       // border: 1px solid red;
     }
@@ -1146,15 +1146,16 @@
   .el-dialog.large-dialog {
     width: 1200px !important;
     .el-dialog__body {
-      height: 700px;
+      // height: 700px;
     }
   }
   .el-dialog.medium-dialog {
     // width: 1000px !important;
     width: 1200px !important;
     .el-dialog__body {
-      height: 700px;
+      // height: 700px;
       // border: 1px solid red;
+         max-height: 80vh;
     }
   }
   .el-form-item__error {
@@ -1198,6 +1199,30 @@
       align-items: center;
       font-size: 18px;
       font-weight: 600;
+      .task-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.task-id {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2px;             
+  background-color: #2666fb;  
+  color: #fff;               
+  font-size: 14px;
+  border-radius: 0;           
+  aspect-ratio: 1 / 1;        
+  min-width: 20px;            
+  min-height: 20px;          
+}
+
+.task-name {
+}
+
     }
     .border-top {
       border-top: 1px solid #f0f3f9;
@@ -1213,7 +1238,7 @@
     .infotop-row-lable {
       width: 150px;
       border-right: 1px solid #f0f3f9;
-      height: 50px;
+      height: 40px;
       display: flex;
       align-items: center;
       padding: 10px;
@@ -1222,17 +1247,17 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      display: block;
     }
     .infotop-row-value {
       flex: 1;
-      height: 50px;
+      height: 40px;
+      display: flex;
+      align-items: center;
       padding: 10px;
       color: #494a4a;
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
-      display: block;
     }
   }
 
@@ -1349,4 +1374,87 @@ input:-internal-autofill-selected {
 }
 ._fc-m-con > a {
   filter: opacity(0) !important;
+}
+// 详细信息 平均分布
+.basicInfo {
+  .el-descriptions__table {
+    table-layout: fixed !important;
+    width: 100%;
+  }
+  .el-descriptions__cell {
+    word-break: break-word;
+    white-space: normal;
+    vertical-align: top;
+  }
+}
+// 详情弹框
+.el-dialog {
+  .form-readonly {
+    width: 100%;
+    border: 1px solid #f1f1f1;
+    padding: 0px 10px;
+    min-height: 34px;
+    background-color: #fcfcfc;
+    border-radius: 2px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    white-space: pre-wrap; /* 保留空格和换行 */
+    word-wrap: break-word; /* 长单词或长串强制换行 */
+    word-break: break-all; /* 中文或连续字符强制换行 */
+  }
+  .h2-title {
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.85);
+    display: flex;
+    align-items: center;
+    font-family: PingFang SC;
+    font-weight: 500;
+    margin: 8px 0;
+    &::before {
+      display: inline-block;
+      content: "";
+      width: 6px;
+      height: 16px;
+      border-radius: 3px;
+      background: var(--el-color-primary);
+      margin-right: 8px;
+    }
+  }
+  // 文本域
+   .textarea{
+      min-height: 85px;
+      display: block; 
+    }
+}
+  .h2-titles {
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.85);
+    display: flex;
+    align-items: center;
+    font-family: PingFang SC;
+    font-weight: 500;
+    margin: 8px 0;
+    &::before {
+      display: inline-block;
+      content: "";
+      width: 6px;
+      height: 16px;
+      border-radius: 3px;
+      background: var(--el-color-primary);
+      margin-right: 8px;
+    }
+  }
+/* 1. 禁用状态 */
+.icon-disabled {
+  filter: currentcolor !important;
+}
+/* 2. 正常状态（企业颜色） */
+.icon-normal {
+  fill: grayscale(100%) brightness(70%) !important;
+  transition: filter 0.3s;
+}
+/* 3. hover 状态 */
+.el-button:hover .icon-normal {
+  filter: brightness(120%);
 }

@@ -10,7 +10,7 @@ export function listAttTag(query) {
 }
 export function listDict(query) {
   return request({
-    url: '/att/AttTag/listDict',
+    url: '/att/tag/listDict',
     method: 'get',
     params: query
   })

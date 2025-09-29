@@ -1,9 +1,11 @@
 package tech.qiantong.qdata.module.dp.dal.dataobject.model;
 
+import lombok.*;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.*;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
@@ -48,6 +50,8 @@ public class DpModelDO extends BaseEntity {
     /** 数据源id */
     private Long datasourceId;
 
+    private Long documentId;
+
     /** 联系人 */
     private String contact;
 
@@ -86,4 +90,16 @@ public class DpModelDO extends BaseEntity {
     /** 端口号 */
     @TableField(exist = false)
     private Long port;
+
+    /** 名称 */
+    @TableField(exist = false)
+    private String documentName;
+
+    /** 名称 */
+    @TableField(exist = false)
+    private String documentCode;
+
+    /** 文件标准类型字段， */
+    @TableField(exist = false)
+    private String documentType;
 }

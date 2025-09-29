@@ -1,33 +1,33 @@
 package tech.qiantong.qdata.module.ds.controller.admin.apiLog;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.util.Arrays;
 import cn.hutool.core.date.DateUtil;
+import java.util.List;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import tech.qiantong.qdata.common.core.domain.AjaxResult;
+import tech.qiantong.qdata.common.core.page.PageParam;
 import tech.qiantong.qdata.common.annotation.Log;
 import tech.qiantong.qdata.common.core.controller.BaseController;
-import tech.qiantong.qdata.common.core.domain.AjaxResult;
 import tech.qiantong.qdata.common.core.domain.CommonResult;
-import tech.qiantong.qdata.common.core.page.PageParam;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.enums.BusinessType;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.common.utils.poi.ExcelUtil;
+import tech.qiantong.qdata.common.exception.enums.GlobalErrorCodeConstants;
 import tech.qiantong.qdata.module.ds.controller.admin.apiLog.vo.DsApiLogPageReqVO;
 import tech.qiantong.qdata.module.ds.controller.admin.apiLog.vo.DsApiLogRespVO;
 import tech.qiantong.qdata.module.ds.controller.admin.apiLog.vo.DsApiLogSaveReqVO;
 import tech.qiantong.qdata.module.ds.convert.apiLog.DsApiLogConvert;
 import tech.qiantong.qdata.module.ds.dal.dataobject.apiLog.DsApiLogDO;
 import tech.qiantong.qdata.module.ds.service.apiLog.IDsApiLogService;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * API服务调用日志Controller
@@ -44,7 +44,7 @@ public class DsApiLogController extends BaseController {
     private IDsApiLogService dsApiLogService;
 
     @Operation(summary = "查询API服务调用日志列表")
-    @PreAuthorize("@ss.hasPermi('ds:apiLog:apilog:list')")
+    @PreAuthorize("@ss.hasPermi('ds:apiLog:list')")
     @GetMapping("/list")
     public CommonResult<PageResult<DsApiLogRespVO>> list(DsApiLogPageReqVO dsApiLog) {
         PageResult<DsApiLogDO> page = dsApiLogService.getDsApiLogPage(dsApiLog);
@@ -52,7 +52,7 @@ public class DsApiLogController extends BaseController {
     }
 
     @Operation(summary = "导出API服务调用日志列表")
-    @PreAuthorize("@ss.hasPermi('ds:apiLog:apilog:export')")
+    @PreAuthorize("@ss.hasPermi('ds:apiLog:export')")
     @Log(title = "API服务调用日志", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DsApiLogPageReqVO exportReqVO) {
@@ -63,7 +63,7 @@ public class DsApiLogController extends BaseController {
     }
 
     @Operation(summary = "导入API服务调用日志列表")
-    @PreAuthorize("@ss.hasPermi('ds:apiLog:apilog:import')")
+    @PreAuthorize("@ss.hasPermi('ds:apiLog:import')")
     @Log(title = "API服务调用日志", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
@@ -75,7 +75,7 @@ public class DsApiLogController extends BaseController {
     }
 
     @Operation(summary = "获取API服务调用日志详细信息")
-    @PreAuthorize("@ss.hasPermi('ds:apiLog:apilog:query')")
+    @PreAuthorize("@ss.hasPermi('ds:apiLog:query')")
     @GetMapping(value = "/{ID}")
     public CommonResult<DsApiLogRespVO> getInfo(@PathVariable("ID") Long ID) {
         DsApiLogDO dsApiLogDO = dsApiLogService.getDsApiLogById(ID);
@@ -86,7 +86,7 @@ public class DsApiLogController extends BaseController {
     }
 
     @Operation(summary = "新增API服务调用日志")
-    @PreAuthorize("@ss.hasPermi('ds:apiLog:apilog:add')")
+    @PreAuthorize("@ss.hasPermi('ds:apiLog:add')")
     @Log(title = "API服务调用日志", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DsApiLogSaveReqVO dsApiLog) {
@@ -97,7 +97,7 @@ public class DsApiLogController extends BaseController {
     }
 
     @Operation(summary = "修改API服务调用日志")
-    @PreAuthorize("@ss.hasPermi('ds:apiLog:apilog:edit')")
+    @PreAuthorize("@ss.hasPermi('ds:apiLog:edit')")
     @Log(title = "API服务调用日志", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DsApiLogSaveReqVO dsApiLog) {
@@ -108,7 +108,7 @@ public class DsApiLogController extends BaseController {
     }
 
     @Operation(summary = "删除API服务调用日志")
-    @PreAuthorize("@ss.hasPermi('ds:apiLog:apilog:remove')")
+    @PreAuthorize("@ss.hasPermi('ds:apiLog:remove')")
     @Log(title = "API服务调用日志", businessType = BusinessType.DELETE)
     @DeleteMapping("/{id}")
     public CommonResult<Integer> remove(@PathVariable Long[] id) {

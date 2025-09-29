@@ -36,14 +36,13 @@ import java.util.List;
  */
 @Tag(name = "数据资产类目管理")
 @RestController
-@RequestMapping("/att/attAssetCat")
+@RequestMapping("/att/assetCat")
 @Validated
 public class AttAssetCatController extends BaseController {
     @Resource
     private IAttAssetCatService attAssetCatService;
 
     @Operation(summary = "查询数据资产类目管理列表")
-    @PreAuthorize("@ss.hasPermi('att:cat:assetcat:list')")
     @GetMapping("/list")
     public CommonResult<List<AttAssetCatRespVO>> list(AttAssetCatPageReqVO attAssetCat) {
         List<AttAssetCatDO> attAssetCatList = attAssetCatService.getAttAssetCatList(attAssetCat);
@@ -51,7 +50,7 @@ public class AttAssetCatController extends BaseController {
     }
 
     @Operation(summary = "导出数据资产类目管理列表")
-    @PreAuthorize("@ss.hasPermi('att:cat:assetcat:export')")
+    @PreAuthorize("@ss.hasPermi('att:assetCat:export')")
     @Log(title = "数据资产类目管理", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AttAssetCatPageReqVO exportReqVO) {
@@ -62,7 +61,7 @@ public class AttAssetCatController extends BaseController {
     }
 
     @Operation(summary = "导入数据资产类目管理列表")
-    @PreAuthorize("@ss.hasPermi('att:cat:assetcat:import')")
+    @PreAuthorize("@ss.hasPermi('att:assetCat:import')")
     @Log(title = "数据资产类目管理", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
@@ -74,7 +73,7 @@ public class AttAssetCatController extends BaseController {
     }
 
     @Operation(summary = "获取数据资产类目管理详细信息")
-    @PreAuthorize("@ss.hasPermi('att:cat:assetcat:query')")
+    @PreAuthorize("@ss.hasPermi('att:assetCat:query')")
     @GetMapping(value = "/{ID}")
     public CommonResult<AttAssetCatRespVO> getInfo(@PathVariable("ID") Long ID) {
         AttAssetCatDO attAssetCatDO = attAssetCatService.getAttAssetCatById(ID);
@@ -82,7 +81,7 @@ public class AttAssetCatController extends BaseController {
     }
 
     @Operation(summary = "新增数据资产类目管理")
-    @PreAuthorize("@ss.hasPermi('att:cat:assetcat:add')")
+    @PreAuthorize("@ss.hasPermi('att:assetCat:add')")
     @Log(title = "数据资产类目管理", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AttAssetCatSaveReqVO attAssetCat) {
@@ -93,7 +92,7 @@ public class AttAssetCatController extends BaseController {
     }
 
     @Operation(summary = "修改数据资产类目管理")
-    @PreAuthorize("@ss.hasPermi('att:cat:assetcat:edit')")
+    @PreAuthorize("@ss.hasPermi('att:assetCat:edit')")
     @Log(title = "数据资产类目管理", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AttAssetCatSaveReqVO attAssetCat) {
@@ -104,7 +103,7 @@ public class AttAssetCatController extends BaseController {
     }
 
     @Operation(summary = "删除数据资产类目管理")
-    @PreAuthorize("@ss.hasPermi('att:cat:assetcat:remove')")
+    @PreAuthorize("@ss.hasPermi('att:assetCat:remove')")
     @Log(title = "数据资产类目管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {

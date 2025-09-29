@@ -1,5 +1,20 @@
 import { parseTime } from './anivia.js'
 
+// 判断数组中是否有重复
+export function hasDuplicateObjects(arr, key) {
+  if (arr.length <= 1) return false;
+  const seen = new Set(); // 记录已出现的键值
+  for (const item of arr) {
+    const value = item[key];
+    // 若当前键值已存在于Set中，说明有重复
+    if (seen.has(value)) {
+      return true;
+    }
+    seen.add(value);
+  }
+  return false;
+}
+
 /**
  * 表格时间格式化
  */

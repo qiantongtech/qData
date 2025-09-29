@@ -1,8 +1,10 @@
 package tech.qiantong.qdata.module.att.dal.mapper.cat;
 
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
+import tech.qiantong.qdata.module.att.dal.dataobject.cat.AttAssetCatDO;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.module.att.controller.admin.cat.vo.AttAssetCatPageReqVO;
-import tech.qiantong.qdata.module.att.dal.dataobject.cat.AttAssetCatDO;
 import tech.qiantong.qdata.mybatis.core.mapper.BaseMapperX;
 import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
 
@@ -29,4 +31,8 @@ public interface AttAssetCatMapper extends BaseMapperX<AttAssetCatDO> {
                 .orderByAsc(AttAssetCatDO::getSortOrder));
 
     }
+
+    @Update(value = "update ATT_ASSET_CAT set VALID_FLAG=#{validFlag} where code like concat(#{prefixCode}, '%')")
+    int updateValidFlag(@Param("prefixCode") String prefixCode, @Param("validFlag") Boolean validFlag);
+
 }

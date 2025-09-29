@@ -21,6 +21,7 @@ import tech.qiantong.qdata.module.att.controller.admin.cat.vo.AttApiCatSaveReqVO
 import tech.qiantong.qdata.module.att.dal.dataobject.cat.AttApiCatDO;
 import tech.qiantong.qdata.module.att.dal.mapper.cat.AttApiCatMapper;
 import tech.qiantong.qdata.module.att.service.cat.IAttApiCatService;
+import tech.qiantong.qdata.module.ds.api.service.api.DsApiService;
 import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
 
 import javax.annotation.Resource;
@@ -39,6 +40,8 @@ import java.util.stream.Collectors;
 public class AttApiCatServiceImpl extends ServiceImpl<AttApiCatMapper, AttApiCatDO> implements IAttApiCatService, IAttApiCatApiService {
     @Resource
     private AttApiCatMapper attApiCatMapper;
+    @Resource
+    private DsApiService dsApiService;
 
     @Override
     public PageResult<AttApiCatDO> getAttApiCatPage(AttApiCatPageReqVO pageReqVO) {
@@ -55,8 +58,22 @@ public class AttApiCatServiceImpl extends ServiceImpl<AttApiCatMapper, AttApiCat
 
     @Override
     public int updateAttApiCat(AttApiCatSaveReqVO updateReqVO) {
-        // 相关校验
-
+        AttApiCatDO catDO = baseMapper.selectById(updateReqVO.getId());
+        if (catDO == null) {
+            return 0;
+        }
+        if (Boolean.FALSE.equals(updateReqVO.getValidFlag())) {
+            Long countData = dsApiService.getCountByCatCode(catDO.getCode());
+            if (countData > 0) {
+                throw new ServiceException("存在API服务，不允许禁用");
+            }
+            baseMapper.updateValidFlag(catDO.getCode(), updateReqVO.getValidFlag());
+        } else if (Boolean.TRUE.equals(updateReqVO.getValidFlag())) {
+            AttApiCatDO parent = baseMapper.selectById(catDO.getParentId());
+            if (parent != null && Boolean.FALSE.equals(parent.getValidFlag())) {
+                throw new ServiceException("须先启用父级");
+            }
+        }
         // 更新数据服务类目管理
         AttApiCatDO updateObj = BeanUtils.toBean(updateReqVO, AttApiCatDO.class);
         return attApiCatMapper.updateById(updateObj);
@@ -64,6 +81,13 @@ public class AttApiCatServiceImpl extends ServiceImpl<AttApiCatMapper, AttApiCat
 
     @Override
     public int removeAttApiCat(Collection<Long> idList) {
+        List<AttApiCatDO> attApiCatDOS = baseMapper.selectBatchIds(idList);
+        for (AttApiCatDO catDO : attApiCatDOS) {
+            Long countData = dsApiService.getCountByCatCode(catDO.getCode());
+            if (countData > 0) {
+                throw new ServiceException("存在API服务，不允许删除");
+            }
+        }
         // 批量删除数据服务类目管理
         return attApiCatMapper.deleteBatchIds(idList);
     }
@@ -85,6 +109,7 @@ public class AttApiCatServiceImpl extends ServiceImpl<AttApiCatMapper, AttApiCat
                 .eqIfPresent(AttApiCatDO::getParentId, reqVO.getParentId())
                 .eqIfPresent(AttApiCatDO::getSortOrder, reqVO.getSortOrder())
                 .eqIfPresent(AttApiCatDO::getDescription, reqVO.getDescription())
+                .eqIfPresent(AttApiCatDO::getValidFlag, reqVO.getValidFlag())
                 .eqIfPresent(AttApiCatDO::getCode, reqVO.getCode())
                 .eqIfPresent(AttApiCatDO::getCreateTime, reqVO.getCreateTime())
                 .orderByAsc(AttApiCatDO::getSortOrder);

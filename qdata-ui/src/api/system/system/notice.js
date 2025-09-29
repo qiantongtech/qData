@@ -42,3 +42,28 @@ export function delNotice(noticeId) {
     method: 'delete'
   })
 }
+
+// 首页公告列表
+export function sortListNotice(query) {
+  return request({
+    url: '/system/notice/sortList',
+    method: 'get',
+    params: query
+  })
+}
+
+// 首页特殊提示
+export function alertNotice() {
+  return request({
+    url: '/system/notice/alertNotice',
+    method: 'get',
+  })
+}
+
+// 查询公告详细-new
+export function getNoticeOne(noticeId) {
+  return request({
+    url: `/system/notice/one?noticeId=${noticeId}`,
+    method: 'get'
+  })
+}

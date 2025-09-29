@@ -22,6 +22,8 @@ public class AttAssetCatPageReqVO extends PageParam {
     private String code;
 
 
+    private Boolean validFlag;
+
 
 
 

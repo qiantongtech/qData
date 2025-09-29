@@ -11,7 +11,7 @@ export default [
     children: [
       {
         path: 'role/:userId(\\d+)',
-        component: () => import('@/views/system/system/user/authRole.vue'),
+        component: () => import('@/views/sys/system/user/authRole.vue'),
         name: 'AuthRole',
         meta: { title: '分配角色', activeMenu: '/system/user' }
       }
@@ -25,7 +25,7 @@ export default [
     children: [
       {
         path: 'user/:roleId(\\d+)',
-        component: () => import('@/views/system/system/role/authUser.vue'),
+        component: () => import('@/views/sys/system/role/authUser.vue'),
         name: 'AuthUser',
         meta: { title: '分配用户', activeMenu: '/system/role' }
       }
@@ -39,7 +39,7 @@ export default [
     children: [
       {
         path: 'index/:dictId(\\d+)',
-        component: () => import('@/views/system/system/dict/data.vue'),
+        component: () => import('@/views/sys/system/dict/data.vue'),
         name: 'Data',
         meta: { title: '字典数据', activeMenu: '/system/dict' }
       }
@@ -53,7 +53,7 @@ export default [
     children: [
       {
         path: 'index/:jobId(\\d+)',
-        component: () => import('@/views/system/monitor/job/log.vue'),
+        component: () => import('@/views/sys/monitor/job/log.vue'),
         name: 'JobLog',
         meta: { title: '调度日志', activeMenu: '/monitor/job' }
       }
@@ -67,7 +67,7 @@ export default [
     children: [
       {
         path: 'index/:tableId(\\d+)',
-        component: () => import('@/views/system/tool/gen/editTable.vue'),
+        component: () => import('@/views/sys/tool/gen/editTable.vue'),
         name: 'GenEdit',
         meta: { title: '修改生成配置', activeMenu: '/tool/gen' }
       }

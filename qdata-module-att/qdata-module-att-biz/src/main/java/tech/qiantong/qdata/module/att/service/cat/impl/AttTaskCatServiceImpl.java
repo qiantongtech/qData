@@ -18,6 +18,7 @@ import tech.qiantong.qdata.module.att.api.service.cat.IAttTaskCatApiService;
 import tech.qiantong.qdata.module.att.controller.admin.cat.vo.AttTaskCatPageReqVO;
 import tech.qiantong.qdata.module.att.controller.admin.cat.vo.AttTaskCatRespVO;
 import tech.qiantong.qdata.module.att.controller.admin.cat.vo.AttTaskCatSaveReqVO;
+import tech.qiantong.qdata.module.att.dal.dataobject.cat.AttModelCatDO;
 import tech.qiantong.qdata.module.att.dal.dataobject.cat.AttTaskCatDO;
 import tech.qiantong.qdata.module.att.dal.mapper.cat.AttTaskCatMapper;
 import tech.qiantong.qdata.module.att.service.cat.IAttTaskCatService;

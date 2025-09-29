@@ -1,8 +1,11 @@
 package tech.qiantong.qdata.module.att.dal.mapper.cat;
 
-import tech.qiantong.qdata.common.core.page.PageResult;
-import tech.qiantong.qdata.module.att.controller.admin.cat.vo.AttDataElemCatPageReqVO;
+import org.apache.ibatis.annotations.Param;
 import tech.qiantong.qdata.module.att.dal.dataobject.cat.AttDataElemCatDO;
+
+import tech.qiantong.qdata.common.core.page.PageResult;
+
+import tech.qiantong.qdata.module.att.controller.admin.cat.vo.AttDataElemCatPageReqVO;
 import tech.qiantong.qdata.mybatis.core.mapper.BaseMapperX;
 import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
 
@@ -33,4 +36,8 @@ public interface AttDataElemCatMapper extends BaseMapperX<AttDataElemCatDO> {
 //                .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(), allowedColumns));
                 .orderByAsc(AttDataElemCatDO::getSortOrder));
     }
+
+
+    int updateValidFlag(@Param("prefixCode") String prefixCode, @Param("validFlag") Boolean validFlag);
+
 }

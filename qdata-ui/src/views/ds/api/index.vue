@@ -1,11 +1,10 @@
 <template>
   <div class="app-container" ref="app-container">
 
-    <!-- 新用户引导内容展示 -->
     <GuideTip tip-id="ds/dsApi.list" />
 
     <el-container style="90%">
-      <DeptTree :deptOptions="deptOptions" :leftWidth="leftWidth" :placeholder="'请输入API服务类目'"
+      <DeptTree :deptOptions="deptOptions" :leftWidth="leftWidth" :placeholder="'请输入API服务类目'" ref="DeptTreeRef"
         @node-click="handleNodeClick" />
 
       <el-main>
@@ -42,7 +41,7 @@
           <div class="justify-between mb15">
             <el-row :gutter="15" class="btn-style">
               <el-col :span="1.5">
-                <el-button type="primary" plain @click="routeToAdd('/ds/api/dsApiEdit')" v-hasPermi="['ds:api:api:add']"
+                <el-button type="primary" plain @click="routeToAdd('/ds/api/add')" v-hasPermi="['ds:api:add']"
                   @mousedown="(e) => e.preventDefault()">
                   <i class="iconfont-mini icon-xinzeng mr5"></i>新增
                 </el-button>
@@ -52,64 +51,94 @@
               <right-toolbar v-model:showSearch="showSearch" @queryTable="getList" :columns="columns"></right-toolbar>
             </div>
           </div>
-          <el-table stripe height="58vh" v-loading="loading" :data="dsApiList" @selection-change="handleSelectionChange"
+          <el-table stripe v-loading="loading" :data="dsApiList" @selection-change="handleSelectionChange"
             :default-sort="defaultSort" @sort-change="handleSortChange">
             <!--            <el-table-column type="selection" width="55" align="center" />-->
             <el-table-column v-if="getColumnVisibility(0)" label="编号" align="center" prop="id" width="80px" />
-            <el-table-column show-overflow-tooltip v-if="getColumnVisibility(1)" label="API名称" min-width="180px"
-              align="left" prop="name">
+            <el-table-column :show-overflow-tooltip="{ effect: 'light' }" v-if="getColumnVisibility(1)" label="API名称"
+              width="300px" align="left" prop="name">
               <template #default="scope">
                 {{ scope.row.name || "-" }}
               </template>
             </el-table-column>
-            <el-table-column show-overflow-tooltip v-if="getColumnVisibility(1)" label="API类目" min-width="160px"
-              align="left" prop="catName">
+            <el-table-column :show-overflow-tooltip="{ effect: 'light' }" v-if="getColumnVisibility(2)" label="API服务类目"
+              min-width="160px" align="left" prop="catName">
               <template #default="scope">
                 {{ scope.row.catName || "-" }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(2)" width="80" label="API版本" align="center" prop="apiVersion">
+            <el-table-column v-if="getColumnVisibility(3)" label="描述" width="200" align="left" prop="description"
+              :show-overflow-tooltip="{ effect: 'light' }">
+              <template #default="scope">
+                {{ scope.row.description || '-' }}
+              </template>
+            </el-table-column>
+            <el-table-column v-if="getColumnVisibility(4)" width="80" label="API版本" align="center" prop="apiVersion">
               <template #default="scope">
                 {{ scope.row.apiVersion || "-" }}
               </template>
             </el-table-column>
-            <el-table-column show-overflow-tooltip v-if="getColumnVisibility(3)" label="API路径" min-width="140px"
-              align="left" prop="apiUrl">
+            <el-table-column :show-overflow-tooltip="{ effect: 'light' }" v-if="getColumnVisibility(5)" label="API路径"
+              min-width="200px" align="left" prop="apiUrl">
               <template #default="scope">
                 {{ scope.row.apiUrl || "-" }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(4)" width="80" label="请求类型" align="center" prop="reqMethod">
+            <el-table-column v-if="getColumnVisibility(6)" width="80" label="请求类型" align="center" prop="reqMethod">
               <template #default="scope">
                 <dict-tag :options="ds_api_bas_info_api_method_type" :value="scope.row.reqMethod" />
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(6)" width="80" label="返回格式" align="center" prop="resDataType">
+            <el-table-column v-if="getColumnVisibility(7)" width="80" label="返回格式" align="center" prop="resDataType">
               <template #default="scope">
                 <dict-tag :options="ds_api_bas_info_res_data_type" :value="scope.row.resDataType" />
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(9)" label="状态" align="center" prop="status" width="70">
+            <el-table-column v-if="getColumnVisibility(8)" width="120" label="创建人" align="center" prop="createBy"
+              :show-overflow-tooltip="{ effect: 'light' }">
+              <template #default="scope">
+                {{ scope.row.createBy || '-' }}
+              </template>
+            </el-table-column>
+            <el-table-column v-if="getColumnVisibility(9)" label="创建时间" align="center" prop="createTime" width="150"
+              sortable="custom" column-key="create_time" :sort-orders="['descending', 'ascending']">
+              <template #default="scope">
+                <span>{{
+                  parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}") || "-"
+                }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column v-if="getColumnVisibility(10)" label="状态" align="center" prop="status" width="70">
+              <template #header>
+                <div class="justify-center">
+                  <span style="margin-right: 5px;">状态</span>
+                  <el-tooltip effect="light" content="当状态为开启则可以被调用，并且同步发布到资源门户中" placement="top">
+                    <el-icon class="tip-icon">
+                      <InfoFilled />
+                    </el-icon>
+                  </el-tooltip>
+                </div>
+              </template>
               <template #default="scope">
                 <el-switch v-model="scope.row.status" active-color="#13ce66" inactive-color="#ff4949" active-value="1"
                   inactive-value="0" @change="handleStatusChange(scope.row)" />
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(18)" label="创建时间" align="center" prop="createTime" width="160">
+            <el-table-column v-if="getColumnVisibility(11)" label="备注" width="200" align="left" prop="remark"
+              :show-overflow-tooltip="{ effect: 'light' }">
               <template #default="scope">
-                <span>{{
-                  parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}:{s}")
-                }}</span>
+                {{ scope.row.remark || '-' }}
               </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
+            <el-table-column v-if="getColumnVisibility(12)" label="操作" align="center"
+              class-name="small-padding fixed-width" fixed="right" width="220">
               <template #default="scope">
-                <el-button link type="primary" icon="Edit" v-if="scope.row.status != '1'"
-                  @click="routeTo('/ds/api/dsApiEdit', scope.row)" v-hasPermi="['ds:api:api:edit']">修改</el-button>
-                <el-button link type="primary" icon="view" @click="routeTo('/ds/api/dsApiDetail', scope.row)"
-                  v-hasPermi="['ds:api:api:edit']">详情</el-button>
-                <el-button v-if="scope.row.status != '1'" link type="danger" icon="Delete"
-                  @click="handleDelete(scope.row)" v-hasPermi="['ds:api:api:remove']">删除</el-button>
+                <el-button link type="primary" icon="Edit" @click="routeTo('/ds/api/edit', scope.row)"
+                  v-hasPermi="['ds:api:edit']">修改</el-button>
+                <el-button link type="primary" icon="view" @click="routeTo('/ds/api/detail', scope.row)"
+                  v-hasPermi="['ds:api:edit']">详情</el-button>
+                <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
+                  v-hasPermi="['ds:api:remove']">删除</el-button>
               </template>
             </el-table-column>
 
@@ -221,7 +250,7 @@
             <el-form-item label="状态" prop="status">
               <el-radio-group v-model="form.status">
                 <el-radio v-for="dict in ds_api_log_status" :key="dict.value" :label="dict.value">{{ dict.label
-                  }}</el-radio>
+                }}</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -389,7 +418,7 @@
   </div>
 </template>
 
-<script setup name="DsApi">
+<script setup name="DaApi">
 import {
   listDsApi,
   getDsApi,
@@ -398,10 +427,10 @@ import {
   updateDsApi,
   releaseDataApi,
   cancelDataApi,
-} from "@/api/ds/api/dsApi";
+} from "@/api/ds/api/api.js";
 import { getToken } from "@/utils/auth.js";
 import DeptTree from "@/components/DeptTree";
-import { listAttApiCat } from "@/api/att/cat/attApiCat/attApiCat";
+import { listAttApiCat } from "@/api/ds/apiCat/apiCat";
 const { proxy } = getCurrentInstance();
 const {
   ds_api_log_status,
@@ -419,14 +448,19 @@ const dsApiList = ref([]);
 
 // 列显隐信息
 const columns = ref([
-  { key: 0, label: "ID", visible: true },
-  { key: 1, label: "API服务名称", visible: true },
-  { key: 2, label: "API版本", visible: true },
-  { key: 3, label: "API路径", visible: true },
-  { key: 4, label: "请求方式", visible: true },
-  { key: 6, label: "返回结果类型", visible: true },
-  { key: 18, label: "创建时间", visible: true },
-  { key: 22, label: "备注", visible: true },
+  { key: 0, label: "编号", visible: true },
+  { key: 1, label: "API名称", visible: true },
+  { key: 2, label: "API服务类目", visible: true },
+  { key: 3, label: "描述", visible: true },
+  { key: 4, label: "API版本", visible: true },
+  { key: 5, label: "API路径", visible: true },
+  { key: 6, label: "请求类型", visible: true },
+  { key: 7, label: "返回格式", visible: true },
+  { key: 8, label: "创建人", visible: true },
+  { key: 9, label: "创建时间", visible: true },
+  { key: 10, label: "状态", visible: true },
+  { key: 11, label: "备注", visible: true },
+  { key: 12, label: "操作", visible: true },
 ]);
 
 const getColumnVisibility = (key) => {
@@ -489,12 +523,13 @@ function handleNodeClick(data) {
 }
 
 function getApiCatList() {
-  listAttApiCat().then((response) => {
+  listAttApiCat({ validFlag: true }).then((response) => {
     deptOptions.value = proxy.handleTree(response.data, "id", "parentId");
     deptOptions.value = [
       {
         name: "API服务类目",
         value: "",
+        id: 0,
         children: deptOptions.value,
       },
     ];
@@ -610,10 +645,15 @@ function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
+const DeptTreeRef = ref(null);
 
 /** 重置按钮操作 */
 function resetQuery() {
+  if (DeptTreeRef.value?.resetTree) {
+    DeptTreeRef.value.resetTree();
+  }
   daterangeCreateTime.value = [];
+  queryParams.value.catCode = "";
   proxy.resetForm("queryRef");
   handleQuery();
 }
@@ -626,8 +666,10 @@ function handleSelectionChange(selection) {
 }
 
 /** 排序触发事件 */
-function handleSortChange(column, prop, order) {
-  queryParams.value.orderByColumn = column.prop;
+function handleSortChange({ column, prop, order }) {
+  console.log(column, prop, order);
+  console.log("column?.columnKey::" + column?.columnKey);
+  queryParams.value.orderByColumn = column?.columnKey || prop;
   queryParams.value.isAsc = column.order;
   getList();
 }
@@ -790,6 +832,9 @@ function routeToAdd(link, row) {
 }
 queryParams.value.orderByColumn = defaultSort.value.prop;
 queryParams.value.isAsc = defaultSort.value.order;
+onActivated(() => {
+  getList();
+});
 getList();
 getApiCatList();
 </script>

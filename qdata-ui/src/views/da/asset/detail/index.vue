@@ -269,7 +269,7 @@ const tabPanes = computed(() => {
         { label: "资产字段", name: "0", component: ComponentOne },
         { label: "资产预览", name: "2", component: ComponentTwo },
         { label: '资产质量', name: '3', component: DataQualityControl },
-        { label: '资产血缘', name: '4', component: lineage },
+        // { label: '资产血缘', name: '4', component: lineage },
         { label: "资产概览", name: "5", component: info },
       ];
     case "2":

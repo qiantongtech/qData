@@ -1,5 +1,12 @@
 package tech.qiantong.qdata.module.dpp.controller.admin.etl;
 
+import javax.annotation.Resource;
+import javax.validation.Valid;
+import java.util.Arrays;
+
+import java.util.List;
+import java.util.Map;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang3.StringUtils;
@@ -7,9 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import tech.qiantong.qdata.common.core.domain.AjaxResult;
 import tech.qiantong.qdata.common.annotation.Log;
 import tech.qiantong.qdata.common.core.controller.BaseController;
-import tech.qiantong.qdata.common.core.domain.AjaxResult;
 import tech.qiantong.qdata.common.core.domain.CommonResult;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.enums.BusinessType;
@@ -17,12 +24,6 @@ import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.*;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlTaskDO;
 import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlTaskService;
-
-import javax.annotation.Resource;
-import javax.validation.Valid;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 数据集成任务Controller
@@ -32,14 +33,14 @@ import java.util.Map;
  */
 @Tag(name = "数据集成任务")
 @RestController
-@RequestMapping("/dpp/dppEtlTask")
+@RequestMapping("/dpp/etlTask")
 @Validated
 public class DppEtlTaskController extends BaseController {
     @Resource
     private IDppEtlTaskService dppEtlTaskService;
 
     @Operation(summary = "查询数据集成任务列表")
-    @PreAuthorize("@ss.hasPermi('dpp:etl:etltask:list')")
+//    @PreAuthorize("@ss.hasPermi('dpp:etlTask:list')")
     @GetMapping("/list")
     public CommonResult<PageResult<DppEtlTaskRespVO>> list(DppEtlTaskPageReqVO dppEtlTask) {
         if (StringUtils.isBlank(dppEtlTask.getType())) {
@@ -50,7 +51,7 @@ public class DppEtlTaskController extends BaseController {
     }
 
     @Operation(summary = "查询数据集成任务列表")
-    @PreAuthorize("@ss.hasPermi('dpp:etl:etltask:list')")
+//    @PreAuthorize("@ss.hasPermi('dpp:etlTask:list')")
     @GetMapping("/getDppEtlTaskPage")
     public CommonResult<PageResult<DppEtlTaskRespVO>> getDppEtlTaskPageList(DppEtlTaskPageReqVO dppEtlTask) {
         if (StringUtils.isBlank(dppEtlTask.getType())) {
@@ -61,7 +62,7 @@ public class DppEtlTaskController extends BaseController {
 
 
     @Operation(summary = "删除数据集成任务")
-    @PreAuthorize("@ss.hasPermi('dpp:etl:etltask:remove')")
+//    @PreAuthorize("@ss.hasPermi('dpp:etlTask:remove')")
     @Log(title = "数据集成任务", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
@@ -69,7 +70,8 @@ public class DppEtlTaskController extends BaseController {
     }
 
     /**
-     *  2025-06-18改版，此为历史版本
+     * 2025-06-18改版，此为历史版本
+     *
      * @param dppEtlNewNodeSaveReqVO
      * @return
      */
@@ -118,14 +120,14 @@ public class DppEtlTaskController extends BaseController {
     }
 
     @Operation(summary = "新增数据集成节点-获取唯一健")
-    @PreAuthorize("@ss.hasPermi('dpp:etl:etltask:add')")
+//    @PreAuthorize("@ss.hasPermi('dpp:etlTask:add')")
     @GetMapping("/getNodeUniqueKey")
     public CommonResult<Long> getNodeUniqueKey(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO) {
         return CommonResult.success(dppEtlTaskService.getNodeUniqueKey(dppEtlNewNodeSaveReqVO));
     }
 
     @Operation(summary = "获取数据集成任务详细信息")
-    @PreAuthorize("@ss.hasPermi('dpp:etl:etltask:query')")
+//    @PreAuthorize("@ss.hasPermi('dpp:etlTask:query')")
     @GetMapping(value = "/{id}")
     public CommonResult<DppEtlTaskRespVO> getInfo(@PathVariable("id") Long id) {
         return CommonResult.success(dppEtlTaskService.getDppEtlTaskById(id));
@@ -133,11 +135,12 @@ public class DppEtlTaskController extends BaseController {
 
 
     @Operation(summary = "获取数据集成任务详细信息")
-    @PreAuthorize("@ss.hasPermi('dpp:etl:etltask:query')")
+//    @PreAuthorize("@ss.hasPermi('dpp:etlTask:query')")
     @GetMapping(value = "/updateQuery/{id}")
     public CommonResult<DppEtlTaskUpdateQueryRespVO> getuUpdateQueryInfo(@PathVariable("id") Long id) {
         return CommonResult.success(dppEtlTaskService.getuUpdateQueryInfo(id));
     }
+
 
     @Operation(summary = "修改节点")
     @PostMapping("/updateProcessDefinition")
@@ -148,7 +151,7 @@ public class DppEtlTaskController extends BaseController {
     }
 
     @Operation(summary = "查询数据集成任务列表")
-    @PreAuthorize("@ss.hasPermi('dpp:etl:etltask:list')")
+//    @PreAuthorize("@ss.hasPermi('dpp:etlTask:list')")
     @GetMapping("/getDppEtlTaskListTree")
     public CommonResult<List<DppEtlTaskTreeRespVO>> getDppEtlTaskListTree(DppEtlTaskPageReqVO dppEtlTask) {
         return CommonResult.success(dppEtlTaskService.getDppEtlTaskListTree(dppEtlTask));
@@ -156,7 +159,7 @@ public class DppEtlTaskController extends BaseController {
 
 
     @Operation(summary = "查询数据集成任务列表")
-    @PreAuthorize("@ss.hasPermi('dpp:etl:etltask:list')")
+//    @PreAuthorize("@ss.hasPermi('dpp:etlTask:list')")
     @GetMapping("/getSubTaskStatusList")
     public CommonResult<List<DppEtlTaskRespVO>> getSubTaskStatusList(DppEtlTaskPageReqVO dppEtlTask) {
         return CommonResult.success(dppEtlTaskService.getSubTaskStatusList(dppEtlTask));
@@ -210,8 +213,9 @@ public class DppEtlTaskController extends BaseController {
         return CommonResult.success(result);
     }
 
+
     @Operation(summary = "获取数据集成任务详细信息--前置草稿任务")
-    @PreAuthorize("@ss.hasPermi('dpp:etl:etltask:query')")
+//    @PreAuthorize("@ss.hasPermi('dpp:etlTask:query')")
     @GetMapping(value = "/updateQueryFront/{id}")
     public CommonResult<DppEtlTaskUpdateQueryRespVO> getupdateQueryFront(@PathVariable("id") Long id) {
         return CommonResult.success(dppEtlTaskService.getupdateQueryFront(id));

@@ -37,7 +37,7 @@ import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlSqlTempService;
  */
 @Tag(name = "数据集成SQL模版")
 @RestController
-@RequestMapping("/dpp/dppEtlSqlTemp")
+@RequestMapping("/dpp/etlSqlTemp")
 @Validated
 public class DppEtlSqlTempController extends BaseController {
     @Resource

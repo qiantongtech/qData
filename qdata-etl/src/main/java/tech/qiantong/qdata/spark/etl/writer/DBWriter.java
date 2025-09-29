@@ -7,7 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
-import org.apache.spark.sql.*;
+import org.apache.spark.sql.Column;
+import org.apache.spark.sql.Dataset;
+import org.apache.spark.sql.Row;
 import tech.qiantong.qdata.common.database.DbQuery;
 import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
 import tech.qiantong.qdata.common.database.constants.DbType;
@@ -15,6 +17,7 @@ import tech.qiantong.qdata.common.database.datasource.AbstractDataSourceFactory;
 import tech.qiantong.qdata.common.database.datasource.DefaultDataSourceFactoryBean;
 import tech.qiantong.qdata.common.enums.TaskComponentTypeEnum;
 import tech.qiantong.qdata.spark.etl.utils.LogUtils;
+import tech.qiantong.qdata.spark.etl.utils.RedisUtils;
 import tech.qiantong.qdata.spark.etl.utils.db.DBUtils;
 import tech.qiantong.qdata.spark.etl.utils.db.element.*;
 import tech.qiantong.qdata.spark.etl.utils.db.exception.DBException;
@@ -22,8 +25,10 @@ import tech.qiantong.qdata.spark.etl.utils.db.exception.DBException;
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.alibaba.fastjson2.JSONWriter.Feature.PrettyFormat;
@@ -93,8 +98,14 @@ public class DBWriter implements Writer {
             tmpTableName = tableName + "_" + DateUtil.format(new Date(), "yyyyMMddHHmmss");
             writerOptions.put("dbtable", tmpTableName);
         }
-
-        DbQueryProperty writerProperty = JSONObject.parseObject(parameter.getJSONObject("writerProperty").toString(), DbQueryProperty.class);
+        String datasource = RedisUtils.hget("datasource", parameter.getString("datasourceId"));
+        DbQueryProperty writerProperty;
+        // 替换存储在 redis 中最新的数据源连接信息
+        if (datasource != null && !"".equals(datasource)) {
+            writerProperty = JSONObject.parseObject(datasource, DbQueryProperty.class);
+        }else {
+            writerProperty = JSONObject.parseObject(parameter.getJSONObject("writerProperty").toString(), DbQueryProperty.class);
+        }
 
         //创建连接
         DbQuery dbQuery = dataSourceFactory.createDbQuery(writerProperty);
@@ -143,9 +154,9 @@ public class DBWriter implements Writer {
                             .save();
                     flag = true;
                 } catch (Exception e) {
-                    success = false;
                     log.info("保存失败:{}", e.getMessage());
                     LogUtils.writeLog(logParams, "保存失败:" + e.getMessage());
+                    success = false;
                 }
             }
 
@@ -193,9 +204,8 @@ public class DBWriter implements Writer {
                 });
             }
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error("写入失败: ", e);
             LogUtils.writeLog(logParams, "失败原因:" + e.getMessage());
-            e.printStackTrace();
             success = false;
         } finally {
             if (dbQuery != null) {
@@ -303,7 +313,11 @@ public class DBWriter implements Writer {
     }
 
     void fillPreparedStatementColumnType(PreparedStatement pstmt, Integer columnIndex, int columnSqltype, String typeName, DataColumn dataColumn, Triple<List<String>, List<Integer>, List<String>> resultSetMetaData, String dbType) throws SQLException {
-        java.util.Date utilDate;
+//        Integer add = 1;
+//        if (StringUtils.equals(DbType.DORIS.getDb(), dbType)) {
+//            add = 0;
+//        }
+        Date utilDate;
         switch (columnSqltype) {
             case Types.CHAR:
             case Types.NCHAR:
@@ -372,7 +386,7 @@ public class DBWriter implements Writer {
                 break;
 
             case Types.TIME:
-                java.sql.Time sqlTime = null;
+                Time sqlTime = null;
                 try {
                     utilDate = dataColumn.asDate();
                 } catch (DBException e) {
@@ -381,13 +395,13 @@ public class DBWriter implements Writer {
                 }
 
                 if (null != utilDate) {
-                    sqlTime = new java.sql.Time(utilDate.getTime());
+                    sqlTime = new Time(utilDate.getTime());
                 }
                 pstmt.setTime(columnIndex + 1, sqlTime);
                 break;
 
             case Types.TIMESTAMP:
-                java.sql.Timestamp sqlTimestamp = null;
+                Timestamp sqlTimestamp = null;
                 try {
                     utilDate = dataColumn.asDate();
                 } catch (DBException e) {
@@ -396,7 +410,7 @@ public class DBWriter implements Writer {
                 }
 
                 if (null != utilDate) {
-                    sqlTimestamp = new java.sql.Timestamp(
+                    sqlTimestamp = new Timestamp(
                             utilDate.getTime());
                 }
                 pstmt.setTimestamp(columnIndex + 1, sqlTimestamp);

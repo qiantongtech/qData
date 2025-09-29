@@ -16,6 +16,7 @@ import tech.qiantong.qdata.common.utils.poi.ExcelUtil;
 import tech.qiantong.qdata.module.system.controller.admin.system.message.vo.MessagePageReqVO;
 import tech.qiantong.qdata.module.system.controller.admin.system.message.vo.MessageRespVO;
 import tech.qiantong.qdata.module.system.controller.admin.system.message.vo.MessageSaveReqVO;
+import tech.qiantong.qdata.module.system.controller.admin.system.message.vo.MessageSend;
 import tech.qiantong.qdata.module.system.controller.admin.system.message.websocket.WebSocketMessageServer;
 import tech.qiantong.qdata.module.system.convert.message.MessageConvert;
 import tech.qiantong.qdata.module.system.dal.dataobject.message.MessageDO;
@@ -69,7 +70,7 @@ public class MessageController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:message:message:query')")
     @GetMapping(value = "/{id}")
     public CommonResult<MessageRespVO> getInfo(@PathVariable("id") Long id) {
-            MessageDO messageDO = messageService.getById(id);
+        MessageDO messageDO = messageService.getById(id);
         return CommonResult.success(BeanUtils.toBean(messageDO, MessageRespVO.class));
     }
 
@@ -148,4 +149,16 @@ public class MessageController extends BaseController {
         map.put("test", context);
         return CommonResult.success(messageService.send(templateId, message, map));
     }
+
+    @Operation(summary = "发送消息")
+    @PostMapping("/send")
+    public CommonResult<Boolean> send(@RequestBody @Valid MessageSend message) {
+        MessageSaveReqVO messageSaveReqDTO = new MessageSaveReqVO();
+        messageSaveReqDTO.setSenderId(1L);
+        messageSaveReqDTO.setCreatorId(1L);
+        messageSaveReqDTO.setCreateBy("超级管理员");
+        messageSaveReqDTO.setReceiverId(message.getReceiverId());
+        return CommonResult.success(messageService.send(message.getTemplateId(), messageSaveReqDTO, message.getData()));
+    }
+
 }

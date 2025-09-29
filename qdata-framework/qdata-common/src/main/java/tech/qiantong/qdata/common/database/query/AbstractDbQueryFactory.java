@@ -159,7 +159,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
 
     @Override
     public int countNew(String tableName, DbQueryProperty dbQueryProperty, String where) {
-        String tableNameWhere = where.isEmpty() ? tableName : tableName + " where " + where;
+        String tableNameWhere = StringUtils.isEmpty(where) ? tableName : tableName + " where " + where;
         return countNew(tableNameWhere, new HashMap<>());
     }
 
@@ -178,7 +178,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
     @Override
     public List<Map<String, Object>> queryDbColumnByList(List<DbColumn> columns, String tableName, DbQueryProperty dbQueryProperty, String where, List<Map> orderByList, long offset, long size) {
         String sql = dbDialect.buildQuerySqlFields(columns, tableName, dbQueryProperty);
-        sql = where.isEmpty() ? sql : sql + " where " + where;
+        sql = StringUtils.isEmpty(where) ? sql : sql + " where " + where;
         if (CollectionUtils.isNotEmpty(orderByList)) {
             StringBuilder orderBySql = new StringBuilder(" ORDER BY ");
             for (int i = 0; i < orderByList.size(); i++) {

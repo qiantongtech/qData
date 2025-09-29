@@ -32,7 +32,7 @@
                     <el-form-item label="连接方式" prop="clmt">
                         <el-radio-group v-if="!info" @change="handleReleaseStateChange" v-model="form.taskParams.clmt">
                           <template v-for="dict in dpp_connection" :key="dict.value" >
-                            <el-radio v-if="!(taskExecuteType == 'STREAM' && dict.value == 2)" :value="dict.value" >
+                            <el-radio :value="dict.value" >
                               {{ dict.label }}
                             </el-radio>
                           </template>
@@ -341,7 +341,6 @@ const props = defineProps({
     title: { type: String, default: '表单标题' },
     currentNode: { type: Object, default: () => ({}) },
     info: { type: Boolean, default: false },
-    taskExecuteType: { type: String, default: 'BATCH' },
 });
 
 const emit = defineEmits(['update', 'confirm']);
@@ -361,7 +360,6 @@ let TablesByDataSource = ref([]);
 let ColumnByAssettab = ref([]);
 let dpModelRefs = ref();
 let form = ref({});
-const taskExecuteType = ref("");
 const tableFields = ref([]); // 来源表格
 const createTypeList = ref([]); // 数据源列表
 // 修改 时间范围增
@@ -672,8 +670,6 @@ watchEffect(() => {
             getDatasourceList();
         }
         form.value = deepCopy(props.currentNode.data);
-        taskExecuteType.value = props.taskExecuteType;
-        debugger
         const taskParams = form.value?.taskParams;
         ColumnByAssettab.value = deepCopy(props.currentNode.data.taskParams.tableFields) || [];
 

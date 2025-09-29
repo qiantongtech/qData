@@ -127,7 +127,6 @@
             <el-radio-group v-if="title != '任务详情'" v-model="form.taskType" class="el-form-input-width"
               :disabled="props.data.id">
               <el-radio label="SPARK"> SPARK </el-radio>
-              <el-radio label="FLINK"> FLINK </el-radio>
             </el-radio-group>
             <div class="form-readonly" v-else>{{ form.taskType || '-' }}</div>
           </el-form-item>
@@ -135,58 +134,6 @@
       </el-row>
 
       <el-row :gutter="20">
-        <template v-if="form.taskType == 'FLINK'">
-          <el-col :span="12">
-            <el-form-item label="执行类型" prop="taskExecuteType" >
-              <el-radio-group v-if="title != '任务详情'" v-model="form.taskExecuteType" class="el-form-input-width" :disabled="props.data.id">
-                <el-radio label="STREAM"> 流模式 </el-radio>
-                <el-radio label="BATCH"> 批模式 </el-radio>
-              </el-radio-group>
-              <div class="form-readonly" v-else>{{ form.taskExecuteType || '-' }}</div>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="JobManager内存数" prop="jobManagerMemory">
-              <el-input v-if="title != '任务详情'" v-model="form.jobManagerMemory" placeholder="请输入JobManager内存数">
-              </el-input>
-              <div class="form-readonly" v-else>{{ form.jobManagerMemory || '-' }}</div>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="TaskManager内存数" prop="taskManagerMemory">
-              <el-input v-if="title != '任务详情'" v-model="form.taskManagerMemory" placeholder="请输入TaskManager内存数">
-              </el-input>
-              <div class="form-readonly" v-else>{{ form.taskManagerMemory || '-' }}</div>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="Slot数量" prop="slot">
-              <el-input-number v-if="title != '任务详情'" placeholder="请输入Slot数量" v-model="form.slot"
-                controls-position="right" :min="0" style="width: 100%" />
-              <div class="form-readonly" v-else>{{ form.slot || '-' }}</div>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="TaskManager数量" prop="taskManager">
-              <el-input v-if="title != '任务详情'" v-model="form.taskManager" placeholder="请输入TaskManager数量"
-                style="width: 100%"> </el-input>
-              <div class="form-readonly" v-else>{{ form.taskManager || '-' }}</div>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="并行度" prop="parallelism">
-              <el-input-number v-if="title != '任务详情'" placeholder="请输入并行度" v-model="form.parallelism"
-                controls-position="right" :min="0" style="width: 100%" />
-              <div class="form-readonly" v-else>{{ form.parallelism || '-' }}</div>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="Yarn队列" prop="yarnQueue">
-              <el-input v-if="title != '任务详情'" v-model="form.yarnQueue" placeholder="请输入Yarn队列(选填)"> </el-input>
-              <div class="form-readonly" v-else>{{ form.yarnQueue || '-' }}</div>
-            </el-form-item>
-          </el-col>
-        </template>
         <template v-if="form.taskType == 'SPARK'">
           <el-col :span="12">
             <el-form-item label="Driver核心数" prop="driverCores">
@@ -307,7 +254,6 @@ const form = ref({
   delayTime: "",
   taskType: "SPARK",
   // Fink配置
-  taskExecuteType: "STREAM",
   jobManagerMemory: "1G",
   taskManagerMemory: "2G",
   slot: 1,

@@ -9,9 +9,6 @@ import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.exception.ServiceException;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
-import tech.qiantong.qdata.module.ds.api.apply.dto.DsApiApplyReqDTO;
-import tech.qiantong.qdata.module.ds.api.apply.dto.DsApiApplyRespDTO;
-import tech.qiantong.qdata.module.ds.api.service.apply.DsApiApplyService;
 import tech.qiantong.qdata.module.ds.controller.admin.apply.vo.DsApiApplyPageReqVO;
 import tech.qiantong.qdata.module.ds.controller.admin.apply.vo.DsApiApplyRespVO;
 import tech.qiantong.qdata.module.ds.controller.admin.apply.vo.DsApiApplySaveReqVO;
@@ -23,7 +20,6 @@ import tech.qiantong.qdata.module.ds.service.api.IDsApiService;
 import tech.qiantong.qdata.module.ds.service.apply.IDsApiApplyService;
 import tech.qiantong.qdata.module.system.api.flowMyBusiness.dto.SystemFlowMyBusinessReqDTO;
 import tech.qiantong.qdata.module.system.api.flowMyBusiness.service.SysFlowMyBusinessService;
-import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -37,7 +33,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class DsApiApplyServiceImpl  extends ServiceImpl<DsApiApplyMapper, DsApiApplyDO> implements IDsApiApplyService, DsApiApplyService {
+public class DsApiApplyServiceImpl  extends ServiceImpl<DsApiApplyMapper, DsApiApplyDO> implements IDsApiApplyService {
     @Resource
     private DsApiApplyMapper dsApiApplyMapper;
     @Resource
@@ -76,21 +72,6 @@ public class DsApiApplyServiceImpl  extends ServiceImpl<DsApiApplyMapper, DsApiA
         }
 
         return dsApiApplyMapper.selectPage(pageReqVO);
-    }
-
-    @Override
-    public PageResult<DsApiApplyRespDTO> getDsApiApplyPage(DsApiApplyReqDTO pageReqVO) {
-        DsApiApplyPageReqVO applyPageReqVO = BeanUtils.toBean(pageReqVO, DsApiApplyPageReqVO.class);
-        PageResult<DsApiApplyDO> applyDOPageResult = dsApiApplyMapper.selectPage(applyPageReqVO);
-        return BeanUtils.toBean(applyDOPageResult,DsApiApplyRespDTO.class);
-    }
-
-    @Override
-    public List<DsApiApplyRespDTO> getDsApiApplyList(DsApiApplyReqDTO pageReqVO) {
-        LambdaQueryWrapperX<DsApiApplyDO> queryWrapperX = new LambdaQueryWrapperX<>();
-        queryWrapperX.eqIfPresent(DsApiApplyDO::getApiId,pageReqVO.getApiId()).eqIfPresent(DsApiApplyDO::getCreatorId,pageReqVO.getCreatorId());
-        List<DsApiApplyDO> dsApiApplyDOList = dsApiApplyMapper.selectList(queryWrapperX);
-        return BeanUtils.toBean(dsApiApplyDOList,DsApiApplyRespDTO.class);
     }
 
     @Override

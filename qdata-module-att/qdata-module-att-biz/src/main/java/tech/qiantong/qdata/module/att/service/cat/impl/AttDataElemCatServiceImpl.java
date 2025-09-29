@@ -40,7 +40,6 @@ import java.util.stream.Collectors;
 public class AttDataElemCatServiceImpl extends ServiceImpl<AttDataElemCatMapper, AttDataElemCatDO> implements IAttDataElemCatService {
     @Resource
     private AttDataElemCatMapper attDataElemCatMapper;
-
     @Resource
     private IDataElemApiService dataElemApiService;
 
@@ -59,10 +58,24 @@ public class AttDataElemCatServiceImpl extends ServiceImpl<AttDataElemCatMapper,
 
     @Override
     public int updateAttDataElemCat(AttDataElemCatSaveReqVO updateReqVO) {
-        // 相关校验
-
+        AttDataElemCatDO attDataElemCatDO = attDataElemCatMapper.selectById(updateReqVO.getId());
+        if (attDataElemCatDO == null) {
+            return 0;
+        }
         // 更新数据元类目管理
         AttDataElemCatDO updateObj = BeanUtils.toBean(updateReqVO, AttDataElemCatDO.class);
+        if (Boolean.FALSE.equals(updateReqVO.getValidFlag())) {
+            Long countData = dataElemApiService.getCountByCatCode(attDataElemCatDO.getCode());
+            if (countData > 0) {
+                throw new ServiceException("存在数据元，不允许禁用");
+            }
+            attDataElemCatMapper.updateValidFlag(attDataElemCatDO.getCode(), updateReqVO.getValidFlag());
+        } else if (Boolean.TRUE.equals(updateReqVO.getValidFlag())) {
+            AttDataElemCatDO parent = attDataElemCatMapper.selectById(attDataElemCatDO.getParentId());
+            if (parent != null && Boolean.FALSE.equals(parent.getValidFlag())) {
+                throw new ServiceException("须先启用父级");
+            }
+        }
         return attDataElemCatMapper.updateById(updateObj);
     }
 
@@ -98,6 +111,7 @@ public class AttDataElemCatServiceImpl extends ServiceImpl<AttDataElemCatMapper,
         LambdaQueryWrapperX<AttDataElemCatDO> queryWrapperX = new LambdaQueryWrapperX<>();
         queryWrapperX.likeIfPresent(AttDataElemCatDO::getName, reqVO.getName())
                 .eqIfPresent(AttDataElemCatDO::getParentId, reqVO.getParentId())
+                .eqIfPresent(AttDataElemCatDO::getValidFlag, reqVO.getValidFlag())
                 .eqIfPresent(AttDataElemCatDO::getSortOrder, reqVO.getSortOrder())
                 .eqIfPresent(AttDataElemCatDO::getDescription, reqVO.getDescription())
                 .likeRightIfPresent(AttDataElemCatDO::getCode, reqVO.getCode())

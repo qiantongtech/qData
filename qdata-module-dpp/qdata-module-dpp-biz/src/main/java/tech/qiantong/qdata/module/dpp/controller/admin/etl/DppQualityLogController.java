@@ -1,16 +1,22 @@
 package tech.qiantong.qdata.module.dpp.controller.admin.etl;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.util.Arrays;
 import cn.hutool.core.date.DateUtil;
+import java.util.List;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import tech.qiantong.qdata.common.core.domain.AjaxResult;
+import tech.qiantong.qdata.common.core.page.PageParam;
 import tech.qiantong.qdata.common.annotation.Log;
 import tech.qiantong.qdata.common.core.controller.BaseController;
-import tech.qiantong.qdata.common.core.domain.AjaxResult;
 import tech.qiantong.qdata.common.core.domain.CommonResult;
-import tech.qiantong.qdata.common.core.page.PageParam;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.enums.BusinessType;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
@@ -22,12 +28,6 @@ import tech.qiantong.qdata.module.dpp.convert.etl.DppQualityLogConvert;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppQualityLogDO;
 import tech.qiantong.qdata.module.dpp.service.etl.IDppQualityLogService;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * 数据质量日志Controller
  *
@@ -36,7 +36,7 @@ import java.util.List;
  */
 @Tag(name = "数据质量日志")
 @RestController
-@RequestMapping("/dpp/DppQualityLog")
+@RequestMapping("/dpp/qualityLog")
 @Validated
 public class DppQualityLogController extends BaseController {
     @Resource

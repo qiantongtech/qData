@@ -37,13 +37,9 @@ import tech.qiantong.qdata.module.da.service.datasource.IDaDatasourceService;
 import tech.qiantong.qdata.module.da.service.datasource.impl.DaDatasourceServiceImpl;
 import tech.qiantong.qdata.module.dp.api.model.dto.DpModelColumnReqDTO;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 数据源Controller
@@ -53,7 +49,7 @@ import java.util.Map;
  */
 @Tag(name = "数据源")
 @RestController
-@RequestMapping("/da/daDatasource")
+@RequestMapping("/da/dataSource")
 @Validated
 @RequiredArgsConstructor
 public class DaDatasourceController extends BaseController {
@@ -61,7 +57,7 @@ public class DaDatasourceController extends BaseController {
     private final IDaAssetService daAssetService;
 
     @Operation(summary = "查询数据源列表")
-    @PreAuthorize("@ss.hasPermi('da:datasource:datasource:list')")
+    @PreAuthorize("@ss.hasPermi('da:dataSource:list')")
     @GetMapping("/list")
     public CommonResult<PageResult<DaDatasourceRespVO>> list(DaDatasourcePageReqVO daDatasource) {
         PageResult<DaDatasourceDO> page = daDatasourceService.getDaDatasourcePage(daDatasource);
@@ -69,7 +65,7 @@ public class DaDatasourceController extends BaseController {
     }
 
     @Operation(summary = "数据集成中排除Kafka并且是当前项目的数据源列表")
-    @PreAuthorize("@ss.hasPermi('da:datasource:datasource:list')")
+    @PreAuthorize("@ss.hasPermi('da:dataSource:list')")
     @GetMapping("/dppNoKafka/list")
     public AjaxResult dppNoKafkaList(DaDatasourcePageReqVO daDatasource) {
         List<DaDatasourceDO> page = daDatasourceService.getDaDatasourceDppNoKafka(daDatasource);
@@ -77,7 +73,7 @@ public class DaDatasourceController extends BaseController {
     }
 
     @Operation(summary = "数据研发中的查询数据源列表")
-    @PreAuthorize("@ss.hasPermi('da:datasource:datasource:list')")
+    @PreAuthorize("@ss.hasPermi('da:dataSource:list')")
     @GetMapping("/dpp/list")
     public CommonResult<PageResult<DaDatasourceRespVO>> dppList(DaDatasourcePageReqVO daDatasource) {
         PageResult<DaDatasourceDO> page = daDatasourceService.getDaDatasourceDppPage(daDatasource);
@@ -85,7 +81,7 @@ public class DaDatasourceController extends BaseController {
     }
 
     @Operation(summary = "查询项目列表，让研发模块添加的数据不可选中")
-    @PreAuthorize("@ss.hasPermi('da:datasource:datasource:list')")
+    @PreAuthorize("@ss.hasPermi('da:dataSource:list')")
     @GetMapping("/noDppAdd/list")
     public CommonResult<PageResult<AttProjectRespDTO>> noDppAddList(AttProjectReqDTO pageReqVO) {
         PageResult<AttProjectRespDTO> page = daDatasourceService.getNoDppAddList(pageReqVO);
@@ -93,7 +89,7 @@ public class DaDatasourceController extends BaseController {
     }
 
     @Operation(summary = "查询数据资产的数据源连接信息")
-    @PreAuthorize("@ss.hasPermi('da:asset:asset:list')")
+    @PreAuthorize("@ss.hasPermi('da:asset:list')")
     @GetMapping("/getDataSourceByAsset")
     public AjaxResult getDataSourceByAsset(DaDatasourceRespVO daAsset) {
         List<DaDatasourceDO> daAssetDOS = daDatasourceService.getDataSourceByAsset(daAsset);
@@ -101,7 +97,7 @@ public class DaDatasourceController extends BaseController {
     }
 
     @Operation(summary = "查询数据源列表")
-    @PreAuthorize("@ss.hasPermi('da:datasource:datasource:list')")
+    @PreAuthorize("@ss.hasPermi('da:dataSource:list')")
     @GetMapping("/getDaDatasourceList")
     public CommonResult<List<DaDatasourceRespVO>> getDaDatasourceList(DaDatasourcePageReqVO daDatasource) {
         List<DaDatasourceDO> page = daDatasourceService.getDaDatasourceList(daDatasource);
@@ -109,7 +105,7 @@ public class DaDatasourceController extends BaseController {
     }
 
     @Operation(summary = "导出数据源列表")
-    @PreAuthorize("@ss.hasPermi('da:datasource:datasource:export')")
+    @PreAuthorize("@ss.hasPermi('da:dataSource:export')")
     @Log(title = "数据源", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DaDatasourcePageReqVO exportReqVO) {
@@ -120,7 +116,7 @@ public class DaDatasourceController extends BaseController {
     }
 
     @Operation(summary = "导入数据源列表")
-    @PreAuthorize("@ss.hasPermi('da:datasource:datasource:import')")
+    @PreAuthorize("@ss.hasPermi('da:dataSource:import')")
     @Log(title = "数据源", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
@@ -132,7 +128,7 @@ public class DaDatasourceController extends BaseController {
     }
 
     @Operation(summary = "获取数据源详细信息")
-    @PreAuthorize("@ss.hasPermi('da:datasource:datasource:query')")
+    @PreAuthorize("@ss.hasPermi('da:dataSource:query')")
     @GetMapping(value = "/{id}")
     public CommonResult<DaDatasourceRespVO> getInfo(@PathVariable("id") Long id) {
         DaDatasourceDO daDatasourceDO = daDatasourceService.getDaDatasourceById(id);
@@ -140,7 +136,7 @@ public class DaDatasourceController extends BaseController {
     }
 
     @Operation(summary = "新增数据源")
-    @PreAuthorize("@ss.hasPermi('da:datasource:datasource:add')")
+    @PreAuthorize("@ss.hasPermi('da:dataSource:add')")
     @Log(title = "数据源", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DaDatasourceSaveReqVO daDatasource) {
@@ -151,7 +147,7 @@ public class DaDatasourceController extends BaseController {
     }
 
     @Operation(summary = "修改数据源")
-    @PreAuthorize("@ss.hasPermi('da:datasource:datasource:edit')")
+    @PreAuthorize("@ss.hasPermi('da:dataSource:edit')")
     @Log(title = "数据源", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DaDatasourceSaveReqVO daDatasource) {
@@ -162,23 +158,24 @@ public class DaDatasourceController extends BaseController {
     }
 
     @Operation(summary = "删除数据源")
-    @PreAuthorize("@ss.hasPermi('da:datasource:datasource:remove')")
+    @PreAuthorize("@ss.hasPermi('da:dataSource:remove')")
     @Log(title = "数据源", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(daDatasourceService.removeDaDatasource(Arrays.asList(ids)));
     }
 
+
     @Operation(summary = "删除数据源带类型判断是数据资产还是数据研发")
-    @PreAuthorize("@ss.hasPermi('da:datasource:datasource:remove')")
+    @PreAuthorize("@ss.hasPermi('da:dataSource:remove')")
     @Log(title = "数据源", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}/{type}")
-    public CommonResult<Integer> removeDppOrDa(@PathVariable("ids") Long[] ids,@PathVariable("type") Long type) {
-        return CommonResult.toAjax(daDatasourceService.removeDaDatasourceDppOrDa(Arrays.asList(ids),type));
+    public CommonResult<Integer> removeDppOrDa(@PathVariable("ids") Long[] ids, @PathVariable("type") Long type) {
+        return CommonResult.toAjax(daDatasourceService.removeDaDatasourceDppOrDa(Arrays.asList(ids), type));
     }
 
     @Operation(summary = "测试连接")
-    @PreAuthorize("@ss.hasPermi('da:datasource:datasource:remove')")
+    @PreAuthorize("@ss.hasPermi('da:dataSource:remove')")
     @Log(title = "测试连接", businessType = BusinessType.DELETE)
     @GetMapping("clientsTest/{id}")
     public AjaxResult clientsTest(@PathVariable("id") Long ids) {
@@ -187,15 +184,16 @@ public class DaDatasourceController extends BaseController {
 
 
     @Operation(summary = "获取数据源里面的数据表")
-    @PreAuthorize("@ss.hasPermi('da:datasource:datasource:query')")
+    @PreAuthorize("@ss.hasPermi('da:dataSource:query')")
     @GetMapping(value = "/tableList/{id}")
     public AjaxResult getTableList(@PathVariable("id") Long id) {
         List<DbTable> tables = daDatasourceService.getDbTables(id);
         return success(tables);
     }
 
+
     @Operation(summary = "获取数据源里面的数据表的数据字段")
-    @PreAuthorize("@ss.hasPermi('da:datasource:datasource:query')")
+    @PreAuthorize("@ss.hasPermi('da:dataSource:query')")
     @PostMapping(value = "/columnsList")
     public AjaxResult getColumnsList(@RequestBody JSONObject jsonObject) {
         List<DpModelColumnReqDTO> columns = daDatasourceService.getColumnsList(jsonObject);
@@ -203,13 +201,13 @@ public class DaDatasourceController extends BaseController {
     }
 
     @Operation(summary = "SQL解析")
-    @PreAuthorize("@ss.hasPermi('da:datasource:datasource:query')")
+    @PreAuthorize("@ss.hasPermi('da:dataSource:query')")
     @PostMapping("/sqlParse")
     public AjaxResult sqlParse(@RequestBody JSONObject jsonObject) {
-        if(StringUtils.isEmpty(jsonObject.getStr("sourceId"))){
+        if (StringUtils.isEmpty(jsonObject.getStr("sourceId"))) {
             return AjaxResult.error("请携带数据源!");
         }
-        if(StringUtils.isEmpty(jsonObject.getStr("sql"))){
+        if (StringUtils.isEmpty(jsonObject.getStr("sql"))) {
             return AjaxResult.error("请输入SQL语句!");
         }
        /* try {
@@ -226,7 +224,7 @@ public class DaDatasourceController extends BaseController {
 
 
     @Operation(summary = "获取数据源里面的数据表的数据字段")
-    @PreAuthorize("@ss.hasPermi('da:datasource:datasource:query')")
+    @PreAuthorize("@ss.hasPermi('da:dataSource:query')")
     @PostMapping(value = "/columnsAsAssetColumnList")
     public CommonResult<List<DaAssetColumnDO>> columnsAsAssetColumnList(@RequestBody @Valid DaDatasourceTableVO param) {
         List<DaAssetColumnDO> columns = daDatasourceService.columnsAsAssetColumnList(param.getId(), param.getTableName());
@@ -252,18 +250,18 @@ public class DaDatasourceController extends BaseController {
         return CommonResult.success(columns);
     }
     @Operation(summary = "")
-    @PreAuthorize("@ss.hasPermi('da:datasource:executesqlquery:list')")
+    @PreAuthorize("@ss.hasPermi('da:dataQuery:list')")
     @GetMapping(value = "/executeSqlQuery")
     public AjaxResult executeSqlQuery(DaDatasourcePageReqVO daDatasource) {
-        return success(daDatasourceService.executeSqlQuery( daDatasource));
+        return success(daDatasourceService.executeSqlQuery(daDatasource));
     }
 
 
     @Operation(summary = "")
-    @PreAuthorize("@ss.hasPermi('da:datasource:executesqlquery:list')")
+    @PreAuthorize("@ss.hasPermi('da:dataQuery:list')")
     @GetMapping(value = "/exportSqlQueryResult/export")
-    public void exportSqlQueryResult(HttpServletResponse response,DaDatasourcePageReqVO daDatasource) {
-        daDatasourceService.exportSqlQueryResult(response,daDatasource);
+    public void exportSqlQueryResult(HttpServletResponse response, DaDatasourcePageReqVO daDatasource) {
+        daDatasourceService.exportSqlQueryResult(response, daDatasource);
     }
 
 }

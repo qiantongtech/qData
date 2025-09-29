@@ -36,14 +36,14 @@ import java.util.List;
  */
 @Tag(name = "数据元类目管理")
 @RestController
-@RequestMapping("/att/attDataElemCat")
+@RequestMapping("/att/dataElemCat")
 @Validated
 public class AttDataElemCatController extends BaseController {
     @Resource
     private IAttDataElemCatService attDataElemCatService;
 
     @Operation(summary = "查询数据元类目管理列表")
-    @PreAuthorize("@ss.hasPermi('att:cat:dataelemcat:list')")
+    @PreAuthorize("@ss.hasPermi('att:dataElemCat:list')")
     @GetMapping("/list")
     public CommonResult<List<AttDataElemCatRespVO>> list(AttDataElemCatPageReqVO attDataElemCat) {
         List<AttDataElemCatDO> attDataElemCatList = attDataElemCatService.getAttDataElemCatList(attDataElemCat);
@@ -51,7 +51,7 @@ public class AttDataElemCatController extends BaseController {
     }
 
     @Operation(summary = "导出数据元类目管理列表")
-    @PreAuthorize("@ss.hasPermi('att:cat:dataelemcat:export')")
+    @PreAuthorize("@ss.hasPermi('att:dataElemCat:export')")
     @Log(title = "数据元类目管理", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AttDataElemCatPageReqVO exportReqVO) {
@@ -62,7 +62,7 @@ public class AttDataElemCatController extends BaseController {
     }
 
     @Operation(summary = "导入数据元类目管理列表")
-    @PreAuthorize("@ss.hasPermi('att:cat:dataelemcat:import')")
+    @PreAuthorize("@ss.hasPermi('att:dataElemCat:import')")
     @Log(title = "数据元类目管理", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
@@ -74,7 +74,7 @@ public class AttDataElemCatController extends BaseController {
     }
 
     @Operation(summary = "获取数据元类目管理详细信息")
-    @PreAuthorize("@ss.hasPermi('att:cat:dataelemcat:query')")
+    @PreAuthorize("@ss.hasPermi('att:dataElemCat:query')")
     @GetMapping(value = "/{id}")
     public CommonResult<AttDataElemCatRespVO> getInfo(@PathVariable("id") Long id) {
         AttDataElemCatDO attDataElemCatDO = attDataElemCatService.getAttDataElemCatById(id);
@@ -82,7 +82,7 @@ public class AttDataElemCatController extends BaseController {
     }
 
     @Operation(summary = "新增数据元类目管理")
-    @PreAuthorize("@ss.hasPermi('att:cat:dataelemcat:add')")
+    @PreAuthorize("@ss.hasPermi('att:dataElemCat:add')")
     @Log(title = "数据元类目管理", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AttDataElemCatSaveReqVO attDataElemCat) {
@@ -93,7 +93,7 @@ public class AttDataElemCatController extends BaseController {
     }
 
     @Operation(summary = "修改数据元类目管理")
-    @PreAuthorize("@ss.hasPermi('att:cat:dataelemcat:edit')")
+    @PreAuthorize("@ss.hasPermi('att:dataElemCat:edit')")
     @Log(title = "数据元类目管理", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AttDataElemCatSaveReqVO attDataElemCat) {
@@ -104,7 +104,7 @@ public class AttDataElemCatController extends BaseController {
     }
 
     @Operation(summary = "删除数据元类目管理")
-    @PreAuthorize("@ss.hasPermi('att:cat:dataelemcat:remove')")
+    @PreAuthorize("@ss.hasPermi('att:dataElemCat:remove')")
     @Log(title = "数据元类目管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {

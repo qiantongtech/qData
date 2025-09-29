@@ -1,7 +1,6 @@
 <template>
   <div class="app-container" ref="app-container">
 
-    <!-- 新用户引导内容展示 -->
     <GuideTip tip-id="dp/dpModel.list" />
 
     <el-container style="90%">
@@ -25,7 +24,6 @@
                 <el-option v-for="dict in dp_model_status" :key="dict.value" :label="dict.label" :value="dict.value" />
               </el-select>
             </el-form-item>
-
             <el-form-item>
               <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
                 <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
@@ -41,32 +39,36 @@
           <div class="justify-between mb15">
             <el-row :gutter="15" class="btn-style">
               <el-col :span="1.5">
-                <el-button type="primary" plain @click="handleAdd" v-hasPermi="['dp:model:model:add']"
+                <el-button type="primary" plain @click="handleAdd" v-hasPermi="['dp:model:add']"
                   @mousedown="(e) => e.preventDefault()">
                   <i class="iconfont-mini icon-xinzeng mr5"></i>新增
                 </el-button>
               </el-col>
               <el-col :span="1.5">
                 <!--  -->
+                <!--  <img v-else src="@/assets/da/asset/api (2).svg" alt="" /> -->
                 <el-button type="primary" :disabled="single" plain @click="handleMaterialization"
-                  v-hasPermi="['dp:model:model:edit']" @mousedown="(e) => e.preventDefault()">
-                  <i class="iconfont-mini icon-xiugai--copy mr5"></i>物化
+                  v-hasPermi="['dp:model:edit']" @mousedown="(e) => e.preventDefault()">
+                  <svg-icon iconClass="wh" style="font-size: 14px; margin-right: 6px;" :class="{
+                    'icon-disabled': single,
+                    'icon-normal': !single
+                  }" />物化
                 </el-button>
               </el-col>
               <el-col :span="1.5">
                 <el-button type="danger" plain :disabled="multiple" @click="handleDelete"
-                  v-hasPermi="['dp:model:model:remove']" @mousedown="(e) => e.preventDefault()">
+                  v-hasPermi="['dp:model:remove']" @mousedown="(e) => e.preventDefault()">
                   <i class="iconfont-mini icon-shanchu-huise mr5"></i>删除
                 </el-button>
               </el-col>
               <!-- <el-col :span="1.5">
-                <el-button type="info" plain @click="handleImport" v-hasPermi="['dp:model:model:export']"
+                <el-button type="info" plain @click="handleImport" v-hasPermi="['dp:model:export']"
                   @mousedown="(e) => e.preventDefault()">
                   <i class="iconfont-mini icon-upload-cloud-line mr5"></i>导入
                 </el-button>
               </el-col>
               <el-col :span="1.5">
-                <el-button type="warning" plain @click="handleExport" v-hasPermi="['dp:model:model:export']"
+                <el-button type="warning" plain @click="handleExport" v-hasPermi="['dp:model:export']"
                   @mousedown="(e) => e.preventDefault()">
                   <i class="iconfont-mini icon-download-line mr5"></i>导出
                 </el-button>
@@ -76,29 +78,42 @@
               <right-toolbar v-model:showSearch="showSearch" @queryTable="getList" :columns="columns"></right-toolbar>
             </div>
           </div>
-          <el-table stripe height="58vh" v-loading="loading" :data="dpModelList"
-            @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
-            <el-table-column type="selection" width="55" align="center" :selectable="selectable" />
-            <el-table-column v-if="getColumnVisibility(0)" label="编号" width="80" align="center" prop="id" />
-            <el-table-column v-if="getColumnVisibility(1)" label="英文名称" :show-overflow-tooltip="true" align="left"
-              prop="modelName">
+
+          <el-table stripe v-loading="loading" :data="dpModelList" @selection-change="handleSelectionChange"
+            :default-sort="defaultSort" @sort-change="handleSortChange">
+            <el-table-column type="selection" width="30" align="left" :selectable="selectable" />
+            <el-table-column v-if="getColumnVisibility(0)" label="编号" width="50" align="left" prop="id" />
+            <el-table-column v-if="getColumnVisibility(1)" label="英文名称" :show-overflow-tooltip="{ effect: 'light' }"
+              align="left" prop="modelName" width="200">
               <template #default="scope">
                 {{ scope.row.modelName || "-" }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(2)" label="中文名称" :show-overflow-tooltip="true" align="left"
-              prop="modelComment">
+            <el-table-column v-if="getColumnVisibility(2)" label="中文名称" :show-overflow-tooltip="{ effect: 'light' }"
+              align="left" prop="modelComment" width="180">
               <template #default="scope">
                 {{ scope.row.modelComment || "-" }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(3)" label="逻辑模型类目" width="130" :show-overflow-tooltip="true"
-              align="left" prop="catName">
+            <el-table-column v-if="getColumnVisibility(3)" label="逻辑模型类目" width="100"
+              :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="catName">
               <template #default="scope">
                 {{ scope.row.catName || "-" }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(4)" label="状态" width="120" align="center" prop="status">
+            <el-table-column v-if="getColumnVisibility(10)" label="创建人" align="left" prop="createBy" width="120">
+              <template #default="scope">
+                {{ scope.row.createBy || "-" }}
+              </template>
+            </el-table-column>
+            <el-table-column label="创建时间" v-if="getColumnVisibility(11)" align="left" prop="createTime" width="180">
+              <template #default="scope">
+                <span>{{
+                  parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}")
+                }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column v-if="getColumnVisibility(4)" label="状态" width="120" align="left" prop="status">
               <template #default="scope">
                 <!-- {{ dp_model_status }}
                                 <dict-tag :options="dp_model_status" :value="scope.row.status" /> -->
@@ -108,22 +123,28 @@
                   " />
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(5)" width="130" label="创建方式" :show-overflow-tooltip="true"
-              align="center" prop="createType">
+            <el-table-column label="备注" v-if="getColumnVisibility(5)" align="left" prop="remark"
+              :show-overflow-tooltip="{ effect: 'light' }">
+              <template #default="scope">
+                {{ scope.row.remark || '-' }}
+              </template>
+            </el-table-column>
+            <!-- <el-table-column v-if="getColumnVisibility(5)" width="130" label="创建方式" :show-overflow-tooltip="{effect: 'light'}"
+              align="left" prop="createType">
               <template #default="scope">
                 <dict-tag :options="dp_model_create_type" :value="scope.row.createType" />
               </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
               <template #default="scope">
                 <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-                  :disabled="scope.row.status == 1" v-hasPermi="['dp:model:model:edit']">修改</el-button>
+                  :disabled="scope.row.status == 1" v-hasPermi="['dp:model:edit']">修改</el-button>
                 <el-button link type="danger" icon="Delete" :disabled="scope.row.status == 1"
-                  @click="handleDelete(scope.row)" v-hasPermi="['dp:model:model:remove']">删除</el-button>
+                  @click="handleDelete(scope.row)" v-hasPermi="['dp:model:remove']">删除</el-button>
                 <el-button link type="primary" icon="view" @click="handleDetail(scope.row)"
-                  v-hasPermi="['dp:model:model:edit']">详情</el-button>
+                  v-hasPermi="['dp:model:edit']">详情</el-button>
                 <!-- <el-button link type="primary" icon="view" @click="routeTo('/dp/model/dpModelDetail', scope.row)"
-                  v-hasPermi="['dp:model:model:edit']">复杂详情</el-button> -->
+                  v-hasPermi="['dp:model:edit']">复杂详情</el-button> -->
               </template>
             </el-table-column>
 
@@ -134,7 +155,6 @@
               </div>
             </template>
           </el-table>
-
           <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum"
             v-model:limit="queryParams.pageSize" @pagination="getList" />
         </div>
@@ -230,8 +250,8 @@
 import { deptUserTree } from "@/api/system/system/user.js";
 import { deptTreeSelectNoPermi } from "@/api/system/system/user.js";
 import DeptTree from "@/components/DeptTree";
-import MyFormDialog from "./detail/MyFormDialog";
-import MaterializationDialog from "./detail/MaterializationDialog";
+import MyFormDialog from "@/views/dp/model/components/add.vue";
+import MaterializationDialog from "@/views/dp/model/detail/materialization.vue";
 import {
   listDpModel,
   getDpModel,
@@ -243,7 +263,7 @@ import {
   listAttModelCat,
   dpModelColumn,
   updateStatusDpDataModel,
-} from "@/api/dp/model/dpModel";
+} from "@/api/dp/model/model";
 import { getToken } from "@/utils/auth.js";
 import { ref, reactive, getCurrentInstance } from "vue";
 const { proxy } = getCurrentInstance();
@@ -292,6 +312,7 @@ function getDeptTree() {
       {
         name: "逻辑模型类目",
         value: "",
+        id: 0,
         children: deptOptions.value,
       },
     ];
@@ -307,11 +328,14 @@ function getDeptTree() {
 }
 // 列显隐信息
 const columns = ref([
+  { key: 0, label: "编号", visible: true },
   { key: 1, label: "英文名称", visible: true },
   { key: 2, label: "中文名称", visible: true },
-  { key: 3, label: "类目编码", visible: true },
+  { key: 3, label: "逻辑模型类目", visible: true },
+  { key: 10, label: "创建人", visible: true },
+  { key: 11, label: "创建时间", visible: true },
   { key: 4, label: "状态", visible: true },
-  { key: 5, label: "创建方式", visible: true },
+  { key: 5, label: "备注", visible: true },
 ]);
 
 const getColumnVisibility = (key) => {
@@ -347,7 +371,7 @@ const upload = reactive({
   // 设置上传的请求头部
   headers: { Authorization: "Bearer " + getToken() },
   // 上传的地址
-  url: import.meta.env.VITE_APP_BASE_API + "/dp/dpModel/importData",
+  url: import.meta.env.VITE_APP_BASE_API + "/dp/model/importData",
 });
 
 /** 启用禁用开关 */
@@ -504,7 +528,7 @@ function handleMaterialization() {
 }
 /** 详情按钮操作 */
 function handleDetail(row) {
-  routeTo("/dp/model/dpModelDetail", row);
+  routeTo("/dp/model/detail", row);
 }
 
 /** 提交按钮 */

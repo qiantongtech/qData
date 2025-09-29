@@ -37,14 +37,14 @@ import java.util.List;
  */
 @Tag(name = "稽查规则")
 @RestController
-@RequestMapping("/att/attAuditRule")
+@RequestMapping("/att/auditRule")
 @Validated
 public class AttAuditRuleController extends BaseController {
     @Resource
     private IAttAuditRuleService attAuditRuleService;
 
     @Operation(summary = "查询稽查规则列表")
-    @PreAuthorize("@ss.hasPermi('att:rule:auditrule:list')")
+    @PreAuthorize("@ss.hasPermi('att:auditRule:list')")
     @GetMapping("/list")
     public CommonResult<PageResult<AttAuditRuleRespVO>> list(AttAuditRulePageReqVO attAuditRule) {
         PageResult<AttAuditRuleDO> page = attAuditRuleService.getAttAuditRulePage(attAuditRule);
@@ -52,7 +52,7 @@ public class AttAuditRuleController extends BaseController {
     }
 
     @Operation(summary = "导出稽查规则列表")
-    @PreAuthorize("@ss.hasPermi('att:rule:auditrule:export')")
+    @PreAuthorize("@ss.hasPermi('att:auditRule:export')")
     @Log(title = "稽查规则", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AttAuditRulePageReqVO exportReqVO) {
@@ -64,7 +64,7 @@ public class AttAuditRuleController extends BaseController {
     }
 
     @Operation(summary = "导入稽查规则列表")
-    @PreAuthorize("@ss.hasPermi('att:rule:auditrule:import')")
+    @PreAuthorize("@ss.hasPermi('att:auditRule:import')")
     @Log(title = "稽查规则", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
@@ -76,7 +76,7 @@ public class AttAuditRuleController extends BaseController {
     }
 
     @Operation(summary = "获取稽查规则详细信息")
-    @PreAuthorize("@ss.hasPermi('att:rule:auditrule:query')")
+    @PreAuthorize("@ss.hasPermi('att:auditRule:query')")
     @GetMapping(value = "/{ID}")
     public CommonResult<AttAuditRuleRespVO> getInfo(@PathVariable("ID") Long ID) {
         AttAuditRuleDO attAuditRuleDO = attAuditRuleService.getAttAuditRuleById(ID);
@@ -84,7 +84,7 @@ public class AttAuditRuleController extends BaseController {
     }
 
     @Operation(summary = "新增稽查规则")
-    @PreAuthorize("@ss.hasPermi('att:rule:auditrule:add')")
+    @PreAuthorize("@ss.hasPermi('att:auditRule:add')")
     @Log(title = "稽查规则", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AttAuditRuleSaveReqVO attAuditRule) {
@@ -95,7 +95,7 @@ public class AttAuditRuleController extends BaseController {
     }
 
     @Operation(summary = "修改稽查规则")
-    @PreAuthorize("@ss.hasPermi('att:rule:auditrule:edit')")
+    @PreAuthorize("@ss.hasPermi('att:auditRule:edit')")
     @Log(title = "稽查规则", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AttAuditRuleSaveReqVO attAuditRule) {
@@ -106,7 +106,7 @@ public class AttAuditRuleController extends BaseController {
     }
 
     @Operation(summary = "删除稽查规则")
-    @PreAuthorize("@ss.hasPermi('att:rule:auditrule:remove')")
+    @PreAuthorize("@ss.hasPermi('att:auditRule:remove')")
     @Log(title = "稽查规则", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {

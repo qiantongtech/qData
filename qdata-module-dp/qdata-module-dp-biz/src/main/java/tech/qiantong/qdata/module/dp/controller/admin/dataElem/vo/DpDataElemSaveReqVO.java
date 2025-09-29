@@ -1,10 +1,14 @@
 package tech.qiantong.qdata.module.dp.controller.admin.dataElem.vo;
 
+import java.util.List;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Date;
+import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
  * 数据元 创建/修改 Request VO DP_DATA_ELEM
@@ -56,4 +60,6 @@ public class DpDataElemSaveReqVO extends BaseEntity {
     @Schema(description = "描述", example = "")
     @Size(max = 256, message = "描述长度不能超过256个字符")
     private String description;
+
+    private Long documentId;
 }

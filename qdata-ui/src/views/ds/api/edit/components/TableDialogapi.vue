@@ -2,25 +2,25 @@
     <el-dialog :title="dialogTitle" v-model="dialogVisible" width="70%" style="min-height:600px;"
         :close-on-click-modal="false" append-to-body @close="handleClose">
         <el-table v-if="apiServiceType == 3" :height="tableHeight" :data="tableData" row-key="id" ref="multipleTable"
-            border stripe tooltip-effect="dark" default-expand-all style="width: 100%; margin: 15px 0;"
+                  stripe tooltip-effect="dark" default-expand-all style="width: 100%; margin: 15px 0;"
             :tree-props="{ children: 'daAssetApiParamList', hasChildren: 'hasChildren' }" :check-strictly="false"
             :selectable="checkSelectable" @selection-change="handleSelectionChange">
             <!-- Selection Column with Condition -->
             <el-table-column type="selection" width="55" :reserve-selection="true" :selectable="checkSelectable" />
-            <el-table-column label="序号" width="100" align="center" fixed="left">
+            <el-table-column label="序号" width="80" align="center" fixed="left">
                 <template #default="{ $index }">
                     {{ $index + 1 }}
                 </template>
             </el-table-column>
-            <el-table-column prop="name" label="参数名称" align="center" show-overflow-tooltip fixed="left" />
-            <el-table-column prop="remark" label="描述" align="center" show-overflow-tooltip fixed="left" />
-            <el-table-column label="数据类型" fixed="left" align="center" prop="columnType" :show-overflow-tooltip="true">
+            <el-table-column prop="name" label="参数名称" align="center" :show-overflow-tooltip="{effect: 'light'}" fixed="left" />
+            <el-table-column prop="remark" label="描述" align="center" :show-overflow-tooltip="{effect: 'light'}" fixed="left" />
+            <el-table-column label="数据类型" fixed="left" align="center" prop="columnType" :show-overflow-tooltip="{effect: 'light'}">
                 <template #default="{ row }">
                     {{ row.columnType || '-' }}
                 </template>
             </el-table-column>
-            <el-table-column prop="exampleValue" label="示例值" align="center" show-overflow-tooltip fixed="left" />
-            <el-table-column prop="requestFlag" label="是否允许为空" align="center" show-overflow-tooltip fixed="left">
+            <el-table-column prop="exampleValue" label="示例值" width="120" align="center" :show-overflow-tooltip="{effect: 'light'}" fixed="left" />
+            <el-table-column prop="requestFlag" label="是否允许为空" align="center" :show-overflow-tooltip="{effect: 'light'}" fixed="left">
                 <template #default="scope">
                     <span>{{ scope.row.requestFlag == '1' ? '是' : '否' }}</span>
                 </template>

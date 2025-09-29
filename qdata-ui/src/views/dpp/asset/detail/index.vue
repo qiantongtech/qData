@@ -233,7 +233,7 @@
             <div class="infotop-row border-top">
               <div class="infotop-row-lable">创建时间</div>
               <div class="infotop-row-value">
-                {{ parseTime(daAssetDetail.createTime, "{y}-{m}-{d} {h}:{i}:{s}") }}
+                {{ parseTime(daAssetDetail.createTime, "{y}-{m}-{d} {h}:{i}") }}
               </div>
             </div>
           </el-col>
@@ -259,16 +259,17 @@
   </div>
 </template>
 <script setup name="DaAsset">
-import { getDaAsset } from "@/api/da/asset/daAsset";
+import { getDaAsset } from "@/api/da/asset/asset";
 import { useRoute } from "vue-router";
-import ComponentOne from "@/views/dpp/asset/detail/componentOne.vue";
-import ComponentTwo from "@/views/dpp/asset/detail/componentTwo.vue";
-import ComponentThree from "@/views/dpp/asset/detail/componentThree";
-import authParams from "@/views/dpp/asset/detail/authParams";
-import RequestParamsForm from "@/views/dpp/asset/detail/RequestParamsForm";
-import ResponseFormatConfig from "@/views/dpp/asset/detail/ResponseFormatConfig";
-import BasicInfo from "@/views/dpp/asset/detail/basicInfo.vue";
-import DataQualityControl from "@/views/dpp/asset/detail/DataQualityControl";
+import ComponentOne from "@/views/dpp/asset/detail/table/column.vue";
+import DataQualityControl from "@/views/dpp/asset/detail/table/quality.vue";
+import lineage from "@/views/dpp/asset/detail/table/lineage.vue";
+import ComponentTwo from "@/views/dpp/asset/detail/table/preview.vue";
+import ComponentThree from "@/views/dpp/asset/detail/api/simulation.vue";
+import authParams from "@/views/dpp/asset/detail/api/authParams";
+import RequestParamsForm from "@/views/dpp/asset/detail/api/requestParamsForm";
+import ResponseFormatConfig from "@/views/dpp/asset/detail/api/responseFormatConfig";
+import info from "@/views/dpp/asset/detail/info.vue";
 
 const { proxy } = getCurrentInstance();
 const { da_assets_status, da_asset_gis_type, da_asset_api_method } = proxy.useDict("da_assets_status", "da_asset_gis_type", "da_asset_api_method");
@@ -308,37 +309,39 @@ const tabPanes = computed(() => {
   switch (daAssetDetail.value.type) {
     case "1":
       return [
-        { label: "资产概览", name: "0", component: BasicInfo },
-        { label: "资产字段", name: "1", component: ComponentOne },
+        { label: "资产字段", name: "0", component: ComponentOne },
         { label: "资产预览", name: "2", component: ComponentTwo },
         { label: '资产质量', name: '3', component: DataQualityControl },
+        { label: '资产血缘', name: '4', component: lineage },
+        { label: "资产概览", name: "5", component: info },
 
       ];
     case "2":
       return [
-        { label: "资产概览", name: "0", component: BasicInfo },
-        { label: "鉴权参数", name: "1", component: authParams },
-        { label: "请求参数", name: "2", component: RequestParamsForm },
-        { label: "返回格式", name: "3", component: ResponseFormatConfig },
-        { label: "预览数据", name: "4", component: ComponentThree },
+        { label: "鉴权参数", name: "0", component: authParams },
+        { label: "请求参数", name: "1", component: RequestParamsForm },
+        { label: "返回格式", name: "2", component: ResponseFormatConfig },
+        { label: "预览数据", name: "3", component: ComponentThree },
+        { label: "资产概览", name: "4", component: info },
+
       ];
     case "3":
-      return [{ label: "资产概览", name: "0", component: BasicInfo }];
+      return [{ label: "资产概览", name: "0", component: info }];
     case "4":
       return [
-        { label: "资产概览", name: "0", component: BasicInfo },
+        { label: "资产概览", name: "0", component: info },
         { label: "资产预览", name: "1", component: ComponentTwo },
       ];
     case "5":
-      return [{ label: "资产概览", name: "0", component: BasicInfo }];
+      return [{ label: "资产概览", name: "0", component: info }];
     case "6":
       return [
-        { label: "资产概览", name: "0", component: BasicInfo },
+        { label: "资产概览", name: "0", component: info },
         { label: "资产字段", name: "1", component: ComponentOne },
         { label: "资产预览", name: "2", component: ComponentTwo },
       ];
     case "7":
-      return [{ label: "资产概览", name: "0", component: BasicInfo }];
+      return [{ label: "资产概览", name: "0", component: info }];
     default:
   }
 });

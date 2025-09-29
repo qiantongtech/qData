@@ -37,14 +37,14 @@ import java.util.List;
  */
 @Tag(name = "清洗规则")
 @RestController
-@RequestMapping("/att/attCleanRule")
+@RequestMapping("/att/cleanRule")
 @Validated
 public class AttCleanRuleController extends BaseController {
     @Resource
     private IAttCleanRuleService attCleanRuleService;
 
     @Operation(summary = "查询清洗规则列表")
-    @PreAuthorize("@ss.hasPermi('att:rule:attcleanrule:list')")
+    @PreAuthorize("@ss.hasPermi('att:cleanRule:list')")
     @GetMapping("/list")
     public CommonResult<PageResult<AttCleanRuleRespVO>> list(AttCleanRulePageReqVO attCleanRule) {
         PageResult<AttCleanRuleDO> page = attCleanRuleService.getAttCleanRulePage(attCleanRule);
@@ -59,7 +59,7 @@ public class AttCleanRuleController extends BaseController {
     }
 
     @Operation(summary = "导出清洗规则列表")
-    @PreAuthorize("@ss.hasPermi('att:rule:attcleanrule:export')")
+    @PreAuthorize("@ss.hasPermi('att:cleanRule:export')")
     @Log(title = "清洗规则", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AttCleanRulePageReqVO exportReqVO) {
@@ -71,7 +71,7 @@ public class AttCleanRuleController extends BaseController {
     }
 
     @Operation(summary = "导入清洗规则列表")
-    @PreAuthorize("@ss.hasPermi('att:rule:attcleanrule:import')")
+    @PreAuthorize("@ss.hasPermi('att:cleanRule:import')")
     @Log(title = "清洗规则", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
@@ -83,7 +83,7 @@ public class AttCleanRuleController extends BaseController {
     }
 
     @Operation(summary = "获取清洗规则详细信息")
-    @PreAuthorize("@ss.hasPermi('att:rule:attcleanrule:query')")
+    @PreAuthorize("@ss.hasPermi('att:cleanRule:query')")
     @GetMapping(value = "/{ID}")
     public CommonResult<AttCleanRuleRespVO> getInfo(@PathVariable("ID") Long ID) {
         AttCleanRuleDO attCleanRuleDO = attCleanRuleService.getAttCleanRuleById(ID);
@@ -91,7 +91,7 @@ public class AttCleanRuleController extends BaseController {
     }
 
     @Operation(summary = "新增清洗规则")
-    @PreAuthorize("@ss.hasPermi('att:rule:attcleanrule:add')")
+    @PreAuthorize("@ss.hasPermi('att:cleanRule:add')")
     @Log(title = "清洗规则", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AttCleanRuleSaveReqVO attCleanRule) {
@@ -102,7 +102,7 @@ public class AttCleanRuleController extends BaseController {
     }
 
     @Operation(summary = "修改清洗规则")
-    @PreAuthorize("@ss.hasPermi('att:rule:attcleanrule:edit')")
+    @PreAuthorize("@ss.hasPermi('att:cleanRule:edit')")
     @Log(title = "清洗规则", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AttCleanRuleSaveReqVO attCleanRule) {
@@ -113,7 +113,7 @@ public class AttCleanRuleController extends BaseController {
     }
 
     @Operation(summary = "删除清洗规则")
-    @PreAuthorize("@ss.hasPermi('att:rule:attcleanrule:remove')")
+    @PreAuthorize("@ss.hasPermi('att:cleanRule:remove')")
     @Log(title = "清洗规则", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {

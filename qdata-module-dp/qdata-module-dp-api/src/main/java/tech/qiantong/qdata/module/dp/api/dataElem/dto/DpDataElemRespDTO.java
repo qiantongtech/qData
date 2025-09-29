@@ -58,4 +58,6 @@ public class DpDataElemRespDTO {
     @TableField(exist = false)
     private Set<Long> columnId;
 
+
+    private Long documentId;
 }

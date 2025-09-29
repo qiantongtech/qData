@@ -2,11 +2,13 @@ package tech.qiantong.qdata.module.dpp.controller.admin.etl.vo;
 
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import tech.qiantong.qdata.common.annotation.Excel;
 import tech.qiantong.qdata.common.utils.JSONUtils;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlTaskDO;
+import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlTaskInstanceDO;
 
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -36,6 +38,10 @@ public class DppEtlTaskUpdateQueryRespVO implements Serializable {
     @Size(max = 256, message = "类目编码长度不能超过256个字符")
     private String catCode;
 
+
+    /**
+     * @see DppEtlTaskDO#type
+     */
     @Excel(name = "任务类型")
     @Schema(description = "任务类型", example = "")
     private String type;
@@ -63,6 +69,10 @@ public class DppEtlTaskUpdateQueryRespVO implements Serializable {
     @Excel(name = "责任人")
     @Schema(description = "责任人", example = "")
     private String personCharge;
+
+    @Excel(name = "责任人名称")
+    @Schema(description = "责任人名称", example = "")
+    private String personChargeName;
 
     @Excel(name = "联系电话")
     @Schema(description = "联系电话", example = "")
@@ -117,6 +127,7 @@ public class DppEtlTaskUpdateQueryRespVO implements Serializable {
 
     @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     @Schema(description = "创建时间", example = "")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
     @Excel(name = "更新人")
@@ -129,6 +140,7 @@ public class DppEtlTaskUpdateQueryRespVO implements Serializable {
 
     @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     @Schema(description = "更新时间", example = "")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
     @Excel(name = "备注")
@@ -154,6 +166,20 @@ public class DppEtlTaskUpdateQueryRespVO implements Serializable {
     @Schema(description = "草稿任务配置信息", example = "")
     private String draftJson;
 
+    /** 最后执行时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date lastExecuteTime;
+
+    /** 最后执行状态 */
+    private String lastExecuteStatus;
+
+    /** 调度上下线状态 */
+    private String schedulerState;
+
+    /**
+     * 任务实例
+     */
+    private DppEtlTaskInstanceDO taskInstance;
 
     public DppEtlTaskUpdateQueryRespVO(DppEtlTaskDO dppEtlTaskDO) {
         this.id = dppEtlTaskDO.getId();
@@ -166,6 +192,7 @@ public class DppEtlTaskUpdateQueryRespVO implements Serializable {
         this.projectId = dppEtlTaskDO.getProjectId();
         this.projectCode = dppEtlTaskDO.getProjectCode();
         this.personCharge = dppEtlTaskDO.getPersonCharge();
+        this.personChargeName = dppEtlTaskDO.getPersonChargeName();
         this.contactNumber = dppEtlTaskDO.getContactNumber();
         this.locations = parseList(dppEtlTaskDO.getLocations());
         this.description = dppEtlTaskDO.getDescription();
@@ -178,6 +205,12 @@ public class DppEtlTaskUpdateQueryRespVO implements Serializable {
         this.validFlag = dppEtlTaskDO.getValidFlag();
         this.delFlag = dppEtlTaskDO.getDelFlag();
         this.draftJson = dppEtlTaskDO.getDraftJson();
+        this.createBy = dppEtlTaskDO.getCreateBy();
+        this.creatorId = dppEtlTaskDO.getCreatorId();
+        this.createTime = dppEtlTaskDO.getCreateTime();
+        this.updateBy = dppEtlTaskDO.getUpdateBy();
+        this.updaterId = dppEtlTaskDO.getUpdatorId();
+        this.updateTime = dppEtlTaskDO.getUpdateTime();
     }
 
     private List<Map<String, Object>> parseList(String string) {

@@ -2,10 +2,12 @@ package tech.qiantong.qdata.module.dp.controller.admin.model.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Date;
+import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
  * 逻辑模型 创建/修改 Request VO DP_MODEL
@@ -34,6 +36,8 @@ public class DpModelSaveReqVO extends BaseEntity {
 
     @Schema(description = "数据源id", example = "")
     private String datasourceId;
+
+    private Long documentId;
 
     @Schema(description = "类目编码", example = "")
     @NotBlank(message = "类目编码不能为空")

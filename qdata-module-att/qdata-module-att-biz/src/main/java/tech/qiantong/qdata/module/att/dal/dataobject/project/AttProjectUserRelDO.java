@@ -58,4 +58,8 @@ public class AttProjectUserRelDO extends BaseEntity {
     /** 用户状态 */
     @TableField(exist = false)
     private String status;
+
+    /** 用户角色多个一逗号拼接 */
+    @TableField(exist = false)
+    private String roleStr;
 }

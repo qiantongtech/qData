@@ -1,7 +1,5 @@
 <template>
   <div class="app-container" ref="app-container">
-
-    <!-- 新用户引导内容展示 -->
     <GuideTip tip-id="da/daAsset.list" />
 
     <el-container>
@@ -13,175 +11,111 @@
           <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="75px"
             v-show="showSearch" @submit.prevent>
             <el-form-item label="资产名称" prop="name">
-              <el-input class="el-form-input-width" v-model="queryParams.name" placeholder="请输入资产名称" clearable
+              <el-input style="width: 166px" v-model="queryParams.name" placeholder="请输入资产名称" clearable
                 @keyup.enter="handleQuery" />
             </el-form-item>
             <el-form-item label="发布状态" prop="status">
-              <el-select class="el-form-input-width" v-model="queryParams.status" placeholder="请选择发布状态" clearable>
+              <el-select style="width: 166px" v-model="queryParams.status" placeholder="请选择发布状态" clearable>
                 <el-option v-for="dict in da_assets_status" :key="dict.value" :label="dict.label" :value="dict.value" />
               </el-select>
             </el-form-item>
-            <!--            <el-form-item label="资产来源" prop="status" v-if="type == 1">-->
-            <!--              <el-select class="el-form-input-width" v-model="queryParams.params.sourceType" multiple collapse-tags-->
-            <!--                collapse-tags-tooltip placeholder="请选择发布状态" clearable>-->
-            <!--                <el-option v-for="dict in options" :key="dict.value" :label="dict.label" :value="dict.value" />-->
-            <!--              </el-select>-->
-            <!--            </el-form-item>-->
-
             <el-form-item label="所属主题" prop="themeIdList">
-              <el-select v-model="queryParams.themeIdList" collapse-tags multiple placeholder="请选择主题名称"
-                style="width: 240px">
+              <el-select style="width: 166px" v-model="queryParams.themeIdList" collapse-tags multiple
+                placeholder="请选择主题名称">
                 <el-option v-for="dict in themeList" :key="dict.id" :label="dict.name" :value="dict.id" />
               </el-select>
             </el-form-item>
             <el-form-item label="资产类型" prop="status">
-              <el-select class="el-form-input-width" v-model="queryParams.type" placeholder="请选择资产类型" clearable>
+              <el-select style="width: 166px" v-model="queryParams.type" placeholder="请选择资产类型" clearable>
                 <el-option v-for="dict in da_asset_type" :key="dict.value" :label="dict.label" :value="dict.value" />
               </el-select>
             </el-form-item>
-            <el-form-item>
+            <div class="form-item-btn">
               <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
                 <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
               </el-button>
               <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
                 <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
               </el-button>
-              <el-button type="primary" plain @click="handleAdd" v-hasPermi="['da:asset:asset:add']"
+              <el-button type="primary" plain @click="handleAdd" v-hasPermi="['da:asset:add']"
                 @mousedown="(e) => e.preventDefault()">
                 <i class="iconfont-mini icon-xinzeng mr5"></i>新增
               </el-button>
-            </el-form-item>
+            </div>
           </el-form>
         </div>
-        <div class="justify-between mb15" v-if="false">
-          <el-row :gutter="15" class="btn-style">
-            <el-col :span="1.5">
-              <el-button type="primary" plain @click="handleAdd" v-hasPermi="['da:asset:asset:add']"
-                @mousedown="(e) => e.preventDefault()">
-                <i class="iconfont-mini icon-xinzeng mr5"></i>新增
-              </el-button>
-            </el-col>
-
-            <!--              <el-col :span="1.5">-->
-            <!--                <el-button type="primary" plain @click="handleAdd" v-hasPermi="['da:asset:asset:add']"-->
-            <!--                  @mousedown="(e) => e.preventDefault()">-->
-            <!--                  <i class="iconfont-mini icon-xinzeng mr5"></i>新增-->
-            <!--                </el-button>-->
-            <!--              </el-col>-->
-            <!--         <el-col :span="1.5">-->
-            <!--           <el-button type="primary" plain :disabled="single" @click="handleUpdate" v-hasPermi="['da:asset:asset:edit']"-->
-            <!--                      @mousedown="(e) => e.preventDefault()">-->
-            <!--             <i class="iconfont-mini icon-xiugai&#45;&#45;copy mr5"></i>修改-->
-            <!--           </el-button>-->
-            <!--         </el-col>-->
-            <!--         <el-col :span="1.5">-->
-            <!--           <el-button type="danger" plain :disabled="multiple" @click="handleDelete" v-hasPermi="['da:asset:asset:remove']"-->
-            <!--                      @mousedown="(e) => e.preventDefault()">-->
-            <!--             <i class="iconfont-mini icon-shanchu-huise mr5"></i>删除-->
-            <!--           </el-button>-->
-            <!--         </el-col>-->
-            <!--         <el-col :span="1.5">-->
-            <!--           <el-button type="info" plain  @click="handleImport" v-hasPermi="['da:asset:asset:export']"-->
-            <!--                      @mousedown="(e) => e.preventDefault()">-->
-            <!--             <i class="iconfont-mini icon-upload-cloud-line mr5"></i>导入-->
-            <!--           </el-button>-->
-            <!--         </el-col>-->
-            <!--         <el-col :span="1.5">-->
-            <!--           <el-button type="warning" plain @click="handleExport" v-hasPermi="['da:asset:asset:export']"-->
-            <!--                      @mousedown="(e) => e.preventDefault()">-->
-            <!--             <i class="iconfont-mini icon-download-line mr5"></i>导出-->
-            <!--           </el-button>-->
-            <!--         </el-col>-->
-          </el-row>
-          <div class="justify-end top-right-btn">
-            <right-toolbar v-model:showSearch="showSearch" @queryTable="getList" :columns="columns"></right-toolbar>
-          </div>
-        </div>
         <div class="pagecont-bottom pagecont-bottoms" v-loading="loading">
-          <div class="daAsset-list" v-if="total > 0">
-            <div class="daAsset-item" v-for="(item, index) in daAssetList" :key="index">
-              <div class="daAsset-li">
-                <div class="li-name">
-                  <span @click="
+          <div class="page-list" v-if="total > 0">
+            <div class="page-item" v-for="(item, index) in daAssetList" :key="index">
+              <div class="item-title">
+                <div class="item-title-left">
+                  <img class="title-icon" src="@/assets/da/asset2/tit.svg" alt="" />
+                  <span class="item-title-name ellipsis" @click="
                     routeTo(
                       type == 1
                         ? '/dpp/asset/daAssetDetail'
                         : '/da/asset/daAssetDetail',
                       item
                     )
-                    " class="li-name-text ellipsis" :title="item.name">{{
-                      item.name
-                    }}</span>
-                  <div class="li-type ellipsis">
-                    <img v-if="item.type == 2" src="@/assets/da/asset/api (1).svg" alt="" />
-                    <img v-else src="@/assets/da/asset/api (2).svg" alt="" />
-                    <span :style="{ color: item.type == 2 ? '#c0d043' : '' }">api</span>
+                    ">{{ item.name }}</span>
+                  <div v-for="btn in titleBtns" :key="btn.id">
+                    <div class="title-btn" :class="{ act: item.type == btn.id }" v-if="item.type == btn.id">
+                      <svg-icon :icon-class="btn.icon" />
+                      <span>{{ btn.name }}</span>
+                    </div>
                   </div>
-                  <div class="li-type ellipsis">
-                    <img v-if="item.type == 1" src="@/assets/da/asset/api (3).svg" alt="" />
-                    <img v-else src="@/assets/da/asset/api (4).svg" alt="" />
-                    <span :style="{ color: item.type == 1 ? '#21a3dd' : '' }">库表</span>
-                  </div>
-                  <div class="li-type ellipsis">
-                    <img v-if="item.type == 7" src="@/assets/da/asset/api (5).svg" alt="" />
-                    <img v-else src="@/assets/da/asset/api (6).svg" alt="" />
-                    <span :style="{ color: item.type == 7 ? '#edce2e' : '' }">文件</span>
+                  <div class="title-tag" v-if="!unregistered(item)">未注册</div>
+                  <div class="title-tag" :class="{ success: item.status == 2 }" v-else>
+                    {{ item.status == 2 ? "已发布" : "未发布" }}
                   </div>
                 </div>
-                <div class="li-tabs" v-if="item.type == 1 && unregistered(item)">
+                <div class="item-title-right" v-if="item.type == 1 && unregistered(item)">
                   <div class="li-tab">
-                    <img src="@/assets/da/asset/icon (1).png" alt="" />
+                    <img src="@/assets/da/asset2/fen (2).svg" alt="" />
                     <span>{{ item.dataCount }}行</span>
                   </div>
-                  <div class="li-tab ellipsis">
-                    <img src="@/assets/da/asset/icon (2).png" alt="" />
+                  <div class="li-bar"></div>
+                  <div class="li-tab">
+                    <img src="@/assets/da/asset2/fen (3).svg" alt="" />
                     <span>{{ item.fieldCount }}列</span>
                   </div>
-                  <div class="li-tab ellipsis">
-                    <img src="@/assets/da/asset/icon (5).png" alt="" />
+                  <div class="li-bar"></div>
+                  <div class="li-tab">
+                    <img src="@/assets/da/asset2/fen (4).svg" alt="" />
                     <span>
                       <overflow-tooltip text="93.33分" />
                     </span>
                   </div>
-                  <div class="li-tab ellipsis" v-if="getDatasourceIcon(item.datasourceType)">
-                    <img :src="getDatasourceIcon(item.datasourceType)" alt="" />
+                  <div class="li-bar" v-if="item.datasourceType"></div>
+                  <div class="li-tab" v-if="item.datasourceType">
+                    <img src="@/assets/da/asset2/fen (1).svg" alt="" />
                     <span>
-                      <!--   -->
-                      <overflow-tooltip :text="item.datasourceName" max-width="170px" />
+                      <overflow-tooltip :text="item.datasourceName" max-width="150px" />
                     </span>
-                  </div>
-                  <div class="li-tab" v-if="false">
-                    <el-select class="tab-select" v-model="item.type" placeholder="请选择">
-                      <el-option v-for="item in da_asset_type" :key="item.value" :label="item.label"
-                        :value="item.value" />
-                    </el-select>
                   </div>
                 </div>
               </div>
-              <div class="daAsset-form">
-                <div class="form-main">
-                  <div class="form-item" v-if="item.type == 1">
-                    <div class="form-label">表名称：</div>
-                    <div class="form-value ellipsis" :title="item.tableName">
-                      {{ item.tableName && item.tableName != -1 ? item.tableName : "-" }}
+              <div class="item-con">
+                <div class="item-con-left">
+                  <div class="item-form item-form1">
+                    <div class="form-label">表名称:</div>
+                    <div class="form-value" :title="item.tableName">
+                      {{
+                        item.tableName && item.tableName != -1
+                          ? item.tableName
+                          : "-"
+                      }}
                     </div>
                   </div>
-                  <div class="form-item" style="width: calc(100% - 280px)">
-                    <div class="form-label">资产描述：</div>
-                    <div class="form-value ellipsis" :title="item.description">
-                      {{ item.description || "-" }}
-                    </div>
-                  </div>
-                  <br />
-                  <div class="form-item">
-                    <div class="form-label">所属类目：</div>
-                    <div class="form-value ellipsis" :title="item.catName">
+                  <div class="item-form item-form1">
+                    <div class="form-label">所属类目:</div>
+                    <div class="form-value" :title="item.catName">
                       {{ item.catName }}
                     </div>
                   </div>
-                  <div class="form-item">
-                    <div class="form-label">所属主题：</div>
-                    <div class="form-value ellipsis" :title="item.daAssetThemeRelList?.length
+                  <div class="item-form item-form1">
+                    <div class="form-label">所属主题:</div>
+                    <div class="form-value" :title="item.daAssetThemeRelList?.length
                       ? item.daAssetThemeRelList
                         .map((ele) => ele.themeName)
                         .join(', ')
@@ -196,89 +130,98 @@
                       }}
                     </div>
                   </div>
-                  <div class="form-item" style="width: 220px">
-                    <div class="form-label">创建时间：</div>
-                    <div class="form-value">{{ item.createTime }}</div>
-                  </div>
-                  <div class="form-item">
-                    <div class="form-label">状态：</div>
-                    <div class="form-value">
-                      <el-tag type="warning" v-if="!unregistered(item)">未注册</el-tag>
-                      <dict-tag :options="da_assets_status" :value="item.status" v-else />
+                  <div class="item-form item-form1">
+                    <div class="form-label">创建时间:</div>
+                    <div class="form-value" :title="item.createTime">
+                      {{
+                        parseTime(item.createTime, "{y}-{m}-{d} {h}:{i}") || "-"
+                      }}
                     </div>
                   </div>
-                  <br />
-                  <div class="form-item" style="width: 960px">
-                    <div class="form-label">数据标签：</div>
-                    <div class="form-value">
-                      <el-tag v-for="tag in item.tags" :key="tag" class="mr10">
-                        {{ tag }}
-                      </el-tag>
+                  <div class="item-form item-form">
+                    <div class="form-label">资产描述:</div>
+                    <div class="form-value textarea" :title="item.description">
+                      {{ item.description || "-" }}
                     </div>
                   </div>
-                </div>
-                <div class="form-btns">
-                  <div class="form-btn" v-if="!unregistered(item)" @click="handleUpdate(item, 'register')">
-                    <img src="@/assets/da/asset/icon (6).png" alt="" />
-                    <span>注册</span>
-                  </div>
-                  <div class="form-btn" v-if="unregistered(item)" @click="handleView(item)">
-                    <img src="@/assets/da/asset/icon (6).png" alt="" />
-                    <span>详情</span>
-                  </div>
-                  <div class="form-btn" :class="{ error: item.status == 2 }" v-if="unregistered(item)"
-                    @click="handleStatusChange(item)">
-                    <img v-if="item.status == 2" src="@/assets/da/asset/icon (9).png" alt="" />
-                    <el-icon v-else>
-                      <Check />
-                    </el-icon>
-                    <span>{{ item.status == 2 ? "撤销发布" : "发布" }}</span>
-                  </div>
-                  <el-dropdown>
-                    <div class="form-btn warn">
-                      <img src="@/assets/da/asset/icon (7).png" alt="" />
-                      <span>更多</span>
+                  <div class="flex-wrap">
+                    <div class="item-form">
+                      <div class="form-label">数据标签:</div>
+                      <div class="form-value">
+                        <span v-if="!item.tags?.length">-</span>
+                        <template v-else>
+                          <el-tag v-for="tag in item.tags" :key="tag" class="mr10">
+                            {{ tag }}
+                          </el-tag>
+                        </template>
+                      </div>
                     </div>
-                    <template #dropdown>
-                      <el-dropdown-menu>
-                        <el-dropdown-item v-if="unregistered(item)">
-                          <el-text type="primary" @click="handleUpdate(item)">
-                            <el-icon>
-                              <Edit />
-                            </el-icon>修改
-                          </el-text>
-                        </el-dropdown-item>
-                        <el-dropdown-item v-if="unregistered(item) && item.type == 1">
-                          <el-text type="primary" @click="handleRefresh(item)">
-                            <el-icon>
-                              <Refresh />
-                            </el-icon>更新数据
-                          </el-text>
-                        </el-dropdown-item>
-                        <!-- <el-dropdown-item v-if="unregistered(item)">
-                          <el-text type="primary" @click="addAttTagData(item)">
-                            <el-icon>
-                              <Pointer />
-                            </el-icon>打标
-                          </el-text>
-                        </el-dropdown-item> -->
-                        <el-dropdown-item v-if="unregistered(item) && type != 1">
-                          <el-text type="primary" @click="handleApply(item)">
-                            <el-icon>
-                              <EditPen />
-                            </el-icon>申请
-                          </el-text>
-                        </el-dropdown-item>
-                        <el-dropdown-item v-if="type != 1 || item.sourceType == 1">
-                          <el-text type="danger" @click="handleDelete(item)">
-                            <el-icon>
-                              <Delete />
-                            </el-icon>删除
-                          </el-text>
-                        </el-dropdown-item>
-                      </el-dropdown-menu>
-                    </template>
-                  </el-dropdown>
+                    <div class="form-btns">
+                      <div class="form-btn" v-if="!unregistered(item)" @click="handleUpdate(item, 'register')">
+                        <img src="@/assets/da/asset2/btn (2).svg" alt="" />
+                        <span>注册</span>
+                      </div>
+                      <div class="form-btn" v-if="unregistered(item)" @click="handleView(item)">
+                        <img src="@/assets/da/asset2/btn (2).svg" alt="" />
+                        <span>详情</span>
+                      </div>
+                      <div class="form-btn" :class="{
+                        danger: item.status == 2,
+                        warn: item.status != 2,
+                      }" v-if="unregistered(item)" @click="handleStatusChange(item)">
+                        <img v-if="item.status == 2" src="@/assets/da/asset2/btn (1).svg" alt="" />
+                        <img v-else src="@/assets/da/asset2/btn (4).svg" alt="" />
+                        <span>{{
+                          item.status == 2 ? "撤销发布" : "发布"
+                        }}</span>
+                      </div>
+                      <el-dropdown>
+                        <div class="form-btn">
+                          <img src="@/assets/da/asset2/btn (3).svg" alt="" />
+                          <span>更多</span>
+                        </div>
+                        <template #dropdown>
+                          <el-dropdown-menu>
+                            <el-dropdown-item v-if="unregistered(item)">
+                              <el-text type="primary" @click="handleUpdate(item)">
+                                <el-icon>
+                                  <Edit />
+                                </el-icon>修改
+                              </el-text>
+                            </el-dropdown-item>
+                            <el-dropdown-item v-if="unregistered(item) && item.type == 1">
+                              <el-text type="primary" @click="handleRefresh(item)">
+                                <el-icon>
+                                  <Refresh />
+                                </el-icon>更新数据
+                              </el-text>
+                            </el-dropdown-item>
+                            <el-dropdown-item v-if="unregistered(item)">
+                              <el-text type="primary" @click="addAttTagData(item)">
+                                <el-icon>
+                                  <Pointer />
+                                </el-icon>打标
+                              </el-text>
+                            </el-dropdown-item>
+                            <el-dropdown-item v-if="unregistered(item) && type != 1">
+                              <el-text type="primary" @click="handleApply(item)">
+                                <el-icon>
+                                  <EditPen />
+                                </el-icon>申请
+                              </el-text>
+                            </el-dropdown-item>
+                            <el-dropdown-item v-if="type != 1 || item.sourceType == 1">
+                              <el-text type="danger" @click="handleDelete(item)">
+                                <el-icon>
+                                  <Delete />
+                                </el-icon>删除
+                              </el-text>
+                            </el-dropdown-item>
+                          </el-dropdown-menu>
+                        </template>
+                      </el-dropdown>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -294,7 +237,7 @@
     </el-container>
     <!-- 数据资产详情对话框 -->
     <el-dialog :title="title" v-model="openDetail" width="800px" :append-to="$refs['app-container']" draggable>
-      <template #header="{ close, titleId, titleClass }">
+      <template #header>
         <span role="heading" aria-level="2" class="el-dialog__title">
           {{ title }}
         </span>
@@ -399,24 +342,7 @@
     <CreateEditModal :deptOptions="deptOptions" :visible="open" :title="title" @update:visible="open = $event"
       @confirm="getList" :data="form" :isRegister="isRegister" type="0" />
     <!-- 用户导入对话框 -->
-    <el-dialog title="新增标签" class="tag-view" v-model="tagMultiple" width="600px" :append-to="$refs['app-container']"
-      draggable destroy-on-close>
-      <el-col :span="24">
-        <el-form-item label="标签">
-          <el-select v-model="tagIds" placeholder="请输选择标签" filterable multiple collapse-tags collapse-tags-tooltip
-            :max-collapse-tags="5" @change="handleTypeChange">
-            <el-option v-for="dict in AttTagList" :key="dict.id + ''" :label="dict.name"
-              :value="dict.id + ''"></el-option>
-          </el-select>
-        </el-form-item>
-      </el-col>
-      <template #footer>
-        <div class="dialog-footer">
-          <el-button @click="tagMultiple = false">取 消</el-button>
-          <el-button type="primary" @click="submitTag">确 定</el-button>
-        </div>
-      </template>
-    </el-dialog>
+
     <el-dialog :title="upload.title" v-model="upload.open" width="800px" :append-to="$refs['app-container']" draggable
       destroy-on-close>
       <el-upload ref="uploadRef" :limit="1" accept=".xlsx, .xls" :headers="upload.headers"
@@ -483,7 +409,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="资产描述">
+            <el-form-item label="描述">
               <el-input type="textarea" v-model="formApply.description" :rows="3" disabled />
             </el-form-item>
           </el-col>
@@ -518,9 +444,10 @@
       </template>
     </el-dialog>
   </div>
+
 </template>
 
-<script setup name="DaAsset">
+<script setup name="Asset">
 import {
   listDaAsset,
   getDaAsset,
@@ -529,18 +456,16 @@ import {
   updateDaAsset,
   listDppAsset,
   startDaDiscoveryTask,
-} from "@/api/da/asset/daAsset";
+} from "@/api/da/asset/asset";
 import OverflowTooltip from "@/components/OverflowTooltip";
-import CreateEditModal from "@/views/dpp/asset/components/CreateEditModal.vue";
-import { currentUser } from "@/api/att/project/attProject";
+import CreateEditModal from "@/views/dpp/asset/add";
+import { currentUser } from "@/api/att/project/project.js";
 import DeptTree from "@/components/DeptTree";
-import { listAttAssetCat } from "@/api/att/cat/attAssetCat/attAssetCat.js";
+import { listAttAssetCat } from "@/api/att/cat/assetCat/assetCat.js";
 import { getToken } from "@/utils/auth.js";
-import { addDaAssetApply } from "@/api/da/daAssetApply/daAssetApply";
+import { addDaAssetApply } from "@/api/da/assetApply/assetApply";
 import useUserStore from "@/store/system/user";
-import { getThemeList } from "@/api/att/theme/attTheme.js";
-// import { listAttTag, listDict } from "@/api/att/cat/attTag/AttTag.js";
-import { addAttTagAssetRel } from "@/api/att/cat/Rel/AttTagAssetRel.js";
+import { getThemeList } from "@/api/att/theme/theme.js";
 const { proxy } = getCurrentInstance();
 const { da_assets_status, da_asset_source, da_asset_type } = proxy.useDict(
   "da_assets_status",
@@ -557,7 +482,23 @@ const tagIds = ref([]);
 const daAssetList = ref([]);
 const AttTagList = ref([]);
 const isRegister = ref(false);
-
+const titleBtns = [
+  {
+    id: 2,
+    name: "API",
+    icon: "da-api",
+  },
+  {
+    id: 1,
+    name: "库表",
+    icon: "da-database",
+  },
+  {
+    id: 7,
+    name: "文件",
+    icon: "da-document",
+  },
+];
 // 列显隐信息
 const columns = ref([
   { key: 0, label: "编号", visible: true },
@@ -792,7 +733,7 @@ function handleView(row) {
   routeTo(
     type == 1
       ? '/dpp/asset/daAssetDetail'
-      : '/da/asset/daAssetDetail',
+      : '/da/asset/detail',
     row
   )
 }
@@ -820,7 +761,6 @@ function getList() {
       loading.value = false;
     });
   }
-  // getListTag();
 }
 
 // 取消按钮
@@ -911,7 +851,7 @@ function handleSortChange(column, prop, order) {
   getList();
 }
 function getAssetCat() {
-  listAttAssetCat().then((response) => {
+  listAttAssetCat({ validFlag: true }).then((response) => {
     deptOptions.value = proxy.handleTree(response.data, "id", "parentId");
     deptOptions.value = [
       {
@@ -1012,7 +952,7 @@ function handleDelete(row) {
 /** 导出按钮操作 */
 function handleExport() {
   proxy.download(
-    "da/daAsset/export",
+    "da/asset/export",
     {
       ...queryParams.value,
     },
@@ -1086,38 +1026,8 @@ function routeTo(link, row) {
   }
 }
 
-/**
- * 标签管理
- */
-// function getListTag() {
-//   listDict().then((response) => {
-//     AttTagList.value = response.data;
-//   });
-// }
 
-function submitTag() {
-  let map = {
-    tagIds: tagIds.value,
-    assetId: assetId.value,
-  };
 
-  addAttTagAssetRel(map).then((res) => {
-    tagMultiple.value = false;
-    proxy.$modal.msgSuccess("操作成功");
-    getList();
-  });
-  // proxy.$modal
-  //   .confirm("是否确定打标该资产？")
-  //   .then(function () {
-  //
-  //   })
-  //   .then(() => {
-  //
-  //   })
-  //   .catch(() => {
-  //     tagMultiple.value = false;
-  //   });
-}
 
 /** 启用禁用开关 */
 function handleStatusChange(row) {
@@ -1141,6 +1051,12 @@ getAssetCat();
 getAssetThemeList();
 </script>
 <style scoped lang="scss">
+.form-item-btn {
+  display: inline-flex;
+  margin-bottom: 14px;
+  vertical-align: middle;
+}
+
 .butgdlist {
   display: flex;
   flex-direction: column;
@@ -1193,230 +1109,7 @@ getAssetThemeList();
 .pagecont-bottom {
   padding: 0;
   background-color: transparent;
-
-  .daAsset-list {
-    height: 64.3vh;
-    overflow-y: auto;
-
-    .daAsset-item {
-      height: 168px;
-      background: #ffffff;
-      border-radius: 2px;
-      margin-bottom: 16px;
-      padding: 20px;
-
-      &:last-child {
-        margin-bottom: 0;
-      }
-
-      .daAsset-li {
-        margin-bottom: 10px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-family: PingFang SC;
-        color: var(--el-color-primary);
-
-        .li-name {
-          display: flex;
-          align-items: center;
-          width: 40%;
-          cursor: pointer;
-
-          .li-name-text {
-            display: block;
-            max-width: 70%;
-            font-weight: 500;
-            font-size: 16px;
-            margin-right: 10px;
-
-          }
-
-          .li-type {
-            display: flex;
-            align-items: center;
-
-            img {
-              width: 18px;
-              margin: 0 5px;
-            }
-
-            span {
-              color: #dbdbdb;
-              font-size: 14px;
-            }
-          }
-        }
-
-        .li-tabs {
-          display: flex;
-          align-items: center;
-          justify-content: flex-end;
-          width: 60%;
-
-          .li-tab {
-            display: flex;
-            align-items: center;
-            margin-left: 20px;
-            font-family: PingFang SC;
-            font-weight: 500;
-            font-size: 14px;
-
-            &.tab-api {
-              margin-left: 10px;
-
-              img {
-                margin-right: 5px;
-              }
-
-              span {
-                color: #dbdbdb;
-              }
-            }
-
-            img {
-              width: 18px;
-              height: 18px;
-              margin-right: 10px;
-            }
-
-            :deep(.tab-select) {
-              width: 70px;
-              height: 24px;
-              border-radius: 2px;
-
-              .el-select__wrapper {
-                width: 70px;
-                height: 24px;
-                min-height: 24px;
-                border: 1px solid var(--el-color-primary);
-                padding: 4px 4px 4px 10px;
-              }
-
-              .el-select__input {
-                font-family: PingFang SC;
-                font-weight: 500;
-                font-size: 12px;
-                color: var(--el-color-primary);
-              }
-
-              .el-select__placeholder {
-                font-family: PingFang SC;
-                font-weight: 500;
-                font-size: 12px;
-                color: var(--el-color-primary);
-              }
-
-              .el-select__suffix {
-                .el-icon {
-                  color: var(--el-color-primary);
-                  font-size: 10px;
-                }
-              }
-            }
-          }
-        }
-      }
-
-      .daAsset-form {
-        position: relative;
-        display: flex;
-        justify-content: space-between;
-
-        .form-main {
-          .form-item {
-            width: 200px;
-            display: inline-flex;
-            align-items: center;
-            line-height: 30px;
-            font-family: PingFang SC;
-            font-weight: 400;
-            font-size: 14px;
-            margin-right: 40px;
-
-            .form-label {
-              color: rgba(0, 0, 0, 0.45);
-            }
-
-            .form-value {
-              color: rgba(0, 0, 0, 0.85);
-              flex: 1;
-
-              .form-tag {
-                width: 103px;
-                height: 24px;
-                background: rgba(51, 103, 252, 0.1);
-                border-radius: 2px;
-
-                span {
-                  font-family: PingFang SC;
-                  font-weight: 400;
-                  font-size: 14px;
-                  color: var(--el-color-primary);
-                }
-              }
-            }
-          }
-        }
-
-        .form-btns {
-          position: absolute;
-          bottom: -10px;
-          right: 0;
-          display: flex;
-          align-items: flex-end;
-
-          .form-btn {
-            cursor: pointer;
-            min-width: 70px;
-            height: 24px;
-            padding: 0 14px;
-            border-radius: 2px;
-            margin-left: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: 1px solid var(--el-color-primary);
-
-            &.warn {
-              border: 1px solid #ffab47;
-
-              span {
-                color: #ffab47;
-              }
-            }
-
-            &.error {
-              border: 1px solid #ff5353;
-
-              span {
-                color: #ff5353;
-              }
-            }
-
-            img {
-              width: 14px;
-              height: 14px;
-              margin-right: 6px;
-            }
-
-            span {
-              font-family: PingFangSC, PingFang SC;
-              font-weight: 500;
-              font-size: 12px;
-              color: var(--el-color-primary);
-            }
-
-            .el-icon {
-              font-size: 14px;
-              color: var(--el-color-primary);
-              margin-right: 6px;
-            }
-          }
-        }
-      }
-    }
-  }
+  box-shadow: none;
 
   .pagination-container {
     height: 60px;
@@ -1427,6 +1120,240 @@ getAssetThemeList();
 
     :deep(.el-pagination) {
       right: 20px;
+    }
+  }
+}
+
+.page-list {
+  height: 69.6vh;
+  height: auto;
+  /* 或者直接删掉这行 */
+  max-height: none;
+  /* 保证不被限制高度 */
+  overflow: visible;
+
+  /* 不产生内部滚动条 */
+  &::-webkit-scrollbar {
+    width: 2px;
+  }
+
+  .page-item {
+    padding: 18px 18px 14px;
+    background: #fff;
+    margin-bottom: 14px;
+    border-radius: 2px;
+
+    .item-title {
+      width: 100%;
+      padding-bottom: 10px;
+      margin-bottom: 8px;
+      border-bottom: 1px solid #eeeeee;
+
+      .item-title-left {
+        width: 60%;
+        display: inline-flex;
+        align-items: center;
+
+        .title-icon {
+          width: 22px;
+          height: 20px;
+          margin-right: 8px;
+        }
+
+        .item-title-name {
+          font-family: PingFang SC;
+          font-weight: 700;
+          font-size: 16px;
+          color: #3d446e;
+          margin-right: 16px;
+        }
+
+        .title-btn {
+          min-width: 58px;
+          padding: 0px 8px;
+          height: 24px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background: #f4f4f5;
+          border: 1px solid #d9d9d9;
+          color: #9d9fa2;
+          margin-right: 8px;
+          border-radius: 2px;
+
+          svg {
+            font-size: 13px;
+          }
+
+          span {
+            margin-left: 3px;
+            font-family: PingFang SC;
+            font-weight: normal;
+            font-size: 12px;
+          }
+
+          &.act {
+            background: #ecf9ff;
+            border: 1px solid #91d5ff;
+            color: #1d6fe9;
+          }
+        }
+
+        .title-tag {
+          min-width: 52px;
+          width: 52px;
+          height: 24px;
+          background: #ff9800;
+          color: #ffffff;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border-radius: 4px;
+          font-family: PingFang SC;
+          font-weight: normal;
+          font-size: 12px;
+
+          &.success {
+            background: #0baa84;
+          }
+        }
+      }
+
+      .item-title-right {
+        width: 40%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: flex-end;
+
+        .li-tab {
+          display: flex;
+          align-items: center;
+
+          img {
+            width: 16px;
+            height: 16px;
+            margin-top: 2px;
+            margin-right: 4px;
+          }
+
+          span {
+            font-family: PingFang SC;
+            font-weight: normal;
+            font-size: 13px;
+            color: #3d446e;
+          }
+        }
+
+        .li-bar {
+          width: 1px;
+          height: 12px;
+          background: #c9cfd8;
+          margin: 0 10px;
+        }
+      }
+    }
+
+    .item-con {
+      width: 100%;
+      display: flex;
+
+      .item-con-left {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+
+        .item-form {
+          width: 100%;
+          display: flex;
+          font-family: PingFang SC;
+          line-height: 28px;
+
+          .form-label {
+            width: 70px;
+            font-weight: 400;
+            font-size: 14px;
+            color: #8c8c8c;
+          }
+
+          .form-value {
+            width: calc(100% - 70px);
+            font-weight: 500;
+            font-size: 14px;
+            color: #262626;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+
+            &.textarea {
+              line-height: 30px;
+              white-space: normal;
+              display: -webkit-box !important;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              word-break: break-all;
+              -webkit-line-clamp: 2;
+              -webkit-box-orient: vertical !important;
+            }
+          }
+
+          &.item-form2 {
+            width: 66%;
+          }
+
+          &.item-form1 {
+            width: 24%;
+          }
+        }
+      }
+
+      .flex-wrap {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .form-btns {
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-end;
+
+        .form-btn {
+          margin-right: 10px;
+          cursor: pointer;
+          min-width: 64px;
+          height: 24px;
+          background: #e8f1ff;
+          border-radius: 2px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #3d446e;
+
+          span {
+            margin-left: 4px;
+            font-family: PingFang SC;
+            font-weight: normal;
+            font-size: 12px;
+          }
+
+          &.warn {
+            min-width: 82px;
+            background: #e1f9fc;
+            color: #039792;
+          }
+
+          &.danger {
+            min-width: 82px;
+            background: #fbefdd;
+            color: #ff7a00;
+          }
+
+          &.last-child {
+            margin-right: 0;
+          }
+        }
+      }
     }
   }
 }
@@ -1460,6 +1387,34 @@ getAssetThemeList();
 
   .el-dialog__body {
     height: 195px;
+  }
+}
+</style>
+<style scoped lang="scss">
+@media screen and (max-width: 1366px) {
+  .page-list .page-item {
+    .item-title {
+      display: block;
+
+      .item-title-left {
+        width: 100%;
+      }
+
+      .item-title-right {
+        width: 100%;
+        justify-content: flex-start;
+      }
+    }
+
+    .item-con .item-con-left .item-form {
+      &.item-form1 {
+        width: 50%;
+      }
+    }
+
+    .item-con .flex-wrap {
+      flex-wrap: wrap;
+    }
   }
 }
 </style>

@@ -8,7 +8,7 @@ export const baseConfig = {
   translating: {
     restrict: true
   },
-  grid: true,
+  grid: false,
   background: {
     color: 'transparent'
   },
@@ -85,36 +85,15 @@ export const baseConfig = {
   },
   // 快捷键绑定
   bindShortcuts(graph) {
-    graph.bindKey(['meta+x', 'ctrl+x'], () => {
+    // graph.use(new Keyboard());
+    graph.bindKey(['delete', 'backspace'], () => {
       const cells = graph.getSelectedCells();
-      if (cells.length) {
-        graph.cut(cells);
+      if (cells.length > 0) {
+        graph.removeCells(cells);
       }
       return false;
     });
 
-    graph.bindKey(['meta+v', 'ctrl+v'], () => {
-      paste();
-    });
-    graph.bindKey(['meta+z', 'ctrl+z'], () => {
-      graph.undo();
-    });
-    graph.bindKey(['meta+y', 'ctrl+y'], () => {
-      redo();
-    });
-    graph.bindKey(['ctrl+1', 'meta+1'], () => {
-      const zoom = graph.zoom();
-      if (zoom < 1.5) {
-        graph.zoom(0.1);
-      }
-    });
-
-    graph.bindKey(['ctrl+2', 'meta+2'], () => {
-      const zoom = graph.zoom();
-      if (zoom > 0.5) {
-        graph.zoom(-0.1);
-      }
-    });
   }
 };
 
@@ -125,7 +104,7 @@ export const cuPort = {
       position: 'top',
       attrs: {
         circle: {
-          r: 4,
+          r: 7,
           magnet: true,
           stroke: '#5F95FF',
           strokeWidth: 1,
@@ -141,7 +120,7 @@ export const cuPort = {
       position: 'right',
       attrs: {
         circle: {
-          r: 4,
+          r: 7,
           magnet: true,
           stroke: '#5F95FF',
           strokeWidth: 1,
@@ -156,7 +135,7 @@ export const cuPort = {
       position: 'bottom',
       attrs: {
         circle: {
-          r: 4,
+          r: 7,
           magnet: true,
           stroke: '#5F95FF',
           strokeWidth: 1,
@@ -171,7 +150,7 @@ export const cuPort = {
       position: 'left',
       attrs: {
         circle: {
-          r: 4,
+          r: 7,
           magnet: true,
           stroke: '#5F95FF',
           strokeWidth: 1,

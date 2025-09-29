@@ -14,6 +14,7 @@
         <result property="personCharge" column="PERSON_CHARGE"/>
         <result property="contactNumber" column="CONTACT_NUMBER"/>
         <result property="columnType" column="COLUMN_TYPE"/>
+        <result property="documentId" column="DOCUMENT_ID"/>
         <result property="status" column="STATUS"/>
         <result property="description" column="DESCRIPTION"/>
         <result property="validFlag" column="VALID_FLAG"/>
@@ -38,6 +39,7 @@
                PERSON_CHARGE,
                CONTACT_NUMBER,
                COLUMN_TYPE,
+               DOCUMENT_ID,
                STATUS,
                DESCRIPTION,
                VALID_FLAG,
@@ -62,6 +64,7 @@
             <if test="personCharge != null  and personCharge != ''">and PERSON_CHARGE = #{personCharge}</if>
             <if test="contactNumber != null  and contactNumber != ''">and CONTACT_NUMBER = #{contactNumber}</if>
             <if test="columnType != null  and columnType != ''">and COLUMN_TYPE = #{columnType}</if>
+            <if test="documentId != null  and documentId != ''">and DOCUMENT_ID = #{documentId}</if>
             <if test="status != null  and status != ''">and STATUS = #{status}</if>
             <if test="description != null  and description != ''">and DESCRIPTION = #{description}</if>
             <if test="createTime != null ">and CREATE_TIME = #{createTime}</if>
@@ -78,6 +81,7 @@
                PERSON_CHARGE,
                CONTACT_NUMBER,
                COLUMN_TYPE,
+               DOCUMENT_ID,
                STATUS,
                DESCRIPTION,
                VALID_FLAG,
@@ -105,6 +109,7 @@
             <if test="personCharge != null">PERSON_CHARGE,</if>
             <if test="contactNumber != null">CONTACT_NUMBER,</if>
             <if test="columnType != null">COLUMN_TYPE,</if>
+            <if test="documentId != null">DOCUMENT_ID,</if>
             <if test="status != null">STATUS,</if>
             <if test="description != null">DESCRIPTION,</if>
             <if test="validFlag != null">VALID_FLAG,</if>
@@ -127,6 +132,7 @@
             <if test="personCharge != null">#{personCharge},</if>
             <if test="contactNumber != null">#{contactNumber},</if>
             <if test="columnType != null">#{columnType},</if>
+            <if test="documentId != null">#{documentId},</if>
             <if test="status != null">#{status},</if>
             <if test="description != null">#{description},</if>
             <if test="validFlag != null">#{validFlag},</if>
@@ -152,6 +158,7 @@
             <if test="personCharge != null">PERSON_CHARGE = #{personCharge},</if>
             <if test="contactNumber != null">CONTACT_NUMBER = #{contactNumber},</if>
             <if test="columnType != null">COLUMN_TYPE = #{columnType},</if>
+            <if test="documentId != null">DOCUMENT_ID = #{documentId},</if>
             <if test="status != null">STATUS = #{status},</if>
             <if test="description != null">DESCRIPTION = #{description},</if>
             <if test="validFlag != null">VALID_FLAG = #{validFlag},</if>

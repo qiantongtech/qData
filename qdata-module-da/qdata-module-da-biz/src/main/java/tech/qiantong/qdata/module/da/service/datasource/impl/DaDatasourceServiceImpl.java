@@ -64,6 +64,7 @@ import tech.qiantong.qdata.module.system.service.ISysMessageService;
 import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
 import tech.qiantong.qdata.redis.service.IRedisService;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
@@ -101,6 +102,74 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
 
     @Resource
     private DppEtlTaskService dppEtlTaskService;
+
+    @Autowired
+    private IRedisService redisService;
+
+    /**
+     * 项目启动后初始化 Redis 中的数据源缓存。
+     *
+     * 功能：
+     * 1. 从数据库中加载所有数据源记录；
+     * 2. 使用 DaDatasourceDO.simplify() 方法提取关键字段；
+     * 3. 将结果写入 Redis Hash：
+     *
+     * 场景：
+     * - 项目启动后预热数据源缓存，任务调度和 Worker 节点可直接从 Redis 获取配置信息；
+     * - 避免运行时对数据库或中台服务的强依赖。
+     *
+     * 注意：
+     * - 可选：初始化前可清空 Redis 中已有的 "datasource" 缓存。
+     */
+    @PostConstruct
+    public void initDatasourceCache() {
+        try {
+            List<DaDatasourceDO> list = daDatasourceMapper.selectList();
+            if (list == null || list.isEmpty()) {
+                log.info("【数据源缓存初始化】无数据源记录，跳过初始化。");
+                return;
+            }
+
+            // 可选：初始化前清空缓存
+            // redisService.del("datasource");
+
+            for (DaDatasourceDO ds : list) {
+                if (ds == null || ds.getId() == null) {
+                    continue;
+                }
+
+                try {
+                    // 最新数据源连接信息
+                    String field = String.valueOf(ds.getId());
+                    String value = com.alibaba.fastjson2.JSONObject.toJSONString(ds.simplify());
+                    redisService.hashPut("datasource", field, value);
+
+                    // todo 历史数据源连接信息 （临时处理，后续可以移除）
+                    DbQueryProperty property = new DbQueryProperty(
+                            ds.getDatasourceType(),
+                            ds.getIp(),
+                            ds.getPort(),
+                            ds.getDatasourceConfig());
+                    String key = property.trainToJdbcUrl();
+
+                    // 判断是否已存在
+                    Boolean exists = redisService.hashHasKey("datasource-old", key);
+                    if (Boolean.FALSE.equals(exists)) {
+                        redisService.hashPut("datasource-old", key, ds.getId().toString());
+                        log.info("存入新历史数据源: key={}, value={}", key, ds.getId().toString());
+                    } else {
+                        log.info("已存在历史数据源: key={}，跳过存入", key);
+                    }
+                } catch (Exception e) {
+                    log.warn("不支持转化的数据源");
+                }
+            }
+
+            log.info("【数据源缓存初始化】成功加载 {} 条数据源到 Redis。", list.size());
+        } catch (Exception e) {
+            log.error("【数据源缓存初始化】加载 Redis 缓存失败：", e);
+        }
+    }
 
     /**
      * 查询数据资产的数据源连接信息

@@ -5,9 +5,9 @@
         <breadcrumb id="breadcrumb-container" class="breadcrumb-container" v-if="!settingsStore.topNav" />
         <top-nav ref="topNavRef" @getRouter="getRouter" id="topmenu-container" class="topmenu-container"
             v-if="settingsStore.topNav" />
-        <!--      {{userStore}}-->
         <div class="right-menu">
             <template v-if="appStore.device !== 'mobile'">
+
                 <div style="width: 250px; margin-top: 10px" v-if="showProjectSelector">
                     <el-form class="btn-style" :model="userStore" ref="queryRef" :inline="true" label-width="93px">
                         <el-form-item label="所属项目" prop="projectId" :rules="[
@@ -37,6 +37,10 @@
                             </el-select> -->
                         </el-form-item>
                     </el-form>
+                </div>
+                <div class="right-menu-item hover-effect">
+                    <i class="iconfont icon-a-chaxunxianxing" style="font-size: 20px"
+                        @click.stop="openDocumentation"></i>
                 </div>
                 <!-- ---------------------------- 报工 --------------------------------- -->
                 <el-popover trigger="hover" popper-style="
@@ -112,6 +116,7 @@
                     <i class="iconfont icon-a-shuaxinxianxing" style="font-size: 20px"></i>
                 </div>
 
+
                 <header-search id="header-search" class="right-menu-item" />
 
                 <screenfull id="screenfull" class="right-menu-item hover-effect" />
@@ -133,6 +138,9 @@
                             </router-link>
                             <el-dropdown-item command="setLayout" v-if="settingsStore.showSettings">
                                 <span>布局设置</span>
+                            </el-dropdown-item>
+                            <el-dropdown-item command="about">
+                                <span>关于我们</span>
                             </el-dropdown-item>
                             <el-dropdown-item divided command="logout">
                                 <span>退出登录</span>
@@ -160,11 +168,11 @@ import useSettingsStore from '@/store/system/settings';
 import useTagsViewStore from '@/store/system/tagsView';
 import { getNum, listMessage, readAll } from '@/api/system/system/message/message';
 import { loginOut } from '@/api/system/sso-auth.js';
-// import MessageList from "@/views/system/system/message/components/messageList.vue";
+// import MessageList from "@/views/sys/system/message/components/messageList.vue";
 import { onMounted, ref, watch } from 'vue';
 import moment from 'moment';
 import { listNotice } from '@/api/system/system/notice';
-import { currentUser } from '@/api/att/project/attProject';
+import { currentUser } from '@/api/att/project/project';
 import { da, id } from 'element-plus/es/locale/index.mjs';
 import usePermissionStore from '@/store/system/permission';
 import { getRoutersDpp } from '@/api/system/menu';
@@ -477,7 +485,7 @@ const initWebSocket = () => {
         pageNum: 1,
         pageSize: 1000
     }).then((response) => {
-        response.data.rows.forEach((item) => {
+        response.data.rows?.forEach((item) => {
             item.time = item.updateTime;
             item.entityType = item.category;
             // item.title = item.title
@@ -566,7 +574,10 @@ const handleClick = (tab) => {
     const label = tab.props.label;
     activeMsg.value = tab.props.name;
 };
-
+// 帮助文档
+function openDocumentation() {
+    window.open('https://qdata.qiantong.tech/docs', '_blank');
+}
 function toggleSideBar() {
     appStore.toggleSideBar();
 }
@@ -578,6 +589,10 @@ function handleCommand(command) {
             break;
         case 'logout':
             logout();
+            break;
+        case 'about':
+            // 跳转到关于我们页面
+            window.open('https://qiantong.tech/', '_blank');
             break;
         default:
             break;
@@ -623,7 +638,7 @@ function messageDetail() {
     if (activeMsg.value == 'first') {
         router.push({ path: '/bases/message' });
     } else {
-        router.push({ path: '/system/notice' });
+        router.push({ path: '/system/notice/detail' });
     }
 }
 

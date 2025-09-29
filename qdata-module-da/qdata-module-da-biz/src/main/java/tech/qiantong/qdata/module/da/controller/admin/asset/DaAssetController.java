@@ -40,22 +40,23 @@ import java.util.Map;
  */
 @Tag(name = "数据资产")
 @RestController
-@RequestMapping("/da/daAsset")
+@RequestMapping("/da/asset")
 @Validated
 public class DaAssetController extends BaseController {
     @Resource
     private IDaAssetService daAssetService;
 
+
     @Operation(summary = "查询数据资产列表")
-    @PreAuthorize("@ss.hasPermi('da:asset:asset:list')")
+    @PreAuthorize("@ss.hasPermi('da:asset:list')")
     @GetMapping("/list")
     public CommonResult<PageResult<DaAssetRespVO>> list(DaAssetPageReqVO daAsset) {
-        PageResult<DaAssetDO> page = daAssetService.getDaAssetPage(daAsset,"1");
+        PageResult<DaAssetDO> page = daAssetService.getDaAssetPage(daAsset, "1");
         return CommonResult.success(BeanUtils.toBean(page, DaAssetRespVO.class));
     }
 
     @Operation(summary = "查询数据研发下的数据资产列表")
-    @PreAuthorize("@ss.hasPermi('da:asset:asset:list')")
+    @PreAuthorize("@ss.hasPermi('da:asset:list')")
     @GetMapping("/dpp/list")
     public CommonResult<PageResult<DaAssetRespVO>> dppList(DaAssetPageReqVO daAsset) {
         PageResult<DaAssetDO> page = daAssetService.getDppAssetPage(daAsset);
@@ -63,7 +64,7 @@ public class DaAssetController extends BaseController {
     }
 
     @Operation(summary = "查询数据研发下的数据资产全部不分页列表")
-    @PreAuthorize("@ss.hasPermi('da:asset:asset:list')")
+    @PreAuthorize("@ss.hasPermi('da:asset:list')")
     @GetMapping("/dpp/noPage/list")
     public AjaxResult dppNoPageList(DaAssetPageReqVO daAsset) {
         List<DaAssetDO> daAssetDOList = daAssetService.getDppAssetNoPageList(daAsset);
@@ -71,7 +72,7 @@ public class DaAssetController extends BaseController {
     }
 
     @Operation(summary = "查询资产表")
-    @PreAuthorize("@ss.hasPermi('da:asset:asset:list')")
+    @PreAuthorize("@ss.hasPermi('da:asset:list')")
     @GetMapping("/getTablesByDataSourceId")
     public AjaxResult getTablesByDataSourceId(DaAssetPageReqVO daAsset) {
         List<DaAssetDO> tablesByDataSourceId = daAssetService.getTablesByDataSourceId(daAsset);
@@ -80,7 +81,7 @@ public class DaAssetController extends BaseController {
 
 
     @Operation(summary = "查询资产表")
-    @PreAuthorize("@ss.hasPermi('da:asset:asset:list')")
+    @PreAuthorize("@ss.hasPermi('da:asset:list')")
     @GetMapping("/getDaAssetRespList")
     public CommonResult<List<DaAssetRespVO>> getDaAssetRespList(DaAssetPageReqVO daAsset) {
         List<DaAssetDO> tablesByDataSourceId = daAssetService.getDaAssetList(daAsset);
@@ -88,20 +89,19 @@ public class DaAssetController extends BaseController {
     }
 
 
-
     @Operation(summary = "导出数据资产列表")
-    @PreAuthorize("@ss.hasPermi('da:asset:asset:export')")
+    @PreAuthorize("@ss.hasPermi('da:asset:export')")
     @Log(title = "数据资产", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DaAssetPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
-        List<DaAssetDO> list = (List<DaAssetDO>) daAssetService.getDaAssetPage(exportReqVO,"1").getRows();
+        List<DaAssetDO> list = (List<DaAssetDO>) daAssetService.getDaAssetPage(exportReqVO, "1").getRows();
         ExcelUtil<DaAssetRespVO> util = new ExcelUtil<>(DaAssetRespVO.class);
         util.exportExcel(response, DaAssetConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
     }
 
     @Operation(summary = "导入数据资产列表")
-    @PreAuthorize("@ss.hasPermi('da:asset:asset:import')")
+    @PreAuthorize("@ss.hasPermi('da:asset:import')")
     @Log(title = "数据资产", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
@@ -113,33 +113,33 @@ public class DaAssetController extends BaseController {
     }
 
     @Operation(summary = "获取数据资产详细信息")
-    @PreAuthorize("@ss.hasPermi('da:asset:asset:query')")
+    @PreAuthorize("@ss.hasPermi('da:asset:query')")
     @GetMapping(value = "/{id}")
     public CommonResult<DaAssetRespVO> getInfo(@PathVariable("id") Long id) {
         return CommonResult.success(daAssetService.getDaAssetById(id));
     }
 
     @Operation(summary = "获取数据资产详细信息预览数据")
-    @PreAuthorize("@ss.hasPermi('da:asset:asset:query')")
+    @PreAuthorize("@ss.hasPermi('da:asset:query')")
     @PostMapping(value = "/preview")
     public AjaxResult getPreview(@RequestBody JSONObject jsonObject) {
-        if (StringUtils.isEmpty(jsonObject.getStr("id"))){
+        if (StringUtils.isEmpty(jsonObject.getStr("id"))) {
             return error("请携带资产id");
         }
-        Map<String,Object> columnData = daAssetService.getColumnData(jsonObject);
-        if (columnData == null){
+        Map<String, Object> columnData = daAssetService.getColumnData(jsonObject);
+        if (columnData == null) {
             return error("数据库中未获取到该表数据，请确认表是否存在!");
         }
         List<Map<String, Object>> dataMaskingList = daAssetService.dataMasking(Long.valueOf(jsonObject.getStr("id")), (List<Map<String, Object>>) columnData.get("tableData"));
-        if (dataMaskingList == null){
+        if (dataMaskingList == null) {
             return error("请检查资产字段与数据表字段是否一致");
         }
-        columnData.put("tableData",dataMaskingList);
+        columnData.put("tableData", dataMaskingList);
         return success(columnData);
     }
 
     @Operation(summary = "新增数据资产")
-    @PreAuthorize("@ss.hasPermi('da:asset:asset:add')")
+    @PreAuthorize("@ss.hasPermi('da:asset:add')")
     @Log(title = "数据资产", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DaAssetSaveReqVO daAsset) {
@@ -150,7 +150,7 @@ public class DaAssetController extends BaseController {
     }
 
     @Operation(summary = "修改数据资产")
-    @PreAuthorize("@ss.hasPermi('da:asset:asset:edit')")
+    @PreAuthorize("@ss.hasPermi('da:asset:edit')")
     @Log(title = "数据资产", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DaAssetSaveReqVO daAsset) {
@@ -161,7 +161,7 @@ public class DaAssetController extends BaseController {
     }
 
 //    @Operation(summary = "删除数据资产")
-//    @PreAuthorize("@ss.hasPermi('da:asset:asset:remove')")
+//    @PreAuthorize("@ss.hasPermi('da:asset:remove')")
 //    @Log(title = "数据资产", businessType = BusinessType.DELETE)
 //    @DeleteMapping("/{ids}")
 //    public CommonResult<Integer> remove(@PathVariable Long[] ids) {
@@ -170,7 +170,7 @@ public class DaAssetController extends BaseController {
 
 
     @Operation(summary = "删除数据资产")
-    @PreAuthorize("@ss.hasPermi('da:asset:asset:remove')")
+    @PreAuthorize("@ss.hasPermi('da:asset:remove')")
     @Log(title = "数据资产", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ID}")
     public CommonResult<Integer> remove(@PathVariable Long ID) {
@@ -179,8 +179,7 @@ public class DaAssetController extends BaseController {
 
     @Log(title = "触发一次定时任务", businessType = BusinessType.UPDATE)
     @PutMapping("/startDaDiscoveryTask")
-    public AjaxResult startDaDiscoveryTask(@Valid @RequestBody DaAssetSaveReqVO daAsset)
-    {
+    public AjaxResult startDaDiscoveryTask(@Valid @RequestBody DaAssetSaveReqVO daAsset) {
         return daAssetService.startDaAssetDatasourceTask(daAsset.getId());
     }
 

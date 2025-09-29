@@ -37,14 +37,14 @@ import java.util.List;
  */
 @Tag(name = "敏感等级")
 @RestController
-@RequestMapping("/da/daSensitiveLevel")
+@RequestMapping("/da/sensitiveLevel")
 @Validated
 public class DaSensitiveLevelController extends BaseController {
     @Resource
     private IDaSensitiveLevelService daSensitiveLevelService;
 
     @Operation(summary = "查询敏感等级列表")
-    @PreAuthorize("@ss.hasPermi('da:sensitiveLevel:sensitivelevel:list')")
+    @PreAuthorize("@ss.hasPermi('da:sensitiveLevel:list')")
     @GetMapping("/list")
     public CommonResult<PageResult<DaSensitiveLevelRespVO>> list(DaSensitiveLevelPageReqVO daSensitiveLevel) {
         PageResult<DaSensitiveLevelDO> page = daSensitiveLevelService.getDaSensitiveLevelPage(daSensitiveLevel);
@@ -52,7 +52,7 @@ public class DaSensitiveLevelController extends BaseController {
     }
 
     @Operation(summary = "导出敏感等级列表")
-    @PreAuthorize("@ss.hasPermi('da:sensitiveLevel:sensitivelevel:export')")
+    @PreAuthorize("@ss.hasPermi('da:sensitiveLevel:export')")
     @Log(title = "敏感等级", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DaSensitiveLevelPageReqVO exportReqVO) {
@@ -63,7 +63,7 @@ public class DaSensitiveLevelController extends BaseController {
     }
 
     @Operation(summary = "导入敏感等级列表")
-    @PreAuthorize("@ss.hasPermi('da:sensitiveLevel:sensitivelevel:import')")
+    @PreAuthorize("@ss.hasPermi('da:sensitiveLevel:import')")
     @Log(title = "敏感等级", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
@@ -75,7 +75,7 @@ public class DaSensitiveLevelController extends BaseController {
     }
 
     @Operation(summary = "获取敏感等级详细信息")
-    @PreAuthorize("@ss.hasPermi('da:sensitiveLevel:sensitivelevel:query')")
+    @PreAuthorize("@ss.hasPermi('da:sensitiveLevel:query')")
     @GetMapping(value = "/{id}")
     public CommonResult<DaSensitiveLevelRespVO> getInfo(@PathVariable("id") Long id) {
         DaSensitiveLevelDO daSensitiveLevelDO = daSensitiveLevelService.getDaSensitiveLevelById(id);
@@ -83,7 +83,7 @@ public class DaSensitiveLevelController extends BaseController {
     }
 
     @Operation(summary = "新增敏感等级")
-    @PreAuthorize("@ss.hasPermi('da:sensitiveLevel:sensitivelevel:add')")
+    @PreAuthorize("@ss.hasPermi('da:sensitiveLevel:add')")
     @Log(title = "敏感等级", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DaSensitiveLevelSaveReqVO daSensitiveLevel) {
@@ -94,7 +94,7 @@ public class DaSensitiveLevelController extends BaseController {
     }
 
     @Operation(summary = "修改敏感等级")
-    @PreAuthorize("@ss.hasPermi('da:sensitiveLevel:sensitivelevel:edit')")
+    @PreAuthorize("@ss.hasPermi('da:sensitiveLevel:edit')")
     @Log(title = "敏感等级", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DaSensitiveLevelSaveReqVO daSensitiveLevel) {
@@ -105,7 +105,7 @@ public class DaSensitiveLevelController extends BaseController {
     }
 
     @Operation(summary = "修改敏感等级状态")
-    @PreAuthorize("@ss.hasPermi('da:sensitiveLevel:sensitivelevel:edit')")
+    @PreAuthorize("@ss.hasPermi('da:sensitiveLevel:edit')")
     @Log(title = "敏感等级", businessType = BusinessType.UPDATE)
     @PostMapping("/updateStatus/{id}/{status}")
     public AjaxResult updateStatus(@PathVariable Long id, @PathVariable Long status) {
@@ -116,7 +116,7 @@ public class DaSensitiveLevelController extends BaseController {
     }
 
     @Operation(summary = "删除敏感等级")
-    @PreAuthorize("@ss.hasPermi('da:sensitiveLevel:sensitivelevel:remove')")
+    @PreAuthorize("@ss.hasPermi('da:sensitiveLevel:remove')")
     @Log(title = "敏感等级", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {

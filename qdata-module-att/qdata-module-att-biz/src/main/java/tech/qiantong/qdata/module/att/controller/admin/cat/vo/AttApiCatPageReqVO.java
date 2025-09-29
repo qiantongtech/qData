@@ -34,5 +34,7 @@ public class AttApiCatPageReqVO extends PageParam {
 
 
 
+    private Boolean validFlag;
+
 
 }

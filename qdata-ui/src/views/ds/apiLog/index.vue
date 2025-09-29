@@ -1,7 +1,7 @@
 <template>
   <div class="app-container" ref="app-container">
     <el-container style="90%">
-      <DeptTree :deptOptions="deptOptions" :leftWidth="leftWidth" :placeholder="'请输入API服务类目'"
+      <DeptTree :deptOptions="deptOptions" :leftWidth="leftWidth" :placeholder="'请输入API服务类目'" ref="DeptTreeRef"
         @node-click="handleNodeClick" />
 
       <el-main>
@@ -40,61 +40,80 @@
               <right-toolbar v-model:showSearch="showSearch" @queryTable="getList" :columns="columns"></right-toolbar>
             </div>
           </div>
-          <el-table stripe height="58vh" v-loading="loading" :data="apiLogList"
-            @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
-            <!--            <el-table-column type="selection" width="55" align="center" />-->
-            <el-table-column v-if="getColumnVisibility(0)" label="编号" align="center" prop="id" width="80" />
-            <el-table-column v-if="getColumnVisibility(1)" show-overflow-tooltip label="API服务名称" align="left"
-              prop="apiName" :show-overflow-tooltip="true">
+          <el-table stripe v-loading="loading" :data="apiLogList" @selection-change="handleSelectionChange"
+            :default-sort="defaultSort" @sort-change="handleSortChange">
+            <el-table-column v-if="getColumnVisibility(1)" label="编号" align="center" prop="id" width="80" />
+            <el-table-column v-if="getColumnVisibility(2)" :show-overflow-tooltip="{ effect: 'light' }" label="API服务名称"
+              align="left" prop="apiName" width="300">
               <template #default="scope">
                 {{ scope.row.apiName || "-" }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(2)" show-overflow-tooltip label="API服务类目" align="left"
-              prop="catName" width="160" :show-overflow-tooltip="true">
+            <el-table-column v-if="getColumnVisibility(3)" :show-overflow-tooltip="{ effect: 'light' }" label="API服务类目"
+              align="left" prop="catName" width="160">
               <template #default="scope">
                 {{ scope.row.catName || "-" }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(3)" label="调用者ip" align="left" prop="callerIp" width="130"
-              :show-overflow-tooltip="true">
+            <el-table-column v-if="getColumnVisibility(4)" label="调用者IP" align="left" prop="callerIp" width="130"
+              :show-overflow-tooltip="{ effect: 'light' }">
               <template #default="scope">
                 {{ scope.row.callerIp || "-" }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(4)" label="调用数据量" align="center" prop="callerSize" width="120"
-              :show-overflow-tooltip="true">
+            <el-table-column v-if="getColumnVisibility(5)" label="调用接口地址" align="left" prop="callerUrl" width="250"
+              :show-overflow-tooltip="{ effect: 'light' }">
+              <template #default="scope">
+                {{ scope.row.callerUrl || "-" }}
+              </template>
+            </el-table-column>
+            <el-table-column v-if="getColumnVisibility(6)" label="调用数据量" align="center" prop="callerSize" width="120"
+              sortable="custom" column-key="caller_size" :sort-orders="['descending', 'ascending']">
               <template #default="scope">
                 {{ scope.row.callerSize || "-" }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(5)" label="调用耗时(秒)" align="center" prop="callerTime" width="120"
-              :show-overflow-tooltip="true">
+            <el-table-column v-if="getColumnVisibility(7)" label="调用耗时(秒)" align="center" prop="callerTime" width="120"
+              :show-overflow-tooltip="{ effect: 'light' }">
               <template #default="scope">
                 {{ scope.row.callerTime / 1000 || "-" }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(6)" label="状态" align="center" prop="status" width="120"
-              :show-overflow-tooltip="true">
+            <el-table-column v-if="getColumnVisibility(8)" label="状态" align="center" prop="status" width="120"
+              :show-overflow-tooltip="{ effect: 'light' }">
+              <template #header>
+                <div class="justify-center">
+                  <span style="margin-right: 5px;">服务状态</span>
+                  <el-tooltip effect="light" content="当状态为开启则可以被调用，并且同步发布到资源门户中" placement="top">
+                    <el-icon class="tip-icon">
+                      <InfoFilled />
+                    </el-icon>
+                  </el-tooltip>
+                </div>
+              </template>
               <template #default="scope">
                 <dict-tag :options="ds_api_log_res_status" :value="scope.row.status" />
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(7)" label="调用时间" align="center" prop="createTime" width="170"
-              :show-overflow-tooltip="true">
+            <el-table-column v-if="getColumnVisibility(9)" label="调用时间" align="center" prop="createTime" width="170"
+              sortable="custom" column-key="create_time" :sort-orders="['descending', 'ascending']"
+              :show-overflow-tooltip="{ effect: 'light' }">
               <template #default="scope">
                 <span>{{
-                  parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}:{s}")
+                  parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}")
                 }}</span>
               </template>
             </el-table-column>
 
-            <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
+            <el-table-column v-if="getColumnVisibility(10)" label="操作" align="center"
+              class-name="small-padding fixed-width" fixed="right" width="200">
               <template #default="scope">
-                <el-button link type="primary" icon="view" @click="routeTo('/ds/logDetail/dsApiLogDetail', scope.row)"
-                  v-hasPermi="['ds:apiLog:apilog:edit']">查看日志</el-button>
+                <!--                <el-button link type="primary" icon="view" @click="routeTo('/ds/logDetail/dsApiLogDetail', scope.row)"-->
+                <!--                  v-hasPermi="['ds:apiLog:edit']">查看日志</el-button>-->
+                <el-button link type="primary" icon="view" @click="handleDetail(scope.row)"
+                  v-hasPermi="['ds:apiLog:edit']">详情</el-button>
                 <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
-                  v-hasPermi="['ds:apiLog:apilog:remove']">删除</el-button>
+                  v-hasPermi="['ds:apiLog:remove']">删除</el-button>
               </template>
             </el-table-column>
 
@@ -170,7 +189,7 @@
             <el-form-item label="状态" prop="status">
               <el-radio-group v-model="form.status">
                 <el-radio v-for="dict in ds_api_log_res_status" :key="dict.value" :label="dict.value">{{ dict.label
-                  }}</el-radio>
+                }}</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -192,81 +211,87 @@
     </el-dialog>
 
     <!-- API服务调用日志详情对话框 -->
-    <el-dialog :title="title" v-model="openDetail" width="800px" :append-to="$refs['app-container']" draggable>
+    <el-dialog :title="title" v-model="openDetail" width="1000px" :append-to="$refs['app-container']" draggable>
       <template #header="{ close, titleId, titleClass }">
         <span role="heading" aria-level="2" class="el-dialog__title">
           {{ title }}
         </span>
       </template>
-      <el-form ref="apiLogRef" :model="form" label-width="80px">
+      <el-form ref="apiLogRef" :model="form" label-width="110px">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="调用url" prop="callerUrl">
-              <div>
-                {{ form.callerUrl }}
+            <el-form-item label="API服务名称">
+              <div class="form-readonly">
+                {{ form.apiName || "-" }}
+              </div>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="调用者IP">
+              <div class="form-readonly">
+                {{ form.callerIp || "-" }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="调用参数" prop="callerParams">
-              <div>
-                {{ form.callerParams }}
+            <el-form-item label="调用接口地址">
+              <div class="form-readonly">
+                {{ form.callerUrl || "-" }}
+              </div>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="调用参数">
+              <div class="form-readonly textarea">
+                {{ form.callerParams || "-" }}
               </div>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="调用开始时间" prop="callerStartDate">
-              <el-date-picker clearable style="width: 100%" v-model="form.callerStartDate" type="date"
-                value-format="YYYY-MM-DD" placeholder="请选择调用开始时间">
-              </el-date-picker>
+            <el-form-item label="调用时间">
+              <div class="form-readonly">
+                {{ parseTime(form.createTime, '{y}-{m}-{d} {h}:{i}') }}
+              </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="调用结束时间" prop="callerEndDate">
-              <el-date-picker clearable style="width: 100%" v-model="form.callerEndDate" type="date"
-                value-format="YYYY-MM-DD" placeholder="请选择调用结束时间">
-              </el-date-picker>
+            <el-form-item label="调用耗时(秒)">
+              <div class="form-readonly">
+                {{ form.callerTime / 1000 || '-' }}
+              </div>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="调用数据量" prop="callerSize">
+            <el-form-item label="请求方式">
               <div>
-                {{ form.callerSize }}
+                <dict-tag :options="ds_api_bas_info_api_method_type" :value="form.reqMethod" />
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="调用耗时(毫秒)" prop="callerTime">
-              <div>
-                {{ form.callerTime }}
+            <el-form-item label="调用数据量">
+              <div class="form-readonly">
+                {{ form.callerSize || "-" }}
               </div>
             </el-form-item>
           </el-col>
+
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="信息记录" prop="MSG">
-              <div>
-                {{ form.MSG }}
+            <el-form-item label="异常信息记录">
+              <div class="form-readonly textarea">
+                {{ form.MSG || "-" }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="状态" prop="status">
               <dict-tag :options="ds_api_log_res_status" :value="form.status" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="备注" prop="REMARK">
-              <div>
-                {{ form.REMARK }}
-              </div>
             </el-form-item>
           </el-col>
         </el-row>
@@ -316,23 +341,30 @@ import {
   updateApiLog,
 } from "@/api/ds/apiLog/apiLog";
 import { getToken } from "@/utils/auth.js";
-import { listAttApiCat } from "@/api/att/cat/attApiCat/attApiCat";
+import { listAttApiCat } from "@/api/ds/apiCat/apiCat";
 import DeptTree from "@/components/DeptTree";
 import { da } from "element-plus/es/locale/index.mjs";
 
 const { proxy } = getCurrentInstance();
-const { ds_api_log_res_status } = proxy.useDict("ds_api_log_res_status");
+const { ds_api_log_res_status, ds_api_bas_info_api_method_type } = proxy.useDict(
+  'ds_api_log_res_status',
+  'ds_api_bas_info_api_method_type'
+);
 
 const apiLogList = ref([]);
 
 // 列显隐信息
 const columns = ref([
-  { key: 4, label: "调用者ip", visible: true },
-  { key: 9, label: "调用数据量", visible: true },
-  { key: 10, label: "调用耗时(毫秒)", visible: true },
-  { key: 12, label: "状态", visible: true },
-  { key: 17, label: "创建时间", visible: true },
-  { key: 21, label: "备注", visible: true },
+  { key: 1, label: "编号", visible: true },
+  { key: 2, label: "API服务名称", visible: true },
+  { key: 3, label: "API服务类目", visible: true },
+  { key: 4, label: "调用者IP", visible: true },
+  { key: 5, label: "调用接口地址", visible: true },
+  { key: 6, label: "调用数据量", visible: true },
+  { key: 7, label: "调用耗时(秒)", visible: true },
+  { key: 8, label: "状态", visible: true },
+  { key: 9, label: "调用时间", visible: true },
+  { key: 10, label: "操作", visible: true },
 ]);
 
 const getColumnVisibility = (key) => {
@@ -357,7 +389,8 @@ const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
 const daterangeCreateTime = ref([]);
-const defaultSort = ref({ prop: "create_time", order: "desc" });
+const defaultSort = ref({ columnKey: "create_time", order: "desc" });
+
 const router = useRouter();
 
 /*** 用户导入参数 */
@@ -390,13 +423,14 @@ const data = reactive({
 
 const { queryParams, form, rules } = toRefs(data);
 
+
 function handleNodeClick(data) {
   queryParams.value.catCode = data.code;
   handleQuery();
 }
 
 function getApiCatList() {
-  listAttApiCat().then((response) => {
+  listAttApiCat({ validFlag: true }).then((response) => {
     deptOptions.value = proxy.handleTree(response.data, "id", "parentId");
     deptOptions.value = [
       {
@@ -487,9 +521,14 @@ function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
+const DeptTreeRef = ref(null);
 
 /** 重置按钮操作 */
 function resetQuery() {
+  if (DeptTreeRef.value?.resetTree) {
+    DeptTreeRef.value.resetTree();
+  }
+  queryParams.value.catCode = "";
   proxy.resetForm("queryRef");
   daterangeCreateTime.value = [];
   handleQuery();
@@ -503,8 +542,9 @@ function handleSelectionChange(selection) {
 }
 
 /** 排序触发事件 */
-function handleSortChange(column, prop, order) {
-  queryParams.value.orderByColumn = column.prop;
+function handleSortChange({ column, prop, order }) {
+  console.log("column?.columnKey::" + column?.columnKey);
+  queryParams.value.orderByColumn = column?.columnKey || prop;
   queryParams.value.isAsc = column.order;
   getList();
 }
@@ -530,7 +570,8 @@ function handleUpdate(row) {
 /** 详情按钮操作 */
 function handleDetail(row) {
   reset();
-  const _ID = row.ID || ids.value;
+  const _ID = row.id || ids.value;
+  console.log("_ID::" + _ID);
   getApiLog(_ID).then((response) => {
     form.value = response.data;
     openDetail.value = true;

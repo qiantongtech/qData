@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -28,10 +29,13 @@ import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.module.att.api.project.IAttProjectApi;
 import tech.qiantong.qdata.module.dpp.api.etl.dto.DppEtlNodeInstanceRespDTO;
 import tech.qiantong.qdata.module.dpp.api.etl.dto.DppEtlTaskInstanceLogStatusRespDTO;
+import tech.qiantong.qdata.module.dpp.api.etl.dto.DppEtlTaskInstanceRespDTO;
 import tech.qiantong.qdata.module.dpp.api.etl.dto.DppEtlTaskRespDTO;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlTaskInstanceTreeListRespVO;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.*;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlNodeInstanceDO;
+import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlNodeLogDO;
+import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlTaskDO;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlTaskInstanceDO;
 import tech.qiantong.qdata.module.dpp.dal.mapper.etl.DppEtlTaskInstanceMapper;
 import tech.qiantong.qdata.module.dpp.service.etl.*;
@@ -82,6 +86,13 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
 
     @Resource
     private IDppEtlNodeInstanceLogService dppEtlNodeInstanceLogService;
+
+
+    @Resource
+    private IDppEtlNodeLogService dppEtlNodeLogService;
+
+    @Resource
+    private IDppEtlTaskNodeRelService iDppEtlTaskNodeRelService;
 
     @Override
     public PageResult<DppEtlTaskInstanceDO> getDppEtlTaskInstancePage(DppEtlTaskInstancePageReqVO pageReqVO) {
@@ -400,6 +411,15 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
         if (dppEtlTaskLogRespVO == null) {
             throw new RuntimeException("任务不存在");
         }
+        //获取节点关系数据
+        JSONArray locations = JSONArray.parse(dppEtlTaskLogRespVO.getLocations());
+        //获取节点数据
+        List<DppEtlNodeInstanceDO> dppEtlNodeInstanceDOList = dppEtlTNodeInstanceService.list(Wrappers.lambdaQuery(DppEtlNodeInstanceDO.class)
+                .select(DppEtlNodeInstanceDO::getId,
+                        DppEtlNodeInstanceDO::getNodeCode,
+                        DppEtlNodeInstanceDO::getName,
+                        DppEtlNodeInstanceDO::getStatus)
+                .eq(DppEtlNodeInstanceDO::getTaskInstanceId, taskInstanceId));
 
         String processInstanceLogKey = TaskConverter.PROCESS_INSTANCE_LOG_KEY + taskInstanceId;
         if (StringUtils.equals("1", dppEtlTaskInstanceDO.getTaskType())) {//判断是否是离线任务
@@ -413,9 +433,6 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
                 }
             }
         } else {
-            JSONArray locations = JSONArray.parse(dppEtlTaskLogRespVO.getLocations());
-            List<DppEtlNodeInstanceDO> dppEtlNodeInstanceDOList = dppEtlTNodeInstanceService.list(Wrappers.lambdaQuery(DppEtlNodeInstanceDO.class)
-                    .eq(DppEtlNodeInstanceDO::getTaskInstanceId, taskInstanceId));
             Map<String, DppEtlNodeInstanceDO> nodeInstanceMap = dppEtlNodeInstanceDOList.stream().collect(Collectors.toMap(key -> key.getNodeCode(), value -> value));
 
             for (int i = 0; i < locations.size(); i++) {
@@ -442,6 +459,7 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
         return DppEtlTaskInstanceLogStatusRespDTO.builder()
                 .log(log)
                 .status(dppEtlTaskInstanceDO.getStatus())
+                .nodeInstanceList(BeanUtils.toBean(dppEtlNodeInstanceDOList, DppEtlNodeInstanceRespDTO.class))
                 .build();
     }
 
@@ -456,4 +474,50 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
         }
         return null;
     }
+
+    @Override
+    public DppEtlTaskUpdateQueryRespVO getTaskInfo(Long id) {
+        //根据任务实例id获取任务信息
+        MPJLambdaWrapper<DppEtlTaskInstanceDO> lambdaWrapper = new MPJLambdaWrapper();
+        lambdaWrapper.selectAll(DppEtlTaskInstanceDO.class)
+                .select("t3.NICK_NAME AS personChargeName")
+                .leftJoin("SYSTEM_USER t3 on t.PERSON_CHARGE = t3.USER_ID AND t3.DEL_FLAG = '0'")
+                .eq(DppEtlTaskInstanceDO::getId, id);
+        DppEtlTaskInstanceDO dppEtlTaskInstanceDO = dppEtlTaskInstanceMapper.selectJoinOne(DppEtlTaskInstanceDO.class, lambdaWrapper);
+
+        //获取任务信息
+        DppEtlTaskLogRespVO dppEtlTaskLogRespVO = dppEtlTaskLogService.getDppEtlTaskLogById(DppEtlTaskLogPageReqVO.builder()
+                .code(dppEtlTaskInstanceDO.getTaskCode())
+                .version(dppEtlTaskInstanceDO.getTaskVersion())
+                .build());
+        if (dppEtlTaskLogRespVO == null) {
+            throw new RuntimeException("任务不存在");
+        }
+        DppEtlTaskUpdateQueryRespVO bean = new DppEtlTaskUpdateQueryRespVO(BeanUtils.toBean(dppEtlTaskLogRespVO, DppEtlTaskDO.class));
+        bean.setTaskInstance(dppEtlTaskInstanceDO);
+        //获取关系数据
+        List<DppEtlTaskNodeRelRespVO> dppEtlTaskNodeRelRespVOList = iDppEtlTaskNodeRelService.getDppEtlTaskNodeRelRespVOList(DppEtlTaskNodeRelPageReqVO.builder()
+                .taskCode(bean.getCode())
+                .taskVersion(bean.getVersion())
+                .build());
+        bean.setTaskRelationJsonFromNodeRelList(dppEtlTaskNodeRelRespVOList);
+
+        //获取捷信信息
+        List<DppEtlNodeLogDO> dppEtlNodeLogDOList = dppEtlNodeLogService.listByTaskCode(dppEtlTaskInstanceDO.getTaskCode(), dppEtlTaskInstanceDO.getTaskVersion());
+        bean.setTaskDefinitionList(BeanUtils.toBean(dppEtlNodeLogDOList, DppEtlNodeRespVO.class));
+        bean.createTaskConfig();
+        return bean;
+    }
+
+    @Override
+    public DppEtlTaskInstanceDO getLastTaskInstanceByTaskCode(String code) {
+        IPage<DppEtlTaskInstanceDO> page = this.page(new Page(1, 1), Wrappers.lambdaQuery(DppEtlTaskInstanceDO.class)
+                .eq(DppEtlTaskInstanceDO::getTaskCode, code)
+                .orderByDesc(DppEtlTaskInstanceDO::getStartTime));
+        if (page.getRecords().size() > 0) {
+            return page.getRecords().get(0);
+        }
+        return null;
+    }
+
 }

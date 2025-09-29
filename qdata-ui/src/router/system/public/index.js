@@ -10,33 +10,33 @@ export default [
         children: [
             {
                 path: '/redirect/:path(.*)',
-                component: () => import('@/views/system/redirect/index.vue')
+                component: () => import('@/views/sys/redirect/index.vue')
             }
         ]
     },
     {
         path: '/sso',
-        component: () => import('@/views/system/sso'),
+        component: () => import('@/views/sys/sso'),
         hidden: true
     },
     {
         path: '/login',
-        component: () => import('@/views/system/login.vue'),
+        component: () => import('@/views/sys/login.vue'),
         hidden: true
     },
     {
         path: '/register',
-        component: () => import('@/views/system/register.vue'),
+        component: () => import('@/views/sys/register.vue'),
         hidden: true
     },
     {
         path: '/:pathMatch(.*)*',
-        component: () => import('@/views/system/error/404.vue'),
+        component: () => import('@/views/sys/error/404.vue'),
         hidden: true
     },
     {
         path: '/401',
-        component: () => import('@/views/system/error/401.vue'),
+        component: () => import('@/views/sys/error/401.vue'),
         hidden: true
     },
     {
@@ -46,7 +46,7 @@ export default [
         children: [
             {
                 path: '/index',
-                component: () => import('@/views/system/index.vue'),
+                component: () => import('@/views/sys/index.vue'),
                 name: 'Index',
                 meta: { title: '首页', icon: 'dashboard', affix: true }
             }
@@ -59,7 +59,7 @@ export default [
         children: [
             {
                 path: 'message',
-                component: () => import('@/views/system/system/message/index.vue'),
+                component: () => import('@/views/sys/system/message/index.vue'),
                 name: 'Message',
                 meta: { title: '我的消息', icon: 'message' },
                 hidden: true
@@ -74,7 +74,7 @@ export default [
         children: [
             {
                 path: 'profile',
-                component: () => import('@/views/system/system/user/profile/index.vue'),
+                component: () => import('@/views/sys/system/user/profile/index.vue'),
                 name: 'Profile',
                 meta: { title: '个人中心', icon: 'user' }
             }
@@ -88,7 +88,7 @@ export default [
         children: [
             {
                 path: 'user',
-                component: () => import('@/views/system/system/user/index.vue'),
+                component: () => import('@/views/sys/system/user/index.vue'),
                 name: 'User',
                 meta: { title: '用户管理', icon: 'user' }
             }

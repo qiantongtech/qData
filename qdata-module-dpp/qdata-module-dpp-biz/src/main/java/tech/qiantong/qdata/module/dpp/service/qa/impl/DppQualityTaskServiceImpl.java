@@ -2,6 +2,7 @@ package tech.qiantong.qdata.module.dpp.service.qa.impl;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,7 @@ import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.module.da.api.datasource.dto.DaDatasourceRespDTO;
 import tech.qiantong.qdata.module.da.api.service.asset.IDaDatasourceApiService;
+import tech.qiantong.qdata.module.dpp.api.service.qa.DppQualityTaskApiService;
 import tech.qiantong.qdata.module.dpp.controller.admin.qa.vo.*;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppQualityLogDO;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.qa.DppQualityTaskDO;
@@ -63,7 +65,7 @@ import static tech.qiantong.qdata.common.core.domain.AjaxResult.success;
 @Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper,DppQualityTaskDO> implements IDppQualityTaskService {
+public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper,DppQualityTaskDO> implements IDppQualityTaskService, DppQualityTaskApiService {
 
     private static String projectCode;
 
@@ -155,7 +157,8 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
             if (qualityTaskObjSaveReqVO.getId() != null) {
                 dppQualityTaskObjService.updateDppQualityTaskObj(qualityTaskObjSaveReqVO);
             } else {
-                dppQualityTaskObjService.createDppQualityTaskObj(qualityTaskObjSaveReqVO);
+                Long dppQualityTaskObj = dppQualityTaskObjService.createDppQualityTaskObj(qualityTaskObjSaveReqVO);
+                qualityTaskObjSaveReqVO.setId(dppQualityTaskObj);
             }
         }
         Map<String, DppQualityTaskObjSaveReqVO> collect = dppQualityTaskObjSaveReqVO.stream().collect(Collectors.toMap(s -> s.getDatasourceId() + s.getTableName(), Function.identity()));
@@ -844,4 +847,11 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
         }
         return jsonObject.toJSONString();
     }
+
+    @Override
+    public Long getCountByCatCode(String catCode) {
+        return baseMapper.selectCount(Wrappers.lambdaQuery(DppQualityTaskDO.class)
+                .likeRight(DppQualityTaskDO::getCatCode, catCode));
+    }
+
 }

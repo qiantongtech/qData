@@ -1,5 +1,5 @@
 <template>
-  <div ref="monacoDom" class="json-editor"></div>
+  <div ref="monacoDom" class="json-editors"></div>
 </template>
 <script setup>
 import beautify from "js-beautify";
@@ -87,7 +87,7 @@ const defaultConfig = {
   automaticLayout: true, // 自动布局，编辑器自适应大小
   theme: "vs", // 官方自带三种主题vs, hc-black, or vs-dark
   minimap: {
-    enabled: true, // 是否开启右侧代码小窗
+    enabled: false, // 是否开启右侧代码小窗
   },
   codeLens: true, // 代码镜头
   colorDecorators: true, // 颜色装饰器
@@ -211,7 +211,9 @@ onMounted(() => {
     autoDetectHighContrast: true,
     lineNumbers: props.lineNumbers,
     readOnly: props.readOnly,
-    value: props.modelValue,
+    value: props.modelValue || `
+-- 在这里输入内容
+`.trim(),
     language: props.language,
     ...props.config,
   });
@@ -274,7 +276,16 @@ function convertCodeEditTheme(editorInstance) {
         { token: "custom-date", foreground: "#008800" },
         { token: "custom-process", foreground: "#07f313" },
       ],
-      colors: {},
+      colors: {
+        "editor.background": "#FFFFFF",
+        "minimap.background": "#FFFFFF",
+        "minimap.selectionHighlight": "#FFFFFF",
+        "minimap.errorHighlight": "#FFFFFF",
+        "minimap.warningHighlight": "#FFFFFF",
+        "minimapSlider.background": "#FFFFFF",
+        "minimapSlider.hoverBackground": "#FFFFFF",
+        "minimapSlider.activeBackground": "#FFFFFF",
+      },
       encodedTokensColors: [],
     });
 
@@ -358,7 +369,7 @@ function reloadCompilation(monacoIns, segmentedWords) {
  */
 const editorInstance = ref(null);
 let provider = {
-  dispose: () => {},
+  dispose: () => { },
 };
 const editorDidMountChange = (editor, monacoIns) => {
   editorInstance.current = editor;
@@ -402,12 +413,21 @@ defineExpose({
 });
 </script>
 <style lang="scss" scoped>
-.json-editor {
+.json-editors {
   width: 100%;
   height: 100%;
-  // border: 1px solid #eee;
-  :deep(.monaco-scrollable-element > .scrollbar > .slider) {
-    background: var(--el-color-primary) !important;
+
+  :deep(.monaco-editor-background) {
+    background: #FFFFFF !important;
   }
+
+  :deep(.monaco-editor .margin) {
+    background: #FFFFFF !important;
+  }
+
+  // :deep(.monaco-editor .minimap) {
+  //   background-color: #ffffff !important;
+  // }
+
 }
 </style>

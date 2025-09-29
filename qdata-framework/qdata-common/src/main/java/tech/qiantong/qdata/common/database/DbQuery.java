@@ -84,6 +84,8 @@ public interface DbQuery {
 
     int countNew(String sql, Map<String, Object> params);
 
+    int countNew(String tableName, DbQueryProperty dbQueryProperty, String where);
+
     /**
      * 查询结果列表
      *
@@ -93,6 +95,16 @@ public interface DbQuery {
     List<Map<String, Object>> queryList(String sql);
 
     List<Map<String, Object>> queryDbColumnByList(List<DbColumn> columns, String tableName, DbQueryProperty dbQueryProperty, long offset, long size);
+
+    List<Map<String, Object>> queryDbColumnByList(
+            List<DbColumn> columns
+            , String tableName
+            , DbQueryProperty dbQueryProperty
+            , String where
+            , List<Map> orderByList
+            , long offset
+            , long size
+    );
 
     /**
      * 查询结果列表带查询参数

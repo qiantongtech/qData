@@ -216,9 +216,9 @@ public class AttCleanRuleServiceImpl extends ServiceImpl<AttCleanRuleMapper, Att
     }
 
     @Override
-    public Long getCount(AttCleanRulePageReqVO vo) {
+    public Long getCount(String type) {
         return attCleanRuleMapper.selectCount(Wrappers.lambdaQuery(AttCleanRuleDO.class)
-                .likeRight(AttCleanRuleDO::getType, vo.getType()));
+                .likeRight(AttCleanRuleDO::getType, type));
     }
 
     /**

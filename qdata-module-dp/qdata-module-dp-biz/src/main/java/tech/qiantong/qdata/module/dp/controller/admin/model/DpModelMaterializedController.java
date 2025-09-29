@@ -21,6 +21,7 @@ import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.enums.BusinessType;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.common.utils.poi.ExcelUtil;
+import tech.qiantong.qdata.common.exception.enums.GlobalErrorCodeConstants;
 import tech.qiantong.qdata.module.dp.controller.admin.model.vo.DpMaterializedMethodReqVO;
 import tech.qiantong.qdata.module.dp.controller.admin.model.vo.DpModelMaterializedPageReqVO;
 import tech.qiantong.qdata.module.dp.controller.admin.model.vo.DpModelMaterializedRespVO;
@@ -44,7 +45,7 @@ public class DpModelMaterializedController extends BaseController {
     private IDpModelMaterializedService dpModelMaterializedService;
 
     @Operation(summary = "查询物化模型记录列表")
-    @PreAuthorize("@ss.hasPermi('dp:modelMaterialized:list')")
+//    @PreAuthorize("@ss.hasPermi('dp:modelMaterialized:list')")
     @GetMapping("/list")
     public CommonResult<PageResult<DpModelMaterializedRespVO>> list(DpModelMaterializedPageReqVO dpModelMaterialized) {
         PageResult<DpModelMaterializedDO> page = dpModelMaterializedService.getDpModelMaterializedPage(dpModelMaterialized);
@@ -52,7 +53,7 @@ public class DpModelMaterializedController extends BaseController {
     }
 
     @Operation(summary = "导出物化模型记录列表")
-    @PreAuthorize("@ss.hasPermi('dp:modelMaterialized:export')")
+//    @PreAuthorize("@ss.hasPermi('dp:modelMaterialized:export')")
     @Log(title = "物化模型记录", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DpModelMaterializedPageReqVO exportReqVO) {
@@ -63,7 +64,7 @@ public class DpModelMaterializedController extends BaseController {
     }
 
     @Operation(summary = "导入物化模型记录列表")
-    @PreAuthorize("@ss.hasPermi('dp:modelMaterialized:import')")
+//    @PreAuthorize("@ss.hasPermi('dp:modelMaterialized:import')")
     @Log(title = "物化模型记录", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
@@ -75,7 +76,7 @@ public class DpModelMaterializedController extends BaseController {
     }
 
     @Operation(summary = "获取物化模型记录详细信息")
-    @PreAuthorize("@ss.hasPermi('dp:modelMaterialized:query')")
+//    @PreAuthorize("@ss.hasPermi('dp:modelMaterialized:query')")
     @GetMapping(value = "/{id}")
     public CommonResult<DpModelMaterializedRespVO> getInfo(@PathVariable("id") Long id) {
         DpModelMaterializedDO dpModelMaterializedDO = dpModelMaterializedService.getDpModelMaterializedById(id);
@@ -83,7 +84,7 @@ public class DpModelMaterializedController extends BaseController {
     }
 
     @Operation(summary = "新增物化模型记录")
-    @PreAuthorize("@ss.hasPermi('dp:modelMaterialized:add')")
+//    @PreAuthorize("@ss.hasPermi('dp:modelMaterialized:add')")
     @Log(title = "物化模型记录", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DpModelMaterializedSaveReqVO dpModelMaterialized) {
@@ -94,7 +95,7 @@ public class DpModelMaterializedController extends BaseController {
     }
 
     @Operation(summary = "新增物化模型记录")
-    @PreAuthorize("@ss.hasPermi('dp:modelMaterialized:add')")
+//    @PreAuthorize("@ss.hasPermi('dp:modelMaterialized:add')")
     @Log(title = "物化模型记录", businessType = BusinessType.INSERT)
     @PostMapping("/createMaterializedTable")
     public CommonResult<Long> createMaterializedTable(@Valid @RequestBody DpMaterializedMethodReqVO dpModelMaterialized) {
@@ -105,7 +106,7 @@ public class DpModelMaterializedController extends BaseController {
     }
 
     @Operation(summary = "修改物化模型记录")
-    @PreAuthorize("@ss.hasPermi('dp:modelMaterialized:edit')")
+//    @PreAuthorize("@ss.hasPermi('dp:modelMaterialized:edit')")
     @Log(title = "物化模型记录", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DpModelMaterializedSaveReqVO dpModelMaterialized) {
@@ -116,7 +117,7 @@ public class DpModelMaterializedController extends BaseController {
     }
 
     @Operation(summary = "删除物化模型记录")
-    @PreAuthorize("@ss.hasPermi('dp:modelMaterialized:remove')")
+//    @PreAuthorize("@ss.hasPermi('dp:modelMaterialized:remove')")
     @Log(title = "物化模型记录", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {

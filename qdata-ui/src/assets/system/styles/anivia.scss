@@ -1161,7 +1161,10 @@
   .el-form-item__error {
     font-size: 10px;
   }
-
+  .el-dialog__body{
+    height: auto  !important;
+    max-height: 80vh;
+  }
   .el-carousel {
     --el-carousel-arrow-background: #2666fb;
     --el-carousel-arrow-hover-background: rgba(38, 102, 251, 0.35);

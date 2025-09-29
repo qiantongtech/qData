@@ -96,7 +96,7 @@
 import { defineProps, defineEmits, ref, computed, watch } from 'vue';
 import { listDppEtlTaskInstance } from '@/api/dpp/instance/job';
 import TaskLogDialog from "@/views/dpp/components/taskLog.vue";
-
+import { getRunTaskInstance, getLogByTaskInstanceId } from "@/api/dpp/task/index.js";
 import request from '@/utils/request';
 const { proxy } = getCurrentInstance();
 const { dpp_etl_node_instance } = proxy.useDict('dpp_etl_node_instance');

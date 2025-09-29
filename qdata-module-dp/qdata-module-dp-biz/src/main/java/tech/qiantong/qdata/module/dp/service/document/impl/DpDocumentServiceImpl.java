@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
-import tech.qiantong.qdata.module.dp.api.service.IDpDocumentApiService;
+import tech.qiantong.qdata.module.dp.api.service.document.IDpDocumentApiService;
 import tech.qiantong.qdata.module.dp.controller.admin.document.vo.*;
 import tech.qiantong.qdata.module.dp.dal.dataobject.document.DpDocumentDO;
 import tech.qiantong.qdata.module.dp.dal.mapper.document.DpDocumentMapper;

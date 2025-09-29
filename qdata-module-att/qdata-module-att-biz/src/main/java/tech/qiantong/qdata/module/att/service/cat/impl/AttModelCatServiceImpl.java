@@ -59,11 +59,25 @@ public class AttModelCatServiceImpl extends ServiceImpl<AttModelCatMapper, AttMo
 
     @Override
     public int updateAttModelCat(AttModelCatSaveReqVO updateReqVO) {
-        // 相关校验
-
+        AttModelCatDO catDO = baseMapper.selectById(updateReqVO.getId());
+        if (catDO == null) {
+            return 0;
+        }
+        if (Boolean.FALSE.equals(updateReqVO.getValidFlag())) {
+            Long countData = dpModelApiService.getCountByCatCode(catDO.getCode());
+            if (countData > 0) {
+                throw new ServiceException("存在逻辑模型，不允许禁用");
+            }
+            baseMapper.updateValidFlag(catDO.getCode(), updateReqVO.getValidFlag());
+        } else if (Boolean.TRUE.equals(updateReqVO.getValidFlag())) {
+            AttModelCatDO parent = baseMapper.selectById(catDO.getParentId());
+            if (parent != null && Boolean.FALSE.equals(parent.getValidFlag())) {
+                throw new ServiceException("须先启用父级");
+            }
+        }
         // 更新逻辑模型类目管理
         AttModelCatDO updateObj = BeanUtils.toBean(updateReqVO, AttModelCatDO.class);
-        return attModelCatMapper.updateById(updateObj);
+        return baseMapper.updateById(updateObj);
     }
 
     @Override
@@ -113,6 +127,7 @@ public class AttModelCatServiceImpl extends ServiceImpl<AttModelCatMapper, AttMo
         LambdaQueryWrapperX<AttModelCatDO> queryWrapperX = new LambdaQueryWrapperX<>();
         queryWrapperX.likeIfPresent(AttModelCatDO::getName, reqVO.getName())
                 .likeRightIfPresent(AttModelCatDO::getCode, reqVO.getCode())
+                .eqIfPresent(AttModelCatDO::getValidFlag, reqVO.getValidFlag())
                 .orderByAsc(AttModelCatDO::getSortOrder);
         return attModelCatMapper.selectList(queryWrapperX);
     }

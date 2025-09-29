@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +42,7 @@ import tech.qiantong.qdata.module.da.api.sensitiveLevel.dto.DaSensitiveLevelResp
 import tech.qiantong.qdata.module.da.api.service.asset.IDaDatasourceApiService;
 import tech.qiantong.qdata.module.da.api.service.assetchild.api.IDaApiOutService;
 import tech.qiantong.qdata.module.da.api.service.assetchild.gis.IDaAssetGisOutService;
+import tech.qiantong.qdata.module.ds.api.service.api.DsApiService;
 import tech.qiantong.qdata.module.ds.async.AsyncTask;
 import tech.qiantong.qdata.module.ds.controller.admin.api.vo.*;
 import tech.qiantong.qdata.module.ds.dal.dataobject.api.DsApiDO;
@@ -70,7 +72,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implements IDsApiService {
+public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implements IDsApiService, DsApiService {
     @Resource
     private DsApiMapper dsApiMapper;
 
@@ -903,5 +905,11 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
             resultMsg.append("恭喜您，数据已全部导入成功！共 ").append(successNum).append(" 条。");
         }
         return resultMsg.toString();
+    }
+
+    @Override
+    public Long getCountByCatCode(String catCode) {
+        return baseMapper.selectCount(Wrappers.lambdaQuery(DsApiDO.class)
+                .likeRight(DsApiDO::getCatCode, catCode));
     }
 }

@@ -32,6 +32,8 @@ public class AttDataElemCatPageReqVO extends PageParam {
     @Schema(description = "层级编码", example = "")
     private String code;
 
+    private Boolean validFlag;
+
 
 
 

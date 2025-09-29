@@ -1,33 +1,32 @@
 package tech.qiantong.qdata.module.att.service.cat.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import javax.annotation.Resource;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.core.text.Convert;
 import tech.qiantong.qdata.common.exception.ServiceException;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.YouBianCodeUtil;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tech.qiantong.qdata.module.att.controller.admin.cat.vo.AttCleanCatPageReqVO;
 import tech.qiantong.qdata.module.att.controller.admin.cat.vo.AttCleanCatRespVO;
 import tech.qiantong.qdata.module.att.controller.admin.cat.vo.AttCleanCatSaveReqVO;
-import tech.qiantong.qdata.module.att.controller.admin.rule.vo.AttCleanRulePageReqVO;
 import tech.qiantong.qdata.module.att.dal.dataobject.cat.AttCleanCatDO;
 import tech.qiantong.qdata.module.att.dal.mapper.cat.AttCleanCatMapper;
 import tech.qiantong.qdata.module.att.service.cat.IAttCleanCatService;
 import tech.qiantong.qdata.module.att.service.rule.IAttCleanRuleService;
 import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
-
-import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * 清洗规则类目Service业务层处理
@@ -38,7 +37,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class AttCleanCatServiceImpl extends ServiceImpl<AttCleanCatMapper,AttCleanCatDO> implements IAttCleanCatService {
+public class AttCleanCatServiceImpl  extends ServiceImpl<AttCleanCatMapper,AttCleanCatDO> implements IAttCleanCatService {
     @Resource
     private AttCleanCatMapper attCleanCatMapper;
     @Resource
@@ -59,9 +58,22 @@ public class AttCleanCatServiceImpl extends ServiceImpl<AttCleanCatMapper,AttCle
 
     @Override
     public int updateAttCleanCat(AttCleanCatSaveReqVO updateReqVO) {
-        // 相关校验
-
-        // 更新清洗规则类目
+        AttCleanCatDO catDO = attCleanCatMapper.selectById(updateReqVO.getId());
+        if (catDO == null) {
+            return 0;
+        }
+        if (Boolean.FALSE.equals(updateReqVO.getValidFlag())) {
+            Long countData = attCleanRuleService.getCount(catDO.getId().toString());
+            if (countData > 0) {
+                throw new ServiceException("存在清洗规则模型，不允许禁用");
+            }
+            attCleanCatMapper.updateValidFlag(catDO.getCode(), updateReqVO.getValidFlag());
+        } else if (Boolean.TRUE.equals(updateReqVO.getValidFlag())) {
+            AttCleanCatDO parent = attCleanCatMapper.selectById(catDO.getParentId());
+            if (parent != null && Boolean.FALSE.equals(parent.getValidFlag())) {
+                throw new ServiceException("须先启用父级");
+            }
+        }        // 更新清洗规则类目
         AttCleanCatDO updateObj = BeanUtils.toBean(updateReqVO, AttCleanCatDO.class);
         return attCleanCatMapper.updateById(updateObj);
     }
@@ -72,9 +84,7 @@ public class AttCleanCatServiceImpl extends ServiceImpl<AttCleanCatMapper,AttCle
         AttCleanCatDO cat = baseMapper.selectById(idList);
 
         //判断是否存在数据
-        AttCleanRulePageReqVO vo = new AttCleanRulePageReqVO();
-        vo.setType(Convert.toStr(idList));
-        if (attCleanRuleService.getCount(vo) > 0) {
+        if (attCleanRuleService.getCount(Convert.toStr(idList)) > 0) {
             throw new RuntimeException("存在清洗规则模型，不允许删除");
         }
 
@@ -95,6 +105,7 @@ public class AttCleanCatServiceImpl extends ServiceImpl<AttCleanCatMapper,AttCle
         LambdaQueryWrapperX<AttCleanCatDO> queryWrapperX = new LambdaQueryWrapperX<>();
         queryWrapperX.likeIfPresent(AttCleanCatDO::getName, attCleanCat.getName())
                 .likeRightIfPresent(AttCleanCatDO::getCode, attCleanCat.getCode())
+                .eqIfPresent(AttCleanCatDO::getValidFlag, attCleanCat.getValidFlag())
                 .orderByAsc(AttCleanCatDO::getSortOrder);
         return attCleanCatMapper.selectList(queryWrapperX);
     }
@@ -117,74 +128,74 @@ public class AttCleanCatServiceImpl extends ServiceImpl<AttCleanCatMapper,AttCle
     }
 
 
-        /**
-         * 导入清洗规则类目数据
-         *
-         * @param importExcelList 清洗规则类目数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
-         */
-        @Override
-        public String importAttCleanCat(List<AttCleanCatRespVO> importExcelList, boolean isUpdateSupport, String operName) {
-            if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-                throw new ServiceException("导入数据不能为空！");
-            }
+    /**
+     * 导入清洗规则类目数据
+     *
+     * @param importExcelList 清洗规则类目数据列表
+     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
+     * @param operName 操作用户
+     * @return 结果
+     */
+    @Override
+    public String importAttCleanCat(List<AttCleanCatRespVO> importExcelList, boolean isUpdateSupport, String operName) {
+        if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
+            throw new ServiceException("导入数据不能为空！");
+        }
 
-            int successNum = 0;
-            int failureNum = 0;
-            List<String> successMessages = new ArrayList<>();
-            List<String> failureMessages = new ArrayList<>();
+        int successNum = 0;
+        int failureNum = 0;
+        List<String> successMessages = new ArrayList<>();
+        List<String> failureMessages = new ArrayList<>();
 
-            for (AttCleanCatRespVO respVO : importExcelList) {
-                try {
-                    AttCleanCatDO attCleanCatDO = BeanUtils.toBean(respVO, AttCleanCatDO.class);
-                    Long attCleanCatId = respVO.getId();
-                    if (isUpdateSupport) {
-                        if (attCleanCatId != null) {
-                            AttCleanCatDO existingAttCleanCat = attCleanCatMapper.selectById(attCleanCatId);
-                            if (existingAttCleanCat != null) {
-                                attCleanCatMapper.updateById(attCleanCatDO);
-                                successNum++;
-                                successMessages.add("数据更新成功，ID为 " + attCleanCatId + " 的清洗规则类目记录。");
-                            } else {
-                                failureNum++;
-                                failureMessages.add("数据更新失败，ID为 " + attCleanCatId + " 的清洗规则类目记录不存在。");
-                            }
+        for (AttCleanCatRespVO respVO : importExcelList) {
+            try {
+                AttCleanCatDO attCleanCatDO = BeanUtils.toBean(respVO, AttCleanCatDO.class);
+                Long attCleanCatId = respVO.getId();
+                if (isUpdateSupport) {
+                    if (attCleanCatId != null) {
+                        AttCleanCatDO existingAttCleanCat = attCleanCatMapper.selectById(attCleanCatId);
+                        if (existingAttCleanCat != null) {
+                            attCleanCatMapper.updateById(attCleanCatDO);
+                            successNum++;
+                            successMessages.add("数据更新成功，ID为 " + attCleanCatId + " 的清洗规则类目记录。");
                         } else {
                             failureNum++;
-                            failureMessages.add("数据更新失败，某条记录的ID不存在。");
+                            failureMessages.add("数据更新失败，ID为 " + attCleanCatId + " 的清洗规则类目记录不存在。");
                         }
                     } else {
-                        QueryWrapper<AttCleanCatDO> queryWrapper = new QueryWrapper<>();
-                        queryWrapper.eq("id", attCleanCatId);
-                        AttCleanCatDO existingAttCleanCat = attCleanCatMapper.selectOne(queryWrapper);
-                        if (existingAttCleanCat == null) {
-                            attCleanCatMapper.insert(attCleanCatDO);
-                            successNum++;
-                            successMessages.add("数据插入成功，ID为 " + attCleanCatId + " 的清洗规则类目记录。");
-                        } else {
-                            failureNum++;
-                            failureMessages.add("数据插入失败，ID为 " + attCleanCatId + " 的清洗规则类目记录已存在。");
-                        }
+                        failureNum++;
+                        failureMessages.add("数据更新失败，某条记录的ID不存在。");
                     }
-                } catch (Exception e) {
-                    failureNum++;
-                    String errorMsg = "数据导入失败，错误信息：" + e.getMessage();
-                    failureMessages.add(errorMsg);
-                    log.error(errorMsg, e);
+                } else {
+                    QueryWrapper<AttCleanCatDO> queryWrapper = new QueryWrapper<>();
+                    queryWrapper.eq("id", attCleanCatId);
+                    AttCleanCatDO existingAttCleanCat = attCleanCatMapper.selectOne(queryWrapper);
+                    if (existingAttCleanCat == null) {
+                        attCleanCatMapper.insert(attCleanCatDO);
+                        successNum++;
+                        successMessages.add("数据插入成功，ID为 " + attCleanCatId + " 的清洗规则类目记录。");
+                    } else {
+                        failureNum++;
+                        failureMessages.add("数据插入失败，ID为 " + attCleanCatId + " 的清洗规则类目记录已存在。");
+                    }
                 }
+            } catch (Exception e) {
+                failureNum++;
+                String errorMsg = "数据导入失败，错误信息：" + e.getMessage();
+                failureMessages.add(errorMsg);
+                log.error(errorMsg, e);
             }
-            StringBuilder resultMsg = new StringBuilder();
-            if (failureNum > 0) {
-                resultMsg.append("很抱歉，导入失败！共 ").append(failureNum).append(" 条数据格式不正确，错误如下：");
-                resultMsg.append("<br/>").append(String.join("<br/>", failureMessages));
-                throw new ServiceException(resultMsg.toString());
-            } else {
-                resultMsg.append("恭喜您，数据已全部导入成功！共 ").append(successNum).append(" 条。");
-            }
-            return resultMsg.toString();
         }
+        StringBuilder resultMsg = new StringBuilder();
+        if (failureNum > 0) {
+            resultMsg.append("很抱歉，导入失败！共 ").append(failureNum).append(" 条数据格式不正确，错误如下：");
+            resultMsg.append("<br/>").append(String.join("<br/>", failureMessages));
+            throw new ServiceException(resultMsg.toString());
+        } else {
+            resultMsg.append("恭喜您，数据已全部导入成功！共 ").append(successNum).append(" 条。");
+        }
+        return resultMsg.toString();
+    }
 
 
     @Override

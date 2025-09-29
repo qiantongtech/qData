@@ -1,5 +1,6 @@
 package tech.qiantong.qdata.module.dp.controller.admin.dataElem.vo;
 
+import java.util.List;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
@@ -15,8 +16,8 @@ import tech.qiantong.qdata.common.core.page.PageParam;
 public class DpDataElemPageReqVO extends PageParam {
 
     private static final long serialVersionUID = 1L;
-        @Schema(description = "ID", example = "")
-        private Long id;
+    @Schema(description = "ID", example = "")
+    private Long id;
 
     @Schema(description = "名称", example = "")
     private String name;
@@ -44,4 +45,6 @@ public class DpDataElemPageReqVO extends PageParam {
 
     @Schema(description = "描述", example = "")
     private String description;
+
+    private Long documentId;
 }

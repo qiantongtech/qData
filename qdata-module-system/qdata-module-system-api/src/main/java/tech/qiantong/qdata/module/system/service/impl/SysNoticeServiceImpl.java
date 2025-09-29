@@ -1,12 +1,11 @@
 package tech.qiantong.qdata.module.system.service.impl;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tech.qiantong.qdata.module.system.domain.SysNotice;
 import tech.qiantong.qdata.module.system.mapper.SysNoticeMapper;
 import tech.qiantong.qdata.module.system.service.ISysNoticeService;
-
-import java.util.List;
 
 /**
  * 公告 服务层实现

@@ -1,28 +1,33 @@
 package tech.qiantong.qdata.module.dp.service.dataElem.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import java.util.*;
+import java.util.stream.Collectors;
+
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.exception.ServiceException;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tech.qiantong.qdata.module.dp.api.service.dataElem.IDataElemApiService;
 import tech.qiantong.qdata.module.dp.controller.admin.dataElem.vo.DpDataElemPageReqVO;
 import tech.qiantong.qdata.module.dp.controller.admin.dataElem.vo.DpDataElemRespVO;
 import tech.qiantong.qdata.module.dp.controller.admin.dataElem.vo.DpDataElemSaveReqVO;
 import tech.qiantong.qdata.module.dp.dal.dataobject.dataElem.DpDataElemDO;
+import tech.qiantong.qdata.module.dp.dal.dataobject.document.DpDocumentDO;
+import tech.qiantong.qdata.module.dp.dal.dataobject.model.DpModelDO;
 import tech.qiantong.qdata.module.dp.dal.mapper.dataElem.DpDataElemMapper;
 import tech.qiantong.qdata.module.dp.service.dataElem.IDpDataElemService;
+import tech.qiantong.qdata.module.dp.service.document.IDpDocumentService;
 import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
-
-import javax.annotation.Resource;
-import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * 数据元Service业务层处理
@@ -36,6 +41,9 @@ import java.util.stream.Collectors;
 public class DpDataElemServiceImpl extends ServiceImpl<DpDataElemMapper, DpDataElemDO> implements IDpDataElemService, IDataElemApiService {
     @Resource
     private DpDataElemMapper dpDataElemMapper;
+
+    @Resource
+    private IDpDocumentService dpDocumentService;
 
     @Override
     public PageResult<DpDataElemDO> getDpDataElemPage(DpDataElemPageReqVO pageReqVO) {
@@ -55,6 +63,7 @@ public class DpDataElemServiceImpl extends ServiceImpl<DpDataElemMapper, DpDataE
                 .eqIfPresent(DpDataElemDO::getContactNumber, reqVO.getContactNumber())
                 .eqIfPresent(DpDataElemDO::getColumnType, reqVO.getColumnType())
                 .eqIfPresent(DpDataElemDO::getStatus, reqVO.getStatus())
+                .eqIfPresent(DpDataElemDO::getDocumentId, reqVO.getDocumentId())
                 .eqIfPresent(DpDataElemDO::getDescription, reqVO.getDescription())
                 .eqIfPresent(DpDataElemDO::getCreateTime, reqVO.getCreateTime())
                 // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
@@ -95,7 +104,18 @@ public class DpDataElemServiceImpl extends ServiceImpl<DpDataElemMapper, DpDataE
                 .leftJoin("ATT_DATA_ELEM_CAT t2 on t.CAT_CODE = t2.CODE AND t2.DEL_FLAG = '0'")
                 .leftJoin("SYSTEM_USER t3 on t.PERSON_CHARGE = t3.USER_ID AND t3.DEL_FLAG = '0'")
                 .eq(DpDataElemDO::getId, id);
-        return dpDataElemMapper.selectJoinOne(DpDataElemDO.class, lambdaWrapper);
+        DpDataElemDO dpDataElemDO = dpDataElemMapper.selectJoinOne(DpDataElemDO.class, lambdaWrapper);
+
+        if(dpDataElemDO.getDocumentId() != null){
+            DpDocumentDO dpDocumentById = dpDocumentService.getDpDocumentById(dpDataElemDO.getDocumentId());
+            dpDocumentById = dpDocumentById == null ? new DpDocumentDO():dpDocumentById;
+
+            dpDataElemDO.setDocumentCode(dpDocumentById.getCode());
+            dpDataElemDO.setDocumentName(dpDocumentById.getName());
+            dpDataElemDO.setDocumentType(dpDocumentById.getType());
+        }
+
+        return dpDataElemDO;
     }
 
     @Override

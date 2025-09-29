@@ -4,7 +4,7 @@ export const treeData = [
         label: '输入',
         level: 1,
         type: 1,
-        engine: ['SPARK','FLINK'],
+        engine: ['SPARK', 'FLINK'],
         children: [
             {
                 label: '表输入组件',
@@ -13,7 +13,7 @@ export const treeData = [
                 level: 2,
                 taskType: 'DATAX',
                 componentType: '1',
-                engine: ['SPARK','FLINK'],
+                engine: ['SPARK', 'FLINK'],
                 icon: new URL('@/assets/system/images/dpp/bsr.svg', import.meta.url).href, // 动态获取路径
                 icons: '@/assets/system/images/dpp/sr.png'
             },
@@ -86,7 +86,7 @@ export const treeData = [
         label: '输出',
         type: 2,
         level: 1,
-        engine: ['SPARK','FLINK'],
+        engine: ['SPARK', 'FLINK'],
         children: [
             {
                 label: '表输出组件',
@@ -95,7 +95,7 @@ export const treeData = [
                 level: 2,
                 taskType: 'DATAX',
                 componentType: '91',
-                engine: ['SPARK','FLINK'],
+                engine: ['SPARK', 'FLINK'],
                 icon: new URL('@/assets/system/images/dpp/bsc.svg', import.meta.url).href, // 动态获取路径
                 icons: '@/assets/system/images/dpp/sc.png'
             },
@@ -111,14 +111,14 @@ export const getTreeData = (taskType) => {
             item.children.map(child => {
                 if (!child.engine.includes(taskType)) {
                     child.disabled = true;
-                }else{
+                } else {
                     child.disabled = false;
                 }
             })
         }
         if (!item.engine.includes(taskType)) {
             item.disabled = true;
-        }else{
+        } else {
             item.disabled = false;
         }
     })

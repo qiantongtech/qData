@@ -79,10 +79,10 @@
                                 info: true,
                             })
                             " v-hasPermi="['dp:qualityLog:edit']">详情</el-button>
-                        <el-button link type="primary" style="padding-left: 14px" @click="sendMessage(scope.row)"
+                        <!-- <el-button link type="primary" style="padding-left: 14px" @click="sendMessage(scope.row)"
                             v-hasPermi="['dp:qualityLog:edit']" :disabled="scope.row.status == 1">
                             <svg-icon iconClass="damessage" style="margin-right: 6px;" />通知处理
-                        </el-button>
+                        </el-button> -->
                     </template>
                 </el-table-column>
 

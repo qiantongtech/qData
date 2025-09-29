@@ -105,35 +105,18 @@ import { ref, computed, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 // 输入组件
 import InputForm from "@/views/dpp/task/integratioTask/components/input/tableForm.vue";
-import KafkaForm from "@/views/dpp/task/integratioTask/components/input/kafkaForm.vue";
-import hiveForm from "@/views/dpp/task/integratioTask/components/input/hiveForm.vue";
 import excelInputForm from "@/views/dpp/task/integratioTask/components/input/excelForm.vue";
-import hdfsForm from "@/views/dpp/task/integratioTask/components/input/hdfsForm.vue";
-import ApiForm from "@/views/dpp/task/integratioTask/components/input/apiForm.vue";
-// 转换组件
-import OutputForm from "@/views/dpp/task/integratioTask/components/output/tableForm.vue";
-import hdfsOutputForm from "@/views/dpp/task/integratioTask/components/output/hdfsForm.vue";
-import HiveoutForm from "@/views/dpp/task/integratioTask/components/output/hiveForm.vue";
 import csvForm from "@/views/dpp/task/integratioTask/components/input/csvForm.vue";
+// 转换组件
+// 清洗组件
 import TransformForm from "@/views/dpp/task/integratioTask/components/clean/cleanForm.vue";
-import ValueMapping from "@/views/dpp/task/integratioTask/components/transform/valueMapping.vue";
+// 排序组件
 import OrderConfig from "@/views/dpp/task/integratioTask/components/transform/orderConfig.vue";
-import FieldPreviewDialog from "@/views/dpp/task/integratioTask/components/fieldPreview.vue";
-import AddConstants from "@/views/dpp/task/integratioTask/components/transform/addConstants.vue";
-import NumericRange from "@/views/dpp/task/integratioTask/components/transform/numericRange.vue";
+// 字段派生期
 import FieldBuilder from "@/views/dpp/task/integratioTask/components/transform/fieldBuilder.vue";
-import DedupFilter from "@/views/dpp/task/integratioTask/components/transform/dedupFilter.vue";
-import ColumnToRow from "@/views/dpp/task/integratioTask/components/transform/columnToRow.vue";
-import addField from "@/views/dpp/task/integratioTask/components/transform/addField.vue";
-import RowToColumn from "@/views/dpp/task/integratioTask/components/transform/rowToColumn.vue";
-import fieldSplit from "@/views/dpp/task/integratioTask/components/transform/fieldSplit.vue";
-import CryptoBox from "@/views/dpp/task/integratioTask/components/transform/cryptoBox.vue";
-import DecryptForm from "@/views/dpp/task/integratioTask/components/transform/decryptForm.vue";
-import CalcWidget from "@/views/dpp/task/integratioTask/components/transform/calcWidget.vue";
-import SetFieldValues from "@/views/dpp/task/integratioTask/components/transform/setFieldValues.vue";
-import FieldSelectAndmodificat from "@/views/dpp/task/integratioTask/components/transform/fieldSelectAndmodificat.vue";
-import StringReplace from "@/views/dpp/task/integratioTask/components/transform/stringReplace.vue";
-import StringOperation from "@/views/dpp/task/integratioTask/components/transform/stringOperation.vue";
+// 输出表组件
+import OutputForm from "@/views/dpp/task/integratioTask/components/output/tableForm.vue";
+
 import add from "../add//add.vue";
 import useUserStore from "@/store/system/user";
 import { deptUserTree } from "@/api/system/system/user.js";

@@ -4,6 +4,7 @@ import cn.hutool.db.ds.simple.SimpleDataSource;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.util.StringUtils;
@@ -157,6 +158,12 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
     }
 
     @Override
+    public int countNew(String tableName, DbQueryProperty dbQueryProperty, String where) {
+        String tableNameWhere = where.isEmpty() ? tableName : tableName + " where " + where;
+        return countNew(tableNameWhere, new HashMap<>());
+    }
+
+    @Override
     public List<Map<String, Object>> queryList(String sql) {
         return jdbcTemplate.queryForList(sql);
     }
@@ -165,7 +172,34 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
     public List<Map<String, Object>> queryDbColumnByList(List<DbColumn> columns, String tableName, DbQueryProperty dbQueryProperty, long offset, long size) {
         String sql = dbDialect.buildQuerySqlFields(columns, tableName, dbQueryProperty);
         String pageSql = dbDialect.buildPaginationSql(sql, offset, size);
-        return jdbcTemplate.queryForList(pageSql);
+        return jdbcTemplate.query(pageSql, new MyRowMapper());
+    }
+
+    @Override
+    public List<Map<String, Object>> queryDbColumnByList(List<DbColumn> columns, String tableName, DbQueryProperty dbQueryProperty, String where, List<Map> orderByList, long offset, long size) {
+        String sql = dbDialect.buildQuerySqlFields(columns, tableName, dbQueryProperty);
+        sql = where.isEmpty() ? sql : sql + " where " + where;
+        if (CollectionUtils.isNotEmpty(orderByList)) {
+            StringBuilder orderBySql = new StringBuilder(" ORDER BY ");
+            for (int i = 0; i < orderByList.size(); i++) {
+                Map map = orderByList.get(i);
+                String orderByColumn = MapUtils.getString(map, "orderByColumn");
+                String isAsc = MapUtils.getString(map, "isAsc", "desc");
+
+                if (tech.qiantong.qdata.common.utils.StringUtils.isNotBlank(orderByColumn)) {
+                    // 拼接表名 + 字段
+                    orderBySql = orderBySql.append(orderByColumn).append(" ").append(isAsc);
+                    if (i < orderByList.size() - 1) {
+                        orderBySql.append(", ");
+                    }
+                }
+            }
+            // 最终拼好的 orderBySql
+            String finalOrderBy = orderBySql.toString();
+            sql += finalOrderBy;
+        }
+        String pageSql = dbDialect.buildPaginationSql(sql, offset, size);
+        return jdbcTemplate.query(pageSql, new MyRowMapper());
     }
 
     @Override

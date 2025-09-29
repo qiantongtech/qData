@@ -1,22 +1,38 @@
 package tech.qiantong.qdata.module.dpp.controller.admin.etl;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import cn.hutool.core.date.DateUtil;
+
+import java.util.List;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import tech.qiantong.qdata.common.core.domain.AjaxResult;
+import tech.qiantong.qdata.common.core.domain.ReturnT;
+import tech.qiantong.qdata.common.core.page.PageParam;
 import tech.qiantong.qdata.common.annotation.Log;
 import tech.qiantong.qdata.common.core.controller.BaseController;
-import tech.qiantong.qdata.common.core.domain.AjaxResult;
 import tech.qiantong.qdata.common.core.domain.CommonResult;
-import tech.qiantong.qdata.common.core.page.PageParam;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.enums.BusinessType;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.common.utils.poi.ExcelUtil;
+import tech.qiantong.qdata.common.exception.enums.GlobalErrorCodeConstants;
+import tech.qiantong.qdata.module.dpp.api.etl.dto.DppEtlTaskInstanceLogStatusRespDTO;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlNodeInstancePageReqVO;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlNodeInstanceRespVO;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlNodeInstanceSaveReqVO;
@@ -27,15 +43,6 @@ import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlNodeInstanceService;
 import tech.qiantong.qdata.module.dpp.utils.TaskConverter;
 import tech.qiantong.qdata.redis.service.IRedisService;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * 数据集成节点实例Controller
  *
@@ -44,7 +51,7 @@ import java.util.List;
  */
 @Tag(name = "数据集成节点实例")
 @RestController
-@RequestMapping("/dpp/dppEtlNodeInstance")
+@RequestMapping("/dpp/etlNodeInstance")
 @Validated
 public class DppEtlNodeInstanceController extends BaseController {
     @Resource
@@ -57,7 +64,7 @@ public class DppEtlNodeInstanceController extends BaseController {
     private IDppEtlNodeInstanceLogService dppEtlNodeInstanceLogService;
 
     @Operation(summary = "查询数据集成节点实例列表")
-    @PreAuthorize("@ss.hasPermi('dpp:etl:etlnodeinstance:list')")
+//    @PreAuthorize("@ss.hasPermi('dpp:etlNodeInstance:list')")
     @GetMapping("/list")
     public CommonResult<PageResult<DppEtlNodeInstanceRespVO>> list(DppEtlNodeInstancePageReqVO dppEtlNodeInstance) {
         PageResult<DppEtlNodeInstanceDO> page = dppEtlNodeInstanceService.getDppEtlNodeInstancePage(dppEtlNodeInstance);
@@ -65,7 +72,7 @@ public class DppEtlNodeInstanceController extends BaseController {
     }
 
     @Operation(summary = "导出数据集成节点实例列表")
-    @PreAuthorize("@ss.hasPermi('dpp:etl:etlnodeinstance:export')")
+//    @PreAuthorize("@ss.hasPermi('dpp:etlNodeInstance:export')")
     @Log(title = "数据集成节点实例", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DppEtlNodeInstancePageReqVO exportReqVO) {
@@ -76,7 +83,7 @@ public class DppEtlNodeInstanceController extends BaseController {
     }
 
     @Operation(summary = "导入数据集成节点实例列表")
-    @PreAuthorize("@ss.hasPermi('dpp:etl:etlnodeinstance:import')")
+//    @PreAuthorize("@ss.hasPermi('dpp:etlNodeInstance:import')")
     @Log(title = "数据集成节点实例", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
@@ -88,7 +95,7 @@ public class DppEtlNodeInstanceController extends BaseController {
     }
 
     @Operation(summary = "获取数据集成节点实例详细信息")
-    @PreAuthorize("@ss.hasPermi('dpp:etl:etlnodeinstance:query')")
+//    @PreAuthorize("@ss.hasPermi('dpp:etlNodeInstance:query')")
     @GetMapping(value = "/{id}")
     public CommonResult<DppEtlNodeInstanceRespVO> getInfo(@PathVariable("id") Long id) {
         DppEtlNodeInstanceDO dppEtlNodeInstanceDO = dppEtlNodeInstanceService.getDppEtlNodeInstanceById(id);
@@ -96,7 +103,7 @@ public class DppEtlNodeInstanceController extends BaseController {
     }
 
     @Operation(summary = "新增数据集成节点实例")
-    @PreAuthorize("@ss.hasPermi('dpp:etl:etlnodeinstance:add')")
+//    @PreAuthorize("@ss.hasPermi('dpp:etlNodeInstance:add')")
     @Log(title = "数据集成节点实例", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DppEtlNodeInstanceSaveReqVO dppEtlNodeInstance) {
@@ -107,7 +114,7 @@ public class DppEtlNodeInstanceController extends BaseController {
     }
 
     @Operation(summary = "修改数据集成节点实例")
-    @PreAuthorize("@ss.hasPermi('dpp:etl:etlnodeinstance:edit')")
+//    @PreAuthorize("@ss.hasPermi('dpp:etlNodeInstance:edit')")
     @Log(title = "数据集成节点实例", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DppEtlNodeInstanceSaveReqVO dppEtlNodeInstance) {
@@ -118,7 +125,7 @@ public class DppEtlNodeInstanceController extends BaseController {
     }
 
     @Operation(summary = "删除数据集成节点实例")
-    @PreAuthorize("@ss.hasPermi('dpp:etl:etlnodeinstance:remove')")
+//    @PreAuthorize("@ss.hasPermi('dpp:etlNodeInstance:remove')")
     @Log(title = "数据集成节点实例", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
@@ -126,7 +133,7 @@ public class DppEtlNodeInstanceController extends BaseController {
     }
 
     @Operation(summary = "查看日志详情")
-    @PreAuthorize("@ss.hasPermi('dpp:etl:etlnodeinstance:query')")
+//    @PreAuthorize("@ss.hasPermi('dpp:etlNodeInstance:query')")
     @GetMapping(value = "/log/{id}")
     public AjaxResult getLogInfo(@PathVariable("id") Long id) {
         DppEtlNodeInstanceDO dppEtlNodeInstanceDO = dppEtlNodeInstanceService.getDppEtlNodeInstanceById(id);

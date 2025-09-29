@@ -38,9 +38,8 @@
                         </el-form-item>
                     </el-form>
                 </div>
-                <div class="right-menu-item hover-effect">
-                    <i class="iconfont icon-a-chaxunxianxing" style="font-size: 20px"
-                        @click.stop="openDocumentation"></i>
+                <div class="right-menu-item hover-effect" @click="openDocumentation">
+                    <svg-icon iconClass="bzzx" style="font-size: 18px;" />
                 </div>
                 <!-- ---------------------------- 报工 --------------------------------- -->
                 <el-popover trigger="hover" popper-style="

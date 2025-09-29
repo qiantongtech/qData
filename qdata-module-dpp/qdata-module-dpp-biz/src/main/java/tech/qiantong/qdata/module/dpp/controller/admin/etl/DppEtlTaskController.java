@@ -213,6 +213,16 @@ public class DppEtlTaskController extends BaseController {
         return CommonResult.success(result);
     }
 
+    @Operation(summary = "复制数据汇聚任务")
+    @PostMapping("/copyCreateEtl")
+    @ResponseStatus(HttpStatus.CREATED)
+    public CommonResult copyCreateEtl(@Valid @RequestBody DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO) {
+        if (StringUtils.isBlank(dppEtlNewNodeSaveReqVO.getType())) {
+            dppEtlNewNodeSaveReqVO.setType("1");//默认离线数据集成
+        }
+        DppEtlTaskSaveReqVO result = dppEtlTaskService.copyCreateEtl(dppEtlNewNodeSaveReqVO);
+        return CommonResult.success(result);
+    }
 
     @Operation(summary = "获取数据集成任务详细信息--前置草稿任务")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlTask:query')")

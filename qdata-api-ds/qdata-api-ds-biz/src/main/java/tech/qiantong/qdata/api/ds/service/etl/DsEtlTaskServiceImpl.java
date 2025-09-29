@@ -71,4 +71,19 @@ public class DsEtlTaskServiceImpl implements IDsEtlTaskService {
                 DsStatusRespDTO.class);
     }
 
+    @Override
+    public DsTaskSaveRespDTO batchCopy(String code, String projectCode) {
+        QianTongDCApiType apiType = QianTongDCApiType.BATCH_COPY_PROCESS_DEFINITION;
+
+        // URL 拼接
+        String url = DsRequestUtils.replaceProjectCode(apiType.getUrl(), projectCode);
+
+        // 表单参数
+        Map<String, Object> params = new HashMap<>();
+        params.put("codes", code);
+        params.put("targetProjectCode", projectCode);
+
+        // 调用
+        return DsRequestUtils.requestForm(url, apiType.getMethod(), params, DsTaskSaveRespDTO.class);
+    }
 }

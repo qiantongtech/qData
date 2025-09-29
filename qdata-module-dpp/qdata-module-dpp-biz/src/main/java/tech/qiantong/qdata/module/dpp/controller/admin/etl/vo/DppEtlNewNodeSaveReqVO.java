@@ -2,8 +2,11 @@ package tech.qiantong.qdata.module.dpp.controller.admin.etl.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.Parameter;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
+import tech.qiantong.qdata.common.utils.JSONUtils;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -18,11 +21,14 @@ import java.util.Map;
  */
 @Schema(description = "新数据集成请求 VO")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class DppEtlNewNodeSaveReqVO extends BaseEntity {
 
     /** 类目编码 */
     @Parameter(name = "catCode", description = "类目编码")
     private String catCode;
+    private Long catId;
 
     /** 责任人 */
     @Parameter(name = "catCode", description = "责任人")
@@ -109,4 +115,37 @@ public class DppEtlNewNodeSaveReqVO extends BaseEntity {
     @Schema(description = "草稿任务配置信息", example = "")
     private String draftJson;
 
+    public DppEtlNewNodeSaveReqVO(DppEtlTaskUpdateQueryRespVO src) {
+        if (src == null) {
+            return;
+        }
+
+        this.catCode = src.getCatCode();
+        this.catId = src.getCatId();
+        this.personCharge = src.getPersonCharge();
+        this.contactNumber = src.getContactNumber();
+        this.projectCode = JSONUtils.convertToLong(src.getProjectCode());
+        this.projectId = src.getProjectId();
+        this.type = src.getType();
+        this.name = src.getName();
+        this.description = src.getDescription();
+        this.locations = src.getLocations();
+        this.timeout = src.getTimeout();
+        this.executionType = src.getExecutionType();
+        this.crontab = src.getCrontab();
+        this.draftJson = src.getDraftJson();
+
+        // 需要转 JSON 的字段
+        if (src.getTaskRelationJson() != null) {
+            this.taskRelationJson = JSONUtils.toJson(src.getTaskRelationJson());
+        }
+        if (src.getTaskDefinitionList() != null) {
+            this.taskDefinitionList = JSONUtils.toJson(src.getTaskDefinitionList());
+        }
+
+        // 全部固定为未上线
+        this.releaseState = "0";
+        this.schedulerState = "0";
+        this.status = "0";
+    }
 }

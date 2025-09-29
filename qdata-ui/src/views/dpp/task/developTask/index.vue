@@ -208,7 +208,7 @@
 
                       v-if="scope.row.processType == 1 && scope.row.status != 1">运行实例</el-button>
                     <el-button link type="primary" icon="VideoPlay"
-                      :disabled="scope.row.status == 0 || scope.row.taskInstanceId"
+                      :disabled="scope.row.status != 1"
                       @click="handleExecuteOnce(scope.row)" >执行一次</el-button>
 
 
@@ -381,7 +381,7 @@ const handleConfirm = (form) => {
     if (res.code == 200) {
       proxy.$modal.msgSuccess("操作成功");
       getList();
-      routeTo('/dpp/tasker/ddv/lntegratiosdeev', {
+      routeTo('/dpp/task/developTask', {
         ...res.data,
       })
     }

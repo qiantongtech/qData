@@ -263,6 +263,12 @@
             <artifactId>hadoop-hdfs</artifactId>
             <version>${hadoop.version}</version>
         </dependency>
+        <dependency>
+            <groupId>cn.com.kingbase</groupId>
+            <artifactId>kingbase8</artifactId>
+            <version>8.6.0</version>
+            <scope>compile</scope>
+        </dependency>
 
     </dependencies>
 

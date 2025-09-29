@@ -22,6 +22,7 @@ import tech.qiantong.qdata.common.database.constants.DbType;
 import tech.qiantong.qdata.common.database.core.DbColumn;
 import tech.qiantong.qdata.common.database.exception.DataQueryException;
 import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.PageUtil;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.module.da.api.asset.dto.DaAssetReqDTO;
@@ -602,10 +603,12 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
     public Map<String, Object> getColumnData(JSONObject jsonObject) {
         String tableName = "";
         Long dataSourceId = null;
-        if (StringUtils.isEmpty(jsonObject.getStr("pageNum")) || StringUtils.isEmpty(jsonObject.getStr("pageSize"))){
+        if (StringUtils.isEmpty(jsonObject.getStr("pageNum")) || StringUtils.isEmpty(jsonObject.getStr("pageSize"))) {
             throw new DataQueryException("请携带页码与每页条数！");
         }
-        // 获取资产详情
+        // 查询数据
+        Integer pageNum = Integer.valueOf(jsonObject.getStr("pageNum"));
+        Integer pageSize = Integer.valueOf(jsonObject.getStr("pageSize"));
         DaAssetRespVO daAssetDO = this.getDaAssetById(Long.valueOf(jsonObject.getStr("id")));
         tableName = daAssetDO.getTableName();
         dataSourceId = daAssetDO.getDatasourceId();
@@ -614,34 +617,34 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
         if (daDatasourceDO == null) {
             return null;
         }
-        JSONObject dataSourceConfig = JSONUtil.parseObj(daDatasourceDO.getDatasourceConfig());
-        DbQueryProperty dbQueryProperty = new DbQueryProperty(daDatasourceDO.getDatasourceType(), daDatasourceDO.getIp(),
-                dataSourceConfig.getStr("username"), dataSourceConfig.getStr("password"), daDatasourceDO.getPort().intValue(),
-                dataSourceConfig.getStr("dbname"), dataSourceConfig.getStr("sid"));
+        DbQueryProperty dbQueryProperty = new DbQueryProperty(
+                daDatasourceDO.getDatasourceType(),
+                daDatasourceDO.getIp(),
+                daDatasourceDO.getPort(),
+                daDatasourceDO.getDatasourceConfig());
         DbQuery dbQuery = dataSourceFactory.createDbQuery(dbQueryProperty);
         if (!dbQuery.valid()) {
             dbQuery.close();
             throw new DataQueryException("数据库连接失败");
         }
         int existsSQL = dbQuery.generateCheckTableExistsSQL(dbQueryProperty, tableName);
-        if (existsSQL == 0){
+        if (existsSQL == 0) {
             dbQuery.close();
             throw new DataQueryException("数据库中未获取到该表数据，请确认表是否存在!");
         }
         // 获取字段集合
         List<DbColumn> columns = redisCache.getCacheList(CacheConstants.ASSET_PREVIEW_KEY + daDatasourceDO.getId() + "_" + tableName);
-        if (columns.isEmpty()){
+        if (columns.isEmpty()) {
             columns = dbQuery.getTableColumns(dbQueryProperty, tableName);
             if (columns.size() == 0) {
                 dbQuery.close();
                 throw new DataQueryException("数据库连接失败");
             }
             redisCache.setCacheList(CacheConstants.ASSET_PREVIEW_KEY + daDatasourceDO.getId() + "_" + tableName, columns);
-            redisCache.expire(CacheConstants.ASSET_PREVIEW_KEY + daDatasourceDO.getId() + "_" + tableName,1, TimeUnit.DAYS);
+            redisCache.expire(CacheConstants.ASSET_PREVIEW_KEY + daDatasourceDO.getId() + "_" + tableName, 1, TimeUnit.DAYS);
         }
         // 拼接查询sql语句
         List<Map<String, Object>> columnTable = new ArrayList<>();
-        StringBuilder sqlBuilder = new StringBuilder("select ");
         for (int i = 0; i < columns.size(); i++) {
             Map<String, Object> column = new HashMap<>();
             column.put("field", columns.get(i).getColName());
@@ -650,30 +653,19 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
             column.put("columnNullable", columns.get(i).getNullable());
             column.put("columnKey", columns.get(i).getColKey());
             columnTable.add(column);
-            sqlBuilder.append(columns.get(i).getColName());
-            if (i != columns.size() - 1){
-                sqlBuilder.append(",");
-            }
         }
-        String sql = sqlBuilder.append(" from ").append(tableName).toString();
-        if (StringUtils.isNotEmpty(jsonObject.getStr("filter"))) {
-            tableName += " where " + jsonObject.getStr("filter");
-            sql += " where " + jsonObject.getStr("filter");
-        }
-        // 查询数据
-        Long pageNum = Long.valueOf(jsonObject.getStr("pageNum")) - 1;
-        Long pageSize = Long.valueOf(jsonObject.getStr("pageSize"));
-        List<Map<String, Object>> queryList = dbQuery.queryDbColumnByList(columns,tableName,dbQueryProperty,pageNum,pageSize);
-        if (DbType.ORACLE.getDb().equals(dbQueryProperty.getDbType()) || DbType.ORACLE_12C.getDb().equals(dbQueryProperty.getDbType())) {
-            for (Map<String, Object> stringObjectMap : queryList) {
-                stringObjectMap.remove("ROW_ID");
-            }
-        }
+        List<Map> orderByList = jsonObject.getBeanList("orderBy", Map.class);
+
+        PageUtil pageUtil = new PageUtil(pageNum, pageSize);
+        List<Map<String, Object>> queryList;
+
+        queryList = dbQuery.queryDbColumnByList(columns, tableName, dbQueryProperty,jsonObject.getStr("filter"),orderByList, pageUtil.getOffset(), pageSize);
+        int total = dbQuery.countNew(tableName, dbQueryProperty, jsonObject.getStr("filter"));
 
         Map<String, Object> data = new HashMap<>();
         data.put("columns", columnTable);
         data.put("tableData", queryList);
-        data.put("total", dbQuery.count(sql));
+        data.put("total", total);
         dbQuery.close();
         return data;
     }
@@ -681,60 +673,103 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
     /**
      * 对数据资产的数据进行脱敏
      *
-     * @param id   数据资产id
+     * @param assetId   数据资产id
      * @param data 数据资产的数据
      * @return
      */
     @Override
-    public List<Map<String, Object>> dataMasking(Long id, List<Map<String, Object>> data) {
-        // 根据资产详情进行查询字段属性
-        QueryWrapper<DaAssetColumnDO> objectQueryWrapper = new QueryWrapper<>();
-        objectQueryWrapper.eq("ASSET_ID", id);
-        List<DaAssetColumnDO> assetColumnDOList = daAssetColumnMapper.selectList(objectQueryWrapper);
-        // 将字段名称转成大写然后转成map类型，key为大写的字段名称，value是实体类
-        Map<String, DaAssetColumnDO> columnDOMap = assetColumnDOList.stream().collect(Collectors.toMap(
-                daAssetColumnDO -> daAssetColumnDO.getColumnName().toUpperCase(), daAssetColumnDO -> daAssetColumnDO));
-        // 查询敏感等级并转成map类型，key为脱敏等级id，value是实体类
-        QueryWrapper<DaSensitiveLevelDO> queryWrapper = new QueryWrapper<DaSensitiveLevelDO>().eq("online_flag", 1);
-        Map<Long, DaSensitiveLevelDO> daSensitiveLevelDOMap = daSensitiveLevelMapper.selectList(queryWrapper).stream()
-                .collect(Collectors.toMap(DaSensitiveLevelDO::getId, daSensitiveLevelDO -> daSensitiveLevelDO));
-        List<Map<String, Object>> columnData = new ArrayList<>();
-        for (Map<String, Object> datum : data) {
-            Map<String, Object> map = new HashMap<>();
-            for (String key : datum.keySet()) {
-                if (datum.get(key) == null){
-                    continue;
-                }
-                StringBuilder stringBuilder = new StringBuilder(datum.get(key).toString());
-                if (columnDOMap.get(key.toUpperCase()) == null) {
-                    return null;
-                }
-                Long sensitiveLevelId = columnDOMap.get(key.toUpperCase()).getSensitiveLevelId();
-                if (sensitiveLevelId == null) {
-                    map.put(key, stringBuilder);
-                    continue;
-                }
-                DaSensitiveLevelDO daSensitiveLevelDO = daSensitiveLevelDOMap.get(sensitiveLevelId);
+    public List<Map<String, Object>> dataMasking(Long assetId, List<Map<String, Object>> data) {
+        // 1) 字段元数据（按字段名大写匹配）
+        List<DaAssetColumnDO> cols = daAssetColumnMapper.findByAssetId(assetId);
+        Map<String, DaAssetColumnDO> colMap = cols.stream()
+                .collect(Collectors.toMap(c -> c.getColumnName().toUpperCase(), c -> c, (a,b)->a));
 
-                if (daSensitiveLevelDOMap.get(sensitiveLevelId) != null) {
-                    // 获取起始位置和结束位置
-                    int startCharLoc = daSensitiveLevelDO.getStartCharLoc() == null ? 0 : daSensitiveLevelDO.getStartCharLoc().intValue();
-                    int endCharLoc = daSensitiveLevelDO.getEndCharLoc() == null ? stringBuilder.length() : daSensitiveLevelDO.getEndCharLoc().intValue();
-                    // 把字符串进行替换
-                    String maskChar = daSensitiveLevelDO.getMaskCharacter();
-                    startCharLoc = startCharLoc > 0 ? startCharLoc - 1 : startCharLoc;
-                    endCharLoc = Math.min(endCharLoc, stringBuilder.length());
-                    int index = startCharLoc;
-                    for (int i = startCharLoc; i < endCharLoc; i++) {
-                        stringBuilder.replace(index, index + 1, maskChar);
-                        index += maskChar.length();
-                    }
+        // 2) 敏感等级（仅在线）
+        Map<Long, DaSensitiveLevelDO> levelMap = daSensitiveLevelMapper
+                .selectList(new QueryWrapper<DaSensitiveLevelDO>().eq("online_flag", 1))
+                .stream().collect(Collectors.toMap(DaSensitiveLevelDO::getId, x -> x, (a,b)->a));
+
+        List<Map<String, Object>> out = new ArrayList<>(data.size());
+
+        for (Map<String, Object> row : data) {
+            // 用 LinkedHashMap 保持字段顺序，且不修改原 map
+            Map<String, Object> masked = new HashMap<>(row.size());
+
+            for (Map.Entry<String, Object> e : row.entrySet()) {
+                String key = e.getKey();
+                Object val = e.getValue();
+
+                // 保证 _id 始终是字符串
+                if ("_id".equalsIgnoreCase(key) && val != null &&
+                        "org.bson.types.ObjectId".equals(val.getClass().getName())) {
+                    val = val.toString();
+                    masked.put(key, val);
+                    continue;
                 }
-                map.put(key, stringBuilder);
+
+                // —— 未匹配到配置 或 无敏感等级 → 原样返回
+                DaAssetColumnDO meta = colMap.get(key.toUpperCase());
+                if (meta == null || meta.getSensitiveLevelId() == null) {
+                    masked.put(key, val);
+                    continue;
+                }
+
+                DaSensitiveLevelDO lvl = levelMap.get(meta.getSensitiveLevelId());
+                if (lvl == null) {
+                    masked.put(key, val);
+                    continue;
+                }
+
+                // 仅对字符串脱敏；其他类型原样返回
+                if (!(val instanceof CharSequence)) {
+                    masked.put(key, val);
+                    continue;
+                }
+
+                String s = val == null ? null : val.toString();
+                if (s == null || s.isEmpty()) {
+                    masked.put(key, s);
+                    continue;
+                }
+
+                // 起止位置：start/end 为 1 基；null 则全覆盖
+                int len = s.length();
+                int start = lvl.getStartCharLoc() == null ? 1 : lvl.getStartCharLoc().intValue();
+                int end   = lvl.getEndCharLoc()   == null ? len : lvl.getEndCharLoc().intValue();
+
+                // 规范边界并保证 start<=end
+                start = Math.max(1, start);
+                end   = Math.min(len, end);
+                if (start > end) { // 无有效覆盖区间 → 原样
+                    masked.put(key, s);
+                    continue;
+                }
+
+                String maskUnit = lvl.getMaskCharacter();
+                if (maskUnit == null || maskUnit.isEmpty()) maskUnit = "*";
+
+                int coverLen = end - start + 1;
+                String midMask = repeat(maskUnit, coverLen); // 支持多字符掩码，不会位移
+
+                String res = s.substring(0, start - 1) + midMask + s.substring(end);
+                masked.put(key, res);
             }
-            columnData.add(map);
+
+            out.add(masked);
         }
-        return columnData;
+
+        return out;
+    }
+
+    /** 生成指定长度的掩码字符串（maskUnit 可为多字符） */
+    private static String repeat(String maskUnit, int targetLen) {
+        if (targetLen <= 0) return "";
+        if (maskUnit == null || maskUnit.isEmpty()) maskUnit = "*";
+        StringBuilder sb = new StringBuilder(targetLen);
+        while (sb.length() + maskUnit.length() <= targetLen) sb.append(maskUnit);
+        int remain = targetLen - sb.length();
+        if (remain > 0) sb.append(maskUnit, 0, remain);
+        return sb.toString();
     }
 
     @Override

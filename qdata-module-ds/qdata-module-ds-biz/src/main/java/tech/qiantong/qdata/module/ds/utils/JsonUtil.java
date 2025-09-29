@@ -216,7 +216,7 @@ public class JsonUtil {
     public static Map<String, Object> buildRequestObject(DsApiDO api,Map<String, Object> params) {
         String headerJson = api.getHeaderJson();
         Map<String, Object> result = new HashMap<>();
-        if(org.apache.commons.lang3.StringUtils.isNotEmpty(headerJson)){
+        if(StringUtils.isNotEmpty(headerJson)){
             List<Map<String, Object>> maps = JSONUtils.convertTaskDefinitionJson(headerJson);
             List<Map<String, String>> fieldHerderList = maps.stream()
                     .map(m -> {

@@ -1,9 +1,7 @@
 package tech.qiantong.qdata.module.ds.controller.admin.api;
 
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import tech.qiantong.qdata.common.core.domain.AjaxResult;
 
 /**

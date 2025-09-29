@@ -30,6 +30,8 @@ public class DpModelPageReqVO extends PageParam {
     private String status;
 
 
+    private Long documentId;
+
 
 
 

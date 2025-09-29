@@ -1,5 +1,11 @@
 package tech.qiantong.qdata.module.att.controller.admin.client;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.util.Arrays;
+import java.util.List;
+
 import cn.hutool.core.util.IdUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -7,11 +13,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import tech.qiantong.qdata.common.core.domain.AjaxResult;
+import tech.qiantong.qdata.common.core.page.PageParam;
 import tech.qiantong.qdata.common.annotation.Log;
 import tech.qiantong.qdata.common.core.controller.BaseController;
-import tech.qiantong.qdata.common.core.domain.AjaxResult;
 import tech.qiantong.qdata.common.core.domain.CommonResult;
-import tech.qiantong.qdata.common.core.page.PageParam;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.enums.BusinessType;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
@@ -22,12 +28,6 @@ import tech.qiantong.qdata.module.att.controller.admin.client.vo.AttClientSaveRe
 import tech.qiantong.qdata.module.att.convert.client.AttClientConvert;
 import tech.qiantong.qdata.module.att.dal.dataobject.client.AttClientDO;
 import tech.qiantong.qdata.module.att.service.client.IAttClientService;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * 应用管理Controller
@@ -44,7 +44,7 @@ public class AttClientController extends BaseController {
     private IAttClientService attClientService;
 
     @Operation(summary = "查询应用管理列表")
-    @PreAuthorize("@ss.hasPermi('att:client:client:list')")
+    @PreAuthorize("@ss.hasPermi('att:client:list')")
     @GetMapping("/list")
     public CommonResult<PageResult<AttClientRespVO>> list(AttClientPageReqVO attClient) {
         PageResult<AttClientDO> page = attClientService.getAttClientPage(attClient);
@@ -52,7 +52,7 @@ public class AttClientController extends BaseController {
     }
 
     @Operation(summary = "导出应用管理列表")
-    @PreAuthorize("@ss.hasPermi('att:client:client:export')")
+    @PreAuthorize("@ss.hasPermi('att:client:export')")
     @Log(title = "应用管理", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AttClientPageReqVO exportReqVO) {
@@ -63,7 +63,7 @@ public class AttClientController extends BaseController {
     }
 
     @Operation(summary = "导入应用管理列表")
-    @PreAuthorize("@ss.hasPermi('att:client:client:import')")
+    @PreAuthorize("@ss.hasPermi('att:client:import')")
     @Log(title = "应用管理", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
@@ -75,7 +75,7 @@ public class AttClientController extends BaseController {
     }
 
     @Operation(summary = "获取应用管理详细信息")
-    @PreAuthorize("@ss.hasPermi('att:client:client:query')")
+    @PreAuthorize("@ss.hasPermi('att:client:query')")
     @GetMapping(value = "/{id}")
     public CommonResult<AttClientRespVO> getInfo(@PathVariable("id") Long id) {
         AttClientDO attClientDO = attClientService.getAttClientById(id);
@@ -83,7 +83,7 @@ public class AttClientController extends BaseController {
     }
 
     @Operation(summary = "新增应用管理")
-    @PreAuthorize("@ss.hasPermi('att:client:client:add')")
+    @PreAuthorize("@ss.hasPermi('att:client:add')")
     @Log(title = "应用管理", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AttClientSaveReqVO attClient) {
@@ -91,7 +91,7 @@ public class AttClientController extends BaseController {
     }
 
     @Operation(summary = "修改应用管理")
-    @PreAuthorize("@ss.hasPermi('att:client:client:edit')")
+    @PreAuthorize("@ss.hasPermi('att:client:edit')")
     @Log(title = "应用管理", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AttClientSaveReqVO attClient) {
@@ -99,7 +99,7 @@ public class AttClientController extends BaseController {
     }
 
     @Operation(summary = "删除应用管理")
-    @PreAuthorize("@ss.hasPermi('att:client:client:remove')")
+    @PreAuthorize("@ss.hasPermi('att:client:remove')")
     @Log(title = "应用管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
@@ -107,7 +107,7 @@ public class AttClientController extends BaseController {
     }
 
     @Operation(summary = "重置应用秘钥")
-    @PreAuthorize("@ss.hasPermi('att:client:client:edit')")
+    @PreAuthorize("@ss.hasPermi('att:client:edit')")
     @Log(title = "重置应用秘钥", businessType = BusinessType.UPDATE)
     @PostMapping("/reset/secret")
     public CommonResult<String> resetSecret(Long id) {

@@ -21,6 +21,7 @@ import tech.qiantong.qdata.common.core.domain.entity.SysUser;
 import tech.qiantong.qdata.common.core.domain.model.LoginUser;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.PageUtils;
 import tech.qiantong.qdata.common.utils.SecurityUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
@@ -30,6 +31,7 @@ import tech.qiantong.qdata.module.att.api.project.dto.AttProjectRespDTO;
 import tech.qiantong.qdata.module.att.controller.admin.project.vo.AttProjectPageReqVO;
 import tech.qiantong.qdata.module.att.controller.admin.project.vo.AttProjectRespVO;
 import tech.qiantong.qdata.module.att.controller.admin.project.vo.AttProjectSaveReqVO;
+import tech.qiantong.qdata.module.att.controller.admin.project.vo.AttSysUserReqVO;
 import tech.qiantong.qdata.module.att.dal.dataobject.project.AttProjectDO;
 import tech.qiantong.qdata.module.att.dal.dataobject.project.AttProjectUserRelDO;
 import tech.qiantong.qdata.module.att.dal.mapper.project.AttProjectMapper;
@@ -368,21 +370,22 @@ public class IAttProjectServiceImpl extends ServiceImpl<AttProjectMapper, AttPro
      * 获取用户列表排除当前项目已经存在的用户
      */
     @Override
-    public List<SysUser> selectNoProjectUserList(JSONObject jsonObject) {
+    public List<SysUser> selectNoProjectUserList(AttSysUserReqVO user) {
         QueryWrapper<AttProjectUserRelDO> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("PROJECT_ID", jsonObject.getLong("projectId"));
+        queryWrapper.eq("PROJECT_ID", user.getProjectId());
         List<AttProjectUserRelDO> projectUserRelDOList = attProjectUserRelMapper.selectList(queryWrapper);
         List<Long> userIdList = projectUserRelDOList.stream()
                 .map(AttProjectUserRelDO::getUserId)
                 .collect(Collectors.toList());
-        AttProjectDO projectDO = attProjectMapper.selectById(jsonObject.getLong("projectId"));
+        AttProjectDO projectDO = attProjectMapper.selectById(user.getProjectId());
         userIdList.add(projectDO.getManagerId());
         userIdList.add(1L);
         SysUser sysUser = new SysUser();
         sysUser.setUserIdList(userIdList);
         sysUser.setStatus("0");
-        sysUser.setPhonenumber(jsonObject.getStr("phonenumber"));
-        sysUser.setUserName(jsonObject.getStr("userName"));
+        sysUser.setPhonenumber(user.getPhonenumber());
+        sysUser.setUserName(user.getUserName());
+        PageUtils.startPage();
         List<SysUser> sysUserList = sysUserMapper.selectNoProjectUserList(sysUser);
         return sysUserList;
     }

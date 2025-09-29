@@ -49,7 +49,7 @@ import java.util.List;
  */
 @Tag(name = "项目与用户关联关系")
 @RestController
-@RequestMapping("/att/AttProjectUserRel")
+@RequestMapping("/att/projectUserRel")
 @Validated
 public class AttProjectUserRelController extends BaseController {
     @Resource
@@ -71,7 +71,7 @@ public class AttProjectUserRelController extends BaseController {
     private ISysDeptService deptService;
 
     @Operation(summary = "查询项目与用户关联关系列表")
-    @PreAuthorize("@ss.hasPermi('att:project:attprojectuserrel:list')")
+    @PreAuthorize("@ss.hasPermi('att:projectUserRel:list')")
     @GetMapping("/list")
     public CommonResult<PageResult<AttProjectUserRelRespVO>> list(AttProjectUserRelPageReqVO attProjectUserRel) {
         PageResult<AttProjectUserRelDO> page = attProjectUserRelService.getAttProjectUserRelPage(attProjectUserRel);
@@ -79,7 +79,7 @@ public class AttProjectUserRelController extends BaseController {
     }
 
     @Operation(summary = "导出项目与用户关联关系列表")
-    @PreAuthorize("@ss.hasPermi('att:project:attprojectuserrel:export')")
+    @PreAuthorize("@ss.hasPermi('att:projectUserRel:export')")
     @Log(title = "项目与用户关联关系", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AttProjectUserRelPageReqVO exportReqVO) {
@@ -90,7 +90,7 @@ public class AttProjectUserRelController extends BaseController {
     }
 
     @Operation(summary = "导入项目与用户关联关系列表")
-    @PreAuthorize("@ss.hasPermi('att:project:attprojectuserrel:import')")
+    @PreAuthorize("@ss.hasPermi('att:projectUserRel:import')")
     @Log(title = "项目与用户关联关系", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
@@ -102,7 +102,7 @@ public class AttProjectUserRelController extends BaseController {
     }
 
     @Operation(summary = "获取项目与用户关联关系详细信息")
-    @PreAuthorize("@ss.hasPermi('att:project:attprojectuserrel:query')")
+    @PreAuthorize("@ss.hasPermi('att:projectUserRel:query')")
     @GetMapping(value = "/{id}")
     public CommonResult<AttProjectUserRelRespVO> getInfo(@PathVariable("id") Long id) {
         AttProjectUserRelDO attProjectUserRelDO = attProjectUserRelService.getAttProjectUserRelById(id);
@@ -110,7 +110,7 @@ public class AttProjectUserRelController extends BaseController {
     }
 
     @Operation(summary = "获取项目与用户关联关系详细信息包括角色信息")
-    @PreAuthorize("@ss.hasPermi('att:project:attprojectuserrel:query')")
+    @PreAuthorize("@ss.hasPermi('att:projectUserRel:query')")
     @GetMapping(value = "/roleUser/{id}")
     public CommonResult<AttProjectUserRelRespVO> getRoleUser(@PathVariable("id") Long id) {
         AttProjectUserRelRespVO attProjectUserRelDO = attProjectUserRelService.getRoleUser(id);
@@ -118,7 +118,7 @@ public class AttProjectUserRelController extends BaseController {
     }
 
     @Operation(summary = "新增项目与用户关联关系")
-    @PreAuthorize("@ss.hasPermi('att:project:attprojectuserrel:add')")
+    @PreAuthorize("@ss.hasPermi('att:projectUserRel:add')")
     @Log(title = "项目与用户关联关系", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AttProjectUserRelSaveReqVO attProjectUserRel) {
@@ -140,7 +140,7 @@ public class AttProjectUserRelController extends BaseController {
     }
 
     @Operation(summary = "修改项目与用户关联关系")
-    @PreAuthorize("@ss.hasPermi('att:project:attprojectuserrel:edit')")
+    @PreAuthorize("@ss.hasPermi('att:projectUserRel:edit')")
     @Log(title = "项目与用户关联关系", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AttProjectUserRelSaveReqVO attProjectUserRel) {
@@ -151,7 +151,7 @@ public class AttProjectUserRelController extends BaseController {
     }
 
     @Operation(summary = "修改项目与用户关联关系")
-    @PreAuthorize("@ss.hasPermi('att:project:attprojectuserrel:edit')")
+    @PreAuthorize("@ss.hasPermi('att:projectUserRel:edit')")
     @Log(title = "项目与用户关联关系", businessType = BusinessType.UPDATE)
     @PutMapping("/editUserListAndRoleList")
     public CommonResult<Integer> editUserListAndRoleList(@Valid @RequestBody AttProjectUserRelSaveReqVO attProjectUserRel) {
@@ -162,7 +162,7 @@ public class AttProjectUserRelController extends BaseController {
     }
 
     @Operation(summary = "删除项目与用户关联关系")
-    @PreAuthorize("@ss.hasPermi('att:project:attprojectuserrel:remove')")
+    @PreAuthorize("@ss.hasPermi('att:projectUserRel:remove')")
     @Log(title = "项目与用户关联关系", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {

@@ -13,22 +13,34 @@ import examplePublicRouter from './example/public/index.js';
 /* 示例模块动态路由 */
 import exampleDynamicRouter from './example/dynamic/index.js';
 
+/* 示例模块公共路由 */
+import daPublicRouter from './da/public/index.js';
 /* 示例模块动态路由 */
 import daDynamicRouter from './da/dynamic/index.js';
-/* 示例模块动态路由 */
-import daPublicRouter from './da/public/index.js';
+/* 数据资产资产地图 */
+import daAssetRouter from './da/asset/index.js';
+/* 数据质量 */
+import daQualityRouter from './da/quality/index.js';
+/* 数据发现 */
+import daDiscoveryRouter from './da/discovery/index.js';
 
 import dsPublicRouter from './ds/public/index.js';
 /* api服务 */
 import dsDynamicRouter from './ds/dynamic/index.js';
-import daDataQuality from './da/dataQuality/index.js';
+
 /* 数据规划公共路由 */
-import dpPublicRouter from './dp/public/index.js';
+import dpPublicRouter from './dp/model/index.js';
+/* 标签管理公共路由 */
+import dsCatRouter from './ds/client/index.js';
 /* 数据规划动态路由 */
 import dpDataElemRouter from './dp/dataElem/index.js';
-/* 数据规划动态路由 */
-import daDiscoveryRouter from './da/discovery/index.js';
-import deeEtlRouter from './dpp/etl/index.js';
+
+// // 研发路由
+import dppRouter from './dpp/index.js';
+
+
+import attTag from './att/tag/index.js';
+import dPdocument from './dp/document/index.js';
 
 /* 数据规划动态路由 */
 // 用来存储当前请求的取消源
@@ -57,24 +69,10 @@ import deeEtlRouter from './dpp/etl/index.js';
  */
 
 // 公共路由
-export const constantRoutes = [
-    ...systemPublicRouter,
-    ...examplePublicRouter,
-    ...dpPublicRouter,
-    ...dsPublicRouter,
-    ...deeEtlRouter,
-    ...daPublicRouter,
-    ...daDataQuality
-];
+export const constantRoutes = [...systemPublicRouter, ...examplePublicRouter, ...daPublicRouter, ...dsCatRouter, ...dsPublicRouter, ...dPdocument, ...dpPublicRouter, ...attTag, ...dpDataElemRouter, ...daAssetRouter, ...daQualityRouter, ...daDiscoveryRouter, ...dppRouter];
 
 // 动态路由，基于用户权限动态去加载
-export const dynamicRoutes = [
-    ...systemDynamicRouter,
-    ...exampleDynamicRouter,
-    ...daDynamicRouter,
-    ...dsDynamicRouter,
-    ...dpDataElemRouter
-];
+export const dynamicRoutes = [...systemDynamicRouter, ...exampleDynamicRouter, ...daDynamicRouter, ...dsDynamicRouter,];
 
 const router = createRouter({
     history: createWebHistory(),

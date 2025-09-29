@@ -21,6 +21,7 @@ import { guideTipConfig } from './guideTipConfig'
 import { useRouter } from 'vue-router'
 import useUserStore from "@/store/system/user";
 
+const { proxy } = getCurrentInstance();
 const userStore = useUserStore()
 const STORAGE_KEY = 'guide_tip_status'
 
@@ -80,6 +81,7 @@ onActivated(() => {
 function neverShow() {
     setGuideTipStatus('hidden')
     visible.value = false
+    // proxy.$modal.msgSuccess("随时可在【个人中心】→【新手引导】重新开启，不怕找不到！");
 }
 
 function close() {

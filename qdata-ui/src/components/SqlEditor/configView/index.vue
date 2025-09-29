@@ -8,48 +8,93 @@
         <span>{{ props.currValue.name }}</span>
       </div> -->
       <span class="close" @click="closeCurrDialog">
-        <el-icon><Minus /></el-icon>
+        <el-icon>
+          <Minus />
+        </el-icon>
       </span>
     </div>
     <div class="container-content">
       <template v-if="props.currValue.type == 'attrConfig'">
-        <el-form ref="configRef" :model="form" :rules="rules" label-width="142px" @submit.prevent>
+        <el-form ref="configRef" :model="form" :rules="rules" label-width="142px" @submit.prevent :disabled="readOnly">
           <div class="h2"><img class="icon" src="@/assets/da/asset/h2 (1).svg" alt="" />基础配置</div>
           <el-form-item label="任务优先级:" prop="taskPriority">
             <el-select v-model="form.taskPriority" placeholder="请选择任务优先级">
-              <el-option v-for="(item, index) in dpp_etl_task_priority" :key="index" :label="item.label" :value="item.value" />
+              <el-option v-for="(item, index) in dpp_etl_task_priority" :key="index" :label="item.label"
+                :value="item.value" />
             </el-select>
           </el-form-item>
           <el-form-item label="Worker分组:" prop="workerGroup">
             <el-input v-model="form.workerGroup" placeholder="请输入Worker分组" disabled />
           </el-form-item>
           <el-form-item label="失败重试次数:" prop="failRetryTimes">
-            <el-input-number style="width: 85%; margin-right: 5px" controls-position="right" :min="0" v-model="form.failRetryTimes" placeholder="请输入失败重试次数"> </el-input-number>
+            <el-input-number style="width: 85%; margin-right: 5px" controls-position="right" :min="0"
+              v-model="form.failRetryTimes" placeholder="请输入失败重试次数"> </el-input-number>
             <span>次</span>
           </el-form-item>
           <el-form-item label="失败重试间隔:" prop="failRetryInterval">
-            <el-input-number style="width: 85%; margin-right: 5px" controls-position="right" :min="0" v-model="form.failRetryInterval" placeholder="请输入失败重试间隔"> </el-input-number>
+            <el-input-number style="width: 85%; margin-right: 5px" controls-position="right" :min="0"
+              v-model="form.failRetryInterval" placeholder="请输入失败重试间隔"> </el-input-number>
             <span>分</span>
           </el-form-item>
           <el-form-item label="延迟执行时间:" prop="delayTime">
-            <el-input-number
-              style="width: 85%; margin-right: 5px"
-              controls-position="right"
-              :min="isShowWithTypeName('DM,Oracle,MYSQL,Kingbase') ? 1 : 0"
-              v-model="form.delayTime"
-              placeholder="请输入延迟执行时间"
-            >
+            <el-input-number style="width: 85%; margin-right: 5px" controls-position="right"
+              :min="isShowWithTypeName('DM,Oracle,MYSQL,Kingbase') ? 1 : 0" v-model="form.delayTime"
+              placeholder="请输入延迟执行时间">
             </el-input-number>
             <span>分</span>
           </el-form-item>
+          <template v-if="isShowWithTypeName('Flink批,Flink流')">
+            <el-form-item label="JobManager内存数" prop="jobManagerMemory">
+              <el-input v-model="form.jobManagerMemory" placeholder="请输入JobManager内存数"> </el-input>
+            </el-form-item>
+            <el-form-item label="TaskManager内存数" prop="taskManagerMemory">
+              <el-input v-model="form.taskManagerMemory" placeholder="请输入TaskManager内存数"> </el-input>
+            </el-form-item>
+            <el-form-item label="Slot数量" prop="slot">
+              <el-input-number placeholder="请输入Slot数量" v-model="form.slot" controls-position="right" :min="0" />
+            </el-form-item>
+            <el-form-item label="TaskManager数量" prop="taskManager">
+              <el-input v-model="form.taskManager" placeholder="请输入TaskManager数量"> </el-input>
+            </el-form-item>
+            <el-form-item label="并行度" prop="parallelism">
+              <el-input-number placeholder="请输入并行度" v-model="form.parallelism" controls-position="right" :min="0" />
+            </el-form-item>
+            <el-form-item label="Yarn队列" prop="yarnQueue">
+              <el-input v-model="form.yarnQueue" placeholder="请输入Yarn队列(选填)"> </el-input>
+            </el-form-item>
+          </template>
+          <template v-if="isShowWithTypeName('SparkSql')">
+            <el-form-item label="Driver核心数" prop="driverCores">
+              <el-input-number placeholder="请输入Driver核心数" v-model="form.driverCores" controls-position="right"
+                :min="0" />
+            </el-form-item>
+            <el-form-item label="Driver内存数" prop="driverMemory">
+              <el-input v-model="form.driverMemory" placeholder="请输入Driver内存数"> </el-input>
+            </el-form-item>
+            <el-form-item label="Executor数量" prop="numExecutors">
+              <el-input-number placeholder="请输入Executor数量" v-model="form.numExecutors" controls-position="right"
+                :min="0" />
+            </el-form-item>
+            <el-form-item label="Executor内存数" prop="executorMemory">
+              <el-input v-model="form.executorMemory" placeholder="请输入Executor内存数"> </el-input>
+            </el-form-item>
+            <el-form-item label="Executor核心数" prop="executorCores">
+              <el-input-number placeholder="请输入Executor核心数" v-model="form.executorCores" controls-position="right"
+                :min="0" />
+            </el-form-item>
+            <el-form-item label="Yarn队列" prop="yarnQueue">
+              <el-input v-model="form.yarnQueue" placeholder="请输入Yarn队列(选填)"> </el-input>
+            </el-form-item>
+          </template>
           <div class="h2"><img class="icon" src="@/assets/da/asset/h2 (1).svg" alt="" />其他配置</div>
-          <el-form-item label="数据源类型:" prop="typaCode"> {{ typaName }} </el-form-item>
-          <el-form-item label="数据源连接:" prop="datasourceId">
+          <el-form-item label="数据连接类型:" prop="typaCode"> {{ typaName }} </el-form-item>
+          <el-form-item label="数据源连接:" prop="datasourceId" v-if="isShowWithTypeName('SparkSql,Flink批,Flink流', false)">
             <el-select v-model="form.datasourceId" placeholder="请选择数据源连接" @change="handleDatasourceChange" filterable>
-              <el-option v-for="dict in createTypeList" :key="dict.id" :label="dict.datasourceName" :value="dict.id"></el-option>
+              <el-option v-for="dict in createTypeList" :key="dict.id" :label="dict.datasourceName"
+                :value="dict.id"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="SQL类型:" prop="sqlType">
+          <el-form-item label="SQL类型:" prop="sqlType" v-if="isShowWithTypeName('SparkSql,Flink批,Flink流', false)">
             <el-radio-group v-model="form.sqlType" inline>
               <el-radio v-for="option in visibleRadioOptions" :key="option.id" :value="option.id">
                 {{ option.label }}
@@ -64,15 +109,20 @@
           <div class="wrap" v-for="(item, index) in form.localParams" :key="index">
             <el-input style="width: 30%" v-model="item.prop" placeholder="参数名称"></el-input>
             <el-select style="width: 40%; margin: 0 4px" v-model="item.type" placeholder="请选择参数类型">
-              <el-option v-for="dict in columnType" :key="dict.value" :label="dict.label" :value="dict.value"></el-option>
+              <el-option v-for="dict in columnType" :key="dict.value" :label="dict.label"
+                :value="dict.value"></el-option>
             </el-select>
             <el-input style="width: 30%; margin-right: 4px" v-model="item.value" placeholder="值"></el-input>
             <div class="del-btn" @click="handleDelDiy(index)">
-              <el-icon class="icon"><Delete /></el-icon>
+              <el-icon class="icon">
+                <Delete />
+              </el-icon>
             </div>
           </div>
           <div class="add-btn" @click="handleAddDiy">
-            <el-icon class="icon"><Plus /></el-icon> 添加配置项
+            <el-icon class="icon">
+              <Plus />
+            </el-icon> 添加配置项
           </div>
         </el-form>
       </template>
@@ -80,8 +130,9 @@
   </div>
 </template>
 <script setup name="EditorConfigView">
-import { treeData } from "@/views/dpp/tasker/ddv/components/data";
-import { listDaDatasourceNoKafkaByProjectCode } from "@/api/da/datasource/daDatasource";
+// 
+import { treeData } from "@/views/dpp/task/developTask/data";
+import { listDaDatasourceNoKafkaByProjectCode } from "@/api/da/dataSource/dataSource";
 const { proxy } = getCurrentInstance();
 const { dpp_etl_task_priority } = proxy.useDict("dpp_etl_task_priority");
 import useUserStore from "@/store/system/user";
@@ -97,6 +148,11 @@ const props = defineProps({
       };
     },
   },
+  readOnly: {
+    type: Boolean,
+    default: false,
+  },
+
 });
 const isShowWithTypeName = (row, boo = true) => {
   if (boo) {
@@ -190,6 +246,20 @@ const radioOptions = ref([
     id: "2",
     show: true,
   },
+  {
+    componentType: "53",
+    label: "SparkSql开发",
+    taskType: "SPARK",
+    id: "4",
+    show: false,
+  },
+  {
+    componentType: "55",
+    label: "FlinkSql开发",
+    taskType: "FLINK",
+    id: "5",
+    show: false,
+  },
 ]);
 
 const visibleRadioOptions = computed(() => radioOptions.value.filter((option) => option.show));
@@ -221,7 +291,7 @@ const updateCurrResize = (event) => {
       return;
     }
     // 使用 requestAnimationFrame 来减少页面重绘频率
-    requestAnimationFrame(() => {});
+    requestAnimationFrame(() => { });
   }
 };
 const stopCurrResize = () => {
@@ -239,6 +309,19 @@ const data = reactive({
     failRetryTimes: "0",
     failRetryInterval: "1",
     delayTime: "0",
+    // Fink配置
+    jobManagerMemory: "1G",
+    taskManagerMemory: "2G",
+    slot: 1,
+    taskManager: 2,
+    parallelism: 1,
+    yarnQueue: "",
+    // Spark配置
+    driverCores: 1,
+    driverMemory: "512M",
+    numExecutors: 1,
+    executorMemory: "1G",
+    executorCores: 1,
     // 其他配置
     typaCode: "",
     datasourceId: "",
@@ -272,8 +355,15 @@ watch(
         form.value.delayTime = 1;
       }
       // Flink特殊字段
-      form.value.executeMode = "";
-      let obj = radioOptions.value?.find((option) => option.id == form.value.sqlType);
+      form.value.executeMode = form.value.typaCode == "FlinkBatch" ? "BATCH" : form.value.typaCode == "FlinkStream" ? "STREAM" : "";
+      let obj;
+      if (form.value.typaCode == "SparkSql") {
+        obj = radioOptions.value?.find((option) => option.id == 4);
+      } else if (form.value.typaCode == "FlinkBatch" || form.value.typaCode == "FlinkStream") {
+        obj = radioOptions.value?.find((option) => option.id == 5);
+      } else {
+        obj = radioOptions.value?.find((option) => option.id == form.value.sqlType);
+      }
       form.value.taskType = obj?.taskType;
       form.value.componentType = obj?.componentType;
       // 获取： 数据源连接
@@ -308,13 +398,14 @@ defineExpose({ currWidth, form, configRef });
   height: 100%;
   margin-top: 0px;
   border-radius: 5px;
-  background-color: rgb(255, 255, 255);
+  background-color: #fbfbfb;
   // max-width: 650px;
   // min-width: 200px;
   box-sizing: border-box;
   border: 1px solid rgba(0, 0, 0, 0.06);
   border-left: none;
   border-top: none;
+
   .move {
     position: absolute;
     user-select: none;
@@ -324,15 +415,17 @@ defineExpose({ currWidth, form, configRef });
     left: -5px;
     cursor: col-resize;
   }
+
   .container-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 50px;
+    height: 40px;
     padding: 0 15px;
     padding-block: 1px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-    background-color: rgb(255, 255, 255);
+    border-bottom: 1px solid rgb(147 147 147 / 6%);
+    background-color: #f9f9f9;
+
     .title {
       overflow: visible;
       font-weight: 500;
@@ -340,8 +433,21 @@ defineExpose({ currWidth, form, configRef });
       font-family: xPingFang SC;
       white-space: nowrap;
       text-overflow: ellipsis;
-      color: var(--el-color-primary);
+      color: #333;
+      display: flex;
+      align-items: center;
+
+      &::before {
+        display: inline-block;
+        content: "";
+        width: 6px;
+        height: 16px;
+        border-radius: 3px;
+        background: var(--el-color-primary);
+        margin-right: 8px;
+      }
     }
+
     .close {
       cursor: pointer;
       display: inline-flex;
@@ -352,10 +458,12 @@ defineExpose({ currWidth, form, configRef });
       border-radius: 50%;
       font-size: 16px;
       color: var(--el-color-primary);
+
       &:hover {
         background-color: rgb(0, 0, 0, 0.06);
       }
     }
+
     .icon {
       width: 110px;
       height: 32px;
@@ -369,13 +477,17 @@ defineExpose({ currWidth, form, configRef });
       font-size: 14px;
     }
   }
+
   .container-content {
-    height: calc(100% - 50px);
+    height: calc(100% - 40px);
     overflow: hidden auto;
     padding: 15px;
+    background-color: #F9F9F9;
+
     &::-webkit-scrollbar {
       width: 4px;
     }
+
     .h2 {
       height: 36px;
       padding: 0 15px;
@@ -388,6 +500,7 @@ defineExpose({ currWidth, form, configRef });
       font-family: PingFang SC;
       margin-bottom: 15px;
       color: var(--el-color-primary);
+
       // span {
       //   display: inline-block;
       //   width: 20px;
@@ -408,12 +521,15 @@ defineExpose({ currWidth, form, configRef });
         // background: url("@/assets/da/asset/h2 (1).svg") no-repeat;
       }
     }
+
     :deep(.el-form-item) {
       margin-bottom: 10px;
+
       .el-form-item__label {
         color: rgba(0, 0, 0, 0.65);
       }
     }
+
     .add-btn {
       cursor: pointer;
       width: 100%;
@@ -425,16 +541,20 @@ defineExpose({ currWidth, form, configRef });
       border: 1px dashed #dcdfe6;
       font-size: 14px;
       color: rgba(0, 0, 0, 0.65);
+
       .icon {
         margin-right: 5px;
       }
     }
+
     .del-btn {
       cursor: pointer;
+
       .icon {
         color: #f00;
       }
     }
+
     .wrap {
       width: 100%;
       display: flex;

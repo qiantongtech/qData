@@ -109,6 +109,15 @@ export function uploadAvatar(data) {
         data: data
     });
 }
+// 用户头像上传
+export function avatarSystemContent(data) {
+    return request({
+        url: '/system/user/profile/avatarSystemContent',
+        method: 'post',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        data: data
+    });
+}
 
 // 查询授权角色
 export function getAuthRole(userId) {

@@ -31,3 +31,12 @@ export function encrypt(data) {
   const encryptedData = encryptedBytes.ciphertext.toString(CryptoJS.enc.Base64);
   return encryptedData;
 }
+
+export function isDecrypted(data){
+    try {
+        decrypt(data)
+        return true
+    } catch (e) {
+        return false
+    }
+}

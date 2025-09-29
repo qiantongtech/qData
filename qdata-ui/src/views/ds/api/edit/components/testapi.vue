@@ -6,7 +6,7 @@
                 <div class="blue-bar"></div>
                 API调用
             </div>
-            <el-button v-hasPerm="['market:api:example']" size="mini" style="border-radius: 30px !important" round
+            <el-button  size="mini" style="border-radius: 30px !important" round
                 @click="handleCall">
                 接口调用
             </el-button>
@@ -15,33 +15,33 @@
         <div class="body-wrapper">
             <el-form v-if="isChange" ref="data" :model="data" label-width="100px" :disabled="true">
                 <el-row>
-                    <el-col :span="9">
+                    <el-col :span="12">
                         <el-form-item label="API名称">
                             <el-input v-model="data.name" />
                         </el-form-item>
                     </el-col>
-                    <el-col :span="9">
+                    <el-col :span="12">
                         <el-form-item label="API版本">
                             <el-input v-model="data.apiVersion" />
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row>
-                    <el-col :span="9">
+                    <el-col :span="12">
                         <el-form-item label="请求类型">
                             <!--                            <el-input v-model="form.reqMethod"/>-->
                             <dict-tag :options="ds_api_bas_info_api_method_type" :value="data.reqMethod" />
                         </el-form-item>
 
                     </el-col>
-                    <el-col :span="9">
+                    <el-col :span="12">
                         <el-form-item label="返回格式" prop="resDataType">
                             <dict-tag :options="ds_api_bas_info_res_data_type" :value="data.resDataType" />
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row>
-                    <el-col :span="18">
+                    <el-col :span="24">
                         <el-form-item label="调用地址">
                             <el-input v-model="data.apiUrl" />
                         </el-form-item>
@@ -49,7 +49,7 @@
                 </el-row>
             </el-form>
             <!-- 请求数据部分 -->
-            <div class="clearfix header-text" style="margin: 12px 0 0 0">
+            <div class="header-container">
                 <div class="header-left">
                     <div class="blue-bar"></div>
                     请求数据
@@ -58,7 +58,7 @@
             <el-form :model="data.reqParams" :rules="rules" ref="inputForm" label-width="0">
                 <el-row>
                     <el-col :span="24">
-                        <el-table :data="data.reqParams" class="tableStyle" row-key="id" border default-expand-all
+                        <el-table :data="data.reqParams" class="tableStyle" row-key="id" stripe default-expand-all
                             :tree-props="{ children: 'daAssetApiParamList', hasChildren: 'hasChildren' }">
                             <el-table-column label="序号" width="80" align="center" fixed="left">
                                 <template #default="{ $index }">
@@ -67,21 +67,21 @@
                             </el-table-column>
 
                             <el-table-column label="参数名称" fixed="left" align="center" prop="name"
-                                :show-overflow-tooltip="true">
+                                :show-overflow-tooltip="{effect: 'light'}">
                                 <template #default="{ row }">
                                     {{ row?.name || '' }}
                                 </template>
                             </el-table-column>
 
                             <el-table-column label="描述" fixed="left" align="center" prop="remark"
-                                :show-overflow-tooltip="true">
+                                :show-overflow-tooltip="{effect: 'light'}">
                                 <template #default="{ row }">
                                     {{ row?.remark || '' }}
                                 </template>
                             </el-table-column>
 
                             <el-table-column label="是否为空" width="70" fixed="left" align="center" prop="requestFlag"
-                                :show-overflow-tooltip="true">
+                                :show-overflow-tooltip="{effect: 'light'}">
                                 <template #default="{ row }">
                                     <el-form-item
                                         :prop="`data.reqParams[${findPosi(data.reqParams, row.id)}].requestFlag`"
@@ -93,14 +93,14 @@
                             </el-table-column>
 
                             <el-table-column label="参数类型" fixed="left" align="center" prop="columnType"
-                                :show-overflow-tooltip="true">
+                                :show-overflow-tooltip="{effect: 'light'}">
                                 <template #default="{ row }">
                                     {{ row?.columnType || '' }}
                                 </template>
                             </el-table-column>
 
                             <el-table-column label="示例值" fixed="left" align="center" prop="exampleValue"
-                                :show-overflow-tooltip="true">
+                                :show-overflow-tooltip="{effect: 'light'}">
                                 <template #default="{ row }">
                                     <el-form-item
                                         :prop="`data.reqParams[${findPosi(data.reqParams, row.id)}].exampleValue`"
@@ -112,7 +112,7 @@
                             </el-table-column>
 
                             <el-table-column label="默认值" fixed="left" align="center" prop="defaultValue"
-                                :show-overflow-tooltip="true">
+                                :show-overflow-tooltip="{effect: 'light'}">
                                 <template #default="{ row }">
                                     <el-form-item
                                         :prop="`data.reqParams[${findPosi(data.reqParams, row.id)}].defaultValue`"
@@ -127,7 +127,7 @@
                 </el-row>
             </el-form>
             <!-- 返回结果部分 -->
-            <div class="clearfix header-text">
+            <div class="header-container">
                 <div class="header-left">
                     <div class="blue-bar"></div>
                     返回数据
@@ -144,7 +144,7 @@
                                 </template>
                             </el-table-column>
                             <template v-for="(column, index) in callData.columnList" :key="index">
-                                <el-table-column :prop="column" :label="column" align="center" show-overflow-tooltip />
+                                <el-table-column :prop="column" :label="column" align="center" :show-overflow-tooltip="{effect: 'light'}" />
                             </template>
                         </el-table>
                         <!-- 分页 -->
@@ -168,7 +168,7 @@
 </template>
 
 <script setup>
-import { queryServiceForwarding } from '@/api/ds/api/dsApi.js';
+import { queryServiceForwarding } from '@/api/ds/api/api.js';
 import { VAceEditor } from "vue3-ace-editor";
 const props = defineProps({
     data: {
@@ -361,7 +361,7 @@ const handleCall = () => {
     // 参数校验
     const isNull = props.data.reqParams.some(param => {
         if (isParamInvalid(param)) {
-            proxy.$message.error(`输入参数‘${param.name}’不能为空`);
+            proxy.$message.warning(`参数校验未通过，输入参数‘${param.name}’不能为空`);
             return true;
         }
         return false;
@@ -462,27 +462,29 @@ const handleApiResponse = (response) => {
     }
 
     .blue-bar {
-        background-color: #2666FB; // 蓝条颜色
-        width: 5px; // 宽度5px
-        height: 20px; // 高度20px
-        margin-right: 10px; // 图片与文字之间的间距
+        background-color: #2666fb;
+        width: 5px;
+        height: 20px;
+        margin-right: 10px;
+        border-radius: 2px;
     }
 
     .header-container {
         height: 36px;
-        background-color: #f8f8f9;
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 5px 0;
         margin: 10px 0;
         border-radius: 4px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .header-left {
         display: flex;
         align-items: center;
+        font-size: 16px;
+        line-height: 24px;
+        font-style: normal;
     }
 
     .el-form {

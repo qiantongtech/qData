@@ -10,11 +10,16 @@
     </el-upload>
     <!-- 上传提示 -->
     <div class="el-upload__tip" v-if="isShowTip">
-      仅支持上传
+      <span v-if="fileType.length != 0">
+        仅支持上传
       <b style="color: #f56c6c">{{
-        fileType.map((ext) => "." + ext).join(",")
-      }}</b>
+          fileType.map((ext) => "." + ext).join(",")
+        }}</b>
       格式的文件，大小不超过
+      </span>
+      <span v-else>
+        文件大小不超过
+      </span>
       <b style="color: #f56c6c">{{ fileSize }}MB</b>
     </div>
   </div>
@@ -93,14 +98,15 @@ watch(
 
 // 上传前校验文件类型
 function handleBeforeUpload(file) {
+  console.log(props , "888888888")
   // 校验文件类型
   if (props.fileType.length) {
     const fileName = file.name.split(".");
     const fileExt = fileName[fileName.length - 1];
     const isTypeOk = props.fileType.indexOf(fileExt) >= 0;
     if (!isTypeOk) {
-      proxy.$modal.msgError(
-        `文件格式不正确, 请上传${props.fileType.join("/")}格式文件!`
+      proxy.$modal.msgWarning(
+        `格式不正确, 请上传${props.fileType.join("/")}格式文件`
       );
       return false;
     }
@@ -109,7 +115,7 @@ function handleBeforeUpload(file) {
   // 校验文件大小
   const fileSize = file.size / 1024 / 1024;
   if (fileSize > props.fileSize) {
-    proxy.$modal.msgError(`文件大小不能超过 ${props.fileSize}MB!`);
+    proxy.$modal.msgWarning(`大小超出限制，上传文件大小不能超过 ${props.fileSize}MB`);
     return false;
   }
 
@@ -120,16 +126,17 @@ function handleBeforeUpload(file) {
 
 // 文件个数超出
 function handleExceed() {
-  proxy.$modal.msgError(`上传文件数量不能超过 ${props.limit} 个!`);
+  proxy.$modal.msgWarning(`数量超出限制，上传文件数量不能超过 ${props.limit} 个`);
 }
 
 // 上传失败
 function handleUploadError(err) {
-  proxy.$modal.msgError("上传文件失败");
+  proxy.$modal.msgWarning("上传文件失败，请联系管理员");
 }
 
 // 上传成功回调
 function handleUploadSuccess(res, file) {
+  emit("customEvent", res);
   if (res.url) {
     uploadList.value.push({
       name: "/profile/" + res.path + res.filename,
@@ -145,7 +152,7 @@ function handleUploadSuccess(res, file) {
   } else {
     number.value--;
     proxy.$modal.closeLoading();
-    proxy.$modal.msgError(res.msg);
+    proxy.$modal.msgWarning("上传文件失败，请联系管理员");
     proxy.$refs.fileUpload.handleRemove(file);
     uploadedSuccessfully();
   }

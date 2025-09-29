@@ -70,8 +70,9 @@ service.interceptors.request.use(config => {
       const interval = 1000;                       // 间隔时间(ms)，小于此时间视为重复提交
       if (s_data === requestObj.data && requestObj.time - s_time < interval && s_url === requestObj.url) {
         const message = '数据正在处理，请勿重复提交';
-        console.warn(`[${s_url}]: ` + message)
-        return Promise.reject(new Error(message))
+        const err = new Error(message);
+        err.isRepeatSubmit = true; // 标记为重复提交
+        return Promise.reject(err);
       } else {
         cache.session.setJSON('sessionObj', requestObj)
       }
@@ -118,7 +119,7 @@ service.interceptors.response.use(res => {
     ElMessage({ message: msg, type: 'warning' })
     return Promise.reject(new Error(msg))
   } else if (code !== 200) {
-    ElNotification.error({ title: msg })
+    ElNotification.warning({ title: msg })
     return Promise.reject('error')
   } else {
     return Promise.resolve(res.data)
@@ -127,6 +128,7 @@ service.interceptors.response.use(res => {
   error => {
     console.log('err' + error)
     let { message } = error;
+
     if (message == "Network Error") {
       message = "后端接口连接异常";
     } else if (message.includes("timeout")) {
@@ -135,6 +137,10 @@ service.interceptors.response.use(res => {
       message = "系统接口" + message.substr(message.length - 3) + "异常";
     } else if ((message.includes('Route change: Request canceled'))) {
       return null
+    } else if (error.isRepeatSubmit) {
+      // 只弹 warning，不弹 error
+      ElMessage({ message: error.message, type: 'warning' });
+      return Promise.reject(error);
     }
     ElMessage({ message: message, type: 'error', duration: 5 * 1000 })
     return Promise.reject(error)
@@ -158,12 +164,12 @@ export function download(url, params, filename, config) {
       const resText = await data.text();
       const rspObj = JSON.parse(resText);
       const errMsg = errorCode[rspObj.code] || rspObj.msg || errorCode['default']
-      ElMessage.error(errMsg);
+      ElMessage.warning(errMsg);
     }
     downloadLoadingInstance.close();
   }).catch((r) => {
     console.error(r)
-    ElMessage.error('下载文件出现错误，请联系管理员！')
+    ElMessage.warning('下载文件出现错误，请联系管理员！')
     downloadLoadingInstance.close();
   })
 }
@@ -184,12 +190,12 @@ export function download2(url, params, filename, config) {
       const resText = await data.text();
       const rspObj = JSON.parse(resText);
       const errMsg = errorCode[rspObj.code] || rspObj.msg || errorCode['default'];
-      ElMessage.error(errMsg);  // 显示错误消息
+      ElMessage.warning(errMsg);  // 显示错误消息
     }
     downloadLoadingInstance.close();  // 关闭加载动画
   }).catch((r) => {
     console.error(r);
-    ElMessage.error('下载文件出现错误，请联系管理员！');  // 错误提示
+    ElMessage.warning('下载文件出现错误，请联系管理员！');  // 错误提示
     downloadLoadingInstance.close();  // 关闭加载动画
   });
 }

@@ -160,11 +160,11 @@ import useSettingsStore from '@/store/system/settings';
 import useTagsViewStore from '@/store/system/tagsView';
 import { getNum, listMessage, readAll } from '@/api/system/system/message/message';
 import { loginOut } from '@/api/system/sso-auth.js';
-// import MessageList from "@/views/system/system/message/components/messageList.vue";
+// import MessageList from "@/views/sys/system/message/components/messageList.vue";
 import { onMounted, ref, watch } from 'vue';
 import moment from 'moment';
 import { listNotice } from '@/api/system/system/notice';
-import { currentUser } from '@/api/att/project/attProject';
+import { currentUser } from '@/api/att/project/project';
 import { da, id } from 'element-plus/es/locale/index.mjs';
 import usePermissionStore from '@/store/system/permission';
 import { getRoutersDpp } from '@/api/system/menu';
@@ -477,7 +477,7 @@ const initWebSocket = () => {
         pageNum: 1,
         pageSize: 1000
     }).then((response) => {
-        response.data.rows.forEach((item) => {
+        response.data.rows?.forEach((item) => {
             item.time = item.updateTime;
             item.entityType = item.category;
             // item.title = item.title

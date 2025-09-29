@@ -13,9 +13,9 @@
                 <template #default="{ node, data }">
                     <span class="custom-tree-node" @dblclick.stop="handleNodeClick(data, node, 'node')">
                         <!-- 数据源/层级图标 -->
-                        <img v-if="node.level === 1" :src="getDatasourceIcon(data.datasourceType)" class="node-icon" />
-                        <img v-if="node.level === 2" src="@/assets/system/images/dpp/sr.png" class="node-icon" />
-                        <img v-if="node.level === 3" src="@/assets/system/images/dpp/zt.png" class="node-icon" />
+                        <img v-if="node.level == 1" :src="getDatasourceIcon(data.datasourceType)" class="node-icon" />
+                        <img v-if="node.level == 2" src="@/assets/system/images/dpp/sr.png" class="node-icon" />
+                        <img v-if="node.level == 3" src="@/assets/system/images/dpp/zt.png" class="node-icon" />
                         <!-- label -->
                         <span class="treelable">{{ node.label }}</span>
 
@@ -103,6 +103,9 @@ const getDatasourceIcon = (type) => {
         case "HDFS": return new URL("@/assets/system/images/dpp/hdfs.png", import.meta.url).href;
         case "SHELL": return new URL("@/assets/system/images/dpp/SHELL.png", import.meta.url).href;
         case "Kingbase8": return new URL("@/assets/system/images/dpp/kingBase.png", import.meta.url).href;
+        case "PostgreSQL": return new URL("@/assets/system/images/dpp/postgresql.svg", import.meta.url).href;
+        case "SQL_Server": return new URL("@/assets/system/images/dpp/SQL_Server.svg", import.meta.url).href;
+        case "Doris": return new URL("@/assets/system/images/dpp/doris.svg", import.meta.url).href;
         default: return null;
     }
 };
@@ -123,29 +126,33 @@ const onNodeContextMenu = (event, data, node) => {
 const generateSQL = (type) => {
     if (!contextMenuNode.value) return;
     const { data, node } = contextMenuNode.value;
-    // 父节点的 dbname 作为库名
     const parentData = node.parent ? node.parent.data : null;
     const dbname = parentData?.dbname;
     const datasourceType = parentData?.datasourceType;
-    const sid = parentData?.sid;
-    // 当前节点 name 作为表名
+    const sid = parentData?.sid; // schema
     const tableName = data.name || null;
-    // 遍历当前节点所有子节点拼字段名
+
     const fields = (node.childNodes || [])
         .map((childNode) => childNode.data?.name)
         .filter(Boolean)
         .join(", ") || "*";
 
-    // 根据是否有 dbname 拼接 SQL
-    var sql = dbname
-        ? `SELECT ${fields} FROM ${dbname}.${tableName};`
-        : `SELECT ${fields} FROM ${tableName};`;
-    if (datasourceType === 'Kingbase8' && sid) {
-        sql = `SELECT ${fields} FROM ${dbname}.${sid}.${tableName};`
+    let fromPart = tableName;
+    console.log("🚀 ~ generateSQL ~ datasourceType:", datasourceType)
+    if (
+        (datasourceType == "Kingbase8" ||
+            datasourceType == "SQL_Server" ||
+            datasourceType == "PostgreSQL")
+    ) {
+        fromPart = dbname ? `${dbname}.${sid}.${tableName}` : tableName;
+    } else {
+        fromPart = dbname ? `${dbname}.${tableName}` : tableName;
     }
+    const sql = `SELECT ${fields} FROM ${fromPart};`;
     contextMenuVisible.value = false;
     handleNodeClick(sql, node, "sql");
 };
+
 
 // 点击空白关闭右键菜单
 const onClickOutside = () => {
@@ -178,14 +185,14 @@ const updateResize = (event) => {
 };
 
 const toggleCollapse = () => {
-    leftWidth.value = leftWidth.value === 0 ? 300 : 0;
+    leftWidth.value = leftWidth.value == 0 ? 300 : 0;
     emit("update:leftWidth", leftWidth.value);
 };
 
 const findExpandedLevelOneId = (node) => {
     if (!node) return null;
 
-    if (node.level === 1) {
+    if (node.level == 1) {
         if (node.expanded && node.data.loadError !== true) {
             return node.data.id;
         }
@@ -197,7 +204,7 @@ const findExpandedLevelOneId = (node) => {
 
 const handleNodeClick = (payload, node, type = "node") => {
     contextMenuVisible.value = false;
-    if (payload?.level === 1) return;
+    if (payload?.level == 1) return;
 
     const parent = node?.parent?.data || null;
     const children = node?.childNodes?.map(n => n.data) || [];

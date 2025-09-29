@@ -10,9 +10,13 @@
                     <el-input class="el-form-input-width" v-model="queryParams.name" placeholder="请输入主题名称" clearable
                         @keyup.enter="handleQuery" />
                 </el-form-item>
-
+                <!-- <el-form-item label="描述" prop="description">
+                    <el-input class="el-form-input-width" v-model="queryParams.description" placeholder="请输入描述"
+                        clearable @keyup.enter="handleQuery" />
+                </el-form-item> -->
                 <el-form-item>
-                    <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
+                    <el-button plain type="primary" v-hasPermi="['att:theme:query']" @click="handleQuery"
+                        @mousedown="(e) => e.preventDefault()">
                         <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
                     </el-button>
                     <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
@@ -21,17 +25,16 @@
                 </el-form-item>
             </el-form>
         </div>
-
         <div class="pagecont-bottom">
             <div class="justify-between mb15">
                 <el-row :gutter="15" class="btn-style">
                     <el-col :span="1.5">
-                        <el-button type="primary" plain @click="handleAdd" v-hasPermi="['att:theme:theme:add']"
+                        <el-button type="primary" plain @click="handleAdd" v-hasPermi="['att:theme:add']"
                             @mousedown="(e) => e.preventDefault()">
                             <i class="iconfont-mini icon-xinzeng mr5"></i>新增
                         </el-button>
                     </el-col>
-                    <el-col :span="1.5">
+                    <!-- <el-col :span="1.5">
                         <el-button type="primary" plain :disabled="single" @click="handleUpdate"
                             v-hasPermi="['att:theme:theme:edit']" @mousedown="(e) => e.preventDefault()">
                             <i class="iconfont-mini icon-xiugai--copy mr5"></i>修改
@@ -42,37 +45,55 @@
                             v-hasPermi="['att:theme:theme:remove']" @mousedown="(e) => e.preventDefault()">
                             <i class="iconfont-mini icon-shanchu-huise mr5"></i>删除
                         </el-button>
-                    </el-col>
+                    </el-col> -->
                 </el-row>
                 <div class="justify-end top-right-btn">
                     <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"
                         :columns="columns"></right-toolbar>
                 </div>
             </div>
-            <el-table stripe height="60vh" v-loading="loading" :data="attThemeList"
-                @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
-                <el-table-column type="selection" width="55" align="center" />
-                <el-table-column v-if="getColumnVisibility(0)" label="编号" align="center" prop="id" width="80" />
+            <el-table stripe v-loading="loading" :data="attThemeList" @selection-change="handleSelectionChange"
+                :default-sort="defaultSort" @sort-change="handleSortChange">
+                <!-- <el-table-column type="selection" width="55" align="center" /> -->
+                <el-table-column v-if="getColumnVisibility(0)" label="编号" align="center" prop="id" width="60" />
                 <!--       <el-table-column v-if="getColumnVisibility(0)" label="ID" align="center" prop="id" />-->
                 <el-table-column v-if="getColumnVisibility(1)" label="主题名称" align="left" prop="name" width="200">
                     <template #default="scope">
                         {{ scope.row.name || '-' }}
                     </template>
                 </el-table-column>
-
                 <el-table-column v-if="getColumnVisibility(2)" label="图标" align="center" prop="icon" width="100">
                     <template #default="scope">
-                        <image-preview :src="scope.row.icon" :width="50" :height="50" />
+                        <image-preview :src="scope.row.icon || noDataImg" :width="50" :height="50" />
                     </template>
                 </el-table-column>
-
-                <el-table-column show-overflow-tooltip v-if="getColumnVisibility(4)" label="描述" align="left"
-                    prop="description">
+                <el-table-column :show-overflow-tooltip="{ effect: 'light' }" v-if="getColumnVisibility(3)" label="描述"
+                    align="left" prop="description" width="300">
                     <template #default="scope">
                         {{ scope.row.description || '-' }}
                     </template>
                 </el-table-column>
-                <el-table-column label="状态" align="center" prop="validFlag" width="120">
+                <el-table-column :show-overflow-tooltip="{ effect: 'light' }" v-if="getColumnVisibility(10)" label="排序"
+                    align="left" prop="sortOrder" width="50">
+                    <template #default="scope">
+                        {{ scope.row.sortOrder || '-' }}
+                    </template>
+                </el-table-column>
+
+                <el-table-column v-if="getColumnVisibility(7)" label="创建人" :show-overflow-tooltip="{ effect: 'light' }"
+                    align="left" prop="createBy">
+                    <template #default="scope">
+                        {{ scope.row.createBy || "-" }}
+                    </template>
+                </el-table-column>
+                <!-- column-key="create_time" :sort-orders="['descending', 'ascending']"   sortable="custom"-->
+                <el-table-column v-if="getColumnVisibility(6)" label="创建时间" align="center" prop="createTime"
+                    width="150">
+                    <template #default="scope"> <span>{{ parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}") || "-"
+                    }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="状态" align="center" prop="validFlag" width="120" v-if="getColumnVisibility(4)">
                     <template #default="scope">
                         <!--              <dict-tag :options="sys_valid" :value="scope.row.validFlag"/>-->
 
@@ -81,7 +102,7 @@
                         </el-switch>
                     </template>
                 </el-table-column>
-                <el-table-column width="240" show-overflow-tooltip v-if="getColumnVisibility(13)" label="备注"
+                <el-table-column :show-overflow-tooltip="{ effect: 'light' }" v-if="getColumnVisibility(5)" label="备注"
                     align="left" prop="remark">
                     <template #default="scope">
                         {{ scope.row.remark || '-' }}
@@ -92,9 +113,12 @@
                     width="240">
                     <template #default="scope">
                         <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-                            v-hasPermi="['att:theme:theme:edit']">修改</el-button>
+                            v-hasPermi="['att:theme:edit']">修改</el-button>
                         <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
-                            v-hasPermi="['att:theme:theme:remove']">删除</el-button>
+                            v-hasPermi="['att:theme:remove']">删除</el-button>
+                        <el-button link v-hasPermi="['att:theme:query']" type="primary" icon="view"
+                            @click="handleDetail(scope.row)">详情</el-button>
+
                     </template>
                 </el-table-column>
 
@@ -125,9 +149,26 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
+                <el-row>
+                    <el-col :span="24">
+                        <el-form-item label="描述" prop="description">
+                            <el-input type="textarea" v-model="form.description" placeholder="请输入描述" />
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+
+
+                <el-row>
+                    <el-col :span="24">
+                        <el-form-item label="图标" prop="icon">
+                            <image-upload :limit="1" v-model="form.icon" :width="50" :height="50" />
+
+                        </el-form-item>
+                    </el-col>
+                </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item label="显示排序" prop="sortOrder">
+                        <el-form-item label="排序" prop="sortOrder">
                             <el-input-number style="width: 100%" v-model="form.sortOrder" controls-position="right"
                                 :min="0" />
                         </el-form-item>
@@ -136,21 +177,6 @@
                         <el-form-item label="状态" prop="validFlag">
                             <el-radio v-model="form.validFlag" :label="true">启用</el-radio>
                             <el-radio v-model="form.validFlag" :label="false">禁用</el-radio>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-row>
-
-                    <el-col :span="24">
-                        <el-form-item label="图标" prop="icon">
-                            <image-upload :limit="1" v-model="form.icon" :width="50" :height="50" />
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-col :span="24">
-                        <el-form-item label="描述" prop="description">
-                            <el-input type="textarea" v-model="form.description" placeholder="请输入描述" />
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -171,55 +197,90 @@
         </el-dialog>
 
         <!-- 主题详情对话框 -->
-        <el-dialog :title="title" v-model="openDetail" width="800px" :append-to="$refs['app-container']" draggable>
-            <template #header="{ close, titleId, titleClass }">
-                <span role="heading" aria-level="2" class="el-dialog__title">
-                    {{ title }}
-                </span>
-            </template>
-            <el-form ref="attThemeRef" :model="form" label-width="80px">
+        <el-dialog :title="title" v-model="openDetail" width="1000px" :append-to="$refs['app-container']" draggable>
+            <el-form ref="daAssetApplyRef" :model="form" label-width="90px">
                 <el-row :gutter="20">
-                    <el-col :span="12">
-                        <el-form-item label="主题名称" prop="name">
-                            <div>
+                    <el-col :span="24">
+                        <el-form-item label="编号:" prop="id">
+                            <div class="form-readonly">
+                                {{ form.id }}
+                            </div>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row :gutter="20">
+                    <el-col :span="24">
+                        <el-form-item label="主题名称:" prop="name">
+                            <div class="form-readonly">
                                 {{ form.name }}
                             </div>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="12">
-                        <el-form-item label="图标" prop="icon">
-                            <image-preview :src="form.icon" :width="50" :height="50" />
+                </el-row>
+                <el-row :gutter="20">
+                    <el-col :span="24">
+                        <el-form-item label="图标:" prop="icon">
+                            <image-preview :src="form.icon || noDataImg" :width="50" :height="50" />
+
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row :gutter="20">
-                    <el-col :span="12">
-                        <el-form-item label="排序" prop="sortOrder">
-                            <div>
-                                {{ form.sortOrder }}
-                            </div>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
+                <el-row>
+                    <el-col :span="24">
                         <el-form-item label="描述" prop="description">
-                            <div>
-                                {{ form.description }}
+                            <div class="form-readonly textarea">
+                                {{ form.description ?? "-" }}
                             </div>
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item label="是否有效" prop="validFlag">
-                            <div>
-                                {{ form.validFlag }}
+                        <el-form-item label="创建人:" prop="createBy">
+                            <div class="form-readonly">
+                                {{ form.createBy }}
                             </div>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
+                        <el-form-item label="创建时间:" prop="createTime">
+                            <div class="form-readonly">
+                                {{ parseTime(form.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
+
+                            </div>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row :gutter="20">
+                    <el-col :span="12">
+                        <el-form-item label="更新人:" prop="createBy">
+                            <div class="form-readonly">
+                                {{ form.updateBy }}
+                            </div>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-form-item label="更新时间:" prop="updateTime">
+                            <div class="form-readonly">
+                                {{ parseTime(form.updateTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
+                            </div>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row :gutter="20">
+                    <el-col :span="12">
+                        <el-form-item label="状态:" prop="validFlag">
+                            <div class="form-readonly">
+                                {{ form.validFlag ? "启用" : "禁用" }}
+                            </div>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="24">
                         <el-form-item label="备注" prop="remark">
-                            <div>
-                                {{ form.remark }}
+                            <div class="form-readonly textarea">
+                                {{ form.remark ?? "-" }}
                             </div>
                         </el-form-item>
                     </el-col>
@@ -227,7 +288,7 @@
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button size="mini" @click="cancel">关 闭</el-button>
+                    <el-button size="mini" @click="openDetail = false">关闭 </el-button>
                 </div>
             </template>
         </el-dialog>
@@ -261,28 +322,29 @@
     </div>
 </template>
 
-<script setup name="AttTheme">
+<script setup name="Theme">
 import {
     listAttTheme,
     getAttTheme,
     delAttTheme,
     addAttTheme,
     updateAttTheme
-} from '@/api/att/theme/attTheme.js';
+} from '@/api/att/theme/theme.js';
 import { getToken } from '@/utils/auth.js';
-
+const noDataImg = new URL('@/assets/system/images/D.png', import.meta.url).href
 const { proxy } = getCurrentInstance();
-
 const attThemeList = ref([]);
-
 // 列显隐信息
 const columns = ref([
+    { key: 0, label: '编号', visible: true },
     { key: 1, label: '主题名称', visible: true },
-    { key: 2, label: '图标url', visible: true },
-    { key: 3, label: '排序', visible: true },
-    { key: 4, label: '描述', visible: true },
-    { key: 5, label: '是否有效', visible: true },
-    { key: 13, label: '备注', visible: true }
+    { key: 2, label: '图标', visible: true },
+    { key: 3, label: '描述', visible: true },
+    { key: 10, label: '排序', visible: true },
+    { key: 7, label: '创建人', visible: true },
+    { key: 6, label: '创建时间', visible: true },
+    { key: 4, label: '状态', visible: true },
+    { key: 5, label: '备注', visible: true }
 ]);
 
 const getColumnVisibility = (key) => {
@@ -327,14 +389,15 @@ const data = reactive({
         pageNum: 1,
         pageSize: 10,
         name: null,
-        orderByColumn: 'sortOrder,createTime'
+        orderByColumn: 'sortOrder,createTime',
+        description: null
     },
     rules: {
         name: [{ required: true, message: '主题名称不能为空', trigger: 'blur' }],
         // icon: [{ required: true, message: "图标url不能为空", trigger: "blur" }],
-        sortOrder: [{ required: true, message: '排序不能为空', trigger: 'blur' }],
-        description: [{ required: true, message: '描述不能为空', trigger: 'blur' }],
-        validFlag: [{ required: true, message: '是否有效不能为空', trigger: 'blur' }]
+        // sortOrder: [{ required: true, message: '排序不能为空', trigger: 'blur' }],
+        // description: [{ required: true, message: '描述不能为空', trigger: 'blur' }],
+        // validFlag: [{ required: true, message: '是否有效不能为空', trigger: 'blur' }]
     }
 });
 
@@ -380,7 +443,7 @@ function reset() {
         icon: null,
         sortOrder: 0,
         description: null,
-        validFlag: false,
+        validFlag: true,
         delFlag: null,
         createBy: null,
         creatorId: null,

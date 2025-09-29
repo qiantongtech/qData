@@ -3,7 +3,7 @@ import request from '@/utils/request';
 // 查询项目与用户关联关系列表
 export function listAttProjectUserRel(query) {
     return request({
-        url: '/att/AttProjectUserRel/list',
+        url: '/att/projectUserRel/list',
         method: 'get',
         params: query
     });
@@ -12,7 +12,7 @@ export function listAttProjectUserRel(query) {
 // 查询项目与用户关联关系详细
 export function getAttProjectUserRel(id) {
     return request({
-        url: '/att/AttProjectUserRel/' + id,
+        url: '/att/projectUserRel/' + id,
         method: 'get'
     });
 }
@@ -20,7 +20,7 @@ export function getAttProjectUserRel(id) {
 // 查询项目与用户关联关系详细
 export function getRoleUser(id) {
     return request({
-        url: '/att/AttProjectUserRel/roleUser/' + id,
+        url: '/att/projectUserRel/roleUser/' + id,
         method: 'get'
     });
 }
@@ -28,7 +28,7 @@ export function getRoleUser(id) {
 // 新增项目与用户关联关系
 export function addAttProjectUserRel(data) {
     return request({
-        url: '/att/AttProjectUserRel',
+        url: '/att/projectUserRel',
         method: 'post',
         data: data
     });
@@ -37,7 +37,7 @@ export function addAttProjectUserRel(data) {
 // 新增项目与用户关联关系
 export function addUserListAndRoleList(data) {
     return request({
-        url: '/att/AttProjectUserRel/addUserListAndRoleList',
+        url: '/att/projectUserRel/addUserListAndRoleList',
         method: 'post',
         data: data
     });
@@ -46,7 +46,7 @@ export function addUserListAndRoleList(data) {
 // 修改项目与用户关联关系
 export function updateAttProjectUserRel(data) {
     return request({
-        url: '/att/AttProjectUserRel',
+        url: '/att/projectUserRel',
         method: 'put',
         data: data
     });
@@ -55,7 +55,7 @@ export function updateAttProjectUserRel(data) {
 // 修改项目与用户关联关系
 export function editUserListAndRoleList(data) {
     return request({
-        url: '/att/AttProjectUserRel/editUserListAndRoleList',
+        url: '/att/projectUserRel/editUserListAndRoleList',
         method: 'put',
         data: data
     });
@@ -64,7 +64,7 @@ export function editUserListAndRoleList(data) {
 // 删除项目与用户关联关系
 export function delAttProjectUserRel(id) {
     return request({
-        url: '/att/AttProjectUserRel/' + id,
+        url: '/att/projectUserRel/' + id,
         method: 'delete'
     });
 }
@@ -72,7 +72,7 @@ export function delAttProjectUserRel(id) {
 // 查询角色列表
 export function listRole(query) {
     return request({
-        url: '/att/AttProjectUserRel/role/list',
+        url: '/att/projectUserRel/role/list',
         method: 'get',
         params: query
     });
@@ -81,7 +81,7 @@ export function listRole(query) {
 // 查询角色详细
 export function getRole(roleId) {
     return request({
-        url: '/att/AttProjectUserRel/role/' + roleId,
+        url: '/att/projectUserRel/role/' + roleId,
         method: 'get'
     });
 }
@@ -89,7 +89,7 @@ export function getRole(roleId) {
 // 新增角色
 export function addRole(data) {
     return request({
-        url: '/att/AttProjectUserRel/role',
+        url: '/att/projectUserRel/role',
         method: 'post',
         data: data
     });
@@ -98,7 +98,7 @@ export function addRole(data) {
 // 修改角色
 export function updateRole(data) {
     return request({
-        url: '/att/AttProjectUserRel/role',
+        url: '/att/projectUserRel/role',
         method: 'put',
         data: data
     });
@@ -107,7 +107,7 @@ export function updateRole(data) {
 // 角色数据权限
 export function dataScope(data) {
     return request({
-        url: '/att/AttProjectUserRel/role/dataScope',
+        url: '/att/projectUserRel/role/dataScope',
         method: 'put',
         data: data
     });
@@ -120,7 +120,7 @@ export function changeRoleStatus(roleId, status) {
         status
     };
     return request({
-        url: '/att/AttProjectUserRel/role/changeStatus',
+        url: '/att/projectUserRel/role/changeStatus',
         method: 'put',
         data: data
     });
@@ -129,7 +129,7 @@ export function changeRoleStatus(roleId, status) {
 // 删除角色
 export function delRole(roleId) {
     return request({
-        url: '/att/AttProjectUserRel/role/' + roleId,
+        url: '/att/projectUserRel/role/' + roleId,
         method: 'delete'
     });
 }
@@ -137,7 +137,7 @@ export function delRole(roleId) {
 // 查询角色已授权用户列表
 export function allocatedUserList(query) {
     return request({
-        url: '/att/AttProjectUserRel/role/authUser/allocatedList',
+        url: '/att/projectUserRel/role/authUser/allocatedList',
         method: 'get',
         params: query
     });
@@ -146,7 +146,7 @@ export function allocatedUserList(query) {
 // 查询角色未授权用户列表
 export function unallocatedUserList(query) {
     return request({
-        url: '/att/AttProjectUserRel/role/authUser/unallocatedList',
+        url: '/att/projectUserRel/role/authUser/unallocatedList',
         method: 'get',
         params: query
     });
@@ -155,7 +155,7 @@ export function unallocatedUserList(query) {
 // 取消用户授权角色
 export function authUserCancel(data) {
     return request({
-        url: '/att/AttProjectUserRel/role/authUser/cancel',
+        url: '/att/projectUserRel/role/authUser/cancel',
         method: 'put',
         data: data
     });
@@ -164,7 +164,7 @@ export function authUserCancel(data) {
 // 批量取消用户授权角色
 export function authUserCancelAll(data) {
     return request({
-        url: '/att/AttProjectUserRel/role/authUser/cancelAll',
+        url: '/att/projectUserRel/role/authUser/cancelAll',
         method: 'put',
         params: data
     });
@@ -173,7 +173,7 @@ export function authUserCancelAll(data) {
 // 授权用户选择
 export function authUserSelectAll(data) {
     return request({
-        url: '/att/AttProjectUserRel/role/authUser/selectAll',
+        url: '/att/projectUserRel/role/authUser/selectAll',
         method: 'put',
         params: data
     });
@@ -182,7 +182,7 @@ export function authUserSelectAll(data) {
 // 根据角色ID查询部门树结构
 export function deptTreeSelect(roleId) {
     return request({
-        url: '/att/AttProjectUserRel/role/deptTree/' + roleId,
+        url: '/att/projectUserRel/role/deptTree/' + roleId,
         method: 'get'
     });
 }

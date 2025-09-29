@@ -163,20 +163,10 @@ import { ref, reactive, watch, toRefs } from "vue";
 import SideMenu from "./ruleSelectorMenu.vue";
 import SpotCheckDialog from "./spotCheckResult.vue";
 import { getColumnByAssetId } from "@/api/dpp/task/index.js";
-// 字符串类型校验
-import CharacterValidation from "./rule/characterValidationRule.vue";
-// 字段长度范围校验
-import LengthRule from "./rule/lengthRangeRule.vue";
 // 数值精度校验
 import DecimalscaleRule from "./rule/decimalScaleRule.vue";
-// 字段组完整性校验
-import GroupFieldCompletenessRule from "./rule/combinerFieldUniqueRule.vue";
-// 数值字段范围校验
-import NumericRangeRule from "./rule/numberRangeRule.vue";
-// 枚举值校验
-import EnumRule from "./rule/enumRule.vue";
-// 时间字段先后顺序校验
-import TimeOrderRule from "./rule/timeOrderRule.vue";
+// 字段字符串类型校验
+import CharacterValidation from "./rule/characterValidationRule.vue";
 import { verifyInterfaceValue, } from "@/api/da/quality/qualityTask";
 let falg = ref(false)
 const { proxy } = getCurrentInstance();
@@ -267,37 +257,11 @@ const ruleConfigMap = {
         field: "characterValidation",
         component: CharacterValidation,
     },
-    "LENGTH_VALIDATION": {
-        label: "字段长度范围校验",
-        field: "lengthValidation",
-        component: LengthRule,
-    },
     "DECIMAL_PRECISION_VALIDATION": {
         label: "数值精度校验",
         field: "decimalscaleValidation",
         component: DecimalscaleRule,
     },
-    "GROUP_FIELD_COMPLETENESS": {
-        label: "字段组完整性校验",
-        field: "groupFieldCompleteness",
-        component: GroupFieldCompletenessRule,
-    },
-    "NUMERIC_RANGE_VALIDATION": {
-        label: "数值字段范围校验",
-        field: "numericRangeValidation",
-        component: NumericRangeRule,
-    },
-    "ENUM_VALIDATION": {
-        label: "枚举值校验",
-        field: "enumValidation",
-        component: EnumRule,
-    },
-    "TIME_ORDER_VALIDATION": {
-        label: "时间字段先后顺序校验",
-        field: "timeOrderValidation",
-        component: TimeOrderRule,
-    },
-
     "COMPOSITE_UNIQUENESS_VALIDATION": {
         label: "多字段组合唯一性校验",
         field: "compositeUniquenessValidation",

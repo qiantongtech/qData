@@ -46,7 +46,7 @@ public class DpDataElemRuleRelController extends BaseController {
     private IDpDataElemRuleRelService dpDataElemRuleRelService;
 
     @Operation(summary = "查询数据元数据规则关联信息列表")
-    @PreAuthorize("@ss.hasPermi('dp:dataElemRuleRel:list')")
+//    @PreAuthorize("@ss.hasPermi('dp:dataElemRuleRel:list')")
     @GetMapping("/list")
     public CommonResult<PageResult<DpDataElemRuleRelDO>> list(DpDataElemRuleRelPageReqVO dpDataElemRuleRel) {
         PageResult<DpDataElemRuleRelDO> page = dpDataElemRuleRelService.getDpDataElemRuleRelPage(dpDataElemRuleRel);
@@ -54,7 +54,7 @@ public class DpDataElemRuleRelController extends BaseController {
     }
 
     @Operation(summary = "导出数据元数据规则关联信息列表")
-    @PreAuthorize("@ss.hasPermi('dp:dataElemRuleRel:export')")
+//    @PreAuthorize("@ss.hasPermi('dp:dataElemRuleRel:export')")
     @Log(title = "数据元数据规则关联信息", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DpDataElemRuleRelPageReqVO exportReqVO) {
@@ -65,7 +65,7 @@ public class DpDataElemRuleRelController extends BaseController {
     }
 
     @Operation(summary = "导入数据元数据规则关联信息列表")
-    @PreAuthorize("@ss.hasPermi('dp:dataElemRuleRel:import')")
+//    @PreAuthorize("@ss.hasPermi('dp:dataElemRuleRel:import')")
     @Log(title = "数据元数据规则关联信息", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
@@ -77,7 +77,7 @@ public class DpDataElemRuleRelController extends BaseController {
     }
 
     @Operation(summary = "获取数据元数据规则关联信息详细信息")
-    @PreAuthorize("@ss.hasPermi('dp:dataElemRuleRel:query')")
+//    @PreAuthorize("@ss.hasPermi('dp:dataElemRuleRel:query')")
     @GetMapping(value = "/{id}")
     public CommonResult<DpDataElemRuleRelRespVO> getInfo(@PathVariable("id") Long id) {
         DpDataElemRuleRelDO dpDataElemRuleRelDO = dpDataElemRuleRelService.getDpDataElemRuleRelById(id);
@@ -85,7 +85,7 @@ public class DpDataElemRuleRelController extends BaseController {
     }
 
     @Operation(summary = "新增数据元数据规则关联信息")
-    @PreAuthorize("@ss.hasPermi('dp:dataElemRuleRel:add')")
+//    @PreAuthorize("@ss.hasPermi('dp:dataElemRuleRel:add')")
     @Log(title = "数据元数据规则关联信息", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DpDataElemRuleRelSaveReqVO dpDataElemRuleRel) {
@@ -96,7 +96,7 @@ public class DpDataElemRuleRelController extends BaseController {
     }
 
     @Operation(summary = "修改数据元数据规则关联信息")
-    @PreAuthorize("@ss.hasPermi('dp:dataElemRuleRel:edit')")
+//    @PreAuthorize("@ss.hasPermi('dp:dataElemRuleRel:edit')")
     @Log(title = "数据元数据规则关联信息", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DpDataElemRuleRelSaveReqVO dpDataElemRuleRel) {
@@ -107,7 +107,7 @@ public class DpDataElemRuleRelController extends BaseController {
     }
 
     @Operation(summary = "删除数据元数据规则关联信息")
-    @PreAuthorize("@ss.hasPermi('dp:dataElemRuleRel:remove')")
+//    @PreAuthorize("@ss.hasPermi('dp:dataElemRuleRel:remove')")
     @Log(title = "数据元数据规则关联信息", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {

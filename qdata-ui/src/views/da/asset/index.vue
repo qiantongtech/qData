@@ -196,6 +196,13 @@
                                 </el-icon>更新数据
                               </el-text>
                             </el-dropdown-item>
+                            <el-dropdown-item v-if="unregistered(item)">
+                              <el-text type="primary" @click="addAttTagData(item)">
+                                <el-icon>
+                                  <Pointer />
+                                </el-icon>打标
+                              </el-text>
+                            </el-dropdown-item>
                             <el-dropdown-item v-if="unregistered(item) && type != 1">
                               <el-text type="primary" @click="handleApply(item)">
                                 <el-icon>
@@ -335,6 +342,7 @@
     <CreateEditModal :deptOptions="deptOptions" :visible="open" :title="title" @update:visible="open = $event"
       @confirm="getList" :data="form" :isRegister="isRegister" type="0" />
     <!-- 用户导入对话框 -->
+
     <el-dialog :title="upload.title" v-model="upload.open" width="800px" :append-to="$refs['app-container']" draggable
       destroy-on-close>
       <el-upload ref="uploadRef" :limit="1" accept=".xlsx, .xls" :headers="upload.headers"
@@ -436,6 +444,7 @@
       </template>
     </el-dialog>
   </div>
+
 </template>
 
 <script setup name="Asset">
@@ -449,7 +458,7 @@ import {
   startDaDiscoveryTask,
 } from "@/api/da/asset/asset";
 import OverflowTooltip from "@/components/OverflowTooltip";
-import add from "@/views/dpp/asset/add/index.vue";
+import CreateEditModal from "@/views/dpp/asset/add";
 import { currentUser } from "@/api/att/project/project.js";
 import DeptTree from "@/components/DeptTree";
 import { listAttAssetCat } from "@/api/att/cat/assetCat/assetCat.js";
@@ -1016,6 +1025,10 @@ function routeTo(link, row) {
     }
   }
 }
+
+
+
+
 /** 启用禁用开关 */
 function handleStatusChange(row) {
   const text = row.status === "2" ? "发布" : "撤销发布";

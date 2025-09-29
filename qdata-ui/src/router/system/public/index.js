@@ -93,5 +93,19 @@ export default [
                 meta: { title: '用户管理', icon: 'user' }
             }
         ]
-    }
+    },
+    {
+        path: '/system/notice/detail',
+        component: Layout,
+        redirect: 'notice',
+        hidden: true,
+        children: [
+            {
+                path: '',
+                component: () => import('@/views/sys/system/notice/detail.vue'),
+                name: 'noticeDetail',
+                meta: { title: '公告详情', activeMenu: '/system/notice' }
+            }
+        ]
+    },
 ];

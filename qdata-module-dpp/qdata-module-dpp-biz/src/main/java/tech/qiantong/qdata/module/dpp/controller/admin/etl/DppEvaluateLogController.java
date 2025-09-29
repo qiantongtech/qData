@@ -1,6 +1,14 @@
 package tech.qiantong.qdata.module.dpp.controller.admin.etl;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.util.Arrays;
 import cn.hutool.core.date.DateUtil;
+
+import java.util.Date;
+import java.util.List;
+
 import com.alibaba.fastjson2.JSONObject;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -8,30 +16,21 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import tech.qiantong.qdata.common.core.domain.AjaxResult;
+import tech.qiantong.qdata.common.core.page.PageParam;
 import tech.qiantong.qdata.common.annotation.Log;
 import tech.qiantong.qdata.common.core.controller.BaseController;
-import tech.qiantong.qdata.common.core.domain.AjaxResult;
 import tech.qiantong.qdata.common.core.domain.CommonResult;
-import tech.qiantong.qdata.common.core.page.PageParam;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.enums.BusinessType;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.common.utils.poi.ExcelUtil;
-import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEvaluateLogPageReqVO;
-import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEvaluateLogRespVO;
-import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEvaluateLogSaveReqVO;
-import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEvaluateLogStatisticsVO;
+import tech.qiantong.qdata.common.exception.enums.GlobalErrorCodeConstants;
+import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.*;
 import tech.qiantong.qdata.module.dpp.controller.admin.qa.vo.CheckErrorDataReqDTO;
 import tech.qiantong.qdata.module.dpp.convert.etl.DppEvaluateLogConvert;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEvaluateLogDO;
 import tech.qiantong.qdata.module.dpp.service.etl.IDppEvaluateLogService;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
 
 /**
  * 评测规则结果Controller
@@ -48,7 +47,7 @@ public class DppEvaluateLogController extends BaseController {
     private IDppEvaluateLogService dppEvaluateLogService;
 
     @Operation(summary = "查询评测规则结果列表")
-    @PreAuthorize("@ss.hasPermi('dpp:evaluateLog:log:list')")
+//    @PreAuthorize("@ss.hasPermi('dpp:evaluateLog:list')")
     @GetMapping("/list")
     public CommonResult<PageResult<DppEvaluateLogRespVO>> list(DppEvaluateLogPageReqVO dppEvaluateLog) {
         PageResult<DppEvaluateLogDO> page = dppEvaluateLogService.getDppEvaluateLogPage(dppEvaluateLog);
@@ -56,7 +55,7 @@ public class DppEvaluateLogController extends BaseController {
     }
 
     @Operation(summary = "导出评测规则结果列表")
-    @PreAuthorize("@ss.hasPermi('dpp:evaluateLog:log:export')")
+//    @PreAuthorize("@ss.hasPermi('dpp:evaluateLog:export')")
     @Log(title = "评测规则结果", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DppEvaluateLogPageReqVO exportReqVO) {
@@ -67,7 +66,7 @@ public class DppEvaluateLogController extends BaseController {
     }
 
     @Operation(summary = "导入评测规则结果列表")
-    @PreAuthorize("@ss.hasPermi('dpp:evaluateLog:log:import')")
+//    @PreAuthorize("@ss.hasPermi('dpp:evaluateLog:import')")
     @Log(title = "评测规则结果", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
@@ -79,7 +78,7 @@ public class DppEvaluateLogController extends BaseController {
     }
 
     @Operation(summary = "获取评测规则结果详细信息")
-    @PreAuthorize("@ss.hasPermi('dpp:evaluateLog:log:query')")
+//    @PreAuthorize("@ss.hasPermi('dpp:evaluateLog:query')")
     @GetMapping(value = "/{id}")
     public CommonResult<DppEvaluateLogRespVO> getInfo(@PathVariable("id") Long id) {
         DppEvaluateLogDO dppEvaluateLogDO = dppEvaluateLogService.getDppEvaluateLogById(id);
@@ -87,7 +86,7 @@ public class DppEvaluateLogController extends BaseController {
     }
 
     @Operation(summary = "新增评测规则结果")
-    @PreAuthorize("@ss.hasPermi('dpp:evaluateLog:log:add')")
+//    @PreAuthorize("@ss.hasPermi('dpp:evaluateLog:add')")
     @Log(title = "评测规则结果", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DppEvaluateLogSaveReqVO dppEvaluateLog) {
@@ -98,7 +97,7 @@ public class DppEvaluateLogController extends BaseController {
     }
 
     @Operation(summary = "修改评测规则结果")
-    @PreAuthorize("@ss.hasPermi('dpp:evaluateLog:log:edit')")
+//    @PreAuthorize("@ss.hasPermi('dpp:evaluateLog:edit')")
     @Log(title = "评测规则结果", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DppEvaluateLogSaveReqVO dppEvaluateLog) {
@@ -109,7 +108,7 @@ public class DppEvaluateLogController extends BaseController {
     }
 
     @Operation(summary = "删除评测规则结果")
-    @PreAuthorize("@ss.hasPermi('dpp:evaluateLog:log:remove')")
+//    @PreAuthorize("@ss.hasPermi('dpp:evaluateLog:remove')")
     @Log(title = "评测规则结果", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {

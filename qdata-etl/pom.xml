@@ -161,10 +161,6 @@
                     <artifactId>jjwt</artifactId>
                 </exclusion>
                 <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-data-redis</artifactId>
-                </exclusion>
-                <exclusion>
                     <groupId>org.apache.commons</groupId>
                     <artifactId>commons-pool2</artifactId>
                 </exclusion>

@@ -7,6 +7,8 @@ import lombok.Data;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import tech.qiantong.qdata.common.database.exception.DataQueryException;
+import tech.qiantong.qdata.common.database.utils.AesEncryptUtil;
+import com.alibaba.fastjson2.annotation.JSONField;
 
 import java.io.Serializable;
 import java.util.List;
@@ -18,6 +20,7 @@ public class DbQueryProperty implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @JSONField(alternateNames = {"type"})
     private String dbType;
     private String host;
     private String username;
@@ -28,6 +31,22 @@ public class DbQueryProperty implements Serializable {
     //kafka配置或生成表sql时所需的配置
     private Map<String, Object> config;
 
+    /**
+     * 配置
+     */
+    private Map<String, Object> datasourceConfig;
+
+    /**
+     * 不解密的构造方法
+     *
+     * @param dbType
+     * @param host
+     * @param username
+     * @param password
+     * @param port
+     * @param dbName
+     * @param sid
+     */
     public DbQueryProperty(String dbType, String host, String username, String password, Integer port, String dbName, String sid) {
         this.dbType = dbType;
         this.host = host;
@@ -42,20 +61,25 @@ public class DbQueryProperty implements Serializable {
      * 参数合法性校验
      */
     public void viald() {
-        //判断是否是kafka
-        if (!StringUtils.isEmpty(dbType) && StringUtils.equals(DbType.KAFKA.getDb(), dbType)) {
-            if (StringUtils.isBlank(host) || port == null) {
-                throw new DataQueryException("参数不完整");
-            }
-        } else {
-            if (StringUtils.isBlank(dbType) || StringUtils.isBlank(host) ||
-                    StringUtils.isBlank(username) || (StringUtils.isBlank(password)) ||
-                    port == null) {
-                throw new DataQueryException("参数不完整");
-            }
+        if (StringUtils.isBlank(dbType)) {
+            throw new DataQueryException("参数不完整");
         }
-        if (DbType.OTHER.getDb().equals(dbType)) {
-            throw new DataQueryException("不支持的数据库类型");
+        DbType dbTypeEnum = DbType.getDbType(dbType);
+        switch (dbTypeEnum) {
+            case MYSQL:
+            case ORACLE:
+            case ORACLE_12C:
+            case DM8:
+            case KINGBASE8:
+                if (StringUtils.isBlank(host)
+                        || StringUtils.isBlank(username)
+                        || StringUtils.isBlank(password)
+                        || port == null) {
+                    throw new DataQueryException("参数不完整");
+                }
+                break;
+            case OTHER:
+                throw new DataQueryException("不支持的数据库类型");
         }
     }
 
@@ -66,8 +90,8 @@ public class DbQueryProperty implements Serializable {
      * @param datasourceConfig 配置信息（JSON字符串）
      */
     public DbQueryProperty(String datasourceType, String ip, Long port, String datasourceConfig) {
-        if (StringUtils.isEmpty(datasourceType) || StringUtils.isEmpty(ip) || port == null) {
-            throw new DataQueryException("数据库类型、IP和端口号不能为空");
+        if (org.apache.commons.lang.StringUtils.isEmpty(datasourceType)) {
+            throw new DataQueryException("数据库类型不能为空");
         }
         if (StringUtils.isEmpty(datasourceConfig)) {
             throw new DataQueryException("数据源配置不能为空");
@@ -76,20 +100,32 @@ public class DbQueryProperty implements Serializable {
             throw new DataQueryException("不支持的数据库类型");
         }
 
-
         JSONObject configJson;
         try {
             configJson = JSON.parseObject(datasourceConfig);
         } catch (Exception e) {
             throw new DataQueryException("数据源配置格式错误，应为合法的 JSON");
         }
+        this.datasourceConfig = configJson;
 
         this.dbType = datasourceType;
         this.host = ip;
-        this.port = port.intValue();
+        if (port != null) {
+            this.port = port.intValue();
+        }
 
         this.username = configJson.getString("username");
-        this.password = configJson.getString("password");
+
+        String passwordAes = configJson.getString("password");
+        //发布商业版，临时注释
+        if(StringUtils.isNotBlank(passwordAes)){
+            try {
+                this.password = AesEncryptUtil.desEncrypt(configJson.getString("password")).trim();
+            } catch (Exception e) {
+                this.password = configJson.getString("password");
+            }
+        }
+//        this.password = passwordAes;
         this.sid = configJson.getString("sid");
         this.dbName = configJson.getString("dbname");
         String config = configJson.getString("config");
@@ -113,8 +149,6 @@ public class DbQueryProperty implements Serializable {
         url = url.replace("${port}", String.valueOf(this.getPort()));
         if (DbType.ORACLE.getDb().equals(this.getDbType()) || DbType.ORACLE_12C.getDb().equals(this.getDbType())) {
             url = url.replace("${sid}", this.getSid());
-        } else if (DbType.DM8.getDb().equals(this.getDbType())) {
-            url = url.replace("${dbName}", this.getDbName());
         } else {
             url = url.replace("${dbName}", this.getDbName());
         }

@@ -1,10 +1,17 @@
 package tech.qiantong.qdata.module.da.dal.dataobject.datasource;
 
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
+import com.alibaba.fastjson2.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
+import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 数据源 DO 对象 DA_DATASOURCE
@@ -20,6 +27,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
+@Slf4j
 public class DaDatasourceDO extends BaseEntity {
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
@@ -73,5 +81,22 @@ public class DaDatasourceDO extends BaseEntity {
     @TableLogic
     private Boolean delFlag;
 
+
+    @JSONField(serialize = false)
+    public String toJsonString() {
+        // 默认 Fastjson：忽略 null 字段，字段顺序自动
+        return JSON.toJSONString(this);
+    }
+
+    @JSONField(serialize = false)
+    public DbQueryProperty simplify() {
+        DbQueryProperty dbQueryProperty = new DbQueryProperty(
+                this.getDatasourceType(),
+                this.getIp(),
+                this.getPort(),
+                this.getDatasourceConfig()
+        );
+        return dbQueryProperty;
+    }
 
 }

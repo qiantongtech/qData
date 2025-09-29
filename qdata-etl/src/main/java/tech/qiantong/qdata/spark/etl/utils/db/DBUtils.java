@@ -6,7 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.spark.sql.jdbc.JdbcDialects;
 import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
 import tech.qiantong.qdata.common.database.constants.DbType;
-import tech.qiantong.qdata.spark.etl.utils.db.spark.dialect.HiveSqlDialect;
+import tech.qiantong.qdata.spark.etl.utils.RedisUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,13 +34,20 @@ public class DBUtils {
      * 获取数据库连接配置
      */
     public static Map<String, String> getDbOptions(JSONObject parameter) {
+        String datasourceId = parameter.getString("datasourceId");
         JSONObject connection = parameter.getJSONObject("connection");
+        String jdbcUrlOld = connection.getString("jdbcUrl");
+        String dbType = parameter.getString("dbType");
+
+        if (jdbcUrlOld != null && !"".equals(jdbcUrlOld) && datasourceId == null) {
+            datasourceId = RedisUtils.hget("datasource-old", jdbcUrlOld);
+        }
 
         Map<String, String> options = new HashMap<>();
         //注册驱动
         try {
             // 根据不同数据库类型设置连接参数
-            switch (DbType.getDbType(parameter.getString("dbType"))) {
+            switch (DbType.getDbType(dbType)) {
                 case DM8:
                     Class.forName("dm.jdbc.driver.DmDriver");
                     options.put("driver", "dm.jdbc.driver.DmDriver");
@@ -60,24 +67,50 @@ public class DBUtils {
                     break;
                 //后续再扩展
                 default:
-                    throw new RuntimeException("Unsupported database type: " + parameter.getString("dbType"));
+                    throw new RuntimeException("Unsupported database type: " + dbType);
             }
         } catch (ClassNotFoundException e) {
         }
-        options.put("url", connection.getString("jdbcUrl"));
-        options.put("user", parameter.getString("username"));
-        options.put("password", parameter.getString("password"));
+
+
+        String jdbcUrl = jdbcUrlOld;
+        String sid = parameter.getString("sid");
+        String dbName = parameter.getString("dbName");
+        String username = parameter.getString("username");
+        String password = parameter.getString("password");
+
+        String datasource = RedisUtils.hget("datasource", datasourceId);
+        // 替换存储在 redis 中最新的数据源连接信息
+        if (datasource != null && !"".equals(datasource)) {
+            DbQueryProperty dbQueryProperty = JSONObject.parseObject(datasource, DbQueryProperty.class);
+            dbType = dbQueryProperty.getDbType();
+            jdbcUrl = dbQueryProperty.trainToJdbcUrl();
+            sid = dbQueryProperty.getSid();
+            dbName = dbQueryProperty.getDbName();
+            username = dbQueryProperty.getUsername();
+            password = dbQueryProperty.getPassword();
+        }
+
+        if (StringUtils.indexOf(jdbcUrl, "?stringtype=unspecified") == -1
+                && (StringUtils.equals(DbType.KINGBASE8.getDb(), dbType))) {
+            options.put("url", jdbcUrl + "?stringtype=unspecified");
+        } else {
+            options.put("url", jdbcUrl);
+        }
+        options.put("user", username);
+        options.put("password", password);
+        options.put("dbName", dbName);
         if (connection.containsKey("table")) {
-            String dbName = parameter.getString("dbName");
-            String sid = parameter.getString("sid");
+            //{\"username\":\"qdata_dev\",\"password\":\"2LKqLVMQ!xVDT$Qx\",\"dbname\":\"qdata_dev\",\"sid\":\"public\"}
             //表查询
-            if (StringUtils.equals(DbType.KINGBASE8.getDb(), parameter.getString("dbType"))) {
+            if (StringUtils.equals(DbType.KINGBASE8.getDb(), dbType)) {
                 options.put("dbtable", dbName + "." + sid + "." + connection.getString("table"));
             } else if (StringUtils.isNotBlank(dbName)) {
                 options.put("dbtable", dbName + "." + connection.getString("table"));
             } else {
                 options.put("dbtable", connection.getString("table"));
             }
+            options.put("tableName", connection.getString("table"));
         } else {
             //sql查询
             options.put("query", connection.getString("querySql"));
@@ -86,6 +119,5 @@ public class DBUtils {
     }
 
     public static void init() {
-        JdbcDialects.registerDialect(new HiveSqlDialect());
     }
 }

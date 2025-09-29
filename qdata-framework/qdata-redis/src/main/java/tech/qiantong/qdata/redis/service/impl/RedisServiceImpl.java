@@ -119,4 +119,9 @@ public class RedisServiceImpl implements IRedisService {
     public List<Object> hashMultiGet(String key, List<String> hashKeys) {
         return stringRedisTemplate.<String, Object>opsForHash().multiGet(key, hashKeys);
     }
+
+    @Override
+    public Boolean hashHasKey(String key, String hashKey) {
+        return stringRedisTemplate.opsForHash().hasKey(key, hashKey);
+    }
 }

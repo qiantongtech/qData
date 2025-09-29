@@ -55,4 +55,13 @@ public interface IRedisService {
     Map<String, Object> hashGetAll(String key);
 
     List<Object> hashMultiGet(String key, List<String> hashKeys);
+
+    /**
+     * 判断 Hash 中是否存在指定字段
+     *
+     * @param key     Redis 键
+     * @param hashKey Hash 字段
+     * @return 是否存在
+     */
+    Boolean hashHasKey(String key, String hashKey);
 }

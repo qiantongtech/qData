@@ -104,4 +104,14 @@ public interface IDppEtlNodeLogService extends IService<DppEtlNodeLogDO> {
      * @return
      */
     Integer getMaxVersionByNodeCode(String nodeCode);
+
+
+    /**
+     * 根据任务编码及任务版本获取节点信息
+     *
+     * @param taskCode
+     * @param version
+     * @return
+     */
+    List<DppEtlNodeLogDO> listByTaskCode(String taskCode, Integer version);
 }

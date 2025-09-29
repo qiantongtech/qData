@@ -196,13 +196,6 @@
                                 </el-icon>更新数据
                               </el-text>
                             </el-dropdown-item>
-                            <el-dropdown-item v-if="unregistered(item)">
-                              <el-text type="primary" @click="addAttTagData(item)">
-                                <el-icon>
-                                  <Pointer />
-                                </el-icon>打标
-                              </el-text>
-                            </el-dropdown-item>
                             <el-dropdown-item v-if="unregistered(item) && type != 1">
                               <el-text type="primary" @click="handleApply(item)">
                                 <el-icon>
@@ -476,7 +469,7 @@ const { da_assets_status, da_asset_source, da_asset_type } = proxy.useDict(
 const unregistered = (item) => {
   return item.createType == undefined || item.createType == 2;
 }
-const tagMultiple = ref(false);
+
 const assetId = ref(null);
 const tagIds = ref([]);
 const daAssetList = ref([]);
@@ -679,11 +672,7 @@ function submitApplyForm() {
   });
 }
 
-function addAttTagData(row) {
-  assetId.value = row.id;
-  tagIds.value = row.tagIds;
-  tagMultiple.value = true;
-}
+
 function handleRefresh(row) {
   const _id = row.id;
   loading.value = true;
@@ -1031,7 +1020,7 @@ function routeTo(link, row) {
 
 /** 启用禁用开关 */
 function handleStatusChange(row) {
-  const text = row.status === "2" ? "发布" : "撤销发布";
+  const text = row.status === "2" ? "撤销发布" : "发布";
   const status = row.status === "2" ? "1" : "2";
   proxy.$modal
     .confirm("确认要" + text + '"' + row.name + '"资产吗？')

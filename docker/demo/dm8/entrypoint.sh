@@ -127,6 +127,30 @@ create user "${QDATA_USER}" identified by "${QDATA_PWD}" hash with SHA512 salt;
 grant "PUBLIC","SOI","DBA" to "${QDATA_USER}";
 COMMIT;
 EOF
+  # 原始层
+  /home/dmdba/dmdb/bin/disql SYSDBA/${SYSDBA_PWD}@localhost:${PORT_NUM} <<EOF >> "$INIT_LOG" 2>&1
+create user "ods" identified by "${QDATA_PWD}" hash with SHA512 salt;
+grant "PUBLIC","SOI","DBA" to "ods";
+COMMIT;
+EOF
+  # 明细层
+  /home/dmdba/dmdb/bin/disql SYSDBA/${SYSDBA_PWD}@localhost:${PORT_NUM} <<EOF >> "$INIT_LOG" 2>&1
+create user "dwd" identified by "${QDATA_PWD}" hash with SHA512 salt;
+grant "PUBLIC","SOI","DBA" to "dwd";
+COMMIT;
+EOF
+  # 主题层
+  /home/dmdba/dmdb/bin/disql SYSDBA/${SYSDBA_PWD}@localhost:${PORT_NUM} <<EOF >> "$INIT_LOG" 2>&1
+create user "dws" identified by "${QDATA_PWD}" hash with SHA512 salt;
+grant "PUBLIC","SOI","DBA" to "dws";
+COMMIT;
+EOF
+  # 应用层
+  /home/dmdba/dmdb/bin/disql SYSDBA/${SYSDBA_PWD}@localhost:${PORT_NUM} <<EOF >> "$INIT_LOG" 2>&1
+create user "ads" identified by "${QDATA_PWD}" hash with SHA512 salt;
+grant "PUBLIC","SOI","DBA" to "ads";
+COMMIT;
+EOF
 
   echo "Importing initial data ..." | tee -a "$INIT_LOG"
   # 第二步：业务用户导入数据（确保 /home/dmdba/initdata/init-qdata.sql 可读）

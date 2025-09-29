@@ -61,7 +61,7 @@ export function delDpDataElem(id) {
 // 查询数据元代码映射列表
 export function listDpCodeMap(query) {
     return request({
-        url: '/dp/dataElem/list',
+        url: '/dp/codeMap/list',
         method: 'get',
         params: query
     });
@@ -70,7 +70,7 @@ export function listDpCodeMap(query) {
 // 查询数据元代码映射详细
 export function getDpCodeMap(id) {
     return request({
-        url: '/dp/dataElem/' + id,
+        url: '/dp/codeMap/' + id,
         method: 'get'
     });
 }
@@ -78,7 +78,7 @@ export function getDpCodeMap(id) {
 // 新增数据元代码映射
 export function addDpCodeMap(data) {
     return request({
-        url: '/dp/dataElem',
+        url: '/dp/codeMap',
         method: 'post',
         data: data
     });
@@ -87,7 +87,7 @@ export function addDpCodeMap(data) {
 // 修改数据元代码映射
 export function updateDpCodeMap(data) {
     return request({
-        url: '/dp/dataElem',
+        url: '/dp/codeMap',
         method: 'put',
         data: data
     });
@@ -96,14 +96,14 @@ export function updateDpCodeMap(data) {
 // 删除数据元代码映射
 export function delDpCodeMap(id) {
     return request({
-        url: '/dp/dataElem/' + id,
+        url: '/dp/codeMap/' + id,
         method: 'delete'
     });
 }
 // 查询数据元数据资产关联信息列表
 export function listDpDataElemAssetRel(query) {
     return request({
-        url: '/dp/dataElem/list',
+        url: '/dp/dataElemAssetRel/list',
         method: 'get',
         params: query
     });
@@ -112,7 +112,7 @@ export function listDpDataElemAssetRel(query) {
 // 查询数据元数据资产关联信息详细
 export function getDpDataElemAssetRel(id) {
     return request({
-        url: '/dp/dataElem/' + id,
+        url: '/dp/dataElemAssetRel/' + id,
         method: 'get'
     });
 }
@@ -120,7 +120,7 @@ export function getDpDataElemAssetRel(id) {
 // 新增数据元数据资产关联信息
 export function addDpDataElemAssetRel(data) {
     return request({
-        url: '/dp/dataElem',
+        url: '/dp/dataElemAssetRel',
         method: 'post',
         data: data
     });
@@ -129,7 +129,7 @@ export function addDpDataElemAssetRel(data) {
 // 修改数据元数据资产关联信息
 export function updateDpDataElemAssetRel(data) {
     return request({
-        url: '/dp/dataElem',
+        url: '/dp/dataElemAssetRel',
         method: 'put',
         data: data
     });
@@ -138,14 +138,14 @@ export function updateDpDataElemAssetRel(data) {
 // 删除数据元数据资产关联信息
 export function delDpDataElemAssetRel(id) {
     return request({
-        url: '/dp/dataElem/' + id,
+        url: '/dp/dataElemAssetRel/' + id,
         method: 'delete'
     });
 }
 // 查询数据元代码列表
 export function listDpDataElemCode(query) {
     return request({
-        url: '/dp/dataElem/list',
+        url: '/dp/dataElemCode/list',
         method: 'get',
         params: query
     });
@@ -154,7 +154,7 @@ export function listDpDataElemCode(query) {
 // 查询数据元代码详细
 export function getDpDataElemCode(id) {
     return request({
-        url: '/dp/dataElem/' + id,
+        url: '/dp/dataElemCode/' + id,
         method: 'get'
     });
 }
@@ -162,7 +162,7 @@ export function getDpDataElemCode(id) {
 // 新增数据元代码
 export function addDpDataElemCode(data) {
     return request({
-        url: '/dp/dataElem',
+        url: '/dp/dataElemCode',
         method: 'post',
         data: data
     });
@@ -171,7 +171,7 @@ export function addDpDataElemCode(data) {
 // 修改数据元代码
 export function updateDpDataElemCode(data) {
     return request({
-        url: '/dp/dataElem',
+        url: '/dp/dataElemCode',
         method: 'put',
         data: data
     });
@@ -180,7 +180,7 @@ export function updateDpDataElemCode(data) {
 // 删除数据元代码
 export function delDpDataElemCode(id) {
     return request({
-        url: '/dp/dataElem/' + id,
+        url: '/dp/dataElemCode/' + id,
         method: 'delete'
     });
 }
@@ -188,7 +188,7 @@ export function delDpDataElemCode(id) {
 //校验源代码值
 export function validateCodeValue(params) {
     return request({
-        url: '/dp/dataElem/validateCodeValue',
+        url: '/dp/dataElemCode/validateCodeValue',
         method: 'get',
         params
     });
@@ -196,7 +196,7 @@ export function validateCodeValue(params) {
 // 查询数据元数据规则关联信息列表
 export function listDpDataElemRuleRel(query) {
     return request({
-        url: '/dp/dataElem/list',
+        url: '/dp/dataElemRuleRel/list',
         method: 'get',
         params: query
     })
@@ -205,7 +205,7 @@ export function listDpDataElemRuleRel(query) {
 // 查询数据元数据规则关联信息详细
 export function getDpDataElemRuleRel(id) {
     return request({
-        url: '/dp/dataElem/' + id,
+        url: '/dp/dataElemRuleRel/' + id,
         method: 'get'
     })
 }
@@ -213,7 +213,7 @@ export function getDpDataElemRuleRel(id) {
 // 新增数据元数据规则关联信息
 export function addDpDataElemRuleRel(data) {
     return request({
-        url: '/dp/dataElem',
+        url: '/dp/dataElemRuleRel',
         method: 'post',
         data: data
     })
@@ -222,7 +222,7 @@ export function addDpDataElemRuleRel(data) {
 // 修改数据元数据规则关联信息
 export function updateDpDataElemRuleRel(data) {
     return request({
-        url: '/dp/dataElem',
+        url: '/dp/dataElemRuleRel',
         method: 'put',
         data: data
     })
@@ -231,7 +231,7 @@ export function updateDpDataElemRuleRel(data) {
 // 删除数据元数据规则关联信息
 export function delDpDataElemRuleRel(id) {
     return request({
-        url: '/dp/dataElem/' + id,
+        url: '/dp/dataElemRuleRel/' + id,
         method: 'delete'
     })
 }
@@ -239,7 +239,7 @@ export function delDpDataElemRuleRel(id) {
 // 保存关联信息
 export function save(dataElemId, ruleType, data) {
     return request({
-        url: `/dp/dataElem/save/${dataElemId}/${ruleType}`,
+        url: `/dp/dataElemRuleRel/save/${dataElemId}/${ruleType}`,
         method: 'post',
         data
     })
@@ -248,7 +248,7 @@ export function save(dataElemId, ruleType, data) {
 // 数据源清洗 稽查规则
 export function dpDataElemRuleRel(data) {
     return request({
-        url: '/dp/dataElem',
+        url: '/dp/dataElemRuleRel',
         method: 'post',
         data: data
     });
@@ -256,7 +256,7 @@ export function dpDataElemRuleRel(data) {
 // 数据源清洗 稽查规则 修改
 export function putDpDataElemRuleRel(data) {
     return request({
-        url: '/dp/dataElem',
+        url: '/dp/dataElemRuleRel',
         method: 'put',
         data: data
     });
@@ -264,15 +264,15 @@ export function putDpDataElemRuleRel(data) {
 // 数据源清洗 稽查规则 删除
 export function DlEPutDpDataElemRuleRel(id) {
     return request({
-        url: '/dp/dataElem/' + id,
+        url: '/dp/dataElemRuleRel/' + id,
         method: 'DELETE',
     });
 }
 
-// 数据集成 查询 
+// 数据集成 查询
 export function listDpDataElemRuleRelV2(query) {
     return request({
-        url: '/da/daAsset/listRelRule/v2',
+        url: '/da/asset/listRelRule/v2',
         method: 'get',
         params: query
     })

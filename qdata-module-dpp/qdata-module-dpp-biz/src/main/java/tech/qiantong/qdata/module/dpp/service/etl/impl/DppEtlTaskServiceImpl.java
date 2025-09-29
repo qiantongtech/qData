@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tech.qiantong.qdata.api.ds.api.base.DsStatusRespDTO;
 import tech.qiantong.qdata.api.ds.api.etl.*;
 import tech.qiantong.qdata.api.ds.api.etl.ds.ProcessDefinition;
+import tech.qiantong.qdata.api.ds.api.etl.ds.ProcessTaskRelation;
 import tech.qiantong.qdata.api.ds.api.etl.ds.Schedule;
 import tech.qiantong.qdata.api.ds.api.service.etl.IDsEtlNodeService;
 import tech.qiantong.qdata.api.ds.api.service.etl.IDsEtlSchedulerService;
@@ -1796,4 +1797,221 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
         DppEtlSchedulerDO result = iDppEtlSchedulerService.getDppEtlSchedulerById(reqVO);
         return result == null ? new DppEtlSchedulerDO() : result;
     }
+
+    @Override
+    public DppEtlTaskSaveReqVO copyCreateEtl(DppEtlNewNodeSaveReqVO nodeSaveReqVO) {
+        DppEtlTaskUpdateQueryRespVO dppEtlTaskUpdateQueryRespVO = this.getuUpdateQueryInfo(JSONUtils.convertToLong(nodeSaveReqVO.getId()));
+
+        //判断是否是离线任务 是需要获取扩展信息的任务编码进行接口调用
+        if (StringUtils.equals("1", dppEtlTaskUpdateQueryRespVO.getType())) {
+            //获取扩展信息
+            DppEtlTaskExtDO taskExt = dppEtlTaskExtService.getByTaskId(Long.parseLong(nodeSaveReqVO.getId()));
+            if (taskExt == null) {
+                throw new ServiceException("暂无数据！");
+            }
+            dppEtlTaskUpdateQueryRespVO.setCode(taskExt.getEtlTaskCode());
+        }
+
+        DsTaskSaveRespDTO task = dsEtlTaskService.batchCopy(dppEtlTaskUpdateQueryRespVO.getCode()
+                , dppEtlTaskUpdateQueryRespVO.getProjectCode());
+
+        if (!task.getSuccess()) {
+            throw new ServiceException("copy任务错误:" + task.getMsg().toString()); // 抛出任务定义创建错误的异常
+        }
+        ProcessDefinition data = task.getData();
+
+        //任务类型;1：离线任务 2：实时任务 3：数据开发任务 4：	作业任务
+        String type = dppEtlTaskUpdateQueryRespVO.getType();
+        if (StringUtils.equals("1", type)) {
+            return copyCreateEtlTask(dppEtlTaskUpdateQueryRespVO, data);
+        } else if (StringUtils.equals("2", type)) {
+            return copyCreateEtlTaskFrontPostpositionRealTime(dppEtlTaskUpdateQueryRespVO, data);
+        } else if (StringUtils.equals("3", type)) {
+            return copyCreateProcessDefinition(dppEtlTaskUpdateQueryRespVO, data);
+        } else if (StringUtils.equals("4", type)) {
+            return copyCreateProcessDefinition(dppEtlTaskUpdateQueryRespVO, data);
+        }
+        return null;
+    }
+
+
+    private DppEtlTaskSaveReqVO copyCreateProcessDefinition(DppEtlTaskUpdateQueryRespVO dppEtlTaskUpdateQueryRespVO, ProcessDefinition data) {
+        return null;
+    }
+
+    private DppEtlTaskSaveReqVO copyCreateEtlTaskFrontPostpositionRealTime(DppEtlTaskUpdateQueryRespVO dppEtlTaskUpdateQueryRespVO, ProcessDefinition data) {
+        return null;
+    }
+
+    /**
+     * copy
+     *
+     * @param src
+     * @return
+     */
+    public DppEtlTaskSaveReqVO copyCreateEtlTask(DppEtlTaskUpdateQueryRespVO src, ProcessDefinition data) {
+        DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO = new DppEtlNewNodeSaveReqVO(src);
+        String taskCode = data.getCode();
+        String name = data.getName();
+        List<Map<String, Object>> locations = dppEtlNewNodeSaveReqVO.getLocations();
+        Map<Long, Long> definitionCopyVO = new HashMap<>();
+
+        // 转换任务保存请求对象
+        DppEtlTaskSaveReqVO taskSaveReqVO = TaskConverter.convertToDppEtlTaskSaveReqVO(dppEtlNewNodeSaveReqVO, data);
+        taskSaveReqVO.setCode(taskCode);
+        taskSaveReqVO.setDraftJson(src.getDraftJson());
+
+        for (Map<String, Object> location : locations) {
+            Long codeold = MapUtils.getLong(location, "taskCode");
+            //生成节点编码
+            DsNodeGenCodeRespDTO dsNodeGenCodeRespDTO = dsEtlNodeService.genCode(dppEtlNewNodeSaveReqVO.getProjectCode());
+            String codeNew = String.valueOf(dsNodeGenCodeRespDTO.getData().get(0));
+
+            definitionCopyVO.put(codeold, JSONUtils.convertToLong(codeNew));
+            location.put("taskCode", codeNew);
+        }
+
+        //封装节点编码
+        remapTaskCodes(dppEtlNewNodeSaveReqVO, definitionCopyVO);
+
+        taskSaveReqVO.setLocations(JSONUtils.toJson(locations));
+        Long dppEtlTask = this.createDppEtlTask(taskSaveReqVO);
+        taskSaveReqVO.setId(dppEtlTask);
+
+        //构建任务任务信息
+        Map<String, Object> taskInfo = new HashMap<>();
+        taskInfo.put("projectCode", dppEtlNewNodeSaveReqVO.getProjectCode());
+        taskInfo.put("taskCode", taskCode);
+        taskInfo.put("taskVersion", 1);
+        taskInfo.put("name", name);
+
+        // 调度器对象构建
+        DppEtlSchedulerSaveReqVO schedulerSaveReqVO = TaskConverter.convertToDppEtlSchedulerSaveReqVO(
+                dppEtlTask, taskSaveReqVO.getCode(), dppEtlNewNodeSaveReqVO
+        );
+        iDppEtlSchedulerService.createDppEtlScheduler(schedulerSaveReqVO);
+
+        DppEtlTaskLogSaveReqVO dppEtlTaskLogSaveReqVO = TaskConverter.fromDppEtlTaskLogSaveReqVO(dppEtlNewNodeSaveReqVO, data);
+        dppEtlTaskLogSaveReqVO.setLocations(JSONUtils.toJson(locations));
+        dppEtlTaskLogSaveReqVO.setCode(taskCode);
+        Long dppEtlTaskLog = iDppEtlTaskLogService.createDppEtlTaskLog(dppEtlTaskLogSaveReqVO);
+        dppEtlTaskLogSaveReqVO.setId(dppEtlTaskLog);
+
+        List<DppEtlNodeSaveReqVO> dppEtlNodeSaveReqVOList = TaskConverter.convertToDppEtlNodeSaveReqVOList(dppEtlNewNodeSaveReqVO, 1);
+
+        //创建etl任务扩展数据
+        dppEtlTaskExtService.createDppEtlTaskExt(DppEtlTaskExtSaveReqVO.builder()
+                .taskId(dppEtlTask)
+                .etlTaskCode(data.getCode())
+                .etlTaskVersion(data.getVersion())
+                .etlNodeId(data.getTaskDefinitionList().get(0).getId())
+                .etlNodeName(data.getTaskDefinitionList().get(0).getName())
+                .etlNodeCode(data.getTaskDefinitionList().get(0).getCode())
+                .etlNodeVersion(data.getTaskDefinitionList().get(0).getVersion())
+                .etlRelationId(data.getTaskRelationList().get(0).getId())
+                .build());
+
+        List<DppEtlNodeDO> dppEtlNodeBatch = iDppEtlNodeService.createDppEtlNodeBatch(dppEtlNodeSaveReqVOList);
+
+        List<DppEtlNodeLogSaveReqVO> dppEtlNodeLogSaveReqVOS = TaskConverter.convertToDppEtlNodeLogSaveReqVOList(dppEtlNodeSaveReqVOList);
+        iDppEtlNodeLogService.createDppEtlNodeLogBatch(dppEtlNodeLogSaveReqVOS);
+
+        List<DppEtlTaskNodeRelSaveReqVO> dppEtlTaskNodeRelSaveReqVOS = TaskConverter.convertToDppEtlTaskNodeRelSaveReqVOList(dppEtlNodeBatch, dppEtlNewNodeSaveReqVO, taskSaveReqVO);
+        iDppEtlTaskNodeRelService.createDppEtlTaskNodeRelBatch(dppEtlTaskNodeRelSaveReqVOS);
+
+        List<DppEtlTaskNodeRelLogSaveReqVO> dppEtlTaskNodeRelLogSaveReqVOS = TaskConverter.convertToDppEtlTaskNodeRelLogSaveReqVOList(dppEtlTaskNodeRelSaveReqVOS);
+        iDppEtlTaskNodeRelLogService.createDppEtlTaskNodeRelLogBatch(dppEtlTaskNodeRelLogSaveReqVOS);
+
+        return taskSaveReqVO; // 返回创建结果
+    }
+
+
+    public static void remapTaskCodes(DppEtlNewNodeSaveReqVO vo, Map<Long, Long> definitionCopyVO) {
+        if (vo == null || definitionCopyVO == null || definitionCopyVO.isEmpty()) {
+            return;
+        }
+
+        // 1) 解析 taskDefinitionList
+        String taskDefJson = vo.getTaskDefinitionList();
+        if (taskDefJson != null && !taskDefJson.isEmpty()) {
+            List<DppEtlNodeSaveReqVO> nodeList =
+                    JSON.parseArray(taskDefJson, DppEtlNodeSaveReqVO.class);
+
+            if (nodeList != null && !nodeList.isEmpty()) {
+                for (DppEtlNodeSaveReqVO node : nodeList) {
+                    node.setId(null);
+                    // code 可能为字符串，需转成 Long 做映射
+                    Long oldCode = JSONUtils.convertToLong(node.getCode());
+                    if (oldCode != null) {
+                        Long newCode = definitionCopyVO.get(oldCode);
+                        if (newCode != null) {
+                            node.setCode(String.valueOf(newCode));
+                        }
+                    }
+                }
+                vo.setTaskDefinitionList(JSON.toJSONString(nodeList));
+            }
+        }
+
+        // 2) 解析 taskRelationJson
+        String relJson = vo.getTaskRelationJson();
+        if (relJson != null && !relJson.isEmpty()) {
+            java.util.List<DppEtlTaskNodeRelRespVO> dppEtlTaskNodeRelRespVOList =
+                    JSON.parseArray(relJson, DppEtlTaskNodeRelRespVO.class);
+
+            List<ProcessTaskRelation> relList = new ArrayList<>();
+            if (dppEtlTaskNodeRelRespVOList != null && !dppEtlTaskNodeRelRespVOList.isEmpty()) {
+                for (DppEtlTaskNodeRelRespVO srcRel : dppEtlTaskNodeRelRespVOList) {
+                    //调取映射子方法
+                    ProcessTaskRelation rel = toProcessTaskRelation(srcRel, definitionCopyVO);
+                    relList.add(rel);
+                }
+                vo.setTaskRelationJson(JSON.toJSONString(relList));
+            }
+        }
+    }
+
+    /**
+     * 将 DppEtlTaskNodeRelRespVO → ProcessTaskRelation，并按 definitionCopyVO 重映射 pre/post code
+     */
+    private static ProcessTaskRelation toProcessTaskRelation(DppEtlTaskNodeRelRespVO src,
+                                                             Map<Long, Long> definitionCopyVO) {
+        ProcessTaskRelation rel = new ProcessTaskRelation();
+
+        // 仅按你的要求映射这四个字段
+        // preTaskCode
+        String preCodeStr = src.getPreNodeCode();
+        Long preOld = JSONUtils.convertToLong(preCodeStr);
+        if (preOld != null && definitionCopyVO != null) {
+            Long preNew = definitionCopyVO.get(preOld);
+            if (preNew != null) {
+                preCodeStr = String.valueOf(preNew);
+            }
+        }
+        rel.setPreTaskCode(preCodeStr);
+
+        // preTaskVersion
+        rel.setPreTaskVersion(safeToInt(src.getPreNodeVersion()));
+
+        // postTaskCode
+        String postCodeStr = src.getPostNodeCode();
+        Long postOld = JSONUtils.convertToLong(postCodeStr);
+        if (postOld != null && definitionCopyVO != null) {
+            Long postNew = definitionCopyVO.get(postOld);
+            if (postNew != null) {
+                postCodeStr = String.valueOf(postNew);
+            }
+        }
+        rel.setPostTaskCode(postCodeStr);
+
+        // postTaskVersion
+        rel.setPostTaskVersion(safeToInt(src.getPostNodeVersion()));
+
+        return rel;
+    }
+
+    private static int safeToInt(Long v) {
+        return v == null ? 1 : (int) Math.min(Math.max(v, 1L), Integer.MAX_VALUE);
+    }
+
 }

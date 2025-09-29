@@ -139,4 +139,6 @@ public interface IDppEtlTaskService extends IService<DppEtlTaskDO> {
     DppEtlTaskSaveReqVO createEtlTaskFrontPostposition(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO);
 
     DppEtlTaskUpdateQueryRespVO getupdateQueryFront(Long id);
+
+    DppEtlTaskSaveReqVO copyCreateEtl(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO);
 }

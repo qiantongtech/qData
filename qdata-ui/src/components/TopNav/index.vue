@@ -1,45 +1,41 @@
 <template>
-    <el-menu :default-active="activeMenu" mode="horizontal" @select="handleSelect" :ellipsis="false"
-        class="custom-topmenu">
-        <template v-for="(item, index) in topMenus" :key="item.path">
-            <el-menu-item :style="{ '--theme': theme }" :index="item.path" v-if="index < visibleNumber">
-                <svg-icon v-if="item.meta && item.meta.icon && item.meta.icon !== '#'" :icon-class="item.meta.icon"
-                    :style="iconStyle(item)" />
+    <el-menu :default-active="activeMenu" mode="horizontal" @select="handleSelect" :ellipsis="false">
+        <template v-for="(item, index) in topMenus">
+            <el-menu-item :style="{ '--theme': theme }" :index="item.path" :key="index" v-if="index < visibleNumber">
+                <svg-icon 
+                    v-if="item.meta && item.meta.icon && item.meta.icon !== '#'" :icon-class="item.meta.icon" />
                 {{ item.meta.title }}
             </el-menu-item>
         </template>
-        <el-sub-menu index="more" v-if="topMenus.length > visibleNumber" popper-class="more-menu-popper"
-            :popper-options="{ modifiers: [{ name: 'offset', options: { offset: [0, -10] } }] }" class="more-menu"
-            popper-append-to-body="false">
-            <template #title>
-                <svg-icon style="margin-right: 10px; width: 17px;height: 17px;" icon-class="gdcd" />
-                更多菜单
-            </template>
-            <template v-for="(item, index) in topMenus" :key="item.path">
-                <el-menu-item v-if="index >= visibleNumber" :index="item.path">
-                    <svg-icon v-if="item.meta && item.meta.icon && item.meta.icon !== '#'"
-                        :icon-class="item.meta.icon" />
+
+        <!-- 顶部菜单超出数量折叠 -->
+        <el-sub-menu :style="{ '--theme': theme }" index="more" v-if="topMenus.length > visibleNumber">
+            <template #title>更多菜单</template>
+            <template v-for="(item, index) in topMenus">
+                <el-menu-item :index="item.path" :key="index" v-if="index >= visibleNumber">
+                    <svg-icon 
+                        v-if="item.meta && item.meta.icon && item.meta.icon !== '#'" :icon-class="item.meta.icon" />
                     {{ item.meta.title }}
                 </el-menu-item>
             </template>
         </el-sub-menu>
-
     </el-menu>
 </template>
 
 <script setup>
-import { computed, ref, onMounted, onBeforeUnmount, getCurrentInstance } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { constantRoutes } from '@/router';
+import { isHttp } from '@/utils/validate';
 import useAppStore from '@/store/system/app';
 import useSettingsStore from '@/store/system/settings';
 import usePermissionStore from '@/store/system/permission';
+import { el } from 'element-plus/es/locale/index.mjs';
 import useTagsViewStore from '@/store/system/tagsView';
-import { isHttp } from '@/utils/validate';
-
 const { proxy } = getCurrentInstance();
-
+// 顶部栏初始数
 const visibleNumber = ref(null);
+// 当前激活菜单的 index
 const currentIndex = ref('/system');
+// 隐藏侧边栏路由
 const hideList = ['/index', '/user/profile'];
 
 const appStore = useAppStore();
@@ -48,71 +44,71 @@ const permissionStore = usePermissionStore();
 const route = useRoute();
 const router = useRouter();
 const emit = defineEmits(['getRouter']);
-
+// 主题颜色
 const theme = computed(() => settingsStore.theme);
-
+// 所有的路由信息
 const routers = computed(() => permissionStore.topbarRouters);
-
+// 顶部显示菜单
 const topMenus = computed(() => {
-    let arr = [];
-    routers.value.forEach(menu => {
+    let topMenus = [];
+    routers.value.map((menu) => {
         if (menu.hidden !== true) {
+            // 兼容顶部栏一级菜单内部跳转
             if (menu.path === '/') {
-                arr.push(menu.children[0]);
+                topMenus.push(menu.children[0]);
             } else {
-                arr.push(menu);
+                topMenus.push(menu);
             }
         }
     });
-    return arr;
-});
-const iconStyle = (item) => {
-    let size = '26px' // 默认大小
-    if (item.meta.title === '数据服务') {
-        size = '28px'
-    } else if (item.meta.title === '系统管理' || item.meta.title === '资源门户') {
-        size = '16px'
-    } else if (item.meta.title === '系统工具') {
-        size = '22px'
-    }
-    return {
-        width: size,
-        height: size,
-        fontSize: size
-    }
-}
-const childrenMenus = computed(() => {
-    let arr = [];
-    routers.value.forEach(router => {
-        router.children.forEach(child => {
-            if (child.parentPath === undefined) {
-                if (router.path === '/') {
-                    child.path = '/' + child.path;
-                } else {
-                    if (!isHttp(child.path)) {
-                        child.path = router.path + '/' + child.path;
-                    }
-                }
-                child.parentPath = router.path;
-            }
-            arr.push(child);
-        });
-    });
-    return arr;
+    return topMenus;
 });
 
+// 设置子路由
+const childrenMenus = computed(() => {
+    let childrenMenus = [];
+    routers.value.map((router) => {
+        for (let item in router.children) {
+            if (router.children[item].parentPath === undefined) {
+                if (router.path === '/') {
+                    router.children[item].path = '/' + router.children[item].path;
+                } else {
+                    if (!isHttp(router.children[item].path)) {
+                        router.children[item].path =
+                            router.path + '/' + router.children[item].path;
+                    }
+                }
+                router.children[item].parentPath = router.path;
+            }
+            childrenMenus.push(router.children[item]);
+        }
+    });
+    return constantRoutes.concat(childrenMenus);
+});
+
+// 默认激活的菜单
 const activeMenu = computed(() => {
     const path = route.path;
     let activePath = path;
+    console.log(route, '菜单');
     emit('getRouter', path);
 
+    // 如果是根路径，选择第一个可见的菜单项
     if (path === '/index') {
         const firstMenu = topMenus.value[0];
-        if (firstMenu) activePath = firstMenu.path;
-    } else if (path !== undefined && path.lastIndexOf('/') > 0 && hideList.indexOf(path) === -1) {
+        if (firstMenu) {
+            activePath = firstMenu.path;
+        }
+    } else if (
+        path !== undefined &&
+        path.lastIndexOf('/') > 0 &&
+        hideList.indexOf(path) === -1
+    ) {
         const tmpPath = path.substring(1, path.length);
         activePath = '/' + tmpPath.substring(0, tmpPath.indexOf('/'));
-        if (!route.meta.link) appStore.toggleSideBarHide(false);
+        if (!route.meta.link) {
+            appStore.toggleSideBarHide(false);
+        }
     } else if (!route.children) {
         activePath = path;
         appStore.toggleSideBarHide(true);
@@ -122,14 +118,8 @@ const activeMenu = computed(() => {
 });
 
 // function setVisibleNumber() {
-//     const isDpp = route.path.startsWith('/dpp');
 //     const width = document.body.getBoundingClientRect().width / 3;
-
-//     if (isDpp) {
-//         visibleNumber.value = parseInt((width - 220) / 90);
-//     } else {
-//         visibleNumber.value = parseInt(width / 90);
-//     }
+//     visibleNumber.value = parseInt(width / 85);
 // }
 
 // 计算可用宽度下的顶部导航栏可显示菜单数量
@@ -152,75 +142,91 @@ function calculateVisibleMenus() {
     visibleNumber.value = finalCount;
 }
 
-watch(route, (newRoute) => {
-    calculateVisibleMenus(newRoute);
-}, { deep: true, immediate: true });
 function closePageExclusion(key) {
     const visitedViews = useTagsViewStore().visitedViews;
+
     for (let i = visitedViews.length - 1; i >= 0; i--) {
         const view = visitedViews[i];
-        if (view.path.includes('/index')) continue;
+        if (view.path.includes('/index')) {
+            continue;
+        }
         if (!view.path.includes(key)) {
             proxy.$tab.closePage(view);
         }
     }
 }
 
+// 处理顶部导航菜单的选择事件
 async function handleSelect(key, keyPath, type) {
-    emit('getRouter', key);
-    currentIndex.value = key;
+    console.log(key, 'key');
+    // console.log(currentIndex.value,"value");
 
-    const routeItem = routers.value.find(item => item.path === key);
+    //子组件调用父组件
+    emit('getRouter', key);
+
+    // 设置当前选中的菜单索引
+    currentIndex.value = key;
+    // 查找选中的路由配置
+    const route = routers.value.find((item) => item.path === key);
 
     if (isHttp(key)) {
-        // 外部链接直接打开新窗口
+        // 如果是http(s)链接,在新窗口打开
         window.open(key, '_blank');
-    } else if (!routeItem || !routeItem.children) {
-        // 叶子路由，带 query 的带上 query 跳转
-        const routeMenu = childrenMenus.value.find(item => item.path === key);
+    } else if (!route || !route.children) {
+        // 如果没有子路由,在当前窗口打开
+        const routeMenu = childrenMenus.value.find((item) => item.path === key);
         if (routeMenu && routeMenu.query) {
-            const query = JSON.parse(routeMenu.query);
-            router.push({ path: key, query });
+            // 如果有query参数,解析后带上
+            let query = JSON.parse(routeMenu.query);
+            router.push({ path: key, query: query });
         } else {
+            // 没有query参数直接跳转
             router.push({ path: key });
         }
+        // 隐藏左侧菜单
         appStore.toggleSideBarHide(true);
     } else {
-        // 父级路由处理
-        const routes = activeRoutes(key);
+        // 有子路由,显示左侧联动菜单
+        let routes = activeRoutes(key);
         if (type) {
             closePageExclusion(key);
-            const visibleRoute = routes.find(r => r.hidden === false) || routes[0];
-            if (visibleRoute) {
-                if (visibleRoute.children && visibleRoute.children.length > 0) {
-                    const firstVisibleChild = visibleRoute.children.find(c => c.hidden === false) || visibleRoute.children[0];
-                    const lastChild = JSON.parse(JSON.stringify(firstVisibleChild));
-                    lastChild.path = `${visibleRoute.path}/${firstVisibleChild.path}`;
+            if (routes.length > 0) {
+                // 获取所有标签页
+
+                if (
+                    routes[0].children != null &&
+                    routes[0].children != undefined &&
+                    routes[0].children.length > 0
+                ) {
+                    const lastChild = JSON.parse(JSON.stringify(routes[0].children[0]));
+                    const fullPath = `${routes[0].path}/${routes[0].children[0].path}`;
+                    lastChild.path = fullPath;
                     proxy.$tab.refreshPage(lastChild);
-                } else if (visibleRoute.query) {
-                    const lastChild = JSON.parse(JSON.stringify(visibleRoute));
-                    lastChild.query = JSON.parse(visibleRoute.query);
+                } else if (routes[0].query != null) {
+                    const lastChild = JSON.parse(JSON.stringify(routes[0]));
+                    const query = JSON.parse(routes[0].query);
+                    lastChild.query = query;
                     proxy.$tab.refreshPage(lastChild);
                 } else {
-                    proxy.$tab.refreshPage(visibleRoute);
+                    proxy.$tab.refreshPage(routes[0]);
                 }
             }
         }
+        // 显示左侧菜单
         appStore.toggleSideBarHide(false);
     }
 }
 
-
 function activeRoutes(key) {
     let routes = [];
-    if (childrenMenus.value.length) {
-        childrenMenus.value.forEach(item => {
-            if (key === item.parentPath || (key === 'index' && item.path === '')) {
+    if (childrenMenus.value && childrenMenus.value.length > 0) {
+        childrenMenus.value.map((item) => {
+            if (key == item.parentPath || (key == 'index' && '' == item.path)) {
                 routes.push(item);
             }
         });
     }
-    if (routes.length) {
+    if (routes.length > 0) {
         permissionStore.setSidebarRouters(routes);
     } else {
         appStore.toggleSideBarHide(true);
@@ -230,292 +236,82 @@ function activeRoutes(key) {
 
 onMounted(() => {
     window.addEventListener('resize', calculateVisibleMenus);
-    calculateVisibleMenus();
 });
-
 onBeforeUnmount(() => {
     window.removeEventListener('resize', calculateVisibleMenus);
 });
 
-defineExpose({ handleSelect });
+onMounted(() => {
+    calculateVisibleMenus();
+});
+// 如果需要暴露给父组件使用，可以使用 defineExpose
+defineExpose({
+    handleSelect
+});
 </script>
 
 <style lang="scss">
-.custom-topmenu.el-menu--horizontal {
-    display: flex;
-    align-items: center;
-    height: 66px;
-    box-sizing: border-box;
-    background-color: #001529;
-    border-bottom: none;
-
-    /* 普通菜单项 */
-    >.el-menu-item,
-    >.el-submenu {
-        margin: 0 5px;
-        padding: 0 12px;
-        height: 40px !important;
-        line-height: 40px !important;
-        display: flex;
-        align-items: center;
-        box-sizing: border-box;
-        cursor: pointer;
-        color: #fff;
-        font-size: 16px;
-        position: relative;
-        overflow: visible;
-    }
-
-    /* 子菜单标题 */
-    >.el-submenu>.el-submenu__title {
-        display: flex;
-        align-items: center;
-        padding: 0 10px;
-        margin: 0 5px;
-        height: 40px !important;
-        line-height: 40px !important;
-        color: #fff;
-        cursor: pointer;
-        font-size: 16px;
-        position: relative;
-        border-radius: 4px;
-    }
-
-    /* 图标与文字间距 */
-    .el-menu-item .svg-icon,
-    .el-submenu .svg-icon {
-        margin-right: 10px;
-        font-size: 20px;
-        vertical-align: middle;
-    }
-
-    /* 选中菜单项 */
-    >.el-menu-item.is-active,
-    >.el-sub-menu.is-active>.el-submenu__title {
-        height: 66px !important;
-        font-weight: 600;
-        position: relative;
-        background: linear-gradient(180deg, #588BFE 0%, #3368FC 100%);
-        transition: none !important;
-        color: #fff !important;
-
-        &::before {
-            content: "";
-            position: absolute;
-            bottom: 4px;
-            left: 0;
-            width: 100%;
-            height: 6px;
-            background-color: #1F92FF;
-            border-radius: 0 0 4px 4px;
-        }
-    }
-
-    /* hover状态 */
-    >.el-menu-item:not(.is-disabled):focus,
-    >.el-menu-item:not(.is-disabled):hover,
-    >.el-submenu>.el-submenu__title:hover {
-        height: 66px !important;
-        font-weight: 600;
-        position: relative;
-        background: linear-gradient(180deg, #588BFE 0%, #3368FC 100%);
-        transition: none !important;
-        color: #fff !important;
-    }
-
-    /* 选中菜单项 */
-    >.el-menu-item.is-active,
-    >.el-sub-menu.is-active>.el-submenu__title {
-        height: 66px !important;
-        font-weight: 600;
-        position: relative;
-        background: linear-gradient(180deg, #588BFE 0%, #3368FC 100%);
-        transition: none !important;
-        color: #fff !important;
-
-        &::before {
-            content: "";
-            position: absolute;
-            bottom: 4px;
-            left: 0;
-            width: 100%;
-            height: 6px;
-            background-color: #1F92FF;
-            border-radius: 0 0 4px 4px;
-        }
-    }
-
-
+.el-menu--horizontal.el-menu {
+    padding-top: 10px;
 }
 
-/* 更多菜单 */
-.more-menu .el-sub-menu__title {
-    padding: 0px 12px !important;
-}
-
-.more-menu>.el-sub-menu__title {
-    height: 66px !important;
-    position: relative;
-    transition: none !important;
-    color: #fff !important;
+.topmenu-container.el-menu--horizontal>.el-menu-item {
     font-size: 16px;
-    position: relative;
-    overflow: visible;
-
-    .el-sub-menu__icon-arrow {
-        display: none;
-    }
-
-}
-
-.more-menu>.el-sub-menu__title:hover {
-    height: 66px !important;
-    position: relative;
-    background: linear-gradient(180deg, #588BFE 0%, #3368FC 100%);
-    transition: none !important;
-    color: #fff !important;
-    font-size: 16px;
-    position: relative;
-    overflow: visible;
-
-
-}
-
-/* 更多菜单选中下方蓝色条 */
-.more-menu.is-active>.el-submenu__title::before {
-    content: "";
-    position: absolute;
-    bottom: 4px;
-    left: 0;
-    width: 80%;
-    height: 6px;
-    background-color: #1F92FF;
-    border-radius: 0 0 4px 4px;
-}
-
-.more-menu .el-menu-item:hover {
-    height: 66px !important;
-    font-weight: 600;
-    position: relative;
-    background: linear-gradient(180deg, #588BFE 0%, #3368FC 100%);
-    transition: none !important;
-    color: #fff !important;
-}
-
-.custom-topmenu.el-menu--horizontal {
-
-    :deep(.more-menu .el-menu-item:hover) {
-        height: 66px !important;
-        font-weight: 600;
-        position: relative;
-        background: linear-gradient(180deg, #588BFE 0%, #3368FC 100%);
-        transition: none !important;
-        color: #fff !important;
-        padding: 0 !important;
-
-    }
-
-    /* 更多菜单里的子菜单项选中样式 */
-    :deep(.more-menu .el-menu .el-sub-menu .el-menu-item.is-active) {
-        height: 663px !important;
-        font-weight: 600;
-        position: relative;
-        background: linear-gradient(180deg, #588BFE 0%, #3368FC 100%);
-        transition: none !important;
-        color: #fff !important;
-
-        &::before {
-            content: "";
-            position: absolute;
-            bottom: 4px;
-            left: 0;
-            width: 100%;
-            height: 6px;
-            background-color: #1F92FF;
-            border-radius: 0 0 4px 4px;
-        }
-    }
-}
-
-.more-menu.is-active>.el-submenu__title {
-    background: linear-gradient(180deg, #588BFE 0%, #3368FC 100%);
-    color: #fff !important;
-    font-weight: 600;
-    position: relative;
-}
-
-.el-menu--horizontal>.el-sub-menu.is-active .el-sub-menu__title {
-    background: linear-gradient(270deg, #1E60FB 0%, #5D8EFE 100%) !important;
-
-    .svg-icon {
-        margin-right: 10px;
-        fill: #1069ed !important
-    }
-}
-
-.el-menu--horizontal .el-menu {
-    padding: 8px 10px;
-    font-size: 16px;
-
-    .svg-icon {
-        font-size: 18px;
-        margin-right: 10px;
-        filter: invert(53%) sepia(33%) saturate(2466%) hue-rotate(189deg) brightness(96%) contrast(92%);
-    }
-
-}
-
-.el-menu--horizontal .el-menu .el-menu-item.is-active,
-.el-menu--horizontal .el-menu .el-sub-menu.is-active>.el-sub-menu__title {
-    background-color: #1069ed;
-    color: #ffff;
-    border-radius: 2px;
+    float: left;
     height: 40px !important;
     line-height: 40px !important;
-    font-size: 16px;
+    color: #333 !important;
+    padding: 0 15px !important;
+    margin: 0 10px !important;
+    border-radius: 5px;
+}
 
-    /* 圆角 */
+/* sub-menu item */
+.topmenu-container.el-menu--horizontal>.el-sub-menu .el-sub-menu__title {
+    font-size: 16px;
+    float: left;
+    height: 40px !important;
+    line-height: 40px !important;
+    color: #333 !important;
+    padding: 0 15px !important;
+    margin: 0 10px !important;
+    border-radius: 5px;
+}
+
+.topmenu-container.el-menu--horizontal>.el-menu-item.is-active,
+.el-menu--horizontal>.el-sub-menu.is-active .el-submenu__title,
+.el-menu--horizontal>.el-sub-menu.is-active .el-sub-menu__title {
+    background: #{'var(--theme)'} !important;
+    color: #fff !important;
+}
+
+/* 背景色隐藏 */
+.topmenu-container.el-menu--horizontal>.el-menu-item:not(.is-disabled):focus,
+.topmenu-container.el-menu--horizontal>.el-menu-item:not(.is-disabled):hover,
+.topmenu-container.el-menu--horizontal>.el-submenu .el-submenu__title:hover {
+    background: #{'var(--theme)'} !important;
+    color: #fff !important;
+}
+
+/* 图标右间距 */
+.topmenu-container .svg-icon {
+    margin-right: 4px;
+}
+
+/* topmenu more arrow */
+.topmenu-container .el-sub-menu .el-sub-menu__icon-arrow {
+    position: static;
+    vertical-align: middle;
+    margin-left: 8px;
+    margin-top: 0px;
+}
+
+.el-menu--horizontal .el-menu .el-menu-item {
+    height: 40px !important;
+    line-height: 40px !important;
+
     .svg-icon {
         margin-right: 10px;
-        filter: brightness(0) invert(1);
-    }
-
-    &:hover {
-        background-color: #1069ed !important;
-        color: #ffff !important;
-
-        .svg-icon {
-            margin-right: 10px;
-            filter: brightness(0) invert(1);
-        }
-    }
-}
-
-.el-menu--horizontal .el-menu .el-menu-item,
-.el-menu--horizontal .el-menu .el-sub-menu__title {
-    font-size: 16px;
-}
-
-.el-menu--horizontal .el-menu .el-menu-item:hover,
-.el-menu--horizontal .el-menu .el-sub-menu__title:hover {
-    background-color: transparent !important;
-    color: #1069ed !important;
-
-    .svg-icon {
-        margin-right: 10px;
-        filter: invert(53%) sepia(33%) saturate(2466%) hue-rotate(189deg) brightness(96%) contrast(92%);
-    }
-
-}
-
-.more-menu-popper {
-    margin-top: -6px !important;
-    margin-left: -4px;
-
-    .el-menu--popup {
-        min-width: 160px;
-        border-radius: 4px;
-        box-shadow: 0 0 0 1px #dcdfe6;
     }
 }
 </style>

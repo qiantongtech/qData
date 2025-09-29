@@ -8,10 +8,14 @@
                     :default-expand-all="defaultExpand">
                     <template #default="{ node, data }">
                         <span class="custom-tree-node">
-                            <img class="node-icon" src="@/assets/da/asset/folder.svg" alt="" v-if="node.childNodes.length" />
-                            <!-- 子级 -->
-                            <img class="child-icon" src="@/assets/da/asset/file.svg" alt="" v-show="!node.isCurrent && node.childNodes.length == 0" />
-                            <img class="child-icon" src="@/assets/da/asset/file.svg" alt="" v-show="node.isCurrent && node.childNodes.length == 0" />
+                            <img class="node-icon" src="@/assets/da/asset/icon (3).png" alt=""
+                                v-if="node.childNodes.length" />
+                            <el-icon class="zjiconimg colorwxz" v-show="!node.isCurrent && node.childNodes.length == 0">
+                                <Tickets />
+                            </el-icon>
+                            <el-icon class="zjiconimg colorxz" v-show="node.isCurrent && node.childNodes.length == 0">
+                                <Tickets />
+                            </el-icon>
                             <span class="treelable" @click="getNode(node)">
                                 {{ node.label }}
                             </span>
@@ -172,10 +176,6 @@ defineExpose({ resetTree });
         width: 18px;
         height: 18px;
     }
-    .child-icon {
-        width: 16px;
-        height: 16px;
-    }
 
     .treelable {
         margin-left: 10px;
@@ -255,7 +255,7 @@ defineExpose({ resetTree });
             color: transparent;
 
             &>svg {
-                background: url("@/assets/da/asset/arrow.svg") no-repeat;
+                background: url("@/assets/da/asset/arrow.png") no-repeat;
                 background-size: 100% 100%;
             }
         }

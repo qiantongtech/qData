@@ -185,7 +185,7 @@
                       >调度周期</el-button>
                     <el-button link type="primary" icon="Stopwatch" @click="handleDataView(scope.row)"
                       >运行实例</el-button>
-                    <el-button link type="primary" icon="VideoPlay" :disabled="scope.row.status == 0"
+                    <el-button link type="primary" icon="VideoPlay" :disabled="scope.row.status != 1"
                       @click="handleExecuteOnce(scope.row)" >执行一次</el-button>
                     <el-button link type="danger" icon="Delete" :disabled="scope.row.status == 1"
                       @click="handleDelete(scope.row)" >删除</el-button>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.qiantong.qdata.module.dp.dal.mapper.document.DpDocumentMapper">
+
+    <resultMap type="DpDocumentDO" id="DpDocumentResult">
+        <result property="id"    column="ID"    />
+        <result property="code"    column="CODE"    />
+        <result property="name"    column="NAME"    />
+        <result property="catCode"    column="CAT_CODE"    />
+        <result property="type"    column="TYPE"    />
+        <result property="status"    column="STATUS"    />
+        <result property="issuingAgency"    column="ISSUING_AGENCY"    />
+        <result property="version"    column="VERSION"    />
+        <result property="releaseDate"    column="RELEASE_DATE"    />
+        <result property="implementationDate"    column="IMPLEMENTATION_DATE"    />
+        <result property="abolitionDate"    column="ABOLITION_DATE"    />
+        <result property="fileUrl"    column="FILE_URL"    />
+        <result property="fileName"    column="FILE_NAME"    />
+        <result property="validFlag"    column="VALID_FLAG"    />
+        <result property="delFlag"    column="DEL_FLAG"    />
+        <result property="createBy"    column="CREATE_BY"    />
+        <result property="creatorId"    column="CREATOR_ID"    />
+        <result property="createTime"    column="CREATE_TIME"    />
+        <result property="updateBy"    column="UPDATE_BY"    />
+        <result property="updaterId"    column="UPDATER_ID"    />
+        <result property="updateTime"    column="UPDATE_TIME"    />
+        <result property="remark"    column="REMARK"    />
+    </resultMap>
+
+    <sql id="selectDpDocumentVo">
+        select ID, CODE, NAME, CAT_CODE, TYPE, STATUS, ISSUING_AGENCY, VERSION, RELEASE_DATE, IMPLEMENTATION_DATE, ABOLITION_DATE, FILE_URL,FILE_NAME, VALID_FLAG, DEL_FLAG, CREATE_BY, CREATOR_ID, CREATE_TIME, UPDATE_BY, UPDATER_ID, UPDATE_TIME, REMARK from DP_DOCUMENT
+    </sql>
+
+    <select id="selectDpDocumentList" parameterType="DpDocumentDO" resultMap="DpDocumentResult">
+        <include refid="selectDpDocumentVo"/>
+        <where>
+            <if test="code != null  and code != ''"> and CODE = #{code}</if>
+            <if test="name != null  and name != ''"> and NAME like concat('%', #{name}, '%')</if>
+            <if test="catCode != null  and catCode != ''"> and CAT_CODE = #{catCode}</if>
+            <if test="type != null  and type != ''"> and TYPE = #{type}</if>
+            <if test="status != null  and status != ''"> and STATUS = #{status}</if>
+            <if test="issuingAgency != null  and issuingAgency != ''"> and ISSUING_AGENCY = #{issuingAgency}</if>
+            <if test="version != null  and version != ''"> and VERSION = #{version}</if>
+            <if test="releaseDate != null "> and RELEASE_DATE = #{releaseDate}</if>
+            <if test="implementationDate != null "> and IMPLEMENTATION_DATE = #{implementationDate}</if>
+            <if test="abolitionDate != null "> and ABOLITION_DATE = #{abolitionDate}</if>
+            <if test="fileUrl != null  and fileUrl != ''"> and FILE_URL = #{fileUrl}</if>
+            <if test="fileName != null  and fileName != ''"> and FILE_NAME = #{fileName}</if>
+            <if test="createTime != null "> and CREATE_TIME = #{createTime}</if>
+        </where>
+    </select>
+
+    <select id="selectDpDocumentByID" parameterType="Long" resultMap="DpDocumentResult">
+        <include refid="selectDpDocumentVo"/>
+        where ID = #{ID}
+    </select>
+    <select id="getDpDocumentSearchPage"
+            resultType="tech.qiantong.qdata.module.dp.controller.admin.document.vo.DpDocumentSearchRespVO">
+        SELECT
+            '1' AS dataType,
+            t.ID,
+            t.CODE,
+            t.NAME,
+            t2.NAME AS catName,
+            t.TYPE,
+            t.STATUS,
+            t.RELEASE_DATE,
+            t.IMPLEMENTATION_DATE,
+            t.FILE_URL,
+            t.FILE_NAME
+        FROM
+            DP_DOCUMENT t
+            LEFT JOIN ATT_DOCUMENT_CAT t2 on t.CAT_CODE = t2.CODE AND t2.DEL_FLAG = '0'
+        WHERE
+            t.DEL_FLAG = '0'
+            <if test="params.search != null and params.search != ''">
+                AND t.NAME LIKE CONCAT('%',CONCAT(#{params.search},'%'))
+            </if>
+    </select>
+
+    <insert id="insertDpDocument" parameterType="DpDocumentDO">
+        insert into DP_DOCUMENT
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="code != null">CODE,</if>
+            <if test="name != null">NAME,</if>
+            <if test="catCode != null">CAT_CODE,</if>
+            <if test="type != null">TYPE,</if>
+            <if test="status != null">STATUS,</if>
+            <if test="issuingAgency != null">ISSUING_AGENCY,</if>
+            <if test="version != null">VERSION,</if>
+            <if test="releaseDate != null">RELEASE_DATE,</if>
+            <if test="implementationDate != null">IMPLEMENTATION_DATE,</if>
+            <if test="abolitionDate != null">ABOLITION_DATE,</if>
+            <if test="fileUrl != null">FILE_URL,</if>
+            <if test="fileName != null">FILE_NAME,</if>
+            <if test="validFlag != null">VALID_FLAG,</if>
+            <if test="delFlag != null">DEL_FLAG,</if>
+            <if test="createBy != null">CREATE_BY,</if>
+            <if test="creatorId != null">CREATOR_ID,</if>
+            <if test="createTime != null">CREATE_TIME,</if>
+            <if test="updateBy != null">UPDATE_BY,</if>
+            <if test="updaterId != null">UPDATER_ID,</if>
+            <if test="updateTime != null">UPDATE_TIME,</if>
+            <if test="remark != null">REMARK,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{ID},</if>
+            <if test="code != null">#{code},</if>
+            <if test="name != null">#{name},</if>
+            <if test="catCode != null">#{catCode},</if>
+            <if test="type != null">#{type},</if>
+            <if test="status != null">#{status},</if>
+            <if test="issuingAgency != null">#{issuingAgency},</if>
+            <if test="version != null">#{version},</if>
+            <if test="releaseDate != null">#{releaseDate},</if>
+            <if test="implementationDate != null">#{implementationDate},</if>
+            <if test="abolitionDate != null">#{abolitionDate},</if>
+            <if test="fileUrl != null">#{fileUrl},</if>
+            <if test="fileName != null">#{fileName},</if>
+            <if test="validFlag != null">#{validFlag},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updaterId != null">#{updaterId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDpDocument" parameterType="DpDocumentDO">
+        update DP_DOCUMENT
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null">CODE = #{code},</if>
+            <if test="name != null">NAME = #{name},</if>
+            <if test="catCode != null">CAT_CODE = #{catCode},</if>
+            <if test="type != null">TYPE = #{type},</if>
+            <if test="status != null">STATUS = #{status},</if>
+            <if test="issuingAgency != null">ISSUING_AGENCY = #{issuingAgency},</if>
+            <if test="version != null">VERSION = #{version},</if>
+            <if test="releaseDate != null">RELEASE_DATE = #{releaseDate},</if>
+            <if test="implementationDate != null">IMPLEMENTATION_DATE = #{implementationDate},</if>
+            <if test="abolitionDate != null">ABOLITION_DATE = #{abolitionDate},</if>
+            <if test="fileUrl != null">FILE_URL = #{fileUrl},</if>
+            <if test="fileName != null">FILE_NAME = #{fileName},</if>
+            <if test="validFlag != null">VALID_FLAG = #{validFlag},</if>
+            <if test="delFlag != null">DEL_FLAG = #{delFlag},</if>
+            <if test="createBy != null">CREATE_BY = #{createBy},</if>
+            <if test="creatorId != null">CREATOR_ID = #{creatorId},</if>
+            <if test="createTime != null">CREATE_TIME = #{createTime},</if>
+            <if test="updateBy != null">UPDATE_BY = #{updateBy},</if>
+            <if test="updaterId != null">UPDATER_ID = #{updaterId},</if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime},</if>
+            <if test="remark != null">REMARK = #{remark},</if>
+        </trim>
+        where ID = #{ID}
+    </update>
+
+    <delete id="deleteDpDocumentByID" parameterType="Long">
+        delete from DP_DOCUMENT where ID = #{id}
+    </delete>
+
+    <delete id="deleteDpDocumentByIDs" parameterType="String">
+        delete from DP_DOCUMENT where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

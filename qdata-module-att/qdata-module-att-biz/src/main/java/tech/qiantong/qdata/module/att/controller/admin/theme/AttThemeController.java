@@ -37,21 +37,20 @@ import java.util.List;
  */
 @Tag(name = "主题")
 @RestController
-@RequestMapping("/att/attTheme")
+@RequestMapping("/att/theme")
 @Validated
 public class AttThemeController extends BaseController {
     @Resource
     private IAttThemeService attThemeService;
 
     @Operation(summary = "查询主题列表")
-    @PreAuthorize("@ss.hasPermi('att:theme:theme:list')")
+    @PreAuthorize("@ss.hasPermi('att:theme:list')")
     @GetMapping("/list")
     public CommonResult<PageResult<AttThemeRespVO>> list(AttThemePageReqVO attTheme) {
         PageResult<AttThemeDO> page = attThemeService.getAttThemePage(attTheme);
         return CommonResult.success(BeanUtils.toBean(page, AttThemeRespVO.class));
     }
     @Operation(summary = "查询主题列表")
-    @PreAuthorize("@ss.hasPermi('att:theme:theme:list')")
     @GetMapping("/getAttThemeListByReqVO")
     public CommonResult<List<AttThemeRespVO>> getAttThemeListByReqVO(AttThemePageReqVO attTheme) {
         List<AttThemeDO> list = attThemeService.getAttThemeListByReqVO(attTheme);
@@ -59,7 +58,7 @@ public class AttThemeController extends BaseController {
     }
 
     @Operation(summary = "导出主题列表")
-    @PreAuthorize("@ss.hasPermi('att:theme:theme:export')")
+    @PreAuthorize("@ss.hasPermi('att:theme:export')")
     @Log(title = "主题", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AttThemePageReqVO exportReqVO) {
@@ -70,7 +69,7 @@ public class AttThemeController extends BaseController {
     }
 
     @Operation(summary = "导入主题列表")
-    @PreAuthorize("@ss.hasPermi('att:theme:theme:import')")
+    @PreAuthorize("@ss.hasPermi('att:theme:import')")
     @Log(title = "主题", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
@@ -82,7 +81,7 @@ public class AttThemeController extends BaseController {
     }
 
     @Operation(summary = "获取主题详细信息")
-    @PreAuthorize("@ss.hasPermi('att:theme:theme:query')")
+    @PreAuthorize("@ss.hasPermi('att:theme:query')")
     @GetMapping(value = "/{ID}")
     public CommonResult<AttThemeRespVO> getInfo(@PathVariable("ID") Long ID) {
         AttThemeDO attThemeDO = attThemeService.getAttThemeById(ID);
@@ -90,7 +89,7 @@ public class AttThemeController extends BaseController {
     }
 
     @Operation(summary = "新增主题")
-    @PreAuthorize("@ss.hasPermi('att:theme:theme:add')")
+    @PreAuthorize("@ss.hasPermi('att:theme:add')")
     @Log(title = "主题", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AttThemeSaveReqVO attTheme) {
@@ -101,7 +100,7 @@ public class AttThemeController extends BaseController {
     }
 
     @Operation(summary = "修改主题")
-    @PreAuthorize("@ss.hasPermi('att:theme:theme:edit')")
+    @PreAuthorize("@ss.hasPermi('att:theme:edit')")
     @Log(title = "主题", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AttThemeSaveReqVO attTheme) {
@@ -112,7 +111,7 @@ public class AttThemeController extends BaseController {
     }
 
     @Operation(summary = "删除主题")
-    @PreAuthorize("@ss.hasPermi('att:theme:theme:remove')")
+    @PreAuthorize("@ss.hasPermi('att:theme:remove')")
     @Log(title = "主题", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {

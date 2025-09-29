@@ -2,6 +2,9 @@ package tech.qiantong.qdata.module.ds.controller.admin.api;
 
 import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson2.JSONObject;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang3.StringUtils;
@@ -43,14 +46,14 @@ import java.util.List;
  */
 @Tag(name = "API服务")
 @RestController
-@RequestMapping("/ds/dsApi")
+@RequestMapping("/ds/api")
 @Validated
 public class DsApiController extends BaseController {
     @Resource
     private IDsApiService dsApiService;
 
     @Operation(summary = "查询API服务列表")
-    @PreAuthorize("@ss.hasPermi('ds:api:api:list')")
+    @PreAuthorize("@ss.hasPermi('ds:api:list')")
     @GetMapping("/list")
     public CommonResult<PageResult<DsApiRespVO>> list(DsApiPageReqVO dsApi) {
         PageResult<DsApiDO> page = dsApiService.getDsApiPage(dsApi);
@@ -58,7 +61,7 @@ public class DsApiController extends BaseController {
     }
 
     @Operation(summary = "导出API服务列表")
-    @PreAuthorize("@ss.hasPermi('ds:api:api:export')")
+    @PreAuthorize("@ss.hasPermi('ds:api:export')")
     @Log(title = "API服务", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DsApiPageReqVO exportReqVO) {
@@ -69,7 +72,7 @@ public class DsApiController extends BaseController {
     }
 
     @Operation(summary = "导入API服务列表")
-    @PreAuthorize("@ss.hasPermi('ds:api:api:import')")
+    @PreAuthorize("@ss.hasPermi('ds:api:import')")
     @Log(title = "API服务", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
@@ -81,7 +84,7 @@ public class DsApiController extends BaseController {
     }
 
     @Operation(summary = "获取API服务详细信息")
-    @PreAuthorize("@ss.hasPermi('ds:api:api:query')")
+    @PreAuthorize("@ss.hasPermi('ds:api:query')")
     @GetMapping(value = "/{ID}")
     public CommonResult<DsApiRespVO> getInfo(@PathVariable("ID") Long ID) {
         DsApiDO dsApiDO = dsApiService.getDsApiById(ID);
@@ -89,29 +92,28 @@ public class DsApiController extends BaseController {
     }
 
     @Operation(summary = "根据名称，版本号，路径进行判断是否重复")
-    @PreAuthorize("@ss.hasPermi('ds:api:api:query')")
+    @PreAuthorize("@ss.hasPermi('ds:api:query')")
     @PostMapping(value = "/repeatFlag")
     public AjaxResult repeatFlag(@RequestBody JSONObject jsonObject) {
-        if (StringUtils.isBlank(jsonObject.getString("name"))){
+        if (StringUtils.isBlank(jsonObject.getString("name"))) {
             return AjaxResult.error("请携带API名称");
         }
-        if (StringUtils.isBlank(jsonObject.getString("apiVersion"))){
+        if (StringUtils.isBlank(jsonObject.getString("apiVersion"))) {
             return AjaxResult.error("请携带API版本号");
         }
-        if (StringUtils.isBlank(jsonObject.getString("apiUrl"))){
+        if (StringUtils.isBlank(jsonObject.getString("apiUrl"))) {
             return AjaxResult.error("请携带API路径");
         }
         DsApiDO dsApiDO = dsApiService.repeatFlag(jsonObject);
-        if (dsApiDO != null){
+        if (dsApiDO != null) {
             return AjaxResult.error("名称、版本号、路径以存在");
         }
         return AjaxResult.success(dsApiDO);
     }
 
 
-
     @Operation(summary = "删除API服务")
-    @PreAuthorize("@ss.hasPermi('ds:api:api:remove')")
+    @PreAuthorize("@ss.hasPermi('ds:api:remove')")
     @Log(title = "API服务", businessType = BusinessType.DELETE)
     @DeleteMapping("/{id}")
     public CommonResult<Integer> remove(@PathVariable(name = "id") Long[] id) {
@@ -125,7 +127,7 @@ public class DsApiController extends BaseController {
      * @return
      */
     @Operation(summary = "SQL解析")
-    @PreAuthorize("@ss.hasPermi('da:asset:asset:list')")
+    @PreAuthorize("@ss.hasPermi('da:asset:list')")
     @PostMapping("/sqlParse")
     public AjaxResult sqlParse(@RequestBody @Validated SqlParseDto sqlParseDto) {
         /*try {
@@ -138,16 +140,16 @@ public class DsApiController extends BaseController {
     }
 
     @Operation(summary = "接口调试")
-    @PreAuthorize("@ss.hasPermi('da:asset:asset:edit')")
+    @PreAuthorize("@ss.hasPermi('da:asset:edit')")
     @PostMapping("/serviceTesting")
-    public AjaxResult serviceTesting(@RequestBody  DsApiDO dataApi) {
+    public AjaxResult serviceTesting(@RequestBody DsApiDO dataApi) {
         if (dataApi.getExecuteConfig() != null && StringUtils.isNotBlank(dataApi.getExecuteConfig().getSqlText())) {
             try {
                 dataApi.getExecuteConfig().setSqlText(AesEncryptUtil.desEncrypt(dataApi.getExecuteConfig().getSqlText()).trim());
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error("失败", e);
             }
-        }else{
+        } else {
             if (dataApi.getExecuteConfig() != null) {
                 dataApi.getExecuteConfig().setSqlText("");
             }
@@ -158,11 +160,11 @@ public class DsApiController extends BaseController {
 
 
     @Operation(summary = "接口调试")
-    @PreAuthorize("@ss.hasPermi('ds:api:api:query')")
+    @PreAuthorize("@ss.hasPermi('ds:api:query')")
     @PostMapping("/queryServiceForwarding")
-    public void queryServiceForwarding(HttpServletResponse response,@Valid @RequestBody DsApiReqVO dsApiReqVO) {
+    public void queryServiceForwarding(HttpServletResponse response, @Valid @RequestBody DsApiReqVO dsApiReqVO) {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8");
-        dsApiService.queryServiceForwarding(response,dsApiReqVO);
+        dsApiService.queryServiceForwarding(response, dsApiReqVO);
     }
 
 
@@ -173,9 +175,9 @@ public class DsApiController extends BaseController {
      * @return
      */
     @Operation(summary = "保存Api信息")
-    @PreAuthorize("@ss.hasPermi('da:asset:asset:edit')")
+    @PreAuthorize("@ss.hasPermi('da:asset:edit')")
     @PostMapping()
-    public AjaxResult saveDataApi(@RequestBody  DsApiDO dataApi) {
+    public AjaxResult saveDataApi(@RequestBody DsApiDO dataApi) {
 //        if (dataApi.getExecuteConfig() != null && StringUtils.isNotBlank(dataApi.getExecuteConfig().getSqlText())) {
 //            try {
 //                dataApi.getExecuteConfig().setSqlText(AesEncryptUtil.desEncrypt(dataApi.getExecuteConfig().getSqlText()).trim());
@@ -198,7 +200,7 @@ public class DsApiController extends BaseController {
      */
     @Operation(summary = "修改Api信息")
     @PutMapping
-    public AjaxResult updateDataApi(@RequestBody  DsApiDO dataApi) {
+    public AjaxResult updateDataApi(@RequestBody DsApiDO dataApi) {
 //        if (dataApi.getExecuteConfig() != null && StringUtils.isNotBlank(dataApi.getExecuteConfig().getSqlText())) {
 //            try {
 //                dataApi.getExecuteConfig().setSqlText(AesEncryptUtil.desEncrypt(dataApi.getExecuteConfig().getSqlText()).trim());
@@ -213,7 +215,6 @@ public class DsApiController extends BaseController {
     }
 
 
-
     /**
      * 发布接口
      *
@@ -222,7 +223,7 @@ public class DsApiController extends BaseController {
      */
 
     @GetMapping(value = "/release/{id}")
-    @PreAuthorize("@ss.hasPermi('da:asset:asset:edit')")
+    @PreAuthorize("@ss.hasPermi('da:asset:edit')")
     public AjaxResult releaseDataApi(@PathVariable String id) {
         dsApiService.releaseDataApi(id, getUserId(), getUsername());
         return AjaxResult.success();
@@ -234,11 +235,20 @@ public class DsApiController extends BaseController {
      * @param id
      * @return
      */
-    @PreAuthorize("@ss.hasPermi('da:asset:asset:edit')")
+    @PreAuthorize("@ss.hasPermi('da:asset:edit')")
     @GetMapping(value = "/cancel/{id}")
     public AjaxResult cancelDataApi(@PathVariable String id) {
         dsApiService.cancelDataApi(id, getUserId(), getUsername());
         return AjaxResult.success();
+    }
+
+    @Operation(summary = "查询API下拉选服务列表")
+    @GetMapping("/selectList")
+    public CommonResult<List<DsApiRespVO>> selectList(String name) {
+        IPage<DsApiDO> page = dsApiService.page(new Page(1, 20), Wrappers.lambdaQuery(DsApiDO.class)
+                .like(StringUtils.isNotBlank(name),DsApiDO::getName, name)
+                .select(DsApiDO::getId, DsApiDO::getName));
+        return CommonResult.success(BeanUtils.toBean(page.getRecords(), DsApiRespVO.class));
     }
 
 

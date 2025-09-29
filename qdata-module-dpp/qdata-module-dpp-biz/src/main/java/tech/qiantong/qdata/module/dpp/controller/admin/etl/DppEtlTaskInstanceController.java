@@ -3,10 +3,7 @@ package tech.qiantong.qdata.module.dpp.controller.admin.etl;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.Arrays;
 
 import cn.hutool.core.date.DateUtil;
@@ -43,14 +40,14 @@ import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlTaskInstanceService;
  */
 @Tag(name = "数据集成任务实例")
 @RestController
-@RequestMapping("/dpp/dppEtlTaskInstance")
+@RequestMapping("/dpp/etlTaskInstance")
 @Validated
 public class DppEtlTaskInstanceController extends BaseController {
     @Resource
     private IDppEtlTaskInstanceService dppEtlTaskInstanceService;
 
     @Operation(summary = "查询数据集成任务实例列表")
-    @PreAuthorize("@ss.hasPermi('dpp:etl:etltaskinstance:list')")
+//    @PreAuthorize("@ss.hasPermi('dpp:etlTaskInstance:list')")
     @GetMapping("/list")
     public CommonResult<PageResult<DppEtlTaskInstanceRespVO>> list(DppEtlTaskInstancePageReqVO dppEtlTaskInstance) {
         if (StringUtils.isNotBlank(dppEtlTaskInstance.getTaskType())) {
@@ -61,7 +58,7 @@ public class DppEtlTaskInstanceController extends BaseController {
     }
 
     @Operation(summary = "导出数据集成任务实例列表")
-    @PreAuthorize("@ss.hasPermi('dpp:etl:etltaskinstance:export')")
+//    @PreAuthorize("@ss.hasPermi('dpp:etlTaskInstance:export')")
     @Log(title = "数据集成任务实例", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DppEtlTaskInstancePageReqVO exportReqVO) {
@@ -72,7 +69,7 @@ public class DppEtlTaskInstanceController extends BaseController {
     }
 
     @Operation(summary = "导入数据集成任务实例列表")
-    @PreAuthorize("@ss.hasPermi('dpp:etl:etltaskinstance:import')")
+//    @PreAuthorize("@ss.hasPermi('dpp:etlTaskInstance:import')")
     @Log(title = "数据集成任务实例", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
@@ -84,7 +81,7 @@ public class DppEtlTaskInstanceController extends BaseController {
     }
 
     @Operation(summary = "获取数据集成任务实例详细信息")
-    @PreAuthorize("@ss.hasPermi('dpp:etl:etltaskinstance:query')")
+//    @PreAuthorize("@ss.hasPermi('dpp:etlTaskInstance:query')")
     @GetMapping(value = "/{id}")
     public CommonResult<DppEtlTaskInstanceRespVO> getInfo(@PathVariable("id") Long id) {
         DppEtlTaskInstanceDO dppEtlTaskInstanceDO = dppEtlTaskInstanceService.getDppEtlTaskInstanceById(id);
@@ -92,7 +89,7 @@ public class DppEtlTaskInstanceController extends BaseController {
     }
 
     @Operation(summary = "新增数据集成任务实例")
-    @PreAuthorize("@ss.hasPermi('dpp:etl:etltaskinstance:add')")
+//    @PreAuthorize("@ss.hasPermi('dpp:etlTaskInstance:add')")
     @Log(title = "数据集成任务实例", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DppEtlTaskInstanceSaveReqVO dppEtlTaskInstance) {
@@ -103,7 +100,7 @@ public class DppEtlTaskInstanceController extends BaseController {
     }
 
     @Operation(summary = "修改数据集成任务实例")
-    @PreAuthorize("@ss.hasPermi('dpp:etl:etltaskinstance:edit')")
+//    @PreAuthorize("@ss.hasPermi('dpp:etlTaskInstance:edit')")
     @Log(title = "数据集成任务实例", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DppEtlTaskInstanceSaveReqVO dppEtlTaskInstance) {
@@ -114,7 +111,7 @@ public class DppEtlTaskInstanceController extends BaseController {
     }
 
     @Operation(summary = "删除数据集成任务实例")
-    @PreAuthorize("@ss.hasPermi('dpp:etl:etltaskinstance:remove')")
+//    @PreAuthorize("@ss.hasPermi('dpp:etlTaskInstance:remove')")
     @Log(title = "数据集成任务实例", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {

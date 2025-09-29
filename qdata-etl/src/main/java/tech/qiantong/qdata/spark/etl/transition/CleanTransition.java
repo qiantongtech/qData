@@ -14,6 +14,8 @@ import org.apache.spark.sql.types.StructType;
 import tech.qiantong.qdata.common.enums.TaskComponentTypeEnum;
 import tech.qiantong.qdata.spark.etl.utils.LogUtils;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -32,7 +34,7 @@ public class CleanTransition implements Transition {
 
     /**
      * 新
-     *
+     * @param spark
      * @param dataset
      * @param transition
      * @param logParams
@@ -41,22 +43,23 @@ public class CleanTransition implements Transition {
     @Override
     public  Dataset<Row> transition(SparkSession spark,Dataset<Row> dataset, JSONObject transition, LogUtils.Params logParams) {
         LogUtils.writeLog(logParams, "*********************************  Initialize task context  ***********************************");
-        LogUtils.writeLog(logParams, "开始转换节点");
+        LogUtils.writeLog(logParams, "开始清洗节点");
         LogUtils.writeLog(logParams, "开始任务时间: " + DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"));
         LogUtils.writeLog(logParams, "任务参数：" + transition.toJSONString(PrettyFormat));
 
         JSONObject parameter = transition.getJSONObject("parameter");
         // 获取需要处理的列名
         List<Map<String, Object>> tableFieldList = (List<Map<String, Object>>) parameter.get("tableFields");
-
-        if (tableFieldList == null || tableFieldList.isEmpty()) {
-            return transitionOld(dataset, transition, logParams);
-        }
-
         String where = parameter.getString("where");
-        if (StringUtils.isNotEmpty(where)) {
+        if(StringUtils.isNotEmpty(where)){
             dataset = safeFilter(dataset, where, logParams);
         }
+
+        if (tableFieldList == null || tableFieldList.isEmpty()) {
+            LogUtils.writeLog(logParams, "未配置任何规则，直接返回数据集。");
+            return dataset;
+        }
+
         // 对每个列应用数据处理
         for (Map<String, Object> rule : tableFieldList) {
             String ruleCode = MapUtils.getString(rule, "ruleCode");
@@ -64,7 +67,7 @@ public class CleanTransition implements Transition {
             JSONObject ruleConfig = JSONObject.parseObject((String) rule.get("ruleConfig"));
 //            JSONObject ruleConfig = (JSONObject)rule.get("ruleConfig");
             String whereClause = MapUtils.getString(rule, "whereClause");
-            if (StringUtils.isNotEmpty(whereClause)) {
+            if(StringUtils.isNotEmpty(whereClause)){
                 dataset = safeFilter(dataset, whereClause, logParams);
             }
 
@@ -266,7 +269,7 @@ public class CleanTransition implements Transition {
         return dataset;
     }
 
-    private static Dataset<Row> safeFilter(Dataset<Row> dataset, String where, LogUtils.Params logParams) {
+    private Dataset<Row> safeFilter(Dataset<Row> dataset, String where, LogUtils.Params logParams) {
         if (StringUtils.isBlank(where)) {
             return dataset;
         }
@@ -304,7 +307,7 @@ public class CleanTransition implements Transition {
     /**
      * 检查字段是否存在
      */
-    private static boolean checkColumnsExist(Dataset<Row> dataset, JSONObject ruleConfig) {
+    private boolean checkColumnsExist(Dataset<Row> dataset, JSONObject ruleConfig) {
         List<String> allColumns = Arrays.asList(dataset.columns());
         List<String> targetCols = new ArrayList<>();
 

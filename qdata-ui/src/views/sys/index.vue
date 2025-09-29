@@ -88,11 +88,11 @@
         <div class="border-item module-6 home-gutter">
           <div class="border-item-head">
             <span class="head-title">新闻公告 </span>
-            <el-link type="primary" :underline="false" @click="goxinwen">查看更多
+            <el-link type="primary" :underline="false" @click="goxinwen('list')">查看更多
             </el-link>
           </div>
           <div class="border-item-body">
-            <div class="module-item" v-for="(item, index) in module6" :key="index" @click="goxinwen">
+            <div class="module-item" v-for="(item, index) in module6" :key="index" @click="goxinwen(item)">
               <dict-tag :options="sys_notice_type" :value="item.noticeType" />
               <div class="value" :title="item.noticeTitle">
                 {{ item.noticeTitle }}
@@ -296,50 +296,56 @@ const module1 = ref([
 const entranceList = [
   {
     name: "数据连接",
-    path: "/da/daDatasource",
+    path: "/da/datasource",
     query: { type: "0" },
-    perm: ["da:datasource:datasource:list"],
+    perm: ["da:dataSource:list"],
     color: "color-primary",
     icon: getAssetsFile("connect.png"),
   },
   {
     name: "资产地图",
-    path: "/da/daAsset",
+    path: "/da/asset",
     query: {},
-    perm: ["da:asset:asset:list"],
+    perm: ["da:asset:list"],
     color: "color-pale-blue",
     icon: getAssetsFile("map.png"),
   },
   {
     name: "数据集成",
-    path: "/dpp/tasker/dppEtlTask",
+    path: "/dpp/task/integratioTask",
     query: {},
-    perm: ["dpp:etl:etltask:list"],
+    TYPE: 1,
+    perm: ["dpp:integratioTask:list"],
     color: "color-orange",
     icon: getAssetsFile("integration.png"),
   },
   {
     name: "数据开发",
-    path: "/dpp/tasker/dpptaskerddv",
+    path: "/dpp/task/developTask",
     query: {},
-    perm: ["dpp:tasker:ddv:list"],
-    color: "color-pink",
+    TYPE: 3,
+    perm: ["dpp:developTask:list"],
     icon: getAssetsFile("develop.png"),
   },
   {
     name: "API 管理",
-    path: "/ds/dsApi",
+    path: "/ds/api",
     query: {},
-    perm: ["ds:api:api:list"],
+    perm: ["ds:api:list"],
     color: "color-pale-blue",
     icon: getAssetsFile("api.png"),
   },
 ];
 
 //新闻跳转
-function goxinwen() {
-  proxy.$router.push("/system/notice"); // 内部页面路径
+function goxinwen(row) {
+  if (row == "list") {
+    proxy.$router.push("/sys/notice");
+  } else {
+    proxy.$router.push({ path: "/system/notice/detail", query: { id: row.noticeId } });
+  }
 }
+
 
 function goprofile() {
   proxy.$router.push("/user/profile"); // 内部页面路径

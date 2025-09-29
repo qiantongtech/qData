@@ -901,3 +901,1205 @@ END LOOP;
 END LOOP;
 END;
 /
+
+
+CREATE TABLE "ODS"."ODS_HYD_DISCHARGE"
+(
+    "ID" VARCHAR(4000) NULL,
+    "STATION_CODE" VARCHAR(4000) NULL,
+    "SENSOR_ID" VARCHAR(4000) NULL,
+    "OBS_TIME" VARCHAR(4000) NULL,
+    "OBS_DATE" VARCHAR(4000) NULL,
+    "DISCHARGE_M3S" VARCHAR(4000) NULL,
+    "QUALITY_CODE" VARCHAR(4000) NULL,
+    "SOURCE" VARCHAR(4000) NULL,
+    "TRACE_ID" VARCHAR(4000) NULL,
+    "EXT_JSON" VARCHAR(4000) NULL,
+    "CREATED_AT" VARCHAR(4000) NULL
+);
+CREATE TABLE "ODS"."ODS_HYD_WATER_LEVEL"
+(
+    "ID" VARCHAR(4000) NULL,
+    "STATION_CODE" VARCHAR(4000) NULL,
+    "SENSOR_ID" VARCHAR(4000) NULL,
+    "OBS_TIME" VARCHAR(4000) NULL,
+    "OBS_DATE" VARCHAR(4000) NULL,
+    "WATER_LEVEL_M" VARCHAR(4000) NULL,
+    "QUALITY_CODE" VARCHAR(4000) NULL,
+    "SOURCE" VARCHAR(4000) NULL,
+    "TRACE_ID" VARCHAR(4000) NULL,
+    "EXT_JSON" VARCHAR(4000) NULL,
+    "CREATED_AT" VARCHAR(4000) NULL
+);
+CREATE TABLE "ODS"."ODS_HYD_WATER_LEVEL_FLINK_STREAM"
+(
+    "ID" VARCHAR(4000) NULL,
+    "STATION_CODE" VARCHAR(4000) NULL,
+    "SENSOR_ID" VARCHAR(4000) NULL,
+    "OBS_TIME" VARCHAR(4000) NULL,
+    "OBS_DATE" VARCHAR(4000) NULL,
+    "WATER_LEVEL_M" VARCHAR(4000) NULL,
+    "QUALITY_CODE" VARCHAR(4000) NULL,
+    "SOURCE" VARCHAR(4000) NULL,
+    "TRACE_ID" VARCHAR(4000) NULL,
+    "EXT_JSON" VARCHAR(4000) NULL,
+    "CREATED_AT" VARCHAR(4000) NULL
+);
+CREATE TABLE "ODS"."ODS_STATION"
+(
+    "STATION_ID" VARCHAR(4000) NULL,
+    "STATION_CODE" VARCHAR(4000) NULL,
+    "STATION_NAME" VARCHAR(4000) NULL,
+    "BASIN_CODE" VARCHAR(4000) NULL,
+    "RIVER_NAME" VARCHAR(4000) NULL,
+    "LONGITUDE" VARCHAR(4000) NULL,
+    "LATITUDE" VARCHAR(4000) NULL,
+    "ADMIN_REGION_CODE" VARCHAR(4000) NULL,
+    "STATUS" VARCHAR(4000) NULL,
+    "CREATED_AT" VARCHAR(4000) NULL,
+    "UPDATED_AT" VARCHAR(4000) NULL
+);
+CREATE TABLE "ODS"."ODS_STATION_ALL"
+(
+    "ID" VARCHAR(4000) NULL,
+    "SRC_SYSTEM" VARCHAR(4000) NULL,
+    "STATION_ID" VARCHAR(4000) NULL,
+    "STATION_CODE" VARCHAR(4000) NULL,
+    "STATION_NAME" VARCHAR(4000) NULL,
+    "BASIN_CODE" VARCHAR(4000) NULL,
+    "RIVER_NAME" VARCHAR(4000) NULL,
+    "LONGITUDE" VARCHAR(4000) NULL,
+    "LATITUDE" VARCHAR(4000) NULL,
+    "ADMIN_REGION_CODE" VARCHAR(4000) NULL,
+    "STATUS" VARCHAR(4000) NULL,
+    "ETL_BATCH_ID" VARCHAR(4000) NULL,
+    "ETL_TIME" VARCHAR(4000) NULL
+);
+CREATE TABLE "ODS"."ODS_WATER_LEVEL"
+(
+    "ID" VARCHAR(4000) NULL,
+    "STATION_CODE" VARCHAR(4000) NULL,
+    "OBS_TIME" VARCHAR(4000) NULL,
+    "WATER_LEVEL" VARCHAR(4000) NULL,
+    "QUALITY_FLAG" VARCHAR(4000) NULL,
+    "TS" VARCHAR(4000) NULL,
+    "SRC_SYSTEM" VARCHAR(4000) NULL,
+    "SRC_DB" VARCHAR(4000) NULL,
+    "SRC_TABLE" VARCHAR(4000) NULL,
+    "ETL_BATCH_ID" VARCHAR(4000) NULL,
+    "ETL_TIME" VARCHAR(4000) NULL
+);
+CREATE TABLE "ODS"."ODS_WR_STATION"
+(
+    "STATION_ID" VARCHAR(4000) NULL,
+    "STATION_CODE" VARCHAR(4000) NULL,
+    "STATION_NAME" VARCHAR(4000) NULL,
+    "BASIN_CODE" VARCHAR(4000) NULL,
+    "RIVER_NAME" VARCHAR(4000) NULL,
+    "LONGITUDE" VARCHAR(4000) NULL,
+    "LATITUDE" VARCHAR(4000) NULL,
+    "ADMIN_REGION_CODE" VARCHAR(4000) NULL,
+    "STATUS" VARCHAR(4000) NULL,
+    "CREATED_AT" VARCHAR(4000) NULL,
+    "UPDATED_AT" VARCHAR(4000) NULL
+);
+CREATE TABLE "ODS"."ODS_WR_WATER_LEVEL"
+(
+    "ID" VARCHAR(4000) NULL,
+    "STATION_CODE" VARCHAR(4000) NULL,
+    "OBS_TIME" VARCHAR(4000) NULL,
+    "WATER_LEVEL" VARCHAR(4000) NULL,
+    "QUALITY_FLAG" VARCHAR(4000) NULL,
+    "TS" VARCHAR(4000) NULL
+);
+
+-- ===========================================================
+-- ODS 全量初始化脚本（共 4 张表，每表 1000 条）
+-- 适配达梦 DM8，字段类型全为 VARCHAR(4000)
+-- ===========================================================
+
+-- 1. ODS_HYD_DISCHARGE（水文监测流量时序数据）
+BEGIN
+FOR i IN 1..1000 LOOP
+    INSERT INTO ODS.ODS_HYD_DISCHARGE (
+      ID, STATION_CODE, SENSOR_ID, OBS_TIME, OBS_DATE,
+      DISCHARGE_M3S, QUALITY_CODE, SOURCE, TRACE_ID, EXT_JSON, CREATED_AT
+    ) VALUES (
+      TO_CHAR(i),
+      'ST' || LPAD(i, 4, '0'),
+      TO_CHAR(1000 + i),
+      TO_CHAR(SYSDATE - MOD(i, 30), 'YYYY-MM-DD HH24:MI:SS'),
+      TO_CHAR(SYSDATE - MOD(i, 30), 'YYYY-MM-DD'),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(10, 500), 3)),
+      'Q' || MOD(i, 9),
+      'SYSTEM_FLOW',
+      'TRACE' || LPAD(i, 6, '0'),
+      '{"info":"flow discharge test"}',
+      TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS')
+    );
+END LOOP;
+END;
+/
+COMMIT;
+/
+
+-- 2. ODS_HYD_WATER_LEVEL（水文监测水位时序数据）
+BEGIN
+FOR i IN 1..1000 LOOP
+    INSERT INTO ODS.ODS_HYD_WATER_LEVEL (
+      ID, STATION_CODE, SENSOR_ID, OBS_TIME, OBS_DATE,
+      WATER_LEVEL_M, QUALITY_CODE, SOURCE, TRACE_ID, EXT_JSON, CREATED_AT
+    ) VALUES (
+      TO_CHAR(i),
+      'ST' || LPAD(i, 4, '0'),
+      TO_CHAR(2000 + i),
+      TO_CHAR(SYSDATE - MOD(i, 30), 'YYYY-MM-DD HH24:MI:SS'),
+      TO_CHAR(SYSDATE - MOD(i, 30), 'YYYY-MM-DD'),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(0.5, 10), 3)),
+      'L' || MOD(i, 9),
+      'SYSTEM_LEVEL',
+      'TRACE' || LPAD(i, 6, '0'),
+      '{"info":"water level test"}',
+      TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS')
+    );
+END LOOP;
+END;
+/
+COMMIT;
+/
+
+-- 3. ODS_WR_STATION（水资源站点基础信息）
+BEGIN
+FOR i IN 1..1000 LOOP
+    INSERT INTO ODS.ODS_WR_STATION (
+      STATION_ID, STATION_CODE, STATION_NAME,
+      BASIN_CODE, RIVER_NAME, LONGITUDE, LATITUDE,
+      ADMIN_REGION_CODE, STATUS, CREATED_AT, UPDATED_AT
+    ) VALUES (
+      TO_CHAR(i),
+      'WR' || LPAD(i, 4, '0'),
+      '水文站点_' || TO_CHAR(i),
+      'BS' || LPAD(MOD(i, 10), 2, '0'),
+      '河流_' || TO_CHAR(MOD(i, 20)),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(100, 120), 6)),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(20, 40), 6)),
+      'CN' || LPAD(MOD(i, 100), 4, '0'),
+      CASE WHEN MOD(i, 2) = 0 THEN '1' ELSE '0' END,
+      TO_CHAR(SYSDATE - MOD(i, 10), 'YYYY-MM-DD HH24:MI:SS'),
+      TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS')
+    );
+END LOOP;
+END;
+/
+COMMIT;
+/
+
+-- 4. ODS_WR_WATER_LEVEL（水资源水位原始明细）
+BEGIN
+FOR i IN 1..1000 LOOP
+    INSERT INTO ODS.ODS_WR_WATER_LEVEL (
+      ID, STATION_CODE, OBS_TIME, WATER_LEVEL, QUALITY_FLAG, TS
+    ) VALUES (
+      TO_CHAR(i),
+      'WR' || LPAD(i, 4, '0'),
+      TO_CHAR(SYSDATE - MOD(i, 30), 'YYYY-MM-DD HH24:MI:SS'),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(0.1, 20), 3)),
+      'F' || MOD(i, 5),
+      TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS')
+    );
+END LOOP;
+END;
+/
+COMMIT;
+/
+
+-- ===========================================================
+-- ✅ 初始化完成：共 4000 条记录
+-- ===========================================================
+
+
+COMMENT ON TABLE "ODS"."ODS_HYD_DISCHARGE" IS '水文监测流量时序数据';
+
+COMMENT ON TABLE "ODS"."ODS_HYD_WATER_LEVEL" IS '水文监测水位时序数据';
+
+COMMENT ON TABLE "ODS"."ODS_HYD_WATER_LEVEL_FLINK_STREAM" IS '水位时序数据（Flink Stream）';
+
+COMMENT ON TABLE "ODS"."ODS_STATION" IS '站点基础信息表';
+
+COMMENT ON TABLE "ODS"."ODS_STATION_ALL" IS '水资源多源站点汇总（追加/重建）';
+
+COMMENT ON TABLE "ODS"."ODS_WATER_LEVEL" IS '水资源水位原始库';
+
+COMMENT ON TABLE "ODS"."ODS_WR_STATION" IS '水资源站点基础信息';
+
+COMMENT ON TABLE "ODS"."ODS_WR_WATER_LEVEL" IS '水资源水位原始明细';
+
+-- ===========================================================
+-- 1. DWD_DIM_STATION — 统一站点维表
+-- ===========================================================
+CREATE TABLE DWD.DWD_DIM_STATION (
+                                     STATION_ID         VARCHAR(4000) NULL,
+                                     STATION_CODE       VARCHAR(4000) NULL,
+                                     STATION_NAME       VARCHAR(4000) NULL,
+                                     BASIN_CODE         VARCHAR(4000) NULL,
+                                     BASIN_NAME         VARCHAR(4000) NULL,
+                                     RIVER_NAME         VARCHAR(4000) NULL,
+                                     LONGITUDE          VARCHAR(4000) NULL,
+                                     LATITUDE           VARCHAR(4000) NULL,
+                                     ADMIN_REGION_CODE  VARCHAR(4000) NULL,
+                                     STATUS             VARCHAR(4000) NULL,
+                                     EFFECTIVE_FROM     VARCHAR(4000) NULL,
+                                     EFFECTIVE_TO       VARCHAR(4000) NULL,
+                                     ETL_TIME           VARCHAR(4000) NULL
+);
+COMMENT ON TABLE DWD.DWD_DIM_STATION IS '统一站点维表';
+
+
+-- ===========================================================
+-- 2. DWD_FACT_WATER_LEVEL_CLEAN — 清洗后的水位明细
+-- ===========================================================
+CREATE TABLE DWD.DWD_FACT_WATER_LEVEL_CLEAN (
+                                                STATION_ID       VARCHAR(4000) NULL,
+                                                STATION_CODE     VARCHAR(4000) NULL,
+                                                OBS_TIME         VARCHAR(4000) NULL,
+                                                WATER_LEVEL      VARCHAR(4000) NULL,
+                                                ANOMALY_FLAG     VARCHAR(4000) NULL,
+                                                IMPUTE_FLAG      VARCHAR(4000) NULL,
+                                                QUALITY_FLAG_STD VARCHAR(4000) NULL,
+                                                SRC_SYSTEM       VARCHAR(4000) NULL,
+                                                ETL_TIME         VARCHAR(4000) NULL
+);
+COMMENT ON TABLE DWD.DWD_FACT_WATER_LEVEL_CLEAN IS '清洗后的水位明细';
+
+
+-- ===========================================================
+-- 3. DWD_FACT_WATER_LEVEL_DEDUP — 去重后的水位明细
+-- ===========================================================
+CREATE TABLE DWD.DWD_FACT_WATER_LEVEL_DEDUP (
+                                                STATION_ID   VARCHAR(4000) NULL,
+                                                STATION_CODE VARCHAR(4000) NULL,
+                                                OBS_TIME     VARCHAR(4000) NULL,
+                                                WATER_LEVEL  VARCHAR(4000) NULL,
+                                                SELECT_RULE  VARCHAR(4000) NULL,
+                                                ETL_TIME     VARCHAR(4000) NULL
+);
+COMMENT ON TABLE DWD.DWD_FACT_WATER_LEVEL_DEDUP IS '去重后的水位明细';
+
+
+-- ===========================================================
+-- 4. DWD_FACT_WATER_LEVEL_SPLIT — 字段拆分后的水位明细
+-- ===========================================================
+CREATE TABLE DWD.DWD_FACT_WATER_LEVEL_SPLIT (
+                                                STATION_ID        VARCHAR(4000) NULL,
+                                                STATION_CODE      VARCHAR(4000) NULL,
+                                                OBS_TIME          VARCHAR(4000) NULL,
+                                                WATER_LEVEL       VARCHAR(4000) NULL,
+                                                BASIN_CODE        VARCHAR(4000) NULL,
+                                                ADMIN_REGION_CODE VARCHAR(4000) NULL,
+                                                ETL_TIME          VARCHAR(4000) NULL
+);
+COMMENT ON TABLE DWD.DWD_FACT_WATER_LEVEL_SPLIT IS '字段拆分后的水位明细';
+
+
+-- ===========================================================
+-- 5. DWD_FACT_WATER_LEVEL_UNPIVOT — 行列转置中间层
+-- ===========================================================
+CREATE TABLE DWD.DWD_FACT_WATER_LEVEL_UNPIVOT (
+                                                  RID          VARCHAR(4000) NULL,
+                                                  STATION_CODE VARCHAR(4000) NULL,
+                                                  OBS_TIME     VARCHAR(4000) NULL,
+                                                  METRIC_NAME  VARCHAR(4000) NULL,
+                                                  METRIC_VALUE VARCHAR(4000) NULL,
+                                                  ETL_TIME     VARCHAR(4000) NULL
+);
+COMMENT ON TABLE DWD.DWD_FACT_WATER_LEVEL_UNPIVOT IS '行列转置中间层（可选）';
+
+
+-- ===========================================================
+-- 6. DWD_STATION_MERGE — 站点基础信息（含经纬度整合）
+-- ===========================================================
+CREATE TABLE DWD.DWD_STATION_MERGE (
+                                       STATION_ID        VARCHAR(4000) NULL,
+                                       STATION_CODE      VARCHAR(4000) NULL,
+                                       STATION_NAME      VARCHAR(4000) NULL,
+                                       BASIN_CODE        VARCHAR(4000) NULL,
+                                       RIVER_NAME        VARCHAR(4000) NULL,
+                                       LONGITUDE         VARCHAR(4000) NULL,
+                                       LATITUDE          VARCHAR(4000) NULL,
+                                       ADMIN_REGION_CODE VARCHAR(4000) NULL,
+                                       STATUS            VARCHAR(4000) NULL,
+                                       CREATED_AT        VARCHAR(4000) NULL,
+                                       UPDATED_AT        VARCHAR(4000) NULL,
+                                       LNGLAT            VARCHAR(4000) NULL
+);
+COMMENT ON TABLE DWD.DWD_STATION_MERGE IS 'DWD_站点基础信息（含经纬度整合字段）';
+
+
+-- ===========================================================
+-- 7. DWD_STATION_WATER_MONTH_REPORT — 站点水位月报表（明细表）
+-- ===========================================================
+CREATE TABLE DWD.DWD_STATION_WATER_MONTH_REPORT (
+                                                    STATION_ID       VARCHAR(4000) NULL,
+                                                    STATION_NAME     VARCHAR(4000) NULL,
+                                                    AVG_WATER_LEVEL  VARCHAR(4000) NULL,
+                                                    STAT_MONTH       VARCHAR(4000) NULL
+);
+COMMENT ON TABLE DWD.DWD_STATION_WATER_MONTH_REPORT IS '站点水位月报表（明细表）';
+
+
+-- ===========================================================
+-- 8. DWD_STATION_WATER_MONTH_REPORT_WIDE — 站点水位月报宽表
+-- ===========================================================
+CREATE TABLE DWD.DWD_STATION_WATER_MONTH_REPORT_WIDE (
+                                                         STATION_ID VARCHAR(4000) NULL,
+                                                         STATION_NAME VARCHAR(4000) NULL,
+                                                         "2025_01" VARCHAR(4000) NULL,
+                                                         "2025_02" VARCHAR(4000) NULL,
+                                                         "2025_03" VARCHAR(4000) NULL,
+                                                         "2025_04" VARCHAR(4000) NULL,
+                                                         "2025_05" VARCHAR(4000) NULL,
+                                                         "2025_06" VARCHAR(4000) NULL,
+                                                         "2025_07" VARCHAR(4000) NULL
+);
+COMMENT ON TABLE DWD.DWD_STATION_WATER_MONTH_REPORT_WIDE IS '站点水位月报宽表（2025-01 至 2025-07）';
+
+
+-- ===========================================================
+-- 9. DWD_WATER_LEVEL_CLEAN_MISSING — 缺失值补全
+-- ===========================================================
+CREATE TABLE DWD.DWD_WATER_LEVEL_CLEAN_MISSING (
+                                                   ID            VARCHAR(4000) NULL,
+                                                   STATION_CODE  VARCHAR(4000) NULL,
+                                                   OBS_TIME      VARCHAR(4000) NULL,
+                                                   WATER_LEVEL   VARCHAR(4000) NULL,
+                                                   QUALITY_FLAG  VARCHAR(4000) NULL,
+                                                   TS            VARCHAR(4000) NULL
+);
+COMMENT ON TABLE DWD.DWD_WATER_LEVEL_CLEAN_MISSING IS '站点水位明细表（缺失值补全）';
+
+
+-- ===========================================================
+-- 10. DWD_WATER_LEVEL_CLEAN_OUTLIER — 异常值剔除
+-- ===========================================================
+CREATE TABLE DWD.DWD_WATER_LEVEL_CLEAN_OUTLIER (
+                                                   ID            VARCHAR(4000) NULL,
+                                                   STATION_CODE  VARCHAR(4000) NULL,
+                                                   OBS_TIME      VARCHAR(4000) NULL,
+                                                   WATER_LEVEL   VARCHAR(4000) NULL,
+                                                   QUALITY_FLAG  VARCHAR(4000) NULL,
+                                                   TS            VARCHAR(4000) NULL
+);
+COMMENT ON TABLE DWD.DWD_WATER_LEVEL_CLEAN_OUTLIER IS '站点水位明细表（异常值剔除）';
+
+
+-- ===========================================================
+-- 11. DWD_WATER_LEVEL_CLEAN_STD — 格式标准化
+-- ===========================================================
+CREATE TABLE DWD.DWD_WATER_LEVEL_CLEAN_STD (
+                                               ID            VARCHAR(4000) NULL,
+                                               STATION_CODE  VARCHAR(4000) NULL,
+                                               OBS_TIME      VARCHAR(4000) NULL,
+                                               WATER_LEVEL   VARCHAR(4000) NULL,
+                                               QUALITY_FLAG  VARCHAR(4000) NULL,
+                                               TS            VARCHAR(4000) NULL
+);
+COMMENT ON TABLE DWD.DWD_WATER_LEVEL_CLEAN_STD IS '站点水位明细表（格式标准化，水位值保留2位小数）';
+
+/* ===========================================================
+   字段注释补丁（DM8）—— 在表已创建后执行
+   =========================================================== */
+
+/* 1) DWD_DIM_STATION */
+COMMENT ON COLUMN DWD.DWD_DIM_STATION.STATION_ID        IS '站点维ID（中台分配）';
+COMMENT ON COLUMN DWD.DWD_DIM_STATION.STATION_CODE      IS '站点编码（业务键）';
+COMMENT ON COLUMN DWD.DWD_DIM_STATION.STATION_NAME      IS '站点名称';
+COMMENT ON COLUMN DWD.DWD_DIM_STATION.BASIN_CODE        IS '流域编码';
+COMMENT ON COLUMN DWD.DWD_DIM_STATION.BASIN_NAME        IS '流域名称（字典映射）';
+COMMENT ON COLUMN DWD.DWD_DIM_STATION.RIVER_NAME        IS '河流名称';
+COMMENT ON COLUMN DWD.DWD_DIM_STATION.LONGITUDE         IS '经度';
+COMMENT ON COLUMN DWD.DWD_DIM_STATION.LATITUDE          IS '纬度';
+COMMENT ON COLUMN DWD.DWD_DIM_STATION.ADMIN_REGION_CODE IS '行政区划码';
+COMMENT ON COLUMN DWD.DWD_DIM_STATION.STATUS            IS '1启用/0停用';
+COMMENT ON COLUMN DWD.DWD_DIM_STATION.EFFECTIVE_FROM    IS '生效起';
+COMMENT ON COLUMN DWD.DWD_DIM_STATION.EFFECTIVE_TO      IS '生效止';
+COMMENT ON COLUMN DWD.DWD_DIM_STATION.ETL_TIME          IS '入仓时间';
+
+/* 2) DWD_FACT_WATER_LEVEL_CLEAN */
+COMMENT ON COLUMN DWD.DWD_FACT_WATER_LEVEL_CLEAN.STATION_ID       IS '维表ID（可空后补）';
+COMMENT ON COLUMN DWD.DWD_FACT_WATER_LEVEL_CLEAN.STATION_CODE     IS '站点编码';
+COMMENT ON COLUMN DWD.DWD_FACT_WATER_LEVEL_CLEAN.OBS_TIME         IS '观测时间';
+COMMENT ON COLUMN DWD.DWD_FACT_WATER_LEVEL_CLEAN.WATER_LEVEL      IS '水位（米，清洗后值）';
+COMMENT ON COLUMN DWD.DWD_FACT_WATER_LEVEL_CLEAN.ANOMALY_FLAG     IS '异常标记：0正常/1异常';
+COMMENT ON COLUMN DWD.DWD_FACT_WATER_LEVEL_CLEAN.IMPUTE_FLAG      IS '缺失补全标记：1补值';
+COMMENT ON COLUMN DWD.DWD_FACT_WATER_LEVEL_CLEAN.QUALITY_FLAG_STD IS '统一质控码';
+COMMENT ON COLUMN DWD.DWD_FACT_WATER_LEVEL_CLEAN.SRC_SYSTEM       IS '来源系统';
+COMMENT ON COLUMN DWD.DWD_FACT_WATER_LEVEL_CLEAN.ETL_TIME         IS '入仓时间';
+
+/* 3) DWD_FACT_WATER_LEVEL_DEDUP */
+COMMENT ON COLUMN DWD.DWD_FACT_WATER_LEVEL_DEDUP.STATION_ID   IS '维表ID';
+COMMENT ON COLUMN DWD.DWD_FACT_WATER_LEVEL_DEDUP.STATION_CODE IS '站点编码';
+COMMENT ON COLUMN DWD.DWD_FACT_WATER_LEVEL_DEDUP.OBS_TIME     IS '观测时间';
+COMMENT ON COLUMN DWD.DWD_FACT_WATER_LEVEL_DEDUP.WATER_LEVEL  IS '水位（米）';
+COMMENT ON COLUMN DWD.DWD_FACT_WATER_LEVEL_DEDUP.SELECT_RULE  IS '选择规则（latest_ts/best_quality）';
+COMMENT ON COLUMN DWD.DWD_FACT_WATER_LEVEL_DEDUP.ETL_TIME     IS '入仓时间';
+
+/* 4) DWD_FACT_WATER_LEVEL_SPLIT */
+COMMENT ON COLUMN DWD.DWD_FACT_WATER_LEVEL_SPLIT.STATION_ID        IS '维表ID';
+COMMENT ON COLUMN DWD.DWD_FACT_WATER_LEVEL_SPLIT.STATION_CODE      IS '站点编码';
+COMMENT ON COLUMN DWD.DWD_FACT_WATER_LEVEL_SPLIT.OBS_TIME          IS '观测时间';
+COMMENT ON COLUMN DWD.DWD_FACT_WATER_LEVEL_SPLIT.WATER_LEVEL       IS '水位（米）';
+COMMENT ON COLUMN DWD.DWD_FACT_WATER_LEVEL_SPLIT.BASIN_CODE        IS '流域编码（拆分/映射）';
+COMMENT ON COLUMN DWD.DWD_FACT_WATER_LEVEL_SPLIT.ADMIN_REGION_CODE IS '行政区划（拆分/映射）';
+COMMENT ON COLUMN DWD.DWD_FACT_WATER_LEVEL_SPLIT.ETL_TIME          IS '入仓时间';
+
+/* 5) DWD_FACT_WATER_LEVEL_UNPIVOT */
+COMMENT ON COLUMN DWD.DWD_FACT_WATER_LEVEL_UNPIVOT.RID          IS '技术主键（为满足首列非 STRING 要求）';
+COMMENT ON COLUMN DWD.DWD_FACT_WATER_LEVEL_UNPIVOT.STATION_CODE IS '站点编码';
+COMMENT ON COLUMN DWD.DWD_FACT_WATER_LEVEL_UNPIVOT.OBS_TIME     IS '观测时间';
+COMMENT ON COLUMN DWD.DWD_FACT_WATER_LEVEL_UNPIVOT.METRIC_NAME  IS '指标名';
+COMMENT ON COLUMN DWD.DWD_FACT_WATER_LEVEL_UNPIVOT.METRIC_VALUE IS '指标值';
+COMMENT ON COLUMN DWD.DWD_FACT_WATER_LEVEL_UNPIVOT.ETL_TIME     IS '入仓时间';
+
+/* 6) DWD_STATION_MERGE */
+COMMENT ON COLUMN DWD.DWD_STATION_MERGE.STATION_ID        IS '站点主键（源）';
+COMMENT ON COLUMN DWD.DWD_STATION_MERGE.STATION_CODE      IS '站点编码（跨源统一关联键）';
+COMMENT ON COLUMN DWD.DWD_STATION_MERGE.STATION_NAME      IS '站点名称';
+COMMENT ON COLUMN DWD.DWD_STATION_MERGE.BASIN_CODE        IS '流域编码';
+COMMENT ON COLUMN DWD.DWD_STATION_MERGE.RIVER_NAME        IS '河流名称';
+COMMENT ON COLUMN DWD.DWD_STATION_MERGE.LONGITUDE         IS '经度';
+COMMENT ON COLUMN DWD.DWD_STATION_MERGE.LATITUDE          IS '纬度';
+COMMENT ON COLUMN DWD.DWD_STATION_MERGE.ADMIN_REGION_CODE IS '行政区划码';
+COMMENT ON COLUMN DWD.DWD_STATION_MERGE.STATUS            IS '1启用/0停用';
+COMMENT ON COLUMN DWD.DWD_STATION_MERGE.CREATED_AT        IS '创建时间';
+COMMENT ON COLUMN DWD.DWD_STATION_MERGE.UPDATED_AT        IS '修改时间';
+COMMENT ON COLUMN DWD.DWD_STATION_MERGE.LNGLAT            IS '经纬度整合，格式：lng,lat 例如 120.123456,30.123456';
+
+/* 7) DWD_STATION_WATER_MONTH_REPORT */
+COMMENT ON COLUMN DWD.DWD_STATION_WATER_MONTH_REPORT.STATION_ID      IS '测站id';
+COMMENT ON COLUMN DWD.DWD_STATION_WATER_MONTH_REPORT.STATION_NAME    IS '测站名称';
+COMMENT ON COLUMN DWD.DWD_STATION_WATER_MONTH_REPORT.AVG_WATER_LEVEL IS '月平均水位';
+COMMENT ON COLUMN DWD.DWD_STATION_WATER_MONTH_REPORT.STAT_MONTH      IS '统计时间（yyyy-mm，例如：2025-01）';
+
+/* 8) DWD_STATION_WATER_MONTH_REPORT_WIDE */
+COMMENT ON COLUMN DWD.DWD_STATION_WATER_MONTH_REPORT_WIDE.STATION_ID   IS '测站ID';
+COMMENT ON COLUMN DWD.DWD_STATION_WATER_MONTH_REPORT_WIDE.STATION_NAME IS '测站名称';
+COMMENT ON COLUMN DWD.DWD_STATION_WATER_MONTH_REPORT_WIDE."2025_01"    IS '2025-01 月平均水位';
+COMMENT ON COLUMN DWD.DWD_STATION_WATER_MONTH_REPORT_WIDE."2025_02"    IS '2025-02 月平均水位';
+COMMENT ON COLUMN DWD.DWD_STATION_WATER_MONTH_REPORT_WIDE."2025_03"    IS '2025-03 月平均水位';
+COMMENT ON COLUMN DWD.DWD_STATION_WATER_MONTH_REPORT_WIDE."2025_04"    IS '2025-04 月平均水位';
+COMMENT ON COLUMN DWD.DWD_STATION_WATER_MONTH_REPORT_WIDE."2025_05"    IS '2025-05 月平均水位';
+COMMENT ON COLUMN DWD.DWD_STATION_WATER_MONTH_REPORT_WIDE."2025_06"    IS '2025-06 月平均水位';
+COMMENT ON COLUMN DWD.DWD_STATION_WATER_MONTH_REPORT_WIDE."2025_07"    IS '2025-07 月平均水位';
+
+/* 9) DWD_WATER_LEVEL_CLEAN_MISSING */
+COMMENT ON COLUMN DWD.DWD_WATER_LEVEL_CLEAN_MISSING.ID           IS '记录主键（源）';
+COMMENT ON COLUMN DWD.DWD_WATER_LEVEL_CLEAN_MISSING.STATION_CODE IS '站点编码';
+COMMENT ON COLUMN DWD.DWD_WATER_LEVEL_CLEAN_MISSING.OBS_TIME     IS '观测时间';
+COMMENT ON COLUMN DWD.DWD_WATER_LEVEL_CLEAN_MISSING.WATER_LEVEL  IS '水位（米，保留2位小数）';
+COMMENT ON COLUMN DWD.DWD_WATER_LEVEL_CLEAN_MISSING.QUALITY_FLAG IS '源端质控标识';
+COMMENT ON COLUMN DWD.DWD_WATER_LEVEL_CLEAN_MISSING.TS           IS '源端变更时间';
+
+/* 10) DWD_WATER_LEVEL_CLEAN_OUTLIER */
+COMMENT ON COLUMN DWD.DWD_WATER_LEVEL_CLEAN_OUTLIER.ID           IS '记录主键（源）';
+COMMENT ON COLUMN DWD.DWD_WATER_LEVEL_CLEAN_OUTLIER.STATION_CODE IS '站点编码';
+COMMENT ON COLUMN DWD.DWD_WATER_LEVEL_CLEAN_OUTLIER.OBS_TIME     IS '观测时间';
+COMMENT ON COLUMN DWD.DWD_WATER_LEVEL_CLEAN_OUTLIER.WATER_LEVEL  IS '水位（米，保留2位小数）';
+COMMENT ON COLUMN DWD.DWD_WATER_LEVEL_CLEAN_OUTLIER.QUALITY_FLAG IS '源端质控标识';
+COMMENT ON COLUMN DWD.DWD_WATER_LEVEL_CLEAN_OUTLIER.TS           IS '源端变更时间';
+
+/* 11) DWD_WATER_LEVEL_CLEAN_STD */
+COMMENT ON COLUMN DWD.DWD_WATER_LEVEL_CLEAN_STD.ID           IS '记录主键（源）';
+COMMENT ON COLUMN DWD.DWD_WATER_LEVEL_CLEAN_STD.STATION_CODE IS '站点编码';
+COMMENT ON COLUMN DWD.DWD_WATER_LEVEL_CLEAN_STD.OBS_TIME     IS '观测时间';
+COMMENT ON COLUMN DWD.DWD_WATER_LEVEL_CLEAN_STD.WATER_LEVEL  IS '水位（米，保留2位小数）';
+COMMENT ON COLUMN DWD.DWD_WATER_LEVEL_CLEAN_STD.QUALITY_FLAG IS '源端质控标识';
+COMMENT ON COLUMN DWD.DWD_WATER_LEVEL_CLEAN_STD.TS           IS '源端变更时间';
+
+
+-- ===========================================================
+-- DWD 层初始化随机数据（每表 500 条）
+-- ===========================================================
+
+-- 1. DWD_DIM_STATION — 统一站点维表
+BEGIN
+FOR i IN 1..500 LOOP
+    INSERT INTO DWD.DWD_DIM_STATION (
+      STATION_ID, STATION_CODE, STATION_NAME, BASIN_CODE, BASIN_NAME,
+      RIVER_NAME, LONGITUDE, LATITUDE, ADMIN_REGION_CODE, STATUS,
+      EFFECTIVE_FROM, EFFECTIVE_TO, ETL_TIME
+    ) VALUES (
+      TO_CHAR(i),
+      'ST' || LPAD(i, 4, '0'),
+      '站点_' || TO_CHAR(i),
+      'BS' || LPAD(MOD(i,10), 2, '0'),
+      '流域_' || TO_CHAR(MOD(i,10)),
+      '河流_' || TO_CHAR(MOD(i,20)),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(100,120),6)),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(20,40),6)),
+      'CN' || LPAD(MOD(i,100),4,'0'),
+      CASE WHEN MOD(i,2)=0 THEN '1' ELSE '0' END,
+      TO_CHAR(SYSDATE - MOD(i,100),'YYYY-MM-DD HH24:MI:SS'),
+      TO_CHAR(SYSDATE + MOD(i,30),'YYYY-MM-DD HH24:MI:SS'),
+      TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS')
+    );
+END LOOP;
+END;
+/
+COMMIT;
+/
+
+-- 2. DWD_FACT_WATER_LEVEL_CLEAN
+BEGIN
+FOR i IN 1..500 LOOP
+    INSERT INTO DWD.DWD_FACT_WATER_LEVEL_CLEAN (
+      STATION_ID, STATION_CODE, OBS_TIME, WATER_LEVEL,
+      ANOMALY_FLAG, IMPUTE_FLAG, QUALITY_FLAG_STD, SRC_SYSTEM, ETL_TIME
+    ) VALUES (
+      TO_CHAR(i),
+      'ST' || LPAD(i,4,'0'),
+      TO_CHAR(SYSDATE - MOD(i,30),'YYYY-MM-DD HH24:MI:SS'),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(0,10),3)),
+      CASE WHEN MOD(i,10)=0 THEN '1' ELSE '0' END,
+      CASE WHEN MOD(i,15)=0 THEN '1' ELSE '0' END,
+      'Q' || MOD(i,9),
+      'SYS_CLEAN',
+      TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS')
+    );
+END LOOP;
+END;
+/
+COMMIT;
+/
+
+-- 3. DWD_FACT_WATER_LEVEL_DEDUP
+BEGIN
+FOR i IN 1..500 LOOP
+    INSERT INTO DWD.DWD_FACT_WATER_LEVEL_DEDUP (
+      STATION_ID, STATION_CODE, OBS_TIME, WATER_LEVEL, SELECT_RULE, ETL_TIME
+    ) VALUES (
+      TO_CHAR(i),
+      'ST' || LPAD(i,4,'0'),
+      TO_CHAR(SYSDATE - MOD(i,20),'YYYY-MM-DD HH24:MI:SS'),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(0,10),3)),
+      CASE WHEN MOD(i,2)=0 THEN 'latest_ts' ELSE 'best_quality' END,
+      TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS')
+    );
+END LOOP;
+END;
+/
+COMMIT;
+/
+
+-- 4. DWD_FACT_WATER_LEVEL_SPLIT
+BEGIN
+FOR i IN 1..500 LOOP
+    INSERT INTO DWD.DWD_FACT_WATER_LEVEL_SPLIT (
+      STATION_ID, STATION_CODE, OBS_TIME, WATER_LEVEL, BASIN_CODE, ADMIN_REGION_CODE, ETL_TIME
+    ) VALUES (
+      TO_CHAR(i),
+      'ST' || LPAD(i,4,'0'),
+      TO_CHAR(SYSDATE - MOD(i,15),'YYYY-MM-DD HH24:MI:SS'),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(0,10),3)),
+      'BS' || LPAD(MOD(i,10),2,'0'),
+      'CN' || LPAD(MOD(i,100),4,'0'),
+      TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS')
+    );
+END LOOP;
+END;
+/
+COMMIT;
+/
+
+-- 5. DWD_FACT_WATER_LEVEL_UNPIVOT
+BEGIN
+FOR i IN 1..500 LOOP
+    INSERT INTO DWD.DWD_FACT_WATER_LEVEL_UNPIVOT (
+      RID, STATION_CODE, OBS_TIME, METRIC_NAME, METRIC_VALUE, ETL_TIME
+    ) VALUES (
+      TO_CHAR(i),
+      'ST' || LPAD(i,4,'0'),
+      TO_CHAR(SYSDATE - MOD(i,10),'YYYY-MM-DD HH24:MI:SS'),
+      CASE WHEN MOD(i,2)=0 THEN 'WATER_LEVEL' ELSE 'FLOW' END,
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(0,1000),3)),
+      TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS')
+    );
+END LOOP;
+END;
+/
+COMMIT;
+/
+
+-- 6. DWD_STATION_MERGE
+BEGIN
+FOR i IN 1..500 LOOP
+    INSERT INTO DWD.DWD_STATION_MERGE (
+      STATION_ID, STATION_CODE, STATION_NAME, BASIN_CODE, RIVER_NAME,
+      LONGITUDE, LATITUDE, ADMIN_REGION_CODE, STATUS, CREATED_AT, UPDATED_AT, LNGLAT
+    ) VALUES (
+      TO_CHAR(i),
+      'ST' || LPAD(i,4,'0'),
+      '站点_' || TO_CHAR(i),
+      'BS' || LPAD(MOD(i,10),2,'0'),
+      '河流_' || TO_CHAR(MOD(i,20)),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(100,120),6)),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(20,40),6)),
+      'CN' || LPAD(MOD(i,100),4,'0'),
+      CASE WHEN MOD(i,2)=0 THEN '1' ELSE '0' END,
+      TO_CHAR(SYSDATE - MOD(i,10),'YYYY-MM-DD HH24:MI:SS'),
+      TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS'),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(100,120),6)) || ',' || TO_CHAR(ROUND(DBMS_RANDOM.VALUE(20,40),6))
+    );
+END LOOP;
+END;
+/
+COMMIT;
+/
+
+-- 7. DWD_STATION_WATER_MONTH_REPORT
+BEGIN
+FOR i IN 1..500 LOOP
+    INSERT INTO DWD.DWD_STATION_WATER_MONTH_REPORT (
+      STATION_ID, STATION_NAME, AVG_WATER_LEVEL, STAT_MONTH
+    ) VALUES (
+      TO_CHAR(i),
+      '站点_' || TO_CHAR(i),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(0,10),3)),
+      '2025-' || LPAD(MOD(i,12)+1,2,'0')
+    );
+END LOOP;
+END;
+/
+COMMIT;
+/
+
+-- 8. DWD_STATION_WATER_MONTH_REPORT_WIDE
+BEGIN
+FOR i IN 1..500 LOOP
+    INSERT INTO DWD.DWD_STATION_WATER_MONTH_REPORT_WIDE (
+      STATION_ID, STATION_NAME, "2025_01","2025_02","2025_03","2025_04","2025_05","2025_06","2025_07"
+    ) VALUES (
+      TO_CHAR(i),
+      '站点_' || TO_CHAR(i),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(0,10),3)),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(0,10),3)),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(0,10),3)),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(0,10),3)),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(0,10),3)),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(0,10),3)),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(0,10),3))
+    );
+END LOOP;
+END;
+/
+COMMIT;
+/
+
+-- 9. DWD_WATER_LEVEL_CLEAN_MISSING
+BEGIN
+FOR i IN 1..500 LOOP
+    INSERT INTO DWD.DWD_WATER_LEVEL_CLEAN_MISSING (
+      ID, STATION_CODE, OBS_TIME, WATER_LEVEL, QUALITY_FLAG, TS
+    ) VALUES (
+      TO_CHAR(i),
+      'ST' || LPAD(i,4,'0'),
+      TO_CHAR(SYSDATE - MOD(i,15),'YYYY-MM-DD HH24:MI:SS'),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(0,10),3)),
+      'F' || MOD(i,5),
+      TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS')
+    );
+END LOOP;
+END;
+/
+COMMIT;
+/
+
+-- 10. DWD_WATER_LEVEL_CLEAN_OUTLIER
+BEGIN
+FOR i IN 1..500 LOOP
+    INSERT INTO DWD.DWD_WATER_LEVEL_CLEAN_OUTLIER (
+      ID, STATION_CODE, OBS_TIME, WATER_LEVEL, QUALITY_FLAG, TS
+    ) VALUES (
+      TO_CHAR(i),
+      'ST' || LPAD(i,4,'0'),
+      TO_CHAR(SYSDATE - MOD(i,15),'YYYY-MM-DD HH24:MI:SS'),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(0,10),3)),
+      'F' || MOD(i,5),
+      TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS')
+    );
+END LOOP;
+END;
+/
+COMMIT;
+/
+
+-- 11. DWD_WATER_LEVEL_CLEAN_STD
+BEGIN
+FOR i IN 1..500 LOOP
+    INSERT INTO DWD.DWD_WATER_LEVEL_CLEAN_STD (
+      ID, STATION_CODE, OBS_TIME, WATER_LEVEL, QUALITY_FLAG, TS
+    ) VALUES (
+      TO_CHAR(i),
+      'ST' || LPAD(i,4,'0'),
+      TO_CHAR(SYSDATE - MOD(i,15),'YYYY-MM-DD HH24:MI:SS'),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(0,10),2)),
+      'F' || MOD(i,5),
+      TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS')
+    );
+END LOOP;
+END;
+/
+COMMIT;
+/
+
+-- ✅ 全部 11 张表初始化完成，每表 500 条，共 5500 条
+
+
+    -- ===========================================================
+-- DWS_STATION_WATER_DAY_REPORT — 站点水位日报表
+-- ===========================================================
+CREATE TABLE DWS.DWS_STATION_WATER_DAY_REPORT (
+                                                  STATION_ID    VARCHAR(4000) NULL,
+                                                  STATION_NAME  VARCHAR(4000) NULL,
+                                                  AVG_LEVEL_YEAR VARCHAR(4000) NULL,
+                                                  STAT_DATE     VARCHAR(4000) NULL
+);
+COMMENT ON TABLE DWS.DWS_STATION_WATER_DAY_REPORT IS '站点水位日报表';
+COMMENT ON COLUMN DWS.DWS_STATION_WATER_DAY_REPORT.STATION_ID     IS '测站ID';
+COMMENT ON COLUMN DWS.DWS_STATION_WATER_DAY_REPORT.STATION_NAME   IS '测站名称';
+COMMENT ON COLUMN DWS.DWS_STATION_WATER_DAY_REPORT.AVG_LEVEL_YEAR IS '年平均水位(米)';
+COMMENT ON COLUMN DWS.DWS_STATION_WATER_DAY_REPORT.STAT_DATE      IS '统计日期';
+
+-- ===========================================================
+-- DWS_WATER_LEVEL_DAILY_AGG — 水位日级聚合
+-- ===========================================================
+CREATE TABLE DWS.DWS_WATER_LEVEL_DAILY_AGG (
+                                               STAT_DATE      VARCHAR(4000) NULL,
+                                               STATION_ID     VARCHAR(4000) NULL,
+                                               STATION_CODE   VARCHAR(4000) NULL,
+                                               AVG_LEVEL      VARCHAR(4000) NULL,
+                                               P95_LEVEL      VARCHAR(4000) NULL,
+                                               MAX_LEVEL      VARCHAR(4000) NULL,
+                                               MIN_LEVEL      VARCHAR(4000) NULL,
+                                               FIRST_OBS_TIME VARCHAR(4000) NULL,
+                                               LAST_OBS_TIME  VARCHAR(4000) NULL,
+                                               ETL_TIME       VARCHAR(4000) NULL
+);
+COMMENT ON TABLE DWS.DWS_WATER_LEVEL_DAILY_AGG IS '水位日级聚合';
+COMMENT ON COLUMN DWS.DWS_WATER_LEVEL_DAILY_AGG.STAT_DATE       IS '统计日期';
+COMMENT ON COLUMN DWS.DWS_WATER_LEVEL_DAILY_AGG.STATION_ID      IS '维表ID';
+COMMENT ON COLUMN DWS.DWS_WATER_LEVEL_DAILY_AGG.STATION_CODE    IS '站点编码';
+COMMENT ON COLUMN DWS.DWS_WATER_LEVEL_DAILY_AGG.AVG_LEVEL       IS '日均';
+COMMENT ON COLUMN DWS.DWS_WATER_LEVEL_DAILY_AGG.P95_LEVEL       IS 'P95';
+COMMENT ON COLUMN DWS.DWS_WATER_LEVEL_DAILY_AGG.MAX_LEVEL       IS '日最大';
+COMMENT ON COLUMN DWS.DWS_WATER_LEVEL_DAILY_AGG.MIN_LEVEL       IS '日最小';
+COMMENT ON COLUMN DWS.DWS_WATER_LEVEL_DAILY_AGG.FIRST_OBS_TIME  IS '当日首条时间';
+COMMENT ON COLUMN DWS.DWS_WATER_LEVEL_DAILY_AGG.LAST_OBS_TIME   IS '当日末条时间';
+COMMENT ON COLUMN DWS.DWS_WATER_LEVEL_DAILY_AGG.ETL_TIME        IS '入仓时间';
+
+-- ===========================================================
+-- DWS_WATER_LEVEL_HOURLY_AGG — 水位小时级聚合
+-- ===========================================================
+CREATE TABLE DWS.DWS_WATER_LEVEL_HOURLY_AGG (
+                                                STATION_ID    VARCHAR(4000) NULL,
+                                                STATION_CODE  VARCHAR(4000) NULL,
+                                                HOUR_WINDOW   VARCHAR(4000) NULL,
+                                                AVG_LEVEL     VARCHAR(4000) NULL,
+                                                MIN_LEVEL     VARCHAR(4000) NULL,
+                                                MAX_LEVEL     VARCHAR(4000) NULL,
+                                                CNT           VARCHAR(4000) NULL,
+                                                COMPUTE_MODE  VARCHAR(4000) NULL,
+                                                ETL_TIME      VARCHAR(4000) NULL
+);
+COMMENT ON TABLE DWS.DWS_WATER_LEVEL_HOURLY_AGG IS '水位小时级聚合';
+COMMENT ON COLUMN DWS.DWS_WATER_LEVEL_HOURLY_AGG.STATION_ID    IS '维表ID';
+COMMENT ON COLUMN DWS.DWS_WATER_LEVEL_HOURLY_AGG.STATION_CODE  IS '站点编码';
+COMMENT ON COLUMN DWS.DWS_WATER_LEVEL_HOURLY_AGG.HOUR_WINDOW   IS '小时窗口起点';
+COMMENT ON COLUMN DWS.DWS_WATER_LEVEL_HOURLY_AGG.AVG_LEVEL     IS '均值';
+COMMENT ON COLUMN DWS.DWS_WATER_LEVEL_HOURLY_AGG.MIN_LEVEL     IS '最小值';
+COMMENT ON COLUMN DWS.DWS_WATER_LEVEL_HOURLY_AGG.MAX_LEVEL     IS '最大值';
+COMMENT ON COLUMN DWS.DWS_WATER_LEVEL_HOURLY_AGG.CNT           IS '样本数';
+COMMENT ON COLUMN DWS.DWS_WATER_LEVEL_HOURLY_AGG.COMPUTE_MODE  IS 'batch/stream';
+COMMENT ON COLUMN DWS.DWS_WATER_LEVEL_HOURLY_AGG.ETL_TIME      IS '入仓时间';
+
+-- ===========================================================
+-- DWS_WATER_LEVEL_WARNING_LVL — 水位预警分级
+-- ===========================================================
+CREATE TABLE DWS.DWS_WATER_LEVEL_WARNING_LVL (
+                                                 STATION_ID       VARCHAR(4000) NULL,
+                                                 STATION_CODE     VARCHAR(4000) NULL,
+                                                 OBS_TIME         VARCHAR(4000) NULL,
+                                                 WATER_LEVEL      VARCHAR(4000) NULL,
+                                                 WARNING_LEVEL    VARCHAR(4000) NULL,
+                                                 THRESHOLD_BLUE   VARCHAR(4000) NULL,
+                                                 THRESHOLD_YELLOW VARCHAR(4000) NULL,
+                                                 THRESHOLD_RED    VARCHAR(4000) NULL,
+                                                 ETL_TIME         VARCHAR(4000) NULL
+);
+COMMENT ON TABLE DWS.DWS_WATER_LEVEL_WARNING_LVL IS '水位预警分级';
+COMMENT ON COLUMN DWS.DWS_WATER_LEVEL_WARNING_LVL.STATION_ID        IS '维表ID';
+COMMENT ON COLUMN DWS.DWS_WATER_LEVEL_WARNING_LVL.STATION_CODE      IS '站点编码';
+COMMENT ON COLUMN DWS.DWS_WATER_LEVEL_WARNING_LVL.OBS_TIME          IS '观测时间';
+COMMENT ON COLUMN DWS.DWS_WATER_LEVEL_WARNING_LVL.WATER_LEVEL       IS '水位（米）';
+COMMENT ON COLUMN DWS.DWS_WATER_LEVEL_WARNING_LVL.WARNING_LEVEL     IS '3红/2黄/1蓝/0无';
+COMMENT ON COLUMN DWS.DWS_WATER_LEVEL_WARNING_LVL.THRESHOLD_BLUE    IS '蓝阈值';
+COMMENT ON COLUMN DWS.DWS_WATER_LEVEL_WARNING_LVL.THRESHOLD_YELLOW  IS '黄阈值';
+COMMENT ON COLUMN DWS.DWS_WATER_LEVEL_WARNING_LVL.THRESHOLD_RED     IS '红阈值';
+COMMENT ON COLUMN DWS.DWS_WATER_LEVEL_WARNING_LVL.ETL_TIME          IS '入仓时间';
+
+
+
+-- 3. DWS_WATER_LEVEL_DAILY_AGG — 水位日级聚合（修正版）
+BEGIN
+FOR i IN 1..500 LOOP
+    INSERT INTO DWS.DWS_WATER_LEVEL_DAILY_AGG (
+      STAT_DATE, STATION_ID, STATION_CODE,
+      AVG_LEVEL, P95_LEVEL, MAX_LEVEL, MIN_LEVEL,
+      FIRST_OBS_TIME, LAST_OBS_TIME, ETL_TIME
+    ) VALUES (
+      TO_CHAR(SYSDATE - MOD(i, 60), 'YYYY-MM-DD'),
+      TO_CHAR(i),
+      'ST' || LPAD(i, 4, '0'),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(1, 10), 3)),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(1, 10), 3)),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(1, 10), 3)),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(0.1, 9), 3)),
+      TO_CHAR(SYSDATE - MOD(i, 60), 'YYYY-MM-DD') || ' 00:00:00',
+      TO_CHAR(SYSDATE - MOD(i, 60), 'YYYY-MM-DD') || ' 23:59:59',
+      TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS')
+    );
+END LOOP;
+END;
+/
+COMMIT;
+/
+
+-- 4. DWS_WATER_LEVEL_HOURLY_AGG — 水位小时级聚合（修正版）
+BEGIN
+FOR i IN 1..500 LOOP
+    INSERT INTO DWS.DWS_WATER_LEVEL_HOURLY_AGG (
+      STATION_ID, STATION_CODE, HOUR_WINDOW,
+      AVG_LEVEL, MIN_LEVEL, MAX_LEVEL, CNT,
+      COMPUTE_MODE, ETL_TIME
+    ) VALUES (
+      TO_CHAR(i),
+      'ST' || LPAD(i, 4, '0'),
+      TO_CHAR(SYSDATE - MOD(i, 48)/24, 'YYYY-MM-DD HH24') || ':00:00',
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(1, 10), 3)),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(0.5, 5.0), 3)),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(5.0, 15.0), 3)),
+      TO_CHAR(TRUNC(DBMS_RANDOM.VALUE(10, 100))),
+      CASE WHEN MOD(i, 2) = 0 THEN 'batch' ELSE 'stream' END,
+      TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS')
+    );
+END LOOP;
+END;
+/
+COMMIT;
+/
+
+
+-- ===========================================================
+-- 1) ADS_BASIN_WATER_MONTH_REPORT_WIDE_APPEND — 流域水位月报表（追加写）
+-- ===========================================================
+CREATE TABLE ADS.ADS_BASIN_WATER_MONTH_REPORT_WIDE_APPEND (
+                                                              BASIN_CODE   VARCHAR(4000) NULL,
+                                                              STAT_MONTH   VARCHAR(4000) NULL,
+                                                              STATION_CNT  VARCHAR(4000) NULL,
+                                                              AVG_LEVEL    VARCHAR(4000) NULL,
+                                                              MAX_LEVEL    VARCHAR(4000) NULL,
+                                                              MIN_LEVEL    VARCHAR(4000) NULL
+);
+COMMENT ON TABLE ADS.ADS_BASIN_WATER_MONTH_REPORT_WIDE_APPEND IS '流域水位月报表（追加写）';
+COMMENT ON COLUMN ADS.ADS_BASIN_WATER_MONTH_REPORT_WIDE_APPEND.BASIN_CODE  IS '流域编码（可空）';
+COMMENT ON COLUMN ADS.ADS_BASIN_WATER_MONTH_REPORT_WIDE_APPEND.STAT_MONTH  IS '统计月份（YYYY-MM）';
+COMMENT ON COLUMN ADS.ADS_BASIN_WATER_MONTH_REPORT_WIDE_APPEND.STATION_CNT IS '参与测站数';
+COMMENT ON COLUMN ADS.ADS_BASIN_WATER_MONTH_REPORT_WIDE_APPEND.AVG_LEVEL   IS '月平均水位';
+COMMENT ON COLUMN ADS.ADS_BASIN_WATER_MONTH_REPORT_WIDE_APPEND.MAX_LEVEL   IS '月最大水位';
+COMMENT ON COLUMN ADS.ADS_BASIN_WATER_MONTH_REPORT_WIDE_APPEND.MIN_LEVEL   IS '月最小水位';
+
+-- ===========================================================
+-- 2) ADS_BASIN_WATER_MONTH_REPORT_WIDE_FULL — 流域水位月报表（全量写）
+-- ===========================================================
+CREATE TABLE ADS.ADS_BASIN_WATER_MONTH_REPORT_WIDE_FULL (
+                                                            BASIN_CODE   VARCHAR(4000) NULL,
+                                                            STAT_MONTH   VARCHAR(4000) NULL,
+                                                            STATION_CNT  VARCHAR(4000) NULL,
+                                                            AVG_LEVEL    VARCHAR(4000) NULL,
+                                                            MAX_LEVEL    VARCHAR(4000) NULL,
+                                                            MIN_LEVEL    VARCHAR(4000) NULL
+);
+COMMENT ON TABLE ADS.ADS_BASIN_WATER_MONTH_REPORT_WIDE_FULL IS '流域水位月报表（全量写）';
+COMMENT ON COLUMN ADS.ADS_BASIN_WATER_MONTH_REPORT_WIDE_FULL.BASIN_CODE  IS '流域编码（可空）';
+COMMENT ON COLUMN ADS.ADS_BASIN_WATER_MONTH_REPORT_WIDE_FULL.STAT_MONTH  IS '统计月份（YYYY-MM）';
+COMMENT ON COLUMN ADS.ADS_BASIN_WATER_MONTH_REPORT_WIDE_FULL.STATION_CNT IS '参与测站数';
+COMMENT ON COLUMN ADS.ADS_BASIN_WATER_MONTH_REPORT_WIDE_FULL.AVG_LEVEL   IS '月平均水位';
+COMMENT ON COLUMN ADS.ADS_BASIN_WATER_MONTH_REPORT_WIDE_FULL.MAX_LEVEL   IS '月最大水位';
+COMMENT ON COLUMN ADS.ADS_BASIN_WATER_MONTH_REPORT_WIDE_FULL.MIN_LEVEL   IS '月最小水位';
+
+-- ===========================================================
+-- 3) ADS_BASIN_WATER_MONTH_REPORT_WIDE_UPDATE — 流域水位月报表（更新写）
+-- ===========================================================
+CREATE TABLE ADS.ADS_BASIN_WATER_MONTH_REPORT_WIDE_UPDATE (
+                                                              BASIN_CODE   VARCHAR(4000) NULL,
+                                                              STAT_MONTH   VARCHAR(4000) NULL,
+                                                              STATION_CNT  VARCHAR(4000) NULL,
+                                                              AVG_LEVEL    VARCHAR(4000) NULL,
+                                                              MAX_LEVEL    VARCHAR(4000) NULL,
+                                                              MIN_LEVEL    VARCHAR(4000) NULL
+);
+COMMENT ON TABLE ADS.ADS_BASIN_WATER_MONTH_REPORT_WIDE_UPDATE IS '流域水位月报表（更新写）';
+COMMENT ON COLUMN ADS.ADS_BASIN_WATER_MONTH_REPORT_WIDE_UPDATE.BASIN_CODE  IS '流域编码（可空）';
+COMMENT ON COLUMN ADS.ADS_BASIN_WATER_MONTH_REPORT_WIDE_UPDATE.STAT_MONTH  IS '统计月份（YYYY-MM）';
+COMMENT ON COLUMN ADS.ADS_BASIN_WATER_MONTH_REPORT_WIDE_UPDATE.STATION_CNT IS '参与测站数';
+COMMENT ON COLUMN ADS.ADS_BASIN_WATER_MONTH_REPORT_WIDE_UPDATE.AVG_LEVEL   IS '月平均水位';
+COMMENT ON COLUMN ADS.ADS_BASIN_WATER_MONTH_REPORT_WIDE_UPDATE.MAX_LEVEL   IS '月最大水位';
+COMMENT ON COLUMN ADS.ADS_BASIN_WATER_MONTH_REPORT_WIDE_UPDATE.MIN_LEVEL   IS '月最小水位';
+
+-- ===========================================================
+-- 4) ADS_STATION_WATER_LEVEL_MONTH_REPORT — 站点水位预警月报表
+-- ===========================================================
+CREATE TABLE ADS.ADS_STATION_WATER_LEVEL_MONTH_REPORT (
+                                                          STATION_ID      VARCHAR(4000) NULL,
+                                                          STATION_NAME    VARCHAR(4000) NULL,
+                                                          AVG_WATER_LEVEL VARCHAR(4000) NULL,
+                                                          WARNING_LEVEL   VARCHAR(4000) NULL,
+                                                          STAT_MONTH      VARCHAR(4000) NULL
+);
+COMMENT ON TABLE ADS.ADS_STATION_WATER_LEVEL_MONTH_REPORT IS '站点水位预警月报表';
+COMMENT ON COLUMN ADS.ADS_STATION_WATER_LEVEL_MONTH_REPORT.STATION_ID      IS '测站ID';
+COMMENT ON COLUMN ADS.ADS_STATION_WATER_LEVEL_MONTH_REPORT.STATION_NAME    IS '测站名称';
+COMMENT ON COLUMN ADS.ADS_STATION_WATER_LEVEL_MONTH_REPORT.AVG_WATER_LEVEL IS '月平均水位';
+COMMENT ON COLUMN ADS.ADS_STATION_WATER_LEVEL_MONTH_REPORT.WARNING_LEVEL   IS '预警等级';
+COMMENT ON COLUMN ADS.ADS_STATION_WATER_LEVEL_MONTH_REPORT.STAT_MONTH      IS '统计时间（YYYY-MM）';
+
+-- ===========================================================
+-- 5) ADS_WATER_LEVEL_DAILY_REPORT — 水位日统计报表
+-- ===========================================================
+CREATE TABLE ADS.ADS_WATER_LEVEL_DAILY_REPORT (
+                                                  STAT_DATE         VARCHAR(4000) NULL,
+                                                  STATION_CODE      VARCHAR(4000) NULL,
+                                                  STATION_NAME      VARCHAR(4000) NULL,
+                                                  AVG_LEVEL         VARCHAR(4000) NULL,
+                                                  MAX_LEVEL         VARCHAR(4000) NULL,
+                                                  MAX_TIME          VARCHAR(4000) NULL,
+                                                  MIN_LEVEL         VARCHAR(4000) NULL,
+                                                  MIN_TIME          VARCHAR(4000) NULL,
+                                                  DATA_COMPLETENESS VARCHAR(4000) NULL,
+                                                  WARNING_CNT       VARCHAR(4000) NULL,
+                                                  ETL_TIME          VARCHAR(4000) NULL
+);
+COMMENT ON TABLE ADS.ADS_WATER_LEVEL_DAILY_REPORT IS '水位日统计报表';
+COMMENT ON COLUMN ADS.ADS_WATER_LEVEL_DAILY_REPORT.STAT_DATE         IS '统计日期';
+COMMENT ON COLUMN ADS.ADS_WATER_LEVEL_DAILY_REPORT.STATION_CODE      IS '站点编码';
+COMMENT ON COLUMN ADS.ADS_WATER_LEVEL_DAILY_REPORT.STATION_NAME      IS '站点名称';
+COMMENT ON COLUMN ADS.ADS_WATER_LEVEL_DAILY_REPORT.AVG_LEVEL         IS '日均';
+COMMENT ON COLUMN ADS.ADS_WATER_LEVEL_DAILY_REPORT.MAX_LEVEL         IS '日最大';
+COMMENT ON COLUMN ADS.ADS_WATER_LEVEL_DAILY_REPORT.MAX_TIME          IS '最大值出现时间';
+COMMENT ON COLUMN ADS.ADS_WATER_LEVEL_DAILY_REPORT.MIN_LEVEL         IS '日最小';
+COMMENT ON COLUMN ADS.ADS_WATER_LEVEL_DAILY_REPORT.MIN_TIME          IS '最小值出现时间';
+COMMENT ON COLUMN ADS.ADS_WATER_LEVEL_DAILY_REPORT.DATA_COMPLETENESS IS '当日采样完整率（%）';
+COMMENT ON COLUMN ADS.ADS_WATER_LEVEL_DAILY_REPORT.WARNING_CNT       IS '当日预警次数';
+COMMENT ON COLUMN ADS.ADS_WATER_LEVEL_DAILY_REPORT.ETL_TIME          IS '入仓时间';
+
+-- ===========================================================
+-- 6) ADS_WATER_LEVEL_HOURLY_REALTIME — 小时均值实时看板
+-- ===========================================================
+CREATE TABLE ADS.ADS_WATER_LEVEL_HOURLY_REALTIME (
+                                                     STATION_CODE VARCHAR(4000) NULL,
+                                                     HOUR_WINDOW  VARCHAR(4000) NULL,
+                                                     AVG_LEVEL    VARCHAR(4000) NULL,
+                                                     UPDATED_AT   VARCHAR(4000) NULL
+);
+COMMENT ON TABLE ADS.ADS_WATER_LEVEL_HOURLY_REALTIME IS '小时均值实时看板';
+COMMENT ON COLUMN ADS.ADS_WATER_LEVEL_HOURLY_REALTIME.STATION_CODE IS '站点编码';
+COMMENT ON COLUMN ADS.ADS_WATER_LEVEL_HOURLY_REALTIME.HOUR_WINDOW  IS '小时窗口起点';
+COMMENT ON COLUMN ADS.ADS_WATER_LEVEL_HOURLY_REALTIME.AVG_LEVEL    IS '小时均值';
+COMMENT ON COLUMN ADS.ADS_WATER_LEVEL_HOURLY_REALTIME.UPDATED_AT   IS '最近刷新时间';
+
+-- ===========================================================
+-- 7) ADS_WATER_LEVEL_WARNING_BOARD — 预警事件看板
+-- ===========================================================
+CREATE TABLE ADS.ADS_WATER_LEVEL_WARNING_BOARD (
+                                                   EVENT_ID         VARCHAR(4000) NULL,
+                                                   STATION_CODE     VARCHAR(4000) NULL,
+                                                   WARNING_LEVEL    VARCHAR(4000) NULL,
+                                                   START_TIME       VARCHAR(4000) NULL,
+                                                   END_TIME         VARCHAR(4000) NULL,
+                                                   DURATION_MINUTES VARCHAR(4000) NULL,
+                                                   CURRENT_LEVEL    VARCHAR(4000) NULL,
+                                                   STATUS           VARCHAR(4000) NULL,
+                                                   ETL_TIME         VARCHAR(4000) NULL
+);
+COMMENT ON TABLE ADS.ADS_WATER_LEVEL_WARNING_BOARD IS '预警事件看板';
+COMMENT ON COLUMN ADS.ADS_WATER_LEVEL_WARNING_BOARD.EVENT_ID         IS '事件ID';
+COMMENT ON COLUMN ADS.ADS_WATER_LEVEL_WARNING_BOARD.STATION_CODE     IS '站点编码';
+COMMENT ON COLUMN ADS.ADS_WATER_LEVEL_WARNING_BOARD.WARNING_LEVEL    IS '3红/2黄/1蓝';
+COMMENT ON COLUMN ADS.ADS_WATER_LEVEL_WARNING_BOARD.START_TIME       IS '事件开始时间';
+COMMENT ON COLUMN ADS.ADS_WATER_LEVEL_WARNING_BOARD.END_TIME         IS '事件结束时间（可空）';
+COMMENT ON COLUMN ADS.ADS_WATER_LEVEL_WARNING_BOARD.DURATION_MINUTES IS '持续分钟数';
+COMMENT ON COLUMN ADS.ADS_WATER_LEVEL_WARNING_BOARD.CURRENT_LEVEL    IS '当前水位';
+COMMENT ON COLUMN ADS.ADS_WATER_LEVEL_WARNING_BOARD.STATUS           IS 'active/cleared';
+COMMENT ON COLUMN ADS.ADS_WATER_LEVEL_WARNING_BOARD.ETL_TIME         IS '入仓时间';
+
+
+
+
+-- ===========================================================
+-- 1) ADS_BASIN_WATER_MONTH_REPORT_WIDE_APPEND — 随机 200 条
+-- ===========================================================
+BEGIN
+FOR i IN 1..200 LOOP
+    INSERT INTO ADS.ADS_BASIN_WATER_MONTH_REPORT_WIDE_APPEND (
+      BASIN_CODE, STAT_MONTH, STATION_CNT, AVG_LEVEL, MAX_LEVEL, MIN_LEVEL
+    ) VALUES (
+      'BASIN_' || LPAD(TO_CHAR(MOD(i,10)+1), 2, '0'),
+      TO_CHAR(ADD_MONTHS(SYSDATE, -MOD(i,12)), 'YYYY-MM'),
+      TO_CHAR(TRUNC(DBMS_RANDOM.VALUE(3, 50))),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(0.5, 10.0), 3)),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(1.0, 15.0), 3)),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(0.1, 5.0), 3))
+    );
+END LOOP;
+END;
+/
+COMMIT;
+/
+
+-- ===========================================================
+-- 2) ADS_BASIN_WATER_MONTH_REPORT_WIDE_FULL — 随机 200 条
+-- ===========================================================
+BEGIN
+FOR i IN 1..200 LOOP
+    INSERT INTO ADS.ADS_BASIN_WATER_MONTH_REPORT_WIDE_FULL (
+      BASIN_CODE, STAT_MONTH, STATION_CNT, AVG_LEVEL, MAX_LEVEL, MIN_LEVEL
+    ) VALUES (
+      'BASIN_' || LPAD(TO_CHAR(MOD(i,10)+1), 2, '0'),
+      TO_CHAR(ADD_MONTHS(SYSDATE, -MOD(i,12)), 'YYYY-MM'),
+      TO_CHAR(TRUNC(DBMS_RANDOM.VALUE(3, 50))),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(0.5, 10.0), 3)),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(1.0, 15.0), 3)),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(0.1, 5.0), 3))
+    );
+END LOOP;
+END;
+/
+COMMIT;
+/
+
+-- ===========================================================
+-- 3) ADS_BASIN_WATER_MONTH_REPORT_WIDE_UPDATE — 随机 200 条
+-- ===========================================================
+BEGIN
+FOR i IN 1..200 LOOP
+    INSERT INTO ADS.ADS_BASIN_WATER_MONTH_REPORT_WIDE_UPDATE (
+      BASIN_CODE, STAT_MONTH, STATION_CNT, AVG_LEVEL, MAX_LEVEL, MIN_LEVEL
+    ) VALUES (
+      'BASIN_' || LPAD(TO_CHAR(MOD(i,10)+1), 2, '0'),
+      TO_CHAR(ADD_MONTHS(SYSDATE, -MOD(i,12)), 'YYYY-MM'),
+      TO_CHAR(TRUNC(DBMS_RANDOM.VALUE(3, 50))),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(0.5, 10.0), 3)),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(1.0, 15.0), 3)),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(0.1, 5.0), 3))
+    );
+END LOOP;
+END;
+/
+COMMIT;
+/
+
+-- ===========================================================
+-- 4) ADS_STATION_WATER_LEVEL_MONTH_REPORT — 随机 200 条
+-- ===========================================================
+BEGIN
+FOR i IN 1..200 LOOP
+    INSERT INTO ADS.ADS_STATION_WATER_LEVEL_MONTH_REPORT (
+      STATION_ID, STATION_NAME, AVG_WATER_LEVEL, WARNING_LEVEL, STAT_MONTH
+    ) VALUES (
+      TO_CHAR(i),
+      '测站_' || TO_CHAR(i),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(0.5, 12.0), 3)),
+      CASE MOD(i,4) WHEN 0 THEN '无' WHEN 1 THEN '蓝' WHEN 2 THEN '黄' ELSE '红' END,
+      TO_CHAR(ADD_MONTHS(SYSDATE, -MOD(i,12)), 'YYYY-MM')
+    );
+END LOOP;
+END;
+/
+COMMIT;
+/
+
+-- ===========================================================
+-- 5) ADS_WATER_LEVEL_DAILY_REPORT — 随机 200 条
+--    时间串用拼接，避免无效掩码
+-- ===========================================================
+BEGIN
+FOR i IN 1..200 LOOP
+    INSERT INTO ADS.ADS_WATER_LEVEL_DAILY_REPORT (
+      STAT_DATE, STATION_CODE, STATION_NAME,
+      AVG_LEVEL, MAX_LEVEL, MAX_TIME,
+      MIN_LEVEL, MIN_TIME, DATA_COMPLETENESS,
+      WARNING_CNT, ETL_TIME
+    ) VALUES (
+      TO_CHAR(SYSDATE - MOD(i, 60), 'YYYY-MM-DD'),
+      'ST' || LPAD(TO_CHAR(MOD(i,500)+1), 4, '0'),
+      '测站_' || TO_CHAR(MOD(i,500)+1),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(0.5, 10.0), 3)),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(1.0, 15.0), 3)),
+      TO_CHAR(SYSDATE - MOD(i, 60), 'YYYY-MM-DD') || ' ' ||
+        LPAD(TO_CHAR(MOD(i,24)), 2, '0') || ':' ||
+        LPAD(TO_CHAR(MOD(i,60)), 2, '0') || ':' ||
+        LPAD(TO_CHAR(MOD(i*7,60)), 2, '0'),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(0.1, 5.0), 3)),
+      TO_CHAR(SYSDATE - MOD(i, 60), 'YYYY-MM-DD') || ' ' ||
+        LPAD(TO_CHAR(MOD(i*3,24)), 2, '0') || ':' ||
+        LPAD(TO_CHAR(MOD(i*5,60)), 2, '0') || ':' ||
+        LPAD(TO_CHAR(MOD(i*11,60)), 2, '0'),
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(70, 100), 2)),  -- 百分比
+      TO_CHAR(TRUNC(DBMS_RANDOM.VALUE(0, 6))),        -- 当日预警次数
+      TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS')
+    );
+END LOOP;
+END;
+/
+COMMIT;
+/
+
+-- ===========================================================
+-- 6) ADS_WATER_LEVEL_HOURLY_REALTIME — 随机 200 条
+--    HOUR_WINDOW 以整点形式输出
+-- ===========================================================
+BEGIN
+FOR i IN 1..200 LOOP
+    INSERT INTO ADS.ADS_WATER_LEVEL_HOURLY_REALTIME (
+      STATION_CODE, HOUR_WINDOW, AVG_LEVEL, UPDATED_AT
+    ) VALUES (
+      'ST' || LPAD(TO_CHAR(MOD(i,500)+1), 4, '0'),
+      TO_CHAR(SYSDATE - (i/24), 'YYYY-MM-DD HH24') || ':00:00',
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(0.5, 10.0), 3)),
+      TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS')
+    );
+END LOOP;
+END;
+/
+COMMIT;
+/
+
+-- 7) ADS_WATER_LEVEL_WARNING_BOARD — 随机 200 条（无 /，无 DECLARE）
+BEGIN
+FOR i IN 1..200 LOOP
+    INSERT INTO ADS.ADS_WATER_LEVEL_WARNING_BOARD (
+      EVENT_ID, STATION_CODE, WARNING_LEVEL, START_TIME, END_TIME,
+      DURATION_MINUTES, CURRENT_LEVEL, STATUS, ETL_TIME
+    ) VALUES (
+      TO_CHAR(i),
+      'ST' || LPAD(TO_CHAR(MOD(i,500)+1), 4, '0'),
+      TO_CHAR(MOD(i,3)+1),  -- 1/2/3
+      TO_CHAR(SYSDATE - (MOD(i,10)/24), 'YYYY-MM-DD HH24:MI:SS'),
+      TO_CHAR(SYSDATE - (MOD(i,10)/24) + (MOD(i,180)/1440), 'YYYY-MM-DD HH24:MI:SS'),
+      TO_CHAR(MOD(i,180)),  -- 0~179
+      TO_CHAR(ROUND(DBMS_RANDOM.VALUE(0.5, 15.0), 3)),
+      CASE WHEN MOD(i,2)=0 THEN 'active' ELSE 'cleared' END,
+      TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS')
+    );
+END LOOP;
+END;
+COMMIT;

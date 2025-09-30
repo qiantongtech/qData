@@ -145,7 +145,8 @@
                     </div>
                   </div>
                   <div class="flex-wrap">
-
+                    <div class="item-form">
+                    </div>
                     <div class="form-btns">
                       <div class="form-btn" v-if="!unregistered(item)" @click="handleUpdate(item, 'register')">
                         <img src="@/assets/da/asset2/btn (2).svg" alt="" />

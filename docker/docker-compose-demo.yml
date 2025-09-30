@@ -9,8 +9,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: "sfdjfFF#s2332"
       TZ: "Asia/Shanghai"
-    ports:
-      - "3306:3306"
+#    ports:
+#      - "3306:3306"
     volumes:
       - ./demo/mysql/conf.d/my.cnf:/etc/mysql/conf.d/my.cnf:ro
       - ./demo/mysql/init:/docker-entrypoint-initdb.d:ro
@@ -40,8 +40,8 @@ services:
     env_file: .env
     privileged: true
     restart: always
-    ports:
-      - "15236:5236"
+#    ports:
+#      - "15236:5236"
     volumes:
       - ./demo/dm8/init-qdata.sql:/home/dmdba/initdata/init-qdata.sql
       - ./demo/dm8/entrypoint.sh:/entrypoint.sh

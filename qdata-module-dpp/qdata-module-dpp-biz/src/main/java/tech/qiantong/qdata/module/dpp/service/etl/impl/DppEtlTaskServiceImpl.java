@@ -186,11 +186,6 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
                 }
                 dppEtlTaskDO.setCode(taskExt.getEtlTaskCode());
             }
-            int i = dppEtlTaskMapper.checkTaskIdInSubTasks(id);
-            if (i > 0) {
-                throw new ServiceException("该任务已被作业引用，请解除引用后删除！");
-            }
-
             if (StringUtils.equals("1", dppEtlTaskDO.getStatus())) {
                 throw new ServiceException("上线任务，不允删除，请先下线！");
             }

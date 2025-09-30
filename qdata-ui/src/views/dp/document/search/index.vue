@@ -463,10 +463,10 @@ getList();
           .item-name-title {
             display: block;
             font-family: PingFang SC;
-            font-weight: 500;
+            font-weight: 600;
             font-size: 16px;
             color: #3d446e;
-            line-height: 22px;
+            line-height: 24px;
           }
 
           .item-name-code {

@@ -102,7 +102,7 @@
             <template #default="scope">
                 <span>{{
                     parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}") || "-"
-                    }}</span>
+                }}</span>
             </template>
         </el-table-column>
         <el-table-column v-if="columns[13].visible" label="备注" width="200" align="left" prop="remark"
@@ -113,14 +113,10 @@
         </el-table-column>
 
         <el-table-column label="操作" v-if="columns[14].visible" align="left" class-name="small-padding fixed-width"
-            fixed="right" width="140">
+            fixed="right" width="100">
             <template #default="scope">
                 <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-                    v-hasPermi="['da:assetColumn:assetcolumn:edit']">修改</el-button>
-                <!--        <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"-->
-                <!--                   v-hasPermi="['da:assetColumn:assetcolumn:remove']">删除</el-button>-->
-                <!--        <el-button link type="primary" icon="view" @click="handleDetail(scope.row)"-->
-                <!--                   v-hasPermi="['da:assetColumn:assetcolumn:edit']">详情</el-button>-->
+                    v-hasPermi="['da:assetColumn:edit']">修改</el-button>
             </template>
         </el-table-column>
 

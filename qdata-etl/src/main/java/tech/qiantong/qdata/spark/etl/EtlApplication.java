@@ -19,6 +19,7 @@ import tech.qiantong.qdata.spark.etl.transition.TransitionFactory;
 import tech.qiantong.qdata.spark.etl.utils.IDGeneratorUtils;
 import tech.qiantong.qdata.spark.etl.utils.LogUtils;
 import tech.qiantong.qdata.spark.etl.utils.RabbitmqUtils;
+import tech.qiantong.qdata.spark.etl.utils.RedisUtils;
 import tech.qiantong.qdata.spark.etl.utils.db.DBUtils;
 import tech.qiantong.qdata.spark.etl.writer.WriterFactory;
 
@@ -46,8 +47,12 @@ public class EtlApplication {
         JSONObject taskParams = JSONObject.parseObject(jsonStr);
         JSONObject config = taskParams.getJSONObject("config");
         JSONObject rabbitmq = config.getJSONObject("rabbitmq");
+        JSONObject redis = config.getJSONObject("redis");
         JSONObject taskInfo = config.getJSONObject("taskInfo");
         String resourceUrl = config.getString("resourceUrl");
+
+        // 初始化redis（兼容历史任务，RedisUtils 中配置默认值后重新打包）
+        RedisUtils.init(redis);
 
         //创建流程实例
         ProcessInstance processInstance = createProcess(taskInfo, now, rabbitmq);

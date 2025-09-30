@@ -35,8 +35,8 @@ services:
     env_file: .env
     environment:
       - TZ=Asia/Shanghai
-    ports:
-      - "8083:8083"
+#    ports:
+#      - "8083:8083"
     mac_address: 28-C5-D2-B7-FC-F6
     volumes:
       - /etc/localtime:/etc/localtime:ro

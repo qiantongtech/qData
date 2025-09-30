@@ -7,10 +7,10 @@ services:
     container_name: namenode
     restart: always
     profiles: [ "all" , "hadoop" , "local" ]
-    ports:
-      - "9870:9870"       # NameNode Web UI
-      - "8020:8020"       # HDFS RPC
-      - "9000:9000"
+#    ports:
+#      - "9870:9870"       # NameNode Web UI
+#      - "8020:8020"       # HDFS RPC
+#      - "9000:9000"
     env_file: .env
     environment:
       ENSURE_NAMENODE_DIR: "/tmp/hadoop-root/dfs/name"
@@ -24,10 +24,10 @@ services:
     container_name: datanode
     restart: always
     profiles: [ "all" , "hadoop" , "local" ]
-    ports:
-      - "9864:9864"
-      - "9866:9866"
-      - "9867:9867"
+#    ports:
+#      - "9864:9864"
+#      - "9866:9866"
+#      - "9867:9867"
     env_file: .env
     command: >
       /bin/bash -c "
@@ -49,8 +49,8 @@ services:
     container_name: resourcemanager
     restart: always
     profiles: [ "all" , "hadoop" , "local" ]
-    ports:
-      - "8088:8088"       # YARN Web UI
+#    ports:
+#      - "8088:8088"       # YARN Web UI
     env_file: .env
     command: [ "yarn", "resourcemanager" ]
     networks:

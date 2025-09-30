@@ -63,7 +63,7 @@ public class AttCleanCatServiceImpl  extends ServiceImpl<AttCleanCatMapper,AttCl
             return 0;
         }
         if (Boolean.FALSE.equals(updateReqVO.getValidFlag())) {
-            Long countData = attCleanRuleService.getCount(catDO.getId().toString());
+            Long countData = attCleanRuleService.getCount(catDO.getCode());
             if (countData > 0) {
                 throw new ServiceException("存在清洗规则模型，不允许禁用");
             }
@@ -84,7 +84,7 @@ public class AttCleanCatServiceImpl  extends ServiceImpl<AttCleanCatMapper,AttCl
         AttCleanCatDO cat = baseMapper.selectById(idList);
 
         //判断是否存在数据
-        if (attCleanRuleService.getCount(Convert.toStr(idList)) > 0) {
+        if (attCleanRuleService.getCount(cat.getCode()) > 0) {
             throw new RuntimeException("存在清洗规则模型，不允许删除");
         }
 

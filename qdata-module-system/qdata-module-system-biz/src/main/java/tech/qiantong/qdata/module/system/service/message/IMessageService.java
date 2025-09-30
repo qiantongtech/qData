@@ -10,6 +10,8 @@ import tech.qiantong.qdata.module.system.convert.message.MessageConvert;
 import tech.qiantong.qdata.module.system.dal.dataobject.message.MessageDO;
 
 import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,15 +23,36 @@ import java.util.List;
 public interface IMessageService extends IService<MessageDO> {
 
     default PageResult<MessageDO> getMessagePage(MessagePageReqVO message) {
-        QueryWrapper<MessageDO> queryWrapper = new QueryWrapper<>(MessageConvert.INSTANCE.convertToDO(message));
-        // 添加时间范围查询条件
-        if (message.getStartTime() != null && message.getEndTime() != null) {
-            queryWrapper.ge("DATE(create_time)", message.getStartTime()); // >= 起始时间
-            queryWrapper.le("DATE(create_time)", message.getEndTime()); // <= 结束时间
-        }
-        List<MessageDO> list = list(queryWrapper);
+        QueryWrapper<MessageDO> qw = new QueryWrapper<>(MessageConvert.INSTANCE.convertToDO(message));
 
-        return new PageResult(list, new PageInfo(list).getTotal());
+        Date startTime = message.getStartTime();
+        Date endTime   = message.getEndTime();
+
+        if (startTime != null || endTime != null) {
+            if (startTime != null) {
+                // >= 当日 00:00:00
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(startTime);
+                cal.set(Calendar.HOUR_OF_DAY, 0);
+                cal.set(Calendar.MINUTE, 0);
+                cal.set(Calendar.SECOND, 0);
+                cal.set(Calendar.MILLISECOND, 0);
+                qw.ge("create_time", cal.getTime());
+            }
+            if (endTime != null) {
+                // <= 当日 23:59:59.999
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(endTime);
+                cal.set(Calendar.HOUR_OF_DAY, 23);
+                cal.set(Calendar.MINUTE, 59);
+                cal.set(Calendar.SECOND, 59);
+                cal.set(Calendar.MILLISECOND, 999);
+                qw.le("create_time", cal.getTime());
+            }
+        }
+
+        List<MessageDO> list = list(qw);
+        return new PageResult<>(list, new PageInfo<>(list).getTotal());
     }
 
     /**

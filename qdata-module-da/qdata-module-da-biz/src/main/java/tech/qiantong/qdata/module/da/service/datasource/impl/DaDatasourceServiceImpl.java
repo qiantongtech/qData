@@ -229,24 +229,24 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
         DaDatasourceDO dictType = BeanUtils.toBean(createReqVO, DaDatasourceDO.class);
         daDatasourceMapper.insert(dictType);
         delAndSaveDaDataSourceProject(dictType);
+
+        redisService.hashPut("datasource", dictType.getId().toString(), com.alibaba.fastjson2.JSONObject.toJSONString(this.getDaDatasourceById(dictType.getId()).simplify()));
+
         return dictType.getId();
     }
 
     @Override
     public int updateDaDatasource(DaDatasourceSaveReqVO updateReqVO) {
-        // 相关校验
-        List<Long> datasourceIdList = new ArrayList<>();
-        datasourceIdList.add(updateReqVO.getId());
-        int datasource = dppEtlTaskService.checkTaskIdInDatasource(datasourceIdList, updateReqVO.getProjectListOld());
-        if (datasource > 0) {
-            throw new ServiceException("修改失败,数据源在项目当中被引用!");
-        }
+        Long datasourceId = updateReqVO.getId();
+
         // 更新数据源
         DaDatasourceDO updateObj = BeanUtils.toBean(updateReqVO, DaDatasourceDO.class);
         delAndSaveDaDataSourceProject(updateObj);
-        return daDatasourceMapper.updateById(updateObj);
-    }
 
+        int i = daDatasourceMapper.updateById(updateObj);
+        redisService.hashPut("datasource", datasourceId.toString(), com.alibaba.fastjson2.JSONObject.toJSONString(this.getDaDatasourceById(datasourceId).simplify()));
+        return i;
+    }
     private void delAndSaveDaDataSourceProject(DaDatasourceDO daDatasourceDO) {
         QueryWrapper<DaDatasourceProjectRelDO> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("DATASOURCE_ID", daDatasourceDO.getId());

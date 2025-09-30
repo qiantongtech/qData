@@ -274,7 +274,7 @@ processedData.value = computed(() => {
     return [
         {
             name: '质量维度',
-            id: '0',
+            id: '',
 
             children: Array.isArray(att_rule_audit_q_dimension.value)
                 ? att_rule_audit_q_dimension.value.map((item) => ({
@@ -410,7 +410,7 @@ function resetQuery() {
     if (DeptTreeRef.value?.resetTree) {
         DeptTreeRef.value.resetTree();
     }
-    queryParams.value.catCode = '';
+    queryParams.value.qualityDim = '';
     queryParams.value.pageNum = 1;
     proxy.resetForm('queryRef');
     handleQuery();

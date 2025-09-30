@@ -281,7 +281,10 @@
       height: 28px;
       padding: 8px 11px;
       font-size: 12px;
-    }
+     i{
+        font-size: 12px;
+      }
+        }
 
     //查询条件按钮颜色设置
     //查询 添加  修改
@@ -400,6 +403,12 @@
       color: #000000;
       font-family: PingFangSC-Regular, PingFangSC-Regular;
     }
+      .toggle-expand-all{
+    .svg-icon{
+      font-size: 12px;
+      margin-right: 6px;
+    }
+  }
     // .el-input__inner{
     //   font-size: 14px;
     //   color: #B2B2B2;
@@ -577,6 +586,13 @@
   //列表字体颜色设置
   .el-table {
     font-size: 14px;
+     .el-popper.is-light {
+      box-shadow: 0px 2px 8px 1px rgba(0, 0, 0, 0.15);
+        max-width: 600px; 
+        font-size: 14px;
+        padding:16px;
+        line-height: 22px;
+    }
     // color: rgba(0,0,0,0.85);
     //操作按钮图标大小
     .el-icon {

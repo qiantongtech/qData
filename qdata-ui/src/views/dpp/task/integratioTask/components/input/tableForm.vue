@@ -31,11 +31,11 @@
                 <el-col :span="12">
                     <el-form-item label="连接方式" prop="clmt">
                         <el-radio-group v-if="!info" @change="handleReleaseStateChange" v-model="form.taskParams.clmt">
-                          <template v-for="dict in dpp_connection" :key="dict.value" >
-                            <el-radio :value="dict.value" >
-                              {{ dict.label }}
-                            </el-radio>
-                          </template>
+                            <template v-for="dict in dpp_connection" :key="dict.value">
+                                <el-radio :value="dict.value">
+                                    {{ dict.label }}
+                                </el-radio>
+                            </template>
                         </el-radio-group>
                         <div class="form-readonly" v-else>{{dpp_connection.find((item) => item.value ==
                             form.taskParams.clmt)?.label || '-'}}</div>
@@ -82,7 +82,7 @@
                             <el-input v-if="!info" v-model="form.taskParams.readerDatasource.datasourceType"
                                 placeholder="请输入数据连接类型" disabled />
                             <div class="form-readonly" v-else>{{ form.taskParams.readerDatasource.datasourceType || '-'
-                            }}</div>
+                                }}</div>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -174,7 +174,7 @@
                                 placeholder="请输入开始值" type="number">
                             </el-input>
                             <div class="form-readonly" v-else>{{ form.taskParams.idIncrementConfig.incrementStart || '-'
-                            }}</div>
+                                }}</div>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -389,13 +389,22 @@ const handlereadModeTypeChange = (val) => {
 }
 
 const checkInteger = (rule, value, callback) => {
-    if (!Number.isInteger(value)) {
-        callback(new Error('开始值必须为整数'))
-    } else {
-        callback()
+    if (value === '' || value === null || value === undefined) {
+        callback(new Error('请输入开始值'))
+        return
     }
-}
+    const numValue = Number(value)
+    if (isNaN(numValue)) {
+        callback(new Error('请输入有效的数字'))
+        return
+    }
+    if (!Number.isInteger(numValue)) {
+        callback(new Error('开始值必须为整数'))
+        return
+    }
 
+    callback()
+}
 // 获取数据源列表
 const getDatasourceList = async () => {
     try {

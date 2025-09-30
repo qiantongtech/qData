@@ -139,7 +139,7 @@
                             <el-radio value="2">id增量</el-radio>
                             <el-radio value="3">时间范围增</el-radio>
                         </el-radio-group>
-                        <div class="form-readonly">{{ form.taskParams.readModeType == 1 ? '全量' :
+                        <div class="form-readonly" v-else>{{ form.taskParams.readModeType == 1 ? '全量' :
                             form.taskParams.readModeType == 2 ?
                                 'id增量' : '时间范围增' }}</div>
                     </el-form-item>

@@ -190,4 +190,12 @@ public interface IDaDatasourceService extends IService<DaDatasourceDO> {
     void exportSqlQueryResult(HttpServletResponse response, DaDatasourcePageReqVO daDatasource);
 
     List<DbColumn> sqlParse(String sourceId, String sqlText);
+
+    /**
+     * 修改数据源状态
+     * @param datasourceId
+     * @param status
+     * @return
+     */
+    Boolean editDatasourceStatus(Long datasourceId, Long status);
 }

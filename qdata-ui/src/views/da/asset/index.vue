@@ -49,6 +49,7 @@
             <div class="page-item" v-for="(item, index) in daAssetList" :key="index">
               <div class="item-title">
                 <div class="item-title-left">
+                  <!-- <img class="title-icon" src="@/assets/da/asset2/tit.svg" alt="" /> -->
                   <span class="item-title-name ellipsis" @click="
                     routeTo(
                       type == 1
@@ -58,7 +59,10 @@
                     )
                     ">{{ item.name }}</span>
                   <div v-for="btn in titleBtns" :key="btn.id">
-
+                    <!-- <div class="title-btn" :class="{ act: item.type == btn.id }" v-if="item.type == btn.id">
+                      <svg-icon :icon-class="btn.icon" />
+                      <span>{{ btn.name }}</span>
+                    </div> -->
                     <el-tag v-if="item.type == btn.id" style="margin-right: 10px;">{{ btn.name
                     }}</el-tag>
                   </div>
@@ -70,7 +74,19 @@
 
                 </div>
                 <div class="item-title-right" v-if="item.type == 1 && unregistered(item)">
-
+                  <div class="li-tab">
+                    <span>{{ item.dataCount }}行</span>
+                  </div>
+                  <div class="li-bar"></div>
+                  <div class="li-tab">
+                    <span>{{ item.fieldCount }}列</span>
+                  </div>
+                  <div class="li-bar"></div>
+                  <div class="li-tab">
+                    <span>
+                      <overflow-tooltip text="93.33分" />
+                    </span>
+                  </div>
                   <div class="li-bar" v-if="item.datasourceType"></div>
                   <div class="li-tab" v-if="item.datasourceType">
                     <img src="@/assets/da/asset2/fen (1).svg" alt="" />
@@ -1128,7 +1144,6 @@ getAssetThemeList();
 
         .item-title-name {
           font-family: PingFang SC;
-          // font-weight: 700;
           font-size: 16px;
           color: #3d446e;
           margin-right: 16px;

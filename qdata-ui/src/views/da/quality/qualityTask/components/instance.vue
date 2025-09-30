@@ -82,7 +82,7 @@
 
 <script setup>
 import { defineProps, defineEmits, ref, computed, watch } from 'vue';
-import { listDaDiscoveryTaskLog, logDetailCat } from '@/api/da/discovery/discoveryTaskLog';
+
 const { proxy } = getCurrentInstance();
 const defaultSort = ref({ columnKey: 'start_time', order: 'desc' });
 import { useRoute, useRouter } from "vue-router"
@@ -92,7 +92,9 @@ const { sys_common_status, sys_job_group, quality_log_success_flag } = proxy.use
   'quality_log_success_flag'
 );
 import { listDppQualityLog, getDppQualityLog, delDppQualityLog, addDppQualityLog, updateDppQualityLog } from "@/api/da/quality/qualityTaskLog";
-
+import {
+  qualityLogLogDetailCat
+} from "@/api/da/quality/qualityTask";;
 const props = defineProps({
   visible: { type: Boolean, default: true },
   title: { type: String, default: '表单标题' },
@@ -146,7 +148,7 @@ async function logDetailCatList(row) {
       return;
     }
     form.value = {};
-    const response = await logDetailCat({ handleMsg: row.path });
+    const response = await qualityLogLogDetailCat({ handleMsg: row.path });
     if (response && response.content) {
       form.value = response.content;
       open.value = true;

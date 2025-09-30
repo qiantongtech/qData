@@ -1,12 +1,15 @@
 package tech.qiantong.qdata.module.ds.service.api.impl;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.parser.Feature;
+import com.alibaba.fastjson.serializer.*;
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.expression.*;
@@ -58,7 +61,6 @@ import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -223,10 +225,11 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
     @Override
     public Object serviceTesting(DsApiDO dataApi) {
         DsApiDO dataApiEntity = shareCode(dataApi);
-
+        List<ResParam> resParamsList = dataApiEntity.getResParamsList();
         Map<String, Object> params = dataApi.getParams();
 
-        // 返回结果类型 1:分页 2:列表 3:详情
+        // 返回结果类型 1:分页 2:列表 3:详情-废弃
+        // 返回结果类型;1：详情，2：列表，3：分页
         String resDataType = dataApiEntity.getResDataType();
         DaDatasourceRespDTO dataSource = iDaDatasourceApiService
                 .getDatasourceById(Long.valueOf(dataApiEntity.getExecuteConfig().getSourceId()));
@@ -258,12 +261,13 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
             // Integer cacheSwitch = Integer.parseInt(dataApiEntity.getCacheSwitch());
             Integer cacheSwitch = 1;
             switch (resDataType) {
-                case "1":
+                case "3":
                     tech.qiantong.qdata.common.database.core.PageResult<Map<String, Object>> pageResult = dbQuery
                             .queryByPage(sqlFilterResult.getSql(), acceptedFilters, offset, pageSize, cacheSwitch);
                     List<Map<String, Object>> data = pageResult.getData();
                     List<Map<String, Object>> list = this.encryptQueryResultList(data,
                             String.valueOf(dataApiEntity.getId()));
+                    this.dateToStr(resParamsList, list);
 
                     pageResult.setPageNum(pageNum).setPageSize(pageSize).setData(list);
                     result = pageResult;
@@ -271,11 +275,13 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
                 case "2":
                     List<Map<String, Object>> listResult = dbQuery.queryList(sqlFilterResult.getSql(), acceptedFilters,
                             cacheSwitch);
+                    this.dateToStr(resParamsList, listResult);
                     result = this.encryptQueryResultList(listResult, String.valueOf(dataApiEntity.getId()));
                     break;
-                case "3":
+                case "1":
                     Map<String, Object> mapResult = dbQuery.queryOne(sqlFilterResult.getSql(), acceptedFilters,
                             cacheSwitch);
+                    this.dateToStr(resParamsList, mapResult);
                     result = encryptQueryResultMap(mapResult, String.valueOf(dataApiEntity.getId()));
                     break;
             }
@@ -284,7 +290,56 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
         } finally {
             dbQuery.close();
         }
-        return result;
+
+        return JSON.parse(JSON.toJSONString(result, new ValueFilter() {
+            @Override
+            public Object process(Object o, String s, Object o1) {
+                if (o1 instanceof Long) {
+                    return String.valueOf(o1);
+                }
+                return o1;
+            }
+        }), Feature.OrderedField);
+    }
+
+    /**
+     * 时间转换成字符串
+     *
+     * @param resParamsList
+     * @param data
+     */
+    void dateToStr(List<ResParam> resParamsList, Object data) {
+        try {
+            if (data instanceof List) {
+                List<Map<String, Object>> list = (List<Map<String, Object>>) data;
+                list.forEach(map -> {
+                    this.dateToStr(resParamsList, map);
+                });
+            } else {
+                Map<String, Object> map = (Map<String, Object>) data;
+                this.dateToStr(resParamsList, map);
+            }
+        } catch (Exception e) {
+            log.error("时间转换成字符串出错", e);
+        }
+    }
+
+    /**
+     * 时间转换成字符串
+     *
+     * @param resParamsList
+     * @param data
+     */
+    void dateToStr(List<ResParam> resParamsList, Map<String, Object> data) {
+        try {
+            resParamsList.forEach(resParam -> {
+                if (tech.qiantong.qdata.common.utils.StringUtils.isNotEmpty(resParam.getDataType()) && resParam.getDataType().equals("4") && data.get(resParam.getFieldName()) instanceof Date) {
+                    data.put(resParam.getFieldName(), DateUtil.format((Date) data.get(resParam.getFieldName()), tech.qiantong.qdata.common.utils.StringUtils.isNotEmpty(resParam.getDateFormat()) ? resParam.getDateFormat() : "yyyy-MM-dd HH:mm:ss"));
+                }
+            });
+        } catch (Exception e) {
+            log.error("时间转换成字符串出错", e);
+        }
     }
 
     /**
@@ -353,7 +408,7 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
                 List<DbColumn> columns;
                 if (org.apache.commons.lang3.StringUtils.isBlank(dbName)) {
                     columns = dbQuery.getTableColumns(dbQueryProperty, tableName);
-                }else {
+                } else {
                     columns = dbQuery.getTableColumns(dbName, tableName);
                 }
                 Map<String, DbColumn> columnMap = columns.stream()
@@ -381,7 +436,6 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
         dbQuery.close();
         return sqlParseVo;
     }
-
 
     /**
      * 归纳修改入口
@@ -436,8 +490,8 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
      * @return
      */
     private static DsApiLogDO packApiLogEntity(DsApiDO dataApiEntity, Long callerId, String callerBy,
-            String callerParams,
-            Integer callerSize, String msg, String status, Integer serviceType) {
+                                               String callerParams,
+                                               Integer callerSize, String msg, String status, Integer serviceType) {
         DsApiLogDO apiLogEntity = new DsApiLogDO();
         // id
         apiLogEntity.setApiId(dataApiEntity.getId());
@@ -567,7 +621,7 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
     }
 
     private void singleSqlParse(Statement stmt, List<Map<String, String>> cols, List<String> vars, String tableName,
-            DbQuery dbQuery) {
+                                DbQuery dbQuery) {
         stmt.accept(new StatementVisitorAdapter() {
             @Override
             public void visit(Select select) {
@@ -786,6 +840,67 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
                         }
                     }
                 });
+            }
+        });
+    }
+
+    /**
+     * 解析子查询
+     *
+     * @param select
+     * @param cols
+     * @param vars
+     */
+    void subSelectWhere(SubSelect select, List<Map<String, String>> cols, List<String> vars) {
+        select.getSelectBody().accept(new SelectVisitorAdapter() {
+            @Override
+            public void visit(PlainSelect plainSelect) {
+                // 存储表名
+                Map<String, String> map = new HashMap<>();
+                Table table = (Table) plainSelect.getFromItem();
+                if (org.apache.commons.lang3.StringUtils.equals(table.getName().toUpperCase(Locale.ROOT), "DUAL")) {
+                    return;
+                }
+                if (table.getAlias() != null) {
+                    String tableName = table.getName();
+                    if (org.apache.commons.lang3.StringUtils.isNotBlank(table.getSchemaName())) {
+                        tableName = table.getSchemaName() + "." + tableName;
+                    }
+                    map.put(tableName, table.getAlias().getName());
+                }
+                if (plainSelect.getJoins() != null && plainSelect.getJoins().size() > 0) {
+                    for (Join join : plainSelect.getJoins()) {
+                        FromItem fromItem = join.getRightItem();
+                        if (fromItem instanceof SubSelect) {
+                            SubSelect subSelect = (SubSelect) fromItem;
+                            subSelectWhere(subSelect, cols, vars);
+                            continue;
+                        }
+                        join.getOnExpression().accept(new ExpressionVisitorAdapter() {
+                            @Override
+                            public void visit(JdbcNamedParameter jdbcNamedParameter) {
+                                vars.add(jdbcNamedParameter.getName());
+                            }
+                        });
+                        Table table1 = (Table) join.getRightItem();
+                        if (table1.getAlias() != null) {
+                            String tableName = table1.getName();
+                            if (org.apache.commons.lang3.StringUtils.isNotBlank(table.getSchemaName())) {
+                                tableName = table1.getSchemaName() + "." + tableName;
+                            }
+                            map.put(tableName, table1.getAlias().getName());
+                        }
+                    }
+                }
+                Expression where = plainSelect.getWhere();
+                if (where != null) {
+                    where.accept(new ExpressionVisitorAdapter() {
+                        @Override
+                        public void visit(JdbcNamedParameter jdbcNamedParameter) {
+                            vars.add(jdbcNamedParameter.getName());
+                        }
+                    });
+                }
             }
         });
     }

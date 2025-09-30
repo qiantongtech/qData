@@ -56,16 +56,17 @@
                         :resTypeOptions="resTypeOptions" :whetherOptions="whetherOptions"
                         :statusOptions="statusOptions" />
                 </div>
-                <div slot="footer" class="button-style">
-                    <el-button type="primary" @click="handleSuccess">返回列表</el-button>
-                    <el-button v-if="activeReult !== 0" @click="handleLastStep">上一步
-                    </el-button>
-                    <el-button v-if="activeReult !== 2" @click="handleNextStep">下一步
-                    </el-button>
-                    <el-button type="primary" v-if="activeReult === 2" @click="submitForm"
-                        :loading="loadingOptions.loading">确定并退出
-                    </el-button>
-                </div>
+
+            </div>
+            <div slot="footer" class="button-style">
+                <el-button type="primary" @click="handleSuccess">返回列表</el-button>
+                <el-button v-if="activeReult !== 0" @click="handleLastStep">上一步
+                </el-button>
+                <el-button v-if="activeReult !== 2" @click="handleNextStep">下一步
+                </el-button>
+                <el-button type="primary" v-if="activeReult === 2" @click="submitForm"
+                    :loading="loadingOptions.loading">确定并退出
+                </el-button>
             </div>
         </div>
     </div>
@@ -482,6 +483,7 @@ onBeforeRouteLeave((to, from) => {
 }
 
 .steps-wrap {
+    position: relative;
     height: 80px;
     padding: 20px 20px;
     step-height: 40px;
@@ -632,12 +634,10 @@ onBeforeRouteLeave((to, from) => {
 }
 
 .button-style {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
     padding: 15px 35px 15px 0px;
-    background: #fff;
     text-align: right;
     z-index: 10;
 }
@@ -647,6 +647,8 @@ onBeforeRouteLeave((to, from) => {
     // margin: 15px;
     background-color: white;
     padding: 10px 25px 0;
+    padding-bottom: 50px;
+
 }
 
 .home {
@@ -684,10 +686,9 @@ onBeforeRouteLeave((to, from) => {
 }
 
 .pagecont-top {
-    height: 685px !important;
+    height: 680px !important;
     overflow-y: auto;
     position: relative;
-    padding-bottom: 40px;
 }
 
 .el-textarea__inner::-webkit-resizer {

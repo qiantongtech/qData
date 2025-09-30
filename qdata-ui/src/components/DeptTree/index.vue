@@ -19,22 +19,27 @@
                             <el-icon class="iconimg colorxz" v-if="!node.expanded && node.level === 1">
                                 <Folder />
                             </el-icon>
-                            <!-- 第二级 -->
+
+                            <!-- 有子节点的所有层级 -->
                             <el-icon class="iconimg colorxz"
-                                v-if="node.expanded && node.childNodes.length && node.level == 2">
+                                v-if="node.expanded && node.childNodes.length && node.level > 1">
                                 <FolderOpened />
                             </el-icon>
                             <el-icon class="iconimg colorxz"
-                                v-if="!node.expanded && node.childNodes.length && node.level == 2">
+                                v-if="!node.expanded && node.childNodes.length && node.level > 1">
                                 <Folder />
                             </el-icon>
-                            <!-- 子级 -->
-                            <el-icon class="zjiconimg colorwxz" v-show="!node.isCurrent && node.level == 3">
+
+                            <!-- 无子节点的节点 -->
+                            <el-icon class="zjiconimg colorwxz"
+                                v-show="!node.isCurrent && (!node.childNodes.length || node.childNodes.length === 0)">
                                 <Tickets />
                             </el-icon>
-                            <el-icon class="zjiconimg colorxz" v-show="node.isCurrent && node.level == 3">
+                            <el-icon class="zjiconimg colorxz"
+                                v-show="node.isCurrent && (!node.childNodes.length || node.childNodes.length === 0)">
                                 <Tickets />
                             </el-icon>
+
                             <span class="treelable" @click="getNode(node)">
                                 {{ node.label }}
                             </span>

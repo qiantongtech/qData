@@ -8,21 +8,23 @@
                 </div>
             </div>
 
-            <el-table :data="form2.reqParams" max-height="250" stripe >
+            <el-table :data="form2.reqParams" max-height="250" stripe>
                 <el-table-column label="序号" width="80" align="center">
                     <template #default="scope">
                         <span>{{ scope.$index + 1 }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="paramName" label="参数名称" align="center" :show-overflow-tooltip="{effect: 'light'}" />
-                <el-table-column prop="nullable" label="是否允许为空" align="center" :show-overflow-tooltip="{effect: 'light'}">
+                <el-table-column prop="paramName" label="参数名称" align="center"
+                    :show-overflow-tooltip="{ effect: 'light' }" />
+                <el-table-column prop="nullable" label="是否允许为空" align="center"
+                    :show-overflow-tooltip="{ effect: 'light' }">
                     <template #default="scope">
                         <el-checkbox disabled v-model="scope.row.nullable" true-label="1" false-label="0" />
                     </template>
                 </el-table-column>
                 <el-table-column prop="paramComment" label="描述" align="center">
                     <template #default="scope">
-                        {{ scope.row.paramComment || '-'}}
+                        {{ scope.row.paramComment || '-' }}
                     </template>
                 </el-table-column>
                 <el-table-column prop="paramType" label="参数类型" align="center">
@@ -40,14 +42,16 @@
                 <!--          <dict-tag :options="whereTypeOptions" :value="scope.row.whereType" />-->
                 <!--        </template>-->
                 <!--      </el-table-column>-->
-                <el-table-column prop="exampleValue" label="示例值" align="center" :show-overflow-tooltip="{effect: 'light'}">
+                <el-table-column prop="exampleValue" label="示例值" align="center"
+                    :show-overflow-tooltip="{ effect: 'light' }">
                     <template #default="scope">
-                        {{ scope.row.exampleValue || '-'}}
+                        {{ scope.row.exampleValue || '-' }}
                     </template>
                 </el-table-column>
-                <el-table-column prop="defaultValue" label="默认值" align="center" :show-overflow-tooltip="{effect: 'light'}">
+                <el-table-column prop="defaultValue" label="默认值" align="center"
+                    :show-overflow-tooltip="{ effect: 'light' }">
                     <template #default="scope">
-                        {{ scope.row.defaultValue || '-'}}
+                        {{ scope.row.defaultValue || '-' }}
                     </template>
                 </el-table-column>
             </el-table>
@@ -63,38 +67,26 @@
                         <span>{{ scope.$index + 1 }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="fieldName" label="中文名称" align="center" :show-overflow-tooltip="{effect: 'light'}" />
-                <el-table-column prop="fieldComment" label="描述" align="center" :show-overflow-tooltip="{effect: 'light'}">
+                <el-table-column prop="fieldName" label="中文名称" align="center"
+                    :show-overflow-tooltip="{ effect: 'light' }" />
+                <el-table-column prop="fieldComment" label="描述" align="center"
+                    :show-overflow-tooltip="{ effect: 'light' }">
                     <template #default="scope">
-                        {{ scope.row.fieldComment || '-'}}
+                        {{ scope.row.fieldComment || '-' }}
                     </template>
                 </el-table-column>
-                <el-table-column prop="dataType" label="数据类型" align="center" :show-overflow-tooltip="{effect: 'light'}">
+                <el-table-column prop="dataType" label="数据类型" align="center" :show-overflow-tooltip="{ effect: 'light' }">
                     <template #default="scope">
-                        {{ scope.row.dataType || '-'}}
+                        {{ scope.row.dataType || '-' }}
                     </template>
                 </el-table-column>
-                <el-table-column prop="exampleValue" label="示例值" align="center" :show-overflow-tooltip="{effect: 'light'}">
+                <el-table-column prop="exampleValue" label="示例值" align="center"
+                    :show-overflow-tooltip="{ effect: 'light' }">
                     <template #default="scope">
-                        {{ scope.row.exampleValue || '-'}}
+                        {{ scope.row.exampleValue || '-' }}
                     </template>
                 </el-table-column>
             </el-table>
-            <div v-if="form2.configType === '1' && false" class="sort-section">
-                <div class="sort-label">
-                    排序字段
-                    <el-link type="primary" v-if="form2.configType !== '2'" class="add-link"
-                        icon="el-icon-circle-plus-outline" @click="openDialog(3)">
-                        新增排序字段
-                    </el-link>
-                </div>
-                <el-form-item label="排序方式" prop="sortBy">
-                    <el-radio-group v-model="form2.sortBy">
-                        <el-radio label="升序" value="ASC"></el-radio>
-                        <el-radio label="降序" value="DESC"></el-radio>
-                    </el-radio-group>
-                </el-form-item>
-            </div>
         </template>
         <template v-if="form2.apiServiceType == 3">
             <div class="clearfix header-text">
@@ -115,21 +107,21 @@
                             </el-table-column>
 
                             <el-table-column label="参数名称" fixed="left" align="center" prop="name"
-                                :show-overflow-tooltip="{effect: 'light'}">
+                                :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="{ row }">
                                     {{ row?.name || '' }}
                                 </template>
                             </el-table-column>
 
                             <el-table-column label="描述" fixed="left" align="center" prop="remark"
-                                :show-overflow-tooltip="{effect: 'light'}">
+                                :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="{ row }">
                                     {{ row?.remark || '' }}
                                 </template>
                             </el-table-column>
 
                             <el-table-column label="是否为空" width="100" fixed="left" align="center" prop="requestFlag"
-                                :show-overflow-tooltip="{effect: 'light'}">
+                                :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="{ row }">
                                     <el-form-item>
                                         <el-checkbox v-model="row.requestFlag" disabled :true-label="'1'"
@@ -139,14 +131,14 @@
                             </el-table-column>
 
                             <el-table-column label="参数类型" fixed="left" align="center" prop="columnType"
-                                :show-overflow-tooltip="{effect: 'light'}">
+                                :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="{ row }">
                                     {{ row?.columnType || '' }}
                                 </template>
                             </el-table-column>
 
                             <el-table-column label="示例值" fixed="left" align="center" prop="exampleValue"
-                                :show-overflow-tooltip="{effect: 'light'}">
+                                :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="{ row }">
                                     <!-- <el-form-item
                                         :prop="`form2.reqParams[${findPosi(form2.reqParams, row.id)}].exampleValue`"
@@ -159,7 +151,7 @@
                             </el-table-column>
 
                             <el-table-column label="默认值" fixed="left" align="center" prop="defaultValue"
-                                :show-overflow-tooltip="{effect: 'light'}">
+                                :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="{ row }">
                                     <!-- <el-form-item
                                         :prop="`form2.reqParams[${findPosi(form2.reqParams, row.id)}].defaultValue`"
@@ -192,28 +184,28 @@
                             </el-table-column>
 
                             <el-table-column label="参数名称" fixed="left" align="center" prop="name"
-                                :show-overflow-tooltip="{effect: 'light'}">
+                                :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="{ row }">
                                     {{ row?.name || '' }}
                                 </template>
                             </el-table-column>
 
                             <el-table-column label="描述" fixed="left" align="center" prop="remark"
-                                :show-overflow-tooltip="{effect: 'light'}">
+                                :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="{ row }">
                                     {{ row?.remark || '' }}
                                 </template>
                             </el-table-column>
 
                             <el-table-column label="参数类型" fixed="left" align="center" prop="columnType"
-                                :show-overflow-tooltip="{effect: 'light'}">
+                                :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="{ row }">
                                     {{ row?.columnType || '' }}
                                 </template>
                             </el-table-column>
 
                             <el-table-column label="示例值" fixed="left" align="center" prop="exampleValue"
-                                :show-overflow-tooltip="{effect: 'light'}">
+                                :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="{ row }">
                                     <!-- <el-form-item
                                         :prop="`form2.reqParams[${findPosi(form2.reqParams, row.id)}].exampleValue`"
@@ -455,7 +447,7 @@ getList();
 }
 
 .header-text {
-    margin: 12px  0
+    margin: 12px 0
 }
 
 .header-left {
@@ -465,5 +457,4 @@ getList();
     line-height: 24px;
     font-style: normal;
 }
-
 </style>

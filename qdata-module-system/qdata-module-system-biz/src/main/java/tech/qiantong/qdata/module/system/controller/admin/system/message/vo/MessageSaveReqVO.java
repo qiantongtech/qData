@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -41,7 +40,6 @@ public class MessageSaveReqVO {
     private Long entityId;
 
     @Schema(description = "消息链接", example = "")
-    @NotBlank(message = "消息链接不能为空")
     @Size(max = 256, message = "消息链接长度不能超过256个字符")
     private String entityUrl;
 

@@ -39,8 +39,6 @@ public interface DpDocumentMapper extends BaseMapperX<DpDocumentDO> {
                         q -> q.like(DpDocumentDO::getCode, reqVO.getKeyWordParam())
                                 .or()
                                 .like(DpDocumentDO::getName, reqVO.getKeyWordParam()))
-                .like(StringUtils.isNotBlank(reqVO.getKeyWordParam()), DpDocumentDO::getCode, reqVO.getKeyWordParam())
-                .like(StringUtils.isNotBlank(reqVO.getKeyWordParam()), DpDocumentDO::getName, reqVO.getKeyWordParam())
                 .like(StringUtils.isNotBlank(reqVO.getIssuingAgency()), DpDocumentDO::getIssuingAgency, reqVO.getIssuingAgency())
                 .likeRight(StringUtils.isNotBlank(reqVO.getCatCode()), DpDocumentDO::getCatCode, reqVO.getCatCode())
                 .eq(StringUtils.isNotBlank(reqVO.getType()),DpDocumentDO::getType, reqVO.getType())
@@ -59,9 +57,10 @@ public interface DpDocumentMapper extends BaseMapperX<DpDocumentDO> {
 
     /**
      * 标准检索分页列表
+     *
      * @param page
      * @param dpDocument
      * @return
      */
-    IPage<DpDocumentSearchRespVO> getDpDocumentSearchPage(Page page,  @Param("params")DpDocumentSearchReqVO dpDocument);
+    IPage<DpDocumentSearchRespVO> getDpDocumentSearchPage(Page page, @Param("params") DpDocumentSearchReqVO dpDocument);
 }

@@ -51,6 +51,7 @@ public class DaAssetThemeRelServiceImpl extends ServiceImpl<DaAssetThemeRelMappe
                 .select("t2.NAME as themeName")
                 .leftJoin("ATT_THEME t2 on t.THEME_ID = t2.ID AND t2.DEL_FLAG = '0'")
                 .likeIfExists("t2.NAME", pageReqVO.getThemeName())
+                .eq("t2.DEL_FLAG","0")
                 .eq(pageReqVO.getAssetId() != null, DaAssetThemeRelDO::getAssetId, pageReqVO.getAssetId())
                 .in(CollectionUtils.isNotEmpty(pageReqVO.getThemeIdList()), DaAssetThemeRelDO::getThemeId, pageReqVO.getThemeIdList());
         List<DaAssetThemeRelDO> daAssetThemeRelDOList = daAssetThemeRelMapper.selectJoinList(DaAssetThemeRelDO.class, lambdaWrapper);

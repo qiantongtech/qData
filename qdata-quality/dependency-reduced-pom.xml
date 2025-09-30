@@ -83,36 +83,6 @@
           <warName>${project.artifactId}</warName>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>com.github.core-lib</groupId>
-        <artifactId>xjar-maven-plugin</artifactId>
-        <version>4.0.2</version>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>build</goal>
-            </goals>
-            <configuration>
-              <password>io.xjar</password>
-              <algorithm>AES/CBC/PKCS5Padding</algorithm>
-              <keySize>128</keySize>
-              <ivSize>128</ivSize>
-              <includes>
-                <include>tech/qiantong/**</include>
-              </includes>
-              <excludes>
-                <exclude>static/**</exclude>
-                <exclude>META-INF/resources/**</exclude>
-              </excludes>
-              <sourceDir>${project.build.directory}</sourceDir>
-              <sourceJar>${project.build.finalName}.jar</sourceJar>
-              <targetDir>${project.build.directory}</targetDir>
-              <targetJar>${project.build.finalName}.xjar</targetJar>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
   <pluginRepositories>

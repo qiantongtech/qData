@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.qiantong.qdata.module.dpp.dal.mapper.etl.DppEvaluateLogMapper">
+
+    <resultMap type="DppEvaluateLogDO" id="DppEvaluateLogResult">
+        <result property="id"    column="ID"    />
+        <result property="tableName"    column="TABLE_NAME"    />
+        <result property="columnName"    column="COLUMN_NAME"    />
+        <result property="ruleCode"    column="RULE_CODE"    />
+        <result property="ruleName"    column="RULE_NAME"    />
+        <result property="dimensionType"    column="DIMENSION_TYPE"    />
+        <result property="ruleDescription"    column="RULE_DESCRIPTION"    />
+        <result property="taskLogId"    column="TASK_LOG_ID"    />
+        <result property="evaluateId"    column="EVALUATE_ID"    />
+        <result property="total"    column="TOTAL"    />
+        <result property="problemTotal"    column="PROBLEM_TOTAL"    />
+        <result property="checkDate"    column="CHECK_DATE"    />
+        <result property="validFlag"    column="VALID_FLAG"    />
+        <result property="delFlag"    column="DEL_FLAG"    />
+        <result property="createBy"    column="CREATE_BY"    />
+        <result property="creatorId"    column="CREATOR_ID"    />
+        <result property="createTime"    column="CREATE_TIME"    />
+        <result property="updateBy"    column="UPDATE_BY"    />
+        <result property="updaterId"    column="UPDATER_ID"    />
+        <result property="updateTime"    column="UPDATE_TIME"    />
+        <result property="remark"    column="REMARK"    />
+    </resultMap>
+
+    <sql id="selectDppEvaluateLogVo">
+        select ID, TABLE_NAME, COLUMN_NAME, RULE_CODE, RULE_NAME, DIMENSION_TYPE, RULE_DESCRIPTION, TASK_LOG_ID, EVALUATE_ID, TOTAL, PROBLEM_TOTAL, CHECK_DATE, VALID_FLAG, DEL_FLAG, CREATE_BY, CREATOR_ID, CREATE_TIME, UPDATE_BY, UPDATER_ID, UPDATE_TIME, REMARK from DPP_EVALUATE_LOG
+    </sql>
+
+    <select id="selectDppEvaluateLogList" parameterType="DppEvaluateLogDO" resultMap="DppEvaluateLogResult">
+        <include refid="selectDppEvaluateLogVo"/>
+        <where>
+            <if test="tableName != null  and tableName != ''"> and TABLE_NAME like concat('%', #{tableName}, '%')</if>
+            <if test="columnName != null  and columnName != ''"> and COLUMN_NAME like concat('%', #{columnName}, '%')</if>
+            <if test="ruleCode != null  and ruleCode != ''"> and RULE_CODE = #{ruleCode}</if>
+            <if test="ruleName != null  and ruleName != ''"> and RULE_NAME like concat('%', #{ruleName}, '%')</if>
+            <if test="dimensionType != null  and dimensionType != ''"> and DIMENSION_TYPE = #{dimensionType}</if>
+            <if test="ruleDescription != null  and ruleDescription != ''"> and RULE_DESCRIPTION = #{ruleDescription}</if>
+            <if test="taskLogId != null  and taskLogId != ''"> and TASK_LOG_ID = #{taskLogId}</if>
+            <if test="evaluateId != null  and evaluateId != ''"> and EVALUATE_ID = #{evaluateId}</if>
+            <if test="total != null "> and TOTAL = #{total}</if>
+            <if test="problemTotal != null "> and PROBLEM_TOTAL = #{problemTotal}</if>
+            <if test="checkDate != null "> and CHECK_DATE = #{checkDate}</if>
+            <if test="createTime != null "> and CREATE_TIME = #{createTime}</if>
+        </where>
+    </select>
+
+    <select id="selectDppEvaluateLogById" parameterType="Long" resultMap="DppEvaluateLogResult">
+        <include refid="selectDppEvaluateLogVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertDppEvaluateLog" parameterType="DppEvaluateLogDO">
+        insert into DPP_EVALUATE_LOG
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="tableName != null">TABLE_NAME,</if>
+            <if test="columnName != null">COLUMN_NAME,</if>
+            <if test="ruleCode != null">RULE_CODE,</if>
+            <if test="ruleName != null">RULE_NAME,</if>
+            <if test="dimensionType != null">DIMENSION_TYPE,</if>
+            <if test="ruleDescription != null">RULE_DESCRIPTION,</if>
+            <if test="taskLogId != null">TASK_LOG_ID,</if>
+            <if test="evaluateId != null">EVALUATE_ID,</if>
+            <if test="total != null">TOTAL,</if>
+            <if test="problemTotal != null">PROBLEM_TOTAL,</if>
+            <if test="checkDate != null">CHECK_DATE,</if>
+            <if test="validFlag != null">VALID_FLAG,</if>
+            <if test="delFlag != null">DEL_FLAG,</if>
+            <if test="createBy != null">CREATE_BY,</if>
+            <if test="creatorId != null">CREATOR_ID,</if>
+            <if test="createTime != null">CREATE_TIME,</if>
+            <if test="updateBy != null">UPDATE_BY,</if>
+            <if test="updaterId != null">UPDATER_ID,</if>
+            <if test="updateTime != null">UPDATE_TIME,</if>
+            <if test="remark != null">REMARK,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="tableName != null">#{tableName},</if>
+            <if test="columnName != null">#{columnName},</if>
+            <if test="ruleCode != null">#{ruleCode},</if>
+            <if test="ruleName != null">#{ruleName},</if>
+            <if test="dimensionType != null">#{dimensionType},</if>
+            <if test="ruleDescription != null">#{ruleDescription},</if>
+            <if test="taskLogId != null">#{taskLogId},</if>
+            <if test="evaluateId != null">#{evaluateId},</if>
+            <if test="total != null">#{total},</if>
+            <if test="problemTotal != null">#{problemTotal},</if>
+            <if test="checkDate != null">#{checkDate},</if>
+            <if test="validFlag != null">#{validFlag},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updaterId != null">#{updaterId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateDppEvaluateLog" parameterType="DppEvaluateLogDO">
+        update DPP_EVALUATE_LOG
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="tableName != null">TABLE_NAME = #{tableName},</if>
+            <if test="columnName != null">COLUMN_NAME = #{columnName},</if>
+            <if test="ruleCode != null">RULE_CODE = #{ruleCode},</if>
+            <if test="ruleName != null">RULE_NAME = #{ruleName},</if>
+            <if test="dimensionType != null">DIMENSION_TYPE = #{dimensionType},</if>
+            <if test="ruleDescription != null">RULE_DESCRIPTION = #{ruleDescription},</if>
+            <if test="taskLogId != null">TASK_LOG_ID = #{taskLogId},</if>
+            <if test="evaluateId != null">EVALUATE_ID = #{evaluateId},</if>
+            <if test="total != null">TOTAL = #{total},</if>
+            <if test="problemTotal != null">PROBLEM_TOTAL = #{problemTotal},</if>
+            <if test="checkDate != null">CHECK_DATE = #{checkDate},</if>
+            <if test="validFlag != null">VALID_FLAG = #{validFlag},</if>
+            <if test="delFlag != null">DEL_FLAG = #{delFlag},</if>
+            <if test="createBy != null">CREATE_BY = #{createBy},</if>
+            <if test="creatorId != null">CREATOR_ID = #{creatorId},</if>
+            <if test="createTime != null">CREATE_TIME = #{createTime},</if>
+            <if test="updateBy != null">UPDATE_BY = #{updateBy},</if>
+            <if test="updaterId != null">UPDATER_ID = #{updaterId},</if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime},</if>
+            <if test="remark != null">REMARK = #{remark},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteDppEvaluateLogById" parameterType="Long">
+        delete from DPP_EVALUATE_LOG where ID = #{id}
+    </delete>
+
+    <delete id="deleteDppEvaluateLogByIds" parameterType="String">
+        delete from DPP_EVALUATE_LOG where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+
+    <select id="getEvaluateTrend7d" resultType="map">
+        <choose>
+            <!-- MySQL 8+ 实现 -->
+            <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'mysql'">
+                <![CDATA[
+      WITH RECURSIVE d AS (
+        SELECT CURDATE() AS d
+        UNION ALL
+        SELECT DATE_SUB(d, INTERVAL 1 DAY) FROM d
+        WHERE d > DATE_SUB(CURDATE(), INTERVAL 6 DAY)
+      )
+      SELECT
+        DATE_FORMAT(d.d, '%Y-%m-%d')        AS statDate,
+        COALESCE(SUM(t.TOTAL), 0)           AS totalCnt,
+        COALESCE(SUM(t.PROBLEM_TOTAL), 0)   AS problemCnt
+      FROM d
+      LEFT JOIN DPP_EVALUATE_LOG t
+        ON DATE(t.CHECK_DATE) = d.d
+       AND t.DEL_FLAG = '0'
+       AND t.VALID_FLAG = '1'
+      GROUP BY d.d
+      ORDER BY d.d
+      ]]>
+            </when>
+
+            <!-- DM8 / Oracle 实现 -->
+            <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'dm8'">
+                <![CDATA[
+      SELECT
+        TO_CHAR(d.d, 'yyyy-mm-dd')          AS statDate,
+        NVL(SUM(t.TOTAL), 0)                AS totalCnt,
+        NVL(SUM(t.PROBLEM_TOTAL), 0)        AS problemCnt
+      FROM (
+        SELECT TRUNC(SYSDATE) - (LEVEL - 1) AS d
+        FROM dual
+        CONNECT BY LEVEL <= 7
+      ) d
+      LEFT JOIN DPP_EVALUATE_LOG t
+        ON TRUNC(t.CHECK_DATE) = d.d
+       AND t.DEL_FLAG = '0'
+       AND t.VALID_FLAG = '1'
+      GROUP BY d.d
+      ORDER BY d.d
+      ]]>
+            </when>
+        </choose>
+    </select>
+</mapper>

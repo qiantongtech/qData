@@ -105,6 +105,7 @@ public class DBReaderComponent implements ComponentItem {
         reader.put("parameter", parameter);
 
         parameter.put("batchSize", taskParams.getOrDefault("batchSize", 1024));
+        parameter.put("datasourceId", readerDatasource.get("datasourceId"));
         parameter.put("username", readerProperty.getUsername());
         parameter.put("password", readerProperty.getPassword());
         parameter.put("dbType", readerProperty.getDbType());
@@ -130,6 +131,7 @@ public class DBReaderComponent implements ComponentItem {
 
         connection.put("jdbcUrl", readerProperty.trainToJdbcUrl());
         parameter.put("connection", connection);
+        parameter.put("readerProperty", readerProperty);
         return reader;
     }
 }

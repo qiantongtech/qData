@@ -74,6 +74,7 @@ public class DBWriterComponent implements ComponentItem {
         reader.put("parameter", parameter);
 
         parameter.put("batchSize", taskParams.getOrDefault("batchSize", 1024));
+        parameter.put("datasourceId", writerDatasource.get("datasourceId"));
         parameter.put("username", writerProperty.getUsername());
         parameter.put("password", writerProperty.getPassword());
         parameter.put("dbType", writerProperty.getDbType());

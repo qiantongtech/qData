@@ -61,7 +61,7 @@
                 {{ scope.row.assetTableName || "-" }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(3)" label="资产类目" align="left" prop="catAssetName" width="200"
+            <el-table-column v-if="getColumnVisibility(3)" label="资产类目" align="left" prop="catAssetName"
               :show-overflow-tooltip="{ effect: 'light' }">
               <template #default="scope">
                 {{ scope.row.catAssetName || "-" }}
@@ -240,7 +240,7 @@
 
     <!-- 数据资产申请详情对话框 -->
     <el-dialog :title="title" v-model="openDetail" width="1000px" :append-to="$refs['app-container']" draggable>
-      <el-form ref="daAssetApplyRef" :model="form" label-width="90px">
+      <el-form :model="form" label-width="90px">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="资产名称:" prop="assetName">

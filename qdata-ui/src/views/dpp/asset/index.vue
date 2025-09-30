@@ -144,7 +144,70 @@
                       {{ item.description || "-" }}
                     </div>
                   </div>
+                  <div class="flex-wrap">
 
+                    <div class="form-btns">
+                      <div class="form-btn" v-if="!unregistered(item)" @click="handleUpdate(item, 'register')">
+                        <img src="@/assets/da/asset2/btn (2).svg" alt="" />
+                        <span>注册</span>
+                      </div>
+                      <div class="form-btn" v-if="unregistered(item)" @click="handleView(item)">
+                        <img src="@/assets/da/asset2/btn (2).svg" alt="" />
+                        <span>详情</span>
+                      </div>
+                      <!-- danger -->
+                      <!--  -->
+                      <div class="form-btn" :class="{
+                        danger: item.status == 2,
+                        warn: item.status != 2,
+                      }" v-if="unregistered(item)" @click="handleStatusChange(item)">
+                        <img v-if="item.status == 2" src="@/assets/da/asset2/btn (1).svg" alt="" />
+                        <img v-else src="@/assets/da/asset2/btn (4).svg" alt="" />
+                        <span>{{ item.status == 2 ? "撤销发布" : "发布" }}
+                        </span>
+                      </div>
+
+                      <el-dropdown>
+                        <div class="form-btn">
+                          <img src="@/assets/da/asset2/btn (3).svg" alt="" />
+                          <span>更多</span>
+                        </div>
+                        <template #dropdown>
+                          <el-dropdown-menu>
+                            <el-dropdown-item v-if="unregistered(item)">
+                              <el-text type="primary" @click="handleUpdate(item)">
+                                <el-icon>
+                                  <Edit />
+                                </el-icon>修改
+                              </el-text>
+                            </el-dropdown-item>
+                            <el-dropdown-item v-if="unregistered(item) && item.type == 1">
+                              <el-text type="primary" @click="handleRefresh(item)">
+                                <el-icon>
+                                  <Refresh />
+                                </el-icon>更新数据
+                              </el-text>
+                            </el-dropdown-item>
+
+                            <el-dropdown-item v-if="unregistered(item) && type != 1">
+                              <el-text type="primary" @click="handleApply(item)">
+                                <el-icon>
+                                  <EditPen />
+                                </el-icon>申请
+                              </el-text>
+                            </el-dropdown-item>
+                            <el-dropdown-item v-if="type != 1 || item.sourceType == 1">
+                              <el-text type="danger" @click="handleDelete(item)">
+                                <el-icon>
+                                  <Delete />
+                                </el-icon>删除
+                              </el-text>
+                            </el-dropdown-item>
+                          </el-dropdown-menu>
+                        </template>
+                      </el-dropdown>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

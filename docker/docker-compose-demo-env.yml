@@ -27,8 +27,8 @@ services:
       - ORACLE_ALLOW_REMOTE=true
       - ORACLE_PASSWORD=Your!Str0ngPass
       - NLS_LANG=AMERICAN_AMERICA.AL32UTF8
-    ports:
-      - "1521:1521"
+#    ports:
+#      - "1521:1521"
     volumes:
       - ./demo/oracle/seed.sql:/docker-entrypoint-initdb.d/seed.sql:ro
     networks:
@@ -78,8 +78,8 @@ services:
       PATH: "/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/kingbase/install/kingbase/bin:"
       USER: "kingbase"
       PASSWORD: "qdata_dev"
-    ports:
-      - "54321:54321"
+#    ports:
+#      - "54321:54321"
     # volumes:
     #   - /data/kingbase:/home/kingbase/userdata:rw
     networks:

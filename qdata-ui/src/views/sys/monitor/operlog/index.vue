@@ -41,7 +41,7 @@
             </el-form-item>
          </el-form>
       </div>
-      <div class="pagecont-bottoms">
+      <div class="pagecont-bottom pagecont-bottoms">
          <div class="justify-between mb15">
             <el-row :gutter="10" class="btn-style">
                <el-col :span="1.5">
@@ -60,19 +60,21 @@
             <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
          </div>
 
-         <el-table stripe height="544px" ref="operlogRef" v-loading="loading" :data="operlogList"
+         <el-table stripe ref="operlogRef" v-loading="loading" :data="operlogList"
             @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
             <el-table-column type="selection" width="50" align="center" />
             <el-table-column label="日志编号" align="center" prop="operId" />
-            <el-table-column label="系统模块" align="center" prop="title" :show-overflow-tooltip="true" />
+            <el-table-column label="系统模块" align="center" prop="title" :show-overflow-tooltip="{ effect: 'light' }" />
             <el-table-column label="操作类型" align="center" prop="businessType">
                <template #default="scope">
                   <dict-tag :options="sys_oper_type" :value="scope.row.businessType" />
                </template>
             </el-table-column>
-            <el-table-column label="操作人员" align="center" width="110" prop="operName" :show-overflow-tooltip="true"
-               sortable="custom" :sort-orders="['descending', 'ascending']" />
-            <el-table-column label="操作地址" align="center" prop="operIp" width="130" :show-overflow-tooltip="true" />
+            <el-table-column label="操作人员" align="center" width="110" prop="operName"
+               :show-overflow-tooltip="{ effect: 'light' }" sortable="custom"
+               :sort-orders="['descending', 'ascending']" />
+            <el-table-column label="操作地址" align="center" prop="operIp" width="130"
+               :show-overflow-tooltip="{ effect: 'light' }" />
             <el-table-column label="操作状态" align="center" prop="status">
                <template #default="scope">
                   <dict-tag :options="sys_common_status" :value="scope.row.status" />
@@ -84,8 +86,8 @@
                   <span>{{ parseTime(scope.row.operTime) }}</span>
                </template>
             </el-table-column>
-            <el-table-column label="消耗时间" align="center" prop="costTime" width="110" :show-overflow-tooltip="true"
-               sortable="custom" :sort-orders="['descending', 'ascending']">
+            <el-table-column label="消耗时间" align="center" prop="costTime" width="110"
+               :show-overflow-tooltip="{ effect: 'light' }" sortable="custom" :sort-orders="['descending', 'ascending']">
                <template #default="scope">
                   <span>{{ scope.row.costTime }}毫秒</span>
                </template>

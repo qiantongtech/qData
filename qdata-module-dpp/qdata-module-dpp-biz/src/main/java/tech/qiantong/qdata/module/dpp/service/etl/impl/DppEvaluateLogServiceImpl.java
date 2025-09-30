@@ -1,25 +1,38 @@
 package tech.qiantong.qdata.module.dpp.service.etl.impl;
 
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 import com.alibaba.fastjson2.JSONObject;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import lombok.extern.slf4j.Slf4j;
+import javax.annotation.Resource;
+
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.context.annotation.Lazy;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.core.text.Convert;
 import tech.qiantong.qdata.common.exception.ServiceException;
 import tech.qiantong.qdata.common.httpClient.HeaderEntity;
 import tech.qiantong.qdata.common.httpClient.HttpUtils;
 import tech.qiantong.qdata.common.utils.DateUtils;
+import tech.qiantong.qdata.common.utils.JSONUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tech.qiantong.qdata.module.da.api.datasource.dto.DaDatasourceRespDTO;
 import tech.qiantong.qdata.module.da.api.service.asset.IDaDatasourceApiService;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.*;
-import tech.qiantong.qdata.module.dpp.controller.admin.qa.vo.CheckErrorDataReqDTO;
-import tech.qiantong.qdata.module.dpp.controller.admin.qa.vo.DppQualityTaskObjRespVO;
+import tech.qiantong.qdata.module.dpp.controller.admin.qa.vo.*;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEvaluateLogDO;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppQualityLogDO;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.qa.DppQualityTaskEvaluateDO;
@@ -30,16 +43,6 @@ import tech.qiantong.qdata.module.dpp.service.etl.IDppQualityLogService;
 import tech.qiantong.qdata.module.dpp.service.qa.IDppQualityTaskEvaluateService;
 import tech.qiantong.qdata.module.dpp.service.qa.IDppQualityTaskObjService;
 import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
-
-import javax.annotation.Resource;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * 评测规则结果Service业务层处理
@@ -58,12 +61,16 @@ public class DppEvaluateLogServiceImpl  extends ServiceImpl<DppEvaluateLogMapper
     private DppEvaluateLogMapper dppEvaluateLogMapper;
 
     @Resource
+    @Lazy
     private IDppQualityLogService dppQualityLogService;
     @Resource
+    @Lazy
     private IDppQualityTaskEvaluateService dppQualityTaskEvaluateService;
     @Resource
+    @Lazy
     private IDppQualityTaskObjService dppQualityTaskObjService;
     @Resource
+    @Lazy
     private IDaDatasourceApiService daDatasourceApiService;
 
     @Override
@@ -136,138 +143,188 @@ public class DppEvaluateLogServiceImpl  extends ServiceImpl<DppEvaluateLogMapper
 
 
     /**
-         * 导入评测规则结果数据
-         *
-         * @param importExcelList 评测规则结果数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
-         */
-        @Override
-        public String importDppEvaluateLog(List<DppEvaluateLogRespVO> importExcelList, boolean isUpdateSupport, String operName) {
-            if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-                throw new ServiceException("导入数据不能为空！");
-            }
+     * 导入评测规则结果数据
+     *
+     * @param importExcelList 评测规则结果数据列表
+     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
+     * @param operName 操作用户
+     * @return 结果
+     */
+    @Override
+    public String importDppEvaluateLog(List<DppEvaluateLogRespVO> importExcelList, boolean isUpdateSupport, String operName) {
+        if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
+            throw new ServiceException("导入数据不能为空！");
+        }
 
-            int successNum = 0;
-            int failureNum = 0;
-            List<String> successMessages = new ArrayList<>();
-            List<String> failureMessages = new ArrayList<>();
+        int successNum = 0;
+        int failureNum = 0;
+        List<String> successMessages = new ArrayList<>();
+        List<String> failureMessages = new ArrayList<>();
 
-            for (DppEvaluateLogRespVO respVO : importExcelList) {
-                try {
-                    DppEvaluateLogDO dppEvaluateLogDO = BeanUtils.toBean(respVO, DppEvaluateLogDO.class);
-                    Long dppEvaluateLogId = respVO.getId();
-                    if (isUpdateSupport) {
-                        if (dppEvaluateLogId != null) {
-                            DppEvaluateLogDO existingDppEvaluateLog = dppEvaluateLogMapper.selectById(dppEvaluateLogId);
-                            if (existingDppEvaluateLog != null) {
-                                dppEvaluateLogMapper.updateById(dppEvaluateLogDO);
-                                successNum++;
-                                successMessages.add("数据更新成功，ID为 " + dppEvaluateLogId + " 的评测规则结果记录。");
-                            } else {
-                                failureNum++;
-                                failureMessages.add("数据更新失败，ID为 " + dppEvaluateLogId + " 的评测规则结果记录不存在。");
-                            }
+        for (DppEvaluateLogRespVO respVO : importExcelList) {
+            try {
+                DppEvaluateLogDO dppEvaluateLogDO = BeanUtils.toBean(respVO, DppEvaluateLogDO.class);
+                Long dppEvaluateLogId = respVO.getId();
+                if (isUpdateSupport) {
+                    if (dppEvaluateLogId != null) {
+                        DppEvaluateLogDO existingDppEvaluateLog = dppEvaluateLogMapper.selectById(dppEvaluateLogId);
+                        if (existingDppEvaluateLog != null) {
+                            dppEvaluateLogMapper.updateById(dppEvaluateLogDO);
+                            successNum++;
+                            successMessages.add("数据更新成功，ID为 " + dppEvaluateLogId + " 的评测规则结果记录。");
                         } else {
                             failureNum++;
-                            failureMessages.add("数据更新失败，某条记录的ID不存在。");
+                            failureMessages.add("数据更新失败，ID为 " + dppEvaluateLogId + " 的评测规则结果记录不存在。");
                         }
                     } else {
-                        QueryWrapper<DppEvaluateLogDO> queryWrapper = new QueryWrapper<>();
-                        queryWrapper.eq("id", dppEvaluateLogId);
-                        DppEvaluateLogDO existingDppEvaluateLog = dppEvaluateLogMapper.selectOne(queryWrapper);
-                        if (existingDppEvaluateLog == null) {
-                            dppEvaluateLogMapper.insert(dppEvaluateLogDO);
-                            successNum++;
-                            successMessages.add("数据插入成功，ID为 " + dppEvaluateLogId + " 的评测规则结果记录。");
-                        } else {
-                            failureNum++;
-                            failureMessages.add("数据插入失败，ID为 " + dppEvaluateLogId + " 的评测规则结果记录已存在。");
-                        }
+                        failureNum++;
+                        failureMessages.add("数据更新失败，某条记录的ID不存在。");
                     }
-                } catch (Exception e) {
-                    failureNum++;
-                    String errorMsg = "数据导入失败，错误信息：" + e.getMessage();
-                    failureMessages.add(errorMsg);
-                    log.error(errorMsg, e);
+                } else {
+                    QueryWrapper<DppEvaluateLogDO> queryWrapper = new QueryWrapper<>();
+                    queryWrapper.eq("id", dppEvaluateLogId);
+                    DppEvaluateLogDO existingDppEvaluateLog = dppEvaluateLogMapper.selectOne(queryWrapper);
+                    if (existingDppEvaluateLog == null) {
+                        dppEvaluateLogMapper.insert(dppEvaluateLogDO);
+                        successNum++;
+                        successMessages.add("数据插入成功，ID为 " + dppEvaluateLogId + " 的评测规则结果记录。");
+                    } else {
+                        failureNum++;
+                        failureMessages.add("数据插入失败，ID为 " + dppEvaluateLogId + " 的评测规则结果记录已存在。");
+                    }
                 }
+            } catch (Exception e) {
+                failureNum++;
+                String errorMsg = "数据导入失败，错误信息：" + e.getMessage();
+                failureMessages.add(errorMsg);
+                log.error(errorMsg, e);
             }
-            StringBuilder resultMsg = new StringBuilder();
-            if (failureNum > 0) {
-                resultMsg.append("很抱歉，导入失败！共 ").append(failureNum).append(" 条数据格式不正确，错误如下：");
-                resultMsg.append("<br/>").append(String.join("<br/>", failureMessages));
-                throw new ServiceException(resultMsg.toString());
-            } else {
-                resultMsg.append("恭喜您，数据已全部导入成功！共 ").append(successNum).append(" 条。");
-            }
-            return resultMsg.toString();
         }
+        StringBuilder resultMsg = new StringBuilder();
+        if (failureNum > 0) {
+            resultMsg.append("很抱歉，导入失败！共 ").append(failureNum).append(" 条数据格式不正确，错误如下：");
+            resultMsg.append("<br/>").append(String.join("<br/>", failureMessages));
+            throw new ServiceException(resultMsg.toString());
+        } else {
+            resultMsg.append("恭喜您，数据已全部导入成功！共 ").append(successNum).append(" 条。");
+        }
+        return resultMsg.toString();
+    }
 
     @Override
     public List<DppEvaluateLogStatisticsVO> statisticsEvaluateOne(Long id) {
-            List<DppEvaluateLogStatisticsVO> voList = new ArrayList<>();
-        DppQualityLogDO dppQualityLogById = dppQualityLogService.getDppQualityLogById(id);
-        DppQualityLogPageReqVO dppQualityLogPageReqVO = new DppQualityLogPageReqVO();
-        dppQualityLogPageReqVO.setQualityId(dppQualityLogById.getQualityId());
-        PageResult<DppQualityLogDO> dppQualityLogPage = dppQualityLogService.getDppQualityLogPage(dppQualityLogPageReqVO);
-        List<DppQualityLogDO> rows =  (List<DppQualityLogDO>) dppQualityLogPage.getRows();
-        DppQualityLogPageReqVO old = new DppQualityLogPageReqVO();
-        for (DppQualityLogDO row : rows) {
-            if (row.getCreateTime().getTime() <= dppQualityLogById.getCreateTime().getTime()) {
-                old = BeanUtils.toBean(row , DppQualityLogPageReqVO.class);
-                break;
-            }
+        List<DppEvaluateLogStatisticsVO> dppEvaluateDimStatVOS = dppEvaluateLogMapper.selectDimStatsByTaskLogId(id);
+        if(dppEvaluateDimStatVOS.isEmpty()){
+            return new ArrayList<>();
         }
-        // 最新的
-        Long problemTotalAll = 0L;
-        List<DppEvaluateLogDO> taskLogId = dppEvaluateLogMapper.selectList("task_log_id", id);
-        Map<String, List<DppEvaluateLogDO>> collect = taskLogId.stream().collect(Collectors.groupingBy(s -> s.getDimensionType()));
-        for (DppEvaluateLogDO aDo : taskLogId) {
-            problemTotalAll += aDo.getProblemTotal();
+        DppQualityLogDO dppQualityLogDO = dppQualityLogService.selectPrevLogByIdWithWrapper(id);
+        if(dppQualityLogDO == null){
+            for (DppEvaluateLogStatisticsVO vo : dppEvaluateDimStatVOS) {
+                vo.setTrendType(3L);
+            }
+            return dppEvaluateDimStatVOS;
+        }
+        List<DppEvaluateLogStatisticsVO> prevList = dppEvaluateLogMapper.selectDimStatsByTaskLogId(dppQualityLogDO.getId());
+        if(prevList == null || prevList.isEmpty()){
+            for (DppEvaluateLogStatisticsVO vo : dppEvaluateDimStatVOS) {
+                vo.setTrendType(3L);
+            }
+            return dppEvaluateDimStatVOS;
         }
 
-        // 老的
-        List<DppEvaluateLogDO> oldTaskLogId = dppEvaluateLogMapper.selectList("task_log_id", old.getId());
-        Map<String, List<DppEvaluateLogDO>> oldCollect = oldTaskLogId.stream().collect(Collectors.groupingBy(s -> s.getDimensionType()));
-        for (DppEvaluateLogDO aDo : oldTaskLogId) {
-
-        }
-        for (Map.Entry<String, List<DppEvaluateLogDO>> entry : collect.entrySet()) {
-            DppEvaluateLogStatisticsVO vo = new DppEvaluateLogStatisticsVO();
-            List<DppEvaluateLogDO> value = entry.getValue();
-            Long problemTotal = 0L;
-            for (DppEvaluateLogDO dppEvaluateLogDO : value) {
-                problemTotal += dppEvaluateLogDO.getProblemTotal();
-            }
-            vo.setDimensionType(entry.getKey());
-            vo.setProblemTotal(problemTotal);
-            vo.setSuccesTotal(Convert.toLong(value.size()));
-            vo.setProportion(BigDecimal.ZERO);
-            if (!problemTotal.equals(0L) && !problemTotalAll.equals(0L)) {
-                BigDecimal bigDecimal = new BigDecimal(problemTotal).divide(new BigDecimal(problemTotalAll) , 5, RoundingMode.HALF_UP);
-                BigDecimal subtract = bigDecimal.multiply(new BigDecimal(100));
-                vo.setProportion(subtract.setScale(2 , RoundingMode.HALF_UP));
-            }
-            List<DppEvaluateLogDO> dppEvaluateLogDOS = oldCollect.get(entry.getKey());
-            Long oldProblemTotal = 0L;
-            if (dppEvaluateLogDOS != null) {
-                for (DppEvaluateLogDO dppEvaluateLogDO : dppEvaluateLogDOS) {
-                    oldProblemTotal += dppEvaluateLogDO.getProblemTotal();
-                }
-                // 趋势 0：下降，1：上升
-                if (problemTotal > oldProblemTotal) {
-                    vo.setTrendType(0L);
-                } else {
-                    vo.setTrendType(1L);
-                }
-            }
-
-            voList.add(vo);
+        // 4) 以维度为 Key 的上次“问题占比”基线
+        Map<String, BigDecimal> prevProportionMap = new HashMap<>(prevList.size() * 2);
+        for (DppEvaluateLogStatisticsVO vo : prevList) {
+            BigDecimal val = vo.getProportion() == null ? BigDecimal.ZERO : vo.getProportion();
+            prevProportionMap.put(String.valueOf(vo.getDimensionType()), val);
         }
 
-        return voList;
+        for (DppEvaluateLogStatisticsVO vo : dppEvaluateDimStatVOS) {
+            String dim = String.valueOf(vo.getDimensionType());
+            BigDecimal curProportion = vo.getProportion() == null ? BigDecimal.ZERO : vo.getProportion();
+            BigDecimal prevProportion = prevProportionMap.get(dim);
+
+            if (prevProportion == null) {
+                vo.setTrendType(3L);
+                continue;
+            }
+
+            int cmp = curProportion.compareTo(prevProportion);
+            if (cmp > 0) {
+                vo.setTrendType(1L);
+            } else if (cmp < 0) {
+                vo.setTrendType(2L);
+            } else {
+                vo.setTrendType(3L);
+            }
+        }
+        return dppEvaluateDimStatVOS;
     }
+
+//    @Override
+//    public List<DppEvaluateLogStatisticsVO> statisticsEvaluateOne(Long id) {
+//            List<DppEvaluateLogStatisticsVO> voList = new ArrayList<>();
+//        DppQualityLogDO dppQualityLogById = dppQualityLogService.getDppQualityLogById(id);
+//        DppQualityLogPageReqVO dppQualityLogPageReqVO = new DppQualityLogPageReqVO();
+//        dppQualityLogPageReqVO.setQualityId(dppQualityLogById.getQualityId());
+//        PageResult<DppQualityLogDO> dppQualityLogPage = dppQualityLogService.getDppQualityLogPage(dppQualityLogPageReqVO);
+//        List<DppQualityLogDO> rows =  (List<DppQualityLogDO>) dppQualityLogPage.getRows();
+//        DppQualityLogPageReqVO old = new DppQualityLogPageReqVO();
+//        for (DppQualityLogDO row : rows) {
+//            if (row.getCreateTime().getTime() <= dppQualityLogById.getCreateTime().getTime()) {
+//                old = BeanUtils.toBean(row , DppQualityLogPageReqVO.class);
+//                break;
+//            }
+//        }
+//        // 最新的
+//        Long problemTotalAll = 0L;
+//        List<DppEvaluateLogDO> taskLogId = dppEvaluateLogMapper.selectList("task_log_id", id);
+//        Map<String, List<DppEvaluateLogDO>> collect = taskLogId.stream().collect(Collectors.groupingBy(s -> s.getDimensionType()));
+//        for (DppEvaluateLogDO aDo : taskLogId) {
+//            problemTotalAll += aDo.getProblemTotal();
+//        }
+//
+//        // 老的
+//        List<DppEvaluateLogDO> oldTaskLogId = dppEvaluateLogMapper.selectList("task_log_id", old.getId());
+//        Map<String, List<DppEvaluateLogDO>> oldCollect = oldTaskLogId.stream().collect(Collectors.groupingBy(s -> s.getDimensionType()));
+//        for (DppEvaluateLogDO aDo : oldTaskLogId) {
+//
+//        }
+//        for (Map.Entry<String, List<DppEvaluateLogDO>> entry : collect.entrySet()) {
+//            DppEvaluateLogStatisticsVO vo = new DppEvaluateLogStatisticsVO();
+//            List<DppEvaluateLogDO> value = entry.getValue();
+//            Long problemTotal = 0L;
+//            for (DppEvaluateLogDO dppEvaluateLogDO : value) {
+//                problemTotal += dppEvaluateLogDO.getProblemTotal();
+//            }
+//            vo.setDimensionType(entry.getKey());
+//            vo.setProblemTotal(problemTotal);
+//            vo.setSuccesTotal(Convert.toLong(value.size()));
+//            vo.setProportion(BigDecimal.ZERO);
+//            if (!problemTotal.equals(0L) && !problemTotalAll.equals(0L)) {
+//                BigDecimal bigDecimal = new BigDecimal(problemTotal).divide(new BigDecimal(problemTotalAll) , 5, RoundingMode.HALF_UP);
+//                BigDecimal subtract = bigDecimal.multiply(new BigDecimal(100));
+//                vo.setProportion(subtract.setScale(2 , RoundingMode.HALF_UP));
+//            }
+//            List<DppEvaluateLogDO> dppEvaluateLogDOS = oldCollect.get(entry.getKey());
+//            Long oldProblemTotal = 0L;
+//            if (dppEvaluateLogDOS != null) {
+//                for (DppEvaluateLogDO dppEvaluateLogDO : dppEvaluateLogDOS) {
+//                    oldProblemTotal += dppEvaluateLogDO.getProblemTotal();
+//                }
+//                // 趋势 0：下降，1：上升
+//                if (problemTotal > oldProblemTotal) {
+//                    vo.setTrendType(0L);
+//                } else {
+//                    vo.setTrendType(1L);
+//                }
+//            }
+//
+//            voList.add(vo);
+//        }
+//
+//        return voList;
+//    }
 
     @Override
     public JSONObject statisticsEvaluateTow(Long id,  Date deDate , Date oldDate , int type) {
@@ -337,21 +394,43 @@ public class DppEvaluateLogServiceImpl  extends ServiceImpl<DppEvaluateLogMapper
         return json;
     }
 
+    public List<DppQualityTaskObjRespVO> buildTaskObjRespList(DppQualityLogDO dppQualityLogById) {
+        if (dppQualityLogById == null || dppQualityLogById.getQualityId() == null) {
+            return Collections.emptyList();
+        }
+
+        DppQualityTaskObjPageReqVO reqVO = new DppQualityTaskObjPageReqVO();
+        reqVO.setTaskId(JSONUtils.convertToLong(dppQualityLogById.getQualityId()));
+
+        List<DppQualityTaskObjDO> lists = dppQualityTaskObjService.getDppQualityTaskObjList(reqVO);
+        List<DppQualityTaskObjRespVO> result = new ArrayList<>();
+
+        if (CollectionUtils.isNotEmpty(lists)) {
+            for (DppQualityTaskObjDO objDO : lists) {
+                DppQualityTaskObjRespVO bean = BeanUtils.toBean(objDO, DppQualityTaskObjRespVO.class);
+
+                DaDatasourceRespDTO ds = daDatasourceApiService.getDatasourceById(objDO.getDatasourceId());
+                if (ds != null) {
+                    bean.setDatasourceType(ds.getDatasourceType());
+                    bean.setDatasourceName(ds.getDatasourceName());
+                }
+                result.add(bean);
+            }
+        }
+        return result;
+    }
+
     @Override
     public List<DppEvaluateLogRespVO> statisticsEvaluateTable(Long id) {
-        List<DppEvaluateLogDO> taskLogId = dppEvaluateLogMapper.selectList("task_log_id", id);
-        List<DppEvaluateLogRespVO> list = new ArrayList<>();
-        List<DppQualityTaskObjDO> lists = dppQualityTaskObjService.list();
-        List<DppQualityTaskObjRespVO> newList = new ArrayList<>();
-        for (DppQualityTaskObjDO dppQualityTaskObjDO : lists) {
-            DaDatasourceRespDTO datasourceById = daDatasourceApiService.getDatasourceById(dppQualityTaskObjDO.getDatasourceId());
-            DppQualityTaskObjRespVO bean = BeanUtils.toBean(dppQualityTaskObjDO, DppQualityTaskObjRespVO.class);
-            if (datasourceById != null) {
-                bean.setDatasourceType(datasourceById.getDatasourceType());
-                bean.setDatasourceName(datasourceById.getDatasourceName());
-            }
-            newList.add(bean);
+        DppQualityLogDO dppQualityLogById = dppQualityLogService.getDppQualityLogById(id);
+        if(dppQualityLogById == null){
+            return new ArrayList<>();
         }
+        List<DppEvaluateLogDO> taskLogId = dppEvaluateLogMapper.selectList("task_log_id", id);
+
+        List<DppQualityTaskObjRespVO> newList = this.buildTaskObjRespList(dppQualityLogById);
+
+        List<DppEvaluateLogRespVO> list = new ArrayList<>();
         Map<Long, DppQualityTaskObjRespVO> collect = newList.stream().collect(Collectors.toMap(s -> s.getId(), Function.identity()));
         for (DppEvaluateLogDO dppEvaluateLogDO : taskLogId) {
             DppQualityTaskEvaluateDO dppQualityTaskEvaluateById = dppQualityTaskEvaluateService.getDppQualityTaskEvaluateById(Convert.toLong(dppEvaluateLogDO.getEvaluateId()));

@@ -37,7 +37,7 @@
             <div class="page-item">
               <div class="item-title">
                 <div class="item-title-left">
-                  <img src="@/assets/dp/standardSearch/file (5).svg" alt="" />
+                  <img :src="getFileIcon(item.fileUrl)" alt="" />
                   <div class="item-name">
                     <span class="item-name-title" :title="item.name">{{ item.name }}</span>
                     <span class="item-name-code ellipsis" :title="item.fileName">{{ item.fileName }}</span>
@@ -212,7 +212,7 @@ const getFileIcon = (fileUrl) => {
     case "ppt":
       return new URL("@/assets/dp/standardSearch/file (3).svg", import.meta.url).href;
     default:
-      return new URL("@/assets/dp/standardSearch/file (2).svg", import.meta.url).href;
+      return new URL("@/assets/dp/standardSearch/file (4).svg", import.meta.url).href;
   }
 };
 /** 查询应用API服务关联列表 */

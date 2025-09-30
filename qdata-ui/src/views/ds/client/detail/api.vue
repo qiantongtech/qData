@@ -13,7 +13,7 @@
     <el-table stripe v-loading="loading" :data="clientApiRelList" @selection-change="handleSelectionChange"
       :default-sort="defaultSort" @sort-change="handleSortChange">
       <el-table-column label="编号" type="index" align="center" width="50" :show-overflow-tooltip="{ effect: 'light' }" />
-      <el-table-column label="API编码" align="center" prop="id" :show-overflow-tooltip="{ effect: 'light' }" />
+      <el-table-column label="API编码" align="center" prop="apiId" :show-overflow-tooltip="{ effect: 'light' }" />
       <el-table-column label="API名称" align="center" prop="apiName" :show-overflow-tooltip="{ effect: 'light' }"
         width="150">
         <template #default="scope">

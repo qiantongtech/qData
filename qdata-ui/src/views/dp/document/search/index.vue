@@ -37,7 +37,7 @@
             <div class="page-item">
               <div class="item-title">
                 <div class="item-title-left">
-                  <img :src="getFileIcon(item.fileUrl)" alt="" />
+                  <img src="@/assets/dp/standardSearch/file (5).svg" alt="" />
                   <div class="item-name">
                     <span class="item-name-title" :title="item.name">{{ item.name }}</span>
                     <span class="item-name-code ellipsis" :title="item.fileName">{{ item.fileName }}</span>
@@ -58,13 +58,13 @@
                 <div class="item-form">
                   <div class="form-label">标准分类:</div>
                   <div class="form-value">
-                    <div :class="['value-tag', 'type' + item.type]">{{ typeFormat1(item) }}</div>
+                    <dict-tag :options="dp_document_type" :value="item.type" />
                   </div>
                 </div>
                 <div class="item-form">
                   <div class="form-label">实施状态:</div>
                   <div class="form-value">
-                    <div :class="['value-tag2', 'status' + item.status]">{{ typeFormat2(item) }}</div>
+                    <dict-tag :options="dp_document_status" :value="item.status" />
                   </div>
                 </div>
                 <div class="item-form">

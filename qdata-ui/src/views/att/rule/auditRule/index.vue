@@ -275,20 +275,17 @@ processedData.value = computed(() => {
         {
             name: '质量维度',
             id: '',
-
             children: Array.isArray(att_rule_audit_q_dimension.value)
                 ? att_rule_audit_q_dimension.value.map((item) => ({
                     name: item.label,
                     id: item.value,
-                    validFlag: true
+                    validFlag: true,
                 }))
                 : []
         }
     ];
 });
-
 const attAuditRuleList = ref([]);
-
 function handleNodeClick(data) {
     queryParams.value.qualityDim = data.id;
     queryParams.value.pageNum = 1;

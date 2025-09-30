@@ -165,6 +165,17 @@ public class DaDatasourceController extends BaseController {
         return CommonResult.toAjax(daDatasourceService.removeDaDatasource(Arrays.asList(ids)));
     }
 
+    @Operation(summary = "修改数据源状态")
+    @PreAuthorize("@ss.hasPermi('da:dataSource:edit')")
+    @GetMapping(value = "/editDatasourceStatus/{id}/{status}")
+    public AjaxResult editDatasourceStatus(@PathVariable Long id, @PathVariable Long status) {
+        Boolean isOk = daDatasourceService.editDatasourceStatus(id, status);
+        if (!isOk) {
+            return AjaxResult.error("任务状态修改失败，请联系系统管理员");
+        }
+        return AjaxResult.success("修改成功");
+    }
+
 
     @Operation(summary = "删除数据源带类型判断是数据资产还是数据研发")
     @PreAuthorize("@ss.hasPermi('da:dataSource:remove')")

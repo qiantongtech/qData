@@ -5,6 +5,7 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.json.JSONObject;
 import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -943,5 +944,13 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
                 workbook.close();
             }
         }
+    }
+
+
+    @Override
+    public Boolean editDatasourceStatus(Long datasourceId, Long status) {
+        return this.update(Wrappers.lambdaUpdate(DaDatasourceDO.class)
+                .eq(DaDatasourceDO::getId, datasourceId)
+                .set(DaDatasourceDO::getValidFlag, status));
     }
 }

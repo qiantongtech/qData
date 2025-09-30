@@ -22,15 +22,15 @@ import java.util.concurrent.TimeUnit;
 public final class RedisUtils {
 
     // ================= 默认值（兼容历史任务数据） =================
-    private static final String DEFAULT_HOST = "127.0.0.1";
+    private static final String DEFAULT_HOST = "redis";
     /** 默认 Redis 端口 */
-    private static final int DEFAULT_PORT = 12138;
+    private static final int DEFAULT_PORT = 6379;
     /** 默认 Redis 数据库索引 */
-    private static final int DEFAULT_DATABASE = 1;
+    private static final int DEFAULT_DATABASE = 0;
     /** 默认连接超时时间（毫秒） */
     private static final int DEFAULT_TIMEOUT_MS = 5000;
     /** 默认 Redis 密码（null 表示无密码） */
-    private static final String DEFAULT_PASSWORD = null;
+    private static final String DEFAULT_PASSWORD = "J98%FHF#9h@e88h9fre9";
 
     /** 心跳周期（秒）。想关掉心跳就设为 0 或负数 */
     private static final int DEFAULT_HEARTBEAT_SECONDS = 10;

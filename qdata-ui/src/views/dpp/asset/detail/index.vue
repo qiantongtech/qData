@@ -261,11 +261,11 @@
 <script setup name="DaAsset">
 import { getDaAsset } from "@/api/da/asset/asset";
 import { useRoute } from "vue-router";
-import ComponentOne from "@/views/dpp/asset/detail/table/column.vue";
+import column from "@/views/dpp/asset/detail/table/column.vue";
 import DataQualityControl from "@/views/dpp/asset/detail/table/quality.vue";
 import lineage from "@/views/dpp/asset/detail/table/lineage.vue";
-import ComponentTwo from "@/views/dpp/asset/detail/table/preview.vue";
-import ComponentThree from "@/views/dpp/asset/detail/api/simulation.vue";
+import preview from "@/views/dpp/asset/detail/table/preview.vue";
+import simulation from "@/views/dpp/asset/detail/api/simulation.vue";
 import authParams from "@/views/dpp/asset/detail/api/authParams";
 import RequestParamsForm from "@/views/dpp/asset/detail/api/requestParamsForm";
 import ResponseFormatConfig from "@/views/dpp/asset/detail/api/responseFormatConfig";
@@ -309,8 +309,8 @@ const tabPanes = computed(() => {
   switch (daAssetDetail.value.type) {
     case "1":
       return [
-        { label: "资产字段", name: "0", component: ComponentOne },
-        { label: "资产预览", name: "2", component: ComponentTwo },
+        { label: "资产字段", name: "0", component: column },
+        { label: "资产预览", name: "2", component: preview },
         { label: '资产质量', name: '3', component: DataQualityControl },
         // { label: '资产血缘', name: '4', component: lineage },
         { label: "资产概览", name: "5", component: info },
@@ -321,7 +321,7 @@ const tabPanes = computed(() => {
         { label: "鉴权参数", name: "0", component: authParams },
         { label: "请求参数", name: "1", component: RequestParamsForm },
         { label: "返回格式", name: "2", component: ResponseFormatConfig },
-        { label: "预览数据", name: "3", component: ComponentThree },
+        { label: "预览数据", name: "3", component: simulation },
         { label: "资产概览", name: "4", component: info },
 
       ];
@@ -330,15 +330,15 @@ const tabPanes = computed(() => {
     case "4":
       return [
         { label: "资产概览", name: "0", component: info },
-        { label: "资产预览", name: "1", component: ComponentTwo },
+        { label: "资产预览", name: "1", component: preview },
       ];
     case "5":
       return [{ label: "资产概览", name: "0", component: info }];
     case "6":
       return [
         { label: "资产概览", name: "0", component: info },
-        { label: "资产字段", name: "1", component: ComponentOne },
-        { label: "资产预览", name: "2", component: ComponentTwo },
+        { label: "资产字段", name: "1", component: column },
+        { label: "资产预览", name: "2", component: preview },
       ];
     case "7":
       return [{ label: "资产概览", name: "0", component: info }];

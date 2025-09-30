@@ -308,7 +308,7 @@ let id = route.query.id || null;
 watch(
   () => route.query.id,
   (newId) => {
-    if (route.path == '/da/asset/detail' || route.path == '/dpp/asset/daAssetDetail') {
+    if (route.path == '/da/asset/detail' || route.path == '/dpp/asset/detail') {
       id = newId || null; // 如果 id 为空，使用默认值 1
       getDaAssetDetailById();
     }

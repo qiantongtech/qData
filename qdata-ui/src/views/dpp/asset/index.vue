@@ -52,8 +52,8 @@
                   <span class="item-title-name ellipsis" @click="
                     routeTo(
                       type == 1
-                        ? '/dpp/asset/daAssetDetail'
-                        : '/da/asset/daAssetDetail',
+                        ? '/dpp/asset/detail'
+                        : '/da/asset/detail',
                       item
                     )
                     ">{{ item.name }}</span>

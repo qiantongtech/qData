@@ -197,7 +197,7 @@ const routers = computed(() => permissionStore.topbarRouters);
 //-----------------------以下报工内容-------------------------
 const handleMessage = (msg) => {
     console.log('接收到的消息:', msg);
-    router.push({ path: "/system/notice/detail", query: { id: msg.noticeId } });
+    router.push({ path: "/sys/system/notice/detail", query: { id: msg.noticeId } });
 }
 const data = reactive({
     form: {
@@ -639,9 +639,9 @@ function handleRefreshClick() {
 
 function messageDetail() {
     if (activeMsg.value == 'first') {
-        router.push({ path: '/bases/message' });
+        router.push({ path: '/sys/system/bases/message' });
     } else {
-        router.push({ path: '/system/notice/detail' });
+        router.push({ path: '/sys/notice' });
     }
 }
 

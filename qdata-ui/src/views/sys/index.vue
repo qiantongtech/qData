@@ -342,7 +342,7 @@ function goxinwen(row) {
   if (row == "list") {
     proxy.$router.push("/sys/notice");
   } else {
-    proxy.$router.push({ path: "/system/notice/detail", query: { id: row.noticeId } });
+    proxy.$router.push({ path: "/sys/system/notice/detail", query: { id: row.noticeId } });
   }
 }
 

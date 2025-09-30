@@ -75,7 +75,7 @@
                             <template #default="scope">
                                 <span>{{
                                     parseTime(scope.row.endTime, "{y}-{m}-{d} {h}:{i}") || "-"
-                                    }}</span>
+                                }}</span>
                             </template>
                         </el-table-column>
 
@@ -97,7 +97,7 @@
                             <template #default="scope">
                                 <span>{{
                                     parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}") || "-"
-                                }}</span>
+                                    }}</span>
                             </template>
                         </el-table-column>
                         <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right"

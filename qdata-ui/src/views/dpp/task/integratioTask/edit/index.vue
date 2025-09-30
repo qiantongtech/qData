@@ -10,9 +10,6 @@
             </div>
 
             <div class="head-btns">
-                <el-button type="primary" size="small" @click="handleExportData(true)" v-if="!route.query.info">
-                    <img src="@/assets/dpp/etl/title-act (1).svg" alt="">暂存
-                </el-button>
                 <el-button type="primary" size="small" @click="handleExportData(false)" v-if="!route.query.info">
                     <img src="@/assets/dpp/etl/title-act (1).svg" alt="">任务保存
                 </el-button>
@@ -89,8 +86,8 @@
             </div>
         </div>
         <component :is="currentFormComponent" :visible="drawer" :key="currentNode?.id || Date.now()" :title="title"
-            @update="closeDialog" @confirm="handleFormSubmit"
-            :currentNode="currentNode" :info="route.query.info" :graph="graph" />
+            @update="closeDialog" @confirm="handleFormSubmit" :currentNode="currentNode" :info="route.query.info"
+            :graph="graph" />
         <add :visible="taskConfigDialogVisible" :title="!route.query.info ? '修改任务配置' : '任务详情'"
             @update:visible="taskConfigDialogVisible = $event" @save="handletaskConfig" :data="nodeData"
             :userList="userList" :deptOptions="deptOptions" :info="true" />

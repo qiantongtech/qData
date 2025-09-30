@@ -148,7 +148,7 @@ watch(
     () => route.query.id,
     (newId) => {
         // 解决数据发现详情和当前界面同时打开报错问题
-        if (route.path == '/da/asset/detail' || route.path == '/dpp/asset/daAssetDetail') {
+        if (route.path == '/da/asset/detail' || route.path == '/dpp/asset/detail') {
             assetId = newId || 1; // 如果 id 为空，使用默认值 1
             getListss();
         }

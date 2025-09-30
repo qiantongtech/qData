@@ -53,12 +53,12 @@ export default [
         ]
     },
     {
-        path: '/bases',
+        path: '/sys/system/bases/message',
         component: Layout,
         redirect: 'message',
         children: [
             {
-                path: 'message',
+                path: '',
                 component: () => import('@/views/sys/system/message/index.vue'),
                 name: 'Message',
                 meta: { title: '我的消息', icon: 'message' },
@@ -95,7 +95,7 @@ export default [
         ]
     },
     {
-        path: '/system/notice/detail',
+        path: '/sys/system/notice/detail',
         component: Layout,
         redirect: 'notice',
         hidden: true,

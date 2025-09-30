@@ -93,7 +93,8 @@ public interface IAttCleanRuleService extends IService<AttCleanRuleDO> {
     List<AttCleanRuleRespVO> getCleaningRuleTree(Long[] dataElemId);
 
     /**
-     * @param type {@link AttCleanCatDO#id}
+     * @param catCode {@link AttCleanCatDO#code}
      */
-    Long getCount(String type);
+    Long getCount(String catCode);
+
 }

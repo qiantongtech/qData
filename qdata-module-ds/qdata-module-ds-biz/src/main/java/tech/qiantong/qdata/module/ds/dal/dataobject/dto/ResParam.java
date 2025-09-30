@@ -32,6 +32,11 @@ public class ResParam implements Serializable {
     @NotBlank(message = "数据类型不能为空")
     private String dataType;
 
+    /**
+     * 时间格式 例如 yyyy-MM-dd HH:mm:ss
+     */
+    private String dateFormat;
+
     private String exampleValue;
 
 //    @ApiModelProperty(value = "示例值")

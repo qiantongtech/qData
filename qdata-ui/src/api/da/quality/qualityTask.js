@@ -110,3 +110,12 @@ export function statisticsEvaluateAssetOne(query) {
     params: query
   });
 }
+// 查看日志
+
+export function qualityLogLogDetailCat(query) {
+  return request({
+    url: '/dpp/qualityLog/logDetailCat',
+    method: 'get',
+    params: query
+  });
+}

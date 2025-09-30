@@ -1,30 +1,59 @@
 <template>
     <div class="app-container">
         <div class="pagecont-top" v-show="showSearch">
-            <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="68px">
+            <el-form
+                class="btn-style"
+                :model="queryParams"
+                ref="queryRef"
+                :inline="true"
+                label-width="68px"
+            >
                 <el-form-item label="消息类型" prop="category">
-                    <el-select v-model="queryParams.category" placeholder="消息类型" clearable class="el-form-input-width">
-                        <el-option v-for="dict in message_category" :key="dict.value" :label="dict.label"
-                            :value="dict.value" />
+                    <el-select
+                        v-model="queryParams.category"
+                        placeholder="消息类型"
+                        clearable
+                        class="el-form-input-width"
+                    >
+                        <el-option
+                            v-for="dict in message_category"
+                            :key="dict.value"
+                            :label="dict.label"
+                            :value="dict.value"
+                        />
                     </el-select>
                 </el-form-item>
 
                 <el-form-item label="创建时间">
-                    <el-date-picker class="el-form-input-width" v-model="queryParams.dateRange"
-                        value-format="YYYY-MM-DD" type="daterange" range-separator="-" start-placeholder="开始日期"
-                        end-placeholder="结束日期"></el-date-picker>
+                    <el-date-picker
+                        class="el-form-input-width"
+                        v-model="queryParams.dateRange"
+                        value-format="YYYY-MM-DD"
+                        type="daterange"
+                        range-separator="-"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期"
+                    ></el-date-picker>
                 </el-form-item>
                 <el-form-item>
-                    <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
+                    <el-button
+                        plain
+                        type="primary"
+                        @click="handleQuery"
+                        @mousedown="(e) => e.preventDefault()"
+                    >
                         <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
                     </el-button>
-                    <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
+                    <el-button
+                        @click="resetQuery"
+                        @mousedown="(e) => e.preventDefault()"
+                    >
                         <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
                     </el-button>
                 </el-form-item>
             </el-form>
         </div>
-        <div class="pagecont-bottom">
+        <div  class="pagecont-bottom">
 
             <div class="justify-between mb15">
                 <el-row :gutter="10" class="btn-style">
@@ -38,10 +67,18 @@
             </div>
 
             <el-table stripe v-loading="loading" :data="msgList">
-                <el-table-column label="消息标题" align="center" key="title" prop="title" />
+                <el-table-column
+                    label="消息标题"
+                    align="center"
+                    key="title"
+                    prop="title"
+                />
                 <el-table-column label="消息类型" align="center" key="category">
                     <template #default="scope">
-                        <dict-tag :options="message_category" :value="scope.row.category" />
+                        <dict-tag
+                            :options="message_category"
+                            :value="scope.row.category"
+                        />
                     </template>
                 </el-table-column>
                 <el-table-column label="是否已读" align="center" key="hasRead">
@@ -51,27 +88,64 @@
                         </el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column label="消息内容" align="center" key="content" prop="content" />
+                <el-table-column
+                    label="消息内容"
+                    align="center"
+                    key="content"
+                    prop="content"
+                />
 
-                <el-table-column label="创建时间" align="center" key="createTime" prop="createTime" />
+                <el-table-column
+                    label="创建时间"
+                    align="center"
+                    key="createTime"
+                    prop="createTime"
+                />
 
-                <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right"
-                    width="240">
+                <el-table-column
+                    label="操作"
+                    align="center"
+                    class-name="small-padding fixed-width"
+                    fixed="right"
+                    width="240"
+                >
                     <template #default="scope">
-                        <el-button link type="primary" icon="View" @click="handleView(scope.row)">
+                        <el-button
+                            link
+                            type="primary"
+                            icon="View"
+                            @click="handleView(scope.row)"
+                        >
                             详情
                         </el-button>
-                        <el-button link type="danger" icon="Delete" @click="deleteMsg(scope.row.id)">
+                        <el-button
+                            link
+                            type="danger"
+                            icon="Delete"
+                            @click="deleteMsg(scope.row.id)"
+                        >
                             删除
                         </el-button>
                     </template>
                 </el-table-column>
             </el-table>
-            <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum"
-                v-model:limit="queryParams.pageSize" @pagination="getList" />
+            <pagination
+                v-show="total > 0"
+                :total="total"
+                v-model:page="queryParams.pageNum"
+                v-model:limit="queryParams.pageSize"
+                @pagination="getList"
+            />
         </div>
 
-        <el-dialog title="消息详情" v-model="openView" width="800px" draggable destroy-on-close class="msg-dialog">
+        <el-dialog
+            title="消息详情"
+            v-model="openView"
+            width="800px"
+            draggable
+            destroy-on-close
+            class="msg-dialog"
+        >
             <el-form label-width="100px">
                 <el-row :gutter="20">
                     <el-col :span="12">
@@ -85,15 +159,21 @@
                     <el-col :span="12">
                         <el-form-item label="类型：">
                             <div class="form-value-ifon">
-                                <dict-tag :options="message_category" :value="viewData.category" />
+                                <dict-tag
+                                    :options="message_category"
+                                    :value="viewData.category"
+                                />
                             </div>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
                         <el-form-item label="是否已读：">
                             <div class="form-value-ifon">
-                                <el-tag :type="viewData.hasRead ? 'success' : 'danger'
-                                    ">
+                                <el-tag
+                                    :type="
+                                        viewData.hasRead ? 'success' : 'danger'
+                                    "
+                                >
                                     {{ viewData.hasRead ? "已读" : "未读" }}
                                 </el-tag>
                             </div>
@@ -142,7 +222,7 @@ const queryParams = ref({
     dateRange: [],
     pageNum: 1,
     pageSize: 10,
-    receiverId: userStore.id,
+    receiverId: userStore.userId,
 });
 const total = ref(0);
 
@@ -180,13 +260,13 @@ const endTime = ref(null)
 const getList = () => {
     const reqData = {
         category: queryParams.value.category,
-        receiverId: userStore.id,
+        receiverId: userStore.userId,
         pageNum: queryParams.value.pageNum,
         pageSize: queryParams.value.pageSize,
     }
-    if (queryParams.value.dateRange && queryParams.value.dateRange.length > 0) {
-        reqData.startTime = queryParams.value.dateRange[0],
-            reqData.endTime = queryParams.value.dateRange[1]
+    if(queryParams.value.dateRange && queryParams.value.dateRange.length > 0){
+        reqData.startTime= queryParams.value.dateRange[0],
+        reqData.endTime= queryParams.value.dateRange[1]
     }
     listMessage(reqData).then((response) => {
         msgList.value = response.data.rows;
@@ -202,11 +282,11 @@ function readAllMsg() {
             return readAll();
         })
         .then((res) => {
-            console.log('------设置为已读----', res)
+            console.log('------设置为已读----',res)
             getList();
             ElMessage.success("操作成功");
         })
-        .catch(() => { });
+        .catch(() => {});
 }
 /** 删除 */
 function deleteMsg(id) {
@@ -218,7 +298,7 @@ function deleteMsg(id) {
             getList();
             ElMessage.success("操作成功");
         })
-        .catch(() => { });
+        .catch(() => {});
 }
 
 // /**

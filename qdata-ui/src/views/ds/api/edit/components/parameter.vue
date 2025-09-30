@@ -359,21 +359,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <div v-if="form2.apiServiceType === '1' && false" class="sort-section">
-          <div class="sort-label">
-            排序字段
-            <el-link type="primary" v-if="form2.apiServiceType !== '2'" class="add-link"
-              icon="el-icon-circle-plus-outline" @click="openDialog(3)">
-              新增排序字段
-            </el-link>
-          </div>
-          <el-form-item label="排序方式" prop="sortBy">
-            <el-radio-group v-model="form2.sortBy">
-              <el-radio label="升序" value="ASC"></el-radio>
-              <el-radio label="降序" value="DESC"></el-radio>
-            </el-radio-group>
-          </el-form-item>
-        </div>
+
         <el-table v-if="form2.apiServiceType === '1' && false" row-key="id" max-height="250" ref="dragTable"
           class="tableStyle" :data="form2.sortParams" stripe border>
           <el-table-column label="序号" width="80" align="center">

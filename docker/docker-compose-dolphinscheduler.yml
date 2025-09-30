@@ -3,8 +3,8 @@ version: "1.0.5"
 services:
   dolphinscheduler-postgresql:
     image: bitnami/postgresql:15.2.0
-    ports:
-      - "5432:5432"
+#    ports:
+#      - "5432:5432"
     profiles: ["schema", "all", "local" ]
     environment:
       POSTGRESQL_USERNAME: ${SPRING_DATASOURCE_USERNAME}

@@ -1,16 +1,15 @@
 package tech.qiantong.qdata.module.dpp.service.etl;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import tech.qiantong.qdata.common.core.page.PageResult;
-import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppQualityLogPageReqVO;
-import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppQualityLogRespVO;
-import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppQualityLogSaveReqVO;
-import tech.qiantong.qdata.module.dpp.controller.admin.qa.vo.DppQualityTaskAssetReqVO;
-import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppQualityLogDO;
-
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Collection;
+import com.baomidou.mybatisplus.extension.service.IService;
+import tech.qiantong.qdata.common.core.page.PageResult;
+import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppQualityLogRespVO;
+import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppQualityLogSaveReqVO;
+import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppQualityLogPageReqVO;
+import tech.qiantong.qdata.module.dpp.controller.admin.qa.vo.DppQualityTaskAssetReqVO;
+import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppQualityLogDO;
 /**
  * 数据质量日志Service接口
  *
@@ -56,6 +55,7 @@ public interface IDppQualityLogService extends IService<DppQualityLogDO> {
      * @return 数据质量日志
      */
     DppQualityLogDO getDppQualityLogById(Long id);
+    DppQualityLogDO selectPrevLogByIdWithWrapper(Long id);
 
     /**
      * 获得数据质量日志详情
@@ -88,5 +88,11 @@ public interface IDppQualityLogService extends IService<DppQualityLogDO> {
      * @return 结果
      */
     String importDppQualityLog(List<DppQualityLogRespVO> importExcelList, boolean isUpdateSupport, String operName);
+
+    /**
+     * 发送数据质量日志的消息
+     * @param id
+     */
+    void sendMessage(Long id);
 
 }

@@ -1,15 +1,14 @@
 package tech.qiantong.qdata.module.dpp.service.qa;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import tech.qiantong.qdata.common.core.page.PageResult;
-import tech.qiantong.qdata.module.dpp.controller.admin.qa.vo.DppQualityTaskObjPageReqVO;
-import tech.qiantong.qdata.module.dpp.controller.admin.qa.vo.DppQualityTaskObjRespVO;
-import tech.qiantong.qdata.module.dpp.controller.admin.qa.vo.DppQualityTaskObjSaveReqVO;
-import tech.qiantong.qdata.module.dpp.dal.dataobject.qa.DppQualityTaskObjDO;
-
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Collection;
+import com.baomidou.mybatisplus.extension.service.IService;
+import tech.qiantong.qdata.common.core.page.PageResult;
+import tech.qiantong.qdata.module.dpp.controller.admin.qa.vo.DppQualityTaskObjRespVO;
+import tech.qiantong.qdata.module.dpp.controller.admin.qa.vo.DppQualityTaskObjSaveReqVO;
+import tech.qiantong.qdata.module.dpp.controller.admin.qa.vo.DppQualityTaskObjPageReqVO;
+import tech.qiantong.qdata.module.dpp.dal.dataobject.qa.DppQualityTaskObjDO;
 /**
  * 数据质量任务-稽查对象Service接口
  *
@@ -62,6 +61,7 @@ public interface IDppQualityTaskObjService extends IService<DppQualityTaskObjDO>
      * @return 数据质量任务-稽查对象列表
      */
     List<DppQualityTaskObjDO> getDppQualityTaskObjList();
+    List<DppQualityTaskObjDO> getDppQualityTaskObjList(DppQualityTaskObjPageReqVO pageReqVO);
 
     /**
      * 获得全部数据质量任务-稽查对象 Map

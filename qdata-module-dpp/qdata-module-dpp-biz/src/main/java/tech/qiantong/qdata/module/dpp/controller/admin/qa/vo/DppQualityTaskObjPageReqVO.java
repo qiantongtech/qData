@@ -15,8 +15,8 @@ import tech.qiantong.qdata.common.core.page.PageParam;
 public class DppQualityTaskObjPageReqVO extends PageParam {
 
     private static final long serialVersionUID = 1L;
-        @Schema(description = "ID", example = "")
-        private Long id;
+    @Schema(description = "ID", example = "")
+    private Long id;
 
     @Schema(description = "稽查对象名称", example = "")
     private String name;
@@ -26,6 +26,9 @@ public class DppQualityTaskObjPageReqVO extends PageParam {
 
     @Schema(description = "表名称", example = "")
     private String tableName;
+
+    /** 数据质量任务ID */
+    private Long taskId;
 
 
 

@@ -402,7 +402,9 @@ function handleUpdate(row) {
     // getDpDocument(_id).then((response) => {
     //     form.value = response.data;
     //     dpDataElemRuleRelList.value = response.data.dpDataElemRuleRelList;
-    //     form.value.personCharge = Number(response.data.personCharge);
+    //    form.value.personCharge = response.data.personCharge && String(response.data.personCharge).trim() !== '' 
+  ?Number(response.data.personCharge) 
+  : null;
     //     open.value = true;
     //     title.value = "修改国家标准";
     // });

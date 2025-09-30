@@ -78,7 +78,7 @@
         <!--  sortable="custom" column-key="create_time" :sort-orders="['descending', 'ascending']" -->
         <el-table-column v-if="getColumnVisibility(11)" label="创建时间" align="left" prop="createTime" width="150">
             <template #default="scope"> <span>{{ parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}") || "-"
-            }}</span>
+                    }}</span>
             </template>
         </el-table-column>
         <el-table-column v-if="getColumnVisibility(5)" width="80" label="状态" align="left" prop="status">
@@ -518,7 +518,9 @@ function handleUpdate(row) {
     getDpDataElem(_id).then((response) => {
         form.value = response.data;
         dpDataElemRuleRelList.value = response.data.dpDataElemRuleRelList;
-        form.value.personCharge = Number(response.data.personCharge);
+        form.value.personCharge = response.data.personCharge && String(response.data.personCharge).trim() !== ''
+            ? Number(response.data.personCharge)
+            : null;
         open.value = true;
         title.value = "修改数据元";
     });

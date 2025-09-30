@@ -196,44 +196,6 @@
                     <warName>${project.artifactId}</warName>
                 </configuration>
             </plugin>
-
-            <plugin>
-                <groupId>com.github.core-lib</groupId>
-                <artifactId>xjar-maven-plugin</artifactId>
-                <version>4.0.2</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>build</goal>
-                        </goals>
-                        <phase>package</phase>
-                        <configuration>
-                            <password>io.xjar</password> <!-- 设置密码 -->
-                            <algorithm>AES/CBC/PKCS5Padding</algorithm> <!-- 加密算法 -->
-                            <keySize>128</keySize> <!-- 密钥长度 -->
-                            <ivSize>128</ivSize> <!-- 密钥向量长度 -->
-                            <!-- 加密的资源路径 -->
-                            <includes>
-                                <include>tech/qiantong/**</include> <!-- 所有 tech.qiantong 包 -->
-                            </includes>
-                            <!-- 无需加密的资源路径 -->
-                            <excludes>
-                                <exclude>static/**</exclude> <!-- 示例：排除 static 包 -->
-                                <exclude>META-INF/resources/**</exclude> <!-- 示例：排除 META-INF 下的资源 -->
-                            </excludes>
-                            <!-- 可选：指定源文件所在的目录 -->
-                            <sourceDir>${project.build.directory}</sourceDir>
-                            <!-- 可选：指定源 JAR 文件名称 -->
-                            <sourceJar>${project.build.finalName}.jar</sourceJar>
-                            <!-- 可选：指定目标 JAR 文件存放目录 -->
-                            <targetDir>${project.build.directory}</targetDir>
-                            <!-- 可选：指定目标加密后的 JAR 文件名称 -->
-                            <targetJar>${project.build.finalName}.xjar</targetJar>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
         </plugins>
         <finalName>${project.artifactId}</finalName>
     </build>

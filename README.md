@@ -211,35 +211,31 @@ qData 提供 **商业版** 与 **开源版** 两种形态，满足不同规模�
 ## 🖼️ 系统配图
 <table>
     <tr>
-        <td><img src="./images/system/1登录页.png" alt="登录页" width="400"/></td>
-        <td><img src="./images/system/2首页.png" alt="首页" width="400"/></td>
+        <td><img src="./images/system/1登录页.jpg" alt="登录页" width="400"/></td>
+        <td><img src="./images/system/2首页.jpg" alt="首页" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="./images/system/3稽查规则.png" alt="稽查规则" width="400"/></td>
-        <td><img src="./images/system/4清洗规则.png" alt="清洗规则" width="400"/></td>
+        <td><img src="./images/system/3标准检索.jpg" alt="标准检索" width="400"/></td>
+        <td><img src="./images/system/4资产地图.jpg" alt="资产地图" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="./images/system/5逻辑模型.png" alt="逻辑模型" width="400"/></td>
-        <td><img src="./images/system/6数据元.png" alt="数据元" width="400"/></td>
+        <td><img src="./images/system/5数据连接.jpg" alt="数据连接" width="400"/></td>
+        <td><img src="./images/system/6数据查询.jpg" alt="数据查询" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="./images/system/7映射.png" alt="映射" width="400"/></td>
-        <td><img src="./images/system/8数据连接.png" alt="数据连接" width="400"/></td>
+        <td><img src="./images/system/7质量任务详情.jpg" alt="质量任务详情" width="400"/></td>
+        <td><img src="./images/system/8质量执行日志.jpg" alt="数据连接" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="./images/system/9数据发现.png" alt="数据发现" width="400"/></td>
-        <td><img src="./images/system/10资产地图.png" alt="资产地图" width="400"/></td>
+        <td><img src="./images/system/9质量执行分析.jpg" alt="质量执行分析" width="400"/></td>
+        <td><img src="./images/system/10数据集成.jpg" alt="数据集成" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="./images/system/11数据集成任务.png" alt="数据集成任务" width="400"/></td>
-        <td><img src="./images/system/12可视化etl.png" alt="可视化ETL" width="400"/></td>
+        <td><img src="./images/system/11数据集成配置.jpg" alt="数据集成配置" width="400"/></td>
+        <td><img src="./images/system/12数据开发.jpg" alt="数据开发" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="./images/system/13数据服务.png" alt="数据服务" width="400"/></td>
-        <td><img src="./images/system/14执行日志.png" alt="执行日志" width="400"/></td>
-    </tr>
-    <tr>
-        <td><img src="./images/system/15发布服务.png" alt="发布服务" width="400"/></td>
-        <td><img src="./images/system/16日志.png" alt="日志" width="400"/></td>
+        <td><img src="./images/system/13集成实例.jpg" alt="集成实例" width="400"/></td>
+        <td><img src="./images/system/14应用管理.jpg" alt="应用管理" width="400"/></td>
     </tr>
 </table>

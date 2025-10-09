@@ -149,7 +149,7 @@
             <el-table-column v-if="getColumnVisibility(11)" label="创建时间" align="left" prop="create_time" width="150"
               sortable="custom" column-key="create_time" :sort-orders="['descending', 'ascending']">
               <template #default="scope"> <span>{{ parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}") || "-"
-                  }}</span>
+              }}</span>
               </template>
             </el-table-column>
             <el-table-column v-if="getColumnVisibility(7)" label="配置状态" :show-overflow-tooltip="true" align="left"
@@ -167,28 +167,25 @@
             <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" width="220">
               <template #default="scope">
                 <el-button link type="primary" icon="Edit" :disabled="scope.row.status == 1"
-                  @click="routeTo('/dpp/task/integratioTask/edit', scope.row)"
-                  >配置任务</el-button>
+                  @click="routeTo('/dpp/task/integratioTask/edit', scope.row)">配置任务</el-button>
                 <el-button link type="primary" icon="view" @click="
                   routeTo('/dpp/task/integratioTask/detail', {
                     ...scope.row,
                     info: true,
                   })
-                  " >详情</el-button>
+                  ">详情</el-button>
                 <el-popover placement="bottom" :width="150" trigger="click">
                   <template #reference>
                     <el-button link type="primary" icon="ArrowDown">更多</el-button>
                   </template>
                   <div style="width: 100px" class="butgdlist">
                     <el-button link style="padding-left: 14px" type="primary" icon="Operation"
-                      @click="handleJobLog(scope.row)" :disabled="scope.row.schedulerState == '1'"
-                      >调度周期</el-button>
-                    <el-button link type="primary" icon="Stopwatch" @click="handleDataView(scope.row)"
-                      >运行实例</el-button>
+                      @click="handleJobLog(scope.row)" :disabled="scope.row.schedulerState == '1'">调度周期</el-button>
+                    <el-button link type="primary" icon="Stopwatch" @click="handleDataView(scope.row)">运行实例</el-button>
                     <el-button link type="primary" icon="VideoPlay" :disabled="scope.row.status != 1"
-                      @click="handleExecuteOnce(scope.row)" >执行一次</el-button>
+                      @click="handleExecuteOnce(scope.row)">执行一次</el-button>
                     <el-button link type="danger" icon="Delete" :disabled="scope.row.status == 1"
-                      @click="handleDelete(scope.row)" >删除</el-button>
+                      @click="handleDelete(scope.row)">删除</el-button>
                     <el-button link type="primary" icon="CopyDocument" :disabled="scope.row.status == 1"
                       @click="handleClone(scope.row)">
                       克隆
@@ -312,7 +309,7 @@ const handleConfirm = (form) => {
     if (res.code == 200) {
       proxy.$modal.msgSuccess("操作成功");
       getList();
-      routeTo('/dpp/etl/lntegratio', res.data);
+      routeTo('/dpp/task/integratioTask/edit', res.data);
     }
   })
 };

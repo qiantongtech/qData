@@ -62,7 +62,7 @@
       <el-row :gutter="20" v-if="type != 3">
         <el-col :span="12">
           <el-form-item label="标准类型" prop="description">
-            <el-select class="el-form-input-width" v-model="form.documentType" placeholder="请选择类型"
+            <el-select class="el-form-input-width" v-model="form.documentType" placeholder="请选择类型" clearable
               @change="fetchSecondLevelDocs" style="width: 100%;">
               <el-option v-for="dict in dp_document_type" :key="dict.value" :label="dict.label"
                 :value="dict.value"></el-option>
@@ -72,7 +72,7 @@
         <el-col :span="12">
           <el-form-item label="标准登记" prop="documentId">
             <el-select class="el-form-input-width" v-model="form.documentId" placeholder="请选择标准进行绑定"
-              style="width: 100%;">
+              style="width: 100%;" clearable>
               <el-option v-for="doc in secondLevelDocs" :key="doc.value" :label="doc.label" :value="doc.value">
               </el-option>
             </el-select>
@@ -173,7 +173,7 @@
     </template>
   </el-dialog>
 
-  <DialogForm :visible="addDialog" @update:dialogFormVisible="addDialog = $event" @confirm="handleFormSubmit"
+  <columnAdd :visible="addDialog" @update:dialogFormVisible="addDialog = $event" @confirm="handleFormSubmit"
     :deptOptions="deptOptions" :userList="userList" :deptList="deptList" :row="selectedRow" :data="form" />
 </template>
 
@@ -188,7 +188,7 @@ import {
   tableList,
   columnsList,
 } from "@/api/dp/model/model";
-import DialogForm from "./columnAdd";
+import columnAdd from "./columnAdd";
 import { defineProps, defineEmits, ref, computed, watch } from "vue";
 import { getDpModelColumnList } from "@/api/dp/model/model";
 const { dp_model_status, dp_model_create_type, dp_document_type } = proxy.useDict(
@@ -213,10 +213,11 @@ watch(
   (newVal) => {
     getDaDatasourceListList();
     if (newVal) {
+
       if (props.dataList && props.dataList.id) {
         Object.assign(form.value, props.dataList);
         form.value.documentId = Number(form.value.documentId) || '';
-        fetchSecondLevelDocs(form.value.documentType);
+        fetchSecondLevelDocs(form.value.documentType, true);
         form.value.contact = Number(form.value.contact) || '';
         form.value.createType = '1';
         if (form.value.createType == 2) {
@@ -226,6 +227,9 @@ watch(
         } else {
           fetchDpModelColumnList();
           form.value.tableName = form.value.modelName;
+        }
+        if (form.value.documentId == -1) {
+          form.value.documentId = null;
         }
       } else {
         form.value = {
@@ -261,10 +265,17 @@ watch(
 );
 
 let secondLevelDocs = ref([]);
-const btnloading = ref(false); // 🔹 loading 状态
+const btnloading = ref(false);
 
-const fetchSecondLevelDocs = async (type) => {
-  console.log("🚀 ~ fetchSecondLevelDocs ~ type:", type)
+const fetchSecondLevelDocs = async (type, preserveSelection = false) => {
+  if (!type) {
+    secondLevelDocs.value = [];
+    if (!preserveSelection) {
+      form.value.documentId = '';
+    }
+    return;
+  }
+
   try {
     btnloading.value = true;
     const res = await listDpDocument({ type });
@@ -272,11 +283,20 @@ const fetchSecondLevelDocs = async (type) => {
       label: d.name,
       value: d.id,
     }));
+
+    // 只有在不是保留选择的情况下才清空
+    if (!preserveSelection) {
+      form.value.documentId = '';
+    }
   } catch (error) {
-    [];
+    secondLevelDocs.value = [];
+    if (!preserveSelection) {
+      form.value.documentId = '';
+    }
+  } finally {
+    btnloading.value = false;
   }
-  btnloading.value = false;
-};
+}
 
 
 let createTypeList = ref();
@@ -397,6 +417,30 @@ const rules = ref({
   ],
   // status: [{ required: true, message: "发布状态不能为空", trigger: "change" }],
   catCode: [{ required: true, message: "逻辑模型类目不能为空", trigger: "change" }],
+  // documentType: [
+  //   {
+  //     validator: (rule, value, callback) => {
+  //       if (value && !form.value.documentId) {
+  //         callback(new Error('请选择标准登记'));
+  //       } else {
+  //         callback();
+  //       }
+  //     },
+  //     trigger: 'change'
+  //   }
+  // ],
+  // documentId: [
+  //   {
+  //     validator: (rule, value, callback) => {
+  //       if (form.value.documentType && !value) {
+  //         callback(new Error('请选择标准登记'));
+  //       } else {
+  //         callback();
+  //       }
+  //     },
+  //     trigger: 'change'
+  //   }
+  // ]
 });
 const tableData = ref([]);
 
@@ -528,9 +572,8 @@ const closeDialog = () => {
 
 const confirmDialog = () => {
   if (!tableData.value || tableData.value.length === 0) {
-    // 如果tableData为空，显示错误提示
-    proxy.$message.warning("操作失败，请选择属性字段");
-    return; // 如果没有选择表字段，退出函数
+    proxy.$message.warning("操作失败，请添加属性字段");
+    return;
   }
 
   proxy.$refs["dpModelRef"].validate((valid) => {
@@ -540,16 +583,15 @@ const confirmDialog = () => {
 
         emit("update:visible", false);
         emit("confirm", {
-          form: form.value,
+          form: { ...form.value, documentId: form.value.documentId || -1, },
           tableData: tableData.value,
-          modelId: form.value.id,
         });
       } else {
         const updatedTableData = tableData.value.map((item) => ({
           ...item,
           modelId: form.value.id,
         }));
-        emit("confirm", { form: form.value, tableData: updatedTableData });
+        emit("confirm", { form: { ...form.value, documentId: form.value.documentId || -1, }, tableData: updatedTableData, modelId: form.value.id, });
       }
       closeDialog();
     }

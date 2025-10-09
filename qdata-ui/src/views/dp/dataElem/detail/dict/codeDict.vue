@@ -150,7 +150,7 @@ function validatorCodeValue(rule, value, callback) {
     if (value !== null && value !== undefined) {
         //调用接口判断是否存在重复的值
         var params = {
-            id: form.id || null,
+            id: form.value.id || null,
             dataElemId: id,
             codeValue: value
         };

@@ -209,15 +209,15 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="标准类型" prop="description">
-              <el-select class="el-form-input-width" style="width: 100%;" v-model="form.documentType"
-                placeholder="请选择类型" @change="fetchSecondLevelDocs">
+              <el-select class="el-form-input-width" v-model="form.documentType" placeholder="请选择类型" clearable
+                @change="fetchSecondLevelDocs" style="width: 100%;">
                 <el-option v-for="dict in dp_document_type" :key="dict.value" :label="dict.label"
                   :value="dict.value"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="标准登记" prop="description">
+            <el-form-item label="标准登记" prop="documentId">
               <el-select class="el-form-input-width" v-model="form.documentId" placeholder="请选择标准进行绑定"
                 style="width: 100%;">
                 <el-option v-for="doc in secondLevelDocs" :key="doc.value" :label="doc.label" :value="doc.value">
@@ -231,7 +231,7 @@
             <el-form-item label="负责人" prop="personCharge">
               <!--                <el-input v-model="form.managerId" placeholder="请选择负责人" />-->
               <el-select v-model="form.personCharge" @change="handleChange" filterable placeholder="请选择">
-                <el-option v-for="item in managerOptions" :key="item.userId" :label="item.nickName"
+                <el-option v-for="item in managerOptions" :key="String(item.userId)" :label="item.nickName"
                   :value="item.userId">
                 </el-option>
               </el-select>
@@ -261,7 +261,13 @@
             </el-form-item>
           </el-col>
         </el-row>
-
+        <el-row :gutter="20">
+          <el-col :span="24">
+            <el-form-item label="备注">
+              <el-input type="textarea" placeholder="请输入备注" v-model="form.remark" :min-height="192" />
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
@@ -359,8 +365,15 @@ const columns = ref([
 let secondLevelDocs = ref([]);
 const btnloading = ref(false); // 🔹 loading 状态
 
-const fetchSecondLevelDocs = async (type) => {
-  console.log("🚀 ~ fetchSecondLevelDocs ~ type:", type)
+const fetchSecondLevelDocs = async (type, preserveSelection = false) => {
+  if (!type) {
+    secondLevelDocs.value = [];
+    if (!preserveSelection) {
+      form.value.documentId = '';
+    }
+    return;
+  }
+
   try {
     btnloading.value = true;
     const res = await listDpDocument({ type });
@@ -368,11 +381,21 @@ const fetchSecondLevelDocs = async (type) => {
       label: d.name,
       value: d.id,
     }));
+
+    // 只有在不是保留选择的情况下才清空
+    if (!preserveSelection) {
+      form.value.documentId = '';
+    }
   } catch (error) {
-    [];
+    secondLevelDocs.value = [];
+    if (!preserveSelection) {
+      form.value.documentId = '';
+    }
+  } finally {
+    btnloading.value = false;
   }
-  btnloading.value = false;
-};
+}
+
 
 const getColumnVisibility = (key) => {
   const column = columns.value.find((col) => col.key === key);
@@ -437,6 +460,30 @@ const data = reactive({
     columnType: [
       { required: true, message: "字段类型不能为空", trigger: "change" },
     ],
+    // documentType: [
+    //   {
+    //     validator: (rule, value, callback) => {
+    //       if (value && !form.value.documentId) {
+    //         callback(new Error('请选择标准登记'));
+    //       } else {
+    //         callback();
+    //       }
+    //     },
+    //     trigger: 'change'
+    //   }
+    // ],
+    // documentId: [
+    //   {
+    //     validator: (rule, value, callback) => {
+    //       if (form.value.documentType && !value) {
+    //         callback(new Error('请选择标准登记'));
+    //       } else {
+    //         callback();
+    //       }
+    //     },
+    //     trigger: 'change'
+    //   }
+    // ]
   },
 });
 
@@ -570,18 +617,21 @@ function handleAdd() {
   open.value = true;
   title.value = "新增数据元";
 }
-
-/** 修改按钮操作 */
 function handleUpdate(row) {
   reset();
   const _id = row.id || ids.value;
   getDpDataElem(_id).then((response) => {
     form.value = response.data;
     dpDataElemRuleRelList.value = response.data.dpDataElemRuleRelList;
-    form.value.personCharge = response.data.personCharge && String(response.data.personCharge).trim() !== ''
-      ? Number(response.data.personCharge)
-      : null;
-    fetchSecondLevelDocs(form.value.documentType);
+    if (response.data.personCharge != null || response.data.personCharge == '0') {
+      form.value.personCharge = Number(response.data.personCharge);
+    }
+    if (form.value.documentId == -1) {
+      form.value.documentId = null;
+    }
+    // 在修改时保留已选择的标准登记值
+    fetchSecondLevelDocs(form.value.documentType, true);
+
     open.value = true;
     title.value = "修改数据元";
   });
@@ -602,7 +652,7 @@ function submitForm() {
     if (valid) {
       form.value.dpDataElemRuleRelList = dpDataElemRuleRelList.value;
       if (form.value.id != null) {
-        updateDpDataElem(form.value)
+        updateDpDataElem({ ...form.value, documentId: form.value.documentId || -1 })
           .then((response) => {
             proxy.$modal.msgSuccess("修改成功");
             open.value = false;
@@ -610,7 +660,7 @@ function submitForm() {
           })
           .catch((error) => { });
       } else {
-        addDpDataElem(form.value)
+        addDpDataElem({ ...form.value, documentId: form.value.documentId || -1 })
           .then((response) => {
             proxy.$modal.msgSuccess("新增成功");
             open.value = false;

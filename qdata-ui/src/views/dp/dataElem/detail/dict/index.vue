@@ -113,7 +113,7 @@
                     <codeDict />
                 </el-tab-pane>
                 <el-tab-pane label="代码映射" name="2">
-                    <dpCodeMap />
+                    <codeMap />
                 </el-tab-pane>
                 <el-tab-pane label="关联信息" name="3">
                     <asset />
@@ -127,7 +127,7 @@
 import { getDpDataElem } from '@/api/dp/dataElem/dataElem';
 import { useRoute } from 'vue-router';
 import codeDict from '@/views/dp/dataElem/detail/dict/codeDict.vue';
-import dpCodeMap from '@/views/dp/dataElem/detail/dict//codeMap.vue';
+import codeMap from '@/views/dp/dataElem/detail/dict/codeMap.vue';
 import asset from "@/views/dp/dataElem/detail/components/asset.vue";
 
 const { proxy } = getCurrentInstance();

@@ -36,9 +36,11 @@
 
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item label="属性长度" prop="columnLength">
+                    <el-form-item label="属性长度" prop="columnLength"
+                        :rules="form.columnType === 'DATE' ? [] : [{ required: true, message: '请输入属性长度', trigger: 'change' }]">
                         <el-input-number :step="1" step-strictly v-model="form.columnLength" style="width: 100%"
                             controls-position="right" :min="1" :max="9999999999" placeholder="请输入属性长度" />
+
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
@@ -142,7 +144,7 @@ watch(
                     cnName: '', // 使用可选链操作符
                     engName: '',
                     columnType: '',
-                    columnLength: '1',
+                    columnLength: '',
                     pkFlag: '0', // 设置默认值
                     authorityDept: '',
                     modelComment: '',
@@ -221,7 +223,7 @@ const rules = ref({
         }
     ],
     columnType: [{ required: true, message: '数据类型不能为空', trigger: 'blur' }],
-    columnLength: [{ required: true, message: '属性长度不能为空', trigger: 'blur' }],
+
     // pkFlag: [{ required: true, message: '请选择是否主键', trigger: 'blur' }],
     // nullableFlag: [{ required: true, message: '请选择是是否必填', trigger: 'blur' }],
     defaultValue: [

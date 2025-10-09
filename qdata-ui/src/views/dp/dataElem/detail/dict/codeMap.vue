@@ -32,7 +32,7 @@
                 {{ scope.row.codeValue || '-' }}
             </template>
         </el-table-column>
-        <el-table-column label="创建人" align="left" prop="createBy" width="120">
+        <el-table-column label="创建人" align="left" prop="createBy">
             <template #default="scope">
                 {{ scope.row.createBy || '-' }}
             </template>

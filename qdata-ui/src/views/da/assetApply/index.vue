@@ -150,21 +150,12 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="主题名称">
-              <div class="form-readonly">
-                {{ form.themeName ?? "-" }}
-              </div>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
             <el-form-item label="数据连接">
               <div class="form-readonly">
                 {{ form.datasourceName ?? "-" }}
               </div>
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="数据库地址">
               <div class="form-readonly">
@@ -172,6 +163,9 @@
               </div>
             </el-form-item>
           </el-col>
+        </el-row>
+        <el-row :gutter="20">
+
           <el-col :span="12">
             <el-form-item label="数据库类型:" prop="datasourceType">
               <dict-tag :options="datasource_type" :value="form.datasourceType" />
@@ -258,13 +252,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="主题名称:" prop="themeName">
-              <div class="form-readonly">
-                {{ form.themeName ?? "-" }}
-              </div>
-            </el-form-item>
-          </el-col>
+
           <el-col :span="12">
             <el-form-item label="数据连接:" prop="datasourceName">
               <div class="form-readonly">
@@ -272,8 +260,6 @@
               </div>
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="数据库地址:" prop="datasourceIp">
               <div class="form-readonly">
@@ -281,6 +267,9 @@
               </div>
             </el-form-item>
           </el-col>
+        </el-row>
+        <el-row :gutter="20">
+
           <el-col :span="12">
             <el-form-item label="数据库类型:" prop="datasourceType">
               <dict-tag :options="datasource_type" :value="form.datasourceType" />

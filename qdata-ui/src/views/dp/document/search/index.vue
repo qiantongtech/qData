@@ -450,8 +450,8 @@ getList();
         width: 66%;
 
         img {
-          width: 52px;
-          height: 55px;
+          width: 40px;
+          height: 40px;
           margin-right: 20px;
         }
 
@@ -472,8 +472,8 @@ getList();
           .item-name-code {
             display: block;
             font-family: PingFang SC;
-            font-weight: bold;
-            font-size: 16px;
+            // font-weight: bold;
+            font-size: 14px;
             color: rgba(88, 88, 88, 0.85);
             line-height: 22px;
           }

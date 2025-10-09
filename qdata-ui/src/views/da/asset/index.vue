@@ -1145,6 +1145,7 @@ getAssetThemeList();
         .item-title-name {
           font-family: PingFang SC;
           font-size: 16px;
+          font-weight: 600;
           color: #3d446e;
           margin-right: 16px;
         }

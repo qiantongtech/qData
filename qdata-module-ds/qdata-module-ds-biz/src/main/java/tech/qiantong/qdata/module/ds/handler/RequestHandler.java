@@ -177,15 +177,14 @@ public class RequestHandler {
                 status = 0;
             }
             apiLogDto.setStatus(status);
-            apiLogDto.setCallerId("");
             //调用数据量
             apiLogDto.setCallerSize(caller_size);
             apiLogDto.setApiId(api_id);
             apiLogDto.setCallerUrl(caller_url);
             apiLogDto.setCallerParams(caller_params);
             apiLogDto.setCallerIp(caller_ip);
-            apiLogDto.setCallerId("");
-            apiLogDto.setCallerBy("");
+            apiLogDto.setCallerId("0");
+            apiLogDto.setCallerBy("-");
             apiLogDto.setCatId(cat_id);
             apiLogDto.setCatCode(cat_code);
             log.info("asyncTask.doTask(apiLogDto);");

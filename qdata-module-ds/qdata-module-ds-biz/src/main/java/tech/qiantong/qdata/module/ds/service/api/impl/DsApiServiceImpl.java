@@ -98,11 +98,7 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
         DsApiDO dataApiEntity = dsApiMapper.selectById(id);
         DsApiLogDO apiLogEntity = null;
         try {
-            Map<String, Object> map = new HashMap<>(2);
-            map.put("id", id);
-            map.put("type", "1");
-            // 调用异步接口
-            asyncTask.releaseOrCancelDataApi(map);
+            invokeReleaseOrCancelApi(id, "1");
 
             LambdaUpdateWrapper<DsApiDO> updateWrapper = new LambdaUpdateWrapper<>();
             updateWrapper.set(DsApiDO::getStatus, DataConstant.EnableState.ENABLE.getKey());
@@ -125,17 +121,20 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
 
     }
 
+    private void invokeReleaseOrCancelApi(String id, String type) {
+        Map<String, Object> map = new HashMap<>(2);
+        map.put("id", id);
+        map.put("type", type);
+        asyncTask.releaseOrCancelDataApi(map);
+    }
+
     @Override
     public void cancelDataApi(String id, Long updateId, String updateBy) {
         // 获取详细信息
         DsApiDO dataApiEntity = dsApiMapper.selectById(id);
         DsApiLogDO apiLogEntity = null;
         try {
-            Map<String, Object> map = new HashMap<>(2);
-            map.put("id", id);
-            map.put("type", "2");
-            // 调用异步接口
-            asyncTask.releaseOrCancelDataApi(map);
+            invokeReleaseOrCancelApi(id, "2");
 
             LambdaUpdateWrapper<DsApiDO> updateWrapper = new LambdaUpdateWrapper<>();
             updateWrapper.set(DsApiDO::getStatus, DataConstant.EnableState.DISABLE.getKey());
@@ -449,6 +448,11 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
             // 封装信息
             apiLogEntity = packApiLogEntity(
                     dataApi, dataApi.getUpdatorId(), dataApi.getUpdateBy(), dataApi.toString(), 1, "", "1", 3);
+            if (StringUtils.equals("1",dataApi.getStatus())) {
+                invokeReleaseOrCancelApi(String.valueOf(dataApi.getId()), "1");
+            } else {
+                invokeReleaseOrCancelApi(String.valueOf(dataApi.getId()), "2");
+            }
         } catch (Exception e) {
             // 封装信息
             apiLogEntity = packApiLogEntity(
@@ -471,6 +475,9 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
             // 封装信息
             apiLogEntity = packApiLogEntity(
                     dataApi, dataApi.getCreatorId(), dataApi.getCreateBy(), dataApi.toString(), 1, "", "1", 2);
+            if (StringUtils.equals("1",dataApi.getStatus())) {
+                invokeReleaseOrCancelApi(String.valueOf(dataApi.getId()), "1");
+            }
         } catch (Exception e) {
             dataApi.setId(0L);
             // 封装信息

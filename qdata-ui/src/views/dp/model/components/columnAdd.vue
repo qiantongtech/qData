@@ -146,7 +146,7 @@ watch(
                     columnType: '',
                     columnLength: '',
                     pkFlag: '0', // 设置默认值
-                    authorityDept: '',
+                    authorityDept: null,
                     modelComment: '',
                     nullableFlag: '0', // 设置默认值
                     defaultValue: '',
@@ -204,7 +204,7 @@ const form = ref({
     columnType: '',
     columnLength: '1',
     pkFlag: '',
-    authorityDept: '',
+    authorityDept: null,
     modelComment: '',
     nullableFlag: '',
     defaultValue: '',
@@ -289,7 +289,7 @@ const closeDialog = () => {
         columnType: '',
         columnLength: '1',
         pkFlag: '',
-        authorityDept: '',
+        authorityDept: null,
         modelComment: '',
         nullableFlag: '',
         defaultValue: '',

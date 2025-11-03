@@ -1,0 +1,64 @@
+version: "1.0.5"
+
+services:
+  # qdata 后端服务
+  qdata-api:
+    image: qiantong/qdata:1.0.6
+    restart: always
+    profiles: [ "all" ]
+    env_file: .env
+    environment:
+      - TZ=Asia/Shanghai
+#    ports:
+#      - "8080:8080"
+    mac_address: 28-C5-D2-B7-FC-F5
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./qdata-server/logs:/usr/app/jar/logs
+      - ./qdata-server/upload:/usr/app/jar/upload
+      - ./qdata-server/application-prod.yml:/usr/app/jar/application-prod.yml
+    depends_on:
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      #使用MySQL这个就注释了
+      dm8:
+        condition: service_healthy
+      #使用达梦这个就注释了
+      #mysql:
+      #  condition: service_healthy
+    networks:
+      - qdatanet
+
+  # qdata 质控服务
+  qdata-quality:
+    image: qiantong/qdata-quality:1.0.6
+    restart: always
+    profiles: [ "all" ]
+    env_file: .env
+    environment:
+      - TZ=Asia/Shanghai
+#    ports:
+#      - "8083:8083"
+    mac_address: 28-C5-D2-B7-FC-F6
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./qdata-quality/logs:/usr/app/jar/logs
+      - ./qdata-quality/job-log:/usr/app/jar/job-log
+      - ./qdata-quality/application-prod.yml:/usr/app/jar/application-prod.yml
+    depends_on:
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      #使用MySQL这个就注释了
+      #dm8:
+      #  condition: service_healthy
+      #使用达梦这个就注释了
+      mysql:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+    networks:
+      - qdatanet

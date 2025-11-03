@@ -116,11 +116,11 @@ mysql:
   # JDBC驱动类名
   driver-class-name: com.mysql.cj.jdbc.Driver
   # 主库JDBC连接URL
-  url: jdbc:mysql://192.168.0.5:3306/qdata_plus_dev?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+  url: jdbc:mysql://mysql:3306/qdata?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
   # 主库用户名
   username: root
   # 主库密码
-  password: a2g5K3YW
+  password: o5KjnPYxswsiURZHCPwd
 
 # 达梦配置文件
 dm8:
@@ -163,12 +163,6 @@ ds:
     main_class: tech.qiantong.qdata.spark.etl.EtlApplication
   hdfs:
     url: hdfs://namenode:8020
-
-#report:
-#  ip: 10.65.9.4
-#  port: 1521
-#  datasourceConfig: '{"username":"USER_WCOBD","password":"USER_WCOBD2019","dbname":"USER_WCOBD","sid":"orcl"}'
-#  datasourceType: Oracle11
 
 path:
   quality_url: http://qdata-quality:8083/quality/qualityTaskExecutor

@@ -1,0 +1,168 @@
+# 用户配置
+user:
+  password:
+    # 密码最大错误次数
+    maxRetryCount: 5
+    # 密码锁定时间（默认10分钟）
+    lockTime: 10
+    #万能密码 配置为空则不生效
+    universalPassword: qData123
+
+# 主数据源选择
+datasource:
+  type: dm8
+
+# Spring配置
+spring:
+  # redis 配置
+  redis:
+    # 地址
+    host: redis
+    # 端口，默认为6379
+    port: 6379
+    # 数据库索引
+    database: 0
+    # 密码
+    password: J98%FHF#9h@e88h9fre9
+    # 连接超时时间
+    timeout: 10s
+    lettuce:
+      pool:
+        # 连接池中的最小空闲连接
+        min-idle: 0
+        # 连接池中的最大空闲连接
+        max-idle: 8
+        # 连接池的最大数据库连接数
+        max-active: 8
+        # #连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: -1ms
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: admin
+    password: Ej^iUNFLp9MQouc1
+    #    listener:
+    #      direct:
+    #        auto-startup: false
+    #      simple:
+    #        auto-startup: false
+    #        acknowledge-mode: manual
+    #        concurrency: 1
+    #        max-concurrency: 10
+    listener:
+      simple:
+        acknowledge-mode: manual
+        concurrency: 1
+        max-concurrency: 10
+  datasource:
+    druid:
+      stat-view-servlet:
+        # 是否启用Druid的监控统计功能
+        enabled: false
+        # 访问Druid监控页面的用户名
+        loginUsername: qdata
+        # 访问Druid监控页面的密码
+        loginPassword: 123456
+    dynamic:
+      druid:
+        # 连接池初始化时创建的连接数量
+        initial-size: 5
+        # 连接池中最小空闲连接数
+        min-idle: 5
+        # 连接池中最大活动连接数
+        maxActive: 20
+        # 连接池等待连接的最长时间（毫秒）
+        maxWait: 60000
+        # 数据库连接超时时间（毫秒）
+        connectTimeout: 30000
+        # Socket超时时间（毫秒）
+        socketTimeout: 60000
+        # 空闲连接的检测周期（毫秒）
+        timeBetweenEvictionRunsMillis: 60000
+        # 最小空闲连接的存活时间（毫秒）
+        minEvictableIdleTimeMillis: 300000
+        # 用于检测连接是否有效的SQL语句
+        validationQuery: SELECT 1 FROM DUAL
+        # 是否在空闲时检测连接的有效性
+        testWhileIdle: true
+        # 借用连接时是否测试连接的有效性
+        testOnBorrow: false
+        # 归还连接时是否测试连接的有效性
+        testOnReturn: false
+        # 是否打开连接池的PreparedStatement缓存
+        poolPreparedStatements: true
+        # 每个连接池的PreparedStatement缓存上限
+        maxPoolPreparedStatementPerConnectionSize: 20
+        # 配置Druid的过滤器
+        filters: stat,slf4j
+        # Druid连接属性配置
+        connectionProperties: druid.stat.mergeSql\=true;druid.stat.slowSqlMillis\=5000
+      datasource:
+        # 主库数据源配置
+        master:
+          # 动态加载的配置属性
+          driver-class-name: ${${datasource.type}.driver-class-name}
+          url: ${${datasource.type}.url}
+          username: ${${datasource.type}.username}
+          password: ${${datasource.type}.password}
+#        test:
+#          driver-class-name: dm.jdbc.driver.DmDriver
+#          url: jdbc:dm://127.0.0.1:5236/MOON?STU&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf-8&schema=MOON&serverTimezone=Asia/Shanghai
+#          username: MOON
+#          password: 1234567890
+
+# MySQL配置文件
+mysql:
+  # JDBC驱动类名
+  driver-class-name: com.mysql.cj.jdbc.Driver
+  # 主库JDBC连接URL
+  url: jdbc:mysql://mysql:3306/qdata?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+  # 主库用户名
+  username: root
+  # 主库密码
+  password: o5KjnPYxswsiURZHCPwd
+
+# 达梦配置文件
+dm8:
+  # JDBC驱动类名
+  driver-class-name: dm.jdbc.driver.DmDriver
+  # 主库JDBC连接URL
+  url: jdbc:dm://dm8:5236/QDATA?STU&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf-8&schema=QDATA&serverTimezone=Asia/Shanghai
+  # 主库用户名
+  username: QDATA
+  # 主库密码
+  password: s2LKr6LMQxVDTQx
+
+## 工作流模块的访问地址
+flow:
+  enable: false
+  url: http://192.168.0.5:26859/
+
+##文件存储路径
+file:
+  job:
+    log:
+      task_prefix_url: /tmp/qData/job-log/task-prefix-url
+
+#调度器相关配置
+ds:
+  base_url: http://dolphinscheduler-api:12345/dolphinscheduler
+  quality_url: http://qdata-quality:8083/quality/qualityTaskExecutor/runExecuteTask
+  http_url: http://qdata-api:8080/da/daDiscoveryTask/runDaDiscoveryTask
+  http_projectCode: 134799536571008
+  http_quality_projectCode: 147372832245312
+  token: b07f0e57c4818043a57ba05a28da291a
+  temp_table_data_source: "{\"ip\":\"192.168.0.5\",\"datasourceType\":\"DM8\",\"port\":5236,\"datasourceConfig\":\"{\\\"username\\\":\\\"TEMP\\\",\\\"password\\\":\\\"InC3tmU4bijT4vkl\\\",\\\"dbname\\\":\\\"TEMP\\\",\\\"sid\\\":\\\"helowin\\\"}\"}"
+  resource_url: /dolphinscheduler/
+  spark:
+    #spark-master的地址
+    master_url: spark://spark:7077
+    #jar包在ds的路径
+    main_jar: file:/dolphinscheduler/default/resources/spark-jar/qdata-etl-3.8.8.jar
+    #jar main入口
+    main_class: tech.qiantong.qdata.spark.etl.EtlApplication
+  hdfs:
+    url: hdfs://namenode:8020
+
+path:
+  quality_url: http://qdata-quality:8083/quality/qualityTaskExecutor

@@ -13020,6 +13020,7 @@ INSERT INTO `system_dict_data` VALUES (145, 2, '禁用', '0', 'sys_disable', NUL
 INSERT INTO `system_dict_data` VALUES (146, 5, 'Kingbase8', 'Kingbase8', 'datasource_type', NULL, 'info', 'N', '0', '吴同', '2025-01-22 10:22:44', 'wutong', '2025-09-22 09:19:26', NULL);
 INSERT INTO `system_dict_data` VALUES (147, 2, 'DM8', 'DM8', 'datasource_type', NULL, 'info', 'N', '0', '吴同', '2025-01-22 10:25:01', 'wutong', '2025-09-22 09:19:17', NULL);
 INSERT INTO `system_dict_data` VALUES (150, 3, 'Oracle', 'Oracle', 'datasource_type', NULL, 'primary', 'N', '0', '吴同', '2025-01-22 10:26:01', 'mengfanming', '2025-03-10 09:55:44', NULL);
+INSERT INTO `system_dict_data` VALUES (389, 5, 'SQL Server', 'SQL_Server', 'datasource_type', NULL, 'info', 'N', '0', '吴同', '2025-08-14 14:59:25', 'admin', '2025-09-30 10:03:26', NULL);
 INSERT INTO `system_dict_data` VALUES (153, 0, '上线', '1', 'da_sensitive_status', NULL, 'default', 'N', '0', 'liuhaosheng', '2025-02-06 09:55:30', NULL, NULL, NULL);
 INSERT INTO `system_dict_data` VALUES (154, 1, '下线', '0', 'da_sensitive_status', NULL, 'default', 'N', '0', 'liuhaosheng', '2025-02-06 09:55:39', '吴同', '2025-02-06 16:58:31', NULL);
 INSERT INTO `system_dict_data` VALUES (155, 0, '停用', '0', 'ds_api_log_status', NULL, NULL, 'N', '0', NULL, NULL, '吴同', '2025-02-26 11:29:44', NULL);

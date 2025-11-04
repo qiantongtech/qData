@@ -69,6 +69,8 @@ public class DbQueryProperty implements Serializable {
             case MYSQL:
             case ORACLE:
             case ORACLE_12C:
+            case SQL_SERVER2008:
+            case SQL_SERVER:
             case DM8:
             case KINGBASE8:
                 if (StringUtils.isBlank(host)

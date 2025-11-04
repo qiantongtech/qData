@@ -116,4 +116,12 @@ public abstract class AbstractDbDialect implements DbDialect {
         }
         return url;
     }
+
+    @Override
+    public String getTableName(DbQueryProperty property, String tableName) {
+        if (!StringUtils.isEmpty(property.getDbName())) {
+            return property.getDbName() + "." + tableName;
+        }
+        return tableName;
+    }
 }

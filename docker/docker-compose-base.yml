@@ -3,7 +3,7 @@ version: "1.0.5"
 services:
   redis:
     image: redis:6-alpine
-    profiles: ["all"]
+    profiles: ["all", "local"]
     env_file: .env
     restart: always
     environment:

@@ -23,15 +23,15 @@ services:
   rabbitmq:
     image: rabbitmq:3.12-management
     restart: always
-#    ports:
-#      - 5672:5672
-#      - 15672:15672
+    ports:
+      - 5672:5672
+      - 15672:15672
     healthcheck:
       test: [ "CMD-SHELL", "rabbitmq-diagnostics -q ping" ]
       interval: 10s
       timeout: 5s
       retries: 5
-    profiles: ["all"]
+    profiles: ["all", "local"]
     env_file: .env
     environment:
 #      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
@@ -138,8 +138,8 @@ services:
     profiles: [ "all", "schema", "local"  ]
     env_file: .env
     image: mongo:4.4
-#    ports:
-#      - 27017:27017
+    ports:
+      - 27017:27017
 #    volumes:
 #      - ./database/mongoDB:/data/db
     environment:

@@ -67,9 +67,9 @@ public enum DbType {
     /**
      * SQLSERVER
      */
-    SQL_SERVER("7",
+    SQL_SERVER("SQL_Server",
             "SQLServer2012+数据库",
-            "jdbc:sqlserver://${host}:${port};DatabaseName=${dbName}",
+            "jdbc:sqlserver://${host}:${port};DatabaseName=${dbName};encrypt=true;trustServerCertificate=true",
             "LEN",
             "SELECT COUNT(1) FROM {tableName}",
             "SELECT {tableFieldName} FROM {tableName} ORDER BY {orderBy} DESC OFFSET {pageNo} ROWS FETCH NEXT {pageSize} ROWS ONLY"),

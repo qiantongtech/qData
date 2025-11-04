@@ -65,6 +65,10 @@ public class DBUtils {
                     Class.forName("com.kingbase8.Driver");
                     options.put("driver", "com.kingbase8.Driver");
                     break;
+                case SQL_SERVER:
+                    Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+                    options.put("driver", "com.microsoft.sqlserver.jdbc.SQLServerDriver");
+                    break;
                 //后续再扩展
                 default:
                     throw new RuntimeException("Unsupported database type: " + dbType);
@@ -103,7 +107,8 @@ public class DBUtils {
         if (connection.containsKey("table")) {
             //{\"username\":\"qdata_dev\",\"password\":\"2LKqLVMQ!xVDT$Qx\",\"dbname\":\"qdata_dev\",\"sid\":\"public\"}
             //表查询
-            if (StringUtils.equals(DbType.KINGBASE8.getDb(), dbType)) {
+            if (StringUtils.equals(DbType.KINGBASE8.getDb(), dbType) ||
+                    StringUtils.equals(DbType.SQL_SERVER.getDb(), dbType)) {
                 options.put("dbtable", dbName + "." + sid + "." + connection.getString("table"));
             } else if (StringUtils.isNotBlank(dbName)) {
                 options.put("dbtable", dbName + "." + connection.getString("table"));

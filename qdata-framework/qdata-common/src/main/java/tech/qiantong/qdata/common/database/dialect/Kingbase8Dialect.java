@@ -318,4 +318,9 @@ public class Kingbase8Dialect extends AbstractDbDialect {
             return entity;
         };
     }
+
+    @Override
+    public String getTableName(DbQueryProperty property, String tableName) {
+        return property.getDbName() + "." + property.getSid() + "." + tableName;
+    }
 }

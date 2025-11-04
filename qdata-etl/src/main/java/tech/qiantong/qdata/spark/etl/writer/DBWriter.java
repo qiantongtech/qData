@@ -168,10 +168,11 @@ public class DBWriter implements Writer {
             //判断是否存在临时表
             if (StringUtils.isNotBlank(tmpTableName)) {
                 if (flag) {
-                    if (StringUtils.equals(DbType.KINGBASE8.getDb(), writerProperty.getDbType())) {
+                    if (StringUtils.equals(DbType.KINGBASE8.getDb(), writerProperty.getDbType())
+                            || StringUtils.equals(DbType.SQL_SERVER.getDb(), writerProperty.getDbType())) {
                         tableName = StringUtils.isNotBlank(writerProperty.getDbName()) ? writerProperty.getDbName() + "." + writerProperty.getSid() + "." + tableName : tableName;
                         tmpTableName = StringUtils.isNotBlank(writerProperty.getDbName()) ? writerProperty.getDbName() + "." + writerProperty.getSid() + "." + tmpTableName : tmpTableName;
-                    } else {
+                    }  else {
                         tableName = StringUtils.isNotBlank(writerProperty.getDbName()) ? writerProperty.getDbName() + "." + tableName : tableName;
                         tmpTableName = StringUtils.isNotBlank(writerProperty.getDbName()) ? writerProperty.getDbName() + "." + tmpTableName : tmpTableName;
                     }
@@ -231,7 +232,8 @@ public class DBWriter implements Writer {
     Triple<List<String>, List<Integer>, List<String>> getColumnMetaData(Connection conn, List<String> columns, DbQueryProperty writerProperty, String tableName) {
         Statement statement = null;
         ResultSet rs = null;
-        if (StringUtils.equals(DbType.KINGBASE8.getDb(), writerProperty.getDbType())) {
+        if (StringUtils.equals(DbType.KINGBASE8.getDb(), writerProperty.getDbType())
+                || StringUtils.equals(DbType.SQL_SERVER.getDb(), writerProperty.getDbType())) {
             tableName = writerProperty.getDbName() + "." + writerProperty.getSid() + "." + tableName;
         } else if (StringUtils.isNotBlank(writerProperty.getDbName())) {
             tableName = writerProperty.getDbName() + "." + tableName;

@@ -13,6 +13,7 @@ import tech.qiantong.qdata.common.database.DataSourceFactory;
 import tech.qiantong.qdata.common.database.DbQuery;
 import tech.qiantong.qdata.common.database.constants.DbDataType;
 import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
+import tech.qiantong.qdata.common.database.constants.DbType;
 import tech.qiantong.qdata.common.database.core.DbColumn;
 import tech.qiantong.qdata.common.database.exception.DataQueryException;
 import tech.qiantong.qdata.common.exception.ServiceException;
@@ -47,10 +48,10 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class DaAssetOperateLogServiceImpl  extends ServiceImpl<DaAssetOperateLogMapper,DaAssetOperateLogDO> implements IDaAssetOperateLogService {
+public class DaAssetOperateLogServiceImpl extends ServiceImpl<DaAssetOperateLogMapper, DaAssetOperateLogDO> implements IDaAssetOperateLogService {
 
     private final static String sql_INSERT = "INSERT INTO {tableName} ({columns}) VALUES ({values})";
-    private final static String sql_UPDATE  = "UPDATE {tableName} SET {setValue} WHERE {where}";
+    private final static String sql_UPDATE = "UPDATE {tableName} SET {setValue} WHERE {where}";
     private final static String sql_DELETE = "DELETE FROM {tableName} WHERE {where}";
 
     @Resource
@@ -76,15 +77,16 @@ public class DaAssetOperateLogServiceImpl  extends ServiceImpl<DaAssetOperateLog
     public PageResult<DaAssetOperateLogDO> queryDaAssetOperateLogPage(DaAssetOperateLogPageReqVO daAssetOperateLog) {
 
         Map<String, Object> after = JSONUtils.convertTaskDefinitionJsonMap(daAssetOperateLog.getUpdateBefore());
-        Map<String, Object> keys  = JSONUtils.convertTaskDefinitionJsonMap(daAssetOperateLog.getFieldNames());
+        Map<String, Object> keys = JSONUtils.convertTaskDefinitionJsonMap(daAssetOperateLog.getFieldNames());
         List<String> whereCols = JSONUtils.splitListByString(keys.get("commentKeyList"));
         DaAssetOperateLogSaveReqVO daAssetOperateLogSaveReqVO = new DaAssetOperateLogSaveReqVO();
-        fillUpdateWhereMd5(daAssetOperateLogSaveReqVO,after,whereCols);
+        fillUpdateWhereMd5(daAssetOperateLogSaveReqVO, after, whereCols);
 
         daAssetOperateLog.setUpdateWhereMd5(daAssetOperateLogSaveReqVO.getUpdateWhereMd5());
 
         return daAssetOperateLogMapper.selectPage(daAssetOperateLog);
     }
+
     @Override
     public int removeDaAssetOperateLog(Collection<Long> idList) {
         // 批量删除数据资产操作记录
@@ -119,7 +121,7 @@ public class DaAssetOperateLogServiceImpl  extends ServiceImpl<DaAssetOperateLog
      *
      * @param importExcelList 数据资产操作记录数据列表
      * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
+     * @param operName        操作用户
      * @return 结果
      */
     @Override
@@ -191,14 +193,14 @@ public class DaAssetOperateLogServiceImpl  extends ServiceImpl<DaAssetOperateLog
         }
         //判断状态 状态;1:执行中  2:失败  3:成功   4:回滚失败  5:回滚成功
         String status = daAssetOperateLogById.getStatus();
-        if ( StringUtils.equals("1",status)
-                || StringUtils.equals("2",status)
-                || StringUtils.equals("5",status)){
+        if (StringUtils.equals("1", status)
+                || StringUtils.equals("2", status)
+                || StringUtils.equals("5", status)) {
             throw new AssetOperateException("此记录暂不支持回滚，请刷新后重试！");
         }
         String operateType = daAssetOperateLogById.getOperateType();
         DaAssetOperateLogSaveReqVO bean = BeanUtils.toBean(daAssetOperateLogById, DaAssetOperateLogSaveReqVO.class);
-        this.applyOperateTypeLogic(bean,operateType);
+        this.applyOperateTypeLogic(bean, operateType);
         this.updateDaAssetOperateLog(bean);
     }
 
@@ -212,7 +214,7 @@ public class DaAssetOperateLogServiceImpl  extends ServiceImpl<DaAssetOperateLog
             String operateType) {
 
         bean.setStatus("-1");
-        bean.setOperateType(mapOperateType( operateType ));
+        bean.setOperateType(mapOperateType(operateType));
 
         if ("2".equals(operateType)) {
             String before = bean.getUpdateBefore();
@@ -308,7 +310,9 @@ public class DaAssetOperateLogServiceImpl  extends ServiceImpl<DaAssetOperateLog
         return logDo.getId();
     }
 
-    /** 公共：校验表，构造查询上下文 */
+    /**
+     * 公共：校验表，构造查询上下文
+     */
     private PreContext prepareContext(DaDatasourceRespVO ds, String tableName) {
         if (StringUtils.isBlank(tableName)) {
             throw new AssetOperateException("表名不能为空！");
@@ -323,13 +327,18 @@ public class DaAssetOperateLogServiceImpl  extends ServiceImpl<DaAssetOperateLog
             throw new DataQueryException("库表不存在，请查看数据库！");
         }
         List<DbColumn> cols = query.getTableColumns(prop, tableName);
-        String fullTable = StringUtils.isNotBlank(prop.getDbName())
-                ? prop.getDbName() + "." + tableName
-                : tableName;
+        String fullTable;
+        if (StringUtils.equals(prop.getDbType(), DbType.KINGBASE8.getDb())
+                || StringUtils.equals(prop.getDbType(), DbType.SQL_SERVER.getDb())) {
+            fullTable = StringUtils.isNotBlank(prop.getDbName()) ? prop.getDbName() + "." + prop.getSid() + "." + tableName : tableName;
+        } else {
+            fullTable = StringUtils.isNotBlank(prop.getDbName()) ? prop.getDbName() + "." + tableName : tableName;
+        }
         return new PreContext(query, prop, cols, fullTable);
     }
 
     private final Map<String, BiConsumer<DaAssetOperateLogSaveReqVO, PreContext>> handlers = new HashMap<>();
+
     @PostConstruct
     private void init() {
         handlers.put("1", this::doAdd);
@@ -342,9 +351,9 @@ public class DaAssetOperateLogServiceImpl  extends ServiceImpl<DaAssetOperateLog
      * 根据 keys 中的 commentKeyList，从 after 中取值，
      * 构造一个有序 Map，然后计算其 JSON 的 MD5 并设置到 req 中。
      *
-     * @param req    需要设置 updateWhereMd5 的请求对象
-     * @param after  原始值 Map
-     * @param whereCols   包含 commentKeyList 的 Map
+     * @param req       需要设置 updateWhereMd5 的请求对象
+     * @param after     原始值 Map
+     * @param whereCols 包含 commentKeyList 的 Map
      */
     public static void fillUpdateWhereMd5(DaAssetOperateLogSaveReqVO req,
                                           Map<String, Object> after,
@@ -369,13 +378,15 @@ public class DaAssetOperateLogServiceImpl  extends ServiceImpl<DaAssetOperateLog
     }
 
 
-    /** 新增逻辑 */
+    /**
+     * 新增逻辑
+     */
     private void doAdd(DaAssetOperateLogSaveReqVO req, PreContext ctx) {
         Map<String, Object> after = JSONUtils.convertTaskDefinitionJsonMap(req.getUpdateAfter());
 
-        Map<String, Object> keys  = JSONUtils.convertTaskDefinitionJsonMap(req.getFieldNames());
+        Map<String, Object> keys = JSONUtils.convertTaskDefinitionJsonMap(req.getFieldNames());
         List<String> whereCols = JSONUtils.splitListByString(keys.get("commentKeyList"));
-        fillUpdateWhereMd5(req,after,whereCols);
+        fillUpdateWhereMd5(req, after, whereCols);
 
 
         StringJoiner colsJs = new StringJoiner(","), valsJs = new StringJoiner(",");
@@ -393,20 +404,22 @@ public class DaAssetOperateLogServiceImpl  extends ServiceImpl<DaAssetOperateLog
 
         req.setExecuteTime(DateUtils.getExecutionDate());
         int cnt = ctx.query.update(sql);
-        if(StringUtils.isNotEmpty(req.getStatus()) && StringUtils.equals("-1",req.getStatus())){
+        if (StringUtils.isNotEmpty(req.getStatus()) && StringUtils.equals("-1", req.getStatus())) {
             req.setStatus(cnt > 0 ? "5" : "4");
-        }else {
+        } else {
             req.setStatus(cnt > 0 ? "3" : "2");
         }
     }
 
-    /** 更新逻辑 */
+    /**
+     * 更新逻辑
+     */
     private void doUpdate(DaAssetOperateLogSaveReqVO req, PreContext ctx) {
         Map<String, Object> after = JSONUtils.convertTaskDefinitionJsonMap(req.getUpdateAfter());
-        Map<String, Object> keys  = JSONUtils.convertTaskDefinitionJsonMap(req.getFieldNames());
-        List<String> setCols   = JSONUtils.splitListByString(keys.get("tableCommentList"));
+        Map<String, Object> keys = JSONUtils.convertTaskDefinitionJsonMap(req.getFieldNames());
+        List<String> setCols = JSONUtils.splitListByString(keys.get("tableCommentList"));
         List<String> whereCols = JSONUtils.splitListByString(keys.get("commentKeyList"));
-        fillUpdateWhereMd5(req,after,whereCols);
+        fillUpdateWhereMd5(req, after, whereCols);
 
         String setClause = setCols.stream()
                 .map(colName -> formatExpression(colName, after.get(colName), findColumn(colName, ctx.columns), ctx.prop))
@@ -423,42 +436,48 @@ public class DaAssetOperateLogServiceImpl  extends ServiceImpl<DaAssetOperateLog
 
         req.setExecuteTime(DateUtils.getExecutionDate());
         int cnt = ctx.query.update(sql);
-        if(StringUtils.isNotEmpty(req.getStatus()) && StringUtils.equals("-1",req.getStatus())){
+        if (StringUtils.isNotEmpty(req.getStatus()) && StringUtils.equals("-1", req.getStatus())) {
             req.setStatus(cnt > 0 ? "5" : "4");
-        }else {
+        } else {
             req.setStatus(cnt > 0 ? "3" : "2");
         }
     }
 
-    /** 删除逻辑占位 */
+    /**
+     * 删除逻辑占位
+     */
     private void doDelete(DaAssetOperateLogSaveReqVO req, PreContext ctx) {
         Map<String, Object> after = JSONUtils.convertTaskDefinitionJsonMap(req.getUpdateAfter());
-        Map<String, Object> keys  = JSONUtils.convertTaskDefinitionJsonMap(req.getFieldNames());
+        Map<String, Object> keys = JSONUtils.convertTaskDefinitionJsonMap(req.getFieldNames());
         // TODO: 按需补充
         List<String> whereCols = JSONUtils.splitListByString(keys.get("commentKeyList"));
         String whereClause = whereCols.stream()
                 .map(colName -> formatExpression(colName, after.get(colName), findColumn(colName, ctx.columns), ctx.prop))
                 .collect(Collectors.joining(" AND "));
         String sql = sql_DELETE
-                .replace("{tableName}",  ctx.fullTable)
+                .replace("{tableName}", ctx.fullTable)
                 .replace("{where}", whereClause);
         log.info("UPDATE SQL: {}", sql);
 
         req.setExecuteTime(DateUtils.getExecutionDate());
         int cnt = ctx.query.update(sql);
-        if(StringUtils.isNotEmpty(req.getStatus()) && StringUtils.equals("-1",req.getStatus())){
+        if (StringUtils.isNotEmpty(req.getStatus()) && StringUtils.equals("-1", req.getStatus())) {
             req.setStatus(cnt > 0 ? "5" : "4");
-        }else {
+        } else {
             req.setStatus(cnt > 0 ? "3" : "2");
         }
     }
 
-    /** 导入逻辑占位 */
+    /**
+     * 导入逻辑占位
+     */
     private void doImport(DaAssetOperateLogSaveReqVO req, PreContext ctx) {
         // TODO: 按需补充
     }
 
-    /** 格式化单个列的 SET/WHERE 表达式 */
+    /**
+     * 格式化单个列的 SET/WHERE 表达式
+     */
     private static String formatExpression(String colName, Object val, DbColumn col, DbQueryProperty prop) {
         String expr;
         String timeType = DbDataType.checkTime(col.getDataType());
@@ -494,19 +513,29 @@ public class DaAssetOperateLogServiceImpl  extends ServiceImpl<DaAssetOperateLog
                 .orElseThrow(() -> new AssetOperateException("字段 " + name + " 不存在！"));
     }
 
-    /** 数据库与列的上下文 */
+    /**
+     * 数据库与列的上下文
+     */
     private static class PreContext {
         final DbQuery query;
         final DbQueryProperty prop;
         final List<DbColumn> columns;
         final String fullTable;
+
         PreContext(DbQuery q, DbQueryProperty p, List<DbColumn> c, String ft) {
-            this.query = q; this.prop = p; this.columns = c; this.fullTable = ft;
+            this.query = q;
+            this.prop = p;
+            this.columns = c;
+            this.fullTable = ft;
         }
     }
 
-    /** 自定义业务异常 */
+    /**
+     * 自定义业务异常
+     */
     public static class AssetOperateException extends RuntimeException {
-        public AssetOperateException(String msg) { super(msg); }
+        public AssetOperateException(String msg) {
+            super(msg);
+        }
     }
 }

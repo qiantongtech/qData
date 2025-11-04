@@ -103,6 +103,7 @@ const getDatasourceIcon = (type) => {
         case "HDFS": return new URL("@/assets/system/images/dpp/hdfs.png", import.meta.url).href;
         case "SHELL": return new URL("@/assets/system/images/dpp/SHELL.png", import.meta.url).href;
         case "Kingbase8": return new URL("@/assets/system/images/dpp/kingBase.png", import.meta.url).href;
+        case "SQL_Server": return new URL("@/assets/system/images/dpp/SQL_Server.svg", import.meta.url).href;
         default: return null;
     }
 };
@@ -121,30 +122,32 @@ const onNodeContextMenu = (event, data, node) => {
 };
 
 const generateSQL = (type) => {
-    if (!contextMenuNode.value) return;
-    const { data, node } = contextMenuNode.value;
-    // 父节点的 dbname 作为库名
-    const parentData = node.parent ? node.parent.data : null;
-    const dbname = parentData?.dbname;
-    const datasourceType = parentData?.datasourceType;
-    const sid = parentData?.sid;
-    // 当前节点 name 作为表名
-    const tableName = data.name || null;
-    // 遍历当前节点所有子节点拼字段名
-    const fields = (node.childNodes || [])
-        .map((childNode) => childNode.data?.name)
-        .filter(Boolean)
-        .join(", ") || "*";
+  if (!contextMenuNode.value) return;
+  const { data, node } = contextMenuNode.value;
+  const parentData = node.parent ? node.parent.data : null;
+  const dbname = parentData?.dbname;
+  const datasourceType = parentData?.datasourceType;
+  const sid = parentData?.sid; // schema
+  const tableName = data.name || null;
 
-    // 根据是否有 dbname 拼接 SQL
-    var sql = dbname
-        ? `SELECT ${fields} FROM ${dbname}.${tableName};`
-        : `SELECT ${fields} FROM ${tableName};`;
-    if (datasourceType === 'Kingbase8' && sid) {
-        sql = `SELECT ${fields} FROM ${dbname}.${sid}.${tableName};`
-    }
-    contextMenuVisible.value = false;
-    handleNodeClick(sql, node, "sql");
+  const fields = (node.childNodes || [])
+      .map((childNode) => childNode.data?.name)
+      .filter(Boolean)
+      .join(", ") || "*";
+
+  let fromPart = tableName;
+  console.log("🚀 ~ generateSQL ~ datasourceType:", datasourceType)
+  if (
+      (datasourceType == "Kingbase8" ||
+          datasourceType == "SQL_Server")
+  ) {
+    fromPart = dbname ? `${dbname}.${sid}.${tableName}` : tableName;
+  } else {
+    fromPart = dbname ? `${dbname}.${tableName}` : tableName;
+  }
+  const sql = `SELECT ${fields} FROM ${fromPart};`;
+  contextMenuVisible.value = false;
+  handleNodeClick(sql, node, "sql");
 };
 
 // 点击空白关闭右键菜单

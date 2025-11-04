@@ -127,4 +127,6 @@ public interface DbDialect {
     Boolean validConnection(DataSource dataSource, DbQueryProperty dbQueryProperty);
 
     String getInsertOrUpdateSql(String tableName, String where, String tableFieldName, String tableFieldValue, String setValue);
+
+    String getTableName(DbQueryProperty property, String tableName);
 }

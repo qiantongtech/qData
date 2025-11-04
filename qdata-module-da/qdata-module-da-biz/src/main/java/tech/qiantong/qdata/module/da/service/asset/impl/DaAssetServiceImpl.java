@@ -1232,6 +1232,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
             DbType.MYSQL.getDb()
             , DbType.ORACLE.getDb()
             , DbType.ORACLE_12C.getDb()
+            , DbType.SQL_SERVER.getDb()
             , DbType.DM8.getDb()
             , DbType.KINGBASE8.getDb()
     ));

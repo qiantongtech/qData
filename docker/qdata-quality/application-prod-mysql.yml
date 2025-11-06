@@ -10,7 +10,7 @@ user:
 
 # 主数据源选择
 datasource:
-  type: dm8
+  type: mysql
 
 # Spring配置
 spring:

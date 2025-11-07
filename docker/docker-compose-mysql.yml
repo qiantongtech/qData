@@ -1,0 +1,24 @@
+include:
+  - path: ./docker-compose-base-mysql.yml
+  - path: ./docker-compose-dolphinscheduler.yml
+  - path: ./docker-compose-spark.yml
+  - path: ./docker-compose-qdata-mysql.yml
+  - path: ./docker-compose-hadoop.yml
+  - path: ./docker-compose-demo.yml
+
+version: "3.8"
+
+networks:
+  qdatanet:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16
+
+volumes:
+  dolphinscheduler-postgresql:
+  dolphinscheduler-zookeeper:
+  dolphinscheduler-worker-data:
+#  dolphinscheduler-logs:
+#  dolphinscheduler-shared-local:
+#  dolphinscheduler-resource-local:

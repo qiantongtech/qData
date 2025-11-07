@@ -1,8 +1,4 @@
 #!/bin/bash
-if [[ "$${DM8_ENABLE}" != "true" ]]; then
-    echo "[dm8] ENABLE is not true, exit."
-    exit 0
-fi
 set -e
 
 DB_PATH=${DB_PATH:-"/home/dmdba/data"}

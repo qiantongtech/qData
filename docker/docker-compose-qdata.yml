@@ -1,4 +1,4 @@
-version: "1.0.5"
+version: "3.8"
 
 services:
   # qdata 后端服务
@@ -22,12 +22,8 @@ services:
         condition: service_healthy
       rabbitmq:
         condition: service_healthy
-      #使用MySQL这个就注释了
       dm8:
         condition: service_healthy
-      #使用达梦这个就注释了
-      #mysql:
-      #  condition: service_healthy
     networks:
       - qdatanet
 
@@ -52,12 +48,8 @@ services:
         condition: service_healthy
       rabbitmq:
         condition: service_healthy
-      #使用MySQL这个就注释了
       dm8:
         condition: service_healthy
-      #使用达梦这个就注释了
-      #mysql:
-      #  condition: service_healthy
       mongodb:
         condition: service_healthy
     networks:

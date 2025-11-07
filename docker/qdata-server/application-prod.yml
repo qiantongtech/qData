@@ -10,7 +10,7 @@ user:
 
 # 主数据源选择
 datasource:
-  type: dm8
+  type: ${DB_TYPE}
 
 # Spring配置
 spring:

@@ -11,7 +11,7 @@
   Special Notice:
   All derivative versions are strictly prohibited from modifying or removing
   the default system logo and copyright information.
-  For brand customization, please contact the official team for authorization.
+  For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
    *
@@ -26,7 +26,7 @@
    *
   特别说明：
   所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌授权。
+  如需定制品牌，请通过官方渠道申请品牌定制授权。
    *
   更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
@@ -35,7 +35,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="${packageName}.mapper.${ClassName}Mapper">
-    
+
     <resultMap type="${ClassName}" id="${ClassName}Result">
 #foreach ($column in $columns)
         <result property="${column.javaField}"    column="${column.columnName}"    />
@@ -60,7 +60,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="select${ClassName}List" parameterType="${ClassName}" resultMap="${ClassName}Result">
         <include refid="select${ClassName}Vo"/>
-        <where>  
+        <where>
 #foreach($column in $columns)
 #set($queryType=$column.queryType)
 #set($javaField=$column.javaField)
@@ -89,7 +89,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 #end
         </where>
     </select>
-    
+
     <select id="select${ClassName}By${pkColumn.capJavaField}" parameterType="${pkColumn.javaType}" resultMap="#if($table.sub)${ClassName}${subClassName}Result#else${ClassName}Result#end">
 #if($table.crud || $table.tree)
         <include refid="select${ClassName}Vo"/>
@@ -144,15 +144,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="delete${ClassName}By${pkColumn.capJavaField}s" parameterType="String">
-        delete from ${tableName} where ${pkColumn.columnName} in 
+        delete from ${tableName} where ${pkColumn.columnName} in
         <foreach item="${pkColumn.javaField}" collection="array" open="(" separator="," close=")">
             #{${pkColumn.javaField}}
         </foreach>
     </delete>
 #if($table.sub)
-    
+
     <delete id="delete${subClassName}By${subTableFkClassName}s" parameterType="String">
-        delete from ${subTableName} where ${subTableFkName} in 
+        delete from ${subTableName} where ${subTableFkName} in
         <foreach item="${subTableFkclassName}" collection="array" open="(" separator="," close=")">
             #{${subTableFkclassName}}
         </foreach>

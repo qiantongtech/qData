@@ -10,7 +10,7 @@
   Special Notice:
   All derivative versions are strictly prohibited from modifying or removing
   the default system logo and copyright information.
-  For brand customization, please contact the official team for authorization.
+  For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
    *
@@ -25,7 +25,7 @@
    *
   特别说明：
   所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌授权。
+  如需定制品牌，请通过官方渠道申请品牌定制授权。
    *
   更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
@@ -34,7 +34,7 @@
     <el-menu :default-active="activeMenu" mode="horizontal" @select="handleSelect" :ellipsis="false">
         <template v-for="(item, index) in topMenus">
             <el-menu-item :style="{ '--theme': theme }" :index="item.path" :key="index" v-if="index < visibleNumber">
-                <svg-icon 
+                <svg-icon
                     v-if="item.meta && item.meta.icon && item.meta.icon !== '#'" :icon-class="item.meta.icon" />
                 {{ item.meta.title }}
             </el-menu-item>
@@ -45,7 +45,7 @@
             <template #title>更多菜单</template>
             <template v-for="(item, index) in topMenus">
                 <el-menu-item :index="item.path" :key="index" v-if="index >= visibleNumber">
-                    <svg-icon 
+                    <svg-icon
                         v-if="item.meta && item.meta.icon && item.meta.icon !== '#'" :icon-class="item.meta.icon" />
                     {{ item.meta.title }}
                 </el-menu-item>

@@ -55,8 +55,24 @@ nbdist/
 !*/build/*.html
 !*/build/*.xml
 
+######################################################################
+# macOS 系统文件
+.DS_Store
+.AppleDouble
+.LSOverride
 
+# 缓存和缩略图
+Icon?
+._*
 
+# Spotlight 搜索索引
+.Spotlight-V100
+
+# Time Machine 备份
+.TemporaryItems
+.Trashes
+
+######################################################################
 ### 组件库编译后的文件 ###
 storybook-static/
 

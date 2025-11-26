@@ -90,7 +90,7 @@ services:
 
   mysql:
     privileged: true
-    image: mysql:5.7
+    image: mysql:8.0
     container_name: mysql
     restart: always
     profiles: [ "all", "schema", "local", "qdata-mysql" ]
@@ -106,7 +106,7 @@ services:
       - "3306:3306"
     volumes:
       #      #挂载数据库
-      #      - ./mysql/data:/var/lib/mysql
+      #      - ./database/mysql/data:/var/lib/mysql
       #挂载配置文件
       - ./database/mysql/conf.d:/etc/mysql/conf.d
       # 如需初始化 SQL：

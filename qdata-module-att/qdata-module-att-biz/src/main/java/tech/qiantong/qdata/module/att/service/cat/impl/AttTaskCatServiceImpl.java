@@ -134,6 +134,7 @@ public class AttTaskCatServiceImpl extends ServiceImpl<AttTaskCatMapper, AttTask
                 .eqIfPresent(AttTaskCatDO::getCreateTime, reqVO.getCreateTime())
                 .eqIfPresent(AttTaskCatDO::getProjectId,reqVO.getProjectId())
                 .eqIfPresent(AttTaskCatDO::getProjectCode,reqVO.getProjectCode())
+                .eqIfPresent(AttTaskCatDO::getValidFlag,reqVO.getValidFlag())
                 .orderByAsc(AttTaskCatDO::getSortOrder);
         return attTaskCatMapper.selectList(queryWrapperX);
     }

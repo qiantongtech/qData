@@ -628,7 +628,7 @@ function handleSortChange(column, prop, order) {
   getList();
 }
 function getDeptTree() {
-  listAttDataElemCat().then((response) => {
+  listAttDataElemCat({ validFlag: true }).then((response) => {
     deptOptions.value = proxy.handleTree(response.data, "id", "parentId");
     deptOptions.value = [
       {

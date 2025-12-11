@@ -51,6 +51,7 @@ import tech.qiantong.qdata.module.att.controller.admin.cat.vo.AttApiCatPageReqVO
 import tech.qiantong.qdata.module.att.controller.admin.cat.vo.AttApiCatRespVO;
 import tech.qiantong.qdata.module.att.controller.admin.cat.vo.AttApiCatSaveReqVO;
 import tech.qiantong.qdata.module.att.dal.dataobject.cat.AttApiCatDO;
+import tech.qiantong.qdata.module.att.dal.dataobject.cat.AttTaskCatDO;
 import tech.qiantong.qdata.module.att.dal.mapper.cat.AttApiCatMapper;
 import tech.qiantong.qdata.module.att.service.cat.IAttApiCatService;
 import tech.qiantong.qdata.module.ds.api.service.api.DsApiService;
@@ -144,6 +145,7 @@ public class AttApiCatServiceImpl extends ServiceImpl<AttApiCatMapper, AttApiCat
                 .eqIfPresent(AttApiCatDO::getValidFlag, reqVO.getValidFlag())
                 .eqIfPresent(AttApiCatDO::getCode, reqVO.getCode())
                 .eqIfPresent(AttApiCatDO::getCreateTime, reqVO.getCreateTime())
+                .eqIfPresent(AttApiCatDO::getValidFlag, reqVO.getValidFlag())
                 .orderByAsc(AttApiCatDO::getSortOrder);
         return attApiCatMapper.selectList(queryWrapperX);
     }

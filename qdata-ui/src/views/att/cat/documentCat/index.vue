@@ -32,9 +32,6 @@
 
 <template>
   <div class="app-container" ref="app-container">
-
-    <GuideTip tip-id="att/attDocumentCat.list" />
-
     <div class="pagecont-top" v-show="showSearch">
       <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="75px">
         <el-form-item label="标准类目名称" prop="name" label-width="130">

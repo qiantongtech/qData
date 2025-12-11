@@ -550,7 +550,7 @@ async function crontabFill(value) {
     formRef.value?.validateField('cycle');
 }
 function getDeptTree() {
-    listAttQualityCat().then((response) => {
+    listAttQualityCat({ validFlag: true }).then((response) => {
         deptOptions.value = proxy.handleTree(response.data, "id", "parentId");
         deptOptions.value = [
             {

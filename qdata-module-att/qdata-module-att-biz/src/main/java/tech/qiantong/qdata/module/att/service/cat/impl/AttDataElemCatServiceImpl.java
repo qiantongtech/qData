@@ -48,6 +48,7 @@ import tech.qiantong.qdata.module.att.controller.admin.cat.vo.AttDataElemCatPage
 import tech.qiantong.qdata.module.att.controller.admin.cat.vo.AttDataElemCatRespVO;
 import tech.qiantong.qdata.module.att.controller.admin.cat.vo.AttDataElemCatSaveReqVO;
 import tech.qiantong.qdata.module.att.dal.dataobject.cat.AttDataElemCatDO;
+import tech.qiantong.qdata.module.att.dal.dataobject.cat.AttTaskCatDO;
 import tech.qiantong.qdata.module.att.dal.mapper.cat.AttDataElemCatMapper;
 import tech.qiantong.qdata.module.att.service.cat.IAttDataElemCatService;
 import tech.qiantong.qdata.module.dp.api.service.dataElem.IDataElemApiService;
@@ -148,6 +149,7 @@ public class AttDataElemCatServiceImpl extends ServiceImpl<AttDataElemCatMapper,
                 .eqIfPresent(AttDataElemCatDO::getDescription, reqVO.getDescription())
                 .likeRightIfPresent(AttDataElemCatDO::getCode, reqVO.getCode())
                 .eqIfPresent(AttDataElemCatDO::getCreateTime, reqVO.getCreateTime())
+                .eqIfPresent(AttDataElemCatDO::getValidFlag,reqVO.getValidFlag())
                 .orderByAsc(AttDataElemCatDO::getSortOrder);
         return attDataElemCatMapper.selectList(queryWrapperX);
     }

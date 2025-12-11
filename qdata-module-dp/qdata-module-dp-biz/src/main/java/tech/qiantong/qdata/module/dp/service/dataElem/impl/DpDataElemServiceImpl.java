@@ -123,7 +123,12 @@ public class DpDataElemServiceImpl extends ServiceImpl<DpDataElemMapper, DpDataE
     }
 
     @Override
-    public int removeDpDataElem(Collection<Long> idList) {
+    public int removeDpDataElem(List<Long> idList) {
+        //判断当前元数据是否被模型及资产使用
+        Long count = dpDataElemMapper.checkHasRel(idList);
+        if (count > 0) {
+            throw new ServiceException("数据元被模型或资产使用，请先解除关联关系");
+        }
         // 批量删除数据元
         return dpDataElemMapper.deleteBatchIds(idList);
     }

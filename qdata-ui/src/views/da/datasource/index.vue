@@ -738,11 +738,11 @@ const data = reactive({
     endpoint: [{ required: true, message: 'endpoint不能为空', trigger: 'blur' }],
     dbname: [
       { required: true, message: '数据库名称不能为空', trigger: 'blur' },
-      {
-        pattern: /^[^\u4e00-\u9fa5]+$/,
-        message: '数据库名称不能包含中文',
-        trigger: 'blur'
-      }
+      // {
+      //   pattern: /^[^\u4e00-\u9fa5]+$/,
+      //   message: '数据库名称不能包含中文',
+      //   trigger: 'blur'
+      // }
     ],
     sid: [{ required: true, message: '模式不能为空', trigger: 'blur' }],
     description: [{ required: true, message: '描述不能为空', trigger: 'blur' }],

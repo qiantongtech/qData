@@ -292,7 +292,7 @@ const data = reactive({
     startTime: null,
     endTime: null,
     time: [],
-    taskType: "1",
+    taskType: "3",
     catCode: null,
     orderByColumn: "start_time",
   },

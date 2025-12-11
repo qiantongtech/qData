@@ -57,7 +57,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 
 	<sql id="selectOperLogVo">
-        select oper_id, title, business_type, method, request_method, operator_type, oper_name, dept_name, oper_url, oper_ip, oper_location, oper_param, json_result, status, error_msg, oper_time, cost_time
+        select oper_id, title, business_type, method, request_method, operator_type, (SELECT u.NICK_NAME FROM SYSTEM_USER u WHERE u.USER_NAME = oper_name AND u.DEL_FLAG = '0') AS oper_name, dept_name, oper_url, oper_ip, oper_location, oper_param, json_result, status, error_msg, oper_time, cost_time
         from system_oper_log
     </sql>
 

@@ -40,9 +40,13 @@
                 <div class="pagecont-top" v-show="showSearch">
                     <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="75px"
                         v-show="showSearch" @submit.prevent>
-                        <el-form-item label="标准信息" prop="keyWordParam">
-                            <el-input class="el-form-input-width" v-model="queryParams.keyWordParam"
-                                placeholder="请输入标准号或标准名称" clearable @keyup.enter="handleQuery" />
+                        <el-form-item label="标准号" prop="code">
+                            <el-input class="el-form-input-width" v-model="queryParams.code"
+                                placeholder="请输入标准号" clearable @keyup.enter="handleQuery" />
+                        </el-form-item>
+                        <el-form-item label="标准名称" prop="name">
+                            <el-input class="el-form-input-width" v-model="queryParams.name"
+                                placeholder="请输入标准名称" clearable @keyup.enter="handleQuery" />
                         </el-form-item>
                         <el-form-item label="标准状态" prop="status">
                             <el-select class="el-form-input-width" v-model="queryParams.status" placeholder="请选择标准状态">
@@ -78,9 +82,9 @@
                     <el-table stripe v-loading="loading" :data="dpDataElemList"
                         @selection-change="handleSelectionChange" :default-sort="defaultSort"
                         @sort-change="handleSortChange">
-                        <el-table-column v-if="getColumnVisibility(0)" label="编号" align="left" prop="id" width="50" />
+                        <el-table-column v-if="getColumnVisibility(0)" label="编号" align="left" prop="id" width="60" sortable />
                         <el-table-column v-if="getColumnVisibility(1)" label="标准号"
-                            :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="name">
+                            :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="code">
                             <template #default="scope">
                                 {{ scope.row.code || "-" }}
                             </template>
@@ -112,7 +116,7 @@
                         </el-table-column>
                         <!--  sortable="custom" column-key="create_time" :sort-orders="['descending', 'ascending']" -->
                         <el-table-column v-if="getColumnVisibility(11)" label="创建时间" align="left" prop="createTime"
-                            width="150">
+                            width="150" sortable>
                             <template #default="scope"> <span>{{ parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}")
                                 || "-"
                                     }}</span>
@@ -246,7 +250,7 @@ const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
-const defaultSort = ref({ prop: "createTime", order: "desc" });
+const defaultSort = ref({ prop: "create_time", order: "descending" });
 const router = useRouter();
 
 /*** 用户导入参数 */
@@ -270,11 +274,10 @@ const data = reactive({
     queryParams: {
         pageNum: 1,
         pageSize: 10,
-        name: null,
+        code: null,
         name: null,
         catCode: null,
-        type:
-            3,
+        type:3,
     },
     rules: {
         code: [{ required: true, message: "中文不能为空", trigger: "blur" }],
@@ -385,6 +388,8 @@ function resetQuery() {
     }
     queryParams.value.catCode = "";
     queryParams.value.pageNum = 1;
+    queryParams.value.orderByColumn = defaultSort.value.prop;
+    queryParams.value.isAsc = defaultSort.value.order;
     reset();
     proxy.resetForm("queryRef");
     handleQuery();
@@ -399,7 +404,7 @@ function handleSelectionChange(selection) {
 
 /** 排序触发事件 */
 function handleSortChange(column, prop, order) {
-    queryParams.value.orderByColumn = column.prop;
+    queryParams.value.orderByColumn = column.prop == 'createTime'?'create_time':column.prop;
     queryParams.value.isAsc = column.order;
     getList();
 }
@@ -616,6 +621,9 @@ function routeTo(link, row) {
         }
     }
 }
+
+queryParams.value.orderByColumn = defaultSort.value.prop;
+queryParams.value.isAsc = defaultSort.value.order;
 getDeptTree();
 getList();
 </script>

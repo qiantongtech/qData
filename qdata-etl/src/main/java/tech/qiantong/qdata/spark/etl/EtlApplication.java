@@ -129,6 +129,7 @@ public class EtlApplication {
             updateProcess(processInstance, WorkflowExecutionStatus.FAILURE, rabbitmq);
             //更新输入节点实例执行失败
             updateTask(readerTaskInstance, TaskExecutionStatus.FAILURE, rabbitmq);
+            LogUtils.writeLog(readerLogParams, "失败原因:" + e.getMessage());
             LogUtils.writeLog(readerLogParams, "任务失败");
             LogUtils.writeLog(readerLogParams, "FINALIZE_SESSION");
             spark.stop();
@@ -165,6 +166,7 @@ public class EtlApplication {
                     updateProcess(processInstance, WorkflowExecutionStatus.FAILURE, rabbitmq);
                     updateTask(transitionTaskInstance, TaskExecutionStatus.FAILURE, rabbitmq);
                     spark.stop();
+                    LogUtils.writeLog(transitionLogParams, "失败原因:" + e.getMessage());
                     LogUtils.writeLog(transitionLogParams, "任务失败");
                     LogUtils.writeLog(transitionLogParams, "FINALIZE_SESSION");
                     spark.stop();
@@ -193,6 +195,7 @@ public class EtlApplication {
                     .writer(config, data, writer, writerLogParams);
         } catch (Exception e) {
             log.error("任务失败", e);
+            LogUtils.writeLog(writerLogParams, "失败原因:" + e.getMessage());
         }
 
         if (flag) {

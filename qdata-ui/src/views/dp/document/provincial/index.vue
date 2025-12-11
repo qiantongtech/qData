@@ -409,7 +409,7 @@ function handleSortChange(column, prop, order) {
     getList();
 }
 function getDeptTree() {
-    listAttDocumentCat().then((response) => {
+    listAttDocumentCat({ validFlag: true }).then((response) => {
         deptOptions.value = proxy.handleTree(response.data, "id", "parentId");
         deptOptions.value = [
             {

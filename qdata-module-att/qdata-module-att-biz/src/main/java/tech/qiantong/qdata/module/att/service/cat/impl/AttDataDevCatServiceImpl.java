@@ -51,6 +51,7 @@ import tech.qiantong.qdata.module.att.controller.admin.cat.vo.AttDataDevCatPageR
 import tech.qiantong.qdata.module.att.controller.admin.cat.vo.AttDataDevCatRespVO;
 import tech.qiantong.qdata.module.att.controller.admin.cat.vo.AttDataDevCatSaveReqVO;
 import tech.qiantong.qdata.module.att.dal.dataobject.cat.AttDataDevCatDO;
+import tech.qiantong.qdata.module.att.dal.dataobject.cat.AttTaskCatDO;
 import tech.qiantong.qdata.module.att.dal.mapper.cat.AttDataDevCatMapper;
 import tech.qiantong.qdata.module.att.service.cat.IAttDataDevCatService;
 import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
@@ -129,6 +130,7 @@ public class AttDataDevCatServiceImpl extends ServiceImpl<AttDataDevCatMapper, A
                 .likeRightIfPresent(AttDataDevCatDO::getCode, reqVO.getCode())
                 .eqIfPresent(AttDataDevCatDO::getProjectId,reqVO.getProjectId())
                 .eqIfPresent(AttDataDevCatDO::getProjectCode,reqVO.getProjectCode())
+                .eqIfPresent(AttDataDevCatDO::getValidFlag,reqVO.getValidFlag())
                 .orderByAsc(AttDataDevCatDO::getSortOrder);
         return attDataDevCatMapper.selectList(queryWrapperX);
     }

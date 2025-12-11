@@ -325,7 +325,7 @@ public class OracleDialect extends AbstractDbDialect {
     @Override
     public String tables(String dbName) {
         if (StringUtils.isNotBlank(dbName)) {
-            return "SELECT DISTINCT t.TABLE_NAME AS TABLENAME,c.COMMENTS AS TABLECOMMENT FROM ALL_TAB_COMMENTS c JOIN ALL_TABLES t ON c.TABLE_NAME = t.TABLE_NAME WHERE t.OWNER = '" + dbName + "'";
+            return "SELECT DISTINCT t.TABLE_NAME AS TABLENAME,c.COMMENTS AS TABLECOMMENT FROM ALL_TAB_COMMENTS c JOIN ALL_TABLES t ON c.TABLE_NAME = t.TABLE_NAME WHERE t.OWNER = '" + dbName + "' AND c.OWNER = '" + dbName + "'";
         } else {
             return "select tables.table_name AS TABLENAME, comments.comments AS TABLECOMMENT from sys.user_tables tables " +
                     "LEFT JOIN sys.user_tab_comments comments ON tables.table_name = comments.table_name ";
@@ -335,7 +335,7 @@ public class OracleDialect extends AbstractDbDialect {
     @Override
     public String tables(DbQueryProperty dbQueryProperty) {
         if (StringUtils.isNotBlank(dbQueryProperty.getDbName())) {
-            return "SELECT DISTINCT t.TABLE_NAME AS TABLENAME,c.COMMENTS AS TABLECOMMENT FROM ALL_TAB_COMMENTS c JOIN ALL_TABLES t ON c.TABLE_NAME = t.TABLE_NAME WHERE t.OWNER = '" + dbQueryProperty.getDbName() + "'";
+            return "SELECT DISTINCT t.TABLE_NAME AS TABLENAME,c.COMMENTS AS TABLECOMMENT FROM ALL_TAB_COMMENTS c JOIN ALL_TABLES t ON c.TABLE_NAME = t.TABLE_NAME WHERE t.OWNER = '" + dbQueryProperty.getDbName() + "' AND c.OWNER = '" + dbQueryProperty.getDbName() + "'";
         } else {
             return "select tables.table_name AS TABLENAME, comments.comments AS TABLECOMMENT from sys.user_tables tables " +
                     "LEFT JOIN sys.user_tab_comments comments ON tables.table_name = comments.table_name ";

@@ -90,7 +90,8 @@
                 <div class="item-form">
                   <div class="form-label">标准分类:</div>
                   <div class="form-value">
-                    <dict-tag :options="dp_document_type" :value="item.type" />
+                    <!-- <dict-tag :options="dp_document_type" :value="item.type" /> -->
+                    <div :class="['value-tag', 'type' + item.type]">{{ typeFormat1(item) }}</div>
                   </div>
                 </div>
                 <div class="item-form">

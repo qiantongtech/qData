@@ -340,7 +340,7 @@ const handleConfirm = (form) => {
   createEtlTaskFront(parms).then((res) => {
     if (res.code == 200) {
       proxy.$modal.msgSuccess("操作成功");
-      getList();
+    //   getList();
       routeTo('/dpp/task/integratioTask/edit', res.data);
     }
   })
@@ -387,13 +387,14 @@ function getDeptTree() {
     projectCode: userStore.projectCode,
     validFlag: true
   }).then((response) => {
-    deptOptions.value = proxy.handleTree(response.data, "id", "parentId");
+    deptOptions.value = []
+    var children = proxy.handleTree(response.data, "id", "parentId");
     deptOptions.value = [
       {
         name: "数据集成类目",
         value: "",
         id: 0,
-        children: deptOptions.value,
+        children: children,
       },
     ];
   });
@@ -584,6 +585,7 @@ watch(
   () => userStore.projectId,
   () => {
     getList();
+    getDeptTree();
   }
 );
 
@@ -696,7 +698,10 @@ onActivated(() => {
   getList();
 
 });
-getDeptTree();
+if(userStore.projectId){
+  getDeptTree();
+  getList();
+}
 
 
 

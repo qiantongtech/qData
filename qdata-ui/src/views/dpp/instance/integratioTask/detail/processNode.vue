@@ -81,6 +81,7 @@ import OutputForm from "@/views/dpp/task/integratioTask/components/output/tableF
 import { getLogByTaskInstanceId, getTaskInfo } from "@/api/dpp/task/etlTask";
 // import taskConfigDialog from "@/views/dpp/etl/components//task.vue";
 import useUserStore from "@/store/system/user";
+import { toolbar } from "@/utils/graph";
 import { Export } from '@antv/x6-plugin-export'
 const userStore = useUserStore();
 import { getTeleport } from "@antv/x6-vue-shape";

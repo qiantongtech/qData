@@ -169,7 +169,7 @@
                 <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
                   v-hasPermi="['dp:dataElem:edit']">修改
                 </el-button>
-                <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
+                <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)" :disabled="scope.row.status === '1'"
                   v-hasPermi="['dp:dataElem:remove']">删除
                 </el-button>
                 <el-button link type="primary" icon="view" @click="handleDetail(scope.row)"

@@ -412,8 +412,8 @@ const handleConfirm = (form) => {
   createEtlTaskFront(parms).then((res) => {
     if (res.code == 200) {
       proxy.$modal.msgSuccess("操作成功");
-      getList();
-      routeTo('/dpp/task/developTask', {
+    //   getList();
+      routeTo('/dpp/task/developTask/edit', {
         ...res.data,
       })
     }
@@ -452,13 +452,14 @@ function getDeptTree() {
     projectCode: userStore.projectCode,
     validFlag: true
   }).then((response) => {
-    deptOptions.value = proxy.handleTree(response.data, "id", "parentId");
+    deptOptions.value = []
+    var children = proxy.handleTree(response.data, "id", "parentId");
     deptOptions.value = [
       {
         name: "数据开发类目",
         value: "",
         id: 0,
-        children: deptOptions.value,
+        children: children
       },
     ];
   });
@@ -693,11 +694,11 @@ const { queryParams, form, rules } = toRefs(data);
 
 // 监听 id 变化
 watch(
-  () => userStore.projectCode,
+  () => userStore.projectId,
   (newId) => {
     getList();
+    getDeptTree();
   },
-  { immediate: true } // `immediate` 为 true 表示页面加载时也会立即执行一次 watch
 );
 
 /** 查询数据开发任务列表 */
@@ -805,7 +806,7 @@ function routeTo(link, row) {
 
 
 onActivated(() => {
-  const from = router.options.history.state.back || "";
+//   const from = router.options.history.state.back || "";
   // if (!from.includes("id=")) {
   //   queryParams.value.catCode = "";
   //   queryParams.value.pageNum = 1;
@@ -814,7 +815,10 @@ onActivated(() => {
   getList();
 
 });
-getDeptTree();
+if(userStore.projectId){
+  getDeptTree();
+  getList();
+}
 
 </script>
 <style scoped lang="scss">

@@ -340,7 +340,7 @@ const formattedText = computed(() => {
 /** 导出按钮操作 */
 async function handleExport(row) {
   proxy.download(
-    "/dpp/dppEtlNodeInstance/downloadLog",
+    "/dpp/etlNodeInstance/downloadLog",
     {
       nodeInstanceId: row.id,
     },

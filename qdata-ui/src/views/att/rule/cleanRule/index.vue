@@ -36,7 +36,7 @@
         <GuideTip tip-id="att/attCleanRule.list" />
 
         <el-container style="90%">
-            <DeptTree :deptOptions="processedData" ref="DeptTreeRef" :leftWidth="leftWidth" :placeholder="'请输入清洗规则类型'"
+            <DeptTree :deptOptions="processedData" ref="DeptTreeRef" :leftWidth="leftWidth" :placeholder="'请输入稽查规则类目'"
                 @node-click="handleNodeClick" />
 
             <el-main>
@@ -47,10 +47,10 @@
                             <el-input class="el-form-input-width" v-model="queryParams.name" placeholder="请输入规则名称"
                                 clearable @keyup.enter="handleQuery" />
                         </el-form-item>
-                        <el-form-item label="编号" prop="code">
+                        <!-- <el-form-item label="编号" prop="code">
                             <el-input class="el-form-input-width" v-model="queryParams.code" placeholder="请输入编号"
                                 clearable @keyup.enter="handleQuery" />
-                        </el-form-item>
+                        </el-form-item> -->
 
                         <el-form-item>
                             <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">

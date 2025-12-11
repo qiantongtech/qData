@@ -772,8 +772,8 @@ function initModule8() {
       },
       selected: {
         数据归集: true,
-        数据清洗: false,
-        数据共享: false,
+        数据清洗: true,
+        数据共享: true,
       },
     },
     grid: {

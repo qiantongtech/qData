@@ -622,6 +622,7 @@ function routeTo(link, row) {
         }
     }
 }
+
 getDeptTree();
 getList();
 </script>

@@ -38,10 +38,10 @@
     <div class="pagecont-top" v-show="showSearch">
       <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="75px"
         v-show="showSearch" @submit.prevent>
-        <el-form-item label="编号" prop="id">
+        <!-- <el-form-item label="编号" prop="id">
           <el-input class="el-form-input-width" v-model="queryParams.id" placeholder="请输入编号" clearable
             @keyup.enter="handleQuery" />
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="应用名称" prop="name">
           <el-input class="el-form-input-width" v-model="queryParams.name" placeholder="请输入应用名称" clearable
             @keyup.enter="handleQuery" />

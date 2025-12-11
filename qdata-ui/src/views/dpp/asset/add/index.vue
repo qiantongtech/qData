@@ -36,7 +36,7 @@
     <el-form ref="daDiscoveryTaskRef" :model="form" label-width="110px" @submit.prevent>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="资产名称" prop="name" :rules="[{ required: true, message: '请输入资产名称', trigger: 'blur' }]">
+          <el-form-item label="资产名称" prop="name" :rules="[{ required: true, message: '请输入资产名称', trigger: 'blur' },{ min: 1, max: 30, message: '长度必须介于1到20个字符之间', trigger: 'blur' }]">
             <el-input v-model="form.name" placeholder="请输入资产名称" />
           </el-form-item>
         </el-col>
@@ -53,7 +53,7 @@
         <el-col :span="12">
           <el-form-item label="所属主题" prop="themeIdList"
             :rules="[{ required: true, message: '请选择主题', trigger: 'change' }]">
-            <el-select v-model="form.themeIdList" collapse-tags multiple placeholder="请选择主题名称">
+            <el-select v-model="form.themeIdList" collapse-tags multiple max-collapse-tags="2" placeholder="请选择主题名称">
               <el-option v-for="dict in themeList" :key="dict.id" :label="dict.name" :value="dict.id"></el-option>
             </el-select>
           </el-form-item>
@@ -279,7 +279,7 @@ const form = ref({
   sourceType: "0",
   name: "",
   themeIdList: [],
-  status: "2",
+  status: "1",
   description: "",
   source: "3",
   // 1
@@ -667,7 +667,7 @@ const clearForm = () => {
     sourceType: "0",
     name: "",
     themeIdList: [],
-    status: '2',
+    status: '1',
     createType: "2",
     description: "",
     source: "3",

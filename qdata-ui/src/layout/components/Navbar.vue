@@ -419,6 +419,7 @@ function projectIdChange(row, newValue) {
         userStore.projectCode = project.code;
     }
     if (userStore.projectId) {
+        localStorage.setItem("qdataProjectId", userStore.projectId);
         getRoutersDpp(userStore.projectId).then((res) => {
             // 更新store中的路由数据
             permissionStore.updateTopbarRoutes(res.data);
@@ -436,6 +437,7 @@ function projectIdChange(row, newValue) {
             console.log('---------menuPaths-------------', menuPaths);
 
             if (!menuPaths.includes(currentPath[currentPath.length - 1])) {
+                proxy.$tab.closeAllPage()
                 console.log('1');
                 // 如果不存在，跳转到第一个菜单
                 if (topMenus.children[0].children && topMenus.children[0].children.length > 0) {
@@ -470,7 +472,9 @@ function projectIdChange(row, newValue) {
                 };
                 console.log(currentPageData, '123123');
 
-                proxy.$tab.refreshPage(currentPageData);
+                if(currentPageData.path !== currentPath.join('/')){
+                  proxy.$tab.refreshPage(currentPageData);
+                }
             }
             // 刷新当前页面
             proxy.$refs['topNavRef'].handleSelect('/dpp', null, false);

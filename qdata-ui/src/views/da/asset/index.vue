@@ -1331,7 +1331,6 @@ getAssetThemeList();
         display: flex;
         align-items: flex-end;
         justify-content: flex-end;
-
         .form-btn {
           margin-right: 10px;
           cursor: pointer;
@@ -1343,6 +1342,10 @@ getAssetThemeList();
           align-items: center;
           justify-content: center;
           color: #3d446e;
+
+          &:last-child {
+            margin-right: 0;
+          }
 
           span {
             margin-left: 4px;

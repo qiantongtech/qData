@@ -333,7 +333,7 @@ function handleNodeClick(data) {
 /** 导出按钮操作 */
 async function handleExport(row) {
     proxy.download(
-        "/dpp/dppEtlTaskInstance/downloadLog",
+        "/dpp/etlTaskInstance/downloadLog",
         {
             taskInstanceId: row.id,
         },

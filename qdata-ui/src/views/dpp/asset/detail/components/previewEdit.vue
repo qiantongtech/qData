@@ -69,6 +69,7 @@ import { ElMessage } from "element-plus";
 import { addDaAssetOperateLog } from "@/api/da/assetchild/operate/daAssetOperateLog.js";
 import moment from "moment";
 import OverflowTooltip from "@/components/OverflowTooltip";
+const { proxy } = getCurrentInstance();
 const props = defineProps({
     columns: {
         type: Array,
@@ -156,6 +157,10 @@ function addRow(row, data) {
 function submitForm() {
     queryFormRef.value.validate((valid) => {
         if (!valid) return;
+        if(uniqueKeys.value){
+          proxy.$modal.msgWarning("当前表未设置物理主键，无法执行修改操作。");
+          return;
+        }
 
         loading.value = true;
         const commentKeyList = uniqueKeys.value.map((item) => item.en).join(",");

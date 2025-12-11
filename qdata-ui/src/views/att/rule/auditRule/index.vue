@@ -36,7 +36,7 @@
         <GuideTip tip-id="att/attAuditRule.list" />
 
         <el-container style="90%">
-            <DeptTree :deptOptions="processedData" :leftWidth="leftWidth" :placeholder="'请输入稽查规则类型'"
+            <DeptTree :deptOptions="processedData" :leftWidth="leftWidth" :placeholder="'请输入稽查规则类目'"
                 @node-click="handleNodeClick" ref="DeptTreeRef" :default-expand="true" :type="1" />
 
             <el-main>
@@ -47,10 +47,10 @@
                             <el-input class="el-form-input-width" v-model="queryParams.name" placeholder="请输入规则名称"
                                 clearable @keyup.enter="handleQuery" />
                         </el-form-item>
-                        <el-form-item label="编号" prop="code">
+                        <!-- <el-form-item label="编号" prop="code">
                             <el-input class="el-form-input-width" v-model="queryParams.code" placeholder="请输入编号"
                                 clearable @keyup.enter="handleQuery" />
-                        </el-form-item>
+                        </el-form-item> -->
                         <!-- <el-form-item label="规则级别" prop="level">
                             <el-select class="el-form-input-width" v-model="queryParams.level" placeholder="请选择规则类型"
                                 clearable>

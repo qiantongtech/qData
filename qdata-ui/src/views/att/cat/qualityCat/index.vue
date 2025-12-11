@@ -291,6 +291,8 @@ function handleStatusChange(row) {
       updateAttQualityCat({ id: row.id, validFlag: row.validFlag }).then((response) => {
         proxy.$modal.msgSuccess(text + '成功');
         getList();
+      }).catch(()=>{
+        row.validFlag = !row.validFlag;
       });
     })
     .catch(function () {

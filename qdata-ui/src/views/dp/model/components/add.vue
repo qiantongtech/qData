@@ -401,7 +401,9 @@ const handleChange = (isOld) => {
     (item) => item.tableName == form.value.tableName
   );
   if (table) {
-    form.value.modelComment = table.tableComment;
+    if(table.tableComment){
+        form.value.modelComment = table.tableComment;
+    }
     form.value.modelName = table.tableName;
   }
   tableData.value = [];

@@ -146,15 +146,20 @@ let form = ref({
 let id = route.query.id || 1;
 // 监听 id 变化
 watch(
-  () => route.query.id,
-  (newId) => {
-    console.log("route.query", route.query);
+    [() => route.query.id, () => userStore.projectCode],
+    ([newId, newCode], [oldId, oldCode]) => {
+      if (newId) {
+        console.log("route.query", route.query);
+        id = newId || 1;
+        if (id) {
+          getList();
+        }
+      }
 
-    id = newId || 1;
-    if (id) {
-      getList();
+      if (newCode) {
+        getDeptTree();
+      }
     }
-  }
 );
 // 图标
 const getDatasourceIcon = (type) => {
@@ -232,7 +237,11 @@ let userList = ref([]);
 let deptOptions = ref([]);
 function getDeptTree() {
   Promise.all([
-    listAttDataDevCat().catch((err) => {
+    listAttDataDevCat({
+      projectId: userStore.projectId,
+      projectCode: userStore.projectCode,
+      validFlag: true,
+    }).catch((err) => {
       console.error("获取类别数据失败", err);
       return { data: [] };
     }),
@@ -242,6 +251,7 @@ function getDeptTree() {
     }),
   ])
     .then(([taskCatRes, userRes]) => {
+      deptOptions.value = []
       // 处理部门类别数据
       deptOptions.value = [
         {
@@ -404,7 +414,9 @@ const minimizeAction = () => {
 
 // 初始化函数
 onMounted(() => {
-  getDeptTree();
+  if(userStore.projectId){
+    getDeptTree();
+  }
 });
 // eslint-disable-next-line no-unused-vars
 function routeTo(link, row) {

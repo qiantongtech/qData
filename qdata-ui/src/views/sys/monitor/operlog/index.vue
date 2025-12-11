@@ -143,72 +143,72 @@
             <el-row :gutter="20">
                <el-col :span="12">
                   <el-form-item label="操作模块">
-                     <div class="form-value-ifon">
+                     <div class="form-readonly">
                         {{ form.title }} / {{ typeFormat(form) }}
                      </div>
                   </el-form-item>
                </el-col>
                <el-col :span="12">
                   <el-form-item label="登录信息">
-                     <div class="form-value-ifon">
+                     <div class="form-readonly">
                         {{ form.operName }} / {{ form.operIp }} / {{ form.operLocation }}
                      </div>
                   </el-form-item>
                </el-col>
                <el-col :span="12">
                   <el-form-item label="请求地址">
-                     <div class="form-value-ifon">
+                     <div class="form-readonly">
                         {{ form.operUrl }}
                      </div>
                   </el-form-item>
                </el-col>
                <el-col :span="12">
                   <el-form-item label="请求方式">
-                     <div class="form-value-ifon">
+                     <div class="form-readonly">
                         {{ form.requestMethod }}
                      </div>
                   </el-form-item>
                </el-col>
                <el-col :span="24">
                   <el-form-item label="操作方法">
-                     <div class="form-value-ifon">
+                     <div class="form-readonly">
                         {{ form.method }}
                      </div>
                   </el-form-item>
                </el-col>
                <el-col :span="24">
                   <el-form-item label="请求参数">
-                     <div class="form-value-ifon">
+                     <div class="form-readonly">
                         {{ form.operParam }}
                      </div>
                   </el-form-item>
                </el-col>
                <el-col :span="24">
                   <el-form-item label="返回参数">
-                     <div class="form-value-ifon">
+                     <div class="form-readonly">
                         {{ form.jsonResult }}
                      </div>
                   </el-form-item>
                </el-col>
                <el-col :span="12">
                   <el-form-item label="操作状态">
-                     <div class="form-value-ifon" v-if="form.status === 0">正常</div>
-                     <div class="form-value-ifon" v-else-if="form.status === 1">失败</div>
+                     <div class="form-readonly" v-if="form.status === 0">正常</div>
+                     <div class="form-readonly" v-else-if="form.status === 1">失败</div>
                   </el-form-item>
                </el-col>
                <el-col :span="12">
                   <el-form-item label="消耗时间">
-                     <div class="form-value-ifon">{{ form.costTime }}毫秒</div>
+                     <div class="form-readonly">{{ form.costTime }}毫秒</div>
                   </el-form-item>
                </el-col>
                <el-col :span="12">
                   <el-form-item label="操作时间">
-                     <div class="form-value-ifon">{{ parseTime(form.operTime) }}</div>
+                     <div class="form-readonly">{{ parseTime(form.operTime) }}</div>
                   </el-form-item>
                </el-col>
                <el-col :span="24">
                   <el-form-item label="异常信息" v-if="form.status === 1">
-                     <div class="form-value-ifon">{{ form.errorMsg }}</div>
+                     <div class="form-readonly">{{ form.errorMsg }}</div>
                   </el-form-item>
                </el-col>
             </el-row>
@@ -334,7 +334,7 @@ function handleExport() {
 getList();
 </script>
 <style scoped lang="scss">
-.form-value-ifon {
+.form-readonly {
    width: 100%;
    border: 1px solid #c0c4cc;
    padding: 0px 10px;

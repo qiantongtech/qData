@@ -324,15 +324,20 @@ function getList() {
 let userList = ref([]);
 let deptOptions = ref([]);
 function getDeptTree() {
-    listAttTaskCat().then((response) => {
-        deptOptions.value = proxy.handleTree(response.data, "id", "parentId");
+    listAttTaskCat({
+        projectId: userStore.projectId,
+        projectCode: userStore.projectCode,
+        validFlag: true,
+    }).then((response) => {
+        deptOptions.value = [];
+        var children = proxy.handleTree(response.data, "id", "parentId");
         deptOptions.value = [
-            {
-                name: "数据集成类目",
-                value: "",
-                id: 0,
-                children: deptOptions.value,
-            },
+        {
+            name: "数据集成类目",
+            value: "",
+            id: 0,
+            children: children,
+        },
         ];
     });
     deptUserTree().then((res) => {
@@ -349,6 +354,13 @@ const closeDialog = () => {
     }
     drawer.value = false;
 };
+
+watch(
+  () => userStore.projectCode,
+  () => {
+    getDeptTree();
+  }
+);
 // 弹窗保存
 const handleFormSubmit = async (nodeData = {}) => {
     if (!currentNode?.value?.id) return;
@@ -444,6 +456,7 @@ const handleFormSubmit = async (nodeData = {}) => {
     node.setProp('data', newData);
 
     const newInputFields = outputFields;
+    
 
     if (outputsChanged) {
         // 只有输出字段实际变化，才清空子节点
@@ -1063,11 +1076,15 @@ const toolbarClick = (item) => {
     }
 };
 // 初始化函数
-onMounted(() => {
-    getDeptTree();
-    initializeGraph();
+onMounted(async () => {
+     if (userStore.projectId) {
+        getDeptTree();
+    }
+    await initializeGraph();
     bindGraphEvents();
-
+    if (route.query.id) {
+        getList();
+    }
 });
 // 离开页面时提示
 onBeforeRouteLeave((to, from, next) => {

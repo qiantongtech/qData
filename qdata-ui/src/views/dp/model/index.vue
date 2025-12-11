@@ -87,12 +87,12 @@
                   }" />物化
                 </el-button>
               </el-col>
-              <el-col :span="1.5">
+              <!-- <el-col :span="1.5">
                 <el-button type="danger" plain :disabled="multiple" @click="handleDelete"
                   v-hasPermi="['dp:model:remove']" @mousedown="(e) => e.preventDefault()">
                   <i class="iconfont-mini icon-shanchu-huise mr5"></i>删除
                 </el-button>
-              </el-col>
+              </el-col> -->
               <!-- <el-col :span="1.5">
                 <el-button type="info" plain @click="handleImport" v-hasPermi="['dp:model:export']"
                   @mousedown="(e) => e.preventDefault()">
@@ -114,7 +114,7 @@
           <el-table stripe v-loading="loading" :data="dpModelList" @selection-change="handleSelectionChange"
             :default-sort="defaultSort" @sort-change="handleSortChange">
             <el-table-column type="selection" width="30" align="left" :selectable="selectable" />
-            <el-table-column v-if="getColumnVisibility(0)" label="编号" width="50" align="left" prop="id" />
+            <el-table-column v-if="getColumnVisibility(0)" label="编号" width="60" align="left" prop="id" sortable />
             <el-table-column v-if="getColumnVisibility(1)" label="英文名称" :show-overflow-tooltip="{ effect: 'light' }"
               align="left" prop="modelName" width="200">
               <template #default="scope">
@@ -138,7 +138,7 @@
                 {{ scope.row.createBy || "-" }}
               </template>
             </el-table-column>
-            <el-table-column label="创建时间" v-if="getColumnVisibility(11)" align="left" prop="createTime" width="180">
+            <el-table-column label="创建时间" v-if="getColumnVisibility(11)" align="left" prop="createTime" width="180" sortable>
               <template #default="scope">
                 <span>{{
                   parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}")
@@ -387,7 +387,7 @@ const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
-const defaultSort = ref({ prop: "createTime", order: "desc" });
+const defaultSort = ref({ prop: "create_time", order: "descending" });
 const router = useRouter();
 
 /*** 用户导入参数 */
@@ -507,6 +507,8 @@ function resetQuery() {
   }
   queryParams.value.catCode = "";
   queryParams.value.pageNum = 1;
+   queryParams.value.orderByColumn = defaultSort.value.prop;
+  queryParams.value.isAsc = defaultSort.value.order;
   reset();
   proxy.resetForm("queryRef");
   handleQuery();
@@ -631,7 +633,8 @@ function routeTo(link, row) {
     }
   }
 }
-
+queryParams.value.orderByColumn = defaultSort.value.prop;
+queryParams.value.isAsc = defaultSort.value.order;
 getList();
 getDeptTree();
 </script>

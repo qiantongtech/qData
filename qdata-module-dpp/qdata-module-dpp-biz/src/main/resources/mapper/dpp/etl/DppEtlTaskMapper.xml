@@ -253,15 +253,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 <choose>
                     <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'mysql'">
                         CAST(
-                            SUBSTRING_INDEX(
-                                SUBSTRING_INDEX(
-                                    node.PARAMETERS,
-                                    '"datasourceId":',
-                                    -1
-                                ),
-                                ',',
-                                1
-                            ) AS UNSIGNED
+                            JSON_UNQUOTE(JSON_EXTRACT(node.PARAMETERS, '$.datasourceId'))
+                            AS UNSIGNED
                         )
                     </when>
                     <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'dm8'">
@@ -338,95 +331,112 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="getDppEtlTaskPage" resultType="tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlTaskRespVO">
         SELECT
-        t.*,
-        t2.NAME AS catName,
-        t3.CRON_EXPRESSION AS cronExpression,
-        t3.STATUS AS schedulerState ,
-        (SELECT MAX(ti.CREATE_TIME) FROM DPP_ETL_TASK_INSTANCE ti WHERE ti.TASK_CODE = t.CODE AND ti.DEL_FLAG = '0') AS lastExecuteTime
-        <if test="params.type == '3'.toString()">
-            <choose>
-                <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'dm8'">
-                    ,JSON_VALUE(t.DRAFT_JSON, '$.typaCode') AS datasourceType
-                </when>
-                <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'mysql'">
-                    ,JSON_EXTRACT(t.DRAFT_JSON, '$.typaCode') AS datasourceType
-                </when>
-            </choose>
-        </if>
+            t.*,
+            t3.CRON_EXPRESSION AS cronExpression,
+            t3.STATUS AS schedulerState,
+            ti.CREATE_TIME AS lastExecuteTime,
+            ti.STATUS AS lastExecuteStatus
+            <if test="params.type == '3'.toString()">
+                <choose>
+                    <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'dm8'">
+                        ,JSON_VALUE(t.DRAFT_JSON, '$.typaCode') AS datasourceType
+                    </when>
+                    <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'mysql'">
+                        ,JSON_EXTRACT(t.DRAFT_JSON, '$.typaCode') AS datasourceType
+                    </when>
+                </choose>
+                ,(SELECT t4.ID FROM DPP_ETL_TASK_INSTANCE t4 WHERE t4.TASK_CODE = t.CODE AND t4.DEL_FLAG = '0' AND t4.STATUS IN ('0','1') ORDER BY t4.CREATE_TIME DESC LIMIT 1) AS taskInstanceId
+            </if>
         FROM
-        DPP_ETL_TASK t
-        LEFT JOIN
+            DPP_ETL_TASK t
         <choose>
             <when test="params.type == '1'.toString()">
-                ATT_TASK_CAT
+                LEFT JOIN  ATT_TASK_CAT t2 ON t.CAT_CODE = t2.CODE AND t2.DEL_FLAG = '0'
             </when>
             <when test="params.type == '3'.toString()">
-                ATT_DATA_DEV_CAT
+                LEFT JOIN ATT_DATA_DEV_CAT t2 ON t.CAT_CODE = t2.CODE AND t2.DEL_FLAG = '0'
             </when>
             <when test="params.type == '4'.toString()">
-                ATT_JOB_CAT
+                LEFT JOIN ATT_JOB_CAT t2 ON t.CAT_CODE = t2.CODE AND t2.DEL_FLAG = '0'
             </when>
         </choose>
-        t2 on t.CAT_CODE = t2.CODE AND t2.DEL_FLAG = '0'
-        LEFT JOIN  DPP_ETL_SCHEDULER t3 ON t.id = t3.task_id AND t3.DEL_FLAG = '0'
+        LEFT JOIN DPP_ETL_SCHEDULER t3 ON t.id = t3.task_id AND t3.DEL_FLAG = '0'
+        <!-- 关键改造：关联“每个任务最新一条实例”的子查询 -->
+        LEFT JOIN (
+            SELECT ti1.TASK_CODE, ti1.CREATE_TIME, ti1.STATUS
+            FROM DPP_ETL_TASK_INSTANCE ti1
+            WHERE ti1.DEL_FLAG = '0'
+            AND ti1.CREATE_TIME = (
+                SELECT MAX(ti2.CREATE_TIME)
+                FROM DPP_ETL_TASK_INSTANCE ti2
+                WHERE ti2.TASK_CODE = ti1.TASK_CODE
+                AND ti2.DEL_FLAG = '0'
+            )
+        ) ti ON ti.TASK_CODE = t.CODE
         WHERE
-        t.DEL_FLAG = '0'
-        AND t.STATUS NOT IN ('-2', '-3')
-        AND t.TYPE = #{params.type}
-        <if test="params.catCode != null and params.catCode != ''">
-            AND t.CAT_CODE LIKE CONCAT(#{params.catCode}, '%')
-        </if>
-        <if test="params.name != null and params.name != ''">
-            AND t.NAME LIKE CONCAT('%',CONCAT(#{params.name},'%'))
-        </if>
-        <if test="params.code != null and params.code != ''">
-            AND t.CODE = #{params.code}
-        </if>
-        <if test="params.projectId != null">
-            AND t.PROJECT_ID = #{params.projectId}
-        </if>
-        <if test="params.projectCode != null and params.projectCode != ''">
-            AND t.PROJECT_CODE = #{params.projectCode}
-        </if>
-        <if test="params.personCharge != null and params.personCharge != ''">
-            AND t.PERSON_CHARGE = #{params.personCharge}
-        </if>
-        <if test="params.status != null and params.status != ''">
-            AND t.STATUS = #{params.status}
-        </if>
-        <if test="params.type == '3'.toString() and params.processType != null and params.processType != ''">
-            <choose>
-                <when test="params.processType == '1'.toString()">
-                    <choose>
-                        <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'dm8'">
-                            AND JSON_VALUE(t.DRAFT_JSON, '$.typaCode') = 'FlinkStream'
-                        </when>
-                        <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'mysql'">
-                            AND JSON_EXTRACT(t.DRAFT_JSON, '$.typaCode') = 'FlinkStream'
-                        </when>
-                    </choose>
-                </when>
-                <when test="params.processType == '2'.toString()">
-                    <choose>
-                        <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'dm8'">
-                            AND JSON_VALUE(t.DRAFT_JSON, '$.typaCode') != 'FlinkStream'
-                        </when>
-                        <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'mysql'">
-                            AND JSON_EXTRACT(t.DRAFT_JSON, '$.typaCode') != 'FlinkStream'
-                        </when>
-                    </choose>
-                </when>
-            </choose>
-        </if>
-        <if test="params.type == '3'.toString() and params.datasourceType != null and params.datasourceType != ''">
-            <choose>
-                <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'dm8'">
-                    AND JSON_VALUE(t.DRAFT_JSON, '$.typaCode') = #{params.datasourceType}
-                </when>
-                <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'mysql'">
-                    AND JSON_EXTRACT(t.DRAFT_JSON, '$.typaCode') = #{params.datasourceType}
-                </when>
-            </choose>
+            t.DEL_FLAG = '0'
+            AND t.STATUS NOT IN ('-2', '-3')
+            AND t.TYPE = #{params.type}
+            <if test="params.catCode != null and params.catCode != ''">
+                AND t.CAT_CODE LIKE CONCAT(#{params.catCode}, '%')
+            </if>
+            <if test="params.name != null and params.name != ''">
+                AND t.NAME LIKE CONCAT('%',CONCAT(#{params.name},'%'))
+            </if>
+            <if test="params.code != null and params.code != ''">
+                AND t.CODE = #{params.code}
+            </if>
+            <if test="params.projectId != null">
+                AND t.PROJECT_ID = #{params.projectId}
+            </if>
+            <if test="params.projectCode != null and params.projectCode != ''">
+                AND t.PROJECT_CODE = #{params.projectCode}
+            </if>
+            <if test="params.personCharge != null and params.personCharge != ''">
+                AND t.PERSON_CHARGE = #{params.personCharge}
+            </if>
+            <if test="params.status != null and params.status != ''">
+                AND t.STATUS = #{params.status}
+            </if>
+            <if test="params.type == '3'.toString() and params.processType != null and params.processType != ''">
+                <choose>
+                    <when test="params.processType == '1'.toString()">
+                        <choose>
+                            <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'dm8'">
+                                AND JSON_VALUE(t.DRAFT_JSON, '$.typaCode') = 'FlinkStream'
+                            </when>
+                            <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'mysql'">
+                                AND JSON_EXTRACT(t.DRAFT_JSON, '$.typaCode') = 'FlinkStream'
+                            </when>
+                        </choose>
+                    </when>
+                    <when test="params.processType == '2'.toString()">
+                        <choose>
+                            <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'dm8'">
+                                AND JSON_VALUE(t.DRAFT_JSON, '$.typaCode') != 'FlinkStream'
+                            </when>
+                            <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'mysql'">
+                                AND JSON_EXTRACT(t.DRAFT_JSON, '$.typaCode') != 'FlinkStream'
+                            </when>
+                        </choose>
+                    </when>
+                </choose>
+            </if>
+            <if test="params.type == '3'.toString() and params.datasourceType != null and params.datasourceType != ''">
+                <choose>
+                    <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'dm8'">
+                        AND JSON_VALUE(t.DRAFT_JSON, '$.typaCode') = #{params.datasourceType}
+                    </when>
+                    <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'mysql'">
+                        AND JSON_EXTRACT(t.DRAFT_JSON, '$.typaCode') = #{params.datasourceType}
+                    </when>
+                </choose>
+            </if>
+        <if test="params.orderByColumn != null and params.orderByColumn != ''">
+            ORDER BY ${params.orderByColumn}
+            <if test="params.isAsc != null and params.isAsc != ''">
+                ${params.isAsc}
+            </if>
         </if>
     </select>
 </mapper>

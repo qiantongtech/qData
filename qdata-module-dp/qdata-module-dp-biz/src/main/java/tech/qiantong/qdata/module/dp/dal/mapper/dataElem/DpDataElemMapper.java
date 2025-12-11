@@ -34,16 +34,13 @@ package tech.qiantong.qdata.module.dp.dal.mapper.dataElem;
 
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.annotations.Param;
 import tech.qiantong.qdata.module.dp.dal.dataobject.dataElem.DpDataElemDO;
 
-import java.util.Arrays;
+import java.util.*;
 
 import com.github.yulichang.base.MPJBaseMapper;
 import tech.qiantong.qdata.common.core.page.PageResult;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import tech.qiantong.qdata.module.dp.controller.admin.dataElem.vo.DpDataElemPageReqVO;
 import tech.qiantong.qdata.mybatis.core.mapper.BaseMapperX;
@@ -75,4 +72,12 @@ public interface DpDataElemMapper extends BaseMapperX<DpDataElemDO> {
                 .orderByStr(StringUtils.isNotBlank(reqVO.getOrderByColumn()), StringUtils.equals("asc", reqVO.getIsAsc()), StringUtils.isNotBlank(reqVO.getOrderByColumn()) ? Arrays.asList(reqVO.getOrderByColumn().split(",")) : null);
         return selectJoinPage(reqVO, DpDataElemDO.class, lambdaWrapper);
     }
+
+    /**
+     * 判断当前元数据是否被模型及资产使用
+     *
+     * @param idList
+     * @return
+     */
+    Long checkHasRel(@Param("idList") List<Long> idList);
 }

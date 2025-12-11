@@ -294,7 +294,7 @@ const selectable = (row) => {
 
 /** 查询部门下拉树结构 */
 function getDeptTree() {
-    listAttModelCat().then((response) => {
+  listAttModelCat({ validFlag: true }).then((response) => {
         deptOptions.value = proxy.handleTree(response.data, "id", "parentId");
         deptOptions.value = [
             {

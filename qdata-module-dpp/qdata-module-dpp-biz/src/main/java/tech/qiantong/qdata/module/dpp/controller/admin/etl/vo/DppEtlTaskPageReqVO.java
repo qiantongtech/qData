@@ -53,6 +53,9 @@ public class DppEtlTaskPageReqVO extends PageParam {
     @Schema(description = "任务类型", example = "1：离线任务 2：实时任务 3：数据开发任务 4：作业任务")
     private String type;
 
+    @Schema(description = "处理类型", example = "1 流处理  2 批处理")
+    private String processType;
+
     @Schema(description = "数据源类型", example = "")
     private String datasourceType;
 
@@ -100,4 +103,7 @@ public class DppEtlTaskPageReqVO extends PageParam {
 
     /** 类目编码 */
     private String catCode;
+
+    @Schema(description = "草稿任务配置信息", example = "")
+    private String draftJson;
 }

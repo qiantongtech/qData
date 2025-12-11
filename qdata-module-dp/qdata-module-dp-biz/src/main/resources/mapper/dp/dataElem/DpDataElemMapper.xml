@@ -128,6 +128,26 @@
         from DP_DATA_ELEM
         where ID = #{id}
     </select>
+    <select id="checkHasRel" resultType="java.lang.Long">
+        SELECT
+        (SELECT
+        count(1)
+        FROM
+        DP_DATA_ELEM_ASSET_REL
+        WHERE DEL_FLAG=0 AND ID IN
+        <foreach collection="idList" item="id" open="(" separator="," close=")">
+            id
+        </foreach>)
+        +
+        (SELECT
+        count(1)
+        FROM
+        DP_MODEL_COLUMN
+        WHERE DEL_FLAG=0 AND DATA_ELEM_ID IN
+        <foreach collection="idList" item="id" open="(" separator="," close=")">
+            id
+        </foreach>)
+    </select>
 
     <insert id="insertDpDataElem" parameterType="DpDataElemDO">
         insert into DP_DATA_ELEM

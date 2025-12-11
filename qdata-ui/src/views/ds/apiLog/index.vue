@@ -143,7 +143,7 @@
                 <!--                <el-button link type="primary" icon="view" @click="routeTo('/ds/logDetail/dsApiLogDetail', scope.row)"-->
                 <!--                  v-hasPermi="['ds:apiLog:edit']">查看日志</el-button>-->
                 <el-button link type="primary" icon="view" @click="handleDetail(scope.row)"
-                  v-hasPermi="['ds:apiLog:edit']">详情</el-button>
+                  v-hasPermi="['ds:apiLog:query']">详情</el-button>
                 <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
                   v-hasPermi="['ds:apiLog:remove']">删除</el-button>
               </template>

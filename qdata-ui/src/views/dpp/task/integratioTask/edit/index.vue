@@ -42,22 +42,47 @@
             </div>
 
             <div class="head-btns">
-                <el-button type="primary" size="small" @click="handleExportData(false)" v-if="!route.query.info">
+                <el-button
+                    type="primary"
+                    size="small"
+                    :disabled="loading"
+                    @click="handleExportData(false)"
+                    v-if="!route.query.info">
                     <img src="@/assets/dpp/etl/title-act (1).svg" alt="">任务保存
                 </el-button>
-                <el-button type="primary" plain size="small" @click="routeTo('/dpp/task/integratioTask', '')">
+                <el-button
+                    type="primary"
+                    plain
+                    size="small"
+                    :disabled="loading"
+                    @click="routeTo('/dpp/task/integratioTask', '')">
                     <img class="currImg" src="@/assets/dpp/etl/title (3).svg" alt="">
                     <img class="act" src="@/assets/dpp/etl/title-act (3).svg" alt="">任务取消
                 </el-button>
-                <el-button type="primary" plain size="small" @click="openTaskConfigDialog" v-if="!route.query.info">
+                <el-button
+                    type="primary"
+                    plain
+                    size="small"
+                    :disabled="loading"
+                    @click="openTaskConfigDialog"
+                    v-if="!route.query.info">
                     <img class="currImg" src="@/assets/dpp/etl/title (4).svg" alt="">
                     <img class="act" src="@/assets/dpp/etl/title-act (4).svg" alt="">任务配置
                 </el-button>
-                <el-button type="primary" plain size="small" @click="openTaskConfigDialog" v-else>
+                <el-button
+                    type="primary"
+                    plain size="small"
+                    :disabled="loading"
+                    @click="openTaskConfigDialog" v-else>
                     <img class="currImg" src="@/assets/dpp/etl/title (4).svg" alt="">
                     <img class="act" src="@/assets/dpp/etl/title-act (4).svg" alt="">任务详情
                 </el-button>
-                <el-button type="primary" plain v-if="!route.query.info" size="small"
+                <el-button
+                    type="primary"
+                    plain
+                    :disabled="loading"
+                    v-if="!route.query.info"
+                    size="small"
                     @click="selectTab('checkMessage')">
                     <img class="currImg" src="@/assets/dpp/etl/title (2).svg" alt="">
                     <img class="act" src="@/assets/dpp/etl/title-act (2).svg" alt="">任务检查
@@ -456,7 +481,7 @@ const handleFormSubmit = async (nodeData = {}) => {
     node.setProp('data', newData);
 
     const newInputFields = outputFields;
-    
+
 
     if (outputsChanged) {
         // 只有输出字段实际变化，才清空子节点
@@ -1291,7 +1316,7 @@ const getAssetsFile = (url) => {
 }
 
 .right-pane {
-    min-height: 864px;
+    //min-height: 864px;
     width: 20vw;
     flex: 1;
     display: flex;

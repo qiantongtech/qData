@@ -413,73 +413,73 @@ function reportingForWork() {
 }
 
 function projectIdChange(row, newValue) {
-    // 从projectOptions中获取项目code
-    const project = projectOptions.value.find((item) => item.id === userStore.projectId);
-    if (project) {
-        userStore.projectCode = project.code;
-    }
-    if (userStore.projectId) {
-        localStorage.setItem("qdataProjectId", userStore.projectId);
-        getRoutersDpp(userStore.projectId).then((res) => {
-            // 更新store中的路由数据
-            permissionStore.updateTopbarRoutes(res.data);
-            let topMenus = [];
-            routers.value.map((menu) => {
-                if (menu.path === '/dpp') {
-                    topMenus = menu;
-                }
-            });
-            const currentPath = router.currentRoute.value.path.split('/'); // 获取当前路由地址
-            const menuPaths = topMenus.children.flatMap((child) =>
-                child.children ? child.children.map((subChild) => subChild.path) : child.path
-            ); // 获取菜单权限中的路径，如果有子节点就获取子节点的路径
-            console.log('---------currentPath-------------', currentPath);
-            console.log('---------menuPaths-------------', menuPaths);
+  // 从projectOptions中获取项目code
+  const project = projectOptions.value.find((item) => item.id === userStore.projectId);
+  if (project) {
+    userStore.projectCode = project.code;
+  }
+  if (userStore.projectId) {
+    localStorage.setItem("qdataProjectId", userStore.projectId);
+    getRoutersDpp(userStore.projectId).then((res) => {
+      // 更新store中的路由数据
+      permissionStore.updateTopbarRoutes(res.data);
+      let topMenus = [];
+      routers.value.map((menu) => {
+        if (menu.path === '/dpp') {
+          topMenus = menu;
+        }
+      });
+      const currentPath = router.currentRoute.value.path.split('/'); // 获取当前路由地址
+      const menuPaths = topMenus.children.flatMap((child) =>
+          child.children ? child.children.map((subChild) => subChild.path) : child.path
+      ); // 获取菜单权限中的路径，如果有子节点就获取子节点的路径
+      console.log('---------currentPath-------------', currentPath);
+      console.log('---------menuPaths-------------', menuPaths);
 
-            if (!menuPaths.includes(currentPath[currentPath.length - 1])) {
-                proxy.$tab.closeAllPage()
-                console.log('1');
-                // 如果不存在，跳转到第一个菜单
-                if (topMenus.children[0].children && topMenus.children[0].children.length > 0) {
-                    console.log('11');
+      if (!menuPaths.includes(currentPath[currentPath.length - 1])) {
+        //清空选项卡
+        proxy.$tab.closeAllPage()
+        console.log('1');
+        // 如果不存在，跳转到第一个菜单
+        if (topMenus.children[0].children && topMenus.children[0].children.length > 0) {
+          console.log('11');
 
-                    const lastChild = JSON.parse(
-                        JSON.stringify(topMenus.children[0].children[0])
-                    );
-                    const fullPath = `${topMenus.path}/${topMenus.children[0].path}/${lastChild.path}`;
-                    lastChild.path = fullPath;
-                    proxy.$tab.refreshPage(lastChild);
-                } else if (topMenus.query != null) {
-                    console.log('12');
-                    const lastChild = JSON.parse(JSON.stringify(topMenus));
-                    const query = JSON.parse(topMenus.query);
-                    lastChild.query = query;
-                    proxy.$tab.refreshPage(lastChild);
-                } else {
-                    console.log('13');
-                    proxy.$tab.refreshPage(topMenus.children[0]);
-                }
-            } else {
-                // 如果当前路由地址在菜单权限中存在，刷新页面
-                console.log('2');
+          const lastChild = JSON.parse(
+              JSON.stringify(topMenus.children[0].children[0])
+          );
+          const fullPath = `${topMenus.path}/${topMenus.children[0].path}/${lastChild.path}`;
+          lastChild.path = fullPath;
+          proxy.$tab.refreshPage(lastChild);
+        } else if (topMenus.query != null) {
+          console.log('12');
+          const lastChild = JSON.parse(JSON.stringify(topMenus));
+          const query = JSON.parse(topMenus.query);
+          lastChild.query = query;
+          proxy.$tab.refreshPage(lastChild);
+        } else {
+          console.log('13');
+          proxy.$tab.refreshPage(topMenus.children[0]);
+        }
+      } else {
+        // 如果当前路由地址在菜单权限中存在，刷新页面
+        console.log('2');
 
-                const currentPageData = {
-                    path: router.currentRoute.value.path,
-                    query: router.currentRoute.value.query,
-                    params: router.currentRoute.value.params,
-                    fullPath: router.currentRoute.value.fullPath,
-                    meta: router.currentRoute.value.meta
-                };
-                console.log(currentPageData, '123123');
-
-                if(currentPageData.path !== currentPath.join('/')){
-                  proxy.$tab.refreshPage(currentPageData);
-                }
-            }
-            // 刷新当前页面
-            proxy.$refs['topNavRef'].handleSelect('/dpp', null, false);
-        });
-    }
+        const currentPageData = {
+          path: router.currentRoute.value.path,
+          query: router.currentRoute.value.query,
+          params: router.currentRoute.value.params,
+          fullPath: router.currentRoute.value.fullPath,
+          meta: router.currentRoute.value.meta
+        };
+        console.log(currentPageData, '123123');
+        if(currentPageData.path !== currentPath.join('/')){
+          proxy.$tab.refreshPage(currentPageData);
+        }
+      }
+      // 刷新当前页面
+      proxy.$refs['topNavRef'].handleSelect('/dpp', null, false);
+    });
+  }
 }
 
 // 判断项目是否被禁用
@@ -552,29 +552,36 @@ const initWebSocket = () => {
     };
 };
 const listProject = () => {
-    console.log(userStore);
-
-    if (userStore.id) {
-        currentUser().then((response) => {
-            console.log('---------- listProjectUserRel-------------', response);
-            projectOptions.value = response.data;
-            response.data[0] == null || response.data[0] == undefined
-                ? (userStore.projectId = null)
-                : (userStore.projectId = response.data[0].id);
-            if (userStore.projectId) {
-                const project = projectOptions.value.find(
-                    (item) => item.id === userStore.projectId
-                );
-                if (project) {
-                    userStore.projectCode = project.code;
-                }
-                getRoutersDpp(userStore.projectId).then((res) => {
-                    // 更新store中的路由数据
-                    permissionStore.updateTopbarRoutes(res.data);
-                });
-            }
+  if (userStore.id) {
+    currentUser().then((response) => {
+      console.log('---------- listProjectUserRel-------------', response);
+      projectOptions.value = response.data;
+      response.data[0] == null || response.data[0] == undefined
+          ? (userStore.projectId = null)
+          : (userStore.projectId = response.data[0].id);
+      if (!response.data || response.data.length == 0) {
+        localStorage.removeItem('qdataProjectId');
+      }
+      var qdataProjectId = localStorage.getItem("qdataProjectId");
+      if (userStore.projectId) {
+        if (qdataProjectId) {
+          userStore.projectId = parseInt(qdataProjectId);
+        }else{
+          localStorage.setItem("qdataProjectId", userStore.projectId);
+        }
+        const project = projectOptions.value.find(
+            (item) => item.id === userStore.projectId
+        );
+        if (project) {
+          userStore.projectCode = project.code;
+        }
+        getRoutersDpp(userStore.projectId).then((res) => {
+          // 更新store中的路由数据
+          permissionStore.updateTopbarRoutes(res.data);
         });
-    }
+      }
+    });
+  }
 };
 
 onMounted(() => {

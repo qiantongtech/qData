@@ -54,7 +54,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 
 	<select id="selectLogininforList" parameterType="SysLogininfor" resultMap="SysLogininforResult">
-		select info_id, user_name, ipaddr, login_location, browser, os, status, msg, login_time from system_logininfor
+		select info_id, (SELECT u.NICK_NAME FROM SYSTEM_USER u WHERE u.USER_NAME = l.user_name AND u.DEL_FLAG = '0') AS user_name, ipaddr, login_location, browser, os, status, msg, login_time from system_logininfor l
 		<where>
 			<if test="status != null and status != ''">
 				AND status = #{status}

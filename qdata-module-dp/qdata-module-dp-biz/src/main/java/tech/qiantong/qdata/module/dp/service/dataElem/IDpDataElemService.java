@@ -81,7 +81,7 @@ public interface IDpDataElemService extends IService<DpDataElemDO> {
      *
      * @param idList 数据元编号
      */
-    int removeDpDataElem(Collection<Long> idList);
+    int removeDpDataElem(List<Long> idList);
 
     /**
      * 获得数据元详情

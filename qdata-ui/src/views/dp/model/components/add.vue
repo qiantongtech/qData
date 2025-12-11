@@ -38,7 +38,7 @@
       </span>
     </template>
     <el-form ref="dpModelRef" :model="form" :rules="rules" label-width="110px" @submit.prevent>
-      <el-form-item label="创建方式" prop="createType">
+      <el-form-item v-if="!form.id" label="创建方式" prop="createType">
         <el-radio-group v-model="form.createType">
           <el-radio v-for="dict in dp_model_create_type" :key="dict.value" :value="dict.value">{{ dict.label
           }}</el-radio>
@@ -402,7 +402,7 @@ const handleChange = (isOld) => {
   );
   if (table) {
     if(table.tableComment){
-        form.value.modelComment = table.tableComment;
+      form.value.modelComment = table.tableComment;
     }
     form.value.modelName = table.tableName;
   }

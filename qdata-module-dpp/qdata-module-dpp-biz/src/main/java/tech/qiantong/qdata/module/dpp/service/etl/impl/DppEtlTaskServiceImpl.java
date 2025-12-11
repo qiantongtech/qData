@@ -37,6 +37,7 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
@@ -76,6 +77,7 @@ import tech.qiantong.qdata.module.dpp.dal.mapper.etl.DppEtlTaskMapper;
 import tech.qiantong.qdata.module.dpp.service.etl.*;
 import tech.qiantong.qdata.module.dpp.utils.TaskConverter;
 import tech.qiantong.qdata.module.dpp.utils.model.DsResource;
+import tech.qiantong.qdata.mybatis.core.util.MyBatisUtils;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -145,34 +147,8 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
 
     @Override
     public PageResult<DppEtlTaskRespVO> getDppEtlTaskPageList(DppEtlTaskPageReqVO dppEtlTask) {
-        PageResult<DppEtlTaskDO> dppEtlTaskDOPageResult = dppEtlTaskMapper.selectPage(dppEtlTask);
-        PageResult<DppEtlTaskRespVO> dppEtlTaskRespVOPageResult = BeanUtils.toBean(dppEtlTaskDOPageResult, DppEtlTaskRespVO.class);
-        List<DppEtlTaskRespVO> dppEtlTaskDOList = (List<DppEtlTaskRespVO>) dppEtlTaskRespVOPageResult.getRows();
-        if (CollectionUtils.isEmpty(dppEtlTaskDOList)) {
-            return dppEtlTaskRespVOPageResult;
-        }
-        if ("3".equals(dppEtlTask.getType())) {
-            for (DppEtlTaskRespVO dppEtlTaskDO : dppEtlTaskDOList) {
-                if (StringUtils.equals("-1", dppEtlTaskDO.getStatus())) {
-                    String draftJson = dppEtlTaskDO.getDraftJson();
-                    if (StringUtils.isNotEmpty(draftJson)) {
-                        JSONObject draftJsonObj = JSONUtil.parseObj(draftJson);
-                        dppEtlTaskDO.setDatasourceType(draftJsonObj.getStr("typaCode"));
-                    }
-                    continue;
-                }
-                List<DppEtlNodeRespVO> etlNodeLogRespVOList = iDppEtlNodeService.listNodeByTaskId(dppEtlTaskDO.getId());
-                if (CollectionUtils.isNotEmpty(etlNodeLogRespVOList)) {
-                    DppEtlNodeRespVO dppEtlNodeDO = CollectionUtils.isNotEmpty(etlNodeLogRespVOList) && etlNodeLogRespVOList.size() >= 1
-                            ? etlNodeLogRespVOList.get(0) : null;
-                    if (dppEtlNodeDO != null) {
-                        JSONObject parametersJsonObj = JSONUtil.parseObj(dppEtlNodeDO.getParameters());
-                        dppEtlTaskDO.setDatasourceType(parametersJsonObj.getStr("typaCode"));
-                    }
-                }
-            }
-        }
-        return dppEtlTaskRespVOPageResult;
+        IPage<DppEtlTaskRespVO> mpPage = dppEtlTaskMapper.getDppEtlTaskPage(MyBatisUtils.buildPage(dppEtlTask), dppEtlTask);//BeanUtils.toBean(dppEtlTaskDOPageResult, DppEtlTaskRespVO.class);
+        return new PageResult(mpPage.getRecords(), mpPage.getTotal());
     }
 
     @Override

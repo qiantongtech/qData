@@ -37,6 +37,7 @@ import org.apache.commons.lang3.StringUtils;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.module.att.controller.admin.project.vo.AttProjectUserRelPageReqVO;
 import tech.qiantong.qdata.module.att.dal.dataobject.project.AttProjectUserRelDO;
+import tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig;
 import tech.qiantong.qdata.mybatis.core.mapper.BaseMapperX;
 
 import java.util.Arrays;
@@ -52,14 +53,21 @@ public interface AttProjectUserRelMapper extends BaseMapperX<AttProjectUserRelDO
     default PageResult<AttProjectUserRelDO> selectPage(AttProjectUserRelPageReqVO reqVO) {
         // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
         MPJLambdaWrapper<AttProjectUserRelDO> lambdaWrapper = new MPJLambdaWrapper();
-
+        String sql = "";
+        if(StringUtils.equals("mysql", MasterDataSourceConfig.getDatabaseType())){
+            sql = "(SELECT GROUP_CONCAT(r.ROLE_NAME) AS roleStr FROM system_role r JOIN system_user_role ur on r.role_id = ur.role_id WHERE u.user_id = ur.user_id" +
+                    " and r.PROJECT_ID = '"+reqVO.getProjectId() +"'"+
+                    ") AS roleStr";
+        }else if(StringUtils.equals("dm8",MasterDataSourceConfig.getDatabaseType())){
+            sql = "(SELECT WM_CONCAT(r.ROLE_NAME) AS roleStr FROM system_role r JOIN system_user_role ur on r.role_id = ur.role_id WHERE u.user_id = ur.user_id" +
+                    " and r.PROJECT_ID = '"+reqVO.getProjectId() +"'"+
+                    ") AS roleStr";
+        }
         lambdaWrapper.selectAll(AttProjectUserRelDO.class)
+                .select(sql)
                 .select("u.nick_name AS nickName, u.user_name AS userName , u.phonenumber AS phoneNumber, u.status AS status ,d.dept_name AS deptName")
-                .leftJoin("SYSTEM_USER u on t.user_id = u.user_id")
-                .leftJoin("SYSTEM_DEPT d on u.dept_id = d.dept_id")
-                .eq("u.del_flag","0")
-                .eq("d.del_flag","0")
-                .eq("t.del_flag","0")
+                .innerJoin("SYSTEM_USER u on t.user_id = u.user_id AND u.del_flag = 0")
+                .leftJoin("SYSTEM_DEPT d on u.dept_id = d.dept_id AND d.del_flag = 0")
                 .eq(reqVO.getProjectId() != null, AttProjectUserRelDO::getProjectId, reqVO.getProjectId())
                 .eq(reqVO.getUserId() != null, AttProjectUserRelDO::getUserId, reqVO.getUserId())
                 .like(StringUtils.isNotBlank(reqVO.getUserName()), "u.user_name", reqVO.getUserName())

@@ -103,6 +103,7 @@ const useUserStore = defineStore('user', {
                         this.token = '';
                         this.roles = [];
                         this.permissions = [];
+                        localStorage.removeItem('qdataProjectId');
                         removeToken();
                         resolve();
                     })

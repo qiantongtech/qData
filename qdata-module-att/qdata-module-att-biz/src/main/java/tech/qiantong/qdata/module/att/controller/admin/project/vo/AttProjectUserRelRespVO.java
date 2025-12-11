@@ -124,4 +124,7 @@ public class AttProjectUserRelRespVO implements Serializable {
 
     @Schema(description = "角色id集合", example = "")
     private List<Long> roleIdList;
+
+    /** 用户角色多个一逗号拼接 */
+    private String roleStr;
 }

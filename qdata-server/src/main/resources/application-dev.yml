@@ -184,7 +184,7 @@ ds:
     #spark-master的地址
     master_url: spark://127.0.0.1:7077
     #jar包在ds的路径
-    main_jar: file:/dolphinscheduler/default/resources/spark-jar/qdata-etl-3.8.8.jar
+    main_jar: file:/dolphinscheduler/default/resources/spark-jar/qdata-etl.jar
     #jar main入口
     main_class: tech.qiantong.qdata.spark.etl.EtlApplication
   # hdfs相关配置

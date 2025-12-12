@@ -37,7 +37,7 @@
     <parent>
         <artifactId>qdata-framework</artifactId>
         <groupId>tech.qiantong</groupId>
-        <version>3.8.8</version>
+        <version>${qdata.version}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -76,7 +76,7 @@
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-redis</artifactId>
-            <version>3.8.8</version>
+            <version>${qdata.version}</version>
         </dependency>
 
         <dependency>
@@ -94,7 +94,7 @@
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-module-system-api</artifactId>
-            <version>3.8.8</version>
+            <version>${qdata.version}</version>
         </dependency>
     </dependencies>
 

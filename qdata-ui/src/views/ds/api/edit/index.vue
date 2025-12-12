@@ -313,6 +313,9 @@ function handleNextStep() {
                 apiId: form2.value?.apiId,
                 transmitType: form2.value?.transmitType,
                 sourceId: form2.sourceId,
+                dbType: form2.sourceId,
+                dbName: form2.sourceId,
+                sid: form2.sourceId,
                 executeConfig: form2,
                 isIntegrate: '0',
                 reqParams: form2.value.reqParams,
@@ -334,8 +337,8 @@ function submitForm() {
                 form2.value = { ...f2 };
                 form1.value = {
                     ...form1.value,
-                    sourceId: form2.sourceId,
-                    executeConfig: form2,
+                    sourceId: form2.value.sourceId,
+                    executeConfig: form2.value,
                     isIntegrate: '0',
                     reqParams: form2.value.reqParams,
                     resParams: form2.value.resParams,

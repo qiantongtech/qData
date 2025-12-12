@@ -57,6 +57,11 @@ public class ExecuteConfig implements Serializable {
 
     private String dbName;
 
+    private String sid;
+
+    private String dbType;
+
+
     @Valid
     private List<FieldParam> fieldParams;
 

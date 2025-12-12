@@ -49,7 +49,6 @@ import tech.qiantong.qdata.common.database.datasource.AbstractDataSourceFactory;
 import tech.qiantong.qdata.common.database.datasource.DefaultDataSourceFactoryBean;
 import tech.qiantong.qdata.common.enums.TaskComponentTypeEnum;
 import tech.qiantong.qdata.spark.etl.utils.LogUtils;
-import tech.qiantong.qdata.spark.etl.utils.RedisUtils;
 import tech.qiantong.qdata.spark.etl.utils.db.DBUtils;
 import tech.qiantong.qdata.spark.etl.utils.db.element.*;
 import tech.qiantong.qdata.spark.etl.utils.db.exception.DBException;
@@ -130,14 +129,7 @@ public class DBWriter implements Writer {
             tmpTableName = tableName + "_" + DateUtil.format(new Date(), "yyyyMMddHHmmss");
             writerOptions.put("dbtable", tmpTableName);
         }
-        String datasource = RedisUtils.hget("datasource", parameter.getString("datasourceId"));
-        DbQueryProperty writerProperty;
-        // 替换存储在 redis 中最新的数据源连接信息
-        if (datasource != null && !"".equals(datasource)) {
-            writerProperty = JSONObject.parseObject(datasource, DbQueryProperty.class);
-        }else {
-            writerProperty = JSONObject.parseObject(parameter.getJSONObject("writerProperty").toString(), DbQueryProperty.class);
-        }
+        DbQueryProperty writerProperty = JSONObject.parseObject(parameter.getJSONObject("writerProperty").toString(), DbQueryProperty.class);
 
         //创建连接
         DbQuery dbQuery = dataSourceFactory.createDbQuery(writerProperty);

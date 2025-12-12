@@ -1,39 +1,6 @@
-/*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
- */
-
 package tech.qiantong.qdata.spark.etl;
 
 import cn.hutool.core.codec.Base64;
-import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import lombok.extern.slf4j.Slf4j;
@@ -41,48 +8,51 @@ import org.apache.spark.SparkConf;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
+import org.junit.jupiter.api.Test;
 import tech.qiantong.qdata.api.ds.api.etl.ds.ProcessInstance;
 import tech.qiantong.qdata.api.ds.api.etl.ds.TaskInstance;
 import tech.qiantong.qdata.common.enums.*;
 import tech.qiantong.qdata.spark.etl.reader.ReaderFactory;
 import tech.qiantong.qdata.spark.etl.transition.TransitionFactory;
-import tech.qiantong.qdata.spark.etl.utils.IDGeneratorUtils;
 import tech.qiantong.qdata.spark.etl.utils.LogUtils;
-import tech.qiantong.qdata.spark.etl.utils.RabbitmqUtils;
 import tech.qiantong.qdata.spark.etl.utils.db.DBUtils;
 import tech.qiantong.qdata.spark.etl.writer.WriterFactory;
 
-
 import java.util.*;
 
-/**
- * <P>
- * 用途:ETL程序入口
- * </p>
- *
- * @author: FXB
- * @create: 2025-04-16 09:43
- **/
-@Slf4j
-public class EtlApplication {
+import static tech.qiantong.qdata.spark.etl.EtlApplication.*;
 
-    public static void main(String[] args) {
+@Slf4j
+class EtlApplicationTest {
+
+
+    @Test
+    public void test() {
+
         DBUtils.init();
 
         Date now = new Date();
-        log.info(args[0]);
-        String jsonStr = Base64.decodeStr(args[0]);
+        String args = "";
+        String jsonStr = Base64.decodeStr(args);
         log.info(jsonStr);
         JSONObject taskParams = JSONObject.parseObject(jsonStr);
         JSONObject config = taskParams.getJSONObject("config");
         JSONObject rabbitmq = config.getJSONObject("rabbitmq");
+        JSONObject redis = config.getJSONObject("redis");
         JSONObject taskInfo = config.getJSONObject("taskInfo");
+        String resourceUrl = config.getString("resourceUrl");
 
         //创建流程实例
         ProcessInstance processInstance = createProcess(taskInfo, now, rabbitmq);
 
         //注册spark
-        SparkConf conf = new SparkConf().setAppName("EtlApplication");
+        SparkConf conf = new SparkConf().setAppName("EtlApplication")
+                .setMaster("local[*]")
+                .set("spark.executor.memory", "6g")
+                .set("spark.driver.memory", "3g")
+                .set("spark.driver.host", "localhost")
+                .set("spark.driver.bindAddress", "localhost")
+                .set("spark.sql.shuffle.partitions", "2");
 
         SparkSession spark = SparkSession.builder()
                 .config(conf)
@@ -121,7 +91,6 @@ public class EtlApplication {
             updateProcess(processInstance, WorkflowExecutionStatus.FAILURE, rabbitmq);
             //更新输入节点实例执行失败
             updateTask(readerTaskInstance, TaskExecutionStatus.FAILURE, rabbitmq);
-            LogUtils.writeLog(readerLogParams, "失败原因:" + e.getMessage());
             LogUtils.writeLog(readerLogParams, "任务失败");
             LogUtils.writeLog(readerLogParams, "FINALIZE_SESSION");
             spark.stop();
@@ -158,7 +127,6 @@ public class EtlApplication {
                     updateProcess(processInstance, WorkflowExecutionStatus.FAILURE, rabbitmq);
                     updateTask(transitionTaskInstance, TaskExecutionStatus.FAILURE, rabbitmq);
                     spark.stop();
-                    LogUtils.writeLog(transitionLogParams, "失败原因:" + e.getMessage());
                     LogUtils.writeLog(transitionLogParams, "任务失败");
                     LogUtils.writeLog(transitionLogParams, "FINALIZE_SESSION");
                     spark.stop();
@@ -170,6 +138,7 @@ public class EtlApplication {
                 LogUtils.writeLog(transitionLogParams, "FINALIZE_SESSION");
             }
         }
+
         //写入配置
         JSONObject writer = taskParams.getJSONObject("writer");
         //输出类型
@@ -187,7 +156,6 @@ public class EtlApplication {
                     .writer(config, data, writer, writerLogParams);
         } catch (Exception e) {
             log.error("任务失败", e);
-            LogUtils.writeLog(writerLogParams, "失败原因:" + e.getMessage());
         }
 
         if (flag) {
@@ -204,67 +172,4 @@ public class EtlApplication {
         spark.stop();
     }
 
-    public static ProcessInstance createProcess(JSONObject taskInfo, Date now, JSONObject rabbitmq) {
-        ProcessInstance processInstance = ProcessInstance.builder()
-                .id(IDGeneratorUtils.getLongId())
-                .name(taskInfo.getString("name") + "-" + taskInfo.getInteger("taskVersion") + "-" + DateUtil.format(new Date(), "yyyyMMddHHmmssSSS"))
-                .projectCode(taskInfo.getString("projectCode"))
-                .processDefinitionCode(taskInfo.getString("taskCode"))
-                .processDefinitionVersion(taskInfo.getInteger("taskVersion"))
-                .runTimes(1)
-                .scheduleTime(now)
-                .startTime(now)
-                .commandStartTime(now)
-                .commandType(CommandType.START_PROCESS)
-                .failureStrategy(FailureStrategy.CONTINUE)
-                .isSubProcess(Flag.NO)
-                .state(WorkflowExecutionStatus.RUNNING_EXECUTION)
-                .build();
-
-        Map<String, Object> processInstanceMap = new HashMap<>();
-        processInstanceMap.put("type", 1);
-        processInstanceMap.put("instance", processInstance);
-
-        RabbitmqUtils.convertAndSend(rabbitmq, "ds.exchange.processInstance", "ds.queue.processInstance", processInstanceMap);
-        return processInstance;
-    }
-
-    public static void updateProcess(ProcessInstance processInstance, WorkflowExecutionStatus status, JSONObject rabbitmq) {
-        processInstance.setState(status);
-        processInstance.setEndTime(new Date());
-
-        Map<String, Object> processInstanceMap = new HashMap<>();
-        processInstanceMap.put("type", 2);
-        processInstanceMap.put("instance", processInstance);
-
-        RabbitmqUtils.convertAndSend(rabbitmq, "ds.exchange.processInstance", "ds.queue.processInstance", processInstanceMap);
-    }
-
-    public static TaskInstance createTask(ProcessInstance processInstance, JSONObject config, Date now, JSONObject rabbitmq) {
-        String nodeName = config.getString("nodeName");
-        String nodeCode = config.getString("nodeCode");
-        Integer nodeVersion = config.getInteger("nodeVersion");
-        TaskInstance taskInstance = TaskInstance.builder()
-                .id(IDGeneratorUtils.getLongId())
-                .name(nodeName)
-                .taskCode(nodeCode)
-                .taskDefinitionVersion(nodeVersion)
-                .taskType("SPARK")
-                .processInstanceId(processInstance.getId())
-                .processInstanceName(processInstance.getName())
-                .projectCode(config.getString("projectCode"))
-                .taskInstancePriority(Priority.MEDIUM)
-                .startTime(now)
-                .state(TaskExecutionStatus.RUNNING_EXECUTION)
-                .build();
-        RabbitmqUtils.convertAndSend(rabbitmq, "ds.exchange.taskInstance", "ds.queue.taskInstance.insert", taskInstance);
-        return taskInstance;
-    }
-
-
-    public static void updateTask(TaskInstance taskInstance, TaskExecutionStatus status, JSONObject rabbitmq) {
-        taskInstance.setState(status);
-        taskInstance.setEndTime(new Date());
-        RabbitmqUtils.convertAndSend(rabbitmq, "ds.exchange.taskInstance", "ds.queue.taskInstance.update", taskInstance);
-    }
 }

@@ -35,10 +35,8 @@ package tech.qiantong.qdata.spark.etl.utils.db;
 import com.alibaba.fastjson2.JSONObject;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.spark.sql.jdbc.JdbcDialects;
 import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
 import tech.qiantong.qdata.common.database.constants.DbType;
-import tech.qiantong.qdata.spark.etl.utils.RedisUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -70,10 +68,6 @@ public class DBUtils {
         JSONObject connection = parameter.getJSONObject("connection");
         String jdbcUrlOld = connection.getString("jdbcUrl");
         String dbType = parameter.getString("dbType");
-
-        if (jdbcUrlOld != null && !"".equals(jdbcUrlOld) && datasourceId == null) {
-            datasourceId = RedisUtils.hget("datasource-old", jdbcUrlOld);
-        }
 
         Map<String, String> options = new HashMap<>();
         //注册驱动
@@ -114,18 +108,6 @@ public class DBUtils {
         String dbName = parameter.getString("dbName");
         String username = parameter.getString("username");
         String password = parameter.getString("password");
-
-        String datasource = RedisUtils.hget("datasource", datasourceId);
-        // 替换存储在 redis 中最新的数据源连接信息
-        if (datasource != null && !"".equals(datasource)) {
-            DbQueryProperty dbQueryProperty = JSONObject.parseObject(datasource, DbQueryProperty.class);
-            dbType = dbQueryProperty.getDbType();
-            jdbcUrl = dbQueryProperty.trainToJdbcUrl();
-            sid = dbQueryProperty.getSid();
-            dbName = dbQueryProperty.getDbName();
-            username = dbQueryProperty.getUsername();
-            password = dbQueryProperty.getPassword();
-        }
 
         if (StringUtils.indexOf(jdbcUrl, "?stringtype=unspecified") == -1
                 && (StringUtils.equals(DbType.KINGBASE8.getDb(), dbType))) {

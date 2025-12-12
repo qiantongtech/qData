@@ -34,7 +34,6 @@ services:
   namenode:
     image: apache/hadoop:3.3.6
     hostname: namenode
-    container_name: namenode
     restart: always
     profiles: [ "all" , "hadoop" , "local" ]
 #    ports:
@@ -51,7 +50,6 @@ services:
   datanode:
     image: apache/hadoop:3.3.6
     hostname: datanode
-    container_name: datanode
     restart: always
     profiles: [ "all" , "hadoop" , "local" ]
 #    ports:
@@ -76,7 +74,6 @@ services:
   resourcemanager:
     image: apache/hadoop:3.3.6
     hostname: resourcemanager
-    container_name: resourcemanager
     restart: always
     profiles: [ "all" , "hadoop" , "local" ]
 #    ports:
@@ -89,7 +86,6 @@ services:
   nodemanager:
     image: apache/hadoop:3.3.6
     hostname: nodemanager
-    container_name: nodemanager
     env_file: .env
     restart: always
     profiles: [ "all" , "hadoop" , "local" ]

@@ -91,7 +91,6 @@ services:
   mysql:
     privileged: true
     image: mysql:8.0
-    container_name: mysql
     restart: always
     profiles: [ "all", "schema", "local", "qdata-mysql" ]
     env_file: .env
@@ -120,7 +119,6 @@ services:
       - qdatanet
 
   mongodb:
-    container_name: mongodb
     restart: always
     profiles: [ "all", "schema", "local"  ]
     env_file: .env

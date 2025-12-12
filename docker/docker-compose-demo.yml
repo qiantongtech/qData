@@ -32,9 +32,8 @@ version: "3.8"
 
 services:
   mysql57:
-    image: mysql:5.7
+    image: mysql:8.0
     profiles: [ "demo", "mysql" ]
-    container_name: mysql57
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: "sfdjfFF#s2332"
@@ -51,7 +50,6 @@ services:
   oracle11g:
     image: wnameless/oracle-xe-11g-r2
     profiles: [ "demo", "oracle" ]
-    container_name: oracle11g-1
     environment:
       - TZ=Asia/Shanghai
       - ORACLE_ALLOW_REMOTE=true

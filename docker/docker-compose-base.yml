@@ -118,7 +118,6 @@ services:
       - qdatanet
 
   mongodb:
-    container_name: mongodb
     restart: always
     profiles: [ "all", "schema", "local"  ]
     env_file: .env

@@ -48,6 +48,7 @@ import org.springframework.stereotype.Service;
 import tech.qiantong.qdata.common.database.DataSourceFactory;
 import tech.qiantong.qdata.common.database.DbQuery;
 import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
+import tech.qiantong.qdata.common.database.constants.DbType;
 import tech.qiantong.qdata.common.database.core.PageResult;
 import tech.qiantong.qdata.common.exception.ServiceException;
 import tech.qiantong.qdata.common.utils.JSONUtils;
@@ -170,8 +171,24 @@ public class ApiMappingEngine {
         List<ReqParam> reqParams1 = JSONArray.parseArray(reqParams, ReqParam.class);
         dataApi.setReqParamsList(reqParams1);
         dataApi.setResParamsList(JSONArray.parseArray(resParams1, ResParam.class));
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(dataApi.getExecuteConfig().getDbName())) {
-            tableName = dataApi.getExecuteConfig().getDbName() + "." + tableName;
+        ExecuteConfig executeConfig = dataApi.getExecuteConfig();
+        if (tech.qiantong.qdata.common.utils.StringUtils.isEmpty(executeConfig.getDbType())) {
+            //通过数据源id获取
+            DaDatasourceRespDTO dataSource = iDaDatasourceApiService.getDatasourceById(Long.valueOf(executeConfig.getSourceId()));
+            if (dataSource == null) {
+                throw new ServiceException("数据源不存在");
+            }
+            executeConfig.setDbType(dataSource.getDatasourceType());
+            JSONObject dataSourceConfig = JSONObject.parseObject(dataSource.getDatasourceConfig());
+            executeConfig.setDbName(dataSourceConfig.getString("dbname"));
+            executeConfig.setSid(dataSourceConfig.getString("sid"));
+        }
+        if (org.apache.commons.lang3.StringUtils.equals(DbType.KINGBASE8.getDb(), executeConfig.getDbType())
+                || org.apache.commons.lang3.StringUtils.equals(DbType.POSTGRE_SQL.getDb(), executeConfig.getDbType())
+                || org.apache.commons.lang3.StringUtils.equals(DbType.SQL_SERVER.getDb(), executeConfig.getDbType())) {
+            tableName = org.apache.commons.lang3.StringUtils.isNotBlank(executeConfig.getDbName()) ? executeConfig.getDbName() + "." + executeConfig.getSid() + "." + tableName : tableName;
+        }  else {
+            tableName = org.apache.commons.lang3.StringUtils.isNotBlank(executeConfig.getDbName()) ? executeConfig.getDbName() + "." + tableName : tableName;
         }
         Table table = new Table(tableName);
         String[] resParams = dataApi.getResParamsList().stream().map(s -> s.getFieldName()).toArray(String[]::new);

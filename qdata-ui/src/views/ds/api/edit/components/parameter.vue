@@ -747,10 +747,16 @@ function configTypeSelectChanged() {
   }
 }
 
-function sourceSelectChanged() {
+function sourceSelectChanged(e) {
   props.form2.reqParams = [];
   props.form2.resParams = [];
   props.form2.table = {};
+
+  let source = props.sourceOptions.filter((i) => i.id == e)[0];
+  let config = JSON.parse(source.datasourceConfig)
+  props.form2.dbType = source.datasourceType;
+  props.form2.dbName = config.dbname;
+  props.form2.sid = config.sid;
 }
 function getDaAssetApply(id) {
   loading.value = true;

@@ -37,7 +37,7 @@
     <parent>
         <artifactId>qData</artifactId>
         <groupId>tech.qiantong</groupId>
-        <version>3.8.8</version>
+        <version>${qdata.version}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -59,35 +59,35 @@
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-module-da-api</artifactId>
-            <version>3.8.8</version>
+            <version>${qdata.version}</version>
         </dependency>
 
 
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-module-att-api</artifactId>
-            <version>3.8.8</version>
+            <version>${qdata.version}</version>
         </dependency>
 
         <!-- 核心模块 config-->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-config</artifactId>
-            <version>3.8.8</version>
+            <version>${qdata.version}</version>
         </dependency>
 
         <!-- 系统模块 mybatis -->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-mybatis</artifactId>
-            <version>3.8.8</version>
+            <version>${qdata.version}</version>
         </dependency>
 
         <!-- 系统模块 redis -->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-redis</artifactId>
-            <version>3.8.8</version>
+            <version>${qdata.version}</version>
         </dependency>
 
         <!-- 通用工具-->
@@ -111,7 +111,7 @@
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-file</artifactId>
-            <version>3.8.8</version>
+            <version>${qdata.version}</version>
         </dependency>
 
         <dependency>

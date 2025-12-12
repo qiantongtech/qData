@@ -37,7 +37,7 @@
     <parent>
         <artifactId>qData</artifactId>
         <groupId>tech.qiantong</groupId>
-        <version>3.8.8</version>
+        <version>${qdata.version}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
@@ -52,43 +52,43 @@
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-module-system-biz</artifactId>
-            <version>3.8.8</version>
+            <version>${qdata.version}</version>
         </dependency>
 
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-module-att-biz</artifactId>
-            <version>3.8.8</version>
+            <version>${qdata.version}</version>
         </dependency>
 
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-module-da-biz</artifactId>
-            <version>3.8.8</version>
+            <version>${qdata.version}</version>
         </dependency>
 
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-module-dp-biz</artifactId>
-            <version>3.8.8</version>
+            <version>${qdata.version}</version>
         </dependency>
 
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-module-dpp-biz</artifactId>
-            <version>3.8.8</version>
+            <version>${qdata.version}</version>
         </dependency>
 
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-module-ds-biz</artifactId>
-            <version>3.8.8</version>
+            <version>${qdata.version}</version>
         </dependency>
 
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-api-ds-biz</artifactId>
-            <version>3.8.8</version>
+            <version>${qdata.version}</version>
         </dependency>
 
         <!-- spring-boot-devtools -->

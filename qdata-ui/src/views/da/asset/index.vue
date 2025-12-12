@@ -98,8 +98,9 @@
                     <el-tag v-if="item.type == btn.id" style="margin-right: 10px;">{{ btn.name
                     }}</el-tag>
                   </div>
-                  <el-tag v-if="!unregistered(item)">{{ 未注册
-                  }}</el-tag>
+                  <el-tag v-if="!unregistered(item)" style="margin-right: 10px;">
+                    未注册
+                  </el-tag>
                   <el-tag :type="item.status == 2 ? 'success' : 'warning'">{{ item.status == 2 ? "已发布" : "未发布"
                   }}</el-tag>
 
@@ -895,6 +896,10 @@ function handleUpdate(row, register) {
   reset();
   const _id = row.id || ids.value;
   getDaAsset(_id).then((response) => {
+    if(register == 'register'){
+        response.data.datasourceId = "";
+        response.data.tableName = "";
+    }
     form.value = response.data;
     open.value = true;
     title.value = "修改数据资产";

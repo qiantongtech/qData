@@ -129,13 +129,20 @@
 import SideMenu from "./ruleSelectorMenu.vue";
 // 数值边界值调整
 import NumberRangeSelector from "./numberBoundaryRule.vue";
+// 小数位数
+import DecimalFormatter from "./decimalFormatterRule.vue";
 // 字段前缀/后缀统一
 import AffixEditor from "./affixEditorRule.vue";
 // 枚举值映射标准化
 import EnumRule from "./enumMapRule/index.vue";
 // 按组合字段去重
 import FieldCombiner from "./combinerFieldUniqueRule.vue";
-
+// 正则表达式替换
+import RegexReplacer from "./regexReplaceRule.vue";
+// 清理过期数据
+import CleanExpiredData from "./cleanExpiredDataRule.vue";
+// 超长字段截断
+import longFieldTruncator from "./longFieldTruncator.vue";
 // 站位组件
 import EmptyRule from "./emptyRule.vue";
 import moment from "moment";
@@ -212,16 +219,31 @@ const ruleConfigMap = {
         label: "数值边界值调整",
         component: NumberRangeSelector,
     },
+    "008": {
+        label: "小数位数",
+        component: DecimalFormatter,
+    },
     //
     "010": {
         label: "字段前缀/后缀统一",
         component: AffixEditor,
     },
+    "011": {
+        label: "正则表达式替换",
+        component: RegexReplacer,
+    },
+    "012": {
+        label: "超长字段截断",
+        component: longFieldTruncator,
+    },
     "019": {
         label: "组合字段为空删除",
         component: EmptyRule,
     },
-
+    "021": {
+        label: "字段转大写",
+        component: EmptyRule,
+    },
     "024": {
         label: "枚举值映射标准化",
         component: EnumRule,
@@ -230,7 +252,10 @@ const ruleConfigMap = {
         label: "按组合字段去重",
         component: FieldCombiner,
     },
-
+    "039": {
+        label: "清理过期记录",
+        component: CleanExpiredData,
+    },
 };
 
 // 计算属性：当前规则配置

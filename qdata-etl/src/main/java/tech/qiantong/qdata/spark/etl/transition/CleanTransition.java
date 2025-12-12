@@ -113,8 +113,15 @@ public class CleanTransition implements Transition {
                 case "WITHIN_BOUNDARY": // 数值边界调整
                     dataset = applyNumericBoundary(dataset, ruleConfig);
                     break;
+                case "SIMPLE_REPLACE": // 正则表达式替换
+                    dataset = applyRegexReplace(dataset, ruleConfig);
+                    break;
                 case "REMOVE_EMPTY_COMBINATION": // 组合字段为空删除
                     dataset = applyDeleteIfAllNull(dataset, ruleConfig);
+                    break;
+                case "TO_UPPERCASE": // 字段值转大写
+                    dataset = applyUpperCase(dataset, ruleConfig);
+                    break;
                 case "ADD_PREFIX_SUFFIX": // 字段前/后缀统一
                     dataset = applyPrefixSuffix(dataset, ruleConfig);
                     break;
@@ -123,6 +130,15 @@ public class CleanTransition implements Transition {
                     break;
                 case "KEEP_LATEST_OR_FIRST": // 按组合字段去重（保留最新或首条）
                     dataset = deduplicateByFieldsKeepFirst(dataset, ruleConfig);
+                    break;
+                case "CHECK_EXPIRATION": // 清理过期记录
+                    dataset = purgeStaleEntries(dataset, ruleConfig);
+                    break;
+                case "FIX_TO_PRECISION": // 小数位统一
+                    dataset = formatDecimalPlaces(dataset, ruleConfig);
+                    break;
+                case "STRING_SUBSTR": // 字符截取
+                    dataset = applyStringSubstr(dataset, ruleConfig);
                     break;
                 default:
                     LogUtils.writeLog(logParams, "未知规则：" + ruleCode);
@@ -134,6 +150,119 @@ public class CleanTransition implements Transition {
     @Override
     public String code() {
         return TaskComponentTypeEnum.SPARK_CLEAN.getCode();
+    }
+
+    /**
+     * STRING_SUBSTR —— 字符截取
+     * 当字段长度超过指定长度时，按配置从开头或结尾截取。
+     *
+     * cfg 示例：
+     * {
+     *   "columns": ["description"],
+     *   "maxLength": 100,
+     *   "direction": "1"   // 可选：1（从开头），2（从结尾），1
+     * }
+     */
+    private Dataset<Row> applyStringSubstr(Dataset<Row> dataset, JSONObject cfg) {
+        String colName = cfg.getJSONArray("columns").getString(0);
+        Integer maxLength = cfg.getInteger("maxLength");
+        String direction = cfg.getString("direction"); // 1 or 2
+        if (direction == null || StringUtils.isBlank(direction)) {
+            direction = "1";
+        }
+
+        Column col = functions.col(colName).cast("string");
+
+        Column newCol;
+        if ("2".equalsIgnoreCase(direction)) {
+            // 从末尾截取 maxLength 个字符
+            newCol = functions.when(functions.length(col).gt(maxLength),
+                            functions.expr("substring(" + colName + ", length(" + colName + ")-" + (maxLength - 1) + ", " + maxLength + ")"))
+                    .otherwise(col);
+        } else {
+            // 从开头截取（默认）
+            newCol = functions.when(functions.length(col).gt(maxLength),
+                            functions.expr("substring(" + colName + ", 1, " + maxLength + ")"))
+                    .otherwise(col);
+        }
+
+        return dataset.withColumn(colName, newCol);
+    }
+
+    private Dataset<Row> formatDecimalPlaces(Dataset<Row> dataset, JSONObject cfg) {
+        String col = cfg.getJSONArray("columns").getString(0);
+        Integer stringValue = cfg.getInteger("stringValue");
+
+        Column formattedColumn = functions.round(col(col), stringValue);
+        // 如果 decimalPlaces 为 0，转换为整数类型
+        if (stringValue == 0) {
+            formattedColumn = formattedColumn.cast("int");
+        }
+        dataset = dataset.withColumn(col, formattedColumn);
+
+        return dataset;
+    }
+
+    private Dataset<Row> purgeStaleEntries(Dataset<Row> dataset, JSONObject cfg) {
+        String col = cfg.getJSONArray("columns").getString(0);
+        Integer dataRangeType = cfg.getInteger("dataRangeType");
+        String dataRangeValue = cfg.getString("dataRangeValue");
+        LocalDate currentDate = LocalDate.now();
+        // 标识大于、等于
+        Boolean flag = true;
+        // 格式化日期为字符串
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        // 0：固定时间范围，1：具体日期
+        Integer dataRange = cfg.getInteger("dataRange");
+        if (dataRange == 0) {
+            flag = true;
+            LocalDate date30DaysAgo = null;
+            // 计算30天、月、年之前日期
+            if (dataRangeType == 1) {
+                date30DaysAgo = currentDate.minusDays(cfg.getInteger("dataRangeValue"));
+            }else if (dataRangeType == 2) {
+                date30DaysAgo = currentDate.minusMonths(cfg.getInteger("dataRangeValue"));
+            } else if (dataRangeType == 3) {
+                date30DaysAgo = currentDate.minusYears(cfg.getInteger("dataRangeValue"));
+            }
+            dataRangeValue = date30DaysAgo.format(formatter);
+        } else {
+            if (dataRangeType == 1) {
+                flag = true;
+            } else {
+                flag = false;
+            }
+        }
+        // 过期处理方式
+        return handleExpiredRecords(dataset , cfg , dataRangeValue , col , flag);
+    }
+
+    private Dataset<Row> handleExpiredRecords(Dataset<Row> dataset, JSONObject cfg, String dataRangeValue, String col , Boolean flag) {
+        Integer handleType = cfg.getInteger("handleType");
+        String handleColumns = cfg.getString("handleColumns");
+        String handleValue = cfg.getString("handleValue");
+
+        Column condition;
+        // 将 dataRangeValue 将日期对象转换为指定的格式进行比较
+        Column dateColumn = functions.date_format(functions.col(col), "yyyy-MM-dd");
+
+        // 判断日期之前还是之后
+        if (flag) {
+            condition = dateColumn.lt(dataRangeValue);
+        } else {
+            condition = dateColumn.gt(dataRangeValue);
+        }
+
+        Column result = functions.lit(handleValue);
+
+        // 0：过期处理方式，1：删除记录
+        if (handleType == 0) {
+            dataset = dataset.withColumn(handleColumns, functions.when(condition, result).otherwise(functions.col(handleColumns)));
+        } else {
+            // 默认满足条件的数据保留，not方法取反
+            dataset = dataset.filter(functions.not(condition));
+        }
+        return dataset;
     }
 
     private Dataset<Row> deduplicateByFieldsKeepFirst(Dataset<Row> ds, JSONObject cfg) {
@@ -383,6 +512,16 @@ public class CleanTransition implements Transition {
     }
 
     /**
+     * 正则表达式替换
+     */
+    private Dataset<Row> applyRegexReplace(Dataset<Row> dataset, JSONObject cfg) {
+        String col = cfg.getJSONArray("columns").getString(0);
+        String regex = cfg.getString("regex");
+        String replacement = cfg.getString("replacement");
+        return dataset.withColumn(col, functions.regexp_replace(dataset.col(col), regex, replacement));
+    }
+
+    /**
      * 组合字段为空删除
      */
     private Dataset<Row> applyDeleteIfAllNull(Dataset<Row> dataset, JSONObject cfg) {
@@ -418,6 +557,14 @@ public class CleanTransition implements Transition {
         }
 
         return dataset.filter(functions.not(allNullCond));
+    }
+
+    /**
+     * 字段值转大写
+     */
+    private Dataset<Row> applyUpperCase(Dataset<Row> dataset, JSONObject cfg) {
+        String col = cfg.getJSONArray("columns").getString(0);
+        return dataset.withColumn(col, functions.upper(dataset.col(col)));
     }
 
     public static Dataset<Row> transitionOld(Dataset<Row> dataset, JSONObject transition, LogUtils.Params logParams) {

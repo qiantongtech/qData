@@ -64,6 +64,7 @@ import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.database.DataSourceFactory;
 import tech.qiantong.qdata.common.database.DbQuery;
 import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
+import tech.qiantong.qdata.common.database.constants.DbType;
 import tech.qiantong.qdata.common.database.core.DbColumn;
 import tech.qiantong.qdata.common.enums.ConfigType;
 import tech.qiantong.qdata.common.enums.DataConstant;
@@ -81,6 +82,7 @@ import tech.qiantong.qdata.module.ds.api.service.api.DsApiService;
 import tech.qiantong.qdata.module.ds.async.AsyncTask;
 import tech.qiantong.qdata.module.ds.controller.admin.api.vo.*;
 import tech.qiantong.qdata.module.ds.dal.dataobject.api.DsApiDO;
+import tech.qiantong.qdata.module.ds.dal.dataobject.api.ExecuteConfig;
 import tech.qiantong.qdata.module.ds.dal.dataobject.api.SqlParseDto;
 import tech.qiantong.qdata.module.ds.dal.dataobject.apiLog.DsApiLogDO;
 import tech.qiantong.qdata.module.ds.dal.dataobject.dto.ReqParam;
@@ -650,8 +652,24 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
 
     private String sqlJdbcNamedParameterBuild(DsApiDO dataApi) throws JSQLParserException {
         String tableName = dataApi.getExecuteConfig().getTableName();
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(dataApi.getExecuteConfig().getDbName())) {
-            tableName = dataApi.getExecuteConfig().getDbName() + "." + tableName;
+        ExecuteConfig executeConfig = dataApi.getExecuteConfig();
+        if (StringUtils.isEmpty(executeConfig.getDbType())) {
+            //通过数据源id获取
+            DaDatasourceRespDTO dataSource = iDaDatasourceApiService.getDatasourceById(Long.valueOf(executeConfig.getSourceId()));
+            if (dataSource == null) {
+                throw new ServiceException("数据源不存在");
+            }
+            executeConfig.setDbType(dataSource.getDatasourceType());
+            JSONObject dataSourceConfig = JSONObject.parseObject(dataSource.getDatasourceConfig());
+            executeConfig.setDbName(dataSourceConfig.getString("dbname"));
+            executeConfig.setSid(dataSourceConfig.getString("sid"));
+        }
+        if (org.apache.commons.lang3.StringUtils.equals(DbType.KINGBASE8.getDb(), executeConfig.getDbType())
+                || org.apache.commons.lang3.StringUtils.equals(DbType.POSTGRE_SQL.getDb(), executeConfig.getDbType())
+                || org.apache.commons.lang3.StringUtils.equals(DbType.SQL_SERVER.getDb(), executeConfig.getDbType())) {
+            tableName = org.apache.commons.lang3.StringUtils.isNotBlank(executeConfig.getDbName()) ? executeConfig.getDbName() + "." + executeConfig.getSid() + "." + tableName : tableName;
+        }  else {
+            tableName = org.apache.commons.lang3.StringUtils.isNotBlank(executeConfig.getDbName()) ? executeConfig.getDbName() + "." + tableName : tableName;
         }
         Table table = new Table(tableName);
         String[] resParams = dataApi.getResParamsList().stream().map(s -> s.getFieldName()).toArray(String[]::new);

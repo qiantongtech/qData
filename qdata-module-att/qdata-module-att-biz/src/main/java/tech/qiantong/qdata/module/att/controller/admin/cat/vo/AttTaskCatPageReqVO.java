@@ -70,7 +70,6 @@ public class AttTaskCatPageReqVO extends PageParam {
     @Schema(description = "层级编码", example = "")
     private String code;
 
-
-
-
+    @Schema(description = "有效状态", example = "")
+    private Boolean validFlag;
 }

@@ -1,98 +1,52 @@
-/*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
- */
-
 package tech.qiantong.qdata.quality.utils.quality.enums;
 
+import org.apache.commons.collections4.CollectionUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
+import tech.qiantong.qdata.common.utils.object.BeanUtils;
+import tech.qiantong.qdata.quality.dal.dataobject.quality.ColumnExpression;
 import tech.qiantong.qdata.quality.dal.dataobject.quality.QualityRuleEntity;
-import tech.qiantong.qdata.quality.utils.SqlBuilderUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public interface CommonGenerator {
 
-    static boolean ignoreNull(QualityRuleEntity rule) {
-        Boolean ignoreNull = SqlBuilderUtils.parseBoolean(rule.getConfig().get("ignoreNullValue"));
-        return ignoreNull != null && ignoreNull;
-    }
-
     static String generateSql(QualityRuleEntity rule, String frag) {
         String table = rule.getTableName();
-        String column = rule.getRuleColumn();
+        List<String> where = new ArrayList<>();
         String whereClause = rule.getWhereClause();
-
+        List<ColumnExpression> preconditions = BeanUtils.toBean((List<?>) rule.getConfig().get("preconditions"), ColumnExpression.class);
         StringBuilder query = new StringBuilder()
                 .append("SELECT COUNT(*) AS totalCount, ")
                 .append("COUNT(CASE WHEN ");
-        if (!ignoreNull(rule)) {
-            query.append(column).append(" IS NULL OR ");
-        }
-        query.append("NOT (").append(frag).append(") THEN 1 END) AS errorCount ")
+        query.append("(").append(frag).append(") THEN 1 END) AS errorCount ")
                 .append("FROM ").append(table);
-        if (StringUtils.isNotEmpty(whereClause)) {
-            query.append(" WHERE ").append(whereClause);
+        if (StringUtils.isNotBlank(whereClause)) {
+            where.add(whereClause);
+        }
+        if (CollectionUtils.isNotEmpty(preconditions)) {
+            where.add(ColumnExpression.toExpressions(preconditions));
+        }
+        if (!where.isEmpty()) {
+            query.append(" WHERE (").append(String.join(") and (", where)).append(")");
         }
         return query.toString();
     }
 
-    static String generateErrorSql(QualityRuleEntity rule, String frag) {
+    static String generateDataSql(QualityRuleEntity rule, String frag) {
         String table = rule.getTableName();
-        String column = rule.getRuleColumn();
         String whereClause = rule.getWhereClause();
+        List<ColumnExpression> preconditions = BeanUtils.toBean((List<?>) rule.getConfig().get("preconditions"), ColumnExpression.class);
         StringBuilder query = new StringBuilder()
                 .append("SELECT * FROM ").append(table)
-                .append(" WHERE (");
-        if (!ignoreNull(rule)) {
-            query.append(column).append(" IS NULL OR ");
+                .append(" WHERE (").
+                append(frag)
+                .append(")");
+        if (StringUtils.isNotBlank(whereClause)) {
+            query.append(" AND (").append(whereClause).append(")");
         }
-        query.append("NOT (").append(frag).append("))");
-        if (StringUtils.isNotEmpty(whereClause)) {
-            query.append(" AND ").append(whereClause);
-        }
-        return query.toString();
-    }
-
-    static String generateValidDataSql(QualityRuleEntity rule, String frag) {
-        String table = rule.getTableName();
-        String column = rule.getRuleColumn();
-        String whereClause = rule.getWhereClause();
-
-        StringBuilder query = new StringBuilder()
-                .append("SELECT * FROM ").append(table)
-                .append(" WHERE (");
-        if (ignoreNull(rule)) {
-            query.append(column).append(" IS NULL OR ");
-        }
-        query.append(frag).append(") ");
-        if (StringUtils.isNotEmpty(whereClause)) {
-            query.append(" AND ").append(whereClause);
+        if (CollectionUtils.isNotEmpty(preconditions)) {
+            query.append(" AND (").append(ColumnExpression.toExpressions(preconditions)).append(")");
         }
         return query.toString();
     }

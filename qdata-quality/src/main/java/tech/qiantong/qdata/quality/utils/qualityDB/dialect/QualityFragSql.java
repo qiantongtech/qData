@@ -1,37 +1,7 @@
-/*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
- */
-
 package tech.qiantong.qdata.quality.utils.qualityDB.dialect;
 
+import cn.hutool.core.lang.Assert;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import tech.qiantong.qdata.quality.dal.dataobject.quality.QualityRuleEntity;
 import tech.qiantong.qdata.quality.utils.SqlBuilderUtils;
@@ -41,9 +11,33 @@ import java.util.stream.Collectors;
 
 public interface QualityFragSql {
 
+    default boolean ignoreNullValue(QualityRuleEntity rule) {
+        Map<String, Object> ruleConfig = rule.getConfig();
+        Boolean ignoreNullValue = SqlBuilderUtils.parseBoolean(ruleConfig.get("ignoreNullValue"));
+        return ignoreNullValue != null && ignoreNullValue;
+    }
+
+    default String pos(String frag, QualityRuleEntity rule) {
+        if (ignoreNullValue(rule)) {
+            return String.format("(%s is null or (%s))", rule.getRuleColumn(), frag);
+        }
+        return frag;
+    }
+
+    default String neg(String frag, QualityRuleEntity rule) {
+        if (ignoreNullValue(rule)) {
+            return String.format("not (%s)", frag);
+        }
+        return String.format("(%s is null or not (%s))", rule.getRuleColumn(), frag);
+    }
+
     default String fragCharacter(QualityRuleEntity rule) {
         String column = rule.getRuleColumn();
         String regex = (String) rule.getConfig().get("regex");
+        return regex(column, regex);
+    }
+
+    default String regex(String column, String regex) {
         return String.format("REGEXP_LIKE(%s, '%s')", column, regex);
     }
 
@@ -94,6 +88,7 @@ public interface QualityFragSql {
         String column = rule.getRuleColumn();
         Double min = MapUtils.getDouble(ruleConfig, "minValue");
         Double max = MapUtils.getDouble(ruleConfig, "maxValue");
+        Assert.isFalse(min == null && max == null);
         boolean include = SqlBuilderUtils.parseBoolean(ruleConfig.get("includeBoundary"));
         List<String> exp = new ArrayList<>();
         if (include) {
@@ -114,24 +109,6 @@ public interface QualityFragSql {
         return String.join(" AND ", exp);
     }
 
-    default String fragOrderNeg(List<Map<String, String>> conditions, boolean allowPartialNull) {
-        if (!allowPartialNull) {
-            return conditions.stream()
-                    .map(c -> {
-                        String leftField = c.get("leftField");
-                        String rightField = c.get("rightField");
-                        return String.format("(%s IS NULL OR %s IS NULL OR NOT %s %s %s)", leftField, rightField, leftField, c.get("operator"), rightField);
-                    })
-                    .collect(Collectors.joining(" OR "));
-        }
-        return conditions.stream()
-                .map(c -> String.format("(NOT %s %s %s)", c.get("leftField"), c.get("operator"), c.get("rightField")))
-                .collect(Collectors.joining(" OR "));
-    }
-
-    /**
-     * @param fillStrategy {@link QualityRuleEntity}
-     */
     default String fragFieldCompleteness(List<String> columns, int fillStrategy) {
         String frag;
         if (fillStrategy == 1) {
@@ -150,6 +127,53 @@ public interface QualityFragSql {
             throw new IllegalArgumentException("Unsupported fillStrategy: " + fillStrategy);
         }
         return frag;
+    }
+
+    default String fragDatetime(QualityRuleEntity rule) {
+        String column = rule.getRuleColumn();
+        Collection<?> dateformat = (Collection<?>) rule.getConfig().get("dateformat");
+        Collection<?> dateformatError = (Collection<?>) rule.getConfig().get("dateformatError");
+
+        // 格式模式映射
+        Map<String, String> formatPatterns = new HashMap<>(8);
+        formatPatterns.put("yyyy-MM-dd", "^[0-9]{4}-[0-9]{2}-[0-9]{2}$");
+        formatPatterns.put("yyyy-MM-dd HH:mm:ss", "^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$");
+
+        // 构建格式条件
+        List<String> formatConditions = CollectionUtils.isEmpty(dateformat) ?
+                Collections.emptyList() :
+                dateformat.stream()
+                        .map(Object::toString)
+                        .map(formatPatterns::get)
+                        .filter(Objects::nonNull)
+                        .map(pattern -> regex(column, pattern))
+                        .collect(Collectors.toList());
+
+        // 构建错误格式排除条件
+        List<String> errorConditions = CollectionUtils.isEmpty(dateformatError) ?
+                Collections.emptyList() :
+                dateformatError.stream()
+                        .map(error -> String.format("%s <> '%s'", column, error.toString()))
+                        .collect(Collectors.toList());
+
+        // 组合所有条件
+        List<String> allConditions = new ArrayList<>();
+        if (!formatConditions.isEmpty()) {
+            allConditions.add("(" + String.join(" or ", formatConditions) + ")");
+        }
+        if (!errorConditions.isEmpty()) {
+            allConditions.addAll(errorConditions);
+        }
+        return allConditions.isEmpty() ? "" : String.join(" and ", allConditions);
+    }
+
+    default String fragMasterExist(QualityRuleEntity rule) {
+        String column = rule.getRuleColumn();
+        String masterTable = (String) rule.getConfig().get("relatedTable");
+        String masterColumn = (String) rule.getConfig().get("relatedColumn");
+        Assert.notBlank(masterTable);
+        Assert.notBlank(masterColumn);
+        return String.format("EXISTS (SELECT 1 FROM %s WHERE %s.%s = %s.%s)", masterTable, masterTable, masterColumn, rule.getTableName(), column);
     }
 
 }

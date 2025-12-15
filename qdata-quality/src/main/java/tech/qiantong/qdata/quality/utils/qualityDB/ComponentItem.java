@@ -65,7 +65,9 @@ public interface ComponentItem extends QualityFragSql {
      * 输出：错误数据数 + 总数
      */
     default String generateCharacterValidationSql(QualityRuleEntity rule) {
-        return generateSql(rule, fragCharacter(rule));
+        String frag = fragCharacter(rule);
+        frag = neg(frag, rule);
+        return generateSql(rule, frag);
     }
 
     /**
@@ -75,7 +77,9 @@ public interface ComponentItem extends QualityFragSql {
      * 输出：错误明细
      */
     default String generateCharacterValidationErrorSql(QualityRuleEntity rule) {
-        return generateErrorSql(rule, fragCharacter(rule));
+        String frag = fragCharacter(rule);
+        frag = neg(frag, rule);
+        return generateDataSql(rule, frag);
     }
 
     /**
@@ -90,7 +94,9 @@ public interface ComponentItem extends QualityFragSql {
      * @return SQL字符串
      */
     default String generateCharacterValidationValidDataSql(QualityRuleEntity rule, int limit, int offset) {
-        return addPagination(generateValidDataSql(rule, fragCharacter(rule)), limit, offset);
+        String frag = fragCharacter(rule);
+        frag = pos(frag, rule);
+        return addPagination(generateDataSql(rule, frag), limit, offset);
     }
 
     /**
@@ -191,7 +197,9 @@ public interface ComponentItem extends QualityFragSql {
      * 检查小数点后超过指定精度的数量，统计错误总数 + 全部记录数。
      */
     default String generateDecimalPrecisionValidationSql(QualityRuleEntity rule) {
-        return generateSql(rule, fragDecimalPrecision(rule));
+        String frag = fragDecimalPrecision(rule);
+        frag = neg(frag, rule);
+        return generateSql(rule, frag);
     }
 
     /**
@@ -201,7 +209,9 @@ public interface ComponentItem extends QualityFragSql {
      * 返回所有小数位数超出指定精度的记录。
      */
     default String generateDecimalPrecisionValidationErrorSql(QualityRuleEntity rule) {
-        return generateErrorSql(rule, fragDecimalPrecision(rule));
+        String frag = fragDecimalPrecision(rule);
+        frag = neg(frag, rule);
+        return generateDataSql(rule, frag);
     }
 
     /**
@@ -211,8 +221,116 @@ public interface ComponentItem extends QualityFragSql {
      * 返回所有符合小数精度要求的记录（不超过指定小数位数）。
      */
     default String generateDecimalPrecisionValidationValidDataSql(QualityRuleEntity rule, int limit, int offset) {
-        return addPagination(generateValidDataSql(rule, fragDecimalPrecision(rule)), limit, offset);
+        String frag = fragDecimalPrecision(rule);
+        frag = pos(frag, rule);
+        return addPagination(generateDataSql(rule, frag), limit, offset);
+     }
+
+    /**
+     * 枚举值校验 - 错误统计 SQL
+     * 规则编码：ENUM_VALIDATION
+     * <p>
+     * 检查字段值是否在指定枚举值列表内，统计不合法数量 + 总数。
+     */
+    default String generateEnumValidationSql(QualityRuleEntity rule) {
+        String frag = fragEnum(rule);
+        frag = neg(frag, rule);
+        return generateSql(rule, frag);
     }
 
+    /**
+     * 枚举值校验 - 错误明细 SQL
+     * 规则编码：ENUM_VALIDATION
+     * <p>
+     * 返回字段值不在指定枚举列表中的记录。
+     */
+    default String generateEnumValidationErrorSql(QualityRuleEntity rule) {
+        String frag = fragEnum(rule);
+        frag = neg(frag, rule);
+        return generateDataSql(rule, frag);
+    }
+
+    /**
+     * 枚举值校验 - 正常数据分页 SQL
+     * 规则编码：ENUM_VALIDATION
+     * <p>
+     * 返回字段值在枚举列表中的记录，支持分页。
+     */
+    default String generateEnumValidationValidDataSql(QualityRuleEntity rule, int limit, int offset) {
+        String frag = fragEnum(rule);
+        frag = pos(frag, rule);
+        return addPagination(generateDataSql(rule, frag), limit, offset);
+    }
+
+    /**
+     * 字段长度范围校验 - 错误统计 SQL
+     * 规则编码：LENGTH_VALIDATION
+     * <p>
+     * 检查字段字符串长度是否超出 [min, max] 范围，返回错误数 + 总数。
+     */
+    default String generateLengthValidationSql(QualityRuleEntity rule) {
+        String frag = fragLength(rule);
+        frag = neg(frag, rule);
+        return generateSql(rule, frag);
+    }
+
+    /**
+     * 字段长度范围校验 - 错误明细 SQL
+     * 规则编码：LENGTH_VALIDATION
+     * <p>
+     * 返回字段长度不在合法区间内的记录。
+     */
+    default String generateLengthValidationErrorSql(QualityRuleEntity rule) {
+        String frag = fragLength(rule);
+        frag = neg(frag, rule);
+        return generateDataSql(rule, frag);
+    }
+
+    /**
+     * 字段长度范围校验 - 正常数据分页 SQL
+     * 规则编码：LENGTH_VALIDATION
+     * <p>
+     * 返回字段长度在合法范围内的记录，支持分页。
+     */
+    default String generateLengthValidationValidDataSql(QualityRuleEntity rule, int limit, int offset) {
+        String frag = fragLength(rule);
+        frag = pos(frag, rule);
+        return addPagination(generateDataSql(rule, frag), limit, offset);
+    }
+    /**
+     * 数值字段范围校验 - 错误统计 SQL
+     * 规则编码：NUMERIC_RANGE_VALIDATION
+     * <p>
+     * 检查字段数值是否超出 [min, max] 范围，返回错误数量 + 总记录数。
+     */
+    default String generateNumericRangeValidationSql(QualityRuleEntity rule) {
+        String frag = fragNumericRange(rule);
+        frag = neg(frag, rule);
+        return generateSql(rule, frag);
+    }
+
+    /**
+     * 数值字段范围校验 - 错误明细 SQL
+     * 规则编码：NUMERIC_RANGE_VALIDATION
+     * <p>
+     * 返回字段值不在 [min, max] 范围内的记录。
+     */
+    default String generateNumericRangeValidationErrorSql(QualityRuleEntity rule) {
+        String frag = fragNumericRange(rule);
+        frag = neg(frag, rule);
+        return generateDataSql(rule, frag);
+    }
+
+    /**
+     * 数值字段范围校验 - 正常数据分页 SQL
+     * 规则编码：NUMERIC_RANGE_VALIDATION
+     * <p>
+     * 返回字段值在 [min, max] 范围内的记录，支持分页。
+     */
+    default String generateNumericRangeValidationValidDataSql(QualityRuleEntity rule, int limit, int offset) {
+        String frag = fragNumericRange(rule);
+        frag = pos(frag, rule);
+        return addPagination(generateDataSql(rule, frag), limit, offset);
+    }
 
 }

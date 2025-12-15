@@ -35,7 +35,6 @@
     <el-form ref="formRef" :model="form" :rules="rules" label-width="130px" :disabled="falg">
         <el-row>
             <el-col :span="12">
-                <!-- 评测对象下拉 -->
                 <el-form-item label="使用正则" prop="useRegexFlag">
                     <el-checkbox v-model="form.useRegexFlag" :true-value="1" :false-value="0">使用正则</el-checkbox>
 

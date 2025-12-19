@@ -228,6 +228,106 @@
                     <warName>${project.artifactId}</warName>
                 </configuration>
             </plugin>
+
+            <!-- docker 镜像打包 -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.0.0</version>
+
+                <executions>
+                    <!-- 1. 只打印 build 命令 -->
+                    <execution>
+                        <id>print-docker-build</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${docker.print.skip}</skip>
+                            <executable>cmd</executable>
+                            <workingDirectory>${project.basedir}</workingDirectory>
+                            <arguments>
+                                <argument>/c</argument>
+                                <argument>
+                                    echo docker buildx build --load --no-cache -t ${docker.hub}/${docker.repo}:${docker.tag} ${project.basedir} --file=docker/Dockerfile
+                                </argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+
+                    <!-- 2. 只打印 push 命令 -->
+                    <execution>
+                        <id>print-docker-push</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${docker.print.skip}</skip>
+                            <executable>cmd</executable>
+                            <workingDirectory>${project.basedir}</workingDirectory>
+                            <arguments>
+                                <argument>/c</argument>
+                                <argument>
+                                    echo docker buildx build --platform linux/amd64,linux/arm64 --no-cache --push -t ${docker.hub}/${docker.repo}:${docker.tag} ${project.basedir} --file=docker/Dockerfile
+                                </argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+
+                    <!-- 3. 真正执行 docker build（和 print-docker-build 完全一致） -->
+                    <execution>
+                        <id>docker-build</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${docker.build.skip}</skip>
+                            <executable>docker</executable>
+                            <workingDirectory>${project.basedir}</workingDirectory>
+                            <arguments>
+                                <argument>buildx</argument>
+                                <argument>build</argument>
+                                <argument>--load</argument>
+                                <argument>--no-cache</argument>
+                                <argument>-t</argument>
+                                <argument>${docker.hub}/${docker.repo}:${docker.tag}</argument>
+                                <argument>${project.basedir}</argument>
+                                <argument>--file=docker/Dockerfile</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+
+                    <!-- 4. 真正执行 docker push（和 print-docker-push 完全一致） -->
+                    <execution>
+                        <id>docker-push</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${docker.push.skip}</skip>
+                            <executable>docker</executable>
+                            <workingDirectory>${project.basedir}</workingDirectory>
+                            <arguments>
+                                <argument>buildx</argument>
+                                <argument>build</argument>
+                                <argument>--platform</argument>
+                                <argument>linux/amd64,linux/arm64</argument>
+                                <argument>--no-cache</argument>
+                                <argument>--push</argument>
+                                <argument>-t</argument>
+                                <argument>${docker.hub}/${docker.repo}:${docker.tag}</argument>
+                                <argument>${project.basedir}</argument>
+                                <argument>--file=docker/Dockerfile</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+
+                </executions>
+            </plugin>
         </plugins>
         <finalName>${project.artifactId}</finalName>
     </build>

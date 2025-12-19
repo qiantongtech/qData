@@ -32,7 +32,7 @@ version: "3.8"
 
 services:
   spark:
-    image: docker.io/bitnami/spark:3
+    image: ${QDATA_HUB}/spark:3.5.6
     profiles: ["all", "local" ]
     environment:
       - SPARK_MASTER_HOST=spark         # 关键：让 master 对外广播服务名
@@ -57,7 +57,7 @@ services:
 
   spark-worker-1:
     profiles: ["all", "local" ]
-    image: docker.io/bitnami/spark:3
+    image: ${QDATA_HUB}/spark:3.5.6
     environment:
       - SPARK_MODE=worker
       - SPARK_MASTER_URL=${SPARK_MASTER_URL}

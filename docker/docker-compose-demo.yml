@@ -63,7 +63,7 @@ services:
       - qdatanet
 
   dm8-demo:
-    image: dm8:dm8_20250506_x86_rh7_64
+    image: ${QDATA_HUB}/dm8:mixed
     profiles: [ "demo", "dm8-demo" ]
     env_file: .env
     privileged: true

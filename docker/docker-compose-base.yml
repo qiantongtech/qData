@@ -90,7 +90,7 @@ services:
 
   #达梦主库
   dm8:
-    image: dm8:dm8_20250506_x86_rh7_64
+    image: ${QDATA_HUB}/dm8:mixed
     profiles: [ "all", "schema", "local", "qdata-dm8"  ]
     env_file: .env
     privileged: true

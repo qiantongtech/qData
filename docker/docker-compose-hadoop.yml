@@ -32,7 +32,7 @@ version: "3.8"
 
 services:
   namenode:
-    image: apache/hadoop:3.3.6
+    image: ${QDATA_HUB}/hadoop:3.3.6
     hostname: namenode
     restart: always
     profiles: [ "all" , "hadoop" , "local" ]
@@ -48,7 +48,7 @@ services:
       - qdatanet
 
   datanode:
-    image: apache/hadoop:3.3.6
+    image: ${QDATA_HUB}/hadoop:3.3.6
     hostname: datanode
     restart: always
     profiles: [ "all" , "hadoop" , "local" ]
@@ -72,7 +72,7 @@ services:
 #      - ./hadoop/data:/data/dfs #挂载数据
 
   resourcemanager:
-    image: apache/hadoop:3.3.6
+    image: ${QDATA_HUB}/hadoop:3.3.6
     hostname: resourcemanager
     restart: always
     profiles: [ "all" , "hadoop" , "local" ]
@@ -84,7 +84,7 @@ services:
       - qdatanet
 
   nodemanager:
-    image: apache/hadoop:3.3.6
+    image: ${QDATA_HUB}/hadoop:3.3.6
     hostname: nodemanager
     env_file: .env
     restart: always

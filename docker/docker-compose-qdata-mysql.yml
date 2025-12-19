@@ -33,7 +33,7 @@ version: "3.8"
 services:
   # qdata 后端服务
   qdata-api:
-    image: qiantong/qdata:${QDATA_VERSION}
+    image: ${QDATA_HUB}/qdata-server-ce:${QDATA_TAG}
     restart: always
     profiles: [ "all" ]
     env_file: .env
@@ -59,7 +59,7 @@ services:
 
   # qdata 质控服务
   qdata-quality:
-    image: qiantong/qdata-quality:${QDATA_VERSION}
+    image: ${QDATA_HUB}/qdata-quality-ce:${QDATA_TAG}
     restart: always
     profiles: [ "all" ]
     env_file: .env

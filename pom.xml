@@ -10,10 +10,10 @@
 
     <name>qdata</name>
     <url>https://qiantong.tech</url>
-    <description>冰凤框架后台管理系统</description>
+    <description>qData开源版</description>
 
     <properties>
-        <qdata.version>1.0.8</qdata.version>
+        <qdata.version>1.1.0</qdata.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>

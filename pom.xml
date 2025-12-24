@@ -220,17 +220,26 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>flatten-maven-plugin</artifactId>
-                <version>1.6.0</version>
+                <version>1.5.0</version>
                 <configuration>
                     <updatePomFile>true</updatePomFile>
-                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                    <flattenMode>defaults</flattenMode>
                 </configuration>
                 <executions>
+                    <!-- 在编译前执行 flatten -->
                     <execution>
                         <id>flatten</id>
                         <phase>process-resources</phase>
                         <goals>
                             <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <!-- 在 clean 时清理生成的文件 -->
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
                         </goals>
                     </execution>
                 </executions>

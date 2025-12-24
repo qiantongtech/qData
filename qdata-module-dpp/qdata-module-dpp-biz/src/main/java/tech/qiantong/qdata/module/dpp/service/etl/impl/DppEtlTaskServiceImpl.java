@@ -33,9 +33,9 @@
 package tech.qiantong.qdata.module.dpp.service.etl.impl;
 
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -57,6 +57,7 @@ import tech.qiantong.qdata.api.ds.api.service.etl.IDsEtlTaskService;
 import tech.qiantong.qdata.common.core.domain.AjaxResult;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.enums.TaskCatEnum;
+import tech.qiantong.qdata.common.enums.TaskComponentTypeEnum;
 import tech.qiantong.qdata.common.exception.ServiceException;
 import tech.qiantong.qdata.common.utils.JSONUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
@@ -78,6 +79,7 @@ import tech.qiantong.qdata.module.dpp.service.etl.*;
 import tech.qiantong.qdata.module.dpp.utils.TaskConverter;
 import tech.qiantong.qdata.module.dpp.utils.model.DsResource;
 import tech.qiantong.qdata.mybatis.core.util.MyBatisUtils;
+import tech.qiantong.qdata.redis.service.IRedisService;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -131,6 +133,8 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
     private IAttDataDevCatApiService iAttDataDevCatApiService;
     @Resource
     private IDppEtlTaskExtService dppEtlTaskExtService;
+    @Resource
+    private IRedisService redisService;
 
     @Override
     public PageResult<DppEtlTaskDO> getDppEtlTaskPage(DppEtlTaskPageReqVO pageReqVO) {
@@ -1251,7 +1255,43 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
             bean.setLastExecuteStatus(dppEtlTaskInstanceDO.getStatus());
         }
         List<DppEtlNodeRespVO> etlNodeLogRespVOList = this.getNodeRespListByTaskNodeRelList(dppEtlTaskNodeRelRespVOList);
-
+        if (etlNodeLogRespVOList.size() > 0) {
+            for (DppEtlNodeRespVO dppEtlNodeRespVO : etlNodeLogRespVOList) {
+                if (StringUtils.equals(TaskComponentTypeEnum.DB_READER.getCode(), dppEtlNodeRespVO.getComponentType())) {
+                    String nodeCode = dppEtlNodeRespVO.getCode();
+                    com.alibaba.fastjson2.JSONObject taskParams = com.alibaba.fastjson2.JSONObject.parse(dppEtlNodeRespVO.getParameters());
+                    //读取方式 1:全量 2:id增量 3:时间范围增量 默认全量
+                    String readModeType = taskParams.getString("readModeType");
+                    if (StringUtils.equals("2", readModeType)) {
+                        com.alibaba.fastjson2.JSONObject idIncrementConfig = taskParams.getJSONObject("idIncrementConfig");
+                        String incrementColumn = idIncrementConfig.getString("incrementColumn");
+                        String cacheKey = TaskConverter.ETL_READER_ID_KEY + nodeCode + ":" + incrementColumn;
+                        if (redisService.hasKey(cacheKey)) {
+                            idIncrementConfig.put("incrementStart", redisService.get(cacheKey));
+                        }
+                    } else if (StringUtils.equals("3", readModeType)) {
+                        com.alibaba.fastjson2.JSONObject dateIncrementConfig = taskParams.getJSONObject("dateIncrementConfig");
+                        List<com.alibaba.fastjson2.JSONObject> columnList = dateIncrementConfig.getJSONArray("column").stream().map(e -> {
+                            return (com.alibaba.fastjson2.JSONObject) e;
+                        }).collect(Collectors.toList());
+                        for (int i = 0; i < columnList.size(); i++) {
+                            JSONObject jsonObject = columnList.get(i);
+                            //类型  1:固定值 2:时间范围 3:SQL表达式
+                            if (!StringUtils.equals("2", jsonObject.getString("type"))) {
+                                continue;
+                            }
+                            //增量字段
+                            String incrementColumn = jsonObject.getString("incrementColumn");
+                            String cacheKey = TaskConverter.ETL_READER_DATE_KEY + nodeCode + ":" + incrementColumn;
+                            if (redisService.hasKey(cacheKey)) {
+                                jsonObject.put("cursorTime", redisService.get(cacheKey));
+                            }
+                        }
+                    }
+                    dppEtlNodeRespVO.setParameters(taskParams.toJSONString());
+                }
+            }
+        }
         bean.setTaskDefinitionList(removeDuplicateById(etlNodeLogRespVOList, type));
         bean.createTaskConfig();
         return bean;

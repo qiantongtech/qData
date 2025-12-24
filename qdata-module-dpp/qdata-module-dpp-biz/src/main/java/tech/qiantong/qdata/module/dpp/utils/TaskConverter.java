@@ -40,6 +40,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import tech.qiantong.qdata.api.ds.api.etl.*;
 import tech.qiantong.qdata.api.ds.api.etl.ds.*;
+import tech.qiantong.qdata.common.config.DsRedisConfig;
 import tech.qiantong.qdata.common.config.RabbitmqConfig;
 import tech.qiantong.qdata.common.enums.TaskComponentTypeEnum;
 import tech.qiantong.qdata.common.utils.JSONUtils;
@@ -67,6 +68,7 @@ public class TaskConverter {
     private static String defaultMaster;
     private static String resourceUrl;
     private static RabbitmqConfig rabbitmqConfig;
+    private static DsRedisConfig dsRedisConfig;
 
     @Value("${ds.spark.main_jar}")
     private void setResourceName(String resourceName) {
@@ -91,6 +93,11 @@ public class TaskConverter {
     @Resource
     private void setRabbitmqConfig(RabbitmqConfig rabbitmqConfig) {
         this.rabbitmqConfig = rabbitmqConfig;
+    }
+
+    @Resource
+    private void setDsRedisConfig(DsRedisConfig dsRedisConfig) {
+        this.dsRedisConfig = dsRedisConfig;
     }
 
     // 默认配置常量
@@ -120,6 +127,10 @@ public class TaskConverter {
     public static final String TASK_INSTANCE_LOG_KEY = "log:taskInstanceLog:";//任务实例日志key
 
     public static final String PROCESS_INSTANCE_LOG_KEY = "log:processInstanceLog:";//流程实例日志key
+
+    public static final String ETL_READER_ID_KEY = "etl:reader:id:";
+
+    public static final String ETL_READER_DATE_KEY = "etl:reader:date:";
 
     public static DsTaskSaveReqDTO buildDsTaskSaveReq(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO) {//名字
         //创建返回实体
@@ -1111,6 +1122,8 @@ public class TaskConverter {
         //配置config
         Map<String, Object> config = new HashMap<>();
         config.put("taskInfo", taskInfo);
+        // EtlApplication.java 连接的 Redis 配置信息（用于获取最新数据源信息，保障任务执行）
+        config.put("redis", dsRedisConfig);
         config.put("rabbitmq", rabbitmqConfig);
         config.put("resourceUrl", resourceUrl);
         result.put("transition", transitionList);

@@ -50,6 +50,10 @@ import java.util.List;
  **/
 public interface Reader {
 
+
+    public static final String ETL_READER_ID_KEY = "etl:reader:id:";
+    public static final String ETL_READER_DATE_KEY = "etl:reader:date:";
+
     Dataset<Row> read(SparkSession spark, JSONObject reader, List<String> readerColumns, LogUtils.Params logParams);
 
     String code();

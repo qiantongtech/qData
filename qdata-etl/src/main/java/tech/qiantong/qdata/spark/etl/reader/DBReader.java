@@ -105,7 +105,6 @@ public class DBReader implements Reader {
             cacheColumnMap.put(incrementColumn, cacheKey);
             if (RedisUtils.hasKey(cacheKey) && Integer.valueOf(RedisUtils.get(cacheKey)) > incrementStart) {
                 incrementStart = Integer.valueOf(RedisUtils.get(cacheKey));
-                incrementStart++;
             }
 
             where2 = incrementColumn + " >= " + incrementStart;
@@ -176,7 +175,7 @@ public class DBReader implements Reader {
                 }
                 if (StringUtils.equals("2", readModeType)) {//id增量
                     String cacheValue = String.valueOf(rowDataset.first().get(0));
-                    cacheDataMap.put(cacheKey, cacheValue);
+                    cacheDataMap.put(cacheKey, String.valueOf(Integer.parseInt(cacheValue) + 1));
                 }
             }
         }

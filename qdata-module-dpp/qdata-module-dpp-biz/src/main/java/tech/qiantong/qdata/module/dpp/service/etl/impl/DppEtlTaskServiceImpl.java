@@ -686,6 +686,18 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
                 newTaskDefinitionLogs.add(createReqVO);
                 continue;
             } else {
+                //判断是否是输入组件并且为id增量
+                if (StringUtils.equals(TaskComponentTypeEnum.DB_READER.getCode(), String.valueOf(createReqVO.getTaskParams().get("type"))) &&
+                        StringUtils.equals("2", String.valueOf(createReqVO.getTaskParams().get("readModeType")))) {
+                    JSONObject idIncrementConfig = JSONObject.parseObject(String.valueOf(createReqVO.getTaskParams().get("idIncrementConfig")));
+                    String incrementColumn = idIncrementConfig.getString("incrementColumn");
+                    Integer incrementStart = idIncrementConfig.getInteger("incrementStart");
+                    String cacheKey = TaskConverter.ETL_READER_ID_KEY + createReqVO.getCode() + ":" + incrementColumn;
+                    //判断是否存在缓存并且缓存值不等于当前值，则删除缓存
+                    if (redisService.hasKey(cacheKey) && Integer.parseInt(redisService.get(cacheKey)) != incrementStart) {
+                        redisService.delete(cacheKey);
+                    }
+                }
                 createReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // 假设项目ID为更新者ID（根据需求调整）
                 createReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // 假设任务名称为更新者（根据需求调整）
                 createReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // 设置当前时间为更新时间

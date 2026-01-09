@@ -80,7 +80,12 @@ public abstract class AbstractDataSourceFactory implements DataSourceFactory {
     }
 
     public DataSource createDataSource(DbQueryProperty property) {
-        SimpleDataSource dataSource = new SimpleDataSource(trainToJdbcUrl(property), property.getUsername(), property.getPassword());
+        SimpleDataSource dataSource = null;
+        if (DbType.SQL_SERVER2008.getDb().equals(property.getDbType()) && tech.qiantong.qdata.common.utils.StringUtils.startsWith(property.trainToJdbcUrl(), "jdbc:jtds:sqlserver")) {
+            dataSource = new SimpleDataSource(property.trainToJdbcUrl(), property.getUsername(), property.getPassword(), "net.sourceforge.jtds.jdbc.Driver");
+        } else {
+            dataSource = new SimpleDataSource(property.trainToJdbcUrl(), property.getUsername(), property.getPassword());
+        }
         return dataSource;
     }
 

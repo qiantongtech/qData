@@ -97,6 +97,14 @@ public interface DbDialect {
     String tablesComment(DbQueryProperty dbQueryProperty,String tableName);
 
     /**
+     * 构建表名
+     * @param dbQueryProperty
+     * @param tableName
+     * @return
+     */
+    String buildTableNameByDbType(DbQueryProperty dbQueryProperty, String tableName);
+
+    /**
      * @param columns
      * @param tableName
      * @param dbQueryProperty

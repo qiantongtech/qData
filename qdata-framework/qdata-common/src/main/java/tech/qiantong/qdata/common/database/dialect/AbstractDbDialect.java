@@ -69,6 +69,12 @@ public abstract class AbstractDbDialect implements DbDialect {
     public String tablesComment(DbQueryProperty dbQueryProperty, String tableName) {
         return null;
     }
+
+    @Override
+    public String buildTableNameByDbType(DbQueryProperty dbQueryProperty, String tableName) {
+        return tableName;
+    }
+
     @Override
     public String buildPaginationSql(String originalSql, long offset, long count) {
         // 获取 分页实际条数

@@ -111,6 +111,15 @@ public class MySqlDialect extends AbstractDbDialect {
     }
 
     @Override
+    public String buildTableNameByDbType(DbQueryProperty dbQueryProperty, String tableName) {
+        if(StringUtils.isNotEmpty(dbQueryProperty.getDbName())){
+            return dbQueryProperty.getDbName() + "." + tableName;
+        }
+
+        return tableName;
+    }
+
+    @Override
     public String generateCheckTableExistsSQL(DbQueryProperty dbQueryProperty, String tableName) {
         return "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = '" + dbQueryProperty.getDbName() + "' AND table_name = '" + tableName + "';";
     }

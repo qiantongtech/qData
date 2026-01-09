@@ -32,10 +32,11 @@
 
 package tech.qiantong.qdata.common.database.dialect;
 
+import com.alibaba.fastjson2.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
 import tech.qiantong.qdata.common.database.core.DbColumn;
-import tech.qiantong.qdata.common.database.utils.MD5Util;
+import tech.qiantong.qdata.common.database.utils.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +49,36 @@ import java.util.stream.Collectors;
  * @date 2022-11-14
  */
 public class SQLServerDialect extends SQLServer2008Dialect {
+
+    @Override
+    public String columns(String dbName, String tableName) {
+        return "select columns.name AS colName, columns.column_id AS COLPOSITION, columns.max_length AS DATALENGTH, columns.precision AS DATAPRECISION, columns.scale AS DATASCALE, " +
+                "columns.is_nullable AS NULLABLE, types.name AS DATATYPE, CAST(ep.value  AS NVARCHAR(128)) AS COLCOMMENT, (CASE WHEN e.text LIKE '((%)' AND e.text NOT LIKE '%)%''%' THEN SUBSTRING(e.text, 3, LEN(e.text) - 4) WHEN e.text LIKE '(%' THEN SUBSTRING(e.text, 2, LEN(e.text) - 2) ELSE e.text END) AS DATADEFAULT, " +
+                "(CASE WHEN (SELECT ic.column_id FROM sys.indexes idx INNER JOIN sys.index_columns ic ON idx.object_id = ic.object_id AND idx.index_id = ic.index_id WHERE idx.is_primary_key = 1 AND columns.column_id = ic.column_id AND columns.object_id = ic.object_id)  IS NOT NULL THEN '1' ELSE '0' END) AS COLKEY " +
+                "from sys.tables tables " +
+                "JOIN sys.columns columns ON tables.object_id = columns.object_id " +
+                "LEFT JOIN sys.types types ON columns.system_type_id = types.system_type_id " +
+                "LEFT JOIN syscomments e ON columns.default_object_id= e.id " +
+                "LEFT JOIN sys.extended_properties ep ON ep.major_id = columns.object_id AND ep.minor_id = columns.column_id AND ep.name = 'MS_Description' " +
+                "where tables.name = '" + tableName + "' " +
+                "order by columns.column_id ";
+    }
+
+    @Override
+    public String columns(DbQueryProperty dbQueryProperty, String tableName) {
+        return "select columns.name AS colName, columns.column_id AS COLPOSITION, columns.max_length AS DATALENGTH, columns.precision AS DATAPRECISION, columns.scale AS DATASCALE, " +
+                "columns.is_nullable AS NULLABLE, types.name AS DATATYPE, CAST(ep.value  AS NVARCHAR(128)) AS COLCOMMENT, (CASE WHEN e.text LIKE '((%)' AND e.text NOT LIKE '%)%''%' THEN SUBSTRING(e.text, 3, LEN(e.text) - 4) WHEN e.text LIKE '(%' THEN SUBSTRING(e.text, 2, LEN(e.text) - 2) ELSE e.text END) AS DATADEFAULT, " +
+                "(CASE WHEN (SELECT ic.column_id FROM sys.indexes idx INNER JOIN sys.index_columns ic ON idx.object_id = ic.object_id AND idx.index_id = ic.index_id WHERE idx.is_primary_key = 1 AND columns.column_id = ic.column_id AND columns.object_id = ic.object_id)  IS NOT NULL THEN '1' ELSE '0' END) AS COLKEY " +
+                "from sys.tables tables " +
+                "JOIN sys.columns columns ON tables.object_id = columns.object_id " +
+                "LEFT JOIN sys.types types ON columns.system_type_id = types.system_type_id " +
+                "LEFT JOIN syscomments e ON columns.default_object_id= e.id " +
+                "LEFT JOIN sys.extended_properties ep ON ep.major_id = columns.object_id AND ep.minor_id = columns.column_id AND ep.name = 'MS_Description' " +
+                "where tables.name = '" + tableName + "' " +
+                "AND SCHEMA_NAME(tables.schema_id) = '" + dbQueryProperty.getSid() + "' " +
+                "order by columns.column_id ";
+    }
+
 
     @Override
     public String buildPaginationSql(String originalSql, long offset, long count) {
@@ -188,7 +219,7 @@ public class SQLServerDialect extends SQLServer2008Dialect {
         if (StringUtils.isNotEmpty(tableComment)) {
             StringBuilder sql = new StringBuilder();
             sql.append("EXEC sys.sp_addextendedproperty @name = N'MS_Description', @value = N'")
-                    .append(MD5Util.escapeSingleQuotes(tableComment)).append("', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'TABLE', @level1name = N'")
+                    .append(DatabaseUtil.escapeSingleQuotes(tableComment)).append("', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'TABLE', @level1name = N'")
                     .append(tableName).append("'\n");
             sqlList.add(sql.toString());
         }
@@ -198,7 +229,7 @@ public class SQLServerDialect extends SQLServer2008Dialect {
             if (StringUtils.isNotEmpty(column.getColComment())) {
                 StringBuilder sql = new StringBuilder();
                 sql.append("EXEC sys.sp_addextendedproperty @name = N'MS_Description', @value = N'")
-                        .append(MD5Util.escapeSingleQuotes(column.getColComment())).append("', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'TABLE', @level1name = N'")
+                        .append(DatabaseUtil.escapeSingleQuotes(column.getColComment())).append("', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'TABLE', @level1name = N'")
                         .append(tableName).append("', @level2type = N'COLUMN', @level2name = N'")
                         .append(column.getColName()).append("'\n");
                 sqlList.add(sql.toString());

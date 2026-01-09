@@ -281,7 +281,7 @@ const getDatasourceList = async () => {
     const response = await listDaDatasource({
       projectCode: userStore.projectCode,
       projectId: userStore.projectId,
-      datasourceType: "DM8,Oracle11,MySql,Oracle,Kingbase8,Doris,SQL_Server,PostgreSQL",
+      datasourceType: "DM8,Oracle11,MySql,Oracle,Kingbase8,Doris,SQL_Server,SQL_Server2008,PostgreSQL",
       pageSize: 9999,
     });
     createTypeList.value = response.data.rows;

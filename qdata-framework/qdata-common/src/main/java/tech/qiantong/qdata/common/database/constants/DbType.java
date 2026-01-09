@@ -88,20 +88,20 @@ public enum DbType {
             "SELECT COUNT(1) FROM {tableName}",
             "SELECT {tableFieldName} FROM {tableName} ORDER BY {orderBy} DESC LIMIT {pageSize} OFFSET ({pageNo}-1)*{pageSize}"),
     /**
-     * SQLSERVER2005
+     * SQLServer2008及以下数据库
      */
-    SQL_SERVER2008("6",
+    SQL_SERVER2008("SQL_Server2008",
             "SQLServer2008及以下数据库",
-            "jdbc:sqlserver://${host}:${port};DatabaseName=${dbName}",
+            "jdbc:jtds:sqlserver://${host}:${port}/${dbName};ssl=off",
             "LEN",
             "SELECT COUNT(1) FROM {tableName}",
-            ""),
+            "SELECT {tableFieldName} FROM {tableName} ORDER BY {orderBy} DESC OFFSET {pageNo} ROWS FETCH NEXT {pageSize} ROWS ONLY"),
     /**
      * SQLSERVER
      */
     SQL_SERVER("SQL_Server",
             "SQLServer2012+数据库",
-            "jdbc:sqlserver://${host}:${port};DatabaseName=${dbName};encrypt=true;trustServerCertificate=true",
+            "jdbc:sqlserver://${host}:${port};DatabaseName=${dbName};encrypt=false;trustServerCertificate=true",
             "LEN",
             "SELECT COUNT(1) FROM {tableName}",
             "SELECT {tableFieldName} FROM {tableName} ORDER BY {orderBy} DESC OFFSET {pageNo} ROWS FETCH NEXT {pageSize} ROWS ONLY"),

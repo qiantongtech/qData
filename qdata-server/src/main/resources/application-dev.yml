@@ -1,36 +1,6 @@
-# Copyright © 2025 Qiantong Technology Co., Ltd.
-# qData Data Middle Platform (Open Source Edition)
-#
-# License:
-# Released under the Apache License, Version 2.0.
-# You may use, modify, and distribute this software for commercial purposes
-# under the terms of the License.
-#
-# Special Notice:
-# All derivative versions are strictly prohibited from modifying or removing
-# the default system logo and copyright information.
-# For brand customization, please apply for brand customization authorization via official channels.
-#
-# More information: https://qdata.qiantong.tech/business.html
-#
-# ============================================================================
-#
-# 版权所有 © 2025 江苏千桐科技有限公司
-# qData 数据中台（开源版）
-#
-# 许可协议：
-# 本项目基于 Apache License 2.0 开源协议发布，
-# 允许在遵守协议的前提下进行商用、修改和分发。
-#
-# 特别说明：
-# 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-# 如需定制品牌，请通过官方渠道申请品牌定制授权。
-#
-# 更多信息请访问：https://qdata.qiantong.tech/business.html
-
 # 主数据源选择
 datasource:
-  type: mysql
+  type: dm8
 
 # Spring配置
 spring:
@@ -39,7 +9,7 @@ spring:
     # 地址
     host: 127.0.0.1
     # 端口，默认为6379
-    port: 6379
+    port: 12138
     # 数据库索引
     database: 0
     # 密码
@@ -57,12 +27,20 @@ spring:
         # #连接池最大阻塞等待时间（使用负值表示没有限制）
         max-wait: -1ms
   rabbitmq:
-    host: 127.0.0.1
-    port: 5672
-    username: 账号
-    password: 密码
+    host: 110.42.38.62
+    port: 40003
+    username: admin
+    password: Ej^iUNFLp9MQouc1
+    #    listener:
+    #      simple:
+    #        acknowledge-mode: manual
+    #        concurrency: 1
+    #        max-concurrency: 10
     listener:
+      direct:
+        auto-startup: false
       simple:
+        auto-startup: false
         acknowledge-mode: manual
         concurrency: 1
         max-concurrency: 10
@@ -139,11 +117,11 @@ dm8:
   # JDBC驱动类名
   driver-class-name: dm.jdbc.driver.DmDriver
   # 主库JDBC连接URL
-  url: jdbc:dm://127.0.0.1:5236/QDATA?STU&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf-8&schema=QDATA&serverTimezone=Asia/Shanghai
+  url: jdbc:dm://110.42.38.62:40013/LS_OPEN?STU&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf-8&schema=LS_OPEN&serverTimezone=Asia/Shanghai
   # 主库用户名
-  username: QDATA
+  username: LS_OPEN
   # 主库密码
-  password: 密码
+  password: 2LKqLVMQ!xVDT$Qx
 
 # 人大金仓配置文件
 kingbase8:
@@ -169,20 +147,18 @@ oracle:
 
 # 调度器相关配置
 ds:
-  # 调度器api前缀
-  base_url: http://127.0.0.1:12345/dolphinscheduler
-  # 数据质量服务组件HTTP地址
-  quality_url: http://127.0.0.1:8083/quality/qualityTaskExecutor/runExecuteTask
-  # 数据质量任务dolphinscheduler项目编码
-  http_quality_projectCode: 134799536571008
-  # 调度器令牌（可以自行修改）
+  base_url: http://110.42.38.62:40018/dolphinscheduler
+  quality_url: http://localhost:8083/quality/qualityTaskExecutor/runExecuteTask
+  http_url: http://110.42.38.62:40021/prod-api/da/daDiscoveryTask/runDaDiscoveryTask
+  http_projectCode: 134799536571008
+  http_quality_projectCode: 147372832245312
   token: b07f0e57c4818043a57ba05a28da291a
   # 资源中心路径
   resource_url: /dolphinscheduler/
   # spark相关配置
   spark:
     #spark-master的地址
-    master_url: spark://127.0.0.1:7077
+    master_url: spark://192.168.0.5:7077
     #jar包在ds的路径
     main_jar: file:/dolphinscheduler/default/resources/spark-jar/qdata-etl.jar
     #jar main入口

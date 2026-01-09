@@ -136,6 +136,7 @@ const getDatasourceIcon = (type) => {
         case "SHELL": return new URL("@/assets/system/images/dpp/SHELL.png", import.meta.url).href;
         case "Kingbase8": return new URL("@/assets/system/images/dpp/kingBase.png", import.meta.url).href;
         case "SQL_Server": return new URL("@/assets/system/images/dpp/SQL_Server.svg", import.meta.url).href;
+        case "SQL_Server2008": return new URL("@/assets/system/images/dpp/SQL_Server.svg", import.meta.url).href;
         default: return null;
     }
 };
@@ -171,7 +172,8 @@ const generateSQL = (type) => {
   console.log("🚀 ~ generateSQL ~ datasourceType:", datasourceType)
   if (
       (datasourceType == "Kingbase8" ||
-          datasourceType == "SQL_Server")
+          datasourceType == "SQL_Server" ||
+          datasourceType == "SQL_Server2008")
   ) {
     fromPart = dbname ? `${dbname}.${sid}.${tableName}` : tableName;
   } else {

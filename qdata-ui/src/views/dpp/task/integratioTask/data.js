@@ -71,6 +71,17 @@ export const treeData = [
                 icon: new URL('@/assets/system/images/dpp/scv.svg', import.meta.url).href, // 动态获取路径
                 icons: '@/assets/system/images/dpp/csv.png'
             },
+            {
+                label: 'Kafka输入组件',
+                key: 'input-Kafka',
+                type: 1,
+                level: 2,
+                componentType: '3',
+                taskType: 'DATAX',
+                engine: ['SPARK'],
+                icon: new URL('@/assets/system/images/dpp/kaf.svg', import.meta.url).href, // 动态获取路径
+                form: 'input/kafkaForm.vue',
+            },
         ]
     },
     {
@@ -111,6 +122,50 @@ export const treeData = [
                 engine: ['SPARK'],
                 icon: new URL('@/assets/system/images/dpp/zdpf.svg', import.meta.url).href, // 动态获取路径
                 icons: '@/assets/system/images/dpp/SHELL.png'
+            },
+            {
+                label: '去除重复记录',
+                key: 'transform-cleaning',
+                type: 4,
+                level: 2,
+                taskType: 'DATA_DEDUPLICATION',
+                componentType: '40',
+                engine: ['SPARK'],
+                icon: new URL('@/assets/system/images/dpp/dedu.svg', import.meta.url).href, // 动态获取路径
+                form: 'transform/dedupFilter.vue',
+            },
+            {
+                label: '增加常量',
+                key: 'transform-cleaning',
+                type: 48,
+                level: 2,
+                taskType: 'ADD_CONSTANT',
+                componentType: '48',
+                engine: ['SPARK'],
+                icon: new URL('@/assets/system/images/dpp/add.svg', import.meta.url).href, // 动态获取路径
+                form: 'transform/addConstants.vue',
+            },
+            {
+                label: '字段选择、修改',
+                key: 'transform-cleaning',
+                type: 3,
+                level: 2,
+                taskType: 'SELECT_FIELDS',
+                componentType: '22',
+                engine: ['SPARK'],
+                icon: new URL('@/assets/system/images/dpp/set.svg', import.meta.url).href, // 动态获取路径
+                form: 'transform/fieldSelectAndmodificat.vue',
+            },
+            {
+                label: '值映射',
+                key: 'transform-cleaning',
+                type: 6,
+                level: 2,
+                taskType: 'VALUE_MAP',
+                componentType: '47',
+                engine: ['SPARK'],
+                icon: new URL('@/assets/system/images/dpp/map.svg', import.meta.url).href, // 动态获取路径
+                form: 'transform/valueMapping.vue',
             },
         ]
     },

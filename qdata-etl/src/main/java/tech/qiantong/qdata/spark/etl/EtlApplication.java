@@ -49,6 +49,7 @@ import tech.qiantong.qdata.spark.etl.transition.TransitionFactory;
 import tech.qiantong.qdata.spark.etl.utils.IDGeneratorUtils;
 import tech.qiantong.qdata.spark.etl.utils.LogUtils;
 import tech.qiantong.qdata.spark.etl.utils.RabbitmqUtils;
+import tech.qiantong.qdata.spark.etl.utils.RedisUtils;
 import tech.qiantong.qdata.spark.etl.utils.db.DBUtils;
 import tech.qiantong.qdata.spark.etl.writer.WriterFactory;
 
@@ -76,7 +77,13 @@ public class EtlApplication {
         JSONObject taskParams = JSONObject.parseObject(jsonStr);
         JSONObject config = taskParams.getJSONObject("config");
         JSONObject rabbitmq = config.getJSONObject("rabbitmq");
+        JSONObject redis = config.getJSONObject("redis");
         JSONObject taskInfo = config.getJSONObject("taskInfo");
+
+        // 初始化redis（兼容历史任务，RedisUtils 中配置默认值后重新打包）
+        if (redis != null && redis.size() > 0) {
+            RedisUtils.init(redis);
+        }
 
         //创建流程实例
         ProcessInstance processInstance = createProcess(taskInfo, now, rabbitmq);
@@ -195,6 +202,13 @@ public class EtlApplication {
             updateProcess(processInstance, WorkflowExecutionStatus.SUCCESS, rabbitmq);
             LogUtils.writeLog(writerLogParams, "任务成功");
             LogUtils.writeLog(writerLogParams, "FINALIZE_SESSION");
+            //判断是否存在数据缓存
+            if (reader.containsKey("cacheDataMap")) {
+                Map<String, String> cacheDataMap = (Map<String, String>) reader.get("cacheDataMap");
+                cacheDataMap.forEach((key, value) -> {
+                    RedisUtils.set(key, value, -1);
+                });
+            }
         } else {
             updateTask(writerTaskInstance, TaskExecutionStatus.FAILURE, rabbitmq);
             updateProcess(processInstance, WorkflowExecutionStatus.FAILURE, rabbitmq);

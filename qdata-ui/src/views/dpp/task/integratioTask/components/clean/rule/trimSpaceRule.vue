@@ -31,53 +31,23 @@
 -->
 
 <template>
-  <!--  字段前缀/后缀统一  -->
   <el-form ref="formRef" :model="form" label-width="130px" :disabled="false">
     <el-row>
       <el-col :span="12">
-        <el-form-item
-          label="标记值"
-          prop="stringValue"
-          :rules="
-            !falg
-              ? [{ required: true, message: '请输入标记值', trigger: 'blur' }]
-              : []
-          "
-        >
-          <el-input
-            v-if="!falg"
-            v-model="form.stringValue"
-            placeholder="请输入添加值"
-            class="rule-half"
-          />
-          <div v-else class="form-readonly">{{ form.stringValue || "-" }}</div>
-        </el-form-item>
-      </el-col>
-      <el-col :span="12" class="hasMsg">
-        <el-form-item
-          label="处理方式"
-          prop="handleType"
-          :rules="
-            !falg
-              ? [{ required: true, message: '请选择处理方式', trigger: 'blur' }]
-              : []
-          "
-        >
+        <el-form-item label="去除空格规则" prop="handleType">
           <el-radio-group v-model="form.handleType" :disabled="falg">
-            <el-radio :value="'1'">加前綴</el-radio>
-            <el-radio :value="'2'">加后綴</el-radio>
-            <el-radio :value="'3'">去除前缀</el-radio>
-            <el-radio :value="'4'">去除后缀</el-radio>
+            <el-radio :value="'1'">去除前后空格</el-radio>
+            <el-radio :value="'2'">去除所有空格</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-col>
     </el-row>
-    <el-row> </el-row>
   </el-form>
 </template>
 
 <script setup>
 import { reactive, ref, watch } from "vue";
+
 const props = defineProps({
   form: Object,
   inputFields: Array,
@@ -89,33 +59,18 @@ const emit = defineEmits(["update:form"]);
 const formRef = ref(null);
 
 const form = reactive({ ...props.form });
-const boundaryExamples = computed(() => {
-  switch (form.handleType) {
-    case "3":
-      return ["示例: 如果年龄 > 150，则设置为 150。"];
-    case "2":
-      return ["示例: 如果收入 < 1000，则设置为 1000。"];
-    case "1":
-      return [
-        "示例1: 如果年龄 > 150，则设置为 150。如果收入 < 1000，则设置为 1000。",
-      ];
-    default:
-      return [];
-  }
-});
-const handleTypeText = computed(() => {
-  if (form.handleType === "1") return "加前綴";
-  if (form.handleType === "2") return "加后綴";
-  if (form.handleType === "3") return "去除前缀";
-  if (form.handleType === "4") return "去除后缀";
-  return "-";
-});
-const loading = ref(false);
-const exposedFields = ["stringValue", "handleType"];
+const handleTypeText = computed(() =>
+  form.handleType === "1"
+    ? "去除前后空格"
+    : form.handleType === "2"
+    ? "去除所有空格"
+    : "-"
+);
 function validate() {
   return new Promise((resolve) => {
     formRef.value.validate((valid) => {
       if (valid) {
+        const exposedFields = ["handleType"];
         const data = Object.fromEntries(
           exposedFields.map((key) => [key, form[key]])
         );

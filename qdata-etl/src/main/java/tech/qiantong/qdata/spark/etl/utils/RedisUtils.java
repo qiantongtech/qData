@@ -159,6 +159,10 @@ public final class RedisUtils {
         }
     }
 
+    public static Boolean hasKey(String key) {
+        return cmd().exists(key) > 0;
+    }
+
     public static boolean expire(String key, long seconds) {
         try {
             Boolean ok = cmd().expire(key, seconds);

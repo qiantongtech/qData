@@ -30,52 +30,22 @@
   更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 <template>
-  <!-- 字段长度范围校验 -->
+  <!-- 字段组完整性校验 -->
   <el-form ref="formRef" :model="form" label-width="130px" :disabled="false">
     <el-row>
       <el-col :span="12">
-        <el-form-item label="最小长度" prop="minLength">
-          <el-input
+        <el-form-item label="字段完整性" prop="fillStrategy">
+          <el-radio-group
             v-if="!falg"
-            v-model="form.minLength"
-            placeholder="不填写表示不限制最小长度"
-            type="number"
-            min="0"
+            v-model="form.fillStrategy"
             class="rule-half"
-          />
-          <div v-else class="form-readonly">{{ form.minLength ?? "-" }}</div>
-        </el-form-item>
-      </el-col>
-      <el-col :span="12">
-        <el-form-item label="最大长度" prop="maxLength">
-          <el-input
-            v-if="!falg"
-            v-model="form.maxLength"
-            placeholder="不填写表示不限制最大长度"
-            type="number"
-            min="0"
-            class="rule-half"
-          />
-          <div v-else class="form-readonly">{{ form.maxLength ?? "-" }}</div>
-        </el-form-item>
-      </el-col>
-    </el-row>
-    <el-row>
-      <el-col :span="12">
-        <el-form-item label="忽略空值" prop="ignoreNullValue">
-          <el-radio-group v-if="!falg" v-model="form.ignoreNullValue">
-            <el-radio :value="'1'">是</el-radio>
-            <el-radio :value="'0'">否</el-radio>
+          >
+            <el-radio :value="'1'">必须全部填写（部分为空为异常）</el-radio>
+            <el-radio :value="'2'"
+              >要么全部为空，要么全部填写（部分填写为异常）</el-radio
+            >
           </el-radio-group>
-          <div v-else class="form-readonly">
-            {{
-              form.ignoreNullValue === "1"
-                ? "是"
-                : form.ignoreNullValue === "0"
-                ? "否"
-                : "-"
-            }}
-          </div>
+          <div v-else class="form-readonly">{{ fillStrategyText }}</div>
         </el-form-item>
       </el-col>
     </el-row>
@@ -84,6 +54,7 @@
 
 <script setup>
 import { reactive, ref, watch } from "vue";
+
 const props = defineProps({
   form: Object,
   dppQualityTaskObjSaveReqVO: Array,
@@ -91,17 +62,24 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["update:form"]);
+
 const formRef = ref(null);
+
 const form = reactive({ ...props.form });
+const fillStrategyText = computed(() =>
+  form.fillStrategy === "1"
+    ? "必须全部填写（部分为空为异常）"
+    : form.fillStrategy === "2"
+    ? "要么全部为空，要么全部填写（部分填写为异常）"
+    : "-"
+);
 function validate() {
   return new Promise((resolve) => {
     formRef.value.validate((valid) => {
       if (valid) {
+        const exposedFields = ["fillStrategy"];
         const data = Object.fromEntries(
-          ["minLength", "maxLength", "ignoreNullValue"].map((key) => [
-            key,
-            form[key],
-          ])
+          exposedFields.map((key) => [key, form[key]])
         );
         resolve({
           valid: true,
@@ -113,6 +91,13 @@ function validate() {
     });
   });
 }
+
+onMounted(() => {
+  if (form.targetObject) {
+    fetchColumns();
+  }
+  console.log("子组件 mounted hook");
+});
 
 defineExpose({ validate });
 </script>

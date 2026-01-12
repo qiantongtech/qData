@@ -29,7 +29,6 @@
    *
   更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
-
 <template>
   <!-- 新增评测规则的 每个规则的配置 -->
   <el-dialog
@@ -67,11 +66,10 @@
                 { required: true, message: '请输入评测名称', trigger: 'blur' },
               ]"
             >
-              <el-input
-                v-model="form.name"
-                placeholder="请输入评测名称"
-                :disabled="falg"
-              />
+              <template v-if="!falg">
+                <el-input v-model="form.name" placeholder="请输入评测名称" />
+              </template>
+              <div v-else class="form-readonly">{{ form.name || "-" }}</div>
             </el-form-item>
             <el-form-item
               label="稽查名称"
@@ -81,47 +79,47 @@
                 { required: true, message: '请输入稽查名称', trigger: 'blur' },
               ]"
             >
-              <el-input
-                v-model="form.name"
-                placeholder="请输入稽查名称"
-                :disabled="falg"
-              />
+              <template v-if="!falg">
+                <el-input v-model="form.name" placeholder="请输入稽查名称" />
+              </template>
+              <div v-else class="form-readonly">{{ form.name || "-" }}</div>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="稽查规则编号" prop="ruleCode">
-              <el-input
-                v-model="form.ruleCode"
-                placeholder="请输入稽查规则编号"
-                disabled
-              />
+              <div class="form-readonly">{{ form.ruleCode || "-" }}</div>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="稽查规则名称" prop="ruleName">
-              <el-input
-                v-model="form.ruleName"
-                placeholder="请输入稽查规则名称"
-                disabled
-              />
+              <div class="form-readonly">{{ form.ruleName || "-" }}</div>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="8">
             <el-form-item label="告警等级" prop="warningLevel">
-              <el-select
-                v-model="form.warningLevel"
-                placeholder="请选择质量维度"
-                style="width: 290px"
-              >
-                <el-option
-                  v-for="dict in quality_warning_status"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                ></el-option>
-              </el-select>
+              <template v-if="!falg">
+                <el-select
+                  v-model="form.warningLevel"
+                  placeholder="请选择质量维度"
+                  style="width: 290px"
+                >
+                  <el-option
+                    v-for="dict in quality_warning_status"
+                    :key="dict.value"
+                    :label="dict.label"
+                    :value="dict.value"
+                  ></el-option>
+                </el-select>
+              </template>
+              <div v-else class="form-readonly">
+                {{
+                  quality_warning_status.find(
+                    (i) => i.value === form.warningLevel
+                  )?.label || "-"
+                }}
+              </div>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -136,48 +134,72 @@
         <el-row>
           <el-col :span="24">
             <el-form-item label="规则描述" prop="ruleDescription">
-              <el-input
-                type="textarea"
-                v-model="form.ruleDescription"
-                placeholder="请输入规则描述"
-                :disabled="falg"
-              />
+              <template v-if="!falg">
+                <el-input
+                  type="textarea"
+                  maxlength="500个字符"
+                  show-word-limit
+                  v-model="form.ruleDescription"
+                  placeholder="请输入规则描述"
+                />
+              </template>
+              <div v-else class="form-readonly textarea">
+                {{ form.ruleDescription || "-" }}
+              </div>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
             <el-form-item label="错误示例" prop="errDescription">
-              <el-input
-                type="textarea"
-                v-model="form.errDescription"
-                placeholder="请输入错误示例"
-                :disabled="falg"
-              />
+              <template v-if="!falg">
+                <el-input
+                  type="textarea"
+                  maxlength="500个字符"
+                  show-word-limit
+                  v-model="form.errDescription"
+                  placeholder="请输入错误示例"
+                />
+              </template>
+              <div v-else class="form-readonly textarea">
+                {{ form.errDescription || "-" }}
+              </div>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
             <el-form-item label="修复建议" prop="suggestion">
-              <el-input
-                type="textarea"
-                v-model="form.suggestion"
-                placeholder="请输入修复建议"
-                :disabled="falg"
-              />
+              <template v-if="!falg">
+                <el-input
+                  type="textarea"
+                  maxlength="500个字符"
+                  show-word-limit
+                  v-model="form.suggestion"
+                  placeholder="请输入修复建议"
+                />
+              </template>
+              <div v-else class="form-readonly textarea">
+                {{ form.suggestion || "-" }}
+              </div>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
             <el-form-item label="Where 条件" prop="whereClause">
-              <el-input
-                type="textarea"
-                v-model="form.whereClause"
-                placeholder="请输入 Where 条件"
-                :disabled="falg"
-              />
+              <template v-if="!falg">
+                <el-input
+                  type="textarea"
+                  maxlength="500个字符"
+                  show-word-limit
+                  v-model="form.whereClause"
+                  placeholder="请输入 Where 条件"
+                />
+              </template>
+              <div v-else class="form-readonly textarea">
+                {{ form.whereClause || "-" }}
+              </div>
             </el-form-item>
           </el-col>
         </el-row>
@@ -196,21 +218,26 @@
                 },
               ]"
             >
-              <el-select
-                v-model="form.tableName"
-                placeholder="请选择评测对象"
-                filterable
-                clearable
-                :disabled="falg || type == 2"
-                @change="handleTargetObjectChange"
-              >
-                <el-option
-                  v-for="item in dppQualityTaskObjSaveReqVO"
-                  :key="item.tableName"
-                  :label="item.name"
-                  :value="item.tableName"
-                />
-              </el-select>
+              <template v-if="!falg">
+                <el-select
+                  v-model="form.tableName"
+                  placeholder="请选择评测对象"
+                  filterable
+                  clearable
+                  :disabled="type == 2"
+                  @change="handleTargetObjectChange"
+                >
+                  <el-option
+                    v-for="item in dppQualityTaskObjSaveReqVO"
+                    :key="item.tableName"
+                    :label="item.name"
+                    :value="item.tableName"
+                  />
+                </el-select>
+              </template>
+              <div v-else class="form-readonly">
+                {{ selectedRef?.name || "-" }}
+              </div>
               <span class="msg" v-if="selectedRef">
                 <el-icon>
                   <InfoFilled />
@@ -235,40 +262,43 @@
                 },
               ]"
             >
-              <el-select
-                v-if="isMultipleRuleType"
-                v-model="form.evaColumn"
-                multiple
-                placeholder="请选择检查字段"
-                filterable
-                clearable
-                :disabled="falg"
-                :loading="loading"
-                collapse-tags
-              >
-                <el-option
-                  v-for="col in columnList"
-                  :key="col.columnName"
-                  :label="col.label"
-                  :value="col.columnName"
-                />
-              </el-select>
-              <el-select
-                v-else
-                v-model="form.evaColumn"
-                placeholder="请选择检查字段"
-                filterable
-                clearable
-                :disabled="falg"
-                :loading="loading"
-              >
-                <el-option
-                  v-for="col in columnList"
-                  :key="col.columnName"
-                  :label="col.label"
-                  :value="col.columnName"
-                />
-              </el-select>
+              <template v-if="!falg">
+                <el-select
+                  v-if="isMultipleRuleType"
+                  v-model="form.evaColumn"
+                  multiple
+                  placeholder="请选择检查字段"
+                  filterable
+                  clearable
+                  :loading="loading"
+                  collapse-tags
+                >
+                  <el-option
+                    v-for="col in columnList"
+                    :key="col.columnName"
+                    :label="col.label"
+                    :value="col.columnName"
+                  />
+                </el-select>
+                <el-select
+                  v-else
+                  v-model="form.evaColumn"
+                  placeholder="请选择检查字段"
+                  filterable
+                  clearable
+                  :loading="loading"
+                >
+                  <el-option
+                    v-for="col in columnList"
+                    :key="col.columnName"
+                    :label="col.label"
+                    :value="col.columnName"
+                  />
+                </el-select>
+              </template>
+              <div v-else class="form-readonly">
+                {{ evaColumnLabel || "-" }}
+              </div>
             </el-form-item>
           </el-col>
         </el-row>
@@ -330,16 +360,8 @@ import { ref, reactive, watch, toRefs } from "vue";
 import SideMenu from "./ruleSelectorMenu.vue";
 import SpotCheckDialog from "./spotCheckResult.vue";
 import { getColumnByAssetId } from "@/api/dpp/task/index.js";
-// 数值精度校验
-import DecimalscaleRule from "./rule/decimalScaleRule.vue";
-// 字段字符串类型校验
-import CharacterValidation from "./rule/characterValidationRule.vue";
-// 字段长度范围校验
-import LengthRule from "./rule/lengthRangeRule.vue";
-// 数值字段范围校验
-import NumericRangeRule from "./rule/numberRangeRule.vue";
-// 枚举值校验
-import EnumRule from "./rule/enumRule.vue";
+// 通过注册中心按需加载规则子组件，减少静态 import 带来的首屏体积
+import { getRuleConfig, getRuleComponent } from "./rule/registry.js";
 import { verifyInterfaceValue } from "@/api/da/quality/qualityTask";
 let falg = ref(false);
 const { proxy } = getCurrentInstance();
@@ -424,52 +446,33 @@ const selectedRef = computed(() => {
     ) || null
   );
 });
+const evaColumnLabel = computed(() => {
+  const map = new Map(
+    (columnList.value || []).map((c) => [c.columnName, c.label])
+  );
+  const val = form.evaColumn;
+  if (!val) return "";
+  if (Array.isArray(val)) {
+    return val.map((v) => map.get(v) || v).join(", ");
+  }
+  return map.get(val) || val;
+});
 let title = ref();
-const ruleConfigMap = {
-  CHARACTER_VALIDATION: {
-    label: "字符串类型校验",
-    field: "characterValidation",
-    component: CharacterValidation,
-  },
-  DECIMAL_PRECISION_VALIDATION: {
-    label: "数值精度校验",
-    field: "decimalscaleValidation",
-    component: DecimalscaleRule,
-  },
-  NUMERIC_RANGE_VALIDATION: {
-    label: "数值字段范围校验",
-    field: "numericRangeValidation",
-    component: NumericRangeRule,
-  },
-  ENUM_VALIDATION: {
-    label: "枚举值校验",
-    field: "enumValidation",
-    component: EnumRule,
-  },
-  COMPOSITE_UNIQUENESS_VALIDATION: {
-    label: "多字段组合唯一性校验",
-    field: "compositeUniquenessValidation",
-    component: "",
-  },
-  LENGTH_VALIDATION: {
-    label: "字段长度范围校验",
-    field: "lengthValidation",
-    component: LengthRule,
-  },
-};
 
 // 计算属性：当前规则配置
 const currentRuleConfig = computed(() => {
-  return ruleConfigMap[form.ruleType] || null;
+  return getRuleConfig(form.ruleType);
 });
 
 // 计算属性：当前规则组件
 const currentRuleComponent = computed(() => {
-  return currentRuleConfig.value?.component || null;
+  return getRuleComponent(form.ruleType) || null;
 });
 
 let loading = ref(false);
 let columnList = ref([]);
+// 评测字段列表缓存：key = datasourceId|tableName
+const columnsCache = new Map();
 
 const spotCheckRef = ref();
 
@@ -557,18 +560,28 @@ async function fetchColumns() {
   }
   loading.value = true;
   try {
-    const res = await getColumnByAssetId({
-      id: form?.datasourceId || selectedRef.value.datasourceId,
-      tableName: form?.tableName,
-    });
-    if (res.code == "200") {
-      columnList.value = res.data.map((col) => ({
-        ...col,
-        label:
-          col.columnName + (col.columnComment ? "/" + col.columnComment : ""),
-      }));
+    const cacheKey = `${form?.datasourceId || selectedRef.value.datasourceId}|${
+      form?.tableName
+    }`;
+    if (columnsCache.has(cacheKey)) {
+      columnList.value = columnsCache.get(cacheKey);
     } else {
-      columnList.value = [];
+      const res = await getColumnByAssetId({
+        id: form?.datasourceId || selectedRef.value.datasourceId,
+        tableName: form?.tableName,
+      });
+      if (res.code == "200") {
+        const list = res.data.map((col) => ({
+          ...col,
+          label:
+            col.columnName + (col.columnComment ? "/" + col.columnComment : ""),
+        }));
+        columnList.value = list;
+        columnsCache.set(cacheKey, list);
+      } else {
+        columnList.value = [];
+        columnsCache.set(cacheKey, []);
+      }
     }
   } catch (error) {
     columnList.value = [];
@@ -670,9 +683,15 @@ async function openDialog(record, index, fg) {
   mode.value = index;
   resetForm();
   const prefix = props?.type == 3 ? "稽查规则" : "评测规则";
-  dialogTitle.value = `${mode.value ? "修改" : "新增"}${prefix}${
-    record?.ruleName ? `-${record.ruleName}` : ""
-  }`;
+  if (falg.value) {
+    dialogTitle.value = `${prefix}详情${
+      record?.ruleName ? `-${record.ruleName}` : ""
+    }`;
+  } else {
+    dialogTitle.value = `${mode.value ? "修改" : "新增"}${prefix}${
+      record?.ruleName ? `-${record.ruleName}` : ""
+    }`;
+  }
 
   dialogStatus.value = mode.value ? 1 : 0;
   dialogVisible.value = true;

@@ -213,22 +213,22 @@
             </template>
             <template v-if="form.taskParams.readModeType == 3">
                 <el-row :gutter="20">
-                    <el-col :span="12">
-                        <el-form-item label="逻辑连接符" prop="taskParams.dateIncrementConfig.logic" :rules="[
-                            {
-                                required: true,
-                                message: '请选择逻辑连接符',
-                                trigger: 'change'
-                            }
-                        ]">
-                            <el-select v-if="!info" v-model="form.taskParams.dateIncrementConfig.logic" filterable
-                                placeholder="下拉选择 and/or，默认 and" @change="handleChange">
-                                <el-option label="and" value="and" />
-                                <el-option label="or" value="or" />
-                            </el-select>
-                            <div class="form-readonly" v-else>{{ form.taskParams.dateIncrementConfig.logic }}</div>
-                        </el-form-item>
-                    </el-col>
+<!--                    <el-col :span="12">-->
+<!--                        <el-form-item label="逻辑连接符" prop="taskParams.dateIncrementConfig.logic" :rules="[-->
+<!--                            {-->
+<!--                                required: true,-->
+<!--                                message: '请选择逻辑连接符',-->
+<!--                                trigger: 'change'-->
+<!--                            }-->
+<!--                        ]">-->
+<!--                            <el-select v-if="!info" v-model="form.taskParams.dateIncrementConfig.logic" filterable-->
+<!--                                placeholder="下拉选择 and/or，默认 and" @change="handleChange">-->
+<!--                                <el-option label="and" value="and" />-->
+<!--                                <el-option label="or" value="or" />-->
+<!--                            </el-select>-->
+<!--                            <div class="form-readonly" v-else>{{ form.taskParams.dateIncrementConfig.logic }}</div>-->
+<!--                        </el-form-item>-->
+<!--                    </el-col>-->
                     <el-col :span="12">
                         <el-form-item label="时间格式" prop="taskParams.dateIncrementConfig.dateFormat">
                             <el-select v-if="!info" v-model="form.taskParams.dateIncrementConfig.dateFormat"
@@ -274,6 +274,11 @@
                         <template #default="scope">
                             {{ scope.row.data || '-' }}
                         </template>
+                    </el-table-column>
+                    <el-table-column label="游标时间" align="left" prop="data">
+                      <template #default="scope">
+                        {{ scope.row.cursorTime || "-" }}
+                      </template>
                     </el-table-column>
                     <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right"
                         width="240">

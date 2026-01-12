@@ -58,9 +58,10 @@ services:
       - 15672:15672
     healthcheck:
       test: [ "CMD-SHELL", "rabbitmq-diagnostics -q ping" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      interval: 20s      # 每 20 秒检测一次
+      timeout: 5s        # 超过 5 秒算失败
+      retries: 10        # 连续 10 次失败算 unhealthy
+      start_period: 1200s # 容忍 20 分钟内失败
     profiles: ["all", "local"]
     env_file: .env
     environment:
@@ -112,9 +113,10 @@ services:
       - ./database/mysql/init:/docker-entrypoint-initdb.d:ro
     healthcheck:
       test: [ "CMD","mysqladmin","ping","-h","127.0.0.1","-po5KjnPYxswsiURZHCPwd" ]
-      interval: 10s
-      timeout: 5s
-      retries: 10
+      interval: 20s      # 每 20 秒检测一次
+      timeout: 5s        # 超过 5 秒算失败
+      retries: 10        # 连续 10 次失败算 unhealthy
+      start_period: 1200s # 容忍 20 分钟内失败
     networks:
       - qdatanet
 

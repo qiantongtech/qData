@@ -42,14 +42,17 @@ import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 import tech.qiantong.qdata.common.enums.TaskComponentTypeEnum;
 import tech.qiantong.qdata.spark.etl.utils.LogUtils;
+import tech.qiantong.qdata.spark.etl.utils.RedisUtils;
 import tech.qiantong.qdata.spark.etl.utils.db.DBUtils;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.alibaba.fastjson2.JSONWriter.Feature.PrettyFormat;
+import static org.apache.spark.sql.functions.desc;
 
 /**
  * <P>
@@ -78,6 +81,8 @@ public class DBReader implements Reader {
         List<Object> column = parameter.getJSONArray("column");
         //封装读取信息
         Map<String, String> readerOptions = DBUtils.getDbOptions(parameter);
+        //节点编码
+        String nodeCode = reader.getString("nodeCode");
 
         readerColumns.addAll(column.stream().map(c -> (String) c).collect(Collectors.toList()));
 
@@ -87,11 +92,21 @@ public class DBReader implements Reader {
                 .options(readerOptions)
                 .load();
         String where2 = "";
+        //需要存储最后数据的字段 map中key为字段名称 value为缓存key
+        Map<String, String> cacheColumnMap = new HashMap<>();
+        Map<String, String> cacheDataMap = new HashMap<>();
         //判断是否是id增量
         if (StringUtils.equals("2", readModeType)) {
             JSONObject idIncrementConfig = parameter.getJSONObject("idIncrementConfig");
             String incrementColumn = idIncrementConfig.getString("incrementColumn");
             Integer incrementStart = idIncrementConfig.getInteger("incrementStart");
+            String cacheKey = ETL_READER_ID_KEY + nodeCode + ":" + incrementColumn;
+            //添加到cacheDataMap中
+            cacheColumnMap.put(incrementColumn, cacheKey);
+            if (RedisUtils.hasKey(cacheKey) && Integer.valueOf(RedisUtils.get(cacheKey)) > incrementStart) {
+                incrementStart = Integer.valueOf(RedisUtils.get(cacheKey));
+            }
+
             where2 = incrementColumn + " >= " + incrementStart;
         }
         if (StringUtils.equals("3", readModeType)) {
@@ -104,7 +119,7 @@ public class DBReader implements Reader {
             }).collect(Collectors.toList());
             for (int i = 0; i < columnList.size(); i++) {
                 JSONObject jsonObject = columnList.get(i);
-                ////类型  1:固定值 2:自动(当前时间) 3:SQL表达式
+                //类型  1:固定值 2:时间范围 3:SQL表达式
                 String type = jsonObject.getString("type");
                 //增量字段
                 String incrementColumn = jsonObject.getString("incrementColumn");
@@ -112,13 +127,27 @@ public class DBReader implements Reader {
                 String operator = jsonObject.getString("operator");
                 //固定值：为 2023-01-01  SQL表达式：为sql函数
                 String data = jsonObject.getString("data");
-                if (StringUtils.equals("1", type)) {
-                    data = DateUtil.format(new Date(), dateFormat);
-                }
-                where2 += incrementColumn + " " + operator + " " + data;
+                //游标时间 只有类型为时间范围时该字段才会有值
+                String cursorTime = jsonObject.getString("cursorTime");
 
-                if (columnList.size() > i) {
-                    where2 += logic;
+                String cacheKey = ETL_READER_DATE_KEY + nodeCode + ":" + incrementColumn;
+
+                if (StringUtils.equals("1", type)) {
+                    where2 += incrementColumn + " " + operator + " '" + data + "'";
+                } else if (StringUtils.equals("3", type)) {
+                    where2 += incrementColumn + " " + operator + " " + data;
+                } else {
+                    String now = DateUtil.format(new Date(), dateFormat);
+                    //判断缓存中是否存在数据，存在且大于页面填写的数据则使用缓存数据
+                    if (RedisUtils.hasKey(cacheKey) && DateUtil.compare(DateUtil.parse(RedisUtils.get(cacheKey)), DateUtil.parse(cursorTime)) > 0) {
+                        cursorTime = RedisUtils.get(cacheKey);
+                    }
+                    where2 += incrementColumn + " > '" + cursorTime + "' and " + incrementColumn + " <= '" + now + "'";
+                    cacheDataMap.put(cacheKey, now);
+                }
+
+                if (columnList.size() > i + 1) {
+                    where2 += " " + logic + " ";
                 }
             }
         }
@@ -128,12 +157,31 @@ public class DBReader implements Reader {
                 where += " AND ( " + where2 + " )";
             }
             dataset = dataset.where(where);
+        } else if (StringUtils.isNotBlank(where2)) {
+            dataset = dataset.where(where2);
         }
         dataset = dataset.select(column.stream().map(c -> new Column((String) c)).toArray(Column[]::new));
         LogUtils.writeLog(logParams, "输入数据量为：" + dataset.count());
         log.info("部分数据如下>>>>>>>>>>>>>>");
         dataset.na().fill("Unknown").show(10);
         LogUtils.writeLog(logParams, "部分数据：\n" + dataset.na().fill("Unknown").showString(10, 0, false));
+        //判断是否需要存储最后的数据
+        if (cacheColumnMap.size() > 0) {
+            for (Map.Entry<String, String> entry : cacheColumnMap.entrySet()) {
+                String cacheKey = entry.getValue();
+                Dataset<Row> rowDataset = dataset.select(entry.getKey()).orderBy(desc(entry.getKey()));
+                if (rowDataset.count() == 0) {
+                    continue;
+                }
+                if (StringUtils.equals("2", readModeType)) {//id增量
+                    String cacheValue = String.valueOf(rowDataset.first().get(0));
+                    cacheDataMap.put(cacheKey, String.valueOf(Integer.parseInt(cacheValue) + 1));
+                }
+            }
+        }
+        if (cacheDataMap.size() > 0) {
+            reader.put("cacheDataMap", cacheDataMap);
+        }
         return dataset;
     }
 

@@ -191,6 +191,16 @@ ds:
   hdfs:
     #NameNode RPC地址（客户端连接 HDFS 的入口地址）
     url: hdfs://127.0.0.1:8020
+  # 调度器 Redis 配置（用于获取最新数据源信息，保障任务执行）
+  redis:
+    # 地址
+    host: 127.0.0.1
+    # 端口，默认为6379
+    port: 6379
+    # 数据库索引
+    database: 0
+    # 密码
+    password:
 
 path:
   # 数据质量服务前缀

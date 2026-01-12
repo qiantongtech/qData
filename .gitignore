@@ -99,6 +99,7 @@ Anivia-App/package-lock.json
 /qdata-etl/src/main/java/tech/qiantong/qdata/spark/etl/EtlApplication2.java
 
 docker/dolphinscheduler/resource/default/resources/spark-jar/qdata-etl-3.8.8.jar
+docker/dolphinscheduler/resource/default/resources/spark-jar/qdata-etl.jar
 docker/dolphinscheduler/soft/flink
 docker/dolphinscheduler/soft/spark
 docker/nginx/dist

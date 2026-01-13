@@ -493,7 +493,12 @@ async function handleSpotCheck() {
   if (form.ruleType !== "COMPOSITE_UNIQUENESS_VALIDATION") {
     res = await ruleComponentRef.value?.validate();
     if (!res.valid) return;
+    // 如果子组件返回了evaColumn字段（如timeOrderRule组件），直接赋值给form.evaColumn
+    if (res.data?.evaColumn) {
+      form.evaColumn = res.data.evaColumn;
+    }
   }
+
   const ruleData = res.data;
   const formCopy = JSON.parse(
     JSON.stringify({
@@ -605,6 +610,11 @@ async function handleSave() {
   if (form.ruleType !== "COMPOSITE_UNIQUENESS_VALIDATION") {
     res = await ruleComponentRef.value?.validate();
     if (!res.valid) return;
+
+    // 如果子组件返回了evaColumn字段（如timeOrderRule组件），直接赋值给form.evaColumn
+    if (res.data?.evaColumn) {
+      form.evaColumn = res.data.evaColumn;
+    }
   }
   const selectedLabels = columnList.value.map((col) => ({
     name: col.columnName,

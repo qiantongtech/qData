@@ -535,6 +535,9 @@ function handleTargetObjectChange(tableName) {
     } else {
       form.evaColumn = "";
     }
+    // 清空当前表的缓存，确保每次切换都重新请求
+    const cacheKey = `${selected.datasourceId}|${tableName}`;
+    columnsCache.delete(cacheKey);
     fetchColumns();
   } else {
     form.datasourceId = null;
@@ -783,6 +786,7 @@ const initialForm = () => ({
 function resetForm() {
   Object.assign(form, initialForm());
   columnList.value = [];
+  columnsCache.clear(); // 清空字段列表缓存
   title.value = "";
   sampleCheckMsg.value = "";
 }

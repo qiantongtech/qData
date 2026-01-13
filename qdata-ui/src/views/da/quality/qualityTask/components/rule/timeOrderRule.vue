@@ -119,13 +119,15 @@ const columnList = ref([]);
 
 const timeColumns = computed(() =>
   columnList.value.filter((col) => {
+    console.log("🚀 ~  columnList.value:", columnList.value);
     if (!col.columnType) return false;
     const type = col.columnType.toUpperCase();
     return (
-      type === "DATE" ||
+      type == "DATE" ||
       type.startsWith("TIMESTAMP") ||
-      type === "TIME" ||
-      type === "YEAR"
+      type == "TIME" ||
+      type == "YEAR" ||
+      type == "DATETIME"
     );
   })
 );

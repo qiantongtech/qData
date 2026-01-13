@@ -132,6 +132,24 @@ const timeColumns = computed(() =>
   })
 );
 
+// 拼接选择的时间字段，参考evaColumn的实现
+const timeOrderFields = computed(() => {
+  if (!form.conditions || form.conditions.length === 0) return "";
+  // 获取所有唯一的字段名
+  const fieldNames = new Set();
+  form.conditions.forEach((cond) => {
+    if (cond.leftField) fieldNames.add(cond.leftField);
+    if (cond.rightField) fieldNames.add(cond.rightField);
+  });
+  // 转换为数组并排序
+  const fieldsArray = Array.from(fieldNames);
+  // 使用columnList中的label显示，如果没有则显示columnName
+  const map = new Map(
+    (columnList.value || []).map((c) => [c.columnName, c.label || c.columnName])
+  );
+  return fieldsArray.map((field) => map.get(field) || field).join(", ");
+});
+
 watch(
   () => props.columnList,
   (newVal) => {
@@ -201,10 +219,22 @@ function validate() {
         resolve({ valid: false });
         return;
       }
+
+      // 获取所有唯一的字段名
+      const fieldNames = new Set();
+      form.conditions.forEach((cond) => {
+        if (cond.leftField) fieldNames.add(cond.leftField);
+        if (cond.rightField) fieldNames.add(cond.rightField);
+      });
+
+      // 转换为数组
+      const fieldsArray = Array.from(fieldNames);
+
       resolve({
         valid: true,
         data: {
           conditions: JSON.parse(JSON.stringify(form.conditions)),
+          evaColumn: fieldsArray, // 直接返回字段数组，用于赋值给父组件的evaColumn
         },
       });
     });

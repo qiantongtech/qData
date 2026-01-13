@@ -33,7 +33,7 @@
   <!-- 字段组完整性校验 -->
   <el-form ref="formRef" :model="form" label-width="130px" :disabled="false">
     <el-row>
-      <el-col :span="12">
+      <el-col :span="24">
         <el-form-item label="字段完整性" prop="fillStrategy">
           <el-radio-group
             v-if="!falg"
@@ -53,7 +53,7 @@
 </template>
 
 <script setup>
-import { reactive, ref, watch } from "vue";
+import { reactive, ref, computed } from "vue";
 
 const props = defineProps({
   form: Object,
@@ -91,13 +91,6 @@ function validate() {
     });
   });
 }
-
-onMounted(() => {
-  if (form.targetObject) {
-    fetchColumns();
-  }
-  console.log("子组件 mounted hook");
-});
 
 defineExpose({ validate });
 </script>

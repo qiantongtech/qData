@@ -59,7 +59,7 @@
             style="width: 50px"
           >
             <el-option label="<" value="<" />
-            <el-option label="≤" value="≤" />
+            <el-option label="≤" value="<=" />
           </el-select>
 
           <el-select
@@ -177,7 +177,7 @@ function validateCalculationGroups() {
       ElMessage.warning(`校验未通过，请填写第 ${i + 1} 个计算组的左字段`);
       return false;
     }
-    if (!group.operator || !["<", "≤"].includes(group.operator)) {
+    if (!group.operator || !["<", "<="].includes(group.operator)) {
       ElMessage.warning(`校验未通过，第 ${i + 1} 个计算组的符号无效`);
       return false;
     }

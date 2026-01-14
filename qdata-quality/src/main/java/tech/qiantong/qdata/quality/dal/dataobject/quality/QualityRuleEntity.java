@@ -155,7 +155,7 @@ public class QualityRuleEntity {
         this.evaluateId = dppQualityTaskEvaluateDO.getId();
         this.taskId = dppQualityTaskEvaluateDO.getTaskId();
 
-//        this.id = String.valueOf(dppQualityTaskEvaluateDO.getId());
+        this.id = String.valueOf(dppQualityTaskEvaluateDO.getId());
 
         this.ruleType = dppQualityTaskEvaluateDO.getRuleType();
         this.tableName = dppQualityTaskEvaluateDO.getTableName();

@@ -34,6 +34,8 @@ package tech.qiantong.qdata.quality.utils.qualityDB;
 
 import org.apache.commons.collections4.MapUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
+import tech.qiantong.qdata.common.utils.object.BeanUtils;
+import tech.qiantong.qdata.quality.dal.dataobject.quality.ColumnCompare;
 import tech.qiantong.qdata.quality.dal.dataobject.quality.QualityRuleEntity;
 import tech.qiantong.qdata.quality.utils.SqlBuilderUtils;
 import tech.qiantong.qdata.quality.utils.quality.enums.CommonGenerator;
@@ -330,6 +332,67 @@ public interface ComponentItem extends QualityFragSql {
     default String generateNumericRangeValidationValidDataSql(QualityRuleEntity rule, int limit, int offset) {
         String frag = fragNumericRange(rule);
         frag = pos(frag, rule);
+        return addPagination(generateDataSql(rule, frag), limit, offset);
+    }
+
+    default String generateLogicCompareValidationSql(QualityRuleEntity rule) {
+        boolean ignoreNullValue = ignoreNullValue(rule);
+        List<ColumnCompare> conditions = BeanUtils.toBean((List<?>) rule.getConfig().get("conditions"), ColumnCompare.class);
+        return generateSql(rule, ColumnCompare.toExpressionsNeg(conditions, ignoreNullValue));
+    }
+
+    default String generateLogicCompareValidationErrorSql(QualityRuleEntity rule) {
+        boolean ignoreNullValue = ignoreNullValue(rule);
+        List<ColumnCompare> conditions = BeanUtils.toBean((List<?>) rule.getConfig().get("conditions"), ColumnCompare.class);
+        return generateDataSql(rule, ColumnCompare.toExpressionsNeg(conditions, ignoreNullValue));
+    }
+
+    default String generateLogicCompareValidationValidDataSql(QualityRuleEntity rule, int limit, int offset) {
+        boolean ignoreNullValue = ignoreNullValue(rule);
+        List<ColumnCompare> conditions = BeanUtils.toBean((List<?>) rule.getConfig().get("conditions"), ColumnCompare.class);
+        String sql = generateDataSql(rule, ColumnCompare.toExpressions(conditions, ignoreNullValue));
+        return addPagination(sql, limit, offset);
+    }
+
+    /**
+     * 字段组完整性校验 - 错误统计 SQL
+     * 规则编码：GROUP_FIELD_COMPLETENESS
+     * <p>
+     * 检查字段组中是否存在任一字段为 NULL，统计错误数量和总数。
+     */
+    default String generateGroupFieldCompletenessSql(QualityRuleEntity rule) {
+        List<String> columns = rule.getRuleColumns();
+        Map<String, Object> ruleConfig = rule.getConfig();
+        int fillStrategy = MapUtils.getIntValue(ruleConfig, "fillStrategy", 1);
+        String frag = String.format("NOT (%s)", fragFieldCompleteness(columns, fillStrategy));
+        return generateSql(rule, frag);
+    }
+
+    /**
+     * 字段组完整性校验 - 错误明细 SQL
+     * 规则编码：GROUP_FIELD_COMPLETENESS
+     * <p>
+     * 返回字段组中存在 NULL 值的记录明细。
+     */
+    default String generateGroupFieldCompletenessErrorSql(QualityRuleEntity rule) {
+        List<String> columns = rule.getRuleColumns();
+        Map<String, Object> ruleConfig = rule.getConfig();
+        int fillStrategy = MapUtils.getIntValue(ruleConfig, "fillStrategy", 1);
+        String frag = String.format("NOT (%s)", fragFieldCompleteness(columns, fillStrategy));
+        return generateDataSql(rule, frag);
+    }
+
+    /**
+     * 字段组完整性校验 - 正常数据分页 SQL
+     * 规则编码：GROUP_FIELD_COMPLETENESS
+     * <p>
+     * 返回字段组中所有字段都非空的记录，支持分页。
+     */
+    default String generateGroupFieldCompletenessValidDataSql(QualityRuleEntity rule, int limit, int offset) {
+        List<String> columns = rule.getRuleColumns();
+        Map<String, Object> ruleConfig = rule.getConfig();
+        int fillStrategy = MapUtils.getIntValue(ruleConfig, "fillStrategy", 1);
+        String frag = fragFieldCompleteness(columns, fillStrategy);
         return addPagination(generateDataSql(rule, frag), limit, offset);
     }
 

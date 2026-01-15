@@ -31,7 +31,7 @@
 -->
 
 <template>
-  <!-- 清洗规则基础页面   -->
+  <!-- 新增评测规则的 每个规则的配置 -->
   <el-dialog
     v-model="dialogVisible"
     draggable
@@ -51,7 +51,7 @@
     </div>
     <div
       class="content"
-      style="height: 600px; padding-right: 10px"
+      style="max-height: 650px; overflow-y: auto; padding-right: 10px"
       v-show="dialogStatus == 1 || dialogStatus == 2"
       :disabled="dialogStatus == 2"
     >
@@ -60,52 +60,70 @@
         <el-row>
           <el-col :span="8">
             <el-form-item
-              label="清洗名称"
+              label="评测名称"
               prop="name"
-              :rules="
-                !falg
-                  ? [
-                      {
-                        required: true,
-                        message: '请输入清洗名称',
-                        trigger: 'blur',
-                      },
-                    ]
-                  : []
-              "
+              v-if="type != 3"
+              :rules="[
+                { required: true, message: '请输入评测名称', trigger: 'blur' },
+              ]"
             >
               <el-input
-                v-if="!falg"
                 v-model="form.name"
-                placeholder="请输入清洗名称"
+                placeholder="请输入评测名称"
+                :disabled="falg"
               />
-              <div v-else class="form-readonly">{{ form.name || "-" }}</div>
+            </el-form-item>
+            <el-form-item
+              label="稽查名称"
+              prop="name"
+              v-else
+              :rules="[
+                { required: true, message: '请输入稽查名称', trigger: 'blur' },
+              ]"
+            >
+              <el-input
+                v-model="form.name"
+                placeholder="请输入稽查名称"
+                :disabled="falg"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="清洗规则编号" prop="ruleCode">
+            <el-form-item label="稽查规则编号" prop="ruleCode">
               <el-input
-                v-if="!falg"
                 v-model="form.ruleCode"
-                placeholder="请输入清洗规则编号"
+                placeholder="请输入稽查规则编号"
                 disabled
               />
-              <div v-else class="form-readonly">{{ form.ruleCode || "-" }}</div>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="清洗规则名称" prop="ruleName">
+            <el-form-item label="稽查规则名称" prop="ruleName">
               <el-input
-                v-if="!falg"
                 v-model="form.ruleName"
-                placeholder="请输入清洗规则名称"
+                placeholder="请输入稽查规则名称"
                 disabled
               />
-              <div v-else class="form-readonly">{{ form.ruleName || "-" }}</div>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
+          <el-col :span="8">
+            <el-form-item label="告警等级" prop="warningLevel">
+              <el-select
+                v-model="form.warningLevel"
+                placeholder="请选择质量维度"
+                style="width: 290px"
+              >
+                <el-option
+                  v-for="dict in quality_warning_status"
+                  :key="dict.value"
+                  :label="dict.label"
+                  :value="dict.value"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
           <el-col :span="8">
             <el-form-item label="状态" prop="status">
               <el-radio-group v-model="form.status" :disabled="falg">
@@ -117,18 +135,37 @@
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="规则描述" prop="ruleDesc">
+            <el-form-item label="规则描述" prop="ruleDescription">
               <el-input
-                v-if="!falg"
                 type="textarea"
-                maxlength="500个字符"
-                show-word-limit
-                v-model="form.ruleDesc"
+                v-model="form.ruleDescription"
                 placeholder="请输入规则描述"
+                :disabled="falg"
               />
-              <div v-else class="form-readonly textarea">
-                {{ form.ruleDesc ?? "-" }}
-              </div>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="错误示例" prop="errDescription">
+              <el-input
+                type="textarea"
+                v-model="form.errDescription"
+                placeholder="请输入错误示例"
+                :disabled="falg"
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="修复建议" prop="suggestion">
+              <el-input
+                type="textarea"
+                v-model="form.suggestion"
+                placeholder="请输入修复建议"
+                :disabled="falg"
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -136,107 +173,181 @@
           <el-col :span="24">
             <el-form-item label="Where 条件" prop="whereClause">
               <el-input
-                v-if="!falg"
                 type="textarea"
-                maxlength="500个字符"
-                show-word-limit
                 v-model="form.whereClause"
                 placeholder="请输入 Where 条件"
+                :disabled="falg"
               />
-              <div v-else class="form-readonly textarea">
-                {{ form?.whereClause ?? "-" }}
-              </div>
             </el-form-item>
           </el-col>
         </el-row>
         <!-- 规则配置 -->
         <div class="h2-title">规则配置</div>
-        <el-row v-if="type != 3">
-          <el-col :span="24">
+        <el-row>
+          <el-col :span="12" class="hasMsg" v-if="type != 3">
             <el-form-item
-              label="清洗字段"
-              prop="columns"
-              :rules="
-                !falg
-                  ? [
-                      {
-                        required: true,
-                        message: '请选择清洗字段',
-                        trigger: 'blur',
-                      },
-                    ]
-                  : []
-              "
+              label="评测对象"
+              prop="tableName"
+              :rules="[
+                {
+                  required: true,
+                  message: '请选择评测对象',
+                  trigger: 'change',
+                },
+              ]"
             >
-              <template v-if="!falg">
-                <el-select
-                  v-if="isMultipleSelect"
-                  v-model="form.columns"
-                  placeholder="请选择清洗字段"
-                  multiple
-                  clearable
-                >
-                  <el-option
-                    v-for="dict in processedFields"
-                    :key="dict.columnName"
-                    :label="dict.label"
-                    :value="dict.columnName"
-                  />
-                </el-select>
-                <el-select
-                  v-else
-                  v-model="form.columns"
-                  placeholder="请选择清洗字段"
-                  clearable
-                >
-                  <el-option
-                    v-for="dict in processedFields"
-                    :key="dict.columnName"
-                    :label="dict.label"
-                    :value="dict.columnName"
-                    :disabled="shouldDisableField(dict)"
-                  />
-                </el-select>
-              </template>
-              <div v-else class="form-readonly">{{ columnsDisplayText }}</div>
+              <el-select
+                v-model="form.tableName"
+                placeholder="请选择评测对象"
+                filterable
+                clearable
+                :disabled="falg || type == 2"
+                @change="handleTargetObjectChange"
+              >
+                <el-option
+                  v-for="item in dppQualityTaskObjSaveReqVO"
+                  :key="item.tableName"
+                  :label="item.name"
+                  :value="item.tableName"
+                />
+              </el-select>
+              <span class="msg" v-if="selectedRef">
+                <el-icon>
+                  <InfoFilled />
+                </el-icon>
+                {{ selectedRef?.datasourceType || "" }} /
+                {{ selectedRef?.tableName || "" }}
+              </span>
+            </el-form-item>
+          </el-col>
+          <el-col
+            :span="12"
+            v-if="form.ruleType != 'TIME_ORDER_VALIDATION' && type != 3"
+          >
+            <el-form-item
+              label="检查字段"
+              prop="evaColumn"
+              :rules="[
+                {
+                  required: true,
+                  message: '请选择检查字段',
+                  trigger: 'change',
+                },
+              ]"
+            >
+              <el-select
+                v-if="isMultipleRuleType"
+                v-model="form.evaColumn"
+                multiple
+                placeholder="请选择检查字段"
+                filterable
+                clearable
+                :disabled="falg"
+                :loading="loading"
+                collapse-tags
+              >
+                <el-option
+                  v-for="col in columnList"
+                  :key="col.columnName"
+                  :label="col.label"
+                  :value="col.columnName"
+                />
+              </el-select>
+              <el-select
+                v-else
+                v-model="form.evaColumn"
+                placeholder="请选择检查字段"
+                filterable
+                clearable
+                :disabled="falg"
+                :loading="loading"
+              >
+                <el-option
+                  v-for="col in columnList"
+                  :key="col.columnName"
+                  :label="col.label"
+                  :value="col.columnName"
+                />
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
         <component
           :is="currentRuleComponent"
           ref="ruleComponentRef"
-          :form="form.ruleConfig"
-          :inputFields="processedFields"
+          :form="form.rule"
+          :dppQualityTaskObjSaveReqVO="dppQualityTaskObjSaveReqVO"
           :falg="falg"
           :columnList="columnList"
         />
+
+        <div class="h2-title" v-if="form.ruleType == 'CHARACTER_VALIDATION'">
+          样例监测
+        </div>
+        <el-row v-if="form.ruleType == 'CHARACTER_VALIDATION'">
+          <el-col :span="12">
+            <el-form-item label="样例数据" prop="sampleData">
+              <el-input v-model="title" placeholder="请输入样例数据" />
+              <!-- <span class="msg">样例必须符合规则，如不符合不能包含特殊字符</span> -->
+              <div style="margin-top: 6px; display: inline-block">
+                <el-tag
+                  v-if="sampleCheckMsg"
+                  closable
+                  type="warning"
+                  @close="sampleCheckMsg = ''"
+                >
+                  {{ sampleCheckMsg }}
+                </el-tag>
+              </div>
+            </el-form-item>
+          </el-col>
+          <el-col :span="11" :offset="1">
+            <el-button plain type="primary" @click="handleSampleCheck">
+              <i class="iconfont-mini icon-a-zu22377 mr5"></i>监测
+            </el-button>
+          </el-col>
+        </el-row>
       </el-form>
+      <SpotCheckDialog ref="spotCheckRef" />
     </div>
     <template #footer>
-      <template v-if="dialogStatus == 1"
-        ><el-button type="primary" @click="handleSave" v-if="!falg"
+      <template v-if="dialogStatus == 1">
+        <el-button type="warning" v-if="type != 3" @click="handleSpotCheck"
+          >抽查</el-button
+        >
+        <el-button @click="handleBack" v-if="!mode">取消</el-button>
+        <el-button type="primary" @click="handleSave" v-if="!falg"
           >确定</el-button
         >
-        <el-button @click="handleBack" v-if="!mode">返回</el-button>
-        <!-- <el-button type="warning" @click="handleSpotCheck">预览</el-button> -->
       </template>
-      <el-button @click="closeDialog" v-else>关闭</el-button>
+      <el-button @click="closeDialog" v-else>取消</el-button>
     </template>
   </el-dialog>
 </template>
 
 <script setup>
+import { ref, reactive, watch, toRefs } from "vue";
 import SideMenu from "./ruleSelectorMenu.vue";
-import { getRuleConfig, getRuleComponent } from "./registry.js";
-
-import moment from "moment";
+import SpotCheckDialog from "./spotCheckResult.vue";
+import { getColumnByAssetId } from "@/api/dpp/task/index.js";
+// 数值精度校验
+import DecimalscaleRule from "./rule/decimalScaleRule.vue";
+// 字段字符串类型校验
+import CharacterValidation from "./rule/characterValidationRule.vue";
+// 字段长度范围校验
+import LengthRule from "./rule/lengthRangeRule.vue";
+// 数值字段范围校验
+import NumericRangeRule from "./rule/numberRangeRule.vue";
+// 枚举值校验
+import EnumRule from "./rule/enumRule.vue";
+import { verifyInterfaceValue } from "@/api/da/quality/qualityTask";
 let falg = ref(false);
 const { proxy } = getCurrentInstance();
 const { quality_warning_status } = proxy.useDict("quality_warning_status");
 const emit = defineEmits(["confirm"]);
 // 父组件传入评测对象列表
 const props = defineProps({
-  inputFields: {
+  dppQualityTaskObjSaveReqVO: {
     type: Array,
     default: () => [],
   },
@@ -244,33 +355,12 @@ const props = defineProps({
     type: String,
     default: "",
   },
+  tableName: {
+    type: String,
+    default: "",
+  },
 });
-
-const { inputFields } = toRefs(props);
-const processedFields = computed(() => {
-  return inputFields.value.map((item) => ({
-    ...item,
-    label: item.columnComment
-      ? `${item.columnName} / ${item.columnComment}`
-      : item.columnName,
-  }));
-});
-const columnsDisplayText = computed(() => {
-  if (isMultipleSelect.value) {
-    const values = Array.isArray(form.columns) ? form.columns : [];
-    const labels = values.map((v) => {
-      const f = processedFields.value.find((d) => d.columnName === v);
-      return f ? f.label : v;
-    });
-    return labels.length ? labels.join(", ") : "-";
-  } else {
-    const v = form.columns;
-    if (!v) return "-";
-    const f = processedFields.value.find((d) => d.columnName === v);
-    return f ? f.label : v;
-  }
-});
-
+const { dppQualityTaskObjSaveReqVO } = toRefs(props);
 const dialogVisible = ref(false);
 const dialogStatus = ref(1);
 const dialogTitle = ref("");
@@ -278,139 +368,300 @@ const formRef = ref();
 
 let form = reactive({
   name: "",
-  ruleName: "", //清洗规则名称：
-  ruleCode: "", //清洗规则编号：
+  ruleName: "", //稽查规则名称：
+  ruleCode: "", //稽查规则编号：
   status: "1",
-  // warningLevel: "2",
+  warningLevel: "2",
+  ruleDescription: "",
+  errDescription: "",
+  suggestion: "",
   whereClause: "",
-  columns: "",
+  ruleType: "",
+  dimensionType: "",
+  evaColumn: [],
   tableName: "",
-  ruleDesc: "",
-  type: "",
-  ruleConfig: {
-    //数值边界调整
-    max: "100",
-    min: "0",
-    handleType: "1",
-    // 去除字符串空格
-    handleType: "1", //"1-去除前后空格，2-去除所有空格"
-    // 正则表达式替换
-    pattern: "", //表达式
-    replacement: "", //replacement
-    ruleValue: [],
-    deduplicationStrategy: "1",
-    dataRangeValue: moment().format("YYYY-MM-DD"),
-    // 数据添加值
-    stringValue: "", //添加值
-    // 超长字段截断
-    maxLength: "100",
-    direction: "1",
-    // 日期格式
-    targetFormat: "yyyy-MM-dd",
-    inputFormats: [
-      "yyyyMMdd",
-      "yyyy-MM-dd",
-      "yyyy/MM/dd",
-      "yyyy.MM.dd",
-      "yyyy-MM-dd HH:mm:ss",
-      "timestamp",
-    ],
+
+  rule: {
+    // 字符串类型校验
+    allowedChars: ["1"], // 允许字符类型
+    useRegexFlag: 0, // 使用正则
+    regex: "", // 正则表达式
+    // 忽略空值：，保留一个
+    ignoreNullValue: "0", //忽略空值：
+    // 字段长度范围校验
+    minLength: null, //最小长度
+    maxLength: null, //最大长度
+    // 字段精度
+    scale: "2", // 小数位数
+    skipInteger: "1", // 忽略整数值
+    // 字段组完整性校验
+    fillStrategy: "1",
+
+    // 数值字段范围校验
+    minValue: null,
+    maxValue: null,
+    includeBoundary: "1",
+    //  枚举值校验
+    useCodeTable: "0",
+    ruleCodeTableId: "",
+    ignoreCase: "0",
+    codeList: [],
+    validValues: [],
+    calculationGroups: [],
+    // 时间选择
+    conditions: [],
   },
 });
-const isMultipleSelect = computed(() => {
-  return form.ruleCode == "019" || form.ruleCode == "029";
-});
-// 新增的计算属性，用于判断字段是否应该被禁用
-const shouldDisableField = computed(() => {
-  return (dict) => {
-    // 对于规则 025（按组合字段去重），只允许 pkFlag 为 1 的字段
-    // if (form.ruleCode == "025") {
-    //   return dict.pkFlag != 1;
-    // }
-
-    // 对于规则 039（清理过期记录），只允许日期类型字段
-    if (
-      form.ruleCode == "039" ||
-      form.ruleCode == "007" ||
-      form.ruleCode == "017"
-    ) {
-      const isDateType =
-        dict.columnType?.toUpperCase().includes("DATE") ||
-        dict.columnType?.toUpperCase().startsWith("TIMESTAMP") ||
-        dict.columnType?.toUpperCase() === "TIME" ||
-        dict.columnType?.toUpperCase() === "YEAR";
-      return !isDateType;
-    }
-
-    // 对于规则 007 日期格式
-    // if (form.ruleCode == "007") {
-    //   const isStringType =
-    //     dict.columnType?.toUpperCase().includes("CHAR") ||
-    //     dict.columnType?.toUpperCase().includes("TEXT") ||
-    //     dict.columnType?.toUpperCase().includes("VARCHAR") ||
-    //     dict.columnType?.toUpperCase().includes("STRING");
-    //   return !isStringType;
-    // }
-
-    return false;
-  };
+const isMultipleRuleType = computed(
+  () =>
+    form.ruleType == "COMPOSITE_UNIQUENESS_VALIDATION" ||
+    form.ruleType == "GROUP_FIELD_COMPLETENESS"
+);
+const selectedRef = computed(() => {
+  return (
+    dppQualityTaskObjSaveReqVO.value.find(
+      (item) => item.tableName == form.tableName
+    ) || null
+  );
 });
 let title = ref();
+const ruleConfigMap = {
+  CHARACTER_VALIDATION: {
+    label: "字符串类型校验",
+    field: "characterValidation",
+    component: CharacterValidation,
+  },
+  DECIMAL_PRECISION_VALIDATION: {
+    label: "数值精度校验",
+    field: "decimalscaleValidation",
+    component: DecimalscaleRule,
+  },
+  NUMERIC_RANGE_VALIDATION: {
+    label: "数值字段范围校验",
+    field: "numericRangeValidation",
+    component: NumericRangeRule,
+  },
+  ENUM_VALIDATION: {
+    label: "枚举值校验",
+    field: "enumValidation",
+    component: EnumRule,
+  },
+  COMPOSITE_UNIQUENESS_VALIDATION: {
+    label: "多字段组合唯一性校验",
+    field: "compositeUniquenessValidation",
+    component: "",
+  },
+  LENGTH_VALIDATION: {
+    label: "字段长度范围校验",
+    field: "lengthValidation",
+    component: LengthRule,
+  },
+};
 
 // 计算属性：当前规则配置
 const currentRuleConfig = computed(() => {
-  return getRuleConfig(form.ruleCode);
+  return ruleConfigMap[form.ruleType] || null;
 });
 
 // 计算属性：当前规则组件
 const currentRuleComponent = computed(() => {
-  return getRuleComponent(form.ruleCode) || getRuleComponent("EMPTY");
+  return currentRuleConfig.value?.component || null;
 });
 
 let loading = ref(false);
 let columnList = ref([]);
 
+const spotCheckRef = ref();
+
+//监测
+async function handleSpotCheck() {
+  console.log(
+    "🚀 ~ handleSpotCheck ~  selectedRef.value:",
+    selectedRef.value.datasourceId
+  );
+  await nextTick();
+  try {
+    await formRef?.value?.validate();
+  } catch (err) {
+    proxy.$message.warning("校验未通过，请完善必填项");
+    return;
+  }
+  let res = { valid: true, data: {} };
+  if (form.ruleType !== "COMPOSITE_UNIQUENESS_VALIDATION") {
+    res = await ruleComponentRef.value?.validate();
+    if (!res.valid) return;
+  }
+  const ruleData = res.data;
+  const formCopy = JSON.parse(
+    JSON.stringify({
+      ...form,
+      rule: JSON.stringify({ ...ruleData }),
+    })
+  );
+  if (Array.isArray(formCopy.evaColumn)) {
+    formCopy.evaColumn =
+      formCopy.evaColumn.length > 0 ? formCopy.evaColumn.join(",") : null;
+  }
+  console.log(
+    "🚀 ~ handleSpotCheck ~  formCopy.evaColumn:",
+    formCopy.evaColumn
+  );
+
+  let obj = {
+    ...formCopy,
+    datasourceId: selectedRef.value?.datasourceId,
+    title: title.value,
+  };
+  // let resw = await validationErrorDataSql(obj)
+  spotCheckRef.value.openDialog(obj);
+}
+function handleTargetObjectChange(tableName) {
+  const selected = dppQualityTaskObjSaveReqVO.value.find(
+    (item) => item.tableName == tableName
+  );
+  console.log("🚀 ~ handleTargetObjectChange ~ selected:", selected);
+  if (selected) {
+    form.datasourceId = selected.datasourceId;
+    if (
+      form.ruleType == "COMPOSITE_UNIQUENESS_VALIDATION" ||
+      form.ruleType == "GROUP_FIELD_COMPLETENESS"
+    ) {
+      console.log("2222");
+
+      form.evaColumn = [];
+    } else {
+      form.evaColumn = "";
+    }
+    fetchColumns();
+  } else {
+    form.datasourceId = null;
+    form.tableName = "";
+    if (
+      form.ruleType == "COMPOSITE_UNIQUENESS_VALIDATION" ||
+      form.ruleType == "GROUP_FIELD_COMPLETENESS"
+    ) {
+      form.evaColumn = [];
+    } else {
+      form.evaColumn = "";
+    }
+
+    columnList.value = [];
+  }
+}
+async function fetchColumns() {
+  console.log("🚀 ~ fetchColumns ~ selectedRef:", selectedRef.value);
+
+  if (!selectedRef.value.datasourceId || !form?.tableName) {
+    columnList.value = [];
+    return;
+  }
+  loading.value = true;
+  try {
+    const res = await getColumnByAssetId({
+      id: form?.datasourceId || selectedRef.value.datasourceId,
+      tableName: form?.tableName,
+    });
+    if (res.code == "200") {
+      columnList.value = res.data.map((col) => ({
+        ...col,
+        label:
+          col.columnName + (col.columnComment ? "/" + col.columnComment : ""),
+      }));
+    } else {
+      columnList.value = [];
+    }
+  } catch (error) {
+    columnList.value = [];
+  } finally {
+    loading.value = false;
+  }
+}
 let ruleComponentRef = ref();
 async function handleSave() {
   await nextTick();
   try {
     await formRef?.value?.validate();
   } catch (err) {
-    proxy.$message.warning("请完善必填项");
+    proxy.$message.warning("校验未通过，请完善必填项");
     return;
   }
   let res = { valid: true, data: {} };
-  res = await ruleComponentRef.value?.validate();
-  if (!res.valid) return;
-  if (!isMultipleSelect.value) {
-    form.columns = [form.columns];
+  if (form.ruleType !== "COMPOSITE_UNIQUENESS_VALIDATION") {
+    res = await ruleComponentRef.value?.validate();
+    if (!res.valid) return;
   }
-  if (form.ruleCode == "035") {
+  const selectedLabels = columnList.value.map((col) => ({
+    name: col.columnName,
+    label: col.label,
+  }));
+  // 先把 evaColumn 数组转为逗号分隔字符串
+  if (Array.isArray(form.evaColumn)) {
+    form.evaColumn = form.evaColumn.join(",");
   }
+  // 构建最终的 rule 字段
+  form.rule = JSON.stringify({
+    ...res.data,
+    evaColumns: selectedLabels,
+  });
+
+  const formCopy = JSON.parse(JSON.stringify(form));
+  emit("confirm", formCopy, mode.value);
+}
+
+let sampleCheckMsg = ref();
+async function handleSampleCheck() {
+  if (!title.value) {
+    return proxy.$message.warning("校验未通过，请添加样例数据");
+  }
+  await nextTick();
+  try {
+    await formRef?.value?.validate();
+  } catch (err) {
+    proxy.$message.warning("校验未通过，请完善必填项");
+    return;
+  }
+  let res = { valid: true, data: {} };
+  if (form.ruleType !== "COMPOSITE_UNIQUENESS_VALIDATION") {
+    res = await ruleComponentRef.value?.validate();
+    if (!res.valid) return;
+  }
+  const ruleData = res.data;
   const formCopy = JSON.parse(
     JSON.stringify({
       ...form,
-      ruleConfig: JSON.stringify({
-        columns: form.columns,
-        ...res.data,
-        parentName: form.parentName,
-      }),
+
+      rule: JSON.stringify({ ...ruleData }),
     })
   );
+  if (Array.isArray(formCopy.evaColumn)) {
+    formCopy.evaColumn =
+      formCopy.evaColumn.length > 0 ? formCopy.evaColumn.join(",") : null;
+  }
+  let resw = await verifyInterfaceValue({ ...formCopy, title: title.value });
 
-  emit("confirm", formCopy, mode.value);
+  if (resw.code === 200) {
+    sampleCheckMsg.value = resw.data;
+  } else {
+    sampleCheckMsg.value = resw.msg || "检测失败";
+  }
 }
-let sampleCheckMsg = ref();
-
 function handleCardClick(data) {
   resetForm();
+  if (props.type == 2) {
+    form.tableName = props.tableName;
+  }
+  if (props.type == 3) {
+    form.tableName = props.tableName;
+  }
   form.ruleName = data?.name;
   form.ruleCode = data?.code;
   form.ruleType = data?.strategyKey;
-  form.type = data?.type;
-  form.parentName = data?.parentName;
   form.dimensionType = data?.qualityDim;
-  dialogTitle.value = `新增清洗规则${data?.name ? "-" + data.name : ""}`;
+  const prefix = props?.type == 3 ? "新增稽查规则" : "新增评测规则";
+  dialogTitle.value = `${prefix}${data?.name ? "-" + data.name : ""}`;
+  if (form.tableName) {
+    handleTargetObjectChange(form.tableName);
+  }
   dialogStatus.value = 1;
 }
 let mode = ref();
@@ -418,34 +669,39 @@ async function openDialog(record, index, fg) {
   falg.value = fg;
   mode.value = index;
   resetForm();
-  dialogTitle.value = `${mode.value ? "修改" : "新增"}清洗规则${
+  const prefix = props?.type == 3 ? "稽查规则" : "评测规则";
+  dialogTitle.value = `${mode.value ? "修改" : "新增"}${prefix}${
     record?.ruleName ? `-${record.ruleName}` : ""
   }`;
-  if (falg?.value) {
-    dialogTitle.value = `清洗规则${
-      record?.ruleName ? `-${record.ruleName}` : ""
-    }`;
-  }
+
   dialogStatus.value = mode.value ? 1 : 0;
   dialogVisible.value = true;
 
   if (index) {
     dialogStatus.value = 1;
-    const { ruleType, ruleConfig, columns, ...rest } = record;
+    const { evaColumn, ruleType, rule, ...rest } = record;
     Object.assign(form, rest);
-    form.ruleType = ruleType;
+    form.ruleType = record.ruleType;
+    console.log("🚀 ~ openDialog ~ form.ruleType:", form.ruleType);
+    if (props.type == 2) {
+      form.tableName = props.tableName;
+    }
+    if (
+      form.ruleType == "COMPOSITE_UNIQUENESS_VALIDATION" ||
+      form.ruleType == "GROUP_FIELD_COMPLETENESS"
+    ) {
+      form.evaColumn = evaColumn ? evaColumn.split(",") : [];
+    } else {
+      form.evaColumn = evaColumn || "";
+    }
 
     try {
-      form.ruleConfig =
-        typeof ruleConfig == "string" ? JSON.parse(ruleConfig) : ruleConfig;
+      form.rule = typeof rule === "string" ? JSON.parse(rule) : rule;
     } catch (e) {
-      form.ruleConfig = {};
+      form.rule = {};
     }
-    if (isMultipleSelect.value) {
-      form.columns = Array.isArray(columns) ? columns : [];
-    } else {
-      form.columns =
-        Array.isArray(columns) && columns.length > 0 ? columns[0] : "";
+    if (form.tableName) {
+      await fetchColumns();
     }
   } else {
     resetForm();
@@ -453,61 +709,55 @@ async function openDialog(record, index, fg) {
 }
 
 const initialForm = () => ({
-  id: "",
   name: "",
-  type: "",
-  ruleName: "", //清洗规则名称：
-  ruleCode: "", //清洗规则编号：
+  ruleName: "", //稽查规则名称：
+  ruleCode: "", //稽查规则编号：
   status: "1",
+  warningLevel: "2",
+  ruleDescription: "",
+  errDescription: "",
+  suggestion: "",
   whereClause: "",
-  columns: isMultipleSelect.value ? [] : "",
+  ruleType: "",
+  dimensionType: "",
+  evaColumn: undefined,
   tableName: "",
-  ruleDesc: "",
-  ruleConfig: {
-    //数值边界调整
-    max: "100",
-    min: "0",
-    handleType: "1",
-    // 去除字符串空格
-    handleType: "1", //"1-去除前后空格，2-去除所有空格"
-    // 正则表达式替换
-    pattern: "", //表达式
-    replacement: "", //replacement
+  rule: {
+    // 字符串类型校验
+    allowedChars: ["1"], // 允许字符类型
+    useRegexFlag: 0, // 使用正则
+    regex: "", // 正则表达式
+    ignoreNullValue: "1", // 忽略空值：
 
-    ruleValue: [],
-    deduplicationStrategy: "1",
-    // 枚举值映射标准化
-    stringValue: [],
-    dataRange: "1", // 0：固定时间范围，1：具体日期
-    dataRangeType: "1", // 0：天前
-    dataRangeValue: moment().format("YYYY-MM-DD"),
-    handleType: "1", // 0：过期处理方式，1：删除记录
-    handleColumns: "", // // 标记字段     选中过期处理方式才会有
-    handleValue: "", // 标记值       选中过期处理方式才会有
-    // 超长字段截断
-    maxLength: "0",
-    direction: "1",
-    // 日期格式
-    targetFormat: "",
-    inputFormats: [
-      "yyyyMMdd",
-      "yyyy-MM-dd",
-      "yyyy/MM/dd",
-      "yyyy.MM.dd",
-      "yyyy-MM-dd HH:mm:ss",
-      "timestamp",
-    ],
-    // 字段值替换
-    mode: "1", // 1-白名单，2-黑名单
-    allowed: [], //清洗值
-    defaultValue: "", //默认值
-    ignoreCase: "1", // 1-大小写敏感，2-大小写不敏感
-    caseSensitive: "1", // 1-去除空格，2-不去除空格
-    ignoreNullValue: "1", // 1-忽略null，2-不忽略null
-    // 日期空值填充
-    fillType: "3", //1=当前日期, 2=昨天, 3=固定值
-    defaultValue: "", // 固定值 fillType=3 时使用
-    format: "", // 日期格式
+    // 字段长度范围校验
+    minLength: null, // 最小长度
+    maxLength: null, // 最大长度
+
+    // 字段精度
+    scale: "2", // 小数位数
+    skipInteger: "1", // 忽略整数值
+
+    // 字段组完整性校验
+    fillStrategy: "1",
+
+    // 数值字段范围校验
+    minValue: null,
+    maxValue: null,
+    includeBoundary: "1",
+
+    // 枚举值校验
+    useCodeTable: "0",
+    ruleCodeTableId: "",
+    ignoreCase: "0",
+    codeList: [],
+    validValues: [],
+    calculationGroups: [],
+
+    // 时间字段
+    allowPartialEmpty: "1",
+
+    // 多条件字段
+    conditions: [],
   },
 });
 
@@ -525,7 +775,7 @@ function closeDialog() {
 
 function handleBack() {
   dialogStatus.value = 0;
-  dialogTitle.value = `新增清洗规则`;
+  dialogTitle.value = `新增评测规则`;
   resetForm();
 }
 defineExpose({ openDialog, closeDialog });

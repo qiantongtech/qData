@@ -55,6 +55,7 @@ public class DialectRegistry {
         dialect_enum_map.put(DbType.OTHER, new UnknownDialect());
         dialect_enum_map.put(DbType.KINGBASE8, new Kingbase8Dialect());
         dialect_enum_map.put(DbType.KAFKA, new KafkaDialect());
+        dialect_enum_map.put(DbType.DORIS, new DorisDialect());
     }
 
     public DbDialect getDialect(DbType dbType) {

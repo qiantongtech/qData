@@ -137,6 +137,7 @@ const getDatasourceIcon = (type) => {
         case "Kingbase8": return new URL("@/assets/system/images/dpp/kingBase.png", import.meta.url).href;
         case "SQL_Server": return new URL("@/assets/system/images/dpp/SQL_Server.svg", import.meta.url).href;
         case "SQL_Server2008": return new URL("@/assets/system/images/dpp/SQL_Server.svg", import.meta.url).href;
+        case "Doris": return new URL("@/assets/system/images/dpp/doris.svg", import.meta.url).href;
         default: return null;
     }
 };

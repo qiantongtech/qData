@@ -31,16 +31,37 @@
 -->
 
 <template>
-  <el-aside :style="{ width: `${leftWidth}px`, marginLeft: leftWidth == 0 ? '-15px' : '0px' }" class="left-pane">
+  <el-aside
+    :style="{
+      width: `${leftWidth}px`,
+      marginLeft: leftWidth == 0 ? '-15px' : '0px',
+    }"
+    class="left-pane"
+  >
     <div class="left-tree">
       <div class="head-container" v-if="props.showFilter">
-        <el-input class="filter-tree" size="large" v-model="deptName" :placeholder="placeholder" clearable
-          prefix-icon="Search" />
+        <el-input
+          class="filter-tree"
+          size="large"
+          v-model="deptName"
+          :placeholder="placeholder"
+          clearable
+          prefix-icon="Search"
+        />
       </div>
       <div class="head-container">
-        <el-tree class="dept-tree" :data="deptOptions" :props="{ label: 'name', children: 'children' }"
-          :filter-node-method="filterNode" ref="deptTreeRef" node-key="id" highlight-current
-          :default-expanded-keys="expandedKeys" @node-click="handleNodeClick" :default-expand-all="defaultExpand">
+        <el-tree
+          class="dept-tree"
+          :data="deptOptions"
+          :props="{ label: 'name', children: 'children' }"
+          :filter-node-method="filterNode"
+          ref="deptTreeRef"
+          node-key="id"
+          highlight-current
+          :default-expanded-keys="expandedKeys"
+          @node-click="handleNodeClick"
+          :default-expand-all="defaultExpand"
+        >
           <template #default="{ node, data }">
             <span class="custom-tree-node">
               <!-- 第一级 -->
@@ -57,15 +78,31 @@
               <el-icon class="iconimg colorxz" v-if="!node.expanded && node.childNodes.length && node.level == 2">
                 <Folder />
               </el-icon> -->
-              <img class="node-icon" src="../../../../../../../assets/da/asset/folder.svg" alt=""
-                   v-if="node.expanded && node.childNodes.length" />
-              <img class="node-icon" src="../../../../../../../assets/da/asset/folder.svg" alt=""
-                   v-if="!node.expanded && node.childNodes.length" />
+              <img
+                class="node-icon"
+                src="../../../../../../../assets/da/asset/folder.svg"
+                alt=""
+                v-if="node.expanded && node.childNodes.length"
+              />
+              <img
+                class="node-icon"
+                src="../../../../../../../assets/da/asset/folder.svg"
+                alt=""
+                v-if="!node.expanded && node.childNodes.length"
+              />
               <!-- 子级 -->
-              <img class="child-icon" src="../../../../../../../assets/da/asset/file.svg" alt=""
-                   v-show="!node.isCurrent && node.childNodes.length == 0" />
-              <img class="child-icon" src="../../../../../../../assets/da/asset/file.svg" alt=""
-                   v-show="node.isCurrent && node.childNodes.length == 0" />
+              <img
+                class="child-icon"
+                src="../../../../../../../assets/da/asset/file.svg"
+                alt=""
+                v-show="!node.isCurrent && node.childNodes.length == 0"
+              />
+              <img
+                class="child-icon"
+                src="../../../../../../../assets/da/asset/file.svg"
+                alt=""
+                v-show="node.isCurrent && node.childNodes.length == 0"
+              />
               <span class="treelable" @click="getNode(node)">
                 {{ node.label }}
               </span>
@@ -80,7 +117,11 @@
   <div class="resize-bar" @mousedown="startResize">
     <div class="resize-handle-sx">
       <span class="zjsx"></span>
-      <el-icon v-if="leftWidth == 0" @click.stop="toggleCollapse" class="collapse-icon">
+      <el-icon
+        v-if="leftWidth == 0"
+        @click.stop="toggleCollapse"
+        class="collapse-icon"
+      >
         <ArrowRight />
       </el-icon>
       <el-icon v-else class="collapse-icon" @click.stop="toggleCollapse">
@@ -175,7 +216,7 @@ const updateResize = (event) => {
     leftWidth.value += delta; // 修改左侧宽度
     startX = event.clientX; // 更新起始位置
     // 使用 requestAnimationFrame 来减少页面重绘频率
-    requestAnimationFrame(() => { });
+    requestAnimationFrame(() => {});
   }
 };
 
@@ -223,15 +264,12 @@ defineExpose({ resetTree });
   scrollbar-width: none;
   -ms-overflow-style: none;
   box-shadow: none !important;
-
 }
 
 .el-aside {
   padding: 2px 0px;
   margin-bottom: 0px;
   background-color: none;
-
-
 }
 
 .custom-tree-node {
@@ -329,9 +367,10 @@ defineExpose({ resetTree });
 }
 
 :deep(.dept-tree) {
-
   //组织树 背景颜色 及右边线颜色
-  &.el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content {
+  &.el-tree--highlight-current
+    .el-tree-node.is-current
+    > .el-tree-node__content {
     background: rgba(51, 103, 252, 0.06) !important;
     border: none;
 
@@ -353,11 +392,10 @@ defineExpose({ resetTree });
       width: 11px;
       height: 11px;
 
-      &>svg {
+      & > svg {
         background: url("@/assets/da/asset/arrow.svg") no-repeat;
         background-size: 100% 100%;
         transform: rotate(-90deg);
-
       }
     }
   }

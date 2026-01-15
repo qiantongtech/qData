@@ -421,6 +421,17 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
                     .append(")")
                     .append(onDuplicateKeyUpdateString(column))
                     .toString();
+        } else if (dbQueryProperty.getDbType().equals(DbType.DORIS.getDb())) {
+            writeDataSqlTemplate = new StringBuilder()
+                    .append("INSERT INTO %s (").append(org.apache.commons.lang3.StringUtils.join(column, ","))
+                    .append(") VALUES(").append(org.apache.commons.lang3.StringUtils.join(valueHolders, ","))
+                    .append(")")
+                    .toString();
+        } else if (dbQueryProperty.getDbType().equals(DbType.SQL_SERVER.getDb()) || dbQueryProperty.getDbType().equals(DbType.SQL_SERVER2008.getDb())) {
+            writeDataSqlTemplate = new StringBuilder().append(onMergeIntoSQLServerDoString(selectedColumns, column)).append("INSERT (")
+                    .append(org.apache.commons.lang3.StringUtils.join(column, ","))
+                    .append(") VALUES(").append(org.apache.commons.lang3.StringUtils.join(valueHolders, ","))
+                    .append(");").toString();
         } else {
             writeDataSqlTemplate = new StringBuilder().append(onMergeIntoDoString(selectedColumns, column)).append("INSERT (")
                     .append(org.apache.commons.lang3.StringUtils.join(column, ","))
@@ -552,5 +563,56 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
         }
 
         return res;
+    }
+
+    public static String onMergeIntoSQLServerDoString(List<String> selectedColumns, List<String> column) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("MERGE INTO %s A ");
+
+        StringBuilder columnValueStr = new StringBuilder();
+        StringBuilder columnStr = new StringBuilder();
+        StringBuilder updateSetStr = new StringBuilder();
+        for (int i = 0; i < column.size(); i++) {
+            if (i != 0) {
+                columnValueStr.append(",");
+                columnStr.append(",");
+            }
+            columnValueStr.append("?");
+            columnStr.append(column.get(i));
+        }
+
+        Boolean first = true;
+        for (int i = 0; i < column.size(); i++) {
+            if (selectedColumns.contains(column.get(i))) {
+                continue;
+            }
+            if (!first) {
+                updateSetStr.append(",");
+            }
+            updateSetStr.append(column.get(i)).append(" = TMP.").append(column.get(i));
+            if (first) {
+                first = false;
+            }
+        }
+
+        sb.append(" USING ( VALUES (").append(columnValueStr).append(" ) ) AS TMP( ").append(columnStr).append(")");
+
+        sb.append(" ON ");
+        for (int i = 0; i < selectedColumns.size(); i++) {
+            String selectedColumn = selectedColumns.get(i);
+            if (i != 0) {
+                sb.append(" AND ");
+            }
+            sb.append(" A.").append(selectedColumn);
+            sb.append(" = ");
+            sb.append(" TMP.").append(selectedColumn);
+        }
+
+        sb.append(" WHEN MATCHED THEN UPDATE SET ");
+
+        sb.append(updateSetStr);
+
+        sb.append(" WHEN NOT MATCHED THEN ");
+        return sb.toString();
     }
 }

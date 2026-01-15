@@ -94,7 +94,8 @@ watch(
     () => props.columns,
     (arr) => {
         if (arr && arr.length > 0) {
-            const requiredFields = arr.filter((item) => item.columnNullable == true);
+          debugger
+            const requiredFields = arr.filter((item) => item.columnNullable == false);
             columnsTwo.value = arr.filter((item) => item.columnKey == false);
             uniqueKeys.value = arr.filter((item) => item.columnKey != false);
 

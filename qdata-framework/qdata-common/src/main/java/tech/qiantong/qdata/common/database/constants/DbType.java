@@ -140,7 +140,16 @@ public enum DbType {
             "${host}:${port}",
             "LENGTH",
             "SELECT COUNT(1) FROM {tableName}",
-            "SELECT {tableFieldName} FROM {tableName} ORDER BY {orderBy} DESC LIMIT {pageSize} OFFSET ({pageNo}-1)*{pageSize}");
+            "SELECT {tableFieldName} FROM {tableName} ORDER BY {orderBy} DESC LIMIT {pageSize} OFFSET ({pageNo}-1)*{pageSize}"),
+    /**
+     * Doris
+     */
+    DORIS("Doris",
+                  "Doris数据库",
+                  "jdbc:mysql://${host}:${port}/${dbName}?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&rewriteBatchedStatements=true&useServerPrepStmts=true&serverTimezone=GMT%2B8",
+                  "LENGTH",
+                  "SELECT COUNT(1) FROM {tableName}",
+                  "SELECT {tableFieldName} FROM {tableName} ORDER BY {orderBy} DESC LIMIT ({pageNo}-1)*{pageSize},{pageSize}");
 
 
     /**

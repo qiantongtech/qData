@@ -96,6 +96,7 @@ public class DBUtils {
                     Class.forName("oracle.jdbc.OracleDriver");
                     options.put("driver", "oracle.jdbc.OracleDriver");
                     break;
+                case DORIS:
                 case MYSQL:
                     Class.forName("com.mysql.cj.jdbc.Driver");
                     options.put("driver", "com.mysql.cj.jdbc.Driver");

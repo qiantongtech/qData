@@ -1,0 +1,56 @@
+name: 📚 文档问题
+description: 文档错误、过期、表达不清或改进建议
+title: "【文档】"
+labels: ["docs"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        建议提供：文档链接/路径 + 当前问题内容 + 建议改成什么。
+
+  - type: input
+    id: doc
+    attributes:
+      label: 文档 URL 或路径
+      placeholder: "例如：https://xxx 或 docs/xxx.md"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: 变更类型
+      options:
+        - 错误/拼写修复
+        - 内容更新
+        - 新增文档
+        - 翻译
+        - 其他
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: 问题内容
+      description: 粘贴“有问题的那一段”即可（避免整页复制）
+      placeholder: "当前文档哪里不对/不清楚？"
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: 建议修改
+      description: 直接给出你建议的替换文本（越可直接用越好）
+      placeholder: "建议改成：……"
+    validations:
+      required: true
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: 补充说明（可选）
+      placeholder: "原因/截图/参考链接等"
+    validations:
+      required: false

@@ -54,8 +54,10 @@ public class TransitionRegistry {
         this.transitionMap.put(TaskComponentTypeEnum.SPARK_CLEAN.getCode(), new CleanTransition());
         this.transitionMap.put(TaskComponentTypeEnum.SORT_RECORD.getCode(), new SortTransition());
         this.transitionMap.put(TaskComponentTypeEnum.FIELD_DERIVATION.getCode(), new FieldDerivationTransition());
-
-
+        this.transitionMap.put(TaskComponentTypeEnum.DATA_DEDUPLICATION.getCode(), new DataDeduplicationTransition());
+        this.transitionMap.put(TaskComponentTypeEnum.VALUE_MAP.getCode(), new ValueMapTransition());
+        this.transitionMap.put(TaskComponentTypeEnum.ADD_CONSTANT.getCode(), new AddConstantTransition());
+        this.transitionMap.put(TaskComponentTypeEnum.SELECT_FIELDS.getCode(), new SelectFieldsTransition());
     }
 
     public Transition getTransition(String code) {

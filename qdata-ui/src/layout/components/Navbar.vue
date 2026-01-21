@@ -181,6 +181,49 @@
                 </el-dropdown>
             </div>
         </div>
+
+        <el-dialog
+        title="关于我们"
+        class="about-dialog"
+        v-model="activeOpen"
+        append-to-body
+        align-center
+    >
+      <div class="about-content-wrapper">
+        <img
+            src="@/assets/system/images/login/qData-logo.png"
+            alt="qData Logo"
+            class="logo"
+        />
+        <div class="about-title">
+          版本{{ currentVersion }}
+          <!-- <span class="version-badge"></span> -->
+        </div>
+        <div class="copyright">©{{ year }}江苏千桐科技有限公司版权所有</div>
+      </div>
+
+      <template #footer>
+        <div class="about-footer">
+          <div v-if="!needUpdate" class="status-text">
+            版本{{ currentVersion }}已是最新版本。
+          </div>
+          <div v-else class="status-text">
+            最新版本{{ latestVersion }}
+            <a
+                href="https://gitee.com/qiantongtech/qData"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="update-link"
+            >
+              更新
+            </a>
+          </div>
+          <div class="head-btns">
+            <el-button type="primary" @click="openUpdateLog">更新日志</el-button>
+          </div>
+        </div>
+      </template>
+    </el-dialog>
     </div>
 </template>
 
@@ -207,6 +250,7 @@ import { currentUser } from '@/api/att/project/project';
 import { da, id } from 'element-plus/es/locale/index.mjs';
 import usePermissionStore from '@/store/system/permission';
 import { getRoutersDpp } from '@/api/system/menu';
+import {getCurrentAppVersion} from "@/api/system/update/update.js";
 // import {listProject, getProject} from "@/api/project/projectBase/project";
 // import {listReport, getReport, delReport, addReport, updateReport} from "@/api/project/report/report";
 // 认证模式
@@ -224,6 +268,10 @@ let isFlag = ref(false);
 const activeMsg = ref('first');
 const projectId = ref('');
 const permissionStore = usePermissionStore();
+
+const needUpdate = ref(false);
+const currentVersion = ref('');
+const latestVersion = ref('')
 // 所有的路由信息
 const routers = computed(() => permissionStore.topbarRouters);
 //-----------------------以下报工内容-------------------------
@@ -589,6 +637,17 @@ onMounted(() => {
     console.log(userStore);
 
     listProject();
+
+    getCurrentAppVersion().then(res => {
+        if (res.data != null) {
+            // 是否最新版本
+            needUpdate.value = res.data.needUpdate;
+            // 本地版本号
+            currentVersion.value = res.data.currentVersion;
+            // 最新版本号
+            latestVersion.value = res.data.latestVersion;
+        }
+    })
 });
 // 页面注销
 onBeforeUnmount(() => {
@@ -628,6 +687,16 @@ function toggleSideBar() {
     appStore.toggleSideBar();
 }
 
+const activeOpen = ref(false)
+
+function handleAboutUs() {
+  activeOpen.value = true
+}
+
+function openUpdateLog() {
+  window.open("https://gitee.com/qiantongtech/qData/releases", "_blank");
+}
+
 function handleCommand(command) {
     switch (command) {
         case 'setLayout':
@@ -638,7 +707,8 @@ function handleCommand(command) {
             break;
         case 'about':
             // 跳转到关于我们页面
-            window.open('https://qiantong.tech/', '_blank');
+            // window.open('https://qiantong.tech/', '_blank');
+            handleAboutUs();
             break;
         default:
             break;
@@ -977,5 +1047,126 @@ function clearNotification() {
 .rounded-button,
 .rounded-button .el-button {
     border-radius: 2px !important;
+}
+
+.about-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  //padding: 27px 0;
+  //gap: 16px;
+
+  .logo {
+    height: 34px;
+    width: 146px;
+    margin-top: 27px;
+  }
+
+  .about-title {
+    margin-top: 20px;
+    font-size: 22px;
+    font-weight: 500;
+    color: #000000;
+
+    .version-badge {
+      background-color: #409eff;
+      color: white;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-left: 6px;
+    }
+  }
+
+  .copyright {
+    color: #909399;
+    font-size: 16px;
+    margin-top: 27px;
+  }
+}
+
+
+.about-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 35px;
+  border-top: 1px solid var(--el-border-color-light); // 使用 Element Plus 主题变量
+
+  .status-text {
+    font-size: 18px;
+    color: #000000;
+  }
+  .update-link {
+    color: #126BED; // Element Plus 主色，也可以用 var(--el-color-primary)
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 18px;
+    transition: color 0.2s;
+
+    &:hover {
+      color: #66b1ff; // 鼠标悬停时颜色变亮
+    }
+
+    &:active {
+      color: #3a8ee6; // 点击时颜色更深一点
+    }
+  }
+  .head-btns {
+    img {
+      margin-right: 6px;
+    }
+    .currImg {
+      display: inline-block;
+    }
+
+    .act {
+      display: none;
+    }
+
+    .el-button {
+      height: 34px;
+      width: 114px;
+      border-radius: 4px !important;
+      font-size: 18px;
+
+      &:hover {
+        .act {
+          display: inline-block;
+        }
+
+        .currImg {
+          display: none;
+        }
+      }
+    }
+  }
+}
+.markdown-content {
+  padding: 0 15px 15px 15px;
+}
+
+</style>
+
+<style lang="scss">
+.about-dialog:not(.is-fullscreen) {
+  margin: auto !important;
+  width: 600px;
+  height: 300px;
+  padding: 0;
+  .el-dialog__header{
+    height: 47px !important;
+    background: #f8f8f8 !important;
+    line-height: 47px;
+    padding-left: 27px;
+    color: #333333;
+  }
+  .el-dialog__footer{
+    padding-top: 0px;
+  }
+  .about-footer{
+    padding: 12px 32px;
+  }
 }
 </style>

@@ -75,7 +75,7 @@ onBeforeUnmount(() => {
 })
 
 // 图标处理
-const icon = computed(() => nodeData.value.taskParams?.icon || "/img/icon-default.png")
+const icon = computed(() => nodeData.value.taskParams?.icon || nodeData.value.icon || "/img/icon-default.png")
 
 const iconWhite = computed(() => {
     const newIcon = icon.value

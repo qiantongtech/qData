@@ -1,0 +1,88 @@
+name: 🐛 Bug 反馈
+description: 报告一个问题，帮助我们快速定位并修复
+title: "【缺陷】"
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        请尽量提供「可复现步骤 + 版本/环境 + 关键日志」。
+        ⚠️ Issue 是公开的，请勿提交密码、Token、手机号等敏感信息。
+
+  - type: checkboxes
+    id: precheck
+    attributes:
+      label: 提交前确认
+      options:
+        - label: 我已搜索过现有 Issue（含已关闭），未发现重复
+          required: true
+        - label: 我确认未包含敏感信息（密码/Token/手机号等）
+          required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: 版本信息
+      description: 填写版本号/分支/Commit（越精确越好）
+      placeholder: "例如：v1.2.3 / main / 1a2b3c4"
+    validations:
+      required: true
+
+  - type: textarea
+    id: env
+    attributes:
+      label: 环境信息
+      description: 简要即可（部署方式/系统/运行环境等）
+      placeholder: |
+        部署方式：Docker / 源码 / K8s / 其他
+        系统：Ubuntu 22.04 / Windows 11 / macOS 14
+        运行环境：如 Java 8 / Node 20 / Python 3.11
+        其他：数据库/外部依赖/代理
+    validations:
+      required: true
+
+  - type: textarea
+    id: desc
+    attributes:
+      label: 问题描述
+      placeholder: "发生了什么？影响是什么？出现频率如何？"
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: 重现步骤
+      placeholder: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: 预期结果
+      placeholder: "你期望看到什么行为/结果？"
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: 实际结果
+      placeholder: "实际发生了什么？如有报错请贴出关键信息。"
+    validations:
+      required: true
+
+  - type: textarea
+    id: attachments
+    attributes:
+      label: 日志/截图（可选）
+      description: 可直接拖拽上传截图/录屏；日志请脱敏
+      placeholder: |
+        1) 关键日志（建议只贴关键片段）：
+        2) 截图/录屏：
+    validations:
+      required: false

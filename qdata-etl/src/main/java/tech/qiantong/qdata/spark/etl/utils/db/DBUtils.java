@@ -70,6 +70,19 @@ public class DBUtils {
         String dbType = parameter.getString("dbType");
 
         Map<String, String> options = new HashMap<>();
+
+        String jdbcUrl = jdbcUrlOld;
+        String sid = parameter.getString("sid");
+        String dbName = parameter.getString("dbName");
+        String username = parameter.getString("username");
+        String password = parameter.getString("password");
+
+        if (StringUtils.indexOf(jdbcUrl, "?stringtype=unspecified") == -1
+                && (StringUtils.equals(DbType.KINGBASE8.getDb(), dbType))) {
+            options.put("url", jdbcUrl + "?stringtype=unspecified");
+        } else {
+            options.put("url", jdbcUrl);
+        }
         //注册驱动
         try {
             // 根据不同数据库类型设置连接参数
@@ -91,6 +104,12 @@ public class DBUtils {
                     Class.forName("com.kingbase8.Driver");
                     options.put("driver", "com.kingbase8.Driver");
                     break;
+                case SQL_SERVER2008:
+                    if (StringUtils.startsWith(jdbcUrl, "jdbc:jtds:sqlserver")) {
+                        Class.forName("net.sourceforge.jtds.jdbc.Driver");
+                        options.put("driver", "net.sourceforge.jtds.jdbc.Driver");
+                        break;
+                    }
                 case SQL_SERVER:
                     Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
                     options.put("driver", "com.microsoft.sqlserver.jdbc.SQLServerDriver");
@@ -101,28 +120,15 @@ public class DBUtils {
             }
         } catch (ClassNotFoundException e) {
         }
-
-
-        String jdbcUrl = jdbcUrlOld;
-        String sid = parameter.getString("sid");
-        String dbName = parameter.getString("dbName");
-        String username = parameter.getString("username");
-        String password = parameter.getString("password");
-
-        if (StringUtils.indexOf(jdbcUrl, "?stringtype=unspecified") == -1
-                && (StringUtils.equals(DbType.KINGBASE8.getDb(), dbType))) {
-            options.put("url", jdbcUrl + "?stringtype=unspecified");
-        } else {
-            options.put("url", jdbcUrl);
-        }
         options.put("user", username);
         options.put("password", password);
         options.put("dbName", dbName);
         if (connection.containsKey("table")) {
             //{\"username\":\"qdata_dev\",\"password\":\"2LKqLVMQ!xVDT$Qx\",\"dbname\":\"qdata_dev\",\"sid\":\"public\"}
             //表查询
-            if (StringUtils.equals(DbType.KINGBASE8.getDb(), dbType) ||
-                    StringUtils.equals(DbType.SQL_SERVER.getDb(), dbType)) {
+            if (StringUtils.equals(DbType.KINGBASE8.getDb(), dbType)
+                    || StringUtils.equals(DbType.SQL_SERVER.getDb(), dbType)
+                    || StringUtils.equals(DbType.SQL_SERVER2008.getDb(), dbType)) {
                 options.put("dbtable", dbName + "." + sid + "." + connection.getString("table"));
             } else if (StringUtils.isNotBlank(dbName)) {
                 options.put("dbtable", dbName + "." + connection.getString("table"));

@@ -306,26 +306,26 @@
               </el-select>
             </template>
           </el-table-column>
-          <!--          <el-table-column-->
-          <!--            prop="whereType"-->
-          <!--            label="操作符"-->
-          <!--            align="center"-->
-          <!--            v-if="splReult !== true"-->
-          <!--          >-->
-          <!--            <template #default="scope">-->
-          <!--              <el-select-->
-          <!--                v-model="scope.row.whereType"-->
-          <!--                placeholder="请选择操作符"-->
-          <!--              >-->
-          <!--                <el-option-->
-          <!--                  v-for="dict in da_api_param_operator"-->
-          <!--                  :key="dict.id"-->
-          <!--                  :label="dict.label"-->
-          <!--                  :value="dict.value"-->
-          <!--                />-->
-          <!--              </el-select>-->
-          <!--            </template>-->
-          <!--          </el-table-column>-->
+          <el-table-column
+            prop="whereType"
+            label="操作符"
+            align="center"
+            v-if="splReult !== true"
+          >
+            <template #default="scope">
+              <el-select
+                v-model="scope.row.whereType"
+                placeholder="请选择操作符"
+              >
+                <el-option
+                  v-for="dict in da_api_param_operator"
+                  :key="dict.id"
+                  :label="dict.label"
+                  :value="dict.value"
+                />
+              </el-select>
+            </template>
+          </el-table-column>
           <el-table-column prop="exampleValue" label="示例值" align="center" :show-overflow-tooltip="{ effect: 'light' }">
             <template #default="scope">
               <el-input v-model="scope.row.exampleValue" placeholder="请输入示例值" />

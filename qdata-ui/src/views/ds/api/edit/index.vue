@@ -175,9 +175,9 @@ const data = reactive({
         apiVersion: [{ required: true, message: 'API版本不能为空', trigger: 'blur' }],
         catCode: [{ required: true, message: '类目不能为空', trigger: 'blur' }],
         apiUrl: [
-            { required: true, message: '请输入API路径', trigger: 'blur' },
+            { required: true, message: '请输入API路径', trigger: 'input' },
             {
-                pattern: /^\/(?!:\/\/)([a-zA-Z0-9\-._~!$&'()*+,;=:@]|%[0-9a-fA-F]{2})*\/?$/,
+                pattern: '^\\/[a-zA-Z0-9_\\-]+(\\/[a-zA-Z0-9_\\-]+)*$',
                 message: '请输入有效的请求路径,例：/user/list',
                 trigger: 'blur'
             }

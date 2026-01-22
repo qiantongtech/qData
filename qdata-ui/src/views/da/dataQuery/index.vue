@@ -112,7 +112,7 @@ const getDatasourcesTree = async () => {
   try {
     const res = await listDaDatasource({
       pageSize: 9999,
-      datasourceType: "DM8,Oracle11,MySql,Oracle,Kingbase8,Hive,Doris,SQL_Server,PostgreSQL",
+      datasourceType: "DM8,Oracle11,MySql,Oracle,Kingbase8,Hive,Doris,SQL_Server,SQL_Server2008,PostgreSQL",
     });
     TablesByDataSource.value = res.data.rows.map((ds) => ({
       id: ds.id,

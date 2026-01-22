@@ -113,14 +113,18 @@
                                 <!--                                </el-select>-->
                             </template>
                         </el-table-column>
-                        <!--                        <el-table-column prop="whereType" label="操作符" align="center" :show-overflow-tooltip="{effect: 'light'}">-->
-                        <!--                            <template #default="scope">-->
-                        <!--                                <el-select v-model="scope.row.whereType" placeholder="请选择操作符" disabled>-->
-                        <!--                                    <el-option v-for="dict in whereTypeOptions" :key="dict.id" :label="dict.itemValue"-->
-                        <!--                                               :value="dict.itemText"/>-->
-                        <!--                                </el-select>-->
-                        <!--                            </template>-->
-                        <!--                        </el-table-column>-->
+                        <el-table-column prop="whereType" label="操作符" align="center" :show-overflow-tooltip="{effect: 'light'}">
+                            <template #default="scope">
+                                <el-select v-model="scope.row.whereType" placeholder="请选择操作符" disabled>
+                                  <el-option
+                                      v-for="dict in da_api_param_operator"
+                                      :key="dict.id"
+                                      :label="dict.label"
+                                      :value="dict.value"
+                                  />
+                                </el-select>
+                            </template>
+                        </el-table-column>
                         <el-table-column prop="paramValue" label="参数值" align="center" :show-overflow-tooltip="{effect: 'light'}">
                             <template #default="scope">
                                 <el-input v-if="scope.row.paramType != '2'" v-model="scope.row.paramValue"
@@ -173,11 +177,12 @@
 <script setup>
 import { serviceTesting } from '@/api/ds/api/api.js';
 const { proxy } = getCurrentInstance();
-const { ds_api_bas_info_api_method_type, ds_api_param_type, ds_api_bas_info_res_data_type } =
+const { ds_api_bas_info_api_method_type, ds_api_param_type, ds_api_bas_info_res_data_type,  da_api_param_operator } =
     proxy.useDict(
         'ds_api_bas_info_api_method_type',
         'ds_api_param_type',
-        'ds_api_bas_info_res_data_type'
+        'ds_api_bas_info_res_data_type',
+        "da_api_param_operator"
     );
 
 const props = defineProps({
@@ -291,6 +296,7 @@ function handleCall() {
     data.pageNum = callData.pageNum;
     data.pageSize = callData.pageSize;
     props.form.reqParams.forEach((param) => {
+        param = JSON.parse(JSON.stringify(param));
         if (param.paramType == 2) {
             if (
                 param.paramValue != null &&
@@ -300,6 +306,20 @@ function handleCall() {
                 param.paramValue = parseInt(param.paramValue);
             }
         }
+      if (param.paramType == 5) {
+        if (
+            param.paramValue != null &&
+            param.paramValue != '' &&
+            param.paramValue != undefined
+        ) {
+          try {
+            param.paramValue = JSON.parse(param.paramValue);
+          } catch (error) {
+            proxy.$message.warning('输入参数‘' + param.paramName + '’格式有误，例如为[1,2]或["1","2"]');
+            return;
+          }
+        }
+      }
         data[param.paramName] = param.paramValue;
     });
     props.form.params = data;

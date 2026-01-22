@@ -40,6 +40,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.util.Assert;
 import tech.qiantong.qdata.common.enums.WhereType;
+import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.module.ds.dal.dataobject.dto.ReqParam;
 
 import java.io.Serializable;
@@ -50,37 +51,38 @@ import java.util.Map;
 /**
  * 用于动态构造sql语句
  * ${ segment... } 为一个条件代码块
- *
+ * <p>
  * String sql = "select * from user where 1=1
- * 		${ and username = :username }
- * 		${ and password = :password }
- * 		${ and age = :age }"
- *
- * 	Map filters = new HashMap();
- * 	filters.put("username", "yuwei");
- * 	filters.put("age", "12");
- * 	filters.put("id", "123");
- *
- * 	SqlFilterResult result = SqlBuilderUtil.applyFilters(sql, filters);
- *
- *  result.getSql()结果
- * 	select * from user where 1=1 and username=:username and age=:age
- *
- *  result.getAcceptedFilters()结果
- * 	{username=yuwei}
- * 	{age=12}
+ * ${ and username = :username }
+ * ${ and password = :password }
+ * ${ and age = :age }"
+ * <p>
+ * Map filters = new HashMap();
+ * filters.put("username", "yuwei");
+ * filters.put("age", "12");
+ * filters.put("id", "123");
+ * <p>
+ * SqlFilterResult result = SqlBuilderUtil.applyFilters(sql, filters);
+ * <p>
+ * result.getSql()结果
+ * select * from user where 1=1 and username=:username and age=:age
+ * <p>
+ * result.getAcceptedFilters()结果
+ * {username=yuwei}
+ * {age=12}
  */
 @Slf4j
 public class SqlBuilderUtil {
 
-    private SqlBuilderUtil() {}
+    private SqlBuilderUtil() {
+    }
 
     private static volatile SqlBuilderUtil instance;
 
     public static SqlBuilderUtil getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             synchronized (SqlBuilderUtil.class) {
-                if(instance == null) {
+                if (instance == null) {
                     instance = new SqlBuilderUtil();
                 }
             }
@@ -139,47 +141,48 @@ public class SqlBuilderUtil {
 
     /**
      * 拼接命名参数sql
+     *
      * @param sql
      * @param params
      * @return
      */
-    public String buildHql(String sql, List<ReqParam> params){
+    public String buildHql(String sql, List<ReqParam> params) {
         Assert.notNull(sql, "SQL must not be null");
         return buildHql(new StringBuffer(sql), params);
     }
 
-    private String buildHql(StringBuffer sql, List<ReqParam> params){
-        if(CollUtil.isEmpty(params)){
+    private String buildHql(StringBuffer sql, List<ReqParam> params) {
+        if (CollUtil.isEmpty(params)) {
             return sql.toString();
         }
         sql.append(SPACE).append(WHERE_INIT);
 
         //判断params是否为空----兼容查询条件为空情景
-        if(CollectionUtils.isEmpty(params)){
+        if (CollectionUtils.isEmpty(params)) {
             return sql.toString();
         }
 
         for (int i = 0; i < params.size(); i++) {
             ReqParam reqParam = params.get(i);
             sql.append(SPACE).append(MARK_KEY_START).append(WHERE_AND).append(SPACE).append(reqParam.getParamName());
-            if (WhereType.LIKE.getType() == reqParam.getWhereType()) {
+            if (StringUtils.equals(WhereType.LIKE.getType(), reqParam.getWhereType())) {
                 // LIKE '%' :username '%' ,:username 两边一定要有空格，如果没有空格，是查询不到数据的
                 sql.append(SPACE).append(WhereType.getWhereType(reqParam.getWhereType()).getKey())
                         .append(SPACE).append(SINGLE_QUOTE).append(PERCENT_SIGN).append(SINGLE_QUOTE).append(SPACE)
                         .append(COLON).append(reqParam.getParamName())
                         .append(SPACE).append(SINGLE_QUOTE).append(PERCENT_SIGN).append(SINGLE_QUOTE).append(MARK_KEY_END);
-            } else if(WhereType.LIKE_LEFT.getType() == reqParam.getWhereType()) {
+            } else if (StringUtils.equals(WhereType.LIKE_LEFT.getType(), reqParam.getWhereType())) {
                 sql.append(SPACE).append(WhereType.getWhereType(reqParam.getWhereType()).getKey())
                         .append(SPACE).append(SINGLE_QUOTE).append(PERCENT_SIGN).append(SINGLE_QUOTE).append(SPACE)
                         .append(COLON).append(reqParam.getParamName()).append(MARK_KEY_END);
-            } else if(WhereType.LIKE_RIGHT.getType() == reqParam.getWhereType()) {
+            } else if (StringUtils.equals(WhereType.LIKE_RIGHT.getType(), reqParam.getWhereType())) {
                 sql.append(SPACE).append(WhereType.getWhereType(reqParam.getWhereType()).getKey())
                         .append(SPACE).append(COLON).append(reqParam.getParamName())
                         .append(SPACE).append(SINGLE_QUOTE).append(PERCENT_SIGN).append(SINGLE_QUOTE).append(MARK_KEY_END);
-            } else if(WhereType.NULL.getType() == reqParam.getWhereType() || WhereType.NOT_NULL.getType() == reqParam.getWhereType()){
+            } else if (StringUtils.equals(WhereType.NULL.getType(), reqParam.getWhereType()) || StringUtils.equals(WhereType.NOT_NULL.getType(), reqParam.getWhereType())) {
                 // is null或is not null不需要参数值
                 sql.append(SPACE).append(WhereType.getWhereType(reqParam.getWhereType()).getKey()).append(MARK_KEY_END);
-            } else if(WhereType.IN.getType() == reqParam.getWhereType()){
+            } else if (StringUtils.equals(WhereType.IN.getType(), reqParam.getWhereType())) {
                 // in (:ids)
                 sql.append(SPACE).append(WhereType.getWhereType(reqParam.getWhereType()).getKey())
                         .append(SPACE).append(LEFT_BRACKET)
@@ -195,22 +198,23 @@ public class SqlBuilderUtil {
 
     /**
      * 根据入参动态构造sql语句
+     *
      * @param sql
      * @param filters
      * @return
      */
-    public SqlFilterResult applyFilters(String sql, Map<String, Object> filters){
+    public SqlFilterResult applyFilters(String sql, Map<String, Object> filters) {
         Assert.notNull(sql, "SQL must not be null");
         return applyFilters(new StringBuffer(sql), filters);
     }
 
-    private SqlFilterResult applyFilters(StringBuffer sql, Map<String, Object> filters){
+    private SqlFilterResult applyFilters(StringBuffer sql, Map<String, Object> filters) {
         LinkedHashMap<String, Object> acceptedFilters = new LinkedHashMap<>();
         for (int i = 0, end = 0, start = sql.indexOf(MARK_KEY_START); ((start = sql.indexOf(MARK_KEY_START, end)) >= 0); i++) {
             end = sql.indexOf(MARK_KEY_END, start);
             // 封装该条件代码块中的NamedParameterSql
             ParsedSql parsedSql = getSegmentParsedSql(sql, start, end);
-            if (CollUtil.isEmpty(parsedSql.getParamNames())){
+            if (CollUtil.isEmpty(parsedSql.getParamNames())) {
                 throw new IllegalArgumentException("Not key found in segment=" + sql.substring(start, end + MARK_KEY_END.length()));
             }
             // 判断输入参数filters中是否存在查询参数
@@ -268,6 +272,7 @@ public class SqlBuilderUtil {
 
     /**
      * 获取参数值
+     *
      * @param filters
      * @param key
      * @return
@@ -280,6 +285,7 @@ public class SqlBuilderUtil {
 
     /**
      * 验证参数值是否空
+     *
      * @param value
      * @param isRemoveEmpty
      * @return
@@ -297,7 +303,7 @@ public class SqlBuilderUtil {
 
     public class SqlFilterResult implements Serializable {
 
-        private static final long serialVersionUID=1L;
+        private static final long serialVersionUID = 1L;
 
         private String sql;
 

@@ -1112,6 +1112,10 @@ public class TaskConverter {
                 case SPARK_CLEAN:
                 case SORT_RECORD:
                 case FIELD_DERIVATION:
+                case DATA_DEDUPLICATION:
+                case VALUE_MAP:
+                case ADD_CONSTANT:
+                case SELECT_FIELDS:
                     transitionList.add(data);
                     break;
                 case DB_WRITER:

@@ -132,6 +132,7 @@
                                 </template>
                             </el-table-column>
 
+
                             <el-table-column label="示例值" fixed="left" align="center" prop="exampleValue"
                                 :show-overflow-tooltip="{effect: 'light'}">
                                 <template #default="{ row }">

@@ -203,7 +203,7 @@ export const typeList = [
   { value: 2, label: '输出组件' },
   { value: 3, label: '转换组件' }
 ];
-export const toolbar = ref([
+export const toolbar = [
   {
     id: "zoom-out",
     icon: "toolbar (1).png",
@@ -245,4 +245,4 @@ export const toolbar = ref([
     icon: "toolbar (3).png",
     tip: "重置",
   },
-]);
+];

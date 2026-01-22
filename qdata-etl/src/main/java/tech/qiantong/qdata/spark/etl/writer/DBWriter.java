@@ -193,7 +193,8 @@ public class DBWriter implements Writer {
             if (StringUtils.isNotBlank(tmpTableName)) {
                 if (flag) {
                     if (StringUtils.equals(DbType.KINGBASE8.getDb(), writerProperty.getDbType())
-                            || StringUtils.equals(DbType.SQL_SERVER.getDb(), writerProperty.getDbType())) {
+                            || StringUtils.equals(DbType.SQL_SERVER.getDb(), writerProperty.getDbType())
+                            || StringUtils.equals(DbType.SQL_SERVER2008.getDb(), writerProperty.getDbType())) {
                         tableName = StringUtils.isNotBlank(writerProperty.getDbName()) ? writerProperty.getDbName() + "." + writerProperty.getSid() + "." + tableName : tableName;
                         tmpTableName = StringUtils.isNotBlank(writerProperty.getDbName()) ? writerProperty.getDbName() + "." + writerProperty.getSid() + "." + tmpTableName : tmpTableName;
                     }  else {
@@ -257,7 +258,8 @@ public class DBWriter implements Writer {
         Statement statement = null;
         ResultSet rs = null;
         if (StringUtils.equals(DbType.KINGBASE8.getDb(), writerProperty.getDbType())
-                || StringUtils.equals(DbType.SQL_SERVER.getDb(), writerProperty.getDbType())) {
+                || StringUtils.equals(DbType.SQL_SERVER.getDb(), writerProperty.getDbType())
+                || StringUtils.equals(DbType.SQL_SERVER2008.getDb(), writerProperty.getDbType())) {
             tableName = writerProperty.getDbName() + "." + writerProperty.getSid() + "." + tableName;
         } else if (StringUtils.isNotBlank(writerProperty.getDbName())) {
             tableName = writerProperty.getDbName() + "." + tableName;

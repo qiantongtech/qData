@@ -42,7 +42,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.database.DataSourceFactory;
+import tech.qiantong.qdata.common.database.DbDialect;
 import tech.qiantong.qdata.common.database.DbQuery;
+import tech.qiantong.qdata.common.database.DialectFactory;
 import tech.qiantong.qdata.common.database.constants.DbDataType;
 import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
 import tech.qiantong.qdata.common.database.constants.DbType;
@@ -359,14 +361,8 @@ public class DaAssetOperateLogServiceImpl extends ServiceImpl<DaAssetOperateLogM
             throw new DataQueryException("库表不存在，请查看数据库！");
         }
         List<DbColumn> cols = query.getTableColumns(prop, tableName);
-        String fullTable;
-        if (StringUtils.equals(prop.getDbType(), DbType.KINGBASE8.getDb())
-                || StringUtils.equals(prop.getDbType(), DbType.SQL_SERVER.getDb())) {
-            fullTable = StringUtils.isNotBlank(prop.getDbName()) ? prop.getDbName() + "." + prop.getSid() + "." + tableName : tableName;
-        } else {
-            fullTable = StringUtils.isNotBlank(prop.getDbName()) ? prop.getDbName() + "." + tableName : tableName;
-        }
-        return new PreContext(query, prop, cols, fullTable);
+        DbDialect dbDialect = DialectFactory.getDialect(DbType.getDbType(prop.getDbType()));
+        return new PreContext(query, prop, cols, dbDialect.getTableName(prop, tableName));
     }
 
     private final Map<String, BiConsumer<DaAssetOperateLogSaveReqVO, PreContext>> handlers = new HashMap<>();

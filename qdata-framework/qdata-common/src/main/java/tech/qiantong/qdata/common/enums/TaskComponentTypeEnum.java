@@ -53,11 +53,15 @@ public enum TaskComponentTypeEnum {
     KAFKA_READER("3", "Kafka输入"),
     CSV_READER("4", "csv输入"),
 
-
     //清洗
+    SELECT_FIELDS("22", "字段选择"),
+
     SPARK_CLEAN("31", "SPARK清洗"),
     SORT_RECORD("34", "排序记录"),
     FIELD_DERIVATION("39", "字段派生器"),
+    DATA_DEDUPLICATION("40", "数据去重"),
+    VALUE_MAP("47", "值映射"),
+    ADD_CONSTANT("48", "增加常量"),
 
     //开发
     SQL_DEV("51", "SQL开发"),

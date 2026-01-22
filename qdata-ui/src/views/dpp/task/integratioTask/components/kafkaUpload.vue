@@ -31,37 +31,70 @@
 -->
 
 <template>
-  <el-dialog v-model="visibleDialog" draggable class="dialog" :title="title" destroy-on-close>
-    <el-form ref="daDiscoveryTaskRef" :model="form" label-width="120px" @submit.prevent>
+  <el-dialog
+    v-model="visibleDialog"
+    draggable
+    class="dialog"
+    :title="title"
+    destroy-on-close
+  >
+    <el-form
+      ref="daDiscoveryTaskRef"
+      :model="form"
+      label-width="120px"
+      @submit.prevent
+    >
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="字段名称" prop="columnName" :rules="[
-            { required: true, message: '请输入字段名称', trigger: 'blur' },
-          ]">
+          <el-form-item
+            label="字段名称"
+            prop="columnName"
+            :rules="[
+              { required: true, message: '请输入字段名称', trigger: 'blur' },
+            ]"
+          >
             <el-input v-model="form.columnName" placeholder="请输入字段名称" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="字段类型" prop="columnType" :rules="[
-            { required: true, message: '请选择字段类型', trigger: 'change' },
-          ]">
+          <el-form-item
+            label="字段类型"
+            prop="columnType"
+            :rules="[
+              { required: true, message: '请选择字段类型', trigger: 'change' },
+            ]"
+          >
             <el-select v-model="form.columnType" placeholder="请选择字段类型">
-              <el-option v-for="dict in columntype" :key="dict.value" :label="dict.label"
-                :value="dict.value"></el-option>
+              <el-option
+                v-for="dict in columntype"
+                :key="dict.value"
+                :label="dict.label"
+                :value="dict.value"
+              ></el-option>
             </el-select>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="JSON解析值" prop="key" :rules="[
-            {
-              required: true,
-              message: '请输入JSON解析值',
-              trigger: 'change',
-            },
-          ]">
-            <el-input v-model="form.key" type="textarea" placeholder="例如:info.aga" />
+          <el-form-item
+            label="JSON解析值"
+            prop="key"
+            :rules="[
+              {
+                required: true,
+                message: '请输入JSON解析值',
+                trigger: 'change',
+              },
+            ]"
+          >
+            <el-input
+              v-model="form.key"
+              type="textarea"
+              maxlength="500个字符"
+              show-word-limit
+              placeholder="例如:info.aga"
+            />
           </el-form-item>
         </el-col>
       </el-row>
@@ -143,11 +176,9 @@ let daDiscoveryTaskRef = ref();
 const saveData = () => {
   daDiscoveryTaskRef.value.validate((valid) => {
     if (valid) {
-
       emit("confirm", form.value);
       emit("update:visible", false);
     } else {
-
       console.log("表单校验未通过");
     }
   });

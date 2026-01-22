@@ -90,7 +90,7 @@ export const useHtmlNode = (node) => {
       const htmlTop = document.createElement("img");
       htmlTop.setAttribute("class", "cu_html_top");
       // 确定 icon 来源
-      let iconSrc = taskParams.icon || icon;
+      let iconSrc = taskParams.icon || icon || cell.getData().icons;
       // 检查 icon 是否是 base64，如果是则直接使用
       if (iconSrc && iconSrc.startsWith("data:image")) {
         htmlTop.setAttribute("src", iconSrc);
@@ -652,6 +652,7 @@ export const createDataNode = (graph, data) => {
       taskType: data.taskType,
       name: data?.label || data.name, // 名字
       version: "0", // 版本号
+      icon: data?.icon || data?.icons || "",
       componentType: data?.componentType || "",
       outputFields: [],
       inputFields: "",
@@ -792,7 +793,7 @@ export const createDataNode = (graph, data) => {
         parentId: "", //上級节点的id
         config: "", //配置参数
         typeName: data?.label || data.name, //组件类型
-        icon: data.icon,
+        icon: data?.icon || data?.icons || "",
         taskType: data.taskType,
         type: data.type, // 组件类型 1:输入组件 2:输出组件
         batchSize: "1024", // 一次性写入量

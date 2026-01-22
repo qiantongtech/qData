@@ -16591,4 +16591,8 @@ UPDATE `att_clean_rule`  SET strategy_key='DATE_FORMAT_STD' WHERE id=7;
 UPDATE `att_clean_rule`  SET strategy_key='DATE_FILL_NULL' WHERE id=17;
 UPDATE `att_clean_rule`  SET strategy_key='PK_DEDUP_FIRST' WHERE id=25;
 
+UPDATE `att_audit_rule` SET valid_flag='1' WHERE code in('205', '115');
+
+INSERT INTO `system_dict_data` VALUES (344, 8, 'Doris', 'Doris', 'datasource_type', NULL, 'info', 'N', '0', '吴同', '2025-06-23 11:22:50', 'wutong', '2025-09-22 09:19:40', NULL);
+
 SET FOREIGN_KEY_CHECKS = 1;

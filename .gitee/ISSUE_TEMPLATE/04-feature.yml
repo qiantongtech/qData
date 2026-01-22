@@ -1,0 +1,65 @@
+name: ✨ 功能建议
+description: 提出新功能或改进点，便于评估与排期
+title: "【需求】"
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        请尽量说清楚：痛点是什么 → 希望怎么做 → （可选）替代方案/补充材料。
+
+  - type: checkboxes
+    id: precheck
+    attributes:
+      label: 提交前确认
+      options:
+        - label: 我已搜索过现有 Issue（含已关闭），未发现重复
+          required: true
+
+  - type: textarea
+    id: pain
+    attributes:
+      label: 你遇到的痛点/问题
+      placeholder: |
+        场景：
+        现在怎么做：
+        为什么麻烦/成本高：
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: 你期望的方案
+      placeholder: |
+        希望新增/改进什么：
+        期望的使用方式/行为：
+    validations:
+      required: true
+
+  - type: textarea
+    id: alt
+    attributes:
+      label: 替代方案（可选）
+      placeholder: "有没有临时绕过办法？为什么不够好？"
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: 补充材料（可选）
+      description: 截图/原型图/链接/对比方案等
+      placeholder: "可直接拖拽上传图片"
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: participation
+    attributes:
+      label: 参与意愿（可选）
+      options:
+        - label: 我愿意提交 PR
+          required: false
+        - label: 我愿意协助测试
+          required: false

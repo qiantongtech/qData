@@ -61,19 +61,19 @@
                 </el-table-column>
                 <el-table-column prop="paramType" label="参数类型" align="center">
                     <template #default="scope">
-                        <dict-tag :options="paramTypeOptions" :value="scope.row.paramType" />
+                        <dict-tag :options="ds_api_param_type" :value="scope.row.paramType" />
                     </template>
                 </el-table-column>
-                <!--      <el-table-column-->
-                <!--        prop="whereType"-->
-                <!--        label="操作符"-->
-                <!--        align="center"-->
-                <!--        v-if="splReult !== true"-->
-                <!--      >-->
-                <!--        <template #default="scope">-->
-                <!--          <dict-tag :options="whereTypeOptions" :value="scope.row.whereType" />-->
-                <!--        </template>-->
-                <!--      </el-table-column>-->
+                <el-table-column
+                  prop="whereType"
+                  label="操作符"
+                  align="center"
+                  v-if="splReult !== true"
+                >
+                  <template #default="scope">
+                    <dict-tag :options="da_api_param_operator" :value="scope.row.whereType" />
+                  </template>
+                </el-table-column>
                 <el-table-column prop="exampleValue" label="示例值" align="center"
                     :show-overflow-tooltip="{ effect: 'light' }">
                     <template #default="scope">
@@ -264,12 +264,16 @@ const {
     ds_api_log_status,
     ds_api_bas_info_api_service_type,
     ds_api_bas_info_api_method_type,
-    ds_api_bas_info_res_data_type
+    ds_api_bas_info_res_data_type,
+    da_api_param_operator,
+    ds_api_param_type,
 } = proxy.useDict(
     'ds_api_log_status',
     'ds_api_bas_info_api_service_type',
     'ds_api_bas_info_api_method_type',
-    'ds_api_bas_info_res_data_type'
+    'ds_api_bas_info_res_data_type',
+    "da_api_param_operator",
+    "ds_api_param_type",
 );
 
 const dsApiList = ref([]);

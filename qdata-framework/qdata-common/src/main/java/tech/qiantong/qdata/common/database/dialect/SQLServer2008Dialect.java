@@ -32,14 +32,18 @@
 
 package tech.qiantong.qdata.common.database.dialect;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.RowMapper;
 import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
 import tech.qiantong.qdata.common.database.core.DbColumn;
 import tech.qiantong.qdata.common.database.core.DbTable;
+import tech.qiantong.qdata.common.database.exception.DataQueryException;
+import tech.qiantong.qdata.common.database.utils.DatabaseUtil;
 import tech.qiantong.qdata.common.database.utils.MD5Util;
 
-import java.sql.ResultSet;
+import javax.sql.DataSource;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -50,7 +54,9 @@ import java.util.stream.Collectors;
  * @author QianTongDC
  * @date 2022-11-14
  */
+@Slf4j
 public class SQLServer2008Dialect extends AbstractDbDialect {
+
 
     @Override
     public String columns(String dbName, String tableName) {
@@ -81,10 +87,9 @@ public class SQLServer2008Dialect extends AbstractDbDialect {
                 "order by columns.column_id ";
     }
 
-
     @Override
     public String generateCheckTableExistsSQL(DbQueryProperty dbQueryProperty, String tableName) {
-        return "SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '" + dbQueryProperty.getDbName() + "' AND TABLE_NAME = '" + tableName + "';";
+        return "SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_CATALOG = '" + dbQueryProperty.getDbName() + "' AND TABLE_SCHEMA = '" + dbQueryProperty.getSid() + "' AND TABLE_NAME = '" + tableName + "';";
     }
 
     @Override
@@ -207,7 +212,7 @@ public class SQLServer2008Dialect extends AbstractDbDialect {
         if (StringUtils.isNotEmpty(tableComment)) {
             StringBuilder sql = new StringBuilder();
             sql.append("EXEC sys.sp_addextendedproperty @name = N'MS_Description', @value = N'")
-                    .append(MD5Util.escapeSingleQuotes(tableComment)).append("', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'TABLE', @level1name = N'")
+                    .append(DatabaseUtil.escapeSingleQuotes(tableComment)).append("', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'TABLE', @level1name = N'")
                     .append(tableName).append("'\n");
             sqlList.add(sql.toString());
         }
@@ -217,7 +222,7 @@ public class SQLServer2008Dialect extends AbstractDbDialect {
             if (StringUtils.isNotEmpty(column.getColComment())) {
                 StringBuilder sql = new StringBuilder();
                 sql.append("EXEC sys.sp_addextendedproperty @name = N'MS_Description', @value = N'")
-                        .append(MD5Util.escapeSingleQuotes(column.getColComment())).append("', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'TABLE', @level1name = N'")
+                        .append(DatabaseUtil.escapeSingleQuotes(column.getColComment())).append("', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'TABLE', @level1name = N'")
                         .append(tableName).append("', @level2type = N'COLUMN', @level2name = N'")
                         .append(column.getColName()).append("'\n");
                 sqlList.add(sql.toString());
@@ -257,7 +262,7 @@ public class SQLServer2008Dialect extends AbstractDbDialect {
                 .collect(Collectors.joining(", "));
 
         // 构造最终的 SQL 查询语句
-        return "SELECT " + fields + " FROM " +dbQueryProperty.getDbName()+"."+ tableName;
+        return "SELECT " + fields + " FROM " + dbQueryProperty.getDbName() + "." + dbQueryProperty.getSid() + "." + tableName;
     }
 
     private static String getOrderByPart(String sql) {
@@ -305,7 +310,7 @@ public class SQLServer2008Dialect extends AbstractDbDialect {
 
     @Override
     public String getDataStorageSize(String dbName) {
-        return "SELECT SUM(size/128.0) AS \"usedSizeMb\" FROM sys.master_files WHERE DB_NAME(database_id) = '"+dbName+"'";
+        return "SELECT SUM(size/128.0) AS \"usedSizeMb\" FROM sys.master_files WHERE DB_NAME(database_id) = '" + dbName + "'";
     }
 
     @Override
@@ -356,5 +361,34 @@ public class SQLServer2008Dialect extends AbstractDbDialect {
     @Override
     public String getTableName(DbQueryProperty property, String tableName) {
         return property.getDbName() + "." + property.getSid() + "." + tableName;
+    }
+
+    @Override
+    public Boolean validConnection(DataSource dataSource, DbQueryProperty dbQueryProperty) {
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection(trainToJdbcUrl(dbQueryProperty), dbQueryProperty.getUsername(),
+                    dbQueryProperty.getPassword());
+
+            // 方法2：执行测试查询（双重验证）
+            try (Statement stmt = conn.createStatement();
+                 ResultSet rs = stmt.executeQuery("SELECT 1")) {
+                if (rs.next()) {
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            throw new DataQueryException("数据库连接失败,稍后重试");
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    throw new DataQueryException("关闭数据库连接出错");
+                }
+            }
+        }
+        return false;
     }
 }

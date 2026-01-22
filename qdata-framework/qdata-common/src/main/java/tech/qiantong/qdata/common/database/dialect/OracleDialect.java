@@ -134,6 +134,15 @@ public class OracleDialect extends AbstractDbDialect {
     }
 
     @Override
+    public String buildTableNameByDbType(DbQueryProperty dbQueryProperty, String tableName) {
+        if (StringUtils.isNotEmpty(dbQueryProperty.getDbName())) {
+            return dbQueryProperty.getDbName() + "." + tableName;
+        }
+
+        return tableName;
+    }
+
+    @Override
     public List<String> someInternalSqlGenerator(DbQueryProperty dbQueryProperty, String tableName, String tableComment, List<DbColumn> dbColumnList) {
         String dbName = dbQueryProperty.getDbName();
 

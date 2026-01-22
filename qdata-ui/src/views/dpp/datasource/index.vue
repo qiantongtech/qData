@@ -299,7 +299,8 @@
             (form.datasourceType == 'Oracle' ||
               form.datasourceType == 'Oracle11' ||
               form.datasourceType == 'Kingbase8' ||
-              form.datasourceType == 'SQL_Server' || form.datasourceType == 'PostgreSQL')
+              form.datasourceType == 'SQL_Server' ||
+              form.datasourceType == 'SQL_Server2008' || form.datasourceType == 'PostgreSQL')
           ">
             <el-form-item label="模式名称" prop="sid">
               <el-input v-model="form.sid" placeholder="请输入模式名称" :disabled="form.id" />
@@ -479,7 +480,8 @@
             (form.datasourceType == 'Oracle' ||
               form.datasourceType == 'Oracle11' ||
               form.datasourceType == 'Kingbase8' ||
-              form.datasourceType == 'SQL_Server' || form.datasourceType == 'PostgreSQL')
+              form.datasourceType == 'SQL_Server' ||
+              form.datasourceType == 'SQL_Server2008' || form.datasourceType == 'PostgreSQL')
           ">
             <el-form-item label="模式名称">
               <div class="form-readonly">

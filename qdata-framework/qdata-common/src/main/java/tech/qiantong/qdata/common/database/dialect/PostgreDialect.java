@@ -86,6 +86,15 @@ public class PostgreDialect extends AbstractDbDialect {
     }
 
     @Override
+    public String buildTableNameByDbType(DbQueryProperty dbQueryProperty, String tableName) {
+        if(StringUtils.isNotEmpty(dbQueryProperty.getSid())){
+            return dbQueryProperty.getSid() + "." + tableName;
+        }
+
+        return  " public." + tableName;
+    }
+
+    @Override
     public List<String> someInternalSqlGenerator(DbQueryProperty dbQueryProperty, String tableName, String tableComment, List<DbColumn> dbColumnList) {
         List<String> sqlList = new ArrayList<>();
 

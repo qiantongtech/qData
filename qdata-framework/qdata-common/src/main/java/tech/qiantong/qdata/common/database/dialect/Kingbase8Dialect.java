@@ -119,11 +119,22 @@ public class Kingbase8Dialect extends AbstractDbDialect {
     }
 
     @Override
+    public String buildTableNameByDbType(DbQueryProperty dbQueryProperty, String tableName) {
+        if (StringUtils.isNotEmpty(dbQueryProperty.getSid())) {
+            return dbQueryProperty.getSid() + "." + tableName;
+        }
+
+        return " public." + tableName;
+    }
+
+    @Override
     public String generateCheckTableExistsSQL(DbQueryProperty dbQueryProperty, String tableName) {
         return "SELECT COUNT(1) FROM pg_tables "
                 + "WHERE schemaname = '" + dbQueryProperty.getSid() + "' "
                 + "  AND tablename = '" + tableName + "'";
     }
+
+
 
     @Override
     public List<String> someInternalSqlGenerator(DbQueryProperty dbQueryProperty, String tableName, String tableComment, List<DbColumn> dbColumnList) {

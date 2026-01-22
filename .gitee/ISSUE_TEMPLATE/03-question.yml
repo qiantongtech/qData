@@ -1,0 +1,89 @@
+name: "🤔 使用问题"
+description: 使用过程中的疑问、求助或最佳实践咨询
+title: "【咨询】"
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        欢迎提问！为了让我们更高效地协助您，请清晰描述您的**使用场景**和**具体疑惑**。
+
+  - type: checkboxes
+    id: precheck
+    attributes:
+      label: 提交前确认
+      options:
+        - label: 我已查阅过官方文档，但未找到答案
+          required: true
+        - label: 我已搜索过现有 Issue（含已关闭），未发现类似问题
+          required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: 软件版本
+      description: 您当前使用的版本号
+      placeholder: "例如：v1.2.3 / main 分支"
+    validations:
+      required: true
+
+  - type: textarea
+    id: env
+    attributes:
+      label: 运行环境（可选）
+      description: 简要描述部署方式，有助于排查环境差异带来的问题
+      placeholder: "例如：Docker 部署 / Ubuntu 22.04 / Java 17 ..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: scenario
+    attributes:
+      label: 想要实现的目标 / 使用场景
+      description: 请描述您的业务背景，或者您最终想要达到的效果是什么？
+      placeholder: |
+        例如：
+        我想在 K8s 环境下配置集群模式...
+        或者：我想对接第三方的 OAuth 登录，目前流程是...
+    validations:
+      required: true
+
+  - type: textarea
+    id: question
+    attributes:
+      label: 具体问题描述
+      description: 遇到了什么阻碍？是不理解配置项的含义，还是实际运行结果不符合预期？
+      placeholder: "请详细描述您的疑问..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: attempts
+    attributes:
+      label: 已尝试的方案
+      description: 您尝试过哪些方法？结果如何？（这能避免我们提供重复建议）
+      placeholder: |
+        1. 我尝试修改了 config.yaml 中的 xxx 参数，但是...
+        2. 我参考了文档 xxx 章节，但是发现...
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: 相关日志 / 配置片段
+      description: 请贴出相关的配置文件（记得脱敏）或报错日志关键片段
+      render: shell
+      placeholder: |
+        ```yaml
+        # 配置文件片段
+        server:
+          port: 8080
+        ```
+        
+        ```text
+        # 报错日志片段
+        Error: address already in use...
+        ```
+    validations:
+      required: false

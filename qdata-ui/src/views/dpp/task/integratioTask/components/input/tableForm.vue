@@ -450,7 +450,7 @@ const getDatasourceList = async () => {
             pageSize: 9999,
             projectCode: userStore.projectCode,
             projectId: userStore.projectId,
-            datasourceType: "DM8,Oracle11,MySql,Oracle,Kingbase8,Doris,SQL_Server,PostgreSQL",
+            datasourceType: "DM8,Oracle11,MySql,Oracle,Kingbase8,Doris,SQL_Server,SQL_Server2008,PostgreSQL",
         });
         createTypeList.value = response.data.rows;
     } finally {

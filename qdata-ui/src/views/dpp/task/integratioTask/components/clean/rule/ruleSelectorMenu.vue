@@ -68,6 +68,7 @@
                       <Document />
                     </el-icon>
                   </div>
+
                   <div class="card-title ellipsis">{{ data.name }}</div>
                   <div class="card-desc ellipsis-multi">
                     {{ data.description }}
@@ -147,8 +148,10 @@ async function fetchRulesByDimension() {
   loading.value = true;
   const res = await listAll(queryParams.value);
   const list = res.data || [];
+  console.log("🚀 ~ fetchRulesByDimension ~ list:", list);
+
   if (props.type == "3") {
-    const disabledCodes = ["029", "039", "019"];
+    const disabledCodes = ["029", "039"];
     attCleanRuleList.value = list.map((item) => {
       if (disabledCodes.includes(item.code)) {
         return { ...item, validFlag: false };

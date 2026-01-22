@@ -45,7 +45,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		delete from system_user_role syr
 		where
 			syr.user_id=#{userId}
-			and exists (select 1 from system_role r where r.role_id=syr.role_id and r.del_flag = '0' and r.project_id = 0)
 	</delete>
 
 	<select id="countUserRoleByRoleId" resultType="Integer">

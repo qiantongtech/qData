@@ -191,8 +191,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
 
     @Override
     public int countNew(String tableName, DbQueryProperty dbQueryProperty, String where) {
-        String tableNameWhere = StringUtils.isEmpty(where) ? tableName : tableName + " where " + where;
-        return countNew(tableNameWhere, new HashMap<>());
+        return countNew(dbDialect.buildTableNameByDbType(dbQueryProperty, StringUtils.isEmpty(where) ? tableName : tableName + " where " + where), new HashMap<>());
     }
 
     @Override
@@ -243,7 +242,14 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
     public PageResult<Map<String, Object>> queryByPage(String sql, long offset, long size) {
         int total = count(sql);
         String pageSql = dbDialect.buildPaginationSql(sql, offset, size);
-        List<Map<String, Object>> records = jdbcTemplate.queryForList(pageSql);
+        List<Map<String, Object>> records = jdbcTemplate.query(pageSql, new MyRowMapper());
+        if (records.size() > 0) {
+            records.forEach(record -> {
+                if (record.containsKey("__row_number__")) {
+                    record.remove("__row_number__");
+                }
+            });
+        }
         return new PageResult<>(total, records);
     }
 

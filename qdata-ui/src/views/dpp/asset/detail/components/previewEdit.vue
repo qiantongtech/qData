@@ -157,7 +157,7 @@ function addRow(row, data) {
 function submitForm() {
     queryFormRef.value.validate((valid) => {
         if (!valid) return;
-        if(uniqueKeys.value){
+      if(uniqueKeys.value.length == 0){
           proxy.$modal.msgWarning("当前表未设置物理主键，无法执行修改操作。");
           return;
         }

@@ -113,6 +113,9 @@ public class CleanTransition implements Transition {
                 case "WITHIN_BOUNDARY": // 数值边界调整
                     dataset = applyNumericBoundary(dataset, ruleConfig);
                     break;
+                case "REMOVE_WHITESPACE": // 去除字符串空格
+                    dataset = applyTrim(dataset, ruleConfig);
+                    break;
                 case "SIMPLE_REPLACE": // 正则表达式替换
                     dataset = applyRegexReplace(dataset, ruleConfig);
                     break;
@@ -121,6 +124,9 @@ public class CleanTransition implements Transition {
                     break;
                 case "TO_UPPERCASE": // 字段值转大写
                     dataset = applyUpperCase(dataset, ruleConfig);
+                    break;
+                case "TO_LOWERCASE": // 字段值转小写
+                    dataset = applyLowerCase(dataset, ruleConfig);
                     break;
                 case "ADD_PREFIX_SUFFIX": // 字段前/后缀统一
                     dataset = applyPrefixSuffix(dataset, ruleConfig);
@@ -136,6 +142,9 @@ public class CleanTransition implements Transition {
                     break;
                 case "FIX_TO_PRECISION": // 小数位统一
                     dataset = formatDecimalPlaces(dataset, ruleConfig);
+                    break;
+                case "DATE_FORMAT_STD": // 日期格式统一
+                    dataset = applyDateFormatStd(dataset, ruleConfig);
                     break;
                 case "STRING_SUBSTR": // 字符截取
                     dataset = applyStringSubstr(dataset, ruleConfig);
@@ -187,6 +196,20 @@ public class CleanTransition implements Transition {
         }
 
         return dataset.withColumn(colName, newCol);
+    }
+
+    /**
+     * 去除字符串空格
+     */
+    private Dataset<Row> applyTrim(Dataset<Row> dataset, JSONObject cfg) {
+        String col = cfg.getJSONArray("columns").getString(0);
+        int handleType = cfg.getIntValue("handleType");
+        if (handleType == 1) {
+            return dataset.withColumn(col, functions.trim(dataset.col(col)));
+        } else if (handleType == 2) {
+            return dataset.withColumn(col, functions.regexp_replace(dataset.col(col), "\\s+", ""));
+        }
+        return dataset;
     }
 
     private Dataset<Row> formatDecimalPlaces(Dataset<Row> dataset, JSONObject cfg) {
@@ -567,10 +590,136 @@ public class CleanTransition implements Transition {
         return dataset.withColumn(col, functions.upper(dataset.col(col)));
     }
 
+    /**
+     * 字段值转小写
+     */
+    private Dataset<Row> applyLowerCase(Dataset<Row> dataset, JSONObject cfg) {
+        String col = cfg.getJSONArray("columns").getString(0);
+        return dataset.withColumn(col, functions.lower(dataset.col(col)));
+    }
+
+    /**
+     * DATE_FORMAT_STD —— 日期格式统一（支持 inputFormats 中的 "timestamp"）
+     * - 普通模式：使用 to_timestamp(asStr, pattern)
+     * - 时间戳模式："timestamp" 视为 Unix 时间戳；自动兼容 10 位(秒) 与 13 位(毫秒)
+     *
+     * cfg 示例：
+     * {
+     *   "columns": ["bizDate"],
+     *   "targetFormat": "yyyy-MM-dd",
+     *   "inputFormats": ["yyyyMMdd","yyyy-MM-dd","yyyy/MM/dd","yyyy.MM.dd","yyyy-MM-dd HH:mm:ss","timestamp"]
+     * }
+     */
+    private Dataset<Row> applyDateFormatStd(Dataset<Row> dataset, JSONObject cfg) {
+
+        System.out.println("序列填充后的字段结构：");
+        dataset.printSchema();
+
+        System.out.println("前10条数据：");
+        dataset.show(10, false);
+
+        String colName = cfg.getJSONArray("columns").getString(0);
+        String targetFmt = cfg.getString("targetFormat"); // 仅当输出为 string 时生效
+        JSONArray arr = cfg.getJSONArray("inputFormats");
+
+        Column col = functions.col(colName);
+        DataType dt = dataset.schema().apply(colName).dataType();
+
+        // === 1) 统一得到 asTs：仅在需要时才解析 ===
+        Column asTs;
+
+        // 1.1 源列已是日期/时间戳：直接使用，避免时区二次转换
+        if (dt.sameType(DataTypes.DateType)) {
+            asTs = col.cast("timestamp");
+        } else if (dt.sameType(DataTypes.TimestampType)) {
+            asTs = col; // 已经是 timestamp
+        }
+        // 1.2 源列是字符串：用 inputFormats 尝试解析
+        else if (dt.sameType(DataTypes.StringType)) {
+            Column asStr = col.cast("string");
+            Column parsed = null;
+            for (int i = 0; i < (arr == null ? 0 : arr.size()); i++) {
+                String pattern = arr.getString(i);
+                Column p;
+                if ("timestamp".equalsIgnoreCase(pattern)) {
+                    // 数字型时间戳字符串：10位秒、13位毫秒，其他长度视为无效
+                    Column digits = functions.regexp_replace(asStr, "[^0-9]", "");
+                    Column len = functions.length(digits);
+                    Column seconds = functions.when(len.equalTo(13), digits.cast("double").divide(1000.0))
+                            .when(len.equalTo(10), digits.cast("double"))
+                            .otherwise(functions.lit((Double) null));
+                    p = functions.to_timestamp(functions.from_unixtime(seconds));
+                } else {
+                    p = functions.to_timestamp(asStr, pattern);
+                }
+                parsed = (parsed == null) ? p : functions.coalesce(parsed, p);
+            }
+            asTs = parsed; // 全部失败则为 null
+        }
+        // 1.3 源列是数值型：按阈值判断秒/毫秒
+        else if (dt.equals(DataTypes.IntegerType) || dt.equals(DataTypes.LongType)
+                || dt.equals(DataTypes.ShortType)   || dt.equals(DataTypes.FloatType)
+                || dt.equals(DataTypes.DoubleType)  || dt.typeName().startsWith("decimal")) {
+            Column num = col.cast("double");
+            // >=1e12 视为毫秒；介于[1e9,1e12) 视为秒；否则无效
+            Column seconds = functions.when(num.geq(1_000_000_000_000.0), num.divide(1000.0))
+                    .when(num.geq(1_000_000_000.0),      num)
+                    .otherwise(functions.lit((Double) null));
+            asTs = functions.to_timestamp(functions.from_unixtime(seconds));
+        }
+        // 1.4 其他类型：放弃解析
+        else {
+            asTs = functions.lit(null);
+        }
+
+        // === 2) 决定输出类型：优先 forceTargetType，其次沿用原列类型，默认 string ===
+        String targetType;
+        if (targetFmt != null && !targetFmt.trim().isEmpty()) {
+            targetType = targetFmt.trim().toLowerCase();
+        } else if (dt.sameType(DataTypes.DateType)) {
+            targetType = "date";
+        } else if (dt.sameType(DataTypes.TimestampType)) {
+            targetType = "timestamp";
+        } else if (dt.sameType(DataTypes.StringType)) {
+            targetType = "string";
+        } else {
+            targetType = "string";
+        }
+
+        // === 3) 落地：仅当解析成功才替换，否则保留原值 ===
+        Column outCol;
+        switch (targetType) {
+            case "date":
+                outCol = functions.when(asTs.isNotNull(), asTs.cast("date"))
+                        .otherwise(col);
+                break;
+            case "timestamp":
+                outCol = functions.when(asTs.isNotNull(), asTs.cast("timestamp"))
+                        .otherwise(col);
+                break;
+            default: // "string"
+                Column formatted = (targetFmt == null || targetFmt.isEmpty())
+                        ? functions.date_format(asTs, "yyyy-MM-dd HH:mm:ss")
+                        : functions.date_format(asTs, targetFmt);
+                outCol = functions.when(asTs.isNotNull(), formatted)
+                        .otherwise(col.cast("string")); // 统一成字符串
+                break;
+        }
+        dataset = dataset.withColumn(colName, outCol);
+
+        System.out.println("序列填充后的字段结构：");
+        dataset.printSchema();
+
+        System.out.println("前10条数据：");
+        dataset.show(10, false);
+
+        return dataset;
+    }
+
+
     public static Dataset<Row> transitionOld(Dataset<Row> dataset, JSONObject transition, LogUtils.Params logParams) {
         LogUtils.writeLog(logParams, "*********************************  Initialize task context  ***********************************");
         LogUtils.writeLog(logParams, "版本重构，历史版本不再做支撑，可查看最新逻辑重新配置");
         return dataset;
     }
-
 }

@@ -71,17 +71,7 @@ export const treeData = [
                 icon: new URL('@/assets/system/images/dpp/scv.svg', import.meta.url).href, // 动态获取路径
                 icons: '@/assets/system/images/dpp/csv.png'
             },
-            {
-                label: 'Kafka输入组件',
-                key: 'input-Kafka',
-                type: 1,
-                level: 2,
-                componentType: '3',
-                taskType: 'DATAX',
-                engine: ['SPARK'],
-                icon: new URL('@/assets/system/images/dpp/kaf.svg', import.meta.url).href, // 动态获取路径
-                form: 'input/kafkaForm.vue',
-            },
+          
         ]
     },
     {

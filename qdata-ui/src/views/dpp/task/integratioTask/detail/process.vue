@@ -33,18 +33,29 @@
 <template>
   <div class="app-containers" ref="app-container">
     <div class="flex-container">
-
       <!-- 右侧主内容 -->
       <div class="right-pane" v-loading="loading">
-        <el-empty description=" 暂无任务流程" v-if="!nodeData?.locations || nodeData.locations.length === 0">
+        <el-empty
+          description=" 暂无任务流程"
+          v-if="!nodeData?.locations || nodeData.locations.length === 0"
+        >
         </el-empty>
-        <div id="graphContainers" class="graph-container" ref="graphContainers"></div>
+        <div
+          id="graphContainers"
+          class="graph-container"
+          ref="graphContainers"
+        ></div>
         <TeleportContainer />
         <!-- 工具栏 -->
         <div class="toolbar" v-if="nodeData?.locations">
           <template v-for="item in toolbar" :key="item.id">
-            <el-tooltip class="box-item" effect="light" :content="item.tip" placement="bottom"
-              v-if="item.tip !== '重置' && item.tip !== '导出'">
+            <el-tooltip
+              class="box-item"
+              effect="light"
+              :content="item.tip"
+              placement="bottom"
+              v-if="item.tip !== '重置' && item.tip !== '导出'"
+            >
               <div class="toolbar-item" @click="toolbarClick(item)">
                 <img :src="getAssetsFile(item.icon)" alt="" />
               </div>
@@ -54,8 +65,16 @@
       </div>
     </div>
     <!-- 动态表单 -->
-    <component :is="currentFormComponent" :visible="drawer" :key="currentNode?.id || Date.now()" :title="title"
-      @update="closeDialog" :currentNode="currentNode" :info="route.query.info" :graph="graph" />
+    <component
+      :is="currentFormComponent"
+      :visible="drawer"
+      :key="currentNode?.id || Date.now()"
+      :title="title"
+      @update="closeDialog"
+      :currentNode="currentNode"
+      :info="route.query.info"
+      :graph="graph"
+    />
     <!-- 字段预览弹窗 -->
     <FieldPreviewDialog ref="fieldPreviewDialog" />
   </div>
@@ -79,10 +98,8 @@ import FieldBuilder from "@/views/dpp/task/integratioTask/components/transform/f
 // 输出表组件
 import OutputForm from "@/views/dpp/task/integratioTask/components/output/tableForm.vue";
 import useUserStore from "@/store/system/user";
-import { Export } from '@antv/x6-plugin-export'
-import {
-  etlTask,
-} from "@/api/dpp/task/index.js";
+import { Export } from "@antv/x6-plugin-export";
+import { etlTask } from "@/api/dpp/task/index.js";
 import { register, getTeleport } from "@antv/x6-vue-shape";
 const TeleportContainer = defineComponent(getTeleport());
 import { Selection } from "@antv/x6-plugin-selection";
@@ -91,7 +108,7 @@ import {
   fetchNodeUniqueKey,
   exportGraphAsPNG,
   useVueNode,
-  renderGraphs
+  renderGraphs,
 } from "@/views/dpp/utils/opBase";
 const { proxy } = getCurrentInstance();
 const route = useRoute();
@@ -111,8 +128,6 @@ const currentFormComponent = computed(() => {
       return InputForm;
     case "2":
       return ExcelInputForm;
-    case "3":
-      return KafkaForm;
     case "4":
       return csvForm;
     case "5":
@@ -172,30 +187,32 @@ const currentFormComponent = computed(() => {
 const props = defineProps({
   dppEtlTaskDetail: {
     type: Object,
-    default: () => ({})
-  }
+    default: () => ({}),
+  },
 });
 const undoDisabled = ref(null);
 let loading = ref(false);
 function getList() {
   // 如果父组件传来的 detail 已经包含 draftJson，就直接用
   if (props.dppEtlTaskDetail?.draftJson) {
-    nodeData.value = props.dppEtlTaskDetail
-    renderGraphs(graph, nodeData.value, 2)
-    loading.value = false
-    return
+    nodeData.value = props.dppEtlTaskDetail;
+    renderGraphs(graph, nodeData.value, 2);
+    loading.value = false;
+    return;
   }
-  if (!route.query.id) return
+  if (!route.query.id) return;
   // 否则再去接口拉取
   etlTask(route.query.id).then((response) => {
     nodeData.value = response.data;
-    nodeData.value.taskConfig = { ...nodeData.value.taskConfig, draftJson: nodeData.value.draftJson };
+    nodeData.value.taskConfig = {
+      ...nodeData.value.taskConfig,
+      draftJson: nodeData.value.draftJson,
+    };
     renderGraphs(graph, nodeData.value, 2);
   });
 }
 
-
-useVueNode(graph)
+useVueNode(graph);
 const fieldPreviewDialog = ref();
 const openDialog = (node, data, title) => {
   fieldPreviewDialog.value.show(node, data, title);
@@ -221,7 +238,9 @@ function initializeGraph() {
       nodeMovable: () => false,
       edgeMovable: () => false,
       arrowMovable: () => false,
-    }, interacting: false, mousewheel: {
+    },
+    interacting: false,
+    mousewheel: {
       enabled: true,
       zoomAtMousePosition: true,
       minScale: 0.5,
@@ -256,16 +275,13 @@ const closeDialog = () => {
 };
 // 绑定事件
 function bindGraphEvents() {
-
   graph.on("node:added", handleNodeAdded);
-
 
   graph.on("node:dblclick", handleNodeDblClick);
   if (route.query.info) {
-    graph.getPlugin('keyboard')?.disable();
+    graph.getPlugin("keyboard")?.disable();
   }
 }
-
 
 // / 处理节点添加事件
 async function handleNodeAdded({ node }) {
@@ -318,7 +334,7 @@ function handleNonInputNode(node) {
   });
   // drawer.value = true; // 控制抽屉显示
 }
-function handleNodeDblClick({ node }, type = 'edit') {
+function handleNodeDblClick({ node }, type = "edit") {
   graph.cleanSelection();
   hasUnsavedChanges.value = true;
   currentNode.value = node;
@@ -361,7 +377,8 @@ const toolbarClick = (item) => {
       graph.zoomTo(1);
       break;
     case "export": {
-      exportGraphAsPNG(graph,); break;
+      exportGraphAsPNG(graph);
+      break;
     }
     case "reset": {
       handleCancel();
@@ -375,9 +392,7 @@ async function updateFlow(data) {
   nodeData.value = { ...data, ...nodeData.value };
   renderGraphs(graph, nodeData.value, 2);
 }
-onActivated(() => {
-
-});
+onActivated(() => {});
 watch(
   () => props.dppEtlTaskDetail,
   (newVal) => {
@@ -390,7 +405,7 @@ watch(
 const getAssetsFile = (url) => {
   return new URL(`/src/assets/dpp/etl/${url}`, import.meta.url).href;
 };
-defineExpose({ updateFlow, })
+defineExpose({ updateFlow });
 </script>
 
 <style scoped lang="less">

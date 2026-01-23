@@ -1066,9 +1066,10 @@ function clearNotification() {
 
   .about-title {
     margin-top: 20px;
+    font-family: PingFang SC;
+    font-weight: 600;
     font-size: 22px;
-    font-weight: 500;
-    color: #000000;
+    color: #333333;
 
     .version-badge {
       background-color: #409eff;
@@ -1080,9 +1081,11 @@ function clearNotification() {
   }
 
   .copyright {
-    color: #909399;
-    font-size: 16px;
     margin-top: 27px;
+    font-family: PingFang SC;
+    font-weight: 500;
+    font-size: 16px;
+    color: #6E7A97;
   }
 }
 
@@ -1095,8 +1098,10 @@ function clearNotification() {
   border-top: 1px solid var(--el-border-color-light); // 使用 Element Plus 主题变量
 
   .status-text {
+    font-family: PingFang SC;
+    font-weight: 600;
     font-size: 18px;
-    color: #000000;
+    color: #333333;
   }
   .update-link {
     color: #126BED; // Element Plus 主色，也可以用 var(--el-color-primary)
@@ -1130,6 +1135,9 @@ function clearNotification() {
       width: 114px;
       border-radius: 4px !important;
       font-size: 18px;
+      font-family: PingFang SC;
+      font-weight: 600;
+      color: #FFFFFF;
 
       &:hover {
         .act {
@@ -1161,12 +1169,25 @@ function clearNotification() {
     line-height: 47px;
     padding-left: 27px;
     color: #333333;
+    padding-bottom: 0px;
+    font-family: PingFang SC;
+    .el-dialog__close{
+        font-size: 18px;
+        color: #6A6A6A;
+        font-weight: bold;
+    }
+
+    .el-dialog__title{
+        font-size: 18px;
+        font-weight: 600;
+        color: #333333;
+    }
   }
   .el-dialog__footer{
     padding-top: 0px;
   }
   .about-footer{
-    padding: 12px 32px;
+    padding: 11px 32px;
   }
 }
 </style>

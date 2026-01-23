@@ -242,7 +242,6 @@ import FieldPreviewDialog from "@/views/dpp/task/integratioTask/components/field
 import InputForm from "@/views/dpp/task/integratioTask/components/input/tableForm.vue";
 import excelInputForm from "@/views/dpp/task/integratioTask/components/input/excelForm.vue";
 import csvForm from "@/views/dpp/task/integratioTask/components/input/csvForm.vue";
-import KafkaForm from "@/views/dpp/task/integratioTask/components/input/kafkaForm.vue";
 
 // 转换组件
 import DedupFilter from "@/views/dpp/task/integratioTask/components/transform/dedupFilter.vue";
@@ -361,8 +360,7 @@ const currentFormComponent = computed(() => {
       return InputForm;
     case "2":
       return excelInputForm;
-    case "3":
-      return KafkaForm;
+
     case "4":
       return csvForm;
     case "5":

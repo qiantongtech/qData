@@ -217,10 +217,10 @@ public class MessageServiceImpl  extends ServiceImpl<MessageMapper, MessageDO> i
             updateWrapper.eq(MessageDO::getModule, module);
         }
         updateWrapper.set(MessageDO::getHasRead, MessageHasReadEnums.YD.code);
-        boolean update = this.update(updateWrapper);
+        this.update(updateWrapper);
         // 更新消息
         this.getReceiverWDNum(getLoginUser().getUserId());
-        return update;
+        return true;
     }
 
     /**

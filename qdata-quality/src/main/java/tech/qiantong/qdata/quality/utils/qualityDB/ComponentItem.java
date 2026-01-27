@@ -396,4 +396,32 @@ public interface ComponentItem extends QualityFragSql {
         return addPagination(generateDataSql(rule, frag), limit, offset);
     }
 
+
+
+    /**
+     * 生成字符串类型校验的SQL
+     * 只用于客户输入数据，点击检测的sql生成方法
+     *
+     * @param rule
+     * @param inputValue
+     * @return
+     */
+    default String generateValidDataCheckSql(QualityRuleEntity rule, String inputValue){
+        // 1. 构造“输入值”的 SQL 表达式（防止直接拼 Java 变量）
+        String valueExpr = "'" + inputValue.replace("'", "''") + "'";
+
+        // 2. 构造规则校验片段（基于输入值，而不是字段）
+        String regex = (String) rule.getConfig().get("regex");
+        String frag = regex(valueExpr, regex);
+
+        // 3. 处理是否忽略 NULL
+//        frag = neg(frag, rule);
+
+        // 4. 最终 SQL（只返回 0 / 1）
+        return new StringBuilder()
+                .append("SELECT CASE WHEN ")
+                .append(frag)
+                .append(" THEN 1 ELSE 0 END AS valid_flag")
+                .toString();
+    }
 }

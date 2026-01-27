@@ -63,4 +63,11 @@ public class CharacterValidationGenerator implements QualitySqlGenerator {
         ComponentItem componentItem = registry.getComponentItem(rule.getDaDatasourceById().getDatasourceType());
         return componentItem.generateCharacterValidationValidDataSql(rule,limit,offset);
     }
+
+
+    public String generateDataCheckSql(QualityRuleEntity rule,String inputValue) {
+        ComponentRegistry registry = new ComponentRegistry();
+        ComponentItem componentItem = registry.getComponentItem(rule.getDaDatasourceById().getDatasourceType());
+        return componentItem.generateValidDataCheckSql(rule,inputValue);
+    }
 }

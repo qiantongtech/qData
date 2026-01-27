@@ -123,4 +123,18 @@ public class QualityTaskExecutorController extends BaseController {
         return success() ;
     }
 
+
+
+    /**
+     * 用户输入数据校验
+     *
+     * @return
+     */
+    @PostMapping("/generateDataCheck")
+    public AjaxResult generateDataCheck(@RequestBody QualityRuleQueryReqDTO queryReqDTO) {
+        Object string = qualityTaskExecutorService.generateDataCheck(queryReqDTO);
+        return AjaxResult.success(string);
+    }
+
+
 }

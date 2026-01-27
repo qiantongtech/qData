@@ -57,7 +57,5 @@ public interface QualityTaskExecutorService {
 
     boolean updateErrorData( CheckErrorDataReqDTO checkErrorDataReqDTO);
 
-
-
-
+    String generateDataCheck(QualityRuleQueryReqDTO queryReqDTO);
 }

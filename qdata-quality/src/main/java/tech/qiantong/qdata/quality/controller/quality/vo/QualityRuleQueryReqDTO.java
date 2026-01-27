@@ -64,6 +64,11 @@ public class QualityRuleQueryReqDTO implements Serializable {
     private String ruleType;
 
     /**
+     * 用户参数
+     */
+    private String inputValue;
+
+    /**
      * 规则配置参数，如时间范围、是否忽略 null、是否忽略大小写等
      */
     private Map<String, Object> config;

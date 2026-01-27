@@ -79,6 +79,7 @@ import tech.qiantong.qdata.quality.service.qa.*;
 import tech.qiantong.qdata.quality.service.quality.QualityTaskExecutorService;
 import tech.qiantong.qdata.quality.utils.quality.QualitySqlGenerateFactory;
 import tech.qiantong.qdata.quality.utils.quality.QualitySqlGenerator;
+import tech.qiantong.qdata.quality.utils.quality.enums.CharacterValidationGenerator;
 import tech.qiantong.qdata.redis.service.IRedisService;
 
 import java.math.BigDecimal;
@@ -813,5 +814,53 @@ public class QualityTaskExecutorServiceImpl implements QualityTaskExecutorServic
             if (s.charAt(i) > 127) return true;
         }
         return false;
+    }
+
+
+
+    @Override
+    public String generateDataCheck(QualityRuleQueryReqDTO queryReqDTO) {
+        DaDatasourceDO daDatasourceById = iDaDatasourceQualityService.getDaDatasourceById(JSONUtils.convertToLong(queryReqDTO.getDataId()));
+        if (daDatasourceById == null) {
+            throw new ServiceException("建立实时数据源链接失败！");
+        }
+        DbQueryProperty dbQueryProperty = new DbQueryProperty(
+                daDatasourceById.getDatasourceType(),
+                daDatasourceById.getIp(),
+                daDatasourceById.getPort(),
+                daDatasourceById.getDatasourceConfig()
+        );
+        DbQuery dbQuery;
+        try {
+            dbQuery = dataSourceFactory.createDbQuery(dbQueryProperty);
+            if (!dbQuery.valid()) {
+                throw new DataQueryException("建立实时数据源链接失败！");
+            }
+        } catch (Exception e) {
+            throw new DataQueryException("建立实时数据源链接异常！");
+        }
+
+        CharacterValidationGenerator characterValidationGenerator = new CharacterValidationGenerator();
+
+
+        QualityRuleEntity rule = new QualityRuleEntity(queryReqDTO);
+        rule.setDaDatasourceById(daDatasourceById);
+        String checkSql = characterValidationGenerator.generateDataCheckSql(rule, queryReqDTO.getInputValue());
+
+        // 执行 SQL，取第一行第一列（0/1）
+        try (Connection conn = dbQuery.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(checkSql)) {
+
+
+            if (rs.next()) {
+                Object val = rs.getObject(1);
+                // 统一返回字符串 "0" / "1"
+                return val == null ? "0" : String.valueOf(val);
+            }
+            return "0";
+        } catch (Exception e) {
+            throw new DataQueryException("建立实时数据源链接失败！");
+        }
     }
 }

@@ -70,6 +70,41 @@ public class Oracle12cQuality implements ComponentItem {
 
 
     /**
+     * Oracle 12c：生成“客户输入数据”的字符串校验 SQL
+     * 只用于客户输入数据，点击检测
+     * 返回 0 / 1
+     */
+    @Override
+    public String generateValidDataCheckSql(QualityRuleEntity rule, String inputValue) {
+
+        String regex = (String) rule.getConfig().get("regex");
+        boolean ignoreNull = SqlBuilderUtils.parseBoolean(
+                rule.getConfig().get("ignoreNullValue")
+        );
+
+        // 输入值（转义单引号）
+        String valueExpr = "'" + inputValue.replace("'", "''") + "'";
+
+        // 正则校验
+        String condition = String.format("REGEXP_LIKE(%s, '%s')", valueExpr, regex);
+
+        // 是否忽略 NULL / 空字符串
+        if (ignoreNull) {
+            condition = String.format(
+                    "%s IS NOT NULL AND %s <> '' AND %s",
+                    valueExpr, valueExpr, condition
+            );
+        }
+
+        // 返回 0 / 1
+        return String.format(
+                "SELECT CASE WHEN %s THEN 1 ELSE 0 END AS valid_flag FROM dual",
+                condition
+        );
+    }
+
+
+    /**
      * 生成字符串类型校验的错误数据SQL
      * 规则编码：CHARACTER_VALIDATION
      *

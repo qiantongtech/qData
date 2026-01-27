@@ -462,13 +462,32 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
     @Override
     public String verifyInterfaceValue(DppQualityTaskEvaluateSaveReqVO dppQualityTaskEvaluate) {
         // 处理正则
-        JSONObject jsonObject = JSONObject.parseObject(dppQualityTaskEvaluate.getRule());
-        List<String> lists = jsonObject.getList("allowedChars", String.class);
-        String s = this.validateInputWithRegex(lists);
-        if (dppQualityTaskEvaluate.getTitle().matches(s)) {
-            return dppQualityTaskEvaluate.getTitle() + "，数据监测成功";
+//        JSONObject jsonObject = JSONObject.parseObject(dppQualityTaskEvaluate.getRule());
+//        List<String> lists = jsonObject.getList("allowedChars", String.class);
+//        String s = this.validateInputWithRegex(lists);
+
+        Map<String, Object> map = this.buildRuleParamMap(dppQualityTaskEvaluate);
+        map.put("dataId", dppQualityTaskEvaluate.getDatasourceId());
+        map.put("inputValue", dppQualityTaskEvaluate.getTitle());
+        List<HeaderEntity> headers = new ArrayList<>();
+        HeaderEntity headerEntity = new HeaderEntity();
+        headerEntity.setKey("Content-Type");
+        headerEntity.setValue("application/json");
+        headers.add(headerEntity);  // 设置请求头
+        try {
+            HttpUtils.ResponseObject responseObject = HttpUtils.sendPost(url + "/generateDataCheck", map, headers);
+            System.out.println(responseObject.toString());
+            // 强转并解析为 JSONObject
+            JSONObject json = JSONObject.parseObject(String.valueOf(responseObject.getBody()));
+            // 提取 data
+            String data = json.getString("data");
+            if (StringUtils.equals("1",data)) {
+                return dppQualityTaskEvaluate.getTitle() + "，数据监测成功";
+            }
+            return dppQualityTaskEvaluate.getTitle() + "，不符合规则";
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        return  dppQualityTaskEvaluate.getTitle() + "，不符合规则";
     }
 
     @Override

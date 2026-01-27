@@ -194,4 +194,45 @@ public class SQLServerQuality implements ComponentItem {
                 .collect(java.util.stream.Collectors.joining(" AND "));
     }
 
+
+    /**
+     * SQL Server 2008：生成“客户输入数据”的字符串校验 SQL
+     * 只用于客户输入数据，点击检测
+     * 返回 0 / 1
+     */
+    @Override
+    public String generateValidDataCheckSql(QualityRuleEntity rule, String inputValue) {
+
+        String regex = (String) rule.getConfig().get("regex");
+
+        // 与统计 SQL 保持一致：regex → LIKE 模式
+        regex = regex.replace("^[", "%[^")
+                .replace("]+$", "]%")
+                .replace("/s", " ")
+                .replace("[:punct:]", "!\"#$%&''()*+,-./:;<=>?@[\\]^_`{|}~");
+
+//        boolean ignoreNull = SqlBuilderUtils.parseBoolean(
+//                rule.getConfig().get("ignoreNullValue")
+//        );
+
+        // 输入值（转义单引号）
+        String valueExpr = "'" + inputValue.replace("'", "''") + "'";
+
+        // 匹配条件（和表校验语义一致）
+        String condition = String.format("%s LIKE '%s'", valueExpr, regex);
+
+//        if (ignoreNull) {
+//            condition = String.format(
+//                    "%s IS NOT NULL AND %s <> '' AND %s",
+//                    valueExpr, valueExpr, condition
+//            );
+//        }
+
+        // 返回 0 / 1（SQL Server 不需要 FROM dual）
+        return String.format(
+                "SELECT CASE WHEN %s THEN 1 ELSE 0 END AS valid_flag",
+                condition
+        );
+    }
+
 }

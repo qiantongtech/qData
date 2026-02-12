@@ -40,6 +40,19 @@
               "low"
             ],
             "description": "优先级，可选"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "user",
+              "ai_suggested"
+            ],
+            "description": "来源标识：user 为用户明确描述（默认），ai_suggested 为 AI 增强建议",
+            "default": "user"
+          },
+          "reason": {
+            "type": "string",
+            "description": "AI 建议理由（当 source 为 ai_suggested 时必填）"
           }
         }
       }
@@ -111,6 +124,19 @@
               "type": "string"
             },
             "description": "涉及对象或字段，可选"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "user",
+              "ai_suggested"
+            ],
+            "description": "来源标识：user 为用户明确描述（默认），ai_suggested 为 AI 增强建议",
+            "default": "user"
+          },
+          "reason": {
+            "type": "string",
+            "description": "AI 建议理由（当 source 为 ai_suggested 时必填）"
           }
         }
       }

@@ -1,29 +1,27 @@
 {
   "featureList": [
-    { "id": "F01", "name": "数据源列表管理", "description": "多类型数据源统一纳入列表展示与管理，无左侧分类树，纯列表页", "priority": "high" },
-    { "id": "F02", "name": "多类型数据源新增", "description": "支持新增四类数据源：关系型数据库（MySQL、Oracle、PostgreSQL、SQL Server、DB2）、大数据/数仓（Doris、Hive、ClickHouse、MaxCompute）、文件/对象存储（FTP、SFTP、HDFS、S3兼容如MinIO/AWS）、接口类型（Restful API）", "priority": "high" },
-    { "id": "F03", "name": "数据源基础信息与连接配置", "description": "基础信息含名称、编码（唯一标识）、描述、所属部门、负责人、环境标签（开发/测试/生产）、版本号；按类型动态展示连接配置：数据库类（Host、Port、库名/SID/Service Name、Schema、用户名、密码、驱动类、JDBC URL后缀、连接池配置）；文件/API类（Base URL、根路径、认证方式 AccessKey/SecretKey/Token）", "priority": "high" },
-    { "id": "F04", "name": "数据源编辑", "description": "支持编辑基础信息及连接配置；数据源类型与编码创建后禁止修改；密码、Secret Key、Token 等敏感字段编辑回显以 ****** 掩码显示，前端严禁明文传输，仅支持通过输入新值覆盖更新", "priority": "high" },
-    { "id": "F05", "name": "数据源删除与引用校验", "description": "支持删除数据源；删除前强制校验是否被已发布的数据资产、元数据采集任务、ETL开发任务或数据质量规则引用；若存在引用则禁止删除并提示具体引用清单（如“当前数据源被表A和任务B引用”）", "priority": "high" },
-    { "id": "F06", "name": "数据源启用/禁用", "description": "支持启用/禁用数据源状态；禁用状态不可被新建数据集或采集任务使用；已存在的定时任务执行时需校验状态，若为禁用则按规则阻断执行并记录错误日志", "priority": "high" },
-    { "id": "F07", "name": "连接测试", "description": "可在新增/编辑后或列表中触发连接测试；验证网络连通性、账号密码认证及基础查询权限；返回成功/失败状态及具体失败原因（如 Connection refused）；记录最近一次测试时间、结果状态与响应耗时", "priority": "high" },
-    { "id": "F08", "name": "条件查询与筛选", "description": "支持按名称、编码、类型、状态、环境标签、所属部门等条件查询与筛选数据源", "priority": "high" }
+    {"id": "F01", "name": "数据源列表管理", "description": "支持新增多类型数据源（数据库、API、文件系统、数据湖），统一纳入数据源列表管理", "priority": "high"},
+    {"id": "F02", "name": "多类型数据源新增", "description": "数据库类型支持 MySQL、Oracle、PostgreSQL（PG）、Doris、Hive；不同类型展示对应的连接配置项", "priority": "high"},
+    {"id": "F03", "name": "数据源编辑", "description": "支持编辑数据源名称、描述、类型及连接配置（包含地址、端口、库/Schema、账号密码、认证方式等）；密码类字段不明文回显，仅支持覆盖更新", "priority": "high"},
+    {"id": "F04", "name": "数据源删除与引用校验", "description": "支持删除数据源；删除前需校验是否被数据资产或元数据采集任务引用，若被引用则禁止删除并提示引用信息/来源", "priority": "high"},
+    {"id": "F05", "name": "数据源启用/禁用", "description": "支持启用/禁用数据源；禁用状态的数据源不可被新建/执行元数据采集任务使用，已存在任务执行时需按规则阻断并提示", "priority": "high"},
+    {"id": "F06", "name": "连接测试", "description": "提供数据源连接测试能力，可在新增/编辑后或列表中触发测试；返回成功/失败及失败原因，并记录最近测试时间与结果状态", "priority": "high"},
+    {"id": "F07", "name": "条件查询与筛选", "description": "支持按名称、类型、状态、所属部门条件查询与筛选数据源，并在列表中展示筛选结果", "priority": "high"}
   ],
   "businessRules": [
-    { "description": "数据源类型与编码创建后禁止修改", "appliesTo": "F04", "constraintType": "validation" },
-    { "description": "密码、Secret Key、Token 等敏感字段编辑回显须 ****** 掩码，严禁明文传输，仅支持输入新值覆盖更新", "appliesTo": "F04", "constraintType": "validation" },
-    { "description": "删除前须校验是否被数据资产、元数据采集任务、ETL开发任务、数据质量规则引用，存在引用则禁止删除并提示引用清单", "appliesTo": "F05", "constraintType": "validation" },
-    { "description": "禁用状态的数据源不可被新建数据集或采集任务使用", "appliesTo": "F06", "constraintType": "state" },
-    { "description": "已存在定时任务执行时若数据源为禁用，须阻断执行并记录错误日志", "appliesTo": "F06", "constraintType": "state" },
-    { "description": "连接测试须记录最近一次测试时间、结果状态与响应耗时", "appliesTo": "F07", "constraintType": "validation" }
+    {"description": "密码类字段不明文回显，仅支持覆盖更新", "appliesTo": "F03", "constraintType": "validation"},
+    {"description": "删除前须校验是否被数据资产或元数据采集任务引用，若被引用则禁止删除并提示引用信息/来源", "appliesTo": "F04", "constraintType": "validation"},
+    {"description": "禁用状态的数据源不可被新建/执行元数据采集任务使用", "appliesTo": "F05", "constraintType": "state"},
+    {"description": "已存在元数据采集任务执行时若数据源为禁用，须按规则阻断并提示", "appliesTo": "F05", "constraintType": "state"},
+    {"description": "连接测试须记录最近测试时间与结果状态", "appliesTo": "F06", "constraintType": "validation"}
   ],
   "interactionIntents": [
-    { "type": "query", "description": "按名称、编码、类型、状态、环境标签、所属部门查询与筛选数据源", "relatedFields": ["名称", "编码", "类型", "状态", "环境标签", "所属部门"] },
-    { "type": "create", "description": "新增数据源（选择类型后展示对应连接配置）" },
-    { "type": "update", "description": "编辑数据源基础信息与连接配置（类型与编码不可改，敏感字段掩码回显）" },
-    { "type": "delete", "description": "删除数据源（需通过引用校验，被引用时禁止并提示清单）" },
-    { "type": "view", "description": "查看数据源详情" },
-    { "type": "other", "description": "连接测试（新增/编辑后或列表中触发，返回成功/失败及原因，记录时间与耗时）" },
-    { "type": "other", "description": "启用/禁用数据源状态切换" }
+    {"type": "query", "description": "按名称、类型、状态、所属部门查询与筛选数据源", "relatedFields": ["名称", "类型", "状态", "所属部门"]},
+    {"type": "create", "description": "新增数据源（选择类型后展示对应连接配置）"},
+    {"type": "update", "description": "编辑数据源名称、描述、类型及连接配置（密码类掩码回显、仅覆盖更新）"},
+    {"type": "delete", "description": "删除数据源（需通过引用校验，被引用时禁止并提示引用信息）"},
+    {"type": "view", "description": "查看数据源详情"},
+    {"type": "other", "description": "连接测试（新增/编辑后或列表中触发，返回成功/失败及原因，记录时间与结果状态）"},
+    {"type": "other", "description": "启用/禁用数据源状态切换"}
   ]
 }

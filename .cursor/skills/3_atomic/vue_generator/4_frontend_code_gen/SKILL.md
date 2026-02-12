@@ -64,11 +64,32 @@ outputs:
 
 ## 核心约束
 
-1. **不脑补业务规则**：page_spec 未给出的字段、操作、校验、权限等，不得擅自发明；缺失时明确列出并**询问用户**，用户确认或补全后再生成。
+1. **不脑补业务规则**：page_spec 未给出的**业务字段、业务操作、业务权限**等，不得擅自发明；缺失时明确列出并**询问用户**，用户确认或补全后再生成。
 2. **代码落盘路径须推荐并获用户确认**：根据 page_spec.entityNameEn 与项目架构规则，给出推荐的 **views 路径**、**api 模块路径**（如 `src/views/da/dataAsset/index.vue`、`src/api/da/dataAsset.js`），**先呈现给用户并询问是否可行**；用户同意后才执行写入，否则仅输出代码内容不落盘或按用户指定路径再落盘。
 3. **字典回显必须使用 useDict + dict-tag**：page_spec 中有 `dictCode` 的 enum 字段，**必须**使用 `proxy.useDict(dictCode)` 加载字典数据，列表列用 `<dict-tag :options="dictVar" :value="scope.row.xxx"/>`，搜索/表单用 `<el-select>` + 字典 options 遍历。**禁止**对有 dictCode 的字段使用硬编码的 tag/switch 回显。详见 [vue3_templates_reference.md](vue3_templates_reference.md) 第 8 节。
 4. **表单校验规则必须完整生成**：page_spec 中 `required: true` 的字段**必须**有对应的必填校验规则；有 `validation` 对象的字段**必须**按其 maxLength/pattern/min/max 生成对应的 Element Plus 校验规则。校验规则写在 `const rules = ref({...})`。详见 [vue3_templates_reference.md](vue3_templates_reference.md) 第 9 节。
 5. **详情弹窗使用 el-descriptions 描述列表**：当 actions 含 `view` 且无独立详情页时，详情弹窗**必须**使用独立的 `el-dialog` + `el-descriptions` 组件（两列 border 布局），**不得**复用新增/编辑弹窗的 form :disabled 模式。详见 [vue3_templates_reference.md](vue3_templates_reference.md) 第 6.1 节。
+
+## AI 工程增强（可主动加入，无需确认）
+
+在严格遵守 page_spec 业务逻辑的前提下，AI **可主动加入**以下工程最佳实践，这些属于「交互体验打磨」而非「业务规则发明」，无需额外向用户确认：
+
+### 允许的工程增强
+
+1. **操作确认文案优化**：删除操作的二次确认弹窗文案应清晰友好（如「确认删除该XX吗？删除后不可恢复。」），而非简单的「确认删除？」。
+2. **合理的表格列宽**：根据字段类型和 label 长度，为列设置合理的 `width` 或 `min-width`，避免表格错乱。
+3. **Loading 状态**：表格加载、表单提交等异步操作应有 loading 状态反馈。
+4. **操作成功/失败提示**：增删改操作完成后应有 `ElMessage.success` / `ElMessage.error` 提示，文案清晰（如「新增XX成功」而非「操作成功」）。
+5. **空状态处理**：表格无数据时应有合理的空状态展示（按模板约定的 `emptyBg` 组件）。
+6. **表单重置**：关闭弹窗或取消时应重置表单数据和校验状态。
+7. **防重复提交**：表单提交按钮应在提交中禁用，防止用户重复点击。
+8. **合理的 placeholder**：搜索区和表单的输入框应有语义明确的 placeholder（如「请输入XX名称」「请选择XX类型」）。
+
+### 增强底线（不得违反）
+
+- **绝不能改变 page_spec 定义的业务逻辑**：不能增减字段、不能改变操作类型、不能修改权限规则。
+- **必须与项目模板一致**：所有增强必须基于 vue3_templates_reference.md 和项目模板的结构与类名，不得自创布局或组件。
+- **不做过度设计**：不加入 page_spec 未暗示的复杂交互（如拖拽排序、虚拟滚动等），这些属于业务决策。
 
 ## 路由约定
 
@@ -84,11 +105,12 @@ outputs:
 
 ## 验收
 
-1. **页面完全满足 page_spec**：表格列、搜索项、操作按钮、表单字段、分页等与 page_spec 一致；无 page_spec 未约定的额外业务逻辑。
+1. **页面完全满足 page_spec**：表格列、搜索项、操作按钮、表单字段、分页等与 page_spec 一致；无 page_spec 未约定的额外**业务**逻辑。
 2. **字典回显正确**：所有有 dictCode 的字段，列表列用 `<dict-tag>`，详情用 `<dict-tag>`，搜索/表单用 `<el-select>` + 字典 options。
 3. **表单校验完整**：所有 required 字段有必填校验，所有有 validation 的字段有对应校验规则，trigger 与字段类型匹配（input→blur，select→change）。
 4. **详情弹窗使用 el-descriptions**：详情弹窗为独立 dialog + el-descriptions（两列 border），非 form :disabled 模式。
 5. **install && dev 能启动，无编译错误**：生成后执行 `npm install`（或 pnpm/yarn）与项目 dev 命令，无报错、可正常打开页面。
+6. **工程增强到位**：删除有二次确认、操作有 loading 与成功/失败提示、表单有重置、提交有防重复、placeholder 语义明确。
 
 ## 流程建议（两阶段落盘）
 

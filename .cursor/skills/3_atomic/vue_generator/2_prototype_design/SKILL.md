@@ -56,8 +56,36 @@ outputs:
 
 - **只做页面级结构设计**：决定字段归属、操作类型、分页等；不做像素级布局、不指定组件 API。
 - **不产出与后端对齐的命名**：不产出对象英文名、字段 key、权限标识、接口路径、表名；上述均由「数据模型定义」技能产出。
-- **严格基于 requirement_spec**：不新增需求中未出现的功能或字段；缺失时标注「待需求补全」或触发上游澄清。**通用字段**（见 reference）视为表级约定，不必在 requirement_spec 中显式写出，下游会自动带上。
+- **基于 requirement_spec 并可建议 UX 增强**（见下文「AI 增强建议」节）：requirement_spec 中已有的功能/字段**必须完整体现**，不得遗漏或削弱；AI 可额外建议 UX 增强项，但须标注并由用户确认。
 - **不写接口与代码**：不定义接口 URL、请求体、后端表结构，不生成任何代码。
+- **通用字段**（见 reference）视为表级约定，不必在 requirement_spec 中显式写出，下游会自动带上。
+
+## AI 增强建议（保底 + 增强 + 确认）
+
+在将 requirement_spec 转为 prototype_spec 时，AI 可基于 UX 最佳实践，**在完整保留用户需求的基础上**，建议页面结构层面的增强。
+
+### 核心原则
+
+1. **保底**：requirement_spec 中所有 featureList、interactionIntents、businessRules **必须完整映射**到 prototype_spec，不得遗漏或降级。
+2. **增强**：AI 可建议 UX 增强项，如：
+   - 合理的列排序（sortable）建议
+   - showSelection（勾选列）以支持批量操作
+   - 搜索区的展开/折叠建议
+   - 合理的分页默认值调整
+   - 表格配置优化（如 showOverflowTooltip）
+   - 其他同类管理端页面常见的 UX 改进
+3. **标注**：增强项须以 `"aiSuggested": true` 标注，与用户需求项区分。
+4. **确认**：增强建议在展示给用户时**单独说明**，用户确认后才纳入正式 prototype_spec 传给下游；用户拒绝的建议项须移除。
+
+### 增强底线
+
+- 建议项须是**管理端 UX 最佳实践**，不得建议无意义或过度复杂的设计。
+- 增强数量**适度**，不要为了建议而建议。
+- **绝不能替代**用户原始需求中的任何内容。
+
+### 处理上游 AI 建议
+
+requirement_spec 中 `source: "ai_suggested"` 的条目，若用户已确认采纳，则按正常条目处理；若用户未确认，则不纳入 prototype_spec。
 
 ## 验收自检
 
@@ -65,12 +93,13 @@ outputs:
 2. **businessRules 仅落语义**：必填 → columns 对应项 `required: true`；权限类 → 仅用 actionPermissions 描述，不产出权限码。
 3. **结构化**：输出符合 [prototype_spec.json](../../../schemas/prototype_spec.json)。
 4. **无 key/entityNameEn/权限码**：输出中不出现字段 key、实体英文名、权限标识字符串。
+5. **增强项标注**：AI 建议的增强项均已标注 `aiSuggested: true`，且未替换或削弱用户原始需求中的任何内容。
 
 ## 示例
 
 **输入**：requirement_spec（员工列表，含查询/增删改、仅管理员可删）。
 
-**输出片段（prototype_spec，无 key/英文名/权限码）**：
+**输出片段（prototype_spec，含 AI 增强建议，无 key/英文名/权限码）**：
 
 ```json
 {
@@ -87,8 +116,25 @@ outputs:
   "actions": ["create", "update", "delete", "view"],
   "actionPermissions": [
     { "action": "delete", "description": "仅管理员可删" }
-  ]
+  ],
+  "tableConfig": {
+    "stripe": true,
+    "border": true,
+    "showIndex": true,
+    "showSelection": true,
+    "showSelection_aiSuggested": true,
+    "showSelection_reason": "支持批量勾选，便于后续批量删除等操作"
+  }
 }
 ```
+
+**展示给用户时**：
+
+> **基于您的需求生成的原型规格**：列表展示姓名/工号/部门，搜索按姓名/部门，操作含增删改查，删除仅管理员。
+>
+> **AI 增强建议（供参考）**：
+> - 表格开启勾选列（showSelection），便于后续批量操作
+>
+> 请确认原型规格，以及是否采纳 AI 建议项。
 
 完整示例与 requirement_spec → prototype_spec 映射见 [reference.md](reference.md)。

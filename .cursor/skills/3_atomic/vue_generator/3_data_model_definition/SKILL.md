@@ -83,12 +83,32 @@ outputs:
 - **不擅自发明字段**：key 与 label 要么来自用户表结构，要么来自推荐并经过「推荐与确认」流程由用户确认。
 - **驼峰与一致性**：前端 key 统一驼峰；若 design_constraints 中已有接口字段名，与其保持一致。
 
+## AI 增强建议（字段定义优化）
+
+在产出 page_spec 时，AI 可在**保留所有上游字段和用户表结构**的基础上，主动建议以下优化：
+
+### 允许的增强范围
+
+1. **更合理的字段类型**：如上游为 `string` 但根据字段语义（如"状态""类型"）更适合用 `enum` + `dictCode` + `displayType: "dict"`，AI 可建议升级并说明理由。
+2. **更完善的 validation 规则**：在已有推荐原则基础上，AI 可为字段建议额外校验（如 URL 格式、手机号格式、数值范围等），须标注为建议。
+3. **更合适的 displayType**：如根据字段语义建议使用 `tag`、`link`、`switch` 等展示形态。
+4. **sortable 建议**：为时间、数值等字段建议启用排序。
+5. **showOverflowTooltip 建议**：为可能超长的文本字段建议启用 tooltip。
+
+### 增强原则
+
+- **保底**：上游 prototype_spec 中所有字段**必须保留**，不得删除或降级其 type/required 等属性。
+- **只做加法或升级**：AI 只能建议将字段定义变得**更好**（如 string → enum+dict、无 validation → 有 validation），不能让字段定义变差。
+- **标注**：增强建议须在展示给用户时明确说明哪些是 AI 建议的优化，用户确认后才生效。
+- **数量适度**：通常 2~5 条优化建议，不要过度。
+
 ## 验收自检
 
 1. **完备性**：prototype_spec 中所有 columns、searchFields 在 page_spec 中有对应项，且均有 key。
 2. **结构化**：输出符合 [page_spec.json](../../../schemas/page_spec.json)（required、type、枚举值）。
 3. **命名**：key 为驼峰；entityNameEn 帕斯卡；与用户表结构或已确认推荐一致。
 4. **缺失时**：未提供表结构或字段不足时，必须走推荐与确认流程，不强行产出完整 page_spec。
+5. **增强项质量**：AI 建议的优化确实让字段定义变得更好，未删除或降级任何上游已有的属性。
 
 ## 示例
 

@@ -42,6 +42,13 @@
 
 - **禁止在本阶段出现**：entityNameEn、columns[].key、searchFields[].key、任何权限标识字符串（如 `att:xxx:remove`）。
 
+### 处理上游 AI 增强建议
+
+requirement_spec 中 `source: "ai_suggested"` 的条目：
+- **用户已确认采纳的**：按正常条目映射到 prototype_spec（不带 aiSuggested 标记，视为已确认需求）。
+- **用户未确认或拒绝的**：不纳入 prototype_spec。
+- **本技能自身的增强建议**：以 `aiSuggested: true` 标注，展示给用户确认后才纳入正式 prototype_spec。
+
 ## 完整示例：requirement_spec → prototype_spec
 
 **输入 requirement_spec**：

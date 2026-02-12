@@ -32,6 +32,15 @@
             "description": "是否必填（用于表单）",
             "default": false
           },
+          "aiSuggested": {
+            "type": "boolean",
+            "description": "是否为 AI 增强建议项（true 表示非用户原始需求，由 AI 建议，需用户确认）",
+            "default": false
+          },
+          "aiSuggestedReason": {
+            "type": "string",
+            "description": "AI 建议理由（当 aiSuggested 为 true 时填写）"
+          },
           "enumOptions": {
             "type": "array",
             "description": "枚举选项（当 type 为 enum 时），仅 label；value 由数据模型定义确定",
@@ -57,7 +66,16 @@
             "type": "string",
             "enum": ["string", "number", "date", "datetime"]
           },
-          "placeholder": { "type": "string" }
+          "placeholder": { "type": "string" },
+          "aiSuggested": {
+            "type": "boolean",
+            "description": "是否为 AI 增强建议项",
+            "default": false
+          },
+          "aiSuggestedReason": {
+            "type": "string",
+            "description": "AI 建议理由（当 aiSuggested 为 true 时填写）"
+          }
         }
       }
     },

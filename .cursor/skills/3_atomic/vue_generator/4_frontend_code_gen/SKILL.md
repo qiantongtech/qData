@@ -42,6 +42,19 @@ outputs:
 | [.cursor/rules/30-project/31-api-contract.mdc](../../../../rules/30-project/31-api-contract.mdc) | 请求封装、RESTful、响应结构、权限标识、URL 规范 |
 | [.cursor/rules/30-project/32-project-context.mdc](../../../../rules/30-project/32-project-context.mdc) | 项目背景与技术栈约束（qData 数据中台；Vue3 + Element Plus、目录与接口约定等），生成时须与之一致 |
 
+## 必须基于项目 Vue3 模板（样式一致）
+
+生成代码**必须基于**项目内 Vue3 模板，保证与现有页面布局、样式类名、组件用法一致，避免样式错乱。
+
+- **模板位置**：`qdata-framework/qdata-generator/src/main/resources/vm/vue/v3/`
+  - **列表页**：`index.vue.vm` → 生成普通 CRUD 列表（搜索区 + 表格 + 分页 + 新增/编辑/详情弹窗）
+  - **树表页**：`index-tree.vue.vm` → 生成树形表格（展开/折叠、树形数据）
+  - **复杂详情页**：`detail/complex-detail.vue.vm` → 生成独立详情页（顶部 infotop 信息块 + 下方 Tab/子组件）
+
+- **执行生成前**：必须先读取上述模板文件或本技能下的 **[vue3_templates_reference.md](vue3_templates_reference.md)**，按其中约定的结构、类名、组件（如 `app-container`、`pagecont-top`、`pagecont-bottom`、`btn-style`、`right-toolbar`、`iconfont-mini`、`emptyBg`、`pagination`、`dialog-footer`、`infotop` 等）生成代码。
+
+- **禁止**：不得自创与模板不一致的根布局、搜索区/表格区类名、按钮图标类名或空状态结构，否则与项目现有样式不一致。
+
 ## 输入校验（上一步产出）
 
 在执行生成前，**必须校验** page_spec 是否满足本技能输入要求：
@@ -53,6 +66,9 @@ outputs:
 
 1. **不脑补业务规则**：page_spec 未给出的字段、操作、校验、权限等，不得擅自发明；缺失时明确列出并**询问用户**，用户确认或补全后再生成。
 2. **代码落盘路径须推荐并获用户确认**：根据 page_spec.entityNameEn 与项目架构规则，给出推荐的 **views 路径**、**api 模块路径**（如 `src/views/da/dataAsset/index.vue`、`src/api/da/dataAsset.js`），**先呈现给用户并询问是否可行**；用户同意后才执行写入，否则仅输出代码内容不落盘或按用户指定路径再落盘。
+3. **字典回显必须使用 useDict + dict-tag**：page_spec 中有 `dictCode` 的 enum 字段，**必须**使用 `proxy.useDict(dictCode)` 加载字典数据，列表列用 `<dict-tag :options="dictVar" :value="scope.row.xxx"/>`，搜索/表单用 `<el-select>` + 字典 options 遍历。**禁止**对有 dictCode 的字段使用硬编码的 tag/switch 回显。详见 [vue3_templates_reference.md](vue3_templates_reference.md) 第 8 节。
+4. **表单校验规则必须完整生成**：page_spec 中 `required: true` 的字段**必须**有对应的必填校验规则；有 `validation` 对象的字段**必须**按其 maxLength/pattern/min/max 生成对应的 Element Plus 校验规则。校验规则写在 `const rules = ref({...})`。详见 [vue3_templates_reference.md](vue3_templates_reference.md) 第 9 节。
+5. **详情弹窗使用 el-descriptions 描述列表**：当 actions 含 `view` 且无独立详情页时，详情弹窗**必须**使用独立的 `el-dialog` + `el-descriptions` 组件（两列 border 布局），**不得**复用新增/编辑弹窗的 form :disabled 模式。详见 [vue3_templates_reference.md](vue3_templates_reference.md) 第 6.1 节。
 
 ## 路由约定
 
@@ -61,7 +77,7 @@ outputs:
 
 ## 输出要求
 
-1. **代码产物**：列表页（含筛选、表格、分页）、新增/编辑弹窗或页面、详情展示等，符合 page_spec 的 columns、searchFields、actions；组件与页面结构符合 Vue3 + Element Plus 及上述规则。
+1. **代码产物**：列表页（含筛选、表格、分页）、新增/编辑弹窗或页面、详情弹窗（el-descriptions）等，符合 page_spec 的 columns、searchFields、actions；**必须按 [vue3_templates_reference.md](vue3_templates_reference.md) 与 v3 模板**（列表/树表/详情）生成，保证与项目现有页面结构、类名、组件一致。特别注意：字典字段必须用 `useDict` + `dict-tag`；表单必须有完整校验规则；详情弹窗必须用 `el-descriptions`（见 vue3_templates_reference.md 第 6.1、8、9 节）。
 2. **Mock 数据 API**：按规则输出 **mock 接口**，与 page_spec 的实体与字段一致，供当前阶段前端联调使用；mock 文件命名按规则（同目录下 `xxx.mock.js`），见 [reference.md](reference.md)。
 3. **正式 api.js**：按 31-api-contract 与 01-style-format 输出 **正式 API 模块**（小驼峰、不超过 3 个单词），包含 list/get/add/edit/remove 等与 page_spec.actions 对应的请求方法；**当前不对接后端**，仅保证形态正确，后续接真实接口时可直接使用。
 4. **api.mock.js**：与 api 模块同目录，命名为 `xxx.mock.js`，实现 mock 数据与延迟，供开发阶段使用。
@@ -69,7 +85,10 @@ outputs:
 ## 验收
 
 1. **页面完全满足 page_spec**：表格列、搜索项、操作按钮、表单字段、分页等与 page_spec 一致；无 page_spec 未约定的额外业务逻辑。
-2. **install && dev 能启动，无编译错误**：生成后执行 `npm install`（或 pnpm/yarn）与项目 dev 命令，无报错、可正常打开页面。
+2. **字典回显正确**：所有有 dictCode 的字段，列表列用 `<dict-tag>`，详情用 `<dict-tag>`，搜索/表单用 `<el-select>` + 字典 options。
+3. **表单校验完整**：所有 required 字段有必填校验，所有有 validation 的字段有对应校验规则，trigger 与字段类型匹配（input→blur，select→change）。
+4. **详情弹窗使用 el-descriptions**：详情弹窗为独立 dialog + el-descriptions（两列 border），非 form :disabled 模式。
+5. **install && dev 能启动，无编译错误**：生成后执行 `npm install`（或 pnpm/yarn）与项目 dev 命令，无报错、可正常打开页面。
 
 ## 流程建议（两阶段落盘）
 

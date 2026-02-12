@@ -45,12 +45,16 @@ outputs:
 
 - **entityName**：实体中文名，与 prototype_spec.entityLabel 一致。
 - **entityNameEn**：实体英文名（帕斯卡/驼峰），用于组件名与路由，需与用户确认或从表名/业务推断。
-- **columns**：表格列/表单字段，每项必须含 **key**（英文驼峰）、**label**、**type**；可选 width、sortable、required、enumOptions（value 需与后端一致）。
+- **columns**：表格列/表单字段，每项必须含 **key**（英文驼峰）、**label**、**type**；可选 width、sortable、required、enumOptions（value 需与后端一致）、**dictCode**（字典编码）、**displayType**（`"dict"` 表示使用字典标签回显）、**validation**（表单校验规则对象，含 maxLength/pattern/message/min/max 等）。
 - **searchFields**：筛选区字段，含 key、label、type、placeholder。
 - **actions**：页面操作列表（create/update/delete/view/export/import）。
 - **pagination / tableConfig**：按 prototype_spec 或默认填充。
 
 **字段 key 规则**：来自表结构时，将数据库字段名转为**驼峰**（如 `create_time` → `createTime`）；无表结构时使用推荐命名并标注注释供用户确认。
+
+**字典字段规则**：凡 type 为 `enum` 的字段，**必须尝试推荐 `dictCode`**（字典编码）并设置 `displayType: "dict"`，让代码生成技能使用项目标准的 `proxy.useDict(dictCode)` + `<dict-tag>` 回显。dictCode 命名按项目字典表惯例（下划线小写，如 `datasource_type`、`sys_disable`）。若无法确定 dictCode，可先在 enumOptions 中写死选项，但**必须**向用户询问是否接字典接口、确认 dictCode。
+
+**表单校验规则（validation）推荐**：产出 page_spec 时，**必须为每个可编辑字段推荐合理的校验规则**并写入 columns[].validation，确保代码生成技能能直接消费。推荐原则见 [reference.md](reference.md) 的「表单校验规则推荐」节。校验规则须**尽量全面**地覆盖必填、长度、格式等约束，让用户确认即可，不能留空让代码生成阶段自行猜测。
 
 **项目规则参考**：entityNameEn、字段 key、actions 的命名与项目约定一致时，下游代码生成更易对接。可参考：
 - [.cursor/rules/00-core/01-style-format.mdc](../../../../../rules/00-core/01-style-format.mdc)：views/components/api 命名（小驼峰、大驼峰等）、路由 path 约定。
@@ -98,8 +102,9 @@ outputs:
   "entityNameEn": "DataConnection",
   "columns": [
     { "key": "id", "label": "编号", "type": "string" },
-    { "key": "name", "label": "数据连接名称", "type": "string" },
-    { "key": "type", "label": "数据连接类型", "type": "enum", "enumOptions": [] },
+    { "key": "name", "label": "数据连接名称", "type": "string", "required": true, "validation": { "maxLength": 100, "message": "名称长度不能超过100个字符" } },
+    { "key": "type", "label": "数据连接类型", "type": "enum", "required": true, "dictCode": "datasource_type", "displayType": "dict", "enumOptions": [{ "label": "MySQL", "value": "MySQL" }] },
+    { "key": "description", "label": "描述", "type": "string", "validation": { "maxLength": 500, "message": "描述长度不能超过500个字符" } },
     { "key": "createTime", "label": "创建时间", "type": "datetime", "sortable": true }
   ],
   "searchFields": [
@@ -108,5 +113,7 @@ outputs:
   "actions": ["create", "update", "delete", "view"]
 }
 ```
+
+注意上例中 `type` 字段使用了 `dictCode: "datasource_type"` + `displayType: "dict"`，这样代码生成阶段会使用 `proxy.useDict('datasource_type')` 加载字典，并在列表/详情中用 `<dict-tag>` 回显。
 
 **无表结构时**：产出 clarificationNeeded 结构，列出推荐字段（业务字段 + **通用字段**，见 reference）及注释，请用户确认后再产出 page_spec。格式见 [reference.md](reference.md)。

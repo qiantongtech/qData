@@ -1,12 +1,13 @@
 {
   "codeArtifacts": {
-    "views": ["qdata-ui/src/views/dpp/datasource/index.vue"],
-    "api": ["qdata-ui/src/api/dpp/datasource/datasource.js"],
-    "mock": ["qdata-ui/src/views/dpp/datasource/datasourceMock.js"]
+    "listPage": "qdata-ui/src/views/dpp/datasource/index.vue",
+    "apiModule": "qdata-ui/src/api/dpp/datasource/datasource.js",
+    "mockModule": "qdata-ui/src/api/dpp/datasource/datasource.mock.js"
   },
   "apiModulePath": "qdata-ui/src/api/dpp/datasource/datasource.js",
   "filesWritten": [
     "qdata-ui/src/views/dpp/datasource/index.vue",
-    "qdata-ui/src/api/dpp/datasource/datasource.js"
+    "qdata-ui/src/api/dpp/datasource/datasource.js",
+    "qdata-ui/src/api/dpp/datasource/datasource.mock.js"
   ]
 }

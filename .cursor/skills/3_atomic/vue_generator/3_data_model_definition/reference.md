@@ -74,7 +74,79 @@
 
 用户确认或补充后，再次调用本技能时可产出完整 page_spec。推荐时业务字段与**通用字段**一并列出，可选 `category: "business" | "common"` 区分。
 
-## 6. 与 CRUD 需求指令模板的对应（page_spec 与代码生成的衔接）
+## 6. 表单校验规则推荐（validation）
+
+产出 page_spec 时，**必须为每个可编辑字段（required 为 true 或在表单中出现的字段）推荐合理的 `validation` 对象**，写入 columns[].validation。代码生成技能会将其转为 Element Plus 的 `rules` 对象。
+
+### 推荐原则
+
+| 字段类型/场景 | 推荐校验 | validation 示例 |
+|--------------|---------|-----------------|
+| 所有 required 字段 | 必填校验 | `required: true`（在 column 级别）+ `{ message: "xxx不能为空" }` |
+| string 类型 | 最大长度限制 | `{ "maxLength": 100, "message": "长度不能超过100个字符" }` |
+| 名称/编码类字段 | 最大长度 + 格式（如不含特殊字符） | `{ "maxLength": 50, "pattern": "^[\\u4e00-\\u9fa5A-Za-z0-9_\\-]+$", "message": "只能包含中英文、数字、下划线和中划线" }` |
+| number 类型 | 数值范围 | `{ "min": 0, "max": 65535, "message": "端口号范围 0-65535" }` |
+| 端口号 | 范围 + 整数 | `{ "min": 1, "max": 65535, "pattern": "^[0-9]+$", "message": "请输入有效端口号" }` |
+| IP 地址 | 格式校验 | `{ "pattern": "^[a-zA-Z0-9\\\\.\\\\-:]+$", "message": "请输入有效的主机地址" }` |
+| URL 类字段 | URL 格式 | `{ "pattern": "^https?://", "message": "请输入有效的URL地址" }` |
+| 手机号 | 格式 | `{ "pattern": "^1[3-9]\\\\d{8}$", "message": "请输入正确的手机号" }` |
+| 邮箱 | 格式 | `{ "pattern": "^\\\\w+@\\\\w+\\\\.\\\\w+$", "message": "请输入正确的邮箱地址" }` |
+| 密码类 | 长度 | `{ "maxLength": 128, "message": "密码长度不能超过128个字符" }` |
+| textarea / 备注 | 最大长度（宽松） | `{ "maxLength": 500, "message": "备注长度不能超过500个字符" }` |
+| 描述 | 最大长度 | `{ "maxLength": 500, "message": "描述长度不能超过500个字符" }` |
+| enum 类型 | 一般只需 required（通过 select 选择） | 不需要额外 validation |
+
+### 示例
+
+```json
+{
+  "key": "datasourceName",
+  "label": "名称",
+  "type": "string",
+  "required": true,
+  "validation": { "maxLength": 100, "message": "名称长度不能超过100个字符" }
+}
+```
+
+```json
+{
+  "key": "port",
+  "label": "端口号",
+  "type": "number",
+  "required": true,
+  "validation": { "min": 1, "max": 65535, "message": "端口号范围 1-65535" }
+}
+```
+
+**注意**：校验规则须尽量全面，让用户确认后即可直接生成代码。不能留空让代码生成阶段猜测。
+
+## 7. 字典字段与 dictCode
+
+当 column 的 type 为 `enum` 时，**必须评估是否应使用项目字典机制**：
+
+- 若该枚举对应后端字典表中的字典类型（如数据源类型、状态等通用分类），须设置 `dictCode`（下划线小写命名，如 `datasource_type`）和 `displayType: "dict"`。
+- 代码生成技能会据此使用 `proxy.useDict('dictCode')` 加载字典数据，表格列用 `<dict-tag :options="dictVar" :value="scope.row.xxx"/>`，表单用 `<el-select>` + 字典 options。
+- 若无法确定 dictCode，先在 `enumOptions` 中写死选项，但**必须向用户明确询问**：「是否需要接字典接口？dictCode 是什么？」
+- 同一字段的 `enumOptions` 和 `dictCode` 可同时存在：`enumOptions` 作为 mock 数据使用，`dictCode` 用于正式环境。
+
+### 示例
+
+```json
+{
+  "key": "datasourceType",
+  "label": "数据连接类型",
+  "type": "enum",
+  "required": true,
+  "dictCode": "datasource_type",
+  "displayType": "dict",
+  "enumOptions": [
+    { "label": "MySQL", "value": "MySQL" },
+    { "label": "Oracle", "value": "Oracle" }
+  ]
+}
+```
+
+## 8. 与 CRUD 需求指令模板的对应（page_spec 与代码生成的衔接）
 
 本技能只维护 **page_spec** 的数据；以下约定由**代码生成技能**按项目 CRUD 模板实现，本技能在产出 page_spec 时保持字段一致即可：
 
@@ -85,7 +157,7 @@
 | 表格列顺序与类型 | columns（key/label/type/width/sortable） | 日期列可设 sortable: true 支持服务端排序 |
 | 空值展示「-」 | 不写在 page_spec | 代码生成时统一空值显示 - |
 | 日期格式 YYYY-MM-DD HH:mm | columns 中 type: date/datetime | 具体格式由代码生成实现 |
-| 枚举/字典 | columns 中 type: enum，enumOptions | 字典码由后端/字典表定，value 与接口一致 |
+| 枚举/字典 | columns 中 type: enum，dictCode + displayType: "dict"（优先）或 enumOptions | dictCode 对应 `proxy.useDict(dictCode)`，代码生成时用 `<dict-tag>` 回显 |
 | 操作列（详情/修改/删除等） | actions 数组 | 具体按钮与权限码由代码生成按模板与权限配置实现 |
 | 分页 pageNum/pageSize/total | pagination | page_spec 中配置 pageSize、showSizeChanger、pageSizeOptions |
 | 权限标识（如 da:qualityTask:add） | 不写在 page_spec | 由代码生成或配置层按模板写入 |
@@ -106,9 +178,9 @@
   "entityNameEn": "DataConnection",
   "columns": [
     { "key": "id", "label": "编号", "type": "string" },
-    { "key": "name", "label": "数据连接名称", "type": "string" },
-    { "key": "type", "label": "数据连接类型", "type": "enum", "enumOptions": [] },
-    { "key": "description", "label": "描述", "type": "string" },
+    { "key": "name", "label": "数据连接名称", "type": "string", "required": true, "validation": { "maxLength": 100, "message": "名称长度不能超过100个字符" } },
+    { "key": "type", "label": "数据连接类型", "type": "enum", "required": true, "dictCode": "datasource_type", "displayType": "dict", "enumOptions": [{ "label": "MySQL", "value": "MySQL" }] },
+    { "key": "description", "label": "描述", "type": "string", "validation": { "maxLength": 500, "message": "描述长度不能超过500个字符" } },
     { "key": "createBy", "label": "创建人", "type": "string" },
     { "key": "createTime", "label": "创建时间", "type": "datetime", "sortable": true }
   ],
@@ -122,4 +194,4 @@
 }
 ```
 
-枚举选项若需与后端一致，在 enumOptions 中填 value/label；若由字典接口提供，可留空由代码生成阶段接字典。
+枚举选项若需与后端一致，在 enumOptions 中填 value/label；若由字典接口提供，须填写 `dictCode` + `displayType: "dict"`，让代码生成使用 `proxy.useDict(dictCode)` + `<dict-tag>` 回显。enumOptions 可同时保留作为 mock 用途。

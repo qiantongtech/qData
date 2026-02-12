@@ -87,7 +87,23 @@
           },
           "dictCode": {
             "type": "string",
-            "description": "字典编码（displayType 为 dict 时使用）"
+            "description": "字典编码（displayType 为 dict 时使用，对应 proxy.useDict 的参数）"
+          },
+          "formOnly": {
+            "type": "boolean",
+            "description": "仅出现在表单中，不在列表展示",
+            "default": false
+          },
+          "validation": {
+            "type": "object",
+            "description": "表单校验规则（由数据模型定义技能推荐，代码生成技能消费）",
+            "properties": {
+              "pattern": { "type": "string", "description": "正则表达式字符串" },
+              "message": { "type": "string", "description": "校验失败提示" },
+              "maxLength": { "type": "number", "description": "最大长度" },
+              "min": { "type": "number", "description": "数值最小值" },
+              "max": { "type": "number", "description": "数值最大值" }
+            }
           }
         }
       },

@@ -1,20 +1,77 @@
 {
-  "entityLabel": "数据源连接",
-  "layoutNote": "页面布局：左侧为数据源分组管理（列表/树，支持新增、修改、删除分组）；右侧为当前分组下的连接列表（表格含名称、类型、地址、状态，支持按名称查询，操作：新增、编辑、测试连通性、删除）。",
+  "entityLabel": "数据源",
+  "layoutNote": "纯列表页（无左侧树）：搜索区 + 表格 + 分页 + 新增/编辑/详情弹窗。表单弹窗含「基础信息」区与「按数据源大类/类型动态展示的连接配置」区；类型与编码创建后不可修改，敏感字段掩码回显。",
   "columns": [
     { "label": "名称", "type": "string", "required": true },
-    { "label": "类型", "type": "enum", "required": true },
-    { "label": "地址", "type": "string", "required": true },
-    { "label": "状态", "type": "enum" }
+    { "label": "编码", "type": "string", "required": true },
+    { "label": "描述", "type": "string" },
+    { "label": "数据源大类", "type": "enum", "required": true, "enumOptions": [
+      { "label": "关系型数据库" },
+      { "label": "大数据/数仓" },
+      { "label": "文件/对象存储" },
+      { "label": "接口类型" }
+    ]},
+    { "label": "数据源类型", "type": "enum", "required": true, "enumOptions": [
+      { "label": "MySQL" },
+      { "label": "Oracle" },
+      { "label": "PostgreSQL" },
+      { "label": "SQL Server" },
+      { "label": "DB2" },
+      { "label": "Doris" },
+      { "label": "Hive" },
+      { "label": "ClickHouse" },
+      { "label": "MaxCompute" },
+      { "label": "FTP" },
+      { "label": "SFTP" },
+      { "label": "HDFS" },
+      { "label": "S3兼容" },
+      { "label": "Restful API" }
+    ]},
+    { "label": "所属部门", "type": "string" },
+    { "label": "负责人", "type": "string" },
+    { "label": "环境标签", "type": "enum", "enumOptions": [
+      { "label": "开发" },
+      { "label": "测试" },
+      { "label": "生产" }
+    ]},
+    { "label": "版本号", "type": "string" },
+    { "label": "状态", "type": "enum", "enumOptions": [{ "label": "启用" }, { "label": "禁用" }] },
+    { "label": "最近测试结果", "type": "enum", "enumOptions": [{ "label": "成功" }, { "label": "失败" }, { "label": "未测试" }] },
+    { "label": "最近测试时间", "type": "datetime" },
+    { "label": "最近测试耗时", "type": "string" },
+    { "label": "主机地址", "type": "string" },
+    { "label": "端口", "type": "number" },
+    { "label": "数据库名/服务名", "type": "string" },
+    { "label": "Schema", "type": "string" },
+    { "label": "用户名", "type": "string" },
+    { "label": "密码", "type": "string" },
+    { "label": "驱动类", "type": "string" },
+    { "label": "JDBC URL 后缀", "type": "string" },
+    { "label": "最大连接数", "type": "number" },
+    { "label": "连接超时时间", "type": "number" },
+    { "label": "Base URL", "type": "string" },
+    { "label": "根路径", "type": "string" },
+    { "label": "认证方式", "type": "enum", "enumOptions": [{ "label": "AccessKey/SecretKey" }, { "label": "Token" }] },
+    { "label": "AccessKey", "type": "string" },
+    { "label": "Secret Key", "type": "string" },
+    { "label": "Token", "type": "string" }
   ],
   "searchFields": [
-    { "label": "名称", "type": "string", "placeholder": "请输入名称" }
+    { "label": "名称", "type": "string", "placeholder": "请输入名称" },
+    { "label": "编码", "type": "string", "placeholder": "请输入编码" },
+    { "label": "数据源类型", "type": "string", "placeholder": "请选择类型" },
+    { "label": "状态", "type": "string", "placeholder": "请选择状态" },
+    { "label": "环境标签", "type": "string", "placeholder": "请选择环境" },
+    { "label": "所属部门", "type": "string", "placeholder": "请选择所属部门" }
   ],
   "actions": ["create", "update", "delete", "view"],
-  "customActions": [{ "label": "测试连通性", "description": "对当前连接执行连通性测试" }],
-  "actionPermissions": [
-    { "action": "delete", "description": "仅管理员可删" }
+  "customActions": [
+    { "label": "连接测试", "description": "触发连接测试并返回成功/失败及原因，记录时间与耗时" },
+    { "label": "启用/禁用", "description": "切换数据源启用状态" }
   ],
-  "pagination": { "pageSize": 10, "showSizeChanger": true },
+  "actionPermissions": [
+    { "action": "delete", "description": "删除前须校验是否被数据资产、元数据采集任务、ETL开发任务、数据质量规则引用，存在引用则禁止删除并提示具体引用清单" }
+  ],
+  "pagination": { "pageSize": 10, "showSizeChanger": true, "pageSizeOptions": [10, 20, 50] },
   "tableConfig": { "stripe": true, "border": true, "showIndex": true, "showSelection": false }
 }

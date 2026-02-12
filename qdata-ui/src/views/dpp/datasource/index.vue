@@ -1,80 +1,86 @@
 <!--
   Copyright © 2025 Qiantong Technology Co., Ltd.
   qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
   <div class="app-container" ref="app-container">
-    <GuideTip tip-id="da/daDatasource.list" />
-
     <div class="pagecont-top" v-show="showSearch">
       <el-form
         class="btn-style"
         :model="queryParams"
         ref="queryRef"
         :inline="true"
-        label-width="100px"
+        label-width="75px"
         v-show="showSearch"
         @submit.prevent
       >
-        <el-form-item label="数据连接名称" prop="datasourceName">
+        <el-form-item label="名称" prop="datasourceName">
           <el-input
-            class="el-form-input-width"
             v-model="queryParams.datasourceName"
-            placeholder="请输入数据连接名称"
+            placeholder="请输入名称"
             clearable
+            class="el-form-input-width"
             @keyup.enter="handleQuery"
           />
         </el-form-item>
-        <el-form-item label="数据连接类型" prop="datasourceType">
-          <el-select
-            class="el-form-input-width"
-            v-model="queryParams.datasourceType"
-            placeholder="请选择数据连接类型"
+        <el-form-item label="编码" prop="code">
+          <el-input
+            v-model="queryParams.code"
+            placeholder="请输入编码"
             clearable
+            class="el-form-input-width"
+            @keyup.enter="handleQuery"
+          />
+        </el-form-item>
+        <el-form-item label="类型" prop="datasourceType">
+          <el-select
+            v-model="queryParams.datasourceType"
+            placeholder="请选择类型"
+            clearable
+            class="el-form-input-width"
           >
             <el-option
-              v-for="dict in datasource_type"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
+              v-for="opt in datasourceTypeOptions"
+              :key="opt.value"
+              :label="opt.label"
+              :value="opt.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="状态" prop="status">
+          <el-select
+            v-model="queryParams.status"
+            placeholder="请选择状态"
+            clearable
+            class="el-form-input-width"
+          >
+            <el-option
+              v-for="opt in statusOptions"
+              :key="opt.value"
+              :label="opt.label"
+              :value="opt.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="环境" prop="envTag">
+          <el-select
+            v-model="queryParams.envTag"
+            placeholder="请选择环境"
+            clearable
+            class="el-form-input-width"
+          >
+            <el-option
+              v-for="opt in envTagOptions"
+              :key="opt.value"
+              :label="opt.label"
+              :value="opt.value"
             />
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button
-            plain
-            type="primary"
-            @click="handleQuery"
-            @mousedown="(e) => e.preventDefault()"
-          >
+          <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
             <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
           </el-button>
           <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
@@ -92,230 +98,134 @@
               type="primary"
               plain
               @click="handleAdd"
-              v-hasPermi="['da:dataSource:add']"
+              v-hasPermi="['dpp:datasource:add']"
               @mousedown="(e) => e.preventDefault()"
             >
               <i class="iconfont-mini icon-xinzeng mr5"></i>新增
             </el-button>
           </el-col>
-          <!--         <el-col :span="1.5">-->
-          <!--           <el-button type="primary" plain :disabled="single" @click="handleUpdate" v-hasPermi="['da:dataSource:edit']"-->
-          <!--                      @mousedown="(e) => e.preventDefault()">-->
-          <!--             <i class="iconfont-mini icon-xiugai&#45;&#45;copy mr5"></i>修改-->
-          <!--           </el-button>-->
-          <!--         </el-col>-->
-          <!--         <el-col :span="1.5">-->
-          <!--           <el-button type="danger" plain :disabled="multiple" @click="handleDelete" v-hasPermi="['da:dataSource:remove']"-->
-          <!--                      @mousedown="(e) => e.preventDefault()">-->
-          <!--             <i class="iconfont-mini icon-shanchu-huise mr5"></i>删除-->
-          <!--           </el-button>-->
-          <!--         </el-col>-->
         </el-row>
         <div class="justify-end top-right-btn">
-          <right-toolbar
-            v-model:showSearch="showSearch"
-            @queryTable="getList"
-            :columns="columns"
-          ></right-toolbar>
+          <right-toolbar v-model:showSearch="showSearch" @queryTable="getList" :columns="columns" />
         </div>
       </div>
       <el-table
         stripe
+        height="60vh"
         v-loading="loading"
-        :data="daDatasourceList"
+        :data="datasourceList"
         @selection-change="handleSelectionChange"
         :default-sort="defaultSort"
         @sort-change="handleSortChange"
       >
-        <el-table-column
-          v-if="getColumnVisibility(1)"
-          width="80"
-          label="编号"
-          align="center"
-          prop="id"
-          :show-overflow-tooltip="{ effect: 'light' }"
-        >
-          <template #default="scope">
-            {{ scope.row.id || "-" }}
-          </template>
+        <el-table-column v-if="getColumnVisibility(1)" width="80" label="编号" align="center" prop="id">
+          <template #default="scope">{{ scope.row.id || '-' }}</template>
         </el-table-column>
-        <!--       <el-table-column type="selection" width="55" align="center" />-->
         <el-table-column
           v-if="getColumnVisibility(2)"
-          width="250"
-          label="数据连接名称"
+          min-width="140"
+          label="名称"
           align="left"
           prop="datasourceName"
           :show-overflow-tooltip="{ effect: 'light' }"
         >
-          <template #default="scope">
-            {{ scope.row.datasourceName || "-" }}
-          </template>
+          <template #default="scope">{{ scope.row.datasourceName || '-' }}</template>
         </el-table-column>
         <el-table-column
           v-if="getColumnVisibility(3)"
+          width="120"
+          label="编码"
+          align="center"
+          prop="code"
+          :show-overflow-tooltip="{ effect: 'light' }"
+        >
+          <template #default="scope">{{ scope.row.code || '-' }}</template>
+        </el-table-column>
+        <el-table-column
+          v-if="getColumnVisibility(4)"
+          min-width="160"
           label="描述"
-          width="240"
           align="left"
           prop="description"
           :show-overflow-tooltip="{ effect: 'light' }"
         >
+          <template #default="scope">{{ scope.row.description || '-' }}</template>
+        </el-table-column>
+        <el-table-column v-if="getColumnVisibility(5)" width="120" label="数据源大类" align="center" prop="datasourceCategory">
+          <template #default="scope">{{ getCategoryLabel(scope.row.datasourceCategory) || '-' }}</template>
+        </el-table-column>
+        <el-table-column v-if="getColumnVisibility(6)" width="120" label="数据源类型" align="center" prop="datasourceType">
+          <template #default="scope">{{ scope.row.datasourceType || '-' }}</template>
+        </el-table-column>
+        <el-table-column v-if="getColumnVisibility(7)" width="120" label="所属部门" align="center" prop="deptName" :show-overflow-tooltip="{ effect: 'light' }">
+          <template #default="scope">{{ scope.row.deptName || '-' }}</template>
+        </el-table-column>
+        <el-table-column v-if="getColumnVisibility(8)" width="100" label="负责人" align="center" prop="owner">
+          <template #default="scope">{{ scope.row.owner || '-' }}</template>
+        </el-table-column>
+        <el-table-column v-if="getColumnVisibility(9)" width="90" label="环境标签" align="center" prop="envTag">
+          <template #default="scope">{{ getEnvTagLabel(scope.row.envTag) || '-' }}</template>
+        </el-table-column>
+        <el-table-column v-if="getColumnVisibility(10)" width="90" label="状态" align="center" prop="status">
           <template #default="scope">
-            {{ scope.row.description || "-" }}
+            <el-tag :type="scope.row.status === 'enabled' ? 'success' : 'info'">
+              {{ scope.row.status === 'enabled' ? '启用' : '禁用' }}
+            </el-tag>
           </template>
         </el-table-column>
-
-        <el-table-column
-          v-if="getColumnVisibility(4)"
-          width="140"
-          label="数据连接类型"
-          align="center"
-          prop="datasourceType"
-        >
+        <el-table-column v-if="getColumnVisibility(11)" width="110" label="最近测试结果" align="center" prop="lastTestResult">
           <template #default="scope">
-            <dict-tag
-              :options="datasource_type"
-              :value="scope.row.datasourceType"
-            />
+            <el-tag v-if="scope.row.lastTestResult === 'success'" type="success">成功</el-tag>
+            <el-tag v-else-if="scope.row.lastTestResult === 'fail'" type="danger">失败</el-tag>
+            <span v-else>{{ scope.row.lastTestResult === 'untested' ? '未测试' : (scope.row.lastTestResult || '-') }}</span>
           </template>
         </el-table-column>
-        <!-- <el-table-column
-            v-if="getColumnVisibility(2) && type == 1"
-            width="120"
-            label="所属项目"
-            align="center"
-            prop="projectName"
-        >
-            <template #default="scope">
-                {{ scope.row.projectName || '-' }}
-            </template>
-        </el-table-column> -->
-        <el-table-column
-          v-if="getColumnVisibility(5)"
-          label="创建人"
-          width="120"
-          align="center"
-          prop="createBy"
-          :show-overflow-tooltip="{ effect: 'light' }"
-        >
-          <template #default="scope">
-            {{ scope.row.createBy || "-" }}
-          </template>
+        <el-table-column v-if="getColumnVisibility(12)" width="160" label="最近测试时间" align="center" prop="lastTestTime">
+          <template #default="scope">{{ parseTime(scope.row.lastTestTime, '{y}-{m}-{d} {h}:{i}') || '-' }}</template>
+        </el-table-column>
+        <el-table-column v-if="getColumnVisibility(13)" width="100" label="最近测试耗时" align="center" prop="lastTestDuration">
+          <template #default="scope">{{ scope.row.lastTestDuration || '-' }}</template>
+        </el-table-column>
+        <el-table-column v-if="getColumnVisibility(14)" width="100" label="创建人" align="center" prop="createBy">
+          <template #default="scope">{{ scope.row.createBy || '-' }}</template>
         </el-table-column>
         <el-table-column
-          v-if="getColumnVisibility(6)"
+          v-if="getColumnVisibility(15)"
+          width="160"
           label="创建时间"
           align="center"
           prop="createTime"
-          width="160"
           sortable="custom"
           :sort-orders="['descending', 'ascending']"
         >
-          <template #default="scope">
-            <span>{{
-              parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}")
-            }}</span>
-          </template>
+          <template #default="scope">{{ parseTime(scope.row.createTime, '{y}-{m}-{d} {h}:{i}') || '-' }}</template>
         </el-table-column>
         <el-table-column
-          v-if="getColumnVisibility(7)"
-          label="状态"
-          align="center"
-          prop="validFlag"
-          width="100"
-        >
-          <template #default="scope">
-            <!--              <dict-tag :options="sys_valid" :value="scope.row.validFlag"/>-->
-
-            <el-switch
-              v-model="scope.row.validFlag"
-              active-color="#13ce66"
-              inactive-color="#ff4949"
-              @change="handleStatusChange(scope.row)"
-            >
-            </el-switch>
-          </template>
-        </el-table-column>
-        <el-table-column
-          v-if="getColumnVisibility(8)"
-          label="备注"
-          align="left"
-          prop="remark"
-          :show-overflow-tooltip="{ effect: 'light' }"
-        >
-          <template #default="scope">
-            {{ scope.row.remark || "-" }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          v-if="getColumnVisibility(9)"
+          v-if="getColumnVisibility(16)"
           label="操作"
           align="center"
           class-name="small-padding fixed-width"
           fixed="right"
-          width="220"
+          width="280"
         >
           <template #default="scope">
-            <el-button
-              link
-              type="primary"
-              icon="Connection"
-              @click="handleTestConnection(scope.row)"
-              v-hasPermi="['da:dataSource:edit']"
-              >测试连接
+            <el-button link type="primary" icon="Connection" @click="handleTest(scope.row)" v-hasPermi="['dpp:datasource:edit']">
+              连接测试
             </el-button>
-
-            <el-button
-              link
-              type="primary"
-              icon="view"
-              @click="handleDetail(scope.row)"
-              v-hasPermi="['da:dataSource:edit']"
-              >详情
+            <el-button link type="primary" @click="handleToggleStatus(scope.row)" v-hasPermi="['dpp:datasource:edit']">
+              {{ scope.row.status === 'enabled' ? '禁用' : '启用' }}
             </el-button>
-            <el-popover placement="bottom" :width="100" trigger="click">
-              <template #reference>
-                <el-button
-                  link
-                  type="primary"
-                  :disabled="scope.row.isAdminAddTo == false"
-                  icon="ArrowDown"
-                >
-                  <el-tooltip
-                    class="box-item"
-                    effect="dark"
-                    content="暂无权限"
-                    placement="top"
-                    :disabled="scope.row.isAdminAddTo != false"
-                  >
-                    更多
-                  </el-tooltip>
-                </el-button>
-              </template>
-              <div class="butgdlist">
-                <el-button
-                  link
-                  type="primary"
-                  icon="Edit"
-                  @click="handleUpdate(scope.row)"
-                  v-hasPermi="['da:dataSource:edit']"
-                  >修改
-                </el-button>
-                <el-button
-                  link
-                  type="danger"
-                  icon="Delete"
-                  @click="handleDelete(scope.row)"
-                  v-hasPermi="['da:dataSource:remove']"
-                  >删除
-                </el-button>
-              </div>
-            </el-popover>
-            <!--           <el-button link type="primary" icon="view" @click="routeTo('/da/datasource/daDatasourceDetail',scope.row)"-->
-            <!--                      v-hasPermi="['da:dataSource:edit']">复杂详情</el-button>-->
+            <el-button link type="primary" icon="View" @click="handleDetail(scope.row)" v-hasPermi="['dpp:datasource:query']">
+              详情
+            </el-button>
+            <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['dpp:datasource:edit']">
+              修改
+            </el-button>
+            <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['dpp:datasource:remove']">
+              删除
+            </el-button>
           </template>
         </el-table-column>
-
         <template #empty>
           <div class="emptyBg">
             <img src="@/assets/system/images/no_data/noData.png" alt="" />
@@ -323,7 +233,6 @@
           </div>
         </template>
       </el-table>
-
       <pagination
         v-show="total > 0"
         :total="total"
@@ -333,267 +242,256 @@
       />
     </div>
 
-    <!-- 新增或修改数据源对话框 -->
-    <el-dialog
-      :title="title"
-      v-model="open"
-      width="1000px"
-      :append-to="$refs['app-container']"
-      draggable
-    >
+    <!-- 新增/编辑弹窗 -->
+    <el-dialog :title="title" v-model="open" width="900px" :append-to="$refs['app-container']" draggable destroy-on-close>
       <template #header="{ close, titleId, titleClass }">
-        <span role="heading" aria-level="2" class="el-dialog__title">
-          {{ title }}
-        </span>
+        <span role="heading" aria-level="2" class="el-dialog__title">{{ title }}</span>
       </template>
-      <el-form
-        ref="daDatasourceRef"
-        :model="form"
-        :rules="rules"
-        label-width="110px"
-        @submit.prevent
-        :disabled="title == '数据源详情'"
-      >
+      <el-form ref="formRef" :model="form" :rules="rules" label-width="120px" @submit.prevent>
+        <div class="form-section-title">基础信息</div>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="数据连接名称" prop="datasourceName">
-              <el-input
-                v-model="form.datasourceName"
-                placeholder="请输入数据连接名称"
-              />
+            <el-form-item label="名称" prop="datasourceName">
+              <el-input v-model="form.datasourceName" placeholder="请输入名称" maxlength="100" show-word-limit />
             </el-form-item>
           </el-col>
-
           <el-col :span="12">
-            <el-form-item label="数据连接类型" prop="datasourceType">
-              <el-select
-                v-model="form.datasourceType"
-                placeholder="请选择数据连接类型"
-                @change="handleDatasourceChange"
-                :disabled="form.id"
-              >
-                <el-option
-                  v-for="dict in datasource_type"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                ></el-option>
+            <el-form-item label="编码" prop="code">
+              <el-input v-model="form.code" placeholder="请输入编码（唯一）" :disabled="!!form.id" maxlength="64" show-word-limit />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="数据源大类" prop="datasourceCategory">
+              <el-select v-model="form.datasourceCategory" placeholder="请选择大类" :disabled="!!form.id" @change="onCategoryChange" style="width: 100%">
+                <el-option v-for="opt in categoryOptions" :key="opt.value" :label="opt.label" :value="opt.value" />
               </el-select>
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row :gutter="20" v-if="form.datasourceType !== 'OSS-ALIYUN'">
           <el-col :span="12">
-            <el-form-item label="IP" prop="ip">
-              <el-input v-model="form.ip" placeholder="请输入IP" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="端口号" prop="port">
-              <el-input v-model="form.port" placeholder="请输入端口号" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row
-          :gutter="20"
-          v-if="
-            form.datasourceType !== 'Kafka' &&
-            form.datasourceType !== 'HDFS' &&
-            form.datasourceType !== 'OSS-ALIYUN'
-          "
-        >
-          <el-col :span="12">
-            <el-form-item label="账号" prop="username">
-              <el-input v-model="form.username" placeholder="请输入账号" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="密码" prop="password">
-              <el-input
-                type="password"
-                v-model="form.password"
-                placeholder="请输入密码"
-                v-if="title === '新增数据源'"
-              />
-              <el-input
-                type="password"
-                v-model="form.password"
-                placeholder="请输入密码"
-                v-if="title !== '新增数据源'"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <template v-if="form.datasourceType === 'OSS-ALIYUN'">
-          <el-row :gutter="20">
-            <el-col :span="12">
-              <el-form-item label="keyID" prop="keyId">
-                <el-input v-model="form.keyId" placeholder="请输入keyID" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="keySecret" prop="keySecret">
-                <el-input
-                  v-model="form.keySecret"
-                  placeholder="请输入keySecret"
-                  v-if="title === '新增数据源'"
-                />
-                <el-input
-                  type="password"
-                  v-model="form.keySecret"
-                  placeholder="请输入keySecret"
-                  v-if="title !== '新增数据源'"
-                />
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20">
-            <el-col :span="12">
-              <el-form-item label="bucket" prop="bucket">
-                <el-input
-                  v-model="form.bucket"
-                  placeholder="请输入bucket，例如：test"
-                />
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="endpoint" prop="endpoint">
-                <el-input
-                  v-model="form.endpoint"
-                  placeholder="请输入endpoint,例如：oss-cn-beijing.aliyuncs.com"
-                />
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20">
-            <el-col :span="24">
-              <el-form-item label="域名" prop="domain">
-                <el-input
-                  v-model="form.domain"
-                  placeholder="请输入域名,可空，例如test.oss-cn-beijing.aliyuncs.com"
-                />
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </template>
-        <el-row
-          :gutter="20"
-          v-if="
-            form.datasourceType !== 'Kafka' &&
-            form.datasourceType !== 'HDFS' &&
-            form.datasourceType !== 'FTP' &&
-            form.datasourceType !== 'OSS-ALIYUN'
-          "
-        >
-          <el-col :span="12" v-if="form.datasourceType !== null">
-            <el-form-item label="数据库名称" prop="dbname">
-              <el-input
-                v-model="form.dbname"
-                placeholder="请输入数据库名称"
-                :disabled="form.id"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col
-            :span="12"
-            v-if="
-              form.datasourceType !== null &&
-              (form.datasourceType == 'Oracle' ||
-                form.datasourceType == 'Oracle11' ||
-                form.datasourceType == 'Kingbase8' ||
-                form.datasourceType == 'SQL_Server' ||
-                form.datasourceType == 'SQL_Server2008' ||
-                form.datasourceType == 'PostgreSQL')
-            "
-          >
-            <el-form-item label="模式名称" prop="sid">
-              <el-input
-                v-model="form.sid"
-                placeholder="请输入模式名称"
-                :disabled="form.id"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row
-          :gutter="20"
-          v-if="
-            form.datasourceType !== null &&
-            (form.datasourceType === 'Kafka' || form.datasourceType === 'HDFS')
-          "
-        >
-          <el-col :span="24">
-            <el-form-item label="配置参数" prop="config">
-              <el-input
-                type="textarea"
-                :autosize="{ minRows: 2, maxRows: 4 }"
-                v-model="form.config"
-                :placeholder="
-                  form.datasourceType === 'Kafka'
-                    ? '例如: {&quot;security.protocol&quot;&colon;&quot;SASL_PLAINTEXT&quot;}'
-                    : '例如: {&quot;kerberosKeytabFilePath&quot;&colon;&quot;/path/to/keytab/file&quot;}'
-                "
-              />
+            <el-form-item label="数据源类型" prop="datasourceType">
+              <el-select v-model="form.datasourceType" placeholder="请选择类型" :disabled="!!form.id" style="width: 100%">
+                <el-option v-for="opt in filteredTypeOptions" :key="opt.value" :label="opt.label" :value="opt.value" />
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
             <el-form-item label="描述" prop="description">
-              <el-input
-                type="textarea"
-                :min-height="192"
-                v-model="form.description"
-                placeholder="请输入描述"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" v-if="type == 0">
-          <el-col :span="24">
-            <el-form-item label="所属项目" prop="projectNameList">
-              <el-input
-                style="width: 83.5%"
-                v-model="form.projectNameList"
-                placeholder="请选择项目"
-                disabled
-              >
-              </el-input>
-              <el-button
-                style="margin-left: 11px"
-                type="primary"
-                @click="getListProject"
-                >选择项目</el-button
-              >
+              <el-input v-model="form.description" type="textarea" :rows="2" placeholder="请输入描述" maxlength="500" show-word-limit />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="状态" prop="validFlag">
-              <el-radio-group v-model="form.validFlag">
-                <el-radio
-                  v-for="dict in sys_disable"
-                  :key="dict.value"
-                  :label="dict.value === '1'"
-                >
-                  {{ dict.label }}
-                </el-radio>
-              </el-radio-group>
+            <el-form-item label="所属部门" prop="deptName">
+              <el-input v-model="form.deptName" placeholder="请输入所属部门" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="负责人" prop="owner">
+              <el-input v-model="form.owner" placeholder="请输入负责人" maxlength="50" show-word-limit />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="环境标签" prop="envTag">
+              <el-select v-model="form.envTag" placeholder="请选择环境" style="width: 100%">
+                <el-option v-for="opt in envTagOptions" :key="opt.value" :label="opt.label" :value="opt.value" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="版本号" prop="version">
+              <el-input v-model="form.version" placeholder="请输入版本号" maxlength="32" show-word-limit />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="状态" prop="status">
+              <el-radio-group v-model="form.status">
+                <el-radio label="enabled">启用</el-radio>
+                <el-radio label="disabled">禁用</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <!-- 数据库类连接配置 -->
+        <template v-if="showDbConnection">
+          <div class="form-section-title">连接配置</div>
+          <el-row :gutter="20">
+            <el-col :span="12">
+              <el-form-item label="主机地址" prop="host">
+                <el-input v-model="form.host" placeholder="请输入主机地址" maxlength="256" show-word-limit />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="端口" prop="port">
+                <el-input-number v-model="form.port" :min="1" :max="65535" placeholder="端口" style="width: 100%" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="12">
+              <el-form-item label="数据库名/服务名" prop="dbName">
+                <el-input v-model="form.dbName" placeholder="请输入数据库名或服务名" maxlength="128" show-word-limit />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="Schema" prop="schema">
+                <el-input v-model="form.schema" placeholder="PG/Oracle 专用" maxlength="64" show-word-limit />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="12">
+              <el-form-item label="用户名" prop="username">
+                <el-input v-model="form.username" placeholder="请输入用户名" maxlength="64" show-word-limit />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="密码" prop="password">
+                <el-input
+                  v-model="form.password"
+                  type="password"
+                  :placeholder="form.id ? '不修改请留空' : '请输入密码'"
+                  maxlength="128"
+                  show-word-limit
+                  autocomplete="new-password"
+                />
+                <span v-if="form.id" class="form-tip">留空表示不修改，否则覆盖原密码</span>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="12">
+              <el-form-item label="驱动类" prop="driverClass">
+                <el-input v-model="form.driverClass" placeholder="可选" maxlength="256" show-word-limit />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="JDBC URL 后缀" prop="jdbcSuffix">
+                <el-input v-model="form.jdbcSuffix" placeholder="如 useSSL=false" maxlength="512" show-word-limit />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="12">
+              <el-form-item label="最大连接数" prop="maxPoolSize">
+                <el-input-number v-model="form.maxPoolSize" :min="1" :max="1000" style="width: 100%" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="连接超时(ms)" prop="connTimeout">
+                <el-input-number v-model="form.connTimeout" :min="0" :max="300000" style="width: 100%" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </template>
+
+        <!-- 文件/API 类连接配置 -->
+        <template v-if="showFileApiConnection">
+          <div class="form-section-title">连接配置</div>
+          <el-row :gutter="20">
+            <el-col :span="12">
+              <el-form-item label="Base URL" prop="baseUrl">
+                <el-input v-model="form.baseUrl" placeholder="接口或存储地址" maxlength="512" show-word-limit />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="根路径" prop="rootPath">
+                <el-input v-model="form.rootPath" placeholder="根路径" maxlength="256" show-word-limit />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <template v-if="form.datasourceCategory === 'fileStorage'">
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <el-form-item label="主机地址" prop="host">
+                  <el-input v-model="form.host" placeholder="FTP/SFTP 主机" maxlength="256" show-word-limit />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="端口" prop="port">
+                  <el-input-number v-model="form.port" :min="1" :max="65535" style="width: 100%" />
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <el-form-item label="用户名" prop="username">
+                  <el-input v-model="form.username" placeholder="用户名" maxlength="64" show-word-limit />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="密码" prop="password">
+                  <el-input
+                    v-model="form.password"
+                    type="password"
+                    :placeholder="form.id ? '不修改请留空' : '请输入密码'"
+                    maxlength="128"
+                    autocomplete="new-password"
+                  />
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </template>
+          <el-row :gutter="20">
+            <el-col :span="12">
+              <el-form-item label="认证方式" prop="authType">
+                <el-select v-model="form.authType" placeholder="请选择" style="width: 100%">
+                  <el-option label="AccessKey/SecretKey" value="aksk" />
+                  <el-option label="Token" value="token" />
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <template v-if="form.authType === 'aksk'">
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <el-form-item label="AccessKey" prop="accessKey">
+                  <el-input v-model="form.accessKey" placeholder="AccessKey" maxlength="128" show-word-limit />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="Secret Key" prop="secretKey">
+                  <el-input
+                    v-model="form.secretKey"
+                    type="password"
+                    :placeholder="form.id ? '不修改请留空' : '请输入 Secret Key'"
+                    maxlength="256"
+                    autocomplete="new-password"
+                  />
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </template>
+          <template v-if="form.authType === 'token'">
+            <el-row :gutter="20">
+              <el-col :span="24">
+                <el-form-item label="Token" prop="token">
+                  <el-input
+                    v-model="form.token"
+                    type="password"
+                    :placeholder="form.id ? '不修改请留空' : '请输入 Token'"
+                    maxlength="512"
+                    autocomplete="new-password"
+                  />
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </template>
+        </template>
+
+        <el-row :gutter="20" v-if="open">
           <el-col :span="24">
-            <el-form-item label="备注">
-              <el-input
-                type="textarea"
-                v-model="form.remark"
-                placeholder="请输入备注"
-                :min-height="192"
-              />
+            <el-form-item>
+              <el-button type="primary" @click="handleTestInDialog" :loading="testLoading">连接测试</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -601,984 +499,425 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button size="mini" @click="cancel">取 消</el-button>
-          <el-button
-            type="primary"
-            size="mini"
-            :loading="btnLoading"
-            @click="submitForm"
-            >确 定</el-button
-          >
+          <el-button type="primary" size="mini" :loading="submitLoading" @click="submitForm">确 定</el-button>
         </div>
       </template>
     </el-dialog>
 
-    <!-- 详情 -->
-    <el-dialog
-      :title="title"
-      v-model="openDetail"
-      width="1000px"
-      :append-to="$refs['app-container']"
-      draggable
-    >
-      <template #header="{ close, titleId, titleClass }">
-        <span role="heading" aria-level="2" class="el-dialog__title">
-          {{ title }}
-        </span>
-      </template>
-      <el-form
-        ref="daDatasourceRef"
-        :model="form"
-        :rules="rules"
-        label-width="110px"
-      >
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="数据连接名称">
-              <div class="form-readonly">
-                {{ form.datasourceName || "-" }}
-              </div>
-            </el-form-item>
-          </el-col>
-
-          <el-col :span="12">
-            <el-form-item label="数据连接类型">
-              <div>
-                <dict-tag
-                  :options="datasource_type"
-                  :value="form.datasourceType"
-                />
-              </div>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" v-if="form.datasourceType !== 'OSS-ALIYUN'">
-          <el-col :span="12">
-            <el-form-item label="IP">
-              <div class="form-readonly">
-                {{ form.ip || "-" }}
-              </div>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="端口号">
-              <div class="form-readonly">
-                {{ form.port || "-" }}
-              </div>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row
-          :gutter="20"
-          v-if="
-            form.datasourceType !== 'Kafka' &&
-            form.datasourceType !== 'HDFS' &&
-            form.datasourceType !== 'OSS-ALIYUN'
-          "
+    <!-- 详情弹窗（el-descriptions） -->
+    <el-dialog title="数据源详情" v-model="openDetail" width="800px" :append-to="$refs['app-container']" draggable>
+      <el-descriptions :column="2" border>
+        <el-descriptions-item
+          v-for="(item, index) in detailDescList"
+          :key="index"
+          label-class-name="base-label"
+          :span="item.span || 1"
+          class-name="base-content"
         >
-          <el-col :span="12">
-            <el-form-item label="账号">
-              <div class="form-readonly">
-                {{ form.username || "-" }}
-              </div>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="密码">
-              <div class="form-readonly">***********</div>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <template v-if="form.datasourceType === 'OSS-ALIYUN'">
-          <el-row :gutter="20">
-            <el-col :span="12">
-              <el-form-item label="keyID">
-                <div class="form-readonly">
-                  {{ form.keyId || "-" }}
-                </div>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="keySecret">
-                <div class="form-readonly">
-                  {{ form.keyIkeySecretd || "-" }}
-                </div>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20">
-            <el-col :span="12">
-              <el-form-item label="bucket">
-                <div class="form-readonly">
-                  {{ form.bucket || "-" }}
-                </div>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="endpoint">
-                <div class="form-readonly">
-                  {{ form.endpoint || "-" }}
-                </div>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20">
-            <el-col :span="24">
-              <el-form-item label="域名">
-                <div class="form-readonly">
-                  {{ form.domain || "-" }}
-                </div>
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </template>
-        <el-row
-          :gutter="20"
-          v-if="
-            form.datasourceType !== 'Kafka' &&
-            form.datasourceType !== 'HDFS' &&
-            form.datasourceType !== 'FTP' &&
-            form.datasourceType !== 'OSS-ALIYUN'
-          "
-        >
-          <el-col :span="12" v-if="form.datasourceType !== null">
-            <el-form-item label="数据库名称">
-              <div class="form-readonly">
-                {{ form.dbname || "-" }}
-              </div>
-            </el-form-item>
-          </el-col>
-          <el-col
-            :span="12"
-            v-if="
-              form.datasourceType !== null &&
-              (form.datasourceType == 'Oracle' ||
-                form.datasourceType == 'Oracle11' ||
-                form.datasourceType == 'Kingbase8' ||
-                form.datasourceType == 'SQL_Server' ||
-                form.datasourceType == 'SQL_Server2008' ||
-                form.datasourceType == 'PostgreSQL')
-            "
-          >
-            <el-form-item label="模式名称">
-              <div class="form-readonly">
-                {{ form.sid || "-" }}
-              </div>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row
-          :gutter="20"
-          v-if="
-            form.datasourceType !== null &&
-            (form.datasourceType === 'Kafka' || form.datasourceType === 'HDFS')
-          "
-        >
-          <el-col :span="24">
-            <el-form-item label="配置参数">
-              <div class="form-readonly">
-                {{ form.config || "-" }}
-              </div>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="24">
-            <el-form-item label="描述">
-              <div class="form-readonly textarea">
-                {{ form.description || "-" }}
-              </div>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" v-if="type == 0">
-          <el-col :span="24">
-            <el-form-item label="所属项目">
-              <div class="form-readonly">
-                {{ form.projectNameListStr || "-" }}
-              </div>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="状态">
-              <dict-tag
-                :options="sys_disable"
-                :value="form.validFlag ? '1' : '0'"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="24">
-            <el-form-item label="备注">
-              <div class="form-readonly textarea">
-                {{ form.remark || "-" }}
-              </div>
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
+          <template #label>
+            <div class="cell-item">{{ item.label }}</div>
+          </template>
+          <div v-if="item.type === 'datetime'">{{ parseTime(detailData[item.key], '{y}-{m}-{d} {h}:{i}') || '-' }}</div>
+          <div v-else-if="item.key === 'status'">{{ detailData[item.key] === 'enabled' ? '启用' : '禁用' }}</div>
+          <div v-else-if="item.key === 'datasourceCategory'">{{ getCategoryLabel(detailData[item.key]) || '-' }}</div>
+          <div v-else-if="item.key === 'envTag'">{{ getEnvTagLabel(detailData[item.key]) || '-' }}</div>
+          <div v-else-if="item.key === 'lastTestResult'">
+            {{ detailData[item.key] === 'success' ? '成功' : detailData[item.key] === 'fail' ? '失败' : (detailData[item.key] === 'untested' ? '未测试' : (detailData[item.key] || '-')) }}
+          </div>
+          <div v-else-if="item.sensitive">{{ detailData[item.key] ? '******' : '-' }}</div>
+          <div v-else>{{ detailData[item.key] ?? '-' }}</div>
+        </el-descriptions-item>
+      </el-descriptions>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="cancel">关 闭</el-button>
-        </div>
-      </template>
-    </el-dialog>
-    <el-dialog title="项目选择" v-model="openProject" width="1000px" draggable>
-      <template>
-        <span role="heading" aria-level="2" class="el-dialog__title">
-          项目选择
-        </span>
-      </template>
-      <!--用户数据-->
-      <el-form
-        class="btn-style"
-        :model="queryParamsProject"
-        ref="queryRef"
-        :inline="true"
-        label-width="68px"
-      >
-        <el-form-item label="项目名称" prop="name">
-          <el-input
-            class="el-form-input-width"
-            v-model="queryParamsProject.name"
-            placeholder="请输入项目名称"
-            clearable
-            @keyup.enter="handleQuery"
-          />
-        </el-form-item>
-        <el-form-item label="负责人" prop="managerId">
-          <el-select
-            v-model="queryParamsProject.managerId"
-            class="el-form-input-width"
-            filterable
-            placeholder="请选择"
-          >
-            <el-option
-              v-for="item in projectOptions"
-              :key="item.userId"
-              :label="item.nickName"
-              :value="item.userId"
-            >
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-button
-            plain
-            type="primary"
-            @click="handleQueryProject"
-            @mousedown="(e) => e.preventDefault()"
-          >
-            <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
-          </el-button>
-          <el-button
-            @click="resetQueryProject"
-            @mousedown="(e) => e.preventDefault()"
-          >
-            <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
-          </el-button>
-        </el-form-item>
-      </el-form>
-      <el-table
-        ref="projectTableRef"
-        stripe
-        v-loading="loadingProject"
-        :data="projectList"
-        @selection-change="handleSelectionChangeProject"
-      >
-        <el-table-column
-          type="selection"
-          width="55"
-          :selectable="selectable"
-          align="center"
-        />
-        <el-table-column label="编号" prop="id" width="80">
-          <template #default="scope">
-            {{ scope.row.id || "-" }}
-          </template>
-        </el-table-column>
-        <el-table-column label="项目名称" align="center" prop="name">
-          <template #default="scope">
-            {{ scope.row.name || "-" }}
-          </template>
-        </el-table-column>
-
-        <el-table-column label="负责人" align="center" prop="managerId">
-          <template #default="scope">
-            {{ scope.row.nickName || "-" }}
-          </template>
-        </el-table-column>
-        <el-table-column label="联系方式" align="center" prop="managerPhone">
-          <template #default="scope">
-            {{ scope.row.managerPhone || "-" }}
-          </template>
-        </el-table-column>
-      </el-table>
-      <pagination
-        v-show="totalProject > 0"
-        :total="totalProject"
-        v-model:page="queryParamsProject.pageNum"
-        v-model:limit="queryParamsProject.pageSize"
-        @pagination="getListProject"
-      />
-      <template #footer>
-        <div class="dialog-footer">
-          <el-button size="mini" @click="openProject = false">取 消</el-button>
-          <el-button type="primary" size="mini" @click="submitFormProject"
-            >确 定</el-button
-          >
+          <el-button size="mini" @click="openDetail = false">关 闭</el-button>
         </div>
       </template>
     </el-dialog>
   </div>
 </template>
 
-<script setup name="DppDataSource">
-import {
-  listDaDatasource,
-  getDaDatasource,
-  clientsTest,
-  delDaDatasource,
-  removeDppOrDa,
-  addDaDatasource,
-  updateDaDatasource,
-  listDaDatasourceByProjectCode,
-  editDatasourceStatus,
-  noDppAdd,
-} from "@/api/da/dataSource/dataSource";
-import { encrypt, isDecrypted } from "@/utils/aesEncrypt";
-import { deptUserTree } from "@/api/system/system/user.js";
-import { getToken } from "@/utils/auth.js";
-import useUserStore from "@/store/system/user";
-import { config } from "ace-builds";
-const userStore = useUserStore();
+<script setup name="Datasource">
+import { listDatasource, getDatasource, addDatasource, updateDatasource, removeDatasource, testDatasource, toggleDatasourceStatus } from '@/api/dpp/datasource/datasource.mock';
+
 const { proxy } = getCurrentInstance();
-const { datasource_type, sys_disable } = proxy.useDict(
-  "datasource_type",
-  "sys_disable"
-);
-const daDatasourceList = ref([]);
-
-// 列显隐信息
-const columns = ref([
-  { key: 1, label: "编号", visible: true },
-  { key: 2, label: "数据连接名称", visible: true },
-  { key: 3, label: "描述", visible: true },
-  { key: 4, label: "数据连接类型", visible: true },
-  { key: 5, label: "创建人", visible: true },
-  { key: 6, label: "创建时间", visible: true },
-  { key: 7, label: "状态", visible: true },
-  { key: 8, label: "备注", visible: true },
-  { key: 9, label: "操作", visible: true },
-]);
-
-const getColumnVisibility = (key) => {
-  const column = columns.value.find((col) => col.key === key);
-  // 如果没有找到对应列配置，默认显示
-  if (!column) return true;
-  // 如果找到对应列配置，根据visible属性来控制显示
-  return column.visible;
-};
-
-const open = ref(false);
-const openProject = ref(false);
-const openDetail = ref(false);
+const datasourceList = ref([]);
 const loading = ref(true);
 const showSearch = ref(true);
-const ids = ref([]);
-const single = ref(true);
-const multiple = ref(true);
 const total = ref(0);
-const title = ref("");
-const defaultSort = ref({ prop: "createTime", order: "desc" });
-const router = useRouter();
-const projectOptions = ref([]);
-const projectList = ref([]);
-const totalProject = ref(0);
-const projectTableRef = ref(null);
-const loadingProject = ref(false);
-const projectIdAndCodeList = ref([]);
-const route = useRoute();
-let type = route.query.type || null;
+const open = ref(false);
+const openDetail = ref(false);
+const title = ref('');
+const submitLoading = ref(false);
+const testLoading = ref(false);
+const defaultSort = ref({ prop: 'createTime', order: 'descending' });
 
-/*** 用户导入参数 */
-const upload = reactive({
-  // 是否显示弹出层（用户导入）
-  open: false,
-  // 弹出层标题（用户导入）
-  title: "",
-  // 是否禁用上传
-  isUploading: false,
-  // 是否更新已经存在的用户数据
-  updateSupport: 0,
-  // 设置上传的请求头部
-  headers: { Authorization: "Bearer " + getToken() },
-  // 上传的地址
-  url: import.meta.env.VITE_APP_BASE_API + "/da/daDatasource/importData",
+const columns = ref([
+  { key: 1, label: '编号', visible: true },
+  { key: 2, label: '名称', visible: true },
+  { key: 3, label: '编码', visible: true },
+  { key: 4, label: '描述', visible: true },
+  { key: 5, label: '数据源大类', visible: true },
+  { key: 6, label: '数据源类型', visible: true },
+  { key: 7, label: '所属部门', visible: true },
+  { key: 8, label: '负责人', visible: true },
+  { key: 9, label: '环境标签', visible: true },
+  { key: 10, label: '状态', visible: true },
+  { key: 11, label: '最近测试结果', visible: true },
+  { key: 12, label: '最近测试时间', visible: true },
+  { key: 13, label: '最近测试耗时', visible: true },
+  { key: 14, label: '创建人', visible: true },
+  { key: 15, label: '创建时间', visible: true },
+  { key: 16, label: '操作', visible: true }
+]);
+
+function getColumnVisibility(key) {
+  const column = columns.value.find((col) => col.key === key);
+  return column ? column.visible : true;
+}
+
+const categoryOptions = [
+  { label: '关系型数据库', value: 'relationDb' },
+  { label: '大数据/数仓', value: 'bigData' },
+  { label: '文件/对象存储', value: 'fileStorage' },
+  { label: '接口类型', value: 'api' }
+];
+
+const datasourceTypeOptions = [
+  { label: 'MySQL', value: 'MySQL' },
+  { label: 'Oracle', value: 'Oracle' },
+  { label: 'PostgreSQL', value: 'PostgreSQL' },
+  { label: 'SQL Server', value: 'SQL Server' },
+  { label: 'DB2', value: 'DB2' },
+  { label: 'Doris', value: 'Doris' },
+  { label: 'Hive', value: 'Hive' },
+  { label: 'ClickHouse', value: 'ClickHouse' },
+  { label: 'MaxCompute', value: 'MaxCompute' },
+  { label: 'FTP', value: 'FTP' },
+  { label: 'SFTP', value: 'SFTP' },
+  { label: 'HDFS', value: 'HDFS' },
+  { label: 'S3兼容', value: 'S3' },
+  { label: 'Restful API', value: 'Restful API' }
+];
+
+const typeByCategory = {
+  relationDb: ['MySQL', 'Oracle', 'PostgreSQL', 'SQL Server', 'DB2'],
+  bigData: ['Doris', 'Hive', 'ClickHouse', 'MaxCompute'],
+  fileStorage: ['FTP', 'SFTP', 'HDFS', 'S3'],
+  api: ['Restful API']
+};
+
+const filteredTypeOptions = computed(() => {
+  const cat = form.datasourceCategory;
+  if (!cat) return datasourceTypeOptions;
+  const types = typeByCategory[cat];
+  return datasourceTypeOptions.filter((opt) => types.includes(opt.value));
 });
 
-const data = reactive({
-  form: {
-    projectNameListStr: "-",
-    projectNameList: [],
-    projectIdList: [],
-    projectList: [],
-  },
-  queryParamsProject: {
-    pageNum: 1,
-    pageSize: 10,
-    name: null,
-    managerId: null,
-    datasourceId: null,
-  },
-  queryParams: {
-    pageNum: 1,
-    pageSize: 10,
-    datasourceName: null,
-    datasourceType: null,
-    datasourceConfig: null,
-    ip: null,
-    port: null,
-    listCount: null,
-    syncCount: null,
-    dataSize: null,
-    description: null,
-    createTime: null,
-  },
-  rules: {
-    datasourceName: [
-      { required: true, message: "数据连接名称不能为空", trigger: "blur" },
-    ],
-    datasourceType: [
-      { required: true, message: "数据连接类型不能为空", trigger: "change" },
-    ],
-    datasourceConfig: [
-      {
-        required: true,
-        message: "数据源配置(json字符串)不能为空",
-        trigger: "blur",
-      },
-    ],
-    ip: [
-      { required: true, message: "IP不能为空", trigger: "blur" },
-      {
-        pattern: /^[^\u4e00-\u9fa5]+$/,
-        message: "IP不能包含中文",
-        trigger: "blur",
-      },
-    ],
-    port: [
-      { required: true, message: "端口号不能为空", trigger: "blur" },
-      {
-        pattern: /^\d{1,9}$/,
-        message: "端口号必须为1-9位数字",
-        trigger: "blur",
-      },
-    ],
-    username: [{ required: true, message: "账号不能为空", trigger: "blur" }],
-    password: [{ required: true, message: "密码不能为空", trigger: "blur" }],
-    keyId: [{ required: true, message: "keyID不能为空", trigger: "blur" }],
-    keySecret: [
-      { required: true, message: "keySecret不能为空", trigger: "blur" },
-    ],
-    bucket: [{ required: true, message: "bucket不能为空", trigger: "blur" }],
-    endpoint: [
-      { required: true, message: "endpoint不能为空", trigger: "blur" },
-    ],
-    dbname: [
-      { required: true, message: "数据库名称不能为空", trigger: "blur" },
-      // {
-      //   pattern: /^[^\u4e00-\u9fa5]+$/,
-      //   message: '数据库名称不能包含中文',
-      //   trigger: 'blur'
-      // }
-    ],
-    sid: [{ required: true, message: "模式不能为空", trigger: "blur" }],
-    description: [{ required: true, message: "描述不能为空", trigger: "blur" }],
-    config: [
-      {
-        trigger: "blur",
-        validator: (rule, value, callback) => {
-          if (value === null || value === undefined || value === "") {
-            callback();
-            return;
-          }
-          var flag = false;
-          if (typeof value === "string") {
-            try {
-              const obj = JSON.parse(value);
-              if (typeof obj === "object" && obj) {
-                flag = true;
-              }
-            } catch (e) {}
-          }
-          if (flag) {
-            callback();
-          } else {
-            callback("不是一个正确的JSON格式");
-          }
-        },
-      },
-    ],
-  },
+const statusOptions = [
+  { label: '启用', value: 'enabled' },
+  { label: '禁用', value: 'disabled' }
+];
+
+const envTagOptions = [
+  { label: '开发', value: 'dev' },
+  { label: '测试', value: 'test' },
+  { label: '生产', value: 'prod' }
+];
+
+function getCategoryLabel(val) {
+  const opt = categoryOptions.find((o) => o.value === val);
+  return opt ? opt.label : val;
+}
+function getEnvTagLabel(val) {
+  const opt = envTagOptions.find((o) => o.value === val);
+  return opt ? opt.label : val;
+}
+
+const showDbConnection = computed(() => {
+  const cat = form.datasourceCategory;
+  return cat === 'relationDb' || cat === 'bigData';
+});
+const showFileApiConnection = computed(() => {
+  const cat = form.datasourceCategory;
+  return cat === 'fileStorage' || cat === 'api';
 });
 
-const { queryParams, form, rules, queryParamsProject } = toRefs(data);
-const selectable = (row) => !row.dppAssigned;
-// 监听 id 变化
-watch(
-  () => userStore.projectCode,
-  (newCode) => {
-    getList();
-  },
-  { immediate: true } // `immediate` 为 true 表示页面加载时也会立即执行一次 watch
-);
+const queryParams = ref({
+  pageNum: 1,
+  pageSize: 10,
+  datasourceName: undefined,
+  code: undefined,
+  datasourceType: undefined,
+  status: undefined,
+  envTag: undefined,
+  deptId: undefined
+});
 
-function getProjectOptions() {
-  deptUserTree().then((response) => {
-    projectOptions.value = response.data;
-  });
+const form = ref({});
+const formRef = ref(null);
+const queryRef = ref(null);
+
+const rules = ref({
+  datasourceName: [
+    { required: true, message: '名称不能为空', trigger: 'blur' },
+    { max: 100, message: '名称长度不能超过100个字符', trigger: 'blur' }
+  ],
+  code: [
+    { required: true, message: '编码不能为空', trigger: 'blur' },
+    { max: 64, message: '编码长度不能超过64个字符', trigger: 'blur' },
+    { pattern: /^[A-Za-z0-9_\-]+$/, message: '编码只能包含英文、数字、下划线和中划线', trigger: 'blur' }
+  ],
+  datasourceCategory: [{ required: true, message: '请选择数据源大类', trigger: 'change' }],
+  datasourceType: [{ required: true, message: '请选择数据源类型', trigger: 'change' }],
+  description: [{ max: 500, message: '描述长度不能超过500个字符', trigger: 'blur' }],
+  owner: [{ max: 50, message: '负责人长度不能超过50个字符', trigger: 'blur' }],
+  version: [{ max: 32, message: '版本号长度不能超过32个字符', trigger: 'blur' }],
+  port: [{ type: 'number', min: 1, max: 65535, message: '端口号范围 1-65535', trigger: 'blur', transform: Number }],
+  host: [{ max: 256, message: '主机地址长度不能超过256个字符', trigger: 'blur' }],
+  dbName: [{ max: 128, message: '长度不能超过128个字符', trigger: 'blur' }],
+  schema: [{ max: 64, message: 'Schema长度不能超过64个字符', trigger: 'blur' }],
+  username: [{ max: 64, message: '用户名长度不能超过64个字符', trigger: 'blur' }],
+  password: [{ max: 128, message: '密码长度不能超过128个字符', trigger: 'blur' }],
+  driverClass: [{ max: 256, message: '驱动类长度不能超过256个字符', trigger: 'blur' }],
+  jdbcSuffix: [{ max: 512, message: '长度不能超过512个字符', trigger: 'blur' }],
+  maxPoolSize: [{ type: 'number', min: 1, max: 1000, message: '范围 1-1000', trigger: 'blur', transform: Number }],
+  connTimeout: [{ type: 'number', min: 0, max: 300000, message: '单位毫秒，范围 0-300000', trigger: 'blur', transform: Number }],
+  baseUrl: [{ max: 512, message: 'Base URL长度不能超过512个字符', trigger: 'blur' }],
+  rootPath: [{ max: 256, message: '根路径长度不能超过256个字符', trigger: 'blur' }],
+  accessKey: [{ max: 128, message: 'AccessKey长度不能超过128个字符', trigger: 'blur' }],
+  secretKey: [{ max: 256, message: 'Secret Key长度不能超过256个字符', trigger: 'blur' }],
+  token: [{ max: 512, message: 'Token长度不能超过512个字符', trigger: 'blur' }]
+});
+
+const detailData = ref({});
+const detailDescList = ref([
+  { key: 'datasourceName', label: '名称' },
+  { key: 'code', label: '编码' },
+  { key: 'description', label: '描述', span: 2 },
+  { key: 'datasourceCategory', label: '数据源大类' },
+  { key: 'datasourceType', label: '数据源类型' },
+  { key: 'deptName', label: '所属部门' },
+  { key: 'owner', label: '负责人' },
+  { key: 'envTag', label: '环境标签' },
+  { key: 'version', label: '版本号' },
+  { key: 'status', label: '状态' },
+  { key: 'host', label: '主机地址' },
+  { key: 'port', label: '端口' },
+  { key: 'dbName', label: '数据库名/服务名' },
+  { key: 'schema', label: 'Schema' },
+  { key: 'username', label: '用户名' },
+  { key: 'password', label: '密码', sensitive: true },
+  { key: 'baseUrl', label: 'Base URL', span: 2 },
+  { key: 'rootPath', label: '根路径' },
+  { key: 'lastTestResult', label: '最近测试结果' },
+  { key: 'lastTestTime', label: '最近测试时间', type: 'datetime' },
+  { key: 'lastTestDuration', label: '最近测试耗时' },
+  { key: 'createBy', label: '创建人' },
+  { key: 'createTime', label: '创建时间', type: 'datetime' }
+]);
+
+function onCategoryChange() {
+  form.value.datasourceType = undefined;
 }
 
-//数据连接类型change事件
-function handleDatasourceChange(type) {
-  if (type == "Hive") {
-    rules.value.password[0].required = false;
-  }
-  if (type != "Hive") {
-    rules.value.password[0].required = true;
-  }
-}
-
-function getListProject() {
-  openProject.value = true;
-  loadingProject.value = true;
-  noDppAdd(queryParamsProject.value).then((response) => {
-    projectList.value = response.data.rows;
-    totalProject.value = response.data.total;
-    loadingProject.value = false;
-
-    // 在表格加载完成后，设置之前选中的项目
-    nextTick(() => {
-      projectList.value.forEach((project) => {
-        form.value.projectList.forEach((item) => {
-          if (item.projectId === project.id) {
-            proxy.$refs.projectTableRef.toggleRowSelection(project, true);
-          }
-        });
-      });
-    });
-  });
-}
-
-function handleSelectionChangeProject(selection) {
-  projectIdAndCodeList.value = [];
-  for (let i = 0; i < selection.length; i++) {
-    const element = selection[i];
-    let project = {
-      projectId: element.id,
-      projectCode: element.code,
-    };
-    projectIdAndCodeList.value.push(project);
-  }
-
-  form.value.projectNameList = selection.map((item) => item.name);
-}
-
-function submitFormProject() {
-  openProject.value = false;
-  form.value.projectList = projectIdAndCodeList.value;
-}
-
-function handleQueryProject() {
-  queryParamsProject.value.pageNum = 1;
-  getListProject();
-}
-
-function resetQueryProject() {
-  queryParamsProject.value.pageNum = 1;
-  queryParamsProject.value.pageSize = 10;
-  queryParamsProject.value.name = null;
-  queryParamsProject.value.managerId = null;
-  getListProject();
-}
-
-/** 查询数据源列表 */
 function getList() {
   loading.value = true;
-  if (type == 1) {
-    queryParams.value.projectId = userStore.projectId;
-    queryParams.value.projectCode = userStore.projectCode;
-    listDaDatasourceByProjectCode(queryParams.value).then((response) => {
-      daDatasourceList.value = response.data.rows;
-      total.value = response.data.total;
-      loading.value = false;
-    });
-  } else {
-    listDaDatasource(queryParams.value).then((response) => {
-      daDatasourceList.value = response.data.rows;
-      total.value = response.data.total;
-      loading.value = false;
-    });
-  }
+  listDatasource(queryParams.value)
+    .then((res) => {
+      const data = res.data || res;
+      datasourceList.value = Array.isArray(data.rows) ? data.rows : (data.list || []);
+      total.value = data.total ?? datasourceList.value.length;
+    })
+    .finally(() => (loading.value = false));
 }
 
-// 取消按钮
-function cancel() {
-  open.value = false;
-  openDetail.value = false;
-  reset();
-}
-
-// 表单重置
-function reset() {
-  form.value = {
-    id: null,
-    projectNameList: [],
-    projectIdList: [],
-    projectList: [],
-    datasourceName: null,
-    datasourceType: null,
-    datasourceConfig: null,
-    ip: null,
-    port: null,
-    listCount: null,
-    syncCount: null,
-    dataSize: null,
-    description: null,
-    validFlag: false,
-    createBy: null,
-    creatorId: null,
-    createTime: null,
-    updateBy: null,
-    updaterId: null,
-    updateTime: null,
-    remark: null,
-  };
-  proxy.resetForm("daDatasourceRef");
-}
-
-/** 搜索按钮操作 */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
-
-/** 重置按钮操作 */
 function resetQuery() {
-  proxy.resetForm("queryRef");
+  proxy.resetForm('queryRef');
   handleQuery();
 }
-
-// 多选框选中数据
-function handleSelectionChange(selection) {
-  ids.value = selection.map((item) => item.id);
-  single.value = selection.length != 1;
-  multiple.value = !selection.length;
-}
-
-/** 排序触发事件 */
-function handleSortChange(column, prop, order) {
-  queryParams.value.orderByColumn = column.prop;
-  queryParams.value.isAsc = column.order;
+function handleSortChange({ prop, order }) {
+  defaultSort.value = { prop: prop || 'createTime', order: order === 'ascending' ? 'ascending' : 'descending' };
   getList();
 }
+function handleSelectionChange(selection) {}
 
-/** 新增按钮操作 */
+function resetFormData() {
+  form.value = {
+    id: undefined,
+    datasourceName: '',
+    code: '',
+    description: '',
+    datasourceCategory: undefined,
+    datasourceType: undefined,
+    deptName: '',
+    owner: '',
+    envTag: undefined,
+    version: '',
+    status: 'enabled',
+    host: undefined,
+    port: undefined,
+    dbName: '',
+    schema: '',
+    username: '',
+    password: '',
+    driverClass: '',
+    jdbcSuffix: '',
+    maxPoolSize: undefined,
+    connTimeout: undefined,
+    baseUrl: '',
+    rootPath: '',
+    authType: undefined,
+    accessKey: '',
+    secretKey: '',
+    token: ''
+  };
+}
+
 function handleAdd() {
-  reset();
-  if (type == 1) {
-    form.value.isDaOrDpp = true;
-    form.value.projectList = [
-      {
-        projectId: userStore.projectId,
-        projectCode: userStore.projectCode,
-        dppAssigned: true,
-      },
-    ];
-  } else {
-    form.value.isDaOrDpp = false;
-    form.value.projectList = [];
-  }
+  resetFormData();
+  title.value = '新增数据源';
   open.value = true;
-  title.value = "新增数据源";
 }
-
-/** 修改按钮操作 */
-let old_password;
-
-function handleUpdate(row, type) {
-  reset();
-  const _id = row.id || ids.value;
-  loading.value = true;
-  getDaDatasource(_id)
-    .then((response) => {
-      form.value = response.data;
-      form.value.projectIdList = form.value.projectList.map(
-        (item) => item.projectId
-      );
-      form.value.projectNameList = form.value.projectList.map(
-        (item) => item.projectName
-      );
-
-      // 拆解 datasourceConfig
-      if (form.value.datasourceConfig) {
-        const config = JSON.parse(form.value.datasourceConfig);
-        form.value.username = config.username;
-        form.value.password = config.password;
-        form.value.dbname = config.dbname;
-        form.value.sid = config.sid;
-        if (config.keyId) form.value.keyId = config.keyId;
-        if (config.keySecret) form.value.keySecret = config.keySecret;
-        if (config.bucket) form.value.bucket = config.bucket;
-        if (config.endpoint) form.value.endpoint = config.endpoint;
-        if (config.domain) form.value.domain = config.domain;
-        if (config.config) form.value.config = config.config;
-      }
-      form.value.projectListOld = form.value.projectIdList;
-      queryParamsProject.value.datasourceId = form.value.id;
-      open.value = true;
-      if (type == 3) {
-        title.value = "数据源详情";
-      } else {
-        old_password = form.value.password;
-        title.value = "修改数据源";
-      }
-    })
-    .finally(() => {
-      loading.value = false; // 不管成功失败都结束loading
-    });
-}
-
-/** 详情按钮操作 */
-function handleDetail(row) {
-  reset();
-  const _id = row.id || ids.value;
-  getDaDatasource(_id).then((response) => {
-    form.value = response.data;
-    form.value.projectNameListStr = form.value.projectList
-      .map((item) => item.projectName)
-      .join(", ");
-    if (form.value.datasourceConfig) {
-      const config = JSON.parse(form.value.datasourceConfig);
-      form.value.username = config.username;
-      form.value.password = config.password;
-      form.value.dbname = config.dbname;
-      form.value.sid = config.sid;
-      if (config.keyId) {
-        form.value.keyId = config.keyId;
-      }
-      if (config.keySecret) {
-        form.value.keySecret = config.keySecret;
-      }
-      if (config.bucket) {
-        form.value.bucket = config.bucket;
-      }
-      if (config.endpoint) {
-        form.value.endpoint = config.endpoint;
-      }
-      if (config.domain) {
-        form.value.domain = config.domain;
-      }
-    }
-    openDetail.value = true;
-    title.value = "数据源详情";
+function handleUpdate(row) {
+  resetFormData();
+  const id = row.id;
+  getDatasource(id).then((res) => {
+    const data = res.data || res;
+    form.value = { ...data };
+    form.value.password = '';
+    form.value.secretKey = '';
+    form.value.token = '';
   });
+  title.value = '编辑数据源';
+  open.value = true;
 }
-
-/** 详情按钮操作 */
-function handleTestConnection(row) {
-  loading.value = true; // 开始加载
-  reset();
-  const _id = row.id || ids.value;
-  clientsTest(_id)
-    .then((response) => {
-      console.log(response);
-      proxy.$modal.msgSuccess(response.msg);
-    })
-    .finally(() => {
-      loading.value = false; // 结束加载
-    });
+function cancel() {
+  open.value = false;
+  resetFormData();
 }
-const btnLoading = ref(false);
-/** 提交按钮 */
 function submitForm() {
-  proxy.$refs["daDatasourceRef"].validate((valid) => {
-    if (valid) {
-      btnLoading.value = true;
-      if (form.value.id != null) {
-        if (
-          old_password !== form.value.password ||
-          !isDecrypted(form.value.password)
-        ) {
-          form.value.password = encrypt(form.value.password);
-        }
-        form.value.datasourceConfig = JSON.stringify({
-          username: form.value.username,
-          password: form.value.password,
-          dbname: form.value.dbname,
-          sid: form.value.sid,
-          keyId: form.value.keyId,
-          keySecret: form.value.keySecret,
-          bucket: form.value.bucket,
-          endpoint: form.value.endpoint,
-          domain: form.value.domain,
-          config: form.value.config,
-        });
-
-        let projectListOld = [];
-        form.value.projectListOld.forEach((item) => {
-          if (!form.value.projectList.includes(item)) {
-            projectListOld.push(item);
-          }
-        });
-        form.value.projectListOld = projectListOld;
-        updateDaDatasource(form.value)
-          .then((response) => {
-            proxy.$modal.msgSuccess("修改成功");
-            open.value = false;
-            getList();
-          })
-          .finally(() => {
-            btnLoading.value = false;
-          });
-      } else {
-        form.value.datasourceConfig = JSON.stringify({
-          username: form.value.username,
-          password: encrypt(form.value.password),
-          dbname: form.value.dbname,
-          sid: form.value.sid,
-          keyId: form.value.keyId,
-          keySecret: form.value.keySecret,
-          bucket: form.value.bucket,
-          endpoint: form.value.endpoint,
-          domain: form.value.domain,
-        });
-        addDaDatasource(form.value)
-          .then((response) => {
-            proxy.$modal.msgSuccess("新增成功");
-            open.value = false;
-            getList();
-          })
-          .finally(() => {
-            btnLoading.value = false;
-          });
-      }
-    }
+  formRef.value?.validate((valid) => {
+    if (!valid) return;
+    submitLoading.value = true;
+    const data = { ...form.value };
+    if (data.id && !data.password) delete data.password;
+    if (data.id && !data.secretKey) delete data.secretKey;
+    if (data.id && !data.token) delete data.token;
+    const fn = data.id ? updateDatasource : addDatasource;
+    fn(data)
+      .then(() => {
+        proxy.$modal.msgSuccess(data.id ? '修改成功' : '新增成功');
+        open.value = false;
+        getList();
+      })
+      .finally(() => (submitLoading.value = false));
   });
 }
 
-/** 删除按钮操作 */
-function handleDelete(row) {
-  const _ids = row.id || ids.value;
+function handleDetail(row) {
+  getDatasource(row.id).then((res) => {
+    const data = res.data || res;
+    detailData.value = { ...data };
+  });
+  openDetail.value = true;
+}
+
+function handleTest(row) {
+  testDatasource(row.id)
+    .then((res) => {
+      const data = res.data || res;
+      if (data && data.success !== false) {
+        proxy.$modal.msgSuccess(data.message || '连接成功');
+      } else {
+        proxy.$modal.msgError(data?.message || '连接失败');
+      }
+      getList();
+    })
+    .catch((err) => {
+      proxy.$modal.msgError(err?.msg || err?.message || '连接测试失败');
+      getList();
+    });
+}
+function handleTestInDialog() {
+  if (!form.value.id) {
+    proxy.$modal.msgWarning('请先保存后再测试连接');
+    return;
+  }
+  testLoading.value = true;
+  testDatasource(form.value.id)
+    .then((res) => {
+      const data = res.data || res;
+      if (data && data.success !== false) {
+        proxy.$modal.msgSuccess(data.message || '连接成功');
+      } else {
+        proxy.$modal.msgError(data?.message || '连接失败');
+      }
+      getList();
+    })
+    .catch((err) => {
+      proxy.$modal.msgError(err?.msg || err?.message || '连接测试失败');
+    })
+    .finally(() => (testLoading.value = false));
+}
+
+function handleToggleStatus(row) {
+  const nextStatus = row.status === 'enabled' ? 'disabled' : 'enabled';
+  const action = nextStatus === 'enabled' ? '启用' : '禁用';
   proxy.$modal
-    .confirm('是否确认删除数据源编号为"' + _ids + '"的数据项？')
-    .then(function () {
-      return removeDppOrDa(_ids, type);
+    .confirm('确认要' + action + '该数据源吗？')
+    .then(() => {
+      return toggleDatasourceStatus(row.id, nextStatus);
     })
     .then(() => {
+      proxy.$modal.msgSuccess('操作成功');
       getList();
-      proxy.$modal.msgSuccess("删除成功");
     })
     .catch(() => {});
 }
 
-/** 导出按钮操作 */
-function handleExport() {
-  proxy.download(
-    "da/daDatasource/export",
-    {
-      ...queryParams.value,
-    },
-    `daDatasource_${new Date().getTime()}.xlsx`
-  );
-}
-
-/** ---------------- 导入相关操作 -----------------**/
-/** 导入按钮操作 */
-function handleImport() {
-  upload.title = "数据源导入";
-  upload.open = true;
-}
-
-/** 下载模板操作 */
-function importTemplate() {
-  proxy.download(
-    "system/user/importTemplate",
-    {},
-    `daDatasource_template_${new Date().getTime()}.xlsx`
-  );
-}
-
-/** 提交上传文件 */
-function submitFileForm() {
-  proxy.$refs["uploadRef"].submit();
-}
-
-/**文件上传中处理 */
-const handleFileUploadProgress = (event, file, fileList) => {
-  upload.isUploading = true;
-};
-
-/** 文件上传成功处理 */
-const handleFileSuccess = (response, file, fileList) => {
-  upload.open = false;
-  upload.isUploading = false;
-  proxy.$refs["uploadRef"].handleRemove(file);
-  proxy.$alert(
-    "<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +
-      response.msg +
-      "</div>",
-    "导入结果",
-    { dangerouslyUseHTMLString: true }
-  );
-  getList();
-};
-
-/** ---------------------------------**/
-
-function routeTo(link, row) {
-  if (link !== "" && link.indexOf("http") !== -1) {
-    window.location.href = link;
-    return;
-  }
-  if (link !== "") {
-    if (link === router.currentRoute.value.path) {
-      window.location.reload();
-    } else {
-      router.push({
-        path: link,
-        query: {
-          id: row.id,
-        },
-      });
-    }
-  }
-}
-
-/** 改变启用状态值 */
-function handleStatusChange(row) {
-  const text = row.validFlag === true ? "启用" : "禁用";
-  const status = row.validFlag === true ? 1 : 0;
+function handleDelete(row) {
+  const id = row.id;
   proxy.$modal
-    .confirm("确认要" + text + ' "' + row.datasourceName + '" 数据连接吗？')
-    .then(function () {
-      editDatasourceStatus(row.id, status).then((response) => {
-        proxy.$modal.msgSuccess(text + "成功");
-        getList();
-      });
+    .confirm('是否确认删除该数据源？删除前将校验是否被数据资产、元数据采集任务、ETL开发任务、数据质量规则引用。')
+    .then(() => removeDatasource(id))
+    .then((res) => {
+      const msg = (res && res.msg) || '删除成功';
+      proxy.$modal.msgSuccess(msg);
+      getList();
     })
-    .catch(function () {
-      row.validFlag = !row.validFlag;
+    .catch((err) => {
+      if (err && (err.msg || err.message)) {
+        proxy.$modal.msgError(err.msg || err.message);
+      }
     });
 }
 
-queryParams.value.orderByColumn = defaultSort.value.prop;
-queryParams.value.isAsc = defaultSort.value.order;
-getList();
-getProjectOptions();
+onMounted(() => {
+  getList();
+});
 </script>
+
+<style lang="scss" scoped>
+.form-section-title {
+  font-weight: 600;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--el-border-color-lighter);
+}
+.form-tip {
+  font-size: 12px;
+  color: var(--el-text-color-secondary);
+  margin-left: 8px;
+}
+:deep(.base-label) {
+  width: 200px;
+  .cell-item {
+    font-weight: 500;
+  }
+}
+</style>

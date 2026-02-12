@@ -1,0 +1,24 @@
+{
+  "featureList": [
+    { "id": "F01", "name": "左侧分组列表展示", "description": "左侧展示数据源分组（按业务域分类）", "priority": "high" },
+    { "id": "F02", "name": "分组新增", "description": "在当前页新增数据源分组", "priority": "high" },
+    { "id": "F03", "name": "分组修改", "description": "修改已有分组信息", "priority": "high" },
+    { "id": "F04", "name": "分组删除", "description": "删除数据源分组", "priority": "medium" },
+    { "id": "F05", "name": "右侧连接列表展示", "description": "右侧表格展示当前分组下的连接，列：名称、类型、地址、状态", "priority": "high" },
+    { "id": "F06", "name": "按名称查询连接", "description": "右侧支持按连接名称筛选", "priority": "high" },
+    { "id": "F07", "name": "新增连接", "description": "新增数据源连接", "priority": "high" },
+    { "id": "F08", "name": "编辑连接", "description": "编辑已有连接信息", "priority": "high" },
+    { "id": "F09", "name": "测试连通性", "description": "对单条连接测试是否可连通", "priority": "high" },
+    { "id": "F10", "name": "删除连接", "description": "删除连接记录，仅管理员可操作", "priority": "medium" }
+  ],
+  "businessRules": [
+    { "description": "删除连接仅管理员可执行", "appliesTo": "F10", "constraintType": "permission" }
+  ],
+  "interactionIntents": [
+    { "type": "query", "description": "按连接名称查询", "relatedFields": ["名称"] },
+    { "type": "create", "description": "新增分组、新增连接" },
+    { "type": "update", "description": "修改分组、编辑连接" },
+    { "type": "delete", "description": "删除分组；删除连接（需管理员权限）" },
+    { "type": "other", "description": "测试连接连通性" }
+  ]
+}

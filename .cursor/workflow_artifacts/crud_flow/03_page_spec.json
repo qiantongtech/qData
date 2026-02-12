@@ -1,0 +1,29 @@
+{
+  "entityName": "数据源连接",
+  "entityNameEn": "Datasource",
+  "columns": [
+    { "key": "id", "label": "编号", "type": "string", "width": 80 },
+    { "key": "name", "label": "名称", "type": "string", "minWidth": 160, "showOverflowTooltip": true },
+    { "key": "type", "label": "类型", "type": "enum", "width": 120, "enumOptions": [
+      { "label": "MySQL", "value": "MySQL" },
+      { "label": "Oracle", "value": "Oracle" },
+      { "label": "PostgreSQL", "value": "PostgreSQL" },
+      { "label": "Doris", "value": "Doris" }
+    ]},
+    { "key": "address", "label": "地址", "type": "string", "minWidth": 180, "showOverflowTooltip": true },
+    { "key": "status", "label": "状态", "type": "enum", "width": 100, "displayType": "tag", "enumOptions": [
+      { "label": "正常", "value": "connected" },
+      { "label": "未连接", "value": "disconnected" },
+      { "label": "连接失败", "value": "failed" }
+    ]}
+  ],
+  "searchFields": [
+    { "key": "name", "label": "名称", "type": "string", "placeholder": "请输入名称" }
+  ],
+  "actions": ["create", "update", "delete", "view"],
+  "customActions": [{ "key": "test", "label": "测试连通性" }],
+  "actionPermissions": [{ "action": "delete", "permissionKey": "adminOnly", "description": "仅管理员可删" }],
+  "pagination": { "pageSize": 10, "showSizeChanger": true, "pageSizeOptions": [10, 20, 50] },
+  "tableConfig": { "stripe": true, "border": true, "showIndex": true, "showSelection": false },
+  "layoutNote": "左侧：数据源分组（增删改）；右侧：连接列表（按名称查询，表格+新增/编辑/测试连通性/删除仅管理员）。纯 mock。"
+}

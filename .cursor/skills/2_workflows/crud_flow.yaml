@@ -1,0 +1,210 @@
+# =============================================================================
+# CRUD 流程定义：需求理解 → 原型设计 → 数据模型定义 → 生成前端代码
+# =============================================================================
+# 触发方式：本流程由意图路由触发。当 1_router 输出 intent=ADMIN_CRUD 时，执行层应启动
+# 本 flow，并将 user_query 等注入 inputs。
+# 说明：
+# 1. 编排技能：需求理解、原型设计、数据模型定义、生成前端代码。
+# 2. 前三步产出按 staging 配置写入暂存目录（仅保留一份），人工可编辑后由下一步从该文件读取输入。
+# 3. 暂存路径：{base_path}/{artifact 文件名}，路径均相对于项目根。
+# 4. 下一步就绪：若当前步产出不满足下一步输入条件，须向用户明确提示待补项，待用户补充并满足条件后再执行下一步。
+# 5. 从中间步骤开始或重跑某步时，未提供的可选输入（如 table_structure、module_path_hint）可由执行层从上下文补全或置空；用户补充 table_structure 后重跑 step_data_model 时，须将新值注入 flow 的 table_structure 输入。
+# =============================================================================
+
+name: crud_flow
+description: 从用户需求到前端代码的 CRUD 流程，包含需求理解、原型设计、数据模型定义、生成前端代码四步；每步输出可暂存，支持手动编辑或对话中由 AI 修改后作为下一步输入。
+version: 3.0.0
+
+# -----------------------------------------------------------------------------
+# 流程输入：由调用方（或执行层）在启动流程时注入
+# -----------------------------------------------------------------------------
+inputs:
+  # 必填：用户对 CRUD 页面的自然语言描述
+  - name: user_query
+    type: string
+    description: 用户的原始需求描述
+
+  # 可选：当前项目/模块业务背景，便于需求理解更准确
+  - name: project_context
+    type: string
+    description: 当前项目业务背景（可选）
+    required: false
+
+  # 可选：技术栈约束（如 Vue3、Element Plus、仅前端等）
+  - name: tech_stack_constraints
+    type: string
+    description: 技术栈约束（可选）
+    required: false
+
+  # 可选：表结构 DDL，供 step_data_model 做字段映射；支持 Oracle COMMENT ON 或 MySQL 列后 COMMENT。用户补充表结构后重跑 step_data_model 时，执行层须将此输入注入。
+  - name: table_structure
+    type: string
+    description: 表结构 DDL（可选，供数据模型定义步骤使用）
+    required: false
+
+  # 可选：原型形态约束（如 admin_crud、form_only）
+  - name: ui_scope
+    type: string
+    description: 原型形态约束（可选，如 admin_crud，供原型设计步骤使用）
+    required: false
+
+  # 可选：设计约束（如搜索不超过 4 个字段、命名规范等）
+  - name: design_constraints
+    type: string
+    description: 设计约束（可选，供原型设计、数据模型定义步骤使用）
+    required: false
+
+  # 可选：代码生成时的一级模块目录提示（如 da、dpp），供 step_code 推荐路径用
+  - name: module_path_hint
+    type: string
+    description: 代码落盘的一级模块目录（可选，供生成前端代码步骤推荐 views/api 路径）
+    required: false
+
+# -----------------------------------------------------------------------------
+# 下一步就绪（step_readiness）：不满足则提示用户，待补充后再执行下一步
+# -----------------------------------------------------------------------------
+# 执行约定：在执行下一步前，必须检查上一步产出是否满足下一步的输入条件；若不满足，不得自动进入下一步，
+# 而应将「不满足原因」与「待用户补充项」明确呈现给用户，待用户补充（如补充描述、表结构、或编辑暂存文件）
+# 并重新执行上一步或确认暂存内容后，再执行下一步。
+# 各步「不满足下一步」的判定与提示见下。
+# -----------------------------------------------------------------------------
+step_readiness:
+  # 执行 step_prototype 前，检查 step_requirements 的产出
+  - after_step: step_requirements
+    next_step: step_prototype
+    condition: "上一步产出为完整 requirement_spec（含 featureList、interactionIntents），且未触发澄清"
+    not_ready_when:
+      - "产出中存在 clarificationNeeded === true（需求理解技能因信息缺失触发了澄清）"
+    action: "向用户展示 clarificationNeeded 中的 reason 与 questions，说明需补充哪些信息（如业务对象、操作范围等）；待用户补充后重新执行 step_requirements 或用户确认已编辑暂存文件后再执行 step_prototype。"
+
+  # 执行 step_data_model 前，检查 step_prototype 的产出
+  - after_step: step_prototype
+    next_step: step_data_model
+    condition: "上一步产出为完整 prototype_spec（含 entityLabel、columns），且符合 prototype_spec schema"
+    not_ready_when:
+      - "暂存 02_prototype_spec.json 不存在或为空"
+      - "缺少 entityLabel 或 columns，或结构不符合 schema"
+    action: "向用户说明缺少的字段或格式问题，建议补全 requirement_spec 后重新执行 step_prototype，或直接编辑 02_prototype_spec.json 后继续。"
+
+  # 执行 step_code（生成前端代码）前，检查 step_data_model 的产出
+  - after_step: step_data_model
+    next_step: step_code
+    condition: "上一步产出为完整 page_spec，且未产出 clarificationNeeded"
+    not_ready_when:
+      - "产出中存在 clarificationNeeded === true（数据模型定义技能因缺表结构或字段不足触发推荐与确认）"
+      - "暂存 03_page_spec.json 不存在或缺少 entityName、entityNameEn、columns"
+    action: "向用户展示 clarificationNeeded 中的 reason、recommendedFields、questions，说明需提供表结构或确认推荐字段；待用户补充 table_structure 或确认后重新执行 step_data_model，再执行 step_code。"
+
+# -----------------------------------------------------------------------------
+# 暂存配置：每步输出写入此处（仅保留最新一份），支持人工微调后作为下一步输入
+# -----------------------------------------------------------------------------
+# 执行约定：
+# - 每步执行完成后，将该步 outputs 中对应变量序列化为 JSON，写入 base_path 下 staging_output 指定文件名。
+# - 若某步产出为澄清结果（根级 clarificationNeeded === true），则不写入该步 staging_output 文件，避免下一步误读；可将澄清结果单独展示给用户。
+# - 执行某步前，若存在 staging_input 指定的文件（即上一步的产出），则从该文件反序列化并注入本步 inputs，覆盖同名字段。
+# - 路径：{base_path}/{artifact 文件名}，如 .cursor/workflow_artifacts/crud_flow/01_requirement_spec.json
+# - step_code 产出变量名为 code_artifacts、api_module_path、files_written（snake_case）；写入 04_code_manifest.json 时须映射为 schema 要求的 codeArtifacts、apiModulePath、filesWritten（camelCase）。
+# -----------------------------------------------------------------------------
+staging:
+  # 暂存根路径，相对于项目根；按流程名 crud_flow 区分，仅保留最新一次运行的产出
+  base_path: .cursor/workflow_artifacts/crud_flow
+
+  # 各步骤对应的暂存文件名（序号+语义，与步骤顺序一致），直接放在 base_path 下
+  artifact_files:
+    step_requirements: 01_requirement_spec.json   # 需求理解产出：featureList、businessRules、interactionIntents
+    step_prototype: 02_prototype_spec.json         # 原型设计产出：entityLabel、columns(label/type)、searchFields、actions
+    step_data_model: 03_page_spec.json             # 数据模型定义产出：entityName、entityNameEn、columns(key/label/type) 等
+    step_code: 04_code_manifest.json              # 代码生成产出：生成的文件路径列表与推荐路径记录（可选）
+
+  # 各 artifact 的 JSON Schema 引用，供校验或 IDE 提示；澄清产出可用对应 output_clarification_schema.json 校验
+  schema_refs:
+    01_requirement_spec.json: skills/3_atomic/vue_generator/1_requirements_understanding/output_schema.json
+    02_prototype_spec.json: skills/schemas/prototype_spec.json
+    03_page_spec.json: skills/schemas/page_spec.json
+    04_code_manifest.json: skills/schemas/code_manifest_schema.json
+
+# -----------------------------------------------------------------------------
+# 流程步骤：仅使用已有原子技能，按依赖顺序编排
+# -----------------------------------------------------------------------------
+steps:
+  # 步骤 1：需求理解
+  - name: step_requirements
+    type: atomic
+    skill_path: skills/3_atomic/vue_generator/1_requirements_understanding
+    inputs:
+      project_context: "{{ project_context | default('') }}"
+      user_description: "{{ user_query }}"
+      tech_stack_constraints: "{{ tech_stack_constraints | default('') }}"
+    outputs:
+      requirement_spec: "{{ requirement_spec }}"
+    # 本步执行完成后，将 requirement_spec 写入该文件
+    staging_output: 01_requirement_spec.json
+    description: "从业务背景与用户描述中提取功能清单、业务规则与交互意图"
+
+  # 步骤 2：原型设计
+  - name: step_prototype
+    type: atomic
+    skill_path: skills/3_atomic/vue_generator/2_prototype_design
+    inputs:
+      requirement_spec: "{{ requirement_spec }}"
+      ui_scope: "{{ ui_scope | default('') }}"
+      design_constraints: "{{ design_constraints | default('') }}"
+    # 执行本步前，若该文件存在，则从中读取 requirement_spec 注入 inputs（可为人工作过后的内容）
+    staging_input: 01_requirement_spec.json
+    outputs:
+      prototype_spec: "{{ prototype_spec }}"
+    staging_output: 02_prototype_spec.json
+    depends_on:
+      - step_requirements
+    description: "将 requirement_spec 转为 prototype_spec（字段归属、操作类型、分页等）"
+
+  # 步骤 3：数据模型定义
+  - name: step_data_model
+    type: atomic
+    skill_path: skills/3_atomic/vue_generator/3_data_model_definition
+    inputs:
+      prototype_spec: "{{ prototype_spec }}"
+      table_structure: "{{ table_structure | default('') }}"
+      design_constraints: "{{ design_constraints | default('') }}"
+    staging_input: 02_prototype_spec.json
+    outputs:
+      page_spec: "{{ page_spec }}"
+    staging_output: 03_page_spec.json
+    depends_on:
+      - step_prototype
+    description: "根据 prototype_spec 与表结构维护 page_spec（驼峰 key），供下游代码生成消费"
+
+  # 步骤 4：生成前端代码
+  - name: step_code
+    type: atomic
+    skill_path: skills/3_atomic/vue_generator/4_frontend_code_gen
+    inputs:
+      page_spec: "{{ page_spec }}"
+      module_path_hint: "{{ module_path_hint | default('') }}"
+    staging_input: 03_page_spec.json
+    outputs:
+      code_artifacts: "{{ code_artifacts }}"
+      api_module_path: "{{ api_module_path }}"
+      files_written: "{{ files_written }}"
+    staging_output: 04_code_manifest.json
+    depends_on:
+      - step_data_model
+    description: "根据 page_spec 生成 Vue3+Element Plus 页面、api.js 与 api.mock.js；路径须推荐并获用户确认后落盘；当前仅对接 mock"
+
+# -----------------------------------------------------------------------------
+# 流程输出：本流程产出的变量名，与暂存 artifact 一一对应
+# -----------------------------------------------------------------------------
+outputs:
+  - requirement_spec
+  - prototype_spec
+  - page_spec
+  - code_artifacts
+  - api_module_path
+  - files_written
+
+# -----------------------------------------------------------------------------
+# 错误处理：任一步失败时停止，不重试
+# -----------------------------------------------------------------------------
+error_handling:
+  on_error: stop   # stop | continue | retry
+  max_retries: 0

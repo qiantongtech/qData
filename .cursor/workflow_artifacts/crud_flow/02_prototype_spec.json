@@ -1,0 +1,20 @@
+{
+  "entityLabel": "数据源连接",
+  "layoutNote": "页面布局：左侧为数据源分组管理（列表/树，支持新增、修改、删除分组）；右侧为当前分组下的连接列表（表格含名称、类型、地址、状态，支持按名称查询，操作：新增、编辑、测试连通性、删除）。",
+  "columns": [
+    { "label": "名称", "type": "string", "required": true },
+    { "label": "类型", "type": "enum", "required": true },
+    { "label": "地址", "type": "string", "required": true },
+    { "label": "状态", "type": "enum" }
+  ],
+  "searchFields": [
+    { "label": "名称", "type": "string", "placeholder": "请输入名称" }
+  ],
+  "actions": ["create", "update", "delete", "view"],
+  "customActions": [{ "label": "测试连通性", "description": "对当前连接执行连通性测试" }],
+  "actionPermissions": [
+    { "action": "delete", "description": "仅管理员可删" }
+  ],
+  "pagination": { "pageSize": 10, "showSizeChanger": true },
+  "tableConfig": { "stripe": true, "border": true, "showIndex": true, "showSelection": false }
+}

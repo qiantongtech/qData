@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CodeManifest",
+  "description": "代码生成步骤的产出记录：生成的文件路径与 API 模块路径",
+  "type": "object",
+  "properties": {
+    "filesWritten": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "已写入的文件路径列表"
+    },
+    "apiModulePath": {
+      "type": "string",
+      "description": "API 模块落盘路径"
+    },
+    "codeArtifacts": {
+      "type": "object",
+      "description": "代码产物与路径摘要"
+    }
+  }
+}

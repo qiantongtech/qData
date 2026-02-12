@@ -1,0 +1,28 @@
+---
+description: 代码风格与命名（views/components/api/静态/路由/脚本、Import 顺序）
+globs: **/*.js, **/*.vue
+alwaysApply: false
+---
+# 代码风格与格式
+
+## 与 ESLint 一致
+- 以项目根目录 **eslint.config.js** 为准；连续空行最多 1 行（`no-multiple-empty-lines`）。
+
+## 命名
+- **views 页面**：一级目录=一级菜单（模块简称如 da、dpp），列表页统一 `index.vue`，其他小驼峰+功能名（如 `apiAdd.vue`、`qualityTaskAdd.vue`）。
+- **components 组件**：目录**大驼峰**（PascalCase），文件名**小驼峰**（camelCase），如 `DictTag/index.vue`、`GuideTip/guideTipConfig.js`。
+- **API 接口**：目录与文件均**小驼峰**，文件名表达接口职责、不超过 3 个单词，如 `assetApply.js`、`dataSync.js`。
+- **静态资源**：**小写 + 连字符**（kebab-case），如 `user-avatar.png`；禁止空格、中文、特殊符号。
+- **路由**：小驼峰，模块下统一 `index.js`；path 与目录结构一致。
+- **执行脚本**（bin/）：**小写 + 连字符**，如 `run-dev.sh`、`init-env.bat`。
+
+## Import 顺序
+按依赖来源依次排列，组间空一行：
+1. **Vue 核心**：ref、reactive、computed、onMounted 等
+2. **第三方库**：element-plus、lodash-es 等
+3. **本地模块**：@/api、@/store、@/utils、@/composables 等
+4. **样式**：./xxx.scss
+
+## 文件组织
+- 单文件内顺序：template → script → style；script 中 setup 优先，顶层 import → 响应式/计算/方法。
+- 同目录下常量、配置可放在 `constants.js` 或 `xxxConfig.js`。

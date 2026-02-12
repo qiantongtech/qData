@@ -1,0 +1,12 @@
+---
+description: 测试（mock）
+globs: **/*.spec.js, **/*.test.js, **/__tests__/**/*
+alwaysApply: false
+---
+# 测试
+
+## Mock 数据放置与命名
+- **位置**：mock 与对应 API **同目录**，便于维护。例如 `src/api/att/cat/assetCat/assetCat.js` 的 mock 放在同目录。
+- **命名**：`<模块名>.mock.js`（如 `assetCat.mock.js`），与真实接口文件一一对应，一眼可辨。
+- **引用**：仅在测试中通过 `vi.mock('@/api/xxx', () => ...)` 或显式 import mock 模块使用；不在业务代码中引用 mock，确保生产构建不包含 mock。
+- **内容**：API 请求统一 mock，不依赖真实后端；边界与错误分支要有用例。

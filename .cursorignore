@@ -1,0 +1,5 @@
+# secrets
+.env
+**/*.pem
+**/*secret*
+**/*credential*

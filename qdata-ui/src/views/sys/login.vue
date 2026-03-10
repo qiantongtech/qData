@@ -62,7 +62,7 @@
                 </div>
                 <div class="login-panel">
                     <el-form ref="loginRef" :model="loginForm" :rules="loginRules">
-                        <p class="titles">账号登录</p>
+                        <p class="titles">{{t('login.accountLogin')}}</p>
                         <div class="titles-bar"></div>
                         <el-form-item prop="username">
                             <el-input v-model="loginForm.username" type="text" auto-complete="off" placeholder="账号">
@@ -248,6 +248,7 @@ import Swiper from 'swiper';
 import 'swiper/swiper-bundle.min.css';
 import useUserStore from '@/store/system/user.js';
 import { getContent } from '@/api/system/system/content';
+import { useI18n } from 'vue-i18n';
 import defaultLogo from '@/assets/system/images/login/qData-logo.png';
 import { useTimeGreeting } from '@/composables/useTimeGreeting';
 const userStore = useUserStore();
@@ -255,6 +256,7 @@ const dialogVisible = ref(false);
 const { proxy } = getCurrentInstance();
 const loading = ref(false);
 const codeUrl = ref('');
+const { t } = useI18n();
 // const greetingsTitle = ref('');
 const { greeting, message } = useTimeGreeting()
 const captchaEnabled = ref(true);

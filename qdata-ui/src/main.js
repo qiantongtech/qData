@@ -38,7 +38,6 @@ import ElementPlus from 'element-plus'
 import AniviaComponents from 'anivia-components'
 import 'anivia-components/style.css'
 import 'element-plus/dist/index.css'
-import locale from 'element-plus/es/locale/lang/zh-cn'
 
 import '@/assets/system/styles/index.scss' // global css
 import '@/assets/system/styles/anivia.scss' // 自定义样式 css
@@ -48,6 +47,7 @@ import App from './App'
 import store from './store'
 import router from './router'
 import directive from './directive' // directive
+import { setupI18n } from './i18n' // i18n
 
 // 注册指令
 import plugins from './plugins' // plugins
@@ -130,9 +130,11 @@ directive(app)
 
 // 使用element-plus 并且设置全局的大小
 app.use(ElementPlus, {
-  locale: locale,
   // 支持 large、default、small
   size: Cookies.get('size') || 'default'
 })
 
+await setupI18n(app);
+
 app.mount('#app')
+

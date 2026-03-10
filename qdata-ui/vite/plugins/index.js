@@ -36,12 +36,14 @@ import createAutoImport from "./auto-import";
 import createSvgIcon from "./svg-icon";
 import createCompression from "./compression";
 import createSetupExtend from "./setup-extend";
+import createVueI18nPlugin from "./i18n";
 // import { visualizer } from "rollup-plugin-visualizer";
 
 export default function createVitePlugins(viteEnv, isBuild = false) {
   const vitePlugins = [vue()];
   vitePlugins.push(createAutoImport());
   vitePlugins.push(createSetupExtend());
+  vitePlugins.push(createVueI18nPlugin());
   vitePlugins.push(createSvgIcon(isBuild));
   // vitePlugins.push(
   //   visualizer({

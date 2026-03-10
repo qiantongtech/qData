@@ -42,7 +42,18 @@ const useAppStore = defineStore(
         hide: false
       },
       device: 'desktop',
-      size: Cookies.get('size') || 'default'
+      size: Cookies.get('size') || 'default',
+      locale: Cookies.get('locale')?JSON.parse(Cookies.get('locale')): {lang:'zh-Hans'},
+      localeMap: [
+        {
+          lang: 'zh-Hans',
+          name: '简体中文'
+        },
+        {
+          lang: 'en-US',
+          name: 'USEnglish'
+        }
+      ]
     }),
     actions: {
       toggleSideBar(withoutAnimation) {
@@ -71,6 +82,16 @@ const useAppStore = defineStore(
       },
       toggleSideBarHide(status) {
         this.sidebar.hide = status
+      },
+      getCurrentLocale(){
+        return this.locale;
+      },
+      getLocaleMap(){
+        return this.localeMap;
+      },
+      setCurrentLocale(locale){
+        this.locale = locale;
+        Cookies.set('locale', JSON.stringify(locale))
       }
     }
   })

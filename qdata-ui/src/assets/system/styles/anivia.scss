@@ -1192,6 +1192,10 @@
     box-shadow: 0 0 0 1px #dcdfe6 inset;
     border-radius: 2px !important;
   }
+  
+  .el-input__wrapper.is-focus {
+    box-shadow: 0 0 0 1px var(--el-color-primary) inset !important;
+  }
 
   .el-input__inner {
     &::placeholder {

@@ -58,15 +58,15 @@
             :model="userStore"
             ref="queryRef"
             :inline="true"
-            label-width="93px"
+            label-width="75px"
           >
             <el-form-item
-              label="所属项目"
+              :label="t('navbar.project')"
               prop="projectId"
               :rules="[
                 {
                   required: true,
-                  message: '请选择所属项目',
+                  message: t('navbar.selectProject'),
                   trigger: 'change',
                 },
               ]"
@@ -76,7 +76,7 @@
                 :fit-input-width="true"
                 v-model="userStore.projectId"
                 @change="projectIdChange"
-                placeholder="请选择所属项目"
+                :placeholder="t('navbar.selectProject')"
                 clearable
                 popper-class="custom-option-style"
               >
@@ -147,7 +147,7 @@
               class="mag-tabs"
               @tab-click="handleClick"
             >
-              <el-tab-pane label="消息提醒" name="first">
+              <el-tab-pane :label="t('navbar.messages')" name="first">
                 <div class="message-list">
                   <div
                     class="msg-item"
@@ -172,12 +172,12 @@
                       messages == 'undefined'
                     "
                     :image-size="100"
-                    description="暂无消息"
+                    :description="t('navbar.noMessages')"
                     class="empty-block"
                   />
                 </div>
               </el-tab-pane>
-              <el-tab-pane label="通知" name="second">
+              <el-tab-pane :label="t('navbar.notifications')" name="second">
                 <!--                <message-list :msg-category="'first'"></message-list>-->
                 <div class="message-list">
                   <div
@@ -199,7 +199,7 @@
                   </div>
                 </div>
               </el-tab-pane>
-              <el-tab-pane label="公告" name="third">
+              <el-tab-pane :label="t('navbar.announcements')" name="third">
                 <!--                <message-list :msg-category="'second'"></message-list>-->
                 <div class="message-list">
                   <div
@@ -223,15 +223,20 @@
               </el-tab-pane>
             </el-tabs>
             <div class="msg-btns">
-              <div class="btn-item" @click="clearNotification">全部已读</div>
-              <div class="btn-item" @click="messageDetail">查看更多</div>
+              <div class="btn-item" @click="clearNotification">
+                {{ t("navbar.markAllRead") }}
+              </div>
+              <div class="btn-item" @click="messageDetail">
+                {{ t("navbar.viewMore") }}
+              </div>
             </div>
           </template>
         </el-popover>
         <div class="right-menu-item hover-effect" @click="handleRefreshClick">
           <!-- <el-icon size="22">
                         <Refresh />
-                    </el-icon> -->
+                    </el-icon> 
+                    -->
           <i
             class="iconfont icon-a-shuaxinxianxing"
             style="font-size: 20px"
@@ -241,6 +246,41 @@
         <header-search id="header-search" class="right-menu-item" />
 
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
+
+        <el-dropdown
+          id="language-select"
+          class="right-menu-item hover-effect"
+          trigger="click"
+          @command="handleLanguageChange"
+        >
+          <div
+            class="language-select-wrapper"
+            style="
+              height: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            "
+          >
+            <svg-icon
+              :iconClass="locale === 'zh-Hans' ? 'language' : 'international'"
+              style="font-size: 20px"
+            />
+          </div>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item
+                command="zh-Hans"
+                :disabled="locale === 'zh-Hans'"
+              >
+                简体中文
+              </el-dropdown-item>
+              <el-dropdown-item command="en-US" :disabled="locale === 'en-US'">
+                English
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
 
         <!-- <el-tooltip content="布局大小" effect="dark" placement="bottom">
                   <size-select id="size-select" class="right-menu-item hover-effect" />
@@ -259,19 +299,19 @@
           <template #dropdown>
             <el-dropdown-menu>
               <router-link to="/user/profile">
-                <el-dropdown-item>个人中心</el-dropdown-item>
+                <el-dropdown-item>{{ t("navbar.profile") }}</el-dropdown-item>
               </router-link>
               <el-dropdown-item
                 command="setLayout"
                 v-if="settingsStore.showSettings"
               >
-                <span>布局设置</span>
+                <span>{{ t("navbar.layoutSettings") }}</span>
               </el-dropdown-item>
               <!-- <el-dropdown-item command="about">
                                 <span>关于我们</span>
                             </el-dropdown-item> -->
               <el-dropdown-item divided command="logout">
-                <span>退出登录</span>
+                <span>{{ t("navbar.logout") }}</span>
               </el-dropdown-item>
             </el-dropdown-menu>
           </template>
@@ -280,7 +320,7 @@
     </div>
 
     <el-dialog
-      title="关于我们"
+      :title="t('navbar.aboutUs')"
       class="about-dialog"
       v-model="activeOpen"
       append-to-body
@@ -293,32 +333,32 @@
           class="logo"
         />
         <div class="about-title">
-          版本{{ currentVersion }}
+          {{ t("navbar.versionTitle", { version: currentVersion }) }}
           <!-- <span class="version-badge"></span> -->
         </div>
-        <div class="copyright">©{{ year }}江苏千桐科技有限公司版权所有</div>
+        <div class="copyright">{{ t("navbar.copyright", { year }) }}</div>
       </div>
 
       <template #footer>
         <div class="about-footer">
           <div v-if="!needUpdate" class="status-text">
-            版本{{ currentVersion }}已是最新版本。
+            {{ t("navbar.versionCurrent", { version: currentVersion }) }}
           </div>
           <div v-else class="status-text">
-            最新版本{{ latestVersion }}
+            {{ t("navbar.versionLatest", { version: latestVersion }) }}
             <a
               href="https://gitee.com/qiantongtech/qData"
               target="_blank"
               rel="noopener noreferrer"
               class="update-link"
             >
-              更新
+              {{ t("navbar.update") }}
             </a>
           </div>
           <div class="head-btns">
-            <el-button type="primary" @click="openUpdateLog"
-              >更新日志</el-button
-            >
+            <el-button type="primary" @click="openUpdateLog">{{
+              t("navbar.changelog")
+            }}</el-button>
           </div>
         </div>
       </template>
@@ -353,6 +393,9 @@ import { currentUser } from "@/api/att/project/project";
 import { da, id } from "element-plus/es/locale/index.mjs";
 import usePermissionStore from "@/store/system/permission";
 import { getRoutersDpp } from "@/api/system/menu";
+import { i18n } from "@/i18n/index";
+import { autoImportLangFiles } from "@/i18n-config/index";
+import { useI18n } from "vue-i18n";
 // import { getCurrentAppVersion } from "@/api/system/update/update.js";
 // import {listProject, getProject} from "@/api/project/projectBase/project";
 // import {listReport, getReport, delReport, addReport, updateReport} from "@/api/project/report/report";
@@ -371,10 +414,12 @@ let isFlag = ref(false);
 const activeMsg = ref("first");
 const projectId = ref("");
 const permissionStore = usePermissionStore();
+const { t, locale } = useI18n();
 
 const needUpdate = ref(false);
 const currentVersion = ref("");
 const latestVersion = ref("");
+const year = new Date().getFullYear();
 // 所有的路由信息
 const routers = computed(() => permissionStore.topbarRouters);
 //-----------------------以下报工内容-------------------------
@@ -412,7 +457,7 @@ function resetFromWork() {
 //请假了
 function offFromWork() {
   proxy.$modal
-    .confirm("确认请假了？")
+    .confirm(t("navbar.leaveConfirm"))
     .then(function () {})
     .then(() => {
       const itemList = tableData.value;
@@ -425,7 +470,7 @@ function offFromWork() {
       console.log("---------提交-请假----req-------", req);
       addReport(req)
         .then((response) => {
-          proxy.$modal.msgSuccess("提交成功");
+          proxy.$modal.msgSuccess(t("navbar.submitSuccess"));
           open.value = false;
           getList();
         })
@@ -446,7 +491,7 @@ function getRouter(data) {
 /** 提交按钮 */
 function submitForm() {
   if (form.value.reportExperience == null) {
-    proxy.$modal.msgWarning("工作心得为空");
+    proxy.$modal.msgWarning(t("navbar.workExperienceEmpty"));
     return;
   }
   proxy.$refs["reportRef"].validate((valid) => {
@@ -454,7 +499,7 @@ function submitForm() {
     if (valid) {
       const tempList = tableData.value;
       if (tempList.length == 0) {
-        proxy.$modal.msgError("报工项目为空");
+        proxy.$modal.msgError(t("navbar.projectEmpty"));
         return;
       }
       let idStatus = false;
@@ -468,11 +513,11 @@ function submitForm() {
         }
       });
       if (idStatus) {
-        proxy.$modal.msgWarning("报工项目为空");
+        proxy.$modal.msgWarning(t("navbar.projectEmpty"));
         return;
       }
       if (timeStatus) {
-        proxy.$modal.msgWarning("报工项目工作时长为空");
+        proxy.$modal.msgWarning(t("navbar.durationEmpty"));
         return;
       }
       // 提取所有非空的 projectId 并用逗号连接
@@ -498,7 +543,7 @@ function submitForm() {
         };
         updateReport(req)
           .then((response) => {
-            proxy.$modal.msgSuccess("修改成功");
+            proxy.$modal.msgSuccess(t("navbar.updateSuccess"));
             open.value = false;
             getList();
           })
@@ -555,7 +600,7 @@ const handlePopoverClick = (value) => {
 function openForWork() {
   tableData.value = [{ projectId: null, duration: null }];
   form.value.reportExperience = null;
-  title.value = "新增报工";
+  title.value = t("navbar.addWorkReport");
   open.value = true;
 }
 
@@ -803,6 +848,13 @@ const handleClick = (tab) => {
 function openDocumentation() {
   window.open("https://qdata.qiantong.tech/docs", "_blank");
 }
+
+function handleLanguageChange(lang) {
+  const messages = autoImportLangFiles(lang);
+  i18n.global.setLocaleMessage(lang, messages);
+  locale.value = lang;
+  appStore.setCurrentLocale({ lang });
+}
 function toggleSideBar() {
   appStore.toggleSideBar();
 }
@@ -836,9 +888,9 @@ function handleCommand(command) {
 }
 
 function logout() {
-  ElMessageBox.confirm("确定注销并退出系统吗？", "提示", {
-    confirmButtonText: "确定",
-    cancelButtonText: "取消",
+  ElMessageBox.confirm(t("navbar.logoutConfirm"), t("navbar.tips"), {
+    confirmButtonText: t("navbar.confirm"),
+    cancelButtonText: t("navbar.cancel"),
     type: "warning",
   })
     .then(() => {
@@ -884,7 +936,7 @@ function clearNotification() {
   readAll().then(() => {
     messages.value = [];
     msgCount.value = 0;
-    ElMessage.success("已全部已读！");
+    ElMessage.success(t("navbar.allReadSuccess"));
   });
 }
 </script>
@@ -1008,12 +1060,12 @@ function clearNotification() {
     }
 
     &:focus {
-      outline: none;
+      // outline: none;
     }
 
     .right-menu-item {
       display: inline-block;
-      padding: 0 8px;
+      padding: 0 10px;
       height: 100%;
       font-size: 18px;
       color: #5a5e66;

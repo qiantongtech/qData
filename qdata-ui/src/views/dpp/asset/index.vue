@@ -35,41 +35,101 @@
     <GuideTip tip-id="dpp/dppAsset.list" />
 
     <el-container style="90%">
-      <DeptTree :deptOptions="deptOptions" :leftWidth="leftWidth" :placeholder="'请输入资产类目名称'" ref="DeptTreeRef"
-        @node-click="handleNodeClick" />
+      <DeptTree
+        :deptOptions="deptOptions"
+        :leftWidth="leftWidth"
+        :placeholder="'请输入资产类目名称'"
+        ref="DeptTreeRef"
+        @node-click="handleNodeClick"
+      />
       <el-main>
         <div class="pagecont-top" v-show="showSearch">
-          <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="75px"
-            v-show="showSearch" @submit.prevent>
+          <el-form
+            class="btn-style"
+            :model="queryParams"
+            ref="queryRef"
+            :inline="true"
+            label-width="75px"
+            v-show="showSearch"
+            @submit.prevent
+          >
             <el-form-item label="资产名称" prop="name">
-              <el-input style="width: 166px" v-model="queryParams.name" placeholder="请输入资产名称" clearable
-                @keyup.enter="handleQuery" />
+              <el-input
+                style="width: 166px"
+                v-model="queryParams.name"
+                placeholder="请输入资产名称"
+                clearable
+                @keyup.enter="handleQuery"
+              />
             </el-form-item>
             <el-form-item label="发布状态" prop="status">
-              <el-select style="width: 166px" v-model="queryParams.status" placeholder="请选择发布状态" clearable>
-                <el-option v-for="dict in da_assets_status" :key="dict.value" :label="dict.label" :value="dict.value" />
+              <el-select
+                style="width: 166px"
+                v-model="queryParams.status"
+                placeholder="请选择发布状态"
+                clearable
+              >
+                <el-option
+                  v-for="dict in da_assets_status"
+                  :key="dict.value"
+                  :label="dict.label"
+                  :value="dict.value"
+                />
               </el-select>
             </el-form-item>
             <el-form-item label="所属主题" prop="themeIdList">
-              <el-select style="width: 166px" v-model="queryParams.themeIdList" collapse-tags multiple
-                placeholder="请选择主题名称">
-                <el-option v-for="dict in themeList" :key="dict.id" :label="dict.name" :value="dict.id" />
+              <el-select
+                style="width: 166px"
+                v-model="queryParams.themeIdList"
+                collapse-tags
+                multiple
+                placeholder="请选择主题名称"
+              >
+                <el-option
+                  v-for="dict in themeList"
+                  :key="dict.id"
+                  :label="dict.name"
+                  :value="dict.id"
+                />
               </el-select>
             </el-form-item>
             <el-form-item label="资产类型" prop="status">
-              <el-select style="width: 166px" v-model="queryParams.type" placeholder="请选择资产类型" clearable>
-                <el-option v-for="dict in da_asset_type" :key="dict.value" :label="dict.label" :value="dict.value" />
+              <el-select
+                style="width: 166px"
+                v-model="queryParams.type"
+                placeholder="请选择资产类型"
+                clearable
+              >
+                <el-option
+                  v-for="dict in da_asset_type"
+                  :key="dict.value"
+                  :label="dict.label"
+                  :value="dict.value"
+                />
               </el-select>
             </el-form-item>
             <div class="form-item-btn">
-              <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
+              <el-button
+                plain
+                type="primary"
+                @click="handleQuery"
+                @mousedown="(e) => e.preventDefault()"
+              >
                 <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
               </el-button>
-              <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
+              <el-button
+                @click="resetQuery"
+                @mousedown="(e) => e.preventDefault()"
+              >
                 <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
               </el-button>
-              <el-button type="primary" plain @click="handleAdd" v-hasPermi="['da:asset:add']"
-                @mousedown="(e) => e.preventDefault()">
+              <el-button
+                type="primary"
+                plain
+                @click="handleAdd"
+                v-hasPermi="['da:asset:add']"
+                @mousedown="(e) => e.preventDefault()"
+              >
                 <i class="iconfont-mini icon-xinzeng mr5"></i>新增
               </el-button>
             </div>
@@ -77,35 +137,42 @@
         </div>
         <div class="pagecont-bottom pagecont-bottoms" v-loading="loading">
           <div class="page-list" v-if="total > 0">
-            <div class="page-item" v-for="(item, index) in daAssetList" :key="index">
+            <div
+              class="page-item"
+              v-for="(item, index) in daAssetList"
+              :key="index"
+            >
               <div class="item-title">
                 <div class="item-title-left">
                   <!-- <img class="title-icon" src="@/assets/da/asset2/tit.svg" alt="" /> -->
-                  <span class="item-title-name ellipsis" @click="
-                    routeTo(
-                      type == 1
-                        ? '/dpp/asset/detail'
-                        : '/da/asset/detail',
-                      item
-                    )
-                    ">{{ item.name }}</span>
+                  <span
+                    class="item-title-name ellipsis"
+                    @click="
+                      routeTo(
+                        type == 1 ? '/dpp/asset/detail' : '/da/asset/detail',
+                        item
+                      )
+                    "
+                    >{{ item.name }}</span
+                  >
                   <div v-for="btn in titleBtns" :key="btn.id">
-                    <!-- <div class="title-btn" :class="{ act: item.type == btn.id }" v-if="item.type == btn.id">
-                      <svg-icon :icon-class="btn.icon" />
-                      <span>{{ btn.name }}</span>
-                    </div> -->
-                    <el-tag v-if="item.type == btn.id" style="margin-right: 10px;">{{ btn.name
-                    }}</el-tag>
+                    <el-tag
+                      v-if="item.type == btn.id"
+                      style="margin-right: 10px"
+                      >{{ btn.name }}</el-tag
+                    >
                   </div>
-                  <el-tag v-if="!unregistered(item)" style="margin-right: 10px;">
+                  <el-tag v-if="!unregistered(item)" style="margin-right: 10px">
                     未注册
                   </el-tag>
-                  <el-tag :type="item.status == 2 ? 'success' : 'warning'">{{ item.status == 2 ? "已发布" : "未发布"
+                  <el-tag :type="item.status == 2 ? 'success' : 'warning'">{{
+                    item.status == 2 ? "已发布" : "未发布"
                   }}</el-tag>
-
-
                 </div>
-                <div class="item-title-right" v-if="item.type == 1 && unregistered(item)">
+                <div
+                  class="item-title-right"
+                  v-if="item.type == 1 && unregistered(item)"
+                >
                   <div class="li-tab">
                     <span>{{ item.dataCount }}行</span>
                   </div>
@@ -123,7 +190,10 @@
                   <div class="li-tab" v-if="item.datasourceType">
                     <img src="@/assets/da/asset2/fen (1).svg" alt="" />
                     <span>
-                      <overflow-tooltip :text="item.datasourceName" max-width="150px" />
+                      <overflow-tooltip
+                        :text="item.datasourceName"
+                        max-width="150px"
+                      />
                     </span>
                   </div>
                 </div>
@@ -148,17 +218,21 @@
                   </div>
                   <div class="item-form item-form1">
                     <div class="form-label">所属主题:</div>
-                    <div class="form-value" :title="item.daAssetThemeRelList?.length
-                      ? item.daAssetThemeRelList
-                        .map((ele) => ele.themeName)
-                        .join(', ')
-                      : '-'
-                      ">
+                    <div
+                      class="form-value"
+                      :title="
+                        item.daAssetThemeRelList?.length
+                          ? item.daAssetThemeRelList
+                              .map((ele) => ele.themeName)
+                              .join(', ')
+                          : '-'
+                      "
+                    >
                       {{
                         item.daAssetThemeRelList?.length
                           ? item.daAssetThemeRelList
-                            .map((ele) => ele.themeName)
-                            .join(", ")
+                              .map((ele) => ele.themeName)
+                              .join(", ")
                           : "-"
                       }}
                     </div>
@@ -178,24 +252,43 @@
                     </div>
                   </div>
                   <div class="flex-wrap">
-                    <div class="item-form">
-
-                    </div>
+                    <div class="item-form"></div>
                     <div class="form-btns">
-                      <div class="form-btn" v-if="!unregistered(item)" @click="handleUpdate(item, 'register')">
+                      <div
+                        class="form-btn"
+                        v-if="!unregistered(item)"
+                        @click="handleUpdate(item, 'register')"
+                      >
                         <img src="@/assets/da/asset2/btn (2).svg" alt="" />
                         <span>注册</span>
                       </div>
-                      <div class="form-btn" v-if="unregistered(item)" @click="handleView(item)">
+                      <div
+                        class="form-btn"
+                        v-if="unregistered(item)"
+                        @click="handleView(item)"
+                      >
                         <img src="@/assets/da/asset2/btn (2).svg" alt="" />
                         <span>详情</span>
                       </div>
-                      <div class="form-btn" :class="{
-                        danger: item.status == 2,
-                        warn: item.status != 2,
-                      }" v-if="unregistered(item)" @click="handleStatusChange(item)">
-                        <img v-if="item.status == 2" src="@/assets/da/asset2/btn (1).svg" alt="" />
-                        <img v-else src="@/assets/da/asset2/btn (4).svg" alt="" />
+                      <div
+                        class="form-btn"
+                        :class="{
+                          danger: item.status == 2,
+                          warn: item.status != 2,
+                        }"
+                        v-if="unregistered(item)"
+                        @click="handleStatusChange(item)"
+                      >
+                        <img
+                          v-if="item.status == 2"
+                          src="@/assets/da/asset2/btn (1).svg"
+                          alt=""
+                        />
+                        <img
+                          v-else
+                          src="@/assets/da/asset2/btn (4).svg"
+                          alt=""
+                        />
                         <span>{{
                           item.status == 2 ? "撤销发布" : "发布"
                         }}</span>
@@ -208,31 +301,49 @@
                         <template #dropdown>
                           <el-dropdown-menu>
                             <el-dropdown-item v-if="unregistered(item)">
-                              <el-text type="primary" @click="handleUpdate(item)">
+                              <el-text
+                                type="primary"
+                                @click="handleUpdate(item)"
+                              >
                                 <el-icon>
-                                  <Edit />
-                                </el-icon>修改
+                                  <Edit /> </el-icon
+                                >修改
                               </el-text>
                             </el-dropdown-item>
-                            <el-dropdown-item v-if="unregistered(item) && item.type == 1">
-                              <el-text type="primary" @click="handleRefresh(item)">
+                            <el-dropdown-item
+                              v-if="unregistered(item) && item.type == 1"
+                            >
+                              <el-text
+                                type="primary"
+                                @click="handleRefresh(item)"
+                              >
                                 <el-icon>
-                                  <Refresh />
-                                </el-icon>更新数据
+                                  <Refresh /> </el-icon
+                                >更新数据
                               </el-text>
                             </el-dropdown-item>
-                            <el-dropdown-item v-if="unregistered(item) && type != 1">
-                              <el-text type="primary" @click="handleApply(item)">
+                            <el-dropdown-item
+                              v-if="unregistered(item) && type != 1"
+                            >
+                              <el-text
+                                type="primary"
+                                @click="handleApply(item)"
+                              >
                                 <el-icon>
-                                  <EditPen />
-                                </el-icon>申请
+                                  <EditPen /> </el-icon
+                                >申请
                               </el-text>
                             </el-dropdown-item>
-                            <el-dropdown-item v-if="type != 1 || item.sourceType == 1">
-                              <el-text type="danger" @click="handleDelete(item)">
+                            <el-dropdown-item
+                              v-if="type != 1 || item.sourceType == 1"
+                            >
+                              <el-text
+                                type="danger"
+                                @click="handleDelete(item)"
+                              >
                                 <el-icon>
-                                  <Delete />
-                                </el-icon>删除
+                                  <Delete /> </el-icon
+                                >删除
                               </el-text>
                             </el-dropdown-item>
                           </el-dropdown-menu>
@@ -248,14 +359,25 @@
             <img src="@/assets/da/asset/empty.png" alt="" />
             <span>暂无搜索内容～</span>
           </div>
-          <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum"
-            v-model:limit="queryParams.pageSize" @pagination="getList" />
+          <pagination
+            v-show="total > 0"
+            :total="total"
+            v-model:page="queryParams.pageNum"
+            v-model:limit="queryParams.pageSize"
+            @pagination="getList"
+          />
         </div>
       </el-main>
     </el-container>
 
     <!-- 数据资产详情对话框 -->
-    <el-dialog :title="title" v-model="openDetail" width="800px" :append-to="$refs['app-container']" draggable>
+    <el-dialog
+      :title="title"
+      v-model="openDetail"
+      width="800px"
+      :append-to="$refs['app-container']"
+      draggable
+    >
       <template #header="{ close, titleId, titleClass }">
         <span role="heading" aria-level="2" class="el-dialog__title">
           {{ title }}
@@ -360,21 +482,43 @@
     </el-dialog>
 
     <!-- 用户导入对话框 -->
-    <el-dialog :title="upload.title" v-model="upload.open" width="800px" :append-to="$refs['app-container']" draggable
-      destroy-on-close>
-      <el-upload ref="uploadRef" :limit="1" accept=".xlsx, .xls" :headers="upload.headers"
-        :action="upload.url + '?updateSupport=' + upload.updateSupport" :disabled="upload.isUploading"
-        :on-progress="handleFileUploadProgress" :on-success="handleFileSuccess" :auto-upload="false" drag>
+    <el-dialog
+      :title="upload.title"
+      v-model="upload.open"
+      width="800px"
+      :append-to="$refs['app-container']"
+      draggable
+      destroy-on-close
+    >
+      <el-upload
+        ref="uploadRef"
+        :limit="1"
+        accept=".xlsx, .xls"
+        :headers="upload.headers"
+        :action="upload.url + '?updateSupport=' + upload.updateSupport"
+        :disabled="upload.isUploading"
+        :on-progress="handleFileUploadProgress"
+        :on-success="handleFileSuccess"
+        :auto-upload="false"
+        drag
+      >
         <el-icon class="el-icon--upload"><upload-filled /></el-icon>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         <template #tip>
           <div class="el-upload__tip text-center">
             <div class="el-upload__tip">
-              <el-checkbox v-model="upload.updateSupport" />是否更新已经存在的数据资产数据
+              <el-checkbox
+                v-model="upload.updateSupport"
+              />是否更新已经存在的数据资产数据
             </div>
             <span>仅允许导入xls、xlsx格式文件。</span>
-            <el-link type="primary" :underline="false" style="font-size: 12px; vertical-align: baseline"
-              @click="importTemplate">下载模板</el-link>
+            <el-link
+              type="primary"
+              :underline="false"
+              style="font-size: 12px; vertical-align: baseline"
+              @click="importTemplate"
+              >下载模板</el-link
+            >
           </div>
         </template>
       </el-upload>
@@ -385,12 +529,31 @@
         </div>
       </template>
     </el-dialog>
-    <CreateEditModal :deptOptions="deptOptions" :visible="open" :title="title" @update:visible="open = $event"
-      @confirm="getList" :data="form" :isRegister="isRegister" type="1" />
+    <CreateEditModal
+      :deptOptions="deptOptions"
+      :visible="open"
+      :title="title"
+      @update:visible="open = $event"
+      @confirm="getList"
+      :data="form"
+      :isRegister="isRegister"
+      type="1"
+    />
 
     <!-- 申请数据资产对话框 -->
-    <el-dialog :title="titleApply" v-model="openApply" width="800px" :append-to="$refs['app-container']" draggable>
-      <el-form ref="daAssetApplyRef" :model="formApply" :rules="rulesApply" label-width="100px">
+    <el-dialog
+      :title="titleApply"
+      v-model="openApply"
+      width="800px"
+      :append-to="$refs['app-container']"
+      draggable
+    >
+      <el-form
+        ref="daAssetApplyRef"
+        :model="formApply"
+        :rules="rulesApply"
+        label-width="100px"
+      >
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="资产名称">
@@ -430,28 +593,50 @@
         <el-row :gutter="20">
           <el-col :span="24">
             <el-form-item label="资产描述">
-              <el-input type="textarea" v-model="formApply.description" :rows="3" disabled />
+              <el-input
+                type="textarea"
+                v-model="formApply.description"
+                :rows="3"
+                disabled
+              />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="申请项目" prop="projectCode">
-              <el-select v-model="formApply.projectCode" @change="handleSelectProject" placeholder="请选择申请项目">
-                <el-option v-for="item in projectOptions" :key="item.code" :label="item.name" :value="item.code" />
+              <el-select
+                v-model="formApply.projectCode"
+                @change="handleSelectProject"
+                placeholder="请选择申请项目"
+              >
+                <el-option
+                  v-for="item in projectOptions"
+                  :key="item.code"
+                  :label="item.name"
+                  :value="item.code"
+                />
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="联系电话" prop="phone">
-              <el-input v-model="formApply.phone" placeholder="请输入联系电话" />
+              <el-input
+                v-model="formApply.phone"
+                placeholder="请输入联系电话"
+              />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
             <el-form-item label="申请事由" prop="applyReason">
-              <el-input type="textarea" v-model="formApply.applyReason" :rows="3" placeholder="请输入申请事由" />
+              <el-input
+                type="textarea"
+                v-model="formApply.applyReason"
+                :rows="3"
+                placeholder="请输入申请事由"
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -474,13 +659,13 @@ import {
   updateDaAsset,
   listDppAsset,
   startDaDiscoveryTask,
-  dataLineage
+  dataLineage,
 } from "@/api/da/asset/asset";
 
 import CreateEditModal from "./add/index.vue";
 import { currentUser } from "@/api/att/project/project.js";
 import DeptTree from "@/components/DeptTree";
-import { listAttAssetCat, } from "@/api/att/cat/assetCat/assetCat.js";
+import { listAttAssetCat } from "@/api/att/cat/assetCat/assetCat.js";
 import { getToken } from "@/utils/auth.js";
 import { addDaAssetApply } from "@/api/da/assetApply/assetApply";
 import useUserStore from "@/store/system/user";
@@ -499,10 +684,9 @@ const daAssetList = ref([]);
 const AttTagList = ref([]);
 const isRegister = ref(false);
 
-
 const unregistered = (item) => {
   return item.createType == undefined || item.createType == 2;
-}
+};
 // 列显隐信息
 const columns = ref([
   { key: 0, label: "编号", visible: true },
@@ -809,7 +993,7 @@ const updateResize = (event) => {
     leftWidth.value += delta; // 修改左侧宽度
     startX = event.clientX; // 更新起始位置
     // 使用 requestAnimationFrame 来减少页面重绘频率
-    requestAnimationFrame(() => { });
+    requestAnimationFrame(() => {});
   }
 }; /** 查询部门下拉树结构 */
 /** 排序触发事件 */
@@ -849,7 +1033,7 @@ function handleAdd() {
 
 /** 修改按钮操作 */
 function handleUpdate(row, register) {
-  if (register == 'register') {
+  if (register == "register") {
     isRegister.value = true;
   } else {
     isRegister.value = false;
@@ -858,9 +1042,9 @@ function handleUpdate(row, register) {
   const _id = row.id || ids.value;
   loading.value = true;
   getDaAsset(_id).then((response) => {
-    if(register == 'register'){
-        response.data.datasourceId = "";
-        response.data.tableName = "";
+    if (register == "register") {
+      response.data.datasourceId = "";
+      response.data.tableName = "";
     }
     form.value = response.data;
     open.value = true;
@@ -881,17 +1065,14 @@ function handleDelete(row) {
       getList();
       proxy.$modal.msgSuccess("删除成功");
     })
-    .catch(() => { });
+    .catch(() => {});
 }
 function handleView(row) {
   if (!unregistered(row)) {
     return proxy.$modal.msgWarning("该资产暂未注册，请注册后重试");
   }
-  console.log("直接跳转数据资产的详情页面")
-  routeTo(
-    '/dpp/asset/detail',
-    row
-  )
+  console.log("直接跳转数据资产的详情页面");
+  routeTo("/dpp/asset/detail", row);
 }
 function addAttTagData(row) {
   assetId.value = row.id;
@@ -995,8 +1176,8 @@ const handleFileSuccess = (response, file, fileList) => {
   proxy.$refs["uploadRef"].handleRemove(file);
   proxy.$alert(
     "<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +
-    response.msg +
-    "</div>",
+      response.msg +
+      "</div>",
     "导入结果",
     { dangerouslyUseHTMLString: true }
   );
@@ -1091,7 +1272,6 @@ getAssetThemeList();
 
 //上传附件样式调整
 ::v-deep {
-
   // .el-upload-list{
   //    display: flex;
   // }

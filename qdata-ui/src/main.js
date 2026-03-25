@@ -63,7 +63,7 @@ import elementIcons from '@/components/SvgIcon/svgicon'
 import './permission' // permission control
 
 import { useDict } from '@/utils/dict'
-import { parseTime, resetForm, addDateRange, handleTree, selectDictLabel, selectDictLabels } from '@/utils/anivia.js'
+import { parseTime, resetForm, addDateRange, handleTree, selectDictLabel, selectDictLabels, getFormatValue, formatNewlines } from '@/utils/anivia.js'
 
 // 分页组件
 import Pagination from '@/components/Pagination'
@@ -90,6 +90,12 @@ import DictTag from '@/components/DictTag'
 // 可视化表单设计器工具
 import FcDesigner from '@form-create/designer';
 import '@/assets/iconfont/font_new/iconfont.css' // iconfont css
+
+import QtSearchBar from '@/components/QtSearchBar/index.vue';
+import QtWrap from '@/components/QtWrap/index.vue';
+import QtTable from '@/components/QtTable/index.vue';
+import QtTabPane from '@/components/QtTabPane/index.vue';
+
 const app = createApp(App)
 app.use(AniviaComponents)
 app.use(FcDesigner);
@@ -105,6 +111,7 @@ app.config.globalProperties.handleTree = handleTree
 app.config.globalProperties.addDateRange = addDateRange
 app.config.globalProperties.selectDictLabel = selectDictLabel
 app.config.globalProperties.selectDictLabels = selectDictLabels
+app.config.globalProperties.getFormatValue = getFormatValue;
 // 将事件总线挂载到全局属性
 app.config.globalProperties.$bus = bus;
 
@@ -120,6 +127,10 @@ app.component('ImagePreview', ImagePreview)
 app.component('RightToolbar', RightToolbar)
 app.component('RightToolbar2', RightToolbar2)
 app.component('Editor', Editor)
+app.component('QtSearchBar', QtSearchBar)
+app.component('QtWrap', QtWrap)
+app.component('QtTable', QtTable)
+app.component('QtTabPane', QtTabPane)
 app.use(router)
 app.use(store)
 app.use(plugins)

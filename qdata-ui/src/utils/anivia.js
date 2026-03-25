@@ -31,7 +31,6 @@
  */
 
 
-
 /**
  * 通用js方法封装处理
  * Copyright (c) 2019 qData
@@ -275,4 +274,88 @@ export function getNormalPath(p) {
 // 验证是否为blob格式
 export function blobValidate(data) {
   return data.type !== 'application/json'
+}
+
+
+// 格式化返回值
+export function getFormatValue(value) {
+  if (value === null || value === undefined || value === 'null') {
+    return '-';
+  }
+  return value;
+}
+
+const imageModules = import.meta.glob('@/assets/**/*.{png,jpg,gif,svg}', { eager: true, import: 'default' })
+export function getAssetsFile(path) {
+  if (!path || path.trim() === '') {
+    console.error('提供的路径无效', path);
+    return undefined;
+  }
+
+  const imagePath = `/src/assets/${path}`;
+
+  if (imageModules.hasOwnProperty(imagePath)) {
+    return imageModules[imagePath];
+  } else {
+    console.log(`找不到路径的图像: ${imagePath}`);
+    return undefined;
+  }
+}
+
+
+export function getParentLabelPath(tree, targetId, options = {}) {
+  const {
+    idKey = 'id',
+    labelKey = 'label',
+    childrenKey = 'children'
+  } = options;
+  function findNode(nodeList, currentPath = []) {
+    for (const node of nodeList) {
+      if (node[idKey] === targetId) {
+        return [...currentPath, node[labelKey]];
+      }
+      if (node[childrenKey] && node[childrenKey].length > 0) {
+        const result = findNode(node[childrenKey], [...currentPath, node[labelKey]]);
+        if (result) return result;
+      }
+    }
+    return null;
+  }
+  const labelPath = findNode(tree);
+  return labelPath ? labelPath.join('/') : '';
+}
+
+// 前端下载日志
+export function downloadContent(content, filename) {
+  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename || 'log.txt';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+// 格式化版本号
+export function formatVersion(version) {
+  const patch = version % 1000;
+  const minor = Math.floor(version / 1000) % 1000;
+  const major = Math.floor(version / 1000000);
+  return `v${major}.${minor}.${patch}`;
+}
+
+// 格式化换行符
+export function formatNewlines(str) {
+  if (!str) return '-';
+  // 第一步：如果字符串中是字面量 "\\n"，先转成真实 \n
+  let processed = str.replace(/\\n/g, '\n');
+  // 第二步：转义 HTML 防 XSS
+  processed = processed
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+  // 第三步：把真实 \n 转成 <br>
+  return processed.replace(/\n/g, '<br>');
 }

@@ -1,11 +1,12 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
+ * Copyright (c) 2026 Jiangsu Qiantong Technology Co., Ltd.
  *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
+ * Software Name: qData Data Middle Platform (Commercial Edition)
+ * Software Copyright Registration No. 16069171
+ *  *
+ * [RIGHTS AND LICENSE STATEMENT]
+ * This file contains non-public commercial source code of which Jiangsu Qiantong
+ * Technology Co., Ltd. lawfully possesses complete intellectual property rights.
  *  *
  * Special Notice:
  * All derivative versions are strictly prohibited from modifying or removing
@@ -73,7 +74,7 @@ public class GenUtils
         column.setTableId(table.getTableId());
         column.setCreateBy(table.getCreateBy());
         // 设置java字段名
-        column.setJavaField(StringUtils.toCamelCase(columnName));
+        column.setJavaField(StringUtils.toCamelCase(columnName.toLowerCase()));
         // 设置默认类型
         column.setJavaType(GenConstants.TYPE_STRING);
         column.setQueryType(GenConstants.QUERY_EQ);

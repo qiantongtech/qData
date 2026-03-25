@@ -813,6 +813,12 @@
     color: #8737a3 !important;
   }
 
+  .el-tag.el-tag--infos {
+    background: #f4f4f5;
+    color: #909399;
+    border: 0px solid #f4f4f5 !important;
+  }
+
   /* //撤回 */
   .el-tag.el-tag--revocation {
     background: #fbf2f3 !important;

@@ -65,7 +65,6 @@
 <template>
   <div class="app-container" ref="app-container">
     <GuideTip tip-id="dpp/tasker/dpptaskerddv.list" />
-
     <el-container>
       <DeptTree
         :api="api"
@@ -80,7 +79,7 @@
         @node-click="handleNodeClick"
         title="数据开发类目"
       />
-      <el-main>
+      <el-main class="main-content">
         <qt-wrap :columns="tableStore.columns" :tableRef="tableRef">
           <template #search>
             <qt-search-bar
@@ -98,45 +97,41 @@
 
           <qt-table v-bind="tableStore" ref="tableRef">
             <template #name="{ row }">
-              <div class="name-label">
+              <div class="name-label task-title">
                 <div
                   class="justify task-title-row"
                   @click="
-                    routeTo('/dpp/task/developTask/detail', {
+                    routeTo('/dpp/task/integratioTask/detail', {
                       ...row,
                       info: true,
                     })
                   "
                 >
                   <img
-                    :src="getDatasourceIcon(row.datasourceType)"
+                    :src="getDatasourceIcon(row.draftJson)"
                     alt=""
                     class="datasource-icon"
-                    v-if="getDatasourceIcon(row.datasourceType)"
+                    v-if="getDatasourceIcon(row.draftJson)"
                   />
                   <el-link
                     type="primary"
                     :underline="false"
-                    class="task-name-text text-ellipsis"
+                    class="task-name-text task-name-ellipsis"
                     :title="row.name"
                   >
-                    {{ row.name }}
+                    {{ row.name || "-" }}
                   </el-link>
                   <el-tag
                     type="primary"
                     :underline="false"
-                    class="text-ellipsis task-cat-ellipsis"
+                    class="task-cat-ellipsis"
                     :title="row.catName"
                   >
-                    {{ row.catName }}
+                    {{ row.catName || "-" }}
                   </el-tag>
                 </div>
-                <div
-                  class="text-ellipsis-2 desc-text"
-                  v-if="row.description"
-                  :title="row.description"
-                >
-                  {{ row.description }}
+                <div class="text-ellipsis desc-text">
+                  {{ row.description || "-" }}
                 </div>
               </div>
             </template>
@@ -171,7 +166,7 @@
             <template #cronExpression="{ row }">
               <div class="flex-column fz14 grey-black-text">
                 <div class="flex-center mb5">
-                  <el-icon class="mr5"><Clock /></el-icon>
+                  <el-icon class="mr5 fz14"><Clock /></el-icon>
                   <span
                     class="text-ellipsis cron-text"
                     :title="cronToZh(row.cronExpression)"
@@ -186,6 +181,33 @@
                     :value="row.executionType"
                   />
                 </div>
+              </div>
+            </template>
+            <template #lastExecute="{ row }">
+              <div class="flex-column fz14 last-execute-col">
+                <template v-if="row.lastExecuteTime">
+                  <div class="mb5">
+                    <dict-tag
+                      v-if="
+                        row.lastExecuteStatus !== null &&
+                        row.lastExecuteStatus !== undefined &&
+                        row.lastExecuteStatus !== ''
+                      "
+                      :options="dpp_etl_task_instance"
+                      :value="row.lastExecuteStatus"
+                    />
+                    <span v-else>-</span>
+                  </div>
+                  <span>
+                    {{ parseTime(row.lastExecuteTime, "{y}-{m}-{d} {h}:{i}") }}
+                  </span>
+                </template>
+                <template v-else>
+                  <div class="mb5">
+                    <el-tag type="infos">未执行</el-tag>
+                  </div>
+                  <span>-</span>
+                </template>
               </div>
             </template>
             <template #personChargeName="{ row }">
@@ -207,6 +229,12 @@
                 >
                 <span>{{ row.createUserContactNumber || "-" }}</span>
               </div>
+            </template>
+            <template #executionType="{ row }">
+              <dict-tag
+                :options="dpp_etl_task_execution_type"
+                :value="row.executionType"
+              />
             </template>
             <template #action="{ row }">
               <el-button
@@ -387,11 +415,13 @@ const api = {
 const {
   dpp_etl_task_status,
   dpp_etl_task_execution_type,
+  dpp_etl_task_instance,
   datasource_type,
   dpp_etl_task_process_type,
 } = proxy.useDict(
   "dpp_etl_task_status",
   "dpp_etl_task_execution_type",
+  "dpp_etl_task_instance",
   "datasource_type",
   "dpp_etl_task_process_type"
 );
@@ -688,6 +718,7 @@ const tableStore = reactive({
     sort: true,
     table: {
       stripe: true,
+      rowKey: "id",
       defaultSort: { prop: "create_time", order: "descending" },
     },
   },
@@ -697,32 +728,41 @@ const tableStore = reactive({
       label: "任务信息",
       prop: "name",
       align: "left",
-      width: 250,
       slot: "name",
-      align: "left",
+      width: 300,
     },
     {
       label: "运行控制",
       prop: "status",
-      width: 150,
+      width: 130,
       slot: "releaseState",
+      align: "left",
     },
     {
       label: "调度周期",
       prop: "cronExpression",
-      width: 240,
+      width: 200,
       slot: "cronExpression",
+      align: "left",
+    },
+    {
+      label: "最近执行",
+      width: 160,
+      slot: "lastExecute",
+      align: "left",
     },
 
     {
       label: "责任人",
       width: 120,
       slot: "personChargeName",
+      align: "left",
     },
     {
       label: "创建人",
       slot: "createBy",
-      width: 100,
+      width: 120,
+      align: "left",
       showOverflowTooltip: true,
     },
     {
@@ -730,8 +770,9 @@ const tableStore = reactive({
       prop: "createTime",
       sortable: true,
       sortableKey: "create_time",
-      width: 160,
       date: true,
+      width: 150,
+      align: "left",
     },
 
     {
@@ -739,11 +780,14 @@ const tableStore = reactive({
       align: "center",
       fixed: "right",
       slot: "action",
+      width: 240,
     },
   ],
   func: listWrapper,
   params: {
     catCode: null,
+    projectId: userStore.projectId,
+    projectCode: userStore.projectCode,
   },
 });
 
@@ -898,31 +942,44 @@ usePageRefresh("developTask", () => getList());
 getDeptTree();
 </script>
 <style scoped lang="scss">
-::v-deep {
-  .selectlist .el-tag.el-tag--info {
-    background: #f3f8ff !important;
-    border: 0px solid #6ba7ff !important;
-    color: #2666fb !important;
-  }
+.task-title-row {
+  width: 100%;
+  min-width: 0;
+  gap: 6px;
+  justify-content: flex-start !important;
+  flex-wrap: nowrap;
 }
 
-.app-container {
-  margin: 13px 15px;
+.task-name-ellipsis {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 160px;
 }
 
-.el-main {
-  padding: 2px 0px;
-  // box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
+:deep(.task-name-ellipsis .el-link__inner) {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
-//上传附件样式调整
-::v-deep {
-  // .el-upload-list{
-  //    display: flex;
-  // }
-  .el-upload-list__item {
-    width: 100%;
-    height: 25px;
-  }
+.task-cat-ellipsis {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: none;
+  padding: 0 4px;
+  height: 20px;
+  line-height: 18px;
+}
+
+:deep(.name-label .task-cat-ellipsis .el-tag__content) {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 12px !important;
 }
 </style>
+

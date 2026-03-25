@@ -342,16 +342,6 @@
  	max-width: 190px;
  }
 
- /* 多行文本省略 */
- .text-ellipsis-2 {
- 	display: -webkit-box;
- 	-webkit-box-orient: vertical;
- 	-webkit-line-clamp: 2;
- 	overflow: hidden;
- 	text-overflow: ellipsis;
- 	word-break: break-all;
- }
-
  /* 垂直布局 */
  .flex-column {
  	display: flex;
@@ -374,10 +364,9 @@
 
  /* 字体大小 14px */
  .fz14 {
- 	font-size: 14px;
+ 	font-size: 14px !important;
  }
 
- /* 水平居中 Flex */
  .flex-center {
  	display: flex;
  	align-items: center;

@@ -74,6 +74,10 @@
         ref="DeptTreeRef"
         title="数据集成类目"
         @node-click="handleNodeClick"
+        :extraParams="{
+          projectCode: userStore.projectCode,
+          projectId: userStore.projectId,
+        }"
       />
       <el-main class="main-content">
         <qt-wrap :columns="tableStore.columns" :tableRef="tableRef">
@@ -115,7 +119,7 @@
                     class="task-name-text task-name-ellipsis"
                     :title="row.name"
                   >
-                    {{ row.name }}
+                    {{ row.name || "-" }}
                   </el-link>
                   <el-tag
                     type="primary"
@@ -123,15 +127,11 @@
                     class="task-cat-ellipsis"
                     :title="row.catName"
                   >
-                    {{ row.catName }}
+                    {{ row.catName || "-" }}
                   </el-tag>
                 </div>
-                <div
-                  class="text-ellipsis desc-text"
-                  v-if="row.description"
-                  :title="row.description"
-                >
-                  {{ row.description }}
+                <div class="text-ellipsis desc-text" :title="row.description">
+                  {{ row.description || "-" }}
                 </div>
               </div>
             </template>
@@ -204,7 +204,9 @@
                 </template>
                 <template v-else>
                   <div class="mb5">
-                    <el-tag type="info" effect="plain">未执行</el-tag>
+                    <el-tag type="infos" class="not-executed-tag"
+                      >未执行</el-tag
+                    >
                   </div>
                   <span>-</span>
                 </template>
@@ -780,13 +782,7 @@ if (userStore.projectId) {
 usePageRefresh("integratioTask", () => handleQuery());
 </script>
 
-<style lang="scss" scoped>
-.last-execute-col {
-  :deep(.el-tag) {
-    font-size: 12px;
-  }
-}
-
+<style scoped lang="scss">
 .task-title-row {
   width: 100%;
   min-width: 0;
@@ -796,9 +792,9 @@ usePageRefresh("integratioTask", () => handleQuery());
 }
 
 .task-name-ellipsis {
-  flex: 0 1 auto;
+  flex: 0 0 auto;
   min-width: 0;
-  max-width: 160px;
+  max-width: calc(100% - 90px);
 }
 
 :deep(.task-name-ellipsis .el-link__inner) {
@@ -813,14 +809,23 @@ usePageRefresh("integratioTask", () => handleQuery());
   flex: 0 1 auto;
   min-width: 0;
   max-width: none;
+  padding: 0 4px;
+  height: 20px;
+  line-height: 18px;
 }
 
-:deep(.task-cat-ellipsis .el-tag__content) {
+:deep(.name-label .task-cat-ellipsis .el-tag__content) {
   display: inline-block;
   max-width: 100%;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  font-size: 12px !important;
+}
+
+.not-executed-tag {
+  background-color: var(--el-fill-color-lighter);
+  border-color: var(--el-border-color-lighter);
 }
 </style>
 

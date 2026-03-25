@@ -91,7 +91,10 @@
               <div class="infotop-row border-top">
                 <div class="infotop-row-lable">分类</div>
                 <div class="infotop-row-value">
-                    <dict-tag :options="dm_data_layer_category" :value="dataLayerDetail.category}}
+                  <dict-tag
+                    :options="dm_data_layer_category"
+                    :value="dataLayerDetail.category"
+                  />
                 </div>
               </div>
             </el-col>

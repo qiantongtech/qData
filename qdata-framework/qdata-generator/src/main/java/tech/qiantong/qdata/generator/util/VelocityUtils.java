@@ -274,38 +274,42 @@ public class VelocityUtils
         String businessName = genTable.getBusinessName();
 
         String javaPath = PROJECT_PATH + "/" + StringUtils.replace(packageName, ".", "/");
+        String javaPathApi = javaPath;
 
         String module = packageName.replaceFirst("^.*?\\.module\\.", "").replaceFirst("^[^.]+\\.", "").replace(".", "/");
-        String mybatisPath = MYBATIS_PATH + "/" + module + "/" + moduleName;
+        String module0 = "qdata-module-"+module;
+        javaPath = module0 + "-biz/src/" + javaPath;
+        javaPathApi = module0 + "-api/src/" + javaPathApi;
+        String mybatisPath = module0 + "-biz/src/" + MYBATIS_PATH + "/" + module + "/" + moduleName;
         String vuePath = "vue";
 
         if (template.contains("do.java.vm"))
         {
-            fileName = StringUtils.format("{}/biz/dal/dataobject/{}/{}.java", javaPath, moduleName, className + "DO");
+            fileName = StringUtils.format("{}/dal/dataobject/{}/{}.java", javaPath, moduleName, className + "DO");
         }
         if (template.contains("reqDTO.java.vm"))
         {
-            fileName = StringUtils.format("{}/api/{}/dto/{}.java", javaPath, moduleName, className + "ReqDTO");
+            fileName = StringUtils.format("{}/api/{}/dto/{}.java", javaPathApi, moduleName, className + "ReqDTO");
         }
         if (template.contains("respDTO.java.vm"))
         {
-            fileName = StringUtils.format("{}/api/{}/dto/{}.java", javaPath, moduleName, className + "RespDTO");
+            fileName = StringUtils.format("{}/api/{}/dto/{}.java", javaPathApi, moduleName, className + "RespDTO");
         }
         if (template.contains("respVO.java.vm"))
         {
-            fileName = StringUtils.format("{}/biz/controller/admin/{}/vo/{}.java", javaPath, moduleName, className + "RespVO");
+            fileName = StringUtils.format("{}/controller/admin/{}/vo/{}.java", javaPath, moduleName, className + "RespVO");
         }
         if (template.contains("pageReqVO.java.vm"))
         {
-            fileName = StringUtils.format("{}/biz/controller/admin/{}/vo/{}.java", javaPath, moduleName, className + "PageReqVO");
+            fileName = StringUtils.format("{}/controller/admin/{}/vo/{}.java", javaPath, moduleName, className + "PageReqVO");
         }
         if (template.contains("convert.java.vm"))
         {
-            fileName = StringUtils.format("{}/biz/convert/{}/{}.java", javaPath, moduleName, className + "Convert");
+            fileName = StringUtils.format("{}/convert/{}/{}.java", javaPath, moduleName, className + "Convert");
         }
         if (template.contains("saveReqVO.java.vm"))
         {
-            fileName = StringUtils.format("{}/biz/controller/admin/{}/vo/{}.java", javaPath, moduleName, className + "SaveReqVO");
+            fileName = StringUtils.format("{}/controller/admin/{}/vo/{}.java", javaPath, moduleName, className + "SaveReqVO");
         }
         if (template.contains("sub-do.java.vm") && StringUtils.equals(GenConstants.TPL_SUB, genTable.getTplCategory()))
         {
@@ -313,19 +317,19 @@ public class VelocityUtils
         }
         else if (template.contains("mapper.java.vm"))
         {
-            fileName = StringUtils.format("{}/biz/dal/mapper/{}/{}Mapper.java", javaPath, moduleName, className);
+            fileName = StringUtils.format("{}/dal/mapper/{}/{}Mapper.java", javaPath, moduleName, className);
         }
         else if (template.contains("service.java.vm"))
         {
-            fileName = StringUtils.format("{}/biz/service/{}/I{}Service.java", javaPath, moduleName, className);
+            fileName = StringUtils.format("{}/service/{}/I{}Service.java", javaPath, moduleName, className);
         }
         else if (template.contains("serviceImpl.java.vm"))
         {
-            fileName = StringUtils.format("{}/biz/service/{}/impl/{}ServiceImpl.java", javaPath, moduleName, className);
+            fileName = StringUtils.format("{}/service/{}/impl/{}ServiceImpl.java", javaPath, moduleName, className);
         }
         else if (template.contains("controller.java.vm"))
         {
-            fileName = StringUtils.format("{}/biz/controller/admin/{}/{}Controller.java", javaPath, moduleName, className);
+            fileName = StringUtils.format("{}/controller/admin/{}/{}Controller.java", javaPath, moduleName, className);
         }
         else if (template.contains("mapper.xml.vm"))
         {

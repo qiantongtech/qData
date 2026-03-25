@@ -96,6 +96,10 @@ public class DppEtlTaskRespVO implements Serializable {
     @Schema(description = "责任人", example = "")
     private String personCharge;
 
+    @Excel(name = "责任人名称")
+    @Schema(description = "责任人名称", example = "")
+    private String personChargeName;
+
     @Excel(name = "联系电话")
     @Schema(description = "联系电话", example = "")
     private String contactNumber;
@@ -142,6 +146,9 @@ public class DppEtlTaskRespVO implements Serializable {
     @Excel(name = "创建人")
     @Schema(description = "创建人", example = "")
     private String createBy;
+
+    @Schema(description = "创建人联系电话", example = "")
+    private String createUserContactNumber;
 
     @Excel(name = "创建人id")
     @Schema(description = "创建人id", example = "")

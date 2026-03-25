@@ -212,6 +212,7 @@
         <module>qdata-api-ds</module>
         <module>qdata-etl</module>
         <module>qdata-quality</module>
+        <module>qdata-module-dm</module>
     </modules>
     <packaging>pom</packaging>
 

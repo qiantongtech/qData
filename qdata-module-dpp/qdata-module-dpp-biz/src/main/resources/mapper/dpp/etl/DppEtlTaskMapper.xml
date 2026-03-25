@@ -332,6 +332,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="getDppEtlTaskPage" resultType="tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlTaskRespVO">
         SELECT
             t.*,
+            cu.NICK_NAME AS personChargeName,
+            u.PHONENUMBER AS createUserContactNumber,
+            t2.NAME AS catName,
             t3.CRON_EXPRESSION AS cronExpression,
             t3.STATUS AS schedulerState,
             ti.CREATE_TIME AS lastExecuteTime,
@@ -349,6 +352,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             </if>
         FROM
             DPP_ETL_TASK t
+            LEFT JOIN SYSTEM_USER u on t.CREATOR_ID = u.USER_ID AND u.DEL_FLAG = '0'
+            LEFT JOIN SYSTEM_USER cu on t.PERSON_CHARGE = cu.USER_ID AND cu.DEL_FLAG = '0'
         <choose>
             <when test="params.type == '1'.toString()">
                 LEFT JOIN  ATT_TASK_CAT t2 ON t.CAT_CODE = t2.CODE AND t2.DEL_FLAG = '0'
@@ -363,15 +368,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         LEFT JOIN DPP_ETL_SCHEDULER t3 ON t.id = t3.task_id AND t3.DEL_FLAG = '0'
         <!-- 关键改造：关联“每个任务最新一条实例”的子查询 -->
         LEFT JOIN (
-            SELECT ti1.TASK_CODE, ti1.CREATE_TIME, ti1.STATUS
-            FROM DPP_ETL_TASK_INSTANCE ti1
-            WHERE ti1.DEL_FLAG = '0'
-            AND ti1.CREATE_TIME = (
-                SELECT MAX(ti2.CREATE_TIME)
-                FROM DPP_ETL_TASK_INSTANCE ti2
-                WHERE ti2.TASK_CODE = ti1.TASK_CODE
-                AND ti2.DEL_FLAG = '0'
-            )
+            SELECT
+                ti1.TASK_CODE, ti1.CREATE_TIME, ti1.STATUS
+            FROM
+                DPP_ETL_TASK_INSTANCE ti1
+                JOIN (
+                    SELECT
+                        ti2.TASK_CODE,MAX(ti2.CREATE_TIME) AS CREATE_TIME
+                    FROM
+                        DPP_ETL_TASK_INSTANCE ti2
+                    WHERE
+                        ti2.DEL_FLAG = '0'
+                    GROUP BY ti2.TASK_CODE
+                ) maxData ON maxData.TASK_CODE = ti1.TASK_CODE AND maxData.CREATE_TIME = ti1.CREATE_TIME
+            WHERE
+                ti1.DEL_FLAG = '0'
         ) ti ON ti.TASK_CODE = t.CODE
         WHERE
             t.DEL_FLAG = '0'

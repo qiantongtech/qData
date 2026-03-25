@@ -1,253 +1,352 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
+  Copyright (c) 2026 Jiangsu Qiantong Technology Co., Ltd.
    *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
+  Software Name: qData Data Middle Platform (Commercial Edition)
+  Software Copyright Registration No. 16069171
    *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
+  [RIGHTS AND LICENSE STATEMENT]
+  This file contains non-public commercial source code of which Jiangsu Qiantong
+  Technology Co., Ltd. lawfully possesses complete intellectual property rights.
    *
-  More information: https://qdata.qiantong.tech/business.html
+  Access and use are limited to entities or individuals who have signed a valid
+  commercial license agreement, within the scope stipulated in the agreement.
+  The "accessibility" of this source code is premised on lawful authorization
+  and does not constitute any form of transfer of intellectual property rights
+  or implied licensing.
+   *
+  [PROHIBITIONS]
+  Unless explicitly agreed in the license agreement, the following acts in any
+  form are strictly prohibited:
+  1. Copying, disseminating, disclosing, selling, renting, or redistributing
+  this source code;
+  2. Providing the software's functionality to third parties via SaaS, PaaS,
+  cloud hosting, or other means;
+  3. Using this software or its derivative versions to develop products that
+  compete with the Right Holder;
+  4. Providing or displaying this source code or related technical information
+  to unauthorized third parties;
+  5. Tampering with, circumventing, or destroying copyright notices, license
+  verifications, or other technical protection measures.
+   *
+  [LEGAL LIABILITY]
+  Any unauthorized use constitutes an infringement of trade secrets and
+  intellectual property rights.
+   *
+  The Right Holder will strictly pursue liability for breach of contract and
+  infringement in accordance with the commercial agreement and laws such as
+  the "Copyright Law of the People's Republic of China" and the "Anti-Unfair
+  Competition Law".
    *
   ============================================================================
    *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
+  Copyright (c) 2026 江苏千桐科技有限公司
    *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
+  软件名称：qData 数据中台（商业版） | 软著登字第16069171号
    *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
+  【权利与授权声明】
+  本文件属于江苏千桐科技有限公司依法享有完全知识产权的非公开商业源代码。
+  仅限已签署有效商业授权合同的单位或个人在约定范围内查阅和使用。
+  源代码的“可访问性”均以合法授权为前提，不构成任何形式的知识产权转让或默示授权。
    *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
+  【禁止事项】
+  除授权合同明确约定外，严禁任何形式的：
+  1. 复制、传播、披露、出售、出租或再分发本源代码；
+  2. 通过 SaaS、PaaS、云托管等方式向第三方提供本软件功能；
+  3. 将本软件或其衍生版本用于开发与权利人构成竞争的产品；
+  4. 向未授权第三方提供或展示本源代码或相关技术信息；
+  5. 篡改、规避或破坏版权标识、授权校验及其他技术保护措施。
+   *
+  【法律责任】
+  任何未经授权的利用行为，均构成对商业秘密及知识产权的侵害。
+  权利人将依据商业合同及《中华人民共和国著作权法》《反不正当竞争法》
+  等法律法规，严厉追究违约与侵权责任。
 -->
 
 <template>
   <div class="app-container" ref="app-container">
-
     <GuideTip tip-id="dpp/tasker/dppEtlTask.list" />
-
-
     <el-container>
-      <DeptTree :deptOptions="deptOptions" :leftWidth="leftWidth" :placeholder="'请输入数据集成类目名称'" ref="DeptTreeRef"
-        @node-click="handleNodeClick" />
-      <el-main>
-        <div class="pagecont-top" v-show="showSearch">
-          <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="75px"
-            v-show="showSearch" @submit.prevent>
-            <el-form-item label="任务名称" prop="name">
-              <el-input class="el-form-input-width" v-model="queryParams.name" placeholder="请输入任务名称" clearable
-                @keyup.enter="handleQuery" />
-            </el-form-item>
-            <el-form-item label="任务状态" prop="status">
-              <el-select v-model="queryParams.status" placeholder="请选择任务状态" clearable class="el-form-input-width">
-                <el-option v-for="dict in dpp_etl_task_status" :key="dict.value" :label="dict.label"
-                  :value="dict.value" />
-              </el-select>
-            </el-form-item>
-            <el-form-item label="责任人" prop="personCharge">
-              <el-tree-select clearable filterable v-model="queryParams.personCharge" :data="userList" :props="{
-                value: 'userId',
-                label: 'nickName',
-                children: 'children',
-              }" value-key="ID" placeholder="请选择责任人" check-strictly class="el-form-input-width" />
-            </el-form-item>
-            <el-form-item>
-              <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
-              </el-button>
-              <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-                <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
-              </el-button>
-            </el-form-item>
-          </el-form>
-        </div>
-        <div class="pagecont-bottom">
-          <div class="justify-between mb15">
-            <el-row :gutter="15" class="btn-style">
-              <el-col :span="1.5">
-                <el-button type="primary" plain @click="openTaskConfigDialog">
-                  <i class="iconfont-mini icon-xinzeng mr5"></i>新增
-                </el-button>
-              </el-col>
-            </el-row>
-            <div class="justify-end top-right-btn">
-              <right-toolbar v-model:showSearch="showSearch" @queryTable="getList" :columns="columns"></right-toolbar>
-            </div>
-          </div>
-          <!-- :default-sort="defaultSort" -->
-          <el-table stripe v-loading="loading" :data="dppEtlTaskList" :default-sort="defaultSort"
-            @sort-change="handleSortChange">
-            <el-table-column v-if="getColumnVisibility(0)" label="编号" width="60" align="left" prop="id" />
-            <el-table-column v-if="getColumnVisibility(1)" label="任务名称" :show-overflow-tooltip="true" align="left"
-              prop="name" width="300">
-              <template #default="scope">
-                <div class="justify">
-                  <img :src="getDatasourceIcon(scope.row.draftJson)" alt=""
-                    :style="getDatasourceIcon(scope.row.draftJson) ? 'width: 20px;margin-right: 5px;' : ''">
-                  <span>{{ scope.row.name || "-" }}</span>
+      <DeptTree
+        :api="api"
+        :editable="true"
+        :leftWidth="leftWidth"
+        :placeholder="'请输入数据集成类目名称'"
+        ref="DeptTreeRef"
+        title="数据集成类目"
+        @node-click="handleNodeClick"
+      />
+      <el-main class="main-content">
+        <qt-wrap :columns="tableStore.columns" :tableRef="tableRef">
+          <template #search>
+            <qt-search-bar
+              v-bind="searchStore"
+              :params="tableStore.params"
+              @query="handleQuery"
+              @reset="resetQuery"
+            />
+          </template>
+          <template #actions-data>
+            <el-button type="primary" plain @click="openTaskConfigDialog">
+              <i class="iconfont-mini icon-xinzeng mr5"></i>新增
+            </el-button>
+          </template>
+
+          <qt-table v-bind="tableStore" ref="tableRef">
+            <template #name="{ row }">
+              <div class="name-label task-title">
+                <div
+                  class="justify task-title-row"
+                  @click="
+                    routeTo('/dpp/task/integratioTask/detail', {
+                      ...row,
+                      info: true,
+                    })
+                  "
+                >
+                  <img
+                    :src="getDatasourceIcon(row.draftJson)"
+                    alt=""
+                    class="datasource-icon"
+                    v-if="getDatasourceIcon(row.draftJson)"
+                  />
+                  <el-link
+                    type="primary"
+                    :underline="false"
+                    class="task-name-text task-name-ellipsis"
+                    :title="row.name"
+                  >
+                    {{ row.name }}
+                  </el-link>
+                  <el-tag
+                    type="primary"
+                    :underline="false"
+                    class="task-cat-ellipsis"
+                    :title="row.catName"
+                  >
+                    {{ row.catName }}
+                  </el-tag>
                 </div>
-              </template>
-            </el-table-column>
-            <el-table-column v-if="getColumnVisibility(2)" label="描述" :show-overflow-tooltip="true" align="left"
-              prop="description" width="240">
-              <template #default="scope">
-                {{ scope.row.description || "-" }}
-              </template>
-            </el-table-column>
-            <el-table-column v-if="getColumnVisibility(4)" label="任务类目" :show-overflow-tooltip="true" align="left"
-              prop="catName" width="140">
-              <template #default="scope">
-                {{ scope.row.catName || "-" }}
-              </template>
-            </el-table-column>
-            <el-table-column v-if="getColumnVisibility(9)" label="执行策略" width="80"
-              :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="executionType">
-              <template #default="scope">
-                <dict-tag :options="dpp_etl_task_execution_type" :value="scope.row.executionType" />
-              </template>
-            </el-table-column>
-
-
-            <el-table-column v-if="getColumnVisibility(7)" align="left" prop="status" width="80">
-              <template #header>
-                <div class="justify-center" style="display: flex; align-items: center; justify-content: center;">
-                  <span>任务状态</span>
-                  <el-tooltip effect="light" content="代表任务上线，不会执行调度，上线后才可以执行一次" placement="top">
-                    <el-icon class="tip-icon" style="margin-left: 4px;">
-                      <InfoFilled />
-                    </el-icon>
-                  </el-tooltip>
+                <div
+                  class="text-ellipsis desc-text"
+                  v-if="row.description"
+                  :title="row.description"
+                >
+                  {{ row.description }}
                 </div>
-              </template>
-              <template #default="scope">
-                <el-switch v-model="scope.row.status" active-color="#13ce66" inactive-color="#ff4949" active-value="1"
-                  :inactive-value="getStatus(scope.row.status)" @change="handleStatusChange(scope.row.id, scope.row)"
-                  :disabled="scope.row.status == '-1'" />
-              </template>
-            </el-table-column>
-            <el-table-column v-if="getColumnVisibility(8)" label="调度状态" width="80" align="left" prop="schedulerState">
-              <template #header>
-                <div class="justify-center" style="display: flex; align-items: center; justify-content: center;">
-                  <span>调度状态</span>
-                  <el-tooltip effect="light" content="任务状态为启用后可开启调度" placement="top">
-                    <el-icon class="tip-icon" style="margin-left: 4px;">
-                      <InfoFilled />
-                    </el-icon>
-                  </el-tooltip>
-                </div>
-              </template>
-              <template #default="scope">
-                <el-switch v-model="scope.row.schedulerState" active-color="#13ce66" inactive-color="#ff4949"
-                  active-value="1" inactive-value="0" :disabled="scope.row.status != '1'"
-                  @change="handleschedulerState(scope.row.id, scope.row)" />
-              </template>
-            </el-table-column>
-
-
-            <el-table-column v-if="getColumnVisibility(5)" label="调度周期" :show-overflow-tooltip="{ effect: 'light' }"
-              align="left" prop="cronExpression" width="240">
-              <template #default="scope">
-                {{ cronToZh(scope.row.cronExpression) || "-" }}
-              </template>
-            </el-table-column>
-
-            <el-table-column v-if="getColumnVisibility(14)" label="最近运行时间" align="left" width="160"
-              :show-overflow-tooltip="true" prop="lastExecuteTime">
-              <template #default="scope">
-                <span>{{
-                  parseTime(
-                    scope.row.lastExecuteTime,
-                    "{y}-{m}-{d} {h}:{i}"
-                  ) || "-"
-                }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column v-if="getColumnVisibility(10)" width="100px" label="创建人"
-              :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="createBy">
-              <template #default="scope">
-                {{ scope.row.createBy || "-" }}
-              </template>
-            </el-table-column>
-            <!--  sortable="custom" column-key="create_time" :sort-orders="['descending', 'ascending']" -->
-            <el-table-column v-if="getColumnVisibility(11)" label="创建时间" align="left" prop="create_time" width="150"
-              sortable="custom" column-key="create_time" :sort-orders="['descending', 'ascending']">
-              <template #default="scope"> <span>{{ parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}") || "-"
-              }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column v-if="getColumnVisibility(7)" label="配置状态" :show-overflow-tooltip="true" align="left"
-              prop="status" width="80">
-              <template #default="scope">
-                <el-tag :type="scope.row.status == -1 ? 'warning' : 'success'">{{ scope.row.status == -1 ? "草稿" : "完成"
-                }}</el-tag>
-              </template>
-            </el-table-column>
-            <el-table-column v-if="getColumnVisibility(13)" width="100" label="最近执行结果" align="left" prop="status">
-              <template #default="scope">
-                <dict-tag :options="dpp_etl_task_instance" :value="scope.row.lastExecuteStatus" />
-              </template>
-            </el-table-column>
-            <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" width="220">
-              <template #default="scope">
-                <el-button link type="primary" icon="Edit" :disabled="scope.row.status == 1"
-                  @click="routeTo('/dpp/task/integratioTask/edit', scope.row)">配置任务</el-button>
-                <el-button link type="primary" icon="view" @click="
-                  routeTo('/dpp/task/integratioTask/detail', {
-                    ...scope.row,
-                    info: true,
-                  })
-                  ">详情</el-button>
-                <el-popover placement="bottom" :width="150" trigger="click">
-                  <template #reference>
-                    <el-button link type="primary" icon="ArrowDown">更多</el-button>
-                  </template>
-                  <div style="width: 100px" class="butgdlist">
-                    <el-button link style="padding-left: 14px" type="primary" icon="Operation"
-                      @click="handleJobLog(scope.row)" :disabled="scope.row.schedulerState == '1'">调度周期</el-button>
-                    <el-button link type="primary" icon="Stopwatch" @click="handleDataView(scope.row)">运行实例</el-button>
-                    <el-button link type="primary" icon="VideoPlay" :disabled="scope.row.status != 1"
-                      @click="handleExecuteOnce(scope.row)">执行一次</el-button>
-                    <el-button link type="danger" icon="Delete" :disabled="scope.row.status == 1"
-                      @click="handleDelete(scope.row)">删除</el-button>
-                    <el-button link type="primary" icon="CopyDocument" :disabled="scope.row.status == 1"
-                      @click="handleClone(scope.row)">
-                      克隆
-                    </el-button>
-                  </div>
-                </el-popover></template>
-            </el-table-column>
-            <template #empty>
-              <div class="emptyBg">
-                <img src="@/assets/system/images/no_data/noData.png" alt="" />
-                <p>暂无记录</p>
               </div>
             </template>
-          </el-table>
-
-          <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum"
-            v-model:limit="queryParams.pageSize" @pagination="getList" />
-        </div>
+            <template #releaseState="{ row }">
+              <div class="flex-column fz12">
+                <div class="flex-center">
+                  <span class="black-label mr5">任务状态:</span>
+                  <el-switch
+                    v-model="row.status"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949"
+                    active-value="1"
+                    :inactive-value="getStatus(row.status)"
+                    @change="handleStatusChange(row.id, row)"
+                    :disabled="row.status == '-1'"
+                  />
+                </div>
+                <div class="flex-center">
+                  <span class="black-label mr5">调度状态:</span>
+                  <el-switch
+                    v-model="row.schedulerState"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949"
+                    active-value="1"
+                    inactive-value="0"
+                    :disabled="row.status != '1'"
+                    @change="handleschedulerState(row.id, row)"
+                  />
+                </div>
+              </div>
+            </template>
+            <template #cronExpression="{ row }">
+              <div class="flex-column fz14 grey-black-text">
+                <div class="flex-center mb5">
+                  <el-icon class="mr5"><Clock /></el-icon>
+                  <span
+                    class="text-ellipsis cron-text"
+                    :title="cronToZh(row.cronExpression)"
+                  >
+                    {{ cronToZh(row.cronExpression) || "-" }}
+                  </span>
+                </div>
+                <div class="flex-center">
+                  <span class="mr5">执行策略:</span>
+                  <dict-tag
+                    :options="dpp_etl_task_execution_type"
+                    :value="row.executionType"
+                  />
+                </div>
+              </div>
+            </template>
+            <template #lastExecute="{ row }">
+              <div class="flex-column fz14 last-execute-col">
+                <template v-if="row.lastExecuteTime">
+                  <div class="mb5">
+                    <dict-tag
+                      v-if="
+                        row.lastExecuteStatus !== null &&
+                        row.lastExecuteStatus !== undefined &&
+                        row.lastExecuteStatus !== ''
+                      "
+                      :options="dpp_etl_task_instance"
+                      :value="row.lastExecuteStatus"
+                    />
+                    <span v-else>-</span>
+                  </div>
+                  <span>
+                    {{ parseTime(row.lastExecuteTime, "{y}-{m}-{d} {h}:{i}") }}
+                  </span>
+                </template>
+                <template v-else>
+                  <div class="mb5">
+                    <el-tag type="info" effect="plain">未执行</el-tag>
+                  </div>
+                  <span>-</span>
+                </template>
+              </div>
+            </template>
+            <template #personChargeName="{ row }">
+              <div class="flex-column fz14">
+                <span
+                  class="text-ellipsis person-charge-ellipsis"
+                  :title="row.personCharge"
+                  >{{ row.personChargeName || "-" }}</span
+                >
+                <span>{{ row.contactNumber || "-" }}</span>
+              </div>
+            </template>
+            <template #createBy="{ row }">
+              <div class="flex-column fz14">
+                <span
+                  class="text-ellipsis person-charge-ellipsis"
+                  :title="row.personCharge"
+                  >{{ row.createBy || "-" }}</span
+                >
+                <span>{{ row.createUserContactNumber || "-" }}</span>
+              </div>
+            </template>
+            <template #executionType="{ row }">
+              <dict-tag
+                :options="dpp_etl_task_execution_type"
+                :value="row.executionType"
+              />
+            </template>
+            <template #action="{ row }">
+              <el-button
+                link
+                type="primary"
+                icon="Edit"
+                :disabled="row.status == 1"
+                @click="routeTo('/dpp/task/integratioTask/edit', row)"
+                >配置任务</el-button
+              >
+              <el-button
+                link
+                type="primary"
+                icon="view"
+                @click="
+                  routeTo('/dpp/task/integratioTask/detail', {
+                    ...row,
+                    info: true,
+                  })
+                "
+                >详情</el-button
+              >
+              <el-popover placement="bottom" :width="150" trigger="click">
+                <template #reference>
+                  <el-button link type="primary" icon="ArrowDown"
+                    >更多</el-button
+                  >
+                </template>
+                <div style="width: 100px" class="butgdlist">
+                  <el-button
+                    link
+                    style="padding-left: 14px"
+                    type="primary"
+                    icon="Operation"
+                    @click="handleJobLog(row)"
+                    :disabled="row.schedulerState == '1'"
+                    >调度周期</el-button
+                  >
+                  <el-button
+                    link
+                    type="primary"
+                    icon="Stopwatch"
+                    @click="handleDataView(row)"
+                    >运行实例</el-button
+                  >
+                  <el-button
+                    link
+                    type="primary"
+                    icon="VideoPlay"
+                    :disabled="row.status != 1"
+                    @click="handleExecuteOnce(row)"
+                    >执行一次</el-button
+                  >
+                  <el-button
+                    link
+                    type="danger"
+                    icon="Delete"
+                    :disabled="row.status == 1"
+                    @click="handleDelete(row)"
+                    >删除</el-button
+                  >
+                  <el-button
+                    link
+                    type="primary"
+                    icon="CopyDocument"
+                    :disabled="row.status == 1"
+                    @click="handleClone(row)"
+                  >
+                    克隆
+                  </el-button>
+                </div>
+              </el-popover>
+            </template>
+          </qt-table>
+        </qt-wrap>
       </el-main>
     </el-container>
-    <instance :visible="DataView" :taskType="1" @update:visible="DataView = $event" @confirm="submitForm" :data="form"
-      title="运行实例" />
-    <el-dialog title="调度周期" v-model="openCron" :append-to="$refs['app-container']" destroy-on-close :appendTo="'#app'">
-      <crontab ref="crontabRef" @hide="openCron = false" @fill="crontabFill" :expression="expression">
+    <instance
+      :visible="DataView"
+      :taskType="1"
+      @update:visible="DataView = $event"
+      @confirm="submitForm"
+      :data="form"
+      title="运行实例"
+    />
+    <el-dialog
+      title="调度周期"
+      v-model="openCron"
+      :append-to="$refs['app-container']"
+      destroy-on-close
+      :appendTo="'#app'"
+    >
+      <crontab
+        ref="crontabRef"
+        @hide="openCron = false"
+        @fill="crontabFill"
+        :expression="expression"
+      >
       </crontab>
     </el-dialog>
     <!-- 新增 -->
-    <add :visible="taskConfigDialogVisible" title="新增任务" @update:visible="taskConfigDialogVisible = $event"
-      @save="handleSave" @confirm="handleConfirm" :data="nodeData" :userList="userList" :deptOptions="deptOptions"
-      :info="route.query.info" :catCode="queryParams.catCode" />
+    <add
+      :visible="taskConfigDialogVisible"
+      title="新增任务"
+      @update:visible="taskConfigDialogVisible = $event"
+      @save="handleSave"
+      @confirm="handleConfirm"
+      :data="nodeData"
+      :userList="userList"
+      :info="route.query.info"
+      :catCode="tableStore.params.catCode"
+    />
   </div>
 </template>
 
@@ -262,410 +361,285 @@ import {
   releaseTaskCrontab,
   startDppEtlTask,
   createEtlTaskFront,
-  copyCreateEtl
+  copyCreateEtl,
 } from "@/api/dpp/task/index.js";
+import { usePageRefresh } from "@/composables/usePageRefresh";
 import { cronToZh } from "@/utils/cronUtils";
 import Crontab from "@/components/Crontab/index.vue";
 import instance from "@/views/dpp/components/instance.vue";
 const userStore = useUserStore();
 import { useRoute, useRouter } from "vue-router";
 import useUserStore from "@/store/system/user";
-import { listAttTaskCat } from "@/api/att/cat/taskCat/taskCat";
+import {
+  listAttTaskCat,
+  getAttTaskCat,
+  addAttTaskCat,
+  updateAttTaskCat,
+  delAttTaskCat,
+} from "@/api/att/cat/taskCat/taskCat";
 import DeptTree from "@/components/DeptTree";
 import add from "./add/add.vue";
 import { deptUserTree } from "@/api/system/system/user.js";
-function crontabFill(value) {
-  console.log("🚀 ~ crontabFill ~ row.value:", row.value);
-  row.value.crontab = value;
-  releaseTaskCrontab({
-    crontab: row.value.crontab,
-    projectCode: userStore.projectCode || "133545087166112",
+import { ref, reactive, getCurrentInstance, watch } from "vue";
+
+const { proxy } = getCurrentInstance();
+
+const api = {
+  list: listAttTaskCat,
+  get: getAttTaskCat,
+  add: addAttTaskCat,
+  update: updateAttTaskCat,
+  del: delAttTaskCat,
+};
+const {
+  dpp_etl_task_status,
+  dpp_etl_task_execution_type,
+  dpp_etl_task_instance,
+} = proxy.useDict(
+  "dpp_etl_task_status",
+  "dpp_etl_task_execution_type",
+  "dpp_etl_task_instance"
+);
+
+const route = useRoute();
+const router = useRouter();
+
+// Table and Search Store
+const tableRef = ref(null);
+const tableStore = reactive({
+  config: {
+    sort: true,
+    table: {
+      stripe: true,
+      rowKey: "id",
+      defaultSort: { prop: "create_time", order: "descending" },
+    },
+  },
+  columns: [
+    { label: "编号", prop: "id", width: 60, sortable: true },
+    {
+      label: "任务信息",
+      prop: "name",
+      align: "left",
+      slot: "name",
+      width: 300,
+    },
+    {
+      label: "运行控制",
+      prop: "status",
+      width: 130,
+      slot: "releaseState",
+      align: "left",
+    },
+    {
+      label: "调度周期",
+      prop: "cronExpression",
+      width: 200,
+      slot: "cronExpression",
+      align: "left",
+    },
+    {
+      label: "最近执行",
+      width: 160,
+      slot: "lastExecute",
+      align: "left",
+    },
+
+    {
+      label: "责任人",
+      width: 120,
+      slot: "personChargeName",
+      align: "left",
+    },
+    {
+      label: "创建人",
+      slot: "createBy",
+      width: 120,
+      align: "left",
+      showOverflowTooltip: true,
+    },
+    {
+      label: "创建时间",
+      prop: "createTime",
+      sortable: true,
+      sortableKey: "create_time",
+      date: true,
+      width: 150,
+      align: "left",
+    },
+
+    {
+      label: "操作",
+      align: "center",
+      fixed: "right",
+      slot: "action",
+      width: 240,
+    },
+  ],
+  func: listWrapper,
+  params: {
+    catCode: null,
     projectId: userStore.projectId,
-    id: row.value.id,
-  }).then((response) => {
-    proxy.$modal.msgSuccess("操作成功");
-    getList();
+    projectCode: userStore.projectCode,
+  },
+});
+
+// User list for search
+const userList = ref([]);
+
+const searchStore = reactive({
+  items: [
+    {
+      label: "任务名称",
+      prop: "name",
+      align: "left",
+      component: { is: "input", placeholder: "请输入任务名称" },
+    },
+    {
+      label: "任务状态",
+      prop: "status",
+      component: {
+        is: "select",
+        placeholder: "请选择任务状态",
+        options: dpp_etl_task_status,
+      },
+    },
+    {
+      label: "责任人",
+      prop: "personCharge",
+      component: {
+        is: "tree-select",
+        data: userList,
+        props: { value: "userId", label: "nickName", children: "children" },
+        valueKey: "ID",
+        placeholder: "请选择责任人",
+        checkStrictly: true,
+      },
+    },
+  ],
+});
+
+function listWrapper(params) {
+  const p = { ...params };
+  p.projectId = userStore.projectId;
+  p.projectCode = userStore.projectCode;
+  return listDppEtlTask(p);
+}
+
+function handleQuery() {
+  tableRef.value.getList();
+}
+
+function resetQuery() {
+  if (DeptTreeRef.value?.resetTree) {
+    DeptTreeRef.value.resetTree();
+  }
+  tableStore.params.catCode = "";
+  handleQuery();
+}
+
+// 部门树
+const leftWidth = ref(300);
+const DeptTreeRef = ref(null);
+
+function getDeptTree() {
+  deptUserTree().then((res) => {
+    userList.value = res.data;
   });
 }
-// 图标
-const getDatasourceIcon = (json) => {
-  let type = json && JSON.parse(json).taskType;
-  switch (type) {
-    case "FLINK":
-      return new URL("@/assets/system/images/dpp/Flink.svg", import.meta.url).href;
-    case "SPARK":
-      return new URL("@/assets/system/images/dpp/Spark.svg", import.meta.url).href;
-    default:
-      return null;
-  }
-};
-const getStatus = (status) => {
-  if (status == '-1') {
-    return '-1'
-  } else {
-    return '0'
-  }
+
+function handleNodeClick(data) {
+  tableStore.params.catCode = data.code;
+  handleQuery();
 }
+
 // 任务配置
 const taskConfigDialogVisible = ref(false);
-let nodeData = ref({ taskConfig: {}, name: null });//新增无id时为空数据
-let userList = ref([]);
-// 保存并关闭
+let nodeData = ref({ taskConfig: {}, name: null });
+
+const openTaskConfigDialog = () => {
+  nodeData.value = { taskConfig: {}, name: null };
+  taskConfigDialogVisible.value = true;
+};
+
 const handleSave = (form) => {
   const parms = {
     ...form,
     projectId: userStore.projectId,
     projectCode: userStore.projectCode,
-    draftJson: JSON.stringify({
-      ...form,
-    }),
-  }
+    draftJson: JSON.stringify({ ...form }),
+  };
   createEtlTaskFront(parms).then((res) => {
     if (res.code == 200) {
       proxy.$modal.msgSuccess("操作成功");
-      getList();
+      handleQuery();
     }
-  })
-}
-// 保存并完善
+  });
+};
+
 const handleConfirm = (form) => {
   const parms = {
     ...form,
     projectId: userStore.projectId,
     projectCode: userStore.projectCode,
-    draftJson: JSON.stringify({
-      ...form,
-    }),
-  }
+    draftJson: JSON.stringify({ ...form }),
+  };
   createEtlTaskFront(parms).then((res) => {
     if (res.code == 200) {
       proxy.$modal.msgSuccess("操作成功");
-    //   getList();
-      routeTo('/dpp/task/integratioTask/edit', res.data);
+      handleQuery();
+      routeTo("/dpp/task/integratioTask/edit", res.data);
     }
-  })
-};
-const openTaskConfigDialog = () => {
-  taskConfigDialogVisible.value = true;
-};
-
-const { proxy } = getCurrentInstance();
-const { dpp_etl_task_status, dpp_etl_task_execution_type, dpp_etl_task_instance } = proxy.useDict(
-  "dpp_etl_task_status",
-  "dpp_etl_task_execution_type",
-  "dpp_etl_task_instance"
-);
-const deptOptions = ref([]);
-const leftWidth = ref(300); // 初始左侧宽度
-const isResizing = ref(false); // 判断是否正在拖拽
-let startX = 0; // 鼠标按下时的初始位置// 初始左侧宽度
-const startResize = (event) => {
-  isResizing.value = true;
-  startX = event.clientX;
-  document.addEventListener("mousemove", updateResize);
-  document.addEventListener("mouseup", stopResize);
-};
-const stopResize = () => {
-  isResizing.value = false;
-  document.removeEventListener("mousemove", updateResize);
-  document.removeEventListener("mouseup", stopResize);
-};
-const updateResize = (event) => {
-  if (isResizing.value) {
-    const delta = event.clientX - startX; // 计算鼠标移动距离
-    leftWidth.value += delta; // 修改左侧宽度
-    startX = event.clientX; // 更新起始位置
-    // 使用 requestAnimationFrame 来减少页面重绘频率
-    requestAnimationFrame(() => { });
-  }
-};
-
-/** 下拉树结构 */
-function getDeptTree() {
-  listAttTaskCat({
-    projectId: userStore.projectId,
-    projectCode: userStore.projectCode,
-    validFlag: true
-  }).then((response) => {
-    deptOptions.value = []
-    var children = proxy.handleTree(response.data, "id", "parentId");
-    deptOptions.value = [
-      {
-        name: "数据集成类目",
-        value: "",
-        id: 0,
-        children: children,
-      },
-    ];
   });
-  deptUserTree().then((res) => {
-    userList.value = res.data;
-  });
-}
-/** 排序触发事件 */
-function handleSortChange(column, prop, order) {
-  queryParams.value.orderByColumn = column.prop;
-  queryParams.value.isAsc = column.order;
-  getList();
-}
-
-function handleNodeClick(data) {
-  queryParams.value.catCode = data.code;
-  console.log("🚀 ~ handleNodeClick ~   queryParams.value.catCode:", queryParams.value.catCode)
-  queryParams.value.pageNum = 1;
-  handleQuery();
-}
-const route = useRoute();
-let openCron = ref(false);
-const dppEtlTaskList = ref([]);
-let row = ref();
-let expression = ref("");
-/** 运行实例按钮操作 */
-function handleJobLog(data) {
-  row.value = "";
-  row.value = data || "";
-  openCron.value = true;
-  expression.value = data.cronExpression || "";
-  console.log("🚀 ~ handleJobLog ~ expression.value:", expression.value);
-}
-function handleschedulerState(id, row, e) {
-  const text = row.schedulerState == "1" ? "上线" : "下线";
-
-  // 弹出确认框
-  proxy.$modal
-    .confirm('确认要"' + text + '","' + row.name + '"数据集成调度状态吗？')
-    .then(function () {
-      loading.value = true;
-      // 调用后台接口更新调度状态
-      updateReleaseSchedule({
-        id,
-        schedulerState: row.schedulerState,
-        projectCode: userStore.projectCode || "133545087166112",
-        projectId: userStore.projectId,
-      })
-        .then((response) => {
-          proxy.$modal.msgSuccess("操作成功");
-        })
-        .catch((error) => {
-          // 处理失败时的恢复操作
-          row.schedulerState = row.schedulerState == "1" ? "0" : "1"; // 恢复之前的状态
-        })
-        .finally(() => {
-          loading.value = false; // 无论成功失败都停止加载
-        });
-    })
-    .catch((error) => {
-      // 失败时恢复状态
-      row.schedulerState = row.schedulerState == "1" ? "0" : "1";
-    });
-}
-const handleClone = (row) => {
-  proxy.$modal
-    .confirm(`确定要克隆任务【${row.name}】吗？`)
-    .then(() => {
-      loading.value = true;
-      return copyCreateEtl({
-        id: Number(row.id),
-        projectCode: userStore.projectCode || "133545087166112",
-        projectId: userStore.projectId,
-      });
-    })
-    .then(() => {
-      getList();
-    })
-    .finally(() => {
-      loading.value = false;
-    });
 };
 
-/** 改变启用状态值 */
-function handleStatusChange(id, row, e) {
+// Actions
+function handleStatusChange(id, row) {
   const text = row.status == "1" ? "上线" : "下线";
-
-  // 弹出确认框
   proxy.$modal
     .confirm('确认要"' + text + '","' + row.name + '"数据集成任务吗？')
     .then(function () {
-      loading.value = true; // 开始加载
-      // 调用后台接口更新发布状态
       updateReleaseJobTask({
         id,
         releaseState: row.status,
-        projectCode: userStore.projectCode || "133545087166112",
+        projectCode: userStore.projectCode,
         projectId: userStore.projectId,
       })
         .then((response) => {
           proxy.$modal.msgSuccess("操作成功");
+          handleQuery();
         })
         .catch((error) => {
-          // 失败时恢复状态
           row.status = row.status === "1" ? "0" : "1";
-        })
-        .finally(() => {
-          loading.value = false; // 无论成功失败都停止加载
         });
     })
     .catch((error) => {
-      // 失败时恢复状态
       row.status = row.status === "1" ? "0" : "1";
     });
 }
-const handleExecuteOnce = async (row) => {
-  if (!row?.id) {
-    proxy.$modal.msgWarning("无效的任务id，请刷新后重试");
-    return;
-  }
-  loading.value = true;
-  try {
-    const res = await startDppEtlTask(row.id);
 
-    if (Number(res?.code) === 200) {
-      proxy.$modal.msgSuccess("执行成功");
-    } else {
-      proxy.$modal.msgWarning(res?.msg || "执行失败，请联系管理员");
-    }
-  } finally {
-    loading.value = false;
-  }
-};
-let DataView = ref(false);
-/** 运行实例接口 */
-function handleDataView(row) {
-  form.value = row;
-  DataView.value = true;
-}
-// 列显隐信息
-const columns = ref([
-  { key: 0, label: "编号", visible: true },
-  { key: 1, label: "任务名称", visible: true },
-  { key: 2, label: "描述", visible: true },
-  { key: 4, label: "任务类目", visible: true },
-  { key: 9, label: "执行策略", visible: true },
-  { key: 7, label: "任务状态", visible: true },
-  { key: 8, label: "调度状态", visible: true },
-  { key: 5, label: "调度周期", visible: true },
-  { key: 14, label: "最近运行时间", visible: true },
-  { key: 10, label: "创建人", visible: true },
-  { key: 11, label: "创建时间", visible: true },
-  { key: 6, label: "配置状态", visible: true },
-  { key: 13, label: "最近执行结果", visible: true },
-]);
-const getColumnVisibility = (key) => {
-  const column = columns.value.find((col) => col.key === key);
-  // 如果没有找到对应列配置，默认显示
-  if (!column) return true;
-  // 如果找到对应列配置，根据visible属性来控制显示
-  return column.visible;
-};
-
-const open = ref(false);
-const loading = ref(false);
-const showSearch = ref(true);
-const ids = ref([]);
-const total = ref(0);
-const defaultSort = ref({ prop: "createTime", order: "desc" });
-const router = useRouter();
-
-const data = reactive({
-  form: {},
-  queryParams: {
-    pageNum: 1,
-    pageSize: 10,
-    type: null,
-    name: null,
-    status: null,
-    orderByColumn: "create_time",
-    isAsc: "desc",
-  },
-  rules: {},
-});
-
-const { queryParams, form, rules } = toRefs(data);
-watch(
-  () => userStore.projectId,
-  () => {
-    getList();
-    getDeptTree();
-  }
-);
-
-
-/** 查询数据集成任务列表 */
-function getList() {
-  loading.value = true;
-  queryParams.value.projectCode = userStore.projectCode;
-  queryParams.value.projectId = userStore.projectId;
-  listDppEtlTask(queryParams.value).then((response) => {
-    dppEtlTaskList.value = response.data.rows;
-    total.value = response.data.total;
-    loading.value = false;
-  });
-}
-
-// 表单重置
-function reset() {
-  form.value = {
-    id: null,
-    type: null,
-    name: null,
-    status: null,
-  };
-  proxy.resetForm("dppEtlTaskRef");
-}
-
-/** 搜索按钮操作 */
-function handleQuery() {
-  getList();
-}
-const DeptTreeRef = ref(null);
-/** 重置按钮操作 */
-function resetQuery() {
-  if (DeptTreeRef.value?.resetTree) {
-    DeptTreeRef.value.resetTree();
-  }
-  queryParams.value.catCode = "";
-  queryParams.value.pageNum = 1;
-  proxy.resetForm("queryRef");
-  handleQuery();
-}
-/** 提交按钮 */
-function submitForm() {
-  proxy.$refs["dppEtlTaskRef"].validate((valid) => {
-    if (valid) {
-      if (form.value.id != null) {
-        updateDppEtlTask(form.value)
-          .then((response) => {
-            proxy.$modal.msgSuccess("修改成功");
-            open.value = false;
-            getList();
-          })
-          .catch((error) => { });
-      } else {
-        addDppEtlTask(form.value)
-          .then((response) => {
-            proxy.$modal.msgSuccess("新增成功");
-            open.value = false;
-            getList();
-          })
-          .catch((error) => { });
-      }
-    }
-  });
-}
-
-/** 删除按钮操作 */
-function handleDelete(row) {
-  const _ids = row.id || ids.value;
+function handleschedulerState(id, row) {
+  const text = row.schedulerState == "1" ? "上线" : "下线";
   proxy.$modal
-    .confirm('是否确认删除数据集成任务编号为"' + _ids + '"的数据项？')
+    .confirm('确认要"' + text + '","' + row.name + '"数据集成调度状态吗？')
     .then(function () {
-      return delDppEtlTask(_ids);
+      updateReleaseSchedule({
+        id,
+        schedulerState: row.schedulerState,
+        projectCode: userStore.projectCode,
+        projectId: userStore.projectId,
+      })
+        .then((response) => {
+          proxy.$modal.msgSuccess("操作成功");
+          handleQuery();
+        })
+        .catch((error) => {
+          row.schedulerState = row.schedulerState == "1" ? "0" : "1";
+        });
     })
-    .then(() => {
-      getList();
-      proxy.$modal.msgSuccess("删除成功");
-    })
-    .catch(() => { });
+    .catch((error) => {
+      row.schedulerState = row.schedulerState == "1" ? "0" : "1";
+    });
 }
 
 function routeTo(link, row) {
@@ -688,48 +662,166 @@ function routeTo(link, row) {
   }
 }
 
-onActivated(() => {
-  // const from = router.options.history.state.back || "";
-  // if (!from.includes("id=")) {
-  //   queryParams.value.catCode = "";
-  //   queryParams.value.pageNum = 1;
-  //   getDeptTree();
-  // }
-  getList();
+// Cron and Instance
+const openCron = ref(false);
+const expression = ref("");
+const row = ref({});
 
-});
-if(userStore.projectId){
+function handleJobLog(data) {
+  row.value = data || {};
+  expression.value = data.cronExpression || "";
+  openCron.value = true;
+}
+
+function crontabFill(value) {
+  row.value.crontab = value;
+  releaseTaskCrontab({
+    crontab: row.value.crontab,
+    projectCode: userStore.projectCode,
+    projectId: userStore.projectId,
+    id: row.value.id,
+  }).then((response) => {
+    proxy.$modal.msgSuccess("操作成功");
+    handleQuery();
+  });
+}
+
+const DataView = ref(false);
+const form = ref({});
+function handleDataView(row) {
+  form.value = row;
+  DataView.value = true;
+}
+
+function submitForm() {
+  handleQuery();
+}
+
+const handleExecuteOnce = async (row) => {
+  if (!row?.id) {
+    proxy.$modal.msgWarning("无效的任务id，请刷新后重试");
+    return;
+  }
+  try {
+    const res = await startDppEtlTask(row.id);
+    if (Number(res?.code) === 200) {
+      proxy.$modal.msgSuccess("执行成功");
+    } else {
+      proxy.$modal.msgWarning(res?.msg || "执行失败，请联系管理员");
+    }
+  } catch (e) {
+    //
+  }
+};
+
+const handleClone = (row) => {
+  proxy.$modal
+    .confirm(`确定要克隆任务【${row.name}】吗？`)
+    .then(() => {
+      return copyCreateEtl({
+        id: Number(row.id),
+        projectCode: userStore.projectCode,
+        projectId: userStore.projectId,
+      });
+    })
+    .then(() => {
+      handleQuery();
+    })
+    .catch(() => {});
+};
+
+function handleDelete(row) {
+  const ids = row.id;
+  proxy.$modal
+    .confirm('是否确认删除数据集成任务编号为"' + ids + '"的数据项？')
+    .then(function () {
+      return delDppEtlTask(ids);
+    })
+    .then(() => {
+      handleQuery();
+      proxy.$modal.msgSuccess("删除成功");
+    })
+    .catch(() => {});
+}
+
+// Utils
+const getDatasourceIcon = (json) => {
+  let type = json && JSON.parse(json).taskType;
+  switch (type) {
+    case "FLINK":
+      return new URL("@/assets/images/common/flink.svg", import.meta.url).href;
+    case "SPARK":
+      return new URL("@/assets/images/common/spark.svg", import.meta.url).href;
+    default:
+      return null;
+  }
+};
+
+const getStatus = (status) => {
+  if (status == "-1") {
+    return "-1";
+  } else {
+    return "0";
+  }
+};
+
+// Initialization
+watch(
+  () => userStore.projectId,
+  () => {
+    handleQuery();
+    getDeptTree();
+  }
+);
+
+if (userStore.projectId) {
   getDeptTree();
-  getList();
 }
-
-
-
+usePageRefresh("integratioTask", () => handleQuery());
 </script>
-<style scoped lang="scss">
-::v-deep {
-  .selectlist .el-tag.el-tag--info {
-    background: #f3f8ff !important;
-    border: 0px solid #6ba7ff !important;
-    color: #2666fb !important;
+
+<style lang="scss" scoped>
+.last-execute-col {
+  :deep(.el-tag) {
+    font-size: 12px;
   }
 }
 
-.el-main {
-  padding: 2px 0px;
-  // box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
-  transition: width 0.2s;
+.task-title-row {
+  width: 100%;
+  min-width: 0;
+  gap: 6px;
+  justify-content: flex-start !important;
+  flex-wrap: nowrap;
 }
 
-//上传附件样式调整
-::v-deep {
+.task-name-ellipsis {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 160px;
+}
 
-  // .el-upload-list{
-  //    display: flex;
-  // }
-  .el-upload-list__item {
-    width: 100%;
-    height: 25px;
-  }
+:deep(.task-name-ellipsis .el-link__inner) {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.task-cat-ellipsis {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: none;
+}
+
+:deep(.task-cat-ellipsis .el-tag__content) {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 </style>
+
+

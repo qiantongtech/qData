@@ -4,277 +4,423 @@
  */
 
  /** 基础通用 **/
-.pt5 {
-	padding-top: 5px;
-}
-.pr5 {
-	padding-right: 5px;
-}
-.pb5 {
-	padding-bottom: 5px;
-}
-.mt5 {
-	margin-top: 5px;
-}
-.mr5 {
-	margin-right: 5px;
-}
-.mb5 {
-	margin-bottom: 5px;
-}
-.mb8 {
-	margin-bottom: 8px;
-}
-.ml5 {
-	margin-left: 5px;
-}
-.mt10 {
-	margin-top: 10px;
-}
-.mr10 {
-	margin-right: 10px;
-}
-.mb10 {
-	margin-bottom: 10px;
-}
-.ml10 {
-	margin-left: 10px;
-}
-.mt20 {
-	margin-top: 20px;
-}
-.mr20 {
-	margin-right: 20px;
-}
-.mb20 {
-	margin-bottom: 20px;
-}
-.ml20 {
-	margin-left: 20px;
-}
+ .pt5 {
+ 	padding-top: 5px;
+ }
 
-.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
-	font-family: inherit;
-	font-weight: 500;
-	line-height: 1.1;
-	color: inherit;
-}
+ .pr5 {
+ 	padding-right: 5px;
+ }
 
-.el-form .el-form-item__label {
-	font-weight: 700;
-}
-.el-dialog:not(.is-fullscreen) {
-	margin-top: 6vh !important;
-}
+ .pb5 {
+ 	padding-bottom: 5px;
+ }
 
-.el-dialog.scrollbar .el-dialog__body {
-	overflow: auto;
-	overflow-x: hidden;
-	max-height: 70vh;
-	padding: 10px 20px 0;
-}
+ .mt5 {
+ 	margin-top: 5px;
+ }
 
-.el-table {
-	.el-table__header-wrapper, .el-table__fixed-header-wrapper {
-		th {
-			word-break: break-word;
-			background-color: #f8f8f9 !important;
-			color: #515a6e;
-			height: 36px !important;
-			font-size: 13px;
-		}
-	}
-	.el-table__body-wrapper {
-		.el-button [class*="el-icon-"] + span {
-			margin-left: 1px;
-		}
-	}
-}
+ .mr5 {
+ 	margin-right: 5px;
+ }
 
-/** 表单布局 **/
-.form-header {
-    font-size:15px;
-	color:#6379bb;
-	border-bottom:1px solid #ddd;
-	margin:0px 0px 25px 0px;
-	padding-bottom:5px
-}
+ .mb5 {
+ 	margin-bottom: 5px;
+ }
 
-/** 表格布局 **/
-.pagination-container {
-    position: relative;
-    height: 25px;
-    margin-bottom: 10px;
-    margin-top: 15px;
-    padding: 0px 20px !important;
-}
+ .mb8 {
+ 	margin-bottom: 8px;
+ }
 
-// .el-dialog .pagination-container {
-//     position: static !important;
-// }
+ .ml5 {
+ 	margin-left: 5px;
+ }
 
-/* tree border */
-.tree-border {
-    margin-top: 5px;
-    border: 1px solid #e5e6e7;
-    background: #FFFFFF none;
-    border-radius:4px;
-    width: 100%;
-}
+ .mt10 {
+ 	margin-top: 10px;
+ }
 
-.pagination-container .el-pagination {
-	right: 0;
-	position: absolute;
-}
+ .mr10 {
+ 	margin-right: 10px;
+ }
 
-@media ( max-width : 768px) {
-  .pagination-container .el-pagination > .el-pagination__jump {
-    display: none !important;
-  }
-  .pagination-container .el-pagination > .el-pagination__sizes {
-    display: none !important;
-  }
-}
+ .mb10 {
+ 	margin-bottom: 10px;
+ }
 
-.el-table .fixed-width .el-button--small {
-	padding-left: 0;
-	padding-right: 0;
-	width: inherit;
-}
+ .ml10 {
+ 	margin-left: 10px;
+ }
 
-/** 表格更多操作下拉样式 */
-.el-table .el-dropdown-link {
-	cursor: pointer;
-	color: #2666FB;
-	margin-left: 10px;
-}
+ .mt20 {
+ 	margin-top: 20px;
+ }
 
-.el-table .el-dropdown, .el-icon-arrow-down {
-	font-size: 12px;
-}
+ .mr20 {
+ 	margin-right: 20px;
+ }
 
-.el-tree-node__content > .el-checkbox {
-	margin-right: 8px;
-}
+ .mb20 {
+ 	margin-bottom: 20px;
+ }
 
-.list-group-striped > .list-group-item {
-	border-left: 0;
-	border-right: 0;
-	border-radius: 0;
-	padding-left: 0;
-	padding-right: 0;
-}
+ .ml20 {
+ 	margin-left: 20px;
+ }
 
-.list-group {
-	padding-left: 0px;
-	list-style: none;
-}
+ .h1,
+ .h2,
+ .h3,
+ .h4,
+ .h5,
+ .h6,
+ h1,
+ h2,
+ h3,
+ h4,
+ h5,
+ h6 {
+ 	font-family: inherit;
+ 	font-weight: 500;
+ 	line-height: 1.1;
+ 	color: inherit;
+ }
 
-.list-group-item {
-	border-bottom: 1px solid #e7eaec;
-	border-top: 1px solid #e7eaec;
-	margin-bottom: -1px;
-	padding: 11px 0px;
-	font-size: 13px;
-}
+ .el-form .el-form-item__label {
+ 	font-weight: 700;
+ }
 
-.pull-right {
-	float: right !important;
-}
+ .el-dialog:not(.is-fullscreen) {
+ 	margin-top: 6vh !important;
+ }
 
-.el-card__header {
-	padding: 14px 15px 7px !important;
-	min-height: 40px;
-}
+ .el-dialog.scrollbar .el-dialog__body {
+ 	overflow: auto;
+ 	overflow-x: hidden;
+ 	max-height: 70vh;
+ 	padding: 10px 20px 0;
+ }
 
-.el-card__body {
-	padding: 15px 20px 20px 20px !important;
-}
+ .el-table {
 
-.card-box {
-	padding: 0;
-	margin-bottom: 15px;
-}
+ 	.el-table__header-wrapper,
+ 	.el-table__fixed-header-wrapper {
+ 		th {
+ 			word-break: break-word;
+ 			background-color: #f8f8f9 !important;
+ 			color: #515a6e;
+ 			height: 36px !important;
+ 			font-size: 13px;
+ 		}
+ 	}
 
-/* button color */
-.el-button--cyan.is-active,
-.el-button--cyan:active {
-  background: #20B2AA;
-  border-color: #20B2AA;
-  color: #FFFFFF;
-}
+ 	.el-table__body-wrapper {
+ 		.el-button [class*="el-icon-"]+span {
+ 			margin-left: 1px;
+ 		}
+ 	}
+ }
 
-.el-button--cyan:focus,
-.el-button--cyan:hover {
-  background: #48D1CC;
-  border-color: #48D1CC;
-  color: #FFFFFF;
-}
+ /** 表单布局 **/
+ .form-header {
+ 	font-size: 15px;
+ 	color: #6379bb;
+ 	border-bottom: 1px solid #ddd;
+ 	margin: 0px 0px 25px 0px;
+ 	padding-bottom: 5px
+ }
 
-.el-button--cyan {
-  background-color: #20B2AA;
-  border-color: #20B2AA;
-  color: #FFFFFF;
-}
+ /** 表格布局 **/
+ .pagination-container {
+ 	position: relative;
+ 	height: 25px;
+ 	margin-bottom: 10px;
+ 	margin-top: 15px;
+ 	padding: 0px 20px !important;
+ }
 
-/* text color */
-.text-navy {
-	color: #1ab394;
-}
+ // .el-dialog .pagination-container {
+ //     position: static !important;
+ // }
 
-.text-primary {
-	color: inherit;
-}
+ /* tree border */
+ .tree-border {
+ 	margin-top: 5px;
+ 	border: 1px solid #e5e6e7;
+ 	background: #FFFFFF none;
+ 	border-radius: 4px;
+ 	width: 100%;
+ }
 
-.text-success {
-	color: #1c84c6;
-}
+ .pagination-container .el-pagination {
+ 	right: 0;
+ 	position: absolute;
+ }
 
-.text-info {
-	color: #23c6c8;
-}
+ @media (max-width : 768px) {
+ 	.pagination-container .el-pagination>.el-pagination__jump {
+ 		display: none !important;
+ 	}
 
-.text-warning {
-	color: #f8ac59;
-}
+ 	.pagination-container .el-pagination>.el-pagination__sizes {
+ 		display: none !important;
+ 	}
+ }
 
-.text-danger {
-	color: #ed5565;
-}
+ .el-table .fixed-width .el-button--small {
+ 	padding-left: 0;
+ 	padding-right: 0;
+ 	width: inherit;
+ }
 
-.text-muted {
-	color: #888888;
-}
+ /** 表格更多操作下拉样式 */
+ .el-table .el-dropdown-link {
+ 	cursor: pointer;
+ 	color: #2666FB;
+ 	margin-left: 10px;
+ }
 
-/* image */
-.img-circle {
-	border-radius: 50%;
-}
+ .el-table .el-dropdown,
+ .el-icon-arrow-down {
+ 	font-size: 12px;
+ }
 
-.img-lg {
-	width: 120px;
-	height: 120px;
-}
+ .el-tree-node__content>.el-checkbox {
+ 	margin-right: 8px;
+ }
 
-.avatar-upload-preview {
-	position: absolute;
-	top: 50%;
-	transform: translate(50%, -50%);
-	width: 200px;
-	height: 200px;
-	border-radius: 50%;
-	box-shadow: 0 0 4px #ccc;
-	overflow: hidden;
-}
+ .list-group-striped>.list-group-item {
+ 	border-left: 0;
+ 	border-right: 0;
+ 	border-radius: 0;
+ 	padding-left: 0;
+ 	padding-right: 0;
+ }
 
-/* 拖拽列样式 */
-.sortable-ghost{
-	opacity: .8;
-	color: #fff!important;
-	background: #42b983!important;
-}
+ .list-group {
+ 	padding-left: 0px;
+ 	list-style: none;
+ }
 
-/* 表格右侧工具栏样式 */
-.top-right-btn {
-	margin-left: auto;
-}
+ .list-group-item {
+ 	border-bottom: 1px solid #e7eaec;
+ 	border-top: 1px solid #e7eaec;
+ 	margin-bottom: -1px;
+ 	padding: 11px 0px;
+ 	font-size: 13px;
+ }
+
+ .pull-right {
+ 	float: right !important;
+ }
+
+ .el-card__header {
+ 	padding: 14px 15px 7px !important;
+ 	min-height: 40px;
+ }
+
+ .el-card__body {
+ 	padding: 15px 20px 20px 20px !important;
+ }
+
+ .card-box {
+ 	padding: 0;
+ 	margin-bottom: 15px;
+ }
+
+ /* button color */
+ .el-button--cyan.is-active,
+ .el-button--cyan:active {
+ 	background: #20B2AA;
+ 	border-color: #20B2AA;
+ 	color: #FFFFFF;
+ }
+
+ .el-button--cyan:focus,
+ .el-button--cyan:hover {
+ 	background: #48D1CC;
+ 	border-color: #48D1CC;
+ 	color: #FFFFFF;
+ }
+
+ .el-button--cyan {
+ 	background-color: #20B2AA;
+ 	border-color: #20B2AA;
+ 	color: #FFFFFF;
+ }
+
+ /* text color */
+ .text-navy {
+ 	color: #1ab394;
+ }
+
+ .text-primary {
+ 	color: inherit;
+ }
+
+ .text-success {
+ 	color: #1c84c6;
+ }
+
+ .text-info {
+ 	color: #23c6c8;
+ }
+
+ .text-warning {
+ 	color: #f8ac59;
+ }
+
+ .text-danger {
+ 	color: #ed5565;
+ }
+
+ .text-muted {
+ 	color: #888888;
+ }
+
+ /* image */
+ .img-circle {
+ 	border-radius: 50%;
+ }
+
+ .img-lg {
+ 	width: 120px;
+ 	height: 120px;
+ }
+
+ .avatar-upload-preview {
+ 	position: absolute;
+ 	top: 50%;
+ 	transform: translate(50%, -50%);
+ 	width: 200px;
+ 	height: 200px;
+ 	border-radius: 50%;
+ 	box-shadow: 0 0 4px #ccc;
+ 	overflow: hidden;
+ }
+
+ /* 拖拽列样式 */
+ .sortable-ghost {
+ 	opacity: .8;
+ 	color: #fff !important;
+ 	background: #42b983 !important;
+ }
+
+ /* 单行文本省略 */
+ .text-ellipsis {
+ 	overflow: hidden;
+ 	white-space: nowrap;
+ 	text-overflow: ellipsis;
+ }
+
+ .task-title-row {
+ 	display: flex;
+ 	align-items: center;
+ 	min-width: 0;
+ 	gap: 10px;
+ }
+
+ .task-name-ellipsis {
+ 	flex: 1 1 auto;
+ 	min-width: 0;
+ }
+
+ .task-cat-ellipsis {
+ 	flex: 0 1 80px;
+ 	min-width: 0;
+ 	max-width: 80px;
+ }
+
+ .person-charge-ellipsis {
+ 	display: inline-block;
+ 	max-width: 100px;
+ }
+
+ /* Cron 文本容器（配合 .text-ellipsis 使用） */
+ .cron-text {
+ 	display: inline-block;
+ 	max-width: 190px;
+ }
+
+ /* 多行文本省略 */
+ .text-ellipsis-2 {
+ 	display: -webkit-box;
+ 	-webkit-box-orient: vertical;
+ 	-webkit-line-clamp: 2;
+ 	overflow: hidden;
+ 	text-overflow: ellipsis;
+ 	word-break: break-all;
+ }
+
+ /* 垂直布局 */
+ .flex-column {
+ 	display: flex;
+ 	flex-direction: column;
+ }
+
+ /* 描述文本样式 */
+ .desc-text {
+ 	color: #999;
+ 	font-size: 12px;
+ }
+
+ /* 任务名称文本 */
+ .task-name-text {
+ 	font-weight: bold;
+ 	color: #333;
+
+
+ }
+
+ /* 字体大小 14px */
+ .fz14 {
+ 	font-size: 14px;
+ }
+
+ /* 水平居中 Flex */
+ .flex-center {
+ 	display: flex;
+ 	align-items: center;
+ }
+
+ /* 灰黑色文本 */
+ .grey-black-text {
+ 	color: #606266;
+ }
+
+ /* 数据源图标 */
+ .datasource-icon {
+ 	width: 20px;
+ 	margin-right: 5px;
+ }
+
+ /* 黑色标签文本 */
+ .black-label {
+ 	color: #333 !important;
+ 	font-weight: normal;
+ }
+
+ /* switch 标签颜色 */
+ .black-label-switch {
+ 	.el-switch__label {
+ 		color: #333 !important;
+ 		font-weight: normal;
+ 	}
+ }
+
+ .main-content {
+ 	padding: 2px 0px;
+ }
+
+
+
+ /* 表格右侧工具栏样式 */
+ .top-right-btn {
+ 	margin-left: auto;
+ }
+
+ .task-title {
+ 	.el-tag.el-tag--default .el-tag__content {
+ 		font-size: 12px !important;
+ 	}
+ }

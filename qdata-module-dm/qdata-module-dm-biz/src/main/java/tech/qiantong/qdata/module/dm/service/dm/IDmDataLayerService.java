@@ -35,12 +35,15 @@ package tech.qiantong.qdata.module.dm.service.dm;
 import java.util.List;
 import java.util.Map;
 import java.util.Collection;
+
 import com.baomidou.mybatisplus.extension.service.IService;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmDataLayerRespVO;
 import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmDataLayerSaveReqVO;
 import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmDataLayerPageReqVO;
+import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmDataLayerTreeRespVO;
 import tech.qiantong.qdata.module.dm.dal.dataobject.dm.DmDataLayerDO;
+
 /**
  * 数仓分层管理Service接口
  *
@@ -107,9 +110,15 @@ public interface IDmDataLayerService extends IService<DmDataLayerDO> {
      *
      * @param importExcelList 数仓分层管理数据列表
      * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
+     * @param operName        操作用户
      * @return 结果
      */
     String importDmDataLayer(List<DmDataLayerRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
+    /**
+     * 获取数仓分层管理树列表
+     *
+     * @return 数仓分层管理树列表
+     */
+    List<DmDataLayerTreeRespVO> tree();
 }

@@ -181,6 +181,10 @@ public class DppEtlTaskRespVO implements Serializable {
     private Date lastExecuteTime;
 
 
+    @TableField(exist = false)
+    private String lastExecuteStatus;
+
+
     @Schema(description = "草稿任务配置信息", example = "")
     private String draftJson;
 

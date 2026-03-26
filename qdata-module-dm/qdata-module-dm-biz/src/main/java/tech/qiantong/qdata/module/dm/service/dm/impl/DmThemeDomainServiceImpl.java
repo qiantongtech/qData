@@ -32,10 +32,7 @@
 
 package tech.qiantong.qdata.module.dm.service.dm.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -56,10 +53,12 @@ import org.springframework.transaction.annotation.Transactional;
 import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmThemeDomainPageReqVO;
 import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmThemeDomainRespVO;
 import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmThemeDomainSaveReqVO;
+import tech.qiantong.qdata.module.dm.dal.dataobject.dm.DmDataLayerDO;
 import tech.qiantong.qdata.module.dm.dal.dataobject.dm.DmThemeDomainDO;
 import tech.qiantong.qdata.module.dm.dal.mapper.dm.DmThemeDomainMapper;
 import tech.qiantong.qdata.module.dm.service.dm.IDmThemeDomainService;
 import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
+import tech.qiantong.qdata.mybatis.core.query.MPJLambdaWrapperX;
 
 /**
  * 主题域管理Service业务层处理
@@ -97,12 +96,12 @@ public class DmThemeDomainServiceImpl extends ServiceImpl<DmThemeDomainMapper, D
         if (catDO.getId().equals(updateReqVO.getParentId())) {
             throw new ServiceException("切换上级不能选择自身作为上级类目");
         }
-//        if (Boolean.TRUE.equals(updateReqVO.getValidFlag())) {
-//            DmThemeDomainDO parent = baseMapper.selectById(catDO.getParentId());
-//            if (parent != null && Boolean.FALSE.equals(parent.getValidFlag())) {
-//                throw new ServiceException("须先启用父级");
-//            }
-//        }
+        if (Boolean.TRUE.equals(updateReqVO.getValidFlag())) {
+            DmThemeDomainDO parent = baseMapper.selectById(catDO.getParentId());
+            if (parent != null && Boolean.FALSE.equals(parent.getValidFlag())) {
+                throw new ServiceException("须先启用父级");
+            }
+        }
         //修改上下级判断
         boolean flag = false;
         if (!catDO.getParentId().equals(updateReqVO.getParentId())) {
@@ -222,14 +221,26 @@ public class DmThemeDomainServiceImpl extends ServiceImpl<DmThemeDomainMapper, D
 
     @Override
     public List<DmThemeDomainDO> getDmThemeDomainList(DmThemeDomainPageReqVO reqVO) {
-        LambdaQueryWrapperX<DmThemeDomainDO> queryWrapperX = new LambdaQueryWrapperX<>();
-        queryWrapperX.likeIfPresent(DmThemeDomainDO::getName, reqVO.getName())
+        MPJLambdaWrapperX<DmThemeDomainDO> lambdaWrapper = new MPJLambdaWrapperX<>();
+
+        lambdaWrapper.selectAll(DmThemeDomainDO.class)
+                .select("u.NICK_NAME AS ownerUserName", "layer.name AS dataLayerName")
+                .leftJoin("SYSTEM_USER u on t.OWNER_USER_ID = u.USER_ID AND u.DEL_FLAG = '0'")
+                .leftJoin(DmDataLayerDO.class, "layer", DmDataLayerDO::getId, DmThemeDomainDO::getDataLayerId);
+
+        lambdaWrapper.eqIfPresent(DmThemeDomainDO::getCode, reqVO.getCode())
+                .likeIfPresent(DmThemeDomainDO::getName, reqVO.getName())
+                .likeIfPresent(DmThemeDomainDO::getEngName, reqVO.getEngName())
                 .eqIfPresent(DmThemeDomainDO::getParentId, reqVO.getParentId())
-                .eqIfPresent(DmThemeDomainDO::getDescription, reqVO.getDescription())
-                .likeRightIfPresent(DmThemeDomainDO::getCode, reqVO.getCode())
+                .eqIfPresent(DmThemeDomainDO::getOwnerUserId, reqVO.getOwnerUserId())
+                .eqIfPresent(DmThemeDomainDO::getDataLayerId, reqVO.getDataLayerId())
+                .likeIfPresent(DmThemeDomainDO::getDescription, reqVO.getDescription())
                 .eqIfPresent(DmThemeDomainDO::getCreateTime, reqVO.getCreateTime())
+                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+                // .likeIfPresent(DmThemeDomainDO::getName, reqVO.getName())
+                // 按照 createTime 字段降序排序
                 .orderByDesc(DmThemeDomainDO::getCreateTime);
-        return dmThemeDomainMapper.selectList(queryWrapperX);
+        return dmThemeDomainMapper.selectList(lambdaWrapper);
     }
 
     @Override

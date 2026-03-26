@@ -36,8 +36,11 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.Arrays;
+
 import cn.hutool.core.date.DateUtil;
+
 import java.util.List;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -57,6 +60,7 @@ import tech.qiantong.qdata.common.exception.enums.GlobalErrorCodeConstants;
 import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmDataLayerPageReqVO;
 import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmDataLayerRespVO;
 import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmDataLayerSaveReqVO;
+import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmDataLayerTreeRespVO;
 import tech.qiantong.qdata.module.dm.convert.dm.DmDataLayerConvert;
 import tech.qiantong.qdata.module.dm.dal.dataobject.dm.DmDataLayerDO;
 import tech.qiantong.qdata.module.dm.service.dm.IDmDataLayerService;
@@ -76,15 +80,22 @@ public class DmDataLayerController extends BaseController {
     private IDmDataLayerService dmDataLayerService;
 
     @Operation(summary = "查询数仓分层管理列表")
-    @PreAuthorize("@ss.hasPermi('dm:datalayer:list')")
+    @PreAuthorize("@ss.hasPermi('dm:dataLayer:list')")
     @GetMapping("/list")
     public CommonResult<PageResult<DmDataLayerRespVO>> list(DmDataLayerPageReqVO dmDataLayer) {
         PageResult<DmDataLayerDO> page = dmDataLayerService.getDmDataLayerPage(dmDataLayer);
         return CommonResult.success(BeanUtils.toBean(page, DmDataLayerRespVO.class));
     }
 
+    @Operation(summary = "查询数仓分层管理树")
+    @PreAuthorize("@ss.hasPermi('dm:dataLayer:list')")
+    @GetMapping("/tree")
+    public CommonResult<List<DmDataLayerTreeRespVO>> tree() {
+        return CommonResult.success(dmDataLayerService.tree());
+    }
+
     @Operation(summary = "导出数仓分层管理列表")
-    @PreAuthorize("@ss.hasPermi('dm:datalayer:export')")
+    @PreAuthorize("@ss.hasPermi('dm:dataLayer:export')")
     @Log(title = "数仓分层管理", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DmDataLayerPageReqVO exportReqVO) {
@@ -95,7 +106,7 @@ public class DmDataLayerController extends BaseController {
     }
 
     @Operation(summary = "导入数仓分层管理列表")
-    @PreAuthorize("@ss.hasPermi('dm:datalayer:import')")
+    @PreAuthorize("@ss.hasPermi('dm:dataLayer:import')")
     @Log(title = "数仓分层管理", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
@@ -107,7 +118,7 @@ public class DmDataLayerController extends BaseController {
     }
 
     @Operation(summary = "获取数仓分层管理详细信息")
-    @PreAuthorize("@ss.hasPermi('dm:datalayer:query')")
+    @PreAuthorize("@ss.hasPermi('dm:dataLayer:query')")
     @GetMapping(value = "/{id}")
     public CommonResult<DmDataLayerRespVO> getInfo(@PathVariable("id") Long id) {
         DmDataLayerDO dmDataLayerDO = dmDataLayerService.getDmDataLayerById(id);
@@ -115,7 +126,7 @@ public class DmDataLayerController extends BaseController {
     }
 
     @Operation(summary = "新增数仓分层管理")
-    @PreAuthorize("@ss.hasPermi('dm:datalayer:add')")
+    @PreAuthorize("@ss.hasPermi('dm:dataLayer:add')")
     @Log(title = "数仓分层管理", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DmDataLayerSaveReqVO dmDataLayer) {
@@ -126,7 +137,7 @@ public class DmDataLayerController extends BaseController {
     }
 
     @Operation(summary = "修改数仓分层管理")
-    @PreAuthorize("@ss.hasPermi('dm:datalayer:edit')")
+    @PreAuthorize("@ss.hasPermi('dm:dataLayer:edit')")
     @Log(title = "数仓分层管理", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DmDataLayerSaveReqVO dmDataLayer) {
@@ -137,7 +148,7 @@ public class DmDataLayerController extends BaseController {
     }
 
     @Operation(summary = "删除数仓分层管理")
-    @PreAuthorize("@ss.hasPermi('dm:datalayer:remove')")
+    @PreAuthorize("@ss.hasPermi('dm:dataLayer:remove')")
     @Log(title = "数仓分层管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {

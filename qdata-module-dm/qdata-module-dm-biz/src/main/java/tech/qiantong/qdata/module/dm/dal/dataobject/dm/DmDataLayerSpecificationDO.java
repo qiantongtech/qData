@@ -88,4 +88,9 @@ public class DmDataLayerSpecificationDO extends BaseEntity {
     private Boolean delFlag;
 
 
+    /**
+     * 负责人名称
+     */
+    @TableField(exist = false)
+    private String ownerUserName;
 }

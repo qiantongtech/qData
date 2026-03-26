@@ -33,7 +33,6 @@
 package tech.qiantong.qdata.module.dm.controller.admin.dm;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.Arrays;
 
@@ -46,21 +45,15 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import tech.qiantong.qdata.common.core.domain.AjaxResult;
-import tech.qiantong.qdata.common.core.page.PageParam;
 import tech.qiantong.qdata.common.annotation.Log;
 import tech.qiantong.qdata.common.core.controller.BaseController;
 import tech.qiantong.qdata.common.core.domain.CommonResult;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.enums.BusinessType;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
-import tech.qiantong.qdata.common.utils.poi.ExcelUtil;
-import tech.qiantong.qdata.common.exception.enums.GlobalErrorCodeConstants;
 import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmDataLayerSpecificationPageReqVO;
 import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmDataLayerSpecificationRespVO;
 import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmDataLayerSpecificationSaveReqVO;
-import tech.qiantong.qdata.module.dm.convert.dm.DmDataLayerSpecificationConvert;
 import tech.qiantong.qdata.module.dm.dal.dataobject.dm.DmDataLayerSpecificationDO;
 import tech.qiantong.qdata.module.dm.service.dm.IDmDataLayerSpecificationService;
 
@@ -79,38 +72,15 @@ public class DmDataLayerSpecificationController extends BaseController {
     private IDmDataLayerSpecificationService dmDataLayerSpecificationService;
 
     @Operation(summary = "查询数仓分层-规范管理列表")
-    @PreAuthorize("@ss.hasPermi('dm:datalayerspecification:list')")
+    @PreAuthorize("@ss.hasPermi('dm:dataLayer:list')")
     @GetMapping("/list")
     public CommonResult<PageResult<DmDataLayerSpecificationRespVO>> list(DmDataLayerSpecificationPageReqVO dmDataLayerSpecification) {
         PageResult<DmDataLayerSpecificationDO> page = dmDataLayerSpecificationService.getDmDataLayerSpecificationPage(dmDataLayerSpecification);
         return CommonResult.success(BeanUtils.toBean(page, DmDataLayerSpecificationRespVO.class));
     }
 
-    @Operation(summary = "导出数仓分层-规范管理列表")
-    @PreAuthorize("@ss.hasPermi('dm:datalayerspecification:export')")
-    @Log(title = "数仓分层-规范管理", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, DmDataLayerSpecificationPageReqVO exportReqVO) {
-        exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
-        List<DmDataLayerSpecificationDO> list = (List<DmDataLayerSpecificationDO>) dmDataLayerSpecificationService.getDmDataLayerSpecificationPage(exportReqVO).getRows();
-        ExcelUtil<DmDataLayerSpecificationRespVO> util = new ExcelUtil<>(DmDataLayerSpecificationRespVO.class);
-        util.exportExcel(response, DmDataLayerSpecificationConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
-    }
-
-    @Operation(summary = "导入数仓分层-规范管理列表")
-    @PreAuthorize("@ss.hasPermi('dm:datalayerspecification:import')")
-    @Log(title = "数仓分层-规范管理", businessType = BusinessType.IMPORT)
-    @PostMapping("/importData")
-    public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
-        ExcelUtil<DmDataLayerSpecificationRespVO> util = new ExcelUtil<>(DmDataLayerSpecificationRespVO.class);
-        List<DmDataLayerSpecificationRespVO> importExcelList = util.importExcel(file.getInputStream());
-        String operName = getUsername();
-        String message = dmDataLayerSpecificationService.importDmDataLayerSpecification(importExcelList, updateSupport, operName);
-        return success(message);
-    }
-
     @Operation(summary = "获取数仓分层-规范管理详细信息")
-    @PreAuthorize("@ss.hasPermi('dm:datalayerspecification:query')")
+    @PreAuthorize("@ss.hasPermi('dm:dataLayer:query')")
     @GetMapping(value = "/{id}")
     public CommonResult<DmDataLayerSpecificationRespVO> getInfo(@PathVariable("id") Long id) {
         DmDataLayerSpecificationDO dmDataLayerSpecificationDO = dmDataLayerSpecificationService.getDmDataLayerSpecificationById(id);
@@ -118,7 +88,7 @@ public class DmDataLayerSpecificationController extends BaseController {
     }
 
     @Operation(summary = "新增数仓分层-规范管理")
-    @PreAuthorize("@ss.hasPermi('dm:datalayerspecification:add')")
+    @PreAuthorize("@ss.hasPermi('dm:dataLayer:add')")
     @Log(title = "数仓分层-规范管理", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DmDataLayerSpecificationSaveReqVO dmDataLayerSpecification) {
@@ -129,7 +99,7 @@ public class DmDataLayerSpecificationController extends BaseController {
     }
 
     @Operation(summary = "修改数仓分层-规范管理")
-    @PreAuthorize("@ss.hasPermi('dm:datalayerspecification:edit')")
+    @PreAuthorize("@ss.hasPermi('dm:dataLayer:edit')")
     @Log(title = "数仓分层-规范管理", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DmDataLayerSpecificationSaveReqVO dmDataLayerSpecification) {
@@ -140,7 +110,7 @@ public class DmDataLayerSpecificationController extends BaseController {
     }
 
     @Operation(summary = "删除数仓分层-规范管理")
-    @PreAuthorize("@ss.hasPermi('dm:datalayerspecification:remove')")
+    @PreAuthorize("@ss.hasPermi('dm:dataLayer:remove')")
     @Log(title = "数仓分层-规范管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {

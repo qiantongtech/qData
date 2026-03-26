@@ -32,10 +32,12 @@
 
 package tech.qiantong.qdata.module.dm.controller.admin.dm.vo;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import tech.qiantong.qdata.common.annotation.Excel;
+
 import java.util.Date;
 import java.io.Serializable;
 
@@ -75,9 +77,18 @@ public class DmThemeDomainRespVO implements Serializable {
     @Schema(description = "负责人ID", example = "")
     private Long ownerUserId;
 
+    @Excel(name = "负责人名称")
+    @Schema(description = "负责人名称", example = "")
+    private String ownerUserName;
+
     @Excel(name = "数仓分层ID")
     @Schema(description = "数仓分层ID", example = "")
     private Long dataLayerId;
+
+    /** 数仓分层名称 */
+    @Excel(name = "数仓分层名称")
+    @Schema(description = "数仓分层名称", example = "")
+    private String dataLayerName;
 
     @Excel(name = "描述")
     @Schema(description = "描述", example = "")

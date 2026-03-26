@@ -32,6 +32,9 @@
 
 package tech.qiantong.qdata.common.core.domain.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import tech.qiantong.qdata.common.annotation.Excel;
@@ -47,6 +50,9 @@ import javax.validation.constraints.Size;
  *
  * @author qdata
  */
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class SysDictData extends BaseEntity
 {
     private static final long serialVersionUID = 1L;

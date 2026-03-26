@@ -51,8 +51,11 @@ import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmDataDomainPageReqV
 import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmDataDomainRespVO;
 import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmDataDomainSaveReqVO;
 import tech.qiantong.qdata.module.dm.dal.dataobject.dm.DmDataDomainDO;
+import tech.qiantong.qdata.module.dm.dal.dataobject.dm.DmDataLayerDO;
 import tech.qiantong.qdata.module.dm.dal.mapper.dm.DmDataDomainMapper;
 import tech.qiantong.qdata.module.dm.service.dm.IDmDataDomainService;
+import tech.qiantong.qdata.mybatis.core.query.MPJLambdaWrapperX;
+
 /**
  * 数据域管理Service业务层处理
  *
@@ -94,7 +97,13 @@ public class DmDataDomainServiceImpl  extends ServiceImpl<DmDataDomainMapper,DmD
 
     @Override
     public DmDataDomainDO getDmDataDomainById(Long id) {
-        return dmDataDomainMapper.selectById(id);
+        MPJLambdaWrapperX<DmDataDomainDO> lambdaWrapper = new MPJLambdaWrapperX<>();
+
+        lambdaWrapper.selectAll(DmDataDomainDO.class)
+                .select("u.NICK_NAME AS ownerUserName")
+                .leftJoin("SYSTEM_USER u on t.OWNER_USER_ID = u.USER_ID AND u.DEL_FLAG = '0'")
+                .eq(DmDataDomainDO::getId, id);
+        return dmDataDomainMapper.selectOne(lambdaWrapper);
     }
 
     @Override

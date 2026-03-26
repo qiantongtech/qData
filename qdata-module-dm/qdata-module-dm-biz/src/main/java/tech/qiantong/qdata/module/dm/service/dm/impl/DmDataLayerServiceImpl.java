@@ -32,16 +32,14 @@
 
 package tech.qiantong.qdata.module.dm.service.dm.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.Resource;
 
+import tech.qiantong.qdata.common.core.domain.entity.SysDictData;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.exception.ServiceException;
 import tech.qiantong.qdata.common.utils.StringUtils;
@@ -53,9 +51,13 @@ import org.springframework.transaction.annotation.Transactional;
 import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmDataLayerPageReqVO;
 import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmDataLayerRespVO;
 import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmDataLayerSaveReqVO;
+import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmDataLayerTreeRespVO;
 import tech.qiantong.qdata.module.dm.dal.dataobject.dm.DmDataLayerDO;
+import tech.qiantong.qdata.module.dm.dal.dataobject.dm.DmDataLayerSpecificationDO;
 import tech.qiantong.qdata.module.dm.dal.mapper.dm.DmDataLayerMapper;
 import tech.qiantong.qdata.module.dm.service.dm.IDmDataLayerService;
+import tech.qiantong.qdata.module.system.service.ISysDictDataService;
+import tech.qiantong.qdata.mybatis.core.query.MPJLambdaWrapperX;
 
 /**
  * 数仓分层管理Service业务层处理
@@ -69,6 +71,9 @@ import tech.qiantong.qdata.module.dm.service.dm.IDmDataLayerService;
 public class DmDataLayerServiceImpl extends ServiceImpl<DmDataLayerMapper, DmDataLayerDO> implements IDmDataLayerService {
     @Resource
     private DmDataLayerMapper dmDataLayerMapper;
+
+    @Resource
+    private ISysDictDataService sysDictDataService;
 
     @Override
     public PageResult<DmDataLayerDO> getDmDataLayerPage(DmDataLayerPageReqVO pageReqVO) {
@@ -187,5 +192,43 @@ public class DmDataLayerServiceImpl extends ServiceImpl<DmDataLayerMapper, DmDat
             resultMsg.append("恭喜您，数据已全部导入成功！共 ").append(successNum).append(" 条。");
         }
         return resultMsg.toString();
+    }
+
+    @Override
+    public List<DmDataLayerTreeRespVO> tree() {
+        List<DmDataLayerDO> list = this.list();
+
+        List<SysDictData> sysDictDataList = sysDictDataService.selectDictDataList(SysDictData.builder()
+                .dictType("dm_data_layer_category")
+                .status("0")
+                .build());
+
+        sysDictDataList.stream().sorted(Comparator.comparingLong(SysDictData::getDictSort));
+
+        List<DmDataLayerTreeRespVO> tree = sysDictDataList.stream()
+                .map(sysDictData -> DmDataLayerTreeRespVO.builder()
+                        .id(Long.parseLong(sysDictData.getDictValue()))
+                        .parentId(0L)
+                        .name(sysDictData.getDictLabel())
+                        .build())
+                .collect(Collectors.toList());
+
+        list.forEach(dmDataLayerDO -> {
+            DmDataLayerTreeRespVO dmDataLayerRespVO = tree.stream()
+                    .filter(item -> String.valueOf(item.getId()).equals(dmDataLayerDO.getCategory()))
+                    .findFirst()
+                    .orElse(null);
+            if (dmDataLayerRespVO != null) {
+                List<DmDataLayerTreeRespVO> childrenList = dmDataLayerRespVO.getChildren();
+                if (childrenList == null) {
+                    childrenList = new ArrayList();
+                    dmDataLayerRespVO.setChildren(childrenList);
+                }
+                DmDataLayerTreeRespVO children = BeanUtils.toBean(dmDataLayerDO, DmDataLayerTreeRespVO.class);
+                children.setParentId(Long.parseLong(children.getCategory()));
+                childrenList.add(children);
+            }
+        });
+        return tree;
     }
 }

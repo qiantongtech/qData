@@ -33,6 +33,8 @@
 package tech.qiantong.qdata.module.dm.dal.mapper.dm;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 import tech.qiantong.qdata.module.dm.dal.dataobject.dm.DmDataDomainDO;
 import tech.qiantong.qdata.module.dm.dal.dataobject.dm.DmThemeDomainDO;
 
@@ -83,4 +85,7 @@ public interface DmThemeDomainMapper extends BaseMapperX<DmThemeDomainDO> {
 
         return selectJoinPage(reqVO, DmThemeDomainDO.class, lambdaWrapper);
     }
+
+    @Update(value = "update DM_THEME_DOMAIN set VALID_FLAG=#{validFlag} where code like concat(#{prefixCode}, '%')")
+    int updateValidFlag(@Param("prefixCode") String prefixCode, @Param("validFlag") Boolean validFlag);
 }

@@ -45,9 +45,9 @@
       </DeptTree>
 
       <!-- 右侧列表 -->
-      <el-main class="main-content main-table">
+      <el-main class="main-content">
         <!-- 顶部信息卡片 -->
-        <layerInfoCard v-if="currentLayer" class="mb15" :layer="currentLayer" />
+        <layerInfoCard v-if="currentLayer" class="mb20" :layer="currentLayer" />
 
         <qt-wrap :columns="tableStore.columns" :tableRef="tableRef">
           <template #search>
@@ -330,7 +330,7 @@ const tableStore = reactive({
   },
   columns: [
     // { type: "selection", width: 55, align: "left" },
-    { label: "编号", prop: "id", width: 60, sortable: true },
+    { label: "ID", prop: "id", width: 60, sortable: true },
     { label: "表前缀", prop: "prefixName", align: "left" },
     { label: "业务大类英文缩写", prop: "businessEngName", align: "left" },
     { label: "负责人", prop: "ownerUserName", align: "left" },
@@ -435,10 +435,8 @@ function getTree() {
 
 /** 节点单击事件 */
 function handleNodeClick(data) {
-  if (data.parentId != 0) {
-    currentLayer.value = data;
-    tableRef.value?.getList();
-  }
+  // 仅当不是一级节点时才执行节点点击逻辑
+  // 保持原有逻辑但不执行任何操作给一级节点
 }
 
 // 处理树节点点击
@@ -642,8 +640,5 @@ function handleDropdownVisibleChange(visible, nodeId) {
 .action-icon {
   font-size: 14px;
   color: var(--el-text-color-secondary);
-}
-:deep(.main-table .qt-wrap--content.full) {
-  min-height: calc(100vh - 345px) !important;
 }
 </style>

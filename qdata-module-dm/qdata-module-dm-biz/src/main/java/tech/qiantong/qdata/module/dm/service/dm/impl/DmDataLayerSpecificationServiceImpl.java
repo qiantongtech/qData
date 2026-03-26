@@ -56,6 +56,7 @@ import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmDataLayerSpecifica
 import tech.qiantong.qdata.module.dm.dal.dataobject.dm.DmDataLayerSpecificationDO;
 import tech.qiantong.qdata.module.dm.dal.mapper.dm.DmDataLayerSpecificationMapper;
 import tech.qiantong.qdata.module.dm.service.dm.IDmDataLayerSpecificationService;
+import tech.qiantong.qdata.mybatis.core.query.MPJLambdaWrapperX;
 
 /**
  * 数仓分层-规范管理Service业务层处理
@@ -99,11 +100,17 @@ public class DmDataLayerSpecificationServiceImpl extends ServiceImpl<DmDataLayer
 
     @Override
     public DmDataLayerSpecificationDO getDmDataLayerSpecificationById(Long id) {
-        return dmDataLayerSpecificationMapper.selectById(id);
+        MPJLambdaWrapperX<DmDataLayerSpecificationDO> lambdaWrapper = new MPJLambdaWrapperX<>();
+
+        lambdaWrapper.selectAll(DmDataLayerSpecificationDO.class)
+                .select("u.NICK_NAME AS ownerUserName")
+                .leftJoin("SYSTEM_USER u on t.OWNER_USER_ID = u.USER_ID AND u.DEL_FLAG = '0'")
+                .eq(DmDataLayerSpecificationDO::getId, id);
+        return dmDataLayerSpecificationMapper.selectOne(lambdaWrapper);
     }
 
     @Override
-    public List<DmDataLayerSpecificationDO> getDmDataLayerSpecificationList() {
+    public List<DmDataLayerSpecificationDO> getDmDataLayerSpecificationPage() {
         return dmDataLayerSpecificationMapper.selectList();
     }
 

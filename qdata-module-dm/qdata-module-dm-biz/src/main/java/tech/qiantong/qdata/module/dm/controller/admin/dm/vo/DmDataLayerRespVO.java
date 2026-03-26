@@ -47,6 +47,9 @@ import java.io.Serializable;
  */
 @Schema(description = "数仓分层管理 Response VO")
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class DmDataLayerRespVO implements Serializable {
 
     private static final long serialVersionUID = 1L;

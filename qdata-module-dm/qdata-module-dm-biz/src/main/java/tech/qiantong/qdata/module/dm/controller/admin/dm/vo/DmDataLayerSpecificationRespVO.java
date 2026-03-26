@@ -71,6 +71,10 @@ public class DmDataLayerSpecificationRespVO implements Serializable {
     @Schema(description = "负责人ID", example = "")
     private Long ownerUserId;
 
+    @Excel(name = "负责人名称")
+    @Schema(description = "负责人名称", example = "")
+    private String ownerUserName;
+
     @Excel(name = "状态")
     @Schema(description = "状态", example = "")
     private String status;

@@ -85,6 +85,19 @@ export default [
         ]
     },
     {
+        path: '/developing',
+        component: Layout,
+        hidden: true,
+        children: [
+            {
+                path: '',
+                component: () => import('@/views/sys/developing/index.vue'),
+                name: 'Developing',
+                meta: { title: '功能开发中' }
+            }
+        ]
+    },
+    {
         path: '/sys/system/bases/message',
         component: Layout,
         redirect: 'message',

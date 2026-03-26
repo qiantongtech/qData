@@ -59,7 +59,6 @@ public class DmDataLayerDO extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /** ID */
-    @TableId(type = IdType.AUTO)
     private Long id;
 
     /** 名称 */

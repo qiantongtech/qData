@@ -49,6 +49,14 @@ export function getDataLayer(id) {
   })
 }
 
+// 查询数仓分层管理树
+export function treeDataLayer() {
+  return request({
+    url: '/dm/dataLayer/tree',
+    method: 'get'
+  })
+}
+
 // 新增数仓分层管理
 export function addDataLayer(data) {
   return request({

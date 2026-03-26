@@ -91,4 +91,13 @@ public class DmThemeDomainDO extends BaseEntity {
     private Boolean delFlag;
 
 
+    /**
+     * 负责人名称
+     */
+    @TableField(exist = false)
+    private String ownerUserName;
+
+    /** 数仓分层名称 */
+    @TableField(exist = false)
+    private String dataLayerName;
 }

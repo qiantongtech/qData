@@ -92,7 +92,7 @@ public interface IDmDataLayerSpecificationService extends IService<DmDataLayerSp
      *
      * @return 数仓分层-规范管理列表
      */
-    List<DmDataLayerSpecificationDO> getDmDataLayerSpecificationList();
+    List<DmDataLayerSpecificationDO> getDmDataLayerSpecificationPage();
 
     /**
      * 获得全部数仓分层-规范管理 Map

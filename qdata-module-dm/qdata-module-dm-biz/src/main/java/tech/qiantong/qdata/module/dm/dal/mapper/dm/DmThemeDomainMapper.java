@@ -32,15 +32,23 @@
 
 package tech.qiantong.qdata.module.dm.dal.mapper.dm;
 
+import org.apache.commons.lang3.StringUtils;
+import tech.qiantong.qdata.module.dm.dal.dataobject.dm.DmDataDomainDO;
 import tech.qiantong.qdata.module.dm.dal.dataobject.dm.DmThemeDomainDO;
+
 import java.util.Arrays;
+
 import com.github.yulichang.base.MPJBaseMapper;
 import tech.qiantong.qdata.common.core.page.PageResult;
+
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
+
 import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmThemeDomainPageReqVO;
 import tech.qiantong.qdata.mybatis.core.mapper.BaseMapperX;
 import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
+import tech.qiantong.qdata.mybatis.core.query.MPJLambdaWrapperX;
 
 /**
  * 主题域管理Mapper接口
@@ -51,12 +59,13 @@ import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
 public interface DmThemeDomainMapper extends BaseMapperX<DmThemeDomainDO> {
 
     default PageResult<DmThemeDomainDO> selectPage(DmThemeDomainPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
-        Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
+        MPJLambdaWrapperX<DmThemeDomainDO> lambdaWrapper = new MPJLambdaWrapperX<>();
 
-        // 构造动态查询条件
-        return selectPage(reqVO, new LambdaQueryWrapperX<DmThemeDomainDO>()
-                .eqIfPresent(DmThemeDomainDO::getCode, reqVO.getCode())
+        lambdaWrapper.selectAll(DmThemeDomainDO.class)
+                .select("u.NICK_NAME AS ownerUserName")
+                .leftJoin("SYSTEM_USER u on t.OWNER_USER_ID = u.USER_ID AND u.DEL_FLAG = '0'");
+
+        lambdaWrapper.eqIfPresent(DmThemeDomainDO::getCode, reqVO.getCode())
                 .likeIfPresent(DmThemeDomainDO::getName, reqVO.getName())
                 .likeIfPresent(DmThemeDomainDO::getEngName, reqVO.getEngName())
                 .eqIfPresent(DmThemeDomainDO::getParentId, reqVO.getParentId())
@@ -67,6 +76,11 @@ public interface DmThemeDomainMapper extends BaseMapperX<DmThemeDomainDO> {
                 // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
                 // .likeIfPresent(DmThemeDomainDO::getName, reqVO.getName())
                 // 按照 createTime 字段降序排序
-                .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(), allowedColumns));
+                .orderByStr(StringUtils.isNotBlank(reqVO.getOrderByColumn()),
+                        StringUtils.equals("asc", reqVO.getIsAsc()), StringUtils.isNotBlank(reqVO.getOrderByColumn()) ? Arrays.asList(reqVO.getOrderByColumn().split(","))
+                                .stream().map(e -> LambdaQueryWrapperX.camelToUnderline(e))
+                                .collect(Collectors.toList()) : null);
+
+        return selectJoinPage(reqVO, DmThemeDomainDO.class, lambdaWrapper);
     }
 }

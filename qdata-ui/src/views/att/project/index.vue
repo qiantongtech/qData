@@ -32,27 +32,53 @@
 
 <template>
   <div class="app-container" ref="app-container">
-
     <GuideTip tip-id="att/attProject.list" />
 
     <div class="pagecont-top" v-show="showSearch">
-      <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="75px"
-        v-show="showSearch" @submit.prevent>
+      <el-form
+        class="btn-style"
+        :model="queryParams"
+        ref="queryRef"
+        :inline="true"
+        label-width="75px"
+        v-show="showSearch"
+        @submit.prevent
+      >
         <el-form-item label="项目名称" prop="name">
-          <el-input class="el-form-input-width" v-model="queryParams.name" placeholder="请输入项目名称" clearable
-            @keyup.enter="handleQuery" />
+          <el-input
+            class="el-form-input-width"
+            v-model="queryParams.name"
+            placeholder="请输入项目名称"
+            clearable
+            @keyup.enter="handleQuery"
+          />
         </el-form-item>
         <el-form-item label="负责人" prop="managerId">
-          <el-select v-model="queryParams.managerId" class="el-form-input-width" @change="handleChange" filterable
-            placeholder="请选择负责人">
-            <el-option v-for="item in managerOptions" :key="item.userId" :label="item.nickName" :value="item.userId">
+          <el-select
+            v-model="queryParams.managerId"
+            class="el-form-input-width"
+            @change="handleChange"
+            filterable
+            placeholder="请选择负责人"
+          >
+            <el-option
+              v-for="item in managerOptions"
+              :key="item.userId"
+              :label="item.nickName"
+              :value="item.userId"
+            >
             </el-option>
           </el-select>
         </el-form-item>
 
         <el-form-item>
-          <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()"
-            v-hasPermi="['att:project:query']">
+          <el-button
+            plain
+            type="primary"
+            @click="handleQuery"
+            @mousedown="(e) => e.preventDefault()"
+            v-hasPermi="['att:project:query']"
+          >
             <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
           </el-button>
           <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
@@ -66,8 +92,13 @@
       <div class="justify-between mb15">
         <el-row :gutter="15" class="btn-style">
           <el-col :span="1.5">
-            <el-button type="primary" plain @click="handleAdd" v-hasPermi="['att:project:add']"
-              @mousedown="(e) => e.preventDefault()">
+            <el-button
+              type="primary"
+              plain
+              @click="handleAdd"
+              v-hasPermi="['att:project:add']"
+              @mousedown="(e) => e.preventDefault()"
+            >
               <i class="iconfont-mini icon-xinzeng mr5"></i>新增
             </el-button>
           </el-col>
@@ -91,72 +122,161 @@
                     </el-col> -->
         </el-row>
         <div class="justify-end top-right-btn">
-          <right-toolbar v-model:showSearch="showSearch" @queryTable="getList" :columns="columns"></right-toolbar>
+          <right-toolbar
+            v-model:showSearch="showSearch"
+            @queryTable="getList"
+            :columns="columns"
+          ></right-toolbar>
         </div>
       </div>
-      <el-table stripe v-loading="loading" :data="attProjectList" :default-sort="defaultSort"
-        @sort-change="handleSortChange">
+      <el-table
+        stripe
+        v-loading="loading"
+        :data="attProjectList"
+        :default-sort="defaultSort"
+        @sort-change="handleSortChange"
+      >
         <!-- <el-table-column type="selection" width="55" align="center" /> -->
         <!--       <el-table-column v-if="getColumnVisibility(0)" label="编号" align="center" prop="id" />-->
-        <el-table-column label="编号" prop="id" width="80" align="center" v-if="getColumnVisibility(1)">
+        <el-table-column
+          label="编号"
+          prop="id"
+          width="80"
+          align="center"
+          v-if="getColumnVisibility(1)"
+        >
           <template #default="scope">
             {{ scope.row.id || "-" }}
           </template>
         </el-table-column>
-        <el-table-column label="项目名称" align="left" prop="name" v-if="getColumnVisibility(2)" width="200">
+        <el-table-column
+          label="项目名称"
+          align="left"
+          prop="name"
+          v-if="getColumnVisibility(2)"
+          width="200"
+        >
           <template #default="scope">
             {{ scope.row.name || "-" }}
           </template>
         </el-table-column>
-        <el-table-column label="描述" align="left" prop="description" :show-overflow-tooltip="{ effect: 'light' }"
-          v-if="getColumnVisibility(3)" width="300">
+        <el-table-column
+          label="描述"
+          align="left"
+          prop="description"
+          :show-overflow-tooltip="{ effect: 'light' }"
+          v-if="getColumnVisibility(3)"
+          width="300"
+        >
           <template #default="scope">
             {{ scope.row.description || "-" }}
           </template>
         </el-table-column>
-        <el-table-column label="负责人" align="center" prop="managerId" v-if="getColumnVisibility(4)">
+        <el-table-column
+          label="负责人"
+          align="center"
+          prop="managerId"
+          v-if="getColumnVisibility(4)"
+        >
           <template #default="scope">
             {{ scope.row.nickName || "-" }}
           </template>
         </el-table-column>
-        <el-table-column label="联系方式" align="center" prop="managerPhone" v-if="getColumnVisibility(5)">
+        <el-table-column
+          label="联系方式"
+          align="center"
+          prop="managerPhone"
+          v-if="getColumnVisibility(5)"
+        >
           <template #default="scope">
             {{ scope.row.managerPhone || "-" }}
           </template>
         </el-table-column>
-        <el-table-column v-if="getColumnVisibility(7)" label="创建人" :show-overflow-tooltip="{ effect: 'light' }"
-          align="left" prop="createBy">
+        <el-table-column
+          v-if="getColumnVisibility(7)"
+          label="创建人"
+          :show-overflow-tooltip="{ effect: 'light' }"
+          align="left"
+          prop="createBy"
+        >
           <template #default="scope">
             {{ scope.row.createBy || "-" }}
           </template>
         </el-table-column>
         <!--   sortable="custom" column-key="create_time" :sort-orders="['descending', 'ascending']" -->
-        <el-table-column v-if="getColumnVisibility(6)" label="创建时间" align="center" prop="createTime" width="150">
-          <template #default="scope"> <span>{{ parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}") || "-"
-              }}</span>
+        <el-table-column
+          v-if="getColumnVisibility(6)"
+          label="创建时间"
+          align="center"
+          prop="createTime"
+          width="150"
+        >
+          <template #default="scope">
+            <span>{{
+              parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}") || "-"
+            }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="状态" align="center" prop="validFlag" v-if="getColumnVisibility(8)">
+        <el-table-column
+          label="状态"
+          align="center"
+          prop="validFlag"
+          v-if="getColumnVisibility(8)"
+        >
           <template #default="scope">
-            <el-switch v-model="scope.row.validFlag" active-color="#13ce66" inactive-color="#ff4949"
-              @change="handleStatusChange(scope.row)">
+            <el-switch
+              v-model="scope.row.validFlag"
+              active-color="#13ce66"
+              inactive-color="#ff4949"
+              @change="handleStatusChange(scope.row)"
+            >
             </el-switch>
           </template>
         </el-table-column>
-        <el-table-column label="备注" align="left" width="200" prop="remark" :show-overflow-tooltip="{ effect: 'light' }"
-          v-if="getColumnVisibility(9)">
+        <el-table-column
+          label="备注"
+          align="left"
+          width="200"
+          prop="remark"
+          :show-overflow-tooltip="{ effect: 'light' }"
+          v-if="getColumnVisibility(9)"
+        >
           <template #default="scope">
             {{ scope.row.remark || "-" }}
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
+        <el-table-column
+          label="操作"
+          align="center"
+          class-name="small-padding fixed-width"
+          fixed="right"
+          width="240"
+        >
           <template #default="scope">
-            <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-              v-hasPermi="['att:project:edit']">修改</el-button>
-            <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
-              v-hasPermi="['att:project:remove']">删除</el-button>
-            <el-button link type="primary" icon="view" v-hasPermi="['att:project:query']"
-              @click="handleDetail(scope.row)">详情</el-button>
+            <el-button
+              link
+              type="primary"
+              icon="Edit"
+              @click="handleUpdate(scope.row)"
+              v-hasPermi="['att:project:edit']"
+              >修改</el-button
+            >
+            <el-button
+              link
+              type="danger"
+              icon="Delete"
+              @click="handleDelete(scope.row)"
+              v-hasPermi="['att:project:remove']"
+              >删除</el-button
+            >
+            <el-button
+              link
+              type="primary"
+              icon="view"
+              v-hasPermi="['att:project:query']"
+              @click="handleDetail(scope.row)"
+              >详情</el-button
+            >
           </template>
         </el-table-column>
         <template #empty>
@@ -167,18 +287,35 @@
         </template>
       </el-table>
 
-      <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum"
-        v-model:limit="queryParams.pageSize" @pagination="getList" />
+      <pagination
+        v-show="total > 0"
+        :total="total"
+        v-model:page="queryParams.pageNum"
+        v-model:limit="queryParams.pageSize"
+        @pagination="getList"
+      />
     </div>
 
     <!-- 新增或修改项目对话框 -->
-    <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable>
+    <el-dialog
+      :title="title"
+      v-model="open"
+      width="800px"
+      :append-to="$refs['app-container']"
+      draggable
+    >
       <template #header="{ close, titleId, titleClass }">
         <span role="heading" aria-level="2" class="el-dialog__title">
           {{ title }}
         </span>
       </template>
-      <el-form ref="attProjectRef" :model="form" :rules="rules" label-width="80px" @submit.prevent>
+      <el-form
+        ref="attProjectRef"
+        :model="form"
+        :rules="rules"
+        label-width="80px"
+        @submit.prevent
+      >
         <el-row :gutter="20">
           <el-col :span="24">
             <el-form-item label="项目名称" prop="name">
@@ -190,9 +327,18 @@
           <el-col :span="12">
             <el-form-item label="负责人" prop="managerId">
               <!--                <el-input v-model="form.managerId" placeholder="请选择负责人" />-->
-              <el-select v-model="form.managerId" @change="handleChange" filterable placeholder="请选择负责人">
-                <el-option v-for="item in managerOptions" :key="item.userId" :label="item.nickName"
-                  :value="item.userId">
+              <el-select
+                v-model="form.managerId"
+                @change="handleChange"
+                filterable
+                placeholder="请选择负责人"
+              >
+                <el-option
+                  v-for="item in managerOptions"
+                  :key="item.userId"
+                  :label="item.nickName"
+                  :value="item.userId"
+                >
                 </el-option>
               </el-select>
               <!--                <el-cascader :options="managerOptions" :show-all-levels="false"></el-cascader>-->
@@ -200,14 +346,25 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="联系方式" prop="managerPhone">
-              <el-input v-model="form.managerPhone" placeholder="请输入联系方式" disabled />
+              <el-input
+                v-model="form.managerPhone"
+                placeholder="请输入联系方式"
+                disabled
+              />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
             <el-form-item label="描述" prop="description">
-              <el-input type="textarea" v-model="form.description" placeholder="请输入描述" />
+              <el-input
+                v-model="form.description"
+                type="textarea"
+                placeholder="请输入描述"
+                :min-height="192"
+                show-word-limit
+                maxlength="500"
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -218,14 +375,17 @@
                 <el-radio :label="true">启用</el-radio>
                 <el-radio :label="false">禁用</el-radio>
               </el-radio-group>
-
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
             <el-form-item label="备注" prop="remark">
-              <el-input type="textarea" v-model="form.remark" placeholder="请输入备注" />
+              <el-input
+                type="textarea"
+                v-model="form.remark"
+                placeholder="请输入备注"
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -233,11 +393,19 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button size="mini" @click="cancel">取 消</el-button>
-          <el-button type="primary" size="mini" @click="submitForm">确 定</el-button>
+          <el-button type="primary" size="mini" @click="submitForm"
+            >确 定</el-button
+          >
         </div>
       </template>
     </el-dialog>
-    <el-dialog :title="title" v-model="openDetail" width="1000px" :append-to="$refs['app-container']" draggable>
+    <el-dialog
+      :title="title"
+      v-model="openDetail"
+      width="1000px"
+      :append-to="$refs['app-container']"
+      draggable
+    >
       <el-form ref="daAssetApplyRef" :model="form" label-width="90px">
         <el-row :gutter="20">
           <el-col :span="24">
@@ -249,7 +417,6 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-
           <el-col :span="24">
             <el-form-item label="项目名称:" prop="name">
               <div class="form-readonly">
@@ -295,7 +462,6 @@
             <el-form-item label="创建时间:" prop="createTime">
               <div class="form-readonly">
                 {{ parseTime(form.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
-
               </div>
             </el-form-item>
           </el-col>
@@ -358,10 +524,7 @@ import { getToken } from "@/utils/auth.js";
 import { deptUserTree } from "@/api/system/system/user.js";
 
 const { proxy } = getCurrentInstance();
-const { dp_model_status, } = proxy.useDict(
-  "dp_model_status",
-
-);
+const { dp_model_status } = proxy.useDict("dp_model_status");
 
 const attProjectList = ref([]);
 
@@ -571,7 +734,7 @@ function submitForm() {
             open.value = false;
             getList();
           })
-          .catch((error) => { });
+          .catch((error) => {});
       } else {
         addAttProject(form.value)
           .then((response) => {
@@ -581,7 +744,7 @@ function submitForm() {
               getList();
             }
           })
-          .catch((error) => { });
+          .catch((error) => {});
       }
     }
   });
@@ -599,7 +762,7 @@ function handleDelete(row) {
       getList();
       proxy.$modal.msgSuccess("删除成功");
     })
-    .catch(() => { });
+    .catch(() => {});
 }
 
 /** 导出按钮操作 */
@@ -646,8 +809,8 @@ const handleFileSuccess = (response, file, fileList) => {
   proxy.$refs["uploadRef"].handleRemove(file);
   proxy.$alert(
     "<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +
-    response.msg +
-    "</div>",
+      response.msg +
+      "</div>",
     "导入结果",
     { dangerouslyUseHTMLString: true }
   );

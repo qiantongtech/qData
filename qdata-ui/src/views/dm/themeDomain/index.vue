@@ -354,6 +354,7 @@ import {
   addThemeDomain,
   updateThemeDomain,
   listThemeDomain,
+  delThemeDomain,
 } from "@/api/dm/themeDomain/themeDomain.js";
 import { deptUserTree } from "@/api/system/system/user.js";
 import { treeDataLayer } from "@/api/dm/dataLayer/dataLayer.js";
@@ -586,7 +587,7 @@ function handleDelete(row) {
   proxy.$modal
     .confirm('是否确认删除主题域类目管理编号为"' + row.name + '"的数据项？')
     .then(function () {
-      return delAttDataElemCat(row.id);
+      return delThemeDomain(row.id);
     })
     .then(() => {
       getList();

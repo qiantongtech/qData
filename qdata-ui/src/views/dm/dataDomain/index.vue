@@ -50,16 +50,6 @@
         >
           新增
         </el-button>
-        <el-button
-          type="danger"
-          plain
-          icon="Delete"
-          :disabled="multiple"
-          @click="handleDelete()"
-          v-hasPermi="['dm:dataDomain:datadomain:remove']"
-        >
-          删除
-        </el-button>
       </template>
 
       <qt-table v-bind="tableStore" ref="tableRef">
@@ -99,9 +89,9 @@
     <el-dialog
       :title="title"
       v-model="open"
-      width="600px"
       :append-to="$refs['app-container']"
       draggable
+      width="800px"
     >
       <template #header>
         <span role="heading" aria-level="2" class="el-dialog__title">
@@ -142,17 +132,17 @@
             placeholder="请输入描述"
             :min-height="192"
             show-word-limit
-            maxlength="500"
+            maxlength="500个字符"
           />
         </el-form-item>
         <el-form-item label="备注" prop="remark">
           <el-input
             v-model="form.remark"
             type="textarea"
-            placeholder="请输入备注"
+            placeholder="请输入描述"
             :min-height="192"
             show-word-limit
-            maxlength="500"
+            maxlength="500个字符"
           />
         </el-form-item>
       </el-form>
@@ -168,9 +158,9 @@
     <el-dialog
       :title="title"
       v-model="openDetail"
-      width="600px"
       :append-to="$refs['app-container']"
       draggable
+      width="800px"
     >
       <template #header>
         <span role="heading" aria-level="2" class="el-dialog__title">
@@ -178,6 +168,11 @@
         </span>
       </template>
       <el-form ref="dataDomainDetailRef" :model="form" label-width="110px">
+        <el-form-item label="编号:" prop="id">
+          <div class="form-readonly">
+            {{ form.id }}
+          </div>
+        </el-form-item>
         <el-form-item label="数据域" prop="name">
           <div class="form-readonly">{{ form.name ?? "-" }}</div>
         </el-form-item>
@@ -195,7 +190,40 @@
         <el-form-item label="备注" prop="remark">
           <div class="form-readonly textarea">{{ form.remark ?? "-" }}</div>
         </el-form-item>
+        <el-row :gutter="20">
+          <el-col :span="24">
+            <el-form-item label="创建人" prop="createBy">
+              <div class="form-readonly">
+                {{ form.createBy }}
+              </div>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="创建时间" prop="createTime">
+              <div class="form-readonly">
+                {{ parseTime(form.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
+              </div>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="24">
+            <el-form-item label="更新人" prop="createBy">
+              <div class="form-readonly">
+                {{ form.updateBy }}
+              </div>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="更新时间" prop="updateTime">
+              <div class="form-readonly">
+                {{ parseTime(form.updateTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
+              </div>
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
+
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="cancel">关 闭</el-button>
@@ -207,7 +235,6 @@
     <el-dialog
       :title="upload.title"
       v-model="upload.open"
-      width="600px"
       :append-to="$refs['app-container']"
       draggable
       destroy-on-close
@@ -302,7 +329,7 @@ const tableStore = reactive({
     },
   },
   columns: [
-    { type: "selection", width: 55, align: "left" },
+    // { type: "selection", width: 55, align: "left" },
     { label: "编号", prop: "id", width: 60, sortable: true },
     { label: "数据域名称", prop: "name", align: "left" },
     { label: "描述", prop: "description", align: "left" },
@@ -365,7 +392,10 @@ const data = reactive({
   form: {},
   rules: {
     name: [{ required: true, message: "请输入数据域名称", trigger: "blur" }],
-    engName: [{ required: true, message: "请输入英文缩写", trigger: "blur" }],
+    engName: [
+      { required: true, message: "请输入英文缩写", trigger: "blur" },
+      { pattern: /^[a-zA-Z]+$/, message: "只能输入英文字符", trigger: "blur" },
+    ],
   },
 });
 

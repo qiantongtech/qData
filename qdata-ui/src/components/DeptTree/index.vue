@@ -578,7 +578,14 @@ const resetTree = () => {
   }
 };
 
-defineExpose({ resetTree, getDeptTree });
+const setCurrentKey = (key) => {
+  if (deptTreeRef.value) {
+    deptTreeRef.value.setCurrentKey(key);
+    currentNodeKey.value = key;
+  }
+};
+
+defineExpose({ resetTree, getDeptTree, setCurrentKey, deptTreeRef });
 </script>
 
 <style scoped lang="scss">

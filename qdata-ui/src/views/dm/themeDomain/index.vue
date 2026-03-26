@@ -64,6 +64,7 @@
         <el-form-item label="数仓分层" prop="dataLayerId">
           <el-tree-select
             filterable
+            default-expand-all
             class="el-form-input-width"
             v-model="queryParams.dataLayerId"
             :data="dataLayerOptions"
@@ -171,6 +172,17 @@
         >
           <template #default="scope">
             {{ scope.row.description || "-" }}
+          </template>
+        </el-table-column>
+        <el-table-column
+            label="英文缩写"
+            align="left"
+            prop="engName"
+            width="200"
+            :show-overflow-tooltip="{ effect: 'light' }"
+        >
+          <template #default="scope">
+            {{ scope.row.engName || "-" }}
           </template>
         </el-table-column>
         <el-table-column label="数仓分层" align="center" prop="validFlag">
@@ -314,6 +326,7 @@
             <el-form-item label="数仓分层" prop="dataLayerId">
               <el-tree-select
                 filterable
+                default-expand-all
                 v-model="form.dataLayerId"
                 :data="dataLayerOptions"
                 :props="{ value: 'id', label: 'name', children: 'children' }"
@@ -423,7 +436,10 @@ const data = reactive({
     parentId: [
       { required: true, message: "上级类目不能为空", trigger: "blur" },
     ],
-    engName: [{ required: true, message: "英文缩写不能为空", trigger: "blur" }],
+    engName: [
+        { required: true, message: "英文缩写不能为空", trigger: "blur" },
+        { pattern: /^[a-zA-Z]+$/, message: "只能输入英文字符", trigger: "blur" }
+    ],
     ownerUserId: [
       { required: true, message: "负责人不能为空", trigger: "blur" },
     ],
@@ -520,7 +536,7 @@ function handleStatusChange(row) {
   proxy.$modal
     .confirm(`确认要"${text}","${row.name}"主题域类目吗？`)
     .then(() => {
-      updateThemeDomain({ id: row.id, validFlag: row.validFlag })
+      updateThemeDomain({ id: row.id,parentId: row.parentId, validFlag: row.validFlag })
         .then((response) => {
           proxy.$modal.msgSuccess(text + "成功");
           getList();

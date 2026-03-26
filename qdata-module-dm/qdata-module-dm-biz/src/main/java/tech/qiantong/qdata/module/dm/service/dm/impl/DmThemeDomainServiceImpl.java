@@ -96,7 +96,9 @@ public class DmThemeDomainServiceImpl extends ServiceImpl<DmThemeDomainMapper, D
         if (catDO.getId().equals(updateReqVO.getParentId())) {
             throw new ServiceException("切换上级不能选择自身作为上级类目");
         }
-        if (Boolean.TRUE.equals(updateReqVO.getValidFlag())) {
+        if (Boolean.FALSE.equals(updateReqVO.getValidFlag())) {
+            baseMapper.updateValidFlag(catDO.getCode(), updateReqVO.getValidFlag());
+        } else if (Boolean.TRUE.equals(updateReqVO.getValidFlag())) {
             DmThemeDomainDO parent = baseMapper.selectById(catDO.getParentId());
             if (parent != null && Boolean.FALSE.equals(parent.getValidFlag())) {
                 throw new ServiceException("须先启用父级");

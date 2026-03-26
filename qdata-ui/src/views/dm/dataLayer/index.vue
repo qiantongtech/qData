@@ -452,8 +452,10 @@ function getTree() {
 
 /** 节点单击事件 */
 function handleNodeClick(data) {
-  // 仅当不是一级节点时才执行节点点击逻辑
-  // 保持原有逻辑但不执行任何操作给一级节点
+  if (data.parentId != 0) {
+    currentLayer.value = data;
+    tableRef.value?.getList();
+  }
 }
 
 // 处理树节点点击

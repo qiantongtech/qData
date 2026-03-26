@@ -41,255 +41,77 @@
         ref="layerTreeRef"
         @node-click="handleNodeClick"
         title="数仓分层"
-      />
+      >
+      </DeptTree>
 
       <!-- 右侧列表 -->
       <el-main class="main-content">
         <!-- 顶部信息卡片 -->
-        <div
-          v-if="currentLayer"
-          class="layer-info-card mb20"
-          style="
-            background-color: #f8f9fa;
-            padding: 15px;
-            border-radius: 4px;
-            border: 1px solid #e4e7ed;
-          "
-        >
-          <h3
-            style="
-              margin-top: 0;
-              color: #409eff;
-              display: flex;
-              align-items: center;
-            "
-          >
-            <i class="iconfont-mini icon-a-zu22377 mr5"></i>
-            {{ currentLayer.name }}
-            {{ currentLayer.engName ? "(" + currentLayer.engName + ")" : "" }}
-          </h3>
-          <div
-            style="
-              display: flex;
-              flex-direction: column;
-              gap: 10px;
-              font-size: 13px;
-              color: #606266;
-            "
-          >
-            <div style="display: flex">
-              <span style="min-width: 70px; color: #909399">业务定义：</span>
-              <span>{{ currentLayer.description || "暂无描述" }}</span>
-            </div>
-            <div style="display: flex" v-if="currentLayer.engName">
-              <span style="min-width: 90px; color: #909399"
-                >命名核心标准：</span
-              >
-              <span
-                style="
-                  background: #e8f4ff;
-                  color: #1890ff;
-                  padding: 2px 8px;
-                  border-radius: 4px;
-                "
-                >表名前缀固定为 {{ currentLayer.engName }}_</span
-              >
-            </div>
-          </div>
-        </div>
+        <layerInfoCard v-if="currentLayer" class="mb15" :layer="currentLayer" />
 
-        <div class="pagecont-top" v-show="showSearch">
-          <el-form
-            class="btn-style"
-            :model="queryParams"
-            ref="queryRef"
-            :inline="true"
-            label-width="75px"
-            v-show="showSearch"
-            @submit.prevent
-          >
-            <el-form-item label="表前缀" prop="prefixName">
-              <el-input
-                class="el-form-input-width"
-                v-model="queryParams.prefixName"
-                placeholder="请输入表前缀"
-                clearable
-                @keyup.enter="handleQuery"
-              />
-            </el-form-item>
+        <qt-wrap :columns="tableStore.columns" :tableRef="tableRef">
+          <template #search>
+            <qt-search-bar
+              v-bind="searchStore"
+              :params="tableStore.params"
+              :tableRef="tableRef"
+            />
+          </template>
+          <template #actions-data>
+            <el-button
+              type="primary"
+              plain
+              icon="Plus"
+              @click="handleAdd"
+              v-hasPermi="['dm:dataLayerSpecification:add']"
+            >
+              新增
+            </el-button>
+          </template>
 
-            <el-form-item>
+          <qt-table v-bind="tableStore" ref="tableRef">
+            <template #action="{ row }">
               <el-button
-                plain
+                link
                 type="primary"
-                @click="handleQuery"
-                @mousedown="(e) => e.preventDefault()"
+                icon="Edit"
+                @click="handleUpdate(row)"
+                v-hasPermi="['dm:dataLayerSpecification:edit']"
               >
-                <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                修改
               </el-button>
               <el-button
-                @click="resetQuery"
-                @mousedown="(e) => e.preventDefault()"
+                link
+                type="danger"
+                icon="Delete"
+                @click="handleDelete(row)"
+                v-hasPermi="['dm:dataLayerSpecification:remove']"
               >
-                <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                删除
               </el-button>
-            </el-form-item>
-          </el-form>
-        </div>
-
-        <div class="pagecont-bottom">
-          <div class="justify-between mb15">
-            <el-row :gutter="15" class="btn-style">
-              <el-col :span="1.5">
-                <el-button
-                  type="primary"
-                  plain
-                  @click="handleAdd"
-                  v-hasPermi="['dm:dataLayerSpecification:add']"
-                  @mousedown="(e) => e.preventDefault()"
-                >
-                  <i class="iconfont-mini icon-xinzeng mr5"></i>新增
-                </el-button>
-              </el-col>
-              <el-col :span="1.5">
-                <el-button
-                  type="primary"
-                  plain
-                  :disabled="single"
-                  @click="handleUpdate"
-                  v-hasPermi="['dm:dataLayerSpecification:edit']"
-                  @mousedown="(e) => e.preventDefault()"
-                >
-                  <i class="iconfont-mini icon-xiugai--copy mr5"></i>修改
-                </el-button>
-              </el-col>
-              <el-col :span="1.5">
-                <el-button
-                  type="danger"
-                  plain
-                  :disabled="multiple"
-                  @click="handleDelete"
-                  v-hasPermi="['dm:dataLayerSpecification:remove']"
-                  @mousedown="(e) => e.preventDefault()"
-                >
-                  <i class="iconfont-mini icon-shanchu-huise mr5"></i>删除
-                </el-button>
-              </el-col>
-            </el-row>
-            <div class="justify-end top-right-btn">
-              <right-toolbar
-                v-model:showSearch="showSearch"
-                @queryTable="getList"
-                :columns="columns"
-              ></right-toolbar>
-            </div>
-          </div>
-          <el-table
-            stripe
-            height="50vh"
-            v-loading="loading"
-            :data="specificationList"
-            @selection-change="handleSelectionChange"
-          >
-            <el-table-column type="selection" width="55" align="center" />
-            <el-table-column
-              v-if="getColumnVisibility(0)"
-              label="ID"
-              align="center"
-              prop="id"
-            />
-            <el-table-column
-              v-if="getColumnVisibility(1)"
-              label="表前缀"
-              align="center"
-              prop="prefixName"
-            />
-            <el-table-column
-              v-if="getColumnVisibility(2)"
-              label="业务大类英文缩写"
-              align="center"
-              prop="businessEngName"
-            />
-            <el-table-column
-              v-if="getColumnVisibility(3)"
-              label="负责人名称"
-              align="center"
-              prop="ownerUserName"
-            />
-            <el-table-column
-              v-if="getColumnVisibility(4)"
-              label="状态"
-              align="center"
-              prop="status"
-            >
-              <template #default="scope">
-                <dict-tag
-                  :options="sys_normal_disable"
-                  :value="scope.row.status"
-                />
-              </template>
-            </el-table-column>
-            <el-table-column
-              v-if="getColumnVisibility(5)"
-              label="描述"
-              align="center"
-              prop="description"
-            />
-            <el-table-column
-              v-if="getColumnVisibility(6)"
-              label="创建时间"
-              align="center"
-              prop="createTime"
-              width="180"
-            >
-              <template #default="scope">
-                <span>{{
-                  parseTime(scope.row.createTime, "{y}-{m}-{d}")
-                }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column
-              label="操作"
-              align="center"
-              class-name="small-padding fixed-width"
-              fixed="right"
-              width="160"
-            >
-              <template #default="scope">
-                <el-button
-                  link
-                  type="primary"
-                  icon="Edit"
-                  @click="handleUpdate(scope.row)"
-                  v-hasPermi="['dm:dataLayerSpecification:edit']"
-                  >修改</el-button
-                >
-                <el-button
-                  link
-                  type="danger"
-                  icon="Delete"
-                  @click="handleDelete(scope.row)"
-                  v-hasPermi="['dm:dataLayerSpecification:remove']"
-                  >删除</el-button
-                >
-              </template>
-            </el-table-column>
-            <template #empty>
-              <div class="emptyBg">
-                <img src="@/assets/system/images/no_data/noData.png" alt="" />
-                <p>暂无记录</p>
-              </div>
+              <el-button
+                link
+                type="primary"
+                icon="View"
+                @click="handleDetail(row)"
+                v-hasPermi="['dm:dataLayerSpecification:edit']"
+              >
+                详情
+              </el-button>
             </template>
-          </el-table>
 
-          <pagination
-            v-show="total > 0"
-            :total="total"
-            v-model:page="queryParams.pageNum"
-            v-model:limit="queryParams.pageSize"
-            @pagination="getList"
-          />
-        </div>
+            <template #status="{ row }">
+              <el-switch
+                v-model="row.status"
+                active-value="0"
+                inactive-value="1"
+                active-color="#13ce66"
+                inactive-color="#ff4949"
+                @change="handleStatusChange(row)"
+              />
+            </template>
+          </qt-table>
+        </qt-wrap>
       </el-main>
     </el-container>
 
@@ -297,10 +119,15 @@
     <el-dialog
       :title="title"
       v-model="open"
-      width="600px"
       :append-to="$refs['app-container']"
       draggable
+      width="800px"
     >
+      <template #header>
+        <span role="heading" aria-level="2" class="el-dialog__title">
+          {{ title }}
+        </span>
+      </template>
       <el-form
         ref="specificationRef"
         :model="form"
@@ -338,8 +165,9 @@
               v-for="dict in sys_normal_disable"
               :key="dict.value"
               :label="dict.value"
-              >{{ dict.label }}</el-radio
             >
+              {{ dict.label }}
+            </el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="描述" prop="description">
@@ -347,15 +175,87 @@
             v-model="form.description"
             type="textarea"
             placeholder="请输入描述"
+            :min-height="192"
+            show-word-limit
+            maxlength="500"
           />
         </el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="cancel">取 消</el-button>
-          <el-button type="primary" size="mini" @click="submitForm"
-            >确 定</el-button
-          >
+          <el-button @click="cancel">取 消</el-button>
+          <el-button type="primary" @click="submitForm">确 定</el-button>
+        </div>
+      </template>
+    </el-dialog>
+
+    <!-- 规范管理详情对话框 -->
+    <el-dialog
+      title="规范管理详情"
+      v-model="openDetail"
+      :append-to="$refs['app-container']"
+      draggable
+      width="800px"
+    >
+      <el-form ref="specificationDetailRef" :model="form" label-width="140px">
+        <el-form-item label="编号:" prop="id">
+          <div class="form-readonly">
+            {{ form.id }}
+          </div>
+        </el-form-item>
+        <el-form-item label="表前缀" prop="prefixName">
+          <div class="form-readonly">{{ form.prefixName ?? "-" }}</div>
+        </el-form-item>
+        <el-form-item label="业务大类英文缩写" prop="businessEngName">
+          <div class="form-readonly">{{ form.businessEngName ?? "-" }}</div>
+        </el-form-item>
+        <el-form-item label="负责人" prop="ownerUserName">
+          <div class="form-readonly">{{ form.ownerUserName || "-" }}</div>
+        </el-form-item>
+        <el-form-item label="状态" prop="status">
+          <dict-tag :options="sys_normal_disable" :value="form.status" />
+        </el-form-item>
+        <el-form-item label="描述" prop="description">
+          <div class="form-readonly textarea">
+            {{ form.description ?? "-" }}
+          </div>
+        </el-form-item>
+        <el-row :gutter="20">
+          <el-col :span="24">
+            <el-form-item label="创建人" prop="createBy">
+              <div class="form-readonly">
+                {{ form.createBy }}
+              </div>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="创建时间" prop="createTime">
+              <div class="form-readonly">
+                {{ parseTime(form.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
+              </div>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="24">
+            <el-form-item label="更新人" prop="createBy">
+              <div class="form-readonly">
+                {{ form.updateBy }}
+              </div>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="更新时间" prop="updateTime">
+              <div class="form-readonly">
+                {{ parseTime(form.updateTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
+              </div>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="cancelDetail">关 闭</el-button>
         </div>
       </template>
     </el-dialog>
@@ -373,16 +273,29 @@ import {
 } from "@/api/dm/dataLayerSpecification/dataLayerSpecification.js";
 import DeptTree from "@/components/DeptTree";
 import { deptUserTree } from "@/api/system/system/user.js";
+import layerInfoCard from "./components/layerInfoCard.vue";
+import {
+  computed,
+  getCurrentInstance,
+  nextTick,
+  onMounted,
+  reactive,
+  ref,
+  toRefs,
+} from "vue";
+
+// 导入必要的图标组件
+import { FolderOpened, Folder, Tickets } from "@element-plus/icons-vue";
 
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
-
 const leftWidth = ref(300); // 初始左侧宽度
-const specificationList = ref([]);
 const layerTreeOptions = ref([]);
 const currentLayer = ref(null);
 const layerTreeRef = ref(null);
 const managerOptions = ref([]);
+const tableRef = ref(null);
+const activeDropdownNodeId = ref(null);
 
 function getManagerOptions() {
   deptUserTree().then((response) => {
@@ -397,55 +310,91 @@ function handleOwnerChange(val) {
   }
 }
 
-// 列显隐信息
-const columns = ref([
-  { key: 0, label: "ID", visible: false },
-  { key: 1, label: "表前缀", visible: true },
-  { key: 2, label: "业务大类英文缩写", visible: true },
-  { key: 3, label: "负责人名称", visible: true },
-  { key: 4, label: "状态", visible: true },
-  { key: 5, label: "描述", visible: true },
-  { key: 6, label: "创建时间", visible: true },
-]);
-
-const getColumnVisibility = (key) => {
-  const column = columns.value.find((col) => col.key === key);
-  return column ? column.visible : true;
-};
-
-const open = ref(false);
-const loading = ref(true);
-const showSearch = ref(true);
 const ids = ref([]);
 const single = ref(true);
 const multiple = ref(true);
-const total = ref(0);
+
+const tableStore = reactive({
+  config: {
+    stripe: true,
+    sort: true,
+    table: {
+      rowKey: "id",
+      defaultSort: { prop: "createTime", order: "descending" },
+      onSelectionChange: function (selection) {
+        ids.value = selection.map((item) => item.id);
+        single.value = selection.length !== 1;
+        multiple.value = !selection.length;
+      },
+    },
+  },
+  columns: [
+    // { type: "selection", width: 55, align: "left" },
+    { label: "ID", prop: "id", width: 60, sortable: true },
+    { label: "表前缀", prop: "prefixName", align: "left" },
+    { label: "业务大类英文缩写", prop: "businessEngName", align: "left" },
+    { label: "负责人", prop: "ownerUserName", align: "left" },
+    {
+      label: "状态",
+      prop: "status",
+      align: "left",
+      width: 100,
+      slot: "status",
+    },
+    { label: "描述", prop: "description", align: "left" },
+    {
+      label: "创建时间",
+      prop: "createTime",
+      sortable: true,
+      sortableKey: "create_time",
+      date: true,
+      width: 150,
+      align: "left",
+    },
+    {
+      label: "操作",
+      width: 280,
+      slot: "action",
+      fixed: "right",
+    },
+  ],
+  func: listDataLayerSpecification,
+  params: {
+    dataLayerId: computed(() => currentLayer.value?.id || null),
+  },
+});
+
+const searchStore = reactive({
+  items: [
+    {
+      label: "表前缀",
+      prop: "prefixName",
+      component: { is: "input", placeholder: "请输入表前缀" },
+    },
+  ],
+});
+
+const open = ref(false);
+const openDetail = ref(false);
 const title = ref("");
 
 const data = reactive({
   form: {},
-  queryParams: {
-    pageNum: 1,
-    pageSize: 10,
-    dataLayerId: null,
-    prefixName: null,
-  },
   rules: {
     prefixName: [
       { required: true, message: "表前缀不能为空", trigger: "blur" },
     ],
     businessEngName: [
       { required: true, message: "业务大类英文缩写不能为空", trigger: "blur" },
+      { pattern: /^[a-zA-Z]+$/, message: "只能输入英文字符", trigger: "blur" },
     ],
     ownerUserId: [
       { required: true, message: "负责人不能为空", trigger: "blur" },
     ],
-    status: [{ required: true, message: "状态不能为空", trigger: "change" }],
-    description: [{ required: true, message: "描述不能为空", trigger: "blur" }],
   },
 });
 
-const { queryParams, form, rules } = toRefs(data);
+const { form, rules } = toRefs(data);
 
 /** 查询树 */
 function getTree() {
@@ -471,16 +420,14 @@ function getTree() {
           layerTreeRef.value.setCurrentKey(targetNode.id);
         }
         currentLayer.value = targetNode;
-        queryParams.value.dataLayerId = targetNode.id;
-        getList();
+        tableRef.value?.getList();
       } else if (layerTreeOptions.value.length > 0) {
         const firstNode = layerTreeOptions.value[0];
         if (layerTreeRef.value && layerTreeRef.value.setCurrentKey) {
           layerTreeRef.value.setCurrentKey(firstNode.id);
         }
         currentLayer.value = firstNode;
-        queryParams.value.dataLayerId = firstNode.id;
-        getList();
+        tableRef.value?.getList();
       }
     });
   });
@@ -488,26 +435,37 @@ function getTree() {
 
 /** 节点单击事件 */
 function handleNodeClick(data) {
-  currentLayer.value = data;
-  queryParams.value.dataLayerId = data.id;
-  handleQuery();
+  if (data.parentId != 0) {
+    currentLayer.value = data;
+    tableRef.value?.getList();
+  }
 }
 
-/** 查询列表 */
-function getList() {
-  if (!queryParams.value.dataLayerId) return;
-  loading.value = true;
-  listDataLayerSpecification(queryParams.value).then((response) => {
-    specificationList.value = response.data.rows;
-    total.value = response.data.total;
-    loading.value = false;
-  });
+// 处理树节点点击
+function handleTreeNodeClick(node) {
+  // 如果是一级节点，只展开/折叠，不触发选中
+  if (node.level === 1) {
+    if (node.expanded) {
+      node.collapse();
+    } else {
+      node.expand();
+    }
+  } else {
+    // 如果不是一级节点，执行正常的节点点击逻辑
+    currentLayer.value = node.data;
+    tableRef.value?.getList();
+  }
 }
 
 // 取消按钮
 function cancel() {
   open.value = false;
   reset();
+}
+
+// 关闭详情
+function cancelDetail() {
+  openDetail.value = false;
 }
 
 // 表单重置
@@ -525,25 +483,6 @@ function reset() {
   proxy.resetForm("specificationRef");
 }
 
-/** 搜索按钮操作 */
-function handleQuery() {
-  queryParams.value.pageNum = 1;
-  getList();
-}
-
-/** 重置按钮操作 */
-function resetQuery() {
-  proxy.resetForm("queryRef");
-  handleQuery();
-}
-
-// 多选框选中数据
-function handleSelectionChange(selection) {
-  ids.value = selection.map((item) => item.id);
-  single.value = selection.length != 1;
-  multiple.value = !selection.length;
-}
-
 /** 新增按钮操作 */
 function handleAdd() {
   reset();
@@ -558,7 +497,7 @@ function handleAdd() {
 /** 修改按钮操作 */
 function handleUpdate(row) {
   reset();
-  const _id = row.id || ids.value;
+  const _id = row?.id || ids.value[0];
   getDataLayerSpecification(_id).then((response) => {
     form.value = response.data;
     if (form.value.ownerUserName && !form.value.ownerUserId) {
@@ -574,6 +513,16 @@ function handleUpdate(row) {
   });
 }
 
+/** 详情按钮操作 */
+function handleDetail(row) {
+  reset();
+  const _id = row?.id || ids.value[0];
+  getDataLayerSpecification(_id).then((response) => {
+    form.value = response.data;
+    openDetail.value = true;
+  });
+}
+
 /** 提交按钮 */
 function submitForm() {
   proxy.$refs["specificationRef"].validate((valid) => {
@@ -582,13 +531,13 @@ function submitForm() {
         updateDataLayerSpecification(form.value).then(() => {
           proxy.$modal.msgSuccess("修改成功");
           open.value = false;
-          getList();
+          tableRef.value?.getList();
         });
       } else {
         addDataLayerSpecification(form.value).then(() => {
           proxy.$modal.msgSuccess("新增成功");
           open.value = false;
-          getList();
+          tableRef.value?.getList();
         });
       }
     }
@@ -597,22 +546,101 @@ function submitForm() {
 
 /** 删除按钮操作 */
 function handleDelete(row) {
-  const _ids = row.id || ids.value;
+  const _ids = row?.id || ids.value;
   proxy.$modal
     .confirm('是否确认删除规范管理编号为"' + _ids + '"的数据项？')
     .then(function () {
       return delDataLayerSpecification(_ids);
     })
     .then(() => {
-      getList();
+      tableRef.value?.getList();
       proxy.$modal.msgSuccess("删除成功");
     })
     .catch(() => {});
 }
 
-getTree();
-getManagerOptions();
+/** 状态修改 */
+function handleStatusChange(row) {
+  let text = row.status === "0" ? "启用" : "停用";
+  proxy.$modal
+    .confirm("确认要" + text + '规范管理"' + row.id + '"吗?')
+    .then(function () {
+      return updateDataLayerSpecification({ id: row.id, status: row.status });
+    })
+    .then(() => {
+      proxy.$modal.msgSuccess(text + "成功");
+    })
+    .catch(function () {
+      // 恢复switch状态
+      row.status = row.status === "0" ? "1" : "0";
+    });
+}
+
+onMounted(() => {
+  getTree();
+  getManagerOptions();
+});
+
+// 添加处理下拉菜单命令的方法
+function handleCommand(command, data) {
+  // 这里可以添加对不同命令的处理逻辑
+}
+
+// 添加处理下拉菜单可见性变化的方法
+function handleDropdownVisibleChange(visible, nodeId) {
+  activeDropdownNodeId.value = visible ? nodeId : null;
+}
 </script>
 
 <style scoped lang="scss">
+.custom-tree-node {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  padding-right: 8px;
+}
+
+.treelabel {
+  flex: 1;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--el-color-primary);
+  }
+}
+
+.iconimg,
+.zjiconimg {
+  margin-right: 6px;
+  font-size: 16px;
+}
+
+.colorxz {
+  color: var(--el-color-primary);
+}
+
+.colorwxz {
+  color: var(--el-text-color-secondary);
+}
+
+.operation-trigger {
+  padding: 4px;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--el-fill-color-light);
+  }
+
+  &.is-active {
+    background-color: var(--el-fill-color);
+  }
+}
+
+.action-icon {
+  font-size: 14px;
+  color: var(--el-text-color-secondary);
+}
 </style>

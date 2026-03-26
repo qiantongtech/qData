@@ -76,7 +76,7 @@ public class DmThemeDomainController extends BaseController {
     private IDmThemeDomainService dmThemeDomainService;
 
     @Operation(summary = "查询主题域管理列表")
-    @PreAuthorize("@ss.hasPermi('dm:themedomain:list')")
+    @PreAuthorize("@ss.hasPermi('dm:themeDomain:list')")
     @GetMapping("/list")
     public CommonResult<List<DmThemeDomainRespVO>> list(DmThemeDomainPageReqVO dmThemeDomain) {
         List<DmThemeDomainDO> dmThemeDomainList = dmThemeDomainService.getDmThemeDomainList(dmThemeDomain);
@@ -84,7 +84,7 @@ public class DmThemeDomainController extends BaseController {
     }
 
     @Operation(summary = "导出主题域管理列表")
-    @PreAuthorize("@ss.hasPermi('dm:themedomain:export')")
+    @PreAuthorize("@ss.hasPermi('dm:themeDomain:export')")
     @Log(title = "主题域管理", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DmThemeDomainPageReqVO exportReqVO) {
@@ -95,7 +95,7 @@ public class DmThemeDomainController extends BaseController {
     }
 
     @Operation(summary = "导入主题域管理列表")
-    @PreAuthorize("@ss.hasPermi('dm:themedomain:import')")
+    @PreAuthorize("@ss.hasPermi('dm:themeDomain:import')")
     @Log(title = "主题域管理", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
@@ -107,7 +107,7 @@ public class DmThemeDomainController extends BaseController {
     }
 
     @Operation(summary = "获取主题域管理详细信息")
-    @PreAuthorize("@ss.hasPermi('dm:themedomain:query')")
+    @PreAuthorize("@ss.hasPermi('dm:themeDomain:query')")
     @GetMapping(value = "/{id}")
     public CommonResult<DmThemeDomainRespVO> getInfo(@PathVariable("id") Long id) {
         DmThemeDomainDO dmThemeDomainDO = dmThemeDomainService.getDmThemeDomainById(id);
@@ -115,7 +115,7 @@ public class DmThemeDomainController extends BaseController {
     }
 
     @Operation(summary = "新增主题域管理")
-    @PreAuthorize("@ss.hasPermi('dm:themedomain:add')")
+    @PreAuthorize("@ss.hasPermi('dm:themeDomain:add')")
     @Log(title = "主题域管理", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DmThemeDomainSaveReqVO dmThemeDomain) {
@@ -126,7 +126,7 @@ public class DmThemeDomainController extends BaseController {
     }
 
     @Operation(summary = "修改主题域管理")
-    @PreAuthorize("@ss.hasPermi('dm:themedomain:edit')")
+    @PreAuthorize("@ss.hasPermi('dm:themeDomain:edit')")
     @Log(title = "主题域管理", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DmThemeDomainSaveReqVO dmThemeDomain) {
@@ -137,7 +137,7 @@ public class DmThemeDomainController extends BaseController {
     }
 
     @Operation(summary = "删除主题域管理")
-    @PreAuthorize("@ss.hasPermi('dm:themedomain:remove')")
+    @PreAuthorize("@ss.hasPermi('dm:themeDomain:remove')")
     @Log(title = "主题域管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {

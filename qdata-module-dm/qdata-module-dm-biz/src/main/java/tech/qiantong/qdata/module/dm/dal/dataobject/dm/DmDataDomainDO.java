@@ -32,12 +32,14 @@
 
 package tech.qiantong.qdata.module.dm.dal.dataobject.dm;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import tech.qiantong.qdata.common.annotation.Excel;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
@@ -58,28 +60,47 @@ public class DmDataDomainDO extends BaseEntity {
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
-    /** ID */
+    /**
+     * ID
+     */
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 名称 */
+    /**
+     * 名称
+     */
     private String name;
 
-    /** 英文缩写 */
+    /**
+     * 英文缩写
+     */
     private String engName;
 
-    /** 负责人ID */
+    /**
+     * 负责人ID
+     */
     private Long ownerUserId;
 
-    /** 描述 */
+    /**
+     * 描述
+     */
     private String description;
 
-    /** 是否有效 */
+    /**
+     * 是否有效
+     */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /**
+     * 删除标志
+     */
     @TableLogic
     private Boolean delFlag;
 
+    /**
+     * 负责人名称
+     */
+    @TableField(exist = false)
+    private String ownerUserName;
 
 }

@@ -206,6 +206,9 @@ springdoc:
     - group: 'ai'
       paths-to-match: '/**'
       packages-to-scan: tech.qiantong.qdata.module.ai.controller
+    - group: 'dm'
+      paths-to-match: '/**'
+      packages-to-scan: tech.qiantong.qdata.module.dm.controller
 # Swagger 增强配置
 knife4j:
   enable: true

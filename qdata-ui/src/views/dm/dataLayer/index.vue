@@ -371,6 +371,23 @@ const searchStore = reactive({
       prop: "prefixName",
       component: { is: "input", placeholder: "请输入表前缀" },
     },
+    {
+      label: "业务大类英文缩写",
+      prop: "businessEngName",
+      component: { is: "input", placeholder: "请输入业务大类英文缩写" },
+    },
+    {
+      label: "责任人",
+      prop: "ownerUserId",
+      component: {
+        is: "tree-select",
+        data: managerOptions,
+        props: { value: "userId", label: "nickName", children: "children" },
+        valueKey: "ID",
+        placeholder: "请选择责任人",
+        checkStrictly: true,
+      },
+    },
   ],
 });
 

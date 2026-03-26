@@ -57,9 +57,37 @@
             :data="attDataElemCatOptions"
             :props="{ value: 'code', label: 'name', children: 'children' }"
             value-key="id"
-            placeholder="请选择上级"
+            placeholder="请选择上级类目"
             check-strictly
           />
+        </el-form-item>
+        <el-form-item label="数仓分层" prop="dataLayerId">
+          <el-tree-select
+            filterable
+            class="el-form-input-width"
+            v-model="queryParams.dataLayerId"
+            :data="dataLayerOptions"
+            :props="{ value: 'id', label: 'name', children: 'children' }"
+            value-key="id"
+            placeholder="请选择数仓分层"
+            check-strictly
+          />
+        </el-form-item>
+        <el-form-item label="负责人" prop="ownerUserId">
+          <el-select
+            v-model="queryParams.ownerUserId"
+            class="el-form-input-width"
+            filterable
+            placeholder="请选择负责人"
+          >
+            <el-option
+              v-for="item in managerOptions"
+              :key="item.userId"
+              :label="item.nickName"
+              :value="item.userId"
+            >
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item>
           <el-button
@@ -145,7 +173,16 @@
             {{ scope.row.description || "-" }}
           </template>
         </el-table-column>
-
+        <el-table-column label="数仓分层" align="center" prop="validFlag">
+          <template #default="scope">
+            {{ scope.row.dataLayerName || "-" }}
+          </template>
+        </el-table-column>
+        <el-table-column label="负责人" align="center" prop="validFlag">
+          <template #default="scope">
+            {{ scope.row.ownerUserName || "-" }}
+          </template>
+        </el-table-column>
         <el-table-column label="状态" align="center" prop="validFlag">
           <template #default="scope">
             <!--              <dict-tag :options="sys_valid" :value="scope.row.validFlag"/>-->
@@ -266,7 +303,7 @@
                 :data="attDataElemCatOptions"
                 :props="{ value: 'id', label: 'name', children: 'children' }"
                 value-key="id"
-                placeholder="请选择上级"
+                placeholder="请选择上级类目"
                 check-strictly
               />
             </el-form-item>

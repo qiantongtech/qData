@@ -369,6 +369,18 @@ const searchStore = reactive({
       prop: "engName",
       component: { is: "input", placeholder: "请输入英文缩写" },
     },
+    {
+      label: "负责人",
+      prop: "ownerUserId",
+      component: {
+        is: "tree-select",
+        data: managerOptions,
+        props: { value: "userId", label: "nickName", children: "children" },
+        valueKey: "ID",
+        placeholder: "请选择负责人",
+        checkStrictly: true,
+      },
+    },
   ],
 });
 
@@ -395,6 +407,9 @@ const data = reactive({
     engName: [
       { required: true, message: "请输入英文缩写", trigger: "blur" },
       { pattern: /^[a-zA-Z]+$/, message: "只能输入英文字符", trigger: "blur" },
+    ],
+    ownerUserId: [
+      { required: true, message: "负责人不能为空", trigger: "blur" },
     ],
   },
 });

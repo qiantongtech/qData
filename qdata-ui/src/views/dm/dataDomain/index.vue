@@ -509,12 +509,7 @@ function handleUpdate(row) {
   const _id = row?.id || ids.value[0];
   getDataDomain(_id).then((response) => {
     form.value = response.data;
-    // 如果有负责人信息，则获取其电话号码
-    if (response.data.ownerUserId) {
-      getUser(response.data.ownerUserId).then((userResponse) => {
-        form.value.ownerUserPhoneNumber = userResponse.data.phonenumber;
-      });
-    }
+
     open.value = true;
     title.value = "修改数据域";
   });
@@ -527,12 +522,7 @@ function handleDetail(row) {
   const _id = row?.id || ids.value[0];
   getDataDomain(_id).then((response) => {
     form.value = response.data;
-    // 如果有负责人信息，则获取其电话号码
-    if (response.data.ownerUserId) {
-      getUser(response.data.ownerUserId).then((userResponse) => {
-        form.value.ownerUserPhoneNumber = userResponse.data.phonenumber;
-      });
-    }
+
     openDetail.value = true;
     title.value = "数据域详情";
   });

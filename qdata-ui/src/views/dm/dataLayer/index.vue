@@ -445,14 +445,14 @@ const searchStore = reactive({
       component: { is: "input", placeholder: "请输入业务英文缩写" },
     },
     {
-      label: "责任人",
+      label: "负责人",
       prop: "ownerUserId",
       component: {
         is: "tree-select",
         data: managerOptions,
         props: { value: "userId", label: "nickName", children: "children" },
         valueKey: "ID",
-        placeholder: "请选择责任人",
+        placeholder: "请选择负责人",
         checkStrictly: true,
       },
     },
@@ -586,14 +586,6 @@ function handleUpdate(row) {
   const _id = row?.id || ids.value[0];
   getDataLayerSpecification(_id).then((response) => {
     form.value = response.data;
-
-    // 如果有负责人信息，则获取其电话号码
-    if (response.data.ownerUserId) {
-      getUser(response.data.ownerUserId).then((userResponse) => {
-        form.value.ownerUserPhoneNumber = userResponse.data.phonenumber;
-      });
-    }
-
     if (form.value.ownerUserName && !form.value.ownerUserId) {
       const selected = managerOptions.value.find(
         (item) => item.nickName === form.value.ownerUserName
@@ -674,16 +666,6 @@ onMounted(() => {
   getTree();
   getManagerOptions();
 });
-
-// 添加处理下拉菜单命令的方法
-function handleCommand(command, data) {
-  // 这里可以添加对不同命令的处理逻辑
-}
-
-// 添加处理下拉菜单可见性变化的方法
-function handleDropdownVisibleChange(visible, nodeId) {
-  activeDropdownNodeId.value = visible ? nodeId : null;
-}
 </script>
 
 <style scoped lang="scss">

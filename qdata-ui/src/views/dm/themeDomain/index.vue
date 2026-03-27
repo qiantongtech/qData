@@ -328,7 +328,6 @@ const tableStore = reactive({
       showOverflowTooltip: { effect: "light" },
     },
     { label: "数仓分层", prop: "dataLayerName", align: "left" },
-    { label: "状态", prop: "validFlag", slot: "validFlag", width: 100 },
     { label: "负责人", prop: "ownerUserName", align: "left" },
     {
       label: "负责人电话",
@@ -336,6 +335,9 @@ const tableStore = reactive({
       width: 140,
       align: "left",
     },
+    { label: "状态", prop: "validFlag", slot: "validFlag", width: 100 },
+    { label: "备注", prop: "remark", align: "left" },
+
     { label: "创建人", prop: "createBy", align: "left" },
     {
       label: "创建时间",
@@ -564,13 +566,6 @@ async function handleUpdate(row) {
     delete response.data.createTime;
     delete response.data.updateTime;
     form.value = response.data;
-
-    // 如果有负责人信息，则获取其电话号码
-    if (response.data.ownerUserId) {
-      getUser(response.data.ownerUserId).then((userResponse) => {
-        form.value.ownerUserPhoneNumber = userResponse.data.phonenumber;
-      });
-    }
 
     open.value = true;
     title.value = "修改主题域";

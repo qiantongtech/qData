@@ -1,0 +1,37 @@
+{
+  "entityLabel": "数据源",
+  "layoutNote": "纯列表页：搜索区 + 表格 + 分页 + 新增/编辑/详情弹窗。表单弹窗含「基础信息」区与「按数据源类型动态展示的连接配置」区；密码类字段掩码回显、仅覆盖更新。",
+  "columns": [
+    {"label": "名称", "type": "string", "required": true},
+    {"label": "描述", "type": "string"},
+    {"label": "数据源类型", "type": "enum", "required": true, "enumOptions": [{"label": "MySQL"}, {"label": "Oracle"}, {"label": "PostgreSQL"}, {"label": "Doris"}, {"label": "Hive"}, {"label": "API"}, {"label": "文件系统"}, {"label": "数据湖"}]},
+    {"label": "所属部门", "type": "string"},
+    {"label": "状态", "type": "enum", "enumOptions": [{"label": "启用"}, {"label": "禁用"}]},
+    {"label": "最近测试结果", "type": "enum", "enumOptions": [{"label": "成功"}, {"label": "失败"}, {"label": "未测试"}]},
+    {"label": "最近测试时间", "type": "datetime"},
+    {"label": "主机地址", "type": "string"},
+    {"label": "端口", "type": "number"},
+    {"label": "库/Schema", "type": "string"},
+    {"label": "用户名", "type": "string"},
+    {"label": "密码", "type": "string"},
+    {"label": "认证方式", "type": "string"},
+    {"label": "Base URL", "type": "string"},
+    {"label": "根路径", "type": "string"}
+  ],
+  "searchFields": [
+    {"label": "名称", "type": "string", "placeholder": "请输入名称"},
+    {"label": "类型", "type": "string", "placeholder": "请选择类型"},
+    {"label": "状态", "type": "string", "placeholder": "请选择状态"},
+    {"label": "所属部门", "type": "string", "placeholder": "请选择所属部门"}
+  ],
+  "actions": ["create", "update", "delete", "view"],
+  "customActions": [
+    {"label": "连接测试", "description": "触发连接测试，返回成功/失败及原因，记录最近测试时间与结果状态"},
+    {"label": "启用/禁用", "description": "切换数据源启用状态"}
+  ],
+  "actionPermissions": [
+    {"action": "delete", "description": "删除前须校验是否被数据资产或元数据采集任务引用，若被引用则禁止删除并提示引用信息/来源"}
+  ],
+  "pagination": {"pageSize": 10, "showSizeChanger": true, "pageSizeOptions": [10, 20, 50]},
+  "tableConfig": {"stripe": true, "border": true, "showIndex": true, "showSelection": false}
+}

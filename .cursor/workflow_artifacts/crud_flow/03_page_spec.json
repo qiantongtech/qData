@@ -1,0 +1,41 @@
+{
+  "entityName": "数据源",
+  "entityNameEn": "Datasource",
+  "layoutNote": "纯列表页；表单弹窗含基础信息区与按 datasourceType 动态展示的连接配置区；密码类掩码回显、仅覆盖更新；删除前校验引用；连接测试记录 lastTestResult、lastTestTime。",
+  "columns": [
+    {"key": "id", "label": "编号", "type": "string", "width": 80},
+    {"key": "name", "label": "名称", "type": "string", "minWidth": 140, "required": true, "showOverflowTooltip": true, "validation": {"maxLength": 100, "message": "名称长度不能超过100个字符"}},
+    {"key": "description", "label": "描述", "type": "string", "minWidth": 160, "showOverflowTooltip": true, "validation": {"maxLength": 500, "message": "描述长度不能超过500个字符"}},
+    {"key": "datasourceType", "label": "数据源类型", "type": "enum", "width": 120, "required": true, "enumOptions": [{"label": "MySQL", "value": "MySQL"}, {"label": "Oracle", "value": "Oracle"}, {"label": "PostgreSQL", "value": "PostgreSQL"}, {"label": "Doris", "value": "Doris"}, {"label": "Hive", "value": "Hive"}, {"label": "API", "value": "API"}, {"label": "文件系统", "value": "fileSystem"}, {"label": "数据湖", "value": "dataLake"}]},
+    {"key": "deptName", "label": "所属部门", "type": "string", "width": 120, "showOverflowTooltip": true},
+    {"key": "status", "label": "状态", "type": "enum", "width": 90, "displayType": "tag", "enumOptions": [{"label": "启用", "value": "enabled"}, {"label": "禁用", "value": "disabled"}]},
+    {"key": "lastTestResult", "label": "最近测试结果", "type": "enum", "width": 110, "displayType": "tag", "enumOptions": [{"label": "成功", "value": "success"}, {"label": "失败", "value": "fail"}, {"label": "未测试", "value": "untested"}]},
+    {"key": "lastTestTime", "label": "最近测试时间", "type": "datetime", "width": 160},
+    {"key": "host", "label": "主机地址", "type": "string", "formOnly": true, "validation": {"maxLength": 256, "message": "主机地址长度不能超过256个字符"}},
+    {"key": "port", "label": "端口", "type": "number", "formOnly": true, "validation": {"min": 1, "max": 65535, "message": "端口范围 1-65535"}},
+    {"key": "dbOrSchema", "label": "库/Schema", "type": "string", "formOnly": true, "validation": {"maxLength": 128, "message": "长度不能超过128个字符"}},
+    {"key": "username", "label": "用户名", "type": "string", "formOnly": true, "validation": {"maxLength": 64, "message": "用户名长度不能超过64个字符"}},
+    {"key": "password", "label": "密码", "type": "string", "formOnly": true, "sensitive": true, "validation": {"maxLength": 128, "message": "密码长度不能超过128个字符"}},
+    {"key": "authType", "label": "认证方式", "type": "string", "formOnly": true, "validation": {"maxLength": 64, "message": "认证方式长度不能超过64个字符"}},
+    {"key": "baseUrl", "label": "Base URL", "type": "string", "formOnly": true, "validation": {"maxLength": 512, "message": "Base URL长度不能超过512个字符"}},
+    {"key": "rootPath", "label": "根路径", "type": "string", "formOnly": true, "validation": {"maxLength": 256, "message": "根路径长度不能超过256个字符"}},
+    {"key": "createBy", "label": "创建人", "type": "string", "width": 100},
+    {"key": "createTime", "label": "创建时间", "type": "datetime", "width": 160, "sortable": true}
+  ],
+  "searchFields": [
+    {"key": "name", "label": "名称", "type": "string", "placeholder": "请输入名称"},
+    {"key": "datasourceType", "label": "类型", "type": "string", "placeholder": "请选择类型"},
+    {"key": "status", "label": "状态", "type": "string", "placeholder": "请选择状态"},
+    {"key": "deptId", "label": "所属部门", "type": "string", "placeholder": "请选择所属部门"}
+  ],
+  "actions": ["create", "update", "delete", "view"],
+  "customActions": [
+    {"key": "test", "label": "连接测试"},
+    {"key": "toggleStatus", "label": "启用/禁用"}
+  ],
+  "actionPermissions": [
+    {"action": "delete", "permissionKey": "dpp:datasource:remove", "description": "删除前须校验是否被数据资产或元数据采集任务引用，若被引用则禁止删除并提示引用信息/来源"}
+  ],
+  "pagination": {"pageSize": 10, "showSizeChanger": true, "pageSizeOptions": [10, 20, 50]},
+  "tableConfig": {"stripe": true, "border": true, "showIndex": true, "showSelection": false}
+}

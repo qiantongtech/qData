@@ -1,0 +1,200 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PageSpec",
+  "description": "页面规格定义，用于描述CRUD页面的结构和配置",
+  "type": "object",
+  "required": ["entityName", "entityNameEn", "columns"],
+  "properties": {
+    "entityName": {
+      "type": "string",
+      "description": "实体中文名称",
+      "examples": ["员工", "订单", "商品"]
+    },
+    "entityNameEn": {
+      "type": "string",
+      "description": "实体英文名称（驼峰命名）",
+      "pattern": "^[A-Z][a-zA-Z0-9]*$",
+      "examples": ["Employee", "Order", "Product"]
+    },
+    "columns": {
+      "type": "array",
+      "description": "表格列定义",
+      "items": {
+        "type": "object",
+        "required": ["key", "label", "type"],
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": "字段键名（英文）"
+          },
+          "label": {
+            "type": "string",
+            "description": "字段显示名称（中文）"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["string", "number", "date", "datetime", "boolean", "enum"],
+            "description": "字段数据类型"
+          },
+          "width": {
+            "type": "number",
+            "description": "列宽度（像素）",
+            "minimum": 0
+          },
+          "sortable": {
+            "type": "boolean",
+            "description": "是否可排序",
+            "default": false
+          },
+          "required": {
+            "type": "boolean",
+            "description": "是否必填（用于表单）",
+            "default": false
+          },
+          "enumOptions": {
+            "type": "array",
+            "description": "枚举类型选项（当type为enum时使用）",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": ["string", "number"]
+                }
+              }
+            }
+          },
+          "align": {
+            "type": "string",
+            "enum": ["left", "center", "right"],
+            "description": "列对齐方式"
+          },
+          "showOverflowTooltip": {
+            "type": "boolean",
+            "description": "超长省略时 hover 显示完整内容",
+            "default": false
+          },
+          "displayType": {
+            "type": "string",
+            "enum": ["text", "link", "tag", "switch", "dict"],
+            "description": "列展示形态：普通文本/链接/标签/开关/字典标签"
+          },
+          "dateFormat": {
+            "type": "string",
+            "description": "日期展示格式，如 YYYY-MM-DD HH:mm"
+          },
+          "dictCode": {
+            "type": "string",
+            "description": "字典编码（displayType 为 dict 时使用，对应 proxy.useDict 的参数）"
+          },
+          "formOnly": {
+            "type": "boolean",
+            "description": "仅出现在表单中，不在列表展示",
+            "default": false
+          },
+          "validation": {
+            "type": "object",
+            "description": "表单校验规则（由数据模型定义技能推荐，代码生成技能消费）",
+            "properties": {
+              "pattern": { "type": "string", "description": "正则表达式字符串" },
+              "message": { "type": "string", "description": "校验失败提示" },
+              "maxLength": { "type": "number", "description": "最大长度" },
+              "min": { "type": "number", "description": "数值最小值" },
+              "max": { "type": "number", "description": "数值最大值" }
+            }
+          }
+        }
+      },
+      "minItems": 1
+    },
+    "searchFields": {
+      "type": "array",
+      "description": "搜索字段配置",
+      "items": {
+        "type": "object",
+        "required": ["key", "label", "type"],
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": "字段键名"
+          },
+          "label": {
+            "type": "string",
+            "description": "字段显示名称"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["string", "number", "date", "datetime"],
+            "description": "字段类型"
+          },
+          "placeholder": {
+            "type": "string",
+            "description": "输入框占位符"
+          }
+        }
+      }
+    },
+    "actions": {
+      "type": "array",
+      "description": "页面支持的操作",
+      "items": {
+        "type": "string",
+        "enum": ["create", "update", "delete", "view", "export", "import"]
+      },
+      "default": ["create", "update", "delete", "view"]
+    },
+    "pagination": {
+      "type": "object",
+      "description": "分页配置",
+      "properties": {
+        "pageSize": {
+          "type": "number",
+          "description": "每页显示数量",
+          "default": 10,
+          "minimum": 1
+        },
+        "showSizeChanger": {
+          "type": "boolean",
+          "description": "是否显示每页条数选择器",
+          "default": true
+        },
+        "pageSizeOptions": {
+          "type": "array",
+          "description": "每页条数选项",
+          "items": {
+            "type": "number"
+          },
+          "default": [10, 20, 50, 100]
+        }
+      }
+    },
+    "tableConfig": {
+      "type": "object",
+      "description": "表格额外配置",
+      "properties": {
+        "stripe": {
+          "type": "boolean",
+          "description": "是否显示斑马纹",
+          "default": true
+        },
+        "border": {
+          "type": "boolean",
+          "description": "是否显示边框",
+          "default": true
+        },
+        "showIndex": {
+          "type": "boolean",
+          "description": "是否显示序号列",
+          "default": true
+        },
+        "showSelection": {
+          "type": "boolean",
+          "description": "是否显示多选列",
+          "default": false
+        }
+      }
+    }
+  }
+}

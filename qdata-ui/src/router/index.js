@@ -51,7 +51,6 @@ import daPublicRouter from './da/public/index.js';
 import daDynamicRouter from './da/dynamic/index.js';
 /* 数据资产资产地图 */
 import daAssetRouter from './da/asset/index.js';
-import daDatasourceRouter from './da/datasource/index.js';
 /* 数据质量 */
 import daQualityRouter from './da/quality/index.js';
 
@@ -100,20 +99,7 @@ import dPdocument from './dp/document/index.js';
  */
 
 // 公共路由
-export const constantRoutes = [
-  ...systemPublicRouter,
-  ...examplePublicRouter,
-  ...daPublicRouter,
-  ...dsCatRouter,
-  ...dsPublicRouter,
-  ...dPdocument,
-  ...dpPublicRouter,
-  ...dpDataElemRouter,
-  ...daAssetRouter,
-  ...daDatasourceRouter,
-  ...daQualityRouter,
-  ...dppRouter
-];
+export const constantRoutes = [...systemPublicRouter, ...examplePublicRouter, ...daPublicRouter, ...dsCatRouter, ...dsPublicRouter, ...dPdocument, ...dpPublicRouter, ...dpDataElemRouter, ...daAssetRouter, ...daQualityRouter, ...dppRouter];
 
 // 动态路由，基于用户权限动态去加载
 export const dynamicRoutes = [...systemDynamicRouter, ...exampleDynamicRouter, ...daDynamicRouter, ...dsDynamicRouter,];

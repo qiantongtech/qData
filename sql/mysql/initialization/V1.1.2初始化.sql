@@ -16580,7 +16580,7 @@ INSERT INTO `system_dict_data` VALUES(413,5,'SQL Server 2008','SQL_Server2008','
 
 
 
---清洗规则
+-- 清洗规则
 UPDATE `att_clean_rule` SET valid_flag='1' WHERE code='022';
 UPDATE  `att_clean_rule` SET valid_flag='1' WHERE code='009';
 UPDATE  `att_clean_rule` SET valid_flag='1' WHERE code='007';

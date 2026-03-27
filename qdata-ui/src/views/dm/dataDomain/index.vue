@@ -258,7 +258,7 @@
             <div class="el-upload__tip">
               <el-checkbox
                 v-model="upload.updateSupport"
-              />是否更新已经存在的数据域管理数据
+              />是否更新已经存在的数据域数据
             </div>
             <span>仅允许导入xls、xlsx格式文件。</span>
             <el-link
@@ -488,7 +488,7 @@ function handleUpdate(row) {
   getDataDomain(_id).then((response) => {
     form.value = response.data;
     open.value = true;
-    title.value = "修改数据域管理";
+    title.value = "修改数据域";
   });
 }
 
@@ -500,7 +500,7 @@ function handleDetail(row) {
   getDataDomain(_id).then((response) => {
     form.value = response.data;
     openDetail.value = true;
-    title.value = "数据域管理详情";
+    title.value = "数据域详情";
   });
 }
 
@@ -533,7 +533,7 @@ function submitForm() {
 function handleDelete(row) {
   const _ids = row?.id || ids.value;
   proxy.$modal
-    .confirm('是否确认删除数据域管理编号为"' + _ids + '"的数据项？')
+    .confirm('是否确认删除数据域编号为"' + _ids + '"的数据项？')
     .then(function () {
       return delDataDomain(_ids);
     })

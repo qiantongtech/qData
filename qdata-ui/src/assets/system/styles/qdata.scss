@@ -101,26 +101,6 @@
  	padding: 10px 20px 0;
  }
 
- .el-table {
-
- 	.el-table__header-wrapper,
- 	.el-table__fixed-header-wrapper {
- 		th {
- 			word-break: break-word;
- 			background-color: #f8f8f9 !important;
- 			color: #515a6e;
- 			height: 36px !important;
- 			font-size: 13px;
- 		}
- 	}
-
- 	.el-table__body-wrapper {
- 		.el-button [class*="el-icon-"]+span {
- 			margin-left: 1px;
- 		}
- 	}
- }
-
  /** 表单布局 **/
  .form-header {
  	font-size: 15px;

@@ -1,0 +1,102 @@
+/* 表格样式优化 - table-style-optimized.scss */
+
+// 任务标题行布局
+.task-title-row {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    gap: 6px;
+    justify-content: flex-start !important;
+    flex-wrap: nowrap;
+}
+
+// 任务名称省略
+.task-name-ellipsis {
+    flex: 0 1 auto;
+    min-width: 0;
+    max-width: 160px;
+
+    .el-link__inner {
+        display: inline-block;
+        max-width: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+}
+
+// 任务分类标签
+.task-cat-ellipsis {
+    flex: 0 1 auto;
+    min-width: 0;
+    max-width: none;
+    padding: 0 4px;
+    height: 20px;
+    line-height: 18px;
+
+    .el-tag__content {
+        display: inline-block;
+        max-width: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-size: 12px !important;
+    }
+}
+
+// 名称容器整体
+.name-label.task-title {
+    width: 100%;
+}
+
+// 描述文本
+.desc-text {
+    color: #999;
+    font-size: 12px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+// Cron 表达式容器
+.cron-text {
+    display: inline-block;
+    max-width: 190px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+// 责任人信息
+.person-charge-ellipsis {
+    display: inline-block;
+    max-width: 100px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+// 最近执行列
+.last-execute-col {
+    align-items: flex-start;
+}
+
+// 数据源图标
+.datasource-icon {
+    width: 20px;
+    margin-right: 5px;
+    flex-shrink: 0;
+}
+
+// 黑色标签文本（用于 switch 左侧说明）
+.black-label {
+    color: #333 !important;
+    font-weight: normal;
+}
+
+// 操作区域 - 更多下拉按钮列表
+.butgdlist {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}

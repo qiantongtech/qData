@@ -38,6 +38,7 @@
           v-bind="searchStore"
           :params="tableStore.params"
           :tableRef="tableRef"
+          :visible-count="4"
         />
       </template>
       <template #actions-data>

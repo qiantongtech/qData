@@ -327,7 +327,7 @@ const tableStore = reactive({
       align: "left",
       showOverflowTooltip: { effect: "light" },
     },
-    { label: "数仓分层", prop: "dataLayerName", align: "left" },
+    { label: "数仓分层", prop: "dataLayerName", align: "left", width: 140 },
     { label: "负责人", prop: "ownerUserName", align: "left" },
     {
       label: "负责人电话",
@@ -346,7 +346,7 @@ const tableStore = reactive({
       date: true,
       width: 180,
     },
-    { label: "操作", width: 240, slot: "action", fixed: "right" },
+    { label: "操作", width: 220, slot: "action", fixed: "right" },
   ],
   func: listThemeDomain,
   params: queryParams,

@@ -421,7 +421,7 @@ const tableStore = reactive({
     },
     {
       label: "操作",
-      width: 280,
+      width: 220,
       slot: "action",
       fixed: "right",
     },

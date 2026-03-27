@@ -1,0 +1,23 @@
+---
+description: Vue3 组件结构（template→script→style、Composition API、composables）
+globs: **/*.vue, **/composables/**/*
+alwaysApply: false
+---
+# Vue 3 基础
+
+## 文件结构
+- 固定顺序：**`<template>` → `<script setup>` → `<style>`**，三部分之间空一行。
+- 模板使用**语义化标签**（如 section、article、header），避免裸 div 堆砌；交互按钮用 Element Plus 组件。
+
+## 组合式 API
+- 新组件一律使用 **Composition API** + `<script setup>`，不新写 Options API。
+- 响应式优先 `ref`/`reactive`；**禁止在子组件内修改 props**（`vue/no-mutating-props`）；需“改一份”时用本地 ref 拷贝或 emit 让父组件改。
+
+## 组件拆分与复用
+- 可复用逻辑放在 **composables/**，命名 `useXxx.js`（如 `useTableData.js`、`useDialog.js`、`useRequest.js`），返回 ref/reactive 与方法。
+
+## 生命周期与副作用
+- 异步初始化、订阅、定时器在 `onMounted`/`onBeforeUnmount` 中配对清理；根据 props/route 响应时用 `watch` 或 `watchEffect`，注意清理副作用。
+
+## 框架配合
+- 路由 Vue Router 4，权限与菜单由后端动态加载时沿用项目 `permission` 与路由守卫；状态用 Pinia，按业务模块拆 store。

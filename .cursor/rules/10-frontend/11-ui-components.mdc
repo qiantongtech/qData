@@ -1,0 +1,25 @@
+---
+description: UI 组件与模板（属性顺序、v-for :key、Element Plus）
+globs: **/*.vue, **/components/**/*
+alwaysApply: false
+---
+# UI 组件与 Element Plus
+
+## 与 ESLint Vue 规则一致
+- **v-slot** 写法统一；**自定义事件名** 按项目约定（如 kebab-case）；**非必填 prop 必须提供 default**。
+- 多属性时**标签右括号前换行**；单标签属性**超过 3 个**时每个属性独占一行，缩进 2 空格。
+
+## 属性顺序
+1. 结构控制：`v-if` / `v-show` / `v-for` / `:key`
+2. 数据绑定：`v-model` / `:prop` / `:value`
+3. 事件：`@click` / `@change` / `@input`
+4. 外观：`class` / `:class` / `style` / `:style`
+
+## 条件与循环
+- `v-for` 必须提供唯一 **`:key`**；**v-if 与 v-for 不要同时写在同一元素上**；避免 v-show 与复杂条件叠用。
+
+## 组件库与边界
+- 统一使用 **Element Plus**；`components/` 下为可复用组件（目录大驼峰、文件名小驼峰），通过 props/emit 通信，不直接依赖业务 API；业务强相关封装放在 `views/xxx/components/`。
+
+## 界面风格
+- 表格 ElTable + 统一列配置，分页 ElPagination（如 `handleQuery`、`resetQuery`）；弹窗 ElDialog，关闭时重置表单并 emit 成功事件供父组件刷新。

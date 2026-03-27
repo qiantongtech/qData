@@ -1,0 +1,28 @@
+---
+description: 接口与 URL、权限（请求封装、RESTful、URL 规范、v-hasPermi）
+globs: src/api/**/*, src/utils/request*.js, src/router/**/*
+alwaysApply: false
+---
+# 接口契约与 URL、权限
+
+## 请求封装
+- 所有 HTTP 请求经 **统一 axios 实例**（如 `utils/request.js`）发出：统一 baseURL、超时、请求/响应拦截器；拦截器内附加 Token、Content-Type，统一解析后端返回体。
+
+## 统一响应结构
+- 后端格式：`{ code, msg, data }`；成功 `code === 200`，业务数据在 `data`。封装层根据 code 判断成功/失败，成功 resolve `data`，失败用 `msg` 提示并 reject。
+
+## 接口地址规范（RESTful）
+- 路径以**资源（名词）**为主，动词由 HTTP 方法表达；层级与前端模块一致：`/一级模块/二级模块/功能点`。
+- **GET** 查询、**POST** 新增、**PUT** 修改、**DELETE** 删除；列表加 `/list`，详情 `/:id`；导入/导出等可在路径尾追加 `export`、`import`。
+
+## 前端 URL（路由 path）
+- 与菜单结构一致：一级模块/二级模块/功能点/操作类型；URL **全小写 + 中划线**（kebab-case）；操作类型如 `add`、`edit`（带 id）、`detail`（带 id）；列表页路径不带操作后缀，对应 `index.vue`。
+
+## 权限控制
+- 权限标识格式：**模块名:功能名:操作类型**（如 `att:project:list`、`att:project:add`）；操作类型统一：list、query、add、edit、remove、export、import；功能名小驼峰或模块简称。前端通过 **v-hasPermi** 控制按钮/菜单显隐。
+
+## 错误处理
+- 401 等登录态失效在拦截器内统一处理（清 Token、跳转登录）；业务错误（code !== 200）由调用方提示或封装层 toast，不吞掉错误。
+
+## 与接口文档一致
+- 请求参数、响应 `data` 的字段与结构以后端接口文档为准；复杂结构可在 api 文件顶部用 JSDoc 或注释说明。

@@ -32,253 +32,79 @@
 
 <template>
   <div class="app-container" ref="app-container">
-    <div class="pagecont-top" v-show="showSearch">
-      <el-form
-        class="btn-style"
-        :model="queryParams"
-        ref="queryRef"
-        :inline="true"
-        label-width="75px"
-      >
-        <el-form-item label="主题域类目名称" prop="name" label-width="110">
-          <el-input
-            class="el-form-input-width"
-            v-model="queryParams.name"
-            placeholder="请输入主题域类目名称"
-            clearable
-            @keyup.enter="handleQuery"
-          />
-        </el-form-item>
-        <el-form-item label="上级类目" prop="code">
-          <el-tree-select
-            filterable
-            class="el-form-input-width"
-            v-model="queryParams.code"
-            :data="attDataElemCatOptions"
-            :props="{ value: 'code', label: 'name', children: 'children' }"
-            value-key="id"
-            placeholder="请选择上级类目"
-            check-strictly
-          />
-        </el-form-item>
-        <el-form-item label="数仓分层" prop="dataLayerId">
-          <el-tree-select
-            filterable
-            default-expand-all
-            class="el-form-input-width"
-            v-model="queryParams.dataLayerId"
-            :data="dataLayerOptions"
-            :props="{ value: 'id', label: 'name', children: 'children' }"
-            value-key="id"
-            placeholder="请选择数仓分层"
-            check-strictly
-          />
-        </el-form-item>
-        <el-form-item label="负责人" prop="ownerUserId">
-          <el-select
-            v-model="queryParams.ownerUserId"
-            class="el-form-input-width"
-            filterable
-            placeholder="请选择负责人"
-          >
-            <el-option
-              v-for="item in managerOptions"
-              :key="item.userId"
-              :label="item.nickName"
-              :value="item.userId"
-            >
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item>
+    <qt-wrap :columns="tableStore.columns" :tableRef="tableRef">
+      <template #search>
+        <qt-search-bar
+          v-bind="searchStore"
+          :params="tableStore.params"
+          :tableRef="tableRef"
+        />
+      </template>
+      <template #actions-data>
+        <el-button
+          type="primary"
+          plain
+          icon="Plus"
+          @click="handleAdd"
+          v-hasPermi="['att:dataElemCat:add']"
+        >
+          新增
+        </el-button>
+        <el-button
+          type="primary"
+          plain
+          @click="toggleExpandAll"
+          class="extend-btn"
+        >
+          <svg-icon v-if="defaultExpandAll" icon-class="toggle" />
+          <svg-icon v-else icon-class="expand" />
+          <span>{{ defaultExpandAll ? "折叠" : "展开" }}</span>
+        </el-button>
+      </template>
+
+      <qt-table v-bind="tableStore" ref="tableRef">
+        <template #action="{ row }">
           <el-button
-            plain
+            link
             type="primary"
-            @click="handleQuery"
-            @mousedown="(e) => e.preventDefault()"
+            icon="Edit"
+            @click="handleUpdate(row)"
+            v-hasPermi="['att:dataElemCat:edit']"
           >
-            <i
-              class="iconfont-mini icon-a-zu22377 mr5"
-              v-hasPermi="['att:dataElemCat:query']"
-            ></i
-            >查询
+            修改
           </el-button>
-          <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-            <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+          <el-button
+            link
+            type="primary"
+            icon="Plus"
+            @click="handleAdd(row)"
+            v-hasPermi="['att:dataElemCat:add']"
+          >
+            新增
           </el-button>
-        </el-form-item>
-      </el-form>
-    </div>
-    <div class="pagecont-bottom">
-      <div class="justify-between mb15">
-        <el-row :gutter="10" class="btn-style">
-          <el-col :span="1.5">
-            <el-button
-              type="primary"
-              plain
-              icon="Plus"
-              @click="handleAdd"
-              v-hasPermi="['att:dataElemCat:add']"
-              >新增</el-button
-            >
-          </el-col>
+          <el-button
+            link
+            type="danger"
+            icon="Delete"
+            @click="handleDelete(row)"
+            v-hasPermi="['att:dataElemCat:remove']"
+          >
+            删除
+          </el-button>
+        </template>
 
-          <el-col :span="1.5">
-            <el-button
-              class="toggle-expand-all"
-              type="primary"
-              plain
-              @click="toggleExpandAll"
-            >
-              <svg-icon v-if="isExpandAll" icon-class="toggle" />
-              <svg-icon v-else icon-class="expand" />
-              <span>{{ isExpandAll ? "折叠" : "展开" }}</span>
-            </el-button>
-          </el-col>
-        </el-row>
-        <right-toolbar
-          v-model:showSearch="showSearch"
-          @queryTable="getList"
-        ></right-toolbar>
-      </div>
+        <template #validFlag="{ row }">
+          <el-switch
+            v-model="row.validFlag"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+            @change="handleStatusChange(row)"
+          >
+          </el-switch>
+        </template>
+      </qt-table>
+    </qt-wrap>
 
-      <el-table
-        height="60vh"
-        v-if="refreshTable"
-        v-loading="loading"
-        :data="attDataElemCatList"
-        row-key="id"
-        :default-expand-all="isExpandAll"
-        :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
-      >
-        <el-table-column
-          label="主题域类目名称"
-          align="left"
-          prop="name"
-          width="200"
-          :show-overflow-tooltip="{ effect: 'light' }"
-        >
-          <template #default="scope">
-            {{ scope.row.name || "-" }}
-          </template>
-        </el-table-column>
-
-        <el-table-column
-          label="描述"
-          align="left"
-          prop="description"
-          :show-overflow-tooltip="{ effect: 'light' }"
-          width="250"
-        >
-          <template #default="scope">
-            {{ scope.row.description || "-" }}
-          </template>
-        </el-table-column>
-        <el-table-column
-            label="英文缩写"
-            align="left"
-            prop="engName"
-            width="200"
-            :show-overflow-tooltip="{ effect: 'light' }"
-        >
-          <template #default="scope">
-            {{ scope.row.engName || "-" }}
-          </template>
-        </el-table-column>
-        <el-table-column label="数仓分层" align="center" prop="validFlag">
-          <template #default="scope">
-            {{ scope.row.dataLayerName || "-" }}
-          </template>
-        </el-table-column>
-        <el-table-column label="负责人" align="center" prop="validFlag">
-          <template #default="scope">
-            {{ scope.row.ownerUserName || "-" }}
-          </template>
-        </el-table-column>
-        <el-table-column label="状态" align="center" prop="validFlag">
-          <template #default="scope">
-            <!--              <dict-tag :options="sys_valid" :value="scope.row.validFlag"/>-->
-
-            <el-switch
-              v-model="scope.row.validFlag"
-              active-color="#13ce66"
-              inactive-color="#ff4949"
-              @change="handleStatusChange(scope.row)"
-            >
-            </el-switch>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="备注"
-          align="left"
-          prop="remark"
-          :show-overflow-tooltip="{ effect: 'light' }"
-        >
-          <template #default="scope">
-            {{ scope.row.remark || "-" }}
-          </template>
-        </el-table-column>
-        <el-table-column label="创建人" align="center" prop="createBy">
-          <template #default="scope">
-            {{ scope.row.createBy || "-" }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="创建时间"
-          align="center"
-          prop="createTime"
-          width="180"
-        >
-          <template #default="scope">
-            <span>{{
-              parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}")
-            }}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column
-          label="操作"
-          align="center"
-          class-name="small-padding fixed-width"
-          fixed="right"
-          width="240"
-        >
-          <template #default="scope">
-            <el-button
-              link
-              type="primary"
-              icon="Edit"
-              @click="handleUpdate(scope.row)"
-              v-hasPermi="['att:dataElemCat:edit']"
-              >修改</el-button
-            >
-            <el-button
-              link
-              type="primary"
-              icon="Plus"
-              @click="handleAdd(scope.row)"
-              v-hasPermi="['att:dataElemCat:add']"
-              >新增</el-button
-            >
-            <el-button
-              link
-              type="danger"
-              icon="Delete"
-              @click="handleDelete(scope.row)"
-              v-hasPermi="['att:dataElemCat:remove']"
-              >删除</el-button
-            >
-          </template>
-        </el-table-column>
-      </el-table>
-      <pagination
-        v-show="total > 0"
-        :total="total"
-        :page.sync="queryParams.pageNum"
-        :limit.sync="queryParams.pageSize"
-        @pagination="getList"
-      />
-    </div>
     <el-dialog
       :title="title"
       v-model="open"
@@ -300,22 +126,19 @@
       >
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="主题域类目名称" prop="name">
-              <el-input
-                v-model="form.name"
-                placeholder="请输入主题域类目名称"
-              />
+            <el-form-item label="主题域名称" prop="name">
+              <el-input v-model="form.name" placeholder="请输入主题域名称" />
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="上级类目" prop="parentId">
+            <el-form-item label="上级主题域" prop="parentId">
               <el-tree-select
                 filterable
                 v-model="form.parentId"
                 :data="attDataElemCatOptions"
                 :props="{ value: 'id', label: 'name', children: 'children' }"
                 value-key="id"
-                placeholder="请选择上级类目"
+                placeholder="请选择上级主题域"
                 check-strictly
               />
             </el-form-item>
@@ -408,37 +231,35 @@ import {
 } from "@/api/dm/themeDomain/themeDomain.js";
 import { deptUserTree } from "@/api/system/system/user.js";
 import { treeDataLayer } from "@/api/dm/dataLayer/dataLayer.js";
+import QtWrap from "@/components/QtWrap";
+import QtTable from "@/components/QtTable";
+import QtSearchBar from "@/components/QtSearchBar";
+import { computed } from "vue";
 
 const { proxy } = getCurrentInstance();
-const attDataElemCatList = ref([]);
 const attDataElemCatOptions = ref([]);
 const managerOptions = ref([]);
 const dataLayerOptions = ref([]);
 const open = ref(false);
-const loading = ref(true);
-const showSearch = ref(true);
 const title = ref("");
-const total = ref(0);
-const isExpandAll = ref(false);
-const refreshTable = ref(true);
+const tableRef = ref(null);
 
 const data = reactive({
   form: {},
   queryParams: {
     name: null,
-    parentId: null,
-    createTime: null,
+    code: null,
+    dataLayerId: null,
+    ownerUserId: null,
   },
   rules: {
-    name: [
-      { required: true, message: "主题域类目名称不能为空", trigger: "blur" },
-    ],
+    name: [{ required: true, message: "主题域名称不能为空", trigger: "blur" }],
     parentId: [
-      { required: true, message: "上级类目不能为空", trigger: "blur" },
+      { required: true, message: "上级主题域不能为空", trigger: "blur" },
     ],
     engName: [
-        { required: true, message: "英文缩写不能为空", trigger: "blur" },
-        { pattern: /^[a-zA-Z]+$/, message: "只能输入英文字符", trigger: "blur" }
+      { required: true, message: "英文缩写不能为空", trigger: "blur" },
+      { pattern: /^[a-zA-Z]+$/, message: "只能输入英文字符", trigger: "blur" },
     ],
     ownerUserId: [
       { required: true, message: "负责人不能为空", trigger: "blur" },
@@ -451,19 +272,128 @@ const data = reactive({
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** 查询主题域类目管理列表 */
+const tableStore = reactive({
+  config: {
+    stripe: true,
+    notPagination: true,
+    notPaginationParams: true,
+    table: {
+      rowKey: "id",
+      defaultExpandAll: false,
+      lazy: false,
+      load: null,
+      treeProps: { children: "children", hasChildren: "hasChildren" },
+      defaultSort: { prop: "createTime", order: "descending" },
+    },
+  },
+  columns: [
+    {
+      label: "主题域名称",
+      prop: "name",
+      width: 200,
+      showOverflowTooltip: { effect: "light" },
+    },
+    {
+      label: "描述",
+      prop: "description",
+      width: 250,
+      showOverflowTooltip: { effect: "light" },
+    },
+    {
+      label: "英文缩写",
+      prop: "engName",
+      width: 200,
+      showOverflowTooltip: { effect: "light" },
+    },
+    { label: "数仓分层", prop: "dataLayerName" },
+    { label: "状态", prop: "validFlag", slot: "validFlag", width: 100 },
+    { label: "负责人", prop: "ownerUserName" },
+    { label: "备注", prop: "remark", showOverflowTooltip: { effect: "light" } },
+    { label: "创建人", prop: "createBy" },
+    {
+      label: "创建时间",
+      prop: "createTime",
+      sortable: true,
+      date: true,
+      width: 180,
+    },
+    { label: "操作", width: 240, slot: "action", fixed: "right" },
+  ],
+  func: listThemeDomain,
+  params: queryParams,
+  events: {
+    formatData: (data) => proxy.handleTree(data, "id", "parentId"),
+  },
+});
+
+const defaultExpandAll = computed({
+  get() {
+    return tableStore.config.table.defaultExpandAll;
+  },
+  set(val) {
+    tableStore.config.table.defaultExpandAll = val;
+  },
+});
+
+const searchStore = reactive({
+  items: [
+    {
+      label: "主题域名称",
+      prop: "name",
+      component: { is: "input", placeholder: "请输入主题域名称" },
+    },
+    {
+      label: "上级主题域",
+      prop: "code",
+      component: {
+        is: "tree-select",
+        data: attDataElemCatOptions,
+        props: { value: "code", label: "name", children: "children" },
+        valueKey: "id",
+        placeholder: "请选择上级主题域",
+        checkStrictly: true,
+      },
+    },
+    {
+      label: "数仓分层",
+      prop: "dataLayerId",
+      component: {
+        is: "tree-select",
+        data: dataLayerOptions,
+        props: { value: "id", label: "name", children: "children" },
+        valueKey: "id",
+        placeholder: "请选择数仓分层",
+        checkStrictly: true,
+      },
+    },
+    {
+      label: "负责人",
+      prop: "ownerUserId",
+      component: {
+        is: "select",
+        options: computed(() =>
+          managerOptions.value.map((item) => ({
+            label: item.nickName,
+            value: item.userId,
+          }))
+        ),
+        placeholder: "请选择负责人",
+      },
+    },
+  ],
+});
+
+/** 查询主题域管理列表 */
 function getList() {
-  loading.value = true;
-  listThemeDomain(queryParams.value).then((response) => {
-    attDataElemCatList.value = proxy.handleTree(
-      response.data,
-      "id",
-      "parentId"
-    );
-    // total.value = response.data.total;
-    loading.value = false;
-  });
+  // 此方法保留以便于手动调用刷新数据
+  tableRef.value?.getList();
 }
+
+function toggleExpandAll() {
+  defaultExpandAll.value = !defaultExpandAll.value;
+  tableRef.value.reload();
+}
+
 function getDataTree() {
   listThemeDomain().then((response) => {
     attDataElemCatOptions.value = [];
@@ -472,11 +402,13 @@ function getDataTree() {
     attDataElemCatOptions.value.push(data);
   });
 }
+
 function getManagerOptions() {
   deptUserTree().then((response) => {
     managerOptions.value = response.data;
   });
 }
+
 function getDataLayerTree() {
   treeDataLayer().then((response) => {
     const disableRoot = (list) => {
@@ -494,7 +426,6 @@ function getDataLayerTree() {
     dataLayerOptions.value = disableRoot(response.data);
   });
 }
-/** 查询主题域类目管理下拉树结构1 */
 
 // 取消按钮
 function cancel() {
@@ -534,9 +465,13 @@ function handleQuery() {
 function handleStatusChange(row) {
   const text = row.validFlag === true ? "启用" : "禁用";
   proxy.$modal
-    .confirm(`确认要"${text}","${row.name}"主题域类目吗？`)
+    .confirm(`确认要"${text}","${row.name}"主题域吗？`)
     .then(() => {
-      updateThemeDomain({ id: row.id,parentId: row.parentId, validFlag: row.validFlag })
+      updateThemeDomain({
+        id: row.id,
+        parentId: row.parentId,
+        validFlag: row.validFlag,
+      })
         .then((response) => {
           proxy.$modal.msgSuccess(text + "成功");
           getList();
@@ -552,7 +487,9 @@ function handleStatusChange(row) {
 
 /** 重置按钮操作 */
 function resetQuery() {
-  proxy.resetForm("queryRef");
+  Object.keys(queryParams.value).forEach((key) => {
+    queryParams.value[key] = null;
+  });
   handleQuery();
 }
 
@@ -572,16 +509,7 @@ function handleAdd(row) {
     form.value.parentId = 0;
   }
   open.value = true;
-  title.value = "新增主题域类目";
-}
-
-/** 展开/折叠操作 */
-function toggleExpandAll() {
-  refreshTable.value = false;
-  isExpandAll.value = !isExpandAll.value;
-  nextTick(() => {
-    refreshTable.value = true;
-  });
+  title.value = "新增主题域";
 }
 
 /** 修改按钮操作 */
@@ -610,7 +538,7 @@ async function handleUpdate(row) {
     delete response.data.updateTime;
     form.value = response.data;
     open.value = true;
-    title.value = "修改主题域类目";
+    title.value = "修改主题域";
   });
 }
 
@@ -638,7 +566,7 @@ function submitForm() {
 /** 删除按钮操作 */
 function handleDelete(row) {
   proxy.$modal
-    .confirm('是否确认删除主题域类目管理编号为"' + row.name + '"的数据项？')
+    .confirm('是否确认删除主题域管理编号为"' + row.name + '"的数据项？')
     .then(function () {
       return delThemeDomain(row.id);
     })
@@ -649,8 +577,18 @@ function handleDelete(row) {
     .catch(() => {});
 }
 
-getList();
-getDataTree();
-getManagerOptions();
-getDataLayerTree();
+// 初始化数据
+onMounted(() => {
+  getDataTree();
+  getManagerOptions();
+  getDataLayerTree();
+});
 </script>
+<style scoped lang="scss">
+.extend-btn {
+  .svg-icon {
+    font-size: 12px;
+    margin-right: 6px;
+  }
+}
+</style>

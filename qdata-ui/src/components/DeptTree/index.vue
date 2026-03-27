@@ -122,25 +122,22 @@
                     <el-dropdown-item :icon="Plus" command="add"
                       >新增子级</el-dropdown-item
                     >
-                    <el-dropdown-item
-                      :icon="CopyDocument"
-                      command="addSibling"
-                      v-if="data.id !== '0'"
-                      >新增同级</el-dropdown-item
-                    >
-                    <el-dropdown-item
-                      :icon="Edit"
-                      command="edit"
-                      v-if="data.id !== '0'"
-                      >编辑</el-dropdown-item
-                    >
-                    <el-dropdown-item
-                      :icon="Delete"
-                      command="delete"
-                      v-if="data.id !== '0'"
-                      class="delete-item"
-                      >删除</el-dropdown-item
-                    >
+                    <template v-if="data.id != '0'">
+                      <el-dropdown-item
+                        :icon="CopyDocument"
+                        command="addSibling"
+                        >新增同级</el-dropdown-item
+                      >
+                      <el-dropdown-item :icon="Edit" command="edit"
+                        >编辑</el-dropdown-item
+                      >
+                      <el-dropdown-item
+                        :icon="Delete"
+                        command="delete"
+                        class="delete-item"
+                        >删除</el-dropdown-item
+                      >
+                    </template>
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>

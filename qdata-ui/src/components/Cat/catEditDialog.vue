@@ -177,7 +177,7 @@ const currentRules = computed(() => {
  */
 const open = (options = {}) => {
   title.value = options.title || "编辑";
-  nameLabel.value = options.nameLabel || "类目名称";
+  nameLabel.value = "类目名称";
   treeOptions.value = options.treeOptions || [];
   customRules.value = options.rules || null;
 

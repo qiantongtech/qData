@@ -684,6 +684,17 @@
     color: #666666;
   }
 
+  // 双行折行
+  .el-table .cell.el-tooltip {
+    display: -webkit-box !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical !important;
+    white-space: normal; //添加才会折行
+  }
+
   //列表内容行高
   .el-table {
     .el-table__row {

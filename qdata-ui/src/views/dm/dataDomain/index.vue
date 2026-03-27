@@ -105,8 +105,8 @@
         label-width="110px"
         @submit.prevent
       >
-        <el-form-item label="数据域" prop="name">
-          <el-input v-model="form.name" placeholder="请输入数据域" />
+        <el-form-item label="数据域名称" prop="name">
+          <el-input v-model="form.name" placeholder="请输入数据域名称" />
         </el-form-item>
         <el-form-item label="英文缩写" prop="engName">
           <el-input v-model="form.engName" placeholder="请输入英文缩写" />
@@ -139,7 +139,7 @@
           <el-input
             v-model="form.remark"
             type="textarea"
-            placeholder="请输入描述"
+            placeholder="请输入备注"
             :min-height="192"
             show-word-limit
             maxlength="500个字符"
@@ -317,7 +317,6 @@ const managerOptions = ref([]);
 const tableStore = reactive({
   config: {
     stripe: true,
-    sort: true,
     table: {
       rowKey: "id",
       defaultSort: { prop: "createTime", order: "descending" },
@@ -331,11 +330,28 @@ const tableStore = reactive({
   columns: [
     // { type: "selection", width: 55, align: "left" },
     { label: "编号", prop: "id", width: 60, sortable: true },
-    { label: "数据域名称", prop: "name", align: "left" },
-    { label: "描述", prop: "description", align: "left" },
+    {
+      label: "数据域名称",
+      prop: "name",
+      align: "left",
+    },
+    {
+      label: "描述",
+      prop: "description",
+      align: "left",
+      width: 240,
+      showOverflowTooltip: {
+        effect: "light",
+      },
+    },
     { label: "英文缩写", prop: "engName", align: "left" },
     { label: "负责人", prop: "ownerUserName", align: "left" },
-    { label: "创建人", prop: "createBy", align: "left" },
+    {
+      label: "创建人",
+      prop: "createBy",
+      align: "left",
+      showOverflowTooltip: true,
+    },
     {
       label: "创建时间",
       prop: "createTime",
@@ -345,7 +361,7 @@ const tableStore = reactive({
       width: 150,
       align: "left",
     },
-    { label: "备注", prop: "remark", align: "left" },
+    // { label: "备注", prop: "remark", align: "left" },
     {
       label: "操作",
       width: 280,
@@ -459,7 +475,7 @@ function handleAdd() {
   reset();
   getManagerOptions();
   open.value = true;
-  title.value = "添加数据域管理";
+  title.value = "添加数据域";
 }
 
 /** 修改按钮操作 */

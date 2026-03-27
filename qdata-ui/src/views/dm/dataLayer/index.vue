@@ -32,6 +32,7 @@
 
 <template>
   <div class="app-container" ref="app-container">
+    <GuideTip tip-id="dm/dataLayer.list" />
     <el-container>
       <!-- 左侧树 -->
       <DeptTree
@@ -103,8 +104,8 @@
             <template #status="{ row }">
               <el-switch
                 v-model="row.status"
-                active-value="0"
-                inactive-value="1"
+                active-value="1"
+                inactive-value="0"
                 active-color="#13ce66"
                 inactive-color="#ff4949"
                 @change="handleStatusChange(row)"
@@ -115,7 +116,7 @@
       </el-main>
     </el-container>
 
-    <!-- 添加或修改规范管理对话框 -->
+    <!-- 添加或修改规范对话框 -->
     <el-dialog
       :title="title"
       v-model="open"
@@ -138,10 +139,10 @@
         <el-form-item label="表前缀" prop="prefixName">
           <el-input v-model="form.prefixName" placeholder="请输入表前缀" />
         </el-form-item>
-        <el-form-item label="业务大类英文缩写" prop="businessEngName">
+        <el-form-item label="业务英文缩写" prop="businessEngName">
           <el-input
             v-model="form.businessEngName"
-            placeholder="请输入业务大类英文缩写"
+            placeholder="请输入业务英文缩写"
           />
         </el-form-item>
         <el-form-item label="负责人" prop="ownerUserId">
@@ -189,9 +190,9 @@
       </template>
     </el-dialog>
 
-    <!-- 规范管理详情对话框 -->
+    <!-- 规范详情对话框 -->
     <el-dialog
-      title="规范管理详情"
+      title="规范详情"
       v-model="openDetail"
       :append-to="$refs['app-container']"
       draggable
@@ -206,7 +207,7 @@
         <el-form-item label="表前缀" prop="prefixName">
           <div class="form-readonly">{{ form.prefixName ?? "-" }}</div>
         </el-form-item>
-        <el-form-item label="业务大类英文缩写" prop="businessEngName">
+        <el-form-item label="业务英文缩写" prop="businessEngName">
           <div class="form-readonly">{{ form.businessEngName ?? "-" }}</div>
         </el-form-item>
         <el-form-item label="负责人" prop="ownerUserName">
@@ -317,7 +318,6 @@ const multiple = ref(true);
 const tableStore = reactive({
   config: {
     stripe: true,
-    sort: true,
     table: {
       rowKey: "id",
       defaultSort: { prop: "createTime", order: "descending" },
@@ -330,10 +330,30 @@ const tableStore = reactive({
   },
   columns: [
     // { type: "selection", width: 55, align: "left" },
-    { label: "ID", prop: "id", width: 60, sortable: true },
-    { label: "表前缀", prop: "prefixName", align: "left" },
-    { label: "业务大类英文缩写", prop: "businessEngName", align: "left" },
-    { label: "负责人", prop: "ownerUserName", align: "left" },
+    { label: "编号", prop: "id", width: 60, sortable: true },
+    {
+      label: "表前缀",
+      prop: "prefixName",
+      align: "left",
+      width: 180,
+      showOverflowTooltip: true,
+    },
+    {
+      label: "描述",
+      prop: "description",
+      align: "left",
+      width: 240,
+      showOverflowTooltip: {
+        effect: "light",
+      },
+    },
+    {
+      label: "业务英文缩写",
+      prop: "businessEngName",
+      align: "left",
+      width: 100,
+    },
+
     {
       label: "状态",
       prop: "status",
@@ -341,7 +361,15 @@ const tableStore = reactive({
       width: 100,
       slot: "status",
     },
-    { label: "描述", prop: "description", align: "left" },
+    { label: "负责人", prop: "ownerUserName", align: "left", width: 120 },
+
+    {
+      label: "创建人",
+      prop: "createBy",
+      width: 120,
+      align: "left",
+      showOverflowTooltip: true,
+    },
     {
       label: "创建时间",
       prop: "createTime",
@@ -372,9 +400,9 @@ const searchStore = reactive({
       component: { is: "input", placeholder: "请输入表前缀" },
     },
     {
-      label: "业务大类英文缩写",
+      label: "业务英文缩写",
       prop: "businessEngName",
-      component: { is: "input", placeholder: "请输入业务大类英文缩写" },
+      component: { is: "input", placeholder: "请输入业务英文缩写" },
     },
     {
       label: "责任人",
@@ -402,7 +430,7 @@ const data = reactive({
       { required: true, message: "表前缀不能为空", trigger: "blur" },
     ],
     businessEngName: [
-      { required: true, message: "业务大类英文缩写不能为空", trigger: "blur" },
+      { required: true, message: "业务英文缩写不能为空", trigger: "blur" },
       { pattern: /^[a-zA-Z]+$/, message: "只能输入英文字符", trigger: "blur" },
     ],
     ownerUserId: [
@@ -508,7 +536,7 @@ function handleAdd() {
     return;
   }
   open.value = true;
-  title.value = "添加规范管理";
+  title.value = "添加规范";
 }
 
 /** 修改按钮操作 */
@@ -526,7 +554,7 @@ function handleUpdate(row) {
       }
     }
     open.value = true;
-    title.value = "修改规范管理";
+    title.value = "修改规范";
   });
 }
 
@@ -565,7 +593,7 @@ function submitForm() {
 function handleDelete(row) {
   const _ids = row?.id || ids.value;
   proxy.$modal
-    .confirm('是否确认删除规范管理编号为"' + _ids + '"的数据项？')
+    .confirm('是否确认删除规范编号为"' + _ids + '"的数据项？')
     .then(function () {
       return delDataLayerSpecification(_ids);
     })
@@ -580,7 +608,7 @@ function handleDelete(row) {
 function handleStatusChange(row) {
   let text = row.status === "0" ? "启用" : "停用";
   proxy.$modal
-    .confirm("确认要" + text + '规范管理"' + row.id + '"吗?')
+    .confirm("确认要" + text + '规范"' + row.id + '"吗?')
     .then(function () {
       return updateDataLayerSpecification({ id: row.id, status: row.status });
     })

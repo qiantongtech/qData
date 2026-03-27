@@ -71,6 +71,14 @@ public class DmDataDomainRespVO implements Serializable {
     @Schema(description = "负责人名称", example = "")
     private String ownerUserName;
 
+    @Excel(name = "负责人名称")
+    @Schema(description = "负责人名称", example = "")
+    private String ownerUserPhone;
+
+    @Excel(name = "负责人联系方式")
+    @Schema(description = "负责人联系方式", example = "")
+    private String ownerUserPhoneNumber;
+
     @Excel(name = "描述")
     @Schema(description = "描述", example = "")
     private String description;

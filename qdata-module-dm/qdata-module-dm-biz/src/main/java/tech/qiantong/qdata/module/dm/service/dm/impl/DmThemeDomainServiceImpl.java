@@ -226,7 +226,7 @@ public class DmThemeDomainServiceImpl extends ServiceImpl<DmThemeDomainMapper, D
         MPJLambdaWrapperX<DmThemeDomainDO> lambdaWrapper = new MPJLambdaWrapperX<>();
 
         lambdaWrapper.selectAll(DmThemeDomainDO.class)
-                .select("u.NICK_NAME AS ownerUserName", "layer.name AS dataLayerName")
+                .select("u.NICK_NAME AS ownerUserName", "u.PHONENUMBER AS ownerUserPhoneNumber", "layer.name AS dataLayerName")
                 .leftJoin("SYSTEM_USER u on t.OWNER_USER_ID = u.USER_ID AND u.DEL_FLAG = '0'")
                 .leftJoin(DmDataLayerDO.class, "layer", DmDataLayerDO::getId, DmThemeDomainDO::getDataLayerId);
 

@@ -103,4 +103,9 @@ public class DmDataDomainDO extends BaseEntity {
     @TableField(exist = false)
     private String ownerUserName;
 
+    /**
+     * 负责人联系方式
+     */
+    @TableField(exist = false)
+    private String ownerUserPhoneNumber;
 }

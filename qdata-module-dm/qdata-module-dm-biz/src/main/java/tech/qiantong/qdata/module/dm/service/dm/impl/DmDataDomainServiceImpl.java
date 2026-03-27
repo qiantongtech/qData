@@ -100,7 +100,7 @@ public class DmDataDomainServiceImpl  extends ServiceImpl<DmDataDomainMapper,DmD
         MPJLambdaWrapperX<DmDataDomainDO> lambdaWrapper = new MPJLambdaWrapperX<>();
 
         lambdaWrapper.selectAll(DmDataDomainDO.class)
-                .select("u.NICK_NAME AS ownerUserName")
+                .select("u.NICK_NAME AS ownerUserName","u.PHONENUMBER AS ownerUserPhoneNumber")
                 .leftJoin("SYSTEM_USER u on t.OWNER_USER_ID = u.USER_ID AND u.DEL_FLAG = '0'")
                 .eq(DmDataDomainDO::getId, id);
         return dmDataDomainMapper.selectOne(lambdaWrapper);

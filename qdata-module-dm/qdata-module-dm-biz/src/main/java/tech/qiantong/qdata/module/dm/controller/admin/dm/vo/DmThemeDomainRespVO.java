@@ -81,6 +81,10 @@ public class DmThemeDomainRespVO implements Serializable {
     @Schema(description = "负责人名称", example = "")
     private String ownerUserName;
 
+    @Excel(name = "负责人联系方式")
+    @Schema(description = "负责人联系方式", example = "")
+    private String ownerUserPhoneNumber;
+
     @Excel(name = "数仓分层ID")
     @Schema(description = "数仓分层ID", example = "")
     private Long dataLayerId;

@@ -52,10 +52,10 @@
           新增
         </el-button>
         <el-button
+          class="extend-btn"
           type="primary"
           plain
           @click="toggleExpandAll"
-          class="extend-btn"
         >
           <svg-icon v-if="defaultExpandAll" icon-class="toggle" />
           <svg-icon v-else icon-class="expand" />
@@ -105,7 +105,6 @@
         </template>
       </qt-table>
     </qt-wrap>
-
     <el-dialog
       :title="title"
       v-model="open"
@@ -173,6 +172,7 @@
                 v-model="form.ownerUserId"
                 filterable
                 placeholder="请选择负责人"
+                @change="handleOwnerChange"
               >
                 <el-option
                   v-for="item in managerOptions"
@@ -181,6 +181,15 @@
                   :value="item.userId"
                 />
               </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="负责人电话" prop="ownerUserPhoneNumber">
+              <el-input
+                v-model="form.ownerUserPhoneNumber"
+                placeholder="请输入负责人电话"
+                disabled
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -230,12 +239,11 @@ import {
   listThemeDomain,
   delThemeDomain,
 } from "@/api/dm/themeDomain/themeDomain.js";
-import { deptUserTree } from "@/api/system/system/user.js";
+import { deptUserTree, getUser } from "@/api/system/system/user.js";
 import { treeDataLayer } from "@/api/dm/dataLayer/dataLayer.js";
 import QtWrap from "@/components/QtWrap";
 import QtTable from "@/components/QtTable";
 import QtSearchBar from "@/components/QtSearchBar";
-import { computed } from "vue";
 
 const { proxy } = getCurrentInstance();
 const attDataElemCatOptions = ref([]);
@@ -244,6 +252,16 @@ const dataLayerOptions = ref([]);
 const open = ref(false);
 const title = ref("");
 const tableRef = ref(null);
+
+// 添加计算属性用于控制展开/折叠
+const defaultExpandAll = computed({
+  get() {
+    return tableStore.config.table.defaultExpandAll;
+  },
+  set(val) {
+    tableStore.config.table.defaultExpandAll = val;
+  },
+});
 
 const data = reactive({
   form: {},
@@ -312,7 +330,12 @@ const tableStore = reactive({
     { label: "数仓分层", prop: "dataLayerName", align: "left" },
     { label: "状态", prop: "validFlag", slot: "validFlag", width: 100 },
     { label: "负责人", prop: "ownerUserName", align: "left" },
-    { label: "备注", prop: "remark", showOverflowTooltip: { effect: "light" } },
+    {
+      label: "负责人电话",
+      prop: "ownerUserPhoneNumber",
+      width: 140,
+      align: "left",
+    },
     { label: "创建人", prop: "createBy", align: "left" },
     {
       label: "创建时间",
@@ -327,15 +350,6 @@ const tableStore = reactive({
   params: queryParams,
   events: {
     formatData: (data) => proxy.handleTree(data, "id", "parentId"),
-  },
-});
-
-const defaultExpandAll = computed({
-  get() {
-    return tableStore.config.table.defaultExpandAll;
-  },
-  set(val) {
-    tableStore.config.table.defaultExpandAll = val;
   },
 });
 
@@ -389,13 +403,7 @@ const searchStore = reactive({
 
 /** 查询主题域管理列表 */
 function getList() {
-  // 此方法保留以便于手动调用刷新数据
   tableRef.value?.getList();
-}
-
-function toggleExpandAll() {
-  defaultExpandAll.value = !defaultExpandAll.value;
-  tableRef.value.reload();
 }
 
 function getDataTree() {
@@ -447,6 +455,7 @@ function reset() {
     code: null,
     engName: null,
     ownerUserId: null,
+    ownerUserPhoneNumber: null,
     dataLayerId: null,
     // validFlag: true,
     delFlag: null,
@@ -497,6 +506,14 @@ function resetQuery() {
   handleQuery();
 }
 
+/** 当负责人改变时，更新电话号码 */
+const handleOwnerChange = (selectedValue) => {
+  const selectedUser = managerOptions.value.find(
+    (user) => user.userId == selectedValue
+  );
+  form.value.ownerUserPhoneNumber = selectedUser?.phonenumber || "";
+};
+
 /** 新增按钮操作 */
 function handleAdd(row) {
   reset();
@@ -514,6 +531,12 @@ function handleAdd(row) {
   }
   open.value = true;
   title.value = "新增主题域";
+}
+
+/** 展开/折叠操作 */
+function toggleExpandAll() {
+  defaultExpandAll.value = !defaultExpandAll.value;
+  tableRef.value.reload();
 }
 
 /** 修改按钮操作 */
@@ -541,6 +564,14 @@ async function handleUpdate(row) {
     delete response.data.createTime;
     delete response.data.updateTime;
     form.value = response.data;
+
+    // 如果有负责人信息，则获取其电话号码
+    if (response.data.ownerUserId) {
+      getUser(response.data.ownerUserId).then((userResponse) => {
+        form.value.ownerUserPhoneNumber = userResponse.data.phonenumber;
+      });
+    }
+
     open.value = true;
     title.value = "修改主题域";
   });

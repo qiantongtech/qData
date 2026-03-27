@@ -136,51 +136,78 @@
         label-width="140px"
         @submit.prevent
       >
-        <el-form-item label="表前缀" prop="prefixName">
-          <el-input v-model="form.prefixName" placeholder="请输入表前缀" />
-        </el-form-item>
-        <el-form-item label="业务英文缩写" prop="businessEngName">
-          <el-input
-            v-model="form.businessEngName"
-            placeholder="请输入业务英文缩写"
-          />
-        </el-form-item>
-        <el-form-item label="负责人" prop="ownerUserId">
-          <el-select
-            v-model="form.ownerUserId"
-            filterable
-            placeholder="请选择负责人"
-            @change="handleOwnerChange"
-          >
-            <el-option
-              v-for="item in managerOptions"
-              :key="item.userId"
-              :label="item.nickName"
-              :value="item.userId"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="状态" prop="status">
-          <el-radio-group v-model="form.status">
-            <el-radio
-              v-for="dict in sys_normal_disable"
-              :key="dict.value"
-              :label="dict.value"
-            >
-              {{ dict.label }}
-            </el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="描述" prop="description">
-          <el-input
-            v-model="form.description"
-            type="textarea"
-            placeholder="请输入描述"
-            :min-height="192"
-            show-word-limit
-            maxlength="500个字符"
-          />
-        </el-form-item>
+        <el-row :gutter="20">
+          <el-col :span="24">
+            <el-form-item label="表前缀" prop="prefixName">
+              <el-input v-model="form.prefixName" placeholder="请输入表前缀" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="业务英文缩写" prop="businessEngName">
+              <el-input
+                v-model="form.businessEngName"
+                placeholder="请输入业务英文缩写"
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="24">
+            <el-form-item label="负责人" prop="ownerUserId">
+              <el-select
+                v-model="form.ownerUserId"
+                filterable
+                placeholder="请选择负责人"
+                @change="handleOwnerChange"
+              >
+                <el-option
+                  v-for="item in managerOptions"
+                  :key="item.userId"
+                  :label="item.nickName"
+                  :value="item.userId"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="负责人电话" prop="ownerUserPhoneNumber">
+              <el-input
+                v-model="form.ownerUserPhoneNumber"
+                placeholder="请输入负责人电话"
+                disabled
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="24">
+            <el-form-item label="状态" prop="status">
+              <el-radio-group v-model="form.status">
+                <el-radio
+                  v-for="dict in sys_normal_disable"
+                  :key="dict.value"
+                  :label="dict.value"
+                >
+                  {{ dict.label }}
+                </el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="24">
+            <el-form-item label="描述" prop="description">
+              <el-input
+                v-model="form.description"
+                type="textarea"
+                placeholder="请输入描述"
+                :min-height="192"
+                show-word-limit
+                maxlength="500个字符"
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
@@ -212,6 +239,11 @@
         </el-form-item>
         <el-form-item label="负责人" prop="ownerUserName">
           <div class="form-readonly">{{ form.ownerUserName || "-" }}</div>
+        </el-form-item>
+        <el-form-item label="负责人电话" prop="ownerUserPhoneNumber">
+          <div class="form-readonly">
+            {{ form.ownerUserPhoneNumber || "-" }}
+          </div>
         </el-form-item>
         <el-form-item label="状态" prop="status">
           <dict-tag :options="sys_normal_disable" :value="form.status" />
@@ -273,7 +305,7 @@ import {
   delDataLayerSpecification,
 } from "@/api/dm/dataLayerSpecification/dataLayerSpecification.js";
 import DeptTree from "@/components/DeptTree";
-import { deptUserTree } from "@/api/system/system/user.js";
+import { deptUserTree, getUser } from "@/api/system/system/user.js";
 import layerInfoCard from "./components/layerInfoCard.vue";
 import {
   computed,
@@ -308,6 +340,8 @@ function handleOwnerChange(val) {
   const selected = managerOptions.value.find((item) => item.userId === val);
   if (selected) {
     form.value.ownerUserName = selected.nickName;
+    // 更新负责人电话
+    form.value.ownerUserPhoneNumber = selected.phonenumber || "";
   }
 }
 
@@ -362,6 +396,12 @@ const tableStore = reactive({
       slot: "status",
     },
     { label: "负责人", prop: "ownerUserName", align: "left", width: 120 },
+    {
+      label: "负责人电话",
+      prop: "ownerUserPhoneNumber",
+      align: "left",
+      width: 140,
+    },
 
     {
       label: "创建人",
@@ -522,6 +562,7 @@ function reset() {
     businessEngName: null,
     ownerUserId: null,
     ownerUserName: null,
+    ownerUserPhoneNumber: null,
     status: "0",
     description: null,
   };
@@ -545,6 +586,14 @@ function handleUpdate(row) {
   const _id = row?.id || ids.value[0];
   getDataLayerSpecification(_id).then((response) => {
     form.value = response.data;
+
+    // 如果有负责人信息，则获取其电话号码
+    if (response.data.ownerUserId) {
+      getUser(response.data.ownerUserId).then((userResponse) => {
+        form.value.ownerUserPhoneNumber = userResponse.data.phonenumber;
+      });
+    }
+
     if (form.value.ownerUserName && !form.value.ownerUserId) {
       const selected = managerOptions.value.find(
         (item) => item.nickName === form.value.ownerUserName

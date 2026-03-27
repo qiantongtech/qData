@@ -116,6 +116,7 @@
             v-model="form.ownerUserId"
             filterable
             placeholder="请选择负责人"
+            @change="handleContactChange"
           >
             <el-option
               v-for="item in managerOptions"
@@ -124,6 +125,13 @@
               :value="item.userId"
             />
           </el-select>
+        </el-form-item>
+        <el-form-item label="负责人电话" prop="ownerUserPhoneNumber">
+          <el-input
+            v-model="form.ownerUserPhoneNumber"
+            placeholder="请输入负责人电话"
+            disabled
+          />
         </el-form-item>
         <el-form-item label="描述" prop="description">
           <el-input
@@ -181,6 +189,11 @@
         </el-form-item>
         <el-form-item label="负责人" prop="ownerUserId">
           <div class="form-readonly">{{ form.ownerUserName || "-" }}</div>
+        </el-form-item>
+        <el-form-item label="负责人电话" prop="ownerUserPhoneNumber">
+          <div class="form-readonly">
+            {{ form.ownerUserPhoneNumber || "-" }}
+          </div>
         </el-form-item>
         <el-form-item label="描述" prop="description">
           <div class="form-readonly textarea">
@@ -290,7 +303,7 @@ import {
   listDataDomain,
   delDataDomain,
 } from "@/api/dm/dataDomain/dataDomain.js";
-import { deptUserTree } from "@/api/system/system/user.js";
+import { deptUserTree, getUser } from "@/api/system/system/user.js";
 import { getToken } from "@/utils/auth.js";
 import {
   computed,
@@ -350,6 +363,12 @@ const tableStore = reactive({
     { label: "英文缩写", prop: "engName", align: "left" },
     { label: "负责人", prop: "ownerUserName", align: "left" },
     {
+      label: "负责人电话",
+      prop: "ownerUserPhoneNumber",
+      align: "left",
+      width: 140,
+    },
+    {
       label: "创建人",
       prop: "createBy",
       showOverflowTooltip: true,
@@ -394,7 +413,7 @@ const searchStore = reactive({
         is: "tree-select",
         data: managerOptions,
         props: { value: "userId", label: "nickName", children: "children" },
-        valueKey: "ID",
+        valueKey: "userId",
         placeholder: "请选择负责人",
         checkStrictly: true,
       },
@@ -458,6 +477,7 @@ function reset() {
     name: null,
     engName: null,
     ownerUserId: null,
+    ownerUserPhoneNumber: null,
     description: null,
     validFlag: null,
     delFlag: null,
@@ -476,6 +496,8 @@ function reset() {
 function handleAdd() {
   reset();
   getManagerOptions();
+  // 显式初始化负责人电话字段
+  form.value.ownerUserPhoneNumber = null;
   open.value = true;
   title.value = "添加数据域";
 }
@@ -487,6 +509,12 @@ function handleUpdate(row) {
   const _id = row?.id || ids.value[0];
   getDataDomain(_id).then((response) => {
     form.value = response.data;
+    // 如果有负责人信息，则获取其电话号码
+    if (response.data.ownerUserId) {
+      getUser(response.data.ownerUserId).then((userResponse) => {
+        form.value.ownerUserPhoneNumber = userResponse.data.phonenumber;
+      });
+    }
     open.value = true;
     title.value = "修改数据域";
   });
@@ -499,6 +527,12 @@ function handleDetail(row) {
   const _id = row?.id || ids.value[0];
   getDataDomain(_id).then((response) => {
     form.value = response.data;
+    // 如果有负责人信息，则获取其电话号码
+    if (response.data.ownerUserId) {
+      getUser(response.data.ownerUserId).then((userResponse) => {
+        form.value.ownerUserPhoneNumber = userResponse.data.phonenumber;
+      });
+    }
     openDetail.value = true;
     title.value = "数据域详情";
   });
@@ -529,6 +563,13 @@ function submitForm() {
   });
 }
 
+// 当负责人改变时，更新电话号码
+const handleContactChange = (selectedValue) => {
+  const selectedUser = managerOptions.value.find(
+    (user) => user.userId == selectedValue
+  );
+  form.value.ownerUserPhoneNumber = selectedUser?.phonenumber || "";
+};
 /** 删除按钮操作 */
 function handleDelete(row) {
   const _ids = row?.id || ids.value;

@@ -53,6 +53,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmThemeDomainPageReqVO;
 import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmThemeDomainRespVO;
 import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmThemeDomainSaveReqVO;
+import tech.qiantong.qdata.module.dm.dal.dataobject.dm.DmDataDomainDO;
 import tech.qiantong.qdata.module.dm.dal.dataobject.dm.DmDataLayerDO;
 import tech.qiantong.qdata.module.dm.dal.dataobject.dm.DmThemeDomainDO;
 import tech.qiantong.qdata.module.dm.dal.mapper.dm.DmThemeDomainMapper;
@@ -131,7 +132,13 @@ public class DmThemeDomainServiceImpl extends ServiceImpl<DmThemeDomainMapper, D
 
     @Override
     public DmThemeDomainDO getDmThemeDomainById(Long id) {
-        return dmThemeDomainMapper.selectById(id);
+        MPJLambdaWrapperX<DmThemeDomainDO> lambdaWrapper = new MPJLambdaWrapperX<>();
+
+        lambdaWrapper.selectAll(DmThemeDomainDO.class)
+                .select("u.NICK_NAME AS ownerUserName","u.PHONENUMBER AS ownerUserPhoneNumber")
+                .leftJoin("SYSTEM_USER u on t.OWNER_USER_ID = u.USER_ID AND u.DEL_FLAG = '0'")
+                .eq(DmThemeDomainDO::getId, id);
+        return dmThemeDomainMapper.selectOne(lambdaWrapper);
     }
 
     @Override

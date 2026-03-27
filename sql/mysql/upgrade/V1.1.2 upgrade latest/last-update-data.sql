@@ -98,14 +98,11 @@ VALUES
 (415,2,'公共层','2','dm_data_layer_category',NULL,NULL,'N','0',NULL,NULL,'admin','2026-03-26 11:04:38',NULL),
 (414,1,'贴源层','1','dm_data_layer_category',NULL,NULL,'N','0',NULL,NULL,'admin','2026-03-26 11:04:38',NULL);
 
+
 -- 删除 数据标准
 DELETE FROM `qdata`.`system_menu` WHERE `menu_id`=2306;
 
 -- 修改菜单
-UPDATE `qdata`.`system_menu`
-SET `menu_name`='标准登记', `parent_id`=2694, `order_num`=0, `path`='document', `component`=NULL, `query`=NULL, `is_frame`=1, `is_cache`=0, `route_name`=NULL, `menu_type`='M', `visible`='0', `status`='0', `perms`=NULL, `icon`='article-line', `create_by`='admin', `create_time`='2025-09-30 10:00:05', `update_by`='admin', `update_time`='2026-03-27 09:31:36', `remark`=NULL
-WHERE `menu_id`=2674;
-
 UPDATE `qdata`.`system_menu`
 SET `menu_name`='团体标准', `parent_id`=2674, `order_num`=0, `path`='group', `component`='dp/document/group/index', `query`=NULL, `is_frame`=1, `is_cache`=0, `route_name`=NULL, `menu_type`='C', `visible`='0', `status`='0', `perms`='dp:document:group:list', `icon`='#', `create_by`='admin', `create_time`='2025-09-30 10:08:52', `update_by`=NULL, `update_time`=NULL, `remark`=NULL
 WHERE `menu_id`=2679;
@@ -127,17 +124,23 @@ SET `menu_name`='标准检索', `parent_id`=2674, `order_num`=0, `path`='search'
 WHERE `menu_id`=2675;
 
 UPDATE `qdata`.`system_menu`
-SET `menu_name`='逻辑模型', `parent_id`=2694, `order_num`=1, `path`='model', `component`='dp/model/index', `query`=NULL, `is_frame`=1, `is_cache`=0, `route_name`=NULL, `menu_type`='C', `visible`='0', `status`='0', `perms`='dp:model:list', `icon`='instance-line', `create_by`='qData', `create_time`='2025-01-21 11:03:26', `update_by`='admin', `update_time`='2026-03-27 09:31:46', `remark`='逻辑模型菜单'
-WHERE `menu_id`=2307;
+SET `menu_name`='标准登记', `parent_id`=2694, `order_num`=0, `path`='document', `component`=NULL, `query`=NULL, `is_frame`=1, `is_cache`=0, `route_name`=NULL, `menu_type`='M', `visible`='0', `status`='0', `perms`=NULL, `icon`='article-line', `create_by`='admin', `create_time`='2025-09-30 10:00:05', `update_by`='admin', `update_time`='2026-03-27 09:31:36', `remark`=NULL
+WHERE `menu_id`=2674;
 
 UPDATE `qdata`.`system_menu`
-SET `menu_name`='标准数据元', `parent_id`=2694, `order_num`=2, `path`='dataElem', `component`='dp/dataElem/index', `query`=NULL, `is_frame`=1, `is_cache`=0, `route_name`=NULL, `menu_type`='C', `visible`='0', `status`='0', `perms`='dp:dataElem:list', `icon`='hard-drive-3-line', `create_by`='qData', `create_time`='2025-01-21 14:53:06', `update_by`='admin', `update_time`='2026-03-27 09:32:31', `remark`='数据元菜单'
+SET `menu_name`='标准数据元', `parent_id`=2694, `order_num`=9, `path`='dataElem', `component`='dp/dataElem/index', `query`=NULL, `is_frame`=1, `is_cache`=0, `route_name`=NULL, `menu_type`='C', `visible`='0', `status`='0', `perms`='dp:dataElem:list', `icon`='hard-drive-3-line', `create_by`='qData', `create_time`='2025-01-21 14:53:06', `update_by`='admin', `update_time`='2026-03-27 16:52:05', `remark`='数据元菜单'
 WHERE `menu_id`=2315;
+
+UPDATE `qdata`.`system_menu`
+SET `menu_name`='创建模型', `parent_id`=2730, `order_num`=1, `path`='create', `component`='dp/model/index', `query`=NULL, `is_frame`=1, `is_cache`=0, `route_name`=NULL, `menu_type`='C', `visible`='0', `status`='0', `perms`='dp:model:list', `icon`=NULL, `create_by`='qData', `create_time`='2025-01-21 11:03:26', `update_by`='admin', `update_time`='2026-03-27 16:56:53', `remark`='逻辑模型菜单'
+WHERE `menu_id`=2307;
 
 -- 插入菜单数据
 INSERT INTO `qdata`.`system_menu`
 (`menu_id`,`menu_name`,`parent_id`,`order_num`,`path`,`component`,`query`,`is_frame`,`is_cache`,`route_name`,`menu_type`,`visible`,`status`,`perms`,`icon`,`create_by`,`create_time`,`update_by`,`update_time`,`remark`)
 VALUES
+(2731, '发布模型', 2730, 2, 'release', 'sys/developing/index', NULL, 1, 0, NULL, 'C', '0', '0', NULL, '#', 'admin', '2026-03-27 16:56:42', 'admin', '2026-03-27 16:57:10', NULL),
+(2730, '模型管理', 2694, 5, 'model', NULL, NULL, 1, 0, NULL, 'M', '0', '0', NULL, 'instance-line', 'admin', '2026-03-27 16:54:27', 'admin', '2026-03-27 16:58:13', NULL),
 (2729, '元数据比对', 2724, 5, 'comparison', 'sys/developing/index', NULL, 1, 0, NULL, 'C', '0', '0', NULL, '#', 'admin', '2026-03-25 17:45:35', 'admin', '2026-03-25 17:45:49', NULL),
 (2728, '定版元数据', 2724, 4, 'fvMeta', 'sys/developing/index', NULL, 1, 0, NULL, 'C', '0', '0', NULL, '#', 'admin', '2026-03-25 17:45:07', 'admin', '2026-03-25 17:46:59', NULL),
 (2727, '最新元数据', 2724, 3, 'newMeta', 'sys/developing/index', NULL, 1, 0, NULL, 'C', '0', '0', NULL, '#', 'admin', '2026-03-25 17:44:52', 'admin', '2026-03-25 17:46:32', NULL),
@@ -151,115 +154,121 @@ VALUES
 (2719, '主题域管理修改', 2716, 3, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'dm:themeDomain:edit', '#', 'admin', '2026-03-24 14:53:02', NULL, NULL, NULL),
 (2718, '主题域管理新增', 2716, 2, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'dm:themeDomain:add', '#', 'admin', '2026-03-24 14:53:02', NULL, NULL, NULL),
 (2717, '主题域管理查询', 2716, 1, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'dm:themeDomain:query', '#', 'admin', '2026-03-24 14:53:02', NULL, NULL, NULL),
-(2716, '主题域管理', 2694, 6, 'themeDomain', 'dm/themeDomain/index', NULL, 1, 0, NULL, 'C', '0', '0', 'dm:themeDomain:list', 'ztygl', 'admin', '2026-03-24 14:52:41', 'admin', '2026-03-27 16:09:43', '主题域管理菜单'),
-(2709, '业务分层', 2694, 4, 'businessLayer', 'sys/developing/index', NULL, 1, 0, NULL, 'C', '0', '0', NULL, 'ywfz', 'admin', '2026-03-24 14:52:05', 'admin', '2026-03-27 16:14:39', '数仓分层-规范管理菜单'),
+(2716, '主题域管理', 2694, 4, 'themeDomain', 'dm/themeDomain/index', NULL, 1, 0, NULL, 'C', '0', '0', 'dm:themeDomain:list', 'ztygl', 'admin', '2026-03-24 14:52:41', 'admin', '2026-03-27 16:52:45', '主题域管理菜单'),
+(2709, '业务分层', 2694, 2, 'businessLayer', 'sys/developing/index', NULL, 1, 0, NULL, 'C', '0', '0', NULL, 'ywfz', 'admin', '2026-03-24 14:52:05', 'admin', '2026-03-27 16:52:25', '数仓分层-规范管理菜单'),
 (2708, '数仓分层管理导入', 2702, 6, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'dm:dataLayer:import', '#', 'admin', '2026-03-24 14:51:48', NULL, NULL, NULL),
 (2707, '数仓分层管理导出', 2702, 5, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'dm:dataLayer:export', '#', 'admin', '2026-03-24 14:51:48', NULL, NULL, NULL),
 (2706, '数仓分层管理删除', 2702, 4, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'dm:dataLayer:remove', '#', 'admin', '2026-03-24 14:51:48', NULL, NULL, NULL),
 (2705, '数仓分层管理修改', 2702, 3, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'dm:dataLayer:edit', '#', 'admin', '2026-03-24 14:51:48', NULL, NULL, NULL),
 (2704, '数仓分层管理新增', 2702, 2, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'dm:dataLayer:add', '#', 'admin', '2026-03-24 14:51:48', NULL, NULL, NULL),
 (2703, '数仓分层管理查询', 2702, 1, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'dm:dataLayer:query', '#', 'admin', '2026-03-24 14:51:48', NULL, NULL, NULL),
-(2702, '数仓分层', 2694, 3, 'dataLayer', 'dm/dataLayer/index', NULL, 1, 0, NULL, 'C', '0', '0', 'dm:dataLayer:list', 'scfc', 'admin', '2026-03-24 14:50:48', 'admin', '2026-03-27 16:14:04', '数仓分层管理菜单'),
+(2702, '数仓分层', 2694, 1, 'dataLayer', 'dm/dataLayer/index', NULL, 1, 0, NULL, 'C', '0', '0', 'dm:dataLayer:list', 'scfc', 'admin', '2026-03-24 14:50:48', 'admin', '2026-03-27 16:52:31', '数仓分层管理菜单'),
 (2701, '数据域管理导入', 2695, 6, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'dm:dataDomain:import', '#', 'admin', '2026-03-24 14:50:23', NULL, NULL, NULL),
 (2700, '数据域管理导出', 2695, 5, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'dm:dataDomain:export', '#', 'admin', '2026-03-24 14:50:23', NULL, NULL, NULL),
 (2699, '数据域管理删除', 2695, 4, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'dm:dataDomain:remove', '#', 'admin', '2026-03-24 14:50:23', NULL, NULL, NULL),
 (2698, '数据域管理修改', 2695, 3, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'dm:dataDomain:edit', '#', 'admin', '2026-03-24 14:50:23', NULL, NULL, NULL),
 (2697, '数据域管理新增', 2695, 2, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'dm:dataDomain:add', '#', 'admin', '2026-03-24 14:50:22', NULL, NULL, NULL),
 (2696, '数据域管理查询', 2695, 1, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'dm:dataDomain:query', '#', 'admin', '2026-03-24 14:50:22', NULL, NULL, NULL),
-(2695, '数据域管理', 2694, 5, 'dataDomain', 'dm/dataDomain/index', NULL, 1, 0, NULL, 'C', '0', '0', 'dm:dataDomain:list', 'sjygl', 'admin', '2026-03-24 14:49:17', 'admin', '2026-03-27 16:09:53', '数据域管理菜单'),
+(2695, '数据域管理', 2694, 3, 'dataDomain', 'dm/dataDomain/index', NULL, 1, 0, NULL, 'C', '0', '0', 'dm:dataDomain:list', 'sjygl', 'admin', '2026-03-24 14:49:17', 'admin', '2026-03-27 16:52:40', '数据域管理菜单'),
 (2694, '数据建模', 0, 2, 'dm', NULL, NULL, 1, 0, NULL, 'M', '0', '0', NULL, 'sjjm', 'admin', '2026-03-24 14:48:16', 'admin', '2026-03-27 16:06:56', NULL);
 
 -- 授权菜单
 INSERT INTO `qdata`.`system_role_menu`
 (`role_id`,`menu_id`,`project_id`)
 VALUES
-(2, 2729, 0),
+(7, 2731, 0),
+(3, 2731, 0),
+(2, 2731, 0),
+(2, 2730, 0),
+(3, 2730, 0),
+(7, 2730, 0),
 (3, 2729, 0),
 (7, 2729, 0),
-(7, 2728, 0),
+(2, 2729, 0),
 (2, 2728, 0),
+(7, 2728, 0),
 (3, 2728, 0),
 (2, 2727, 0),
-(3, 2727, 0),
 (7, 2727, 0),
-(7, 2726, 0),
-(2, 2726, 0),
+(3, 2727, 0),
 (3, 2726, 0),
+(2, 2726, 0),
+(7, 2726, 0),
+(2, 2725, 0),
 (3, 2725, 0),
 (7, 2725, 0),
-(2, 2725, 0),
+(3, 2724, 0),
 (2, 2724, 0),
 (7, 2724, 0),
-(3, 2724, 0),
+(3, 2723, 0),
 (2, 2723, 0),
 (7, 2723, 0),
-(3, 2723, 0),
-(3, 2722, 0),
 (2, 2722, 0),
 (7, 2722, 0),
-(7, 2721, 0),
-(3, 2721, 0),
+(3, 2722, 0),
 (2, 2721, 0),
-(2, 2720, 0),
-(3, 2720, 0),
+(3, 2721, 0),
+(7, 2721, 0),
 (7, 2720, 0),
-(3, 2719, 0),
-(7, 2719, 0),
+(3, 2720, 0),
+(2, 2720, 0),
 (2, 2719, 0),
+(7, 2719, 0),
+(3, 2719, 0),
 (3, 2718, 0),
 (2, 2718, 0),
 (7, 2718, 0),
 (3, 2717, 0),
 (7, 2717, 0),
 (2, 2717, 0),
-(7, 2716, 0),
 (3, 2716, 0),
 (2, 2716, 0),
-(2, 2709, 0),
+(7, 2716, 0),
 (3, 2709, 0),
 (7, 2709, 0),
+(2, 2709, 0),
 (7, 2708, 0),
-(3, 2708, 0),
 (2, 2708, 0),
+(3, 2708, 0),
 (7, 2707, 0),
-(2, 2707, 0),
 (3, 2707, 0),
-(7, 2706, 0),
+(2, 2707, 0),
 (3, 2706, 0),
+(7, 2706, 0),
 (2, 2706, 0),
-(3, 2705, 0),
-(2, 2705, 0),
 (7, 2705, 0),
+(2, 2705, 0),
+(3, 2705, 0),
 (7, 2704, 0),
 (2, 2704, 0),
 (3, 2704, 0),
-(3, 2703, 0),
 (7, 2703, 0),
+(3, 2703, 0),
 (2, 2703, 0),
+(2, 2702, 0),
 (3, 2702, 0),
 (7, 2702, 0),
-(2, 2702, 0),
-(7, 2701, 0),
 (3, 2701, 0),
 (2, 2701, 0),
+(7, 2701, 0),
+(7, 2700, 0),
 (2, 2700, 0),
 (3, 2700, 0),
-(7, 2700, 0),
 (3, 2699, 0),
-(7, 2699, 0),
 (2, 2699, 0),
+(7, 2699, 0),
 (3, 2698, 0),
-(7, 2698, 0),
 (2, 2698, 0),
-(2, 2697, 0),
+(7, 2698, 0),
 (3, 2697, 0),
 (7, 2697, 0),
+(2, 2697, 0),
+(3, 2696, 0),
 (2, 2696, 0),
 (7, 2696, 0),
-(3, 2696, 0),
-(7, 2695, 0),
 (2, 2695, 0),
+(7, 2695, 0),
 (3, 2695, 0),
-(2, 2694, 0),
 (7, 2694, 0),
+(2, 2694, 0),
 (3, 2694, 0);

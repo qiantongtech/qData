@@ -58,35 +58,55 @@ public class DmThemeDomainDO extends BaseEntity {
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
-    /** ID */
+    /**
+     * ID
+     */
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 层级编码 */
+    /**
+     * 层级编码
+     */
     private String code;
 
-    /** 名称 */
+    /**
+     * 名称
+     */
     private String name;
 
-    /** 英文缩写 */
+    /**
+     * 英文缩写
+     */
     private String engName;
 
-    /** 关联上级ID */
+    /**
+     * 关联上级ID
+     */
     private Long parentId;
 
-    /** 负责人ID */
+    /**
+     * 负责人ID
+     */
     private Long ownerUserId;
 
-    /** 数仓分层ID */
+    /**
+     * 数仓分层ID
+     */
     private Long dataLayerId;
 
-    /** 描述 */
+    /**
+     * 描述
+     */
     private String description;
 
-    /** 是否有效 */
+    /**
+     * 是否有效
+     */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /**
+     * 删除标志
+     */
     @TableLogic
     private Boolean delFlag;
 
@@ -97,7 +117,15 @@ public class DmThemeDomainDO extends BaseEntity {
     @TableField(exist = false)
     private String ownerUserName;
 
-    /** 数仓分层名称 */
+    /**
+     * 数仓分层名称
+     */
     @TableField(exist = false)
     private String dataLayerName;
+
+    /**
+     * 负责人联系方式
+     */
+    @TableField(exist = false)
+    private String ownerUserPhoneNumber;
 }

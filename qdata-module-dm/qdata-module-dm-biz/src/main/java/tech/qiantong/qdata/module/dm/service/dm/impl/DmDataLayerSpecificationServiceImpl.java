@@ -103,7 +103,7 @@ public class DmDataLayerSpecificationServiceImpl extends ServiceImpl<DmDataLayer
         MPJLambdaWrapperX<DmDataLayerSpecificationDO> lambdaWrapper = new MPJLambdaWrapperX<>();
 
         lambdaWrapper.selectAll(DmDataLayerSpecificationDO.class)
-                .select("u.NICK_NAME AS ownerUserName")
+                .select("u.NICK_NAME AS ownerUserName","u.PHONENUMBER AS ownerUserPhoneNumber")
                 .leftJoin("SYSTEM_USER u on t.OWNER_USER_ID = u.USER_ID AND u.DEL_FLAG = '0'")
                 .eq(DmDataLayerSpecificationDO::getId, id);
         return dmDataLayerSpecificationMapper.selectOne(lambdaWrapper);

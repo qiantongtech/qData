@@ -64,7 +64,7 @@ public interface DmThemeDomainMapper extends BaseMapperX<DmThemeDomainDO> {
         MPJLambdaWrapperX<DmThemeDomainDO> lambdaWrapper = new MPJLambdaWrapperX<>();
 
         lambdaWrapper.selectAll(DmThemeDomainDO.class)
-                .select("u.NICK_NAME AS ownerUserName")
+                .select("u.NICK_NAME AS ownerUserName","u.PHONENUMBER AS ownerUserPhoneNumber")
                 .leftJoin("SYSTEM_USER u on t.OWNER_USER_ID = u.USER_ID AND u.DEL_FLAG = '0'");
 
         lambdaWrapper.eqIfPresent(DmThemeDomainDO::getCode, reqVO.getCode())
@@ -80,7 +80,7 @@ public interface DmThemeDomainMapper extends BaseMapperX<DmThemeDomainDO> {
                 // 按照 createTime 字段降序排序
                 .orderByStr(StringUtils.isNotBlank(reqVO.getOrderByColumn()),
                         StringUtils.equals("asc", reqVO.getIsAsc()), StringUtils.isNotBlank(reqVO.getOrderByColumn()) ? Arrays.asList(reqVO.getOrderByColumn().split(","))
-                                .stream().map(e -> LambdaQueryWrapperX.camelToUnderline(e))
+                                .stream().map(e -> "t." +LambdaQueryWrapperX.camelToUnderline(e))
                                 .collect(Collectors.toList()) : null);
 
         return selectJoinPage(reqVO, DmThemeDomainDO.class, lambdaWrapper);

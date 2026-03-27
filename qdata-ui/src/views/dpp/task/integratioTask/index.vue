@@ -348,6 +348,7 @@
       :userList="userList"
       :info="route.query.info"
       :catCode="tableStore.params.catCode"
+      :deptOptions="deptOptions"
     />
   </div>
 </template>
@@ -487,7 +488,29 @@ const tableStore = reactive({
 });
 
 // User list for search
-const userList = ref([]);
+let userList = ref([]);
+let deptOptions = ref([]);
+function getDeptTree() {
+  listAttTaskCat({
+    projectId: userStore.projectId,
+    projectCode: userStore.projectCode,
+    validFlag: true,
+  }).then((response) => {
+    deptOptions.value = [];
+    var children = proxy.handleTree(response.data, "id", "parentId");
+    deptOptions.value = [
+      {
+        name: "数据集成类目",
+        value: "",
+        id: 0,
+        children: children,
+      },
+    ];
+  });
+  deptUserTree().then((res) => {
+    userList.value = res.data;
+  });
+}
 
 const searchStore = reactive({
   items: [
@@ -543,18 +566,10 @@ function resetQuery() {
 // 部门树
 const leftWidth = ref(300);
 const DeptTreeRef = ref(null);
-
-function getDeptTree() {
-  deptUserTree().then((res) => {
-    userList.value = res.data;
-  });
-}
-
 function handleNodeClick(data) {
   tableStore.params.catCode = data.code;
   handleQuery();
 }
-
 // 任务配置
 const taskConfigDialogVisible = ref(false);
 let nodeData = ref({ taskConfig: {}, name: null });

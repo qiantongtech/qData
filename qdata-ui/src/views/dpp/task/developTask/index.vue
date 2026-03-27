@@ -108,10 +108,10 @@
                   "
                 >
                   <img
-                    :src="getDatasourceIcon(row.draftJson)"
+                    :src="getDatasourceIcon(row.datasourceType)"
                     alt=""
                     class="datasource-icon"
-                    v-if="getDatasourceIcon(row.draftJson)"
+                    v-if="getDatasourceIcon(row.datasourceType)"
                   />
                   <el-link
                     type="primary"

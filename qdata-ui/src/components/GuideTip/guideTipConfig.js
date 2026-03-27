@@ -298,4 +298,13 @@ export const guideTipConfig = {
     `,
         type: 'remind', version: '1.0'
     },
+
+
+    // 数据建模
+    'dm/dataLayer.list': {
+        title: '分层规范 — 基于数仓分层的定义 （如表前缀、业务大类） 制定检查逻辑。配置完成后，可以绑定至质量调度任务中执行。',
+        content: `
+    `,
+        type: 'remind', version: '1.0'
+    },
 }

@@ -1,7 +1,6 @@
 <template>
   <div class="layer-info-card">
     <h3 class="layer-info-card-title">
-      <!-- <i class="iconfont-mini icon-a-zu22377 mr5 layer-info-card-icon"></i> -->
       {{ layer.name }}
       <span v-if="layer.engName">({{ layer.engName }})</span>
     </h3>
@@ -20,9 +19,7 @@
         <span class="layer-info-card-label layer-info-card-label--long">
           命名核心标准：
         </span>
-        <span class="layer-info-card-badge">
-          表名前缀固定为 {{ layer.engName }}_
-        </span>
+        <el-tag ype="info"> 表名前缀固定为 {{ layer.engName }}_ </el-tag>
       </div>
     </div>
   </div>
@@ -53,7 +50,8 @@ const layer = computed(() => props.layer || {});
   display: flex;
   align-items: center;
   margin-top: 0;
-  color: #409eff;
+  font-weight: 600;
+  color: #000;
 }
 
 .layer-info-card-icon {
@@ -64,8 +62,9 @@ const layer = computed(() => props.layer || {});
   display: flex;
   flex-direction: column;
   gap: 10px;
-  font-size: 13px;
-  color: #606266;
+  font-size: 14px;
+  color: #666;
+  font-weight: 400;
 }
 
 .layer-info-card-row {
@@ -74,7 +73,8 @@ const layer = computed(() => props.layer || {});
 }
 
 .layer-info-card-label {
-  color: #909399;
+  font-weight: 600;
+  color: #666666;
 }
 
 .layer-info-card-label--short {

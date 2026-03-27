@@ -32,21 +32,39 @@
 
 <template>
   <div class="app-container" ref="app-container">
-
     <GuideTip tip-id="dp/dpDocument" />
 
     <div class="pagecont-top" v-show="showSearch">
-      <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="75px"
-        v-show="showSearch" @submit.prevent>
+      <el-form
+        class="btn-style"
+        :model="queryParams"
+        ref="queryRef"
+        :inline="true"
+        label-width="75px"
+        v-show="showSearch"
+        @submit.prevent
+      >
         <el-form-item label="标准名称" prop="search">
-          <el-input class="el-form-input-width" v-model="queryParams.search" placeholder="请输入标准名称" clearable
-            @keyup.enter="handleQuery" />
+          <el-input
+            class="el-form-input-width"
+            v-model="queryParams.search"
+            placeholder="请输入标准名称"
+            clearable
+            @keyup.enter="handleQuery"
+          />
         </el-form-item>
         <el-form-item>
-          <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()"> <i
-              class="iconfont-mini icon-a-zu22377 mr5"></i>查询 </el-button>
-          <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()"> <i
-              class="iconfont-mini icon-a-zu22378 mr5"></i>重置 </el-button>
+          <el-button
+            plain
+            type="primary"
+            @click="handleQuery"
+            @mousedown="(e) => e.preventDefault()"
+          >
+            <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+          </el-button>
+          <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
+            <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+          </el-button>
         </el-form-item>
       </el-form>
       <div class="list-title">
@@ -71,12 +89,21 @@
                 <div class="item-title-left">
                   <img :src="getFileIcon(item.fileUrl)" alt="" />
                   <div class="item-name">
-                    <span class="item-name-title" :title="item.name">{{ item.name }}</span>
-                    <span class="item-name-code ellipsis" :title="item.fileName">{{ item.fileName }}</span>
+                    <span class="item-name-title" :title="item.name">{{
+                      item.name
+                    }}</span>
+                    <span
+                      class="item-name-code ellipsis"
+                      :title="item.fileName"
+                      >{{ item.fileName }}</span
+                    >
                   </div>
                 </div>
                 <div class="item-title-right">
-                  <div class="form-btn" @click="handleFilePreview(item.fileUrl)">
+                  <div
+                    class="form-btn"
+                    @click="handleFilePreview(item.fileUrl)"
+                  >
                     <!-- <img src="@/assets/dp/standardSearch/icon (2).svg" alt="" /> -->
                     <span>查看</span>
                   </div>
@@ -91,13 +118,18 @@
                   <div class="form-label">标准分类:</div>
                   <div class="form-value">
                     <!-- <dict-tag :options="dp_document_type" :value="item.type" /> -->
-                    <div :class="['value-tag', 'type' + item.type]">{{ typeFormat1(item) }}</div>
+                    <div :class="['value-tag', 'type' + item.type]">
+                      {{ typeFormat1(item) }}
+                    </div>
                   </div>
                 </div>
                 <div class="item-form">
                   <div class="form-label">实施状态:</div>
                   <div class="form-value">
-                    <dict-tag :options="dp_document_status" :value="item.status" />
+                    <dict-tag
+                      :options="dp_document_status"
+                      :value="item.status"
+                    />
                   </div>
                 </div>
                 <div class="item-form">
@@ -109,7 +141,9 @@
                 <div class="item-form">
                   <div class="form-label">实施日期:</div>
                   <div class="form-value">
-                    <div class="ellipsis">{{ item.implementationDate || "-" }}</div>
+                    <div class="ellipsis">
+                      {{ item.implementationDate || "-" }}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -121,8 +155,13 @@
         <img src="@/assets/da/asset/empty.png" alt="" />
         <span>暂无搜索内容～</span>
       </div>
-      <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum"
-        v-model:limit="queryParams.pageSize" @pagination="getList" />
+      <pagination
+        v-show="total > 0"
+        :total="total"
+        v-model:page="queryParams.pageNum"
+        v-model:limit="queryParams.pageSize"
+        @pagination="getList"
+      />
     </div>
   </div>
 </template>
@@ -131,7 +170,12 @@ import { dpDocumentList } from "@/api/dp/document/search";
 import handleFilePreview from "@/utils/filePreview.js";
 // search
 const { proxy } = getCurrentInstance();
-const { dp_document_standard_type, dp_document_type, dp_document_status } = proxy.useDict("dp_document_standard_type", "dp_document_type", "dp_document_status");
+const { dp_document_standard_type, dp_document_type, dp_document_status } =
+  proxy.useDict(
+    "dp_document_standard_type",
+    "dp_document_type",
+    "dp_document_status"
+  );
 const searchList = ref([]);
 const column1 = ref([
   {
@@ -238,14 +282,18 @@ const getFileIcon = (fileUrl) => {
   let type = fileUrl.split(".")[fileUrl.split(".").length - 1];
   switch (type) {
     case "pdf":
-      return new URL("@/assets/dp/standardSearch/file (2).svg", import.meta.url).href;
+      return new URL("@/assets/dp/standardSearch/file (2).svg", import.meta.url)
+        .href;
     case "doc":
     case "docx":
-      return new URL("@/assets/dp/standardSearch/file (1).svg", import.meta.url).href;
+      return new URL("@/assets/dp/standardSearch/file (1).svg", import.meta.url)
+        .href;
     case "ppt":
-      return new URL("@/assets/dp/standardSearch/file (3).svg", import.meta.url).href;
+      return new URL("@/assets/dp/standardSearch/file (3).svg", import.meta.url)
+        .href;
     default:
-      return new URL("@/assets/dp/standardSearch/file (4).svg", import.meta.url).href;
+      return new URL("@/assets/dp/standardSearch/file (4).svg", import.meta.url)
+        .href;
   }
 };
 /** 查询应用API服务关联列表 */
@@ -274,7 +322,7 @@ function resetQuery() {
 }
 
 function handleView(row) {
-  routeTo("/dp/document/search/detail", row);
+  routeTo("/dm/document/search/detail", row);
 }
 
 function routeTo(link, row) {

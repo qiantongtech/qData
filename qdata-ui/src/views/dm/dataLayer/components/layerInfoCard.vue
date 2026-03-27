@@ -40,10 +40,9 @@ const layer = computed(() => props.layer || {});
 
 <style scoped lang="scss">
 .layer-info-card {
-  padding: 15px;
+  padding: 15px 15px;
   background-color: #ffffff;
-  border: 1px solid #e4e7ed;
-  border-radius: 4px;
+  border-radius: 2px;
 }
 
 .layer-info-card-title {

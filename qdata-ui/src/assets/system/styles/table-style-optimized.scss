@@ -100,3 +100,7 @@
     flex-direction: column;
     gap: 8px;
 }
+
+.app-container .task-title .el-tag--default .el-tag__content {
+    font-size: 12px !important;
+}

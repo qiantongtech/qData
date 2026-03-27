@@ -178,7 +178,7 @@
             placeholder="请输入描述"
             :min-height="192"
             show-word-limit
-            maxlength="500"
+            maxlength="500个字符"
           />
         </el-form-item>
       </el-form>

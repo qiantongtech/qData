@@ -48,7 +48,7 @@
       <!-- 右侧列表 -->
       <el-main class="main-content">
         <!-- 顶部信息卡片 -->
-        <layerInfoCard v-if="currentLayer" class="mb20" :layer="currentLayer" />
+        <layerInfoCard v-if="currentLayer" class="mb15" :layer="currentLayer" />
 
         <qt-wrap :columns="tableStore.columns" :tableRef="tableRef">
           <template #search>

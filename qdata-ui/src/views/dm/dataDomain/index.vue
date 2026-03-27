@@ -334,6 +334,9 @@ const tableStore = reactive({
       label: "数据域名称",
       prop: "name",
       align: "left",
+      showOverflowTooltip: {
+        effect: "light",
+      },
     },
     {
       label: "描述",
@@ -349,7 +352,6 @@ const tableStore = reactive({
     {
       label: "创建人",
       prop: "createBy",
-      align: "left",
       showOverflowTooltip: true,
     },
     {

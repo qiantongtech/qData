@@ -82,7 +82,7 @@ public class PostgreDialect extends AbstractDbDialect {
 
     @Override
     public String generateCheckTableExistsSQL(DbQueryProperty dbQueryProperty, String tableName) {
-        return "SELECT COUNT(*) FROM pg_catalog.pg_tables WHERE schemaname = '" + dbQueryProperty.getDbName() + "' AND tablename = '" + tableName + "';";
+        return "SELECT COUNT(*) FROM pg_catalog.pg_tables WHERE schemaname = '" + dbQueryProperty.getSid() + "' AND tablename = '" + tableName + "';";
     }
 
     @Override

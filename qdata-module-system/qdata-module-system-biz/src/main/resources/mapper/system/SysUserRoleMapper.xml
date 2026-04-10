@@ -42,9 +42,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 
 	<delete id="deleteUserRoleByUserId" parameterType="Long">
-		delete from system_user_role syr
+		delete from system_user_role
 		where
-			syr.user_id=#{userId}
+			user_id=#{userId}
 	</delete>
 
 	<select id="countUserRoleByRoleId" resultType="Integer">

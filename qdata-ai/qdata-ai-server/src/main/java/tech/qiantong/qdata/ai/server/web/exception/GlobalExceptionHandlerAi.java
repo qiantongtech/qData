@@ -1,0 +1,178 @@
+/*
+ * Copyright © 2025 Qiantong Technology Co., Ltd.
+ * qData Data Middle Platform (Open Source Edition)
+ *  *
+ * License:
+ * Released under the Apache License, Version 2.0.
+ * You may use, modify, and distribute this software for commercial purposes
+ * under the terms of the License.
+ *  *
+ * Special Notice:
+ * All derivative versions are strictly prohibited from modifying or removing
+ * the default system logo and copyright information.
+ * For brand customization, please apply for brand customization authorization via official channels.
+ *  *
+ * More information: https://qdata.qiantong.tech/business.html
+ *  *
+ * ============================================================================
+ *  *
+ * 版权所有 © 2025 江苏千桐科技有限公司
+ * qData 数据中台（开源版）
+ *  *
+ * 许可协议：
+ * 本项目基于 Apache License 2.0 开源协议发布，
+ * 允许在遵守协议的前提下进行商用、修改和分发。
+ *  *
+ * 特别说明：
+ * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
+ * 如需定制品牌，请通过官方渠道申请品牌定制授权。
+ *  *
+ * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ */
+
+package tech.qiantong.qdata.ai.server.web.exception;
+
+import cn.hutool.core.convert.Convert;
+import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.validation.BindException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingPathVariableException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import tech.qiantong.qdata.common.constant.HttpStatus;
+import tech.qiantong.qdata.common.core.domain.AjaxResult;
+import tech.qiantong.qdata.common.exception.DemoModeException;
+import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.StringUtils;
+import tech.qiantong.qdata.common.utils.html.EscapeUtil;
+
+
+/**
+ * 全局异常处理器
+ *
+ * @author qdata
+ */
+@RestControllerAdvice
+public class GlobalExceptionHandlerAi
+{
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandlerAi.class);
+
+    /**
+     * 权限校验异常
+     */
+    @ExceptionHandler(AccessDeniedException.class)
+    public AjaxResult handleAccessDeniedException(AccessDeniedException e, HttpServletRequest request)
+    {
+        String requestURI = request.getRequestURI();
+        log.error("请求地址'{}',权限校验失败'{}'", requestURI, e.getMessage());
+        return AjaxResult.error(HttpStatus.FORBIDDEN, "没有权限，请联系管理员授权");
+    }
+
+    /**
+     * 请求方式不支持
+     */
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public AjaxResult handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException e,
+            HttpServletRequest request)
+    {
+        String requestURI = request.getRequestURI();
+        log.error("请求地址'{}',不支持'{}'请求", requestURI, e.getMethod());
+        return AjaxResult.error(e.getMessage());
+    }
+
+    /**
+     * 业务异常
+     */
+    @ExceptionHandler(ServiceException.class)
+    public AjaxResult handleServiceException(ServiceException e, HttpServletRequest request)
+    {
+        log.error(e.getMessage(), e);
+        Integer code = e.getCode();
+        return StringUtils.isNotNull(code) ? AjaxResult.error(code, e.getMessage()) : AjaxResult.error(e.getMessage());
+    }
+
+    /**
+     * 请求路径中缺少必需的路径变量
+     */
+    @ExceptionHandler(MissingPathVariableException.class)
+    public AjaxResult handleMissingPathVariableException(MissingPathVariableException e, HttpServletRequest request)
+    {
+        String requestURI = request.getRequestURI();
+        log.error("请求路径中缺少必需的路径变量'{}',发生系统异常.", requestURI, e);
+        return AjaxResult.error(String.format("请求路径中缺少必需的路径变量[%s]", e.getVariableName()));
+    }
+
+    /**
+     * 请求参数类型不匹配
+     */
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public AjaxResult handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e, HttpServletRequest request)
+    {
+        String requestURI = request.getRequestURI();
+        String value = Convert.toStr(e.getValue());
+        if (StringUtils.isNotEmpty(value))
+        {
+            value = EscapeUtil.clean(value);
+        }
+        log.error("请求参数类型不匹配'{}',发生系统异常.", requestURI, e);
+        return AjaxResult.error(String.format("请求参数类型不匹配，参数[%s]要求类型为：'%s'，但输入值为：'%s'", e.getName(), e.getRequiredType().getName(), value));
+    }
+
+    /**
+     * 拦截未知的运行时异常
+     */
+    @ExceptionHandler(RuntimeException.class)
+    public AjaxResult handleRuntimeException(RuntimeException e, HttpServletRequest request)
+    {
+        String requestURI = request.getRequestURI();
+        log.error("请求地址'{}',发生未知异常.", requestURI, e);
+        return AjaxResult.error(e.getMessage());
+    }
+
+    /**
+     * 系统异常
+     */
+    @ExceptionHandler(Exception.class)
+    public AjaxResult handleException(Exception e, HttpServletRequest request)
+    {
+        String requestURI = request.getRequestURI();
+        log.error("请求地址'{}',发生系统异常.", requestURI, e);
+        return AjaxResult.error(e.getMessage());
+    }
+
+    /**
+     * 自定义验证异常
+     */
+    @ExceptionHandler(BindException.class)
+    public AjaxResult handleBindException(BindException e)
+    {
+        log.error(e.getMessage(), e);
+        String message = e.getAllErrors().get(0).getDefaultMessage();
+        return AjaxResult.error(message);
+    }
+
+    /**
+     * 自定义验证异常
+     */
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Object handleMethodArgumentNotValidException(MethodArgumentNotValidException e)
+    {
+        log.error(e.getMessage(), e);
+        String message = e.getBindingResult().getFieldError().getDefaultMessage();
+        return AjaxResult.error(message);
+    }
+
+    /**
+     * 演示模式异常
+     */
+    @ExceptionHandler(DemoModeException.class)
+    public AjaxResult handleDemoModeException(DemoModeException e)
+    {
+        return AjaxResult.error("演示模式，不允许操作");
+    }
+}

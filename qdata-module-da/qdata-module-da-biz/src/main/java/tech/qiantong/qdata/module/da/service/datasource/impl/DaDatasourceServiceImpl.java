@@ -479,34 +479,6 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
     }
 
     /**
-     * @param id        数据源id
-     * @param tableName 表名称
-     * @return
-     */
-    @Override
-    public List<DbColumn> getDbTableColumns(Long id, String tableName) {
-        if (StringUtils.isEmpty(tableName)) {
-            throw new DataQueryException("表名不能为空");
-        }
-
-        DaDatasourceDO daDatasourceBy = this.getDaDatasourceById(id);
-        if (daDatasourceBy == null) {
-            throw new DataQueryException("数据源详情信息查询失败");
-        }
-
-        DbQueryProperty dbQueryProperty = new DbQueryProperty(daDatasourceBy.getDatasourceType()
-                , daDatasourceBy.getIp(), daDatasourceBy.getPort(), daDatasourceBy.getDatasourceConfig());
-        DbQuery dbQuery = dataSourceFactory.createDbQuery(dbQueryProperty);
-        if (!dbQuery.valid()) {
-            throw new DataQueryException("数据库连接失败");
-        }
-        List<DbColumn> tableColumns = dbQuery.getTableColumns(dbQueryProperty, tableName);
-        dbQuery.close();
-
-        return tableColumns;
-    }
-
-    /**
      * 获取数据表里面的数据字段
      *
      * @param jsonObject 数据源id和数据表
@@ -984,5 +956,59 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
         return this.update(Wrappers.lambdaUpdate(DaDatasourceDO.class)
                 .eq(DaDatasourceDO::getId, datasourceId)
                 .set(DaDatasourceDO::getValidFlag, status));
+    }
+
+    /**
+     * @param id        数据源id
+     * @param tableName 表名称
+     * @return
+     */
+    @Override
+    public List<DbColumn> getDbTableColumns(Long id, String tableName) {
+        if (StringUtils.isEmpty(tableName)) {
+            throw new DataQueryException("表名不能为空");
+        }
+
+        DaDatasourceDO daDatasourceBy = this.getDaDatasourceById(id);
+        if (daDatasourceBy == null) {
+            throw new DataQueryException("数据源详情信息查询失败");
+        }
+
+        DbQueryProperty dbQueryProperty = new DbQueryProperty(daDatasourceBy.getDatasourceType()
+                , daDatasourceBy.getIp(), daDatasourceBy.getPort(), daDatasourceBy.getDatasourceConfig());
+        DbQuery dbQuery = dataSourceFactory.createDbQuery(dbQueryProperty);
+        if (!dbQuery.valid()) {
+            throw new DataQueryException("数据库连接失败");
+        }
+        List<DbColumn> tableColumns = dbQuery.getTableColumns(dbQueryProperty, tableName);
+        dbQuery.close();
+
+        return tableColumns;
+    }
+
+    @Override
+    public DbTable getDbTable(Long datasourceId, String tableName) {
+        DaDatasourceDO daDatasourceBy = this.getDaDatasourceById(datasourceId);
+        if (daDatasourceBy == null) {
+            throw new DataQueryException("数据源详情信息查询失败");
+        }
+
+        DbQueryProperty dbQueryProperty = new DbQueryProperty(daDatasourceBy.getDatasourceType()
+                , daDatasourceBy.getIp(), daDatasourceBy.getPort(), daDatasourceBy.getDatasourceConfig());
+        DbQuery dbQuery = dataSourceFactory.createDbQuery(dbQueryProperty);
+        if (!dbQuery.valid()) {
+            throw new DataQueryException("数据库连接失败");
+        }
+        List<DbTable> tables = dbQuery.getTables(dbQueryProperty);
+        if (StringUtils.isNotEmpty(tableName)) {
+            tables = tables.stream()
+                    .filter(dbTable -> org.apache.commons.lang3.StringUtils.indexOfIgnoreCase(dbTable.getTableName(), tableName) > -1)
+                    .collect(Collectors.toList());
+        }
+        dbQuery.close();
+        if (tables.size() > 0) {
+            return tables.get(0);
+        }
+        return null;
     }
 }

@@ -34,9 +34,13 @@ package tech.qiantong.qdata.module.da.api.service.asset;
 
 import tech.qiantong.qdata.common.database.DbQuery;
 import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
+import tech.qiantong.qdata.common.database.core.DbColumn;
+import tech.qiantong.qdata.common.database.core.DbTable;
 import tech.qiantong.qdata.module.da.api.datasource.dto.DaDatasourceRespDTO;
 import tech.qiantong.qdata.module.da.api.datasource.dto.DatasourceCreaTeTableListReqDTO;
 import tech.qiantong.qdata.module.da.api.datasource.dto.DatasourceCreaTeTableReqDTO;
+
+import java.util.List;
 
 /**
  * 数据源Service接口
@@ -52,4 +56,22 @@ public interface IDaDatasourceApiService {
     public boolean creaDatasourceTeTableApi(DbQuery dbQuery, DbQueryProperty dbQueryProperty, DatasourceCreaTeTableReqDTO creaTeTableReqDTO);
     public boolean creaDatasourceTeTableListApi(DatasourceCreaTeTableListReqDTO datasourceCreaTeTableListReqDTO);
 
+    /**
+     * 获得字段列表
+     *
+     * @param datasourceId 数据源id
+     * @param tableName    表名
+     * @return 数据源列表
+     */
+    List<DbColumn> getDbTableColumns(Long datasourceId, String tableName);
+
+
+    /**
+     * 获得表信息
+     *
+     * @param datasourceId 数据源id
+     * @param tableName    表名
+     * @return 数据源列表
+     */
+    DbTable getDbTable(Long datasourceId, String tableName);
 }

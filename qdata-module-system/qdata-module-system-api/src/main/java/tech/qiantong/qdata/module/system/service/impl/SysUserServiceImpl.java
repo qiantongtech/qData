@@ -45,7 +45,6 @@ import tech.qiantong.qdata.common.core.domain.entity.SysUser;
 import tech.qiantong.qdata.common.exception.ServiceException;
 import tech.qiantong.qdata.common.utils.SecurityUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
-import tech.qiantong.qdata.common.utils.bean.BeanValidators;
 import tech.qiantong.qdata.common.utils.spring.SpringUtils;
 import tech.qiantong.qdata.module.system.domain.SysPost;
 import tech.qiantong.qdata.module.system.domain.SysUserPost;
@@ -55,7 +54,6 @@ import tech.qiantong.qdata.module.system.service.ISysConfigService;
 import tech.qiantong.qdata.module.system.service.ISysDeptService;
 import tech.qiantong.qdata.module.system.service.ISysUserService;
 
-import javax.validation.Validator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -90,9 +88,6 @@ public class SysUserServiceImpl implements ISysUserService
 
     @Autowired
     private ISysDeptService deptService;
-
-    @Autowired
-    protected Validator validator;
 
     /**
      * 根据条件分页查询用户列表
@@ -535,7 +530,6 @@ public class SysUserServiceImpl implements ISysUserService
                 SysUser u = userMapper.selectUserByUserName(user.getUserName());
                 if (StringUtils.isNull(u))
                 {
-                    BeanValidators.validateWithException(validator, user);
                     deptService.checkDeptDataScope(user.getDeptId());
                     String password = configService.selectConfigByKey("sys.user.initPassword");
                     user.setPassword(SecurityUtils.encryptPassword(password));
@@ -546,7 +540,6 @@ public class SysUserServiceImpl implements ISysUserService
                 }
                 else if (isUpdateSupport)
                 {
-                    BeanValidators.validateWithException(validator, user);
                     checkUserAllowed(u);
                     checkUserDataScope(u.getUserId());
                     deptService.checkDeptDataScope(user.getDeptId());

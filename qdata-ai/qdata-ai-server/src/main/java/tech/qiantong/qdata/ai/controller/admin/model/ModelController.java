@@ -47,7 +47,7 @@ import tech.qiantong.qdata.module.ai.controller.admin.model.vo.AiModelRespVO;
 import tech.qiantong.qdata.module.ai.dal.dataobject.model.AiModelDO;
 import tech.qiantong.qdata.module.ai.service.model.IAiModelService;
 
-import jakarta.annotation.Resource;
+import javax.annotation.Resource;
 import java.util.List;
 
 /**

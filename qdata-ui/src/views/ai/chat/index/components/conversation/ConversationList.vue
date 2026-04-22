@@ -427,6 +427,7 @@ const createConversation = async (data) => {
     factTableName: data?.factTableName,
     factTableComment: data?.factTableComment,
     dimensionTable: data?.dimensionTable,
+    modelId: data?.modelId,
   });
   const { id: conversationId, code } = result.data;
   // 2. 获取对话内容

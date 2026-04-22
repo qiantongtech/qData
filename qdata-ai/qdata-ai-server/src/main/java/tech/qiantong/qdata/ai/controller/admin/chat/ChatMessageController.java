@@ -52,6 +52,7 @@ import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.module.ai.controller.admin.chat.vo.AiChatMessageRespVO;
 import tech.qiantong.qdata.module.ai.dal.dataobject.chat.AiChatConversationDO;
 import tech.qiantong.qdata.module.ai.dal.dataobject.chat.AiChatMessageDO;
+import tech.qiantong.qdata.module.ai.dal.mapper.model.AiModelMapper;
 import tech.qiantong.qdata.module.ai.service.chat.IAiChatConversationService;
 import tech.qiantong.qdata.module.ai.service.chat.IAiChatMessageService;
 

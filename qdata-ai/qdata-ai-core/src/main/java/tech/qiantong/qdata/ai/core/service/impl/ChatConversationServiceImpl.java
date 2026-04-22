@@ -80,7 +80,7 @@ public class ChatConversationServiceImpl implements IChatConversationService {
 
     @Override
     public AiChatConversationSaveRespVO createAiChatConversation(AiChatConversationSaveReqVO reqVO) {
-        ChatModel chatModel = chatModelService.getChatModel(1L);
+        ChatModel chatModel = chatModelService.getChatModel(reqVO.getModelId());
 
         Long datasourceId = reqVO.getDatasourceId();
         String factTableName = reqVO.getFactTableName();

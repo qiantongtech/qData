@@ -73,6 +73,9 @@ public class AiChatConversationSaveReqVO extends BaseEntity {
     @Schema(description = "置顶时间", example = "")
     private Date pinnedTime;
 
+    @Schema(description = "模型id", example = "")
+    private Long modelId;
+
     @Schema(description = "数据源id", example = "")
     private Long datasourceId;
 

@@ -53,40 +53,6 @@
     </dependencies>
     <build>
         <plugins>
-            <!-- 将所有的模块打包在一个jar中-->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.1</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <!-- 限制只处理 tech.qiantong 相关的依赖 -->
-                            <artifactSet>
-                                <includes>
-                                    <include>tech.qiantong:*:*</include> <!-- 只包括 tech.qiantong 开头的所有依赖 -->
-                                </includes>
-                            </artifactSet>
-
-                            <filters>
-                                <filter>
-                                    <artifact>*:*</artifact>
-                                    <excludes>
-                                        <!-- 排除 JAR 中的签名文件等不必要的文件 -->
-                                        <exclude>META-INF/*.SF</exclude>
-                                        <exclude>META-INF/*.DSA</exclude>
-                                        <exclude>META-INF/*.RSA</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
             <!-- maven-compiler-plugin 配置 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

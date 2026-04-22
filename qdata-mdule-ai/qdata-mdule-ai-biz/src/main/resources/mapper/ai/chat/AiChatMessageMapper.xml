@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  Copyright © 2025 Qiantong Technology Co., Ltd.
+  qData Data Middle Platform (Open Source Edition)
+   *
+  License:
+  Released under the Apache License, Version 2.0.
+  You may use, modify, and distribute this software for commercial purposes
+  under the terms of the License.
+   *
+  Special Notice:
+  All derivative versions are strictly prohibited from modifying or removing
+  the default system logo and copyright information.
+  For brand customization, please apply for brand customization authorization via official channels.
+   *
+  More information: https://qdata.qiantong.tech/business.html
+   *
+  ============================================================================
+   *
+  版权所有 © 2025 江苏千桐科技有限公司
+  qData 数据中台（开源版）
+   *
+  许可协议：
+  本项目基于 Apache License 2.0 开源协议发布，
+  允许在遵守协议的前提下进行商用、修改和分发。
+   *
+  特别说明：
+  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
+  如需定制品牌，请通过官方渠道申请品牌定制授权。
+   *
+  更多信息请访问：https://qdata.qiantong.tech/business.html
+-->
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.qiantong.qdata.module.ai.dal.mapper.chat.AiChatMessageMapper">
+
+    <resultMap type="AiChatMessageDO" id="AiChatMessageResult">
+        <result property="id"    column="ID"    />
+        <result property="conversationId"    column="CONVERSATION_ID"    />
+        <result property="replyId"    column="REPLY_ID"    />
+        <result property="userId"    column="USER_ID"    />
+        <result property="type"    column="TYPE"    />
+        <result property="content"    column="CONTENT"    />
+        <result property="contextFlag"    column="CONTEXT_FLAG"    />
+        <result property="validFlag"    column="VALID_FLAG"    />
+        <result property="delFlag"    column="DEL_FLAG"    />
+        <result property="createBy"    column="CREATE_BY"    />
+        <result property="creatorId"    column="CREATOR_ID"    />
+        <result property="createTime"    column="CREATE_TIME"    />
+        <result property="updateBy"    column="UPDATE_BY"    />
+        <result property="updaterId"    column="UPDATER_ID"    />
+        <result property="updateTime"    column="UPDATE_TIME"    />
+        <result property="remark"    column="REMARK"    />
+    </resultMap>
+
+    <sql id="selectAiChatMessageVo">
+        select ID, CONVERSATION_ID, REPLY_ID, STATISTICS_TASK_ID, USER_ID, TYPE, CONTENT, CONTEXT_FLAG, VALID_FLAG, DEL_FLAG, CREATE_BY, CREATOR_ID, CREATE_TIME, UPDATE_BY, UPDATER_ID, UPDATE_TIME, REMARK from AI_CHAT_MESSAGE
+    </sql>
+
+    <select id="selectAiChatMessageList" parameterType="AiChatMessageDO" resultMap="AiChatMessageResult">
+        <include refid="selectAiChatMessageVo"/>
+        <where>
+            <if test="conversationId != null "> and CONVERSATION_ID = #{conversationId}</if>
+            <if test="replyId != null "> and REPLY_ID = #{replyId}</if>
+            <if test="userId != null "> and USER_ID = #{userId}</if>
+            <if test="type != null  and type != ''"> and TYPE = #{type}</if>
+            <if test="content != null  and content != ''"> and CONTENT = #{content}</if>
+            <if test="contextFlag != null  and contextFlag != ''"> and CONTEXT_FLAG = #{contextFlag}</if>
+            <if test="createTime != null "> and CREATE_TIME = #{createTime}</if>
+        </where>
+    </select>
+
+    <select id="selectAiChatMessageById" parameterType="Long" resultMap="AiChatMessageResult">
+        <include refid="selectAiChatMessageVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertAiChatMessage" parameterType="AiChatMessageDO">
+        insert into AI_CHAT_MESSAGE
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="conversationId != null">CONVERSATION_ID,</if>
+            <if test="replyId != null">REPLY_ID,</if>
+            <if test="userId != null">USER_ID,</if>
+            <if test="type != null">TYPE,</if>
+            <if test="content != null">CONTENT,</if>
+            <if test="contextFlag != null">CONTEXT_FLAG,</if>
+            <if test="validFlag != null">VALID_FLAG,</if>
+            <if test="delFlag != null">DEL_FLAG,</if>
+            <if test="createBy != null">CREATE_BY,</if>
+            <if test="creatorId != null">CREATOR_ID,</if>
+            <if test="createTime != null">CREATE_TIME,</if>
+            <if test="updateBy != null">UPDATE_BY,</if>
+            <if test="updaterId != null">UPDATER_ID,</if>
+            <if test="updateTime != null">UPDATE_TIME,</if>
+            <if test="remark != null">REMARK,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="conversationId != null">#{conversationId},</if>
+            <if test="replyId != null">#{replyId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="type != null">#{type},</if>
+            <if test="content != null">#{content},</if>
+            <if test="contextFlag != null">#{contextFlag},</if>
+            <if test="validFlag != null">#{validFlag},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updaterId != null">#{updaterId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAiChatMessage" parameterType="AiChatMessageDO">
+        update AI_CHAT_MESSAGE
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="conversationId != null">CONVERSATION_ID = #{conversationId},</if>
+            <if test="replyId != null">REPLY_ID = #{replyId},</if>
+            <if test="userId != null">USER_ID = #{userId},</if>
+            <if test="type != null">TYPE = #{type},</if>
+            <if test="content != null">CONTENT = #{content},</if>
+            <if test="contextFlag != null">CONTEXT_FLAG = #{contextFlag},</if>
+            <if test="validFlag != null">VALID_FLAG = #{validFlag},</if>
+            <if test="delFlag != null">DEL_FLAG = #{delFlag},</if>
+            <if test="createBy != null">CREATE_BY = #{createBy},</if>
+            <if test="creatorId != null">CREATOR_ID = #{creatorId},</if>
+            <if test="createTime != null">CREATE_TIME = #{createTime},</if>
+            <if test="updateBy != null">UPDATE_BY = #{updateBy},</if>
+            <if test="updaterId != null">UPDATER_ID = #{updaterId},</if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime},</if>
+            <if test="remark != null">REMARK = #{remark},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteAiChatMessageById" parameterType="Long">
+        delete from AI_CHAT_MESSAGE where ID = #{id}
+    </delete>
+
+    <delete id="deleteAiChatMessageByIds" parameterType="String">
+        delete from AI_CHAT_MESSAGE where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

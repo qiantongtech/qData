@@ -15,7 +15,7 @@ cd /mnt/c/Users/Ming/Desktop/qData/qdata-quality-ce # 路径改成你自己的�
 docker buildx build \
   --platform linux/amd64 \
   --no-cache \
-  -t crpi-kf13onfj0v8f6jax.cn-shanghai.personal.cr.aliyuncs.com/qiantongkeji/qdata-quality-ce:1.1.2 \
+  -t crpi-kf13onfj0v8f6jax.cn-shanghai.personal.cr.aliyuncs.com/qiantongkeji/qdata-quality-ce:1.3.0 \
   --file=docker/Dockerfile \
   --load \
   /mnt/c/Users/Ming/Desktop/qData/qdata-quality-ce # 上下文路径改成你自己的路径
@@ -24,13 +24,13 @@ docker buildx build \
 docker buildx build \
   --platform linux/arm64 \
   --no-cache \
-  -t crpi-kf13onfj0v8f6jax.cn-shanghai.personal.cr.aliyuncs.com/qiantongkeji/qdata-quality-ce:1.1.2 \
+  -t crpi-kf13onfj0v8f6jax.cn-shanghai.personal.cr.aliyuncs.com/qiantongkeji/qdata-quality-ce:1.3.0 \
   --file=docker/Dockerfile \
   --load \
   /mnt/c/Users/Ming/Desktop/qData/qdata-quality-ce # 上下文路径改成你自己的路径
 
 # 检查是否支持 ARM64
-docker inspect crpi-kf13onfj0v8f6jax.cn-shanghai.personal.cr.aliyuncs.com/qiantongkeji/qdata-quality-ce:1.1.2 --format '{{.Architecture}}'
+docker inspect crpi-kf13onfj0v8f6jax.cn-shanghai.personal.cr.aliyuncs.com/qiantongkeji/qdata-quality-ce:1.3.0 --format '{{.Architecture}}'
 
 # 删掉之前建的 builder（可选但建议，保持干净）
 docker buildx rm qdata-builder
@@ -39,4 +39,4 @@ docker buildx rm qdata-builder
 docker run -d \
   --name qdata-quality-ce \
   -p 8083:8083 \
-  crpi-kf13onfj0v8f6jax.cn-shanghai.personal.cr.aliyuncs.com/qiantongkeji/qdata-quality-ce:1.1.2
+  crpi-kf13onfj0v8f6jax.cn-shanghai.personal.cr.aliyuncs.com/qiantongkeji/qdata-quality-ce:1.3.0

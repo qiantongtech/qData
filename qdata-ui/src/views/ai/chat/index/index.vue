@@ -513,13 +513,14 @@ const handleConversationClear = async () => {
 };
 
 /** 处理聊天对话的创建成功 */
-const handleConversationCreate = async () => {
+const handleConversationCreate = async (mId) => {
   // 创建对话
   return await conversationListRef.value.createConversation({
     datasourceId: datasourceId.value,
     factTableName: factTableName.value,
     factTableComment: factTableComment.value,
     dimensionTable: dimensionTable.value,
+    modelId: mId || selectedModelId.value,
   });
 };
 /** 处理聊天对话的创建成功 */
@@ -735,7 +736,7 @@ const doSendMessage = async (content, mId, cType) => {
     // 首次发送：显示加载状态，用于 MessageListEmpty 展示骨架屏
     activeMessageListLoading.value = true;
     try {
-      const createRes = await handleConversationCreate();
+      const createRes = await handleConversationCreate(mId);
       if (createRes && createRes.code === 10001) {
         conversationInProgress.value = false;
         activeMessageListLoading.value = false; // 10001 状态需要恢复展示输入框

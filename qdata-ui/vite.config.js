@@ -86,6 +86,14 @@ export default defineConfig(({ mode, command }) => {
           changeOrigin: true,
           rewrite: (p) => p.replace(/^\/dev-api/, ""),
         },
+        "/dev-ai": {
+          target: "http://localhost:8087",
+          // target: "http://192.168.20.115:8080",
+          // target: "https://qdata-pro.qiantong.tech/prod-api/",
+          // target: "http://110.42.38.62:30001/prod-api/",
+          changeOrigin: true,
+          rewrite: (p) => p.replace(/^\/dev-ai/, ""),
+        },
         "/jmreport": {
           target: "http://localhost:8080",
           changeOrigin: true,

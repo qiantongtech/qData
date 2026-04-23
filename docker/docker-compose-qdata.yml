@@ -41,7 +41,6 @@ services:
       - TZ=Asia/Shanghai
 #    ports:
 #      - "8080:8080"
-    mac_address: 28-C5-D2-B7-FC-F5
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./qdata-server/logs:/usr/app/jar/logs
@@ -67,7 +66,6 @@ services:
       - TZ=Asia/Shanghai
 #    ports:
 #      - "8083:8083"
-    mac_address: 28-C5-D2-B7-FC-F6
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./qdata-quality/logs:/usr/app/jar/logs
@@ -84,3 +82,32 @@ services:
         condition: service_healthy
     networks:
       - qdatanet
+
+  # qdata ai服务
+  qdata-ai:
+    privileged: true
+    image: ${QDATA_HUB}/qdata-ai-ce:${QDATA_TAG}
+    restart: always
+    profiles: [ "all" ]
+    env_file: .env
+    environment:
+      - TZ=Asia/Shanghai
+    #    ports:
+    #      - "8087:8087"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./qdata-ai/logs:/usr/app/jar/logs
+      - ./qdata-ai/application-prod.yml:/usr/app/jar/application-prod.yml
+    depends_on:
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      dm8:
+        condition: service_healthy
+      neo4j:
+        condition: service_healthy
+    networks:
+      - qdatanet
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

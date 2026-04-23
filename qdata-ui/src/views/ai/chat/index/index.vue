@@ -228,7 +228,7 @@
           </div>
         </form>
         <div class="ai-disclaimer">
-          qData 智能助手 是一款 AI 工具，其回答未必正确无误。
+          本功能由 AI 生成，其回答未必正确无误。
         </div>
       </el-footer>
     </el-container>

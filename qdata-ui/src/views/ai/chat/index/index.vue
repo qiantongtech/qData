@@ -778,6 +778,7 @@ const doSendMessageStream = async (userMessage) => {
       id: null, // 还没返回 id
       type: 1,
       content: userMessage.content,
+      createTime: Date.now(),
     };
     activeMessageList.value.push(newUserMessage);
     const newAssistantMessage = {
@@ -785,6 +786,7 @@ const doSendMessageStream = async (userMessage) => {
       type: 2,
       content: "loading",
       replyType: userMessage.chatType === "chart" ? 2 : 1,
+      createTime: Date.now(),
     };
     activeMessageList.value.push(newAssistantMessage);
     // 滚动底部
@@ -990,7 +992,7 @@ onMounted(async () => {
   position: absolute;
   flex: 1;
   left: 0;
-  height: 100%;
+  height: calc(100vh - 96px);
   width: 100%;
 }
 

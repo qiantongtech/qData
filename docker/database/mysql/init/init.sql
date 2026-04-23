@@ -16937,4 +16937,157 @@ VALUES
 (2, 2694, 0),
 (3, 2694, 0);
 
+-- 1. 重置体验角色的菜单
+DELETE FROM `system_role_menu` WHERE `role_id` = 7;
+
+-- MySQL 直接插入即可，不需要 SET IDENTITY_INSERT
+INSERT INTO `system_role_menu` (`role_id`, `menu_id`, `project_id`) VALUES
+(7, 2737, 0), (7, 2736, 0), (7, 2735, 0), (7, 2734, 0), (7, 2733, 0),
+(7, 2732, 0), (7, 2731, 0), (7, 2730, 0), (7, 2729, 0), (7, 2728, 0),
+(7, 2727, 0), (7, 2726, 0), (7, 2725, 0), (7, 2724, 0), (7, 2723, 0),
+(7, 2722, 0), (7, 2721, 0), (7, 2720, 0), (7, 2719, 0), (7, 2718, 0),
+(7, 2717, 0), (7, 2716, 0), (7, 2709, 0), (7, 2708, 0), (7, 2707, 0),
+(7, 2706, 0), (7, 2705, 0), (7, 2704, 0), (7, 2703, 0), (7, 2702, 0),
+(7, 2701, 0), (7, 2700, 0), (7, 2699, 0), (7, 2698, 0), (7, 2697, 0),
+(7, 2696, 0), (7, 2695, 0), (7, 2694, 0), (7, 2693, 0), (7, 2692, 0),
+(7, 2691, 0), (7, 2690, 0), (7, 2689, 0), (7, 2688, 0), (7, 2687, 0),
+(7, 2686, 0), (7, 2685, 0), (7, 2684, 0), (7, 2683, 0), (7, 2679, 0),
+(7, 2678, 0), (7, 2677, 0), (7, 2676, 0), (7, 2675, 0), (7, 2674, 0),
+(7, 2578, 0), (7, 2577, 0), (7, 2576, 0), (7, 2575, 0), (7, 2574, 0),
+(7, 2573, 0), (7, 2572, 0), (7, 2571, 0), (7, 2570, 0), (7, 2569, 0),
+(7, 2568, 0), (7, 2567, 0), (7, 2566, 0), (7, 2565, 0), (7, 2564, 0),
+(7, 2563, 0), (7, 2562, 0), (7, 2561, 0), (7, 2560, 0), (7, 2559, 0),
+(7, 2558, 0), (7, 2557, 0), (7, 2556, 0), (7, 2555, 0), (7, 2554, 0),
+(7, 2536, 0), (7, 2535, 0), (7, 2534, 0), (7, 2533, 0), (7, 2532, 0),
+(7, 2531, 0), (7, 2530, 0), (7, 2500, 0), (7, 2499, 0), (7, 2498, 0),
+(7, 2497, 0), (7, 2496, 0), (7, 2495, 0), (7, 2494, 0), (7, 2463, 0),
+(7, 2462, 0), (7, 2461, 0), (7, 2460, 0), (7, 2459, 0), (7, 2458, 0),
+(7, 2457, 0), (7, 2442, 0), (7, 2441, 0), (7, 2440, 0), (7, 2439, 0),
+(7, 2438, 0), (7, 2437, 0), (7, 2436, 0), (7, 2434, 0), (7, 2433, 0),
+(7, 2432, 0), (7, 2431, 0), (7, 2430, 0), (7, 2429, 0), (7, 2428, 0),
+(7, 2427, 0), (7, 2396, 0), (7, 2395, 0), (7, 2394, 0), (7, 2393, 0),
+(7, 2392, 0), (7, 2391, 0), (7, 2390, 0), (7, 2389, 0), (7, 2388, 0),
+(7, 2387, 0), (7, 2386, 0), (7, 2385, 0), (7, 2384, 0), (7, 2383, 0),
+(7, 2382, 0), (7, 2381, 0), (7, 2380, 0), (7, 2379, 0), (7, 2378, 0),
+(7, 2377, 0), (7, 2376, 0), (7, 2375, 0), (7, 2374, 0), (7, 2373, 0),
+(7, 2372, 0), (7, 2371, 0), (7, 2370, 0), (7, 2369, 0), (7, 2368, 0),
+(7, 2360, 0), (7, 2359, 0), (7, 2358, 0), (7, 2357, 0), (7, 2356, 0),
+(7, 2355, 0), (7, 2354, 0), (7, 2352, 0), (7, 2351, 0), (7, 2350, 0),
+(7, 2349, 0), (7, 2348, 0), (7, 2347, 0), (7, 2346, 0), (7, 2345, 0),
+(7, 2344, 0), (7, 2343, 0), (7, 2342, 0), (7, 2341, 0), (7, 2340, 0),
+(7, 2339, 0), (7, 2338, 0), (7, 2337, 0), (7, 2336, 0), (7, 2335, 0),
+(7, 2334, 0), (7, 2333, 0), (7, 2332, 0), (7, 2331, 0), (7, 2330, 0),
+(7, 2329, 0), (7, 2328, 0), (7, 2327, 0), (7, 2326, 0), (7, 2325, 0),
+(7, 2324, 0), (7, 2323, 0), (7, 2322, 0), (7, 2321, 0), (7, 2320, 0),
+(7, 2319, 0), (7, 2318, 0), (7, 2317, 0), (7, 2316, 0), (7, 2315, 0),
+(7, 2314, 0), (7, 2313, 0), (7, 2312, 0), (7, 2311, 0), (7, 2310, 0),
+(7, 2309, 0), (7, 2308, 0), (7, 2307, 0), (7, 2305, 0), (7, 2304, 0),
+(7, 2303, 0), (7, 2302, 0), (7, 2301, 0), (7, 2300, 0), (7, 2299, 0),
+(7, 2298, 0), (7, 2297, 0), (7, 2296, 0), (7, 2295, 0), (7, 2294, 0),
+(7, 2293, 0), (7, 2292, 0), (7, 2284, 0), (7, 2283, 0), (7, 2282, 0),
+(7, 2281, 0), (7, 2280, 0), (7, 2279, 0), (7, 2278, 0), (7, 2277, 0),
+(7, 2276, 0), (7, 2275, 0), (7, 2274, 0), (7, 2273, 0), (7, 2272, 0),
+(7, 2271, 0), (7, 2270, 0), (7, 2269, 0), (7, 2268, 0), (7, 2267, 0),
+(7, 2266, 0), (7, 2265, 0), (7, 2264, 0), (7, 2263, 0), (7, 2262, 0),
+(7, 2261, 0), (7, 2260, 0), (7, 2259, 0), (7, 2258, 0), (7, 2257, 0),
+(7, 2249, 0), (7, 2248, 0), (7, 2247, 0), (7, 2246, 0), (7, 2245, 0),
+(7, 2244, 0), (7, 2243, 0), (7, 2063, 0), (7, 2062, 0), (7, 1045, 0),
+(7, 1044, 0), (7, 1043, 0), (7, 1042, 0), (7, 1041, 0), (7, 1040, 0),
+(7, 1039, 0), (7, 1035, 0), (7, 501, 0), (7, 500, 0), (7, 108, 0),
+(7, 107, 0), (7, 1, 0);
+
+-- 2. 系统菜单插入
+INSERT INTO `system_menu` 
+(`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `route_name`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) 
+VALUES
+(2732, '模型管理', 1, 8, 'model', 'ai/model/index', NULL, 1, 0, NULL, 'C', '0', '0', 'ai:model:list', 'mxgl', 'admin', '2026-04-01 14:30:55', 'admin', '2026-04-14 17:02:24', '模型管理菜单'),
+(2733, '智能分析', 0, 6, 'ai', 'ai/chat/index/index', NULL, 1, 0, NULL, 'C', '0', '0', NULL, 'znfx', 'admin', '2026-04-22 10:13:35', NULL, NULL, NULL),
+(2736, '模型管理删除', 2732, 4, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'ai:model:remove', '#', 'admin', '2026-04-01 14:31:11', NULL, NULL, NULL),
+(2735, '模型管理修改', 2732, 3, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'ai:model:edit', '#', 'admin', '2026-04-01 14:31:10', NULL, NULL, NULL),
+(2734, '模型管理新增', 2732, 2, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'ai:model:add', '#', 'admin', '2026-04-01 14:31:09', NULL, NULL, NULL),
+(2737, '模型管理查询', 2732, 1, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'ai:model:query', '#', 'admin', '2026-04-01 14:31:09', NULL, NULL, NULL);
+
+-- 3. 字典类型
+INSERT INTO `system_dict_type` 
+(`dict_id`, `dict_name`, `dict_type`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) 
+VALUES
+(110, 'AI模型平台', 'ai_model_platform', '0', NULL, NULL, NULL, NULL, NULL);
+
+-- 4. 字典数据
+INSERT INTO `system_dict_data` 
+(`dict_code`, `dict_sort`, `dict_label`, `dict_value`, `dict_type`, `css_class`, `list_class`, `is_default`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) 
+VALUES
+(420, 0, 'DeepSeek', 'DeepSeek', 'ai_model_platform', NULL, NULL, 'N', '0', NULL, NULL, NULL, NULL, NULL),
+(419, 0, '通义千问', 'TongYi', 'ai_model_platform', NULL, NULL, 'N', '0', NULL, NULL, NULL, NULL, NULL);
+
+-- 1. 创建 AI 模型管理表
+CREATE TABLE `ai_model` (
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `name` VARCHAR(32) NOT NULL COMMENT '模型名称;例如 qwen-max',
+  `platform` VARCHAR(10) NOT NULL COMMENT '平台;1:通义千问 2:DeepSeek',
+  `api_url` VARCHAR(512) DEFAULT NULL COMMENT 'API地址',
+  `api_key` VARCHAR(256) DEFAULT NULL COMMENT 'API秘钥',
+  `sort_order` INT(11) NOT NULL COMMENT '排序',
+  `description` VARCHAR(512) DEFAULT NULL COMMENT '描述',
+  `valid_flag` VARCHAR(1) NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `del_flag` VARCHAR(1) NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `create_by` VARCHAR(32) DEFAULT NULL COMMENT '创建人',
+  `creator_id` BIGINT(20) DEFAULT NULL COMMENT '创建人id',
+  `create_time` DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT '创建时间',
+  `update_by` VARCHAR(32) DEFAULT NULL COMMENT '更新人',
+  `updater_id` BIGINT(20) DEFAULT NULL COMMENT '更新人id',
+  `update_time` DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '更新时间',
+  `remark` VARCHAR(512) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='模型管理';
+
+-- 2. 创建 AI 聊天对话表
+CREATE TABLE `ai_chat_conversation` (
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `user_id` BIGINT(20) NOT NULL COMMENT '用户id',
+  `title` VARCHAR(128) NOT NULL COMMENT '对话标题',
+  `pinned` VARCHAR(1) NOT NULL DEFAULT '0' COMMENT '是否置顶;0：不置顶，1：置顶',
+  `pinned_time` DATETIME(6) DEFAULT NULL COMMENT '置顶时间',
+  `datasource_id` BIGINT(20) NOT NULL COMMENT '数据源id',
+  `fact_table_name` VARCHAR(256) NOT NULL COMMENT '事实表名称',
+  `fact_table_comment` VARCHAR(2000) DEFAULT NULL COMMENT '事实表注释/事实表描述',
+  `dimension_table` TEXT DEFAULT NULL COMMENT '维度表;格式 [{"tableName":"表名","tableComment":"表注释"}]',
+  `associations` TEXT DEFAULT NULL COMMENT '关联信息;格式 [{"dimensionTable": "维度表名","factColumnName": "事实表外键字段名","dimensionColumnName": "维度表主键字段名","matchReason": "匹配依据"}]',
+  `join_condition_match_flag` VARCHAR(1) DEFAULT '0' COMMENT '关联条件匹配状态;0：未匹配，1：已匹配',
+  `join_condition_match_type` CHAR(1) DEFAULT '1' COMMENT '关联条件匹配类型;1：自动匹配 2:手动匹配',
+  `valid_flag` VARCHAR(1) NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `del_flag` VARCHAR(1) NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `create_by` VARCHAR(32) DEFAULT NULL COMMENT '创建人',
+  `creator_id` BIGINT(20) DEFAULT NULL COMMENT '创建人id',
+  `create_time` DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT '创建时间',
+  `update_by` VARCHAR(32) DEFAULT NULL COMMENT '更新人',
+  `updater_id` BIGINT(20) DEFAULT NULL COMMENT '更新人id',
+  `update_time` DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '更新时间',
+  `remark` VARCHAR(512) DEFAULT NULL COMMENT '备注',
+  `datasource_type` VARCHAR(32) DEFAULT NULL COMMENT '数据源类型',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='ai聊天对话表';
+
+-- 3. 创建 AI 聊天消息表
+CREATE TABLE `ai_chat_message` (
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `conversation_id` BIGINT(20) NOT NULL COMMENT '对话id',
+  `reply_id` BIGINT(20) DEFAULT NULL COMMENT '回复id',
+  `reply_type` VARCHAR(8188) DEFAULT NULL COMMENT '回复类型;1:知识问答 2: 知识图表',
+  `user_id` BIGINT(20) NOT NULL COMMENT '用户id',
+  `type` VARCHAR(10) DEFAULT '1' COMMENT '消息类型;1:用户 2：机器人',
+  `content` TEXT DEFAULT NULL COMMENT '消息内容',
+  `context_flag` VARCHAR(1) NOT NULL DEFAULT '1' COMMENT '是否携带上下文;0：否，1：是',
+  `valid_flag` VARCHAR(1) NOT NULL DEFAULT '1' COMMENT '是否有效;0：无效，1：有效',
+  `del_flag` VARCHAR(1) NOT NULL DEFAULT '0' COMMENT '删除标志;1：已删除，0：未删除',
+  `create_by` VARCHAR(32) DEFAULT NULL COMMENT '创建人',
+  `creator_id` BIGINT(20) DEFAULT NULL COMMENT '创建人id',
+  `create_time` DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT '创建时间',
+  `update_by` VARCHAR(32) DEFAULT NULL COMMENT '更新人',
+  `updater_id` BIGINT(20) DEFAULT NULL COMMENT '更新人id',
+  `update_time` DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '更新时间',
+  `remark` VARCHAR(512) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='ai聊天消息表';
+
 SET FOREIGN_KEY_CHECKS = 1;

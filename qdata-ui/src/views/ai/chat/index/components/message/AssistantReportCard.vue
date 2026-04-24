@@ -92,7 +92,9 @@
                   />
                 </div>
               </template>
-              <el-empty v-else description="暂无明细数据" :image-size="60" />
+              <div v-else class="ai-report-empty">
+                <el-empty description="暂无明细数据" :image-size="60" />
+              </div>
             </div>
             <div
               v-else-if="tab.code && activeTab == tab.key"

@@ -622,6 +622,9 @@ onMounted(() => {
 
 .overflow-y-auto {
   overflow-y: auto;
+  &::-webkit-scrollbar-track {
+    background: #fff;
+  }
 }
 .relative {
   position: relative;

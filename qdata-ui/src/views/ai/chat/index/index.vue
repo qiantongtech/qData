@@ -227,7 +227,7 @@
             </div>
           </div>
         </form>
-        <div class="ai-disclaimer">本功能由 AI 生成，其回答未必正确无误。</div>
+<!--        <div class="ai-disclaimer">本功能由 AI 生成，其回答未必正确无误。</div>-->
       </el-footer>
     </el-container>
   </el-container>
@@ -992,6 +992,7 @@ onMounted(async () => {
   left: 0;
   height: calc(100vh - 96px);
   width: 100%;
+  padding: 13px 16px 0 13px;
 }
 
 .conversation-container {

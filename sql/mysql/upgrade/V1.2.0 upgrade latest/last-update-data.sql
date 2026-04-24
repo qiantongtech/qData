@@ -63,7 +63,7 @@ INSERT INTO `system_menu`
 (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `route_name`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`)
 VALUES
 (2732, '模型管理', 1, 8, 'model', 'ai/model/index', NULL, 1, 0, NULL, 'C', '0', '0', 'ai:model:list', 'mxgl', 'admin', '2026-04-01 14:30:55', 'admin', '2026-04-14 17:02:24', '模型管理菜单'),
-(2733, '智能分析', 0, 6, 'ai', 'ai/chat/index/index', NULL, 1, 0, NULL, 'C', '0', '0', NULL, 'znfx', 'admin', '2026-04-22 10:13:35', NULL, NULL, NULL),
+(2733, '智能问数', 0, 6, 'ai', 'ai/chat/index/index', NULL, 1, 0, NULL, 'C', '0', '0', NULL, 'znfx', 'admin', '2026-04-22 10:13:35', NULL, NULL, NULL),
 (2736, '模型管理删除', 2732, 4, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'ai:model:remove', '#', 'admin', '2026-04-01 14:31:11', NULL, NULL, NULL),
 (2735, '模型管理修改', 2732, 3, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'ai:model:edit', '#', 'admin', '2026-04-01 14:31:10', NULL, NULL, NULL),
 (2734, '模型管理新增', 2732, 2, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'ai:model:add', '#', 'admin', '2026-04-01 14:31:09', NULL, NULL, NULL),

@@ -70,7 +70,7 @@
             />
           </div>
           <div class="message">
-            <div>
+            <div style="text-align: left;">
               <el-text class="time">{{ parseTime(item.createTime) }}</el-text>
             </div>
             <div
@@ -147,15 +147,15 @@
                   src="@/assets/ai/delete.png"
                 />
               </el-button>
-              <el-divider direction="vertical" class="btn-divider" />
-              <el-button class="btn-cus" link @click="onRefresh(item)">
+              <el-divider direction="vertical" class="btn-divider" v-if="isLastUserMessage(index)" />
+              <el-button class="btn-cus" link @click="onRefresh(item)" v-if="isLastUserMessage(index)">
                 <img
                   class="btn-image h-17px mr-12px"
                   src="@/assets/ai/refresh.png"
                 />
               </el-button>
-              <el-divider direction="vertical" class="btn-divider" />
-              <el-button class="btn-cus" link @click="onEdit(item)">
+              <el-divider direction="vertical" class="btn-divider" v-if="isLastUserMessage(index)" />
+              <el-button class="btn-cus" link @click="onEdit(item)" v-if="isLastUserMessage(index)">
                 <img
                   class="btn-image h-17px mr-12px"
                   src="@/assets/ai/edit.png"
@@ -227,6 +227,16 @@ const props = defineProps({
 });
 
 const { list } = toRefs(props); // 消息列表
+
+// 判断当前消息是否是最后一条用户消息
+const isLastUserMessage = (currentIndex) => {
+  for (let i = list.value.length - 1; i >= 0; i--) {
+    if (toNumber(list.value[i].type) === 1) {
+      return i === currentIndex;
+    }
+  }
+  return false;
+};
 
 const emits = defineEmits([
   "onDeleteSuccess",
@@ -569,11 +579,15 @@ const copyContent = (index) => {
 
 /** 删除 */
 const onDelete = async (id) => {
-  // 删除 message
-  await ChatMessageApi.deleteChatMessage(id);
-  message.msgSuccess("删除成功！");
-  // 回调
-  emits("onDeleteSuccess");
+  // 确认
+  proxy.$modal.confirm("是否确认删除？").then(async () => {
+    // 删除 message
+    await ChatMessageApi.deleteChatMessage(id);
+    message.msgSuccess("删除成功！");
+    // 回调
+    emits("onDeleteSuccess");
+  });
+
 };
 
 /** 刷新 */

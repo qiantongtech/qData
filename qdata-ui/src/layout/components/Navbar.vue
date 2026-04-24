@@ -32,6 +32,11 @@
 
 <template>
   <div class="navbar" ref="navbar">
+    <logo
+      v-if="appStore.sidebar.hide && isOnlyLogoRoute"
+      :collapse="false"
+      class="navbar-logo"
+    />
     <hamburger
       id="hamburger-container"
       :is-active="appStore.sidebar.opened"
@@ -49,6 +54,7 @@
       id="topmenu-container"
       class="topmenu-container"
       v-if="settingsStore.topNav"
+      :class="{ 'has-navbar-logo': appStore.sidebar.hide && isOnlyLogoRoute }"
     />
     <div class="right-menu">
       <template v-if="appStore.device !== 'mobile'">
@@ -332,6 +338,7 @@ import { ElMessageBox } from "element-plus";
 import Breadcrumb from "@/components/Breadcrumb";
 import TopNav from "@/components/TopNav";
 import Hamburger from "@/components/Hamburger";
+import Logo from "./Sidebar/Logo";
 import Screenfull from "@/components/Screenfull";
 import SizeSelect from "@/components/SizeSelect";
 import HeaderSearch from "@/components/HeaderSearch";
@@ -339,6 +346,7 @@ import useAppStore from "@/store/system/app";
 import useUserStore from "@/store/system/user";
 import useSettingsStore from "@/store/system/settings";
 import useTagsViewStore from "@/store/system/tagsView";
+import defaultSettings from "@/settings";
 import {
   getNum,
   listMessage,
@@ -366,6 +374,10 @@ const userStore = useUserStore();
 const settingsStore = useSettingsStore();
 const { proxy } = getCurrentInstance();
 const visitedViews = computed(() => useTagsViewStore().visitedViews);
+const isOnlyLogoRoute = computed(() => {
+  const navbarLogoRoutes = defaultSettings.navbarLogoRoutes || [];
+  return navbarLogoRoutes.some((logoPath) => route.path.startsWith(logoPath));
+});
 let isFlag = ref(false);
 // 默认选择的消息类型
 const activeMsg = ref("first");
@@ -960,6 +972,23 @@ function clearNotification() {
   text-align: center;
   line-height: 60px;
 
+  .navbar-logo {
+    float: left;
+    width: 200px !important;
+    height: 100% !important;
+    background-color: #1a1b1d !important;
+
+    ::v-deep.sidebar-logo-link {
+      background-color: transparent !important;
+    }
+
+    ::v-deep.sidebar-logo {
+      height: 48px !important;
+      margin-top: 6px !important;
+      transform: none !important;
+    }
+  }
+
   ::v-deep .size-icon--style {
     line-height: 60px;
   }
@@ -984,6 +1013,10 @@ function clearNotification() {
   .topmenu-container {
     position: absolute;
     left: 50px;
+
+    &.has-navbar-logo {
+      left: 200px;
+    }
   }
 
   .errLog-container {

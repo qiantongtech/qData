@@ -16997,25 +16997,25 @@ INSERT INTO `system_role_menu` (`role_id`, `menu_id`, `project_id`) VALUES
 (7, 107, 0), (7, 1, 0);
 
 -- 2. 系统菜单插入
-INSERT INTO `system_menu` 
-(`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `route_name`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) 
+INSERT INTO `system_menu`
+(`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `route_name`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`)
 VALUES
 (2732, '模型管理', 1, 8, 'model', 'ai/model/index', NULL, 1, 0, NULL, 'C', '0', '0', 'ai:model:list', 'mxgl', 'admin', '2026-04-01 14:30:55', 'admin', '2026-04-14 17:02:24', '模型管理菜单'),
-(2733, '智能分析', 0, 6, 'ai', 'ai/chat/index/index', NULL, 1, 0, NULL, 'C', '0', '0', NULL, 'znfx', 'admin', '2026-04-22 10:13:35', NULL, NULL, NULL),
+(2733, '智能问数', 0, 6, 'ai', 'ai/chat/index/index', NULL, 1, 0, NULL, 'C', '0', '0', NULL, 'znfx', 'admin', '2026-04-22 10:13:35', NULL, NULL, NULL),
 (2736, '模型管理删除', 2732, 4, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'ai:model:remove', '#', 'admin', '2026-04-01 14:31:11', NULL, NULL, NULL),
 (2735, '模型管理修改', 2732, 3, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'ai:model:edit', '#', 'admin', '2026-04-01 14:31:10', NULL, NULL, NULL),
 (2734, '模型管理新增', 2732, 2, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'ai:model:add', '#', 'admin', '2026-04-01 14:31:09', NULL, NULL, NULL),
 (2737, '模型管理查询', 2732, 1, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'ai:model:query', '#', 'admin', '2026-04-01 14:31:09', NULL, NULL, NULL);
 
 -- 3. 字典类型
-INSERT INTO `system_dict_type` 
-(`dict_id`, `dict_name`, `dict_type`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) 
+INSERT INTO `system_dict_type`
+(`dict_id`, `dict_name`, `dict_type`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`)
 VALUES
 (110, 'AI模型平台', 'ai_model_platform', '0', NULL, NULL, NULL, NULL, NULL);
 
 -- 4. 字典数据
-INSERT INTO `system_dict_data` 
-(`dict_code`, `dict_sort`, `dict_label`, `dict_value`, `dict_type`, `css_class`, `list_class`, `is_default`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) 
+INSERT INTO `system_dict_data`
+(`dict_code`, `dict_sort`, `dict_label`, `dict_value`, `dict_type`, `css_class`, `list_class`, `is_default`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`)
 VALUES
 (420, 0, 'DeepSeek', 'DeepSeek', 'ai_model_platform', NULL, NULL, 'N', '0', NULL, NULL, NULL, NULL, NULL),
 (419, 0, '通义千问', 'TongYi', 'ai_model_platform', NULL, NULL, 'N', '0', NULL, NULL, NULL, NULL, NULL);

@@ -139,7 +139,7 @@
             v-model="prompt"
             @keydown.enter.prevent="handleSendByKeydown"
             @keydown.shift.enter="addNewLine"
-            placeholder="问问 qData 智能助手...（Shift+Enter 换行，按下 Enter 发送）"
+            placeholder="问问 qData 智能问数...（Shift+Enter 换行，按下 Enter 发送）"
           />
           <div class="prompt-btns">
             <div class="footer-left">
@@ -227,9 +227,7 @@
             </div>
           </div>
         </form>
-        <div class="ai-disclaimer">
-          本功能由 AI 生成，其回答未必正确无误。
-        </div>
+        <div class="ai-disclaimer">本功能由 AI 生成，其回答未必正确无误。</div>
       </el-footer>
     </el-container>
   </el-container>

@@ -70,6 +70,12 @@ export default {
   dynamicTitle: true,
 
   /**
+   * 导航栏中需要显示 Logo 的路由路径
+   * 当访问这些路径时，会在导航栏左侧动态插入 Logo（占用 200px 宽度）
+   */
+  navbarLogoRoutes: ['/ai',],
+
+  /**
    * @type {string | array} 'production' | ['production', 'development']
    * @description Need show err logs component.
    * The default is only used in the production env

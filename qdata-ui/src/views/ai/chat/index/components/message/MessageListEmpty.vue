@@ -36,7 +36,7 @@
     <div class="center-container">
       <div class="title">
         <img src="@/assets/ai/gpt-new.svg" width="44px" />
-        <span>Hello，我是 qData 智能助手，很高兴见到你!</span>
+        <span>Hello，我是 qData 智能问数，很高兴见到你!</span>
       </div>
       <div class="subheading">智启未来，一触即发</div>
       <el-footer class="footer-container">
@@ -48,7 +48,7 @@
             v-model="value"
             @keydown.enter.native="handleSendByKeydown"
             @keydown.shift.enter.native="addNewLine"
-            placeholder="问问 qData 智能助手...（Shift+Enter 换行，按下 Enter 发送）"
+            placeholder="问问 qData 智能问数...（Shift+Enter 换行，按下 Enter 发送）"
           />
           <div class="prompt-btns">
             <div class="footer-left">
@@ -127,9 +127,7 @@
         </form>
       </el-footer>
     </div>
-    <div class="ai-disclaimer">
-      本功能由 AI 生成，其回答未必正确无误。
-    </div>
+    <div class="ai-disclaimer">本功能由 AI 生成，其回答未必正确无误。</div>
   </div>
 </template>
 <script setup>

@@ -205,7 +205,7 @@ public class StatisticsPromptBuilder {
                     输出JSON格式：
                     {
                         "success":"如果问题非规则内的为false，规则内为true",
-                        "msg": "非规则内的请将你的回答放到这里"
+                        "msg": "非规则内的请将你的回答放到这里,不要直接用用户的提问进行回复"
                         "sql": "生成的SQL，必须对SQL进行格式化",
                         "selectColumn":["sql中select的字段"],
                         "selectColumnDescription":["sql中select的字段注释"],

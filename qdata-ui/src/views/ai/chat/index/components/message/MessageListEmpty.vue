@@ -29,6 +29,7 @@
    *
   更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
+
 <!-- 消息列表为空时，展示 prompt 列表 -->
 <template>
   <div class="chat-empty">

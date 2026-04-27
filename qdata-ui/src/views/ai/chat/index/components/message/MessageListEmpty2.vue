@@ -47,7 +47,7 @@
         </div>
       </div>
       <div class="ai-disclaimer">
-        本功能由 AI 生成，其回答未必正确无误。
+        本功能由 qData 智能问数生成，其回答未必正确无误。
       </div>
     </div>
   </div>

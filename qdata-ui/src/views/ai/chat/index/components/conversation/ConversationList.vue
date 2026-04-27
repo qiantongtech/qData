@@ -30,7 +30,7 @@
   更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
-<!--  AI 对话  -->
+<!--  qData 智能问数对话  -->
 <template>
   <el-aside width="260px" class="conversation-container h-100%">
     <!-- 左顶部：对话 -->
@@ -40,8 +40,8 @@
         type="primary"
         @click="handleNewButtonClick"
       >
-        <el-icon style="margin-right: 13px"><Plus /></el-icon>
-        新建对话
+        <el-icon class="icon-plus" :size="14"><Plus /></el-icon>
+        <span class="btn-text">新建对话</span>
       </el-button>
 
       <!-- 左顶部：搜索对话 -->
@@ -568,16 +568,34 @@ onMounted(async () => {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 10px 10px 0;
+  padding: 23px 10px 0;
+  
   overflow: hidden;
-  background-color: #edf5fe;
+  background-color: #f5f7fb;
 
   .btn-new-conversation {
     width: 100%;
-    //padding: 18px 0;
-    height: 36px;
-    background: #257fff;
-    border: #257fff;
+    height: 42px;
+    background: #3367fc;
+    border: #3367fc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .icon-plus {
+      width: 14px;
+      height: 14px;
+      margin-right: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      :deep(svg) {
+        color: #ffffff !important;
+        fill: #ffffff !important;
+        stroke: #ffffff !important;
+        stroke-width: 60px;
+      }
+    }
   }
 
   .search-input {

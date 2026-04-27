@@ -13729,7 +13729,7 @@ INSERT INTO `system_menu` VALUES (2310, '逻辑模型修改', 2307, 3, '#', NULL
 INSERT INTO `system_menu` VALUES (2311, '逻辑模型删除', 2307, 4, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'dp:model:remove', '#', 'qData', '2025-01-21 11:09:26', 'admin', '2025-09-30 10:10:26', NULL);
 INSERT INTO `system_menu` VALUES (2312, '逻辑模型导出', 2307, 5, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'dp:model:export', '#', 'qData', '2025-01-21 11:09:26', 'admin', '2025-09-30 10:10:31', NULL);
 INSERT INTO `system_menu` VALUES (2313, '逻辑模型导入', 2307, 6, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'dp:model:import', '#', 'qData', '2025-01-21 11:09:26', 'admin', '2025-09-30 10:10:41', NULL);
-INSERT INTO `system_menu` VALUES (2314, '数据资产', 0, 3, 'da', NULL, NULL, 1, 0, NULL, 'M', '0', '0', NULL, 'newspaper-line', 'qData', '2025-01-21 14:01:11', 'admin', '2025-05-30 15:36:20', NULL);
+INSERT INTO `system_menu` VALUES (2314, '数据资产', 0, 5, 'da', NULL, NULL, 1, 0, NULL, 'M', '0', '0', NULL, 'newspaper-line', 'qData', '2025-01-21 14:01:11', 'admin', '2025-05-30 15:36:20', NULL);
 INSERT INTO `system_menu` VALUES (2315, '标准数据元', 2306, 2, 'dataElem', 'dp/dataElem/index', NULL, 1, 0, NULL, 'C', '0', '0', 'dp:dataElem:list', 'hard-drive-3-line', 'qData', '2025-01-21 14:53:06', 'admin', '2025-09-30 10:11:03', '数据元菜单');
 INSERT INTO `system_menu` VALUES (2316, '数据元查询', 2315, 1, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'dp:dataElem:query', '#', 'qData', '2025-01-21 14:54:20', 'admin', '2025-09-30 10:11:16', NULL);
 INSERT INTO `system_menu` VALUES (2317, '数据元新增', 2315, 2, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'dp:dataElem:add', '#', 'qData', '2025-01-21 14:54:20', 'admin', '2025-09-30 10:11:34', NULL);
@@ -13804,7 +13804,7 @@ INSERT INTO `system_menu` VALUES (2393, '数据元代码修改', 2390, 3, '#', N
 INSERT INTO `system_menu` VALUES (2394, '数据元代码删除', 2390, 4, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'dp:dataElemCode:remove', '#', 'qData', '2025-02-06 10:45:16', 'admin', '2025-09-30 10:19:47', NULL);
 INSERT INTO `system_menu` VALUES (2395, '数据元代码导出', 2390, 5, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'dp:dataElemCode:export', '#', 'qData', '2025-02-06 10:45:16', 'admin', '2025-09-30 10:19:53', NULL);
 INSERT INTO `system_menu` VALUES (2396, '数据元代码导入', 2390, 6, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'dp:dataElemCode:import', '#', 'qData', '2025-02-06 10:45:16', 'admin', '2025-09-30 10:20:01', NULL);
-INSERT INTO `system_menu` VALUES (2397, '数据研发', 0, 4, 'dpp', NULL, NULL, 1, 0, NULL, 'M', '0', '0', NULL, 'book-3-line', 'changmingyao', '2025-02-11 09:51:19', 'admin', '2025-05-30 15:37:17', NULL);
+INSERT INTO `system_menu` VALUES (2397, '数据研发', 0, 3, 'dpp', NULL, NULL, 1, 0, NULL, 'M', '0', '0', NULL, 'book-3-line', 'changmingyao', '2025-02-11 09:51:19', 'admin', '2025-05-30 15:37:17', NULL);
 INSERT INTO `system_menu` VALUES (2398, '成员角色管理', 2552, 4, 'projectUserRel', 'dpp/setting/projectUserRel/index', NULL, 1, 0, NULL, 'C', '0', '0', 'att:projectUserRel:list', '#', 'qData', '2025-02-11 09:57:17', 'admin', '2025-09-30 10:39:13', '项目与用户关联关系菜单');
 INSERT INTO `system_menu` VALUES (2399, '项目与用户关联关系查询', 2398, 1, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'att:projectUserRel:query', '#', 'qData', '2025-02-11 09:58:01', 'admin', '2025-09-30 10:39:37', NULL);
 INSERT INTO `system_menu` VALUES (2400, '项目与用户关联关系新增', 2398, 2, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'att:projectUserRel:add', '#', 'qData', '2025-02-11 09:58:01', 'admin', '2025-09-30 10:39:43', NULL);
@@ -13813,7 +13813,7 @@ INSERT INTO `system_menu` VALUES (2402, '项目与用户关联关系删除', 239
 INSERT INTO `system_menu` VALUES (2403, '项目与用户关联关系导出', 2398, 5, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'att:projectUserRel:export', '#', 'qData', '2025-02-11 09:58:01', 'admin', '2025-09-30 10:40:18', NULL);
 INSERT INTO `system_menu` VALUES (2404, '项目与用户关联关系导入', 2398, 6, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'att:projectUserRel:import', '#', 'qData', '2025-02-11 09:58:01', 'admin', '2025-09-30 10:40:09', NULL);
 INSERT INTO `system_menu` VALUES (2426, '数据集成', 2510, 1, 'integratioTask', 'dpp/task/integratioTask/index', NULL, 1, 0, 'dppIntegratioTask', 'C', '0', '0', 'dpp:integratioTask:list', '#', 'qData', '2025-02-12 11:56:06', 'admin', '2025-09-30 11:23:48', NULL);
-INSERT INTO `system_menu` VALUES (2427, '数据服务', 0, 5, 'ds', NULL, NULL, 1, 0, NULL, 'M', '0', '0', NULL, 'hourglass-line', 'qData', '2025-02-12 16:08:29', 'admin', '2025-05-30 15:38:07', NULL);
+INSERT INTO `system_menu` VALUES (2427, '数据服务', 0, 6, 'ds', NULL, NULL, 1, 0, NULL, 'M', '0', '0', NULL, 'hourglass-line', 'qData', '2025-02-12 16:08:29', 'admin', '2025-05-30 15:38:07', NULL);
 INSERT INTO `system_menu` VALUES (2428, '调用日志', 2427, 1, 'apiLog', 'ds/apiLog/index', NULL, 1, 1, NULL, 'C', '0', '0', 'ds:apiLog:list', 'telegram-line', 'qData', '2025-02-12 16:13:42', 'admin', '2025-09-30 10:14:00', 'API服务调用日志菜单');
 INSERT INTO `system_menu` VALUES (2429, 'API服务调用日志查询', 2428, 1, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'ds:apilog:query', '#', 'qData', '2025-02-12 16:14:14', 'admin', '2025-09-30 10:13:52', NULL);
 INSERT INTO `system_menu` VALUES (2430, 'API服务调用日志新增', 2428, 2, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'ds:apiLog:apilog:add', '#', 'qData', '2025-02-12 16:14:14', NULL, NULL, NULL);
@@ -16839,7 +16839,7 @@ VALUES
 (2726, '采集实例', 2724, 2, 'instance', 'sys/developing/index', NULL, 1, 0, NULL, 'C', '0', '0', NULL, '#', 'admin', '2026-03-25 17:44:36', NULL, NULL, NULL),
 (2725, '采集任务', 2724, 1, 'mc', 'sys/developing/index', NULL, 1, 0, NULL, 'C', '0', '0', NULL, '#', 'admin', '2026-03-25 17:43:26', 'admin', '2026-03-25 17:43:43', NULL),
 (2724, '元数据管理', 2723, 1, 'meta', NULL, NULL, 1, 0, NULL, 'M', '0', '0', NULL, 'ysjgl', 'admin', '2026-03-25 17:42:50', 'admin', '2026-03-27 16:10:44', NULL),
-(2723, '数据治理', 0, 5, 'dg', NULL, NULL, 1, 0, NULL, 'M', '0', '0', NULL, 'sjzl', 'admin', '2026-03-25 17:42:27', 'admin', '2026-03-27 16:08:33', NULL),
+(2723, '数据治理', 0, 4, 'dg', NULL, NULL, 1, 0, NULL, 'M', '0', '0', NULL, 'sjzl', 'admin', '2026-03-25 17:42:27', 'admin', '2026-03-27 16:08:33', NULL),
 (2722, '主题规划导入', 2716, 6, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'dm:themeDomain:import', '#', 'admin', '2026-03-24 14:53:02', NULL, NULL, NULL),
 (2721, '主题规划导出', 2716, 5, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'dm:themeDomain:export', '#', 'admin', '2026-03-24 14:53:02', NULL, NULL, NULL),
 (2720, '主题规划删除', 2716, 4, '#', NULL, NULL, 1, 0, NULL, 'F', '0', '0', 'dm:themeDomain:remove', '#', 'admin', '2026-03-24 14:53:02', NULL, NULL, NULL),

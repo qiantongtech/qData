@@ -36,6 +36,7 @@
       v-if="appStore.sidebar.hide && isOnlyLogoRoute"
       :collapse="false"
       class="navbar-logo"
+      :current-route="route.path"
     />
     <hamburger
       id="hamburger-container"
@@ -976,7 +977,7 @@ function clearNotification() {
     float: left;
     width: 200px !important;
     height: 100% !important;
-    background-color: #1a1b1d !important;
+    background-color: transparent !important;
 
     ::v-deep.sidebar-logo-link {
       background-color: transparent !important;

@@ -569,7 +569,7 @@ onMounted(async () => {
   flex-direction: column;
   justify-content: space-between;
   padding: 23px 10px 0;
-  
+
   overflow: hidden;
   background-color: #f5f7fb;
 
@@ -581,6 +581,7 @@ onMounted(async () => {
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: 2px;
     .icon-plus {
       width: 14px;
       height: 14px;
@@ -601,8 +602,12 @@ onMounted(async () => {
   .search-input {
     margin-top: 15px;
     height: 36px;
-  }
 
+    :deep(.el-select__wrapper),
+    :deep(.el-input__wrapper) {
+      border-radius: 2px;
+    }
+  }
   .conversation-list {
     overflow: auto;
     height: 100%;

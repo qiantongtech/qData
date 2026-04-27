@@ -60,7 +60,9 @@
               }}
             </div>
           </template>
-          <div class="dim-tag">+ {{ dimensionTableNames.length }}张维表</div>
+          <div class="dim-tag" @click="showConfig = !showConfig">
+            + {{ dimensionTableNames.length }}张维表
+          </div>
         </el-tooltip>
 
         <el-form inline :disabled="disabled" class="summary-form">
@@ -129,6 +131,7 @@
               @visible-change="handleFactTableSelectVisible"
               placeholder="请选择事实表"
               @change="onFactTableChange"
+              class="config-select"
             >
               <el-option
                 v-for="item in factTableOptions"
@@ -377,19 +380,6 @@ const handleOpenAssociationConfirm = (conversationId) => {
 // props.initialShowConfig
 const showConfig = ref(false);
 
-// 如果数据源、事实表、关联维表都有值，且不是强制要求显示，则不展开
-const isConfigComplete =
-  props.datasourceId &&
-  props.factTableName &&
-  props.dimensionTableNames?.length > 0;
-
-if (isConfigComplete && !props.initialShowConfig) {
-  showConfig.value = false;
-} else if (!isConfigComplete) {
-  // 如果配置不完整，默认展开
-  showConfig.value = false;
-}
-
 // watch(
 //   () => props.initialShowConfig,
 //   (val) => {
@@ -399,13 +389,19 @@ if (isConfigComplete && !props.initialShowConfig) {
 
 watch(showConfig, (val) => {
   if (val) {
-    // 每次打开配置面板时，同步外部 props 到内部 state (草稿)
     internalDatasourceId.value = props.datasourceId;
     internalFactTableName.value = props.factTableName;
     internalFactTableComment.value = props.factTableComment;
     internalDimensionTableNames.value = [...props.dimensionTableNames];
   }
 });
+
+watch(
+  () => props.conversationId,
+  () => {
+    showConfig.value = false;
+  }
+);
 
 const internalDatasourceId = ref(props.datasourceId);
 const internalFactTableName = ref(props.factTableName);
@@ -770,6 +766,7 @@ const handleSaveAssociations = async () => {
 defineExpose({
   openAssociationDialog,
   handleOpenAssociationConfirm,
+  showConfig,
 });
 
 onMounted(() => {
@@ -787,6 +784,7 @@ onMounted(() => {
   margin: 0 !important;
   padding: 0 !important;
   min-height: auto !important;
+  border-bottom: 1px solid #f0f1f2;
 }
 
 .summary-bar {
@@ -794,34 +792,35 @@ onMounted(() => {
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
-  height: 48px;
+  padding-right: 0px;
+  min-height: 69px;
   background: #fff;
   box-sizing: border-box;
-  // border: 1px solid #dcdfe6;
+  flex-wrap: wrap;
 
   .summary-left-col {
     display: flex;
     align-items: center;
     flex-shrink: 0;
     margin-right: 20px;
+    padding: 10px 0;
     .title-info {
       display: flex;
       align-items: center;
       gap: 12px;
 
       .robot-icon {
-        width: 24px;
-        height: 24px;
+        width: 32px;
+        height: 32px;
         flex-shrink: 0;
       }
 
       .title {
-        font-size: 16px;
-        font-weight: 600;
-        color: #333;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        font-family: Microsoft YaHei, Microsoft YaHei;
+        font-weight: bold;
+        font-size: 18px;
+        color: #333333;
+        line-height: 38px;
       }
     }
   }
@@ -830,28 +829,32 @@ onMounted(() => {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 4px;
+    gap: 12px;
     flex: 1;
     min-width: 0;
     margin-right: 12px;
+    flex-wrap: wrap;
+    padding: 10px 0;
 
     .dim-tag {
-      background: #fff;
-      border: 1px solid #e4e7ed;
-      color: #333;
-      height: 28px;
-      line-height: 26px;
-      margin-right: 20px;
-      padding: 0 12px;
-      flex-shrink: 0;
-      font-weight: 500;
-      font-size: 13px;
-      border-radius: 2px;
+      width: 93px;
+      height: 32px;
+      background: #f0f5ff;
+      border-radius: 16px;
+      font-family: Microsoft YaHei, Microsoft YaHei;
+      font-weight: 400;
+      font-size: 14px;
+      color: #3367fc;
+      line-height: 36px;
+      text-align: left;
+      font-style: normal;
+      text-transform: none;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       box-sizing: border-box;
+      flex-shrink: 0;
     }
 
     .summary-form {
@@ -925,7 +928,7 @@ onMounted(() => {
 
       &.disabled {
         cursor: pointer;
-        background-color: #f5f7fa;
+        background-color: #fcfcfd;
         color: #c0c4cc;
       }
 
@@ -959,18 +962,21 @@ onMounted(() => {
 }
 
 .config-panel {
-  padding: 16px 20px;
-  background: #f5f7fa;
-  border-top: 1px solid #e4e7ed;
-
+  padding: 20px 16px 20px 20px;
+  background: #fcfcfd;
+  font-family: Microsoft YaHei, Microsoft YaHei;
   .steps-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 89px;
     margin-bottom: 16px;
+    flex-wrap: wrap;
 
     :deep(.el-form-item) {
-      margin-bottom: 0;
+      flex: 1;
+      min-width: 280px;
+      margin-bottom: 10px;
+      margin-right: 0;
     }
 
     :deep(.el-form-item__label) {
@@ -980,12 +986,10 @@ onMounted(() => {
     }
   }
 
-  .step-item {
-    .config-select {
-      width: 100%;
-      :deep(.el-input__wrapper) {
-        background: #fff;
-      }
+  .config-select {
+    width: 100% !important;
+    :deep(.el-input__wrapper) {
+      background: #fff;
     }
   }
 
@@ -1002,6 +1006,38 @@ onMounted(() => {
   }
 }
 
+@media screen and (max-width: 1200px) {
+  .summary-bar {
+    .summary-left-col {
+      width: 100%;
+    }
+    .summary-middle-col {
+      width: 100%;
+      justify-content: flex-start;
+      margin-right: 0;
+    }
+  }
+  .config-panel {
+    .steps-container {
+      gap: 20px;
+      :deep(.el-form-item) {
+        flex: 1;
+        min-width: calc(33.33% - 20px);
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .config-panel {
+    .steps-container {
+      :deep(.el-form-item) {
+        min-width: 100%;
+      }
+    }
+  }
+}
+
 :deep(.el-select .el-select__tags .el-tag) {
   background-color: #f4f4f5;
   border-color: #e9e9eb;
@@ -1009,7 +1045,7 @@ onMounted(() => {
 }
 
 :deep(.table-header-cell) {
-  background-color: #f5f7fa !important;
+  background-color: #fcfcfd !important;
   color: #333;
   font-weight: 600;
 }

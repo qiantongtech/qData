@@ -39,7 +39,7 @@
         <img src="@/assets/ai/gpt-new.svg" width="44px" />
         <span>Hello，我是 qData 智能问数，很高兴见到你!</span>
       </div>
-      <div class="subheading">智启未来，一触即发</div>
+      <div class="subheading">化繁为简，让数据分析更高效。</div>
       <el-footer class="footer-container">
         <form class="prompt-from">
           <el-input
@@ -128,7 +128,9 @@
         </form>
       </el-footer>
     </div>
-    <div class="ai-disclaimer">本功能由 AI 生成，其回答未必正确无误。</div>
+    <div class="ai-disclaimer">
+      本功能由 qData 智能问数生成，其回答未必正确无误。
+    </div>
   </div>
 </template>
 <script setup>
@@ -260,7 +262,6 @@ const addNewLine = async (event) => {
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 11px;
       img {
         margin-right: 13px;
       }

@@ -228,7 +228,9 @@
             </div>
           </div>
         </form>
-        <div class="ai-disclaimer">本功能由 AI 生成，其回答未必正确无误。</div>
+        <div class="ai-disclaimer">
+          本功能由 qData 智能问数生成，其回答未必正确无误。
+        </div>
       </el-footer>
     </el-container>
   </el-container>
@@ -259,7 +261,7 @@ import DatasourceList from "@/components/Datasource/List.vue";
 import { getTablesByDataSourceId } from "@/api/dpp/task/index.js";
 import { Plus } from "@element-plus/icons-vue";
 
-/** AI 聊天对话 列表 */
+/** qData 智能问数聊天对话 列表 */
 defineOptions({ name: "AiChat" });
 
 const route = useRoute(); // 路由
@@ -993,6 +995,21 @@ onMounted(async () => {
   left: 0;
   height: calc(100vh - 96px);
   width: 100%;
+  padding: 13px 16px 0 13px;
+  :deep(::-webkit-scrollbar) {
+    width: 6px;
+    height: 6px;
+    background-color: white;
+  }
+
+  :deep(::-webkit-scrollbar-track) {
+    background-color: white;
+  }
+
+  :deep(::-webkit-scrollbar-thumb) {
+    background-color: #ccc;
+    border-radius: 3px;
+  }
 }
 
 .conversation-container {

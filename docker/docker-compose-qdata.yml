@@ -105,8 +105,6 @@ services:
         condition: service_healthy
       dm8:
         condition: service_healthy
-      neo4j:
-        condition: service_healthy
     networks:
       - qdatanet
     extra_hosts:

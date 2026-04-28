@@ -4,7 +4,7 @@
  <img src="https://img.shields.io/badge/Spring%20Boot-2.5.15-blue.svg" alt="Downloads">
  <img src="https://img.shields.io/badge/Vue-3.4.31-blue.svg" alt="Downloads">
  <img src="https://img.shields.io/badge/license-Apache--2.0-green"/>
- <img src="https://img.shields.io/badge/qData-v1.0.0-blue.svg"/>
+ <img src="https://img.shields.io/badge/qData-v1.3.0-blue.svg"/>
 
  <img src="https://gitee.com/qiantongtech/qData/badge/star.svg"/>
  <img src="https://img.shields.io/github/stars/qiantongtech/qData?label=Github%20Stars"/>
@@ -18,11 +18,11 @@
 ## 🌈 平台简介
 **qData 数据中台**是一套集**数据集成**、**标准管理**、**资产治理**、**质量控制**、**服务开放**与**智能分析**于一体的企业级数据管理平台，致力于帮助企业实现数据资源的统一管理、高效治理与价值释放。我们秉承“高效、安全、灵活、开放”的理念，持续引入前沿技术，让数据真正成为企业发展的核心驱动力。
 
-✨✨✨**在线文档**✨✨✨ <a href="https://qdata.qiantong.tech" target="_blank">https://qdata.qiantong.tech</a> 
+✨✨✨**在线文档**✨✨✨ <a href="https://community.qdata.tech" target="_blank">https://community.qdata.tech</a> 
 
-✨✨✨**开源版演示地址**✨✨✨ <a href="https://qdata-demo.qiantong.tech" target="_blank">https://qdata-demo.qiantong.tech</a> ，账号：qData 密码：qData123
+✨✨✨**开源版演示地址**✨✨✨ <a href="https://demo.qdata.tech" target="_blank">https://demo.qdata.tech</a> ，账号：qData 密码：qData123
 
-✨✨✨**专业版演示地址**✨✨✨ <a href="https://qdata-pro.qiantong.tech" target="_blank">https://qdata-pro.qiantong.tech</a> ，演示账号请 [联系客服获取](https://qdata.qiantong.tech/business/policy.html)
+✨✨✨**专业版演示地址**✨✨✨ <a href="https://pro-demo.qdata.tech" target="_blank">https://pro-demo.qdata.tech</a> ，演示账号请 [联系客服获取](https://qdata.qiantong.tech/business/policy.html)
 
 > 如果 qData 对您有帮助，请点个 **Star ⭐️**，这是我们持续更新的最大动力！ 🚀
 

@@ -175,7 +175,7 @@ qData 平台采用前后端分离架构，后端基于 Spring Boot，前端基�
 
   <tr>
     <td rowspan="3">前端</td><td>Node.js</td><td>16+</td><td>构建工具依赖</td>
-  </tr>
+  </tr> 
   <tr>
     <td>npm</td><td>10+</td><td>包管理器</td>
   </tr>

@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.qiantong.qdata.module.mc.dal.mapper.metadata.McDbMapper">
+
+    <resultMap type="McDbDO" id="McDbResult">
+        <result property="id" column="ID" />
+        <result property="taskId" column="TASK_ID" />
+        <result property="sourceSystemId" column="SOURCE_SYSTEM_ID" />
+        <result property="sourceSystemName" column="SOURCE_SYSTEM_NAME" />
+        <result property="version" column="VERSION" />
+        <result property="datasourceId" column="DATASOURCE_ID" />
+        <result property="ip" column="IP" />
+        <result property="port" column="PORT" />
+        <result property="datasourceConfig" column="DATASOURCE_CONFIG" />
+        <result property="dbType" column="DB_TYPE" />
+        <result property="dbName" column="DB_NAME" />
+        <result property="schemaName" column="SCHEMA_NAME" />
+        <result property="safetyLevelId" column="SAFETY_LEVEL_ID" />
+        <result property="belongingLayer" column="BELONGING_LAYER" />
+        <result property="belongingSystem" column="BELONGING_SYSTEM" />
+        <result property="businessLeader" column="BUSINESS_LEADER" />
+        <result property="businessLeaderPhone" column="BUSINESS_LEADER_PHONE" />
+        <result property="techLeader" column="TECH_LEADER" />
+        <result property="techLeaderPhone" column="TECH_LEADER_PHONE" />
+        <result property="storageSize" column="STORAGE_SIZE" />
+        <result property="dataQuality" column="DATA_QUALITY" />
+        <result property="auditStatus" column="AUDIT_STATUS" />
+        <result property="auditTime" column="AUDIT_TIME" />
+        <result property="status" column="STATUS" />
+        <result property="validFlag" column="VALID_FLAG" />
+        <result property="delFlag" column="DEL_FLAG" />
+        <result property="createBy" column="CREATE_BY" />
+        <result property="creatorId" column="CREATOR_ID" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="updateBy" column="UPDATE_BY" />
+        <result property="updaterId" column="UPDATER_ID" />
+        <result property="updateTime" column="UPDATE_TIME" />
+        <result property="remark" column="REMARK" />
+        <result property="description" column="DESCRIPTION" />
+        <result property="portalVisible" column="PORTAL_VISIBLE" />
+    </resultMap>
+
+    <sql id="selectMcDbVo">
+        select ID, TASK_ID, SOURCE_SYSTEM_ID, SOURCE_SYSTEM_NAME, VERSION, DATASOURCE_ID, IP, PORT,
+               DATASOURCE_CONFIG, DB_TYPE, DB_NAME, SCHEMA_NAME, SAFETY_LEVEL_ID,
+               BELONGING_LAYER, BELONGING_SYSTEM, BUSINESS_LEADER, BUSINESS_LEADER_PHONE,
+               TECH_LEADER, TECH_LEADER_PHONE, STORAGE_SIZE, DATA_QUALITY, AUDIT_STATUS,
+               AUDIT_TIME, STATUS, VALID_FLAG, DEL_FLAG, CREATE_BY, CREATOR_ID,
+               CREATE_TIME, UPDATE_BY, UPDATER_ID, UPDATE_TIME, REMARK, DESCRIPTION,
+               PORTAL_VISIBLE
+        from MC_DB
+    </sql>
+
+    <select id="selectMcDbList" parameterType="McDbDO" resultMap="McDbResult">
+        <include refid="selectMcDbVo"/>
+        <where>
+            <if test="taskId != null"> and TASK_ID = #{taskId}</if>
+            <if test="sourceSystemId != null"> and SOURCE_SYSTEM_ID = #{sourceSystemId}</if>
+            <if test="sourceSystemName != null and sourceSystemName != ''"> and SOURCE_SYSTEM_NAME = #{sourceSystemName}</if>
+            <if test="version != null"> and VERSION = #{version}</if>
+            <if test="datasourceId != null"> and DATASOURCE_ID = #{datasourceId}</if>
+            <if test="ip != null and ip != ''"> and IP = #{ip}</if>
+            <if test="port != null"> and PORT = #{port}</if>
+            <if test="datasourceConfig != null and datasourceConfig != ''"> and DATASOURCE_CONFIG = #{datasourceConfig}</if>
+            <if test="dbType != null and dbType != ''"> and DB_TYPE = #{dbType}</if>
+            <if test="dbName != null and dbName != ''"> and DB_NAME like concat('%', #{dbName}, '%')</if>
+            <if test="schemaName != null and schemaName != ''"> and SCHEMA_NAME like concat('%', #{schemaName}, '%')</if>
+            <if test="safetyLevelId != null"> and SAFETY_LEVEL_ID = #{safetyLevelId}</if>
+            <if test="belongingLayer != null and belongingLayer != ''"> and BELONGING_LAYER = #{belongingLayer}</if>
+            <if test="belongingSystem != null and belongingSystem != ''"> and BELONGING_SYSTEM = #{belongingSystem}</if>
+            <if test="businessLeader != null"> and BUSINESS_LEADER = #{businessLeader}</if>
+            <if test="businessLeaderPhone != null and businessLeaderPhone != ''"> and BUSINESS_LEADER_PHONE = #{businessLeaderPhone}</if>
+            <if test="techLeader != null"> and TECH_LEADER = #{techLeader}</if>
+            <if test="techLeaderPhone != null and techLeaderPhone != ''"> and TECH_LEADER_PHONE = #{techLeaderPhone}</if>
+            <if test="storageSize != null"> and STORAGE_SIZE = #{storageSize}</if>
+            <if test="dataQuality != null"> and DATA_QUALITY = #{dataQuality}</if>
+            <if test="auditStatus != null and auditStatus != ''"> and AUDIT_STATUS = #{auditStatus}</if>
+            <if test="auditTime != null"> and AUDIT_TIME = #{auditTime}</if>
+            <if test="status != null and status != ''"> and STATUS = #{status}</if>
+            <if test="createTime != null"> and CREATE_TIME = #{createTime}</if>
+            <if test="description != null and description != ''"> and DESCRIPTION = #{description}</if>
+            <if test="portalVisible != null and portalVisible != ''"> and PORTAL_VISIBLE = #{portalVisible}</if>
+        </where>
+    </select>
+
+    <select id="selectMcDbById" parameterType="Long" resultMap="McDbResult">
+        <include refid="selectMcDbVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertMcDb" parameterType="McDbDO">
+        insert into MC_DB
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="taskId != null">TASK_ID,</if>
+            <if test="sourceSystemId != null">SOURCE_SYSTEM_ID,</if>
+            <if test="sourceSystemName != null">SOURCE_SYSTEM_NAME,</if>
+            <if test="version != null">VERSION,</if>
+            <if test="datasourceId != null">DATASOURCE_ID,</if>
+            <if test="ip != null">IP,</if>
+            <if test="port != null">PORT,</if>
+            <if test="datasourceConfig != null">DATASOURCE_CONFIG,</if>
+            <if test="dbType != null">DB_TYPE,</if>
+            <if test="dbName != null">DB_NAME,</if>
+            <if test="schemaName != null">SCHEMA_NAME,</if>
+            <if test="safetyLevelId != null">SAFETY_LEVEL_ID,</if>
+            <if test="belongingLayer != null">BELONGING_LAYER,</if>
+            <if test="belongingSystem != null">BELONGING_SYSTEM,</if>
+            <if test="businessLeader != null">BUSINESS_LEADER,</if>
+            <if test="businessLeaderPhone != null">BUSINESS_LEADER_PHONE,</if>
+            <if test="techLeader != null">TECH_LEADER,</if>
+            <if test="techLeaderPhone != null">TECH_LEADER_PHONE,</if>
+            <if test="storageSize != null">STORAGE_SIZE,</if>
+            <if test="dataQuality != null">DATA_QUALITY,</if>
+            <if test="auditStatus != null">AUDIT_STATUS,</if>
+            <if test="auditTime != null">AUDIT_TIME,</if>
+            <if test="status != null">STATUS,</if>
+            <if test="validFlag != null">VALID_FLAG,</if>
+            <if test="delFlag != null">DEL_FLAG,</if>
+            <if test="createBy != null">CREATE_BY,</if>
+            <if test="creatorId != null">CREATOR_ID,</if>
+            <if test="createTime != null">CREATE_TIME,</if>
+            <if test="updateBy != null">UPDATE_BY,</if>
+            <if test="updaterId != null">UPDATER_ID,</if>
+            <if test="updateTime != null">UPDATE_TIME,</if>
+            <if test="remark != null">REMARK,</if>
+            <if test="description != null">DESCRIPTION,</if>
+            <if test="portalVisible != null">PORTAL_VISIBLE,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="taskId != null">#{taskId},</if>
+            <if test="sourceSystemId != null">#{sourceSystemId},</if>
+            <if test="sourceSystemName != null">#{sourceSystemName},</if>
+            <if test="version != null">#{version},</if>
+            <if test="datasourceId != null">#{datasourceId},</if>
+            <if test="ip != null">#{ip},</if>
+            <if test="port != null">#{port},</if>
+            <if test="datasourceConfig != null">#{datasourceConfig},</if>
+            <if test="dbType != null">#{dbType},</if>
+            <if test="dbName != null">#{dbName},</if>
+            <if test="schemaName != null">#{schemaName},</if>
+            <if test="safetyLevelId != null">#{safetyLevelId},</if>
+            <if test="belongingLayer != null">#{belongingLayer},</if>
+            <if test="belongingSystem != null">#{belongingSystem},</if>
+            <if test="businessLeader != null">#{businessLeader},</if>
+            <if test="businessLeaderPhone != null">#{businessLeaderPhone},</if>
+            <if test="techLeader != null">#{techLeader},</if>
+            <if test="techLeaderPhone != null">#{techLeaderPhone},</if>
+            <if test="storageSize != null">#{storageSize},</if>
+            <if test="dataQuality != null">#{dataQuality},</if>
+            <if test="auditStatus != null">#{auditStatus},</if>
+            <if test="auditTime != null">#{auditTime},</if>
+            <if test="status != null">#{status},</if>
+            <if test="validFlag != null">#{validFlag},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updaterId != null">#{updaterId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="description != null">#{description},</if>
+            <if test="portalVisible != null">#{portalVisible},</if>
+        </trim>
+    </insert>
+
+    <update id="updateMcDb" parameterType="McDbDO">
+        update MC_DB
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="taskId != null">TASK_ID = #{taskId},</if>
+            <if test="sourceSystemId != null">SOURCE_SYSTEM_ID = #{sourceSystemId},</if>
+            <if test="sourceSystemName != null">SOURCE_SYSTEM_NAME = #{sourceSystemName},</if>
+            <if test="version != null">VERSION = #{version},</if>
+            <if test="datasourceId != null">DATASOURCE_ID = #{datasourceId},</if>
+            <if test="ip != null">IP = #{ip},</if>
+            <if test="port != null">PORT = #{port},</if>
+            <if test="datasourceConfig != null">DATASOURCE_CONFIG = #{datasourceConfig},</if>
+            <if test="dbType != null">DB_TYPE = #{dbType},</if>
+            <if test="dbName != null">DB_NAME = #{dbName},</if>
+            <if test="schemaName != null">SCHEMA_NAME = #{schemaName},</if>
+            <if test="safetyLevelId != null">SAFETY_LEVEL_ID = #{safetyLevelId},</if>
+            <if test="belongingLayer != null">BELONGING_LAYER = #{belongingLayer},</if>
+            <if test="belongingSystem != null">BELONGING_SYSTEM = #{belongingSystem},</if>
+            <if test="businessLeader != null">BUSINESS_LEADER = #{businessLeader},</if>
+            <if test="businessLeaderPhone != null">BUSINESS_LEADER_PHONE = #{businessLeaderPhone},</if>
+            <if test="techLeader != null">TECH_LEADER = #{techLeader},</if>
+            <if test="techLeaderPhone != null">TECH_LEADER_PHONE = #{techLeaderPhone},</if>
+            <if test="storageSize != null">STORAGE_SIZE = #{storageSize},</if>
+            <if test="dataQuality != null">DATA_QUALITY = #{dataQuality},</if>
+            <if test="auditStatus != null">AUDIT_STATUS = #{auditStatus},</if>
+            <if test="auditTime != null">AUDIT_TIME = #{auditTime},</if>
+            <if test="status != null">STATUS = #{status},</if>
+            <if test="validFlag != null">VALID_FLAG = #{validFlag},</if>
+            <if test="delFlag != null">DEL_FLAG = #{delFlag},</if>
+            <if test="createBy != null">CREATE_BY = #{createBy},</if>
+            <if test="creatorId != null">CREATOR_ID = #{creatorId},</if>
+            <if test="createTime != null">CREATE_TIME = #{createTime},</if>
+            <if test="updateBy != null">UPDATE_BY = #{updateBy},</if>
+            <if test="updaterId != null">UPDATER_ID = #{updaterId},</if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime},</if>
+            <if test="remark != null">REMARK = #{remark},</if>
+            <if test="description != null">DESCRIPTION = #{description},</if>
+            <if test="portalVisible != null">PORTAL_VISIBLE = #{portalVisible},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteMcDbById" parameterType="Long">
+        delete from MC_DB where ID = #{id}
+    </delete>
+
+    <delete id="deleteMcDbByIds" parameterType="String">
+        delete from MC_DB where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

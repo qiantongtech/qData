@@ -35,6 +35,7 @@ package tech.qiantong.qdata.common.database.dialect;
 import org.springframework.jdbc.core.RowMapper;
 import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
 import tech.qiantong.qdata.common.database.core.DbColumn;
+import tech.qiantong.qdata.common.database.core.DbName;
 import tech.qiantong.qdata.common.database.core.DbTable;
 import tech.qiantong.qdata.common.database.exception.DataQueryException;
 
@@ -58,9 +59,19 @@ public class UnknownDialect extends AbstractDbDialect {
     public String columns(DbQueryProperty dbQueryProperty, String tableName) {
         throw new DataQueryException("不支持的数据库类型");
     }
+    @Override
+    public String getPkColumnNames(DbQueryProperty dbQueryProperty, String tableName) {
+        throw new DataQueryException("不支持的数据库类型");
+    }
 
     @Override
     public String generateCheckTableExistsSQL(DbQueryProperty dbQueryProperty, String tableName) {
+        throw new DataQueryException("不支持的数据库类型");
+    }
+
+
+    @Override
+    public String buildTableNameByDbType(DbQueryProperty dbQueryProperty, String tableName) {
         throw new DataQueryException("不支持的数据库类型");
     }
 
@@ -110,6 +121,11 @@ public class UnknownDialect extends AbstractDbDialect {
 
     @Override
     public String getDbName() {
+        throw new DataQueryException("不支持的数据库类型");
+    }
+
+    @Override
+    public String getDbName(DbName dbName) {
         throw new DataQueryException("不支持的数据库类型");
     }
 

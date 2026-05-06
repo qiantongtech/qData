@@ -32,10 +32,10 @@
 
 package tech.qiantong.qdata.common.database;
 
+import com.alibaba.fastjson2.JSONObject;
+import org.springframework.web.multipart.MultipartFile;
 import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
-import tech.qiantong.qdata.common.database.core.DbColumn;
-import tech.qiantong.qdata.common.database.core.DbTable;
-import tech.qiantong.qdata.common.database.core.PageResult;
+import tech.qiantong.qdata.common.database.core.*;
 
 import java.sql.Connection;
 import java.util.List;
@@ -75,10 +75,38 @@ public interface DbQuery {
 
     List<DbColumn> getTableColumns(DbQueryProperty dbQueryProperty, String tableName);
 
+    /**
+     * 获取库下所有字段信息
+     * @param dbQueryProperty
+     * @return
+     */
+    List<DbColumn> getDbColumns(DbQueryProperty dbQueryProperty);
+
     int generateCheckTableExistsSQL(DbQueryProperty dbQueryProperty, String tableName);
 
     List<String> generateCreateTableSQL(DbQueryProperty dbQueryProperty, String tableName, String tableComment,
                                         List<DbColumn> dbColumnList);
+
+    /**
+     * doris 创建表 SQL
+     *
+     * @param dbQueryProperty
+     * @param tableName
+     * @param tableComment
+     * @param dbColumnList
+     * @param partitionRule
+     * @param bucketRule
+     * @param replica
+     * @return
+     */
+    List<String> generateDorisCreateTableSQL(DbQueryProperty dbQueryProperty, String tableName, String tableComment,
+                                             List<DbColumn> dbColumnList,
+                                             String partitionRule,
+                                             String bucketRule,
+                                             Integer replica);
+
+    int createCollectionWithSchema(DbQueryProperty dbQueryProperty, String tableName, String tableComment,
+                                   List<DbColumn> dbColumnList);
 
     /**
      * 获取指定数据库下 所有的表信息
@@ -90,6 +118,10 @@ public interface DbQuery {
 
     List<DbTable> getTables(DbQueryProperty dbQueryProperty);
 
+    List<DbName> getDbNames(DbName dbName);
+
+    List<FileInfo> getFiles(String path);
+
     /**
      * 获取总数
      *
@@ -97,6 +129,14 @@ public interface DbQuery {
      * @return
      */
     int count(String sql);
+
+    /**
+     * 直接执行sql获取统计数量
+     *
+     * @param sql
+     * @return
+     */
+    int executeCountSql(String sql);
 
     /**
      * 获取总数带查询参数
@@ -203,6 +243,13 @@ public interface DbQuery {
 
     int update(String sql);
 
+    int addTableData(String tableName, Map<String, Object> after);
+
+    int updateTableData(Map<String, Object> after,
+                        List<String> setCols,
+                        List<String> whereCols,
+                        String tableName);
+
     void execute(String sql);
 
     int[] batchUpdate(String sql);
@@ -224,15 +271,75 @@ public interface DbQuery {
      * @param newTableName
      * @return
      */
-    Boolean copyTable(Connection conn,DbQueryProperty dbQueryProperty, String tableName, String newTableName);
+    Boolean copyTable(Connection conn, DbQueryProperty dbQueryProperty, String tableName, String newTableName);
 
-    String getInsertOrUpdateSql(DbQueryProperty property,String tableName, List<String> selectedColumns, List<String> column);
+    /**
+     * 根据一个表创建表到另一个数据库中
+     *
+     * @param otherDbQueryProperty
+     * @param tableName
+     * @param newTableName
+     * @param addColumn            追加字段可空
+     * @return
+     */
+    Boolean copyTableToOtherDb(DbQueryProperty otherDbQueryProperty, String tableName, String newTableName, String newTableComment, List<JSONObject> addColumn, String partitionRule, String bucketRule, Integer replica);
+
+    String getInsertOrUpdateSql(DbQueryProperty property, String tableName, List<String> selectedColumns, List<String> column);
 
 
     /**
      * 通过sql查询字段
+     *
      * @param querySql
      * @return
      */
     List<DbColumn> getColumnsByQuerySql(String querySql);
+
+    void uploadFile(String path, MultipartFile file);
+
+    /**
+     * 获取flink 字段
+     *
+     * @param dbQueryProperty 数据库连接信息
+     * @param config          额外的扩展参数
+     * @param tableName
+     * @param column
+     * @param querySql        该数据如果不为空时、tableName无效
+     * @return
+     */
+    String generateFlinkFields(DbQueryProperty dbQueryProperty, JSONObject config, String tableName, List<String> column, String querySql);
+
+    /**
+     * 获取flink sql
+     *
+     * @param taskExecuteType 执行类型 STREAM：流模式  BATCH：批处理
+     * @param flinkTableName  flink表名
+     * @param tableName       真实表名
+     * @param column          字段
+     * @param querySql
+     * @return
+     */
+    String getFlinkSQL(JSONObject config, String taskExecuteType, String flinkTableName, String tableName, List<String> column, String querySql);
+
+    /**
+     * 获取flink cdc sql
+     *
+     * @param flinkTableName flink表名
+     * @param tableName      真实表名
+     * @param column         字段
+     * @param querySql
+     * @return
+     */
+    String getFlinkCDCSQL(JSONObject config, String flinkTableName, String tableName, List<String> column, String querySql);
+
+    /**
+     * 获取flink sink sql
+     *
+     * @param taskExecuteType 执行类型 STREAM：流模式  BATCH：批处理
+     * @param flinkTableName  flink表名
+     * @param tableName       真实表名
+     * @param column          字段
+     * @return
+     */
+    String getFlinkSinkSQL(JSONObject config, String taskExecuteType, String flinkTableName, String tableName, List<String> column);
 }

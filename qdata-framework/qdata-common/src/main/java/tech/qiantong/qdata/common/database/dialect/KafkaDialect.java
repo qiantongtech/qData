@@ -39,6 +39,7 @@ import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.jdbc.core.RowMapper;
 import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
 import tech.qiantong.qdata.common.database.core.DbColumn;
+import tech.qiantong.qdata.common.database.core.DbName;
 import tech.qiantong.qdata.common.database.core.DbTable;
 import tech.qiantong.qdata.common.database.exception.DataQueryException;
 
@@ -107,6 +108,11 @@ public class KafkaDialect extends AbstractDbDialect {
 
     @Override
     public String getDbName() {
+        return null;
+    }
+
+    @Override
+    public String getDbName(DbName dbName) {
         return null;
     }
 

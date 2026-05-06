@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  Copyright © 2025 Qiantong Technology Co., Ltd.
+  qData Data Middle Platform (Open Source Edition)
+   *
+  License:
+  Released under the Apache License, Version 2.0.
+  You may use, modify, and distribute this software for commercial purposes
+  under the terms of the License.
+   *
+  Special Notice:
+  All derivative versions are strictly prohibited from modifying or removing
+  the default system logo and copyright information.
+  For brand customization, please apply for brand customization authorization via official channels.
+   *
+  More information: https://qdata.qiantong.tech/business.html
+   *
+  ============================================================================
+   *
+  版权所有 © 2025 江苏千桐科技有限公司
+  qData 数据中台（开源版）
+   *
+  许可协议：
+  本项目基于 Apache License 2.0 开源协议发布，
+  允许在遵守协议的前提下进行商用、修改和分发。
+   *
+  特别说明：
+  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
+  如需定制品牌，请通过官方渠道申请品牌定制授权。
+   *
+  更多信息请访问：https://qdata.qiantong.tech/business.html
+-->
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.qiantong.qdata.module.system.mapper.SysUserRoleMapper">
+
+	<resultMap type="SysUserRole" id="SysUserRoleResult">
+		<result property="userId"     column="user_id"      />
+		<result property="roleId"     column="role_id"      />
+	</resultMap>
+
+	<delete id="deleteUserRoleByUserId" parameterType="Long">
+		delete from system_user_role
+		where
+			user_id=#{userId}
+	</delete>
+
+	<select id="countUserRoleByRoleId" resultType="Integer">
+	    select count(1) from system_user_role where role_id=#{roleId}
+	</select>
+
+	<select id="getUserRoleByRoleId" resultType="Integer" resultMap="SysUserRoleResult">
+	    select user_id,role_id from system_user_role where user_id=#{userId}
+	</select>
+
+	<select id="getByUserIdList" resultMap="SysUserRoleResult">
+	    select user_id,role_id from system_user_role where user_id in
+		<foreach collection="userIdList" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+	<delete id="deleteUserRole" parameterType="Long">
+ 		delete from system_user_role where user_id in
+ 		<foreach collection="array" item="userId" open="(" separator="," close=")">
+ 			#{userId}
+        </foreach>
+ 	</delete>
+
+	<delete id="deleteUserRoleList">
+		delete from system_user_role where user_id in
+		<foreach collection="sysUserRoleList" item="item" open="(" separator="," close=")">
+			#{item.userId}
+		</foreach>
+		AND role_id in
+		<foreach collection="sysUserRoleList" item="item" open="(" separator="," close=")">
+			#{item.roleId}
+		</foreach>
+ 	</delete>
+
+	<insert id="batchUserRole">
+		insert into system_user_role(user_id, role_id) values
+		<foreach item="item" index="index" collection="list" separator=",">
+			(#{item.userId},#{item.roleId})
+		</foreach>
+	</insert>
+
+	<delete id="deleteUserRoleInfo" parameterType="SysUserRole">
+		delete from system_user_role where user_id=#{userId} and role_id=#{roleId}
+	</delete>
+
+	<delete id="deleteUserRoleInfos">
+	    delete from system_user_role where role_id=#{roleId} and user_id in
+ 	    <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+ 	        #{userId}
+            </foreach>
+	</delete>
+</mapper>

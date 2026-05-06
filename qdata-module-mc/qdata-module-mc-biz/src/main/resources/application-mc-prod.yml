@@ -1,0 +1,23 @@
+# xxljob 配置
+xxl:
+  job:
+    admin:
+      addresses: http://127.0.0.1:8086/xxl-job-admin
+      accessToken: default_token
+      timeout: 3
+    ### xxl-job 执行器
+    executor:
+      ### id 需在xxl-job-admin 中配置后复制id到这里
+      id: 1
+      ### 名称 需在xxl-job-admin 中配置后复制AppName到这里
+      appname: qdata
+      ### 执行器注册地址：默认使用地址进行注册，否则如果地址为空则使用 IP：端口。
+      address:
+      ### ip
+      ip: 192.168.0.5
+      ### 端口
+      port: 9999
+      ### 日志存储地址
+      logpath: ${user.dir}/data/applogs/xxl-job/jobhandler
+      ### 日志保留天数
+      logretentiondays: 30

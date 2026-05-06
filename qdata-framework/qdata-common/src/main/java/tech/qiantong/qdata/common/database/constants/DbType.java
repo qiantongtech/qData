@@ -81,9 +81,9 @@ public enum DbType {
     /**
      * POSTGRESQL
      */
-    POSTGRE_SQL("5",
-            "PostgreSql数据库",
-            "jdbc:postgresql://${host}:${port}/${dbName}",
+    POSTGRE_SQL("PostgreSQL",
+            "PostgreSQL数据库",
+            "jdbc:postgresql://${host}:${port}/${dbName}?stringtype=unspecified",
             "LENGTH",
             "SELECT COUNT(1) FROM {tableName}",
             "SELECT {tableFieldName} FROM {tableName} ORDER BY {orderBy} DESC LIMIT {pageSize} OFFSET ({pageNo}-1)*{pageSize}"),
@@ -128,10 +128,28 @@ public enum DbType {
      */
     KINGBASE8("Kingbase8",
             "人大金仓数据库",
-            "jdbc:kingbase8://${host}:${port}/${dbName}",
+            "jdbc:kingbase8://${host}:${port}/${dbName}?stringtype=unspecified",
             "LENGTH",
             "SELECT COUNT(1) FROM {tableName}",
             "SELECT {tableFieldName} FROM {tableName} ORDER BY {orderBy} DESC LIMIT {pageSize} OFFSET ({pageNo}-1)*{pageSize} "),
+    /**
+     * 人大金仓数据库
+     */
+    HIVE("Hive",
+            "Hive on HBase",
+            "jdbc:hive2://${host}:${port}/${dbName}",
+            "LENGTH",
+            null,
+            null),
+    /**
+     * 人大金仓数据库
+     */
+    HDFS("HDFS",
+            "HDFS数据库",
+            "jdbc:kingbase8://${host}:${port}",
+            "LENGTH",
+            null,
+            null),
     /**
      * Kafka
      */
@@ -141,15 +159,81 @@ public enum DbType {
             "LENGTH",
             "SELECT COUNT(1) FROM {tableName}",
             "SELECT {tableFieldName} FROM {tableName} ORDER BY {orderBy} DESC LIMIT {pageSize} OFFSET ({pageNo}-1)*{pageSize}"),
+
+    /**
+     * Phoenix(HBase)
+     */
+    PHOENIX("Phoenix",
+            "Phoenix数据库",
+            "jdbc:phoenix:${host}:${port}:/${dbName}",
+            "LENGTH",
+            "SELECT COUNT(1) FROM {tableName}",
+            "SELECT {tableFieldName} FROM {tableName} ORDER BY {orderBy} DESC LIMIT ({pageNo}-1)*{pageSize},{pageSize}"),
+
     /**
      * Doris
      */
     DORIS("Doris",
-                  "Doris数据库",
-                  "jdbc:mysql://${host}:${port}/${dbName}?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&rewriteBatchedStatements=true&useServerPrepStmts=true&serverTimezone=GMT%2B8",
-                  "LENGTH",
-                  "SELECT COUNT(1) FROM {tableName}",
-                  "SELECT {tableFieldName} FROM {tableName} ORDER BY {orderBy} DESC LIMIT ({pageNo}-1)*{pageSize},{pageSize}");
+            "Doris数据库",
+            "jdbc:mysql://${host}:${port}/${dbName}?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&rewriteBatchedStatements=true&useServerPrepStmts=true&serverTimezone=GMT%2B8",
+            "LENGTH",
+            "SELECT COUNT(1) FROM {tableName}",
+            "SELECT {tableFieldName} FROM {tableName} ORDER BY {orderBy} DESC LIMIT ({pageNo}-1)*{pageSize},{pageSize}"),
+
+    /**
+     * ClickHouse
+     */
+    CLICK_HOUSE("ClickHouse",
+            "ClickHouse数据库",
+            "jdbc:clickhouse://${host}:${port}/${dbName}",
+            "LENGTH",
+            "SELECT COUNT(1) FROM {tableName}",
+            "SELECT {tableFieldName} FROM {tableName} ORDER BY {orderBy} DESC LIMIT {pageSize} OFFSET ({pageNo}-1)*{pageSize}"),
+    /**
+     * MongoDB（官方 Java Driver）
+     */
+    MONGODB("MongoDB",
+            "MongoDB数据库",
+            "mongodb://${user}:${password}@${host}:${port}/${dbName}?authSource=${authDb}",
+            "",
+            "",
+            ""),
+
+    /**
+     * 神通数据库（官方 Java Driver）
+     */
+    OSCAR("OSCAR",
+            "神通数据库",
+            "jdbc:oscar://${host}:${port}/${dbName}",
+            "LENGTH",
+            "SELECT COUNT(1) FROM {tableName}",
+            "SELECT {tableFieldName} FROM {tableName} ORDER BY {orderBy} DESC LIMIT ({pageNo}-1)*{pageSize},{pageSize}"),
+
+    /**
+     * DB2 idm
+     */
+    DB2("DB2",
+            "DB2",
+            "jdbc:db2://${host}:${port}/${dbName}",
+            "LENGTH",
+            "SELECT COUNT(1) FROM {tableName}",
+            "SELECT * FROM (SELECT *, ROW_NUMBER() OVER (ORDER BY 1) AS rownum FROM {tableName} ORDER BY {orderBy} DESC) AS temp_table WHERE rownum BETWEEN  ( {pageNo} - 1 ) * {pageSize} AND ( {pageNo} - 1 ) * {pageSize} + {pageSize})"),
+    /**
+     * Redis
+     */
+    REDIS("Redis", "Redis", "", "", "", ""),
+    /**
+     * RabbitMQ
+     */
+    RABBITMQ("RabbitMQ", "RabbitMQ消息队列", "", "", "", ""),
+    /**
+     * FTP
+     */
+    FTP("FTP", "FTP", "", "", "", ""),
+    /**
+     * FTP
+     */
+    OSS_ALIYUN("OSS-ALIYUN", "OSS(阿里云)", "", "", "", "");
 
 
     /**
@@ -181,6 +265,7 @@ public enum DbType {
      * 分页查询
      */
     private String selectPage;
+
 
     public String getLengthFun() {
         return lengthFun;

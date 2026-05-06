@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.RowMapper;
 import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
 import tech.qiantong.qdata.common.database.core.DbColumn;
+import tech.qiantong.qdata.common.database.core.DbName;
 import tech.qiantong.qdata.common.database.core.DbTable;
 import tech.qiantong.qdata.common.database.utils.DatabaseUtil;
 
@@ -53,6 +54,9 @@ public class DorisDialect extends AbstractDbDialect {
     public RowMapper<DbColumn> columnMapper() {
         return (ResultSet rs, int rowNum) -> {
             DbColumn entity = new DbColumn();
+            if (DatabaseUtil.hasColumn(rs, "TABLENAME")) {
+                entity.setTableName(rs.getString("TABLENAME"));
+            }
             entity.setColName(rs.getString("COLNAME"));
             entity.setDataType(rs.getString("DATATYPE"));
             entity.setDataLength(rs.getString("DATALENGTH"));
@@ -85,6 +89,24 @@ public class DorisDialect extends AbstractDbDialect {
                 " where table_schema = '" + dbQueryProperty.getDbName() + "' and table_name = '" + tableName + "' order by ordinal_position ";
     }
 
+
+    @Override
+    public String getDbColumns(DbQueryProperty dbQueryProperty) {
+        return "select " +
+                "table_name              AS TABLENAME, " +
+                "column_name AS COLNAME" +
+                ", ordinal_position AS COLPOSITION" +
+                ", column_default AS DATADEFAULT" +
+                ", is_nullable AS NULLABLE" +
+                ", data_type AS DATATYPE" +
+                ", character_maximum_length AS DATALENGTH" +
+                ", numeric_precision AS DATAPRECISION" +
+                ", numeric_scale AS DATASCALE" +
+                ", column_comment AS COLCOMMENT " +
+                "from information_schema.columns" +
+                " where table_schema = '" + dbQueryProperty.getDbName() + "' order by table_name, ordinal_position ";
+    }
+
     @Override
     public String generateCheckTableExistsSQL(DbQueryProperty dbQueryProperty, String tableName) {
         return "SELECT " +
@@ -101,6 +123,16 @@ public class DorisDialect extends AbstractDbDialect {
         }
 
         return tableName;
+    }
+
+
+    @Override
+    public String getPkColumnNames(DbQueryProperty dbQueryProperty, String tableName) {
+        return "SHOW CREATE TABLE " + dbQueryProperty.getDbName() + "." + tableName;
+    }
+    @Override
+    public String getPkColumnNames(DbQueryProperty dbQueryProperty) {
+        return "SHOW CREATE TABLE " + dbQueryProperty.getDbName() ;
     }
 
     @Override
@@ -229,6 +261,132 @@ public class DorisDialect extends AbstractDbDialect {
         return sqlList;
     }
 
+
+    @Override
+    public List<String> someInternalSqlDorisGenerator(DbQueryProperty dbQueryProperty, String tableName, String tableComment, List<DbColumn> dbColumnList, String partitionRule, String bucketRule, Integer replica) {
+        List<String> sqlList = new ArrayList<>();
+        List<String> primaryKeys = new ArrayList<>();
+        StringBuilder sql = new StringBuilder();
+
+        sql.append("CREATE TABLE ").append(tableName).append(" (\n");
+
+        for (DbColumn column : dbColumnList) {
+            String columnType = column.getDataType();
+            String colName = column.getColName();
+
+            sql.append("  ").append(this.escapeReservedKeyword(colName)).append(" ");
+
+            // 映射 Doris 支持的数据类型
+            switch (columnType.toUpperCase()) {
+                case "VARCHAR":
+                case "VARCHAR2":
+                    sql.append("VARCHAR");
+                    if (StringUtils.isNotEmpty(column.getDataLength())) {
+                        sql.append("(").append(column.getDataLength()).append(")");
+                    } else {
+                        sql.append("(255)");
+                    }
+                    break;
+                case "CHAR":
+                    sql.append("CHAR");
+                    if (StringUtils.isNotEmpty(column.getDataLength())) {
+                        sql.append("(").append(column.getDataLength()).append(")");
+                    } else {
+                        sql.append("(1)");
+                    }
+                    break;
+                case "TEXT":
+                    sql.append("TEXT");
+                    break;
+                case "INT":
+                case "INTEGER":
+                    sql.append("INT");
+                    break;
+                case "BIGINT":
+                    sql.append("BIGINT");
+                    break;
+                case "TINYINT":
+                    sql.append("TINYINT");
+                    break;
+                case "DECIMAL":
+                    sql.append(generateColumnSQLDORIS("DECIMAL", column.getDataLength(), column.getDataScale(), 65, 30));
+                    break;
+                case "FLOAT":
+                    sql.append("FLOAT");
+                    break;
+                case "DOUBLE":
+                    sql.append("DOUBLE");
+                    break;
+                case "DATE":
+                case "DATETIME":
+                case "TIMESTAMP":
+                    sql.append("DATETIME");
+                    break;
+                default:
+                    sql.append("VARCHAR(255)"); // fallback 处理
+                    break;
+            }
+
+            // NOT NULL
+            if (!column.getNullable()) {
+                sql.append(" NOT NULL");
+            }
+
+            String columnTypeResolved = sql.substring(sql.lastIndexOf(" ") + 1); // 获取当前已拼接的数据类型
+            String defaultClause = buildDorisDefaultClause(columnTypeResolved, column.getDataDefault());
+            sql.append(defaultClause);
+
+            // 注释
+            if (StringUtils.isNotEmpty(column.getColComment())) {
+                sql.append(" COMMENT '").append(DatabaseUtil.escapeSingleQuotes(column.getColComment())).append("'");
+            }
+
+            if (Boolean.TRUE.equals(column.getColKey())) {
+                primaryKeys.add(colName);
+            }
+
+            sql.append(",\n");
+        }
+
+        // 去掉最后一个逗号
+        sql.setLength(sql.length() - 2);
+        sql.append("\n)");
+
+        // Doris 必须指定 KEY 类型
+        if (!primaryKeys.isEmpty()) {
+            sql.append("\nUNIQUE KEY (");
+            for (String pk : primaryKeys) {
+                sql.append("`").append(pk).append("`, ");
+            }
+            sql.setLength(sql.length() - 2);
+            sql.append(")");
+        } else {
+            // 无主键则用第一列作 DUPLICATE KEY
+            sql.append("\nDUPLICATE KEY (`").append(dbColumnList.get(0).getColName()).append("`)");
+        }
+
+        //判断是否添加分区
+        if (StringUtils.isNotBlank(partitionRule)) {
+            sql.append("\n").append(partitionRule);
+        }
+
+        // 分桶策略（必需）
+        if (StringUtils.isBlank(bucketRule)) {
+            sql.append("\nDISTRIBUTED BY HASH(`").append(dbColumnList.get(0).getColName()).append("`) BUCKETS AUTO");
+        } else {
+            sql.append("\n").append(bucketRule);
+        }
+
+        // 表属性（含表注释）
+        sql.append("\nPROPERTIES (\n");
+        sql.append("  \"replication_num\" = \"" + replica + "\"");
+        sql.append("\n)");
+        sqlList.add(sql.toString());
+        //表注释
+        sqlList.add("ALTER TABLE " + tableName + " MODIFY COMMENT '" + tableComment + "'");
+        return sqlList;
+    }
+
     /**
      * 构造 Doris 合法的 DEFAULT 子句（仅允许合法字面量，防止建表失败）
      *
@@ -348,6 +506,25 @@ public class DorisDialect extends AbstractDbDialect {
 
 
     @Override
+    public String getDbName(DbName req) {
+        int level = req == null ? 1 : req.getLevel() + 1;
+        // Doris 默认只有 Database 层，总层级=1
+        if (level == 1) {
+            return "SHOW DATABASES";
+        }
+        throw new UnsupportedOperationException("Doris 默认仅支持 level=1（Database 层）");
+    }
+
+    @Override
+    public RowMapper<DbName> firstLevelMapper(int level) {
+        return (rs, i) -> DbName.builder()
+                .dbName(rs.getString(1))  // Doris 的第一列就是 Database 名
+                .level(1)
+                .totalLevels(1)
+                .build();
+    }
+
+    @Override
     public String getInsertOrUpdateSql(String tableName, String where, String tableFieldName, String tableFieldValue, String setValue) {
         String sql = "INSERT INTO {tableName} ({tableFieldName}) values({tableFieldValue}) ON DUPLICATE KEY UPDATE {setValue}";
         sql = StringUtils
@@ -366,5 +543,51 @@ public class DorisDialect extends AbstractDbDialect {
             entity.setTableComment(rs.getString("TABLECOMMENT"));
             return entity;
         };
+    }
+
+    @Override
+    public String getFlinkCDCSQL(DbQueryProperty property, String flinkTableName, String tableName, String tableFieldName) {
+        String sql = "CREATE TABLE ${flinkTableName} (${tableFieldName}) " +
+                "WITH ( 'connector' = 'dm-cdc'," +
+                " 'hostname' = '${host}' ," +
+                "'port' = '${port}' ," +
+                "'username' = '${username}' ," +
+                "'password' = '${password}'," +
+                "'database-name' = '${tableName}' ," +
+                "'table-name' = '${dbName}' ," +
+                "'server-time-zone' = 'Asia/Shanghai'," +
+                "'scan.incremental.snapshot.enabled' = 'true'," +
+                "'debezium.snapshot.mode'='latest-offset')";
+        sql = StringUtils
+                .replace(sql, "${flinkTableName}", flinkTableName)
+                .replace("${tableName}", tableName)
+                .replace("${host}", property.getHost())
+                .replace("${tableFieldName}", tableFieldName)
+                .replace("${port}", String.valueOf(property.getPort()))
+                .replace("${dbName}", property.getDbName())
+                .replace("${username}", property.getUsername())
+                .replace("${password}", property.getPassword());
+        return sql;
+    }
+
+    @Override
+    public String getFlinkSQL(DbQueryProperty property, String flinkTableName, String tableName, String tableFieldName) {
+        String sql = "CREATE TABLE ${flinkTableName} (${tableFieldName}) " +
+                "WITH ( 'connector' = 'jdbc'," +
+                "'url' = 'jdbc:dm://${host}:${port}/${dbName}?STU&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf-8&schema=${dbName}&serverTimezone=Asia/Shanghai'," +
+                "'table-name' = '${tableName}'," +
+                "'username' = '${username}'," +
+                "'password' = '${password}')";
+
+        sql = StringUtils
+                .replace(sql, "${flinkTableName}", flinkTableName)
+                .replace("${tableName}", tableName)
+                .replace("${host}", property.getHost())
+                .replace("${tableFieldName}", tableFieldName)
+                .replace("${port}", String.valueOf(property.getPort()))
+                .replace("${dbName}", property.getDbName())
+                .replace("${username}", property.getUsername())
+                .replace("${password}", property.getPassword());
+        return sql;
     }
 }

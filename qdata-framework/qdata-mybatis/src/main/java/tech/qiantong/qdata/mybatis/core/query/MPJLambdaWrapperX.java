@@ -34,14 +34,18 @@ package tech.qiantong.qdata.mybatis.core.query;
 
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.github.yulichang.toolkit.MPJWrappers;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * 拓展 MyBatis Plus Join QueryWrapper 类，主要增加如下功能：
@@ -342,4 +346,17 @@ public class MPJLambdaWrapperX<T> extends MPJLambdaWrapper<T> {
         return this;
     }
 
+    public MPJLambdaWrapperX<T> orderBy(String orderByColumn, String isAsc, Collection<String> allowedColumns) {
+        if (StringUtils.hasText(orderByColumn)) {
+            List<String> columns = Arrays.stream(orderByColumn.split(","))
+                    .map(StrUtil::toUnderlineCase).collect(Collectors.toList());
+            for (String column : columns) {
+                if (!allowedColumns.contains(column)) {
+                    throw new IllegalArgumentException("非法的排序字段：" + column);
+                }
+            }
+            super.orderByStr(true, "asc".equals(isAsc), columns);
+        }
+        return this;
+    }
 }

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  Copyright © 2025 Qiantong Technology Co., Ltd.
+  qData Data Middle Platform (Open Source Edition)
+   *
+  License:
+  Released under the Apache License, Version 2.0.
+  You may use, modify, and distribute this software for commercial purposes
+  under the terms of the License.
+   *
+  Special Notice:
+  All derivative versions are strictly prohibited from modifying or removing
+  the default system logo and copyright information.
+  For brand customization, please apply for brand customization authorization via official channels.
+   *
+  More information: https://qdata.qiantong.tech/business.html
+   *
+  ============================================================================
+   *
+  版权所有 © 2025 江苏千桐科技有限公司
+  qData 数据中台（开源版）
+   *
+  许可协议：
+  本项目基于 Apache License 2.0 开源协议发布，
+  允许在遵守协议的前提下进行商用、修改和分发。
+   *
+  特别说明：
+  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
+  如需定制品牌，请通过官方渠道申请品牌定制授权。
+   *
+  更多信息请访问：https://qdata.qiantong.tech/business.html
+-->
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.qiantong.qdata.module.system.ca.mapper.CaSubjectMapper">
+
+    <resultMap type="CaSubject" id="CaSubjectResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="cn"    column="cn"    />
+        <result property="ou"    column="ou"    />
+        <result property="o"    column="o"    />
+        <result property="l"    column="l"    />
+        <result property="st"    column="st"    />
+        <result property="c"    column="c"    />
+        <result property="certificate"    column="certificate"    />
+        <result property="privateKey"    column="private_key"    />
+        <result property="validFlag"    column="valid_flag"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectCaSubjectVo">
+        select id, name, cn, ou, o, l, st, c, certificate, private_key, valid_flag, del_flag, create_by, creator_id, create_time, update_by, update_time, remark from ca_subject
+    </sql>
+
+    <select id="selectCaSubjectList" parameterType="CaSubject" resultMap="CaSubjectResult">
+        <include refid="selectCaSubjectVo"/>
+        <where>
+            <if test="cn != null  and cn != ''"> and cn = #{cn}</if>
+            <if test="ou != null  and ou != ''"> and ou = #{ou}</if>
+            <if test="o != null  and o != ''"> and o = #{o}</if>
+            <if test="l != null  and l != ''"> and l = #{l}</if>
+            <if test="st != null  and st != ''"> and st = #{st}</if>
+            <if test="c != null  and c != ''"> and c = #{c}</if>
+            <if test="certificate != null  and certificate != ''"> and certificate = #{certificate}</if>
+            <if test="privateKey != null  and privateKey != ''"> and private_key = #{privateKey}</if>
+            <if test="validFlag != null "> and valid_flag = #{validFlag}</if>
+            <if test="creatorId != null "> and creator_id = #{creatorId}</if>
+
+            <choose>
+                <!-- 如果数据库是 kingBase -->
+                <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'kingbase8'">
+                    <if test="name != null  and name != ''"> and name like '%' || #{name} || '%'</if>
+                </when>
+
+                <!-- 如果是其他数据库（如 MySQL、 DM） -->
+                <otherwise>
+                    <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <select id="selectCaSubjectById" parameterType="Long" resultMap="CaSubjectResult">
+        <include refid="selectCaSubjectVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertCaSubject" parameterType="CaSubject" useGeneratedKeys="true" keyProperty="id">
+        insert into ca_subject
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="cn != null and cn != ''">cn,</if>
+            <if test="ou != null and ou != ''">ou,</if>
+            <if test="o != null and o != ''">o,</if>
+            <if test="l != null and l != ''">l,</if>
+            <if test="st != null and st != ''">st,</if>
+            <if test="c != null and c != ''">c,</if>
+            <if test="certificate != null and certificate != ''">certificate,</if>
+            <if test="privateKey != null and privateKey != ''">private_key,</if>
+            <if test="validFlag != null">valid_flag,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="cn != null and cn != ''">#{cn},</if>
+            <if test="ou != null and ou != ''">#{ou},</if>
+            <if test="o != null and o != ''">#{o},</if>
+            <if test="l != null and l != ''">#{l},</if>
+            <if test="st != null and st != ''">#{st},</if>
+            <if test="c != null and c != ''">#{c},</if>
+            <if test="certificate != null and certificate != ''">#{certificate},</if>
+            <if test="privateKey != null and privateKey != ''">#{privateKey},</if>
+            <if test="validFlag != null">#{validFlag},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCaSubject" parameterType="CaSubject">
+        update ca_subject
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="cn != null and cn != ''">cn = #{cn},</if>
+            <if test="ou != null and ou != ''">ou = #{ou},</if>
+            <if test="o != null and o != ''">o = #{o},</if>
+            <if test="l != null and l != ''">l = #{l},</if>
+            <if test="st != null and st != ''">st = #{st},</if>
+            <if test="c != null and c != ''">c = #{c},</if>
+            <if test="certificate != null and certificate != ''">certificate = #{certificate},</if>
+            <if test="privateKey != null and privateKey != ''">private_key = #{privateKey},</if>
+            <if test="validFlag != null">valid_flag = #{validFlag},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCaSubjectById" parameterType="Long">
+        delete from ca_subject where id = #{id}
+    </delete>
+
+    <delete id="deleteCaSubjectByIds" parameterType="String">
+        delete from ca_subject where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

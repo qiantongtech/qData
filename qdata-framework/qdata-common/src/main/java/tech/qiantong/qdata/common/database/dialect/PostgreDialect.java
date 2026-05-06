@@ -32,12 +32,14 @@
 
 package tech.qiantong.qdata.common.database.dialect;
 
+import com.alibaba.fastjson2.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.RowMapper;
 import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
 import tech.qiantong.qdata.common.database.core.DbColumn;
+import tech.qiantong.qdata.common.database.core.DbName;
 import tech.qiantong.qdata.common.database.core.DbTable;
-import tech.qiantong.qdata.common.database.utils.MD5Util;
+import tech.qiantong.qdata.common.database.utils.DatabaseUtil;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -54,44 +56,73 @@ public class PostgreDialect extends AbstractDbDialect {
 
     @Override
     public String columns(String dbName, String tableName) {
-        return "select col.column_name AS COLNAME, col.ordinal_position AS COLPOSITION, col.column_default AS DATADEFAULT, col.is_nullable AS NULLABLE, col.udt_name AS DATATYPE, " +
-                "col.character_maximum_length AS DATALENGTH, col.numeric_precision AS DATAPRECISION, col.numeric_scale AS DATASCALE, des.description AS COLCOMMENT, " +
-                "case when t.colname is null then 0 else 1 end as COLKEY " +
-                "from information_schema.columns col left join pg_description des on col.table_name::regclass = des.objoid and col.ordinal_position = des.objsubid " +
-                "left join ( " +
-                "select pg_attribute.attname as colname from pg_constraint inner join pg_class on pg_constraint.conrelid = pg_class.oid " +
-                "inner join pg_attribute on pg_attribute.attrelid = pg_class.oid and pg_attribute.attnum = any(pg_constraint.conkey) " +
-                "where pg_class.relname = '" + tableName + "' and pg_constraint.contype = 'p' " +
-                ") t on t.colname = col.column_name " +
-                "where col.table_catalog = '" + dbName + "' and col.table_schema = 'public' and col.table_name = '" + tableName + "' order by col.ordinal_position ";
+        return "SELECT a.attname AS COLNAME," +
+                " CASE " +
+                "        WHEN t.typname = 'int2' THEN 'SMALLINT' " +
+                "        WHEN t.typname = 'int4' THEN 'INTEGER' " +
+                "        WHEN t.typname = 'int8' THEN 'BIGINT' " +
+                "        WHEN t.typname = 'float4' THEN 'REAL' " +
+                "        WHEN t.typname = 'float8' THEN 'DOUBLE PRECISION' " +
+                "        WHEN t.typname = 'varchar' THEN 'VARCHAR' " +
+                "        WHEN t.typname = 'bpchar' THEN 'CHAR' " +
+                "        WHEN t.typname = 'text' THEN 'TEXT' " +
+                "        ELSE t.typname  " +
+                "    END AS DATATYPE," +
+                "CASE WHEN t.typname IN ('varchar', 'char', 'bpchar', 'text') THEN a.atttypmod - 4 ELSE a.attlen END AS DATALENGTH, " +
+                "CASE WHEN t.typname IN ('numeric', 'decimal', 'float4', 'float8') THEN (a.atttypmod - 4) >> 16 ELSE NULL END AS DATAPRECISION, " +
+                "CASE WHEN t.typname IN ('numeric', 'decimal', 'float4', 'float8') THEN (a.atttypmod - 4) & 65535 ELSE NULL END AS DATASCALE, " +
+                "CASE WHEN con.contype = 'p' THEN TRUE ELSE FALSE END AS COLKEY, " +
+                "NOT a.attnotnull AS NULLABLE, a.attnum AS COLPOSITION, " +
+                "regexp_replace(pg_get_expr(d.adbin, d.adrelid), '(::[a-zA-Z0-9_]+)+$', '') AS DATADEFAULT," +
+                "col_description(a.attrelid, a.attnum) AS COLCOMMENT " +
+                "FROM pg_attribute a " +
+                "JOIN pg_class c ON a.attrelid = c.oid " +
+                "JOIN pg_type t ON a.atttypid = t.oid " +
+                "LEFT JOIN pg_constraint con ON con.conrelid = c.oid AND a.attnum = ANY(con.conkey) AND con.contype = 'p' " +
+                "LEFT JOIN pg_attrdef d ON a.attrelid = d.adrelid AND a.attnum = d.adnum " +
+                "WHERE (SELECT current_database()) =  '" + dbName + "'  " +
+                "AND c.relname =  '" + tableName + "'  " +
+                "AND c.relnamespace = (SELECT oid FROM pg_namespace WHERE nspname =  'public' ) " +
+                "AND a.attnum > 0 " +  // 过滤掉系统隐藏列
+                "ORDER BY a.attnum";
     }
 
     @Override
     public String columns(DbQueryProperty dbQueryProperty, String tableName) {
-        return "select col.column_name AS COLNAME, col.ordinal_position AS COLPOSITION, col.column_default AS DATADEFAULT, col.is_nullable AS NULLABLE, col.udt_name AS DATATYPE, " +
-                "col.character_maximum_length AS DATALENGTH, col.numeric_precision AS DATAPRECISION, col.numeric_scale AS DATASCALE, des.description AS COLCOMMENT, " +
-                "case when t.colname is null then 0 else 1 end as COLKEY " +
-                "from information_schema.columns col left join pg_description des on col.table_name::regclass = des.objoid and col.ordinal_position = des.objsubid " +
-                "left join ( " +
-                "select pg_attribute.attname as colname from pg_constraint inner join pg_class on pg_constraint.conrelid = pg_class.oid " +
-                "inner join pg_attribute on pg_attribute.attrelid = pg_class.oid and pg_attribute.attnum = any(pg_constraint.conkey) " +
-                "where pg_class.relname = '" + tableName + "' and pg_constraint.contype = 'p' " +
-                ") t on t.colname = col.column_name " +
-                "where col.table_catalog = '" + dbQueryProperty.getDbName() + "' and col.table_schema = 'public' and col.table_name = '" + tableName + "' order by col.ordinal_position ";
+        return "SELECT a.attname AS COLNAME," +
+                " CASE " +
+                "        WHEN t.typname = 'int2' THEN 'SMALLINT' " +
+                "        WHEN t.typname = 'int4' THEN 'INTEGER' " +
+                "        WHEN t.typname = 'int8' THEN 'BIGINT' " +
+                "        WHEN t.typname = 'float4' THEN 'REAL' " +
+                "        WHEN t.typname = 'float8' THEN 'DOUBLE PRECISION' " +
+                "        WHEN t.typname = 'varchar' THEN 'VARCHAR' " +
+                "        WHEN t.typname = 'bpchar' THEN 'CHAR' " +
+                "        WHEN t.typname = 'text' THEN 'TEXT' " +
+                "        ELSE t.typname  " +
+                "    END AS DATATYPE," +
+                "CASE WHEN t.typname IN ('varchar', 'char', 'bpchar', 'text') THEN a.atttypmod - 4 ELSE a.attlen END AS DATALENGTH, " +
+                "CASE WHEN t.typname IN ('numeric', 'decimal', 'float4', 'float8') THEN (a.atttypmod - 4) >> 16 ELSE NULL END AS DATAPRECISION, " +
+                "CASE WHEN t.typname IN ('numeric', 'decimal', 'float4', 'float8') THEN (a.atttypmod - 4) & 65535 ELSE NULL END AS DATASCALE, " +
+                "CASE WHEN con.contype = 'p' THEN TRUE ELSE FALSE END AS COLKEY, " +
+                "NOT a.attnotnull AS NULLABLE, a.attnum AS COLPOSITION, " +
+                "regexp_replace(pg_get_expr(d.adbin, d.adrelid), '(::[a-zA-Z0-9_]+)+$', '') AS DATADEFAULT," +
+                "col_description(a.attrelid, a.attnum) AS COLCOMMENT " +
+                "FROM pg_attribute a " +
+                "JOIN pg_class c ON a.attrelid = c.oid " +
+                "JOIN pg_type t ON a.atttypid = t.oid " +
+                "LEFT JOIN pg_constraint con ON con.conrelid = c.oid AND a.attnum = ANY(con.conkey) AND con.contype = 'p' " +
+                "LEFT JOIN pg_attrdef d ON a.attrelid = d.adrelid AND a.attnum = d.adnum " +
+                "WHERE (SELECT current_database()) =  '" + dbQueryProperty.getDbName() + "'  " +
+                "AND c.relname =  '" + tableName + "'  " +
+                "AND c.relnamespace = (SELECT oid FROM pg_namespace WHERE nspname =  '" + dbQueryProperty.getSid() + "' ) " +
+                "AND a.attnum > 0 " +  // 过滤掉系统隐藏列
+                "ORDER BY a.attnum";
     }
 
     @Override
     public String generateCheckTableExistsSQL(DbQueryProperty dbQueryProperty, String tableName) {
         return "SELECT COUNT(*) FROM pg_catalog.pg_tables WHERE schemaname = '" + dbQueryProperty.getSid() + "' AND tablename = '" + tableName + "';";
-    }
-
-    @Override
-    public String buildTableNameByDbType(DbQueryProperty dbQueryProperty, String tableName) {
-        if(StringUtils.isNotEmpty(dbQueryProperty.getSid())){
-            return dbQueryProperty.getSid() + "." + tableName;
-        }
-
-        return  " public." + tableName;
     }
 
     @Override
@@ -136,6 +167,8 @@ public class PostgreDialect extends AbstractDbDialect {
                     case "TINYINT":
                         sql.append("SMALLINT"); // PostgreSQL没有TINYINT，使用SMALLINT
                         break;
+                    case "NUMERIC":
+                    case "NUMBER":
                     case "DECIMAL":
                         sql.append("NUMERIC");
                         if (StringUtils.isNotEmpty(column.getDataLength())) {
@@ -211,7 +244,7 @@ public class PostgreDialect extends AbstractDbDialect {
         // 添加表备注
         if (StringUtils.isNotEmpty(tableComment)) {
             StringBuilder sql = new StringBuilder();
-            sql.append("COMMENT ON TABLE ").append(tableName).append(" IS '").append(MD5Util.escapeSingleQuotes(tableComment)).append("'\n");
+            sql.append("COMMENT ON TABLE ").append(tableName).append(" IS '").append(DatabaseUtil.escapeSingleQuotes(tableComment)).append("'\n");
             sqlList.add(sql.toString());
         }
 
@@ -221,7 +254,7 @@ public class PostgreDialect extends AbstractDbDialect {
                 StringBuilder sql = new StringBuilder();
                 sql.append("COMMENT ON COLUMN ").append(tableName).append(".")
                         .append(column.getColName()).append(" IS '")
-                        .append(MD5Util.escapeSingleQuotes(column.getColComment())).append("'\n");
+                        .append(DatabaseUtil.escapeSingleQuotes(column.getColComment())).append("'\n");
                 sqlList.add(sql.toString());
             }
         }
@@ -236,15 +269,37 @@ public class PostgreDialect extends AbstractDbDialect {
 
     @Override
     public String tables(String dbName) {
-        return "select relname AS TABLENAME, cast(obj_description(relfilenode, 'pg_class') as varchar) AS TABLECOMMENT from pg_class " +
-                "where relname in (select tablename from pg_tables where schemaname = 'public' and tableowner = '" + dbName + "' and position('_2' in tablename) = 0) ";
+        return "SELECT " +
+                "    c.relname AS TABLENAME, " +
+                "    d.description AS TABLECOMMENT " +
+                "FROM " +
+                "    pg_class c " +
+                " LEFT JOIN " +
+                "    pg_description d ON c.oid = d.objoid AND d.objsubid = 0 " +
+                "WHERE " +
+                "    c.relkind = 'r' " +
+                "    AND c.relnamespace = (SELECT oid FROM pg_namespace WHERE nspname = 'public') " +
+                "    AND (SELECT current_database()) = '" + dbName + "' " +
+                "ORDER BY " +
+                "    c.relname;";
     }
 
 
     @Override
     public String tables(DbQueryProperty dbQueryProperty) {
-        return "select relname AS TABLENAME, cast(obj_description(relfilenode, 'pg_class') as varchar) AS TABLECOMMENT from pg_class " +
-                "where relname in (select tablename from pg_tables where schemaname = 'public' and tableowner = '" + dbQueryProperty.getDbName() + "' and position('_2' in tablename) = 0) ";
+        return "SELECT " +
+                "    c.relname AS TABLENAME, " +
+                "    d.description AS TABLECOMMENT " +
+                "FROM " +
+                "    pg_class c " +
+                " LEFT JOIN " +
+                "    pg_description d ON c.oid = d.objoid AND d.objsubid = 0 " +
+                "WHERE " +
+                "    c.relkind = 'r' " +
+                "    AND c.relnamespace = (SELECT oid FROM pg_namespace WHERE nspname = '" + dbQueryProperty.getSid() + "') " +
+                "    AND (SELECT current_database()) = '" + dbQueryProperty.getDbName() + "' " +
+                "ORDER BY " +
+                "    c.relname;";
     }
 
     @Override
@@ -260,8 +315,19 @@ public class PostgreDialect extends AbstractDbDialect {
                 .collect(Collectors.joining(", "));
 
         // 构造最终的 SQL 查询语句
-        return "SELECT " + fields + " FROM " +dbQueryProperty.getDbName()+"."+ tableName;
+        return "SELECT " + fields + " FROM " + dbQueryProperty.getSid() + "." + tableName;
     }
+
+
+    @Override
+    public String buildTableNameByDbType(DbQueryProperty dbQueryProperty, String tableName) {
+        if(StringUtils.isNotEmpty(dbQueryProperty.getSid())){
+            return dbQueryProperty.getSid() + "." + tableName;
+        }
+
+        return  " public." + tableName;
+    }
+
 
     @Override
     public String buildPaginationSql(String originalSql, long offset, long count) {
@@ -281,6 +347,28 @@ public class PostgreDialect extends AbstractDbDialect {
     }
 
     @Override
+    public String getDbName(DbName dbName) {
+        int level =  dbName == null ? 1 : dbName.getLevel()+1;
+
+        if (level == 1) {
+            // 第一次请求，列出所有数据库
+            return "SELECT datname AS DBNAME, 1 AS LVL, 2 AS TOTALLEVELS " +
+                    "FROM pg_database " +
+                    "WHERE datistemplate = false " +
+                    "ORDER BY datname";
+        } else if (level == 2) {
+            // 第二次请求，列出指定数据库下所有 schema
+            // 注意：执行前必须连接到该数据库
+            return "SELECT nspname AS DBNAME, 2 AS LVL, 2 AS TOTALLEVELS " +
+                    "FROM pg_namespace " +
+                    "WHERE nspname NOT IN ('pg_catalog','information_schema','pg_toast') " +
+                    "ORDER BY nspname";
+        }
+
+        throw new UnsupportedOperationException("PostgreSQL 仅支持 level=1~2");
+    }
+
+    @Override
     public String getInsertOrUpdateSql(String tableName, String where, String tableFieldName, String tableFieldValue, String setValue) {
         return null;
     }
@@ -293,9 +381,12 @@ public class PostgreDialect extends AbstractDbDialect {
             entity.setDataType(rs.getString("DATATYPE"));
             entity.setDataLength(rs.getString("DATALENGTH"));
             entity.setDataPrecision(rs.getString("DATAPRECISION"));
+            if (rs.getString("DATAPRECISION") != null) {
+                entity.setDataLength(rs.getString("DATAPRECISION"));
+            }
             entity.setDataScale(rs.getString("DATASCALE"));
-            entity.setColKey("1".equals(rs.getString("COLKEY")) ? true : false);
-            entity.setNullable("YES".equals(rs.getString("NULLABLE")) ? true : false);
+            entity.setColKey("t".equals(rs.getString("COLKEY")));
+            entity.setNullable("t".equals(rs.getString("NULLABLE")));
             entity.setColPosition(rs.getInt("COLPOSITION"));
             entity.setDataDefault(rs.getString("DATADEFAULT"));
             entity.setColComment(rs.getString("COLCOMMENT"));
@@ -311,5 +402,87 @@ public class PostgreDialect extends AbstractDbDialect {
             entity.setTableComment(rs.getString("TABLECOMMENT"));
             return entity;
         };
+    }
+
+    @Override
+    public String getFlinkCDCSQL(DbQueryProperty property, String flinkTableName, String tableName, String tableFieldName) {
+        String sql = "CREATE TABLE ${flinkTableName} (${tableFieldName}) " +
+                "WITH ( 'connector' = 'postgres-cdc'," +
+                "'hostname' = '${host}' ," +
+                "'port' = '${port}' ," +
+                "'username' = '${username}' ," +
+                "'password' = '${password}'," +
+                "'database-name' = '${dbName}' ," +
+                "'schema-name' = '${sid}' ," +
+                "'table-name' = '${tableName}' ," +
+                "'slot.name' = 'flink'," +
+                "'decoding.plugin.name' = 'pgoutput'," +
+                "'scan.startup.mode' = 'initial' ," +
+                "'scan.incremental.snapshot.enabled' = 'true'," +
+                "'debezium.snapshot.mode'='initial'" +
+                ")";
+        sql = StringUtils
+                .replace(sql, "${flinkTableName}", flinkTableName)
+                .replace("${tableName}", tableName)
+                .replace("${host}", property.getHost())
+                .replace("${tableFieldName}", tableFieldName)
+                .replace("${port}", String.valueOf(property.getPort()))
+                .replace("${sid}", property.getSid())
+                .replace("${dbName}", property.getDbName())
+                .replace("${username}", property.getUsername())
+                .replace("${password}", property.getPassword());
+        return sql;
+    }
+
+    @Override
+    public String getFlinkSQL(DbQueryProperty property, String flinkTableName, String tableName, String tableFieldName) {
+        String sql = "CREATE TABLE ${flinkTableName} (${tableFieldName}) " +
+                "WITH ( 'connector' = 'jdbc'," +
+                "'url' = 'jdbc:postgresql://${host}:${port}/${dbName}?stringtype=unspecified'," +
+                "'table-name' = '${dbName}.${sid}.${tableName}'," +
+                "'username' = '${username}'," +
+                "'password' = '${password}')";
+
+        sql = StringUtils
+                .replace(sql, "${flinkTableName}", flinkTableName)
+                .replace("${tableName}", tableName)
+                .replace("${host}", property.getHost())
+                .replace("${tableFieldName}", tableFieldName)
+                .replace("${port}", String.valueOf(property.getPort()))
+                .replace("${dbName}", property.getDbName())
+                .replace("${sid}", property.getSid())
+                .replace("${username}", property.getUsername())
+                .replace("${password}", property.getPassword());
+        return sql;
+    }
+
+    @Override
+    public String getTableName(DbQueryProperty property, String tableName) {
+        return property.getDbName() + "." + property.getSid() + "." + tableName;
+    }
+
+    @Override
+    public String getFlinkSinkSQL(DbQueryProperty property, JSONObject config, String flinkTableName, String tableName, String tableFieldName) {
+        String sql = "CREATE TABLE ${flinkTableName} (${tableFieldName}) " +
+                "WITH ( 'connector' = 'jdbc'," +
+                "'url' = 'jdbc:postgresql://${host}:${port}/${dbName}?stringtype=unspecified'," +
+                "'table-name' = '${dbName}.${sid}.${tableName}'," +
+                "'username' = '${username}'," +
+                "'password' = '${password}'," +
+                "'sink.buffer-flush.max-rows' = '${batchSize}'," +
+                "'sink.buffer-flush.interval' = '1s'" +
+                ")";
+
+        sql = StringUtils
+                .replace(sql, "${flinkTableName}", flinkTableName)
+                .replace("${tableName}", tableName)
+                .replace("${host}", property.getHost())
+                .replace("${tableFieldName}", tableFieldName)
+                .replace("${port}", String.valueOf(property.getPort()))
+                .replace("${dbName}", property.getDbName())
+                .replace("${username}", property.getUsername())
+                .replace("${password}", property.getPassword())
+                .replace("${batchSize}", String.valueOf(config.getIntValue("batchSize",100)));
+        return sql;
     }
 }

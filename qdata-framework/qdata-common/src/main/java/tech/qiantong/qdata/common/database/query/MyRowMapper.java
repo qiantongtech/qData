@@ -38,6 +38,8 @@ import org.springframework.jdbc.support.JdbcUtils;
 import org.springframework.lang.Nullable;
 import org.springframework.util.LinkedCaseInsensitiveMap;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -65,6 +67,26 @@ public class MyRowMapper implements RowMapper<Map<String, Object>> {
             } else {
                 value = this.getColumnValue(rs, i);
             }
+
+            if (value instanceof Map) {
+                String digits = value.toString().replaceAll("\\D", "");
+                if (!digits.isEmpty()) {
+                    value = Long.parseLong(digits);
+                }
+            }
+
+            if (value instanceof BigInteger) {
+                value = ((BigInteger) value).longValue();
+            } else if (value instanceof BigDecimal) {
+                value = ((BigDecimal) value).doubleValue();
+            } else if (value instanceof Double) {
+                value = ((Double) value).doubleValue();
+            } else if (value instanceof Float) {
+                value = ((Float) value).doubleValue();
+            } else if (value instanceof Number) {
+                value = ((Number) value).longValue();
+            }
+
             row.putIfAbsent(colName, value);
         }
         return row;

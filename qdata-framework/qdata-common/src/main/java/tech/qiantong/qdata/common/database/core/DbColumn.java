@@ -44,6 +44,11 @@ import lombok.NoArgsConstructor;
 public class DbColumn {
 
     /**
+     * 表名
+     */
+    private String tableName;
+
+    /**
      * 列名
      */
     private String colName;

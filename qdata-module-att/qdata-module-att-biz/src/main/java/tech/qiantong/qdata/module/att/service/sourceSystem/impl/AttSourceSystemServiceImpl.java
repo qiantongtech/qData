@@ -123,6 +123,10 @@ public class AttSourceSystemServiceImpl  extends ServiceImpl<AttSourceSystemMapp
     }
     @Override
     public int removeAttSourceSystem(Collection<Long> idList) {
+        //判断validFlag是否为true
+        if (idList.stream().anyMatch(id -> attSourceSystemMapper.selectById(id).getValidFlag() == true)) {
+            throw new IllegalArgumentException("已启用的来源系统，不能删除！");
+        }
         // 批量删除来源系统
         return attSourceSystemMapper.deleteBatchIds(idList);
     }

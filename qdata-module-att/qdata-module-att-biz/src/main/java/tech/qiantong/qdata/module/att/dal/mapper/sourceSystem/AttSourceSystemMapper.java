@@ -98,6 +98,17 @@ public interface AttSourceSystemMapper extends BaseMapperX<AttSourceSystemDO> {
                 .orderByStr(StringUtils.isNotBlank(reqVO.getOrderByColumn()), StringUtils.equals("asc", reqVO.getIsAsc()), StringUtils.isNotBlank(reqVO.getOrderByColumn()) ? Arrays.asList(reqVO.getOrderByColumn().split(",")) : null);
         return selectJoinPage(reqVO, AttSourceSystemDO.class, lambdaWrapper);
     }
+
+    default AttSourceSystemDO selectById(Long id) {
+        MPJLambdaWrapper<AttSourceSystemDO> lambdaWrapper = new MPJLambdaWrapper();
+        lambdaWrapper.selectAll(AttSourceSystemDO.class)
+                .select("t2.NICK_NAME AS responsiblePersonName,t3.NICK_NAME AS contactPersonName")
+                .leftJoin("SYSTEM_USER t2 on t.RESPONSIBLE_PERSON = t2.USER_ID AND t2.DEL_FLAG = '0'")
+                .leftJoin("SYSTEM_USER t3 on t.CONTACT_PERSON = t3.USER_ID AND t3.DEL_FLAG = '0'")
+                .eq(AttSourceSystemDO::getId, id);
+        return selectOne(lambdaWrapper);
+    }
+
   /*  default PageResult<AttSourceSystemDO> selectPage(AttSourceSystemPageReqVO reqVO) {
         MPJLambdaWrapper<AttSourceSystemDO> lambdaWrapper = new MPJLambdaWrapper();
         lambdaWrapper.selectAll(AttSourceSystemDO.class)

@@ -3,16 +3,13 @@ package tech.qiantong.qdata.module.mc.service.metadata.impl;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
-import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import tech.qiantong.qdata.common.core.domain.BatchDeleteCheck;
-import tech.qiantong.qdata.common.core.domain.entity.SysUser;
 import tech.qiantong.qdata.common.core.page.PageResult;
-import tech.qiantong.qdata.common.exception.ServiceException;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.module.da.api.service.asset.IDaAssetApiOutService;
@@ -48,7 +45,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class McTableServiceImpl  extends ServiceImpl<McTableMapper,McTableDO> implements IMcTableService {
+public class McTableServiceImpl extends ServiceImpl<McTableMapper,McTableDO> implements IMcTableService {
     @Resource
     private McTableMapper mcTableMapper;
     @Resource
@@ -70,42 +67,6 @@ public class McTableServiceImpl  extends ServiceImpl<McTableMapper,McTableDO> im
     @Override
     public PageResult<McTableDO> getMcTablePage(McTablePageReqVO pageReqVO) {
         PageResult<McTableDO> mcTablelist = mcTableMapper.selectPage(pageReqVO);
-        List<McTableDO> rows = mcTablelist.getRows();
-        // FIXME(用户查询避免循环查询，临时方案)  使用 Map 缓存用户信息,避免重复查询
-        Map<Long, SysUser> userCache = Maps.newHashMap();
-        for (McTableDO row : rows) {
-            // 获取创建人手机号
-            Long creatorId = row.getCreatorId();
-            if (creatorId != null && !userCache.containsKey(creatorId)) {
-                SysUser sysUser = sysUserService.selectUserById(creatorId);
-                if (sysUser != null) {
-                    userCache.put(creatorId, sysUser);
-                }
-            }
-            SysUser creatorUser = userCache.get(creatorId);
-            if (creatorUser != null) {
-                row.setCreatePhoneNumber(creatorUser.getPhonenumber());
-            }
-
-            // 获取更新人手机号
-            Long updaterId = row.getUpdatorId();
-            if (updaterId != null && !userCache.containsKey(updaterId)) {
-                SysUser updateSysUser = sysUserService.selectUserById(updaterId);
-                if (updateSysUser != null) {
-                    userCache.put(updaterId, updateSysUser);
-                }
-            }
-            SysUser updaterUser = userCache.get(updaterId);
-            if (updaterUser != null) {
-                row.setUpdatePhoneNumber(updaterUser.getPhonenumber());
-            }
-
-            MPJLambdaWrapper<McColumnDO> wrapper = new MPJLambdaWrapper<>();
-            wrapper.eq(McColumnDO::getTableId, row.getId());
-            long count = mcColumnService.count(wrapper);
-            row.setColumnCount(count);
-        }
-        mcTablelist.setRows(rows);
         return mcTablelist;
     }
 
@@ -188,9 +149,9 @@ public class McTableServiceImpl  extends ServiceImpl<McTableMapper,McTableDO> im
         // 批量删除元数据信息
         //return mcTableMapper.deleteBatchIds(idList);
         // 批量删除表元数据信息
-        if (columnMapper.existsByTableIds(idList)) {
-            throw new ServiceException("被字段元数据引用，不可删除");
-        }
+        //if (columnMapper.existsByTableIds(idList)) {
+        //    throw new ServiceException("被字段元数据引用，不可删除");
+        //}
         return mcTableMapper.delete(Wrappers.lambdaQuery(McTableDO.class)
                 .in(McTableDO::getId, idList)
                 .eq(McTableDO::getStatus, "0"));
@@ -226,8 +187,10 @@ public class McTableServiceImpl  extends ServiceImpl<McTableMapper,McTableDO> im
         }
         if (tableDO.getTaskId() != null) {
             McTaskDO mcTaskById = mcTaskService.getMcTaskById(tableDO.getTaskId());
-            respVO.setSourceSystemId(mcTaskById.getSourceSystemId());
-            respVO.setSourceSystemName(mcTaskById.getSourceSystemName());
+            if (mcTaskById != null) {
+                respVO.setSourceSystemId(mcTaskById.getSourceSystemId());
+                respVO.setSourceSystemName(mcTaskById.getSourceSystemName());
+            }
         }
         MPJLambdaWrapper<McColumnDO> wrapper = new MPJLambdaWrapper<>();
         wrapper.eq(McColumnDO::getTableId, tableDO.getId());
@@ -302,12 +265,13 @@ public class McTableServiceImpl  extends ServiceImpl<McTableMapper,McTableDO> im
                 continue;
             }
             // 检查是否有字段引用 检查是否被数据资产使用（通过tableId）
-            boolean hasColumn = columnMapper.existsByTableId(one.getId());
-            if (hasColumn) {
-                cannotDeleteCount++;
-            } else {
+            //boolean hasColumn = columnMapper.existsByTableId(one.getId());
+            //boolean usedByAsset = daAssetApiOutService.existsByTableId(one.getId());
+            //if (false) {
+            //    cannotDeleteCount++;
+            //} else {
                 canDeleteIds.add(one.getId());
-            }
+            //}
         }
         return new BatchDeleteCheck<>(cannotDeleteCount, canDeleteIds);
     }

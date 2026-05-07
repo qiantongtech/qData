@@ -72,6 +72,15 @@ import dppRouter from './dpp/index.js';
 
 import dPdocument from './dp/document/index.js';
 
+/* 元数据采集*/
+import mcPublicRouter from './mc/public/index.js';
+/* 元数据采集 */
+import mcDynamicRouter from './mc/dynamic/index.js';
+/* 表元数据 */
+import metaPublicRouter from './meta/public/index.js';
+/* 表元数据 */
+import metaDynamicRouter from './meta/dynamic/index.js';
+
 /* 数据规划动态路由 */
 // 用来存储当前请求的取消源
 // let currentCancelSource = null;
@@ -99,7 +108,7 @@ import dPdocument from './dp/document/index.js';
  */
 
 // 公共路由
-export const constantRoutes = [...systemPublicRouter, ...examplePublicRouter, ...daPublicRouter, ...dsCatRouter, ...dsPublicRouter, ...dPdocument, ...dpPublicRouter, ...dpDataElemRouter, ...daAssetRouter, ...daQualityRouter, ...dppRouter];
+export const constantRoutes = [...systemPublicRouter, ...examplePublicRouter, ...daPublicRouter, ...dsCatRouter, ...dsPublicRouter, ...dPdocument, ...dpPublicRouter, ...dpDataElemRouter, ...daAssetRouter, ...daQualityRouter, ...dppRouter, ...mcPublicRouter, ...metaPublicRouter, ...mcDynamicRouter, ...metaDynamicRouter];
 
 // 动态路由，基于用户权限动态去加载
 export const dynamicRoutes = [...systemDynamicRouter, ...exampleDynamicRouter, ...daDynamicRouter, ...dsDynamicRouter,];

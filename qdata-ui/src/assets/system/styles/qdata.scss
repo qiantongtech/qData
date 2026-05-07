@@ -383,8 +383,128 @@
  	margin-left: auto;
  }
 
+ // 页面级弹窗-双列表单
+ .column-form {
+ 	display: grid;
+ 	grid-template-columns: repeat(2, 1fr);
+ 	row-gap: 16px;
+ 	column-gap: 20px;
+
+ 	.row-full {
+ 		grid-column: span 2;
+ 	}
+
+ 	.el-form-item {
+ 		margin-right: 0 !important;
+ 		margin-bottom: 0 !important;
+ 	}
+
+ 	.number-input {
+ 		width: 100%;
+
+ 		.el-input__wrapper {
+ 			padding-left: 11px;
+
+ 			.el-input__inner {
+ 				text-align: left;
+ 			}
+ 		}
+ 	}
+ }
+
  .task-title {
  	.el-tag.el-tag--default .el-tag__content {
  		font-size: 12px !important;
  	}
+ }
+
+ .pagecont-top-wrap {
+ 	padding: 15px 15px 15px 15px;
+ 	background-color: #ffffff;
+ 	border-radius: 2px;
+ 	margin-bottom: 15px;
+ 	box-shadow: 0 5px 8px rgba(128, 145, 165, 0.1);
+
+ 	.el-row {
+ 		margin-bottom: 2px;
+
+ 		&:last-child {
+ 			margin-bottom: 0;
+ 		}
+ 	}
+ }
+
+ .h2-titles {
+ 	font-size: 16px;
+ 	color: rgba(0, 0, 0, 0.85);
+ 	display: flex;
+ 	align-items: center;
+ 	font-family: PingFang SC;
+ 	font-weight: 500;
+ 	margin: 8px 0;
+
+ 	&::before {
+ 		display: inline-block;
+ 		content: "";
+ 		width: 6px;
+ 		height: 16px;
+ 		border-radius: 3px;
+ 		background: var(--el-color-primary);
+ 		margin-right: 8px;
+ 	}
+ }
+
+ .fh_btn {
+ 	.svg-icon {
+ 		font-size: 12px;
+ 		margin-right: 3px;
+ 		vertical-align: middle;
+ 		margin-top: -3px;
+ 	}
+
+ 	&:hover {
+ 		.svg-icon {
+ 			filter: brightness(0) invert(1) !important;
+ 		}
+ 	}
+ }
+
+ .module-head {
+ 	padding-left: 15px;
+ 	position: relative;
+ 	font-size: 16px;
+ 	color: #213547;
+ 	margin-bottom: 10px;
+
+ 	&::before {
+ 		content: '';
+ 		position: absolute;
+ 		top: 50%;
+ 		transform: translateY(-50%);
+ 		left: 0;
+ 		width: 5px;
+ 		height: 20px;
+ 		background-color: #2666fb;
+ 		border-radius: 2px;
+ 	}
+ }
+
+ .handle-popover {
+ 	min-width: unset !important;
+ 	display: flex;
+ 	flex-direction: column;
+ 	align-items: flex-start;
+
+ 	.el-button {
+ 		padding: 6px 2px !important;
+ 	}
+
+ 	.el-button+.el-button {
+ 		margin-left: 0;
+ 	}
+ }
+
+ .handle-svg-icon {
+ 	font-size: 13px !important;
+ 	margin-right: 7px;
  }

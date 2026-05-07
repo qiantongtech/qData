@@ -1884,21 +1884,37 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
                 }
             }
         } else if (CollectionScopeEnum.isCustom(task.getCollectionScope())) {
-            // 自定义库：查询该任务的采集范围
-            List<McTaskScopeDO> scopes = mcTaskScopeService.getMcTaskScopeListBytaskId(task.getId());
+            List<McDbDO> allDbs = mcDbMapper.selectList(
+                    new QueryWrapper<McDbDO>()
+                            .eq("DATASOURCE_ID", task.getDatasourceId())
+                            .eq("DEL_FLAG", "0")
+            );
 
-            if (CollectionUtils.isNotEmpty(scopes)) {
-                for (McTaskScopeDO scope : scopes) {
+            if (CollectionUtils.isNotEmpty(allDbs)) {
+                for (McDbDO db : allDbs) {
                     McTaskSourceTreeRespVO dbNode = new McTaskSourceTreeRespVO();
-                    dbNode.setId(scope.getId());
-                    dbNode.setName(StringUtils.isNotBlank(scope.getSchemaName())
-                            ? scope.getDbName() + "." + scope.getSchemaName()
-                            : scope.getDbName());
+                    dbNode.setId(db.getId());
+                    dbNode.setName(db.getDbName());
                     dbNode.setType("DATABASE");
                     dbNode.setTaskId(task.getId());
                     dbNodes.add(dbNode);
                 }
             }
+            // 自定义库：查询该任务的采集范围
+            //List<McTaskScopeDO> scopes = mcTaskScopeService.getMcTaskScopeListBytaskId(task.getId());
+            //
+            //if (CollectionUtils.isNotEmpty(scopes)) {
+            //    for (McTaskScopeDO scope : scopes) {
+            //        McTaskSourceTreeRespVO dbNode = new McTaskSourceTreeRespVO();
+            //        dbNode.setId(scope.getId());
+            //        dbNode.setName(StringUtils.isNotBlank(scope.getSchemaName())
+            //                ? scope.getDbName() + "." + scope.getSchemaName()
+            //                : scope.getDbName());
+            //        dbNode.setType("DATABASE");
+            //        dbNode.setTaskId(task.getId());
+            //        dbNodes.add(dbNode);
+            //    }
+            //}
         }
 
         return dbNodes;

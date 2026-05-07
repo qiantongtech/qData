@@ -6,6 +6,7 @@
         <el-form-item label="所属库名" prop="dbId">
           <el-select
             v-model="store.form.dbId"
+            :disabled="!!route.query.id"
             placeholder="请选择所属库名"
             @change="handleMetaDBChange"
           >
@@ -20,13 +21,14 @@
         <el-form-item label="来源系统" prop="sourceSystemName">
           <el-input
             v-model="store.form.sourceSystemName"
-            disabled
+            :disabled="!!route.query.id"
             placeholder="自动获取来源系统"
           />
         </el-form-item>
         <el-form-item label="表名称" prop="tableName">
           <el-input
             clearable
+            :disabled="!!route.query.id"
             v-model="store.form.tableName"
             placeholder="请输入表名称"
           />
@@ -35,6 +37,7 @@
         <el-form-item label="表注释" prop="tableComment">
           <el-input
             clearable
+            :disabled="!!route.query.id"
             v-model="store.form.tableComment"
             placeholder="请输入表注释"
           />

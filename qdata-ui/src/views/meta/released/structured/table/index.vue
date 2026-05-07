@@ -101,6 +101,7 @@ import { reactive, ref, getCurrentInstance, computed } from "vue";
 import { listDomain } from "@/api/att/domain/domain.js";
 import { getParentLabelPath } from "@/utils/anivia.js";
 import { listTable } from "@/api/mc/unreleased/table";
+
 import { useRouter } from "vue-router";
 import { listDb } from "@/api/mc/unreleased/db";
 import SourceSystemTree from "@/views/mc/task/structured/components/SourceSystemTree.vue";
@@ -220,7 +221,7 @@ const tableStroe = reactive({
   ],
   func: listTable,
   params: {
-    status: "1",
+    // status: "1",
     dataType: 1,
   },
   events: {

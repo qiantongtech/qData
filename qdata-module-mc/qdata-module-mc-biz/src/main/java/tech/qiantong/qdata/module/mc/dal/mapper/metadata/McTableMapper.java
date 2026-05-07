@@ -34,13 +34,13 @@ public interface McTableMapper extends BaseMapperX<McTableDO> {
         Set<String> allowedColumns = Sets.newHashSet("id", "create_time", "update_time", "audit_time", "data_quality");
         MPJLambdaWrapperX<McTableDO> lambdaWrapperX = new MPJLambdaWrapperX<>();
         lambdaWrapperX.selectAll(McTableDO.class)
-                .select("d.source_system_id",
-                        "(CASE WHEN da.ID IS NULL THEN '0' ELSE '1' END) AS dssetFlag"
+                .select("d.source_system_id"
+                        //"(CASE WHEN da.ID IS NULL THEN '0' ELSE '1' END) AS dssetFlag"
                         ,"t4.DATASOURCE_NAME AS datasourceName"
                         ,"t4.DATASOURCE_TYPE AS datasourceType"
                 )
                 .leftJoin("MC_DB d ON t.DB_ID=d.id")
-                .leftJoin("DA_ASSET da ON da.TABLE_ID = t.ID AND da.DEL_FLAG = '0'")
+                //.leftJoin("DA_ASSET da ON da.TABLE_ID = t.ID AND da.DEL_FLAG = '0'")
                 .leftJoin("DA_DATASOURCE t4 ON t.datasource_id = t4.id AND t4.DEL_FLAG = '0'");
         lambdaWrapperX.eqIfPresent(McTableDO::getTaskId, reqVO.getTaskId())
                 .eqIfPresent(McTableDO::getDbId, reqVO.getDbId())

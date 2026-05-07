@@ -33,7 +33,7 @@ public interface McColumnMapper extends BaseMapperX<McColumnDO> {
                 "column_precision", "column_scale", "audit_time", "data_quality");
         MPJLambdaWrapperX<McColumnDO> lambdaWrapperX = new MPJLambdaWrapperX<>();
         lambdaWrapperX.selectAll(McColumnDO.class)
-                .select("(SELECT e.NAME FROM DG_DATA_ELEM e WHERE e.ID = t.DATA_ELEM_ID) dataElemName")
+                //.select("(SELECT e.NAME FROM DG_DATA_ELEM e WHERE e.ID = t.DATA_ELEM_ID) dataElemName")
                 .select("t2.TABLE_NAME tableName")
                 .select("t2.DB_NAME dbName")
                 .select("d.source_system_id")
@@ -82,7 +82,7 @@ public interface McColumnMapper extends BaseMapperX<McColumnDO> {
     default McColumnDO findById(Long id) {
         MPJLambdaWrapperX<McColumnDO> lambdaWrapperX = new MPJLambdaWrapperX<>();
         lambdaWrapperX.selectAll(McColumnDO.class)
-                .select("(SELECT e.NAME FROM DG_DATA_ELEM e WHERE e.ID = t.DATA_ELEM_ID) dataElemName")
+                //.select("(SELECT e.NAME FROM DG_DATA_ELEM e WHERE e.ID = t.DATA_ELEM_ID) dataElemName")
 //                .select("(SELECT s.SENSITIVE_LEVEL FROM DG_SENSITIVE_LEVEL s WHERE s.ID = t.SAFETY_LEVEL_ID) safetyLevelName")
                 .eq(McTableDO::getId, id);
         return selectOne(lambdaWrapperX);

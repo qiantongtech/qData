@@ -186,7 +186,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         mcTaskMapper.insert(dictType);
         Long id = dictType.getId();
 
-        String jobId = "1";//mcTaskXxxJobService.addJob(dictType.getName(), dictType.getCronExpression(), String.valueOf(id));
+        String jobId = mcTaskXxxJobService.addJob(dictType.getName(), dictType.getCronExpression(), String.valueOf(id));
 
         //存储调度信息
         McTaskSchedulerSaveReqVO schedulerSaveReqVO = new McTaskSchedulerSaveReqVO(dictType);
@@ -1785,23 +1785,24 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         // 2. 查询所有任务，用于构建数据源和数据库节点
         List<McTaskDO> allTasks = mcTaskMapper.selectList();
         Map<Long, List<McTaskDO>> tasksBySourceSystemMap = Maps.newHashMap();
+        List<DaDatasourceRespDTO> daDatasourceRespDTOList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(allTasks)) {
             // 按来源系统ID分组任务
             tasksBySourceSystemMap = allTasks.stream()
                     .filter(task -> task.getSourceSystemId() != null)
                     .collect(Collectors.groupingBy(McTaskDO::getSourceSystemId));
+            // 3. 获取所有任务涉及的数据源信息
+            Set<Long> datasourceIds = allTasks.stream()
+                    .map(McTaskDO::getDatasourceId)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toSet());
+            daDatasourceRespDTOList = daDatasourceApiService
+                    .getDatabaseListByIds(new ArrayList<>(datasourceIds));
         }
 
-        // 3. 获取所有任务涉及的数据源信息
-        Set<Long> datasourceIds = allTasks.stream()
-                .map(McTaskDO::getDatasourceId)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toSet());
-
-        List<DaDatasourceRespDTO> daDatasourceRespDTOList = daDatasourceApiService
-                .getDatabaseListByIds(new ArrayList<>(datasourceIds));
         Map<Long, DaDatasourceRespDTO> daDatasourceRespDTOMap = daDatasourceRespDTOList
-                .stream().collect(Collectors.toMap(DaDatasourceRespDTO::getId, daDatasourceRespDTO -> daDatasourceRespDTO));
+                .stream()
+                .collect(Collectors.toMap(DaDatasourceRespDTO::getId, daDatasourceRespDTO -> daDatasourceRespDTO));
 
         List<McTaskSourceTreeRespVO> treeList = Lists.newArrayList();
 

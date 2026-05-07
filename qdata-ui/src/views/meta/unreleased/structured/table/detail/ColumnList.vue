@@ -341,7 +341,7 @@ import {
 } from "@/api/mc/unreleased/column.js";
 import { useRoute, useRouter } from "vue-router";
 import { listDgSensitiveLevel } from "@/api/dg/compliance/sensitiveLevel";
-import { getDgDataElemList } from "@/api/dg/standard/dataElem.js";
+// import { getDgDataElemList } from "@/api/dg/standard/dataElem.js";
 
 const BASE_URL = "/meta/unreleased/structured/column";
 
@@ -562,12 +562,12 @@ function getSensitiveLevel() {
   });
 }
 
-// 获取标准数据元
-function getDataElem() {
-  getDgDataElemList().then((res) => {
-    store.dataElemList = res.data;
-  });
-}
+// // 获取标准数据元
+// function getDataElem() {
+//   getDgDataElemList().then((res) => {
+//     store.dataElemList = res.data;
+//   });
+// }
 
 // 打开修改弹窗
 function handleEditClick(row) {
@@ -679,5 +679,4 @@ function handleStatusChange(row, status) {
     });
 }
 // getSensitiveLevel();
-getDataElem();
 </script>

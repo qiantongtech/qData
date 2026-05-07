@@ -86,3 +86,10 @@ export function sourceSystemTree(query) {
     params: query
   })
 }
+// 批量删除采集任务
+export function batchDeleteCheck(id) {
+  return request({
+    url: '/mc/task/batchDeleteCheck/' + id,
+    method: 'get'
+  });
+}

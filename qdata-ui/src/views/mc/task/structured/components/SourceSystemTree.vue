@@ -64,19 +64,12 @@
         >
           <template #default="{ node, data }">
             <span class="custom-tree-node">
-              <!-- 1级节点 - 使用文件夹图标 -->
-              <el-icon
-                v-if="node.level === 1 && node.expanded"
-                class="node-icon colorxz"
-              >
-                <FolderOpened />
-              </el-icon>
-              <el-icon
-                v-else-if="node.level === 1 && !node.expanded"
-                class="node-icon colorxz"
-              >
-                <Folder />
-              </el-icon>
+              <!-- 1级节点 - 使用自定义 zoom 图标 -->
+              <svg-icon
+                v-if="node.level === 1"
+                icon-class="zoom"
+                class="node-icon colorwxz"
+              />
               <!-- 2级节点 - 使用 type 对应的图标 -->
               <img
                 v-else-if="node.level == 2"

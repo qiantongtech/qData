@@ -166,7 +166,7 @@
             />
           </el-select>
         </el-form-item> -->
-        <el-form-item label="标准数据元" prop="dataElemId">
+        <!-- <el-form-item label="标准数据元" prop="dataElemId">
           <el-select
             clearable
             v-model="dialog.form.dataElemId"
@@ -179,7 +179,7 @@
               :value="item.id"
             />
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="字段类型" prop="columnType">
           <el-select
             clearable
@@ -361,7 +361,7 @@ import { listDb } from "@/api/mc/unreleased/db";
 import { listTable } from "@/api/mc/unreleased/table";
 import { useRoute, useRouter } from "vue-router";
 import { listDgSensitiveLevel } from "@/api/dg/compliance/sensitiveLevel";
-import { getDgDataElemList } from "@/api/dg/standard/dataElem.js";
+// import { getDgDataElemList } from "@/api/dg/standard/dataElem.js";
 
 const rules = {
   columnName: [
@@ -732,11 +732,11 @@ function getSensitiveLevel() {
 }
 
 // 获取标准数据元
-function getDataElem() {
-  getDgDataElemList().then((res) => {
-    store.dataElemList = res.data;
-  });
-}
+// function getDataElem() {
+//   getDgDataElemList().then((res) => {
+//     store.dataElemList = res.data;
+//   });
+// }
 
 // 新增
 function handleAddClick() {
@@ -884,5 +884,4 @@ getDomains();
 getMetaDatabases();
 getMetaTables();
 // getSensitiveLevel();
-getDataElem();
 </script>

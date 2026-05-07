@@ -233,12 +233,6 @@ const tableStroe = reactive({
     },
 
     {
-      label: "数据质量",
-      prop: "dataQuality",
-      width: 90,
-      sortable: true,
-    },
-    {
       label: "版本号",
       prop: "version",
       width: 90,
@@ -248,19 +242,6 @@ const tableStroe = reactive({
       prop: "status",
       width: 90,
       slot: "status",
-    },
-    {
-      label: "审核状态",
-      prop: "auditStatus",
-      dict: "meta_audit_status",
-      width: 100,
-    },
-    {
-      label: "审核时间",
-      prop: "auditTime",
-      sortable: true,
-      width: 160,
-      date: true,
     },
     {
       label: "更新人",
@@ -357,6 +338,7 @@ function handleNodeClick(data) {
   tableStroe.params.sourceSystemId = undefined;
   tableStroe.params.datasourceId = undefined;
   tableStroe.params.taskId = undefined;
+  tableStroe.params.dbId = undefined;
 
   if (data.type === "SOURCE") {
     tableStroe.params.sourceSystemId = data.id;
@@ -364,6 +346,7 @@ function handleNodeClick(data) {
     tableStroe.params.datasourceId = data.id;
   } else if (data.type === "DATABASE") {
     tableStroe.params.taskId = data.taskId;
+    tableStroe.params.dbId = data.id;
   }
   tableRef.value.getList();
 }
@@ -381,6 +364,7 @@ function handleResetQueryClick() {
   tableStroe.params.sourceSystemId = null;
   tableStroe.params.datasourceId = null;
   tableStroe.params.taskId = null;
+  tableStroe.params.dbId = null;
   tableRef.value?.resetQuery();
 }
 

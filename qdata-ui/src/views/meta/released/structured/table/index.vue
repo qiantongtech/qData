@@ -183,12 +183,6 @@ const tableStroe = reactive({
       },
     },
     {
-      label: "数据质量",
-      prop: "dataQuality",
-      width: 90,
-      sortable: true,
-    },
-    {
       label: "版本号",
       prop: "version",
       width: 90,
@@ -290,6 +284,7 @@ function handleNodeClick(data) {
   tableStroe.params.sourceSystemId = undefined;
   tableStroe.params.datasourceId = undefined;
   tableStroe.params.taskId = undefined;
+  tableStroe.params.dbId = undefined;
 
   if (data.type === "SOURCE") {
     tableStroe.params.sourceSystemId = data.id;
@@ -297,6 +292,7 @@ function handleNodeClick(data) {
     tableStroe.params.datasourceId = data.id;
   } else if (data.type === "DATABASE") {
     tableStroe.params.taskId = data.taskId;
+    tableStroe.params.dbId = data.id;
   }
   tableRef.value.getList();
 }
@@ -314,6 +310,7 @@ function handleResetQueryClick() {
   tableStroe.params.sourceSystemId = null;
   tableStroe.params.datasourceId = null;
   tableStroe.params.taskId = null;
+  tableStroe.params.dbId = null;
   tableRef.value?.resetQuery();
 }
 

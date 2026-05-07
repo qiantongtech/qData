@@ -127,7 +127,7 @@ import { reactive, ref, toValue, getCurrentInstance } from "vue";
 import { listColumn } from "@/api/mc/unreleased/column.js";
 import { useRouter } from "vue-router";
 import { listDgSensitiveLevel } from "@/api/dg/compliance/sensitiveLevel";
-import { getDgDataElemList } from "@/api/dg/standard/dataElem.js";
+// import { getDgDataElemList } from "@/api/dg/standard/dataElem.js";
 import { getDgSensitiveLevel } from "@/api/dg/compliance/sensitiveLevel";
 
 const BASE_URL = "/meta/unreleased/structured/column";
@@ -257,12 +257,12 @@ function getSensitiveLevel() {
   });
 }
 
-// 获取标准数据元
-function getDataElem() {
-  getDgDataElemList().then((res) => {
-    store.dataElemList = res.data;
-  });
-}
+// // 获取标准数据元
+// function getDataElem() {
+//   getDgDataElemList().then((res) => {
+//     store.dataElemList = res.data;
+//   });
+// }
 
 // 详情
 function handleDetailClick(row) {
@@ -293,5 +293,4 @@ function handleSensitiveLevelClick(row) {
 }
 
 getSensitiveLevel();
-getDataElem();
 </script>

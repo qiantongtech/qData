@@ -176,7 +176,7 @@
                   </el-select>
                 </el-form-item> -->
 
-                <el-form-item label="标准数据元" prop="dataElemId">
+                <!-- <el-form-item label="标准数据元" prop="dataElemId">
                   <el-select
                     clearable
                     v-model="form.dataElemId"
@@ -189,7 +189,7 @@
                       :value="item.id"
                     />
                   </el-select>
-                </el-form-item>
+                </el-form-item> -->
 
                 <el-form-item label="状态" prop="status">
                   <el-radio-group v-model="form.status">
@@ -378,7 +378,7 @@ import { listTable } from "@/api/mc/unreleased/table";
 import { addColumn, draftColumn } from "@/api/mc/unreleased/column";
 import { listDomain } from "@/api/att/domain/domain.js";
 import { listDgSensitiveLevel } from "@/api/dg/compliance/sensitiveLevel";
-import { getDgDataElemList } from "@/api/dg/standard/dataElem.js";
+// import { getDgDataElemList } from "@/api/dg/standard/dataElem.js";
 import { useRouter } from "vue-router";
 
 const BASE_URL = "/meta/unreleased/structured/column";
@@ -628,11 +628,11 @@ function getSensitiveLevel() {
   });
 }
 
-function getDataElem() {
-  getDgDataElemList().then((res) => {
-    store.dataElemList = res.data;
-  });
-}
+// function getDataElem() {
+//   getDgDataElemList().then((res) => {
+//     store.dataElemList = res.data;
+//   });
+// }
 
 // 表单验证
 function validateGlobalForm() {
@@ -706,7 +706,6 @@ async function handleDraftClick() {
 getDomains();
 getMetaDatabases();
 // getSensitiveLevel();
-getDataElem();
 </script>
 
 <style lang="scss" scoped>

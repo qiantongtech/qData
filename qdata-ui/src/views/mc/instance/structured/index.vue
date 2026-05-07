@@ -32,11 +32,11 @@
 <template>
   <div class="app-container" v-loading="store.loading">
     <el-container>
-      <SourceSystemTree
+      <!-- <SourceSystemTree
         ref="sourceSystemTreeRef"
         @node-click="handleNodeClick"
         @data-loaded="handleTreeDataLoaded"
-      />
+      /> -->
       <el-main class="main-content">
         <qt-wrap :columns="tableStroe.columns" :tableRef="tableRef">
           <template #search>

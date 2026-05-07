@@ -116,18 +116,18 @@ const tabData = [
     key: "ColumnList",
     label: "字段列表",
   },
-  {
-    key: "DataGovern",
-    label: "数据治理",
-  },
-  {
-    key: "LineageAnalysis",
-    label: "血缘分析",
-  },
-  {
-    key: "ImpactAnalysis",
-    label: "影响分析",
-  },
+  // {
+  //   key: "DataGovern",
+  //   label: "数据治理",
+  // },
+  // {
+  //   key: "LineageAnalysis",
+  //   label: "血缘分析",
+  // },
+  // {
+  //   key: "ImpactAnalysis",
+  //   label: "影响分析",
+  // },
   {
     key: "VersionManagement",
     label: "版本与变更",
@@ -136,15 +136,6 @@ const tabData = [
 const tabComponent = {
   BaseInfo: defineAsyncComponent(() => import("./BaseInfo.vue")),
   ColumnList: defineAsyncComponent(() => import("./ColumnList.vue")),
-  DataGovern: defineAsyncComponent(() =>
-    import("@/views/sys/developing/index.vue")
-  ),
-  LineageAnalysis: defineAsyncComponent(() =>
-    import("@/views/sys/developing/index.vue")
-  ),
-  ImpactAnalysis: defineAsyncComponent(() =>
-    import("@/views/sys/developing/index.vue")
-  ),
   VersionManagement: defineAsyncComponent(() =>
     import("./VersionManagement.vue")
   ),

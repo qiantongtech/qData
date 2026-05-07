@@ -34,11 +34,11 @@
   <div class="app-container" ref="app-container">
     <guide-tip tip-id="mc/task/structured" />
     <el-container>
-      <SourceSystemTree
+      <!-- <SourceSystemTree
         ref="sourceSystemTreeRef"
         @node-click="handleNodeClick"
         @data-loaded="handleTreeDataLoaded"
-      />
+      /> -->
       <el-main class="main-content">
         <qt-wrap
           :columns="tableStore.columns"
@@ -225,6 +225,11 @@
               :key="item.id"
               :label="item.datasourceName"
               :value="item.id"
+              :disabled="
+                !['MySql', 'Oracle11', 'Oracle', 'PostgreSQL', 'Hive'].includes(
+                  item.datasourceType
+                )
+              "
             >
             </el-option>
           </el-select>
@@ -343,17 +348,23 @@
               </el-radio>
             </el-radio-group>
 
-            <el-transfer
+            <el-form-item
+              prop="tables"
               v-if="dialog.form.collectionScope == 1"
-              v-model="dialog.form.tables"
-              :data="dialog.tableList"
-              :props="{ label: 'label', key: 'dbName' }"
-              filterable
-              :filter-method="onFilterTransfer"
-              filter-placeholder="请输入物理库名称"
-              :titles="['来源库', '已选来源库']"
-              style="--el-transfer-panel-width: 320px"
-            />
+              label-width="0"
+              style="margin-bottom: 0"
+            >
+              <el-transfer
+                v-model="dialog.form.tables"
+                :data="dialog.tableList"
+                :props="{ label: 'label', key: 'dbName' }"
+                filterable
+                :filter-method="onFilterTransfer"
+                filter-placeholder="请输入物理库名称"
+                :titles="['来源库', '已选来源库']"
+                style="--el-transfer-panel-width: 320px"
+              />
+            </el-form-item>
           </div>
         </el-form-item>
 
@@ -415,6 +426,7 @@ import {
   updateReleaseSchedule,
   runJobOnce,
   sourceSystemTree,
+  batchDeleteCheck,
 } from "@/api/mc/task/task";
 import { listDaDatasource } from "@/api/mc/dataSource/dataSource";
 import { deptUserTree } from "@/api/system/system/user.js";
@@ -464,6 +476,22 @@ const rules = {
   ],
   collectionScope: [
     { required: true, message: "请选择采集范围", trigger: "change" },
+  ],
+  tables: [
+    {
+      required: true,
+      validator: (rule, value, callback) => {
+        if (
+          dialog.form.collectionScope == "1" &&
+          (!value || value.length === 0)
+        ) {
+          callback(new Error("请选择已选来源库"));
+        } else {
+          callback();
+        }
+      },
+      trigger: "change",
+    },
   ],
 };
 
@@ -706,6 +734,7 @@ const searchStore = reactive({
 const DEFAULT_FORM = {
   collectionMode: "1",
   collectionScope: "2",
+  tables: [],
 };
 const dialog = reactive({
   open: false,
@@ -861,21 +890,24 @@ function handleCancelClick() {
 
 // 确认新增/修改
 async function handleConfirmClick() {
-  dialog.loading = true;
   const valid = await formRef.value.validate();
-  dialog.loading = false;
   if (!valid) return;
+  dialog.loading = true;
   const { tables, ...params } = dialog.form;
   if (params.collectionScope == "1") {
     params.scopeSaveReqVOS = dialog.tableList.filter((item) =>
       tables.includes(item.dbName)
     );
   }
-  dialog.loading = true;
-  await dialog.func(params);
-  dialog.loading = false;
-  handleCancelClick();
-  tableRef.value.getList();
+  try {
+    await dialog.func(params);
+    handleCancelClick();
+    tableRef.value.getList();
+  } catch (err) {
+    console.error(err);
+  } finally {
+    dialog.loading = false;
+  }
 }
 
 // 打开修改弹窗
@@ -931,23 +963,33 @@ function handleInstanceClick(row) {
 // 删除选中行
 function handleDeleteColumnClick() {
   if (!store.rows.length) return;
-  ElMessageBox.confirm(
-    `可删除${store.rows.length}个，不可删除0个，是否删除可删部分`,
-    "系统提示",
-    {
-      confirmButtonText: "确定",
-      cancelButtonText: "取消",
-      type: "warning",
-    }
-  )
-    .then(() => {
-      const ids = store.rows.map((item) => item.id);
-      return delTask(ids);
-    })
-    .then(() => {
-      ElMessage.success("删除成功");
-      tableRef.value.getList();
-    });
+  const ids = store.rows.map((item) => item.id);
+  store.loading = true;
+  batchDeleteCheck(ids).then((res) => {
+    const { canDeleteCount, cannotDeleteCount, canDeleteIds } = res.data;
+    store.loading = false;
+    ElMessageBox.confirm(
+      `可删除${canDeleteCount}个，不可删除${cannotDeleteCount}个，是否删除可删部分`,
+      "系统提示",
+      {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      }
+    )
+      .then(() => {
+        if (!canDeleteIds.length) {
+          ElMessage.success("删除成功");
+          return;
+        }
+        return delTask(canDeleteIds);
+      })
+      .then((res) => {
+        if (!res) return;
+        ElMessage.success("删除成功");
+        tableRef.value.getList();
+      });
+  });
 }
 
 // 筛选表

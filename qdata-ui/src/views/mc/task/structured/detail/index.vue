@@ -139,12 +139,12 @@ import { getParentLabelPath } from "@/utils/anivia.js";
 
 const tabData = [
   {
-    key: "BaseInfo",
-    label: "基本信息",
-  },
-  {
     key: "CollectInstance",
     label: "采集实例",
+  },
+  {
+    key: "BaseInfo",
+    label: "基本信息",
   },
 ];
 const tabComponent = {
@@ -169,7 +169,7 @@ const store = reactive({
   form: {},
   treeDomains: [],
   domains: [],
-  tab: route.query.tab || "BaseInfo",
+  tab: route.query.tab || "CollectInstance",
 });
 
 const form = computed(() => store.form);

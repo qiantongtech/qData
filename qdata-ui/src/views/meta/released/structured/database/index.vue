@@ -274,5 +274,5 @@ function handleDetailClick(row, tab) {
   });
 }
 
-getDomains();
+// getDomains();
 </script>

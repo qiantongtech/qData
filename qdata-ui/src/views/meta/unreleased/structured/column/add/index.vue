@@ -703,7 +703,7 @@ async function handleDraftClick() {
   router.push({ path: BASE_URL });
 }
 
-getDomains();
+// getDomains();
 getMetaDatabases();
 // getSensitiveLevel();
 </script>

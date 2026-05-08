@@ -40,27 +40,17 @@
         @data-loaded="handleTreeDataLoaded"
       /> -->
       <el-main class="main-content">
-        <qt-wrap
-          :columns="tableStore.columns"
-          :tableRef="tableRef"
-          :config="{ permi: ['mc:task:structured:query'] }"
-        >
+        <qt-wrap :columns="tableStore.columns" :tableRef="tableRef">
           <template #search>
             <qt-search-bar
               v-bind="searchStore"
               :params="tableStore.params"
               @query="handleQueryClick"
               @reset="handleResetQueryClick"
-              :config="{ permi: ['mc:task:structured:query'] }"
             />
           </template>
           <template #actions-data>
-            <el-button
-              type="primary"
-              plain
-              @click="handleAddClick"
-              v-hasPermi="['mc:task:structured:add']"
-            >
+            <el-button type="primary" plain @click="handleAddClick">
               <i class="iconfont-mini icon-xinzeng mr5"></i>新增
             </el-button>
             <el-button
@@ -69,7 +59,6 @@
               icon="Delete"
               :disabled="!store.rows.length"
               @click="handleDeleteColumnClick"
-              v-hasPermi="['mc:task:structured:remove']"
             >
               删除
             </el-button>
@@ -102,7 +91,6 @@
                 icon="Edit"
                 :disabled="row.status == '1'"
                 @click="handleEditClick(row)"
-                v-hasPermi="['mc:task:structured:edit']"
               >
                 修改
               </el-button>
@@ -111,21 +99,12 @@
                 type="primary"
                 icon="view"
                 @click="handleDetailClick(row)"
-                v-hasPermi="['mc:task:structured:detail']"
               >
                 详情
               </el-button>
               <el-popover placement="bottom" :width="150" trigger="click">
                 <template #reference>
-                  <el-button
-                    link
-                    type="primary"
-                    icon="ArrowDown"
-                    v-hasPermi="[
-                      'mc:instance:structured:list',
-                      'mc:task:structured:remove',
-                    ]"
-                  >
+                  <el-button link type="primary" icon="ArrowDown">
                     更多
                   </el-button>
                 </template>
@@ -135,7 +114,6 @@
                     type="primary"
                     icon="Document"
                     @click="handleInstanceClick(row)"
-                    v-hasPermi="['mc:instance:structured:list']"
                     style="padding-left: 14px"
                   >
                     采集实例
@@ -155,7 +133,6 @@
                     icon="Delete"
                     :disabled="row.status == '1'"
                     @click="handleDeleteClick(row)"
-                    v-hasPermi="['mc:task:structured:remove']"
                   >
                     删除
                   </el-button>

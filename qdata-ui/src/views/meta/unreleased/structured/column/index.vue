@@ -27,7 +27,7 @@
           icon="Delete"
           :disabled="!store.rows.length"
           @click="handleDeleteColumnClick"
-          v-hasPermi="['md:unreleased:structured:column:remove']"
+          "
         >
           删除
         </el-button>
@@ -53,7 +53,6 @@
             type="primary"
             icon="view"
             @click="handleDetailClick(row)"
-            v-hasPermi="['md:unreleased:structured:column:detail']"
           >
             详情
           </el-button>
@@ -63,7 +62,6 @@
             icon="Edit"
             :disabled="row.status == 1"
             @click="handleEditClick(row)"
-            v-hasPermi="['md:unreleased:structured:column:edit']"
           >
             修改
           </el-button>
@@ -93,7 +91,7 @@
               icon="Delete"
               :disabled="row.status == 1"
               @click="handleDeleteClick(row)"
-              v-hasPermi="['md:unreleased:structured:column:remove']"
+              "
             >
               删除
             </el-button>
@@ -105,7 +103,6 @@
               type="primary"
               :disabled="row.status == 1"
               @click="handleStatusChange(row, '1')"
-              v-hasPermi="['md:unreleased:structured:column:edit']"
             >
               <svg-icon icon-class="meta-publish" class="handle-svg-icon" />
               发布
@@ -115,7 +112,6 @@
               link
               type="primary"
               @click="handleDetailClick(row, 'VersionManagement')"
-              v-hasPermi="['md:unreleased:structured:column:detail']"
             >
               <svg-icon icon-class="meta-version" class="handle-svg-icon" />
               版本与变更
@@ -880,7 +876,7 @@ function handleStatusChange(row, status) {
     });
 }
 
-getDomains();
+// getDomains();
 getMetaDatabases();
 getMetaTables();
 // getSensitiveLevel();

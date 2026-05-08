@@ -845,7 +845,7 @@ function handleDeleteClick(row) {
 }
 
 getUserList();
-getDomains();
+// getDomains();
 // getSensitiveLevel();
 getDatasources();
 </script>

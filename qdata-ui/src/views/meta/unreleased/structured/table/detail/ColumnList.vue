@@ -21,7 +21,6 @@
             type="primary"
             icon="view"
             @click="handleDetailClick(row)"
-            v-hasPermi="['md:unreleased:structured:column:detail']"
           >
             详情
           </el-button>
@@ -32,7 +31,6 @@
               :disabled="row.status == 1"
               icon="Edit"
               @click="handleEditClick(row)"
-              v-hasPermi="['md:unreleased:structured:column:edit']"
             >
               修改
             </el-button>
@@ -43,16 +41,7 @@
               trigger="click"
             >
               <template #reference>
-                <el-button
-                  link
-                  type="primary"
-                  icon="ArrowDown"
-                  v-hasPermi="[
-                    'md:unreleased:structured:column:edit',
-                    'md:unreleased:structured:column:remove',
-                    'md:unreleased:structured:column:detail',
-                  ]"
-                >
+                <el-button link type="primary" icon="ArrowDown">
                   更多
                 </el-button>
               </template>
@@ -62,7 +51,7 @@
                 icon="Delete"
                 :disabled="row.status == 1"
                 @click="handleDeleteClick(row)"
-                v-hasPermi="['md:unreleased:structured:column:remove']"
+                "
               >
                 删除
               </el-button>
@@ -74,7 +63,6 @@
                 type="primary"
                 :disabled="row.status == 1"
                 @click="handleStatusChange(row, '1')"
-                v-hasPermi="['md:unreleased:structured:column:edit']"
               >
                 <svg-icon icon-class="meta-publish" class="handle-svg-icon" />
                 发布
@@ -84,7 +72,7 @@
                 link
                 type="primary"
                 @click="handleDetailClick(row, 'VersionManagement')"
-                v-hasPermi="['md:unreleased:structured:column:detail']"
+            
               >
                 <svg-icon icon-class="meta-version" class="handle-svg-icon" />
                 版本与变更

@@ -384,7 +384,7 @@ function handleDetailClick(row, tab) {
   });
 }
 
-getDomains();
+// getDomains();
 getMetaDatabases();
 getMetaTables();
 </script>

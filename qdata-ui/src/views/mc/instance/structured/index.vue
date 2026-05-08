@@ -45,7 +45,6 @@
               :params="tableStroe.params"
               @query="handleQueryClick"
               @reset="handleResetQueryClick"
-              :config="{ permi: ['mc:instance:structured:query'] }"
             />
           </template>
           <template #actions-data>
@@ -55,7 +54,6 @@
               icon="Delete"
               :disabled="!store.rows.length"
               @click="handleDeleteColumnClick"
-              v-hasPermi="['mc:instance:structured:remove']"
             >
               删除
             </el-button>
@@ -79,7 +77,6 @@
                 type="primary"
                 icon="View"
                 @click="handleViewClick(row)"
-                v-hasPermi="['mc:instance:structured:log:view']"
               >
                 查看日志
               </el-button>
@@ -88,7 +85,6 @@
                 type="warning"
                 icon="Download"
                 @click="handleDownloadClick(row)"
-                v-hasPermi="['mc:instance:structured:log:download']"
               >
                 下载日志
               </el-button>
@@ -104,7 +100,6 @@
 
 <script setup name="InstanceStructured">
 import { reactive, computed, getCurrentInstance, ref } from "vue";
-import { listDomain } from "@/api/att/domain/domain.js";
 import { listTaskInstance, delTaskInstance } from "@/api/mc/task/taskInstance";
 import { getParentLabelPath } from "@/utils/anivia";
 import { getTaskInstanceLog } from "@/api/mc/task/taskInstanceLog";

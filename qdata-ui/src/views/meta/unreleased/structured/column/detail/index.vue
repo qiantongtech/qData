@@ -196,7 +196,7 @@ function getDomains() {
 // 获取详情
 async function getDetail() {
   store.loading = true;
-  await getDomains();
+  // await getDomains();
   getColumn(route.query.id).then((res) => {
     const dbRespVO = res.data?.tableRespVO?.dbRespVO;
     res.data.dbRespVO = dbRespVO;

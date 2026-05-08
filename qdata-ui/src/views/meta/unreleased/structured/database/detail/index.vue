@@ -185,6 +185,6 @@ function handleTabChange(tab) {
   });
 }
 
-getDomains();
+// getDomains();
 getDetail();
 </script>

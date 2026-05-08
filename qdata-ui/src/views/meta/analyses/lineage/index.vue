@@ -69,7 +69,7 @@ function getDomains() {
 }
 
 getList();
-getDomains();
+// getDomains();
 </script>
 
 <style lang="scss" scoped>

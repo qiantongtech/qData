@@ -111,7 +111,7 @@ function getList() {
 // }
 
 getList();
-getDomains();
+// getDomains();
 </script>
 
 <style lang="scss" scoped>

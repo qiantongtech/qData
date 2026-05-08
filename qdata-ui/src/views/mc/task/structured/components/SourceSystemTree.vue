@@ -38,7 +38,7 @@
     }"
     class="left-pane"
   >
-    <div class="left-tree" v-loading="loading">
+    <div class="left-tree">
       <div class="head-container mb10">
         <el-input
           class="filter-tree"
@@ -49,7 +49,7 @@
           prefix-icon="Search"
         />
       </div>
-      <div class="head-container">
+      <div class="tree-wrapper" v-loading="loading">
         <el-tree
           v-if="treeData.length > 0"
           ref="treeRef"
@@ -80,15 +80,7 @@
               <!-- 3级及以后节点 - 使用叶子节点图标 -->
               <svg-icon v-else icon-class="zbzc" class="node-icon colorwxz" />
 
-              <el-tooltip
-                class="box-item"
-                effect="dark"
-                :content="node.label"
-                placement="top-start"
-                :disabled="node.label.length < 10"
-              >
-                <span class="treelabel"> {{ node.label }} </span>
-              </el-tooltip>
+              <span class="treelabel"> {{ node.label }} </span>
             </span>
           </template>
         </el-tree>
@@ -300,12 +292,21 @@ defineExpose({
 .left-pane {
   background-color: #ffffff;
   overflow: hidden;
+  height: v-bind(qtWrapheight);
 }
 
 .left-tree {
   padding: 15px;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.tree-wrapper {
+  flex: 1;
+  overflow: auto;
+  min-height: 200px;
 }
 
 .el-aside {

@@ -283,7 +283,6 @@
                         id: meta.id,
                       })
                     "
-                    v-hasPermi="['md:unreleased:structured:column:detail']"
                   >
                     <el-icon color="var(--el-color-primary)">
                       <View />
@@ -299,17 +298,13 @@
                         tab: 'LineageAnalysis',
                       })
                     "
-                    v-hasPermi="['md:unreleased:structured:column:detail']"
                   >
                     <svg-icon icon-class="meta-lineage"></svg-icon>
                     血缘分析
                   </div>
 
                   <el-dropdown popper-class="more-dropdown">
-                    <div
-                      class="btn-item"
-                      v-hasPermi="['md:unreleased:structured:column:detail']"
-                    >
+                    <div class="btn-item">
                       <svg-icon icon-class="arrow-down"> </svg-icon>
                       <span>更多</span>
                     </div>
@@ -635,7 +630,7 @@ function go(path, query) {
 }
 
 getList();
-getDomains();
+// getDomains();
 </script>
 
 <style lang="scss" scoped>

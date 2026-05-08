@@ -24,7 +24,6 @@
                 type="primary"
                 icon="view"
                 @click="handleDetailClick(row)"
-                v-hasPermi="['mc:released:structured:table:detail']"
               >
                 详情
               </el-button>
@@ -33,13 +32,8 @@
                 link
                 type="primary"
                 @click="handleDetailClick(row, 'ColumnList')"
-                v-hasPermi="['mc:released:structured:table:detail']"
               >
-                <svg-icon
-                  icon-class="meta-column"
-                  class="handle-svg-icon"
-                  v-hasPermi="['mc:released:structured:table:detail']"
-                />
+                <svg-icon icon-class="meta-column" class="handle-svg-icon" />
                 字段列表
               </el-button>
 
@@ -50,12 +44,7 @@
                 trigger="click"
               >
                 <template #reference>
-                  <el-button
-                    link
-                    type="primary"
-                    icon="ArrowDown"
-                    v-hasPermi="['mc:released:structured:table:detail']"
-                  >
+                  <el-button link type="primary" icon="ArrowDown">
                     更多
                   </el-button>
                 </template>
@@ -64,7 +53,6 @@
                   link
                   type="primary"
                   @click="handleDetailClick(row, 'LineageAnalysis')"
-                  v-hasPermi="['mc:released:structured:table:detail']"
                 >
                   <svg-icon icon-class="meta-lineage" class="handle-svg-icon" />
                   血缘分析
@@ -73,7 +61,6 @@
                   link
                   type="primary"
                   @click="handleDetailClick(row, 'ImpactAnalysis')"
-                  v-hasPermi="['mc:released:structured:table:detail']"
                 >
                   <svg-icon icon-class="meta-impact" class="handle-svg-icon" />
                   影响分析
@@ -82,7 +69,6 @@
                   link
                   type="primary"
                   @click="handleDetailClick(row, 'VersionManagement')"
-                  v-hasPermi="['mc:released:structured:table:detail']"
                 >
                   <svg-icon icon-class="meta-version" class="handle-svg-icon" />
                   版本与变更

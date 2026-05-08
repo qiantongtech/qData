@@ -19,13 +19,7 @@
             />
           </template>
           <template #actions-data>
-            <el-button
-              type="primary"
-              plain
-              icon="Plus"
-              @click="handleAddClick"
-              v-hasPermi="['mc:unreleased:structured:table:add']"
-            >
+            <el-button type="primary" plain icon="Plus" @click="handleAddClick">
               新增
             </el-button>
 
@@ -35,7 +29,6 @@
               icon="Delete"
               :disabled="!store.rows.length"
               @click="handleDeleteColumnClick"
-              v-hasPermi="['mc:unreleased:structured:table:remove']"
             >
               删除
             </el-button>
@@ -61,7 +54,6 @@
                 type="primary"
                 icon="view"
                 @click="handleDetailClick(row)"
-                v-hasPermi="['mc:unreleased:structured:table:detail']"
               >
                 详情
               </el-button>
@@ -71,7 +63,6 @@
                 icon="Edit"
                 :disabled="row.status == 1"
                 @click="handleEditClick(row)"
-                v-hasPermi="['mc:unreleased:structured:table:edit']"
               >
                 修改
               </el-button>
@@ -82,16 +73,7 @@
                 trigger="click"
               >
                 <template #reference>
-                  <el-button
-                    link
-                    type="primary"
-                    icon="ArrowDown"
-                    v-hasPermi="[
-                      'mc:unreleased:structured:table:detail',
-                      'mc:unreleased:structured:table:remove',
-                      'mc:unreleased:structured:table:edit',
-                    ]"
-                  >
+                  <el-button link type="primary" icon="ArrowDown">
                     更多
                   </el-button>
                 </template>
@@ -101,7 +83,6 @@
                   icon="Delete"
                   :disabled="row.status == 1"
                   @click="handleDeleteClick(row)"
-                  v-hasPermi="['mc:unreleased:structured:table:remove']"
                 >
                   删除
                 </el-button>
@@ -113,7 +94,6 @@
                   type="primary"
                   :disabled="row.status == 1"
                   @click="handleStatusChange(row, '1')"
-                  v-hasPermi="['mc:unreleased:structured:table:edit']"
                 >
                   <svg-icon icon-class="meta-publish" class="handle-svg-icon" />
                   发布
@@ -123,7 +103,6 @@
                   link
                   type="primary"
                   @click="handleDetailClick(row, 'VersionManagement')"
-                  v-hasPermi="['mc:unreleased:structured:table:detail']"
                 >
                   <svg-icon icon-class="meta-version" class="handle-svg-icon" />
                   版本与变更

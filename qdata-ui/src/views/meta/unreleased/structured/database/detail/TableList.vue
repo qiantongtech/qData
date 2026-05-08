@@ -463,5 +463,5 @@ function handleStatusChange(row, status) {
     });
 }
 
-getDomains();
+// getDomains();
 </script>

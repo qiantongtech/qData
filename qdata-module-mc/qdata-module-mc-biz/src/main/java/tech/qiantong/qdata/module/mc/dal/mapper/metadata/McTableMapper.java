@@ -34,7 +34,8 @@ public interface McTableMapper extends BaseMapperX<McTableDO> {
         Set<String> allowedColumns = Sets.newHashSet("id", "create_time", "update_time", "audit_time", "data_quality");
         MPJLambdaWrapperX<McTableDO> lambdaWrapperX = new MPJLambdaWrapperX<>();
         lambdaWrapperX.selectAll(McTableDO.class)
-                .select("d.source_system_id"
+                .select("d.source_system_id",
+                        "d.source_system_name"
                         //"(CASE WHEN da.ID IS NULL THEN '0' ELSE '1' END) AS dssetFlag"
                         ,"t4.DATASOURCE_NAME AS datasourceName"
                         ,"t4.DATASOURCE_TYPE AS datasourceType"

@@ -111,6 +111,9 @@ public class McTableDO extends BaseEntity {
     @TableField(exist = false)
     private Long sourceSystemId;
 
+    @TableField(exist = false)
+    private String sourceSystemName;
+
     /**
      * 业务责任人姓名
      */

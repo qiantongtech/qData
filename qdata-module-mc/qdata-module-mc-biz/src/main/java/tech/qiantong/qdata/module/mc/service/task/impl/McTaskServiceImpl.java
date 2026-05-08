@@ -176,6 +176,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
 
     @Override
     public Long createMcTask(McTaskSaveReqVO createReqVO) {
+        daDatasourceApiService.getDatabaseListByDatasourceId(createReqVO.getDatasourceId());
         // 校验任务是否重复
         validateDuplicateTask(createReqVO, null);
 
@@ -291,7 +292,10 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
     public McTaskDO getMcTaskById(Long id) {
         MPJLambdaWrapper<McTaskDO> lambdaWrapper = new MPJLambdaWrapper();
 
-        lambdaWrapper.selectAll(McTaskDO.class).select("t5.NICK_NAME AS personChargeName").leftJoin("SYSTEM_USER t5 ON t.LEADER = t5.USER_ID AND t5.DEL_FLAG = '0'").eq(McTaskDO::getId, id);
+        lambdaWrapper.selectAll(McTaskDO.class)
+                .select("t5.NICK_NAME AS personChargeName")
+                .leftJoin("SYSTEM_USER t5 ON t.LEADER = t5.USER_ID AND t5.DEL_FLAG = '0'")
+                .eq(McTaskDO::getId, id);
 
         return mcTaskMapper.selectOne(lambdaWrapper);
     }
@@ -482,6 +486,14 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
 
     @Override
     public Map<String, Object> runJobOnce(McTaskSaveReqVO mcTask) {
+        String redisKey = buildRunLockKey(mcTask.getId());
+        if (!checkTaskRunLock(redisKey)) {
+            throw new RuntimeException("历史任务未执行完毕，请稍后重试");
+        }
+        // FIXME 记录用redis解决执行一次的人
+        redisService.set(redisKey + ":creatorId", mcTask.getCreatorId().toString(), 60 * 60 * 12);
+        redisService.set(redisKey + ":createBy", mcTask.getCreateBy().toString(), 60 * 60 * 12);
+
         McTaskRespVO mcTaskByIdNew = this.getMcTaskByIdNew(mcTask.getId());
         mcTaskXxxJobService.runJobOnce(mcTaskByIdNew.getJobId(), String.valueOf(mcTaskByIdNew.getId()));
         return new HashMap<>();
@@ -529,6 +541,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
             safeLog(instanceId, taskId, "任务执行成功");
             return true;
         } catch (Exception e) {
+            redisService.delete(redisKey);
             markFail(instance, e);
             safeLog(instanceId, taskId, "任务执行失败：" + e.getMessage());
             return false;
@@ -549,6 +562,14 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
             throw new DataQueryException("采集任务不存在，taskId=" + taskId);
         }
         return task;
+    }
+
+    private boolean checkTaskRunLock(String redisKey) {
+        String status = redisService.get(redisKey);
+        if (StringUtils.isNotBlank(status) && "1".equals(status)) {
+            return false;
+        }
+        return true;
     }
 
     private boolean acquireRunLock(String redisKey) {
@@ -578,8 +599,10 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
                 .validFlag(Boolean.TRUE)
                 .delFlag(Boolean.FALSE)
                 .build();
-        instance.setCreateBy("System Collection Task");
-        instance.setCreatorId(1L);
+        String creatorId = redisService.get(buildRunLockKey(task.getId()) + ":creatorId");
+        String createBy = redisService.get(buildRunLockKey(task.getId()) + ":createBy");
+        instance.setCreateBy(StringUtils.isNotEmpty(createBy) ? createBy : "System Collection Task");
+        instance.setCreatorId(StringUtils.isNotEmpty(creatorId) ? Long.parseLong(creatorId) : 1L);
 
         String collectType = task.getCollectType();
         if (StringUtils.equals("2", collectType)) {
@@ -819,7 +842,8 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
 
     }
 
-    private Void  updateResponsibleInfoForMetadata(McTaskRespVO task){Long leader = task.getLeader();
+    private Void updateResponsibleInfoForMetadata(McTaskRespVO task) {
+        Long leader = task.getLeader();
         Long dept = task.getResponsibleDept();
         LambdaUpdateWrapper<McDbDO> updateDbWrapper = new LambdaUpdateWrapper<>();
         updateDbWrapper.eq(McDbDO::getTaskId, task.getId());
@@ -851,6 +875,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         }
         return null;
     }
+
     private List<McDbRespVO> findDbsOnlyInResp(List<McTaskScopeDO> databaseScopes, DaDatasourceRespDTO datasource, List<McDbRespVO> mcDbByTaskId) {
 
         List<McDbRespVO> result = new ArrayList<>();
@@ -863,7 +888,8 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
 
             if (CollectionUtils.isNotEmpty(databaseScopes)) {
                 for (McTaskScopeDO scope : databaseScopes) {
-                    if (Objects.equals(resp.getIp(), datasource.getIp()) && Objects.equals(resp.getPort(), datasource.getPort() == null ? null : datasource.getPort().intValue()) && Objects.equals(resp.getDatasourceConfig(), datasource.getDatasourceConfig()) && Objects.equals(resp.getDbType(), datasource.getDatasourceType()) && Objects.equals(resp.getDbName(), scope.getDbName()) && Objects.equals(resp.getSchemaName(), scope.getSchemaName())) {
+                    if (Objects.equals(resp.getIp(), datasource.getIp()) && Objects.equals(resp.getPort(), datasource.getPort() == null ? null : datasource.getPort()
+                                                                                                                                                 .intValue()) && Objects.equals(resp.getDatasourceConfig(), datasource.getDatasourceConfig()) && Objects.equals(resp.getDbType(), datasource.getDatasourceType()) && Objects.equals(resp.getDbName(), scope.getDbName()) && Objects.equals(resp.getSchemaName(), scope.getSchemaName())) {
                         exists = true;
                         break;
                     }
@@ -884,7 +910,8 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         }
 
         for (McDbRespVO resp : mcDbByTaskId) {
-            if (Objects.equals(resp.getIp(), datasource.getIp()) && Objects.equals(resp.getPort(), datasource.getPort() == null ? null : datasource.getPort().intValue()) && Objects.equals(resp.getDatasourceConfig(), datasource.getDatasourceConfig()) && Objects.equals(resp.getDbType(), datasource.getDatasourceType()) && Objects.equals(resp.getDbName(), dbScope.getDbName()) && Objects.equals(resp.getSchemaName(), dbScope.getSchemaName())) {
+            if (Objects.equals(resp.getIp(), datasource.getIp()) && Objects.equals(resp.getPort(), datasource.getPort() == null ? null : datasource.getPort()
+                                                                                                                                         .intValue()) && Objects.equals(resp.getDatasourceConfig(), datasource.getDatasourceConfig()) && Objects.equals(resp.getDbType(), datasource.getDatasourceType()) && Objects.equals(resp.getDbName(), dbScope.getDbName()) && Objects.equals(resp.getSchemaName(), dbScope.getSchemaName())) {
                 return resp;
             }
         }
@@ -895,14 +922,15 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         DbQueryProperty property = new DbQueryProperty(datasource.getDatasourceType(), datasource.getIp(), datasource.getPort(), datasource.getDatasourceConfig());
 
         // PG / Kingbase 切库 + schema
-        if (DbType.KINGBASE8.getDb().equals(property.getDbType()) || DbType.POSTGRE_SQL.getDb().equals(property.getDbType())) {
+        if (DbType.KINGBASE8.getDb().equals(property.getDbType()) || DbType.POSTGRE_SQL.getDb()
+                .equals(property.getDbType())) {
             property.setDbName(dbScope.getDbName());
             property.setSid(dbScope.getSchemaName());
         }
 
         DbQuery dbQuery = dataSourceFactory.createDbQuery(property);
         if (!dbQuery.valid()) {
-            safeLog(instance.getId(), task.getId(),  "数据库连接失败，db=" + dbScope.getDbName());
+            safeLog(instance.getId(), task.getId(), "数据库连接失败，db=" + dbScope.getDbName());
             throw new DataQueryException("数据库连接失败");
         }
 
@@ -953,7 +981,8 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         safeLog(instanceId, taskId, String.format("库 %s 字段加载完成，字段数量=%d", dbScope.getDbName(), columns.size()));
 
 
-        Map<String, List<DbColumn>> tableColumnMap = columns.stream().collect(Collectors.groupingBy(DbColumn::getTableName));
+        Map<String, List<DbColumn>> tableColumnMap = columns.stream()
+                .collect(Collectors.groupingBy(DbColumn::getTableName));
 
         List<McColumnSaveReqVO> mcColumnReqDTOList = new ArrayList<>();
         List<Long> updateTableIds = new ArrayList<>();
@@ -1070,9 +1099,9 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         Long updateCount = 0L;
         Long successCount = 0L;
 
-        safeLog(instanceId, taskId,"开始处理表：" + dbScope.getDbName() + "." + table.getTableName());
+        safeLog(instanceId, taskId, "开始处理表：" + dbScope.getDbName() + "." + table.getTableName());
 
-        safeLog(instanceId, taskId,String.format("表 %s 字段加载完成，字段数量=%d", table.getTableName(), columns.size()));
+        safeLog(instanceId, taskId, String.format("表 %s 字段加载完成，字段数量=%d", table.getTableName(), columns.size()));
 
         if (CollectionUtils.isEmpty(columns)) {
             return null;
@@ -1094,11 +1123,11 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
 
             boolean updated = isTableUpdated(table, matched, columnReqDTOS, mcColumnRespDTOList);
             boolean updated2 = isTableUpdated2(table, matched);
-            if (updated||updated2) {
+            if (updated || updated2) {
 
                 safeLog(instanceId, taskId, "[TABLE] 表结构发生变更，执行更新：" + table.getTableName());
 
-                updateCount++;
+                updateCount++;//11
 
                 mcTableTxService.runInNewTx(() -> mcTableService.updateMcTable(table));
 //                mcTableService.updateMcTable(table);
@@ -1106,7 +1135,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
                 safeLog(instanceId, taskId, "[TABLE] 表已更新，准备删除并重建字段：" + table.getTableName());
 
                 removeMcColumn(table, instance, dbScope);
-            }else {
+            } else {
                 safeLog(instanceId, taskId, "[TABLE] 表结构未变化，跳过更新：" + table.getTableName());
                 successCount++;
                 return new TableProcessResult(addCount, updateCount, successCount, new ArrayList<>());
@@ -1162,7 +1191,11 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         String respComment = StringUtils.defaultString(respTable.getTableComment());
         if (!reqComment.equals(respComment)) {
             result = true;
-            updateMsg.append("表注释变更旧注释：").append(respComment).append("，新注释：").append(reqComment).append("；\n");
+            updateMsg.append("表注释变更旧注释：")
+                    .append(respComment)
+                    .append("，新注释：")
+                    .append(reqComment)
+                    .append("；\n");
             type.add("1");
         }
 
@@ -1225,21 +1258,34 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
 
         if (!addColumnNames.isEmpty()) {
             type.add("2");
-            updateMsg.append("新增：").append(addColumnNames.size()).append("个字段：").append(String.join(",", addColumnNames)).append("；\n");
+            updateMsg.append("新增：")
+                    .append(addColumnNames.size())
+                    .append("个字段：")
+                    .append(String.join(",", addColumnNames))
+                    .append("；\n");
         }
         if (!deleteColumnNames.isEmpty()) {
             type.add("2");
-            updateMsg.append("删除：").append(deleteColumnNames.size()).append("个字段：").append(String.join(",", deleteColumnNames)).append("；\n");
+            updateMsg.append("删除：")
+                    .append(deleteColumnNames.size())
+                    .append("个字段：")
+                    .append(String.join(",", deleteColumnNames))
+                    .append("；\n");
         }
         if (!updateColumnNames.isEmpty()) {
             type.add("2");
-            updateMsg.append("更新：").append(updateColumnNames.size()).append("个字段：").append(String.join(",", updateColumnNames)).append("；\n");
+            updateMsg.append("更新：")
+                    .append(updateColumnNames.size())
+                    .append("个字段：")
+                    .append(String.join(",", updateColumnNames))
+                    .append("；\n");
         }
 
         reqTable.setUpdateMsg(updateMsg.toString());
         reqTable.setUpdateType(String.join(",", type));
         return result;
     }
+
     private boolean isTableUpdated2(McTableSaveReqVO reqTable, McTableRespVO respTable) {
         boolean result = false;
         StringBuilder updateMsg = new StringBuilder();
@@ -1250,6 +1296,9 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         // 获取表中原来存储的索引字段和存储大小
         String tbIndex = mcTableDO.getTbIndex();
         Integer storageSize = mcTableDO.getStorageSize();
+        if (storageSize == null) {
+            storageSize = 0;
+        }
         // 获取数据库元数据信息，包括数据库类型
         McDbDO mcDbDO = mcDbMapper.findById(mcTableDO.getDbId());
         if (mcDbDO != null) {
@@ -1259,14 +1308,23 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
                 // 批量获取表元数据信息
                 DatabaseDialect.TableMetadata metadata = dialect.getTableMetadata(mcDbDO, mcTableDO.getTableName());
                 // 对比索引字段和存储大小
-                if (StringUtils.isNotBlank(tbIndex) &&!tbIndex.equals(metadata.getIndexes())) {
+                if (StringUtils.isNotBlank(tbIndex) && !tbIndex.equals(metadata.getIndexes())) {
                     result = true;
-                    updateMsg.append("表索引字段变更旧索引：").append(tbIndex).append("，新索引字段：").append(metadata.getIndexes()).append("；\n");
+                    updateMsg.append("表索引字段变更旧索引：")
+                            .append(tbIndex)
+                            .append("，新索引字段：")
+                            .append(metadata.getIndexes())
+                            .append("；\n");
                     type.add("3");
                 }
-                if (storageSize != metadata.getTableSize().intValue()) {
+
+                if (metadata.getTableSize() != null && storageSize != metadata.getTableSize().intValue()) {
                     result = true;
-                    updateMsg.append("表存储大小变更旧存储大小：").append(storageSize).append("，新存储大小：").append(metadata.getTableSize()).append("；\n");
+                    updateMsg.append("表存储大小变更旧存储大小：")
+                            .append(storageSize)
+                            .append("，新存储大小：")
+                            .append(metadata.getTableSize())
+                            .append("；\n");
                     type.add("4");
                 }
             }
@@ -1275,6 +1333,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         reqTable.setUpdateType(String.join(",", type));
         return result;
     }
+
     private boolean isColumnUpdated(McColumnSaveReqVO req, McColumnRespVO resp) {
 
         StringBuilder updateMsg = new StringBuilder();
@@ -1286,7 +1345,11 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         String respComment = StringUtils.defaultString(resp.getColumnComment());
         if (!reqComment.equals(respComment)) {
             result = true;
-            updateMsg.append("字段注释变更旧注释：").append(respComment).append("，新注释：").append(reqComment).append("；\n");
+            updateMsg.append("字段注释变更旧注释：")
+                    .append(respComment)
+                    .append("，新注释：")
+                    .append(reqComment)
+                    .append("；\n");
             type.add("1");
         }
 
@@ -1302,21 +1365,33 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         // 字段长度变更
         if (!Objects.equals(req.getColumnLength(), resp.getColumnLength())) {
             result = true;
-            updateMsg.append("字段长度变更旧长度：").append(resp.getColumnLength()).append("，新长度：").append(req.getColumnLength()).append("；\n");
+            updateMsg.append("字段长度变更旧长度：")
+                    .append(resp.getColumnLength())
+                    .append("，新长度：")
+                    .append(req.getColumnLength())
+                    .append("；\n");
             type.add("3");
         }
 
         // 字段精度变更
         if (!Objects.equals(req.getColumnPrecision(), resp.getColumnPrecision())) {
             result = true;
-            updateMsg.append("字段精度变更旧精度：").append(resp.getColumnPrecision()).append("，新精度：").append(req.getColumnPrecision()).append("；\n");
+            updateMsg.append("字段精度变更旧精度：")
+                    .append(resp.getColumnPrecision())
+                    .append("，新精度：")
+                    .append(req.getColumnPrecision())
+                    .append("；\n");
             type.add("4");
         }
 
         // 字段小数位数变更
         if (!Objects.equals(req.getColumnScale(), resp.getColumnScale())) {
             result = true;
-            updateMsg.append("字段小数位数变更旧小数位数：").append(resp.getColumnScale()).append("，新小数位数：").append(req.getColumnScale()).append("；\n");
+            updateMsg.append("字段小数位数变更旧小数位数：")
+                    .append(resp.getColumnScale())
+                    .append("，新小数位数：")
+                    .append(req.getColumnScale())
+                    .append("；\n");
             type.add("5");
         }
 
@@ -1325,7 +1400,11 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         String respDefault = StringUtils.defaultString(resp.getDefaultValue());
         if (!reqDefault.equals(respDefault)) {
             result = true;
-            updateMsg.append("字段默认值变更旧默认值：").append(respDefault).append("，新默认值：").append(reqDefault).append("；\n");
+            updateMsg.append("字段默认值变更旧默认值：")
+                    .append(respDefault)
+                    .append("，新默认值：")
+                    .append(reqDefault)
+                    .append("；\n");
             type.add("6");
         }
 
@@ -1334,7 +1413,11 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         String respPkFlag = StringUtils.defaultString(resp.getPkFlag());
         if (!reqPkFlag.equals(respPkFlag)) {
             result = true;
-            updateMsg.append("主键标识变更旧标识：").append(respPkFlag).append("，新标识：").append(reqPkFlag).append("；\n");
+            updateMsg.append("主键标识变更旧标识：")
+                    .append(respPkFlag)
+                    .append("，新标识：")
+                    .append(reqPkFlag)
+                    .append("；\n");
             type.add("7");
         }
 
@@ -1343,7 +1426,11 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         String respFkFlag = StringUtils.defaultString(resp.getFkFlag());
         if (!reqFkFlag.equals(respFkFlag)) {
             result = true;
-            updateMsg.append("外键标识变更旧标识：").append(respFkFlag).append("，新标识：").append(reqFkFlag).append("；\n");
+            updateMsg.append("外键标识变更旧标识：")
+                    .append(respFkFlag)
+                    .append("，新标识：")
+                    .append(reqFkFlag)
+                    .append("；\n");
             type.add("8");
         }
 
@@ -1352,7 +1439,11 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         String respNullableFlag = StringUtils.defaultString(resp.getNullableFlag());
         if (!reqNullableFlag.equals(respNullableFlag)) {
             result = true;
-            updateMsg.append("可空标识变更旧标识：").append(respNullableFlag).append("，新标识：").append(reqNullableFlag).append("；\n");
+            updateMsg.append("可空标识变更旧标识：")
+                    .append(respNullableFlag)
+                    .append("，新标识：")
+                    .append(reqNullableFlag)
+                    .append("；\n");
             type.add("9");
         }
 
@@ -1467,7 +1558,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         DbQuery rootQuery = dataSourceFactory.createDbQuery(baseProperty);
         try {
             if (!rootQuery.valid()) {
-                safeLog(instanceId, taskId,"数据库连接失败");
+                safeLog(instanceId, taskId, "数据库连接失败");
                 throw new DataQueryException("数据库连接失败");
             }
             dbNames = rootQuery.getDbNames(null);
@@ -1495,7 +1586,8 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         for (DbName dbName : dbNames) {
 
             DbQueryProperty childProperty = baseProperty;
-            if (DbType.KINGBASE8.getDb().equals(baseProperty.getDbType()) || DbType.POSTGRE_SQL.getDb().equals(baseProperty.getDbType())) {
+            if (DbType.KINGBASE8.getDb().equals(baseProperty.getDbType()) || DbType.POSTGRE_SQL.getDb()
+                    .equals(baseProperty.getDbType())) {
 
                 childProperty = baseProperty.copy();
                 childProperty.setDbName(dbName.getDbName());
@@ -1543,7 +1635,8 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
 
     private List<McDbSaveReqVO> compareAndRecordDatabaseScope(McTaskRespVO task, McTaskInstanceDO instance, List<McTaskScopeDO> databaseScopes, DaDatasourceRespDTO datasource) {
         List<McDbSaveReqVO> dbReqDTOList = new ArrayList<>();
-
+        String creatorId = redisService.get(buildRunLockKey(task.getId()) + ":creatorId");
+        String createBy = redisService.get(buildRunLockKey(task.getId()) + ":createBy");
         //TODO 逻辑待完善
         for (McTaskScopeDO databaseScope : databaseScopes) {
 
@@ -1563,8 +1656,8 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
             createReqVO.setDatasourceConfig(datasource.getDatasourceConfig());
             createReqVO.setBelongingSystem(datasource.getDatasourceName());
 
-            createReqVO.setCreateBy("System Collection Task");
-            createReqVO.setCreatorId(1L);
+            createReqVO.setCreateBy(StringUtils.isNotEmpty(createBy) ? createBy : "System Collection Task");
+            createReqVO.setCreatorId(StringUtils.isNotEmpty(creatorId) ? Long.parseLong(creatorId) : 1L);
 
             // ====== 库 / 模式 ======
             createReqVO.setDbName(databaseScope.getDbName());
@@ -1587,6 +1680,9 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
 
     private List<McTableSaveReqVO> compareAndRecordTables(McTaskRespVO task, McTaskInstanceDO instance, McDbSaveReqVO dbScope, List<DbTable> tables) {
         List<McTableSaveReqVO> mcTableReqDTOList = new ArrayList<>();
+        String creatorId = redisService.get(buildRunLockKey(task.getId()) + ":creatorId");
+        String createBy = redisService.get(buildRunLockKey(task.getId()) + ":createBy");
+
         for (DbTable table : tables) {
 
             McTableSaveReqVO mcTableReqDTO = new McTableSaveReqVO();
@@ -1604,8 +1700,8 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
             mcTableReqDTO.setDbName(dbScope.getDbName());
             mcTableReqDTO.setSchemaName(dbScope.getSchemaName());
 
-            mcTableReqDTO.setCreateBy("System Collection Task");
-            mcTableReqDTO.setCreatorId(1L);
+            mcTableReqDTO.setCreateBy(StringUtils.isNotEmpty(createBy) ? createBy : "System Collection Task");
+            mcTableReqDTO.setCreatorId(StringUtils.isNotEmpty(creatorId) ? Long.parseLong(creatorId) : 1L);
 
             // ====== 状态与标志位 ======
             mcTableReqDTO.setStatus("0");     // 未发布
@@ -1630,54 +1726,56 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
 
     private List<McColumnSaveReqVO> compareAndRecordColumns(McTaskRespVO task, McTaskInstanceDO instance, McDbSaveReqVO dbScope, McTableSaveReqVO table, List<DbColumn> columns) {
 
-            List<McColumnSaveReqVO> columnReqDTOS = new ArrayList<>();
-            for (DbColumn column : columns) {
-                if (null !=column) {
-                    McColumnSaveReqVO createReqVO = new McColumnSaveReqVO();
+        List<McColumnSaveReqVO> columnReqDTOS = new ArrayList<>();
+        String creatorId = redisService.get(buildRunLockKey(task.getId()) + ":creatorId");
+        String createBy = redisService.get(buildRunLockKey(task.getId()) + ":createBy");
+        for (DbColumn column : columns) {
+            if (null != column) {
+                McColumnSaveReqVO createReqVO = new McColumnSaveReqVO();
 
-                    // ====== 关联信息 ======
-                    createReqVO.setTaskId(task.getId());
-                    createReqVO.setDbId(dbScope.getId());
-                    createReqVO.setTableId(table.getId());
-                    createReqVO.setDatasourceId(task.getDatasourceId());
+                // ====== 关联信息 ======
+                createReqVO.setTaskId(task.getId());
+                createReqVO.setDbId(dbScope.getId());
+                createReqVO.setTableId(table.getId());
+                createReqVO.setDatasourceId(task.getDatasourceId());
 
-                    // ====== 字段基础信息 ======
-                    createReqVO.setColumnName(StringUtils.isEmpty(column.getColName()) ? "" : column.getColName());
-                    createReqVO.setColumnComment(StringUtils.isEmpty(column.getColComment()) ? "" : column.getColComment());
-                    createReqVO.setColumnType(StringUtils.isEmpty(column.getDataType()) ? "" : column.getDataType());
+                // ====== 字段基础信息 ======
+                createReqVO.setColumnName(StringUtils.isEmpty(column.getColName()) ? "" : column.getColName());
+                createReqVO.setColumnComment(StringUtils.isEmpty(column.getColComment()) ? "" : column.getColComment());
+                createReqVO.setColumnType(StringUtils.isEmpty(column.getDataType()) ? "" : column.getDataType());
 
-                    // ====== 长度 / 精度 ======
-                    createReqVO.setColumnLength(parseInt(column.getDataLength()));
-                    createReqVO.setColumnPrecision(parseInt(column.getDataPrecision()));
-                    createReqVO.setColumnScale(parseInt(column.getDataScale()));
+                // ====== 长度 / 精度 ======
+                createReqVO.setColumnLength(parseInt(column.getDataLength()));
+                createReqVO.setColumnPrecision(parseInt(column.getDataPrecision()));
+                createReqVO.setColumnScale(parseInt(column.getDataScale()));
 
-                    // ====== 默认值 ======
-                    createReqVO.setDefaultValue(column.getDataDefault());
+                // ====== 默认值 ======
+                createReqVO.setDefaultValue(column.getDataDefault());
 
-                    // ====== 主键 / 可空 ======
-                    createReqVO.setPkFlag(Boolean.TRUE.equals(column.getColKey()) ? "1" : "0");
-                    createReqVO.setNullableFlag(Boolean.FALSE.equals(column.getNullable()) ? "1" : "0");
-                    createReqVO.setFkFlag("0");
+                // ====== 主键 / 可空 ======
+                createReqVO.setPkFlag(Boolean.TRUE.equals(column.getColKey()) ? "1" : "0");
+                createReqVO.setNullableFlag(Boolean.FALSE.equals(column.getNullable()) ? "1" : "0");
+                createReqVO.setFkFlag("0");
 
-                    createReqVO.setCreateBy("System Collection Task");
-                    createReqVO.setCreatorId(1L);
+                createReqVO.setCreateBy(StringUtils.isNotEmpty(createBy) ? createBy : "System Collection Task");
+                createReqVO.setCreatorId(StringUtils.isNotEmpty(creatorId) ? Long.parseLong(creatorId) : 1L);
 
-                    // ====== 状态与标志位 ======
-                    createReqVO.setStatus("0");     // 未发布
-                    createReqVO.setVersion(1);
-                    createReqVO.setAuditStatus("2");
-                    createReqVO.setAuditTime(new Date());
+                // ====== 状态与标志位 ======
+                createReqVO.setStatus("0");     // 未发布
+                createReqVO.setVersion(1);
+                createReqVO.setAuditStatus("2");
+                createReqVO.setAuditTime(new Date());
 
-                    // ====== 描述 ======
-                    createReqVO.setDescription(column.getColComment());
+                // ====== 描述 ======
+                createReqVO.setDescription(column.getColComment());
 
 
-                    columnReqDTOS.add(createReqVO);
-                    // ====== 调用字段元数据服务 ======
+                columnReqDTOS.add(createReqVO);
+                // ====== 调用字段元数据服务 ======
 
-                    // 如需回写 columnId，可在 DbColumn 中扩展字段
-                }
+                // 如需回写 columnId，可在 DbColumn 中扩展字段
             }
+        }
         return columnReqDTOS;
     }
 
@@ -1748,8 +1846,8 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
                                 String dbName = currentScope.getDbName();
                                 String schemaName = currentScope.getSchemaName();
                                 String dbInfo = StringUtils.isNotBlank(schemaName)
-                                    ? dbName + "." + schemaName
-                                    : dbName;
+                                        ? dbName + "." + schemaName
+                                        : dbName;
                                 throw new ServiceException("采集范围中的数据库 [" + dbInfo + "] 已被其他任务使用", HttpStatus.CONFLICT);
                             }
                         }
@@ -1771,7 +1869,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
             return false;
         }
         return Objects.equals(scope1.getDbName(), scope2.getDbName()) &&
-               Objects.equals(scope1.getSchemaName(), scope2.getSchemaName());
+                Objects.equals(scope1.getSchemaName(), scope2.getSchemaName());
     }
 
     @Override

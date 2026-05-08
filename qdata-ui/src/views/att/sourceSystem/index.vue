@@ -10,12 +10,7 @@
         />
       </template>
       <template #actions-data>
-        <el-button
-          type="primary"
-          plain
-          icon="Plus"
-          @click="handleAdd"
-        >
+        <el-button type="primary" plain icon="Plus" @click="handleAdd">
           新增
         </el-button>
         <el-button
@@ -47,11 +42,7 @@
           {{ getUserLabel(scope.row.contactPerson) }}
         </template>
         <template #handle="{ row }">
-          <el-button
-            link
-            type="primary"
-            icon="Edit"
-            @click="handleUpdate(row)"
+          <el-button link type="primary" icon="Edit" @click="handleUpdate(row)"
             >修改</el-button
           >
           <el-button
@@ -59,13 +50,10 @@
             type="danger"
             icon="Delete"
             @click="handleDelete(row)"
+            :disabled="row.validFlag"
             >删除</el-button
           >
-          <el-button
-            link
-            type="primary"
-            icon="view"
-            @click="handleDetail(row)"
+          <el-button link type="primary" icon="view" @click="handleDetail(row)"
             >详情</el-button
           >
         </template>
@@ -208,14 +196,14 @@
           </div>
         </el-form-item>
 
-        <el-form-item label="负责人" prop="responsiblePerson">
+        <el-form-item label="负责人" prop="responsiblePersonName">
           <div class="form-readonly">
-            {{ form.responsiblePerson }}
+            {{ form.responsiblePersonName }}
           </div>
         </el-form-item>
-        <el-form-item label="对接人" prop="contactPerson">
+        <el-form-item label="对接人" prop="contactPersonName">
           <div class="form-readonly">
-            {{ form.contactPerson }}
+            {{ form.contactPersonName }}
           </div>
         </el-form-item>
         <el-form-item label="排序" prop="sortOrder">
@@ -346,7 +334,7 @@ const tableStore = reactive({
     table: {
       stripe: true,
       rowKey: "id",
-      defaultSort: { prop: "create_time", order: "descending" },
+      defaultSort: { prop: "create_time", order: "desc" },
       onSelectionChange: function (rows) {
         store.rows = rows;
       },
@@ -378,7 +366,13 @@ const tableStore = reactive({
       width: 80,
       slot: "validFlag",
     },
-    { label: "排序", prop: "sortOrder", width: 80, sortable: true },
+    {
+      label: "排序",
+      prop: "sortOrder",
+      sortableKey: "sort_order",
+      width: 80,
+      sortable: true,
+    },
     {
       label: "负责人",
       prop: "responsiblePersonName",
@@ -540,6 +534,8 @@ function handleUpdate(row) {
     delete response.data.createTime;
     delete response.data.updateTime;
     form.value = response.data;
+    form.value.responsiblePerson = Number(response.data.responsiblePerson);
+    form.value.contactPerson = Number(response.data.contactPerson);
     open.value = true;
     title.value = "修改来源系统";
   });
@@ -555,7 +551,6 @@ function handleDetail(row) {
     title.value = "来源系统详情";
   });
 }
-
 /** 提交按钮 */
 function submitForm() {
   proxy.$refs["sourceSystemRef"].validate((valid) => {
@@ -580,22 +575,29 @@ function submitForm() {
     }
   });
 }
-
 /** 删除按钮操作 */
 function handleDelete(row) {
+  const invalidIds = [];
   let _ids = null;
   if (row?.id) {
     _ids = row.id;
   } else {
-    _ids = store.rows.map((item) => item.id).join(",");
+    // _ids = store.rows.map((item) => item.id).join(",");
+    store.rows.forEach((item) => {
+      // 当 validFlag 为 false 时，记录 id
+      if (item.validFlag === false) {
+        invalidIds.push(item.id);
+      }
+    });
   }
-
-  if (!_ids) return;
-
   proxy.$modal
-    .confirm('是否确认删除来源系统编号为"' + _ids + '"的数据项？')
+    .confirm(
+      `可删除${invalidIds.length}个，不可删除${
+        store.rows.length - invalidIds.length
+      }个，是否删除可删部分`
+    )
     .then(function () {
-      return delSourceSystem(_ids);
+      return delSourceSystem(invalidIds);
     })
     .then(() => {
       tableRef.value.getList();

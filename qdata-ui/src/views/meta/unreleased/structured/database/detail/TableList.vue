@@ -272,19 +272,6 @@ const tableStroe = reactive({
       invisible: route.query.released,
     },
     {
-      label: "审核状态",
-      prop: "auditStatus",
-      dict: "meta_audit_status",
-      width: 90,
-    },
-    {
-      label: "审核时间",
-      prop: "auditTime",
-      sortable: true,
-      width: 160,
-      date: true,
-    },
-    {
       label: "更新人",
       prop: "updateBy",
       width: 120,

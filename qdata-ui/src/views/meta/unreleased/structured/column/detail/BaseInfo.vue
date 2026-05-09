@@ -63,24 +63,7 @@
             </div>
           </div>
         </el-col>
-
-        <el-col :span="8">
-          <div class="infotop-row border-top">
-            <div class="infotop-row-lable">审核人</div>
-            <div class="infotop-row-value">
-              {{ getFormatValue() }}
-            </div>
-          </div>
-        </el-col>
-
-        <el-col :span="8">
-          <div class="infotop-row border-top">
-            <div class="infotop-row-lable">审核时间</div>
-            <div class="infotop-row-value">
-              {{ getFormatValue(detail.auditTime) }}
-            </div>
-          </div>
-        </el-col>
+        
       </el-row>
 
       <el-row :gutter="2">

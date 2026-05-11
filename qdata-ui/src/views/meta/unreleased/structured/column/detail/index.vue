@@ -119,14 +119,14 @@ const tabData = [
     key: "BaseInfo",
     label: "基本信息",
   },
-  {
-    key: "LineageAnalysis",
-    label: "血缘分析",
-  },
-  {
-    key: "ImpactAnalysis",
-    label: "影响分析",
-  },
+  // {
+  //   key: "LineageAnalysis",
+  //   label: "血缘分析",
+  // },
+  // {
+  //   key: "ImpactAnalysis",
+  //   label: "影响分析",
+  // },
   {
     key: "VersionManagement",
     label: "版本与变更",

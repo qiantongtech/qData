@@ -227,7 +227,7 @@
                     </div>
                     <template #dropdown>
                       <el-dropdown-menu>
-                        <el-dropdown-item
+                        <!-- <el-dropdown-item
                           @click="
                             go('table/detail', {
                               id: meta.id,
@@ -240,7 +240,7 @@
                             <svg-icon icon-class="meta-impact"> </svg-icon>
                             影响分析
                           </el-text>
-                        </el-dropdown-item>
+                        </el-dropdown-item> -->
                         <el-dropdown-item
                           @click="
                             go('table/detail', {

@@ -36,44 +36,14 @@
                 <svg-icon icon-class="meta-column" class="handle-svg-icon" />
                 字段列表
               </el-button>
-
-              <el-popover
-                placement="bottom"
-                :width="120"
-                popper-class="handle-popover"
-                trigger="click"
+              <el-button
+                link
+                type="primary"
+                @click="handleDetailClick(row, 'VersionManagement')"
               >
-                <template #reference>
-                  <el-button link type="primary" icon="ArrowDown">
-                    更多
-                  </el-button>
-                </template>
-
-                <el-button
-                  link
-                  type="primary"
-                  @click="handleDetailClick(row, 'LineageAnalysis')"
-                >
-                  <svg-icon icon-class="meta-lineage" class="handle-svg-icon" />
-                  血缘分析
-                </el-button>
-                <el-button
-                  link
-                  type="primary"
-                  @click="handleDetailClick(row, 'ImpactAnalysis')"
-                >
-                  <svg-icon icon-class="meta-impact" class="handle-svg-icon" />
-                  影响分析
-                </el-button>
-                <el-button
-                  link
-                  type="primary"
-                  @click="handleDetailClick(row, 'VersionManagement')"
-                >
-                  <svg-icon icon-class="meta-version" class="handle-svg-icon" />
-                  版本与变更
-                </el-button>
-              </el-popover>
+                <svg-icon icon-class="meta-version" class="handle-svg-icon" />
+                版本与变更
+              </el-button>
             </template>
           </qt-table>
         </qt-wrap>
@@ -200,7 +170,7 @@ const tableStroe = reactive({
     },
     {
       label: "操作",
-      width: 240,
+      width: 280,
       fixed: "right",
       slot: "handle",
     },

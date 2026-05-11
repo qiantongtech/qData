@@ -83,7 +83,7 @@
           </el-select>
         </el-form-item> -->
 
-        <el-form-item label="状态" prop="status">
+        <!-- <el-form-item label="状态" prop="status">
           <el-radio-group v-model="store.form.status">
             <el-radio
               v-for="dict in toValue(dicts.meta_task_status)"
@@ -93,7 +93,7 @@
               {{ dict.label }}
             </el-radio>
           </el-radio-group>
-        </el-form-item>
+        </el-form-item> -->
 
         <el-form-item label="备注" class="row-full">
           <el-input

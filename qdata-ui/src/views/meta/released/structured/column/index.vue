@@ -25,7 +25,7 @@
           >
             详情
           </el-button>
-          <el-button
+          <!-- <el-button
             link
             type="primary"
             @click="handleDetailClick(row, 'LineageAnalysis')"
@@ -33,7 +33,7 @@
           >
             <svg-icon icon-class="meta-lineage" class="handle-svg-icon" />
             血缘分析
-          </el-button>
+          </el-button> -->
           <el-popover
             placement="bottom"
             :width="120"

@@ -95,19 +95,6 @@
             >
               删除
             </el-button>
-            <el-button link type="primary" icon="Document" :disabled="true">
-              提交审核
-            </el-button>
-            <el-button
-              link
-              type="primary"
-              :disabled="row.status == 1"
-              @click="handleStatusChange(row, '1')"
-              v-hasPermi="['md:unreleased:structured:db:edit']"
-            >
-              <svg-icon icon-class="meta-publish" class="handle-svg-icon" />
-              发布
-            </el-button>
           </el-popover>
         </template>
       </qt-table>

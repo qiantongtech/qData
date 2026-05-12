@@ -58,7 +58,7 @@
           :props="defaultProps"
           node-key="nodeKey"
           highlight-current
-          default-expand-all
+          :default-expanded-keys="defaultExpandedKeys"
           :filter-node-method="filterNode"
           @node-click="handleNodeClick"
         >
@@ -136,6 +136,7 @@ const treeRef = ref(null);
 const filterText = ref("");
 const treeData = ref([]);
 const flatData = ref([]);
+const defaultExpandedKeys = ref([]);
 const loading = ref(false);
 const leftWidth = ref(props.initialLeftWidth);
 const qtWrapheight = ref("86vh");
@@ -223,6 +224,22 @@ const getTreeData = () => {
         });
       };
       treeData.value = formatData(res.data);
+
+      // 获取第1级节点的key用于默认展开
+      const getExpandedKeys = (list, level = 1) => {
+        if (!Array.isArray(list)) return [];
+        let keys = [];
+        list.forEach((item) => {
+          if (level === 1) {
+            keys.push(item.nodeKey);
+          }
+          if (item.children && item.children.length > 0) {
+            keys = keys.concat(getExpandedKeys(item.children, level + 1));
+          }
+        });
+        return keys;
+      };
+      defaultExpandedKeys.value = getExpandedKeys(treeData.value);
 
       // 扁平化数据用于查找
       const flatten = (list) => {

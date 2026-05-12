@@ -102,13 +102,18 @@
               >
                 详情
               </el-button>
-              <el-popover placement="bottom" :width="150" trigger="click">
+              <el-popover
+                placement="bottom"
+                :width="150"
+                trigger="click"
+                popper-class="handle-popover"
+              >
                 <template #reference>
                   <el-button link type="primary" icon="ArrowDown">
                     更多
                   </el-button>
                 </template>
-                <div style="width: 100px" class="butgdlist">
+                <div style="width: 100px">
                   <el-button
                     link
                     type="primary"

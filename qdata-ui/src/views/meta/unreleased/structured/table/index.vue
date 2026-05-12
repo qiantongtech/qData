@@ -19,10 +19,6 @@
             />
           </template>
           <template #actions-data>
-            <el-button type="primary" plain icon="Plus" @click="handleAddClick">
-              新增
-            </el-button>
-
             <el-button
               type="danger"
               plain

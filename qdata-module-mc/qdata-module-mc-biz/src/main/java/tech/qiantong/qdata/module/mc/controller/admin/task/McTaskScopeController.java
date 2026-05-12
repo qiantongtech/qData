@@ -3,7 +3,6 @@ package tech.qiantong.qdata.module.mc.controller.admin.task;
 import cn.hutool.core.date.DateUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,7 +43,6 @@ public class McTaskScopeController extends BaseController {
     private IMcTaskScopeService mcTaskScopeService;
 
     @Operation(summary = "查询采集范围列表")
-    @PreAuthorize("@ss.hasPermi('mc:task:scope:list')")
     @GetMapping("/list")
     public CommonResult<PageResult<McTaskScopeRespVO>> list(McTaskScopePageReqVO mcTaskScope) {
         PageResult<McTaskScopeDO> page = mcTaskScopeService.getMcTaskScopePage(mcTaskScope);
@@ -52,7 +50,6 @@ public class McTaskScopeController extends BaseController {
     }
 
     @Operation(summary = "导出采集范围列表")
-    @PreAuthorize("@ss.hasPermi('mc:task:scope:export')")
     @Log(title = "采集范围", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, McTaskScopePageReqVO exportReqVO) {
@@ -63,7 +60,6 @@ public class McTaskScopeController extends BaseController {
     }
 
     @Operation(summary = "导入采集范围列表")
-    @PreAuthorize("@ss.hasPermi('mc:task:scope:import')")
     @Log(title = "采集范围", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
@@ -75,7 +71,6 @@ public class McTaskScopeController extends BaseController {
     }
 
     @Operation(summary = "获取采集范围详细信息")
-    @PreAuthorize("@ss.hasPermi('mc:task:scope:query')")
     @GetMapping(value = "/{id}")
     public CommonResult<McTaskScopeRespVO> getInfo(@PathVariable("id") Long id) {
         McTaskScopeDO mcTaskScopeDO = mcTaskScopeService.getMcTaskScopeById(id);
@@ -83,7 +78,6 @@ public class McTaskScopeController extends BaseController {
     }
 
     @Operation(summary = "新增采集范围")
-    @PreAuthorize("@ss.hasPermi('mc:task:scope:add')")
     @Log(title = "采集范围", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody McTaskScopeSaveReqVO mcTaskScope) {
@@ -94,7 +88,6 @@ public class McTaskScopeController extends BaseController {
     }
 
     @Operation(summary = "修改采集范围")
-    @PreAuthorize("@ss.hasPermi('mc:task:scope:edit')")
     @Log(title = "采集范围", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody McTaskScopeSaveReqVO mcTaskScope) {
@@ -105,7 +98,6 @@ public class McTaskScopeController extends BaseController {
     }
 
     @Operation(summary = "删除采集范围")
-    @PreAuthorize("@ss.hasPermi('mc:task:scope:remove')")
     @Log(title = "采集范围", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {

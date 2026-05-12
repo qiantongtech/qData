@@ -3,7 +3,6 @@ package tech.qiantong.qdata.module.mc.controller.admin.tableLog;
 import cn.hutool.core.date.DateUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import tech.qiantong.qdata.common.annotation.Log;
@@ -42,7 +41,6 @@ public class McTableLogController extends BaseController {
     private IMcTableLogService mcTableLogService;
 
     @Operation(summary = "查询元数据信息 - 日志列表")
-    @PreAuthorize("@ss.hasPermi('mc:tableLog:TableLog:list')")
     @GetMapping("/list")
     public CommonResult<PageResult<McTableLogRespVO>> list(McTableLogPageReqVO mcTableLog) {
         PageResult<McTableLogDO> page = mcTableLogService.getMcTableLogPage(mcTableLog);
@@ -50,7 +48,6 @@ public class McTableLogController extends BaseController {
     }
 
     @Operation(summary = "导出元数据信息 - 日志列表")
-    @PreAuthorize("@ss.hasPermi('mc:tableLog:TableLog:export')")
     @Log(title = "元数据信息 - 日志", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, McTableLogPageReqVO exportReqVO) {
@@ -61,7 +58,6 @@ public class McTableLogController extends BaseController {
     }
 
     @Operation(summary = "获取元数据信息 - 日志详细信息")
-    @PreAuthorize("@ss.hasPermi('mc:tableLog:TableLog:query')")
     @GetMapping(value = "/{id}")
     public CommonResult<McTableLogRespVO> getInfo(@PathVariable("id") Long id) {
         McTableLogDO mcTableLogDO = mcTableLogService.getMcTableLogById(id);
@@ -69,7 +65,6 @@ public class McTableLogController extends BaseController {
     }
 
     @Operation(summary = "新增元数据信息 - 日志")
-    @PreAuthorize("@ss.hasPermi('mc:tableLog:TableLog:add')")
     @Log(title = "元数据信息 - 日志", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody McTableLogSaveReqVO mcTableLog) {
@@ -80,7 +75,6 @@ public class McTableLogController extends BaseController {
     }
 
     @Operation(summary = "修改元数据信息 - 日志")
-    @PreAuthorize("@ss.hasPermi('mc:tableLog:TableLog:edit')")
     @Log(title = "元数据信息 - 日志", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody McTableLogSaveReqVO mcTableLog) {
@@ -91,7 +85,6 @@ public class McTableLogController extends BaseController {
     }
 
     @Operation(summary = "删除元数据信息 - 日志")
-    @PreAuthorize("@ss.hasPermi('mc:tableLog:TableLog:remove')")
     @Log(title = "元数据信息 - 日志", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {

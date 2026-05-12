@@ -3,7 +3,6 @@ package tech.qiantong.qdata.module.mc.controller.admin.metadata;
 import cn.hutool.core.date.DateUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import tech.qiantong.qdata.common.annotation.Log;
@@ -46,7 +45,6 @@ public class McColumnController extends BaseController {
     private IMcColumnService mcColumnService;
 
     @Operation(summary = "查询元数据字段信息列表")
-    @PreAuthorize("@ss.hasPermi('mc:metadata:column:list')")
     @BizDataScope(code = "mc_metadata_list", userField = "businessLeader", deptField = "responsibleDept")
     @GetMapping("/list")
     public CommonResult<PageResult<McColumnRespVO>> list(McColumnPageReqVO mcColumn) {
@@ -63,7 +61,6 @@ public class McColumnController extends BaseController {
     }
 
     @Operation(summary = "导出元数据字段信息列表")
-    @PreAuthorize("@ss.hasPermi('mc:metadata:column:export')")
     @BizDataScope(code = "mc_metadata_list", userField = "businessLeader", deptField = "responsibleDept")
     @Log(title = "元数据字段信息", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
@@ -75,7 +72,6 @@ public class McColumnController extends BaseController {
     }
 
     @Operation(summary = "获取元数据字段信息详细信息")
-    @PreAuthorize("@ss.hasPermi('mc:metadata:column:query')")
     @GetMapping(value = "/{id}")
     public CommonResult<McColumnRespVO> getInfo(@PathVariable("id") Long id) {
         McColumnRespVO respVO = mcColumnService.getMcColumnById(id);
@@ -83,7 +79,6 @@ public class McColumnController extends BaseController {
     }
 
     @Operation(summary = "新增元数据字段信息")
-    @PreAuthorize("@ss.hasPermi('mc:metadata:column:add')")
     @Log(title = "元数据字段信息", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Integer> add(@Valid @RequestBody @NotEmpty List<@Valid McColumnSaveReqVO> mdColumn) {
@@ -97,7 +92,6 @@ public class McColumnController extends BaseController {
     }
 
     @Operation(summary = "暂存字段元数据信息")
-    @PreAuthorize("@ss.hasPermi('mc:metadata:column:add')")
     @Log(title = "暂存表元数据信息", businessType = BusinessType.INSERT)
     @PostMapping("draft")
     public CommonResult<Integer> draft(@RequestBody @NotEmpty List<McColumnSaveReqVO> saveReqVO) {
@@ -106,7 +100,6 @@ public class McColumnController extends BaseController {
 
 
     @Operation(summary = "修改元数据字段信息")
-    @PreAuthorize("@ss.hasPermi('mc:metadata:column:edit')")
     @Log(title = "元数据字段信息", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody McColumnSaveReqVO mcColumn) {
@@ -118,7 +111,6 @@ public class McColumnController extends BaseController {
     }
 
     @Operation(summary = "停启用字段元数据")
-    @PreAuthorize("@ss.hasPermi('mc:metadata:column:edit')")
     @Log(title = "字段元数据", businessType = BusinessType.UPDATE)
     @PostMapping("toggle")
     public CommonResult<Integer> toggle(@Valid @RequestBody ToggleStatusVO param) {
@@ -127,7 +119,6 @@ public class McColumnController extends BaseController {
 
 
     @Operation(summary = "删除元数据字段信息")
-    @PreAuthorize("@ss.hasPermi('mc:metadata:column:remove')")
     @Log(title = "元数据字段信息", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
@@ -135,7 +126,6 @@ public class McColumnController extends BaseController {
     }
 
     @Operation(summary = "批量删除检查字段元数据")
-    @PreAuthorize("@ss.hasPermi('mc:metadata:column:remove')")
     @GetMapping("/batchDeleteCheck/{ids}")
     public CommonResult<BatchDeleteCheck<Long>> batchDeleteCheck(@PathVariable Long[] ids) {
         BatchDeleteCheck<Long> result = mcColumnService.batchDeleteCheck(Arrays.asList(ids));

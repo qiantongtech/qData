@@ -3,7 +3,6 @@ package tech.qiantong.qdata.module.mc.controller.admin.task;
 import cn.hutool.core.date.DateUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,7 +43,6 @@ public class McTaskSchedulerController extends BaseController {
     private IMcTaskSchedulerService mcTaskSchedulerService;
 
     @Operation(summary = "查询数据集成调度信息列表")
-    @PreAuthorize("@ss.hasPermi('mc:task:scheduler:list')")
     @GetMapping("/list")
     public CommonResult<PageResult<McTaskSchedulerRespVO>> list(McTaskSchedulerPageReqVO mcTaskScheduler) {
         PageResult<McTaskSchedulerDO> page = mcTaskSchedulerService.getMcTaskSchedulerPage(mcTaskScheduler);
@@ -52,7 +50,6 @@ public class McTaskSchedulerController extends BaseController {
     }
 
     @Operation(summary = "导出数据集成调度信息列表")
-    @PreAuthorize("@ss.hasPermi('mc:task:scheduler:export')")
     @Log(title = "数据集成调度信息", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, McTaskSchedulerPageReqVO exportReqVO) {
@@ -63,7 +60,6 @@ public class McTaskSchedulerController extends BaseController {
     }
 
     @Operation(summary = "导入数据集成调度信息列表")
-    @PreAuthorize("@ss.hasPermi('mc:task:scheduler:import')")
     @Log(title = "数据集成调度信息", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
@@ -75,7 +71,6 @@ public class McTaskSchedulerController extends BaseController {
     }
 
     @Operation(summary = "获取数据集成调度信息详细信息")
-    @PreAuthorize("@ss.hasPermi('mc:task:scheduler:query')")
     @GetMapping(value = "/{id}")
     public CommonResult<McTaskSchedulerRespVO> getInfo(@PathVariable("id") Long id) {
         McTaskSchedulerDO mcTaskSchedulerDO = mcTaskSchedulerService.getMcTaskSchedulerById(id);
@@ -83,7 +78,6 @@ public class McTaskSchedulerController extends BaseController {
     }
 
     @Operation(summary = "新增数据集成调度信息")
-    @PreAuthorize("@ss.hasPermi('mc:task:scheduler:add')")
     @Log(title = "数据集成调度信息", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody McTaskSchedulerSaveReqVO mcTaskScheduler) {
@@ -94,7 +88,6 @@ public class McTaskSchedulerController extends BaseController {
     }
 
     @Operation(summary = "修改数据集成调度信息")
-    @PreAuthorize("@ss.hasPermi('mc:task:scheduler:edit')")
     @Log(title = "数据集成调度信息", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody McTaskSchedulerSaveReqVO mcTaskScheduler) {
@@ -105,7 +98,6 @@ public class McTaskSchedulerController extends BaseController {
     }
 
     @Operation(summary = "删除数据集成调度信息")
-    @PreAuthorize("@ss.hasPermi('mc:task:scheduler:remove')")
     @Log(title = "数据集成调度信息", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {

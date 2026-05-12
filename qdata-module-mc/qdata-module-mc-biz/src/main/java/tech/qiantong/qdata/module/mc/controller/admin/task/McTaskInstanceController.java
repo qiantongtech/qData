@@ -3,7 +3,6 @@ package tech.qiantong.qdata.module.mc.controller.admin.task;
 import cn.hutool.core.date.DateUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,7 +43,6 @@ public class McTaskInstanceController extends BaseController {
     private IMcTaskInstanceService mcTaskInstanceService;
 
     @Operation(summary = "查询采集任务实例列表")
-    @PreAuthorize("@ss.hasPermi('mc:task:instance:list')")
     @GetMapping("/list")
     public CommonResult<PageResult<McTaskInstanceRespVO>> list(McTaskInstancePageReqVO mcTaskInstance) {
         PageResult<McTaskInstanceDO> page = mcTaskInstanceService.getMcTaskInstancePage(mcTaskInstance);
@@ -52,7 +50,6 @@ public class McTaskInstanceController extends BaseController {
     }
 
     @Operation(summary = "导出采集任务实例列表")
-    @PreAuthorize("@ss.hasPermi('mc:task:instance:export')")
     @Log(title = "采集任务实例", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, McTaskInstancePageReqVO exportReqVO) {
@@ -63,7 +60,6 @@ public class McTaskInstanceController extends BaseController {
     }
 
     @Operation(summary = "导入采集任务实例列表")
-    @PreAuthorize("@ss.hasPermi('mc:task:instance:import')")
     @Log(title = "采集任务实例", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
@@ -75,7 +71,6 @@ public class McTaskInstanceController extends BaseController {
     }
 
     @Operation(summary = "获取采集任务实例详细信息")
-    @PreAuthorize("@ss.hasPermi('mc:task:instance:query')")
     @GetMapping(value = "/{id}")
     public CommonResult<McTaskInstanceRespVO> getInfo(@PathVariable("id") Long id) {
         McTaskInstanceDO mcTaskInstanceDO = mcTaskInstanceService.getMcTaskInstanceById(id);
@@ -83,7 +78,6 @@ public class McTaskInstanceController extends BaseController {
     }
 
     @Operation(summary = "新增采集任务实例")
-    @PreAuthorize("@ss.hasPermi('mc:task:instance:add')")
     @Log(title = "采集任务实例", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody McTaskInstanceSaveReqVO mcTaskInstance) {
@@ -94,7 +88,6 @@ public class McTaskInstanceController extends BaseController {
     }
 
     @Operation(summary = "修改采集任务实例")
-    @PreAuthorize("@ss.hasPermi('mc:task:instance:edit')")
     @Log(title = "采集任务实例", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody McTaskInstanceSaveReqVO mcTaskInstance) {
@@ -105,7 +98,6 @@ public class McTaskInstanceController extends BaseController {
     }
 
     @Operation(summary = "删除采集任务实例")
-    @PreAuthorize("@ss.hasPermi('mc:task:instance:remove')")
     @Log(title = "采集任务实例", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {

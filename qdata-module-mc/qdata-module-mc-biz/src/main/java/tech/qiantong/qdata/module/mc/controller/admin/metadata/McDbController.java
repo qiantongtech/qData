@@ -3,7 +3,6 @@ package tech.qiantong.qdata.module.mc.controller.admin.metadata;
 import cn.hutool.core.date.DateUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import tech.qiantong.qdata.common.annotation.Log;
@@ -42,7 +41,6 @@ public class McDbController extends BaseController {
     private IMcDbService mcDbService;
 
     @Operation(summary = "查询数据库列表")
-    @PreAuthorize("@ss.hasPermi('mc:metadata:db:list')")
     @BizDataScope(code = "mc_metadata_list", userField = "businessLeader", deptField = "responsibleDept")
     @GetMapping("/list")
     public CommonResult<PageResult<McDbRespVO>> list(McDbPageReqVO mcDb) {
@@ -60,7 +58,6 @@ public class McDbController extends BaseController {
 
 
     @Operation(summary = "导出数据库列表")
-    @PreAuthorize("@ss.hasPermi('mc:metadata:db:export')")
     @BizDataScope(code = "mc_metadata_list", userField = "businessLeader", deptField = "responsibleDept")
     @Log(title = "数据库", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
@@ -72,7 +69,6 @@ public class McDbController extends BaseController {
     }
 
     @Operation(summary = "获取数据库详细信息")
-    @PreAuthorize("@ss.hasPermi('mc:metadata:db:query')")
     @GetMapping(value = "/{id}")
     public CommonResult<McDbRespVO> getInfo(@PathVariable("id") Long id) {
         McDbRespVO respVO = mcDbService.getMcDbById(id);
@@ -80,7 +76,6 @@ public class McDbController extends BaseController {
     }
 
     @Operation(summary = "新增数据库")
-    @PreAuthorize("@ss.hasPermi('mc:metadata:db:add')")
     @Log(title = "数据库", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody McDbSaveReqVO mcDb) {
@@ -91,7 +86,6 @@ public class McDbController extends BaseController {
     }
 
     @Operation(summary = "修改数据库")
-    @PreAuthorize("@ss.hasPermi('mc:metadata:db:edit')")
     @Log(title = "数据库", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody McDbSaveReqVO mcDb) {
@@ -102,7 +96,6 @@ public class McDbController extends BaseController {
     }
 
     @Operation(summary = "停启用库元数据")
-    @PreAuthorize("@ss.hasPermi('mc:metadata:db:edit')")
     @Log(title = "库元数据", businessType = BusinessType.UPDATE)
     @PostMapping("toggle")
     public CommonResult<Integer> toggle(@Valid @RequestBody ToggleStatusVO param) {
@@ -111,7 +104,6 @@ public class McDbController extends BaseController {
 
 
     @Operation(summary = "停启用库元数据")
-    @PreAuthorize("@ss.hasPermi('mc:metadata:db:edit')")
     @Log(title = "库元数据", businessType = BusinessType.UPDATE)
     @PostMapping("/editPortalVisible")
     public CommonResult<Integer> editPortalVisible(@Valid @RequestBody McDbSaveReqVO param) {
@@ -122,7 +114,6 @@ public class McDbController extends BaseController {
 
 
     @Operation(summary = "删除数据库")
-    @PreAuthorize("@ss.hasPermi('mc:metadata:db:remove')")
     @Log(title = "数据库", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
@@ -131,7 +122,6 @@ public class McDbController extends BaseController {
 
 
     @Operation(summary = "批量删除检查库元数据")
-    @PreAuthorize("@ss.hasPermi('mc:metadata:db:remove')")
     @GetMapping("/batchDeleteCheck/{ids}")
     public CommonResult<BatchDeleteCheck<Long>> batchDeleteCheck(@PathVariable Long[] ids) {
         BatchDeleteCheck<Long> result = mcDbService.batchDeleteCheck(Arrays.asList(ids));

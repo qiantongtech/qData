@@ -31,8 +31,11 @@ public class McTaskSchedulerDO extends BaseEntity {
     /** 任务id */
     private Long taskId;
 
-    /** xxlJob_ID */
+    /** 调度器ID */
     private String jobId;
+
+    /** DolphinScheduler任务编码（用于API调用） */
+    private String taskCode;
 
     /** 开始时间 */
     private Date startTime;

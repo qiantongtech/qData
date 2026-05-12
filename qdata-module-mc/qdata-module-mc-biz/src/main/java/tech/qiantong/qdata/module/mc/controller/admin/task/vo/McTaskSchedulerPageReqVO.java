@@ -22,7 +22,7 @@ public class McTaskSchedulerPageReqVO extends PageParam {
     @Schema(description = "任务id", example = "")
     private Long taskId;
 
-    @Schema(description = "xxlJob_ID", example = "")
+    @Schema(description = "调度器id", example = "")
     private String jobId;
 
     @Schema(description = "开始时间", example = "")

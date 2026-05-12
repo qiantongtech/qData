@@ -375,7 +375,8 @@ DROP TABLE IF EXISTS `mc_task_scheduler`;
 CREATE TABLE `mc_task_scheduler` (
                                      `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
                                      `task_id` bigint(20) NOT NULL COMMENT '任务id',
-                                     `job_id` bigint(20) DEFAULT NULL COMMENT 'xxljobid;xxljobid',
+                                     `job_id` bigint(20) DEFAULT NULL COMMENT '调度器id',
+                                     `task_code` varchar(32) DEFAULT NULL COMMENT '调度器任务编码',
                                      `start_time` datetime DEFAULT NULL COMMENT '开始时间',
                                      `end_time` datetime DEFAULT NULL COMMENT '结束时间',
                                      `timezone_id` varchar(128) DEFAULT 'Asia/Shanghai' COMMENT '时区;直接默认 Asia/Shanghai',

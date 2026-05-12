@@ -31,9 +31,13 @@ public class McTaskSchedulerSaveReqVO extends BaseEntity {
     @Schema(description = "任务id", example = "")
     private Long taskId;
 
-    @Schema(description = "xxlJob_ID", example = "")
-    @Size(max = 256, message = "xxlJob_ID长度不能超过256个字符")
+    @Schema(description = "调度器ID", example = "")
+    @Size(max = 256, message = "调度器ID长度不能超过256个字符")
     private String jobId;
+
+    @Schema(description = "DolphinScheduler任务编码（用于API调用）", example = "")
+    @Size(max = 256, message = "任务编码长度不能超过256个字符")
+    private String taskCode;
 
     @Schema(description = "开始时间", example = "")
     private Date startTime;

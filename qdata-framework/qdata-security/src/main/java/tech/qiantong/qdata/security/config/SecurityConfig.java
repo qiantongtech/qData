@@ -169,7 +169,9 @@ public class SecurityConfig
                                     "/payment/**",
                                     "/syncData/**",
                                     "/sys/**",
-                                    "/oauth2/**"
+                                    "/oauth2/**",
+                                    // 调度器白名单
+                                    "/mc/taskExecutor/runExecuteTask/**"
                             ).permitAll()
                             // 除上面外的所有请求全部需要鉴权认证
                             .anyRequest().authenticated();

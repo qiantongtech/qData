@@ -83,13 +83,6 @@
             <scope>compile</scope>
         </dependency>
 
-
-        <!-- qdata-xxljob-core-->
-        <dependency>
-            <groupId>tech.qiantong</groupId>
-            <artifactId>qdata-xxljob-core</artifactId>
-            <version>${qdata-xxljob.version}</version>
-        </dependency>
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-module-da-api</artifactId>
@@ -99,6 +92,12 @@
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-module-att-api</artifactId>
+            <version>${qdata.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>tech.qiantong</groupId>
+            <artifactId>qdata-api-ds-api</artifactId>
             <version>${qdata.version}</version>
             <scope>compile</scope>
         </dependency>

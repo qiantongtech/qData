@@ -1,12 +1,12 @@
 package tech.qiantong.qdata.module.mc.service.task.impl;
 
+import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.xxl.job.core.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,13 +47,14 @@ import tech.qiantong.qdata.module.mc.dal.mapper.metadata.McDbMapper;
 import tech.qiantong.qdata.module.mc.dal.mapper.metadata.McTableMapper;
 import tech.qiantong.qdata.module.mc.dal.mapper.task.McTaskMapper;
 import tech.qiantong.qdata.module.mc.enums.CollectionScopeEnum;
+import tech.qiantong.qdata.module.mc.enums.SchedulerStatusEnum;
 import tech.qiantong.qdata.module.mc.service.columnLog.IMcColumnLogService;
-import tech.qiantong.qdata.module.mc.service.jobhandler.McTaskXxxJobService;
 import tech.qiantong.qdata.module.mc.service.metadata.IMcColumnService;
 import tech.qiantong.qdata.module.mc.service.metadata.IMcDbService;
 import tech.qiantong.qdata.module.mc.service.metadata.IMcTableService;
 import tech.qiantong.qdata.module.mc.service.metadata.dialect.DatabaseDialect;
 import tech.qiantong.qdata.module.mc.service.metadata.dialect.DatabaseDialectFactory;
+import tech.qiantong.qdata.module.mc.service.scheduler.McTaskDolphinSchedulerService;
 import tech.qiantong.qdata.module.mc.service.tableColumnRelLog.IMcTableColumnRelLogService;
 import tech.qiantong.qdata.module.mc.service.tableLog.IMcTableLogService;
 import tech.qiantong.qdata.module.mc.service.task.*;
@@ -110,7 +111,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
     @Resource
     private McTableTxService mcTableTxService;
     @Resource
-    private McTaskXxxJobService mcTaskXxxJobService;
+    private McTaskDolphinSchedulerService mcTaskDolphinSchedulerService;
 
 
     @Resource
@@ -182,16 +183,25 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
 
         McTaskDO dictType = BeanUtils.toBean(createReqVO, McTaskDO.class);
         if (StringUtils.isEmpty(dictType.getStatus())) {
-            dictType.setStatus("0");
+            dictType.setStatus(SchedulerStatusEnum.DISABLED.getValue());
         }
         mcTaskMapper.insert(dictType);
         Long id = dictType.getId();
 
-        String jobId = mcTaskXxxJobService.addJob(dictType.getName(), dictType.getCronExpression(), String.valueOf(id));
+        // 创建 DolphinScheduler 任务定义
+        String taskCode = mcTaskDolphinSchedulerService.createTaskDefinition(dictType.getName(), id);
+
+        // 先上线任务（DolphinScheduler要求：只有上线的任务才能创建调度器）
+        mcTaskDolphinSchedulerService.onlineTask(taskCode);
+
+        // 创建调度器
+        Long schedulerId = mcTaskDolphinSchedulerService.createScheduler(taskCode, dictType.getCronExpression());
 
         //存储调度信息
         McTaskSchedulerSaveReqVO schedulerSaveReqVO = new McTaskSchedulerSaveReqVO(dictType);
-        schedulerSaveReqVO.setJobId(jobId);
+        schedulerSaveReqVO.setJobId(String.valueOf(schedulerId));
+        schedulerSaveReqVO.setTaskCode(taskCode);  // 设置任务编码到调度表
+        schedulerSaveReqVO.setStatus(SchedulerStatusEnum.DISABLED.getValue());
         mcTaskSchedulerService.createMcTaskScheduler(schedulerSaveReqVO);
 
         if (StringUtils.equals("1", createReqVO.getCollectionScope())) {
@@ -227,7 +237,16 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
             String cronExpression = updateReqVO.getCronExpression();
             if (StringUtils.isNotEmpty(cronExpression) && !StringUtils.equals(cronExpression, scheduler.getCronExpression())) {
                 schedulerSaveReqVO.setCronExpression(cronExpression);
-                mcTaskXxxJobService.updateJob(updateObj.getName(), cronExpression, String.valueOf(updateObj.getId()), scheduler.getJobId());
+
+                // 获取任务编码（从调度表）
+                String taskCode = scheduler.getTaskCode();
+
+                if (StringUtils.isNotEmpty(taskCode)) {
+                    // 更新 DolphinScheduler 调度器
+                    Long newSchedulerId = mcTaskDolphinSchedulerService.updateScheduler(
+                            Long.parseLong(scheduler.getJobId()), taskCode, cronExpression);
+                    schedulerSaveReqVO.setJobId(String.valueOf(newSchedulerId));
+                }
                 needUpdate = true;
             }
 
@@ -263,8 +282,24 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
     public int removeMcTask(Collection<Long> idList) {
         for (Long id : idList) {
             McTaskSchedulerDO scheduler = mcTaskSchedulerService.getMcTaskSchedulerBytaskId(id);
-            if (scheduler != null && StringUtils.isNotEmpty(scheduler.getJobId())) {
-                mcTaskXxxJobService.removeJob(scheduler.getJobId());
+            McTaskDO task = mcTaskMapper.selectById(id);
+
+            // 先下线任务和调度器
+            if (task != null && scheduler != null && StringUtils.isNotEmpty(scheduler.getTaskCode())) {
+                try {
+                    Long schedulerId = StringUtils.isNotEmpty(scheduler.getJobId()) ?
+                            Long.parseLong(scheduler.getJobId()) : null;
+                    mcTaskDolphinSchedulerService.offlineTaskAndScheduler(scheduler.getTaskCode(), schedulerId);
+                } catch (Exception e) {
+                    log.warn("下线任务失败，taskId={}", id, e);
+                }
+
+                // 删除任务
+                try {
+                    mcTaskDolphinSchedulerService.deleteTask(scheduler.getTaskCode());
+                } catch (Exception e) {
+                    log.warn("删除DolphinScheduler任务失败，taskId={}", id, e);
+                }
             }
         }
         // 批量删除采集任务
@@ -309,6 +344,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
             bean.setCronExpression(scheduler.getCronExpression());
             bean.setSchedulerStatus(scheduler.getStatus());
             bean.setJobId(scheduler.getJobId());
+            bean.setTaskCode(scheduler.getTaskCode());  // 从调度表获取 taskCode
         }
 
         List<McTaskScopeDO> mcTaskScopeDOS = mcTaskScopeService.getMcTaskScopeListBytaskId(id);
@@ -461,19 +497,27 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
     @Override
     public Map<String, Object> updateReleaseSchedule(McTaskSaveReqVO mcTask) {
         McTaskRespVO mcTaskByIdNew = this.getMcTaskByIdNew(mcTask.getId());
-        String status = mcTaskByIdNew.getStatus();
         String schedulerStatus = mcTaskByIdNew.getSchedulerStatus();
         if (StringUtils.equals(schedulerStatus, mcTask.getStatus())) {
             return new HashMap<>();
         }
-        //下线
-        if (StringUtils.equals("0", mcTask.getStatus())) {
-            mcTaskXxxJobService.stopJob(mcTaskByIdNew.getJobId());
-        }
 
-        //上线
-        if (StringUtils.equals("1", mcTask.getStatus())) {
-            mcTaskXxxJobService.startJob(mcTaskByIdNew.getJobId());
+        // 获取调度器信息
+        McTaskSchedulerDO scheduler = mcTaskSchedulerService.getMcTaskSchedulerBytaskId(mcTask.getId());
+
+        if (scheduler != null && StringUtils.isNotEmpty(scheduler.getTaskCode())) {
+            Long schedulerId = StringUtils.isNotEmpty(scheduler.getJobId()) ?
+                    Long.parseLong(scheduler.getJobId()) : null;
+
+            // 下线调度器（禁用定时触发）
+            if (SchedulerStatusEnum.isDisabled(mcTask.getStatus())) {
+                mcTaskDolphinSchedulerService.offlineSchedulerOnly(schedulerId);
+            }
+
+            // 上线调度器（启用定时触发）
+            if (SchedulerStatusEnum.isEnabled(mcTask.getStatus())) {
+                mcTaskDolphinSchedulerService.onlineSchedulerOnly(schedulerId);
+            }
         }
 
         McTaskSchedulerSaveReqVO updateReqVO = new McTaskSchedulerSaveReqVO();
@@ -495,7 +539,16 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         redisService.set(redisKey + ":createBy", mcTask.getCreateBy().toString(), 60 * 60 * 12);
 
         McTaskRespVO mcTaskByIdNew = this.getMcTaskByIdNew(mcTask.getId());
-        mcTaskXxxJobService.runJobOnce(mcTaskByIdNew.getJobId(), String.valueOf(mcTaskByIdNew.getId()));
+
+        // 使用 DolphinScheduler 立即执行任务
+        if (mcTaskByIdNew != null) {
+            // 从调度信息中获取 taskCode
+            McTaskSchedulerDO scheduler = mcTaskSchedulerService.getMcTaskSchedulerBytaskId(mcTask.getId());
+            if (scheduler != null && StringUtils.isNotEmpty(scheduler.getTaskCode())) {
+                mcTaskDolphinSchedulerService.startTask(scheduler.getTaskCode());
+            }
+        }
+
         return new HashMap<>();
     }
 

@@ -125,6 +125,12 @@ public class McTaskRespVO implements Serializable {
 
 
     /**
+     * DolphinScheduler任务编码（从调度表获取）
+     */
+    @TableField(exist = false)
+    private String taskCode;
+
+    /**
      * cron表达式
      */
     @TableField(exist = false)

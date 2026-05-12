@@ -28,9 +28,13 @@ public class McTaskSchedulerRespVO implements Serializable {
     @Schema(description = "任务id", example = "")
     private Long taskId;
 
-    @Excel(name = "xxlJob_ID")
-    @Schema(description = "xxlJob_ID", example = "")
+    @Excel(name = "调度器id")
+    @Schema(description = "调度器ID", example = "")
     private String jobId;
+
+    @Excel(name = "DolphinScheduler任务编码")
+    @Schema(description = "DolphinScheduler任务编码（用于API调用）", example = "")
+    private String taskCode;
 
     @Excel(name = "开始时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

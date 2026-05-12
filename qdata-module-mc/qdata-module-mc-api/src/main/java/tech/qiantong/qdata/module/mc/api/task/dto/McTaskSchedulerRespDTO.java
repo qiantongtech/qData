@@ -21,7 +21,7 @@ public class McTaskSchedulerRespDTO {
     /** 任务id */
     private Long taskId;
 
-    /** xxlJob_ID */
+    /** 调度器id */
     private String jobId;
 
     /** 开始时间 */

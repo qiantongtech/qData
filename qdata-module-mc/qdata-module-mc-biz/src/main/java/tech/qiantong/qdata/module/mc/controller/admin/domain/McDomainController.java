@@ -3,7 +3,6 @@ package tech.qiantong.qdata.module.mc.controller.admin.domain;
 import cn.hutool.core.date.DateUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import tech.qiantong.qdata.common.annotation.Log;
@@ -43,7 +42,6 @@ public class McDomainController extends BaseController {
     private IMcDomainService mcDomainService;
 
     @Operation(summary = "查询业务域列表")
-    @PreAuthorize("@ss.hasPermi('mc:domain:list')")
     @GetMapping("/listpage")
     public CommonResult<PageResult<McDomainRespVO>> listpage(McDomainPageReqVO mcDomain) {
         PageResult<McDomainDO> page = mcDomainService.getMcDomainPage(mcDomain);
@@ -51,7 +49,6 @@ public class McDomainController extends BaseController {
     }
 
     @Operation(summary = "查询业务域列表")
-    @PreAuthorize("@ss.hasPermi('mc:domain:list')")
     @GetMapping("/list")
     public CommonResult<List<McDomainRespVO>> list(McDomainPageReqVO mcDomain) {
         List<McDomainDO> mcDomainList = mcDomainService.getMcDomainList(mcDomain);
@@ -61,7 +58,6 @@ public class McDomainController extends BaseController {
 
 
     @Operation(summary = "导出业务域列表")
-    @PreAuthorize("@ss.hasPermi('mc:domain:export')")
     @Log(title = "业务域", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, McDomainPageReqVO exportReqVO) {
@@ -72,7 +68,6 @@ public class McDomainController extends BaseController {
     }
 
     @Operation(summary = "获取业务域详细信息")
-    @PreAuthorize("@ss.hasPermi('mc:domain:query')")
     @GetMapping(value = "/{id}")
     public CommonResult<McDomainRespVO> getInfo(@PathVariable("id") Long id) {
         McDomainDO mcDomainDO = mcDomainService.getMcDomainById(id);
@@ -80,7 +75,6 @@ public class McDomainController extends BaseController {
     }
 
     @Operation(summary = "新增业务域")
-    @PreAuthorize("@ss.hasPermi('mc:domain:add')")
     @Log(title = "业务域", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody McDomainSaveReqVO mcDomain) {
@@ -91,7 +85,6 @@ public class McDomainController extends BaseController {
     }
 
     @Operation(summary = "修改业务域")
-    @PreAuthorize("@ss.hasPermi('mc:domain:edit')")
     @Log(title = "业务域", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody McDomainSaveReqVO mcDomain) {
@@ -102,7 +95,6 @@ public class McDomainController extends BaseController {
     }
 
     @Operation(summary = "删除业务域")
-    @PreAuthorize("@ss.hasPermi('mc:domain:remove')")
     @Log(title = "业务域", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
@@ -113,7 +105,6 @@ public class McDomainController extends BaseController {
      * 批量删除检查,查询可删除数和不可删除数
      */
     @Operation(summary = "批量删除检查业务域")
-    @PreAuthorize("@ss.hasPermi('md:domain:remove')")
     @GetMapping("/batchDeleteCheck/{ids}")
     public CommonResult<BatchDeleteCheck<Long>> batchDeleteCheck(@PathVariable Long[] ids) {
         BatchDeleteCheck<Long> result = mcDomainService.batchDeleteCheck(Arrays.asList(ids));

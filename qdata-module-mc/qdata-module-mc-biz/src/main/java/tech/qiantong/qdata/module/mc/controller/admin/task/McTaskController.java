@@ -4,7 +4,6 @@ import cn.hutool.core.date.DateUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,7 +45,6 @@ public class McTaskController extends BaseController {
     private IMcTaskService mcTaskService;
 
     @Operation(summary = "查询采集任务列表")
-    @PreAuthorize("@ss.hasPermi('mc:task:list')")
     @BizDataScope(code = "mc_task_list", userField = "leader", deptField = "responsibleDept")
     @GetMapping("/list")
     public CommonResult<PageResult<McTaskRespVO>> list(McTaskPageReqVO mcTask) {
@@ -55,7 +53,6 @@ public class McTaskController extends BaseController {
     }
 
     @Operation(summary = "导出采集任务列表")
-    @PreAuthorize("@ss.hasPermi('mc:task:export')")
     @BizDataScope(code = "mc_task_list", userField = "leader", deptField = "responsibleDept")
     @Log(title = "采集任务", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
@@ -67,7 +64,6 @@ public class McTaskController extends BaseController {
     }
 
     @Operation(summary = "导入采集任务列表")
-    @PreAuthorize("@ss.hasPermi('mc:task:import')")
     @Log(title = "采集任务", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
@@ -79,14 +75,12 @@ public class McTaskController extends BaseController {
     }
 
     @Operation(summary = "获取采集任务详细信息")
-    @PreAuthorize("@ss.hasPermi('mc:task:query')")
     @GetMapping(value = "/{id}")
     public CommonResult<McTaskRespVO> getInfo(@PathVariable("id") Long id) {
         return CommonResult.success(mcTaskService.getMcTaskByIdNew(id));
     }
 
     @Operation(summary = "新增采集任务")
-    @PreAuthorize("@ss.hasPermi('mc:task:add')")
     @Log(title = "采集任务", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody McTaskSaveReqVO mcTask) {
@@ -97,7 +91,6 @@ public class McTaskController extends BaseController {
     }
 
     @Operation(summary = "修改采集任务")
-    @PreAuthorize("@ss.hasPermi('mc:task:edit')")
     @Log(title = "采集任务", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody McTaskSaveReqVO mcTask) {
@@ -108,7 +101,6 @@ public class McTaskController extends BaseController {
     }
 
     @Operation(summary = "删除采集任务")
-    @PreAuthorize("@ss.hasPermi('mc:task:remove')")
     @Log(title = "采集任务", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
@@ -116,7 +108,6 @@ public class McTaskController extends BaseController {
     }
 
     @Operation(summary = "删除采集任务")
-    @PreAuthorize("@ss.hasPermi('mc:task:remove')")
     @Log(title = "采集任务", businessType = BusinessType.DELETE)
     @GetMapping("/batchDeleteCheck/{ids}")
     public CommonResult<BatchDeleteCheck<Long>> batchDeleteCheck(@PathVariable Long[] ids) {
@@ -125,7 +116,6 @@ public class McTaskController extends BaseController {
     }
 
     @Operation(summary = "获取采集范围信息")
-    @PreAuthorize("@ss.hasPermi('mc:task:query')")
     @GetMapping(value = "/getRealtimeMcTaskScopeList/{id}")
     public CommonResult<List<McTaskScopeRespVO>> getRealtimeMcTaskScopeList(@PathVariable("id") Long id) {
         return CommonResult.success(BeanUtils.toBean(mcTaskService.getRealtimeMcTaskScopeList(id), McTaskScopeRespVO.class));
@@ -153,12 +143,13 @@ public class McTaskController extends BaseController {
     @PostMapping("/runJobOnce")
     @ResponseStatus(HttpStatus.CREATED)
     public CommonResult runJobOnce(@Valid @RequestBody McTaskSaveReqVO mcTask) {
+        mcTask.setCreatorId(super.getUserId());
+        mcTask.setCreateBy(super.getNickName());
         Map<String, Object> result = mcTaskService.runJobOnce(mcTask);
         return CommonResult.success(result);
     }
 
     @Operation(summary = "获取来源系统树形结构")
-    @PreAuthorize("@ss.hasPermi('mc:task:list')")
     @GetMapping("/sourceSystemTree")
     public CommonResult<List<McTaskSourceTreeRespVO>> getSourceSystemTree() {
         List<McTaskSourceTreeRespVO> treeList = mcTaskService.getSourceSystemTree();

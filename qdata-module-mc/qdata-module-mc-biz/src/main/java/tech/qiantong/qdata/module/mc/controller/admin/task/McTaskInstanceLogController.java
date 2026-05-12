@@ -3,7 +3,6 @@ package tech.qiantong.qdata.module.mc.controller.admin.task;
 import cn.hutool.core.date.DateUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import tech.qiantong.qdata.common.annotation.Log;
@@ -42,7 +41,6 @@ public class McTaskInstanceLogController extends BaseController {
     private IMcTaskInstanceLogService mcTaskInstanceLogService;
 
     @Operation(summary = "查询采集任务实例-日志列表")
-    @PreAuthorize("@ss.hasPermi('mc:task:instancelog:list')")
     @GetMapping("/list")
     public CommonResult<PageResult<McTaskInstanceLogRespVO>> list(McTaskInstanceLogPageReqVO mcTaskInstanceLog) {
         PageResult<McTaskInstanceLogDO> page = mcTaskInstanceLogService.getMcTaskInstanceLogPage(mcTaskInstanceLog);
@@ -50,7 +48,6 @@ public class McTaskInstanceLogController extends BaseController {
     }
 
     @Operation(summary = "导出采集任务实例-日志列表")
-    @PreAuthorize("@ss.hasPermi('mc:task:instancelog:export')")
     @Log(title = "采集任务实例-日志", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, McTaskInstanceLogPageReqVO exportReqVO) {
@@ -61,7 +58,6 @@ public class McTaskInstanceLogController extends BaseController {
     }
 
     @Operation(summary = "获取采集任务实例-日志详细信息")
-    @PreAuthorize("@ss.hasPermi('mc:task:instancelog:query')")
     @GetMapping(value = "/{id}")
     public CommonResult<McTaskInstanceLogRespVO> getInfo(@PathVariable("id") Long id) {
         McTaskInstanceLogDO mcTaskInstanceLogDO = mcTaskInstanceLogService.getMcTaskInstanceLogById(id);
@@ -69,7 +65,6 @@ public class McTaskInstanceLogController extends BaseController {
     }
 
     @Operation(summary = "新增采集任务实例-日志")
-    @PreAuthorize("@ss.hasPermi('mc:task:instancelog:add')")
     @Log(title = "采集任务实例-日志", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody McTaskInstanceLogSaveReqVO mcTaskInstanceLog) {
@@ -80,7 +75,6 @@ public class McTaskInstanceLogController extends BaseController {
     }
 
     @Operation(summary = "修改采集任务实例-日志")
-    @PreAuthorize("@ss.hasPermi('mc:task:instancelog:edit')")
     @Log(title = "采集任务实例-日志", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody McTaskInstanceLogSaveReqVO mcTaskInstanceLog) {
@@ -91,7 +85,6 @@ public class McTaskInstanceLogController extends BaseController {
     }
 
     @Operation(summary = "删除采集任务实例-日志")
-    @PreAuthorize("@ss.hasPermi('mc:task:instancelog:remove')")
     @Log(title = "采集任务实例-日志", businessType = BusinessType.DELETE)
     @DeleteMapping("/{taskInstanceIds}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {

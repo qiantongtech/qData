@@ -33,9 +33,9 @@
         <el-row :gutter="2">
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">业务域</div>
+              <div class="infotop-row-lable">来源系统</div>
               <div class="infotop-row-value">
-                {{ getDomainPath(form.dbRespVO?.domainId) }}
+                {{ form.sourceSystemName || "-" }}
               </div>
             </div>
           </el-col>

@@ -34,38 +34,15 @@
             >
               修改
             </el-button>
-            <el-popover
-              placement="bottom"
-              :width="120"
-              popper-class="handle-popover"
-              trigger="click"
+            <el-button
+              link
+              type="danger"
+              icon="Delete"
+              :disabled="row.status == 1"
+              @click="handleDeleteClick(row)"
             >
-              <template #reference>
-                <el-button link type="primary" icon="ArrowDown">
-                  更多
-                </el-button>
-              </template>
-              <el-button
-                link
-                type="danger"
-                icon="Delete"
-                :disabled="row.status == 1"
-                @click="handleDeleteClick(row)"
-                "
-              >
-                删除
-              </el-button>
-
-              <!-- <el-button
-                link
-                type="primary"
-                @click="handleDetailClick(row, 'VersionManagement')"
-            
-              >
-                <svg-icon icon-class="meta-version" class="handle-svg-icon" />
-                版本与变更
-              </el-button> -->
-            </el-popover>
+              删除
+            </el-button>
           </template>
         </template>
       </qt-table>

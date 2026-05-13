@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.qiantong.qdata.module.mc.dal.mapper.columnLog.McColumnLogMapper">
+
+    <resultMap type="McColumnLogDO" id="McColumnLogResult">
+        <result property="id"    column="ID"    />
+        <result property="dataType"    column="DATA_TYPE"    />
+        <result property="taskId"    column="TASK_ID"    />
+        <result property="columnId"    column="COLUMN_ID"    />
+        <result property="version"    column="VERSION"    />
+        <result property="dbId"    column="DB_ID"    />
+        <result property="tableId"    column="TABLE_ID"    />
+        <result property="datasourceId"    column="DATASOURCE_ID"    />
+        <result property="safetyLevelId"    column="SAFETY_LEVEL_ID"    />
+        <result property="dataElemId"    column="DATA_ELEM_ID"    />
+        <result property="columnName"    column="COLUMN_NAME"    />
+        <result property="columnComment"    column="COLUMN_COMMENT"    />
+        <result property="columnType"    column="COLUMN_TYPE"    />
+        <result property="columnLength"    column="COLUMN_LENGTH"    />
+        <result property="columnPrecision"    column="COLUMN_PRECISION"    />
+        <result property="columnScale"    column="COLUMN_SCALE"    />
+        <result property="defaultValue"    column="DEFAULT_VALUE"    />
+        <result property="pkFlag"    column="PK_FLAG"    />
+        <result property="fkFlag"    column="FK_FLAG"    />
+        <result property="nullableFlag"    column="NULLABLE_FLAG"    />
+        <result property="busDefinition"    column="BUS_DEFINITION"    />
+        <result property="measuringUnit"    column="MEASURING_UNIT"    />
+        <result property="dataQuality"    column="DATA_QUALITY"    />
+        <result property="updateType"    column="UPDATE_TYPE"    />
+        <result property="updateMsg"    column="UPDATE_MSG"    />
+        <result property="validFlag"    column="VALID_FLAG"    />
+        <result property="delFlag"    column="DEL_FLAG"    />
+        <result property="createBy"    column="CREATE_BY"    />
+        <result property="creatorId"    column="CREATOR_ID"    />
+        <result property="createTime"    column="CREATE_TIME"    />
+        <result property="updateBy"    column="UPDATE_BY"    />
+        <result property="updaterId"    column="UPDATER_ID"    />
+        <result property="updateTime"    column="UPDATE_TIME"    />
+        <result property="remark"    column="REMARK"    />
+        <result property="description"    column="DESCRIPTION"    />
+    </resultMap>
+
+    <sql id="selectMcColumnLogVo">
+        select ID, DATA_TYPE, TASK_ID, COLUMN_ID, VERSION, DB_ID, TABLE_ID, DATASOURCE_ID, SAFETY_LEVEL_ID, DATA_ELEM_ID, COLUMN_NAME, COLUMN_COMMENT, COLUMN_TYPE, COLUMN_LENGTH, COLUMN_PRECISION, COLUMN_SCALE, DEFAULT_VALUE, PK_FLAG, FK_FLAG, NULLABLE_FLAG, BUS_DEFINITION, MEASURING_UNIT, DATA_QUALITY, UPDATE_TYPE, UPDATE_MSG, VALID_FLAG, DEL_FLAG, CREATE_BY, CREATOR_ID, CREATE_TIME, UPDATE_BY, UPDATER_ID, UPDATE_TIME, REMARK, DESCRIPTION from MC_COLUMN_LOG
+    </sql>
+
+    <select id="selectMcColumnLogList" parameterType="McColumnLogDO" resultMap="McColumnLogResult">
+        <include refid="selectMcColumnLogVo"/>
+        <where>
+            <if test="dataType != null  and dataType != ''"> and DATA_TYPE = #{dataType}</if>
+            <if test="taskId != null "> and TASK_ID = #{taskId}</if>
+            <if test="columnId != null "> and COLUMN_ID = #{columnId}</if>
+            <if test="version != null "> and VERSION = #{version}</if>
+            <if test="dbId != null "> and DB_ID = #{dbId}</if>
+            <if test="tableId != null "> and TABLE_ID = #{tableId}</if>
+            <if test="datasourceId != null "> and DATASOURCE_ID = #{datasourceId}</if>
+            <if test="safetyLevelId != null "> and SAFETY_LEVEL_ID = #{safetyLevelId}</if>
+            <if test="dataElemId != null "> and DATA_ELEM_ID = #{dataElemId}</if>
+            <if test="columnName != null  and columnName != ''"> and COLUMN_NAME like concat('%', #{columnName}, '%')</if>
+            <if test="columnComment != null  and columnComment != ''"> and COLUMN_COMMENT = #{columnComment}</if>
+            <if test="columnType != null  and columnType != ''"> and COLUMN_TYPE = #{columnType}</if>
+            <if test="columnLength != null "> and COLUMN_LENGTH = #{columnLength}</if>
+            <if test="columnPrecision != null "> and COLUMN_PRECISION = #{columnPrecision}</if>
+            <if test="columnScale != null "> and COLUMN_SCALE = #{columnScale}</if>
+            <if test="defaultValue != null  and defaultValue != ''"> and DEFAULT_VALUE = #{defaultValue}</if>
+            <if test="pkFlag != null  and pkFlag != ''"> and PK_FLAG = #{pkFlag}</if>
+            <if test="fkFlag != null  and fkFlag != ''"> and FK_FLAG = #{fkFlag}</if>
+            <if test="nullableFlag != null  and nullableFlag != ''"> and NULLABLE_FLAG = #{nullableFlag}</if>
+            <if test="busDefinition != null  and busDefinition != ''"> and BUS_DEFINITION = #{busDefinition}</if>
+            <if test="measuringUnit != null  and measuringUnit != ''"> and MEASURING_UNIT = #{measuringUnit}</if>
+            <if test="dataQuality != null "> and DATA_QUALITY = #{dataQuality}</if>
+            <if test="updateType != null  and updateType != ''"> and UPDATE_TYPE = #{updateType}</if>
+            <if test="updateMsg != null  and updateMsg != ''"> and UPDATE_MSG = #{updateMsg}</if>
+            <if test="createTime != null "> and CREATE_TIME = #{createTime}</if>
+            <if test="description != null  and description != ''"> and DESCRIPTION = #{description}</if>
+        </where>
+    </select>
+
+    <select id="selectMcColumnLogById" parameterType="Long" resultMap="McColumnLogResult">
+        <include refid="selectMcColumnLogVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertMcColumnLog" parameterType="McColumnLogDO">
+        insert into MC_COLUMN_LOG
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="dataType != null">DATA_TYPE,</if>
+            <if test="taskId != null">TASK_ID,</if>
+            <if test="columnId != null">COLUMN_ID,</if>
+            <if test="version != null">VERSION,</if>
+            <if test="dbId != null">DB_ID,</if>
+            <if test="tableId != null">TABLE_ID,</if>
+            <if test="datasourceId != null">DATASOURCE_ID,</if>
+            <if test="safetyLevelId != null">SAFETY_LEVEL_ID,</if>
+            <if test="dataElemId != null">DATA_ELEM_ID,</if>
+            <if test="columnName != null">COLUMN_NAME,</if>
+            <if test="columnComment != null">COLUMN_COMMENT,</if>
+            <if test="columnType != null">COLUMN_TYPE,</if>
+            <if test="columnLength != null">COLUMN_LENGTH,</if>
+            <if test="columnPrecision != null">COLUMN_PRECISION,</if>
+            <if test="columnScale != null">COLUMN_SCALE,</if>
+            <if test="defaultValue != null">DEFAULT_VALUE,</if>
+            <if test="pkFlag != null">PK_FLAG,</if>
+            <if test="fkFlag != null">FK_FLAG,</if>
+            <if test="nullableFlag != null">NULLABLE_FLAG,</if>
+            <if test="busDefinition != null">BUS_DEFINITION,</if>
+            <if test="measuringUnit != null">MEASURING_UNIT,</if>
+            <if test="dataQuality != null">DATA_QUALITY,</if>
+            <if test="updateType != null">UPDATE_TYPE,</if>
+            <if test="updateMsg != null">UPDATE_MSG,</if>
+            <if test="validFlag != null">VALID_FLAG,</if>
+            <if test="delFlag != null">DEL_FLAG,</if>
+            <if test="createBy != null">CREATE_BY,</if>
+            <if test="creatorId != null">CREATOR_ID,</if>
+            <if test="createTime != null">CREATE_TIME,</if>
+            <if test="updateBy != null">UPDATE_BY,</if>
+            <if test="updaterId != null">UPDATER_ID,</if>
+            <if test="updateTime != null">UPDATE_TIME,</if>
+            <if test="remark != null">REMARK,</if>
+            <if test="description != null">DESCRIPTION,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="dataType != null">#{dataType},</if>
+            <if test="taskId != null">#{taskId},</if>
+            <if test="columnId != null">#{columnId},</if>
+            <if test="version != null">#{version},</if>
+            <if test="dbId != null">#{dbId},</if>
+            <if test="tableId != null">#{tableId},</if>
+            <if test="datasourceId != null">#{datasourceId},</if>
+            <if test="safetyLevelId != null">#{safetyLevelId},</if>
+            <if test="dataElemId != null">#{dataElemId},</if>
+            <if test="columnName != null">#{columnName},</if>
+            <if test="columnComment != null">#{columnComment},</if>
+            <if test="columnType != null">#{columnType},</if>
+            <if test="columnLength != null">#{columnLength},</if>
+            <if test="columnPrecision != null">#{columnPrecision},</if>
+            <if test="columnScale != null">#{columnScale},</if>
+            <if test="defaultValue != null">#{defaultValue},</if>
+            <if test="pkFlag != null">#{pkFlag},</if>
+            <if test="fkFlag != null">#{fkFlag},</if>
+            <if test="nullableFlag != null">#{nullableFlag},</if>
+            <if test="busDefinition != null">#{busDefinition},</if>
+            <if test="measuringUnit != null">#{measuringUnit},</if>
+            <if test="dataQuality != null">#{dataQuality},</if>
+            <if test="updateType != null">#{updateType},</if>
+            <if test="updateMsg != null">#{updateMsg},</if>
+            <if test="validFlag != null">#{validFlag},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updaterId != null">#{updaterId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="description != null">#{description},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMcColumnLog" parameterType="McColumnLogDO">
+        update MC_COLUMN_LOG
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="dataType != null">DATA_TYPE = #{dataType},</if>
+            <if test="taskId != null">TASK_ID = #{taskId},</if>
+            <if test="columnId != null">COLUMN_ID = #{columnId},</if>
+            <if test="version != null">VERSION = #{version},</if>
+            <if test="dbId != null">DB_ID = #{dbId},</if>
+            <if test="tableId != null">TABLE_ID = #{tableId},</if>
+            <if test="datasourceId != null">DATASOURCE_ID = #{datasourceId},</if>
+            <if test="safetyLevelId != null">SAFETY_LEVEL_ID = #{safetyLevelId},</if>
+            <if test="dataElemId != null">DATA_ELEM_ID = #{dataElemId},</if>
+            <if test="columnName != null">COLUMN_NAME = #{columnName},</if>
+            <if test="columnComment != null">COLUMN_COMMENT = #{columnComment},</if>
+            <if test="columnType != null">COLUMN_TYPE = #{columnType},</if>
+            <if test="columnLength != null">COLUMN_LENGTH = #{columnLength},</if>
+            <if test="columnPrecision != null">COLUMN_PRECISION = #{columnPrecision},</if>
+            <if test="columnScale != null">COLUMN_SCALE = #{columnScale},</if>
+            <if test="defaultValue != null">DEFAULT_VALUE = #{defaultValue},</if>
+            <if test="pkFlag != null">PK_FLAG = #{pkFlag},</if>
+            <if test="fkFlag != null">FK_FLAG = #{fkFlag},</if>
+            <if test="nullableFlag != null">NULLABLE_FLAG = #{nullableFlag},</if>
+            <if test="busDefinition != null">BUS_DEFINITION = #{busDefinition},</if>
+            <if test="measuringUnit != null">MEASURING_UNIT = #{measuringUnit},</if>
+            <if test="dataQuality != null">DATA_QUALITY = #{dataQuality},</if>
+            <if test="updateType != null">UPDATE_TYPE = #{updateType},</if>
+            <if test="updateMsg != null">UPDATE_MSG = #{updateMsg},</if>
+            <if test="validFlag != null">VALID_FLAG = #{validFlag},</if>
+            <if test="delFlag != null">DEL_FLAG = #{delFlag},</if>
+            <if test="createBy != null">CREATE_BY = #{createBy},</if>
+            <if test="creatorId != null">CREATOR_ID = #{creatorId},</if>
+            <if test="createTime != null">CREATE_TIME = #{createTime},</if>
+            <if test="updateBy != null">UPDATE_BY = #{updateBy},</if>
+            <if test="updaterId != null">UPDATER_ID = #{updaterId},</if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime},</if>
+            <if test="remark != null">REMARK = #{remark},</if>
+            <if test="description != null">DESCRIPTION = #{description},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteMcColumnLogById" parameterType="Long">
+        delete from MC_COLUMN_LOG where ID = #{id}
+    </delete>
+
+    <delete id="deleteMcColumnLogByIds" parameterType="String">
+        delete from MC_COLUMN_LOG where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -32,10 +32,8 @@
 
 package tech.qiantong.qdata.module.da.service.datasource.impl;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.json.JSONObject;
-import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -45,13 +43,10 @@ import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.statement.Statement;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.MapUtils;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.xssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.qiantong.qdata.common.core.domain.AjaxResult;
@@ -61,15 +56,13 @@ import tech.qiantong.qdata.common.database.DbQuery;
 import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
 import tech.qiantong.qdata.common.database.constants.DbType;
 import tech.qiantong.qdata.common.database.core.DbColumn;
+import tech.qiantong.qdata.common.database.core.DbName;
 import tech.qiantong.qdata.common.database.core.DbTable;
 import tech.qiantong.qdata.common.database.exception.DataQueryException;
 import tech.qiantong.qdata.common.enums.KingbaseColumnTypeEnum;
 import tech.qiantong.qdata.common.enums.MySqlColumnTypeEnum;
 import tech.qiantong.qdata.common.exception.ServiceException;
-import tech.qiantong.qdata.common.httpClient.HttpTaskLogger;
 import tech.qiantong.qdata.common.utils.AesEncryptUtil;
-import tech.qiantong.qdata.common.utils.DateUtils;
-import tech.qiantong.qdata.common.utils.JSONUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.module.att.api.project.IAttProjectApi;
@@ -88,12 +81,10 @@ import tech.qiantong.qdata.module.da.dal.dataobject.datasource.DaDatasourceProje
 import tech.qiantong.qdata.module.da.dal.mapper.datasource.DaDatasourceMapper;
 import tech.qiantong.qdata.module.da.service.datasource.IDaDatasourceProjectRelService;
 import tech.qiantong.qdata.module.da.service.datasource.IDaDatasourceService;
-import tech.qiantong.qdata.module.da.utils.ToTableColumnsUtils;
 import tech.qiantong.qdata.module.dp.api.model.dto.DpModelColumnReqDTO;
 import tech.qiantong.qdata.module.dp.api.model.dto.DpModelColumnRespDTO;
 import tech.qiantong.qdata.module.dp.api.service.model.IDpModelApiService;
 import tech.qiantong.qdata.module.dpp.api.service.etl.DppEtlTaskService;
-import tech.qiantong.qdata.module.system.service.ISysMessageService;
 import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
 import tech.qiantong.qdata.redis.service.IRedisService;
 
@@ -104,7 +95,6 @@ import java.io.ByteArrayOutputStream;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -1010,5 +1000,77 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
             return tables.get(0);
         }
         return null;
+    }
+
+    @Override
+    public List<DbName> getDatabaseListByDatasourceId(Long id) {
+        DaDatasourceRespDTO datasource = this.getDatasourceById(id);
+        if (datasource == null) {
+            throw new DataQueryException("数据源详情信息查询失败");
+        }
+
+        DbQueryProperty baseProperty = new DbQueryProperty(
+                datasource.getDatasourceType(),
+                datasource.getIp(),
+                datasource.getPort(),
+                datasource.getDatasourceConfig()
+        );
+
+        // 1. 先获取顶层数据库
+        List<DbName> dbNames;
+        DbQuery rootQuery = dataSourceFactory.createDbQuery(baseProperty);
+        try {
+            if (!rootQuery.valid()) {
+                throw new DataQueryException("数据库连接失败");
+            }
+            dbNames = rootQuery.getDbNames(null);
+        } finally {
+            rootQuery.close();
+        }
+
+        if (CollectionUtils.isEmpty(dbNames)) {
+            return dbNames;
+        }
+
+        // 单层结构，直接返回
+        if (dbNames.get(0).getLevel() == 1 && dbNames.get(0).getTotalLevels() == 1) {
+            return dbNames;
+        }
+
+        // 2. 逐个加载下级
+        for (DbName dbName : dbNames) {
+
+            // Kingbase / PostgreSQL 需要切换 dbName
+            DbQueryProperty childProperty = baseProperty;
+            if (DbType.KINGBASE8.getDb().equals(baseProperty.getDbType())
+                    || DbType.POSTGRE_SQL.getDb().equals(baseProperty.getDbType())) {
+
+                childProperty = baseProperty.copy();
+                childProperty.setDbName(dbName.getDbName());
+            }
+
+            DbQuery childQuery = dataSourceFactory.createDbQuery(childProperty);
+            try {
+                if (!childQuery.valid()) {
+                    // 不影响整体，直接跳过当前节点
+                    continue;
+                }
+                List<DbName> children = childQuery.getDbNames(dbName);
+                dbName.setChildren(children);
+            } catch (Exception e) {
+                // 可选：记录日志
+                // log.warn("获取数据库 {} 子级失败", dbName.getDbName(), e);
+            } finally {
+                childQuery.close();
+            }
+        }
+
+        return dbNames;
+    }
+
+    @Override
+    public List<DaDatasourceRespDTO> getDatabaseListByIds(List<Long> ids) {
+        List<DaDatasourceDO> daDatasourceDOS = daDatasourceMapper.selectBatchIds(ids);
+        return BeanUtils.toBean(daDatasourceDOS, DaDatasourceRespDTO.class);
     }
 }

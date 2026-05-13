@@ -33,7 +33,7 @@ qdata:
   # 名称
   name: qData
   # 版本
-  version: 1.3.0
+  version: 1.4.0
   # 版权年份
   copyrightYear: 2024
   # 文件路径 示例（ Windows配置D:/qdata/uploadPath，Linux配置 /home/qdata/uploadPath） -- 需要和 file 模块保持一致

@@ -1,45 +1,55 @@
 <template>
-  <div class="app-container">
-    <div class="emptyBg">
-      <div class="empty-content">
-        <img
-          src="@/assets/images/sys/error/no-data.png"
-          alt="功能开发中"
-          class="empty-image"
-        />
-        <p class="empty-text">功能开发中</p>
-      </div>
+  <div :class="['app-container', { 'is-tab': type === 'tab' }]">
+    <div class="developing-wrapper">
+      <img
+        src="@/assets/images/sys/error/building.png"
+        alt="功能开发中"
+        class="developing-img"
+      />
     </div>
   </div>
 </template>
 
 <script setup>
-// 无需逻辑，仅展示组件
+defineProps({
+  type: {
+    type: String,
+    default: "page",
+  },
+});
 </script>
 
 <style scoped>
-.emptyBg {
+.developing-wrapper {
+  width: 100%;
+  height: calc(100vh - 125px);
+  background-color: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: calc(100vh - 124px);
-  padding: 40px 0;
-  background-color: #fff;
+  border-radius: 4px;
+  overflow: hidden;
 }
 
-.empty-content {
-  text-align: center;
-}
-
-.empty-image {
-  max-width: 300px;
+.developing-img {
   width: 100%;
+  max-width: 500px;
   height: auto;
-  margin-bottom: 16px;
+  object-fit: contain;
+  display: block;
+  margin-top: -46px;
 }
 
-.empty-text {
-  font-size: 18px;
-  color: #666;
+.is-tab.app-container {
+  padding: 0;
+}
+
+.is-tab .developing-wrapper {
+  height: 500px;
+}
+
+.is-tab .developing-img {
+  max-width: 400px;
+  margin-top: 0;
 }
 </style>

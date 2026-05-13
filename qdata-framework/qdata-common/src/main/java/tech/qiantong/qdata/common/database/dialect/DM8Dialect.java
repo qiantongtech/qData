@@ -33,18 +33,23 @@
 package tech.qiantong.qdata.common.database.dialect;
 
 
+import com.alibaba.fastjson2.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.springframework.jdbc.core.RowMapper;
 import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
+import tech.qiantong.qdata.common.database.constants.DbType;
 import tech.qiantong.qdata.common.database.constants.fieldtypes.DM8FieldType;
 import tech.qiantong.qdata.common.database.core.DbColumn;
+import tech.qiantong.qdata.common.database.core.DbName;
 import tech.qiantong.qdata.common.database.core.DbTable;
 import tech.qiantong.qdata.common.database.exception.DataQueryException;
-import tech.qiantong.qdata.common.database.utils.MD5Util;
+import tech.qiantong.qdata.common.database.utils.DatabaseUtil;
 
 import javax.sql.DataSource;
+import java.security.Security;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -142,6 +147,36 @@ public class DM8Dialect extends AbstractDbDialect {
                 "ORDER BY atc.COLUMN_ID ASC";
     }
 
+    @Override
+    public String getDbColumns(DbQueryProperty dbQueryProperty) {
+        return "SELECT " +
+                "atc.TABLE_NAME AS TABLENAME, " +
+                "atc.COLUMN_NAME AS COLNAME, " +
+                "atc.COLUMN_ID AS COLPOSITION, " +
+                "atc.DATA_DEFAULT AS DATADEFAULT, " +
+                "atc.NULLABLE AS NULLABLE, " +
+                "atc.DATA_TYPE AS DATATYPE, " +
+                "atc.DATA_LENGTH AS DATALENGTH, " +
+                "atc.DATA_PRECISION AS DATAPRECISION, " +
+                "atc.DATA_SCALE AS DATASCALE, " +
+                "MAX(CASE WHEN ac.CONSTRAINT_TYPE = 'p' THEN 1 ELSE 0 END) AS COLKEY, " +
+                "acc.COMMENTS AS COLCOMMENT " +
+                "FROM ALL_TAB_COLUMNS atc " +
+                "INNER JOIN ALL_COL_COMMENTS acc ON acc.COLUMN_NAME = atc.COLUMN_NAME " +
+                "AND acc.Table_Name = atc.Table_Name " +
+                "AND acc.OWNER = atc.OWNER " +
+                "LEFT JOIN DBA_CONS_COLUMNS dcc ON dcc.COLUMN_NAME = atc.COLUMN_NAME " +
+                "AND dcc.Table_Name = atc.Table_Name " +
+                "AND dcc.OWNER = atc.OWNER " +
+                "LEFT JOIN ALL_CONSTRAINTS ac ON ac.CONSTRAINT_NAME = dcc.CONSTRAINT_NAME " +
+                "AND ac.Table_Name = atc.Table_Name " +
+                "AND ac.OWNER = atc.OWNER " +
+                "WHERE atc.OWNER = '" + dbQueryProperty.getDbName() + "' " +
+                "GROUP BY atc.TABLE_NAME, atc.COLUMN_NAME, atc.COLUMN_ID, atc.DATA_DEFAULT, atc.NULLABLE, " +
+                "atc.DATA_TYPE, atc.DATA_LENGTH, atc.DATA_PRECISION, atc.DATA_SCALE, acc.COMMENTS " +
+                "ORDER BY atc.COLUMN_ID ASC";
+    }
+
 
     @Override
     public String generateCheckTableExistsSQL(DbQueryProperty dbQueryProperty, String tableName) {
@@ -157,7 +192,6 @@ public class DM8Dialect extends AbstractDbDialect {
 
         return tableName;
     }
-
 
     @Override
     public List<String> someInternalSqlGenerator(DbQueryProperty dbQueryProperty, String tableName, String tableComment, List<DbColumn> dbColumnList) {
@@ -183,6 +217,7 @@ public class DM8Dialect extends AbstractDbDialect {
             createSql.append("\n  ").append(col.getColName()).append(" ");
             createSql.append(mapDmColumnType(col));
 
+            // N false 不能为空  Y true 可以为空
             if (!col.getNullable()) {
                 createSql.append(" NOT NULL");
             }
@@ -190,7 +225,7 @@ public class DM8Dialect extends AbstractDbDialect {
                 createSql.append(" DEFAULT ").append(col.getDataDefault());
 //                String columnType = col.getDataType();
 //                if (isStringTypeSwitchDEFAULT(columnType)) {
-//                    createSql.append(" DEFAULT '").append(MD5Util.escapeSingleQuotes(col.getDataDefault())).append("'");
+//                    createSql.append(" DEFAULT '").append(DatabaseUtil.escapeSingleQuotes(col.getDataDefault())).append("'");
 //                } else {
 //                    createSql.append(" DEFAULT ").append(col.getDataDefault());
 //                }
@@ -215,13 +250,13 @@ public class DM8Dialect extends AbstractDbDialect {
         sqlList.add(createSql.toString());
 
         if (StringUtils.isNotEmpty(tableComment)) {
-            String tableCmt = "COMMENT ON TABLE " + tableName + " IS '" + MD5Util.escapeSingleQuotes(tableComment) + "'";
+            String tableCmt = "COMMENT ON TABLE " + tableName + " IS '" + DatabaseUtil.escapeSingleQuotes(tableComment) + "'";
             sqlList.add(tableCmt);
         }
         for (DbColumn col : columns) {
             if (StringUtils.isNotEmpty(col.getColComment())) {
                 String colCmt = "COMMENT ON COLUMN " + tableName + "." + col.getColName()
-                        + " IS '" + MD5Util.escapeSingleQuotes(col.getColComment()) + "'";
+                        + " IS '" + DatabaseUtil.escapeSingleQuotes(col.getColComment()) + "'";
                 sqlList.add(colCmt);
             }
         }
@@ -244,8 +279,8 @@ public class DM8Dialect extends AbstractDbDialect {
     private static String mapDmColumnType(DbColumn col) {
         // 类似 Oracle
         String type = col.getDataType();
-        Long length = MD5Util.getStringToLong(col.getDataLength());
-        Long scale = MD5Util.getStringToLong(col.getDataScale());
+        Long length = DatabaseUtil.getStringToLong(col.getDataLength());
+        Long scale = DatabaseUtil.getStringToLong(col.getDataScale());
 
         switch (type) {
             case "varchar":
@@ -262,6 +297,10 @@ public class DM8Dialect extends AbstractDbDialect {
                 return "BIGINT";
             case "DECIMAL":
                 return "DECIMAL(" + (length != null ? length : 10) + "," + (scale != null ? scale : 0) + ")";
+            case "NUMERIC":
+                return "NUMERIC(" + (length != null ? length : 10) + "," + (scale != null ? scale : 0) + ")";
+            case "NUMBER":
+                return "NUMBER(" + (length != null ? length : 10) + "," + (scale != null ? scale : 0) + ")";
             case "DATE":
             case "DATETIME":
                 return "TIMESTAMP";
@@ -315,15 +354,35 @@ public class DM8Dialect extends AbstractDbDialect {
         return "SELECT SYS_CONTEXT('USERENV', 'CURRENT_SCHEMA') AS \"databaseName\" FROM DUAL";
     }
 
+    @Override
+    public String getDbName(DbName dbName) {
+        int level =  dbName == null ? 1 : dbName.getLevel()+1;
+        if (level == 1) {
+            return "SELECT USERNAME AS DBNAME, 1 AS TOTALLEVELS\n" +
+                    "FROM ALL_USERS\n" +
+                    "WHERE USERNAME NOT IN ('SYSDBA','SYSAUDITOR','SYS','PUBLIC','OUTLN','DBSNMP','MDDATA',\n" +
+                    "                       'SYSSSO','SYSSSO_AUDIT')\n" +
+                    "ORDER BY DBNAME;";
+        }
+        throw new UnsupportedOperationException("DM8 only supports one-level namespace (schema=user)");
+
+    }
+
 
     @Override
     public RowMapper<DbColumn> columnMapper() {
         return (ResultSet rs, int rowNum) -> {
             DbColumn entity = new DbColumn();
+            if (DatabaseUtil.hasColumn(rs, "TABLENAME")) {
+                entity.setTableName(rs.getString("TABLENAME"));
+            }
             entity.setColName(rs.getString("COLNAME"));
             entity.setDataType(rs.getString("DATATYPE"));
             entity.setDataLength(rs.getString("DATALENGTH"));
             entity.setDataPrecision(rs.getString("DATAPRECISION"));
+            if (rs.getString("DATAPRECISION") != null) {
+                entity.setDataLength(rs.getString("DATAPRECISION"));
+            }
             entity.setDataScale(rs.getString("DATASCALE"));
             entity.setColKey("1".equals(rs.getString("COLKEY")));
             entity.setNullable("Y".equals(rs.getString("NULLABLE")));
@@ -352,22 +411,13 @@ public class DM8Dialect extends AbstractDbDialect {
 
     @Override
     public Boolean validConnection(DataSource dataSource, DbQueryProperty dbQueryProperty) {
-        Connection conn = null;
-        try {
-            conn = DriverManager.getConnection(trainToJdbcUrl(dbQueryProperty), dbQueryProperty.getUsername(),
-                    dbQueryProperty.getPassword());
+        String jdbcUrl = trainToJdbcUrl(dbQueryProperty);
+        try (Connection conn = DriverManager.getConnection(jdbcUrl, dbQueryProperty.getUsername(),
+                dbQueryProperty.getPassword())) {
             return conn.isValid(0);
         } catch (SQLException e) {
-            log.error(e.getMessage());
+            log.error("数据库连接失败", e);
             throw new DataQueryException("数据库连接失败,稍后重试");
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    throw new DataQueryException("关闭数据库连接出错");
-                }
-            }
         }
     }
 
@@ -427,4 +477,98 @@ public class DM8Dialect extends AbstractDbDialect {
         return errors;
     }
 
+    @Override
+    public String getFlinkCDCSQL(DbQueryProperty property, String flinkTableName, String tableName, String tableFieldName) {
+        String sql = "CREATE TABLE ${flinkTableName} (${tableFieldName}) " +
+                "WITH ( 'connector' = 'dm-cdc'," +
+                "'hostname' = '${host}' ," +
+                "'port' = '${port}' ," +
+                "'username' = '${username}' ," +
+                "'password' = '${password}'," +
+                "'database-name' = 'DAMENG' ," +//TODO 后面这个可以在数据连接里加一个配置项动态传递
+                "'schema-name' = '${dbName}'," +
+                "'table-name' = '${tableName}' ," +
+                " 'scan.startup.mode' = 'initial'," +
+                " 'debezium.database.tablename.case.insensitive' =  'false'," +
+                " 'debezium.lob.enabled' = 'true'" +
+                ")";
+        sql = StringUtils
+                .replace(sql, "${flinkTableName}", flinkTableName)
+                .replace("${tableName}", tableName)
+                .replace("${host}", property.getHost())
+                .replace("${tableFieldName}", tableFieldName)
+                .replace("${port}", String.valueOf(property.getPort()))
+                .replace("${dbName}", property.getDbName())
+                .replace("${username}", property.getUsername())
+                .replace("${password}", property.getPassword());
+        return sql;
+    }
+
+    @Override
+    public String getFlinkSQL(DbQueryProperty property, String flinkTableName, String tableName, String tableFieldName) {
+        String sql = "CREATE TABLE ${flinkTableName} (${tableFieldName}) " +
+                "WITH ( 'connector' = 'jdbc'," +
+                "'url' = 'jdbc:dm://${host}:${port}/${dbName}?STU&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf-8&schema=${dbName}&serverTimezone=Asia/Shanghai'," +
+                "'table-name' = '${tableName}'," +
+                "'username' = '${username}'," +
+                "'password' = '${password}')";
+
+        sql = StringUtils
+                .replace(sql, "${flinkTableName}", flinkTableName)
+                .replace("${tableName}", tableName)
+                .replace("${host}", property.getHost())
+                .replace("${tableFieldName}", tableFieldName)
+                .replace("${port}", String.valueOf(property.getPort()))
+                .replace("${dbName}", property.getDbName())
+                .replace("${username}", property.getUsername())
+                .replace("${password}", property.getPassword());
+        return sql;
+    }
+
+    @Override
+    public String getFlinkSinkSQL(DbQueryProperty property, JSONObject config, String flinkTableName, String tableName, String tableFieldName) {
+        String sql = "CREATE TABLE ${flinkTableName} (${tableFieldName}) " +
+                "WITH ( 'connector' = 'jdbc'," +
+                "'url' = 'jdbc:dm://${host}:${port}/${dbName}?STU&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf-8&schema=${dbName}&serverTimezone=Asia/Shanghai'," +
+                "'table-name' = '${tableName}'," +
+                "'username' = '${username}'," +
+                "'password' = '${password}'," +
+                "'sink.buffer-flush.max-rows' = '${batchSize}'," +
+                "'sink.buffer-flush.interval' = '1s'" +
+                ")";
+
+        sql = StringUtils
+                .replace(sql, "${flinkTableName}", flinkTableName)
+                .replace("${tableName}", tableName)
+                .replace("${host}", property.getHost())
+                .replace("${tableFieldName}", tableFieldName)
+                .replace("${port}", String.valueOf(property.getPort()))
+                .replace("${dbName}", property.getDbName())
+                .replace("${username}", property.getUsername())
+                .replace("${password}", property.getPassword())
+                .replace("${batchSize}", String.valueOf(config.getIntValue("batchSize", 100)));
+        return sql;
+    }
+
+    @Override
+    public String trainToJdbcUrl(DbQueryProperty property) {
+        String url = DbType.getDbType(property.getDbType()).getUrl();
+        if (org.springframework.util.StringUtils.isEmpty(url)) {
+            throw new DataQueryException("无效数据库类型!");
+        }
+        url = url.replace("${host}", property.getHost());
+        url = url.replace("${port}", String.valueOf(property.getPort()));
+        url = url.replace("${dbName}", property.getDbName());
+        //判断是否开启ssl
+        if (checkUseSSL(property)) {
+            Security.addProvider(new BouncyCastleProvider());
+            JSONObject sslConfig = (JSONObject) property.getDatasourceConfig().get("sslConfig");
+            StringBuilder urlStrBuilder = new StringBuilder(url);
+            urlStrBuilder
+                    .append("&sslFilesPath=").append(sslConfig.getString("sslFilesPath"))
+                    .append("&sslKeystorePass=").append(sslConfig.getString("sslKeystorePass"));
+            url = urlStrBuilder.toString();
+        }
+        return url;
+    }
 }

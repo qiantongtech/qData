@@ -49,7 +49,7 @@ import java.util.List;
 public final class PageResult<T> implements Serializable {
 
     @Schema(description = "数据")
-    private List<?> rows;
+    private List<T> rows;
 
     @Schema(description = "总量")
     private Long total;

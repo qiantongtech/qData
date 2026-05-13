@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.qiantong.qdata.module.mc.dal.mapper.metadata.McTableMapper">
+
+    <resultMap type="McTableDO" id="McTableResult">
+        <result property="id" column="ID" />
+        <result property="taskId" column="TASK_ID" />
+        <result property="dbId" column="DB_ID" />
+        <result property="datasourceId" column="DATASOURCE_ID" />
+        <result property="version" column="VERSION" />
+        <result property="tableName" column="TABLE_NAME" />
+        <result property="tableComment" column="TABLE_COMMENT" />
+        <result property="safetyLevelId" column="SAFETY_LEVEL_ID" />
+        <result property="dbName" column="DB_NAME" />
+        <result property="schemaName" column="SCHEMA_NAME" />
+        <result property="storageType" column="STORAGE_TYPE" />
+        <result property="storageSize" column="STORAGE_SIZE" />
+        <result property="businessLeader" column="BUSINESS_LEADER" />
+        <result property="businessLeaderPhone" column="BUSINESS_LEADER_PHONE" />
+        <result property="techLeader" column="TECH_LEADER" />
+        <result property="techLeaderPhone" column="TECH_LEADER_PHONE" />
+        <result property="masterFlag" column="MASTER_FLAG" />
+        <result property="tempFlag" column="TEMP_FLAG" />
+        <result property="dataQuality" column="DATA_QUALITY" />
+        <result property="auditStatus" column="AUDIT_STATUS" />
+        <result property="auditTime" column="AUDIT_TIME" />
+        <result property="status" column="STATUS" />
+        <result property="validFlag" column="VALID_FLAG" />
+        <result property="delFlag" column="DEL_FLAG" />
+        <result property="createBy" column="CREATE_BY" />
+        <result property="creatorId" column="CREATOR_ID" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="updateBy" column="UPDATE_BY" />
+        <result property="updaterId" column="UPDATER_ID" />
+        <result property="updateTime" column="UPDATE_TIME" />
+        <result property="remark" column="REMARK" />
+        <result property="description" column="DESCRIPTION" />
+        <result property="portalVisible" column="PORTAL_VISIBLE" />
+    </resultMap>
+
+    <sql id="selectMcTableVo">
+        select ID, TASK_ID, DB_ID, DATASOURCE_ID, VERSION, TABLE_NAME, TABLE_COMMENT,
+               SAFETY_LEVEL_ID, DB_NAME, SCHEMA_NAME, STORAGE_TYPE, STORAGE_SIZE,
+               BUSINESS_LEADER, BUSINESS_LEADER_PHONE, TECH_LEADER, TECH_LEADER_PHONE,
+               MASTER_FLAG, TEMP_FLAG, DATA_QUALITY, AUDIT_STATUS, AUDIT_TIME, STATUS,
+               VALID_FLAG, DEL_FLAG, CREATE_BY, CREATOR_ID, CREATE_TIME,
+               UPDATE_BY, UPDATER_ID, UPDATE_TIME, REMARK, DESCRIPTION, PORTAL_VISIBLE
+        from MC_TABLE
+    </sql>
+
+    <select id="selectMcTableList" parameterType="McTableDO" resultMap="McTableResult">
+        <include refid="selectMcTableVo"/>
+        <where>
+            <if test="taskId != null"> and TASK_ID = #{taskId}</if>
+            <if test="dbId != null"> and DB_ID = #{dbId}</if>
+            <if test="datasourceId != null"> and DATASOURCE_ID = #{datasourceId}</if>
+            <if test="version != null"> and VERSION = #{version}</if>
+            <if test="tableName != null and tableName != ''"> and TABLE_NAME like concat('%', #{tableName}, '%')</if>
+            <if test="tableComment != null and tableComment != ''"> and TABLE_COMMENT = #{tableComment}</if>
+            <if test="safetyLevelId != null"> and SAFETY_LEVEL_ID = #{safetyLevelId}</if>
+            <if test="dbName != null and dbName != ''"> and DB_NAME like concat('%', #{dbName}, '%')</if>
+            <if test="schemaName != null and schemaName != ''"> and SCHEMA_NAME like concat('%', #{schemaName}, '%')</if>
+            <if test="storageType != null and storageType != ''"> and STORAGE_TYPE = #{storageType}</if>
+            <if test="storageSize != null"> and STORAGE_SIZE = #{storageSize}</if>
+            <if test="businessLeader != null"> and BUSINESS_LEADER = #{businessLeader}</if>
+            <if test="businessLeaderPhone != null and businessLeaderPhone != ''"> and BUSINESS_LEADER_PHONE = #{businessLeaderPhone}</if>
+            <if test="techLeader != null"> and TECH_LEADER = #{techLeader}</if>
+            <if test="techLeaderPhone != null and techLeaderPhone != ''"> and TECH_LEADER_PHONE = #{techLeaderPhone}</if>
+            <if test="masterFlag != null and masterFlag != ''"> and MASTER_FLAG = #{masterFlag}</if>
+            <if test="tempFlag != null and tempFlag != ''"> and TEMP_FLAG = #{tempFlag}</if>
+            <if test="dataQuality != null"> and DATA_QUALITY = #{dataQuality}</if>
+            <if test="auditStatus != null and auditStatus != ''"> and AUDIT_STATUS = #{auditStatus}</if>
+            <if test="auditTime != null"> and AUDIT_TIME = #{auditTime}</if>
+            <if test="status != null and status != ''"> and STATUS = #{status}</if>
+            <if test="createTime != null"> and CREATE_TIME = #{createTime}</if>
+            <if test="description != null and description != ''"> and DESCRIPTION = #{description}</if>
+            <if test="portalVisible != null and portalVisible != ''"> and PORTAL_VISIBLE = #{portalVisible}</if>
+        </where>
+    </select>
+
+    <select id="selectMcTableById" parameterType="Long" resultMap="McTableResult">
+        <include refid="selectMcTableVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertMcTable" parameterType="McTableDO">
+        insert into MC_TABLE
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="taskId != null">TASK_ID,</if>
+            <if test="dbId != null">DB_ID,</if>
+            <if test="datasourceId != null">DATASOURCE_ID,</if>
+            <if test="version != null">VERSION,</if>
+            <if test="tableName != null">TABLE_NAME,</if>
+            <if test="tableComment != null">TABLE_COMMENT,</if>
+            <if test="safetyLevelId != null">SAFETY_LEVEL_ID,</if>
+            <if test="dbName != null">DB_NAME,</if>
+            <if test="schemaName != null">SCHEMA_NAME,</if>
+            <if test="storageType != null">STORAGE_TYPE,</if>
+            <if test="storageSize != null">STORAGE_SIZE,</if>
+            <if test="businessLeader != null">BUSINESS_LEADER,</if>
+            <if test="businessLeaderPhone != null">BUSINESS_LEADER_PHONE,</if>
+            <if test="techLeader != null">TECH_LEADER,</if>
+            <if test="techLeaderPhone != null">TECH_LEADER_PHONE,</if>
+            <if test="masterFlag != null">MASTER_FLAG,</if>
+            <if test="tempFlag != null">TEMP_FLAG,</if>
+            <if test="dataQuality != null">DATA_QUALITY,</if>
+            <if test="auditStatus != null">AUDIT_STATUS,</if>
+            <if test="auditTime != null">AUDIT_TIME,</if>
+            <if test="status != null">STATUS,</if>
+            <if test="validFlag != null">VALID_FLAG,</if>
+            <if test="delFlag != null">DEL_FLAG,</if>
+            <if test="createBy != null">CREATE_BY,</if>
+            <if test="creatorId != null">CREATOR_ID,</if>
+            <if test="createTime != null">CREATE_TIME,</if>
+            <if test="updateBy != null">UPDATE_BY,</if>
+            <if test="updaterId != null">UPDATER_ID,</if>
+            <if test="updateTime != null">UPDATE_TIME,</if>
+            <if test="remark != null">REMARK,</if>
+            <if test="description != null">DESCRIPTION,</if>
+            <if test="portalVisible != null">PORTAL_VISIBLE,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="taskId != null">#{taskId},</if>
+            <if test="dbId != null">#{dbId},</if>
+            <if test="datasourceId != null">#{datasourceId},</if>
+            <if test="version != null">#{version},</if>
+            <if test="tableName != null">#{tableName},</if>
+            <if test="tableComment != null">#{tableComment},</if>
+            <if test="safetyLevelId != null">#{safetyLevelId},</if>
+            <if test="dbName != null">#{dbName},</if>
+            <if test="schemaName != null">#{schemaName},</if>
+            <if test="storageType != null">#{storageType},</if>
+            <if test="storageSize != null">#{storageSize},</if>
+            <if test="businessLeader != null">#{businessLeader},</if>
+            <if test="businessLeaderPhone != null">#{businessLeaderPhone},</if>
+            <if test="techLeader != null">#{techLeader},</if>
+            <if test="techLeaderPhone != null">#{techLeaderPhone},</if>
+            <if test="masterFlag != null">#{masterFlag},</if>
+            <if test="tempFlag != null">#{tempFlag},</if>
+            <if test="dataQuality != null">#{dataQuality},</if>
+            <if test="auditStatus != null">#{auditStatus},</if>
+            <if test="auditTime != null">#{auditTime},</if>
+            <if test="status != null">#{status},</if>
+            <if test="validFlag != null">#{validFlag},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updaterId != null">#{updaterId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="description != null">#{description},</if>
+            <if test="portalVisible != null">#{portalVisible},</if>
+        </trim>
+    </insert>
+
+    <update id="updateMcTable" parameterType="McTableDO">
+        update MC_TABLE
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="taskId != null">TASK_ID = #{taskId},</if>
+            <if test="dbId != null">DB_ID = #{dbId},</if>
+            <if test="datasourceId != null">DATASOURCE_ID = #{datasourceId},</if>
+            <if test="version != null">VERSION = #{version},</if>
+            <if test="tableName != null">TABLE_NAME = #{tableName},</if>
+            <if test="tableComment != null">TABLE_COMMENT = #{tableComment},</if>
+            <if test="safetyLevelId != null">SAFETY_LEVEL_ID = #{safetyLevelId},</if>
+            <if test="dbName != null">DB_NAME = #{dbName},</if>
+            <if test="schemaName != null">SCHEMA_NAME = #{schemaName},</if>
+            <if test="storageType != null">STORAGE_TYPE = #{storageType},</if>
+            <if test="storageSize != null">STORAGE_SIZE = #{storageSize},</if>
+            <if test="businessLeader != null">BUSINESS_LEADER = #{businessLeader},</if>
+            <if test="businessLeaderPhone != null">BUSINESS_LEADER_PHONE = #{businessLeaderPhone},</if>
+            <if test="techLeader != null">TECH_LEADER = #{techLeader},</if>
+            <if test="techLeaderPhone != null">TECH_LEADER_PHONE = #{techLeaderPhone},</if>
+            <if test="masterFlag != null">MASTER_FLAG = #{masterFlag},</if>
+            <if test="tempFlag != null">TEMP_FLAG = #{tempFlag},</if>
+            <if test="dataQuality != null">DATA_QUALITY = #{dataQuality},</if>
+            <if test="auditStatus != null">AUDIT_STATUS = #{auditStatus},</if>
+            <if test="auditTime != null">AUDIT_TIME = #{auditTime},</if>
+            <if test="status != null">STATUS = #{status},</if>
+            <if test="validFlag != null">VALID_FLAG = #{validFlag},</if>
+            <if test="delFlag != null">DEL_FLAG = #{delFlag},</if>
+            <if test="createBy != null">CREATE_BY = #{createBy},</if>
+            <if test="creatorId != null">CREATOR_ID = #{creatorId},</if>
+            <if test="createTime != null">CREATE_TIME = #{createTime},</if>
+            <if test="updateBy != null">UPDATE_BY = #{updateBy},</if>
+            <if test="updaterId != null">UPDATER_ID = #{updaterId},</if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime},</if>
+            <if test="remark != null">REMARK = #{remark},</if>
+            <if test="description != null">DESCRIPTION = #{description},</if>
+            <if test="portalVisible != null">PORTAL_VISIBLE = #{portalVisible},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteMcTableById" parameterType="Long">
+        delete from MC_TABLE where ID = #{id}
+    </delete>
+
+    <delete id="deleteMcTableByIds" parameterType="String">
+        delete from MC_TABLE where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

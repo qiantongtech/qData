@@ -37,10 +37,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.RowMapper;
 import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
 import tech.qiantong.qdata.common.database.core.DbColumn;
+import tech.qiantong.qdata.common.database.core.DbName;
 import tech.qiantong.qdata.common.database.core.DbTable;
 import tech.qiantong.qdata.common.database.exception.DataQueryException;
 import tech.qiantong.qdata.common.database.utils.DatabaseUtil;
-import tech.qiantong.qdata.common.database.utils.MD5Util;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -56,7 +56,6 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 public class SQLServer2008Dialect extends AbstractDbDialect {
-
 
     @Override
     public String columns(String dbName, String tableName) {
@@ -232,6 +231,249 @@ public class SQLServer2008Dialect extends AbstractDbDialect {
         return sqlList;
     }
 
+
+    @Override
+    public List<String> someInternalSqlDorisGenerator(DbQueryProperty dbQueryProperty, String tableName, String tableComment, List<DbColumn> dbColumnList, String partitionRule, String bucketRule, Integer replica) {
+        List<String> sqlList = new ArrayList<>();
+        List<String> primaryKeys = new ArrayList<>();
+        StringBuilder sql = new StringBuilder();
+
+        sql.append("CREATE TABLE ").append(tableName).append(" (\n");
+
+        for (DbColumn column : dbColumnList) {
+            String columnType = column.getDataType();
+            String colName = column.getColName();
+
+            sql.append("  ").append(this.escapeReservedKeyword(colName)).append(" ");
+
+            String columnTypeResolved = "";
+            // 映射 Doris 支持的数据类型
+            switch (columnType.toUpperCase()) {
+                case "VARCHAR":
+                case "NVARCHAR":
+                    sql.append("VARCHAR");
+                    if (StringUtils.isNotEmpty(column.getDataLength())) {
+                        sql.append("(").append(column.getDataLength()).append(")");
+                    } else {
+                        sql.append("(255)");
+                    }
+                    columnTypeResolved = "VARCHAR";
+                    break;
+                case "CHAR":
+                    sql.append("VARCHAR");
+                    if (StringUtils.isNotEmpty(column.getDataLength())) {
+                        sql.append("(").append(column.getDataLength()).append(")");
+                    } else {
+                        sql.append("(1)");
+                    }
+                    columnTypeResolved = "VARCHAR";
+                    break;
+                case "VARCHAR(MAX)":
+                case "TEXT":
+                    sql.append("STRING");
+                    columnTypeResolved = "STRING";
+                    break;
+                case "SMALLINT":
+                    sql.append("SMALLINT");
+                    columnTypeResolved = "SMALLINT";
+                    break;
+                case "TINYINT":
+                    sql.append("TINYINT");
+                    columnTypeResolved = "TINYINT";
+                    break;
+                case "INT":
+                    sql.append("INT");
+                    columnTypeResolved = "INT";
+                    break;
+                case "BIGINT":
+                    sql.append("BIGINT");
+                    columnTypeResolved = "BIGINT";
+                    break;
+                case "DECIMAL":
+                    sql.append(generateColumnSQLDORIS("DECIMAL", column.getDataLength(), column.getDataScale(), 65, 30));
+                    columnTypeResolved = "DECIMAL";
+                    break;
+                case "REAL":
+                    sql.append("FLOAT");
+                    columnTypeResolved = "FLOAT";
+                    break;
+                case "FLOAT":
+                    sql.append("DOUBLE");
+                    columnTypeResolved = "DOUBLE";
+                    break;
+                case "DATE":
+                case "DATETIMEOFFSET":
+                case "DATETIME":
+                case "DATETIME2":
+                case "TIMESTAMP":
+                    sql.append("DATETIME");
+                    columnTypeResolved = "DATETIME";
+                    break;
+                default:
+                    sql.append("VARCHAR(255)"); // fallback 处理
+                    columnTypeResolved = "VARCHAR";
+                    break;
+            }
+            // NOT NULL
+            if (!column.getNullable()) {
+                sql.append(" NOT NULL");
+            }
+
+
+            String defaultClause = buildDorisDefaultClause(columnTypeResolved, column.getDataDefault());
+            sql.append(defaultClause);
+
+            // 注释
+            if (StringUtils.isNotEmpty(column.getColComment())) {
+                sql.append(" COMMENT '").append(DatabaseUtil.escapeSingleQuotes(column.getColComment())).append("'");
+            }
+
+            if (Boolean.TRUE.equals(column.getColKey())) {
+                primaryKeys.add(colName);
+            }
+
+            sql.append(",\n");
+        }
+
+        // 去掉最后一个逗号
+        sql.setLength(sql.length() - 2);
+        sql.append("\n)");
+
+        // Doris 必须指定 KEY 类型
+        if (!primaryKeys.isEmpty()) {
+            sql.append("\nUNIQUE KEY (");
+            for (String pk : primaryKeys) {
+                sql.append("`").append(pk).append("`, ");
+            }
+            sql.setLength(sql.length() - 2);
+            sql.append(")");
+        } else {
+            // 无主键则用第一列作 DUPLICATE KEY
+            sql.append("\nDUPLICATE KEY (`").append(dbColumnList.get(0).getColName()).append("`)");
+        }
+
+        //判断是否添加分区
+        if (StringUtils.isNotBlank(partitionRule)) {
+            sql.append("\n").append(partitionRule);
+        }
+
+        // 分桶策略（必需）
+        if (StringUtils.isBlank(bucketRule)) {
+            sql.append("\nDISTRIBUTED BY HASH(`").append(dbColumnList.get(0).getColName()).append("`) BUCKETS AUTO");
+        } else {
+            sql.append("\n").append(bucketRule);
+        }
+
+        // 表属性（含表注释）
+        sql.append("\nPROPERTIES (\n");
+        sql.append("  \"replication_num\" = \"" + replica + "\"");
+        sql.append("\n)");
+        sqlList.add(sql.toString());
+        //表注释
+        sqlList.add("ALTER TABLE " + tableName + " MODIFY COMMENT '" + tableComment + "'");
+        return sqlList;
+    }
+
+    // 定义一个包含常见DORIS保留关键字的集合（全部转换为大写便于比较）
+    private static final String[] DORIS_RESERVED_WORDS = {
+            "ACCESSIBLE", "ADD", "ALL", "ALTER", "ANALYZE", "AND", "AS", "ASC", "ASENSITIVE",
+            "BEFORE", "BETWEEN", "BIGINT", "BINARY", "BLOB", "BOTH", "BY", "CALL", "CASCADE",
+            "CASE", "CHANGE", "CHAR", "CHARACTER", "CHECK", "COLLATE", "COLUMN", "CONDITION",
+            "CONSTRAINT", "CONVERT", "CREATE", "CROSS", "CURRENT_DATE", "CURRENT_TIME",
+            "CURRENT_TIMESTAMP", "CURRENT_USER", "DATABASE", "DATABASES", "DAY_HOUR",
+            "DAY_MICROSECOND", "DAY_MINUTE", "DAY_SECOND", "DEC", "DECIMAL", "DEFAULT",
+            "DELETE", "DESC", "DESCRIBE", "DETERMINISTIC", "DISTINCT", "DISTINCTROW",
+            "DIV", "DOUBLE", "DROP", "DUAL", "ELSE", "ELSEIF", "EXISTS", "EXPLAIN", "FALSE",
+            "FLOAT", "FLOAT4", "FLOAT8", "FOR", "FORCE", "FROM", "GROUP", "HAVING", "HIGH_PRIORITY",
+            "IF", "IGNORE", "IN", "INDEX", "INNER", "INSERT", "INT", "INT1", "INT2", "INT3",
+            "INT4", "INT8", "INTEGER", "INTERVAL", "INTO", "IS", "JOIN", "KEY", "KEYS",
+            "LEADING", "LEFT", "LIKE", "LIMIT", "LINES", "LOAD", "LOCK", "LONG", "LONGBLOB",
+            "LONGTEXT", "LOW_PRIORITY", "MATCH", "MAXVALUE", "MEDIUMBLOB", "MEDIUMINT",
+            "MEDIUMTEXT", "MIDDLEINT", "MINUTE_MICROSECOND", "MINUTE_SECOND", "MOD", "MODIFIES",
+            "NATURAL", "NOT", "NULL", "NUMERIC", "ON", "OPTIMIZE", "OPTION", "OR", "ORDER",
+            "OUTER", "PARTITION", "PRECISION", "PRIMARY", "RANGE", "READ", "REGEXP",
+            "RELEASE", "RENAME", "REPEAT", "REPLACE", "REQUIRE", "RESTRICT", "RETURN", "RIGHT",
+            "RLIKE", "SCHEMA", "SCHEMAS", "SECOND_MICROSECOND", "SELECT", "SET", "SHOW",
+            "SMALLINT", "SQL", "SQL_BIG_RESULT", "SQL_CALC_FOUND_ROWS", "SQL_SMALL_RESULT",
+            "STARTING", "STORED", "STRAIGHT_JOIN", "TABLE", "TERMINATED", "THEN", "TINYBLOB",
+            "TINYINT", "TINYTEXT", "TO", "TRAILING", "TRUE", "UNION", "UNIQUE", "UNLOCK",
+            "UNSIGNED", "UPDATE", "USAGE", "USE", "USING", "UTC_DATE", "UTC_TIME",
+            "UTC_TIMESTAMP", "VALUES", "VARBINARY", "VARCHAR", "VARCHARACTER", "VARYING",
+            "VIRTUAL", "WHEN", "WHERE", "WITH", "WRITE", "XOR", "YEAR_MONTH", "ZEROFILL"
+    };
+
+    /**
+     * 构造 Doris 合法的 DEFAULT 子句（仅允许合法字面量，防止建表失败）
+     *
+     * @param dataType     字段类型，如 VARCHAR、INT、DECIMAL(10,2) 等
+     * @param defaultValue 默认值，如 'abc'、0、1.23 等
+     * @return 若合法则返回 DEFAULT xxx 子句，否则返回空字符串
+     */
+    public static String buildDorisDefaultClause(String dataType, String defaultValue) {
+        if (StringUtils.isBlank(defaultValue) || StringUtils.isBlank(dataType)) {
+            return "";
+        }
+
+        String type = dataType.trim().toUpperCase();
+        String def = defaultValue.trim();
+
+        boolean isNumeric = def.matches("^-?\\d+(\\.\\d+)?$");
+        boolean isQuoted = def.matches("^'.*'$");
+
+        // 非下面的数值类型无法添加默认值
+        if (type.matches(".*(TINYINT|SMALLINT|INT|BIGINT|LARGEINT|FLOAT|DOUBLE|DECIMAL|FLOAT|CHAR|VARCHAR|DATE|DATETIME|BOOLEAN).*")) {
+            if (!isQuoted && isNumeric) {
+                return " DEFAULT '" + def + "'";
+            } else if (isQuoted) {
+                return " DEFAULT " + def;
+            }
+        }
+        return ""; // 其他不合法情况过滤掉
+    }
+
+    public static String escapeReservedKeyword(String colName) {
+        if (colName == null || colName.isEmpty()) {
+            return colName;
+        }
+        for (String reserved : DORIS_RESERVED_WORDS) {
+            if (reserved.equalsIgnoreCase(colName)) {
+                return "`" + colName + "`";
+            }
+        }
+        return colName;
+    }
+
+    public static String generateColumnSQLDORIS(String columnType, String columnLength, String columnScale, int maxLength, int maxScale) {
+        StringBuilder sql = new StringBuilder(columnType);
+
+        // 仅当是需要长度和小数位数的类型时，才处理长度
+        if (columnType.equalsIgnoreCase("DECIMAL") || columnType.equalsIgnoreCase("FLOAT")) {
+            if (StringUtils.isNotEmpty(columnLength)) {
+                int length = Integer.parseInt(columnLength);
+                // 限制长度不超过最大长度
+                if (length > maxLength) {
+                    length = maxLength;
+                }
+                sql.append("(").append(length);
+
+                // 如果列类型是 DECIMAL 并且提供了小数位数，则附加小数位
+                if (columnType.equalsIgnoreCase("DECIMAL") && StringUtils.isNotEmpty(columnScale)) {
+                    int scale = Integer.parseInt(columnScale);
+                    // 限制小数位数不超过最大值
+                    if (scale > maxScale) {
+                        scale = maxScale;
+                    }
+                    sql.append(", ").append(scale);
+                }
+
+                sql.append(")");
+            }
+        }
+
+        return sql.toString();
+    }
+
+
     @Override
     public List<String> validateSpecification(String tableName, String tableComment, List<DbColumn> columns) {
         return null;
@@ -264,6 +506,7 @@ public class SQLServer2008Dialect extends AbstractDbDialect {
         // 构造最终的 SQL 查询语句
         return "SELECT " + fields + " FROM " + dbQueryProperty.getDbName() + "." + dbQueryProperty.getSid() + "." + tableName;
     }
+
 
     private static String getOrderByPart(String sql) {
         String loweredString = sql.toLowerCase();
@@ -316,6 +559,31 @@ public class SQLServer2008Dialect extends AbstractDbDialect {
     @Override
     public String getDbName() {
         return "SELECT DB_NAME() AS \"databaseName\"";
+    }
+
+    @Override
+    public String getDbName(DbName dbNameVO) {
+        int level = dbNameVO == null ? 1 : dbNameVO.getLevel() + 1;
+
+        if (level == 1) {
+            // 第一次：列出所有数据库
+            return "SELECT name AS DBNAME, 2 AS TOTALLEVELS " +
+                    "FROM sys.databases " +
+                    "WHERE name NOT IN ('master','tempdb','model','msdb') " +
+                    "ORDER BY name";
+        } else if (level == 2) {
+            // 第二次：列出某数据库下的所有 schema
+            String dbName = dbNameVO.getDbName();
+            if (dbName == null || dbName.trim().isEmpty()) {
+                throw new IllegalArgumentException("SQLServer level=2 需要上级 dbName");
+            }
+            return "SELECT name AS DBNAME,  2 AS TOTALLEVELS " +
+                    "FROM [" + dbName + "].sys.schemas " +
+                    "WHERE principal_id <> 1 " +
+                    "ORDER BY name";
+        }
+
+        throw new UnsupportedOperationException("SQLServer 仅支持 1~2 层级");
     }
 
     @Override
@@ -391,4 +659,5 @@ public class SQLServer2008Dialect extends AbstractDbDialect {
         }
         return false;
     }
+
 }

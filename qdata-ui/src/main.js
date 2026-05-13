@@ -63,7 +63,7 @@ import elementIcons from '@/components/SvgIcon/svgicon'
 import './permission' // permission control
 
 import { useDict } from '@/utils/dict'
-import { parseTime, resetForm, addDateRange, handleTree, selectDictLabel, selectDictLabels, getFormatValue, formatNewlines } from '@/utils/anivia.js'
+import { parseTime, resetForm, addDateRange, handleTree, selectDictLabel, selectDictLabels, getFormatValue, formatNewlines, formatVersion, downloadContent } from '@/utils/anivia.js'
 
 // 分页组件
 import Pagination from '@/components/Pagination'
@@ -95,6 +95,7 @@ import QtSearchBar from '@/components/QtSearchBar/index.vue';
 import QtWrap from '@/components/QtWrap/index.vue';
 import QtTable from '@/components/QtTable/index.vue';
 import QtTabPane from '@/components/QtTabPane/index.vue';
+import QtFormItem from '@/components/QtFormItem/index.vue';
 
 const app = createApp(App)
 app.use(AniviaComponents)
@@ -112,6 +113,8 @@ app.config.globalProperties.addDateRange = addDateRange
 app.config.globalProperties.selectDictLabel = selectDictLabel
 app.config.globalProperties.selectDictLabels = selectDictLabels
 app.config.globalProperties.getFormatValue = getFormatValue;
+app.config.globalProperties.downloadContent = downloadContent;
+app.config.globalProperties.formatVersion = formatVersion;
 // 将事件总线挂载到全局属性
 app.config.globalProperties.$bus = bus;
 
@@ -131,6 +134,7 @@ app.component('QtSearchBar', QtSearchBar)
 app.component('QtWrap', QtWrap)
 app.component('QtTable', QtTable)
 app.component('QtTabPane', QtTabPane)
+app.component('QtFormItem', QtFormItem)
 app.use(router)
 app.use(store)
 app.use(plugins)

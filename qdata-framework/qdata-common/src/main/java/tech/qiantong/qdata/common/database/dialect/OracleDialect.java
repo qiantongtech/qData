@@ -33,16 +33,21 @@
 package tech.qiantong.qdata.common.database.dialect;
 
 
+import com.alibaba.fastjson2.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.RowMapper;
 import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
+import tech.qiantong.qdata.common.database.constants.DbType;
 import tech.qiantong.qdata.common.database.core.DbColumn;
+import tech.qiantong.qdata.common.database.core.DbName;
 import tech.qiantong.qdata.common.database.core.DbTable;
-import tech.qiantong.qdata.common.database.utils.MD5Util;
+import tech.qiantong.qdata.common.database.exception.DataQueryException;
+import tech.qiantong.qdata.common.database.utils.DatabaseUtil;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 /**
@@ -73,7 +78,7 @@ public class OracleDialect extends AbstractDbDialect {
                     "\tLEFT JOIN all_col_comments cm ON cm.OWNER = '" + dbName + "' AND c.table_name = cm.table_name AND c.column_name = cm.column_name\n" +
                     "\tLEFT JOIN ( " +
                     "SELECT a.table_name, a.column_name FROM all_constraints b JOIN all_cons_columns a ON b.owner = a.owner AND b.constraint_name = a.constraint_name\n" +
-                    "WHERE b.owner ='"+dbName+"' AND b.constraint_type = 'P' AND b.table_name ='"+tableName+"' "+
+                    "WHERE b.owner ='" + dbName + "' AND b.constraint_type = 'P' AND b.table_name ='" + tableName + "' " +
                     ") t on t.table_name = c.table_name and c.column_name = t.column_name " +
                     "WHERE\n" +
                     "\t c.OWNER = '" + dbName + "' \n" +
@@ -90,6 +95,7 @@ public class OracleDialect extends AbstractDbDialect {
                     "where columns.table_name = UPPER('" + tableName + "') order by columns.column_id ";
         }
     }
+
     @Override
     public String columns(DbQueryProperty dbQueryProperty, String tableName) {
         if (StringUtils.isNotBlank(dbQueryProperty.getDbName())) {
@@ -110,7 +116,7 @@ public class OracleDialect extends AbstractDbDialect {
                     "\tLEFT JOIN all_col_comments cm ON cm.OWNER = '" + dbQueryProperty.getDbName() + "' AND c.table_name = cm.table_name AND c.column_name = cm.column_name\n" +
                     "\tLEFT JOIN ( " +
                     "SELECT a.table_name, a.column_name FROM all_constraints b JOIN all_cons_columns a ON b.owner = a.owner AND b.constraint_name = a.constraint_name\n" +
-                    "WHERE b.owner ='" + dbQueryProperty.getDbName() + "' AND b.constraint_type = 'P' AND b.table_name ='" + tableName + "' "+
+                    "WHERE b.owner ='" + dbQueryProperty.getDbName() + "' AND b.constraint_type = 'P' AND b.table_name ='" + tableName + "' " +
                     ") t on t.table_name = c.table_name and c.column_name = t.column_name " +
                     "WHERE\n" +
                     "\t c.OWNER = '" + dbQueryProperty.getDbName() + "' \n" +
@@ -146,14 +152,267 @@ public class OracleDialect extends AbstractDbDialect {
     public List<String> someInternalSqlGenerator(DbQueryProperty dbQueryProperty, String tableName, String tableComment, List<DbColumn> dbColumnList) {
         String dbName = dbQueryProperty.getDbName();
 
-        if(StringUtils.isNotEmpty(dbName)){
+        if (StringUtils.isNotEmpty(dbName)) {
             tableName = dbName + "." + tableName;
         }
 
-        List<String> sqlList =  generateOracleCreateSql(tableName,tableComment,dbColumnList);
+        List<String> sqlList = generateOracleCreateSql(tableName, tableComment, dbColumnList);
 
         return sqlList;
     }
+
+    @Override
+    public List<String> someInternalSqlDorisGenerator(DbQueryProperty dbQueryProperty, String tableName, String tableComment, List<DbColumn> dbColumnList, String partitionRule, String bucketRule, Integer replica) {
+        List<String> sqlList = new ArrayList<>();
+        List<String> primaryKeys = new ArrayList<>();
+        StringBuilder sql = new StringBuilder();
+
+        sql.append("CREATE TABLE ").append(tableName).append(" (\n");
+
+        for (DbColumn column : dbColumnList) {
+            String columnType = column.getDataType();
+            String colName = column.getColName();
+
+            sql.append("  ").append(this.escapeReservedKeyword(colName)).append(" ");
+
+            String columnTypeResolved = "";
+            // 映射 Doris 支持的数据类型
+            switch (columnType.toUpperCase()) {
+                case "VARCHAR2":
+                case "NVARCHAR2":
+                    sql.append("VARCHAR");
+                    if (StringUtils.isNotEmpty(column.getDataLength())) {
+                        sql.append("(").append(column.getDataLength()).append(")");
+                    } else {
+                        sql.append("(255)");
+                    }
+                    columnTypeResolved = "VARCHAR";
+                    break;
+                case "CHAR":
+                    sql.append("VARCHAR");
+                    if (StringUtils.isNotEmpty(column.getDataLength())) {
+                        sql.append("(").append(column.getDataLength()).append(")");
+                    } else {
+                        sql.append("(1)");
+                    }
+                    columnTypeResolved = "VARCHAR";
+                    break;
+                case "LONG":
+                case "CLOB":
+                    sql.append("STRING");
+                    columnTypeResolved = "STRING";
+                    break;
+                case "NUMBER":
+                    //NUMBER(无参数) → DOUBLE
+                    if (StringUtils.isBlank(column.getDataLength()) && StringUtils.isBlank(column.getDataPrecision())) {
+                        sql.append("DOUBLE");
+                        columnTypeResolved = "DOUBLE";
+                        break;
+                    }
+                    //判断是否存在小数位
+                    if (StringUtils.isBlank(column.getDataScale())) {
+                        Integer dataLength = Integer.parseInt(column.getDataLength());
+                        if (dataLength < 3) {
+                            sql.append("TINYINT");
+                            columnTypeResolved = "TINYINT";
+                        } else if (dataLength < 5) {
+                            sql.append("SMALLINT");
+                            columnTypeResolved = "SMALLINT";
+                        } else if (dataLength < 10) {
+                            sql.append("INT");
+                            columnTypeResolved = "INT";
+                        } else if (dataLength < 19) {
+                            sql.append("BIGINT");
+                            columnTypeResolved = "BIGINT";
+                        } else if (dataLength <= 38) {
+                            sql.append("LARGEINT");
+                            columnTypeResolved = "LARGEINT";
+                        }
+                    } else {
+                        sql.append(generateColumnSQLDORIS("DECIMAL", column.getDataPrecision(), column.getDataScale(), 65, 30));
+                        columnTypeResolved = "DECIMAL";
+                    }
+                    break;
+                case "BINARY_FLOAT":
+                    sql.append("FLOAT");
+                    columnTypeResolved = "FLOAT";
+                    break;
+                case "BINARY_DOUBLE":
+                    sql.append("DOUBLE");
+                    columnTypeResolved = "DOUBLE";
+                    break;
+                case "DATE":
+                    sql.append("DATE");
+                    columnTypeResolved = "DATE";
+                    break;
+                case "TIMESTAMP":
+                case "TIMESTAMP WITH TIME ZONE":
+                    sql.append("DATETIME");
+                    columnTypeResolved = "DATETIME";
+                    break;
+                default:
+                    sql.append("VARCHAR(255)"); // fallback 处理
+                    columnTypeResolved = "VARCHAR";
+                    break;
+            }
+            // NOT NULL
+            if (!column.getNullable()) {
+                sql.append(" NOT NULL");
+            }
+
+            String defaultClause = buildDorisDefaultClause(columnTypeResolved, column.getDataDefault());
+            sql.append(defaultClause);
+
+            // 注释
+            if (StringUtils.isNotEmpty(column.getColComment())) {
+                sql.append(" COMMENT '").append(DatabaseUtil.escapeSingleQuotes(column.getColComment())).append("'");
+            }
+
+            if (Boolean.TRUE.equals(column.getColKey())) {
+                primaryKeys.add(colName);
+            }
+
+            sql.append(",\n");
+        }
+
+        // 去掉最后一个逗号
+        sql.setLength(sql.length() - 2);
+        sql.append("\n)");
+
+        // Doris 必须指定 KEY 类型
+        if (!primaryKeys.isEmpty()) {
+            sql.append("\nUNIQUE KEY (");
+            for (String pk : primaryKeys) {
+                sql.append("`").append(pk).append("`, ");
+            }
+            sql.setLength(sql.length() - 2);
+            sql.append(")");
+        } else {
+            // 无主键则用第一列作 DUPLICATE KEY
+            sql.append("\nDUPLICATE KEY (`").append(dbColumnList.get(0).getColName()).append("`)");
+        }
+
+        //判断是否添加分区
+        if (StringUtils.isNotBlank(partitionRule)) {
+            sql.append("\n").append(partitionRule);
+        }
+
+        // 分桶策略（必需）
+        if (StringUtils.isBlank(bucketRule)) {
+            sql.append("\nDISTRIBUTED BY HASH(`").append(dbColumnList.get(0).getColName()).append("`) BUCKETS AUTO");
+        } else {
+            sql.append("\n").append(bucketRule);
+        }
+
+        // 表属性（含表注释）
+        sql.append("\nPROPERTIES (\n");
+        sql.append("  \"replication_num\" = \"" + replica + "\"");
+        sql.append("\n)");
+        sqlList.add(sql.toString());
+        //表注释
+        sqlList.add("ALTER TABLE " + tableName + " MODIFY COMMENT '" + tableComment + "'");
+        return sqlList;
+    }
+
+    // 定义一个包含常见DORIS保留关键字的集合（全部转换为大写便于比较）
+    private static final String[] DORIS_RESERVED_WORDS = {
+            "ACCESSIBLE", "ADD", "ALL", "ALTER", "ANALYZE", "AND", "AS", "ASC", "ASENSITIVE",
+            "BEFORE", "BETWEEN", "BIGINT", "BINARY", "BLOB", "BOTH", "BY", "CALL", "CASCADE",
+            "CASE", "CHANGE", "CHAR", "CHARACTER", "CHECK", "COLLATE", "COLUMN", "CONDITION",
+            "CONSTRAINT", "CONVERT", "CREATE", "CROSS", "CURRENT_DATE", "CURRENT_TIME",
+            "CURRENT_TIMESTAMP", "CURRENT_USER", "DATABASE", "DATABASES", "DAY_HOUR",
+            "DAY_MICROSECOND", "DAY_MINUTE", "DAY_SECOND", "DEC", "DECIMAL", "DEFAULT",
+            "DELETE", "DESC", "DESCRIBE", "DETERMINISTIC", "DISTINCT", "DISTINCTROW",
+            "DIV", "DOUBLE", "DROP", "DUAL", "ELSE", "ELSEIF", "EXISTS", "EXPLAIN", "FALSE",
+            "FLOAT", "FLOAT4", "FLOAT8", "FOR", "FORCE", "FROM", "GROUP", "HAVING", "HIGH_PRIORITY",
+            "IF", "IGNORE", "IN", "INDEX", "INNER", "INSERT", "INT", "INT1", "INT2", "INT3",
+            "INT4", "INT8", "INTEGER", "INTERVAL", "INTO", "IS", "JOIN", "KEY", "KEYS",
+            "LEADING", "LEFT", "LIKE", "LIMIT", "LINES", "LOAD", "LOCK", "LONG", "LONGBLOB",
+            "LONGTEXT", "LOW_PRIORITY", "MATCH", "MAXVALUE", "MEDIUMBLOB", "MEDIUMINT",
+            "MEDIUMTEXT", "MIDDLEINT", "MINUTE_MICROSECOND", "MINUTE_SECOND", "MOD", "MODIFIES",
+            "NATURAL", "NOT", "NULL", "NUMERIC", "ON", "OPTIMIZE", "OPTION", "OR", "ORDER",
+            "OUTER", "PARTITION", "PRECISION", "PRIMARY", "RANGE", "READ", "REGEXP",
+            "RELEASE", "RENAME", "REPEAT", "REPLACE", "REQUIRE", "RESTRICT", "RETURN", "RIGHT",
+            "RLIKE", "SCHEMA", "SCHEMAS", "SECOND_MICROSECOND", "SELECT", "SET", "SHOW",
+            "SMALLINT", "SQL", "SQL_BIG_RESULT", "SQL_CALC_FOUND_ROWS", "SQL_SMALL_RESULT",
+            "STARTING", "STORED", "STRAIGHT_JOIN", "TABLE", "TERMINATED", "THEN", "TINYBLOB",
+            "TINYINT", "TINYTEXT", "TO", "TRAILING", "TRUE", "UNION", "UNIQUE", "UNLOCK",
+            "UNSIGNED", "UPDATE", "USAGE", "USE", "USING", "UTC_DATE", "UTC_TIME",
+            "UTC_TIMESTAMP", "VALUES", "VARBINARY", "VARCHAR", "VARCHARACTER", "VARYING",
+            "VIRTUAL", "WHEN", "WHERE", "WITH", "WRITE", "XOR", "YEAR_MONTH", "ZEROFILL"
+    };
+
+    /**
+     * 构造 Doris 合法的 DEFAULT 子句（仅允许合法字面量，防止建表失败）
+     *
+     * @param dataType     字段类型，如 VARCHAR、INT、DECIMAL(10,2) 等
+     * @param defaultValue 默认值，如 'abc'、0、1.23 等
+     * @return 若合法则返回 DEFAULT xxx 子句，否则返回空字符串
+     */
+    public static String buildDorisDefaultClause(String dataType, String defaultValue) {
+        if (StringUtils.isBlank(defaultValue) || StringUtils.isBlank(dataType)) {
+            return "";
+        }
+
+        String type = dataType.trim().toUpperCase();
+        String def = defaultValue.trim();
+
+        boolean isNumeric = def.matches("^-?\\d+(\\.\\d+)?$");
+        boolean isQuoted = def.matches("^'.*'$");
+
+        // 非下面的数值类型无法添加默认值
+        if (type.matches(".*(TINYINT|SMALLINT|INT|BIGINT|LARGEINT|FLOAT|DOUBLE|DECIMAL|FLOAT|CHAR|VARCHAR|DATE|DATETIME|BOOLEAN).*")) {
+            if (!isQuoted && isNumeric) {
+                return " DEFAULT '" + def + "'";
+            } else if (isQuoted) {
+                return " DEFAULT " + def;
+            }
+        }
+        return ""; // 其他不合法情况过滤掉
+    }
+
+    public static String escapeReservedKeyword(String colName) {
+        if (colName == null || colName.isEmpty()) {
+            return colName;
+        }
+        for (String reserved : DORIS_RESERVED_WORDS) {
+            if (reserved.equalsIgnoreCase(colName)) {
+                return "`" + colName + "`";
+            }
+        }
+        return colName;
+    }
+
+    public static String generateColumnSQLDORIS(String columnType, String columnLength, String columnScale, int maxLength, int maxScale) {
+        StringBuilder sql = new StringBuilder(columnType);
+
+        // 仅当是需要长度和小数位数的类型时，才处理长度
+        if (columnType.equalsIgnoreCase("DECIMAL") || columnType.equalsIgnoreCase("FLOAT")) {
+            if (StringUtils.isNotEmpty(columnLength)) {
+                int length = Integer.parseInt(columnLength);
+                // 限制长度不超过最大长度
+                if (length > maxLength) {
+                    length = maxLength;
+                }
+                sql.append("(").append(length);
+
+                // 如果列类型是 DECIMAL 并且提供了小数位数，则附加小数位
+                if (columnType.equalsIgnoreCase("DECIMAL") && StringUtils.isNotEmpty(columnScale)) {
+                    int scale = Integer.parseInt(columnScale);
+                    // 限制小数位数不超过最大值
+                    if (scale > maxScale) {
+                        scale = maxScale;
+                    }
+                    sql.append(", ").append(scale);
+                }
+
+                sql.append(")");
+            }
+        }
+
+        return sql.toString();
+    }
+
 
     @Override
     public List<String> validateSpecification(String tableName, String tableComment, List<DbColumn> columns) {
@@ -180,7 +439,7 @@ public class OracleDialect extends AbstractDbDialect {
                 createSql.append(" DEFAULT ").append(col.getDataDefault());
 //                String columnType = col.getDataType();
 //                if (isStringTypeSwitchDEFAULT(columnType)) {
-//                    createSql.append(" DEFAULT '").append(MD5Util.escapeSingleQuotes(col.getDataDefault())).append("'");
+//                    createSql.append(" DEFAULT '").append(DatabaseUtil.escapeSingleQuotes(col.getDataDefault())).append("'");
 //                } else {
 //                    createSql.append(" DEFAULT ").append(col.getDataDefault());
 //                }
@@ -208,14 +467,14 @@ public class OracleDialect extends AbstractDbDialect {
 
         // 表注释
         if (tech.qiantong.qdata.common.utils.StringUtils.hasText(tableComment)) {
-            String tableCmt = "COMMENT ON TABLE " + tableName + " IS '" + MD5Util.escapeSingleQuotes(tableComment) + "'";
+            String tableCmt = "COMMENT ON TABLE " + tableName + " IS '" + DatabaseUtil.escapeSingleQuotes(tableComment) + "'";
             sqlList.add(tableCmt);
         }
         // 字段注释
         for (DbColumn col : columns) {
             if (tech.qiantong.qdata.common.utils.StringUtils.hasText(col.getColComment())) {
                 String colCmt = "COMMENT ON COLUMN " + tableName + "." + col.getColName()
-                        + " IS '" + MD5Util.escapeSingleQuotes(col.getColComment()) + "'";
+                        + " IS '" + DatabaseUtil.escapeSingleQuotes(col.getColComment()) + "'";
                 sqlList.add(colCmt);
             }
         }
@@ -252,8 +511,8 @@ public class OracleDialect extends AbstractDbDialect {
     private static String mapOracleColumnType(DbColumn col) {
         // 类似 Oracle
         String type = col.getDataType();
-        Long length = MD5Util.getStringToLong(col.getDataLength());
-        Long scale = MD5Util.getStringToLong(col.getDataScale());
+        Long length = DatabaseUtil.getStringToLong(col.getDataLength());
+        Long scale = DatabaseUtil.getStringToLong(col.getDataScale());
 
         switch (type) {
             case "varchar":
@@ -306,7 +565,7 @@ public class OracleDialect extends AbstractDbDialect {
     public static String generateColumnDefinitionOracle(Long columnLength, long maxLength, boolean includeScale, Long columnScale) {
         StringBuilder sql = new StringBuilder("");
 
-        if(columnLength == null){
+        if (columnLength == null) {
             throw new UnsupportedOperationException("属性类型：格式错误，数字类型长度未填充");
         }
 
@@ -321,7 +580,7 @@ public class OracleDialect extends AbstractDbDialect {
         sql.append("(").append(length);
 
         // 根据 includeScale 和 columnScale 判断是否需要拼接小数位数
-        if (includeScale &&  columnScale != 0 ) {
+        if (includeScale && columnScale != 0) {
             sql.append(", ").append(columnScale);
         }
 
@@ -364,7 +623,7 @@ public class OracleDialect extends AbstractDbDialect {
                 .collect(Collectors.joining(", "));
 
         // 构造最终的 SQL 查询语句
-        return "SELECT " + fields + " FROM " +dbQueryProperty.getDbName()+"."+ tableName;
+        return "SELECT " + fields + " FROM " + dbQueryProperty.getDbName() + "." + tableName;
     }
 
     @Override
@@ -396,6 +655,25 @@ public class OracleDialect extends AbstractDbDialect {
     }
 
     @Override
+    public String getDbName(DbName dbName) {
+        int level = dbName == null ? 1 : dbName.getLevel() + 1;
+        // 只有一个层级：数据库（库）
+        if (level == 1) {
+            return "SELECT USERNAME AS DBNAME,1 AS TOTALLEVELS \n" +
+                    "FROM ALL_USERS\n" +
+                    "WHERE USERNAME NOT IN (\n" +
+                    "  'SYS','SYSTEM','OUTLN','MDSYS','XDB','WMSYS','CTXSYS','DBSNMP',\n" +
+                    "  'APPQOSSYS','OLAPSYS','OWBSYS','ORDSYS','ORDDATA','ORDPLUGINS',\n" +
+                    "  'SI_INFORMTN_SCHEMA','ORACLE_OCM','SYSMAN','MDDATA','ANONYMOUS',\n" +
+                    "  'XS$NULL','DIP','MGMT_VIEW','APEX_PUBLIC_USER'\n" +
+                    ")\n" +
+                    "ORDER BY DBNAME";
+        }
+        // 没有第二层
+        throw new UnsupportedOperationException("Oracle11g only has one level");
+    }
+
+    @Override
     public String getInsertOrUpdateSql(String tableName, String where, String tableFieldName, String tableFieldValue, String setValue) {
         String sql = "MERGE INTO {tableName} USING (SELECT COUNT(1) count FROM {tableName}  WHERE {where}) c ON (c.count > 0) WHEN MATCHED THEN UPDATE SET {setValue} WHERE {where} WHEN NOT MATCHED THEN INSERT ({tableFieldName}) VALUES ({tableFieldValue})";
         sql = StringUtils
@@ -415,6 +693,9 @@ public class OracleDialect extends AbstractDbDialect {
             entity.setDataType(rs.getString("DATATYPE"));
             entity.setDataLength(rs.getString("DATALENGTH"));
             entity.setDataPrecision(rs.getString("DATAPRECISION"));
+            if (rs.getString("DATAPRECISION") != null) {
+                entity.setDataLength(rs.getString("DATAPRECISION"));
+            }
             entity.setDataScale(rs.getString("DATASCALE"));
             entity.setColKey("1".equals(rs.getString("COLKEY")));
             entity.setNullable("Y".equals(rs.getString("NULLABLE")));
@@ -434,5 +715,93 @@ public class OracleDialect extends AbstractDbDialect {
             entity.setTableComment(rs.getString("TABLECOMMENT"));
             return entity;
         };
+    }
+
+    @Override
+    public String getFlinkCDCSQL(DbQueryProperty property, String flinkTableName, String tableName, String tableFieldName) {
+        String sql = "CREATE TABLE ${flinkTableName} (${tableFieldName}) " +
+                "WITH ( 'connector' = 'oracle-cdc'," +
+                " 'hostname' = '${host}' ," +
+                "'port' = '${port}' ," +
+                "'username' = '${username}' ," +
+                "'password' = '${password}'," +
+                "'database-name' = '${sid}' ," +
+                "'schema-name' = '${dbName}' ," +
+                "'table-name' = '${tableName}' ," +
+                "'scan.startup.mode' = 'initial' ," +
+                "'scan.incremental.snapshot.enabled' = 'true'," +
+                "'debezium.database.connection.adapter'='logminer'," +
+                "'debezium.log.mining.strategy'='online_catalog'," +
+                "'debezium.log.mining.continuous.mine'='true')";
+        sql = StringUtils
+                .replace(sql, "${flinkTableName}", flinkTableName)
+                .replace("${tableName}", tableName)
+                .replace("${host}", property.getHost())
+                .replace("${tableFieldName}", tableFieldName)
+                .replace("${port}", String.valueOf(property.getPort()))
+                .replace("${dbName}", property.getDbName())
+                .replace("${sid}", property.getSid().toUpperCase(Locale.ROOT))
+                .replace("${username}", property.getUsername())
+                .replace("${password}", property.getPassword());
+        return sql;
+    }
+
+    @Override
+    public String getFlinkSQL(DbQueryProperty property, String flinkTableName, String tableName, String tableFieldName) {
+        String sql = "CREATE TABLE ${flinkTableName} (${tableFieldName}) " +
+                "WITH ( 'connector' = 'jdbc'," +
+                "'url' = 'jdbc:oracle:thin:@${host}:${port}:${sid}'," +
+                "'table-name' = '${dbName}.${tableName}'," +
+                "'username' = '${username}'," +
+                "'password' = '${password}')";
+
+        sql = StringUtils
+                .replace(sql, "${flinkTableName}", flinkTableName)
+                .replace("${tableName}", tableName)
+                .replace("${host}", property.getHost())
+                .replace("${tableFieldName}", tableFieldName)
+                .replace("${port}", String.valueOf(property.getPort()))
+                .replace("${dbName}", property.getDbName())
+                .replace("${sid}", property.getSid())
+                .replace("${username}", property.getUsername())
+                .replace("${password}", property.getPassword());
+        return sql;
+    }
+
+    @Override
+    public String getFlinkSinkSQL(DbQueryProperty property, JSONObject config, String flinkTableName, String tableName, String tableFieldName) {
+        String sql = "CREATE TABLE ${flinkTableName} (${tableFieldName}) " +
+                "WITH ( 'connector' = 'jdbc'," +
+                "'url' = 'jdbc:oracle:thin:@${host}:${port}:${sid}'," +
+                "'table-name' = '${dbName}.${tableName}'," +
+                "'username' = '${username}'," +
+                "'password' = '${password}'," +
+                "'sink.buffer-flush.max-rows' = '${batchSize}'," +
+                "'sink.buffer-flush.interval' = '1s'" +
+                ")";
+
+        sql = StringUtils
+                .replace(sql, "${flinkTableName}", flinkTableName)
+                .replace("${tableName}", tableName)
+                .replace("${host}", property.getHost())
+                .replace("${tableFieldName}", tableFieldName)
+                .replace("${port}", String.valueOf(property.getPort()))
+                .replace("${dbName}", property.getDbName())
+                .replace("${username}", property.getUsername())
+                .replace("${password}", property.getPassword())
+                .replace("${batchSize}", String.valueOf(config.getIntValue("batchSize", 100)));
+        return sql;
+    }
+
+    @Override
+    public String trainToJdbcUrl(DbQueryProperty property) {
+        String url = DbType.getDbType(property.getDbType()).getUrl();
+        if (org.springframework.util.StringUtils.isEmpty(url)) {
+            throw new DataQueryException("无效数据库类型!");
+        }
+        url = url.replace("${host}", property.getHost());
+        url = url.replace("${port}", String.valueOf(property.getPort()));
+        url = url.replace("${sid}", property.getSid());
+        return url;
     }
 }

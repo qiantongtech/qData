@@ -1346,6 +1346,12 @@
 
   //复杂详情样式-----------开始
   .infotop {
+    .clearfixs {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
+
     .infotop-title {
       color: #333333;
       display: flex;
@@ -1391,6 +1397,8 @@
       font-size: 15px;
     }
 
+
+
     .infotop-row-lable {
       width: 150px;
       border-right: 1px solid #f0f3f9;
@@ -1403,6 +1411,10 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    .infotop-item-separator {
+      margin: 2px 0;
     }
 
     .infotop-row-value {

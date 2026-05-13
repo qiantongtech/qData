@@ -35,8 +35,10 @@ package tech.qiantong.qdata.common.database.dialect;
 import com.alibaba.fastjson2.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
+import tech.qiantong.qdata.common.database.constants.DbType;
 import tech.qiantong.qdata.common.database.core.DbColumn;
-import tech.qiantong.qdata.common.database.utils.*;
+import tech.qiantong.qdata.common.database.exception.DataQueryException;
+import tech.qiantong.qdata.common.database.utils.DatabaseUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -256,6 +258,15 @@ public class SQLServerDialect extends SQLServer2008Dialect {
     }
 
 
+    @Override
+    public String buildTableNameByDbType(DbQueryProperty dbQueryProperty, String tableName) {
+        if (StringUtils.isNotEmpty(dbQueryProperty.getSid())) {
+            return dbQueryProperty.getSid() + "." + tableName;
+        }
+
+        return tableName;
+    }
+
     private static String getOrderByPart(String sql) {
         String loweredString = sql.toLowerCase();
         int orderByIndex = loweredString.indexOf("order by");
@@ -267,7 +278,108 @@ public class SQLServerDialect extends SQLServer2008Dialect {
     }
 
     @Override
+    public String getFlinkCDCSQL(DbQueryProperty property, String flinkTableName, String tableName, String tableFieldName) {
+        String sql = "CREATE TABLE ${flinkTableName} (${tableFieldName}) " +
+                "WITH ( 'connector' = 'sqlserver-cdc'," +
+                "'hostname' = '${host}' ," +
+                "'port' = '${port}' ," +
+                "'username' = '${username}' ," +
+                "'password' = '${password}'," +
+                "'database-name' = '${dbName}' ," +
+                "'table-name' = '${sid}.${tableName}'," +
+                "'server-time-zone' = 'Asia/Shanghai'," +
+                "'debezium.database.encrypt' = 'true'," +
+                "'debezium.snapshot.mode'='initial'," +
+                "'debezium.database.trustServerCertificate' = 'true'" +
+                ")";
+        sql = StringUtils
+                .replace(sql, "${flinkTableName}", flinkTableName)
+                .replace("${tableName}", tableName)
+                .replace("${host}", property.getHost())
+                .replace("${tableFieldName}", tableFieldName)
+                .replace("${port}", String.valueOf(property.getPort()))
+                .replace("${dbName}", property.getDbName())
+                .replace("${sid}", property.getSid())
+                .replace("${username}", property.getUsername())
+                .replace("${password}", property.getPassword());
+        return sql;
+    }
+
+    @Override
+    public String getFlinkSQL(DbQueryProperty property, String flinkTableName, String tableName, String tableFieldName) {
+        String sql = "CREATE TABLE ${flinkTableName} (${tableFieldName}) " +
+                "WITH ( 'connector' = 'jdbc'," +
+                "'url' = 'jdbc:sqlserver://${host}:${port};DatabaseName=${dbName};encrypt=true;trustServerCertificate=true'," +
+                "'table-name' = '${dbName}.${sid}.${tableName}'," +
+                "'username' = '${username}'," +
+                "'password' = '${password}')";
+
+        sql = StringUtils
+                .replace(sql, "${flinkTableName}", flinkTableName)
+                .replace("${tableName}", tableName)
+                .replace("${host}", property.getHost())
+                .replace("${tableFieldName}", tableFieldName)
+                .replace("${port}", String.valueOf(property.getPort()))
+                .replace("${dbName}", property.getDbName())
+                .replace("${sid}", property.getSid())
+                .replace("${username}", property.getUsername())
+                .replace("${password}", property.getPassword());
+        return sql;
+    }
+
+    @Override
     public String getTableName(DbQueryProperty property, String tableName) {
         return property.getDbName() + "." + property.getSid() + "." + tableName;
+    }
+
+
+    @Override
+    public String getFlinkSinkSQL(DbQueryProperty property, JSONObject config, String flinkTableName, String tableName, String tableFieldName) {
+        String sql = "CREATE TABLE ${flinkTableName} (${tableFieldName}) " +
+                "WITH ( 'connector' = 'jdbc'," +
+                "'url' = 'jdbc:sqlserver://${host}:${port};DatabaseName=${dbName};encrypt=true;trustServerCertificate=true'," +
+                "'table-name' = '${dbName}.${sid}.${tableName}'," +
+                "'username' = '${username}'," +
+                "'password' = '${password}'," +
+                "'sink.buffer-flush.max-rows' = '${batchSize}'," +
+                "'sink.buffer-flush.interval' = '1s'" +
+                ")";
+
+        sql = StringUtils
+                .replace(sql, "${flinkTableName}", flinkTableName)
+                .replace("${tableName}", tableName)
+                .replace("${host}", property.getHost())
+                .replace("${tableFieldName}", tableFieldName)
+                .replace("${port}", String.valueOf(property.getPort()))
+                .replace("${dbName}", property.getDbName())
+                .replace("${sid}", property.getSid())
+                .replace("${username}", property.getUsername())
+                .replace("${password}", property.getPassword())
+                .replace("${batchSize}", String.valueOf(config.getIntValue("batchSize", 100)));
+        return sql;
+    }
+
+
+    @Override
+    public String trainToJdbcUrl(DbQueryProperty property) {
+        String url = DbType.getDbType(property.getDbType()).getUrl();
+        if (org.springframework.util.StringUtils.isEmpty(url)) {
+            throw new DataQueryException("无效数据库类型!");
+        }
+        url = url.replace("${host}", property.getHost());
+        url = url.replace("${port}", String.valueOf(property.getPort()));
+        url = url.replace("${dbName}", property.getDbName());
+        //判断是否开启ssl
+        if (checkUseSSL(property)) {
+            JSONObject sslConfig = (JSONObject) property.getDatasourceConfig().get("sslConfig");
+            url = url.replace("encrypt=false", "encrypt=true")
+                    .replace("trustServerCertificate=true", "trustServerCertificate=false");
+            StringBuilder urlStrBuilder = new StringBuilder(url);
+            urlStrBuilder
+                    .append(";trustStore=").append(sslConfig.getString("trustStore"))
+                    .append(";trustStorePassword=").append(sslConfig.getString("trustStorePassword"));
+            url = urlStrBuilder.toString();
+        }
+        return url;
     }
 }

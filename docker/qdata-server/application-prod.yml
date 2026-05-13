@@ -179,8 +179,12 @@ ds:
   base_url: http://dolphinscheduler-api:12345/dolphinscheduler
   quality_url: http://qdata-quality:8083/quality/qualityTaskExecutor/runExecuteTask
   http_url: http://qdata-api:8080/da/daDiscoveryTask/runDaDiscoveryTask
+  # 元数据采集任务api前缀
+  mc_url: http://qdata-api:8080/mc/taskExecutor/runExecuteTask
   http_projectCode: 134799536571008
   http_quality_projectCode: 147372832245312
+  # 元数据采集任务dolphinscheduler项目编码
+  http_mc_projectCode: 173198624561952
   token: b07f0e57c4818043a57ba05a28da291a
   temp_table_data_source: "{\"ip\":\"192.168.0.5\",\"datasourceType\":\"DM8\",\"port\":5236,\"datasourceConfig\":\"{\\\"username\\\":\\\"TEMP\\\",\\\"password\\\":\\\"InC3tmU4bijT4vkl\\\",\\\"dbname\\\":\\\"TEMP\\\",\\\"sid\\\":\\\"helowin\\\"}\"}"
   resource_url: /dolphinscheduler/
@@ -196,3 +200,4 @@ ds:
 
 path:
   quality_url: http://qdata-quality:8083/quality/qualityTaskExecutor
+  mc_url: http://qdata-api:8080/mc/taskExecutor

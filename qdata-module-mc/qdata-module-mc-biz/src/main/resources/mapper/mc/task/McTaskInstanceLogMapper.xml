@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.qiantong.qdata.module.mc.dal.mapper.task.McTaskInstanceLogMapper">
+
+    <resultMap type="McTaskInstanceLogDO" id="McTaskInstanceLogResult">
+        <result property="taskInstanceId"    column="TASK_INSTANCE_ID"    />
+        <result property="time"    column="TIME"    />
+        <result property="taskId"    column="TASK_ID"    />
+        <result property="logContent"    column="LOG_CONTENT"    />
+        <result property="validFlag"    column="VALID_FLAG"    />
+        <result property="delFlag"    column="DEL_FLAG"    />
+        <result property="createBy"    column="CREATE_BY"    />
+        <result property="creatorId"    column="CREATOR_ID"    />
+        <result property="createTime"    column="CREATE_TIME"    />
+        <result property="updateBy"    column="UPDATE_BY"    />
+        <result property="updaterId"    column="UPDATER_ID"    />
+        <result property="updateTime"    column="UPDATE_TIME"    />
+        <result property="remark"    column="REMARK"    />
+    </resultMap>
+
+    <sql id="selectMcTaskInstanceLogVo">
+        select TASK_INSTANCE_ID, TIME, TASK_ID, LOG_CONTENT, VALID_FLAG, DEL_FLAG, CREATE_BY, CREATOR_ID, CREATE_TIME, UPDATE_BY, UPDATER_ID, UPDATE_TIME, REMARK from MC_TASK_INSTANCE_LOG
+    </sql>
+
+    <select id="selectMcTaskInstanceLogList" parameterType="McTaskInstanceLogDO" resultMap="McTaskInstanceLogResult">
+        <include refid="selectMcTaskInstanceLogVo"/>
+        <where>
+            <if test="taskId != null "> and TASK_ID = #{taskId}</if>
+            <if test="logContent != null  and logContent != ''"> and LOG_CONTENT = #{logContent}</if>
+            <if test="createTime != null "> and CREATE_TIME = #{createTime}</if>
+        </where>
+    </select>
+
+    <select id="selectMcTaskInstanceLogByTaskInstanceId" parameterType="Long" resultMap="McTaskInstanceLogResult">
+        <include refid="selectMcTaskInstanceLogVo"/>
+        where TASK_INSTANCE_ID = #{taskInstanceId}
+    </select>
+
+    <insert id="insertMcTaskInstanceLog" parameterType="McTaskInstanceLogDO">
+        insert into MC_TASK_INSTANCE_LOG
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="taskInstanceId != null">TASK_INSTANCE_ID,</if>
+            <if test="time != null">TIME,</if>
+            <if test="taskId != null">TASK_ID,</if>
+            <if test="logContent != null">LOG_CONTENT,</if>
+            <if test="validFlag != null">VALID_FLAG,</if>
+            <if test="delFlag != null">DEL_FLAG,</if>
+            <if test="createBy != null">CREATE_BY,</if>
+            <if test="creatorId != null">CREATOR_ID,</if>
+            <if test="createTime != null">CREATE_TIME,</if>
+            <if test="updateBy != null">UPDATE_BY,</if>
+            <if test="updaterId != null">UPDATER_ID,</if>
+            <if test="updateTime != null">UPDATE_TIME,</if>
+            <if test="remark != null">REMARK,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="taskInstanceId != null">#{taskInstanceId},</if>
+            <if test="time != null">#{time},</if>
+            <if test="taskId != null">#{taskId},</if>
+            <if test="logContent != null">#{logContent},</if>
+            <if test="validFlag != null">#{validFlag},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updaterId != null">#{updaterId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMcTaskInstanceLog" parameterType="McTaskInstanceLogDO">
+        update MC_TASK_INSTANCE_LOG
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="time != null">TIME = #{time},</if>
+            <if test="taskId != null">TASK_ID = #{taskId},</if>
+            <if test="logContent != null">LOG_CONTENT = #{logContent},</if>
+            <if test="validFlag != null">VALID_FLAG = #{validFlag},</if>
+            <if test="delFlag != null">DEL_FLAG = #{delFlag},</if>
+            <if test="createBy != null">CREATE_BY = #{createBy},</if>
+            <if test="creatorId != null">CREATOR_ID = #{creatorId},</if>
+            <if test="createTime != null">CREATE_TIME = #{createTime},</if>
+            <if test="updateBy != null">UPDATE_BY = #{updateBy},</if>
+            <if test="updaterId != null">UPDATER_ID = #{updaterId},</if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime},</if>
+            <if test="remark != null">REMARK = #{remark},</if>
+        </trim>
+        where TASK_INSTANCE_ID = #{taskInstanceId}
+    </update>
+
+    <delete id="deleteMcTaskInstanceLogByTaskInstanceId" parameterType="Long">
+        delete from MC_TASK_INSTANCE_LOG where TASK_INSTANCE_ID = #{taskInstanceId}
+    </delete>
+
+    <delete id="deleteMcTaskInstanceLogByTaskInstanceIds" parameterType="String">
+        delete from MC_TASK_INSTANCE_LOG where TASK_INSTANCE_ID in
+        <foreach item="taskInstanceId" collection="array" open="(" separator="," close=")">
+            #{taskInstanceId}
+        </foreach>
+    </delete>
+</mapper>

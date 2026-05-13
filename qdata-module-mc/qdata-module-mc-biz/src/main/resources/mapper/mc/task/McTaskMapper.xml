@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.qiantong.qdata.module.mc.dal.mapper.task.McTaskMapper">
+
+    <resultMap type="McTaskDO" id="McTaskResult">
+        <result property="id"    column="ID"    />
+        <result property="sourceSystemId"    column="SOURCE_SYSTEM_ID"    />
+        <result property="sourceSystemName"    column="SOURCE_SYSTEM_NAME"    />
+        <result property="name"    column="NAME"    />
+        <result property="datasourceId"    column="DATASOURCE_ID"    />
+        <result property="dbType"    column="DB_TYPE"    />
+        <result property="leader"    column="LEADER"    />
+        <result property="leaderPhone"    column="LEADER_PHONE"    />
+        <result property="collectionMode"    column="COLLECTION_MODE"    />
+        <result property="collectionScope"    column="COLLECTION_SCOPE"    />
+        <result property="status"    column="STATUS"    />
+
+        <!-- 新增字段 -->
+        <result property="collectType" column="COLLECT_TYPE" />
+        <result property="blacklist" column="BLACKLIST" />
+
+        <result property="validFlag"    column="VALID_FLAG"    />
+        <result property="delFlag"    column="DEL_FLAG"    />
+        <result property="createBy"    column="CREATE_BY"    />
+        <result property="creatorId"    column="CREATOR_ID"    />
+        <result property="createTime"    column="CREATE_TIME"    />
+        <result property="updateBy"    column="UPDATE_BY"    />
+        <result property="updaterId"    column="UPDATER_ID"    />
+        <result property="updateTime"    column="UPDATE_TIME"    />
+        <result property="remark"    column="REMARK"    />
+        <result property="description"    column="DESCRIPTION"    />
+    </resultMap>
+
+    <sql id="selectMcTaskVo">
+        select ID, SOURCE_SYSTEM_ID, SOURCE_SYSTEM_NAME, NAME, DATASOURCE_ID, DB_TYPE, LEADER, LEADER_PHONE,
+               COLLECTION_MODE, COLLECTION_SCOPE, STATUS,
+               COLLECT_TYPE, BLACKLIST,
+               VALID_FLAG, DEL_FLAG, CREATE_BY, CREATOR_ID, CREATE_TIME,
+               UPDATE_BY, UPDATER_ID, UPDATE_TIME, REMARK, DESCRIPTION
+        from MC_TASK
+    </sql>
+
+    <select id="selectMcTaskList" parameterType="McTaskDO" resultMap="McTaskResult">
+        <include refid="selectMcTaskVo"/>
+        <where>
+            <if test="sourceSystemId != null "> and SOURCE_SYSTEM_ID = #{sourceSystemId}</if>
+            <if test="sourceSystemName != null  and sourceSystemName != ''"> and SOURCE_SYSTEM_NAME = #{sourceSystemName}</if>
+            <if test="name != null  and name != ''"> and NAME like concat('%', #{name}, '%')</if>
+            <if test="datasourceId != null "> and DATASOURCE_ID = #{datasourceId}</if>
+            <if test="dbType != null  and dbType != ''"> and DB_TYPE = #{dbType}</if>
+            <if test="leader != null "> and LEADER = #{leader}</if>
+            <if test="leaderPhone != null  and leaderPhone != ''"> and LEADER_PHONE = #{leaderPhone}</if>
+            <if test="collectionMode != null  and collectionMode != ''"> and COLLECTION_MODE = #{collectionMode}</if>
+            <if test="collectionScope != null  and collectionScope != ''"> and COLLECTION_SCOPE = #{collectionScope}</if>
+            <if test="status != null  and status != ''"> and STATUS = #{status}</if>
+            <if test="collectType != null"> and COLLECT_TYPE = #{collectType}</if>
+            <if test="createTime != null "> and CREATE_TIME = #{createTime}</if>
+            <if test="description != null  and description != ''"> and DESCRIPTION = #{description}</if>
+        </where>
+    </select>
+
+    <select id="selectMcTaskById" parameterType="Long" resultMap="McTaskResult">
+        <include refid="selectMcTaskVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertMcTask" parameterType="McTaskDO">
+        insert into MC_TASK
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="sourceSystemId != null">SOURCE_SYSTEM_ID,</if>
+            <if test="sourceSystemName != null">SOURCE_SYSTEM_NAME,</if>
+            <if test="name != null">NAME,</if>
+            <if test="datasourceId != null">DATASOURCE_ID,</if>
+            <if test="dbType != null">DB_TYPE,</if>
+            <if test="leader != null">LEADER,</if>
+            <if test="leaderPhone != null">LEADER_PHONE,</if>
+            <if test="collectionMode != null">COLLECTION_MODE,</if>
+            <if test="collectionScope != null">COLLECTION_SCOPE,</if>
+            <if test="status != null">STATUS,</if>
+
+            <if test="collectType != null">COLLECT_TYPE,</if>
+            <if test="blacklist != null">BLACKLIST,</if>
+
+            <if test="validFlag != null">VALID_FLAG,</if>
+            <if test="delFlag != null">DEL_FLAG,</if>
+            <if test="createBy != null">CREATE_BY,</if>
+            <if test="creatorId != null">CREATOR_ID,</if>
+            <if test="createTime != null">CREATE_TIME,</if>
+            <if test="updateBy != null">UPDATE_BY,</if>
+            <if test="updaterId != null">UPDATER_ID,</if>
+            <if test="updateTime != null">UPDATE_TIME,</if>
+            <if test="remark != null">REMARK,</if>
+            <if test="description != null">DESCRIPTION,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="sourceSystemId != null">#{sourceSystemId},</if>
+            <if test="sourceSystemName != null">#{sourceSystemName},</if>
+            <if test="name != null">#{name},</if>
+            <if test="datasourceId != null">#{datasourceId},</if>
+            <if test="dbType != null">#{dbType},</if>
+            <if test="leader != null">#{leader},</if>
+            <if test="leaderPhone != null">#{leaderPhone},</if>
+            <if test="collectionMode != null">#{collectionMode},</if>
+            <if test="collectionScope != null">#{collectionScope},</if>
+            <if test="status != null">#{status},</if>
+
+            <if test="collectType != null">#{collectType},</if>
+            <if test="blacklist != null">#{blacklist},</if>
+
+            <if test="validFlag != null">#{validFlag},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updaterId != null">#{updaterId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="description != null">#{description},</if>
+        </trim>
+    </insert>
+
+    <update id="updateMcTask" parameterType="McTaskDO">
+        update MC_TASK
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sourceSystemId != null">SOURCE_SYSTEM_ID = #{sourceSystemId},</if>
+            <if test="sourceSystemName != null">SOURCE_SYSTEM_NAME = #{sourceSystemName},</if>
+            <if test="name != null">NAME = #{name},</if>
+            <if test="datasourceId != null">DATASOURCE_ID = #{datasourceId},</if>
+            <if test="dbType != null">DB_TYPE = #{dbType},</if>
+            <if test="leader != null">LEADER = #{leader},</if>
+            <if test="leaderPhone != null">LEADER_PHONE = #{leaderPhone},</if>
+            <if test="collectionMode != null">COLLECTION_MODE = #{collectionMode},</if>
+            <if test="collectionScope != null">COLLECTION_SCOPE = #{collectionScope},</if>
+            <if test="status != null">STATUS = #{status},</if>
+
+            <if test="collectType != null">COLLECT_TYPE = #{collectType},</if>
+            <if test="blacklist != null">BLACKLIST = #{blacklist},</if>
+
+            <if test="validFlag != null">VALID_FLAG = #{validFlag},</if>
+            <if test="delFlag != null">DEL_FLAG = #{delFlag},</if>
+            <if test="createBy != null">CREATE_BY = #{createBy},</if>
+            <if test="creatorId != null">CREATOR_ID = #{creatorId},</if>
+            <if test="createTime != null">CREATE_TIME = #{createTime},</if>
+            <if test="updateBy != null">UPDATE_BY = #{updateBy},</if>
+            <if test="updaterId != null">UPDATER_ID = #{updaterId},</if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime},</if>
+            <if test="remark != null">REMARK = #{remark},</if>
+            <if test="description != null">DESCRIPTION = #{description},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteMcTaskById" parameterType="Long">
+        delete from MC_TASK where ID = #{id}
+    </delete>
+
+    <delete id="deleteMcTaskByIds" parameterType="String">
+        delete from MC_TASK where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.qiantong.qdata.module.mc.dal.mapper.task.McTaskInstanceMapper">
+
+    <resultMap type="McTaskInstanceDO" id="McTaskInstanceResult">
+        <result property="id"    column="ID"    />
+        <result property="sourceSystemId"    column="SOURCE_SYSTEM_ID"    />
+        <result property="sourceSystemName"    column="SOURCE_SYSTEM_NAME"    />
+        <result property="taskId"    column="TASK_ID"    />
+        <result property="collectionMode"    column="COLLECTION_MODE"    />
+        <result property="collectionScope"    column="COLLECTION_SCOPE"    />
+        <result property="totalCount"    column="TOTAL_COUNT"    />
+        <result property="successCount"    column="SUCCESS_COUNT"    />
+        <result property="failCount"    column="FAIL_COUNT"    />
+        <result property="failCause"    column="FAIL_CAUSE"    />
+        <result property="addCount"    column="ADD_COUNT"    />
+        <result property="delCount"    column="DEL_COUNT"    />
+        <result property="updateCount"    column="UPDATE_COUNT"    />
+        <result property="startTime"    column="START_TIME"    />
+        <result property="endTime"    column="END_TIME"    />
+        <result property="duration"    column="DURATION"    />
+        <result property="status"    column="STATUS"    />
+        <result property="validFlag"    column="VALID_FLAG"    />
+        <result property="delFlag"    column="DEL_FLAG"    />
+        <result property="createBy"    column="CREATE_BY"    />
+        <result property="creatorId"    column="CREATOR_ID"    />
+        <result property="createTime"    column="CREATE_TIME"    />
+        <result property="updateBy"    column="UPDATE_BY"    />
+        <result property="updaterId"    column="UPDATER_ID"    />
+        <result property="updateTime"    column="UPDATE_TIME"    />
+        <result property="remark"    column="REMARK"    />
+        <result property="description"    column="DESCRIPTION"    />
+    </resultMap>
+
+    <sql id="selectMcTaskInstanceVo">
+        select ID, SOURCE_SYSTEM_ID, SOURCE_SYSTEM_NAME, TASK_ID, COLLECTION_MODE, COLLECTION_SCOPE, TOTAL_COUNT, SUCCESS_COUNT, FAIL_COUNT, FAIL_CAUSE, ADD_COUNT, DEL_COUNT, UPDATE_COUNT, START_TIME, END_TIME, DURATION, STATUS, VALID_FLAG, DEL_FLAG, CREATE_BY, CREATOR_ID, CREATE_TIME, UPDATE_BY, UPDATER_ID, UPDATE_TIME, REMARK, DESCRIPTION from MC_TASK_INSTANCE
+    </sql>
+
+    <select id="selectMcTaskInstanceList" parameterType="McTaskInstanceDO" resultMap="McTaskInstanceResult">
+        <include refid="selectMcTaskInstanceVo"/>
+        <where>
+            <if test="sourceSystemId != null "> and SOURCE_SYSTEM_ID = #{sourceSystemId}</if>
+            <if test="sourceSystemName != null  and sourceSystemName != ''"> and SOURCE_SYSTEM_NAME = #{sourceSystemName}</if>
+            <if test="taskId != null "> and TASK_ID = #{taskId}</if>
+            <if test="collectionMode != null  and collectionMode != ''"> and COLLECTION_MODE = #{collectionMode}</if>
+            <if test="collectionScope != null  and collectionScope != ''"> and COLLECTION_SCOPE = #{collectionScope}</if>
+            <if test="totalCount != null "> and TOTAL_COUNT = #{totalCount}</if>
+            <if test="successCount != null "> and SUCCESS_COUNT = #{successCount}</if>
+            <if test="failCount != null "> and FAIL_COUNT = #{failCount}</if>
+            <if test="failCause != null  and failCause != ''"> and FAIL_CAUSE = #{failCause}</if>
+            <if test="addCount != null "> and ADD_COUNT = #{addCount}</if>
+            <if test="delCount != null "> and DEL_COUNT = #{delCount}</if>
+            <if test="updateCount != null "> and UPDATE_COUNT = #{updateCount}</if>
+            <if test="startTime != null "> and START_TIME = #{startTime}</if>
+            <if test="endTime != null "> and END_TIME = #{endTime}</if>
+            <if test="duration != null "> and DURATION = #{duration}</if>
+            <if test="status != null  and status != ''"> and STATUS = #{status}</if>
+            <if test="createTime != null "> and CREATE_TIME = #{createTime}</if>
+            <if test="description != null  and description != ''"> and DESCRIPTION = #{description}</if>
+        </where>
+    </select>
+
+    <select id="selectMcTaskInstanceById" parameterType="Long" resultMap="McTaskInstanceResult">
+        <include refid="selectMcTaskInstanceVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertMcTaskInstance" parameterType="McTaskInstanceDO">
+        insert into MC_TASK_INSTANCE
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="sourceSystemId != null">SOURCE_SYSTEM_ID,</if>
+            <if test="sourceSystemName != null">SOURCE_SYSTEM_NAME,</if>
+            <if test="taskId != null">TASK_ID,</if>
+            <if test="collectionMode != null">COLLECTION_MODE,</if>
+            <if test="collectionScope != null">COLLECTION_SCOPE,</if>
+            <if test="totalCount != null">TOTAL_COUNT,</if>
+            <if test="successCount != null">SUCCESS_COUNT,</if>
+            <if test="failCount != null">FAIL_COUNT,</if>
+            <if test="failCause != null">FAIL_CAUSE,</if>
+            <if test="addCount != null">ADD_COUNT,</if>
+            <if test="delCount != null">DEL_COUNT,</if>
+            <if test="updateCount != null">UPDATE_COUNT,</if>
+            <if test="startTime != null">START_TIME,</if>
+            <if test="endTime != null">END_TIME,</if>
+            <if test="duration != null">DURATION,</if>
+            <if test="status != null">STATUS,</if>
+            <if test="validFlag != null">VALID_FLAG,</if>
+            <if test="delFlag != null">DEL_FLAG,</if>
+            <if test="createBy != null">CREATE_BY,</if>
+            <if test="creatorId != null">CREATOR_ID,</if>
+            <if test="createTime != null">CREATE_TIME,</if>
+            <if test="updateBy != null">UPDATE_BY,</if>
+            <if test="updaterId != null">UPDATER_ID,</if>
+            <if test="updateTime != null">UPDATE_TIME,</if>
+            <if test="remark != null">REMARK,</if>
+            <if test="description != null">DESCRIPTION,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="sourceSystemId != null">#{sourceSystemId},</if>
+            <if test="sourceSystemName != null">#{sourceSystemName},</if>
+            <if test="taskId != null">#{taskId},</if>
+            <if test="collectionMode != null">#{collectionMode},</if>
+            <if test="collectionScope != null">#{collectionScope},</if>
+            <if test="totalCount != null">#{totalCount},</if>
+            <if test="successCount != null">#{successCount},</if>
+            <if test="failCount != null">#{failCount},</if>
+            <if test="failCause != null">#{failCause},</if>
+            <if test="addCount != null">#{addCount},</if>
+            <if test="delCount != null">#{delCount},</if>
+            <if test="updateCount != null">#{updateCount},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="duration != null">#{duration},</if>
+            <if test="status != null">#{status},</if>
+            <if test="validFlag != null">#{validFlag},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updaterId != null">#{updaterId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="description != null">#{description},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMcTaskInstance" parameterType="McTaskInstanceDO">
+        update MC_TASK_INSTANCE
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sourceSystemId != null">SOURCE_SYSTEM_ID = #{sourceSystemId},</if>
+            <if test="sourceSystemName != null">SOURCE_SYSTEM_NAME = #{sourceSystemName},</if>
+            <if test="taskId != null">TASK_ID = #{taskId},</if>
+            <if test="collectionMode != null">COLLECTION_MODE = #{collectionMode},</if>
+            <if test="collectionScope != null">COLLECTION_SCOPE = #{collectionScope},</if>
+            <if test="totalCount != null">TOTAL_COUNT = #{totalCount},</if>
+            <if test="successCount != null">SUCCESS_COUNT = #{successCount},</if>
+            <if test="failCount != null">FAIL_COUNT = #{failCount},</if>
+            <if test="failCause != null">FAIL_CAUSE = #{failCause},</if>
+            <if test="addCount != null">ADD_COUNT = #{addCount},</if>
+            <if test="delCount != null">DEL_COUNT = #{delCount},</if>
+            <if test="updateCount != null">UPDATE_COUNT = #{updateCount},</if>
+            <if test="startTime != null">START_TIME = #{startTime},</if>
+            <if test="endTime != null">END_TIME = #{endTime},</if>
+            <if test="duration != null">DURATION = #{duration},</if>
+            <if test="status != null">STATUS = #{status},</if>
+            <if test="validFlag != null">VALID_FLAG = #{validFlag},</if>
+            <if test="delFlag != null">DEL_FLAG = #{delFlag},</if>
+            <if test="createBy != null">CREATE_BY = #{createBy},</if>
+            <if test="creatorId != null">CREATOR_ID = #{creatorId},</if>
+            <if test="createTime != null">CREATE_TIME = #{createTime},</if>
+            <if test="updateBy != null">UPDATE_BY = #{updateBy},</if>
+            <if test="updaterId != null">UPDATER_ID = #{updaterId},</if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime},</if>
+            <if test="remark != null">REMARK = #{remark},</if>
+            <if test="description != null">DESCRIPTION = #{description},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteMcTaskInstanceById" parameterType="Long">
+        delete from MC_TASK_INSTANCE where ID = #{id}
+    </delete>
+
+    <delete id="deleteMcTaskInstanceByIds" parameterType="String">
+        delete from MC_TASK_INSTANCE where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

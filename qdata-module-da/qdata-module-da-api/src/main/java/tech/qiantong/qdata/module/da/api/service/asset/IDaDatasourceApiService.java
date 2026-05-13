@@ -35,6 +35,7 @@ package tech.qiantong.qdata.module.da.api.service.asset;
 import tech.qiantong.qdata.common.database.DbQuery;
 import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
 import tech.qiantong.qdata.common.database.core.DbColumn;
+import tech.qiantong.qdata.common.database.core.DbName;
 import tech.qiantong.qdata.common.database.core.DbTable;
 import tech.qiantong.qdata.module.da.api.datasource.dto.DaDatasourceRespDTO;
 import tech.qiantong.qdata.module.da.api.datasource.dto.DatasourceCreaTeTableListReqDTO;
@@ -74,4 +75,19 @@ public interface IDaDatasourceApiService {
      * @return 数据源列表
      */
     DbTable getDbTable(Long datasourceId, String tableName);
+
+    /**
+     * TODO:获得数据库列表
+     *
+     * @param id 数据源id
+     * @return 数据源列表
+     */
+    public List<DbName> getDatabaseListByDatasourceId(Long id);
+
+    /**
+     * 根据ids获取数据源列表
+     * @param ids
+     * @return
+     */
+    List<DaDatasourceRespDTO> getDatabaseListByIds(List<Long> ids);
 }

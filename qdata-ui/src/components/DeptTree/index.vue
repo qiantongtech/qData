@@ -406,16 +406,6 @@ watch(
   { deep: true }
 );
 
-watch(
-  () => props.deptOptions,
-  (val) => {
-    if (!props.api.list && Array.isArray(val)) {
-      processedData.value = val;
-    }
-  },
-  { immediate: true }
-);
-
 onMounted(() => {
   if (props.api.list) {
     getDeptTree();
@@ -497,6 +487,9 @@ function getIdsByLevel(nodes, level = 2, currentLevel = 1) {
 watch(
   () => props.deptOptions,
   (val) => {
+    if (!props.api.list && Array.isArray(val)) {
+      processedData.value = val;
+    }
     if (Array.isArray(val) && val.length > 0) {
       if (
         val.length === 1 &&

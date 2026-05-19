@@ -206,6 +206,7 @@
             <el-select
               v-model="form.dataCategoryId"
               filterable
+              disabled
               clearable
               placeholder="请选择分类"
               @change="(val) => (form.dataCategoryId = val ?? null)"
@@ -910,24 +911,26 @@ function getCodeTableList() {
 }
 
 function openBindTerm(row) {
-  currentColumnId.value = row.id;
-  Promise.all([getDaAssetColumn(row.id), getTermList()]).then(([detailRes]) => {
-    const detail = detailRes?.data || {};
-    let termId = ""; // 单选用单个值
+  proxy.$modal.msgWarning("功能正在开发中");
 
-    if (Array.isArray(detail.termIds)) {
-      termId = detail.termIds[0] || ""; // 取第一个
-    } else if (typeof detail.termIds === "string") {
-      termId = detail.termIds.split(",")[0] || "";
-    } else if (Array.isArray(row.termIds)) {
-      termId = row.termIds[0] || "";
-    } else if (typeof row.termIds === "string") {
-      termId = row.termIds.split(",")[0] || "";
-    }
-
-    termForm.termIds = termId; // 直接赋值单个值
-    termDialogVisible.value = true;
-  });
+  // currentColumnId.value = row.id;
+  // Promise.all([getDaAssetColumn(row.id), getTermList()]).then(([detailRes]) => {
+  //   const detail = detailRes?.data || {};
+  //   let termId = ""; // 单选用单个值
+  //
+  //   if (Array.isArray(detail.termIds)) {
+  //     termId = detail.termIds[0] || ""; // 取第一个
+  //   } else if (typeof detail.termIds === "string") {
+  //     termId = detail.termIds.split(",")[0] || "";
+  //   } else if (Array.isArray(row.termIds)) {
+  //     termId = row.termIds[0] || "";
+  //   } else if (typeof row.termIds === "string") {
+  //     termId = row.termIds.split(",")[0] || "";
+  //   }
+  //
+  //   termForm.termIds = termId; // 直接赋值单个值
+  //   termDialogVisible.value = true;
+  // });
 }
 
 function getTermList() {

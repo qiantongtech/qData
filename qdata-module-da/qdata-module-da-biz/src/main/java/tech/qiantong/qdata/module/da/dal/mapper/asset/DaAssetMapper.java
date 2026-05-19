@@ -93,7 +93,7 @@ public interface DaAssetMapper extends BaseMapperX<DaAssetDO> {
                 "     ATT_TAG d \n" +
                 "JOIN ATT_TAG_ASSET_REL rel ON d.ID = rel.TAG_ID \n" +
                 "WHERE \n" +
-                "    d.DEL_FLAG ='0' \n" +
+                "    d.DEL_FLAG ='0' AND rel.DEL_FLAG = '0'  \n" +
                 "    AND rel.ASSET_ID = t.ID \n" +
                 "HAVING COUNT(d.ID) > 0";
 

@@ -366,7 +366,7 @@
                   <div class="flex-wrap">
                     <div class="item-form">
                       <div class="form-label">数据标签:</div>
-                      <div class="form-value">
+                      <div class="form-value tag-container">
                         <span v-if="!item.tagNames?.length">-</span>
                         <template v-else>
                           <el-tag
@@ -1566,6 +1566,31 @@ getAssetThemeList();
         display: flex;
         align-items: center;
         justify-content: space-between;
+
+        .item-form {
+          flex: 1;
+          min-width: 0;
+
+          .form-value {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+
+            &.tag-container {
+              display: inline-block;
+              max-width: 100%;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              vertical-align: middle;
+            }
+          }
+        }
+
+        .form-btns {
+          flex-shrink: 0;
+          margin-left: 10px;
+        }
       }
 
       .form-btns {

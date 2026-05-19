@@ -32,32 +32,33 @@
 
 package tech.qiantong.qdata.module.dm.service.dm.impl;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
+import com.alibaba.fastjson2.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
-
-import javax.annotation.Resource;
-
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import tech.qiantong.qdata.common.core.domain.TreeData;
 import tech.qiantong.qdata.common.core.domain.entity.SysDictData;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.exception.ServiceException;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import tech.qiantong.qdata.module.dm.api.service.dataLayer.IDmDataLayerApiService;
 import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmDataLayerPageReqVO;
 import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmDataLayerRespVO;
 import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmDataLayerSaveReqVO;
 import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmDataLayerTreeRespVO;
 import tech.qiantong.qdata.module.dm.dal.dataobject.dm.DmDataLayerDO;
-import tech.qiantong.qdata.module.dm.dal.dataobject.dm.DmDataLayerSpecificationDO;
+import tech.qiantong.qdata.module.dm.dal.dataobject.dm.DmThemeDomainDO;
 import tech.qiantong.qdata.module.dm.dal.mapper.dm.DmDataLayerMapper;
 import tech.qiantong.qdata.module.dm.service.dm.IDmDataLayerService;
 import tech.qiantong.qdata.module.system.service.ISysDictDataService;
 import tech.qiantong.qdata.mybatis.core.query.MPJLambdaWrapperX;
+
+import javax.annotation.Resource;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 数仓分层管理Service业务层处理
@@ -68,7 +69,7 @@ import tech.qiantong.qdata.mybatis.core.query.MPJLambdaWrapperX;
 @Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class DmDataLayerServiceImpl extends ServiceImpl<DmDataLayerMapper, DmDataLayerDO> implements IDmDataLayerService {
+public class DmDataLayerServiceImpl extends ServiceImpl<DmDataLayerMapper, DmDataLayerDO> implements IDmDataLayerService, IDmDataLayerApiService {
     @Resource
     private DmDataLayerMapper dmDataLayerMapper;
 
@@ -227,6 +228,64 @@ public class DmDataLayerServiceImpl extends ServiceImpl<DmDataLayerMapper, DmDat
                 DmDataLayerTreeRespVO children = BeanUtils.toBean(dmDataLayerDO, DmDataLayerTreeRespVO.class);
                 children.setParentId(Long.parseLong(children.getCategory()));
                 childrenList.add(children);
+            }
+        });
+        return tree;
+    }
+
+    @Override
+    public List<TreeData> getTreeData(String type) {
+        MPJLambdaWrapperX<DmDataLayerDO> lambdaWrapper = new MPJLambdaWrapperX<>();
+        lambdaWrapper
+                .selectAll(DmDataLayerDO.class)
+                .eq(DmThemeDomainDO::getValidFlag, true);
+        String statisticsSql = null;
+        if (StringUtils.isNotBlank(type)) {
+            switch (type) {
+                case "1":
+                    statisticsSql = "(SELECT COUNT(1) FROM DA_ASSET a WHERE t.ID = a.DATA_LAYER_ID) AS num";
+                    break;
+            }
+            if (StringUtils.isNotBlank(statisticsSql)) {
+                lambdaWrapper.select(statisticsSql);
+            }
+        }
+        List<DmDataLayerDO> list = this.list(lambdaWrapper);
+
+        List<SysDictData> sysDictDataList = sysDictDataService.selectDictDataList(SysDictData.builder()
+                .dictType("dm_data_layer_category")
+                .status("0")
+                .build());
+
+        sysDictDataList.stream().sorted(Comparator.comparingLong(SysDictData::getDictSort));
+
+        List<TreeData> tree = sysDictDataList.stream()
+                .map(sysDictData -> TreeData.builder()
+                        .id(Long.parseLong(sysDictData.getDictValue()))
+                        .name(sysDictData.getDictLabel())
+                        .type("4")
+                        .build())
+                .collect(Collectors.toList());
+
+        list.forEach(dmDataLayerDO -> {
+            TreeData treeData = tree.stream()
+                    .filter(item -> String.valueOf(item.getId()).equals(dmDataLayerDO.getCategory()))
+                    .findFirst()
+                    .orElse(null);
+            if (treeData != null) {
+                List<TreeData> childrenList = treeData.getChildren();
+                if (childrenList == null) {
+                    childrenList = new ArrayList();
+                    treeData.setChildren(childrenList);
+                }
+                childrenList.add(TreeData.builder()
+                        .id(dmDataLayerDO.getId())
+                        .name(dmDataLayerDO.getName())
+                        .type("5")
+                        .otherData(JSONObject.of(
+                                "engName", dmDataLayerDO.getEngName(),
+                                "num", dmDataLayerDO.getNum()))
+                        .build());
             }
         });
         return tree;

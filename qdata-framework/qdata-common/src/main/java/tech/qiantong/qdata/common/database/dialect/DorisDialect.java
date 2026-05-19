@@ -590,4 +590,259 @@ public class DorisDialect extends AbstractDbDialect {
                 .replace("${password}", property.getPassword());
         return sql;
     }
+    @Override
+    public String updateTableComment(DbQueryProperty dbQueryProperty, String tableName, String tableComment) {
+        String fullTableName = getTableName(dbQueryProperty, tableName);
+        return "ALTER TABLE " + fullTableName + " MODIFY COMMENT '" + DatabaseUtil.escapeSingleQuotes(tableComment) + "'";
+    }
+
+    // ... existing code ...
+    @Override
+    public String dropColumn(DbQueryProperty dbQueryProperty, String tableName, String colName) {
+        String fullTableName = getTableName(dbQueryProperty, tableName);
+        return "ALTER TABLE " + fullTableName + " DROP COLUMN " + escapeReservedKeyword(colName);
+    }
+
+    @Override
+    public List<String> modifyColumn(DbQueryProperty dbQueryProperty, String tableName, DbColumn column) {
+        List<String> sqlList = new ArrayList<>();
+        String fullTableName = getTableName(dbQueryProperty, tableName);
+
+        if (Boolean.TRUE.equals(column.getColKey())) {
+            StringBuilder sql = new StringBuilder();
+            sql.append("ALTER TABLE ").append(fullTableName).append(" ADD UNIQUE KEY (");
+            sql.append(escapeReservedKeyword(column.getColName())).append(")");
+            sqlList.add(sql.toString());
+        } else {
+            StringBuilder sql = new StringBuilder();
+            sql.append("ALTER TABLE ").append(fullTableName).append(" MODIFY COLUMN ");
+            sql.append(escapeReservedKeyword(column.getColName())).append(" ");
+
+            String columnType = column.getDataType();
+            switch (columnType.toUpperCase()) {
+                case "VARCHAR":
+                case "VARCHAR2":
+                    sql.append("VARCHAR");
+                    if (StringUtils.isNotEmpty(column.getDataLength())) {
+                        sql.append("(").append(column.getDataLength()).append(")");
+                    } else {
+                        sql.append("(255)");
+                    }
+                    break;
+                case "CHAR":
+                    sql.append("CHAR");
+                    if (StringUtils.isNotEmpty(column.getDataLength())) {
+                        sql.append("(").append(column.getDataLength()).append(")");
+                    } else {
+                        sql.append("(1)");
+                    }
+                    break;
+                case "TEXT":
+                    sql.append("TEXT");
+                    break;
+                case "INT":
+                case "INTEGER":
+                    sql.append("INT");
+                    break;
+                case "BIGINT":
+                    sql.append("BIGINT");
+                    break;
+                case "TINYINT":
+                    sql.append("TINYINT");
+                    break;
+                case "DECIMAL":
+                    sql.append(generateColumnSQLDORIS("DECIMAL", column.getDataLength(), column.getDataScale(), 65, 30));
+                    break;
+                case "FLOAT":
+                    sql.append("FLOAT");
+                    break;
+                case "DOUBLE":
+                    sql.append("DOUBLE");
+                    break;
+                case "DATE":
+                    sql.append("DATE");
+                    break;
+                case "DATETIME":
+                case "TIMESTAMP":
+                    sql.append("DATETIME");
+                    break;
+                default:
+                    sql.append("VARCHAR(255)");
+                    break;
+            }
+
+            if (!column.getNullable()) {
+                sql.append(" NOT NULL");
+            }
+
+            String columnTypeResolved = sql.substring(sql.lastIndexOf(" ") + 1);
+            String defaultClause = buildDorisDefaultClause(columnTypeResolved, column.getDataDefault());
+            sql.append(defaultClause);
+
+            if (StringUtils.isNotEmpty(column.getColComment())) {
+                sql.append(" COMMENT '").append(DatabaseUtil.escapeSingleQuotes(column.getColComment())).append("'");
+            }
+
+            sqlList.add(sql.toString());
+        }
+
+        return sqlList;
+    }
+
+    @Override
+    public List<String> addColumn(DbQueryProperty dbQueryProperty, String tableName, DbColumn column) {
+        List<String> sqlList = new ArrayList<>();
+        String fullTableName = getTableName(dbQueryProperty, tableName);
+
+        if (Boolean.TRUE.equals(column.getColKey())) {
+            StringBuilder sql = new StringBuilder();
+            sql.append("ALTER TABLE ").append(fullTableName).append(" ADD COLUMN ");
+            sql.append(escapeReservedKeyword(column.getColName())).append(" ");
+
+            String columnType = column.getDataType();
+            switch (columnType.toUpperCase()) {
+                case "VARCHAR":
+                case "VARCHAR2":
+                    sql.append("VARCHAR");
+                    if (StringUtils.isNotEmpty(column.getDataLength())) {
+                        sql.append("(").append(column.getDataLength()).append(")");
+                    } else {
+                        sql.append("(255)");
+                    }
+                    break;
+                case "CHAR":
+                    sql.append("CHAR");
+                    if (StringUtils.isNotEmpty(column.getDataLength())) {
+                        sql.append("(").append(column.getDataLength()).append(")");
+                    } else {
+                        sql.append("(1)");
+                    }
+                    break;
+                case "TEXT":
+                    sql.append("TEXT");
+                    break;
+                case "INT":
+                case "INTEGER":
+                    sql.append("INT");
+                    break;
+                case "BIGINT":
+                    sql.append("BIGINT");
+                    break;
+                case "TINYINT":
+                    sql.append("TINYINT");
+                    break;
+                case "DECIMAL":
+                    sql.append(generateColumnSQLDORIS("DECIMAL", column.getDataLength(), column.getDataScale(), 65, 30));
+                    break;
+                case "FLOAT":
+                    sql.append("FLOAT");
+                    break;
+                case "DOUBLE":
+                    sql.append("DOUBLE");
+                    break;
+                case "DATE":
+                    sql.append("DATE");
+                    break;
+                case "DATETIME":
+                case "TIMESTAMP":
+                    sql.append("DATETIME");
+                    break;
+                default:
+                    sql.append("VARCHAR(255)");
+                    break;
+            }
+
+            if (!column.getNullable()) {
+                sql.append(" NOT NULL");
+            }
+
+            String columnTypeResolved = sql.substring(sql.lastIndexOf(" ") + 1);
+            String defaultClause = buildDorisDefaultClause(columnTypeResolved, column.getDataDefault());
+            sql.append(defaultClause);
+
+            if (StringUtils.isNotEmpty(column.getColComment())) {
+                sql.append(" COMMENT '").append(DatabaseUtil.escapeSingleQuotes(column.getColComment())).append("'");
+            }
+
+            sqlList.add(sql.toString());
+
+            sql = new StringBuilder();
+            sql.append("ALTER TABLE ").append(fullTableName).append(" ADD UNIQUE KEY (");
+            sql.append(escapeReservedKeyword(column.getColName())).append(")");
+            sqlList.add(sql.toString());
+        } else {
+            StringBuilder sql = new StringBuilder();
+            sql.append("ALTER TABLE ").append(fullTableName).append(" ADD COLUMN ");
+            sql.append(escapeReservedKeyword(column.getColName())).append(" ");
+
+            String columnType = column.getDataType();
+            switch (columnType.toUpperCase()) {
+                case "VARCHAR":
+                case "VARCHAR2":
+                    sql.append("VARCHAR");
+                    if (StringUtils.isNotEmpty(column.getDataLength())) {
+                        sql.append("(").append(column.getDataLength()).append(")");
+                    } else {
+                        sql.append("(255)");
+                    }
+                    break;
+                case "CHAR":
+                    sql.append("CHAR");
+                    if (StringUtils.isNotEmpty(column.getDataLength())) {
+                        sql.append("(").append(column.getDataLength()).append(")");
+                    } else {
+                        sql.append("(1)");
+                    }
+                    break;
+                case "TEXT":
+                    sql.append("TEXT");
+                    break;
+                case "INT":
+                case "INTEGER":
+                    sql.append("INT");
+                    break;
+                case "BIGINT":
+                    sql.append("BIGINT");
+                    break;
+                case "TINYINT":
+                    sql.append("TINYINT");
+                    break;
+                case "DECIMAL":
+                    sql.append(generateColumnSQLDORIS("DECIMAL", column.getDataLength(), column.getDataScale(), 65, 30));
+                    break;
+                case "FLOAT":
+                    sql.append("FLOAT");
+                    break;
+                case "DOUBLE":
+                    sql.append("DOUBLE");
+                    break;
+                case "DATE":
+                    sql.append("DATE");
+                    break;
+                case "DATETIME":
+                case "TIMESTAMP":
+                    sql.append("DATETIME");
+                    break;
+                default:
+                    sql.append("VARCHAR(255)");
+                    break;
+            }
+
+            if (!column.getNullable()) {
+                sql.append(" NOT NULL");
+            }
+
+            String columnTypeResolved = sql.substring(sql.lastIndexOf(" ") + 1);
+            String defaultClause = buildDorisDefaultClause(columnTypeResolved, column.getDataDefault());
+            sql.append(defaultClause);
+
+            if (StringUtils.isNotEmpty(column.getColComment())) {
+                sql.append(" COMMENT '").append(DatabaseUtil.escapeSingleQuotes(column.getColComment())).append("'");
+            }
+
+            sqlList.add(sql.toString());
+        }
+
+        return sqlList;
+    }
 }

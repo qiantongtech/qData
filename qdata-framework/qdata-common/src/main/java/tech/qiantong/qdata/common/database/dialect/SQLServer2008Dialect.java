@@ -660,4 +660,279 @@ public class SQLServer2008Dialect extends AbstractDbDialect {
         return false;
     }
 
+    @Override
+    public String updateTableComment(DbQueryProperty dbQueryProperty, String tableName, String tableComment) {
+        String schema = StringUtils.isNotEmpty(dbQueryProperty.getSid()) ? dbQueryProperty.getSid() : "dbo";
+        return "EXEC sys.sp_updateextendedproperty @name = N'MS_Description', @value = N'" + DatabaseUtil.escapeSingleQuotes(tableComment) + "', @level0type = N'SCHEMA', @level0name = N'" + schema + "', @level1type = N'TABLE', @level1name = N'" + tableName + "'";
+    }
+
+    // ... existing code ...
+    @Override
+    public String dropColumn(DbQueryProperty dbQueryProperty, String tableName, String colName) {
+        String fullTableName = getTableName(dbQueryProperty, tableName);
+        return "ALTER TABLE " + fullTableName + " DROP COLUMN " + colName;
+    }
+
+    @Override
+    public List<String> modifyColumn(DbQueryProperty dbQueryProperty, String tableName, DbColumn column) {
+        List<String> sqlList = new ArrayList<>();
+        String fullTableName = getTableName(dbQueryProperty, tableName);
+
+        if (Boolean.TRUE.equals(column.getColKey())) {
+            StringBuilder sql = new StringBuilder();
+            sql.append("ALTER TABLE ").append(fullTableName).append(" ADD CONSTRAINT PK_").append(tableName).append("_").append(column.getColName());
+            sql.append(" PRIMARY KEY (").append(column.getColName()).append(")");
+            sqlList.add(sql.toString());
+        } else {
+            StringBuilder sql = new StringBuilder();
+            sql.append("ALTER TABLE ").append(fullTableName).append(" ALTER COLUMN ");
+            sql.append(column.getColName()).append(" ");
+
+            String columnType = column.getDataType().toUpperCase();
+            switch (columnType) {
+                case "VARCHAR":
+                case "VARCHAR2":
+                    sql.append("VARCHAR");
+                    if (StringUtils.isNotEmpty(column.getDataLength())) {
+                        sql.append("(").append(column.getDataLength()).append(")");
+                    } else {
+                        sql.append("(MAX)");
+                    }
+                    break;
+                case "CHAR":
+                    sql.append("CHAR");
+                    if (StringUtils.isNotEmpty(column.getDataLength())) {
+                        sql.append("(").append(column.getDataLength()).append(")");
+                    }
+                    break;
+                case "TEXT":
+                    sql.append("TEXT");
+                    break;
+                case "INT":
+                case "INTEGER":
+                    sql.append("INT");
+                    break;
+                case "BIGINT":
+                    sql.append("BIGINT");
+                    break;
+                case "TINYINT":
+                    sql.append("TINYINT");
+                    break;
+                case "DECIMAL":
+                    sql.append("DECIMAL");
+                    if (StringUtils.isNotEmpty(column.getDataLength())) {
+                        sql.append("(").append(column.getDataLength());
+                        if (StringUtils.isNotEmpty(column.getDataScale())) {
+                            sql.append(", ").append(column.getDataScale());
+                        }
+                        sql.append(")");
+                    }
+                    break;
+                case "FLOAT":
+                    sql.append("FLOAT");
+                    break;
+                case "DOUBLE":
+                    sql.append("FLOAT");
+                    break;
+                case "DATE":
+                    sql.append("DATE");
+                    break;
+                case "DATETIME":
+                    sql.append("DATETIME");
+                    break;
+                default:
+                    sql.append(columnType);
+                    break;
+            }
+
+            if (!column.getNullable()) {
+                sql.append(" NOT NULL");
+            }
+
+            sqlList.add(sql.toString());
+        }
+
+        if (StringUtils.isNotEmpty(column.getDataDefault())) {
+            String defaultSql = "ALTER TABLE " + fullTableName + " ADD CONSTRAINT DF_" + tableName + "_" + column.getColName()
+                    + " DEFAULT " + column.getDataDefault() + " FOR " + column.getColName();
+            sqlList.add(defaultSql);
+        }
+
+        if (StringUtils.isNotEmpty(column.getColComment())) {
+            String schema = StringUtils.isNotEmpty(dbQueryProperty.getSid()) ? dbQueryProperty.getSid() : "dbo";
+            sqlList.add("EXEC sys.sp_addextendedproperty @name = N'MS_Description', @value = N'"
+                    + DatabaseUtil.escapeSingleQuotes(column.getColComment())
+                    + "', @level0type = N'SCHEMA', @level0name = N'" + schema
+                    + "', @level1type = N'TABLE', @level1name = N'" + tableName
+                    + "', @level2type = N'COLUMN', @level2name = N'" + column.getColName() + "'");
+        }
+
+        return sqlList;
+    }
+
+    @Override
+    public List<String> addColumn(DbQueryProperty dbQueryProperty, String tableName, DbColumn column) {
+        List<String> sqlList = new ArrayList<>();
+        String fullTableName = getTableName(dbQueryProperty, tableName);
+
+        if (Boolean.TRUE.equals(column.getColKey())) {
+            StringBuilder sql = new StringBuilder();
+            sql.append("ALTER TABLE ").append(fullTableName).append(" ADD ");
+            sql.append(column.getColName()).append(" ");
+
+            String columnType = column.getDataType().toUpperCase();
+            switch (columnType) {
+                case "VARCHAR":
+                case "VARCHAR2":
+                    sql.append("VARCHAR");
+                    if (StringUtils.isNotEmpty(column.getDataLength())) {
+                        sql.append("(").append(column.getDataLength()).append(")");
+                    } else {
+                        sql.append("(MAX)");
+                    }
+                    break;
+                case "CHAR":
+                    sql.append("CHAR");
+                    if (StringUtils.isNotEmpty(column.getDataLength())) {
+                        sql.append("(").append(column.getDataLength()).append(")");
+                    }
+                    break;
+                case "TEXT":
+                    sql.append("TEXT");
+                    break;
+                case "INT":
+                case "INTEGER":
+                    sql.append("INT");
+                    break;
+                case "BIGINT":
+                    sql.append("BIGINT");
+                    break;
+                case "TINYINT":
+                    sql.append("TINYINT");
+                    break;
+                case "DECIMAL":
+                    sql.append("DECIMAL");
+                    if (StringUtils.isNotEmpty(column.getDataLength())) {
+                        sql.append("(").append(column.getDataLength());
+                        if (StringUtils.isNotEmpty(column.getDataScale())) {
+                            sql.append(", ").append(column.getDataScale());
+                        }
+                        sql.append(")");
+                    }
+                    break;
+                case "FLOAT":
+                    sql.append("FLOAT");
+                    break;
+                case "DOUBLE":
+                    sql.append("FLOAT");
+                    break;
+                case "DATE":
+                    sql.append("DATE");
+                    break;
+                case "DATETIME":
+                    sql.append("DATETIME");
+                    break;
+                default:
+                    sql.append(columnType);
+                    break;
+            }
+
+            if (!column.getNullable()) {
+                sql.append(" NOT NULL");
+            }
+
+            if (StringUtils.isNotEmpty(column.getDataDefault())) {
+                sql.append(" DEFAULT ").append(column.getDataDefault());
+            }
+
+            sqlList.add(sql.toString());
+
+            sql = new StringBuilder();
+            sql.append("ALTER TABLE ").append(fullTableName).append(" ADD CONSTRAINT PK_").append(tableName).append("_").append(column.getColName());
+            sql.append(" PRIMARY KEY (").append(column.getColName()).append(")");
+            sqlList.add(sql.toString());
+        } else {
+            StringBuilder sql = new StringBuilder();
+            sql.append("ALTER TABLE ").append(fullTableName).append(" ADD ");
+            sql.append(column.getColName()).append(" ");
+
+            String columnType = column.getDataType().toUpperCase();
+            switch (columnType) {
+                case "VARCHAR":
+                case "VARCHAR2":
+                    sql.append("VARCHAR");
+                    if (StringUtils.isNotEmpty(column.getDataLength())) {
+                        sql.append("(").append(column.getDataLength()).append(")");
+                    } else {
+                        sql.append("(MAX)");
+                    }
+                    break;
+                case "CHAR":
+                    sql.append("CHAR");
+                    if (StringUtils.isNotEmpty(column.getDataLength())) {
+                        sql.append("(").append(column.getDataLength()).append(")");
+                    }
+                    break;
+                case "TEXT":
+                    sql.append("TEXT");
+                    break;
+                case "INT":
+                case "INTEGER":
+                    sql.append("INT");
+                    break;
+                case "BIGINT":
+                    sql.append("BIGINT");
+                    break;
+                case "TINYINT":
+                    sql.append("TINYINT");
+                    break;
+                case "DECIMAL":
+                    sql.append("DECIMAL");
+                    if (StringUtils.isNotEmpty(column.getDataLength())) {
+                        sql.append("(").append(column.getDataLength());
+                        if (StringUtils.isNotEmpty(column.getDataScale())) {
+                            sql.append(", ").append(column.getDataScale());
+                        }
+                        sql.append(")");
+                    }
+                    break;
+                case "FLOAT":
+                    sql.append("FLOAT");
+                    break;
+                case "DOUBLE":
+                    sql.append("FLOAT");
+                    break;
+                case "DATE":
+                    sql.append("DATE");
+                    break;
+                case "DATETIME":
+                    sql.append("DATETIME");
+                    break;
+                default:
+                    sql.append(columnType);
+                    break;
+            }
+
+            if (!column.getNullable()) {
+                sql.append(" NOT NULL");
+            }
+
+            if (StringUtils.isNotEmpty(column.getDataDefault())) {
+                sql.append(" DEFAULT ").append(column.getDataDefault());
+            }
+
+            sqlList.add(sql.toString());
+        }
+
+        if (StringUtils.isNotEmpty(column.getColComment())) {
+            String schema = StringUtils.isNotEmpty(dbQueryProperty.getSid()) ? dbQueryProperty.getSid() : "dbo";
+            sqlList.add("EXEC sys.sp_addextendedproperty @name = N'MS_Description', @value = N'"
+                    + DatabaseUtil.escapeSingleQuotes(column.getColComment())
+                    + "', @level0type = N'SCHEMA', @level0name = N'" + schema
+                    + "', @level1type = N'TABLE', @level1name = N'" + tableName
+                    + "', @level2type = N'COLUMN', @level2name = N'" + column.getColName() + "'");
+        }
+
+        return sqlList;
+    }
 }

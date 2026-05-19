@@ -96,5 +96,7 @@ public class DpModelMaterializedSaveReqVO extends BaseEntity {
     @Size(max = 256, message = "备注长度不能超过256个字符")
     private String remark;
 
-
+    /**  发布模式 1：删除重建  2：增量发布 */
+    @Schema(description = " 发布模式 1：删除重建  2：增量发布", example = "")
+    private String releaseMode;
 }

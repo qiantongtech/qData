@@ -94,8 +94,7 @@ watch(
     () => props.columns,
     (arr) => {
         if (arr && arr.length > 0) {
-          debugger
-            const requiredFields = arr.filter((item) => item.columnNullable == false);
+            const requiredFields = arr.filter((item) => item.columnNullable == true);
             columnsTwo.value = arr.filter((item) => item.columnKey == false);
             uniqueKeys.value = arr.filter((item) => item.columnKey != false);
 
@@ -158,11 +157,10 @@ function addRow(row, data) {
 function submitForm() {
     queryFormRef.value.validate((valid) => {
         if (!valid) return;
-      if(uniqueKeys.value.length == 0){
+        if(uniqueKeys.value.length == 0){
           proxy.$modal.msgWarning("当前表未设置物理主键，无法执行修改操作。");
           return;
         }
-
         loading.value = true;
         const commentKeyList = uniqueKeys.value.map((item) => item.en).join(",");
         const getModifiedFields = (oldData, newData) => {

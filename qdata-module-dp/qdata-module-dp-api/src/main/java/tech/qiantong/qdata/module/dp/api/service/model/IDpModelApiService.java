@@ -130,4 +130,13 @@ public interface IDpModelApiService {
      * @param modelId 模型id
      */
     List<DpModelColumnRespDTO> getModelIdColumnList(Long modelId);
+
+    /**
+     * 将老的 CAT_CODE 批量更新成新的 CAT_CODE
+     *
+     * @param oldCatCode 旧分类编码
+     * @param newCatCode 新分类编码
+     * @return 受影响行数
+     */
+    int updateCatCode(String oldCatCode, String newCatCode);
 }

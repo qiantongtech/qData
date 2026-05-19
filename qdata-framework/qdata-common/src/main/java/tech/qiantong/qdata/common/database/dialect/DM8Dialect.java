@@ -571,4 +571,124 @@ public class DM8Dialect extends AbstractDbDialect {
         }
         return url;
     }
+
+
+    @Override
+    public String updateTableComment(DbQueryProperty dbQueryProperty, String tableName, String tableComment) {
+        String fullTableName = getTableName(dbQueryProperty, tableName);
+        return "COMMENT ON TABLE " + fullTableName + " IS '" + DatabaseUtil.escapeSingleQuotes(tableComment) + "'";
+    }
+
+    // ... existing code ...
+    @Override
+    public String dropColumn(DbQueryProperty dbQueryProperty, String tableName, String colName) {
+        String fullTableName = getTableName(dbQueryProperty, tableName);
+        return "ALTER TABLE " + fullTableName + " DROP COLUMN " + colName;
+    }
+
+    @Override
+    public List<String> modifyColumn(DbQueryProperty dbQueryProperty, String tableName, DbColumn column) {
+        List<String> sqlList = new ArrayList<>();
+        String fullTableName = getTableName(dbQueryProperty, tableName);
+
+        StringBuilder sql = new StringBuilder();
+        sql.append("ALTER TABLE ").append(fullTableName).append(" MODIFY ");
+        sql.append(column.getColName()).append(" ");
+        sql.append(mapDmColumnType(column));
+
+        if (!column.getNullable()) {
+            sql.append(" NOT NULL");
+        }
+
+        if (StringUtils.isNotEmpty(column.getDataDefault())) {
+            sql.append(" DEFAULT ").append(column.getDataDefault());
+        }
+
+        sqlList.add(sql.toString());
+
+        return sqlList;
+    }
+
+    @Override
+    public List<String> addColumn(DbQueryProperty dbQueryProperty, String tableName, DbColumn column) {
+        List<String> sqlList = new ArrayList<>();
+        String fullTableName = getTableName(dbQueryProperty, tableName);
+
+        StringBuilder sql = new StringBuilder();
+        sql.append("ALTER TABLE ").append(fullTableName).append(" ADD ");
+        sql.append(column.getColName()).append(" ");
+        sql.append(mapDmColumnType(column));
+
+        if (!column.getNullable()) {
+            sql.append(" NOT NULL");
+        }
+
+        if (StringUtils.isNotEmpty(column.getDataDefault())) {
+            sql.append(" DEFAULT ").append(column.getDataDefault());
+        }
+
+        sqlList.add(sql.toString());
+
+        if (StringUtils.isNotEmpty(column.getColComment())) {
+            sqlList.add("COMMENT ON COLUMN " + fullTableName + "." + column.getColName()
+                    + " IS '" + DatabaseUtil.escapeSingleQuotes(column.getColComment()) + "'");
+        }
+
+        return sqlList;
+    }
+
+    @Override
+    public List<String> updateColKey(DbQueryProperty dbQueryProperty, String tableName, List<DbColumn> colKeyDbColumnList) {
+        List<String> sqlList = new ArrayList<>();
+        String fullTableName = getTableName(dbQueryProperty, tableName);
+
+        // 首先删除现有的主键约束
+        sqlList.add("ALTER TABLE " + fullTableName + " DROP PRIMARY KEY CASCADE");
+
+        // 如果提供了新的主键字段列表，则添加新的主键约束
+        if (colKeyDbColumnList != null && !colKeyDbColumnList.isEmpty()) {
+            StringBuilder addSql = new StringBuilder();
+            addSql.append("ALTER TABLE ").append(fullTableName).append(" ADD CONSTRAINT ");
+
+            // 生成约束名：表名_主键字段组合
+            StringBuilder constraintName = new StringBuilder();
+            constraintName.append(tableName.toUpperCase());
+            for (DbColumn col : colKeyDbColumnList) {
+                constraintName.append("_").append(col.getColName().toUpperCase());
+            }
+            // 达梦约束名长度限制为128个字符
+            String finalConstraintName = constraintName.length() > 128 ?
+                    constraintName.substring(0, 128) : constraintName.toString();
+
+            addSql.append(finalConstraintName);
+            addSql.append(" PRIMARY KEY (");
+            for (int i = 0; i < colKeyDbColumnList.size(); i++) {
+                if (i > 0) {
+                    addSql.append(", ");
+                }
+                addSql.append(colKeyDbColumnList.get(i).getColName());
+            }
+            addSql.append(")");
+            sqlList.add(addSql.toString());
+        }
+
+        return sqlList;
+    }
+
+    @Override
+    public String getColumnType(DbColumn column) {
+        String columnType = mapDmColumnType(column);
+        if (columnType.indexOf("(") > 0) {
+            return columnType.substring(0, columnType.lastIndexOf("("));
+        }
+        return columnType;
+    }
+
+    @Override
+    public String getTableName(DbQueryProperty property, String tableName) {
+        if (!org.springframework.util.StringUtils.isEmpty(property.getDbName())) {
+            return "\"" + property.getDbName() + "\".\"" + tableName + "\"";
+        }
+        return tableName;
+    }
 }

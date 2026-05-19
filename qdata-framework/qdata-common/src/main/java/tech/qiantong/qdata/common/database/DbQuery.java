@@ -342,4 +342,24 @@ public interface DbQuery {
      * @return
      */
     String getFlinkSinkSQL(JSONObject config, String taskExecuteType, String flinkTableName, String tableName, List<String> column);
+
+    /**
+     * 删除表
+     *
+     * @param dbQueryProperty
+     * @param tableName
+     * @return
+     */
+    Boolean deleteTable(DbQueryProperty dbQueryProperty, String tableName);
+
+    /**
+     * 更新表 SQL
+     * @param dbQueryProperty
+     * @param tableName
+     * @param tableComment
+     * @param dbColumnList
+     * @return
+     */
+    List<String> generateUpdateTableSQL(DbQueryProperty dbQueryProperty, String tableName, String tableComment,
+                                        List<DbColumn> dbColumnList);
 }

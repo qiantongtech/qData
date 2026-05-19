@@ -48,6 +48,47 @@ public class DpModelPageReqVO extends PageParam {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * 表类型;1:明细表 2:汇总表 3:维度表 4:应用表
+     */
+    @Schema(description = "表类型 1:明细表 2:汇总表 3:维度表 4:应用表")
+    private String tableType;
+    /**
+     * 数仓分层id
+     */
+    @Schema(description = "数仓分层id ")
+    private Long dataLayerId;
+    /**
+     * 业务分类id;只有表类型为非应用表是才有值
+     */
+    @Schema(description = "业务分类id 只有表类型为非应用表是才有值")
+    private Long businessCategoryId;
+    /**
+     * 业务分类层级编码
+     */
+    @Schema(description = "业务分类层级编码 ")
+    private String businessCategoryCode;
+    /**
+     * 数据分域id;只有表类型为非应用表是才有值
+     */
+    @Schema(description = "数据分域id 只有表类型为非应用表是才有值")
+    private Long dataDomainId;
+    /**
+     * 所属主题id（主题规划）;只有表类型为应用表是才有值
+     */
+    @Schema(description = "所属主题id（主题规划） 只有表类型为应用表是才有值")
+    private Long themeDomainId;
+    /**
+     * 所属主题层级编码
+     */
+    @Schema(description = "所属主题层级编码 ")
+    private String themeDomainCode;
+    /**
+     * 表名大小写;1：大写 2：小写
+     */
+    @Schema(description = "表名大小写 1：大写 2：小写")
+    private String tableCase;
+
     @Schema(description = "模型编码", example = "")
     private String modelName;
 
@@ -63,12 +104,6 @@ public class DpModelPageReqVO extends PageParam {
 
 
     private Long documentId;
-
-
-
-
-
-
 
 
 }

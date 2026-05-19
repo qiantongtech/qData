@@ -35,13 +35,17 @@ public interface McTableMapper extends BaseMapperX<McTableDO> {
         MPJLambdaWrapperX<McTableDO> lambdaWrapperX = new MPJLambdaWrapperX<>();
         lambdaWrapperX.selectAll(McTableDO.class)
                 .select("d.source_system_id",
-                        "d.source_system_name"
-                        //"(CASE WHEN da.ID IS NULL THEN '0' ELSE '1' END) AS dssetFlag"
-                        ,"t4.DATASOURCE_NAME AS datasourceName"
-                        ,"t4.DATASOURCE_TYPE AS datasourceType"
+                        "d.source_system_name",
+                        "(CASE WHEN da.ID IS NULL THEN '0' ELSE '1' END) AS dssetFlag"
+                        , "t4.DATASOURCE_NAME AS datasourceName"
+                        , "t4.DATASOURCE_TYPE AS datasourceType"
+                        , "u.PHONENUMBER AS createPhoneNumber"
+                        , "u2.PHONENUMBER AS updatePhoneNumber"
                 )
                 .leftJoin("MC_DB d ON t.DB_ID=d.id")
-                //.leftJoin("DA_ASSET da ON da.TABLE_ID = t.ID AND da.DEL_FLAG = '0'")
+                .leftJoin("SYSTEM_USER u on t.CREATOR_ID = u.USER_ID AND u.DEL_FLAG = '0'")
+                .leftJoin("SYSTEM_USER u2 on t.UPDATER_ID = u2.USER_ID AND u2.DEL_FLAG = '0'")
+                .leftJoin("DA_ASSET da ON da.TABLE_ID = t.ID AND da.DEL_FLAG = '0'")
                 .leftJoin("DA_DATASOURCE t4 ON t.datasource_id = t4.id AND t4.DEL_FLAG = '0'");
         lambdaWrapperX.eqIfPresent(McTableDO::getTaskId, reqVO.getTaskId())
                 .eqIfPresent(McTableDO::getDbId, reqVO.getDbId())
@@ -66,6 +70,11 @@ public interface McTableMapper extends BaseMapperX<McTableDO> {
                 .eqIfPresent(McTableDO::getCreateTime, reqVO.getCreateTime())
                 .eqIfPresent(McTableDO::getDescription, reqVO.getDescription())
                 .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(), allowedColumns);
+        lambdaWrapperX.and(StringUtils.isNotBlank(reqVO.getKeyWord()), wrapper ->
+                wrapper.like(McTableDO::getTableName, reqVO.getKeyWord())
+                        .or()
+                        .like(McTableDO::getTableComment, reqVO.getKeyWord()));
+        lambdaWrapperX.notIn(StringUtils.isNotBlank(reqVO.getHideTableIds()),McTableDO::getId, reqVO.getHideTableIds() != null ? Arrays.asList(reqVO.getHideTableIds().split(",")) : null);
         lambdaWrapperX.apply(selfScopeWithUnassigned, "(t.BUSINESS_LEADER = {0} OR (t.BUSINESS_LEADER IS NULL AND t.RESPONSIBLE_DEPT IS NULL))", reqVO.getBusinessLeader());
         lambdaWrapperX.eq(!selfScopeWithUnassigned && reqVO.getBusinessLeader() != null, McTableDO::getBusinessLeader, reqVO.getBusinessLeader());
         lambdaWrapperX.apply(deptScopeWithUnassigned, "(t.RESPONSIBLE_DEPT = {0} OR (t.BUSINESS_LEADER IS NULL AND t.RESPONSIBLE_DEPT IS NULL))", reqVO.getResponsibleDept());

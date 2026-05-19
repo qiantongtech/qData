@@ -32,15 +32,11 @@
 
 package tech.qiantong.qdata.quality.service.asset;
 
-import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.extension.service.IService;
-import tech.qiantong.qdata.common.core.domain.AjaxResult;
 import tech.qiantong.qdata.common.core.page.PageResult;
+import tech.qiantong.qdata.module.da.api.asset.dto.DaAssetReqDTO;
+import tech.qiantong.qdata.module.da.api.asset.dto.DaAssetRespDTO;
 import tech.qiantong.qdata.quality.dal.dataobject.asset.DaAssetDO;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 数据资产Service接口
@@ -50,4 +46,9 @@ import java.util.Map;
  */
 public interface IDaAssetService extends IService<DaAssetDO> {
 
+    public DaAssetRespDTO insertDaAsset(DaAssetReqDTO daAssetReqDTO);
+
+    public Long getCountByCatCode(String catCode);
+
+    public PageResult<DaAssetRespDTO> daAssetListPage(DaAssetReqDTO daAssetReqDTO);
 }

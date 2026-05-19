@@ -485,4 +485,277 @@ public class PostgreDialect extends AbstractDbDialect {
                 .replace("${batchSize}", String.valueOf(config.getIntValue("batchSize",100)));
         return sql;
     }
+
+    @Override
+    public String updateTableComment(DbQueryProperty dbQueryProperty, String tableName, String tableComment) {
+        String fullTableName = getTableName(dbQueryProperty, tableName);
+        return "COMMENT ON TABLE " + fullTableName + " IS '" + DatabaseUtil.escapeSingleQuotes(tableComment) + "'";
+    }
+
+    // ... existing code ...
+    @Override
+    public String dropColumn(DbQueryProperty dbQueryProperty, String tableName, String colName) {
+        String fullTableName = getTableName(dbQueryProperty, tableName);
+        return "ALTER TABLE " + fullTableName + " DROP COLUMN " + colName;
+    }
+
+    @Override
+    public List<String> modifyColumn(DbQueryProperty dbQueryProperty, String tableName, DbColumn column) {
+        List<String> sqlList = new ArrayList<>();
+        String fullTableName = getTableName(dbQueryProperty, tableName);
+
+        if (Boolean.TRUE.equals(column.getColKey())) {
+            StringBuilder sql = new StringBuilder();
+            sql.append("ALTER TABLE ").append(fullTableName).append(" ADD CONSTRAINT PK_").append(tableName).append("_").append(column.getColName());
+            sql.append(" PRIMARY KEY (").append(column.getColName()).append(")");
+            sqlList.add(sql.toString());
+        } else {
+            StringBuilder sql = new StringBuilder();
+            sql.append("ALTER TABLE ").append(fullTableName).append(" ALTER COLUMN ");
+            sql.append(column.getColName()).append(" TYPE ");
+
+            String columnType = column.getDataType().toUpperCase();
+            switch (columnType) {
+                case "VARCHAR":
+                case "VARCHAR2":
+                    sql.append("VARCHAR");
+                    if (StringUtils.isNotEmpty(column.getDataLength())) {
+                        sql.append("(").append(column.getDataLength()).append(")");
+                    }
+                    break;
+                case "CHAR":
+                    sql.append("CHAR");
+                    if (StringUtils.isNotEmpty(column.getDataLength())) {
+                        sql.append("(").append(column.getDataLength()).append(")");
+                    }
+                    break;
+                case "TEXT":
+                    sql.append("TEXT");
+                    break;
+                case "INT":
+                case "INTEGER":
+                    sql.append("INTEGER");
+                    break;
+                case "BIGINT":
+                    sql.append("BIGINT");
+                    break;
+                case "TINYINT":
+                    sql.append("SMALLINT");
+                    break;
+                case "NUMERIC":
+                case "NUMBER":
+                case "DECIMAL":
+                    sql.append("NUMERIC");
+                    if (StringUtils.isNotEmpty(column.getDataLength())) {
+                        sql.append("(").append(column.getDataLength());
+                        if (StringUtils.isNotEmpty(column.getDataScale())) {
+                            sql.append(", ").append(column.getDataScale());
+                        }
+                        sql.append(")");
+                    }
+                    break;
+                case "FLOAT":
+                    sql.append("REAL");
+                    break;
+                case "DOUBLE":
+                    sql.append("DOUBLE PRECISION");
+                    break;
+                case "DATE":
+                    sql.append("DATE");
+                    break;
+                case "DATETIME":
+                case "TIMESTAMP":
+                    sql.append("TIMESTAMP");
+                    break;
+                default:
+                    sql.append(columnType);
+                    break;
+            }
+
+            sqlList.add(sql.toString());
+
+            if (!column.getNullable()) {
+                sqlList.add("ALTER TABLE " + fullTableName + " ALTER COLUMN " + column.getColName() + " SET NOT NULL");
+            } else {
+                sqlList.add("ALTER TABLE " + fullTableName + " ALTER COLUMN " + column.getColName() + " DROP NOT NULL");
+            }
+
+            if (StringUtils.isNotEmpty(column.getDataDefault())) {
+                sqlList.add("ALTER TABLE " + fullTableName + " ALTER COLUMN " + column.getColName() + " SET DEFAULT " + column.getDataDefault());
+            } else {
+                sqlList.add("ALTER TABLE " + fullTableName + " ALTER COLUMN " + column.getColName() + " DROP DEFAULT");
+            }
+        }
+
+        if (StringUtils.isNotEmpty(column.getColComment())) {
+            sqlList.add("COMMENT ON COLUMN " + fullTableName + "." + column.getColName()
+                    + " IS '" + DatabaseUtil.escapeSingleQuotes(column.getColComment()) + "'");
+        }
+
+        return sqlList;
+    }
+
+    @Override
+    public List<String> addColumn(DbQueryProperty dbQueryProperty, String tableName, DbColumn column) {
+        List<String> sqlList = new ArrayList<>();
+        String fullTableName = getTableName(dbQueryProperty, tableName);
+
+        if (Boolean.TRUE.equals(column.getColKey())) {
+            StringBuilder sql = new StringBuilder();
+            sql.append("ALTER TABLE ").append(fullTableName).append(" ADD COLUMN ");
+            sql.append(column.getColName()).append(" ");
+
+            String columnType = column.getDataType().toUpperCase();
+            switch (columnType) {
+                case "VARCHAR":
+                case "VARCHAR2":
+                    sql.append("VARCHAR");
+                    if (StringUtils.isNotEmpty(column.getDataLength())) {
+                        sql.append("(").append(column.getDataLength()).append(")");
+                    }
+                    break;
+                case "CHAR":
+                    sql.append("CHAR");
+                    if (StringUtils.isNotEmpty(column.getDataLength())) {
+                        sql.append("(").append(column.getDataLength()).append(")");
+                    }
+                    break;
+                case "TEXT":
+                    sql.append("TEXT");
+                    break;
+                case "INT":
+                case "INTEGER":
+                    sql.append("INTEGER");
+                    break;
+                case "BIGINT":
+                    sql.append("BIGINT");
+                    break;
+                case "TINYINT":
+                    sql.append("SMALLINT");
+                    break;
+                case "NUMERIC":
+                case "NUMBER":
+                case "DECIMAL":
+                    sql.append("NUMERIC");
+                    if (StringUtils.isNotEmpty(column.getDataLength())) {
+                        sql.append("(").append(column.getDataLength());
+                        if (StringUtils.isNotEmpty(column.getDataScale())) {
+                            sql.append(", ").append(column.getDataScale());
+                        }
+                        sql.append(")");
+                    }
+                    break;
+                case "FLOAT":
+                    sql.append("REAL");
+                    break;
+                case "DOUBLE":
+                    sql.append("DOUBLE PRECISION");
+                    break;
+                case "DATE":
+                    sql.append("DATE");
+                    break;
+                case "DATETIME":
+                case "TIMESTAMP":
+                    sql.append("TIMESTAMP");
+                    break;
+                default:
+                    sql.append(columnType);
+                    break;
+            }
+
+            if (!column.getNullable()) {
+                sql.append(" NOT NULL");
+            }
+
+            if (StringUtils.isNotEmpty(column.getDataDefault())) {
+                sql.append(" DEFAULT ").append(column.getDataDefault());
+            }
+
+            sqlList.add(sql.toString());
+
+            sql = new StringBuilder();
+            sql.append("ALTER TABLE ").append(fullTableName).append(" ADD CONSTRAINT PK_").append(tableName).append("_").append(column.getColName());
+            sql.append(" PRIMARY KEY (").append(column.getColName()).append(")");
+            sqlList.add(sql.toString());
+        } else {
+            StringBuilder sql = new StringBuilder();
+            sql.append("ALTER TABLE ").append(fullTableName).append(" ADD COLUMN ");
+            sql.append(column.getColName()).append(" ");
+
+            String columnType = column.getDataType().toUpperCase();
+            switch (columnType) {
+                case "VARCHAR":
+                case "VARCHAR2":
+                    sql.append("VARCHAR");
+                    if (StringUtils.isNotEmpty(column.getDataLength())) {
+                        sql.append("(").append(column.getDataLength()).append(")");
+                    }
+                    break;
+                case "CHAR":
+                    sql.append("CHAR");
+                    if (StringUtils.isNotEmpty(column.getDataLength())) {
+                        sql.append("(").append(column.getDataLength()).append(")");
+                    }
+                    break;
+                case "TEXT":
+                    sql.append("TEXT");
+                    break;
+                case "INT":
+                case "INTEGER":
+                    sql.append("INTEGER");
+                    break;
+                case "BIGINT":
+                    sql.append("BIGINT");
+                    break;
+                case "TINYINT":
+                    sql.append("SMALLINT");
+                    break;
+                case "NUMERIC":
+                case "NUMBER":
+                case "DECIMAL":
+                    sql.append("NUMERIC");
+                    if (StringUtils.isNotEmpty(column.getDataLength())) {
+                        sql.append("(").append(column.getDataLength());
+                        if (StringUtils.isNotEmpty(column.getDataScale())) {
+                            sql.append(", ").append(column.getDataScale());
+                        }
+                        sql.append(")");
+                    }
+                    break;
+                case "FLOAT":
+                    sql.append("REAL");
+                    break;
+                case "DOUBLE":
+                    sql.append("DOUBLE PRECISION");
+                    break;
+                case "DATE":
+                    sql.append("DATE");
+                    break;
+                case "DATETIME":
+                case "TIMESTAMP":
+                    sql.append("TIMESTAMP");
+                    break;
+                default:
+                    sql.append(columnType);
+                    break;
+            }
+
+            if (!column.getNullable()) {
+                sql.append(" NOT NULL");
+            }
+
+            if (StringUtils.isNotEmpty(column.getDataDefault())) {
+                sql.append(" DEFAULT ").append(column.getDataDefault());
+            }
+
+            sqlList.add(sql.toString());
+        }
+
+        if (StringUtils.isNotEmpty(column.getColComment())) {
+            sqlList.add("COMMENT ON COLUMN " + fullTableName + "." + column.getColName()
+                    + " IS '" + DatabaseUtil.escapeSingleQuotes(column.getColComment()) + "'");
+        }
+
+        return sqlList;
+    }
 }

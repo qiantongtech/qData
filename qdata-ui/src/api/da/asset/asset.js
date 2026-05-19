@@ -143,3 +143,21 @@ export function dataLineage(id) {
     });
 }
 
+// 获取树结构
+export function getTreeData(query) {
+    return request({
+        url: '/da/asset/getTreeData',
+        method: 'get',
+        params: query
+    });
+}
+
+// 批量发布
+export function batchPublish(data) {
+    return request({
+        url: '/da/asset/batchPublish',
+        method: 'post',
+        data: data
+    });
+}
+

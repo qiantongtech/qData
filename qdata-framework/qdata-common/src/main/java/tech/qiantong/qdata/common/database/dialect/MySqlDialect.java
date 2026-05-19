@@ -542,4 +542,295 @@ public class MySqlDialect extends AbstractDbDialect {
         }
         return url;
     }
+
+
+    @Override
+    public String updateTableComment(DbQueryProperty dbQueryProperty, String tableName, String tableComment) {
+        String fullTableName = getTableName(dbQueryProperty, tableName);
+        return "ALTER TABLE " + fullTableName + " COMMENT '" + DatabaseUtil.escapeSingleQuotes(tableComment) + "'";
+    }
+
+    // ... existing code ...
+    @Override
+    public String dropColumn(DbQueryProperty dbQueryProperty, String tableName, String colName) {
+        String fullTableName = getTableName(dbQueryProperty, tableName);
+        return "ALTER TABLE " + fullTableName + " DROP COLUMN " + escapeReservedKeyword(colName);
+    }
+
+    @Override
+    public List<String> modifyColumn(DbQueryProperty dbQueryProperty, String tableName, DbColumn column) {
+        List<String> sqlList = new ArrayList<>();
+        String fullTableName = getTableName(dbQueryProperty, tableName);
+
+        StringBuilder sql = new StringBuilder();
+        sql.append("ALTER TABLE ").append(fullTableName).append(" MODIFY ");
+        sql.append(escapeReservedKeyword(column.getColName())).append(" ");
+
+        String columnType = column.getDataType();
+        switch (columnType) {
+            case "varchar":
+            case "varchar2":
+            case "VARCHAR":
+            case "VARCHAR2":
+                sql.append("VARCHAR");
+                if (StringUtils.isNotEmpty(column.getDataLength())) {
+                    sql.append("(").append(column.getDataLength()).append(")");
+                }
+                break;
+            case "CHAR":
+            case "char":
+                sql.append("CHAR");
+                if (StringUtils.isNotEmpty(column.getDataLength())) {
+                    sql.append("(").append(column.getDataLength()).append(")");
+                }
+                break;
+            case "TEXT":
+            case "text":
+                sql.append("TEXT");
+                break;
+            case "INT":
+            case "INTEGER":
+            case "int":
+            case "integer":
+                sql.append("INT");
+                break;
+            case "bigint":
+            case "BIGINT":
+                sql.append("BIGINT");
+                break;
+            case "tinyint":
+            case "TINYINT":
+                sql.append("TINYINT");
+                break;
+            case "NUMERIC":
+            case "NUMBER":
+            case "decimal":
+            case "DECIMAL":
+                sql.append(generateColumnSQLMySql("DECIMAL", column.getDataLength(), column.getDataScale(), 65, 30));
+                break;
+            case "float":
+            case "FLOAT":
+                sql.append("FLOAT");
+                break;
+            case "double":
+            case "DOUBLE":
+                sql.append("DOUBLE");
+                break;
+            case "date":
+            case "DATE":
+                sql.append("DATE");
+                break;
+            case "timestamp":
+            case "TIMESTAMP":
+            case "datetime":
+            case "DATETIME":
+                sql.append("DATETIME");
+                break;
+            default:
+                sql.append(columnType);
+                break;
+        }
+
+        if (!column.getNullable()) {
+            sql.append(" NOT NULL");
+        }
+
+        if (StringUtils.isNotEmpty(column.getDataDefault())) {
+            sql.append(" DEFAULT ").append(column.getDataDefault());
+        } else if (column.getNullable()) {
+            sql.append(" DEFAULT NULL");
+        }
+
+        if (StringUtils.isNotEmpty(column.getColComment())) {
+            sql.append(" COMMENT '").append(DatabaseUtil.escapeSingleQuotes(column.getColComment())).append("'");
+        }
+
+        sqlList.add(sql.toString());
+
+        return sqlList;
+    }
+
+    @Override
+    public List<String> addColumn(DbQueryProperty dbQueryProperty, String tableName, DbColumn column) {
+        List<String> sqlList = new ArrayList<>();
+        String fullTableName = getTableName(dbQueryProperty, tableName);
+
+        StringBuilder sql = new StringBuilder();
+        sql.append("ALTER TABLE ").append(fullTableName).append(" ADD ");
+        sql.append(escapeReservedKeyword(column.getColName())).append(" ");
+
+        String columnType = column.getDataType();
+        switch (columnType) {
+            case "varchar":
+            case "varchar2":
+            case "VARCHAR":
+            case "VARCHAR2":
+                sql.append("VARCHAR");
+                if (StringUtils.isNotEmpty(column.getDataLength())) {
+                    sql.append("(").append(column.getDataLength()).append(")");
+                }
+                break;
+            case "CHAR":
+            case "char":
+                sql.append("CHAR");
+                if (StringUtils.isNotEmpty(column.getDataLength())) {
+                    sql.append("(").append(column.getDataLength()).append(")");
+                }
+                break;
+            case "TEXT":
+            case "text":
+                sql.append("TEXT");
+                break;
+            case "INT":
+            case "INTEGER":
+            case "int":
+            case "integer":
+                sql.append("INT");
+                break;
+            case "bigint":
+            case "BIGINT":
+                sql.append("BIGINT");
+                break;
+            case "tinyint":
+            case "TINYINT":
+                sql.append("TINYINT");
+                break;
+            case "NUMERIC":
+            case "NUMBER":
+            case "decimal":
+            case "DECIMAL":
+                sql.append(generateColumnSQLMySql("DECIMAL", column.getDataLength(), column.getDataScale(), 65, 30));
+                break;
+            case "float":
+            case "FLOAT":
+                sql.append("FLOAT");
+                break;
+            case "double":
+            case "DOUBLE":
+                sql.append("DOUBLE");
+                break;
+            case "date":
+            case "DATE":
+                sql.append("DATE");
+                break;
+            case "timestamp":
+            case "TIMESTAMP":
+            case "datetime":
+            case "DATETIME":
+                sql.append("DATETIME");
+                break;
+            default:
+                sql.append(columnType);
+                break;
+        }
+
+        if (!column.getNullable()) {
+            sql.append(" NOT NULL");
+        }
+
+        if (StringUtils.isNotEmpty(column.getDataDefault())) {
+            sql.append(" DEFAULT ").append(column.getDataDefault());
+        } else if (column.getNullable()) {
+            sql.append(" DEFAULT NULL");
+        }
+
+        if (StringUtils.isNotEmpty(column.getColComment())) {
+            sql.append(" COMMENT '").append(DatabaseUtil.escapeSingleQuotes(column.getColComment())).append("'");
+        }
+
+        sqlList.add(sql.toString());
+
+        return sqlList;
+    }
+
+    @Override
+    public List<String> updateColKey(DbQueryProperty dbQueryProperty, String tableName, List<DbColumn> colKeyDbColumnList) {
+        List<String> sqlList = new ArrayList<>();
+        String fullTableName = getTableName(dbQueryProperty, tableName);
+
+        // 首先删除现有的主键约束
+        sqlList.add("ALTER TABLE " + fullTableName + " DROP PRIMARY KEY");
+
+        // 如果提供了新的主键字段列表，则添加新的主键约束
+        if (colKeyDbColumnList != null && !colKeyDbColumnList.isEmpty()) {
+            StringBuilder sql = new StringBuilder();
+            sql.append("ALTER TABLE ").append(fullTableName).append(" ADD PRIMARY KEY (");
+
+            for (int i = 0; i < colKeyDbColumnList.size(); i++) {
+                if (i > 0) {
+                    sql.append(", ");
+                }
+                sql.append(escapeReservedKeyword(colKeyDbColumnList.get(i).getColName()));
+            }
+
+            sql.append(")");
+            sqlList.add(sql.toString());
+        }
+
+        return sqlList;
+    }
+
+    @Override
+    public String getColumnType(DbColumn column) {
+        String columnType = column.getDataType();
+        switch (column.getDataType()) {
+            case "varchar":
+            case "varchar2":
+            case "VARCHAR":
+            case "VARCHAR2":  // MySQL不支持VARCHAR2，映射为VARCHAR
+                return "VARCHAR";
+            case "CHAR":
+            case "char":
+                return "CHAR";
+            case "TEXT":
+            case "text":
+                return "TEXT";
+            case "INT":
+            case "INTEGER":
+            case "int":
+            case "integer":
+                return "INT";
+            case "bigint":
+            case "BIGINT":
+                return "BIGINT";
+            case "tinyint":
+            case "TINYINT":
+                return "TINYINT";
+            case "NUMERIC":
+            case "NUMBER":
+            case "decimal":
+            case "DECIMAL":
+                return "DECIMAL";
+            case "float":
+            case "FLOAT":
+                return "FLOAT";
+            case "double":
+            case "DOUBLE":
+                return "DOUBLE";
+            case "date":
+            case "DATE":
+                return "DATE";
+            case "timestamp":
+            case "TIMESTAMP":
+            case "datetime":
+            case "DATETIME":
+                return "DATETIME";
+            case "time":
+            case "TIME":
+                return "TIME";
+            case "year":
+            case "YEAR":
+                return "YEAR";
+            default:
+                return columnType; // 默认处理未知类型
+        }
+    }
+
+    @Override
+    public String getTableName(DbQueryProperty property, String tableName) {
+        if (!org.springframework.util.StringUtils.isEmpty(property.getDbName())) {
+            return "`"+property.getDbName() + "`.`" + tableName + "`";
+        }
+        return tableName;
+    }
 }

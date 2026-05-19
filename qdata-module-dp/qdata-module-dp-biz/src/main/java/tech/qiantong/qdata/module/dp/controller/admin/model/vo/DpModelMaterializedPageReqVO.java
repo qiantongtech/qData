@@ -79,7 +79,8 @@ public class DpModelMaterializedPageReqVO extends PageParam {
     @Schema(description = "资产表id", example = "")
     private String assetId;
 
-
+    /**  发布模式 1：删除重建  2：增量发布 */
+    private String releaseMode;
 
 
 }

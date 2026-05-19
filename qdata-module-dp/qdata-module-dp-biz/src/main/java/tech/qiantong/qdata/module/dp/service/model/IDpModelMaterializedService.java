@@ -43,6 +43,7 @@ import tech.qiantong.qdata.module.dp.dal.dataobject.model.DpModelMaterializedDO;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+
 /**
  * 物化模型记录Service接口
  *
@@ -109,7 +110,7 @@ public interface IDpModelMaterializedService extends IService<DpModelMaterialize
      *
      * @param importExcelList 物化模型记录数据列表
      * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
+     * @param operName        操作用户
      * @return 结果
      */
     String importDpModelMaterialized(List<DpModelMaterializedRespVO> importExcelList, boolean isUpdateSupport, String operName);

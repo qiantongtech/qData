@@ -219,4 +219,65 @@ public interface DbDialect {
      * @return
      */
     String trainToJdbcUrl(DbQueryProperty property);
+
+
+    /**
+     * 获取表信息sql
+     * @param dbQueryProperty
+     * @param tableName
+     * @return
+     */
+    String table(DbQueryProperty dbQueryProperty,String tableName);
+
+    /**
+     * 获取更改注释的SQL
+     * @param dbQueryProperty
+     * @param tableName
+     * @param tableComment
+     * @return
+     */
+    String updateTableComment(DbQueryProperty dbQueryProperty, String tableName, String tableComment);
+
+    /**
+     * 修改列
+     * @param dbQueryProperty
+     * @param tableName
+     * @param column
+     * @return
+     */
+    List<String> modifyColumn(DbQueryProperty dbQueryProperty, String tableName, DbColumn column);
+
+    /**
+     * 添加列
+     * @param dbQueryProperty
+     * @param tableName
+     * @param column
+     * @return
+     */
+    List<String> addColumn(DbQueryProperty dbQueryProperty, String tableName, DbColumn column);
+
+    /**
+     * 删除列
+     * @param dbQueryProperty
+     * @param tableName
+     * @param colName
+     * @return
+     */
+    String dropColumn(DbQueryProperty dbQueryProperty, String tableName, String colName);
+
+    /**
+     * 更新主键
+     * @param dbQueryProperty
+     * @param tableName
+     * @param colKeyDbColumnList
+     * @return
+     */
+    List<String> updateColKey(DbQueryProperty dbQueryProperty, String tableName, List<DbColumn> colKeyDbColumnList);
+
+    /**
+     * 获取列类型
+     * @param column
+     * @return
+     */
+    String getColumnType(DbColumn column);
 }

@@ -30,11 +30,15 @@
  * 更多信息请访问：https://qdata.qiantong.tech/business.html
  */
 
-
+import { defineStore } from 'pinia'
+import { getTreeData as getAssetTree } from "@/api/da/asset/asset"
+import { getTreeData as getModelTree } from "@/api/dp/model/model"
 
 export const useProjectStore = defineStore('project', {
     state: () => ({
-        project: {}
+        project: {},
+        assetDeptTree: [],
+        modelDeptTree: []
     }),
     actions: {
         // 设置整个项目对象
@@ -44,6 +48,34 @@ export const useProjectStore = defineStore('project', {
         // 设置项目中的某个属性
         setProjectField(field, value) {
             this.project[field] = value
+        },
+        // 获取资产类目树
+        async getAssetDeptTree(refresh = false) {
+            if (this.assetDeptTree.length > 0 && !refresh) {
+                return this.assetDeptTree
+            }
+            try {
+                const response = await getAssetTree({ validFlag: true })
+                this.assetDeptTree = response.data || []
+                return this.assetDeptTree
+            } catch (error) {
+                console.error('获取资产类目树失败:', error)
+                return []
+            }
+        },
+        // 获取模型类目树
+        async getModelDeptTree(refresh = false) {
+            if (this.modelDeptTree.length > 0 && !refresh) {
+                return this.modelDeptTree
+            }
+            try {
+                const response = await getModelTree({ validFlag: true })
+                this.modelDeptTree = response.data || []
+                return this.modelDeptTree
+            } catch (error) {
+                console.error('获取模型类目树失败:', error)
+                return []
+            }
         }
     }
 })

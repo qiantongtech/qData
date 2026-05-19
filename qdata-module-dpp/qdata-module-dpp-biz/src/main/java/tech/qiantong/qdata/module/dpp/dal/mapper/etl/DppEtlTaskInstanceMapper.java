@@ -44,7 +44,6 @@ import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlTaskInstance
 import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlNodeInstanceDO;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlTaskInstanceDO;
 import tech.qiantong.qdata.mybatis.core.mapper.BaseMapperX;
-import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -116,4 +115,12 @@ public interface DppEtlTaskInstanceMapper extends BaseMapperX<DppEtlTaskInstance
      * @return
      */
     List<DppEtlTaskInstanceTreeListRespVO> listSubNodeInstance(@Param("taskInstanceId") Long taskInstanceId, @Param("nodeInstanceId") Long nodeInstanceId);
+
+    /**
+     * 获取最新的任务实例
+     *
+     * @param taskIdList
+     * @return
+     */
+    List<DppEtlTaskInstanceDO> getLastTaskInstance(@Param("taskIdList") List<Long> taskIdList);
 }

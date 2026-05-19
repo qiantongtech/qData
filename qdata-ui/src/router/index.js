@@ -69,6 +69,7 @@ import dpDataElemRouter from './dp/dataElem/index.js';
 // // 研发路由
 import dppRouter from './dpp/index.js';
 
+import dmRouter from './dm/businessLayer/index.js'
 
 import dPdocument from './dp/document/index.js';
 
@@ -108,7 +109,7 @@ import metaDynamicRouter from './meta/dynamic/index.js';
  */
 
 // 公共路由
-export const constantRoutes = [...systemPublicRouter, ...examplePublicRouter, ...daPublicRouter, ...dsCatRouter, ...dsPublicRouter, ...dPdocument, ...dpPublicRouter, ...dpDataElemRouter, ...daAssetRouter, ...daQualityRouter, ...dppRouter, ...mcPublicRouter, ...metaPublicRouter, ...mcDynamicRouter, ...metaDynamicRouter];
+export const constantRoutes = [...systemPublicRouter, ...examplePublicRouter, ...daPublicRouter, ...dsCatRouter, ...dsPublicRouter, ...dPdocument, ...dpPublicRouter, ...dpDataElemRouter, ...daAssetRouter, ...daQualityRouter, ...dppRouter, ...mcPublicRouter, ...metaPublicRouter, ...mcDynamicRouter, ...metaDynamicRouter, ...dmRouter];
 
 // 动态路由，基于用户权限动态去加载
 export const dynamicRoutes = [...systemDynamicRouter, ...exampleDynamicRouter, ...daDynamicRouter, ...dsDynamicRouter,];

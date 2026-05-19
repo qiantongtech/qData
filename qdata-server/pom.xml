@@ -109,6 +109,13 @@
             <version>${qdata.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>tech.qiantong</groupId>
+            <artifactId>qdata-module-dg-biz</artifactId>
+            <version>${qdata.version}</version>
+        </dependency>
+
+
         <!-- spring-boot-devtools -->
 <!--        <dependency>-->
 <!--            <groupId>org.springframework.boot</groupId>-->

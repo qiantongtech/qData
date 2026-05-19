@@ -32,14 +32,8 @@
 
 package tech.qiantong.qdata.module.dm.dal.dataobject.dm;
 
-import io.swagger.v3.oas.annotations.media.Schema;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.*;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
-import tech.qiantong.qdata.common.annotation.Excel;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
@@ -108,4 +102,17 @@ public class DmDataDomainDO extends BaseEntity {
      */
     @TableField(exist = false)
     private String ownerUserPhoneNumber;
+
+    /**
+     * 业务分类id
+     */
+    @TableField(exist = false)
+    private Long businessCategoryId;
+
+
+    /**
+     * 统计数量
+     */
+    @TableField(exist = false)
+    private Long num;
 }

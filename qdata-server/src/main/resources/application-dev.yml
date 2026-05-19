@@ -66,6 +66,11 @@ spring:
         acknowledge-mode: manual
         concurrency: 1
         max-concurrency: 10
+  data:
+    neo4j:
+      uri: bolt://127.0.0.1:7687
+      username: neo4j
+      password: 密码
   datasource:
     druid:
       stat-view-servlet:

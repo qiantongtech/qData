@@ -37,7 +37,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import tech.qiantong.qdata.common.annotation.Excel;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
+import tech.qiantong.qdata.common.database.core.DbColumn;
 import tech.qiantong.qdata.module.dp.api.dataElem.dto.DpDataElemRuleRelRespDTO;
+import tech.qiantong.qdata.module.mc.api.column.dto.McColumnRespDTO;
 
 import java.util.List;
 import java.util.Set;
@@ -180,4 +182,30 @@ public class DaAssetColumnDO extends BaseEntity {
      */
     @TableField(exist = false)
     private List<DpDataElemRuleRelRespDTO> cleanRuleList;
+
+    public DaAssetColumnDO(McColumnRespDTO column) {
+        if (column != null) {
+            this.columnLength = (column.getColumnLength() != null) ? Long.valueOf(column.getColumnLength()) : null;
+            this.columnName = column.getColumnName();
+            this.columnComment = column.getColumnComment();
+            this.columnType = column.getColumnType();
+            this.columnScale = (column.getColumnScale() != null) ? Long.valueOf(column.getColumnScale()) : null;
+            this.defaultValue = column.getDefaultValue();
+            this.pkFlag = column.getPkFlag();
+            this.nullableFlag = column.getNullableFlag();
+        }
+    }
+
+    public DbColumn toDbColumn() {
+        return DbColumn.builder()
+                .colName(this.columnName)
+                .colComment(this.columnComment)
+                .dataType(this.columnType)
+                .dataLength(String.valueOf(this.columnLength))
+                .dataPrecision(String.valueOf(this.columnLength))
+                .dataScale(String.valueOf(this.columnScale))
+                .colKey(this.pkFlag.equals("1"))
+                .nullable(this.nullableFlag.equals("0"))
+                .build();
+    }
 }

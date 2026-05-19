@@ -215,6 +215,7 @@
         <module>qdata-module-dm</module>
         <module>qdata-mdule-ai</module>
         <module>qdata-module-mc</module>
+        <module>qdata-module-dg</module>
     </modules>
     <packaging>pom</packaging>
 

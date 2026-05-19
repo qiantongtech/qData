@@ -32,38 +32,36 @@
 
 package tech.qiantong.qdata.module.dp.service.model.impl;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
 import cn.hutool.core.bean.BeanUtil;
+import com.alibaba.fastjson2.JSON;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import lombok.extern.slf4j.Slf4j;
-
-import javax.annotation.Resource;
-
 import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import tech.qiantong.qdata.common.core.domain.BatchDeleteCheck;
+import tech.qiantong.qdata.common.core.domain.TreeData;
 import tech.qiantong.qdata.common.core.page.PageResult;
-import tech.qiantong.qdata.common.database.core.DbTable;
 import tech.qiantong.qdata.common.exception.ServiceException;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import tech.qiantong.qdata.module.da.api.datasource.dto.DaDatasourceRespDTO;
 import tech.qiantong.qdata.module.da.api.service.asset.IDaDatasourceApiService;
+import tech.qiantong.qdata.module.dm.api.service.businessCategory.IDmBusinessCategoryApiService;
+import tech.qiantong.qdata.module.dm.api.service.themeDomain.IDmThemeDomainApiService;
 import tech.qiantong.qdata.module.dp.api.dataElem.dto.DpDataElemAssetRelReqDTO;
 import tech.qiantong.qdata.module.dp.api.dataElem.dto.DpDataElemAssetRelRespDTO;
 import tech.qiantong.qdata.module.dp.api.dataElem.dto.DpDataElemRespDTO;
 import tech.qiantong.qdata.module.dp.api.model.dto.DpModelColumnRespDTO;
 import tech.qiantong.qdata.module.dp.api.model.dto.DpModelRespDTO;
 import tech.qiantong.qdata.module.dp.api.service.model.IDpModelApiService;
-import tech.qiantong.qdata.module.dp.controller.admin.model.vo.*;
-import tech.qiantong.qdata.module.dp.convert.model.DpModelColumnConvert;
-import tech.qiantong.qdata.module.dp.convert.model.DpModelConvert;
-import tech.qiantong.qdata.module.dp.convert.model.DpModelMaterializedConvert;
+import tech.qiantong.qdata.module.dp.controller.admin.model.vo.DpModelColumnSaveReqVO;
+import tech.qiantong.qdata.module.dp.controller.admin.model.vo.DpModelPageReqVO;
+import tech.qiantong.qdata.module.dp.controller.admin.model.vo.DpModelRespVO;
+import tech.qiantong.qdata.module.dp.controller.admin.model.vo.DpModelSaveReqVO;
 import tech.qiantong.qdata.module.dp.dal.dataobject.dataElem.DpDataElemAssetRelDO;
 import tech.qiantong.qdata.module.dp.dal.dataobject.dataElem.DpDataElemDO;
 import tech.qiantong.qdata.module.dp.dal.dataobject.document.DpDocumentDO;
@@ -75,6 +73,10 @@ import tech.qiantong.qdata.module.dp.service.dataElem.IDpDataElemService;
 import tech.qiantong.qdata.module.dp.service.document.IDpDocumentService;
 import tech.qiantong.qdata.module.dp.service.model.IDpModelColumnService;
 import tech.qiantong.qdata.module.dp.service.model.IDpModelService;
+
+import javax.annotation.Resource;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 逻辑模型Service业务层处理
@@ -101,6 +103,12 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
     @Resource
     private IDpDocumentService dpDocumentService;
 
+    @Resource
+    private IDmThemeDomainApiService dmThemeDomainApiService;
+
+    @Resource
+    private IDmBusinessCategoryApiService dmBusinessCategoryApiService;
+
 
     /**
      * 根据资产id和代码表id查询数据元信息
@@ -124,9 +132,7 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
         ids.addAll(codeId);
         List<DpDataElemDO> dpDataElemDOS = new ArrayList<>();
         if (StringUtils.isNotEmpty(ids)) {
-            dpDataElemDOS = iDpDataElemService.lambdaQuery()
-                    .in(DpDataElemDO::getId, ids)
-                    .list();
+            dpDataElemDOS = iDpDataElemService.lambdaQuery().in(DpDataElemDO::getId, ids).list();
             for (DpDataElemDO dpDataElemDO : dpDataElemDOS) {
                 Set<Long> columnId = new HashSet<>();
                 for (DpDataElemAssetRelDO dpDataElemAssetRelDO : list) {
@@ -214,9 +220,7 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
     public boolean updateElementAssetRelation(DpDataElemAssetRelReqDTO dpDataElemAssetRel) {
         boolean save = false;
         Long assetId = dpDataElemAssetRel.getAssetId();
-        iDpDataElemAssetRelService.lambdaUpdate()
-                .eq(DpDataElemAssetRelDO::getAssetId, assetId)
-                .remove();
+        iDpDataElemAssetRelService.lambdaUpdate().eq(DpDataElemAssetRelDO::getAssetId, assetId).remove();
         Set<Long> elementIds = dpDataElemAssetRel.getElementIds();
         List<DpDataElemAssetRelDO> dpDataElemAssetRelDOList = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(elementIds)) {
@@ -263,8 +267,7 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
 
     @Override
     public Long getCountByCatCode(String catCode) {
-        return baseMapper.selectCount(Wrappers.lambdaQuery(DpModelDO.class)
-                .likeRight(DpModelDO::getCatCode, catCode));
+        return baseMapper.selectCount(Wrappers.lambdaQuery(DpModelDO.class).likeRight(DpModelDO::getCatCode, catCode));
     }
 
     /**
@@ -310,21 +313,21 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
     @Override
     public PageResult<DpModelDO> getDpModelPage(DpModelPageReqVO pageReqVO) {
         PageResult<DpModelDO> dpModelDOPageResult = dpModelMapper.selectPage(pageReqVO);
-        List<DpModelDO> rows = (List<DpModelDO>) dpModelDOPageResult.getRows();
-        if (CollectionUtils.isEmpty(rows)) {
-            return dpModelDOPageResult;
-        }
-        for (DpModelDO row : rows) {
-            //字段
-            DpModelColumnSaveReqVO dpModelColumnSaveReqVO = new DpModelColumnSaveReqVO();
-            dpModelColumnSaveReqVO.setModelId(row.getId());
-            long count = iDpModelColumnService.countByDpModelColumn(dpModelColumnSaveReqVO);
-            row.setColumnCount(count);
-
-            //资产
-
-        }
-        dpModelDOPageResult.setRows(rows);
+//        List<DpModelDO> rows = (List<DpModelDO>) dpModelDOPageResult.getRows();
+//        if (CollectionUtils.isEmpty(rows)) {
+//            return dpModelDOPageResult;
+//        }
+//        for (DpModelDO row : rows) {
+//            //字段
+//            DpModelColumnSaveReqVO dpModelColumnSaveReqVO = new DpModelColumnSaveReqVO();
+//            dpModelColumnSaveReqVO.setModelId(row.getId());
+//            long count = iDpModelColumnService.countByDpModelColumn(dpModelColumnSaveReqVO);
+//            row.setColumnCount(count);
+//
+//            //资产
+//
+//        }
+//        dpModelDOPageResult.setRows(rows);
         return dpModelDOPageResult;
     }
 
@@ -354,8 +357,24 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
     public DpModelDO getDpModelById(Long id) {
         MPJLambdaWrapper<DpModelDO> mpjLambdaWrapper = new MPJLambdaWrapper();
         mpjLambdaWrapper.selectAll(DpModelDO.class)
-                .select("t2.name AS catName")
+                .select("t2.name AS catName",
+                        "t3.NAME AS dataLayerName",
+                        "t3.ENG_NAME AS dataLayerEngName",
+                        "t4.NAME AS businessCategoryName",
+                        "t4.ENG_NAME AS businessCategoryEngName",
+                        "t5.NAME AS dataDomainName",
+                        "t5.ENG_NAME AS dataDomainEngName",
+                        "t6.NAME AS themeDomainName",
+                        "t6.ENG_NAME AS themeDomainEngName",
+                        "u.PHONENUMBER AS createUserPhoneNumber",
+                        "u2.PHONENUMBER AS updateUserPhoneNumber")
+                .leftJoin("SYSTEM_USER u on t.CREATOR_ID = u.USER_ID AND u.DEL_FLAG = '0'")
+                .leftJoin("SYSTEM_USER u2 on t.UPDATER_ID = u2.USER_ID AND u2.DEL_FLAG = '0'")
                 .leftJoin("ATT_MODEL_CAT t2 on t.CAT_CODE = t2.CODE AND t2.DEL_FLAG = '0'")
+                .leftJoin("DM_DATA_LAYER t3 ON t.DATA_LAYER_ID = t3.id AND t3.DEL_FLAG = '0'")
+                .leftJoin("DM_BUSINESS_CATEGORY t4 ON t.BUSINESS_CATEGORY_ID = t4.id AND t4.DEL_FLAG = '0'")
+                .leftJoin("DM_DATA_DOMAIN t5 ON t.DATA_DOMAIN_ID = t5.id AND t5.DEL_FLAG = '0'")
+                .leftJoin("DM_THEME_DOMAIN t6 ON t.THEME_DOMAIN_ID = t6.id AND t6.DEL_FLAG = '0'")
                 .eq(DpModelDO::getId, id);
         DpModelDO dpModelDO = dpModelMapper.selectJoinOne(DpModelDO.class, mpjLambdaWrapper);
         if (dpModelDO == null) {
@@ -363,18 +382,21 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
         }
         if ("2".equals(dpModelDO.getCreateType())) {
             DaDatasourceRespDTO datasource = daDatasourceApiService.getDatasourceById(dpModelDO.getDatasourceId());
-            dpModelDO.setPort(datasource.getPort());
-            dpModelDO.setIp(datasource.getIp());
-            dpModelDO.setDatasourceConfig(datasource.getDatasourceConfig());
-            dpModelDO.setDatasourceType(datasource.getDatasourceType());
-            dpModelDO.setDatasourceName(datasource.getDatasourceName());
+            if (datasource != null) {
+                dpModelDO.setPort(datasource.getPort());
+                dpModelDO.setIp(datasource.getIp());
+                dpModelDO.setDatasourceConfig(datasource.getDatasourceConfig());
+                dpModelDO.setDatasourceType(datasource.getDatasourceType());
+                dpModelDO.setDatasourceName(datasource.getDatasourceName());
+            }
         }
-        if(dpModelDO.getDocumentId() != null){
-            DpDocumentDO dpDocumentById = dpDocumentService.getDpDocumentById(dpModelDO.getDocumentId());
-            dpDocumentById = dpDocumentById == null ? new DpDocumentDO():dpDocumentById;
-            dpModelDO.setDocumentCode(dpDocumentById.getCode());
-            dpModelDO.setDocumentName(dpDocumentById.getName());
-            dpModelDO.setDocumentType(dpDocumentById.getType());
+        if (dpModelDO.getDocumentId() != null) {
+            DpDocumentDO dpDocument = dpDocumentService.getDpDocumentById(dpModelDO.getDocumentId());
+            if (dpDocument != null) {
+                dpModelDO.setDocumentCode(dpDocument.getCode());
+                dpModelDO.setDocumentName(dpDocument.getName());
+                dpModelDO.setDocumentType(dpDocument.getType());
+            }
         }
         return dpModelDO;
     }
@@ -388,7 +410,7 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
     @Override
     public DpModelRespDTO getDpModelByIdApi(Long id) {
         DpModelRespDTO dto = new DpModelRespDTO();
-        DpModelDO dpModelDO = dpModelMapper.selectById(id);
+        DpModelDO dpModelDO = this.getDpModelById(id);
         BeanUtil.copyProperties(dpModelDO, dto);
         return dto;
     }
@@ -402,13 +424,9 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
     @Override
     public Map<Long, DpModelDO> getDpModelMap() {
         List<DpModelDO> dpModelList = dpModelMapper.selectList();
-        return dpModelList.stream()
-                .collect(Collectors.toMap(
-                        DpModelDO::getId,
-                        dpModelDO -> dpModelDO,
-                        // 保留已存在的值
-                        (existing, replacement) -> existing
-                ));
+        return dpModelList.stream().collect(Collectors.toMap(DpModelDO::getId, dpModelDO -> dpModelDO,
+                // 保留已存在的值
+                (existing, replacement) -> existing));
     }
 
 
@@ -493,5 +511,51 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
         return this.update(Wrappers.lambdaUpdate(DpModelDO.class)
                 .eq(DpModelDO::getId, id)
                 .set(DpModelDO::getStatus, status));
+    }
+
+    @Override
+    public List<TreeData> getTreeData() {
+        List<TreeData> treeData = new ArrayList<>();
+
+        treeData.add(TreeData.builder()
+                .name("公共层")
+                .type("0")
+                .otherData(JSON.parseObject("{\"tooltipStr\":\"主要面向数据开发人员，作为应用层的数据地基，把杂乱的数据建成通用的明细模型，方便大家复用。\"}"))
+                .children(dmBusinessCategoryApiService.getTreeData(null))
+                .build());
+        treeData.add(TreeData.builder()
+                .name("应用层")
+                .type("0")
+                .otherData(JSON.parseObject("{\"tooltipStr\":\"主要面向业务及分析人员，通过加工公共层的基础数据计算而来，直接用来做可视化大屏或业务报表。\"}"))
+                .children(dmThemeDomainApiService.getTreeData(null))
+                .build());
+        return treeData;
+    }
+
+    @Override
+    public int updateCatCode(String oldCatCode, String newCatCode) {
+        return dpModelMapper.updateCatCode(oldCatCode, newCatCode);
+    }
+
+    @Override
+    public PageResult<DpModelDO> getReleaseListPage(DpModelPageReqVO pageReqVO) {
+        return dpModelMapper.getReleaseListPage(pageReqVO);
+    }
+
+    @Override
+    public BatchDeleteCheck<Long> batchDeleteCheck(List<Long> ids) {
+        List<DpModelDO> list = baseMapper.selectList(Wrappers.lambdaQuery(DpModelDO.class)
+                .select(DpModelDO::getId, DpModelDO::getStatus)
+                .in(DpModelDO::getId, ids));
+        int cannotDeleteCount = 0;
+        List<Long> canDeleteIds = new ArrayList<>();
+        for (DpModelDO one : list) {
+            if ("1".equals(one.getStatus())) {
+                cannotDeleteCount++;
+                continue;
+            }
+            canDeleteIds.add(one.getId());
+        }
+        return new BatchDeleteCheck<>(cannotDeleteCount, canDeleteIds);
     }
 }

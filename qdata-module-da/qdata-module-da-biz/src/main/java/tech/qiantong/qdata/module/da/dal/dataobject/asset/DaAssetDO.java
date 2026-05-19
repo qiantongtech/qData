@@ -36,6 +36,7 @@ import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
+import tech.qiantong.qdata.module.da.controller.admin.assetchild.api.vo.DaAssetApiRespVO;
 import tech.qiantong.qdata.module.da.controller.admin.assetchild.theme.vo.DaAssetThemeRelRespVO;
 
 import java.util.List;
@@ -73,6 +74,53 @@ public class DaAssetDO extends BaseEntity {
 
     @TableField(exist = false)
     private String catName;
+
+    /**
+     * 表类型;1:明细表 2:汇总表 3:维度表 4:应用表
+     */
+    @Schema(name = "表类型 1:明细表 2:汇总表 3:维度表 4:应用表")
+    private String tableType;
+    /**
+     * 数仓分层id
+     */
+    @Schema(name = "数仓分层id ")
+    private Long dataLayerId;
+    /**
+     * 业务分类id;只有表类型为非应用表是才有值
+     */
+    @Schema(name = "业务分类id 只有表类型为非应用表是才有值")
+    private Long businessCategoryId;
+    /**
+     * 业务分类层级编码
+     */
+    @Schema(name = "业务分类层级编码 ")
+    private String businessCategoryCode;
+    /**
+     * 数据分域id;只有表类型为非应用表是才有值
+     */
+    @Schema(name = "数据分域id 只有表类型为非应用表是才有值")
+    private Long dataDomainId;
+    /**
+     * 所属主题id（主题规划）;只有表类型为应用表是才有值
+     */
+    @Schema(name = "所属主题id（主题规划） 只有表类型为应用表是才有值")
+    private Long themeDomainId;
+    /**
+     * 所属主题层级编码
+     */
+    @Schema(name = "所属主题层级编码 ")
+    private String themeDomainCode;
+    /**
+     * 表名大小写;1：大写 2：小写
+     */
+    @Schema(description = "表名大小写 1：大写 2：小写")
+    private String tableCase;
+
+    /**
+     * 元数据表id
+     */
+    @Schema(description = "元数据表id")
+    private Long tableId;
 
     /**是申请过来的资产还是项目自己生成的资产0：申请，1：自创 */
     @TableField(exist = false)
@@ -121,9 +169,9 @@ public class DaAssetDO extends BaseEntity {
     @TableLogic
     private Boolean delFlag;
 
-//    //api
-//    @TableField(exist = false)
-//    private DaAssetApiRespVO daAssetApi;
+    //api
+    @TableField(exist = false)
+    private DaAssetApiRespVO daAssetApi;
 //    //api
 //    @TableField(exist = false)
 //    private List<DaAssetApiParamRespVO> daAssetApiParamList;
@@ -153,6 +201,50 @@ public class DaAssetDO extends BaseEntity {
     @Schema(description = "项目编码", example = "")
     @TableField(exist = false)
     private String projectCode;
-    @Schema(description = "创建类型", example = "")
+    /** 创建类型 */
     private String createType;
+
+    @TableField(exist = false)
+    private String tags;
+
+    @Schema(name = "数仓分层名称")
+    @TableField(exist = false)
+    private String dataLayerName;
+
+    @Schema(name = "数仓分层英文缩写")
+    @TableField(exist = false)
+    private String dataLayerEngName;
+
+    @Schema(name = "业务名称")
+    @TableField(exist = false)
+    private String businessCategoryName;
+
+    @Schema(name = "业务英文缩写")
+    @TableField(exist = false)
+    private String businessCategoryEngName;
+
+    @Schema(name = "数据分域名称")
+    @TableField(exist = false)
+    private String dataDomainName;
+
+    @Schema(name = "数据分域英文缩写")
+    @TableField(exist = false)
+    private String dataDomainEngName;
+
+    @Schema(name = "所属主题名称")
+    @TableField(exist = false)
+    private String themeDomainName;
+
+    @Schema(name = "所属主题英文缩写")
+    @TableField(exist = false)
+    private String themeDomainEngName;
+
+    @Schema(name = "创建人联系电话")
+    @TableField(exist = false)
+    private String createUserPhoneNumber;
+
+
+    @Schema(name = "修改人联系电话")
+    @TableField(exist = false)
+    private String updateUserPhoneNumber;
 }

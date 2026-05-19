@@ -541,4 +541,106 @@ public class Kingbase8Dialect extends AbstractDbDialect {
                 .replace("${batchSize}", String.valueOf(config.getIntValue("batchSize", 100)));
         return sql;
     }
+
+
+    @Override
+    public String updateTableComment(DbQueryProperty dbQueryProperty, String tableName, String tableComment) {
+        String fullTableName = getTableName(dbQueryProperty, tableName);
+        return "COMMENT ON TABLE " + fullTableName + " IS '" + DatabaseUtil.escapeSingleQuotes(tableComment) + "'";
+    }
+
+    // ... existing code ...
+    @Override
+    public String dropColumn(DbQueryProperty dbQueryProperty, String tableName, String colName) {
+        String fullTableName = getTableName(dbQueryProperty, tableName);
+        return "ALTER TABLE " + fullTableName + " DROP COLUMN " + colName;
+    }
+
+    @Override
+    public List<String> modifyColumn(DbQueryProperty dbQueryProperty, String tableName, DbColumn column) {
+        List<String> sqlList = new ArrayList<>();
+        String fullTableName = getTableName(dbQueryProperty, tableName);
+
+        if (Boolean.TRUE.equals(column.getColKey())) {
+            StringBuilder sql = new StringBuilder();
+            sql.append("ALTER TABLE ").append(fullTableName).append(" ADD CONSTRAINT PK_").append(tableName).append("_").append(column.getColName());
+            sql.append(" PRIMARY KEY (").append(column.getColName()).append(")");
+            sqlList.add(sql.toString());
+        } else {
+            StringBuilder sql = new StringBuilder();
+            sql.append("ALTER TABLE ").append(fullTableName).append(" ALTER COLUMN ");
+            sql.append(column.getColName()).append(" TYPE ");
+            sql.append(mapKingbaseColumnType(column));
+            sqlList.add(sql.toString());
+
+            if (!column.getNullable()) {
+                sqlList.add("ALTER TABLE " + fullTableName + " ALTER COLUMN " + column.getColName() + " SET NOT NULL");
+            } else {
+                sqlList.add("ALTER TABLE " + fullTableName + " ALTER COLUMN " + column.getColName() + " DROP NOT NULL");
+            }
+
+            if (StringUtils.isNotEmpty(column.getDataDefault())) {
+                sqlList.add("ALTER TABLE " + fullTableName + " ALTER COLUMN " + column.getColName() + " SET DEFAULT " + column.getDataDefault());
+            } else {
+                sqlList.add("ALTER TABLE " + fullTableName + " ALTER COLUMN " + column.getColName() + " DROP DEFAULT");
+            }
+        }
+
+        if (StringUtils.isNotEmpty(column.getColComment())) {
+            sqlList.add("COMMENT ON COLUMN " + fullTableName + "." + column.getColName()
+                    + " IS '" + DatabaseUtil.escapeSingleQuotes(column.getColComment()) + "'");
+        }
+
+        return sqlList;
+    }
+
+    @Override
+    public List<String> addColumn(DbQueryProperty dbQueryProperty, String tableName, DbColumn column) {
+        List<String> sqlList = new ArrayList<>();
+        String fullTableName = getTableName(dbQueryProperty, tableName);
+
+        if (Boolean.TRUE.equals(column.getColKey())) {
+            StringBuilder sql = new StringBuilder();
+            sql.append("ALTER TABLE ").append(fullTableName).append(" ADD COLUMN ");
+            sql.append(column.getColName()).append(" ");
+            sql.append(mapKingbaseColumnType(column));
+
+            if (!column.getNullable()) {
+                sql.append(" NOT NULL");
+            }
+
+            if (StringUtils.isNotEmpty(column.getDataDefault())) {
+                sql.append(" DEFAULT ").append(column.getDataDefault());
+            }
+
+            sqlList.add(sql.toString());
+
+            sql = new StringBuilder();
+            sql.append("ALTER TABLE ").append(fullTableName).append(" ADD CONSTRAINT PK_").append(tableName).append("_").append(column.getColName());
+            sql.append(" PRIMARY KEY (").append(column.getColName()).append(")");
+            sqlList.add(sql.toString());
+        } else {
+            StringBuilder sql = new StringBuilder();
+            sql.append("ALTER TABLE ").append(fullTableName).append(" ADD COLUMN ");
+            sql.append(column.getColName()).append(" ");
+            sql.append(mapKingbaseColumnType(column));
+
+            if (!column.getNullable()) {
+                sql.append(" NOT NULL");
+            }
+
+            if (StringUtils.isNotEmpty(column.getDataDefault())) {
+                sql.append(" DEFAULT ").append(column.getDataDefault());
+            }
+
+            sqlList.add(sql.toString());
+        }
+
+        if (StringUtils.isNotEmpty(column.getColComment())) {
+            sqlList.add("COMMENT ON COLUMN " + fullTableName + "." + column.getColName()
+                    + " IS '" + DatabaseUtil.escapeSingleQuotes(column.getColComment()) + "'");
+        }
+
+        return sqlList;
+    }
 }

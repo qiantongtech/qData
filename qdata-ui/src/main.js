@@ -90,12 +90,17 @@ import DictTag from '@/components/DictTag'
 // 可视化表单设计器工具
 import FcDesigner from '@form-create/designer';
 import '@/assets/iconfont/font_new/iconfont.css' // iconfont css
+// 通用详情页头部组件
+import DetailInfo from "@/components/DetailInfo"
+// 通用描述信息组件（el-descriptions 封装）
+import DescriptionsInfo from "@/components/DescriptionsInfo"
 
 import QtSearchBar from '@/components/QtSearchBar/index.vue';
 import QtWrap from '@/components/QtWrap/index.vue';
 import QtTable from '@/components/QtTable/index.vue';
 import QtTabPane from '@/components/QtTabPane/index.vue';
 import QtFormItem from '@/components/QtFormItem/index.vue';
+import QtTagGroup from '@/components/QtTagGroup/index.vue';
 
 const app = createApp(App)
 app.use(AniviaComponents)
@@ -119,6 +124,7 @@ app.config.globalProperties.formatVersion = formatVersion;
 app.config.globalProperties.$bus = bus;
 
 // 全局组件挂载
+app.component('QtTagGroup', QtTagGroup)
 app.component('DictTag', DictTag)
 app.component('Pagination', Pagination)
 app.component('TreeSelect', TreeSelect)
@@ -135,6 +141,8 @@ app.component('QtWrap', QtWrap)
 app.component('QtTable', QtTable)
 app.component('QtTabPane', QtTabPane)
 app.component('QtFormItem', QtFormItem)
+app.component('DetailInfo', DetailInfo)
+app.component('DescriptionsInfo', DescriptionsInfo)
 app.use(router)
 app.use(store)
 app.use(plugins)

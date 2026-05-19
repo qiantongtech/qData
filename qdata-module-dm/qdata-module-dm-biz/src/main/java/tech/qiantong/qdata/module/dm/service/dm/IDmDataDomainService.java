@@ -32,15 +32,17 @@
 
 package tech.qiantong.qdata.module.dm.service.dm;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Collection;
 import com.baomidou.mybatisplus.extension.service.IService;
 import tech.qiantong.qdata.common.core.page.PageResult;
+import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmDataDomainPageReqVO;
 import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmDataDomainRespVO;
 import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmDataDomainSaveReqVO;
-import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmDataDomainPageReqVO;
 import tech.qiantong.qdata.module.dm.dal.dataobject.dm.DmDataDomainDO;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
 /**
  * 数据域管理Service接口
  *
@@ -112,4 +114,11 @@ public interface IDmDataDomainService extends IService<DmDataDomainDO> {
      */
     String importDmDataDomain(List<DmDataDomainRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
+    /**
+     * 根据业务分类id查询数据域
+     *
+     * @param dmDataDomain
+     * @return
+     */
+    PageResult<DmDataDomainDO> getDmDataDomainByCategoryId(DmDataDomainPageReqVO dmDataDomain);
 }

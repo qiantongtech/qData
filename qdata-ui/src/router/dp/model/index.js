@@ -48,4 +48,17 @@ export default [
             }
         ]
     },
+    {
+        path: '/dm/model/materializedModel/detail',
+        component: Layout,
+        hidden: true,
+        children: [
+            {
+                path: '',
+                component: () => import('@/views/dp/model/detail/index.vue'),
+                name: 'materializedModelDetail',
+                meta: { title: '发布模型详情', activeMenu: '/dm/model/materializedModel' }
+            }
+        ]
+    },
 ];

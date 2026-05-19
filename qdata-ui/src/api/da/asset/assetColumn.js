@@ -83,3 +83,11 @@ export function preview(data) {
     data: data
   })
 }
+
+export function pageListByIds(query) {
+  return request({
+    url: '/da/assetColumn/listAssetColumnTerm',
+    method: 'get',
+    params: query
+  });
+}

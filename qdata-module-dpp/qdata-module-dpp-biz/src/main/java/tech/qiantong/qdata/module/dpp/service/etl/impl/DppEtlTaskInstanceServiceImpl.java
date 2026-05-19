@@ -32,7 +32,6 @@
 
 package tech.qiantong.qdata.module.dpp.service.etl.impl;
 
-import cn.hutool.core.io.FileUtil;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -42,7 +41,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.qiantong.qdata.api.ds.api.base.DsStatusRespDTO;
@@ -63,7 +61,7 @@ import tech.qiantong.qdata.module.dpp.api.etl.dto.DppEtlNodeInstanceRespDTO;
 import tech.qiantong.qdata.module.dpp.api.etl.dto.DppEtlTaskInstanceLogStatusRespDTO;
 import tech.qiantong.qdata.module.dpp.api.etl.dto.DppEtlTaskInstanceRespDTO;
 import tech.qiantong.qdata.module.dpp.api.etl.dto.DppEtlTaskRespDTO;
-import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlTaskInstanceTreeListRespVO;
+import tech.qiantong.qdata.module.dpp.api.service.etl.DppEtlTaskInstanceService;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.*;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlNodeInstanceDO;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlNodeLogDO;
@@ -75,7 +73,10 @@ import tech.qiantong.qdata.module.dpp.utils.TaskConverter;
 import tech.qiantong.qdata.redis.service.IRedisService;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static tech.qiantong.qdata.common.core.domain.AjaxResult.error;
@@ -90,7 +91,7 @@ import static tech.qiantong.qdata.common.core.domain.AjaxResult.success;
 @Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanceMapper, DppEtlTaskInstanceDO> implements IDppEtlTaskInstanceService {
+public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanceMapper, DppEtlTaskInstanceDO> implements IDppEtlTaskInstanceService, DppEtlTaskInstanceService {
     @Resource
     private DppEtlTaskInstanceMapper dppEtlTaskInstanceMapper;
 
@@ -550,6 +551,11 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
             return page.getRecords().get(0);
         }
         return null;
+    }
+    @Override
+    public List<DppEtlTaskInstanceRespDTO> getLastTaskInstance(List<Long> taskIdList) {
+        List<DppEtlTaskInstanceDO> dppEtlTaskInstanceDO = dppEtlTaskInstanceMapper.getLastTaskInstance(taskIdList);
+        return BeanUtils.toBean(dppEtlTaskInstanceDO, DppEtlTaskInstanceRespDTO.class);
     }
 
 }

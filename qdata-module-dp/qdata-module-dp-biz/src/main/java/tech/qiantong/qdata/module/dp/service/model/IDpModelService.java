@@ -32,15 +32,19 @@
 
 package tech.qiantong.qdata.module.dp.service.model;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Collection;
 import com.baomidou.mybatisplus.extension.service.IService;
+import tech.qiantong.qdata.common.core.domain.BatchDeleteCheck;
+import tech.qiantong.qdata.common.core.domain.TreeData;
 import tech.qiantong.qdata.common.core.page.PageResult;
+import tech.qiantong.qdata.module.dp.controller.admin.model.vo.DpModelPageReqVO;
 import tech.qiantong.qdata.module.dp.controller.admin.model.vo.DpModelRespVO;
 import tech.qiantong.qdata.module.dp.controller.admin.model.vo.DpModelSaveReqVO;
-import tech.qiantong.qdata.module.dp.controller.admin.model.vo.DpModelPageReqVO;
 import tech.qiantong.qdata.module.dp.dal.dataobject.model.DpModelDO;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
 /**
  * 逻辑模型Service接口
  *
@@ -107,7 +111,7 @@ public interface IDpModelService extends IService<DpModelDO> {
      *
      * @param importExcelList 逻辑模型数据列表
      * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
+     * @param operName        操作用户
      * @return 结果
      */
     String importDpModel(List<DpModelRespVO> importExcelList, boolean isUpdateSupport, String operName);
@@ -115,4 +119,27 @@ public interface IDpModelService extends IService<DpModelDO> {
     int removeDpModelAndColumnAll(List<Long> asList);
 
     Boolean updateStatus(Long id, Long status);
+
+    /**
+     * 获取树类目数据（多个数据组合而来
+     *
+     * @return
+     */
+    List<TreeData> getTreeData();
+
+    /**
+     * 查询发布模型列表
+     *
+     * @param pageReqVO
+     * @return
+     */
+    PageResult<DpModelDO> getReleaseListPage(DpModelPageReqVO pageReqVO);
+
+    /**
+     * 批量删除模型数据检查
+     *
+     * @param ids
+     * @return
+     */
+    BatchDeleteCheck<Long> batchDeleteCheck(List<Long> ids);
 }

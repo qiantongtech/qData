@@ -385,4 +385,21 @@
           AND ti.DEL_FLAG = 0
         ORDER BY ni.START_TIME DESC
     </select>
+
+    <select id="getLastTaskInstance" resultType="tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlTaskInstanceDO">
+        SELECT
+        v.*
+        FROM
+        DPP_ETL_TASK_INSTANCE v
+        JOIN (
+        SELECT
+        MAX( v.START_TIME ) AS START_TIME,v.TASK_ID
+        FROM
+        DPP_ETL_TASK_INSTANCE v
+        WHERE v.TASK_ID IN
+        <foreach item="item" collection="taskIdList" separator="," open="(" close=")" index="index">
+            #{item}
+        </foreach>
+        GROUP BY v.TASK_ID) max ON max.TASK_ID = v.TASK_ID AND max.START_TIME = v.START_TIME
+    </select>
 </mapper>

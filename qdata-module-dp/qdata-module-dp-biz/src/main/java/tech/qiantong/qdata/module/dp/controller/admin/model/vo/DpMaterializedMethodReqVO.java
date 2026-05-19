@@ -37,7 +37,6 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.List;
 
 /**
@@ -61,7 +60,6 @@ public class DpMaterializedMethodReqVO extends BaseEntity {
     private Long datasourceId;
 
     @Schema(description = "数据源名称", example = "DataSource1")
-    @Size(max = 256, message = "数据源名称长度不能超过256个字符")
     private String datasourceName;
 
     /**
@@ -70,17 +68,17 @@ public class DpMaterializedMethodReqVO extends BaseEntity {
     private String dbName;
 
     @Schema(description = "数据源类型", example = "MySQL")
-    @Size(max = 256, message = "数据源类型长度不能超过256个字符")
     private String datasourceType;
 
     @Schema(description = "数据源配置(json字符串)", example = "{\"username\":\"root\",\"password\":\"123456\"}")
     private String datasourceConfig;
 
     @Schema(description = "IP地址", example = "192.168.1.1")
-    @Size(max = 15, message = "IP地址长度不能超过15个字符")
-    private String IP;
+    private String ip;
 
     @Schema(description = "端口号", example = "3306")
-    private Long Port;
+    private Long port;
 
+    /**  发布模式 1：删除重建  2：增量发布 */
+    private String releaseMode;
 }

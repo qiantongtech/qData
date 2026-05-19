@@ -37,6 +37,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import tech.qiantong.qdata.common.core.page.PageParam;
+import tech.qiantong.qdata.module.da.dal.dataobject.discovery.DaDiscoveryTableDO;
 
 import java.util.List;
 
@@ -60,6 +61,53 @@ public class DaAssetPageReqVO extends PageParam {
 
     @Schema(description = "类目编码", example = "")
     private String catCode;
+
+    /**
+     * 表类型;1:明细表 2:汇总表 3:维度表 4:应用表
+     */
+    @Schema(description = "表类型 1:明细表 2:汇总表 3:维度表 4:应用表")
+    private String tableType;
+    /**
+     * 数仓分层id
+     */
+    @Schema(description = "数仓分层id ")
+    private Long dataLayerId;
+    /**
+     * 业务分类id;只有表类型为非应用表是才有值
+     */
+    @Schema(description = "业务分类id 只有表类型为非应用表是才有值")
+    private Long businessCategoryId;
+    /**
+     * 业务分类层级编码
+     */
+    @Schema(description = "业务分类层级编码 ")
+    private String businessCategoryCode;
+    /**
+     * 数据分域id;只有表类型为非应用表是才有值
+     */
+    @Schema(description = "数据分域id 只有表类型为非应用表是才有值")
+    private Long dataDomainId;
+    /**
+     * 所属主题id（主题规划）;只有表类型为应用表是才有值
+     */
+    @Schema(description = "所属主题id（主题规划） 只有表类型为应用表是才有值")
+    private Long themeDomainId;
+    /**
+     * 所属主题层级编码
+     */
+    @Schema(description = "所属主题层级编码 ")
+    private String themeDomainCode;
+    /**
+     * 表名大小写;1：大写 2：小写
+     */
+    @Schema(description = "表名大小写 1：大写 2：小写")
+    private String tableCase;
+
+    /**
+     * 元数据表id
+     */
+    @Schema(description = "元数据表id")
+    private Long tableId;
 
     @Schema(description = "资产类型", example = "")
     private String type;
@@ -103,9 +151,30 @@ public class DaAssetPageReqVO extends PageParam {
     @Schema(description = "资产id集合", example = "")
     private List<Long> assetIdList;
 
+    //标签id
+    private List<Long> tagIdList;
+
     @Schema(description = "资产id集合(主题筛选)", example = "")
     private List<Long> themeAssetIdList;
 
     @Schema(description = "创建类型", example = "")
     private String createType;
+    /**
+     * 构造函数，根据 DaDiscoveryTableDO 对象初始化数据资产 VO
+     *
+     * @param daDiscoveryTableById 数据发现库表信息
+     */
+    public DaAssetPageReqVO(DaDiscoveryTableDO daDiscoveryTableById) {
+        if (daDiscoveryTableById != null) {
+            // 这里将表名作为资产名称
+//            this.name = daDiscoveryTableById.getTableComment();
+            this.tableName = daDiscoveryTableById.getTableName();
+            this.tableComment = daDiscoveryTableById.getTableComment();
+            this.dataCount = daDiscoveryTableById.getDataCount();
+            this.fieldCount = daDiscoveryTableById.getFieldCount();
+            this.status = "1";
+            // 可根据需要将表描述也赋值给描述字段
+//            this.description = daDiscoveryTableById.getTableComment();
+        }
+    }
 }

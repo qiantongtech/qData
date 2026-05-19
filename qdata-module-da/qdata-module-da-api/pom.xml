@@ -53,5 +53,11 @@
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-common</artifactId>
         </dependency>
+        <dependency>
+            <groupId>tech.qiantong</groupId>
+            <artifactId>qdata-module-mc-api</artifactId>
+            <version>${qdata.version}</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 </project>

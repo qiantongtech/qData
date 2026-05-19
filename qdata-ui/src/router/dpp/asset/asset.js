@@ -48,5 +48,18 @@ export default [
             }
         ]
     },
+    {
+        path: '/da/asset/addAsset/:assetType?',
+        component: Layout,
+        hidden: true,
+        children: [
+            {
+                path: '',
+                component: () => import('@/views/dpp/asset/addAsset/index.vue'),
+                name: 'dppDaAssetAdd',
+                meta: { title: '新增数据资产', activeMenu: '/da/asset' }
+            }
+        ]
+    },
 
 ];

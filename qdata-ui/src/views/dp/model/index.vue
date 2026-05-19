@@ -34,317 +34,139 @@
   <div class="app-container" ref="app-container">
     <GuideTip tip-id="dp/dpModel.list" />
 
-    <el-container style="90%">
+    <el-container>
       <DeptTree
         ref="DeptTreeRef"
+        type="model"
         :deptOptions="deptOptions"
-        :leftWidth="leftWidth"
-        :placeholder="'请输入逻辑模型类目'"
+        :placeholder="'请输入分层/分域/主题名称'"
         @node-click="handleNodeClick"
       />
 
-      <el-main>
-        <div class="pagecont-top" v-show="showSearch">
-          <el-form
-            class="btn-style"
-            :model="queryParams"
-            ref="queryRef"
-            :inline="true"
-            label-width="75px"
-            v-show="showSearch"
-            @submit.prevent
-          >
-            <el-form-item label="英文名称" prop="modelName">
-              <el-input
-                class="el-form-input-width"
-                v-model="queryParams.modelName"
-                placeholder="请输入英文名称"
-                clearable
-                @keyup.enter="handleQuery"
-              />
-            </el-form-item>
-            <el-form-item label="中文名称" prop="modelComment">
-              <el-input
-                class="el-form-input-width"
-                v-model="queryParams.modelComment"
-                placeholder="请输入中文名称"
-                clearable
-                @keyup.enter="handleQuery"
-              />
-            </el-form-item>
-            <el-form-item label="状态" prop="status">
-              <el-select
-                class="el-form-input-width"
-                v-model="queryParams.status"
-                placeholder="请选择状态"
-                clearable
-              >
-                <el-option
-                  v-for="dict in dp_model_status"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                />
-              </el-select>
-            </el-form-item>
-            <el-form-item>
-              <el-button
-                plain
-                type="primary"
-                @click="handleQuery"
-                @mousedown="(e) => e.preventDefault()"
-              >
-                <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
-              </el-button>
-              <el-button
-                @click="resetQuery"
-                @mousedown="(e) => e.preventDefault()"
-              >
-                <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
-              </el-button>
-            </el-form-item>
-          </el-form>
-        </div>
-
-        <div class="pagecont-bottom">
-          <div class="justify-between mb15">
-            <el-row :gutter="15" class="btn-style">
-              <el-col :span="1.5">
-                <el-button
-                  type="primary"
-                  plain
-                  @click="handleAdd"
-                  v-hasPermi="['dp:model:add']"
-                  @mousedown="(e) => e.preventDefault()"
-                >
-                  <i class="iconfont-mini icon-xinzeng mr5"></i>新增
-                </el-button>
-              </el-col>
-              <el-col :span="1.5">
-                <!--  -->
-                <!--  <img v-else src="@/assets/da/asset/api (2).svg" alt="" /> -->
-                <el-button
-                  type="primary"
-                  :disabled="single"
-                  plain
-                  @click="handleMaterialization"
-                  v-hasPermi="['dp:model:edit']"
-                  @mousedown="(e) => e.preventDefault()"
-                >
-                  <svg-icon
-                    iconClass="wh"
-                    style="font-size: 14px; margin-right: 6px"
-                    :class="{
-                      'icon-disabled': single,
-                      'icon-normal': !single,
-                    }"
-                  />物化
-                </el-button>
-              </el-col>
-              <!-- <el-col :span="1.5">
-                <el-button type="danger" plain :disabled="multiple" @click="handleDelete"
-                  v-hasPermi="['dp:model:remove']" @mousedown="(e) => e.preventDefault()">
-                  <i class="iconfont-mini icon-shanchu-huise mr5"></i>删除
-                </el-button>
-              </el-col> -->
-              <!-- <el-col :span="1.5">
-                <el-button type="info" plain @click="handleImport" v-hasPermi="['dp:model:export']"
-                  @mousedown="(e) => e.preventDefault()">
-                  <i class="iconfont-mini icon-upload-cloud-line mr5"></i>导入
-                </el-button>
-              </el-col>
-              <el-col :span="1.5">
-                <el-button type="warning" plain @click="handleExport" v-hasPermi="['dp:model:export']"
-                  @mousedown="(e) => e.preventDefault()">
-                  <i class="iconfont-mini icon-download-line mr5"></i>导出
-                </el-button>
-              </el-col> -->
-            </el-row>
-            <div class="justify-end top-right-btn">
-              <right-toolbar
-                v-model:showSearch="showSearch"
-                @queryTable="getList"
-                :columns="columns"
-              ></right-toolbar>
-            </div>
-          </div>
-
-          <el-table
-            stripe
-            v-loading="loading"
-            :data="dpModelList"
-            @selection-change="handleSelectionChange"
-            :default-sort="defaultSort"
-            @sort-change="handleSortChange"
-          >
-            <el-table-column
-              type="selection"
-              width="30"
-              align="left"
-              :selectable="selectable"
+      <el-main class="main-content">
+        <qt-wrap :columns="tableStore.columns" :tableRef="tableRef">
+          <template #search>
+            <qt-search-bar
+              v-bind="searchStore"
+              :params="tableStore.params"
+              @query="handleQuery"
+              @reset="resetQuery"
             />
-            <el-table-column
-              v-if="getColumnVisibility(0)"
-              label="编号"
-              width="60"
-              align="left"
-              prop="id"
-              sortable
-            />
-            <el-table-column
-              v-if="getColumnVisibility(1)"
-              label="英文名称"
-              :show-overflow-tooltip="{ effect: 'light' }"
-              align="left"
-              prop="modelName"
-              width="200"
-            >
-              <template #default="scope">
-                {{ scope.row.modelName || "-" }}
-              </template>
-            </el-table-column>
-            <el-table-column
-              v-if="getColumnVisibility(2)"
-              label="中文名称"
-              :show-overflow-tooltip="{ effect: 'light' }"
-              align="left"
-              prop="modelComment"
-              width="180"
-            >
-              <template #default="scope">
-                {{ scope.row.modelComment || "-" }}
-              </template>
-            </el-table-column>
-            <el-table-column
-              v-if="getColumnVisibility(3)"
-              label="逻辑模型类目"
-              width="100"
-              :show-overflow-tooltip="{ effect: 'light' }"
-              align="left"
-              prop="catName"
-            >
-              <template #default="scope">
-                {{ scope.row.catName || "-" }}
-              </template>
-            </el-table-column>
-            <el-table-column
-              v-if="getColumnVisibility(10)"
-              label="创建人"
-              align="left"
-              prop="createBy"
-              width="120"
-            >
-              <template #default="scope">
-                {{ scope.row.createBy || "-" }}
-              </template>
-            </el-table-column>
-            <el-table-column
-              label="创建时间"
-              v-if="getColumnVisibility(11)"
-              align="left"
-              prop="createTime"
-              width="180"
-              sortable
-            >
-              <template #default="scope">
-                <span>{{
-                  parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}")
-                }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column
-              v-if="getColumnVisibility(4)"
-              label="状态"
-              width="120"
-              align="left"
-              prop="status"
-            >
-              <template #default="scope">
-                <!-- {{ dp_model_status }}
-                                <dict-tag :options="dp_model_status" :value="scope.row.status" /> -->
-                <el-switch
-                  v-model="scope.row.status"
-                  active-color="#13ce66"
-                  inactive-color="#ff4949"
-                  active-value="1"
-                  inactive-value="0"
-                  @change="
-                    (e) => handleStatusChange(scope.row.id, scope.row, e)
-                  "
-                />
-              </template>
-            </el-table-column>
-            <el-table-column
-              label="备注"
-              v-if="getColumnVisibility(5)"
-              align="left"
-              prop="remark"
-              :show-overflow-tooltip="{ effect: 'light' }"
-            >
-              <template #default="scope">
-                {{ scope.row.remark || "-" }}
-              </template>
-            </el-table-column>
-            <!-- <el-table-column v-if="getColumnVisibility(5)" width="130" label="创建方式" :show-overflow-tooltip="{effect: 'light'}"
-              align="left" prop="createType">
-              <template #default="scope">
-                <dict-tag :options="dp_model_create_type" :value="scope.row.createType" />
-              </template>
-            </el-table-column> -->
-            <el-table-column
-              label="操作"
-              align="center"
-              class-name="small-padding fixed-width"
-              fixed="right"
-              width="240"
-            >
-              <template #default="scope">
-                <el-button
-                  link
-                  type="primary"
-                  icon="Edit"
-                  @click="handleUpdate(scope.row)"
-                  :disabled="scope.row.status == 1"
-                  v-hasPermi="['dp:model:edit']"
-                  >修改</el-button
-                >
-                <el-button
-                  link
-                  type="danger"
-                  icon="Delete"
-                  :disabled="scope.row.status == 1"
-                  @click="handleDelete(scope.row)"
-                  v-hasPermi="['dp:model:remove']"
-                  >删除</el-button
-                >
-                <el-button
-                  link
-                  type="primary"
-                  icon="view"
-                  @click="handleDetail(scope.row)"
-                  v-hasPermi="['dp:model:edit']"
-                  >详情</el-button
-                >
-                <!-- <el-button link type="primary" icon="view" @click="routeTo('/dp/model/dpModelDetail', scope.row)"
-                  v-hasPermi="['dp:model:edit']">复杂详情</el-button> -->
-              </template>
-            </el-table-column>
+          </template>
 
-            <template #empty>
-              <div class="emptyBg">
-                <img src="@/assets/system/images/no_data/noData.png" alt="" />
-                <p>暂无记录</p>
-              </div>
+          <template #actions-data>
+            <el-dropdown
+              @command="handleAdd"
+              v-hasPermi="['dp:model:add']"
+              class="create-dropdown"
+              placement="bottom-start"
+              popper-class="model-create-table-dropdown-popper"
+              @mousedown="(e) => e.preventDefault()"
+              @visible-change="(val) => (dropdownVisible = val)"
+            >
+              <el-button type="primary" plain>
+                <el-icon><Plus /></el-icon>
+                <span>创建表</span>
+                <div class="divider"></div>
+                <el-icon
+                  class="arrow-icon el-icon--right"
+                  :class="{ 'is-reverse': dropdownVisible }"
+                >
+                  <ArrowDown />
+                </el-icon>
+              </el-button>
+              <template #dropdown>
+                <el-dropdown-menu class="create-table-dropdown-menu">
+                  <el-dropdown-item
+                    v-for="dict in table_type"
+                    :key="dict.value"
+                    :command="dict.value"
+                  >
+                    <svg-icon :iconClass="getIconClass(dict.value)" />
+                    <div class="dropdown-info">
+                      <div class="dropdown-label">{{ dict.label }}</div>
+                      <div class="dropdown-remark">{{ dict.remark }}</div>
+                    </div>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+            <!-- <el-button
+              type="primary"
+              :disabled="single"
+              plain
+              @click="handleMaterialization"
+              v-hasPermi="['dp:model:edit']"
+              @mousedown="(e) => e.preventDefault()"
+            >
+              <svg-icon
+                iconClass="wh"
+                style="font-size: 14px; margin-right: 6px"
+                :class="{
+                  'icon-disabled': single,
+                  'icon-normal': !single,
+                }"
+              />发布
+            </el-button> -->
+            <el-button
+              type="danger"
+              plain
+              :disabled="multiple"
+              @click="handleDelete"
+              v-hasPermi="['dp:model:remove']"
+              @mousedown="(e) => e.preventDefault()"
+            >
+              <i class="iconfont-mini icon-shanchu-huise mr5"></i>删除
+            </el-button>
+          </template>
+
+          <qt-table v-bind="tableStore" ref="tableRef">
+            <template #status="{ row }">
+              <el-switch
+                v-model="row.status"
+                active-color="#13ce66"
+                inactive-color="#ff4949"
+                active-value="1"
+                inactive-value="0"
+                @change="(e) => handleStatusChange(row.id, row, e)"
+              />
             </template>
-          </el-table>
-          <pagination
-            v-show="total > 0"
-            :total="total"
-            v-model:page="queryParams.pageNum"
-            v-model:limit="queryParams.pageSize"
-            @pagination="getList"
-          />
-        </div>
+            <template #createTime="{ row }">
+              <span>{{
+                parseTime(row.createTime, "{y}-{m}-{d} {h}:{i}")
+              }}</span>
+            </template>
+            <template #action="{ row }">
+              <el-button
+                link
+                type="primary"
+                icon="Edit"
+                @click="handleUpdate(row)"
+                :disabled="row.status == 1"
+                v-hasPermi="['dp:model:edit']"
+                >修改</el-button
+              >
+              <el-button
+                link
+                type="danger"
+                icon="Delete"
+                icon-class="icon-shanchu-huise"
+                :disabled="row.status == 1"
+                @click="handleDelete(row)"
+                v-hasPermi="['dp:model:remove']"
+                >删除</el-button
+              >
+              <el-button
+                link
+                type="primary"
+                icon="view"
+                @click="handleDetail(row)"
+                v-hasPermi="['dp:model:edit']"
+                >详情</el-button
+              >
+            </template>
+          </qt-table>
+        </qt-wrap>
       </el-main>
     </el-container>
 
@@ -367,16 +189,16 @@
       <el-form ref="dpModelRef" :model="form" label-width="80px">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="英文名称" prop="modelName">
+            <el-form-item label="中文名称" prop="modelComment">
               <div>
-                {{ form.modelName }}
+                {{ form.modelComment }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="中文名称" prop="modelComment">
+            <el-form-item label="英文名称" prop="modelName">
               <div>
-                {{ form.modelComment }}
+                {{ form.modelName }}
               </div>
             </el-form-item>
           </el-col>
@@ -444,24 +266,26 @@
       :userList="userList"
       @confirm="submitForm"
       :dataList="dataList"
-      :catCode="queryParams.catCode"
+      :catCode="tableStore.params.catCode"
       :deptOptions="deptOptions"
+      :type="selectedType"
     />
     <MaterializationDialog
       :title="title"
       :visible="Materialization"
       @update:dialogFormVisible="Materialization = $event"
       :ids="ids"
-      @confirm="getList"
+      @confirm="handleQuery"
     />
   </div>
 </template>
 <script setup name="DpModel">
 import { deptUserTree } from "@/api/system/system/user.js";
 import { deptTreeSelectNoPermi } from "@/api/system/system/user.js";
-import DeptTree from "@/components/DeptTree";
+import DeptTree from "@/components/DeptTree/index1.vue";
 import MyFormDialog from "@/views/dp/model/components/add.vue";
 import MaterializationDialog from "@/views/dp/model/detail/materialization.vue";
+import { useProjectStore } from "@/store/project/project";
 import {
   listDpModel,
   getDpModel,
@@ -471,61 +295,72 @@ import {
   updateDpModelColumn,
   updateDpModel,
   listAttModelCat,
+  getTreeData,
   dpModelColumn,
   updateStatusDpDataModel,
+  batchDeleteCheck,
 } from "@/api/dp/model/model";
+import { treeDataLayer } from "@/api/dm/dataLayer/dataLayer.js";
 import { getToken } from "@/utils/auth.js";
+import { formatHierarchyDisplayName } from "../../../utils/dm/utils";
 import { ref, reactive, getCurrentInstance } from "vue";
 const { proxy } = getCurrentInstance();
-const { dp_model_status, dp_model_create_type } = proxy.useDict(
+const projectStore = useProjectStore();
+const {
+  dp_model_status,
+  dp_model_create_type,
+  table_type,
+} = proxy.useDict(
   "dp_model_status",
-  "dp_model_create_type"
+  "dp_model_create_type",
+  "table_type"
 );
-const dpModelList = ref([]);
+
+function getIconClass(value) {
+  const map = {
+    1: "btn-model-detail-table",
+    2: "btn-model-summary-table",
+    3: "btn-model-dimension-table",
+    4: "btn-model-progress-table",
+  };
+  return map[value] || "btn-model-detail-table";
+}
 const deptList = ref([]);
 const userList = ref([]);
+const dataLayerList = ref([]);
 const deptOptions = ref(undefined);
+const tableRef = ref(null);
+const DeptTreeRef = ref(null);
 
-const leftWidth = ref(300); // 初始左侧宽度
-const isResizing = ref(false); // 判断是否正在拖拽
-let startX = 0; // 鼠标按下时的初始位置// 初始左侧宽度
 let Materialization = ref(false);
-const startResize = (event) => {
-  isResizing.value = true;
-  startX = event.clientX;
-  document.addEventListener("mousemove", updateResize);
-  document.addEventListener("mouseup", stopResize);
-};
-const stopResize = () => {
-  isResizing.value = false;
-  document.removeEventListener("mousemove", updateResize);
-  document.removeEventListener("mouseup", stopResize);
-};
-const updateResize = (event) => {
-  if (isResizing.value) {
-    const delta = event.clientX - startX; // 计算鼠标移动距离
-    leftWidth.value += delta; // 修改左侧宽度
-    startX = event.clientX; // 更新起始位置
-    // 使用 requestAnimationFrame 来减少页面重绘频率
-    requestAnimationFrame(() => {});
-  }
-};
-const selectable = (row) => {
-  return row.status != 0;
-};
+
+/** 查询数仓分层树结构 */
+function getDataLayerTree() {
+  treeDataLayer().then((res) => {
+    const tree = res.data || res.rows || [];
+    const processTree = (list) => {
+      return list.map((item) => {
+        const newItem = { ...item };
+        newItem.id = Number(item.id);
+        const abbreviation = item.engName || item.shortName;
+        newItem.displayName = abbreviation
+          ? `${item.name} / ${abbreviation}`
+          : item.name;
+        if (item.children && item.children.length) {
+          newItem.children = processTree(item.children);
+        }
+        return newItem;
+      });
+    };
+    dataLayerList.value = processTree(tree);
+  });
+}
 
 /** 查询部门下拉树结构 */
 function getDeptTree() {
-  listAttModelCat({ validFlag: true }).then((response) => {
-    deptOptions.value = proxy.handleTree(response.data, "id", "parentId");
-    deptOptions.value = [
-      {
-        name: "逻辑模型类目",
-        value: "",
-        id: 0,
-        children: deptOptions.value,
-      },
-    ];
+  getDataLayerTree();
+  projectStore.getModelDeptTree().then((data) => {
+    deptOptions.value = data;
   });
   // 部门
   deptTreeSelectNoPermi().then((response) => {
@@ -536,37 +371,16 @@ function getDeptTree() {
     console.log("userList", userList.value);
   });
 }
-// 列显隐信息
-const columns = ref([
-  { key: 0, label: "编号", visible: true },
-  { key: 1, label: "英文名称", visible: true },
-  { key: 2, label: "中文名称", visible: true },
-  { key: 3, label: "逻辑模型类目", visible: true },
-  { key: 10, label: "创建人", visible: true },
-  { key: 11, label: "创建时间", visible: true },
-  { key: 4, label: "状态", visible: true },
-  { key: 5, label: "备注", visible: true },
-]);
-
-const getColumnVisibility = (key) => {
-  const column = columns.value.find((col) => col.key === key);
-  // 如果没有找到对应列配置，默认显示
-  if (!column) return true;
-  // 如果找到对应列配置，根据visible属性来控制显示
-  return column.visible;
-};
 
 const open = ref(false);
 const openDetail = ref(false);
-const loading = ref(true);
-const showSearch = ref(true);
+const dropdownVisible = ref(false);
 const ids = ref([]);
 const single = ref(true);
 const multiple = ref(true);
-const total = ref(0);
 const title = ref("");
-const defaultSort = ref({ prop: "create_time", order: "descending" });
 const router = useRouter();
+const selectedType = ref("");
 
 /*** 用户导入参数 */
 const upload = reactive({
@@ -601,13 +415,6 @@ function handleStatusChange(id, row, e) {
 
 const data = reactive({
   form: { status: "1" },
-  queryParams: {
-    pageNum: 1,
-    pageSize: 10,
-    modelName: null,
-    modelComment: null,
-    catCode: null,
-  },
   rules: {
     modelName: [
       { required: true, message: "模型编码不能为空", trigger: "blur" },
@@ -623,20 +430,161 @@ const data = reactive({
   },
 });
 
-const { queryParams, form, rules } = toRefs(data);
+const { form, rules } = toRefs(data);
+
+const tableStore = reactive({
+  config: {
+    sort: true,
+    table: {
+      stripe: true,
+      rowKey: "id",
+      defaultSort: { prop: "create_time", order: "descending" },
+      onSelectionChange: handleSelectionChange,
+      honRowDblclick: handleDetail,
+    },
+  },
+  columns: [
+    {
+      type: "selection",
+      width: 55,
+    },
+    { label: "编号", prop: "id", width: 60, sortable: true },
+    {
+      label: "模型信息",
+      width: 450,
+      align: "left",
+      info: {
+        title: (row) =>
+          row.modelComment + (row.modelName ? ` (${row.modelName})` : ""),
+        desc: "description",
+        click: (row) => handleDetail(row),
+      },
+    },
+    {
+      label: "归属层级",
+      align: "left",
+      width: 300,
+      showOverflowTooltip: { effect: "light" },
+      formatter: (row) => formatHierarchyDisplayName(row, row.tableType),
+    },
+    {
+      label: "表类型",
+      align: "center",
+      width: 130,
+      prop: "tableType",
+      dict: "table_type",
+      showOverflowTooltip: { effect: "light" },
+    },
+
+    {
+      label: "状态",
+      prop: "status",
+      slot: "status",
+    },
+    {
+      label: "创建人",
+      width: 120,
+      align: "left",
+      list: [
+        { prop: "createBy", class: "person-charge-ellipsis" },
+        { prop: "createUserPhoneNumber" },
+      ],
+    },
+    {
+      label: "创建时间",
+      prop: "createTime",
+      width: 150,
+      sortable: true,
+      date: true,
+    },
+    {
+      label: "操作",
+      width: 240,
+      align: "center",
+      fixed: "right",
+      slot: "action",
+    },
+  ],
+  func: listDpModel,
+  params: {
+    modelName: null,
+    modelComment: null,
+    catCode: null,
+    id: null,
+    status: null,
+    dataLayerId: null,
+    tableType: null,
+    tableCase: null,
+    businessCategoryCode: null,
+    dataDomainId: null,
+    themeDomainCode: null,
+  },
+});
+
+const searchStore = reactive({
+  items: [
+    { label: "中文名称", prop: "modelComment", component: { is: "input" } },
+    { label: "英文名称", prop: "modelName", component: { is: "input" } },
+    {
+      label: "数仓分层",
+      prop: "dataLayerId",
+      type: "select",
+      component: {
+        is: "tree-select",
+        data: dataLayerList,
+        props: {
+          value: "id",
+          label: "displayName",
+          children: "children",
+        },
+        "node-key": "id",
+        filterable: true,
+        clearable: true,
+        "default-expand-all": true,
+      },
+    },
+    {
+      label: "表类型",
+      prop: "tableType",
+      type: "select",
+      component: { is: "select", options: table_type },
+    },
+    // {
+    //   label: "命名大小写",
+    //   prop: "tableCase",
+    //   type: "select",
+    //   component: { is: "select", options: dp_model_table_case },
+    // },
+    // {
+    //   label: "状态",
+    //   prop: "status",
+    //   type: "select",
+    //   component: { is: "select", options: dp_model_status },
+    // },
+  ],
+});
+
 function handleNodeClick(data) {
-  queryParams.value.catCode = data.code;
-  queryParams.value.pageNum = 1;
+  if (data.type === "0") {
+    return;
+  }
+  tableStore.params.businessCategoryCode = null;
+  tableStore.params.dataDomainId = null;
+  tableStore.params.themeDomainCode = null;
+  tableStore.params.dataLayerId = null;
+  tableStore.params.catCode = null;
+  tableStore.params.id = null;
+  if (data.type === "1") {
+    tableStore.params.businessCategoryCode = data.otherData?.code;
+  } else if (data.type === "2") {
+    tableStore.params.dataDomainId = data.id;
+    tableStore.params.businessCategoryCode = data.otherData?.code;
+  } else if (data.type === "3") {
+    tableStore.params.themeDomainCode = data.otherData?.code;
+  } else if (data.type === "5") {
+    tableStore.params.dataLayerId = data.id;
+  }
   handleQuery();
-}
-/** 查询逻辑模型列表 */
-function getList() {
-  loading.value = true;
-  listDpModel(queryParams.value).then((response) => {
-    dpModelList.value = response.data.rows;
-    total.value = response.data.total;
-    loading.value = false;
-  });
 }
 
 // 取消按钮
@@ -674,24 +622,22 @@ function reset() {
 
 /** 搜索按钮操作 */
 function handleQuery() {
-  queryParams.value.pageNum = 1;
-  getList();
+  tableRef.value && tableRef.value.getList();
 }
-const DeptTreeRef = ref(null);
+
 /** 重置按钮操作 */
 function resetQuery() {
   if (DeptTreeRef.value?.resetTree) {
     DeptTreeRef.value.resetTree();
   }
-  queryParams.value.catCode = "";
-  queryParams.value.pageNum = 1;
-  queryParams.value.orderByColumn = defaultSort.value.prop;
-  queryParams.value.isAsc = defaultSort.value.order;
-  reset();
-  proxy.resetForm("queryRef");
+  tableStore.params.catCode = null;
+  tableStore.params.id = null;
+  tableStore.params.businessCategoryCode = null;
+  tableStore.params.dataDomainId = null;
+  tableStore.params.themeDomainCode = null;
+  tableStore.params.dataLayerId = null;
   handleQuery();
 }
-
 // 多选框选中数据
 function handleSelectionChange(selection) {
   console.log("selection", selection);
@@ -701,15 +647,9 @@ function handleSelectionChange(selection) {
   multiple.value = !selection.length;
 }
 
-/** 排序触发事件 */
-function handleSortChange(column, prop, order) {
-  queryParams.value.orderByColumn = column.prop;
-  queryParams.value.isAsc = column.order;
-  getList();
-}
-
 /** 新增按钮操作 */
-function handleAdd() {
+function handleAdd(type) {
+  selectedType.value = typeof type === "string" ? type : "1";
   dataList.value = {};
   reset();
   open.value = true;
@@ -723,20 +663,21 @@ function handleUpdate(row) {
   const _ID = row.id || ids.value;
   getDpModel(_ID).then((response) => {
     dataList.value = response.data;
+    selectedType.value = String(dataList.value.tableType || "");
     open.value = true;
     title.value = "修改逻辑模型";
   });
 }
 
-/** 物化按钮操作 */
+/** 发布按钮操作 */
 function handleMaterialization() {
   const _ID = ids.value;
   // getDpModel(_ID).then(response => {
   //   form.value = response.data;
-
+  //
   // });
   Materialization.value = true;
-  title.value = "逻辑物化";
+  title.value = "发布模型";
 }
 /** 详情按钮操作 */
 function handleDetail(row) {
@@ -752,7 +693,7 @@ function submitForm(obj) {
         updateDpModelColumn(obj.tableData).then((response) => {
           proxy.$modal.msgSuccess("修改成功");
           open.value = false;
-          getList();
+          handleQuery();
         });
       })
       .catch((error) => {});
@@ -768,7 +709,7 @@ function submitForm(obj) {
           .then((dpModelColumnResponse) => {
             proxy.$modal.msgSuccess("新增成功");
             open.value = false;
-            getList();
+            handleQuery();
           })
           .catch((dpModelColumnError) => {});
       })
@@ -781,16 +722,32 @@ function submitForm(obj) {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const _IDs = row.id || ids.value;
-  proxy.$modal
-    .confirm('是否确认删除逻辑模型编号为"' + _IDs + '"的数据项？')
-    .then(function () {
-      return delDpModelColumn(_IDs);
-    })
-    .then(() => {
-      getList();
-      proxy.$modal.msgSuccess("删除成功");
-    })
-    .catch(() => {});
+  batchDeleteCheck(_IDs).then((res) => {
+    const { canDeleteCount, cannotDeleteCount, canDeleteIds } = res.data;
+    proxy.$modal
+      .confirm(
+        `可删除${canDeleteCount}个，不可删除${cannotDeleteCount}个，是否删除可删部分？`,
+        "系统提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        }
+      )
+      .then(() => {
+        if (!canDeleteIds.length) {
+          proxy.$modal.msgSuccess("删除成功");
+          return;
+        }
+        return delDpModelColumn(canDeleteIds.toString());
+      })
+      .then((res) => {
+        if (!res) return;
+        proxy.$modal.msgSuccess("删除成功");
+        handleQuery();
+      })
+      .catch(() => {});
+  });
 }
 
 function routeTo(link, row) {
@@ -811,43 +768,88 @@ function routeTo(link, row) {
     }
   }
 }
-queryParams.value.orderByColumn = defaultSort.value.prop;
-queryParams.value.isAsc = defaultSort.value.order;
-getList();
+
 getDeptTree();
 </script>
-<style scoped lang="scss">
-::v-deep {
-  .selectlist .el-tag.el-tag--info {
-    background: #f3f8ff !important;
-    border: 0px solid #6ba7ff !important;
-    color: #2666fb !important;
+
+<style scoped lang="less">
+.create-dropdown {
+  vertical-align: middle;
+
+  :deep(.el-button) {
+    &:focus,
+    &:focus-visible {
+      outline: none;
+      box-shadow: none !important;
+    }
+  }
+
+  .arrow-icon {
+    transition: transform 0.3s;
+    &.is-reverse {
+      transform: rotate(180deg);
+    }
+  }
+
+  .divider {
+    width: 1px;
+    height: 12px;
+    background: currentColor;
+    opacity: 0.3;
+    margin: 0 4px 0 12px;
+  }
+
+  .el-button:hover,
+  .el-button:focus,
+  .el-button:active {
+    .divider {
+      opacity: 0.6;
+    }
   }
 }
+</style>
 
-.app-container {
-  margin: 13px 15px;
-}
+<style lang="less" scoped>
+.model-create-table-dropdown-popper {
+  min-width: 140px !important;
 
-.el-main {
-  padding: 2px 0px;
-  // box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
-}
-
-//上传附件样式调整
-::v-deep {
-  // .el-upload-list{
-  //    display: flex;
-  // }
-  .el-upload-list__item {
-    width: 100%;
-    height: 25px;
+  .el-dropdown-menu {
+    padding: 4px 0 !important;
   }
-}
 
-.ellipsis-container {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  .el-dropdown-menu__item {
+    padding: 10px 16px !important;
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+    display: flex !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+
+    .svg-icon {
+      margin-right: 12px !important;
+      font-size: 18px !important;
+      margin-top: 2px;
+    }
+
+    .dropdown-info {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .dropdown-label {
+      color: #333;
+      font-size: 14px;
+    }
+
+    .dropdown-remark {
+      color: #999;
+      font-size: 12px;
+      margin-top: 2px;
+      white-space: normal;
+      word-break: break-all;
+    }
+  }
 }
 </style>

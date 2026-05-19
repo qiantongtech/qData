@@ -39,7 +39,6 @@ import org.springframework.transaction.annotation.Transactional;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.module.da.api.asset.dto.DaAssetReqDTO;
 import tech.qiantong.qdata.module.da.api.asset.dto.DaAssetRespDTO;
-import tech.qiantong.qdata.module.da.api.service.asset.IDaAssetApiOutService;
 import tech.qiantong.qdata.quality.dal.dataobject.asset.DaAssetDO;
 import tech.qiantong.qdata.quality.dal.mapper.asset.DaAssetMapper;
 import tech.qiantong.qdata.quality.service.asset.IDaAssetService;
@@ -53,7 +52,7 @@ import tech.qiantong.qdata.quality.service.asset.IDaAssetService;
 @Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> implements IDaAssetService, IDaAssetApiOutService {
+public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> implements IDaAssetService {
 
     @Override
     public DaAssetRespDTO insertDaAsset(DaAssetReqDTO daAssetReqDTO) {
@@ -62,6 +61,11 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
 
     @Override
     public Long getCountByCatCode(String catCode) {
+        return null;
+    }
+
+    @Override
+    public PageResult<DaAssetRespDTO> daAssetListPage(DaAssetReqDTO daAssetReqDTO) {
         return null;
     }
 }

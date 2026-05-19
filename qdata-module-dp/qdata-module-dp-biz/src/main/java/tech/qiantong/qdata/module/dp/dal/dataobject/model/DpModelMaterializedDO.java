@@ -91,6 +91,9 @@ public class DpModelMaterializedDO extends BaseEntity {
     /** 资产表id */
     private Long assetId;
 
+    /** 发布模式 1：删除重建  2：增量发布 */
+    private String releaseMode;
+
     /** 是否有效 */
     private Boolean validFlag;
 

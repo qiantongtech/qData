@@ -143,4 +143,29 @@ public class UnknownDialect extends AbstractDbDialect {
     public RowMapper<DbTable> tableMapper() {
         throw new DataQueryException("不支持的数据库类型");
     }
+
+    @Override
+    public String dropColumn(DbQueryProperty dbQueryProperty, String tableName, String colName) {
+        throw new DataQueryException("不支持的数据库类型");
+    }
+
+    @Override
+    public List<String> modifyColumn(DbQueryProperty dbQueryProperty, String tableName, DbColumn column) {
+        throw new DataQueryException("不支持的数据库类型");
+    }
+
+    @Override
+    public List<String> addColumn(DbQueryProperty dbQueryProperty, String tableName, DbColumn column) {
+        throw new DataQueryException("不支持的数据库类型");
+    }
+
+    @Override
+    public List<String> updateColKey(DbQueryProperty dbQueryProperty, String tableName, List<DbColumn> colKeyDbColumnList) {
+        throw new DataQueryException("不支持的数据库类型");
+    }
+
+    @Override
+    public String getColumnType(DbColumn column) {
+        throw new DataQueryException("不支持的数据库类型");
+    }
 }

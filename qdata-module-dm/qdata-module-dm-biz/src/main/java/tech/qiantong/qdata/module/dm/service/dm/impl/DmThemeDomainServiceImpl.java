@@ -35,12 +35,14 @@ package tech.qiantong.qdata.module.dm.service.dm.impl;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.Resource;
 
+import tech.qiantong.qdata.common.core.domain.TreeData;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.exception.ServiceException;
 import tech.qiantong.qdata.common.utils.StringUtils;
@@ -50,6 +52,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tech.qiantong.qdata.module.dm.api.service.themeDomain.IDmThemeDomainApiService;
 import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmThemeDomainPageReqVO;
 import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmThemeDomainRespVO;
 import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmThemeDomainSaveReqVO;
@@ -70,7 +73,7 @@ import tech.qiantong.qdata.mybatis.core.query.MPJLambdaWrapperX;
 @Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class DmThemeDomainServiceImpl extends ServiceImpl<DmThemeDomainMapper, DmThemeDomainDO> implements IDmThemeDomainService {
+public class DmThemeDomainServiceImpl extends ServiceImpl<DmThemeDomainMapper, DmThemeDomainDO> implements IDmThemeDomainService, IDmThemeDomainApiService {
     @Resource
     private DmThemeDomainMapper dmThemeDomainMapper;
 
@@ -297,5 +300,54 @@ public class DmThemeDomainServiceImpl extends ServiceImpl<DmThemeDomainMapper, D
                 this.changeCodeByPid(e.getId(), e.getCode());
             });
         }
+    }
+
+    @Override
+    public List<TreeData> getTreeData(String type) {
+        //获取所有开启的数据
+        MPJLambdaWrapperX<DmThemeDomainDO> lambdaWrapper = new MPJLambdaWrapperX<>();
+        lambdaWrapper.selectAll(DmThemeDomainDO.class)
+                .eq(DmThemeDomainDO::getValidFlag, true);
+        String statisticsSql = null;
+        if (StringUtils.isNotBlank(type)) {
+            switch (type) {
+                case "1":
+                    statisticsSql = "(SELECT COUNT(1) FROM DA_ASSET a WHERE t.ID = a.THEME_DOMAIN_ID) AS num";
+                    break;
+            }
+            if (StringUtils.isNotBlank(statisticsSql)) {
+                lambdaWrapper.select(statisticsSql);
+            }
+        }
+        List<DmThemeDomainDO> list = baseMapper.selectList(lambdaWrapper);
+
+        //组装业务分类树
+        Map<Long, TreeData> treeDataMap = list.stream()
+                .collect(Collectors.toMap(k -> k.getId(), v -> TreeData.builder()
+                        .id(v.getId())
+                        .parentId(v.getParentId())
+                        .name(v.getName())
+                        .type("3")
+                        .otherData(JSONObject.of(
+                                "code", v.getCode(),
+                                "engName", v.getEngName(),
+                                "num", v.getNum()))
+                        .build()));
+
+        for (TreeData treeData : treeDataMap.values()) {
+            TreeData parent = treeDataMap.get(treeData.getParentId());
+            if (parent != null) {
+                List<TreeData> children = parent.getChildren();
+                if (children == null) {
+                    children = new ArrayList<>();
+                    parent.setChildren(children);
+                }
+                children.add(treeData);
+            }
+        }
+        return treeDataMap.values()
+                .stream()
+                .filter(treeData -> treeData.getParentId() == 0)
+                .collect(Collectors.toList());
     }
 }

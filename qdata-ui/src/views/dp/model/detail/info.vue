@@ -32,134 +32,66 @@
 
 <template>
   <div class="basicInfo">
-    <el-descriptions title="" :column="2" border>
-      <el-descriptions-item v-for="(item, index) in fileDesc" :key="index" label-class-name="base-label"
-        :span="item.span" class-name="base-content">
-        <template #label>
-          <div class="cell-item">{{ item.label }}</div>
-        </template>
-        <div v-if="item.key == 'status'">
-          <dict-tag :options="da_discovery_task_status" :value="daDiscoveryTaskDetail.status" />
-        </div>
-        <div v-else-if="item.key == 'countSubmitted'">
-          <ProgressBar :completed="daDiscoveryTaskDetail.countSubmitted"
-            :inProgress="daDiscoveryTaskDetail.countPending" :notStarted="daDiscoveryTaskDetail.countIgnoreFlag"
-            :total="21" />
-        </div>
-        <div v-else-if="item.key == 'createTime'">
-          {{
-            parseTime(
-              daDiscoveryTaskDetail.createTime,
-              "{y}-{m}-{d} {h}:{i}"
-            ) || "-"
-          }}
-        </div>
-        <div v-else-if="item.key == 'createType'">
-          <dict-tag :options="dp_model_create_type" :value="daDiscoveryTaskDetail.createType" />
-        </div>
-        <div v-else-if="item.key == 'updateTime'">
-          {{
-            parseTime(
-              daDiscoveryTaskDetail.updateTime,
-              "{y}-{m}-{d} {h}:{i}"
-            ) || "-"
-          }}
-        </div>
-        <div v-else>{{ getDescValue(item) }}</div>
-      </el-descriptions-item>
-    </el-descriptions>
+    <DescriptionsInfo
+      :column="2"
+      :data="daDiscoveryTaskDetail"
+      :items="items"
+      :border="true"
+    >
+      <template #tableType="{ data }">
+        <dict-tag :options="table_type" :value="data.tableType" />
+      </template>
+    </DescriptionsInfo>
   </div>
 </template>
 <script setup name="BasicInfo">
-import ProgressBar from "@/views/da/discovery/components/progressBar.vue";
-import moment from "moment";
-import { cronToZh } from "@/utils/cronUtils";
+import {
+  formatModelName,
+  formatHierarchyDisplayName,
+} from "../../../../utils/dm/utils";
 const { proxy } = getCurrentInstance();
-const { dp_model_status, dp_model_create_type } = proxy.useDict(
-  "dp_model_status",
-  "dp_model_create_type"
-);
+const { dp_model_create_type, table_name_case, dp_document_type, table_type } =
+  proxy.useDict(
+    "dp_model_create_type",
+    "table_name_case",
+    "dp_document_type",
+    "table_type"
+  );
 const props = defineProps({
   daDiscoveryTaskDetail: {
     type: Object,
-    default: () => { },
+    default: () => {},
   },
 });
-const fileDesc = computed(() => {
-  return table.value;
-});
-const table = ref([
-  {
-    key: "catName",
-    label: "逻辑模型类目",
-    value: "",
-  },
+const items = computed(() => [
   // {
-  //   key: "createType",
-  //   label: "创建方式",
-  //   value: "",
+  //   label: "表类型",
+  //   key: "tableType",
+  //   slot: "tableType",
   // },
   {
-    key: "contact",
-    label: "联系人",
-    value: "",
-  },
-  {
-    key: "contactNumber",
-    label: "联系电话",
-    value: "",
-  },
-
-  {
-    key: "createBy",
-    label: "创建人",
-    value: "",
-  },
-  {
-    key: "createTime",
-    label: "创建时间",
-    value: "",
-  },
-  {
-    key: "updateBy",
-    label: "更新人",
-    value: "",
-  },
-  {
-    key: "updateTime",
-    label: "更新时间",
-    value: "",
-    type: "time",
+    label: "命名大小写",
+    key: "tableCase",
+    dictOptions: table_name_case.value,
   },
   // {
-  //   key: "remark",
-  //   label: "备注",
-  //   value: "",
-  //   span: 24,
+  //   label: "归属层级",
+  //   formatter: (val, data) => formatHierarchyDisplayName(data, data.tableType),
   // },
+  {
+    label: "表命名规范",
+    formatter: (val, data) =>
+      formatModelName({ ...data, modelName: "", modelNameSuffix: "" }),
+  },
+  {
+    label: "标准类型",
+    key: "documentType",
+    dictOptions: dp_document_type.value,
+  },
+  { label: "标准登记", key: "documentName" },
+  { label: "创建人", key: "createBy" },
+  { label: "联系方式", key: "createUserPhoneNumber" },
+  { label: "更新人", key: "updateBy" },
+  { label: "联系方式", key: "updateUserPhoneNumber" },
 ]);
-const getDescValue = (row) => {
-  let detail = { ...props.daDiscoveryTaskDetail };
-  if (props.daDiscoveryTaskDetail) {
-    if (row.type == "time") {
-      row.value = moment(detail[row.key]).format("YYYY-MM-DD");
-    } else if (row.key == "countSubmitted") {
-      row.countSubmitted = detail[row.countSubmitted];
-      row.countPending = detail[row.countPending];
-      row.countIgnoreFlag = detail[row.countIgnoreFlag];
-    } else {
-      row.value = detail[row.key];
-    }
-  }
-  return row.value !== null && row.value !== undefined && row.value !== "" ? row.value : "-";
-};
 </script>
-<style lang="scss" scoped>
-:deep(.base-label) {
-  width: 200px;
-
-  .cell-item {
-    font-weight: 500;
-  }
-}
-</style>

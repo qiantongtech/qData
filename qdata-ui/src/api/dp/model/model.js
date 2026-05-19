@@ -32,6 +32,15 @@
 
 import request from '@/utils/request';
 
+// 查询已发布逻辑模型列表
+export function releaseList(query) {
+    return request({
+        url: '/dp/model/releaseList',
+        method: 'get',
+        params: query
+    });
+}
+
 // 查询逻辑模型列表
 export function listDpModel(query) {
     return request({
@@ -105,6 +114,14 @@ export function listAttModelCat(query) {
         params: query
     });
 }
+// 查询树
+export function getTreeData(query) {
+    return request({
+        url: '/dp/model/getTreeData',
+        method: 'get',
+        params: query
+    });
+}
 // 获取 表信息
 export function getDpModelColumnList(query) {
     return request({
@@ -121,7 +138,7 @@ export function updateDpModelColumn(data) {
         data: data
     });
 }
-// 物化
+// 发布
 export function createMaterializedTable(data) {
     return request({
         url: '/dp/modelMaterialized/createMaterializedTable',
@@ -129,7 +146,7 @@ export function createMaterializedTable(data) {
         data: data
     });
 }
-// 数据库连接
+// 数据连接名称
 export function getDaDatasourceList(query) {
     return request({
         url: '/da/dataSource/getDaDatasourceList',
@@ -145,11 +162,13 @@ export function updateStatusDpDataModel(id, status) {
     });
 }
 //表
-export function tableList(ID) {
-    console.log("🚀 ~ tableList ~ ID:", ID)
+export function tableList(ID, limit) {
+    const idVal = typeof ID === 'object' ? ID.datasourceId : ID
+    const params = typeof ID === 'object' ? { tableName: ID.tableName, limit } : { limit }
     return request({
-        url: '/da/dataSource/tableList/' + ID,
-        method: 'get'
+        url: '/da/dataSource/tableList/' + idVal,
+        method: 'get',
+        params
     });
 }
 // 表字段
@@ -203,7 +222,7 @@ export function delDpModelColumns(id) {
         method: 'delete'
     })
 }
-// 查询物化模型记录列表
+// 查询发布模型记录列表
 export function listDpModelMaterialized(query) {
     return request({
         url: '/dp/modelMaterialized/list',
@@ -212,7 +231,7 @@ export function listDpModelMaterialized(query) {
     })
 }
 
-// 查询物化模型记录详细
+// 查询发布模型记录详细
 export function getDpModelMaterialized(id) {
     return request({
         url: '/dp/modelMaterialized/' + id,
@@ -220,7 +239,7 @@ export function getDpModelMaterialized(id) {
     })
 }
 
-// 新增物化模型记录
+// 新增发布模型记录
 export function addDpModelMaterialized(data) {
     return request({
         url: '/dp/modelMaterialized',
@@ -229,7 +248,7 @@ export function addDpModelMaterialized(data) {
     })
 }
 
-// 修改物化模型记录
+// 修改发布模型记录
 export function updateDpModelMaterialized(data) {
     return request({
         url: '/dp/modelMaterialized',
@@ -238,10 +257,17 @@ export function updateDpModelMaterialized(data) {
     })
 }
 
-// 删除物化模型记录
+// 删除发布模型记录
 export function delDpModelMaterialized(id) {
     return request({
         url: '/dp/modelMaterialized/' + id,
         method: 'delete'
     })
+}
+// 批量删除模型校验
+export function batchDeleteCheck(id) {
+    return request({
+        url: '/dp/model/batchDeleteCheck/' + id,
+        method: 'get'
+    });
 }

@@ -41,6 +41,15 @@ export function listDataCategory(query) {
   })
 }
 
+export function listDataCategoryAll(query) {
+  return request({
+    url: '/dg/dataCategory/listAll',
+    method: 'get',
+    params: query
+  })
+}
+
+
 // 查询数据分类详细
 export function getDataCategory(id) {
   return request({

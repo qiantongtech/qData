@@ -116,4 +116,11 @@ public class McTablePageReqVO extends PageParam {
     @Schema(description = "是否在门户展示：0-不展示，1-展示", example = "0")
     private String portalVisible;
 
+
+    /**
+     * 不展示的数据，多个一逗号拼接
+     */
+    @Schema(description = "不展示的数据，多个一逗号拼接", example = "0")
+    private String hideTableIds;
+
 }

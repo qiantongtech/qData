@@ -32,6 +32,13 @@
     text-align: start;
   }
 
+  .toggle-expand-all{
+    .svg-icon{
+      font-size: 12px;
+      margin-right: 6px;
+    }
+  }
+
   //页面底部
   .pagecont-bottom {
     flex: 1;
@@ -156,14 +163,14 @@
 
   // 表格内容超过2行...
   // .el-table td .cell {
-  //   max-width: 300px;         
-  //   white-space: normal;      
-  //   overflow: hidden;         
-  //   display: -webkit-box;     
-  //   -webkit-line-clamp: 2;   
+  //   max-width: 300px;
+  //   white-space: normal;
+  //   overflow: hidden;
+  //   display: -webkit-box;
+  //   -webkit-line-clamp: 2;
   //   -webkit-box-orient: vertical;
-  //   text-overflow: ellipsis;  
-  //   word-break: break-word;   
+  //   text-overflow: ellipsis;
+  //   word-break: break-word;
   // }
 
   //一级标题

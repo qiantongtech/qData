@@ -31,53 +31,104 @@
 -->
 
 <template>
-   <!--  逻辑物化的弹窗  -->
-  <el-dialog v-model="localVisible" :title="title" draggable class="warn-dialog" destroy-on-close>
+  <!--  逻辑发布的弹窗  -->
+  <el-dialog
+    v-model="localVisible"
+    :title="title"
+    draggable
+    class="warn-dialog"
+    destroy-on-close
+  >
     <!-- <div class="centered-text">
       您将对选择的{{
         ids?.length
-      }}个逻辑模型进行逻辑物化，请选择数据资产的数据连接
+      }}个逻辑模型进行逻辑发布，请选择数据资产的数据连接
     </div> -->
-    <el-form ref="dpModelRefs" :model="form" :rules="rules" label-width="100px" @submit.prevent>
+    <el-form
+      ref="dpModelRefs"
+      :model="form"
+      :rules="rules"
+      label-width="100px"
+      @submit.prevent
+    >
       <el-row :gutter="20">
-        <el-col :span="12">
-          <el-form-item label="数据库连接" prop="datasourceId" :rules="[
-            {
-              required: true,
-              message: '请选择数据库连接',
-              trigger: 'change',
-            },
-          ]">
-            <el-select v-model="form.datasourceId" placeholder="请选择数据连接" @change="handleDatasourceChange" filterable>
-              <el-option v-for="dict in createTypeList" :key="dict.id" :label="dict.datasourceName"
-                :value="dict.id"></el-option>
-            </el-select>
+        <el-col :span="24">
+          <el-form-item
+            label="数据库连接"
+            prop="datasourceId"
+            :rules="[
+              {
+                required: true,
+                message: '请选择数据库连接',
+                trigger: 'change',
+              },
+            ]"
+          >
+            <DatasourceList
+              v-model="form.datasourceId"
+              placeholder="请选择数据连接"
+              @change="handleDatasourceChange"
+              filterable
+              flag="dpModel"
+            />
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="24">
           <el-form-item label="数据库类型" prop="datasourceType">
-            <el-input v-model="form.datasourceType" placeholder="请输入数据库类型" disabled />
+            <el-input
+              v-model="form.datasourceType"
+              placeholder="请选择数据库类型"
+              disabled
+            />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
-        <el-col :span="12">
+        <el-col :span="24">
           <el-form-item label="数据库地址" prop="ip">
-            <el-input v-model="form.ip" placeholder="请输入数据库类型" disabled />
+            <el-input
+              v-model="form.ip"
+              placeholder="请输入数据库地址"
+              disabled
+            />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="24">
+          <el-form-item label="发布模式" prop="releaseMode">
+            <el-radio-group v-model="form.releaseMode">
+              <el-radio label="1">删除重建</el-radio>
+              <el-radio label="2">增量发布</el-radio>
+            </el-radio-group>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
           <el-form-item label="描述">
-            <el-input type="textarea" placeholder="请输入描述" v-model="form.description" :min-height="192" />
+            <el-input
+              type="textarea"
+              maxlength="500个字符"
+              show-word-limit
+              placeholder="请输入描述"
+              v-model="form.description"
+              :min-height="192"
+            />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
           <el-form-item label="备注">
-            <el-input type="textarea" placeholder="请输入备注" v-model="form.remark" :min-height="192" />
+            <el-input
+              type="textarea"
+              maxlength="500个字符"
+              show-word-limit
+              placeholder="请输入备注"
+              v-model="form.remark"
+              :min-height="192"
+            />
           </el-form-item>
         </el-col>
       </el-row>
@@ -86,7 +137,9 @@
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="closeDialog">取消</el-button>
-        <el-button type="primary" @click="confirmDialog"> 确认 </el-button>
+        <el-button type="primary" :loading="loading" @click="confirmDialog">
+          {{ loading ? "发布中" : "确认" }}
+        </el-button>
       </div>
     </template>
   </el-dialog>
@@ -97,11 +150,23 @@ import {
   createMaterializedTable,
   getDaDatasourceList,
 } from "@/api/dp/model/model";
-import { defineProps, defineEmits, ref, computed, watch } from "vue";
+import {
+  defineProps,
+  defineEmits,
+  ref,
+  computed,
+  watch,
+  getCurrentInstance,
+} from "vue";
+import DatasourceList from "@/components/Datasource/List.vue";
+import {
+  getDatasourceData,
+  getAvailableDatasource,
+} from "@/components/Datasource/utils.js";
 const { proxy } = getCurrentInstance();
 const props = defineProps({
   visible: { type: Boolean, default: true },
-  title: { type: String, default: "表单标题" },
+  title: { type: String, default: "发布模型" },
   ids: { type: Array, default: () => [] },
 });
 let createTypeList = ref();
@@ -117,8 +182,8 @@ watch(
 
 const getDaDatasourceListList = async () => {
   try {
-    const response = await getDaDatasourceList();
-    createTypeList.value = response.data;
+    const response = await getDatasourceData();
+    createTypeList.value = getAvailableDatasource(response, "dpModel");
   } catch (error) {
     console.error("请求失败:", error);
   }
@@ -136,10 +201,7 @@ const localVisible = computed({
   },
 });
 
-const handleDatasourceChange = (value) => {
-  const selectedDatasource = createTypeList.value.find(
-    (item) => item.id === value
-  );
+const handleDatasourceChange = (value, selectedDatasource) => {
   if (selectedDatasource) {
     form.value.ip = selectedDatasource.ip;
     form.value.datasourceConfig = selectedDatasource.datasourceConfig;
@@ -154,16 +216,21 @@ const form = ref({
   datasourceType: "",
   ip: "",
   datasourceConfig: "",
-  datasourceType: "",
   port: "",
   datasourceName: "",
+  releaseMode: "1",
 });
 
 const rules = ref({
   datasourceId: [
     { required: true, message: "请选择数据连接", trigger: "blur" },
   ],
+  releaseMode: [
+    { required: true, message: "请选择发布模式", trigger: "change" },
+  ],
 });
+
+const loading = ref(false);
 
 const closeDialog = () => {
   form.value = {
@@ -171,48 +238,70 @@ const closeDialog = () => {
     datasourceType: "",
     ip: "",
     datasourceConfig: "",
-    datasourceType: "",
     port: "",
     datasourceName: "",
+    releaseMode: "1",
   };
   localVisible.value = false;
   proxy.resetForm("dpModelRefs");
 };
-
 const confirmDialog = async () => {
   try {
-    // 使用 Promise 进行表单验证
     const isValid = await new Promise((resolve, reject) => {
       proxy.$refs["dpModelRefs"].validate((valid) => {
         if (valid) {
-          resolve(true); // 表单验证通过
+          resolve(true);
         } else {
-          reject("表单验证失败"); // 验证失败时拒绝
+          reject("表单验证失败");
         }
       });
     });
 
     if (isValid) {
-      // 创建物化表格
-      const response = await createMaterializedTable({
-        modelId: props.ids,
-        ...form.value,
+      const confirmMessage =
+        form.value.releaseMode === "1"
+          ? "确认选择删除重建吗？ 将清空原表数据并重新创建物理表结构。此操作不可逆转，请谨慎操作！"
+          : "确认选择增量发布吗？保留原表数据，仅追加新增的字段列。适用于非破坏性的安全变更。";
+
+      await proxy.$modal.confirm(confirmMessage, "系统提示", {
+        confirmButtonText: "确认",
+        cancelButtonText: "取消",
+        type: "warning",
       });
-      console.log(response);
 
-      // 提交数据
-      emit("confirm", form.value);
+      if (form.value.releaseMode === "2") {
+        const supportedTypes = ["oracle11", "mysql", "DM8"];
+        if (!supportedTypes.includes(form.value.datasourceType)) {
+          proxy.$message.warning(
+            "增量发布暂只支持oracle、MySqL、DM8这三种类型"
+          );
+          loading.value = false;
+          return;
+        }
+      }
+      loading.value = true;
+      try {
+        // 创建发布表格
+        const response = await createMaterializedTable({
+          modelId: props.ids,
+          ...form.value,
+        });
+        console.log(response);
 
-      // 关闭对话框
-      closeDialog();
-      // 提示成功
-      proxy.$modal.msgSuccess(response.msg);
+        // 提交数据
+        emit("confirm", form.value);
+
+        // 关闭对话框
+        closeDialog();
+        // 提示成功
+        proxy.$modal.msgSuccess(response.msg);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        loading.value = false;
+      }
     }
-  } catch (error) {
-    // 捕获并提示错误信息
-    proxy.$message.warning(response.msg);
-    console.log(error);
-  }
+  } catch (error) {}
 };
 </script>
 

@@ -230,4 +230,11 @@ public interface IDaDatasourceService extends IService<DaDatasourceDO> {
      * @return
      */
     Boolean editDatasourceStatus(Long datasourceId, Long status);
+
+    /**
+     * 定时任务方法
+     *
+     * @param id
+     */
+    void detectTableSchemaUpdates(Long id);
 }

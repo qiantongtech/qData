@@ -62,6 +62,12 @@ public class DmDataDomainPageReqVO extends PageParam {
     private String description;
 
 
+    @Schema(description = "业务域ID", example = "")
+    private Long businessDomainId;
+
+
+    @Schema(description = "业务分类ID", example = "")
+    private Long businessCategoryId;
 
 
 }

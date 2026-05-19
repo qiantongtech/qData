@@ -134,4 +134,7 @@ public class DpModelMaterializedRespVO implements Serializable {
     @Schema(description = "备注", example = "")
     private String remark;
 
+    /**  发布模式 1：删除重建  2：增量发布 */
+    @Schema(description = " 发布模式 1：删除重建  2：增量发布", example = "")
+    private String releaseMode;
 }

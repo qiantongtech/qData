@@ -192,4 +192,9 @@ public class DmDataDomainServiceImpl  extends ServiceImpl<DmDataDomainMapper,DmD
             }
             return resultMsg.toString();
         }
+
+    @Override
+    public PageResult<DmDataDomainDO> getDmDataDomainByCategoryId(DmDataDomainPageReqVO dmDataDomain) {
+        return dmDataDomainMapper.selectlistBybusinessDomainId(dmDataDomain);
+    }
 }

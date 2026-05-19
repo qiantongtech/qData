@@ -51,6 +51,12 @@
             <version>${qdata.version}</version>
         </dependency>
 
+        <!-- 系统模块 file -->
+        <dependency>
+            <groupId>tech.qiantong</groupId>
+            <artifactId>qdata-file</artifactId>
+            <version>${qdata.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>junit</groupId>

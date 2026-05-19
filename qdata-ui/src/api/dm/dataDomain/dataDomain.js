@@ -74,3 +74,20 @@ export function delDataDomain(id) {
     method: 'delete'
   })
 }
+
+// 查询业务分类
+export function listDataDomainlist(query) {
+  return request({
+    url: '/dm/dataDomain/listByCategoryId',
+    method: 'get',
+    params: query
+  })
+}
+
+// 批量删除数据域管理 业务分层绑定的
+export function getDeletebyDomainId(query) {
+  return request({
+    url: '/dm/BusinessDomainRel/deletebyDomainId/' + query.domainId + '/' + query.businessCategoryId,
+    method: 'delete'
+  })
+}

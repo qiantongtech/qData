@@ -42,7 +42,7 @@
                 <div class="quality-item">
                     <span class="quality-label">上一次评估时间：</span>
                     <span class="quality-value"> {{ parseTime(taskData.lastExecuteTime, '{y}-{m}-{d} {h}:{i}') || '-'
-                    }}</span>
+                        }}</span>
                 </div>
             </div>
             <div class="quality-actions">
@@ -431,7 +431,7 @@ const loadChartWithData = (data = []) => {
             type: 'value',
             min: 0,
             max: yMax,
-            interval: 5,
+            minInterval: 1,
             nameTextStyle: {
                 color: 'rgba(0,0,0,0.85)',
                 fontSize: 14,

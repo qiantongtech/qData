@@ -1099,4 +1099,227 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
         String tableFieldName = this.generateFlinkFields(dbQueryProperty, config, tableName, column, null);
         return dbDialect.getFlinkSinkSQL(dbQueryProperty, config, flinkTableName, tableName, tableFieldName);
     }
+
+    @Override
+    public Boolean deleteTable(DbQueryProperty dbQueryProperty, String tableName) {
+        try {
+            String sql = "DROP TABLE " + dbDialect.getTableName(dbQueryProperty, tableName);
+            this.execute(sql);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public List<String> generateUpdateTableSQL(DbQueryProperty dbQueryProperty, String tableName, String tableComment, List<DbColumn> sourceDbColumnList) {
+        List<String> sqlList = new ArrayList<>();
+        //生成获取表信息的sql
+        String getTableInfoSql = dbDialect.table(dbQueryProperty, tableName);
+        List<DbTable> dbTableList = jdbcTemplate.query(getTableInfoSql, dbDialect.tableMapper());
+        if (dbTableList == null || dbTableList.size() == 0) {
+            throw new ServiceException("表不存在");
+        }
+        //目标库表信息
+        DbTable targetDbTable = dbTableList.get(0);
+        //目标库表注释
+        String targetTableComment = dbTableList.get(0).getTableComment();
+        //查询表注释是否有改动
+        if (!org.apache.commons.lang3.StringUtils.equals(tableComment, targetTableComment)) {
+            sqlList.add(dbDialect.updateTableComment(dbQueryProperty, tableName, tableComment));
+        }
+
+        //生成获取目标字段列表的SQL
+        String getTableColumnsSql = dbDialect.columns(dbQueryProperty, tableName);
+        List<DbColumn> targetDbColumnList = new ArrayList<>();
+        if (dbDialect instanceof OracleDialect) {
+            List<DbColumn> longColumns = jdbcTemplate.query(getTableColumnsSql, dbDialect.columnLongMapper());
+            List<DbColumn> queryColumns = jdbcTemplate.query(getTableColumnsSql, dbDialect.columnMapper());
+            for (int i = 0; i < longColumns.size(); i++) {
+                DbColumn longColumn = longColumns.get(i);
+                DbColumn otherColumn = queryColumns.get(i);
+                otherColumn.setDataDefault(longColumn.getDataDefault());
+            }
+            targetDbColumnList.addAll(queryColumns);
+        } else {
+            List<DbColumn> queryColumns = jdbcTemplate.query(getTableColumnsSql, dbDialect.columnMapper());
+            targetDbColumnList.addAll(queryColumns);
+        }
+
+        // 比较源列和目标列的差异
+        Map<String, Object> columnChanges = compareColumnLists(sourceDbColumnList, targetDbColumnList);
+        List<DbColumn> columnsToDelete = (List<DbColumn>) columnChanges.get("columnsToDelete");
+        List<DbColumn> columnsToModify = (List<DbColumn>) columnChanges.get("columnsToModify");
+        List<DbColumn> columnsToAdd = (List<DbColumn>) columnChanges.get("columnsToAdd");
+        Boolean updateColKey = (Boolean) columnChanges.get("updateColKey");
+
+        // 处理需要新增的列
+        for (DbColumn column : columnsToAdd) {
+            sqlList.addAll(sqlList.size(), dbDialect.addColumn(dbQueryProperty, tableName, column));
+        }
+
+        // 处理需要修改的列
+        for (DbColumn column : columnsToModify) {
+            sqlList.addAll(sqlList.size(), dbDialect.modifyColumn(dbQueryProperty, tableName, column));
+        }
+
+        // 处理需要删除的列
+        for (DbColumn column : columnsToDelete) {
+            sqlList.add(dbDialect.dropColumn(dbQueryProperty, tableName, column.getColName()));
+        }
+
+        //处理主键更新
+        if (updateColKey) {
+            List<DbColumn> colKeyDbColumnList = sourceDbColumnList.stream()
+                    .filter(DbColumn::getColKey)
+                    .collect(Collectors.toList());
+            //TODO 这个逻辑暂时不要——将需要删除的列中为主键的进行过滤
+//            List<DbColumn> deleteColKeyColumnList = columnsToDelete.stream()
+//                    .filter(DbColumn::getColKey)
+//                    .collect(Collectors.toList());
+//            if (deleteColKeyColumnList.size() > 0) {
+//                colKeyDbColumnList.addAll(deleteColKeyColumnList);
+//            }
+            sqlList.addAll(sqlList.size(), dbDialect.updateColKey(dbQueryProperty, tableName, colKeyDbColumnList));
+        }
+        return sqlList;
+    }
+
+
+    /**
+     * 比较源列列表和目标列列表，返回需要删除、修改和新增的列
+     *
+     * @param sourceDbColumnList 源列列表
+     * @param targetDbColumnList 目标列列表
+     * @return 包含三个键的Map：columnsToDelete（需删除）、columnsToModify（需修改）、columnsToAdd（需新增）
+     */
+    private Map<String, Object> compareColumnLists(List<DbColumn> sourceDbColumnList, List<DbColumn> targetDbColumnList) {
+        //删除的字段
+        List<DbColumn> columnsToDelete = new ArrayList<>();
+        //修改的字段
+        List<DbColumn> columnsToModify = new ArrayList<>();
+        //添加的字段
+        List<DbColumn> columnsToAdd = new ArrayList<>();
+        //是否更改主键
+        Boolean updateColKey = false;
+
+        // 创建目标列的Map，以列名为key
+        Map<String, DbColumn> targetColumnMap = new HashMap<>();
+        if (targetDbColumnList != null) {
+            for (DbColumn targetColumn : targetDbColumnList) {
+                targetColumnMap.put(targetColumn.getColName(), targetColumn);
+            }
+        }
+
+        // 创建源列的Map，以列名为key
+        Map<String, DbColumn> sourceColumnMap = new HashMap<>();
+        if (sourceDbColumnList != null) {
+            for (DbColumn sourceColumn : sourceDbColumnList) {
+                sourceColumnMap.put(sourceColumn.getColName(), sourceColumn);
+            }
+        }
+
+        // 查找需要删除和修改的列
+        if (targetDbColumnList != null) {
+            for (DbColumn targetColumn : targetDbColumnList) {
+                String colName = targetColumn.getColName();
+                if (!sourceColumnMap.containsKey(colName)) {
+                    // 源列中不存在该列，需要删除
+                    columnsToDelete.add(targetColumn);
+                    if (targetColumn.getColKey()) {
+                        updateColKey = true;
+                    }
+                } else {
+                    // 列存在，检查是否有变化需要修改
+                    DbColumn sourceColumn = sourceColumnMap.get(colName);
+                    if (isColumnModified(sourceColumn, targetColumn)) {
+                        columnsToModify.add(sourceColumn);
+                        if (!java.util.Objects.equals(sourceColumn.getColKey(), targetColumn.getColKey())) {
+                            updateColKey = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        // 查找需要新增的列
+        if (sourceDbColumnList != null) {
+            for (DbColumn sourceColumn : sourceDbColumnList) {
+                String colName = sourceColumn.getColName();
+                if (!targetColumnMap.containsKey(colName)) {
+                    //判断是否是主键
+                    if (sourceColumn.getColKey()) {
+                        updateColKey = true;
+                    }
+                    // 目标列中不存在该列，需要新增
+                    columnsToAdd.add(sourceColumn);
+                }
+            }
+        }
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("columnsToDelete", columnsToDelete);
+        result.put("columnsToModify", columnsToModify);
+        result.put("columnsToAdd", columnsToAdd);
+        result.put("updateColKey", updateColKey);
+        return result;
+    }
+
+    /**
+     * 判断列是否发生了改变
+     *
+     * @param sourceColumn 源列
+     * @param targetColumn 目标列
+     * @return true表示有改变，false表示无改变
+     */
+    private boolean isColumnModified(DbColumn sourceColumn, DbColumn targetColumn) {
+        //将源表字段类型进行转换
+        String sourceDataType = dbDialect.getColumnType(targetColumn);
+
+        if (sourceColumn == null || targetColumn == null) {
+            return true;
+        }
+
+        // 比较数据类型
+        if (!org.apache.commons.lang3.StringUtils.equalsIgnoreCase(sourceDataType, targetColumn.getDataType())) {
+            return true;
+        }
+
+        // 比较数据长度
+        if (!org.apache.commons.lang3.StringUtils.equals(sourceColumn.getDataLength(), targetColumn.getDataLength())) {
+            return true;
+        }
+
+        // 比较数据精度
+        if (targetColumn.getDataPrecision() != null && !org.apache.commons.lang3.StringUtils.equals(sourceColumn.getDataPrecision() == null ? sourceColumn.getDataLength() : sourceColumn.getDataPrecision(), targetColumn.getDataPrecision())) {
+            return true;
+        }
+
+        // 比较小数位
+        if (!org.apache.commons.lang3.StringUtils.equals(sourceColumn.getDataScale(), targetColumn.getDataScale())) {
+            return true;
+        }
+
+        // 比较是否允许为空
+        if (!java.util.Objects.equals(sourceColumn.getNullable(), targetColumn.getNullable())) {
+            return true;
+        }
+
+        // 比较默认值
+        if (!org.apache.commons.lang3.StringUtils.equals(sourceColumn.getDataDefault(), targetColumn.getDataDefault())) {
+            return true;
+        }
+
+        // 比较注释
+        if (!org.apache.commons.lang3.StringUtils.equals(sourceColumn.getColComment(), targetColumn.getColComment())) {
+            return true;
+        }
+
+        if (!java.util.Objects.equals(sourceColumn.getColKey(), targetColumn.getColKey())) {
+            return true;
+        }
+
+        return false;
+    }
 }

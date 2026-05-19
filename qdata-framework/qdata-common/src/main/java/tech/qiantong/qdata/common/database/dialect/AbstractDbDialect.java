@@ -229,4 +229,39 @@ public abstract class AbstractDbDialect implements DbDialect {
         }
         return false;
     }
+
+    @Override
+    public String table(DbQueryProperty dbQueryProperty,String tableName) {
+        return null;
+    }
+
+    @Override
+    public String updateTableComment(DbQueryProperty dbQueryProperty, String tableName, String tableComment) {
+        return null;
+    }
+
+    @Override
+    public List<String> addColumn(DbQueryProperty dbQueryProperty, String tableName, DbColumn column) {
+        return null;
+    }
+
+    @Override
+    public List<String> modifyColumn(DbQueryProperty dbQueryProperty, String tableName, DbColumn column) {
+        return null;
+    }
+
+    @Override
+    public String dropColumn(DbQueryProperty dbQueryProperty, String tableName, String colName) {
+        return null;
+    }
+
+    @Override
+    public List<String> updateColKey(DbQueryProperty dbQueryProperty, String tableName, List<DbColumn> colKeyDbColumnList) {
+        return null;
+    }
+
+    @Override
+    public String getColumnType(DbColumn column) {
+        return null;
+    }
 }

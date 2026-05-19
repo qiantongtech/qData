@@ -38,6 +38,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
+import tech.qiantong.qdata.module.da.dal.dataobject.discovery.DaDiscoveryColumnDO;
 
 import javax.validation.constraints.Size;
 import java.util.Set;
@@ -130,4 +131,26 @@ public class DaAssetColumnSaveReqVO extends BaseEntity {
      */
     @TableField(exist = false)
     private Set<Long> elementId;
+
+    /**
+     * 构造函数，根据 DaDiscoveryColumnDO 对象初始化数据资产字段保存 VO
+     *
+     * @param discoveryColumnDO 数据发现字段 DO 对象
+     */
+    public DaAssetColumnSaveReqVO(DaDiscoveryColumnDO discoveryColumnDO) {
+        if (discoveryColumnDO != null) {
+//            this.id = discoveryColumnDO.getId();
+            // assetId 的赋值需根据实际业务逻辑处理，此处暂未映射
+            this.columnName = discoveryColumnDO.getColumnName();
+            this.columnComment = discoveryColumnDO.getColumnComment();
+            this.columnType = discoveryColumnDO.getColumnType();
+            this.columnLength = discoveryColumnDO.getColumnLength();
+            this.columnScale = discoveryColumnDO.getColumnScale();
+            this.nullableFlag = discoveryColumnDO.getNullableFlag();
+            this.pkFlag = discoveryColumnDO.getPkFlag();
+            this.defaultValue = discoveryColumnDO.getDefaultValue();
+            // 其他字段，如 dataElemCodeFlag、dataElemCodeId、sensitiveLevelId、relDataElmeFlag、
+            // relCleanFlag、relAuditFlag、description、remark、elementId 等，可根据业务需求补充映射逻辑
+        }
+    }
 }

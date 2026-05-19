@@ -32,6 +32,7 @@
 
 package tech.qiantong.qdata.module.da.service.datasource.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -43,10 +44,12 @@ import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.statement.Statement;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.xssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.qiantong.qdata.common.core.domain.AjaxResult;
@@ -63,6 +66,7 @@ import tech.qiantong.qdata.common.enums.KingbaseColumnTypeEnum;
 import tech.qiantong.qdata.common.enums.MySqlColumnTypeEnum;
 import tech.qiantong.qdata.common.exception.ServiceException;
 import tech.qiantong.qdata.common.utils.AesEncryptUtil;
+import tech.qiantong.qdata.common.utils.DateUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.module.att.api.project.IAttProjectApi;
@@ -75,16 +79,24 @@ import tech.qiantong.qdata.module.da.api.service.asset.IDaDatasourceApiService;
 import tech.qiantong.qdata.module.da.controller.admin.datasource.vo.DaDatasourcePageReqVO;
 import tech.qiantong.qdata.module.da.controller.admin.datasource.vo.DaDatasourceRespVO;
 import tech.qiantong.qdata.module.da.controller.admin.datasource.vo.DaDatasourceSaveReqVO;
+import tech.qiantong.qdata.module.da.controller.admin.discovery.vo.DaDiscoveryColumnPageReqVO;
+import tech.qiantong.qdata.module.da.controller.admin.discovery.vo.DaDiscoveryTablePageReqVO;
+import tech.qiantong.qdata.module.da.controller.admin.discovery.vo.DaDiscoveryTaskLogSaveReqVO;
+import tech.qiantong.qdata.module.da.controller.admin.discovery.vo.DaDiscoveryTaskRespVO;
 import tech.qiantong.qdata.module.da.dal.dataobject.assetColumn.DaAssetColumnDO;
 import tech.qiantong.qdata.module.da.dal.dataobject.datasource.DaDatasourceDO;
 import tech.qiantong.qdata.module.da.dal.dataobject.datasource.DaDatasourceProjectRelDO;
+import tech.qiantong.qdata.module.da.dal.dataobject.discovery.DaDiscoveryColumnDO;
+import tech.qiantong.qdata.module.da.dal.dataobject.discovery.DaDiscoveryTableDO;
 import tech.qiantong.qdata.module.da.dal.mapper.datasource.DaDatasourceMapper;
 import tech.qiantong.qdata.module.da.service.datasource.IDaDatasourceProjectRelService;
 import tech.qiantong.qdata.module.da.service.datasource.IDaDatasourceService;
+import tech.qiantong.qdata.module.da.service.discovery.*;
 import tech.qiantong.qdata.module.dp.api.model.dto.DpModelColumnReqDTO;
 import tech.qiantong.qdata.module.dp.api.model.dto.DpModelColumnRespDTO;
 import tech.qiantong.qdata.module.dp.api.service.model.IDpModelApiService;
 import tech.qiantong.qdata.module.dpp.api.service.etl.DppEtlTaskService;
+import tech.qiantong.qdata.module.system.service.ISysMessageService;
 import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
 import tech.qiantong.qdata.redis.service.IRedisService;
 
@@ -128,6 +140,29 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
 
     @Autowired
     private IRedisService redisService;
+
+    @Autowired
+    private ISysMessageService iSysMessageService;
+
+    @Autowired
+    @Lazy
+    private IDaDiscoveryTaskService iDaDiscoveryTaskService;
+
+    @Autowired
+    @Lazy
+    private IDaDiscoveryColumnService iDaDiscoveryColumnService;
+
+    @Autowired
+    @Lazy
+    private IDaDiscoveryTableService iDaDiscoveryTableService;
+
+    @Autowired
+    @Lazy
+    private IDaDiscoveryTaskLogService iDaDiscoveryTaskLogService;
+
+    @Resource
+    private IDaDiscoveryLogBodyService iDaDiscoveryLogBodyService;
+
 
     /**
      * 项目启动后初始化 Redis 中的数据源缓存。
@@ -1072,5 +1107,360 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
     public List<DaDatasourceRespDTO> getDatabaseListByIds(List<Long> ids) {
         List<DaDatasourceDO> daDatasourceDOS = daDatasourceMapper.selectBatchIds(ids);
         return BeanUtils.toBean(daDatasourceDOS, DaDatasourceRespDTO.class);
+    }
+
+    private List<DaDiscoveryTableDO> fetchDiscoveryTableList(DaDiscoveryTaskRespVO daDiscoveryTaskDO, Long daDiscoveryTaskLog) {
+        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "开始从本地库中获取发现任务表快照列表，任务ID：" + daDiscoveryTaskDO.getId());
+        DaDiscoveryTablePageReqVO daDiscoveryTablePageReqVO = new DaDiscoveryTablePageReqVO();
+        daDiscoveryTablePageReqVO.setTaskId(daDiscoveryTaskDO.getId());
+
+        List<DaDiscoveryTableDO> result = iDaDiscoveryTableService.getDaDiscoveryTableList(daDiscoveryTablePageReqVO);
+        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "从本地库中获取发现任务表快照列表成功，表数量：" + (result != null ? result.size() : 0));
+        return result;
+    }
+
+    private List<DaDiscoveryColumnDO> fetchDaDiscoveryColumnDOList(DaDiscoveryTableDO matchedTable, Long daDiscoveryTaskLog) {
+        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "开始从本地库中获取表的列快照信息，表ID：" + matchedTable.getId() + "，任务ID：" + matchedTable.getTaskId());
+
+        DaDiscoveryColumnPageReqVO daDiscoveryTablePageReqVO = new DaDiscoveryColumnPageReqVO();
+        daDiscoveryTablePageReqVO.setTaskId(matchedTable.getTaskId());
+        daDiscoveryTablePageReqVO.setTableId(matchedTable.getId());
+
+        List<DaDiscoveryColumnDO> result = iDaDiscoveryColumnService.getDaDiscoveryColumnList(daDiscoveryTablePageReqVO);
+        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "从本地库中获取表的列快照信息成功，列数量：" + (result != null ? result.size() : 0));
+        return result;
+    }
+
+    private List<DaDiscoveryTableDO> mapToMetadataTableList(List<DbTable> tables, Long taskId) {
+        return tables.stream().map(table -> {
+            DaDiscoveryTableDO metadataTable = new DaDiscoveryTableDO();
+            metadataTable.setTaskId(taskId);
+            metadataTable.setTableName(table.getTableName());
+            metadataTable.setTableComment(table.getTableComment());
+            return metadataTable;
+        }).collect(Collectors.toList());
+    }
+
+    private void updateTableDataCount(DbQuery dbQuery, DaDiscoveryTableDO table, int fieldCount) {
+        int dataCount = dbQuery.countNew(table.getTableName(), new HashMap<>());
+        table.setDataCount((long) dataCount);
+        table.setFieldCount((long) fieldCount);
+        table.setCreateBy("超级管理员");
+        table.setCreatorId(1L);
+    }
+
+
+    private int updateTableStatus(DaDiscoveryTableDO matchedTable, DaDiscoveryTableDO table, boolean modifiedTablesBoolean, Long daDiscoveryTaskLog) {
+        if (modifiedTablesBoolean) {
+            //1:新增，2:修改，3:删除，4:无变化
+            table.setChangeFlag("2");
+            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "更新表状态为修改：" + matchedTable.getTableName());
+
+            iDaDiscoveryTableService.updateDaDiscoveryTable(table);
+            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "更新完毕");
+            return 1;
+        } else {
+            //1:新增，2:修改，3:删除，4:无变化
+            matchedTable.setChangeFlag("4");
+            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "更新表状态为无变化：" + matchedTable.getTableName());
+
+            iDaDiscoveryTableService.updateDaDiscoveryTable(matchedTable);
+            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "更新完毕");
+            return 0;
+        }
+
+    }
+    private void saveNewTable(DaDiscoveryTableDO table, List<DbColumn> columns, DbQuery dbQuery, DbQueryProperty dbQueryProperty, Long daDiscoveryTaskLog) {
+        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "保存新表：" + table.getTableName());
+
+        updateTableDataCount(dbQuery, table, columns.size());
+
+        //1:新增，2:修改，3:删除，4:无变化
+        table.setChangeFlag("1");
+        iDaDiscoveryTableService.createDaDiscoveryTable(table);
+
+        if (CollUtil.isNotEmpty(columns)) {
+            List<DaDiscoveryColumnDO> metadataColumnEntityList = columns.stream()
+                    .map(column -> new DaDiscoveryColumnDO(table.getTaskId(), table.getId(), column))
+                    .collect(Collectors.toList());
+            metadataColumnEntityList.forEach(iDaDiscoveryColumnService::createDaDiscoveryColumn);
+        }
+        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "保存完毕");
+    }
+
+    public DaDiscoveryTableDO findMatchedTable(DaDiscoveryTableDO table, List<DaDiscoveryTableDO> daDiscoveryTableDOList) {
+        return daDiscoveryTableDOList.stream()
+                .filter(existingTable -> existingTable.getTableName().equals(table.getTableName()) &&
+                        existingTable.getTaskId().equals(table.getTaskId()))
+                .findFirst()
+                .orElse(null);  // 如果没有匹配到，返回null
+    }
+
+    private boolean isTableCommentModified(DaDiscoveryTableDO table, DaDiscoveryTableDO matchedTable) {
+        return !StringUtils.equals(table.getTableComment(), matchedTable.getTableComment());
+    }
+
+    private List<DaDiscoveryColumnDO> generateMetadataColumnList(List<DbColumn> columns, DaDiscoveryTableDO matchedTable) {
+        if (CollUtil.isEmpty(columns)) {
+            return new ArrayList<>();
+        }
+
+        return columns.stream()
+                .map(column -> new DaDiscoveryColumnDO(matchedTable.getTaskId(), matchedTable.getId(), column))
+                .collect(Collectors.toList());
+    }
+
+    private boolean compareColumnsAndUpdate(List<DaDiscoveryColumnDO> metadataColumnEntityList, List<DaDiscoveryColumnDO> discoveryColumnDOList) {
+        boolean modifiedTablesBoolean = false;
+
+        for (DaDiscoveryColumnDO column : metadataColumnEntityList) {
+            DaDiscoveryColumnDO matchedColumn = findMatchedColumn(column, discoveryColumnDOList);
+            if (matchedColumn == null) {
+                modifiedTablesBoolean = true;
+                iDaDiscoveryColumnService.createDaDiscoveryColumn(column);
+            } else if (!column.isEqual(matchedColumn)) {
+                modifiedTablesBoolean = true;
+                iDaDiscoveryColumnService.updateDaDiscoveryColumn(column);
+            }
+        }
+        return modifiedTablesBoolean;
+    }
+
+    public DaDiscoveryColumnDO findMatchedColumn(DaDiscoveryColumnDO table, List<DaDiscoveryColumnDO> daDiscoveryTableDOList) {
+        return daDiscoveryTableDOList.stream()
+                .filter(existingTable -> StringUtils.equals(existingTable.getColumnName(), table.getColumnName()))
+                .findFirst()
+                .orElse(null);  // 如果没有匹配到，返回null
+    }
+
+
+    private boolean deleteUnmatchedColumns(List<DaDiscoveryColumnDO> discoveryColumnDOList, List<DaDiscoveryColumnDO> metadataColumnEntityList) {
+        List<DaDiscoveryColumnDO> notInMetadataTable = findNotInDaDiscoveryColumn(discoveryColumnDOList, metadataColumnEntityList);
+        if (CollectionUtils.isEmpty(notInMetadataTable)) {
+            return false;
+        }
+
+        Collection<Long> idList = notInMetadataTable.stream()
+                .map(DaDiscoveryColumnDO::getId)
+                .collect(Collectors.toList());
+
+        iDaDiscoveryColumnService.removeDaDiscoveryColumn(idList);
+        return true;
+    }
+
+    public List<DaDiscoveryColumnDO> findNotInDaDiscoveryColumn(List<DaDiscoveryColumnDO> discoveryColumnDOList, List<DaDiscoveryColumnDO> metadataTableEntityList) {
+        return discoveryColumnDOList.stream()
+                .filter(table -> metadataTableEntityList.stream()
+                        .noneMatch(existingTable -> {
+                            return StringUtils.equals(existingTable.getColumnName(), table.getColumnName());
+                        }))
+                .collect(Collectors.toList()); // 返回daDiscoveryTableDOList中在metadataTableEntityList中不存在的table
+    }
+
+
+    private int updateExistingTable(DbQuery dbQuery, DaDiscoveryTableDO matchedTable, DaDiscoveryTableDO table, List<DbColumn> columns, Long daDiscoveryTaskLog) {
+        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "更新表：" + table.getTableName());
+
+        boolean modifiedTablesBoolean = false;
+        //查询表存的快照字段结构
+        List<DaDiscoveryColumnDO> discoveryColumnDOList = this.fetchDaDiscoveryColumnDOList(matchedTable, daDiscoveryTaskLog);
+        discoveryColumnDOList = discoveryColumnDOList == null ? new ArrayList<>() : discoveryColumnDOList;
+
+        if (isTableCommentModified(table, matchedTable)) {
+            modifiedTablesBoolean = true;
+        }
+
+        List<DaDiscoveryColumnDO> metadataColumnEntityList = generateMetadataColumnList(columns, matchedTable);
+
+        modifiedTablesBoolean |= compareColumnsAndUpdate(metadataColumnEntityList, discoveryColumnDOList);
+
+        modifiedTablesBoolean |= deleteUnmatchedColumns(discoveryColumnDOList, metadataColumnEntityList);
+
+        updateTableDataCount(dbQuery, table, columns.size());
+
+        return updateTableStatus(matchedTable, table, modifiedTablesBoolean, daDiscoveryTaskLog);
+    }
+
+    private Map<String, Object> logSchemaModifications(DbQueryProperty dbQueryProperty, DbQuery dbQuery, DaDiscoveryTaskRespVO daDiscoveryTaskById, Long daDiscoveryTaskLog) {
+        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "开始执行模式修改操作，任务ID：" + daDiscoveryTaskById.getId());
+
+        int newTables = 0;
+        int modifiedTables = 0;
+        int deletedTables = 0;
+        int totalTables = 0;
+
+        List<DaDiscoveryTableDO> daDiscoveryTableDOList = this.fetchDiscoveryTableList(daDiscoveryTaskById, daDiscoveryTaskLog);
+        daDiscoveryTableDOList = daDiscoveryTableDOList == null ? new ArrayList<>() : daDiscoveryTableDOList;
+
+        List<DbTable> tables = dbQuery.getTables(dbQueryProperty);
+        List<DaDiscoveryTableDO> metadataTableEntityList = new ArrayList<>();
+        if (CollUtil.isNotEmpty(tables)) {
+            totalTables = tables.size();
+            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "从数据源中，实时获取表列数量信息：" + totalTables);
+
+            metadataTableEntityList = mapToMetadataTableList(tables, daDiscoveryTaskById.getId());
+            if (CollUtil.isNotEmpty(metadataTableEntityList)) {
+                for (DaDiscoveryTableDO table : metadataTableEntityList) {
+                    DaDiscoveryTableDO matchedTable = findMatchedTable(table, daDiscoveryTableDOList);
+                    iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "正在处理表：" + table.getTableName());
+
+                    List<DbColumn> columns = dbQuery.getTableColumns(dbQueryProperty, table.getTableName());
+
+                    columns = columns == null ? new ArrayList<>() : columns;
+                    iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "从数据源中，实时获取列数量信息：" + columns.size());
+                    if (matchedTable == null) {
+                        newTables++;
+                        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "新表发现，表：" + table.getTableName() + "，开始保存");
+                        saveNewTable(table, columns, dbQuery, dbQueryProperty, daDiscoveryTaskLog);
+                    } else {
+                        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "查看表[ " + table.getTableName() + " ]库中配置信息");
+                        //是否忽略;0:否，1：是
+                        String ignoreFlag = matchedTable.getIgnoreFlag();
+                        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "查看表[ " + table.getTableName() + " ]库中配置信息,发现配置ignoreFlag为：" + ignoreFlag);
+                        if (StringUtils.equals("1", ignoreFlag)) {
+                            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "查看表[ " + table.getTableName() + " ]库中配置信息,发现配置为：忽略。该表结束扫描！");
+                            continue;
+                        }
+                        table.setId(matchedTable.getId());
+                        modifiedTables += updateExistingTable(dbQuery, matchedTable, table, columns, daDiscoveryTaskLog);
+                        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "已存在表更新，表：" + table.getTableName());
+
+                    }
+                }
+            }
+        }
+
+        deletedTables = deleteUnmatchedTables(daDiscoveryTableDOList, metadataTableEntityList, daDiscoveryTaskLog);
+        String executionTime = DateUtils.getExecutionTime();
+
+        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "模式修改操作完成，总表数：" + totalTables + "。其中，新增表数：" + newTables + "，修改表数：" + modifiedTables + "，删除表数：" + deletedTables);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("taskName", daDiscoveryTaskById.getName());
+        map.put("executionTime", executionTime);
+        map.put("totalTables", totalTables);
+        map.put("newTables", newTables);
+        map.put("modifiedTables", modifiedTables);
+        map.put("deletedTables", deletedTables);
+
+        daDiscoveryTaskById.setLastTableCount((long) (newTables + modifiedTables + deletedTables));
+        return map;
+    }
+
+
+    public List<DaDiscoveryTableDO> findNotInMetadataTable(List<DaDiscoveryTableDO> daDiscoveryTableDOList, List<DaDiscoveryTableDO> metadataTableEntityList) {
+        return daDiscoveryTableDOList.stream()
+                .filter(table -> metadataTableEntityList.stream()
+                        .noneMatch(existingTable -> existingTable.getTableName().equals(table.getTableName()) &&
+                                existingTable.getTaskId().equals(table.getTaskId())))
+                .collect(Collectors.toList()); // 返回daDiscoveryTableDOList中在metadataTableEntityList中不存在的table
+    }
+
+    private int deleteUnmatchedTables(List<DaDiscoveryTableDO> daDiscoveryTableDOList, List<DaDiscoveryTableDO> metadataTableEntityList, Long daDiscoveryTaskLog) {
+        List<DaDiscoveryTableDO> notInMetadataTable = findNotInMetadataTable(daDiscoveryTableDOList, metadataTableEntityList);
+        if (CollectionUtils.isEmpty(notInMetadataTable)) return 0;
+
+        for (DaDiscoveryTableDO daDiscoveryTableDO : notInMetadataTable) {
+            daDiscoveryTableDO.setUpdateBy("超级管理员");
+            daDiscoveryTableDO.setUpdatorId(1L);
+            //1:新增，2:修改，3:删除，4:无变化
+            daDiscoveryTableDO.setChangeFlag("3");
+            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "删除未匹配表：" + daDiscoveryTableDO.getTableName());
+            iDaDiscoveryTableService.updateDaDiscoveryTable(daDiscoveryTableDO);
+        }
+
+        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "删除完毕");
+        return notInMetadataTable.size();
+    }
+
+
+
+    private Map<String, Object> runJobTableSchemaUpdates(DaDiscoveryTaskRespVO daDiscoveryTaskById, Long daDiscoveryTaskLog) {
+
+        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "任务执行-根据数据源编号，获取发现任务的 数据源详细信息");
+        DaDatasourceDO daDatasourceBy = this.getDaDatasourceById(daDiscoveryTaskById.getDatasourceId());
+        if (daDatasourceBy == null) {
+            throw new DataQueryException("任务执行-根据数据源编号，获取发现任务的 数据源详情信息查询失败！");
+        }
+        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "任务执行-根据数据源编号，获取发现任务的 数据源详细信息成功");
+        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "任务执行-根据数据源链接信息，建立实时数据源链接");
+        DbQueryProperty dbQueryProperty = new DbQueryProperty(daDatasourceBy.getDatasourceType()
+                , daDatasourceBy.getIp(), daDatasourceBy.getPort(), daDatasourceBy.getDatasourceConfig());
+        DbQuery dbQuery = dataSourceFactory.createDbQuery(dbQueryProperty);
+        if (!dbQuery.valid()) {
+            throw new DataQueryException("任务执行-根据数据源链接信息，建立实时数据源链接 失败！");
+        }
+        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "任务执行-根据数据源链接信息，建立实时数据源链接 成功");
+
+        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "任务执行-根据数据源链接，开始进入获取实时库中信息方法");
+        try {
+            Map<String, Object> map = logSchemaModifications(dbQueryProperty, dbQuery, daDiscoveryTaskById, daDiscoveryTaskLog);
+            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "任务执行-根据数据源链接，获取实时库中信息方法结束");
+            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "任务执行-信息如下 map:" + map.toString());
+            iDaDiscoveryTaskService.updateDaDiscoveryTask(daDiscoveryTaskById);
+            return map;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            dbQuery.close();
+        }
+    }
+
+
+    /**
+     * @param id
+     */
+    @Override
+    public void detectTableSchemaUpdates(Long id) {
+        String key = "detectTableSchemaUpdates-" + id;
+        String status = redisService.get(key);
+        if (StringUtils.isEmpty(status) && StringUtils.equals("1", status)) {
+            throw new RuntimeException("历史任务未执行完毕，请稍后重试");
+        }
+        DaDiscoveryTaskRespVO daDiscoveryTaskById = iDaDiscoveryTaskService.getDaDiscoveryTaskById(id);
+        if (daDiscoveryTaskById == null) {
+            throw new DataQueryException("任务执行-根据发现任务编号，获取发现任务详细信息 失败!");
+        }
+        redisService.set(key, "1", 1200);
+        //创建日志记录表
+        DaDiscoveryTaskLogSaveReqVO createReqVO = new DaDiscoveryTaskLogSaveReqVO();
+        Date executionDate = DateUtils.getExecutionDate();
+        createReqVO.setStartTime(executionDate);
+        createReqVO.populateFromTask(daDiscoveryTaskById);
+        Long daDiscoveryTaskLog = iDaDiscoveryTaskLogService.createDaDiscoveryTaskLog(createReqVO);
+        createReqVO.setId(daDiscoveryTaskLog);
+        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "任务执行-根据发现任务编号，获取发现任务详细信息成功");
+
+        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "任务开始执行");
+
+        try {
+            daDiscoveryTaskById.setLastExecuteTime(executionDate);
+            //
+            Map<String, Object> map = runJobTableSchemaUpdates(daDiscoveryTaskById, daDiscoveryTaskLog);
+
+            int newTables = MapUtils.getIntValue(map, "newTables");
+            int modifiedTables = MapUtils.getIntValue(map, "modifiedTables");
+            int deletedTables = MapUtils.getIntValue(map, "deletedTables");
+            createReqVO.setNewTableCount((long) newTables);
+            createReqVO.setModifiedTableCount((long) modifiedTables);
+            createReqVO.setDeletedTableCount((long) deletedTables);
+
+            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "任务执行-根据任务执行信息，开始对本次任务发放站内信");
+            iSysMessageService.sendDbChangeMessage(daDiscoveryTaskById.getContactId(), map);
+            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "任务执行-根据任务执行信息，对本次任务站内信发放 完毕");
+            createReqVO.setStatus("2");
+        } catch (Exception e) {
+            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "任务失败");
+            createReqVO.setStatus("3");
+            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, e.getMessage().toString());
+            redisService.set(key, "3", 300);
+        } finally {
+            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "FINALIZE_SESSION");
+            createReqVO.setPath("");
+            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "任务结束");
+            createReqVO.setEndTime(DateUtils.getExecutionDate());
+            iDaDiscoveryTaskLogService.updateDaDiscoveryTaskLog(createReqVO);
+            redisService.set(key, "2", 300);
+        }
     }
 }

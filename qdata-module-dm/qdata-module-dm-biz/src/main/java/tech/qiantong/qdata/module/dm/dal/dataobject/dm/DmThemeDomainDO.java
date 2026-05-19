@@ -128,4 +128,10 @@ public class DmThemeDomainDO extends BaseEntity {
      */
     @TableField(exist = false)
     private String ownerUserPhoneNumber;
+
+    /**
+     * 统计数量
+     */
+    @TableField(exist = false)
+    private Long num;
 }

@@ -374,4 +374,8 @@ public class DbQueryProperty implements Serializable {
                 throw new DataQueryException("不支持的数据库类型");
         }
     }
+
+    public String trainToHostPort() {
+        return host + ":" + port;
+    }
 }

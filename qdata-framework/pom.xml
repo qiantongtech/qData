@@ -52,6 +52,7 @@
         <module>qdata-file</module>
         <module>qdata-pay</module>
         <module>qdata-auth</module>
+        <module>qdata-neo4j</module>
     </modules>
     <packaging>pom</packaging>
 

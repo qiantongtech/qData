@@ -32,13 +32,13 @@
 
 package tech.qiantong.qdata.module.dp.controller.admin.model.vo;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.*;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 import tech.qiantong.qdata.common.annotation.Excel;
-import java.util.Date;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 逻辑模型 Response VO 对象 DP_MODEL
@@ -69,6 +69,47 @@ public class DpModelRespVO implements Serializable {
     @Schema(description = "类目编码", example = "")
     private String catCode;
     private String catName;
+
+    /**
+     * 表类型;1:明细表 2:汇总表 3:维度表 4:应用表
+     */
+    @Schema(description = "表类型 1:明细表 2:汇总表 3:维度表 4:应用表")
+    private String tableType;
+    /**
+     * 数仓分层id
+     */
+    @Schema(description = "数仓分层id ")
+    private Long dataLayerId;
+    /**
+     * 业务分类id;只有表类型为非应用表是才有值
+     */
+    @Schema(description = "业务分类id 只有表类型为非应用表是才有值")
+    private Long businessCategoryId;
+    /**
+     * 业务分类层级编码
+     */
+    @Schema(description = "业务分类层级编码 ")
+    private String businessCategoryCode;
+    /**
+     * 数据分域id;只有表类型为非应用表是才有值
+     */
+    @Schema(description = "数据分域id 只有表类型为非应用表是才有值")
+    private Long dataDomainId;
+    /**
+     * 所属主题id（主题规划）;只有表类型为应用表是才有值
+     */
+    @Schema(description = "所属主题id（主题规划） 只有表类型为应用表是才有值")
+    private Long themeDomainId;
+    /**
+     * 所属主题层级编码
+     */
+    @Schema(description = "所属主题层级编码 ")
+    private String themeDomainCode;
+    /**
+     * 表名大小写;1：大写 2：小写
+     */
+    @Schema(description = "表名大小写 1：大写 2：小写")
+    private String tableCase;
 
     @Excel(name = "状态")
     @Schema(description = "状态", example = "")
@@ -154,15 +195,55 @@ public class DpModelRespVO implements Serializable {
     @Schema(description = "端口号", example = "")
     private Long port;
 
-    /** 名称 */
-    @TableField(exist = false)
+    /**
+     * 名称
+     */
     private String documentName;
 
-    /** 名称 */
-    @TableField(exist = false)
+    /**
+     * 名称
+     */
     private String documentCode;
 
-    /** 文件标准类型字段， */
-    @TableField(exist = false)
+    /**
+     * 文件标准类型字段，
+     */
     private String documentType;
+
+    @Schema(description = "数仓分层名称")
+    private String dataLayerName;
+
+    @Schema(description = "数仓分层英文缩写")
+    private String dataLayerEngName;
+
+    @Schema(description = "业务名称")
+    private String businessCategoryName;
+
+    @Schema(description = "业务英文缩写")
+    private String businessCategoryEngName;
+
+    @Schema(description = "数据分域名称")
+    private String dataDomainName;
+
+    @Schema(description = "数据分域英文缩写")
+    private String dataDomainEngName;
+
+    @Schema(description = "所属主题名称")
+    private String themeDomainName;
+
+    @Schema(description = "所属主题英文缩写")
+    private String themeDomainEngName;
+
+    @Schema(description = "发布状态 1:未发布 3:发布成功 4:发布失败")
+    private String releaseStatus;
+
+    @Schema(description = "发布发布数据源列表")
+    private String releaseDatabaseList;
+
+    @Schema(name = "创建人联系电话")
+    private String createUserPhoneNumber;
+
+
+    @Schema(name = "修改人联系电话")
+    private String updateUserPhoneNumber;
 }

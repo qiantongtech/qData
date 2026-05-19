@@ -34,6 +34,8 @@ package tech.qiantong.qdata.module.da.controller.admin.asset;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.json.JSONObject;
+import com.alibaba.fastjson2.JSONArray;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -44,12 +46,20 @@ import tech.qiantong.qdata.common.annotation.Log;
 import tech.qiantong.qdata.common.core.controller.BaseController;
 import tech.qiantong.qdata.common.core.domain.AjaxResult;
 import tech.qiantong.qdata.common.core.domain.CommonResult;
+import tech.qiantong.qdata.common.core.domain.TreeData;
+import tech.qiantong.qdata.common.core.domain.entity.SysUser;
 import tech.qiantong.qdata.common.core.page.PageParam;
 import tech.qiantong.qdata.common.core.page.PageResult;
+import tech.qiantong.qdata.common.core.text.Convert;
 import tech.qiantong.qdata.common.enums.BusinessType;
+import tech.qiantong.qdata.common.utils.SecurityUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.common.utils.poi.ExcelUtil;
+import tech.qiantong.qdata.module.att.api.Rel.dto.AttTagAssetRelReqDTO;
+import tech.qiantong.qdata.module.att.api.Rel.dto.AttTagAssetRelRespDTO;
+import tech.qiantong.qdata.module.att.api.service.cat.tag.IAttTagApiService;
+import tech.qiantong.qdata.module.att.api.service.cat.tagRel.IAttTagAssetRelApiService;
 import tech.qiantong.qdata.module.da.controller.admin.asset.vo.DaAssetPageReqVO;
 import tech.qiantong.qdata.module.da.controller.admin.asset.vo.DaAssetRespVO;
 import tech.qiantong.qdata.module.da.controller.admin.asset.vo.DaAssetSaveReqVO;
@@ -57,12 +67,16 @@ import tech.qiantong.qdata.module.da.controller.admin.assetColumn.vo.DaAssetColu
 import tech.qiantong.qdata.module.da.convert.asset.DaAssetConvert;
 import tech.qiantong.qdata.module.da.dal.dataobject.asset.DaAssetDO;
 import tech.qiantong.qdata.module.da.service.asset.IDaAssetService;
+import tech.qiantong.qdata.neo4j.dto.LineageDTO;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 数据资产Controller
@@ -78,20 +92,125 @@ public class DaAssetController extends BaseController {
     @Resource
     private IDaAssetService daAssetService;
 
+    @Resource
+    private IAttTagAssetRelApiService attTagAssetRelApiService;
+    @Resource
+    private IAttTagApiService attTagApiService;
 
     @Operation(summary = "查询数据资产列表")
     @PreAuthorize("@ss.hasPermi('da:asset:list')")
     @GetMapping("/list")
     public CommonResult<PageResult<DaAssetRespVO>> list(DaAssetPageReqVO daAsset) {
         PageResult<DaAssetDO> page = daAssetService.getDaAssetPage(daAsset, "1");
+        PageResult<DaAssetRespVO> result = BeanUtils.toBean(page, DaAssetRespVO.class);
+        if (result.getRows().size() > 0) {
+            for (DaAssetRespVO item : result.getRows()) {
+                if (StringUtils.isNotBlank(item.getTags())) {
+                    JSONArray tags = JSONArray.parse(item.getTags());
+                    item.setTagIds(
+                            tags.stream()
+                                    .map(tag -> ((com.alibaba.fastjson2.JSONObject) tag).getString("tagId"))
+                                    .collect(Collectors.toList())
+                    );
+                    item.setTagNames(
+                            tags.stream()
+                                    .map(tag -> ((com.alibaba.fastjson2.JSONObject) tag).getString("tagName"))
+                                    .collect(Collectors.toList())
+                    );
+                }
+            }
+        }
+        return CommonResult.success(result);
+    }
+
+    @Operation(summary = "查询数据资产列表不分页")
+    @PreAuthorize("@ss.hasPermi('da:asset:list')")
+    @GetMapping("/listAll")
+    public CommonResult<List<DaAssetRespVO>> listAll(DaAssetPageReqVO daAsset) {
+        List<DaAssetDO> page = daAssetService.getDaAssetListAll(daAsset, "1");
         return CommonResult.success(BeanUtils.toBean(page, DaAssetRespVO.class));
     }
 
+    /**
+     * 处理资产标签信息
+     *
+     * @param bean PageResult<DaAssetRespVO>
+     * @return PageResult<DaAssetRespVO>
+     */
+    @Deprecated
+    @SuppressWarnings("unchecked")
+    public PageResult<DaAssetRespVO> fillAssetTags(PageResult<DaAssetRespVO> bean) {
+        List<DaAssetRespVO> rows = (List<DaAssetRespVO>) bean.getRows();
+        if (CollectionUtils.isEmpty(rows)) {
+            return bean;
+        }
+
+        List<AttTagAssetRelRespDTO> apiList = attTagAssetRelApiService.getApiList(new AttTagAssetRelReqDTO());
+        Map<Long, String> collect1 = attTagApiService.getApiList()
+                .stream()
+                .collect(Collectors.toMap(s -> s.getId(), s -> s.getName()));
+        Map<String, List<AttTagAssetRelRespDTO>> collect = apiList.stream()
+                .collect(Collectors.groupingBy(s -> s.getAssetId()));
+        for (DaAssetRespVO row : rows) {
+            List<AttTagAssetRelRespDTO> attTagAssetRelRespDTOS = collect.get(Convert.toStr(row.getId()));
+            row.setTagIds(new ArrayList<>());
+
+            if (attTagAssetRelRespDTOS != null) {
+                List<String> list = new ArrayList<>();
+                List<String> listName = new ArrayList<>();
+
+                for (AttTagAssetRelRespDTO attTagAssetRelRespDTO : attTagAssetRelRespDTOS) {
+                    String name = collect1.get(Convert.toLong(attTagAssetRelRespDTO.getTagId()));
+                    if (StringUtils.isNotEmpty(name)) {
+                        listName.add(name);
+                    }
+                    list.add(attTagAssetRelRespDTO.getTagId());
+                }
+
+                row.setTagIds(list);
+//                row.setTags(listName);
+            }
+        }
+        bean.setRows(rows);
+        return bean;
+    }
+
+
+    @Operation(summary = "查询数据资产列表")
+    @PreAuthorize("@ss.hasPermi('att:tag:query')")
+    @GetMapping("/listAssetTag")
+    public CommonResult<PageResult<DaAssetRespVO>> listAssetTag(DaAssetPageReqVO daAsset) {
+        if (CollectionUtils.isEmpty(daAsset.getTagIdList())) {
+            return CommonResult.success(null);
+        }
+
+        PageResult<DaAssetDO> page = daAssetService.getDaAssetPage(daAsset, "1");
+        PageResult<DaAssetRespVO> bean = BeanUtils.toBean(page, DaAssetRespVO.class);
+
+        return CommonResult.success(bean);
+    }
+
+    @Deprecated
     @Operation(summary = "查询数据研发下的数据资产列表")
     @PreAuthorize("@ss.hasPermi('da:asset:list')")
     @GetMapping("/dpp/list")
     public CommonResult<PageResult<DaAssetRespVO>> dppList(DaAssetPageReqVO daAsset) {
         PageResult<DaAssetDO> page = daAssetService.getDppAssetPage(daAsset);
+        return CommonResult.success(this.fillAssetTags(BeanUtils.toBean(page, DaAssetRespVO.class)));
+    }
+
+    /**
+     * 根据id查询
+     *
+     * @param ids
+     * @return
+     */
+    @Operation(summary = "查询数据资产列表")
+    @PreAuthorize("@ss.hasPermi('da:asset:list')")
+    @GetMapping("/listByIds/{ids}")
+    public CommonResult<PageResult<DaAssetRespVO>> list(@PathVariable("ids") List<Long> ids) {
+
+        PageResult<DaAssetDO> page = daAssetService.getDaAssetByIds(ids);
         return CommonResult.success(BeanUtils.toBean(page, DaAssetRespVO.class));
     }
 
@@ -162,12 +281,28 @@ public class DaAssetController extends BaseController {
         if (columnData == null) {
             return error("数据库中未获取到该表数据，请确认表是否存在!");
         }
-        List<Map<String, Object>> dataMaskingList = daAssetService.dataMasking(Long.valueOf(jsonObject.getStr("id")), (List<Map<String, Object>>) columnData.get("tableData"));
+
+        SysUser sysUser = SecurityUtils.getLoginUser().getUser();
+       // List<Map<String, Object>> dataMaskingList = daAssetService.dataMasking(Long.valueOf(jsonObject.getStr("id")), (List<Map<String, Object>>) columnData.get("tableData"));
+        //1.数据资产  2.数据查询
+        List<Map<String, Object>> dataMaskingList = daAssetService.dataMaskings(Long.valueOf(jsonObject.getStr("id")), (List<Map<String, Object>>) columnData.get("tableData"),sysUser.getUserId(),"1");
+
         if (dataMaskingList == null) {
             return error("请检查资产字段与数据表字段是否一致");
         }
         columnData.put("tableData", dataMaskingList);
         return success(columnData);
+    }
+
+    @Operation(summary = "数据资产绑定资源")
+    @PreAuthorize("@ss.hasPermi('da:asset:edit')")
+    @Log(title = "数据资产", businessType = BusinessType.INSERT)
+    @PostMapping("/bindResources")
+    public CommonResult<Long> bindResources(@Valid @RequestBody DaAssetSaveReqVO daAsset) {
+        daAsset.setUpdatorId(getUserId());
+        daAsset.setUpdateBy(getNickName());
+        daAsset.setUpdateTime(DateUtil.date());
+        return CommonResult.toAjax(daAssetService.createDaAssetBindResources(daAsset));
     }
 
     @Operation(summary = "新增数据资产")
@@ -181,6 +316,24 @@ public class DaAssetController extends BaseController {
         return CommonResult.toAjax(daAssetService.createDaAssetNew(daAsset));
     }
 
+    @Operation(summary = "批量新增数据资产")
+    @PreAuthorize("@ss.hasPermi('da:asset:add')") // 也可以单独配 da:asset:batchAdd
+    @Log(title = "数据资产", businessType = BusinessType.INSERT)
+    @PostMapping("/batch")
+    public CommonResult<List<Long>> batchAdd(@Valid @RequestBody List<DaAssetSaveReqVO> daAssetList) {
+        Long userId = getUserId();
+        String nickName = getNickName();
+        Date now = DateUtil.date();
+
+        for (DaAssetSaveReqVO daAsset : daAssetList) {
+            daAsset.setCreatorId(userId);
+            daAsset.setCreateBy(nickName);
+            daAsset.setCreateTime(now);
+        }
+
+        return CommonResult.success(daAssetService.createDaAssetBatchNew(daAssetList));
+    }
+
     @Operation(summary = "修改数据资产")
     @PreAuthorize("@ss.hasPermi('da:asset:edit')")
     @Log(title = "数据资产", businessType = BusinessType.UPDATE)
@@ -191,15 +344,6 @@ public class DaAssetController extends BaseController {
         daAsset.setUpdateTime(DateUtil.date());
         return CommonResult.toAjax(daAssetService.updateDaAssetNew(daAsset));
     }
-
-//    @Operation(summary = "删除数据资产")
-//    @PreAuthorize("@ss.hasPermi('da:asset:remove')")
-//    @Log(title = "数据资产", businessType = BusinessType.DELETE)
-//    @DeleteMapping("/{ids}")
-//    public CommonResult<Integer> remove(@PathVariable Long[] ids) {
-//        return CommonResult.toAjax(daAssetService.removeDaAsset(Arrays.asList(ids)));
-//    }
-
 
     @Operation(summary = "删除数据资产")
     @PreAuthorize("@ss.hasPermi('da:asset:remove')")
@@ -227,5 +371,17 @@ public class DaAssetController extends BaseController {
                                                                   @RequestParam String type) {
         List<DaAssetColumnRelRuleVO> vos = daAssetService.listRelRule(datasourceId, tableName, type);
         return CommonResult.success(vos);
+    }
+
+
+    @GetMapping("/dataLineage/{id}")
+    public CommonResult<LineageDTO> dataLineage(@PathVariable Long id) {
+        return CommonResult.success(daAssetService.dataLineage(id));
+    }
+
+    @Operation(summary = "获取树类目数据（多个数据组合而来）")
+    @GetMapping("/getTreeData")
+    public CommonResult<List<TreeData>> getTree() {
+        return CommonResult.success(daAssetService.getTreeData());
     }
 }

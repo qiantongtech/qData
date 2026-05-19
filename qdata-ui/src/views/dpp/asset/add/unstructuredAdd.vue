@@ -32,56 +32,100 @@
 
 <template>
   <!-- 非结构化数据 -->
-  <el-row :gutter="20">
-    <el-col :span="12">
-      <el-form-item label="数据连接名称" prop="datasourceId"
-        :rules="[{ required: true, message: '请选择数据连接名称', trigger: 'change' }]">
-        <el-select v-model="localForm.datasourceId" placeholder="请选择数据连接名称" @change="handleDatasourceChange" filterable
-          :loading="loading" :disabled="!props.isRegister && localForm.id && localForm.createType == '2'">
-          <el-option v-for="dict in createTypeList" :key="dict.id" :label="dict.datasourceName" :value="dict.id" />
-        </el-select>
-      </el-form-item>
-    </el-col>
+  <qt-form-item
+      label="数据连接名称"
+      prop="datasourceId"
+      :rules="[
+      { required: true, message: '请选择数据连接名称', trigger: 'change' },
+    ]"
+      :tip="{ content: '选择该资产所依赖的数据连接，即数据源实例。' }"
+  >
+    <DatasourceList
+        v-model="localForm.datasourceId"
+        placeholder="请选择数据连接名称"
+        @change="handleDatasourceChange"
+        filterable
+        :loading="loading"
+        :disabled="
+        !props.isRegister && localForm.id && localForm.createType == '2'
+      "
+        flag="daAssetUnstructured"
+        :project="props.type == '1' ? true : false"
+    />
+  </qt-form-item>
 
-    <el-col :span="12">
-      <el-form-item label="数据连接类型" prop="datasourceType">
-        <el-input v-model="localForm.datasourceType" disabled />
-      </el-form-item>
-    </el-col>
-  </el-row>
+  <el-form-item label="数据连接类型" prop="datasourceType">
+    <el-input
+        v-model="localForm.datasourceType"
+        disabled
+        placeholder="请选择数据连接类型"
+    />
+  </el-form-item>
 
-  <el-row :gutter="20">
-    <el-col :span="24">
-      <el-form-item label="文件路径" prop="filePath" :rules="[{ required: true, message: '请选择文件路径', trigger: 'blur' }]">
-        <el-input style="width: 92%" v-model="localForm.filePath" placeholder="请输入文件路径" disabled />
-        <el-button type="primary" @click="handleSearch" icon="Search">搜索</el-button>
-      </el-form-item>
-    </el-col>
-  </el-row>
+  <el-form-item
+      label="文件路径"
+      prop="filePath"
+      class="row-full"
+      :rules="[{ required: true, message: '请选择文件路径', trigger: 'blur' }]"
+  >
+    <el-input
+        style="width: 92%"
+        v-model="localForm.filePath"
+        placeholder="请输入文件路径"
+        disabled
+    />
+    <el-button type="primary" @click="handleSearch" icon="Search"
+    >搜索</el-button
+    >
+  </el-form-item>
 
-  <el-row :gutter="20" v-if="localForm.filePath">
-    <el-col :span="24">
-      <el-descriptions title="" :column="2" border>
-        <el-descriptions-item v-for="(item, index) in fileDesc" :key="index" label-class-name="base-label"
-          class-name="base-content">
-          <template #label>
-            <div class="cell-item">{{ item.label }}</div>
-          </template>
-          <span v-if="item.key == 'size'">{{ (item.value / 1024).toFixed(2) + "KB" }}</span>
-          <span v-else>{{ item.value }}</span>
-        </el-descriptions-item>
-      </el-descriptions>
-    </el-col>
-  </el-row>
+  <div
+      v-if="localForm.filePath"
+      class="file-desc-row row-full"
+      style="margin-bottom: 20px"
+  >
+    <el-descriptions title="" :column="2" border>
+      <el-descriptions-item
+          v-for="(item, index) in fileDesc"
+          :key="index"
+          label-class-name="base-label"
+          class-name="base-content"
+      >
+        <template #label>
+          <div class="cell-item">{{ item.label }}</div>
+        </template>
+        <span v-if="item.key == 'size'">{{
+            (item.value / 1024).toFixed(2) + "KB"
+          }}</span>
+        <span v-else>{{ item.value }}</span>
+      </el-descriptions-item>
+    </el-descriptions>
+  </div>
 
-  <el-dialog class="file-dialog" title="选择文件" width="900px" v-model="visibleDialog" draggable destroy-on-close
-    :append-to="$refs['app-container']">
+  <el-dialog
+      class="file-dialog"
+      title="选择文件"
+      width="900px"
+      v-model="visibleDialog"
+      draggable
+      destroy-on-close
+      :append-to="$refs['app-container']"
+  >
     <div class="file-main" v-loading="upload.isUploading">
       <div class="head">
-        <el-upload ref="uploadRef" :limit="1" :headers="upload.headers" :action="upload.url"
-          :disabled="upload.isUploading" :data="uploadData" :before-upload="handleBeforeUpload"
-          :on-progress="handleFileUploadProgress" :on-success="handleFileSuccess" :on-error="handleUploadError"
-          :show-file-list="false">
+        <el-upload
+            ref="uploadRef"
+            :limit="1"
+            :headers="upload.headers"
+            :action="upload.url"
+            :disabled="upload.isUploading"
+            :data="uploadData"
+            :before-upload="handleBeforeUpload"
+            :on-progress="handleFileUploadProgress"
+            :on-success="handleFileSuccess"
+            :on-error="handleUploadError"
+            :show-file-list="false"
+        >
           <el-button type="primary" size="small">上传文件</el-button>
         </el-upload>
         <div class="back">
@@ -96,61 +140,114 @@
             <el-text type="primary" @click="handleCatalogue('/')">
               <span class="catalogue-text">{{ localForm.datasourceName }}</span>
             </el-text>
-            <span class="catalogue-split" v-if="catalogues.length != 0"> / </span>
-            <el-text type="primary" @click="handleCatalogue(item)" v-for="(item, index) in catalogues" :key="item">
-              <span class="catalogue-text">{{ item }}</span> <span class="catalogue-split"
-                v-if="index != catalogues.length - 1"> / </span>
+            <span class="catalogue-split" v-if="catalogues.length != 0">
+              /
+            </span>
+            <el-text
+                type="primary"
+                @click="handleCatalogue(item)"
+                v-for="(item, index) in catalogues"
+                :key="item"
+            >
+              <span class="catalogue-text">{{ item }}</span>
+              <span
+                  class="catalogue-split"
+                  v-if="index != catalogues.length - 1"
+              >
+                /
+              </span>
             </el-text>
           </div>
         </div>
       </div>
       <!-- :tree-props="{ children: 'children', hasChildren: 'hasChildren' }" -->
-      <el-table height="380px" v-loading="fileListLoading" :data="currentPageData" row-key="id"
-        @selection-change="handleSelectionChange" @row-click="handleRowClick">
+      <el-table
+          height="380px"
+          v-loading="fileListLoading"
+          :data="currentPageData"
+          row-key="id"
+          @selection-change="handleSelectionChange"
+          @row-click="handleRowClick"
+      >
         <el-table-column type="selection" width="55" :selectable="selectable" />
-        <el-table-column label="文件名" prop="name" :show-overflow-tooltip="{ effect: 'light' }">
+        <el-table-column
+            label="文件名"
+            prop="name"
+            :show-overflow-tooltip="{ effect: 'light' }"
+        >
           <template #default="scope">
             <div class="fileName">
-              <img v-if="scope.row.directory" src="../../../../assets/da/asset/folder.svg" alt="" />
-              <img v-else src="../../../../assets/da/asset/file.svg" alt="" style="width: 12px;height: 12px;margin-right: 5px;" />
+              <img
+                  v-if="scope.row.directory"
+                  src="../../../../assets/da/asset/folder.svg"
+                  alt=""
+              />
+              <img
+                  v-else
+                  src="../../../../assets/da/asset/file.svg"
+                  alt=""
+                  style="width: 12px; height: 12px; margin-right: 5px"
+              />
               <span>{{ scope.row.name || "-" }}</span>
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="文件大小" prop="size" :show-overflow-tooltip="{ effect: 'light' }" align="left">
+        <el-table-column
+            label="文件大小"
+            prop="size"
+            :show-overflow-tooltip="{ effect: 'light' }"
+            align="left"
+        >
           <template #default="scope">
-            <span>{{ scope.row.directory ? "-" : (scope.row.size / 1024).toFixed(2) + "KB" || "-" }}</span>
+            <span>{{
+                scope.row.directory
+                    ? "-"
+                    : (scope.row.size / 1024).toFixed(2) + "KB" || "-"
+              }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="更新时间" prop="lastModified" :show-overflow-tooltip="{ effect: 'light' }" align="left">
+        <el-table-column
+            label="更新时间"
+            prop="lastModified"
+            :show-overflow-tooltip="{ effect: 'light' }"
+            align="left"
+        >
           <template #default="scope">
             {{ scope.row.lastModified || "-" }}
           </template>
         </el-table-column>
       </el-table>
-      <pagination v-show="fileList.length > 0" :total="fileList.length" v-model:page="queryParams.pageNum"
-        v-model:limit="queryParams.pageSize" />
+      <pagination
+          v-show="fileList.length > 0"
+          :total="fileList.length"
+          v-model:page="queryParams.pageNum"
+          v-model:limit="queryParams.pageSize"
+      />
     </div>
     <template #footer>
       <div class="dialog-footer">
         <el-button size="mini" @click="cancel">取 消</el-button>
-        <el-button type="primary" size="mini" @click="submitForm">确 定</el-button>
+        <el-button type="primary" size="mini" @click="submitForm"
+        >确 定</el-button
+        >
       </div>
     </template>
   </el-dialog>
 </template>
 
 <script setup>
-import { listDaDatasourceNoKafkaByProjectCode } from "@/api/da/dataSource/dataSource.js";
+import { listDaDatasource } from "@/api/da/dataSource/dataSource.js";
 import { getFileList } from "@/api/da/asset/asset.js";
 import { getToken } from "@/utils/auth.js";
 import useUserStore from "@/store/system/user.js";
+import DatasourceList from '@/components/Datasource/List.vue'
 const userStore = useUserStore();
 const emit = defineEmits(["update:form"]);
 const { proxy } = getCurrentInstance();
 const props = defineProps({
   form: { type: Object, default: () => ({}) },
-  isRegister: Boolean
+  isRegister: Boolean,
+  type: String,
 });
 const queryParams = reactive({ pageNum: 1, pageSize: 10 });
 const currentPageData = computed(() => {
@@ -163,7 +260,7 @@ const currentPageData = computed(() => {
 const upload = reactive({
   isUploading: false,
   headers: { Authorization: "Bearer " + getToken() },
-  url: import.meta.env.VITE_APP_BASE_API + "/da/daDatasource/file",
+  url: import.meta.env.VITE_APP_BASE_API + "/da/dataSource/file",
   fileSize: 50,
 });
 const uploadData = computed(() => {
@@ -206,19 +303,37 @@ const handleFileSuccess = (response, file) => {
 };
 const createTypeList = ref([]); // 数据源列表
 let loading = ref(false);
+// const getDatasourceList = async () => {
+//   try {
+//     loading.value = true;
+//     const response = await listDaDatasource({
+//       projectCode: userStore.projectCode,
+//       projectId: userStore.projectId,
+//     });
+//     createTypeList.value = response.data.filter(
+//       (item) =>
+//         item.datasourceType == "HDFS" ||
+//         item.datasourceType == "FTP" ||
+//         item.datasourceType == "OSS-ALIYUN"
+//     );
+//   } finally {
+//     loading.value = false;
+//   }
+// };
 const getDatasourceList = async () => {
   try {
     loading.value = true;
-    const response = await listDaDatasourceNoKafkaByProjectCode({
-      projectCode: userStore.projectCode,
-      projectId: userStore.projectId,
+    const response = await listDaDatasource({
+      pageSize: 9999,
+      projectCode: props.type == "1" ? userStore.projectCode : undefined,
+      projectId: props.type == "1" ? userStore.projectId : undefined,
+      datasourceType: "FTP,OSS-ALIYUN,HDFS",
     });
-    createTypeList.value = response.data.filter((item) => item.datasourceType == "HDFS" || item.datasourceType == "FTP" || item.datasourceType == "OSS-ALIYUN");
+    createTypeList.value = response.data.rows;
   } finally {
     loading.value = false;
   }
 };
-
 const localForm = ref({ ...props.form });
 
 // 同步 props.form 到 localForm
@@ -226,8 +341,7 @@ const localForm = ref({ ...props.form });
 getDatasourceList();
 
 // 数据源变化时
-const handleDatasourceChange = async (id) => {
-  const selected = createTypeList.value.find((item) => item.id == id);
+const handleDatasourceChange = async (id,selected) => {
   if (!selected) return;
   const { datasourceType, datasourceConfig, datasourceName } = selected;
   const config = JSON.parse(datasourceConfig);
@@ -281,7 +395,10 @@ const fileDesc = ref([
 ]);
 const getFileDesc = () => {
   fileDesc.value.forEach((item) => {
-    if (single.value[item.key] !== undefined && single.value[item.key] != null) {
+    if (
+        single.value[item.key] !== undefined &&
+        single.value[item.key] != null
+    ) {
       item.value = single.value[item.key];
     }
   });
@@ -293,13 +410,14 @@ const handleSearch = () => {
     visibleDialog.value = true;
     getList();
   } else {
-    return proxy.$modal.msgWarning("未选择源数据库连接，请选择完成后重试");
+    return proxy.$modal.msgWarning("未选择源数据连接名称，请选择完成后重试");
   }
 };
 // 返回上级目录
 const handleBack = () => {
   if (catalogues.value.length > 1) {
-    currPath.value = "/" + catalogues.value.slice(0, catalogues.value.length - 1).join("/");
+    currPath.value =
+        "/" + catalogues.value.slice(0, catalogues.value.length - 1).join("/");
     getList();
   } else if (catalogues.value.length == 1) {
     currPath.value = "";
@@ -311,7 +429,9 @@ const handleCatalogue = (path) => {
   if (path == "/") {
     currPath.value = "";
   } else {
-    currPath.value = "/" + catalogues.value.slice(0, catalogues.value.indexOf(path) + 1).join("/");
+    currPath.value =
+        "/" +
+        catalogues.value.slice(0, catalogues.value.indexOf(path) + 1).join("/");
   }
   getList();
 };
@@ -331,14 +451,14 @@ const getList = () => {
     path: currPath.value,
   };
   getFileList(param)
-    .then((res) => {
-      if (res.code == 200) {
-        fileList.value = res.data;
-      }
-    })
-    .finally(() => {
-      fileListLoading.value = false;
-    });
+      .then((res) => {
+        if (res.code == 200) {
+          fileList.value = res.data;
+        }
+      })
+      .finally(() => {
+        fileListLoading.value = false;
+      });
 };
 const selectable = (row) => {
   if (single.value.path) {
@@ -388,7 +508,10 @@ watchEffect(() => {
     localForm.value.filePath = props.form.fileInfo.path;
     single.value = props.form.fileInfo;
     fileDesc.value.forEach((item) => {
-      if (props.form.fileInfo[item.key] !== undefined && props.form.fileInfo[item.key] != null) {
+      if (
+          props.form.fileInfo[item.key] !== undefined &&
+          props.form.fileInfo[item.key] != null
+      ) {
         item.value = props.form.fileInfo[item.key];
       }
     });
@@ -398,6 +521,9 @@ defineExpose({ fileDesc });
 </script>
 
 <style lang="scss" scoped>
+.file-desc-row {
+  margin-bottom: 15px;
+}
 .head {
   display: flex;
   align-items: center;

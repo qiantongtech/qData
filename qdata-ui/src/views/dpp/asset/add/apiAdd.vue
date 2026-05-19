@@ -31,254 +31,470 @@
 -->
 
 <template>
-  <el-row :gutter="20">
-    <el-col :span="12">
-      <el-form-item label="应用名称" prop="daAssetApi.appName" :rules="[
-        { required: true, message: '请输入资产描述', trigger: 'blur' },
-      ]">
-        <el-input v-model="localForm.daAssetApi.appName" placeholder="请输入应用名称" />
-      </el-form-item>
-    </el-col>
-    <el-col :span="12">
-      <el-form-item label="开发者" prop="daAssetApi.developerName" :rules="[
-        { required: true, message: '请输入资产描述', trigger: 'blur' },
-      ]">
-        <el-input v-model="localForm.daAssetApi.developerName" placeholder="请输入开发者" />
-      </el-form-item>
-    </el-col>
-  </el-row>
+  <el-form-item
+      label="应用名称"
+      prop="daAssetApi.appName"
+      :rules="[{ required: true, message: '请输入资产描述', trigger: 'blur' }]"
+  >
+    <el-input
+        v-model="localForm.daAssetApi.appName"
+        placeholder="请输入应用名称"
+    />
+  </el-form-item>
+  <el-form-item
+      label="开发者"
+      prop="daAssetApi.developerName"
+      :rules="[{ required: true, message: '请输入开发者', trigger: 'blur' }]"
+  >
+    <el-input
+        v-model="localForm.daAssetApi.developerName"
+        placeholder="请输入开发者"
+    />
+  </el-form-item>
 
-  <el-row :gutter="20">
-    <el-col :span="12">
-      <el-form-item label="服务地址" prop="daAssetApi.url" :rules="[
-        { required: true, message: '请输入资产描述', trigger: 'blur' },
-      ]">
-        <el-input v-model="localForm.daAssetApi.url" placeholder="请输入服务地址" />
-      </el-form-item>
-    </el-col>
-    <el-col :span="12">
-      <el-form-item label="请求类型" prop="daAssetApi.httpMethod" :rules="[
-        { required: true, message: '请输入请求类型', trigger: 'blur' },
-      ]">
-        <el-select v-model="localForm.daAssetApi.httpMethod" placeholder="请选择请求类型">
-          <el-option v-for="dict in da_asset_api_method" :key="dict.value" :label="dict.label" :value="dict.value" />
-        </el-select>
-      </el-form-item>
-    </el-col>
-  </el-row>
+  <el-form-item
+      label="服务地址"
+      prop="daAssetApi.url"
+      :rules="[{ required: true, message: '请输入服务地址', trigger: 'blur' }]"
+  >
+    <el-input v-model="localForm.daAssetApi.url" placeholder="请输入服务地址" />
+  </el-form-item>
+  <el-form-item
+      label="请求类型"
+      prop="daAssetApi.httpMethod"
+      :rules="[{ required: true, message: '请输入请求类型', trigger: 'blur' }]"
+  >
+    <el-select
+        v-model="localForm.daAssetApi.httpMethod"
+        placeholder="请选择请求类型"
+    >
+      <el-option
+          v-for="dict in da_asset_api_method"
+          :key="dict.value"
+          :label="dict.label"
+          :value="dict.value"
+      />
+    </el-select>
+  </el-form-item>
 
-  <div class="tableForm">
+  <div class="tableForm row-full">
     <!-- Header 字段（type == 3） -->
-    <el-form :model="{ headerList }" :rules="rules" ref="headerForm" label-width="0">
-
-      <div class="3-text">
+    <el-form
+        :model="{ headerList }"
+        :rules="rules"
+        ref="headerForm"
+        label-width="0"
+    >
+      <div class="btn-style">
         Header 字段
-        <el-link type="primary" class="add-link" icon="el-icon-circle-plus-outline" @click="handleAdd(3)">
-          新增参数
-        </el-link>
+        <el-button
+            plain
+            type="primary"
+            class="add-link"
+            @click="handleAdd(3)"
+            @mousedown="(e) => e.preventDefault()"
+        >
+          <i class="iconfont-mini icon-xinzeng mr5"></i>新增参数
+        </el-button>
       </div>
-      <el-table :data="headerList" row-key="id" border default-expand-all
-        :tree-props="{ children: 'daAssetApiParamList', hasChildren: 'hasChildren' }">
+      <el-table
+          :data="headerList"
+          row-key="id"
+          border
+          default-expand-all
+          :tree-props="{
+          children: 'daAssetApiParamList',
+          hasChildren: 'hasChildren',
+        }"
+      >
         <el-table-column label="序号" width="100" align="left" fixed="left">
           <template #default="{ $index }">
             {{ $index + 1 }}
           </template>
         </el-table-column>
-        <el-table-column label="键" fixed="left" align="left" prop="name" :show-overflow-tooltip="{ effect: 'light' }">
+        <el-table-column
+            label="键"
+            fixed="left"
+            align="left"
+            prop="name"
+            :show-overflow-tooltip="{ effect: 'light' }"
+        >
           <template #default="{ row, $index }">
-            <el-form-item :prop="`headerList[${findPosi(headerList, row.id)}].name`" :rules="rules.name">
+            <el-form-item
+                :prop="`headerList[${findPosi(headerList, row.id)}].name`"
+                :rules="rules.name"
+            >
               <el-input v-model="row.name" placeholder="请输入键名" />
             </el-form-item>
           </template>
         </el-table-column>
-        <el-table-column label="描述" fixed="left" align="left" prop="remark"
-          :show-overflow-tooltip="{ effect: 'light' }">
+        <el-table-column
+            label="描述"
+            fixed="left"
+            align="left"
+            prop="remark"
+            :show-overflow-tooltip="{ effect: 'light' }"
+        >
           <template #default="{ row, $index }">
-            <el-form-item :prop="`headerList[${findPosi(headerList, row.id)}].remark`" :rules="rules.fieldDefault">
+            <el-form-item
+                :prop="`headerList[${findPosi(headerList, row.id)}].remark`"
+                :rules="rules.fieldDefault"
+            >
               <el-input v-model="row.remark" placeholder="请输入描述" />
             </el-form-item>
           </template>
         </el-table-column>
-        <el-table-column label="值" fixed="left" align="left" prop="defaultValue"
-          :show-overflow-tooltip="{ effect: 'light' }">
+        <el-table-column
+            label="值"
+            fixed="left"
+            align="left"
+            prop="defaultValue"
+            :show-overflow-tooltip="{ effect: 'light' }"
+        >
           <template #default="{ row, $index }">
-            <el-form-item :prop="`headerList[${findPosi(headerList, row.dataSculptor)}].defaultValue`"
-              :rules="rules.defaultValue">
+            <el-form-item
+                :prop="`headerList[${findPosi(headerList, row.dataSculptor)}].defaultValue`"
+                :rules="rules.defaultValue"
+            >
               <el-input v-model="row.defaultValue" placeholder="请输入默认值" />
             </el-form-item>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <el-table-column
+            label="操作"
+            align="center"
+            class-name="small-padding fixed-width"
+        >
           <template #default="{ row }">
-            <el-button link type="primary" @click="handleUpdate(3, row)">修改</el-button>
-            <el-button type="danger" link @click="handleDelete(3, row)">删除</el-button>
+            <!-- <el-button link type="primary" icon="Edit" @click="handleUpdate(3, row)">修改</el-button> -->
+            <el-button
+                link
+                type="danger"
+                icon="Delete"
+                @click="handleDelete(3, row)"
+            >删除</el-button
+            >
           </template>
         </el-table-column>
-
       </el-table>
     </el-form>
 
     <!-- 入参字段（type == 1） -->
-    <el-form :model="{ inputList }" :rules="rules" ref="inputForm" label-width="0">
-
-      <div class="3-text">
+    <el-form
+        :model="{ inputList }"
+        :rules="rules"
+        ref="inputForm"
+        label-width="0"
+    >
+      <div class="btn-style">
         入参字段
-        <el-link type="primary" class="add-link" icon="el-icon-circle-plus-outline" @click="handleAdd(1)">
-          新增参数
-        </el-link>
+        <el-button
+            plain
+            type="primary"
+            class="add-link"
+            @click="handleAdd(1)"
+            @mousedown="(e) => e.preventDefault()"
+        >
+          <i class="iconfont-mini icon-xinzeng mr5"></i>新增参数
+        </el-button>
       </div>
 
-      <el-table :data="inputList" class="tableStyle" row-key="id" border default-expand-all
-        :tree-props="{ children: 'daAssetApiParamList', hasChildren: 'hasChildren' }">
-
+      <el-table
+          :data="inputList"
+          class="tableStyle"
+          row-key="id"
+          border
+          default-expand-all
+          :tree-props="{
+          children: 'daAssetApiParamList',
+          hasChildren: 'hasChildren',
+        }"
+      >
         <el-table-column label="序号" width="100" align="left" fixed="left">
           <template #default="{ $index }">
             {{ $index + 1 }}
           </template>
         </el-table-column>
 
-        <el-table-column label="参数名称" fixed="left" align="left" prop="name"
-          :show-overflow-tooltip="{ effect: 'light' }">
+        <el-table-column
+            label="参数名称"
+            fixed="left"
+            align="left"
+            prop="name"
+            :show-overflow-tooltip="{ effect: 'light' }"
+        >
           <template #default="{ row, $index }">
-            <el-form-item :prop="`inputList[${findPosi(inputList, row.id)}].name`" :rules="rules.name">
+            <el-form-item
+                :prop="`inputList[${findPosi(inputList, row.id)}].name`"
+                :rules="rules.name"
+            >
               <el-input v-model="row.name" placeholder="请输入参数名称" />
             </el-form-item>
           </template>
         </el-table-column>
 
-        <el-table-column label="描述" fixed="left" align="left" prop="remark"
-          :show-overflow-tooltip="{ effect: 'light' }">
+        <el-table-column
+            label="描述"
+            fixed="left"
+            align="left"
+            prop="remark"
+            :show-overflow-tooltip="{ effect: 'light' }"
+        >
           <template #default="{ row, $index }">
-            <el-form-item :prop="`inputList[${findPosi(inputList, row.id)}].remark`" :rules="rules.fieldDefault">
+            <el-form-item
+                :prop="`inputList[${findPosi(inputList, row.id)}].remark`"
+                :rules="rules.fieldDefault"
+            >
               <el-input v-model="row.remark" placeholder="请输入描述" />
             </el-form-item>
           </template>
         </el-table-column>
 
-        <el-table-column label="是否为空" fixed="left" align="left" prop="requestFlag"
-          :show-overflow-tooltip="{ effect: 'light' }">
+        <el-table-column
+            label="是否为空"
+            fixed="left"
+            align="left"
+            prop="requestFlag"
+            :show-overflow-tooltip="{ effect: 'light' }"
+        >
           <template #default="{ row, $index }">
-            <el-form-item :prop="`inputList[${findPosi(inputList, row.id)}].requestFlag`" :rules="rules.requestFlag">
-              <el-checkbox v-model="row.requestFlag" :true-label="'1'" :false-label="'0'" </el-checkbox>
+            <el-form-item
+                :prop="`inputList[${findPosi(inputList, row.id)}].requestFlag`"
+                :rules="rules.requestFlag"
+            >
+              <el-checkbox
+                  v-model="row.requestFlag"
+                  :true-label="'1'"
+                  :false-label="'0'"
+              >
+              </el-checkbox>
             </el-form-item>
           </template>
         </el-table-column>
-        <el-table-column label="参数类型" fixed="left" align="left" prop="columnType"
-          :show-overflow-tooltip="{ effect: 'light' }">
+        <el-table-column
+            label="参数类型"
+            fixed="left"
+            align="left"
+            prop="columnType"
+            :show-overflow-tooltip="{ effect: 'light' }"
+        >
           <template #default="{ row, $index }">
-            <el-form-item :prop="`inputList[${findPosi(inputList, row.id)}].columnType`" :rules="rules.columnType">
+            <el-form-item
+                :prop="`inputList[${findPosi(inputList, row.id)}].columnType`"
+                :rules="rules.columnType"
+            >
               <el-select v-model="row.columnType" placeholder="请选择字段类型">
-                <el-option v-for="dict in da_asset_api_column_type" :key="dict.value" :label="dict.label"
-                  :value="dict.value" :disabled="hasChildren(row) && !['Object', 'Array'].includes(dict.value)" />
+                <el-option
+                    v-for="dict in da_asset_api_column_type"
+                    :key="dict.value"
+                    :label="dict.label"
+                    :value="dict.value"
+                    :disabled="
+                    hasChildren(row) &&
+                    !['Object', 'Array'].includes(dict.value)
+                  "
+                />
               </el-select>
             </el-form-item>
           </template>
         </el-table-column>
 
-        <el-table-column label="示例值" fixed="left" align="left" prop="exampleValue"
-          :show-overflow-tooltip="{ effect: 'light' }">
+        <el-table-column
+            label="示例值"
+            fixed="left"
+            align="left"
+            prop="exampleValue"
+            :show-overflow-tooltip="{ effect: 'light' }"
+        >
           <template #default="{ row, $index }">
-            <el-form-item :prop="`inputList[${findPosi(inputList, row.id)}].exampleValue`" :rules="rules.fieldDefault">
+            <el-form-item
+                :prop="`inputList[${findPosi(inputList, row.id)}].exampleValue`"
+                :rules="rules.fieldDefault"
+            >
               <el-input v-model="row.fieldDefault" placeholder="请输入示例值" />
             </el-form-item>
           </template>
         </el-table-column>
 
-        <el-table-column label="默认值" fixed="left" align="left" prop="defaultValue"
-          :show-overflow-tooltip="{ effect: 'light' }">
+        <el-table-column
+            label="默认值"
+            fixed="left"
+            align="left"
+            prop="defaultValue"
+            :show-overflow-tooltip="{ effect: 'light' }"
+        >
           <template #default="{ row, $index }">
-            <el-form-item :prop="`inputList[${findPosi(inputList, row.id)}].defaultValue`" :rules="rules.defaultValue">
+            <el-form-item
+                :prop="`inputList[${findPosi(inputList, row.id)}].defaultValue`"
+                :rules="rules.defaultValue"
+            >
               <el-input v-model="row.defaultValue" placeholder="请输入默认值" />
             </el-form-item>
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <el-table-column
+            label="操作"
+            align="center"
+            class-name="small-padding fixed-width"
+        >
           <template #default="{ row }">
-            <el-button link type="primary" icon="icon-xinzeng" @click="handleAddRow(1, row)">新增</el-button>
-            <el-button type="danger" link @click="handleDelete(1, row)">删除</el-button>
+            <el-button
+                link
+                type="primary"
+                icon="Plus"
+                @click="handleAddRow(1, row)"
+            >新增</el-button
+            >
+            <el-button
+                link
+                type="danger"
+                icon="Delete"
+                @click="handleDelete(1, row)"
+            >删除</el-button
+            >
           </template>
         </el-table-column>
-
       </el-table>
     </el-form>
-
     <!-- 出参字段（type == 2） -->
-    <el-form :model="{ outputList }" :rules="rules" ref="outputForm" label-width="0">
-
-      <div class="3-text">
+    <el-form
+        :model="{ outputList }"
+        :rules="rules"
+        ref="outputForm"
+        label-width="0"
+    >
+      <div class="btn-style">
         出参字段
-        <el-link type="primary" class="add-link" icon="el-icon-circle-plus-outline" @click="handleAdd(2)">
-          新增参数
-        </el-link>
+        <el-button
+            plain
+            type="primary"
+            class="add-link"
+            @click="handleAdd(2)"
+            @mousedown="(e) => e.preventDefault()"
+        >
+          <i class="iconfont-mini icon-xinzeng mr5"></i>新增参数
+        </el-button>
       </div>
 
-      <el-table :data="outputList" row-key="id" border default-expand-all
-        :tree-props="{ children: 'daAssetApiParamList', hasChildren: 'hasChildren' }">
+      <el-table
+          :data="outputList"
+          row-key="id"
+          border
+          default-expand-all
+          :tree-props="{
+          children: 'daAssetApiParamList',
+          hasChildren: 'hasChildren',
+        }"
+      >
         <el-table-column label="序号" width="100" align="left" fixed="left">
           <template #default="{ $index }">
             {{ $index + 1 }}
           </template>
         </el-table-column>
-
-        <el-table-column label="参数名称" fixed="left" align="left" prop="name"
-          :show-overflow-tooltip="{ effect: 'light' }">
+        <el-table-column
+            label="参数名称"
+            fixed="left"
+            align="left"
+            prop="name"
+            :show-overflow-tooltip="{ effect: 'light' }"
+        >
           <template #default="{ row, $index }">
-            <el-form-item :prop="`outputList[${findPosi(outputList, row.id)}].name`" :rules="rules.name">
+            <el-form-item
+                :prop="`outputList[${findPosi(outputList, row.id)}].name`"
+                :rules="rules.name"
+            >
               <el-input v-model="row.name" placeholder="请输入参数名称" />
             </el-form-item>
           </template>
         </el-table-column>
 
-        <el-table-column label="描述" fixed="left" align="left" prop="remark"
-          :show-overflow-tooltip="{ effect: 'light' }">
+        <el-table-column
+            label="描述"
+            fixed="left"
+            align="left"
+            prop="remark"
+            :show-overflow-tooltip="{ effect: 'light' }"
+        >
           <template #default="{ row, $index }">
-            <el-form-item :prop="`outputList[${findPosi(outputList, row.id)}].remark`" :rules="rules.fieldDefault">
+            <el-form-item
+                :prop="`outputList[${findPosi(outputList, row.id)}].remark`"
+                :rules="rules.fieldDefault"
+            >
               <el-input v-model="row.remark" placeholder="请输入描述" />
             </el-form-item>
           </template>
         </el-table-column>
 
-        <el-table-column label="数据类型" fixed="left" align="left" prop="columnType"
-          :show-overflow-tooltip="{ effect: 'light' }">
+        <el-table-column
+            label="数据类型"
+            fixed="left"
+            align="left"
+            prop="columnType"
+            :show-overflow-tooltip="{ effect: 'light' }"
+        >
           <template #default="{ row, $index }">
             <el-select v-model="row.columnType" placeholder="请选择字段类型">
-              <el-option v-for="dict in da_asset_api_column_type" :key="dict.value" :label="dict.label"
-                :value="dict.value" :disabled="hasChildren(row) && !['Object', 'Array'].includes(dict.value)" />
+              <el-option
+                  v-for="dict in da_asset_api_column_type"
+                  :key="dict.value"
+                  :label="dict.label"
+                  :value="dict.value"
+                  :disabled="
+                  hasChildren(row) && !['Object', 'Array'].includes(dict.value)
+                "
+              />
             </el-select>
           </template>
         </el-table-column>
 
-        <el-table-column label="示例值" fixed="left" align="left" prop="exampleValue"
-          :show-overflow-tooltip="{ effect: 'light' }">
+        <el-table-column
+            label="示例值"
+            fixed="left"
+            align="left"
+            prop="exampleValue"
+            :show-overflow-tooltip="{ effect: 'light' }"
+        >
           <template #default="{ row, $index }">
-            <el-form-item :prop="`outputList[${findPosi(outputList, row.id)}].exampleValue`"
-              :rules="rules.fieldDefault">
+            <el-form-item
+                :prop="`outputList[${findPosi(outputList, row.id)}].exampleValue`"
+                :rules="rules.fieldDefault"
+            >
               <el-input v-model="row.exampleValue" placeholder="请输入示例值" />
             </el-form-item>
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <el-table-column
+            label="操作"
+            align="center"
+            class-name="small-padding fixed-width"
+        >
           <template #default="{ row }">
-            <el-button link type="primary" icon="icon-xinzeng" @click="handleAddRow(2, row)">新增</el-button>
-            <el-button type="danger" link @click="handleDelete(2, row)">删除</el-button>
+            <el-button
+                link
+                type="primary"
+                icon="Plus"
+                @click="handleAddRow(2, row)"
+            >新增</el-button
+            >
+            <el-button
+                link
+                type="danger"
+                icon="Delete"
+                @click="handleDelete(2, row)"
+            >删除</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
     </el-form>
-
   </div>
-  <!-- 弹窗组件 -->
-  <tableDialog v-model="open" dialogTitle="添加字段信息" :visible="open" :formcode="form2" @confirm="submitCU"
-    @echoSelected="submitCU" @cancelCU="cancelCU" />
 </template>
 
 <script setup>
 import { ref, reactive, computed, watch, getCurrentInstance } from "vue";
-import tableDialog from "./tableAdd.vue";
 import { v4 as uuidv4 } from "uuid";
-
 // 接收父组件传递的form对象（其中包含 daAssetApiParamList）和其他属性
 const props = defineProps({
   form: Object,
@@ -288,16 +504,16 @@ const emit = defineEmits(["update:form"]);
 
 const { proxy } = getCurrentInstance();
 const { da_asset_api_column_type, da_asset_api_method } = proxy.useDict(
-  "da_asset_api_column_type",
-  "da_asset_api_method"
+    "da_asset_api_column_type",
+    "da_asset_api_method"
 );
 const localForm = ref({ ...props.form });
 
 const daAssetApiParamList = ref(props.form.daAssetApiParamList || []);
 const hasChildren = (row) => {
   const hasChild =
-    Array.isArray(row.daAssetApiParamList) &&
-    row.daAssetApiParamList.length > 0;
+      Array.isArray(row.daAssetApiParamList) &&
+      row.daAssetApiParamList.length > 0;
   if (hasChild) {
     if (["Object", "Array"].includes(row.columnType)) {
     } else {
@@ -327,13 +543,13 @@ const form2 = ref({
 });
 // 计算属性：按 type 分组过滤数据
 const headerList = computed(() =>
-  daAssetApiParamList.value.filter((item) => Number(item.type) == 3)
+    daAssetApiParamList.value.filter((item) => Number(item.type) == 3)
 );
 const inputList = computed(() =>
-  daAssetApiParamList.value.filter((item) => Number(item.type) == 1)
+    daAssetApiParamList.value.filter((item) => Number(item.type) == 1)
 );
 const outputList = computed(() =>
-  daAssetApiParamList.value.filter((item) => Number(item.type) == 2)
+    daAssetApiParamList.value.filter((item) => Number(item.type) == 2)
 );
 // 新增操作（顶级记录）
 // const handleAdd = (type) => {
@@ -470,8 +686,8 @@ const updateNodeInTree = (tree, node) => {
       tree[i] = { ...tree[i], ...node };
       return true;
     } else if (
-      tree[i].daAssetApiParamList &&
-      tree[i].daAssetApiParamList.length
+        tree[i].daAssetApiParamList &&
+        tree[i].daAssetApiParamList.length
     ) {
       const updated = updateNodeInTree(tree[i].daAssetApiParamList, node);
       if (updated) return true;
@@ -486,7 +702,7 @@ const buildTree = (tree, parentId, newNode) => {
     if (node.id === parentId) {
       if (!node.daAssetApiParamList) node.daAssetApiParamList = [];
       const existingIndex = node.daAssetApiParamList.findIndex(
-        (child) => child.id === newNode.id
+          (child) => child.id === newNode.id
       );
       if (existingIndex !== -1) {
         node.daAssetApiParamList[existingIndex] = {
@@ -507,7 +723,7 @@ const submitCU = (value) => {
   if (Number(value.type) === 3) {
     // 顶级记录
     const index = daAssetApiParamList.value.findIndex(
-      (item) => item.id === value.id
+        (item) => item.id === value.id
     );
     if (index !== -1) {
       daAssetApiParamList.value[index] = {
@@ -549,13 +765,13 @@ const cancelCU = () => {
 
 // 同步外部传入的 form 数据
 watch(
-  () => props.form,
-  (newVal) => {
-    localForm.value = { ...newVal };
-    // 同步合并的参数列表（注意：若外部传入的 daAssetApiParamList 更新时，也需要同步过来）
-    daAssetApiParamList.value = newVal.daAssetApiParamList || [];
-  },
-  { deep: true }
+    () => props.form,
+    (newVal) => {
+      localForm.value = { ...newVal };
+      // 同步合并的参数列表（注意：若外部传入的 daAssetApiParamList 更新时，也需要同步过来）
+      daAssetApiParamList.value = newVal.daAssetApiParamList || [];
+    },
+    { deep: true }
 );
 defineExpose({
   validateForms,
@@ -568,7 +784,7 @@ defineExpose({
   margin: 0px !important;
 
   ::v-deep {
-    th.el-table__cell>.cell {
+    th.el-table__cell > .cell {
       padding: 0 5px !important;
       font-style: normal;
       text-transform: none;
@@ -631,15 +847,8 @@ defineExpose({
   width: 98%;
 }
 
-.3-text {
-  font-size: 14px;
-  margin-bottom: 3px;
-  margin: 10px 0;
-}
-
 .add-link {
-  margin-left: 10px;
-  margin: 10px 0;
+  margin: 10px;
 }
 
 .sort-section {
@@ -671,6 +880,7 @@ defineExpose({
 }
 
 .tableForm {
+  margin-bottom: 15px;
   .el-form-item {
     margin: 0; // 去掉默认 margin
     display: flex;

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  Copyright © 2025 Qiantong Technology Co., Ltd.
+  qData Data Middle Platform (Open Source Edition)
+   *
+  License:
+  Released under the Apache License, Version 2.0.
+  You may use, modify, and distribute this software for commercial purposes
+  under the terms of the License.
+   *
+  Special Notice:
+  All derivative versions are strictly prohibited from modifying or removing
+  the default system logo and copyright information.
+  For brand customization, please apply for brand customization authorization via official channels.
+   *
+  More information: https://qdata.qiantong.tech/business.html
+   *
+  ============================================================================
+   *
+  版权所有 © 2025 江苏千桐科技有限公司
+  qData 数据中台（开源版）
+   *
+  许可协议：
+  本项目基于 Apache License 2.0 开源协议发布，
+  允许在遵守协议的前提下进行商用、修改和分发。
+   *
+  特别说明：
+  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
+  如需定制品牌，请通过官方渠道申请品牌定制授权。
+   *
+  更多信息请访问：https://qdata.qiantong.tech/business.html
+-->
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.qiantong.qdata.module.dg.dal.mapper.whitelist.DgDesensitizeUserRelMapper">
+
+    <resultMap type="DgDesensitizeUserRelDO" id="DgDesensitizeUserRelResult">
+        <result property="id"    column="ID"    />
+        <result property="desensitizeId"    column="DESENSITIZE_ID"    />
+        <result property="userId"    column="USER_ID"    />
+        <result property="desensitizeName"    column="DESENSITIZE_NAME"    />
+        <result property="userName"    column="USER_NAME"    />
+        <result property="validFlag"    column="VALID_FLAG"    />
+        <result property="delFlag"    column="DEL_FLAG"    />
+        <result property="createBy"    column="CREATE_BY"    />
+        <result property="creatorId"    column="CREATOR_ID"    />
+        <result property="createTime"    column="CREATE_TIME"    />
+        <result property="updateBy"    column="UPDATE_BY"    />
+        <result property="updaterId"    column="UPDATER_ID"    />
+        <result property="updateTime"    column="UPDATE_TIME"    />
+        <result property="remark"    column="REMARK"    />
+        <result property="effectiveCategory"    column="EFFECTIVE_CATEGORY"    />
+    </resultMap>
+
+    <sql id="selectDgDesensitizeUserRelVo">
+        select ID, DESENSITIZE_ID, USER_ID, DESENSITIZE_NAME, USER_NAME, VALID_FLAG, DEL_FLAG, CREATE_BY, CREATOR_ID, CREATE_TIME, UPDATE_BY, UPDATER_ID, UPDATE_TIME, REMARK, EFFECTIVE_CATEGORY from DG_DESENSITIZE_USER_REL
+    </sql>
+
+    <select id="selectDgDesensitizeUserRelList" parameterType="DgDesensitizeUserRelDO" resultMap="DgDesensitizeUserRelResult">
+        <include refid="selectDgDesensitizeUserRelVo"/>
+        <where>
+            <if test="desensitizeId != null "> and DESENSITIZE_ID = #{desensitizeId}</if>
+            <if test="userId != null "> and USER_ID = #{userId}</if>
+            <if test="desensitizeName != null  and desensitizeName != ''"> and DESENSITIZE_NAME like concat('%', #{desensitizeName}, '%')</if>
+            <if test="userName != null  and userName != ''"> and USER_NAME like concat('%', #{userName}, '%')</if>
+            <if test="createTime != null "> and CREATE_TIME = #{createTime}</if>
+            <if test="effectiveCategory != null  and effectiveCategory != ''"> and EFFECTIVE_CATEGORY = #{effectiveCategory}</if>
+        </where>
+    </select>
+
+    <select id="selectDgDesensitizeUserRelById" parameterType="Long" resultMap="DgDesensitizeUserRelResult">
+        <include refid="selectDgDesensitizeUserRelVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertDgDesensitizeUserRel" parameterType="DgDesensitizeUserRelDO">
+        insert into DG_DESENSITIZE_USER_REL
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="desensitizeId != null">DESENSITIZE_ID,</if>
+            <if test="userId != null">USER_ID,</if>
+            <if test="desensitizeName != null">DESENSITIZE_NAME,</if>
+            <if test="userName != null">USER_NAME,</if>
+            <if test="validFlag != null">VALID_FLAG,</if>
+            <if test="delFlag != null">DEL_FLAG,</if>
+            <if test="createBy != null">CREATE_BY,</if>
+            <if test="creatorId != null">CREATOR_ID,</if>
+            <if test="createTime != null">CREATE_TIME,</if>
+            <if test="updateBy != null">UPDATE_BY,</if>
+            <if test="updaterId != null">UPDATER_ID,</if>
+            <if test="updateTime != null">UPDATE_TIME,</if>
+            <if test="remark != null">REMARK,</if>
+            <if test="effectiveCategory != null">EFFECTIVE_CATEGORY,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="desensitizeId != null">#{desensitizeId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="desensitizeName != null">#{desensitizeName},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="validFlag != null">#{validFlag},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updaterId != null">#{updaterId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="effectiveCategory != null">#{effectiveCategory},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDgDesensitizeUserRel" parameterType="DgDesensitizeUserRelDO">
+        update DG_DESENSITIZE_USER_REL
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="desensitizeId != null">DESENSITIZE_ID = #{desensitizeId},</if>
+            <if test="userId != null">USER_ID = #{userId},</if>
+            <if test="desensitizeName != null">DESENSITIZE_NAME = #{desensitizeName},</if>
+            <if test="userName != null">USER_NAME = #{userName},</if>
+            <if test="validFlag != null">VALID_FLAG = #{validFlag},</if>
+            <if test="delFlag != null">DEL_FLAG = #{delFlag},</if>
+            <if test="createBy != null">CREATE_BY = #{createBy},</if>
+            <if test="creatorId != null">CREATOR_ID = #{creatorId},</if>
+            <if test="createTime != null">CREATE_TIME = #{createTime},</if>
+            <if test="updateBy != null">UPDATE_BY = #{updateBy},</if>
+            <if test="updaterId != null">UPDATER_ID = #{updaterId},</if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime},</if>
+            <if test="remark != null">REMARK = #{remark},</if>
+            <if test="effectiveCategory != null">EFFECTIVE_CATEGORY = #{effectiveCategory},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteDgDesensitizeUserRelById" parameterType="Long">
+        delete from DG_DESENSITIZE_USER_REL where ID = #{id}
+    </delete>
+
+    <delete id="deleteDgDesensitizeUserRelByIds" parameterType="String">
+        delete from DG_DESENSITIZE_USER_REL where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

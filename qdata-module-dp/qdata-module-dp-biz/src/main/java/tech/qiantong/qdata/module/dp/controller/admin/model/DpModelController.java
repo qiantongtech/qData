@@ -32,35 +32,36 @@
 
 package tech.qiantong.qdata.module.dp.controller.admin.model;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import java.util.Arrays;
 import cn.hutool.core.date.DateUtil;
-import java.util.List;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import tech.qiantong.qdata.common.core.domain.AjaxResult;
-import tech.qiantong.qdata.common.core.page.PageParam;
 import tech.qiantong.qdata.common.annotation.Log;
 import tech.qiantong.qdata.common.core.controller.BaseController;
+import tech.qiantong.qdata.common.core.domain.AjaxResult;
+import tech.qiantong.qdata.common.core.domain.BatchDeleteCheck;
 import tech.qiantong.qdata.common.core.domain.CommonResult;
+import tech.qiantong.qdata.common.core.domain.TreeData;
+import tech.qiantong.qdata.common.core.page.PageParam;
 import tech.qiantong.qdata.common.core.page.PageResult;
-import tech.qiantong.qdata.common.database.core.DbTable;
 import tech.qiantong.qdata.common.enums.BusinessType;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.common.utils.poi.ExcelUtil;
-import tech.qiantong.qdata.common.exception.enums.GlobalErrorCodeConstants;
 import tech.qiantong.qdata.module.dp.controller.admin.model.vo.DpModelPageReqVO;
 import tech.qiantong.qdata.module.dp.controller.admin.model.vo.DpModelRespVO;
 import tech.qiantong.qdata.module.dp.controller.admin.model.vo.DpModelSaveReqVO;
 import tech.qiantong.qdata.module.dp.convert.model.DpModelConvert;
 import tech.qiantong.qdata.module.dp.dal.dataobject.model.DpModelDO;
 import tech.qiantong.qdata.module.dp.service.model.IDpModelService;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 逻辑模型Controller
@@ -81,6 +82,14 @@ public class DpModelController extends BaseController {
     @GetMapping("/list")
     public CommonResult<PageResult<DpModelRespVO>> list(DpModelPageReqVO dpModel) {
         PageResult<DpModelDO> page = dpModelService.getDpModelPage(dpModel);
+        return CommonResult.success(BeanUtils.toBean(page, DpModelRespVO.class));
+    }
+
+    @Operation(summary = "查询发布模型列表")
+    @PreAuthorize("@ss.hasPermi('dp:releaseModel:list')")
+    @GetMapping("/releaseList")
+    public CommonResult<PageResult<DpModelRespVO>> releaseList(DpModelPageReqVO dpModel) {
+        PageResult<DpModelDO> page = dpModelService.getReleaseListPage(dpModel);
         return CommonResult.success(BeanUtils.toBean(page, DpModelRespVO.class));
     }
 
@@ -145,6 +154,14 @@ public class DpModelController extends BaseController {
         return CommonResult.toAjax(dpModelService.removeDpModel(Arrays.asList(ids)));
     }
 
+    @Operation(summary = "批量删除检查表元数据")
+    @PreAuthorize("@ss.hasPermi('dp:model:remove')")
+    @GetMapping("/batchDeleteCheck/{ids}")
+    public CommonResult<BatchDeleteCheck<Long>> batchDeleteCheck(@PathVariable Long[] ids) {
+        BatchDeleteCheck<Long> result = dpModelService.batchDeleteCheck(Arrays.asList(ids));
+        return CommonResult.success(result);
+    }
+
     @Operation(summary = "删除逻辑模型连带字段一起删除")
     @PreAuthorize("@ss.hasPermi('dp:model:remove')")
     @Log(title = "逻辑模型", businessType = BusinessType.DELETE)
@@ -157,7 +174,13 @@ public class DpModelController extends BaseController {
     @PreAuthorize("@ss.hasPermi('dp:model:edit')")
     @Log(title = "更改数据元状态", businessType = BusinessType.UPDATE)
     @PostMapping("/updateStatus/{id}/{status}")
-    public CommonResult<Boolean> updateStatus(@PathVariable Long id,@PathVariable Long status) {
-        return CommonResult.toAjax(dpModelService.updateStatus(id,status));
+    public CommonResult<Boolean> updateStatus(@PathVariable Long id, @PathVariable Long status) {
+        return CommonResult.toAjax(dpModelService.updateStatus(id, status));
+    }
+
+    @Operation(summary = "获取树类目数据（多个数据组合而来）")
+    @GetMapping("/getTreeData")
+    public CommonResult<List<TreeData>> getTree() {
+        return CommonResult.success(dpModelService.getTreeData());
     }
 }

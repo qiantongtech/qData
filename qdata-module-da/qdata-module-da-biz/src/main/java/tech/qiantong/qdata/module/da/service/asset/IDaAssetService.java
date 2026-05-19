@@ -35,6 +35,7 @@ package tech.qiantong.qdata.module.da.service.asset;
 import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.extension.service.IService;
 import tech.qiantong.qdata.common.core.domain.AjaxResult;
+import tech.qiantong.qdata.common.core.domain.TreeData;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.module.da.controller.admin.asset.vo.DaAssetPageReqVO;
 import tech.qiantong.qdata.module.da.controller.admin.asset.vo.DaAssetRespVO;
@@ -42,10 +43,12 @@ import tech.qiantong.qdata.module.da.controller.admin.asset.vo.DaAssetSaveReqVO;
 import tech.qiantong.qdata.module.da.controller.admin.assetColumn.vo.DaAssetColumnRelRuleVO;
 import tech.qiantong.qdata.module.da.controller.admin.assetColumn.vo.DaAssetColumnSaveReqVO;
 import tech.qiantong.qdata.module.da.dal.dataobject.asset.DaAssetDO;
+import tech.qiantong.qdata.neo4j.dto.LineageDTO;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+
 /**
  * 数据资产Service接口
  *
@@ -60,13 +63,13 @@ public interface IDaAssetService extends IService<DaAssetDO> {
      * @param pageReqVO 分页请求
      * @return 数据资产分页列表
      */
-    PageResult<DaAssetDO> getDaAssetPage(DaAssetPageReqVO pageReqVO,String daAssetQueryType);
+    PageResult<DaAssetDO> getDaAssetPage(DaAssetPageReqVO pageReqVO, String daAssetQueryType);
+
     List<DaAssetDO> getDaAssetList(DaAssetPageReqVO daAsset);
 
     List<DaAssetDO> getTablesByDataSourceId(DaAssetPageReqVO pageReqVO);
+
     DaAssetDO getDaAssetByDaAssetPageReqVO(DaAssetPageReqVO pageReqVO);
-
-
 
 
     /**
@@ -90,6 +93,7 @@ public interface IDaAssetService extends IService<DaAssetDO> {
      * @param idList 数据资产编号
      */
     int removeDaAsset(Collection<Long> idList);
+
     int removeDaAsset(Long id);
 
     /**
@@ -101,7 +105,6 @@ public interface IDaAssetService extends IService<DaAssetDO> {
     DaAssetRespVO getDaAssetById(Long id);
 
     DaAssetRespVO getDaAssetByIdSimple(Long id);
-
 
 
     /**
@@ -124,21 +127,23 @@ public interface IDaAssetService extends IService<DaAssetDO> {
      *
      * @param importExcelList 数据资产数据列表
      * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
+     * @param operName        操作用户
      * @return 结果
      */
     String importDaAsset(List<DaAssetRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
     /**
      * 数据资产预览带有脱敏规则后的数据预览
+     *
      * @param jsonObject 主键id和条件查询的内容
      * @return
      */
-    Map<String,Object> getColumnData(JSONObject jsonObject);
+    Map<String, Object> getColumnData(JSONObject jsonObject);
 
     /**
      * 对数据资产的数据进行脱敏
-     * @param id 数据资产id
+     *
+     * @param id   数据资产id
      * @param data 数据资产的数据
      * @return
      */
@@ -154,11 +159,49 @@ public interface IDaAssetService extends IService<DaAssetDO> {
 
     Long createDaAssetNew(DaAssetSaveReqVO daAsset);
 
+    /**
+     * 绑定资源
+     */
+    Long createDaAssetBindResources(DaAssetSaveReqVO daAsset);
+
     int updateDaAssetNew(DaAssetSaveReqVO daAsset);
 
     AjaxResult startDaAssetDatasourceTask(Long id);
 
+    void startDaAssetDatasourceTaskNull();
+
+    PageResult<DaAssetDO> getDaAssetByIds(List<Long> ids);
+
     List<DaAssetColumnRelRuleVO> listRelRule(Long id, String type);
 
     List<DaAssetColumnRelRuleVO> listRelRule(Long datasourceId, String tableName, String type);
+
+    /**
+     * 通过资产id查询数据血缘关系
+     *
+     * @param id
+     * @return
+     */
+    LineageDTO dataLineage(Long id);
+
+    List<DaAssetDO> getDaAssetListAll(DaAssetPageReqVO daAsset, String number);
+
+    /**
+     * 获取树类目数据（多个数据组合而来）
+     *
+     * @return
+     */
+    List<TreeData> getTreeData();
+
+    /**
+     * 批量创建数据资产
+     *
+     * @param daAssetList
+     * @return
+     */
+    List<Long> createDaAssetBatchNew(List<DaAssetSaveReqVO> daAssetList);
+
+    List<Map<String, Object>> dataMaskings(Long id, List<Map<String, Object>> tableData, Long userId, String scene);
+
+    List<DaAssetDO> getDaAssetByDataSourceId(Long dataSourceId, String tableName);
 }

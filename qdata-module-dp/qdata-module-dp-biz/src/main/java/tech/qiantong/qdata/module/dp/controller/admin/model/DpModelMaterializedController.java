@@ -32,35 +32,27 @@
 
 package tech.qiantong.qdata.module.dp.controller.admin.model;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import java.util.Arrays;
 import cn.hutool.core.date.DateUtil;
-import java.util.List;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import tech.qiantong.qdata.common.core.domain.AjaxResult;
-import tech.qiantong.qdata.common.core.page.PageParam;
 import tech.qiantong.qdata.common.annotation.Log;
 import tech.qiantong.qdata.common.core.controller.BaseController;
 import tech.qiantong.qdata.common.core.domain.CommonResult;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.enums.BusinessType;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
-import tech.qiantong.qdata.common.utils.poi.ExcelUtil;
-import tech.qiantong.qdata.common.exception.enums.GlobalErrorCodeConstants;
 import tech.qiantong.qdata.module.dp.controller.admin.model.vo.DpMaterializedMethodReqVO;
 import tech.qiantong.qdata.module.dp.controller.admin.model.vo.DpModelMaterializedPageReqVO;
 import tech.qiantong.qdata.module.dp.controller.admin.model.vo.DpModelMaterializedRespVO;
 import tech.qiantong.qdata.module.dp.controller.admin.model.vo.DpModelMaterializedSaveReqVO;
-import tech.qiantong.qdata.module.dp.convert.model.DpModelMaterializedConvert;
 import tech.qiantong.qdata.module.dp.dal.dataobject.model.DpModelMaterializedDO;
 import tech.qiantong.qdata.module.dp.service.model.IDpModelMaterializedService;
+
+import javax.annotation.Resource;
+import javax.validation.Valid;
+import java.util.Arrays;
 
 /**
  * 物化模型记录Controller
@@ -82,29 +74,6 @@ public class DpModelMaterializedController extends BaseController {
     public CommonResult<PageResult<DpModelMaterializedRespVO>> list(DpModelMaterializedPageReqVO dpModelMaterialized) {
         PageResult<DpModelMaterializedDO> page = dpModelMaterializedService.getDpModelMaterializedPage(dpModelMaterialized);
         return CommonResult.success(BeanUtils.toBean(page, DpModelMaterializedRespVO.class));
-    }
-
-    @Operation(summary = "导出物化模型记录列表")
-//    @PreAuthorize("@ss.hasPermi('dp:modelMaterialized:export')")
-    @Log(title = "物化模型记录", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, DpModelMaterializedPageReqVO exportReqVO) {
-        exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
-        List<DpModelMaterializedDO> list = (List<DpModelMaterializedDO>) dpModelMaterializedService.getDpModelMaterializedPage(exportReqVO).getRows();
-        ExcelUtil<DpModelMaterializedRespVO> util = new ExcelUtil<>(DpModelMaterializedRespVO.class);
-        util.exportExcel(response, DpModelMaterializedConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
-    }
-
-    @Operation(summary = "导入物化模型记录列表")
-//    @PreAuthorize("@ss.hasPermi('dp:modelMaterialized:import')")
-    @Log(title = "物化模型记录", businessType = BusinessType.IMPORT)
-    @PostMapping("/importData")
-    public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
-        ExcelUtil<DpModelMaterializedRespVO> util = new ExcelUtil<>(DpModelMaterializedRespVO.class);
-        List<DpModelMaterializedRespVO> importExcelList = util.importExcel(file.getInputStream());
-        String operName = getUsername();
-        String message = dpModelMaterializedService.importDpModelMaterialized(importExcelList, updateSupport, operName);
-        return success(message);
     }
 
     @Operation(summary = "获取物化模型记录详细信息")

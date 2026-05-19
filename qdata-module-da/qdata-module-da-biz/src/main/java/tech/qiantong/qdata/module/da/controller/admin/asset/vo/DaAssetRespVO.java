@@ -37,8 +37,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import tech.qiantong.qdata.common.annotation.Excel;
+import tech.qiantong.qdata.common.database.core.FileInfo;
 import tech.qiantong.qdata.module.da.controller.admin.assetchild.api.vo.DaAssetApiParamRespVO;
 import tech.qiantong.qdata.module.da.controller.admin.assetchild.api.vo.DaAssetApiRespVO;
+import tech.qiantong.qdata.module.da.controller.admin.assetchild.files.vo.DaAssetFilesSaveReqVO;
 import tech.qiantong.qdata.module.da.controller.admin.assetchild.geo.vo.DaAssetGeoRespVO;
 import tech.qiantong.qdata.module.da.controller.admin.assetchild.gis.vo.DaAssetGisRespVO;
 import tech.qiantong.qdata.module.da.controller.admin.assetchild.theme.vo.DaAssetThemeRelRespVO;
@@ -77,6 +79,53 @@ public class DaAssetRespVO implements Serializable {
     private String catCode;
 
     private String catName;
+
+    /**
+     * 表类型;1:明细表 2:汇总表 3:维度表 4:应用表
+     */
+    @Schema(description = "表类型 1:明细表 2:汇总表 3:维度表 4:应用表")
+    private String tableType;
+    /**
+     * 数仓分层id
+     */
+    @Schema(description = "数仓分层id ")
+    private Long dataLayerId;
+    /**
+     * 业务分类id;只有表类型为非应用表是才有值
+     */
+    @Schema(description = "业务分类id 只有表类型为非应用表是才有值")
+    private Long businessCategoryId;
+    /**
+     * 业务分类层级编码
+     */
+    @Schema(description = "业务分类层级编码 ")
+    private String businessCategoryCode;
+    /**
+     * 数据分域id;只有表类型为非应用表是才有值
+     */
+    @Schema(description = "数据分域id 只有表类型为非应用表是才有值")
+    private Long dataDomainId;
+    /**
+     * 所属主题id（主题规划）;只有表类型为应用表是才有值
+     */
+    @Schema(description = "所属主题id（主题规划） 只有表类型为应用表是才有值")
+    private Long themeDomainId;
+    /**
+     * 所属主题层级编码
+     */
+    @Schema(description = "所属主题层级编码 ")
+    private String themeDomainCode;
+    /**
+     * 表名大小写;1：大写 2：小写
+     */
+    @Schema(description = "表名大小写 1：大写 2：小写")
+    private String tableCase;
+
+    /**
+     * 元数据表id
+     */
+    @Schema(description = "元数据表id")
+    private Long tableId;
 
     @TableField(exist = false)
     private List<DaAssetThemeRelRespVO> daAssetThemeRelList;
@@ -192,6 +241,12 @@ public class DaAssetRespVO implements Serializable {
     @TableField(exist = false)
     private DaAssetVideoRespVO daAssetVideo;
 
+    /**
+     * 文件数据
+     */
+    @TableField(exist = false)
+    private DaAssetFilesSaveReqVO daAssetFiles;
+
     @Schema(description = "项目id", example = "")
     private Long projectId;
 
@@ -201,4 +256,42 @@ public class DaAssetRespVO implements Serializable {
     @Schema(description = "创建类型", example = "")
     private String createType;
 
+    private List<String> tagIds;
+    private List<String> tagNames;
+
+    private String tags;
+
+    private FileInfo fileInfo;
+
+
+    @Schema(description = "数仓分层名称")
+    private String dataLayerName;
+
+    @Schema(description = "数仓分层英文缩写")
+    private String dataLayerEngName;
+
+    @Schema(description = "业务名称")
+    private String businessCategoryName;
+
+    @Schema(description = "业务英文缩写")
+    private String businessCategoryEngName;
+
+    @Schema(description = "数据分域名称")
+    private String dataDomainName;
+
+    @Schema(description = "数据分域英文缩写")
+    private String dataDomainEngName;
+
+    @Schema(description = "所属主题名称")
+    private String themeDomainName;
+
+    @Schema(description = "所属主题英文缩写")
+    private String themeDomainEngName;
+
+    @Schema(name = "创建人联系电话")
+    private String createUserPhoneNumber;
+
+
+    @Schema(name = "修改人联系电话")
+    private String updateUserPhoneNumber;
 }

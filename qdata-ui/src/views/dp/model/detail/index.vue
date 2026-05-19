@@ -32,74 +32,30 @@
 
 <template>
   <div class="app-container" ref="app-container">
-    <div class="pagecont-top" v-show="showSearch" style="padding-bottom: 15px">
-      <div class="infotop">
-        <div class="infotop-title mb15">
-
-          <div class="task-item">
-            <!-- 正方形编号 -->
-            <div class="task-id">
-              {{ dpModelDetail.id || '-' }}
-            </div>
-
-            <!-- 名称 -->
-            <div class="task-name">
-              {{ dpModelDetail.modelComment || '' }}
-            </div>
-          </div>
-        </div>
-        <el-row :gutter="2">
-          <el-col :span="8">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">英文名称</div>
-              <div class="infotop-row-value">
-                {{ dpModelDetail.modelName || "-" }}
-              </div>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">创建方式</div>
-              <div class="infotop-row-value">
-                <dict-tag :options="dp_model_create_type" :value="dpModelDetail.createType" />
-              </div>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">状态</div>
-              <div class="infotop-row-value">
-                <dict-tag :options="dp_model_status" :value="dpModelDetail.status" />
-              </div>
-            </div>
-          </el-col>
-          <el-col :span="24" style="margin: 2px 0;">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">描述</div>
-              <div class="infotop-row-value">
-                {{ dpModelDetail.description || "-" }}
-              </div>
-            </div>
-          </el-col>
-          <el-col :span="24">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">备注</div>
-              <div class="infotop-row-value">
-                {{ dpModelDetail.remark || "-" }}
-              </div>
-            </div>
-          </el-col>
-        </el-row>
-      </div>
-    </div>
-
+    <DetailInfo
+      :show="showSearch"
+      :data="dpModelDetail"
+      :header="{
+        className: 'clearfixs',
+        nameKey: 'modelComment',
+        statusKey: 'status',
+        statusOptions: dp_model_status,
+      }"
+      :items="detailItems"
+    />
     <div class="pagecont-bottom">
       <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
-        <el-tab-pane label="属性字段" name="1">
-          <modelColumn />
-        </el-tab-pane>
-        <el-tab-pane label="逻辑物化" name="2">
-          <modelMaterialized :modelId="route.query.id" :row="dpModelDetail"></modelMaterialized>
+        <qt-tab-pane
+          label="属性字段"
+          name="1"
+        >
+          <modelColumn :is-detail="isMaterializedDetail" />
+        </qt-tab-pane>
+        <el-tab-pane label="发布日志" name="2" v-if="isMaterializedDetail">
+          <modelMaterialized
+            :modelId="route.query.id"
+            :row="dpModelDetail"
+          ></modelMaterialized>
         </el-tab-pane>
         <el-tab-pane label="详细信息" name="3">
           <info :daDiscoveryTaskDetail="dpModelDetail"></info>
@@ -111,17 +67,22 @@
 
 <script setup name="DpModel">
 import { getDpModel } from "@/api/dp/model/model";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { deptUserTree } from "@/api/system/system/user.js";
 import modelColumn from "@/views/dp/model/detail/modelColumn.vue";
 import modelMaterialized from "@/views/dp/model/detail/materializationLog.vue";
 import info from "@/views/dp/model/detail/info.vue";
+import {
+  formatHierarchyDisplayName,
+  formatModelName,
+} from "../../../../utils/dm/utils.js";
 const { proxy } = getCurrentInstance();
-const { dp_model_status, dp_model_create_type } = proxy.useDict(
+const { dp_model_status, dp_model_create_type, table_type } = proxy.useDict(
   "dp_model_status",
-  "dp_model_create_type"
+  "dp_model_create_type",
+  "table_type"
 );
-
+const router = useRouter();
 const activeName = ref("1");
 const getNickNameById = (userId) => {
   if (!userList.value || !Array.isArray(userList.value)) {
@@ -140,6 +101,9 @@ const handleClick = (tab, event) => {
 
 const showSearch = ref(true);
 const route = useRoute();
+const isMaterializedDetail = computed(
+  () => route.path === "/dm/model/materializedModel/detail"
+);
 let id = route.query.id || 1;
 // 监听 id 变化
 watch(
@@ -157,6 +121,22 @@ const data = reactive({
 });
 
 const { dpModelDetail, rules } = toRefs(data);
+const detailItems = computed(() => [
+  {
+    key: "modelName",
+    label: "英文名称",
+  },
+  { label: "表类型", key: "tableType", dictOptions: table_type.value },
+  {
+    label: "归属层级",
+    formatter: (data) => formatHierarchyDisplayName(data, data.tableType),
+  },
+  {
+    label: "表命名规范",
+    formatter: (data) =>
+      formatModelName({ ...data, modelName: "", modelNameSuffix: "" }),
+  },
+]);
 const userList = ref();
 /** 复杂详情页面上方表单查询 */
 function getDpModelDetailById() {
@@ -166,11 +146,9 @@ function getDpModelDetailById() {
   }
   getDpModel(_ID).then((response) => {
     dpModelDetail.value = response.data;
-    console.log("🚀 ~ getDpModel ~ response.data:", response.data);
   });
   deptUserTree().then((res) => {
     userList.value = res.data;
-    console.log("userList", userList.value);
   });
 }
 

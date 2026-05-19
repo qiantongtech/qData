@@ -144,4 +144,11 @@ public class DmDataDomainController extends BaseController {
         return CommonResult.toAjax(dmDataDomainService.removeDmDataDomain(Arrays.asList(ids)));
     }
 
+    @Operation(summary = "查询数据域管理列通过业务分类id")
+    @PreAuthorize("@ss.hasPermi('dm:dataDomain:list')")
+    @GetMapping("/listByCategoryId")
+    public CommonResult<PageResult<DmDataDomainRespVO>> listByCategoryId(DmDataDomainPageReqVO dmDataDomain) {
+        PageResult<DmDataDomainDO> page = dmDataDomainService.getDmDataDomainByCategoryId(dmDataDomain);
+        return CommonResult.success(BeanUtils.toBean(page, DmDataDomainRespVO.class));
+    }
 }

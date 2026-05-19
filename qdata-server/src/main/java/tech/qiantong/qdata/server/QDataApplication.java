@@ -35,10 +35,12 @@ package tech.qiantong.qdata.server;
 import org.dromara.x.file.storage.spring.EnableFileStorage;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
 
 /**
  * 启动程序
@@ -49,6 +51,8 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @ComponentScan(basePackages = {"tech.qiantong"})
 @ServletComponentScan(basePackages = {"tech.qiantong"})
 @SpringBootApplication(exclude = { DataSourceAutoConfiguration.class })
+@EnableNeo4jRepositories(basePackages = "tech.qiantong.qdata.neo4j.repository")
+@EntityScan(basePackages = "tech.qiantong.qdata.neo4j.node")   // 节点/关系实
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 public class QDataApplication
 {

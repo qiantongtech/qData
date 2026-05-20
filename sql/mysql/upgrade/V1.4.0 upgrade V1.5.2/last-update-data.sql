@@ -1,0 +1,17 @@
+-- 菜单数据新增
+INSERT INTO `system_menu` (`menu_id`,`menu_name`,`parent_id`,`order_num`,`path`,`component`,`query`,`is_frame`,`is_cache`,`route_name`,`menu_type`,`visible`,`status`,`perms`,`icon`,`create_by`,`create_time`,`update_by`,`update_time`,`remark` ) VALUES (2750,'业务分类',2694,2,'businessCategory','dm/businessCategory/index',null,1,0,null,'C','0','0','dm:businesscategory:list','ywfc','admin','2026-03-30 16:46:41','admin','2026-04-15 15:06:14',null);
+INSERT INTO `system_menu` (`menu_id`,`menu_name`,`parent_id`,`order_num`,`path`,`component`,`query`,`is_frame`,`is_cache`,`route_name`,`menu_type`,`visible`,`status`,`perms`,`icon`,`create_by`,`create_time`,`update_by`,`update_time`,`remark` ) VALUES (2751,'业务分类查询',2750,1,'#',null,null,1,0,null,'F','0','0','dm:businesscategory:query','#','admin','2026-04-08 11:51:41',null,null,null);
+INSERT INTO `system_menu` (`menu_id`,`menu_name`,`parent_id`,`order_num`,`path`,`component`,`query`,`is_frame`,`is_cache`,`route_name`,`menu_type`,`visible`,`status`,`perms`,`icon`,`create_by`,`create_time`,`update_by`,`update_time`,`remark` ) VALUES (2752,'业务分类新增',2750,2,'#',null,null,1,0,null,'F','0','0','dm:businesscategory:add','#','admin','2026-04-08 11:51:49',null,null,null);
+INSERT INTO `system_menu` (`menu_id`,`menu_name`,`parent_id`,`order_num`,`path`,`component`,`query`,`is_frame`,`is_cache`,`route_name`,`menu_type`,`visible`,`status`,`perms`,`icon`,`create_by`,`create_time`,`update_by`,`update_time`,`remark` ) VALUES (2753,'业务分类修改',2750,3,'#',null,null,1,0,null,'F','0','0','dm:businesscategory:edit','#','admin','2026-04-08 11:51:56',null,null,null);
+INSERT INTO `system_menu` (`menu_id`,`menu_name`,`parent_id`,`order_num`,`path`,`component`,`query`,`is_frame`,`is_cache`,`route_name`,`menu_type`,`visible`,`status`,`perms`,`icon`,`create_by`,`create_time`,`update_by`,`update_time`,`remark` ) VALUES (2754,'业务分类删除',2750,4,'#',null,null,1,0,null,'F','0','0','dm:businesscategory:remove','#','admin','2026-04-08 11:52:16',null,null,null);
+INSERT INTO `system_menu` (`menu_id`,`menu_name`,`parent_id`,`order_num`,`path`,`component`,`query`,`is_frame`,`is_cache`,`route_name`,`menu_type`,`visible`,`status`,`perms`,`icon`,`create_by`,`create_time`,`update_by`,`update_time`,`remark` ) VALUES (2755,'业务分类导出',2750,5,'#',null,null,1,0,null,'F','0','0','dm:businesscategory:export','#','admin','2026-04-08 11:52:24',null,null,null);
+INSERT INTO `system_menu` (`menu_id`,`menu_name`,`parent_id`,`order_num`,`path`,`component`,`query`,`is_frame`,`is_cache`,`route_name`,`menu_type`,`visible`,`status`,`perms`,`icon`,`create_by`,`create_time`,`update_by`,`update_time`,`remark` ) VALUES (2756,'业务分类导入',2750,6,'#',null,null,1,0,null,'F','0','0','dm:businesscategory:import','#','admin','2026-04-08 11:52:32',null,null,null);
+UPDATE `system_menu` SET `order_num` = 8 WHERE `menu_id` = 2674;
+UPDATE `system_menu` SET `path` = 'materializedModel',`component` = 'dp/materializedModel/index',`perms` = 'dp:releaseModel:list' WHERE `menu_id` = 2731;
+DELETE FROM `system_menu` WHERE `menu_id` = 2709;
+
+-- 字典数据更新
+UPDATE `system_dict_data` SET `dict_sort` = 4,`remark` = '直接用于大屏或报表展示的最终数据，如"防汛大屏综合指标表"。' WHERE `dict_code` = 425;
+UPDATE `system_dict_data` SET `dict_sort` = 3,`remark` = '按条件统计出来的阶段性结果，如"测站日降水量表"、"月均水位表"。' WHERE `dict_code` = 454;
+UPDATE `system_dict_data` SET `dict_sort` = 2,`remark` = '记录未经加工的原始流水记录，如"单次水位上报"、"设备报警日志"。' WHERE `dict_code` = 453;
+UPDATE `system_dict_data` SET `dict_sort` = 1,`remark` = '存放固定的基础档案信息，如"测站基本属性表"、"水库名录"等。' WHERE `dict_code` = 452;

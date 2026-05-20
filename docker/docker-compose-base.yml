@@ -140,3 +140,25 @@ services:
       timeout: 10s
     networks:
       - qdatanet
+  neo4j:
+    privileged: true
+    image: neo4j:4.4.40
+    profiles: [ "all", "neo4j" ]
+    restart: always
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      - NEO4J_AUTH=neo4j/InC3tmU4bijT4vkl
+    volumes:
+      - ./neo4j/data:/data
+      - ./neo4j/logs:/logs
+      - ./neo4j/conf:/var/lib/neo4j/conf
+    healthcheck:
+      test: [ "CMD", "cypher-shell", "-u", "neo4j", "-p", "InC3tmU4bijT4vkl", "RETURN 1;" ]
+      interval: 20s      # 每 20 秒检测一次
+      timeout: 5s        # 超过 5 秒算失败
+      retries: 10        # 连续 10 次失败算 unhealthy
+      start_period: 1200s # 容忍 20 分钟内失败
+    networks:
+      - qdatanet

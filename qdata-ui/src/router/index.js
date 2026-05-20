@@ -81,6 +81,7 @@ import mcDynamicRouter from './mc/dynamic/index.js';
 import metaPublicRouter from './meta/public/index.js';
 /* 表元数据 */
 import metaDynamicRouter from './meta/dynamic/index.js';
+import attTag from './att/tag/index.js';
 
 /* 数据规划动态路由 */
 // 用来存储当前请求的取消源
@@ -109,7 +110,7 @@ import metaDynamicRouter from './meta/dynamic/index.js';
  */
 
 // 公共路由
-export const constantRoutes = [...systemPublicRouter, ...examplePublicRouter, ...daPublicRouter, ...dsCatRouter, ...dsPublicRouter, ...dPdocument, ...dpPublicRouter, ...dpDataElemRouter, ...daAssetRouter, ...daQualityRouter, ...dppRouter, ...mcPublicRouter, ...metaPublicRouter, ...mcDynamicRouter, ...metaDynamicRouter, ...dmRouter];
+export const constantRoutes = [...systemPublicRouter, ...examplePublicRouter, ...daPublicRouter, ...dsCatRouter, ...dsPublicRouter, ...dPdocument, ...dpPublicRouter, ...dpDataElemRouter, ...daAssetRouter, ...daQualityRouter, ...dppRouter, ...mcPublicRouter, ...metaPublicRouter, ...mcDynamicRouter, ...metaDynamicRouter, ...dmRouter, ...attTag];
 
 // 动态路由，基于用户权限动态去加载
 export const dynamicRoutes = [...systemDynamicRouter, ...exampleDynamicRouter, ...daDynamicRouter, ...dsDynamicRouter,];

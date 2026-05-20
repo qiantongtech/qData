@@ -79,10 +79,12 @@ public interface DaAssetMapper extends BaseMapperX<DaAssetDO> {
 
         //增加标签筛选
         if (CollectionUtils.isNotEmpty(reqVO.getTagIdList())) {
+            String tagIds = reqVO.getTagIdList().stream()
+                    .map(String::valueOf)
+                    .collect(java.util.stream.Collectors.joining(","));
+
             lambdaWrapper.exists(
-                    "SELECT 1 FROM ATT_TAG_ASSET_REL taRel WHERE t.id = taRel.ASSET_ID AND taRel.DEL_FLAG = '0' AND taRel.TAG_ID IN (" +
-                            reqVO.getTagIdList().stream().map(id -> "?").reduce((a, b) -> a + "," + b).orElse("") +
-                            ")"
+                    "SELECT 1 FROM ATT_TAG_ASSET_REL taRel WHERE t.id = taRel.ASSET_ID AND taRel.DEL_FLAG = '0' AND taRel.TAG_ID IN (" + tagIds + ")"
             );
         }
 

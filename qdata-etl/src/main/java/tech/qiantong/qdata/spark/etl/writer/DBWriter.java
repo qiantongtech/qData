@@ -213,7 +213,11 @@ public class DBWriter implements Writer {
                     if (StringUtils.isNotBlank(writerProperty.getSid())) {
                         repTableName = StringUtils.replace(repTableName, writerProperty.getSid() + ".", "");
                     }
-                    dbQuery.execute("ALTER TABLE " + tmpTableName + " RENAME TO " + repTableName);
+                    if (StringUtils.equals(DbType.DORIS.getDb(), writerProperty.getDbType())) {
+                        dbQuery.execute("ALTER TABLE " + tmpTableName + " RENAME " + repTableName);
+                    } else {
+                        dbQuery.execute("ALTER TABLE " + tmpTableName + " RENAME TO " + repTableName);
+                    }
                     log.info("临时表：{}改为目标表:{}", tmpTableName, tableName);
                     LogUtils.writeLog(logParams, "临时表：" + tmpTableName + "改为目标表:" + tableName);
                 } else {

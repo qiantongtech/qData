@@ -30,11 +30,8 @@ import javax.annotation.Resource;
 @Service
 public class McTaskDolphinSchedulerService {
 
-    @Value("${ds.http_mc_projectCode}")
+    @Value("${ds.http_mc_projectCode:}")
     private Long projectCode;
-
-    @Value("${path.mc_url}")
-    private String url;
 
     @Resource
     private IDsEtlTaskService dsEtlTaskService;

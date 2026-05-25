@@ -24,7 +24,7 @@ public class McTaskConverter {
 
     private static String defaultURL;
 
-    @Value("${ds.mc_url}")
+    @Value("${ds.mc_url:}")
     private void setDefaultURL(String defaultURL) {
         McTaskConverter.defaultURL = defaultURL;
     }

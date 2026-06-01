@@ -212,12 +212,12 @@ const tabPanes = computed(() => {
           //   content: "查看该资产的数据质量指标，如完整性、准确性、一致性等",
           // },
         },
-        {
-          label: "资产血缘",
-          name: "4",
-          component: lineage,
-          // tip: { content: "查看该资产的数据来源与去向，了解其上下游依赖关系" },
-        },
+        // {
+        //   label: "资产血缘",
+        //   name: "4",
+        //   component: lineage,
+        //   // tip: { content: "查看该资产的数据来源与去向，了解其上下游依赖关系" },
+        // },
         {
           label: "资产概览",
           name: "5",

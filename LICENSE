@@ -1,14 +1,18 @@
 # Open Source License
 
-qData is licensed under a modified version of the Apache License 2.0, with the following additional conditions:
+qData is made available under the Apache License 2.0, subject to the following additional conditions specific to qData:
 
-1. qData may be utilized commercially, including as a backend service for other applications or as an application development platform for enterprises. Should the conditions below be met, a commercial license must be obtained from the producer:
+For the purpose of this License, "qData" refers to the entire software project, including but not limited to its frontend, backend, API, and related documentation in whole or in part.
 
-a. LOGO and copyright information: In the process of using qData's frontend, you may not remove or modify the LOGO or copyright information in the qData console or applications.
+For the purpose of this License, "Producer" refers to Jiangsu Qiantong Technology Co., Ltd.
+
+1. You may use qData for commercial purposes, provided that you do not remove, hide, or modify the qData logo, copyright notices, license notices, or attribution information displayed in the qData.
+
+If you wish to remove, hide, obscure, replace, or modify such logo, copyright notices, license notices, or attribution information, including but not limited to white-label use, OEM distribution, rebranding, or presenting qData as another product, you must obtain a separate commercial license from the Producer.
 
 2. As a contributor, you should agree that:
 
-a. The producer can adjust the open-source agreement to be more strict or relaxed as deemed necessary.
+a. The Producer can adjust the open-source agreement to be more strict or relaxed as deemed necessary.
 b. Your contributed code may be used for commercial purposes, including but not limited to its cloud business operations.
 
 Apart from the specific conditions mentioned above, all other rights and restrictions follow the Apache License 2.0. Detailed information about the Apache License 2.0 can be found at http://www.apache.org/licenses/LICENSE-2.0.

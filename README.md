@@ -8,6 +8,7 @@
 
  <img src="https://gitee.com/qiantongtech/qData/badge/star.svg"/>
  <img src="https://img.shields.io/github/stars/qiantongtech/qData?label=Github%20Stars"/>
+ <img src="https://atomgit.com/qiantongtech/qData/star/badge.svg"/>
 </p>
 
 <p align="center">

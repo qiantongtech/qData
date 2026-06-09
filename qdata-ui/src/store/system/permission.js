@@ -103,11 +103,6 @@ const usePermissionStore = defineStore('permission', {
 // 遍历后台传来的路由字符串，转换为组件对象
 function filterAsyncRouter(asyncRouterMap, lastRouter = false, type = false) {
     return asyncRouterMap.filter((route) => {
-        
-
-        if (type && route.children) {
-            route.children = filterChildren(route.children);
-        }
         if (route.component) {
             // Layout ParentView 组件特殊处理
             if (route.component === 'Layout') {
@@ -121,20 +116,30 @@ function filterAsyncRouter(asyncRouterMap, lastRouter = false, type = false) {
             }
         }
 
-        if(!route.meta) route.meta = {};
+        if(!route.meta){
+            route.meta = {};
+        }
+        
         if(lastRouter?.meta?.lang){
-            route.meta.lang = lastRouter.meta.lang + '-' + route.name;
+            route.meta.lang = lastRouter.meta.lang + route.name;
         }else{
             if(route.name){
-                route.meta.lang = 'dynamic.'+route.name;
+                const name = route.name.charAt(0).toLowerCase() + route.name.slice(1);
+                route.meta.lang = 'dynamic.'+name;
             }
         }
+
         if (route.children != null && route.children && route.children.length) {
             route.children = filterAsyncRouter(route.children, route, type);
         } else {
             delete route['children'];
             delete route['redirect'];
         }
+
+        if (type && route.children) {
+            route.children = filterChildren(route.children);
+        }
+
         return true;
     });
 }

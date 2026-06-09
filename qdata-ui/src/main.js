@@ -38,7 +38,10 @@ import ElementPlus from 'element-plus'
 import AniviaComponents from 'anivia-components'
 import 'anivia-components/style.css'
 import 'element-plus/dist/index.css'
-import locale from 'element-plus/es/locale/lang/zh-cn'
+
+// 初始化多语言
+import { setupI18n } from '@/plugins/vueI18n'
+import { useLocaleStoreWithOut } from '@/store/system/locale'
 
 import '@/assets/system/styles/index.scss' // global css
 import '@/assets/system/styles/anivia.scss' // 自定义样式 css
@@ -103,59 +106,69 @@ import QtFormItem from '@/components/QtFormItem/index.vue';
 import QtTagGroup from '@/components/QtTagGroup/index.vue';
 
 const app = createApp(App)
-app.use(AniviaComponents)
-app.use(FcDesigner);
-app.use(FcDesigner.formCreate);
 
-// 全局方法挂载
-app.config.globalProperties.useDict = useDict
-app.config.globalProperties.download = download
-app.config.globalProperties.download2 = download2
-app.config.globalProperties.parseTime = parseTime
-app.config.globalProperties.resetForm = resetForm
-app.config.globalProperties.handleTree = handleTree
-app.config.globalProperties.addDateRange = addDateRange
-app.config.globalProperties.selectDictLabel = selectDictLabel
-app.config.globalProperties.selectDictLabels = selectDictLabels
-app.config.globalProperties.getFormatValue = getFormatValue;
-app.config.globalProperties.downloadContent = downloadContent;
-app.config.globalProperties.formatVersion = formatVersion;
-// 将事件总线挂载到全局属性
-app.config.globalProperties.$bus = bus;
+// 初始化多语言（必须在使用 store / element-plus 之前完成）
+const setupAll = async () => {
+  app.use(store)
+  await setupI18n(app)
 
-// 全局组件挂载
-app.component('QtTagGroup', QtTagGroup)
-app.component('DictTag', DictTag)
-app.component('Pagination', Pagination)
-app.component('TreeSelect', TreeSelect)
-app.component('FileUpload', FileUpload)
-app.component('FileUploadbtn', FileUploadbtn)
-app.component('GuideTip', GuideTip)
-app.component('ImageUpload', ImageUpload)
-app.component('ImagePreview', ImagePreview)
-app.component('RightToolbar', RightToolbar)
-app.component('RightToolbar2', RightToolbar2)
-app.component('Editor', Editor)
-app.component('QtSearchBar', QtSearchBar)
-app.component('QtWrap', QtWrap)
-app.component('QtTable', QtTable)
-app.component('QtTabPane', QtTabPane)
-app.component('QtFormItem', QtFormItem)
-app.component('DetailInfo', DetailInfo)
-app.component('DescriptionsInfo', DescriptionsInfo)
-app.use(router)
-app.use(store)
-app.use(plugins)
-app.use(elementIcons)
-app.component('svg-icon', SvgIcon)
+  app.use(AniviaComponents)
+  app.use(FcDesigner)
+  app.use(FcDesigner.formCreate)
 
-directive(app)
+  // 全局方法挂载
+  app.config.globalProperties.useDict = useDict
+  app.config.globalProperties.download = download
+  app.config.globalProperties.download2 = download2
+  app.config.globalProperties.parseTime = parseTime
+  app.config.globalProperties.resetForm = resetForm
+  app.config.globalProperties.handleTree = handleTree
+  app.config.globalProperties.addDateRange = addDateRange
+  app.config.globalProperties.selectDictLabel = selectDictLabel
+  app.config.globalProperties.selectDictLabels = selectDictLabels
+  app.config.globalProperties.getFormatValue = getFormatValue
+  app.config.globalProperties.downloadContent = downloadContent
+  app.config.globalProperties.formatVersion = formatVersion
+  // 将事件总线挂载到全局属性
+  app.config.globalProperties.$bus = bus
 
-// 使用element-plus 并且设置全局的大小
-app.use(ElementPlus, {
-  locale: locale,
-  // 支持 large、default、small
-  size: Cookies.get('size') || 'default'
-})
+  // 全局组件挂载
+  app.component('QtTagGroup', QtTagGroup)
+  app.component('DictTag', DictTag)
+  app.component('Pagination', Pagination)
+  app.component('TreeSelect', TreeSelect)
+  app.component('FileUpload', FileUpload)
+  app.component('FileUploadbtn', FileUploadbtn)
+  app.component('GuideTip', GuideTip)
+  app.component('ImageUpload', ImageUpload)
+  app.component('ImagePreview', ImagePreview)
+  app.component('RightToolbar', RightToolbar)
+  app.component('RightToolbar2', RightToolbar2)
+  app.component('Editor', Editor)
+  app.component('QtSearchBar', QtSearchBar)
+  app.component('QtWrap', QtWrap)
+  app.component('QtTable', QtTable)
+  app.component('QtTabPane', QtTabPane)
+  app.component('QtFormItem', QtFormItem)
+  app.component('DetailInfo', DetailInfo)
+  app.component('DescriptionsInfo', DescriptionsInfo)
 
-app.mount('#app')
+  app.use(router)
+  app.use(plugins)
+  app.use(elementIcons)
+  app.component('svg-icon', SvgIcon)
+
+  directive(app)
+
+  // 使用 element-plus 并且设置全局的大小、跟随当前语言
+  const localeStore = useLocaleStoreWithOut()
+  app.use(ElementPlus, {
+    locale: localeStore.getCurrentLocale.elLocale,
+    // 支持 large、default、small
+    size: Cookies.get('size') || 'default'
+  })
+
+  app.mount('#app')
+}
+
+setupAll()

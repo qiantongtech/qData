@@ -53,26 +53,44 @@
         </div>
         <div class="right-content">
             <div class="logo">
-                <img :src="logo" />
+              <img :src="logo" />
+              <div ref="target" :class="['language', langOpen ? 'language-open' : 'language-close']"
+                   @click="langOpen = !langOpen"
+              >
+                <img class="language-icon" src="@/assets/system/images/login/language-icon.svg" alt="" />
+                <div class="language-name">{{ currentLocaleName }}</div>
+                <el-icon class="language-switch">
+                  <ArrowRight />
+                </el-icon>
+
+                <div class="language-list">
+                  <div
+                    v-for="item in localeMap"
+                    :key="item.lang"
+                    class="lang-item"
+                    @click.stop="handleLangClick(item.lang)"
+                  >{{ item.name }}</div>
+                </div>
+              </div>
             </div>
-            <div>
+          <div>
                 <div class="greeting">
-                    <div class="entry_period">亲爱的朋友，{{ greeting }}！</div>
-                    <div class="entry_greeting"> 🌟 每一次登录，都是向数据价值更进一步！</div>
+                    <div class="entry_period">{{ t('login.greeting.greetingHello') }}，{{ greeting }}！</div>
+                    <div class="entry_greeting">{{ t('login.greeting.greetingMessage') }}</div>
                 </div>
                 <div class="login-panel">
                     <el-form ref="loginRef" :model="loginForm" :rules="loginRules">
-                        <p class="titles">账号登录</p>
+                        <p class="titles">{{ t('login.title') }}</p>
                         <div class="titles-bar"></div>
                         <el-form-item prop="username">
-                            <el-input v-model="loginForm.username" type="text" auto-complete="off" placeholder="账号">
+                            <el-input v-model="loginForm.username" type="text" auto-complete="off" :placeholder="t('login.username')">
                                 <template #prefix>
                                     <i class="iconfont">&#xebc0;</i>
                                 </template>
                             </el-input>
                         </el-form-item>
                         <el-form-item prop="password">
-                            <el-input v-model="loginForm.password" type="password" auto-complete="off" placeholder="密码"
+                            <el-input v-model="loginForm.password" type="password" auto-complete="off" :placeholder="t('login.password')"
                                 @keyup.enter="handleLogin">
                                 <template #prefix>
                                     <i class="iconfont">&#xeb8d;</i>
@@ -80,7 +98,7 @@
                             </el-input>
                         </el-form-item>
                         <el-form-item prop="code" v-if="captchaEnabled">
-                            <el-input v-model="loginForm.code" auto-complete="off" placeholder="验证码" class="code-class"
+                            <el-input v-model="loginForm.code" auto-complete="off" :placeholder="t('login.code')" class="code-class"
                                 @keyup.enter.native="handleLogin">
                                 <template #prefix>
                                     <i class="iconfont">&#xeb9e;</i>
@@ -94,14 +112,14 @@
                         <el-form-item style="width: 100%">
                             <el-button :loading="loading" type="primary" style="width: 100%"
                                 @click.native.prevent="handleLogin">
-                                <span v-if="!loading">登 录</span>
-                                <span v-else>登 录 中...</span>
+                                <span v-if="!loading">{{ t('login.loginBtn') }}</span>
+                                <span v-else>{{ t('login.logining') }}</span>
                             </el-button>
                         </el-form-item>
 
                         <div class="form-actions">
-                            <el-checkbox v-model="loginForm.rememberMe">记住密码</el-checkbox>
-                            <el-text type="primary" @click="dialogVisible = true">忘记密码</el-text>
+                            <el-checkbox v-model="loginForm.rememberMe">{{ t('login.remember') }}</el-checkbox>
+                            <el-text type="primary" @click="dialogVisible = true">{{ t('login.forgetPassword') }}</el-text>
                         </div>
                     </el-form>
                 </div>
@@ -111,8 +129,7 @@
                     <div class="contact" style="float: left">
                         <img src="@/assets/system/images/login/phone.png" />
                         <div>
-                            <p>联系电话：</p>
-                            <!--              <p>400-660-8208</p>-->
+                            <p>{{ t('login.info.phoneContact') }}</p>
                             <p>
                                 {{
                                     contentDetail && contentDetail.contactNumber
@@ -125,8 +142,7 @@
                     <div class="contact" style="margin-left: 24px">
                         <img src="@/assets/system/images/login/email.png" />
                         <div>
-                            <p>电子邮箱：</p>
-                            <!--              <p>sales@qiantong.tech</p>-->
+                            <p>{{ t('login.info.emailContact') }}</p>
                             <p>
                                 {{
                                     contentDetail && contentDetail.email
@@ -139,9 +155,9 @@
                 </div>
                 <div class="chrome-wrap">
                     <img src="@/assets/system/images/login/goge-icon.png" style="height: 20px" />
-                    <span style="color: #888; font-size: 12px; line-height: 0; margin-left: 10px">为保证最佳浏览效果，请使用</span>
+                    <span style="color: #888; font-size: 12px; line-height: 0; margin-left: 10px">{{ t('login.info.chromeHint') }}</span>
                     <span style="color: #ee2223; font-size: 12px; line-height: 0">Chrome</span>
-                    <span style="color: #888; font-size: 12px; line-height: 0">浏览器，点击下载安装</span>
+                    <span style="color: #888; font-size: 12px; line-height: 0">{{ t('login.info.chromeHint2') }}</span>
                     <a href="https://www.google.cn/chrome/" target="_blank">
                         <div style="
                                 margin-left: 15px;
@@ -181,7 +197,7 @@
                         <a href="https://qiantong.tech/" target="_blank">
                             Copyright© {{ new Date().getFullYear() }}
                             <span style="color: #2666fb">江苏千桐科技有限公司</span>
-                            版权所有
+                            {{ t('login.info.copyrightOwner') }}
                         </a>
                     </div>
 
@@ -200,39 +216,39 @@
         </div>
     </div>
 
-    <el-dialog v-model="dialogVisible" title="忘记密码" class="fp-form-dialog" width="650px"
+    <el-dialog v-model="dialogVisible" :title="t('login.forgetPassword')" class="fp-form-dialog" width="650px"
         :append-to="$refs['app-container']" draggable destroy-on-close>
         <el-form :model="fpForm" label-width="auto" style="padding: 10px 60px 0">
             <el-row :gutter="20">
                 <el-col :span="24">
-                    <el-form-item label="用户名">
-                        <el-input v-model="fpForm.name" placeholder="请输入手机号或用户名" />
+                    <el-form-item :label="t('login.username')">
+                        <el-input v-model="fpForm.name" :placeholder="t('login.usernameInputPlaceholder')" />
                     </el-form-item>
                 </el-col>
                 <el-col :span="24">
-                    <el-form-item label="验证码">
+                    <el-form-item :label="t('login.code')">
                         <div class="wrapper">
-                            <el-input v-model="fpForm.code" placeholder="请输入验证码" />
+                            <el-input v-model="fpForm.code" :placeholder="t('login.codePlaceholder')" />
                             <el-button type="primary" :disabled="codeFlag" style="margin-left: 10px"
-                                @click="handleFPCodeClick">{{ codeFlag ? `${codeTime}s` : '获取验证码' }}</el-button>
+                                @click="handleFPCodeClick">{{ codeFlag ? `${codeTime}s` : t('login.getCode') }}</el-button>
                         </div>
                     </el-form-item>
                 </el-col>
                 <el-col :span="24">
-                    <el-form-item label="新密码">
-                        <el-input v-model="fpForm.password" placeholder="请输入新密码" />
+                    <el-form-item :label="t('login.newPassword')">
+                        <el-input v-model="fpForm.password" :placeholder="t('login.newPasswordPlaceholder')" />
                     </el-form-item>
                 </el-col>
                 <el-col :span="24">
-                    <el-form-item label="确认密码">
-                        <el-input v-model="fpForm.password2" placeholder="请输入确认密码" />
+                    <el-form-item :label="t('login.confirmPassword')">
+                        <el-input v-model="fpForm.password2" :placeholder="t('login.confirmPasswordPlaceholder')" />
                     </el-form-item>
                 </el-col>
             </el-row>
         </el-form>
         <template #footer>
             <div class="dialog-footer">
-                <el-button type="primary" @click="dialogVisible = false"> 重置密码 </el-button>
+                <el-button type="primary" @click="dialogVisible = false"> {{ t('login.resetPassword') }} </el-button>
             </div>
         </template>
     </el-dialog>
@@ -240,23 +256,40 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { getCodeImg } from '@/api/system/login';
 import Cookies from 'js-cookie';
 import { encrypt, decrypt } from '@/utils/jsencrypt';
 import Swiper from 'swiper';
 import 'swiper/swiper-bundle.min.css';
 import useUserStore from '@/store/system/user.js';
+import useLocaleStore from '@/store/system/locale.js';
+import { useLocale } from '@/composables/useLocale';
+import { useLocaleImage } from '@/composables/useLocaleImage';
+import { useTimeGreeting } from '@/composables/useTimeGreeting';
 import { getContent } from '@/api/system/system/content';
 import defaultLogo from '@/assets/system/images/login/qData-logo.png';
-import { useTimeGreeting } from '@/composables/useTimeGreeting';
+
+const { t } = useI18n();
+const { changeLocale } = useLocale();
+const { getImage } = useLocaleImage();
+const { greeting, message } = useTimeGreeting();
 const userStore = useUserStore();
+const localeStore = useLocaleStore();
+const router = useRouter();
 const dialogVisible = ref(false);
 const { proxy } = getCurrentInstance();
 const loading = ref(false);
 const codeUrl = ref('');
-// const greetingsTitle = ref('');
-const { greeting, message } = useTimeGreeting()
+
+const langOpen = ref(false);
+const localeMap = computed(() => localeStore.getLocaleMap);
+const currentLocaleName = computed(() => {
+  const lang = localeStore.getCurrentLocale.lang;
+  return localeMap.value.find((v) => v.lang === lang)?.name || lang;
+});
+
 const captchaEnabled = ref(true);
 const codeFlag = ref(false);
 const loginForm = ref({
@@ -272,34 +305,14 @@ const fpForm = ref({
     password2: '',
     code: ''
 });
-// const loginimglist=ref([
-//   {
-//     id:1,
-//     imgurl:'banner.png',
-//   },
-//   // {
-//   //   id:2,
-//   //   imgurl:'banner2.png',
-//   // },
-//   // {
-//   //   id:3,
-//   //   imgurl:'banner-gy.png',
-//   // },
-//   {
-//     id:4,
-//     imgurl:'banner-sl.png',
-//   }
-// ])
 const defaltImglist = ref([
-    { id: 1, image: new URL('@/assets/system/images/login/banner-zt.png', import.meta.url).href },
-
+    { id: 1, image: getImage('login/banner-zt.png') },
 ]);
 const loginimglist = ref([]);
 
 const getBackgroundStyle = (item) => {
     return {
         background: `url(${item.image}) center center / cover no-repeat`,
-
     };
 };
 
@@ -307,11 +320,11 @@ const getAssetsFile = (url) => {
     return new URL(`@/assets/system/images/login/${url}`, import.meta.url).href;
 };
 
-const loginRules = {
-    username: [{ required: true, trigger: 'blur', message: '请输入您的账号' }],
-    password: [{ required: true, trigger: 'blur', message: '请输入您的密码' }],
-    code: [{ required: true, trigger: 'change', message: '请输入验证码' }]
-};
+const loginRules = computed(() => ({
+    username: [{ required: true, trigger: 'blur', message: t('login.usernameRequired') }],
+    password: [{ required: true, trigger: 'blur', message: t('login.passwordRequired') }],
+    code: [{ required: true, trigger: 'change', message: t('login.codeRequired') }]
+}));
 
 const logo = ref(null);
 const contentDetail = ref(null);
@@ -319,21 +332,15 @@ const contentDetail = ref(null);
 onMounted(() => {
     fetchContent();
 });
-// 使用 getContent 来获取数据，而不是重新定义一个 getContent 函数
 const fetchContent = async () => {
-    // logo.value = defaultLogo;
-    // loginimglist.value = defaltImglist.value
     try {
-        // 调用你从 API 导入的 getContent 方法
-        const res = await getContent(1); // 假设请求的是 id 为 1 的数据
+        const res = await getContent(1);
         if (res.code == 200) {
             const data = res.data;
-            console.log("🚀 ~ fetchContent ~  res.data:", res.data)
             contentDetail.value = data;
             const sysLogo = data.loginLogo;
             logo.value = sysLogo ? sysLogo : defaultLogo;
             const carouselImageList = data.carouselImage.split(',');
-            console.log('-----login-----0----0--0--------0-', carouselImageList);
             const carouselImgList = [];
             for (let i = 0; i <= carouselImageList.length; i++) {
                 let item = carouselImageList[i];
@@ -344,7 +351,6 @@ const fetchContent = async () => {
                     });
                 }
             }
-            console.log('-----login-----1----1--1--------1-', defaltImglist.value);
             if (carouselImgList.length > 0) {
                 loginimglist.value = carouselImgList;
             } else {
@@ -353,26 +359,20 @@ const fetchContent = async () => {
         } else {
             loginimglist.value = defaltImglist.value;
         }
-
-        // this.$message.success('内容加载成功');
     } catch (error) {
         logo.value = defaultLogo;
         loginimglist.value = defaltImglist.value;
     }
 };
 
-// function judgeDate() {
-//     var currentTime = new Date();
-//     var currentHour = currentTime.getHours();
-//     if (currentHour < 12) {
-//         greetingsTitle.value = '上午好';
-//     } else if (currentHour < 18) {
-//         greetingsTitle.value = '下午好';
-//     } else {
-//         greetingsTitle.value = '晚上好';
-//     }
-// }
-// judgeDate();
+// 切换语言：更新 store + 加载语言包 + 刷新页面
+async function handleLangClick(lang) {
+  langOpen.value = false;
+  if (lang === localeStore.getCurrentLocale.lang) return;
+  localeStore.setCurrentLocale({ lang });
+  await changeLocale(lang);
+  window.location.reload();
+}
 
 function getCookie() {
     const username = Cookies.get('username');
@@ -482,6 +482,75 @@ function goKtPage() {
 </style>
 
 <style scoped lang="scss">
+.language {
+  position: relative;
+  display: flex;
+  align-items: center;
+  font-family: PingFang SC;
+  color: #666666;
+  cursor: pointer;
+  user-select: none;
+  font-weight: 600;
+  margin-left: auto;
+  margin-right: 4%;
+
+  .language-icon {
+    display: block;
+    width: 16px;
+    height: 16px;
+    margin-right: 6px;
+  }
+
+  .language-name {
+    font-size: 15px;
+    margin-right: 8px;
+  }
+
+  ::v-deep(.language-switch) {
+    display: block;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .language-list {
+    display: none;
+    background: #ffffff;
+    box-shadow: 0px 5px 10px 0px rgba(51, 51, 51, 0.2);
+    border-radius: 8px;
+    padding: 8px 0 9px;
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    font-weight: 500;
+
+    .lang-item {
+      width: 100%;
+      height: 31px;
+      font-weight: 400;
+      font-size: 15px;
+      color: #333333;
+      line-height: 31px;
+      padding: 0 27px;
+      white-space: nowrap;
+
+      &:hover {
+        font-weight: 500;
+        color: var(--login-primary-color);
+        background-color: rgba($color: #eff6fe, $alpha: 0.5);
+      }
+    }
+  }
+
+  &.language-open {
+    ::v-deep(.language-switch) {
+      transform: rotate(90deg);
+    }
+
+    .language-list {
+      display: block;
+    }
+  }
+}
+
 .login-two {
     height: 100%;
     width: 100%;
@@ -638,9 +707,10 @@ function goKtPage() {
         justify-content: space-between;
 
         .logo {
-            width: 100px;
+            //width: 100px;
             height: 33px;
             margin-left: 20%;
+            display: flex;
 
             img {
                 // width: 100%;

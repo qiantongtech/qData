@@ -48,7 +48,7 @@
           v-if="item.meta && item.meta.icon && item.meta.icon !== '#'"
           :icon-class="item.meta.icon"
         />
-        {{ item.meta.title }}
+        {{ t(`router.${item.meta.lang}`) }}
       </el-menu-item>
     </template>
 
@@ -85,6 +85,8 @@ import usePermissionStore from "@/store/system/permission";
 import { el } from "element-plus/es/locale/index.mjs";
 import useTagsViewStore from "@/store/system/tagsView";
 import defaultSettings from "@/settings";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 const NAVBAR_LOGO_WIDTH = 200;
 const { proxy } = getCurrentInstance();
 // 顶部栏初始数
@@ -104,7 +106,6 @@ const emit = defineEmits(["getRouter"]);
 const theme = computed(() => settingsStore.theme);
 // 所有的路由信息
 const routers = computed(() => permissionStore.topbarRouters);
-
 let resizeObserver = null;
 let mutationObserver = null;
 
@@ -346,6 +347,7 @@ function activeRoutes(key) {
     });
   }
   if (routes.length > 0) {
+    console.log('1--->');
     permissionStore.setSidebarRouters(routes);
   } else {
     appStore.toggleSideBarHide(true);

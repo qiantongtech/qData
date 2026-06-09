@@ -80,7 +80,7 @@ export default [
                 path: '/index',
                 component: () => import('@/views/sys/index.vue'),
                 name: 'Index',
-                meta: { title: '首页', icon: 'dashboard', affix: true }
+                meta: { title: '首页', icon: 'dashboard', affix: true, lang: 'public.home' }
             }
         ]
     },

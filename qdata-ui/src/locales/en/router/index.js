@@ -1,5 +1,9 @@
-// 路由和菜单名称
+import dynamic from './dynamic'
+import publicRouter from './public'
+
+
+
 export default {
-  login: 'Login',
-  home: 'Home'
+  dynamic,
+  public: publicRouter,
 }

@@ -1,12 +1,50 @@
-// common パッケージ入口（骨架，內容待補全）
-import button from './button'
-import message from './message'
-import form from './form'
-import display from './display'
-
+// 通用翻译（按钮、消息、表单、展示标签）（骨架，內容待補全）
 export default {
-  button,
-  message,
-  form,
-  display
+  // 按钮
+  button: {
+    ok: '',
+    cancel: '',
+    save: '',
+    close: '',
+    back: '',
+    reload: '',
+    query: '',
+    reset: '',
+    copy: '',
+    shrink: '',
+    expand: ''
+  },
+  // 消息
+  message: {
+    success: '',
+    confirmTitle: '',
+    loginOutMessage: '',
+    required: '',
+    createSuccess: '',
+    updateSuccess: '',
+    delSuccess: '',
+    copySuccess: '',
+    copyError: '',
+    delMessage: '',
+    delDataMessage: '',
+    delNoData: '',
+    noPermission: '',
+    pageError: '',
+    networkError: '',
+    returnToHome: ''
+  },
+  // 表单
+  form: {
+    inputText: '',
+    selectText: ''
+  },
+  // 展示
+  display: {
+    index: '',
+    status: '',
+    createTime: '',
+    updateTime: '',
+    startTimeText: '',
+    endTimeText: ''
+  }
 }

@@ -233,7 +233,7 @@ function calculateVisibleMenus() {
     : 606;
 
   const bodyWidth = document.body.getBoundingClientRect().width;
-  const menuWidth = 124; // 每个菜单项宽度
+  const menuWidth = 164; // 每个菜单项宽度
 
   const availableWidth = bodyWidth - leftWidth - rightWidth;
 

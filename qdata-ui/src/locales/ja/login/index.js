@@ -1,10 +1,54 @@
-// login パッケージ入口（form フラット展開、greeting/info はネスト）（骨架，內容待補全）
-import form from './form'
-import greeting from './greeting'
-import info from './info'
-
+// 登录页翻译（表单、问候语、底部信息）（骨架，內容待補全）
 export default {
-  ...form,
-  greeting,
-  info
+  // 表单
+  title: '',
+  username: '',
+  password: '',
+  code: '',
+  login: '',
+  loginBtn: '',
+  logining: '',
+  relogin: '',
+  remember: '',
+  forgetPassword: '',
+  resetPassword: '',
+  getCode: '',
+  newPassword: '',
+  confirmPassword: '',
+  usernamePlaceholder: '',
+  passwordPlaceholder: '',
+  codePlaceholder: '',
+  usernameInputPlaceholder: '',
+  newPasswordPlaceholder: '',
+  confirmPasswordPlaceholder: '',
+  usernameRequired: '',
+  passwordRequired: '',
+  codeRequired: '',
+  // 时段问候语
+  greeting: {
+    greetingHello: '',
+    greetingMessage: '',
+    greetingLateNight: '',
+    greetingLateNightMsg: '',
+    greetingMorning: '',
+    greetingMorningMsg: '',
+    greetingForenoon: '',
+    greetingForenoonMsg: '',
+    greetingNoon: '',
+    greetingNoonMsg: '',
+    greetingAfternoon: '',
+    greetingAfternoonMsg: '',
+    greetingEvening: '',
+    greetingEveningMsg: ''
+  },
+  // 底部信息
+  info: {
+    welcome: '',
+    message: '',
+    phoneContact: '',
+    emailContact: '',
+    chromeHint: '',
+    chromeHint2: '',
+    copyrightOwner: ''
+  }
 }

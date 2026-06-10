@@ -44,8 +44,8 @@
       </el-form-item>
       <el-form-item label="创建时间">
         <el-date-picker @change="handleDateChange" class="el-form-input-width" v-model="createTime"
-          value-format="YYYY-MM-DD" type="daterange" range-separator="-" start-placeholder="开始日期"
-          end-placeholder="结束日期"></el-date-picker>
+          value-format="YYYY-MM-DD" type="daterange" range-separator="-" :start-placeholder="td('common.form.startDatePlaceholder')"
+          :end-placeholder="td('common.form.endDatePlaceholder')"></el-date-picker>
       </el-form-item>
 
       <el-form-item>
@@ -267,7 +267,9 @@ import {
 import { getToken } from '@/utils/auth.js';
 import useUserStore from '@/store/system/user';
 import { addUserAndProject, noProjectUser } from '@/api/att/project/project.js';
-import { ref } from 'vue';
+import { ref } from 'vue'
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();;
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable, sys_user_sex } = proxy.useDict(
   'sys_normal_disable',

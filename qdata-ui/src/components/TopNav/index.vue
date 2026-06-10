@@ -48,7 +48,7 @@
           v-if="item.meta && item.meta.icon && item.meta.icon !== '#'"
           :icon-class="item.meta.icon"
         />
-        {{ t(`router.${item.meta.lang}`) }}
+        {{ td(`router.${item.meta.lang}`, item.meta.title) }}
       </el-menu-item>
     </template>
 
@@ -58,7 +58,7 @@
       index="more"
       v-if="topMenus.length > visibleNumber"
     >
-      <template #title>更多菜单</template>
+      <template #title>{{td("router.dynamic.more", "更多菜单")}}</template>
       <template v-for="(item, index) in topMenus">
         <el-menu-item
           :index="item.path"
@@ -69,7 +69,7 @@
             v-if="item.meta && item.meta.icon && item.meta.icon !== '#'"
             :icon-class="item.meta.icon"
           />
-          {{ item.meta.title }}
+          {{ td(`router.${item.meta.lang}`, item.meta.title) }}
         </el-menu-item>
       </template>
     </el-sub-menu>
@@ -85,8 +85,13 @@ import usePermissionStore from "@/store/system/permission";
 import { el } from "element-plus/es/locale/index.mjs";
 import useTagsViewStore from "@/store/system/tagsView";
 import defaultSettings from "@/settings";
-import { useI18n } from "vue-i18n";
-const { t } = useI18n();
+import useDefaultLang from "@/composables/useDefaultLang";
+import { useLocale } from '@/composables/useLocale';
+const { changeLocale } = useLocale();
+const { td, locale } = useDefaultLang();
+window.demo = function(name){
+    changeLocale(name)
+}
 const NAVBAR_LOGO_WIDTH = 200;
 const { proxy } = getCurrentInstance();
 // 顶部栏初始数
@@ -233,7 +238,7 @@ function calculateVisibleMenus() {
     : 606;
 
   const bodyWidth = document.body.getBoundingClientRect().width;
-  const menuWidth = 164; // 每个菜单项宽度
+  const menuWidth = locale.value === "en" ? 164 : 124; // 每个菜单项宽度
 
   const availableWidth = bodyWidth - leftWidth - rightWidth;
 
@@ -253,7 +258,7 @@ function calculateVisibleMenus() {
 }
 
 watch(
-  [() => route.path, () => topMenus.value.length],
+  [() => route.path, () => topMenus.value.length, () => locale.value],
   () => {
     nextTick(() => {
       calculateVisibleMenus();

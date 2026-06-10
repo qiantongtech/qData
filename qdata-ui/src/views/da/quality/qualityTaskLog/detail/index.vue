@@ -169,11 +169,13 @@
 <script setup>
 import * as echarts from 'echarts';
 import { useRoute } from 'vue-router';
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
 import moment from 'moment';
 const { proxy } = getCurrentInstance();
 import { ArrowUp, ArrowDown } from '@element-plus/icons-vue';
 import ProblemDialog from '../components/problemData.vue';
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td, locale } = useDefaultLang();
 import {
     statisticsEvaluateOne,
     statisticsEvaluateTow,
@@ -273,7 +275,7 @@ const loadChartWithData = (data = []) => {
 
     const option = {
         legend: {
-            data: ['质量趋势'],
+            data: [td('common.qualityTrends')],
             left: 'center',
         },
         tooltip: { trigger: 'axis' },
@@ -313,7 +315,7 @@ const loadChartWithData = (data = []) => {
         },
         grid: { left: '3%', right: '4%', bottom: '0%', containLabel: true },
         series: [{
-            name: '质量趋势',
+            name: td('common.qualityTrends'),
             type: 'line',
             data: value,
             symbolSize: 8,
@@ -401,6 +403,16 @@ const loadTrendChart = async (id) => {
         console.warn('折线图数据失败', err);
     }
 };
+
+// 监听语言变化，重新渲染图表
+watch(locale, () => {
+    if (chartInstance) {
+        chartInstance.dispose();
+        chartInstance = null;
+    }
+    const id = route.query.id || 'default';
+    loadTrendChart(id);
+});
 
 //
 const fetchData = async (id) => {

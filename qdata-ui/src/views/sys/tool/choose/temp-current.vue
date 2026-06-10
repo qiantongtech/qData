@@ -88,8 +88,8 @@
           value-format="YYYY-MM-DD"
           type="daterange"
           range-separator="-"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="td('common.form.startDatePlaceholder')"
+          :end-placeholder="td('common.form.endDatePlaceholder')"
         ></el-date-picker>
       </el-form-item>
       <el-form-item>
@@ -181,7 +181,9 @@
 
 <script setup name="Dict">
 import { listType, getType, delType } from "@/api/system/system/dict/type.js";
-import { ref } from "vue";
+import { ref } from "vue"
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();;
 
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable");

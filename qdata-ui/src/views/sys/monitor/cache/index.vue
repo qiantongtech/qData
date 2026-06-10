@@ -97,13 +97,20 @@
 </template>
 
 <script setup name="Cache">
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
 import { getCache } from '@/api/system/monitor/cache.js';
 import * as echarts from 'echarts';
+import useDefaultLang from "@/composables/useDefaultLang";
+
+const { td, locale } = useDefaultLang();
 
 const cache = ref([]);
 const commandstats = ref(null);
 const usedmemory = ref(null);
 const { proxy } = getCurrentInstance();
+
+let commandstatsIntance = null;
+let usedmemoryInstance = null;
 
 function getList() {
   proxy.$modal.loading("正在加载缓存监控数据，请稍候！");
@@ -111,54 +118,77 @@ function getList() {
     proxy.$modal.closeLoading();
     cache.value = response.data;
 
-    const commandstatsIntance = echarts.init(commandstats.value, "macarons");
-    commandstatsIntance.setOption({
-      tooltip: {
-        trigger: "item",
-        formatter: "{a} <br/>{b} : {c} ({d}%)"
-      },
-      series: [
-        {
-          name: "命令",
-          type: "pie",
-          roseType: "radius",
-          radius: [15, 95],
-          center: ["50%", "38%"],
-          data: response.data.commandStats,
-          animationEasing: "cubicInOut",
-          animationDuration: 1000
-        }
-      ]
-    });
-    const usedmemoryInstance = echarts.init(usedmemory.value, "macarons");
-    usedmemoryInstance.setOption({
-      tooltip: {
-        formatter: "{b} <br/>{a} : " + cache.value.info.used_memory_human
-      },
-      series: [
-        {
-          name: "峰值",
-          type: "gauge",
-          min: 0,
-          max: 1000,
-          detail: {
-            formatter: cache.value.info.used_memory_human
-          },
-          data: [
-            {
-              value: parseFloat(cache.value.info.used_memory_human),
-              name: "内存消耗"
-            }
-          ]
-        }
-      ]
-    })
+    initCharts(response.data);
+    
     window.addEventListener("resize", () => {
-      commandstatsIntance.resize();
-      usedmemoryInstance.resize();
+      commandstatsIntance?.resize();
+      usedmemoryInstance?.resize();
     });
   })
 }
+
+function initCharts(data) {
+  // 销毁旧实例
+  if (commandstatsIntance) {
+    commandstatsIntance.dispose();
+    commandstatsIntance = null;
+  }
+  if (usedmemoryInstance) {
+    usedmemoryInstance.dispose();
+    usedmemoryInstance = null;
+  }
+
+  commandstatsIntance = echarts.init(commandstats.value, "macarons");
+  commandstatsIntance.setOption({
+    tooltip: {
+      trigger: "item",
+      formatter: "{a} <br/>{b} : {c} ({d}%)"
+    },
+    series: [
+      {
+        name: td('sys.monitor.cache.echarts.command'),
+        type: "pie",
+        roseType: "radius",
+        radius: [15, 95],
+        center: ["50%", "38%"],
+        data: data.commandStats,
+        animationEasing: "cubicInOut",
+        animationDuration: 1000
+      }
+    ]
+  });
+
+  usedmemoryInstance = echarts.init(usedmemory.value, "macarons");
+  usedmemoryInstance.setOption({
+    tooltip: {
+      formatter: "{b} <br/>{a} : " + cache.value.info.used_memory_human
+    },
+    series: [
+      {
+        name: td('sys.monitor.cache.echarts.peak'),
+        type: "gauge",
+        min: 0,
+        max: 1000,
+        detail: {
+          formatter: cache.value.info.used_memory_human
+        },
+        data: [
+          {
+            value: parseFloat(cache.value.info.used_memory_human),
+            name: td('sys.monitor.cache.echarts.memoryConsumption')
+          }
+        ]
+      }
+    ]
+  });
+}
+
+// 监听语言变化，重新渲染图表
+watch(locale, () => {
+  if (cache.value && cache.value.info) {
+    initCharts(cache.value);
+  }
+});
 
 getList();
 </script>

@@ -81,8 +81,8 @@
                         value-format="YYYY-MM-DD"
                         type="daterange"
                         range-separator="-"
-                        start-placeholder="开始日期"
-                        end-placeholder="结束日期"
+                        :start-placeholder="td('common.form.startDatePlaceholder')"
+                        :end-placeholder="td('common.form.endDatePlaceholder')"
                     ></el-date-picker>
                 </el-form-item>
                 <el-form-item>
@@ -445,7 +445,9 @@
         treeselectNoDpp as menuTreeselect,
         roleMenuTreeselectNoDpp
     } from '@/api/system/system/menu.js';
+    import useDefaultLang from "@/composables/useDefaultLang";
 
+    const { td } = useDefaultLang();
     const router = useRouter();
     const { proxy } = getCurrentInstance();
     const { sys_normal_disable } = proxy.useDict('sys_normal_disable');

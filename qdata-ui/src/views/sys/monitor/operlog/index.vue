@@ -60,7 +60,7 @@
             </el-form-item>
             <el-form-item label="操作时间">
                <el-date-picker class="el-form-input-width" v-model="dateRange" value-format="YYYY-MM-DD HH:mm:ss"
-                  type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"
+                  type="daterange" range-separator="-" :start-placeholder="td('common.form.startDatePlaceholder')" :end-placeholder="td('common.form.endDatePlaceholder')"
                   :default-time="[new Date(2000, 1, 1, 0, 0, 0), new Date(2000, 1, 1, 23, 59, 59)]"></el-date-picker>
             </el-form-item>
             <el-form-item>
@@ -224,7 +224,9 @@
 
 <script setup name="Operlog">
 import { list, delOperlog, cleanOperlog } from "@/api/system/monitor/operlog.js";
+import useDefaultLang from "@/composables/useDefaultLang";
 
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { sys_oper_type, sys_common_status } = proxy.useDict("sys_oper_type", "sys_common_status");
 

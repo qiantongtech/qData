@@ -69,8 +69,8 @@
                   value-format="YYYY-MM-DD"
                   type="daterange"
                   range-separator="-"
-                  start-placeholder="开始日期"
-                  end-placeholder="结束日期"
+                  :start-placeholder="td('common.form.startDatePlaceholder')"
+                  :end-placeholder="td('common.form.endDatePlaceholder')"
                ></el-date-picker>
             </el-form-item>
             <el-form-item>
@@ -224,7 +224,9 @@
 
 <script setup name="Config">
 import { listConfig, getConfig, delConfig, addConfig, updateConfig, refreshCache } from "@/api/system/system/config.js";
+import useDefaultLang from "@/composables/useDefaultLang";
 
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { sys_yes_no } = proxy.useDict("sys_yes_no");
 

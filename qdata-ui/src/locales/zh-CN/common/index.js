@@ -36,6 +36,10 @@ export default {
   // 表单
   form: {
     createByPlaceholder: '请输入创建人',
+    startTimePlaceholder: '开始时间',
+    endTimePlaceholder: '结束时间',
+    startDatePlaceholder: '开始日期',
+    endDatePlaceholder: '结束日期'
   },
   // 展示
   display: {
@@ -45,5 +49,6 @@ export default {
     updateTime: '更新时间',
     startTime: '开始时间',
     endTime: '结束时间'
-  }
+  },
+  qualityTrends: '质量趋势',
 }

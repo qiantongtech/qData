@@ -116,7 +116,7 @@
             </el-form-item>
             <el-form-item label="创建时间">
               <el-date-picker class="el-form-input-width" v-model="dateRange" value-format="YYYY-MM-DD" type="daterange"
-                range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+                range-separator="-" :start-placeholder="td('common.form.startDatePlaceholder')" :end-placeholder="td('common.form.endDatePlaceholder')"></el-date-picker>
             </el-form-item>
             <el-form-item>
               <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
@@ -366,7 +366,9 @@ import {
   addUser,
   deptTreeSelect,
 } from "@/api/system/system/user.js";
-import { computed } from "vue";
+import { computed } from "vue"
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();;
 const router = useRouter();
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable, sys_user_sex } = proxy.useDict(

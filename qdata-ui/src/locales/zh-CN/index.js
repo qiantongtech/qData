@@ -2,9 +2,13 @@
 import common from './common'
 import login from './login'
 import router from './router'
+import home from './home'
+import sys from './sys'
 
 export default {
   common,
   login,
-  router
+  router,
+  home,
+  sys
 }

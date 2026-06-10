@@ -36,7 +36,11 @@ export default {
   // 表单
   form: {
     inputText: 'Please input',
-    selectText: 'Please select'
+    selectText: 'Please select',
+    startTimePlaceholder: 'Start time',
+    endTimePlaceholder: 'End time',
+    startDatePlaceholder: 'Start date',
+    endDatePlaceholder: 'End date'
   },
   // 展示
   display: {
@@ -46,5 +50,6 @@ export default {
     updateTime: 'Update time',
     startTimeText: 'Start time',
     endTimeText: 'End time'
-  }
+  },
+  qualityTrends: 'Quality Trends',
 }

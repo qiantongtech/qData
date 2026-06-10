@@ -197,9 +197,23 @@ import useAppStore from "@/store/system/app";
 import * as echarts from "echarts";
 import { timeAgo } from "@/utils/time";
 import { loginOut } from "@/api/system/sso-auth.js";
+import useDefaultLang from "@/composables/useDefaultLang";
 
 import { useTimeGreeting } from '@/composables/useTimeGreeting'
 const { greeting, message } = useTimeGreeting()
+const { td,locale } = useDefaultLang();
+
+// 监听语言变化，重新渲染图表
+watch(locale, () => {
+  // 销毁现有图表实例
+  chartIntances.forEach((instance) => {
+    instance.dispose();
+  });
+  chartIntances.length = 0;
+  // 重新初始化图表
+  initModule5();
+  initModule8();
+});
 
 // eslint-disable-next-line no-unused-vars
 import {
@@ -699,7 +713,7 @@ function initModule5() {
     yAxis: {
       type: "value",
       max: 1000,
-      name: "单位：次",
+      name: `${td('home.echart.unit')}: ${td('home.echart.times')}`,
       nameLocation: "end",
       interval: 250,
       nameTextStyle: {
@@ -756,8 +770,8 @@ function initModule8() {
   instance.setOption({
     legend: {
       show: true,
-      itemGap: 20, // 缩小图例间距
-      data: ["数据归集", "数据清洗", "数据共享"],
+      itemGap: 10, // 缩小图例间距
+      data: [td('home.dataAggregation'), td('home.dataCleaning'), td('home.dataSharing')],
       icon: "circle",
       itemWidth: 6,
       itemHeight: 6,
@@ -768,12 +782,12 @@ function initModule8() {
         fontSize: 14,
         lineHeight: 30,
         fontFamily: "PingFangSC, PingFang SC",
-        padding: [5, 0, 0, 10],
+        padding: [5, 0, 0, 5],
       },
       selected: {
-        数据归集: true,
-        数据清洗: true,
-        数据共享: true,
+        [td('home.dataAggregation')]: true,
+        [td('home.dataCleaning')]: true,
+        [td('home.dataSharing')]: true,
       },
     },
     grid: {
@@ -808,19 +822,20 @@ function initModule8() {
     yAxis: {
       type: "value",
       max: 1000,
-      name: "单位：万条",
+      name: `${td('home.echart.unit')}: ${td('home.echart.tenThousandEntries')}`,
       nameLocation: "end",
       interval: 250,
       nameTextStyle: {
         color: "rgba(0,0,0,0.85)",
+        align: "left",
         fontSize: 14,
-        padding: [0, 0, 10, -18],
+        padding: [0, 0, 10, -38],
         fontFamily: "PingFangSC, PingFang SC",
       },
     },
     series: [
       {
-        name: "数据归集",
+        name: td('home.dataAggregation'),
         type: "line",
         data: [250, 100, 780, 60, 760, 200, 260],
         symbolSize: 8,
@@ -840,7 +855,7 @@ function initModule8() {
         },
       },
       {
-        name: "数据清洗",
+        name: td('home.dataCleaning'),
         type: "line",
         data: [0, 0, 0, 0, 0, 0, 0], // 用0占位，避免图例变灰
         symbolSize: 8,
@@ -860,7 +875,7 @@ function initModule8() {
         },
       },
       {
-        name: "数据共享",
+        name: td('home.dataSharing'),
         type: "line",
         data: [0, 0, 0, 0, 0, 0, 0], // 同上
         symbolSize: 8,

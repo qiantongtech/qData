@@ -44,7 +44,7 @@
                 @click.middle="!isAffix(tag) ? closeSelectedTag(tag) : ''"
                 @contextmenu.prevent="openMenu(tag, $event)"
             >
-                {{ t(`router.${tag.meta.lang}`) }}
+                {{ td(`router.${tag.meta.lang}`, tag.meta.title) }}
                 <span v-if="!isAffix(tag)" @click.prevent.stop="closeSelectedTag(tag)">
                     <close
                         class="el-icon-close"
@@ -82,9 +82,9 @@
     import useTagsViewStore from '@/store/system/tagsView';
     import useSettingsStore from '@/store/system/settings';
     import usePermissionStore from '@/store/system/permission';
-    import { useI18n } from "vue-i18n";
+    import useDefaultLang from "@/composables/useDefaultLang";
 
-    const { t } = useI18n();
+    const { td } = useDefaultLang();
     const visible = ref(false);
     const top = ref(0);
     const left = ref(0);

@@ -63,8 +63,8 @@
                         value-format="YYYY-MM-DD"
                         type="daterange"
                         range-separator="-"
-                        start-placeholder="开始日期"
-                        end-placeholder="结束日期"
+                        :start-placeholder="td('common.form.startDatePlaceholder')"
+                        :end-placeholder="td('common.form.endDatePlaceholder')"
                     ></el-date-picker>
                 </el-form-item>
                 <el-form-item>
@@ -237,7 +237,9 @@
 </template>
 
 <script setup name="Message">
-import { getCurrentInstance, ref } from "vue";
+import { getCurrentInstance, ref } from "vue"
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();;
 import useUserStore from "@/store/system/user";
 import {
     listMessage,

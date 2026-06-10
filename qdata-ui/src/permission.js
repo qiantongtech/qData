@@ -40,6 +40,7 @@ import { isRelogin } from "@/utils/request";
 import useUserStore from "@/store/system/user";
 import useSettingsStore from "@/store/system/settings";
 import usePermissionStore from "@/store/system/permission";
+import { i18n } from '@/plugins/vueI18n'
 
 NProgress.configure({ showSpinner: false });
 
@@ -52,14 +53,14 @@ const serverUrl = import.meta.env.VITE_APP_SERVER_URL;
 // 当前APP地址
 const appUrl = import.meta.env.VITE_APP_THIS_APP_URL;
 
-
 const whiteList = ["/login", "/register", "/sso/login", "/sso",];
 
 router.beforeEach((to, from, next) => {
   NProgress.start();
 
   if (getToken()) {
-    to.meta.title && useSettingsStore().setTitle(to.meta.title);
+    const title = i18n.global.te(`router.${to.meta.lang}`)?i18n.global.t(`router.${to.meta.lang}`):to.meta.title;
+    to.meta.title && useSettingsStore().setTitle(title);
 
     if (to.path === "/login") {
       next({ path: "/" });

@@ -56,8 +56,8 @@
             </el-form-item>
             <el-form-item label="执行时间" prop="time">
               <el-date-picker class="el-form-input-width" v-model="queryParams.time" @change="handleTimeChange"
-                value-format="YYYY-MM-DD" type="daterange" range-separator="-" start-placeholder="开始日期"
-                end-placeholder="结束日期"></el-date-picker>
+                value-format="YYYY-MM-DD" type="daterange" range-separator="-" :start-placeholder="td('common.form.startDatePlaceholder')"
+                :end-placeholder="td('common.form.endDatePlaceholder')"></el-date-picker>
             </el-form-item>
             <el-form-item>
               <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
@@ -197,7 +197,9 @@
 </template>
 
 <script setup name="Develop">
-import { defineEmits, defineProps } from "vue";
+import { defineEmits, defineProps } from "vue"
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();;
 import { listAttDataDevCat } from "@/api/att/cat/dataDevCat/dataDevCat";
 import {
   listDppEtlNodeInstance,

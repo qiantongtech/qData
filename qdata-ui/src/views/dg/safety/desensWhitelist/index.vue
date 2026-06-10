@@ -201,8 +201,8 @@
             v-model="form.effectiveTimeRange"
             type="daterange"
             range-separator="~"
-            start-placeholder="开始时间"
-            end-placeholder="结束时间"
+            ::start-placeholder="td('common.form.startDatePlaceholder')"
+            ::end-placeholder="td('common.form.endDatePlaceholder')"
             value-format="YYYY-MM-DD"
             style="width: 100%"
           />
@@ -342,7 +342,9 @@ import {
 } from "./mockData";
 import { selectTreeDataCategory } from "@/api/dg/safety/dataCategory/dataCategory";
 import { getCurrentInstance, onMounted, reactive, ref, toRefs } from "vue";
+import useDefaultLang from "@/composables/useDefaultLang";
 
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { dp_model_status } = proxy.useDict("dp_model_status");
 

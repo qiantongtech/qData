@@ -59,8 +59,8 @@
             value-format="YYYY-MM-DD"
             type="daterange"
             range-separator="-"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
+            :start-placeholder="td('common.form.startDatePlaceholder')"
+            :end-placeholder="td('common.form.endDatePlaceholder')"
           ></el-date-picker>
         </el-form-item>
         <el-form-item>
@@ -215,7 +215,9 @@ import { listTable, previewTable, delTable, genCode, synchDb } from "@/api/syste
 import router from "@/router/index.js";
 import importTable from "./importTable.vue";
 import createTable from "./createTable.vue";
+import useDefaultLang from "@/composables/useDefaultLang";
 
+const { td } = useDefaultLang();
 const route = useRoute();
 const { proxy } = getCurrentInstance();
 

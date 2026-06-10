@@ -55,7 +55,7 @@
             </el-form-item>
             <el-form-item label="创建时间">
               <el-date-picker class="el-form-input-width" v-model="daterangeCreateTime" value-format="YYYY-MM-DD"
-                type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+                type="daterange" range-separator="-" :start-placeholder="td('common.form.startDatePlaceholder')" :end-placeholder="td('common.form.endDatePlaceholder')"></el-date-picker>
             </el-form-item>
 
             <el-form-item>
@@ -463,6 +463,9 @@ import {
 import { getToken } from "@/utils/auth.js";
 import DeptTree from "@/components/DeptTree";
 import { listAttApiCat } from "@/api/ds/apiCat/apiCat";
+import useDefaultLang from "@/composables/useDefaultLang";
+
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const {
   ds_api_log_status,

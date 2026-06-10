@@ -373,7 +373,9 @@ import { listMeta } from "@/api/mc/retrieve.js";
 import { getParentLabelPath } from "@/utils/anivia.js";
 import { listDomain } from "@/api/att/domain/domain.js";
 import { useRouter } from "vue-router";
+import useDefaultLang from "@/composables/useDefaultLang";
 
+const { td } = useDefaultLang();
 const BASE_URL = "/meta/unreleased/structured/";
 
 const TYPE_OPTIONS = [
@@ -532,8 +534,8 @@ const searchStore = reactive({
       component: {
         is: "date-picker",
         type: "daterange",
-        startPlaceholder: "开始日期",
-        endPlaceholder: "结束日期",
+        startPlaceholder: computed(() => td("common.form.startDatePlaceholder")),
+        endPlaceholder: computed(() => td("common.form.endDatePlaceholder")),
       },
     },
   ],

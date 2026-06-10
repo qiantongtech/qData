@@ -74,8 +74,8 @@
                   value-format="YYYY-MM-DD"
                   type="daterange"
                   range-separator="-"
-                  start-placeholder="开始日期"
-                  end-placeholder="结束日期"
+                  :start-placeholder="td('common.form.startDatePlaceholder')"
+                  :end-placeholder="td('common.form.endDatePlaceholder')"
                ></el-date-picker>
             </el-form-item>
             <el-form-item>
@@ -238,7 +238,9 @@
 import useDictStore from '@/store/system/dict.js'
 import { listType, getType, delType, addType, updateType, refreshCache } from "@/api/system/system/dict/type.js";
 import {genCode} from "@/api/system/tool/gen.js";
+import useDefaultLang from "@/composables/useDefaultLang";
 
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
 

@@ -41,7 +41,7 @@
         <el-form ref="queryForm" :model="queryParams" inline>
             <el-form-item label="时间" prop="dataTime">
                 <el-date-picker v-model="queryParams.dataTime" style="width: 250px" :clearable="false" type="daterange"
-                    align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"
+                    align="right" unlink-panels range-separator="至" :start-placeholder="td('common.form.startDatePlaceholder')" :end-placeholder="td('common.form.endDatePlaceholder')"
                     @change="handleDateChange" />
             </el-form-item>
             <el-form-item label="创建人" prop="createBy">
@@ -115,7 +115,9 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch } from "vue";
+import { ref, reactive, watch } from "vue"
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();;
 // import { page } from "@/api/metadata/contentsTypeTaUp";
 import dataDiffDialog from "./previewEditDiff.vue";
 import { getDaAssetList, rollBack } from '@/api/da/assetchild/operate/daAssetOperateLog.js';

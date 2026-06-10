@@ -38,7 +38,7 @@
         <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{ 'submenu-title-noDropdown': !isNest }">
           <svg-icon :icon-class="onlyOneChild.meta.icon || (item.meta && item.meta.icon)" />
           <template #title><span class="menu-title" :title="hasTitle(onlyOneChild.meta.title)">{{
-            t(`router.${onlyOneChild.meta.lang}`) }}</span></template>
+            td(`router.${onlyOneChild.meta.lang}`, onlyOneChild.meta.title) }}</span></template>
         </el-menu-item>
       </app-link>
     </template>
@@ -46,7 +46,7 @@
     <el-sub-menu v-else ref="subMenu" :index="resolvePath(item.path)" teleported>
       <template v-if="item.meta" #title>
         <svg-icon :icon-class="item.meta && item.meta.icon" />
-        <span class="menu-title" :title="hasTitle(item.meta.title)">{{ t(`router.${item.meta.lang}`) }}</span>
+        <span class="menu-title" :title="hasTitle(item.meta.title)">{{ td(`router.${item.meta.lang}`, item.meta.title) }}</span>
       </template>
       <sidebar-item v-for="(child, index) in item.children" :key="child.path + index" :is-nest="true" :item="child"
         :base-path="resolvePath(child.path)" class="nest-menu" />
@@ -58,8 +58,8 @@
 import { isExternal } from '@/utils/validate'
 import AppLink from './Link'
 import { getNormalPath } from '@/utils/anivia.js'
-import { useI18n } from "vue-i18n";
-const { t } = useI18n();
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();
 
 const props = defineProps({
   // route object

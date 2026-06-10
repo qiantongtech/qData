@@ -160,15 +160,15 @@
                <el-col :span="12">
                   <el-form-item label="生效时间">
                      <el-date-picker class="el-form-input-width" v-model="dateRange" value-format="YYYY-MM-DD HH:mm:ss"
-                        type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"
+                        type="daterange" range-separator="-" :start-placeholder="td('common.form.startDatePlaceholder')" :end-placeholder="td('common.form.endDatePlaceholder')"
                         :default-time="[new Date(2000, 1, 1, 0, 0, 0),
                         new Date(2000, 1, 1, 23, 59, 59)]"></el-date-picker>
 
                      <!--                     <el-date-picker-->
                      <!--                         v-model="dateRange"-->
                      <!--                         type="daterange"-->
-                     <!--                         start-placeholder="开始时间"-->
-                     <!--                         end-placeholder="结束时间"-->
+                     <!--                         :start-placeholder="td('common.form.startTimePlaceholder')"-->
+                     <!--                         :end-placeholder="td('common.form.endTimePlaceholder')"-->
                      <!--                         value-format="YYYY-MM-DD HH:mm:ss"-->
                      <!--                         :default-time="['00:00:00', '23:59:59']"-->
                      <!--                         style="width: 100%;"-->
@@ -221,7 +221,9 @@
 
 <script setup name="Notice">
 import { listNotice, getNoticeOne, delNotice, addNotice, updateNotice } from "@/api/system/system/notice.js";
+import useDefaultLang from "@/composables/useDefaultLang";
 
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { sys_notice_status, sys_notice_type, sys_is_or_not } = proxy.useDict("sys_notice_status", "sys_notice_type", "sys_is_or_not");
 const router = useRouter();

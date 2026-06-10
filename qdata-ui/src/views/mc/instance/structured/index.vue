@@ -105,7 +105,9 @@ import { getParentLabelPath } from "@/utils/anivia";
 import { getTaskInstanceLog } from "@/api/mc/task/taskInstanceLog";
 import LogDialog from "@/components/LogDialog/index.vue";
 import SourceSystemTree from "@/views/mc/task/structured/components/SourceSystemTree.vue";
+import useDefaultLang from "@/composables/useDefaultLang";
 
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 
 const sourceSystemTreeRef = ref();
@@ -230,8 +232,8 @@ const searchStore = reactive({
       component: {
         is: "date-picker",
         type: "daterange",
-        startPlaceholder: "开始日期",
-        endPlaceholder: "结束日期",
+        startPlaceholder: computed(() => td("common.form.startDatePlaceholder")),
+        endPlaceholder: computed(() => td("common.form.endDatePlaceholder")),
       },
     },
   ],

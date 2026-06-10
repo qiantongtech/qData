@@ -230,10 +230,10 @@
 <script setup>
 import * as echarts from 'echarts';
 import { useRoute } from 'vue-router';
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
 import moment from 'moment';
 const { proxy } = getCurrentInstance();
-
+import useDefaultLang from "@/composables/useDefaultLang";
 import qualityTaskDialog from '../components/qualityTaskAdd.vue';
 import ProblemDialog from '@/views/da/quality/qualityTaskLog/components/problemData.vue';
 
@@ -252,7 +252,7 @@ import {
 } from "@/api/da/quality/qualityTask";
 const route = useRoute();
 import Crontab from "@/components/Crontab/index.vue";
-
+const { td,locale } = useDefaultLang();
 const id = ref(route.query.id)
 
 const { att_rule_audit_q_dimension, } = proxy.useDict(
@@ -409,7 +409,7 @@ const loadChartWithData = (data = []) => {
 
     const option = {
         legend: {
-            data: ['质量趋势'],
+            data: [td('common.qualityTrends')],
             left: 'center',
         },
         tooltip: { trigger: 'axis' },
@@ -449,7 +449,7 @@ const loadChartWithData = (data = []) => {
         },
         grid: { left: '3%', right: '4%', bottom: '0%', containLabel: true },
         series: [{
-            name: '质量趋势',
+            name: td('common.qualityTrends'),
             type: 'line',
             data: value,
             symbolSize: 8,
@@ -534,6 +534,15 @@ const loadTrendChart = async () => {
         console.warn('折线图数据失败', err);
     }
 };
+
+// 监听语言变化，重新渲染图表
+watch(locale, () => {
+    if (chartInstance) {
+        chartInstance.dispose();
+        chartInstance = null;
+    }
+    loadTrendChart();
+});
 
 function fetchTrendData(range) {
     return new Promise((resolve) => {

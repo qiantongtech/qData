@@ -255,8 +255,8 @@
             v-model="form.effectiveTimeRange"
             type="daterange"
             value-format="YYYY-MM-DD"
-            start-placeholder="开始时间"
-            end-placeholder="结束时间"
+            :start-placeholder="td('common.form.startTimePlaceholder')"
+            :end-placeholder="td('common.form.endTimePlaceholder')"
           />
         </el-form-item>
         <qt-form-item label="状态" prop="validFlag">
@@ -623,7 +623,9 @@ import {
   ref,
   toRefs,
   computed,
-} from "vue";
+} from "vue"
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();;
 const { proxy } = getCurrentInstance();
 const { effective_category_type } = proxy.useDict(
   "dp_model_status",

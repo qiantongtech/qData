@@ -146,7 +146,7 @@
         <el-col :span="12" v-if="form.pvFlag == 0">
           <el-form-item label="有效期" prop="dateRange">
             <el-date-picker class="el-form-input-width" v-model="form.dateRange" value-format="YYYY-MM-DD"
-              type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+              type="daterange" range-separator="-" :start-placeholder="td('common.form.startDatePlaceholder')" :end-placeholder="td('common.form.endDatePlaceholder')"></el-date-picker>
           </el-form-item>
         </el-col>
       </el-row>
@@ -239,7 +239,9 @@
 import { listClientApiRel, getClientApiRel, delClientApiRel, addClientApiRel, updateClientApiRel } from "@/api/ds/client/clientApiRel";
 import { selectByName } from "@/api/ds/api/api.js";
 import { status } from "nprogress";
+import useDefaultLang from "@/composables/useDefaultLang";
 
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { sys_is_or_not, ds_api_bas_info_api_method_type } = proxy.useDict("sys_is_or_not", "ds_api_bas_info_api_method_type");
 

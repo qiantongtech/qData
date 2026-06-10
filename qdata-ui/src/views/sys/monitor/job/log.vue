@@ -79,8 +79,8 @@
                   value-format="YYYY-MM-DD"
                   type="daterange"
                   range-separator="-"
-                  start-placeholder="开始日期"
-                  end-placeholder="结束日期"
+                  :start-placeholder="td('common.form.startDatePlaceholder')"
+                  :end-placeholder="td('common.form.endDatePlaceholder')"
                ></el-date-picker>
             </el-form-item>
             <el-form-item>
@@ -233,7 +233,9 @@
 <script setup name="JobLog">
 import { getJob } from "@/api/system/monitor/job.js";
 import { listJobLog, delJobLog, cleanJobLog } from "@/api/system/monitor/jobLog.js";
+import useDefaultLang from "@/composables/useDefaultLang";
 
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { sys_common_status, sys_job_group } = proxy.useDict("sys_common_status", "sys_job_group");
 

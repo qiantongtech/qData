@@ -413,7 +413,9 @@ import {
 import { listDaDatasource } from "@/api/mc/dataSource/dataSource";
 import { deptUserTree } from "@/api/system/system/user.js";
 import { listValidSourceSystem } from "@/api/att/sourceSystem/sourceSystem";
+import useDefaultLang from "@/composables/useDefaultLang";
 
+const { td } = useDefaultLang();
 // 表单验证规则
 const rules = {
   sourceSystemId: [
@@ -705,8 +707,8 @@ const searchStore = reactive({
       component: {
         is: "date-picker",
         type: "daterange",
-        startPlaceholder: "开始日期",
-        endPlaceholder: "结束日期",
+        startPlaceholder: computed(() => td("common.form.startDatePlaceholder")),
+        endPlaceholder: computed(() => td("common.form.endDatePlaceholder")),
       },
     },
   ],

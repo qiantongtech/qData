@@ -1,7 +1,7 @@
 # 🚀 系统运行指南
 
 <p align="center">
-  📖简体中文 | <a href="../en/DEPLOY.md">📖English</a> | <a href="../ja/DEPLOY.md">📖日本語</a>
+  📖简体中文 | <a href="../en-US/DEPLOY.md">📖English</a> | <a href="../ja-JP/DEPLOY.md">📖日本語</a>
 </p>
 
 ## 🛠️ 一、准备工作

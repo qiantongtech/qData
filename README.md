@@ -1,4 +1,4 @@
-![banner.png](images/en/banner.png)
+![banner.png](images/en-US/banner.png)
 <p align="center">
   <img src="https://img.shields.io/badge/JDK-1.8+-brightgreen.svg" alt="JDK">
  <img src="https://img.shields.io/badge/Spring%20Boot-2.5.15-blue.svg" alt="Spring Boot">
@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-  <a href="README.zh-CN.md">📖简体中文</a> | 📖English | <a href="README.ja.md">📖日本語</a>
+  <a href="README.zh-CN.md">📖简体中文</a> | 📖English | <a href="README.ja-JP.md">📖日本語</a>
 </p>
 
 
@@ -212,31 +212,31 @@ Welcome to join the official qData QQ community to get the latest updates, techn
 ## 🖼️ System Screenshots
 <table>
     <tr>
-        <td><img src="images/en/system/1-login.png" alt="Login page" width="400"/></td>
-        <td><img src="images/en/system/2-home.png" alt="Home page" width="400"/></td>
+        <td><img src="images/en-US/system/1-login.png" alt="Login page" width="400"/></td>
+        <td><img src="images/en-US/system/2-home.png" alt="Home page" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="images/en/system/4-data-integration.png" alt="Data integration" width="400"/></td>
-        <td><img src="images/en/system/6-data-integration-configuration.png" alt="Data integration configuration" width="400"/></td>
+        <td><img src="images/en-US/system/4-data-integration.png" alt="Data integration" width="400"/></td>
+        <td><img src="images/en-US/system/6-data-integration-configuration.png" alt="Data integration configuration" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="images/en/system/12-data-development.png" alt="Data development" width="400"/></td>
-        <td><img src="images/en/system/7-data-development-configuration.png" alt="Data development configuration" width="400"/></td>
+        <td><img src="images/en-US/system/12-data-development.png" alt="Data development" width="400"/></td>
+        <td><img src="images/en-US/system/7-data-development-configuration.png" alt="Data development configuration" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="images/en/system/10-asset-management.png" alt="Asset management" width="400"/></td>
-        <td><img src="images/en/system/11-asset-details.png" alt="Asset details" width="400"/></td>
+        <td><img src="images/en-US/system/10-asset-management.png" alt="Asset management" width="400"/></td>
+        <td><img src="images/en-US/system/11-asset-details.png" alt="Asset details" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="images/en/system/8-configure-quality-task.png" alt="Configure quality task" width="400"/></td>
-        <td><img src="images/en/system/9-quality-execution-analysis.png" alt="Quality execution analysis" width="400"/></td>
+        <td><img src="images/en-US/system/8-configure-quality-task.png" alt="Configure quality task" width="400"/></td>
+        <td><img src="images/en-US/system/9-quality-execution-analysis.png" alt="Quality execution analysis" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="images/en/system/3-api-management.png" alt="API management" width="400"/></td>
-        <td><img src="images/en/system/13-configure-api.png" alt="Configure API" width="400"/></td>
+        <td><img src="images/en-US/system/3-api-management.png" alt="API management" width="400"/></td>
+        <td><img src="images/en-US/system/13-configure-api.png" alt="Configure API" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="images/en/system/14-ai-data-qa.png" alt="AI-powered data Q&A" width="400"/></td>
-        <td><img src="images/en/system/5-ai-data-qa-conversation.png" alt="AI-powered data Q&A conversation" width="400"/></td>
+        <td><img src="images/en-US/system/14-ai-data-qa.png" alt="AI-powered data Q&A" width="400"/></td>
+        <td><img src="images/en-US/system/5-ai-data-qa-conversation.png" alt="AI-powered data Q&A conversation" width="400"/></td>
     </tr>
 </table>

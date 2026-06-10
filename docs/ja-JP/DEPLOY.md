@@ -1,7 +1,7 @@
 # 🚀 システム実行ガイド
 
 <p align="center">
-  <a href="../zh-CN/DEPLOY.md">📖简体中文</a> | <a href="../en/DEPLOY.md">📖English</a> | 📖日本語
+  <a href="../zh-CN/DEPLOY.md">📖简体中文</a> | <a href="../en-US/DEPLOY.md">📖English</a> | 📖日本語
 </p>
 
 ## 🛠️ 一、準備作業

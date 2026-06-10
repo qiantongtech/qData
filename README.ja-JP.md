@@ -1,4 +1,4 @@
-![banner.png](images/ja/banner.png)
+![banner.png](images/ja-JP/banner.png)
 <p align="center">
   <img src="https://img.shields.io/badge/JDK-1.8+-brightgreen.svg" alt="JDK">
  <img src="https://img.shields.io/badge/Spring%20Boot-2.5.15-blue.svg" alt="Spring Boot">
@@ -212,31 +212,31 @@ qData公式QQコミュニティに参加して、最新情報、技術サポー�
 ## 🖼️ システム画面
 <table>
     <tr>
-        <td><img src="images/ja/system/1-ログイン.png" alt="ログイン画面" width="400"/></td>
-        <td><img src="images/ja/system/2-ホーム.png" alt="ホーム画面" width="400"/></td>
+        <td><img src="images/ja-JP/system/1-ログイン.png" alt="ログイン画面" width="400"/></td>
+        <td><img src="images/ja-JP/system/2-ホーム.png" alt="ホーム画面" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="images/ja/system/4-データ連携.png" alt="データ連携" width="400"/></td>
-        <td><img src="images/ja/system/6-データ連携設定.png" alt="データ連携設定" width="400"/></td>
+        <td><img src="images/ja-JP/system/4-データ連携.png" alt="データ連携" width="400"/></td>
+        <td><img src="images/ja-JP/system/6-データ連携設定.png" alt="データ連携設定" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="images/ja/system/12-データ開発.png" alt="データ開発" width="400"/></td>
-        <td><img src="images/ja/system/7-データ開発設定.png" alt="データ開発設定" width="400"/></td>
+        <td><img src="images/ja-JP/system/12-データ開発.png" alt="データ開発" width="400"/></td>
+        <td><img src="images/ja-JP/system/7-データ開発設定.png" alt="データ開発設定" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="images/ja/system/10-資産管理.png" alt="資産管理" width="400"/></td>
-        <td><img src="images/ja/system/11-データ詳細.png" alt="データ詳細" width="400"/></td>
+        <td><img src="images/ja-JP/system/10-資産管理.png" alt="資産管理" width="400"/></td>
+        <td><img src="images/ja-JP/system/11-データ詳細.png" alt="データ詳細" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="images/ja/system/8-品質タスク設定.png" alt="品質タスク設定" width="400"/></td>
-        <td><img src="images/ja/system/9-品質実行分析.png" alt="品質実行分析" width="400"/></td>
+        <td><img src="images/ja-JP/system/8-品質タスク設定.png" alt="品質タスク設定" width="400"/></td>
+        <td><img src="images/ja-JP/system/9-品質実行分析.png" alt="品質実行分析" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="images/ja/system/3-API管理.png" alt="API管理" width="400"/></td>
-        <td><img src="images/ja/system/13-API設定.png" alt="API設定" width="400"/></td>
+        <td><img src="images/ja-JP/system/3-API管理.png" alt="API管理" width="400"/></td>
+        <td><img src="images/ja-JP/system/13-API設定.png" alt="API設定" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="images/ja/system/14-AIデータ問答.png" alt="AIデータ問答" width="400"/></td>
-        <td><img src="images/ja/system/5-AIデータ対話.png" alt="AIデータ対話" width="400"/></td>
+        <td><img src="images/ja-JP/system/14-AIデータ問答.png" alt="AIデータ問答" width="400"/></td>
+        <td><img src="images/ja-JP/system/5-AIデータ対話.png" alt="AIデータ対話" width="400"/></td>
     </tr>
 </table>

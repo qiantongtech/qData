@@ -1,7 +1,7 @@
 # 🚀 System Deployment Guide
 
 <p align="center">
-  <a href="../zh-CN/DEPLOY.md">📖简体中文</a> | 📖English | <a href="../ja/DEPLOY.md">📖日本語</a>
+  <a href="../zh-CN/DEPLOY.md">📖简体中文</a> | 📖English | <a href="../ja-JP/DEPLOY.md">📖日本語</a>
 </p>
 
 ## 🛠️ 1. Prerequisites

@@ -1,4 +1,9 @@
 # 🚀 系统运行指南
+
+<p align="center">
+  📖简体中文 | <a href="../en/DEPLOY.md">📖English</a> | <a href="../ja/DEPLOY.md">📖日本語</a>
+</p>
+
 ## 🛠️ 一、准备工作
 ### 系统要求
 
@@ -125,7 +130,7 @@ cd spark/sbin
 
 ✅ 验证：刷新 Spark 管理页面，检查 "Workers" 列表是否新增节点（如图示）。
 
-![Spark Worker验证](images/deploy/调度器/验证spark.png)
+![Spark Worker验证](../../images/deploy/scheduler/verify-spark.png)
 
 ### 3.2 DS 调度器启动 
 

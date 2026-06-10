@@ -45,10 +45,12 @@
   </div>
 </template>
 <script setup name="BasicInfo">
+import { useI18n } from 'vue-i18n'
 import {
   formatModelName,
   formatHierarchyDisplayName,
 } from "../../../../utils/dm/utils";
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { dp_model_create_type, table_name_case, dp_document_type, table_type } =
   proxy.useDict(
@@ -89,9 +91,9 @@ const items = computed(() => [
     dictOptions: dp_document_type.value,
   },
   { label: "标准登记", key: "documentName" },
-  { label: "创建人", key: "createBy" },
+  { label: t('common.texts.createdBy'), key: "createBy" },
   { label: "联系方式", key: "createUserPhoneNumber" },
-  { label: "更新人", key: "updateBy" },
+  { label: t('common.texts.updatedBy'), key: "updateBy" },
   { label: "联系方式", key: "updateUserPhoneNumber" },
 ]);
 </script>

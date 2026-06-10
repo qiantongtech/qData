@@ -13,24 +13,26 @@
                 v-copyText="content"
                 v-copyText:callback="copyTextSuccess"
             >
-                复制
+                {{ t('common.button.copy') }}
             </el-button>
         </div>
         <div class="dialog-content" v-html="content"></div>
         <template #footer>
             <div class="dialog-footer">
-                <el-button @click="handleCancel">关闭</el-button>
+                <el-button @click="handleCancel">{{ t('common.button.close') }}</el-button>
             </div>
         </template>
     </el-dialog>
 </template>
 
 <script setup name="LogDialog">
-    import { defineProps, defineEmits, computed } from 'vue';
+import { useI18n } from 'vue-i18n'
+import { defineProps, defineEmits, computed } from 'vue';
     import { merge } from 'lodash-es';
     import { ElMessage } from 'element-plus';
 
-    const DEFAULT_CONFIG = {
+const { t } = useI18n();
+const DEFAULT_CONFIG = {
         title: '日志详情',
         width: '800',
         draggable: true,

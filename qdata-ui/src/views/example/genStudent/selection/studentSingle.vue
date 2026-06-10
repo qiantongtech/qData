@@ -94,7 +94,7 @@
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.texts.createdTime')" prop="createTime">
         <el-date-picker style="width:240px"
                         clearable
                         v-model="queryParams.createTime"
@@ -110,10 +110,10 @@
             @click="handleQuery"
             @mousedown="(e) => e.preventDefault()"
         >
-          <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+          <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
         </el-button>
         <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-          <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+          <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -169,17 +169,17 @@
               <dict-tag :options="message_level" :value="scope.row.hobby ? scope.row.hobby.split(',') : []"/>
         </template>
       </el-table-column>
-      <el-table-column label="创建人" align="center" prop="createBy">
+      <el-table-column :label="t('common.texts.createdBy')" align="center" prop="createBy">
         <template #default="scope">
           {{ scope.row.createBy || '-' }}
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+      <el-table-column :label="t('common.texts.createdTime')" align="center" prop="createTime" width="180">
         <template #default="scope">
           <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="center" prop="remark">
+      <el-table-column :label="t('common.texts.remark')" align="center" prop="remark">
         <template #default="scope">
           {{ scope.row.remark || '-' }}
         </template>
@@ -196,9 +196,9 @@
 
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="cancel">取 消</el-button>
+        <el-button size="mini" @click="cancel">{{ t('common.button.cancel') }}</el-button>
         <el-button type="primary" size="mini" @click="confirm">
-          确 定
+          {{ t('common.button.confirm') }}
         </el-button>
       </div>
     </template>
@@ -206,8 +206,11 @@
 </template>
 
 <script setup name="StudentSingle">
-  import { listStudent } from "@/api/example/genStudent/student";
+import { useI18n } from 'vue-i18n'
+import { listStudent } from "@/api/example/genStudent/student";
   import { ref } from "vue";
+
+const { t } = useI18n();
   const { proxy } = getCurrentInstance();
 
   const { sys_user_sex, message_level } = proxy.useDict('sys_user_sex', 'message_level');

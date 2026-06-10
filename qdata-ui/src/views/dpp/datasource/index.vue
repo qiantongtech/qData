@@ -75,10 +75,10 @@
               @click="handleQuery"
               @mousedown="(e) => e.preventDefault()"
           >
-            <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+            <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
           </el-button>
           <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-            <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+            <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
           </el-button>
         </el-form-item>
       </el-form>
@@ -95,7 +95,7 @@
                 v-hasPermi="['da:dataSource:add']"
                 @mousedown="(e) => e.preventDefault()"
             >
-              <i class="iconfont-mini icon-xinzeng mr5"></i>新增
+              <i class="iconfont-mini icon-xinzeng mr5"></i>{{ t('common.button.add') }}
             </el-button>
           </el-col>
           <!--         <el-col :span="1.5">-->
@@ -130,7 +130,7 @@
         <el-table-column
             v-if="getColumnVisibility(1)"
             width="80"
-            label="编号"
+            :label="t('common.texts.number')"
             align="center"
             prop="id"
             :show-overflow-tooltip="{ effect: 'light' }"
@@ -154,7 +154,7 @@
         </el-table-column>
         <el-table-column
             v-if="getColumnVisibility(3)"
-            label="描述"
+            :label="t('common.texts.description')"
             width="240"
             align="left"
             prop="description"
@@ -192,7 +192,7 @@
         </el-table-column> -->
         <el-table-column
             v-if="getColumnVisibility(5)"
-            label="创建人"
+            :label="t('common.texts.createdBy')"
             width="120"
             align="center"
             prop="createBy"
@@ -204,7 +204,7 @@
         </el-table-column>
         <el-table-column
             v-if="getColumnVisibility(6)"
-            label="创建时间"
+            :label="t('common.texts.createdTime')"
             align="center"
             prop="createTime"
             width="160"
@@ -219,7 +219,7 @@
         </el-table-column>
         <el-table-column
             v-if="getColumnVisibility(7)"
-            label="状态"
+            :label="t('common.texts.status')"
             align="center"
             prop="validFlag"
             width="100"
@@ -238,7 +238,7 @@
         </el-table-column>
         <el-table-column
             v-if="getColumnVisibility(8)"
-            label="备注"
+            :label="t('common.texts.remark')"
             align="left"
             prop="remark"
             :show-overflow-tooltip="{ effect: 'light' }"
@@ -249,7 +249,7 @@
         </el-table-column>
         <el-table-column
             v-if="getColumnVisibility(9)"
-            label="操作"
+            :label="t('common.texts.operation')"
             align="center"
             class-name="small-padding fixed-width"
             fixed="right"
@@ -271,7 +271,7 @@
                 icon="view"
                 @click="handleDetail(scope.row)"
                 v-hasPermi="['da:dataSource:edit']"
-            >详情
+            >{{ t('common.button.details') }}
             </el-button>
             <el-popover placement="bottom" :width="100" trigger="click">
               <template #reference>
@@ -288,7 +288,7 @@
                       placement="top"
                       :disabled="scope.row.isAdminAddTo != false"
                   >
-                    更多
+                    {{ t('common.button.more') }}
                   </el-tooltip>
                 </el-button>
               </template>
@@ -299,7 +299,7 @@
                     icon="Edit"
                     @click="handleUpdate(scope.row)"
                     v-hasPermi="['da:dataSource:edit']"
-                >修改
+                >{{ t('common.button.update') }}
                 </el-button>
                 <el-button
                     link
@@ -307,7 +307,7 @@
                     icon="Delete"
                     @click="handleDelete(scope.row)"
                     v-hasPermi="['da:dataSource:remove']"
-                >删除
+                >{{ t('common.button.delete') }}
                 </el-button>
               </div>
             </el-popover>
@@ -319,7 +319,7 @@
         <template #empty>
           <div class="emptyBg">
             <img src="@/assets/system/images/no_data/noData.png" alt="" />
-            <p>暂无记录</p>
+            <p>{{ t('common.message.noRecord') }}</p>
           </div>
         </template>
       </el-table>
@@ -541,12 +541,12 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="描述" prop="description">
+            <el-form-item :label="t('common.texts.description')" prop="description">
               <el-input
                   type="textarea"
                   :min-height="192"
                   v-model="form.description"
-                  placeholder="请输入描述"
+                  :placeholder="t('common.form.descriptionPlaceholder')"
               />
             </el-form-item>
           </el-col>
@@ -572,7 +572,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="状态" prop="validFlag">
+            <el-form-item :label="t('common.texts.status')" prop="validFlag">
               <el-radio-group v-model="form.validFlag">
                 <el-radio
                     v-for="dict in sys_disable"
@@ -587,11 +587,11 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="备注">
+            <el-form-item :label="t('common.texts.remark')">
               <el-input
                   type="textarea"
                   v-model="form.remark"
-                  placeholder="请输入备注"
+                  :placeholder="t('common.form.remarkPlaceholder')"
                   :min-height="192"
               />
             </el-form-item>
@@ -600,13 +600,13 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="cancel">取 消</el-button>
+          <el-button size="mini" @click="cancel">{{ t('common.button.cancel') }}</el-button>
           <el-button
               type="primary"
               size="mini"
               :loading="btnLoading"
               @click="submitForm"
-          >确 定</el-button
+          >{{ t('common.button.confirm') }}</el-button
           >
         </div>
       </template>
@@ -785,7 +785,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="描述">
+            <el-form-item :label="t('common.texts.description')">
               <div class="form-readonly textarea">
                 {{ form.description || "-" }}
               </div>
@@ -803,7 +803,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="状态">
+            <el-form-item :label="t('common.texts.status')">
               <dict-tag
                   :options="sys_disable"
                   :value="form.validFlag ? '1' : '0'"
@@ -813,7 +813,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="备注">
+            <el-form-item :label="t('common.texts.remark')">
               <div class="form-readonly textarea">
                 {{ form.remark || "-" }}
               </div>
@@ -823,7 +823,7 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="cancel">关 闭</el-button>
+          <el-button size="mini" @click="cancel">{{ t('common.button.close') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -873,13 +873,13 @@
               @click="handleQueryProject"
               @mousedown="(e) => e.preventDefault()"
           >
-            <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+            <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
           </el-button>
           <el-button
               @click="resetQueryProject"
               @mousedown="(e) => e.preventDefault()"
           >
-            <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+            <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
           </el-button>
         </el-form-item>
       </el-form>
@@ -896,7 +896,7 @@
             :selectable="selectable"
             align="center"
         />
-        <el-table-column label="编号" prop="id" width="80">
+        <el-table-column :label="t('common.texts.number')" prop="id" width="80">
           <template #default="scope">
             {{ scope.row.id || "-" }}
           </template>
@@ -927,9 +927,9 @@
       />
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="openProject = false">取 消</el-button>
+          <el-button size="mini" @click="openProject = false">{{ t('common.button.cancel') }}</el-button>
           <el-button type="primary" size="mini" @click="submitFormProject"
-          >确 定</el-button
+          >{{ t('common.button.confirm') }}</el-button
           >
         </div>
       </template>
@@ -938,6 +938,7 @@
 </template>
 
 <script setup name="DppDataSource">
+import { useI18n } from 'vue-i18n'
 import {
   listDaDatasource,
   getDaDatasource,
@@ -955,6 +956,8 @@ import { deptUserTree } from "@/api/system/system/user.js";
 import { getToken } from "@/utils/auth.js";
 import useUserStore from "@/store/system/user";
 import { config } from "ace-builds";
+
+const { t } = useI18n();
 const userStore = useUserStore();
 const { proxy } = getCurrentInstance();
 const { datasource_type, sys_disable } = proxy.useDict(
@@ -965,15 +968,15 @@ const daDatasourceList = ref([]);
 
 // 列显隐信息
 const columns = ref([
-  { key: 1, label: "编号", visible: true },
+  { key: 1, label: t('common.texts.number'), visible: true },
   { key: 2, label: "数据连接名称", visible: true },
-  { key: 3, label: "描述", visible: true },
+  { key: 3, label: t('common.texts.description'), visible: true },
   { key: 4, label: "数据连接类型", visible: true },
-  { key: 5, label: "创建人", visible: true },
-  { key: 6, label: "创建时间", visible: true },
-  { key: 7, label: "状态", visible: true },
-  { key: 8, label: "备注", visible: true },
-  { key: 9, label: "操作", visible: true },
+  { key: 5, label: t('common.texts.createdBy'), visible: true },
+  { key: 6, label: t('common.texts.createdTime'), visible: true },
+  { key: 7, label: t('common.texts.status'), visible: true },
+  { key: 8, label: t('common.texts.remark'), visible: true },
+  { key: 9, label: t('common.texts.operation'), visible: true },
 ]);
 
 const getColumnVisibility = (key) => {
@@ -1098,7 +1101,7 @@ const data = reactive({
       // }
     ],
     sid: [{ required: true, message: "模式不能为空", trigger: "blur" }],
-    description: [{ required: true, message: "描述不能为空", trigger: "blur" }],
+    description: [{ required: true, message: t('common.form.descriptionRequired'), trigger: "blur" }],
     config: [
       {
         trigger: "blur",
@@ -1439,7 +1442,7 @@ function submitForm() {
         form.value.projectListOld = projectListOld;
         updateDaDatasource(form.value)
             .then((response) => {
-              proxy.$modal.msgSuccess("修改成功");
+              proxy.$modal.msgSuccess(t('common.message.editSuccess'));
               open.value = false;
               getList();
             })
@@ -1460,7 +1463,7 @@ function submitForm() {
         });
         addDaDatasource(form.value)
             .then((response) => {
-              proxy.$modal.msgSuccess("新增成功");
+              proxy.$modal.msgSuccess(t('common.message.addSuccess'));
               open.value = false;
               getList();
             })
@@ -1482,7 +1485,7 @@ function handleDelete(row) {
       })
       .then(() => {
         getList();
-        proxy.$modal.msgSuccess("删除成功");
+        proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
       })
       .catch(() => {});
 }

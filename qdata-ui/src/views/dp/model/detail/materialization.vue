@@ -106,12 +106,12 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="描述">
+          <el-form-item :label="t('common.texts.description')">
             <el-input
               type="textarea"
               maxlength="500个字符"
               show-word-limit
-              placeholder="请输入描述"
+              :placeholder="t('common.form.descriptionPlaceholder')"
               v-model="form.description"
               :min-height="192"
             />
@@ -120,12 +120,12 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="备注">
+          <el-form-item :label="t('common.texts.remark')">
             <el-input
               type="textarea"
               maxlength="500个字符"
               show-word-limit
-              placeholder="请输入备注"
+              :placeholder="t('common.form.remarkPlaceholder')"
               v-model="form.remark"
               :min-height="192"
             />
@@ -136,7 +136,7 @@
 
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="closeDialog">取消</el-button>
+        <el-button @click="closeDialog">{{ t('common.button.cancel') }}</el-button>
         <el-button type="primary" :loading="loading" @click="confirmDialog">
           {{ loading ? "发布中" : "确认" }}
         </el-button>
@@ -146,6 +146,7 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import {
   createMaterializedTable,
   getDaDatasourceList,
@@ -163,6 +164,8 @@ import {
   getDatasourceData,
   getAvailableDatasource,
 } from "@/components/Datasource/utils.js";
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const props = defineProps({
   visible: { type: Boolean, default: true },
@@ -263,9 +266,9 @@ const confirmDialog = async () => {
           ? "确认选择删除重建吗？ 将清空原表数据并重新创建物理表结构。此操作不可逆转，请谨慎操作！"
           : "确认选择增量发布吗？保留原表数据，仅追加新增的字段列。适用于非破坏性的安全变更。";
 
-      await proxy.$modal.confirm(confirmMessage, "系统提示", {
+      await proxy.$modal.confirm(confirmMessage, t('common.message.systemPrompt'), {
         confirmButtonText: "确认",
-        cancelButtonText: "取消",
+        cancelButtonText: t('common.button.cancel'),
         type: "warning",
       });
 

@@ -151,17 +151,18 @@
 
     <template #footer>
       <div style="text-align: right">
-        <el-button @click="closeDialog">关闭</el-button>
-        <el-button type="primary" @click="submitForm">保存</el-button>
+        <el-button @click="closeDialog">{{ t('common.button.close') }}</el-button>
+        <el-button type="primary" @click="submitForm">{{ t('common.button.save') }}</el-button>
       </div>
     </template>
   </el-dialog>
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { ref, watch, computed } from "vue";
 
-// props
+const { t } = useI18n();// props
 const props = defineProps({
   visibleDialogs: { type: Boolean, default: true },
   title: { type: String, default: "字段合并规则配置" },
@@ -175,7 +176,6 @@ const usedFields = computed(() => {
     ?.map(f => f?.columnName)
     .filter(Boolean);
 });
-
 
 
 // emits

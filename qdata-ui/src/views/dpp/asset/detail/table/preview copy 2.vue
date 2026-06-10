@@ -44,7 +44,7 @@
             :loading="loading"
             @mousedown="(e) => e.preventDefault()"
           >
-            <i class="iconfont-mini icon-xinzeng mr5"></i>新增
+            <i class="iconfont-mini icon-xinzeng mr5"></i>{{ t('common.button.add') }}
           </el-button>
         </el-col>
         <el-button
@@ -55,10 +55,10 @@
           @click="handleQuery"
           @mousedown="(e) => e.preventDefault()"
         >
-          <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+          <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
         </el-button>
         <el-button @click="handleReset" @mousedown="(e) => e.preventDefault()">
-          <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+          <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
         </el-button>
       </el-row>
     </div>
@@ -194,7 +194,7 @@
         icon="Edit"
         @click="handleUpdate(row)"
         v-hasPermi="['da:asset:edit']"
-        >修改</el-button
+        >{{ t('common.button.update') }}</el-button
       >
       <el-button
         link
@@ -219,11 +219,14 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { ref, reactive, watch } from "vue";
 import { useRoute } from "vue-router";
 import { preview } from "@/api/da/asset/assetColumn.js";
 import updateDataDialog from "../components/previewEdit.vue";
 import UpdateHistory from "../components/previewEditLog.vue";
+
+const { t } = useI18n();
 const props = defineProps({
   form1: {
     type: Object,
@@ -382,7 +385,7 @@ const tableStore = reactive({
           width: 230,
         }));
         const handleCol = {
-          label: "操作",
+          label: t('common.texts.operation'),
           fixed: "right",
           slot: "handle",
         };

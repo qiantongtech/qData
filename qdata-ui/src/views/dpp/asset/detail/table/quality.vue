@@ -185,7 +185,7 @@
                                 </template>
 
                             </el-table-column>
-                            <el-table-column label="操作" fixed="right" width="140" align="left">
+                            <el-table-column :label="t('common.texts.operation')" fixed="right" width="140" align="left">
                                 <template #default="scope">
                                     <el-button link type="primary" icon="View"
                                         @click="openDialog(scope.row)">查看问题数据</el-button>
@@ -195,7 +195,6 @@
                     </div>
                 </div>
             </el-row>
-
 
         </div>
         <el-empty description="暂无资产质量任务" v-else>
@@ -228,6 +227,7 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import * as echarts from 'echarts';
 import { useRoute } from 'vue-router';
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
@@ -253,6 +253,7 @@ import {
 const route = useRoute();
 import Crontab from "@/components/Crontab/index.vue";
 const { td,locale } = useDefaultLang();
+const { t } = useI18n();
 const id = ref(route.query.id)
 
 const { att_rule_audit_q_dimension, } = proxy.useDict(
@@ -295,7 +296,7 @@ function crontabFill(value) {
         status: '1',
         id: Number(taskData.value?.id),
     }).then((response) => {
-        proxy.$modal.msgSuccess("操作成功");
+        proxy.$modal.msgSuccess(t('common.message.msgOpSuccess'));
         fetchData()
     });
 }
@@ -312,7 +313,7 @@ function handleStatusChange(status, row, e) {
             })
                 .then((response) => {
                     fetchData()
-                    proxy.$modal.msgSuccess("操作成功");
+                    proxy.$modal.msgSuccess(t('common.message.msgOpSuccess'));
                 })
                 .finally(() => {
                     loading.value = false;
@@ -385,7 +386,6 @@ function getLabelsByColumnName(row, columnName) {
 
     return labels.join(' , ');
 }
-
 
 const getColumnVisibility = (key) => {
     const column = columns.value.find((col) => col.key === key);
@@ -475,7 +475,6 @@ const loadChartWithData = (data = []) => {
 };
 
 
-
 // 评分和质量维度汇总
 const loadScoreAndSummary = async () => {
     try {
@@ -517,7 +516,6 @@ const loadRuleTable = async () => {
     } finally {
     }
 };
-
 
 // 折线图数据
 const loadTrendChart = async () => {
@@ -587,7 +585,6 @@ const fetchData = async () => {
     }
     if (res.data?.logId) {
 
-
         id.value = res.data.logId
         await Promise.all([
             loadScoreAndSummary(id),
@@ -623,7 +620,6 @@ const onRangeChange = () => {
 const handleResize = () => {
     chartInstance?.resize();
 };
-
 
 onMounted(async () => {
     overallScore.value = route.query.score
@@ -767,7 +763,6 @@ onBeforeUnmount(() => {
         }
     }
 }
-
 
 .info-left {
     display: flex;

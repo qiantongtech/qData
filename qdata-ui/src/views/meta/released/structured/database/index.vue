@@ -24,7 +24,7 @@
             @click="handleDetailClick(row)"
             v-hasPermi="['md:released:structured:db:detail']"
           >
-            详情
+            {{ t('common.button.details') }}
           </el-button>
           <el-button
             link
@@ -57,12 +57,14 @@
 </template>
 
 <script setup name="ReleasedStructuredDatabase">
+import { useI18n } from 'vue-i18n'
 import { reactive, ref, getCurrentInstance } from "vue";
 import { listDomain } from "@/api/att/domain/domain.js";
 import { listDb } from "@/api/mc/unreleased/db.js";
 import { getParentLabelPath } from "@/utils/anivia.js";
 import { useRouter } from "vue-router";
 
+const { t } = useI18n();
 const BASE_URL = "/meta/released/structured/db";
 
 const { proxy } = getCurrentInstance();
@@ -96,7 +98,7 @@ const tableStroe = reactive({
   },
   columns: [
     {
-      label: "编号",
+      label: t('common.texts.number'),
       prop: "id",
       sortable: true,
       width: 60,
@@ -114,7 +116,7 @@ const tableStroe = reactive({
       },
     },
     {
-      label: "描述",
+      label: t('common.texts.description'),
       prop: "description",
       width: 240,
       align: "left",
@@ -155,31 +157,31 @@ const tableStroe = reactive({
       width: 90,
     },
     {
-      label: "更新人",
+      label: t('common.texts.updatedBy'),
       prop: "updateBy",
       width: 120,
     },
     {
-      label: "更新时间",
+      label: t('common.texts.updatedTime'),
       prop: "updateTime",
       sortable: true,
       width: 160,
       date: true,
     },
     {
-      label: "创建人",
+      label: t('common.texts.createdBy'),
       prop: "createBy",
       width: 120,
     },
     {
-      label: "创建时间",
+      label: t('common.texts.createdTime'),
       prop: "createTime",
       sortable: true,
       width: 160,
       date: true,
     },
     {
-      label: "操作",
+      label: t('common.texts.operation'),
       width: 280,
       fixed: "right",
       slot: "handle",

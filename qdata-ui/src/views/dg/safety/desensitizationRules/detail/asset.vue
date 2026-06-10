@@ -77,7 +77,7 @@
         </template>
         <template #handle="{ row }">
           <el-button link type="primary" icon="View" @click="handleDetail(row)">
-            详情
+            {{ t('common.button.details') }}
           </el-button>
           <!-- <el-button link type="primary" icon="Edit">编辑</el-button> -->
           <el-button
@@ -86,7 +86,7 @@
             icon="Delete"
             @click="handleDelete(row)"
           >
-            删除
+            {{ t('common.button.delete') }}
           </el-button>
         </template>
       </qt-table>
@@ -124,33 +124,33 @@
         <el-form-item label="数据分级" prop="dataLevelName">
           <div class="form-readonly">{{ detailData.dataLevelName ?? "-" }}</div>
         </el-form-item>
-        <el-form-item label="状态" prop="validFlag">
+        <el-form-item :label="t('common.texts.status')" prop="validFlag">
           <div class="form-readonly">
             {{ getStatusLabel(detailData.validFlag) }}
           </div>
         </el-form-item>
-        <el-form-item label="描述" prop="assetDescription" class="row-full">
+        <el-form-item :label="t('common.texts.description')" prop="assetDescription" class="row-full">
           <div class="form-readonly textarea">
             {{ detailData.assetDescription ?? "-" }}
           </div>
         </el-form-item>
-        <el-form-item label="备注" prop="remark" class="row-full">
+        <el-form-item :label="t('common.texts.remark')" prop="remark" class="row-full">
           <div class="form-readonly textarea">
             {{ detailData.remark ?? "-" }}
           </div>
         </el-form-item>
-        <el-form-item label="创建人" prop="createBy">
+        <el-form-item :label="t('common.texts.createdBy')" prop="createBy">
           <div class="form-readonly">{{ detailData.createBy ?? "-" }}</div>
         </el-form-item>
-        <el-form-item label="创建时间" prop="createTime">
+        <el-form-item :label="t('common.texts.createdTime')" prop="createTime">
           <div class="form-readonly">
             {{ parseTime(detailData.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
         </el-form-item>
-        <el-form-item label="更新人" prop="updateBy">
+        <el-form-item :label="t('common.texts.updatedBy')" prop="updateBy">
           <div class="form-readonly">{{ detailData.updateBy ?? "-" }}</div>
         </el-form-item>
-        <el-form-item label="更新时间" prop="updateTime">
+        <el-form-item :label="t('common.texts.updatedTime')" prop="updateTime">
           <div class="form-readonly">
             {{ parseTime(detailData.updateTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
@@ -159,7 +159,7 @@
 
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="openDetail = false">关 闭</el-button>
+          <el-button @click="openDetail = false">{{ t('common.button.close') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -167,6 +167,7 @@
 </template>
 
 <script setup name="DesensitizationRuleAssets">
+import { useI18n } from 'vue-i18n'
 import {
   listDgDesensitizeListByRuleId,
   getDgDesensitizeList,
@@ -175,6 +176,7 @@ import {
 import LevelBadge from "@/views/dg/safety/dataLevel/components/LevelBadge.vue";
 import { getCurrentInstance, ref, reactive, watch } from "vue";
 
+const { t } = useI18n();
 const props = defineProps({
   ruleDetail: {
     type: Object,
@@ -214,7 +216,7 @@ function handleDelete(row) {
     .confirm('是否确认删除编号为"' + ids + '"的数据项？')
     .then(() => delDgDesensitizeList(ids))
     .then(() => {
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
       tableRef.value?.getList();
     })
     .catch(() => {});
@@ -231,7 +233,7 @@ const tableStore = reactive({
     },
   },
   columns: [
-    { label: "编号", prop: "id", width: 60, sortable: true },
+    { label: t('common.texts.number'), prop: "id", width: 60, sortable: true },
     {
       label: "资产名称/描述",
       prop: "assetName",
@@ -255,22 +257,22 @@ const tableStore = reactive({
       showOverflowTooltip: { effect: "light" },
     },
     { label: "数据分级", prop: "dataLevelName", slot: "dataLevel", width: 120 },
-    { label: "状态", prop: "validFlag", slot: "validFlag", minWidth: 120 },
+    { label: t('common.texts.status'), prop: "validFlag", slot: "validFlag", minWidth: 120 },
     {
-      label: "创建人",
+      label: t('common.texts.createdBy'),
       prop: "createBy",
       width: 120,
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: "创建时间",
+      label: t('common.texts.createdTime'),
       prop: "createTime",
       width: 150,
       sortable: true,
       sortableKey: "create_time",
       date: true,
     },
-    { label: "操作", width: 200, fixed: "right", slot: "handle" },
+    { label: t('common.texts.operation'), width: 200, fixed: "right", slot: "handle" },
   ],
   func: async (params) => {
     if (!props.ruleDetail?.id) {

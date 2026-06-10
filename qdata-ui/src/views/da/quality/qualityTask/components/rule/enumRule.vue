@@ -111,7 +111,7 @@
                 type="primary"
                 icon="Plus"
                 @click="opencodeDialog(undefined)"
-                >新增</el-button
+                >{{ t('common.button.add') }}</el-button
               >
             </el-col>
           </template>
@@ -149,7 +149,7 @@
         </el-table-column>
         <el-table-column
           v-if="!falg && form.useCodeTable == 0"
-          label="操作"
+          :label="t('common.texts.operation')"
           align="center"
           class-name="small-padding fixed-width"
           fixed="right"
@@ -161,7 +161,7 @@
               type="danger"
               icon="Delete"
               @click="handleDelete(scope.row, scope.$index + 1)"
-              >删除</el-button
+              >{{ t('common.button.delete') }}</el-button
             >
           </template>
         </el-table-column>
@@ -172,9 +172,12 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { reactive, ref, watch } from "vue";
 import { listDpDataElem } from "@/api/dp/dataElem/dataElem";
 import { listDpDataElemCode } from "@/api/dp/dataElem/dataElem";
+
+const { t } = useI18n();
 const props = defineProps({
   form: Object,
   dppQualityTaskObjSaveReqVO: Array,

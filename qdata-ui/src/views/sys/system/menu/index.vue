@@ -43,7 +43,7 @@
                   @keyup.enter="handleQuery"
                />
             </el-form-item>
-            <el-form-item label="状态" prop="status">
+            <el-form-item :label="t('common.texts.status')" prop="status">
                <el-select v-model="queryParams.status" placeholder="菜单状态" clearable class="el-form-input-width">
                   <el-option
                      v-for="dict in sys_normal_disable"
@@ -55,10 +55,10 @@
             </el-form-item>
             <el-form-item>
                <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                  <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                  <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
                </el-button>
                <el-button @click="resetQuery" @mousedown="e => e.preventDefault()">
-                  <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                  <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
                </el-button>
             </el-form-item>
          </el-form>
@@ -73,7 +73,7 @@
                   icon="Plus"
                   @click="handleAdd"
                   v-hasPermi="['system:menu:add']"
-               >新增</el-button>
+               >{{ t('common.button.add') }}</el-button>
             </el-col>
             <el-col :span="1.5">
                <el-button
@@ -81,7 +81,7 @@
                   plain
                   icon="Sort"
                   @click="toggleExpandAll"
-               >展开/折叠</el-button>
+               >{{ t('common.button.un_fold') }}</el-button>
             </el-col>
          </el-row>
          <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
@@ -113,21 +113,21 @@
                   <span>{{ scope.row.component || "-" }}</span>
                </template>
             </el-table-column>
-            <el-table-column prop="status" label="状态" width="80" align="center">
+            <el-table-column prop="status" :label="t('common.texts.status')" width="80" align="center">
                <template #default="scope">
                   <dict-tag :options="sys_normal_disable" :value="scope.row.status" />
                </template>
             </el-table-column>
-            <el-table-column label="创建时间" align="center" width="160" prop="createTime">
+            <el-table-column :label="t('common.texts.createdTime')" align="center" width="160" prop="createTime">
                <template #default="scope">
                   <span>{{ parseTime(scope.row.createTime) }}</span>
                </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" class-name="small-padding fixed-width"  fixed="right" width="240">
+            <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width"  fixed="right" width="240">
                <template #default="scope">
-                  <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:menu:edit']">修改</el-button>
-                  <el-button link type="primary" icon="Plus" @click="handleAdd(scope.row)" v-hasPermi="['system:menu:add']">新增</el-button>
-                  <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['system:menu:remove']">删除</el-button>
+                  <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:menu:edit']">{{ t('common.button.update') }}</el-button>
+                  <el-button link type="primary" icon="Plus" @click="handleAdd(scope.row)" v-hasPermi="['system:menu:add']">{{ t('common.button.add') }}</el-button>
+                  <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['system:menu:remove']">{{ t('common.button.delete') }}</el-button>
                </template>
             </el-table-column>
          </el-table>
@@ -332,8 +332,8 @@
          </el-form>
          <template #footer>
             <div class="dialog-footer">
-               <el-button @click="cancel">取 消</el-button>
-               <el-button type="primary" @click="submitForm">确 定</el-button>
+               <el-button @click="cancel">{{ t('common.button.cancel') }}</el-button>
+               <el-button type="primary" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
             </div>
          </template>
       </el-dialog>
@@ -341,10 +341,12 @@
 </template>
 
 <script setup name="Menu">
+import { useI18n } from 'vue-i18n'
 import { addMenu, delMenu, getMenu, listMenu, updateMenu } from "@/api/system/system/menu.js";
 import SvgIcon from "@/components/SvgIcon/index.vue";
 import IconSelect from "@/components/IconSelect/index.vue";
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { sys_show_hide, sys_normal_disable } = proxy.useDict("sys_show_hide", "sys_normal_disable");
 
@@ -475,13 +477,13 @@ function submitForm() {
     if (valid) {
       if (form.value.menuId != undefined) {
         updateMenu(form.value).then(response => {
-          proxy.$modal.msgSuccess("修改成功");
+          proxy.$modal.msgSuccess(t('common.message.editSuccess'));
           open.value = false;
           getList();
         });
       } else {
         addMenu(form.value).then(response => {
-          proxy.$modal.msgSuccess("新增成功");
+          proxy.$modal.msgSuccess(t('common.message.addSuccess'));
           open.value = false;
           getList();
         });
@@ -496,7 +498,7 @@ function handleDelete(row) {
     return delMenu(row.menuId);
   }).then(() => {
     getList();
-    proxy.$modal.msgSuccess("删除成功");
+    proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
   }).catch(() => {});
 }
 

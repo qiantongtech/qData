@@ -47,9 +47,9 @@
           </el-select>
         </div>
         <el-button plain type="primary" size="small" @click="handleQuery" :loading="loadings">
-          <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+          <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
         </el-button>
-        <el-button type="primary" size="small" @click="handleClear">清除</el-button>
+        <el-button type="primary" size="small" @click="handleClear">{{ t('common.button.clear') }}</el-button>
       </div>
     </div>
     <el-container style="90%">
@@ -70,6 +70,7 @@
 </template>
 
 <script setup name="DataQuery">
+import { useI18n } from 'vue-i18n'
 import { ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import Editor from "@/components/SqlEditor/editor/index1.vue";
@@ -88,6 +89,8 @@ import {
 } from "@/api/dp/model/model";
 import { executeSqlQuery } from "@/api/da/dataSource/dataSource";
 import { encrypt } from "@/utils/aesEncrypt";
+
+const { t } = useI18n();
 const leftWidth = ref(300);
 const loading = ref(false);
 const dialogVisible = ref(false);
@@ -100,7 +103,6 @@ const queryParams = ref({
   datasourceType: '',
 });
 let spl = ref('')
-
 
 const TablesByDataSource = ref([]); // 树顶级为数据源节点
 
@@ -182,10 +184,8 @@ const loadTreeData = async (node, resolveSuccess, resolveFail) => {
     }
   } finally {
 
-
   }
 };
-
 
 // 3. 点击树节点插入SQL
 function handleTreeNodeClick({ type, expandedRootId, payload, }, node) {
@@ -219,7 +219,6 @@ function handleChange(val) {
 }
 let DeptTreeRef = ref()
 let loadings = ref()
-
 
 // 5. 查询按钮
 async function handleQuery() {

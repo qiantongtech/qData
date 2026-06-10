@@ -103,7 +103,7 @@
                                 <el-checkbox v-model="scope.row.nullable" true-label="1" false-label="0" disabled />
                             </template>
                         </el-table-column>
-                        <el-table-column prop="paramComment" label="描述" align="center" :show-overflow-tooltip="{effect: 'light'}" />
+                        <el-table-column prop="paramComment" :label="t('common.texts.description')" align="center" :show-overflow-tooltip="{effect: 'light'}" />
                         <el-table-column prop="paramType" label="参数类型" align="center" :show-overflow-tooltip="{effect: 'light'}">
                             <template #default="scope">
                                 <dict-tag :options="ds_api_param_type" :value="scope.row.paramType" />
@@ -167,7 +167,7 @@
                         </div>
 
                     </div>
-                    <div v-else class="no-data">暂无数据</div>
+                    <div v-else class="no-data">{{ t('common.message.noData') }}</div>
                 </el-col>
             </el-row>
         </div>
@@ -175,7 +175,10 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { serviceTesting } from '@/api/ds/api/api.js';
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { ds_api_bas_info_api_method_type, ds_api_param_type, ds_api_bas_info_res_data_type,  da_api_param_operator } =
     proxy.useDict(

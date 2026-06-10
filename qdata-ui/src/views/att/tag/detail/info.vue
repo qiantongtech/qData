@@ -41,6 +41,9 @@
   </div>
 </template>
 <script setup name="BasicInfo">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n();
 const { AttTagDetail } = defineProps({
   AttTagDetail: {
     type: Object,
@@ -49,10 +52,10 @@ const { AttTagDetail } = defineProps({
 });
 
 const items = computed(() => [
-  { key: "createBy", label: "创建人" },
-  { key: "createTime", label: "创建时间", type: "time" },
-  { key: "updateBy", label: "更新人" },
-  { key: "updateTime", label: "更新时间", type: "time" },
-  { key: "remark", label: "备注", span: 24 },
+  { key: "createBy", label: t('common.texts.createdBy') },
+  { key: "createTime", label: t('common.texts.createdTime'), type: "time" },
+  { key: "updateBy", label: t('common.texts.updatedBy') },
+  { key: "updateTime", label: t('common.texts.updatedTime'), type: "time" },
+  { key: "remark", label: t('common.texts.remark'), span: 24 },
 ]);
 </script>

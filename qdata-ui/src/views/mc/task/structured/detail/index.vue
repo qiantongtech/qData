@@ -56,7 +56,7 @@
               @mousedown="(e) => e.preventDefault()"
               @click="router.back"
             >
-              <svg-icon iconClass="fhs" />返回
+              <svg-icon iconClass="fhs" />{{ t('common.button.return') }}
             </el-button>
           </div>
         </div>
@@ -84,7 +84,7 @@
           </el-col>
           <el-col :span="24" style="margin: 2px 0">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">描述</div>
+              <div class="infotop-row-lable">{{ t('common.texts.description') }}</div>
               <div class="infotop-row-value">
                 {{ form.description }}
               </div>
@@ -105,7 +105,7 @@
           </el-col>
           <el-col :span="24" style="margin: 2px 0 0">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">备注</div>
+              <div class="infotop-row-lable">{{ t('common.texts.remark') }}</div>
               <div class="infotop-row-value">{{ form.remark }}</div>
             </div>
           </el-col>
@@ -132,11 +132,13 @@
   </div>
 </template>
 <script setup name="Detail">
+import { useI18n } from 'vue-i18n'
 import { computed, getCurrentInstance, reactive, toValue } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { getTask, sourceSystemTree } from "@/api/mc/task/task";
 import { getParentLabelPath } from "@/utils/anivia.js";
 
+const { t } = useI18n();
 const tabData = [
   {
     key: "CollectInstance",

@@ -49,7 +49,7 @@
         <el-row :gutter="2">
           <!-- <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">编号</div>
+              <div class="infotop-row-lable">{{ t('common.texts.number') }}</div>
               <div class="infotop-row-value">
                 {{ dppEtlTaskDetail?.id || '-' }}
               </div>
@@ -65,7 +65,7 @@
           </el-col>
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">创建时间</div>
+              <div class="infotop-row-lable">{{ t('common.texts.createdTime') }}</div>
               <div class="infotop-row-value">
                 {{ parseTime(dppEtlTaskDetail.createTime, '{y}-{m}-{d} {h}:{i}') }}
 
@@ -82,7 +82,7 @@
           </el-col>
           <el-col :span="8" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">创建人</div>
+              <div class="infotop-row-lable">{{ t('common.texts.createdBy') }}</div>
               <div class="infotop-row-value">
                 {{ dppEtlTaskDetail?.createBy || '-' }}
               </div>
@@ -153,12 +153,14 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { useRoute } from "vue-router";
 import processNode from "./processNode.vue";
 import instanceLog from "./instanceLog.vue";
 import { reactive, ref, toRefs, watch, getCurrentInstance } from "vue";
 import { getLogByTaskInstanceId, getTaskInfo } from "@/api/dpp/task/etlTask";
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { dpp_etl_node_type, dpp_etl_task_instance_command_type, dpp_etl_node_instance } = proxy.useDict(
   "dpp_etl_node_type",
@@ -231,7 +233,6 @@ watch(
   },
   { immediate: true }
 );
-
 
 // 清理函数
 const clearPolling = () => {

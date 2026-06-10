@@ -79,7 +79,7 @@
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" :icon="Search"> 查询 </el-button>
+                    <el-button type="primary" :icon="Search"> {{ t('common.button.query') }} </el-button>
                 </el-form-item>
             </el-form>
         </template>
@@ -114,11 +114,12 @@
 </template>
 
 <script setup name="DetailPopResViewC1">
-
-    import { Search } from '@element-plus/icons-vue';
+import { useI18n } from 'vue-i18n'
+import { Search } from '@element-plus/icons-vue';
     import moment from 'moment';
 
-    const params = ref({
+const { t } = useI18n();
+const params = ref({
         jcd: '',
         checkVal: 'x',
         startDate: moment().subtract(7, 'days').format('YYYY-MM-DD'),

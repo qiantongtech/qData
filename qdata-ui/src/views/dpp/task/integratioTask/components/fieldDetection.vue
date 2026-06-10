@@ -41,12 +41,15 @@
             <el-button type="warning" @click="handleClick('addNewOnly')">增加新的</el-button>
             <el-button type="primary" @click="handleClick('addAll')">增加所有</el-button>
             <el-button type="danger" @click="handleClick('clearAndAddAll')">清除并增加所有</el-button>
-            <el-button @click="onCancel">取消</el-button>
+            <el-button @click="onCancel">{{ t('common.button.cancel') }}</el-button>
         </template>
     </el-dialog>
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n();
 const props = defineProps({
     modelValue: Boolean,
     existingFields: Array,

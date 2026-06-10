@@ -108,17 +108,19 @@
 
     <template #footer>
       <div style="text-align: right">
-        <el-button @click="closeDialog">关闭</el-button>
-        <el-button type="primary" @click="saveData">保存</el-button>
+        <el-button @click="closeDialog">{{ t('common.button.close') }}</el-button>
+        <el-button type="primary" @click="saveData">{{ t('common.button.save') }}</el-button>
       </div>
     </template>
   </el-dialog>
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { defineProps, defineEmits, ref, computed, watch, getCurrentInstance } from "vue";
 import SqlEditor from "@/components/SqlEditor/index1.vue";
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const props = defineProps({
   visible: { type: Boolean, default: true },

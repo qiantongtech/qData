@@ -149,13 +149,13 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="描述" prop="modelComment">
+          <el-form-item :label="t('common.texts.description')" prop="modelComment">
             <el-input
               v-model="form.description"
               type="textarea"
               maxlength="500个字符"
               show-word-limit
-              placeholder="请输入描述"
+              :placeholder="t('common.form.descriptionPlaceholder')"
             />
           </el-form-item>
         </el-col>
@@ -194,7 +194,7 @@
 
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="closeDialog">取消</el-button>
+        <el-button @click="closeDialog">{{ t('common.button.cancel') }}</el-button>
         <el-button type="primary" @click="confirmDialog"> 确认 </el-button>
       </div>
     </template>
@@ -202,10 +202,12 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { defineProps, defineEmits, ref, computed, watch } from "vue";
 
 import { getDpDataElemList } from "@/api/dp/dataElem/dataElem";
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { column_type, dp_model_column_pk_flag, dp_model_column_nullable_flag } =
   proxy.useDict(
@@ -420,5 +422,4 @@ const confirmDialog = () => {
   });
 };
 </script>
-
 

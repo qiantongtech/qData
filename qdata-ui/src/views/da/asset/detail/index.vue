@@ -40,7 +40,7 @@
         <el-row :gutter="2">
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">编号</div>
+              <div class="infotop-row-lable">{{ t('common.texts.number') }}</div>
               <div class="infotop-row-value">
                 {{ daAssetDetail.id || "-" }}
               </div>
@@ -68,7 +68,7 @@
         </el-row>
         <el-col :span="24">
           <div class="infotop-row border-top">
-            <div class="infotop-row-lable">描述</div>
+            <div class="infotop-row-lable">{{ t('common.texts.description') }}</div>
             <div class="infotop-row-value">
               <span class="ellipsis-2">
                 {{ daAssetDetail.description || "-" }}
@@ -243,6 +243,7 @@
   </div>
 </template>
 <script setup name="DaAsset">
+import { useI18n } from 'vue-i18n'
 import { getDaAsset } from "@/api/da/asset/asset";
 import { useRoute } from "vue-router";
 import ComponentOne from "@/views/dpp/asset/detail/table/column.vue";
@@ -254,6 +255,8 @@ import RequestParamsForm from "@/views/dpp/asset/detail/api/requestParamsForm";
 import ResponseFormatConfig from "@/views/dpp/asset/detail/api/responseFormatConfig";
 import lineage from "@/views/dpp/asset/detail/table/lineage.vue";
 import info from "@/views/dpp/asset/detail/info.vue";
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { da_assets_status, da_asset_gis_type, da_asset_api_method } = proxy.useDict("da_assets_status", "da_asset_gis_type", "da_asset_api_method");
 const activeName = ref("0");
@@ -285,10 +288,9 @@ const descList = ref([
   },
   {
     key: "status",
-    label: "状态",
+    label: t('common.texts.status'),
     value: "",
   },
-
 
 ]);
 
@@ -393,7 +395,6 @@ onBeforeUnmount(() => {
     width: 18px;
     margin: 0 5px;
   }
-
 
 }
 </style>

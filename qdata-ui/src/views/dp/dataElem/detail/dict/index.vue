@@ -105,7 +105,7 @@
                     </el-col>
                     <el-col :span="8">
                         <div class="infotop-row border-top">
-                            <div class="infotop-row-lable">状态</div>
+                            <div class="infotop-row-lable">{{ t('common.texts.status') }}</div>
                             <div class="infotop-row-value">
                                 <dict-tag :options="sys_disable" :value="dpDataElemDetail.status" />
                             </div>
@@ -113,7 +113,7 @@
                     </el-col>
                     <el-col :span="8">
                         <div class="infotop-row border-top">
-                            <div class="infotop-row-lable">创建时间</div>
+                            <div class="infotop-row-lable">{{ t('common.texts.createdTime') }}</div>
                             <div class="infotop-row-value">
                                 {{ parseTime(dpDataElemDetail.createTime, '{y}-{m}-{d}') }}
                             </div>
@@ -121,7 +121,7 @@
                     </el-col>
                     <el-col :span="8">
                         <div class="infotop-row border-top">
-                            <div class="infotop-row-lable">创建人</div>
+                            <div class="infotop-row-lable">{{ t('common.texts.createdBy') }}</div>
                             <div class="infotop-row-value">
                                 {{ dpDataElemDetail.createBy || '-' }}
                             </div>
@@ -129,7 +129,7 @@
                     </el-col>
                     <el-col :span="24">
                         <div class="infotop-row border-top">
-                            <div class="infotop-row-lable">描述</div>
+                            <div class="infotop-row-lable">{{ t('common.texts.description') }}</div>
                             <div class="infotop-row-value">
                                 {{ dpDataElemDetail.description || '-' }}
                             </div>
@@ -156,12 +156,14 @@
 </template>
 
 <script setup name="DpDataElem">
+import { useI18n } from 'vue-i18n'
 import { getDpDataElem } from '@/api/dp/dataElem/dataElem';
 import { useRoute } from 'vue-router';
 import codeDict from '@/views/dp/dataElem/detail/dict/codeDict.vue';
 import codeMap from '@/views/dp/dataElem/detail/dict/codeMap.vue';
 import asset from "@/views/dp/dataElem/detail/components/asset.vue";
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { column_type, sys_disable, dp_data_elem_code_type } = proxy.useDict(
     'column_type',

@@ -35,19 +35,19 @@
         <el-row :gutter="15" class="btn-style">
             <el-col :span="1.5">
                 <el-button type="primary" plain @click="handleAdd" @mousedown="(e) => e.preventDefault()">
-                    <i class="iconfont-mini icon-xinzeng mr5"></i>新增
+                    <i class="iconfont-mini icon-xinzeng mr5"></i>{{ t('common.button.add') }}
                 </el-button>
             </el-col>
             <!-- <el-col :span="1.5">
                 <el-button type="primary" plain :disabled="single" @click="handleUpdate"
                    @mousedown="(e) => e.preventDefault()">
-                  <i class="iconfont-mini icon-xiugai--copy mr5"></i>修改
+                  <i class="iconfont-mini icon-xiugai--copy mr5"></i>{{ t('common.button.update') }}
                 </el-button>
               </el-col>
               <el-col :span="1.5">
                 <el-button type="danger" plain :disabled="multiple" @click="handleDelete"
                   @mousedown="(e) => e.preventDefault()">
-                  <i class="iconfont-mini icon-shanchu-huise mr5"></i>删除
+                  <i class="iconfont-mini icon-shanchu-huise mr5"></i>{{ t('common.button.delete') }}
                 </el-button>
               </el-col> -->
             <!--          <el-col :span="1.5">-->
@@ -70,7 +70,7 @@
 
     <el-table stripe height="400" v-loading="loading" :data="dpDataElemList" @selection-change="handleSelectionChange"
         :default-sort="defaultSort" @sort-change="handleSortChange">
-        <el-table-column v-if="getColumnVisibility(0)" label="编号" align="left" prop="id" width="50" />
+        <el-table-column v-if="getColumnVisibility(0)" :label="t('common.texts.number')" align="left" prop="id" width="50" />
         <el-table-column v-if="getColumnVisibility(1)" label="中文名称" :show-overflow-tooltip="{ effect: 'light' }"
             align="left" prop="name" width="200">
             <template #default="scope">
@@ -83,7 +83,7 @@
                 {{ scope.row.engName || "-" }}
             </template>
         </el-table-column>
-        <el-table-column v-if="getColumnVisibility(7)" width="240" label="描述" align="left" prop="description"
+        <el-table-column v-if="getColumnVisibility(7)" width="240" :label="t('common.texts.description')" align="left" prop="description"
             :show-overflow-tooltip="{ effect: 'light' }">
             <template #default="scope">
                 {{ scope.row.description || "-" }}
@@ -101,19 +101,19 @@
             </template>
         </el-table-column>
 
-        <el-table-column v-if="getColumnVisibility(10)" label="创建人" :show-overflow-tooltip="{ effect: 'light' }"
+        <el-table-column v-if="getColumnVisibility(10)" :label="t('common.texts.createdBy')" :show-overflow-tooltip="{ effect: 'light' }"
             align="left" prop="createBy">
             <template #default="scope">
                 {{ scope.row.createBy || "-" }}
             </template>
         </el-table-column>
         <!--  sortable="custom" column-key="create_time" :sort-orders="['descending', 'ascending']" -->
-        <el-table-column v-if="getColumnVisibility(11)" label="创建时间" align="left" prop="createTime" width="150">
+        <el-table-column v-if="getColumnVisibility(11)" :label="t('common.texts.createdTime')" align="left" prop="createTime" width="150">
             <template #default="scope"> <span>{{ parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}") || "-"
                     }}</span>
             </template>
         </el-table-column>
-        <el-table-column v-if="getColumnVisibility(5)" width="80" label="状态" align="left" prop="status">
+        <el-table-column v-if="getColumnVisibility(5)" width="80" :label="t('common.texts.status')" align="left" prop="status">
             <template #default="scope">
                 <el-switch v-model="scope.row.status" active-color="#13ce66" inactive-color="#ff4949" active-value="1"
                     inactive-value="0" @change="
@@ -121,22 +121,22 @@
                     " />
             </template>
         </el-table-column>
-        <el-table-column label="备注" align="left" prop="remark" :show-overflow-tooltip="{ effect: 'light' }"
+        <el-table-column :label="t('common.texts.remark')" align="left" prop="remark" :show-overflow-tooltip="{ effect: 'light' }"
             v-if="getColumnVisibility(15)">
             <template #default="scope">
                 {{ scope.row.remark || "-" }}
             </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" width="200">
+        <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="200">
             <template #default="scope">
                 <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-                    v-hasPermi="['dp:dataElem:dataelem:edit']">修改
+                    v-hasPermi="['dp:dataElem:dataelem:edit']">{{ t('common.button.update') }}
                 </el-button>
                 <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
-                    v-hasPermi="['dp:dataElem:dataelem:remove']">删除
+                    v-hasPermi="['dp:dataElem:dataelem:remove']">{{ t('common.button.delete') }}
                 </el-button>
                 <el-button link type="primary" icon="view" @click="handleDetail(scope.row)"
-                    v-hasPermi="['dp:dataElem:dataelem:edit']">详情
+                    v-hasPermi="['dp:dataElem:dataelem:edit']">{{ t('common.button.details') }}
                 </el-button>
             </template>
         </el-table-column>
@@ -144,13 +144,12 @@
         <template #empty>
             <div class="emptyBg">
                 <img src="@/assets/system/images/no_data/noData.png" alt="" />
-                <p>暂无记录</p>
+                <p>{{ t('common.message.noRecord') }}</p>
             </div>
         </template>
     </el-table>
     <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum"
         v-model:limit="queryParams.pageSize" @pagination="getList" />
-
 
     <!-- 新增或修改数据元对话框 -->
     <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable>
@@ -192,8 +191,8 @@
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="24">
-                    <el-form-item label="描述" prop="description">
-                        <el-input v-model="form.description" type="textarea" placeholder="请输入描述" />
+                    <el-form-item :label="t('common.texts.description')" prop="description">
+                        <el-input v-model="form.description" type="textarea" :placeholder="t('common.form.descriptionPlaceholder')" />
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -226,7 +225,7 @@
                     </el-form-item>
                 </el-col> -->
                 <el-col :span="12">
-                    <el-form-item label="状态" prop="status">
+                    <el-form-item :label="t('common.texts.status')" prop="status">
                         <el-radio-group v-model="form.status">
                             <el-radio v-for="dict in sys_disable" :key="dict.value" :label="dict.value">{{
                                 dict.label }}
@@ -238,16 +237,16 @@
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="24">
-                    <el-form-item label="备注" prop="remark">
-                        <el-input v-model="form.remark" type="textarea" placeholder="请输入备注" />
+                    <el-form-item :label="t('common.texts.remark')" prop="remark">
+                        <el-input v-model="form.remark" type="textarea" :placeholder="t('common.form.remarkPlaceholder')" />
                     </el-form-item>
                 </el-col>
             </el-row>
         </el-form>
         <template #footer>
             <div class="dialog-footer">
-                <el-button size="mini" @click="cancel">取 消</el-button>
-                <el-button type="primary" size="mini" @click="submitForm">确 定</el-button>
+                <el-button size="mini" @click="cancel">{{ t('common.button.cancel') }}</el-button>
+                <el-button type="primary" size="mini" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
             </div>
         </template>
     </el-dialog>
@@ -277,8 +276,8 @@
         </el-upload>
         <template #footer>
             <div class="dialog-footer">
-                <el-button @click="upload.open = false">取 消</el-button>
-                <el-button type="primary" @click="submitFileForm">确 定</el-button>
+                <el-button @click="upload.open = false">{{ t('common.button.cancel') }}</el-button>
+                <el-button type="primary" @click="submitFileForm">{{ t('common.button.confirm') }}</el-button>
             </div>
         </template>
     </el-dialog>
@@ -290,6 +289,7 @@
 </template>
 
 <script setup name="DpDataElem">
+import { useI18n } from 'vue-i18n'
 import DeptTree from "@/components/DeptTree";
 import {
     listDpDataElem,
@@ -304,6 +304,8 @@ import { listAttDataElemCat } from "@/api/att/cat/dataElemCat/dataElemCat";
 import { getToken } from "@/utils/auth.js";
 const { proxy } = getCurrentInstance();
 import { useRoute } from 'vue-router';
+
+const { t } = useI18n();
 const route = useRoute();
 const props = defineProps({
     activeName: { type: Number, default: null },
@@ -327,16 +329,16 @@ const dpDataElemRuleRelList = ref([]);
 
 // 列显隐信息
 const columns = ref([
-    { key: 0, label: "编号", visible: true },
+    { key: 0, label: t('common.texts.number'), visible: true },
     { key: 1, label: "中文名称", visible: true },
     { key: 2, label: "英文名称", visible: true },
-    { key: 7, label: "描述", visible: true },
+    { key: 7, label: t('common.texts.description'), visible: true },
     { key: 3, label: "类型", visible: true },
     { key: 4, label: "数据元类目", visible: true },
-    { key: 10, label: "创建人", visible: true },
-    { key: 11, label: "创建时间", visible: true },
-    { key: 5, label: "状态", visible: true },
-    { key: 6, label: "描述", visible: true },
+    { key: 10, label: t('common.texts.createdBy'), visible: true },
+    { key: 11, label: t('common.texts.createdTime'), visible: true },
+    { key: 5, label: t('common.texts.status'), visible: true },
+    { key: 6, label: t('common.texts.description'), visible: true },
 ]);
 
 const getColumnVisibility = (key) => {
@@ -397,7 +399,7 @@ const data = reactive({
             },
         ],
         catCode: [{ required: true, message: "数据元类目不能为空", trigger: "blur" }],
-        // status: [{ required: true, message: "状态不能为空", trigger: "change" }],
+        // status: [{ required: true, message: t('common.form.statusRequired'), trigger: "change" }],
         // type: [{ required: true, message: "类型不能为空", trigger: "change" }],
         columnType: [
             { required: true, message: "字段类型不能为空", trigger: "change" },
@@ -575,7 +577,7 @@ function submitForm() {
             if (form.value.id != null) {
                 updateDpDataElem(form.value)
                     .then((response) => {
-                        proxy.$modal.msgSuccess("修改成功");
+                        proxy.$modal.msgSuccess(t('common.message.editSuccess'));
                         open.value = false;
                         getList();
                     })
@@ -584,7 +586,7 @@ function submitForm() {
                 form.value.documentId = queryParams.value.documentId
                 addDpDataElem(form.value)
                     .then((response) => {
-                        proxy.$modal.msgSuccess("新增成功");
+                        proxy.$modal.msgSuccess(t('common.message.addSuccess'));
                         open.value = false;
                         getList();
                     })
@@ -604,7 +606,7 @@ function handleDelete(row) {
         })
         .then(() => {
             getList();
-            proxy.$modal.msgSuccess("删除成功");
+            proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
         })
         .catch(() => { });
 }
@@ -701,7 +703,7 @@ function handleStatusChange(id, row, e) {
         .confirm('确认要"' + text + '","' + row.name + '"数据元吗？')
         .then(function () {
             updateStatusDpDataElem(id, row.status).then((response) => {
-                proxy.$modal.msgSuccess("操作成功");
+                proxy.$modal.msgSuccess(t('common.message.msgOpSuccess'));
             });
         })
         .catch(function () {

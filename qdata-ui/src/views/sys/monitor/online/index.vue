@@ -44,10 +44,10 @@
             </el-form-item>
             <el-form-item>
                <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                  <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                  <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
                </el-button>
                <el-button @click="resetQuery" @mousedown="e => e.preventDefault()">
-                  <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                  <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
                </el-button>
             </el-form-item>
          </el-form>
@@ -73,7 +73,7 @@
                   <span>{{ parseTime(scope.row.loginTime) }}</span>
                </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
+            <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
                <template #default="scope">
                   <el-button link type="danger" icon="Delete" @click="handleForceLogout(scope.row)"
                      v-hasPermi="['monitor:online:forceLogout']">强退</el-button>
@@ -87,8 +87,10 @@
 </template>
 
 <script setup name="Online">
+import { useI18n } from 'vue-i18n'
 import { forceLogout, list as initData } from "@/api/system/monitor/online.js";
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 
 const onlineList = ref([]);
@@ -130,7 +132,7 @@ function handleForceLogout(row) {
       return forceLogout(row.tokenId);
    }).then(() => {
       getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
    }).catch(() => { });
 }
 

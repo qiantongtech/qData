@@ -107,7 +107,7 @@
         </el-row>
         <el-row>
           <el-col :span="8">
-            <el-form-item label="状态" prop="status">
+            <el-form-item :label="t('common.texts.status')" prop="status">
               <el-radio-group v-model="form.status" :disabled="falg">
                 <el-radio :value="'1'">上线</el-radio>
                 <el-radio :value="'0'">下线</el-radio>
@@ -215,21 +215,24 @@
     <template #footer>
       <template v-if="dialogStatus == 1"
         ><el-button type="primary" @click="handleSave" v-if="!falg"
-          >确定</el-button
+          >{{ t('common.button.confirm') }}</el-button
         >
-        <el-button @click="handleBack" v-if="!mode">返回</el-button>
+        <el-button @click="handleBack" v-if="!mode">{{ t('common.button.return') }}</el-button>
         <!-- <el-button type="warning" @click="handleSpotCheck">预览</el-button> -->
       </template>
-      <el-button @click="closeDialog" v-else>关闭</el-button>
+      <el-button @click="closeDialog" v-else>{{ t('common.button.close') }}</el-button>
     </template>
   </el-dialog>
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import SideMenu from "./ruleSelectorMenu.vue";
 import { getRuleConfig, getRuleComponent } from "./registry.js";
 
 import moment from "moment";
+
+const { t } = useI18n();
 let falg = ref(false);
 const { proxy } = getCurrentInstance();
 const { quality_warning_status } = proxy.useDict("quality_warning_status");
@@ -418,7 +421,7 @@ async function openDialog(record, index, fg) {
   falg.value = fg;
   mode.value = index;
   resetForm();
-  dialogTitle.value = `${mode.value ? "修改" : "新增"}清洗规则${
+  dialogTitle.value = `${mode.value ? t('common.button.update') : t('common.button.add')}清洗规则${
     record?.ruleName ? `-${record.ruleName}` : ""
   }`;
   if (falg?.value) {

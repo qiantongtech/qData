@@ -83,7 +83,7 @@
           </el-select>
         </el-form-item> -->
 
-        <!-- <el-form-item label="状态" prop="status">
+        <!-- <el-form-item :label="t('common.texts.status')" prop="status">
           <el-radio-group v-model="store.form.status">
             <el-radio
               v-for="dict in toValue(dicts.meta_task_status)"
@@ -95,11 +95,11 @@
           </el-radio-group>
         </el-form-item> -->
 
-        <el-form-item label="备注" class="row-full">
+        <el-form-item :label="t('common.texts.remark')" class="row-full">
           <el-input
             v-model="store.form.remark"
             type="textarea"
-            placeholder="请输入备注"
+            :placeholder="t('common.form.remarkPlaceholder')"
             :min-height="192"
             show-word-limit
             maxlength="500个字符"
@@ -260,11 +260,11 @@
           </el-radio-group>
         </el-form-item>
 
-        <el-form-item label="描述" class="row-full">
+        <el-form-item :label="t('common.texts.description')" class="row-full">
           <el-input
             v-model="store.form.description"
             type="textarea"
-            placeholder="请输入描述"
+            :placeholder="t('common.form.descriptionPlaceholder')"
             :min-height="192"
             show-word-limit
             maxlength="500个字符"
@@ -308,6 +308,7 @@
 </template>
 
 <script setup name="TableHandle">
+import { useI18n } from 'vue-i18n'
 import { reactive, getCurrentInstance, toValue } from "vue";
 import { listDb, getDb } from "@/api/mc/unreleased/db";
 import { deptUserTree } from "@/api/system/system/user.js";
@@ -321,6 +322,7 @@ import {
 } from "@/api/mc/unreleased/table";
 import { useRoute, useRouter } from "vue-router";
 
+const { t } = useI18n();
 const DEFAULT_FORM = {
   status: "0",
   masterFlag: "1",
@@ -470,7 +472,7 @@ async function handleConfirmClick() {
   }
   await func(store.form);
   store.loading = false;
-  proxy.$modal.msgSuccess(`${route.query.id ? "修改" : "新增"}表元数据成功！`);
+  proxy.$modal.msgSuccess(`${route.query.id ? t('common.button.update') : t('common.button.add')}表元数据成功！`);
   router.back();
 }
 

@@ -38,6 +38,7 @@ import { tansParams, blobValidate } from '@/utils/anivia.js'
 import cache from '@/plugins/cache'
 import { saveAs } from 'file-saver'
 import useUserStore from '@/store/system/user'
+import { i18n } from '@/plugins/vueI18n'
 
 let downloadLoadingInstance;
 // 是否显示重新登录
@@ -116,7 +117,7 @@ service.interceptors.response.use(res => {
     if (code === 401) {
       if (!isRelogin.show) {
         isRelogin.show = true;
-        ElMessageBox.confirm('登录状态已过期，您可以继续留在该页面，或者重新登录', '系统提示', { confirmButtonText: '重新登录', cancelButtonText: '取消', type: 'warning' }).then(() => {
+        ElMessageBox.confirm('登录状态已过期，您可以继续留在该页面，或者重新登录', i18n.global.t('common.message.systemPrompt'), { confirmButtonText: '重新登录', cancelButtonText: i18n.global.t('common.button.cancel'), type: 'warning' }).then(() => {
           isRelogin.show = false;
           useUserStore().logOut().then(() => {
             location.href = '/index';
@@ -143,9 +144,9 @@ service.interceptors.response.use(res => {
     console.log('err' + error)
     let { message } = error;
     if (message == "Network Error") {
-      message = "后端接口连接异常";
+      message = i18n.global.t('common.message.systemPrompt')
     } else if (message.includes("timeout")) {
-      message = "系统接口请求超时";
+      message = i18n.global.t('common.message.timeout')
     } else if (message.includes("Request failed with status code")) {
       message = "系统接口" + message.substr(message.length - 3) + "异常";
     }

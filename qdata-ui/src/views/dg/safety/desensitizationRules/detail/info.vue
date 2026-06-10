@@ -51,7 +51,10 @@
 </template>
 
 <script setup name="DesensitizationRuleInfo">
+import { useI18n } from 'vue-i18n'
 import { computed } from "vue";
+
+const { t } = useI18n();
 const { ruleDetail } = defineProps({
   ruleDetail: {
     type: Object,
@@ -60,11 +63,11 @@ const { ruleDetail } = defineProps({
 });
 
 const items = computed(() => [
-  { key: "createBy", label: "创建人" },
-  { key: "createTime", label: "创建时间", type: "time" },
-  { key: "updateBy", label: "更新人" },
-  { key: "updateTime", label: "更新时间", type: "time" },
-  { key: "remark", label: "备注", span: 24 },
+  { key: "createBy", label: t('common.texts.createdBy') },
+  { key: "createTime", label: t('common.texts.createdTime'), type: "time" },
+  { key: "updateBy", label: t('common.texts.updatedBy') },
+  { key: "updateTime", label: t('common.texts.updatedTime'), type: "time" },
+  { key: "remark", label: t('common.texts.remark'), span: 24 },
 ]);
 </script>
 

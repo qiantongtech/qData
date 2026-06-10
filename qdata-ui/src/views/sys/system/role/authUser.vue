@@ -41,8 +41,8 @@
           <el-input v-model="queryParams.phonenumber" placeholder="请输入手机号码" clearable @keyup.enter="handleQuery" />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" icon="Search" @click="handleQuery">查询</el-button>
-          <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+          <el-button type="primary" icon="Search" @click="handleQuery">{{ t('common.button.query') }}</el-button>
+          <el-button icon="Refresh" @click="resetQuery">{{ t('common.button.reset') }}</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -59,7 +59,7 @@
               v-hasPermi="['system:role:remove']">批量取消授权</el-button>
           </el-col>
           <el-col :span="1.5">
-            <el-button type="warning" plain icon="Close" @click="handleClose">关闭</el-button>
+            <el-button type="warning" plain icon="Close" @click="handleClose">{{ t('common.button.close') }}</el-button>
           </el-col>
         </el-row>
         <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
@@ -71,17 +71,17 @@
         <el-table-column label="用户昵称" prop="nickName" :show-overflow-tooltip="true" />
         <el-table-column label="邮箱" prop="email" :show-overflow-tooltip="true" />
         <el-table-column label="手机" prop="phonenumber" :show-overflow-tooltip="true" />
-        <el-table-column label="状态" align="center" prop="status">
+        <el-table-column :label="t('common.texts.status')" align="center" prop="status">
           <template #default="scope">
             <dict-tag :options="sys_normal_disable" :value="scope.row.status" />
           </template>
         </el-table-column>
-        <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+        <el-table-column :label="t('common.texts.createdTime')" align="center" prop="createTime" width="180">
           <template #default="scope">
             <span>{{ parseTime(scope.row.createTime) }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width">
           <template #default="scope">
             <el-button link type="primary" icon="CircleClose" @click="cancelAuthUser(scope.row)"
               v-hasPermi="['system:role:remove']">取消授权</el-button>
@@ -97,9 +97,11 @@
 </template>
 
 <script setup name="AuthUser">
+import { useI18n } from 'vue-i18n'
 import selectUser from "./selectUser.vue";
 import { allocatedUserList, authUserCancel, authUserCancelAll } from "@/api/system/system/role.js";
 
+const { t } = useI18n();
 const route = useRoute();
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable");

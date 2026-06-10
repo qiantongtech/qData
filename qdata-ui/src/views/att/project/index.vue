@@ -79,10 +79,10 @@
             @mousedown="(e) => e.preventDefault()"
             v-hasPermi="['att:project:query']"
           >
-            <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+            <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
           </el-button>
           <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-            <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+            <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
           </el-button>
         </el-form-item>
       </el-form>
@@ -99,7 +99,7 @@
               v-hasPermi="['att:project:add']"
               @mousedown="(e) => e.preventDefault()"
             >
-              <i class="iconfont-mini icon-xinzeng mr5"></i>新增
+              <i class="iconfont-mini icon-xinzeng mr5"></i>{{ t('common.button.add') }}
             </el-button>
           </el-col>
           <!-- <el-col :span="1.5">
@@ -111,13 +111,13 @@
                             v-hasPermi="['att:project:edit']"
                             @mousedown="(e) => e.preventDefault()"
                         >
-                            <i class="iconfont-mini icon-xiugai--copy mr5"></i>修改
+                            <i class="iconfont-mini icon-xiugai--copy mr5"></i>{{ t('common.button.update') }}
                         </el-button>
                     </el-col>
                     <el-col :span="1.5">
                         <el-button type="danger" plain :disabled="multiple" @click="handleDelete"
                             v-hasPermi="['att:project:remove']" @mousedown="(e) => e.preventDefault()">
-                            <i class="iconfont-mini icon-shanchu-huise mr5"></i>删除
+                            <i class="iconfont-mini icon-shanchu-huise mr5"></i>{{ t('common.button.delete') }}
                         </el-button>
                     </el-col> -->
         </el-row>
@@ -137,9 +137,9 @@
         @sort-change="handleSortChange"
       >
         <!-- <el-table-column type="selection" width="55" align="center" /> -->
-        <!--       <el-table-column v-if="getColumnVisibility(0)" label="编号" align="center" prop="id" />-->
+        <!--       <el-table-column v-if="getColumnVisibility(0)" :label="t('common.texts.number')" align="center" prop="id" />-->
         <el-table-column
-          label="编号"
+          :label="t('common.texts.number')"
           prop="id"
           width="80"
           align="center"
@@ -161,7 +161,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="描述"
+          :label="t('common.texts.description')"
           align="left"
           prop="description"
           :show-overflow-tooltip="{ effect: 'light' }"
@@ -194,7 +194,7 @@
         </el-table-column>
         <el-table-column
           v-if="getColumnVisibility(7)"
-          label="创建人"
+          :label="t('common.texts.createdBy')"
           :show-overflow-tooltip="{ effect: 'light' }"
           align="left"
           prop="createBy"
@@ -206,7 +206,7 @@
         <!--   sortable="custom" column-key="create_time" :sort-orders="['descending', 'ascending']" -->
         <el-table-column
           v-if="getColumnVisibility(6)"
-          label="创建时间"
+          :label="t('common.texts.createdTime')"
           align="center"
           prop="createTime"
           width="150"
@@ -218,7 +218,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="状态"
+          :label="t('common.texts.status')"
           align="center"
           prop="validFlag"
           v-if="getColumnVisibility(8)"
@@ -234,7 +234,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="备注"
+          :label="t('common.texts.remark')"
           align="left"
           width="200"
           prop="remark"
@@ -246,7 +246,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="操作"
+          :label="t('common.texts.operation')"
           align="center"
           class-name="small-padding fixed-width"
           fixed="right"
@@ -259,7 +259,7 @@
               icon="Edit"
               @click="handleUpdate(scope.row)"
               v-hasPermi="['att:project:edit']"
-              >修改</el-button
+              >{{ t('common.button.update') }}</el-button
             >
             <el-button
               link
@@ -267,7 +267,7 @@
               icon="Delete"
               @click="handleDelete(scope.row)"
               v-hasPermi="['att:project:remove']"
-              >删除</el-button
+              >{{ t('common.button.delete') }}</el-button
             >
             <el-button
               link
@@ -275,14 +275,14 @@
               icon="view"
               v-hasPermi="['att:project:query']"
               @click="handleDetail(scope.row)"
-              >详情</el-button
+              >{{ t('common.button.details') }}</el-button
             >
           </template>
         </el-table-column>
         <template #empty>
           <div class="emptyBg">
             <img src="@/assets/system/images/no_data/noData.png" alt="" />
-            <p>暂无记录</p>
+            <p>{{ t('common.message.noRecord') }}</p>
           </div>
         </template>
       </el-table>
@@ -356,11 +356,11 @@
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="描述" prop="description">
+            <el-form-item :label="t('common.texts.description')" prop="description">
               <el-input
                 v-model="form.description"
                 type="textarea"
-                placeholder="请输入描述"
+                :placeholder="t('common.form.descriptionPlaceholder')"
                 :min-height="192"
                 show-word-limit
                 maxlength="500个字符"
@@ -370,7 +370,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="状态" prop="validFlag">
+            <el-form-item :label="t('common.texts.status')" prop="validFlag">
               <el-radio-group v-model="form.validFlag">
                 <el-radio :label="true">启用</el-radio>
                 <el-radio :label="false">禁用</el-radio>
@@ -380,11 +380,11 @@
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="备注" prop="remark">
+            <el-form-item :label="t('common.texts.remark')" prop="remark">
               <el-input
                 type="textarea"
                 v-model="form.remark"
-                placeholder="请输入备注"
+                :placeholder="t('common.form.remarkPlaceholder')"
               />
             </el-form-item>
           </el-col>
@@ -392,9 +392,9 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="cancel">取 消</el-button>
+          <el-button size="mini" @click="cancel">{{ t('common.button.cancel') }}</el-button>
           <el-button type="primary" size="mini" @click="submitForm"
-            >确 定</el-button
+            >{{ t('common.button.confirm') }}</el-button
           >
         </div>
       </template>
@@ -443,7 +443,7 @@
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="描述" prop="description">
+            <el-form-item :label="t('common.texts.description')" prop="description">
               <div class="form-readonly textarea">
                 {{ form.description ?? "-" }}
               </div>
@@ -493,7 +493,7 @@
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="备注" prop="remark">
+            <el-form-item :label="t('common.texts.remark')" prop="remark">
               <div class="form-readonly textarea">
                 {{ form.remark ?? "-" }}
               </div>
@@ -503,7 +503,7 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="openDetail = false">关闭 </el-button>
+          <el-button size="mini" @click="openDetail = false">{{ t('common.button.close') }} </el-button>
         </div>
       </template>
     </el-dialog>
@@ -511,6 +511,7 @@
 </template>
 
 <script setup name="Project">
+import { useI18n } from 'vue-i18n'
 import {
   listAttProject,
   getAttProject,
@@ -523,6 +524,7 @@ import {
 import { getToken } from "@/utils/auth.js";
 import { deptUserTree } from "@/api/system/system/user.js";
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { dp_model_status } = proxy.useDict("dp_model_status");
 
@@ -530,15 +532,15 @@ const attProjectList = ref([]);
 
 // 列显隐信息
 const columns = ref([
-  { key: 1, label: "编号", visible: true },
+  { key: 1, label: t('common.texts.number'), visible: true },
   { key: 2, label: "项目名称", visible: true },
   { key: 3, label: "项目描述", visible: true },
   { key: 4, label: "负责人", visible: true },
   { key: 5, label: "联系方式", visible: true },
-  { key: 6, label: "创建时间", visible: true },
-  { key: 7, label: "创建人", visible: true },
-  { key: 8, label: "状态", visible: true },
-  { key: 9, label: "备注", visible: true },
+  { key: 6, label: t('common.texts.createdTime'), visible: true },
+  { key: 7, label: t('common.texts.createdBy'), visible: true },
+  { key: 8, label: t('common.texts.status'), visible: true },
+  { key: 9, label: t('common.texts.remark'), visible: true },
 ]);
 
 const getColumnVisibility = (key) => {
@@ -729,7 +731,7 @@ function submitForm() {
       if (form.value.id != null) {
         updateAttProject(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("修改成功");
+            proxy.$modal.msgSuccess(t('common.message.editSuccess'));
 
             open.value = false;
             getList();
@@ -739,7 +741,7 @@ function submitForm() {
         addAttProject(form.value)
           .then((response) => {
             if (response.code === 200) {
-              proxy.$modal.msgSuccess("新增成功");
+              proxy.$modal.msgSuccess(t('common.message.addSuccess'));
               open.value = false;
               getList();
             }
@@ -760,7 +762,7 @@ function handleDelete(row) {
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
     })
     .catch(() => {});
 }

@@ -30,8 +30,10 @@
  * 更多信息请访问：https://qdata.qiantong.tech/business.html
  */
 
+import { useI18n } from 'vue-i18n'
 import { ref, reactive, toRefs, nextTick, getCurrentInstance } from "vue";
 
+const { t } = useI18n();
 export default function useCatManager({
   listFunc,
   getFunc,
@@ -176,13 +178,13 @@ export default function useCatManager({
   function onDialogSubmit(payload) {
     if (payload.id != null) {
       updateFunc && updateFunc(payload).then(() => {
-        proxy.$modal.msgSuccess("修改成功");
+        proxy.$modal.msgSuccess(t('common.message.editSuccess'));
         getList();
         open.value = false;
       });
     } else {
       addFunc && addFunc(payload).then(() => {
-        proxy.$modal.msgSuccess("新增成功");
+        proxy.$modal.msgSuccess(t('common.message.addSuccess'));
         getList();
         open.value = false;
       });
@@ -198,7 +200,7 @@ export default function useCatManager({
       })
       .then(() => {
         getList();
-        proxy.$modal.msgSuccess("删除成功");
+        proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
       })
       .catch(() => { });
   }

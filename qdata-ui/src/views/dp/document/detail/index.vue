@@ -40,7 +40,7 @@
         <el-row :gutter="2">
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">编号</div>
+              <div class="infotop-row-lable">{{ t('common.texts.number') }}</div>
               <div class="infotop-row-value">{{ dpDocumentDetail.id }}</div>
             </div>
           </el-col>
@@ -62,7 +62,7 @@
           </el-col>
           <el-col :span="24" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">描述</div>
+              <div class="infotop-row-lable">{{ t('common.texts.description') }}</div>
               <div class="infotop-row-value">
                 {{ dpDocumentDetail.description || "-" }}
               </div>
@@ -93,7 +93,7 @@
           </el-col>
           <!-- <el-col :span="24">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">备注</div>
+              <div class="infotop-row-lable">{{ t('common.texts.remark') }}</div>
               <div class="infotop-row-value">
                 {{ dpDocumentDetail.remark || "-" }}
               </div>
@@ -123,11 +123,14 @@
 </template>
 
 <script setup name="DpDocument">
+import { useI18n } from 'vue-i18n'
 import { getDpDocument } from "@/api/dp/document/document";
 import { useRoute } from 'vue-router';
 import BasicInfo from "./info.vue";
 import model from "./model.vue";
 import dataElem from "./dataElem.vue";
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { column_type, sys_disable, dp_document_status } = proxy.useDict(
   "column_type",

@@ -82,7 +82,7 @@
                     </el-col>
                     <el-col :span="8">
                         <div class="infotop-row">
-                            <div class="infotop-row-lable">备注</div>
+                            <div class="infotop-row-lable">{{ t('common.texts.remark') }}</div>
                             <div class="infotop-row-value">{{ userform.bz }}</div>
                         </div>
                     </el-col>
@@ -90,10 +90,10 @@
 
                 <!-- <el-form-item>
           <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-            <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+            <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
           </el-button>
           <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-            <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+            <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
           </el-button>
         </el-form-item> -->
             </div>
@@ -112,7 +112,7 @@
                                     v-hasPermi="['user:userType:add']"
                                     @mousedown="(e) => e.preventDefault()"
                                 >
-                                    <i class="iconfont-mini icon-xinzeng mr5"></i>新增
+                                    <i class="iconfont-mini icon-xinzeng mr5"></i>{{ t('common.button.add') }}
                                 </el-button>
                             </el-col>
                             <el-col :span="1.5">
@@ -123,7 +123,7 @@
                                     v-hasPermi="['user:userType:export']"
                                     @mousedown="(e) => e.preventDefault()"
                                 >
-                                    <i class="iconfont-mini icon-download-line mr5"></i>导出
+                                    <i class="iconfont-mini icon-download-line mr5"></i>{{ t('common.button.export') }}
                                 </el-button>
                             </el-col>
                         </el-row>
@@ -182,7 +182,7 @@
                         </el-table-column>
                         <el-table-column
                             v-if="columns[4].visible"
-                            label="创建人"
+                            :label="t('common.texts.createdBy')"
                             align="center"
                             prop="createBy"
                         >
@@ -202,7 +202,7 @@
                         </el-table-column>
                         <el-table-column
                             v-if="columns[6].visible"
-                            label="创建时间"
+                            :label="t('common.texts.createdTime')"
                             align="center"
                             prop="createTime"
                             width="180"
@@ -214,7 +214,7 @@
                         </el-table-column>
                         <el-table-column
                             v-if="columns[7].visible"
-                            label="更新人"
+                            :label="t('common.texts.updatedBy')"
                             align="center"
                             prop="updateBy"
                         >
@@ -234,7 +234,7 @@
                         </el-table-column>
                         <el-table-column
                             v-if="columns[9].visible"
-                            label="更新时间"
+                            :label="t('common.texts.updatedTime')"
                             align="center"
                             prop="updateTime"
                             width="180"
@@ -246,7 +246,7 @@
                         </el-table-column>
                         <el-table-column
                             v-if="columns[10].visible"
-                            label="备注"
+                            :label="t('common.texts.remark')"
                             align="center"
                             prop="remark"
                         >
@@ -255,7 +255,7 @@
                             </template>
                         </el-table-column>
                         <el-table-column
-                            label="操作"
+                            :label="t('common.texts.operation')"
                             align="center"
                             class-name="small-padding fixed-width"
                             fixed="right"
@@ -268,7 +268,7 @@
                                     icon="Edit"
                                     @click="handleUpdate(scope.row)"
                                     v-hasPermi="['user:userType:edit']"
-                                    >修改</el-button
+                                    >{{ t('common.button.update') }}</el-button
                                 >
                                 <el-button
                                     link
@@ -276,7 +276,7 @@
                                     icon="Delete"
                                     @click="handleDelete(scope.row)"
                                     v-hasPermi="['user:userType:remove']"
-                                    >删除</el-button
+                                    >{{ t('common.button.delete') }}</el-button
                                 >
                             </template>
                         </el-table-column>
@@ -284,7 +284,7 @@
                         <template #empty>
                             <div class="emptyBg">
                                 <img src="@/assets/system/images/no_data/noData.png" alt="" />
-                                <p>暂无记录</p>
+                                <p>{{ t('common.message.noRecord') }}</p>
                             </div>
                         </template>
                     </el-table>
@@ -339,7 +339,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="24">
-                        <el-form-item label="备注" prop="remark">
+                        <el-form-item :label="t('common.texts.remark')" prop="remark">
                             <el-input
                                 v-model="form.remark"
                                 type="textarea"
@@ -351,8 +351,8 @@
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button size="mini" @click="cancel">取 消</el-button>
-                    <el-button type="primary" size="mini" @click="submitForm">确 定</el-button>
+                    <el-button size="mini" @click="cancel">{{ t('common.button.cancel') }}</el-button>
+                    <el-button type="primary" size="mini" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
                 </div>
             </template>
         </el-dialog>
@@ -360,7 +360,8 @@
 </template>
 
 <script setup name="UserType">
-    import {
+import { useI18n } from 'vue-i18n'
+import {
         listUserType,
         getUserType,
         delUserType,
@@ -368,6 +369,7 @@
         updateUserType
     } from '@/api/example/user/userType';
 
+    const { t } = useI18n();
     const { proxy } = getCurrentInstance();
 
     const userTypeList = ref([]);
@@ -384,13 +386,13 @@
         { key: 1, label: '类型名称', visible: true },
         { key: 2, label: '是否有效', visible: true },
         { key: 3, label: '删除标志', visible: true },
-        { key: 4, label: '创建人', visible: true },
+        { key: 4, label: t('common.texts.createdBy'), visible: true },
         { key: 5, label: '创建人id', visible: true },
-        { key: 6, label: '创建时间', visible: true },
-        { key: 7, label: '更新人', visible: true },
+        { key: 6, label: t('common.texts.createdTime'), visible: true },
+        { key: 7, label: t('common.texts.updatedBy'), visible: true },
         { key: 8, label: '更新人id', visible: true },
-        { key: 9, label: '更新时间', visible: true },
-        { key: 10, label: '备注', visible: true }
+        { key: 9, label: t('common.texts.updatedTime'), visible: true },
+        { key: 10, label: t('common.texts.remark'), visible: true }
     ]);
 
     const open = ref(false);
@@ -551,13 +553,13 @@
             if (valid) {
                 if (form.value.id != null) {
                     updateUserType(form.value).then((response) => {
-                        proxy.$modal.msgSuccess('修改成功');
+                        proxy.$modal.msgSuccess(t('common.message.editSuccess'));
                         open.value = false;
                         getList();
                     });
                 } else {
                     addUserType(form.value).then((response) => {
-                        proxy.$modal.msgSuccess('新增成功');
+                        proxy.$modal.msgSuccess(t('common.message.addSuccess'));
                         open.value = false;
                         getList();
                     });
@@ -576,7 +578,7 @@
             })
             .then(() => {
                 getList();
-                proxy.$modal.msgSuccess('删除成功');
+                proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
             })
             .catch(() => {});
     }

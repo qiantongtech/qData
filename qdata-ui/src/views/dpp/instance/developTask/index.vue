@@ -61,10 +61,10 @@
             </el-form-item>
             <el-form-item>
               <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
               </el-button>
               <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-                <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
               </el-button>
             </el-form-item>
           </el-form>
@@ -78,7 +78,7 @@
           </div>
           <el-table stripe height="500px" v-loading="loading" :data="dppEtlTaskLogList"
             @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
-            <el-table-column v-if="getColumnVisibility(0)" width="150" label="编号" align="left" prop="id" />
+            <el-table-column v-if="getColumnVisibility(0)" width="150" :label="t('common.texts.number')" align="left" prop="id" />
             <el-table-column v-if="getColumnVisibility(1)" :show-overflow-tooltip="{ effect: 'light' }" label="节点实例名称"
               align="left" prop="name" width="300">
               <template #default="scope">
@@ -147,13 +147,13 @@
                 {{ scope.row.personChargeName || "-" }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(10)" label="创建人" :show-overflow-tooltip="true" align="left"
+            <el-table-column v-if="getColumnVisibility(10)" :label="t('common.texts.createdBy')" :show-overflow-tooltip="true" align="left"
               prop="createBy">
               <template #default="scope">
                 {{ scope.row.createBy || "-" }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(11)" label="创建时间" align="left" prop="create_time" width="150"
+            <el-table-column v-if="getColumnVisibility(11)" :label="t('common.texts.createdTime')" align="left" prop="create_time" width="150"
               sortable="custom" column-key="create_time" :sort-orders="['descending', 'ascending']">
               <template #default="scope">
                 <span>{{
@@ -161,7 +161,7 @@
                 }}</span>
               </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" width="200">
+            <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="200">
               <template #default="scope">
                 <el-button link type="primary" icon="View" @click="logDetailCatList(scope.row)">查看日志</el-button>
                 <el-button link type="warning" icon="Download" @click="handleExport(scope.row)"
@@ -174,7 +174,7 @@
             <template #empty>
               <div class="emptyBg">
                 <img src="@/assets/system/images/no_data/noData.png" alt="" />
-                <p>暂无记录</p>
+                <p>{{ t('common.message.noRecord') }}</p>
               </div>
             </template>
           </el-table>
@@ -186,7 +186,7 @@
             <div v-html="formattedText"></div>
             <template #footer>
               <div class="dialog-footer">
-                <el-button @click="cancel">关 闭</el-button>
+                <el-button @click="cancel">{{ t('common.button.close') }}</el-button>
               </div>
             </template>
           </el-dialog>
@@ -200,6 +200,7 @@
 import { defineEmits, defineProps } from "vue"
 import useDefaultLang from "@/composables/useDefaultLang";
 const { td } = useDefaultLang();;
+import { useI18n } from 'vue-i18n'
 import { listAttDataDevCat } from "@/api/att/cat/dataDevCat/dataDevCat";
 import {
   listDppEtlNodeInstance,
@@ -213,6 +214,8 @@ import { getToken } from "@/utils/auth.js";
 import useUserStore from "@/store/system/user";
 const { proxy } = getCurrentInstance();
 import DeptTree from "@/components/DeptTree/index.vue";
+
+const { t } = useI18n();
 let activeName = ref("first");
 const { dpp_etl_node_instance } = proxy.useDict("dpp_etl_node_instance");
 const { dpp_etl_node_type, dpp_etl_task_instance_command_type } = proxy.useDict(
@@ -222,7 +225,7 @@ const { dpp_etl_node_type, dpp_etl_task_instance_command_type } = proxy.useDict(
 const dppEtlTaskLogList = ref([]);
 // 列显隐信息
 const columns = ref([
-  { key: 0, label: "编号", visible: true },
+  { key: 0, label: t('common.texts.number'), visible: true },
   { key: 1, label: "节点实例名称", visible: true },
   { key: 2, label: "任务名称", visible: true },
   { key: 3, label: "执行类型", visible: true },
@@ -230,8 +233,8 @@ const columns = ref([
   { key: 5, label: "开始时间", visible: true },
   { key: 6, label: "结束时间", visible: true },
   { key: 9, label: "责任人", visible: true },
-  { key: 10, label: "创建人", visible: true },
-  { key: 11, label: "创建时间", visible: true },
+  { key: 10, label: t('common.texts.createdBy'), visible: true },
+  { key: 11, label: t('common.texts.createdTime'), visible: true },
 ]);
 
 const getColumnVisibility = (key) => {
@@ -477,7 +480,7 @@ function submitForm() {
       if (form.value.id != null) {
         updateDppEtlNodeInstance(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("修改成功");
+            proxy.$modal.msgSuccess(t('common.message.editSuccess'));
             open.value = false;
             getList();
           })
@@ -485,7 +488,7 @@ function submitForm() {
       } else {
         addDppEtlNodeInstance(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("新增成功");
+            proxy.$modal.msgSuccess(t('common.message.addSuccess'));
             open.value = false;
             getList();
           })
@@ -505,7 +508,7 @@ function handleDelete(row) {
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
     })
     .catch(() => { });
 }

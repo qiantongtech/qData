@@ -55,7 +55,7 @@
             </el-button>
           </el-tooltip>
 
-          <el-tooltip effect="dark" content="刷新" placement="top">
+          <el-tooltip effect="dark" :content="t('common.button.refresh')" placement="top">
             <el-button
               circle
               v-show="config.actions.table.refresh"
@@ -100,9 +100,11 @@
 </template>
 
 <script setup name="QtWrap">
+import { useI18n } from 'vue-i18n'
 import { computed, reactive } from "vue";
 import { merge } from "lodash-es";
 
+const { t } = useI18n();
 const DEFAULT_CONFIG = {
   fullContent: true,
   actions: {

@@ -48,7 +48,6 @@
  -->
 
 
-
 <template>
   <div class="app-container" ref="app-container">
     <div class="pagecont-top" v-show="showSearch" style="padding-bottom:15px">
@@ -129,7 +128,7 @@
           </el-col>
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">创建人</div>
+              <div class="infotop-row-lable">{{ t('common.texts.createdBy') }}</div>
               <div class="infotop-row-value">
                 {{ studentDetail.createBy || '-' }}
               </div>
@@ -137,13 +136,13 @@
           </el-col>
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">创建时间</div>
+              <div class="infotop-row-lable">{{ t('common.texts.createdTime') }}</div>
               <div class="infotop-row-value">{{ parseTime(studentDetail.createTime, '{y}-{m}-{d}') }}</div>
             </div>
           </el-col>
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">备注</div>
+              <div class="infotop-row-lable">{{ t('common.texts.remark') }}</div>
               <div class="infotop-row-value">
                 {{ studentDetail.remark || '-' }}
               </div>
@@ -165,16 +164,17 @@
       </el-tabs>
     </div>
 
-
   </div>
 </template>
 
 <script setup name="Student">
+import { useI18n } from 'vue-i18n'
 import {getStudent } from "@/api/example/genStudent/student";
 import { useRoute } from 'vue-router';
 import ComponentOne from "@/views/example/genStudent/detail/componentOne.vue";
 import ComponentTwo from "@/views/example/genStudent/detail/componentTwo.vue";
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { sys_user_sex, message_level } = proxy.useDict('sys_user_sex', 'message_level');
 

@@ -64,7 +64,7 @@
                 @keyup.enter="handleQuery"
               />
             </el-form-item>
-            <!-- <el-form-item label="编号" prop="code">
+            <!-- <el-form-item :label="t('common.texts.number')" prop="code">
                             <el-input class="el-form-input-width" v-model="queryParams.code" placeholder="请输入编号"
                                 clearable @keyup.enter="handleQuery" />
                         </el-form-item> -->
@@ -90,13 +90,13 @@
                 @click="handleQuery"
                 @mousedown="(e) => e.preventDefault()"
               >
-                <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
               </el-button>
               <el-button
                 @click="resetQuery"
                 @mousedown="(e) => e.preventDefault()"
               >
-                <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
               </el-button>
             </el-form-item>
           </el-form>
@@ -108,7 +108,7 @@
               <el-col :span="1.5">
                 <!-- <el-button type="primary" plain @click="handleAdd"
                                     v-hasPermi="['att:rule:auditrule:add']" @mousedown="(e) => e.preventDefault()">
-                                    <i class="iconfont-mini icon-xinzeng mr5"></i>新增
+                                    <i class="iconfont-mini icon-xinzeng mr5"></i>{{ t('common.button.add') }}
                                 </el-button> -->
               </el-col>
               <!--                            <el-col :span="1.5">-->
@@ -142,7 +142,7 @@
           >
             <el-table-column
               v-if="getColumnVisibility(6)"
-              label="编号"
+              :label="t('common.texts.number')"
               align="left"
               prop="code"
               width="80"
@@ -181,7 +181,7 @@
             <el-table-column
               :show-overflow-tooltip="{ effect: 'light' }"
               v-if="getColumnVisibility(5)"
-              label="描述"
+              :label="t('common.texts.description')"
               width="400"
               align="left"
               prop="description"
@@ -218,7 +218,7 @@
             <!-- <el-table-column
                             :show-overflow-tooltip="{effect: 'light'}"
                             v-if="getColumnVisibility(14)"
-                            label="备注"
+                            :label="t('common.texts.remark')"
                             align="left"
                             prop="remark"
                         >
@@ -226,13 +226,13 @@
                                 {{ scope.row.remark || '-' }}
                             </template>
                         </el-table-column> -->
-            <!-- <el-table-column label="操作" align="left" class-name="small-padding fixed-width" fixed="right"
+            <!-- <el-table-column :label="t('common.texts.operation')" align="left" class-name="small-padding fixed-width" fixed="right"
                             width="120">
                             <template #default="scope">
                                 <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-                                    v-hasPermi="['att:rule:auditrule:edit']">修改</el-button>
+                                    v-hasPermi="['att:rule:auditrule:edit']">{{ t('common.button.update') }}</el-button>
                                 <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
-                                    v-hasPermi="['att:rule:auditrule:remove']">删除</el-button>
+                                    v-hasPermi="['att:rule:auditrule:remove']">{{ t('common.button.delete') }}</el-button>
                             </template>
                         </el-table-column> -->
 
@@ -242,7 +242,7 @@
                   src="../../../../assets/system/images/no_data/noData.png"
                   alt=""
                 />
-                <p>暂无记录</p>
+                <p>{{ t('common.message.noRecord') }}</p>
               </div>
             </template>
           </el-table>
@@ -284,7 +284,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="编号" prop="code">
+            <el-form-item :label="t('common.texts.number')" prop="code">
               <el-input v-model="form.code" placeholder="请输入编号" />
             </el-form-item>
           </el-col>
@@ -343,7 +343,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="描述" prop="description">
+            <el-form-item :label="t('common.texts.description')" prop="description">
               <el-input
                 type="textarea"
                 v-model="form.description"
@@ -355,9 +355,9 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="cancel">取 消</el-button>
+          <el-button size="mini" @click="cancel">{{ t('common.button.cancel') }}</el-button>
           <el-button type="primary" size="mini" @click="submitForm"
-            >确 定</el-button
+            >{{ t('common.button.confirm') }}</el-button
           >
         </div>
       </template>
@@ -376,6 +376,9 @@ import {
 import { getToken } from "@/utils/auth.js";
 import { computed } from "vue";
 import DeptTree from "@/components/DeptTree";
+import {useI18n} from "vue-i18n";
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { att_rule_audit_type, att_rule_level, att_rule_audit_q_dimension } =
   proxy.useDict(
@@ -430,10 +433,10 @@ function handleNodeClick(data) {
 }
 // 列显隐信息
 const columns = ref([
-  { key: 6, label: "编号", visible: true },
+  { key: 6, label: t('common.texts.number'), visible: true },
   { key: 1, label: "规则名称", visible: true },
   { key: 2, label: "质量维度", visible: true },
-  { key: 5, label: "描述", visible: true },
+  { key: 5, label: t('common.texts.description'), visible: true },
   { key: 3, label: "使用场景", visible: true },
   { key: 4, label: "示例", visible: true },
 ]);
@@ -609,7 +612,7 @@ function submitForm() {
       if (form.value.id != null) {
         updateAttAuditRule(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("修改成功");
+            proxy.$modal.msgSuccess(t('common.message.editSuccess'));
             open.value = false;
             getList();
           })
@@ -617,7 +620,7 @@ function submitForm() {
       } else {
         addAttAuditRule(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("新增成功");
+            proxy.$modal.msgSuccess(t('common.message.addSuccess'));
             open.value = false;
             getList();
           })
@@ -637,7 +640,7 @@ function handleDelete(row) {
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
     })
     .catch(() => {});
 }

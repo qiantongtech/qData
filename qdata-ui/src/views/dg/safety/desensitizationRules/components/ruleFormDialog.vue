@@ -143,35 +143,35 @@
           </div>
         </div>
       </qt-form-item>
-      <el-form-item label="状态" prop="validFlag" class="row-full">
+      <el-form-item :label="t('common.texts.status')" prop="validFlag" class="row-full">
         <el-radio-group v-model="form.validFlag">
           <el-radio :label="false">禁用</el-radio>
           <el-radio :label="true">启用</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="描述" prop="description" class="row-full">
+      <el-form-item :label="t('common.texts.description')" prop="description" class="row-full">
         <el-input
             v-model="form.description"
             type="textarea"
-            placeholder="请输入描述"
+            :placeholder="t('common.form.descriptionPlaceholder')"
             maxlength="500个字符"
             show-word-limit
         />
       </el-form-item>
-      <el-form-item label="备注" prop="remark" class="row-full">
+      <el-form-item :label="t('common.texts.remark')" prop="remark" class="row-full">
         <el-input
             v-model="form.remark"
             type="textarea"
             maxlength="500个字符"
             show-word-limit
-            placeholder="请输入备注"
+            :placeholder="t('common.form.remarkPlaceholder')"
         />
       </el-form-item>
     </el-form>
     <template #footer>
       <div class="dialog-footer">
         <el-button size="mini" @click="close">{{
-            isReadonly ? "关 闭" : "取 消"
+            isReadonly ? "{{ t('common.button.close') }}" : "{{ t('common.button.cancel') }}"
           }}</el-button>
         <el-button
             v-if="!isReadonly"
@@ -180,7 +180,7 @@
             :loading="loading"
             @click="submit"
         >
-          确 定
+          {{ t('common.button.confirm') }}
         </el-button>
       </div>
     </template>
@@ -188,8 +188,11 @@
 </template>
 
 <script setup name="RuleFormDialog">
+import { useI18n } from 'vue-i18n'
 import { computed, getCurrentInstance, nextTick, onMounted, ref } from "vue";
 import { selectTreeDataCategory } from "@/api/dg/safety/dataCategory/dataCategory";
+
+const { t } = useI18n();
 const emit = defineEmits(["success"]);
 const props = defineProps({
   appendTo: { type: [String, Object], default: undefined },
@@ -419,10 +422,10 @@ function submit() {
     try {
       if (payload.id != null) {
         await props.update(payload);
-        proxy.$modal.msgSuccess("修改成功");
+        proxy.$modal.msgSuccess(t('common.message.editSuccess'));
       } else {
         await props.add(payload);
-        proxy.$modal.msgSuccess("新增成功");
+        proxy.$modal.msgSuccess(t('common.message.addSuccess'));
       }
       close();
       emit("success");

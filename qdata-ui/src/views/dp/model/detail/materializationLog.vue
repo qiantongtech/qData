@@ -98,7 +98,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="状态" prop="status">
+          <el-form-item :label="t('common.texts.status')" prop="status">
             <el-radio-group v-model="form.status">
               <el-radio
                 v-for="dict in dp_template_build_log_build_status"
@@ -166,17 +166,17 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="备注" prop="remark">
-            <el-input v-model="form.remark" placeholder="请输入备注" />
+          <el-form-item :label="t('common.texts.remark')" prop="remark">
+            <el-input v-model="form.remark" :placeholder="t('common.form.remarkPlaceholder')" />
           </el-form-item>
         </el-col>
       </el-row>
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="cancel">取 消</el-button>
+        <el-button size="mini" @click="cancel">{{ t('common.button.cancel') }}</el-button>
         <el-button type="primary" size="mini" @click="submitForm"
-          >确 定</el-button
+          >{{ t('common.button.confirm') }}</el-button
         >
       </div>
     </template>
@@ -216,7 +216,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="状态" prop="status">
+          <el-form-item :label="t('common.texts.status')" prop="status">
             <dict-tag
               :options="dp_template_build_log_build_status"
               :value="form.status"
@@ -285,7 +285,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="备注" prop="remark">
+          <el-form-item :label="t('common.texts.remark')" prop="remark">
             <div>
               {{ form.remark }}
             </div>
@@ -295,7 +295,7 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="cancel">关 闭</el-button>
+        <el-button size="mini" @click="cancel">{{ t('common.button.close') }}</el-button>
       </div>
     </template>
   </el-dialog>
@@ -310,6 +310,7 @@
 </template>
 
 <script setup name="ComponentOne">
+import { useI18n } from 'vue-i18n'
 import {
   listDpModelMaterialized,
   getDpModelMaterialized,
@@ -318,6 +319,8 @@ import {
   updateDpModelMaterialized,
 } from "@/api/dp/model/model";
 import MaterializationDialog from "./materialization.vue";
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { dp_template_build_log_build_status } = proxy.useDict(
   "dp_template_build_log_build_status"
@@ -369,7 +372,7 @@ const tableStore = reactive({
     },
   },
   columns: [
-    { label: "编号", prop: "id", width: 60, sortable: true },
+    { label: t('common.texts.number'), prop: "id", width: 60, sortable: true },
 
     { label: "模型编码", prop: "modelName", width: 240, align: "left" },
     {
@@ -380,7 +383,7 @@ const tableStore = reactive({
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: "描述",
+      label: t('common.texts.description'),
       prop: "description",
       align: "left",
       width: 250,
@@ -412,14 +415,14 @@ const tableStore = reactive({
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: "状态",
+      label: t('common.texts.status'),
       prop: "status",
       width: 80,
       dict: "dp_template_build_log_build_status",
     },
-    { label: "创建人", prop: "createBy", width: 120, align: "left" },
+    { label: t('common.texts.createdBy'), prop: "createBy", width: 120, align: "left" },
     {
-      label: "创建时间",
+      label: t('common.texts.createdTime'),
       prop: "createTime",
       sortable: true,
       sortableKey: "create_time",
@@ -545,7 +548,7 @@ function submitForm() {
       if (form.value.id != null) {
         updateDpModelMaterialized(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("修改成功");
+            proxy.$modal.msgSuccess(t('common.message.editSuccess'));
             open.value = false;
             getList();
           })
@@ -553,7 +556,7 @@ function submitForm() {
       } else {
         addDpModelMaterialized(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("新增成功");
+            proxy.$modal.msgSuccess(t('common.message.addSuccess'));
             open.value = false;
             getList();
           })
@@ -573,7 +576,7 @@ function handleDelete(row) {
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
     })
     .catch(() => {});
 }

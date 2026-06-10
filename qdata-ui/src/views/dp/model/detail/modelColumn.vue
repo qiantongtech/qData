@@ -43,7 +43,7 @@
         @click="handleAdd"
         @mousedown="(e) => e.preventDefault()"
       >
-        <i class="iconfont-mini icon-xinzeng mr5"></i>新增
+        <i class="iconfont-mini icon-xinzeng mr5"></i>{{ t('common.button.add') }}
       </el-button>
     </template>
 
@@ -58,7 +58,7 @@
       </template>
       <template #action="{ row }">
         <el-button link type="primary" icon="View" @click="handleDetail(row)"
-          >详情</el-button
+          >{{ t('common.button.details') }}</el-button
         >
         <el-button
           v-if="!isDetail"
@@ -66,7 +66,7 @@
           type="primary"
           icon="Edit"
           @click="handleUpdate(row)"
-          >修改</el-button
+          >{{ t('common.button.update') }}</el-button
         >
         <el-button
           v-if="!isDetail"
@@ -74,7 +74,7 @@
           type="danger"
           icon="Delete"
           @click="handleDelete(row)"
-          >删除</el-button
+          >{{ t('common.button.delete') }}</el-button
         >
       </template>
     </qt-table>
@@ -198,25 +198,25 @@
 
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="描述" prop="modelComment">
+          <el-form-item :label="t('common.texts.description')" prop="modelComment">
             <el-input
               v-model="form.modelComment"
               type="textarea"
               maxlength="500个字符"
               show-word-limit
-              placeholder="请输入描述"
+              :placeholder="t('common.form.descriptionPlaceholder')"
             />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="备注">
+          <el-form-item :label="t('common.texts.remark')">
             <el-input
               type="textarea"
               maxlength="500个字符"
               show-word-limit
-              placeholder="请输入备注"
+              :placeholder="t('common.form.remarkPlaceholder')"
               v-model="form.remark"
               :min-height="192"
             />
@@ -255,9 +255,9 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="cancel">取 消</el-button>
+        <el-button size="mini" @click="cancel">{{ t('common.button.cancel') }}</el-button>
         <el-button type="primary" size="mini" @click="submitForm"
-          >确 定</el-button
+          >{{ t('common.button.confirm') }}</el-button
         >
       </div>
     </template>
@@ -326,34 +326,34 @@
       <el-form-item label="排序" prop="sortOrder">
         <div class="form-readonly">{{ form.sortOrder || "-" }}</div>
       </el-form-item>
-      <el-form-item label="描述" prop="modelComment" class="row-full">
+      <el-form-item :label="t('common.texts.description')" prop="modelComment" class="row-full">
         <div class="form-readonly textarea">
           {{ form.modelComment || "-" }}
         </div>
       </el-form-item>
-      <el-form-item label="备注" prop="remark" class="row-full">
+      <el-form-item :label="t('common.texts.remark')" prop="remark" class="row-full">
         <div class="form-readonly textarea">{{ form.remark || "-" }}</div>
       </el-form-item>
 
-      <el-form-item label="创建人" prop="createBy">
+      <el-form-item :label="t('common.texts.createdBy')" prop="createBy">
         <div class="form-readonly">
           {{ form.createBy }}
         </div>
       </el-form-item>
 
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.texts.createdTime')" prop="createTime">
         <div class="form-readonly">
           {{ parseTime(form.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
         </div>
       </el-form-item>
 
-      <el-form-item label="更新人" prop="updateBy">
+      <el-form-item :label="t('common.texts.updatedBy')" prop="updateBy">
         <div class="form-readonly">
           {{ form.updateBy }}
         </div>
       </el-form-item>
 
-      <el-form-item label="更新时间" prop="updateTime">
+      <el-form-item :label="t('common.texts.updatedTime')" prop="updateTime">
         <div class="form-readonly">
           {{ parseTime(form.updateTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
         </div>
@@ -361,13 +361,14 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="cancel">关 闭</el-button>
+        <el-button @click="cancel">{{ t('common.button.close') }}</el-button>
       </div>
     </template>
   </el-dialog>
 </template>
 
 <script setup name="ComponentOne">
+import { useI18n } from 'vue-i18n'
 import {
   listDpModelColumn,
   getDpModelColumn,
@@ -377,6 +378,8 @@ import {
 } from "@/api/dp/model/model";
 import { getDpDataElemList } from "@/api/dp/dataElem/dataElem";
 import { deptTreeSelectNoPermi } from "@/api/system/system/user.js";
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const props = defineProps({
   isDetail: {
@@ -470,7 +473,7 @@ const tableStore = reactive({
     },
   },
   columns: [
-    { label: "编号", prop: "id", width: 60, sortable: true },
+    { label: t('common.texts.number'), prop: "id", width: 60, sortable: true },
     { label: "关联标准", prop: "dataElemName", align: "left", width: 240 },
     {
       label: "中文名称",
@@ -487,7 +490,7 @@ const tableStore = reactive({
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: "描述",
+      label: t('common.texts.description'),
       prop: "description",
       align: "left",
       width: 250,
@@ -502,13 +505,13 @@ const tableStore = reactive({
       slot: "pkFlag",
     },
     {
-      label: "创建人",
+      label: t('common.texts.createdBy'),
       prop: "createBy",
       width: 160,
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: "创建时间",
+      label: t('common.texts.createdTime'),
       prop: "createTime",
       sortable: true,
       sortableKey: "create_time",
@@ -516,7 +519,7 @@ const tableStore = reactive({
       date: true,
     },
     {
-      label: "操作",
+      label: t('common.texts.operation'),
       align: "center",
       fixed: "right",
       width: 240,
@@ -663,7 +666,7 @@ function submitForm() {
       if (form.value.id != null) {
         updateDpModelColumns(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("修改成功");
+            proxy.$modal.msgSuccess(t('common.message.editSuccess'));
             open.value = false;
             getList();
           })
@@ -671,7 +674,7 @@ function submitForm() {
       } else {
         addDpModelColumn(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("新增成功");
+            proxy.$modal.msgSuccess(t('common.message.addSuccess'));
             open.value = false;
             getList();
           })
@@ -691,7 +694,7 @@ function handleDelete(row) {
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
     })
     .catch(() => {});
 }

@@ -106,7 +106,7 @@
                                 </template>
                             </el-table-column>
 
-                            <el-table-column label="描述" fixed="left" align="center" prop="remark"
+                            <el-table-column :label="t('common.texts.description')" fixed="left" align="center" prop="remark"
                                 :show-overflow-tooltip="{effect: 'light'}">
                                 <template #default="{ row }">
                                     {{ row?.remark || '' }}
@@ -131,7 +131,6 @@
                                     {{ row?.columnType || '' }}
                                 </template>
                             </el-table-column>
-
 
                             <el-table-column label="示例值" fixed="left" align="center" prop="exampleValue"
                                 :show-overflow-tooltip="{effect: 'light'}">
@@ -194,7 +193,7 @@
                         <iframe class="html-iframe" v-if="!jsonFlag" :srcdoc="htmlData"></iframe>
                     </div>
                     <!-- 没有返回数据时显示提示 -->
-                    <div v-else>暂无数据</div>
+                    <div v-else>{{ t('common.message.noData') }}</div>
                 </el-col>
             </el-row>
         </div>
@@ -202,6 +201,7 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { queryServiceForwarding } from '@/api/ds/api/api.js';
 import { VAceEditor } from "vue3-ace-editor";
 const props = defineProps({
@@ -244,6 +244,8 @@ const { ds_api_bas_info_api_method_type, ds_api_param_type, ds_api_bas_info_res_
         'ds_api_bas_info_res_data_type'
     );
 import request from '@/utils/request';
+
+const { t } = useI18n();
 const hasChildren = (row) => {
     return Array.isArray(row.daAssetApiParamList) && row.daAssetApiParamList.length > 0;
 };
@@ -278,7 +280,6 @@ const callData = reactive({
     pageSize: 20,  // 每页数据量
     dataTotal: 0  // 数据总数
 });
-
 
 
 const rules = {
@@ -355,7 +356,7 @@ function buildParamsTree(paramList) {
 }
 const showSuccessNotify = () => {
     ElNotification({
-        title: '提示',
+        title: t('common.message.prompt'),
         message: '接口调用成功',
         type: 'success',
         duration: 2000,
@@ -364,7 +365,7 @@ const showSuccessNotify = () => {
 
 const showErrorNotify = (msg) => {
     ElNotification({
-        title: '提示',
+        title: t('common.message.prompt'),
         message: msg || '接口调用失败',
         type: 'error',
         duration: 2000,
@@ -437,7 +438,6 @@ const handleCall = () => {
         }
     });
 };
-
 
 // 处理API响应
 const handleApiResponse = (response) => {

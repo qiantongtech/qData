@@ -142,12 +142,12 @@
                 </template>
               </el-table-column>
 
-              <el-table-column label="描述" fixed="left" align="center" prop="remark"
+              <el-table-column :label="t('common.texts.description')" fixed="left" align="center" prop="remark"
                 :show-overflow-tooltip="{ effect: 'light' }">
                 <template #default="{ row, $index }">
                   <!-- <el-form-item :prop="`props.form2.reqParams[${findPosi(props.form2.reqParams, row.id)}].remark`"
                     :rules="rules.fieldDefault">
-                    <el-input v-model="row.remark" placeholder="请输入描述" />
+                    <el-input v-model="row.remark" :placeholder="t('common.form.descriptionPlaceholder')" />
                   </el-form-item> -->
                   {{ row.reqParams }}
                 </template>
@@ -198,10 +198,10 @@
                 </template>
               </el-table-column>
 
-              <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+              <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width">
                 <template #default="scope">
                   <el-button type="danger" link v-if="scope.row.parentId == null"
-                    @click="deleteRow(scope.$index, scope.row)">删除</el-button>
+                    @click="deleteRow(scope.$index, scope.row)">{{ t('common.button.delete') }}</el-button>
                 </template>
               </el-table-column>
 
@@ -239,12 +239,12 @@
                 </template>
               </el-table-column>
 
-              <el-table-column label="描述" fixed="left" align="center" prop="remark"
+              <el-table-column :label="t('common.texts.description')" fixed="left" align="center" prop="remark"
                 :show-overflow-tooltip="{ effect: 'light' }">
                 <template #default="{ row, $index }">
                   <el-form-item :prop="`props.form2.resParams[${findPosi(props.form2.resParams, row.id)}].remark`"
                     :rules="rules.fieldDefault">
-                    <el-input v-model="row.remark" placeholder="请输入描述" />
+                    <el-input v-model="row.remark" :placeholder="t('common.form.descriptionPlaceholder')" />
                   </el-form-item>
                 </template>
               </el-table-column>
@@ -294,9 +294,9 @@
               <el-checkbox v-model="scope.row.nullable" true-label="1" false-label="0" />
             </template>
           </el-table-column>
-          <el-table-column prop="paramComment" label="描述" align="center">
+          <el-table-column prop="paramComment" :label="t('common.texts.description')" align="center">
             <template #default="scope">
-              <el-input v-model="scope.row.paramComment" placeholder="请输入描述" />
+              <el-input v-model="scope.row.paramComment" :placeholder="t('common.form.descriptionPlaceholder')" />
             </template>
           </el-table-column>
           <el-table-column prop="paramType" label="参数类型" align="center">
@@ -336,11 +336,11 @@
               <el-input v-model="scope.row.defaultValue" placeholder="请输入默认值" />
             </template>
           </el-table-column>
-          <el-table-column label="操作" align="center" width="150" :show-overflow-tooltip="{ effect: 'light' }"
+          <el-table-column :label="t('common.texts.operation')" align="center" width="150" :show-overflow-tooltip="{ effect: 'light' }"
             v-if="form2.apiServiceType !== '2'">
             <template #default="scope">
               <el-button type="text" size="mini" icon="el-icon-edit" @click="handleDelete(scope.$index)">
-                删除
+                {{ t('common.button.delete') }}
               </el-button>
             </template>
           </el-table-column>
@@ -359,9 +359,9 @@
             </template>
           </el-table-column>
           <el-table-column prop="fieldName" label="中文名称" align="center" :show-overflow-tooltip="{ effect: 'light' }" />
-          <el-table-column prop="fieldComment" label="描述" align="center" :show-overflow-tooltip="{ effect: 'light' }">
+          <el-table-column prop="fieldComment" :label="t('common.texts.description')" align="center" :show-overflow-tooltip="{ effect: 'light' }">
             <template #default="scope">
-              <el-input v-model="scope.row.fieldComment" placeholder="请输入描述" />
+              <el-input v-model="scope.row.fieldComment" :placeholder="t('common.form.descriptionPlaceholder')" />
             </template>
           </el-table-column>
           <el-table-column prop="dataType" label="数据类型" align="center" :show-overflow-tooltip="{ effect: 'light' }">
@@ -382,11 +382,11 @@
               <el-input v-model="scope.row.exampleValue" placeholder="请输入示例值" />
             </template>
           </el-table-column>
-          <el-table-column label="操作" align="center" width="150" :show-overflow-tooltip="{ effect: 'light' }"
+          <el-table-column :label="t('common.texts.operation')" align="center" width="150" :show-overflow-tooltip="{ effect: 'light' }"
             v-if="form2.apiServiceType !== '2'">
             <template #default="scope">
               <el-button type="text" size="mini" icon="el-icon-edit" @click="handleDelete(scope.$index, true)">
-                删除
+                {{ t('common.button.delete') }}
               </el-button>
             </template>
           </el-table-column>
@@ -400,11 +400,11 @@
             </template>
           </el-table-column>
           <el-table-column prop="fieldName" label="中文名称" align="center" :show-overflow-tooltip="{ effect: 'light' }" />
-          <el-table-column label="操作" align="center" :show-overflow-tooltip="{ effect: 'light' }"
+          <el-table-column :label="t('common.texts.operation')" align="center" :show-overflow-tooltip="{ effect: 'light' }"
             v-if="form2.apiServiceType !== '2'">
             <template #default="scope">
               <el-button type="text" size="mini" icon="el-icon-edit" @click="handlesortDelete(scope.$index, true)">
-                删除
+                {{ t('common.button.delete') }}
               </el-button>
             </template>
           </el-table-column>
@@ -431,6 +431,7 @@
 </template>
 
 <script setup name="parameter">
+import { useI18n } from 'vue-i18n'
 import Sortable from "sortablejs";
 import SqlEditor from "@/components/SqlEditor";
 import tableDialog from "./tableDialog.vue";
@@ -445,6 +446,7 @@ import {
 } from "@/api/da/dataSource/dataSource.js";
 import { sqlParse } from "@/api/ds/api/api.js";
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const {
   ds_api_bas_info_api_service_type,
@@ -538,7 +540,6 @@ function getTableInfo(sourceId) {
     props.form2.filteredTableOptions = response.data;
   });
 
-
 }
 const hasChildren = (row) => {
   const hasChild =
@@ -605,7 +606,6 @@ watch(
   },
   { flush: 'post', deep: false }
 );
-
 
 function sqlParseFunction() {
   if (!props.form2.sourceId) {
@@ -815,7 +815,7 @@ function tableSelectChanged(item) {
   //         // this.setSort()
   //     } else {
   //         this.$notify({
-  //             title: "提示",
+  //             title: t('common.message.prompt'),
   //             dangerouslyUseHTMLString: true, // 启用 HTML 字符串解析
   //             message: response.msg,
   //             type: "error",
@@ -899,7 +899,6 @@ if (props?.form2?.transmitType && props?.form2?.apiServiceType == '3') {
 }
 
 </script>
-
 
 <style scoped lang="less">
 .tableStyle {

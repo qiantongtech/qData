@@ -76,7 +76,7 @@
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" :icon="Search" @click="getChartData">
-                        查询
+                        {{ t('common.button.query') }}
                     </el-button>
                 </el-form-item>
             </el-form>
@@ -99,10 +99,11 @@
 </template>
 
 <script setup name="DetailPopResViewA4">
+import { useI18n } from 'vue-i18n'
+import { Search } from '@element-plus/icons-vue';
 
-    import { Search } from '@element-plus/icons-vue';
-
-    const params = ref({
+const { t } = useI18n();
+const params = ref({
         avgTypeId: '1',
         years: ['2024', '2023'],
         sizeType: '极大值',

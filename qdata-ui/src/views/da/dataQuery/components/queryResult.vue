@@ -35,7 +35,7 @@
     <div>
       <!-- 导出按钮 -->
       <el-button :disabled="!callData.dataTotal > 0" type="warning" plain icon="Download"
-        @click="downloadMethodNotification" :loading="downloadLoading">导出</el-button>
+        @click="downloadMethodNotification" :loading="downloadLoading">{{ t('common.button.export') }}</el-button>
 
       <el-table :data="callData.dataList" stripe border height="540" v-loading="loading"
         style="width: 100%; margin: 15px 0">
@@ -56,7 +56,7 @@
         <template #empty>
           <div class="emptyBg">
             <!-- <img src="@/assets/system/images/no_data/noData.png" alt="" /> -->
-            <p>暂无记录</p>
+            <p>{{ t('common.message.noRecord') }}</p>
           </div>
         </template>
       </el-table>
@@ -66,17 +66,19 @@
 
     <template #footer>
       <div style="text-align: right">
-        <el-button @click="closeDialog">关闭</el-button>
+        <el-button @click="closeDialog">{{ t('common.button.close') }}</el-button>
       </div>
     </template>
   </el-dialog>
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { ref, computed, watch, getCurrentInstance } from "vue";
 import { encrypt } from "@/utils/aesEncrypt";
 import { executeSqlQuery } from "@/api/da/dataSource/dataSource";
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const props = defineProps({
   visible: { type: Boolean, default: true },
@@ -167,7 +169,7 @@ const downloadMethod = () => {
 
   if (total === 0) {
     ElNotification({
-      title: "提示",
+      title: t('common.message.prompt'),
       message: "该表没有数据",
       type: "info",
       duration: 2000,
@@ -201,11 +203,11 @@ const downloadMethodNotification = () => {
 
   ElMessageBox.confirm(
     `是否导出总数为：<span style="color: rgb(0, 160, 233);">${callData.value.dataTotal}</span>，以每5000数据一份文件进行导出，总共导出 ${totalFilesCount} 份？`,
-    "提示",
+    t('common.message.prompt'),
     {
       dangerouslyUseHTMLString: true,
-      confirmButtonText: "确定",
-      cancelButtonText: "取消",
+      confirmButtonText: t('common.button.confirm'),
+      cancelButtonText: t('common.button.cancel'),
       type: "warning",
     }
   ).then(() => {

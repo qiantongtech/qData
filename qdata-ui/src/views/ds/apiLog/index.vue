@@ -44,8 +44,8 @@
               <el-input class="el-form-input-width" v-model="queryParams.apiName" placeholder="请输入API服务名称" clearable
                 @keyup.enter="handleQuery" />
             </el-form-item>
-            <el-form-item label="状态" prop="status">
-              <el-select class="el-form-input-width" v-model="queryParams.status" placeholder="请选择状态" clearable>
+            <el-form-item :label="t('common.texts.status')" prop="status">
+              <el-select class="el-form-input-width" v-model="queryParams.status" :placeholder="t('common.form.statusPlaceholder')" clearable>
                 <el-option v-for="dict in ds_api_log_res_status" :key="dict.value" :label="dict.label"
                   :value="dict.value" />
               </el-select>
@@ -57,10 +57,10 @@
 
             <el-form-item>
               <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
               </el-button>
               <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-                <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
               </el-button>
             </el-form-item>
           </el-form>
@@ -74,7 +74,7 @@
           </div>
           <el-table stripe v-loading="loading" :data="apiLogList" @selection-change="handleSelectionChange"
             :default-sort="defaultSort" @sort-change="handleSortChange">
-            <el-table-column v-if="getColumnVisibility(1)" label="编号" align="center" prop="id" width="80" />
+            <el-table-column v-if="getColumnVisibility(1)" :label="t('common.texts.number')" align="center" prop="id" width="80" />
             <el-table-column v-if="getColumnVisibility(2)" :show-overflow-tooltip="{ effect: 'light' }" label="API服务名称"
               align="left" prop="apiName" width="300">
               <template #default="scope">
@@ -111,7 +111,7 @@
                 {{ scope.row.callerTime / 1000 || "-" }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(8)" label="状态" align="center" prop="status" width="120"
+            <el-table-column v-if="getColumnVisibility(8)" :label="t('common.texts.status')" align="center" prop="status" width="120"
               :show-overflow-tooltip="{ effect: 'light' }">
               <template #header>
                 <div class="justify-center">
@@ -137,22 +137,22 @@
               </template>
             </el-table-column>
 
-            <el-table-column v-if="getColumnVisibility(10)" label="操作" align="center"
+            <el-table-column v-if="getColumnVisibility(10)" :label="t('common.texts.operation')" align="center"
               class-name="small-padding fixed-width" fixed="right" width="200">
               <template #default="scope">
                 <!--                <el-button link type="primary" icon="view" @click="routeTo('/ds/logDetail/dsApiLogDetail', scope.row)"-->
                 <!--                  v-hasPermi="['ds:apiLog:edit']">查看日志</el-button>-->
                 <el-button link type="primary" icon="view" @click="handleDetail(scope.row)"
-                  v-hasPermi="['ds:apiLog:query']">详情</el-button>
+                  v-hasPermi="['ds:apiLog:query']">{{ t('common.button.details') }}</el-button>
                 <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
-                  v-hasPermi="['ds:apiLog:remove']">删除</el-button>
+                  v-hasPermi="['ds:apiLog:remove']">{{ t('common.button.delete') }}</el-button>
               </template>
             </el-table-column>
 
             <template #empty>
               <div class="emptyBg">
                 <img src="@/assets/system/images/no_data/noData.png" alt="" />
-                <p>暂无记录</p>
+                <p>{{ t('common.message.noRecord') }}</p>
               </div>
             </template>
           </el-table>
@@ -218,7 +218,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="状态" prop="status">
+            <el-form-item :label="t('common.texts.status')" prop="status">
               <el-radio-group v-model="form.status">
                 <el-radio v-for="dict in ds_api_log_res_status" :key="dict.value" :label="dict.value">{{ dict.label
                 }}</el-radio>
@@ -228,16 +228,16 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="备注" prop="REMARK">
-              <el-input v-model="form.REMARK" placeholder="请输入备注" />
+            <el-form-item :label="t('common.texts.remark')" prop="REMARK">
+              <el-input v-model="form.REMARK" :placeholder="t('common.form.remarkPlaceholder')" />
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="cancel">取 消</el-button>
-          <el-button type="primary" size="mini" @click="submitForm">确 定</el-button>
+          <el-button size="mini" @click="cancel">{{ t('common.button.cancel') }}</el-button>
+          <el-button type="primary" size="mini" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -322,7 +322,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="状态" prop="status">
+            <el-form-item :label="t('common.texts.status')" prop="status">
               <dict-tag :options="ds_api_log_res_status" :value="form.status" />
             </el-form-item>
           </el-col>
@@ -330,7 +330,7 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="cancel">关 闭</el-button>
+          <el-button size="mini" @click="cancel">{{ t('common.button.close') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -356,8 +356,8 @@
       </el-upload>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="upload.open = false">取 消</el-button>
-          <el-button type="primary" @click="submitFileForm">确 定</el-button>
+          <el-button @click="upload.open = false">{{ t('common.button.cancel') }}</el-button>
+          <el-button type="primary" @click="submitFileForm">{{ t('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -365,6 +365,7 @@
 </template>
 
 <script setup name="ApiLog">
+import { useI18n } from 'vue-i18n'
 import {
   listApiLog,
   getApiLog,
@@ -379,6 +380,7 @@ import { da } from "element-plus/es/locale/index.mjs";
 import useDefaultLang from "@/composables/useDefaultLang";
 
 const { td } = useDefaultLang();
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { ds_api_log_res_status, ds_api_bas_info_api_method_type } = proxy.useDict(
   'ds_api_log_res_status',
@@ -389,16 +391,16 @@ const apiLogList = ref([]);
 
 // 列显隐信息
 const columns = ref([
-  { key: 1, label: "编号", visible: true },
+  { key: 1, label: t('common.texts.number'), visible: true },
   { key: 2, label: "API服务名称", visible: true },
   { key: 3, label: "API服务类目", visible: true },
   { key: 4, label: "调用者IP", visible: true },
   { key: 5, label: "调用接口地址", visible: true },
   { key: 6, label: "调用数据量", visible: true },
   { key: 7, label: "调用耗时(秒)", visible: true },
-  { key: 8, label: "状态", visible: true },
+  { key: 8, label: t('common.texts.status'), visible: true },
   { key: 9, label: "调用时间", visible: true },
-  { key: 10, label: "操作", visible: true },
+  { key: 10, label: t('common.texts.operation'), visible: true },
 ]);
 
 const getColumnVisibility = (key) => {
@@ -456,7 +458,6 @@ const data = reactive({
 });
 
 const { queryParams, form, rules } = toRefs(data);
-
 
 function handleNodeClick(data) {
   queryParams.value.catCode = data.code;
@@ -620,7 +621,7 @@ function submitForm() {
       if (form.value.ID != null) {
         updateApiLog(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("修改成功");
+            proxy.$modal.msgSuccess(t('common.message.editSuccess'));
             open.value = false;
             getList();
           })
@@ -628,7 +629,7 @@ function submitForm() {
       } else {
         addApiLog(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("新增成功");
+            proxy.$modal.msgSuccess(t('common.message.addSuccess'));
             open.value = false;
             getList();
           })
@@ -648,7 +649,7 @@ function handleDelete(row) {
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
     })
     .catch(() => { });
 }

@@ -40,7 +40,7 @@
         <el-row :gutter="2">
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">编号</div>
+              <div class="infotop-row-lable">{{ t('common.texts.number') }}</div>
               <div class="infotop-row-value">{{ clientDetail.id }}</div>
             </div>
           </el-col>
@@ -62,7 +62,7 @@
           </el-col>
           <el-col :span="24" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">描述</div>
+              <div class="infotop-row-lable">{{ t('common.texts.description') }}</div>
               <div class="infotop-row-value">
                 <span class="ellipsis-2" :title="clientDetail.description">{{ clientDetail.description || '-' }}</span>
               </div>
@@ -70,7 +70,7 @@
           </el-col>
           <el-col :span="24">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">备注</div>
+              <div class="infotop-row-lable">{{ t('common.texts.remark') }}</div>
               <div class="infotop-row-value">
                 <span class="ellipsis" :title="clientDetail.remark">{{ clientDetail.remark || '-' }}</span>
               </div>
@@ -93,15 +93,17 @@
 
     </div>
 
-
   </div>
 </template>
 
 <script setup name="Client">
+import { useI18n } from 'vue-i18n'
 import { getClient } from "@/api/ds/client/client";
 import { useRoute } from 'vue-router';
 import info from "@/views/ds/client/detail/info.vue";
 import api from "@/views/ds/client/detail/api.vue";
+
+const { t } = useI18n();
 const noDataImg = new URL('@/assets/system/images/D.png', import.meta.url).href
 
 const { proxy } = getCurrentInstance();

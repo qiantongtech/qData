@@ -54,10 +54,10 @@
             </el-form-item>
             <el-form-item>
               <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
               </el-button>
               <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-                <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
               </el-button>
             </el-form-item>
           </el-form>
@@ -68,7 +68,7 @@
               <el-col :span="1.5">
                 <el-button type="primary" plain @click="routeTo('/da/quality/qualityTask/add', { row: null, })"
                   v-hasPermi="['da:qualityTask:add']" @mousedown="(e) => e.preventDefault()">
-                  <i class="iconfont-mini icon-xinzeng mr5"></i>新增
+                  <i class="iconfont-mini icon-xinzeng mr5"></i>{{ t('common.button.add') }}
                 </el-button>
               </el-col>
             </el-row>
@@ -78,7 +78,7 @@
           </div>
           <el-table stripe v-loading="loading" :data="DppQualityTaskEvaluateList" :default-sort="defaultSort"
             @sort-change="handleSortChange">
-            <el-table-column v-if="getColumnVisibility(1)" label="编号" align="center" prop="id" width="80" />
+            <el-table-column v-if="getColumnVisibility(1)" :label="t('common.texts.number')" align="center" prop="id" width="80" />
             <el-table-column v-if="getColumnVisibility(2)" label="任务名称" align="left" prop="taskName"
               :show-overflow-tooltip="{ effect: 'light' }" width="200">
               <template #default="scope">
@@ -91,7 +91,7 @@
                 {{ scope.row.catName || '-' }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(4)" label="描述" width="200" align="left" prop="description"
+            <el-table-column v-if="getColumnVisibility(4)" :label="t('common.texts.description')" width="200" align="left" prop="description"
               :show-overflow-tooltip="{ effect: 'light' }">
               <template #default="scope">
                 {{ scope.row.description || '-' }}
@@ -115,7 +115,6 @@
               </template>
             </el-table-column>
 
-
             <el-table-column v-if="getColumnVisibility(8)" label="调度周期" align="center" prop="cycle"
               :show-overflow-tooltip="{ effect: 'light' }" width="240">
               <template #default="scope">
@@ -128,13 +127,13 @@
                 {{ parseTime(scope.row.lastExecuteTime, '{y}-{m}-{d} {h}:{i}') || '-' }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(10)" width="120" label="创建人" align="center" prop="createBy"
+            <el-table-column v-if="getColumnVisibility(10)" width="120" :label="t('common.texts.createdBy')" align="center" prop="createBy"
               :show-overflow-tooltip="{ effect: 'light' }">
               <template #default="scope">
                 {{ scope.row.createBy || '-' }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(11)" label="创建时间" align="center" prop="createTime" width="150"
+            <el-table-column v-if="getColumnVisibility(11)" :label="t('common.texts.createdTime')" align="center" prop="createTime" width="150"
               sortable="custom" column-key="create_time" :sort-orders="['descending', 'ascending']">
               <template #default="scope">
                 <span>{{
@@ -145,7 +144,7 @@
             <el-table-column v-if="getColumnVisibility(12)" align="center" prop="status" width="150">
               <template #header>
                 <div class="justify-center" style="display: flex; align-items: center; justify-content: center;">
-                  <span>状态</span>
+                  <span>{{ t('common.texts.status') }}</span>
                   <el-tooltip effect="light" content="状态开启 = 任务上线 + 执行调度计划。请合理制定调度周期。" placement="top">
                     <el-icon class="tip-icon" style="margin-left: 4px;">
                       <InfoFilled />
@@ -160,14 +159,14 @@
                 </el-switch>
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(13)" label="备注" width="200" align="left" prop="remark"
+            <el-table-column v-if="getColumnVisibility(13)" :label="t('common.texts.remark')" width="200" align="left" prop="remark"
               :show-overflow-tooltip="{ effect: 'light' }">
               <template #default="scope">
                 {{ scope.row.remark || '-' }}
               </template>
             </el-table-column>
 
-            <el-table-column v-if="getColumnVisibility(14)" label="操作" align="center"
+            <el-table-column v-if="getColumnVisibility(14)" :label="t('common.texts.operation')" align="center"
               class-name="small-padding fixed-width" fixed="right" width="200">
               <template #default="scope">
                 <!--  :disabled="scope.row.status == 1" -->
@@ -180,11 +179,11 @@
                     ...scope.row,
                     info: true,
                   })
-                  " v-hasPermi="['da:qualityTask:info']">详情</el-button>
+                  " v-hasPermi="['da:qualityTask:info']">{{ t('common.button.details') }}</el-button>
 
                 <el-popover placement="bottom" :width="150" trigger="click">
                   <template #reference>
-                    <el-button link type="primary" icon="ArrowDown">更多</el-button>
+                    <el-button link type="primary" icon="ArrowDown">{{ t('common.button.more') }}</el-button>
                   </template>
                   <div style="width: 100px" class="butgdlist">
                     <el-button link type="primary" icon="VideoPlay" style="padding-left: 14px"
@@ -193,7 +192,7 @@
                     <el-button link type="primary" icon="Stopwatch" @click="handleDataView(scope.row)"
                       v-hasPermi="['da:qualityTask:edit']">执行记录</el-button>
                     <el-button link type="danger" icon="Delete" :disabled="scope.row.status != 1"
-                      @click="handleDelete(scope.row)" v-hasPermi="['da:qualityTask:remove']">删除</el-button>
+                      @click="handleDelete(scope.row)" v-hasPermi="['da:qualityTask:remove']">{{ t('common.button.delete') }}</el-button>
                     <el-button link icon="Operation" @click="handleJobLog(scope.row)" type="primary"
                       :disabled="scope.row.status != 1" v-hasPermi="['da:qualityTask:schedule']">调度周期</el-button>
                   </div>
@@ -202,7 +201,7 @@
             <template #empty>
               <div class="emptyBg">
                 <img src="@/assets/system/images/no_data/noData.png" alt="" />
-                <p>暂无记录</p>
+                <p>{{ t('common.message.noRecord') }}</p>
               </div>
             </template>
           </el-table>
@@ -229,6 +228,7 @@
 </template>
 
 <script setup name="QualityTask">
+import { useI18n } from 'vue-i18n'
 import { treeData } from "./data.js";
 import {
   createEtlTaskFront
@@ -252,6 +252,8 @@ import {
   updateDaDiscoveryTaskCronExpression
 } from "@/api/da/quality/qualityTask";;
 
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { da_discovery_task_status, dpp_etl_task_execution_type, datasource_type, dpp_etl_task_process_type } =
   proxy.useDict(
@@ -304,7 +306,7 @@ const handleSave = (form) => {
   }
   createEtlTaskFront(parms).then((res) => {
     if (res.code == 200) {
-      proxy.$modal.msgSuccess("操作成功");
+      proxy.$modal.msgSuccess(t('common.message.msgOpSuccess'));
       getList();
     }
   })
@@ -357,7 +359,7 @@ function handleStatusChange(row, e) {
         status: Number(row.status)
       })
         .then((response) => {
-          proxy.$modal.msgSuccess("操作成功");
+          proxy.$modal.msgSuccess(t('common.message.msgOpSuccess'));
         })
         .catch((error) => {
           row.status = row.status === "1" ? "0" : "1";
@@ -378,7 +380,7 @@ function crontabFill(value) {
     status: '1',
     id: Number(row.value.id),
   }).then((response) => {
-    proxy.$modal.msgSuccess("操作成功");
+    proxy.$modal.msgSuccess(t('common.message.msgOpSuccess'));
     getList();
   });
 }
@@ -408,20 +410,20 @@ function handleDataView(row) {
 }
 // 列显隐信息
 const columns = ref([
-  { key: 1, label: "编号", visible: true },
+  { key: 1, label: t('common.texts.number'), visible: true },
   { key: 2, label: "任务名称", visible: true },
   { key: 3, label: "所属类目", visible: true },
-  { key: 4, label: "描述", visible: true },
+  { key: 4, label: t('common.texts.description'), visible: true },
   { key: 5, label: "稽查对象数", visible: true },
   { key: 6, label: "稽查规则数", visible: true },
   { key: 7, label: "执行策略", visible: true },
   { key: 8, label: "调度周期", visible: true },
   { key: 9, label: "上次执行时间", visible: true },
-  { key: 10, label: "创建人", visible: true },
-  { key: 11, label: "创建时间", visible: true },
-  { key: 12, label: "状态", visible: true },
-  { key: 13, label: "备注", visible: true },
-  { key: 14, label: "操作", visible: true },
+  { key: 10, label: t('common.texts.createdBy'), visible: true },
+  { key: 11, label: t('common.texts.createdTime'), visible: true },
+  { key: 12, label: t('common.texts.status'), visible: true },
+  { key: 13, label: t('common.texts.remark'), visible: true },
+  { key: 14, label: t('common.texts.operation'), visible: true },
 ]);
 
 const getColumnVisibility = (key) => {
@@ -453,7 +455,6 @@ const data = reactive({
 const { queryParams, form, rules } = toRefs(data);
 
 
-
 function getList() {
   loading.value = true;
   queryParams.value.projectCode = userStore.projectCode;
@@ -464,12 +465,10 @@ function getList() {
     loading.value = false;
   });
 
-
   // getDppQualityTask(23).then(r => {
   //   console.log(r, "999999999")
   // })
 }
-
 
 /** 搜索按钮操作 */
 function handleQuery() {
@@ -497,7 +496,7 @@ function handleDelete(row) {
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
     })
     .catch(() => { });
 }

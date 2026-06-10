@@ -54,7 +54,7 @@
         </el-form-item>
       </el-col>
       <el-col :span="24">
-        <el-form-item label="备注" prop="remark">
+        <el-form-item :label="t('common.texts.remark')" prop="remark">
           <el-input type="textarea" :rows="3" v-model="info.remark"></el-input>
         </el-form-item>
       </el-col>
@@ -63,7 +63,9 @@
 </template>
 
 <script setup>
-defineProps({
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n();defineProps({
   info: {
     type: Object,
     default: null

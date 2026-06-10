@@ -88,8 +88,8 @@
         </el-row>
         <el-row :gutter="20">
             <el-col :span="24">
-                <el-form-item label="描述" prop="description">
-                    <el-input v-model="form1.description" type="textarea" placeholder="请输入描述" />
+                <el-form-item :label="t('common.texts.description')" prop="description">
+                    <el-input v-model="form1.description" type="textarea" :placeholder="t('common.form.descriptionPlaceholder')" />
                 </el-form-item>
             </el-col>
         </el-row>
@@ -125,7 +125,7 @@
                 </el-form-item>
             </el-col>
             <el-col :span="12">
-                <el-form-item label="状态" prop="status">
+                <el-form-item :label="t('common.texts.status')" prop="status">
                     <el-radio-group v-model="form1.status">
                         <el-radio v-for="dict in ds_api_status" :key="dict.value" :value="dict.value">{{
                             dict.label
@@ -150,7 +150,7 @@
         </el-row>
         <el-row :gutter="20">
             <el-col :span="24">
-                <el-form-item label="备注" prop="remark">
+                <el-form-item :label="t('common.texts.remark')" prop="remark">
                     <el-input v-model="form1.remark" type="textarea" placeholder="请输入内容" />
                 </el-form-item>
             </el-col>
@@ -159,7 +159,10 @@
 </template>
 
 <script setup name="base">
+import { useI18n } from 'vue-i18n'
 import { listAttApiCat } from '@/api/ds/apiCat/apiCat';
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const {
     ds_api_bas_info_res_data_type,

@@ -41,16 +41,16 @@
       </div>
       <div class="bullshit">
         <div class="bullshit__oops">
-          404错误!
+          {{ t('common.error.findPage') }}
         </div>
         <div class="bullshit__headline">
           {{ message }}
         </div>
         <div class="bullshit__info">
-          对不起，您正在寻找的页面不存在。尝试检查URL的错误，然后按浏览器上的刷新按钮或尝试在我们的应用程序中找到其他内容。
+          {{ t('common.error.findPageInfo') }}
         </div>
         <router-link to="/index" class="bullshit__return-home">
-          返回首页
+          {{ t('common.button.returnHome') }}
         </router-link>
       </div>
     </div>
@@ -58,8 +58,10 @@
 </template>
 
 <script setup>
-let message = computed(() => {
-  return '找不到网页！'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n();let message = computed(() => {
+  return t('common.error.findPage')
 })
 </script>
 

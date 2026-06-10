@@ -33,7 +33,7 @@
 <template>
     <el-dialog v-model="visibleDialog" draggable class="medium-dialog" :title="title" destroy-on-close>
         <el-table stripe height="580px" v-loading="loading" :data="jobLogList">
-            <el-table-column width="150" label="编号" align="left" prop="id" />
+            <el-table-column width="150" :label="t('common.texts.number')" align="left" prop="id" />
             <el-table-column :show-overflow-tooltip="{ effect: 'light' }" label="任务名称" align="left" width="300"
                 prop="taskInstanceName">
                 <template #default="scope">
@@ -88,7 +88,7 @@
                     {{ scope.row.personChargeName || '-' }}
                 </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" width="200">
+            <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="200">
                 <template #default="scope">
                     <el-button link type="primary" icon="View" @click="logDetailCatList(scope.row)">查看日志</el-button>
                     <el-button link type="warning" @click="handleExport(scope.row)" icon="Download"
@@ -99,7 +99,7 @@
             </el-table-column>
             <template #empty>
                 <div class="emptyBg">
-                    <p>暂无记录</p>
+                    <p>{{ t('common.message.noRecord') }}</p>
                 </div>
             </template>
         </el-table>
@@ -107,8 +107,8 @@
             v-model:limit="queryParams.pageSize" @pagination="getList" />
         <template #footer>
             <div style="text-align: right">
-                <el-button @click="visibleDialog = false">关闭</el-button>
-                <!-- <el-button type="primary" @click="saveData">保存</el-button> -->
+                <el-button @click="visibleDialog = false">{{ t('common.button.close') }}</el-button>
+                <!-- <el-button type="primary" @click="saveData">{{ t('common.button.save') }}</el-button> -->
             </div>
         </template>
     </el-dialog>
@@ -117,7 +117,7 @@
         <div v-html="formattedText"></div>
         <template #footer>
             <div class="dialog-footer">
-                <el-button @click="open = false">关 闭</el-button>
+                <el-button @click="open = false">{{ t('common.button.close') }}</el-button>
             </div>
         </template>
     </el-dialog>
@@ -125,11 +125,14 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { defineProps, defineEmits, ref, computed, watch } from 'vue';
 import { listDppEtlTaskInstance } from '@/api/dpp/instance/job';
 import TaskLogDialog from "@/views/dpp/components/taskLog.vue";
 import { getRunTaskInstance, getLogByTaskInstanceId } from "@/api/dpp/task/index.js";
 import request from '@/utils/request';
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { dpp_etl_node_instance } = proxy.useDict('dpp_etl_node_instance');
 const { dpp_etl_node_type, dpp_etl_task_instance_command_type } = proxy.useDict(

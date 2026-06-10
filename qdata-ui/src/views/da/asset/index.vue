@@ -100,13 +100,13 @@
                 @click="handleQuery"
                 @mousedown="(e) => e.preventDefault()"
               >
-                <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
               </el-button>
               <el-button
                 @click="resetQuery"
                 @mousedown="(e) => e.preventDefault()"
               >
-                <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
               </el-button>
               <el-dropdown
                 @command="handleAdd"
@@ -394,7 +394,7 @@
                         @click="handleView(item)"
                       >
                         <img src="@/assets/da/asset2/btn (2).svg" alt="" />
-                        <span>详情</span>
+                        <span>{{ t('common.button.details') }}</span>
                       </div>
                       <!-- danger -->
                       <!--  -->
@@ -425,7 +425,7 @@
                       <el-dropdown>
                         <div class="form-btn">
                           <img src="@/assets/da/asset2/btn (3).svg" alt="" />
-                          <span>更多</span>
+                          <span>{{ t('common.button.more') }}</span>
                         </div>
                         <template #dropdown>
                           <el-dropdown-menu>
@@ -436,7 +436,7 @@
                                 type="primary"
                                 @click="handleUpdate(item)"
                               >
-                                <el-icon> <Edit /> </el-icon>修改
+                                <el-icon> <Edit /> </el-icon>{{ t('common.button.update') }}
                               </el-text>
                             </el-dropdown-item>
                             <el-dropdown-item
@@ -474,7 +474,7 @@
                                 type="danger"
                                 @click="handleDelete(item)"
                               >
-                                <el-icon> <Delete /> </el-icon>删除
+                                <el-icon> <Delete /> </el-icon>{{ t('common.button.delete') }}
                               </el-text>
                             </el-dropdown-item>
                           </el-dropdown-menu>
@@ -580,14 +580,14 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="状态" prop="status">
+            <el-form-item :label="t('common.texts.status')" prop="status">
               <div>
                 {{ form.status }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="描述" prop="description">
+            <el-form-item :label="t('common.texts.description')" prop="description">
               <div>
                 {{ form.description }}
               </div>
@@ -596,7 +596,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="备注" prop="remark">
+            <el-form-item :label="t('common.texts.remark')" prop="remark">
               <div>
                 {{ form.remark }}
               </div>
@@ -606,7 +606,7 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="cancel">关 闭</el-button>
+          <el-button size="mini" @click="cancel">{{ t('common.button.close') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -662,8 +662,8 @@
       </el-col>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="tagMultiple = false">取 消</el-button>
-          <el-button type="primary" @click="submitTag">确 定</el-button>
+          <el-button @click="tagMultiple = false">{{ t('common.button.cancel') }}</el-button>
+          <el-button type="primary" @click="submitTag">{{ t('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -719,7 +719,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="描述">
+            <el-form-item :label="t('common.texts.description')">
               <el-input
                 type="textarea"
                 maxlength="500个字符"
@@ -774,8 +774,8 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="openApply = false">取 消</el-button>
-          <el-button type="primary" @click="submitApplyForm">确 定</el-button>
+          <el-button @click="openApply = false">{{ t('common.button.cancel') }}</el-button>
+          <el-button type="primary" @click="submitApplyForm">{{ t('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -784,6 +784,7 @@
 </template>
 
 <script setup name="Asset">
+import { useI18n } from 'vue-i18n'
 import {
   listDaAsset,
   getDaAsset,
@@ -808,6 +809,8 @@ import { listDict } from "@/api/att/tag/tag.js";
 import { addAttTagAssetRel } from "@/api/att/tag/tagAssetRel.js";
 import { formatHierarchyDisplayName } from "@/utils/dm/utils";
 import { usePageRefresh } from "@/composables/usePageRefresh";
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { da_assets_status, da_asset_type, table_type } = proxy.useDict(
   "da_assets_status",
@@ -849,16 +852,16 @@ const titleBtns = [
 ];
 // 列显隐信息
 const columns = ref([
-  { key: 0, label: "编号", visible: true },
+  { key: 0, label: t('common.texts.number'), visible: true },
   { key: 1, label: "资产名称", visible: true },
   { key: 2, label: "资产描述", visible: true },
   { key: 3, label: "资产类目", visible: true },
   { key: 8, label: "资产类型", visible: true },
   { key: 4, label: "主题名称", visible: true },
   { key: 5, label: "数据量(条)", visible: true },
-  { key: 6, label: "状态", visible: true },
-  { key: 7, label: "创建时间", visible: true },
-  { key: 8, label: "更新时间", visible: true },
+  { key: 6, label: t('common.texts.status'), visible: true },
+  { key: 7, label: t('common.texts.createdTime'), visible: true },
+  { key: 8, label: t('common.texts.updatedTime'), visible: true },
 ]);
 let themeList = ref([]);
 async function getAssetThemeList() {
@@ -1147,7 +1150,7 @@ function handleDelete(row) {
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
     })
     .catch(() => {});
 }
@@ -1212,7 +1215,7 @@ function submitTag() {
 
   addAttTagAssetRel(map).then((res) => {
     tagMultiple.value = false;
-    proxy.$modal.msgSuccess("操作成功");
+    proxy.$modal.msgSuccess(t('common.message.msgOpSuccess'));
     getList();
   });
   // proxy.$modal

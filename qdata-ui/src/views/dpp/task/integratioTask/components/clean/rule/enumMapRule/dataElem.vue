@@ -70,7 +70,7 @@
         >
           <el-table-column
             v-if="getColumnVisibility(0)"
-            label="编号"
+            :label="t('common.texts.number')"
             align="left"
             prop="id"
             width="80"
@@ -116,7 +116,7 @@
             }}</template>
           </el-table-column>
           <el-table-column
-            label="操作"
+            :label="t('common.texts.operation')"
             align="center"
             class-name="small-padding fixed-width"
             fixed="right"
@@ -161,14 +161,14 @@
     <!-- 底部按钮 -->
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="handleCancel">取 消</el-button>
+        <el-button @click="handleCancel">{{ t('common.button.cancel') }}</el-button>
         <el-button
           type="primary"
           @click="handleConfirm"
           :disabled="!selectedRow"
           :loading="loading"
         >
-          保 存
+          {{ t('common.button.save') }}
         </el-button>
       </div>
     </template>
@@ -177,6 +177,7 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { ref, reactive } from "vue";
 const emit = defineEmits(["confirm"]);
 import DeptTree from "@/components/DeptTree/tree.vue";
@@ -187,6 +188,8 @@ import { listAttDataElemCat } from "@/api/att/cat/dataElemCat/dataElemCat.js";
 const { proxy } = getCurrentInstance();
 const { dp_data_elem_code_type } = proxy.useDict("dp_data_elem_code_type");
 import CodeValueInput from "./dataElemDetail.vue";
+
+const { t } = useI18n();
 const deptOptions = ref(undefined);
 const leftWidth = ref(240); // 初始左侧宽度
 const isResizing = ref(false); // 判断是否正在拖拽

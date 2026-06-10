@@ -107,10 +107,10 @@
             @click="handleQuery"
             @mousedown="(e) => e.preventDefault()"
           >
-            <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+            <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
           </el-button>
           <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-            <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+            <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
           </el-button>
         </el-form-item>
       </el-form>
@@ -125,12 +125,12 @@
               icon="Plus"
               @click="handleAdd"
               v-hasPermi="['gen:dept:add']"
-              >新增</el-button
+              >{{ t('common.button.add') }}</el-button
             >
           </el-col>
           <el-col :span="1.5">
             <el-button type="info" plain icon="Sort" @click="toggleExpandAll"
-              >展开/折叠</el-button
+              >{{ t('common.button.un_fold') }}</el-button
             >
           </el-col>
         </el-row>
@@ -171,7 +171,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="操作"
+          :label="t('common.texts.operation')"
           align="center"
           class-name="small-padding fixed-width"
         >
@@ -182,7 +182,7 @@
               icon="Edit"
               @click="handleUpdate(scope.row)"
               v-hasPermi="['gen:dept:edit']"
-              >修改</el-button
+              >{{ t('common.button.update') }}</el-button
             >
             <el-button
               link
@@ -190,7 +190,7 @@
               icon="Plus"
               @click="handleAdd(scope.row)"
               v-hasPermi="['gen:dept:add']"
-              >新增</el-button
+              >{{ t('common.button.add') }}</el-button
             >
             <el-button
               link
@@ -198,7 +198,7 @@
               icon="Delete"
               @click="handleDelete(scope.row)"
               v-hasPermi="['gen:dept:remove']"
-              >删除</el-button
+              >{{ t('common.button.delete') }}</el-button
             >
           </template>
         </el-table-column>
@@ -279,7 +279,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="备注" prop="remark">
+            <el-form-item :label="t('common.texts.remark')" prop="remark">
               <el-input
                 v-model="form.remark"
                 type="textarea"
@@ -291,8 +291,8 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button type="primary" @click="submitForm">确 定</el-button>
-          <el-button @click="cancel">取 消</el-button>
+          <el-button type="primary" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
+          <el-button @click="cancel">{{ t('common.button.cancel') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -300,6 +300,7 @@
 </template>
 
 <script setup name="Dept">
+import { useI18n } from 'vue-i18n'
 import {
   listDept,
   getDept,
@@ -308,6 +309,7 @@ import {
   updateDept,
 } from "@/api/example/gen/dept";
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { sys_notice_status } = proxy.useDict("sys_notice_status");
 
@@ -488,13 +490,13 @@ function submitForm() {
     if (valid) {
       if (form.value.id != null) {
         updateDept(form.value).then((response) => {
-          proxy.$modal.msgSuccess("修改成功");
+          proxy.$modal.msgSuccess(t('common.message.editSuccess'));
           open.value = false;
           getList();
         });
       } else {
         addDept(form.value).then((response) => {
-          proxy.$modal.msgSuccess("新增成功");
+          proxy.$modal.msgSuccess(t('common.message.addSuccess'));
           open.value = false;
           getList();
         });
@@ -512,7 +514,7 @@ function handleDelete(row) {
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
     })
     .catch(() => {});
 }

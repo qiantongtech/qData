@@ -1,3 +1,4 @@
+import { i18n } from '@/plugins/vueI18n'
 /*
  * Copyright © 2025 Qiantong Technology Co., Ltd.
  * qData Data Middle Platform (Open Source Edition)
@@ -238,11 +239,11 @@ export const toolbar = [
   {
     id: "export",
     icon: "toolbar (2).png",
-    tip: "导出",
+    tip: i18n.global.t('common.button.export'),
   },
   {
     id: "reset",
     icon: "toolbar (3).png",
-    tip: "重置",
+    tip: i18n.global.t('common.button.reset'),
   },
 ];

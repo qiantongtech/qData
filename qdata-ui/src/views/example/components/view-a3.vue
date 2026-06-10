@@ -86,7 +86,7 @@
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" :icon="Search" @click="getChartData">
-                        查询
+                        {{ t('common.button.query') }}
                     </el-button>
                 </el-form-item>
             </el-form>
@@ -109,11 +109,12 @@
 </template>
 
 <script setup name="DetailPopResViewA3">
-
-    import { Search } from '@element-plus/icons-vue';
+import { useI18n } from 'vue-i18n'
+import { Search } from '@element-plus/icons-vue';
     import moment from 'moment';
 
-    const params = ref({
+const { t } = useI18n();
+const params = ref({
         startDate: moment().subtract(7, 'days').format('YYYY-MM-DD'),
         endDate: moment().format('YYYY-MM-DD'),
         years: ['2024', '2023'],

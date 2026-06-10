@@ -211,26 +211,28 @@
     </el-form>
     <template #footer>
       <el-button @click="renameDialogVisible = false" :disabled="renameLoading"
-        >取消</el-button
+        >{{ t('common.button.cancel') }}</el-button
       >
       <el-button
         type="primary"
         @click="handleRenameConfirm"
         :loading="renameLoading"
       >
-        确定
+        {{ t('common.button.confirm') }}
       </el-button>
     </template>
   </el-dialog>
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { ChatConversationApi } from "@/api/ai/chat/conversation";
 import roleAvatarDefaultImg from "@/assets/ai/gpt-new.svg";
 import roleAvatartActiveImg from "@/assets/ai/gpt-new.svg";
 import useUserStore from "@/store/system/user";
 import moment from "moment/moment.js";
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const message = proxy.$modal; // 消息弹窗
 const userStore = useUserStore();

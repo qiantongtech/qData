@@ -70,7 +70,6 @@
             <el-input v-model.number="form.index" type="number" placeholder="请输入索引" :min="0" />
           </el-form-item>
 
-
         </el-col>
       </el-row>
     </el-form>
@@ -78,16 +77,19 @@
     <template #footer>
       <div style="text-align: right">
         <!-- 关闭按钮 -->
-        <el-button @click="closeDialog">关闭</el-button>
+        <el-button @click="closeDialog">{{ t('common.button.close') }}</el-button>
         <!-- 保存按钮 -->
-        <el-button type="primary" @click="saveData">保存</el-button>
+        <el-button type="primary" @click="saveData">{{ t('common.button.save') }}</el-button>
       </div>
     </template>
   </el-dialog>
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { defineProps, defineEmits, ref, computed, watch } from "vue";
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { column_type } = proxy.useDict("column_type");
 

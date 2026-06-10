@@ -93,11 +93,11 @@
             "
           />
         </el-form-item>
-        <el-form-item label="状态" prop="validFlag">
+        <el-form-item :label="t('common.texts.status')" prop="validFlag">
           <el-select
             class="el-form-input-width"
             v-model="queryParams.validFlag"
-            placeholder="请选择状态"
+            :placeholder="t('common.form.statusPlaceholder')"
             clearable
           >
             <el-option label="启用" :value="true" />
@@ -106,13 +106,13 @@
         </el-form-item>
         <el-form-item class="search-btns">
           <el-button type="primary" plain @click="handleQuery">
-            <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+            <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
           </el-button>
           <el-button @click="resetQuery">
-            <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+            <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
           </el-button>
           <el-button type="primary" plain @click="handleAdd">
-            <i class="iconfont-mini icon-xinzeng mr5"></i>新增
+            <i class="iconfont-mini icon-xinzeng mr5"></i>{{ t('common.button.add') }}
           </el-button>
         </el-form-item>
       </el-form>
@@ -147,7 +147,7 @@
                     icon="View"
                     @click="handleDetail(item)"
                     v-hasPermi="['dg:dataleve:query']"
-                    >详情</el-button
+                    >{{ t('common.button.details') }}</el-button
                   >
                   <el-button
                     v-if="!item.colors"
@@ -158,7 +158,7 @@
                     :disabled="item.status == 1"
                     v-hasPermi="['dg:dataleve:edit']"
                     style="padding-right: 25px"
-                    >修改</el-button
+                    >{{ t('common.button.update') }}</el-button
                   >
                   <el-button
                     v-if="!item.colors"
@@ -169,7 +169,7 @@
                     @click="handleDelete(item)"
                     style="padding-right: 25px"
                     v-hasPermi="['dg:dataleve:remove']"
-                    >删除</el-button
+                    >{{ t('common.button.delete') }}</el-button
                   >
                 </div>
               </el-popover>
@@ -180,7 +180,7 @@
                 <span class="info-value">{{ item.sensitiveLevel ?? "-" }}</span>
               </div>
               <div class="info-row">
-                <span class="info-label">更新人</span>
+                <span class="info-label">{{ t('common.texts.updatedBy') }}</span>
                 <span
                   class="info-value ellipsis"
                   :title="item.updateBy || item.updateUser || item.updateName"
@@ -190,7 +190,7 @@
                 >
               </div>
               <div class="info-row">
-                <span class="info-label">更新时间</span>
+                <span class="info-label">{{ t('common.texts.updatedTime') }}</span>
                 <span
                   class="info-value ellipsis"
                   :title="
@@ -274,34 +274,34 @@
           <div class="form-readonly">{{ form.sensitiveLevel ?? "-" }}</div>
         </el-form-item>
 
-        <el-form-item label="状态" prop="validFlag">
+        <el-form-item :label="t('common.texts.status')" prop="validFlag">
           <el-tag v-if="form.validFlag === true" type="primary">启用</el-tag>
           <el-tag v-else-if="form.validFlag === false" type="danger"
             >禁用</el-tag
           >
         </el-form-item>
-        <el-form-item label="描述" prop="description" class="row-full">
+        <el-form-item :label="t('common.texts.description')" prop="description" class="row-full">
           <div class="form-readonly textarea">
             {{ form.description || form.remark || form.levelDesc || "-" }}
           </div>
         </el-form-item>
-        <el-form-item label="备注" prop="remark" class="row-full">
+        <el-form-item :label="t('common.texts.remark')" prop="remark" class="row-full">
           <div class="form-readonly textarea">{{ form.remark ?? "-" }}</div>
         </el-form-item>
-        <el-form-item label="创建人" prop="createBy">
+        <el-form-item :label="t('common.texts.createdBy')" prop="createBy">
           <div class="form-readonly">{{ form.createBy ?? "-" }}</div>
         </el-form-item>
-        <el-form-item label="创建时间" prop="createTime">
+        <el-form-item :label="t('common.texts.createdTime')" prop="createTime">
           <div class="form-readonly">
             {{ parseTime(form.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
         </el-form-item>
-        <el-form-item label="更新人" prop="updateBy">
+        <el-form-item :label="t('common.texts.updatedBy')" prop="updateBy">
           <div class="form-readonly">
             {{ form.updateBy || form.updateUser || form.updateName || "-" }}
           </div>
         </el-form-item>
-        <el-form-item label="更新时间" prop="updateTime">
+        <el-form-item :label="t('common.texts.updatedTime')" prop="updateTime">
           <div class="form-readonly">
             {{
               parseTime(
@@ -314,7 +314,7 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="cancel">关 闭</el-button>
+          <el-button @click="cancel">{{ t('common.button.close') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -322,6 +322,7 @@
 </template>
 
 <script setup name="DataLevel">
+import { useI18n } from 'vue-i18n'
 import {
   delDataLevel,
   getDataLevel,
@@ -332,6 +333,7 @@ import moreIcon from "@/assets/dg/safety/dataLevel/more.svg";
 import LevelBadge from "./components/LevelBadge.vue";
 import DataLevelDialog from "./components/DataLevelDialog.vue";
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 
 const loading = ref(false);
@@ -450,7 +452,7 @@ function handleDelete(row) {
     )
     .then(() => delDataLevel(row.id))
     .then(() => {
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
       getList();
     })
     .catch(() => {});

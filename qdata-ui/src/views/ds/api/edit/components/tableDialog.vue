@@ -64,14 +64,17 @@
         </el-table>
         <template #footer>
             <div class="dialog-footer">
-                <el-button @click="handleClose">取消</el-button>
-                <el-button type="primary" @click="confirm">确定</el-button>
+                <el-button @click="handleClose">{{ t('common.button.cancel') }}</el-button>
+                <el-button type="primary" @click="confirm">{{ t('common.button.confirm') }}</el-button>
             </div>
         </template>
     </el-dialog>
 </template>
 
 <script setup name="AddList">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 
 const props = defineProps({
@@ -146,7 +149,6 @@ function echoSelected() { // 回显选中
         isInitialized.value = true;
     });
 }
-
 
 function confirm() {
     proxy.$emit("confirm", AddListRows.value);

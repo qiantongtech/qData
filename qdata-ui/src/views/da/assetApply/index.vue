@@ -64,10 +64,10 @@
 
             <el-form-item>
               <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
               </el-button>
               <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-                <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
               </el-button>
             </el-form-item>
           </el-form>
@@ -132,20 +132,20 @@
                 <dict-tag :options="da_asset_apply_status" :value="scope.row.status" />
               </template>
             </el-table-column>
-            <el-table-column label="操作" v-if="getColumnVisibility(9)" align="center"
+            <el-table-column :label="t('common.texts.operation')" v-if="getColumnVisibility(9)" align="center"
               class-name="small-padding fixed-width" fixed="right" width="140">
               <template #default="scope">
                 <el-button link v-if="scope.row.status == 1" type="primary" icon="Stamp"
                   @click="handleUpdate(scope.row)" v-hasPermi="['da:assetApply:edit']">审核</el-button>
                 <el-button link type="primary" icon="view" @click="handleDetail(scope.row)"
-                  v-hasPermi="['da:assetApply:edit']">详情</el-button>
+                  v-hasPermi="['da:assetApply:edit']">{{ t('common.button.details') }}</el-button>
               </template>
             </el-table-column>
 
             <template #empty>
               <div class="emptyBg">
                 <img src="@/assets/system/images/no_data/noData.png" alt="" />
-                <p>暂无记录</p>
+                <p>{{ t('common.message.noRecord') }}</p>
               </div>
             </template>
           </el-table>
@@ -258,8 +258,8 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="cancel">取 消</el-button>
-          <el-button type="primary" size="mini" @click="submitForm">确 定</el-button>
+          <el-button size="mini" @click="cancel">{{ t('common.button.cancel') }}</el-button>
+          <el-button type="primary" size="mini" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -377,7 +377,7 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="cancel">关 闭</el-button>
+          <el-button size="mini" @click="cancel">{{ t('common.button.close') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -403,8 +403,8 @@
       </el-upload>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="upload.open = false">取 消</el-button>
-          <el-button type="primary" @click="submitFileForm">确 定</el-button>
+          <el-button @click="upload.open = false">{{ t('common.button.cancel') }}</el-button>
+          <el-button type="primary" @click="submitFileForm">{{ t('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -412,6 +412,7 @@
 </template>
 
 <script setup name="AssetApply">
+import { useI18n } from 'vue-i18n'
 import {
   listDaAssetApply,
   getDaAssetApply,
@@ -423,6 +424,8 @@ import { listAttProject } from "@/api/att/project/project.js";
 import { getToken } from "@/utils/auth.js";
 import { listAttAssetCat } from "@/api/att/cat/assetCat/assetCat.js";
 import DeptTree from "@/components/DeptTree";
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { da_asset_apply_status, datasource_type } = proxy.useDict(
   "da_asset_apply_status",
@@ -440,7 +443,7 @@ const columns = ref([
   { key: 6, label: "申请时间", visible: true },
   { key: 7, label: "申请人", visible: true },
   { key: 8, label: "审核状态", visible: true },
-  { key: 9, label: "操作", visible: true },
+  { key: 9, label: t('common.texts.operation'), visible: true },
 ]);
 
 const getColumnVisibility = (key) => {
@@ -665,7 +668,7 @@ function submitForm() {
       if (form.value.id != null) {
         updateDaAssetApply(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("修改成功");
+            proxy.$modal.msgSuccess(t('common.message.editSuccess'));
             open.value = false;
             getList();
           })
@@ -673,7 +676,7 @@ function submitForm() {
       } else {
         addDaAssetApply(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("新增成功");
+            proxy.$modal.msgSuccess(t('common.message.addSuccess'));
             open.value = false;
             getList();
           })
@@ -693,7 +696,7 @@ function handleDelete(row) {
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
     })
     .catch(() => { });
 }

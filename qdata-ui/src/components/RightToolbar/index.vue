@@ -38,7 +38,7 @@
           <i class="iconfont icon-a-chaxunxianxing"></i>
         </el-button>
       </el-tooltip>
-      <el-tooltip class="item" effect="dark" content="刷新" placement="top">
+      <el-tooltip class="item" effect="dark" :content="t('common.button.refresh')" placement="top">
         <el-button circle @click="refresh()">
           <i class="iconfont icon-a-shuaxinxianxing"></i>
         </el-button>
@@ -68,6 +68,9 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n();
 const props = defineProps({
   /* 是否显示检索条件 */
   showSearch: {

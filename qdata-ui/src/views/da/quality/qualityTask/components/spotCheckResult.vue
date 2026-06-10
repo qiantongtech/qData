@@ -74,16 +74,18 @@
         </el-tabs>
 
         <template #footer>
-            <el-button @click="visible = false">关闭</el-button>
+            <el-button @click="visible = false">{{ t('common.button.close') }}</el-button>
         </template>
     </el-dialog>
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { validationErrorDataSql, validationValidDataSql } from '@/api/da/quality/qualityTask'
 
+const { t } = useI18n();
 const visible = ref(false)
 const activeTab = ref('problem')
 const loading = ref(false)

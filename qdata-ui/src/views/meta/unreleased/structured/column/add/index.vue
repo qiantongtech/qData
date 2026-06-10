@@ -191,7 +191,7 @@
                   </el-select>
                 </el-form-item> -->
 
-                <!-- <el-form-item label="状态" prop="status">
+                <!-- <el-form-item :label="t('common.texts.status')" prop="status">
                   <el-radio-group v-model="form.status">
                     <el-radio
                       v-for="dict in toValue(dicts.meta_task_status)"
@@ -203,11 +203,11 @@
                   </el-radio-group>
                 </el-form-item> -->
 
-                <el-form-item label="备注" class="row-full">
+                <el-form-item :label="t('common.texts.remark')" class="row-full">
                   <el-input
                     v-model="form.remark"
                     type="textarea"
-                    placeholder="请输入备注"
+                    :placeholder="t('common.form.remarkPlaceholder')"
                     :min-height="192"
                     show-word-limit
                     maxlength="500个字符"
@@ -327,11 +327,11 @@
                   />
                 </el-form-item>
 
-                <el-form-item label="描述" class="row-full">
+                <el-form-item :label="t('common.texts.description')" class="row-full">
                   <el-input
                     v-model="form.description"
                     type="textarea"
-                    placeholder="请输入描述"
+                    :placeholder="t('common.form.descriptionPlaceholder')"
                     :min-height="192"
                     show-word-limit
                     maxlength="500个字符"
@@ -356,7 +356,7 @@
           </div>
           <div class="emptyBg" v-else>
             <img src="@/assets/images/sys/error/no-data.png" alt="" />
-            <p>暂无记录</p>
+            <p>{{ t('common.message.noRecord') }}</p>
           </div>
         </div>
       </div>
@@ -365,6 +365,7 @@
 </template>
 
 <script setup name="AddColumn">
+import { useI18n } from 'vue-i18n'
 import {
   reactive,
   getCurrentInstance,
@@ -381,6 +382,7 @@ import { listDgSensitiveLevel } from "@/api/dg/compliance/sensitiveLevel";
 // import { getDgDataElemList } from "@/api/dg/standard/dataElem.js";
 import { useRouter } from "vue-router";
 
+const { t } = useI18n();
 const BASE_URL = "/meta/unreleased/structured/column";
 
 const DEFAULT_FORM = {

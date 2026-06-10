@@ -39,7 +39,7 @@
       :data="dpDataElemCodeList"
       :default-sort="defaultSort"
     >
-      <el-table-column label="编号" align="left" prop="id" width="80" />
+      <el-table-column :label="t('common.texts.number')" align="left" prop="id" width="80" />
       <el-table-column label="代码值" align="left" prop="codeValue" width="160">
         <template #default="scope">
           {{ scope.row.codeValue || "-" }}
@@ -55,13 +55,13 @@
           {{ scope.row.codeName || "-" }}
         </template>
       </el-table-column>
-      <el-table-column label="创建人" align="left" prop="createBy" width="160">
+      <el-table-column :label="t('common.texts.createdBy')" align="left" prop="createBy" width="160">
         <template #default="scope">
           {{ scope.row.createBy || "-" }}
         </template>
       </el-table-column>
       <el-table-column
-        label="创建时间"
+        :label="t('common.texts.createdTime')"
         align="left"
         prop="createTime"
         width="220"
@@ -73,7 +73,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="备注"
+        :label="t('common.texts.remark')"
         align="left"
         prop="remark"
         width="360"
@@ -103,17 +103,20 @@
     />
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="handleClose">关 闭</el-button>
+        <el-button size="mini" @click="handleClose">{{ t('common.button.close') }}</el-button>
       </div>
     </template>
   </el-dialog>
 </template>
 
 <script setup name="ComponentOne">
+import { useI18n } from 'vue-i18n'
 import {
   listDpDataElemCode,
   validateCodeValue,
 } from "@/api/dp/dataElem/dataElem.js";
+
+const { t } = useI18n();
 const route = useRoute();
 const { proxy } = getCurrentInstance();
 

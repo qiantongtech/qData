@@ -35,7 +35,7 @@
         <el-row :gutter="15" class="btn-style">
             <el-col :span="1.5">
                 <el-button type="primary" plain @click="handleAdd" @mousedown="(e) => e.preventDefault()">
-                    <i class="iconfont-mini icon-xinzeng mr5"></i>新增
+                    <i class="iconfont-mini icon-xinzeng mr5"></i>{{ t('common.button.add') }}
                 </el-button>
             </el-col>
         </el-row>
@@ -58,11 +58,11 @@
                 {{ scope.row.dictValue || '-' }}
             </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right">
+        <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right">
             <template #default="scope">
                 <!-- 修改时传递行索引，用于后续的 local 编辑 -->
-                <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row, scope.$index)">修改</el-button>
-                <el-button link type="danger" icon="Delete" @click="handleDelete(scope.$index)">删除</el-button>
+                <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row, scope.$index)">{{ t('common.button.update') }}</el-button>
+                <el-button link type="danger" icon="Delete" @click="handleDelete(scope.$index)">{{ t('common.button.delete') }}</el-button>
             </template>
         </el-table-column>
         <template #empty>
@@ -97,14 +97,17 @@
         </el-form>
         <template #footer>
             <div class="dialog-footer">
-                <el-button size="mini" @click="cancel">取 消</el-button>
-                <el-button type="primary" size="mini" @click="submitForm">确 定</el-button>
+                <el-button size="mini" @click="cancel">{{ t('common.button.cancel') }}</el-button>
+                <el-button type="primary" size="mini" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
             </div>
         </template>
     </el-dialog>
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const props = defineProps({
     row: { type: Object, default: () => ({}) },
@@ -124,7 +127,6 @@ watch(
     },
     { deep: true }
 );
-
 
 // 其他状态变量
 const loading = ref(false);
@@ -159,7 +161,7 @@ function reset() {
 function handleAdd() {
     reset();
     open.value = true;
-    title.value = '新增';
+    title.value = t('common.button.add');
 }
 
 /** 修改按钮操作 */
@@ -168,7 +170,7 @@ function handleUpdate(row, index) {
     form.value = { ...row, index };
     oldOriginalValue.value = row.originalValue;
     open.value = true;
-    title.value = '修改';
+    title.value = t('common.button.update');
 }
 
 /** 删除按钮操作 */
@@ -177,7 +179,7 @@ function handleDelete(index) {
         .then(() => {
             dpCodeMapList.value.splice(index, 1);
             total.value = dpCodeMapList.value.length;
-            proxy.$modal.msgSuccess('删除成功');
+            proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
             emit('dpCodeMapList', dpCodeMapList.value);
         })
         .catch(() => { });
@@ -197,10 +199,10 @@ function submitForm() {
             // 如果是修改操作
             if (form.value.index !== null && form.value.index !== undefined) {
                 dpCodeMapList.value.splice(form.value.index, 1, { ...form.value });
-                proxy.$modal.msgSuccess('修改成功');
+                proxy.$modal.msgSuccess(t('common.message.editSuccess'));
             } else {
                 dpCodeMapList.value.push({ ...form.value });
-                proxy.$modal.msgSuccess('新增成功');
+                proxy.$modal.msgSuccess(t('common.message.addSuccess'));
             }
             emit('dpCodeMapList', dpCodeMapList.value);
 

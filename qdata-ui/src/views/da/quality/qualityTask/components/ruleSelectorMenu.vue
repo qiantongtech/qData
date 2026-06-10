@@ -75,7 +75,7 @@
             </template>
 
             <template v-else>
-              <div class="empty-wrapper">暂无数据</div>
+              <div class="empty-wrapper">{{ t('common.message.noData') }}</div>
             </template>
           </div>
         </el-row>
@@ -85,6 +85,7 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import {
   Document,
   Menu,
@@ -94,6 +95,8 @@ import {
 } from "@element-plus/icons-vue";
 import { listAttAuditRule } from "@/api/att/rule/auditRule.js";
 import DeptTree from "@/components/DeptTree/tree.vue";
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { att_rule_audit_q_dimension } = proxy.useDict(
   "att_rule_audit_q_dimension"

@@ -54,7 +54,7 @@
                         <el-checkbox disabled v-model="scope.row.nullable" true-label="1" false-label="0" />
                     </template>
                 </el-table-column>
-                <el-table-column prop="paramComment" label="描述" align="center">
+                <el-table-column prop="paramComment" :label="t('common.texts.description')" align="center">
                     <template #default="scope">
                         {{ scope.row.paramComment || '-' }}
                     </template>
@@ -101,7 +101,7 @@
                 </el-table-column>
                 <el-table-column prop="fieldName" label="中文名称" align="center"
                     :show-overflow-tooltip="{ effect: 'light' }" />
-                <el-table-column prop="fieldComment" label="描述" align="center"
+                <el-table-column prop="fieldComment" :label="t('common.texts.description')" align="center"
                     :show-overflow-tooltip="{ effect: 'light' }">
                     <template #default="scope">
                         {{ scope.row.fieldComment || '-' }}
@@ -145,7 +145,7 @@
                                 </template>
                             </el-table-column>
 
-                            <el-table-column label="描述" fixed="left" align="center" prop="remark"
+                            <el-table-column :label="t('common.texts.description')" fixed="left" align="center" prop="remark"
                                 :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="{ row }">
                                     {{ row?.remark || '' }}
@@ -222,7 +222,7 @@
                                 </template>
                             </el-table-column>
 
-                            <el-table-column label="描述" fixed="left" align="center" prop="remark"
+                            <el-table-column :label="t('common.texts.description')" fixed="left" align="center" prop="remark"
                                 :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="{ row }">
                                     {{ row?.remark || '' }}
@@ -257,8 +257,10 @@
 </template>
 
 <script setup name="ComponentOne">
+import { useI18n } from 'vue-i18n'
 import { listDsApi, getDsApi, delDsApi, addDsApi, updateDsApi } from '@/api/ds/api/api.js';
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const {
     ds_api_log_status,
@@ -426,7 +428,7 @@ function submitForm() {
             if (form.value.ID != null) {
                 updateDsApi(form.value)
                     .then((response) => {
-                        proxy.$modal.msgSuccess('修改成功');
+                        proxy.$modal.msgSuccess(t('common.message.editSuccess'));
                         open.value = false;
                         getList();
                     })
@@ -434,7 +436,7 @@ function submitForm() {
             } else {
                 addDsApi(form.value)
                     .then((response) => {
-                        proxy.$modal.msgSuccess('新增成功');
+                        proxy.$modal.msgSuccess(t('common.message.addSuccess'));
                         open.value = false;
                         getList();
                     })
@@ -454,7 +456,7 @@ function handleDelete(row) {
         })
         .then(() => {
             getList();
-            proxy.$modal.msgSuccess('删除成功');
+            proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
         })
         .catch(() => { });
 }

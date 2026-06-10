@@ -35,7 +35,7 @@
   <el-dialog v-model="visibleDialog" draggable class="dialog" :title="title" style="width: 1200px" destroy-on-close>
     <el-table stripe height="380px" v-loading="loading" :data="jobLogList" :default-sort="defaultSort"
       @sort-change="handleSortChange">
-      <el-table-column label="编号" align="center" prop="id" width="80" />
+      <el-table-column :label="t('common.texts.number')" align="center" prop="id" width="80" />
       <el-table-column label="任务名称" align="center" prop="name">
         <template #default="scope">
           {{ scope.row.name || '-' }}
@@ -69,26 +69,26 @@
           <span>{{ parseTime(scope.row.endTime, '{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" width="200">
+      <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="200">
         <template #default="scope">
           <el-button link type="primary" icon="View" @click="logDetailCatList(scope.row)"
             v-hasPermi="['monitor:job:query']">查看</el-button>
           <!-- <el-button link type="warning" @click="handleExport(scope.row)" @mousedown="(e) => e.preventDefault()">
-            <i class="iconfont-mini icon-download-line mr5"></i>下载
+            <i class="iconfont-mini icon-download-line mr5"></i>{{ t('common.button.download') }}
           </el-button> -->
           <el-button link type="primary" icon="view" @click="
             routeTo('/da/quality/qualityTaskLog/detail', {
               ...scope.row,
               info: true,
             })
-            ">详情</el-button>
+            ">{{ t('common.button.details') }}</el-button>
         </template>
       </el-table-column>
 
       <template #empty>
         <div class="emptyBg">
           <img src="@/assets/system/images/no_data/noData.png" alt="" />
-          <p>暂无记录</p>
+          <p>{{ t('common.message.noRecord') }}</p>
         </div>
       </template>
     </el-table>
@@ -96,8 +96,8 @@
       v-model:limit="queryParams.pageSize" @pagination="getList" />
     <!-- <template #footer>
             <div style="text-align: right">
-        <el-button @click="closeDialog">关闭</el-button>
-        <el-button type="primary" @click="saveData">保存</el-button>
+        <el-button @click="closeDialog">{{ t('common.button.close') }}</el-button>
+        <el-button type="primary" @click="saveData">{{ t('common.button.save') }}</el-button>
         </div>
 </template> -->
   </el-dialog>
@@ -106,13 +106,14 @@
     <div v-html="formattedText"></div>
     <!-- <template #footer>
             <div class="dialog-footer">
-                <el-button @click="open = false">关 闭</el-button>
+                <el-button @click="open = false">{{ t('common.button.close') }}</el-button>
             </div>
         </template> -->
   </el-dialog>
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { defineProps, defineEmits, ref, computed, watch } from 'vue';
 
 const { proxy } = getCurrentInstance();
@@ -127,6 +128,7 @@ import { listDppQualityLog, getDppQualityLog, delDppQualityLog, addDppQualityLog
 import {
   qualityLogLogDetailCat
 } from "@/api/da/quality/qualityTask";;
+const { t } = useI18n();
 const props = defineProps({
   visible: { type: Boolean, default: true },
   title: { type: String, default: '表单标题' },

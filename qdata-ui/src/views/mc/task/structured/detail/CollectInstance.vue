@@ -80,11 +80,13 @@
 </template>
 
 <script setup name="CollectInstance">
+import { useI18n } from 'vue-i18n'
 import { listTaskInstance } from "@/api/mc/task/taskInstance";
 import { getTaskInstanceLog } from "@/api/mc/task/taskInstanceLog";
 import LogDialog from "@/components/LogDialog/index.vue";
 import { getCurrentInstance, reactive } from "vue";
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 
 const props = defineProps({
@@ -110,7 +112,7 @@ const tableStroe = reactive({
   },
   columns: [
     {
-      label: "编号",
+      label: t('common.texts.number'),
       prop: "id",
       width: 60,
     },
@@ -164,7 +166,7 @@ const tableStroe = reactive({
       },
     },
     {
-      label: "操作",
+      label: t('common.texts.operation'),
       slot: "handle",
       width: 220,
       fixed: "right",

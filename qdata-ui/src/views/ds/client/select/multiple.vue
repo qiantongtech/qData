@@ -65,17 +65,17 @@
           <el-option v-for="dict in auth_public" :key="dict.value" :label="dict.label" :value="dict.value" />
         </el-select>
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.texts.createdTime')" prop="createTime">
         <el-date-picker style="width:240px" clearable v-model="queryParams.createTime" type="date"
           value-format="YYYY-MM-DD" placeholder="请选择创建时间">
         </el-date-picker>
       </el-form-item>
       <el-form-item>
         <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-          <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+          <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
         </el-button>
         <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-          <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+          <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -109,7 +109,7 @@
           <image-preview :src="scope.row.logo" :width="50" :height="50" />
         </template>
       </el-table-column>
-      <el-table-column label="描述" align="center" prop="description">
+      <el-table-column :label="t('common.texts.description')" align="center" prop="description">
         <template #default="scope">
           {{ scope.row.description || '-' }}
         </template>
@@ -119,17 +119,17 @@
           <dict-tag :options="auth_public" :value="scope.row.publicFlag" />
         </template>
       </el-table-column>
-      <el-table-column label="创建人" align="center" prop="createBy">
+      <el-table-column :label="t('common.texts.createdBy')" align="center" prop="createBy">
         <template #default="scope">
           {{ scope.row.createBy || '-' }}
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+      <el-table-column :label="t('common.texts.createdTime')" align="center" prop="createTime" width="180">
         <template #default="scope">
           <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="center" prop="remark">
+      <el-table-column :label="t('common.texts.remark')" align="center" prop="remark">
         <template #default="scope">
           {{ scope.row.remark || '-' }}
         </template>
@@ -140,9 +140,9 @@
       v-model:limit="queryParams.pageSize" @pagination="getList" />
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="cancel">取 消</el-button>
+        <el-button size="mini" @click="cancel">{{ t('common.button.cancel') }}</el-button>
         <el-button type="primary" size="mini" @click="confirm">
-          确 定
+          {{ t('common.button.confirm') }}
         </el-button>
       </div>
     </template>
@@ -150,8 +150,11 @@
 </template>
 
 <script setup name="ClientMultiple">
+import { useI18n } from 'vue-i18n'
 import { listClient } from "@/api/ds/client/client";
 import { ref } from "vue";
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 
 const { auth_public, auth_app_type } = proxy.useDict('auth_public', 'auth_app_type');

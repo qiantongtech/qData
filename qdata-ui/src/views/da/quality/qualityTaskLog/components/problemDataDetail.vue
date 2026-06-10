@@ -38,14 +38,16 @@
             </el-descriptions-item>
         </el-descriptions>
         <template #footer>
-            <el-button @click="handleClose">关闭</el-button>
+            <el-button @click="handleClose">{{ t('common.button.close') }}</el-button>
         </template>
     </el-dialog>
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { ref, defineExpose, watch } from 'vue'
 
+const { t } = useI18n();
 const visible = ref(false)
 const detailData = ref(null)
 const parsedFields = ref([])
@@ -72,7 +74,6 @@ function open(data, value) {
         parsedFields.value = []
     }
 }
-
 
 function handleClose() {
     visible.value = false

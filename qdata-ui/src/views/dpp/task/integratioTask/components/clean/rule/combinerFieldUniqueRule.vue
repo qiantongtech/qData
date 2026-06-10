@@ -114,14 +114,14 @@
             <p>无数据</p>
           </div>
         </template>
-        <el-table-column v-if="!falg" label="操作" align="center" width="100">
+        <el-table-column v-if="!falg" :label="t('common.texts.operation')" align="center" width="100">
           <template #default="scope">
             <el-button
               link
               type="danger"
               icon="Delete"
               @click="handleDeletetypecolumns(scope.$index)"
-              >删除</el-button
+              >{{ t('common.button.delete') }}</el-button
             >
           </template>
         </el-table-column>
@@ -151,7 +151,10 @@
 </template>
 
 <script setup name="columnsCombiner">
+import { useI18n } from 'vue-i18n'
 import Sortable from "sortablejs";
+
+const { t } = useI18n();
 const props = defineProps({
   form: Object,
   inputFields: Array,

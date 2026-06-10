@@ -147,7 +147,7 @@
                 icon="view"
                 @click="handleDetail(row)"
                 v-hasPermi="['dp:model:edit']"
-                >详情</el-button
+                >{{ t('common.button.details') }}</el-button
               >
               <el-button
                 link
@@ -171,7 +171,7 @@
                 :disabled="row.status == 1"
                 @click="handleDelete(row)"
                 v-hasPermi="['dp:model:remove']"
-                >删除</el-button
+                >{{ t('common.button.delete') }}</el-button
               > -->
               <!-- <el-button
                 link
@@ -179,7 +179,7 @@
                 icon="view"
                 @click="handleDetail(row)"
                 v-hasPermi="['dp:model:edit']"
-                >详情</el-button
+                >{{ t('common.button.details') }}</el-button
               > -->
             </template>
           </qt-table>
@@ -209,6 +209,7 @@
   </div>
 </template>
 <script setup name="DpModel">
+import { useI18n } from 'vue-i18n'
 import { deptUserTree } from "@/api/system/system/user.js";
 import { deptTreeSelectNoPermi } from "@/api/system/system/user.js";
 import DeptTree from "@/components/DeptTree/index1.vue";
@@ -234,6 +235,8 @@ import { treeDataLayer } from "@/api/dm/dataLayer/dataLayer.js";
 import { getToken } from "@/utils/auth.js";
 import { formatHierarchyDisplayName } from "../../../utils/dm/utils";
 import { ref, reactive, getCurrentInstance } from "vue";
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const projectStore = useProjectStore();
 const {
@@ -329,7 +332,7 @@ function handleStatusChange(id, row, e) {
     .confirm('确认要"' + text + '","' + row.modelComment + '"逻辑模型吗？')
     .then(function () {
       updateStatusDpDataModel(id, row.status).then((response) => {
-        proxy.$modal.msgSuccess("操作成功");
+        proxy.$modal.msgSuccess(t('common.message.msgOpSuccess'));
       });
     })
     .catch(function () {
@@ -347,7 +350,7 @@ const data = reactive({
       { required: true, message: "模型名称不能为空", trigger: "blur" },
     ],
     catCode: [{ required: true, message: "类目编码不能为空", trigger: "blur" }],
-    status: [{ required: true, message: "状态不能为空", trigger: "change" }],
+    status: [{ required: true, message: t('common.form.statusRequired'), trigger: "change" }],
     createType: [
       { required: true, message: "创建方式不能为空", trigger: "change" },
     ],
@@ -372,7 +375,7 @@ const tableStore = reactive({
       type: "selection",
       width: 55,
     },
-    { label: "编号", prop: "id", width: 60, sortable: true },
+    { label: t('common.texts.number'), prop: "id", width: 60, sortable: true },
     {
       label: "模型信息",
       width: 450,
@@ -415,7 +418,7 @@ const tableStore = reactive({
       slot: "releaseDatabaseList",
     },
     {
-      label: "创建人",
+      label: t('common.texts.createdBy'),
       width: 120,
       align: "left",
       list: [
@@ -424,14 +427,14 @@ const tableStore = reactive({
       ],
     },
     {
-      label: "创建时间",
+      label: t('common.texts.createdTime'),
       prop: "createTime",
       width: 150,
       sortable: true,
       date: true,
     },
     {
-      label: "操作",
+      label: t('common.texts.operation'),
       width: 175,
       headerAlign: "center",
       align: "left",
@@ -490,7 +493,7 @@ const searchStore = reactive({
     //   component: { is: "select", options: dp_model_table_case },
     // },
     // {
-    //   label: "状态",
+    //   label: t('common.texts.status'),
     //   prop: "status",
     //   type: "select",
     //   component: { is: "select", options: dp_model_status },
@@ -630,7 +633,7 @@ function submitForm(obj) {
     updateDpModel(obj.form)
       .then((response) => {
         updateDpModelColumn(obj.tableData).then((response) => {
-          proxy.$modal.msgSuccess("修改成功");
+          proxy.$modal.msgSuccess(t('common.message.editSuccess'));
           open.value = false;
           handleQuery();
         });
@@ -646,7 +649,7 @@ function submitForm(obj) {
         }));
         dpModelColumn(updatedTableData)
           .then((dpModelColumnResponse) => {
-            proxy.$modal.msgSuccess("新增成功");
+            proxy.$modal.msgSuccess(t('common.message.addSuccess'));
             open.value = false;
             handleQuery();
           })
@@ -668,7 +671,7 @@ function handleDelete(row) {
     })
     .then(() => {
       handleQuery();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
     })
     .catch(() => {});
 }

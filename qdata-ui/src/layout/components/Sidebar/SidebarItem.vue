@@ -60,7 +60,8 @@ import AppLink from './Link'
 import { getNormalPath } from '@/utils/anivia.js'
 import useDefaultLang from "@/composables/useDefaultLang";
 const { td } = useDefaultLang();
-
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 const props = defineProps({
   // route object
   item: {

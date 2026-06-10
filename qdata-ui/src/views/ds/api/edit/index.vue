@@ -65,7 +65,6 @@
                     </li>
                 </ul>
 
-
             </div>
         </div>
 
@@ -90,9 +89,9 @@
                 </div>
                 <div slot="footer" class="button-style">
                     <el-button type="primary" @click="handleSuccess">返回列表</el-button>
-                    <el-button v-if="activeReult !== 0" @click="handleLastStep">上一步
+                    <el-button v-if="activeReult !== 0" @click="handleLastStep">{{ t('common.button.previousStep') }}
                     </el-button>
-                    <el-button v-if="activeReult !== 2" @click="handleNextStep">下一步
+                    <el-button v-if="activeReult !== 2" @click="handleNextStep">{{ t('common.button.nextStep') }}
                     </el-button>
                     <el-button type="primary" v-if="activeReult === 2" @click="submitForm"
                         :loading="loadingOptions.loading">确定并退出
@@ -104,6 +103,7 @@
 </template>
 
 <script setup name="DsApi">
+import { useI18n } from 'vue-i18n'
 import {
     getDsApi,
     updateDataApi,
@@ -121,6 +121,8 @@ import Parameter from '@/views/ds/api/edit/components/parameter.vue';
 import Test from '@/views/ds/api/edit/components/simulation.vue';
 import { getCurrentInstance, reactive, ref, toRefs, watch } from 'vue';
 import testapi from '@/views/ds/api/edit/components/testApi.vue';
+
+const { t } = useI18n();
 const components = { Base, Parameter, Test };
 const { proxy } = getCurrentInstance();
 const router = useRouter();
@@ -177,7 +179,226 @@ const data = reactive({
         apiUrl: [
             { required: true, message: '请输入API路径', trigger: 'input' },
             {
-                pattern: '^\\/[a-zA-Z0-9_\\-]+(\\/[a-zA-Z0-9_\\-]+)*$',
+                pattern: '^\\/[a-zA-Z0-9_\\-]+(\\/[a-zA-Z0-9_\\-]+)*</script>
+<style lang="scss" scoped>
+.el-card ::v-deep .el-card__body {
+    overflow-y: auto;
+}
+
+.steps-wrap {
+    height: 80px;
+    padding: 20px 20px;
+    step-height: 40px;
+    border-radius: 4px;
+    border: 0px solid #ebeef5;
+    background-color: #fff;
+    margin: 15px 15px -34px 15px;
+}
+
+.custom-card {
+    width: 100%;
+    height: 100px;
+    padding: 34px 177px 26px 189px;
+    background: #fff;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+
+    .steps-inner {
+        padding: 0 10px;
+        padding-left: 20px;
+        display: flex;
+        width: auto;
+        color: #303133;
+        transition: 0.3s;
+        transform: translateZ(0);
+
+        &::-webkit-scrollbar {
+            height: 5px;
+        }
+
+        .zl-step {
+            list-style: none;
+            width: 100%;
+            height: 20px;
+            padding: 0;
+            margin: 20px auto;
+            cursor: pointer;
+            display: flex;
+            align-items: flex-end;
+
+            li {
+                position: relative;
+                flex: 1;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: #d7d8da;
+                color: #666;
+                font-weight: 500;
+                transition: background 0.3s;
+
+                &:first-child {
+                    z-index: 2;
+                    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 50%, calc(100% - 20px) 100%, 0 100%);
+                }
+
+                &:not(:first-child):not(:last-child) {
+                    margin-left: -10px;
+                    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 50%, calc(100% - 20px) 100%, 0 100%);
+                    z-index: 1;
+
+                    &::before {
+                        content: '';
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        width: 20px;
+                        height: 100%;
+                        background: #fff;
+                        clip-path: polygon(0 0, 100% 50%, 0 100%);
+                        z-index: 2;
+                    }
+                }
+
+                &:last-child {
+                    margin-left: -10px;
+                    z-index: 0;
+                    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+
+                    &::before {
+                        content: '';
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        width: 20px;
+                        height: 100%;
+                        background: #fff;
+                        clip-path: polygon(0 0, 100% 50%, 0 100%);
+                        z-index: 2;
+                    }
+                }
+
+                &.statusEnd {
+                    background: linear-gradient(270deg, #e9effe 0%, #5589FA 100%);
+                    color: #2666FB !important;
+                }
+
+                &.prevStep {
+                    background: #E9EFFE !important;
+                    font-weight: normal;
+                    font-size: 16px !important;
+                    color: #2666FB !important;
+                }
+
+                &.cur {
+                    background: #F1F1F5;
+                    color: #404040;
+                    font-weight: 500;
+                }
+            }
+        }
+
+        .step-circle {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #f1f1f5;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-right: 11px;
+            border: 1px solid #b2b2b2;
+            flex-shrink: 0;
+            transition: all 0.3s;
+
+            &.active {
+                background: #2666fb;
+                color: #fff;
+                border: 1px solid #fff;
+            }
+
+            &.prev {
+                background: #f1f1f5 !important;
+                border: 1px solid #2666fb !important;
+                color: #2666fb !important;
+            }
+        }
+
+        .step-name {
+            font-family: PingFang SC, PingFang SC;
+            font-weight: 500;
+            font-size: 16px;
+        }
+    }
+}
+
+.button-style {
+    padding: 15px 35px 0px 0px;
+    background: #fff;
+    text-align: right;
+    z-index: 10;
+}
+
+.main {
+    flex: 1;
+    // margin: 15px;
+    background-color: white;
+    padding: 10px 25px 0;
+}
+
+.home {
+    display: flex;
+    flex-direction: column;
+    height: 88vh;
+
+    .clearfix {
+        width: 100%;
+        height: 36px;
+        background-color: #f8f8f9;
+        display: flex;
+        align-items: center;
+        padding-left: 10px;
+        margin-bottom: 10px;
+    }
+
+    .clearfix span {
+        display: flex;
+        align-items: center;
+    }
+
+    // .blue-bar {
+    //     background-color: #2666FB; // 蓝条颜色
+    //     width: 5px; // 宽度5px
+    //     height: 20px; // 高度20px
+    //     margin-right: 10px; // 图片与文字之间的间距
+    // }
+}
+
+.option-item {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.pagecont-top {
+    min-height: 600px;
+    position: relative;
+    padding-bottom: 40px;
+}
+
+.el-textarea__inner::-webkit-resizer {
+    background: transparent;
+    /* 背景透明 */
+    border-width: 3px;
+    /* 线条粗细 */
+    border-style: solid;
+    border-color: transparent #2666FB #2666FB transparent;
+}
+</style>
+,
                 message: '请输入有效的请求路径,例：/user/list',
                 trigger: 'blur'
             }
@@ -209,7 +430,7 @@ const data = reactive({
         },
         {
             itemValue: '3',
-            itemText: '详情'
+            itemText: t('common.button.details')
         }
     ],
     active: 0,

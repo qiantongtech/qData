@@ -444,9 +444,9 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="uiState.batchVisible = false">取 消</el-button>
+          <el-button @click="uiState.batchVisible = false">{{ t('common.button.cancel') }}</el-button>
           <el-button type="primary" @click="confirmBatchSetting"
-            >确 定</el-button
+            >{{ t('common.button.confirm') }}</el-button
           >
         </div>
       </template>
@@ -455,6 +455,7 @@
 </template>
 
 <script setup name="DaBatchPublish">
+import { useI18n } from 'vue-i18n'
 import {
   computed,
   getCurrentInstance,
@@ -475,7 +476,7 @@ import { listThemeDomain } from "@/api/dm/themeDomain/themeDomain";
 import { addDaAsset } from "@/api/da/asset/asset.js";
 import { usePageRefresh } from "@/composables/usePageRefresh";
 
-// --- 基础配置与工具 ---
+const { t } = useI18n();// --- 基础配置与工具 ---
 const { proxy } = getCurrentInstance();
 const router = useRouter();
 const { setRefreshNeeded } = usePageRefresh("da_asset");
@@ -546,7 +547,7 @@ const hideTableIds = computed(() => {
 
 const tableColumns = [
   { type: "selection", width: 55 },
-  { type: "index", label: "编号", width: 60 },
+  { type: "index", label: t('common.texts.number'), width: 60 },
   {
     label: "来源表名/注释",
     width: 200,
@@ -563,7 +564,7 @@ const tableColumns = [
   { label: "数据分域", slot: "dataDomainId" },
   { label: "所属主题", slot: "themeDomainId" },
   { label: "表命名规范", width: 140, slot: "tableCase" },
-  { label: "操作", width: 100, slot: "action" },
+  { label: t('common.texts.operation'), width: 100, slot: "action" },
 ];
 
 const tableConfig = reactive({

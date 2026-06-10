@@ -231,7 +231,7 @@
         <template #empty>
           <div class="emptyBg">
             <img src="@/assets/system/images/no_data/noData.png" alt="" />
-            <p>暂无记录</p>
+            <p>{{ t('common.message.noRecord') }}</p>
           </div>
         </template>
       </el-table>
@@ -257,12 +257,13 @@
 </template>
 
 <script setup name="QtTable">
+import { useI18n } from 'vue-i18n'
 import { reactive, computed, nextTick } from "vue";
 import { useRouter } from "vue-router";
 import SvgIcon from "@/components/SvgIcon/index.vue";
 import { scrollTo } from "@/utils/scroll-to";
 
-defineOptions({
+const { t } = useI18n();defineOptions({
   inheritAttrs: false,
 });
 

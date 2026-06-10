@@ -48,7 +48,7 @@
         </template>
         <template #handle="{ row }">
           <el-button link type="primary" icon="View" @click="handleDetail(row)">
-            详情
+            {{ t('common.button.details') }}
           </el-button>
           <el-button
             link
@@ -56,7 +56,7 @@
             icon="Delete"
             @click="handleDelete(row)"
           >
-            删除
+            {{ t('common.button.delete') }}
           </el-button>
         </template>
       </qt-table>
@@ -101,34 +101,34 @@
             {{ form.ownerUserPhoneNumber || "-" }}
           </div>
         </el-form-item>
-        <el-form-item label="描述" prop="description" class="row-full">
+        <el-form-item :label="t('common.texts.description')" prop="description" class="row-full">
           <div class="form-readonly textarea">
             {{ form.description ?? "-" }}
           </div>
         </el-form-item>
-        <el-form-item label="备注" prop="remark" class="row-full">
+        <el-form-item :label="t('common.texts.remark')" prop="remark" class="row-full">
           <div class="form-readonly textarea">{{ form.remark ?? "-" }}</div>
         </el-form-item>
 
-        <el-form-item label="创建人" prop="createBy">
+        <el-form-item :label="t('common.texts.createdBy')" prop="createBy">
           <div class="form-readonly">
             {{ form.createBy }}
           </div>
         </el-form-item>
 
-        <el-form-item label="创建时间" prop="createTime">
+        <el-form-item :label="t('common.texts.createdTime')" prop="createTime">
           <div class="form-readonly">
             {{ parseTime(form.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
         </el-form-item>
 
-        <el-form-item label="更新人" prop="createBy">
+        <el-form-item :label="t('common.texts.updatedBy')" prop="createBy">
           <div class="form-readonly">
             {{ form.updateBy }}
           </div>
         </el-form-item>
 
-        <el-form-item label="更新时间" prop="updateTime">
+        <el-form-item :label="t('common.texts.updatedTime')" prop="updateTime">
           <div class="form-readonly">
             {{ parseTime(form.updateTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
@@ -137,7 +137,7 @@
 
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="cancel">关 闭</el-button>
+          <el-button @click="cancel">{{ t('common.button.close') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -145,6 +145,7 @@
 </template>
 
 <script setup name="BusinessLayerDataDomains">
+import { useI18n } from 'vue-i18n'
 import {
   ref,
   reactive,
@@ -160,6 +161,7 @@ import {
 } from "@/api/dm/dataDomain/dataDomain.js";
 import { useRouter } from "vue-router";
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const props = defineProps({
   businessLayerDetail: {
@@ -215,10 +217,10 @@ const tableStore = reactive({
     },
   },
   columns: [
-    { label: "编号", prop: "id", width: 60, sortable: true },
+    { label: t('common.texts.number'), prop: "id", width: 60, sortable: true },
     { label: "数据域名称", prop: "name", align: "left", minWidth: 150 },
     {
-      label: "描述",
+      label: t('common.texts.description'),
       prop: "description",
       align: "left",
       minWidth: 200,
@@ -227,15 +229,15 @@ const tableStore = reactive({
     { label: "英文缩写", prop: "engName", align: "left", minWidth: 120 },
     { label: "负责人", prop: "ownerUserName", width: 120 },
     { label: "负责人电话", prop: "ownerUserPhoneNumber", width: 120 },
-    { label: "创建人", prop: "createBy", width: 120 },
+    { label: t('common.texts.createdBy'), prop: "createBy", width: 120 },
     {
-      label: "创建时间",
+      label: t('common.texts.createdTime'),
       prop: "createTime",
       width: 160,
       date: true,
       sortable: true,
     },
-    { label: "操作", width: 150, fixed: "right", slot: "handle" },
+    { label: t('common.texts.operation'), width: 150, fixed: "right", slot: "handle" },
   ],
   func: listDataDomainlist,
   params: {
@@ -278,7 +280,7 @@ function handleDelete(row) {
       });
     })
     .then(() => {
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
       tableRef.value?.getList();
     })
     .catch(() => {});

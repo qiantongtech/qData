@@ -76,15 +76,17 @@
         </el-table>
         <template #footer>
             <div class="dialog-footer">
-                <el-button @click="cancel">关 闭</el-button>
-                <!-- <el-button type="primary" @click="submitForm">确 定</el-button> -->
+                <el-button @click="cancel">{{ t('common.button.close') }}</el-button>
+                <!-- <el-button type="primary" @click="submitForm">{{ t('common.button.confirm') }}</el-button> -->
             </div>
         </template>
     </el-dialog>
 </template>
 
 <script setup name="RpApplyDialog">
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n();
 const emit = defineEmits(['setLoading']);
 const open = ref(false);
 const cancel = () => {

@@ -191,6 +191,7 @@
 </template>
 
 <script setup name="Index">
+import { useI18n } from 'vue-i18n'
 import useUserStore from "@/store/system/user";
 import { listNotice } from "@/api/system/system/notice.js";
 import useAppStore from "@/store/system/app";
@@ -236,6 +237,8 @@ import {
 let { proxy } = getCurrentInstance();
 const { sys_notice_type } = proxy.useDict("sys_notice_type");
 import { useRouter } from "vue-router";
+
+const { t } = useI18n();
 const router = useRouter();
 async function routeTo(link, query = {}) {
   if (link && link.indexOf("http") !== -1) {
@@ -391,7 +394,6 @@ function goxinwen(row) {
     proxy.$router.push({ path: "/sys/system/notice/detail", query: { id: row.noticeId } });
   }
 }
-
 
 function goprofile() {
   proxy.$router.push("/user/profile"); // 内部页面路径
@@ -646,9 +648,9 @@ function initModule4() {
 // 认证模式
 const authType = import.meta.env.VITE_APP_AUTH_TYPE;
 function logout() {
-  ElMessageBox.confirm('确定注销并退出系统吗？', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+  ElMessageBox.confirm('确定注销并退出系统吗？', t('common.message.prompt'), {
+    confirmButtonText: t('common.button.confirm'),
+    cancelButtonText: t('common.button.cancel'),
     type: 'warning'
   })
     .then(() => {
@@ -1904,7 +1906,6 @@ onMounted(() => {
   .module-10 {
     height: auto !important;
 
-
     .cards {
       flex-wrap: wrap !important;
       gap: 12px;
@@ -1915,7 +1916,6 @@ onMounted(() => {
     }
   }
 }
-
 
 @media screen and (max-width: 768px) {
   .stagingIndex {
@@ -2031,7 +2031,6 @@ onMounted(() => {
 
   .module-10 {
     height: auto !important;
-
 
     .cards {
       flex-direction: column; // 改为一列

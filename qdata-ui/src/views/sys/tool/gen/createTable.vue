@@ -37,16 +37,18 @@
     <el-input type="textarea" :rows="10" placeholder="请输入文本" v-model="content"></el-input>
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="visible = false">取 消</el-button>
-        <el-button type="primary" @click="handleImportTable">确 定</el-button>
+        <el-button @click="visible = false">{{ t('common.button.cancel') }}</el-button>
+        <el-button type="primary" @click="handleImportTable">{{ t('common.button.confirm') }}</el-button>
       </div>
     </template>
   </el-dialog>
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { createTable } from "@/api/system/tool/gen.js";
 
+const { t } = useI18n();
 const visible = ref(false);
 const content = ref("");
 const { proxy } = getCurrentInstance();

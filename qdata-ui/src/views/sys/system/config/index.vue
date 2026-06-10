@@ -62,7 +62,7 @@
                   />
                </el-select>
             </el-form-item>
-            <el-form-item label="创建时间">
+            <el-form-item :label="t('common.texts.createdTime')">
                <el-date-picker
                   class="el-form-input-width"
                   v-model="dateRange"
@@ -75,10 +75,10 @@
             </el-form-item>
             <el-form-item>
                <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                  <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                  <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
                </el-button>
                <el-button @click="resetQuery" @mousedown="e => e.preventDefault()">
-                  <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                  <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
                </el-button>
             </el-form-item>
          </el-form>
@@ -93,7 +93,7 @@
                   icon="Plus"
                   @click="handleAdd"
                   v-hasPermi="['system:config:add']"
-               >新增</el-button>
+               >{{ t('common.button.add') }}</el-button>
             </el-col>
             <el-col :span="1.5">
                <el-button
@@ -103,7 +103,7 @@
                   :disabled="single"
                   @click="handleUpdate"
                   v-hasPermi="['system:config:edit']"
-               >修改</el-button>
+               >{{ t('common.button.update') }}</el-button>
             </el-col>
             <el-col :span="1.5">
                <el-button
@@ -113,7 +113,7 @@
                   :disabled="multiple"
                   @click="handleDelete"
                   v-hasPermi="['system:config:remove']"
-               >删除</el-button>
+               >{{ t('common.button.delete') }}</el-button>
             </el-col>
             <el-col :span="1.5">
                <el-button
@@ -122,7 +122,7 @@
                   icon="Download"
                   @click="handleExport"
                   v-hasPermi="['system:config:export']"
-               >导出</el-button>
+               >{{ t('common.button.export') }}</el-button>
             </el-col>
             <el-col :span="1.5">
                <el-button
@@ -152,16 +152,16 @@
                   <dict-tag :options="sys_yes_no" :value="scope.row.configType" />
                </template>
             </el-table-column>
-            <el-table-column label="备注" align="center" prop="remark" :show-overflow-tooltip="true" />
-            <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+            <el-table-column :label="t('common.texts.remark')" align="center" prop="remark" :show-overflow-tooltip="true" />
+            <el-table-column :label="t('common.texts.createdTime')" align="center" prop="createTime" width="180">
                <template #default="scope">
                   <span>{{ parseTime(scope.row.createTime) }}</span>
                </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" class-name="small-padding fixed-width"  fixed="right" width="240">
+            <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width"  fixed="right" width="240">
                <template #default="scope">
-                  <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:config:edit']" >修改</el-button>
-                  <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['system:config:remove']">删除</el-button>
+                  <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:config:edit']" >{{ t('common.button.update') }}</el-button>
+                  <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['system:config:remove']">{{ t('common.button.delete') }}</el-button>
                </template>
             </el-table-column>
          </el-table>
@@ -206,7 +206,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="24">
-                  <el-form-item label="备注" prop="remark">
+                  <el-form-item :label="t('common.texts.remark')" prop="remark">
                      <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
                   </el-form-item>
                </el-col>
@@ -214,8 +214,8 @@
          </el-form>
          <template #footer>
             <div class="dialog-footer">
-               <el-button @click="cancel">取 消</el-button>
-               <el-button type="primary" @click="submitForm">确 定</el-button>
+               <el-button @click="cancel">{{ t('common.button.cancel') }}</el-button>
+               <el-button type="primary" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
             </div>
          </template>
       </el-dialog>
@@ -223,10 +223,12 @@
 </template>
 
 <script setup name="Config">
+import { useI18n } from 'vue-i18n'
 import { listConfig, getConfig, delConfig, addConfig, updateConfig, refreshCache } from "@/api/system/system/config.js";
 import useDefaultLang from "@/composables/useDefaultLang";
 
 const { td } = useDefaultLang();
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { sys_yes_no } = proxy.useDict("sys_yes_no");
 
@@ -332,13 +334,13 @@ function submitForm() {
     if (valid) {
       if (form.value.configId != undefined) {
         updateConfig(form.value).then(response => {
-          proxy.$modal.msgSuccess("修改成功");
+          proxy.$modal.msgSuccess(t('common.message.editSuccess'));
           open.value = false;
           getList();
         });
       } else {
         addConfig(form.value).then(response => {
-          proxy.$modal.msgSuccess("新增成功");
+          proxy.$modal.msgSuccess(t('common.message.addSuccess'));
           open.value = false;
           getList();
         });
@@ -354,7 +356,7 @@ function handleDelete(row) {
     return delConfig(configIds);
   }).then(() => {
     getList();
-    proxy.$modal.msgSuccess("删除成功");
+    proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
   }).catch(() => {});
 }
 

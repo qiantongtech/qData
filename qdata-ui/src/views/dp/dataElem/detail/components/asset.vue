@@ -38,14 +38,14 @@
     </div>
     <el-table stripe height="360" v-loading="loading" :data="dpDataElemAssetRelList"
         @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
-        <el-table-column label="编号" align="left" prop="id" width="50" />
+        <el-table-column :label="t('common.texts.number')" align="left" prop="id" width="50" />
         <el-table-column label="资产名称" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="assetName"
             width="300">
             <template #default="scope">
                 {{ scope.row.assetName || '-' }}
             </template>
         </el-table-column>
-        <el-table-column label="描述" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="description"
+        <el-table-column :label="t('common.texts.description')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="description"
             width="380">
             <template #default="scope">
                 {{ scope.row.description || '-' }}
@@ -61,18 +61,18 @@
                 {{ scope.row.columnName || '-' }}
             </template>
         </el-table-column>
-        <el-table-column label="创建人" :show-overflow-tooltip="{ effect: 'light' }" align="left" width="120"
+        <el-table-column :label="t('common.texts.createdBy')" :show-overflow-tooltip="{ effect: 'light' }" align="left" width="120"
             prop="createBy">
             <template #default="scope">
                 {{ scope.row.createBy || "-" }}
             </template>
         </el-table-column>
-        <el-table-column label="创建时间" align="left" prop="createTime" width="150">
+        <el-table-column :label="t('common.texts.createdTime')" align="left" prop="createTime" width="150">
             <template #default="scope"> <span>{{ parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}") || "-"
             }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="更新时间" align="left" prop="updateTime" width="300">
+        <el-table-column :label="t('common.texts.updatedTime')" align="left" prop="updateTime" width="300">
             <template #default="scope">
                 <span>{{ parseTime(scope.row.updateTime, '{y}-{m}-{d} {h}:{i}') || '-' }}</span>
             </template>
@@ -81,7 +81,7 @@
         <template #empty>
             <div class="emptyBg">
                 <img src="@/assets/system/images/no_data/noData.png" alt="" />
-                <p>暂无记录</p>
+                <p>{{ t('common.message.noRecord') }}</p>
             </div>
         </template>
     </el-table>
@@ -91,6 +91,7 @@
 </template>
 
 <script setup name="ComponentOne">
+import { useI18n } from 'vue-i18n'
 import {
     listDpDataElemAssetRel,
     getDpDataElemAssetRel,
@@ -99,6 +100,7 @@ import {
     updateDpDataElemAssetRel
 } from '@/api/dp/dataElem/dataElem';
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const route = useRoute();
 
@@ -246,7 +248,7 @@ function submitForm() {
             if (form.value.id != null) {
                 updateDpDataElemAssetRel(form.value)
                     .then((response) => {
-                        proxy.$modal.msgSuccess('修改成功');
+                        proxy.$modal.msgSuccess(t('common.message.editSuccess'));
                         open.value = false;
                         getList();
                     })
@@ -254,7 +256,7 @@ function submitForm() {
             } else {
                 addDpDataElemAssetRel(form.value)
                     .then((response) => {
-                        proxy.$modal.msgSuccess('新增成功');
+                        proxy.$modal.msgSuccess(t('common.message.addSuccess'));
                         open.value = false;
                         getList();
                     })
@@ -274,7 +276,7 @@ function handleDelete(row) {
         })
         .then(() => {
             getList();
-            proxy.$modal.msgSuccess('删除成功');
+            proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
         })
         .catch(() => { });
 }

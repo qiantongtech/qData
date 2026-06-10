@@ -108,9 +108,11 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { ElMessageBox } from "element-plus";
 import { getCodeImg, register } from "@/api/system/login.js";
 
+const { t } = useI18n();
 const router = useRouter();
 const { proxy } = getCurrentInstance();
 
@@ -157,7 +159,7 @@ function handleRegister() {
       loading.value = true;
       register(registerForm.value).then(res => {
         const username = registerForm.value.username;
-        ElMessageBox.alert("<font color='red'>恭喜你，您的账号 " + username + " 注册成功！</font>", "系统提示", {
+        ElMessageBox.alert("<font color='red'>恭喜你，您的账号 " + username + " 注册成功！</font>", t('common.message.systemPrompt'), {
           dangerouslyUseHTMLString: true,
           type: "success",
         }).then(() => {

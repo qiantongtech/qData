@@ -35,7 +35,7 @@
         <el-row :gutter="15" class="btn-style">
             <el-col :span="1.5">
                 <el-button type="primary" plain @click="handleAdd" @mousedown="(e) => e.preventDefault()">
-                    <i class="iconfont-mini icon-xinzeng mr5"></i>新增
+                    <i class="iconfont-mini icon-xinzeng mr5"></i>{{ t('common.button.add') }}
                 </el-button>
             </el-col>
         </el-row>
@@ -45,7 +45,7 @@
     </div>
     <el-table stripe height="360" v-loading="loading" :data="dpCodeMapList" @selection-change="handleSelectionChange"
         :default-sort="defaultSort" @sort-change="handleSortChange">
-        <el-table-column label="编号" align="left" prop="id" width="50" />
+        <el-table-column :label="t('common.texts.number')" align="left" prop="id" width="50" />
         <el-table-column label="原始值" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="originalValue"
             width="210">
             <template #default="scope">
@@ -64,32 +64,32 @@
                 {{ scope.row.codeValue || '-' }}
             </template>
         </el-table-column>
-        <el-table-column label="创建人" align="left" prop="createBy">
+        <el-table-column :label="t('common.texts.createdBy')" align="left" prop="createBy">
             <template #default="scope">
                 {{ scope.row.createBy || '-' }}
             </template>
         </el-table-column>
-        <el-table-column label="创建时间" align="left" prop="createTime" width="200">
+        <el-table-column :label="t('common.texts.createdTime')" align="left" prop="createTime" width="200">
             <template #default="scope">
                 <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d} {h}:{i}') }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="备注" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="remark" width="320">
+        <el-table-column :label="t('common.texts.remark')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="remark" width="320">
             <template #default="scope">
                 {{ scope.row.remark || '-' }}
             </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" width="300">
+        <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="300">
             <template #default="scope">
-                <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)">修改</el-button>
-                <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
+                <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)">{{ t('common.button.update') }}</el-button>
+                <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)">{{ t('common.button.delete') }}</el-button>
             </template>
         </el-table-column>
 
         <template #empty>
             <div class="emptyBg">
                 <img src="@/assets/system/images/no_data/noData.png" alt="" />
-                <p>暂无记录</p>
+                <p>{{ t('common.message.noRecord') }}</p>
             </div>
         </template>
     </el-table>
@@ -124,22 +124,23 @@
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="24">
-                    <el-form-item label="备注" prop="remark">
-                        <el-input v-model="form.remark" type="textarea" placeholder="请输入备注" />
+                    <el-form-item :label="t('common.texts.remark')" prop="remark">
+                        <el-input v-model="form.remark" type="textarea" :placeholder="t('common.form.remarkPlaceholder')" />
                     </el-form-item>
                 </el-col>
             </el-row>
         </el-form>
         <template #footer>
             <div class="dialog-footer">
-                <el-button size="mini" @click="cancel">取 消</el-button>
-                <el-button type="primary" size="mini" @click="submitForm">确 定</el-button>
+                <el-button size="mini" @click="cancel">{{ t('common.button.cancel') }}</el-button>
+                <el-button type="primary" size="mini" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
             </div>
         </template>
     </el-dialog>
 </template>
 
 <script setup name="ComponentOne">
+import { useI18n } from 'vue-i18n'
 import {
     listDpCodeMap,
     getDpCodeMap,
@@ -148,6 +149,8 @@ import {
     updateDpCodeMap
 } from '@/api/dp/dataElem/dataElem';
 import { listDpDataElemCode } from '@/api/dp/dataElem/dataElem';
+
+const { t } = useI18n();
 const route = useRoute();
 const { proxy } = getCurrentInstance();
 
@@ -314,7 +317,7 @@ function submitForm() {
             if (form.value.id != null) {
                 updateDpCodeMap(form.value)
                     .then((response) => {
-                        proxy.$modal.msgSuccess('修改成功');
+                        proxy.$modal.msgSuccess(t('common.message.editSuccess'));
                         open.value = false;
                         getList();
                     })
@@ -322,7 +325,7 @@ function submitForm() {
             } else {
                 addDpCodeMap(form.value)
                     .then((response) => {
-                        proxy.$modal.msgSuccess('新增成功');
+                        proxy.$modal.msgSuccess(t('common.message.addSuccess'));
                         open.value = false;
                         getList();
                     })
@@ -342,7 +345,7 @@ function handleDelete(row) {
         })
         .then(() => {
             getList();
-            proxy.$modal.msgSuccess('删除成功');
+            proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
         })
         .catch(() => { });
 }

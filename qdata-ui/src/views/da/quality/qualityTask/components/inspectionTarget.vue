@@ -83,8 +83,8 @@
 
         <template #footer>
             <div class="dialog-footer">
-                <el-button @click="closeDialog">取消</el-button>
-                <el-button type="primary" @click="saveData">确定</el-button>
+                <el-button @click="closeDialog">{{ t('common.button.cancel') }}</el-button>
+                <el-button type="primary" @click="saveData">{{ t('common.button.confirm') }}</el-button>
             </div>
         </template>
     </el-dialog>
@@ -95,11 +95,13 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { ref, defineProps, defineEmits, getCurrentInstance } from 'vue'
 import Crontab from '@/components/Crontab/index.vue'
 import { getTablesByDataSourceId, getColumnByAssetId } from '@/api/dpp/task/index.js'
 import { getDaDatasourceList } from '@/api/dp/model/model'
 
+const { t } = useI18n();
 const emit = defineEmits(['confirm'])
 const { proxy } = getCurrentInstance()
 
@@ -183,7 +185,6 @@ const onTableChange = async (val) => {
         form.value.columnComment = '';
     }
 };
-
 
 const loadTablesByDatasourceId = async (id) => {
     tableLoading.value = true

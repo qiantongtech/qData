@@ -48,15 +48,17 @@
       </el-radio-group>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="submit">保存</el-button>
-      <el-button type="danger" @click="close">关闭</el-button>
+      <el-button type="primary" @click="submit">{{ t('common.button.save') }}</el-button>
+      <el-button type="danger" @click="close">{{ t('common.button.close') }}</el-button>
     </el-form-item>
   </el-form>
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { updateUserProfile } from "@/api/system/system/user.js";
 
+const { t } = useI18n();
 const props = defineProps({
   user: {
     type: Object
@@ -77,7 +79,7 @@ function submit() {
   proxy.$refs.userRef.validate(valid => {
     if (valid) {
       updateUserProfile(form.value).then(response => {
-        proxy.$modal.msgSuccess("修改成功");
+        proxy.$modal.msgSuccess(t('common.message.editSuccess'));
         props.user.phonenumber = form.value.phonenumber;
         props.user.email = form.value.email;
       });

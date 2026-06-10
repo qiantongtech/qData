@@ -36,14 +36,14 @@
       <el-row :gutter="15" class="btn-style">
         <el-col :span="1.5">
           <el-button type="primary" plain @click="handleAdd" @mousedown="(e) => e.preventDefault()">
-            <i class="iconfont-mini icon-xinzeng mr5"></i>新增
+            <i class="iconfont-mini icon-xinzeng mr5"></i>{{ t('common.button.add') }}
           </el-button>
         </el-col>
       </el-row>
     </div>
     <el-table stripe v-loading="loading" :data="clientApiRelList" @selection-change="handleSelectionChange"
       :default-sort="defaultSort" @sort-change="handleSortChange">
-      <el-table-column label="编号" type="index" align="center" width="50" :show-overflow-tooltip="{ effect: 'light' }" />
+      <el-table-column :label="t('common.texts.number')" type="index" align="center" width="50" :show-overflow-tooltip="{ effect: 'light' }" />
       <el-table-column label="API编码" align="center" prop="apiId" :show-overflow-tooltip="{ effect: 'light' }" />
       <el-table-column label="API名称" align="center" prop="apiName" :show-overflow-tooltip="{ effect: 'light' }"
         width="150">
@@ -72,18 +72,18 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="描述" align="left" prop="description" :show-overflow-tooltip="{ effect: 'light' }"
+      <el-table-column :label="t('common.texts.description')" align="left" prop="description" :show-overflow-tooltip="{ effect: 'light' }"
         width="250">
         <template #default="scope">
           {{ scope.row.description || '-' }}
         </template>
       </el-table-column>
-      <el-table-column label="创建人" align="center" prop="createBy" :show-overflow-tooltip="{ effect: 'light' }">
+      <el-table-column :label="t('common.texts.createdBy')" align="center" prop="createBy" :show-overflow-tooltip="{ effect: 'light' }">
         <template #default="scope">
           {{ scope.row.createBy || "-" }}
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" align="center" prop="createTime" width="180"
+      <el-table-column :label="t('common.texts.createdTime')" align="center" prop="createTime" width="180"
         :show-overflow-tooltip="{ effect: 'light' }">
         <template #default="scope">
           <span>{{
@@ -97,22 +97,22 @@
             inactive-value="0" @change="(e) => handleStatusChange(scope.row.id, scope.row, e)" />
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="left" prop="remark" :show-overflow-tooltip="{ effect: 'light' }">
+      <el-table-column :label="t('common.texts.remark')" align="left" prop="remark" :show-overflow-tooltip="{ effect: 'light' }">
         <template #default="scope">
           {{ scope.row.remark || '-' }}
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" width="140">
+      <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="140">
         <template #default="scope">
-          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)">修改</el-button>
-          <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
+          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)">{{ t('common.button.update') }}</el-button>
+          <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)">{{ t('common.button.delete') }}</el-button>
         </template>
       </el-table-column>
 
       <template #empty>
         <div class="emptyBg">
           <img src="@/assets/system/images/no_data/noData.png" alt="" />
-          <p>暂无记录</p>
+          <p>{{ t('common.message.noRecord') }}</p>
         </div>
       </template>
     </el-table>
@@ -152,23 +152,23 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="描述">
-            <el-input type="textarea" placeholder="请输入描述" v-model="form.description" :min-height="192" />
+          <el-form-item :label="t('common.texts.description')">
+            <el-input type="textarea" :placeholder="t('common.form.descriptionPlaceholder')" v-model="form.description" :min-height="192" />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="备注">
-            <el-input type="textarea" placeholder="请输入备注" v-model="form.remark" :min-height="192" />
+          <el-form-item :label="t('common.texts.remark')">
+            <el-input type="textarea" :placeholder="t('common.form.remarkPlaceholder')" v-model="form.remark" :min-height="192" />
           </el-form-item>
         </el-col>
       </el-row>
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="cancel">取 消</el-button>
-        <el-button type="primary" size="mini" @click="submitForm">确 定</el-button>
+        <el-button size="mini" @click="cancel">{{ t('common.button.cancel') }}</el-button>
+        <el-button type="primary" size="mini" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
       </div>
     </template>
   </el-dialog>
@@ -229,19 +229,21 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="cancel">关 闭</el-button>
+        <el-button size="mini" @click="cancel">{{ t('common.button.close') }}</el-button>
       </div>
     </template>
   </el-dialog>
 </template>
 
 <script setup name="ClientApiRel">
+import { useI18n } from 'vue-i18n'
 import { listClientApiRel, getClientApiRel, delClientApiRel, addClientApiRel, updateClientApiRel } from "@/api/ds/client/clientApiRel";
 import { selectByName } from "@/api/ds/api/api.js";
 import { status } from "nprogress";
 import useDefaultLang from "@/composables/useDefaultLang";
 
 const { td } = useDefaultLang();
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { sys_is_or_not, ds_api_bas_info_api_method_type } = proxy.useDict("sys_is_or_not", "ds_api_bas_info_api_method_type");
 
@@ -323,7 +325,7 @@ function handleStatusChange(id, row, e) {
       updateClientApiRel({ ...row })
         .then((res) => {
           if (res.code == 200) {
-            proxy.$modal.msgSuccess("操作成功");
+            proxy.$modal.msgSuccess(t('common.message.msgOpSuccess'));
           }
         })
         .catch((error) => {
@@ -468,7 +470,7 @@ function submitForm() {
       if (form.value.id != null) {
         updateClientApiRel(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("修改成功");
+            proxy.$modal.msgSuccess(t('common.message.editSuccess'));
             open.value = false;
             getList();
           })
@@ -476,7 +478,7 @@ function submitForm() {
       } else {
         addClientApiRel(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("新增成功");
+            proxy.$modal.msgSuccess(t('common.message.addSuccess'));
             open.value = false;
             getList();
           })
@@ -496,7 +498,7 @@ function handleDelete(row) {
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
     })
     .catch(() => { });
 }

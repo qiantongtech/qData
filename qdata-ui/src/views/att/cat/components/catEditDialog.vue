@@ -69,7 +69,7 @@
         </el-col>
       </el-row>
       <el-col :span="24" v-if="!hideStatusAndSort">
-        <el-form-item label="状态" prop="validFlag">
+        <el-form-item :label="t('common.texts.status')" prop="validFlag">
           <el-radio v-model="form.validFlag" :label="true">启用</el-radio>
           <el-radio v-model="form.validFlag" :label="false">禁用</el-radio>
         </el-form-item>
@@ -88,12 +88,12 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="描述" prop="description">
+          <el-form-item :label="t('common.texts.description')" prop="description">
             <el-input
               type="textarea"
               maxlength="500个字符"
               show-word-limit
-              placeholder="请输入描述"
+              :placeholder="t('common.form.descriptionPlaceholder')"
               v-model="form.description"
               :min-height="192"
             />
@@ -102,12 +102,12 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="备注" prop="remark">
+          <el-form-item :label="t('common.texts.remark')" prop="remark">
             <el-input
               type="textarea"
               maxlength="500个字符"
               show-word-limit
-              placeholder="请输入备注"
+              :placeholder="t('common.form.remarkPlaceholder')"
               v-model="form.remark"
               :min-height="192"
             />
@@ -117,14 +117,16 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="onCancel">取 消</el-button>
-        <el-button type="primary" @click="onSubmit" :loading="loading">确 定</el-button>
+        <el-button @click="onCancel">{{ t('common.button.cancel') }}</el-button>
+        <el-button type="primary" @click="onSubmit" :loading="loading">{{ t('common.button.confirm') }}</el-button>
       </div>
     </template>
   </el-dialog>
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
+
 /**
  * CatEditDialog 组件使用说明
  *
@@ -157,6 +159,7 @@
 
 import { ref, computed, nextTick } from "vue";
 
+const { t } = useI18n();
 const emit = defineEmits(["submit", "cancel"]);
 
 const visible = ref(false);
@@ -188,7 +191,7 @@ const hideStatusAndSort = computed(() => dialogType.value === "dataCategory");
 
 // 默认校验规则
 const defaultRules = {
-  name: [{ required: true, message: "名称不能为空", trigger: "blur" }],
+  name: [{ required: true, message: t('common.form.nameRequired'), trigger: "blur" }],
   parentId: [{ required: true, message: "上级类目不能为空", trigger: "blur" }],
   code: [{ required: true, message: "编码不能为空", trigger: "blur" }],
 };

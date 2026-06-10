@@ -42,13 +42,13 @@
                 <el-input v-model="queryParams.roleKey" placeholder="请输入权限字符" clearable class="el-form-input-width"
                     @keyup.enter="handleQuery" />
             </el-form-item>
-            <el-form-item label="状态" prop="status">
+            <el-form-item :label="t('common.texts.status')" prop="status">
                 <el-select v-model="queryParams.status" placeholder="角色状态" clearable class="el-form-input-width">
                     <el-option v-for="dict in sys_normal_disable" :key="dict.value" :label="dict.label"
                         :value="dict.value" />
                 </el-select>
             </el-form-item>
-            <el-form-item label="创建时间">
+            <el-form-item :label="t('common.texts.createdTime')">
                 <el-date-picker class="el-form-input-width" v-model="dateRange" value-format="YYYY-MM-DD"
                     type="daterange" range-separator="-" :start-placeholder="td('common.form.startDatePlaceholder')"
                     :end-placeholder="td('common.form.endDatePlaceholder')"></el-date-picker>
@@ -56,9 +56,9 @@
             <el-form-item>
                 <!-- <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button> -->
                 <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                    <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                    <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
                 </el-button>
-                <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+                <el-button icon="Refresh" @click="resetQuery">{{ t('common.button.reset') }}</el-button>
             </el-form-item>
         </el-form>
     </div>
@@ -67,12 +67,12 @@
             <el-row :gutter="15" class="btn-style">
                 <el-col :span="1.5">
                     <el-button type="primary" plain icon="Plus" @click="handleAdd"
-                        v-hasPermi="['att:project:role:add']">新增</el-button>
+                        v-hasPermi="['att:project:role:add']">{{ t('common.button.add') }}</el-button>
                 </el-col>
 
                 <el-col :span="1.5">
                     <el-button type="danger" plain icon="Delete" :disabled="multiple" @click="handleDelete"
-                        v-hasPermi="['att:project:role:remove']">删除</el-button>
+                        v-hasPermi="['att:project:role:remove']">{{ t('common.button.delete') }}</el-button>
                 </el-col>
             </el-row>
             <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
@@ -81,37 +81,37 @@
         <!-- 表格数据 -->
         <el-table stripe v-loading="loading" :data="roleList" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55" align="center" />
-            <el-table-column label="编号" width="60" prop="roleId" align="center" />
+            <el-table-column :label="t('common.texts.number')" width="60" prop="roleId" align="center" />
             <el-table-column label="角色名称" prop="roleName" align="center" :show-overflow-tooltip="{effect: 'light'}" />
             <el-table-column label="权限描述" prop="remark" align="center" :show-overflow-tooltip="{effect: 'light'}" width="250" />
             <el-table-column label="权限字符" prop="roleKey" align="center" :show-overflow-tooltip="{effect: 'light'}" />
             <el-table-column label="显示顺序" prop="roleSort" align="center" />
-            <el-table-column label="创建人" align="center" prop="createBy">
+            <el-table-column :label="t('common.texts.createdBy')" align="center" prop="createBy">
                 <template #default="scope">
                     {{ scope.row.createBy || "-" }}
                 </template>
             </el-table-column>
-            <el-table-column label="创建时间" align="center" prop="createTime" width="160">
+            <el-table-column :label="t('common.texts.createdTime')" align="center" prop="createTime" width="160">
                 <template #default="scope">
                     <span>{{ parseTime(scope.row.createTime) }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="状态" align="center">
+            <el-table-column :label="t('common.texts.status')" align="center">
                 <template #default="scope">
                     <el-switch v-model="scope.row.status" active-value="0" inactive-value="1"
                         @change="handleStatusChange(scope.row)"></el-switch>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
+            <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
                 <template #default="scope">
                     <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
                         v-hasPermi="['att:project:role:edit']"
-                        v-if="scope.row.roleId !== 1 || scope.row.builtInOrNot">修改</el-button>
+                        v-if="scope.row.roleId !== 1 || scope.row.builtInOrNot">{{ t('common.button.update') }}</el-button>
                     <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
                         v-hasPermi="['att:project:role:remove']" v-if="
                             (scope.row.roleId !== 1 && scope.row.roleId !== 3) ||
                             scope.row.builtInOrNot
-                        ">删除</el-button>
+                        ">{{ t('common.button.delete') }}</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -156,7 +156,7 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="状态">
+                    <el-form-item :label="t('common.texts.status')">
                         <el-radio-group v-model="form.status">
                             <el-radio v-for="dict in sys_normal_disable" :key="dict.value" :value="dict.value">{{
                                 dict.label
@@ -166,7 +166,7 @@
                 </el-col>
             </el-row>
             <el-form-item label="菜单权限">
-                <el-checkbox v-model="menuExpand" @change="handleCheckedTreeExpand($event, 'menu')">展开/折叠</el-checkbox>
+                <el-checkbox v-model="menuExpand" @change="handleCheckedTreeExpand($event, 'menu')">{{ t('common.button.un_fold') }}</el-checkbox>
                 <el-checkbox v-model="menuNodeAll"
                     @change="handleCheckedTreeNodeAll($event, 'menu')">全选/全不选</el-checkbox>
                 <el-checkbox v-model="form.menuCheckStrictly"
@@ -181,8 +181,8 @@
         </el-form>
         <template #footer>
             <div class="dialog-footer">
-                <el-button @click="cancel">取 消</el-button>
-                <el-button type="primary" @click="submitForm">确 定</el-button>
+                <el-button @click="cancel">{{ t('common.button.cancel') }}</el-button>
+                <el-button type="primary" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
             </div>
         </template>
     </el-dialog>
@@ -203,7 +203,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="数据权限" v-show="form.dataScope == 2">
-                <el-checkbox v-model="deptExpand" @change="handleCheckedTreeExpand($event, 'dept')">展开/折叠</el-checkbox>
+                <el-checkbox v-model="deptExpand" @change="handleCheckedTreeExpand($event, 'dept')">{{ t('common.button.un_fold') }}</el-checkbox>
                 <el-checkbox v-model="deptNodeAll"
                     @change="handleCheckedTreeNodeAll($event, 'dept')">全选/全不选</el-checkbox>
                 <el-checkbox v-model="form.deptCheckStrictly"
@@ -215,14 +215,15 @@
         </el-form>
         <template #footer>
             <div class="dialog-footer">
-                <el-button type="primary" @click="submitDataScope">确 定</el-button>
-                <el-button @click="cancelDataScope">取 消</el-button>
+                <el-button type="primary" @click="submitDataScope">{{ t('common.button.confirm') }}</el-button>
+                <el-button @click="cancelDataScope">{{ t('common.button.cancel') }}</el-button>
             </div>
         </template>
     </el-dialog>
 </template>
 
 <script setup name="Role">
+import { useI18n } from 'vue-i18n'
 import {
     addRole,
     changeRoleStatus,
@@ -241,6 +242,7 @@ import useUserStore from '@/store/system/user';
 import useDefaultLang from "@/composables/useDefaultLang";
 
 const { td } = useDefaultLang();
+const { t } = useI18n();
 const router = useRouter();
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable } = proxy.useDict('sys_normal_disable');
@@ -338,7 +340,7 @@ function handleDelete(row) {
         })
         .then(() => {
             getList();
-            proxy.$modal.msgSuccess('删除成功');
+            proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
         })
         .catch(() => { });
 }
@@ -539,7 +541,7 @@ function submitForm() {
                 form.value.projectId = userStore.projectId;
                 form.value.menuIds = getMenuAllCheckedKeys();
                 updateRole(form.value).then((response) => {
-                    proxy.$modal.msgSuccess('修改成功');
+                    proxy.$modal.msgSuccess(t('common.message.editSuccess'));
                     open.value = false;
                     getList();
                 });
@@ -547,7 +549,7 @@ function submitForm() {
                 form.value.menuIds = getMenuAllCheckedKeys();
                 form.value.projectId = userStore.projectId;
                 addRole(form.value).then((response) => {
-                    proxy.$modal.msgSuccess('新增成功');
+                    proxy.$modal.msgSuccess(t('common.message.addSuccess'));
                     open.value = false;
                     getList();
                 });
@@ -594,7 +596,7 @@ function submitDataScope() {
     if (form.value.roleId != undefined) {
         form.value.deptIds = getDeptAllCheckedKeys();
         dataScope(form.value).then((response) => {
-            proxy.$modal.msgSuccess('修改成功');
+            proxy.$modal.msgSuccess(t('common.message.editSuccess'));
             openDataScope.value = false;
             getList();
         });

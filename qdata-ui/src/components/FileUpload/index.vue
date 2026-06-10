@@ -66,7 +66,7 @@
         </el-link>
         <span class="el-icon-document"> {{ getFileName(file.name) }} </span>
         <div class="ele-upload-list__item-content-action">
-          <el-link :underline="false" @click="handleDelete(index)" type="danger">删除</el-link>
+          <el-link :underline="false" @click="handleDelete(index)" type="danger">{{ t('common.button.delete') }}</el-link>
         </div>
       </li> -->
       <li :key="file.uid" class="filelistcont" v-for="(file, index) in fileList">
@@ -74,7 +74,7 @@
           <span class="el-icon-document"> {{ getFileName(file.name) }} </span>
         </div>
         <div class="ele-upload-list__item-content-action">
-          <el-link :underline="false" @click="handleDelete(index)" type="danger">删除</el-link>
+          <el-link :underline="false" @click="handleDelete(index)" type="danger">{{ t('common.button.delete') }}</el-link>
         </div>
       </li>
     </transition-group>
@@ -82,8 +82,10 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { getToken } from "@/utils/auth";
 
+const { t } = useI18n();
 const props = defineProps({
   modelValue: [String, Object, Array],
   // 数量限制

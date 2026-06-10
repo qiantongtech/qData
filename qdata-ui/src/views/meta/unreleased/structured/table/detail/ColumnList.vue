@@ -22,7 +22,7 @@
             icon="view"
             @click="handleDetailClick(row)"
           >
-            详情
+            {{ t('common.button.details') }}
           </el-button>
           <template v-if="detail.status == '1' && route.query.table_status">
             <el-button
@@ -32,7 +32,7 @@
               icon="Edit"
               @click="handleEditClick(row)"
             >
-              修改
+              {{ t('common.button.update') }}
             </el-button>
             <el-button
               link
@@ -41,7 +41,7 @@
               :disabled="row.status == 1"
               @click="handleDeleteClick(row)"
             >
-              删除
+              {{ t('common.button.delete') }}
             </el-button>
           </template>
         </template>
@@ -211,7 +211,7 @@
           </el-radio-group>
         </el-form-item>
 
-        <el-form-item label="状态" prop="status">
+        <el-form-item :label="t('common.texts.status')" prop="status">
           <el-radio-group v-model="dialog.form.status">
             <el-radio
               v-for="dict in toValue(dicts.meta_task_status)"
@@ -223,22 +223,22 @@
           </el-radio-group>
         </el-form-item>
 
-        <el-form-item label="备注" class="row-full">
+        <el-form-item :label="t('common.texts.remark')" class="row-full">
           <el-input
             v-model="dialog.form.remark"
             type="textarea"
-            placeholder="请输入备注"
+            :placeholder="t('common.form.remarkPlaceholder')"
             :min-height="192"
             show-word-limit
             maxlength="500个字符"
           />
         </el-form-item>
 
-        <el-form-item label="描述" class="row-full">
+        <el-form-item :label="t('common.texts.description')" class="row-full">
           <el-input
             v-model="dialog.form.description"
             type="textarea"
-            placeholder="请输入描述"
+            :placeholder="t('common.form.descriptionPlaceholder')"
             :min-height="192"
             show-word-limit
             maxlength="500个字符"
@@ -265,17 +265,17 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="handleCancelClick" v-if="dialog.type != 'Detail'">
-            取消
+            {{ t('common.button.cancel') }}
           </el-button>
           <el-button @click="handleCancelClick" v-if="dialog.type == 'Detail'">
-            关闭
+            {{ t('common.button.close') }}
           </el-button>
           <el-button
             type="primary"
             v-if="dialog.type != 'Detail'"
             @click="handleConfirmClick"
           >
-            确定
+            {{ t('common.button.confirm') }}
           </el-button>
         </div>
       </template>
@@ -284,6 +284,7 @@
 </template>
 
 <script setup name="ColumnList">
+import { useI18n } from 'vue-i18n'
 import { getCurrentInstance, reactive, ref, toValue } from "vue";
 import {
   listColumn,
@@ -294,6 +295,8 @@ import {
 } from "@/api/mc/unreleased/column.js";
 import { useRoute, useRouter } from "vue-router";
 import { listDgSensitiveLevel } from "@/api/dg/compliance/sensitiveLevel";
+
+const { t } = useI18n();
 // import { getDgDataElemList } from "@/api/dg/standard/dataElem.js";
 
 const BASE_URL = "/meta/unreleased/structured/column";
@@ -370,7 +373,7 @@ const tableStroe = reactive({
   },
   columns: [
     {
-      label: "编号",
+      label: t('common.texts.number'),
       prop: "id",
       sortable: true,
       width: 70,
@@ -445,7 +448,7 @@ const tableStroe = reactive({
       dict: "table_yes_no",
     },
     {
-      label: "状态",
+      label: t('common.texts.status'),
       prop: "status",
       width: 90,
       slot: "status",
@@ -453,31 +456,31 @@ const tableStroe = reactive({
     },
 
     {
-      label: "更新人",
+      label: t('common.texts.updatedBy'),
       prop: "updateBy",
       width: 120,
     },
     {
-      label: "更新时间",
+      label: t('common.texts.updatedTime'),
       prop: "updateTime",
       sortable: true,
       width: 160,
       date: true,
     },
     {
-      label: "创建人",
+      label: t('common.texts.createdBy'),
       prop: "createBy",
       width: 120,
     },
     {
-      label: "创建时间",
+      label: t('common.texts.createdTime'),
       prop: "createTime",
       sortable: true,
       width: 160,
       date: true,
     },
     {
-      label: "操作",
+      label: t('common.texts.operation'),
       width: 220,
       fixed: "right",
       slot: "handle",
@@ -551,7 +554,7 @@ async function handleConfirmClick() {
   await updateColumn(dialog.form);
   dialog.loading = false;
   proxy.$modal.msgSuccess(
-    `${dialog.form.id ? "修改" : "新增"}字段元数据成功！`
+    `${dialog.form.id ? t('common.button.update') : t('common.button.add')}字段元数据成功！`
   );
   handleCancelClick();
   tableRef.value.getList();
@@ -576,16 +579,16 @@ function handleDetailClick(row) {
 
 // 删除
 function handleDeleteClick(row) {
-  ElMessageBox.confirm(`是否确认删除编号为${row.id}的数据项？`, "系统提示", {
-    confirmButtonText: "确定",
-    cancelButtonText: "取消",
+  ElMessageBox.confirm(`是否确认删除编号为${row.id}的数据项？`, t('common.message.systemPrompt'), {
+    confirmButtonText: t('common.button.confirm'),
+    cancelButtonText: t('common.button.cancel'),
     type: "warning",
   })
     .then(() => {
       return delColumn(row.id);
     })
     .then(() => {
-      ElMessage.success("删除成功");
+      ElMessage.success(t('common.message.deleteSuccess'));
       tableRef.value.getList();
     });
 }
@@ -596,10 +599,10 @@ function handleStatusChange(row, status) {
     `是否确认${status == 1 ? "发布" : "取消发布"}数据编号为${
       row.id
     }的字段元数据吗？`,
-    "系统提示",
+    t('common.message.systemPrompt'),
     {
-      confirmButtonText: "确定",
-      cancelButtonText: "取消",
+      confirmButtonText: t('common.button.confirm'),
+      cancelButtonText: t('common.button.cancel'),
       type: "warning",
     }
   )

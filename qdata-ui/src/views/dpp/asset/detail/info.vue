@@ -51,6 +51,9 @@
   </div>
 </template>
 <script setup name="BasicInfo">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { table_type } = proxy.useDict("table_type");
 
@@ -83,9 +86,9 @@ const itemsForDesc = computed(() => {
   const commonFields = [
     { key: "tableType", label: "数据类型", dictOptions: table_type.value },
     { key: "tagNames", label: "数据标签", type: "tags" },
-    { key: "createBy", label: "创建人" },
+    { key: "createBy", label: t('common.texts.createdBy') },
     { key: "createUserPhoneNumber", label: "联系方式" },
-    { key: "updateBy", label: "更新人" },
+    { key: "updateBy", label: t('common.texts.updatedBy') },
     { key: "updateUserPhoneNumber", label: "联系方式" },
   ];
 
@@ -114,7 +117,7 @@ const itemsForDesc = computed(() => {
       { key: "fileType", label: "文件类型" },
       { key: "fileSize", label: "文件大小（字节）" },
       { key: "filePath", label: "文件路径" },
-      { key: "fileLastModified", label: "更新时间", type: "time" },
+      { key: "fileLastModified", label: t('common.texts.updatedTime'), type: "time" },
       ...commonFields,
     ];
   }

@@ -69,13 +69,13 @@
             ></el-table-column>
 
             <el-table-column
-              label="备注"
+              :label="t('common.texts.remark')"
               align="center"
               prop="remark"
               :show-overflow-tooltip="true"
             />
             <el-table-column
-              label="操作"
+              :label="t('common.texts.operation')"
               width="60"
               align="center"
               class-name="small-padding fixed-width"
@@ -127,7 +127,7 @@
             >
             </el-table-column>
             <el-table-column
-              label="操作"
+              :label="t('common.texts.operation')"
               width="60"
               align="center"
               class-name="small-padding fixed-width"
@@ -189,8 +189,10 @@
 </template>
 
 <script setup name="CacheList">
+import { useI18n } from 'vue-i18n'
 import { listCacheName, listCacheKey, getCacheValue, clearCacheName, clearCacheKey, clearCacheAll } from "@/api/system/monitor/cache.js";
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 
 const cacheNames = ref([]);

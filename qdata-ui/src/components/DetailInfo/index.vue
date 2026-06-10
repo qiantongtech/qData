@@ -168,7 +168,10 @@
 </template>
 
 <script setup name="DetailInfo">
+import { useI18n } from 'vue-i18n'
 import { useRouter } from "vue-router";
+
+const { t } = useI18n();
 // 设计说明：
 // - 通用详情页头部展示组件，系统内各模块统一使用；
 // - 默认每行 3 项（span=8），通过 items[i].span 调整为 12（每行 2 项）或 24（独占一行）；
@@ -300,17 +303,17 @@ const displayItems = computed(() => {
     const rows = [
       ...firstRow,
       {
-        label: "描述",
+        label: t('common.texts.description'),
         key: "description",
         span: 24,
         ellipsisClass: "ellipsis",
         className: "mt2 mb2",
       },
-      { label: "创建人", key: "createBy", span: 8 },
-      { label: "创建时间", key: "createTime", type: "time", span: 8 },
-      { label: "更新时间", key: "updateTime", type: "time", span: 8 },
+      { label: t('common.texts.createdBy'), key: "createBy", span: 8 },
+      { label: t('common.texts.createdTime'), key: "createTime", type: "time", span: 8 },
+      { label: t('common.texts.updatedTime'), key: "updateTime", type: "time", span: 8 },
       {
-        label: "备注",
+        label: t('common.texts.remark'),
         key: "remark",
         span: 24,
         ellipsisClass: "ellipsis",

@@ -56,7 +56,7 @@
                     </el-select>
                 </el-form-item>
 
-                <el-form-item label="创建时间">
+                <el-form-item :label="t('common.texts.createdTime')">
                     <el-date-picker
                         class="el-form-input-width"
                         v-model="queryParams.dateRange"
@@ -74,13 +74,13 @@
                         @click="handleQuery"
                         @mousedown="(e) => e.preventDefault()"
                     >
-                        <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                        <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
                     </el-button>
                     <el-button
                         @click="resetQuery"
                         @mousedown="(e) => e.preventDefault()"
                     >
-                        <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                        <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
                     </el-button>
                 </el-form-item>
             </el-form>
@@ -128,14 +128,14 @@
                 />
 
                 <el-table-column
-                    label="创建时间"
+                    :label="t('common.texts.createdTime')"
                     align="center"
                     key="createTime"
                     prop="createTime"
                 />
 
                 <el-table-column
-                    label="操作"
+                    :label="t('common.texts.operation')"
                     align="center"
                     class-name="small-padding fixed-width"
                     fixed="right"
@@ -148,7 +148,7 @@
                             icon="View"
                             @click="handleView(scope.row)"
                         >
-                            详情
+                            {{ t('common.button.details') }}
                         </el-button>
                         <el-button
                             link
@@ -156,7 +156,7 @@
                             icon="Delete"
                             @click="deleteMsg(scope.row.id)"
                         >
-                            删除
+                            {{ t('common.button.delete') }}
                         </el-button>
                     </template>
                 </el-table-column>
@@ -229,7 +229,7 @@
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button @click="openView = false">关 闭</el-button>
+                    <el-button @click="openView = false">{{ t('common.button.close') }}</el-button>
                 </div>
             </template>
         </el-dialog>
@@ -240,6 +240,7 @@
 import { getCurrentInstance, ref } from "vue"
 import useDefaultLang from "@/composables/useDefaultLang";
 const { td } = useDefaultLang();;
+import { useI18n } from 'vue-i18n'
 import useUserStore from "@/store/system/user";
 import {
     listMessage,
@@ -249,6 +250,7 @@ import {
     updateMessage
 } from "@/api/system/system/message/message";
 
+const { t } = useI18n();
 const openView = ref(false);
 const viewData = ref({});
 const userStore = useUserStore();
@@ -318,7 +320,7 @@ function readAllMsg() {
         .then((res) => {
             console.log('------设置为已读----',res)
             getList();
-            ElMessage.success("操作成功");
+            ElMessage.success(t('common.message.msgOpSuccess'));
         })
         .catch(() => {});
 }
@@ -330,7 +332,7 @@ function deleteMsg(id) {
         })
         .then(() => {
             getList();
-            ElMessage.success("操作成功");
+            ElMessage.success(t('common.message.msgOpSuccess'));
         })
         .catch(() => {});
 }

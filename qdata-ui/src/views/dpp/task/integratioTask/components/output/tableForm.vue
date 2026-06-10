@@ -55,8 +55,8 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="描述" prop="description">
-            <el-input v-if="!info" v-model="form.description" type="textarea" placeholder="请输入描述" />
+          <el-form-item :label="t('common.texts.description')" prop="description">
+            <el-input v-if="!info" v-model="form.description" type="textarea" :placeholder="t('common.form.descriptionPlaceholder')" />
             <div v-else class="form-readonly">{{ form.description || '-' }}</div>
           </el-form-item>
         </el-col>
@@ -202,13 +202,14 @@
     </el-form>
     <template #footer>
       <div style="text-align: right">
-        <el-button @click="closeDialog">关闭</el-button>
-        <el-button type="primary" @click="saveData" v-if="!info">保存</el-button>
+        <el-button @click="closeDialog">{{ t('common.button.close') }}</el-button>
+        <el-button type="primary" @click="saveData" v-if="!info">{{ t('common.button.save') }}</el-button>
       </div>
     </template>
   </el-dialog>
 </template>
 <script setup name="OutputForm">
+import { useI18n } from 'vue-i18n'
 import {
   listDaDatasource,
 } from "@/api/da/dataSource/dataSource.js";
@@ -225,6 +226,8 @@ import {
 const { proxy } = getCurrentInstance();
 import useUserStore from "@/store/system/user.js";
 import YourChildComponent from "../fieldMap.vue";
+
+const { t } = useI18n();
 const userStore = useUserStore();
 const props = defineProps({
   visible: { type: Boolean, default: true },
@@ -422,7 +425,6 @@ const saveData = async () => {
   }
 };
 
-
 const closeDialog = () => {
   off();
   // 关闭对话框
@@ -470,7 +472,6 @@ watchEffect(() => {
 });
 handleDatasource(form.value?.taskParams.writerDatasource || "");
 </script>
-
 
 <style scoped lang="less">
 .blue-text {

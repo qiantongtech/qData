@@ -175,16 +175,17 @@
             </div>
             <CrontabResult :ex="crontabValueString" v-if="Crontab"></CrontabResult>
             <div class="pop_btn" v-if="btn">
-                <el-button type="primary" @click="submitFill">确定</el-button>
-                <el-button type="warning" plain @click="clearCron">重置</el-button>
-                <el-button @click="hidePopup">取消</el-button>
+                <el-button type="primary" @click="submitFill">{{ t('common.button.confirm') }}</el-button>
+                <el-button type="warning" plain @click="clearCron">{{ t('common.button.reset') }}</el-button>
+                <el-button @click="hidePopup">{{ t('common.button.cancel') }}</el-button>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-    import CrontabSecond from './second.vue';
+import { useI18n } from 'vue-i18n'
+import CrontabSecond from './second.vue';
     import CrontabMin from './min.vue';
     import CrontabHour from './hour.vue';
     import CrontabDay from './day.vue';
@@ -192,6 +193,8 @@
     import CrontabWeek from './week.vue';
     import CrontabYear from './year.vue';
     import CrontabResult from './result.vue';
+
+const { t } = useI18n();
     const { proxy } = getCurrentInstance();
     const emit = defineEmits(['hide', 'fill']);
     const props = defineProps({

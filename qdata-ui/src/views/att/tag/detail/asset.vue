@@ -51,7 +51,7 @@
           icon="Delete"
           style="padding-left: 14px"
           @click="handleDelete(row)"
-          >删除</el-button
+          >{{ t('common.button.delete') }}</el-button
         >
       </template>
     </qt-table>
@@ -78,17 +78,17 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="名称" prop="name">
-            <el-input v-model="form.name" placeholder="请输入名称" />
+          <el-form-item :label="t('common.texts.name')" prop="name">
+            <el-input v-model="form.name" :placeholder="t('common.form.namePlaceholder')" />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="描述" prop="description">
+          <el-form-item :label="t('common.texts.description')" prop="description">
             <el-input
               v-model="form.description"
-              placeholder="请输入描述"
+              :placeholder="t('common.form.descriptionPlaceholder')"
               maxlength="500个字符"
               show-word-limit
             />
@@ -107,7 +107,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="状态" prop="status">
+          <el-form-item :label="t('common.texts.status')" prop="status">
             <el-input v-model="form.status" placeholder="请输入状态" />
           </el-form-item>
         </el-col>
@@ -131,10 +131,10 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="备注" prop="remark">
+          <el-form-item :label="t('common.texts.remark')" prop="remark">
             <el-input
               v-model="form.remark"
-              placeholder="请输入备注"
+              :placeholder="t('common.form.remarkPlaceholder')"
               maxlength="500个字符"
               show-word-limit
             />
@@ -144,9 +144,9 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="cancel">取 消</el-button>
+        <el-button size="mini" @click="cancel">{{ t('common.button.cancel') }}</el-button>
         <el-button type="primary" size="mini" @click="submitForm"
-          >确 定</el-button
+          >{{ t('common.button.confirm') }}</el-button
         >
       </div>
     </template>
@@ -175,7 +175,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="名称" prop="name">
+          <el-form-item :label="t('common.texts.name')" prop="name">
             <div>
               {{ form.name }}
             </div>
@@ -184,7 +184,7 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="描述" prop="description">
+          <el-form-item :label="t('common.texts.description')" prop="description">
             <div>
               {{ form.description }}
             </div>
@@ -207,7 +207,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="状态" prop="status">
+          <el-form-item :label="t('common.texts.status')" prop="status">
             <div>
               {{ form.status }}
             </div>
@@ -239,7 +239,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="备注" prop="remark">
+          <el-form-item :label="t('common.texts.remark')" prop="remark">
             <div>
               {{ form.remark }}
             </div>
@@ -249,13 +249,14 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="cancel">关 闭</el-button>
+        <el-button size="mini" @click="cancel">{{ t('common.button.close') }}</el-button>
       </div>
     </template>
   </el-dialog>
 </template>
 
 <script setup name="asset">
+import { useI18n } from 'vue-i18n'
 import {
   listAttTag,
   getAttTag,
@@ -268,6 +269,8 @@ import { defineProps } from "vue";
 import { delByTagIdAndAesstId } from "@/api/att/tag/tagAssetRel.js";
 const { proxy } = getCurrentInstance();
 import { useRoute } from "vue-router";
+
+const { t } = useI18n();
 const route = useRoute();
 const { da_assets_status, da_asset_source, da_asset_type } = proxy.useDict(
   "da_assets_status",
@@ -321,7 +324,7 @@ const tableStore = reactive({
     },
   },
   columns: [
-    { label: "编号", prop: "id", width: 60, sortable: true },
+    { label: t('common.texts.number'), prop: "id", width: 60, sortable: true },
     {
       label: "资产名称",
       prop: "name",
@@ -329,7 +332,7 @@ const tableStore = reactive({
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: "描述",
+      label: t('common.texts.description'),
       prop: "description",
       align: "left",
       showOverflowTooltip: { effect: "light" },
@@ -350,12 +353,12 @@ const tableStore = reactive({
       slot: "themeNames",
     },
     {
-      label: "创建人",
+      label: t('common.texts.createdBy'),
       prop: "createBy",
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: "创建时间",
+      label: t('common.texts.createdTime'),
       prop: "createTime",
       sortable: true,
       sortableKey: "create_time",
@@ -363,7 +366,7 @@ const tableStore = reactive({
       width: 160,
     },
 
-    { label: "操作", width: 120, fixed: "right", slot: "action" },
+    { label: t('common.texts.operation'), width: 120, fixed: "right", slot: "action" },
   ],
   func: (params) => pageListByIds({ tagIdList: route.query.id, ...params }),
   params: queryParams.value,
@@ -467,7 +470,7 @@ function submitForm() {
       if (form.value.id != null) {
         updateAttTag(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("修改成功");
+            proxy.$modal.msgSuccess(t('common.message.editSuccess'));
             open.value = false;
             handleQueryClick();
           })
@@ -475,7 +478,7 @@ function submitForm() {
       } else {
         addAttTag(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("新增成功");
+            proxy.$modal.msgSuccess(t('common.message.addSuccess'));
             open.value = false;
             handleQueryClick();
           })
@@ -499,7 +502,7 @@ function handleDelete(row) {
     })
     .then(() => {
       handleQueryClick();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
     })
     .catch(() => {});
 }
@@ -517,7 +520,7 @@ function handleDeleteAll() {
     })
     .then(() => {
       handleQueryClick();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
     })
     .catch(() => {});
 }

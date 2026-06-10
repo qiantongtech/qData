@@ -84,7 +84,7 @@
 
         <el-table-column
           v-if="!falg"
-          label="操作"
+          :label="t('common.texts.operation')"
           align="center"
           class-name="small-padding fixed-width"
           fixed="right"
@@ -96,7 +96,7 @@
               type="danger"
               icon="Delete"
               @click="handleDelete(scope.$index + 1)"
-              >删除</el-button
+              >{{ t('common.button.delete') }}</el-button
             >
           </template>
         </el-table-column>
@@ -108,12 +108,15 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { reactive, ref, watch } from "vue";
 import {
   listDpDataElem,
   listDpDataElemCode,
 } from "@/api/dp/dataElem/dataElem.js";
 import singleSelectTableDialog from "./dataElem.vue";
+
+const { t } = useI18n();
 const props = defineProps({
   form: Object,
   inputFields: Array,

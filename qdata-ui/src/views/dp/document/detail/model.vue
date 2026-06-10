@@ -41,7 +41,7 @@
           v-hasPermi="['dp:model:add']"
           @mousedown="(e) => e.preventDefault()"
         >
-          <i class="iconfont-mini icon-xinzeng mr5"></i>新增
+          <i class="iconfont-mini icon-xinzeng mr5"></i>{{ t('common.button.add') }}
         </el-button>
       </el-col>
       <!-- <el-col :span="1.5">
@@ -53,19 +53,19 @@
                     <el-col :span="1.5">
                         <el-button type="danger" plain :disabled="multiple" @click="handleDelete"
                             v-hasPermi="['dp:model:remove']" @mousedown="(e) => e.preventDefault()">
-                            <i class="iconfont-mini icon-shanchu-huise mr5"></i>删除
+                            <i class="iconfont-mini icon-shanchu-huise mr5"></i>{{ t('common.button.delete') }}
                         </el-button>
                     </el-col> -->
       <!-- <el-col :span="1.5">
                 <el-button type="info" plain @click="handleImport" v-hasPermi="['dp:model:export']"
                   @mousedown="(e) => e.preventDefault()">
-                  <i class="iconfont-mini icon-upload-cloud-line mr5"></i>导入
+                  <i class="iconfont-mini icon-upload-cloud-line mr5"></i>{{ t('common.button.import') }}
                 </el-button>
               </el-col>
               <el-col :span="1.5">
                 <el-button type="warning" plain @click="handleExport" v-hasPermi="['dp:model:export']"
                   @mousedown="(e) => e.preventDefault()">
-                  <i class="iconfont-mini icon-download-line mr5"></i>导出
+                  <i class="iconfont-mini icon-download-line mr5"></i>{{ t('common.button.export') }}
                 </el-button>
               </el-col> -->
     </el-row>
@@ -88,7 +88,7 @@
   >
     <el-table-column
       v-if="getColumnVisibility(0)"
-      label="编号"
+      :label="t('common.texts.number')"
       width="50"
       align="left"
       prop="id"
@@ -131,7 +131,7 @@
     </el-table-column>
     <el-table-column
       v-if="getColumnVisibility(10)"
-      label="创建人"
+      :label="t('common.texts.createdBy')"
       align="left"
       prop="createBy"
       width="120"
@@ -141,7 +141,7 @@
       </template>
     </el-table-column>
     <el-table-column
-      label="创建时间"
+      :label="t('common.texts.createdTime')"
       v-if="getColumnVisibility(11)"
       align="left"
       prop="createTime"
@@ -155,7 +155,7 @@
     </el-table-column>
     <el-table-column
       v-if="getColumnVisibility(4)"
-      label="状态"
+      :label="t('common.texts.status')"
       width="120"
       align="left"
       prop="status"
@@ -174,7 +174,7 @@
       </template>
     </el-table-column>
     <el-table-column
-      label="备注"
+      :label="t('common.texts.remark')"
       v-if="getColumnVisibility(5)"
       align="left"
       prop="remark"
@@ -191,7 +191,7 @@
               </template>
             </el-table-column> -->
     <el-table-column
-      label="操作"
+      :label="t('common.texts.operation')"
       align="center"
       class-name="small-padding fixed-width"
       fixed="right"
@@ -205,7 +205,7 @@
           @click="handleUpdate(scope.row)"
           :disabled="scope.row.status == 1"
           v-hasPermi="['dp:model:edit']"
-          >修改</el-button
+          >{{ t('common.button.update') }}</el-button
         >
         <el-button
           link
@@ -214,7 +214,7 @@
           :disabled="scope.row.status == 1"
           @click="handleDelete(scope.row)"
           v-hasPermi="['dp:model:remove']"
-          >删除</el-button
+          >{{ t('common.button.delete') }}</el-button
         >
         <el-button
           link
@@ -222,7 +222,7 @@
           icon="view"
           @click="handleDetail(scope.row)"
           v-hasPermi="['dp:model:edit']"
-          >详情</el-button
+          >{{ t('common.button.details') }}</el-button
         >
         <!-- <el-button link type="primary" icon="view" @click="routeTo('/dp/model/dpModelDetail', scope.row)"
                   v-hasPermi="['dp:model:edit']">复杂详情</el-button> -->
@@ -232,7 +232,7 @@
     <template #empty>
       <div class="emptyBg">
         <img src="@/assets/system/images/no_data/noData.png" alt="" />
-        <p>暂无记录</p>
+        <p>{{ t('common.message.noRecord') }}</p>
       </div>
     </template>
   </el-table>
@@ -287,7 +287,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="状态" prop="status">
+          <el-form-item :label="t('common.texts.status')" prop="status">
             <dict-tag :options="dp_model_status" :value="form.status" />
           </el-form-item>
         </el-col>
@@ -318,7 +318,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="描述" prop="description">
+          <el-form-item :label="t('common.texts.description')" prop="description">
             <div>
               {{ form.description }}
             </div>
@@ -328,7 +328,7 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="cancel">关 闭</el-button>
+        <el-button size="mini" @click="cancel">{{ t('common.button.close') }}</el-button>
       </div>
     </template>
   </el-dialog>
@@ -357,6 +357,7 @@
   />
 </template>
 <script setup name="DpModel">
+import { useI18n } from 'vue-i18n'
 import { deptUserTree } from "@/api/system/system/user.js";
 import { deptTreeSelectNoPermi } from "@/api/system/system/user.js";
 import DeptTree from "@/components/DeptTree";
@@ -377,6 +378,8 @@ import {
 import { getToken } from "@/utils/auth.js";
 import { ref, reactive, getCurrentInstance } from "vue";
 import { useRoute } from "vue-router";
+
+const { t } = useI18n();
 const route = useRoute();
 const { proxy } = getCurrentInstance();
 const { dp_model_status, dp_model_create_type } = proxy.useDict(
@@ -440,14 +443,14 @@ function getDeptTree() {
 }
 // 列显隐信息
 const columns = ref([
-  { key: 0, label: "编号", visible: true },
+  { key: 0, label: t('common.texts.number'), visible: true },
   { key: 1, label: "英文名称", visible: true },
   { key: 2, label: "中文名称", visible: true },
   { key: 3, label: "逻辑模型类目", visible: true },
-  { key: 10, label: "创建人", visible: true },
-  { key: 11, label: "创建时间", visible: true },
-  { key: 4, label: "状态", visible: true },
-  { key: 5, label: "备注", visible: true },
+  { key: 10, label: t('common.texts.createdBy'), visible: true },
+  { key: 11, label: t('common.texts.createdTime'), visible: true },
+  { key: 4, label: t('common.texts.status'), visible: true },
+  { key: 5, label: t('common.texts.remark'), visible: true },
 ]);
 
 const getColumnVisibility = (key) => {
@@ -493,7 +496,7 @@ function handleStatusChange(id, row, e) {
     .confirm('确认要"' + text + '","' + row.modelComment + '"逻辑模型吗？')
     .then(function () {
       updateStatusDpDataModel(id, row.status).then((response) => {
-        proxy.$modal.msgSuccess("操作成功");
+        proxy.$modal.msgSuccess(t('common.message.msgOpSuccess'));
       });
     })
     .catch(function () {
@@ -519,7 +522,7 @@ const data = reactive({
       { required: true, message: "模型名称不能为空", trigger: "blur" },
     ],
     catCode: [{ required: true, message: "类目编码不能为空", trigger: "blur" }],
-    status: [{ required: true, message: "状态不能为空", trigger: "change" }],
+    status: [{ required: true, message: t('common.form.statusRequired'), trigger: "change" }],
     createType: [
       { required: true, message: "创建方式不能为空", trigger: "change" },
     ],
@@ -655,7 +658,7 @@ function submitForm(obj) {
     updateDpModel({ ...obj.form, documentId: queryParams.value.documentId })
       .then((response) => {
         updateDpModelColumn(obj.tableData).then((response) => {
-          proxy.$modal.msgSuccess("修改成功");
+          proxy.$modal.msgSuccess(t('common.message.editSuccess'));
           open.value = false;
           getList();
         });
@@ -671,7 +674,7 @@ function submitForm(obj) {
         }));
         dpModelColumn(updatedTableData)
           .then((dpModelColumnResponse) => {
-            proxy.$modal.msgSuccess("新增成功");
+            proxy.$modal.msgSuccess(t('common.message.addSuccess'));
             open.value = false;
             getList();
           })
@@ -693,7 +696,7 @@ function handleDelete(row) {
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
     })
     .catch(() => {});
 }

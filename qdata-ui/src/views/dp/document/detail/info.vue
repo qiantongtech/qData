@@ -99,6 +99,9 @@
   </div>
 </template>
 <script setup name="BasicInfo">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n();
 const props = defineProps({
   form1: {
     type: Object,
@@ -117,20 +120,20 @@ const fileDesc = ref([
   { key: "abolitionDate", label: "废止日期" },
   // { key: "fileName", label: "文件名称" },
   { key: "fileUrl", label: "文件" },
-  { key: "createBy", label: "创建人" },
-  { key: "createTime", label: "创建时间" },
+  { key: "createBy", label: t('common.texts.createdBy') },
+  { key: "createTime", label: t('common.texts.createdTime') },
   {
     key: "updateBy",
-    label: "更新人",
+    label: t('common.texts.updatedBy'),
     value: "",
   },
   {
     key: "updateTime",
-    label: "更新时间",
+    label: t('common.texts.updatedTime'),
     value: "",
     type: "time",
   },
-  { key: "remark", label: "备注", span: 2 },]);
+  { key: "remark", label: t('common.texts.remark'), span: 2 },]);
 const getDescValue = (row) => {
   let detail = { ...props.form1 };
   if (props.form1) {

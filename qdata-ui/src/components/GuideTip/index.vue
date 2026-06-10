@@ -40,7 +40,7 @@
             </span>
             <div class="header-buttons">
                 <el-button v-if="config.type !== 'danger'" class="btn-never-show" @click="neverShow">不再展示</el-button>
-                <el-button :class="['btn-close', config.type]" @click="close">关闭</el-button>
+                <el-button :class="['btn-close', config.type]" @click="close">{{ t('common.button.close') }}</el-button>
             </div>
         </div>
         <div v-if="config.content" class="tip-content" v-html="config.content" @click="handleClick"></div>
@@ -48,11 +48,13 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { ref, onMounted, onActivated, computed } from 'vue'
 import { guideTipConfig } from './guideTipConfig'
 import { useRouter } from 'vue-router'
 import useUserStore from "@/store/system/user";
 
+const { t } = useI18n();
 const userStore = useUserStore()
 const STORAGE_KEY = 'guide_tip_status'
 

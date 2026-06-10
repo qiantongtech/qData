@@ -34,10 +34,10 @@
   <div class="app-container" ref="app-container">
     <div class="pagecont-top" v-show="showSearch">
       <el-form class="btn-style" :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-        <el-form-item label="名称" prop="name">
+        <el-form-item :label="t('common.texts.name')" prop="name">
           <el-input
             v-model="queryParams.name"
-            placeholder="请输入名称"
+            :placeholder="t('common.form.namePlaceholder')"
             clearable
             class="el-form-input-width"
             @keyup.enter.native="handleQuery"
@@ -63,10 +63,10 @@
         </el-form-item>
         <el-form-item>
           <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-            <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+            <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
           </el-button>
           <el-button @click="resetQuery" @mousedown="e => e.preventDefault()">
-            <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+            <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
           </el-button>
         </el-form-item>
       </el-form>
@@ -82,7 +82,7 @@
             size="mini"
             @click="handleAdd"
             v-hasPermi="['ca:cert:add']"
-          >新增</el-button>
+          >{{ t('common.button.add') }}</el-button>
         </el-col>
       </el-row>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
@@ -90,7 +90,7 @@
 
       <el-table  stripe height="60vh" v-loading="loading" :data="certList" @selection-change="handleSelectionChange">
         <el-table-column label="ID" align="center" prop="id" />
-        <el-table-column label="名称" align="center" prop="name"  :show-overflow-tooltip="true" />
+        <el-table-column :label="t('common.texts.name')" align="center" prop="name"  :show-overflow-tooltip="true" />
         <el-table-column label="主体名称" align="center" prop="subjectName"  :show-overflow-tooltip="true" />
         <el-table-column label="颁发者" align="center" prop="issuer"  :show-overflow-tooltip="true" />
         <el-table-column label="所有者" align="center" prop="possessor" :show-overflow-tooltip="true"/>
@@ -100,12 +100,12 @@
           </template>
         </el-table-column>
         <el-table-column label="生效时间" align="center" prop="createTime" :show-overflow-tooltip="true"/>
-        <el-table-column label="备注" align="center" prop="remark"  :show-overflow-tooltip="true" >
+        <el-table-column :label="t('common.texts.remark')" align="center" prop="remark"  :show-overflow-tooltip="true" >
           <template #default="scope">
             <span>{{ scope.row.remark || "-" }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作"  align="center" class-name="small-padding fixed-width" fixed="right" width="240">
+        <el-table-column :label="t('common.texts.operation')"  align="center" class-name="small-padding fixed-width" fixed="right" width="240">
           <template #default="scope">
             <el-button
               link
@@ -113,7 +113,7 @@
               icon="download"
               @click="downloadFiles(scope.row)"
               v-hasPermi="['ca:cert:edit']"
-            >下载</el-button>
+            >{{ t('common.button.download') }}</el-button>
             <el-button
               link
               type="danger"
@@ -121,7 +121,7 @@
               icon="Delete"
               @click="handleDelete(scope.row)"
               v-hasPermi="['ca:cert:remove']"
-            >删除</el-button>
+            >{{ t('common.button.delete') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -140,8 +140,8 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="名称" prop="name">
-              <el-input v-model="form.name" placeholder="请输入名称" />
+            <el-form-item :label="t('common.texts.name')" prop="name">
+              <el-input v-model="form.name" :placeholder="t('common.form.namePlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -174,7 +174,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="备注" prop="remark">
+            <el-form-item :label="t('common.texts.remark')" prop="remark">
               <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
             </el-form-item>
           </el-col>
@@ -182,8 +182,8 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="cancel">取 消</el-button>
-          <el-button type="primary" @click="submitForm">确 定</el-button>
+          <el-button @click="cancel">{{ t('common.button.cancel') }}</el-button>
+          <el-button type="primary" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -195,6 +195,7 @@ import { listCert, getCert, delCert, addCert, updateCert } from "@/api/system/ca
 import {listSubject} from "@/api/system/ca/subject.js";
 import JSZip from "jszip";
 
+const { t } = useI18n();
 export default {
   name: "Cert",
   data() {
@@ -239,7 +240,7 @@ export default {
       // 表单校验
       rules: {
         name: [
-          { required: true, message: "名称", trigger: "blur" }
+          { required: true, message: t('common.texts.name'), trigger: "blur" }
         ],
         subjectId: [
           { required: true, message: "主体id不能为空", trigger: "change" }
@@ -356,13 +357,13 @@ export default {
         if (valid) {
           if (this.form.id != null) {
             updateCert(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功");
+              this.$modal.msgSuccess(t('common.message.editSuccess'));
               this.open = false;
               this.getList();
             });
           } else {
             addCert(this.form).then(response => {
-              this.$modal.msgSuccess("新增成功");
+              this.$modal.msgSuccess(t('common.message.addSuccess'));
               this.open = false;
               this.getList();
             });
@@ -377,7 +378,7 @@ export default {
         return delCert(ids);
       }).then(() => {
         this.getList();
-        this.$modal.msgSuccess("删除成功");
+        this.$modal.msgSuccess(t('common.message.deleteSuccess'));
       }).catch(() => {});
     },
     async downloadFiles(row) {

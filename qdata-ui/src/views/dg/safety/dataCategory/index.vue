@@ -63,7 +63,7 @@
               @click="handleAdd"
               v-hasPermi="['dg:dataCategory:add']"
             >
-              新增
+              {{ t('common.button.add') }}
             </el-button>
 
             <el-button
@@ -74,7 +74,7 @@
               @click="handleDelete"
               v-hasPermi="['dg:dataCategory:remove']"
             >
-              删除
+              {{ t('common.button.delete') }}
             </el-button>
 
             <el-button
@@ -146,7 +146,7 @@
                 @click="handleDetail(row)"
                 v-hasPermi="['dg:dataCategory:query']"
               >
-                详情
+                {{ t('common.button.details') }}
               </el-button>
               <el-button
                 link
@@ -156,13 +156,13 @@
                 :disabled="row.status == 1"
                 v-hasPermi="['dg:dataCategory:edit']"
               >
-                修改
+                {{ t('common.button.update') }}
               </el-button>
 
               <el-popover placement="bottom" :width="150" trigger="click">
                 <template #reference>
                   <el-button link type="primary" icon="ArrowDown">
-                    更多
+                    {{ t('common.button.more') }}
                   </el-button>
                 </template>
                 <div style="width: 100px" class="butgdlist">
@@ -174,7 +174,7 @@
                     @click="handleDelete(row)"
                     v-hasPermi="['dg:dataCategory:remove']"
                   >
-                    删除
+                    {{ t('common.button.delete') }}
                   </el-button>
                   <el-button
                     link
@@ -285,7 +285,7 @@
         <el-row :gutter="20">
           <el-col :span="24">
             <qt-form-item
-              label="状态"
+              :label="t('common.texts.status')"
               prop="validFlag"
               :tip="{
                 content:
@@ -302,11 +302,11 @@
 
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="描述" prop="description">
+            <el-form-item :label="t('common.texts.description')" prop="description">
               <el-input
                 v-model="form.description"
                 type="textarea"
-                placeholder="请输入描述"
+                :placeholder="t('common.form.descriptionPlaceholder')"
                 maxlength="500个字符"
                 show-word-limit
               />
@@ -316,13 +316,13 @@
 
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="备注" prop="remark">
+            <el-form-item :label="t('common.texts.remark')" prop="remark">
               <el-input
                 v-model="form.remark"
                 type="textarea"
                 maxlength="500个字符"
                 show-word-limit
-                placeholder="请输入备注"
+                :placeholder="t('common.form.remarkPlaceholder')"
               />
             </el-form-item>
           </el-col>
@@ -331,9 +331,9 @@
 
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="cancel">取 消</el-button>
+          <el-button size="mini" @click="cancel">{{ t('common.button.cancel') }}</el-button>
           <el-button type="primary" size="mini" @click="submitForm">
-            确 定
+            {{ t('common.button.confirm') }}
           </el-button>
         </div>
       </template>
@@ -389,33 +389,33 @@
           </el-tag>
           <el-tag v-else type="danger">未配置</el-tag>
         </el-form-item>
-        <el-form-item label="状态" prop="validFlag">
+        <el-form-item :label="t('common.texts.status')" prop="validFlag">
           <el-tag v-if="form.validFlag === true" type="primary">启用</el-tag>
           <el-tag v-else-if="form.validFlag === false" type="danger"
             >禁用</el-tag
           >
         </el-form-item>
 
-        <el-form-item label="描述" prop="description" class="row-full">
+        <el-form-item :label="t('common.texts.description')" prop="description" class="row-full">
           <div class="form-readonly textarea">
             {{ form.description ?? "-" }}
           </div>
         </el-form-item>
-        <el-form-item label="备注" prop="remark" class="row-full">
+        <el-form-item :label="t('common.texts.remark')" prop="remark" class="row-full">
           <div class="form-readonly textarea">{{ form.remark ?? "-" }}</div>
         </el-form-item>
-        <el-form-item label="创建人" prop="createBy">
+        <el-form-item :label="t('common.texts.createdBy')" prop="createBy">
           <div class="form-readonly">{{ form.createBy ?? "-" }}</div>
         </el-form-item>
-        <el-form-item label="创建时间" prop="createTime">
+        <el-form-item :label="t('common.texts.createdTime')" prop="createTime">
           <div class="form-readonly">
             {{ parseTime(form.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
         </el-form-item>
-        <el-form-item label="更新人" prop="updateBy">
+        <el-form-item :label="t('common.texts.updatedBy')" prop="updateBy">
           <div class="form-readonly">{{ form.updateBy ?? "-" }}</div>
         </el-form-item>
-        <el-form-item label="更新时间" prop="updateTime">
+        <el-form-item :label="t('common.texts.updatedTime')" prop="updateTime">
           <div class="form-readonly">
             {{ parseTime(form.updateTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
@@ -423,7 +423,7 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="cancel">关 闭</el-button>
+          <el-button @click="cancel">{{ t('common.button.close') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -462,8 +462,8 @@
 
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="batchLevelOpen = false">取 消</el-button>
-          <el-button type="primary" @click="submitBatchLevel">确 定</el-button>
+          <el-button @click="batchLevelOpen = false">{{ t('common.button.cancel') }}</el-button>
+          <el-button type="primary" @click="submitBatchLevel">{{ t('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -486,6 +486,7 @@
 </template>
 
 <script setup name="DataCategory">
+import { useI18n } from 'vue-i18n'
 import {
   listDataCategory,
   getDataCategory,
@@ -515,6 +516,7 @@ import {
 import RuleFormDialog from "@/views/dg/safety/desensitizationRules/components/ruleFormDialog.vue";
 import { getCurrentInstance, ref, reactive, toRefs, onMounted } from "vue";
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { dg_data_priority, dg_replace_rule } = proxy.useDict(
   "dg_data_priority",
@@ -562,7 +564,7 @@ const tableStore = reactive({
   },
   columns: [
     { type: "selection", width: 45 },
-    { label: "编号", prop: "id", width: 60, sortable: true },
+    { label: t('common.texts.number'), prop: "id", width: 60, sortable: true },
     {
       label: "分类名称/描述",
       prop: "name",
@@ -610,19 +612,19 @@ const tableStore = reactive({
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: "状态",
+      label: t('common.texts.status'),
       prop: "validFlag",
       slot: "status",
       minWidth: 120,
     },
     {
-      label: "创建人",
+      label: t('common.texts.createdBy'),
       prop: "createBy",
       width: 120,
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: "创建时间",
+      label: t('common.texts.createdTime'),
       prop: "createTime",
       width: 150,
       sortable: true,
@@ -630,7 +632,7 @@ const tableStore = reactive({
       date: true,
     },
     {
-      label: "操作",
+      label: t('common.texts.operation'),
       width: 220,
       fixed: "right",
       slot: "handle",
@@ -670,11 +672,11 @@ const searchStore = reactive({
     //   },
     // },
     {
-      label: "状态",
+      label: t('common.texts.status'),
       prop: "validFlag",
       component: {
         is: "select",
-        placeholder: "请选择状态",
+        placeholder: t('common.form.statusPlaceholder'),
         options: [
           { label: "启用", value: true },
           { label: "禁用", value: false },
@@ -718,7 +720,7 @@ function handleStatusChange(id, row, e) {
     .confirm('确认要"' + text + '","' + row.name + '"数据分类吗？')
     .then(function () {
       updateDataCategory(dataForm).then(() => {
-        proxy.$modal.msgSuccess("操作成功");
+        proxy.$modal.msgSuccess(t('common.message.msgOpSuccess'));
         tableRef.value.getList();
       });
     })
@@ -849,13 +851,13 @@ function submitForm() {
     if (valid) {
       if (form.value.id != null) {
         updateDataCategory(form.value).then(() => {
-          proxy.$modal.msgSuccess("修改成功");
+          proxy.$modal.msgSuccess(t('common.message.editSuccess'));
           open.value = false;
           tableRef.value.getList();
         });
       } else {
         addDataCategory(form.value).then(() => {
-          proxy.$modal.msgSuccess("新增成功");
+          proxy.$modal.msgSuccess(t('common.message.addSuccess'));
           open.value = false;
           tableRef.value.getList();
         });
@@ -881,7 +883,7 @@ function handleDelete(row) {
     })
     .then(() => {
       tableRef.value.getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
     })
     .catch(() => {});
 }

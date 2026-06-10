@@ -67,10 +67,10 @@
       </el-form-item>
       <el-form-item class="search-btns">
         <el-button plain type="primary" @click="handleQueryClick">
-          <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+          <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
         </el-button>
         <el-button @click="handleResetClick">
-          <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+          <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
         </el-button>
         <el-button
           plain
@@ -89,8 +89,10 @@
 </template>
 
 <script setup name="QtSearchBar">
+import { useI18n } from 'vue-i18n'
 import { reactive, ref } from "vue";
 
+const { t } = useI18n();
 const props = defineProps({
   params: {
     type: Object,

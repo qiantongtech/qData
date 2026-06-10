@@ -18,7 +18,7 @@
         icon="Plus"
         @click="handleAdd()"
         v-hasPermi="[`${permBase}:add`]"
-        >新增</el-button
+        >{{ t('common.button.add') }}</el-button
       >
       <el-button
         type="danger"
@@ -28,7 +28,7 @@
         v-hasPermi="[`${permBase}:remove`]"
         @click="handleDeleteSelected"
       >
-        删除
+        {{ t('common.button.delete') }}
       </el-button>
       <el-button
         class="toggle-expand-all"
@@ -57,7 +57,7 @@
           icon="Edit"
           @click="handleUpdate(row)"
           v-hasPermi="[`${permBase}:edit`]"
-          >修改</el-button
+          >{{ t('common.button.update') }}</el-button
         >
         <el-button
           link
@@ -65,7 +65,7 @@
           icon="Plus"
           @click="handleAdd(row)"
           v-hasPermi="[`${permBase}:add`]"
-          >新增</el-button
+          >{{ t('common.button.add') }}</el-button
         >
         <el-button
           link
@@ -74,7 +74,7 @@
           @click="handleDelete(row)"
           v-hasPermi="[`${permBase}:remove`]"
           :disabled="row.validFlag"
-          >删除</el-button
+          >{{ t('common.button.delete') }}</el-button
         >
       </template>
     </qt-table>
@@ -88,6 +88,8 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
+
 const props = defineProps({
   listFunc: { type: Function, required: true },
   getFunc: { type: Function, required: true },
@@ -103,6 +105,7 @@ const props = defineProps({
 import { ref, reactive, toRefs, getCurrentInstance } from "vue";
 import CatEditDialog from "./catEditDialog.vue";
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const catEditDialogRef = ref();
 const appContainerRef = ref();
@@ -139,13 +142,13 @@ const tableStore = reactive({
     },
     { label: `${props.nameLabel}`, prop: "name", width: 200, align: "left" },
     {
-      label: "描述",
+      label: t('common.texts.description'),
       prop: "description",
       align: "left",
       width: 240,
       showOverflowTooltip: { effect: "light" },
     },
-    { label: "状态", prop: "validFlag", slot: "validFlag", align: "center" },
+    { label: t('common.texts.status'), prop: "validFlag", slot: "validFlag", align: "center" },
     {
       label: "排序",
       prop: "sortOrder",
@@ -153,20 +156,20 @@ const tableStore = reactive({
       sortableKey: "sortOrder",
     },
     {
-      label: "备注",
+      label: t('common.texts.remark'),
       prop: "remark",
       width: 200,
       showOverflowTooltip: { effect: "light" },
     },
-    { label: "创建人", prop: "createBy" },
+    { label: t('common.texts.createdBy'), prop: "createBy" },
     {
-      label: "创建时间",
+      label: t('common.texts.createdTime'),
       prop: "createTime",
       sortable: true,
       sortableKey: "create_time",
       date: true,
     },
-    { label: "操作", width: 240, slot: "action", align: "center" },
+    { label: t('common.texts.operation'), width: 240, slot: "action", align: "center" },
   ],
   func: props.listFunc,
   params: {},
@@ -283,7 +286,7 @@ function onDialogSubmit(payload) {
     props
       .updateFunc(payload)
       .then(() => {
-        proxy.$modal.msgSuccess("修改成功");
+        proxy.$modal.msgSuccess(t('common.message.editSuccess'));
         handleQueryClick();
       })
       .catch(() => {});
@@ -291,7 +294,7 @@ function onDialogSubmit(payload) {
     props
       .addFunc(payload)
       .then(() => {
-        proxy.$modal.msgSuccess("新增成功");
+        proxy.$modal.msgSuccess(t('common.message.addSuccess'));
         handleQueryClick();
       })
       .catch(() => {});
@@ -309,7 +312,7 @@ function handleDelete(row) {
     })
     .then(() => {
       handleQueryClick();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
     })
     .catch(() => {});
 }
@@ -331,10 +334,10 @@ function handleDeleteSelected() {
         } = res?.data || {};
         return ElMessageBox.confirm(
           `可删除${canDeleteCount}个，不可删除${cannotDeleteCount}个，是否删除可删部分`,
-          "系统提示",
+          t('common.message.systemPrompt'),
           {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
+            confirmButtonText: t('common.button.confirm'),
+            cancelButtonText: t('common.button.cancel'),
             type: "warning",
           }
         ).then(() => {
@@ -343,7 +346,7 @@ function handleDeleteSelected() {
             return;
           } else {
             return props.delFunc(canDeleteIds).then(() => {
-              ElMessage.success("删除成功");
+              ElMessage.success(t('common.message.deleteSuccess'));
               tableRef.value.getList();
             });
           }
@@ -353,12 +356,12 @@ function handleDeleteSelected() {
   } else {
     ElMessageBox.confirm(
       `可删除${selection.rows.length}个，不可删除0个，是否删除可删部分`,
-      "系统提示",
-      { confirmButtonText: "确定", cancelButtonText: "取消", type: "warning" }
+      t('common.message.systemPrompt'),
+      { confirmButtonText: t('common.button.confirm'), cancelButtonText: t('common.button.cancel'), type: "warning" }
     )
       .then(() => props.delFunc(ids))
       .then(() => {
-        ElMessage.success("删除成功");
+        ElMessage.success(t('common.message.deleteSuccess'));
         tableRef.value.getList();
       });
   }

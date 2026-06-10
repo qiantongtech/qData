@@ -45,12 +45,12 @@
       </el-form-item>
       <el-form-item>
         <!-- <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
-        <el-button icon="Refresh" @click="resetQuery">重置</el-button> -->
+        <el-button icon="Refresh" @click="resetQuery">{{ t('common.button.reset') }}</el-button> -->
         <el-button plain type="primary" @click="handleQuery">
-            <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+            <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
         </el-button>
         <el-button @click="resetQuery">
-            <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+            <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -58,8 +58,8 @@
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column prop="tableName" label="表名称" :show-overflow-tooltip="true"></el-table-column>
         <el-table-column prop="tableComment" label="表描述" :show-overflow-tooltip="true"></el-table-column>
-        <el-table-column prop="createTime" label="创建时间"></el-table-column>
-        <el-table-column prop="updateTime" label="更新时间"></el-table-column>
+        <el-table-column prop="createTime" :label="t('common.texts.createdTime')"></el-table-column>
+        <el-table-column prop="updateTime" :label="t('common.texts.updatedTime')"></el-table-column>
       </el-table>
       <pagination
         v-show="total>0"
@@ -70,16 +70,18 @@
       />
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="visible = false">取 消</el-button>
-        <el-button type="primary" @click="handleImportTable">确 定</el-button>
+        <el-button @click="visible = false">{{ t('common.button.cancel') }}</el-button>
+        <el-button type="primary" @click="handleImportTable">{{ t('common.button.confirm') }}</el-button>
       </div>
     </template>
   </el-dialog>
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { listDbTable, importTable } from "@/api/system/tool/gen.js";
 
+const { t } = useI18n();
 const total = ref(0);
 const visible = ref(false);
 const tables = ref([]);

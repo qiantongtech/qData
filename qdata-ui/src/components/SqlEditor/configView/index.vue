@@ -162,12 +162,16 @@
   </div>
 </template>
 <script setup name="EditorConfigView">
+import { useI18n } from 'vue-i18n'
+
 //
 import { treeData } from "@/views/dpp/task/developTask/data";
 import { listDaDatasourceNoKafkaByProjectCode } from "@/api/da/dataSource/dataSource";
 const { proxy } = getCurrentInstance();
 const { dpp_etl_task_priority } = proxy.useDict("dpp_etl_task_priority");
 import useUserStore from "@/store/system/user";
+
+const { t } = useI18n();
 const userStore = useUserStore();
 const emits = defineEmits(["close"]);
 const props = defineProps({
@@ -263,7 +267,7 @@ const handleDatasourceChange = async (value) => {
 };
 
 const radioOptions = ref([
-  { componentType: "51", label: "查询", taskType: "SQL", id: "0", show: true },
+  { componentType: "51", label: t('common.button.query'), taskType: "SQL", id: "0", show: true },
   {
     componentType: "51",
     label: "非查询",

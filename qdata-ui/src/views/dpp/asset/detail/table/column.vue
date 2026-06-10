@@ -80,7 +80,7 @@
           icon="Edit"
           @click="handleUpdate(row)"
           v-hasPermi="['da:assetColumn:edit']"
-          >修改</el-button
+          >{{ t('common.button.update') }}</el-button
         >
         <el-button link type="primary" icon="Pointer" @click="openBindTerm(row)">
           绑定术语
@@ -175,13 +175,13 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="描述" prop="description">
+          <el-form-item :label="t('common.texts.description')" prop="description">
             <el-input
               v-model="form.description"
               type="textarea"
               maxlength="500个字符"
               show-word-limit
-              placeholder="请输入描述"
+              :placeholder="t('common.form.descriptionPlaceholder')"
             />
           </el-form-item>
         </el-col>
@@ -295,13 +295,13 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="备注" prop="remark">
+          <el-form-item :label="t('common.texts.remark')" prop="remark">
             <el-input
               v-model="form.remark"
               type="textarea"
               maxlength="500个字符"
               show-word-limit
-              placeholder="请输入备注"
+              :placeholder="t('common.form.remarkPlaceholder')"
             />
           </el-form-item>
         </el-col>
@@ -309,8 +309,8 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="cancel">取 消</el-button>
-        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button @click="cancel">{{ t('common.button.cancel') }}</el-button>
+        <el-button type="primary" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
       </div>
     </template>
   </el-dialog>
@@ -367,12 +367,12 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="termDialogVisible = false">取 消</el-button>
+        <el-button @click="termDialogVisible = false">{{ t('common.button.cancel') }}</el-button>
         <el-button
             type="primary"
             :loading="termSubmitting"
             @click="submitBindTerm"
-        >确 定</el-button
+        >{{ t('common.button.confirm') }}</el-button
         >
       </div>
     </template>
@@ -446,7 +446,7 @@
         </el-col>
         <el-col :span="24">
           <qt-form-item
-              label="状态"
+              :label="t('common.texts.status')"
               prop="status"
               :tip="{
               content:
@@ -466,11 +466,11 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="描述" prop="description">
+          <el-form-item :label="t('common.texts.description')" prop="description">
             <el-input
                 v-model="termAddForm.description"
                 type="textarea"
-                placeholder="请输入描述"
+                :placeholder="t('common.form.descriptionPlaceholder')"
                 maxlength="500个字符"
                 show-word-limit
             />
@@ -479,13 +479,13 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="备注" prop="remark">
+          <el-form-item :label="t('common.texts.remark')" prop="remark">
             <el-input
                 v-model="termAddForm.remark"
                 type="textarea"
                 maxlength="500个字符"
                 show-word-limit
-                placeholder="请输入备注"
+                :placeholder="t('common.form.remarkPlaceholder')"
             />
           </el-form-item>
         </el-col>
@@ -493,13 +493,13 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="cancelAddTerm">取 消</el-button>
+        <el-button size="mini" @click="cancelAddTerm">{{ t('common.button.cancel') }}</el-button>
         <el-button
             type="primary"
             size="mini"
             :loading="termAddSubmitting"
             @click="submitAddTerm"
-        >确 定</el-button
+        >{{ t('common.button.confirm') }}</el-button
         >
       </div>
     </template>
@@ -592,7 +592,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="描述" prop="description">
+          <el-form-item :label="t('common.texts.description')" prop="description">
             <div>
               {{ form.description }}
             </div>
@@ -611,13 +611,14 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="small" @click="cancel">关 闭</el-button>
+        <el-button size="small" @click="cancel">{{ t('common.button.close') }}</el-button>
       </div>
     </template>
   </el-dialog>
 </template>
 
 <script setup name="ComponentOne">
+import { useI18n } from 'vue-i18n'
 import {
   listDaAsset,
   getDaAsset,
@@ -640,6 +641,7 @@ import { useRoute } from "vue-router";
 import { ref } from "vue";
 import TagClamp from "@/components/TagClamp";
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { column_type, dp_model_column_pk_flag, dp_model_column_nullable_flag } =
   proxy.useDict(
@@ -850,7 +852,7 @@ function submitForm() {
 
         updateDaAssetColumn(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("修改成功");
+            proxy.$modal.msgSuccess(t('common.message.editSuccess'));
             open.value = false;
             if (tableRef.value) tableRef.value.getList();
           })
@@ -858,7 +860,7 @@ function submitForm() {
       } else {
         addDaAsset(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("新增成功");
+            proxy.$modal.msgSuccess(t('common.message.addSuccess'));
             open.value = false;
             if (tableRef.value) tableRef.value.getList();
           })
@@ -878,7 +880,7 @@ function handleDelete(row) {
     })
     .then(() => {
       if (tableRef.value) tableRef.value.getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
     })
     .catch(() => {});
 }
@@ -1019,7 +1021,7 @@ function submitAddTerm() {
     termAddSubmitting.value = true;
     addAttTag(termAddForm)
         .then(() => {
-          proxy.$modal.msgSuccess("新增成功");
+          proxy.$modal.msgSuccess(t('common.message.addSuccess'));
           termAddOpen.value = false;
           resetAddTerm();
           // 新增后仅刷新术语列表，不自动选择
@@ -1047,7 +1049,7 @@ const tableStore = reactive({
   },
   columns: [
     {
-      label: "编号",
+      label: t('common.texts.number'),
       prop: "id",
       sortable: true,
       width: 60,
@@ -1066,7 +1068,7 @@ const tableStore = reactive({
       showOverflowTooltip: true,
     },
     {
-      label: "描述",
+      label: t('common.texts.description'),
       prop: "description",
       align: "left",
       width: 240,
@@ -1130,12 +1132,12 @@ const tableStore = reactive({
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: "创建人",
+      label: t('common.texts.createdBy'),
       prop: "createBy",
       width: 120,
     },
     {
-      label: "创建时间",
+      label: t('common.texts.createdTime'),
       prop: "createTime",
       width: 150,
       sortable: true,
@@ -1144,7 +1146,7 @@ const tableStore = reactive({
     },
 
     {
-      label: "操作",
+      label: t('common.texts.operation'),
       width: 180,
       fixed: "right",
       slot: "handle",

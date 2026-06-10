@@ -48,7 +48,7 @@
           @click="handleAdd"
           v-hasPermi="['dm:dataDomain:add']"
         >
-          新增
+          {{ t('common.button.add') }}
         </el-button>
       </template>
 
@@ -61,7 +61,7 @@
             @click="handleUpdate(row)"
             v-hasPermi="['dm:dataDomain:edit']"
           >
-            修改
+            {{ t('common.button.update') }}
           </el-button>
           <el-button
             link
@@ -70,7 +70,7 @@
             @click="handleDelete(row)"
             v-hasPermi="['dm:dataDomain:remove']"
           >
-            删除
+            {{ t('common.button.delete') }}
           </el-button>
           <el-button
             link
@@ -79,7 +79,7 @@
             @click="handleDetail(row)"
             v-hasPermi="['dm:dataDomain:edit']"
           >
-            详情
+            {{ t('common.button.details') }}
           </el-button>
         </template>
       </qt-table>
@@ -133,21 +133,21 @@
             disabled
           />
         </el-form-item>
-        <el-form-item label="描述" prop="description">
+        <el-form-item :label="t('common.texts.description')" prop="description">
           <el-input
             v-model="form.description"
             type="textarea"
-            placeholder="请输入描述"
+            :placeholder="t('common.form.descriptionPlaceholder')"
             :min-height="192"
             show-word-limit
             maxlength="500个字符"
           />
         </el-form-item>
-        <el-form-item label="备注" prop="remark">
+        <el-form-item :label="t('common.texts.remark')" prop="remark">
           <el-input
             v-model="form.remark"
             type="textarea"
-            placeholder="请输入备注"
+            :placeholder="t('common.form.remarkPlaceholder')"
             :min-height="192"
             show-word-limit
             maxlength="500个字符"
@@ -156,8 +156,8 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="cancel">取 消</el-button>
-          <el-button type="primary" @click="submitForm">确 定</el-button>
+          <el-button @click="cancel">{{ t('common.button.cancel') }}</el-button>
+          <el-button type="primary" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -195,24 +195,24 @@
             {{ form.ownerUserPhoneNumber || "-" }}
           </div>
         </el-form-item>
-        <el-form-item label="描述" prop="description">
+        <el-form-item :label="t('common.texts.description')" prop="description">
           <div class="form-readonly textarea">
             {{ form.description ?? "-" }}
           </div>
         </el-form-item>
-        <el-form-item label="备注" prop="remark">
+        <el-form-item :label="t('common.texts.remark')" prop="remark">
           <div class="form-readonly textarea">{{ form.remark ?? "-" }}</div>
         </el-form-item>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="创建人" prop="createBy">
+            <el-form-item :label="t('common.texts.createdBy')" prop="createBy">
               <div class="form-readonly">
                 {{ form.createBy }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="创建时间" prop="createTime">
+            <el-form-item :label="t('common.texts.createdTime')" prop="createTime">
               <div class="form-readonly">
                 {{ parseTime(form.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
               </div>
@@ -221,14 +221,14 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="更新人" prop="createBy">
+            <el-form-item :label="t('common.texts.updatedBy')" prop="createBy">
               <div class="form-readonly">
                 {{ form.updateBy }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="更新时间" prop="updateTime">
+            <el-form-item :label="t('common.texts.updatedTime')" prop="updateTime">
               <div class="form-readonly">
                 {{ parseTime(form.updateTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
               </div>
@@ -239,7 +239,7 @@
 
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="cancel">关 闭</el-button>
+          <el-button @click="cancel">{{ t('common.button.close') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -287,8 +287,8 @@
       </el-upload>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="upload.open = false">取 消</el-button>
-          <el-button type="primary" @click="submitFileForm">确 定</el-button>
+          <el-button @click="upload.open = false">{{ t('common.button.cancel') }}</el-button>
+          <el-button type="primary" @click="submitFileForm">{{ t('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -296,6 +296,7 @@
 </template>
 
 <script setup name="DataDomain">
+import { useI18n } from 'vue-i18n'
 import {
   getDataDomain,
   addDataDomain,
@@ -314,6 +315,8 @@ import {
   toRefs,
 } from "vue";
 
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 
 const tableRef = ref(null);
@@ -342,7 +345,7 @@ const tableStore = reactive({
   },
   columns: [
     // { type: "selection", width: 55, align: "left" },
-    { label: "编号", prop: "id", width: 60, sortable: true },
+    { label: t('common.texts.number'), prop: "id", width: 60, sortable: true },
     {
       label: "数据域名称",
       prop: "name",
@@ -352,7 +355,7 @@ const tableStore = reactive({
       },
     },
     {
-      label: "描述",
+      label: t('common.texts.description'),
       prop: "description",
       align: "left",
       width: 240,
@@ -369,12 +372,12 @@ const tableStore = reactive({
       width: 140,
     },
     {
-      label: "创建人",
+      label: t('common.texts.createdBy'),
       prop: "createBy",
       showOverflowTooltip: true,
     },
     {
-      label: "创建时间",
+      label: t('common.texts.createdTime'),
       prop: "createTime",
       sortable: true,
       sortableKey: "create_time",
@@ -382,9 +385,9 @@ const tableStore = reactive({
       width: 150,
       align: "left",
     },
-    // { label: "备注", prop: "remark", align: "left" },
+    // { label: t('common.texts.remark'), prop: "remark", align: "left" },
     {
-      label: "操作",
+      label: t('common.texts.operation'),
       width: 220,
       slot: "action",
       fixed: "right",
@@ -535,7 +538,7 @@ function submitForm() {
       if (form.value.id != null) {
         updateDataDomain(form.value)
           .then(() => {
-            proxy.$modal.msgSuccess("修改成功");
+            proxy.$modal.msgSuccess(t('common.message.editSuccess'));
             open.value = false;
             tableRef.value.getList();
           })
@@ -543,7 +546,7 @@ function submitForm() {
       } else {
         addDataDomain(form.value)
           .then(() => {
-            proxy.$modal.msgSuccess("新增成功");
+            proxy.$modal.msgSuccess(t('common.message.addSuccess'));
             open.value = false;
             tableRef.value.getList();
           })
@@ -570,7 +573,7 @@ function handleDelete(row) {
     })
     .then(() => {
       tableRef.value.getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
     })
     .catch(() => {});
 }

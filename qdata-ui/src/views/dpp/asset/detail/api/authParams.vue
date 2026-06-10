@@ -60,13 +60,13 @@
 
                         </template>
                     </el-table-column>
-                    <el-table-column label="描述" fixed="left" align="left" prop="remark"
+                    <el-table-column :label="t('common.texts.description')" fixed="left" align="left" prop="remark"
                         :show-overflow-tooltip="{ effect: 'light' }">
                         <template #default="{ row, $index }">
                             <!-- <el-form-item
                                                     :prop="`headerList[${findPosi(headerList, row.id)}].remark`"
                                                     :rules="rules.fieldDefault">
-                                                    <el-input v-model="row.remark" placeholder="请输入描述" />
+                                                    <el-input v-model="row.remark" :placeholder="t('common.form.descriptionPlaceholder')" />
                                                 </el-form-item> -->
                             {{ row.remark || "-" }}
                         </template>
@@ -88,6 +88,8 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
+
 // 引入 Vue 和必要的 API 方法
 import { ref, reactive, onMounted } from 'vue';
 // import { getApiCall, postApiCall } from "@/api/market/apimapping";
@@ -103,6 +105,8 @@ const props = defineProps({
 });
 const { proxy } = getCurrentInstance();
 import request from '@/utils/request';
+
+const { t } = useI18n();
 const hasChildren = (row) => {
     return Array.isArray(row.daAssetApiParamList) && row.daAssetApiParamList.length > 0;
 };
@@ -205,7 +209,7 @@ function buildParamsTree(paramList) {
 }
 const showSuccessNotify = () => {
     ElNotification({
-        title: '提示',
+        title: t('common.message.prompt'),
         message: '接口调用成功',
         type: 'success',
         duration: 2000,
@@ -214,7 +218,7 @@ const showSuccessNotify = () => {
 
 const showErrorNotify = (msg) => {
     ElNotification({
-        title: '提示',
+        title: t('common.message.prompt'),
         message: msg || '接口调用失败',
         type: 'error',
         duration: 2000,
@@ -275,7 +279,6 @@ const handleCall = () => {
         }
     });
 };
-
 
 // 处理API响应
 const handleApiResponse = (response) => {

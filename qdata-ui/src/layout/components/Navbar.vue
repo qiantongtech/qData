@@ -334,6 +334,7 @@
 </template>
 
 <script setup name="Navbar">
+import { useI18n } from 'vue-i18n'
 import { useWindowSize } from "@vueuse/core";
 import { ElMessageBox } from "element-plus";
 import Breadcrumb from "@/components/Breadcrumb";
@@ -362,6 +363,8 @@ import { currentUser } from "@/api/att/project/project";
 import { da, id } from "element-plus/es/locale/index.mjs";
 import usePermissionStore from "@/store/system/permission";
 import { getRoutersDpp } from "@/api/system/menu";
+
+const { t } = useI18n();
 // import { getCurrentAppVersion } from "@/api/system/update/update.js";
 // import {listProject, getProject} from "@/api/project/projectBase/project";
 // import {listReport, getReport, delReport, addReport, updateReport} from "@/api/project/report/report";
@@ -511,7 +514,7 @@ function submitForm() {
         };
         updateReport(req)
           .then((response) => {
-            proxy.$modal.msgSuccess("修改成功");
+            proxy.$modal.msgSuccess(t('common.message.editSuccess'));
             open.value = false;
             getList();
           })
@@ -849,9 +852,9 @@ function handleCommand(command) {
 }
 
 function logout() {
-  ElMessageBox.confirm("确定注销并退出系统吗？", "提示", {
-    confirmButtonText: "确定",
-    cancelButtonText: "取消",
+  ElMessageBox.confirm("确定注销并退出系统吗？", t('common.message.prompt'), {
+    confirmButtonText: t('common.button.confirm'),
+    cancelButtonText: t('common.button.cancel'),
     type: "warning",
   })
     .then(() => {

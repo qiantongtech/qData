@@ -47,13 +47,14 @@
         </div>
         <template #footer>
             <div style="text-align: right">
-                <el-button @click="handleClose">关闭</el-button>
+                <el-button @click="handleClose">{{ t('common.button.close') }}</el-button>
             </div>
         </template>
     </el-dialog>
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { ref, onBeforeUnmount, nextTick, defineComponent } from "vue";
 import { Graph } from "@antv/x6";
 import { ElMessage } from "element-plus";
@@ -62,6 +63,8 @@ import { getLogByTaskInstanceId, getTaskInfo } from "@/api/dpp/task/etlTask";
 import { register, getTeleport } from "@antv/x6-vue-shape";
 import { baseConfig, cuPort } from "@/utils/graph";
 import { DagreLayout } from '@antv/layout';
+
+const { t } = useI18n();
 const TeleportContainer = defineComponent(getTeleport());
 
 // 状态变量
@@ -132,7 +135,6 @@ const initGraph = () => {
         });
     }
 };
-
 
 
 const renderGraph = (graph, savedData) => {
@@ -226,7 +228,6 @@ const renderGraph = (graph, savedData) => {
         });
     });
 };
-
 
 // 更新节点状态
 const updateGraphNodes = (graph, nodeInstanceList) => {

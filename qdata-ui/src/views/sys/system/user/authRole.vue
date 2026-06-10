@@ -63,7 +63,7 @@
         <el-table-column label="角色编号" align="center" prop="roleId" />
         <el-table-column label="角色名称" align="center" prop="roleName" />
         <el-table-column label="权限字符" align="center" prop="roleKey" />
-        <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+        <el-table-column :label="t('common.texts.createdTime')" align="center" prop="createTime" width="180">
           <template #default="scope">
             <span>{{ parseTime(scope.row.createTime) }}</span>
           </template>
@@ -75,7 +75,7 @@
       <el-form label-width="100px">
         <div style="text-align: center; margin-left: -120px; margin-top: 30px">
           <el-button type="primary" @click="submitForm()">提交</el-button>
-          <el-button @click="close()">返回</el-button>
+          <el-button @click="close()">{{ t('common.button.return') }}</el-button>
         </div>
       </el-form>
     </div>
@@ -83,8 +83,10 @@
 </template>
 
 <script setup name="AuthRole">
+import { useI18n } from 'vue-i18n'
 import { getAuthRole, updateAuthRole } from "@/api/system/system/user.js";
 
+const { t } = useI18n();
 const route = useRoute();
 const { proxy } = getCurrentInstance();
 

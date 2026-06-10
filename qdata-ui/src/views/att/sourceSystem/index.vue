@@ -11,7 +11,7 @@
       </template>
       <template #actions-data>
         <el-button type="primary" plain icon="Plus" @click="handleAdd">
-          新增
+          {{ t('common.button.add') }}
         </el-button>
         <el-button
           type="danger"
@@ -20,7 +20,7 @@
           :disabled="!store.rows.length"
           @click="handleDelete"
         >
-          删除
+          {{ t('common.button.delete') }}
         </el-button>
       </template>
       <qt-table v-bind="tableStore" ref="tableRef">
@@ -43,7 +43,7 @@
         </template>
         <template #handle="{ row }">
           <el-button link type="primary" icon="Edit" @click="handleUpdate(row)"
-            >修改</el-button
+            >{{ t('common.button.update') }}</el-button
           >
           <el-button
             link
@@ -51,10 +51,10 @@
             icon="Delete"
             @click="handleDelete(row)"
             :disabled="row.validFlag"
-            >删除</el-button
+            >{{ t('common.button.delete') }}</el-button
           >
           <el-button link type="primary" icon="view" @click="handleDetail(row)"
-            >详情</el-button
+            >{{ t('common.button.details') }}</el-button
           >
         </template>
       </qt-table>
@@ -133,35 +133,35 @@
             :min="0"
           />
         </el-form-item>
-        <el-form-item label="状态" prop="validFlag">
+        <el-form-item :label="t('common.texts.status')" prop="validFlag">
           <el-radio v-model="form.validFlag" :label="false">禁用</el-radio>
           <el-radio v-model="form.validFlag" :label="true">启用</el-radio>
         </el-form-item>
-        <el-form-item label="描述" prop="description">
+        <el-form-item :label="t('common.texts.description')" prop="description">
           <el-input
             type="textarea"
             maxlength="500个字符"
             show-word-limit
             v-model="form.description"
-            placeholder="请输入描述"
+            :placeholder="t('common.form.descriptionPlaceholder')"
           />
         </el-form-item>
 
-        <el-form-item label="备注" prop="remark">
+        <el-form-item :label="t('common.texts.remark')" prop="remark">
           <el-input
             type="textarea"
             maxlength="500个字符"
             show-word-limit
             v-model="form.remark"
-            placeholder="请输入备注"
+            :placeholder="t('common.form.remarkPlaceholder')"
           />
         </el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="cancel">取 消</el-button>
+          <el-button size="mini" @click="cancel">{{ t('common.button.cancel') }}</el-button>
           <el-button type="primary" size="mini" @click="submitForm"
-            >确 定</el-button
+            >{{ t('common.button.confirm') }}</el-button
           >
         </div>
       </template>
@@ -180,7 +180,7 @@
         label-width="90px"
         class="column-form"
       >
-        <el-form-item label="编号" prop="id">
+        <el-form-item :label="t('common.texts.number')" prop="id">
           <div class="form-readonly">
             {{ form.id }}
           </div>
@@ -211,41 +211,41 @@
             {{ form.sortOrder }}
           </div>
         </el-form-item>
-        <el-form-item label="状态" prop="validFlag">
+        <el-form-item :label="t('common.texts.status')" prop="validFlag">
           <div class="form-readonly">
             {{ form.validFlag ? "启用" : "禁用" }}
           </div>
         </el-form-item>
-        <el-form-item label="描述" prop="description" class="row-full">
+        <el-form-item :label="t('common.texts.description')" prop="description" class="row-full">
           <div class="form-readonly textarea">
             {{ form.description ?? "-" }}
           </div>
         </el-form-item>
-        <el-form-item label="备注" prop="remark" class="row-full">
+        <el-form-item :label="t('common.texts.remark')" prop="remark" class="row-full">
           <div class="form-readonly textarea">
             {{ form.remark ?? "-" }}
           </div>
         </el-form-item>
 
-        <el-form-item label="创建人" prop="createBy">
+        <el-form-item :label="t('common.texts.createdBy')" prop="createBy">
           <div class="form-readonly">
             {{ form.createBy }}
           </div>
         </el-form-item>
 
-        <el-form-item label="创建时间" prop="createTime">
+        <el-form-item :label="t('common.texts.createdTime')" prop="createTime">
           <div class="form-readonly">
             {{ parseTime(form.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
         </el-form-item>
 
-        <el-form-item label="更新人" prop="updateBy">
+        <el-form-item :label="t('common.texts.updatedBy')" prop="updateBy">
           <div class="form-readonly">
             {{ form.updateBy }}
           </div>
         </el-form-item>
 
-        <el-form-item label="更新时间" prop="updateTime">
+        <el-form-item :label="t('common.texts.updatedTime')" prop="updateTime">
           <div class="form-readonly">
             {{ parseTime(form.updateTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
@@ -253,7 +253,7 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="openDetail = false">关闭 </el-button>
+          <el-button size="mini" @click="openDetail = false">{{ t('common.button.close') }} </el-button>
         </div>
       </template>
     </el-dialog>
@@ -266,6 +266,7 @@
 </template>
 
 <script setup name="SourceSystem">
+import { useI18n } from 'vue-i18n'
 import {
   listSourceSystem,
   getSourceSystem,
@@ -278,6 +279,7 @@ import { getToken } from "@/utils/auth.js";
 import DeleteConfirmDialog from "@/components/DeleteConfirmDialog";
 import { reactive, ref, toRefs, getCurrentInstance, onMounted } from "vue";
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { sys_source_system_type } = proxy.useDict("sys_source_system_type");
 
@@ -345,7 +347,7 @@ const tableStore = reactive({
       type: "selection",
       width: 55,
     },
-    { label: "编号", prop: "id", width: 60, sortable: true },
+    { label: t('common.texts.number'), prop: "id", width: 60, sortable: true },
     { label: "系统名称", prop: "name", align: "left", width: 150 },
     {
       label: "系统类型",
@@ -354,14 +356,14 @@ const tableStore = reactive({
       slot: "type",
     },
     {
-      label: "描述",
+      label: t('common.texts.description'),
       prop: "description",
       align: "left",
       width: 200,
       showOverflowTooltip: true,
     },
     {
-      label: "状态",
+      label: t('common.texts.status'),
       prop: "validFlag",
       width: 80,
       slot: "validFlag",
@@ -381,16 +383,16 @@ const tableStore = reactive({
       label: "对接人",
       prop: "contactPersonName",
     },
-    { label: "创建人", prop: "createBy", width: 120 },
+    { label: t('common.texts.createdBy'), prop: "createBy", width: 120 },
     {
-      label: "创建时间",
+      label: t('common.texts.createdTime'),
       prop: "createTime",
       width: 150,
       sortable: true,
       sortableKey: "create_time",
       date: true,
     },
-    { label: "操作", width: 240, fixed: "right", slot: "handle" },
+    { label: t('common.texts.operation'), width: 240, fixed: "right", slot: "handle" },
   ],
   func: listSourceSystem,
   params: {},
@@ -415,11 +417,11 @@ const searchStore = reactive({
       },
     },
     {
-      label: "状态",
+      label: t('common.texts.status'),
       prop: "validFlag",
       component: {
         is: "select",
-        placeholder: "请选择状态",
+        placeholder: t('common.form.statusPlaceholder'),
         options: [
           { value: true, label: "启用" },
           { value: false, label: "禁用" },
@@ -558,7 +560,7 @@ function submitForm() {
       if (form.value.id != null) {
         updateSourceSystem(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("修改成功");
+            proxy.$modal.msgSuccess(t('common.message.editSuccess'));
             open.value = false;
             tableRef.value.getList();
           })
@@ -566,7 +568,7 @@ function submitForm() {
       } else {
         addSourceSystem(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("新增成功");
+            proxy.$modal.msgSuccess(t('common.message.addSuccess'));
             open.value = false;
             tableRef.value.getList();
           })
@@ -601,7 +603,7 @@ function handleDelete(row) {
     })
     .then(() => {
       tableRef.value.getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
     })
     .catch(() => {
       // 用户取消删除操作

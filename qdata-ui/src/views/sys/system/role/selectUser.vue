@@ -44,7 +44,7 @@
          </el-form-item>
          <el-form-item>
             <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
-            <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+            <el-button icon="Refresh" @click="resetQuery">{{ t('common.button.reset') }}</el-button>
          </el-form-item>
       </el-form>
       <el-row>
@@ -55,12 +55,12 @@
             <el-table-column label="用户昵称" prop="nickName" :show-overflow-tooltip="true" />
             <el-table-column label="邮箱" prop="email" :show-overflow-tooltip="true" />
             <el-table-column label="手机" prop="phonenumber" :show-overflow-tooltip="true" />
-            <el-table-column label="状态" align="center" prop="status">
+            <el-table-column :label="t('common.texts.status')" align="center" prop="status">
                <template #default="scope">
                   <dict-tag :options="sys_normal_disable" :value="scope.row.status" />
                </template>
             </el-table-column>
-            <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+            <el-table-column :label="t('common.texts.createdTime')" align="center" prop="createTime" width="180">
                <template #default="scope">
                   <span>{{ parseTime(scope.row.createTime) }}</span>
                </template>
@@ -71,16 +71,18 @@
          v-model:limit="queryParams.pageSize" @pagination="getList" />
       <template #footer>
          <div class="dialog-footer">
-            <el-button type="primary" @click="handleSelectUser">确 定</el-button>
-            <el-button @click="visible = false">取 消</el-button>
+            <el-button type="primary" @click="handleSelectUser">{{ t('common.button.confirm') }}</el-button>
+            <el-button @click="visible = false">{{ t('common.button.cancel') }}</el-button>
          </div>
       </template>
    </el-dialog>
 </template>
 
 <script setup name="SelectUser">
+import { useI18n } from 'vue-i18n'
 import { authUserSelectAll, unallocatedUserList } from "@/api/system/system/role.js";
 
+const { t } = useI18n();
 const props = defineProps({
    roleId: {
       type: [Number, String]

@@ -84,7 +84,7 @@
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="创建人" prop="createBy">
+      <el-form-item :label="t('common.texts.createdBy')" prop="createBy">
         <el-input
             style="width:240px"
             v-model="queryParams.createBy"
@@ -102,7 +102,7 @@
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="创建时间" style="width: 308px">
+      <el-form-item :label="t('common.texts.createdTime')" style="width: 308px">
         <el-date-picker
             style="width:240px"
             v-model="daterangeCreateTime"
@@ -113,7 +113,7 @@
             :end-placeholder="td('common.form.endDatePlaceholder')"
         ></el-date-picker>
       </el-form-item>
-      <el-form-item label="更新人" prop="updateBy">
+      <el-form-item :label="t('common.texts.updatedBy')" prop="updateBy">
         <el-input
             style="width:240px"
             v-model="queryParams.updateBy"
@@ -131,7 +131,7 @@
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="更新时间" style="width: 308px">
+      <el-form-item :label="t('common.texts.updatedTime')" style="width: 308px">
         <el-date-picker
             style="width:240px"
             v-model="daterangeUpdateTime"
@@ -149,10 +149,10 @@
             @click="handleQuery"
             @mousedown="(e) => e.preventDefault()"
         >
-          <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+          <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
         </el-button>
         <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-          <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+          <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -185,7 +185,7 @@
           {{ scope.row.delFlag || '-' }}
         </template>
       </el-table-column>
-      <el-table-column label="创建人" align="center" prop="createBy">
+      <el-table-column :label="t('common.texts.createdBy')" align="center" prop="createBy">
         <template #default="scope">
           {{ scope.row.createBy || '-' }}
         </template>
@@ -195,12 +195,12 @@
           {{ scope.row.creatorId || '-' }}
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+      <el-table-column :label="t('common.texts.createdTime')" align="center" prop="createTime" width="180">
         <template #default="scope">
           <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="更新人" align="center" prop="updateBy">
+      <el-table-column :label="t('common.texts.updatedBy')" align="center" prop="updateBy">
         <template #default="scope">
           {{ scope.row.updateBy || '-' }}
         </template>
@@ -210,12 +210,12 @@
           {{ scope.row.updaterId || '-' }}
         </template>
       </el-table-column>
-      <el-table-column label="更新时间" align="center" prop="updateTime" width="180">
+      <el-table-column :label="t('common.texts.updatedTime')" align="center" prop="updateTime" width="180">
         <template #default="scope">
           <span>{{ parseTime(scope.row.updateTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="center" prop="remark">
+      <el-table-column :label="t('common.texts.remark')" align="center" prop="remark">
         <template #default="scope">
           {{ scope.row.remark || '-' }}
         </template>
@@ -231,9 +231,9 @@
     />
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="cancel">取 消</el-button>
+        <el-button size="mini" @click="cancel">{{ t('common.button.cancel') }}</el-button>
         <el-button type="primary" size="mini" @click="confirm">
-          确 定
+          {{ t('common.button.confirm') }}
         </el-button>
       </div>
     </template>
@@ -241,10 +241,12 @@
 </template>
 
 <script setup name="UserTypeMultiple">
+import { useI18n } from 'vue-i18n'
 import { listUserType } from "@/api/example/user/userType";
 import { ref } from "vue"
 import useDefaultLang from "@/composables/useDefaultLang";
 const { td } = useDefaultLang();;
+const { t } = useI18n();
 const daterangeCreateTime = ref([]);
 const daterangeUpdateTime = ref([]);
 const { proxy } = getCurrentInstance();

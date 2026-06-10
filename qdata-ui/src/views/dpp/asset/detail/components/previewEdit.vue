@@ -55,20 +55,23 @@
         </el-form>
 
         <template #footer>
-            <el-button @click="visible = false">取消</el-button>
+            <el-button @click="visible = false">{{ t('common.button.cancel') }}</el-button>
             <el-button type="primary" @click="submitForm" :disabled="loading">
-                确定
+                {{ t('common.button.confirm') }}
             </el-button>
         </template>
     </el-dialog>
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { ref, watch } from "vue";
 import { ElMessage } from "element-plus";
 import { addDaAssetOperateLog } from "@/api/da/assetchild/operate/daAssetOperateLog.js";
 import moment from "moment";
 import OverflowTooltip from "@/components/OverflowTooltip";
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const props = defineProps({
     columns: {
@@ -148,7 +151,7 @@ function addRow(row, data) {
         operateType: row ? "2" : "1",
     };
 
-    title.value = row ? "修改" : "新增";
+    title.value = row ? t('common.button.update') : t('common.button.add');
     visible.value = true;
     dataForm.value = { ...row };
     oldData.value = { ...row };
@@ -186,7 +189,7 @@ function submitForm() {
             .then((res) => {
                 if (res.code == "200") {
                     close();
-                    ElMessage.success("修改成功");
+                    ElMessage.success(t('common.message.editSuccess'));
                     emit("ok");
                 }
             })

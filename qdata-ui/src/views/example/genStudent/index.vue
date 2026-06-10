@@ -92,7 +92,7 @@
                         @keyup.enter="handleQuery"
                     />
                 </el-form-item>
-                <el-form-item label="创建时间" prop="createTime">
+                <el-form-item :label="t('common.texts.createdTime')" prop="createTime">
                     <el-date-picker
                         class="el-form-input-width"
                         clearable
@@ -111,10 +111,10 @@
                         @click="handleQuery"
                         @mousedown="(e) => e.preventDefault()"
                     >
-                        <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                        <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
                     </el-button>
                     <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-                        <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                        <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
                     </el-button>
                 </el-form-item>
             </el-form>
@@ -131,7 +131,7 @@
                             v-hasPermi="['genStudent:student:add']"
                             @mousedown="(e) => e.preventDefault()"
                         >
-                            <i class="iconfont-mini icon-xinzeng mr5"></i>新增
+                            <i class="iconfont-mini icon-xinzeng mr5"></i>{{ t('common.button.add') }}
                         </el-button>
                     </el-col>
                     <el-col :span="1.5">
@@ -143,7 +143,7 @@
                             v-hasPermi="['genStudent:student:edit']"
                             @mousedown="(e) => e.preventDefault()"
                         >
-                            <i class="iconfont-mini icon-xiugai--copy mr5"></i>修改
+                            <i class="iconfont-mini icon-xiugai--copy mr5"></i>{{ t('common.button.update') }}
                         </el-button>
                     </el-col>
                     <el-col :span="1.5">
@@ -155,7 +155,7 @@
                             v-hasPermi="['genStudent:student:remove']"
                             @mousedown="(e) => e.preventDefault()"
                         >
-                            <i class="iconfont-mini icon-shanchu-huise mr5"></i>删除
+                            <i class="iconfont-mini icon-shanchu-huise mr5"></i>{{ t('common.button.delete') }}
                         </el-button>
                     </el-col>
                     <el-col :span="1.5">
@@ -166,7 +166,7 @@
                             v-hasPermi="['genStudent:student:export']"
                             @mousedown="(e) => e.preventDefault()"
                         >
-                            <i class="iconfont-mini icon-upload-cloud-line mr5"></i>导入
+                            <i class="iconfont-mini icon-upload-cloud-line mr5"></i>{{ t('common.button.import') }}
                         </el-button>
                     </el-col>
                     <el-col :span="1.5">
@@ -177,7 +177,7 @@
                             v-hasPermi="['genStudent:student:export']"
                             @mousedown="(e) => e.preventDefault()"
                         >
-                            <i class="iconfont-mini icon-download-line mr5"></i>导出
+                            <i class="iconfont-mini icon-download-line mr5"></i>{{ t('common.button.export') }}
                         </el-button>
                     </el-col>
                 </el-row>
@@ -291,7 +291,7 @@
                 </el-table-column>
                 <el-table-column
                     v-if="getColumnVisibility(11)"
-                    label="创建人"
+                    :label="t('common.texts.createdBy')"
                     align="center"
                     prop="createBy"
                 >
@@ -301,7 +301,7 @@
                 </el-table-column>
                 <el-table-column
                     v-if="getColumnVisibility(13)"
-                    label="创建时间"
+                    :label="t('common.texts.createdTime')"
                     align="center"
                     prop="createTime"
                     width="180"
@@ -314,7 +314,7 @@
                 </el-table-column>
                 <el-table-column
                     v-if="getColumnVisibility(17)"
-                    label="备注"
+                    :label="t('common.texts.remark')"
                     align="center"
                     prop="remark"
                 >
@@ -323,7 +323,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    label="操作"
+                    :label="t('common.texts.operation')"
                     align="center"
                     class-name="small-padding fixed-width"
                     fixed="right"
@@ -336,7 +336,7 @@
                             icon="Edit"
                             @click="handleUpdate(scope.row)"
                             v-hasPermi="['genStudent:student:edit']"
-                            >修改</el-button
+                            >{{ t('common.button.update') }}</el-button
                         >
                         <el-button
                             link
@@ -344,7 +344,7 @@
                             icon="Delete"
                             @click="handleDelete(scope.row)"
                             v-hasPermi="['genStudent:student:remove']"
-                            >删除</el-button
+                            >{{ t('common.button.delete') }}</el-button
                         >
                         <el-button
                             link
@@ -352,7 +352,7 @@
                             icon="view"
                             @click="handleDetail(scope.row)"
                             v-hasPermi="['genStudent:student:edit']"
-                            >详情</el-button
+                            >{{ t('common.button.details') }}</el-button
                         >
                         <el-button
                             link
@@ -368,7 +368,7 @@
                 <template #empty>
                     <div class="emptyBg">
                         <img src="@/assets/system/images/no_data/noData.png" alt="" />
-                        <p>暂无记录</p>
+                        <p>{{ t('common.message.noRecord') }}</p>
                     </div>
                 </template>
             </el-table>
@@ -464,7 +464,7 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="24">
-                        <el-form-item label="备注" prop="remark">
+                        <el-form-item :label="t('common.texts.remark')" prop="remark">
                             <el-input
                                 v-model="form.remark"
                                 type="textarea"
@@ -476,8 +476,8 @@
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button size="mini" @click="cancel">取 消</el-button>
-                    <el-button type="primary" size="mini" @click="submitForm">确 定</el-button>
+                    <el-button size="mini" @click="cancel">{{ t('common.button.cancel') }}</el-button>
+                    <el-button type="primary" size="mini" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
                 </div>
             </template>
         </el-dialog>
@@ -554,7 +554,7 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="24">
-                        <el-form-item label="备注" prop="remark">
+                        <el-form-item :label="t('common.texts.remark')" prop="remark">
                             <div>
                                 {{ form.remark }}
                             </div>
@@ -564,7 +564,7 @@
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button size="mini" @click="cancel">关 闭</el-button>
+                    <el-button size="mini" @click="cancel">{{ t('common.button.close') }}</el-button>
                 </div>
             </template>
         </el-dialog>
@@ -610,8 +610,8 @@
             </el-upload>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button @click="upload.open = false">取 消</el-button>
-                    <el-button type="primary" @click="submitFileForm">确 定</el-button>
+                    <el-button @click="upload.open = false">{{ t('common.button.cancel') }}</el-button>
+                    <el-button type="primary" @click="submitFileForm">{{ t('common.button.confirm') }}</el-button>
                 </div>
             </template>
         </el-dialog>
@@ -619,7 +619,8 @@
 </template>
 
 <script setup name="Student">
-    import {
+import { useI18n } from 'vue-i18n'
+import {
         listStudent,
         getStudent,
         delStudent,
@@ -628,7 +629,8 @@
     } from '@/api/example/genStudent/student';
     import { getToken } from '@/utils/auth.js';
 
-    const { proxy } = getCurrentInstance();
+const { t } = useI18n();
+const { proxy } = getCurrentInstance();
     const { sys_user_sex, message_level } = proxy.useDict('sys_user_sex', 'message_level');
 
     const studentList = ref([]);
@@ -643,9 +645,9 @@
         { key: 6, label: '学号', visible: true },
         { key: 7, label: '班级', visible: true },
         { key: 8, label: '爱好', visible: true },
-        { key: 11, label: '创建人', visible: true },
-        { key: 13, label: '创建时间', visible: true },
-        { key: 17, label: '备注', visible: true }
+        { key: 11, label: t('common.texts.createdBy'), visible: true },
+        { key: 13, label: t('common.texts.createdTime'), visible: true },
+        { key: 17, label: t('common.texts.remark'), visible: true }
     ]);
 
     const getColumnVisibility = (key) => {
@@ -818,7 +820,7 @@
                 if (form.value.id != null) {
                     updateStudent(form.value)
                         .then((response) => {
-                            proxy.$modal.msgSuccess('修改成功');
+                            proxy.$modal.msgSuccess(t('common.message.editSuccess'));
                             open.value = false;
                             getList();
                         })
@@ -828,7 +830,7 @@
                 } else {
                     addStudent(form.value)
                         .then((response) => {
-                            proxy.$modal.msgSuccess('新增成功');
+                            proxy.$modal.msgSuccess(t('common.message.addSuccess'));
                             open.value = false;
                             getList();
                         })
@@ -850,7 +852,7 @@
             })
             .then(() => {
                 getList();
-                proxy.$modal.msgSuccess('删除成功');
+                proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
             })
             .catch(() => {});
     }

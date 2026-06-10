@@ -37,7 +37,7 @@
       draggable
     >
       <el-form label-width="100px" class="column-form">
-        <el-form-item label="编号" prop="id">
+        <el-form-item :label="t('common.texts.number')" prop="id">
           <div class="form-readonly">
             {{ getFormatValue(dialog.form.id) }}
           </div>
@@ -53,7 +53,7 @@
             :value="dialog.form.sensitiveRule"
           />
         </el-form-item>
-        <el-form-item label="状态" prop="onlineFlag">
+        <el-form-item :label="t('common.texts.status')" prop="onlineFlag">
           <dict-tag
             :options="toValue(dicts.da_sensitive_status)"
             :value="dialog.form.onlineFlag"
@@ -74,22 +74,22 @@
             {{ getFormatValue(dialog.form.maskCharacter) }}
           </div>
         </el-form-item>
-        <el-form-item label="描述" prop="description" class="row-full">
+        <el-form-item :label="t('common.texts.description')" prop="description" class="row-full">
           <div class="form-readonly textarea">
             {{ getFormatValue(dialog.form.description) }}
           </div>
         </el-form-item>
-        <el-form-item label="备注" prop="remark" class="row-full">
+        <el-form-item :label="t('common.texts.remark')" prop="remark" class="row-full">
           <div class="form-readonly textarea">
             {{ getFormatValue(dialog.form.remark) }}
           </div>
         </el-form-item>
-        <el-form-item label="创建人" prop="createBy">
+        <el-form-item :label="t('common.texts.createdBy')" prop="createBy">
           <div class="form-readonly">
             {{ getFormatValue(dialog.form.createBy) }}
           </div>
         </el-form-item>
-        <el-form-item label="创建时间" prop="createTime">
+        <el-form-item :label="t('common.texts.createdTime')" prop="createTime">
           <div class="form-readonly">
             {{
               getFormatValue(
@@ -98,12 +98,12 @@
             }}
           </div>
         </el-form-item>
-        <el-form-item label="更新人" prop="updateBy">
+        <el-form-item :label="t('common.texts.updatedBy')" prop="updateBy">
           <div class="form-readonly">
             {{ getFormatValue(dialog.form.updateBy) }}
           </div>
         </el-form-item>
-        <el-form-item label="更新时间" prop="updateTime">
+        <el-form-item :label="t('common.texts.updatedTime')" prop="updateTime">
           <div class="form-readonly">
             {{
               getFormatValue(
@@ -115,7 +115,7 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="dialog.open = false">关 闭</el-button>
+          <el-button size="mini" @click="dialog.open = false">{{ t('common.button.close') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -123,6 +123,7 @@
 </template>
 
 <script setup name="DataGovern">
+import { useI18n } from 'vue-i18n'
 import { reactive, ref, toValue, getCurrentInstance } from "vue";
 import { listColumn } from "@/api/mc/unreleased/column.js";
 import { useRouter } from "vue-router";
@@ -130,6 +131,7 @@ import { listDgSensitiveLevel } from "@/api/dg/compliance/sensitiveLevel";
 // import { getDgDataElemList } from "@/api/dg/standard/dataElem.js";
 import { getDgSensitiveLevel } from "@/api/dg/compliance/sensitiveLevel";
 
+const { t } = useI18n();
 const BASE_URL = "/meta/unreleased/structured/column";
 
 const props = defineProps({
@@ -164,7 +166,7 @@ const tableStroe = reactive({
   },
   columns: [
     {
-      label: "编号",
+      label: t('common.texts.number'),
       prop: "id",
       sortable: true,
       width: 70,
@@ -213,31 +215,31 @@ const tableStroe = reactive({
       dict: "table_yes_no",
     },
     {
-      label: "更新人",
+      label: t('common.texts.updatedBy'),
       prop: "updateBy",
       width: 120,
     },
     {
-      label: "更新时间",
+      label: t('common.texts.updatedTime'),
       prop: "updateTime",
       sortable: true,
       width: 160,
       date: true,
     },
     {
-      label: "创建人",
+      label: t('common.texts.createdBy'),
       prop: "createBy",
       width: 120,
     },
     {
-      label: "创建时间",
+      label: t('common.texts.createdTime'),
       prop: "createTime",
       sortable: true,
       width: 160,
       date: true,
     },
     {
-      label: "操作",
+      label: t('common.texts.operation'),
       width: 280,
       fixed: "right",
       slot: "handle",

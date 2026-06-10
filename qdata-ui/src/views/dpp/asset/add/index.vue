@@ -220,34 +220,34 @@
 
       <excelAdd ref="excelAddRef" class="row-full" />
 
-      <el-form-item label="描述" prop="description" class="row-full">
+      <el-form-item :label="t('common.texts.description')" prop="description" class="row-full">
         <el-input
             type="textarea"
             maxlength="500个字符"
             show-word-limit
             :min-height="192"
             v-model="form.description"
-            placeholder="请输入描述"
+            :placeholder="t('common.form.descriptionPlaceholder')"
         />
       </el-form-item>
-      <el-form-item label="备注" prop="remark" class="row-full">
+      <el-form-item :label="t('common.texts.remark')" prop="remark" class="row-full">
         <el-input
             type="textarea"
             maxlength="500个字符"
             show-word-limit
             :min-height="192"
             v-model="form.remark"
-            placeholder="请输入备注"
+            :placeholder="t('common.form.remarkPlaceholder')"
         />
       </el-form-item>
     </el-form>
     <template #footer>
       <div class="dialog-footer">
         <!-- 关闭按钮 -->
-        <el-button @click="closeDialog">取消</el-button>
+        <el-button @click="closeDialog">{{ t('common.button.cancel') }}</el-button>
         <!-- 保存按钮 -->
         <el-button type="primary" @click="saveData" :loading="loading"
-        >确定</el-button
+        >{{ t('common.button.confirm') }}</el-button
         >
       </div>
     </template>
@@ -255,6 +255,7 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { defineProps, defineEmits, ref, computed, watch } from "vue";
 // import Crontab from "@/components/Crontab/ruleBase.vue";
 // import { getDaDiscoveryTask } from "@/api/da/discovery/discoveryTask";
@@ -284,6 +285,8 @@ const {
     "da_asset_api_method"
 );
 import { addDaAsset, updateDaAsset, bindResources } from "@/api/da/asset/asset";
+
+const { t } = useI18n();
 // import ExcelUploadDialog from "@/views/dpp/etl/components/formComponents/components/ExcelUploadDialog.vue";
 const props = defineProps({
   visible: { type: Boolean, default: true },
@@ -782,7 +785,7 @@ const saveData = async () => {
           proxy.$modal.msgSuccess("配置成功");
         } else {
           await updateDaAsset(form.value);
-          proxy.$modal.msgSuccess("修改成功");
+          proxy.$modal.msgSuccess(t('common.message.editSuccess'));
         }
       } else {
         if (form.value.type == 2) {
@@ -800,7 +803,7 @@ const saveData = async () => {
         await addDaAsset({
           ...payload,
         });
-        proxy.$modal.msgSuccess("新增成功");
+        proxy.$modal.msgSuccess(t('common.message.addSuccess'));
       }
       emit("update:visible", false);
       emit("confirm", form.value);

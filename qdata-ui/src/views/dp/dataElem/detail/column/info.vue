@@ -67,8 +67,11 @@
   </div>
 </template>
 <script setup name="BasicInfo">
+import { useI18n } from 'vue-i18n'
 import moment from "moment";
 import { cronToZh } from "@/utils/cronUtils";
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { dp_model_status, dp_model_create_type } = proxy.useDict(
   "dp_model_status",
@@ -97,28 +100,28 @@ const table = ref([
 
   {
     key: "createBy",
-    label: "创建人",
+    label: t('common.texts.createdBy'),
     value: "",
   },
   {
     key: "createTime",
-    label: "创建时间",
+    label: t('common.texts.createdTime'),
     value: "",
   },
   {
     key: "updateBy",
-    label: "更新人",
+    label: t('common.texts.updatedBy'),
     value: "",
   },
   {
     key: "updateTime",
-    label: "更新时间",
+    label: t('common.texts.updatedTime'),
     value: "",
     type: "time",
   },
   {
     key: "remark",
-    label: "备注",
+    label: t('common.texts.remark'),
     value: "",
     span: 24,
   },

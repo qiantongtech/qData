@@ -48,10 +48,10 @@
                 </el-form-item>
                 <el-form-item>
                     <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                        <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                        <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
                     </el-button>
                     <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-                        <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                        <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
                     </el-button>
                 </el-form-item>
             </el-form>
@@ -65,7 +65,7 @@
             </div>
             <el-table stripe v-loading="loading" :data="DppQualityLogList" :default-sort="defaultSort"
                 @sort-change="handleSortChange">
-                <el-table-column v-if="getColumnVisibility(0)" label="编号" align="center" prop="id" width="80" />
+                <el-table-column v-if="getColumnVisibility(0)" :label="t('common.texts.number')" align="center" prop="id" width="80" />
                 <el-table-column v-if="getColumnVisibility(1)" label="任务名称" align="center" prop="name">
                     <template #default="scope">
                         {{ scope.row.name || '-' }}
@@ -102,7 +102,7 @@
                         <span>{{ parseTime(scope.row.endTime, '{y}-{m}-{d} {h}:{i}') }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" v-if="getColumnVisibility(7)" align="center"
+                <el-table-column :label="t('common.texts.operation')" v-if="getColumnVisibility(7)" align="center"
                     class-name="small-padding fixed-width" fixed="right" width="240">
                     <template #default="scope">
                         <el-button link type="primary" icon="view" @click="
@@ -110,7 +110,7 @@
                                 ...scope.row,
                                 info: true,
                             })
-                            " v-hasPermi="['dp:qualityLog:edit']">详情</el-button>
+                            " v-hasPermi="['dp:qualityLog:edit']">{{ t('common.button.details') }}</el-button>
                         <!-- <el-button link type="primary" style="padding-left: 14px" @click="sendMessage(scope.row)"
                             v-hasPermi="['dp:qualityLog:edit']" :disabled="scope.row.status == 1">
                             <svg-icon iconClass="damessage" style="margin-right: 6px;" />通知处理
@@ -121,7 +121,7 @@
                 <template #empty>
                     <div class="emptyBg">
                         <img src="@/assets/system/images/no_data/noData.png" alt="" />
-                        <p>暂无记录</p>
+                        <p>{{ t('common.message.noRecord') }}</p>
                     </div>
                 </template>
             </el-table>
@@ -133,10 +133,13 @@
 </template>
 
 <script setup name="DppQualityLog">
+import { useI18n } from 'vue-i18n'
 import { listDppQualityLog, doSendMessage } from "@/api/da/quality/qualityTaskLog";
 const { proxy } = getCurrentInstance();
 import { useRoute, useRouter } from "vue-router"
 import { ref } from "vue";
+
+const { t } = useI18n();
 const defaultSort = ref({ columnKey: 'start_time', order: 'desc' });
 const { quality_log_success_flag } = proxy.useDict(
 
@@ -145,14 +148,14 @@ const { quality_log_success_flag } = proxy.useDict(
 const DppQualityLogList = ref([]);
 // 列显隐信息
 const columns = ref([
-    { key: 0, label: "编号", visible: true },
+    { key: 0, label: t('common.texts.number'), visible: true },
     { key: 1, label: "任务名称", visible: true },
     { key: 2, label: "质量评分", visible: true },
     { key: 3, label: "问题数据", visible: true },
     { key: 4, label: "执行状态", visible: true },
     { key: 5, label: "开始时间", visible: true },
     { key: 6, label: "结束时间", visible: true },
-    { key: 7, label: "操作", visible: true },
+    { key: 7, label: t('common.texts.operation'), visible: true },
 ]);
 const getColumnVisibility = (key) => {
     const column = columns.value.find(col => col.key == key);

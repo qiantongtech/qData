@@ -39,15 +39,17 @@
         </el-form>
 
         <template #footer>
-            <el-button @click="handleClose">关闭</el-button>
-            <el-button type="primary" @click="handleok">保存</el-button>
+            <el-button @click="handleClose">{{ t('common.button.close') }}</el-button>
+            <el-button type="primary" @click="handleok">{{ t('common.button.save') }}</el-button>
         </template>
     </el-dialog>
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { ref, defineExpose, defineEmits } from 'vue'
 
+const { t } = useI18n();
 const emit = defineEmits(['ok'])
 
 const visible = ref(false)
@@ -142,7 +144,6 @@ function handleok() {
     console.log("🚀 ~ handleok ~ keyWordData:", keyWordData)
     handleClose()
 }
-
 
 
 defineExpose({

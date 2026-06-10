@@ -90,13 +90,13 @@
                 @click="handleQuery"
                 @mousedown="(e) => e.preventDefault()"
               >
-                <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
               </el-button>
               <el-button
                 @click="resetQuery"
                 @mousedown="(e) => e.preventDefault()"
               >
-                <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
               </el-button>
             </el-form-item>
           </el-form>
@@ -111,7 +111,7 @@
                   @click="handleAdd"
                   @mousedown="(e) => e.preventDefault()"
                 >
-                  <i class="iconfont-mini icon-xinzeng mr5"></i>新增
+                  <i class="iconfont-mini icon-xinzeng mr5"></i>{{ t('common.button.add') }}
                 </el-button>
               </el-col>
             </el-row>
@@ -133,7 +133,7 @@
           >
             <el-table-column
               v-if="getColumnVisibility(0)"
-              label="编号"
+              :label="t('common.texts.number')"
               align="left"
               prop="id"
               width="60"
@@ -165,7 +165,7 @@
             <el-table-column
               v-if="getColumnVisibility(7)"
               width="240"
-              label="描述"
+              :label="t('common.texts.description')"
               align="left"
               prop="description"
               :show-overflow-tooltip="{ effect: 'light' }"
@@ -187,7 +187,7 @@
             </el-table-column>
             <el-table-column
               v-if="getColumnVisibility(10)"
-              label="创建人"
+              :label="t('common.texts.createdBy')"
               :show-overflow-tooltip="{ effect: 'light' }"
               align="left"
               prop="createBy"
@@ -199,7 +199,7 @@
             <!--  sortable="custom" column-key="create_time" :sort-orders="['descending', 'ascending']" -->
             <el-table-column
               v-if="getColumnVisibility(11)"
-              label="创建时间"
+              :label="t('common.texts.createdTime')"
               align="left"
               prop="createTime"
               width="150"
@@ -225,7 +225,7 @@
               </template>
             </el-table-column>
             <el-table-column
-              label="备注"
+              :label="t('common.texts.remark')"
               align="left"
               prop="remark"
               :show-overflow-tooltip="{ effect: 'light' }"
@@ -236,7 +236,7 @@
               </template>
             </el-table-column>
             <el-table-column
-              label="操作"
+              :label="t('common.texts.operation')"
               align="center"
               class-name="small-padding fixed-width"
               fixed="right"
@@ -248,19 +248,19 @@
                   type="primary"
                   icon="Edit"
                   @click="handleUpdate(scope.row)"
-                  >修改
+                  >{{ t('common.button.update') }}
                 </el-button>
                 <el-button
                   link
                   type="primary"
                   icon="view"
                   @click="handleDetail(scope.row)"
-                  >详情
+                  >{{ t('common.button.details') }}
                 </el-button>
                 <el-popover placement="bottom" :width="150" trigger="click">
                   <template #reference>
                     <el-button link type="primary" icon="ArrowDown"
-                      >更多</el-button
+                      >{{ t('common.button.more') }}</el-button
                     >
                   </template>
                   <div style="width: 100px" class="butgdlist">
@@ -279,7 +279,7 @@
                       icon="Download"
                       :disabled="!scope.row.fileUrl"
                       @click="handleDownload(scope.row)"
-                      >下载</el-button
+                      >{{ t('common.button.download') }}</el-button
                     >
 
                     <el-button
@@ -287,7 +287,7 @@
                       type="danger"
                       icon="Delete"
                       @click="handleDelete(scope.row)"
-                      >删除
+                      >{{ t('common.button.delete') }}
                     </el-button>
                   </div>
                 </el-popover>
@@ -297,7 +297,7 @@
             <template #empty>
               <div class="emptyBg">
                 <img src="@/assets/system/images/no_data/noData.png" alt="" />
-                <p>暂无记录</p>
+                <p>{{ t('common.message.noRecord') }}</p>
               </div>
             </template>
           </el-table>
@@ -318,6 +318,7 @@
 </template>
 
 <script setup name="Provincial">
+import { useI18n } from 'vue-i18n'
 import DeptTree from "@/components/DeptTree";
 import {
   listDpDocument,
@@ -332,6 +333,8 @@ import { deptUserTree } from "@/api/system/system/user.js";
 
 import handleFilePreview from "@/utils/filePreview.js";
 import { getToken } from "@/utils/auth.js";
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { column_type, sys_disable, dp_document_status } = proxy.useDict(
   "column_type",
@@ -352,15 +355,15 @@ const dpDataElemRuleRelList = ref([]);
 
 // 列显隐信息
 const columns = ref([
-  { key: 0, label: "编号", visible: true },
+  { key: 0, label: t('common.texts.number'), visible: true },
   { key: 1, label: "标准号", visible: true },
   { key: 2, label: "标准名称", visible: true },
-  { key: 7, label: "描述", visible: true },
+  { key: 7, label: t('common.texts.description'), visible: true },
   { key: 3, label: "标准类目", visible: true },
-  { key: 10, label: "创建人", visible: true },
-  { key: 11, label: "创建时间", visible: true },
+  { key: 10, label: t('common.texts.createdBy'), visible: true },
+  { key: 11, label: t('common.texts.createdTime'), visible: true },
   { key: 3, label: "标准状态", visible: true },
-  { key: 15, label: "备注", visible: true },
+  { key: 15, label: t('common.texts.remark'), visible: true },
 ]);
 
 const handleDownload = (row) => {
@@ -430,7 +433,7 @@ const data = reactive({
       },
     ],
     catCode: [{ required: true, message: "类目编码不能为空", trigger: "blur" }],
-    status: [{ required: true, message: "状态不能为空", trigger: "change" }],
+    status: [{ required: true, message: t('common.form.statusRequired'), trigger: "change" }],
     type: [{ required: true, message: "类型不能为空", trigger: "change" }],
     columnType: [
       { required: true, message: "字段类型不能为空", trigger: "change" },
@@ -601,7 +604,7 @@ function submitForm() {
       if (form.value.id != null) {
         updateDpDocument(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("修改成功");
+            proxy.$modal.msgSuccess(t('common.message.editSuccess'));
             open.value = false;
             getList();
           })
@@ -609,7 +612,7 @@ function submitForm() {
       } else {
         addDpDocument(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("新增成功");
+            proxy.$modal.msgSuccess(t('common.message.addSuccess'));
             open.value = false;
             getList();
           })
@@ -629,7 +632,7 @@ function handleDelete(row) {
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
     })
     .catch(() => {});
 }
@@ -728,7 +731,7 @@ function handleStatusChange(id, row, e) {
     .confirm('确认要"' + text + '","' + row.name + '"国家标准吗？')
     .then(function () {
       updateStatusDpDataElem(id, row.status).then((response) => {
-        proxy.$modal.msgSuccess("操作成功");
+        proxy.$modal.msgSuccess(t('common.message.msgOpSuccess'));
       });
     })
     .catch(function () {

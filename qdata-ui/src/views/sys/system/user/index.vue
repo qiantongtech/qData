@@ -108,22 +108,22 @@
               <el-input v-model="queryParams.phonenumber" placeholder="请输入手机号码" clearable class="el-form-input-width"
                 @keyup.enter="handleQuery" />
             </el-form-item>
-            <el-form-item label="状态" prop="status">
+            <el-form-item :label="t('common.texts.status')" prop="status">
               <el-select v-model="queryParams.status" placeholder="用户状态" clearable class="el-form-input-width">
                 <el-option v-for="dict in sys_normal_disable" :key="dict.value" :label="dict.label"
                   :value="dict.value" />
               </el-select>
             </el-form-item>
-            <el-form-item label="创建时间">
+            <el-form-item :label="t('common.texts.createdTime')">
               <el-date-picker class="el-form-input-width" v-model="dateRange" value-format="YYYY-MM-DD" type="daterange"
                 range-separator="-" :start-placeholder="td('common.form.startDatePlaceholder')" :end-placeholder="td('common.form.endDatePlaceholder')"></el-date-picker>
             </el-form-item>
             <el-form-item>
               <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
               </el-button>
               <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-                <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
               </el-button>
             </el-form-item>
           </el-form>
@@ -132,26 +132,26 @@
           <div class="justify-between mb15">
             <el-row :gutter="10" class="btn-style">
               <el-col :span="1.5">
-                <el-button type="primary" plain icon="Plus" @click="handleAdd" v-hasPermi="['system:user:add']">新增
+                <el-button type="primary" plain icon="Plus" @click="handleAdd" v-hasPermi="['system:user:add']">{{ t('common.button.add') }}
                 </el-button>
               </el-col>
               <el-col :span="1.5">
                 <el-button type="primary" plain icon="Edit" :disabled="single" @click="handleUpdate"
-                  v-hasPermi="['system:user:edit']">修改
+                  v-hasPermi="['system:user:edit']">{{ t('common.button.update') }}
                 </el-button>
               </el-col>
               <el-col :span="1.5">
                 <el-button type="danger" plain icon="Delete" :disabled="multiple" @click="handleDelete"
-                  v-hasPermi="['system:user:remove']">删除
+                  v-hasPermi="['system:user:remove']">{{ t('common.button.delete') }}
                 </el-button>
               </el-col>
               <el-col :span="1.5">
-                <el-button type="info" plain icon="Upload" @click="handleImport" v-hasPermi="['system:user:import']">导入
+                <el-button type="info" plain icon="Upload" @click="handleImport" v-hasPermi="['system:user:import']">{{ t('common.button.import') }}
                 </el-button>
               </el-col>
               <el-col :span="1.5">
                 <el-button type="warning" plain icon="Download" @click="handleExport"
-                  v-hasPermi="['system:user:export']">导出
+                  v-hasPermi="['system:user:export']">{{ t('common.button.export') }}
                 </el-button>
               </el-col>
             </el-row>
@@ -169,23 +169,23 @@
               :show-overflow-tooltip="true" />
             <el-table-column label="手机号码" align="center" key="phonenumber" prop="phonenumber" v-if="columns[4].visible"
               width="120" />
-            <el-table-column label="状态" align="center" key="status" v-if="columns[5].visible">
+            <el-table-column :label="t('common.texts.status')" align="center" key="status" v-if="columns[5].visible">
               <template #default="scope">
                 <el-switch v-model="scope.row.status" active-value="0" inactive-value="1"
                   @change="handleStatusChange(scope.row)"></el-switch>
               </template>
             </el-table-column>
-            <el-table-column label="创建时间" align="center" prop="createTime" v-if="columns[6].visible" width="160">
+            <el-table-column :label="t('common.texts.createdTime')" align="center" prop="createTime" v-if="columns[6].visible" width="160">
               <template #default="scope">
                 <span>{{ parseTime(scope.row.createTime) }}</span>
               </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
+            <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
               <template #default="scope">
-                <!-- <el-tooltip content="修改" placement="top" v-if="scope.row.userId !== 1">
+                <!-- <el-tooltip :content="t('common.button.update')" placement="top" v-if="scope.row.userId !== 1">
                                    <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:user:edit']"></el-button>
                                 </el-tooltip>
-                                <el-tooltip content="删除" placement="top" v-if="scope.row.userId !== 1">
+                                <el-tooltip :content="t('common.button.delete')" placement="top" v-if="scope.row.userId !== 1">
                                    <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['system:user:remove']"></el-button>
                                 </el-tooltip>
                                 <el-tooltip content="重置密码" placement="top" v-if="scope.row.userId !== 1">
@@ -195,14 +195,14 @@
                                    <el-button link type="primary" icon="CircleCheck" @click="handleAuthRole(scope.row)" v-hasPermi="['system:user:edit']"></el-button>
                                 </el-tooltip> -->
                 <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-                  v-hasPermi="['system:user:edit']" v-if="scope.row.userId !== 1">修改
+                  v-hasPermi="['system:user:edit']" v-if="scope.row.userId !== 1">{{ t('common.button.update') }}
                 </el-button>
                 <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
-                  v-hasPermi="['system:user:remove']" v-if="scope.row.userId !== 1">删除
+                  v-hasPermi="['system:user:remove']" v-if="scope.row.userId !== 1">{{ t('common.button.delete') }}
                 </el-button>
                 <el-popover placement="bottom" :width="150" trigger="click" v-if="scope.row.userId !== 1">
                   <template #reference>
-                    <el-button link type="primary" icon="ArrowDown">更多</el-button>
+                    <el-button link type="primary" icon="ArrowDown">{{ t('common.button.more') }}</el-button>
                   </template>
                   <div style="width: 90px" class="butgdlist">
                     <el-button style="padding-left: 14px" link type="primary" icon="Key"
@@ -239,7 +239,7 @@
                 :props="{ value: 'id', label: 'label', children: 'children' }" value-key="id" placeholder="请选择归属部门"
                 check-strictly />
               <!--                     <treeselect v-model="form.deptId" :options="deptOptions" :flat="true" :show-count="true" placeholder="请选择归属部门"-->
-              <!--                                 noResultsText="暂无数据" :multiple="true"-->
+              <!--                                 :noResultsText="t('common.message.noData')" :multiple="true"-->
               <!--                     />-->
             </el-form-item>
           </el-col>
@@ -278,7 +278,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="状态">
+            <el-form-item :label="t('common.texts.status')">
               <el-radio-group v-model="form.status">
                 <el-radio v-for="dict in sys_normal_disable" :key="dict.value" :value="dict.value">{{ dict.label }}
                 </el-radio>
@@ -306,7 +306,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="备注">
+            <el-form-item :label="t('common.texts.remark')">
               <el-input v-model="form.remark" type="textarea" placeholder="请输入内容"></el-input>
             </el-form-item>
           </el-col>
@@ -314,8 +314,8 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="cancel">取 消</el-button>
-          <el-button type="primary" @click="submitForm">确 定</el-button>
+          <el-button @click="cancel">{{ t('common.button.cancel') }}</el-button>
+          <el-button type="primary" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -345,8 +345,8 @@
       </el-upload>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="upload.open = false">取 消</el-button>
-          <el-button type="primary" @click="submitFileForm">确 定</el-button>
+          <el-button @click="upload.open = false">{{ t('common.button.cancel') }}</el-button>
+          <el-button type="primary" @click="submitFileForm">{{ t('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -354,6 +354,7 @@
 </template>
 
 <script setup name="User">
+import { useI18n } from 'vue-i18n'
 import { getToken } from "@/utils/auth.js";
 import Cookies from "js-cookie";
 import {
@@ -377,6 +378,8 @@ const { sys_normal_disable, sys_user_sex } = proxy.useDict(
 );
 import store from "@/store";
 import useUserStore from "@/store/system/user";
+
+const { t } = useI18n();
 const userStore = useUserStore();
 const userId = ref(userStore.id);
 // 计算属性动态设置 phonenumber 规则
@@ -632,7 +635,7 @@ function handleDelete(row) {
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
     })
     .catch(() => { });
 }
@@ -687,9 +690,9 @@ function handleAuthRole(row) {
 /** 重置密码按钮操作 */
 function handleResetPwd(row) {
   proxy
-    .$prompt('请输入"' + row.userName + '"的新密码', "提示", {
-      confirmButtonText: "确定",
-      cancelButtonText: "取消",
+    .$prompt('请输入"' + row.userName + '"的新密码', t('common.message.prompt'), {
+      confirmButtonText: t('common.button.confirm'),
+      cancelButtonText: t('common.button.cancel'),
       closeOnClickModal: false,
       inputType: 'password',
       inputPattern: /^.{8,20}$/, // 密码长度要求在 8 到 20 之间
@@ -837,13 +840,13 @@ function submitForm() {
     if (valid) {
       if (form.value.userId != undefined) {
         updateUser(form.value).then((response) => {
-          proxy.$modal.msgSuccess("修改成功");
+          proxy.$modal.msgSuccess(t('common.message.editSuccess'));
           open.value = false;
           getList();
         });
       } else {
         addUser(form.value).then((response) => {
-          proxy.$modal.msgSuccess("新增成功");
+          proxy.$modal.msgSuccess(t('common.message.addSuccess'));
           open.value = false;
           getList();
         });

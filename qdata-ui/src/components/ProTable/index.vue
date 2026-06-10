@@ -129,7 +129,7 @@
       :fixed="ui.actionsFixed"
       :width="ui.actionsWidth"
       align="center"
-      label="操作"
+      :label="t('common.texts.operation')"
       class-name="small-padding fixed-width"
     >
       <template #default="scope">
@@ -140,7 +140,7 @@
       <slot name="empty">
         <div class="emptyBg">
           <img src="@/assets/system/images/no_data/noData.png" alt="" />
-          <p>暂无记录</p>
+          <p>{{ t('common.message.noRecord') }}</p>
         </div>
       </slot>
     </template>
@@ -157,10 +157,13 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { computed, ref, watch } from "vue";
 import { parseTime } from "@/utils/anivia";
 import { cronToZh } from "@/utils/cronUtils";
 import Pagination from "@/views/flyflow/components/pagination.vue";
+
+const { t } = useI18n();
 const noDataImg = new URL(
   "@/assets/images/common/noDataImg.png",
   import.meta.url
@@ -170,7 +173,7 @@ const noDataImg = new URL(
  *
  * 一步一步怎么用（推荐）：
  * 1) 引入组件：import ProTable from '@/components/ProTable/index.vue'
- * 2) 定义列：const columns = [{ prop: 'name', label: '名称' }, { prop: 'status', label: '状态', dictOptions: [...] }]
+ * 2) 定义列：const columns = [{ prop: 'name', label: t('common.texts.name') }, { prop: 'status', label: t('common.texts.status'), dictOptions: [...] }]
  * 3) 准备数据与分页状态：list、loading、total、query({ pageNum, pageSize })
  * 4) 组装唯一入口 `config`：{ columns, data: list, loading, table, selection, actions, pagination }
  * 5) 模板中使用：<ProTable :config="tableConfig" @sort-change @pagination @update:selected> ...插槽 ...</ProTable>
@@ -187,14 +190,14 @@ const noDataImg = new URL(
  * - pagination：{ total, page, limit }；当 total>0 自动显示分页
  *
  * 常见场景示例（摘抄）：
- * - 字典：{ prop:'status', label:'状态', dictOptions:[{value:'1',label:'启用'},{value:'0',label:'停用'}] }
- * - 时间：{ prop:'createTime', label:'创建时间', time:true, timeFormat:'{y}-{m}-{d} {h}:{i}' }
+ * - 字典：{ prop:'status', label:t('common.texts.status'), dictOptions:[{value:'1',label:'启用'},{value:'0',label:'停用'}] }
+ * - 时间：{ prop:'createTime', label:t('common.texts.createdTime'), time:true, timeFormat:'{y}-{m}-{d} {h}:{i}' }
  * - 图片：{ prop:'icon', label:'图标', image:true, imageWidth:50, imageHeight:50, imageFallback:占位图 }
- * - 图标+文本：{ prop:'name', label:'名称', iconGetter:(row)=>url, iconSize:20 }
- * - 插槽：{ prop:'name', label:'名称', slot:'name' }，模板写 <template #name="{ row }">...</template>
+ * - 图标+文本：{ prop:'name', label:t('common.texts.name'), iconGetter:(row)=>url, iconSize:20 }
+ * - 插槽：{ prop:'name', label:t('common.texts.name'), slot:'name' }，模板写 <template #name="{ row }">...</template>
  * - 操作列：在组件内统一开启 `actions:true`，模板写 <template #actions="{ row }"><el-button>...</el-button></template>
  * - 禁用选择：selectionSelectable: 'disabled' 或 { field:'status', disabledValues:['1'] } 或 (row)=>boolean
- * - 自定义排序：{ prop:'createTime', label:'创建时间', sort:true, sortKey:'create_time' }
+ * - 自定义排序：{ prop:'createTime', label:t('common.texts.createdTime'), sort:true, sortKey:'create_time' }
  *
  * 事件（只需接收并回填/透传）：
  * - sort-change(e)：e.order 为 'asc'|'desc'；根据 e.column/e.prop 触发后端排序

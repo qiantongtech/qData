@@ -52,7 +52,7 @@
                   @keyup.enter="handleQuery"
                />
             </el-form-item>
-            <el-form-item label="状态" prop="status">
+            <el-form-item :label="t('common.texts.status')" prop="status">
                <el-select
                   v-model="queryParams.status"
                   placeholder="登录状态"
@@ -81,10 +81,10 @@
             </el-form-item>
             <el-form-item>
                <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                  <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                  <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
                </el-button>
                <el-button @click="resetQuery" @mousedown="e => e.preventDefault()">
-                  <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                  <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
                </el-button>
             </el-form-item>
          </el-form>
@@ -100,7 +100,7 @@
                   :disabled="multiple"
                   @click="handleDelete"
                   v-hasPermi="['monitor:logininfor:remove']"
-               >删除</el-button>
+               >{{ t('common.button.delete') }}</el-button>
             </el-col>
             <el-col :span="1.5">
                <el-button
@@ -128,7 +128,7 @@
                   icon="Download"
                   @click="handleExport"
                   v-hasPermi="['monitor:logininfor:export']"
-               >导出</el-button>
+               >{{ t('common.button.export') }}</el-button>
             </el-col>
          </el-row>
          <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
@@ -147,7 +147,7 @@
                   <dict-tag :options="sys_common_status" :value="scope.row.status" />
                </template>
             </el-table-column>
-            <el-table-column label="描述" align="center" prop="msg" :show-overflow-tooltip="true" />
+            <el-table-column :label="t('common.texts.description')" align="center" prop="msg" :show-overflow-tooltip="true" />
             <el-table-column label="访问时间" align="center" prop="loginTime" sortable="custom" :sort-orders="['descending', 'ascending']" width="180">
                <template #default="scope">
                   <span>{{ parseTime(scope.row.loginTime) }}</span>
@@ -167,10 +167,12 @@
 </template>
 
 <script setup name="Logininfor">
+import { useI18n } from 'vue-i18n'
 import { list, delLogininfor, cleanLogininfor, unlockLogininfor } from "@/api/system/monitor/logininfor.js";
 import useDefaultLang from "@/composables/useDefaultLang";
 
 const { td } = useDefaultLang();
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { sys_common_status } = proxy.useDict("sys_common_status");
 
@@ -242,7 +244,7 @@ function handleDelete(row) {
     return delLogininfor(infoIds);
   }).then(() => {
     getList();
-    proxy.$modal.msgSuccess("删除成功");
+    proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
   }).catch(() => {});
 }
 

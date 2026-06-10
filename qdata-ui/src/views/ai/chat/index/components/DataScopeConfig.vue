@@ -269,7 +269,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button size="mini" @click="associationVisible = false"
-            >取 消</el-button
+            >{{ t('common.button.cancel') }}</el-button
           >
           <el-button
             type="primary"
@@ -277,7 +277,7 @@
             @click="handleSaveAssociations"
             :loading="savingAssociations"
           >
-            确 定
+            {{ t('common.button.confirm') }}
           </el-button>
         </div>
       </template>
@@ -286,6 +286,7 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { ref, watch, onMounted, computed, nextTick } from "vue";
 import { Coin, ArrowDown, ArrowUp, Setting } from "@element-plus/icons-vue";
 import DatasourceList from "@/components/Datasource/List.vue";
@@ -296,6 +297,7 @@ import {
 import { ChatConversationApi } from "@/api/ai/chat/conversation/index.js";
 import { ElMessage, ElMessageBox } from "element-plus";
 
+const { t } = useI18n();
 const props = defineProps({
   title: {
     type: String,
@@ -362,10 +364,10 @@ const handleOpenAssociationConfirm = (conversationId) => {
   }
   ElMessageBox.confirm(
     "关联关系无法自动识别，是否需要手动设置关联关系？",
-    "提示",
+    t('common.message.prompt'),
     {
-      confirmButtonText: "确定",
-      cancelButtonText: "取消",
+      confirmButtonText: t('common.button.confirm'),
+      cancelButtonText: t('common.button.cancel'),
       type: "warning",
     }
   )
@@ -636,7 +638,7 @@ const associationTableStore = ref({
     },
   },
   columns: [
-    { type: "index", label: "编号", width: 60, align: "center" },
+    { type: "index", label: t('common.texts.number'), width: 60, align: "center" },
     {
       label: "字段名称",
       prop: "columnName",

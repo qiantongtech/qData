@@ -61,6 +61,7 @@
 </template>
 
 <script setup name="DesensitizationRuleDetail">
+import { useI18n } from 'vue-i18n'
 import { getDesensitizeRules } from "@/api/dg/safety/desensitizeRules";
 import { useRoute } from "vue-router";
 import {
@@ -76,6 +77,7 @@ import { selectTreeDataCategory } from "@/api/dg/safety/dataCategory/dataCategor
 import asset from "@/views/dg/safety/desensitizationRules/detail/asset.vue";
 import info from "@/views/dg/safety/desensitizationRules/detail/info.vue";
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { dp_model_status, dg_application_scene, dg_mask_type } = proxy.useDict(
   "dp_model_status",
@@ -160,7 +162,7 @@ const detailItems = computed(() => [
   },
   { label: "脱敏方式", key: "maskType", dictOptions: unref(dg_mask_type) },
   {
-    label: "描述",
+    label: t('common.texts.description'),
     key: "description",
     span: 24,
     ellipsisClass: "ellipsis-2",

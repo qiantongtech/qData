@@ -61,6 +61,7 @@
 </template>
 
 <script setup name="BusinessLayerDetail">
+import { useI18n } from 'vue-i18n'
 import { getBusinessCategory } from "@/api/dm/businessCategory/businessCategory";
 import { useRoute } from "vue-router";
 import asset from "./asset.vue";
@@ -74,6 +75,7 @@ import {
   getCurrentInstance,
 } from "vue";
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const route = useRoute();
 
@@ -90,16 +92,16 @@ const detailItems = computed(() => [
   { label: "英文简写", key: "engName" },
   { label: "负责人", key: "ownerName" },
   {
-    label: "描述",
+    label: t('common.texts.description'),
     key: "description",
     span: 24,
     ellipsisClass: "ellipsis-2",
     className: "mt2 mb2",
   },
-  { label: "创建人", key: "createBy" },
-  { label: "创建时间", key: "createTime" },
-  { label: "更新时间", key: "updateTime" },
-  { label: "备注", key: "remark", span: 24 },
+  { label: t('common.texts.createdBy'), key: "createBy" },
+  { label: t('common.texts.createdTime'), key: "createTime" },
+  { label: t('common.texts.updatedTime'), key: "updateTime" },
+  { label: t('common.texts.remark'), key: "remark", span: 24 },
 ]);
 
 function getDetail(id) {

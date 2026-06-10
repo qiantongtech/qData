@@ -34,11 +34,11 @@
     <div class="justify-between mb15">
         <el-row :gutter="10" class="btn-style">
             <el-col :span="1.5">
-                <el-button type="primary" plain icon="Plus">新增</el-button>
+                <el-button type="primary" plain icon="Plus">{{ t('common.button.add') }}</el-button>
             </el-col>
             <el-col :span="1.5">
                 <el-button type="info" plain icon="Sort" @click="toggleExpandAll"
-                    >展开/折叠</el-button
+                    >{{ t('common.button.un_fold') }}</el-button
                 >
             </el-col>
         </el-row>
@@ -65,26 +65,26 @@
                 {{ scope.row.content || '-' }}
             </template>
         </el-table-column>
-        <el-table-column label="创建人" align="center" prop="createBy">
+        <el-table-column :label="t('common.texts.createdBy')" align="center" prop="createBy">
             <template #default="scope">
                 {{ scope.row.createBy || '-' }}
             </template>
         </el-table-column>
-        <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+        <el-table-column :label="t('common.texts.createdTime')" align="center" prop="createTime" width="180">
             <template #default="scope">
                 <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="备注" align="center" prop="remark">
+        <el-table-column :label="t('common.texts.remark')" align="center" prop="remark">
             <template #default="scope">
                 {{ scope.row.remark || '-' }}
             </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width">
             <template #default="scope">
-                <el-button link type="primary" icon="Edit">修改</el-button>
-                <el-button link type="primary" icon="Plus">新增</el-button>
-                <el-button link type="danger" icon="Delete">删除</el-button>
+                <el-button link type="primary" icon="Edit">{{ t('common.button.update') }}</el-button>
+                <el-button link type="primary" icon="Plus">{{ t('common.button.add') }}</el-button>
+                <el-button link type="danger" icon="Delete">{{ t('common.button.delete') }}</el-button>
             </template>
         </el-table-column>
     </el-table>
@@ -92,7 +92,11 @@
 </template>
 
 <script setup name="ComponentTwo">
-    const { proxy } = getCurrentInstance();
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n();
+    
+const { proxy } = getCurrentInstance();
 
     const detailsList = ref([]);
     const open = ref(false);

@@ -45,10 +45,10 @@
                 </el-form-item>
                 <el-form-item>
                     <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                        <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                        <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
                     </el-button>
                     <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-                        <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                        <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
                     </el-button>
                 </el-form-item>
             </el-form>
@@ -58,7 +58,7 @@
                 <el-row :gutter="10" class="btn-style">
                     <el-col :span="1.5">
                         <el-button type="primary" plain icon="Plus" @click="handleAdd"
-                            v-hasPermi="['att:cat:doccat:add']">新增</el-button>
+                            v-hasPermi="['att:cat:doccat:add']">{{ t('common.button.add') }}</el-button>
                     </el-col>
 
                     <el-col :span="1.5">
@@ -74,7 +74,7 @@
 
             <el-table height="60vh" v-if="refreshTable" v-loading="loading" :data="attDataElemCatList" row-key="id"
                 :default-expand-all="isExpandAll" :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
-                <!--          <el-table-column label="编号"  prop="code"   width="160">-->
+                <!--          <el-table-column :label="t('common.texts.number')"  prop="code"   width="160">-->
                 <!--            <template #default="scope">-->
                 <!--              {{ scope.row.code || '-' }}-->
                 <!--            </template>-->
@@ -86,7 +86,7 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column label="描述" align="left" prop="description" :show-overflow-tooltip="{ effect: 'light' }"
+                <el-table-column :label="t('common.texts.description')" align="left" prop="description" :show-overflow-tooltip="{ effect: 'light' }"
                     width="250">
                     <template #default="scope">
                         {{ scope.row.description || '-' }}
@@ -98,19 +98,19 @@
                         {{ scope.row.sortOrder }}
                     </template>
                 </el-table-column>
-                <el-table-column label="创建人" align="center" prop="createBy">
+                <el-table-column :label="t('common.texts.createdBy')" align="center" prop="createBy">
                     <template #default="scope">
                         {{ scope.row.createBy || "-" }}
                     </template>
                 </el-table-column>
-                <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+                <el-table-column :label="t('common.texts.createdTime')" align="center" prop="createTime" width="180">
                     <template #default="scope">
                         <span>{{
                             parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}")
                         }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="状态" align="center" prop="validFlag">
+                <el-table-column :label="t('common.texts.status')" align="center" prop="validFlag">
                     <template #default="scope">
                         <!--              <dict-tag :options="sys_valid" :value="scope.row.validFlag"/>-->
 
@@ -119,20 +119,20 @@
                         </el-switch>
                     </template>
                 </el-table-column>
-                <el-table-column label="备注" align="left" prop="remark" :show-overflow-tooltip="{ effect: 'light' }">
+                <el-table-column :label="t('common.texts.remark')" align="left" prop="remark" :show-overflow-tooltip="{ effect: 'light' }">
                     <template #default="scope">
                         {{ scope.row.remark || '-' }}
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right"
+                <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right"
                     width="240">
                     <template #default="scope">
                         <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-                            v-hasPermi="['att:cat:doccat:edit']">修改</el-button>
+                            v-hasPermi="['att:cat:doccat:edit']">{{ t('common.button.update') }}</el-button>
                         <el-button link type="primary" icon="Plus" @click="handleAdd(scope.row)"
-                            v-hasPermi="['att:cat:doccat:add']">新增</el-button>
+                            v-hasPermi="['att:cat:doccat:add']">{{ t('common.button.add') }}</el-button>
                         <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
-                            v-hasPermi="['att:cat:doccat:remove']">删除</el-button>
+                            v-hasPermi="['att:cat:doccat:remove']">{{ t('common.button.delete') }}</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -161,8 +161,8 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="24">
-                        <el-form-item label="描述">
-                            <el-input type="textarea" placeholder="请输入描述" v-model="form.description"
+                        <el-form-item :label="t('common.texts.description')">
+                            <el-input type="textarea" :placeholder="t('common.form.descriptionPlaceholder')" v-model="form.description"
                                 :min-height="192" />
                         </el-form-item>
                     </el-col>
@@ -175,26 +175,25 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="状态" prop="validFlag">
+                        <el-form-item :label="t('common.texts.status')" prop="validFlag">
                             <el-radio v-model="form.validFlag" :label="true">启用</el-radio>
                             <el-radio v-model="form.validFlag" :label="false">禁用</el-radio>
                         </el-form-item>
                     </el-col>
                 </el-row>
 
-
                 <el-row :gutter="20">
                     <el-col :span="24">
-                        <el-form-item label="备注">
-                            <el-input type="textarea" placeholder="请输入备注" v-model="form.remark" :min-height="192" />
+                        <el-form-item :label="t('common.texts.remark')">
+                            <el-input type="textarea" :placeholder="t('common.form.remarkPlaceholder')" v-model="form.remark" :min-height="192" />
                         </el-form-item>
                     </el-col>
                 </el-row>
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button @click="cancel">取 消</el-button>
-                    <el-button type="primary" @click="submitForm">确 定</el-button>
+                    <el-button @click="cancel">{{ t('common.button.cancel') }}</el-button>
+                    <el-button type="primary" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
                 </div>
             </template>
         </el-dialog>
@@ -202,6 +201,8 @@
 </template>
 
 <script setup name="AttDataElemCat">
+import { useI18n } from 'vue-i18n'
+
 // import {
 //     listAttDocCat,
 //     getAttDocCat,
@@ -209,6 +210,7 @@
 //     addAttDocCat,
 //     updateAttDocCat
 // } from '@/api/att/cat/attDocCat/attDocCat.js';
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 
 const attDataElemCatList = ref([]);
@@ -373,13 +375,13 @@ function submitForm() {
         if (valid) {
             if (form.value.id != null) {
                 updateAttDocCat(form.value).then((response) => {
-                    proxy.$modal.msgSuccess('修改成功');
+                    proxy.$modal.msgSuccess(t('common.message.editSuccess'));
                     open.value = false;
                     getList();
                 });
             } else {
                 addAttDocCat(form.value).then((response) => {
-                    proxy.$modal.msgSuccess('新增成功');
+                    proxy.$modal.msgSuccess(t('common.message.addSuccess'));
                     open.value = false;
                     getList();
                 });
@@ -397,7 +399,7 @@ function handleDelete(row) {
         })
         .then(() => {
             getList();
-            proxy.$modal.msgSuccess('删除成功');
+            proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
         })
         .catch(() => { });
 }

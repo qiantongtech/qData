@@ -150,7 +150,7 @@
                             </template>
 
                         </el-table-column>
-                        <el-table-column label="操作" fixed="right" width="140" align="center">
+                        <el-table-column :label="t('common.texts.operation')" fixed="right" width="140" align="center">
                             <template #default="scope">
                                 <el-button link type="primary" icon="View"
                                     @click="openDialog(scope.row)">查看问题数据</el-button>
@@ -167,6 +167,7 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import * as echarts from 'echarts';
 import { useRoute } from 'vue-router';
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
@@ -181,6 +182,8 @@ import {
     statisticsEvaluateTow,
     statisticsEvaluateTable
 } from "@/api/da/quality/qualityTaskLog";
+
+const { t } = useI18n();
 const { att_rule_audit_q_dimension, } = proxy.useDict(
 
     'att_rule_audit_q_dimension'
@@ -251,7 +254,6 @@ function getLabelsByColumnName(row, columnName) {
 
     return labels.join(' , ');
 }
-
 
 const getColumnVisibility = (key) => {
     const column = columns.value.find((col) => col.key === key);
@@ -341,7 +343,6 @@ const loadChartWithData = (data = []) => {
 };
 
 
-
 // 评分和质量维度汇总
 // 评分和质量维度汇总
 const loadScoreAndSummary = async (id) => {
@@ -386,7 +387,6 @@ const loadRuleTable = async (id) => {
     } finally {
     }
 };
-
 
 // 折线图数据
 const loadTrendChart = async (id) => {

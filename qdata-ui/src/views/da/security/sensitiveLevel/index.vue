@@ -52,10 +52,10 @@
 
                 <el-form-item>
                     <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                        <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                        <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
                     </el-button>
                     <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-                        <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                        <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
                     </el-button>
                 </el-form-item>
             </el-form>
@@ -67,7 +67,7 @@
                     <el-col :span="1.5">
                         <el-button type="primary" plain @click="handleAdd" v-hasPermi="['da:sensitiveLevel:add']"
                             @mousedown="(e) => e.preventDefault()">
-                            <i class="iconfont-mini icon-xinzeng mr5"></i>新增
+                            <i class="iconfont-mini icon-xinzeng mr5"></i>{{ t('common.button.add') }}
                         </el-button>
                     </el-col>
                 </el-row>
@@ -79,7 +79,7 @@
             <el-table stripe v-loading="loading" :data="daSensitiveLevelList" @selection-change="handleSelectionChange"
                 :default-sort="defaultSort" @sort-change="handleSortChange">
                 <!--       <el-table-column type="selection" width="55" align="center" />-->
-                <el-table-column v-if="getColumnVisibility(1)" label="编号" align="center" prop="id" width="80">
+                <el-table-column v-if="getColumnVisibility(1)" :label="t('common.texts.number')" align="center" prop="id" width="80">
                     <template #default="scope">
                         {{ scope.row.id || '-' }}
                     </template>
@@ -89,7 +89,7 @@
                         {{ scope.row.sensitiveLevel || '-' }}
                     </template>
                 </el-table-column>
-                <el-table-column v-if="getColumnVisibility(3)" width="350" label="描述" align="left" prop="description">
+                <el-table-column v-if="getColumnVisibility(3)" width="350" :label="t('common.texts.description')" align="left" prop="description">
                     <template #default="scope">
                         {{ scope.row.description || '-' }}
                     </template>
@@ -105,13 +105,13 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column v-if="getColumnVisibility(6)" label="创建人" width="120" align="center" prop="createBy"
+                <el-table-column v-if="getColumnVisibility(6)" :label="t('common.texts.createdBy')" width="120" align="center" prop="createBy"
                     :show-overflow-tooltip="{ effect: 'light' }">
                     <template #default="scope">
                         {{ scope.row.createBy || '-' }}
                     </template>
                 </el-table-column>
-                <el-table-column v-if="getColumnVisibility(7)" label="创建时间" align="center" prop="createTime" width="160"
+                <el-table-column v-if="getColumnVisibility(7)" :label="t('common.texts.createdTime')" align="center" prop="createTime" width="160"
                     sortable="custom" column-key="create_time" :sort-orders="['descending', 'ascending']">
                     <template #default="scope">
                         <span>{{
@@ -126,21 +126,21 @@
                             active-value="1" inactive-value="0" @change="handleStatusChange(scope.row)" />
                     </template>
                 </el-table-column>
-                <el-table-column v-if="getColumnVisibility(9)" label="备注" align="left" prop="remark"
+                <el-table-column v-if="getColumnVisibility(9)" :label="t('common.texts.remark')" align="left" prop="remark"
                     :show-overflow-tooltip="{ effect: 'light' }">
                     <template #default="scope">
                         {{ scope.row.remark || '-' }}
                     </template>
                 </el-table-column>
-                <el-table-column v-if="getColumnVisibility(10)" label="操作" align="center"
+                <el-table-column v-if="getColumnVisibility(10)" :label="t('common.texts.operation')" align="center"
                     class-name="small-padding fixed-width" fixed="right" width="240">
                     <template #default="scope">
                         <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-                            v-hasPermi="['da:sensitiveLevel:edit']">修改</el-button>
+                            v-hasPermi="['da:sensitiveLevel:edit']">{{ t('common.button.update') }}</el-button>
                         <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
-                            v-hasPermi="['da:sensitiveLevel:remove']">删除</el-button>
+                            v-hasPermi="['da:sensitiveLevel:remove']">{{ t('common.button.delete') }}</el-button>
                         <!--           <el-button link type="primary" icon="view" @click="handleDetail(scope.row)"-->
-                        <!--                      v-hasPermi="['da:sensitiveLevel:edit']">详情</el-button>-->
+                        <!--                      v-hasPermi="['da:sensitiveLevel:edit']">{{ t('common.button.details') }}</el-button>-->
                         <!--           <el-button link type="primary" icon="view" @click="routeTo('/da/sensitiveLevel/daSensitiveLevelDetail',scope.row)"-->
                         <!--                      v-hasPermi="['da:sensitiveLevel:edit']">复杂详情</el-button>-->
                     </template>
@@ -149,7 +149,7 @@
                 <template #empty>
                     <div class="emptyBg">
                         <img src="../../../../assets/system/images/no_data/noData.png" alt="" />
-                        <p>暂无记录</p>
+                        <p>{{ t('common.message.noRecord') }}</p>
                     </div>
                 </template>
             </el-table>
@@ -202,8 +202,8 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="24">
-                        <el-form-item label="描述" prop="description">
-                            <el-input v-model="form.description" type="textarea" placeholder="请输入描述" />
+                        <el-form-item :label="t('common.texts.description')" prop="description">
+                            <el-input v-model="form.description" type="textarea" :placeholder="t('common.form.descriptionPlaceholder')" />
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -219,16 +219,16 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="24">
-                        <el-form-item label="备注" prop="remark">
-                            <el-input v-model="form.remark" type="textarea" placeholder="请输入备注" />
+                        <el-form-item :label="t('common.texts.remark')" prop="remark">
+                            <el-input v-model="form.remark" type="textarea" :placeholder="t('common.form.remarkPlaceholder')" />
                         </el-form-item>
                     </el-col>
                 </el-row>
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button size="mini" @click="cancel">取 消</el-button>
-                    <el-button type="primary" size="mini" @click="submitForm">确 定</el-button>
+                    <el-button size="mini" @click="cancel">{{ t('common.button.cancel') }}</el-button>
+                    <el-button type="primary" size="mini" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
                 </div>
             </template>
         </el-dialog>
@@ -292,14 +292,14 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item label="描述" prop="description">
+                        <el-form-item :label="t('common.texts.description')" prop="description">
                             <div>
                                 {{ form.description }}
                             </div>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="备注" prop="remark">
+                        <el-form-item :label="t('common.texts.remark')" prop="remark">
                             <div>
                                 {{ form.remark }}
                             </div>
@@ -309,7 +309,7 @@
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button size="mini" @click="cancel">关 闭</el-button>
+                    <el-button size="mini" @click="cancel">{{ t('common.button.close') }}</el-button>
                 </div>
             </template>
         </el-dialog>
@@ -335,8 +335,8 @@
             </el-upload>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button @click="upload.open = false">取 消</el-button>
-                    <el-button type="primary" @click="submitFileForm">确 定</el-button>
+                    <el-button @click="upload.open = false">{{ t('common.button.cancel') }}</el-button>
+                    <el-button type="primary" @click="submitFileForm">{{ t('common.button.confirm') }}</el-button>
                 </div>
             </template>
         </el-dialog>
@@ -344,6 +344,7 @@
 </template>
 
 <script setup name="SensitiveLevel">
+import { useI18n } from 'vue-i18n'
 import {
     listDaSensitiveLevel,
     getDaSensitiveLevel,
@@ -355,6 +356,7 @@ import {
 import { getToken } from '@/utils/auth.js';
 import { updateDaAsset } from '@/api/da/asset/asset.js';
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { da_sensitive_level_rule, da_sensitive_status } = proxy.useDict(
     'da_sensitive_level_rule',
@@ -364,16 +366,16 @@ const daSensitiveLevelList = ref([]);
 
 // 列显隐信息
 const columns = ref([
-    { key: 1, label: '编号', visible: true },
+    { key: 1, label: t('common.texts.number'), visible: true },
     { key: 2, label: '敏感级别名称', visible: true },
-    { key: 3, label: '描述', visible: true },
+    { key: 3, label: t('common.texts.description'), visible: true },
     { key: 4, label: '替换规则', visible: true },
     { key: 5, label: '替换内容', visible: true },
-    { key: 6, label: '创建人', visible: true },
-    { key: 7, label: '创建时间', visible: true },
+    { key: 6, label: t('common.texts.createdBy'), visible: true },
+    { key: 7, label: t('common.texts.createdTime'), visible: true },
     { key: 8, label: '在线状态', visible: true },
-    { key: 9, label: '备注', visible: true },
-    { key: 10, label: '操作', visible: true }
+    { key: 9, label: t('common.texts.remark'), visible: true },
+    { key: 10, label: t('common.texts.operation'), visible: true }
 ]);
 
 const getColumnVisibility = (key) => {
@@ -540,7 +542,7 @@ function submitForm() {
             if (form.value.id != null) {
                 updateDaSensitiveLevel(form.value)
                     .then((response) => {
-                        proxy.$modal.msgSuccess('修改成功');
+                        proxy.$modal.msgSuccess(t('common.message.editSuccess'));
                         open.value = false;
                         getList();
                     })
@@ -548,7 +550,7 @@ function submitForm() {
             } else {
                 addDaSensitiveLevel(form.value)
                     .then((response) => {
-                        proxy.$modal.msgSuccess('新增成功');
+                        proxy.$modal.msgSuccess(t('common.message.addSuccess'));
                         open.value = false;
                         getList();
                     })
@@ -568,7 +570,7 @@ function handleDelete(row) {
         })
         .then(() => {
             getList();
-            proxy.$modal.msgSuccess('删除成功');
+            proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
         })
         .catch(() => { });
 }

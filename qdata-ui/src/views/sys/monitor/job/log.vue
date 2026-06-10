@@ -85,10 +85,10 @@
             </el-form-item>
             <el-form-item>
                <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                  <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                  <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
                </el-button>
                <el-button @click="resetQuery" @mousedown="e => e.preventDefault()">
-                  <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                  <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
                </el-button>
             </el-form-item>
          </el-form>
@@ -105,7 +105,7 @@
                   :disabled="multiple"
                   @click="handleDelete"
                   v-hasPermi="['monitor:job:remove']"
-               >删除</el-button>
+               >{{ t('common.button.delete') }}</el-button>
             </el-col>
             <el-col :span="1.5">
                <el-button
@@ -123,7 +123,7 @@
                   icon="Download"
                   @click="handleExport"
                   v-hasPermi="['monitor:job:export']"
-               >导出</el-button>
+               >{{ t('common.button.export') }}</el-button>
             </el-col>
             <el-col :span="1.5">
                <el-button
@@ -131,7 +131,7 @@
                   plain
                   icon="Close"
                   @click="handleClose"
-               >关闭</el-button>
+               >{{ t('common.button.close') }}</el-button>
             </el-col>
          </el-row>
          <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
@@ -158,7 +158,7 @@
                   <span>{{ parseTime(scope.row.createTime) }}</span>
                </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+            <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width">
                <template #default="scope">
                   <el-button link type="primary" icon="View" @click="handleView(scope.row)" v-hasPermi="['monitor:job:query']">详细</el-button>
                </template>
@@ -223,7 +223,7 @@
          </el-form>
          <template #footer>
             <div class="dialog-footer">
-               <el-button @click="open = false">关 闭</el-button>
+               <el-button @click="open = false">{{ t('common.button.close') }}</el-button>
             </div>
          </template>
       </el-dialog>
@@ -231,11 +231,13 @@
 </template>
 
 <script setup name="JobLog">
+import { useI18n } from 'vue-i18n'
 import { getJob } from "@/api/system/monitor/job.js";
 import { listJobLog, delJobLog, cleanJobLog } from "@/api/system/monitor/jobLog.js";
 import useDefaultLang from "@/composables/useDefaultLang";
 
 const { td } = useDefaultLang();
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { sys_common_status, sys_job_group } = proxy.useDict("sys_common_status", "sys_job_group");
 
@@ -309,7 +311,7 @@ function handleDelete(row) {
     return delJobLog(ids.value);
   }).then(() => {
     getList();
-    proxy.$modal.msgSuccess("删除成功");
+    proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
   }).catch(() => {});
 }
 

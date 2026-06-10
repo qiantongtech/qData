@@ -61,7 +61,10 @@
 </template>
 
 <script setup name="SynchronizeTaskBaseInfo">
+import { useI18n } from 'vue-i18n'
 import { computed, getCurrentInstance, toValue } from "vue";
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const dicts = proxy.useDict(
   "datasource_type",
@@ -81,10 +84,10 @@ const fields = [
     label: "采集范围",
     span: 2,
   },
-  { key: "updateBy", label: "更新人" },
-  { key: "updateTime", label: "更新时间" },
-  { key: "createBy", label: "创建人" },
-  { key: "createTime", label: "创建时间" },
+  { key: "updateBy", label: t('common.texts.updatedBy') },
+  { key: "updateTime", label: t('common.texts.updatedTime') },
+  { key: "createBy", label: t('common.texts.createdBy') },
+  { key: "createTime", label: t('common.texts.createdTime') },
 ];
 
 const props = defineProps({

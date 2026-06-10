@@ -103,7 +103,7 @@
 
           <el-col :span="8" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">创建时间</div>
+              <div class="infotop-row-lable">{{ t('common.texts.createdTime') }}</div>
               <div class="infotop-row-value">
                 {{ parseTime(dppEtlTaskDetail.createTime, '{y}-{m}-{d} {h}:{i}') }}
               </div>
@@ -112,7 +112,7 @@
 
           <el-col :span="24" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">描述</div>
+              <div class="infotop-row-lable">{{ t('common.texts.description') }}</div>
               <div class="infotop-row-value">
                 {{ dppEtlTaskDetail.description || '-' }}
               </div>
@@ -136,12 +136,14 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { etlTask } from "@/api/dpp/task/index.js";
 import { useRoute } from "vue-router";
 import process from "@/views/dpp/task/integratioTask/detail/process.vue";
 import info from "@/views/dpp/task/integratioTask/detail/info.vue";
 import { onActivated, reactive, ref, toRefs, watch, getCurrentInstance } from "vue";
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const activeName = ref("1");
 const showSearch = ref(true);

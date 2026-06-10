@@ -91,11 +91,13 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import "vue-cropper/dist/index.css";
 import { VueCropper } from "vue-cropper";
 import { uploadAvatar } from "@/api/system/system/user.js";
 import useUserStore from "@/store/system/user.js";
 
+const { t } = useI18n();
 const userStore = useUserStore();
 const { proxy } = getCurrentInstance();
 
@@ -167,7 +169,7 @@ function uploadImg() {
       open.value = false;
       options.img = import.meta.env.VITE_APP_BASE_API + response.imgUrl;
       userStore.avatar = options.img;
-      proxy.$modal.msgSuccess("修改成功");
+      proxy.$modal.msgSuccess(t('common.message.editSuccess'));
       visible.value = false;
     });
   });

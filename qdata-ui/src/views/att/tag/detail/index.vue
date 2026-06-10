@@ -59,10 +59,13 @@
 </template>
 
 <script setup name="Tag">
+import { useI18n } from 'vue-i18n'
 import { getAttTag } from "@/api/att/tag/tag.js";
 import { useRoute } from "vue-router";
 import asset from "@/views/att/tag/detail/asset.vue";
 import info from "@/views/att/tag/detail/info.vue";
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { dp_model_status } = proxy.useDict("dp_model_status");
 const handleClick = (tab, event) => {
@@ -94,7 +97,7 @@ const detailItems = computed(() => [
   { label: "近义词", key: "nearSynonyms" },
   { label: "同义词", key: "synonyms" },
   {
-    label: "描述",
+    label: t('common.texts.description'),
     key: "description",
     span: 24,
     ellipsisClass: "ellipsis-2",

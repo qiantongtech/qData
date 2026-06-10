@@ -48,7 +48,7 @@
         </div>
         <div class="message">
           <div>
-            <el-text class="time">系统提示</el-text>
+            <el-text class="time">{{ t('common.message.systemPrompt') }}</el-text>
           </div>
           <div class="left-text-container">
             <div class="left-text">关联关系无法自动识别</div>
@@ -188,6 +188,7 @@
   </div>
 </template>
 <script setup>
+import { useI18n } from 'vue-i18n'
 import MarkdownView from "@/components/MarkdownView/index.vue";
 import AssistantReportCard from "./AssistantReportCard.vue";
 import { ChatMessageApi } from "@/api/ai/chat/message";
@@ -196,6 +197,7 @@ import userAvatarDefaultImg from "@/assets/images/defaultAvatar.png";
 import roleAvatarDefaultImg from "@/assets/ai/gpt-new.svg";
 import { useClipboard } from "@vueuse/core";
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const message = proxy.$modal; // 消息弹窗
 const userStore = useUserStore();

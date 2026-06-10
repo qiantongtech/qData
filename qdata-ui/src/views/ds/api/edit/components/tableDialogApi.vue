@@ -45,7 +45,7 @@
                 </template>
             </el-table-column>
             <el-table-column prop="name" label="参数名称" align="center" :show-overflow-tooltip="{effect: 'light'}" fixed="left" />
-            <el-table-column prop="remark" label="描述" align="center" :show-overflow-tooltip="{effect: 'light'}" fixed="left" />
+            <el-table-column prop="remark" :label="t('common.texts.description')" align="center" :show-overflow-tooltip="{effect: 'light'}" fixed="left" />
             <el-table-column label="数据类型" fixed="left" align="center" prop="columnType" :show-overflow-tooltip="{effect: 'light'}">
                 <template #default="{ row }">
                     {{ row.columnType || '-' }}
@@ -60,13 +60,16 @@
         </el-table>
 
         <span slot="footer" class="dialog-footer">
-            <el-button @click="handleClose">取消</el-button>
-            <el-button type="primary" @click="confirm">确定</el-button>
+            <el-button @click="handleClose">{{ t('common.button.cancel') }}</el-button>
+            <el-button type="primary" @click="confirm">{{ t('common.button.confirm') }}</el-button>
         </span>
     </el-dialog>
 </template>
 
 <script setup name="AddList">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 
 const props = defineProps({

@@ -23,7 +23,7 @@
             @click="handleDetailClick(row)"
             v-hasPermi="['md:released:structured:column:detail']"
           >
-            详情
+            {{ t('common.button.details') }}
           </el-button>
           <!-- <el-button
             link
@@ -46,7 +46,7 @@
                 type="primary"
                 icon="ArrowDown"
                 v-hasPermi="['md:released:structured:column:detail']"
-                >更多</el-button
+                >{{ t('common.button.more') }}</el-button
               >
             </template>
 
@@ -76,6 +76,7 @@
 </template>
 
 <script setup name="UnreleasedStructuredColumn">
+import { useI18n } from 'vue-i18n'
 import { getCurrentInstance, reactive, ref } from "vue";
 import { listDomain } from "@/api/att/domain/domain.js";
 import { getParentLabelPath } from "@/utils/anivia.js";
@@ -84,6 +85,7 @@ import { listDb } from "@/api/mc/unreleased/db";
 import { listTable } from "@/api/mc/unreleased/table";
 import { useRouter } from "vue-router";
 
+const { t } = useI18n();
 const BASE_URL = "/meta/released/structured/column";
 
 const { proxy } = getCurrentInstance();
@@ -114,7 +116,7 @@ const tableStroe = reactive({
   },
   columns: [
     {
-      label: "编号",
+      label: t('common.texts.number'),
       prop: "id",
       sortable: true,
       width: 70,
@@ -160,7 +162,7 @@ const tableStroe = reactive({
       minWidth: 230,
     },
     {
-      label: "描述",
+      label: t('common.texts.description'),
       prop: "description",
       align: "left",
       width: 240,
@@ -230,31 +232,31 @@ const tableStroe = reactive({
       dict: "table_yes_no",
     },
     {
-      label: "更新人",
+      label: t('common.texts.updatedBy'),
       prop: "updateBy",
       width: 120,
     },
     {
-      label: "更新时间",
+      label: t('common.texts.updatedTime'),
       prop: "updateTime",
       sortable: true,
       width: 160,
       date: true,
     },
     {
-      label: "创建人",
+      label: t('common.texts.createdBy'),
       prop: "createBy",
       width: 120,
     },
     {
-      label: "创建时间",
+      label: t('common.texts.createdTime'),
       prop: "createTime",
       sortable: true,
       width: 160,
       date: true,
     },
     {
-      label: "操作",
+      label: t('common.texts.operation'),
       width: 240,
       fixed: "right",
       slot: "handle",

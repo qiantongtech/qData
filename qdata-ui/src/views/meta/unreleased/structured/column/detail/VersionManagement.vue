@@ -11,7 +11,7 @@
                 </template>
                 <template #handle="{ row }">
                     <el-button link type="primary" icon="view" @click="handleDetailClick(row)">
-                        详情
+                        {{ t('common.button.details') }}
                     </el-button>
                     <el-button link type="primary" icon="Edit"> 恢复 </el-button>
                 </template>
@@ -70,7 +70,7 @@
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button @click="dialog.open = false">关闭</el-button>
+                    <el-button @click="dialog.open = false">{{ t('common.button.close') }}</el-button>
                 </div>
             </template>
         </el-dialog>
@@ -78,15 +78,17 @@
 </template>
 
 <script setup name="VersionManagement">
-    import { reactive, toValue, getCurrentInstance } from 'vue';
+import { useI18n } from 'vue-i18n'
+import { reactive, toValue, getCurrentInstance } from 'vue';
 
-    const { proxy } = getCurrentInstance();
+const { t } = useI18n();
+const { proxy } = getCurrentInstance();
     const dicts = proxy.useDict('sys_yes_no');
 
     const tableStroe = reactive({
         columns: [
             {
-                label: '编号',
+                label: t('common.texts.number'),
                 prop: 'id',
                 sortable: true,
                 width: 60
@@ -132,19 +134,19 @@
                 width: 90
             },
             {
-                label: '创建人',
+                label: t('common.texts.createdBy'),
                 prop: 'createBy',
                 width: 90
             },
             {
-                label: '创建时间',
+                label: t('common.texts.createdTime'),
                 prop: 'createTime',
                 sortable: true,
                 width: 160,
                 date: true
             },
             {
-                label: '操作',
+                label: t('common.texts.operation'),
                 width: 240,
                 fixed: 'right',
                 slot: 'handle'
@@ -159,7 +161,7 @@
                                 {
                                     id: 1,
                                     version: '1.0.0',
-                                    updateType: '新增',
+                                    updateType: t('common.button.add'),
                                     updateMsg:
                                         '新增用户姓名字段，用于存储用户真实姓名信息，支持中文和英文字符，最大长度50个字符',
                                     activeVersion: 'N',
@@ -171,7 +173,7 @@
                                 {
                                     id: 2,
                                     version: '1.0.1',
-                                    updateType: '新增',
+                                    updateType: t('common.button.add'),
                                     updateMsg:
                                         '添加邮箱字段，用于用户邮箱验证和密码找回功能，采用标准邮箱格式验证规则',
                                     activeVersion: 'N',
@@ -183,7 +185,7 @@
                                 {
                                     id: 3,
                                     version: '1.0.2',
-                                    updateType: '删除',
+                                    updateType: t('common.button.delete'),
                                     updateMsg:
                                         '删除废弃的临时字段temp_data，该字段已不再使用，清理冗余数据结构提高表性能',
                                     activeVersion: 'N',
@@ -207,19 +209,19 @@
                                 {
                                     id: 5,
                                     version: '1.0.4',
-                                    updateType: '新增',
+                                    updateType: t('common.button.add'),
                                     updateMsg:
                                         '创建时间戳字段，自动记录数据创建时间，支持毫秒级精度，用于数据追踪和审计',
                                     activeVersion: 'Y',
                                     createBy: 'dev002',
                                     createTime: '2021-09-05 09:15:00',
                                     columnName: 'create_time',
-                                    columnComment: '创建时间'
+                                    columnComment: t('common.texts.createdTime')
                                 },
                                 {
                                     id: 6,
                                     version: '1.0.5',
-                                    updateType: '删除',
+                                    updateType: t('common.button.delete'),
                                     updateMsg:
                                         '移除过时的字段old_status，该字段已被新的status字段替代，简化数据结构设计',
                                     activeVersion: 'N',
@@ -231,7 +233,7 @@
                                 {
                                     id: 7,
                                     version: '1.0.6',
-                                    updateType: '新增',
+                                    updateType: t('common.button.add'),
                                     updateMsg:
                                         '新增索引字段，为提升查询性能而添加，支持多字段联合查询，优化系统响应速度',
                                     activeVersion: 'N',

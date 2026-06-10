@@ -103,9 +103,9 @@
 
 <!--            {{contentDetail}}-->
             <div style="margin-top: 20px;">
-                <!--                <el-button @click="update" v-show="status">修改</el-button>-->
-                <!--                <el-button @click="confirm" v-show="!status">保存</el-button>-->
-                <el-button @click="confirm">保存</el-button>
+                <!--                <el-button @click="update" v-show="status">{{ t('common.button.update') }}</el-button>-->
+                <!--                <el-button @click="confirm" v-show="!status">{{ t('common.button.save') }}</el-button>-->
+                <el-button @click="confirm">{{ t('common.button.save') }}</el-button>
             </div>
 
         </el-row>
@@ -114,9 +114,12 @@
 </template>
 
 <script setup>
-    import { ref } from 'vue';
+import { useI18n } from 'vue-i18n'
+import { ref } from 'vue';
     import { getContent,listContent, updateContent } from "@/api/system/system/content";
     import ImageUpload from "@/components/ImageUpload/index.vue"
+
+const { t } = useI18n();
     const { proxy } = getCurrentInstance();
 
     const loginLogoModelValue = ref([])

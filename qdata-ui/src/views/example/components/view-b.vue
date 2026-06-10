@@ -37,7 +37,7 @@
                 <el-table class="video-list" :data="videoList">
                     <el-table-column label="监控名称" prop="name" show-overflow-tooltip>
                     </el-table-column>
-                    <el-table-column label="状态" align="center" width="80">
+                    <el-table-column :label="t('common.texts.status')" align="center" width="80">
                         <template #default="scope">
                             <el-tag type="primary" v-if="scope.row.isOnline == '1'"> 在线 </el-tag>
                             <el-tag type="danger" v-else>离线</el-tag>
@@ -66,7 +66,11 @@
 </template>
 
 <script setup name="DetailPopResViewB">
-    const videoList = ref([
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n();
+    
+const videoList = ref([
         {
             id: '20eed7584c8d4cb992b531c762695345',
             pid: 'HP0016540280000028',

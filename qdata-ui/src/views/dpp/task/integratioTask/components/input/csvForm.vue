@@ -52,8 +52,8 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="描述" prop="description">
-            <el-input v-model="form.description" type="textarea" placeholder="请输入描述" />
+          <el-form-item :label="t('common.texts.description')" prop="description">
+            <el-input v-model="form.description" type="textarea" :placeholder="t('common.form.descriptionPlaceholder')" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -111,17 +111,17 @@
             {{ scope.row.format || "-" }}
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
+        <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
           <template #default="scope">
-            <el-button link type="primary" icon="Edit" @click="openDialog(scope.row)">修改</el-button>
+            <el-button link type="primary" icon="Edit" @click="openDialog(scope.row)">{{ t('common.button.update') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
     </el-form>
     <template #footer>
       <div style="text-align: right">
-        <el-button @click="closeDialog">关闭</el-button>
-        <el-button type="primary" @click="saveData" v-if="!info">保存</el-button>
+        <el-button @click="closeDialog">{{ t('common.button.close') }}</el-button>
+        <el-button type="primary" @click="saveData" v-if="!info">{{ t('common.button.save') }}</el-button>
       </div>
     </template>
   </el-dialog>
@@ -129,6 +129,7 @@
     :data="row" />
 </template>
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { getToken } from "@/utils/auth.js";
 import { typeList } from "@/utils/graph.js";
 import {
@@ -140,6 +141,8 @@ import excelUploadDialog from "../excelUpload.vue";
 import FileUploadbtn from '@/components/FileUploadbtn/index1.vue'
 const { proxy } = getCurrentInstance();
 import useUserStore from "@/store/system/user.js";
+
+const { t } = useI18n();
 const userStore = useUserStore();
 const props = defineProps({
   visible: { type: Boolean, default: true },

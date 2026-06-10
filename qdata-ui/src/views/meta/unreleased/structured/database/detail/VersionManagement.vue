@@ -11,7 +11,7 @@
                 </template>
                 <template #handle="{ row }">
                     <el-button link type="primary" icon="view" @click="handleDetailClick(row)">
-                        详情
+                        {{ t('common.button.details') }}
                     </el-button>
                     <el-button link type="primary" icon="Edit"> 恢复 </el-button>
                 </template>
@@ -59,7 +59,7 @@
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button @click="dialog.open = false">关闭</el-button>
+                    <el-button @click="dialog.open = false">{{ t('common.button.close') }}</el-button>
                 </div>
             </template>
         </el-dialog>
@@ -67,15 +67,17 @@
 </template>
 
 <script setup name="VersionManagement">
-    import { reactive, toValue, getCurrentInstance } from 'vue';
+import { useI18n } from 'vue-i18n'
+import { reactive, toValue, getCurrentInstance } from 'vue';
 
-    const { proxy } = getCurrentInstance();
+const { t } = useI18n();
+const { proxy } = getCurrentInstance();
     const dicts = proxy.useDict('sys_yes_no');
 
     const tableStroe = reactive({
         columns: [
             {
-                label: '编号',
+                label: t('common.texts.number'),
                 prop: 'id',
                 sortable: true,
                 width: 60
@@ -113,19 +115,19 @@
                 width: 90
             },
             {
-                label: '创建人',
+                label: t('common.texts.createdBy'),
                 prop: 'createBy',
                 width: 90
             },
             {
-                label: '创建时间',
+                label: t('common.texts.createdTime'),
                 prop: 'createTime',
                 sortable: true,
                 width: 160,
                 date: true
             },
             {
-                label: '操作',
+                label: t('common.texts.operation'),
                 width: 240,
                 fixed: 'right',
                 slot: 'handle'
@@ -141,7 +143,7 @@
                                     id: 1,
                                     dbName: 'qdata_meta',
                                     version: '1.0.0',
-                                    updateType: '新增',
+                                    updateType: t('common.button.add'),
                                     updateMsg:
                                         '新增用户表字段，包括用户姓名、联系方式、注册时间等基础信息，优化数据结构设计',
                                     activeVersion: 'Y',
@@ -152,7 +154,7 @@
                                     id: 2,
                                     dbName: 'qdata_meta',
                                     version: '1.0.1',
-                                    updateType: '修改',
+                                    updateType: t('common.button.update'),
                                     updateMsg: '修改表结构',
                                     activeVersion: 'N',
                                     createBy: 'admin',

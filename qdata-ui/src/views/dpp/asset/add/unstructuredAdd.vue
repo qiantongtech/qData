@@ -133,7 +133,7 @@
             <el-icon>
               <Back />
             </el-icon>
-            <span style="margin-left: 5px">返回</span>
+            <span style="margin-left: 5px">{{ t('common.button.return') }}</span>
           </el-text>
           <div class="catalogue">
             <!-- 默认展示根目录 -->
@@ -207,7 +207,7 @@
           </template>
         </el-table-column>
         <el-table-column
-            label="更新时间"
+            :label="t('common.texts.updatedTime')"
             prop="lastModified"
             :show-overflow-tooltip="{ effect: 'light' }"
             align="left"
@@ -226,9 +226,9 @@
     </div>
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="cancel">取 消</el-button>
+        <el-button size="mini" @click="cancel">{{ t('common.button.cancel') }}</el-button>
         <el-button type="primary" size="mini" @click="submitForm"
-        >确 定</el-button
+        >{{ t('common.button.confirm') }}</el-button
         >
       </div>
     </template>
@@ -236,11 +236,14 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { listDaDatasource } from "@/api/da/dataSource/dataSource.js";
 import { getFileList } from "@/api/da/asset/asset.js";
 import { getToken } from "@/utils/auth.js";
 import useUserStore from "@/store/system/user.js";
 import DatasourceList from '@/components/Datasource/List.vue'
+
+const { t } = useI18n();
 const userStore = useUserStore();
 const emit = defineEmits(["update:form"]);
 const { proxy } = getCurrentInstance();
@@ -379,7 +382,7 @@ const fileDesc = ref([
   },
   {
     key: "createTime",
-    label: "创建时间",
+    label: t('common.texts.createdTime'),
     value: "-",
   },
   {

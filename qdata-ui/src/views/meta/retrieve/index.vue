@@ -163,7 +163,7 @@
                     <el-icon color="var(--el-color-primary)">
                       <View />
                     </el-icon>
-                    详情
+                    {{ t('common.button.details') }}
                   </div>
 
                   <div
@@ -200,7 +200,7 @@
                     <el-icon color="var(--el-color-primary)">
                       <View />
                     </el-icon>
-                    详情
+                    {{ t('common.button.details') }}
                   </div>
 
                   <div
@@ -223,7 +223,7 @@
                       v-hasPermi="['md:unreleased:structured:table:detail']"
                     >
                       <svg-icon icon-class="arrow-down"> </svg-icon>
-                      <span>更多</span>
+                      <span>{{ t('common.button.more') }}</span>
                     </div>
                     <template #dropdown>
                       <el-dropdown-menu>
@@ -287,7 +287,7 @@
                     <el-icon color="var(--el-color-primary)">
                       <View />
                     </el-icon>
-                    详情
+                    {{ t('common.button.details') }}
                   </div>
 
                   <div
@@ -306,7 +306,7 @@
                   <el-dropdown popper-class="more-dropdown">
                     <div class="btn-item">
                       <svg-icon icon-class="arrow-down"> </svg-icon>
-                      <span>更多</span>
+                      <span>{{ t('common.button.more') }}</span>
                     </div>
                     <template #dropdown>
                       <el-dropdown-menu>
@@ -360,7 +360,7 @@
 
         <div class="emptyBg" v-else>
           <img src="@/assets/images/sys/error/no-data.png" alt="" />
-          <p>暂无记录</p>
+          <p>{{ t('common.message.noRecord') }}</p>
         </div>
       </div>
     </qt-wrap>
@@ -368,6 +368,7 @@
 </template>
 
 <script setup name="MetaRetrieve">
+import { useI18n } from 'vue-i18n'
 import { getCurrentInstance, reactive, toValue } from "vue";
 import { listMeta } from "@/api/mc/retrieve.js";
 import { getParentLabelPath } from "@/utils/anivia.js";
@@ -376,6 +377,7 @@ import { useRouter } from "vue-router";
 import useDefaultLang from "@/composables/useDefaultLang";
 
 const { td } = useDefaultLang();
+const { t } = useI18n();
 const BASE_URL = "/meta/unreleased/structured/";
 
 const TYPE_OPTIONS = [
@@ -464,23 +466,23 @@ const TYPE_INFOS = {
 
 const TYPE_BASE_DETAIL = [
   {
-    label: "创建人",
+    label: t('common.texts.createdBy'),
     key: "createBy",
   },
   {
-    label: "创建时间",
+    label: t('common.texts.createdTime'),
     key: "createTime",
   },
   {
-    label: "更新人",
+    label: t('common.texts.updatedBy'),
     key: "updateBy",
   },
   {
-    label: "更新时间",
+    label: t('common.texts.updatedTime'),
     key: "updateTime",
   },
   {
-    label: "描述",
+    label: t('common.texts.description'),
     key: "description",
     class: "row-full",
   },

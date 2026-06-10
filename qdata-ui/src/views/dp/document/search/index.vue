@@ -60,10 +60,10 @@
             @click="handleQuery"
             @mousedown="(e) => e.preventDefault()"
           >
-            <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+            <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
           </el-button>
           <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-            <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+            <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
           </el-button>
         </el-form-item>
       </el-form>
@@ -109,7 +109,7 @@
                   </div>
                   <div class="form-btn" @click="handleView(item)">
                     <!-- <img src="@/assets/dp/standardSearch/icon (1).svg" alt="" /> -->
-                    <span>详情</span>
+                    <span>{{ t('common.button.details') }}</span>
                   </div>
                 </div>
               </div>
@@ -166,8 +166,11 @@
   </div>
 </template>
 <script setup name="Search">
+import { useI18n } from 'vue-i18n'
 import { dpDocumentList } from "@/api/dp/document/search";
 import handleFilePreview from "@/utils/filePreview.js";
+
+const { t } = useI18n();
 // search
 const { proxy } = getCurrentInstance();
 const { dp_document_standard_type, dp_document_type, dp_document_status } =

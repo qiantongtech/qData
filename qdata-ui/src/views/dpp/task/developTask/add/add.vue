@@ -57,7 +57,6 @@
         </el-col>
       </el-row>
 
-
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item label="调度周期" prop="crontab"
@@ -103,8 +102,8 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="描述" prop="description">
-            <el-input v-if="title != '任务详情'" v-model="form.description" type="textarea" placeholder="请输入描述" />
+          <el-form-item :label="t('common.texts.description')" prop="description">
+            <el-input v-if="title != '任务详情'" v-model="form.description" type="textarea" :placeholder="t('common.form.descriptionPlaceholder')" />
             <div class="form-readonly" v-else>{{ form.description || '-' }}</div>
           </el-form-item>
         </el-col>
@@ -126,8 +125,8 @@
       </el-row>
       <!-- <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="备注" prop="remark">
-            <el-input v-model="form.remark" type="textarea" placeholder="请输入备注" />
+          <el-form-item :label="t('common.texts.remark')" prop="remark">
+            <el-input v-model="form.remark" type="textarea" :placeholder="t('common.form.remarkPlaceholder')" />
           </el-form-item>
         </el-col>
       </el-row> -->
@@ -148,7 +147,7 @@
               }" />
             </div>
           </div>
-          <el-empty style="width: 100%" v-if="total == 0" description="暂无数据" />
+          <el-empty style="width: 100%" v-if="total == 0" :description="t('common.message.noData')" />
         </div>
         <pagination layout="prev, pager, next" v-show="total > 0" :total="total" v-model:page="queryParams.pageNum"
           v-model:limit="queryParams.pageSize" @pagination="getList" />
@@ -158,8 +157,8 @@
     <template #footer>
       <div style="text-align: right">
         <template v-if="info">
-          <el-button @click="closeDialog">关闭</el-button>
-          <el-button type="primary" @click="saveClose" v-if="!route.query.info">保存</el-button>
+          <el-button @click="closeDialog">{{ t('common.button.close') }}</el-button>
+          <el-button type="primary" @click="saveClose" v-if="!route.query.info">{{ t('common.button.save') }}</el-button>
         </template>
         <template v-else>
           <el-button @click="saveClose">仅保存</el-button>
@@ -182,6 +181,7 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { defineProps, defineEmits, ref, computed, watch } from "vue";
 import CodeShow from "@/components/SqlEditor/editorShow/index.vue";
 import Crontab from "@/components/Crontab/index.vue";
@@ -194,6 +194,8 @@ const { dpp_etl_task_status } = proxy.useDict("dpp_etl_task_status");
 import useUserStore from "@/store/system/user";
 const userStore = useUserStore();
 import { treeData } from "@/views/dpp/task/developTask/data";
+
+const { t } = useI18n();
 const props = defineProps({
   visible: { type: Boolean, default: true },
   title: { type: String, default: "表单标题" },

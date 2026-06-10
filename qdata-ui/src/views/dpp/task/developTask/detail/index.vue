@@ -118,6 +118,7 @@
   </div>
 </template>
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { ref, computed, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import add from "../add/add.vue";
@@ -132,6 +133,8 @@ import ConfigView from "@/components/SqlEditor/configView/index.vue";
 
 const userStore = useUserStore();
 import { createProcessDefinition, etlTask, updateProcessDefinition, startDppEtlTask } from "@/api/dpp/task/index.js";
+
+const { t } = useI18n();
 // import { renderGraph } from "@/utils/opBase";
 // import { right } from "@antv/x6/lib/registry/port-layout/line";
 
@@ -283,7 +286,7 @@ const handleRun = async () => {
   try {
     const res = await startDppEtlTask(id);
     if (res.code == 200) {
-      proxy.$modal.msgSuccess("操作成功");
+      proxy.$modal.msgSuccess(t('common.message.msgOpSuccess'));
       // 打开控制台
       activeValue.value = iconList.value[0];
     } else {
@@ -394,7 +397,7 @@ const handleExportData = async () => {
 const handleSuccess = () => {
   taskConfigDialogVisible.value = false;
   hasUnsavedChanges.value = false;
-  const message = form.value?.id ? "操作成功" : "操作成功";
+  const message = form.value?.id ? t('common.message.msgOpSuccess') : t('common.message.msgOpSuccess');
   router.push("/dpp/task/developTask");
   proxy.$modal.msgSuccess(message);
 };
@@ -509,9 +512,9 @@ onBeforeRouteLeave((to, from, next) => {
   if (hasUnsavedChanges.value) {
     ElMessageBox.confirm(
       "您已经编辑部分任务内容，是否放弃已编辑内容？",
-      "提示",
+      t('common.message.prompt'),
       {
-        confirmButtonText: "保存",
+        confirmButtonText: t('common.button.save'),
         cancelButtonText: "放弃",
         type: "warning",
         beforeClose: (action, instance, done) => {
@@ -538,7 +541,6 @@ onBeforeRouteLeave((to, from, next) => {
     next();
   }
 });
-
 
 // #region sql编辑器
 // 左侧图标

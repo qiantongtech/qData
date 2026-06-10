@@ -50,10 +50,10 @@
             </el-form-item>
             <el-form-item>
                <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                  <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                  <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
                </el-button>
                <el-button @click="resetQuery" @mousedown="e => e.preventDefault()">
-                  <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                  <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
                </el-button>
             </el-form-item>
          </el-form>
@@ -63,7 +63,7 @@
             <el-row :gutter="10" class="btn-style">
                <el-col :span="1.5">
                   <el-button type="primary" plain icon="Plus" @click="handleAdd"
-                     v-hasPermi="['system:notice:add']">新增</el-button>
+                     v-hasPermi="['system:notice:add']">{{ t('common.button.add') }}</el-button>
                </el-col>
                <!-- <el-col :span="1.5">
                <el-button
@@ -73,11 +73,11 @@
                   :disabled="single"
                   @click="handleUpdate"
                   v-hasPermi="['system:notice:edit']"
-               >修改</el-button>
+               >{{ t('common.button.update') }}</el-button>
             </el-col> -->
                <el-col :span="1.5">
                   <el-button type="danger" plain icon="Delete" :disabled="multiple" @click="handleDelete"
-                     v-hasPermi="['system:notice:remove']">删除</el-button>
+                     v-hasPermi="['system:notice:remove']">{{ t('common.button.delete') }}</el-button>
                </el-col>
             </el-row>
             <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
@@ -112,25 +112,25 @@
                   </span>
                </template>
             </el-table-column>
-            <el-table-column label="状态" align="center" prop="status" width="100">
+            <el-table-column :label="t('common.texts.status')" align="center" prop="status" width="100">
                <template #default="scope">
                   <dict-tag :options="sys_notice_status" :value="scope.row.status" />
                </template>
             </el-table-column>
             <el-table-column label="创建者" align="center" prop="createBy" width="100" />
-            <el-table-column label="创建时间" align="center" prop="createTime" width="100">
+            <el-table-column :label="t('common.texts.createdTime')" align="center" prop="createTime" width="100">
                <template #default="scope">
                   <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
                </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
+            <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
                <template #default="scope">
                   <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-                     v-hasPermi="['system:notice:edit']">修改</el-button>
+                     v-hasPermi="['system:notice:edit']">{{ t('common.button.update') }}</el-button>
                   <el-button link type="primary" icon="View" @click="handleView(scope.row)"
-                     v-hasPermi="['system:notice:detail']">详情</el-button>
+                     v-hasPermi="['system:notice:detail']">{{ t('common.button.details') }}</el-button>
                   <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
-                     v-hasPermi="['system:notice:remove']">删除</el-button>
+                     v-hasPermi="['system:notice:remove']">{{ t('common.button.delete') }}</el-button>
                </template>
             </el-table-column>
          </el-table>
@@ -194,7 +194,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item label="状态">
+                  <el-form-item :label="t('common.texts.status')">
                      <el-radio-group v-model="form.status">
                         <el-radio v-for="dict in sys_notice_status" :key="dict.value" :value="dict.value">{{ dict.label
                            }}</el-radio>
@@ -211,8 +211,8 @@
          </el-form>
          <template #footer>
             <div class="dialog-footer">
-               <el-button @click="cancel">取 消</el-button>
-               <el-button type="primary" @click="submitForm">确 定</el-button>
+               <el-button @click="cancel">{{ t('common.button.cancel') }}</el-button>
+               <el-button type="primary" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
             </div>
          </template>
       </el-dialog>
@@ -220,10 +220,12 @@
 </template>
 
 <script setup name="Notice">
+import { useI18n } from 'vue-i18n'
 import { listNotice, getNoticeOne, delNotice, addNotice, updateNotice } from "@/api/system/system/notice.js";
 import useDefaultLang from "@/composables/useDefaultLang";
 
 const { td } = useDefaultLang();
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { sys_notice_status, sys_notice_type, sys_is_or_not } = proxy.useDict("sys_notice_status", "sys_notice_type", "sys_is_or_not");
 const router = useRouter();
@@ -348,13 +350,13 @@ function submitForm() {
       if (valid) {
          if (form.value.noticeId != undefined) {
             updateNotice(form.value).then(response => {
-               proxy.$modal.msgSuccess("修改成功");
+               proxy.$modal.msgSuccess(t('common.message.editSuccess'));
                open.value = false;
                getList();
             });
          } else {
             addNotice(form.value).then(response => {
-               proxy.$modal.msgSuccess("新增成功");
+               proxy.$modal.msgSuccess(t('common.message.addSuccess'));
                open.value = false;
                getList();
             });
@@ -370,7 +372,7 @@ function handleDelete(row) {
       return delNotice(noticeIds);
    }).then(() => {
       getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
    }).catch(() => { });
 }
 

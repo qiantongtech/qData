@@ -75,7 +75,7 @@
     </div>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button @click="dialogVisible = false">{{ t('common.button.cancel') }}</el-button>
         <el-button
           type="primary"
           @click="confirmDelete"
@@ -89,8 +89,10 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { ref, computed } from "vue";
 
+const { t } = useI18n();
 const dialogVisible = ref(false);
 const inputValue = ref("");
 const inputError = ref("");

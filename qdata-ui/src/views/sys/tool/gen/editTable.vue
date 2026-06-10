@@ -153,7 +153,7 @@
       </el-tabs>
       <el-form label-width="100px">
         <div style="text-align: center;margin-left:-100px;margin-top:10px;">
-          <el-button @click="close()">返回</el-button>
+          <el-button @click="close()">{{ t('common.button.return') }}</el-button>
           <el-button type="primary" @click="submitForm()">提交</el-button>
         </div>
       </el-form>
@@ -163,11 +163,13 @@
 </template>
 
 <script setup name="GenEdit">
+import { useI18n } from 'vue-i18n'
 import { getGenTable, updateGenTable } from "@/api/system/tool/gen.js";
 import { optionselect as getDictOptionselect } from "@/api/system/system/dict/type.js";
 import basicInfoForm from "./basicInfoForm.vue";
 import genInfoForm from "./genInfoForm.vue";
 
+const { t } = useI18n();
 const route = useRoute();
 const { proxy } = getCurrentInstance();
 

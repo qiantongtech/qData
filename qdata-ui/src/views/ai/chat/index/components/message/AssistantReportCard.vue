@@ -93,7 +93,7 @@
                     @click="handleExport"
                     v-if="data?.conversationId && data?.messageId"
                   >
-                    导出
+                    {{ t('common.button.export') }}
                   </el-button>
                 </div>
                 <el-table :data="getCurrentPageData(tab.table)">
@@ -133,7 +133,7 @@
               <div class="ai-report-code-header">
                 <div class="ai-report-code-actions">
                   <el-button link type="primary" @click="handleCopySql"
-                    >复制</el-button
+                    >{{ t('common.button.copy') }}</el-button
                   >
                 </div>
               </div>
@@ -146,7 +146,7 @@
               </div>
             </div>
             <div v-else class="ai-report-empty">
-              <el-empty description="暂无数据" :image-size="60" />
+              <el-empty :description="t('common.message.noData')" :image-size="60" />
             </div>
           </div>
         </div>
@@ -156,6 +156,7 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { Cpu, Loading, Download } from "@element-plus/icons-vue";
 import { ElLoading } from "element-plus";
 import * as echarts from "echarts";
@@ -164,6 +165,7 @@ import { ChatMessageApi } from "@/api/ai/chat/message";
 import { saveAs } from "file-saver";
 import SqlEditor from "@/components/SqlEditor/index2.vue";
 
+const { t } = useI18n();
 const props = defineProps({
   data: {
     type: Object,

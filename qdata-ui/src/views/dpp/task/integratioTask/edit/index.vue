@@ -232,6 +232,7 @@
   </div>
 </template>
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { Graph } from "@antv/x6";
 import { Dnd } from "@antv/x6-plugin-dnd";
 import { baseConfig, cuPort, typeList, toolbar } from "@/utils/graph";
@@ -295,6 +296,8 @@ import {
   exportGraphAsPNG,
   renameRuleToRuleConfig,
 } from "@/views/dpp/utils/opBase";
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const route = useRoute();
 const router = useRouter();
@@ -681,7 +684,7 @@ const hasTaskConfig = (nodeData) => {
 const handleSuccess = () => {
   taskConfigDialogVisible.value = false;
   hasUnsavedChanges.value = false;
-  const message = "操作成功";
+  const message = t('common.message.msgOpSuccess');
   router.push("/dpp/task/integratioTask");
   proxy.$modal.msgSuccess(message);
 };
@@ -918,7 +921,7 @@ function handleDeleteCells(graph, cells, menuController) {
 
   ElMessageBox.confirm(message, "确认删除", {
     confirmButtonText: "确认",
-    cancelButtonText: "取消",
+    cancelButtonText: t('common.button.cancel'),
     type: "warning",
   })
     .then(() => {
@@ -1085,7 +1088,7 @@ function updateTargetNodeData(source, target, edge) {
   if (needBindCleanRule) {
     ElMessageBox.confirm(
       "是否要给转换组件添加输入组件绑定的清洗规则？",
-      "提示",
+      t('common.message.prompt'),
       {
         confirmButtonText: "是",
         cancelButtonText: "否",
@@ -1201,9 +1204,9 @@ onBeforeRouteLeave((to, from, next) => {
   if (hasUnsavedChanges.value) {
     ElMessageBox.confirm(
       "您已经编辑部分任务内容，是否放弃已编辑内容？", // 提示信息
-      "提示", // 标题
+      t('common.message.prompt'), // 标题
       {
-        confirmButtonText: "保存", // 确认按钮文本
+        confirmButtonText: t('common.button.save'), // 确认按钮文本
         cancelButtonText: "放弃", // 取消按钮文本
         type: "warning", // 弹窗类型
       }

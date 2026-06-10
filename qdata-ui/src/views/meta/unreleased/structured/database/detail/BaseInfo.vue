@@ -28,7 +28,7 @@
       <el-row :gutter="2">
         <el-col :span="24">
           <div class="infotop-row border-top">
-            <div class="infotop-row-lable">描述</div>
+            <div class="infotop-row-lable">{{ t('common.texts.description') }}</div>
             <div class="infotop-row-value">
               {{ getFormatValue(detail.description) }}
             </div>
@@ -39,7 +39,7 @@
       <el-row :gutter="2">
         <el-col :span="8">
           <div class="infotop-row border-top">
-            <div class="infotop-row-lable">更新人</div>
+            <div class="infotop-row-lable">{{ t('common.texts.updatedBy') }}</div>
             <div class="infotop-row-value">
               {{ getFormatValue(detail.updateBy) }}
             </div>
@@ -48,7 +48,7 @@
 
         <el-col :span="8">
           <div class="infotop-row border-top">
-            <div class="infotop-row-lable">更新时间</div>
+            <div class="infotop-row-lable">{{ t('common.texts.updatedTime') }}</div>
             <div class="infotop-row-value">
               {{ getFormatValue(detail.updateTime) }}
             </div>
@@ -57,7 +57,7 @@
 
         <el-col :span="8">
           <div class="infotop-row border-top">
-            <div class="infotop-row-lable">创建人</div>
+            <div class="infotop-row-lable">{{ t('common.texts.createdBy') }}</div>
             <div class="infotop-row-value">
               {{ getFormatValue(detail.createBy) }}
             </div>
@@ -68,7 +68,7 @@
       <el-row :gutter="2">
         <el-col :span="8">
           <div class="infotop-row border-top">
-            <div class="infotop-row-lable">创建时间</div>
+            <div class="infotop-row-lable">{{ t('common.texts.createdTime') }}</div>
             <div class="infotop-row-value">
               {{ getFormatValue(detail.createTime) }}
             </div>
@@ -78,7 +78,7 @@
       <el-row :gutter="2">
         <el-col :span="24">
           <div class="infotop-row border-top">
-            <div class="infotop-row-lable">备注</div>
+            <div class="infotop-row-lable">{{ t('common.texts.remark') }}</div>
             <div class="infotop-row-value">
               {{ getFormatValue(detail.remark) }}
             </div>
@@ -212,7 +212,10 @@
 </template>
 
 <script setup name="SynchronizeTaskBaseInfo">
+import { useI18n } from 'vue-i18n'
 import { getCurrentInstance, toValue } from "vue";
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const dicts = proxy.useDict("datasource_type", "meta_dw_layers");
 

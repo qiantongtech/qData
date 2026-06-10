@@ -233,7 +233,7 @@
       </el-form-item>
 
       <qt-form-item
-        label="状态"
+        :label="t('common.texts.status')"
         prop="status"
         :tip="{
           content:
@@ -249,22 +249,22 @@
           >
         </el-radio-group>
       </qt-form-item>
-      <el-form-item label="描述" prop="description" class="row-full">
+      <el-form-item :label="t('common.texts.description')" prop="description" class="row-full">
         <el-input
           v-model="form.description"
           type="textarea"
           maxlength="500个字符"
           show-word-limit
-          placeholder="请输入描述"
+          :placeholder="t('common.form.descriptionPlaceholder')"
         />
       </el-form-item>
-      <el-form-item label="备注" prop="remark" class="row-full">
+      <el-form-item :label="t('common.texts.remark')" prop="remark" class="row-full">
         <el-input
           v-model="form.remark"
           type="textarea"
           maxlength="500个字符"
           show-word-limit
-          placeholder="请输入备注"
+          :placeholder="t('common.form.remarkPlaceholder')"
         />
       </el-form-item>
 
@@ -335,10 +335,10 @@
       size="small"
       @mousedown="(e) => e.preventDefault()"
     >
-      <i class="iconfont-mini icon-xinzeng mr5"></i>新增
+      <i class="iconfont-mini icon-xinzeng mr5"></i>{{ t('common.button.add') }}
     </el-button>
     <el-table :data="tableData" style="width: 100%" v-loading="loading">
-      <el-table-column label="编号" type="index" align="left" width="60" />
+      <el-table-column :label="t('common.texts.number')" type="index" align="left" width="60" />
       <el-table-column
         v-for="column in columns"
         :key="column.prop"
@@ -388,7 +388,7 @@
             >编辑</el-button
           >
           <el-button link type="danger" icon="Delete" @click="deleteRow(row)"
-            >删除</el-button
+            >{{ t('common.button.delete') }}</el-button
           >
         </template>
       </el-table-column>
@@ -396,7 +396,7 @@
 
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="closeDialog">取消</el-button>
+        <el-button @click="closeDialog">{{ t('common.button.cancel') }}</el-button>
         <el-button type="primary" @click="confirmDialog">确认</el-button>
       </div>
     </template>
@@ -415,6 +415,8 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
+
 const { proxy } = getCurrentInstance();
 import { listDpDocument } from "@/api/dp/document/document";
 import { listDataLayerSpecification } from "@/api/dm/dataLayerSpecification/dataLayerSpecification";
@@ -437,6 +439,7 @@ import { defineProps, defineEmits, ref, computed, watch } from "vue";
 import { getDpModelColumnList } from "@/api/dp/model/model";
 import { findInTree, formatModelName } from "../../../../utils/dm/utils";
 
+const { t } = useI18n();
 const {
   dp_model_status,
   dp_model_create_type,
@@ -990,7 +993,7 @@ const columns = ref([
   {
     prop: "description",
     align: "left",
-    label: "描述",
+    label: t('common.texts.description'),
     align: "left",
     showOverflowTooltip: true,
     width: "250",
@@ -1004,7 +1007,7 @@ const columns = ref([
   },
   { prop: "columnLength", label: "属性长度", width: "80", align: "center" },
   { prop: "pkFlag", label: "是否主键", width: "80", align: "center" },
-  { type: "button", label: "操作", width: "150", align: "center" },
+  { type: "button", label: t('common.texts.operation'), width: "150", align: "center" },
 ]);
 const handleContactChange = (selectedValue) => {
   const selectedUser = props.userList.find(

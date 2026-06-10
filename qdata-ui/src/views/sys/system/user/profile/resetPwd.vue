@@ -43,16 +43,17 @@
          <el-input v-model="user.confirmPassword" placeholder="请确认新密码" type="password" show-password />
       </el-form-item>
       <el-form-item>
-         <el-button type="primary" @click="submit">保存</el-button>
-         <el-button type="danger" @click="close">关闭</el-button>
+         <el-button type="primary" @click="submit">{{ t('common.button.save') }}</el-button>
+         <el-button type="danger" @click="close">{{ t('common.button.close') }}</el-button>
       </el-form-item>
    </el-form>
 </template>
 
 <script setup>
-   import { updateUserPwd } from "@/api/system/system/user.js";
+import { useI18n } from 'vue-i18n'
+import { updateUserPwd } from "@/api/system/system/user.js";
 
-   const { proxy } = getCurrentInstance();
+const { t } = useI18n();   const { proxy } = getCurrentInstance();
 
    const user = reactive({
       oldPassword: undefined,
@@ -138,7 +139,7 @@
       proxy.$refs.pwdRef.validate(valid => {
          if (valid) {
             updateUserPwd(user.oldPassword, user.newPassword).then(response => {
-               proxy.$modal.msgSuccess("修改成功");
+               proxy.$modal.msgSuccess(t('common.message.editSuccess'));
             });
          }
       });

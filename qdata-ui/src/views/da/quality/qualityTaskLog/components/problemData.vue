@@ -66,10 +66,10 @@
                     <!-- 查询/重置按钮 -->
                     <el-form-item>
                         <el-button plain type="primary" @click="handleQuery" @mousedown.prevent>
-                            <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                            <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
                         </el-button>
                         <el-button @click="resetQuery" @mousedown.prevent>
-                            <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                            <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
                         </el-button>
                     </el-form-item>
                 </el-form>
@@ -140,12 +140,12 @@
                     {{ scope.row.time ? moment(scope.row.time).format('YYYY-MM-DD') : '-' }}
                 </template>
             </el-table-column>
-            <el-table-column label="备注" align="center" prop="remark" :show-overflow-tooltip="{effect: 'light'}" width="300">
+            <el-table-column :label="t('common.texts.remark')" align="center" prop="remark" :show-overflow-tooltip="{effect: 'light'}" width="300">
                 <template #default="scope">
                     {{ scope.row.remark || '-' }}
                 </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" width="240" fixed="right">
+            <el-table-column :label="t('common.texts.operation')" align="center" width="240" fixed="right">
                 <template #default="scope">
                     <el-button link type="primary" v-if="scope.row.repair != 2" @click="addIgnore(scope.row)"
                         icon="CircleClose">
@@ -167,19 +167,19 @@
         <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum"
             v-model:limit="queryParams.pageSize" @pagination="getList" />
         <template #footer>
-            <el-button @click="close">关闭</el-button>
+            <el-button @click="close">{{ t('common.button.close') }}</el-button>
         </template>
         <ProblemDataDetailDialog ref="detailDialogRef" />
         <updateDataDialog ref="updateDialogRef" @ok="onSave" />
         <el-dialog v-model="commentDialogVisible" title="添加备注" width="800px" @close="resetComment">
             <el-form :model="commentForm" label-width="80px">
-                <el-form-item label="备注">
+                <el-form-item :label="t('common.texts.remark')">
                     <el-input type="textarea" v-model="commentForm.comment" rows="4" placeholder="请输入备注内容" />
                 </el-form-item>
             </el-form>
             <template #footer>
-                <el-button @click="commentDialogVisible = false">取消</el-button>
-                <el-button type="primary" @click="submitComment">保存</el-button>
+                <el-button @click="commentDialogVisible = false">{{ t('common.button.cancel') }}</el-button>
+                <el-button type="primary" @click="submitComment">{{ t('common.button.save') }}</el-button>
             </template>
         </el-dialog>
 
@@ -187,6 +187,7 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import {
     SemiSelect,
     RefreshLeft,
@@ -201,6 +202,7 @@ import updateDataDialog from './problemDataEdit.vue'
 import ProblemDataDetailDialog from './problemDataDetail.vue'
 import { pageErrorData, updateErrorData } from "@/api/da/quality/qualityTaskLog"
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance()
 const { quality_warning_status, quality_log_data_repair } = proxy.useDict(
     'quality_warning_status',
@@ -243,7 +245,6 @@ async function handleUpdateErrorData(params) {
         loading.value = false
     }
 }
-
 
 let row = ref(null)
 let obj = ref({})
@@ -313,7 +314,7 @@ async function addIgnore(row) {
         ? `确认要忽略这 ${errorDataId.length} 条问题数据吗？`
         : '确认要忽略该条问题数据吗？'
 
-    proxy.$modal.confirm(message, '提示', {
+    proxy.$modal.confirm(message, t('common.message.prompt'), {
         dangerouslyUseHTMLString: true,
     }).then(() => {
         handleUpdateErrorData({
@@ -478,7 +479,6 @@ defineExpose({ open, close })
 .data-field::-webkit-scrollbar {
     display: none;
 }
-
 
 .popover-content {
     padding: 10px;

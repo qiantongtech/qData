@@ -53,7 +53,10 @@
   </div>
 </template>
 <script setup name="BasicInfo">
+import { useI18n } from 'vue-i18n'
 import moment from "moment";
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { auth_public, auth_app_type } = proxy.useDict("auth_public", "auth_app_type");
 const props = defineProps({
@@ -89,29 +92,29 @@ const table = ref([
   // },
   {
     key: "createBy",
-    label: "创建人",
+    label: t('common.texts.createdBy'),
     value: "",
   },
   {
     key: "createTime",
-    label: "创建时间",
+    label: t('common.texts.createdTime'),
     value: "",
     type: "time",
   },
   {
     key: "updateBy",
-    label: "更新人",
+    label: t('common.texts.updatedBy'),
     value: "",
   },
   {
     key: "updateTime",
-    label: "更新时间",
+    label: t('common.texts.updatedTime'),
     value: "",
     type: "time",
   },
   {
     key: "remark",
-    label: "备注",
+    label: t('common.texts.remark'),
     value: "",
     span: 24,
   },

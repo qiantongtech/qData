@@ -4,12 +4,12 @@ import ja from 'element-plus/es/locale/lang/ja'
 
 const LANG_KEY = 'qdata_lang'
 
-const SUPPORTED_LANGS = ['zh-CN', 'en', 'ja']
+const SUPPORTED_LANGS = ['zh-CN', 'en-US', 'ja-JP']
 
 const elLocaleMap = {
   'zh-CN': zhCn,
-  en: en,
-  ja: ja
+  'en-US': en,
+  'ja-JP': ja
 }
 
 const getStoredLang = () => {
@@ -31,11 +31,11 @@ const useLocaleStore = defineStore('locale', {
           name: '简体中文'
         },
         {
-          lang: 'en',
+          lang: 'en-US',
           name: 'English'
         },
         {
-          lang: 'ja',
+          lang: 'ja-JP',
           name: '日本語'
         }
       ]

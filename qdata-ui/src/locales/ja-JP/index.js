@@ -2,9 +2,11 @@
 import common from './common'
 import login from './login'
 import router from './router'
+import dict from './dict'
 
 export default {
   common,
   login,
-  router
+  router,
+  dict
 }

@@ -51,7 +51,7 @@
                 <div class="flex-content">
                     <div class="opinion-wrap">
                         <div class="dp-main--h3">调度意见</div>
-                        <p>暂无意见</p>
+                        <p>{{ td('common.noOpinion') }}</p>
                     </div>
                     <dp-table :fn="getTableData" :column="tableColumn" />
                 </div>
@@ -63,8 +63,9 @@
 </template>
 
 <script setup name="DetailPopResViewA1">
-import { useI18n } from 'vue-i18n'
-import ViewA1Chart from './view-a1-chart.vue';
+    import useDefaultLang from "@/composables/useDefaultLang";
+    const { td } = useDefaultLang();
+    import ViewA1Chart from './view-a1-chart.vue';
     import { Search } from '@element-plus/icons-vue';
     import moment from 'moment';
 

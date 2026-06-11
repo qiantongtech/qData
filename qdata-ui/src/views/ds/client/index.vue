@@ -182,7 +182,7 @@
         <template #empty>
           <div class="emptyBg">
             <img src="@/assets/system/images/no_data/noData.png" alt="" />
-            <p>{{ t('common.message.noRecord') }}</p>
+            <p>{{td('common.noData')}}</p>
           </div>
         </template>
       </el-table>
@@ -381,8 +381,9 @@ import {
   resetSecret,
 } from "@/api/ds/client/client";
 import { getToken } from "@/utils/auth.js";
+import useDefaultLang from "@/composables/useDefaultLang";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { auth_public, auth_app_type } = proxy.useDict(
   "auth_public",

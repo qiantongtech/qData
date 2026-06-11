@@ -224,7 +224,7 @@
                 :props="{ value: 'id', label: 'label', children: 'children' }" value-key="id" placeholder="请选择归属部门"
                 check-strictly />
               <!--                     <treeselect v-model="form.deptId" :options="deptOptions" :flat="true" :show-count="true" placeholder="请选择归属部门"-->
-              <!--                                 :noResultsText="t('common.message.noData')" :multiple="true"-->
+              <!--                                  :noResultsText="{{td('common.noData')}}" :multiple="true"-->
               <!--                     />-->
             </el-form-item>
           </el-col>

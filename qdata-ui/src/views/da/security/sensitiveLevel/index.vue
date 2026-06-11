@@ -134,7 +134,7 @@
                 <template #empty>
                     <div class="emptyBg">
                         <img src="../../../../assets/system/images/no_data/noData.png" alt="" />
-                        <p>{{ t('common.message.noRecord') }}</p>
+                        <p>{{td('common.noData')}}</p>
                     </div>
                 </template>
             </el-table>
@@ -340,8 +340,9 @@ import {
 } from '@/api/da/security/sensitiveLevel/sensitiveLevel';
 import { getToken } from '@/utils/auth.js';
 import { updateDaAsset } from '@/api/da/asset/asset.js';
+import useDefaultLang from "@/composables/useDefaultLang";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { da_sensitive_level_rule, da_sensitive_status } = proxy.useDict(
     'da_sensitive_level_rule',

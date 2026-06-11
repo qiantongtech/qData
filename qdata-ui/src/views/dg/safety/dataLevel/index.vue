@@ -221,7 +221,7 @@
 
       <div class="empty" v-else>
         <img src="@/assets/da/asset/empty.png" alt="" />
-        <span>暂无数据～</span>
+        <span>{{td('common.noData')}}</span>
       </div>
       <!-- <pagination
         v-show="total > 0"
@@ -322,7 +322,8 @@
 </template>
 
 <script setup name="DataLevel">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();
 import {
   delDataLevel,
   getDataLevel,

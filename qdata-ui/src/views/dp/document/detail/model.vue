@@ -217,7 +217,7 @@
     <template #empty>
       <div class="emptyBg">
         <img src="@/assets/system/images/no_data/noData.png" alt="" />
-        <p>{{ t('common.message.noRecord') }}</p>
+        <p>{{td('common.noData')}}</p>
       </div>
     </template>
   </el-table>
@@ -363,9 +363,10 @@ import {
 import { getToken } from "@/utils/auth.js";
 import { ref, reactive, getCurrentInstance } from "vue";
 import { useRoute } from "vue-router";
+import useDefaultLang from "@/composables/useDefaultLang";
 
-const { t } = useI18n();
 const route = useRoute();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { dp_model_status, dp_model_create_type } = proxy.useDict(
   "dp_model_status",

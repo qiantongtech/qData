@@ -342,7 +342,7 @@
           </div>
           <div class="empty" v-else>
             <img src="@/assets/da/asset/empty.png" alt="" />
-            <span>暂无搜索内容～</span>
+            <span>{{ td('common.noSearchResult') }}</span>
           </div>
           <pagination
             v-show="total > 0"
@@ -636,7 +636,8 @@
   </div>
 </template>
 <script setup name="DppAsset">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();
 import {
   listDaAsset,
   getDaAsset,

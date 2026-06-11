@@ -356,7 +356,7 @@
           </div>
           <div class="emptyBg" v-else>
             <img src="@/assets/images/sys/error/no-data.png" alt="" />
-            <p>{{ t('common.message.noRecord') }}</p>
+            <p>{{td('common.noData')}}</p>
           </div>
         </div>
       </div>
@@ -381,8 +381,9 @@ import { listDomain } from "@/api/att/domain/domain.js";
 import { listDgSensitiveLevel } from "@/api/dg/compliance/sensitiveLevel";
 // import { getDgDataElemList } from "@/api/dg/standard/dataElem.js";
 import { useRouter } from "vue-router";
+import useDefaultLang from "@/composables/useDefaultLang";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const BASE_URL = "/meta/unreleased/structured/column";
 
 const DEFAULT_FORM = {

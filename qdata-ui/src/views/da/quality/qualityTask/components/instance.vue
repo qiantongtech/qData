@@ -73,7 +73,7 @@
       <template #empty>
         <div class="emptyBg">
           <img src="@/assets/system/images/no_data/noData.png" alt="" />
-          <p>{{ t('common.message.noRecord') }}</p>
+          <p>{{td('common.noData')}}</p>
         </div>
       </template>
     </el-table>
@@ -100,10 +100,12 @@
 <script setup>
 import { useI18n } from 'vue-i18n'
 import { defineProps, defineEmits, ref, computed, watch } from 'vue';
+import { useRoute, useRouter } from "vue-router";
+import useDefaultLang from "@/composables/useDefaultLang";
 
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const defaultSort = ref({ columnKey: 'start_time', order: 'desc' });
-import { useRoute, useRouter } from "vue-router"
 const { sys_common_status, sys_job_group, quality_log_success_flag } = proxy.useDict(
   'sys_common_status',
   'sys_job_group',

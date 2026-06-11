@@ -136,7 +136,7 @@
                         <template #empty>
                             <div class="emptyBg">
                                 <img src="@/assets/system/images/no_data/noData.png" alt="" />
-                                <p>{{ t('common.message.noRecord') }}</p>
+                                <p>{{td('common.noData')}}</p>
                             </div>
                         </template>
                     </el-table>

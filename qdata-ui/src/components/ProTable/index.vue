@@ -125,7 +125,7 @@
       <slot name="empty">
         <div class="emptyBg">
           <img src="@/assets/system/images/no_data/noData.png" alt="" />
-          <p>{{ t('common.message.noRecord') }}</p>
+          <p>{{td('common.noData')}}</p>
         </div>
       </slot>
     </template>
@@ -147,8 +147,8 @@ import { computed, ref, watch } from "vue";
 import { parseTime } from "@/utils/anivia";
 import { cronToZh } from "@/utils/cronUtils";
 import Pagination from "@/views/flyflow/components/pagination.vue";
-
-const { t } = useI18n();
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();
 const noDataImg = new URL(
   "@/assets/images/common/noDataImg.png",
   import.meta.url

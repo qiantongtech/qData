@@ -164,7 +164,7 @@
                       messages == 'undefined'
                     "
                     :image-size="100"
-                    description="暂无消息"
+                    :description="td('common.noMessage')"
                     class="empty-block"
                   />
                 </div>
@@ -330,6 +330,8 @@ import Screenfull from "@/components/Screenfull";
 import SizeSelect from "@/components/SizeSelect";
 import HeaderSearch from "@/components/HeaderSearch";
 import useAppStore from "@/store/system/app";
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();
 import useUserStore from "@/store/system/user";
 import useSettingsStore from "@/store/system/settings";
 import useTagsViewStore from "@/store/system/tagsView";

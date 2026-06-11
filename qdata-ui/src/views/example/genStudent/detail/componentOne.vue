@@ -175,7 +175,7 @@
         <template #empty>
             <div class="emptyBg">
                 <img src="@/assets/system/images/no_data/noData.png" alt="" />
-                <p>{{ t('common.message.noRecord') }}</p>
+                <p>{{td('common.noData')}}</p>
             </div>
         </template>
     </el-table>
@@ -378,8 +378,9 @@ import {
         addStudent,
         updateStudent
     } from '@/api/example/genStudent/student';
+    import useDefaultLang from "@/composables/useDefaultLang";
 
-    const { t } = useI18n();
+    const { td } = useDefaultLang();
     const { proxy } = getCurrentInstance();
     const { sys_user_sex, message_level } = proxy.useDict('sys_user_sex', 'message_level');
 

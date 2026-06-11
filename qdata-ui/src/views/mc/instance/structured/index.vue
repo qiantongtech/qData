@@ -283,7 +283,7 @@ function handleResetQueryClick() {
 
 function handleViewClick(row) {
   getTaskInstanceLog(row.id).then((res) => {
-    dialog.content = res.data?.logContent || "暂无日志";
+    dialog.content = res.data?.logContent || td('common.noLog');
     dialog.open = true;
   });
 }
@@ -291,7 +291,7 @@ function handleViewClick(row) {
 // 下载日志
 function handleDownloadClick(row) {
   getTaskInstanceLog(row.id).then((res) => {
-    const content = res.data?.logContent || "暂无日志";
+    const content = res.data?.logContent || td('common.noLog');
     proxy.downloadContent(content, `${row.name}_${row.id}_日志.log`);
   });
 }

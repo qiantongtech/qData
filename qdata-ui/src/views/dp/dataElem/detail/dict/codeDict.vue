@@ -66,7 +66,7 @@
         <template #empty>
             <div class="emptyBg">
                 <img src="@/assets/system/images/no_data/noData.png" alt="" />
-                <p>{{ t('common.message.noRecord') }}</p>
+                <p>{{td('common.noData')}}</p>
             </div>
         </template>
     </el-table>
@@ -116,9 +116,10 @@ import {
     updateDpDataElemCode,
     validateCodeValue
 } from '@/api/dp/dataElem/dataElem';
+import useDefaultLang from "@/composables/useDefaultLang";
 
-const { t } = useI18n();
 const route = useRoute();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 
 const dpDataElemCodeList = ref([]);

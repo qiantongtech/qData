@@ -269,7 +269,7 @@
                   <el-tooltip
                     class="box-item"
                     effect="dark"
-                    content="暂无权限"
+                    :content="td('common.noPermission')"
                     placement="top"
                     :disabled="scope.row.isAdminAddTo != false"
                   >
@@ -304,7 +304,7 @@
         <template #empty>
           <div class="emptyBg">
             <img src="@/assets/system/images/no_data/noData.png" alt="" />
-            <p>{{ t('common.message.noRecord') }}</p>
+            <p>{{td('common.noData')}}</p>
           </div>
         </template>
       </el-table>
@@ -943,9 +943,10 @@ import { deptUserTree } from "@/api/system/system/user.js";
 import { getToken } from "@/utils/auth.js";
 import useUserStore from "@/store/system/user";
 import { config } from "ace-builds";
+import useDefaultLang from "@/composables/useDefaultLang";
 
-const { t } = useI18n();
 const userStore = useUserStore();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { datasource_type, sys_disable } = proxy.useDict(
   "datasource_type",

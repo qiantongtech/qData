@@ -227,7 +227,7 @@
                   src="../../../../assets/system/images/no_data/noData.png"
                   alt=""
                 />
-                <p>{{ t('common.message.noRecord') }}</p>
+                <p>{{td('common.noData')}}</p>
               </div>
             </template>
           </el-table>
@@ -361,9 +361,9 @@ import {
 import { getToken } from "@/utils/auth.js";
 import { computed } from "vue";
 import DeptTree from "@/components/DeptTree";
-import {useI18n} from "vue-i18n";
+import useDefaultLang from "@/composables/useDefaultLang";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { att_rule_audit_type, att_rule_level, att_rule_audit_q_dimension } =
   proxy.useDict(

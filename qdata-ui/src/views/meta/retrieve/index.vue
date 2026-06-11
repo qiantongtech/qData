@@ -360,7 +360,7 @@
 
         <div class="emptyBg" v-else>
           <img src="@/assets/images/sys/error/no-data.png" alt="" />
-          <p>{{ t('common.message.noRecord') }}</p>
+          <p>{{td('common.noData')}}</p>
         </div>
       </div>
     </qt-wrap>

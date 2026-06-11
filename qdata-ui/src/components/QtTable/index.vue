@@ -216,7 +216,7 @@
         <template #empty>
           <div class="emptyBg">
             <img src="@/assets/system/images/no_data/noData.png" alt="" />
-            <p>{{ t('common.message.noRecord') }}</p>
+            <p>{{td('common.noData')}}</p>
           </div>
         </template>
       </el-table>
@@ -247,6 +247,7 @@ import { reactive, computed, nextTick } from "vue";
 import { useRouter } from "vue-router";
 import SvgIcon from "@/components/SvgIcon/index.vue";
 import { scrollTo } from "@/utils/scroll-to";
+import useDefaultLang from "@/composables/useDefaultLang";
 
 const { t } = useI18n();defineOptions({
   inheritAttrs: false,
@@ -310,6 +311,7 @@ const props = defineProps({
   },
 });
 
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const router = useRouter();
 

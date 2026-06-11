@@ -71,7 +71,7 @@
         </el-tree>
         <el-empty
           v-else-if="!loading"
-          description="暂无来源系统数据"
+          :description="td('common.noData')"
           :image-size="40"
         />
       </div>
@@ -97,6 +97,8 @@
 </template>
 
 <script setup>
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();
 import { ref, watch, onMounted, onUnmounted, nextTick } from "vue";
 import {
   ArrowRight,

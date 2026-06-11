@@ -130,7 +130,7 @@
                         <template #empty>
                             <div class="emptyBg">
                                 <img src="@/assets/system/images/no_data/noData.png" alt="" />
-                                <p>{{ t('common.message.noRecord') }}</p>
+                                <p>{{td('common.noData')}}</p>
                             </div>
                         </template>
                     </el-table>
@@ -318,8 +318,9 @@ import { getToken } from '@/utils/auth.js';
 import DeptTree from '@/components/DeptTree';
 import { computed } from 'vue';
 import { listAttCleanCat } from "@/api/att/cat/cleanCat/cleanCat.js";
+import useDefaultLang from "@/composables/useDefaultLang";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { att_rule_level, att_rule_clean_type } = proxy.useDict(
     'att_rule_level',

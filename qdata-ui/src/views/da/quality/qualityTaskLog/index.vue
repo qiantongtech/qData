@@ -106,7 +106,7 @@
                 <template #empty>
                     <div class="emptyBg">
                         <img src="@/assets/system/images/no_data/noData.png" alt="" />
-                        <p>{{ t('common.message.noRecord') }}</p>
+                        <p>{{td('common.noData')}}</p>
                     </div>
                 </template>
             </el-table>
@@ -120,11 +120,12 @@
 <script setup name="DppQualityLog">
 import { useI18n } from 'vue-i18n'
 import { listDppQualityLog, doSendMessage } from "@/api/da/quality/qualityTaskLog";
-const { proxy } = getCurrentInstance();
-import { useRoute, useRouter } from "vue-router"
+import { useRoute, useRouter } from "vue-router";
 import { ref } from "vue";
+import useDefaultLang from "@/composables/useDefaultLang";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
+const { proxy } = getCurrentInstance();
 const defaultSort = ref({ columnKey: 'start_time', order: 'desc' });
 const { quality_log_success_flag } = proxy.useDict(
 

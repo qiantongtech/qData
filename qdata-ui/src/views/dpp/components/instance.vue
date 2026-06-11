@@ -84,7 +84,7 @@
             </el-table-column>
             <template #empty>
                 <div class="emptyBg">
-                    <p>{{ t('common.message.noRecord') }}</p>
+                    <p>{{td('common.noData')}}</p>
                 </div>
             </template>
         </el-table>
@@ -116,8 +116,9 @@ import { listDppEtlTaskInstance } from '@/api/dpp/instance/job';
 import TaskLogDialog from "@/views/dpp/components/taskLog.vue";
 import { getRunTaskInstance, getLogByTaskInstanceId } from "@/api/dpp/task/index.js";
 import request from '@/utils/request';
+import useDefaultLang from "@/composables/useDefaultLang";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { dpp_etl_node_instance } = proxy.useDict('dpp_etl_node_instance');
 const { dpp_etl_node_type, dpp_etl_task_instance_command_type } = proxy.useDict(

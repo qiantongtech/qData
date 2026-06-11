@@ -130,7 +130,7 @@
             <template #empty>
               <div class="emptyBg">
                 <img src="@/assets/system/images/no_data/noData.png" alt="" />
-                <p>{{ t('common.message.noRecord') }}</p>
+                <p>{{td('common.noData')}}</p>
               </div>
             </template>
           </el-table>
@@ -409,8 +409,9 @@ import { listAttProject } from "@/api/att/project/project.js";
 import { getToken } from "@/utils/auth.js";
 import { listAttAssetCat } from "@/api/att/cat/assetCat/assetCat.js";
 import DeptTree from "@/components/DeptTree";
+import useDefaultLang from "@/composables/useDefaultLang";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { da_asset_apply_status, datasource_type } = proxy.useDict(
   "da_asset_apply_status",

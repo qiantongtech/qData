@@ -211,7 +211,7 @@
             <iframe class="html-iframe" v-if="!jsonFlag" :srcdoc="htmlData"></iframe>
           </div>
           <!-- 没有返回数据时显示提示 -->
-          <div v-else>{{ t('common.message.noData') }}</div>
+          <div v-else>{{td('common.noData')}}</div>
         </el-col>
       </el-row>
     </div>
@@ -219,8 +219,8 @@
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
-
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();
 // 引入 Vue 和必要的 API 方法
 import { ref, reactive, onMounted } from "vue";
 import { VAceEditor } from "vue3-ace-editor";

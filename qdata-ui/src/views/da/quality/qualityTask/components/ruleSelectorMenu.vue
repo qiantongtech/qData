@@ -60,7 +60,7 @@
             </template>
 
             <template v-else>
-              <div class="empty-wrapper">{{ t('common.message.noData') }}</div>
+              <div class="empty-wrapper">{{td('common.noData')}}</div>
             </template>
           </div>
         </el-row>
@@ -70,7 +70,8 @@
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();
 import {
   Document,
   Menu,

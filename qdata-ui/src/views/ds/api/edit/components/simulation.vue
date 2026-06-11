@@ -152,7 +152,7 @@
                         </div>
 
                     </div>
-                    <div v-else class="no-data">{{ t('common.message.noData') }}</div>
+                    <div v-else class="no-data">{{td('common.noData')}}</div>
                 </el-col>
             </el-row>
         </div>
@@ -160,7 +160,8 @@
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();
 import { serviceTesting } from '@/api/ds/api/api.js';
 
 const { t } = useI18n();

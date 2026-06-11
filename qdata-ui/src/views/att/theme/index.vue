@@ -142,7 +142,7 @@
                 <template #empty>
                     <div class="emptyBg">
                         <img src="../../../assets/system/images/no_data/noData.png" alt="" />
-                        <p>{{ t('common.message.noRecord') }}</p>
+                        <p>{{td('common.noData')}}</p>
                     </div>
                 </template>
             </el-table>
@@ -348,9 +348,10 @@ import {
     updateAttTheme
 } from '@/api/att/theme/theme.js';
 import { getToken } from '@/utils/auth.js';
-
-const { t } = useI18n();
+import useDefaultLang from "@/composables/useDefaultLang";
 const noDataImg = new URL('@/assets/system/images/D.png', import.meta.url).href
+
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const attThemeList = ref([]);
 // 列显隐信息

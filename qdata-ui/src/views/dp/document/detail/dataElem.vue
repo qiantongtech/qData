@@ -129,7 +129,7 @@
         <template #empty>
             <div class="emptyBg">
                 <img src="@/assets/system/images/no_data/noData.png" alt="" />
-                <p>{{ t('common.message.noRecord') }}</p>
+                <p>{{td('common.noData')}}</p>
             </div>
         </template>
     </el-table>
@@ -287,10 +287,11 @@ import {
 import { deptUserTree } from "@/api/system/system/user.js";
 import { listAttDataElemCat } from "@/api/att/cat/dataElemCat/dataElemCat";
 import { getToken } from "@/utils/auth.js";
-const { proxy } = getCurrentInstance();
 import { useRoute } from 'vue-router';
+import useDefaultLang from "@/composables/useDefaultLang";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
+const { proxy } = getCurrentInstance();
 const route = useRoute();
 const props = defineProps({
     activeName: { type: Number, default: null },

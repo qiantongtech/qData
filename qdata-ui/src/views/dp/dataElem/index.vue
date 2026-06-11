@@ -166,7 +166,7 @@
             <template #empty>
               <div class="emptyBg">
                 <img src="@/assets/system/images/no_data/noData.png" alt="" />
-                <p>{{ t('common.message.noRecord') }}</p>
+                <p>{{td('common.noData')}}</p>
               </div>
             </template>
           </el-table>
@@ -346,8 +346,9 @@ import {
 import { deptUserTree } from "@/api/system/system/user.js";
 import { listAttDataElemCat } from "@/api/att/cat/dataElemCat/dataElemCat";
 import { getToken } from "@/utils/auth.js";
+import useDefaultLang from "@/composables/useDefaultLang";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { column_type, sys_disable, dp_data_elem_code_type, dp_document_type } = proxy.useDict(
   "column_type",

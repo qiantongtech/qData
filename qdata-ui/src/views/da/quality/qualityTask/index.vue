@@ -186,7 +186,7 @@
             <template #empty>
               <div class="emptyBg">
                 <img src="@/assets/system/images/no_data/noData.png" alt="" />
-                <p>{{ t('common.message.noRecord') }}</p>
+                <p>{{td('common.noData')}}</p>
               </div>
             </template>
           </el-table>
@@ -221,13 +221,16 @@ import {
 import { cronToZh } from "@/utils/cronUtils";
 import Crontab from "@/components/Crontab/index.vue";
 import DataViewDialog from "./components/instance.vue";
-const userStore = useUserStore();
 import { useRoute, useRouter } from "vue-router";
 import useUserStore from "@/store/system/user";
 import DeptTree from "@/components/DeptTree";
 import { deptUserTree } from "@/api/system/system/user.js";
 import { ref } from "vue";
 import { listAttQualityCat } from "@/api/att/cat/qualityCat/qualityCat.js";
+import useDefaultLang from "@/composables/useDefaultLang";
+
+const userStore = useUserStore();
+const { td } = useDefaultLang();
 const defaultSort = ref({ columnKey: 'create_time', order: 'desc' });
 import {
   listDppQualityTask,

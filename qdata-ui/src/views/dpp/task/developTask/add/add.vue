@@ -132,7 +132,7 @@
               }" />
             </div>
           </div>
-          <el-empty style="width: 100%" v-if="total == 0" :description="t('common.message.noData')" />
+          <el-empty style="width: 100%" v-if="total == 0" :description="td('common.noData')" />
         </div>
         <pagination layout="prev, pager, next" v-show="total > 0" :total="total" v-model:page="queryParams.pageNum"
           v-model:limit="queryParams.pageSize" @pagination="getList" />
@@ -166,7 +166,8 @@
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();
 import { defineProps, defineEmits, ref, computed, watch } from "vue";
 import CodeShow from "@/components/SqlEditor/editorShow/index.vue";
 import Crontab from "@/components/Crontab/index.vue";

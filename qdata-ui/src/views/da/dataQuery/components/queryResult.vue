@@ -41,7 +41,7 @@
         <template #empty>
           <div class="emptyBg">
             <!-- <img src="@/assets/system/images/no_data/noData.png" alt="" /> -->
-            <p>{{ t('common.message.noRecord') }}</p>
+            <p>{{td('common.noData')}}</p>
           </div>
         </template>
       </el-table>
@@ -62,8 +62,9 @@ import { useI18n } from 'vue-i18n'
 import { ref, computed, watch, getCurrentInstance } from "vue";
 import { encrypt } from "@/utils/aesEncrypt";
 import { executeSqlQuery } from "@/api/da/dataSource/dataSource";
+import useDefaultLang from "@/composables/useDefaultLang";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const props = defineProps({
   visible: { type: Boolean, default: true },

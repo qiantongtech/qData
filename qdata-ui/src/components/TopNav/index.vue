@@ -238,7 +238,7 @@ function calculateVisibleMenus() {
     : 606;
 
   const bodyWidth = document.body.getBoundingClientRect().width;
-  const menuWidth = locale.value === "en" ? 164 : 124; // 每个菜单项宽度
+  const menuWidth = locale.value === "en-US" ? 164 : 124; // 每个菜单项宽度
 
   const availableWidth = bodyWidth - leftWidth - rightWidth;
 

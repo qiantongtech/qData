@@ -99,7 +99,7 @@
             </el-table-column>
             <template #empty>
                 <div class="emptyBg">
-                    <p>暂无记录</p>
+                    <p>{{td('common.noData')}}</p>
                 </div>
             </template>
         </el-table>

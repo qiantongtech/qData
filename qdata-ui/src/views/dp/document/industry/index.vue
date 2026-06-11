@@ -297,7 +297,7 @@
             <template #empty>
               <div class="emptyBg">
                 <img src="@/assets/system/images/no_data/noData.png" alt="" />
-                <p>暂无记录</p>
+                <p>{{td('common.noData')}}</p>
               </div>
             </template>
           </el-table>

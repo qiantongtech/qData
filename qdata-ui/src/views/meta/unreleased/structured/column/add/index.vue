@@ -356,7 +356,7 @@
           </div>
           <div class="emptyBg" v-else>
             <img src="@/assets/images/sys/error/no-data.png" alt="" />
-            <p>暂无记录</p>
+            <p>{{td('common.noData')}}</p>
           </div>
         </div>
       </div>

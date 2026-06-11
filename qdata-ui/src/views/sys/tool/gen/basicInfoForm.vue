@@ -19,27 +19,27 @@
   <el-form ref="basicInfoForm" :model="info" :rules="rules" label-width="150px">
     <el-row>
       <el-col :span="12">
-        <el-form-item :label="t('sys.tool.genBasic.tableName')" prop="tableName">
-          <el-input :placeholder="t('sys.tool.genBasic.tableNamePlaceholder')" v-model="info.tableName" />
+        <el-form-item :label="td('sys.tool.genBasic.tableName')" prop="tableName">
+          <el-input :placeholder="td('sys.tool.genBasic.tableNamePlaceholder')" v-model="info.tableName" />
         </el-form-item>
       </el-col>
       <el-col :span="12">
-        <el-form-item :label="t('sys.tool.genBasic.tableDesc')" prop="tableComment">
-          <el-input :placeholder="t('sys.tool.genBasic.tableDescRequired')" v-model="info.tableComment" />
+        <el-form-item :label="td('sys.tool.genBasic.tableDesc')" prop="tableComment">
+          <el-input :placeholder="td('sys.tool.genBasic.tableDescRequired')" v-model="info.tableComment" />
         </el-form-item>
       </el-col>
       <el-col :span="12">
-        <el-form-item :label="t('sys.tool.genBasic.entityName')" prop="className">
-          <el-input :placeholder="t('sys.tool.genBasic.entityNameRequired')" v-model="info.className" />
+        <el-form-item :label="td('sys.tool.genBasic.entityName')" prop="className">
+          <el-input :placeholder="td('sys.tool.genBasic.entityNameRequired')" v-model="info.className" />
         </el-form-item>
       </el-col>
       <el-col :span="12">
-        <el-form-item :label="t('sys.tool.genBasic.author')" prop="functionAuthor">
-          <el-input :placeholder="t('sys.tool.genBasic.authorRequired')" v-model="info.functionAuthor" />
+        <el-form-item :label="td('sys.tool.genBasic.author')" prop="functionAuthor">
+          <el-input :placeholder="td('sys.tool.genBasic.authorRequired')" v-model="info.functionAuthor" />
         </el-form-item>
       </el-col>
       <el-col :span="24">
-        <el-form-item :label="t('common.texts.remark')" prop="remark">
+        <el-form-item :label="td('common.texts.remark')" prop="remark">
           <el-input type="textarea" :rows="3" v-model="info.remark"></el-input>
         </el-form-item>
       </el-col>
@@ -48,9 +48,9 @@
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang";
 
-const { t } = useI18n();defineProps({
+const { td } = useDefaultLang();defineProps({
   info: {
     type: Object,
     default: null
@@ -59,9 +59,9 @@ const { t } = useI18n();defineProps({
 
 // 表单校验
 const rules = ref({
-  tableName: [{ required: true, message: t('sys.tool.genBasic.tableNameRequired'), trigger: "blur" }],
-  tableComment: [{ required: true, message: t('sys.tool.genBasic.tableDescRequired'), trigger: "blur" }],
-  className: [{ required: true, message: t('sys.tool.genBasic.entityNameRequired'), trigger: "blur" }],
-  functionAuthor: [{ required: true, message: t('sys.tool.genBasic.authorRequired'), trigger: "blur" }]
+  tableName: [{ required: true, message: td('sys.tool.genBasic.tableNameRequired'), trigger: "blur" }],
+  tableComment: [{ required: true, message: td('sys.tool.genBasic.tableDescRequired'), trigger: "blur" }],
+  className: [{ required: true, message: td('sys.tool.genBasic.entityNameRequired'), trigger: "blur" }],
+  functionAuthor: [{ required: true, message: td('sys.tool.genBasic.authorRequired'), trigger: "blur" }]
 });
 </script>

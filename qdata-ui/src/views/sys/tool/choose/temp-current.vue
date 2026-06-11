@@ -17,7 +17,7 @@
 
 <template>
   <el-dialog
-    :title="t('sys.tool.chooseCurrent.title')"
+    :title="td('sys.tool.chooseCurrent.title')"
     v-model="visible"
     width="1200px"
     :append-to="$refs['app-container']"
@@ -33,28 +33,28 @@
       v-show="showSearch"
       label-width="68px"
     >
-      <el-form-item :label="t('sys.tool.chooseCurrent.dictName')" prop="dictName">
+      <el-form-item :label="td('sys.tool.chooseCurrent.dictName')" prop="dictName">
         <el-input
           v-model="queryParams.dictName"
-          :placeholder="t('sys.tool.chooseCurrent.dictNamePlaceholder')"
+          :placeholder="td('sys.tool.chooseCurrent.dictNamePlaceholder')"
           clearable
           class="el-form-input-width"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item :label="t('sys.tool.chooseCurrent.dictType')" prop="dictType">
+      <el-form-item :label="td('sys.tool.chooseCurrent.dictType')" prop="dictType">
         <el-input
           v-model="queryParams.dictType"
-          :placeholder="t('sys.tool.chooseCurrent.dictTypePlaceholder')"
+          :placeholder="td('sys.tool.chooseCurrent.dictTypePlaceholder')"
           clearable
           class="el-form-input-width"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item :label="t('common.texts.status')" prop="status">
+      <el-form-item :label="td('common.texts.status')" prop="status">
         <el-select
           v-model="queryParams.status"
-          :placeholder="t('sys.tool.chooseCurrent.dictStatus')"
+          :placeholder="td('sys.tool.chooseCurrent.dictStatus')"
           clearable
           class="el-form-input-width"
         >
@@ -66,7 +66,7 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item :label="t('common.texts.createdTime')">
+      <el-form-item :label="td('common.texts.createdTime')">
         <el-date-picker
           class="el-form-input-width"
           v-model="dateRange"
@@ -84,10 +84,10 @@
           @click="handleQuery"
           @mousedown="(e) => e.preventDefault()"
         >
-          <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
+          <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
         </el-button>
         <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-          <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
+          <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -103,19 +103,19 @@
       @current-change="handleCurrentChange"
     >
       <el-table-column
-        :label="t('sys.tool.chooseCurrent.dictNo')"
+        :label="td('sys.tool.chooseCurrent.dictNo')"
         align="center"
         prop="dictId"
         width="85"
       />
       <el-table-column
-        :label="t('sys.tool.chooseCurrent.dictName')"
+        :label="td('sys.tool.chooseCurrent.dictName')"
         align="center"
         prop="dictName"
         :show-overflow-tooltip="true"
       />
       <el-table-column
-        :label="t('sys.tool.chooseCurrent.dictType')"
+        :label="td('sys.tool.chooseCurrent.dictType')"
         align="center"
         :show-overflow-tooltip="true"
       >
@@ -128,18 +128,18 @@
           </router-link>
         </template>
       </el-table-column>
-      <el-table-column :label="t('common.texts.status')" align="center" prop="status">
+      <el-table-column :label="td('common.texts.status')" align="center" prop="status">
         <template #default="scope">
           <dict-tag :options="sys_normal_disable" :value="scope.row.status" />
         </template>
       </el-table-column>
       <el-table-column
-        :label="t('common.texts.remark')"
+        :label="td('common.texts.remark')"
         align="center"
         prop="remark"
         :show-overflow-tooltip="true"
       />
-      <el-table-column :label="t('common.texts.createdTime')" align="center" prop="createTime">
+      <el-table-column :label="td('common.texts.createdTime')" align="center" prop="createTime">
         <template #default="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
@@ -155,9 +155,9 @@
     />
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="cancel">{{ t('common.button.cancel') }}</el-button>
+        <el-button size="mini" @click="cancel">{{ td('common.button.cancel') }}</el-button>
         <el-button type="primary" size="mini" @click="confirm">
-          {{ t('common.button.confirm') }}
+          {{ td('common.button.confirm') }}
         </el-button>
       </div>
     </template>
@@ -165,12 +165,10 @@
 </template>
 
 <script setup name="Dict">
-import { useI18n } from 'vue-i18n'
 import { listType, getType, delType } from "@/api/system/system/dict/type.js";
 import { ref } from "vue"
 import useDefaultLang from "@/composables/useDefaultLang";
-const { t } = useI18n();
-const { td } = useDefaultLang();;
+const { td } = useDefaultLang();
 
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
@@ -242,7 +240,7 @@ function cancel() {
  */
 function confirm() {
   if (!single.value) {
-    proxy.$modal.msgWarning(t('sys.tool.chooseCurrent.noDataSelected'));
+    proxy.$modal.msgWarning(td('sys.tool.chooseCurrent.noDataSelected'));
     return;
   }
   emit("confirm", single.value);

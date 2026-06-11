@@ -17,23 +17,23 @@
 
 <template>
   <!-- 创建表 -->
-  <el-dialog :title="t('sys.tool.genCreate.title')" v-model="visible" width="800px" top="5vh"  :append-to="$refs['app-container']" draggable destroy-on-close>
-    <span>{{ t('sys.tool.genCreate.createTableStmt') }}</span>
-    <el-input type="textarea" :rows="10" :placeholder="t('sys.tool.genCreate.inputTextPlaceholder')" v-model="content"></el-input>
+  <el-dialog :title="td('sys.tool.genCreate.title')" v-model="visible" width="800px" top="5vh"  :append-to="$refs['app-container']" draggable destroy-on-close>
+    <span>{{ td('sys.tool.genCreate.createTableStmt') }}</span>
+    <el-input type="textarea" :rows="10" :placeholder="td('sys.tool.genCreate.inputTextPlaceholder')" v-model="content"></el-input>
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="visible = false">{{ t('common.button.cancel') }}</el-button>
-        <el-button type="primary" @click="handleImportTable">{{ t('common.button.confirm') }}</el-button>
+        <el-button @click="visible = false">{{ td('common.button.cancel') }}</el-button>
+        <el-button type="primary" @click="handleImportTable">{{ td('common.button.confirm') }}</el-button>
       </div>
     </template>
   </el-dialog>
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang";
 import { createTable } from "@/api/system/tool/gen.js";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const visible = ref(false);
 const content = ref("");
 const { proxy } = getCurrentInstance();
@@ -47,7 +47,7 @@ function show() {
 /** 导入按钮操作 */
 function handleImportTable() {
   if (content.value === "") {
-    proxy.$modal.msgError(t('sys.tool.genCreate.inputCreateStmt'));
+    proxy.$modal.msgError(td('sys.tool.genCreate.inputCreateStmt'));
     return;
   }
   createTable({ sql: content.value }).then(res => {

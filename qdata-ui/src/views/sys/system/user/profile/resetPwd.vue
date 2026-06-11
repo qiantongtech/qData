@@ -17,28 +17,28 @@
 
 <template>
    <el-form ref="pwdRef" :model="user" :rules="rules" label-width="80px">
-      <el-form-item :label="t('sys.system.resetPwd.oldPassword')" prop="oldPassword">
-         <el-input v-model="user.oldPassword" :placeholder="t('sys.system.resetPwd.oldPasswordPlaceholder')" type="password" show-password />
+      <el-form-item :label="td('sys.system.resetPwd.oldPassword')" prop="oldPassword">
+         <el-input v-model="user.oldPassword" :placeholder="td('sys.system.resetPwd.oldPasswordPlaceholder')" type="password" show-password />
       </el-form-item>
-      <el-form-item :label="t('sys.system.resetPwd.newPassword')" prop="newPassword">
-         <el-input v-model="user.newPassword" :placeholder="t('sys.system.resetPwd.newPasswordPlaceholder')" type="password" show-password />
+      <el-form-item :label="td('sys.system.resetPwd.newPassword')" prop="newPassword">
+         <el-input v-model="user.newPassword" :placeholder="td('sys.system.resetPwd.newPasswordPlaceholder')" type="password" show-password />
          <div v-if="passwordStrengthMessage" class="password-strength-message">{{ passwordStrengthMessage }}</div>
       </el-form-item>
-      <el-form-item :label="t('sys.system.resetPwd.confirmPassword')" prop="confirmPassword">
-         <el-input v-model="user.confirmPassword" :placeholder="t('sys.system.resetPwd.confirmPasswordPlaceholder')" type="password" show-password />
+      <el-form-item :label="td('sys.system.resetPwd.confirmPassword')" prop="confirmPassword">
+         <el-input v-model="user.confirmPassword" :placeholder="td('sys.system.resetPwd.confirmPasswordPlaceholder')" type="password" show-password />
       </el-form-item>
       <el-form-item>
-         <el-button type="primary" @click="submit">{{ t('common.button.save') }}</el-button>
-         <el-button type="danger" @click="close">{{ t('common.button.close') }}</el-button>
+         <el-button type="primary" @click="submit">{{ td('common.button.save') }}</el-button>
+         <el-button type="danger" @click="close">{{ td('common.button.close') }}</el-button>
       </el-form-item>
    </el-form>
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang";
 import { updateUserPwd } from "@/api/system/system/user.js";
 
-   const { t } = useI18n();
+   const { td } = useDefaultLang();
    const { proxy } = getCurrentInstance();
 
    const user = reactive({
@@ -64,19 +64,19 @@ import { updateUserPwd } from "@/api/system/system/user.js";
       let strengthValid = true;
 
       if (!passwordStrengthRegex.minLength.test(password)) {
-         message = t('sys.system.resetPwd.passwordMinLength');
+         message = td('sys.system.resetPwd.passwordMinLength');
          strengthValid = false;
       } else if (!passwordStrengthRegex.upperCase.test(password)) {
-         message = t('sys.system.resetPwd.passwordUppercase');
+         message = td('sys.system.resetPwd.passwordUppercase');
          strengthValid = false;
       } else if (!passwordStrengthRegex.lowerCase.test(password)) {
-         message = t('sys.system.resetPwd.passwordLowercase');
+         message = td('sys.system.resetPwd.passwordLowercase');
          strengthValid = false;
       } else if (!passwordStrengthRegex.number.test(password)) {
-         message = t('sys.system.resetPwd.passwordDigit');
+         message = td('sys.system.resetPwd.passwordDigit');
          strengthValid = false;
       } else if (!passwordStrengthRegex.specialChar.test(password)) {
-         message = t('sys.system.resetPwd.passwordSpecial');
+         message = td('sys.system.resetPwd.passwordSpecial');
          strengthValid = false;
       }
 
@@ -88,18 +88,18 @@ import { updateUserPwd } from "@/api/system/system/user.js";
 
    const equalToPassword = (rule, value, callback) => {
       if (user.newPassword !== value) {
-         callback(new Error(t('sys.system.resetPwd.passwordMismatch')));
+         callback(new Error(td('sys.system.resetPwd.passwordMismatch')));
       } else {
          callback();
       }
    };
 
    const rules = ref({
-      oldPassword: [{ required: true, message: t('sys.system.resetPwd.oldPasswordRequired'), trigger: "blur" }],
+      oldPassword: [{ required: true, message: td('sys.system.resetPwd.oldPasswordRequired'), trigger: "blur" }],
       newPassword: [
-         { required: true, message: t('sys.system.resetPwd.newPasswordRequired'), trigger: "blur" },
-         { min: 6, max: 20, message: t('sys.system.resetPwd.passwordLengthRange'), trigger: "blur" },
-         { pattern: /^[^<>"'|\\]+$/, message: t('sys.system.resetPwd.invalidChars'), trigger: "blur" },
+         { required: true, message: td('sys.system.resetPwd.newPasswordRequired'), trigger: "blur" },
+         { min: 6, max: 20, message: td('sys.system.resetPwd.passwordLengthRange'), trigger: "blur" },
+         { pattern: /^[^<>"'|\\]+$/, message: td('sys.system.resetPwd.invalidChars'), trigger: "blur" },
          {
             validator: (rule, value, callback) => {
                const strengthMessage = checkPasswordStrength(value);
@@ -115,7 +115,7 @@ import { updateUserPwd } from "@/api/system/system/user.js";
          }
       ],
       confirmPassword: [
-         { required: true, message: t('sys.system.resetPwd.confirmPasswordRequired'), trigger: "blur" },
+         { required: true, message: td('sys.system.resetPwd.confirmPasswordRequired'), trigger: "blur" },
          { required: true, validator: equalToPassword, trigger: "blur" }
       ]
    });
@@ -125,7 +125,7 @@ import { updateUserPwd } from "@/api/system/system/user.js";
       proxy.$refs.pwdRef.validate(valid => {
          if (valid) {
             updateUserPwd(user.oldPassword, user.newPassword).then(response => {
-               proxy.$modal.msgSuccess(t('common.message.editSuccess'));
+               proxy.$modal.msgSuccess(td('common.message.editSuccess'));
             });
          }
       });

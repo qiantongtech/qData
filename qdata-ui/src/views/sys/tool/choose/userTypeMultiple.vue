@@ -17,7 +17,7 @@
 
 <template>
   <el-dialog
-      :title="t('sys.tool.chooseUser.title')"
+      :title="td('sys.tool.chooseUser.title')"
       v-model="visible"
       width="1200px"
       :append-to="$refs['app-container']"
@@ -37,57 +37,57 @@
         <el-input
             style="width:240px"
             v-model="queryParams.id"
-            :placeholder="t('sys.tool.chooseUser.idPlaceholder')"
+            :placeholder="td('sys.tool.chooseUser.idPlaceholder')"
             clearable
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item :label="t('sys.tool.chooseUser.typeName')" prop="name">
+      <el-form-item :label="td('sys.tool.chooseUser.typeName')" prop="name">
         <el-input
             style="width:240px"
             v-model="queryParams.name"
-            :placeholder="t('sys.tool.chooseUser.typeNamePlaceholder')"
+            :placeholder="td('sys.tool.chooseUser.typeNamePlaceholder')"
             clearable
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item :label="t('sys.tool.chooseUser.isActive')" prop="validFlag">
+      <el-form-item :label="td('sys.tool.chooseUser.isActive')" prop="validFlag">
         <el-input
             style="width:240px"
             v-model="queryParams.validFlag"
-            :placeholder="t('sys.tool.chooseUser.isActivePlaceholder')"
+            :placeholder="td('sys.tool.chooseUser.isActivePlaceholder')"
             clearable
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item :label="t('sys.tool.chooseUser.deleteFlag')" prop="delFlag">
+      <el-form-item :label="td('sys.tool.chooseUser.deleteFlag')" prop="delFlag">
         <el-input
             style="width:240px"
             v-model="queryParams.delFlag"
-            :placeholder="t('sys.tool.chooseUser.deleteFlagPlaceholder')"
+            :placeholder="td('sys.tool.chooseUser.deleteFlagPlaceholder')"
             clearable
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item :label="t('common.texts.createdBy')" prop="createBy">
+      <el-form-item :label="td('common.texts.createdBy')" prop="createBy">
         <el-input
             style="width:240px"
             v-model="queryParams.createBy"
-            :placeholder="t('sys.tool.chooseUser.createByPlaceholder')"
+            :placeholder="td('sys.tool.chooseUser.createByPlaceholder')"
             clearable
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item :label="t('sys.tool.chooseUser.createById')" prop="creatorId">
+      <el-form-item :label="td('sys.tool.chooseUser.createById')" prop="creatorId">
         <el-input
             style="width:240px"
             v-model="queryParams.creatorId"
-            :placeholder="t('sys.tool.chooseUser.createByIdPlaceholder')"
+            :placeholder="td('sys.tool.chooseUser.createByIdPlaceholder')"
             clearable
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item :label="t('common.texts.createdTime')" style="width: 308px">
+      <el-form-item :label="td('common.texts.createdTime')" style="width: 308px">
         <el-date-picker
             style="width:240px"
             v-model="daterangeCreateTime"
@@ -98,25 +98,25 @@
             :end-placeholder="td('common.form.endDatePlaceholder')"
         ></el-date-picker>
       </el-form-item>
-      <el-form-item :label="t('common.texts.updatedBy')" prop="updateBy">
+      <el-form-item :label="td('common.texts.updatedBy')" prop="updateBy">
         <el-input
             style="width:240px"
             v-model="queryParams.updateBy"
-            :placeholder="t('sys.tool.chooseUser.updateByPlaceholder')"
+            :placeholder="td('sys.tool.chooseUser.updateByPlaceholder')"
             clearable
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item :label="t('sys.tool.chooseUser.updateById')" prop="updaterId">
+      <el-form-item :label="td('sys.tool.chooseUser.updateById')" prop="updaterId">
         <el-input
             style="width:240px"
             v-model="queryParams.updaterId"
-            :placeholder="t('sys.tool.chooseUser.updateByIdPlaceholder')"
+            :placeholder="td('sys.tool.chooseUser.updateByIdPlaceholder')"
             clearable
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item :label="t('common.texts.updatedTime')" style="width: 308px">
+      <el-form-item :label="td('common.texts.updatedTime')" style="width: 308px">
         <el-date-picker
             style="width:240px"
             v-model="daterangeUpdateTime"
@@ -134,10 +134,10 @@
             @click="handleQuery"
             @mousedown="(e) => e.preventDefault()"
         >
-          <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
+          <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
         </el-button>
         <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-          <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
+          <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -155,52 +155,52 @@
     >
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="ID" align="center" prop="id" />
-      <el-table-column :label="t('sys.tool.chooseUser.typeName')" align="center" prop="name">
+      <el-table-column :label="td('sys.tool.chooseUser.typeName')" align="center" prop="name">
         <template #default="scope">
           {{ scope.row.name || '-' }}
         </template>
       </el-table-column>
-      <el-table-column :label="t('sys.tool.chooseUser.isActive')" align="center" prop="validFlag">
+      <el-table-column :label="td('sys.tool.chooseUser.isActive')" align="center" prop="validFlag">
         <template #default="scope">
           {{ scope.row.validFlag || '-' }}
         </template>
       </el-table-column>
-      <el-table-column :label="t('sys.tool.chooseUser.deleteFlag')" align="center" prop="delFlag">
+      <el-table-column :label="td('sys.tool.chooseUser.deleteFlag')" align="center" prop="delFlag">
         <template #default="scope">
           {{ scope.row.delFlag || '-' }}
         </template>
       </el-table-column>
-      <el-table-column :label="t('common.texts.createdBy')" align="center" prop="createBy">
+      <el-table-column :label="td('common.texts.createdBy')" align="center" prop="createBy">
         <template #default="scope">
           {{ scope.row.createBy || '-' }}
         </template>
       </el-table-column>
-      <el-table-column :label="t('sys.tool.chooseUser.createById')" align="center" prop="creatorId">
+      <el-table-column :label="td('sys.tool.chooseUser.createById')" align="center" prop="creatorId">
         <template #default="scope">
           {{ scope.row.creatorId || '-' }}
         </template>
       </el-table-column>
-      <el-table-column :label="t('common.texts.createdTime')" align="center" prop="createTime" width="180">
+      <el-table-column :label="td('common.texts.createdTime')" align="center" prop="createTime" width="180">
         <template #default="scope">
           <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="t('common.texts.updatedBy')" align="center" prop="updateBy">
+      <el-table-column :label="td('common.texts.updatedBy')" align="center" prop="updateBy">
         <template #default="scope">
           {{ scope.row.updateBy || '-' }}
         </template>
       </el-table-column>
-      <el-table-column :label="t('sys.tool.chooseUser.updateById')" align="center" prop="updaterId">
+      <el-table-column :label="td('sys.tool.chooseUser.updateById')" align="center" prop="updaterId">
         <template #default="scope">
           {{ scope.row.updaterId || '-' }}
         </template>
       </el-table-column>
-      <el-table-column :label="t('common.texts.updatedTime')" align="center" prop="updateTime" width="180">
+      <el-table-column :label="td('common.texts.updatedTime')" align="center" prop="updateTime" width="180">
         <template #default="scope">
           <span>{{ parseTime(scope.row.updateTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="t('common.texts.remark')" align="center" prop="remark">
+      <el-table-column :label="td('common.texts.remark')" align="center" prop="remark">
         <template #default="scope">
           {{ scope.row.remark || '-' }}
         </template>
@@ -216,9 +216,9 @@
     />
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="cancel">{{ t('common.button.cancel') }}</el-button>
+        <el-button size="mini" @click="cancel">{{ td('common.button.cancel') }}</el-button>
         <el-button type="primary" size="mini" @click="confirm">
-          {{ t('common.button.confirm') }}
+          {{ td('common.button.confirm') }}
         </el-button>
       </div>
     </template>
@@ -226,12 +226,10 @@
 </template>
 
 <script setup name="UserTypeMultiple">
-import { useI18n } from 'vue-i18n'
 import { listUserType } from "@/api/example/user/userType";
 import { ref } from "vue"
 import useDefaultLang from "@/composables/useDefaultLang";
-const { t } = useI18n();
-const { td } = useDefaultLang();;
+const { td } = useDefaultLang();
 const daterangeCreateTime = ref([]);
 const daterangeUpdateTime = ref([]);
 const { proxy } = getCurrentInstance();
@@ -386,7 +384,7 @@ function cancel() {
  */
 function confirm() {
   if (multiple.value.length == 0) {
-    proxy.$modal.msgWarning(t('sys.tool.chooseUser.noDataSelected'));
+    proxy.$modal.msgWarning(td('sys.tool.chooseUser.noDataSelected'));
     return;
   }
   emit("confirm", [...multiple.value]);

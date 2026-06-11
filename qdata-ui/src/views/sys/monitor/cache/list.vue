@@ -21,7 +21,7 @@
       <el-col :span="8">
         <el-card style="height: calc(100vh - 125px)">
           <template #header>
-            <Collection style="width: 1em; height: 1em; vertical-align: middle;" /> <span style="vertical-align: middle;">{{ t('sys.monitor.cacheList.title') }}</span>
+            <Collection style="width: 1em; height: 1em; vertical-align: middle;" /> <span style="vertical-align: middle;">{{ td('sys.monitor.cacheList.title') }}</span>
             <el-button
               style="float: right; padding: 3px 0"
               link
@@ -40,13 +40,13 @@
             style="width: 100%"
           >
             <el-table-column
-              :label="t('common.display.index')"
+              :label="td('common.display.index')"
               width="80"
               type="index"
             ></el-table-column>
 
             <el-table-column
-              :label="t('sys.monitor.cacheList.cacheName')"
+              :label="td('sys.monitor.cacheList.cacheName')"
               align="center"
               prop="cacheName"
               :show-overflow-tooltip="true"
@@ -54,13 +54,13 @@
             ></el-table-column>
 
             <el-table-column
-              :label="t('common.texts.remark')"
+              :label="td('common.texts.remark')"
               align="center"
               prop="remark"
               :show-overflow-tooltip="true"
             />
             <el-table-column
-              :label="t('common.texts.operation')"
+              :label="td('common.texts.operation')"
               width="60"
               align="center"
               class-name="small-padding fixed-width"
@@ -81,7 +81,7 @@
       <el-col :span="8">
         <el-card style="height: calc(100vh - 125px)">
           <template #header>
-            <Key style="width: 1em; height: 1em; vertical-align: middle;" /> <span style="vertical-align: middle;">{{ t('sys.monitor.cacheList.keyList') }}</span>
+            <Key style="width: 1em; height: 1em; vertical-align: middle;" /> <span style="vertical-align: middle;">{{ td('sys.monitor.cacheList.keyList') }}</span>
             <el-button
               style="float: right; padding: 3px 0"
               link
@@ -100,19 +100,19 @@
             style="width: 100%"
           >
             <el-table-column
-              :label="t('common.display.index')"
+              :label="td('common.display.index')"
               width="80"
               type="index"
             ></el-table-column>
             <el-table-column
-              :label="t('sys.monitor.cacheList.cacheKeyName')"
+              :label="td('sys.monitor.cacheList.cacheKeyName')"
               align="center"
               :show-overflow-tooltip="true"
               :formatter="keyFormatter"
             >
             </el-table-column>
             <el-table-column
-              :label="t('common.texts.operation')"
+              :label="td('common.texts.operation')"
               width="60"
               align="center"
               class-name="small-padding fixed-width"
@@ -133,30 +133,30 @@
       <el-col :span="8">
         <el-card :bordered="false" style="height: calc(100vh - 125px)">
           <template #header>
-            <Document style="width: 1em; height: 1em; vertical-align: middle;" /> <span style="vertical-align: middle;">{{ t('sys.monitor.cacheList.cacheContent') }}</span>
+            <Document style="width: 1em; height: 1em; vertical-align: middle;" /> <span style="vertical-align: middle;">{{ td('sys.monitor.cacheList.cacheContent') }}</span>
             <el-button
               style="float: right; padding: 3px 0"
               link
               type="primary"
               icon="Refresh"
               @click="handleClearCacheAll()"
-              >{{ t('sys.monitor.cacheList.clearAll') }}</el-button
+              >{{ td('sys.monitor.cacheList.clearAll') }}</el-button
             >
           </template>
           <el-form :model="cacheForm">
             <el-row :gutter="32">
               <el-col :offset="1" :span="22">
-                <el-form-item :label="t('sys.monitor.cacheList.cacheName') + ':'" prop="cacheName">
+                <el-form-item :label="td('sys.monitor.cacheList.cacheName') + ':'" prop="cacheName">
                   <el-input v-model="cacheForm.cacheName" :readOnly="true" />
                 </el-form-item>
               </el-col>
               <el-col :offset="1" :span="22">
-                <el-form-item :label="t('sys.monitor.cacheList.cacheKeyName') + ':'" prop="cacheKey">
+                <el-form-item :label="td('sys.monitor.cacheList.cacheKeyName') + ':'" prop="cacheKey">
                   <el-input v-model="cacheForm.cacheKey" :readOnly="true" />
                 </el-form-item>
               </el-col>
               <el-col :offset="1" :span="22">
-                <el-form-item :label="t('sys.monitor.cacheList.cacheContent') + ':'" prop="cacheValue">
+                <el-form-item :label="td('sys.monitor.cacheList.cacheContent') + ':'" prop="cacheValue">
                   <el-input
                     v-model="cacheForm.cacheValue"
                     type="textarea"
@@ -174,10 +174,10 @@
 </template>
 
 <script setup name="CacheList">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang";
 import { listCacheName, listCacheKey, getCacheValue, clearCacheName, clearCacheKey, clearCacheAll } from "@/api/system/monitor/cache.js";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 
 const cacheNames = ref([]);
@@ -200,13 +200,13 @@ function getCacheNames() {
 /** 刷新缓存名称列表 */
 function refreshCacheNames() {
   getCacheNames();
-  proxy.$modal.msgSuccess(t('sys.monitor.cacheList.refreshSuccess'));
+  proxy.$modal.msgSuccess(td('sys.monitor.cacheList.refreshSuccess'));
 }
 
 /** 清理指定名称缓存 */
 function handleClearCacheName(row) {
   clearCacheName(row.cacheName).then(response => {
-    proxy.$modal.msgSuccess(t('sys.monitor.cacheList.clearNameSuccess', { name: row.cacheName }));
+    proxy.$modal.msgSuccess(td('sys.monitor.cacheList.clearNameSuccess', { name: row.cacheName }));
     getCacheKeys();
   });
 }
@@ -228,13 +228,13 @@ function getCacheKeys(row) {
 /** 刷新缓存键名列表 */
 function refreshCacheKeys() {
   getCacheKeys();
-  proxy.$modal.msgSuccess(t('sys.monitor.cacheList.refreshKeySuccess'));
+  proxy.$modal.msgSuccess(td('sys.monitor.cacheList.refreshKeySuccess'));
 }
 
 /** 清理指定键名缓存 */
 function handleClearCacheKey(cacheKey) {
   clearCacheKey(cacheKey).then(response => {
-    proxy.$modal.msgSuccess(t('sys.monitor.cacheList.clearKeySuccess', { key: cacheKey }));
+    proxy.$modal.msgSuccess(td('sys.monitor.cacheList.clearKeySuccess', { key: cacheKey }));
     getCacheKeys();
   });
 }
@@ -259,7 +259,7 @@ function handleCacheValue(cacheKey) {
 /** 清理全部缓存 */
 function handleClearCacheAll() {
   clearCacheAll().then(response => {
-    proxy.$modal.msgSuccess(t('sys.monitor.cacheList.clearAllSuccess'));
+    proxy.$modal.msgSuccess(td('sys.monitor.cacheList.clearAllSuccess'));
   });
 }
 

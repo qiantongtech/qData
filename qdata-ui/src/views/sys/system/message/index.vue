@@ -25,10 +25,10 @@
                 :inline="true"
                 label-width="68px"
             >
-                <el-form-item :label="t('sys.system.message.msgType')" prop="category">
+                <el-form-item :label="td('sys.system.message.msgType')" prop="category">
                     <el-select
                         v-model="queryParams.category"
-                        :placeholder="t('sys.system.message.msgTypePlaceholder')"
+                        :placeholder="td('sys.system.message.msgTypePlaceholder')"
                         clearable
                         class="el-form-input-width"
                     >
@@ -41,7 +41,7 @@
                     </el-select>
                 </el-form-item>
 
-                <el-form-item :label="t('common.texts.createdTime')">
+                <el-form-item :label="td('common.texts.createdTime')">
                     <el-date-picker
                         class="el-form-input-width"
                         v-model="queryParams.dateRange"
@@ -59,13 +59,13 @@
                         @click="handleQuery"
                         @mousedown="(e) => e.preventDefault()"
                     >
-                        <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
+                        <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
                     </el-button>
                     <el-button
                         @click="resetQuery"
                         @mousedown="(e) => e.preventDefault()"
                     >
-                        <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
+                        <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
                     </el-button>
                 </el-form-item>
             </el-form>
@@ -76,7 +76,7 @@
                 <el-row :gutter="10" class="btn-style">
                     <el-col :span="1.5">
                         <el-button @click="readAllMsg" plain>
-                            <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('sys.system.message.setAllRead') }}
+                            <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('sys.system.message.setAllRead') }}
                         </el-button>
                     </el-col>
                 </el-row>
@@ -85,12 +85,12 @@
 
             <el-table stripe v-loading="loading" :data="msgList">
                 <el-table-column
-                    :label="t('sys.system.message.msgTitle')"
+                    :label="td('sys.system.message.msgTitle')"
                     align="center"
                     key="title"
                     prop="title"
                 />
-                <el-table-column :label="t('sys.system.message.msgType')" align="center" key="category">
+                <el-table-column :label="td('sys.system.message.msgType')" align="center" key="category">
                     <template #default="scope">
                         <dict-tag
                             :options="message_category"
@@ -98,29 +98,29 @@
                         />
                     </template>
                 </el-table-column>
-                <el-table-column :label="t('sys.system.message.isRead')" align="center" key="hasRead">
+                <el-table-column :label="td('sys.system.message.isRead')" align="center" key="hasRead">
                     <template #default="scope">
                         <el-tag :type="scope.row.hasRead ? 'success' : 'danger'">
-                            {{ scope.row.hasRead ? t('sys.system.message.read') : t('sys.system.message.unread') }}
+                            {{ scope.row.hasRead ? td('sys.system.message.read') : td('sys.system.message.unread') }}
                         </el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column
-                    :label="t('sys.system.message.msgContent')"
+                    :label="td('sys.system.message.msgContent')"
                     align="center"
                     key="content"
                     prop="content"
                 />
 
                 <el-table-column
-                    :label="t('common.texts.createdTime')"
+                    :label="td('common.texts.createdTime')"
                     align="center"
                     key="createTime"
                     prop="createTime"
                 />
 
                 <el-table-column
-                    :label="t('common.texts.operation')"
+                    :label="td('common.texts.operation')"
                     align="center"
                     class-name="small-padding fixed-width"
                     fixed="right"
@@ -133,7 +133,7 @@
                             icon="View"
                             @click="handleView(scope.row)"
                         >
-                            {{ t('common.button.details') }}
+                            {{ td('common.button.details') }}
                         </el-button>
                         <el-button
                             link
@@ -141,7 +141,7 @@
                             icon="Delete"
                             @click="deleteMsg(scope.row.id)"
                         >
-                            {{ t('common.button.delete') }}
+                            {{ td('common.button.delete') }}
                         </el-button>
                     </template>
                 </el-table-column>
@@ -156,7 +156,7 @@
         </div>
 
         <el-dialog
-            :title="t('sys.system.message.msgDetail')"
+            :title="td('sys.system.message.msgDetail')"
             v-model="openView"
             width="800px"
             draggable
@@ -166,7 +166,7 @@
             <el-form label-width="100px">
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item :label="t('sys.system.message.msgTitleLabel')">
+                        <el-form-item :label="td('sys.system.message.msgTitleLabel')">
                             <div class="form-value-ifon">
                                 {{ viewData.title }}
                             </div>
@@ -174,7 +174,7 @@
                     </el-col>
 
                     <el-col :span="12">
-                        <el-form-item :label="t('sys.system.message.typeLabel')">
+                        <el-form-item :label="td('sys.system.message.typeLabel')">
                             <div class="form-value-ifon">
                                 <dict-tag
                                     :options="message_category"
@@ -184,27 +184,27 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item :label="t('sys.system.message.isReadLabel')">
+                        <el-form-item :label="td('sys.system.message.isReadLabel')">
                             <div class="form-value-ifon">
                                 <el-tag
                                     :type="
                                         viewData.hasRead ? 'success' : 'danger'
                                     "
                                 >
-                                    {{ viewData.hasRead ? t('sys.system.message.read') : t('sys.system.message.unread') }}
+                                    {{ viewData.hasRead ? td('sys.system.message.read') : td('sys.system.message.unread') }}
                                 </el-tag>
                             </div>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item :label="t('sys.system.message.msgContentLabel')">
+                        <el-form-item :label="td('sys.system.message.msgContentLabel')">
                             <div class="form-value-ifon">
                                 {{ viewData.content }}
                             </div>
                         </el-form-item>
                     </el-col>
                     <el-col :span="24">
-                        <el-form-item :label="t('sys.system.message.createTimeLabel')">
+                        <el-form-item :label="td('sys.system.message.createTimeLabel')">
                             <div class="form-value-ifon">
                                 {{ viewData.createTime }}
                             </div>
@@ -214,7 +214,7 @@
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button @click="openView = false">{{ t('common.button.close') }}</el-button>
+                    <el-button @click="openView = false">{{ td('common.button.close') }}</el-button>
                 </div>
             </template>
         </el-dialog>
@@ -224,10 +224,8 @@
 <script setup name="Message">
 import { getCurrentInstance, ref } from "vue"
 import useDefaultLang from "@/composables/useDefaultLang";
-import { useI18n } from 'vue-i18n'
 import useUserStore from "@/store/system/user";
 
-const { t } = useI18n();
 const { td } = useDefaultLang();
 import {
     listMessage,
@@ -237,7 +235,6 @@ import {
     updateMessage
 } from "@/api/system/system/message/message";
 
-const { t } = useI18n();
 const openView = ref(false);
 const viewData = ref({});
 const userStore = useUserStore();
@@ -300,26 +297,26 @@ getList();
 
 /** 全部已读 */
 function readAllMsg() {
-    ElMessageBox.confirm(t('sys.system.message.confirmSetAllRead'))
+    ElMessageBox.confirm(td('sys.system.message.confirmSetAllRead'))
         .then(() => {
             return readAll();
         })
         .then((res) => {
             console.log('------设置为已读----',res)
             getList();
-            ElMessage.success(t('common.message.msgOpSuccess'));
+            ElMessage.success(td('common.message.msgOpSuccess'));
         })
         .catch(() => {});
 }
 /** 删除 */
 function deleteMsg(id) {
-    ElMessageBox.confirm(t('sys.system.message.confirmDelete'))
+    ElMessageBox.confirm(td('sys.system.message.confirmDelete'))
         .then(() => {
             return delMessage(id);
         })
         .then(() => {
             getList();
-            ElMessage.success(t('common.message.msgOpSuccess'));
+            ElMessage.success(td('common.message.msgOpSuccess'));
         })
         .catch(() => {});
 }

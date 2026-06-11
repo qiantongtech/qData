@@ -21,7 +21,7 @@
             <!-- Logo 上传 -->
             <el-col :span="24">
                 <div class="form-item">
-                    <div class="form-label">{{ t('sys.system.content.loginLogo') }}</div>
+                    <div class="form-label">{{ td('sys.system.content.loginLogo') }}</div>
                     <div class="form-input">
                         <ImageUpload v-model="loginLogoModelValue" :limit="1" :fileSize="10" :isShowTip="true" @update:modelValue="loginLogoUpdate" :platForm="platForm"  />  <!-- 使用组件 -->
                     </div>
@@ -30,7 +30,7 @@
 
             <el-col :span="24">
             <div class="form-item">
-                <div class="form-label">{{ t('sys.system.content.systemLogo') }}</div>
+                <div class="form-label">{{ td('sys.system.content.systemLogo') }}</div>
                 <div class="form-input">
                     <ImageUpload v-model="logoModelValue" :limit="1" :fileSize="10" :isShowTip="true" @update:modelValue="logoUpdate" :platForm="platForm"  />  <!-- 使用组件 -->
                 </div>
@@ -39,7 +39,7 @@
 
             <el-col :span="24">
                 <div class="form-item">
-                    <div class="form-label">{{ t('sys.system.content.loginCarousel') }}</div>
+                    <div class="form-label">{{ td('sys.system.content.loginCarousel') }}</div>
                     <div class="form-input">
                         <ImageUpload v-model="carouselImageModelValue" :limit="3" :fileSize="10" :isShowTip="true" @update:modelValue="carouselImageUpdate" :platForm="platForm"  />  <!-- 使用组件 -->
                     </div>
@@ -49,9 +49,9 @@
             <!-- 联系电话 -->
             <el-col :span="24" :xs="24">
                 <div class="form-item">
-                    <div class="form-label">{{ t('sys.system.content.contactPhone') }}</div>
+                    <div class="form-label">{{ td('sys.system.content.contactPhone') }}</div>
                     <div class="form-input-i">
-                        <el-input v-model="contentDetail.contactNumber" :placeholder="t('sys.system.content.contactPhonePlaceholder')"></el-input>
+                        <el-input v-model="contentDetail.contactNumber" :placeholder="td('sys.system.content.contactPhonePlaceholder')"></el-input>
                     </div>
                 </div>
             </el-col>
@@ -59,9 +59,9 @@
             <!-- 电子邮箱 -->
             <el-col :span="24" :xs="24">
                 <div class="form-item">
-                    <div class="form-label">{{ t('sys.system.content.email') }}</div>
+                    <div class="form-label">{{ td('sys.system.content.email') }}</div>
                     <div class="form-input-i">
-                        <el-input v-model="contentDetail.email" :placeholder="t('sys.system.content.emailPlaceholder')"></el-input>
+                        <el-input v-model="contentDetail.email" :placeholder="td('sys.system.content.emailPlaceholder')"></el-input>
                     </div>
                 </div>
             </el-col>
@@ -69,9 +69,9 @@
             <!-- 版权方 -->
             <el-col :span="24" :xs="24">
                 <div class="form-item">
-                    <div class="form-label">{{ t('sys.system.content.copyrightOwner') }}</div>
+                    <div class="form-label">{{ td('sys.system.content.copyrightOwner') }}</div>
                     <div class="form-input-i">
-                        <el-input v-model="contentDetail.copyright" :placeholder="t('sys.system.content.copyrightOwnerPlaceholder')"></el-input>
+                        <el-input v-model="contentDetail.copyright" :placeholder="td('sys.system.content.copyrightOwnerPlaceholder')"></el-input>
                     </div>
                 </div>
             </el-col>
@@ -79,18 +79,18 @@
             <!-- 备案号 -->
             <el-col :span="24" :xs="24">
                 <div class="form-item">
-                    <div class="form-label">{{ t('sys.system.content.recordNo') }}</div>
+                    <div class="form-label">{{ td('sys.system.content.recordNo') }}</div>
                     <div class="form-input-i">
-                        <el-input v-model="contentDetail.recordNumber" :placeholder="t('sys.system.content.recordNoPlaceholder')"></el-input>
+                        <el-input v-model="contentDetail.recordNumber" :placeholder="td('sys.system.content.recordNoPlaceholder')"></el-input>
                     </div>
                 </div>
             </el-col>
 
 <!--            {{contentDetail}}-->
             <div style="margin-top: 20px;">
-                <!--                <el-button @click="update" v-show="status">{{ t('common.button.update') }}</el-button>-->
-                <!--                <el-button @click="confirm" v-show="!status">{{ t('common.button.save') }}</el-button>-->
-                <el-button @click="confirm">{{ t('common.button.save') }}</el-button>
+                <!--                <el-button @click="update" v-show="status">{{ td('common.button.update') }}</el-button>-->
+                <!--                <el-button @click="confirm" v-show="!status">{{ td('common.button.save') }}</el-button>-->
+                <el-button @click="confirm">{{ td('common.button.save') }}</el-button>
             </div>
 
         </el-row>
@@ -99,12 +99,12 @@
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang";
 import { ref } from 'vue';
     import { getContent,listContent, updateContent } from "@/api/system/system/content";
     import ImageUpload from "@/components/ImageUpload/index.vue"
 
-    const { t } = useI18n();
+    const { td } = useDefaultLang();
     const { proxy } = getCurrentInstance();
 
     const loginLogoModelValue = ref([])
@@ -150,7 +150,7 @@ import { ref } from 'vue';
             if(res.code == 200){
                 const data = res.data
                 if(data.loginLogo){
-                    const loginLogoList = data.loginLogo.split(',')
+                    const loginLogoList = data.loginLogo.splitd(',')
                     const arr = []
                     loginLogoList.forEach(e=>{
                         arr.push({url: e})
@@ -158,7 +158,7 @@ import { ref } from 'vue';
                     loginLogoModelValue.value = arr
                 }
                 if(data.logo){
-                    const logoList = data.logo.split(',')
+                    const logoList = data.logo.splitd(',')
                     const arr = []
                     logoList.forEach(e=>{
                         arr.push({url: e})
@@ -166,7 +166,7 @@ import { ref } from 'vue';
                     logoModelValue.value = arr
                 }
                 if(data.carouselImage){
-                    const carouselImageList = data.carouselImage.split(',')
+                    const carouselImageList = data.carouselImage.splitd(',')
                     const arr = []
                     carouselImageList.forEach(e=>{
                         arr.push({url: e})
@@ -191,7 +191,7 @@ import { ref } from 'vue';
         } catch (error) {
             // 错误处理
             // this.$message.error('内容加载失败');
-            console.error(t('sys.system.content.dataLoadFailed'), error);
+            console.error(td('sys.system.content.dataLoadFailed'), error);
         }
     };
 
@@ -207,22 +207,22 @@ import { ref } from 'vue';
 
     // 确认按钮点击事件
     const confirm =  () => {
-        proxy.$modal.confirm(t('sys.system.content.confirmSave')).then(function() {}).then(async () => {
+        proxy.$modal.confirm(td('sys.system.content.confirmSave')).then(function() {}).then(async () => {
             status.value = !status.value
             try {
                 const item = contentDetail.value
                 const res = await updateContent(item)
                 if (res.code == 200) {
                     fetchContent();
-                    proxy.$modal.msgSuccess(t('sys.system.content.saveSuccess'));
+                    proxy.$modal.msgSuccess(td('sys.system.content.saveSuccess'));
                 } else {
                     // 如果响应 code 不是 200，表示请求失败
-                    proxy.$modal.msgError(t('sys.system.content.saveFailed'));
+                    proxy.$modal.msgError(td('sys.system.content.saveFailed'));
                 }
             } catch (error) {
                 // 捕获网络错误或请求失败的情况
                 console.error("请求失败:", error);
-                proxy.$modal.msgError(t('sys.system.content.saveException') + error.message);
+                proxy.$modal.msgError(td('sys.system.content.saveException') + error.message);
             }
         }).catch(() => {});
     };

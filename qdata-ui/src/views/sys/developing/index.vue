@@ -3,7 +3,7 @@
     <div class="developing-wrapper">
       <img
         src="@/assets/images/sys/error/building.png"
-        :alt="t('sys.developing.underDevelopment')"
+        :alt="td('sys.developing.underDevelopment')"
         class="developing-img"
       />
     </div>
@@ -11,8 +11,8 @@
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n';
-const { t } = useI18n();
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();
 
 defineProps({
   type: {

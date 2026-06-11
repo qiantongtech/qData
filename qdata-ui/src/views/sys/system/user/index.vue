@@ -37,7 +37,7 @@
       <el-aside :style="{ width: `${leftWidth}px`, marginLeft: leftWidth == 0 ? '-15px' : '0px' }" class="left-pane">
         <div class="left-tree">
           <div class="head-container">
-            <el-input v-model="deptName" :placeholder="t('sys.system.user.deptNamePlaceholder')" clearable prefix-icon="Search"
+            <el-input v-model="deptName" :placeholder="td('sys.system.user.deptNamePlaceholder')" clearable prefix-icon="Search"
               style="margin-bottom: 20px" />
           </div>
           <div class="head-container">
@@ -100,30 +100,30 @@
         <!--用户数据-->
         <div class="pagecont-top" v-show="showSearch">
           <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="68px">
-            <el-form-item :label="t('sys.system.user.userName')" prop="userName">
-              <el-input v-model="queryParams.userName" :placeholder="t('sys.system.user.userNamePlaceholder')" clearable class="el-form-input-width"
+            <el-form-item :label="td('sys.system.user.userName')" prop="userName">
+              <el-input v-model="queryParams.userName" :placeholder="td('sys.system.user.userNamePlaceholder')" clearable class="el-form-input-width"
                 @keyup.enter="handleQuery" />
             </el-form-item>
-            <el-form-item :label="t('sys.system.user.phone')" prop="phonenumber">
-              <el-input v-model="queryParams.phonenumber" :placeholder="t('sys.system.user.phonePlaceholder')" clearable class="el-form-input-width"
+            <el-form-item :label="td('sys.system.user.phone')" prop="phonenumber">
+              <el-input v-model="queryParams.phonenumber" :placeholder="td('sys.system.user.phonePlaceholder')" clearable class="el-form-input-width"
                 @keyup.enter="handleQuery" />
             </el-form-item>
-            <el-form-item label="状态" prop="status">
-              <el-select v-model="queryParams.status" placeholder="用户状态" clearable class="el-form-input-width">
+            <el-form-item :label="td('common.texts.status')" prop="status">
+              <el-select v-model="queryParams.status" :placeholder="td('sys.system.user.userStatus')" clearable class="el-form-input-width">
                 <el-option v-for="dict in sys_normal_disable" :key="dict.value" :label="dict.label"
                   :value="dict.value" />
               </el-select>
             </el-form-item>
-            <el-form-item label="创建时间">
+            <el-form-item :label="td('common.texts.createdTime')">
               <el-date-picker class="el-form-input-width" v-model="dateRange" value-format="YYYY-MM-DD" type="daterange"
                 range-separator="-" :start-placeholder="td('common.form.startDatePlaceholder')" :end-placeholder="td('common.form.endDatePlaceholder')"></el-date-picker>
             </el-form-item>
             <el-form-item>
               <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
               </el-button>
               <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-                <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
               </el-button>
             </el-form-item>
           </el-form>
@@ -132,26 +132,26 @@
           <div class="justify-between mb15">
             <el-row :gutter="10" class="btn-style">
               <el-col :span="1.5">
-                <el-button type="primary" plain icon="Plus" @click="handleAdd" v-hasPermi="['system:user:add']">新增
+                <el-button type="primary" plain icon="Plus" @click="handleAdd" v-hasPermi="['system:user:add']">{{ td('common.button.add') }}
                 </el-button>
               </el-col>
               <el-col :span="1.5">
                 <el-button type="primary" plain icon="Edit" :disabled="single" @click="handleUpdate"
-                  v-hasPermi="['system:user:edit']">修改
+                  v-hasPermi="['system:user:edit']">{{ td('common.button.update') }}
                 </el-button>
               </el-col>
               <el-col :span="1.5">
                 <el-button type="danger" plain icon="Delete" :disabled="multiple" @click="handleDelete"
-                  v-hasPermi="['system:user:remove']">删除
+                  v-hasPermi="['system:user:remove']">{{ td('common.button.delete') }}
                 </el-button>
               </el-col>
               <el-col :span="1.5">
-                <el-button type="info" plain icon="Upload" @click="handleImport" v-hasPermi="['system:user:import']">导入
+                <el-button type="info" plain icon="Upload" @click="handleImport" v-hasPermi="['system:user:import']">{{ td('common.button.import') }}
                 </el-button>
               </el-col>
               <el-col :span="1.5">
                 <el-button type="warning" plain icon="Download" @click="handleExport"
-                  v-hasPermi="['system:user:export']">导出
+                  v-hasPermi="['system:user:export']">{{ td('common.button.export') }}
                 </el-button>
               </el-col>
             </el-row>
@@ -160,27 +160,27 @@
 
           <el-table stripe height="58vh" v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="50" align="center" />
-            <el-table-column :label="t('sys.system.user.userNo')" align="center" key="userId" prop="userId" v-if="columns[0].visible" />
-            <el-table-column :label="t('sys.system.user.userName')" align="center" key="userName" prop="userName" v-if="columns[1].visible"
+            <el-table-column :label="td('sys.system.user.userNo')" align="center" key="userId" prop="userId" v-if="columns[0].visible" />
+            <el-table-column :label="td('sys.system.user.userName')" align="center" key="userName" prop="userName" v-if="columns[1].visible"
               :show-overflow-tooltip="true" />
-            <el-table-column :label="t('sys.system.user.userNickName')" align="center" key="nickName" prop="nickName" v-if="columns[2].visible"
+            <el-table-column :label="td('sys.system.user.userNickName')" align="center" key="nickName" prop="nickName" v-if="columns[2].visible"
               :show-overflow-tooltip="true" />
-            <el-table-column :label="t('sys.system.user.dept')" align="center" key="deptName" prop="dept.deptName" v-if="columns[3].visible"
+            <el-table-column :label="td('sys.system.user.dept')" align="center" key="deptName" prop="dept.deptName" v-if="columns[3].visible"
               :show-overflow-tooltip="true" />
-            <el-table-column :label="t('sys.system.user.phone')" align="center" key="phonenumber" prop="phonenumber" v-if="columns[4].visible"
+            <el-table-column :label="td('sys.system.user.phone')" align="center" key="phonenumber" prop="phonenumber" v-if="columns[4].visible"
               width="120" />
-            <el-table-column label="状态" align="center" key="status" v-if="columns[5].visible">
+            <el-table-column :label="td('common.texts.status')" align="center" key="status" v-if="columns[5].visible">
               <template #default="scope">
                 <el-switch v-model="scope.row.status" active-value="0" inactive-value="1"
                   @change="handleStatusChange(scope.row)"></el-switch>
               </template>
             </el-table-column>
-            <el-table-column label="创建时间" align="center" prop="createTime" v-if="columns[6].visible" width="160">
+            <el-table-column :label="td('common.texts.createdTime')" align="center" prop="createTime" v-if="columns[6].visible" width="160">
               <template #default="scope">
                 <span>{{ parseTime(scope.row.createTime) }}</span>
               </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
+            <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
               <template #default="scope">
                 <!-- <el-tooltip content="修改" placement="top" v-if="scope.row.userId !== 1">
                                    <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:user:edit']"></el-button>
@@ -195,22 +195,22 @@
                                    <el-button link type="primary" icon="CircleCheck" @click="handleAuthRole(scope.row)" v-hasPermi="['system:user:edit']"></el-button>
                                 </el-tooltip> -->
                 <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-                  v-hasPermi="['system:user:edit']" v-if="scope.row.userId !== 1">修改
+                  v-hasPermi="['system:user:edit']" v-if="scope.row.userId !== 1">{{ td('common.button.update') }}
                 </el-button>
                 <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
-                  v-hasPermi="['system:user:remove']" v-if="scope.row.userId !== 1">删除
+                  v-hasPermi="['system:user:remove']" v-if="scope.row.userId !== 1">{{ td('common.button.delete') }}
                 </el-button>
                 <el-popover placement="bottom" :width="150" trigger="click" v-if="scope.row.userId !== 1">
                   <template #reference>
-                    <el-button link type="primary" icon="ArrowDown">更多</el-button>
+                    <el-button link type="primary" icon="ArrowDown">{{ td('common.button.more') }}</el-button>
                   </template>
                   <div style="width: 90px" class="butgdlist">
                     <el-button style="padding-left: 14px" link type="primary" icon="Key"
-                      @click="handleResetPwd(scope.row)" v-hasPermi="['system:user:resetPwd']">{{ t('sys.system.user.resetPassword') }}
+                      @click="handleResetPwd(scope.row)" v-hasPermi="['system:user:resetPwd']">{{ td('sys.system.user.resetPassword') }}
                     </el-button>
                     <el-button link type="primary" icon="CircleCheck" @click="handleAuthRole(scope.row)"
                       v-hasPermi="['system:user:edit']">
-                      {{ t('sys.system.user.assignRole') }}
+                      {{ td('sys.system.user.assignRole') }}
                     </el-button>
                   </div>
                 </el-popover>
@@ -229,14 +229,14 @@
       <el-form :model="form" :rules="rules" ref="userRef" label-width="80px">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="t('sys.system.user.userNickNameLabel')" prop="nickName">
-              <el-input v-model="form.nickName" :placeholder="t('sys.system.user.userNickNamePlaceholder')" maxlength="30" />
+            <el-form-item :label="td('sys.system.user.userNickNameLabel')" prop="nickName">
+              <el-input v-model="form.nickName" :placeholder="td('sys.system.user.userNickNamePlaceholder')" maxlength="30" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="t('sys.system.user.belongDept')" prop="deptId">
+            <el-form-item :label="td('sys.system.user.belongDept')" prop="deptId">
               <el-tree-select v-model="form.deptId" :data="deptOptions"
-                :props="{ value: 'id', label: 'label', children: 'children' }" value-key="id" :placeholder="t('sys.system.user.selectBelongDept')"
+                :props="{ value: 'id', label: 'label', children: 'children' }" value-key="id" :placeholder="td('sys.system.user.selectBelongDept')"
                 check-strictly />
               <!--                     <treeselect v-model="form.deptId" :options="deptOptions" :flat="true" :show-count="true" placeholder="请选择归属部门"-->
               <!--                                  :noResultsText="{{td('common.noData')}}" :multiple="true"-->
@@ -246,39 +246,39 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="t('sys.system.user.phone')" prop="phonenumber">
-              <el-input v-model="form.phonenumber" :placeholder="t('sys.system.user.phonePlaceholder')" maxlength="11" />
+            <el-form-item :label="td('sys.system.user.phone')" prop="phonenumber">
+              <el-input v-model="form.phonenumber" :placeholder="td('sys.system.user.phonePlaceholder')" maxlength="11" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="t('sys.system.user.email')" prop="email">
-              <el-input v-model="form.email" :placeholder="t('sys.system.user.emailPlaceholder')" maxlength="50" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item v-if="form.userId == undefined" :label="t('sys.system.user.userNameLabel')" prop="userName">
-              <el-input v-model="form.userName" :placeholder="t('sys.system.user.userNameLabelPlaceholder')" maxlength="30" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item v-if="form.userId == undefined" :label="t('sys.system.user.userPassword')" prop="password">
-              <el-input v-model="form.password" :placeholder="t('sys.system.user.userPasswordPlaceholder')" type="password" maxlength="20" show-password />
+            <el-form-item :label="td('sys.system.user.email')" prop="email">
+              <el-input v-model="form.email" :placeholder="td('sys.system.user.emailPlaceholder')" maxlength="50" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="t('sys.system.user.userGender')">
-              <el-select v-model="form.sex" :placeholder="t('sys.system.user.selectPlaceholder')">
+            <el-form-item v-if="form.userId == undefined" :label="td('sys.system.user.userNameLabel')" prop="userName">
+              <el-input v-model="form.userName" :placeholder="td('sys.system.user.userNameLabelPlaceholder')" maxlength="30" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item v-if="form.userId == undefined" :label="td('sys.system.user.userPassword')" prop="password">
+              <el-input v-model="form.password" :placeholder="td('sys.system.user.userPasswordPlaceholder')" type="password" maxlength="20" show-password />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item :label="td('sys.system.user.userGender')">
+              <el-select v-model="form.sex" :placeholder="td('sys.system.user.selectPlaceholder')">
                 <el-option v-for="dict in sys_user_sex" :key="dict.value" :label="dict.label"
                   :value="dict.value"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="状态">
+            <el-form-item :label="td('common.texts.status')">
               <el-radio-group v-model="form.status">
                 <el-radio v-for="dict in sys_normal_disable" :key="dict.value" :value="dict.value">{{ dict.label }}
                 </el-radio>
@@ -288,16 +288,16 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="t('sys.system.user.post')">
-              <el-select v-model="form.postIds" multiple :placeholder="t('sys.system.user.selectPlaceholder')" class="selectlist">
+            <el-form-item :label="td('sys.system.user.post')">
+              <el-select v-model="form.postIds" multiple :placeholder="td('sys.system.user.selectPlaceholder')" class="selectlist">
                 <el-option v-for="item in postOptions" :key="item.postId" :label="item.postName" :value="item.postId"
                   :disabled="item.status == 1"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="t('sys.system.user.role')" prop="roleIds">
-            <el-select v-model="form.roleIds" multiple :placeholder="t('sys.system.user.selectPlaceholder')" class="selectlist">
+            <el-form-item :label="td('sys.system.user.role')" prop="roleIds">
+            <el-select v-model="form.roleIds" multiple :placeholder="td('sys.system.user.selectPlaceholder')" class="selectlist">
                 <el-option v-for="item in roleOptions" :key="item.roleId" :label="item.roleName" :value="item.roleId"
                   :disabled="item.status == 1"></el-option>
               </el-select>
@@ -306,16 +306,16 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="备注">
-              <el-input v-model="form.remark" type="textarea" placeholder="请输入内容"></el-input>
+            <el-form-item :label="td('common.texts.remark')">
+              <el-input v-model="form.remark" type="textarea" :placeholder="td('sys.system.user.inputContent')"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="cancel">取 消</el-button>
-          <el-button type="primary" @click="submitForm">确 定</el-button>
+          <el-button @click="cancel">{{ td('common.button.cancel') }}</el-button>
+          <el-button type="primary" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -329,24 +329,24 @@
         <el-icon class="el-icon--upload">
           <upload-filled />
         </el-icon>
-        <div class="el-upload__text" v-html="t('sys.system.user.dragOrClick')"></div>
+        <div class="el-upload__text" v-html="td('sys.system.user.dragOrClick')"></div>
         <template #tip>
           <div class="el-upload__tip text-center">
             <div class="el-upload__tip">
               <el-checkbox v-model="upload.updateSupport" />
-              {{ t('sys.system.user.updateExistingData') }}
+              {{ td('sys.system.user.updateExistingData') }}
             </div>
-            <span>{{ t('sys.system.user.importTip') }}</span>
+            <span>{{ td('sys.system.user.importTip') }}</span>
             <el-link type="primary" :underline="false" style="font-size: 12px; vertical-align: baseline"
-              @click="importTemplate">{{ t('sys.system.user.downloadTemplate') }}
+              @click="importTemplate">{{ td('sys.system.user.downloadTemplate') }}
             </el-link>
           </div>
         </template>
       </el-upload>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="upload.open = false">取 消</el-button>
-          <el-button type="primary" @click="submitFileForm">确 定</el-button>
+          <el-button @click="upload.open = false">{{ td('common.button.cancel') }}</el-button>
+          <el-button type="primary" @click="submitFileForm">{{ td('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -368,7 +368,7 @@ import {
 } from "@/api/system/system/user.js";
 import { computed } from "vue"
 import useDefaultLang from "@/composables/useDefaultLang";
-const { td } = useDefaultLang();;
+const { td } = useDefaultLang();
 const router = useRouter();
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable, sys_user_sex } = proxy.useDict(
@@ -384,14 +384,14 @@ const phonenumberRules = computed(() => {
   const rules = [
     {
       pattern: /^1[3-9]\d{9}$/,
-      message: t('sys.system.user.phoneRequired'),
+      message: td('sys.system.user.phoneRequired'),
       trigger: "blur",
     },
   ];
   if (userId.value != 1) {
     rules.unshift({
       required: true,
-      message: t('sys.system.user.contactPhoneRequired'),
+      message: td('sys.system.user.contactPhoneRequired'),
       trigger: "blur",
     });
   }
@@ -402,28 +402,28 @@ const phonenumberRules = computed(() => {
 // 表单校验规则
 const rules = computed(() => ({
   userName: [
-    { required: true, message: t('sys.system.user.userNameRequired'), trigger: "blur" },
+    { required: true, message: td('sys.system.user.userNameRequired'), trigger: "blur" },
     {
       min: 2,
       max: 20,
-      message: t('sys.system.user.userNameLengthRange'),
+      message: td('sys.system.user.userNameLengthRange'),
       trigger: "blur",
     },
   ],
-  nickName: [{ required: true, message: t('sys.system.user.userNickNameRequired'), trigger: "blur" }],
-  roleIds: [{ required: true, message: t('sys.system.user.roleRequired'), trigger: "change" }],
-  deptId: [{ required: true, message: t('sys.system.user.deptRequired'), trigger: "change" }],
+  nickName: [{ required: true, message: td('sys.system.user.userNickNameRequired'), trigger: "blur" }],
+  roleIds: [{ required: true, message: td('sys.system.user.roleRequired'), trigger: "change" }],
+  deptId: [{ required: true, message: td('sys.system.user.deptRequired'), trigger: "change" }],
   password: [
-    { required: true, message: t('sys.system.user.passwordRequired'), trigger: "blur" },
+    { required: true, message: td('sys.system.user.passwordRequired'), trigger: "blur" },
     {
       min: 8,
       max: 20,
-      message: t('sys.system.user.passwordLengthRange'),
+      message: td('sys.system.user.passwordLengthRange'),
       trigger: "blur",
     },
     {
       pattern: /^[^<>"'|\\]+$/,
-      message: t('sys.system.user.invalidChars'),
+      message: td('sys.system.user.invalidChars'),
       trigger: "blur",
     },
     {
@@ -437,15 +437,15 @@ const rules = computed(() => ({
         };
 
         if (!strengthRegex.minLength.test(value)) {
-          callback(new Error(t('sys.system.user.passwordMinLength')));
+          callback(new Error(td('sys.system.user.passwordMinLength')));
         } else if (!strengthRegex.upperCase.test(value)) {
-          callback(new Error(t('sys.system.user.passwordUppercase')));
+          callback(new Error(td('sys.system.user.passwordUppercase')));
         } else if (!strengthRegex.lowerCase.test(value)) {
-          callback(new Error(t('sys.system.user.passwordLowercase')));
+          callback(new Error(td('sys.system.user.passwordLowercase')));
         } else if (!strengthRegex.number.test(value)) {
-          callback(new Error(t('sys.system.user.passwordDigit')));
+          callback(new Error(td('sys.system.user.passwordDigit')));
         } else if (!strengthRegex.specialChar.test(value)) {
-          callback(new Error(t('sys.system.user.passwordSpecial')));
+          callback(new Error(td('sys.system.user.passwordSpecial')));
         } else {
           callback();
         }
@@ -456,7 +456,7 @@ const rules = computed(() => ({
   email: [
     {
       type: "email",
-      message: t('sys.system.user.emailRequired'),
+      message: td('sys.system.user.emailRequired'),
       trigger: ["blur", "change"],
     },
   ],
@@ -531,13 +531,13 @@ const upload = reactive({
 });
 // 列显隐信息
 const columns = ref([
-  { key: 0, label: t('sys.system.user.columnVisibility.userNo'), visible: true },
-  { key: 1, label: t('sys.system.user.columnVisibility.userName'), visible: true },
-  { key: 2, label: t('sys.system.user.columnVisibility.userName'), visible: true },
-  { key: 3, label: t('sys.system.user.columnVisibility.dept'), visible: true },
-  { key: 4, label: t('sys.system.user.columnVisibility.phone'), visible: true },
-  { key: 5, label: t('common.display.status'), visible: true },
-  { key: 6, label: t('common.display.createTime'), visible: true },
+  { key: 0, label: td('sys.system.user.columnVisibility.userNo'), visible: true },
+  { key: 1, label: td('sys.system.user.columnVisibility.userName'), visible: true },
+  { key: 2, label: td('sys.system.user.columnVisibility.userName'), visible: true },
+  { key: 3, label: td('sys.system.user.columnVisibility.dept'), visible: true },
+  { key: 4, label: td('sys.system.user.columnVisibility.phone'), visible: true },
+  { key: 5, label: td('common.display.status'), visible: true },
+  { key: 6, label: td('common.display.createTime'), visible: true },
 ]);
 
 const data = reactive({
@@ -626,13 +626,13 @@ function resetQuery() {
 function handleDelete(row) {
   const userIds = row.userId || ids.value;
   proxy.$modal
-    .confirm(t('sys.system.user.confirmDelete', { id: userIds }))
+    .confirm(td('sys.system.user.confirmDelete', { id: userIds }))
     .then(function () {
       return delUser(userIds);
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
     })
     .catch(() => { });
 }
@@ -650,14 +650,14 @@ function handleExport() {
 
 /** 用户状态修改  */
 function handleStatusChange(row) {
-  let text = row.status === "0" ? t('sys.system.user.enable') : t('sys.system.user.disable');
+  let text = row.status === "0" ? td('sys.system.user.enable') : td('sys.system.user.disable');
   proxy.$modal
-    .confirm(t('sys.system.user.confirmStatusChange', { text, name: row.userName }))
+    .confirm(td('sys.system.user.confirmStatusChange', { text, name: row.userName }))
     .then(function () {
       return changeUserStatus(row.userId, row.status);
     })
     .then(() => {
-      proxy.$modal.msgSuccess(t('common.message.updateSuccess'));
+      proxy.$modal.msgSuccess(td('common.message.updateSuccess'));
     })
     .catch(function () {
       row.status = row.status === "0" ? "1" : "0";
@@ -687,17 +687,17 @@ function handleAuthRole(row) {
 /** 重置密码按钮操作 */
 function handleResetPwd(row) {
   proxy
-    .$prompt('请输入"' + row.userName + '"的新密码', "提示", {
-      confirmButtonText: "确定",
-      cancelButtonText: "取消",
+    .$promptd(td('sys.system.user.resetPasswordPrompt', { name: row.userName }), td('common.message.prompt'), {
+      confirmButtonText: td('common.button.confirm'),
+      cancelButtonText: td('common.button.cancel'),
       closeOnClickModal: false,
       inputType: 'password',
       inputPattern: /^.{8,20}$/, // 密码长度要求在 8 到 20 之间
-      inputErrorMessage: t('sys.system.user.resetPasswordInputError'),
+      inputErrorMessage: td('sys.system.user.resetPasswordInputError'),
       inputValidator: (value) => {
         // 校验密码包含的非法字符
         if (/<|>|"|'|\||\\/.test(value)) {
-          return t('sys.system.user.invalidChars');
+          return td('sys.system.user.invalidChars');
         }
         // 校验密码强度
         const strengthRegex = {
@@ -708,22 +708,22 @@ function handleResetPwd(row) {
         };
 
         if (!strengthRegex.upperCase.test(value)) {
-          return t('sys.system.user.passwordUppercase');
+          return td('sys.system.user.passwordUppercase');
         }
         if (!strengthRegex.lowerCase.test(value)) {
-          return t('sys.system.user.passwordLowercase');
+          return td('sys.system.user.passwordLowercase');
         }
         if (!strengthRegex.number.test(value)) {
-          return t('sys.system.user.passwordDigit');
+          return td('sys.system.user.passwordDigit');
         }
         if (!strengthRegex.specialChar.test(value)) {
-          return t('sys.system.user.passwordSpecial');
+          return td('sys.system.user.passwordSpecial');
         }
       },
     })
     .then(({ value }) => {
       resetUserPwd(row.userId, value).then((response) => {
-        proxy.$modal.msgSuccess(t('sys.system.user.resetPasswordSuccess', { password: value }));
+        proxy.$modal.msgSuccess(td('sys.system.user.resetPasswordSuccess', { password: value }));
       });
     })
     .catch(() => {
@@ -740,7 +740,7 @@ function handleSelectionChange(selection) {
 
 /** 导入按钮操作 */
 function handleImport() {
-  upload.title = t('sys.system.user.userImport');
+  upload.title = td('sys.system.user.userImport');
   upload.open = true;
 }
 
@@ -767,7 +767,7 @@ const handleFileSuccess = (response, file, fileList) => {
     "<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +
     response.msg +
     "</div>",
-    t('sys.system.user.importResult'),
+    td('sys.system.user.importResult'),
     { dangerouslyUseHTMLString: true }
   );
   getList();
@@ -810,7 +810,7 @@ function handleAdd() {
     postOptions.value = response.posts;
     roleOptions.value = response.roles;
     open.value = true;
-    title.value = t('sys.system.user.addUser');
+    title.value = td('sys.system.user.addUser');
     form.value.password = initPassword.value;
   });
 }
@@ -826,7 +826,7 @@ function handleUpdate(row) {
     form.value.postIds = response.postIds;
     form.value.roleIds = response.roleIds;
     open.value = true;
-    title.value = t('sys.system.user.editUser');
+    title.value = td('sys.system.user.editUser');
     form.password = "";
   });
 }
@@ -837,13 +837,13 @@ function submitForm() {
     if (valid) {
       if (form.value.userId != undefined) {
         updateUser(form.value).then((response) => {
-          proxy.$modal.msgSuccess("修改成功");
+          proxy.$modal.msgSuccess(td('common.message.editSuccess'));
           open.value = false;
           getList();
         });
       } else {
         addUser(form.value).then((response) => {
-          proxy.$modal.msgSuccess("新增成功");
+          proxy.$modal.msgSuccess(td('common.message.addSuccess'));
           open.value = false;
           getList();
         });

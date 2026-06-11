@@ -19,10 +19,10 @@
   <div class="app-container" ref="app-container">
     <div class="pagecont-top" v-show="showSearch">
       <el-form class="btn-style" :model="queryParams" ref="queryForm" :inline="true" label-width="68px">
-        <el-form-item :label="t('sys.subject.subjectName')" prop="name">
+        <el-form-item :label="td('sys.subject.subjectName')" prop="name">
           <el-input
             v-model="queryParams.name"
-            :placeholder="t('sys.subject.subjectNamePlaceholder')"
+            :placeholder="td('sys.subject.subjectNamePlaceholder')"
             class="el-form-input-width"
             clearable
             @keyup.enter.native="handleQuery"
@@ -30,10 +30,10 @@
         </el-form-item>
         <el-form-item>
               <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
+                <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
               </el-button>
               <el-button @click="resetQuery" @mousedown="e => e.preventDefault()">
-                <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
+                <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
               </el-button>
         </el-form-item>
       </el-form>
@@ -49,7 +49,7 @@
             icon="plus"
             @click="handleAdd"
             v-hasPermi="['ca:subject:add']"
-          >{{ t('common.button.add') }}</el-button>
+          >{{ td('common.button.add') }}</el-button>
         </el-col>
       </el-row>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
@@ -57,15 +57,15 @@
 
       <el-table stripe height="60vh" v-loading="loading" :data="subjectList" @selection-change="handleSelectionChange">
         <el-table-column label="ID" align="center" prop="id" />
-        <el-table-column :label="t('sys.subject.subjectName')" align="center" prop="name" :show-overflow-tooltip="true" />
-        <el-table-column :label="t('sys.subject.commonName')" align="center" prop="cn" :show-overflow-tooltip="true" />
-        <el-table-column :label="t('sys.subject.dept')" align="center" prop="ou" />
-        <el-table-column :label="t('sys.subject.orgName')" align="center" prop="o" />
-        <el-table-column :label="t('sys.subject.cityName')" align="center" prop="l" />
-        <el-table-column :label="t('sys.subject.provinceName')" align="center" prop="st" />
-        <el-table-column :label="t('sys.subject.country')" align="center" prop="c" />
-  <!--      <el-table-column :label="t('common.texts.remark')" align="center" prop="remark" />-->
-        <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width"  fixed="right" width="240">
+        <el-table-column :label="td('sys.subject.subjectName')" align="center" prop="name" :show-overflow-tooltip="true" />
+        <el-table-column :label="td('sys.subject.commonName')" align="center" prop="cn" :show-overflow-tooltip="true" />
+        <el-table-column :label="td('sys.subject.dept')" align="center" prop="ou" />
+        <el-table-column :label="td('sys.subject.orgName')" align="center" prop="o" />
+        <el-table-column :label="td('sys.subject.cityName')" align="center" prop="l" />
+        <el-table-column :label="td('sys.subject.provinceName')" align="center" prop="st" />
+        <el-table-column :label="td('sys.subject.country')" align="center" prop="c" />
+  <!--      <el-table-column :label="td('common.texts.remark')" align="center" prop="remark" />-->
+        <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width"  fixed="right" width="240">
           <template #default="scope">
             <el-button
                 link
@@ -73,14 +73,14 @@
                 icon="download"
                 @click="downloadFiles(scope.row)"
                 v-hasPermi="['ca:subject:remove']"
-            >{{ t('common.button.download') }}</el-button>
+            >{{ td('common.button.download') }}</el-button>
   <!--          <el-button-->
   <!--            size="mini"-->
   <!--            type="text"-->
   <!--            icon="el-icon-edit"-->
   <!--            @click="handleUpdate(scope.row)"-->
   <!--            v-hasPermi="['ca:subject:edit']"-->
-  <!--          >{{ t('common.button.update') }}</el-button>-->
+  <!--          >{{ td('common.button.update') }}</el-button>-->
             <el-button
                 link
                 type="primary"
@@ -88,7 +88,7 @@
                 icon="Delete"
                 @click="handleDelete(scope.row)"
                 v-hasPermi="['ca:subject:remove']"
-            >{{ t('common.button.delete') }}</el-button>
+            >{{ td('common.button.delete') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -107,46 +107,46 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="t('sys.subject.subjectName')" prop="name">
-              <el-input v-model="form.name" :placeholder="t('sys.subject.subjectNamePlaceholder')" />
+            <el-form-item :label="td('sys.subject.subjectName')" prop="name">
+              <el-input v-model="form.name" :placeholder="td('sys.subject.subjectNamePlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="t('sys.subject.commonName')" prop="cn">
-              <el-input v-model="form.cn" :placeholder="t('sys.subject.commonNamePlaceholder')" />
+            <el-form-item :label="td('sys.subject.commonName')" prop="cn">
+              <el-input v-model="form.cn" :placeholder="td('sys.subject.commonNamePlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="t('sys.subject.deptName')" prop="ou">
-              <el-input v-model="form.ou" :placeholder="t('sys.subject.deptNamePlaceholder')" />
+            <el-form-item :label="td('sys.subject.deptName')" prop="ou">
+              <el-input v-model="form.ou" :placeholder="td('sys.subject.deptNamePlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="t('sys.subject.orgName')" prop="o">
-              <el-input v-model="form.o" :placeholder="t('sys.subject.orgNamePlaceholder')" />
+            <el-form-item :label="td('sys.subject.orgName')" prop="o">
+              <el-input v-model="form.o" :placeholder="td('sys.subject.orgNamePlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="t('sys.subject.cityName')" prop="l">
-              <el-input v-model="form.l" :placeholder="t('sys.subject.cityNamePlaceholder')" />
+            <el-form-item :label="td('sys.subject.cityName')" prop="l">
+              <el-input v-model="form.l" :placeholder="td('sys.subject.cityNamePlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="t('sys.subject.province')" prop="st">
-              <el-input v-model="form.st" :placeholder="t('sys.subject.provincePlaceholder')" />
+            <el-form-item :label="td('sys.subject.province')" prop="st">
+              <el-input v-model="form.st" :placeholder="td('sys.subject.provincePlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="t('sys.subject.countryName')" prop="c">
-              <el-input v-model="form.c" :placeholder="t('sys.subject.countryPlaceholder')" />
+            <el-form-item :label="td('sys.subject.countryName')" prop="c">
+              <el-input v-model="form.c" :placeholder="td('sys.subject.countryPlaceholder')" />
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="cancel">{{ t('common.button.cancel') }}</el-button>
-          <el-button type="primary" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
+          <el-button @click="cancel">{{ td('common.button.cancel') }}</el-button>
+          <el-button type="primary" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -155,15 +155,14 @@
 
 <script>
 import { listSubject, getSubject, delSubject, addSubject, updateSubject } from "@/api/system/ca/subject.js";
+import useDefaultLang from "@/composables/useDefaultLang";
 import JSZip from 'jszip';
 import {red} from "chalk";
-import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 export default {
   name: "Subject",
   setup() {
-    const { t } = useI18n();
     return { t };
   },
   data() {
@@ -207,25 +206,25 @@ export default {
       // 表单校验
       rules: {
         name: [
-          { required: true, message: this.t('sys.subject.subjectNameRequired'), trigger: "blur" }
+          { required: true, message: this.td('sys.subject.subjectNameRequired'), trigger: "blur" }
         ],
         cn: [
-          { required: true, message: this.t('sys.subject.commonNameRequired'), trigger: "blur" }
+          { required: true, message: this.td('sys.subject.commonNameRequired'), trigger: "blur" }
         ],
         ou: [
-          { required: true, message: this.t('sys.subject.orgUnitRequired'), trigger: "blur" }
+          { required: true, message: this.td('sys.subject.orgUnitRequired'), trigger: "blur" }
         ],
         o: [
-          { required: true, message: this.t('sys.subject.orgNameRequired'), trigger: "blur" }
+          { required: true, message: this.td('sys.subject.orgNameRequired'), trigger: "blur" }
         ],
         l: [
-          { required: true, message: this.t('sys.subject.cityNameRequired'), trigger: "blur" }
+          { required: true, message: this.td('sys.subject.cityNameRequired'), trigger: "blur" }
         ],
         st: [
-          { required: true, message: this.t('sys.subject.provinceNameRequired'), trigger: "blur" }
+          { required: true, message: this.td('sys.subject.provinceNameRequired'), trigger: "blur" }
         ],
         c: [
-          { required: true, message: this.t('sys.subject.countryRequired'), trigger: "blur" }
+          { required: true, message: this.td('sys.subject.countryRequired'), trigger: "blur" }
         ],
       }
     };
@@ -311,7 +310,7 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = this.t('sys.subject.addTitle');
+      this.title = this.td('sys.subject.addTitle');
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -320,7 +319,7 @@ export default {
       getSubject(id).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = this.t('sys.subject.editTitle');
+        this.title = this.td('sys.subject.editTitle');
       });
     },
     /** 提交按钮 */
@@ -329,13 +328,13 @@ export default {
         if (valid) {
           if (this.form.id != null) {
             updateSubject(this.form).then(response => {
-              this.$modal.msgSuccess(t('common.message.editSuccess'));
+              this.$modal.msgSuccess(td('common.message.editSuccess'));
               this.open = false;
               this.getList();
             });
           } else {
             addSubject(this.form).then(response => {
-              this.$modal.msgSuccess(t('common.message.addSuccess'));
+              this.$modal.msgSuccess(td('common.message.addSuccess'));
               this.open = false;
               this.getList();
             });
@@ -346,11 +345,11 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm(this.t('sys.subject.confirmDelete', { id: ids })).then(function() {
+      this.$modal.confirm(this.td('sys.subject.confirmDelete', { id: ids })).then(function() {
         return delSubject(ids);
       }).then(() => {
         this.getList();
-        this.$modal.msgSuccess(t('common.message.deleteSuccess'));
+        this.$modal.msgSuccess(td('common.message.deleteSuccess'));
       }).catch(() => {});
     },
     /** 导出按钮操作 */

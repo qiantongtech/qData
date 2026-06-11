@@ -19,28 +19,28 @@
    <div class="app-container" ref="app-container">
       <div class="pagecont-top" v-show="showSearch">
          <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="68px">
-            <el-form-item :label="t('sys.system.dictType.dictName')" prop="dictName">
+            <el-form-item :label="td('sys.system.dictType.dictName')" prop="dictName">
                <el-input
                   v-model="queryParams.dictName"
-                  :placeholder="t('sys.system.dictType.dictNamePlaceholder')"
+                  :placeholder="td('sys.system.dictType.dictNamePlaceholder')"
                   clearable
                   class="el-form-input-width"
                   @keyup.enter="handleQuery"
                />
             </el-form-item>
-            <el-form-item :label="t('sys.system.dictType.dictType')" prop="dictType">
+            <el-form-item :label="td('sys.system.dictType.dictType')" prop="dictType">
                <el-input
                   v-model="queryParams.dictType"
-                  :placeholder="t('sys.system.dictType.dictTypePlaceholder')"
+                  :placeholder="td('sys.system.dictType.dictTypePlaceholder')"
                   clearable
                   class="el-form-input-width"
                   @keyup.enter="handleQuery"
                />
             </el-form-item>
-            <el-form-item :label="t('common.texts.status')" prop="status">
+            <el-form-item :label="td('common.texts.status')" prop="status">
                <el-select
                   v-model="queryParams.status"
-                  :placeholder="t('sys.system.dictType.dictStatus')"
+                  :placeholder="td('sys.system.dictType.dictStatus')"
                   clearable
                   class="el-form-input-width"
                >
@@ -52,7 +52,7 @@
                   />
                </el-select>
             </el-form-item>
-            <el-form-item :label="t('common.texts.createdTime')">
+            <el-form-item :label="td('common.texts.createdTime')">
                <el-date-picker
                   class="el-form-input-width"
                   v-model="dateRange"
@@ -65,10 +65,10 @@
             </el-form-item>
             <el-form-item>
                <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                  <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
+                  <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
                </el-button>
                <el-button @click="resetQuery" @mousedown="e => e.preventDefault()">
-                  <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
+                  <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
                </el-button>
             </el-form-item>
          </el-form>
@@ -84,7 +84,7 @@
                      icon="Plus"
                      @click="handleAdd"
                      v-hasPermi="['system:dict:add']"
-                  >{{ t('common.button.add') }}</el-button>
+                  >{{ td('common.button.add') }}</el-button>
                </el-col>
                <el-col :span="1.5">
                   <el-button
@@ -94,7 +94,7 @@
                      :disabled="single"
                      @click="handleUpdate"
                      v-hasPermi="['system:dict:edit']"
-                  >{{ t('common.button.update') }}</el-button>
+                  >{{ td('common.button.update') }}</el-button>
                </el-col>
                <el-col :span="1.5">
                   <el-button
@@ -104,7 +104,7 @@
                      :disabled="multiple"
                      @click="handleDelete"
                      v-hasPermi="['system:dict:remove']"
-                  >{{ t('common.button.delete') }}</el-button>
+                  >{{ td('common.button.delete') }}</el-button>
                </el-col>
                <el-col :span="1.5">
                   <el-button
@@ -113,7 +113,7 @@
                      icon="Download"
                      @click="handleExport"
                      v-hasPermi="['system:dict:export']"
-                  >{{ t('common.button.export') }}</el-button>
+                  >{{ td('common.button.export') }}</el-button>
                </el-col>
               <el-col :span="1.5">
               <el-button
@@ -122,7 +122,7 @@
                   icon="Download"
                   :disabled="multiple"
                   @click="handleEnum"
-              >{{ t('common.button.download') }}</el-button>
+              >{{ td('common.button.download') }}</el-button>
               </el-col>
               <el-col :span="1.5">
                   <el-button
@@ -131,7 +131,7 @@
                      icon="Refresh"
                      @click="handleRefreshCache"
                      v-hasPermi="['system:dict:remove']"
-                  >{{ t('sys.system.dictType.refreshCache') }}</el-button>
+                  >{{ td('sys.system.dictType.refreshCache') }}</el-button>
                </el-col>
             </el-row>
             <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
@@ -139,31 +139,31 @@
 
          <el-table stripe height="60vh" v-loading="loading" :data="typeList" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55" align="center" />
-            <el-table-column :label="t('sys.system.dictType.dictNo')" align="center" prop="dictId" />
-            <el-table-column :label="t('sys.system.dictType.dictName')" align="center" prop="dictName" :show-overflow-tooltip="true"/>
-            <el-table-column :label="t('sys.system.dictType.dictType')" align="center" :show-overflow-tooltip="true">
+            <el-table-column :label="td('sys.system.dictType.dictNo')" align="center" prop="dictId" />
+            <el-table-column :label="td('sys.system.dictType.dictName')" align="center" prop="dictName" :show-overflow-tooltip="true"/>
+            <el-table-column :label="td('sys.system.dictType.dictType')" align="center" :show-overflow-tooltip="true">
                <template #default="scope">
                   <router-link :to="'/system/dict-data/index/' + scope.row.dictId" class="link-type">
                      <span>{{ scope.row.dictType }}</span>
                   </router-link>
                </template>
             </el-table-column>
-            <el-table-column :label="t('common.texts.status')" align="center" prop="status">
+            <el-table-column :label="td('common.texts.status')" align="center" prop="status">
                <template #default="scope">
                   <dict-tag :options="sys_normal_disable" :value="scope.row.status" />
                </template>
             </el-table-column>
-            <el-table-column :label="t('common.texts.remark')" align="center" prop="remark" :show-overflow-tooltip="true" />
-            <el-table-column :label="t('common.texts.createdTime')" align="center" prop="createTime" width="180">
+            <el-table-column :label="td('common.texts.remark')" align="center" prop="remark" :show-overflow-tooltip="true" />
+            <el-table-column :label="td('common.texts.createdTime')" align="center" prop="createTime" width="180">
                <template #default="scope">
                   <span>{{ parseTime(scope.row.createTime) }}</span>
                </template>
             </el-table-column>
-            <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
+            <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
                <template #default="scope">
-                  <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:dict:edit']">{{ t('common.button.update') }}</el-button>
-                  <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['system:dict:remove']">{{ t('common.button.delete') }}</el-button>
-                  <el-button link type="primary" icon="Download" @click="handleEnum(scope.row)" >{{ t('common.button.download') }}</el-button>
+                  <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:dict:edit']">{{ td('common.button.update') }}</el-button>
+                  <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['system:dict:remove']">{{ td('common.button.delete') }}</el-button>
+                  <el-button link type="primary" icon="Download" @click="handleEnum(scope.row)" >{{ td('common.button.download') }}</el-button>
                </template>
             </el-table-column>
          </el-table>
@@ -182,17 +182,17 @@
          <el-form ref="dictRef" :model="form" :rules="rules" label-width="80px">
             <el-row :gutter="20">
                <el-col :span="12">
-                  <el-form-item :label="t('sys.system.dictType.dictName')" prop="dictName">
-                     <el-input v-model="form.dictName" :placeholder="t('sys.system.dictType.dictNamePlaceholder')" />
+                  <el-form-item :label="td('sys.system.dictType.dictName')" prop="dictName">
+                     <el-input v-model="form.dictName" :placeholder="td('sys.system.dictType.dictNamePlaceholder')" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="t('sys.system.dictType.dictType')" prop="dictType">
-                     <el-input v-model="form.dictType" :placeholder="t('sys.system.dictType.dictTypePlaceholder')" />
+                  <el-form-item :label="td('sys.system.dictType.dictType')" prop="dictType">
+                     <el-input v-model="form.dictType" :placeholder="td('sys.system.dictType.dictTypePlaceholder')" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="t('common.texts.status')" prop="status">
+                  <el-form-item :label="td('common.texts.status')" prop="status">
                      <el-radio-group v-model="form.status">
                         <el-radio
                            v-for="dict in sys_normal_disable"
@@ -203,16 +203,16 @@
                   </el-form-item>
                </el-col>
                <el-col :span="24">
-                  <el-form-item :label="t('common.texts.remark')" prop="remark">
-                     <el-input v-model="form.remark" type="textarea" :placeholder="t('sys.dictType.inputContent')"></el-input>
+                  <el-form-item :label="td('common.texts.remark')" prop="remark">
+                     <el-input v-model="form.remark" type="textarea" :placeholder="td('sys.dictType.inputContent')"></el-input>
                   </el-form-item>
                </el-col>
             </el-row>
          </el-form>
          <template #footer>
             <div class="dialog-footer">
-               <el-button @click="cancel">{{ t('common.button.cancel') }}</el-button>
-               <el-button type="primary" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
+               <el-button @click="cancel">{{ td('common.button.cancel') }}</el-button>
+               <el-button type="primary" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
             </div>
          </template>
       </el-dialog>
@@ -220,13 +220,11 @@
 </template>
 
 <script setup name="Dict">
-import { useI18n } from 'vue-i18n'
 import useDictStore from '@/store/system/dict.js'
 import { listType, getType, delType, addType, updateType, refreshCache } from "@/api/system/system/dict/type.js";
 import {genCode} from "@/api/system/tool/gen.js";
 import useDefaultLang from "@/composables/useDefaultLang";
 
-const { t } = useI18n();
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
@@ -253,8 +251,8 @@ const data = reactive({
     status: undefined
   },
   rules: {
-    dictName: [{ required: true, message: t('sys.system.dictType.dictNameRequired'), trigger: "blur" }],
-    dictType: [{ required: true, message: t('sys.system.dictType.dictTypeRequired'), trigger: "blur" }]
+    dictName: [{ required: true, message: td('sys.system.dictType.dictNameRequired'), trigger: "blur" }],
+    dictType: [{ required: true, message: td('sys.system.dictType.dictTypeRequired'), trigger: "blur" }]
   },
 });
 
@@ -305,7 +303,7 @@ function resetQuery() {
 function handleAdd() {
   reset();
   open.value = true;
-  title.value = t('sys.system.dictType.addTitle');
+  title.value = td('sys.system.dictType.addTitle');
 }
 
 /** 多选框选中数据 */
@@ -324,7 +322,7 @@ function handleUpdate(row) {
   getType(dictId).then(response => {
     form.value = response.data;
     open.value = true;
-    title.value = t('sys.system.dictType.editTitle');
+    title.value = td('sys.system.dictType.editTitle');
   });
 }
 
@@ -334,13 +332,13 @@ function submitForm() {
     if (valid) {
       if (form.value.dictId != undefined) {
         updateType(form.value).then(response => {
-          proxy.$modal.msgSuccess(t('common.message.editSuccess'));
+          proxy.$modal.msgSuccess(td('common.message.editSuccess'));
           open.value = false;
           getList();
         });
       } else {
         addType(form.value).then(response => {
-          proxy.$modal.msgSuccess(t('common.message.addSuccess'));
+          proxy.$modal.msgSuccess(td('common.message.addSuccess'));
           open.value = false;
           getList();
         });
@@ -352,11 +350,11 @@ function submitForm() {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const dictIds = row.dictId || ids.value;
-  proxy.$modal.confirm(t('sys.system.dictType.confirmDelete', { id: dictIds })).then(function() {
+  proxy.$modal.confirm(td('sys.system.dictType.confirmDelete', { id: dictIds })).then(function() {
     return delType(dictIds);
   }).then(() => {
     getList();
-    proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+    proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
   }).catch(() => {});
 }
 
@@ -370,7 +368,7 @@ function handleExport() {
 /** 刷新缓存按钮操作 */
 function handleRefreshCache() {
   refreshCache().then(() => {
-    proxy.$modal.msgSuccess(t('sys.system.dictType.refreshSuccess'));
+    proxy.$modal.msgSuccess(td('sys.system.dictType.refreshSuccess'));
     useDictStore().cleanDict();
   });
 }
@@ -379,7 +377,7 @@ function handleRefreshCache() {
 function handleEnum(row) {
   const dtNames = row.dictType || dictTypes.value;
   if (dtNames == "") {
-    proxy.$modal.msgError(t('sys.system.dictType.selectDictToGenerate'));
+    proxy.$modal.msgError(td('sys.system.dictType.selectDictToGenerate'));
     return;
   }
 

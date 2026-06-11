@@ -19,15 +19,15 @@
   <div class="app-container" ref="app-container">
     <div class="pagecont-top" v-show="showSearch">
       <el-form class="btn-style" :model="queryParams" ref="queryRef" v-show="showSearch" :inline="true">
-        <el-form-item :label="t('sys.system.roleAuth.userName')" prop="userName">
-          <el-input v-model="queryParams.userName" :placeholder="t('sys.system.roleAuth.userNamePlaceholder')" clearable @keyup.enter="handleQuery" />
+        <el-form-item :label="td('sys.system.roleAuth.userName')" prop="userName">
+          <el-input v-model="queryParams.userName" :placeholder="td('sys.system.roleAuth.userNamePlaceholder')" clearable @keyup.enter="handleQuery" />
         </el-form-item>
-        <el-form-item :label="t('sys.system.roleAuth.phone')" prop="phonenumber">
-          <el-input v-model="queryParams.phonenumber" :placeholder="t('sys.system.roleAuth.phonePlaceholder')" clearable @keyup.enter="handleQuery" />
+        <el-form-item :label="td('sys.system.roleAuth.phone')" prop="phonenumber">
+          <el-input v-model="queryParams.phonenumber" :placeholder="td('sys.system.roleAuth.phonePlaceholder')" clearable @keyup.enter="handleQuery" />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" icon="Search" @click="handleQuery">{{ t('common.button.query') }}</el-button>
-          <el-button icon="Refresh" @click="resetQuery">{{ t('common.button.reset') }}</el-button>
+          <el-button type="primary" icon="Search" @click="handleQuery">{{ td('common.button.query') }}</el-button>
+          <el-button icon="Refresh" @click="resetQuery">{{ td('common.button.reset') }}</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -37,14 +37,14 @@
         <el-row :gutter="10" class="btn-style">
           <el-col :span="1.5">
             <el-button type="primary" plain icon="Plus" @click="openSelectUser"
-              v-hasPermi="['system:role:add']">{{ t('sys.system.roleAuth.addUser') }}</el-button>
+              v-hasPermi="['system:role:add']">{{ td('sys.system.roleAuth.addUser') }}</el-button>
           </el-col>
           <el-col :span="1.5">
             <el-button type="danger" plain icon="CircleClose" :disabled="multiple" @click="cancelAuthUserAll"
-              v-hasPermi="['system:role:remove']">{{ t('sys.system.roleAuth.batchCancelAuth') }}</el-button>
+              v-hasPermi="['system:role:remove']">{{ td('sys.system.roleAuth.batchCancelAuth') }}</el-button>
           </el-col>
           <el-col :span="1.5">
-            <el-button type="warning" plain icon="Close" @click="handleClose">{{ t('common.button.close') }}</el-button>
+            <el-button type="warning" plain icon="Close" @click="handleClose">{{ td('common.button.close') }}</el-button>
           </el-col>
         </el-row>
         <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
@@ -52,24 +52,24 @@
 
       <el-table stripe height="60vh" v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center" />
-        <el-table-column :label="t('sys.system.roleAuth.userName')" prop="userName" :show-overflow-tooltip="true" />
-        <el-table-column :label="t('sys.system.roleAuth.userNickName')" prop="nickName" :show-overflow-tooltip="true" />
-        <el-table-column :label="t('sys.system.roleAuth.email')" prop="email" :show-overflow-tooltip="true" />
-        <el-table-column :label="t('sys.system.roleAuth.mobile')" prop="phonenumber" :show-overflow-tooltip="true" />
-        <el-table-column :label="t('common.texts.status')" align="center" prop="status">
+        <el-table-column :label="td('sys.system.roleAuth.userName')" prop="userName" :show-overflow-tooltip="true" />
+        <el-table-column :label="td('sys.system.roleAuth.userNickName')" prop="nickName" :show-overflow-tooltip="true" />
+        <el-table-column :label="td('sys.system.roleAuth.email')" prop="email" :show-overflow-tooltip="true" />
+        <el-table-column :label="td('sys.system.roleAuth.mobile')" prop="phonenumber" :show-overflow-tooltip="true" />
+        <el-table-column :label="td('common.texts.status')" align="center" prop="status">
           <template #default="scope">
             <dict-tag :options="sys_normal_disable" :value="scope.row.status" />
           </template>
         </el-table-column>
-        <el-table-column :label="t('common.texts.createdTime')" align="center" prop="createTime" width="180">
+        <el-table-column :label="td('common.texts.createdTime')" align="center" prop="createTime" width="180">
           <template #default="scope">
             <span>{{ parseTime(scope.row.createTime) }}</span>
           </template>
         </el-table-column>
-        <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width">
+        <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width">
           <template #default="scope">
             <el-button link type="primary" icon="CircleClose" @click="cancelAuthUser(scope.row)"
-              v-hasPermi="['system:role:remove']">{{ t('sys.system.roleAuth.cancelAuth') }}</el-button>
+              v-hasPermi="['system:role:remove']">{{ td('sys.system.roleAuth.cancelAuth') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -82,11 +82,11 @@
 </template>
 
 <script setup name="AuthUser">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang";
 import selectUser from "./selectUser.vue";
 import { allocatedUserList, authUserCancel, authUserCancelAll } from "@/api/system/system/role.js";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const route = useRoute();
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
@@ -148,13 +148,13 @@ function openSelectUser() {
 /** 取消授权按钮操作 */
 function cancelAuthUser(row) {
   proxy.$modal
-    .confirm(t('sys.system.roleAuth.confirmCancelAuth', { name: row.userName }))
+    .confirm(td('sys.system.roleAuth.confirmCancelAuth', { name: row.userName }))
     .then(function () {
       return authUserCancel({ userId: row.userId, roleId: queryParams.roleId });
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess(t('sys.system.roleAuth.cancelAuthSuccess'));
+      proxy.$modal.msgSuccess(td('sys.system.roleAuth.cancelAuthSuccess'));
     })
     .catch(() => { });
 }
@@ -164,13 +164,13 @@ function cancelAuthUserAll(row) {
   const roleId = queryParams.roleId;
   const uIds = userIds.value.join(",");
   proxy.$modal
-    .confirm(t('sys.system.roleAuth.confirmBatchCancel'))
+    .confirm(td('sys.system.roleAuth.confirmBatchCancel'))
     .then(function () {
       return authUserCancelAll({ roleId: roleId, userIds: uIds });
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess(t('sys.system.roleAuth.cancelAuthSuccess'));
+      proxy.$modal.msgSuccess(td('sys.system.roleAuth.cancelAuthSuccess'));
     })
     .catch(() => { });
 }

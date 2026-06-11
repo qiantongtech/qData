@@ -19,25 +19,25 @@
   <div class="app-container" ref="app-container">
     <div class="pagecont-top" v-show="showSearch">
       <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="68px">
-        <el-form-item :label="t('sys.tool.genIndex.tableName')" prop="tableName">
+        <el-form-item :label="td('sys.tool.genIndex.tableName')" prop="tableName">
           <el-input
             v-model="queryParams.tableName"
-            :placeholder="t('sys.tool.genIndex.tableNamePlaceholder')"
+            :placeholder="td('sys.tool.genIndex.tableNamePlaceholder')"
             clearable
             class="el-form-input-width"
             @keyup.enter="handleQuery"
           />
         </el-form-item>
-        <el-form-item :label="t('sys.tool.genIndex.tableDesc')" prop="tableComment">
+        <el-form-item :label="td('sys.tool.genIndex.tableDesc')" prop="tableComment">
           <el-input
             v-model="queryParams.tableComment"
-            :placeholder="t('sys.tool.genIndex.tableDescPlaceholder')"
+            :placeholder="td('sys.tool.genIndex.tableDescPlaceholder')"
             clearable
             class="el-form-input-width"
             @keyup.enter="handleQuery"
           />
         </el-form-item>
-        <el-form-item :label="t('common.texts.createdTime')">
+        <el-form-item :label="td('common.texts.createdTime')">
           <el-date-picker
             class="el-form-input-width"
             v-model="dateRange"
@@ -50,10 +50,10 @@
         </el-form-item>
         <el-form-item>
               <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
+                <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
               </el-button>
               <el-button @click="resetQuery" @mousedown="e => e.preventDefault()">
-                <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
+                <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
               </el-button>
         </el-form-item>
       </el-form>
@@ -70,7 +70,7 @@
             :disabled="multiple"
             @click="handleGenTable"
             v-hasPermi="['tool:gen:code']"
-          >{{ t('sys.tool.genIndex.generate') }}</el-button>
+          >{{ td('sys.tool.genIndex.generate') }}</el-button>
         </el-col>
         <el-col :span="1.5">
           <el-button
@@ -79,7 +79,7 @@
             icon="Plus"
             @click="openCreateTable"
             v-hasRole="['admin']"
-          >{{ t('sys.tool.genIndex.create') }}</el-button>
+          >{{ td('sys.tool.genIndex.create') }}</el-button>
         </el-col>
         <el-col :span="1.5">
           <el-button
@@ -88,7 +88,7 @@
             icon="Upload"
             @click="openImportTable"
             v-hasPermi="['tool:gen:import']"
-          >{{ t('common.button.import') }}</el-button>
+          >{{ td('common.button.import') }}</el-button>
         </el-col>
         <el-col :span="1.5">
           <el-button
@@ -98,7 +98,7 @@
             :disabled="single"
             @click="handleEditTable"
             v-hasPermi="['tool:gen:edit']"
-          >{{ t('common.button.update') }}</el-button>
+          >{{ td('common.button.update') }}</el-button>
         </el-col>
         <el-col :span="1.5">
           <el-button
@@ -108,7 +108,7 @@
             :disabled="multiple"
             @click="handleDelete"
             v-hasPermi="['tool:gen:remove']"
-          >{{ t('common.button.delete') }}</el-button>
+          >{{ td('common.button.delete') }}</el-button>
         </el-col>
       </el-row>
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
@@ -116,46 +116,46 @@
 
       <el-table stripe height="60vh" v-loading="loading" :data="tableList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" align="center" width="55"></el-table-column>
-      <el-table-column :label="t('sys.tool.genIndex.index')" type="index" width="80" align="center">
+      <el-table-column :label="td('sys.tool.genIndex.index')" type="index" width="80" align="center">
         <template #default="scope">
           <span>{{(queryParams.pageNum - 1) * queryParams.pageSize + scope.$index + 1}}</span>
         </template>
       </el-table-column>
       <el-table-column
-        :label="t('sys.tool.genIndex.tableName')"
+        :label="td('sys.tool.genIndex.tableName')"
         align="center"
         prop="tableName"
         :show-overflow-tooltip="true"
       />
       <el-table-column
-        :label="t('sys.tool.genIndex.tableDesc')"
+        :label="td('sys.tool.genIndex.tableDesc')"
         align="center"
         prop="tableComment"
         :show-overflow-tooltip="true"
       />
       <el-table-column
-        :label="t('sys.tool.genIndex.entity')"
+        :label="td('sys.tool.genIndex.entity')"
         align="center"
         prop="className"
         :show-overflow-tooltip="true"
       />
-      <el-table-column :label="t('common.texts.createdTime')" align="center" prop="createTime" width="160" />
-      <el-table-column :label="t('common.texts.updatedTime')" align="center" prop="updateTime" width="160" />
-      <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width"  fixed="right" width="240">
+      <el-table-column :label="td('common.texts.createdTime')" align="center" prop="createTime" width="160" />
+      <el-table-column :label="td('common.texts.updatedTime')" align="center" prop="updateTime" width="160" />
+      <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width"  fixed="right" width="240">
         <template #default="scope">
-          <el-tooltip :content="t('sys.tool.genIndex.preview')" placement="top">
+          <el-tooltip :content="td('sys.tool.genIndex.preview')" placement="top">
             <el-button link type="primary" icon="View" @click="handlePreview(scope.row)" v-hasPermi="['tool:gen:preview']"></el-button>
           </el-tooltip>
-          <el-tooltip :content="t('sys.tool.genIndex.edit')" placement="top">
+          <el-tooltip :content="td('sys.tool.genIndex.edit')" placement="top">
             <el-button link type="primary" icon="Edit" @click="handleEditTable(scope.row)" v-hasPermi="['tool:gen:edit']"></el-button>
           </el-tooltip>
-          <el-tooltip :content="t('common.button.delete')" placement="top">
+          <el-tooltip :content="td('common.button.delete')" placement="top">
             <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['tool:gen:remove']"></el-button>
           </el-tooltip>
 <!--          <el-tooltip content="同步" placement="top">-->
 <!--            <el-button link type="primary" icon="Refresh" @click="handleSynchDb(scope.row)" v-hasPermi="['tool:gen:edit']"></el-button>-->
 <!--          </el-tooltip>-->
-            <el-tooltip :content="t('sys.tool.genIndex.genCode')" placement="top">
+            <el-tooltip :content="td('sys.tool.genIndex.genCode')" placement="top">
               <el-button link type="primary" icon="Download" @click="handleGenTable(scope.row)" v-hasPermi="['tool:gen:code']"></el-button>
             </el-tooltip>
           </template>
@@ -180,11 +180,11 @@
         >
           <!-- <div class="justify-between mb15">
               <div class="justify-end top-right-btn">
-                  <el-link :underline="false" icon="DocumentCopy" v-copyText="value" v-copyText:callback="copyTextSuccess" style="float:right">&nbsp;{{ t('common.button.copy') }}</el-link>
+                  <el-link :underline="false" icon="DocumentCopy" v-copyText="value" v-copyText:callback="copyTextSuccess" style="float:right">&nbsp;{{ td('common.button.copy') }}</el-link>
               </div>
           </div> -->
           <div class="precont">
-            <el-link :underline="false" icon="DocumentCopy" v-copyText="value" v-copyText:callback="copyTextSuccess" style="float:right">&nbsp;{{ t('common.button.copy') }}</el-link>
+            <el-link :underline="false" icon="DocumentCopy" v-copyText="value" v-copyText:callback="copyTextSuccess" style="float:right">&nbsp;{{ td('common.button.copy') }}</el-link>
             <pre >{{ value }}</pre>
           </div>
         </el-tab-pane>
@@ -196,7 +196,6 @@
 </template>
 
 <script setup name="Gen">
-import { useI18n } from 'vue-i18n'
 import { listTable, previewTable, delTable, genCode, synchDb } from "@/api/system/tool/gen.js";
 import router from "@/router/index.js";
 import importTable from "./importTable.vue";
@@ -204,7 +203,6 @@ import createTable from "./createTable.vue";
 import useDefaultLang from "@/composables/useDefaultLang";
 
 const { td } = useDefaultLang();
-const { t } = useI18n();
 const route = useRoute();
 const { proxy } = getCurrentInstance();
 
@@ -228,7 +226,7 @@ const data = reactive({
   },
   preview: {
     open: false,
-    title: t('sys.tool.genIndex.codePreview'),
+    title: td('sys.tool.genIndex.codePreview'),
     data: {},
     activeName: "do.java"
   }
@@ -267,12 +265,12 @@ function handleQuery() {
 function handleGenTable(row) {
   const tbNames = row.tableName || tableNames.value;
   if (tbNames == "") {
-    proxy.$modal.msgError(t('sys.tool.genIndex.selectDataToGenerate'));
+    proxy.$modal.msgError(td('sys.tool.genIndex.selectDataToGenerate'));
     return;
   }
   if (row.genType === "1") {
     genCode(row.tableName).then(response => {
-      proxy.$modal.msgSuccess(t('sys.tool.genIndex.genSuccessToCustomPath', { path: row.genPath }));
+      proxy.$modal.msgSuccess(td('sys.tool.genIndex.genSuccessToCustomPath', { path: row.genPath }));
     });
   } else {
     proxy.$download.zip("/tool/gen/batchGenCode?tables=" + tbNames, "anivia.zip");
@@ -282,10 +280,10 @@ function handleGenTable(row) {
 /** 同步数据库操作 */
 function handleSynchDb(row) {
   const tableName = row.tableName;
-  proxy.$modal.confirm(t('sys.tool.genIndex.confirmSyncTable', { name: tableName })).then(function () {
+  proxy.$modal.confirm(td('sys.tool.genIndex.confirmSyncTable', { name: tableName })).then(function () {
     return synchDb(tableName);
   }).then(() => {
-    proxy.$modal.msgSuccess(t('sys.tool.genIndex.syncSuccess'));
+    proxy.$modal.msgSuccess(td('sys.tool.genIndex.syncSuccess'));
   }).catch(() => {});
 }
 
@@ -317,7 +315,7 @@ function handlePreview(row) {
 
 /** 复制代码成功 */
 function copyTextSuccess() {
-  proxy.$modal.msgSuccess(t('common.message.copySuccess'));
+  proxy.$modal.msgSuccess(td('common.message.copySuccess'));
 }
 
 // 多选框选中数据
@@ -337,11 +335,11 @@ function handleEditTable(row) {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const tableIds = row.tableId || ids.value;
-  proxy.$modal.confirm(t('sys.tool.genIndex.confirmDelete', { ids: tableIds })).then(function () {
+  proxy.$modal.confirm(td('sys.tool.genIndex.confirmDelete', { ids: tableIds })).then(function () {
     return delTable(tableIds);
   }).then(() => {
     getList();
-    proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+    proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
   }).catch(() => {});
 }
 

@@ -19,20 +19,20 @@
    <div class="app-container" ref="app-container">
       <div class="pagecont-top">
          <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="68px">
-            <el-form-item :label="t('sys.monitor.online.loginAddr')" prop="ipaddr">
-               <el-input v-model="queryParams.ipaddr" :placeholder="t('sys.monitor.online.loginAddrPlaceholder')" clearable class="el-form-input-width"
+            <el-form-item :label="td('sys.monitor.online.loginAddr')" prop="ipaddr">
+               <el-input v-model="queryParams.ipaddr" :placeholder="td('sys.monitor.online.loginAddrPlaceholder')" clearable class="el-form-input-width"
                   @keyup.enter="handleQuery" />
             </el-form-item>
-            <el-form-item :label="t('sys.monitor.online.userName')" prop="userName">
-               <el-input v-model="queryParams.userName" :placeholder="t('sys.monitor.online.userNamePlaceholder')" clearable class="el-form-input-width"
+            <el-form-item :label="td('sys.monitor.online.userName')" prop="userName">
+               <el-input v-model="queryParams.userName" :placeholder="td('sys.monitor.online.userNamePlaceholder')" clearable class="el-form-input-width"
                   @keyup.enter="handleQuery" />
             </el-form-item>
             <el-form-item>
                <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                  <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
+                  <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
                </el-button>
                <el-button @click="resetQuery" @mousedown="e => e.preventDefault()">
-                  <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
+                  <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
                </el-button>
             </el-form-item>
          </el-form>
@@ -41,27 +41,27 @@
 
          <el-table height="60vh" stripe v-loading="loading"
             :data="onlineList.slice((pageNum - 1) * pageSize, pageNum * pageSize)" style="width: 100%;">
-            <el-table-column :label="t('common.display.index')" width="80" type="index" align="center">
+            <el-table-column :label="td('common.display.index')" width="80" type="index" align="center">
                <template #default="scope">
                   <span>{{ (pageNum - 1) * pageSize + scope.$index + 1 }}</span>
                </template>
             </el-table-column>
-            <el-table-column :label="t('sys.monitor.online.sessionId')" align="center" prop="tokenId" :show-overflow-tooltip="true" />
-            <el-table-column :label="t('sys.monitor.online.loginName')" align="center" prop="userName" :show-overflow-tooltip="true" />
-            <el-table-column :label="t('sys.monitor.online.dept')" align="center" prop="deptName" :show-overflow-tooltip="true" />
-            <el-table-column :label="t('sys.monitor.online.host')" align="center" prop="ipaddr" :show-overflow-tooltip="true" />
-            <el-table-column :label="t('sys.monitor.online.loginLocation')" align="center" prop="loginLocation" :show-overflow-tooltip="true" />
-            <el-table-column :label="t('sys.monitor.online.os')" align="center" prop="os" :show-overflow-tooltip="true" />
-            <el-table-column :label="t('sys.monitor.online.browser')" align="center" prop="browser" :show-overflow-tooltip="true" />
-            <el-table-column :label="t('sys.monitor.online.loginTime')" align="center" prop="loginTime" width="180">
+            <el-table-column :label="td('sys.monitor.online.sessionId')" align="center" prop="tokenId" :show-overflow-tooltip="true" />
+            <el-table-column :label="td('sys.monitor.online.loginName')" align="center" prop="userName" :show-overflow-tooltip="true" />
+            <el-table-column :label="td('sys.monitor.online.dept')" align="center" prop="deptName" :show-overflow-tooltip="true" />
+            <el-table-column :label="td('sys.monitor.online.host')" align="center" prop="ipaddr" :show-overflow-tooltip="true" />
+            <el-table-column :label="td('sys.monitor.online.loginLocation')" align="center" prop="loginLocation" :show-overflow-tooltip="true" />
+            <el-table-column :label="td('sys.monitor.online.os')" align="center" prop="os" :show-overflow-tooltip="true" />
+            <el-table-column :label="td('sys.monitor.online.browser')" align="center" prop="browser" :show-overflow-tooltip="true" />
+            <el-table-column :label="td('sys.monitor.online.loginTime')" align="center" prop="loginTime" width="180">
                <template #default="scope">
                   <span>{{ parseTime(scope.row.loginTime) }}</span>
                </template>
             </el-table-column>
-            <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
+            <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
                <template #default="scope">
                   <el-button link type="danger" icon="Delete" @click="handleForceLogout(scope.row)"
-                     v-hasPermi="['monitor:online:forceLogout']">{{ t('sys.monitor.online.forceLogout') }}</el-button>
+                     v-hasPermi="['monitor:online:forceLogout']">{{ td('sys.monitor.online.forceLogout') }}</el-button>
                </template>
             </el-table-column>
          </el-table>
@@ -72,10 +72,10 @@
 </template>
 
 <script setup name="Online">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang";
 import { forceLogout, list as initData } from "@/api/system/monitor/online.js";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 
 const onlineList = ref([]);
@@ -113,11 +113,11 @@ function resetQuery() {
 
 /** 强退按钮操作 */
 function handleForceLogout(row) {
-   proxy.$modal.confirm(t('sys.monitor.online.confirmForceLogout', { name: row.userName })).then(function () {
+   proxy.$modal.confirm(td('sys.monitor.online.confirmForceLogout', { name: row.userName })).then(function () {
       return forceLogout(row.tokenId);
    }).then(() => {
       getList();
-      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+      proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
    }).catch(() => { });
 }
 

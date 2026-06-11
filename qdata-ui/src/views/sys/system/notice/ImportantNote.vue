@@ -18,7 +18,7 @@
 <template>
   <el-dialog
     class="importantNote-dialog"
-    :title="t('sys.system.notice.platformName')"
+    :title="td('sys.system.notice.platformName')"
     v-model="visible"
     @close="close"
     width="842px"
@@ -32,7 +32,7 @@
       <div class="header-title">
         <div class="title-text">
           <img src="@/assets/system/images/notice/icon.png" alt="" />
-          <span>{{ t('sys.system.notice.platformName') }}</span>
+          <span>{{ td('sys.system.notice.platformName') }}</span>
         </div>
         <div class="close">
           <img src="@/assets/system/images/notice/close.png" alt="" @click="close" />
@@ -42,15 +42,15 @@
     <div class="content">
       <div class="content-text" v-html="notice.noticeContentText"></div>
       <div class="content-line"></div>
-      <div class="href" @click="openDocs">{{ t('sys.system.notice.getMoreInfo') }}</div>
+      <div class="href" @click="openDocs">{{ td('sys.system.notice.getMoreInfo') }}</div>
     </div>
   </el-dialog>
 </template>
 
 <script setup name="ImportantNote">
-import { useI18n } from 'vue-i18n';
+import useDefaultLang from "@/composables/useDefaultLang";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const visible = ref(false);
 const notice = ref({});
 

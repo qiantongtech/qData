@@ -18,19 +18,19 @@
 <template>
   <div class="errPage-container">
     <el-button icon="arrow-left" class="pan-back-btn" @click="back">
-      {{ t('common.button.return') }}
+      {{ td('common.button.return') }}
     </el-button>
     <el-row>
       <el-col :span="12">
         <h1 class="text-jumbo text-ginormous">
-          {{ t('common.error.code401') }}
+          {{ td('common.error.code401') }}
         </h1>
-        <h2>{{ t('common.error.notAccessRights') }}</h2>
-        <h6>{{ t('common.error.Sorry401') }}</h6>
+        <h2>{{ td('common.error.notAccessRights') }}</h2>
+        <h6>{{ td('common.error.Sorry401') }}</h6>
         <ul class="list-unstyled">
           <li class="link-type">
             <router-link to="/">
-              {{ t('common.button.return') }}
+              {{ td('common.button.return') }}
             </router-link>
           </li>
         </ul>
@@ -43,10 +43,10 @@
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang";
 import errImage from "@/assets/system/401_images/401.gif";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 
 let { proxy } = getCurrentInstance();
 

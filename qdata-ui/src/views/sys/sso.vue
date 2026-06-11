@@ -20,14 +20,14 @@
     <div id="loader"></div>
     <div class="loader-section section-left"></div>
     <div class="loader-section section-right"></div>
-    <div class="load_title">{{ t('sys.sso.loadingMsg') }}</div>
+    <div class="load_title">{{ td('sys.sso.loadingMsg') }}</div>
   </div>
 </template>
 
 <script>
 import {codeLogin} from "@/api/system/sso-auth.js";
+import useDefaultLang from "@/composables/useDefaultLang";
 import useUserStore from '@/store/system/user.js'
-import { useI18n } from 'vue-i18n';
 
 const userStore = useUserStore()
 export default {
@@ -35,7 +35,7 @@ export default {
   components: {
   },
   setup() {
-    const { t } = useI18n();
+    const { td } = useDefaultLang();
     return { t };
   },
   data() {

@@ -19,30 +19,30 @@
   <div class="app-container" ref="app-container">
     <div class="pagecont-top" v-show="showSearch">
       <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="68px">
-        <el-form-item :label="t('sys.client.clientId')" prop="id">
+        <el-form-item :label="td('sys.client.clientId')" prop="id">
           <el-input
               class="el-form-input-width"
               v-model="queryParams.id"
-              :placeholder="t('sys.client.clientIdPlaceholder')"
+              :placeholder="td('sys.client.clientIdPlaceholder')"
               clearable
               @keyup.enter="handleQuery"
           />
         </el-form-item>
-        <el-form-item :label="t('sys.client.clientName')" prop="name">
+        <el-form-item :label="td('sys.client.clientName')" prop="name">
           <el-input
               class="el-form-input-width"
               v-model="queryParams.name"
-              :placeholder="t('sys.client.clientNamePlaceholder')"
+              :placeholder="td('sys.client.clientNamePlaceholder')"
               clearable
               @keyup.enter="handleQuery"
           />
         </el-form-item>
         <el-form-item>
           <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-            <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
+            <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
           </el-button>
           <el-button @click="resetQuery" @mousedown="e => e.preventDefault()">
-            <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
+            <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
           </el-button>
         </el-form-item>
       </el-form>
@@ -57,57 +57,57 @@
                 icon="Plus"
                 @click="handleAdd"
                 v-hasPermi="['auth:client:add']"
-            >{{ t('common.button.add') }}</el-button>
+            >{{ td('common.button.add') }}</el-button>
           </el-col>
         </el-row>
             <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
       </div>
 
       <el-table stripe height="60vh"  v-loading="loading" :data="clientList" @selection-change="handleSelectionChange">
-        <el-table-column :label="t('sys.client.clientId')" align="center" prop="id" />
-        <el-table-column :label="t('sys.client.clientSecret')" align="center" prop="secretKey"  width="300"/>
-        <el-table-column :label="t('sys.client.clientName')" align="center" prop="name" width="120"/>
-        <el-table-column :label="t('sys.client.clientType')" align="center" prop="type">
+        <el-table-column :label="td('sys.client.clientId')" align="center" prop="id" />
+        <el-table-column :label="td('sys.client.clientSecret')" align="center" prop="secretKey"  width="300"/>
+        <el-table-column :label="td('sys.client.clientName')" align="center" prop="name" width="120"/>
+        <el-table-column :label="td('sys.client.clientType')" align="center" prop="type">
           <template #default="scope">
             <dict-tag :options="auth_app_type" :value="scope.row.type"/>
           </template>
         </el-table-column>
-        <el-table-column :label="t('sys.client.clientIcon')" align="center" prop="icon" width="100">
+        <el-table-column :label="td('sys.client.clientIcon')" align="center" prop="icon" width="100">
           <template #default="scope">
             <image-preview :src="scope.row.icon" :width="50" :height="50"/>
           </template>
         </el-table-column>
-        <el-table-column :label="t('sys.client.clientHomepage')" align="center" prop="homeUrl" >
+        <el-table-column :label="td('sys.client.clientHomepage')" align="center" prop="homeUrl" >
         <template #default="scope">
             <span>{{ scope.row.homeUrl || "-" }}</span>
           </template>
         </el-table-column>
-  <!--      <el-table-column :label="t('sys.client.syncUrl')" align="center" prop="syncUrl" />-->
-        <el-table-column :label="t('sys.client.authorizedUrl')" align="center" prop="redirectUrl" width="150"/>
-        <el-table-column :label="t('sys.client.isPublic')" align="center" prop="publicFlag">
+  <!--      <el-table-column :label="td('sys.client.syncUrl')" align="center" prop="syncUrl" />-->
+        <el-table-column :label="td('sys.client.authorizedUrl')" align="center" prop="redirectUrl" width="150"/>
+        <el-table-column :label="td('sys.client.isPublic')" align="center" prop="publicFlag">
           <template #default="scope">
             <dict-tag :options="auth_public" :value="scope.row.publicFlag"/>
           </template>
         </el-table-column>
-        <el-table-column :label="t('sys.client.isActive')" align="center" prop="validFlag">
+        <el-table-column :label="td('sys.client.isActive')" align="center" prop="validFlag">
           <template #default="scope">
             <dict-tag :options="sys_valid" :value="scope.row.validFlag"/>
           </template>
         </el-table-column>
-        <el-table-column :label="t('common.texts.createdTime')" align="center" prop="createTime" width="180">
+        <el-table-column :label="td('common.texts.createdTime')" align="center" prop="createTime" width="180">
           <template #default="scope">
             <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
           </template>
         </el-table-column>
-        <el-table-column :label="t('common.texts.remark')" align="center" prop="remark">
+        <el-table-column :label="td('common.texts.remark')" align="center" prop="remark">
         <template #default="scope">
             <span>{{ scope.row.remark || "-" }}</span>
           </template>
         </el-table-column>
-        <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
+        <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
           <template #default="scope">
-            <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['auth:client:edit']">{{ t('common.button.update') }}</el-button>
-            <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['auth:client:remove']">{{ t('common.button.delete') }}</el-button>
+            <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['auth:client:edit']">{{ td('common.button.update') }}</el-button>
+            <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['auth:client:remove']">{{ td('common.button.delete') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -126,25 +126,25 @@
       <el-form ref="clientRef" :model="form" :rules="rules" label-width="110px">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="t('sys.client.clientHomepage')" prop="homeUrl">
-              <el-input v-model="form.homeUrl" :placeholder="t('sys.client.clientHomepagePlaceholder')" />
+            <el-form-item :label="td('sys.client.clientHomepage')" prop="homeUrl">
+              <el-input v-model="form.homeUrl" :placeholder="td('sys.client.clientHomepagePlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="t('sys.client.syncUrl')" prop="syncUrl">
-              <el-input v-model="form.syncUrl" :placeholder="t('sys.client.syncUrlPlaceholder')" />
+            <el-form-item :label="td('sys.client.syncUrl')" prop="syncUrl">
+              <el-input v-model="form.syncUrl" :placeholder="td('sys.client.syncUrlPlaceholder')" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="t('sys.client.clientName')" prop="name">
-              <el-input v-model="form.name" :placeholder="t('sys.client.clientNamePlaceholder')" />
+            <el-form-item :label="td('sys.client.clientName')" prop="name">
+              <el-input v-model="form.name" :placeholder="td('sys.client.clientNamePlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="t('sys.client.clientType')" prop="type">
-              <el-select v-model="form.type" :placeholder="t('sys.client.selectClientType')">
+            <el-form-item :label="td('sys.client.clientType')" prop="type">
+              <el-select v-model="form.type" :placeholder="td('sys.client.selectClientType')">
                 <el-option
                     v-for="dict in auth_app_type"
                     :key="dict.value"
@@ -157,7 +157,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="t('sys.client.isPublic')" prop="publicFlag">
+            <el-form-item :label="td('sys.client.isPublic')" prop="publicFlag">
               <el-radio-group v-model="form.publicFlag">
                 <el-radio
                     v-for="dict in auth_public"
@@ -168,7 +168,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="t('sys.client.isActive')" prop="validFlag">
+            <el-form-item :label="td('sys.client.isActive')" prop="validFlag">
               <el-radio-group v-model="form.validFlag">
                 <el-radio
                     v-for="dict in sys_valid"
@@ -181,7 +181,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="t('sys.client.clientIcon')" prop="icon">
+            <el-form-item :label="td('sys.client.clientIcon')" prop="icon">
               <div class="xgtpcont">
                   <ImageUpload class="sctplist" v-model="form.icon">
                   </ImageUpload>
@@ -191,23 +191,23 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="t('sys.client.authorizedUrl')" prop="redirectUrl">
-              <el-input v-model="form.redirectUrl" type="textarea" :placeholder="t('sys.client.inputContent')" />
+            <el-form-item :label="td('sys.client.authorizedUrl')" prop="redirectUrl">
+              <el-input v-model="form.redirectUrl" type="textarea" :placeholder="td('sys.client.inputContent')" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="t('common.texts.remark')" prop="remark">
-              <el-input v-model="form.remark" type="textarea" :placeholder="t('sys.client.inputContent')" />
+            <el-form-item :label="td('common.texts.remark')" prop="remark">
+              <el-input v-model="form.remark" type="textarea" :placeholder="td('sys.client.inputContent')" />
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="cancel">{{ t('common.button.cancel') }}</el-button>
-          <el-button type="primary" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
+          <el-button @click="cancel">{{ td('common.button.cancel') }}</el-button>
+          <el-button type="primary" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -215,10 +215,10 @@
 </template>
 
 <script setup name="Client">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang";
 import { listClient, getClient, delClient, addClient, updateClient } from "@/api/system/auth/client.js";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { auth_app_type } = proxy.useDict('auth_app_type');
 const { sys_valid } = proxy.useDict('sys_valid');
@@ -261,22 +261,22 @@ const data = reactive({
   },
   rules: {
     secretKey: [
-      { required: true, message: t('sys.client.clientSecretRequired'), trigger: "blur" }
+      { required: true, message: td('sys.client.clientSecretRequired'), trigger: "blur" }
     ],
     name: [
-      { required: true, message: t('sys.client.clientNameRequired'), trigger: "blur" }
+      { required: true, message: td('sys.client.clientNameRequired'), trigger: "blur" }
     ],
     type: [
-      { required: true, message: t('sys.client.clientTypeRequired'), trigger: "change" }
+      { required: true, message: td('sys.client.clientTypeRequired'), trigger: "change" }
     ],
     redirectUrl: [
-      { required: true, message: t('sys.client.authorizedUrlRequired'), trigger: "blur" }
+      { required: true, message: td('sys.client.authorizedUrlRequired'), trigger: "blur" }
     ],
     publicFlag: [
-      { required: true, message: t('sys.client.isPublicRequired'), trigger: "blur" }
+      { required: true, message: td('sys.client.isPublicRequired'), trigger: "blur" }
     ],
     validFlag: [
-      { required: true, message: t('sys.client.isActiveRequired'), trigger: "blur" }
+      { required: true, message: td('sys.client.isActiveRequired'), trigger: "blur" }
     ],
   }
 });
@@ -347,7 +347,7 @@ function handleSelectionChange(selection) {
 function handleAdd() {
   reset();
   open.value = true;
-  title.value = t('sys.client.addTitle');
+  title.value = td('sys.client.addTitle');
 }
 
 /** 修改按钮操作 */
@@ -357,7 +357,7 @@ function handleUpdate(row) {
   getClient(_id).then(response => {
     form.value = response.data;
     open.value = true;
-    title.value = t('sys.client.editTitle');
+    title.value = td('sys.client.editTitle');
   });
 }
 
@@ -367,13 +367,13 @@ function submitForm() {
     if (valid) {
       if (form.value.id != null) {
         updateClient(form.value).then(response => {
-          proxy.$modal.msgSuccess(t('common.message.editSuccess'));
+          proxy.$modal.msgSuccess(td('common.message.editSuccess'));
           open.value = false;
           getList();
         });
       } else {
         addClient(form.value).then(response => {
-          proxy.$modal.msgSuccess(t('common.message.addSuccess'));
+          proxy.$modal.msgSuccess(td('common.message.addSuccess'));
           open.value = false;
           getList();
         });
@@ -385,11 +385,11 @@ function submitForm() {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const _ids = row.id || ids.value;
-  proxy.$modal.confirm(t('sys.client.confirmDelete', { id: _ids })).then(function() {
+  proxy.$modal.confirm(td('sys.client.confirmDelete', { id: _ids })).then(function() {
     return delClient(_ids);
   }).then(() => {
     getList();
-    proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+    proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
   }).catch(() => {});
 }
 

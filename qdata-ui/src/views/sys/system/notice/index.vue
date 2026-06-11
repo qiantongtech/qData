@@ -19,26 +19,26 @@
    <div class="app-container" ref="app-container">
       <div class="pagecont-top" v-show="showSearch">
          <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="68px">
-            <el-form-item :label="t('sys.system.notice.noticeTitle')" prop="noticeTitle">
-               <el-input v-model="queryParams.noticeTitle" :placeholder="t('sys.system.notice.noticeTitlePlaceholder')" clearable class="el-form-input-width"
+            <el-form-item :label="td('sys.system.notice.noticeTitle')" prop="noticeTitle">
+               <el-input v-model="queryParams.noticeTitle" :placeholder="td('sys.system.notice.noticeTitlePlaceholder')" clearable class="el-form-input-width"
                   @keyup.enter="handleQuery" />
             </el-form-item>
-            <el-form-item :label="t('sys.system.notice.operPerson')" prop="createBy">
-               <el-input v-model="queryParams.createBy" :placeholder="t('sys.system.notice.operPersonPlaceholder')" clearable class="el-form-input-width"
+            <el-form-item :label="td('sys.system.notice.operPerson')" prop="createBy">
+               <el-input v-model="queryParams.createBy" :placeholder="td('sys.system.notice.operPersonPlaceholder')" clearable class="el-form-input-width"
                   @keyup.enter="handleQuery" />
             </el-form-item>
-            <el-form-item :label="t('sys.system.notice.type')" prop="noticeType">
-               <el-select v-model="queryParams.noticeType" :placeholder="t('sys.system.notice.noticeType')" clearable class="el-form-input-width">
+            <el-form-item :label="td('sys.system.notice.type')" prop="noticeType">
+               <el-select v-model="queryParams.noticeType" :placeholder="td('sys.system.notice.noticeType')" clearable class="el-form-input-width">
                   <el-option v-for="dict in sys_notice_type" :key="dict.value" :label="dict.label"
                      :value="dict.value" />
                </el-select>
             </el-form-item>
             <el-form-item>
                <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                  <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
+                  <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
                </el-button>
                <el-button @click="resetQuery" @mousedown="e => e.preventDefault()">
-                  <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
+                  <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
                </el-button>
             </el-form-item>
          </el-form>
@@ -48,7 +48,7 @@
             <el-row :gutter="10" class="btn-style">
                <el-col :span="1.5">
                   <el-button type="primary" plain icon="Plus" @click="handleAdd"
-                     v-hasPermi="['system:notice:add']">{{ t('common.button.add') }}</el-button>
+                     v-hasPermi="['system:notice:add']">{{ td('common.button.add') }}</el-button>
                </el-col>
                <!-- <el-col :span="1.5">
                <el-button
@@ -58,11 +58,11 @@
                   :disabled="single"
                   @click="handleUpdate"
                   v-hasPermi="['system:notice:edit']"
-               >{{ t('common.button.update') }}</el-button>
+               >{{ td('common.button.update') }}</el-button>
             </el-col> -->
                <el-col :span="1.5">
                   <el-button type="danger" plain icon="Delete" :disabled="multiple" @click="handleDelete"
-                     v-hasPermi="['system:notice:remove']">{{ t('common.button.delete') }}</el-button>
+                     v-hasPermi="['system:notice:remove']">{{ td('common.button.delete') }}</el-button>
                </el-col>
             </el-row>
             <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
@@ -70,25 +70,25 @@
 
          <el-table stripe v-loading="loading" :data="noticeList" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55" align="center" />
-            <el-table-column :label="t('common.display.index')" align="center" prop="noticeId" width="80" />
-            <el-table-column :label="t('sys.system.notice.noticeTitle')" align="center" prop="noticeTitle"
+            <el-table-column :label="td('common.display.index')" align="center" prop="noticeId" width="80" />
+            <el-table-column :label="td('sys.system.notice.noticeTitle')" align="center" prop="noticeTitle"
                :show-overflow-tooltip="{ effect: 'light' }" />
-            <el-table-column :label="t('sys.system.notice.noticeType')" align="center" prop="noticeType" width="100">
+            <el-table-column :label="td('sys.system.notice.noticeType')" align="center" prop="noticeType" width="100">
                <template #default="scope">
                   <dict-tag :options="sys_notice_type" :value="scope.row.noticeType" />
                </template>
             </el-table-column>
-            <el-table-column :label="t('sys.system.notice.isTop')" align="center" prop="topFlag" width="100">
+            <el-table-column :label="td('sys.system.notice.isTop')" align="center" prop="topFlag" width="100">
                <template #default="scope">
                   <dict-tag :options="sys_is_or_not" :value="scope.row.topFlag" />
                </template>
             </el-table-column>
-            <el-table-column :label="t('sys.system.notice.popup')" align="center" prop="alertFlag" width="100">
+            <el-table-column :label="td('sys.system.notice.popup')" align="center" prop="alertFlag" width="100">
                <template #default="scope">
                   <dict-tag :options="sys_is_or_not" :value="scope.row.alertFlag" />
                </template>
             </el-table-column>
-            <el-table-column :label="t('sys.system.notice.effectTime')" align="center" width="220">
+            <el-table-column :label="td('sys.system.notice.effectTime')" align="center" width="220">
                <template #default="scope">
                   <span>
                      {{ parseTime(scope.row.alertStartTime, '{y}-{m}-{d}') }}
@@ -97,25 +97,25 @@
                   </span>
                </template>
             </el-table-column>
-            <el-table-column :label="t('common.texts.status')" align="center" prop="status" width="100">
+            <el-table-column :label="td('common.texts.status')" align="center" prop="status" width="100">
                <template #default="scope">
                   <dict-tag :options="sys_notice_status" :value="scope.row.status" />
                </template>
             </el-table-column>
-            <el-table-column label="创建者" align="center" prop="createBy" width="100" />
-            <el-table-column :label="t('common.texts.createdTime')" align="center" prop="createTime" width="100">
+            <el-table-column :label="td('sys.system.notice.creator')" align="center" prop="createBy" width="100" />
+            <el-table-column :label="td('common.texts.createdTime')" align="center" prop="createTime" width="100">
                <template #default="scope">
                   <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
                </template>
             </el-table-column>
-            <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
+            <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
                <template #default="scope">
                   <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-                     v-hasPermi="['system:notice:edit']">{{ t('common.button.update') }}</el-button>
+                     v-hasPermi="['system:notice:edit']">{{ td('common.button.update') }}</el-button>
                   <el-button link type="primary" icon="View" @click="handleView(scope.row)"
-                     v-hasPermi="['system:notice:detail']">{{ t('common.button.details') }}</el-button>
+                     v-hasPermi="['system:notice:detail']">{{ td('common.button.details') }}</el-button>
                   <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
-                     v-hasPermi="['system:notice:remove']">{{ t('common.button.delete') }}</el-button>
+                     v-hasPermi="['system:notice:remove']">{{ td('common.button.delete') }}</el-button>
                </template>
             </el-table-column>
          </el-table>
@@ -130,20 +130,20 @@
          <el-form ref="noticeRef" :model="form" :rules="rules" label-width="80px">
             <el-row :gutter="20">
                <el-col :span="12">
-                  <el-form-item :label="t('sys.system.notice.noticeTitle')" prop="noticeTitle">
-                     <el-input v-model="form.noticeTitle" :placeholder="t('sys.system.notice.noticeTitlePlaceholder')" />
+                  <el-form-item :label="td('sys.system.notice.noticeTitle')" prop="noticeTitle">
+                     <el-input v-model="form.noticeTitle" :placeholder="td('sys.system.notice.noticeTitlePlaceholder')" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="t('sys.system.notice.noticeType')" prop="noticeType">
-                     <el-select v-model="form.noticeType" :placeholder="t('sys.system.notice.selectPlaceholder')">
+                  <el-form-item :label="td('sys.system.notice.noticeType')" prop="noticeType">
+                     <el-select v-model="form.noticeType" :placeholder="td('sys.system.notice.selectPlaceholder')">
                         <el-option v-for="dict in sys_notice_type" :key="dict.value" :label="dict.label"
                            :value="dict.value"></el-option>
                      </el-select>
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="t('sys.system.notice.effectTime')">
+                  <el-form-item :label="td('sys.system.notice.effectTime')">
                      <el-date-picker class="el-form-input-width" v-model="dateRange" value-format="YYYY-MM-DD HH:mm:ss"
                         type="daterange" range-separator="-" :start-placeholder="td('common.form.startDatePlaceholder')" :end-placeholder="td('common.form.endDatePlaceholder')"
                         :default-time="[new Date(2000, 1, 1, 0, 0, 0),
@@ -163,7 +163,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="t('sys.system.notice.isTopLabel')" prop="topFlag">
+                  <el-form-item :label="td('sys.system.notice.isTopLabel')" prop="topFlag">
                      <el-radio-group v-model="form.topFlag">
                         <el-radio v-for="dict in sys_is_or_not" :key="dict.value" :value="+dict.value">{{ dict.label
                            }}</el-radio>
@@ -171,7 +171,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="t('sys.system.notice.isPopupLabel')">
+                  <el-form-item :label="td('sys.system.notice.isPopupLabel')">
                      <el-radio-group v-model="form.alertFlag">
                         <el-radio v-for="dict in sys_is_or_not" :key="dict.value" :value="+dict.value">{{ dict.label
                            }}</el-radio>
@@ -179,7 +179,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="t('common.texts.status')">
+                  <el-form-item :label="td('common.texts.status')">
                      <el-radio-group v-model="form.status">
                         <el-radio v-for="dict in sys_notice_status" :key="dict.value" :value="dict.value">{{ dict.label
                            }}</el-radio>
@@ -188,7 +188,7 @@
                </el-col>
 
                <el-col :span="24">
-                  <el-form-item :label="t('sys.system.notice.content')">
+                  <el-form-item :label="td('sys.system.notice.content')">
                      <editor v-model="form.noticeContentText" :min-height="192" :max-height="300" />
                   </el-form-item>
                </el-col>
@@ -196,8 +196,8 @@
          </el-form>
          <template #footer>
             <div class="dialog-footer">
-               <el-button @click="cancel">{{ t('common.button.cancel') }}</el-button>
-               <el-button type="primary" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
+               <el-button @click="cancel">{{ td('common.button.cancel') }}</el-button>
+               <el-button type="primary" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
             </div>
          </template>
       </el-dialog>
@@ -205,13 +205,10 @@
 </template>
 
 <script setup name="Notice">
-import { useI18n } from 'vue-i18n'
 import { listNotice, getNoticeOne, delNotice, addNotice, updateNotice } from "@/api/system/system/notice.js";
 import useDefaultLang from "@/composables/useDefaultLang";
 
-const { t } = useI18n();
 const { td } = useDefaultLang();
-const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { sys_notice_status, sys_notice_type, sys_is_or_not } = proxy.useDict("sys_notice_status", "sys_notice_type", "sys_is_or_not");
 const router = useRouter();
@@ -238,10 +235,10 @@ const data = reactive({
       status: undefined
    },
    rules: {
-      noticeTitle: [{ required: true, message: t('sys.system.notice.noticeTitleRequired'), trigger: "blur" }],
+      noticeTitle: [{ required: true, message: td('sys.system.notice.noticeTitleRequired'), trigger: "blur" }],
       // alertFlag: [{ required: true, message: "是否弹窗不能为空", trigger: "blur" }],
       // topFlag: [{ required: true, message: "是否置顶不能为空", trigger: "blur" }],
-      noticeType: [{ required: true, message: t('sys.system.notice.noticeTypeRequired'), trigger: "change" }]
+      noticeType: [{ required: true, message: td('sys.system.notice.noticeTypeRequired'), trigger: "change" }]
    },
 });
 
@@ -304,7 +301,7 @@ function handleSelectionChange(selection) {
 function handleAdd() {
    reset();
    open.value = true;
-   title.value = t('sys.system.notice.addTitle');
+   title.value = td('sys.system.notice.addTitle');
 }
 
 /**修改按钮操作 */
@@ -318,7 +315,7 @@ function handleUpdate(row) {
          response.data.alertEndTime
       ];
       open.value = true;
-      title.value = t('sys.system.notice.editTitle');
+      title.value = td('sys.system.notice.editTitle');
    });
 }
 
@@ -336,13 +333,13 @@ function submitForm() {
       if (valid) {
          if (form.value.noticeId != undefined) {
             updateNotice(form.value).then(response => {
-               proxy.$modal.msgSuccess(t('common.message.editSuccess'));
+               proxy.$modal.msgSuccess(td('common.message.editSuccess'));
                open.value = false;
                getList();
             });
          } else {
             addNotice(form.value).then(response => {
-               proxy.$modal.msgSuccess(t('common.message.addSuccess'));
+               proxy.$modal.msgSuccess(td('common.message.addSuccess'));
                open.value = false;
                getList();
             });
@@ -354,11 +351,11 @@ function submitForm() {
 /** 删除按钮操作 */
 function handleDelete(row) {
    const noticeIds = row.noticeId || ids.value
-   proxy.$modal.confirm(t('sys.system.notice.confirmDelete', { id: noticeIds })).then(function () {
+   proxy.$modal.confirm(td('sys.system.notice.confirmDelete', { id: noticeIds })).then(function () {
       return delNotice(noticeIds);
    }).then(() => {
       getList();
-      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+      proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
    }).catch(() => { });
 }
 

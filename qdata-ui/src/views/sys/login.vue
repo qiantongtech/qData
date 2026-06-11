@@ -60,22 +60,22 @@
             </div>
           <div>
                 <div class="greeting">
-                    <div class="entry_period">{{ t('login.greeting.greetingHello') }}，{{ greeting }}！</div>
-                    <div class="entry_greeting">{{ t('login.greeting.greetingMessage') }}</div>
+                    <div class="entry_period">{{ td('login.greeting.greetingHello') }}，{{ greeting }}！</div>
+                    <div class="entry_greeting">{{ td('login.greeting.greetingMessage') }}</div>
                 </div>
                 <div class="login-panel">
                     <el-form ref="loginRef" :model="loginForm" :rules="loginRules">
-                        <p class="titles">{{ t('login.title') }}</p>
+                        <p class="titles">{{ td('login.title') }}</p>
                         <div class="titles-bar"></div>
                         <el-form-item prop="username">
-                            <el-input v-model="loginForm.username" type="text" auto-complete="off" :placeholder="t('login.username')">
+                            <el-input v-model="loginForm.username" type="text" auto-complete="off" :placeholder="td('login.username')">
                                 <template #prefix>
                                     <i class="iconfont">&#xebc0;</i>
                                 </template>
                             </el-input>
                         </el-form-item>
                         <el-form-item prop="password">
-                            <el-input v-model="loginForm.password" type="password" auto-complete="off" :placeholder="t('login.password')"
+                            <el-input v-model="loginForm.password" type="password" auto-complete="off" :placeholder="td('login.password')"
                                 @keyup.enter="handleLogin">
                                 <template #prefix>
                                     <i class="iconfont">&#xeb8d;</i>
@@ -83,7 +83,7 @@
                             </el-input>
                         </el-form-item>
                         <el-form-item prop="code" v-if="captchaEnabled">
-                            <el-input v-model="loginForm.code" auto-complete="off" :placeholder="t('login.code')" class="code-class"
+                            <el-input v-model="loginForm.code" auto-complete="off" :placeholder="td('login.code')" class="code-class"
                                 @keyup.enter.native="handleLogin">
                                 <template #prefix>
                                     <i class="iconfont">&#xeb9e;</i>
@@ -97,14 +97,14 @@
                         <el-form-item style="width: 100%">
                             <el-button :loading="loading" type="primary" style="width: 100%"
                                 @click.native.prevent="handleLogin">
-                                <span v-if="!loading">{{ t('login.loginBtn') }}</span>
-                                <span v-else>{{ t('login.logining') }}</span>
+                                <span v-if="!loading">{{ td('login.loginBtn') }}</span>
+                                <span v-else>{{ td('login.logining') }}</span>
                             </el-button>
                         </el-form-item>
 
                         <div class="form-actions">
-                            <el-checkbox v-model="loginForm.rememberMe">{{ t('login.remember') }}</el-checkbox>
-                            <el-text type="primary" @click="dialogVisible = true">{{ t('login.forgetPassword') }}</el-text>
+                            <el-checkbox v-model="loginForm.rememberMe">{{ td('login.remember') }}</el-checkbox>
+                            <el-text type="primary" @click="dialogVisible = true">{{ td('login.forgetPassword') }}</el-text>
                         </div>
                     </el-form>
                 </div>
@@ -114,7 +114,7 @@
                     <div class="contact" style="float: left">
                         <img src="@/assets/system/images/login/phone.png" />
                         <div>
-                            <p>{{ t('login.info.phoneContact') }}</p>
+                            <p>{{ td('login.info.phoneContact') }}</p>
                             <p>
                                 {{
                                     contentDetail && contentDetail.contactNumber
@@ -127,7 +127,7 @@
                     <div class="contact" style="margin-left: 24px">
                         <img src="@/assets/system/images/login/email.png" />
                         <div>
-                            <p>{{ t('login.info.emailContact') }}</p>
+                            <p>{{ td('login.info.emailContact') }}</p>
                             <p>
                                 {{
                                     contentDetail && contentDetail.email
@@ -140,9 +140,9 @@
                 </div>
                 <div class="chrome-wrap">
                     <img src="@/assets/system/images/login/goge-icon.png" style="height: 20px" />
-                    <span style="color: #888; font-size: 12px; line-height: 0; margin-left: 10px">{{ t('login.info.chromeHint') }}</span>
+                    <span style="color: #888; font-size: 12px; line-height: 0; margin-left: 10px">{{ td('login.info.chromeHint') }}</span>
                     <span style="color: #ee2223; font-size: 12px; line-height: 0">Chrome</span>
-                    <span style="color: #888; font-size: 12px; line-height: 0">{{ t('login.info.chromeHint2') }}</span>
+                    <span style="color: #888; font-size: 12px; line-height: 0">{{ td('login.info.chromeHint2') }}</span>
                     <a href="https://www.google.cn/chrome/" target="_blank">
                         <div style="
                                 margin-left: 15px;
@@ -182,7 +182,7 @@
                         <a href="https://qiantong.tech/" target="_blank">
                             Copyright© {{ new Date().getFullYear() }}
                             <span style="color: #2666fb">江苏千桐科技有限公司</span>
-                            {{ t('login.info.copyrightOwner') }}
+                            {{ td('login.info.copyrightOwner') }}
                         </a>
                     </div>
 
@@ -201,39 +201,39 @@
         </div>
     </div>
 
-    <el-dialog v-model="dialogVisible" :title="t('login.forgetPassword')" class="fp-form-dialog" width="650px"
+    <el-dialog v-model="dialogVisible" :title="td('login.forgetPassword')" class="fp-form-dialog" width="650px"
         :append-to="$refs['app-container']" draggable destroy-on-close>
         <el-form :model="fpForm" label-width="auto" style="padding: 10px 60px 0">
             <el-row :gutter="20">
                 <el-col :span="24">
-                    <el-form-item :label="t('login.username')">
-                        <el-input v-model="fpForm.name" :placeholder="t('login.usernameInputPlaceholder')" />
+                    <el-form-item :label="td('login.username')">
+                        <el-input v-model="fpForm.name" :placeholder="td('login.usernameInputPlaceholder')" />
                     </el-form-item>
                 </el-col>
                 <el-col :span="24">
-                    <el-form-item :label="t('login.code')">
+                    <el-form-item :label="td('login.code')">
                         <div class="wrapper">
-                            <el-input v-model="fpForm.code" :placeholder="t('login.codePlaceholder')" />
+                            <el-input v-model="fpForm.code" :placeholder="td('login.codePlaceholder')" />
                             <el-button type="primary" :disabled="codeFlag" style="margin-left: 10px"
-                                @click="handleFPCodeClick">{{ codeFlag ? `${codeTime}s` : t('login.getCode') }}</el-button>
+                                @click="handleFPCodeClick">{{ codeFlag ? `${codeTime}s` : td('login.getCode') }}</el-button>
                         </div>
                     </el-form-item>
                 </el-col>
                 <el-col :span="24">
-                    <el-form-item :label="t('login.newPassword')">
-                        <el-input v-model="fpForm.password" :placeholder="t('login.newPasswordPlaceholder')" />
+                    <el-form-item :label="td('login.newPassword')">
+                        <el-input v-model="fpForm.password" :placeholder="td('login.newPasswordPlaceholder')" />
                     </el-form-item>
                 </el-col>
                 <el-col :span="24">
-                    <el-form-item :label="t('login.confirmPassword')">
-                        <el-input v-model="fpForm.password2" :placeholder="t('login.confirmPasswordPlaceholder')" />
+                    <el-form-item :label="td('login.confirmPassword')">
+                        <el-input v-model="fpForm.password2" :placeholder="td('login.confirmPasswordPlaceholder')" />
                     </el-form-item>
                 </el-col>
             </el-row>
         </el-form>
         <template #footer>
             <div class="dialog-footer">
-                <el-button type="primary" @click="dialogVisible = false"> {{ t('login.resetPassword') }} </el-button>
+                <el-button type="primary" @click="dialogVisible = false"> {{ td('login.resetPassword') }} </el-button>
             </div>
         </template>
     </el-dialog>
@@ -242,7 +242,7 @@
 
 <script setup>
 import { ref, computed } from 'vue';
-import { useI18n } from 'vue-i18n';
+import useDefaultLang from "@/composables/useDefaultLang";
 import { getCodeImg } from '@/api/system/login';
 import Cookies from 'js-cookie';
 import { encrypt, decrypt } from '@/utils/jsencrypt';
@@ -256,7 +256,7 @@ import { useTimeGreeting } from '@/composables/useTimeGreeting';
 import { getContent } from '@/api/system/system/content';
 import defaultLogo from '@/assets/system/images/login/qData-logo.png';
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { changeLocale } = useLocale();
 const { getImage } = useLocaleImage();
 const { greeting, message } = useTimeGreeting();
@@ -306,9 +306,9 @@ const getAssetsFile = (url) => {
 };
 
 const loginRules = computed(() => ({
-    username: [{ required: true, trigger: 'blur', message: t('login.usernameRequired') }],
-    password: [{ required: true, trigger: 'blur', message: t('login.passwordRequired') }],
-    code: [{ required: true, trigger: 'change', message: t('login.codeRequired') }]
+    username: [{ required: true, trigger: 'blur', message: td('login.usernameRequired') }],
+    password: [{ required: true, trigger: 'blur', message: td('login.passwordRequired') }],
+    code: [{ required: true, trigger: 'change', message: td('login.codeRequired') }]
 }));
 
 const logo = ref(null);
@@ -325,7 +325,7 @@ const fetchContent = async () => {
             contentDetail.value = data;
             const sysLogo = data.loginLogo;
             logo.value = sysLogo ? sysLogo : defaultLogo;
-            const carouselImageList = data.carouselImage.split(',');
+            const carouselImageList = data.carouselImage.splitd(',');
             const carouselImgList = [];
             for (let i = 0; i <= carouselImageList.length; i++) {
                 let item = carouselImageList[i];
@@ -360,9 +360,9 @@ async function handleLangClick(lang) {
 }
 
 function getCookie() {
-    const username = Cookies.get('username');
-    const password = Cookies.get('password');
-    const rememberMe = Cookies.get('rememberMe');
+    const username = Cookies.getd('username');
+    const password = Cookies.getd('password');
+    const rememberMe = Cookies.getd('rememberMe');
     loginForm.value = {
         username: username === undefined ? loginForm.value.username : username,
         password: password === undefined ? loginForm.value.password : decrypt(password),
@@ -389,9 +389,9 @@ function handleLogin() {
             loading.value = true;
             // 勾选了需要记住密码设置在 cookie 中设置记住用户名和密码
             if (loginForm.value.rememberMe) {
-                Cookies.set('username', loginForm.value.username, { expires: 30 });
-                Cookies.set('password', encrypt(loginForm.value.password), { expires: 30 });
-                Cookies.set('rememberMe', loginForm.value.rememberMe, { expires: 30 });
+                Cookies.setd('username', loginForm.value.username, { expires: 30 });
+                Cookies.setd('password', encrypt(loginForm.value.password), { expires: 30 });
+                Cookies.setd('rememberMe', loginForm.value.rememberMe, { expires: 30 });
             } else {
                 // 否则移除
                 Cookies.remove('username');

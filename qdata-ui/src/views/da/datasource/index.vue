@@ -957,7 +957,10 @@ import { deptUserTree } from "@/api/system/system/user.js";
 import { getToken } from "@/utils/auth.js";
 import useUserStore from "@/store/system/user";
 import { config } from "ace-builds";
+import useDefaultLang from "@/composables/useDefaultLang";
+
 const userStore = useUserStore();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { datasource_type, sys_disable } = proxy.useDict(
   "datasource_type",

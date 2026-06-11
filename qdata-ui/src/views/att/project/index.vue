@@ -522,7 +522,9 @@ import {
 // import { deptUserTree } from "@/api/system/system/user.js";
 import { getToken } from "@/utils/auth.js";
 import { deptUserTree } from "@/api/system/system/user.js";
+import useDefaultLang from "@/composables/useDefaultLang";
 
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { dp_model_status } = proxy.useDict("dp_model_status");
 

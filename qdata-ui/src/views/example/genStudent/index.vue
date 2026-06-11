@@ -627,7 +627,9 @@
         updateStudent
     } from '@/api/example/genStudent/student';
     import { getToken } from '@/utils/auth.js';
+    import useDefaultLang from "@/composables/useDefaultLang";
 
+    const { td } = useDefaultLang();
     const { proxy } = getCurrentInstance();
     const { sys_user_sex, message_level } = proxy.useDict('sys_user_sex', 'message_level');
 

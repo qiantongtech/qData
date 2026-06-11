@@ -354,7 +354,9 @@ import {
 } from '@/api/da/security/sensitiveLevel/sensitiveLevel';
 import { getToken } from '@/utils/auth.js';
 import { updateDaAsset } from '@/api/da/asset/asset.js';
+import useDefaultLang from "@/composables/useDefaultLang";
 
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { da_sensitive_level_rule, da_sensitive_status } = proxy.useDict(
     'da_sensitive_level_rule',

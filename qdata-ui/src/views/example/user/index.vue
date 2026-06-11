@@ -431,7 +431,9 @@
         addUserType,
         updateUserType
     } from '@/api/example/user/userType';
+    import useDefaultLang from "@/composables/useDefaultLang";
 
+    const { td } = useDefaultLang();
     const { proxy } = getCurrentInstance();
 
     const userTypeList = ref([]);

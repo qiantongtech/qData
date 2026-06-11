@@ -98,7 +98,9 @@ import {
     addDpDataElemAssetRel,
     updateDpDataElemAssetRel
 } from '@/api/dp/dataElem/dataElem';
+import useDefaultLang from "@/composables/useDefaultLang";
 
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const route = useRoute();
 

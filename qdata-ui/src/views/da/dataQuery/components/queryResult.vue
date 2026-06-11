@@ -76,7 +76,9 @@
 import { ref, computed, watch, getCurrentInstance } from "vue";
 import { encrypt } from "@/utils/aesEncrypt";
 import { executeSqlQuery } from "@/api/da/dataSource/dataSource";
+import useDefaultLang from "@/composables/useDefaultLang";
 
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const props = defineProps({
   visible: { type: Boolean, default: true },

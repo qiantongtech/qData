@@ -148,7 +148,10 @@ import {
     updateDpCodeMap
 } from '@/api/dp/dataElem/dataElem';
 import { listDpDataElemCode } from '@/api/dp/dataElem/dataElem';
+import useDefaultLang from "@/composables/useDefaultLang";
+
 const route = useRoute();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 
 const dpCodeMapList = ref([]);

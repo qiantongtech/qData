@@ -333,6 +333,9 @@ import { getToken } from '@/utils/auth.js';
 import DeptTree from '@/components/DeptTree';
 import { computed } from 'vue';
 import { listAttCleanCat } from "@/api/att/cat/cleanCat/cleanCat.js";
+import useDefaultLang from "@/composables/useDefaultLang";
+
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { att_rule_level, att_rule_clean_type } = proxy.useDict(
     'att_rule_level',

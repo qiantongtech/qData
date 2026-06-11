@@ -395,7 +395,9 @@ import {
   resetSecret,
 } from "@/api/ds/client/client";
 import { getToken } from "@/utils/auth.js";
+import useDefaultLang from "@/composables/useDefaultLang";
 
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { auth_public, auth_app_type } = proxy.useDict(
   "auth_public",

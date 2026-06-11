@@ -423,6 +423,9 @@ import { listAttProject } from "@/api/att/project/project.js";
 import { getToken } from "@/utils/auth.js";
 import { listAttAssetCat } from "@/api/att/cat/assetCat/assetCat.js";
 import DeptTree from "@/components/DeptTree";
+import useDefaultLang from "@/composables/useDefaultLang";
+
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { da_asset_apply_status, datasource_type } = proxy.useDict(
   "da_asset_apply_status",

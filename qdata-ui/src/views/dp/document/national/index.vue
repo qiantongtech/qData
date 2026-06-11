@@ -328,8 +328,10 @@ import {
 import StandardModal from "../components/add";
 import handleFilePreview from "@/utils/filePreview.js";
 import { deptUserTree } from "@/api/system/system/user.js";
-
 import { getToken } from "@/utils/auth.js";
+import useDefaultLang from "@/composables/useDefaultLang";
+
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { column_type, sys_disable, dp_document_status } = proxy.useDict(
   "column_type",

@@ -52,4 +52,5 @@ export default {
     endTimeText: 'End time'
   },
   qualityTrends: 'Quality Trends',
+  noData: 'No data available',
 }

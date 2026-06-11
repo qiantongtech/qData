@@ -130,7 +130,10 @@ import {
     updateDpDataElemCode,
     validateCodeValue
 } from '@/api/dp/dataElem/dataElem';
+import useDefaultLang from "@/composables/useDefaultLang";
+
 const route = useRoute();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 
 const dpDataElemCodeList = ref([]);

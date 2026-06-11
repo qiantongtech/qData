@@ -376,6 +376,9 @@ import {
 import { getToken } from "@/utils/auth.js";
 import { computed } from "vue";
 import DeptTree from "@/components/DeptTree";
+import useDefaultLang from "@/composables/useDefaultLang";
+
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { att_rule_audit_type, att_rule_level, att_rule_audit_q_dimension } =
   proxy.useDict(

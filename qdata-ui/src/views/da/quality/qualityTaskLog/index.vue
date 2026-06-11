@@ -134,9 +134,12 @@
 
 <script setup name="DppQualityLog">
 import { listDppQualityLog, doSendMessage } from "@/api/da/quality/qualityTaskLog";
-const { proxy } = getCurrentInstance();
-import { useRoute, useRouter } from "vue-router"
+import { useRoute, useRouter } from "vue-router";
 import { ref } from "vue";
+import useDefaultLang from "@/composables/useDefaultLang";
+
+const { td } = useDefaultLang();
+const { proxy } = getCurrentInstance();
 const defaultSort = ref({ columnKey: 'start_time', order: 'desc' });
 const { quality_log_success_flag } = proxy.useDict(
 

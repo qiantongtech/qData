@@ -380,7 +380,9 @@ import { listDomain } from "@/api/att/domain/domain.js";
 import { listDgSensitiveLevel } from "@/api/dg/compliance/sensitiveLevel";
 // import { getDgDataElemList } from "@/api/dg/standard/dataElem.js";
 import { useRouter } from "vue-router";
+import useDefaultLang from "@/composables/useDefaultLang";
 
+const { td } = useDefaultLang();
 const BASE_URL = "/meta/unreleased/structured/column";
 
 const DEFAULT_FORM = {

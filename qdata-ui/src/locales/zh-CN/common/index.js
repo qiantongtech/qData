@@ -51,4 +51,5 @@ export default {
     endTime: '结束时间'
   },
   qualityTrends: '质量趋势',
+  noData: '暂无数据',
 }

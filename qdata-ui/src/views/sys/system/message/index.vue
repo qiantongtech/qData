@@ -25,10 +25,10 @@
                 :inline="true"
                 label-width="68px"
             >
-                <el-form-item label="消息类型" prop="category">
+                <el-form-item :label="t('sys.system.message.msgType')" prop="category">
                     <el-select
                         v-model="queryParams.category"
-                        placeholder="消息类型"
+                        :placeholder="t('sys.system.message.msgTypePlaceholder')"
                         clearable
                         class="el-form-input-width"
                     >
@@ -76,7 +76,7 @@
                 <el-row :gutter="10" class="btn-style">
                     <el-col :span="1.5">
                         <el-button @click="readAllMsg" plain>
-                            <i class="iconfont-mini icon-a-zu22378 mr5"></i>全部设为已读
+                            <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('sys.system.message.setAllRead') }}
                         </el-button>
                     </el-col>
                 </el-row>
@@ -85,12 +85,12 @@
 
             <el-table stripe v-loading="loading" :data="msgList">
                 <el-table-column
-                    label="消息标题"
+                    :label="t('sys.system.message.msgTitle')"
                     align="center"
                     key="title"
                     prop="title"
                 />
-                <el-table-column label="消息类型" align="center" key="category">
+                <el-table-column :label="t('sys.system.message.msgType')" align="center" key="category">
                     <template #default="scope">
                         <dict-tag
                             :options="message_category"
@@ -98,15 +98,15 @@
                         />
                     </template>
                 </el-table-column>
-                <el-table-column label="是否已读" align="center" key="hasRead">
+                <el-table-column :label="t('sys.system.message.isRead')" align="center" key="hasRead">
                     <template #default="scope">
                         <el-tag :type="scope.row.hasRead ? 'success' : 'danger'">
-                            {{ scope.row.hasRead ? "已读" : "未读" }}
+                            {{ scope.row.hasRead ? t('sys.system.message.read') : t('sys.system.message.unread') }}
                         </el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column
-                    label="消息内容"
+                    :label="t('sys.system.message.msgContent')"
                     align="center"
                     key="content"
                     prop="content"
@@ -156,7 +156,7 @@
         </div>
 
         <el-dialog
-            title="消息详情"
+            :title="t('sys.system.message.msgDetail')"
             v-model="openView"
             width="800px"
             draggable
@@ -166,7 +166,7 @@
             <el-form label-width="100px">
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item label="消息标题：">
+                        <el-form-item :label="t('sys.system.message.msgTitleLabel')">
                             <div class="form-value-ifon">
                                 {{ viewData.title }}
                             </div>
@@ -174,7 +174,7 @@
                     </el-col>
 
                     <el-col :span="12">
-                        <el-form-item label="类型：">
+                        <el-form-item :label="t('sys.system.message.typeLabel')">
                             <div class="form-value-ifon">
                                 <dict-tag
                                     :options="message_category"
@@ -184,27 +184,27 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="是否已读：">
+                        <el-form-item :label="t('sys.system.message.isReadLabel')">
                             <div class="form-value-ifon">
                                 <el-tag
                                     :type="
                                         viewData.hasRead ? 'success' : 'danger'
                                     "
                                 >
-                                    {{ viewData.hasRead ? "已读" : "未读" }}
+                                    {{ viewData.hasRead ? t('sys.system.message.read') : t('sys.system.message.unread') }}
                                 </el-tag>
                             </div>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="消息内容：">
+                        <el-form-item :label="t('sys.system.message.msgContentLabel')">
                             <div class="form-value-ifon">
                                 {{ viewData.content }}
                             </div>
                         </el-form-item>
                     </el-col>
                     <el-col :span="24">
-                        <el-form-item label="创建时间：">
+                        <el-form-item :label="t('sys.system.message.createTimeLabel')">
                             <div class="form-value-ifon">
                                 {{ viewData.createTime }}
                             </div>
@@ -224,9 +224,11 @@
 <script setup name="Message">
 import { getCurrentInstance, ref } from "vue"
 import useDefaultLang from "@/composables/useDefaultLang";
-const { td } = useDefaultLang();;
 import { useI18n } from 'vue-i18n'
 import useUserStore from "@/store/system/user";
+
+const { t } = useI18n();
+const { td } = useDefaultLang();
 import {
     listMessage,
     delMessage,
@@ -298,7 +300,7 @@ getList();
 
 /** 全部已读 */
 function readAllMsg() {
-    ElMessageBox.confirm("确定全部设为已读吗？")
+    ElMessageBox.confirm(t('sys.system.message.confirmSetAllRead'))
         .then(() => {
             return readAll();
         })
@@ -311,7 +313,7 @@ function readAllMsg() {
 }
 /** 删除 */
 function deleteMsg(id) {
-    ElMessageBox.confirm("确定删除改条消息吗？")
+    ElMessageBox.confirm(t('sys.system.message.confirmDelete'))
         .then(() => {
             return delMessage(id);
         })

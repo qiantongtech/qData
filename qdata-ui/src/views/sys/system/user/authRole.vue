@@ -18,16 +18,16 @@
 <template>
   <div class="app-container" ref="app-container">
     <div class="pagecont-top">
-      <h4 class="form-header h4">基本信息</h4>
+      <h4 class="form-header h4">{{ t('sys.system.user.basicInfo') }}</h4>
       <el-form class="btn-style" :model="form" label-width="80px">
         <el-row>
           <el-col :span="8" :offset="2">
-            <el-form-item label="用户名称" prop="nickName">
+            <el-form-item :label="t('sys.system.user.userNameLabel')" prop="nickName">
               <el-input v-model="form.nickName" disabled />
             </el-form-item>
           </el-col>
           <el-col :span="8" :offset="2">
-            <el-form-item label="登录账号" prop="userName">
+            <el-form-item :label="t('sys.system.user.loginAccount')" prop="userName">
               <el-input v-model="form.userName" disabled />
             </el-form-item>
           </el-col>
@@ -36,10 +36,10 @@
     </div>
 
     <div class="pagecont-bottom">
-      <h4 class="form-header h4">角色信息</h4>
+      <h4 class="form-header h4">{{ t('sys.system.user.roleInfo') }}</h4>
       <el-table stripe height="500px" v-loading="loading" :row-key="getRowKey" @row-click="clickRow" ref="roleRef"
         @selection-change="handleSelectionChange" :data="roles.slice((pageNum - 1) * pageSize, pageNum * pageSize)">
-        <el-table-column label="序号" width="80" type="index" align="center">
+        <el-table-column :label="t('common.display.index')" width="80" type="index" align="center">
           <template #default="scope">
             <span>{{ (pageNum - 1) * pageSize + scope.$index + 1 }}</span>
           </template>
@@ -113,7 +113,7 @@ function submitForm() {
   const userId = form.value.userId;
   const rIds = roleIds.value.join(",");
   updateAuthRole({ userId: userId, roleIds: rIds }).then((response) => {
-    proxy.$modal.msgSuccess("授权成功");
+    proxy.$modal.msgSuccess(t('sys.system.user.authSuccess'));
     close();
   });
 }

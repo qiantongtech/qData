@@ -29,7 +29,7 @@
             <div class="info-con">
               <div class="info-con-name">{{ greeting }}，{{ userStore.nickName }} ，{{ message }}</div>
               <div class="info-con-desc">
-                <span style="color: var(--el-color-primary)"> 系统管理员 </span>
+                <span style="color: var(--el-color-primary)">{{ t('sys.dashboard.admin') }}</span>
                 <el-divider direction="vertical" />
                 {{ xljtcont }}
               </div>
@@ -38,11 +38,11 @@
               <!-- <a href="/user/profile" class=""> -->
               <el-button type="primary" class="info-btn-dft" plain size="large" @click="goprofile"
                 style="background: #135afb; color: #fff; font-size: 14px">
-                个人中心
+                {{ t('sys.dashboard.personalCenter') }}
               </el-button>
               <el-button auto-insert-space @click="logout" type="primary" class="info-btn-dft info-btn-dfts" plain
                 size="large" style="color: #135afb">
-                退出登录
+                {{ t('sys.dashboard.logout') }}
               </el-button>
             </div>
           </div>
@@ -70,7 +70,7 @@
 
             <div class="module-item-border"></div>
             <div class="module-item-data">
-              <span class="data-label">周同比：</span>
+              <span class="data-label">{{ t('sys.dashboard.weekOverWeek') }}</span>
               <span :class="[item.up ? 'data-up' : 'data-down']">{{ item.speed }}%
               </span>
             </div>
@@ -80,7 +80,7 @@
           <el-col :xs="24" :sm="24" :md="12" :lg="12">
             <div class="module-9 border-item">
               <div class="border-item-head">
-                <span class="head-title"> API数据调用量变化趋势 </span>
+                <span class="head-title">{{ t('sys.dashboard.apiCallTrend') }}</span>
                 <!-- <el-link type="primary" :underline="false">查看更多 </el-link> -->
               </div>
               <div class="border-item-body">
@@ -91,7 +91,7 @@
           <el-col :xs="24" :sm="24" :md="12" :lg="12">
             <div class="module-8 border-item">
               <div class="border-item-head">
-                <span class="head-title">治理数据量变化趋势 </span>
+                <span class="head-title">{{ t('sys.dashboard.governanceDataTrend') }}</span>
                 <!-- <el-link type="primary" :underline="false">查看更多 </el-link> -->
               </div>
               <div class="border-item-body">
@@ -104,8 +104,8 @@
       <el-col :xs="24" :sm="24" :md="6" :lg="6" class="home-gutter">
         <div class="border-item module-6 home-gutter">
           <div class="border-item-head">
-            <span class="head-title">新闻公告 </span>
-            <el-link type="primary" :underline="false" @click="goxinwen('list')">查看更多
+            <span class="head-title">{{ t('sys.dashboard.newsNotice') }}</span>
+            <el-link type="primary" :underline="false" @click="goxinwen('list')">{{ t('sys.dashboard.viewMore') }}
             </el-link>
           </div>
           <div class="border-item-body">
@@ -124,7 +124,7 @@
           <div class="news">
             <div class="border-item">
               <div class="border-item-head">
-                <span class="head-title">快捷功能入口</span>
+                <span class="head-title">{{ t('sys.dashboard.quickEntry') }}</span>
                 <router-link to="/"> </router-link>
               </div>
               <div class="border-item-body" style="padding-top: 10px; padding-left: 5px">
@@ -147,7 +147,7 @@
       <el-col :xs="24" :sm="24" :md="24" :lg="24">
         <div class="module-10 border-item">
           <div class="border-item-head">
-            <span class="head-title"> 监控状态 </span>
+            <span class="head-title">{{ t('sys.dashboard.monitorStatus') }}</span>
             <!-- <el-link type="primary" :underline="false">查看更多 </el-link> -->
           </div>
           <div class="cards">
@@ -159,12 +159,12 @@
               <div class="stats">
                 <div class="stat-box normal-box">
                   <div class="num">{{ item.normal }}</div>
-                  <div class="label">正常</div>
+                  <div class="label">{{ t('sys.dashboard.normal') }}</div>
                 </div>
 
                 <div class="stat-box abnormal-box">
                   <div class="num">{{ item.error }}</div>
-                  <div class="label">异常</div>
+                  <div class="label">{{ t('sys.dashboard.abnormal') }}</div>
                 </div>
               </div>
             </div>
@@ -258,23 +258,23 @@ const prevSlide = () => {
 };
 const statusList = [
   {
-    name: "数据库",
+    name: t('sys.dashboard.database'),
     icon: getAssetsFile("db.svg"),
     normal: 0,
     error: 0,
     highlight: true,
   },
-  { name: "批量归集", icon: getAssetsFile("batch.svg"), normal: 2, error: 8 },
-  { name: "任务编排", icon: getAssetsFile("task.svg"), normal: 0, error: 0 },
+  { name: t('sys.dashboard.batchCollection'), icon: getAssetsFile("batch.svg"), normal: 2, error: 8 },
+  { name: t('sys.dashboard.taskOrchestration'), icon: getAssetsFile("task.svg"), normal: 0, error: 0 },
   {
-    name: "实时归集",
+    name: t('sys.dashboard.realtimeCollection'),
     icon: getAssetsFile("realtime.svg"),
     normal: 1,
     error: 0,
   },
-  { name: "api测试集", icon: getAssetsFile("api1.svg"), normal: 4, error: 0 },
+  { name: t('sys.dashboard.apiTestSuite'), icon: getAssetsFile("api1.svg"), normal: 4, error: 0 },
   {
-    name: "数据开发",
+    name: t('sys.dashboard.dataDevelopment'),
     icon: getAssetsFile("dev.svg"),
     normal: 0,
     error: 0,
@@ -292,35 +292,35 @@ const appStore = useAppStore();
 const userStore = useUserStore();
 const module1 = ref([
   {
-    name: "数据集成任务",
+    name: t('sys.dashboard.dataIntegrationTask'),
     value: 126,
     up: true,
     speed: 12,
     img: getAssetsFile("1.png"),
   },
   {
-    name: "数据开发任务",
+    name: t('sys.dashboard.dataDevTask'),
     value: 72,
     up: true,
     speed: 2,
     img: getAssetsFile("2.png"),
   },
   {
-    name: "数据作业任务",
+    name: t('sys.dashboard.dataJobTask'),
     value: 164,
     up: true,
     speed: 9,
     img: getAssetsFile("3.png"),
   },
   {
-    name: "数据资产",
+    name: t('sys.dashboard.dataAsset'),
     value: 76,
     up: true,
     speed: 10,
     img: getAssetsFile("4.png"),
   },
   {
-    name: "接口服务",
+    name: t('sys.dashboard.apiService'),
     value: 18,
     up: false,
     speed: 10,
@@ -329,7 +329,7 @@ const module1 = ref([
 ]);
 const entranceList = [
   {
-    name: "数据连接",
+    name: t('sys.dashboard.dataConnection'),
     path: "/da/datasource",
     query: { type: "0" },
     perm: ["da:dataSource:list"],
@@ -337,7 +337,7 @@ const entranceList = [
     icon: getAssetsFile("connect.png"),
   },
   {
-    name: "资产地图",
+    name: t('sys.dashboard.assetMap'),
     path: "/da/asset",
     query: {},
     perm: ["da:asset:list"],
@@ -345,7 +345,7 @@ const entranceList = [
     icon: getAssetsFile("map.png"),
   },
   {
-    name: "数据集成",
+    name: t('sys.dashboard.dataIntegration'),
     path: "/dpp/task/integratioTask",
     query: {},
     TYPE: 1,
@@ -354,7 +354,7 @@ const entranceList = [
     icon: getAssetsFile("integration.png"),
   },
   {
-    name: "数据开发",
+    name: t('sys.dashboard.dataDevelopment'),
     path: "/dpp/task/developTask",
     query: {},
     TYPE: 3,
@@ -362,7 +362,7 @@ const entranceList = [
     icon: getAssetsFile("develop.png"),
   },
   {
-    name: "API 管理",
+    name: t('sys.dashboard.apiManagement'),
     path: "/ds/api",
     query: {},
     perm: ["ds:api:list"],
@@ -388,21 +388,21 @@ const xljtcont = ref("");
 function getxljtcont() {
   let num = Math.floor(Math.random() * 9);
   let xljtlist = [
-    { value: "在数据有序中，愿您也能感受到内心的安定。" },
-    { value: "数据清晰，思路清晰；心情舒展，工作自然顺畅。" },
-    { value: "每一次整理与沉淀，都是一种成长。" },
-    { value: "愿今天的您，不止高效，更能从容。" },
-    { value: "愿您的每一次决策，都带来笃定与安心。" },
-    { value: "治理有序，决策有据，让数据成为您可靠的伙伴。" },
-    { value: "数据驱动价值，愿您每天的工作更高效、更轻松。" },
-    { value: "数据能整理，心情也值得被安放。" },
-    { value: "数据赋能决策，筑业务新高度。" },
-    { value: "稳中求进，行稳致远，与您共筑数字未来。" },
-    { value: "在变化中把握趋势，在数据中预见未来。" },
-    { value: "每一份数据背后，都承载着责任与期待。" },
-    { value: "洞察从数据开始，决策从这里出发。" },
-    { value: "让数据多跑路，让您少操心。" },
-    { value: "数据为舟破迷雾，伴您高效前行。" },
+    { value: t('sys.dashboard.quote1') },
+    { value: t('sys.dashboard.quote2') },
+    { value: t('sys.dashboard.quote3') },
+    { value: t('sys.dashboard.quote4') },
+    { value: t('sys.dashboard.quote5') },
+    { value: t('sys.dashboard.quote6') },
+    { value: t('sys.dashboard.quote7') },
+    { value: t('sys.dashboard.quote8') },
+    { value: t('sys.dashboard.quote9') },
+    { value: t('sys.dashboard.quote10') },
+    { value: t('sys.dashboard.quote11') },
+    { value: t('sys.dashboard.quote12') },
+    { value: t('sys.dashboard.quote13') },
+    { value: t('sys.dashboard.quote14') },
+    { value: t('sys.dashboard.quote15') },
   ];
   xljtcont.value = xljtlist[num].value;
 }
@@ -492,10 +492,10 @@ function initModule4() {
           "" +
           parms.data.legendname +
           "</br>" +
-          "数量：" +
+          t('common.quantity') + "：" +
           parms.data.value +
           "</br>" +
-          "占比：" +
+          t('common.proportion') + "：" +
           parms.percent +
           "%";
         return str;
@@ -633,7 +633,7 @@ function initModule4() {
 // 认证模式
 const authType = import.meta.env.VITE_APP_AUTH_TYPE;
 function logout() {
-  ElMessageBox.confirm('确定注销并退出系统吗？', t('common.message.prompt'), {
+  ElMessageBox.confirm(t('sys.dashboard.confirmLogout'), t('common.message.prompt'), {
     confirmButtonText: t('common.button.confirm'),
     cancelButtonText: t('common.button.cancel'),
     type: 'warning'

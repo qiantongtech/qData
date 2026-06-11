@@ -19,17 +19,17 @@
   <div class="app-container" ref="app-container">
     <div class="pagecont-top" v-show="showSearch">
       <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="68px">
-        <el-form-item label="消息标题" prop="title">
+        <el-form-item :label="t('sys.system.messageTemplate.msgTitle')" prop="title">
           <el-input
               class="el-form-input-width"
               v-model="queryParams.title"
-              placeholder="请输入消息标题"
+              :placeholder="t('sys.system.messageTemplate.msgTitlePlaceholder')"
               clearable
               @keyup.enter="handleQuery"
           />
         </el-form-item>
-        <el-form-item label="消息类别" prop="category">
-          <el-select v-model="queryParams.category" placeholder="请选择" class="el-form-input-width">
+        <el-form-item :label="t('sys.system.messageTemplate.msgCategory')" prop="category">
+          <el-select v-model="queryParams.category" :placeholder="t('sys.system.messageTemplate.selectPlaceholder')" class="el-form-input-width">
             <el-option
                 v-for="dict in message_category"
                 :key="dict.value"
@@ -38,8 +38,8 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="消息等级" prop="msgLevel">
-          <el-select v-model="queryParams.msgLevel" placeholder="请选择" class="el-form-input-width">
+        <el-form-item :label="t('sys.system.messageTemplate.msgLevel')" prop="msgLevel">
+          <el-select v-model="queryParams.msgLevel" :placeholder="t('sys.system.messageTemplate.selectPlaceholder')" class="el-form-input-width">
             <el-option
                 v-for="dict in message_level"
                 :key="dict.value"

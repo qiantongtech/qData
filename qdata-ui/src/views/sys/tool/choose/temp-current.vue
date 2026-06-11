@@ -17,7 +17,7 @@
 
 <template>
   <el-dialog
-    title="单选-字典管理"
+    :title="t('sys.tool.chooseCurrent.title')"
     v-model="visible"
     width="1200px"
     :append-to="$refs['app-container']"
@@ -33,19 +33,19 @@
       v-show="showSearch"
       label-width="68px"
     >
-      <el-form-item label="字典名称" prop="dictName">
+      <el-form-item :label="t('sys.tool.chooseCurrent.dictName')" prop="dictName">
         <el-input
           v-model="queryParams.dictName"
-          placeholder="请输入字典名称"
+          :placeholder="t('sys.tool.chooseCurrent.dictNamePlaceholder')"
           clearable
           class="el-form-input-width"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="字典类型" prop="dictType">
+      <el-form-item :label="t('sys.tool.chooseCurrent.dictType')" prop="dictType">
         <el-input
           v-model="queryParams.dictType"
-          placeholder="请输入字典类型"
+          :placeholder="t('sys.tool.chooseCurrent.dictTypePlaceholder')"
           clearable
           class="el-form-input-width"
           @keyup.enter="handleQuery"
@@ -54,7 +54,7 @@
       <el-form-item :label="t('common.texts.status')" prop="status">
         <el-select
           v-model="queryParams.status"
-          placeholder="字典状态"
+          :placeholder="t('sys.tool.chooseCurrent.dictStatus')"
           clearable
           class="el-form-input-width"
         >
@@ -103,19 +103,19 @@
       @current-change="handleCurrentChange"
     >
       <el-table-column
-        label="字典编号"
+        :label="t('sys.tool.chooseCurrent.dictNo')"
         align="center"
         prop="dictId"
         width="85"
       />
       <el-table-column
-        label="字典名称"
+        :label="t('sys.tool.chooseCurrent.dictName')"
         align="center"
         prop="dictName"
         :show-overflow-tooltip="true"
       />
       <el-table-column
-        label="字典类型"
+        :label="t('sys.tool.chooseCurrent.dictType')"
         align="center"
         :show-overflow-tooltip="true"
       >
@@ -169,9 +169,9 @@ import { useI18n } from 'vue-i18n'
 import { listType, getType, delType } from "@/api/system/system/dict/type.js";
 import { ref } from "vue"
 import useDefaultLang from "@/composables/useDefaultLang";
+const { t } = useI18n();
 const { td } = useDefaultLang();;
 
-const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
 
@@ -242,7 +242,7 @@ function cancel() {
  */
 function confirm() {
   if (!single.value) {
-    proxy.$modal.msgWarning("未选择数据！");
+    proxy.$modal.msgWarning(t('sys.tool.chooseCurrent.noDataSelected'));
     return;
   }
   emit("confirm", single.value);

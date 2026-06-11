@@ -19,10 +19,10 @@
   <div class="app-container" ref="app-container">
     <div class="pagecont-top" v-show="showSearch">
       <el-form class="btn-style" :model="queryParams" ref="queryForm" :inline="true" label-width="68px">
-        <el-form-item label="主体名称" prop="name">
+        <el-form-item :label="t('sys.subject.subjectName')" prop="name">
           <el-input
             v-model="queryParams.name"
-            placeholder="请输入主体名称"
+            :placeholder="t('sys.subject.subjectNamePlaceholder')"
             class="el-form-input-width"
             clearable
             @keyup.enter.native="handleQuery"
@@ -57,13 +57,13 @@
 
       <el-table stripe height="60vh" v-loading="loading" :data="subjectList" @selection-change="handleSelectionChange">
         <el-table-column label="ID" align="center" prop="id" />
-        <el-table-column label="主体名称" align="center" prop="name" :show-overflow-tooltip="true" />
-        <el-table-column label="通用名称" align="center" prop="cn" :show-overflow-tooltip="true" />
-        <el-table-column label="组织部门" align="center" prop="ou" />
-        <el-table-column label="组织名称" align="center" prop="o" />
-        <el-table-column label="城市名称" align="center" prop="l" />
-        <el-table-column label="省名称" align="center" prop="st" />
-        <el-table-column label="国家" align="center" prop="c" />
+        <el-table-column :label="t('sys.subject.subjectName')" align="center" prop="name" :show-overflow-tooltip="true" />
+        <el-table-column :label="t('sys.subject.commonName')" align="center" prop="cn" :show-overflow-tooltip="true" />
+        <el-table-column :label="t('sys.subject.dept')" align="center" prop="ou" />
+        <el-table-column :label="t('sys.subject.orgName')" align="center" prop="o" />
+        <el-table-column :label="t('sys.subject.cityName')" align="center" prop="l" />
+        <el-table-column :label="t('sys.subject.provinceName')" align="center" prop="st" />
+        <el-table-column :label="t('sys.subject.country')" align="center" prop="c" />
   <!--      <el-table-column :label="t('common.texts.remark')" align="center" prop="remark" />-->
         <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width"  fixed="right" width="240">
           <template #default="scope">
@@ -107,38 +107,38 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="主体名称" prop="name">
-              <el-input v-model="form.name" placeholder="请输入主体名称" />
+            <el-form-item :label="t('sys.subject.subjectName')" prop="name">
+              <el-input v-model="form.name" :placeholder="t('sys.subject.subjectNamePlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="通用名称" prop="cn">
-              <el-input v-model="form.cn" placeholder="请输入通用名称" />
+            <el-form-item :label="t('sys.subject.commonName')" prop="cn">
+              <el-input v-model="form.cn" :placeholder="t('sys.subject.commonNamePlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="部门名称" prop="ou">
-              <el-input v-model="form.ou" placeholder="请输入部门名称" />
+            <el-form-item :label="t('sys.subject.deptName')" prop="ou">
+              <el-input v-model="form.ou" :placeholder="t('sys.subject.deptNamePlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="组织名称" prop="o">
-              <el-input v-model="form.o" placeholder="请输入组织名称" />
+            <el-form-item :label="t('sys.subject.orgName')" prop="o">
+              <el-input v-model="form.o" :placeholder="t('sys.subject.orgNamePlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="城市名称" prop="l">
-              <el-input v-model="form.l" placeholder="请输入城市名称" />
+            <el-form-item :label="t('sys.subject.cityName')" prop="l">
+              <el-input v-model="form.l" :placeholder="t('sys.subject.cityNamePlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="省份名称" prop="st">
-              <el-input v-model="form.st" placeholder="请输入省名称" />
+            <el-form-item :label="t('sys.subject.province')" prop="st">
+              <el-input v-model="form.st" :placeholder="t('sys.subject.provincePlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="国家名称" prop="c">
-              <el-input v-model="form.c" placeholder="请输入国家" />
+            <el-form-item :label="t('sys.subject.countryName')" prop="c">
+              <el-input v-model="form.c" :placeholder="t('sys.subject.countryPlaceholder')" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -157,10 +157,15 @@
 import { listSubject, getSubject, delSubject, addSubject, updateSubject } from "@/api/system/ca/subject.js";
 import JSZip from 'jszip';
 import {red} from "chalk";
+import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 export default {
   name: "Subject",
+  setup() {
+    const { t } = useI18n();
+    return { t };
+  },
   data() {
     return {
       // 遮罩层
@@ -202,25 +207,25 @@ export default {
       // 表单校验
       rules: {
         name: [
-          { required: true, message: "主体名称不能为空", trigger: "blur" }
+          { required: true, message: this.t('sys.subject.subjectNameRequired'), trigger: "blur" }
         ],
         cn: [
-          { required: true, message: "通用名称不能为空", trigger: "blur" }
+          { required: true, message: this.t('sys.subject.commonNameRequired'), trigger: "blur" }
         ],
         ou: [
-          { required: true, message: "组织单位名称不能为空", trigger: "blur" }
+          { required: true, message: this.t('sys.subject.orgUnitRequired'), trigger: "blur" }
         ],
         o: [
-          { required: true, message: "组织名称不能为空", trigger: "blur" }
+          { required: true, message: this.t('sys.subject.orgNameRequired'), trigger: "blur" }
         ],
         l: [
-          { required: true, message: "城市名称不能为空", trigger: "blur" }
+          { required: true, message: this.t('sys.subject.cityNameRequired'), trigger: "blur" }
         ],
         st: [
-          { required: true, message: "省名称不能为空", trigger: "blur" }
+          { required: true, message: this.t('sys.subject.provinceNameRequired'), trigger: "blur" }
         ],
         c: [
-          { required: true, message: "国家不能为空", trigger: "blur" }
+          { required: true, message: this.t('sys.subject.countryRequired'), trigger: "blur" }
         ],
       }
     };
@@ -306,7 +311,7 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "新增主体";
+      this.title = this.t('sys.subject.addTitle');
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -315,7 +320,7 @@ export default {
       getSubject(id).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改主体管理";
+        this.title = this.t('sys.subject.editTitle');
       });
     },
     /** 提交按钮 */
@@ -341,7 +346,7 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除主体管理编号为"' + ids + '"的数据项？').then(function() {
+      this.$modal.confirm(this.t('sys.subject.confirmDelete', { id: ids })).then(function() {
         return delSubject(ids);
       }).then(() => {
         this.getList();

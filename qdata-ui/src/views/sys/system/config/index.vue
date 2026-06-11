@@ -19,26 +19,26 @@
    <div class="app-container" ref="app-container">
       <div class="pagecont-top" v-show="showSearch">
          <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="68px">
-            <el-form-item label="参数名称" prop="configName">
+            <el-form-item :label="t('sys.system.config.paramName')" prop="configName">
                <el-input
                   v-model="queryParams.configName"
-                  placeholder="请输入参数名称"
+                  :placeholder="t('sys.system.config.paramNamePlaceholder')"
                   clearable
                   class="el-form-input-width"
                   @keyup.enter="handleQuery"
                />
             </el-form-item>
-            <el-form-item label="参数键名" prop="configKey">
+            <el-form-item :label="t('sys.system.config.paramKey')" prop="configKey">
                <el-input
                   v-model="queryParams.configKey"
-                  placeholder="请输入参数键名"
+                  :placeholder="t('sys.system.config.paramKeyPlaceholder')"
                   clearable
                   class="el-form-input-width"
                   @keyup.enter="handleQuery"
                />
             </el-form-item>
-            <el-form-item label="系统内置" prop="configType">
-               <el-select class="el-form-input-width" v-model="queryParams.configType" placeholder="系统内置" clearable>
+            <el-form-item :label="t('sys.system.config.systemBuiltIn')" prop="configType">
+               <el-select class="el-form-input-width" v-model="queryParams.configType" :placeholder="t('sys.system.config.systemBuiltIn')" clearable>
                   <el-option
                      v-for="dict in sys_yes_no"
                      :key="dict.value"
@@ -116,7 +116,7 @@
                   icon="Refresh"
                   @click="handleRefreshCache"
                   v-hasPermi="['system:config:remove']"
-               >刷新缓存</el-button>
+               >{{ t('sys.system.config.refreshCache') }}</el-button>
             </el-col>
          </el-row>
          <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
@@ -124,15 +124,15 @@
 
          <el-table stripe height="60vh" v-loading="loading" :data="configList" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55" align="center" />
-            <el-table-column label="参数主键" align="center" prop="configId" />
-            <el-table-column label="参数名称" align="center" prop="configName" :show-overflow-tooltip="true" />
-            <el-table-column label="参数键名" align="center" prop="configKey" :show-overflow-tooltip="true" />
-            <el-table-column label="参数键值" align="center" prop="configValue" :show-overflow-tooltip="true" >
+            <el-table-column :label="t('sys.system.config.paramPrimaryKey')" align="center" prop="configId" />
+            <el-table-column :label="t('sys.system.config.paramName')" align="center" prop="configName" :show-overflow-tooltip="true" />
+            <el-table-column :label="t('sys.system.config.paramKey')" align="center" prop="configKey" :show-overflow-tooltip="true" />
+            <el-table-column :label="t('sys.system.config.paramValue')" align="center" prop="configValue" :show-overflow-tooltip="true" >
                <template #default="scope">
                   <span>{{ scope.row.configValue || "-" }}</span>
                </template>
             </el-table-column>
-            <el-table-column label="系统内置" align="center" prop="configType">
+            <el-table-column :label="t('sys.system.config.systemBuiltIn')" align="center" prop="configType">
                <template #default="scope">
                   <dict-tag :options="sys_yes_no" :value="scope.row.configType" />
                </template>
@@ -165,22 +165,22 @@
          <el-form ref="configRef" :model="form" :rules="rules" label-width="80px">
             <el-row :gutter="20">
                <el-col :span="12">
-                  <el-form-item label="参数名称" prop="configName">
-                     <el-input v-model="form.configName" placeholder="请输入参数名称" />
+                  <el-form-item :label="t('sys.system.config.paramName')" prop="configName">
+                     <el-input v-model="form.configName" :placeholder="t('sys.system.config.paramNamePlaceholder')" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item label="参数键名" prop="configKey">
-                     <el-input v-model="form.configKey" placeholder="请输入参数键名" />
+                  <el-form-item :label="t('sys.system.config.paramKey')" prop="configKey">
+                     <el-input v-model="form.configKey" :placeholder="t('sys.system.config.paramKeyPlaceholder')" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item label="参数键值" prop="configValue">
-                     <el-input v-model="form.configValue" placeholder="请输入参数键值" />
+                  <el-form-item :label="t('sys.system.config.paramValue')" prop="configValue">
+                     <el-input v-model="form.configValue" :placeholder="t('sys.system.config.paramValuePlaceholder')" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item label="系统内置" prop="configType">
+                  <el-form-item :label="t('sys.system.config.systemBuiltIn')" prop="configType">
                      <el-radio-group v-model="form.configType">
                         <el-radio
                            v-for="dict in sys_yes_no"
@@ -192,7 +192,7 @@
                </el-col>
                <el-col :span="24">
                   <el-form-item :label="t('common.texts.remark')" prop="remark">
-                     <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
+                     <el-input v-model="form.remark" type="textarea" :placeholder="t('sys.config.inputContent')" />
                   </el-form-item>
                </el-col>
             </el-row>
@@ -212,6 +212,7 @@ import { useI18n } from 'vue-i18n'
 import { listConfig, getConfig, delConfig, addConfig, updateConfig, refreshCache } from "@/api/system/system/config.js";
 import useDefaultLang from "@/composables/useDefaultLang";
 
+const { t } = useI18n();
 const { td } = useDefaultLang();
 const { t } = useI18n();
 const { proxy } = getCurrentInstance();
@@ -238,9 +239,9 @@ const data = reactive({
     configType: undefined
   },
   rules: {
-    configName: [{ required: true, message: "参数名称不能为空", trigger: "blur" }],
-    configKey: [{ required: true, message: "参数键名不能为空", trigger: "blur" }],
-    configValue: [{ required: true, message: "参数键值不能为空", trigger: "blur" }]
+    configName: [{ required: true, message: t('sys.system.config.paramNameRequired'), trigger: "blur" }],
+    configKey: [{ required: true, message: t('sys.system.config.paramKeyRequired'), trigger: "blur" }],
+    configValue: [{ required: true, message: t('sys.system.config.paramValueRequired'), trigger: "blur" }]
   }
 });
 
@@ -299,7 +300,7 @@ function handleSelectionChange(selection) {
 function handleAdd() {
   reset();
   open.value = true;
-  title.value = "新增参数";
+  title.value = t('sys.system.config.addTitle');
 }
 
 /** 修改按钮操作 */
@@ -309,7 +310,7 @@ function handleUpdate(row) {
   getConfig(configId).then(response => {
     form.value = response.data;
     open.value = true;
-    title.value = "修改参数";
+    title.value = t('sys.system.config.editTitle');
   });
 }
 
@@ -337,7 +338,7 @@ function submitForm() {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const configIds = row.configId || ids.value;
-  proxy.$modal.confirm('是否确认删除参数编号为"' + configIds + '"的数据项？').then(function () {
+  proxy.$modal.confirm(t('sys.system.config.confirmDelete', { id: configIds })).then(function () {
     return delConfig(configIds);
   }).then(() => {
     getList();
@@ -355,7 +356,7 @@ function handleExport() {
 /** 刷新缓存按钮操作 */
 function handleRefreshCache() {
   refreshCache().then(() => {
-    proxy.$modal.msgSuccess("刷新缓存成功");
+    proxy.$modal.msgSuccess(t('sys.system.config.refreshCacheSuccess'));
   });
 }
 

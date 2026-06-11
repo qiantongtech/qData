@@ -19,19 +19,19 @@
    <div class="app-container" ref="app-container">
       <div class="pagecont-top" v-show="showSearch">
          <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="68px">
-            <el-form-item label="字典名称" prop="dictName">
+            <el-form-item :label="t('sys.system.dictType.dictName')" prop="dictName">
                <el-input
                   v-model="queryParams.dictName"
-                  placeholder="请输入字典名称"
+                  :placeholder="t('sys.system.dictType.dictNamePlaceholder')"
                   clearable
                   class="el-form-input-width"
                   @keyup.enter="handleQuery"
                />
             </el-form-item>
-            <el-form-item label="字典类型" prop="dictType">
+            <el-form-item :label="t('sys.system.dictType.dictType')" prop="dictType">
                <el-input
                   v-model="queryParams.dictType"
-                  placeholder="请输入字典类型"
+                  :placeholder="t('sys.system.dictType.dictTypePlaceholder')"
                   clearable
                   class="el-form-input-width"
                   @keyup.enter="handleQuery"
@@ -40,7 +40,7 @@
             <el-form-item :label="t('common.texts.status')" prop="status">
                <el-select
                   v-model="queryParams.status"
-                  placeholder="字典状态"
+                  :placeholder="t('sys.system.dictType.dictStatus')"
                   clearable
                   class="el-form-input-width"
                >
@@ -131,7 +131,7 @@
                      icon="Refresh"
                      @click="handleRefreshCache"
                      v-hasPermi="['system:dict:remove']"
-                  >刷新缓存</el-button>
+                  >{{ t('sys.system.dictType.refreshCache') }}</el-button>
                </el-col>
             </el-row>
             <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
@@ -139,9 +139,9 @@
 
          <el-table stripe height="60vh" v-loading="loading" :data="typeList" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55" align="center" />
-            <el-table-column label="字典编号" align="center" prop="dictId" />
-            <el-table-column label="字典名称" align="center" prop="dictName" :show-overflow-tooltip="true"/>
-            <el-table-column label="字典类型" align="center" :show-overflow-tooltip="true">
+            <el-table-column :label="t('sys.system.dictType.dictNo')" align="center" prop="dictId" />
+            <el-table-column :label="t('sys.system.dictType.dictName')" align="center" prop="dictName" :show-overflow-tooltip="true"/>
+            <el-table-column :label="t('sys.system.dictType.dictType')" align="center" :show-overflow-tooltip="true">
                <template #default="scope">
                   <router-link :to="'/system/dict-data/index/' + scope.row.dictId" class="link-type">
                      <span>{{ scope.row.dictType }}</span>
@@ -182,13 +182,13 @@
          <el-form ref="dictRef" :model="form" :rules="rules" label-width="80px">
             <el-row :gutter="20">
                <el-col :span="12">
-                  <el-form-item label="字典名称" prop="dictName">
-                     <el-input v-model="form.dictName" placeholder="请输入字典名称" />
+                  <el-form-item :label="t('sys.system.dictType.dictName')" prop="dictName">
+                     <el-input v-model="form.dictName" :placeholder="t('sys.system.dictType.dictNamePlaceholder')" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item label="字典类型" prop="dictType">
-                     <el-input v-model="form.dictType" placeholder="请输入字典类型" />
+                  <el-form-item :label="t('sys.system.dictType.dictType')" prop="dictType">
+                     <el-input v-model="form.dictType" :placeholder="t('sys.system.dictType.dictTypePlaceholder')" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
@@ -204,7 +204,7 @@
                </el-col>
                <el-col :span="24">
                   <el-form-item :label="t('common.texts.remark')" prop="remark">
-                     <el-input v-model="form.remark" type="textarea" placeholder="请输入内容"></el-input>
+                     <el-input v-model="form.remark" type="textarea" :placeholder="t('sys.dictType.inputContent')"></el-input>
                   </el-form-item>
                </el-col>
             </el-row>
@@ -226,6 +226,7 @@ import { listType, getType, delType, addType, updateType, refreshCache } from "@
 import {genCode} from "@/api/system/tool/gen.js";
 import useDefaultLang from "@/composables/useDefaultLang";
 
+const { t } = useI18n();
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
@@ -252,8 +253,8 @@ const data = reactive({
     status: undefined
   },
   rules: {
-    dictName: [{ required: true, message: "字典名称不能为空", trigger: "blur" }],
-    dictType: [{ required: true, message: "字典类型不能为空", trigger: "blur" }]
+    dictName: [{ required: true, message: t('sys.system.dictType.dictNameRequired'), trigger: "blur" }],
+    dictType: [{ required: true, message: t('sys.system.dictType.dictTypeRequired'), trigger: "blur" }]
   },
 });
 
@@ -304,7 +305,7 @@ function resetQuery() {
 function handleAdd() {
   reset();
   open.value = true;
-  title.value = "新增字典类型";
+  title.value = t('sys.system.dictType.addTitle');
 }
 
 /** 多选框选中数据 */
@@ -323,7 +324,7 @@ function handleUpdate(row) {
   getType(dictId).then(response => {
     form.value = response.data;
     open.value = true;
-    title.value = "修改字典类型";
+    title.value = t('sys.system.dictType.editTitle');
   });
 }
 
@@ -351,7 +352,7 @@ function submitForm() {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const dictIds = row.dictId || ids.value;
-  proxy.$modal.confirm('是否确认删除字典编号为"' + dictIds + '"的数据项？').then(function() {
+  proxy.$modal.confirm(t('sys.system.dictType.confirmDelete', { id: dictIds })).then(function() {
     return delType(dictIds);
   }).then(() => {
     getList();
@@ -369,7 +370,7 @@ function handleExport() {
 /** 刷新缓存按钮操作 */
 function handleRefreshCache() {
   refreshCache().then(() => {
-    proxy.$modal.msgSuccess("刷新成功");
+    proxy.$modal.msgSuccess(t('sys.system.dictType.refreshSuccess'));
     useDictStore().cleanDict();
   });
 }
@@ -378,7 +379,7 @@ function handleRefreshCache() {
 function handleEnum(row) {
   const dtNames = row.dictType || dictTypes.value;
   if (dtNames == "") {
-    proxy.$modal.msgError("请选择要生成的字典");
+    proxy.$modal.msgError(t('sys.system.dictType.selectDictToGenerate'));
     return;
   }
 

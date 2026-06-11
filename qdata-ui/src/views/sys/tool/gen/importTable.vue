@@ -17,12 +17,12 @@
 
 <template>
   <!-- 导入表 -->
-  <el-dialog title="导入表" v-model="visible" width="800px" top="5vh" :append-to="$refs['app-container']"  draggable destroy-on-close>
+  <el-dialog :title="t('sys.tool.genImport.title')" v-model="visible" width="800px" top="5vh" :append-to="$refs['app-container']"  draggable destroy-on-close>
     <el-form :model="queryParams" ref="queryRef" :inline="true">
-      <el-form-item label="表名称" prop="tableName">
+      <el-form-item :label="t('sys.tool.genImport.tableName')" prop="tableName">
         <el-input
           v-model="queryParams.tableName"
-          placeholder="请输入表名称"
+          :placeholder="t('sys.tool.genImport.tableNamePlaceholder')"
           clearable
           class="el-form-input-width"
           @keyup.enter="handleQuery"
@@ -41,8 +41,8 @@
     </el-form>
       <el-table @row-click="clickRow" ref="table" :data="dbTableList" @selection-change="handleSelectionChange" height="380px">
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column prop="tableName" label="表名称" :show-overflow-tooltip="true"></el-table-column>
-        <el-table-column prop="tableComment" label="表描述" :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column prop="tableName" :label="t('sys.tool.genImport.tableName')" :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column prop="tableComment" :label="t('sys.tool.genImport.tableDesc')" :show-overflow-tooltip="true"></el-table-column>
         <el-table-column prop="createTime" :label="t('common.texts.createdTime')"></el-table-column>
         <el-table-column prop="updateTime" :label="t('common.texts.updatedTime')"></el-table-column>
       </el-table>
@@ -122,7 +122,7 @@ function resetQuery() {
 function handleImportTable() {
   const tableNames = tables.value.join(",");
   if (tableNames == "") {
-    proxy.$modal.msgError("请选择要导入的表");
+    proxy.$modal.msgError(t('sys.tool.genImport.selectTableToImport'));
     return;
   }
   importTable({ tables: tableNames }).then(res => {

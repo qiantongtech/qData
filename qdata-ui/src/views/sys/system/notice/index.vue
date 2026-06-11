@@ -19,16 +19,16 @@
    <div class="app-container" ref="app-container">
       <div class="pagecont-top" v-show="showSearch">
          <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="68px">
-            <el-form-item label="公告标题" prop="noticeTitle">
-               <el-input v-model="queryParams.noticeTitle" placeholder="请输入公告标题" clearable class="el-form-input-width"
+            <el-form-item :label="t('sys.system.notice.noticeTitle')" prop="noticeTitle">
+               <el-input v-model="queryParams.noticeTitle" :placeholder="t('sys.system.notice.noticeTitlePlaceholder')" clearable class="el-form-input-width"
                   @keyup.enter="handleQuery" />
             </el-form-item>
-            <el-form-item label="操作人员" prop="createBy">
-               <el-input v-model="queryParams.createBy" placeholder="请输入操作人员" clearable class="el-form-input-width"
+            <el-form-item :label="t('sys.system.notice.operPerson')" prop="createBy">
+               <el-input v-model="queryParams.createBy" :placeholder="t('sys.system.notice.operPersonPlaceholder')" clearable class="el-form-input-width"
                   @keyup.enter="handleQuery" />
             </el-form-item>
-            <el-form-item label="类型" prop="noticeType">
-               <el-select v-model="queryParams.noticeType" placeholder="公告类型" clearable class="el-form-input-width">
+            <el-form-item :label="t('sys.system.notice.type')" prop="noticeType">
+               <el-select v-model="queryParams.noticeType" :placeholder="t('sys.system.notice.noticeType')" clearable class="el-form-input-width">
                   <el-option v-for="dict in sys_notice_type" :key="dict.value" :label="dict.label"
                      :value="dict.value" />
                </el-select>
@@ -70,25 +70,25 @@
 
          <el-table stripe v-loading="loading" :data="noticeList" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55" align="center" />
-            <el-table-column label="序号" align="center" prop="noticeId" width="80" />
-            <el-table-column label="公告标题" align="center" prop="noticeTitle"
+            <el-table-column :label="t('common.display.index')" align="center" prop="noticeId" width="80" />
+            <el-table-column :label="t('sys.system.notice.noticeTitle')" align="center" prop="noticeTitle"
                :show-overflow-tooltip="{ effect: 'light' }" />
-            <el-table-column label="公告类型" align="center" prop="noticeType" width="100">
+            <el-table-column :label="t('sys.system.notice.noticeType')" align="center" prop="noticeType" width="100">
                <template #default="scope">
                   <dict-tag :options="sys_notice_type" :value="scope.row.noticeType" />
                </template>
             </el-table-column>
-            <el-table-column label="置顶" align="center" prop="topFlag" width="100">
+            <el-table-column :label="t('sys.system.notice.isTop')" align="center" prop="topFlag" width="100">
                <template #default="scope">
                   <dict-tag :options="sys_is_or_not" :value="scope.row.topFlag" />
                </template>
             </el-table-column>
-            <el-table-column label="弹框" align="center" prop="alertFlag" width="100">
+            <el-table-column :label="t('sys.system.notice.popup')" align="center" prop="alertFlag" width="100">
                <template #default="scope">
                   <dict-tag :options="sys_is_or_not" :value="scope.row.alertFlag" />
                </template>
             </el-table-column>
-            <el-table-column label="生效时间" align="center" width="220">
+            <el-table-column :label="t('sys.system.notice.effectTime')" align="center" width="220">
                <template #default="scope">
                   <span>
                      {{ parseTime(scope.row.alertStartTime, '{y}-{m}-{d}') }}
@@ -130,20 +130,20 @@
          <el-form ref="noticeRef" :model="form" :rules="rules" label-width="80px">
             <el-row :gutter="20">
                <el-col :span="12">
-                  <el-form-item label="公告标题" prop="noticeTitle">
-                     <el-input v-model="form.noticeTitle" placeholder="请输入公告标题" />
+                  <el-form-item :label="t('sys.system.notice.noticeTitle')" prop="noticeTitle">
+                     <el-input v-model="form.noticeTitle" :placeholder="t('sys.system.notice.noticeTitlePlaceholder')" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item label="公告类型" prop="noticeType">
-                     <el-select v-model="form.noticeType" placeholder="请选择">
+                  <el-form-item :label="t('sys.system.notice.noticeType')" prop="noticeType">
+                     <el-select v-model="form.noticeType" :placeholder="t('sys.system.notice.selectPlaceholder')">
                         <el-option v-for="dict in sys_notice_type" :key="dict.value" :label="dict.label"
                            :value="dict.value"></el-option>
                      </el-select>
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item label="生效时间">
+                  <el-form-item :label="t('sys.system.notice.effectTime')">
                      <el-date-picker class="el-form-input-width" v-model="dateRange" value-format="YYYY-MM-DD HH:mm:ss"
                         type="daterange" range-separator="-" :start-placeholder="td('common.form.startDatePlaceholder')" :end-placeholder="td('common.form.endDatePlaceholder')"
                         :default-time="[new Date(2000, 1, 1, 0, 0, 0),
@@ -163,7 +163,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item label="是否置顶" prop="topFlag">
+                  <el-form-item :label="t('sys.system.notice.isTopLabel')" prop="topFlag">
                      <el-radio-group v-model="form.topFlag">
                         <el-radio v-for="dict in sys_is_or_not" :key="dict.value" :value="+dict.value">{{ dict.label
                            }}</el-radio>
@@ -171,7 +171,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item label="是否弹框">
+                  <el-form-item :label="t('sys.system.notice.isPopupLabel')">
                      <el-radio-group v-model="form.alertFlag">
                         <el-radio v-for="dict in sys_is_or_not" :key="dict.value" :value="+dict.value">{{ dict.label
                            }}</el-radio>
@@ -188,7 +188,7 @@
                </el-col>
 
                <el-col :span="24">
-                  <el-form-item label="内容">
+                  <el-form-item :label="t('sys.system.notice.content')">
                      <editor v-model="form.noticeContentText" :min-height="192" :max-height="300" />
                   </el-form-item>
                </el-col>
@@ -209,6 +209,7 @@ import { useI18n } from 'vue-i18n'
 import { listNotice, getNoticeOne, delNotice, addNotice, updateNotice } from "@/api/system/system/notice.js";
 import useDefaultLang from "@/composables/useDefaultLang";
 
+const { t } = useI18n();
 const { td } = useDefaultLang();
 const { t } = useI18n();
 const { proxy } = getCurrentInstance();
@@ -237,10 +238,10 @@ const data = reactive({
       status: undefined
    },
    rules: {
-      noticeTitle: [{ required: true, message: "公告标题不能为空", trigger: "blur" }],
+      noticeTitle: [{ required: true, message: t('sys.system.notice.noticeTitleRequired'), trigger: "blur" }],
       // alertFlag: [{ required: true, message: "是否弹窗不能为空", trigger: "blur" }],
       // topFlag: [{ required: true, message: "是否置顶不能为空", trigger: "blur" }],
-      noticeType: [{ required: true, message: "公告类型不能为空", trigger: "change" }]
+      noticeType: [{ required: true, message: t('sys.system.notice.noticeTypeRequired'), trigger: "change" }]
    },
 });
 
@@ -303,7 +304,7 @@ function handleSelectionChange(selection) {
 function handleAdd() {
    reset();
    open.value = true;
-   title.value = "新增公告";
+   title.value = t('sys.system.notice.addTitle');
 }
 
 /**修改按钮操作 */
@@ -317,7 +318,7 @@ function handleUpdate(row) {
          response.data.alertEndTime
       ];
       open.value = true;
-      title.value = "修改公告";
+      title.value = t('sys.system.notice.editTitle');
    });
 }
 
@@ -353,7 +354,7 @@ function submitForm() {
 /** 删除按钮操作 */
 function handleDelete(row) {
    const noticeIds = row.noticeId || ids.value
-   proxy.$modal.confirm('是否确认删除公告编号为"' + noticeIds + '"的数据项？').then(function () {
+   proxy.$modal.confirm(t('sys.system.notice.confirmDelete', { id: noticeIds })).then(function () {
       return delNotice(noticeIds);
    }).then(() => {
       getList();

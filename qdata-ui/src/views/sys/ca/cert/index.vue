@@ -28,19 +28,19 @@
             @keyup.enter.native="handleQuery"
           />
         </el-form-item>
-        <el-form-item label="颁发者" prop="issuer">
+        <el-form-item :label="t('sys.cert.issuer')" prop="issuer">
           <el-input
             v-model="queryParams.issuer"
-            placeholder="请输入颁发者"
+            :placeholder="t('sys.cert.issuerPlaceholder')"
             clearable
             class="el-form-input-width"
             @keyup.enter.native="handleQuery"
           />
         </el-form-item>
-        <el-form-item label="所有者" prop="possessor">
+        <el-form-item :label="t('sys.cert.owner')" prop="possessor">
           <el-input
             v-model="queryParams.possessor"
-            placeholder="请输入所有者"
+            :placeholder="t('sys.cert.ownerPlaceholder')"
             class="el-form-input-width"
             clearable
             @keyup.enter.native="handleQuery"
@@ -76,15 +76,15 @@
       <el-table  stripe height="60vh" v-loading="loading" :data="certList" @selection-change="handleSelectionChange">
         <el-table-column label="ID" align="center" prop="id" />
         <el-table-column :label="t('common.texts.name')" align="center" prop="name"  :show-overflow-tooltip="true" />
-        <el-table-column label="主体名称" align="center" prop="subjectName"  :show-overflow-tooltip="true" />
-        <el-table-column label="颁发者" align="center" prop="issuer"  :show-overflow-tooltip="true" />
-        <el-table-column label="所有者" align="center" prop="possessor" :show-overflow-tooltip="true"/>
-        <el-table-column label="有效期" align="center" prop="validTime">
+        <el-table-column :label="t('sys.cert.subjectName')" align="center" prop="subjectName"  :show-overflow-tooltip="true" />
+        <el-table-column :label="t('sys.cert.issuer')" align="center" prop="issuer"  :show-overflow-tooltip="true" />
+        <el-table-column :label="t('sys.cert.owner')" align="center" prop="possessor" :show-overflow-tooltip="true"/>
+        <el-table-column :label="t('sys.cert.validPeriod')" align="center" prop="validTime">
           <template #default="scope">
-            {{ scope.row.validTime }} 年
+            {{ scope.row.validTime }} {{ t('sys.cert.year') }}
           </template>
         </el-table-column>
-        <el-table-column label="生效时间" align="center" prop="createTime" :show-overflow-tooltip="true"/>
+        <el-table-column :label="t('sys.cert.effectTime')" align="center" prop="createTime" :show-overflow-tooltip="true"/>
         <el-table-column :label="t('common.texts.remark')" align="center" prop="remark"  :show-overflow-tooltip="true" >
           <template #default="scope">
             <span>{{ scope.row.remark || "-" }}</span>
@@ -130,8 +130,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="颁发主体" prop="issuer">
-              <el-select v-model="form.subjectId" placeholder="请选择颁发主体" @change="subjectChange" :style="'width:100%'">
+            <el-form-item :label="t('sys.cert.issueSubject')" prop="issuer">
+              <el-select v-model="form.subjectId" :placeholder="t('sys.cert.selectIssueSubject')" @change="subjectChange" :style="'width:100%'">
                 <el-option
                   v-for="item in subjectList"
                   :key="item.id"
@@ -142,25 +142,25 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="颁发者" prop="issuer">
-              <el-input v-model="form.issuer" disabled placeholder="请输入颁发者" />
+            <el-form-item :label="t('sys.cert.issuer')" prop="issuer">
+              <el-input v-model="form.issuer" disabled :placeholder="t('sys.cert.issuerPlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="所有者" prop="possessor">
-              <el-input v-model="form.possessor" placeholder="请输入所有者" />
+            <el-form-item :label="t('sys.cert.owner')" prop="possessor">
+              <el-input v-model="form.possessor" :placeholder="t('sys.cert.ownerPlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="有效期" prop="validTime">
-              <el-input v-model="form.validTime" type="number" :max="30" :min="1" placeholder="请输入有效期">
-                <el-button slot="append">年</el-button>
+            <el-form-item :label="t('sys.cert.validPeriod')" prop="validTime">
+              <el-input v-model="form.validTime" type="number" :max="30" :min="1" :placeholder="t('sys.cert.validPeriodPlaceholder')">
+                <el-button slot="append">{{ t('sys.cert.year') }}</el-button>
               </el-input>
             </el-form-item>
           </el-col>
           <el-col :span="24">
             <el-form-item :label="t('common.texts.remark')" prop="remark">
-              <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
+              <el-input v-model="form.remark" type="textarea" :placeholder="t('sys.cert.inputContent')" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -179,10 +179,15 @@
 import { listCert, getCert, delCert, addCert, updateCert } from "@/api/system/ca/cert.js";
 import {listSubject} from "@/api/system/ca/subject.js";
 import JSZip from "jszip";
+import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 export default {
   name: "Cert",
+  setup() {
+    const { t } = useI18n();
+    return { t };
+  },
   data() {
     return {
       // 遮罩层
@@ -228,19 +233,19 @@ export default {
           { required: true, message: t('common.texts.name'), trigger: "blur" }
         ],
         subjectId: [
-          { required: true, message: "主体id不能为空", trigger: "change" }
+          { required: true, message: this.t('sys.cert.subjectIdRequired'), trigger: "change" }
         ],
         subjectName: [
-          { required: true, message: "主体名称不能为空", trigger: "change" }
+          { required: true, message: this.t('sys.cert.subjectNameRequired'), trigger: "change" }
         ],
         issuer: [
-          { required: true, message: "颁发者不能为空", trigger: "blur" }
+          { required: true, message: this.t('sys.cert.issuerRequired'), trigger: "blur" }
         ],
         possessor: [
-          { required: true, message: "所有者不能为空", trigger: "blur" }
+          { required: true, message: this.t('sys.cert.ownerRequired'), trigger: "blur" }
         ],
         validTime: [
-          { required: true, message: "有效期不能为空", trigger: "blur" },
+          { required: true, message: this.t('sys.cert.validPeriodRequired'), trigger: "blur" },
         ],
       }
     };
@@ -324,7 +329,7 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "新增证书";
+      this.title = this.t('sys.cert.addTitle');
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -333,7 +338,7 @@ export default {
       getCert(id).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改证书";
+        this.title = this.t('sys.cert.editTitle');
       });
     },
     /** 提交按钮 */
@@ -359,7 +364,7 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除证书编号为"' + ids + '"的数据项？').then(function() {
+      this.$modal.confirm(this.t('sys.cert.confirmDelete', { id: ids })).then(function() {
         return delCert(ids);
       }).then(() => {
         this.getList();

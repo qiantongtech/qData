@@ -3,7 +3,7 @@
     <div class="developing-wrapper">
       <img
         src="@/assets/images/sys/error/building.png"
-        alt="功能开发中"
+        :alt="t('sys.developing.underDevelopment')"
         class="developing-img"
       />
     </div>
@@ -11,6 +11,9 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
+
 defineProps({
   type: {
     type: String,

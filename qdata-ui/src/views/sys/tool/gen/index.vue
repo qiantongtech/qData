@@ -19,19 +19,19 @@
   <div class="app-container" ref="app-container">
     <div class="pagecont-top" v-show="showSearch">
       <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="68px">
-        <el-form-item label="表名称" prop="tableName">
+        <el-form-item :label="t('sys.tool.genIndex.tableName')" prop="tableName">
           <el-input
             v-model="queryParams.tableName"
-            placeholder="请输入表名称"
+            :placeholder="t('sys.tool.genIndex.tableNamePlaceholder')"
             clearable
             class="el-form-input-width"
             @keyup.enter="handleQuery"
           />
         </el-form-item>
-        <el-form-item label="表描述" prop="tableComment">
+        <el-form-item :label="t('sys.tool.genIndex.tableDesc')" prop="tableComment">
           <el-input
             v-model="queryParams.tableComment"
-            placeholder="请输入表描述"
+            :placeholder="t('sys.tool.genIndex.tableDescPlaceholder')"
             clearable
             class="el-form-input-width"
             @keyup.enter="handleQuery"
@@ -70,7 +70,7 @@
             :disabled="multiple"
             @click="handleGenTable"
             v-hasPermi="['tool:gen:code']"
-          >生成</el-button>
+          >{{ t('sys.tool.genIndex.generate') }}</el-button>
         </el-col>
         <el-col :span="1.5">
           <el-button
@@ -79,7 +79,7 @@
             icon="Plus"
             @click="openCreateTable"
             v-hasRole="['admin']"
-          >创建</el-button>
+          >{{ t('sys.tool.genIndex.create') }}</el-button>
         </el-col>
         <el-col :span="1.5">
           <el-button
@@ -116,25 +116,25 @@
 
       <el-table stripe height="60vh" v-loading="loading" :data="tableList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" align="center" width="55"></el-table-column>
-      <el-table-column label="序号" type="index" width="80" align="center">
+      <el-table-column :label="t('sys.tool.genIndex.index')" type="index" width="80" align="center">
         <template #default="scope">
           <span>{{(queryParams.pageNum - 1) * queryParams.pageSize + scope.$index + 1}}</span>
         </template>
       </el-table-column>
       <el-table-column
-        label="表名称"
+        :label="t('sys.tool.genIndex.tableName')"
         align="center"
         prop="tableName"
         :show-overflow-tooltip="true"
       />
       <el-table-column
-        label="表描述"
+        :label="t('sys.tool.genIndex.tableDesc')"
         align="center"
         prop="tableComment"
         :show-overflow-tooltip="true"
       />
       <el-table-column
-        label="实体"
+        :label="t('sys.tool.genIndex.entity')"
         align="center"
         prop="className"
         :show-overflow-tooltip="true"
@@ -143,10 +143,10 @@
       <el-table-column :label="t('common.texts.updatedTime')" align="center" prop="updateTime" width="160" />
       <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width"  fixed="right" width="240">
         <template #default="scope">
-          <el-tooltip content="预览" placement="top">
+          <el-tooltip :content="t('sys.tool.genIndex.preview')" placement="top">
             <el-button link type="primary" icon="View" @click="handlePreview(scope.row)" v-hasPermi="['tool:gen:preview']"></el-button>
           </el-tooltip>
-          <el-tooltip content="编辑" placement="top">
+          <el-tooltip :content="t('sys.tool.genIndex.edit')" placement="top">
             <el-button link type="primary" icon="Edit" @click="handleEditTable(scope.row)" v-hasPermi="['tool:gen:edit']"></el-button>
           </el-tooltip>
           <el-tooltip :content="t('common.button.delete')" placement="top">
@@ -155,7 +155,7 @@
 <!--          <el-tooltip content="同步" placement="top">-->
 <!--            <el-button link type="primary" icon="Refresh" @click="handleSynchDb(scope.row)" v-hasPermi="['tool:gen:edit']"></el-button>-->
 <!--          </el-tooltip>-->
-            <el-tooltip content="生成代码" placement="top">
+            <el-tooltip :content="t('sys.tool.genIndex.genCode')" placement="top">
               <el-button link type="primary" icon="Download" @click="handleGenTable(scope.row)" v-hasPermi="['tool:gen:code']"></el-button>
             </el-tooltip>
           </template>
@@ -180,11 +180,11 @@
         >
           <!-- <div class="justify-between mb15">
               <div class="justify-end top-right-btn">
-                  <el-link :underline="false" icon="DocumentCopy" v-copyText="value" v-copyText:callback="copyTextSuccess" style="float:right">&nbsp;复制</el-link>
+                  <el-link :underline="false" icon="DocumentCopy" v-copyText="value" v-copyText:callback="copyTextSuccess" style="float:right">&nbsp;{{ t('common.button.copy') }}</el-link>
               </div>
           </div> -->
           <div class="precont">
-            <el-link :underline="false" icon="DocumentCopy" v-copyText="value" v-copyText:callback="copyTextSuccess" style="float:right">&nbsp;复制</el-link>
+            <el-link :underline="false" icon="DocumentCopy" v-copyText="value" v-copyText:callback="copyTextSuccess" style="float:right">&nbsp;{{ t('common.button.copy') }}</el-link>
             <pre >{{ value }}</pre>
           </div>
         </el-tab-pane>
@@ -228,7 +228,7 @@ const data = reactive({
   },
   preview: {
     open: false,
-    title: "代码预览",
+    title: t('sys.tool.genIndex.codePreview'),
     data: {},
     activeName: "do.java"
   }
@@ -267,12 +267,12 @@ function handleQuery() {
 function handleGenTable(row) {
   const tbNames = row.tableName || tableNames.value;
   if (tbNames == "") {
-    proxy.$modal.msgError("请选择要生成的数据");
+    proxy.$modal.msgError(t('sys.tool.genIndex.selectDataToGenerate'));
     return;
   }
   if (row.genType === "1") {
     genCode(row.tableName).then(response => {
-      proxy.$modal.msgSuccess("成功生成到自定义路径：" + row.genPath);
+      proxy.$modal.msgSuccess(t('sys.tool.genIndex.genSuccessToCustomPath', { path: row.genPath }));
     });
   } else {
     proxy.$download.zip("/tool/gen/batchGenCode?tables=" + tbNames, "anivia.zip");
@@ -282,10 +282,10 @@ function handleGenTable(row) {
 /** 同步数据库操作 */
 function handleSynchDb(row) {
   const tableName = row.tableName;
-  proxy.$modal.confirm('确认要强制同步"' + tableName + '"表结构吗？').then(function () {
+  proxy.$modal.confirm(t('sys.tool.genIndex.confirmSyncTable', { name: tableName })).then(function () {
     return synchDb(tableName);
   }).then(() => {
-    proxy.$modal.msgSuccess("同步成功");
+    proxy.$modal.msgSuccess(t('sys.tool.genIndex.syncSuccess'));
   }).catch(() => {});
 }
 
@@ -317,7 +317,7 @@ function handlePreview(row) {
 
 /** 复制代码成功 */
 function copyTextSuccess() {
-  proxy.$modal.msgSuccess("复制成功");
+  proxy.$modal.msgSuccess(t('common.message.copySuccess'));
 }
 
 // 多选框选中数据
@@ -337,7 +337,7 @@ function handleEditTable(row) {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const tableIds = row.tableId || ids.value;
-  proxy.$modal.confirm('是否确认删除表编号为"' + tableIds + '"的数据项？').then(function () {
+  proxy.$modal.confirm(t('sys.tool.genIndex.confirmDelete', { ids: tableIds })).then(function () {
     return delTable(tableIds);
   }).then(() => {
     getList();

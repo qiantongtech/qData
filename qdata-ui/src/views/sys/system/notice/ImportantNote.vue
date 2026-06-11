@@ -18,7 +18,7 @@
 <template>
   <el-dialog
     class="importantNote-dialog"
-    title="qData数据中台"
+    :title="t('sys.system.notice.platformName')"
     v-model="visible"
     @close="close"
     width="842px"
@@ -32,7 +32,7 @@
       <div class="header-title">
         <div class="title-text">
           <img src="@/assets/system/images/notice/icon.png" alt="" />
-          <span>qData数据中台</span>
+          <span>{{ t('sys.system.notice.platformName') }}</span>
         </div>
         <div class="close">
           <img src="@/assets/system/images/notice/close.png" alt="" @click="close" />
@@ -42,12 +42,15 @@
     <div class="content">
       <div class="content-text" v-html="notice.noticeContentText"></div>
       <div class="content-line"></div>
-      <div class="href" @click="openDocs">点击获取更多信息</div>
+      <div class="href" @click="openDocs">{{ t('sys.system.notice.getMoreInfo') }}</div>
     </div>
   </el-dialog>
 </template>
 
 <script setup name="ImportantNote">
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 const visible = ref(false);
 const notice = ref({});
 

@@ -17,15 +17,15 @@
 
 <template>
    <el-form ref="pwdRef" :model="user" :rules="rules" label-width="80px">
-      <el-form-item label="旧密码" prop="oldPassword">
-         <el-input v-model="user.oldPassword" placeholder="请输入旧密码" type="password" show-password />
+      <el-form-item :label="t('sys.system.resetPwd.oldPassword')" prop="oldPassword">
+         <el-input v-model="user.oldPassword" :placeholder="t('sys.system.resetPwd.oldPasswordPlaceholder')" type="password" show-password />
       </el-form-item>
-      <el-form-item label="新密码" prop="newPassword">
-         <el-input v-model="user.newPassword" placeholder="请输入新密码" type="password" show-password />
+      <el-form-item :label="t('sys.system.resetPwd.newPassword')" prop="newPassword">
+         <el-input v-model="user.newPassword" :placeholder="t('sys.system.resetPwd.newPasswordPlaceholder')" type="password" show-password />
          <div v-if="passwordStrengthMessage" class="password-strength-message">{{ passwordStrengthMessage }}</div>
       </el-form-item>
-      <el-form-item label="确认密码" prop="confirmPassword">
-         <el-input v-model="user.confirmPassword" placeholder="请确认新密码" type="password" show-password />
+      <el-form-item :label="t('sys.system.resetPwd.confirmPassword')" prop="confirmPassword">
+         <el-input v-model="user.confirmPassword" :placeholder="t('sys.system.resetPwd.confirmPasswordPlaceholder')" type="password" show-password />
       </el-form-item>
       <el-form-item>
          <el-button type="primary" @click="submit">{{ t('common.button.save') }}</el-button>
@@ -38,7 +38,8 @@
 import { useI18n } from 'vue-i18n'
 import { updateUserPwd } from "@/api/system/system/user.js";
 
-const { t } = useI18n();   const { proxy } = getCurrentInstance();
+   const { t } = useI18n();
+   const { proxy } = getCurrentInstance();
 
    const user = reactive({
       oldPassword: undefined,
@@ -63,19 +64,19 @@ const { t } = useI18n();   const { proxy } = getCurrentInstance();
       let strengthValid = true;
 
       if (!passwordStrengthRegex.minLength.test(password)) {
-         message = "密码长度必须至少 8 位";
+         message = t('sys.system.resetPwd.passwordMinLength');
          strengthValid = false;
       } else if (!passwordStrengthRegex.upperCase.test(password)) {
-         message = "密码必须包含至少一个大写字母";
+         message = t('sys.system.resetPwd.passwordUppercase');
          strengthValid = false;
       } else if (!passwordStrengthRegex.lowerCase.test(password)) {
-         message = "密码必须包含至少一个小写字母";
+         message = t('sys.system.resetPwd.passwordLowercase');
          strengthValid = false;
       } else if (!passwordStrengthRegex.number.test(password)) {
-         message = "密码必须包含至少一个数字";
+         message = t('sys.system.resetPwd.passwordDigit');
          strengthValid = false;
       } else if (!passwordStrengthRegex.specialChar.test(password)) {
-         message = "密码必须包含至少一个特殊字符";
+         message = t('sys.system.resetPwd.passwordSpecial');
          strengthValid = false;
       }
 
@@ -87,18 +88,18 @@ const { t } = useI18n();   const { proxy } = getCurrentInstance();
 
    const equalToPassword = (rule, value, callback) => {
       if (user.newPassword !== value) {
-         callback(new Error("两次输入的密码不一致"));
+         callback(new Error(t('sys.system.resetPwd.passwordMismatch')));
       } else {
          callback();
       }
    };
 
    const rules = ref({
-      oldPassword: [{ required: true, message: "旧密码不能为空", trigger: "blur" }],
+      oldPassword: [{ required: true, message: t('sys.system.resetPwd.oldPasswordRequired'), trigger: "blur" }],
       newPassword: [
-         { required: true, message: "新密码不能为空", trigger: "blur" },
-         { min: 6, max: 20, message: "长度在 6 到 20 个字符", trigger: "blur" },
-         { pattern: /^[^<>"'|\\]+$/, message: "不能包含非法字符：< > \" ' \\\ |", trigger: "blur" },
+         { required: true, message: t('sys.system.resetPwd.newPasswordRequired'), trigger: "blur" },
+         { min: 6, max: 20, message: t('sys.system.resetPwd.passwordLengthRange'), trigger: "blur" },
+         { pattern: /^[^<>"'|\\]+$/, message: t('sys.system.resetPwd.invalidChars'), trigger: "blur" },
          {
             validator: (rule, value, callback) => {
                const strengthMessage = checkPasswordStrength(value);
@@ -114,7 +115,7 @@ const { t } = useI18n();   const { proxy } = getCurrentInstance();
          }
       ],
       confirmPassword: [
-         { required: true, message: "确认密码不能为空", trigger: "blur" },
+         { required: true, message: t('sys.system.resetPwd.confirmPasswordRequired'), trigger: "blur" },
          { required: true, validator: equalToPassword, trigger: "blur" }
       ]
    });

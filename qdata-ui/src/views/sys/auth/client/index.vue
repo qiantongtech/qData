@@ -19,20 +19,20 @@
   <div class="app-container" ref="app-container">
     <div class="pagecont-top" v-show="showSearch">
       <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="68px">
-        <el-form-item label="应用ID" prop="id">
+        <el-form-item :label="t('sys.client.clientId')" prop="id">
           <el-input
               class="el-form-input-width"
               v-model="queryParams.id"
-              placeholder="请输入应用ID"
+              :placeholder="t('sys.client.clientIdPlaceholder')"
               clearable
               @keyup.enter="handleQuery"
           />
         </el-form-item>
-        <el-form-item label="应用名称" prop="name">
+        <el-form-item :label="t('sys.client.clientName')" prop="name">
           <el-input
               class="el-form-input-width"
               v-model="queryParams.name"
-              placeholder="请输入应用名称"
+              :placeholder="t('sys.client.clientNamePlaceholder')"
               clearable
               @keyup.enter="handleQuery"
           />
@@ -64,32 +64,32 @@
       </div>
 
       <el-table stripe height="60vh"  v-loading="loading" :data="clientList" @selection-change="handleSelectionChange">
-        <el-table-column label="应用ID" align="center" prop="id" />
-        <el-table-column label="应用秘钥" align="center" prop="secretKey"  width="300"/>
-        <el-table-column label="应用名称" align="center" prop="name" width="120"/>
-        <el-table-column label="应用类型" align="center" prop="type">
+        <el-table-column :label="t('sys.client.clientId')" align="center" prop="id" />
+        <el-table-column :label="t('sys.client.clientSecret')" align="center" prop="secretKey"  width="300"/>
+        <el-table-column :label="t('sys.client.clientName')" align="center" prop="name" width="120"/>
+        <el-table-column :label="t('sys.client.clientType')" align="center" prop="type">
           <template #default="scope">
             <dict-tag :options="auth_app_type" :value="scope.row.type"/>
           </template>
         </el-table-column>
-        <el-table-column label="应用图标" align="center" prop="icon" width="100">
+        <el-table-column :label="t('sys.client.clientIcon')" align="center" prop="icon" width="100">
           <template #default="scope">
             <image-preview :src="scope.row.icon" :width="50" :height="50"/>
           </template>
         </el-table-column>
-        <el-table-column label="应用首页" align="center" prop="homeUrl" >
+        <el-table-column :label="t('sys.client.clientHomepage')" align="center" prop="homeUrl" >
         <template #default="scope">
             <span>{{ scope.row.homeUrl || "-" }}</span>
           </template>
         </el-table-column>
-  <!--      <el-table-column label="同步地址" align="center" prop="syncUrl" />-->
-        <el-table-column label="允许授权的url" align="center" prop="redirectUrl" width="150"/>
-        <el-table-column label="是否公开" align="center" prop="publicFlag">
+  <!--      <el-table-column :label="t('sys.client.syncUrl')" align="center" prop="syncUrl" />-->
+        <el-table-column :label="t('sys.client.authorizedUrl')" align="center" prop="redirectUrl" width="150"/>
+        <el-table-column :label="t('sys.client.isPublic')" align="center" prop="publicFlag">
           <template #default="scope">
             <dict-tag :options="auth_public" :value="scope.row.publicFlag"/>
           </template>
         </el-table-column>
-        <el-table-column label="是否有效" align="center" prop="validFlag">
+        <el-table-column :label="t('sys.client.isActive')" align="center" prop="validFlag">
           <template #default="scope">
             <dict-tag :options="sys_valid" :value="scope.row.validFlag"/>
           </template>
@@ -126,25 +126,25 @@
       <el-form ref="clientRef" :model="form" :rules="rules" label-width="110px">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="应用首页" prop="homeUrl">
-              <el-input v-model="form.homeUrl" placeholder="请输入应用首页" />
+            <el-form-item :label="t('sys.client.clientHomepage')" prop="homeUrl">
+              <el-input v-model="form.homeUrl" :placeholder="t('sys.client.clientHomepagePlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="同步地址" prop="syncUrl">
-              <el-input v-model="form.syncUrl" placeholder="请输入同步地址" />
+            <el-form-item :label="t('sys.client.syncUrl')" prop="syncUrl">
+              <el-input v-model="form.syncUrl" :placeholder="t('sys.client.syncUrlPlaceholder')" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="应用名称" prop="name">
-              <el-input v-model="form.name" placeholder="请输入应用名称" />
+            <el-form-item :label="t('sys.client.clientName')" prop="name">
+              <el-input v-model="form.name" :placeholder="t('sys.client.clientNamePlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="应用类型" prop="type">
-              <el-select v-model="form.type" placeholder="请选择应用类型">
+            <el-form-item :label="t('sys.client.clientType')" prop="type">
+              <el-select v-model="form.type" :placeholder="t('sys.client.selectClientType')">
                 <el-option
                     v-for="dict in auth_app_type"
                     :key="dict.value"
@@ -157,7 +157,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="是否公开" prop="publicFlag">
+            <el-form-item :label="t('sys.client.isPublic')" prop="publicFlag">
               <el-radio-group v-model="form.publicFlag">
                 <el-radio
                     v-for="dict in auth_public"
@@ -168,7 +168,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="是否有效" prop="validFlag">
+            <el-form-item :label="t('sys.client.isActive')" prop="validFlag">
               <el-radio-group v-model="form.validFlag">
                 <el-radio
                     v-for="dict in sys_valid"
@@ -181,7 +181,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="应用图标" prop="icon">
+            <el-form-item :label="t('sys.client.clientIcon')" prop="icon">
               <div class="xgtpcont">
                   <ImageUpload class="sctplist" v-model="form.icon">
                   </ImageUpload>
@@ -191,15 +191,15 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="允许授权的url" prop="redirectUrl">
-              <el-input v-model="form.redirectUrl" type="textarea" placeholder="请输入内容" />
+            <el-form-item :label="t('sys.client.authorizedUrl')" prop="redirectUrl">
+              <el-input v-model="form.redirectUrl" type="textarea" :placeholder="t('sys.client.inputContent')" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
             <el-form-item :label="t('common.texts.remark')" prop="remark">
-              <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
+              <el-input v-model="form.remark" type="textarea" :placeholder="t('sys.client.inputContent')" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -261,22 +261,22 @@ const data = reactive({
   },
   rules: {
     secretKey: [
-      { required: true, message: "应用秘钥不能为空", trigger: "blur" }
+      { required: true, message: t('sys.client.clientSecretRequired'), trigger: "blur" }
     ],
     name: [
-      { required: true, message: "应用名称不能为空", trigger: "blur" }
+      { required: true, message: t('sys.client.clientNameRequired'), trigger: "blur" }
     ],
     type: [
-      { required: true, message: "应用类型", trigger: "change" }
+      { required: true, message: t('sys.client.clientTypeRequired'), trigger: "change" }
     ],
     redirectUrl: [
-      { required: true, message: "允许授权的url不能为空", trigger: "blur" }
+      { required: true, message: t('sys.client.authorizedUrlRequired'), trigger: "blur" }
     ],
     publicFlag: [
-      { required: true, message: "是否公开不能为空", trigger: "blur" }
+      { required: true, message: t('sys.client.isPublicRequired'), trigger: "blur" }
     ],
     validFlag: [
-      { required: true, message: "是否有效", trigger: "blur" }
+      { required: true, message: t('sys.client.isActiveRequired'), trigger: "blur" }
     ],
   }
 });
@@ -347,7 +347,7 @@ function handleSelectionChange(selection) {
 function handleAdd() {
   reset();
   open.value = true;
-  title.value = "新增应用管理";
+  title.value = t('sys.client.addTitle');
 }
 
 /** 修改按钮操作 */
@@ -357,7 +357,7 @@ function handleUpdate(row) {
   getClient(_id).then(response => {
     form.value = response.data;
     open.value = true;
-    title.value = "修改应用管理";
+    title.value = t('sys.client.editTitle');
   });
 }
 
@@ -385,7 +385,7 @@ function submitForm() {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const _ids = row.id || ids.value;
-  proxy.$modal.confirm('是否确认删除应用管理编号为"' + _ids + '"的数据项？').then(function() {
+  proxy.$modal.confirm(t('sys.client.confirmDelete', { id: _ids })).then(function() {
     return delClient(_ids);
   }).then(() => {
     getList();

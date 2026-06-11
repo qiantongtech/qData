@@ -38,6 +38,8 @@ export default {
     createByPlaceholder: '请输入创建人',
     startTimePlaceholder: '开始时间',
     endTimePlaceholder: '结束时间',
+    singleSelect: '单选',
+    multiSelect: '多选',
     startDatePlaceholder: '开始日期',
     endDatePlaceholder: '结束日期'
   },

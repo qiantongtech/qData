@@ -19,12 +19,12 @@
    <div class="app-container" ref="app-container">
       <div class="pagecont-top" v-show="showSearch">
          <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="68px">
-            <el-form-item label="部门名称" prop="deptName">
-               <el-input v-model="queryParams.deptName" placeholder="请输入部门名称" clearable class="el-form-input-width"
+            <el-form-item :label="t('sys.system.dept.deptName')" prop="deptName">
+               <el-input v-model="queryParams.deptName" :placeholder="t('sys.system.dept.deptNamePlaceholder')" clearable class="el-form-input-width"
                   @keyup.enter="handleQuery" />
             </el-form-item>
             <el-form-item :label="t('common.texts.status')" prop="status">
-               <el-select v-model="queryParams.status" placeholder="部门状态" clearable class="el-form-input-width">
+               <el-select v-model="queryParams.status" :placeholder="t('sys.system.dept.deptStatus')" clearable class="el-form-input-width">
                   <el-option v-for="dict in sys_normal_disable" :key="dict.value" :label="dict.label"
                      :value="dict.value" />
                </el-select>
@@ -55,8 +55,8 @@
 
          <el-table v-if="refreshTable" height="60vh" v-loading="loading" :data="deptList" row-key="deptId"
             :default-expand-all="isExpandAll" :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
-            <el-table-column prop="deptName" label="部门名称" :show-overflow-tooltip="true"></el-table-column>
-            <el-table-column prop="orderNum" label="排序"></el-table-column>
+            <el-table-column prop="deptName" :label="t('sys.system.dept.deptName')" :show-overflow-tooltip="true"></el-table-column>
+            <el-table-column prop="orderNum" :label="t('sys.system.dept.sort')"></el-table-column>
             <el-table-column prop="status" :label="t('common.texts.status')">
                <template #default="scope">
                   <dict-tag :options="sys_normal_disable" :value="scope.row.status" />
@@ -86,39 +86,39 @@
          <el-form ref="deptRef" :model="form" :rules="rules" label-width="80px">
             <el-row :gutter="20">
                <el-col :span="24" v-if="form.parentId !== 0">
-                  <el-form-item label="上级部门" prop="parentId">
+                  <el-form-item :label="t('sys.system.dept.parentDept')" prop="parentId">
                      <el-tree-select v-model="form.parentId" :data="deptOptions"
                         :props="{ value: 'deptId', label: 'deptName', children: 'children' }" value-key="deptId"
-                        placeholder="选择上级部门" check-strictly />
+                        :placeholder="t('sys.system.dept.selectParentDept')" check-strictly />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item label="部门名称" prop="deptName">
-                     <el-input v-model="form.deptName" placeholder="请输入部门名称" />
+                  <el-form-item :label="t('sys.system.dept.deptName')" prop="deptName">
+                     <el-input v-model="form.deptName" :placeholder="t('sys.system.dept.deptNamePlaceholder')" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item label="显示排序" prop="orderNum">
+                  <el-form-item :label="t('sys.system.dept.showSort')" prop="orderNum">
                      <el-input-number style="width:100%" v-model="form.orderNum" controls-position="right" :min="0" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item label="负责人" prop="leader">
-                     <el-input v-model="form.leader" placeholder="请输入负责人" maxlength="20" />
+                  <el-form-item :label="t('sys.system.dept.leader')" prop="leader">
+                     <el-input v-model="form.leader" :placeholder="t('sys.system.dept.leaderPlaceholder')" maxlength="20" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item label="联系电话" prop="phone">
-                     <el-input v-model="form.phone" placeholder="请输入联系电话" maxlength="11" />
+                  <el-form-item :label="t('sys.system.dept.contactPhone')" prop="phone">
+                     <el-input v-model="form.phone" :placeholder="t('sys.system.dept.contactPhonePlaceholder')" maxlength="11" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item label="邮箱" prop="email">
-                     <el-input v-model="form.email" placeholder="请输入邮箱" maxlength="50" />
+                  <el-form-item :label="t('sys.system.dept.email')" prop="email">
+                     <el-input v-model="form.email" :placeholder="t('sys.system.dept.emailPlaceholder')" maxlength="50" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item label="部门状态">
+                  <el-form-item :label="t('sys.system.dept.deptStatus')">
                      <el-radio-group v-model="form.status">
                         <el-radio v-for="dict in sys_normal_disable" :key="dict.value" :value="dict.value">{{ dict.label
                            }}</el-radio>
@@ -160,11 +160,11 @@ const data = reactive({
       status: undefined
    },
    rules: {
-      parentId: [{ required: true, message: "上级部门不能为空", trigger: "blur" }],
-      deptName: [{ required: true, message: "部门名称不能为空", trigger: "blur" }],
-      orderNum: [{ required: true, message: "显示排序不能为空", trigger: "blur" }],
-      email: [{ type: "email", message: "请输入正确的邮箱地址", trigger: ["blur", "change"] }],
-      phone: [{ pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/, message: "请输入正确的手机号码", trigger: "blur" }]
+      parentId: [{ required: true, message: t('sys.system.dept.parentDeptRequired'), trigger: "blur" }],
+      deptName: [{ required: true, message: t('sys.system.dept.deptNameRequired'), trigger: "blur" }],
+      orderNum: [{ required: true, message: t('sys.system.dept.showSortRequired'), trigger: "blur" }],
+      email: [{ type: "email", message: t('sys.system.dept.emailRequired'), trigger: ["blur", "change"] }],
+      phone: [{ pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/, message: t('sys.system.dept.phoneRequired'), trigger: "blur" }]
    },
 });
 
@@ -222,7 +222,7 @@ function handleAdd(row) {
       form.value.parentId = row.deptId;
    }
    open.value = true;
-   title.value = "新增部门";
+   title.value = t('sys.system.dept.addTitle');
 }
 
 /** 展开/折叠操作 */
@@ -243,7 +243,7 @@ function handleUpdate(row) {
    getDept(row.deptId).then(response => {
       form.value = response.data;
       open.value = true;
-      title.value = "修改部门";
+      title.value = t('sys.system.dept.editTitle');
    });
 }
 
@@ -270,7 +270,7 @@ function submitForm() {
 
 /** 删除按钮操作 */
 function handleDelete(row) {
-   proxy.$modal.confirm('是否确认删除名称为"' + row.deptName + '"的数据项?').then(function () {
+   proxy.$modal.confirm(t('sys.system.dept.confirmDelete', { name: row.deptName })).then(function () {
       return delDept(row.deptId);
    }).then(() => {
       getList();

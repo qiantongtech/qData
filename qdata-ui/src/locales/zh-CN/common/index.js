@@ -14,6 +14,8 @@ export default {
     export: '导出',
     fold: '折叠',
     import: '导入',
+    linkParentChild: '父子联动',
+    loading: '加载中，请稍候',
     more: '更多',
     nextStep: '下一步',
     previousStep: '上一步',
@@ -23,6 +25,8 @@ export default {
     return: '返回',
     returnHome: '返回首页',
     save: '保存',
+    selectAll: '全选',
+    unselectAll: '全不选',
     un_fold: '展开/折叠',
     update: '修改',
     upload: '上传'
@@ -54,6 +58,7 @@ export default {
     endDatePlaceholder: '结束日期'
   },
   texts: {
+    action: '操作',
     createdBy: '创建人',
     createdTime: '创建时间',
     description: '描述',
@@ -63,7 +68,9 @@ export default {
     remark: '备注',
     status: '状态',
     updatedBy: '更新人',
-    updatedTime: '更新时间'
+    updatedTime: '更新时间',
+    enable: '启用',
+    disable: '禁用'
   },
   message: {
     addSuccess: '新增成功',
@@ -77,13 +84,15 @@ export default {
     noData: '暂无数据',
     noMatchingData: '无匹配数据',
     noRecord: '暂无记录',
+    operationSuccess: '操作成功',
     prompt: '提示',
-    systemPrompt: '系统提示'
+    systemPrompt: '系统提示',
+    confirmChangeStatus: '确认要{status}"{name}"数据连接吗？'
   },
   html: {
     appTitle: 'qData开源数据中台'
   },
-    // 展示
+  // 展示
   display: {
     index: '序号',
     status: '状态',

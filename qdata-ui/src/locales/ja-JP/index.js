@@ -5,6 +5,7 @@ import router from './router'
 import dict from './dict'
 import mc from './mc'
 import meta from './meta'
+import dpp from './dpp'
 
 export default {
   common,
@@ -12,5 +13,6 @@ export default {
   router,
   dict,
   mc,
-  meta
+  meta,
+  dpp
 }

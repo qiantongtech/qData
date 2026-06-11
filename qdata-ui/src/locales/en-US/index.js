@@ -7,6 +7,7 @@ import home from './home'
 import sys from './sys'
 import mc from './mc'
 import meta from './meta'
+import dpp from './dpp'
 
 export default {
   common,
@@ -16,5 +17,6 @@ export default {
   home,
   sys,
   mc,
-  meta
+  meta,
+  dpp
 }

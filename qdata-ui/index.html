@@ -249,20 +249,26 @@
 <script type="module" src="/src/main.js"></script>
 <script type="module">
     import zhCommon from '@/locales/zh-CN/common/index.js'
-    import enCommon from '@/locales/en/common/index.js'
-    import jaCommon from '@/locales/ja/common/index.js'
+    import enCommon from '@/locales/en-US/common/index.js'
+    import jaCommon from '@/locales/ja-JP/common/index.js'
+
     const i18nMap = {
         'zh-CN': zhCommon,
-        'en': enCommon,
-        'ja': jaCommon
+        'en-US': enCommon,
+        'ja-JP': jaCommon
     }
-    const lang = localStorage.getItem('qdata_lang') || 'zh-CN'
-    const common = i18nMap[lang] || i18nMap['zh-CN']
-    document.title = common.html?.appTitle || 'qData'
-    const el = document.querySelector('.load_title')
-    if (el) {
-        el.textContent = common.message?.loadingResource || ''
+
+    function update() {
+        const lang = localStorage.getItem('qdata_lang') || 'zh-CN'
+        const common = i18nMap[lang] || i18nMap['zh-CN']
+        const el = document.querySelector('.load_title')
+        if (el) {
+            el.textContent = common.message?.loadingResource || ''
+        }
     }
+
+    update();
+    window.addEventListener('LangChange', update);
 </script>
 </body>
 

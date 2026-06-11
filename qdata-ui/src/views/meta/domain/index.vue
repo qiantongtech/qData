@@ -36,7 +36,7 @@
         >
           <svg-icon v-if="defaultExpandAll" icon-class="toggle" />
           <svg-icon v-else icon-class="expand" />
-          <span>{{ defaultExpandAll ? "折叠" : "展开" }}</span>
+          <span>{{ defaultExpandAll ? t('common.button.collapse') : t('common.button.expand') }}</span>
         </el-button>
       </template>
       <qt-table v-bind="tableStroe" ref="tableRef">

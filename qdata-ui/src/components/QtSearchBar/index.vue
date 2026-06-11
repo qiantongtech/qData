@@ -81,7 +81,7 @@
         >
           <svg-icon v-if="store.expand" icon-class="toggle" />
           <svg-icon v-else icon-class="expand" />
-          <span>{{ store.expand ? "折叠" : "展开" }}</span>
+          <span>{{ store.expand ? t('common.button.collapse') : t('common.button.expand') }}</span>
         </el-button>
       </el-form-item>
     </el-form>

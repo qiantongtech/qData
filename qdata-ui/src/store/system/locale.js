@@ -55,6 +55,7 @@ const useLocaleStore = defineStore('locale', {
       this.currentLocale.elLocale = elLocaleMap[localeMap?.lang]
       if (localeMap?.lang) {
         localStorage.setItem(LANG_KEY, localeMap.lang)
+        window.dispatchEvent(new CustomEvent('LangChange'))
       }
     }
   }

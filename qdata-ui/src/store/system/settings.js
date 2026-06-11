@@ -25,7 +25,6 @@ const storageSetting = JSON.parse(localStorage.getItem('layout-setting')) || '';
 
 const useSettingsStore = defineStore('settings', {
     state: () => ({
-        lang: '',
         title: '',
         theme: storageSetting.theme || '#2666fb',
         sideTheme: storageSetting.sideTheme || sideTheme,
@@ -50,8 +49,7 @@ const useSettingsStore = defineStore('settings', {
         },
         // 设置网页标题
         setTitle(title) {
-            this.title = title.title;
-            this.lang = title.lang;
+            this.title = title;
             useDynamicTitle();
         }
     }

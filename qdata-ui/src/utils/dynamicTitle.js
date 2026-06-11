@@ -27,7 +27,7 @@ const title = () => i18n.global.t('common.html.appTitle') || defaultSettings.tit
 export function useDynamicTitle() {
     const settingsStore = useSettingsStore();
     if (settingsStore.dynamicTitle) {
-        document.title = (settingsStore.lang && i18n.global.t(`router.${settingsStore.lang}`) ? i18n.global.t(`router.${settingsStore.lang}`) : settingsStore.title) + ' - ' + title();
+        document.title = settingsStore.title ? settingsStore.title + ' - ' + title() : title();
     } else {
         document.title = title();
     }

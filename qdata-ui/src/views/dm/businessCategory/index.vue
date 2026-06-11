@@ -33,7 +33,7 @@
           />
           <svg-icon v-else icon-class="expand" />
           <span>{{
-            tableStore.config.table.defaultExpandAll ? "折叠" : "展开"
+            tableStore.config.table.defaultExpandAll ? t('common.button.collapse') : t('common.button.expand')
           }}</span>
         </el-button>
       </template>

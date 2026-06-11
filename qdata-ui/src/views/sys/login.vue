@@ -360,9 +360,9 @@ async function handleLangClick(lang) {
 }
 
 function getCookie() {
-    const username = Cookies.getd('username');
-    const password = Cookies.getd('password');
-    const rememberMe = Cookies.getd('rememberMe');
+    const username = Cookies.get('username');
+    const password = Cookies.get('password');
+    const rememberMe = Cookies.get('rememberMe');
     loginForm.value = {
         username: username === undefined ? loginForm.value.username : username,
         password: password === undefined ? loginForm.value.password : decrypt(password),

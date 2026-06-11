@@ -71,12 +71,12 @@
       <template v-if="currItem.type == 'result'">
         <div class="result-view">
           <el-button class="result-icon" type="primary" @click="handleSearch" icon="Search">获取最新数据</el-button>
-          <el-empty description="暂无数据" />
+          <el-empty :description="td('common.noData')" />
         </div>
       </template>
       <template v-if="currItem.type == 'history'">
         <div class="history-view">
-          <el-empty description="暂无数据" />
+          <el-empty :description="td('common.noData')" />
         </div>
       </template>
     </div>
@@ -85,6 +85,8 @@
 <script setup name="EditorConsole">
 import CodeShow from "@/components/SqlEditor/editorShow/index.vue";
 import { getRunTaskInstance, getLogByTaskInstanceId } from "@/api/dpp/task/index.js";
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();
 // #region curr弹框拖拽
 const currHeight = ref(345); // 初始左侧宽度
 const isCurrResizing = ref(false); // 判断是否正在拖拽

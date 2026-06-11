@@ -33,7 +33,7 @@
 <template>
   <!-- 资产血缘 tab -->
   <div class="containerServer" v-loding="loding">
-    <el-empty description=" 暂无资产血缘" v-if="noData">
+    <el-empty :description="td('common.noAssetLineage')" v-if="noData">
     </el-empty>
     <div id="containerServer-container" ref="graphContainer"></div>
     <TeleportContainer />
@@ -41,6 +41,8 @@
 </template>
 
 <script setup name="lineage">
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();
 import DataProcessingDagNode from "../components/lineageItem.vue";
 import { Graph, Path, Edge, Platform } from "@antv/x6";
 import { Selection } from "@antv/x6-plugin-selection";

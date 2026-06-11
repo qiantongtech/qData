@@ -80,6 +80,8 @@
 </template>
 
 <script setup name="CollectInstance">
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();
 import { listTaskInstance } from "@/api/mc/task/taskInstance";
 import { getTaskInstanceLog } from "@/api/mc/task/taskInstanceLog";
 import LogDialog from "@/components/LogDialog/index.vue";
@@ -184,7 +186,7 @@ const dialog = reactive({
 function handleViewClick(row) {
   store.loading = true;
   getTaskInstanceLog(row.id).then((res) => {
-    dialog.content = res.data?.logContent || "暂无日志";
+    dialog.content = res.data?.logContent || td('common.noLog');
     store.loading = false;
     dialog.open = true;
   });
@@ -194,7 +196,7 @@ function handleViewClick(row) {
 function handleDownloadClick(row) {
   store.loading = true;
   getTaskInstanceLog(row.id).then((res) => {
-    const content = res.data?.logContent || "暂无日志";
+    const content = res.data?.logContent || td('common.noLog');
     proxy.downloadContent(content, `${props.detail.name}_${row.id}_日志.log`);
     store.loading = false;
   });

@@ -198,7 +198,7 @@
 
 
         </div>
-        <el-empty description="暂无资产质量任务" v-else>
+        <el-empty :description="td('common.noAssetQualityTask')" v-else>
             <el-button type="primary" @click="openQualityDialog(undefined)">
                 <i class="iconfont-mini icon-xinzeng mr5"></i>新增资产质量任务
             </el-button>

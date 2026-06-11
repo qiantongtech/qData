@@ -12,7 +12,7 @@
         <span
           class="layer-info-card-value text-ellipsis"
           :title="layer.description"
-          >{{ layer.description || "暂无描述" }}</span
+          >{{ layer.description || td('common.noDescription') }}</span
         >
       </div>
       <div v-if="layer.engName" class="layer-info-card-row">
@@ -27,6 +27,8 @@
 
 <script setup name="layerInfoCard">
 import { computed } from "vue";
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();
 
 const props = defineProps({
   layer: {

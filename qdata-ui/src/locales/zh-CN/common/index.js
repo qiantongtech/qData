@@ -52,4 +52,14 @@ export default {
   },
   qualityTrends: '质量趋势',
   noData: '暂无数据',
+  noMessage: '暂无消息',
+  noHistory: '暂无历史记录',
+  noPermission: '暂无权限',
+  noSearchResult: '暂无搜索结果',
+  noDescription: '暂无描述',
+  noLog: '暂无日志',
+  noOpinion: '暂无意见',
+  noAssetLineage: '暂无资产血缘',
+  noAssetQualityTask: '暂无资产质量任务',
+  noTaskProcess: '暂无任务流程'
 }

@@ -75,7 +75,7 @@
             </template>
 
             <template v-else>
-              <div class="empty-wrapper">暂无数据</div>
+              <div class="empty-wrapper">{{td('common.noData')}}</div>
             </template>
           </div>
         </el-row>
@@ -85,6 +85,8 @@
 </template>
 
 <script setup>
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();
 import {
   Document,
   Menu,

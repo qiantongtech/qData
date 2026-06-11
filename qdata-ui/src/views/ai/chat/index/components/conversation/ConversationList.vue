@@ -65,7 +65,7 @@
         <!-- 情况一：加载中且没有任何数据时才显示空状态 -->
         <el-empty
           v-if="!loading && conversationList.length === 0"
-          description="暂无历史记录"
+          :description="td('common.noHistory')"
         />
         <!-- 情况二：按照 group 分组，展示聊天会话 list 列表 -->
         <div
@@ -230,6 +230,8 @@ import roleAvatarDefaultImg from "@/assets/ai/gpt-new.svg";
 import roleAvatartActiveImg from "@/assets/ai/gpt-new.svg";
 import useUserStore from "@/store/system/user";
 import moment from "moment/moment.js";
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();
 
 const { proxy } = getCurrentInstance();
 const message = proxy.$modal; // 消息弹窗

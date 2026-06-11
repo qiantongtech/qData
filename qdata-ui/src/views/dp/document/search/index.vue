@@ -153,7 +153,7 @@
       </div>
       <div class="empty" v-else>
         <img src="@/assets/da/asset/empty.png" alt="" />
-        <span>暂无搜索内容～</span>
+        <span>{{ td('common.noSearchResult') }}</span>
       </div>
       <pagination
         v-show="total > 0"
@@ -166,6 +166,8 @@
   </div>
 </template>
 <script setup name="Search">
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();
 import { dpDocumentList } from "@/api/dp/document/search";
 import handleFilePreview from "@/utils/filePreview.js";
 // search

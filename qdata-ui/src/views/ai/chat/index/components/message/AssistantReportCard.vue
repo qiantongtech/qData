@@ -124,7 +124,7 @@
                   />
                 </div>
               </template>
-              <el-empty v-else description="暂无明细数据" :image-size="60" />
+              <el-empty v-else :description="td('common.noData')" :image-size="60" />
             </div>
             <div
               v-else-if="tab.code && activeTab == tab.key"
@@ -146,7 +146,7 @@
               </div>
             </div>
             <div v-else class="ai-report-empty">
-              <el-empty description="暂无数据" :image-size="60" />
+              <el-empty :description="td('common.noData')" :image-size="60" />
             </div>
           </div>
         </div>
@@ -161,6 +161,8 @@ import { ElLoading } from "element-plus";
 import * as echarts from "echarts";
 import { useClipboard } from "@vueuse/core";
 import { ChatMessageApi } from "@/api/ai/chat/message";
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();
 import { saveAs } from "file-saver";
 import SqlEditor from "@/components/SqlEditor/index2.vue";
 

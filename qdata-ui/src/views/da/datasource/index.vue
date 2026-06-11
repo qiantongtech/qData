@@ -284,7 +284,7 @@
                   <el-tooltip
                     class="box-item"
                     effect="dark"
-                    content="暂无权限"
+                    :content="td('common.noPermission')"
                     placement="top"
                     :disabled="scope.row.isAdminAddTo != false"
                   >

@@ -239,7 +239,7 @@
                 :props="{ value: 'id', label: 'label', children: 'children' }" value-key="id" placeholder="请选择归属部门"
                 check-strictly />
               <!--                     <treeselect v-model="form.deptId" :options="deptOptions" :flat="true" :show-count="true" placeholder="请选择归属部门"-->
-              <!--                                 noResultsText="暂无数据" :multiple="true"-->
+              <!--                                  :noResultsText="{{td('common.noData')}}" :multiple="true"-->
               <!--                     />-->
             </el-form-item>
           </el-col>

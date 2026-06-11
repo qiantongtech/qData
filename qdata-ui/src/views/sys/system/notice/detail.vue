@@ -42,7 +42,7 @@
         </template>
         <div class="empty" v-else>
           <img src="@/assets/system/images/no_data/noData.png" alt="" />
-          <!-- <span>暂无公告内容</span> -->
+          <!-- <span>{{ td('common.noDescription') }}</span> -->
         </div>
       </div>
     </div>
@@ -53,6 +53,8 @@
 </template>
 
 <script setup name="NoticeDetail">
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();
 import { getNoticeOne } from "@/api/system/system/notice.js";
 import moment from "moment";
 

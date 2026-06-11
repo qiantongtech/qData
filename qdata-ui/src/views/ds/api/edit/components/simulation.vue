@@ -167,7 +167,7 @@
                         </div>
 
                     </div>
-                    <div v-else class="no-data">暂无数据</div>
+                    <div v-else class="no-data">{{td('common.noData')}}</div>
                 </el-col>
             </el-row>
         </div>
@@ -175,6 +175,8 @@
 </template>
 
 <script setup>
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();
 import { serviceTesting } from '@/api/ds/api/api.js';
 const { proxy } = getCurrentInstance();
 const { ds_api_bas_info_api_method_type, ds_api_param_type, ds_api_bas_info_res_data_type,  da_api_param_operator } =

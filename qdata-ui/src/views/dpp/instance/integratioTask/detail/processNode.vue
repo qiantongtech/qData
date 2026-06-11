@@ -36,7 +36,7 @@
 
       <!-- 右侧主内容 -->
       <div class="right-pane" v-loading="loading">
-        <!-- <el-empty description=" 暂无任务流程" v-if="!nodeData?.locations || nodeData.locations.length === 0">
+        <!-- <el-empty :description="td('common.noTaskProcess')" v-if="!nodeData?.locations || nodeData.locations.length === 0">
         </el-empty> -->
         <div id="graphContainer" class="graph-container" ref="graphContainer"></div>
         <TeleportContainer />
@@ -61,6 +61,8 @@
   </div>
 </template>
 <script setup>
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();
 import { Graph } from "@antv/x6";
 import { Dnd } from "@antv/x6-plugin-dnd";
 import { ref, computed, onMounted } from "vue";

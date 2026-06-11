@@ -53,4 +53,14 @@ export default {
   },
   qualityTrends: 'Quality Trends',
   noData: 'No data available',
+  noMessage: 'No message available',
+  noHistory: 'No history available',
+  noPermission: 'No permission available',
+  noSearchResult: 'No search result available',
+  noDescription: 'No description available',
+  noLog: 'No log available',
+  noOpinion: 'No opinion available',
+  noAssetLineage: 'No asset lineage available',
+  noAssetQualityTask: 'No asset quality task available',
+  noTaskProcess: 'No task process available'
 }

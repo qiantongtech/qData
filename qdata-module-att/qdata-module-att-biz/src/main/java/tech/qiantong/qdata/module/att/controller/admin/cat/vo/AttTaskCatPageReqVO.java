@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright © 2025 Qiantong Technology Co., Ltd.
  * qData Data Middle Platform (Open Source Edition)
  *  *

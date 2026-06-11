@@ -21,7 +21,7 @@
             <!-- Logo 上传 -->
             <el-col :span="24">
                 <div class="form-item">
-                    <div class="form-label">登录页logo</div>
+                    <div class="form-label">{{ t('sys.system.content.loginLogo') }}</div>
                     <div class="form-input">
                         <ImageUpload v-model="loginLogoModelValue" :limit="1" :fileSize="10" :isShowTip="true" @update:modelValue="loginLogoUpdate" :platForm="platForm"  />  <!-- 使用组件 -->
                     </div>
@@ -30,7 +30,7 @@
 
             <el-col :span="24">
             <div class="form-item">
-                <div class="form-label">系统Logo</div>
+                <div class="form-label">{{ t('sys.system.content.systemLogo') }}</div>
                 <div class="form-input">
                     <ImageUpload v-model="logoModelValue" :limit="1" :fileSize="10" :isShowTip="true" @update:modelValue="logoUpdate" :platForm="platForm"  />  <!-- 使用组件 -->
                 </div>
@@ -39,7 +39,7 @@
 
             <el-col :span="24">
                 <div class="form-item">
-                    <div class="form-label">登录页轮播图</div>
+                    <div class="form-label">{{ t('sys.system.content.loginCarousel') }}</div>
                     <div class="form-input">
                         <ImageUpload v-model="carouselImageModelValue" :limit="3" :fileSize="10" :isShowTip="true" @update:modelValue="carouselImageUpdate" :platForm="platForm"  />  <!-- 使用组件 -->
                     </div>
@@ -49,9 +49,9 @@
             <!-- 联系电话 -->
             <el-col :span="24" :xs="24">
                 <div class="form-item">
-                    <div class="form-label">联系电话</div>
+                    <div class="form-label">{{ t('sys.system.content.contactPhone') }}</div>
                     <div class="form-input-i">
-                        <el-input v-model="contentDetail.contactNumber" placeholder="请输入联系电话"></el-input>
+                        <el-input v-model="contentDetail.contactNumber" :placeholder="t('sys.system.content.contactPhonePlaceholder')"></el-input>
                     </div>
                 </div>
             </el-col>
@@ -59,9 +59,9 @@
             <!-- 电子邮箱 -->
             <el-col :span="24" :xs="24">
                 <div class="form-item">
-                    <div class="form-label">电子邮箱</div>
+                    <div class="form-label">{{ t('sys.system.content.email') }}</div>
                     <div class="form-input-i">
-                        <el-input v-model="contentDetail.email" placeholder="请输入电子邮箱"></el-input>
+                        <el-input v-model="contentDetail.email" :placeholder="t('sys.system.content.emailPlaceholder')"></el-input>
                     </div>
                 </div>
             </el-col>
@@ -69,9 +69,9 @@
             <!-- 版权方 -->
             <el-col :span="24" :xs="24">
                 <div class="form-item">
-                    <div class="form-label">版权方</div>
+                    <div class="form-label">{{ t('sys.system.content.copyrightOwner') }}</div>
                     <div class="form-input-i">
-                        <el-input v-model="contentDetail.copyright" placeholder="请输入版权方"></el-input>
+                        <el-input v-model="contentDetail.copyright" :placeholder="t('sys.system.content.copyrightOwnerPlaceholder')"></el-input>
                     </div>
                 </div>
             </el-col>
@@ -79,9 +79,9 @@
             <!-- 备案号 -->
             <el-col :span="24" :xs="24">
                 <div class="form-item">
-                    <div class="form-label">备案号</div>
+                    <div class="form-label">{{ t('sys.system.content.recordNo') }}</div>
                     <div class="form-input-i">
-                        <el-input v-model="contentDetail.recordNumber" placeholder="请输入备案号"></el-input>
+                        <el-input v-model="contentDetail.recordNumber" :placeholder="t('sys.system.content.recordNoPlaceholder')"></el-input>
                     </div>
                 </div>
             </el-col>
@@ -104,7 +104,7 @@ import { ref } from 'vue';
     import { getContent,listContent, updateContent } from "@/api/system/system/content";
     import ImageUpload from "@/components/ImageUpload/index.vue"
 
-const { t } = useI18n();
+    const { t } = useI18n();
     const { proxy } = getCurrentInstance();
 
     const loginLogoModelValue = ref([])
@@ -191,7 +191,7 @@ const { t } = useI18n();
         } catch (error) {
             // 错误处理
             // this.$message.error('内容加载失败');
-            console.error('数据加载失败', error);
+            console.error(t('sys.system.content.dataLoadFailed'), error);
         }
     };
 
@@ -207,22 +207,22 @@ const { t } = useI18n();
 
     // 确认按钮点击事件
     const confirm =  () => {
-        proxy.$modal.confirm('是否确认保存？').then(function() {}).then(async () => {
+        proxy.$modal.confirm(t('sys.system.content.confirmSave')).then(function() {}).then(async () => {
             status.value = !status.value
             try {
                 const item = contentDetail.value
                 const res = await updateContent(item)
                 if (res.code == 200) {
                     fetchContent();
-                    proxy.$modal.msgSuccess("保存成功");
+                    proxy.$modal.msgSuccess(t('sys.system.content.saveSuccess'));
                 } else {
                     // 如果响应 code 不是 200，表示请求失败
-                    proxy.$modal.msgError("保存失败，请重试！");
+                    proxy.$modal.msgError(t('sys.system.content.saveFailed'));
                 }
             } catch (error) {
                 // 捕获网络错误或请求失败的情况
                 console.error("请求失败:", error);
-                proxy.$modal.msgError("保存异常:" + error.message);
+                proxy.$modal.msgError(t('sys.system.content.saveException') + error.message);
             }
         }).catch(() => {});
     };

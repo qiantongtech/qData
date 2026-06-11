@@ -17,9 +17,9 @@
 
 <template>
   <!-- 创建表 -->
-  <el-dialog title="创建表" v-model="visible" width="800px" top="5vh"  :append-to="$refs['app-container']" draggable destroy-on-close>
-    <span>创建表语句(支持多个建表语句)：</span>
-    <el-input type="textarea" :rows="10" placeholder="请输入文本" v-model="content"></el-input>
+  <el-dialog :title="t('sys.tool.genCreate.title')" v-model="visible" width="800px" top="5vh"  :append-to="$refs['app-container']" draggable destroy-on-close>
+    <span>{{ t('sys.tool.genCreate.createTableStmt') }}</span>
+    <el-input type="textarea" :rows="10" :placeholder="t('sys.tool.genCreate.inputTextPlaceholder')" v-model="content"></el-input>
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="visible = false">{{ t('common.button.cancel') }}</el-button>
@@ -47,7 +47,7 @@ function show() {
 /** 导入按钮操作 */
 function handleImportTable() {
   if (content.value === "") {
-    proxy.$modal.msgError("请输入建表语句");
+    proxy.$modal.msgError(t('sys.tool.genCreate.inputCreateStmt'));
     return;
   }
   createTable({ sql: content.value }).then(res => {

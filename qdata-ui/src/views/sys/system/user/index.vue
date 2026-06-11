@@ -37,7 +37,7 @@
       <el-aside :style="{ width: `${leftWidth}px`, marginLeft: leftWidth == 0 ? '-15px' : '0px' }" class="left-pane">
         <div class="left-tree">
           <div class="head-container">
-            <el-input v-model="deptName" placeholder="请输入部门名称" clearable prefix-icon="Search"
+            <el-input v-model="deptName" :placeholder="t('sys.system.user.deptNamePlaceholder')" clearable prefix-icon="Search"
               style="margin-bottom: 20px" />
           </div>
           <div class="head-container">
@@ -100,12 +100,12 @@
         <!--用户数据-->
         <div class="pagecont-top" v-show="showSearch">
           <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="68px">
-            <el-form-item label="用户名称" prop="userName">
-              <el-input v-model="queryParams.userName" placeholder="请输入用户名称" clearable class="el-form-input-width"
+            <el-form-item :label="t('sys.system.user.userName')" prop="userName">
+              <el-input v-model="queryParams.userName" :placeholder="t('sys.system.user.userNamePlaceholder')" clearable class="el-form-input-width"
                 @keyup.enter="handleQuery" />
             </el-form-item>
-            <el-form-item label="手机号码" prop="phonenumber">
-              <el-input v-model="queryParams.phonenumber" placeholder="请输入手机号码" clearable class="el-form-input-width"
+            <el-form-item :label="t('sys.system.user.phone')" prop="phonenumber">
+              <el-input v-model="queryParams.phonenumber" :placeholder="t('sys.system.user.phonePlaceholder')" clearable class="el-form-input-width"
                 @keyup.enter="handleQuery" />
             </el-form-item>
             <el-form-item label="状态" prop="status">
@@ -160,14 +160,14 @@
 
           <el-table stripe height="58vh" v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="50" align="center" />
-            <el-table-column label="用户编号" align="center" key="userId" prop="userId" v-if="columns[0].visible" />
-            <el-table-column label="用户名称" align="center" key="userName" prop="userName" v-if="columns[1].visible"
+            <el-table-column :label="t('sys.system.user.userNo')" align="center" key="userId" prop="userId" v-if="columns[0].visible" />
+            <el-table-column :label="t('sys.system.user.userName')" align="center" key="userName" prop="userName" v-if="columns[1].visible"
               :show-overflow-tooltip="true" />
-            <el-table-column label="用户昵称" align="center" key="nickName" prop="nickName" v-if="columns[2].visible"
+            <el-table-column :label="t('sys.system.user.userNickName')" align="center" key="nickName" prop="nickName" v-if="columns[2].visible"
               :show-overflow-tooltip="true" />
-            <el-table-column label="部门" align="center" key="deptName" prop="dept.deptName" v-if="columns[3].visible"
+            <el-table-column :label="t('sys.system.user.dept')" align="center" key="deptName" prop="dept.deptName" v-if="columns[3].visible"
               :show-overflow-tooltip="true" />
-            <el-table-column label="手机号码" align="center" key="phonenumber" prop="phonenumber" v-if="columns[4].visible"
+            <el-table-column :label="t('sys.system.user.phone')" align="center" key="phonenumber" prop="phonenumber" v-if="columns[4].visible"
               width="120" />
             <el-table-column label="状态" align="center" key="status" v-if="columns[5].visible">
               <template #default="scope">
@@ -206,11 +206,11 @@
                   </template>
                   <div style="width: 90px" class="butgdlist">
                     <el-button style="padding-left: 14px" link type="primary" icon="Key"
-                      @click="handleResetPwd(scope.row)" v-hasPermi="['system:user:resetPwd']">重置密码
+                      @click="handleResetPwd(scope.row)" v-hasPermi="['system:user:resetPwd']">{{ t('sys.system.user.resetPassword') }}
                     </el-button>
                     <el-button link type="primary" icon="CircleCheck" @click="handleAuthRole(scope.row)"
                       v-hasPermi="['system:user:edit']">
-                      分配角色
+                      {{ t('sys.system.user.assignRole') }}
                     </el-button>
                   </div>
                 </el-popover>
@@ -229,14 +229,14 @@
       <el-form :model="form" :rules="rules" ref="userRef" label-width="80px">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="用户昵称" prop="nickName">
-              <el-input v-model="form.nickName" placeholder="请输入用户昵称" maxlength="30" />
+            <el-form-item :label="t('sys.system.user.userNickNameLabel')" prop="nickName">
+              <el-input v-model="form.nickName" :placeholder="t('sys.system.user.userNickNamePlaceholder')" maxlength="30" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="归属部门" prop="deptId">
+            <el-form-item :label="t('sys.system.user.belongDept')" prop="deptId">
               <el-tree-select v-model="form.deptId" :data="deptOptions"
-                :props="{ value: 'id', label: 'label', children: 'children' }" value-key="id" placeholder="请选择归属部门"
+                :props="{ value: 'id', label: 'label', children: 'children' }" value-key="id" :placeholder="t('sys.system.user.selectBelongDept')"
                 check-strictly />
               <!--                     <treeselect v-model="form.deptId" :options="deptOptions" :flat="true" :show-count="true" placeholder="请选择归属部门"-->
               <!--                                  :noResultsText="{{td('common.noData')}}" :multiple="true"-->
@@ -246,32 +246,32 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="手机号码" prop="phonenumber">
-              <el-input v-model="form.phonenumber" placeholder="请输入手机号码" maxlength="11" />
+            <el-form-item :label="t('sys.system.user.phone')" prop="phonenumber">
+              <el-input v-model="form.phonenumber" :placeholder="t('sys.system.user.phonePlaceholder')" maxlength="11" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="邮箱" prop="email">
-              <el-input v-model="form.email" placeholder="请输入邮箱" maxlength="50" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item v-if="form.userId == undefined" label="用户名称" prop="userName">
-              <el-input v-model="form.userName" placeholder="请输入用户名称" maxlength="30" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item v-if="form.userId == undefined" label="用户密码" prop="password">
-              <el-input v-model="form.password" placeholder="请输入用户密码" type="password" maxlength="20" show-password />
+            <el-form-item :label="t('sys.system.user.email')" prop="email">
+              <el-input v-model="form.email" :placeholder="t('sys.system.user.emailPlaceholder')" maxlength="50" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="用户性别">
-              <el-select v-model="form.sex" placeholder="请选择">
+            <el-form-item v-if="form.userId == undefined" :label="t('sys.system.user.userNameLabel')" prop="userName">
+              <el-input v-model="form.userName" :placeholder="t('sys.system.user.userNameLabelPlaceholder')" maxlength="30" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item v-if="form.userId == undefined" :label="t('sys.system.user.userPassword')" prop="password">
+              <el-input v-model="form.password" :placeholder="t('sys.system.user.userPasswordPlaceholder')" type="password" maxlength="20" show-password />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item :label="t('sys.system.user.userGender')">
+              <el-select v-model="form.sex" :placeholder="t('sys.system.user.selectPlaceholder')">
                 <el-option v-for="dict in sys_user_sex" :key="dict.value" :label="dict.label"
                   :value="dict.value"></el-option>
               </el-select>
@@ -288,16 +288,16 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="岗位">
-              <el-select v-model="form.postIds" multiple placeholder="请选择" class="selectlist">
+            <el-form-item :label="t('sys.system.user.post')">
+              <el-select v-model="form.postIds" multiple :placeholder="t('sys.system.user.selectPlaceholder')" class="selectlist">
                 <el-option v-for="item in postOptions" :key="item.postId" :label="item.postName" :value="item.postId"
                   :disabled="item.status == 1"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="角色" prop="roleIds">
-            <el-select v-model="form.roleIds" multiple placeholder="请选择" class="selectlist">
+            <el-form-item :label="t('sys.system.user.role')" prop="roleIds">
+            <el-select v-model="form.roleIds" multiple :placeholder="t('sys.system.user.selectPlaceholder')" class="selectlist">
                 <el-option v-for="item in roleOptions" :key="item.roleId" :label="item.roleName" :value="item.roleId"
                   :disabled="item.status == 1"></el-option>
               </el-select>
@@ -329,16 +329,16 @@
         <el-icon class="el-icon--upload">
           <upload-filled />
         </el-icon>
-        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        <div class="el-upload__text" v-html="t('sys.system.user.dragOrClick')"></div>
         <template #tip>
           <div class="el-upload__tip text-center">
             <div class="el-upload__tip">
               <el-checkbox v-model="upload.updateSupport" />
-              是否更新已经存在的用户数据
+              {{ t('sys.system.user.updateExistingData') }}
             </div>
-            <span>仅允许导入xls、xlsx格式文件。</span>
+            <span>{{ t('sys.system.user.importTip') }}</span>
             <el-link type="primary" :underline="false" style="font-size: 12px; vertical-align: baseline"
-              @click="importTemplate">下载模板
+              @click="importTemplate">{{ t('sys.system.user.downloadTemplate') }}
             </el-link>
           </div>
         </template>
@@ -384,14 +384,14 @@ const phonenumberRules = computed(() => {
   const rules = [
     {
       pattern: /^1[3-9]\d{9}$/,
-      message: "请输入正确的手机号码",
+      message: t('sys.system.user.phoneRequired'),
       trigger: "blur",
     },
   ];
   if (userId.value != 1) {
     rules.unshift({
       required: true,
-      message: "联系人手机号不能为空",
+      message: t('sys.system.user.contactPhoneRequired'),
       trigger: "blur",
     });
   }
@@ -402,28 +402,28 @@ const phonenumberRules = computed(() => {
 // 表单校验规则
 const rules = computed(() => ({
   userName: [
-    { required: true, message: "用户名称不能为空", trigger: "blur" },
+    { required: true, message: t('sys.system.user.userNameRequired'), trigger: "blur" },
     {
       min: 2,
       max: 20,
-      message: "用户名称长度必须介于 2 和 20 之间",
+      message: t('sys.system.user.userNameLengthRange'),
       trigger: "blur",
     },
   ],
-  nickName: [{ required: true, message: "用户昵称不能为空", trigger: "blur" }],
-  roleIds: [{ required: true, message: "角色不能为空", trigger: "change" }],
-  deptId: [{ required: true, message: "归属部门不能为空", trigger: "change" }],
+  nickName: [{ required: true, message: t('sys.system.user.userNickNameRequired'), trigger: "blur" }],
+  roleIds: [{ required: true, message: t('sys.system.user.roleRequired'), trigger: "change" }],
+  deptId: [{ required: true, message: t('sys.system.user.deptRequired'), trigger: "change" }],
   password: [
-    { required: true, message: "用户密码不能为空", trigger: "blur" },
+    { required: true, message: t('sys.system.user.passwordRequired'), trigger: "blur" },
     {
       min: 8,
       max: 20,
-      message: "用户密码长度必须介于 8 和 20 之间",
+      message: t('sys.system.user.passwordLengthRange'),
       trigger: "blur",
     },
     {
       pattern: /^[^<>"'|\\]+$/,
-      message: "不能包含非法字符：< > \" ' \\ |",
+      message: t('sys.system.user.invalidChars'),
       trigger: "blur",
     },
     {
@@ -437,15 +437,15 @@ const rules = computed(() => ({
         };
 
         if (!strengthRegex.minLength.test(value)) {
-          callback(new Error("密码长度必须至少 8 个字符"));
+          callback(new Error(t('sys.system.user.passwordMinLength')));
         } else if (!strengthRegex.upperCase.test(value)) {
-          callback(new Error("密码必须包含至少一个大写字母"));
+          callback(new Error(t('sys.system.user.passwordUppercase')));
         } else if (!strengthRegex.lowerCase.test(value)) {
-          callback(new Error("密码必须包含至少一个小写字母"));
+          callback(new Error(t('sys.system.user.passwordLowercase')));
         } else if (!strengthRegex.number.test(value)) {
-          callback(new Error("密码必须包含至少一个数字"));
+          callback(new Error(t('sys.system.user.passwordDigit')));
         } else if (!strengthRegex.specialChar.test(value)) {
-          callback(new Error("密码必须包含至少一个特殊字符"));
+          callback(new Error(t('sys.system.user.passwordSpecial')));
         } else {
           callback();
         }
@@ -456,7 +456,7 @@ const rules = computed(() => ({
   email: [
     {
       type: "email",
-      message: "请输入正确的邮箱地址",
+      message: t('sys.system.user.emailRequired'),
       trigger: ["blur", "change"],
     },
   ],
@@ -531,13 +531,13 @@ const upload = reactive({
 });
 // 列显隐信息
 const columns = ref([
-  { key: 0, label: `用户编号`, visible: true },
-  { key: 1, label: `用户名称`, visible: true },
-  { key: 2, label: `用户名称`, visible: true },
-  { key: 3, label: `部门`, visible: true },
-  { key: 4, label: `手机号码`, visible: true },
-  { key: 5, label: `状态`, visible: true },
-  { key: 6, label: `创建时间`, visible: true },
+  { key: 0, label: t('sys.system.user.columnVisibility.userNo'), visible: true },
+  { key: 1, label: t('sys.system.user.columnVisibility.userName'), visible: true },
+  { key: 2, label: t('sys.system.user.columnVisibility.userName'), visible: true },
+  { key: 3, label: t('sys.system.user.columnVisibility.dept'), visible: true },
+  { key: 4, label: t('sys.system.user.columnVisibility.phone'), visible: true },
+  { key: 5, label: t('common.display.status'), visible: true },
+  { key: 6, label: t('common.display.createTime'), visible: true },
 ]);
 
 const data = reactive({
@@ -626,7 +626,7 @@ function resetQuery() {
 function handleDelete(row) {
   const userIds = row.userId || ids.value;
   proxy.$modal
-    .confirm('是否确认删除用户编号为"' + userIds + '"的数据项？')
+    .confirm(t('sys.system.user.confirmDelete', { id: userIds }))
     .then(function () {
       return delUser(userIds);
     })
@@ -650,14 +650,14 @@ function handleExport() {
 
 /** 用户状态修改  */
 function handleStatusChange(row) {
-  let text = row.status === "0" ? "启用" : "停用";
+  let text = row.status === "0" ? t('sys.system.user.enable') : t('sys.system.user.disable');
   proxy.$modal
-    .confirm('确认要"' + text + '""' + row.userName + '"用户吗?')
+    .confirm(t('sys.system.user.confirmStatusChange', { text, name: row.userName }))
     .then(function () {
       return changeUserStatus(row.userId, row.status);
     })
     .then(() => {
-      proxy.$modal.msgSuccess(text + "成功");
+      proxy.$modal.msgSuccess(t('common.message.updateSuccess'));
     })
     .catch(function () {
       row.status = row.status === "0" ? "1" : "0";
@@ -693,11 +693,11 @@ function handleResetPwd(row) {
       closeOnClickModal: false,
       inputType: 'password',
       inputPattern: /^.{8,20}$/, // 密码长度要求在 8 到 20 之间
-      inputErrorMessage: "用户密码长度必须介于 8 和 20 之间",
+      inputErrorMessage: t('sys.system.user.resetPasswordInputError'),
       inputValidator: (value) => {
         // 校验密码包含的非法字符
         if (/<|>|"|'|\||\\/.test(value)) {
-          return "不能包含非法字符：< > \" ' \\ |";
+          return t('sys.system.user.invalidChars');
         }
         // 校验密码强度
         const strengthRegex = {
@@ -708,22 +708,22 @@ function handleResetPwd(row) {
         };
 
         if (!strengthRegex.upperCase.test(value)) {
-          return "密码必须包含至少一个大写字母";
+          return t('sys.system.user.passwordUppercase');
         }
         if (!strengthRegex.lowerCase.test(value)) {
-          return "密码必须包含至少一个小写字母";
+          return t('sys.system.user.passwordLowercase');
         }
         if (!strengthRegex.number.test(value)) {
-          return "密码必须包含至少一个数字";
+          return t('sys.system.user.passwordDigit');
         }
         if (!strengthRegex.specialChar.test(value)) {
-          return "密码必须包含至少一个特殊字符";
+          return t('sys.system.user.passwordSpecial');
         }
       },
     })
     .then(({ value }) => {
       resetUserPwd(row.userId, value).then((response) => {
-        proxy.$modal.msgSuccess("修改成功，新密码是：" + value);
+        proxy.$modal.msgSuccess(t('sys.system.user.resetPasswordSuccess', { password: value }));
       });
     })
     .catch(() => {
@@ -740,7 +740,7 @@ function handleSelectionChange(selection) {
 
 /** 导入按钮操作 */
 function handleImport() {
-  upload.title = "用户导入";
+  upload.title = t('sys.system.user.userImport');
   upload.open = true;
 }
 
@@ -767,7 +767,7 @@ const handleFileSuccess = (response, file, fileList) => {
     "<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +
     response.msg +
     "</div>",
-    "导入结果",
+    t('sys.system.user.importResult'),
     { dangerouslyUseHTMLString: true }
   );
   getList();
@@ -810,7 +810,7 @@ function handleAdd() {
     postOptions.value = response.posts;
     roleOptions.value = response.roles;
     open.value = true;
-    title.value = "新增用户";
+    title.value = t('sys.system.user.addUser');
     form.value.password = initPassword.value;
   });
 }
@@ -826,7 +826,7 @@ function handleUpdate(row) {
     form.value.postIds = response.postIds;
     form.value.roleIds = response.roleIds;
     open.value = true;
-    title.value = "修改用户";
+    title.value = t('sys.system.user.editUser');
     form.password = "";
   });
 }

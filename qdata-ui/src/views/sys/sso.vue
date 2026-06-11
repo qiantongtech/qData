@@ -20,18 +20,23 @@
     <div id="loader"></div>
     <div class="loader-section section-left"></div>
     <div class="loader-section section-right"></div>
-    <div class="load_title">正在登录统一身份认证中心，请耐心等待~~</div>
+    <div class="load_title">{{ t('sys.sso.loadingMsg') }}</div>
   </div>
 </template>
 
 <script>
 import {codeLogin} from "@/api/system/sso-auth.js";
 import useUserStore from '@/store/system/user.js'
+import { useI18n } from 'vue-i18n';
 
 const userStore = useUserStore()
 export default {
   name: "sso",
   components: {
+  },
+  setup() {
+    const { t } = useI18n();
+    return { t };
   },
   data() {
     return {

@@ -20,7 +20,7 @@
     <el-input
       v-model="input1"
       style="max-width: 300px; margin-right: 20px"
-      placeholder="单选"
+      :placeholder="t('common.form.singleSelect')"
       class="input-with-select"
     >
       <template #append>
@@ -31,7 +31,7 @@
     <el-input
       v-model="input2"
       style="max-width: 300px"
-      placeholder="多选"
+      :placeholder="t('common.form.multiSelect')"
       class="input-with-select"
     >
       <template #append>

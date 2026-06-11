@@ -17,7 +17,7 @@
 
 <template>
   <el-dialog
-    title="多选-字典管理"
+    :title="t('sys.tool.chooseSelection.title')"
     v-model="visible"
     width="1200px"
     :append-to="$refs['app-container']"
@@ -33,19 +33,19 @@
       v-show="showSearch"
       label-width="68px"
     >
-      <el-form-item label="字典名称" prop="dictName">
+      <el-form-item :label="t('sys.tool.chooseSelection.dictName')" prop="dictName">
         <el-input
           v-model="queryParams.dictName"
-          placeholder="请输入字典名称"
+          :placeholder="t('sys.tool.chooseSelection.dictNamePlaceholder')"
           clearable
           class="el-form-input-width"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="字典类型" prop="dictType">
+      <el-form-item :label="t('sys.tool.chooseSelection.dictType')" prop="dictType">
         <el-input
           v-model="queryParams.dictType"
-          placeholder="请输入字典类型"
+          :placeholder="t('sys.tool.chooseSelection.dictTypePlaceholder')"
           clearable
           class="el-form-input-width"
           @keyup.enter="handleQuery"
@@ -54,7 +54,7 @@
       <el-form-item :label="t('common.texts.status')" prop="status">
         <el-select
           v-model="queryParams.status"
-          placeholder="字典状态"
+          :placeholder="t('sys.tool.chooseSelection.dictStatus')"
           clearable
           class="el-form-input-width"
         >
@@ -104,19 +104,19 @@
     >
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column
-        label="字典编号"
+        :label="t('sys.tool.chooseSelection.dictNo')"
         align="center"
         prop="dictId"
         width="85"
       />
       <el-table-column
-        label="字典名称"
+        :label="t('sys.tool.chooseSelection.dictName')"
         align="center"
         prop="dictName"
         :show-overflow-tooltip="true"
       />
       <el-table-column
-        label="字典类型"
+        :label="t('sys.tool.chooseSelection.dictType')"
         align="center"
         :show-overflow-tooltip="true"
       >
@@ -170,9 +170,9 @@ import { useI18n } from 'vue-i18n'
 import { listType, getType, delType } from "@/api/system/system/dict/type.js";
 import { ref } from "vue"
 import useDefaultLang from "@/composables/useDefaultLang";
+const { t } = useI18n();
 const { td } = useDefaultLang();;
 
-const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
 
@@ -192,10 +192,10 @@ const data = reactive({
   },
   rules: {
     dictName: [
-      { required: true, message: "字典名称不能为空", trigger: "blur" },
+      { required: true, message: t('sys.tool.chooseSelection.dictNameRequired'), trigger: "blur" },
     ],
     dictType: [
-      { required: true, message: "字典类型不能为空", trigger: "blur" },
+      { required: true, message: t('sys.tool.chooseSelection.dictTypeRequired'), trigger: "blur" },
     ],
   },
 });
@@ -301,7 +301,7 @@ function cancel() {
  */
 function confirm() {
   if (multiple.value.length == 0) {
-    proxy.$modal.msgWarning("未选择数据！");
+    proxy.$modal.msgWarning(t('sys.tool.chooseSelection.noDataSelected'));
     return;
   }
   emit("confirm", [...multiple.value]);

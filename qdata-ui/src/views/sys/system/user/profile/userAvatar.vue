@@ -17,7 +17,7 @@
 
 <template>
   <div class="user-info-head" @click="editCropper()">
-    <img :src="options.img" title="点击上传头像" class="img-circle img-lg" />
+    <img :src="options.img" :title="t('sys.system.userAvatar.clickToUpload')" class="img-circle img-lg" />
     <el-dialog :title="title" v-model="open" width="800px" append-to-body @opened="modalOpened" @close="closeDialog">
       <el-row>
         <el-col :xs="24" :md="12" :style="{ height: '350px' }">
@@ -50,7 +50,7 @@
             :before-upload="beforeUpload"
           >
             <el-button>
-              选择
+              {{ t('sys.system.userAvatar.select') }}
               <el-icon class="el-icon--right"><Upload /></el-icon>
             </el-button>
           </el-upload>
@@ -68,7 +68,7 @@
           <el-button icon="RefreshRight" @click="rotateRight()"></el-button>
         </el-col>
         <el-col :lg="{ span: 2, offset: 6 }" :md="2">
-          <el-button type="primary" @click="uploadImg()">提 交</el-button>
+          <el-button type="primary" @click="uploadImg()">{{ t('sys.system.userAvatar.submit') }}</el-button>
         </el-col>
       </el-row>
     </el-dialog>
@@ -88,7 +88,7 @@ const { proxy } = getCurrentInstance();
 
 const open = ref(false);
 const visible = ref(false);
-const title = ref("修改头像");
+const title = ref(t('sys.system.userAvatar.editAvatar'));
 
 //图片裁剪数据
 const options = reactive({
@@ -134,7 +134,7 @@ function changeScale(num) {
 /** 上传预处理 */
 function beforeUpload(file) {
   if (file.type.indexOf("image/") == -1) {
-    proxy.$modal.msgError("文件格式错误，请上传图片类型,如：JPG，PNG后缀的文件。");
+    proxy.$modal.msgError(t('sys.system.userAvatar.fileFormatError'));
   } else {
     const reader = new FileReader();
     reader.readAsDataURL(file);

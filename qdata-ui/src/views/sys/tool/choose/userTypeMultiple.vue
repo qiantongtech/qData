@@ -17,7 +17,7 @@
 
 <template>
   <el-dialog
-      title="用户类型-多选"
+      :title="t('sys.tool.chooseUser.title')"
       v-model="visible"
       width="1200px"
       :append-to="$refs['app-container']"
@@ -37,34 +37,34 @@
         <el-input
             style="width:240px"
             v-model="queryParams.id"
-            placeholder="请输入ID"
+            :placeholder="t('sys.tool.chooseUser.idPlaceholder')"
             clearable
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="类型名称" prop="name">
+      <el-form-item :label="t('sys.tool.chooseUser.typeName')" prop="name">
         <el-input
             style="width:240px"
             v-model="queryParams.name"
-            placeholder="请输入类型名称"
+            :placeholder="t('sys.tool.chooseUser.typeNamePlaceholder')"
             clearable
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="是否有效" prop="validFlag">
+      <el-form-item :label="t('sys.tool.chooseUser.isActive')" prop="validFlag">
         <el-input
             style="width:240px"
             v-model="queryParams.validFlag"
-            placeholder="请输入是否有效"
+            :placeholder="t('sys.tool.chooseUser.isActivePlaceholder')"
             clearable
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="删除标志" prop="delFlag">
+      <el-form-item :label="t('sys.tool.chooseUser.deleteFlag')" prop="delFlag">
         <el-input
             style="width:240px"
             v-model="queryParams.delFlag"
-            placeholder="请输入删除标志"
+            :placeholder="t('sys.tool.chooseUser.deleteFlagPlaceholder')"
             clearable
             @keyup.enter="handleQuery"
         />
@@ -73,16 +73,16 @@
         <el-input
             style="width:240px"
             v-model="queryParams.createBy"
-            placeholder="请输入创建人"
+            :placeholder="t('sys.tool.chooseUser.createByPlaceholder')"
             clearable
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="创建人id" prop="creatorId">
+      <el-form-item :label="t('sys.tool.chooseUser.createById')" prop="creatorId">
         <el-input
             style="width:240px"
             v-model="queryParams.creatorId"
-            placeholder="请输入创建人id"
+            :placeholder="t('sys.tool.chooseUser.createByIdPlaceholder')"
             clearable
             @keyup.enter="handleQuery"
         />
@@ -102,16 +102,16 @@
         <el-input
             style="width:240px"
             v-model="queryParams.updateBy"
-            placeholder="请输入更新人"
+            :placeholder="t('sys.tool.chooseUser.updateByPlaceholder')"
             clearable
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="更新人id" prop="updaterId">
+      <el-form-item :label="t('sys.tool.chooseUser.updateById')" prop="updaterId">
         <el-input
             style="width:240px"
             v-model="queryParams.updaterId"
-            placeholder="请输入更新人id"
+            :placeholder="t('sys.tool.chooseUser.updateByIdPlaceholder')"
             clearable
             @keyup.enter="handleQuery"
         />
@@ -155,17 +155,17 @@
     >
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="ID" align="center" prop="id" />
-      <el-table-column label="类型名称" align="center" prop="name">
+      <el-table-column :label="t('sys.tool.chooseUser.typeName')" align="center" prop="name">
         <template #default="scope">
           {{ scope.row.name || '-' }}
         </template>
       </el-table-column>
-      <el-table-column label="是否有效" align="center" prop="validFlag">
+      <el-table-column :label="t('sys.tool.chooseUser.isActive')" align="center" prop="validFlag">
         <template #default="scope">
           {{ scope.row.validFlag || '-' }}
         </template>
       </el-table-column>
-      <el-table-column label="删除标志" align="center" prop="delFlag">
+      <el-table-column :label="t('sys.tool.chooseUser.deleteFlag')" align="center" prop="delFlag">
         <template #default="scope">
           {{ scope.row.delFlag || '-' }}
         </template>
@@ -175,7 +175,7 @@
           {{ scope.row.createBy || '-' }}
         </template>
       </el-table-column>
-      <el-table-column label="创建人id" align="center" prop="creatorId">
+      <el-table-column :label="t('sys.tool.chooseUser.createById')" align="center" prop="creatorId">
         <template #default="scope">
           {{ scope.row.creatorId || '-' }}
         </template>
@@ -190,7 +190,7 @@
           {{ scope.row.updateBy || '-' }}
         </template>
       </el-table-column>
-      <el-table-column label="更新人id" align="center" prop="updaterId">
+      <el-table-column :label="t('sys.tool.chooseUser.updateById')" align="center" prop="updaterId">
         <template #default="scope">
           {{ scope.row.updaterId || '-' }}
         </template>
@@ -230,8 +230,8 @@ import { useI18n } from 'vue-i18n'
 import { listUserType } from "@/api/example/user/userType";
 import { ref } from "vue"
 import useDefaultLang from "@/composables/useDefaultLang";
-const { td } = useDefaultLang();;
 const { t } = useI18n();
+const { td } = useDefaultLang();;
 const daterangeCreateTime = ref([]);
 const daterangeUpdateTime = ref([]);
 const { proxy } = getCurrentInstance();
@@ -386,7 +386,7 @@ function cancel() {
  */
 function confirm() {
   if (multiple.value.length == 0) {
-    proxy.$modal.msgWarning("未选择数据！");
+    proxy.$modal.msgWarning(t('sys.tool.chooseUser.noDataSelected'));
     return;
   }
   emit("confirm", [...multiple.value]);

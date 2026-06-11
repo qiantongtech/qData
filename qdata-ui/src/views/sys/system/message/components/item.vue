@@ -29,6 +29,8 @@
 </template>
 
 <script setup>
+  import { useI18n } from 'vue-i18n'
+  const { t } = useI18n();
   const {proxy} = getCurrentInstance();
 
   import { ref,nextTick, onMounted, onBeforeUnmount, watch } from 'vue';
@@ -50,11 +52,11 @@
 
   const messages = ref([
     {
-      title: '您有一条新消息',
+      title: t('sys.system.message.newMessage'),
       time: 'test'
     },
     {
-      title: '您有一条新消息',
+      title: t('sys.system.message.newMessage'),
       time: 'test'
     },
   ]); // 用于保存接收到的站内信

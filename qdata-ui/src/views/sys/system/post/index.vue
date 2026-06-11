@@ -19,26 +19,26 @@
    <div class="app-container" ref="app-container">
       <div class="pagecont-top" v-show="showSearch">
          <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="68px">
-            <el-form-item label="岗位编码" prop="postCode">
+            <el-form-item :label="t('sys.system.post.postCode')" prop="postCode">
                <el-input
                   v-model="queryParams.postCode"
-                  placeholder="请输入岗位编码"
+                  :placeholder="t('sys.system.post.postCodePlaceholder')"
                   clearable
                   class="el-form-input-width"
                   @keyup.enter="handleQuery"
                />
             </el-form-item>
-            <el-form-item label="岗位名称" prop="postName">
+            <el-form-item :label="t('sys.system.post.postName')" prop="postName">
                <el-input
                   v-model="queryParams.postName"
-                  placeholder="请输入岗位名称"
+                  :placeholder="t('sys.system.post.postNamePlaceholder')"
                   clearable
                   class="el-form-input-width"
                   @keyup.enter="handleQuery"
                />
             </el-form-item>
             <el-form-item :label="t('common.texts.status')" prop="status">
-               <el-select v-model="queryParams.status" placeholder="岗位状态" clearable class="el-form-input-width">
+               <el-select v-model="queryParams.status" :placeholder="t('sys.post.postStatus')" clearable class="el-form-input-width">
                   <el-option
                      v-for="dict in sys_normal_disable"
                      :key="dict.value"
@@ -104,10 +104,10 @@
 
          <el-table stripe height="60vh" v-loading="loading" :data="postList" @selection-change="handleSelectionChange" >
             <el-table-column type="selection" width="55" align="center" />
-            <el-table-column label="岗位编号" align="center" prop="postId" />
-            <el-table-column label="岗位编码" align="center" prop="postCode" />
-            <el-table-column label="岗位名称" align="center" prop="postName" />
-            <el-table-column label="岗位排序" align="center" prop="postSort" />
+            <el-table-column :label="t('sys.post.postNo')" align="center" prop="postId" />
+            <el-table-column :label="t('sys.post.postCode')" align="center" prop="postCode" />
+            <el-table-column :label="t('sys.post.postName')" align="center" prop="postName" />
+            <el-table-column :label="t('sys.post.postSort')" align="center" prop="postSort" />
             <el-table-column :label="t('common.texts.status')" align="center" prop="status">
                <template #default="scope">
                   <dict-tag :options="sys_normal_disable" :value="scope.row.status" />
@@ -140,22 +140,22 @@
          <el-form ref="postRef" :model="form" :rules="rules" label-width="80px">
             <el-row :gutter="20">
                <el-col :span="12">
-                  <el-form-item label="岗位名称" prop="postName">
-                     <el-input v-model="form.postName" placeholder="请输入岗位名称" />
+                  <el-form-item :label="t('sys.system.post.postName')" prop="postName">
+                     <el-input v-model="form.postName" :placeholder="t('sys.system.post.postNamePlaceholder')" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item label="岗位编码" prop="postCode">
-                     <el-input v-model="form.postCode" placeholder="请输入编码名称" />
+                  <el-form-item :label="t('sys.system.post.postCode')" prop="postCode">
+                     <el-input v-model="form.postCode" :placeholder="t('sys.system.post.postCodeLabelPlaceholder')" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item label="岗位顺序" prop="postSort">
+                  <el-form-item :label="t('sys.system.post.postOrder')" prop="postSort">
                      <el-input-number style="width:100%" v-model="form.postSort" controls-position="right" :min="0" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item label="岗位状态" prop="status">
+                  <el-form-item :label="t('sys.system.post.postStatus')" prop="status">
                      <el-radio-group v-model="form.status">
                         <el-radio
                            v-for="dict in sys_normal_disable"
@@ -167,7 +167,7 @@
                </el-col>
                <el-col :span="24">
                   <el-form-item :label="t('common.texts.remark')" prop="remark">
-                     <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
+                     <el-input v-model="form.remark" type="textarea" :placeholder="t('sys.post.inputContent')" />
                   </el-form-item>
                </el-col>
             </el-row>
@@ -210,9 +210,9 @@ const data = reactive({
     status: undefined
   },
   rules: {
-    postName: [{ required: true, message: "岗位名称不能为空", trigger: "blur" }],
-    postCode: [{ required: true, message: "岗位编码不能为空", trigger: "blur" }],
-    postSort: [{ required: true, message: "岗位顺序不能为空", trigger: "blur" }],
+    postName: [{ required: true, message: t('sys.system.post.postNameRequired'), trigger: "blur" }],
+    postCode: [{ required: true, message: t('sys.system.post.postCodeRequired'), trigger: "blur" }],
+    postSort: [{ required: true, message: t('sys.system.post.postOrderRequired'), trigger: "blur" }],
   }
 });
 
@@ -270,7 +270,7 @@ function handleSelectionChange(selection) {
 function handleAdd() {
   reset();
   open.value = true;
-  title.value = "新增岗位";
+  title.value = t('sys.system.post.addTitle');
 }
 
 /** 修改按钮操作 */
@@ -280,7 +280,7 @@ function handleUpdate(row) {
   getPost(postId).then(response => {
     form.value = response.data;
     open.value = true;
-    title.value = "修改岗位";
+    title.value = t('sys.system.post.editTitle');
   });
 }
 
@@ -308,7 +308,7 @@ function submitForm() {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const postIds = row.postId || ids.value;
-  proxy.$modal.confirm('是否确认删除岗位编号为"' + postIds + '"的数据项？').then(function() {
+  proxy.$modal.confirm(t('sys.system.post.confirmDelete', { id: postIds })).then(function() {
     return delPost(postIds);
   }).then(() => {
     getList();

@@ -26,19 +26,19 @@
                 :inline="true"
                 label-width="68px"
             >
-                <el-form-item label="角色名称" prop="roleName">
+                <el-form-item :label="t('sys.system.role.roleName')" prop="roleName">
                     <el-input
                         v-model="queryParams.roleName"
-                        placeholder="请输入角色名称"
+                        :placeholder="t('sys.system.role.roleNamePlaceholder')"
                         clearable
                         class="el-form-input-width"
                         @keyup.enter="handleQuery"
                     />
                 </el-form-item>
-                <el-form-item label="权限字符" prop="roleKey">
+                <el-form-item :label="t('sys.system.role.permissionChar')" prop="roleKey">
                     <el-input
                         v-model="queryParams.roleKey"
-                        placeholder="请输入权限字符"
+                        :placeholder="t('sys.system.role.permissionCharPlaceholder')"
                         clearable
                         class="el-form-input-width"
                         @keyup.enter="handleQuery"
@@ -47,7 +47,7 @@
                 <el-form-item :label="t('common.texts.status')" prop="status">
                     <el-select
                         v-model="queryParams.status"
-                        placeholder="角色状态"
+                        :placeholder="t('sys.system.role.roleStatus')"
                         clearable
                         class="el-form-input-width"
                     >
@@ -145,20 +145,20 @@
                 @selection-change="handleSelectionChange"
             >
                 <el-table-column type="selection" width="55" align="center" />
-                <el-table-column label="角色编号" prop="roleId" align="center" />
+                <el-table-column :label="t('sys.system.role.roleNo')" prop="roleId" align="center" />
                 <el-table-column
-                    label="角色名称"
+                    :label="t('sys.system.role.roleName')"
                     prop="roleName"
                     align="center"
                     :show-overflow-tooltip="true"
                 />
                 <el-table-column
-                    label="权限字符"
+                    :label="t('sys.system.role.permissionChar')"
                     prop="roleKey"
                     align="center"
                     :show-overflow-tooltip="true"
                 />
-                <el-table-column label="显示顺序" prop="roleSort" align="center" />
+                <el-table-column :label="t('sys.system.role.showOrder')" prop="roleSort" align="center" />
                 <el-table-column :label="t('common.texts.status')" align="center">
                     <template #default="scope">
                         <el-switch
@@ -229,7 +229,7 @@
                                     icon="CircleCheck"
                                     @click="handleDataScope(scope.row)"
                                     v-hasPermi="['system:role:edit']"
-                                    >数据权限</el-button
+                                    >{{ t('sys.system.role.dataPermission') }}</el-button
                                 >
                                 <el-button
                                     link
@@ -237,7 +237,7 @@
                                     icon="User"
                                     @click="handleAuthUser(scope.row)"
                                     v-hasPermi="['system:role:edit']"
-                                    >分配用户</el-button
+                                    >{{ t('sys.system.role.assignUser') }}</el-button
                                 >
                             </div>
                         </el-popover>
@@ -266,8 +266,8 @@
             <el-form ref="roleRef" :model="form" :rules="rules" label-width="100px">
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item label="角色名称" prop="roleName">
-                            <el-input v-model="form.roleName" placeholder="请输入角色名称" />
+                        <el-form-item :label="t('sys.system.role.roleName')" prop="roleName">
+                            <el-input v-model="form.roleName" :placeholder="t('sys.system.role.roleNamePlaceholder')" />
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
@@ -275,22 +275,22 @@
                             <template #label>
                                 <span>
                                     <el-tooltip
-                                        content="控制器中定义的权限字符，如：@PreAuthorize(`@ss.hasRole('admin')`)"
+                                        :content="t('sys.system.role.roleTooltip')"
                                         placement="top"
                                     >
                                         <!-- <el-icon style="color: #909399;"><InfoFilled /></el-icon> -->
                                         <el-icon style="color: #909399"><InfoFilled /></el-icon>
                                     </el-tooltip>
-                                    权限字符
+                                    {{ t('sys.system.role.permissionChar') }}
                                 </span>
                             </template>
-                            <el-input v-model="form.roleKey" placeholder="请输入权限字符" />
+                            <el-input v-model="form.roleKey" :placeholder="t('sys.system.role.permissionCharPlaceholder')" />
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item label="角色顺序" prop="roleSort">
+                        <el-form-item :label="t('sys.system.role.roleOrder')" prop="roleSort">
                             <el-input-number
                                 style="width: 100%"
                                 v-model="form.roleSort"
@@ -312,7 +312,7 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-form-item label="菜单权限">
+                <el-form-item :label="t('sys.system.role.menuPermission')">
                     <el-checkbox
                         v-model="menuExpand"
                         @change="handleCheckedTreeExpand($event, 'menu')"
@@ -321,12 +321,12 @@
                     <el-checkbox
                         v-model="menuNodeAll"
                         @change="handleCheckedTreeNodeAll($event, 'menu')"
-                        >全选/全不选</el-checkbox
+                        >{{ t('sys.system.role.selectAll') }}</el-checkbox
                     >
                     <el-checkbox
                         v-model="form.menuCheckStrictly"
                         @change="handleCheckedTreeConnect($event, 'menu')"
-                        >父子联动</el-checkbox
+                        >{{ t('sys.system.role.parentChildLink') }}</el-checkbox
                     >
                     <el-tree
                         class="tree-border"
@@ -335,7 +335,7 @@
                         ref="menuRef"
                         node-key="id"
                         :check-strictly="!form.menuCheckStrictly"
-                        empty-text="加载中，请稍候"
+                        :empty-text="t('sys.system.role.loadingTree')"
                         :props="{ label: 'label', children: 'children' }"
                     ></el-tree>
                 </el-form-item>
@@ -343,7 +343,7 @@
                     <el-input
                         v-model="form.remark"
                         type="textarea"
-                        placeholder="请输入内容"
+                        :placeholder="t('sys.system.role.inputContent')"
                     ></el-input>
                 </el-form-item>
             </el-form>
@@ -358,13 +358,13 @@
         <!-- 分配角色数据权限对话框 -->
         <el-dialog :title="title" v-model="openDataScope" width="500px" append-to-body>
             <el-form :model="form" label-width="80px">
-                <el-form-item label="角色名称">
+                <el-form-item :label="t('sys.system.role.roleNameDataScope')">
                     <el-input v-model="form.roleName" :disabled="true" />
                 </el-form-item>
-                <el-form-item label="权限字符">
+                <el-form-item :label="t('sys.system.role.permissionCharDataScope')">
                     <el-input v-model="form.roleKey" :disabled="true" />
                 </el-form-item>
-                <el-form-item label="权限范围">
+                <el-form-item :label="t('sys.system.role.permissionRange')">
                     <el-select v-model="form.dataScope" @change="dataScopeSelectChange">
                         <el-option
                             v-for="item in dataScopeOptions"
@@ -374,7 +374,7 @@
                         ></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="数据权限" v-show="form.dataScope == 2">
+                <el-form-item :label="t('sys.system.role.dataPermission')" v-show="form.dataScope == 2">
                     <el-checkbox
                         v-model="deptExpand"
                         @change="handleCheckedTreeExpand($event, 'dept')"
@@ -383,12 +383,12 @@
                     <el-checkbox
                         v-model="deptNodeAll"
                         @change="handleCheckedTreeNodeAll($event, 'dept')"
-                        >全选/全不选</el-checkbox
+                        >{{ t('sys.system.role.selectAll') }}</el-checkbox
                     >
                     <el-checkbox
                         v-model="form.deptCheckStrictly"
                         @change="handleCheckedTreeConnect($event, 'dept')"
-                        >父子联动</el-checkbox
+                        >{{ t('sys.system.role.parentChildLink') }}</el-checkbox
                     >
                     <el-tree
                         class="tree-border"
@@ -398,7 +398,7 @@
                         ref="deptRef"
                         node-key="id"
                         :check-strictly="!form.deptCheckStrictly"
-                        empty-text="加载中，请稍候"
+                        :empty-text="t('sys.system.role.loadingTree')"
                         :props="{ label: 'label', children: 'children' }"
                     ></el-tree>
                 </el-form-item>
@@ -433,8 +433,8 @@ import { useI18n } from 'vue-i18n'
     } from '@/api/system/system/menu.js';
     import useDefaultLang from "@/composables/useDefaultLang";
 
-    const { td } = useDefaultLang();
     const { t } = useI18n();
+    const { td } = useDefaultLang();
     const router = useRouter();
     const { proxy } = getCurrentInstance();
     const { sys_normal_disable } = proxy.useDict('sys_normal_disable');
@@ -461,11 +461,11 @@ import { useI18n } from 'vue-i18n'
 
     /** 数据范围选项*/
     const dataScopeOptions = ref([
-        { value: '1', label: '全部数据权限' },
-        { value: '2', label: '自定数据权限' },
-        { value: '3', label: '本部门数据权限' },
-        { value: '4', label: '本部门及以下数据权限' },
-        { value: '5', label: '仅本人数据权限' }
+        { value: '1', label: t('sys.system.role.allDataPermission') },
+        { value: '2', label: t('sys.system.role.customDataPermission') },
+        { value: '3', label: t('sys.system.role.deptDataPermission') },
+        { value: '4', label: t('sys.system.role.deptAndBelowDataPermission') },
+        { value: '5', label: t('sys.system.role.selfDataPermission') }
     ]);
 
     const data = reactive({
@@ -479,9 +479,9 @@ import { useI18n } from 'vue-i18n'
             status: undefined
         },
         rules: {
-            roleName: [{ required: true, message: '角色名称不能为空', trigger: 'blur' }],
-            roleKey: [{ required: true, message: '权限字符不能为空', trigger: 'blur' }],
-            roleSort: [{ required: true, message: '角色顺序不能为空', trigger: 'blur' }]
+            roleName: [{ required: true, message: t('sys.system.role.roleNameRequired'), trigger: 'blur' }],
+            roleKey: [{ required: true, message: t('sys.system.role.permissionCharRequired'), trigger: 'blur' }],
+            roleSort: [{ required: true, message: t('sys.system.role.roleOrderRequired'), trigger: 'blur' }]
         }
     });
 
@@ -514,7 +514,7 @@ import { useI18n } from 'vue-i18n'
     function handleDelete(row) {
         const roleIds = row.roleId || ids.value;
         proxy.$modal
-            .confirm('是否确认删除角色编号为"' + roleIds + '"的数据项?')
+            .confirm(t('sys.system.role.confirmDelete', { id: roleIds }))
             .then(function () {
                 return delRole(roleIds);
             })
@@ -545,14 +545,14 @@ import { useI18n } from 'vue-i18n'
 
     /** 角色状态修改 */
     function handleStatusChange(row) {
-        let text = row.status === '0' ? '启用' : '停用';
+        let text = row.status === '0' ? t('sys.system.role.enable') : t('sys.system.role.disable');
         proxy.$modal
-            .confirm('确认要"' + text + '""' + row.roleName + '"角色吗?')
+            .confirm(t('sys.system.role.confirmStatusChange', { text: text, name: row.roleName }))
             .then(function () {
                 return changeRoleStatus(row.roleId, row.status);
             })
             .then(() => {
-                proxy.$modal.msgSuccess(text + '成功');
+                proxy.$modal.msgSuccess(text + t('common.message.success'));
             })
             .catch(function () {
                 row.status = row.status === '0' ? '1' : '0';
@@ -625,7 +625,7 @@ import { useI18n } from 'vue-i18n'
         reset();
         getMenuTreeselect();
         open.value = true;
-        title.value = '新增角色';
+        title.value = t('sys.system.role.addTitle');
     }
 
     /** 修改角色 */
@@ -647,7 +647,7 @@ import { useI18n } from 'vue-i18n'
                     });
                 });
             });
-            title.value = '修改角色';
+            title.value = t('sys.system.role.editTitle');
         });
     }
 
@@ -762,7 +762,7 @@ import { useI18n } from 'vue-i18n'
                     });
                 });
             });
-            title.value = '分配数据权限';
+            title.value = t('sys.system.role.assignDataPermissionTitle');
         });
     }
 

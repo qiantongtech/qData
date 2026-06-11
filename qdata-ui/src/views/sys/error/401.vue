@@ -46,7 +46,9 @@
 import { useI18n } from 'vue-i18n'
 import errImage from "@/assets/system/401_images/401.gif";
 
-const { t } = useI18n();let { proxy } = getCurrentInstance();
+const { t } = useI18n();
+
+let { proxy } = getCurrentInstance();
 
 const errGif = ref(errImage + "?" + +new Date());
 

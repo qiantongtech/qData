@@ -48,6 +48,8 @@ export default {
     statusRequired: '状态不能为空',
     startTimePlaceholder: '开始时间',
     endTimePlaceholder: '结束时间',
+    singleSelect: '单选',
+    multiSelect: '多选',
     startDatePlaceholder: '开始日期',
     endDatePlaceholder: '结束日期'
   },

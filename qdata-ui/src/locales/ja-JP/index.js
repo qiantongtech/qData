@@ -3,10 +3,12 @@ import common from './common'
 import login from './login'
 import router from './router'
 import dict from './dict'
+import att from './att'
 
 export default {
   common,
   login,
   router,
-  dict
+  dict,
+  att
 }

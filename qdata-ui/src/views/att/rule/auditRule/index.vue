@@ -38,7 +38,7 @@
       <DeptTree
         :deptOptions="processedData"
         :leftWidth="leftWidth"
-        :placeholder="'请输入稽查规则类目'"
+        :placeholder="td('att.common.ruleCategoryPlaceholder')"
         @node-click="handleNodeClick"
         ref="DeptTreeRef"
         :default-expand="true"
@@ -55,33 +55,15 @@
             v-show="showSearch"
             @submit.prevent
           >
-            <el-form-item label="规则名称" prop="name">
+            <el-form-item :label="td('att.common.ruleName')" prop="name">
               <el-input
                 class="el-form-input-width"
                 v-model="queryParams.name"
-                placeholder="请输入规则名称"
+                :placeholder="td('common.form.namePlaceholder')"
                 clearable
                 @keyup.enter="handleQuery"
               />
             </el-form-item>
-            <!-- <el-form-item label="编号" prop="code">
-                            <el-input class="el-form-input-width" v-model="queryParams.code" placeholder="请输入编号"
-                                clearable @keyup.enter="handleQuery" />
-                        </el-form-item> -->
-            <!-- <el-form-item label="规则级别" prop="level">
-                            <el-select class="el-form-input-width" v-model="queryParams.level" placeholder="请选择规则类型"
-                                clearable>
-                                <el-option v-for="dict in att_rule_level" :key="dict.value" :label="dict.label"
-                                    :value="dict.value" />
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="质量维度" prop="qualityDim">
-                            <el-select class="el-form-input-width" v-model="queryParams.qualityDim"
-                                placeholder="请选择质量维度" clearable>
-                                <el-option v-for="dict in att_rule_audit_q_dimension" :key="dict.value"
-                                    :label="dict.label" :value="dict.value" />
-                            </el-select>
-                        </el-form-item> -->
 
             <el-form-item>
               <el-button
@@ -90,13 +72,13 @@
                 @click="handleQuery"
                 @mousedown="(e) => e.preventDefault()"
               >
-                <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
               </el-button>
               <el-button
                 @click="resetQuery"
                 @mousedown="(e) => e.preventDefault()"
               >
-                <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
               </el-button>
             </el-form-item>
           </el-form>
@@ -142,7 +124,7 @@
           >
             <el-table-column
               v-if="getColumnVisibility(6)"
-              label="编号"
+              :label="td('att.auditRule.table.code')"
               align="left"
               prop="code"
               width="80"
@@ -153,7 +135,7 @@
             </el-table-column>
             <el-table-column
               v-if="getColumnVisibility(1)"
-              label="规则名称"
+              :label="td('att.auditRule.table.name')"
               align="left"
               prop="name"
               :show-overflow-tooltip="{ effect: 'light' }"
@@ -165,7 +147,7 @@
             </el-table-column>
             <el-table-column
               v-if="getColumnVisibility(2)"
-              label="质量维度"
+              :label="td('att.auditRule.table.qualityDim')"
               align="left"
               prop="qualityDim"
               :show-overflow-tooltip="{ effect: 'light' }"
@@ -181,7 +163,7 @@
             <el-table-column
               :show-overflow-tooltip="{ effect: 'light' }"
               v-if="getColumnVisibility(5)"
-              label="描述"
+              :label="td('common.texts.description')"
               width="400"
               align="left"
               prop="description"
@@ -192,7 +174,7 @@
             </el-table-column>
             <el-table-column
               v-if="getColumnVisibility(3)"
-              label="使用场景"
+              :label="td('att.auditRule.table.useCase')"
               width="500"
               align="left"
               prop="level"
@@ -204,7 +186,7 @@
             </el-table-column>
             <el-table-column
               v-if="getColumnVisibility(4)"
-              label="示例"
+              :label="td('att.auditRule.table.example')"
               width="700"
               align="left"
               prop="type"
@@ -218,7 +200,7 @@
             <!-- <el-table-column
                             :show-overflow-tooltip="{effect: 'light'}"
                             v-if="getColumnVisibility(14)"
-                            label="备注"
+                            :label="td('common.texts.remark')"
                             align="left"
                             prop="remark"
                         >
@@ -279,18 +261,18 @@
       >
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="规则名称" prop="name">
-              <el-input v-model="form.name" placeholder="请输入规则名称" />
+            <el-form-item :label="td('att.common.ruleName')" prop="name">
+              <el-input v-model="form.name" :placeholder="td('common.form.namePlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="编号" prop="code">
-              <el-input v-model="form.code" placeholder="请输入编号" />
+            <el-form-item :label="td('att.common.code')" prop="code">
+              <el-input v-model="form.code" :placeholder="td('att.auditRule.form.codePlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="质量维度" prop="qualityDim">
-              <el-select v-model="form.qualityDim" placeholder="请选择质量维度">
+            <el-form-item :label="td('att.auditRule.table.qualityDim')" prop="qualityDim">
+              <el-select v-model="form.qualityDim" :placeholder="td('att.common.qualityDimPlaceholder')">
                 <el-option
                   v-for="dict in att_rule_audit_q_dimension"
                   :key="dict.value"
@@ -301,53 +283,35 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <!-- <el-row :gutter="20">
-                    <el-col :span="12">
-                        <el-form-item label="规则类型" prop="type">
-                            <el-select v-model="form.type" placeholder="请选择规则类型">
-                                <el-option v-for="dict in att_rule_audit_type" :key="dict.value" :label="dict.label"
-                                    :value="dict.value"></el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                        <el-form-item label="规则级别" prop="level">
-                            <el-select v-model="form.level" placeholder="请选择规则级别">
-                                <el-option v-for="dict in att_rule_level" :key="dict.value" :label="dict.label"
-                                    :value="dict.value"></el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                </el-row> -->
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="场景" prop="useCase">
+            <el-form-item :label="td('att.common.useCase')" prop="useCase">
               <el-input
                 type="textarea"
                 v-model="form.useCase"
-                placeholder="请输入场景"
+                :placeholder="td('att.common.useCasePlaceholder')"
               />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="示例" prop="example">
+            <el-form-item :label="td('att.common.example')" prop="example">
               <el-input
                 type="textarea"
                 v-model="form.example"
-                placeholder="请输入示例"
+                :placeholder="td('att.common.examplePlaceholder')"
               />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="描述" prop="description">
+            <el-form-item :label="td('common.texts.description')" prop="description">
               <el-input
                 type="textarea"
                 v-model="form.description"
-                placeholder="请输入规则描述"
+                :placeholder="td('att.auditRule.form.descriptionPlaceholder')"
               />
             </el-form-item>
           </el-col>
@@ -355,9 +319,9 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="cancel">取 消</el-button>
+          <el-button size="mini" @click="cancel">{{ td('common.button.cancel') }}</el-button>
           <el-button type="primary" size="mini" @click="submitForm"
-            >确 定</el-button
+            >{{ td('common.button.confirm') }}</el-button
           >
         </div>
       </template>

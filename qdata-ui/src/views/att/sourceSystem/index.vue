@@ -11,7 +11,7 @@
       </template>
       <template #actions-data>
         <el-button type="primary" plain icon="Plus" @click="handleAdd">
-          {{ t('common.button.add') }}
+          {{ td('common.button.add') }}
         </el-button>
         <el-button
           type="danger"
@@ -20,7 +20,7 @@
           :disabled="!store.rows.length"
           @click="handleDelete"
         >
-          {{ t('common.button.delete') }}
+          {{ td('common.button.delete') }}
         </el-button>
       </template>
       <qt-table v-bind="tableStore" ref="tableRef">
@@ -43,7 +43,7 @@
         </template>
         <template #handle="{ row }">
           <el-button link type="primary" icon="Edit" @click="handleUpdate(row)"
-            >{{ t('common.button.update') }}</el-button
+            >{{ td('common.button.update') }}</el-button
           >
           <el-button
             link
@@ -51,10 +51,10 @@
             icon="Delete"
             @click="handleDelete(row)"
             :disabled="row.validFlag"
-            >{{ t('common.button.delete') }}</el-button
+            >{{ td('common.button.delete') }}</el-button
           >
           <el-button link type="primary" icon="view" @click="handleDetail(row)"
-            >{{ t('common.button.details') }}</el-button
+            >{{ td('common.button.details') }}</el-button
           >
         </template>
       </qt-table>
@@ -80,12 +80,12 @@
         label-width="80px"
         @submit.prevent
       >
-        <el-form-item label="系统名称" prop="name">
-          <el-input v-model="form.name" placeholder="请输入系统名称" />
+        <el-form-item :label="td('att.sourceSystem.form.name')" prop="name">
+          <el-input v-model="form.name" :placeholder="td('att.sourceSystem.form.namePlaceholder')" />
         </el-form-item>
 
-        <el-form-item label="系统类型" prop="type">
-          <el-select v-model="form.type" placeholder="请选择系统类型">
+        <el-form-item :label="td('att.sourceSystem.form.type')" prop="type">
+          <el-select v-model="form.type" :placeholder="td('att.sourceSystem.form.typePlaceholder')">
             <el-option
               v-for="dict in sys_source_system_type"
               :key="dict.value"
@@ -94,11 +94,11 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="负责人" prop="responsiblePerson">
+        <el-form-item :label="td('att.sourceSystem.form.responsiblePerson')" prop="responsiblePerson">
           <el-select
             v-model="form.responsiblePerson"
             filterable
-            placeholder="请选择负责人"
+            :placeholder="td('att.sourceSystem.form.responsiblePersonPlaceholder')"
           >
             <el-option
               v-for="item in userOptions"
@@ -110,11 +110,11 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="对接人" prop="contactPerson">
+        <el-form-item :label="td('att.sourceSystem.form.contactPerson')" prop="contactPerson">
           <el-select
             v-model="form.contactPerson"
             filterable
-            placeholder="请选择对接人"
+            :placeholder="td('att.sourceSystem.form.contactPersonPlaceholder')"
           >
             <el-option
               v-for="item in userOptions"
@@ -125,7 +125,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="排序" prop="sortOrder">
+        <el-form-item :label="td('att.sourceSystem.form.sortOrder')" prop="sortOrder">
           <el-input-number
             style="width: 100%"
             v-model="form.sortOrder"
@@ -133,35 +133,35 @@
             :min="0"
           />
         </el-form-item>
-        <el-form-item :label="t('common.texts.status')" prop="validFlag">
-          <el-radio v-model="form.validFlag" :label="false">禁用</el-radio>
-          <el-radio v-model="form.validFlag" :label="true">启用</el-radio>
+        <el-form-item :label="td('common.texts.status')" prop="validFlag">
+          <el-radio v-model="form.validFlag" :label="false">{{ td('att.sourceSystem.form.disable') }}</el-radio>
+          <el-radio v-model="form.validFlag" :label="true">{{ td('att.sourceSystem.form.enable') }}</el-radio>
         </el-form-item>
-        <el-form-item :label="t('common.texts.description')" prop="description">
+        <el-form-item :label="td('common.texts.description')" prop="description">
           <el-input
             type="textarea"
-            maxlength="500个字符"
+            :maxlength="500"
             show-word-limit
             v-model="form.description"
-            :placeholder="t('common.form.descriptionPlaceholder')"
+            :placeholder="td('common.form.descriptionPlaceholder')"
           />
         </el-form-item>
 
-        <el-form-item :label="t('common.texts.remark')" prop="remark">
+        <el-form-item :label="td('common.texts.remark')" prop="remark">
           <el-input
             type="textarea"
-            maxlength="500个字符"
+            :maxlength="500"
             show-word-limit
             v-model="form.remark"
-            :placeholder="t('common.form.remarkPlaceholder')"
+            :placeholder="td('common.form.remarkPlaceholder')"
           />
         </el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="cancel">{{ t('common.button.cancel') }}</el-button>
+          <el-button size="mini" @click="cancel">{{ td('common.button.cancel') }}</el-button>
           <el-button type="primary" size="mini" @click="submitForm"
-            >{{ t('common.button.confirm') }}</el-button
+            >{{ td('common.button.confirm') }}</el-button
           >
         </div>
       </template>
@@ -180,72 +180,72 @@
         label-width="90px"
         class="column-form"
       >
-        <el-form-item :label="t('common.texts.number')" prop="id">
+        <el-form-item :label="td('common.texts.number')" prop="id">
           <div class="form-readonly">
             {{ form.id }}
           </div>
         </el-form-item>
-        <el-form-item label="系统名称" prop="name">
+        <el-form-item :label="td('att.sourceSystem.form.name')" prop="name">
           <div class="form-readonly">
             {{ form.name }}
           </div>
         </el-form-item>
-        <el-form-item label="系统类型" prop="type">
+        <el-form-item :label="td('att.sourceSystem.form.type')" prop="type">
           <div class="form-readonly">
             {{ getDictLabel(sys_source_system_type, form.type) }}
           </div>
         </el-form-item>
 
-        <el-form-item label="负责人" prop="responsiblePersonName">
+        <el-form-item :label="td('att.sourceSystem.form.responsiblePerson')" prop="responsiblePersonName">
           <div class="form-readonly">
             {{ form.responsiblePersonName }}
           </div>
         </el-form-item>
-        <el-form-item label="对接人" prop="contactPersonName">
+        <el-form-item :label="td('att.sourceSystem.form.contactPerson')" prop="contactPersonName">
           <div class="form-readonly">
             {{ form.contactPersonName }}
           </div>
         </el-form-item>
-        <el-form-item label="排序" prop="sortOrder">
+        <el-form-item :label="td('att.sourceSystem.form.sortOrder')" prop="sortOrder">
           <div class="form-readonly">
             {{ form.sortOrder }}
           </div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.status')" prop="validFlag">
+        <el-form-item :label="td('common.texts.status')" prop="validFlag">
           <div class="form-readonly">
-            {{ form.validFlag ? "启用" : "禁用" }}
+            {{ form.validFlag ? td('att.sourceSystem.form.enable') : td('att.sourceSystem.form.disable') }}
           </div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.description')" prop="description" class="row-full">
+        <el-form-item :label="td('common.texts.description')" prop="description" class="row-full">
           <div class="form-readonly textarea">
             {{ form.description ?? "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.remark')" prop="remark" class="row-full">
+        <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full">
           <div class="form-readonly textarea">
             {{ form.remark ?? "-" }}
           </div>
         </el-form-item>
 
-        <el-form-item :label="t('common.texts.createdBy')" prop="createBy">
+        <el-form-item :label="td('common.texts.createdBy')" prop="createBy">
           <div class="form-readonly">
             {{ form.createBy }}
           </div>
         </el-form-item>
 
-        <el-form-item :label="t('common.texts.createdTime')" prop="createTime">
+        <el-form-item :label="td('common.texts.createdTime')" prop="createTime">
           <div class="form-readonly">
             {{ parseTime(form.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
         </el-form-item>
 
-        <el-form-item :label="t('common.texts.updatedBy')" prop="updateBy">
+        <el-form-item :label="td('common.texts.updatedBy')" prop="updateBy">
           <div class="form-readonly">
             {{ form.updateBy }}
           </div>
         </el-form-item>
 
-        <el-form-item :label="t('common.texts.updatedTime')" prop="updateTime">
+        <el-form-item :label="td('common.texts.updatedTime')" prop="updateTime">
           <div class="form-readonly">
             {{ parseTime(form.updateTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
@@ -253,7 +253,7 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="openDetail = false">{{ t('common.button.close') }} </el-button>
+          <el-button size="mini" @click="openDetail = false">{{ td('common.button.close') }} </el-button>
         </div>
       </template>
     </el-dialog>
@@ -267,6 +267,7 @@
 
 <script setup name="SourceSystem">
 import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang";
 import {
   listSourceSystem,
   getSourceSystem,
@@ -280,6 +281,7 @@ import DeleteConfirmDialog from "@/components/DeleteConfirmDialog";
 import { reactive, ref, toRefs, getCurrentInstance, onMounted } from "vue";
 
 const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { sys_source_system_type } = proxy.useDict("sys_source_system_type");
 
@@ -347,52 +349,52 @@ const tableStore = reactive({
       type: "selection",
       width: 55,
     },
-    { label: t('common.texts.number'), prop: "id", width: 60, sortable: true },
-    { label: "系统名称", prop: "name", align: "left", width: 150 },
+    { label: td('common.texts.number'), prop: "id", width: 60, sortable: true },
+    { label: td('att.sourceSystem.table.name'), prop: "name", align: "left", width: 150 },
     {
-      label: "系统类型",
+      label: td('att.sourceSystem.table.type'),
       prop: "type",
       width: 120,
       slot: "type",
     },
     {
-      label: t('common.texts.description'),
+      label: td('common.texts.description'),
       prop: "description",
       align: "left",
       width: 200,
       showOverflowTooltip: true,
     },
     {
-      label: t('common.texts.status'),
+      label: td('common.texts.status'),
       prop: "validFlag",
       width: 80,
       slot: "validFlag",
     },
     {
-      label: "排序",
+      label: td('common.texts.sortOrder'),
       prop: "sortOrder",
       sortableKey: "sort_order",
       width: 80,
       sortable: true,
     },
     {
-      label: "负责人",
+      label: td('att.sourceSystem.table.responsiblePerson'),
       prop: "responsiblePersonName",
     },
     {
-      label: "对接人",
+      label: td('att.sourceSystem.table.contactPerson'),
       prop: "contactPersonName",
     },
-    { label: t('common.texts.createdBy'), prop: "createBy", width: 120 },
+    { label: td('common.texts.createdBy'), prop: "createBy", width: 120 },
     {
-      label: t('common.texts.createdTime'),
+      label: td('common.texts.createdTime'),
       prop: "createTime",
       width: 150,
       sortable: true,
       sortableKey: "create_time",
       date: true,
     },
-    { label: t('common.texts.operation'), width: 240, fixed: "right", slot: "handle" },
+    { label: td('common.texts.operation'), width: 240, fixed: "right", slot: "handle" },
   ],
   func: listSourceSystem,
   params: {},
@@ -402,47 +404,47 @@ const tableStore = reactive({
 const searchStore = reactive({
   items: [
     {
-      label: "系统名称",
+      label: td('att.sourceSystem.form.name'),
       prop: "name",
       align: "left",
-      component: { is: "input", placeholder: "请输入系统名称" },
+      component: { is: "input", placeholder: td('att.sourceSystem.form.namePlaceholder') },
     },
     {
-      label: "系统类型",
+      label: td('att.sourceSystem.form.type'),
       prop: "type",
       component: {
         is: "select",
-        placeholder: "请选择系统类型",
+        placeholder: td('att.sourceSystem.form.typePlaceholder'),
         options: sys_source_system_type,
       },
     },
     {
-      label: t('common.texts.status'),
+      label: td('common.texts.status'),
       prop: "validFlag",
       component: {
         is: "select",
-        placeholder: t('common.form.statusPlaceholder'),
+        placeholder: td('common.form.statusPlaceholder'),
         options: [
-          { value: true, label: "启用" },
-          { value: false, label: "禁用" },
+          { value: true, label: td('att.sourceSystem.form.enable') },
+          { value: false, label: td('att.sourceSystem.form.disable') },
         ],
       },
     },
     {
-      label: "负责人",
+      label: td('att.sourceSystem.form.responsiblePerson'),
       prop: "responsiblePerson",
       component: {
         is: "select",
-        placeholder: "请选择负责人",
+        placeholder: td('att.sourceSystem.form.responsiblePersonPlaceholder'),
         options: [],
       },
     },
     {
-      label: "对接人",
+      label: td('att.sourceSystem.form.contactPerson'),
       prop: "contactPerson",
       component: {
         is: "select",
-        placeholder: "请选择对接人",
+        placeholder: td('att.sourceSystem.form.contactPersonPlaceholder'),
         options: [],
       },
     },
@@ -456,8 +458,8 @@ const title = ref("");
 const data = reactive({
   form: {},
   rules: {
-    name: [{ required: true, message: "系统名称不能为空", trigger: "blur" }],
-    type: [{ required: true, message: "系统类型不能为空", trigger: "blur" }],
+    name: [{ required: true, message: td('att.sourceSystem.message.nameRequired'), trigger: "blur" }],
+    type: [{ required: true, message: td('att.sourceSystem.message.typeRequired'), trigger: "blur" }],
   },
 });
 
@@ -475,13 +477,13 @@ function handleResetQueryClick() {
 
 /** 改变启用状态值 */
 function handleStatusChange(row) {
-  const text = row.validFlag === true ? "启用" : "禁用";
+  const text = row.validFlag === true ? td('att.sourceSystem.form.enable') : td('att.sourceSystem.form.disable');
   proxy.$modal
-    .confirm('确认要"' + text + '","' + row.name + '"来源系统吗？')
+    .confirm(td('att.sourceSystem.message.confirmStatus').replace("{status}", text).replace("{name}", row.name))
     .then(function () {
       updateSourceSystem({ id: row.id, validFlag: row.validFlag }).then(
         (response) => {
-          proxy.$modal.msgSuccess(text + "成功");
+          proxy.$modal.msgSuccess(td('att.sourceSystem.message.statusSuccess').replace("{status}", text));
           tableRef.value.getList();
         }
       );
@@ -525,7 +527,7 @@ function reset() {
 function handleAdd() {
   reset();
   open.value = true;
-  title.value = "新增来源系统";
+  title.value = td('att.sourceSystem.title.add');
 }
 
 /** 修改按钮操作 */
@@ -539,7 +541,7 @@ function handleUpdate(row) {
     form.value.responsiblePerson = Number(response.data.responsiblePerson);
     form.value.contactPerson = Number(response.data.contactPerson);
     open.value = true;
-    title.value = "修改来源系统";
+    title.value = td('att.sourceSystem.title.edit');
   });
 }
 
@@ -550,7 +552,7 @@ function handleDetail(row) {
   getSourceSystem(_id).then((response) => {
     form.value = response.data;
     openDetail.value = true;
-    title.value = "来源系统详情";
+    title.value = td('att.sourceSystem.title.detail');
   });
 }
 /** 提交按钮 */
@@ -560,7 +562,7 @@ function submitForm() {
       if (form.value.id != null) {
         updateSourceSystem(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess(t('common.message.editSuccess'));
+            proxy.$modal.msgSuccess(td('common.message.editSuccess'));
             open.value = false;
             tableRef.value.getList();
           })
@@ -568,7 +570,7 @@ function submitForm() {
       } else {
         addSourceSystem(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess(t('common.message.addSuccess'));
+            proxy.$modal.msgSuccess(td('common.message.addSuccess'));
             open.value = false;
             tableRef.value.getList();
           })
@@ -594,16 +596,14 @@ function handleDelete(row) {
   }
   proxy.$modal
     .confirm(
-      `可删除${invalidIds.length}个，不可删除${
-        store.rows.length - invalidIds.length
-      }个，是否删除可删部分`
+      td('att.sourceSystem.message.deleteConfirm').replace("{deletable}", invalidIds.length).replace("{undeletable}", store.rows.length - invalidIds.length)
     )
     .then(function () {
       return delSourceSystem(invalidIds);
     })
     .then(() => {
       tableRef.value.getList();
-      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+      proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
     })
     .catch(() => {
       // 用户取消删除操作

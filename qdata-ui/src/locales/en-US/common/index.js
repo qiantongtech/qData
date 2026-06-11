@@ -90,6 +90,12 @@ export default {
     noMessage: 'No message available',
     noHistory: 'No history available',
     noPermission: 'No permission available',
+    upload: {
+      dragOrClick: 'Drag file here, or click to upload',
+      updateExistingData: 'Update existing data',
+      fileFormat: 'Only xls, xlsx format files are allowed.',
+      downloadTemplate: 'Download Template'
+    },
     noSearchResult: 'No search result available',
     noDescription: 'No description available',
     noLog: 'No log available',

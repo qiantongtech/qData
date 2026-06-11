@@ -38,12 +38,12 @@
         <div class="pagecont-top" v-show="showSearch">
             <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="75px"
                 v-show="showSearch" @submit.prevent>
-                <el-form-item label="主题名称" prop="name">
-                    <el-input class="el-form-input-width" v-model="queryParams.name" placeholder="请输入主题名称" clearable
+                <el-form-item :label="td('att.common.themeName')" prop="name">
+                    <el-input class="el-form-input-width" v-model="queryParams.name" :placeholder="td('common.form.namePlaceholder')" clearable
                         @keyup.enter="handleQuery" />
                 </el-form-item>
                 <!-- <el-form-item label="描述" prop="description">
-                    <el-input class="el-form-input-width" v-model="queryParams.description" placeholder="请输入描述"
+                    <el-input class="el-form-input-width" v-model="queryParams.description" :placeholder="td('common.form.descriptionPlaceholder')"
                         clearable @keyup.enter="handleQuery" />
                 </el-form-item> -->
                 <el-form-item>
@@ -63,7 +63,7 @@
                     <el-col :span="1.5">
                         <el-button type="primary" plain @click="handleAdd" v-hasPermi="['att:theme:add']"
                             @mousedown="(e) => e.preventDefault()">
-                            <i class="iconfont-mini icon-xinzeng mr5"></i>新增
+                            <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('common.button.add') }}
                         </el-button>
                     </el-col>
                     <!-- <el-col :span="1.5">
@@ -87,45 +87,45 @@
             <el-table stripe v-loading="loading" :data="attThemeList" @selection-change="handleSelectionChange"
                 :default-sort="defaultSort" @sort-change="handleSortChange">
                 <!-- <el-table-column type="selection" width="55" align="center" /> -->
-                <el-table-column v-if="getColumnVisibility(0)" label="编号" align="center" prop="id" width="60" />
+                <el-table-column v-if="getColumnVisibility(0)" :label="td('common.texts.number')" align="center" prop="id" width="60" />
                 <!--       <el-table-column v-if="getColumnVisibility(0)" label="ID" align="center" prop="id" />-->
-                <el-table-column v-if="getColumnVisibility(1)" label="主题名称" align="left" prop="name" width="200">
+                <el-table-column v-if="getColumnVisibility(1)" :label="td('att.theme.table.name')" align="left" prop="name" width="200">
                     <template #default="scope">
                         {{ scope.row.name || '-' }}
                     </template>
                 </el-table-column>
-                <el-table-column v-if="getColumnVisibility(2)" label="图标" align="center" prop="icon" width="100">
+                <el-table-column v-if="getColumnVisibility(2)" :label="td('att.theme.table.icon')" align="center" prop="icon" width="100">
                     <template #default="scope">
                         <image-preview :src="scope.row.icon || noDataImg" :width="50" :height="50" />
                     </template>
                 </el-table-column>
-                <el-table-column :show-overflow-tooltip="{ effect: 'light' }" v-if="getColumnVisibility(3)" label="描述"
+                <el-table-column :show-overflow-tooltip="{ effect: 'light' }" v-if="getColumnVisibility(3)" :label="td('common.texts.description')"
                     align="left" prop="description" width="300">
                     <template #default="scope">
                         {{ scope.row.description || '-' }}
                     </template>
                 </el-table-column>
-                <el-table-column :show-overflow-tooltip="{ effect: 'light' }" v-if="getColumnVisibility(10)" label="排序"
+                <el-table-column :show-overflow-tooltip="{ effect: 'light' }" v-if="getColumnVisibility(10)" :label="td('att.theme.table.sortOrder')"
                     align="left" prop="sortOrder" width="50">
                     <template #default="scope">
                         {{ scope.row.sortOrder || '-' }}
                     </template>
                 </el-table-column>
 
-                <el-table-column v-if="getColumnVisibility(7)" label="创建人" :show-overflow-tooltip="{ effect: 'light' }"
+                <el-table-column v-if="getColumnVisibility(7)" :label="td('common.texts.createdBy')" :show-overflow-tooltip="{ effect: 'light' }"
                     align="left" prop="createBy">
                     <template #default="scope">
                         {{ scope.row.createBy || "-" }}
                     </template>
                 </el-table-column>
                 <!-- column-key="create_time" :sort-orders="['descending', 'ascending']"   sortable="custom"-->
-                <el-table-column v-if="getColumnVisibility(6)" label="创建时间" align="center" prop="createTime"
+                <el-table-column v-if="getColumnVisibility(6)" :label="td('common.texts.createdTime')" align="center" prop="createTime"
                     width="150">
                     <template #default="scope"> <span>{{ parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}") || "-"
                     }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="状态" align="center" prop="validFlag" width="120" v-if="getColumnVisibility(4)">
+                <el-table-column :label="td('common.texts.status')" align="center" prop="validFlag" width="120" v-if="getColumnVisibility(4)">
                     <template #default="scope">
                         <!--              <dict-tag :options="sys_valid" :value="scope.row.validFlag"/>-->
 
@@ -134,14 +134,14 @@
                         </el-switch>
                     </template>
                 </el-table-column>
-                <el-table-column :show-overflow-tooltip="{ effect: 'light' }" v-if="getColumnVisibility(5)" label="备注"
+                <el-table-column :show-overflow-tooltip="{ effect: 'light' }" v-if="getColumnVisibility(5)" :label="td('common.texts.remark')"
                     align="left" prop="remark">
                     <template #default="scope">
                         {{ scope.row.remark || '-' }}
                     </template>
                 </el-table-column>
 
-                <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right"
+                <el-table-column :label="td('common.texts.handle')" align="center" class-name="small-padding fixed-width" fixed="right"
                     width="240">
                     <template #default="scope">
                         <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
@@ -176,15 +176,15 @@
             <el-form ref="attThemeRef" :model="form" :rules="rules" label-width="80px" @submit.prevent>
                 <el-row :gutter="20">
                     <el-col>
-                        <el-form-item label="主题名称" prop="name">
-                            <el-input v-model="form.name" placeholder="请输入主题名称" />
+                        <el-form-item :label="td('att.common.themeName')" prop="name">
+                            <el-input v-model="form.name" :placeholder="td('common.form.namePlaceholder')" />
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row>
                     <el-col :span="24">
-                        <el-form-item label="描述" prop="description">
-                            <el-input type="textarea" v-model="form.description" placeholder="请输入描述" />
+                        <el-form-item :label="td('common.texts.description')" prop="description">
+                            <el-input type="textarea" v-model="form.description" :placeholder="td('common.form.descriptionPlaceholder')" />
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -192,7 +192,7 @@
 
                 <el-row>
                     <el-col :span="24">
-                        <el-form-item label="图标" prop="icon">
+                        <el-form-item :label="td('att.common.icon')" prop="icon">
                             <image-upload :limit="1" v-model="form.icon" :width="50" :height="50" />
 
                         </el-form-item>
@@ -200,22 +200,22 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item label="排序" prop="sortOrder">
+                        <el-form-item :label="td('att.common.sortOrder')" prop="sortOrder">
                             <el-input-number style="width: 100%" v-model="form.sortOrder" controls-position="right"
                                 :min="0" />
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="状态" prop="validFlag">
-                            <el-radio v-model="form.validFlag" :label="true">启用</el-radio>
-                            <el-radio v-model="form.validFlag" :label="false">禁用</el-radio>
+                        <el-form-item :label="td('common.texts.status')" prop="validFlag">
+                            <el-radio v-model="form.validFlag" :label="true">{{ td('att.common.enable') }}</el-radio>
+                            <el-radio v-model="form.validFlag" :label="false">{{ td('att.common.disable') }}</el-radio>
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row>
                     <el-col :span="24">
-                        <el-form-item label="备注" prop="remark">
-                            <el-input type="textarea" v-model="form.remark" placeholder="请输入备注" />
+                        <el-form-item :label="td('common.texts.remark')" prop="remark">
+                            <el-input type="textarea" v-model="form.remark" :placeholder="td('common.form.remarkPlaceholder')" />
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -242,7 +242,7 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="24">
-                        <el-form-item label="主题名称:" prop="name">
+                        <el-form-item :label="td('att.common.themeName') + ':'" prop="name">
                             <div class="form-readonly">
                                 {{ form.name }}
                             </div>
@@ -259,7 +259,7 @@
                 </el-row>
                 <el-row>
                     <el-col :span="24">
-                        <el-form-item label="描述" prop="description">
+                        <el-form-item :label="td('common.texts.description')" prop="description">
                             <div class="form-readonly textarea">
                                 {{ form.description ?? "-" }}
                             </div>
@@ -275,7 +275,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="创建时间:" prop="createTime">
+                        <el-form-item :label="td('common.texts.createdTime') + ':'" prop="createTime">
                             <div class="form-readonly">
                                 {{ parseTime(form.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
 
@@ -301,16 +301,16 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item label="状态:" prop="validFlag">
+                        <el-form-item :label="td('common.texts.status') + ':'" prop="validFlag">
                             <div class="form-readonly">
-                                {{ form.validFlag ? "启用" : "禁用" }}
+                                {{ form.validFlag ? td('att.common.enable') : td('att.common.disable') }}
                             </div>
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row>
                     <el-col :span="24">
-                        <el-form-item label="备注" prop="remark">
+                        <el-form-item :label="td('common.texts.remark')" prop="remark">
                             <div class="form-readonly textarea">
                                 {{ form.remark ?? "-" }}
                             </div>

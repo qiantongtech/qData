@@ -23,7 +23,7 @@
       :del-func="delAttTagCat"
       :add-func="addAttTagCat"
       :update-func="updateAttTagCat"
-      name-label="标签管理类目名称"
+      :name-label="td('att.common.tagCatName')"
       title-base="标签管理类目"
       perm-base="att:tagCat"
     />
@@ -39,4 +39,7 @@ import {
   addAttTagCat,
   updateAttTagCat,
 } from "@/api/att/cat/tagCat/tagCat";
+import useDefaultLang from "@/composables/useDefaultLang";
+
+const { td } = useDefaultLang();
 </script>

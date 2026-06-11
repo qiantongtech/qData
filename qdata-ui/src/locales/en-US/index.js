@@ -5,6 +5,7 @@ import router from './router'
 import home from './home'
 import sys from './sys'
 import dict from './dict'
+import att from './att'
 
 export default {
   common,
@@ -12,5 +13,6 @@ export default {
   router,
   dict,
   home,
-  sys
+  sys,
+  att
 }

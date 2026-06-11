@@ -32,14 +32,14 @@
     >
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="上级类目" prop="parentId">
+          <el-form-item :label="td('att.common.parentCat')" prop="parentId">
             <el-tree-select
               filterable
               v-model="form.parentId"
               :data="treeOptions"
               :props="{ value: 'id', label: 'name', children: 'children' }"
               value-key="id"
-              placeholder="请选择上级"
+              :placeholder="td('att.common.parentCatPlaceholder')"
               check-strictly
             />
           </el-form-item>
@@ -54,14 +54,14 @@
         </el-col>
       </el-row>
       <el-col :span="24" v-if="!hideStatusAndSort">
-        <el-form-item :label="t('common.texts.status')" prop="validFlag">
+        <el-form-item :label="td('common.texts.status')" prop="validFlag">
           <el-radio v-model="form.validFlag" :label="true">启用</el-radio>
           <el-radio v-model="form.validFlag" :label="false">禁用</el-radio>
         </el-form-item>
       </el-col>
       <el-row :gutter="20" v-if="!hideStatusAndSort">
         <el-col :span="24">
-          <el-form-item label="排序" prop="sortOrder">
+          <el-form-item :label="td('att.common.sortOrder')" prop="sortOrder">
             <el-input-number
               style="width: 100%"
               v-model="form.sortOrder"
@@ -73,12 +73,12 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="t('common.texts.description')" prop="description">
+          <el-form-item :label="td('common.texts.description')" prop="description">
             <el-input
               type="textarea"
               maxlength="500个字符"
               show-word-limit
-              :placeholder="t('common.form.descriptionPlaceholder')"
+              :placeholder="td('common.form.descriptionPlaceholder')"
               v-model="form.description"
               :min-height="192"
             />
@@ -87,12 +87,12 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="t('common.texts.remark')" prop="remark">
+          <el-form-item :label="td('common.texts.remark')" prop="remark">
             <el-input
               type="textarea"
               maxlength="500个字符"
               show-word-limit
-              :placeholder="t('common.form.remarkPlaceholder')"
+              :placeholder="td('common.form.remarkPlaceholder')"
               v-model="form.remark"
               :min-height="192"
             />
@@ -102,8 +102,8 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="onCancel">{{ t('common.button.cancel') }}</el-button>
-        <el-button type="primary" @click="onSubmit" :loading="loading">{{ t('common.button.confirm') }}</el-button>
+        <el-button @click="onCancel">{{ td('common.button.cancel') }}</el-button>
+        <el-button type="primary" @click="onSubmit" :loading="loading">{{ td('common.button.confirm') }}</el-button>
       </div>
     </template>
   </el-dialog>
@@ -171,12 +171,12 @@ const defaultForm = {
 const form = ref({ ...defaultForm });
 
 const effectiveNameLabel = computed(() => nameLabel.value);
-const effectiveNamePlaceholder = computed(() => `请输入${nameLabel.value}`);
+const effectiveNamePlaceholder = computed(() => td('att.common.namePlaceholder'));
 const hideStatusAndSort = computed(() => dialogType.value === "dataCategory");
 
 // 默认校验规则
 const defaultRules = {
-  name: [{ required: true, message: t('common.form.nameRequired'), trigger: "blur" }],
+  name: [{ required: true, message: td('common.form.nameRequired'), trigger: "blur" }],
   parentId: [{ required: true, message: "上级类目不能为空", trigger: "blur" }],
   code: [{ required: true, message: "编码不能为空", trigger: "blur" }],
 };

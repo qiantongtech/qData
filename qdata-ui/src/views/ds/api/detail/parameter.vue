@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -54,7 +39,7 @@
                         <el-checkbox disabled v-model="scope.row.nullable" true-label="1" false-label="0" />
                     </template>
                 </el-table-column>
-                <el-table-column prop="paramComment" label="描述" align="center">
+                <el-table-column prop="paramComment" :label="t('common.texts.description')" align="center">
                     <template #default="scope">
                         {{ scope.row.paramComment || '-' }}
                     </template>
@@ -101,7 +86,7 @@
                 </el-table-column>
                 <el-table-column prop="fieldName" label="中文名称" align="center"
                     :show-overflow-tooltip="{ effect: 'light' }" />
-                <el-table-column prop="fieldComment" label="描述" align="center"
+                <el-table-column prop="fieldComment" :label="t('common.texts.description')" align="center"
                     :show-overflow-tooltip="{ effect: 'light' }">
                     <template #default="scope">
                         {{ scope.row.fieldComment || '-' }}
@@ -145,7 +130,7 @@
                                 </template>
                             </el-table-column>
 
-                            <el-table-column label="描述" fixed="left" align="center" prop="remark"
+                            <el-table-column :label="t('common.texts.description')" fixed="left" align="center" prop="remark"
                                 :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="{ row }">
                                     {{ row?.remark || '' }}
@@ -222,7 +207,7 @@
                                 </template>
                             </el-table-column>
 
-                            <el-table-column label="描述" fixed="left" align="center" prop="remark"
+                            <el-table-column :label="t('common.texts.description')" fixed="left" align="center" prop="remark"
                                 :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="{ row }">
                                     {{ row?.remark || '' }}
@@ -257,8 +242,10 @@
 </template>
 
 <script setup name="ComponentOne">
+import { useI18n } from 'vue-i18n'
 import { listDsApi, getDsApi, delDsApi, addDsApi, updateDsApi } from '@/api/ds/api/api.js';
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const {
     ds_api_log_status,
@@ -426,7 +413,7 @@ function submitForm() {
             if (form.value.ID != null) {
                 updateDsApi(form.value)
                     .then((response) => {
-                        proxy.$modal.msgSuccess('修改成功');
+                        proxy.$modal.msgSuccess(t('common.message.editSuccess'));
                         open.value = false;
                         getList();
                     })
@@ -434,7 +421,7 @@ function submitForm() {
             } else {
                 addDsApi(form.value)
                     .then((response) => {
-                        proxy.$modal.msgSuccess('新增成功');
+                        proxy.$modal.msgSuccess(t('common.message.addSuccess'));
                         open.value = false;
                         getList();
                     })
@@ -454,7 +441,7 @@ function handleDelete(row) {
         })
         .then(() => {
             getList();
-            proxy.$modal.msgSuccess('删除成功');
+            proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
         })
         .catch(() => { });
 }

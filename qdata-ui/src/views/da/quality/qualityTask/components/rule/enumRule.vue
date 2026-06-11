@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 <template>
   <!-- 枚举值校验 -->
@@ -111,7 +96,7 @@
                 type="primary"
                 icon="Plus"
                 @click="opencodeDialog(undefined)"
-                >新增</el-button
+                >{{ t('common.button.add') }}</el-button
               >
             </el-col>
           </template>
@@ -149,7 +134,7 @@
         </el-table-column>
         <el-table-column
           v-if="!falg && form.useCodeTable == 0"
-          label="操作"
+          :label="t('common.texts.operation')"
           align="center"
           class-name="small-padding fixed-width"
           fixed="right"
@@ -161,7 +146,7 @@
               type="danger"
               icon="Delete"
               @click="handleDelete(scope.row, scope.$index + 1)"
-              >删除</el-button
+              >{{ t('common.button.delete') }}</el-button
             >
           </template>
         </el-table-column>
@@ -172,9 +157,12 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { reactive, ref, watch } from "vue";
 import { listDpDataElem } from "@/api/dp/dataElem/dataElem";
 import { listDpDataElemCode } from "@/api/dp/dataElem/dataElem";
+
+const { t } = useI18n();
 const props = defineProps({
   form: Object,
   dppQualityTaskObjSaveReqVO: Array,

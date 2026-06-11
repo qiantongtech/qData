@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -40,7 +25,7 @@
         <el-row :gutter="2">
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">编号</div>
+              <div class="infotop-row-lable">{{ t('common.texts.number') }}</div>
               <div class="infotop-row-value">{{ dsApiDetail.id }}</div>
             </div>
           </el-col>
@@ -54,7 +39,7 @@
           </el-col>
           <el-col :span="8">
               <div class="infotop-row border-top">
-                  <div class="infotop-row-lable">状态</div>
+                  <div class="infotop-row-lable">{{ t('common.texts.status') }}</div>
                   <div class="infotop-row-value">
                       <dict-tag :options="sys_disable" :value="dsApiDetail.status" />
                   </div>
@@ -86,7 +71,7 @@
           </el-col>
           <el-col :span="24" >
               <div class="infotop-row border-top">
-                  <div class="infotop-row-lable">描述</div>
+                  <div class="infotop-row-lable">{{ t('common.texts.description') }}</div>
                   <div class="infotop-row-value">
                      <span class="ellipsis-2">
                          {{ dsApiDetail.description || '-' }}
@@ -96,13 +81,13 @@
           </el-col>
           <el-col :span="8" style="margin: 2px 0;">
               <div class="infotop-row border-top">
-                  <div class="infotop-row-lable">创建人</div>
+                  <div class="infotop-row-lable">{{ t('common.texts.createdBy') }}</div>
                   <div class="infotop-row-value">{{ dsApiDetail.createBy || '-' }}</div>
               </div>
           </el-col>
           <el-col :span="8" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">创建时间</div>
+              <div class="infotop-row-lable">{{ t('common.texts.createdTime') }}</div>
               <div class="infotop-row-value">{{ parseTime(dsApiDetail.createTime, '{y}-{m}-{d} {h}:{i}') }}</div>
             </div>
           </el-col>
@@ -117,7 +102,7 @@
           </el-col>
           <el-col :span="24" >
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">备注</div>
+              <div class="infotop-row-lable">{{ t('common.texts.remark') }}</div>
               <div class="infotop-row-value">
                 {{ dsApiDetail.remark || '-' }}
               </div>
@@ -142,18 +127,17 @@
       </el-tabs>
     </div>
 
-
   </div>
 </template>
 
 <script setup name="DsApi">
+import { useI18n } from 'vue-i18n'
 import { getDsApi } from "@/api/ds/api/api.js";
 import { onBeforeRouteLeave, useRoute } from 'vue-router';
 import ComponentOne from "@/views/ds/api/detail/parameter.vue";
 import ComponentTwo from "@/views/ds/api/detail/simulation.vue";
 
-
-
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { ds_api_log_status, ds_api_bas_info_api_service_type,
     ds_api_bas_info_api_method_type, ds_api_bas_info_res_data_type,sys_disable }

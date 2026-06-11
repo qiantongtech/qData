@@ -11,7 +11,7 @@ const GREETING_CONFIG = [
 ]
 
 export function useTimeGreeting() {
-  const { t } = useI18n()
+  const { t } = useI18n();
   const now = new Date()
   const currentHour = now.getHours()
 

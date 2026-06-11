@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -118,6 +103,7 @@
   </div>
 </template>
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { ref, computed, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import add from "../add/add.vue";
@@ -132,6 +118,8 @@ import ConfigView from "@/components/SqlEditor/configView/index.vue";
 
 const userStore = useUserStore();
 import { createProcessDefinition, etlTask, updateProcessDefinition, startDppEtlTask } from "@/api/dpp/task/index.js";
+
+const { t } = useI18n();
 // import { renderGraph } from "@/utils/opBase";
 // import { right } from "@antv/x6/lib/registry/port-layout/line";
 
@@ -283,7 +271,7 @@ const handleRun = async () => {
   try {
     const res = await startDppEtlTask(id);
     if (res.code == 200) {
-      proxy.$modal.msgSuccess("操作成功");
+      proxy.$modal.msgSuccess(t('common.message.msgOpSuccess'));
       // 打开控制台
       activeValue.value = iconList.value[0];
     } else {
@@ -394,7 +382,7 @@ const handleExportData = async () => {
 const handleSuccess = () => {
   taskConfigDialogVisible.value = false;
   hasUnsavedChanges.value = false;
-  const message = form.value?.id ? "操作成功" : "操作成功";
+  const message = form.value?.id ? t('common.message.msgOpSuccess') : t('common.message.msgOpSuccess');
   router.push("/dpp/task/developTask");
   proxy.$modal.msgSuccess(message);
 };
@@ -509,9 +497,9 @@ onBeforeRouteLeave((to, from, next) => {
   if (hasUnsavedChanges.value) {
     ElMessageBox.confirm(
       "您已经编辑部分任务内容，是否放弃已编辑内容？",
-      "提示",
+      t('common.message.prompt'),
       {
-        confirmButtonText: "保存",
+        confirmButtonText: t('common.button.save'),
         cancelButtonText: "放弃",
         type: "warning",
         beforeClose: (action, instance, done) => {
@@ -538,7 +526,6 @@ onBeforeRouteLeave((to, from, next) => {
     next();
   }
 });
-
 
 // #region sql编辑器
 // 左侧图标

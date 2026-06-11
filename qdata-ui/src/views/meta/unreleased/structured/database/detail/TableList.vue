@@ -12,7 +12,7 @@
         @click="handleAddClick"
         v-hasPermi="['md:unreleased:structured:table:add']"
       >
-        新增
+        {{ t('common.button.add') }}
       </el-button>
     </template>
     <qt-table v-bind="tableStroe" ref="tableRef">
@@ -38,7 +38,7 @@
           @click="handleDetailClick(row)"
           v-hasPermi="['md:unreleased:structured:table:detail']"
         >
-          详情
+          {{ t('common.button.details') }}
         </el-button>
 
         <template
@@ -55,7 +55,7 @@
             @click="handleEditClick(row)"
             v-hasPermi="['md:unreleased:structured:table:edit']"
           >
-            修改
+            {{ t('common.button.update') }}
           </el-button>
           <el-popover
             placement="bottom"
@@ -74,7 +74,7 @@
                   'md:unreleased:structured:table:detail',
                 ]"
               >
-                更多
+                {{ t('common.button.more') }}
               </el-button>
             </template>
             <el-button
@@ -85,7 +85,7 @@
               @click="handleDeleteClick(row)"
               v-hasPermi="['md:unreleased:structured:table:remove']"
             >
-              删除
+              {{ t('common.button.delete') }}
             </el-button>
             <el-button
               link
@@ -134,6 +134,7 @@
 </template>
 
 <script setup name="UnreleasedStructuredTable">
+import { useI18n } from 'vue-i18n'
 import { reactive, ref, getCurrentInstance, computed } from "vue";
 import { listDomain } from "@/api/att/domain/domain.js";
 import { getParentLabelPath } from "@/utils/anivia.js";
@@ -144,6 +145,7 @@ import {
 } from "@/api/mc/unreleased/table";
 import { useRoute, useRouter } from "vue-router";
 
+const { t } = useI18n();
 const props = defineProps({
   detail: {
     type: Object,
@@ -185,7 +187,7 @@ const tableStroe = reactive({
       // }
     },
     {
-      label: "编号",
+      label: t('common.texts.number'),
       prop: "id",
       sortable: true,
       width: 60,
@@ -221,7 +223,7 @@ const tableStroe = reactive({
       minWidth: 240,
     },
     {
-      label: "描述",
+      label: t('common.texts.description'),
       prop: "description",
       align: "left",
       width: 240,
@@ -250,38 +252,38 @@ const tableStroe = reactive({
       hide: true,
     },
     {
-      label: "状态",
+      label: t('common.texts.status'),
       prop: "status",
       width: 90,
       slot: "status",
       invisible: route.query.released,
     },
     {
-      label: "更新人",
+      label: t('common.texts.updatedBy'),
       prop: "updateBy",
       width: 120,
     },
     {
-      label: "更新时间",
+      label: t('common.texts.updatedTime'),
       prop: "updateTime",
       sortable: true,
       width: 160,
       date: true,
     },
     {
-      label: "创建人",
+      label: t('common.texts.createdBy'),
       prop: "createBy",
       width: 120,
     },
     {
-      label: "创建时间",
+      label: t('common.texts.createdTime'),
       prop: "createTime",
       sortable: true,
       width: 160,
       date: true,
     },
     {
-      label: "操作",
+      label: t('common.texts.operation'),
       width: 280,
       fixed: "right",
       slot: "handle",
@@ -361,10 +363,10 @@ function handleDeleteColumnClick() {
   if (!store.rows.length) return;
   ElMessageBox.confirm(
     `可删除${store.rows.length}个，不可删除0个，是否删除可删部分`,
-    "系统提示",
+    t('common.message.systemPrompt'),
     {
-      confirmButtonText: "确定",
-      cancelButtonText: "取消",
+      confirmButtonText: t('common.button.confirm'),
+      cancelButtonText: t('common.button.cancel'),
       type: "warning",
     }
   )
@@ -373,23 +375,23 @@ function handleDeleteColumnClick() {
       return delTable(ids);
     })
     .then(() => {
-      ElMessage.success("删除成功");
+      ElMessage.success(t('common.message.deleteSuccess'));
       tableRef.value.getList();
     });
 }
 
 // 删除
 function handleDeleteClick(row) {
-  ElMessageBox.confirm(`是否确认删除编号为${row.id}的数据项？`, "系统提示", {
-    confirmButtonText: "确定",
-    cancelButtonText: "取消",
+  ElMessageBox.confirm(`是否确认删除编号为${row.id}的数据项？`, t('common.message.systemPrompt'), {
+    confirmButtonText: t('common.button.confirm'),
+    cancelButtonText: t('common.button.cancel'),
     type: "warning",
   })
     .then(() => {
       return delTable(row.id);
     })
     .then(() => {
-      ElMessage.success("删除成功");
+      ElMessage.success(t('common.message.deleteSuccess'));
       tableRef.value.getList();
     });
 }
@@ -411,10 +413,10 @@ function handleStatusChange(row, status) {
     `是否确认${status == 1 ? "发布" : "取消发布"}数据编号为${
       row.id
     }的表元数据吗？`,
-    "系统提示",
+    t('common.message.systemPrompt'),
     {
-      confirmButtonText: "确定",
-      cancelButtonText: "取消",
+      confirmButtonText: t('common.button.confirm'),
+      cancelButtonText: t('common.button.cancel'),
       type: "warning",
     }
   )

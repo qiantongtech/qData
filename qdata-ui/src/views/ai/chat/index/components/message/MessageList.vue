@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -48,7 +33,7 @@
         </div>
         <div class="message">
           <div>
-            <el-text class="time">系统提示</el-text>
+            <el-text class="time">{{ t('common.message.systemPrompt') }}</el-text>
           </div>
           <div class="left-text-container">
             <div class="left-text">关联关系无法自动识别</div>
@@ -188,6 +173,7 @@
   </div>
 </template>
 <script setup>
+import { useI18n } from 'vue-i18n'
 import MarkdownView from "@/components/MarkdownView/index.vue";
 import AssistantReportCard from "./AssistantReportCard.vue";
 import { ChatMessageApi } from "@/api/ai/chat/message";
@@ -196,6 +182,7 @@ import userAvatarDefaultImg from "@/assets/images/defaultAvatar.png";
 import roleAvatarDefaultImg from "@/assets/ai/gpt-new.svg";
 import { useClipboard } from "@vueuse/core";
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const message = proxy.$modal; // 消息弹窗
 const userStore = useUserStore();

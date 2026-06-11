@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -40,7 +25,7 @@
         <el-row :gutter="2">
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">编号</div>
+              <div class="infotop-row-lable">{{ t('common.texts.number') }}</div>
               <div class="infotop-row-value">
                 {{ daAssetDetail.id || "-" }}
               </div>
@@ -68,7 +53,7 @@
         </el-row>
         <el-col :span="24">
           <div class="infotop-row border-top">
-            <div class="infotop-row-lable">描述</div>
+            <div class="infotop-row-lable">{{ t('common.texts.description') }}</div>
             <div class="infotop-row-value">
               <span class="ellipsis-2">
                 {{ daAssetDetail.description || "-" }}
@@ -243,6 +228,7 @@
   </div>
 </template>
 <script setup name="DaAsset">
+import { useI18n } from 'vue-i18n'
 import { getDaAsset } from "@/api/da/asset/asset";
 import { useRoute } from "vue-router";
 import ComponentOne from "@/views/dpp/asset/detail/table/column.vue";
@@ -254,6 +240,8 @@ import RequestParamsForm from "@/views/dpp/asset/detail/api/requestParamsForm";
 import ResponseFormatConfig from "@/views/dpp/asset/detail/api/responseFormatConfig";
 import lineage from "@/views/dpp/asset/detail/table/lineage.vue";
 import info from "@/views/dpp/asset/detail/info.vue";
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { da_assets_status, da_asset_gis_type, da_asset_api_method } = proxy.useDict("da_assets_status", "da_asset_gis_type", "da_asset_api_method");
 const activeName = ref("0");
@@ -285,10 +273,9 @@ const descList = ref([
   },
   {
     key: "status",
-    label: "状态",
+    label: t('common.texts.status'),
     value: "",
   },
-
 
 ]);
 
@@ -393,7 +380,6 @@ onBeforeUnmount(() => {
     width: 18px;
     margin: 0 5px;
   }
-
 
 }
 </style>

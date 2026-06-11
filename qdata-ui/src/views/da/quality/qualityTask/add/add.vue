@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -315,11 +300,11 @@
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-form-item label="备注" prop="remark">
+            <el-form-item :label="t('common.texts.remark')" prop="remark">
               <el-input
                 v-model="form.remark"
                 type="textarea"
-                placeholder="请输入备注"
+                :placeholder="t('common.form.remarkPlaceholder')"
               />
             </el-form-item>
           </el-form>
@@ -334,7 +319,7 @@
                     icon="Plus"
                     @click="openDialog(undefined)"
                     v-if="!route.query.info"
-                    >新增</el-button
+                    >{{ t('common.button.add') }}</el-button
                   >
                 </el-col>
               </el-row>
@@ -393,7 +378,7 @@
                 </template>
               </el-table-column>
               <el-table-column
-                label="操作"
+                :label="t('common.texts.operation')"
                 align="center"
                 class-name="small-padding fixed-width"
                 fixed="right"
@@ -406,14 +391,14 @@
                     type="primary"
                     icon="Edit"
                     @click="openDialog(scope.row, scope.$index + 1)"
-                    >修改</el-button
+                    >{{ t('common.button.update') }}</el-button
                   >
                   <el-button
                     link
                     type="danger"
                     icon="Delete"
                     @click="handleDelete(scope.row)"
-                    >删除</el-button
+                    >{{ t('common.button.delete') }}</el-button
                   >
                 </template>
               </el-table-column>
@@ -458,10 +443,10 @@
                 </el-select>
               </el-form-item>
 
-              <el-form-item label="状态" prop="publishStatus">
+              <el-form-item :label="t('common.texts.status')" prop="publishStatus">
                 <el-select
                   v-model="queryParams.publishStatus"
-                  placeholder="请选择状态"
+                  :placeholder="t('common.form.statusPlaceholder')"
                   clearable
                   class="el-form-input-width"
                 >
@@ -476,13 +461,13 @@
                   @click="handleQuery"
                   @mousedown="(e) => e.preventDefault()"
                 >
-                  <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                  <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
                 </el-button>
                 <el-button
                   @click="resetQuery"
                   @mousedown="(e) => e.preventDefault()"
                 >
-                  <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                  <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
                 </el-button>
               </el-form-item>
             </el-form>
@@ -494,7 +479,7 @@
                     icon="Plus"
                     @click="openRuleSelector(undefined)"
                     v-if="!route.query.info"
-                    >新增</el-button
+                    >{{ t('common.button.add') }}</el-button
                   >
                 </el-col>
                 <el-col :span="1.5">
@@ -578,7 +563,7 @@
               </el-table-column>
 
               <el-table-column
-                label="状态"
+                :label="t('common.texts.status')"
                 align="center"
                 prop="status"
                 width="100"
@@ -588,7 +573,7 @@
                 </template>
               </el-table-column>
               <el-table-column
-                label="操作"
+                :label="t('common.texts.operation')"
                 align="center"
                 class-name="small-padding fixed-width"
                 fixed="right"
@@ -603,14 +588,14 @@
                     type="primary"
                     icon="Edit"
                     @click="openRuleDialog(scope.row, scope.$index + 1)"
-                    >修改</el-button
+                    >{{ t('common.button.update') }}</el-button
                   >
                   <el-button
                     link
                     type="danger"
                     icon="Delete"
                     @click="handleRuleDelete(scope.$index + 1)"
-                    >删除</el-button
+                    >{{ t('common.button.delete') }}</el-button
                   >
                 </template>
               </el-table-column>
@@ -620,7 +605,7 @@
         <div class="button-style">
           <el-button type="primary" @click="handleSuccess">返回列表</el-button>
           <el-button v-if="activeReult != 0" @click="handleLastStep"
-            >上一步</el-button
+            >{{ t('common.button.previousStep') }}</el-button
           >
           <el-button
             type="primary"
@@ -631,7 +616,7 @@
             确定并退出
           </el-button>
           <el-button v-if="activeReult !== 2" @click="handleNextStep"
-            >下一步</el-button
+            >{{ t('common.button.nextStep') }}</el-button
           >
         </div>
       </div>
@@ -658,6 +643,7 @@
 </template>
 
 <script setup name="qualityTask">
+import { useI18n } from 'vue-i18n'
 import { ref, reactive, toRefs, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import InspectionTargetDialog from "../components/inspectionTarget.vue";
@@ -672,6 +658,8 @@ import {
 import Crontab from "@/components/Crontab/index.vue";
 import { getColumnByAssetId } from "@/api/dpp/task/index.js";
 import { treeData } from "../data.js";
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const route = useRoute();
 const loading = ref(false);

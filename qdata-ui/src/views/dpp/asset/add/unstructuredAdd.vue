@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -133,7 +118,7 @@
             <el-icon>
               <Back />
             </el-icon>
-            <span style="margin-left: 5px">返回</span>
+            <span style="margin-left: 5px">{{ t('common.button.return') }}</span>
           </el-text>
           <div class="catalogue">
             <!-- 默认展示根目录 -->
@@ -207,7 +192,7 @@
           </template>
         </el-table-column>
         <el-table-column
-            label="更新时间"
+            :label="t('common.texts.updatedTime')"
             prop="lastModified"
             :show-overflow-tooltip="{ effect: 'light' }"
             align="left"
@@ -226,9 +211,9 @@
     </div>
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="cancel">取 消</el-button>
+        <el-button size="mini" @click="cancel">{{ t('common.button.cancel') }}</el-button>
         <el-button type="primary" size="mini" @click="submitForm"
-        >确 定</el-button
+        >{{ t('common.button.confirm') }}</el-button
         >
       </div>
     </template>
@@ -236,11 +221,14 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { listDaDatasource } from "@/api/da/dataSource/dataSource.js";
 import { getFileList } from "@/api/da/asset/asset.js";
 import { getToken } from "@/utils/auth.js";
 import useUserStore from "@/store/system/user.js";
 import DatasourceList from '@/components/Datasource/List.vue'
+
+const { t } = useI18n();
 const userStore = useUserStore();
 const emit = defineEmits(["update:form"]);
 const { proxy } = getCurrentInstance();
@@ -379,7 +367,7 @@ const fileDesc = ref([
   },
   {
     key: "createTime",
-    label: "创建时间",
+    label: t('common.texts.createdTime'),
     value: "-",
   },
   {

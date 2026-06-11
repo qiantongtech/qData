@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -72,10 +57,10 @@
               class="iconfont-mini icon-a-zu22377 mr5"
               v-hasPermi="['att:dataElemCat:query']"
             ></i
-            >查询
+            >{{ t('common.button.query') }}
           </el-button>
           <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-            <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+            <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
           </el-button>
         </el-form-item>
       </el-form>
@@ -90,7 +75,7 @@
               icon="Plus"
               @click="handleAdd"
               v-hasPermi="['att:dataElemCat:add']"
-              >新增</el-button
+              >{{ t('common.button.add') }}</el-button
             >
           </el-col>
 
@@ -103,7 +88,7 @@
             >
               <svg-icon v-if="isExpandAll" icon-class="toggle" />
               <svg-icon v-else icon-class="expand" />
-              <span>{{ isExpandAll ? "折叠" : "展开" }}</span>
+              <span>{{ isExpandAll ? t('common.button.collapse') : t('common.button.expand') }}</span>
             </el-button>
           </el-col>
         </el-row>
@@ -135,7 +120,7 @@
         </el-table-column>
 
         <el-table-column
-          label="描述"
+          :label="t('common.texts.description')"
           align="left"
           prop="description"
           :show-overflow-tooltip="{ effect: 'light' }"
@@ -155,13 +140,13 @@
             {{ scope.row.sortOrder }}
           </template>
         </el-table-column>
-        <el-table-column label="创建人" align="center" prop="createBy">
+        <el-table-column :label="t('common.texts.createdBy')" align="center" prop="createBy">
           <template #default="scope">
             {{ scope.row.createBy || "-" }}
           </template>
         </el-table-column>
         <el-table-column
-          label="创建时间"
+          :label="t('common.texts.createdTime')"
           align="center"
           prop="createTime"
           width="180"
@@ -172,7 +157,7 @@
             }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="状态" align="center" prop="validFlag">
+        <el-table-column :label="t('common.texts.status')" align="center" prop="validFlag">
           <template #default="scope">
             <!--              <dict-tag :options="sys_valid" :value="scope.row.validFlag"/>-->
 
@@ -186,7 +171,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="备注"
+          :label="t('common.texts.remark')"
           align="left"
           prop="remark"
           :show-overflow-tooltip="{ effect: 'light' }"
@@ -196,7 +181,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="操作"
+          :label="t('common.texts.operation')"
           align="center"
           class-name="small-padding fixed-width"
           fixed="right"
@@ -209,7 +194,7 @@
               icon="Edit"
               @click="handleUpdate(scope.row)"
               v-hasPermi="['att:dataElemCat:edit']"
-              >修改</el-button
+              >{{ t('common.button.update') }}</el-button
             >
             <el-button
               link
@@ -217,7 +202,7 @@
               icon="Plus"
               @click="handleAdd(scope.row)"
               v-hasPermi="['att:dataElemCat:add']"
-              >新增</el-button
+              >{{ t('common.button.add') }}</el-button
             >
             <el-button
               link
@@ -225,7 +210,7 @@
               icon="Delete"
               @click="handleDelete(scope.row)"
               v-hasPermi="['att:dataElemCat:remove']"
-              >删除</el-button
+              >{{ t('common.button.delete') }}</el-button
             >
           </template>
         </el-table-column>
@@ -280,10 +265,10 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="描述">
+            <el-form-item :label="t('common.texts.description')">
               <el-input
                 type="textarea"
-                placeholder="请输入描述"
+                :placeholder="t('common.form.descriptionPlaceholder')"
                 v-model="form.description"
                 :min-height="192"
               />
@@ -302,7 +287,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="状态" prop="validFlag">
+            <el-form-item :label="t('common.texts.status')" prop="validFlag">
               <el-radio v-model="form.validFlag" :label="true">启用</el-radio>
               <el-radio v-model="form.validFlag" :label="false">禁用</el-radio>
             </el-form-item>
@@ -311,10 +296,10 @@
 
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="备注">
+            <el-form-item :label="t('common.texts.remark')">
               <el-input
                 type="textarea"
-                placeholder="请输入备注"
+                :placeholder="t('common.form.remarkPlaceholder')"
                 v-model="form.remark"
                 :min-height="192"
               />
@@ -324,9 +309,9 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="cancel">取 消</el-button>
+          <el-button @click="cancel">{{ t('common.button.cancel') }}</el-button>
 
-          <el-button type="primary" @click="submitForm">确 定</el-button>
+          <el-button type="primary" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -334,6 +319,7 @@
 </template>
 
 <script setup name="DataElemCat">
+import { useI18n } from 'vue-i18n'
 import {
   listAttDataElemCat,
   getAttDataElemCat,
@@ -342,6 +328,7 @@ import {
   updateAttDataElemCat,
 } from "@/api/att/cat/dataElemCat/dataElemCat.js";
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 
 const attDataElemCatList = ref([]);
@@ -519,13 +506,13 @@ function submitForm() {
     if (valid) {
       if (form.value.id != null) {
         updateAttDataElemCat(form.value).then((response) => {
-          proxy.$modal.msgSuccess("修改成功");
+          proxy.$modal.msgSuccess(t('common.message.editSuccess'));
           open.value = false;
           getList();
         });
       } else {
         addAttDataElemCat(form.value).then((response) => {
-          proxy.$modal.msgSuccess("新增成功");
+          proxy.$modal.msgSuccess(t('common.message.addSuccess'));
           open.value = false;
           getList();
         });
@@ -543,7 +530,7 @@ function handleDelete(row) {
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
     })
     .catch(() => {});
 }

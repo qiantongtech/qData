@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -106,12 +91,12 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="描述">
+          <el-form-item :label="t('common.texts.description')">
             <el-input
               type="textarea"
               maxlength="500个字符"
               show-word-limit
-              placeholder="请输入描述"
+              :placeholder="t('common.form.descriptionPlaceholder')"
               v-model="form.description"
               :min-height="192"
             />
@@ -120,12 +105,12 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="备注">
+          <el-form-item :label="t('common.texts.remark')">
             <el-input
               type="textarea"
               maxlength="500个字符"
               show-word-limit
-              placeholder="请输入备注"
+              :placeholder="t('common.form.remarkPlaceholder')"
               v-model="form.remark"
               :min-height="192"
             />
@@ -136,7 +121,7 @@
 
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="closeDialog">取消</el-button>
+        <el-button @click="closeDialog">{{ t('common.button.cancel') }}</el-button>
         <el-button type="primary" :loading="loading" @click="confirmDialog">
           {{ loading ? "发布中" : "确认" }}
         </el-button>
@@ -146,6 +131,7 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import {
   createMaterializedTable,
   getDaDatasourceList,
@@ -163,6 +149,8 @@ import {
   getDatasourceData,
   getAvailableDatasource,
 } from "@/components/Datasource/utils.js";
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const props = defineProps({
   visible: { type: Boolean, default: true },
@@ -263,9 +251,9 @@ const confirmDialog = async () => {
           ? "确认选择删除重建吗？ 将清空原表数据并重新创建物理表结构。此操作不可逆转，请谨慎操作！"
           : "确认选择增量发布吗？保留原表数据，仅追加新增的字段列。适用于非破坏性的安全变更。";
 
-      await proxy.$modal.confirm(confirmMessage, "系统提示", {
+      await proxy.$modal.confirm(confirmMessage, t('common.message.systemPrompt'), {
         confirmButtonText: "确认",
-        cancelButtonText: "取消",
+        cancelButtonText: t('common.button.cancel'),
         type: "warning",
       });
 

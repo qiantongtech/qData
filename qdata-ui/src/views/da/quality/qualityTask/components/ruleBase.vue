@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 <template>
   <!-- 新增评测规则的 每个规则的配置 -->
@@ -123,7 +108,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="状态" prop="status">
+            <el-form-item :label="t('common.texts.status')" prop="status">
               <el-radio-group v-model="form.status" :disabled="falg">
                 <el-radio :value="'1'">上线</el-radio>
                 <el-radio :value="'0'">下线</el-radio>
@@ -345,17 +330,18 @@
         <el-button type="warning" v-if="type != 3" @click="handleSpotCheck"
           >抽查</el-button
         >
-        <el-button @click="handleBack" v-if="!mode">取消</el-button>
+        <el-button @click="handleBack" v-if="!mode">{{ t('common.button.cancel') }}</el-button>
         <el-button type="primary" @click="handleSave" v-if="!falg"
-          >确定</el-button
+          >{{ t('common.button.confirm') }}</el-button
         >
       </template>
-      <el-button @click="closeDialog" v-else>取消</el-button>
+      <el-button @click="closeDialog" v-else>{{ t('common.button.cancel') }}</el-button>
     </template>
   </el-dialog>
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { ref, reactive, watch, toRefs } from "vue";
 import SideMenu from "./ruleSelectorMenu.vue";
 import SpotCheckDialog from "./spotCheckResult.vue";
@@ -363,6 +349,8 @@ import { getColumnByAssetId } from "@/api/dpp/task/index.js";
 // 通过注册中心按需加载规则子组件，减少静态 import 带来的首屏体积
 import { getRuleConfig, getRuleComponent } from "./rule/registry.js";
 import { verifyInterfaceValue } from "@/api/da/quality/qualityTask";
+
+const { t } = useI18n();
 let falg = ref(false);
 const { proxy } = getCurrentInstance();
 const { quality_warning_status } = proxy.useDict("quality_warning_status");
@@ -701,7 +689,7 @@ async function openDialog(record, index, fg) {
       record?.ruleName ? `-${record.ruleName}` : ""
     }`;
   } else {
-    dialogTitle.value = `${mode.value ? "修改" : "新增"}${prefix}${
+    dialogTitle.value = `${mode.value ? t('common.button.update') : t('common.button.add')}${prefix}${
       record?.ruleName ? `-${record.ruleName}` : ""
     }`;
   }

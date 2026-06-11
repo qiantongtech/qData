@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -44,23 +29,23 @@
                     align="right" unlink-panels range-separator="至" :start-placeholder="td('common.form.startDatePlaceholder')" :end-placeholder="td('common.form.endDatePlaceholder')"
                     @change="handleDateChange" />
             </el-form-item>
-            <el-form-item label="创建人" prop="createBy">
+            <el-form-item :label="t('common.texts.createdBy')" prop="createBy">
                 <el-input v-model="queryParams.createBy" placeholder="请输入创建人" style="width: 180px; margin-right: 10px"
                     class="filter-item" />
             </el-form-item>
             <el-form-item>
                 <el-button style="margin-left: 7px" plain type="primary" @click="fetchData"
                     @mousedown="(e) => e.preventDefault()">
-                    <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                    <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
                 </el-button>
                 <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-                    <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                    <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
                 </el-button>
             </el-form-item>
         </el-form>
         <el-table v-loading="loading" :data="list" stripe :default-sort="defaultSort" @sort-change="handleSortChange"
             tooltip-effect="dark" :size="tableSize" :height="tableHeight" style="width: 100%; margin: 15px 0;">
-            <el-table-column v-if="tableColumns.length > 0" label="编号" width="75" align="left">
+            <el-table-column v-if="tableColumns.length > 0" :label="t('common.texts.number')" width="75" align="left">
                 <!--                <template #default="{ $index }">-->
                 <!--                    <span>{{ $index + 1 }}</span>-->
                 <!--                </template>-->
@@ -72,29 +57,29 @@
             <!-- <el-table-column v-for="(item, index) in tableColumns" :key="index" :prop="item.prop" :label="item.label"
                 :show-overflow-tooltip="{effect: 'light'}"  align="left" /> -->
 
-            <el-table-column label="创建人" align="left">
+            <el-table-column :label="t('common.texts.createdBy')" align="left">
                 <template #default="scope">
                     <div>{{ scope.row.createBy || '-' }}</div>
                 </template>
             </el-table-column>
-            <el-table-column label="创建时间" align="left" sortable="custom" column-key="create_time"
+            <el-table-column :label="t('common.texts.createdTime')" align="left" sortable="custom" column-key="create_time"
                 :sort-orders="['descending', 'ascending']">
                 <template #default="scope">
                     <div>{{ parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}") || '-' }}</div>
                 </template>
             </el-table-column>
-            <el-table-column label="更新人" align="left">
+            <el-table-column :label="t('common.texts.updatedBy')" align="left">
                 <template #default="scope">
                     <div>{{ scope.row.updateBy || '-' }}</div>
                 </template>
             </el-table-column>
-            <el-table-column label="更新时间" align="left" sortable="custom" column-key="update_time"
+            <el-table-column :label="t('common.texts.updatedTime')" align="left" sortable="custom" column-key="update_time"
                 :sort-orders="['descending', 'ascending']">
                 <template #default="scope">
                     <div>{{ parseTime(scope.row.updateTime, "{y}-{m}-{d} {h}:{i}") || '-' }}</div>
                 </template>
             </el-table-column>
-            <el-table-column label="状态" align="left">
+            <el-table-column :label="t('common.texts.status')" align="left">
                 <template #default="scope">
                     <dict-tag :options="da_asset_operate_status" :value="scope.row.status" />
                 </template>
@@ -118,10 +103,12 @@
 import { ref, reactive, watch } from "vue"
 import useDefaultLang from "@/composables/useDefaultLang";
 const { td } = useDefaultLang();;
+import { useI18n } from 'vue-i18n'
 // import { page } from "@/api/metadata/contentsTypeTaUp";
 import dataDiffDialog from "./previewEditDiff.vue";
 import { getDaAssetList, rollBack } from '@/api/da/assetchild/operate/daAssetOperateLog.js';
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { da_asset_operate_status, } = proxy.useDict(
     "da_asset_operate_status",

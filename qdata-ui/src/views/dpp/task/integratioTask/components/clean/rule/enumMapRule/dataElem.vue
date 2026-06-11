@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -70,7 +55,7 @@
         >
           <el-table-column
             v-if="getColumnVisibility(0)"
-            label="编号"
+            :label="t('common.texts.number')"
             align="left"
             prop="id"
             width="80"
@@ -116,7 +101,7 @@
             }}</template>
           </el-table-column>
           <el-table-column
-            label="操作"
+            :label="t('common.texts.operation')"
             align="center"
             class-name="small-padding fixed-width"
             fixed="right"
@@ -161,14 +146,14 @@
     <!-- 底部按钮 -->
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="handleCancel">取 消</el-button>
+        <el-button @click="handleCancel">{{ t('common.button.cancel') }}</el-button>
         <el-button
           type="primary"
           @click="handleConfirm"
           :disabled="!selectedRow"
           :loading="loading"
         >
-          保 存
+          {{ t('common.button.save') }}
         </el-button>
       </div>
     </template>
@@ -177,6 +162,7 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { ref, reactive } from "vue";
 const emit = defineEmits(["confirm"]);
 import DeptTree from "@/components/DeptTree/tree.vue";
@@ -187,6 +173,8 @@ import { listAttDataElemCat } from "@/api/att/cat/dataElemCat/dataElemCat.js";
 const { proxy } = getCurrentInstance();
 const { dp_data_elem_code_type } = proxy.useDict("dp_data_elem_code_type");
 import CodeValueInput from "./dataElemDetail.vue";
+
+const { t } = useI18n();
 const deptOptions = ref(undefined);
 const leftWidth = ref(240); // 初始左侧宽度
 const isResizing = ref(false); // 判断是否正在拖拽

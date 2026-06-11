@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -61,6 +46,7 @@
 </template>
 
 <script setup name="DesensitizationRuleDetail">
+import { useI18n } from 'vue-i18n'
 import { getDesensitizeRules } from "@/api/dg/safety/desensitizeRules";
 import { useRoute } from "vue-router";
 import {
@@ -76,6 +62,7 @@ import { selectTreeDataCategory } from "@/api/dg/safety/dataCategory/dataCategor
 import asset from "@/views/dg/safety/desensitizationRules/detail/asset.vue";
 import info from "@/views/dg/safety/desensitizationRules/detail/info.vue";
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { dp_model_status, dg_application_scene, dg_mask_type } = proxy.useDict(
   "dp_model_status",
@@ -160,7 +147,7 @@ const detailItems = computed(() => [
   },
   { label: "脱敏方式", key: "maskType", dictOptions: unref(dg_mask_type) },
   {
-    label: "描述",
+    label: t('common.texts.description'),
     key: "description",
     span: 24,
     ellipsisClass: "ellipsis-2",

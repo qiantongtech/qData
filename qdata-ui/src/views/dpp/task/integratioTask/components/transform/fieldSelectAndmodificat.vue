@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -90,14 +75,14 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="描述" prop="description">
+          <el-form-item :label="t('common.texts.description')" prop="description">
             <el-input
               v-if="!info"
               v-model="form.description"
               type="textarea"
               maxlength="500个字符"
               show-word-limit
-              placeholder="请输入描述"
+              :placeholder="t('common.form.descriptionPlaceholder')"
             />
             <div v-else class="form-readonly textarea">
               {{ form.description || "-" }}
@@ -112,7 +97,7 @@
         <el-row :gutter="15" class="btn-style">
           <el-col :span="1.5">
             <el-button type="primary" plain @click="handleAddField">
-              <i class="iconfont-mini icon-xinzeng mr5"></i>新增
+              <i class="iconfont-mini icon-xinzeng mr5"></i>{{ t('common.button.add') }}
             </el-button>
           </el-col>
           <el-col :span="1.5">
@@ -220,7 +205,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="操作"
+          :label="t('common.texts.operation')"
           align="center"
           class-name="small-padding fixed-width"
           fixed="right"
@@ -234,7 +219,7 @@
               icon="Delete"
               @click="handleDelete(scope.row)"
             >
-              删除
+              {{ t('common.button.delete') }}
             </el-button>
           </template>
         </el-table-column>
@@ -246,7 +231,7 @@
         <el-row :gutter="15" class="btn-style">
           <el-col :span="1.5">
             <el-button type="primary" plain @click="handleAddField2">
-              <i class="iconfont-mini icon-xinzeng mr5"></i>新增
+              <i class="iconfont-mini icon-xinzeng mr5"></i>{{ t('common.button.add') }}
             </el-button>
           </el-col>
         </el-row>
@@ -282,7 +267,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="操作"
+          :label="t('common.texts.operation')"
           align="center"
           class-name="small-padding fixed-width"
           fixed="right"
@@ -295,7 +280,7 @@
               icon="Delete"
               @click="handleDelete2(scope.row)"
             >
-              删除
+              {{ t('common.button.delete') }}
             </el-button>
           </template>
         </el-table-column>
@@ -304,9 +289,9 @@
 
     <template #footer>
       <div style="text-align: right">
-        <el-button @click="closeDialog">关闭</el-button>
+        <el-button @click="closeDialog">{{ t('common.button.close') }}</el-button>
         <el-button type="primary" @click="saveData" v-if="!info"
-          >保存</el-button
+          >{{ t('common.button.save') }}</el-button
         >
       </div>
     </template>
@@ -329,6 +314,7 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import CreateEditModal from "../fieldMergeModal.vue";
 import FieldConflictDialog from "../fieldDetection.vue";
 import {
@@ -343,6 +329,8 @@ import {
 import { getNodeUniqueKey } from "@/api/dpp/task/index.js";
 import useUserStore from "@/store/system/user.js";
 import { createNodeSelect } from "@/views/dpp/utils/opBase.js";
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const userStore = useUserStore();
 

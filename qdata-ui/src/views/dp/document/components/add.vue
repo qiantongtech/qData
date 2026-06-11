@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -86,8 +71,8 @@
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="24">
-                    <el-form-item label="描述" prop="description">
-                        <el-input v-model="form.description" type="textarea" placeholder="请输入描述" />
+                    <el-form-item :label="t('common.texts.description')" prop="description">
+                        <el-input v-model="form.description" type="textarea" :placeholder="t('common.form.descriptionPlaceholder')" />
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -131,8 +116,8 @@
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="24">
-                    <el-form-item label="备注" prop="remark">
-                        <el-input v-model="form.remark" type="textarea" placeholder="请输入备注" />
+                    <el-form-item :label="t('common.texts.remark')" prop="remark">
+                        <el-input v-model="form.remark" type="textarea" :placeholder="t('common.form.remarkPlaceholder')" />
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -140,18 +125,21 @@
 
         <template #footer>
             <div class="dialog-footer">
-                <el-button size="mini" @click="close">取消</el-button>
-                <el-button type="primary" size="mini" @click="submitForm" :loading="loading">确定</el-button>
+                <el-button size="mini" @click="close">{{ t('common.button.cancel') }}</el-button>
+                <el-button type="primary" size="mini" @click="submitForm" :loading="loading">{{ t('common.button.confirm') }}</el-button>
             </div>
         </template>
     </el-dialog>
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { ref, reactive, nextTick, getCurrentInstance } from "vue";
 const { proxy } = getCurrentInstance();
 import FileUploadbtn from "@/components/FileUploadbtn/index1.vue";
 import { addDpDocument, updateDpDocument } from "@/api/dp/document/document";
+
+const { t } = useI18n();
 const { column_type, sys_disable, dp_document_status } = proxy.useDict(
     "column_type",
     "sys_disable",
@@ -201,10 +189,10 @@ function openModal(formData = {}, options = [], types) {
         Object.assign(form, formData);
         form.catCode = form.catCode != null ? String(form.catCode) : "";
         form.status = form.status != null ? String(form.status) : "";
-        title.value = "修改" + (titleMap[type.value] || "标准");
+        title.value = t('common.button.update') + (titleMap[type.value] || "标准");
     } else {
         clearForm();
-        title.value = "新增" + (titleMap[type.value] || "标准");
+        title.value = t('common.button.add') + (titleMap[type.value] || "标准");
     }
 
     visible.value = true;
@@ -246,7 +234,7 @@ function submitForm() {
         const apiCall = form.id ? updateDpDocument : addDpDocument;
         apiCall({ ...form, type: type.value })
             .then(() => {
-                proxy.$modal.msgSuccess(form.id ? "修改成功" : "新增成功");
+                proxy.$modal.msgSuccess(form.id ? t('common.message.editSuccess') : t('common.message.addSuccess'));
                 visible.value = false;
                 clearForm();
                 emit("update-success");

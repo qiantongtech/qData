@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -49,7 +34,7 @@
           @click="handleAdd"
           v-hasPermi="['dm:themeDomain:add']"
         >
-          新增
+          {{ t('common.button.add') }}
         </el-button>
         <el-button
           class="extend-btn"
@@ -59,7 +44,7 @@
         >
           <svg-icon v-if="defaultExpandAll" icon-class="toggle" />
           <svg-icon v-else icon-class="expand" />
-          <span>{{ defaultExpandAll ? "折叠" : "展开" }}</span>
+          <span>{{ defaultExpandAll ? t('common.button.collapse') : t('common.button.expand') }}</span>
         </el-button>
       </template>
 
@@ -72,7 +57,7 @@
             @click="handleUpdate(row)"
             v-hasPermi="['dm:themeDomain:edit']"
           >
-            修改
+            {{ t('common.button.update') }}
           </el-button>
           <el-button
             link
@@ -81,7 +66,7 @@
             @click="handleAdd(row)"
             v-hasPermi="['dm:themeDomain:add']"
           >
-            新增
+            {{ t('common.button.add') }}
           </el-button>
           <el-button
             link
@@ -90,7 +75,7 @@
             @click="handleDelete(row)"
             v-hasPermi="['dm:themeDomain:remove']"
           >
-            删除
+            {{ t('common.button.delete') }}
           </el-button>
         </template>
 
@@ -195,25 +180,25 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="描述" prop="description">
+            <el-form-item :label="t('common.texts.description')" prop="description">
               <el-input
                 v-model="form.description"
                 type="textarea"
                 maxlength="256个字符"
                 :min-height="256"
                 show-word-limit
-                placeholder="请输入描述"
+                :placeholder="t('common.form.descriptionPlaceholder')"
               />
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="备注" prop="remark">
+            <el-form-item :label="t('common.texts.remark')" prop="remark">
               <el-input
                 v-model="form.remark"
                 type="textarea"
                 maxlength="500个字符"
                 show-word-limit
-                placeholder="请输入备注"
+                :placeholder="t('common.form.remarkPlaceholder')"
               />
             </el-form-item>
           </el-col>
@@ -221,9 +206,9 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="cancel">取 消</el-button>
+          <el-button size="mini" @click="cancel">{{ t('common.button.cancel') }}</el-button>
           <el-button type="primary" size="mini" @click="submitForm"
-            >确 定</el-button
+            >{{ t('common.button.confirm') }}</el-button
           >
         </div>
       </template>
@@ -232,6 +217,7 @@
 </template>
 
 <script setup name="DataElemCat">
+import { useI18n } from 'vue-i18n'
 import {
   getThemeDomain,
   addThemeDomain,
@@ -245,6 +231,7 @@ import QtWrap from "@/components/QtWrap";
 import QtTable from "@/components/QtTable";
 import QtSearchBar from "@/components/QtSearchBar";
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const attDataElemCatOptions = ref([]);
 const managerOptions = ref([]);
@@ -314,7 +301,7 @@ const tableStore = reactive({
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: "描述",
+      label: t('common.texts.description'),
       prop: "description",
       width: 250,
       align: "left",
@@ -335,18 +322,18 @@ const tableStore = reactive({
       width: 140,
       align: "left",
     },
-    { label: "状态", prop: "validFlag", slot: "validFlag", width: 100 },
-    { label: "备注", prop: "remark", align: "left" },
+    { label: t('common.texts.status'), prop: "validFlag", slot: "validFlag", width: 100 },
+    { label: t('common.texts.remark'), prop: "remark", align: "left" },
 
-    { label: "创建人", prop: "createBy", align: "left" },
+    { label: t('common.texts.createdBy'), prop: "createBy", align: "left" },
     {
-      label: "创建时间",
+      label: t('common.texts.createdTime'),
       prop: "createTime",
       sortable: true,
       date: true,
       width: 180,
     },
-    { label: "操作", width: 220, slot: "action", fixed: "right" },
+    { label: t('common.texts.operation'), width: 220, slot: "action", fixed: "right" },
   ],
   func: listThemeDomain,
   params: queryParams,
@@ -578,13 +565,13 @@ function submitForm() {
     if (valid) {
       if (form.value.id != null) {
         updateThemeDomain(form.value).then((response) => {
-          proxy.$modal.msgSuccess("修改成功");
+          proxy.$modal.msgSuccess(t('common.message.editSuccess'));
           open.value = false;
           getList();
         });
       } else {
         addThemeDomain(form.value).then((response) => {
-          proxy.$modal.msgSuccess("新增成功");
+          proxy.$modal.msgSuccess(t('common.message.addSuccess'));
           open.value = false;
           getList();
         });
@@ -602,7 +589,7 @@ function handleDelete(row) {
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
     })
     .catch(() => {});
 }

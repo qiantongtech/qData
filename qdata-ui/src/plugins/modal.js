@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright © 2025 Qiantong Technology Co., Ltd.
  * qData Data Middle Platform (Open Source Edition)
  *  *
@@ -13,25 +13,10 @@
  * For brand customization, please apply for brand customization authorization via official channels.
  *  *
  * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
  */
 
 import { ElMessage, ElMessageBox, ElNotification, ElLoading } from 'element-plus'
-
+import { i18n } from '@/plugins/vueI18n'
 let loadingInstance;
 
 export default {
@@ -53,19 +38,19 @@ export default {
   },
   // 弹出提示
   alert(content) {
-    ElMessageBox.alert(content, "系统提示")
+    ElMessageBox.alert(content, i18n.global.t('common.message.systemPrompt'))
   },
   // 错误提示
   alertError(content) {
-    ElMessageBox.alert(content, "系统提示", { type: 'error' })
+    ElMessageBox.alert(content, i18n.global.t('common.message.systemPrompt'), { type: 'error' })
   },
   // 成功提示
   alertSuccess(content) {
-    ElMessageBox.alert(content, "系统提示", { type: 'success' })
+    ElMessageBox.alert(content, i18n.global.t('common.message.systemPrompt'), { type: 'success' })
   },
   // 警告提示
   alertWarning(content) {
-    ElMessageBox.alert(content, "系统提示", { type: 'warning' })
+    ElMessageBox.alert(content, i18n.global.t('common.message.systemPrompt'), { type: 'warning' })
   },
   // 通知提示
   notify(content) {
@@ -85,17 +70,17 @@ export default {
   },
   // 确认窗体
   confirm(content) {
-    return ElMessageBox.confirm(content, "系统提示", {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
+    return ElMessageBox.confirm(content, i18n.global.t('common.message.systemPrompt'), {
+      confirmButtonText: i18n.global.t('common.button.confirm'),
+      cancelButtonText: i18n.global.t('common.button.cancel'),
       type: "warning",
     })
   },
   // 提交内容
   prompt(content) {
-    return ElMessageBox.prompt(content, "系统提示", {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
+    return ElMessageBox.prompt(content, i18n.global.t('common.message.systemPrompt'), {
+      confirmButtonText: i18n.global.t('common.button.confirm'),
+      cancelButtonText: i18n.global.t('common.button.cancel'),
       type: "warning",
     })
   },

@@ -18,7 +18,7 @@
           @click="handleAddClick"
           v-hasPermi="['md:unreleased:structured:db:add']"
         >
-          新增
+          {{ t('common.button.add') }}
         </el-button>
         <el-button
           type="danger"
@@ -28,7 +28,7 @@
           @click="handleDeleteColumnClick"
           v-hasPermi="['md:unreleased:structured:db:remove']"
         >
-          删除
+          {{ t('common.button.delete') }}
         </el-button>
       </template>
       <qt-table v-bind="tableStroe" ref="tableRef">
@@ -54,7 +54,7 @@
             @click="handleDetailClick(row)"
             v-hasPermi="['md:unreleased:structured:db:detail']"
           >
-            详情
+            {{ t('common.button.details') }}
           </el-button>
           <el-button
             link
@@ -64,7 +64,7 @@
             @click="handleEditClick(row)"
             v-hasPermi="['md:unreleased:structured:db:edit']"
           >
-            修改
+            {{ t('common.button.update') }}
           </el-button>
           <el-popover
             placement="bottom"
@@ -82,7 +82,7 @@
                   'md:unreleased:structured:db:edit',
                 ]"
               >
-                更多
+                {{ t('common.button.more') }}
               </el-button>
             </template>
             <el-button
@@ -93,7 +93,7 @@
               @click="handleDeleteClick(row)"
               v-hasPermi="['md:unreleased:structured:db:remove']"
             >
-              删除
+              {{ t('common.button.delete') }}
             </el-button>
           </el-popover>
         </template>
@@ -280,7 +280,7 @@
           />
         </el-form-item>
 
-        <el-form-item label="状态" class="row-full">
+        <el-form-item :label="t('common.texts.status')" class="row-full">
           <el-radio-group v-model="dialog.form.status">
             <el-radio
               v-for="dict in toValue(dicts.meta_task_status)"
@@ -292,22 +292,22 @@
           </el-radio-group>
         </el-form-item>
 
-        <el-form-item label="描述" class="row-full">
+        <el-form-item :label="t('common.texts.description')" class="row-full">
           <el-input
             v-model="dialog.form.description"
             type="textarea"
-            placeholder="请输入描述"
+            :placeholder="t('common.form.descriptionPlaceholder')"
             :min-height="192"
             show-word-limit
             maxlength="500个字符"
           />
         </el-form-item>
 
-        <el-form-item label="备注" class="row-full">
+        <el-form-item :label="t('common.texts.remark')" class="row-full">
           <el-input
             v-model="dialog.form.remark"
             type="textarea"
-            placeholder="请输入备注"
+            :placeholder="t('common.form.remarkPlaceholder')"
             :min-height="192"
             show-word-limit
             maxlength="500个字符"
@@ -332,9 +332,9 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="handleCancelClick">取消</el-button>
+          <el-button @click="handleCancelClick">{{ t('common.button.cancel') }}</el-button>
           <el-button type="primary" @click="handleConfirmClick">
-            确定
+            {{ t('common.button.confirm') }}
           </el-button>
         </div>
       </template>
@@ -343,6 +343,7 @@
 </template>
 
 <script setup name="UnreleasedStructuredDatabase">
+import { useI18n } from 'vue-i18n'
 import { reactive, ref, getCurrentInstance, toValue } from "vue";
 import { listDomain } from "@/api/att/domain/domain.js";
 import {
@@ -361,7 +362,7 @@ import { useRoute, useRouter } from "vue-router";
 import { listDgSensitiveLevel } from "@/api/dg/compliance/sensitiveLevel";
 import { getRealtimeMcTaskScopeList } from "@/api/mc/task/task.js";
 
-// 表单验证规则
+const { t } = useI18n();// 表单验证规则
 const rules = {
   domainId: [{ required: true, message: "请选择业务域", trigger: "change" }],
   datasourceId: [
@@ -443,7 +444,7 @@ const tableStroe = reactive({
       // }
     },
     {
-      label: "编号",
+      label: t('common.texts.number'),
       prop: "id",
       sortable: true,
       width: 60,
@@ -461,7 +462,7 @@ const tableStroe = reactive({
       },
     },
     {
-      label: "描述",
+      label: t('common.texts.description'),
       prop: "description",
       align: "left",
       width: 240,
@@ -502,38 +503,38 @@ const tableStroe = reactive({
       width: 90,
     },
     {
-      label: "状态",
+      label: t('common.texts.status'),
       prop: "status",
       width: 90,
       slot: "status",
     },
 
     {
-      label: "更新人",
+      label: t('common.texts.updatedBy'),
       prop: "updateBy",
       width: 120,
     },
     {
-      label: "更新时间",
+      label: t('common.texts.updatedTime'),
       prop: "updateTime",
       sortable: true,
       width: 160,
       date: true,
     },
     {
-      label: "创建人",
+      label: t('common.texts.createdBy'),
       prop: "createBy",
       width: 120,
     },
     {
-      label: "创建时间",
+      label: t('common.texts.createdTime'),
       prop: "createTime",
       sortable: true,
       width: 160,
       date: true,
     },
     {
-      label: "操作",
+      label: t('common.texts.operation'),
       width: 220,
       fixed: "right",
       slot: "handle",
@@ -696,7 +697,7 @@ async function handleConfirmClick() {
   }
   await dialog.func(dialog.form);
   dialog.loading = false;
-  proxy.$modal.msgSuccess(`${dialog.form.id ? "修改" : "新增"}库元数据成功！`);
+  proxy.$modal.msgSuccess(`${dialog.form.id ? t('common.button.update') : t('common.button.add')}库元数据成功！`);
   handleCancelClick();
   tableRef.value.getList();
 }
@@ -736,10 +737,10 @@ function handleStatusChange(row, status) {
     `是否确认${status == 1 ? "发布" : "取消发布"}数据编号为${
       row.id
     }的库元数据吗？`,
-    "系统提示",
+    t('common.message.systemPrompt'),
     {
-      confirmButtonText: "确定",
-      cancelButtonText: "取消",
+      confirmButtonText: t('common.button.confirm'),
+      cancelButtonText: t('common.button.cancel'),
       type: "warning",
     }
   )
@@ -770,23 +771,23 @@ function handleDeleteColumnClick() {
     store.loading = false;
     ElMessageBox.confirm(
       `可删除${canDeleteCount}个，不可删除${cannotDeleteCount}个，是否删除可删部分`,
-      "系统提示",
+      t('common.message.systemPrompt'),
       {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
+        confirmButtonText: t('common.button.confirm'),
+        cancelButtonText: t('common.button.cancel'),
         type: "warning",
       }
     )
       .then(() => {
         if (!canDeleteIds.length) {
-          ElMessage.success("删除成功");
+          ElMessage.success(t('common.message.deleteSuccess'));
           return;
         }
         return delDb(canDeleteIds.toString());
       })
       .then((res) => {
         if (!res) return;
-        ElMessage.success("删除成功");
+        ElMessage.success(t('common.message.deleteSuccess'));
         tableRef.value.getList();
       });
   });
@@ -805,16 +806,16 @@ function handleDetailClick(row) {
 
 // 删除
 function handleDeleteClick(row) {
-  ElMessageBox.confirm(`是否确认删除编号为${row.id}的数据项？`, "系统提示", {
-    confirmButtonText: "确定",
-    cancelButtonText: "取消",
+  ElMessageBox.confirm(`是否确认删除编号为${row.id}的数据项？`, t('common.message.systemPrompt'), {
+    confirmButtonText: t('common.button.confirm'),
+    cancelButtonText: t('common.button.cancel'),
     type: "warning",
   })
     .then(() => {
       return delDb(row.id);
     })
     .then(() => {
-      ElMessage.success("删除成功");
+      ElMessage.success(t('common.message.deleteSuccess'));
       tableRef.value.getList();
     });
 }

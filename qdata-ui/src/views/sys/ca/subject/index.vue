@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -45,10 +30,10 @@
         </el-form-item>
         <el-form-item>
               <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
               </el-button>
               <el-button @click="resetQuery" @mousedown="e => e.preventDefault()">
-                <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
               </el-button>
         </el-form-item>
       </el-form>
@@ -64,7 +49,7 @@
             icon="plus"
             @click="handleAdd"
             v-hasPermi="['ca:subject:add']"
-          >新增</el-button>
+          >{{ t('common.button.add') }}</el-button>
         </el-col>
       </el-row>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
@@ -79,8 +64,8 @@
         <el-table-column label="城市名称" align="center" prop="l" />
         <el-table-column label="省名称" align="center" prop="st" />
         <el-table-column label="国家" align="center" prop="c" />
-  <!--      <el-table-column label="备注" align="center" prop="remark" />-->
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width"  fixed="right" width="240">
+  <!--      <el-table-column :label="t('common.texts.remark')" align="center" prop="remark" />-->
+        <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width"  fixed="right" width="240">
           <template #default="scope">
             <el-button
                 link
@@ -88,14 +73,14 @@
                 icon="download"
                 @click="downloadFiles(scope.row)"
                 v-hasPermi="['ca:subject:remove']"
-            >下载</el-button>
+            >{{ t('common.button.download') }}</el-button>
   <!--          <el-button-->
   <!--            size="mini"-->
   <!--            type="text"-->
   <!--            icon="el-icon-edit"-->
   <!--            @click="handleUpdate(scope.row)"-->
   <!--            v-hasPermi="['ca:subject:edit']"-->
-  <!--          >修改</el-button>-->
+  <!--          >{{ t('common.button.update') }}</el-button>-->
             <el-button
                 link
                 type="primary"
@@ -103,7 +88,7 @@
                 icon="Delete"
                 @click="handleDelete(scope.row)"
                 v-hasPermi="['ca:subject:remove']"
-            >删除</el-button>
+            >{{ t('common.button.delete') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -160,8 +145,8 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="cancel">取 消</el-button>
-          <el-button type="primary" @click="submitForm">确 定</el-button>
+          <el-button @click="cancel">{{ t('common.button.cancel') }}</el-button>
+          <el-button type="primary" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -173,6 +158,7 @@ import { listSubject, getSubject, delSubject, addSubject, updateSubject } from "
 import JSZip from 'jszip';
 import {red} from "chalk";
 
+const { t } = useI18n();
 export default {
   name: "Subject",
   data() {
@@ -338,13 +324,13 @@ export default {
         if (valid) {
           if (this.form.id != null) {
             updateSubject(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功");
+              this.$modal.msgSuccess(t('common.message.editSuccess'));
               this.open = false;
               this.getList();
             });
           } else {
             addSubject(this.form).then(response => {
-              this.$modal.msgSuccess("新增成功");
+              this.$modal.msgSuccess(t('common.message.addSuccess'));
               this.open = false;
               this.getList();
             });
@@ -359,7 +345,7 @@ export default {
         return delSubject(ids);
       }).then(() => {
         this.getList();
-        this.$modal.msgSuccess("删除成功");
+        this.$modal.msgSuccess(t('common.message.deleteSuccess'));
       }).catch(() => {});
     },
     /** 导出按钮操作 */

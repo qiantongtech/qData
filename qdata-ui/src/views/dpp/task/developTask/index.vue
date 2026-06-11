@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -59,7 +44,7 @@
           </template>
           <template #actions-data>
             <el-button type="primary" plain @click="handleAdd">
-              <i class="iconfont-mini icon-xinzeng mr5"></i>新增
+              <i class="iconfont-mini icon-xinzeng mr5"></i>{{ t('common.button.add') }}
             </el-button>
           </template>
 
@@ -223,13 +208,13 @@
                     info: true,
                   })
                 "
-                >详情</el-button
+                >{{ t('common.button.details') }}</el-button
               >
 
               <el-popover placement="bottom" :width="150" trigger="click">
                 <template #reference>
                   <el-button link type="primary" icon="ArrowDown"
-                    >更多</el-button
+                    >{{ t('common.button.more') }}</el-button
                   >
                 </template>
                 <div style="width: 100px" class="butgdlist">
@@ -283,7 +268,7 @@
                     icon="Delete"
                     :disabled="row.status == 1"
                     @click="handleDelete(row)"
-                    >删除</el-button
+                    >{{ t('common.button.delete') }}</el-button
                   >
                 </div>
               </el-popover>
@@ -338,6 +323,7 @@
 </template>
 
 <script setup name="DppDevelopTask">
+import { useI18n } from 'vue-i18n'
 import { treeData } from "@/views/dpp/task/developTask/data";
 import {
   listDppEtlTask,
@@ -371,6 +357,8 @@ import DeptTree from "@/components/DeptTree";
 import add from "./add/add.vue";
 import { deptUserTree } from "@/api/system/system/user.js";
 import { ref, reactive, getCurrentInstance, watch, toRefs } from "vue";
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 
 const api = {
@@ -437,7 +425,7 @@ const handleSave = (form) => {
   };
   createEtlTaskFront(parms).then((res) => {
     if (res.code == 200) {
-      proxy.$modal.msgSuccess("操作成功");
+      proxy.$modal.msgSuccess(t('common.message.msgOpSuccess'));
       handleQuery();
     }
   });
@@ -452,7 +440,7 @@ const handleConfirm = (form) => {
   };
   createEtlTaskFront(parms).then((res) => {
     if (res.code == 200) {
-      proxy.$modal.msgSuccess("操作成功");
+      proxy.$modal.msgSuccess(t('common.message.msgOpSuccess'));
       handleQuery();
       routeTo("/dpp/task/developTask/edit", {
         ...res.data,
@@ -532,7 +520,7 @@ function handleschedulerState(id, row, e) {
         projectId: userStore.projectId,
       })
         .then((response) => {
-          proxy.$modal.msgSuccess("操作成功");
+          proxy.$modal.msgSuccess(t('common.message.msgOpSuccess'));
         })
         .catch((error) => {
           // 处理失败时的恢复操作
@@ -565,7 +553,7 @@ function handleStatusChange(id, row, e) {
         projectId: userStore.projectId,
       })
         .then((response) => {
-          proxy.$modal.msgSuccess("操作成功");
+          proxy.$modal.msgSuccess(t('common.message.msgOpSuccess'));
           handleQuery();
         })
         .catch((error) => {
@@ -590,7 +578,7 @@ function crontabFill(value) {
     projectId: userStore.projectId,
     id: row.value.id,
   }).then((response) => {
-    proxy.$modal.msgSuccess("操作成功");
+    proxy.$modal.msgSuccess(t('common.message.msgOpSuccess'));
     handleQuery();
   });
 }
@@ -691,7 +679,7 @@ const tableStore = reactive({
     },
   },
   columns: [
-    { label: "编号", prop: "id", width: 60, sortable: true },
+    { label: t('common.texts.number'), prop: "id", width: 60, sortable: true },
     {
       label: "任务信息",
       prop: "name",
@@ -727,14 +715,14 @@ const tableStore = reactive({
       align: "left",
     },
     {
-      label: "创建人",
+      label: t('common.texts.createdBy'),
       slot: "createBy",
       width: 120,
       align: "left",
       showOverflowTooltip: true,
     },
     {
-      label: "创建时间",
+      label: t('common.texts.createdTime'),
       prop: "createTime",
       sortable: true,
       sortableKey: "create_time",
@@ -744,7 +732,7 @@ const tableStore = reactive({
     },
 
     {
-      label: "操作",
+      label: t('common.texts.operation'),
       align: "center",
       fixed: "right",
       slot: "action",
@@ -853,7 +841,7 @@ function submitForm() {
       if (form.value.id != null) {
         updateDppEtlTask(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("修改成功");
+            proxy.$modal.msgSuccess(t('common.message.editSuccess'));
             open.value = false;
             getList();
           })
@@ -861,7 +849,7 @@ function submitForm() {
       } else {
         addDppEtlTask(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("新增成功");
+            proxy.$modal.msgSuccess(t('common.message.addSuccess'));
             open.value = false;
             getList();
           })
@@ -881,7 +869,7 @@ function handleDelete(row) {
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
     })
     .catch(() => {});
 }

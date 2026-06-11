@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -60,13 +45,13 @@
 
                         </template>
                     </el-table-column>
-                    <el-table-column label="描述" fixed="left" align="left" prop="remark"
+                    <el-table-column :label="t('common.texts.description')" fixed="left" align="left" prop="remark"
                         :show-overflow-tooltip="{ effect: 'light' }">
                         <template #default="{ row, $index }">
                             <!-- <el-form-item
                                                     :prop="`headerList[${findPosi(headerList, row.id)}].remark`"
                                                     :rules="rules.fieldDefault">
-                                                    <el-input v-model="row.remark" placeholder="请输入描述" />
+                                                    <el-input v-model="row.remark" :placeholder="t('common.form.descriptionPlaceholder')" />
                                                 </el-form-item> -->
                             {{ row.remark || "-" }}
                         </template>
@@ -88,6 +73,8 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
+
 // 引入 Vue 和必要的 API 方法
 import { ref, reactive, onMounted } from 'vue';
 // import { getApiCall, postApiCall } from "@/api/market/apimapping";
@@ -103,6 +90,8 @@ const props = defineProps({
 });
 const { proxy } = getCurrentInstance();
 import request from '@/utils/request';
+
+const { t } = useI18n();
 const hasChildren = (row) => {
     return Array.isArray(row.daAssetApiParamList) && row.daAssetApiParamList.length > 0;
 };
@@ -205,7 +194,7 @@ function buildParamsTree(paramList) {
 }
 const showSuccessNotify = () => {
     ElNotification({
-        title: '提示',
+        title: t('common.message.prompt'),
         message: '接口调用成功',
         type: 'success',
         duration: 2000,
@@ -214,7 +203,7 @@ const showSuccessNotify = () => {
 
 const showErrorNotify = (msg) => {
     ElNotification({
-        title: '提示',
+        title: t('common.message.prompt'),
         message: msg || '接口调用失败',
         type: 'error',
         duration: 2000,
@@ -275,7 +264,6 @@ const handleCall = () => {
         }
     });
 };
-
 
 // 处理API响应
 const handleApiResponse = (response) => {

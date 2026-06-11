@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -103,7 +88,7 @@
 
           <el-col :span="8" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">创建时间</div>
+              <div class="infotop-row-lable">{{ t('common.texts.createdTime') }}</div>
               <div class="infotop-row-value">
                 {{ parseTime(dppEtlTaskDetail.createTime, '{y}-{m}-{d} {h}:{i}') }}
               </div>
@@ -112,7 +97,7 @@
 
           <el-col :span="24" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">描述</div>
+              <div class="infotop-row-lable">{{ t('common.texts.description') }}</div>
               <div class="infotop-row-value">
                 {{ dppEtlTaskDetail.description || '-' }}
               </div>
@@ -136,12 +121,14 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { etlTask } from "@/api/dpp/task/index.js";
 import { useRoute } from "vue-router";
 import process from "@/views/dpp/task/integratioTask/detail/process.vue";
 import info from "@/views/dpp/task/integratioTask/detail/info.vue";
 import { onActivated, reactive, ref, toRefs, watch, getCurrentInstance } from "vue";
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const activeName = ref("1");
 const showSearch = ref(true);

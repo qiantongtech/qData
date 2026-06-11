@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -46,10 +31,10 @@
         <el-form-item>
           <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()"
             v-hasPermi="['att:documentCat:query']">
-            <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+            <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
           </el-button>
           <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-            <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+            <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
           </el-button>
         </el-form-item>
       </el-form>
@@ -59,13 +44,13 @@
         <el-row :gutter="10" class="btn-style">
           <el-col :span="1.5">
             <el-button type="primary" plain icon="Plus" @click="handleAdd"
-              v-hasPermi="['att:documentCat:add']">新增</el-button>
+              v-hasPermi="['att:documentCat:add']">{{ t('common.button.add') }}</el-button>
           </el-col>
           <el-col :span="1.5">
             <el-button class="toggle-expand-all" type="primary" plain @click="toggleExpandAll">
               <svg-icon v-if="isExpandAll" icon-class="toggle" />
               <svg-icon v-else icon-class="expand" />
-              <span>{{ isExpandAll ? "折叠" : "展开" }}</span>
+              <span>{{ isExpandAll ? t('common.button.collapse') : t('common.button.expand') }}</span>
             </el-button>
           </el-col>
         </el-row>
@@ -73,7 +58,7 @@
       </div>
       <el-table v-if="refreshTable" height="60vh" v-loading="loading" :data="AttTagCatList" row-key="id"
         :default-expand-all="isExpandAll" :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
-        <!--          <el-table-column label="编号"  prop="code" :show-overflow-tooltip="{effect: 'light'}" width="160">-->
+        <!--          <el-table-column :label="t('common.texts.number')"  prop="code" :show-overflow-tooltip="{effect: 'light'}" width="160">-->
         <!--            <template #default="scope">-->
         <!--              {{ scope.row.code || '-' }}-->
         <!--            </template>-->
@@ -85,7 +70,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="描述" align="left" prop="description" :show-overflow-tooltip="{ effect: 'light' }"
+        <el-table-column :label="t('common.texts.description')" align="left" prop="description" :show-overflow-tooltip="{ effect: 'light' }"
           width="300">
           <template #default="scope">
             {{ scope.row.description || '-' }}
@@ -97,19 +82,19 @@
             {{ scope.row.sortOrder }}
           </template>
         </el-table-column>
-        <el-table-column label="创建人" align="center" prop="createBy">
+        <el-table-column :label="t('common.texts.createdBy')" align="center" prop="createBy">
           <template #default="scope">
             {{ scope.row.createBy || "-" }}
           </template>
         </el-table-column>
-        <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+        <el-table-column :label="t('common.texts.createdTime')" align="center" prop="createTime" width="180">
           <template #default="scope">
             <span>{{
               parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}")
             }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="状态" align="center" prop="validFlag">
+        <el-table-column :label="t('common.texts.status')" align="center" prop="validFlag">
           <template #default="scope">
             <!--              <dict-tag :options="sys_valid" :value="scope.row.validFlag"/>-->
 
@@ -118,20 +103,20 @@
             </el-switch>
           </template>
         </el-table-column>
-        <el-table-column label="备注" align="left" prop="remark">
+        <el-table-column :label="t('common.texts.remark')" align="left" prop="remark">
           <template #default="scope">
             {{ scope.row.remark || '-' }}
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
+        <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
           <template #default="scope">
             <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-              v-hasPermi="['att:documentCat:edit']">修改</el-button>
+              v-hasPermi="['att:documentCat:edit']">{{ t('common.button.update') }}</el-button>
             <el-button link type="primary" icon="Plus" @click="handleAdd(scope.row)"
-              v-hasPermi="['att:documentCat:add']">新增</el-button>
+              v-hasPermi="['att:documentCat:add']">{{ t('common.button.add') }}</el-button>
             <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
-              v-hasPermi="['att:documentCat:remove']">删除</el-button>
+              v-hasPermi="['att:documentCat:remove']">{{ t('common.button.delete') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -164,7 +149,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="状态" prop="validFlag">
+            <el-form-item :label="t('common.texts.status')" prop="validFlag">
               <el-radio v-model="form.validFlag" :label="true">启用</el-radio>
               <el-radio v-model="form.validFlag" :label="false">禁用</el-radio>
             </el-form-item>
@@ -172,16 +157,16 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="描述">
-              <el-input type="textarea" placeholder="请输入描述" v-model="form.description" :min-height="192" />
+            <el-form-item :label="t('common.texts.description')">
+              <el-input type="textarea" :placeholder="t('common.form.descriptionPlaceholder')" v-model="form.description" :min-height="192" />
             </el-form-item>
           </el-col>
         </el-row>
 
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="备注">
-              <el-input type="textarea" placeholder="请输入备注" v-model="form.remark" :min-height="192" />
+            <el-form-item :label="t('common.texts.remark')">
+              <el-input type="textarea" :placeholder="t('common.form.remarkPlaceholder')" v-model="form.remark" :min-height="192" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -189,8 +174,8 @@
 
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="cancel">取 消</el-button>
-          <el-button type="primary" @click="submitForm">确 定</el-button>
+          <el-button @click="cancel">{{ t('common.button.cancel') }}</el-button>
+          <el-button type="primary" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -198,7 +183,10 @@
 </template>
 
 <script setup name="DocumentCat">
+import { useI18n } from 'vue-i18n'
 import { listAttDocumentCat, getAttDocumentCat, delAttDocumentCat, addAttDocumentCat, updateAttDocumentCat } from "@/api/att/cat/documentCat/documentCat";
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const AttTagCatList = ref([]);
 const AttTagCatOptions = ref([]);
@@ -365,13 +353,13 @@ function submitForm() {
     if (valid) {
       if (form.value.id != null) {
         updateAttDocumentCat(form.value).then((response) => {
-          proxy.$modal.msgSuccess('修改成功');
+          proxy.$modal.msgSuccess(t('common.message.editSuccess'));
           open.value = false;
           getList();
         });
       } else {
         addAttDocumentCat(form.value).then((response) => {
-          proxy.$modal.msgSuccess('新增成功');
+          proxy.$modal.msgSuccess(t('common.message.addSuccess'));
           open.value = false;
           getList();
         });
@@ -388,7 +376,7 @@ function handleDelete(row) {
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess('删除成功');
+      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
     })
     .catch(() => { });
 }

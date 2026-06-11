@@ -135,7 +135,7 @@
                         :icon="Delete"
                         command="delete"
                         class="delete-item"
-                        >删除</el-dropdown-item
+                        >{{ t('common.button.delete') }}</el-dropdown-item
                       >
                     </template>
                   </el-dropdown-menu>
@@ -168,6 +168,7 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import {
   ref,
   defineProps,
@@ -239,6 +240,8 @@ const emit = defineEmits([
 const qtWrapheight = ref("86vh");
 let resizeObserver = null;
 import CatEditDialog from "@/components/Cat/catEditDialog";
+
+const { t } = useI18n();
 const catEditDialogRef = ref(null);
 const processedData = ref([]);
 
@@ -255,8 +258,8 @@ const dialogTreeOptions = computed(() => {
 function handleNodeAdd(data) {
   if (props.api.add) {
     catEditDialogRef.value.open({
-      title: "新增" + props.title,
-      nameLabel: props.title + "名称",
+      title: t('common.button.add') + props.title,
+      nameLabel: props.title + t('common.texts.name'),
       treeOptions: dialogTreeOptions.value,
       form: {
         parentId: data.id,
@@ -273,8 +276,8 @@ function handleNodeAddSibling(data) {
   const parentId = data.parentId || "0";
   if (props.api.add) {
     catEditDialogRef.value.open({
-      title: "新增" + props.title + "同级",
-      nameLabel: props.title + "名称",
+      title: t('common.button.add') + props.title + "同级",
+      nameLabel: props.title + t('common.texts.name'),
       treeOptions: dialogTreeOptions.value,
       form: {
         parentId: parentId,
@@ -309,7 +312,7 @@ function handleNodeEdit(data) {
     props.api.get(data.id).then((response) => {
       catEditDialogRef.value.open({
         title: "编辑" + props.title,
-        nameLabel: props.title + "名称",
+        nameLabel: props.title + t('common.texts.name'),
         treeOptions: dialogTreeOptions.value,
         form: response.data,
       });
@@ -329,7 +332,7 @@ function handleNodeDelete(data) {
         }
       })
       .then(() => {
-        proxy.$modal.msgSuccess("删除成功");
+        proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
         // 如果删除的是当前选中的节点，清空选中状态
         if (currentNodeKey.value === data.id) {
           currentNodeKey.value = null;
@@ -346,14 +349,14 @@ function handleCatSubmit(formData) {
   if (formData.id) {
     if (props.api.update) {
       props.api.update(formData).then((response) => {
-        proxy.$modal.msgSuccess("修改成功");
+        proxy.$modal.msgSuccess(t('common.message.editSuccess'));
         getDeptTree();
       });
     }
   } else {
     if (props.api.add) {
       props.api.add(formData).then((response) => {
-        proxy.$modal.msgSuccess("新增成功");
+        proxy.$modal.msgSuccess(t('common.message.addSuccess'));
         // 如果是新增，自动展开父节点
         if (
           formData.parentId &&

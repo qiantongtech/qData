@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -45,7 +30,7 @@
                 </template>
             </el-table-column>
             <el-table-column prop="name" label="参数名称" align="center" :show-overflow-tooltip="{effect: 'light'}" fixed="left" />
-            <el-table-column prop="remark" label="描述" align="center" :show-overflow-tooltip="{effect: 'light'}" fixed="left" />
+            <el-table-column prop="remark" :label="t('common.texts.description')" align="center" :show-overflow-tooltip="{effect: 'light'}" fixed="left" />
             <el-table-column label="数据类型" fixed="left" align="center" prop="columnType" :show-overflow-tooltip="{effect: 'light'}">
                 <template #default="{ row }">
                     {{ row.columnType || '-' }}
@@ -60,13 +45,16 @@
         </el-table>
 
         <span slot="footer" class="dialog-footer">
-            <el-button @click="handleClose">取消</el-button>
-            <el-button type="primary" @click="confirm">确定</el-button>
+            <el-button @click="handleClose">{{ t('common.button.cancel') }}</el-button>
+            <el-button type="primary" @click="confirm">{{ t('common.button.confirm') }}</el-button>
         </span>
     </el-dialog>
 </template>
 
 <script setup name="AddList">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 
 const props = defineProps({

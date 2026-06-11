@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -68,7 +53,7 @@
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" :icon="Search"> 查询 </el-button>
+                    <el-button type="primary" :icon="Search"> {{ t('common.button.query') }} </el-button>
                 </el-form-item>
             </el-form>
         </template>
@@ -90,11 +75,12 @@
 </template>
 
 <script setup name="DetailPopResViewC2">
-
-    import { Search } from '@element-plus/icons-vue';
+import { useI18n } from 'vue-i18n'
+import { Search } from '@element-plus/icons-vue';
     import moment from 'moment';
 
-    const params = ref({
+const { t } = useI18n();
+const params = ref({
         jcd: '',
         startDate: moment().subtract(7, 'days').format('YYYY-MM-DD'),
         endDate: moment().format('YYYY-MM-DD')

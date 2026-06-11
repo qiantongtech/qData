@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -129,7 +114,7 @@
           </template>
         </el-table-column>
         <el-table-column
-            label="描述"
+            :label="t('common.texts.description')"
             fixed="left"
             align="left"
             prop="remark"
@@ -140,7 +125,7 @@
                 :prop="`headerList[${findPosi(headerList, row.id)}].remark`"
                 :rules="rules.fieldDefault"
             >
-              <el-input v-model="row.remark" placeholder="请输入描述" />
+              <el-input v-model="row.remark" :placeholder="t('common.form.descriptionPlaceholder')" />
             </el-form-item>
           </template>
         </el-table-column>
@@ -161,18 +146,18 @@
           </template>
         </el-table-column>
         <el-table-column
-            label="操作"
+            :label="t('common.texts.operation')"
             align="center"
             class-name="small-padding fixed-width"
         >
           <template #default="{ row }">
-            <!-- <el-button link type="primary" icon="Edit" @click="handleUpdate(3, row)">修改</el-button> -->
+            <!-- <el-button link type="primary" icon="Edit" @click="handleUpdate(3, row)">{{ t('common.button.update') }}</el-button> -->
             <el-button
                 link
                 type="danger"
                 icon="Delete"
                 @click="handleDelete(3, row)"
-            >删除</el-button
+            >{{ t('common.button.delete') }}</el-button
             >
           </template>
         </el-table-column>
@@ -234,7 +219,7 @@
         </el-table-column>
 
         <el-table-column
-            label="描述"
+            :label="t('common.texts.description')"
             fixed="left"
             align="left"
             prop="remark"
@@ -245,7 +230,7 @@
                 :prop="`inputList[${findPosi(inputList, row.id)}].remark`"
                 :rules="rules.fieldDefault"
             >
-              <el-input v-model="row.remark" placeholder="请输入描述" />
+              <el-input v-model="row.remark" :placeholder="t('common.form.descriptionPlaceholder')" />
             </el-form-item>
           </template>
         </el-table-column>
@@ -334,7 +319,7 @@
         </el-table-column>
 
         <el-table-column
-            label="操作"
+            :label="t('common.texts.operation')"
             align="center"
             class-name="small-padding fixed-width"
         >
@@ -344,14 +329,14 @@
                 type="primary"
                 icon="Plus"
                 @click="handleAddRow(1, row)"
-            >新增</el-button
+            >{{ t('common.button.add') }}</el-button
             >
             <el-button
                 link
                 type="danger"
                 icon="Delete"
                 @click="handleDelete(1, row)"
-            >删除</el-button
+            >{{ t('common.button.delete') }}</el-button
             >
           </template>
         </el-table-column>
@@ -410,7 +395,7 @@
         </el-table-column>
 
         <el-table-column
-            label="描述"
+            :label="t('common.texts.description')"
             fixed="left"
             align="left"
             prop="remark"
@@ -421,7 +406,7 @@
                 :prop="`outputList[${findPosi(outputList, row.id)}].remark`"
                 :rules="rules.fieldDefault"
             >
-              <el-input v-model="row.remark" placeholder="请输入描述" />
+              <el-input v-model="row.remark" :placeholder="t('common.form.descriptionPlaceholder')" />
             </el-form-item>
           </template>
         </el-table-column>
@@ -466,7 +451,7 @@
         </el-table-column>
 
         <el-table-column
-            label="操作"
+            :label="t('common.texts.operation')"
             align="center"
             class-name="small-padding fixed-width"
         >
@@ -476,14 +461,14 @@
                 type="primary"
                 icon="Plus"
                 @click="handleAddRow(2, row)"
-            >新增</el-button
+            >{{ t('common.button.add') }}</el-button
             >
             <el-button
                 link
                 type="danger"
                 icon="Delete"
                 @click="handleDelete(2, row)"
-            >删除</el-button
+            >{{ t('common.button.delete') }}</el-button
             >
           </template>
         </el-table-column>
@@ -493,8 +478,11 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { ref, reactive, computed, watch, getCurrentInstance } from "vue";
 import { v4 as uuidv4 } from "uuid";
+
+const { t } = useI18n();
 // 接收父组件传递的form对象（其中包含 daAssetApiParamList）和其他属性
 const props = defineProps({
   form: Object,

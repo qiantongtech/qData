@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -69,7 +54,7 @@
         </el-col>
       </el-row>
       <el-col :span="24" v-if="!hideStatusAndSort">
-        <el-form-item label="状态" prop="validFlag">
+        <el-form-item :label="t('common.texts.status')" prop="validFlag">
           <el-radio v-model="form.validFlag" :label="true">启用</el-radio>
           <el-radio v-model="form.validFlag" :label="false">禁用</el-radio>
         </el-form-item>
@@ -88,12 +73,12 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="描述" prop="description">
+          <el-form-item :label="t('common.texts.description')" prop="description">
             <el-input
               type="textarea"
               maxlength="500个字符"
               show-word-limit
-              placeholder="请输入描述"
+              :placeholder="t('common.form.descriptionPlaceholder')"
               v-model="form.description"
               :min-height="192"
             />
@@ -102,12 +87,12 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="备注" prop="remark">
+          <el-form-item :label="t('common.texts.remark')" prop="remark">
             <el-input
               type="textarea"
               maxlength="500个字符"
               show-word-limit
-              placeholder="请输入备注"
+              :placeholder="t('common.form.remarkPlaceholder')"
               v-model="form.remark"
               :min-height="192"
             />
@@ -117,14 +102,16 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="onCancel">取 消</el-button>
-        <el-button type="primary" @click="onSubmit" :loading="loading">确 定</el-button>
+        <el-button @click="onCancel">{{ t('common.button.cancel') }}</el-button>
+        <el-button type="primary" @click="onSubmit" :loading="loading">{{ t('common.button.confirm') }}</el-button>
       </div>
     </template>
   </el-dialog>
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
+
 /**
  * CatEditDialog 组件使用说明
  *
@@ -157,6 +144,7 @@
 
 import { ref, computed, nextTick } from "vue";
 
+const { t } = useI18n();
 const emit = defineEmits(["submit", "cancel"]);
 
 const visible = ref(false);
@@ -188,7 +176,7 @@ const hideStatusAndSort = computed(() => dialogType.value === "dataCategory");
 
 // 默认校验规则
 const defaultRules = {
-  name: [{ required: true, message: "名称不能为空", trigger: "blur" }],
+  name: [{ required: true, message: t('common.form.nameRequired'), trigger: "blur" }],
   parentId: [{ required: true, message: "上级类目不能为空", trigger: "blur" }],
   code: [{ required: true, message: "编码不能为空", trigger: "blur" }],
 };

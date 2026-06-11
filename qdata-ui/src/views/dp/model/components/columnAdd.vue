@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -149,13 +134,13 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="描述" prop="modelComment">
+          <el-form-item :label="t('common.texts.description')" prop="modelComment">
             <el-input
               v-model="form.description"
               type="textarea"
               maxlength="500个字符"
               show-word-limit
-              placeholder="请输入描述"
+              :placeholder="t('common.form.descriptionPlaceholder')"
             />
           </el-form-item>
         </el-col>
@@ -194,7 +179,7 @@
 
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="closeDialog">取消</el-button>
+        <el-button @click="closeDialog">{{ t('common.button.cancel') }}</el-button>
         <el-button type="primary" @click="confirmDialog"> 确认 </el-button>
       </div>
     </template>
@@ -202,10 +187,12 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { defineProps, defineEmits, ref, computed, watch } from "vue";
 
 import { getDpDataElemList } from "@/api/dp/dataElem/dataElem";
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { column_type, dp_model_column_pk_flag, dp_model_column_nullable_flag } =
   proxy.useDict(
@@ -420,5 +407,4 @@ const confirmDialog = () => {
   });
 };
 </script>
-
 

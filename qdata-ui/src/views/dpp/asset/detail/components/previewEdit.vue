@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -55,20 +40,23 @@
         </el-form>
 
         <template #footer>
-            <el-button @click="visible = false">取消</el-button>
+            <el-button @click="visible = false">{{ t('common.button.cancel') }}</el-button>
             <el-button type="primary" @click="submitForm" :disabled="loading">
-                确定
+                {{ t('common.button.confirm') }}
             </el-button>
         </template>
     </el-dialog>
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { ref, watch } from "vue";
 import { ElMessage } from "element-plus";
 import { addDaAssetOperateLog } from "@/api/da/assetchild/operate/daAssetOperateLog.js";
 import moment from "moment";
 import OverflowTooltip from "@/components/OverflowTooltip";
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const props = defineProps({
     columns: {
@@ -148,7 +136,7 @@ function addRow(row, data) {
         operateType: row ? "2" : "1",
     };
 
-    title.value = row ? "修改" : "新增";
+    title.value = row ? t('common.button.update') : t('common.button.add');
     visible.value = true;
     dataForm.value = { ...row };
     oldData.value = { ...row };
@@ -186,7 +174,7 @@ function submitForm() {
             .then((res) => {
                 if (res.code == "200") {
                     close();
-                    ElMessage.success("修改成功");
+                    ElMessage.success(t('common.message.editSuccess'));
                     emit("ok");
                 }
             })

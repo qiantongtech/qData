@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -49,7 +34,7 @@
           @click="handleAdd"
           v-hasPermi="['dg:dgdesensitizelist:add']"
         >
-          新增
+          {{ t('common.button.add') }}
         </el-button>
         <el-button
           type="danger"
@@ -59,7 +44,7 @@
           @click="handleDelete"
           v-hasPermi="['dg:dgdesensitizelist:remove']"
         >
-          删除
+          {{ t('common.button.delete') }}
         </el-button>
       </template>
 
@@ -112,7 +97,7 @@
             :disabled="row.validFlag === true"
             v-hasPermi="['dg:dgdesensitizelist:edit']"
           >
-            修改
+            {{ t('common.button.update') }}
           </el-button>
           <el-button
             link
@@ -122,7 +107,7 @@
             @click="handleDelete(row)"
             v-hasPermi="['dg:dgdesensitizelist:remove']"
           >
-            删除
+            {{ t('common.button.delete') }}
           </el-button>
           <el-button
             link
@@ -131,7 +116,7 @@
             @click="handleDetail(row)"
             v-hasPermi="['dg:dgdesensitizelist:query']"
           >
-            详情
+            {{ t('common.button.details') }}
           </el-button>
         </template>
       </qt-table>
@@ -157,7 +142,7 @@
         @submit.prevent
       >
         <AssetColumnSelect v-model="form" />
-        <qt-form-item label="状态" prop="validFlag">
+        <qt-form-item :label="t('common.texts.status')" prop="validFlag">
           <el-radio-group v-model="form.validFlag">
             <el-radio
               v-for="opt in validFlagOptions"
@@ -168,21 +153,21 @@
             </el-radio>
           </el-radio-group>
         </qt-form-item>
-        <el-form-item label="描述" prop="assetDescription" class="row-full">
+        <el-form-item :label="t('common.texts.description')" prop="assetDescription" class="row-full">
           <el-input
             v-model="form.assetDescription"
             type="textarea"
-            placeholder="请输入描述"
+            :placeholder="t('common.form.descriptionPlaceholder')"
             :min-height="192"
             show-word-limit
             maxlength="500个字符"
           />
         </el-form-item>
-        <el-form-item label="备注" prop="remark" class="row-full">
+        <el-form-item :label="t('common.texts.remark')" prop="remark" class="row-full">
           <el-input
             v-model="form.remark"
             type="textarea"
-            placeholder="请输入备注"
+            :placeholder="t('common.form.remarkPlaceholder')"
             :min-height="192"
             show-word-limit
             maxlength="500个字符"
@@ -191,8 +176,8 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="cancel">取 消</el-button>
-          <el-button type="primary" @click="submitForm">确 定</el-button>
+          <el-button @click="cancel">{{ t('common.button.cancel') }}</el-button>
+          <el-button type="primary" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -243,36 +228,36 @@
             {{ form.assetcolumnName || "-" }}
           </div>
         </el-form-item>
-        <el-form-item label="状态" prop="validFlag">
+        <el-form-item :label="t('common.texts.status')" prop="validFlag">
           <el-tag v-if="form.validFlag === true" type="primary">启用</el-tag>
           <el-tag v-else-if="form.validFlag === false" type="danger"
             >禁用</el-tag
           >
         </el-form-item>
-        <el-form-item label="描述" prop="assetDescription" class="row-full">
+        <el-form-item :label="t('common.texts.description')" prop="assetDescription" class="row-full">
           <div class="form-readonly textarea">
             {{ form.assetDescription ?? "-" }}
           </div>
         </el-form-item>
-        <el-form-item label="备注" prop="remark" class="row-full">
+        <el-form-item :label="t('common.texts.remark')" prop="remark" class="row-full">
           <div class="form-readonly textarea">{{ form.remark ?? "-" }}</div>
         </el-form-item>
-        <el-form-item label="创建人" prop="createBy">
+        <el-form-item :label="t('common.texts.createdBy')" prop="createBy">
           <div class="form-readonly">{{ form.createBy ?? "-" }}</div>
         </el-form-item>
-        <el-form-item label="创建时间" prop="createTime">
+        <el-form-item :label="t('common.texts.createdTime')" prop="createTime">
           <div class="form-readonly">
             {{ parseTime(form.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
         </el-form-item>
 
-        <el-form-item label="更新人" prop="updateBy">
+        <el-form-item :label="t('common.texts.updatedBy')" prop="updateBy">
           <div class="form-readonly">
             {{ form.updateBy ?? "-" }}
           </div>
         </el-form-item>
 
-        <el-form-item label="更新时间" prop="updateTime">
+        <el-form-item :label="t('common.texts.updatedTime')" prop="updateTime">
           <div class="form-readonly">
             {{ parseTime(form.updateTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
@@ -280,7 +265,7 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="cancel">关 闭</el-button>
+          <el-button @click="cancel">{{ t('common.button.close') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -288,6 +273,7 @@
 </template>
 
 <script setup name="SensitiveList">
+import { useI18n } from 'vue-i18n'
 import {
   listDgDesensitizeList,
   getDgDesensitizeList,
@@ -301,6 +287,7 @@ import LevelBadge from "@/views/dg/safety/dataLevel/components/LevelBadge.vue";
 import { getCurrentInstance, onMounted, reactive, ref, toRefs } from "vue";
 import {delDesensitizeWhitelist} from "@/api/dg/safety/whitelist/desensitizeWhitelist.js";
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { dp_model_status } = proxy.useDict("dp_model_status");
 
@@ -359,7 +346,7 @@ const tableStore = reactive({
   },
   columns: [
     { type: "selection", width: 55, align: "left" },
-    { label: "编号", prop: "id", width: 60, sortable: true },
+    { label: t('common.texts.number'), prop: "id", width: 60, sortable: true },
     {
       label: "资产名称/描述",
       prop: "assetName",
@@ -397,17 +384,17 @@ const tableStore = reactive({
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: "状态",
+      label: t('common.texts.status'),
       slot: "validFlag",
     },
     {
-      label: "创建人",
+      label: t('common.texts.createdBy'),
       prop: "createBy",
       width: 120,
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: "创建时间",
+      label: t('common.texts.createdTime'),
       prop: "createTime",
       width: 150,
       sortable: true,
@@ -415,7 +402,7 @@ const tableStore = reactive({
       date: true,
     },
     {
-      label: "操作",
+      label: t('common.texts.operation'),
       width: 220,
       fixed: "right",
       slot: "handle",
@@ -452,11 +439,11 @@ const searchStore = reactive({
       },
     },
     {
-      label: "状态",
+      label: t('common.texts.status'),
       prop: "validFlag",
       component: {
         is: "select",
-        placeholder: "请选择状态",
+        placeholder: t('common.form.statusPlaceholder'),
         options: validFlagOptions,
       },
     },
@@ -477,7 +464,7 @@ function handleStatusChange(id, row, e) {
     .confirm('确认要"' + text + '","' + (row.assetName || "-") + '"吗？')
     .then(function () {
       updateDgDesensitizeList({ id, validFlag: row.validFlag }).then(() => {
-        proxy.$modal.msgSuccess("操作成功");
+        proxy.$modal.msgSuccess(t('common.message.msgOpSuccess'));
         tableRef.value.getList();
       });
     })
@@ -492,7 +479,7 @@ const title = ref("");
 const data = reactive({
   form: {},
   rules: {
-    validFlag: [{ required: true, message: "状态不能为空", trigger: "change" }],
+    validFlag: [{ required: true, message: t('common.form.statusRequired'), trigger: "change" }],
   },
 });
 
@@ -568,13 +555,13 @@ function submitForm() {
     if (valid) {
       if (form.value.id != null) {
         updateDgDesensitizeList(form.value).then(() => {
-          proxy.$modal.msgSuccess("修改成功");
+          proxy.$modal.msgSuccess(t('common.message.editSuccess'));
           open.value = false;
           tableRef.value.getList();
         });
       } else {
         addDgDesensitizeList(form.value).then(() => {
-          proxy.$modal.msgSuccess("新增成功");
+          proxy.$modal.msgSuccess(t('common.message.addSuccess'));
           open.value = false;
           tableRef.value.getList();
         });
@@ -599,7 +586,7 @@ function submitForm() {
     .then(() => {
       delDgDesensitizeList(_ids).then(() => {
         tableRef.value.getList();
-        proxy.$modal.msgSuccess("删除成功");
+        proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
       });
     })
     .catch(() => {
@@ -626,7 +613,7 @@ function handleDelete(row) {
       .then(() => {
         delDgDesensitizeList(invalidIds).then(() => {
           tableRef.value.getList();
-          proxy.$modal.msgSuccess("删除成功");
+          proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
         });
       })
       .catch(() => {

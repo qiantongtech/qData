@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -58,8 +43,8 @@
                                     </el-select>
                                 </el-form-item>
 
-                                <el-form-item label="状态" prop="publishStatus">
-                                    <el-select v-model="queryParams.publishStatus" placeholder="请选择状态" clearable
+                                <el-form-item :label="t('common.texts.status')" prop="publishStatus">
+                                    <el-select v-model="queryParams.publishStatus" :placeholder="t('common.form.statusPlaceholder')" clearable
                                         class="el-form-input-width">
                                         <el-option label="上线" value="online" />
                                         <el-option label="下线" value="offline" />
@@ -68,10 +53,10 @@
                                 <el-form-item>
                                     <el-button plain type="primary" @click="handleQuery"
                                         @mousedown="(e) => e.preventDefault()">
-                                        <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                                        <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
                                     </el-button>
                                     <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-                                        <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                                        <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
                                     </el-button>
                                 </el-form-item>
                             </el-form> -->
@@ -83,7 +68,7 @@
                 icon="Plus"
                 @click="openRuleSelector(undefined)"
                 v-if="!route.query.info"
-                >新增</el-button
+                >{{ t('common.button.add') }}</el-button
               >
             </el-col>
             <el-col :span="1.5">
@@ -107,7 +92,7 @@
         </div>
 
         <el-table stripe height="550px" :data="dppQualityTaskEvaluateSaveReqVO">
-          <el-table-column label="编号" type="index" align="left">
+          <el-table-column :label="t('common.texts.number')" type="index" align="left">
             <template #default="scope">
               {{ scope.row.id || "-" }}
             </template>
@@ -168,13 +153,13 @@
             </template>
           </el-table-column>
 
-          <el-table-column label="状态" align="left" prop="status" width="80">
+          <el-table-column :label="t('common.texts.status')" align="left" prop="status" width="80">
             <template #default="scope">
               {{ scope.row.status == "1" ? "上线" : "下线" }}
             </template>
           </el-table-column>
           <el-table-column
-            label="操作"
+            :label="t('common.texts.operation')"
             align="center"
             class-name="small-padding fixed-width"
             fixed="right"
@@ -194,14 +179,14 @@
                 type="primary"
                 icon="Edit"
                 @click="openRuleDialog(scope.row, scope.$index + 1)"
-                >修改</el-button
+                >{{ t('common.button.update') }}</el-button
               >
               <el-button
                 link
                 type="danger"
                 icon="Delete"
                 @click="handleRuleDelete(scope.$index + 1)"
-                >删除</el-button
+                >{{ t('common.button.delete') }}</el-button
               >
             </template>
           </el-table-column>
@@ -220,19 +205,20 @@
       :tableName="formData?.tableName"
     />
     <template #footer>
-      <el-button @click="handleClose">取消</el-button>
+      <el-button @click="handleClose">{{ t('common.button.cancel') }}</el-button>
       <el-button
         type="primary"
         @click="submitForm"
         :loading="loadingOptions.loading"
       >
-        确定
+        {{ t('common.button.confirm') }}
       </el-button>
     </template>
   </el-dialog>
 </template>
 
 <script setup name="qualityTask">
+import { useI18n } from 'vue-i18n'
 import { ref, reactive, toRefs, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import RuleSelectorDialog from "@/views/da/quality/qualityTask/components/ruleBase.vue";
@@ -248,6 +234,8 @@ const loading = ref(false);
 const showSearch = ref(true);
 import moment from "moment";
 import { getColumnByAssetId } from "@/api/dpp/task/index.js";
+
+const { t } = useI18n();
 let id = route.query.id || "";
 const router = useRouter();
 const {
@@ -270,7 +258,6 @@ function convertAssetToTask(asset) {
     },
   ];
 }
-
 
 let loadingInstance = ref(null); // 全局 loading 实例
 let originList = ref([]);

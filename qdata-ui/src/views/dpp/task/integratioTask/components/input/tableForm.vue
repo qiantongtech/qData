@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -53,8 +38,8 @@
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="24">
-                    <el-form-item label="描述" prop="description">
-                        <el-input v-if="!info" v-model="form.description" type="textarea" placeholder="请输入描述" />
+                    <el-form-item :label="t('common.texts.description')" prop="description">
+                        <el-input v-if="!info" v-model="form.description" type="textarea" :placeholder="t('common.form.descriptionPlaceholder')" />
                         <div v-else class="form-readonly">{{ form.description || '-' }}</div>
                     </el-form-item>
                 </el-col>
@@ -245,7 +230,7 @@
                     <el-row :gutter="15" class="btn-style">
                         <el-col :span="1.5">
                             <el-button type="primary" plain @click="openDialog()">
-                                <i class="iconfont-mini icon-xinzeng mr5"></i>新增
+                                <i class="iconfont-mini icon-xinzeng mr5"></i>{{ t('common.button.add') }}
                             </el-button>
                         </el-col>
                     </el-row>
@@ -280,12 +265,12 @@
                         {{ scope.row.cursorTime || "-" }}
                       </template>
                     </el-table-column>
-                    <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right"
+                    <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right"
                         width="240">
                         <template #default="scope">
                             <!-- <el-button link type="primary" icon="Edit"
-                @click="openDialog({ ...scope.row, index: scope.$index + 1 })">修改</el-button> -->
-                            <el-button type="danger" link icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
+                @click="openDialog({ ...scope.row, index: scope.$index + 1 })">{{ t('common.button.update') }}</el-button> -->
+                            <el-button type="danger" link icon="Delete" @click="handleDelete(scope.row)">{{ t('common.button.delete') }}</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -349,13 +334,14 @@
         </el-form>
         <template #footer>
             <div style="text-align: right">
-                <el-button @click="closeDialog">关闭</el-button>
-                <el-button type="primary" @click="saveData" v-if="!info">保存</el-button>
+                <el-button @click="closeDialog">{{ t('common.button.close') }}</el-button>
+                <el-button type="primary" @click="saveData" v-if="!info">{{ t('common.button.save') }}</el-button>
             </div>
         </template>
     </el-dialog>
 </template>
 <script setup>
+import { useI18n } from 'vue-i18n'
 import inputEditModel from './inputColumnEdit.vue';
 import SqlEditor from '@/components/SqlEditor/index1.vue';
 import {
@@ -371,6 +357,8 @@ import {
 import { listDppAsset } from '@/api/da/asset/asset.js';
 const { proxy } = getCurrentInstance();
 import useUserStore from '@/store/system/user.js';
+
+const { t } = useI18n();
 const userStore = useUserStore();
 const { dpp_connection } = proxy.useDict('dpp_connection');
 const props = defineProps({
@@ -583,9 +571,9 @@ const handleReleaseStateChange = (value) => {
     form.value.taskParams.readModeType = 1;
 };
 const handleDelete = (row) => {
-    ElMessageBox.confirm('确定要删除这条数据吗?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+    ElMessageBox.confirm('确定要删除这条数据吗?', t('common.message.prompt'), {
+        confirmButtonText: t('common.button.confirm'),
+        cancelButtonText: t('common.button.cancel'),
         type: 'warning'
     })
         .then(() => {
@@ -594,7 +582,7 @@ const handleDelete = (row) => {
             if (index !== -1) {
                 form.value.taskParams.dateIncrementConfig.column.splice(index, 1);
             }
-            ElMessage.success('删除成功');
+            ElMessage.success(t('common.message.deleteSuccess'));
         })
         .catch(() => {
             ElMessage.info('取消删除');

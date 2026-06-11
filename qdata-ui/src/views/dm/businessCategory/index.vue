@@ -19,7 +19,7 @@
           v-hasPermi="['dm:businesscategory:add']"
           @mousedown="(e) => e.preventDefault()"
         >
-          新增
+          {{ t('common.button.add') }}
         </el-button>
         <el-button
           class="toggle-expand-all"
@@ -33,7 +33,7 @@
           />
           <svg-icon v-else icon-class="expand" />
           <span>{{
-            tableStore.config.table.defaultExpandAll ? "折叠" : "展开"
+            tableStore.config.table.defaultExpandAll ? t('common.button.collapse') : t('common.button.expand')
           }}</span>
         </el-button>
       </template>
@@ -63,7 +63,7 @@
             :disabled="row.validFlag === true"
             v-hasPermi="['dm:businesscategory:edit']"
           >
-            修改
+            {{ t('common.button.update') }}
           </el-button>
           <el-button
             link
@@ -72,11 +72,11 @@
             @click="handleAdd(row)"
             v-hasPermi="['dm:businesscategory:add']"
           >
-            新增
+            {{ t('common.button.add') }}
           </el-button>
           <el-popover placement="bottom" :width="150" trigger="click">
             <template #reference>
-              <el-button link type="primary" icon="ArrowDown">更多</el-button>
+              <el-button link type="primary" icon="ArrowDown">{{ t('common.button.more') }}</el-button>
             </template>
             <div style="width: 100px" class="butgdlist">
               <el-button
@@ -87,7 +87,7 @@
                 v-hasPermi="['dm:businesscategory:remove']"
                 style="padding-left: 14px"
               >
-                详情
+                {{ t('common.button.details') }}
               </el-button>
               <el-button
                 link
@@ -97,7 +97,7 @@
                 v-hasPermi="['dm:businesscategory:remove']"
                 :disabled="row.validFlag === true"
               >
-                删除
+                {{ t('common.button.delete') }}
               </el-button>
             </div>
           </el-popover>
@@ -113,6 +113,7 @@
 </template>
 
 <script setup name="BusinessCategory">
+import { useI18n } from 'vue-i18n'
 import {
   listBusinessCategory,
   getBusinessCategory,
@@ -127,6 +128,7 @@ import { useRouter } from "vue-router";
 import { deptUserTree } from "@/api/system/system/user";
 import TagClamp from "@/components/TagClamp";
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const router = useRouter();
 
@@ -157,7 +159,7 @@ const tableStore = reactive({
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: "描述",
+      label: t('common.texts.description'),
       prop: "description",
       align: "left",
       width: 250,
@@ -179,24 +181,24 @@ const tableStore = reactive({
     },
     { label: "负责人", prop: "owner", width: 100 },
     { label: "负责人电话", prop: "ownerPhone", width: 120 },
-    { label: "状态", prop: "validFlag", width: 100, slot: "validFlag" },
+    { label: t('common.texts.status'), prop: "validFlag", width: 100, slot: "validFlag" },
     {
-      label: "备注",
+      label: t('common.texts.remark'),
       prop: "remark",
       align: "left",
       width: 150,
       showOverflowTooltip: { effect: "light" },
     },
-    { label: "创建人", prop: "createBy", width: 120 },
+    { label: t('common.texts.createdBy'), prop: "createBy", width: 120 },
     {
-      label: "创建时间",
+      label: t('common.texts.createdTime'),
       prop: "createTime",
       width: 150,
       sortable: true,
       sortableKey: "create_time",
       date: true,
     },
-    { label: "操作", width: 250, fixed: "right", slot: "action" },
+    { label: t('common.texts.operation'), width: 250, fixed: "right", slot: "action" },
   ],
   func: listBusinessCategory,
   params: {
@@ -330,7 +332,7 @@ function onDialogSubmit(payload) {
       : addBusinessCategory(payload);
   apiCall
     .then(() => {
-      proxy.$modal.msgSuccess(payload.id ? "修改成功" : "新增成功");
+      proxy.$modal.msgSuccess(payload.id ? t('common.message.editSuccess') : t('common.message.addSuccess'));
       businessLayerEditDialogRef.value.close();
       businessLayerEditDialogRef.value.refreshTreeData(); // 刷新弹窗内部树缓存
       tableRef.value?.getList();
@@ -348,7 +350,7 @@ function handleDelete(row) {
       tableRef.value?.getList();
       getTreeData();
       businessLayerEditDialogRef.value.refreshTreeData(); // 刷新弹窗内部树缓存
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
     })
     .catch(() => {});
 }

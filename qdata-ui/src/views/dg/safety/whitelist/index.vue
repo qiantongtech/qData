@@ -81,7 +81,7 @@
           @click="handleAdd"
           v-hasPermi="['dg:desensitizewhitelist:add']"
         >
-          新增
+          {{ t('common.button.add') }}
         </el-button>
         <el-button
           type="danger"
@@ -91,7 +91,7 @@
           @click="handleDelete"
           v-hasPermi="['dg:desensitizewhitelist:remove']"
         >
-          删除
+          {{ t('common.button.delete') }}
         </el-button>
       </template>
 
@@ -148,7 +148,7 @@
             @click="handleDetail(row)"
             v-hasPermi="['dg:desensitizewhitelist:query']"
           >
-            详情
+            {{ t('common.button.details') }}
           </el-button>
           <el-button
             link
@@ -157,7 +157,7 @@
             @click="handleUpdate(row)"
             v-hasPermi="['dg:desensitizewhitelist:edit']"
           >
-            修改
+            {{ t('common.button.update') }}
           </el-button>
           <!-- :disabled="row.validFlag == true" -->
           <!--  -->
@@ -169,7 +169,7 @@
             @click="handleDelete(row)"
             v-hasPermi="['dg:desensitizewhitelist:remove']"
           >
-            删除
+            {{ t('common.button.delete') }}
           </el-button>
         </template>
       </qt-table>
@@ -259,7 +259,7 @@
             :end-placeholder="td('common.form.endTimePlaceholder')"
           />
         </el-form-item>
-        <qt-form-item label="状态" prop="validFlag">
+        <qt-form-item :label="t('common.texts.status')" prop="validFlag">
           <el-radio-group v-model="form.validFlag">
             <el-radio
               v-for="opt in validFlagOptions"
@@ -270,21 +270,21 @@
             </el-radio>
           </el-radio-group>
         </qt-form-item>
-        <el-form-item label="描述" prop="description" class="row-full">
+        <el-form-item :label="t('common.texts.description')" prop="description" class="row-full">
           <el-input
             v-model="form.description"
             type="textarea"
-            placeholder="请输入描述"
+            :placeholder="t('common.form.descriptionPlaceholder')"
             :min-height="192"
             show-word-limit
             maxlength="500个字符"
           />
         </el-form-item>
-        <el-form-item label="备注" prop="remark" class="row-full">
+        <el-form-item :label="t('common.texts.remark')" prop="remark" class="row-full">
           <el-input
             v-model="form.remark"
             type="textarea"
-            placeholder="请输入备注"
+            :placeholder="t('common.form.remarkPlaceholder')"
             :min-height="192"
             show-word-limit
             maxlength="500个字符"
@@ -293,8 +293,8 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="cancel">取 消</el-button>
-          <el-button type="primary" @click="submitForm">确 定</el-button>
+          <el-button @click="cancel">{{ t('common.button.cancel') }}</el-button>
+          <el-button type="primary" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -346,36 +346,36 @@
             {{ formatTimeRange(form.startTime, form.endTime) }}
           </div>
         </el-form-item>
-        <el-form-item label="状态" prop="validFlag">
+        <el-form-item :label="t('common.texts.status')" prop="validFlag">
           <el-tag v-if="form.validFlag === true" type="primary">启用</el-tag>
           <el-tag v-else-if="form.validFlag === false" type="danger"
             >禁用</el-tag
           >
         </el-form-item>
-        <el-form-item label="描述" prop="description" class="row-full">
+        <el-form-item :label="t('common.texts.description')" prop="description" class="row-full">
           <div class="form-readonly textarea">
             {{ form.description ?? "-" }}
           </div>
         </el-form-item>
-        <el-form-item label="备注" prop="remark" class="row-full">
+        <el-form-item :label="t('common.texts.remark')" prop="remark" class="row-full">
           <div class="form-readonly textarea">{{ form.remark ?? "-" }}</div>
         </el-form-item>
-        <el-form-item label="创建人" prop="createBy">
+        <el-form-item :label="t('common.texts.createdBy')" prop="createBy">
           <div class="form-readonly">{{ form.createBy ?? "-" }}</div>
         </el-form-item>
-        <el-form-item label="创建时间" prop="createTime">
+        <el-form-item :label="t('common.texts.createdTime')" prop="createTime">
           <div class="form-readonly">
             {{ parseTime(form.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
         </el-form-item>
 
-        <el-form-item label="更新人" prop="updateBy">
+        <el-form-item :label="t('common.texts.updatedBy')" prop="updateBy">
           <div class="form-readonly">
             {{ form.updateBy ?? "-" }}
           </div>
         </el-form-item>
 
-        <el-form-item label="更新时间" prop="updateTime">
+        <el-form-item :label="t('common.texts.updatedTime')" prop="updateTime">
           <div class="form-readonly">
             {{ parseTime(form.updateTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
@@ -383,7 +383,7 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="cancel">关 闭</el-button>
+          <el-button @click="cancel">{{ t('common.button.close') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -435,13 +435,13 @@
               @click="handleQueryUser"
               @mousedown="(e) => e.preventDefault()"
             >
-              查询
+              {{ t('common.button.query') }}
             </el-button>
             <el-button
               @click="resetQueryUser"
               @mousedown="(e) => e.preventDefault()"
             >
-              重置
+              {{ t('common.button.reset') }}
             </el-button>
           </el-form-item>
         </el-form>
@@ -456,7 +456,7 @@
         >
           <el-table-column type="selection" width="70" align="center" />
           <el-table-column
-            label="编号"
+            :label="t('common.texts.number')"
             width="80"
             align="center"
             prop="userId"
@@ -520,13 +520,13 @@
               @click="handleQueryRole"
               @mousedown="(e) => e.preventDefault()"
             >
-              查询
+              {{ t('common.button.query') }}
             </el-button>
             <el-button
               @click="resetQueryRole"
               @mousedown="(e) => e.preventDefault()"
             >
-              重置
+              {{ t('common.button.reset') }}
             </el-button>
           </el-form-item>
         </el-form>
@@ -541,7 +541,7 @@
         >
           <el-table-column type="selection" width="70" align="center" />
           <el-table-column
-            label="编号"
+            :label="t('common.texts.number')"
             width="80"
             align="center"
             prop="roleId"
@@ -559,7 +559,7 @@
             :show-overflow-tooltip="{ effect: 'light' }"
           />
           <el-table-column
-            label="备注"
+            :label="t('common.texts.remark')"
             align="center"
             prop="remark"
             :show-overflow-tooltip="{ effect: 'light' }"
@@ -589,14 +589,14 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button size="mini" @click="effectiveAccountPickerOpen = false">
-            取 消
+            {{ t('common.button.cancel') }}
           </el-button>
           <el-button
             type="primary"
             size="mini"
             @click="confirmEffectiveAccount"
           >
-            确 定
+            {{ t('common.button.confirm') }}
           </el-button>
         </div>
       </template>
@@ -605,6 +605,7 @@
 </template>
 
 <script setup name="Whitelist">
+import { useI18n } from 'vue-i18n'
 import {
   addDesensitizeWhitelist,
   delDesensitizeWhitelist,
@@ -625,7 +626,8 @@ import {
   computed,
 } from "vue"
 import useDefaultLang from "@/composables/useDefaultLang";
-const { td } = useDefaultLang();;
+const { td } = useDefaultLang();
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { effective_category_type } = proxy.useDict(
   "dp_model_status",
@@ -782,7 +784,7 @@ const tableStore = reactive({
   },
   columns: [
     { type: "selection", width: 55, align: "left" },
-    { label: "编号", prop: "id", width: 60, sortable: true },
+    { label: t('common.texts.number'), prop: "id", width: 60, sortable: true },
     {
       label: "白名单名称/描述",
       prop: "name",
@@ -820,18 +822,18 @@ const tableStore = reactive({
       align: "left",
     },
     {
-      label: "状态",
+      label: t('common.texts.status'),
       prop: "validFlag",
       slot: "status",
       width: 120,
     },
     {
-      label: "创建人",
+      label: t('common.texts.createdBy'),
       prop: "createBy",
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: "创建时间",
+      label: t('common.texts.createdTime'),
       prop: "createTime",
       width: 150,
       sortable: true,
@@ -839,7 +841,7 @@ const tableStore = reactive({
       date: true,
     },
     {
-      label: "操作",
+      label: t('common.texts.operation'),
       width: 220,
       fixed: "right",
       slot: "handle",
@@ -874,11 +876,11 @@ const searchStore = reactive({
       },
     },
     {
-      label: "状态",
+      label: t('common.texts.status'),
       prop: "validFlag",
       component: {
         is: "select",
-        placeholder: "请选择状态",
+        placeholder: t('common.form.statusPlaceholder'),
         options: validFlagOptions,
       },
     },
@@ -902,7 +904,7 @@ function handleStatusChange(id, row, e) {
     .confirm('确认要"' + text + '","' + (row.name || "-") + '"吗？')
     .then(async function () {
       await updateDesensitizeWhitelist({ id, validFlag: row.validFlag });
-      proxy.$modal.msgSuccess("操作成功");
+      proxy.$modal.msgSuccess(t('common.message.msgOpSuccess'));
       tableRef.value.getList();
     })
     .catch(function () {
@@ -936,7 +938,7 @@ const data = reactive({
     effectiveTimeRange: [
       { required: true, message: "生效时段不能为空", trigger: "change" },
     ],
-    validFlag: [{ required: true, message: "状态不能为空", trigger: "change" }],
+    validFlag: [{ required: true, message: t('common.form.statusRequired'), trigger: "change" }],
   },
 });
 
@@ -1303,13 +1305,13 @@ function submitForm() {
     const payload = buildSubmitPayload();
     if (form.value.id != null) {
       await updateDesensitizeWhitelist(payload);
-      proxy.$modal.msgSuccess("修改成功");
+      proxy.$modal.msgSuccess(t('common.message.editSuccess'));
       open.value = false;
       tableRef.value.getList();
       return;
     }
     await addDesensitizeWhitelist(payload);
-    proxy.$modal.msgSuccess("新增成功");
+    proxy.$modal.msgSuccess(t('common.message.addSuccess'));
     open.value = false;
     tableRef.value.getList();
   });
@@ -1329,11 +1331,10 @@ function submitForm() {
     .then(async () => {
       await delDesensitizeWhitelist(_ids);
       tableRef.value.getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
     })
     .catch(() => {});
 }*/
-
 
 function handleDelete(row) {
   const invalidIds = [];
@@ -1355,7 +1356,7 @@ function handleDelete(row) {
       .then(async () => {
         await delDesensitizeWhitelist(invalidIds);
         tableRef.value.getList();
-        proxy.$modal.msgSuccess("删除成功");
+        proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
       })
       .catch(() => {});
 }

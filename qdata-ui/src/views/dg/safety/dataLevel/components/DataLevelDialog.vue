@@ -31,27 +31,27 @@
         />
       </el-form-item>
 
-      <el-form-item label="状态" prop="validFlag">
+      <el-form-item :label="t('common.texts.status')" prop="validFlag">
         <el-radio-group v-model="form.validFlag">
           <el-radio label="禁用" :value="false" />
           <el-radio label="启用" :value="true" />
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="描述" prop="description">
+      <el-form-item :label="t('common.texts.description')" prop="description">
         <el-input
           v-model="form.description"
           type="textarea"
-          placeholder="请输入描述"
+          :placeholder="t('common.form.descriptionPlaceholder')"
           :min-height="192"
           show-word-limit
           maxlength="500个字符"
         />
       </el-form-item>
-      <el-form-item label="备注" prop="remark">
+      <el-form-item :label="t('common.texts.remark')" prop="remark">
         <el-input
           v-model="form.remark"
           type="textarea"
-          placeholder="请输入备注"
+          :placeholder="t('common.form.remarkPlaceholder')"
           :min-height="192"
           show-word-limit
           maxlength="500个字符"
@@ -61,7 +61,7 @@
 
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="handleClose">取消</el-button>
+        <el-button @click="handleClose">{{ t('common.button.cancel') }}</el-button>
         <el-button type="primary" :loading="submitLoading" @click="submitForm"
           >确认</el-button
         >
@@ -71,6 +71,7 @@
 </template>
 
 <script setup name="DataLevelDialog">
+import { useI18n } from 'vue-i18n'
 import {
   addDataLevel,
   getDataLevel,
@@ -79,6 +80,7 @@ import {
 } from "@/api/dg/dataLevel/dataLevel";
 import { ref, watch, computed, getCurrentInstance } from "vue";
 
+const { t } = useI18n();
 const props = defineProps({
   open: {
     type: Boolean,
@@ -153,7 +155,7 @@ const rules = {
       trigger: "blur",
     },
   ],
-  validFlag: [{ required: true, message: "状态不能为空", trigger: "change" }],
+  validFlag: [{ required: true, message: t('common.form.statusRequired'), trigger: "change" }],
 };
 
 watch(
@@ -255,7 +257,7 @@ function submitForm() {
 
     req
       .then(() => {
-        proxy.$modal.msgSuccess(formData.id ? "修改成功" : "新增成功");
+        proxy.$modal.msgSuccess(formData.id ? t('common.message.editSuccess') : t('common.message.addSuccess'));
         emit("success");
         handleClose();
       })

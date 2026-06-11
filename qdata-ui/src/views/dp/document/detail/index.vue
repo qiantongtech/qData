@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -40,7 +25,7 @@
         <el-row :gutter="2">
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">编号</div>
+              <div class="infotop-row-lable">{{ t('common.texts.number') }}</div>
               <div class="infotop-row-value">{{ dpDocumentDetail.id }}</div>
             </div>
           </el-col>
@@ -62,7 +47,7 @@
           </el-col>
           <el-col :span="24" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">描述</div>
+              <div class="infotop-row-lable">{{ t('common.texts.description') }}</div>
               <div class="infotop-row-value">
                 {{ dpDocumentDetail.description || "-" }}
               </div>
@@ -93,7 +78,7 @@
           </el-col>
           <!-- <el-col :span="24">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">备注</div>
+              <div class="infotop-row-lable">{{ t('common.texts.remark') }}</div>
               <div class="infotop-row-value">
                 {{ dpDocumentDetail.remark || "-" }}
               </div>
@@ -123,11 +108,14 @@
 </template>
 
 <script setup name="DpDocument">
+import { useI18n } from 'vue-i18n'
 import { getDpDocument } from "@/api/dp/document/document";
 import { useRoute } from 'vue-router';
 import BasicInfo from "./info.vue";
 import model from "./model.vue";
 import dataElem from "./dataElem.vue";
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { column_type, sys_disable, dp_document_status } = proxy.useDict(
   "column_type",

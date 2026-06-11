@@ -64,12 +64,12 @@
       </div>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="handleCancel">取消</el-button>
+          <el-button @click="handleCancel">{{ t('common.button.cancel') }}</el-button>
           <el-button
             type="primary"
             :disabled="selectedTableList.length === 0"
             @click="handleConfirm"
-            >确定</el-button
+            >{{ t('common.button.confirm') }}</el-button
           >
         </div>
       </template>
@@ -78,6 +78,7 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import {
   ref,
   reactive,
@@ -91,6 +92,7 @@ import { listTable } from "@/api/mc/unreleased/table";
 import { Search } from "@element-plus/icons-vue";
 import { debounce } from "lodash-es";
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 
 const props = defineProps({
@@ -143,7 +145,7 @@ const tableColumns = [
     showOverflowTooltip: true,
   },
   {
-    label: "描述",
+    label: t('common.texts.description'),
     prop: "description",
     align: "left",
     minWidth: 150,

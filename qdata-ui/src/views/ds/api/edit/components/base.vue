@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -88,8 +73,8 @@
         </el-row>
         <el-row :gutter="20">
             <el-col :span="24">
-                <el-form-item label="描述" prop="description">
-                    <el-input v-model="form1.description" type="textarea" placeholder="请输入描述" />
+                <el-form-item :label="t('common.texts.description')" prop="description">
+                    <el-input v-model="form1.description" type="textarea" :placeholder="t('common.form.descriptionPlaceholder')" />
                 </el-form-item>
             </el-col>
         </el-row>
@@ -125,7 +110,7 @@
                 </el-form-item>
             </el-col>
             <el-col :span="12">
-                <el-form-item label="状态" prop="status">
+                <el-form-item :label="t('common.texts.status')" prop="status">
                     <el-radio-group v-model="form1.status">
                         <el-radio v-for="dict in ds_api_status" :key="dict.value" :value="dict.value">{{
                             dict.label
@@ -150,7 +135,7 @@
         </el-row>
         <el-row :gutter="20">
             <el-col :span="24">
-                <el-form-item label="备注" prop="remark">
+                <el-form-item :label="t('common.texts.remark')" prop="remark">
                     <el-input v-model="form1.remark" type="textarea" placeholder="请输入内容" />
                 </el-form-item>
             </el-col>
@@ -159,7 +144,10 @@
 </template>
 
 <script setup name="base">
+import { useI18n } from 'vue-i18n'
 import { listAttApiCat } from '@/api/ds/apiCat/apiCat';
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const {
     ds_api_bas_info_res_data_type,

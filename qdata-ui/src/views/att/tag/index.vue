@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -61,7 +46,7 @@
               @click="handleAdd"
               v-hasPermi="['att:tag:add']"
             >
-              新增
+              {{ t('common.button.add') }}
             </el-button>
             <el-button
               type="danger"
@@ -71,7 +56,7 @@
               @click="handleDelete"
               v-hasPermi="['att:tag:remove']"
             >
-              删除
+              {{ t('common.button.delete') }}
             </el-button>
           </template>
           <qt-table v-bind="tableStore" ref="tableRef">
@@ -93,7 +78,7 @@
                 @click="handleUpdate(row)"
                 :disabled="row.status == 1"
                 v-hasPermi="['att:tag:edit']"
-                >修改</el-button
+                >{{ t('common.button.update') }}</el-button
               >
               <el-button
                 link
@@ -102,7 +87,7 @@
                 :disabled="row.status == 1"
                 @click="handleDelete(row)"
                 v-hasPermi="['att:tag:remove']"
-                >删除</el-button
+                >{{ t('common.button.delete') }}</el-button
               >
               <el-button
                 link
@@ -110,7 +95,7 @@
                 icon="view"
                 @click="handleDetail(row)"
                 v-hasPermi="['att:tag:query']"
-                >详情</el-button
+                >{{ t('common.button.details') }}</el-button
               >
             </template>
           </qt-table>
@@ -175,7 +160,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <qt-form-item label="状态" prop="status" :tip="{content:'启用状态表示该标签可用于打标数据资产；禁用后无法再被使用，但已有标签仍保留。'}">
+            <qt-form-item :label="t('common.texts.status')" prop="status" :tip="{content:'启用状态表示该标签可用于打标数据资产；禁用后无法再被使用，但已有标签仍保留。'}">
               <el-radio-group v-model="form.status">
                 <el-radio
                   v-for="dict in dp_model_status"
@@ -189,11 +174,11 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="描述" prop="description">
+            <el-form-item :label="t('common.texts.description')" prop="description">
               <el-input
                 v-model="form.description"
                 type="textarea"
-                placeholder="请输入描述"
+                :placeholder="t('common.form.descriptionPlaceholder')"
                 maxlength="500个字符"
                 show-word-limit
               />
@@ -202,13 +187,13 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="备注" prop="remark">
+            <el-form-item :label="t('common.texts.remark')" prop="remark">
               <el-input
                 v-model="form.remark"
                 type="textarea"
                 maxlength="500个字符"
                 show-word-limit
-                placeholder="请输入备注"
+                :placeholder="t('common.form.remarkPlaceholder')"
               />
             </el-form-item>
           </el-col>
@@ -216,9 +201,9 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="cancel">取 消</el-button>
+          <el-button size="mini" @click="cancel">{{ t('common.button.cancel') }}</el-button>
           <el-button type="primary" size="mini" @click="submitForm"
-            >确 定</el-button
+            >{{ t('common.button.confirm') }}</el-button
           >
         </div>
       </template>
@@ -227,6 +212,7 @@
 </template>
 
 <script setup name="AttTag">
+import { useI18n } from 'vue-i18n'
 import {
   listAttTag,
   getAttTag,
@@ -239,6 +225,7 @@ import { listAttTagCat } from "@/api/att/cat/tagCat/tagCat.js";
 import { getCurrentInstance, ref, reactive, toRefs } from "vue";
 import { useRouter } from "vue-router";
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { dp_model_status } = proxy.useDict("dp_model_status");
 const router = useRouter();
@@ -276,7 +263,7 @@ const tableStore = reactive({
     },
   },
   columns: [
-    { label: "编号", prop: "id", width: 60, sortable: true },
+    { label: t('common.texts.number'), prop: "id", width: 60, sortable: true },
     {
       label: "标签名称",
       prop: "name",
@@ -295,7 +282,7 @@ const tableStore = reactive({
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: "描述",
+      label: t('common.texts.description'),
       prop: "description",
       align: "left",
       width: 240,
@@ -313,7 +300,7 @@ const tableStore = reactive({
       }
     },
     {
-        label: "状态",
+        label: t('common.texts.status'),
         prop: "status",
         slot: "status",
         minWidth: 120,
@@ -322,13 +309,13 @@ const tableStore = reactive({
         }
     },
     {
-      label: "创建人",
+      label: t('common.texts.createdBy'),
       prop: "createBy",
       width: 120,
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: "创建时间",
+      label: t('common.texts.createdTime'),
       prop: "createTime",
       width: 150,
       sortable: true,
@@ -336,7 +323,7 @@ const tableStore = reactive({
       date: true,
     },
     {
-      label: "操作",
+      label: t('common.texts.operation'),
       width: 240,
       fixed: "right",
       slot: "handle",
@@ -357,16 +344,16 @@ const searchStore = reactive({
       component: { is: "input", placeholder: "请输入标签名称" },
     },
     {
-      label: "创建人",
+      label: t('common.texts.createdBy'),
       prop: "createBy",
       component: { is: "input", placeholder: "请输入创建人" },
     },
     {
-      label: "状态",
+      label: t('common.texts.status'),
       prop: "status",
       component: {
         is: "select",
-        placeholder: "请选择状态",
+        placeholder: t('common.form.statusPlaceholder'),
         options: dp_model_status,
       },
     },
@@ -401,7 +388,7 @@ function handleStatusChange(id, row, e) {
     .confirm('确认要"' + text + '","' + row.name + '"标签吗？')
     .then(function () {
       updateAttTag(dataForm).then((response) => {
-        proxy.$modal.msgSuccess("操作成功");
+        proxy.$modal.msgSuccess(t('common.message.msgOpSuccess'));
         tableRef.value.getList();
       });
     })
@@ -493,13 +480,13 @@ function submitForm() {
       if (form.value.id != null) {
         form.value.status = null;
         updateAttTag(form.value).then((response) => {
-          proxy.$modal.msgSuccess("修改成功");
+          proxy.$modal.msgSuccess(t('common.message.editSuccess'));
           open.value = false;
           tableRef.value.getList();
         });
       } else {
         addAttTag(form.value).then((response) => {
-          proxy.$modal.msgSuccess("新增成功");
+          proxy.$modal.msgSuccess(t('common.message.addSuccess'));
           open.value = false;
           tableRef.value.getList();
         });
@@ -527,7 +514,7 @@ function handleDelete(row) {
     })
     .then(() => {
       tableRef.value.getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
     })
     .catch(() => {
       // 用户取消删除操作

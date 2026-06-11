@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -38,7 +23,7 @@
                <el-input v-model="queryParams.deptName" placeholder="请输入部门名称" clearable class="el-form-input-width"
                   @keyup.enter="handleQuery" />
             </el-form-item>
-            <el-form-item label="状态" prop="status">
+            <el-form-item :label="t('common.texts.status')" prop="status">
                <el-select v-model="queryParams.status" placeholder="部门状态" clearable class="el-form-input-width">
                   <el-option v-for="dict in sys_normal_disable" :key="dict.value" :label="dict.label"
                      :value="dict.value" />
@@ -46,10 +31,10 @@
             </el-form-item>
             <el-form-item>
                <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                  <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                  <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
                </el-button>
                <el-button @click="resetQuery" @mousedown="e => e.preventDefault()">
-                  <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                  <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
                </el-button>
             </el-form-item>
          </el-form>
@@ -59,10 +44,10 @@
             <el-row :gutter="10" class="btn-style">
                <el-col :span="1.5">
                   <el-button type="primary" plain icon="Plus" @click="handleAdd"
-                     v-hasPermi="['system:dept:add']">新增</el-button>
+                     v-hasPermi="['system:dept:add']">{{ t('common.button.add') }}</el-button>
                </el-col>
                <el-col :span="1.5">
-                  <el-button type="info" plain icon="Sort" @click="toggleExpandAll">展开/折叠</el-button>
+                  <el-button type="info" plain icon="Sort" @click="toggleExpandAll">{{ t('common.button.un_fold') }}</el-button>
                </el-col>
             </el-row>
             <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
@@ -72,24 +57,24 @@
             :default-expand-all="isExpandAll" :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
             <el-table-column prop="deptName" label="部门名称" :show-overflow-tooltip="true"></el-table-column>
             <el-table-column prop="orderNum" label="排序"></el-table-column>
-            <el-table-column prop="status" label="状态">
+            <el-table-column prop="status" :label="t('common.texts.status')">
                <template #default="scope">
                   <dict-tag :options="sys_normal_disable" :value="scope.row.status" />
                </template>
             </el-table-column>
-            <el-table-column label="创建时间" align="center" prop="createTime" width="160">
+            <el-table-column :label="t('common.texts.createdTime')" align="center" prop="createTime" width="160">
                <template #default="scope">
                   <span>{{ parseTime(scope.row.createTime) }}</span>
                </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
+            <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
                <template #default="scope">
                   <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-                     v-hasPermi="['system:dept:edit']">修改</el-button>
+                     v-hasPermi="['system:dept:edit']">{{ t('common.button.update') }}</el-button>
                   <el-button link type="primary" icon="Plus" @click="handleAdd(scope.row)"
-                     v-hasPermi="['system:dept:add']">新增</el-button>
+                     v-hasPermi="['system:dept:add']">{{ t('common.button.add') }}</el-button>
                   <el-button v-if="scope.row.parentId != 0" link type="danger" icon="Delete"
-                     @click="handleDelete(scope.row)" v-hasPermi="['system:dept:remove']">删除</el-button>
+                     @click="handleDelete(scope.row)" v-hasPermi="['system:dept:remove']">{{ t('common.button.delete') }}</el-button>
                </template>
             </el-table-column>
          </el-table>
@@ -144,8 +129,8 @@
          </el-form>
          <template #footer>
             <div class="dialog-footer">
-               <el-button @click="cancel">取 消</el-button>
-               <el-button type="primary" @click="submitForm">确 定</el-button>
+               <el-button @click="cancel">{{ t('common.button.cancel') }}</el-button>
+               <el-button type="primary" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
             </div>
          </template>
       </el-dialog>
@@ -153,7 +138,10 @@
 </template>
 
 <script setup name="Dept">
+import { useI18n } from 'vue-i18n'
 import { listDept, getDept, delDept, addDept, updateDept, listDeptExcludeChild } from "@/api/system/system/dept.js";
+
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
 
@@ -265,13 +253,13 @@ function submitForm() {
       if (valid) {
          if (form.value.deptId != undefined) {
             updateDept(form.value).then(response => {
-               proxy.$modal.msgSuccess("修改成功");
+               proxy.$modal.msgSuccess(t('common.message.editSuccess'));
                open.value = false;
                getList();
             });
          } else {
             addDept(form.value).then(response => {
-               proxy.$modal.msgSuccess("新增成功");
+               proxy.$modal.msgSuccess(t('common.message.addSuccess'));
                open.value = false;
                getList();
             });
@@ -286,7 +274,7 @@ function handleDelete(row) {
       return delDept(row.deptId);
    }).then(() => {
       getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
    }).catch(() => { });
 }
 

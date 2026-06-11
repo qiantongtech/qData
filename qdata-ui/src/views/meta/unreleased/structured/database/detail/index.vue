@@ -25,7 +25,7 @@
               @mousedown="(e) => e.preventDefault()"
               @click="router.back"
             >
-              <svg-icon iconClass="fhs" />返回
+              <svg-icon iconClass="fhs" />{{ t('common.button.return') }}
             </el-button>
           </div>
         </div>
@@ -81,12 +81,14 @@
   </div>
 </template>
 <script setup name="DatabaseDetail">
+import { useI18n } from 'vue-i18n'
 import { computed, getCurrentInstance, reactive, toValue } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { getDb } from "@/api/mc/unreleased/db.js";
 import { listDomain } from "@/api/att/domain/domain.js";
 import { getParentLabelPath } from "@/utils/anivia.js";
 
+const { t } = useI18n();
 const tabData = [
   {
     key: "BaseInfo",

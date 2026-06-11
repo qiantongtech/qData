@@ -16,7 +16,7 @@
           @click="handleAddClick"
           v-hasPermi="['md:domain:add']"
         >
-          新增
+          {{ t('common.button.add') }}
         </el-button>
         <el-button
           type="danger"
@@ -26,7 +26,7 @@
           @click="handleDeleteColumnClick"
           v-hasPermi="['md:domain:remove']"
         >
-          删除
+          {{ t('common.button.delete') }}
         </el-button>
         <el-button
           class="toggle-expand-all"
@@ -36,7 +36,7 @@
         >
           <svg-icon v-if="defaultExpandAll" icon-class="toggle" />
           <svg-icon v-else icon-class="expand" />
-          <span>{{ defaultExpandAll ? "折叠" : "展开" }}</span>
+          <span>{{ defaultExpandAll ? t('common.button.collapse') : t('common.button.expand') }}</span>
         </el-button>
       </template>
       <qt-table v-bind="tableStroe" ref="tableRef">
@@ -54,7 +54,7 @@
             @click="handleEditClick(row)"
             v-hasPermi="['md:domain:edit']"
           >
-            修改
+            {{ t('common.button.update') }}
           </el-button>
           <el-button
             link
@@ -63,7 +63,7 @@
             @click="handleAddClick(row)"
             v-hasPermi="['md:domain:add']"
           >
-            新增
+            {{ t('common.button.add') }}
           </el-button>
           <el-button
             link
@@ -73,7 +73,7 @@
             @click="handleDeleteClick(row)"
             v-hasPermi="['md:domain:remove']"
           >
-            删除
+            {{ t('common.button.delete') }}
           </el-button>
         </template>
       </qt-table>
@@ -107,7 +107,7 @@
         <el-form-item label="业务域名称" prop="name">
           <el-input v-model="dialog.form.name" placeholder="请输入业务域名称" />
         </el-form-item>
-        <el-form-item label="状态" prop="validFlag">
+        <el-form-item :label="t('common.texts.status')" prop="validFlag">
           <el-radio-group v-model="dialog.form.validFlag">
             <el-radio :label="true">启用</el-radio>
             <el-radio :label="false">禁用</el-radio>
@@ -121,21 +121,21 @@
             style="width: 100%"
           />
         </el-form-item>
-        <el-form-item label="描述" class="row-full">
+        <el-form-item :label="t('common.texts.description')" class="row-full">
           <el-input
             v-model="dialog.form.description"
             type="textarea"
-            placeholder="请输入描述"
+            :placeholder="t('common.form.descriptionPlaceholder')"
             :min-height="192"
             show-word-limit
             maxlength="500个字符"
           />
         </el-form-item>
-        <el-form-item label="备注" class="row-full">
+        <el-form-item :label="t('common.texts.remark')" class="row-full">
           <el-input
             v-model="dialog.form.remark"
             type="textarea"
-            placeholder="请输入备注"
+            :placeholder="t('common.form.remarkPlaceholder')"
             :min-height="192"
             show-word-limit
             maxlength="500个字符"
@@ -144,9 +144,9 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="handleCancelClick">取消</el-button>
+          <el-button @click="handleCancelClick">{{ t('common.button.cancel') }}</el-button>
           <el-button type="primary" @click="handleConfirmClick">
-            确定
+            {{ t('common.button.confirm') }}
           </el-button>
         </div>
       </template>
@@ -155,6 +155,7 @@
 </template>
 
 <script setup name="MetaDomain">
+import { useI18n } from 'vue-i18n'
 import {
   listDomain,
   addDomain,
@@ -167,6 +168,7 @@ import {
 import { ElMessage } from "element-plus";
 import { computed, getCurrentInstance, reactive, ref } from "vue";
 
+const { t } = useI18n();
 const DEFAULT_FORM = {
   validFlag: true,
   sortOrder: 0,
@@ -212,7 +214,7 @@ const tableStroe = reactive({
     },
     { label: "业务域名称", prop: "name", width: 240, align: "left" },
     {
-      label: "描述",
+      label: t('common.texts.description'),
       prop: "description",
       align: "left",
       width: 240,
@@ -220,22 +222,22 @@ const tableStroe = reactive({
         effect: "light",
       },
     },
-    { label: "状态", prop: "validFlag", slot: "valid-flag", align: "center" },
+    { label: t('common.texts.status'), prop: "validFlag", slot: "valid-flag", align: "center" },
     {
       label: "排序",
       prop: "sortOrder",
       sortable: true,
     },
-    { label: "备注", prop: "remark" },
-    { label: "创建人", prop: "createBy" },
+    { label: t('common.texts.remark'), prop: "remark" },
+    { label: t('common.texts.createdBy'), prop: "createBy" },
     {
-      label: "创建时间",
+      label: t('common.texts.createdTime'),
       prop: "createTime",
       sortable: true,
       sortableKey: "create_time",
       date: true,
     },
-    { label: "操作", width: 240, slot: "action", align: "center" },
+    { label: t('common.texts.operation'), width: 240, slot: "action", align: "center" },
   ],
   func: getTreeData,
   params: {},
@@ -316,23 +318,23 @@ function handleDeleteColumnClick() {
     store.loading = false;
     ElMessageBox.confirm(
       `可删除${canDeleteCount}个，不可删除${cannotDeleteCount}个，是否删除可删部分`,
-      "系统提示",
+      t('common.message.systemPrompt'),
       {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
+        confirmButtonText: t('common.button.confirm'),
+        cancelButtonText: t('common.button.cancel'),
         type: "warning",
       }
     )
       .then(() => {
         if (!canDeleteIds.length) {
-          ElMessage.success("删除成功");
+          ElMessage.success(t('common.message.deleteSuccess'));
           return;
         }
         return delDomain(canDeleteIds.toString());
       })
       .then((res) => {
         if (!res) return;
-        ElMessage.success("删除成功");
+        ElMessage.success(t('common.message.deleteSuccess'));
         tableRef.value.getList();
       });
   });
@@ -356,7 +358,7 @@ async function handleConfirmClick() {
   if (!valid) return;
   await dialog.func(dialog.form);
   proxy.$modal.msgSuccess(
-    `${dialog.form.id ? "修改" : "新增"}业务域任务成功！`
+    `${dialog.form.id ? t('common.button.update') : t('common.button.add')}业务域任务成功！`
   );
   handleCancelClick();
   tableRef.value.getList();
@@ -366,10 +368,10 @@ async function handleConfirmClick() {
 function handleStatusChange(row, status) {
   ElMessageBox.confirm(
     `是否确认${status ? "上线" : "下线"}数据编号为${row.id}的业务域吗？`,
-    "系统提示",
+    t('common.message.systemPrompt'),
     {
-      confirmButtonText: "确定",
-      cancelButtonText: "取消",
+      confirmButtonText: t('common.button.confirm'),
+      cancelButtonText: t('common.button.cancel'),
       type: "warning",
     }
   )
@@ -399,16 +401,16 @@ function handleEditClick(row) {
 
 // 删除
 function handleDeleteClick(row) {
-  ElMessageBox.confirm(`是否确认删除编号为${row.id}的数据项？`, "系统提示", {
-    confirmButtonText: "确定",
-    cancelButtonText: "取消",
+  ElMessageBox.confirm(`是否确认删除编号为${row.id}的数据项？`, t('common.message.systemPrompt'), {
+    confirmButtonText: t('common.button.confirm'),
+    cancelButtonText: t('common.button.cancel'),
     type: "warning",
   })
     .then(() => {
       return delDomain(row.id);
     })
     .then(() => {
-      ElMessage.success("删除成功");
+      ElMessage.success(t('common.message.deleteSuccess'));
       tableRef.value.getList();
     });
 }

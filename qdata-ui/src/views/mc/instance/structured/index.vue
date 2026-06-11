@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 <template>
   <div class="app-container" v-loading="store.loading">
@@ -55,7 +40,7 @@
               :disabled="!store.rows.length"
               @click="handleDeleteColumnClick"
             >
-              删除
+              {{ t('common.button.delete') }}
             </el-button>
           </template>
           <qt-table v-bind="tableStroe" ref="tableRef">
@@ -99,6 +84,7 @@
 </template>
 
 <script setup name="InstanceStructured">
+import { useI18n } from 'vue-i18n'
 import { reactive, computed, getCurrentInstance, ref } from "vue";
 import { listTaskInstance, delTaskInstance } from "@/api/mc/task/taskInstance";
 import { getParentLabelPath } from "@/utils/anivia";
@@ -108,6 +94,7 @@ import SourceSystemTree from "@/views/mc/task/structured/components/SourceSystem
 import useDefaultLang from "@/composables/useDefaultLang";
 
 const { td } = useDefaultLang();
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 
 const sourceSystemTreeRef = ref();
@@ -136,7 +123,7 @@ const tableStroe = reactive({
       width: 55,
     },
     {
-      label: "编号",
+      label: t('common.texts.number'),
       prop: "id",
       width: 60,
     },
@@ -183,12 +170,12 @@ const tableStroe = reactive({
       },
     },
     {
-      label: "创建人",
+      label: t('common.texts.createdBy'),
       prop: "createBy",
       width: 120,
     },
     {
-      label: "创建时间",
+      label: t('common.texts.createdTime'),
       prop: "createTime",
       sortable: true,
       sortableKey: "create_time",
@@ -196,7 +183,7 @@ const tableStroe = reactive({
       date: true,
     },
     {
-      label: "操作",
+      label: t('common.texts.operation'),
       slot: "handle",
       width: 220,
       fixed: "right",
@@ -226,7 +213,7 @@ const searchStore = reactive({
     },
 
     {
-      label: "创建时间",
+      label: t('common.texts.createdTime'),
       prop: "time",
       style: { width: "320px" },
       component: {
@@ -314,10 +301,10 @@ function handleDeleteColumnClick() {
   if (!store.rows.length) return;
   ElMessageBox.confirm(
     `可删除${store.rows.length}个，不可删除0个，是否删除可删部分`,
-    "系统提示",
+    t('common.message.systemPrompt'),
     {
-      confirmButtonText: "确定",
-      cancelButtonText: "取消",
+      confirmButtonText: t('common.button.confirm'),
+      cancelButtonText: t('common.button.cancel'),
       type: "warning",
     }
   )
@@ -326,7 +313,7 @@ function handleDeleteColumnClick() {
       return delTaskInstance(ids);
     })
     .then(() => {
-      ElMessage.success("删除成功");
+      ElMessage.success(t('common.message.deleteSuccess'));
       tableRef.value.getList();
     });
 }

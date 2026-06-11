@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -63,7 +48,7 @@
         <el-table-column label="角色编号" align="center" prop="roleId" />
         <el-table-column label="角色名称" align="center" prop="roleName" />
         <el-table-column label="权限字符" align="center" prop="roleKey" />
-        <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+        <el-table-column :label="t('common.texts.createdTime')" align="center" prop="createTime" width="180">
           <template #default="scope">
             <span>{{ parseTime(scope.row.createTime) }}</span>
           </template>
@@ -75,7 +60,7 @@
       <el-form label-width="100px">
         <div style="text-align: center; margin-left: -120px; margin-top: 30px">
           <el-button type="primary" @click="submitForm()">提交</el-button>
-          <el-button @click="close()">返回</el-button>
+          <el-button @click="close()">{{ t('common.button.return') }}</el-button>
         </div>
       </el-form>
     </div>
@@ -83,8 +68,10 @@
 </template>
 
 <script setup name="AuthRole">
+import { useI18n } from 'vue-i18n'
 import { getAuthRole, updateAuthRole } from "@/api/system/system/user.js";
 
+const { t } = useI18n();
 const route = useRoute();
 const { proxy } = getCurrentInstance();
 

@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -175,16 +160,17 @@
             </div>
             <CrontabResult :ex="crontabValueString" v-if="Crontab"></CrontabResult>
             <div class="pop_btn" v-if="btn">
-                <el-button type="primary" @click="submitFill">确定</el-button>
-                <el-button type="warning" plain @click="clearCron">重置</el-button>
-                <el-button @click="hidePopup">取消</el-button>
+                <el-button type="primary" @click="submitFill">{{ t('common.button.confirm') }}</el-button>
+                <el-button type="warning" plain @click="clearCron">{{ t('common.button.reset') }}</el-button>
+                <el-button @click="hidePopup">{{ t('common.button.cancel') }}</el-button>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-    import CrontabSecond from './second.vue';
+import { useI18n } from 'vue-i18n'
+import CrontabSecond from './second.vue';
     import CrontabMin from './min.vue';
     import CrontabHour from './hour.vue';
     import CrontabDay from './day.vue';
@@ -192,6 +178,8 @@
     import CrontabWeek from './week.vue';
     import CrontabYear from './year.vue';
     import CrontabResult from './result.vue';
+
+const { t } = useI18n();
     const { proxy } = getCurrentInstance();
     const emit = defineEmits(['hide', 'fill']);
     const props = defineProps({

@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -191,6 +176,7 @@
 </template>
 
 <script setup name="Index">
+import { useI18n } from 'vue-i18n'
 import useUserStore from "@/store/system/user";
 import { listNotice } from "@/api/system/system/notice.js";
 import useAppStore from "@/store/system/app";
@@ -236,6 +222,8 @@ import {
 let { proxy } = getCurrentInstance();
 const { sys_notice_type } = proxy.useDict("sys_notice_type");
 import { useRouter } from "vue-router";
+
+const { t } = useI18n();
 const router = useRouter();
 async function routeTo(link, query = {}) {
   if (link && link.indexOf("http") !== -1) {
@@ -391,7 +379,6 @@ function goxinwen(row) {
     proxy.$router.push({ path: "/sys/system/notice/detail", query: { id: row.noticeId } });
   }
 }
-
 
 function goprofile() {
   proxy.$router.push("/user/profile"); // 内部页面路径
@@ -646,9 +633,9 @@ function initModule4() {
 // 认证模式
 const authType = import.meta.env.VITE_APP_AUTH_TYPE;
 function logout() {
-  ElMessageBox.confirm('确定注销并退出系统吗？', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+  ElMessageBox.confirm('确定注销并退出系统吗？', t('common.message.prompt'), {
+    confirmButtonText: t('common.button.confirm'),
+    cancelButtonText: t('common.button.cancel'),
     type: 'warning'
   })
     .then(() => {
@@ -1904,7 +1891,6 @@ onMounted(() => {
   .module-10 {
     height: auto !important;
 
-
     .cards {
       flex-wrap: wrap !important;
       gap: 12px;
@@ -1915,7 +1901,6 @@ onMounted(() => {
     }
   }
 }
-
 
 @media screen and (max-width: 768px) {
   .stagingIndex {
@@ -2031,7 +2016,6 @@ onMounted(() => {
 
   .module-10 {
     height: auto !important;
-
 
     .cards {
       flex-direction: column; // 改为一列

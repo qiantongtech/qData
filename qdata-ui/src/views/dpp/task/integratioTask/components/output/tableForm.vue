@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -55,8 +40,8 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="描述" prop="description">
-            <el-input v-if="!info" v-model="form.description" type="textarea" placeholder="请输入描述" />
+          <el-form-item :label="t('common.texts.description')" prop="description">
+            <el-input v-if="!info" v-model="form.description" type="textarea" :placeholder="t('common.form.descriptionPlaceholder')" />
             <div v-else class="form-readonly">{{ form.description || '-' }}</div>
           </el-form-item>
         </el-col>
@@ -202,13 +187,14 @@
     </el-form>
     <template #footer>
       <div style="text-align: right">
-        <el-button @click="closeDialog">关闭</el-button>
-        <el-button type="primary" @click="saveData" v-if="!info">保存</el-button>
+        <el-button @click="closeDialog">{{ t('common.button.close') }}</el-button>
+        <el-button type="primary" @click="saveData" v-if="!info">{{ t('common.button.save') }}</el-button>
       </div>
     </template>
   </el-dialog>
 </template>
 <script setup name="OutputForm">
+import { useI18n } from 'vue-i18n'
 import {
   listDaDatasource,
 } from "@/api/da/dataSource/dataSource.js";
@@ -225,6 +211,8 @@ import {
 const { proxy } = getCurrentInstance();
 import useUserStore from "@/store/system/user.js";
 import YourChildComponent from "../fieldMap.vue";
+
+const { t } = useI18n();
 const userStore = useUserStore();
 const props = defineProps({
   visible: { type: Boolean, default: true },
@@ -422,7 +410,6 @@ const saveData = async () => {
   }
 };
 
-
 const closeDialog = () => {
   off();
   // 关闭对话框
@@ -470,7 +457,6 @@ watchEffect(() => {
 });
 handleDatasource(form.value?.taskParams.writerDatasource || "");
 </script>
-
 
 <style scoped lang="less">
 .blue-text {

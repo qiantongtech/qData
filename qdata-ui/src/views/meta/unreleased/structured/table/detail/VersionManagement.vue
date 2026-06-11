@@ -16,7 +16,7 @@
             icon="view"
             @click="handleDetailClick(row)"
           >
-            详情
+            {{ t('common.button.details') }}
           </el-button>
           <el-button link type="primary" icon="Edit"> 恢复 </el-button>
         </template>
@@ -87,7 +87,7 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="dialog.open = false">关闭</el-button>
+          <el-button @click="dialog.open = false">{{ t('common.button.close') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -95,15 +95,17 @@
 </template>
 
 <script setup name="VersionManagement">
+import { useI18n } from 'vue-i18n'
 import { reactive, toValue, getCurrentInstance } from "vue";
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const dicts = proxy.useDict("sys_yes_no");
 
 const tableStroe = reactive({
   columns: [
     {
-      label: "编号",
+      label: t('common.texts.number'),
       prop: "id",
       sortable: true,
       width: 60,
@@ -152,19 +154,19 @@ const tableStroe = reactive({
       width: 90,
     },
     {
-      label: "创建人",
+      label: t('common.texts.createdBy'),
       prop: "createBy",
       width: 90,
     },
     {
-      label: "创建时间",
+      label: t('common.texts.createdTime'),
       prop: "createTime",
       sortable: true,
       width: 160,
       date: true,
     },
     {
-      label: "操作",
+      label: t('common.texts.operation'),
       width: 240,
       fixed: "right",
       slot: "handle",
@@ -179,7 +181,7 @@ const tableStroe = reactive({
               {
                 id: 1,
                 version: "1.0.0",
-                updateType: "新增",
+                updateType: t('common.button.add'),
                 updateMsg:
                   "新增用户表字段，包括用户姓名、联系方式、注册时间等基础信息，优化数据结构设计",
                 activeVersion: "N",
@@ -191,7 +193,7 @@ const tableStroe = reactive({
               {
                 id: 2,
                 version: "1.0.1",
-                updateType: "删除",
+                updateType: t('common.button.delete'),
                 updateMsg:
                   "删除冗余字段，移除不再使用的email_backup和phone_backup字段，精简表结构提高性能",
                 activeVersion: "N",
@@ -203,7 +205,7 @@ const tableStroe = reactive({
               {
                 id: 3,
                 version: "1.0.2",
-                updateType: "新增",
+                updateType: t('common.button.add'),
                 updateMsg:
                   "添加索引优化，为user_name和create_time字段创建复合索引，提升查询效率约30%",
                 activeVersion: "N",
@@ -227,7 +229,7 @@ const tableStroe = reactive({
               {
                 id: 5,
                 version: "1.0.4",
-                updateType: "新增",
+                updateType: t('common.button.add'),
                 updateMsg:
                   "增加用户权限字段，添加role_id和permission_level字段，支持多级权限管理功能",
                 activeVersion: "Y",

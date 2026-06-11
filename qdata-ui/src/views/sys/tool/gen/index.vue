@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -52,7 +37,7 @@
             @keyup.enter="handleQuery"
           />
         </el-form-item>
-        <el-form-item label="创建时间">
+        <el-form-item :label="t('common.texts.createdTime')">
           <el-date-picker
             class="el-form-input-width"
             v-model="dateRange"
@@ -65,10 +50,10 @@
         </el-form-item>
         <el-form-item>
               <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
               </el-button>
               <el-button @click="resetQuery" @mousedown="e => e.preventDefault()">
-                <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
               </el-button>
         </el-form-item>
       </el-form>
@@ -103,7 +88,7 @@
             icon="Upload"
             @click="openImportTable"
             v-hasPermi="['tool:gen:import']"
-          >导入</el-button>
+          >{{ t('common.button.import') }}</el-button>
         </el-col>
         <el-col :span="1.5">
           <el-button
@@ -113,7 +98,7 @@
             :disabled="single"
             @click="handleEditTable"
             v-hasPermi="['tool:gen:edit']"
-          >修改</el-button>
+          >{{ t('common.button.update') }}</el-button>
         </el-col>
         <el-col :span="1.5">
           <el-button
@@ -123,7 +108,7 @@
             :disabled="multiple"
             @click="handleDelete"
             v-hasPermi="['tool:gen:remove']"
-          >删除</el-button>
+          >{{ t('common.button.delete') }}</el-button>
         </el-col>
       </el-row>
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
@@ -154,9 +139,9 @@
         prop="className"
         :show-overflow-tooltip="true"
       />
-      <el-table-column label="创建时间" align="center" prop="createTime" width="160" />
-      <el-table-column label="更新时间" align="center" prop="updateTime" width="160" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width"  fixed="right" width="240">
+      <el-table-column :label="t('common.texts.createdTime')" align="center" prop="createTime" width="160" />
+      <el-table-column :label="t('common.texts.updatedTime')" align="center" prop="updateTime" width="160" />
+      <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width"  fixed="right" width="240">
         <template #default="scope">
           <el-tooltip content="预览" placement="top">
             <el-button link type="primary" icon="View" @click="handlePreview(scope.row)" v-hasPermi="['tool:gen:preview']"></el-button>
@@ -164,7 +149,7 @@
           <el-tooltip content="编辑" placement="top">
             <el-button link type="primary" icon="Edit" @click="handleEditTable(scope.row)" v-hasPermi="['tool:gen:edit']"></el-button>
           </el-tooltip>
-          <el-tooltip content="删除" placement="top">
+          <el-tooltip :content="t('common.button.delete')" placement="top">
             <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['tool:gen:remove']"></el-button>
           </el-tooltip>
 <!--          <el-tooltip content="同步" placement="top">-->
@@ -211,6 +196,7 @@
 </template>
 
 <script setup name="Gen">
+import { useI18n } from 'vue-i18n'
 import { listTable, previewTable, delTable, genCode, synchDb } from "@/api/system/tool/gen.js";
 import router from "@/router/index.js";
 import importTable from "./importTable.vue";
@@ -218,6 +204,7 @@ import createTable from "./createTable.vue";
 import useDefaultLang from "@/composables/useDefaultLang";
 
 const { td } = useDefaultLang();
+const { t } = useI18n();
 const route = useRoute();
 const { proxy } = getCurrentInstance();
 
@@ -354,7 +341,7 @@ function handleDelete(row) {
     return delTable(tableIds);
   }).then(() => {
     getList();
-    proxy.$modal.msgSuccess("删除成功");
+    proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
   }).catch(() => {});
 }
 

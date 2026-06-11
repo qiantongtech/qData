@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -150,7 +135,7 @@
                             </template>
 
                         </el-table-column>
-                        <el-table-column label="操作" fixed="right" width="140" align="center">
+                        <el-table-column :label="t('common.texts.operation')" fixed="right" width="140" align="center">
                             <template #default="scope">
                                 <el-button link type="primary" icon="View"
                                     @click="openDialog(scope.row)">查看问题数据</el-button>
@@ -167,6 +152,7 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import * as echarts from 'echarts';
 import { useRoute } from 'vue-router';
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
@@ -181,6 +167,8 @@ import {
     statisticsEvaluateTow,
     statisticsEvaluateTable
 } from "@/api/da/quality/qualityTaskLog";
+
+const { t } = useI18n();
 const { att_rule_audit_q_dimension, } = proxy.useDict(
 
     'att_rule_audit_q_dimension'
@@ -251,7 +239,6 @@ function getLabelsByColumnName(row, columnName) {
 
     return labels.join(' , ');
 }
-
 
 const getColumnVisibility = (key) => {
     const column = columns.value.find((col) => col.key === key);
@@ -341,7 +328,6 @@ const loadChartWithData = (data = []) => {
 };
 
 
-
 // 评分和质量维度汇总
 // 评分和质量维度汇总
 const loadScoreAndSummary = async (id) => {
@@ -386,7 +372,6 @@ const loadRuleTable = async (id) => {
     } finally {
     }
 };
-
 
 // 折线图数据
 const loadTrendChart = async (id) => {

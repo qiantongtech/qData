@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -49,7 +34,7 @@
           @click="handleAdd"
           v-hasPermi="['dg:desensitizerules:add']"
         >
-          新增
+          {{ t('common.button.add') }}
         </el-button>
         <el-button
           type="danger"
@@ -59,7 +44,7 @@
           @click="handleDelete"
           v-hasPermi="['dg:desensitizerules:remove']"
         >
-          删除
+          {{ t('common.button.delete') }}
         </el-button>
       </template>
       <qt-table v-bind="tableStore" ref="tableRef">
@@ -107,7 +92,7 @@
             @click="handleDetail(row)"
             v-hasPermi="['dg:desensitizerules:query']"
           >
-            详情
+            {{ t('common.button.details') }}
           </el-button>
           <!-- :disabled="row.validFlag === true" -->
           <el-button
@@ -117,7 +102,7 @@
             @click="handleUpdate(row)"
             v-hasPermi="['dg:desensitizerules:edit']"
           >
-            修改
+            {{ t('common.button.update') }}
           </el-button>
           <el-button
             link
@@ -127,7 +112,7 @@
             @click="handleDelete(row)"
             v-hasPermi="['dg:desensitizerules:remove']"
           >
-            删除
+            {{ t('common.button.delete') }}
           </el-button>
         </template>
       </qt-table>
@@ -145,6 +130,7 @@
 </template>
 
 <script setup name="DesensitizationRules">
+import { useI18n } from 'vue-i18n'
 import {
   listDesensitizeRules,
   getDesensitizeRules,
@@ -158,6 +144,7 @@ import { selectTreeDataCategory } from "@/api/dg/safety/dataCategory/dataCategor
 import RuleFormDialog from "@/views/dg/safety/desensitizationRules/components/ruleFormDialog.vue";
 import {delDesensitizeWhitelist} from "@/api/dg/safety/whitelist/desensitizeWhitelist.js";
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { dg_application_scene, dg_mask_type, dg_replace_rule } = proxy.useDict(
   "dg_application_scene",
@@ -194,7 +181,6 @@ onMounted(() => {
   getDataCategoryList();
 });
 
-
 const store = reactive({ rows: [] });
 const appContainerRef = ref(null);
 const tableRef = ref(null);
@@ -219,7 +205,7 @@ const tableStore = reactive({
   },
   columns: [
     { type: "selection", width: 45 },
-    { label: "编号", prop: "id", width: 60, sortable: true },
+    { label: t('common.texts.number'), prop: "id", width: 60, sortable: true },
     {
       label: "脱敏规则名称/描述",
       prop: "name",
@@ -236,22 +222,22 @@ const tableStore = reactive({
     },
     { label: "应用场景", slot: "applicationScene", width: 120 },
     { label: "脱敏方式", prop: "maskType", slot: "maskType", width: 120 },
-    { label: "状态", prop: "validFlag", slot: "validFlag", minWidth: 120 },
+    { label: t('common.texts.status'), prop: "validFlag", slot: "validFlag", minWidth: 120 },
     {
-      label: "创建人",
+      label: t('common.texts.createdBy'),
       prop: "createBy",
       width: 120,
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: "创建时间",
+      label: t('common.texts.createdTime'),
       prop: "createTime",
       width: 150,
       sortable: true,
       sortableKey: "create_time",
       date: true,
     },
-    { label: "操作", width: 220, fixed: "right", slot: "handle" },
+    { label: t('common.texts.operation'), width: 220, fixed: "right", slot: "handle" },
   ],
   func: async (params) => {
     const res = await listDesensitizeRules(params);
@@ -289,11 +275,11 @@ const searchStore = reactive({
       },
     },
     {
-      label: "状态",
+      label: t('common.texts.status'),
       prop: "validFlag",
       component: {
         is: "select",
-        placeholder: "请选择状态",
+        placeholder: t('common.form.statusPlaceholder'),
         options: validFlagOptions,
       },
     },
@@ -315,7 +301,7 @@ function handleStatusChange(id, row, e) {
     .confirm('确认要"' + text + '","' + row.name + '"脱敏规则吗？')
     .then(function () {
       updateDesensitizeRules(dataForm).then(() => {
-        proxy.$modal.msgSuccess("操作成功");
+        proxy.$modal.msgSuccess(t('common.message.msgOpSuccess'));
         tableRef.value.getList();
       });
     })
@@ -357,7 +343,7 @@ function handleDialogSuccess() {
     })
     .then(() => {
       tableRef.value.getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
     })
     .catch(() => {});
 }*/
@@ -384,7 +370,7 @@ function handleDelete(row) {
       })
       .then(() => {
         tableRef.value.getList();
-        proxy.$modal.msgSuccess("删除成功");
+        proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
       })
       .catch(() => {});
 }

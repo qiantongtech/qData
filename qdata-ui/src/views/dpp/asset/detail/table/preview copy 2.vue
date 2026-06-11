@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -44,7 +29,7 @@
             :loading="loading"
             @mousedown="(e) => e.preventDefault()"
           >
-            <i class="iconfont-mini icon-xinzeng mr5"></i>新增
+            <i class="iconfont-mini icon-xinzeng mr5"></i>{{ t('common.button.add') }}
           </el-button>
         </el-col>
         <el-button
@@ -55,10 +40,10 @@
           @click="handleQuery"
           @mousedown="(e) => e.preventDefault()"
         >
-          <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+          <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
         </el-button>
         <el-button @click="handleReset" @mousedown="(e) => e.preventDefault()">
-          <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+          <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
         </el-button>
       </el-row>
     </div>
@@ -194,7 +179,7 @@
         icon="Edit"
         @click="handleUpdate(row)"
         v-hasPermi="['da:asset:edit']"
-        >修改</el-button
+        >{{ t('common.button.update') }}</el-button
       >
       <el-button
         link
@@ -219,11 +204,14 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { ref, reactive, watch } from "vue";
 import { useRoute } from "vue-router";
 import { preview } from "@/api/da/asset/assetColumn.js";
 import updateDataDialog from "../components/previewEdit.vue";
 import UpdateHistory from "../components/previewEditLog.vue";
+
+const { t } = useI18n();
 const props = defineProps({
   form1: {
     type: Object,
@@ -382,7 +370,7 @@ const tableStore = reactive({
           width: 230,
         }));
         const handleCol = {
-          label: "操作",
+          label: t('common.texts.operation'),
           fixed: "right",
           slot: "handle",
         };

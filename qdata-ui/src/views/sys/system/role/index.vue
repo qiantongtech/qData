@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -59,7 +44,7 @@
                         @keyup.enter="handleQuery"
                     />
                 </el-form-item>
-                <el-form-item label="状态" prop="status">
+                <el-form-item :label="t('common.texts.status')" prop="status">
                     <el-select
                         v-model="queryParams.status"
                         placeholder="角色状态"
@@ -74,7 +59,7 @@
                         />
                     </el-select>
                 </el-form-item>
-                <el-form-item label="创建时间">
+                <el-form-item :label="t('common.texts.createdTime')">
                     <el-date-picker
                         class="el-form-input-width"
                         v-model="dateRange"
@@ -93,9 +78,9 @@
                         @click="handleQuery"
                         @mousedown="(e) => e.preventDefault()"
                     >
-                        <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                        <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
                     </el-button>
-                    <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+                    <el-button icon="Refresh" @click="resetQuery">{{ t('common.button.reset') }}</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -109,7 +94,7 @@
                             icon="Plus"
                             @click="handleAdd"
                             v-hasPermi="['system:role:add']"
-                            >新增</el-button
+                            >{{ t('common.button.add') }}</el-button
                         >
                     </el-col>
                     <el-col :span="1.5">
@@ -120,7 +105,7 @@
                             :disabled="single"
                             @click="handleUpdate"
                             v-hasPermi="['system:role:edit']"
-                            >修改</el-button
+                            >{{ t('common.button.update') }}</el-button
                         >
                     </el-col>
                     <el-col :span="1.5">
@@ -131,7 +116,7 @@
                             :disabled="multiple"
                             @click="handleDelete"
                             v-hasPermi="['system:role:remove']"
-                            >删除</el-button
+                            >{{ t('common.button.delete') }}</el-button
                         >
                     </el-col>
                     <el-col :span="1.5">
@@ -141,7 +126,7 @@
                             icon="Download"
                             @click="handleExport"
                             v-hasPermi="['system:role:export']"
-                            >导出</el-button
+                            >{{ t('common.button.export') }}</el-button
                         >
                     </el-col>
                 </el-row>
@@ -174,7 +159,7 @@
                     :show-overflow-tooltip="true"
                 />
                 <el-table-column label="显示顺序" prop="roleSort" align="center" />
-                <el-table-column label="状态" align="center">
+                <el-table-column :label="t('common.texts.status')" align="center">
                     <template #default="scope">
                         <el-switch
                             v-model="scope.row.status"
@@ -184,23 +169,23 @@
                         ></el-switch>
                     </template>
                 </el-table-column>
-                <el-table-column label="创建时间" align="center" prop="createTime" width="160">
+                <el-table-column :label="t('common.texts.createdTime')" align="center" prop="createTime" width="160">
                     <template #default="scope">
                         <span>{{ parseTime(scope.row.createTime) }}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
-                    label="操作"
+                    :label="t('common.texts.operation')"
                     align="center"
                     class-name="small-padding fixed-width"
                     fixed="right"
                     width="240"
                 >
                     <template #default="scope">
-                        <!-- <el-tooltip content="修改" placement="top" v-if="scope.row.roleId !== 1">
+                        <!-- <el-tooltip :content="t('common.button.update')" placement="top" v-if="scope.row.roleId !== 1">
                 <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:role:edit']"></el-button>
               </el-tooltip>
-              <el-tooltip content="删除" placement="top" v-if="scope.row.roleId !== 1">
+              <el-tooltip :content="t('common.button.delete')" placement="top" v-if="scope.row.roleId !== 1">
                 <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['system:role:remove']"></el-button>
               </el-tooltip> -->
                         <!-- <el-tooltip content="数据权限" placement="top" v-if="scope.row.roleId !== 1">
@@ -216,7 +201,7 @@
                             @click="handleUpdate(scope.row)"
                             v-hasPermi="['system:role:edit']"
                             v-if="scope.row.roleId !== 1"
-                            >修改</el-button
+                            >{{ t('common.button.update') }}</el-button
                         >
                         <el-button
                             link
@@ -225,7 +210,7 @@
                             @click="handleDelete(scope.row)"
                             v-hasPermi="['system:role:remove']"
                             v-if="scope.row.roleId !== 1 && scope.row.roleId !== 3"
-                            >删除</el-button
+                            >{{ t('common.button.delete') }}</el-button
                         >
                         <el-popover
                             placement="bottom"
@@ -234,7 +219,7 @@
                             v-if="scope.row.roleId !== 1"
                         >
                             <template #reference>
-                                <el-button link type="primary" icon="View">更多</el-button>
+                                <el-button link type="primary" icon="View">{{ t('common.button.more') }}</el-button>
                             </template>
                             <div style="width: 90px" class="butgdlist">
                                 <el-button
@@ -315,7 +300,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="状态">
+                        <el-form-item :label="t('common.texts.status')">
                             <el-radio-group v-model="form.status">
                                 <el-radio
                                     v-for="dict in sys_normal_disable"
@@ -331,7 +316,7 @@
                     <el-checkbox
                         v-model="menuExpand"
                         @change="handleCheckedTreeExpand($event, 'menu')"
-                        >展开/折叠</el-checkbox
+                        >{{ t('common.button.un_fold') }}</el-checkbox
                     >
                     <el-checkbox
                         v-model="menuNodeAll"
@@ -354,7 +339,7 @@
                         :props="{ label: 'label', children: 'children' }"
                     ></el-tree>
                 </el-form-item>
-                <el-form-item label="备注">
+                <el-form-item :label="t('common.texts.remark')">
                     <el-input
                         v-model="form.remark"
                         type="textarea"
@@ -364,8 +349,8 @@
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button @click="cancel">取 消</el-button>
-                    <el-button type="primary" @click="submitForm">确 定</el-button>
+                    <el-button @click="cancel">{{ t('common.button.cancel') }}</el-button>
+                    <el-button type="primary" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
                 </div>
             </template>
         </el-dialog>
@@ -393,7 +378,7 @@
                     <el-checkbox
                         v-model="deptExpand"
                         @change="handleCheckedTreeExpand($event, 'dept')"
-                        >展开/折叠</el-checkbox
+                        >{{ t('common.button.un_fold') }}</el-checkbox
                     >
                     <el-checkbox
                         v-model="deptNodeAll"
@@ -420,8 +405,8 @@
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button type="primary" @click="submitDataScope">确 定</el-button>
-                    <el-button @click="cancelDataScope">取 消</el-button>
+                    <el-button type="primary" @click="submitDataScope">{{ t('common.button.confirm') }}</el-button>
+                    <el-button @click="cancelDataScope">{{ t('common.button.cancel') }}</el-button>
                 </div>
             </template>
         </el-dialog>
@@ -429,6 +414,7 @@
 </template>
 
 <script setup name="Role">
+import { useI18n } from 'vue-i18n'
     import {
         addRole,
         changeRoleStatus,
@@ -448,6 +434,7 @@
     import useDefaultLang from "@/composables/useDefaultLang";
 
     const { td } = useDefaultLang();
+    const { t } = useI18n();
     const router = useRouter();
     const { proxy } = getCurrentInstance();
     const { sys_normal_disable } = proxy.useDict('sys_normal_disable');
@@ -533,7 +520,7 @@
             })
             .then(() => {
                 getList();
-                proxy.$modal.msgSuccess('删除成功');
+                proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
             })
             .catch(() => {});
     }
@@ -730,14 +717,14 @@
                 if (form.value.roleId != undefined) {
                     form.value.menuIds = getMenuAllCheckedKeys();
                     updateRole(form.value).then((response) => {
-                        proxy.$modal.msgSuccess('修改成功');
+                        proxy.$modal.msgSuccess(t('common.message.editSuccess'));
                         open.value = false;
                         getList();
                     });
                 } else {
                     form.value.menuIds = getMenuAllCheckedKeys();
                     addRole(form.value).then((response) => {
-                        proxy.$modal.msgSuccess('新增成功');
+                        proxy.$modal.msgSuccess(t('common.message.addSuccess'));
                         open.value = false;
                         getList();
                     });
@@ -784,7 +771,7 @@
         if (form.value.roleId != undefined) {
             form.value.deptIds = getDeptAllCheckedKeys();
             dataScope(form.value).then((response) => {
-                proxy.$modal.msgSuccess('修改成功');
+                proxy.$modal.msgSuccess(t('common.message.editSuccess'));
                 openDataScope.value = false;
                 getList();
             });

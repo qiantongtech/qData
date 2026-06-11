@@ -13,21 +13,6 @@
  * For brand customization, please apply for brand customization authorization via official channels.
  *  *
  * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
  */
 
 import axios from 'axios'
@@ -38,6 +23,7 @@ import { tansParams, blobValidate } from '@/utils/anivia.js'
 import cache from '@/plugins/cache'
 import { saveAs } from 'file-saver'
 import useUserStore from '@/store/system/user'
+import { i18n } from '@/plugins/vueI18n'
 
 let downloadLoadingInstance;
 // 是否显示重新登录
@@ -116,7 +102,7 @@ service.interceptors.response.use(res => {
     if (code === 401) {
       if (!isRelogin.show) {
         isRelogin.show = true;
-        ElMessageBox.confirm('登录状态已过期，您可以继续留在该页面，或者重新登录', '系统提示', { confirmButtonText: '重新登录', cancelButtonText: '取消', type: 'warning' }).then(() => {
+        ElMessageBox.confirm('登录状态已过期，您可以继续留在该页面，或者重新登录', i18n.global.t('common.message.systemPrompt'), { confirmButtonText: '重新登录', cancelButtonText: i18n.global.t('common.button.cancel'), type: 'warning' }).then(() => {
           isRelogin.show = false;
           useUserStore().logOut().then(() => {
             location.href = '/index';
@@ -143,9 +129,9 @@ service.interceptors.response.use(res => {
     console.log('err' + error)
     let { message } = error;
     if (message == "Network Error") {
-      message = "后端接口连接异常";
+      message = i18n.global.t('common.message.systemPrompt')
     } else if (message.includes("timeout")) {
-      message = "系统接口请求超时";
+      message = i18n.global.t('common.message.timeout')
     } else if (message.includes("Request failed with status code")) {
       message = "系统接口" + message.substr(message.length - 3) + "异常";
     }

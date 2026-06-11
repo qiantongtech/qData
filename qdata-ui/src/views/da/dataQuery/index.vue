@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -47,9 +32,9 @@
           </el-select>
         </div>
         <el-button plain type="primary" size="small" @click="handleQuery" :loading="loadings">
-          <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+          <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
         </el-button>
-        <el-button type="primary" size="small" @click="handleClear">清除</el-button>
+        <el-button type="primary" size="small" @click="handleClear">{{ t('common.button.clear') }}</el-button>
       </div>
     </div>
     <el-container style="90%">
@@ -70,6 +55,7 @@
 </template>
 
 <script setup name="DataQuery">
+import { useI18n } from 'vue-i18n'
 import { ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import Editor from "@/components/SqlEditor/editor/index1.vue";
@@ -88,6 +74,8 @@ import {
 } from "@/api/dp/model/model";
 import { executeSqlQuery } from "@/api/da/dataSource/dataSource";
 import { encrypt } from "@/utils/aesEncrypt";
+
+const { t } = useI18n();
 const leftWidth = ref(300);
 const loading = ref(false);
 const dialogVisible = ref(false);
@@ -100,7 +88,6 @@ const queryParams = ref({
   datasourceType: '',
 });
 let spl = ref('')
-
 
 const TablesByDataSource = ref([]); // 树顶级为数据源节点
 
@@ -182,10 +169,8 @@ const loadTreeData = async (node, resolveSuccess, resolveFail) => {
     }
   } finally {
 
-
   }
 };
-
 
 // 3. 点击树节点插入SQL
 function handleTreeNodeClick({ type, expandedRootId, payload, }, node) {
@@ -219,7 +204,6 @@ function handleChange(val) {
 }
 let DeptTreeRef = ref()
 let loadings = ref()
-
 
 // 5. 查询按钮
 async function handleQuery() {

@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -124,7 +109,7 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="状态" prop="validFlag">
+          <el-form-item :label="t('common.texts.status')" prop="validFlag">
             <el-radio v-model="form.validFlag" :label="false">禁用</el-radio>
             <el-radio v-model="form.validFlag" :label="true">启用</el-radio>
           </el-form-item>
@@ -132,12 +117,12 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="描述" prop="description">
+          <el-form-item :label="t('common.texts.description')" prop="description">
             <el-input
               type="textarea"
               maxlength="500个字符"
               show-word-limit
-              placeholder="请输入描述"
+              :placeholder="t('common.form.descriptionPlaceholder')"
               v-model="form.description"
               :rows="3"
             />
@@ -146,12 +131,12 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="备注" prop="remark">
+          <el-form-item :label="t('common.texts.remark')" prop="remark">
             <el-input
               type="textarea"
               maxlength="500个字符"
               show-word-limit
-              placeholder="请输入备注"
+              :placeholder="t('common.form.remarkPlaceholder')"
               v-model="form.remark"
               :rows="3"
             />
@@ -161,9 +146,9 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="onCancel">取 消</el-button>
+        <el-button @click="onCancel">{{ t('common.button.cancel') }}</el-button>
         <el-button type="primary" @click="onSubmit" :loading="loading"
-          >确 定</el-button
+          >{{ t('common.button.confirm') }}</el-button
         >
       </div>
     </template>
@@ -171,11 +156,13 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { ref, computed, nextTick, getCurrentInstance } from "vue";
 import { deptUserTree } from "@/api/system/system/user";
 import { listBusinessCategory } from "@/api/dm/businessCategory/businessCategory";
 import { listDataDomain } from "@/api/dm/dataDomain/dataDomain.js";
 
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const emit = defineEmits(["submit", "cancel"]);
 

@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -40,7 +25,7 @@
             </span>
             <div class="header-buttons">
                 <el-button v-if="config.type !== 'danger'" class="btn-never-show" @click="neverShow">不再展示</el-button>
-                <el-button :class="['btn-close', config.type]" @click="close">关闭</el-button>
+                <el-button :class="['btn-close', config.type]" @click="close">{{ t('common.button.close') }}</el-button>
             </div>
         </div>
         <div v-if="config.content" class="tip-content" v-html="config.content" @click="handleClick"></div>
@@ -48,11 +33,13 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { ref, onMounted, onActivated, computed } from 'vue'
 import { guideTipConfig } from './guideTipConfig'
 import { useRouter } from 'vue-router'
 import useUserStore from "@/store/system/user";
 
+const { t } = useI18n();
 const userStore = useUserStore()
 const STORAGE_KEY = 'guide_tip_status'
 

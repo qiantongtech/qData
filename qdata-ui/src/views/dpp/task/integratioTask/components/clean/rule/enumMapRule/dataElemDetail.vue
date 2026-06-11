@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -39,7 +24,7 @@
       :data="dpDataElemCodeList"
       :default-sort="defaultSort"
     >
-      <el-table-column label="编号" align="left" prop="id" width="80" />
+      <el-table-column :label="t('common.texts.number')" align="left" prop="id" width="80" />
       <el-table-column label="代码值" align="left" prop="codeValue" width="160">
         <template #default="scope">
           {{ scope.row.codeValue || "-" }}
@@ -55,13 +40,13 @@
           {{ scope.row.codeName || "-" }}
         </template>
       </el-table-column>
-      <el-table-column label="创建人" align="left" prop="createBy" width="160">
+      <el-table-column :label="t('common.texts.createdBy')" align="left" prop="createBy" width="160">
         <template #default="scope">
           {{ scope.row.createBy || "-" }}
         </template>
       </el-table-column>
       <el-table-column
-        label="创建时间"
+        :label="t('common.texts.createdTime')"
         align="left"
         prop="createTime"
         width="220"
@@ -73,7 +58,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="备注"
+        :label="t('common.texts.remark')"
         align="left"
         prop="remark"
         width="360"
@@ -103,17 +88,20 @@
     />
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="handleClose">关 闭</el-button>
+        <el-button size="mini" @click="handleClose">{{ t('common.button.close') }}</el-button>
       </div>
     </template>
   </el-dialog>
 </template>
 
 <script setup name="ComponentOne">
+import { useI18n } from 'vue-i18n'
 import {
   listDpDataElemCode,
   validateCodeValue,
 } from "@/api/dp/dataElem/dataElem.js";
+
+const { t } = useI18n();
 const route = useRoute();
 const { proxy } = getCurrentInstance();
 

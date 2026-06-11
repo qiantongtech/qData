@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -76,7 +61,7 @@
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" :icon="Search" @click="getChartData">
-                        查询
+                        {{ t('common.button.query') }}
                     </el-button>
                 </el-form-item>
             </el-form>
@@ -99,10 +84,11 @@
 </template>
 
 <script setup name="DetailPopResViewA4">
+import { useI18n } from 'vue-i18n'
+import { Search } from '@element-plus/icons-vue';
 
-    import { Search } from '@element-plus/icons-vue';
-
-    const params = ref({
+const { t } = useI18n();
+const params = ref({
         avgTypeId: '1',
         years: ['2024', '2023'],
         sizeType: '极大值',

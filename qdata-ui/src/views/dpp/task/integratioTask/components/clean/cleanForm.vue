@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -85,13 +70,13 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="描述" prop="description">
+            <el-form-item :label="t('common.texts.description')" prop="description">
               <el-input
                 v-model="form.description"
                 type="textarea"
                 maxlength="500个字符"
                 show-word-limit
-                placeholder="请输入描述"
+                :placeholder="t('common.form.descriptionPlaceholder')"
               />
             </el-form-item>
           </el-col>
@@ -129,7 +114,7 @@
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="描述" prop="description">
+            <el-form-item :label="t('common.texts.description')" prop="description">
               <div class="form-readonly textarea">
                 {{ form.description ?? "-" }}
               </div>
@@ -259,13 +244,13 @@
             {{ scope.row.parentName || "-" }}
           </template>
         </el-table-column>
-        <el-table-column label="状态" align="left" prop="status">
+        <el-table-column :label="t('common.texts.status')" align="left" prop="status">
           <template #default="scope">
             {{ scope.row.status == "1" ? "上线" : "下线" }}
           </template>
         </el-table-column>
         <el-table-column
-          label="操作"
+          :label="t('common.texts.operation')"
           align="center"
           class-name="small-padding fixed-width"
           fixed="right"
@@ -280,14 +265,14 @@
               type="primary"
               icon="Edit"
               @click="openRuleDialog(scope.row, scope.$index + 1)"
-              >修改</el-button
+              >{{ t('common.button.update') }}</el-button
             >
             <el-button
               link
               type="danger"
               icon="Delete"
               @click="handleRuleDelete(scope.$index + 1)"
-              >删除</el-button
+              >{{ t('common.button.delete') }}</el-button
             >
           </template>
         </el-table-column>
@@ -295,9 +280,9 @@
     </el-form>
     <template #footer>
       <div style="text-align: right">
-        <el-button @click="closeDialog">关闭</el-button>
+        <el-button @click="closeDialog">{{ t('common.button.close') }}</el-button>
         <el-button type="primary" @click="saveData" v-if="!info"
-          >保存</el-button
+          >{{ t('common.button.save') }}</el-button
         >
         <el-tooltip
           content="会自动获取资产关联的数据元中的清洗规则"
@@ -321,6 +306,7 @@
   />
 </template>
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { defineProps, defineEmits, ref, computed, watch } from "vue";
 
 import { getNodeUniqueKey } from "@/api/dpp/task/index.js";
@@ -333,6 +319,8 @@ import {
   renameRuleToRuleConfig,
 } from "@/views/dpp/utils/opBase.js";
 import RuleSelectorDialog from "./rule/ruleBase.vue";
+
+const { t } = useI18n();
 const userStore = useUserStore();
 const {
   att_rule_clean_type,
@@ -560,7 +548,6 @@ watchEffect(() => {
   setSort();
 });
 </script>
-
 
 <style scoped lang="less">
 .blue-text {

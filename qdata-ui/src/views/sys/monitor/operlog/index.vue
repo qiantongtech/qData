@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -52,7 +37,7 @@
                   <el-option v-for="dict in sys_oper_type" :key="dict.value" :label="dict.label" :value="dict.value" />
                </el-select>
             </el-form-item>
-            <el-form-item label="状态" prop="status">
+            <el-form-item :label="t('common.texts.status')" prop="status">
                <el-select v-model="queryParams.status" placeholder="操作状态" clearable class="el-form-input-width">
                   <el-option v-for="dict in sys_common_status" :key="dict.value" :label="dict.label"
                      :value="dict.value" />
@@ -65,10 +50,10 @@
             </el-form-item>
             <el-form-item>
                <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                  <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                  <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
                </el-button>
                <el-button @click="resetQuery" @mousedown="e => e.preventDefault()">
-                  <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                  <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
                </el-button>
             </el-form-item>
          </el-form>
@@ -78,7 +63,7 @@
             <el-row :gutter="10" class="btn-style">
                <el-col :span="1.5">
                   <el-button type="danger" plain icon="Delete" :disabled="multiple" @click="handleDelete"
-                     v-hasPermi="['monitor:operlog:remove']">删除</el-button>
+                     v-hasPermi="['monitor:operlog:remove']">{{ t('common.button.delete') }}</el-button>
                </el-col>
                <el-col :span="1.5">
                   <el-button type="danger" plain icon="Delete" @click="handleClean"
@@ -86,7 +71,7 @@
                </el-col>
                <el-col :span="1.5">
                   <el-button type="warning" plain icon="Download" @click="handleExport"
-                     v-hasPermi="['monitor:operlog:export']">导出</el-button>
+                     v-hasPermi="['monitor:operlog:export']">{{ t('common.button.export') }}</el-button>
                </el-col>
             </el-row>
             <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
@@ -124,7 +109,7 @@
                   <span>{{ scope.row.costTime }}毫秒</span>
                </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
+            <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
                <template #default="scope">
                   <el-button link type="primary" icon="View" @click="handleView(scope.row, scope.index)"
                      v-hasPermi="['monitor:operlog:query']">详细</el-button>
@@ -215,7 +200,7 @@
          </el-form>
          <template #footer>
             <div class="dialog-footer">
-               <el-button @click="open = false">关 闭</el-button>
+               <el-button @click="open = false">{{ t('common.button.close') }}</el-button>
             </div>
          </template>
       </el-dialog>
@@ -223,10 +208,12 @@
 </template>
 
 <script setup name="Operlog">
+import { useI18n } from 'vue-i18n'
 import { list, delOperlog, cleanOperlog } from "@/api/system/monitor/operlog.js";
 import useDefaultLang from "@/composables/useDefaultLang";
 
 const { td } = useDefaultLang();
+const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { sys_oper_type, sys_common_status } = proxy.useDict("sys_oper_type", "sys_common_status");
 
@@ -312,7 +299,7 @@ function handleDelete(row) {
       return delOperlog(operIds);
    }).then(() => {
       getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
    }).catch(() => { });
 }
 

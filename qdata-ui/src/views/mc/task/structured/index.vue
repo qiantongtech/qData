@@ -14,21 +14,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 <template>
   <div class="app-container" ref="app-container">
@@ -51,7 +36,7 @@
           </template>
           <template #actions-data>
             <el-button type="primary" plain @click="handleAddClick">
-              <i class="iconfont-mini icon-xinzeng mr5"></i>新增
+              <i class="iconfont-mini icon-xinzeng mr5"></i>{{ t('common.button.add') }}
             </el-button>
             <el-button
               type="danger"
@@ -60,7 +45,7 @@
               :disabled="!store.rows.length"
               @click="handleDeleteColumnClick"
             >
-              删除
+              {{ t('common.button.delete') }}
             </el-button>
           </template>
           <qt-table v-bind="tableStore" ref="tableRef">
@@ -92,7 +77,7 @@
                 :disabled="row.status == '1'"
                 @click="handleEditClick(row)"
               >
-                修改
+                {{ t('common.button.update') }}
               </el-button>
               <el-button
                 link
@@ -100,7 +85,7 @@
                 icon="view"
                 @click="handleDetailClick(row)"
               >
-                详情
+                {{ t('common.button.details') }}
               </el-button>
               <el-popover
                 placement="bottom"
@@ -110,7 +95,7 @@
               >
                 <template #reference>
                   <el-button link type="primary" icon="ArrowDown">
-                    更多
+                    {{ t('common.button.more') }}
                   </el-button>
                 </template>
                 <div style="width: 100px">
@@ -139,7 +124,7 @@
                     :disabled="row.status == '1'"
                     @click="handleDeleteClick(row)"
                   >
-                    删除
+                    {{ t('common.button.delete') }}
                   </el-button>
                 </div>
               </el-popover>
@@ -350,22 +335,22 @@
           </div>
         </el-form-item>
 
-        <el-form-item label="描述" class="row-full" prop="description">
+        <el-form-item :label="t('common.texts.description')" class="row-full" prop="description">
           <el-input
             v-model="dialog.form.description"
             type="textarea"
-            placeholder="请输入描述"
+            :placeholder="t('common.form.descriptionPlaceholder')"
             :min-height="192"
             show-word-limit
             maxlength="500个字符"
           />
         </el-form-item>
 
-        <el-form-item label="备注" class="row-full" prop="remark">
+        <el-form-item :label="t('common.texts.remark')" class="row-full" prop="remark">
           <el-input
             v-model="dialog.form.remark"
             type="textarea"
-            placeholder="请输入备注"
+            :placeholder="t('common.form.remarkPlaceholder')"
             :min-height="192"
             show-word-limit
             maxlength="500个字符"
@@ -374,9 +359,9 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="handleCancelClick">取消</el-button>
+          <el-button @click="handleCancelClick">{{ t('common.button.cancel') }}</el-button>
           <el-button type="primary" @click="handleConfirmClick">
-            确定
+            {{ t('common.button.confirm') }}
           </el-button>
         </div>
       </template>
@@ -385,6 +370,7 @@
 </template>
 
 <script setup name="McTaskStructured">
+import { useI18n } from 'vue-i18n'
 import { useRouter } from "vue-router";
 import {
   reactive,
@@ -416,7 +402,7 @@ import { listValidSourceSystem } from "@/api/att/sourceSystem/sourceSystem";
 import useDefaultLang from "@/composables/useDefaultLang";
 
 const { td } = useDefaultLang();
-// 表单验证规则
+const { t } = useI18n();// 表单验证规则
 const rules = {
   sourceSystemId: [
     { required: true, message: "请选择来源系统", trigger: "change" },
@@ -567,7 +553,7 @@ const tableStore = reactive({
       width: 55,
     },
     {
-      label: "编号",
+      label: t('common.texts.number'),
       prop: "id",
       sortable: true,
       width: 60,
@@ -585,7 +571,7 @@ const tableStore = reactive({
       },
     },
     {
-      label: "描述",
+      label: t('common.texts.description'),
       prop: "description",
       align: "left",
       width: 240,
@@ -653,7 +639,7 @@ const tableStore = reactive({
       date: true,
     },
     {
-      label: "创建人",
+      label: t('common.texts.createdBy'),
       prop: "createBy",
       width: 120,
       align: "left",
@@ -662,7 +648,7 @@ const tableStore = reactive({
       },
     },
     {
-      label: "创建时间",
+      label: t('common.texts.createdTime'),
       prop: "createTime",
       sortable: true,
       sortableKey: "create_time",
@@ -670,7 +656,7 @@ const tableStore = reactive({
       date: true,
     },
     {
-      label: "操作",
+      label: t('common.texts.operation'),
       width: 220,
       fixed: "right",
       slot: "handle",
@@ -701,7 +687,7 @@ const searchStore = reactive({
     },
 
     {
-      label: "创建时间",
+      label: t('common.texts.createdTime'),
       prop: "time",
       style: { width: "320px" },
       component: {
@@ -919,16 +905,16 @@ function handleEditClick(row) {
 
 // 删除
 function handleDeleteClick(row) {
-  ElMessageBox.confirm(`是否确认删除编号为${row.id}的数据项？`, "系统提示", {
-    confirmButtonText: "确定",
-    cancelButtonText: "取消",
+  ElMessageBox.confirm(`是否确认删除编号为${row.id}的数据项？`, t('common.message.systemPrompt'), {
+    confirmButtonText: t('common.button.confirm'),
+    cancelButtonText: t('common.button.cancel'),
     type: "warning",
   })
     .then(() => {
       return delTask(row.id);
     })
     .then(() => {
-      ElMessage.success("删除成功");
+      ElMessage.success(t('common.message.deleteSuccess'));
       tableRef.value.getList();
     });
 }
@@ -954,23 +940,23 @@ function handleDeleteColumnClick() {
     store.loading = false;
     ElMessageBox.confirm(
       `可删除${canDeleteCount}个，不可删除${cannotDeleteCount}个，是否删除可删部分`,
-      "系统提示",
+      t('common.message.systemPrompt'),
       {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
+        confirmButtonText: t('common.button.confirm'),
+        cancelButtonText: t('common.button.cancel'),
         type: "warning",
       }
     )
       .then(() => {
         if (!canDeleteIds.length) {
-          ElMessage.success("删除成功");
+          ElMessage.success(t('common.message.deleteSuccess'));
           return;
         }
         return delTask(canDeleteIds);
       })
       .then((res) => {
         if (!res) return;
-        ElMessage.success("删除成功");
+        ElMessage.success(t('common.message.deleteSuccess'));
         tableRef.value.getList();
       });
   });
@@ -987,10 +973,10 @@ function onFilterTransfer(value, item) {
 function handleTaskStatusChange(row, status) {
   ElMessageBox.confirm(
     `是否确认${status == 1 ? "发布" : "取消发布"}${row.name}任务？`,
-    "系统提示",
+    t('common.message.systemPrompt'),
     {
-      confirmButtonText: "确定",
-      cancelButtonText: "取消",
+      confirmButtonText: t('common.button.confirm'),
+      cancelButtonText: t('common.button.cancel'),
       type: "warning",
     }
   )
@@ -1015,10 +1001,10 @@ function handleTaskStatusChange(row, status) {
 function handleSchedulerStatusChange(row, status) {
   ElMessageBox.confirm(
     `是否确认${status == 0 ? "下线" : "上线"}${row.name}的调度任务？`,
-    "系统提示",
+    t('common.message.systemPrompt'),
     {
-      confirmButtonText: "确定",
-      cancelButtonText: "取消",
+      confirmButtonText: t('common.button.confirm'),
+      cancelButtonText: t('common.button.cancel'),
       type: "warning",
     }
   )

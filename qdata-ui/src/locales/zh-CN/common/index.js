@@ -1,47 +1,87 @@
 // 通用翻译（按钮、消息、表单、展示标签）
 export default {
-  // 按钮
   button: {
-    ok: '确定',
+    add: '新增',
     cancel: '取消',
-    save: '保存',
+    clear: '清除',
     close: '关闭',
-    back: '返回',
-    reload: '重新加载',
-    query: '查询',
-    reset: '重置',
+    confirm: '确定',
     copy: '复制',
-    shrink: '收起',
-    expand: '展开'
+    delete: '删除',
+    details: '详情',
+    download: '下载',
+    expand: '展开',
+    export: '导出',
+    fold: '折叠',
+    import: '导入',
+    more: '更多',
+    nextStep: '下一步',
+    previousStep: '上一步',
+    query: '查询',
+    refresh: '刷新',
+    reset: '重置',
+    return: '返回',
+    returnHome: '返回首页',
+    save: '保存',
+    un_fold: '展开/折叠',
+    update: '修改',
+    upload: '上传'
   },
-  // 消息
-  message: {
-    success: '成功',
-    confirmTitle: '系统提示',
-    loginOutMessage: '是否退出本系统？',
-    required: '该项为必填项',
-    createSuccess: '新增成功',
-    updateSuccess: '修改成功',
-    delSuccess: '删除成功',
-    copySuccess: '复制成功',
-    copyError: '复制失败',
-    delMessage: '是否删除所选中数据？',
-    delDataMessage: '是否删除数据？',
-    delNoData: '请选择需要删除的数据',
-    noPermission: '抱歉，您无权访问此页面。',
-    pageError: '抱歉，您访问的页面不存在。',
-    networkError: '抱歉，服务器报告错误。',
-    returnToHome: '返回首页'
+  error: {
+    code401: '401错误!',
+    code404: '404错误！',
+    findPage: '找不到网页！',
+    notAccessRights: '您没有访问权限！',
+    Sorry401: '对不起，您没有访问权限，请不要进行非法操作！您可以返回主页面',
+    Sorry404: '对不起，您正在寻找的页面不存在。尝试检查URL的错误，然后按浏览器上的刷新按钮或尝试在我们的应用程序中找到其他内容。',
+    network: '后端接口连接异常',
+    timeout: '系统接口超时！'
   },
-  // 表单
   form: {
-    createByPlaceholder: '请输入创建人',
+    descriptionPlaceholder: '请输入描述',
+    descriptionRequired: '描述不能为空',
+    namePlaceholder: '请输入名称',
+    nameRequired: '名称不能为空',
+    remarkPlaceholder: '请输入备注',
+    remarkRequired: '备注不能为空',
+    statusPlaceholder: '请选择状态',
+    statusRequired: '状态不能为空',
     startTimePlaceholder: '开始时间',
     endTimePlaceholder: '结束时间',
     startDatePlaceholder: '开始日期',
     endDatePlaceholder: '结束日期'
   },
-  // 展示
+  texts: {
+    createdBy: '创建人',
+    createdTime: '创建时间',
+    description: '描述',
+    name: '名称',
+    number: '编号',
+    operation: '操作',
+    remark: '备注',
+    status: '状态',
+    updatedBy: '更新人',
+    updatedTime: '更新时间'
+  },
+  message: {
+    addSuccess: '新增成功',
+    deleteSuccess: '删除成功',
+    downloadingData: '正在下载数据，请稍后...',
+    editSuccess: '修改成功',
+    loading: '加载中...',
+    loadingResource: '正在加载系统资源，请耐心等待...',
+    msgOpFailed: '操作失败',
+    msgOpSuccess: '操作成功',
+    noData: '暂无数据',
+    noMatchingData: '无匹配数据',
+    noRecord: '暂无记录',
+    prompt: '提示',
+    systemPrompt: '系统提示'
+  },
+  html: {
+    appTitle: 'qData开源数据中台'
+  },
+    // 展示
   display: {
     index: '序号',
     status: '状态',

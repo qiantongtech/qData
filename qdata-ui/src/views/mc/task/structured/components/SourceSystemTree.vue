@@ -29,7 +29,7 @@
           class="filter-tree"
           size="large"
           v-model="filterText"
-          placeholder="请输入来源系统/数据源名称/库名"
+          :placeholder="td('mc.task.structured.sourceSystemPlaceholder')"
           clearable
           prefix-icon="Search"
         />

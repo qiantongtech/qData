@@ -1,11 +1,15 @@
 <template>
   <div class="base-info">
-    <div class="module-head">基础信息</div>
+    <div class="module-head">
+      {{ td("meta.unreleased.structured.table.detail.basicInfo") }}
+    </div>
     <div class="module-body infotop">
       <el-row :gutter="2">
         <el-col :span="8">
           <div class="infotop-row border-top">
-            <div class="infotop-row-lable">所属分层</div>
+            <div class="infotop-row-lable">
+              {{ td("meta.unreleased.structured.table.detail.belongingLayer") }}
+            </div>
             <div class="infotop-row-value">
               <dict-tag
                 :options="toValue(dicts.meta_dw_layers)"
@@ -17,7 +21,11 @@
 
         <el-col :span="8">
           <div class="infotop-row border-top">
-            <div class="infotop-row-lable">所属系统</div>
+            <div class="infotop-row-lable">
+              {{
+                td("meta.unreleased.structured.table.detail.belongingSystem")
+              }}
+            </div>
             <div class="infotop-row-value">
               {{ getFormatValue(detail.dbRespVO?.belongingSystem) }}
             </div>
@@ -28,7 +36,9 @@
       <el-row :gutter="2">
         <el-col :span="24">
           <div class="infotop-row border-top">
-            <div class="infotop-row-lable">{{ t('common.texts.description') }}</div>
+            <div class="infotop-row-lable">
+              {{ td("common.texts.description") }}
+            </div>
             <div class="infotop-row-value">
               {{ getFormatValue(detail.description) }}
             </div>
@@ -39,7 +49,9 @@
       <el-row :gutter="2">
         <el-col :span="8">
           <div class="infotop-row border-top">
-            <div class="infotop-row-lable">{{ t('common.texts.updatedBy') }}</div>
+            <div class="infotop-row-lable">
+              {{ td("common.texts.updatedBy") }}
+            </div>
             <div class="infotop-row-value">
               {{ getFormatValue(detail.updateBy) }}
             </div>
@@ -48,7 +60,9 @@
 
         <el-col :span="8">
           <div class="infotop-row border-top">
-            <div class="infotop-row-lable">{{ t('common.texts.updatedTime') }}</div>
+            <div class="infotop-row-lable">
+              {{ td("common.texts.updatedTime") }}
+            </div>
             <div class="infotop-row-value">
               {{ getFormatValue(detail.updateTime) }}
             </div>
@@ -57,7 +71,9 @@
 
         <el-col :span="8">
           <div class="infotop-row border-top">
-            <div class="infotop-row-lable">{{ t('common.texts.createdBy') }}</div>
+            <div class="infotop-row-lable">
+              {{ td("common.texts.createdBy") }}
+            </div>
             <div class="infotop-row-value">
               {{ getFormatValue(detail.createBy) }}
             </div>
@@ -68,7 +84,9 @@
       <el-row :gutter="2">
         <el-col :span="8">
           <div class="infotop-row border-top">
-            <div class="infotop-row-lable">{{ t('common.texts.createdTime') }}</div>
+            <div class="infotop-row-lable">
+              {{ td("common.texts.createdTime") }}
+            </div>
             <div class="infotop-row-value">
               {{ getFormatValue(detail.createTime) }}
             </div>
@@ -79,7 +97,7 @@
       <el-row :gutter="2">
         <el-col :span="24">
           <div class="infotop-row border-top">
-            <div class="infotop-row-lable">{{ t('common.texts.remark') }}</div>
+            <div class="infotop-row-lable">{{ td("common.texts.remark") }}</div>
             <div class="infotop-row-value">
               {{ getFormatValue(detail.remark) }}
             </div>
@@ -88,12 +106,16 @@
       </el-row>
     </div>
 
-    <div class="module-head">技术信息</div>
+    <div class="module-head">
+      {{ td("meta.unreleased.structured.table.detail.techInfo") }}
+    </div>
     <div class="module-body infotop">
       <el-row :gutter="2">
         <el-col :span="8">
           <div class="infotop-row border-top">
-            <div class="infotop-row-lable">数据源名称</div>
+            <div class="infotop-row-lable">
+              {{ td("meta.unreleased.structured.table.detail.datasourceName") }}
+            </div>
             <div class="infotop-row-value">
               {{ getFormatValue(detail.dbName) }}
             </div>
@@ -102,7 +124,9 @@
 
         <el-col :span="8">
           <div class="infotop-row border-top">
-            <div class="infotop-row-lable">IP</div>
+            <div class="infotop-row-lable">
+              {{ td("meta.unreleased.structured.table.detail.ip") }}
+            </div>
             <div class="infotop-row-value">
               {{ getFormatValue(detail.dbRespVO?.ip) }}
             </div>
@@ -111,7 +135,9 @@
 
         <el-col :span="8">
           <div class="infotop-row border-top">
-            <div class="infotop-row-lable">端口号</div>
+            <div class="infotop-row-lable">
+              {{ td("meta.unreleased.structured.table.detail.port") }}
+            </div>
             <div class="infotop-row-value">
               {{ getFormatValue(detail.dbRespVO?.port) }}
             </div>
@@ -122,7 +148,9 @@
       <el-row :gutter="2">
         <el-col :span="8">
           <div class="infotop-row border-top">
-            <div class="infotop-row-lable">账号</div>
+            <div class="infotop-row-lable">
+              {{ td("meta.unreleased.structured.table.detail.username") }}
+            </div>
             <div class="infotop-row-value">
               {{ getFormatValue(detail.username) }}
             </div>
@@ -131,7 +159,9 @@
 
         <el-col :span="8">
           <div class="infotop-row border-top">
-            <div class="infotop-row-lable">存储类型</div>
+            <div class="infotop-row-lable">
+              {{ td("meta.unreleased.structured.table.detail.storageType") }}
+            </div>
             <div class="infotop-row-value">
               {{ getFormatValue(detail.storageType) }}
             </div>
@@ -140,7 +170,9 @@
 
         <el-col :span="8">
           <div class="infotop-row border-top">
-            <div class="infotop-row-lable">存储大小</div>
+            <div class="infotop-row-lable">
+              {{ td("meta.unreleased.structured.table.detail.storageSize") }}
+            </div>
             <div class="infotop-row-value">
               {{ getFormatValue(detail.storageSize) }}
             </div>
@@ -151,7 +183,9 @@
       <el-row :gutter="2">
         <el-col :span="8">
           <div class="infotop-row border-top">
-            <div class="infotop-row-lable">技术负责人</div>
+            <div class="infotop-row-lable">
+              {{ td("meta.unreleased.structured.table.detail.techLeader") }}
+            </div>
             <div class="infotop-row-value">
               {{ getFormatValue(detail.techLeaderName) }}
             </div>
@@ -160,7 +194,11 @@
 
         <el-col :span="8">
           <div class="infotop-row border-top">
-            <div class="infotop-row-lable">技术负责人电话</div>
+            <div class="infotop-row-lable">
+              {{
+                td("meta.unreleased.structured.table.detail.techLeaderPhone")
+              }}
+            </div>
             <div class="infotop-row-value">
               {{ getFormatValue(detail.techLeaderPhone) }}
             </div>
@@ -169,7 +207,7 @@
       </el-row>
     </div>
 
-    <div class="module-head">业务信息</div>
+    <div class="module-head">{{ td("meta.unreleased.structured.table.detail.businessInfo") }}</div>
     <div class="module-body infotop">
       <el-row :gutter="2">
         <!-- <el-col :span="8">
@@ -183,7 +221,7 @@
 
         <el-col :span="8">
           <div class="infotop-row border-top">
-            <div class="infotop-row-lable">是否主表</div>
+            <div class="infotop-row-lable">{{ td("meta.unreleased.structured.table.detail.isMasterTable") }}</div>
             <div class="infotop-row-value">
               <dict-tag
                 :options="toValue(dicts.table_yes_no)"
@@ -195,7 +233,7 @@
 
         <el-col :span="8">
           <div class="infotop-row border-top">
-            <div class="infotop-row-lable">是否临时表</div>
+            <div class="infotop-row-lable">{{ td("meta.unreleased.structured.table.detail.tempFlag") }}</div>
             <div class="infotop-row-value">
               <dict-tag
                 :options="toValue(dicts.table_yes_no)"
@@ -206,7 +244,7 @@
         </el-col>
         <el-col :span="8">
           <div class="infotop-row border-top">
-            <div class="infotop-row-lable">业务负责人</div>
+            <div class="infotop-row-lable">{{ td("meta.unreleased.structured.table.detail.businessLeader") }}</div>
             <div class="infotop-row-value">
               {{ getFormatValue(detail.businessLeaderName) }}
             </div>
@@ -217,7 +255,7 @@
       <el-row :gutter="2">
         <el-col :span="8">
           <div class="infotop-row border-top">
-            <div class="infotop-row-lable">业务负责人电话</div>
+            <div class="infotop-row-lable">{{ td("meta.unreleased.structured.table.detail.businessLeaderPhone") }}</div>
             <div class="infotop-row-value">
               {{ getFormatValue(detail.businessLeaderPhone) }}
             </div>
@@ -229,10 +267,10 @@
 </template>
 
 <script setup name="SynchronizeTaskBaseInfo">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang";
 import { getCurrentInstance, toValue } from "vue";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const dicts = proxy.useDict(
   "datasource_type",

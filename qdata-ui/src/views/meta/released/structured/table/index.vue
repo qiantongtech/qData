@@ -25,7 +25,7 @@
                 icon="view"
                 @click="handleDetailClick(row)"
               >
-                {{ t('common.button.details') }}
+                {{ td("common.button.details") }}
               </el-button>
 
               <el-button
@@ -34,7 +34,7 @@
                 @click="handleDetailClick(row, 'ColumnList')"
               >
                 <svg-icon icon-class="meta-column" class="handle-svg-icon" />
-                字段列表
+                {{ td("meta.released.structured.table.columnList") }}
               </el-button>
               <el-button
                 link
@@ -42,7 +42,7 @@
                 @click="handleDetailClick(row, 'VersionManagement')"
               >
                 <svg-icon icon-class="meta-version" class="handle-svg-icon" />
-                版本与变更
+                {{ td("meta.released.structured.table.versionManagement") }}
               </el-button>
             </template>
           </qt-table>
@@ -53,7 +53,7 @@
 </template>
 
 <script setup name="ReleasedStructuredTable">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang";
 import { reactive, ref, getCurrentInstance, computed } from "vue";
 import { listDomain } from "@/api/att/domain/domain.js";
 import { getParentLabelPath } from "@/utils/anivia.js";
@@ -63,7 +63,7 @@ import { useRouter } from "vue-router";
 import { listDb } from "@/api/mc/unreleased/db";
 import SourceSystemTree from "@/views/mc/task/structured/components/SourceSystemTree.vue";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const BASE_URL = "/dg/meta/comparison";
 
 const { proxy } = getCurrentInstance();
@@ -89,13 +89,13 @@ const tableStroe = reactive({
   },
   columns: [
     {
-      label: t('common.texts.number'),
+      label: td("common.texts.number"),
       prop: "id",
       sortable: true,
       width: 60,
     },
     {
-      label: "所属库名",
+      label: td("meta.released.structured.table.dbName"),
       prop: "dbName",
       align: "left",
       showOverflowTooltip: {
@@ -104,7 +104,7 @@ const tableStroe = reactive({
       minWidth: 230,
     },
     {
-      label: "表名称",
+      label: td("meta.released.structured.table.tableName"),
       prop: "tableName",
       align: "left",
       showOverflowTooltip: {
@@ -116,7 +116,7 @@ const tableStroe = reactive({
       },
     },
     {
-      label: "表注释",
+      label: td("meta.released.structured.table.tableComment"),
       prop: "tableComment",
       align: "left",
       showOverflowTooltip: {
@@ -125,7 +125,7 @@ const tableStroe = reactive({
       minWidth: 240,
     },
     {
-      label: t('common.texts.description'),
+      label: td("common.texts.description"),
       prop: "description",
       align: "left",
       width: 240,
@@ -134,7 +134,7 @@ const tableStroe = reactive({
       },
     },
     {
-      label: "来源系统",
+      label: td("meta.released.structured.table.sourceSystem"),
       prop: "sourceSystemName",
       width: 240,
       showOverflowTooltip: {
@@ -142,36 +142,36 @@ const tableStroe = reactive({
       },
     },
     {
-      label: "版本号",
+      label: td("meta.released.structured.table.version"),
       prop: "version",
       width: 90,
     },
     {
-      label: t('common.texts.updatedBy'),
+      label: td("common.texts.updatedBy"),
       prop: "updateBy",
       width: 120,
     },
     {
-      label: t('common.texts.updatedTime'),
+      label: td("common.texts.updatedTime"),
       prop: "updateTime",
       sortable: true,
       width: 160,
       date: true,
     },
     {
-      label: t('common.texts.createdBy'),
+      label: td("common.texts.createdBy"),
       prop: "createBy",
       width: 120,
     },
     {
-      label: t('common.texts.createdTime'),
+      label: td("common.texts.createdTime"),
       prop: "createTime",
       sortable: true,
       width: 160,
       date: true,
     },
     {
-      label: t('common.texts.operation'),
+      label: td("common.texts.operation"),
       width: 280,
       fixed: "right",
       slot: "handle",
@@ -195,14 +195,14 @@ const tableStroe = reactive({
 const searchStore = reactive({
   items: [
     {
-      label: "表名称",
+      label: td("meta.released.structured.table.tableName"),
       prop: "tableName",
       component: {
         is: "input",
       },
     },
     {
-      label: "表注释",
+      label: td("meta.released.structured.table.tableComment"),
       prop: "tableComment",
       component: {
         is: "input",
@@ -210,7 +210,7 @@ const searchStore = reactive({
     },
 
     {
-      label: "所属库名",
+      label: td("meta.released.structured.table.dbName"),
       prop: "dbId",
       component: {
         is: "select",

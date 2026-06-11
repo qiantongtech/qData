@@ -41,7 +41,7 @@
               @mousedown="(e) => e.preventDefault()"
               @click="router.back"
             >
-              <svg-icon iconClass="fhs" />{{ t('common.button.return') }}
+              <svg-icon iconClass="fhs" />{{ td("common.button.return") }}
             </el-button>
           </div>
         </div>
@@ -49,7 +49,9 @@
         <el-row :gutter="2">
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">来源系统</div>
+              <div class="infotop-row-lable">
+                {{ td("mc.task.structured.sourceSystem") }}
+              </div>
               <div class="infotop-row-value">
                 {{ form?.sourceSystemName || "--" }}
               </div>
@@ -57,19 +59,25 @@
           </el-col>
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">责任人</div>
+              <div class="infotop-row-lable">
+                {{ td("mc.task.structured.personCharge") }}
+              </div>
               <div class="infotop-row-value">{{ form.personChargeName }}</div>
             </div>
           </el-col>
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">责任人电话</div>
+              <div class="infotop-row-lable">
+                {{ td("mc.task.structured.leaderPhone") }}
+              </div>
               <div class="infotop-row-value">{{ form.leaderPhone }}</div>
             </div>
           </el-col>
           <el-col :span="24" style="margin: 2px 0">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ t('common.texts.description') }}</div>
+              <div class="infotop-row-lable">
+                {{ td("common.texts.description") }}
+              </div>
               <div class="infotop-row-value">
                 {{ form.description }}
               </div>
@@ -78,19 +86,25 @@
 
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">最近执行时间</div>
+              <div class="infotop-row-lable">
+                {{ td("mc.task.structured.lastExecuteTime") }}
+              </div>
               <div class="infotop-row-value">{{ form.lastExecuteTime }}</div>
             </div>
           </el-col>
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">下次执行时间</div>
+              <div class="infotop-row-lable">
+                {{ td("mc.task.structured.nextExecuteTime") }}
+              </div>
               <div class="infotop-row-value">{{ form.createTime }}</div>
             </div>
           </el-col>
           <el-col :span="24" style="margin: 2px 0 0">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ t('common.texts.remark') }}</div>
+              <div class="infotop-row-lable">
+                {{ td("common.texts.remark") }}
+              </div>
               <div class="infotop-row-value">{{ form.remark }}</div>
             </div>
           </el-col>
@@ -117,21 +131,21 @@
   </div>
 </template>
 <script setup name="Detail">
-import { useI18n } from 'vue-i18n'
+import { useI18n } from "vue-i18n";
 import { computed, getCurrentInstance, reactive, toValue } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { getTask, sourceSystemTree } from "@/api/mc/task/task";
 import { getParentLabelPath } from "@/utils/anivia.js";
-
-const { t } = useI18n();
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();
 const tabData = [
   {
     key: "CollectInstance",
-    label: "采集实例",
+    label: td("mc.task.structured.collectInstanceTab"),
   },
   {
     key: "BaseInfo",
-    label: "基本信息",
+    label: td("mc.task.structured.baseInfoTab"),
   },
 ];
 const tabComponent = {

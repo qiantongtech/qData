@@ -36,7 +36,8 @@
           </template>
           <template #actions-data>
             <el-button type="primary" plain @click="handleAddClick">
-              <i class="iconfont-mini icon-xinzeng mr5"></i>{{ t('common.button.add') }}
+              <i class="iconfont-mini icon-xinzeng mr5"></i
+              >{{ td("common.button.add") }}
             </el-button>
             <el-button
               type="danger"
@@ -45,7 +46,7 @@
               :disabled="!store.rows.length"
               @click="handleDeleteColumnClick"
             >
-              {{ t('common.button.delete') }}
+              {{ td("common.button.delete") }}
             </el-button>
           </template>
           <qt-table v-bind="tableStore" ref="tableRef">
@@ -77,7 +78,7 @@
                 :disabled="row.status == '1'"
                 @click="handleEditClick(row)"
               >
-                {{ t('common.button.update') }}
+                {{ td("common.button.update") }}
               </el-button>
               <el-button
                 link
@@ -85,7 +86,7 @@
                 icon="view"
                 @click="handleDetailClick(row)"
               >
-                {{ t('common.button.details') }}
+                {{ td("common.button.details") }}
               </el-button>
               <el-popover
                 placement="bottom"
@@ -95,7 +96,7 @@
               >
                 <template #reference>
                   <el-button link type="primary" icon="ArrowDown">
-                    {{ t('common.button.more') }}
+                    {{ td("common.button.more") }}
                   </el-button>
                 </template>
                 <div style="width: 100px">
@@ -106,7 +107,7 @@
                     @click="handleInstanceClick(row)"
                     style="padding-left: 14px"
                   >
-                    采集实例
+                    {{ td("mc.task.structured.collectInstance") }}
                   </el-button>
                   <el-button
                     link
@@ -115,7 +116,7 @@
                     :disabled="row.status == '0'"
                     @click="handleRunClick(row)"
                   >
-                    执行一次
+                    {{ td("mc.task.structured.executeOnce") }}
                   </el-button>
                   <el-button
                     link
@@ -124,7 +125,7 @@
                     :disabled="row.status == '1'"
                     @click="handleDeleteClick(row)"
                   >
-                    {{ t('common.button.delete') }}
+                    {{ td("common.button.delete") }}
                   </el-button>
                 </div>
               </el-popover>
@@ -136,7 +137,7 @@
 
     <!-- 调度周期弹窗 -->
     <el-dialog
-      title="Cron表达式生成器"
+      :title="td('mc.task.structured.cronGenerator')"
       v-model="cronDialog.open"
       :append-to="$refs['app-container']"
       destroy-on-close
@@ -163,28 +164,37 @@
         ref="formRef"
         label-width="110px"
       >
-        <el-form-item label="来源系统" prop="sourceSystemId">
+        <el-form-item
+          :label="td('mc.task.structured.sourceSystem')"
+          prop="sourceSystemId"
+        >
           <el-tree-select
             filterable
             v-model="dialog.form.sourceSystemId"
             :data="store.sourceSystems"
             :props="{ value: 'id', label: 'name', children: 'children' }"
             value-key="id"
-            placeholder="请选择来源系统"
+            :placeholder="td('mc.task.structured.sourceSystemPlaceholder')"
             check-strictly
             @change="handleDomainChange"
             default-expand-all
           />
         </el-form-item>
 
-        <el-form-item label="任务名称" prop="name">
-          <el-input v-model="dialog.form.name" placeholder="请输入任务名称" />
+        <el-form-item :label="td('mc.task.structured.taskName')" prop="name">
+          <el-input
+            v-model="dialog.form.name"
+            :placeholder="td('mc.task.structured.taskNamePlaceholder')"
+          />
         </el-form-item>
 
-        <el-form-item label="数据连接名称" prop="datasourceId">
+        <el-form-item
+          :label="td('mc.task.structured.datasourceName')"
+          prop="datasourceId"
+        >
           <el-select
             v-model="dialog.form.datasourceId"
-            placeholder="请选择数据连接名称"
+            :placeholder="td('mc.task.structured.datasourceNamePlaceholder')"
             @change="handleDatasourceChange"
           >
             <el-option
@@ -202,51 +212,58 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="数据库类型" prop="dbType">
+        <el-form-item :label="td('mc.task.structured.dbType')" prop="dbType">
           <el-input
             v-model="dialog.form.dbType"
             disabled
-            placeholder="请输入数据库类型"
+            :placeholder="td('mc.task.structured.dbTypePlaceholder')"
           />
         </el-form-item>
 
-        <el-form-item label="IP" prop="ip">
-          <el-input v-model="dialog.form.ip" disabled placeholder="请输入ip" />
+        <el-form-item :label="td('mc.task.structured.ip')" prop="ip">
+          <el-input
+            v-model="dialog.form.ip"
+            disabled
+            :placeholder="td('mc.task.structured.ipPlaceholder')"
+          />
         </el-form-item>
 
-        <el-form-item label="端口号" prop="port">
+        <el-form-item :label="td('mc.task.structured.port')" prop="port">
           <el-input
             v-model="dialog.form.port"
             disabled
-            placeholder="请输入端口号"
+            :placeholder="td('mc.task.structured.portPlaceholder')"
           />
         </el-form-item>
 
-        <el-form-item label="账号" prop="username">
+        <el-form-item
+          :label="td('mc.task.structured.username')"
+          prop="username"
+        >
           <el-input
             v-model="dialog.form.username"
             disabled
-            placeholder="请输入账号"
+            :placeholder="td('mc.task.structured.usernamePlaceholder')"
           />
         </el-form-item>
 
         <qt-form-item
-          label="调度周期"
+          :label="td('mc.task.structured.cronExpression')"
           prop="cronExpression"
           :rules="[
             {
               required: true,
-              message: '请配置调度周期',
+              message: td('mc.task.structured.cronRequired'),
               trigger: 'blur',
             },
           ]"
           :tip="{
-            content: '支持Cron表达式，如 0 0 * * * 表示每天0点执行',
+            content: td('mc.task.structured.cronTip'),
           }"
         >
           <el-input
             v-model="dialog.form.cronExpression"
-            placeholder="请配置调度周期"
+            :placeholder="td('mc.task.structured.cronExpressionPlaceholder')"
           >
             <template #append>
               <el-button
@@ -254,14 +271,14 @@
                 @click="handleOpenCronClick"
                 style="background-color: #2666fb; color: #fff"
               >
-                配置
+                {{ td("mc.task.structured.cronConfig") }}
                 <i class="el-icon-time el-icon--right"></i>
               </el-button>
             </template>
           </el-input>
         </qt-form-item>
 
-        <el-form-item label="责任人" prop="leader">
+        <el-form-item :label="td('mc.task.structured.leader')" prop="leader">
           <el-tree-select
             filterable
             v-model="dialog.form.leader"
@@ -272,22 +289,25 @@
               children: 'children',
             }"
             value-key="userId"
-            placeholder="请选择责任人"
+            :placeholder="td('mc.task.structured.leaderPlaceholder')"
             check-strictly
             @change="handleUserChange"
           />
         </el-form-item>
 
-        <el-form-item label="责任人电话" prop="leaderPhone">
+        <el-form-item
+          :label="td('mc.task.structured.leaderPhone')"
+          prop="leaderPhone"
+        >
           <el-input
             v-model="dialog.form.leaderPhone"
             disabled
-            placeholder="请输入责任人电话"
+            :placeholder="td('mc.task.structured.leaderPhonePlaceholder')"
           />
         </el-form-item>
 
         <el-form-item
-          label="采集模式"
+          :label="td('mc.task.structured.collectionMode')"
           class="row-full"
           prop="collectionMode"
           v-if="false"
@@ -303,7 +323,11 @@
           </el-radio-group>
         </el-form-item>
 
-        <el-form-item label="采集范围" class="row-full" prop="collectionScope">
+        <el-form-item
+          :label="td('mc.task.structured.collectionScope')"
+          class="row-full"
+          prop="collectionScope"
+        >
           <div class="collection-wrap">
             <el-radio-group v-model="dialog.form.collectionScope">
               <el-radio
@@ -327,41 +351,54 @@
                 :props="{ label: 'label', key: 'dbName' }"
                 filterable
                 :filter-method="onFilterTransfer"
-                filter-placeholder="请输入物理库名称"
-                :titles="['来源库', '已选来源库']"
+                :filter-placeholder="td('mc.task.structured.inputDbName')"
+                :titles="[
+                  td('mc.task.structured.selectSourceDb'),
+                  td('mc.task.structured.selectSelectedDb'),
+                ]"
                 style="--el-transfer-panel-width: 320px"
               />
             </el-form-item>
           </div>
         </el-form-item>
 
-        <el-form-item :label="t('common.texts.description')" class="row-full" prop="description">
+        <el-form-item
+          :label="td('common.texts.description')"
+          class="row-full"
+          prop="description"
+        >
           <el-input
             v-model="dialog.form.description"
             type="textarea"
-            :placeholder="t('common.form.descriptionPlaceholder')"
+            :placeholder="td('common.form.descriptionPlaceholder')"
             :min-height="192"
             show-word-limit
-            maxlength="500个字符"
+            :maxlength="500"
           />
         </el-form-item>
 
-        <el-form-item :label="t('common.texts.remark')" class="row-full" prop="remark">
+        <el-form-item
+          :label="td('common.texts.remark')"
+          class="row-full"
+          prop="remark"
+        >
           <el-input
             v-model="dialog.form.remark"
             type="textarea"
-            :placeholder="t('common.form.remarkPlaceholder')"
+            :placeholder="td('common.form.remarkPlaceholder')"
             :min-height="192"
             show-word-limit
-            maxlength="500个字符"
+            :maxlength="500"
           />
         </el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="handleCancelClick">{{ t('common.button.cancel') }}</el-button>
+          <el-button @click="handleCancelClick">{{
+            td("common.button.cancel")
+          }}</el-button>
           <el-button type="primary" @click="handleConfirmClick">
-            {{ t('common.button.confirm') }}
+            {{ td("common.button.confirm") }}
           </el-button>
         </div>
       </template>
@@ -370,7 +407,7 @@
 </template>
 
 <script setup name="McTaskStructured">
-import { useI18n } from 'vue-i18n'
+import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import {
   reactive,
@@ -402,50 +439,82 @@ import { listValidSourceSystem } from "@/api/att/sourceSystem/sourceSystem";
 import useDefaultLang from "@/composables/useDefaultLang";
 
 const { td } = useDefaultLang();
-const { t } = useI18n();// 表单验证规则
 const rules = {
   sourceSystemId: [
-    { required: true, message: "请选择来源系统", trigger: "change" },
+    {
+      required: true,
+      message: td("mc.task.structured.sourceSystemRequired"),
+      trigger: "change",
+    },
   ],
   name: [
-    { required: true, message: "请输入任务名称", trigger: "blur" },
-    { min: 2, max: 20, message: "长度在 2 到 20 个字符", trigger: "blur" },
+    {
+      required: true,
+      message: td("mc.task.structured.taskNameRequired"),
+      trigger: "blur",
+    },
+    {
+      min: 2,
+      max: 20,
+      message: td("mc.task.structured.taskNameLength"),
+      trigger: "blur",
+    },
   ],
   datasourceId: [
-    { required: true, message: "请选择数据连接名称", trigger: "change" },
+    {
+      required: true,
+      message: td("mc.task.structured.datasourceRequired"),
+      trigger: "change",
+    },
   ],
   dbType: [
     {
       required: true,
-      message: "请输入数据库类型",
+      message: td("mc.task.structured.dbTypeRequired"),
       trigger: ["blur", "change"],
     },
   ],
   ip: [
-    { required: true, message: "请输入数据库ip", trigger: ["blur", "change"] },
+    {
+      required: true,
+      message: td("mc.task.structured.ipRequired"),
+      trigger: ["blur", "change"],
+    },
   ],
   port: [
     {
       required: true,
-      message: "请输入数据库端口",
+      message: td("mc.task.structured.portRequired"),
       trigger: ["blur", "change"],
     },
   ],
   username: [
     {
       required: true,
-      message: "请输入数据库用户名",
+      message: td("mc.task.structured.usernameRequired"),
       trigger: ["blur", "change"],
     },
   ],
   cronExpression: [
-    { required: true, message: "请配置调度周期", trigger: "change" },
+    {
+      required: true,
+      message: td("mc.task.structured.cronRequired"),
+      trigger: "change",
+    },
   ],
   collectionMode: [
-    { required: true, message: "请选择采集模式", trigger: "change" },
+    {
+      required: true,
+      message: td("mc.task.structured.collectionModeRequired"),
+      trigger: "change",
+    },
   ],
   collectionScope: [
-    { required: true, message: "请选择采集范围", trigger: "change" },
+    {
+      required: true,
+      message: td("mc.task.structured.collectionScopeRequired"),
+      trigger: "change",
+    },
   ],
   tables: [
     {
@@ -455,7 +524,7 @@ const rules = {
           dialog.form.collectionScope == "1" &&
           (!value || value.length === 0)
         ) {
-          callback(new Error("请选择已选来源库"));
+          callback(new Error(td("mc.task.structured.selectedDbRequired")));
         } else {
           callback();
         }
@@ -553,13 +622,13 @@ const tableStore = reactive({
       width: 55,
     },
     {
-      label: t('common.texts.number'),
+      label: td("common.texts.number"),
       prop: "id",
       sortable: true,
       width: 60,
     },
     {
-      label: "任务名称",
+      label: td("mc.task.structured.taskName"),
       prop: "name",
       width: 240,
       align: "left",
@@ -571,7 +640,7 @@ const tableStore = reactive({
       },
     },
     {
-      label: t('common.texts.description'),
+      label: td("common.texts.description"),
       prop: "description",
       align: "left",
       width: 240,
@@ -580,7 +649,7 @@ const tableStore = reactive({
       },
     },
     {
-      label: "来源系统",
+      label: td("mc.task.structured.sourceSystem"),
       prop: "sourceSystemName",
       width: 240,
       align: "left",
@@ -589,13 +658,13 @@ const tableStore = reactive({
       },
     },
     {
-      label: "数据库类型",
+      label: td("mc.task.structured.dbType"),
       prop: "dbType",
       dict: "datasource_type",
       width: 100,
     },
     {
-      label: "数据源名称",
+      label: td("mc.task.structured.datasourceName"),
       prop: "datasourceName",
       width: 240,
       align: "left",
@@ -604,26 +673,26 @@ const tableStore = reactive({
       },
     },
     // {
-    //   label: "采集方式",
+    //   label: td("mc.task.structured.collectionMode"),
     //   prop: "collectionMode",
     //   width: 100,
     //   dict: "mc_collect_mode",
     // },
 
     {
-      label: "任务状态",
+      label: td("mc.task.structured.taskStatus"),
       prop: "status",
       width: 100,
       slot: "task-status",
     },
     {
-      label: "调度状态",
+      label: td("mc.task.structured.schedulerStatus"),
       prop: "schedulerStatus",
       width: 100,
       slot: "scheduler-status",
     },
     {
-      label: "责任人",
+      label: td("mc.task.structured.personCharge"),
       prop: "personChargeName",
       width: 120,
       align: "left",
@@ -632,14 +701,14 @@ const tableStore = reactive({
       },
     },
     {
-      label: "最近运行时间",
+      label: td("mc.task.structured.lastExecuteTime"),
       prop: "lastExecuteTime",
       sortable: true,
       width: 160,
       date: true,
     },
     {
-      label: t('common.texts.createdBy'),
+      label: td("common.texts.createdBy"),
       prop: "createBy",
       width: 120,
       align: "left",
@@ -648,7 +717,7 @@ const tableStore = reactive({
       },
     },
     {
-      label: t('common.texts.createdTime'),
+      label: td("common.texts.createdTime"),
       prop: "createTime",
       sortable: true,
       sortableKey: "create_time",
@@ -656,7 +725,7 @@ const tableStore = reactive({
       date: true,
     },
     {
-      label: t('common.texts.operation'),
+      label: td("common.texts.operation"),
       width: 220,
       fixed: "right",
       slot: "handle",
@@ -679,7 +748,7 @@ const tableStore = reactive({
 const searchStore = reactive({
   items: [
     {
-      label: "任务名称",
+      label: td("mc.task.structured.taskName"),
       prop: "name",
       component: {
         is: "input",
@@ -687,13 +756,15 @@ const searchStore = reactive({
     },
 
     {
-      label: t('common.texts.createdTime'),
+      label: td("common.texts.createdTime"),
       prop: "time",
       style: { width: "320px" },
       component: {
         is: "date-picker",
         type: "daterange",
-        startPlaceholder: computed(() => td("common.form.startDatePlaceholder")),
+        startPlaceholder: computed(() =>
+          td("common.form.startDatePlaceholder")
+        ),
         endPlaceholder: computed(() => td("common.form.endDatePlaceholder")),
       },
     },
@@ -807,7 +878,7 @@ function handleDomainChange(id) {
 function handleRunClick(val) {
   runJobOnce({ id: val.id }).then((res) => {
     if (res.code == 200) {
-      ElMessage.success("执行成功");
+      ElMessage.success(td("mc.task.structured.executeSuccess"));
     } else {
     }
   });
@@ -842,7 +913,7 @@ function handleDetailClick(row) {
 
 // 点击新增
 function handleAddClick() {
-  dialog.title = "新增采集任务";
+  dialog.title = td("mc.task.structured.addTask");
   dialog.open = true;
   dialog.func = addTask;
 }
@@ -884,7 +955,7 @@ async function handleConfirmClick() {
 function handleEditClick(row) {
   dialog.open = true;
   dialog.func = updateTask;
-  dialog.title = "修改任务";
+  dialog.title = td("mc.task.structured.editTask");
   getTask(row.id).then((res) => {
     if (res.data.scopeSaveReqVOS) {
       res.data.tables = res.data.scopeSaveReqVOS.map((item) => item.dbName);
@@ -905,16 +976,20 @@ function handleEditClick(row) {
 
 // 删除
 function handleDeleteClick(row) {
-  ElMessageBox.confirm(`是否确认删除编号为${row.id}的数据项？`, t('common.message.systemPrompt'), {
-    confirmButtonText: t('common.button.confirm'),
-    cancelButtonText: t('common.button.cancel'),
-    type: "warning",
-  })
+  ElMessageBox.confirm(
+    td("mc.task.structured.confirmDelete", { id: row.id }),
+    td("common.message.systemPrompt"),
+    {
+      confirmButtonText: td("common.button.confirm"),
+      cancelButtonText: td("common.button.cancel"),
+      type: "warning",
+    }
+  )
     .then(() => {
       return delTask(row.id);
     })
     .then(() => {
-      ElMessage.success(t('common.message.deleteSuccess'));
+      ElMessage.success(t("common.message.deleteSuccess"));
       tableRef.value.getList();
     });
 }
@@ -939,24 +1014,27 @@ function handleDeleteColumnClick() {
     const { canDeleteCount, cannotDeleteCount, canDeleteIds } = res.data;
     store.loading = false;
     ElMessageBox.confirm(
-      `可删除${canDeleteCount}个，不可删除${cannotDeleteCount}个，是否删除可删部分`,
-      t('common.message.systemPrompt'),
+      td("mc.task.structured.confirmDeleteSelected", {
+        count: canDeleteCount,
+        notDeleteCount: cannotDeleteCount,
+      }),
+      td("common.message.systemPrompt"),
       {
-        confirmButtonText: t('common.button.confirm'),
-        cancelButtonText: t('common.button.cancel'),
+        confirmButtonText: td("common.button.confirm"),
+        cancelButtonText: td("common.button.cancel"),
         type: "warning",
       }
     )
       .then(() => {
         if (!canDeleteIds.length) {
-          ElMessage.success(t('common.message.deleteSuccess'));
+          ElMessage.success(t("common.message.deleteSuccess"));
           return;
         }
         return delTask(canDeleteIds);
       })
       .then((res) => {
         if (!res) return;
-        ElMessage.success(t('common.message.deleteSuccess'));
+        ElMessage.success(t("common.message.deleteSuccess"));
         tableRef.value.getList();
       });
   });
@@ -971,12 +1049,19 @@ function onFilterTransfer(value, item) {
 
 // 切换任务状态
 function handleTaskStatusChange(row, status) {
+  const action =
+    status == 1
+      ? td("mc.task.structured.publish")
+      : td("mc.task.structured.cancelPublish");
   ElMessageBox.confirm(
-    `是否确认${status == 1 ? "发布" : "取消发布"}${row.name}任务？`,
-    t('common.message.systemPrompt'),
+    td("mc.task.structured.confirmPublish", {
+      action,
+      name: row.name,
+    }),
+    td("common.message.systemPrompt"),
     {
-      confirmButtonText: t('common.button.confirm'),
-      cancelButtonText: t('common.button.cancel'),
+      confirmButtonText: td("common.button.confirm"),
+      cancelButtonText: td("common.button.cancel"),
       type: "warning",
     }
   )
@@ -988,7 +1073,10 @@ function handleTaskStatusChange(row, status) {
     })
     .then(() => {
       ElMessage.success(
-        `${row.name}${status == 1 ? "发布" : "取消发布"}任务成功!`
+        td("mc.task.structured.publishSuccess", {
+          name: row.name,
+          action,
+        })
       );
       row.status = status;
     })
@@ -999,12 +1087,19 @@ function handleTaskStatusChange(row, status) {
 
 // 切换调度状态
 function handleSchedulerStatusChange(row, status) {
+  const action =
+    status == 1
+      ? td("mc.task.structured.online")
+      : td("mc.task.structured.offline");
   ElMessageBox.confirm(
-    `是否确认${status == 0 ? "下线" : "上线"}${row.name}的调度任务？`,
-    t('common.message.systemPrompt'),
+    td("mc.task.structured.confirmScheduler", {
+      action,
+      name: row.name,
+    }),
+    td("common.message.systemPrompt"),
     {
-      confirmButtonText: t('common.button.confirm'),
-      cancelButtonText: t('common.button.cancel'),
+      confirmButtonText: td("common.button.confirm"),
+      cancelButtonText: td("common.button.cancel"),
       type: "warning",
     }
   )
@@ -1016,7 +1111,10 @@ function handleSchedulerStatusChange(row, status) {
     })
     .then(() => {
       ElMessage.success(
-        `${row.name}${status == 1 ? "上线" : "下线"}调度任务成功!`
+        td("mc.task.structured.schedulerSuccess", {
+          name: row.name,
+          action,
+        })
       );
       row.schedulerStatus = status;
     })

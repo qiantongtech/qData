@@ -40,7 +40,7 @@
               :disabled="!store.rows.length"
               @click="handleDeleteColumnClick"
             >
-              {{ t('common.button.delete') }}
+              {{ td("common.button.delete") }}
             </el-button>
           </template>
           <qt-table v-bind="tableStroe" ref="tableRef">
@@ -63,7 +63,7 @@
                 icon="View"
                 @click="handleViewClick(row)"
               >
-                查看日志
+                {{ td("mc.task.structured.viewLog") }}
               </el-button>
               <el-button
                 link
@@ -71,7 +71,7 @@
                 icon="Download"
                 @click="handleDownloadClick(row)"
               >
-                下载日志
+                {{ td("mc.task.structured.downloadLog") }}
               </el-button>
             </template>
           </qt-table>
@@ -84,7 +84,7 @@
 </template>
 
 <script setup name="InstanceStructured">
-import { useI18n } from 'vue-i18n'
+import { useI18n } from "vue-i18n";
 import { reactive, computed, getCurrentInstance, ref } from "vue";
 import { listTaskInstance, delTaskInstance } from "@/api/mc/task/taskInstance";
 import { getParentLabelPath } from "@/utils/anivia";
@@ -123,12 +123,12 @@ const tableStroe = reactive({
       width: 55,
     },
     {
-      label: t('common.texts.number'),
+      label: td("common.texts.number"),
       prop: "id",
       width: 60,
     },
     {
-      label: "任务名称",
+      label: td("mc.task.structured.taskName"),
       prop: "name",
       minWidth: 240,
       align: "left",
@@ -137,7 +137,7 @@ const tableStroe = reactive({
       },
     },
     {
-      label: "来源系统",
+      label: td("mc.task.structured.sourceSystem"),
       prop: "sourceSystemName",
       minWidth: 240,
       align: "left",
@@ -146,23 +146,23 @@ const tableStroe = reactive({
       },
     },
     {
-      label: "采集表数量",
+      label: td("mc.task.structured.collectTableCount"),
       prop: "totalCount",
       width: 140,
     },
     {
-      label: "采集状态",
+      label: td("mc.task.structured.collectStatus"),
       prop: "status",
       width: 140,
       dict: "mc_task_instance_status",
     },
     {
-      label: "采集耗时(s)",
+      label: td("mc.task.structured.collectDuration"),
       prop: "duration",
       width: 120,
     },
     {
-      label: "采集起止时间",
+      label: td("mc.task.structured.collectTimeRange"),
       slot: "date-range",
       width: 340,
       showOverflowTooltip: {
@@ -170,12 +170,12 @@ const tableStroe = reactive({
       },
     },
     {
-      label: t('common.texts.createdBy'),
+      label: td("common.texts.createdBy"),
       prop: "createBy",
       width: 120,
     },
     {
-      label: t('common.texts.createdTime'),
+      label: td("common.texts.createdTime"),
       prop: "createTime",
       sortable: true,
       sortableKey: "create_time",
@@ -183,7 +183,7 @@ const tableStroe = reactive({
       date: true,
     },
     {
-      label: t('common.texts.operation'),
+      label: td("common.texts.operation"),
       slot: "handle",
       width: 220,
       fixed: "right",
@@ -205,7 +205,7 @@ const tableStroe = reactive({
 const searchStore = reactive({
   items: [
     {
-      label: "任务名称",
+      label: td("mc.task.structured.taskName"),
       prop: "name",
       component: {
         is: "input",
@@ -213,13 +213,15 @@ const searchStore = reactive({
     },
 
     {
-      label: t('common.texts.createdTime'),
+      label: td("common.texts.createdTime"),
       prop: "time",
       style: { width: "320px" },
       component: {
         is: "date-picker",
         type: "daterange",
-        startPlaceholder: computed(() => td("common.form.startDatePlaceholder")),
+        startPlaceholder: computed(() =>
+          td("common.form.startDatePlaceholder")
+        ),
         endPlaceholder: computed(() => td("common.form.endDatePlaceholder")),
       },
     },
@@ -283,7 +285,7 @@ function handleResetQueryClick() {
 
 function handleViewClick(row) {
   getTaskInstanceLog(row.id).then((res) => {
-    dialog.content = res.data?.logContent || td('common.noLog');
+    dialog.content = res.data?.logContent || td("common.noLog");
     dialog.open = true;
   });
 }
@@ -291,8 +293,11 @@ function handleViewClick(row) {
 // 下载日志
 function handleDownloadClick(row) {
   getTaskInstanceLog(row.id).then((res) => {
-    const content = res.data?.logContent || td('common.noLog');
-    proxy.downloadContent(content, `${row.name}_${row.id}_日志.log`);
+    const content = res.data?.logContent || td("common.noLog");
+    const taskName = row.name || 'task';
+    const instanceId = String(row.id).replace(/[^\w\-]/g, '_');
+    const fileName = td('mc.instance.structured.logFileName', { name: taskName, id: instanceId });
+    proxy.downloadContent(content, fileName);
   });
 }
 
@@ -300,11 +305,14 @@ function handleDownloadClick(row) {
 function handleDeleteColumnClick() {
   if (!store.rows.length) return;
   ElMessageBox.confirm(
-    `可删除${store.rows.length}个，不可删除0个，是否删除可删部分`,
-    t('common.message.systemPrompt'),
+    td("mc.task.structured.confirmDeleteSelected", {
+      count: store.rows.length,
+      notDeleteCount: 0,
+    }),
+    td("common.message.systemPrompt"),
     {
-      confirmButtonText: t('common.button.confirm'),
-      cancelButtonText: t('common.button.cancel'),
+      confirmButtonText: td("common.button.confirm"),
+      cancelButtonText: td("common.button.cancel"),
       type: "warning",
     }
   )
@@ -313,7 +321,7 @@ function handleDeleteColumnClick() {
       return delTaskInstance(ids);
     })
     .then(() => {
-      ElMessage.success(t('common.message.deleteSuccess'));
+      ElMessage.success(t("common.message.deleteSuccess"));
       tableRef.value.getList();
     });
 }

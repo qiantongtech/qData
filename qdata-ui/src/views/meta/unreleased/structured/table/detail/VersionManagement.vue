@@ -16,78 +16,133 @@
             icon="view"
             @click="handleDetailClick(row)"
           >
-            {{ t('common.button.details') }}
+            {{ td("common.button.details") }}
           </el-button>
-          <el-button link type="primary" icon="Edit"> 恢复 </el-button>
+          <el-button link type="primary" icon="Edit">{{
+            td("meta.unreleased.structured.table.detail.restore")
+          }}</el-button>
         </template>
       </qt-table>
     </qt-wrap>
 
-    <el-dialog v-model="dialog.open" title="版本详情" width="800" draggable>
+    <el-dialog
+      v-model="dialog.open"
+      :title="td('meta.unreleased.structured.table.detail.versionDetail')"
+      width="800"
+      draggable
+    >
       <el-form label-width="auto">
-        <el-form-item label="表名称：">
+        <el-form-item
+          :label="td('meta.released.structured.table.tableName') + '：'"
+        >
           <el-input
             v-model="dialog.row.tableName"
-            placeholder="请输入表名称"
+            :placeholder="
+              td('common.form.inputPlaceholder', {
+                field: td('meta.released.structured.table.tableName'),
+              })
+            "
             disabled
           />
         </el-form-item>
-        <el-form-item label="表注释：">
+        <el-form-item
+          :label="td('meta.released.structured.table.tableComment') + '：'"
+        >
           <el-input
             v-model="dialog.row.tableComment"
-            placeholder="请输入表注释"
+            :placeholder="
+              td('common.form.inputPlaceholder', {
+                field: td('meta.released.structured.table.tableComment'),
+              })
+            "
             disabled
           />
         </el-form-item>
-        <el-form-item label="版本号：">
+        <el-form-item
+          :label="td('meta.unreleased.structured.table.detail.version') + '：'"
+        >
           <el-input
             v-model="dialog.row.version"
-            placeholder="请输入版本号"
+            :placeholder="
+              td('common.form.inputPlaceholder', {
+                field: td('meta.unreleased.structured.table.detail.version'),
+              })
+            "
             disabled
           />
         </el-form-item>
-        <el-form-item label="变更类型：">
+        <el-form-item
+          :label="
+            td('meta.unreleased.structured.table.detail.updateType') + '：'
+          "
+        >
           <el-input
             v-model="dialog.row.updateType"
-            placeholder="请输入变更类型"
+            :placeholder="
+              td('common.form.inputPlaceholder', {
+                field: td('meta.unreleased.structured.table.detail.updateType'),
+              })
+            "
             disabled
           />
         </el-form-item>
-        <el-form-item label="变更说明：">
+        <el-form-item
+          :label="
+            td('meta.unreleased.structured.table.detail.updateMsg') + '：'
+          "
+        >
           <el-input
             v-model="dialog.row.updateMsg"
-            placeholder="请输入变更说明"
+            :placeholder="
+              td('common.form.inputPlaceholder', {
+                field: td('meta.unreleased.structured.table.detail.updateMsg'),
+              })
+            "
             disabled
             type="textarea"
             :min-height="192"
             show-word-limit
-            maxlength="500个字符"
+            :maxlength="500"
           />
         </el-form-item>
-        <el-form-item label="当前版本：">
+        <el-form-item
+          :label="
+            td('meta.unreleased.structured.table.detail.activeVersion') + '：'
+          "
+        >
           <dict-tag
             :options="toValue(dicts.sys_yes_no)"
             :value="dialog.row.activeVersion"
           />
         </el-form-item>
-        <el-form-item label="创建人：">
+        <el-form-item :label="td('common.texts.createdBy') + '：'">
           <el-input
             v-model="dialog.row.name"
-            placeholder="请输入修改人"
+            :placeholder="
+              td('common.form.inputPlaceholder', {
+                field: td('common.texts.createdBy'),
+              })
+            "
             disabled
           />
         </el-form-item>
-        <el-form-item label="创建时间：">
+        <el-form-item :label="td('common.texts.createdTime') + '：'">
           <el-input
             v-model="dialog.row.time"
-            placeholder="请输入创建时间"
+            :placeholder="
+              td('common.form.inputPlaceholder', {
+                field: td('common.texts.createdTime'),
+              })
+            "
             disabled
           />
         </el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="dialog.open = false">{{ t('common.button.close') }}</el-button>
+          <el-button @click="dialog.open = false">{{
+            td("common.button.close")
+          }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -95,23 +150,23 @@
 </template>
 
 <script setup name="VersionManagement">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang";
 import { reactive, toValue, getCurrentInstance } from "vue";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const dicts = proxy.useDict("sys_yes_no");
 
 const tableStroe = reactive({
   columns: [
     {
-      label: t('common.texts.number'),
+      label: td("common.texts.number"),
       prop: "id",
       sortable: true,
       width: 60,
     },
     {
-      label: "表名称",
+      label: td("meta.released.structured.table.tableName"),
       prop: "tableName",
       align: "left",
       showOverflowTooltip: {
@@ -120,7 +175,7 @@ const tableStroe = reactive({
       minWidth: 140,
     },
     {
-      label: "表注释",
+      label: td("meta.released.structured.table.tableComment"),
       prop: "tableComment",
       align: "left",
       showOverflowTooltip: {
@@ -129,17 +184,17 @@ const tableStroe = reactive({
       minWidth: 240,
     },
     {
-      label: "版本号",
+      label: td("meta.unreleased.structured.table.detail.version"),
       prop: "version",
       width: 90,
     },
     {
-      label: "变更类型",
+      label: td("meta.unreleased.structured.table.detail.updateType"),
       prop: "updateType",
       width: 90,
     },
     {
-      label: "变更说明",
+      label: td("meta.unreleased.structured.table.detail.updateMsg"),
       prop: "updateMsg",
       minWidth: 240,
       align: "left",
@@ -148,25 +203,25 @@ const tableStroe = reactive({
       },
     },
     {
-      label: "当前版本",
+      label: td("meta.unreleased.structured.table.detail.activeVersion"),
       prop: "activeVersion",
       slot: "active-version",
       width: 90,
     },
     {
-      label: t('common.texts.createdBy'),
+      label: td("common.texts.createdBy"),
       prop: "createBy",
       width: 90,
     },
     {
-      label: t('common.texts.createdTime'),
+      label: td("common.texts.createdTime"),
       prop: "createTime",
       sortable: true,
       width: 160,
       date: true,
     },
     {
-      label: t('common.texts.operation'),
+      label: td("common.texts.operation"),
       width: 240,
       fixed: "right",
       slot: "handle",
@@ -181,7 +236,7 @@ const tableStroe = reactive({
               {
                 id: 1,
                 version: "1.0.0",
-                updateType: t('common.button.add'),
+                updateType: td("common.button.add"),
                 updateMsg:
                   "新增用户表字段，包括用户姓名、联系方式、注册时间等基础信息，优化数据结构设计",
                 activeVersion: "N",
@@ -193,7 +248,7 @@ const tableStroe = reactive({
               {
                 id: 2,
                 version: "1.0.1",
-                updateType: t('common.button.delete'),
+                updateType: td("common.button.delete"),
                 updateMsg:
                   "删除冗余字段，移除不再使用的email_backup和phone_backup字段，精简表结构提高性能",
                 activeVersion: "N",
@@ -205,7 +260,7 @@ const tableStroe = reactive({
               {
                 id: 3,
                 version: "1.0.2",
-                updateType: t('common.button.add'),
+                updateType: td("common.button.add"),
                 updateMsg:
                   "添加索引优化，为user_name和create_time字段创建复合索引，提升查询效率约30%",
                 activeVersion: "N",
@@ -229,7 +284,7 @@ const tableStroe = reactive({
               {
                 id: 5,
                 version: "1.0.4",
-                updateType: t('common.button.add'),
+                updateType: td("common.button.add"),
                 updateMsg:
                   "增加用户权限字段，添加role_id和permission_level字段，支持多级权限管理功能",
                 activeVersion: "Y",

@@ -25,7 +25,7 @@
               @mousedown="(e) => e.preventDefault()"
               @click="router.back"
             >
-              <svg-icon iconClass="fhs" />{{ t('common.button.return') }}
+              <svg-icon iconClass="fhs" />{{ td("common.button.return") }}
             </el-button>
           </div>
         </div>
@@ -33,7 +33,9 @@
         <el-row :gutter="2">
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">来源系统</div>
+              <div class="infotop-row-lable">
+                {{ td("meta.unreleased.structured.table.detail.sourceSystem") }}
+              </div>
               <div class="infotop-row-value">
                 {{ form.sourceSystemName || "-" }}
               </div>
@@ -41,7 +43,9 @@
           </el-col>
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">数据库类型</div>
+              <div class="infotop-row-lable">
+                {{ td("meta.unreleased.structured.table.detail.dbType") }}
+              </div>
               <div class="infotop-row-value">
                 <dict-tag
                   :options="toValue(dicts.datasource_type)"
@@ -52,7 +56,9 @@
           </el-col>
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">版本号</div>
+              <div class="infotop-row-lable">
+                {{ td("meta.unreleased.structured.table.detail.version") }}
+              </div>
               <div class="infotop-row-value">
                 {{ formatVersion(form.version) }}
               </div>
@@ -63,7 +69,9 @@
         <el-row :gutter="2">
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">所属库名</div>
+              <div class="infotop-row-lable">
+                {{ td("meta.unreleased.structured.table.detail.dbName") }}
+              </div>
               <div class="infotop-row-value">
                 {{ getFormatValue(form.dbName) }}
               </div>
@@ -71,7 +79,9 @@
           </el-col>
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">表注释</div>
+              <div class="infotop-row-lable">
+                {{ td("meta.unreleased.structured.table.detail.tableComment") }}
+              </div>
               <div class="infotop-row-value">
                 {{ getFormatValue(form.tableComment) }}
               </div>
@@ -101,22 +111,29 @@
   </div>
 </template>
 <script setup name="DatabaseDetail">
-import { useI18n } from 'vue-i18n'
-import { computed, getCurrentInstance, nextTick, reactive, toValue } from "vue";
+import useDefaultLang from "@/composables/useDefaultLang";
+import {
+  computed,
+  getCurrentInstance,
+  nextTick,
+  reactive,
+  toValue,
+  defineAsyncComponent,
+} from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { getTable } from "@/api/mc/unreleased/table";
 import { listDomain } from "@/api/att/domain/domain.js";
 import { getParentLabelPath } from "@/utils/anivia.js";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const tabData = [
   {
     key: "BaseInfo",
-    label: "基本信息",
+    label: td("meta.unreleased.structured.table.detail.baseInfo"),
   },
   {
     key: "ColumnList",
-    label: "字段列表",
+    label: td("meta.unreleased.structured.table.detail.columnList"),
   },
   // {
   //   key: "DataGovern",
@@ -132,7 +149,7 @@ const tabData = [
   // },
   {
     key: "VersionManagement",
-    label: "版本与变更",
+    label: td("meta.unreleased.structured.table.detail.versionManagement"),
   },
 ];
 const tabComponent = {
@@ -187,7 +204,7 @@ function getDomains() {
     const domains = {
       id: 0,
       code: 0,
-      name: "顶级节点",
+      name: td("meta.unreleased.structured.table.detail.topNode"),
       children: proxy.handleTree(res.data, "id", "parentId"),
     };
     store.treeDomains.push(domains);

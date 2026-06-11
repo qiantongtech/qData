@@ -19,19 +19,19 @@
    <div class="app-container" ref="app-container">
       <div class="pagecont-top" v-show="showSearch">
          <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
-            <el-form-item :label="t('sys.monitor.jobLog.taskName')" prop="jobName">
+            <el-form-item :label="td('sys.monitor.jobLog.taskName')" prop="jobName">
                <el-input
                   v-model="queryParams.jobName"
-                  :placeholder="t('sys.monitor.jobLog.taskNamePlaceholder')"
+                  :placeholder="td('sys.monitor.jobLog.taskNamePlaceholder')"
                   clearable
                   style="width: 240px"
                   @keyup.enter="handleQuery"
                />
             </el-form-item>
-            <el-form-item :label="t('sys.monitor.jobLog.taskGroup')" prop="jobGroup">
+            <el-form-item :label="td('sys.monitor.jobLog.taskGroup')" prop="jobGroup">
                <el-select
                   v-model="queryParams.jobGroup"
-                  :placeholder="t('sys.monitor.jobLog.taskGroupPlaceholder')"
+                  :placeholder="td('sys.monitor.jobLog.taskGroupPlaceholder')"
                   clearable
                   style="width: 240px"
                >
@@ -43,10 +43,10 @@
                   />
                </el-select>
             </el-form-item>
-            <el-form-item :label="t('sys.monitor.jobLog.execStatus')" prop="status">
+            <el-form-item :label="td('sys.monitor.jobLog.execStatus')" prop="status">
                <el-select
                   v-model="queryParams.status"
-                  :placeholder="t('sys.monitor.jobLog.execStatusPlaceholder')"
+                  :placeholder="td('sys.monitor.jobLog.execStatusPlaceholder')"
                   clearable
                   style="width: 240px"
                >
@@ -58,7 +58,7 @@
                   />
                </el-select>
             </el-form-item>
-            <el-form-item :label="t('sys.monitor.jobLog.execTime')" style="width: 308px">
+            <el-form-item :label="td('sys.monitor.jobLog.execTime')" style="width: 308px">
                <el-date-picker
                   v-model="dateRange"
                   value-format="YYYY-MM-DD"
@@ -70,10 +70,10 @@
             </el-form-item>
             <el-form-item>
                <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                  <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
+                  <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
                </el-button>
                <el-button @click="resetQuery" @mousedown="e => e.preventDefault()">
-                  <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
+                  <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
                </el-button>
             </el-form-item>
          </el-form>
@@ -90,7 +90,7 @@
                   :disabled="multiple"
                   @click="handleDelete"
                   v-hasPermi="['monitor:job:remove']"
-               >{{ t('common.button.delete') }}</el-button>
+               >{{ td('common.button.delete') }}</el-button>
             </el-col>
             <el-col :span="1.5">
                <el-button
@@ -99,7 +99,7 @@
                   icon="Delete"
                   @click="handleClean"
                   v-hasPermi="['monitor:job:remove']"
-               >{{ t('sys.monitor.jobLog.clearAll') }}</el-button>
+               >{{ td('sys.monitor.jobLog.clearAll') }}</el-button>
             </el-col>
             <el-col :span="1.5">
                <el-button
@@ -108,7 +108,7 @@
                   icon="Download"
                   @click="handleExport"
                   v-hasPermi="['monitor:job:export']"
-               >{{ t('common.button.export') }}</el-button>
+               >{{ td('common.button.export') }}</el-button>
             </el-col>
             <el-col :span="1.5">
                <el-button
@@ -116,7 +116,7 @@
                   plain
                   icon="Close"
                   @click="handleClose"
-               >{{ t('common.button.close') }}</el-button>
+               >{{ td('common.button.close') }}</el-button>
             </el-col>
          </el-row>
          <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
@@ -124,28 +124,28 @@
 
          <el-table stripe height="60vh" v-loading="loading" :data="jobLogList" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55" align="center" />
-            <el-table-column :label="t('sys.monitor.jobLog.logNo')" width="80" align="center" prop="jobLogId" />
-            <el-table-column :label="t('sys.monitor.jobLog.taskName')" align="center" prop="jobName" :show-overflow-tooltip="true" />
-            <el-table-column :label="t('sys.monitor.jobLog.taskGroup')" align="center" prop="jobGroup" :show-overflow-tooltip="true">
+            <el-table-column :label="td('sys.monitor.jobLog.logNo')" width="80" align="center" prop="jobLogId" />
+            <el-table-column :label="td('sys.monitor.jobLog.taskName')" align="center" prop="jobName" :show-overflow-tooltip="true" />
+            <el-table-column :label="td('sys.monitor.jobLog.taskGroup')" align="center" prop="jobGroup" :show-overflow-tooltip="true">
                <template #default="scope">
                   <dict-tag :options="sys_job_group" :value="scope.row.jobGroup" />
                </template>
             </el-table-column>
-            <el-table-column :label="t('sys.monitor.jobLog.invokeTarget')" align="center" prop="invokeTarget" :show-overflow-tooltip="true" />
-            <el-table-column :label="t('sys.monitor.jobLog.logInfo')" align="center" prop="jobMessage" :show-overflow-tooltip="true" />
-            <el-table-column :label="t('sys.monitor.jobLog.execStatus')" align="center" prop="status">
+            <el-table-column :label="td('sys.monitor.jobLog.invokeTarget')" align="center" prop="invokeTarget" :show-overflow-tooltip="true" />
+            <el-table-column :label="td('sys.monitor.jobLog.logInfo')" align="center" prop="jobMessage" :show-overflow-tooltip="true" />
+            <el-table-column :label="td('sys.monitor.jobLog.execStatus')" align="center" prop="status">
                <template #default="scope">
                   <dict-tag :options="sys_common_status" :value="scope.row.status" />
                </template>
             </el-table-column>
-            <el-table-column :label="t('sys.monitor.jobLog.execTime')" align="center" prop="createTime" width="180">
+            <el-table-column :label="td('sys.monitor.jobLog.execTime')" align="center" prop="createTime" width="180">
                <template #default="scope">
                   <span>{{ parseTime(scope.row.createTime) }}</span>
                </template>
             </el-table-column>
-            <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width">
+            <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width">
                <template #default="scope">
-                  <el-button link type="primary" icon="View" @click="handleView(scope.row)" v-hasPermi="['monitor:job:query']">{{ t('sys.monitor.jobLog.detail') }}</el-button>
+                  <el-button link type="primary" icon="View" @click="handleView(scope.row)" v-hasPermi="['monitor:job:query']">{{ td('sys.monitor.jobLog.detail') }}</el-button>
                </template>
             </el-table-column>
          </el-table>
@@ -160,47 +160,47 @@
       </div>
 
       <!-- 调度日志详细 -->
-      <el-dialog :title="t('sys.monitor.jobLog.scheduleLogDetail')" v-model="open" width="800px" :append-to="$refs['app-container']" draggable destroy-on-close>
+      <el-dialog :title="td('sys.monitor.jobLog.scheduleLogDetail')" v-model="open" width="800px" :append-to="$refs['app-container']" draggable destroy-on-close>
          <el-form :model="form" label-width="80px">
             <el-row :gutter="20">
                <el-col :span="12">
-                  <el-form-item :label="t('sys.monitor.jobLog.logIndex')">
+                  <el-form-item :label="td('sys.monitor.jobLog.logIndex')">
                      <div class="form-value-ifon">{{ form.jobLogId }}</div>
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="t('sys.monitor.jobLog.taskName')">
+                  <el-form-item :label="td('sys.monitor.jobLog.taskName')">
                      <div class="form-value-ifon">{{ form.jobName }}</div>
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="t('sys.monitor.jobLog.taskGroupLabel')">
+                  <el-form-item :label="td('sys.monitor.jobLog.taskGroupLabel')">
                      <div class="form-value-ifon">{{ form.jobGroup }}</div>
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="t('sys.monitor.jobLog.execTime')">
+                  <el-form-item :label="td('sys.monitor.jobLog.execTime')">
                      <div class="form-value-ifon">{{ form.createTime }}</div>
                   </el-form-item>
                </el-col>
                <el-col :span="24">
-                  <el-form-item :label="t('sys.monitor.jobLog.invokeMethod')">
+                  <el-form-item :label="td('sys.monitor.jobLog.invokeMethod')">
                      <div class="form-value-ifon">{{ form.invokeTarget }}</div>
                   </el-form-item>
                </el-col>
                <el-col :span="24">
-                  <el-form-item :label="t('sys.monitor.jobLog.logInfo')">
+                  <el-form-item :label="td('sys.monitor.jobLog.logInfo')">
                      <div class="form-value-ifon">{{ form.jobMessage }}</div>
                   </el-form-item>
                </el-col>
                <el-col :span="24">
-                  <el-form-item :label="t('sys.monitor.jobLog.execStatus')">
-                     <div class="form-value-ifon" v-if="form.status == 0">{{ t('sys.monitor.jobLog.normal') }}</div>
-                     <div class="form-value-ifon" v-else-if="form.status == 1">{{ t('sys.monitor.jobLog.failed') }}</div>
+                  <el-form-item :label="td('sys.monitor.jobLog.execStatus')">
+                     <div class="form-value-ifon" v-if="form.status == 0">{{ td('sys.monitor.jobLog.normal') }}</div>
+                     <div class="form-value-ifon" v-else-if="form.status == 1">{{ td('sys.monitor.jobLog.failed') }}</div>
                   </el-form-item>
                </el-col>
                <el-col :span="24">
-                  <el-form-item :label="t('sys.monitor.jobLog.exceptionInfo')" v-if="form.status == 1">
+                  <el-form-item :label="td('sys.monitor.jobLog.exceptionInfo')" v-if="form.status == 1">
                      <div class="form-value-ifon">{{ form.exceptionInfo }}</div>
                   </el-form-item>
                </el-col>
@@ -208,7 +208,7 @@
          </el-form>
          <template #footer>
             <div class="dialog-footer">
-               <el-button @click="open = false">{{ t('common.button.close') }}</el-button>
+               <el-button @click="open = false">{{ td('common.button.close') }}</el-button>
             </div>
          </template>
       </el-dialog>
@@ -216,13 +216,11 @@
 </template>
 
 <script setup name="JobLog">
-import { useI18n } from 'vue-i18n'
 import { getJob } from "@/api/system/monitor/job.js";
 import { listJobLog, delJobLog, cleanJobLog } from "@/api/system/monitor/jobLog.js";
 import useDefaultLang from "@/composables/useDefaultLang";
 
 const { td } = useDefaultLang();
-const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { sys_common_status, sys_job_group } = proxy.useDict("sys_common_status", "sys_job_group");
 
@@ -292,21 +290,21 @@ function handleView(row) {
 
 /** 删除按钮操作 */
 function handleDelete(row) {
-  proxy.$modal.confirm(t('sys.monitor.jobLog.confirmDelete', { ids: ids.value })).then(function () {
+  proxy.$modal.confirm(td('sys.monitor.jobLog.confirmDelete', { ids: ids.value })).then(function () {
     return delJobLog(ids.value);
   }).then(() => {
     getList();
-    proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+    proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
   }).catch(() => {});
 }
 
 /** 清空按钮操作 */
 function handleClean() {
-  proxy.$modal.confirm(t('sys.monitor.jobLog.confirmClearAll')).then(function () {
+  proxy.$modal.confirm(td('sys.monitor.jobLog.confirmClearAll')).then(function () {
     return cleanJobLog();
   }).then(() => {
     getList();
-    proxy.$modal.msgSuccess(t('sys.monitor.jobLog.clearSuccess'));
+    proxy.$modal.msgSuccess(td('sys.monitor.jobLog.clearSuccess'));
   }).catch(() => {});
 }
 

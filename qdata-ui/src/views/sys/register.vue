@@ -18,14 +18,14 @@
 <template>
   <div class="register">
     <el-form ref="registerRef" :model="registerForm" :rules="registerRules" class="register-form">
-      <h3 class="title">{{ t('sys.register.title') }}</h3>
+      <h3 class="title">{{ td('sys.register.title') }}</h3>
       <el-form-item prop="username">
         <el-input
           v-model="registerForm.username"
           type="text"
           size="large"
           auto-complete="off"
-          :placeholder="t('sys.register.account')"
+          :placeholder="td('sys.register.account')"
         >
           <template #prefix><svg-icon icon-class="user" class="el-input__icon input-icon" /></template>
         </el-input>
@@ -36,7 +36,7 @@
           type="password"
           size="large"
           auto-complete="off"
-          :placeholder="t('sys.register.password')"
+          :placeholder="td('sys.register.password')"
           @keyup.enter="handleRegister"
         >
           <template #prefix><svg-icon icon-class="password" class="el-input__icon input-icon" /></template>
@@ -48,7 +48,7 @@
           type="password"
           size="large"
           auto-complete="off"
-          :placeholder="t('sys.register.confirmPassword')"
+          :placeholder="td('sys.register.confirmPassword')"
           @keyup.enter="handleRegister"
         >
           <template #prefix><svg-icon icon-class="password" class="el-input__icon input-icon" /></template>
@@ -59,7 +59,7 @@
           size="large"
           v-model="registerForm.code"
           auto-complete="off"
-          :placeholder="t('sys.register.code')"
+          :placeholder="td('sys.register.code')"
           style="width: 63%"
           @keyup.enter="handleRegister"
         >
@@ -77,11 +77,11 @@
           style="width:100%;"
           @click.prevent="handleRegister"
         >
-          <span v-if="!loading">{{ t('sys.register.registerBtn') }}</span>
-          <span v-else>{{ t('sys.register.registering') }}</span>
+          <span v-if="!loading">{{ td('sys.register.registerBtn') }}</span>
+          <span v-else>{{ td('sys.register.registering') }}</span>
         </el-button>
         <div style="float: right;">
-          <router-link class="link-type" :to="'/login'">{{ t('sys.register.useExistingAccount') }}</router-link>
+          <router-link class="link-type" :to="'/login'">{{ td('sys.register.useExistingAccount') }}</router-link>
         </div>
       </el-form-item>
     </el-form>
@@ -93,13 +93,12 @@
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang";
 import { ElMessageBox } from "element-plus";
 import { getCodeImg, register } from "@/api/system/login.js";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 
-const { t } = useI18n();
 const router = useRouter();
 const { proxy } = getCurrentInstance();
 
@@ -113,7 +112,7 @@ const registerForm = ref({
 
 const equalToPassword = (rule, value, callback) => {
   if (registerForm.value.password !== value) {
-    callback(new Error(t('sys.register.passwordMismatch')));
+    callback(new Error(td('sys.register.passwordMismatch')));
   } else {
     callback();
   }
@@ -121,19 +120,19 @@ const equalToPassword = (rule, value, callback) => {
 
 const registerRules = computed(() => ({
   username: [
-    { required: true, trigger: "blur", message: t('sys.register.accountPlaceholder') },
-    { min: 2, max: 20, message: t('sys.register.accountLengthRange'), trigger: "blur" }
+    { required: true, trigger: "blur", message: td('sys.register.accountPlaceholder') },
+    { min: 2, max: 20, message: td('sys.register.accountLengthRange'), trigger: "blur" }
   ],
   password: [
-    { required: true, trigger: "blur", message: t('sys.register.passwordPlaceholder') },
-    { min: 5, max: 20, message: t('sys.register.passwordLengthRange'), trigger: "blur" },
-    { pattern: /^[^<>"'|\\]+$/, message: t('sys.register.invalidChars'), trigger: "blur" }
+    { required: true, trigger: "blur", message: td('sys.register.passwordPlaceholder') },
+    { min: 5, max: 20, message: td('sys.register.passwordLengthRange'), trigger: "blur" },
+    { pattern: /^[^<>"'|\\]+$/, message: td('sys.register.invalidChars'), trigger: "blur" }
   ],
   confirmPassword: [
-    { required: true, trigger: "blur", message: t('sys.register.confirmPasswordPlaceholder') },
+    { required: true, trigger: "blur", message: td('sys.register.confirmPasswordPlaceholder') },
     { required: true, validator: equalToPassword, trigger: "blur" }
   ],
-  code: [{ required: true, trigger: "change", message: t('sys.register.codePlaceholder') }]
+  code: [{ required: true, trigger: "change", message: td('sys.register.codePlaceholder') }]
 }));
 
 const codeUrl = ref("");
@@ -146,7 +145,7 @@ function handleRegister() {
       loading.value = true;
       register(registerForm.value).then(res => {
         const username = registerForm.value.username;
-        ElMessageBox.alert("<font color='red'>" + t('sys.register.successMsg', { username }) + "</font>", t('common.message.systemPrompt'), {
+        ElMessageBox.alert("<font color='red'>" + td('sys.register.successMsg', { username }) + "</font>", td('common.message.systemPrompt'), {
           dangerouslyUseHTMLString: true,
           type: "success",
         }).then(() => {

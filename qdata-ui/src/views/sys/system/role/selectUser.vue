@@ -17,35 +17,35 @@
 
 <template>
    <!-- 授权用户 -->
-   <el-dialog :title="t('sys.system.roleAuth.selectUser')" v-model="visible" width="800px" top="5vh" append-to-body>
+   <el-dialog :title="td('sys.system.roleAuth.selectUser')" v-model="visible" width="800px" top="5vh" append-to-body>
       <el-form :model="queryParams" ref="queryRef" :inline="true">
-         <el-form-item :label="t('sys.system.roleAuth.userName')" prop="userName">
-            <el-input v-model="queryParams.userName" :placeholder="t('sys.system.roleAuth.userNamePlaceholder')" clearable style="width: 180px"
+         <el-form-item :label="td('sys.system.roleAuth.userName')" prop="userName">
+            <el-input v-model="queryParams.userName" :placeholder="td('sys.system.roleAuth.userNamePlaceholder')" clearable style="width: 180px"
                @keyup.enter="handleQuery" />
          </el-form-item>
-         <el-form-item :label="t('sys.system.roleAuth.phone')" prop="phonenumber">
-            <el-input v-model="queryParams.phonenumber" :placeholder="t('sys.system.roleAuth.phonePlaceholder')" clearable style="width: 180px"
+         <el-form-item :label="td('sys.system.roleAuth.phone')" prop="phonenumber">
+            <el-input v-model="queryParams.phonenumber" :placeholder="td('sys.system.roleAuth.phonePlaceholder')" clearable style="width: 180px"
                @keyup.enter="handleQuery" />
          </el-form-item>
          <el-form-item>
-            <el-button type="primary" icon="Search" @click="handleQuery">{{ t('sys.system.roleAuth.searchBtn') }}</el-button>
-            <el-button icon="Refresh" @click="resetQuery">{{ t('common.button.reset') }}</el-button>
+            <el-button type="primary" icon="Search" @click="handleQuery">{{ td('sys.system.roleAuth.searchBtn') }}</el-button>
+            <el-button icon="Refresh" @click="resetQuery">{{ td('common.button.reset') }}</el-button>
          </el-form-item>
       </el-form>
       <el-row>
          <el-table @row-click="clickRow" ref="refTable" :data="userList" @selection-change="handleSelectionChange"
             height="260px">
             <el-table-column type="selection" width="55"></el-table-column>
-            <el-table-column :label="t('sys.system.roleAuth.userName')" prop="userName" :show-overflow-tooltip="true" />
-            <el-table-column :label="t('sys.system.roleAuth.userNickName')" prop="nickName" :show-overflow-tooltip="true" />
-            <el-table-column :label="t('sys.system.roleAuth.email')" prop="email" :show-overflow-tooltip="true" />
-            <el-table-column :label="t('sys.system.roleAuth.mobile')" prop="phonenumber" :show-overflow-tooltip="true" />
-            <el-table-column :label="t('common.texts.status')" align="center" prop="status">
+            <el-table-column :label="td('sys.system.roleAuth.userName')" prop="userName" :show-overflow-tooltip="true" />
+            <el-table-column :label="td('sys.system.roleAuth.userNickName')" prop="nickName" :show-overflow-tooltip="true" />
+            <el-table-column :label="td('sys.system.roleAuth.email')" prop="email" :show-overflow-tooltip="true" />
+            <el-table-column :label="td('sys.system.roleAuth.mobile')" prop="phonenumber" :show-overflow-tooltip="true" />
+            <el-table-column :label="td('common.texts.status')" align="center" prop="status">
                <template #default="scope">
                   <dict-tag :options="sys_normal_disable" :value="scope.row.status" />
                </template>
             </el-table-column>
-            <el-table-column :label="t('common.texts.createdTime')" align="center" prop="createTime" width="180">
+            <el-table-column :label="td('common.texts.createdTime')" align="center" prop="createTime" width="180">
                <template #default="scope">
                   <span>{{ parseTime(scope.row.createTime) }}</span>
                </template>
@@ -56,18 +56,18 @@
          v-model:limit="queryParams.pageSize" @pagination="getList" />
       <template #footer>
          <div class="dialog-footer">
-            <el-button type="primary" @click="handleSelectUser">{{ t('common.button.confirm') }}</el-button>
-            <el-button @click="visible = false">{{ t('common.button.cancel') }}</el-button>
+            <el-button type="primary" @click="handleSelectUser">{{ td('common.button.confirm') }}</el-button>
+            <el-button @click="visible = false">{{ td('common.button.cancel') }}</el-button>
          </div>
       </template>
    </el-dialog>
 </template>
 
 <script setup name="SelectUser">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang";
 import { authUserSelectAll, unallocatedUserList } from "@/api/system/system/role.js";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const props = defineProps({
    roleId: {
       type: [Number, String]
@@ -133,7 +133,7 @@ function handleSelectUser() {
    const roleId = queryParams.roleId;
    const uIds = userIds.value.join(",");
    if (uIds == "") {
-      proxy.$modal.msgError(t('sys.system.roleAuth.selectAssignUser'));
+      proxy.$modal.msgError(td('sys.system.roleAuth.selectAssignUser'));
       return;
    }
    authUserSelectAll({ roleId: roleId, userIds: uIds }).then(res => {

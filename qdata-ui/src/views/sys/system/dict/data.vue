@@ -19,7 +19,7 @@
    <div class="app-container" ref="app-container">
       <div class="pagecont-top" v-show="showSearch">
          <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="68px">
-            <el-form-item :label="t('sys.system.dictData.dictName')" prop="dictType">
+            <el-form-item :label="td('sys.system.dictData.dictName')" prop="dictType">
                <el-select v-model="queryParams.dictType" class="el-form-input-width">
                   <el-option
                      v-for="item in typeOptions"
@@ -29,17 +29,17 @@
                   />
                </el-select>
             </el-form-item>
-            <el-form-item :label="t('sys.system.dictData.dictLabel')" prop="dictLabel">
+            <el-form-item :label="td('sys.system.dictData.dictLabel')" prop="dictLabel">
                <el-input
                   v-model="queryParams.dictLabel"
-                  :placeholder="t('sys.system.dictData.dictLabelPlaceholder')"
+                  :placeholder="td('sys.system.dictData.dictLabelPlaceholder')"
                   clearable
                   class="el-form-input-width"
                   @keyup.enter="handleQuery"
                />
             </el-form-item>
-            <el-form-item :label="t('common.texts.status')" prop="status">
-               <el-select v-model="queryParams.status" :placeholder="t('sys.dictData.dataStatus')" clearable class="el-form-input-width">
+            <el-form-item :label="td('common.texts.status')" prop="status">
+               <el-select v-model="queryParams.status" :placeholder="td('sys.dictData.dataStatus')" clearable class="el-form-input-width">
                   <el-option
                      v-for="dict in sys_normal_disable"
                      :key="dict.value"
@@ -50,10 +50,10 @@
             </el-form-item>
             <el-form-item>
                <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                  <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
+                  <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
                </el-button>
                <el-button @click="resetQuery" @mousedown="e => e.preventDefault()">
-                  <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
+                  <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
                </el-button>
             </el-form-item>
          </el-form>
@@ -68,7 +68,7 @@
                      icon="Plus"
                      @click="handleAdd"
                      v-hasPermi="['system:dict:add']"
-                  >{{ t('common.button.add') }}</el-button>
+                  >{{ td('common.button.add') }}</el-button>
                </el-col>
                <el-col :span="1.5">
                   <el-button
@@ -78,7 +78,7 @@
                      :disabled="single"
                      @click="handleUpdate"
                      v-hasPermi="['system:dict:edit']"
-                  >{{ t('common.button.update') }}</el-button>
+                  >{{ td('common.button.update') }}</el-button>
                </el-col>
                <el-col :span="1.5">
                   <el-button
@@ -88,7 +88,7 @@
                      :disabled="multiple"
                      @click="handleDelete"
                      v-hasPermi="['system:dict:remove']"
-                  >{{ t('common.button.delete') }}</el-button>
+                  >{{ td('common.button.delete') }}</el-button>
                </el-col>
                <el-col :span="1.5">
                   <el-button
@@ -97,7 +97,7 @@
                      icon="Download"
                      @click="handleExport"
                      v-hasPermi="['system:dict:export']"
-                  >{{ t('common.button.export') }}</el-button>
+                  >{{ td('common.button.export') }}</el-button>
                </el-col>
                <el-col :span="1.5">
                   <el-button
@@ -105,7 +105,7 @@
                      plain
                      icon="Close"
                      @click="handleClose"
-                  >{{ t('common.button.close') }}</el-button>
+                  >{{ td('common.button.close') }}</el-button>
                </el-col>
             </el-row>
             <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
@@ -114,30 +114,30 @@
          <!-- <el-table v-loading="loading" :data="dataList" @selection-change="handleSelectionChange"> -->
          <el-table stripe height="60vh" v-loading="loading" :data="dataList" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55" align="center" />
-            <el-table-column :label="t('sys.system.dictData.dictCode')" align="center" prop="dictCode" />
-            <el-table-column :label="t('sys.system.dictData.dictLabel')" align="center" prop="dictLabel">
+            <el-table-column :label="td('sys.system.dictData.dictCode')" align="center" prop="dictCode" />
+            <el-table-column :label="td('sys.system.dictData.dictLabel')" align="center" prop="dictLabel">
                <template #default="scope">
                   <span v-if="(scope.row.listClass == '' || scope.row.listClass == 'default') && (scope.row.cssClass == '' || scope.row.cssClass == null)">{{ scope.row.dictLabel }}</span>
                   <el-tag v-else :type="scope.row.listClass == 'primary' ? '' : scope.row.listClass" :class="scope.row.cssClass">{{ scope.row.dictLabel }}</el-tag>
                </template>
             </el-table-column>
-            <el-table-column :label="t('sys.dictData.dictValue')" align="center" prop="dictValue" />
-            <el-table-column :label="t('sys.dictData.dictSort')" align="center" prop="dictSort" />
-            <el-table-column :label="t('common.texts.status')" align="center" prop="status">
+            <el-table-column :label="td('sys.dictData.dictValue')" align="center" prop="dictValue" />
+            <el-table-column :label="td('sys.dictData.dictSort')" align="center" prop="dictSort" />
+            <el-table-column :label="td('common.texts.status')" align="center" prop="status">
                <template #default="scope">
                   <dict-tag :options="sys_normal_disable" :value="scope.row.status" />
                </template>
             </el-table-column>
-            <el-table-column :label="t('common.texts.remark')" align="center" prop="remark" :show-overflow-tooltip="true" />
-            <el-table-column :label="t('common.texts.createdTime')" align="center" prop="createTime" width="180">
+            <el-table-column :label="td('common.texts.remark')" align="center" prop="remark" :show-overflow-tooltip="true" />
+            <el-table-column :label="td('common.texts.createdTime')" align="center" prop="createTime" width="180">
                <template #default="scope">
                   <span>{{ parseTime(scope.row.createTime) }}</span>
                </template>
             </el-table-column>
-            <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
+            <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
                <template #default="scope">
-                  <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:dict:edit']">{{ t('common.button.update') }}</el-button>
-                  <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['system:dict:remove']">{{ t('common.button.delete') }}</el-button>
+                  <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:dict:edit']">{{ td('common.button.update') }}</el-button>
+                  <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['system:dict:remove']">{{ td('common.button.delete') }}</el-button>
                </template>
             </el-table-column>
          </el-table>
@@ -156,32 +156,32 @@
          <el-form ref="dataRef" :model="form" :rules="rules" label-width="80px">
             <el-row :gutter="20">
                <el-col :span="12">
-                  <el-form-item :label="t('sys.system.dictData.dictType')">
+                  <el-form-item :label="td('sys.system.dictData.dictType')">
                      <el-input v-model="form.dictType" :disabled="true" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="t('sys.system.dictData.dataLabel')" prop="dictLabel">
-                     <el-input v-model="form.dictLabel" :placeholder="t('sys.system.dictData.dataLabelPlaceholder')" />
+                  <el-form-item :label="td('sys.system.dictData.dataLabel')" prop="dictLabel">
+                     <el-input v-model="form.dictLabel" :placeholder="td('sys.system.dictData.dataLabelPlaceholder')" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="t('sys.system.dictData.dataValue')" prop="dictValue">
-                     <el-input v-model="form.dictValue" :placeholder="t('sys.system.dictData.dataValuePlaceholder')" />
+                  <el-form-item :label="td('sys.system.dictData.dataValue')" prop="dictValue">
+                     <el-input v-model="form.dictValue" :placeholder="td('sys.system.dictData.dataValuePlaceholder')" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="t('sys.system.dictData.styleAttr')" prop="cssClass">
-                     <el-input v-model="form.cssClass" :placeholder="t('sys.system.dictData.styleAttrPlaceholder')" />
+                  <el-form-item :label="td('sys.system.dictData.styleAttr')" prop="cssClass">
+                     <el-input v-model="form.cssClass" :placeholder="td('sys.system.dictData.styleAttrPlaceholder')" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="t('sys.system.dictData.showSort')" prop="dictSort">
+                  <el-form-item :label="td('sys.system.dictData.showSort')" prop="dictSort">
                      <el-input-number style="width:100%" v-model="form.dictSort" controls-position="right" :min="0" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="t('sys.system.dictData.echoStyle')" prop="listClass">
+                  <el-form-item :label="td('sys.system.dictData.echoStyle')" prop="listClass">
                      <el-select v-model="form.listClass">
                         <el-option
                            v-for="item in listClassOptions"
@@ -193,7 +193,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="t('common.texts.status')" prop="status">
+                  <el-form-item :label="td('common.texts.status')" prop="status">
                      <el-radio-group v-model="form.status">
                         <el-radio
                            v-for="dict in sys_normal_disable"
@@ -204,16 +204,16 @@
                   </el-form-item>
                </el-col>
                <el-col :span="24">
-                  <el-form-item :label="t('common.texts.remark')" prop="remark">
-                     <el-input v-model="form.remark" type="textarea" :placeholder="t('sys.dictData.inputContent')"></el-input>
+                  <el-form-item :label="td('common.texts.remark')" prop="remark">
+                     <el-input v-model="form.remark" type="textarea" :placeholder="td('sys.dictData.inputContent')"></el-input>
                   </el-form-item>
                </el-col>
             </el-row>
          </el-form>
          <template #footer>
             <div class="dialog-footer">
-               <el-button @click="cancel">{{ t('common.button.cancel') }}</el-button>
-               <el-button type="primary" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
+               <el-button @click="cancel">{{ td('common.button.cancel') }}</el-button>
+               <el-button type="primary" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
             </div>
          </template>
       </el-dialog>
@@ -221,12 +221,12 @@
 </template>
 
 <script setup name="Data">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang";
 import useDictStore from '@/store/system/dict.js'
 import { optionselect as getDictOptionselect, getType } from "@/api/system/system/dict/type.js";
 import { listData, getData, delData, addData, updateData } from "@/api/system/system/dict/data.js";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
 
@@ -244,12 +244,12 @@ const typeOptions = ref([]);
 const route = useRoute();
 // 数据标签回显样式
 const listClassOptions = ref([
-  { value: "default", label: t('sys.system.dictData.default') },
-  { value: "primary", label: t('sys.system.dictData.primary') },
-  { value: "success", label: t('sys.system.dictData.success') },
-  { value: "info", label: t('sys.system.dictData.info') },
-  { value: "warning", label: t('sys.system.dictData.warning') },
-  { value: "danger", label: t('sys.system.dictData.danger') }
+  { value: "default", label: td('sys.system.dictData.default') },
+  { value: "primary", label: td('sys.system.dictData.primary') },
+  { value: "success", label: td('sys.system.dictData.success') },
+  { value: "info", label: td('sys.system.dictData.info') },
+  { value: "warning", label: td('sys.system.dictData.warning') },
+  { value: "danger", label: td('sys.system.dictData.danger') }
 ]);
 
 const data = reactive({
@@ -262,9 +262,9 @@ const data = reactive({
     status: undefined
   },
   rules: {
-    dictLabel: [{ required: true, message: t('sys.system.dictData.dataLabelRequired'), trigger: "blur" }],
-    dictValue: [{ required: true, message: t('sys.system.dictData.dataValueRequired'), trigger: "blur" }],
-    dictSort: [{ required: true, message: t('sys.system.dictData.dataSortRequired'), trigger: "blur" }]
+    dictLabel: [{ required: true, message: td('sys.system.dictData.dataLabelRequired'), trigger: "blur" }],
+    dictValue: [{ required: true, message: td('sys.system.dictData.dataValueRequired'), trigger: "blur" }],
+    dictSort: [{ required: true, message: td('sys.system.dictData.dataSortRequired'), trigger: "blur" }]
   }
 });
 
@@ -340,7 +340,7 @@ function resetQuery() {
 function handleAdd() {
   reset();
   open.value = true;
-  title.value = t('sys.system.dictData.addTitle');
+  title.value = td('sys.system.dictData.addTitle');
   form.value.dictType = queryParams.value.dictType;
 }
 
@@ -358,7 +358,7 @@ function handleUpdate(row) {
   getData(dictCode).then(response => {
     form.value = response.data;
     open.value = true;
-    title.value = t('sys.system.dictData.editTitle');
+    title.value = td('sys.system.dictData.editTitle');
   });
 }
 
@@ -369,14 +369,14 @@ function submitForm() {
       if (form.value.dictCode != undefined) {
         updateData(form.value).then(response => {
           useDictStore().removeDict(queryParams.value.dictType);
-          proxy.$modal.msgSuccess(t('common.message.editSuccess'));
+          proxy.$modal.msgSuccess(td('common.message.editSuccess'));
           open.value = false;
           getList();
         });
       } else {
         addData(form.value).then(response => {
           useDictStore().removeDict(queryParams.value.dictType);
-          proxy.$modal.msgSuccess(t('common.message.addSuccess'));
+          proxy.$modal.msgSuccess(td('common.message.addSuccess'));
           open.value = false;
           getList();
         });
@@ -388,11 +388,11 @@ function submitForm() {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const dictCodes = row.dictCode || ids.value;
-  proxy.$modal.confirm(t('sys.system.dictData.confirmDelete', { code: dictCodes })).then(function() {
+  proxy.$modal.confirm(td('sys.system.dictData.confirmDelete', { code: dictCodes })).then(function() {
     return delData(dictCodes);
   }).then(() => {
     getList();
-    proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+    proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
     useDictStore().removeDict(queryParams.value.dictType);
   }).catch(() => {});
 }

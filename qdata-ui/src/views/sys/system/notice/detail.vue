@@ -19,7 +19,7 @@
   <div class="container" id="top">
     <div class="header-line"></div>
     <p class="title">{{ notice.noticeTitle }}</p>
-    <p class="time">{{ t('sys.system.notice.time') }}：{{ notice.createTime }}丨{{ t('sys.system.notice.author') }}：{{ notice.createBy }}</p>
+    <p class="time">{{ td('sys.system.notice.time') }}：{{ notice.createTime }}丨{{ td('sys.system.notice.author') }}：{{ notice.createBy }}</p>
     <div class="content" id="ces">
       <div class="content-line">
         <template v-if="notice.noticeContentText != null">
@@ -32,7 +32,7 @@
       </div>
     </div>
     <div class="attachment" v-if="notice.attachmentUrl != null">
-      {{ t('sys.system.notice.attachment') }}：<a :href="notice.attachmentUrl">{{ notice.attachmentTitle }}</a>
+      {{ td('sys.system.notice.attachment') }}：<a :href="notice.attachmentUrl">{{ notice.attachmentTitle }}</a>
     </div>
   </div>
 </template>
@@ -42,9 +42,7 @@ import useDefaultLang from "@/composables/useDefaultLang";
 const { td } = useDefaultLang();
 import { getNoticeOne } from "@/api/system/system/notice.js";
 import moment from "moment";
-import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n();
 const route = useRoute();
 const notice = ref({});
 // 监听 id 变化

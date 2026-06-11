@@ -18,16 +18,16 @@
 <template>
   <div class="app-container" ref="app-container">
     <div class="pagecont-top">
-      <h4 class="form-header h4">{{ t('sys.system.user.basicInfo') }}</h4>
+      <h4 class="form-header h4">{{ td('sys.system.user.basicInfo') }}</h4>
       <el-form class="btn-style" :model="form" label-width="80px">
         <el-row>
           <el-col :span="8" :offset="2">
-            <el-form-item :label="t('sys.system.user.userNameLabel')" prop="nickName">
+            <el-form-item :label="td('sys.system.user.userNameLabel')" prop="nickName">
               <el-input v-model="form.nickName" disabled />
             </el-form-item>
           </el-col>
           <el-col :span="8" :offset="2">
-            <el-form-item :label="t('sys.system.user.loginAccount')" prop="userName">
+            <el-form-item :label="td('sys.system.user.loginAccount')" prop="userName">
               <el-input v-model="form.userName" disabled />
             </el-form-item>
           </el-col>
@@ -36,19 +36,19 @@
     </div>
 
     <div class="pagecont-bottom">
-      <h4 class="form-header h4">{{ t('sys.system.user.roleInfo') }}</h4>
+      <h4 class="form-header h4">{{ td('sys.system.user.roleInfo') }}</h4>
       <el-table stripe height="500px" v-loading="loading" :row-key="getRowKey" @row-click="clickRow" ref="roleRef"
         @selection-change="handleSelectionChange" :data="roles.slice((pageNum - 1) * pageSize, pageNum * pageSize)">
-        <el-table-column :label="t('common.display.index')" width="80" type="index" align="center">
+        <el-table-column :label="td('common.display.index')" width="80" type="index" align="center">
           <template #default="scope">
             <span>{{ (pageNum - 1) * pageSize + scope.$index + 1 }}</span>
           </template>
         </el-table-column>
         <el-table-column type="selection" :reserve-selection="true" width="55"></el-table-column>
-        <el-table-column label="角色编号" align="center" prop="roleId" />
-        <el-table-column label="角色名称" align="center" prop="roleName" />
-        <el-table-column label="权限字符" align="center" prop="roleKey" />
-        <el-table-column :label="t('common.texts.createdTime')" align="center" prop="createTime" width="180">
+        <el-table-column :label="td('sys.system.role.roleNo')" align="center" prop="roleId" />
+        <el-table-column :label="td('sys.system.role.roleName')" align="center" prop="roleName" />
+        <el-table-column :label="td('sys.system.role.permissionChar')" align="center" prop="roleKey" />
+        <el-table-column :label="td('common.texts.createdTime')" align="center" prop="createTime" width="180">
           <template #default="scope">
             <span>{{ parseTime(scope.row.createTime) }}</span>
           </template>
@@ -59,8 +59,8 @@
 
       <el-form label-width="100px">
         <div style="text-align: center; margin-left: -120px; margin-top: 30px">
-          <el-button type="primary" @click="submitForm()">提交</el-button>
-          <el-button @click="close()">{{ t('common.button.return') }}</el-button>
+          <el-button type="primary" @click="submitForm()">{{ td('common.button.confirm') }}</el-button>
+          <el-button @click="close()">{{ td('common.button.return') }}</el-button>
         </div>
       </el-form>
     </div>
@@ -68,10 +68,10 @@
 </template>
 
 <script setup name="AuthRole">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang";
 import { getAuthRole, updateAuthRole } from "@/api/system/system/user.js";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const route = useRoute();
 const { proxy } = getCurrentInstance();
 
@@ -113,7 +113,7 @@ function submitForm() {
   const userId = form.value.userId;
   const rIds = roleIds.value.join(",");
   updateAuthRole({ userId: userId, roleIds: rIds }).then((response) => {
-    proxy.$modal.msgSuccess(t('sys.system.user.authSuccess'));
+    proxy.$modal.msgSuccess(td('sys.system.user.authSuccess'));
     close();
   });
 }

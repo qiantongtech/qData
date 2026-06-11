@@ -19,26 +19,26 @@
    <div class="app-container" ref="app-container">
       <div class="pagecont-top" v-show="showSearch">
          <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="68px">
-            <el-form-item :label="t('sys.system.config.paramName')" prop="configName">
+            <el-form-item :label="td('sys.system.config.paramName')" prop="configName">
                <el-input
                   v-model="queryParams.configName"
-                  :placeholder="t('sys.system.config.paramNamePlaceholder')"
+                  :placeholder="td('sys.system.config.paramNamePlaceholder')"
                   clearable
                   class="el-form-input-width"
                   @keyup.enter="handleQuery"
                />
             </el-form-item>
-            <el-form-item :label="t('sys.system.config.paramKey')" prop="configKey">
+            <el-form-item :label="td('sys.system.config.paramKey')" prop="configKey">
                <el-input
                   v-model="queryParams.configKey"
-                  :placeholder="t('sys.system.config.paramKeyPlaceholder')"
+                  :placeholder="td('sys.system.config.paramKeyPlaceholder')"
                   clearable
                   class="el-form-input-width"
                   @keyup.enter="handleQuery"
                />
             </el-form-item>
-            <el-form-item :label="t('sys.system.config.systemBuiltIn')" prop="configType">
-               <el-select class="el-form-input-width" v-model="queryParams.configType" :placeholder="t('sys.system.config.systemBuiltIn')" clearable>
+            <el-form-item :label="td('sys.system.config.systemBuiltIn')" prop="configType">
+               <el-select class="el-form-input-width" v-model="queryParams.configType" :placeholder="td('sys.system.config.systemBuiltIn')" clearable>
                   <el-option
                      v-for="dict in sys_yes_no"
                      :key="dict.value"
@@ -47,7 +47,7 @@
                   />
                </el-select>
             </el-form-item>
-            <el-form-item :label="t('common.texts.createdTime')">
+            <el-form-item :label="td('common.texts.createdTime')">
                <el-date-picker
                   class="el-form-input-width"
                   v-model="dateRange"
@@ -60,10 +60,10 @@
             </el-form-item>
             <el-form-item>
                <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                  <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
+                  <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
                </el-button>
                <el-button @click="resetQuery" @mousedown="e => e.preventDefault()">
-                  <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
+                  <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
                </el-button>
             </el-form-item>
          </el-form>
@@ -78,7 +78,7 @@
                   icon="Plus"
                   @click="handleAdd"
                   v-hasPermi="['system:config:add']"
-               >{{ t('common.button.add') }}</el-button>
+               >{{ td('common.button.add') }}</el-button>
             </el-col>
             <el-col :span="1.5">
                <el-button
@@ -88,7 +88,7 @@
                   :disabled="single"
                   @click="handleUpdate"
                   v-hasPermi="['system:config:edit']"
-               >{{ t('common.button.update') }}</el-button>
+               >{{ td('common.button.update') }}</el-button>
             </el-col>
             <el-col :span="1.5">
                <el-button
@@ -98,7 +98,7 @@
                   :disabled="multiple"
                   @click="handleDelete"
                   v-hasPermi="['system:config:remove']"
-               >{{ t('common.button.delete') }}</el-button>
+               >{{ td('common.button.delete') }}</el-button>
             </el-col>
             <el-col :span="1.5">
                <el-button
@@ -107,7 +107,7 @@
                   icon="Download"
                   @click="handleExport"
                   v-hasPermi="['system:config:export']"
-               >{{ t('common.button.export') }}</el-button>
+               >{{ td('common.button.export') }}</el-button>
             </el-col>
             <el-col :span="1.5">
                <el-button
@@ -116,7 +116,7 @@
                   icon="Refresh"
                   @click="handleRefreshCache"
                   v-hasPermi="['system:config:remove']"
-               >{{ t('sys.system.config.refreshCache') }}</el-button>
+               >{{ td('sys.system.config.refreshCache') }}</el-button>
             </el-col>
          </el-row>
          <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
@@ -124,29 +124,29 @@
 
          <el-table stripe height="60vh" v-loading="loading" :data="configList" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55" align="center" />
-            <el-table-column :label="t('sys.system.config.paramPrimaryKey')" align="center" prop="configId" />
-            <el-table-column :label="t('sys.system.config.paramName')" align="center" prop="configName" :show-overflow-tooltip="true" />
-            <el-table-column :label="t('sys.system.config.paramKey')" align="center" prop="configKey" :show-overflow-tooltip="true" />
-            <el-table-column :label="t('sys.system.config.paramValue')" align="center" prop="configValue" :show-overflow-tooltip="true" >
+            <el-table-column :label="td('sys.system.config.paramPrimaryKey')" align="center" prop="configId" />
+            <el-table-column :label="td('sys.system.config.paramName')" align="center" prop="configName" :show-overflow-tooltip="true" />
+            <el-table-column :label="td('sys.system.config.paramKey')" align="center" prop="configKey" :show-overflow-tooltip="true" />
+            <el-table-column :label="td('sys.system.config.paramValue')" align="center" prop="configValue" :show-overflow-tooltip="true" >
                <template #default="scope">
                   <span>{{ scope.row.configValue || "-" }}</span>
                </template>
             </el-table-column>
-            <el-table-column :label="t('sys.system.config.systemBuiltIn')" align="center" prop="configType">
+            <el-table-column :label="td('sys.system.config.systemBuiltIn')" align="center" prop="configType">
                <template #default="scope">
                   <dict-tag :options="sys_yes_no" :value="scope.row.configType" />
                </template>
             </el-table-column>
-            <el-table-column :label="t('common.texts.remark')" align="center" prop="remark" :show-overflow-tooltip="true" />
-            <el-table-column :label="t('common.texts.createdTime')" align="center" prop="createTime" width="180">
+            <el-table-column :label="td('common.texts.remark')" align="center" prop="remark" :show-overflow-tooltip="true" />
+            <el-table-column :label="td('common.texts.createdTime')" align="center" prop="createTime" width="180">
                <template #default="scope">
                   <span>{{ parseTime(scope.row.createTime) }}</span>
                </template>
             </el-table-column>
-            <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width"  fixed="right" width="240">
+            <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width"  fixed="right" width="240">
                <template #default="scope">
-                  <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:config:edit']" >{{ t('common.button.update') }}</el-button>
-                  <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['system:config:remove']">{{ t('common.button.delete') }}</el-button>
+                  <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:config:edit']" >{{ td('common.button.update') }}</el-button>
+                  <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['system:config:remove']">{{ td('common.button.delete') }}</el-button>
                </template>
             </el-table-column>
          </el-table>
@@ -165,22 +165,22 @@
          <el-form ref="configRef" :model="form" :rules="rules" label-width="80px">
             <el-row :gutter="20">
                <el-col :span="12">
-                  <el-form-item :label="t('sys.system.config.paramName')" prop="configName">
-                     <el-input v-model="form.configName" :placeholder="t('sys.system.config.paramNamePlaceholder')" />
+                  <el-form-item :label="td('sys.system.config.paramName')" prop="configName">
+                     <el-input v-model="form.configName" :placeholder="td('sys.system.config.paramNamePlaceholder')" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="t('sys.system.config.paramKey')" prop="configKey">
-                     <el-input v-model="form.configKey" :placeholder="t('sys.system.config.paramKeyPlaceholder')" />
+                  <el-form-item :label="td('sys.system.config.paramKey')" prop="configKey">
+                     <el-input v-model="form.configKey" :placeholder="td('sys.system.config.paramKeyPlaceholder')" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="t('sys.system.config.paramValue')" prop="configValue">
-                     <el-input v-model="form.configValue" :placeholder="t('sys.system.config.paramValuePlaceholder')" />
+                  <el-form-item :label="td('sys.system.config.paramValue')" prop="configValue">
+                     <el-input v-model="form.configValue" :placeholder="td('sys.system.config.paramValuePlaceholder')" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="t('sys.system.config.systemBuiltIn')" prop="configType">
+                  <el-form-item :label="td('sys.system.config.systemBuiltIn')" prop="configType">
                      <el-radio-group v-model="form.configType">
                         <el-radio
                            v-for="dict in sys_yes_no"
@@ -191,16 +191,16 @@
                   </el-form-item>
                </el-col>
                <el-col :span="24">
-                  <el-form-item :label="t('common.texts.remark')" prop="remark">
-                     <el-input v-model="form.remark" type="textarea" :placeholder="t('sys.config.inputContent')" />
+                  <el-form-item :label="td('common.texts.remark')" prop="remark">
+                     <el-input v-model="form.remark" type="textarea" :placeholder="td('sys.config.inputContent')" />
                   </el-form-item>
                </el-col>
             </el-row>
          </el-form>
          <template #footer>
             <div class="dialog-footer">
-               <el-button @click="cancel">{{ t('common.button.cancel') }}</el-button>
-               <el-button type="primary" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
+               <el-button @click="cancel">{{ td('common.button.cancel') }}</el-button>
+               <el-button type="primary" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
             </div>
          </template>
       </el-dialog>
@@ -208,13 +208,10 @@
 </template>
 
 <script setup name="Config">
-import { useI18n } from 'vue-i18n'
 import { listConfig, getConfig, delConfig, addConfig, updateConfig, refreshCache } from "@/api/system/system/config.js";
 import useDefaultLang from "@/composables/useDefaultLang";
 
-const { t } = useI18n();
 const { td } = useDefaultLang();
-const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { sys_yes_no } = proxy.useDict("sys_yes_no");
 
@@ -239,9 +236,9 @@ const data = reactive({
     configType: undefined
   },
   rules: {
-    configName: [{ required: true, message: t('sys.system.config.paramNameRequired'), trigger: "blur" }],
-    configKey: [{ required: true, message: t('sys.system.config.paramKeyRequired'), trigger: "blur" }],
-    configValue: [{ required: true, message: t('sys.system.config.paramValueRequired'), trigger: "blur" }]
+    configName: [{ required: true, message: td('sys.system.config.paramNameRequired'), trigger: "blur" }],
+    configKey: [{ required: true, message: td('sys.system.config.paramKeyRequired'), trigger: "blur" }],
+    configValue: [{ required: true, message: td('sys.system.config.paramValueRequired'), trigger: "blur" }]
   }
 });
 
@@ -300,7 +297,7 @@ function handleSelectionChange(selection) {
 function handleAdd() {
   reset();
   open.value = true;
-  title.value = t('sys.system.config.addTitle');
+  title.value = td('sys.system.config.addTitle');
 }
 
 /** 修改按钮操作 */
@@ -310,7 +307,7 @@ function handleUpdate(row) {
   getConfig(configId).then(response => {
     form.value = response.data;
     open.value = true;
-    title.value = t('sys.system.config.editTitle');
+    title.value = td('sys.system.config.editTitle');
   });
 }
 
@@ -320,13 +317,13 @@ function submitForm() {
     if (valid) {
       if (form.value.configId != undefined) {
         updateConfig(form.value).then(response => {
-          proxy.$modal.msgSuccess(t('common.message.editSuccess'));
+          proxy.$modal.msgSuccess(td('common.message.editSuccess'));
           open.value = false;
           getList();
         });
       } else {
         addConfig(form.value).then(response => {
-          proxy.$modal.msgSuccess(t('common.message.addSuccess'));
+          proxy.$modal.msgSuccess(td('common.message.addSuccess'));
           open.value = false;
           getList();
         });
@@ -338,11 +335,11 @@ function submitForm() {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const configIds = row.configId || ids.value;
-  proxy.$modal.confirm(t('sys.system.config.confirmDelete', { id: configIds })).then(function () {
+  proxy.$modal.confirm(td('sys.system.config.confirmDelete', { id: configIds })).then(function () {
     return delConfig(configIds);
   }).then(() => {
     getList();
-    proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+    proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
   }).catch(() => {});
 }
 
@@ -356,7 +353,7 @@ function handleExport() {
 /** 刷新缓存按钮操作 */
 function handleRefreshCache() {
   refreshCache().then(() => {
-    proxy.$modal.msgSuccess(t('sys.system.config.refreshCacheSuccess'));
+    proxy.$modal.msgSuccess(td('sys.system.config.refreshCacheSuccess'));
   });
 }
 

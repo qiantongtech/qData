@@ -23,7 +23,7 @@
                <template v-slot:header>
                   <div class="head-container">
                      <span class="head-title"></span>
-                     <span>{{ t('sys.system.profile.personalInfo') }}</span>
+                     <span>{{ td('sys.system.profile.personalInfo') }}</span>
                   </div>
                </template>
                <div>
@@ -33,22 +33,22 @@
                   <ul class="list-group list-group-striped">
                      <li class="list-group-item vertical-center">
                         <i class="iconfont icon-a-yonghuzhanghaoxianxing mr5"></i>
-                        {{ t('sys.system.profile.userName') }}
+                        {{ td('sys.system.profile.userName') }}
                         <div class="pull-right label-text">{{ state.user.userName }}</div>
                      </li>
                      <li class="list-group-item vertical-center">
                         <i class="iconfont icon-a-shoujixianxing mr5"></i>
-                        {{ t('sys.system.profile.phone') }}
+                        {{ td('sys.system.profile.phone') }}
                         <div class="pull-right label-text">{{ state.user.phonenumber }}</div>
                      </li>
                      <li class="list-group-item vertical-center">
                         <i class="iconfont icon-a-yonghuyouxiangxianxing mr5"></i>
-                        {{ t('sys.system.profile.userEmail') }}
+                        {{ td('sys.system.profile.userEmail') }}
                         <div class="pull-right label-text">{{ state.user.email }}</div>
                      </li>
                      <li class="list-group-item vertical-center">
                         <i class="iconfont icon-bumen margin-right-5 mr5"></i>
-                        {{ t('sys.system.profile.belongDept') }}
+                        {{ td('sys.system.profile.belongDept') }}
                         <div class="pull-right label-text" v-if="state.user.dept">{{ state.user.dept.deptName }} /
                            {{ state.postGroup }}
                         </div>
@@ -60,7 +60,7 @@
 <!--                     </li>-->
                      <li class="list-group-item vertical-center">
                         <i class="iconfont icon-a-riqixianxing mr5"></i>
-                        {{ t('sys.system.profile.createDate') }}
+                        {{ td('sys.system.profile.createDate') }}
                         <div class="pull-right label-text">{{ state.user.createTime }}</div>
                      </li>
                   </ul>
@@ -72,14 +72,14 @@
                <template v-slot:header>
                   <div class="head-container">
                      <span class="head-title"></span>
-                     <span>{{ t('sys.system.profile.basicInfo') }}</span>
+                     <span>{{ td('sys.system.profile.basicInfo') }}</span>
                   </div>
                </template>
                <el-tabs v-model="activeTab">
-                  <el-tab-pane :label="t('sys.system.profile.basicInfo')" name="userinfo">
+                  <el-tab-pane :label="td('sys.system.profile.basicInfo')" name="userinfo">
                      <userInfo :user="state.user" />
                   </el-tab-pane>
-                  <el-tab-pane :label="t('sys.system.profile.changePassword')" name="resetPwd">
+                  <el-tab-pane :label="td('sys.system.profile.changePassword')" name="resetPwd">
                      <resetPwd />
                   </el-tab-pane>
                </el-tabs>
@@ -90,13 +90,13 @@
 </template>
 
 <script setup name="Profile">
-import { useI18n } from 'vue-i18n';
+import useDefaultLang from "@/composables/useDefaultLang";
 import userAvatar from "./userAvatar.vue";
 import userInfo from "./userInfo.vue";
 import resetPwd from "./resetPwd.vue";
 import { getUserProfile } from "@/api/system/system/user.js";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 
 const activeTab = ref("userinfo");
 const state = reactive({

@@ -19,28 +19,28 @@
    <div class="app-container" ref="app-container">
       <div class="pagecont-top" v-show="showSearch">
          <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="68px">
-            <el-form-item :label="t('logininfor.loginAddr')" prop="ipaddr">
+            <el-form-item :label="td('logininfor.loginAddr')" prop="ipaddr">
                <el-input
                   v-model="queryParams.ipaddr"
-                  :placeholder="t('logininfor.loginAddrPlaceholder')"
+                  :placeholder="td('logininfor.loginAddrPlaceholder')"
                   clearable
                   class="el-form-input-width"
                   @keyup.enter="handleQuery"
                />
             </el-form-item>
-            <el-form-item :label="t('logininfor.userName')" prop="userName">
+            <el-form-item :label="td('logininfor.userName')" prop="userName">
                <el-input
                   v-model="queryParams.userName"
-                  :placeholder="t('logininfor.userNamePlaceholder')"
+                  :placeholder="td('logininfor.userNamePlaceholder')"
                   clearable
                   class="el-form-input-width"
                   @keyup.enter="handleQuery"
                />
             </el-form-item>
-            <el-form-item :label="t('common.texts.status')" prop="status">
+            <el-form-item :label="td('common.texts.status')" prop="status">
                <el-select
                   v-model="queryParams.status"
-                  :placeholder="t('logininfor.loginStatus')"
+                  :placeholder="td('logininfor.loginStatus')"
                   clearable
                   class="el-form-input-width"
                >
@@ -52,7 +52,7 @@
                   />
                </el-select>
             </el-form-item>
-            <el-form-item :label="t('logininfor.loginTime')">
+            <el-form-item :label="td('logininfor.loginTime')">
                <el-date-picker
                   class="el-form-input-width"
                   v-model="dateRange"
@@ -66,10 +66,10 @@
             </el-form-item>
             <el-form-item>
                <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                  <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
+                  <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
                </el-button>
                <el-button @click="resetQuery" @mousedown="e => e.preventDefault()">
-                  <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
+                  <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
                </el-button>
             </el-form-item>
          </el-form>
@@ -85,7 +85,7 @@
                   :disabled="multiple"
                   @click="handleDelete"
                   v-hasPermi="['monitor:logininfor:remove']"
-               >{{ t('common.button.delete') }}</el-button>
+               >{{ td('common.button.delete') }}</el-button>
             </el-col>
             <el-col :span="1.5">
                <el-button
@@ -94,7 +94,7 @@
                   icon="Delete"
                   @click="handleClean"
                   v-hasPermi="['monitor:logininfor:remove']"
-               >{{ t('logininfor.clearAll') }}</el-button>
+               >{{ td('logininfor.clearAll') }}</el-button>
             </el-col>
             <el-col :span="1.5">
                <el-button
@@ -104,7 +104,7 @@
                   :disabled="single"
                   @click="handleUnlock"
                   v-hasPermi="['monitor:logininfor:unlock']"
-               >{{ t('logininfor.unlock') }}</el-button>
+               >{{ td('logininfor.unlock') }}</el-button>
             </el-col>
             <el-col :span="1.5">
                <el-button
@@ -113,7 +113,7 @@
                   icon="Download"
                   @click="handleExport"
                   v-hasPermi="['monitor:logininfor:export']"
-               >{{ t('common.button.export') }}</el-button>
+               >{{ td('common.button.export') }}</el-button>
             </el-col>
          </el-row>
          <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
@@ -121,19 +121,19 @@
 
          <el-table stripe height="60vh" ref="logininforRef" v-loading="loading" :data="logininforList" @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
             <el-table-column type="selection" width="55" align="center" />
-            <el-table-column :label="t('logininfor.accessNo')" align="center" prop="infoId" />
-            <el-table-column :label="t('logininfor.userName')" width="120" align="center" prop="userName" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']" />
-            <el-table-column :label="t('logininfor.address')" align="center" prop="ipaddr" :show-overflow-tooltip="true" />
-            <el-table-column :label="t('logininfor.loginLocation')" align="center" prop="loginLocation" :show-overflow-tooltip="true" />
-            <el-table-column :label="t('logininfor.os')" align="center" prop="os" :show-overflow-tooltip="true" />
-            <el-table-column :label="t('logininfor.browser')" align="center" prop="browser" :show-overflow-tooltip="true" />
-            <el-table-column :label="t('logininfor.loginStatus')" align="center" prop="status">
+            <el-table-column :label="td('logininfor.accessNo')" align="center" prop="infoId" />
+            <el-table-column :label="td('logininfor.userName')" width="120" align="center" prop="userName" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']" />
+            <el-table-column :label="td('logininfor.address')" align="center" prop="ipaddr" :show-overflow-tooltip="true" />
+            <el-table-column :label="td('logininfor.loginLocation')" align="center" prop="loginLocation" :show-overflow-tooltip="true" />
+            <el-table-column :label="td('logininfor.os')" align="center" prop="os" :show-overflow-tooltip="true" />
+            <el-table-column :label="td('logininfor.browser')" align="center" prop="browser" :show-overflow-tooltip="true" />
+            <el-table-column :label="td('logininfor.loginStatus')" align="center" prop="status">
                <template #default="scope">
                   <dict-tag :options="sys_common_status" :value="scope.row.status" />
                </template>
             </el-table-column>
-            <el-table-column :label="t('common.texts.description')" align="center" prop="msg" :show-overflow-tooltip="true" />
-            <el-table-column :label="t('sys.monitor.logininfor.accessTime')" align="center" prop="loginTime" sortable="custom" :sort-orders="['descending', 'ascending']" width="180">
+            <el-table-column :label="td('common.texts.description')" align="center" prop="msg" :show-overflow-tooltip="true" />
+            <el-table-column :label="td('sys.monitor.logininfor.accessTime')" align="center" prop="loginTime" sortable="custom" :sort-orders="['descending', 'ascending']" width="180">
                <template #default="scope">
                   <span>{{ parseTime(scope.row.loginTime) }}</span>
                </template>
@@ -152,13 +152,10 @@
 </template>
 
 <script setup name="Logininfor">
-import { useI18n } from 'vue-i18n'
 import { list, delLogininfor, cleanLogininfor, unlockLogininfor } from "@/api/system/monitor/logininfor.js";
 import useDefaultLang from "@/composables/useDefaultLang";
 
-const { t } = useI18n();
 const { td } = useDefaultLang();
-const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { sys_common_status } = proxy.useDict("sys_common_status");
 
@@ -226,31 +223,31 @@ function handleSortChange(column, prop, order) {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const infoIds = row.infoId || ids.value;
-  proxy.$modal.confirm(t('logininfor.confirmDelete', { ids: infoIds })).then(function () {
+  proxy.$modal.confirm(td('logininfor.confirmDelete', { ids: infoIds })).then(function () {
     return delLogininfor(infoIds);
   }).then(() => {
     getList();
-    proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+    proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
   }).catch(() => {});
 }
 
 /** 清空按钮操作 */
 function handleClean() {
-  proxy.$modal.confirm(t('logininfor.confirmClearAll')).then(function () {
+  proxy.$modal.confirm(td('logininfor.confirmClearAll')).then(function () {
     return cleanLogininfor();
   }).then(() => {
     getList();
-    proxy.$modal.msgSuccess(t('logininfor.clearSuccess'));
+    proxy.$modal.msgSuccess(td('logininfor.clearSuccess'));
   }).catch(() => {});
 }
 
 /** 解锁按钮操作 */
 function handleUnlock() {
   const username = selectName.value;
-  proxy.$modal.confirm(t('logininfor.confirmUnlock', { name: username })).then(function () {
+  proxy.$modal.confirm(td('logininfor.confirmUnlock', { name: username })).then(function () {
     return unlockLogininfor(username);
   }).then(() => {
-    proxy.$modal.msgSuccess(t('logininfor.unlockSuccess', { name: username }));
+    proxy.$modal.msgSuccess(td('logininfor.unlockSuccess', { name: username }));
   }).catch(() => {});
 }
 

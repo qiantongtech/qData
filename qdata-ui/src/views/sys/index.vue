@@ -29,7 +29,7 @@
             <div class="info-con">
               <div class="info-con-name">{{ greeting }}，{{ userStore.nickName }} ，{{ message }}</div>
               <div class="info-con-desc">
-                <span style="color: var(--el-color-primary)">{{ t('sys.dashboard.admin') }}</span>
+                <span style="color: var(--el-color-primary)">{{ td('sys.dashboard.admin') }}</span>
                 <el-divider direction="vertical" />
                 {{ xljtcont }}
               </div>
@@ -38,11 +38,11 @@
               <!-- <a href="/user/profile" class=""> -->
               <el-button type="primary" class="info-btn-dft" plain size="large" @click="goprofile"
                 style="background: #135afb; color: #fff; font-size: 14px">
-                {{ t('sys.dashboard.personalCenter') }}
+                {{ td('sys.dashboard.personalCenter') }}
               </el-button>
               <el-button auto-insert-space @click="logout" type="primary" class="info-btn-dft info-btn-dfts" plain
                 size="large" style="color: #135afb">
-                {{ t('sys.dashboard.logout') }}
+                {{ td('sys.dashboard.logout') }}
               </el-button>
             </div>
           </div>
@@ -70,7 +70,7 @@
 
             <div class="module-item-border"></div>
             <div class="module-item-data">
-              <span class="data-label">{{ t('sys.dashboard.weekOverWeek') }}</span>
+              <span class="data-label">{{ td('sys.dashboard.weekOverWeek') }}</span>
               <span :class="[item.up ? 'data-up' : 'data-down']">{{ item.speed }}%
               </span>
             </div>
@@ -80,7 +80,7 @@
           <el-col :xs="24" :sm="24" :md="12" :lg="12">
             <div class="module-9 border-item">
               <div class="border-item-head">
-                <span class="head-title">{{ t('sys.dashboard.apiCallTrend') }}</span>
+                <span class="head-title">{{ td('sys.dashboard.apiCallTrend') }}</span>
                 <!-- <el-link type="primary" :underline="false">查看更多 </el-link> -->
               </div>
               <div class="border-item-body">
@@ -91,7 +91,7 @@
           <el-col :xs="24" :sm="24" :md="12" :lg="12">
             <div class="module-8 border-item">
               <div class="border-item-head">
-                <span class="head-title">{{ t('sys.dashboard.governanceDataTrend') }}</span>
+                <span class="head-title">{{ td('sys.dashboard.governanceDataTrend') }}</span>
                 <!-- <el-link type="primary" :underline="false">查看更多 </el-link> -->
               </div>
               <div class="border-item-body">
@@ -104,8 +104,8 @@
       <el-col :xs="24" :sm="24" :md="6" :lg="6" class="home-gutter">
         <div class="border-item module-6 home-gutter">
           <div class="border-item-head">
-            <span class="head-title">{{ t('sys.dashboard.newsNotice') }}</span>
-            <el-link type="primary" :underline="false" @click="goxinwen('list')">{{ t('sys.dashboard.viewMore') }}
+            <span class="head-title">{{ td('sys.dashboard.newsNotice') }}</span>
+            <el-link type="primary" :underline="false" @click="goxinwen('list')">{{ td('sys.dashboard.viewMore') }}
             </el-link>
           </div>
           <div class="border-item-body">
@@ -124,7 +124,7 @@
           <div class="news">
             <div class="border-item">
               <div class="border-item-head">
-                <span class="head-title">{{ t('sys.dashboard.quickEntry') }}</span>
+                <span class="head-title">{{ td('sys.dashboard.quickEntry') }}</span>
                 <router-link to="/"> </router-link>
               </div>
               <div class="border-item-body" style="padding-top: 10px; padding-left: 5px">
@@ -147,7 +147,7 @@
       <el-col :xs="24" :sm="24" :md="24" :lg="24">
         <div class="module-10 border-item">
           <div class="border-item-head">
-            <span class="head-title">{{ t('sys.dashboard.monitorStatus') }}</span>
+            <span class="head-title">{{ td('sys.dashboard.monitorStatus') }}</span>
             <!-- <el-link type="primary" :underline="false">查看更多 </el-link> -->
           </div>
           <div class="cards">
@@ -159,12 +159,12 @@
               <div class="stats">
                 <div class="stat-box normal-box">
                   <div class="num">{{ item.normal }}</div>
-                  <div class="label">{{ t('sys.dashboard.normal') }}</div>
+                  <div class="label">{{ td('sys.dashboard.normal') }}</div>
                 </div>
 
                 <div class="stat-box abnormal-box">
                   <div class="num">{{ item.error }}</div>
-                  <div class="label">{{ t('sys.dashboard.abnormal') }}</div>
+                  <div class="label">{{ td('sys.dashboard.abnormal') }}</div>
                 </div>
               </div>
             </div>
@@ -176,7 +176,6 @@
 </template>
 
 <script setup name="Index">
-import { useI18n } from 'vue-i18n'
 import useUserStore from "@/store/system/user";
 import { listNotice } from "@/api/system/system/notice.js";
 import useAppStore from "@/store/system/app";
@@ -223,7 +222,6 @@ let { proxy } = getCurrentInstance();
 const { sys_notice_type } = proxy.useDict("sys_notice_type");
 import { useRouter } from "vue-router";
 
-const { t } = useI18n();
 const router = useRouter();
 async function routeTo(link, query = {}) {
   if (link && link.indexOf("http") !== -1) {
@@ -258,23 +256,23 @@ const prevSlide = () => {
 };
 const statusList = [
   {
-    name: t('sys.dashboard.database'),
+    name: td('sys.dashboard.database'),
     icon: getAssetsFile("db.svg"),
     normal: 0,
     error: 0,
     highlight: true,
   },
-  { name: t('sys.dashboard.batchCollection'), icon: getAssetsFile("batch.svg"), normal: 2, error: 8 },
-  { name: t('sys.dashboard.taskOrchestration'), icon: getAssetsFile("task.svg"), normal: 0, error: 0 },
+  { name: td('sys.dashboard.batchCollection'), icon: getAssetsFile("batch.svg"), normal: 2, error: 8 },
+  { name: td('sys.dashboard.taskOrchestration'), icon: getAssetsFile("task.svg"), normal: 0, error: 0 },
   {
-    name: t('sys.dashboard.realtimeCollection'),
+    name: td('sys.dashboard.realtimeCollection'),
     icon: getAssetsFile("realtime.svg"),
     normal: 1,
     error: 0,
   },
-  { name: t('sys.dashboard.apiTestSuite'), icon: getAssetsFile("api1.svg"), normal: 4, error: 0 },
+  { name: td('sys.dashboard.apiTestSuite'), icon: getAssetsFile("api1.svg"), normal: 4, error: 0 },
   {
-    name: t('sys.dashboard.dataDevelopment'),
+    name: td('sys.dashboard.dataDevelopment'),
     icon: getAssetsFile("dev.svg"),
     normal: 0,
     error: 0,
@@ -292,35 +290,35 @@ const appStore = useAppStore();
 const userStore = useUserStore();
 const module1 = ref([
   {
-    name: t('sys.dashboard.dataIntegrationTask'),
+    name: td('sys.dashboard.dataIntegrationTask'),
     value: 126,
     up: true,
     speed: 12,
     img: getAssetsFile("1.png"),
   },
   {
-    name: t('sys.dashboard.dataDevTask'),
+    name: td('sys.dashboard.dataDevTask'),
     value: 72,
     up: true,
     speed: 2,
     img: getAssetsFile("2.png"),
   },
   {
-    name: t('sys.dashboard.dataJobTask'),
+    name: td('sys.dashboard.dataJobTask'),
     value: 164,
     up: true,
     speed: 9,
     img: getAssetsFile("3.png"),
   },
   {
-    name: t('sys.dashboard.dataAsset'),
+    name: td('sys.dashboard.dataAsset'),
     value: 76,
     up: true,
     speed: 10,
     img: getAssetsFile("4.png"),
   },
   {
-    name: t('sys.dashboard.apiService'),
+    name: td('sys.dashboard.apiService'),
     value: 18,
     up: false,
     speed: 10,
@@ -329,7 +327,7 @@ const module1 = ref([
 ]);
 const entranceList = [
   {
-    name: t('sys.dashboard.dataConnection'),
+    name: td('sys.dashboard.dataConnection'),
     path: "/da/datasource",
     query: { type: "0" },
     perm: ["da:dataSource:list"],
@@ -337,7 +335,7 @@ const entranceList = [
     icon: getAssetsFile("connect.png"),
   },
   {
-    name: t('sys.dashboard.assetMap'),
+    name: td('sys.dashboard.assetMap'),
     path: "/da/asset",
     query: {},
     perm: ["da:asset:list"],
@@ -345,7 +343,7 @@ const entranceList = [
     icon: getAssetsFile("map.png"),
   },
   {
-    name: t('sys.dashboard.dataIntegration'),
+    name: td('sys.dashboard.dataIntegration'),
     path: "/dpp/task/integratioTask",
     query: {},
     TYPE: 1,
@@ -354,7 +352,7 @@ const entranceList = [
     icon: getAssetsFile("integration.png"),
   },
   {
-    name: t('sys.dashboard.dataDevelopment'),
+    name: td('sys.dashboard.dataDevelopment'),
     path: "/dpp/task/developTask",
     query: {},
     TYPE: 3,
@@ -362,7 +360,7 @@ const entranceList = [
     icon: getAssetsFile("develop.png"),
   },
   {
-    name: t('sys.dashboard.apiManagement'),
+    name: td('sys.dashboard.apiManagement'),
     path: "/ds/api",
     query: {},
     perm: ["ds:api:list"],
@@ -388,21 +386,21 @@ const xljtcont = ref("");
 function getxljtcont() {
   let num = Math.floor(Math.random() * 9);
   let xljtlist = [
-    { value: t('sys.dashboard.quote1') },
-    { value: t('sys.dashboard.quote2') },
-    { value: t('sys.dashboard.quote3') },
-    { value: t('sys.dashboard.quote4') },
-    { value: t('sys.dashboard.quote5') },
-    { value: t('sys.dashboard.quote6') },
-    { value: t('sys.dashboard.quote7') },
-    { value: t('sys.dashboard.quote8') },
-    { value: t('sys.dashboard.quote9') },
-    { value: t('sys.dashboard.quote10') },
-    { value: t('sys.dashboard.quote11') },
-    { value: t('sys.dashboard.quote12') },
-    { value: t('sys.dashboard.quote13') },
-    { value: t('sys.dashboard.quote14') },
-    { value: t('sys.dashboard.quote15') },
+    { value: td('sys.dashboard.quote1') },
+    { value: td('sys.dashboard.quote2') },
+    { value: td('sys.dashboard.quote3') },
+    { value: td('sys.dashboard.quote4') },
+    { value: td('sys.dashboard.quote5') },
+    { value: td('sys.dashboard.quote6') },
+    { value: td('sys.dashboard.quote7') },
+    { value: td('sys.dashboard.quote8') },
+    { value: td('sys.dashboard.quote9') },
+    { value: td('sys.dashboard.quote10') },
+    { value: td('sys.dashboard.quote11') },
+    { value: td('sys.dashboard.quote12') },
+    { value: td('sys.dashboard.quote13') },
+    { value: td('sys.dashboard.quote14') },
+    { value: td('sys.dashboard.quote15') },
   ];
   xljtcont.value = xljtlist[num].value;
 }
@@ -492,10 +490,10 @@ function initModule4() {
           "" +
           parms.data.legendname +
           "</br>" +
-          t('common.quantity') + "：" +
+          td('common.quantity') + "：" +
           parms.data.value +
           "</br>" +
-          t('common.proportion') + "：" +
+          td('common.proportion') + "：" +
           parms.percent +
           "%";
         return str;
@@ -633,9 +631,9 @@ function initModule4() {
 // 认证模式
 const authType = import.meta.env.VITE_APP_AUTH_TYPE;
 function logout() {
-  ElMessageBox.confirm(t('sys.dashboard.confirmLogout'), t('common.message.prompt'), {
-    confirmButtonText: t('common.button.confirm'),
-    cancelButtonText: t('common.button.cancel'),
+  ElMessageBox.confirm(td('sys.dashboard.confirmLogout'), td('common.message.prompt'), {
+    confirmButtonText: td('common.button.confirm'),
+    cancelButtonText: td('common.button.cancel'),
     type: 'warning'
   })
     .then(() => {

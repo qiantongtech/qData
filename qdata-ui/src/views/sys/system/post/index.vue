@@ -19,26 +19,26 @@
    <div class="app-container" ref="app-container">
       <div class="pagecont-top" v-show="showSearch">
          <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="68px">
-            <el-form-item :label="t('sys.system.post.postCode')" prop="postCode">
+            <el-form-item :label="td('sys.system.post.postCode')" prop="postCode">
                <el-input
                   v-model="queryParams.postCode"
-                  :placeholder="t('sys.system.post.postCodePlaceholder')"
+                  :placeholder="td('sys.system.post.postCodePlaceholder')"
                   clearable
                   class="el-form-input-width"
                   @keyup.enter="handleQuery"
                />
             </el-form-item>
-            <el-form-item :label="t('sys.system.post.postName')" prop="postName">
+            <el-form-item :label="td('sys.system.post.postName')" prop="postName">
                <el-input
                   v-model="queryParams.postName"
-                  :placeholder="t('sys.system.post.postNamePlaceholder')"
+                  :placeholder="td('sys.system.post.postNamePlaceholder')"
                   clearable
                   class="el-form-input-width"
                   @keyup.enter="handleQuery"
                />
             </el-form-item>
-            <el-form-item :label="t('common.texts.status')" prop="status">
-               <el-select v-model="queryParams.status" :placeholder="t('sys.post.postStatus')" clearable class="el-form-input-width">
+            <el-form-item :label="td('common.texts.status')" prop="status">
+               <el-select v-model="queryParams.status" :placeholder="td('sys.system.post.postStatus')" clearable class="el-form-input-width">
                   <el-option
                      v-for="dict in sys_normal_disable"
                      :key="dict.value"
@@ -49,10 +49,10 @@
             </el-form-item>
             <el-form-item>
                <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                  <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
+                  <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
                </el-button>
                <el-button @click="resetQuery" @mousedown="e => e.preventDefault()">
-                  <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
+                  <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
                </el-button>
             </el-form-item>
          </el-form>
@@ -67,7 +67,7 @@
                   icon="Plus"
                   @click="handleAdd"
                   v-hasPermi="['system:post:add']"
-               >{{ t('common.button.add') }}</el-button>
+               >{{ td('common.button.add') }}</el-button>
             </el-col>
             <el-col :span="1.5">
                <el-button
@@ -77,7 +77,7 @@
                   :disabled="single"
                   @click="handleUpdate"
                   v-hasPermi="['system:post:edit']"
-               >{{ t('common.button.update') }}</el-button>
+               >{{ td('common.button.update') }}</el-button>
             </el-col>
             <el-col :span="1.5">
                <el-button
@@ -87,7 +87,7 @@
                   :disabled="multiple"
                   @click="handleDelete"
                   v-hasPermi="['system:post:remove']"
-               >{{ t('common.button.delete') }}</el-button>
+               >{{ td('common.button.delete') }}</el-button>
             </el-col>
             <el-col :span="1.5">
                <el-button
@@ -96,7 +96,7 @@
                   icon="Download"
                   @click="handleExport"
                   v-hasPermi="['system:post:export']"
-               >{{ t('common.button.export') }}</el-button>
+               >{{ td('common.button.export') }}</el-button>
             </el-col>
          </el-row>
          <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
@@ -104,24 +104,24 @@
 
          <el-table stripe height="60vh" v-loading="loading" :data="postList" @selection-change="handleSelectionChange" >
             <el-table-column type="selection" width="55" align="center" />
-            <el-table-column :label="t('sys.post.postNo')" align="center" prop="postId" />
-            <el-table-column :label="t('sys.post.postCode')" align="center" prop="postCode" />
-            <el-table-column :label="t('sys.post.postName')" align="center" prop="postName" />
-            <el-table-column :label="t('sys.post.postSort')" align="center" prop="postSort" />
-            <el-table-column :label="t('common.texts.status')" align="center" prop="status">
+            <el-table-column :label="td('sys.system.post.postNo')" align="center" prop="postId" />
+            <el-table-column :label="td('sys.system.post.postCode')" align="center" prop="postCode" />
+            <el-table-column :label="td('sys.system.post.postName')" align="center" prop="postName" />
+            <el-table-column :label="td('sys.system.post.postSort')" align="center" prop="postSort" />
+            <el-table-column :label="td('common.texts.status')" align="center" prop="status">
                <template #default="scope">
                   <dict-tag :options="sys_normal_disable" :value="scope.row.status" />
                </template>
             </el-table-column>
-            <el-table-column :label="t('common.texts.createdTime')" align="center" prop="createTime" width="180">
+            <el-table-column :label="td('common.texts.createdTime')" align="center" prop="createTime" width="180">
                <template #default="scope">
                   <span>{{ parseTime(scope.row.createTime) }}</span>
                </template>
             </el-table-column>
-            <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width"  fixed="right" width="240">
+            <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width"  fixed="right" width="240">
                <template #default="scope">
-                  <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:post:edit']">{{ t('common.button.update') }}</el-button>
-                  <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['system:post:remove']">{{ t('common.button.delete') }}</el-button>
+                  <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:post:edit']">{{ td('common.button.update') }}</el-button>
+                  <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['system:post:remove']">{{ td('common.button.delete') }}</el-button>
                </template>
             </el-table-column>
          </el-table>
@@ -140,22 +140,22 @@
          <el-form ref="postRef" :model="form" :rules="rules" label-width="80px">
             <el-row :gutter="20">
                <el-col :span="12">
-                  <el-form-item :label="t('sys.system.post.postName')" prop="postName">
-                     <el-input v-model="form.postName" :placeholder="t('sys.system.post.postNamePlaceholder')" />
+                  <el-form-item :label="td('sys.system.post.postName')" prop="postName">
+                     <el-input v-model="form.postName" :placeholder="td('sys.system.post.postNamePlaceholder')" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="t('sys.system.post.postCode')" prop="postCode">
-                     <el-input v-model="form.postCode" :placeholder="t('sys.system.post.postCodeLabelPlaceholder')" />
+                  <el-form-item :label="td('sys.system.post.postCode')" prop="postCode">
+                     <el-input v-model="form.postCode" :placeholder="td('sys.system.post.postCodeLabelPlaceholder')" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="t('sys.system.post.postOrder')" prop="postSort">
+                  <el-form-item :label="td('sys.system.post.postOrder')" prop="postSort">
                      <el-input-number style="width:100%" v-model="form.postSort" controls-position="right" :min="0" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="t('sys.system.post.postStatus')" prop="status">
+                  <el-form-item :label="td('sys.system.post.postStatus')" prop="status">
                      <el-radio-group v-model="form.status">
                         <el-radio
                            v-for="dict in sys_normal_disable"
@@ -166,16 +166,16 @@
                   </el-form-item>
                </el-col>
                <el-col :span="24">
-                  <el-form-item :label="t('common.texts.remark')" prop="remark">
-                     <el-input v-model="form.remark" type="textarea" :placeholder="t('sys.post.inputContent')" />
+                  <el-form-item :label="td('common.texts.remark')" prop="remark">
+                     <el-input v-model="form.remark" type="textarea" :placeholder="td('sys.system.post.inputContent')" />
                   </el-form-item>
                </el-col>
             </el-row>
          </el-form>
          <template #footer>
             <div class="dialog-footer">
-               <el-button @click="cancel">{{ t('common.button.cancel') }}</el-button>
-               <el-button type="primary" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
+               <el-button @click="cancel">{{ td('common.button.cancel') }}</el-button>
+               <el-button type="primary" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
             </div>
          </template>
       </el-dialog>
@@ -183,10 +183,10 @@
 </template>
 
 <script setup name="Post">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang";
 import { listPost, addPost, delPost, getPost, updatePost } from "@/api/system/system/post.js";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
 
@@ -210,9 +210,9 @@ const data = reactive({
     status: undefined
   },
   rules: {
-    postName: [{ required: true, message: t('sys.system.post.postNameRequired'), trigger: "blur" }],
-    postCode: [{ required: true, message: t('sys.system.post.postCodeRequired'), trigger: "blur" }],
-    postSort: [{ required: true, message: t('sys.system.post.postOrderRequired'), trigger: "blur" }],
+    postName: [{ required: true, message: td('sys.system.post.postNameRequired'), trigger: "blur" }],
+    postCode: [{ required: true, message: td('sys.system.post.postCodeRequired'), trigger: "blur" }],
+    postSort: [{ required: true, message: td('sys.system.post.postOrderRequired'), trigger: "blur" }],
   }
 });
 
@@ -270,7 +270,7 @@ function handleSelectionChange(selection) {
 function handleAdd() {
   reset();
   open.value = true;
-  title.value = t('sys.system.post.addTitle');
+  title.value = td('sys.system.post.addTitle');
 }
 
 /** 修改按钮操作 */
@@ -280,7 +280,7 @@ function handleUpdate(row) {
   getPost(postId).then(response => {
     form.value = response.data;
     open.value = true;
-    title.value = t('sys.system.post.editTitle');
+    title.value = td('sys.system.post.editTitle');
   });
 }
 
@@ -290,13 +290,13 @@ function submitForm() {
     if (valid) {
       if (form.value.postId != undefined) {
         updatePost(form.value).then(response => {
-          proxy.$modal.msgSuccess(t('common.message.editSuccess'));
+          proxy.$modal.msgSuccess(td('common.message.editSuccess'));
           open.value = false;
           getList();
         });
       } else {
         addPost(form.value).then(response => {
-          proxy.$modal.msgSuccess(t('common.message.addSuccess'));
+          proxy.$modal.msgSuccess(td('common.message.addSuccess'));
           open.value = false;
           getList();
         });
@@ -308,11 +308,11 @@ function submitForm() {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const postIds = row.postId || ids.value;
-  proxy.$modal.confirm(t('sys.system.post.confirmDelete', { id: postIds })).then(function() {
+  proxy.$modal.confirm(td('sys.system.post.confirmDelete', { id: postIds })).then(function() {
     return delPost(postIds);
   }).then(() => {
     getList();
-    proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+    proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
   }).catch(() => {});
 }
 

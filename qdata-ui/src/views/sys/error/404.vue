@@ -26,16 +26,16 @@
       </div>
       <div class="bullshit">
         <div class="bullshit__oops">
-          {{ t('common.error.findPage') }}
+          {{ td('common.error.findPage') }}
         </div>
         <div class="bullshit__headline">
           {{ message }}
         </div>
         <div class="bullshit__info">
-          {{ t('common.error.findPageInfo') }}
+          {{ td('common.error.findPageInfo') }}
         </div>
         <router-link to="/index" class="bullshit__return-home">
-          {{ t('common.button.returnHome') }}
+          {{ td('common.button.returnHome') }}
         </router-link>
       </div>
     </div>
@@ -43,10 +43,10 @@
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang";
 
-const { t } = useI18n();let message = computed(() => {
-  return t('common.error.findPage')
+const { td } = useDefaultLang();let message = computed(() => {
+  return td('common.error.findPage')
 })
 </script>
 

@@ -1,8 +1,8 @@
 <template>
-   <div> {{ t('sys.tool.build.title') }} <svg-icon icon-class="build" /> </div>
+   <div> {{ td('sys.tool.build.title') }} <svg-icon icon-class="build" /> </div>
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n';
-const { t } = useI18n();
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();
 </script>

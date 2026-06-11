@@ -17,7 +17,7 @@
 
 <template>
   <div class="user-info-head" @click="editCropper()">
-    <img :src="options.img" :title="t('sys.system.userAvatar.clickToUpload')" class="img-circle img-lg" />
+    <img :src="options.img" :title="td('sys.system.userAvatar.clickToUpload')" class="img-circle img-lg" />
     <el-dialog :title="title" v-model="open" width="800px" append-to-body @opened="modalOpened" @close="closeDialog">
       <el-row>
         <el-col :xs="24" :md="12" :style="{ height: '350px' }">
@@ -50,7 +50,7 @@
             :before-upload="beforeUpload"
           >
             <el-button>
-              {{ t('sys.system.userAvatar.select') }}
+              {{ td('sys.system.userAvatar.select') }}
               <el-icon class="el-icon--right"><Upload /></el-icon>
             </el-button>
           </el-upload>
@@ -68,7 +68,7 @@
           <el-button icon="RefreshRight" @click="rotateRight()"></el-button>
         </el-col>
         <el-col :lg="{ span: 2, offset: 6 }" :md="2">
-          <el-button type="primary" @click="uploadImg()">{{ t('sys.system.userAvatar.submit') }}</el-button>
+          <el-button type="primary" @click="uploadImg()">{{ td('sys.system.userAvatar.submit') }}</el-button>
         </el-col>
       </el-row>
     </el-dialog>
@@ -76,19 +76,19 @@
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang";
 import "vue-cropper/dist/index.css";
 import { VueCropper } from "vue-cropper";
 import { uploadAvatar } from "@/api/system/system/user.js";
 import useUserStore from "@/store/system/user.js";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const userStore = useUserStore();
 const { proxy } = getCurrentInstance();
 
 const open = ref(false);
 const visible = ref(false);
-const title = ref(t('sys.system.userAvatar.editAvatar'));
+const title = ref(td('sys.system.userAvatar.editAvatar'));
 
 //图片裁剪数据
 const options = reactive({
@@ -134,7 +134,7 @@ function changeScale(num) {
 /** 上传预处理 */
 function beforeUpload(file) {
   if (file.type.indexOf("image/") == -1) {
-    proxy.$modal.msgError(t('sys.system.userAvatar.fileFormatError'));
+    proxy.$modal.msgError(td('sys.system.userAvatar.fileFormatError'));
   } else {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -154,7 +154,7 @@ function uploadImg() {
       open.value = false;
       options.img = import.meta.env.VITE_APP_BASE_API + response.imgUrl;
       userStore.avatar = options.img;
-      proxy.$modal.msgSuccess(t('common.message.editSuccess'));
+      proxy.$modal.msgSuccess(td('common.message.editSuccess'));
       visible.value = false;
     });
   });

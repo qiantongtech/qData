@@ -26,28 +26,28 @@
                 :inline="true"
                 label-width="68px"
             >
-                <el-form-item :label="t('sys.system.role.roleName')" prop="roleName">
+                <el-form-item :label="td('sys.system.role.roleName')" prop="roleName">
                     <el-input
                         v-model="queryParams.roleName"
-                        :placeholder="t('sys.system.role.roleNamePlaceholder')"
+                        :placeholder="td('sys.system.role.roleNamePlaceholder')"
                         clearable
                         class="el-form-input-width"
                         @keyup.enter="handleQuery"
                     />
                 </el-form-item>
-                <el-form-item :label="t('sys.system.role.permissionChar')" prop="roleKey">
+                <el-form-item :label="td('sys.system.role.permissionChar')" prop="roleKey">
                     <el-input
                         v-model="queryParams.roleKey"
-                        :placeholder="t('sys.system.role.permissionCharPlaceholder')"
+                        :placeholder="td('sys.system.role.permissionCharPlaceholder')"
                         clearable
                         class="el-form-input-width"
                         @keyup.enter="handleQuery"
                     />
                 </el-form-item>
-                <el-form-item :label="t('common.texts.status')" prop="status">
+                <el-form-item :label="td('common.texts.status')" prop="status">
                     <el-select
                         v-model="queryParams.status"
-                        :placeholder="t('sys.system.role.roleStatus')"
+                        :placeholder="td('sys.system.role.roleStatus')"
                         clearable
                         class="el-form-input-width"
                     >
@@ -59,7 +59,7 @@
                         />
                     </el-select>
                 </el-form-item>
-                <el-form-item :label="t('common.texts.createdTime')">
+                <el-form-item :label="td('common.texts.createdTime')">
                     <el-date-picker
                         class="el-form-input-width"
                         v-model="dateRange"
@@ -78,9 +78,9 @@
                         @click="handleQuery"
                         @mousedown="(e) => e.preventDefault()"
                     >
-                        <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
+                        <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
                     </el-button>
-                    <el-button icon="Refresh" @click="resetQuery">{{ t('common.button.reset') }}</el-button>
+                    <el-button icon="Refresh" @click="resetQuery">{{ td('common.button.reset') }}</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -94,7 +94,7 @@
                             icon="Plus"
                             @click="handleAdd"
                             v-hasPermi="['system:role:add']"
-                            >{{ t('common.button.add') }}</el-button
+                            >{{ td('common.button.add') }}</el-button
                         >
                     </el-col>
                     <el-col :span="1.5">
@@ -105,7 +105,7 @@
                             :disabled="single"
                             @click="handleUpdate"
                             v-hasPermi="['system:role:edit']"
-                            >{{ t('common.button.update') }}</el-button
+                            >{{ td('common.button.update') }}</el-button
                         >
                     </el-col>
                     <el-col :span="1.5">
@@ -116,7 +116,7 @@
                             :disabled="multiple"
                             @click="handleDelete"
                             v-hasPermi="['system:role:remove']"
-                            >{{ t('common.button.delete') }}</el-button
+                            >{{ td('common.button.delete') }}</el-button
                         >
                     </el-col>
                     <el-col :span="1.5">
@@ -126,7 +126,7 @@
                             icon="Download"
                             @click="handleExport"
                             v-hasPermi="['system:role:export']"
-                            >{{ t('common.button.export') }}</el-button
+                            >{{ td('common.button.export') }}</el-button
                         >
                     </el-col>
                 </el-row>
@@ -145,21 +145,21 @@
                 @selection-change="handleSelectionChange"
             >
                 <el-table-column type="selection" width="55" align="center" />
-                <el-table-column :label="t('sys.system.role.roleNo')" prop="roleId" align="center" />
+                <el-table-column :label="td('sys.system.role.roleNo')" prop="roleId" align="center" />
                 <el-table-column
-                    :label="t('sys.system.role.roleName')"
+                    :label="td('sys.system.role.roleName')"
                     prop="roleName"
                     align="center"
                     :show-overflow-tooltip="true"
                 />
                 <el-table-column
-                    :label="t('sys.system.role.permissionChar')"
+                    :label="td('sys.system.role.permissionChar')"
                     prop="roleKey"
                     align="center"
                     :show-overflow-tooltip="true"
                 />
-                <el-table-column :label="t('sys.system.role.showOrder')" prop="roleSort" align="center" />
-                <el-table-column :label="t('common.texts.status')" align="center">
+                <el-table-column :label="td('sys.system.role.showOrder')" prop="roleSort" align="center" />
+                <el-table-column :label="td('common.texts.status')" align="center">
                     <template #default="scope">
                         <el-switch
                             v-model="scope.row.status"
@@ -169,23 +169,23 @@
                         ></el-switch>
                     </template>
                 </el-table-column>
-                <el-table-column :label="t('common.texts.createdTime')" align="center" prop="createTime" width="160">
+                <el-table-column :label="td('common.texts.createdTime')" align="center" prop="createTime" width="160">
                     <template #default="scope">
                         <span>{{ parseTime(scope.row.createTime) }}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
-                    :label="t('common.texts.operation')"
+                    :label="td('common.texts.operation')"
                     align="center"
                     class-name="small-padding fixed-width"
                     fixed="right"
                     width="240"
                 >
                     <template #default="scope">
-                        <!-- <el-tooltip :content="t('common.button.update')" placement="top" v-if="scope.row.roleId !== 1">
+                        <!-- <el-tooltip :content="td('common.button.update')" placement="top" v-if="scope.row.roleId !== 1">
                 <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:role:edit']"></el-button>
               </el-tooltip>
-              <el-tooltip :content="t('common.button.delete')" placement="top" v-if="scope.row.roleId !== 1">
+              <el-tooltip :content="td('common.button.delete')" placement="top" v-if="scope.row.roleId !== 1">
                 <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['system:role:remove']"></el-button>
               </el-tooltip> -->
                         <!-- <el-tooltip content="数据权限" placement="top" v-if="scope.row.roleId !== 1">
@@ -201,7 +201,7 @@
                             @click="handleUpdate(scope.row)"
                             v-hasPermi="['system:role:edit']"
                             v-if="scope.row.roleId !== 1"
-                            >{{ t('common.button.update') }}</el-button
+                            >{{ td('common.button.update') }}</el-button
                         >
                         <el-button
                             link
@@ -210,7 +210,7 @@
                             @click="handleDelete(scope.row)"
                             v-hasPermi="['system:role:remove']"
                             v-if="scope.row.roleId !== 1 && scope.row.roleId !== 3"
-                            >{{ t('common.button.delete') }}</el-button
+                            >{{ td('common.button.delete') }}</el-button
                         >
                         <el-popover
                             placement="bottom"
@@ -219,7 +219,7 @@
                             v-if="scope.row.roleId !== 1"
                         >
                             <template #reference>
-                                <el-button link type="primary" icon="View">{{ t('common.button.more') }}</el-button>
+                                <el-button link type="primary" icon="View">{{ td('common.button.more') }}</el-button>
                             </template>
                             <div style="width: 90px" class="butgdlist">
                                 <el-button
@@ -229,7 +229,7 @@
                                     icon="CircleCheck"
                                     @click="handleDataScope(scope.row)"
                                     v-hasPermi="['system:role:edit']"
-                                    >{{ t('sys.system.role.dataPermission') }}</el-button
+                                    >{{ td('sys.system.role.dataPermission') }}</el-button
                                 >
                                 <el-button
                                     link
@@ -237,7 +237,7 @@
                                     icon="User"
                                     @click="handleAuthUser(scope.row)"
                                     v-hasPermi="['system:role:edit']"
-                                    >{{ t('sys.system.role.assignUser') }}</el-button
+                                    >{{ td('sys.system.role.assignUser') }}</el-button
                                 >
                             </div>
                         </el-popover>
@@ -266,8 +266,8 @@
             <el-form ref="roleRef" :model="form" :rules="rules" label-width="100px">
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item :label="t('sys.system.role.roleName')" prop="roleName">
-                            <el-input v-model="form.roleName" :placeholder="t('sys.system.role.roleNamePlaceholder')" />
+                        <el-form-item :label="td('sys.system.role.roleName')" prop="roleName">
+                            <el-input v-model="form.roleName" :placeholder="td('sys.system.role.roleNamePlaceholder')" />
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
@@ -275,22 +275,22 @@
                             <template #label>
                                 <span>
                                     <el-tooltip
-                                        :content="t('sys.system.role.roleTooltip')"
+                                        :content="td('sys.system.role.roleTooltip')"
                                         placement="top"
                                     >
                                         <!-- <el-icon style="color: #909399;"><InfoFilled /></el-icon> -->
                                         <el-icon style="color: #909399"><InfoFilled /></el-icon>
                                     </el-tooltip>
-                                    {{ t('sys.system.role.permissionChar') }}
+                                    {{ td('sys.system.role.permissionChar') }}
                                 </span>
                             </template>
-                            <el-input v-model="form.roleKey" :placeholder="t('sys.system.role.permissionCharPlaceholder')" />
+                            <el-input v-model="form.roleKey" :placeholder="td('sys.system.role.permissionCharPlaceholder')" />
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item :label="t('sys.system.role.roleOrder')" prop="roleSort">
+                        <el-form-item :label="td('sys.system.role.roleOrder')" prop="roleSort">
                             <el-input-number
                                 style="width: 100%"
                                 v-model="form.roleSort"
@@ -300,7 +300,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item :label="t('common.texts.status')">
+                        <el-form-item :label="td('common.texts.status')">
                             <el-radio-group v-model="form.status">
                                 <el-radio
                                     v-for="dict in sys_normal_disable"
@@ -312,21 +312,21 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-form-item :label="t('sys.system.role.menuPermission')">
+                <el-form-item :label="td('sys.system.role.menuPermission')">
                     <el-checkbox
                         v-model="menuExpand"
                         @change="handleCheckedTreeExpand($event, 'menu')"
-                        >{{ t('common.button.un_fold') }}</el-checkbox
+                        >{{ td('common.button.un_fold') }}</el-checkbox
                     >
                     <el-checkbox
                         v-model="menuNodeAll"
                         @change="handleCheckedTreeNodeAll($event, 'menu')"
-                        >{{ t('sys.system.role.selectAll') }}</el-checkbox
+                        >{{ td('sys.system.role.selectAll') }}</el-checkbox
                     >
                     <el-checkbox
                         v-model="form.menuCheckStrictly"
                         @change="handleCheckedTreeConnect($event, 'menu')"
-                        >{{ t('sys.system.role.parentChildLink') }}</el-checkbox
+                        >{{ td('sys.system.role.parentChildLink') }}</el-checkbox
                     >
                     <el-tree
                         class="tree-border"
@@ -335,22 +335,22 @@
                         ref="menuRef"
                         node-key="id"
                         :check-strictly="!form.menuCheckStrictly"
-                        :empty-text="t('sys.system.role.loadingTree')"
+                        :empty-text="td('sys.system.role.loadingTree')"
                         :props="{ label: 'label', children: 'children' }"
                     ></el-tree>
                 </el-form-item>
-                <el-form-item :label="t('common.texts.remark')">
+                <el-form-item :label="td('common.texts.remark')">
                     <el-input
                         v-model="form.remark"
                         type="textarea"
-                        :placeholder="t('sys.system.role.inputContent')"
+                        :placeholder="td('sys.system.role.inputContent')"
                     ></el-input>
                 </el-form-item>
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button @click="cancel">{{ t('common.button.cancel') }}</el-button>
-                    <el-button type="primary" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
+                    <el-button @click="cancel">{{ td('common.button.cancel') }}</el-button>
+                    <el-button type="primary" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
                 </div>
             </template>
         </el-dialog>
@@ -358,13 +358,13 @@
         <!-- 分配角色数据权限对话框 -->
         <el-dialog :title="title" v-model="openDataScope" width="500px" append-to-body>
             <el-form :model="form" label-width="80px">
-                <el-form-item :label="t('sys.system.role.roleNameDataScope')">
+                <el-form-item :label="td('sys.system.role.roleNameDataScope')">
                     <el-input v-model="form.roleName" :disabled="true" />
                 </el-form-item>
-                <el-form-item :label="t('sys.system.role.permissionCharDataScope')">
+                <el-form-item :label="td('sys.system.role.permissionCharDataScope')">
                     <el-input v-model="form.roleKey" :disabled="true" />
                 </el-form-item>
-                <el-form-item :label="t('sys.system.role.permissionRange')">
+                <el-form-item :label="td('sys.system.role.permissionRange')">
                     <el-select v-model="form.dataScope" @change="dataScopeSelectChange">
                         <el-option
                             v-for="item in dataScopeOptions"
@@ -374,21 +374,21 @@
                         ></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item :label="t('sys.system.role.dataPermission')" v-show="form.dataScope == 2">
+                <el-form-item :label="td('sys.system.role.dataPermission')" v-show="form.dataScope == 2">
                     <el-checkbox
                         v-model="deptExpand"
                         @change="handleCheckedTreeExpand($event, 'dept')"
-                        >{{ t('common.button.un_fold') }}</el-checkbox
+                        >{{ td('common.button.un_fold') }}</el-checkbox
                     >
                     <el-checkbox
                         v-model="deptNodeAll"
                         @change="handleCheckedTreeNodeAll($event, 'dept')"
-                        >{{ t('sys.system.role.selectAll') }}</el-checkbox
+                        >{{ td('sys.system.role.selectAll') }}</el-checkbox
                     >
                     <el-checkbox
                         v-model="form.deptCheckStrictly"
                         @change="handleCheckedTreeConnect($event, 'dept')"
-                        >{{ t('sys.system.role.parentChildLink') }}</el-checkbox
+                        >{{ td('sys.system.role.parentChildLink') }}</el-checkbox
                     >
                     <el-tree
                         class="tree-border"
@@ -398,15 +398,15 @@
                         ref="deptRef"
                         node-key="id"
                         :check-strictly="!form.deptCheckStrictly"
-                        :empty-text="t('sys.system.role.loadingTree')"
+                        :empty-text="td('sys.system.role.loadingTree')"
                         :props="{ label: 'label', children: 'children' }"
                     ></el-tree>
                 </el-form-item>
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button type="primary" @click="submitDataScope">{{ t('common.button.confirm') }}</el-button>
-                    <el-button @click="cancelDataScope">{{ t('common.button.cancel') }}</el-button>
+                    <el-button type="primary" @click="submitDataScope">{{ td('common.button.confirm') }}</el-button>
+                    <el-button @click="cancelDataScope">{{ td('common.button.cancel') }}</el-button>
                 </div>
             </template>
         </el-dialog>
@@ -414,7 +414,6 @@
 </template>
 
 <script setup name="Role">
-import { useI18n } from 'vue-i18n'
     import {
         addRole,
         changeRoleStatus,
@@ -433,7 +432,6 @@ import { useI18n } from 'vue-i18n'
     } from '@/api/system/system/menu.js';
     import useDefaultLang from "@/composables/useDefaultLang";
 
-    const { t } = useI18n();
     const { td } = useDefaultLang();
     const router = useRouter();
     const { proxy } = getCurrentInstance();
@@ -461,11 +459,11 @@ import { useI18n } from 'vue-i18n'
 
     /** 数据范围选项*/
     const dataScopeOptions = ref([
-        { value: '1', label: t('sys.system.role.allDataPermission') },
-        { value: '2', label: t('sys.system.role.customDataPermission') },
-        { value: '3', label: t('sys.system.role.deptDataPermission') },
-        { value: '4', label: t('sys.system.role.deptAndBelowDataPermission') },
-        { value: '5', label: t('sys.system.role.selfDataPermission') }
+        { value: '1', label: td('sys.system.role.allDataPermission') },
+        { value: '2', label: td('sys.system.role.customDataPermission') },
+        { value: '3', label: td('sys.system.role.deptDataPermission') },
+        { value: '4', label: td('sys.system.role.deptAndBelowDataPermission') },
+        { value: '5', label: td('sys.system.role.selfDataPermission') }
     ]);
 
     const data = reactive({
@@ -479,9 +477,9 @@ import { useI18n } from 'vue-i18n'
             status: undefined
         },
         rules: {
-            roleName: [{ required: true, message: t('sys.system.role.roleNameRequired'), trigger: 'blur' }],
-            roleKey: [{ required: true, message: t('sys.system.role.permissionCharRequired'), trigger: 'blur' }],
-            roleSort: [{ required: true, message: t('sys.system.role.roleOrderRequired'), trigger: 'blur' }]
+            roleName: [{ required: true, message: td('sys.system.role.roleNameRequired'), trigger: 'blur' }],
+            roleKey: [{ required: true, message: td('sys.system.role.permissionCharRequired'), trigger: 'blur' }],
+            roleSort: [{ required: true, message: td('sys.system.role.roleOrderRequired'), trigger: 'blur' }]
         }
     });
 
@@ -514,13 +512,13 @@ import { useI18n } from 'vue-i18n'
     function handleDelete(row) {
         const roleIds = row.roleId || ids.value;
         proxy.$modal
-            .confirm(t('sys.system.role.confirmDelete', { id: roleIds }))
+            .confirm(td('sys.system.role.confirmDelete', { id: roleIds }))
             .then(function () {
                 return delRole(roleIds);
             })
             .then(() => {
                 getList();
-                proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+                proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
             })
             .catch(() => {});
     }
@@ -545,14 +543,14 @@ import { useI18n } from 'vue-i18n'
 
     /** 角色状态修改 */
     function handleStatusChange(row) {
-        let text = row.status === '0' ? t('sys.system.role.enable') : t('sys.system.role.disable');
+        let text = row.status === '0' ? td('sys.system.role.enable') : td('sys.system.role.disable');
         proxy.$modal
-            .confirm(t('sys.system.role.confirmStatusChange', { text: text, name: row.roleName }))
+            .confirm(td('sys.system.role.confirmStatusChange', { text: text, name: row.roleName }))
             .then(function () {
                 return changeRoleStatus(row.roleId, row.status);
             })
             .then(() => {
-                proxy.$modal.msgSuccess(text + t('common.message.success'));
+                proxy.$modal.msgSuccess(text + td('common.message.success'));
             })
             .catch(function () {
                 row.status = row.status === '0' ? '1' : '0';
@@ -625,7 +623,7 @@ import { useI18n } from 'vue-i18n'
         reset();
         getMenuTreeselect();
         open.value = true;
-        title.value = t('sys.system.role.addTitle');
+        title.value = td('sys.system.role.addTitle');
     }
 
     /** 修改角色 */
@@ -647,7 +645,7 @@ import { useI18n } from 'vue-i18n'
                     });
                 });
             });
-            title.value = t('sys.system.role.editTitle');
+            title.value = td('sys.system.role.editTitle');
         });
     }
 
@@ -717,14 +715,14 @@ import { useI18n } from 'vue-i18n'
                 if (form.value.roleId != undefined) {
                     form.value.menuIds = getMenuAllCheckedKeys();
                     updateRole(form.value).then((response) => {
-                        proxy.$modal.msgSuccess(t('common.message.editSuccess'));
+                        proxy.$modal.msgSuccess(td('common.message.editSuccess'));
                         open.value = false;
                         getList();
                     });
                 } else {
                     form.value.menuIds = getMenuAllCheckedKeys();
                     addRole(form.value).then((response) => {
-                        proxy.$modal.msgSuccess(t('common.message.addSuccess'));
+                        proxy.$modal.msgSuccess(td('common.message.addSuccess'));
                         open.value = false;
                         getList();
                     });
@@ -762,7 +760,7 @@ import { useI18n } from 'vue-i18n'
                     });
                 });
             });
-            title.value = t('sys.system.role.assignDataPermissionTitle');
+            title.value = td('sys.system.role.assignDataPermissionTitle');
         });
     }
 
@@ -771,7 +769,7 @@ import { useI18n } from 'vue-i18n'
         if (form.value.roleId != undefined) {
             form.value.deptIds = getDeptAllCheckedKeys();
             dataScope(form.value).then((response) => {
-                proxy.$modal.msgSuccess(t('common.message.editSuccess'));
+                proxy.$modal.msgSuccess(td('common.message.editSuccess'));
                 openDataScope.value = false;
                 getList();
             });

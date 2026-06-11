@@ -19,17 +19,17 @@
    <div class="app-container" ref="app-container">
       <div class="pagecont-top" v-show="showSearch">
          <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true"  label-width="68px">
-            <el-form-item :label="t('sys.system.menu.menuName')" prop="menuName">
+            <el-form-item :label="td('sys.system.menu.menuName')" prop="menuName">
                <el-input
                   v-model="queryParams.menuName"
-                  :placeholder="t('sys.system.menu.menuNamePlaceholder')"
+                  :placeholder="td('sys.system.menu.menuNamePlaceholder')"
                   clearable
                   class="el-form-input-width"
                   @keyup.enter="handleQuery"
                />
             </el-form-item>
-            <el-form-item :label="t('common.texts.status')" prop="status">
-               <el-select v-model="queryParams.status" placeholder="菜单状态" clearable class="el-form-input-width">
+            <el-form-item :label="td('common.texts.status')" prop="status">
+               <el-select v-model="queryParams.status" :placeholder="td('sys.system.menu.menuStatus')" clearable class="el-form-input-width">
                   <el-option
                      v-for="dict in sys_normal_disable"
                      :key="dict.value"
@@ -40,10 +40,10 @@
             </el-form-item>
             <el-form-item>
                <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                  <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
+                  <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
                </el-button>
                <el-button @click="resetQuery" @mousedown="e => e.preventDefault()">
-                  <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
+                  <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
                </el-button>
             </el-form-item>
          </el-form>
@@ -58,7 +58,7 @@
                   icon="Plus"
                   @click="handleAdd"
                   v-hasPermi="['system:menu:add']"
-               >{{ t('common.button.add') }}</el-button>
+               >{{ td('common.button.add') }}</el-button>
             </el-col>
             <el-col :span="1.5">
                <el-button
@@ -66,7 +66,7 @@
                   plain
                   icon="Sort"
                   @click="toggleExpandAll"
-               >{{ t('common.button.un_fold') }}</el-button>
+               >{{ td('common.button.un_fold') }}</el-button>
             </el-col>
          </el-row>
          <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
@@ -81,38 +81,38 @@
             :default-expand-all="isExpandAll"
             :tree-props="{ children: 'children', hasChildren: 'hasChildren'}"
          >
-            <el-table-column prop="menuName" :label="t('sys.system.menu.menuName')" :show-overflow-tooltip="true" width="160"></el-table-column>
-            <el-table-column prop="icon" :label="t('sys.system.menu.icon')" align="center" width="100">
+            <el-table-column prop="menuName" :label="td('sys.system.menu.menuName')" :show-overflow-tooltip="true" width="160"></el-table-column>
+            <el-table-column prop="icon" :label="td('sys.system.menu.icon')" align="center" width="100">
                <template #default="scope">
                   <svg-icon :icon-class="scope.row.icon"/>
                </template>
             </el-table-column>
-            <el-table-column prop="orderNum" :label="t('sys.system.menu.sort')" align="center" width="60"></el-table-column>
-            <el-table-column prop="perms" :label="t('sys.system.menu.permission')" align="center" :show-overflow-tooltip="true">
+            <el-table-column prop="orderNum" :label="td('sys.system.menu.sort')" align="center" width="60"></el-table-column>
+            <el-table-column prop="perms" :label="td('sys.system.menu.permission')" align="center" :show-overflow-tooltip="true">
                <template #default="scope">
                   <span>{{ scope.row.perms || "-" }}</span>
                </template>
             </el-table-column>
-            <el-table-column prop="component" :label="t('sys.system.menu.componentPath')" align="center" :show-overflow-tooltip="true">
+            <el-table-column prop="component" :label="td('sys.system.menu.componentPath')" align="center" :show-overflow-tooltip="true">
                <template #default="scope">
                   <span>{{ scope.row.component || "-" }}</span>
                </template>
             </el-table-column>
-            <el-table-column prop="status" :label="t('common.texts.status')" width="80" align="center">
+            <el-table-column prop="status" :label="td('common.texts.status')" width="80" align="center">
                <template #default="scope">
                   <dict-tag :options="sys_normal_disable" :value="scope.row.status" />
                </template>
             </el-table-column>
-            <el-table-column :label="t('common.texts.createdTime')" align="center" width="160" prop="createTime">
+            <el-table-column :label="td('common.texts.createdTime')" align="center" width="160" prop="createTime">
                <template #default="scope">
                   <span>{{ parseTime(scope.row.createTime) }}</span>
                </template>
             </el-table-column>
-            <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width"  fixed="right" width="240">
+            <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width"  fixed="right" width="240">
                <template #default="scope">
-                  <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:menu:edit']">{{ t('common.button.update') }}</el-button>
-                  <el-button link type="primary" icon="Plus" @click="handleAdd(scope.row)" v-hasPermi="['system:menu:add']">{{ t('common.button.add') }}</el-button>
-                  <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['system:menu:remove']">{{ t('common.button.delete') }}</el-button>
+                  <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:menu:edit']">{{ td('common.button.update') }}</el-button>
+                  <el-button link type="primary" icon="Plus" @click="handleAdd(scope.row)" v-hasPermi="['system:menu:add']">{{ td('common.button.add') }}</el-button>
+                  <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['system:menu:remove']">{{ td('common.button.delete') }}</el-button>
                </template>
             </el-table-column>
          </el-table>
@@ -123,35 +123,35 @@
          <el-form ref="menuRef" :model="form" :rules="rules" label-width="100px">
             <el-row :gutter="20">
                <el-col :span="24">
-                  <el-form-item :label="t('sys.system.menu.parentMenu')">
+                  <el-form-item :label="td('sys.system.menu.parentMenu')">
                      <el-tree-select
                         v-model="form.parentId"
                         :data="menuOptions"
                         :props="{ value: 'menuId', label: 'menuName', children: 'children' }"
                         value-key="menuId"
-                        :placeholder="t('sys.system.menu.selectParentMenu')"
+                        :placeholder="td('sys.system.menu.selectParentMenu')"
                         check-strictly
                      />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="t('sys.system.menu.menuType')" prop="menuType">
+                  <el-form-item :label="td('sys.system.menu.menuType')" prop="menuType">
                      <el-radio-group v-model="form.menuType">
-                        <el-radio value="M">{{ t('sys.system.menu.directory') }}</el-radio>
-                        <el-radio value="C">{{ t('sys.system.menu.menu') }}</el-radio>
-                        <el-radio value="F">{{ t('sys.system.menu.button') }}</el-radio>
+                        <el-radio value="M">{{ td('sys.system.menu.directory') }}</el-radio>
+                        <el-radio value="C">{{ td('sys.system.menu.menu') }}</el-radio>
+                        <el-radio value="F">{{ td('sys.system.menu.button') }}</el-radio>
                      </el-radio-group>
                   </el-form-item>
                </el-col>
                <el-col :span="12" v-if="form.menuType != 'F'">
-                  <el-form-item :label="t('sys.system.menu.menuIcon')" prop="icon">
+                  <el-form-item :label="td('sys.system.menu.menuIcon')" prop="icon">
                      <el-popover
                         placement="bottom-start"
                         :width="540"
                         trigger="click"
                      >
                         <template #reference>
-                           <el-input v-model="form.icon" :placeholder="t('sys.system.menu.selectIcon')" @blur="showSelectIcon" readonly>
+                           <el-input v-model="form.icon" :placeholder="td('sys.system.menu.selectIcon')" @blur="showSelectIcon" readonly>
                               <template #prefix>
                                  <svg-icon
                                     v-if="form.icon"
@@ -168,54 +168,54 @@
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="t('sys.system.menu.showSort')" prop="orderNum">
+                  <el-form-item :label="td('sys.system.menu.showSort')" prop="orderNum">
                      <el-input-number style="width:100%" v-model="form.orderNum" controls-position="right" :min="0" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="t('sys.system.menu.menuName')" prop="menuName">
-                     <el-input v-model="form.menuName" :placeholder="t('sys.system.menu.menuNamePlaceholder')" />
+                  <el-form-item :label="td('sys.system.menu.menuName')" prop="menuName">
+                     <el-input v-model="form.menuName" :placeholder="td('sys.system.menu.menuNamePlaceholder')" />
                   </el-form-item>
                </el-col>
                <el-col :span="12" v-if="form.menuType == 'C'">
                   <el-form-item prop="routeName">
                      <template #label>
                         <span>
-                           <el-tooltip :content="t('sys.system.menu.routeNameTooltip')" placement="top">
+                           <el-tooltip :content="td('sys.system.menu.routeNameTooltip')" placement="top">
                               <el-icon style="color: #909399;"><InfoFilled /></el-icon>
                            </el-tooltip>
-                           {{ t('sys.system.menu.routeName') }}
+                           {{ td('sys.system.menu.routeName') }}
                         </span>
                      </template>
-                     <el-input v-model="form.routeName" :placeholder="t('sys.system.menu.routeNamePlaceholder')" />
+                     <el-input v-model="form.routeName" :placeholder="td('sys.system.menu.routeNamePlaceholder')" />
                   </el-form-item>
                </el-col>
                <el-col :span="12" v-if="form.menuType != 'F'">
                   <el-form-item prop="path">
                      <template #label>
                         <span>
-                           <el-tooltip :content="t('sys.system.menu.routePathTooltip')" placement="top">
+                           <el-tooltip :content="td('sys.system.menu.routePathTooltip')" placement="top">
                               <el-icon style="color: #909399;"><InfoFilled /></el-icon>
                            </el-tooltip>
-                           {{ t('sys.system.menu.routePath') }}
+                           {{ td('sys.system.menu.routePath') }}
                         </span>
                      </template>
-                     <el-input v-model="form.path" :placeholder="t('sys.system.menu.routePathPlaceholder')" />
+                     <el-input v-model="form.path" :placeholder="td('sys.system.menu.routePathPlaceholder')" />
                   </el-form-item>
                </el-col>
                <el-col :span="12" v-if="form.menuType != 'F'">
                   <el-form-item>
                      <template #label>
                         <span>
-                           <el-tooltip :content="t('sys.system.menu.isExternalLinkTooltip')" placement="top">
+                           <el-tooltip :content="td('sys.system.menu.isExternalLinkTooltip')" placement="top">
                               <el-icon style="color: #909399;"><InfoFilled /></el-icon>
                            </el-tooltip>
-                           {{ t('sys.system.menu.isExternalLink') }}
+                           {{ td('sys.system.menu.isExternalLink') }}
                         </span>
                      </template>
                      <el-radio-group v-model="form.isFrame">
-                        <el-radio value="0">{{ t('sys.system.menu.yes') }}</el-radio>
-                        <el-radio value="1">{{ t('sys.system.menu.no') }}</el-radio>
+                        <el-radio value="0">{{ td('sys.system.menu.yes') }}</el-radio>
+                        <el-radio value="1">{{ td('sys.system.menu.no') }}</el-radio>
                      </el-radio-group>
                   </el-form-item>
                </el-col>
@@ -224,37 +224,37 @@
                   <el-form-item prop="component">
                      <template #label>
                         <span>
-                           <el-tooltip :content="t('sys.system.menu.componentPathTooltip')" placement="top">
+                           <el-tooltip :content="td('sys.system.menu.componentPathTooltip')" placement="top">
                               <el-icon style="color: #909399;"><InfoFilled /></el-icon>
                            </el-tooltip>
-                           {{ t('sys.system.menu.componentPath') }}
+                           {{ td('sys.system.menu.componentPath') }}
                         </span>
                      </template>
-                     <el-input v-model="form.component" :placeholder="t('sys.system.menu.componentPathPlaceholder')" />
+                     <el-input v-model="form.component" :placeholder="td('sys.system.menu.componentPathPlaceholder')" />
                   </el-form-item>
                </el-col>
                <el-col :span="12" v-if="form.menuType != 'M'">
                   <el-form-item>
-                     <el-input v-model="form.perms" :placeholder="t('sys.system.menu.permissionPlaceholder')" maxlength="100" />
+                     <el-input v-model="form.perms" :placeholder="td('sys.system.menu.permissionPlaceholder')" maxlength="100" />
                      <template #label>
                         <span>
-                           <el-tooltip :content="t('sys.system.menu.permissionTooltip')" placement="top">
+                           <el-tooltip :content="td('sys.system.menu.permissionTooltip')" placement="top">
                               <el-icon style="color: #909399;"><InfoFilled /></el-icon>
                            </el-tooltip>
-                           {{ t('sys.system.menu.permissionChar') }}
+                           {{ td('sys.system.menu.permissionChar') }}
                         </span>
                      </template>
                   </el-form-item>
                </el-col>
                <el-col :span="12" v-if="form.menuType == 'C'">
                   <el-form-item>
-                     <el-input v-model="form.query" :placeholder="t('sys.system.menu.routeParamPlaceholder')" maxlength="255" />
+                     <el-input v-model="form.query" :placeholder="td('sys.system.menu.routeParamPlaceholder')" maxlength="255" />
                      <template #label>
                         <span>
-                           <el-tooltip :content="t('sys.system.menu.routeParamTooltip')" placement="top">
+                           <el-tooltip :content="td('sys.system.menu.routeParamTooltip')" placement="top">
                               <el-icon style="color: #909399;"><InfoFilled /></el-icon>
                            </el-tooltip>
-                           {{ t('sys.system.menu.routeParam') }}
+                           {{ td('sys.system.menu.routeParam') }}
                         </span>
                      </template>
                   </el-form-item>
@@ -263,15 +263,15 @@
                   <el-form-item>
                      <template #label>
                         <span>
-                           <el-tooltip :content="t('sys.system.menu.isCacheTooltip')" placement="top">
+                           <el-tooltip :content="td('sys.system.menu.isCacheTooltip')" placement="top">
                               <el-icon style="color: #909399;"><InfoFilled /></el-icon>
                            </el-tooltip>
-                           {{ t('sys.system.menu.isCache') }}
+                           {{ td('sys.system.menu.isCache') }}
                         </span>
                      </template>
                      <el-radio-group v-model="form.isCache">
-                        <el-radio value="0">{{ t('sys.system.menu.cache') }}</el-radio>
-                        <el-radio value="1">{{ t('sys.system.menu.noCache') }}</el-radio>
+                        <el-radio value="0">{{ td('sys.system.menu.cache') }}</el-radio>
+                        <el-radio value="1">{{ td('sys.system.menu.noCache') }}</el-radio>
                      </el-radio-group>
                   </el-form-item>
                </el-col>
@@ -279,10 +279,10 @@
                   <el-form-item>
                      <template #label>
                         <span>
-                           <el-tooltip :content="t('sys.system.menu.showStatusTooltip')" placement="top">
+                           <el-tooltip :content="td('sys.system.menu.showStatusTooltip')" placement="top">
                               <el-icon style="color: #909399;"><InfoFilled /></el-icon>
                            </el-tooltip>
-                           {{ t('sys.system.menu.showStatus') }}
+                           {{ td('sys.system.menu.showStatus') }}
                         </span>
                      </template>
                      <el-radio-group v-model="form.visible">
@@ -298,10 +298,10 @@
                   <el-form-item>
                      <template #label>
                         <span>
-                           <el-tooltip :content="t('sys.system.menu.menuStatusTooltip')" placement="top">
+                           <el-tooltip :content="td('sys.system.menu.menuStatusTooltip')" placement="top">
                               <el-icon style="color: #909399;"><InfoFilled /></el-icon>
                            </el-tooltip>
-                           {{ t('sys.system.menu.menuStatus') }}
+                           {{ td('sys.system.menu.menuStatus') }}
                         </span>
                      </template>
                      <el-radio-group v-model="form.status">
@@ -317,8 +317,8 @@
          </el-form>
          <template #footer>
             <div class="dialog-footer">
-               <el-button @click="cancel">{{ t('common.button.cancel') }}</el-button>
-               <el-button type="primary" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
+               <el-button @click="cancel">{{ td('common.button.cancel') }}</el-button>
+               <el-button type="primary" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
             </div>
          </template>
       </el-dialog>
@@ -326,12 +326,12 @@
 </template>
 
 <script setup name="Menu">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang";
 import { addMenu, delMenu, getMenu, listMenu, updateMenu } from "@/api/system/system/menu.js";
 import SvgIcon from "@/components/SvgIcon/index.vue";
 import IconSelect from "@/components/IconSelect/index.vue";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { sys_show_hide, sys_normal_disable } = proxy.useDict("sys_show_hide", "sys_normal_disable");
 
@@ -352,9 +352,9 @@ const data = reactive({
     visible: undefined
   },
   rules: {
-    menuName: [{ required: true, message: t('sys.system.menu.menuNameRequired'), trigger: "blur" }],
-    orderNum: [{ required: true, message: t('sys.system.menu.menuSortRequired'), trigger: "blur" }],
-    path: [{ required: true, message: t('sys.system.menu.routePathRequired'), trigger: "blur" }]
+    menuName: [{ required: true, message: td('sys.system.menu.menuNameRequired'), trigger: "blur" }],
+    orderNum: [{ required: true, message: td('sys.system.menu.menuSortRequired'), trigger: "blur" }],
+    path: [{ required: true, message: td('sys.system.menu.routePathRequired'), trigger: "blur" }]
   },
 });
 
@@ -373,7 +373,7 @@ function getList() {
 function getTreeselect() {
   menuOptions.value = [];
   listMenu().then(response => {
-    const menu = { menuId: 0, menuName: t('sys.system.menu.rootCategory'), children: [] };
+    const menu = { menuId: 0, menuName: td('sys.system.menu.rootCategory'), children: [] };
     menu.children = proxy.handleTree(response.data, "menuId");
     menuOptions.value.push(menu);
   });
@@ -433,7 +433,7 @@ function handleAdd(row) {
     form.value.parentId = 0;
   }
   open.value = true;
-  title.value = t('sys.system.menu.addTitle');
+  title.value = td('sys.system.menu.addTitle');
 }
 
 /** 展开/折叠操作 */
@@ -452,7 +452,7 @@ async function handleUpdate(row) {
   getMenu(row.menuId).then(response => {
     form.value = response.data;
     open.value = true;
-    title.value = t('sys.system.menu.editTitle');
+    title.value = td('sys.system.menu.editTitle');
   });
 }
 
@@ -462,13 +462,13 @@ function submitForm() {
     if (valid) {
       if (form.value.menuId != undefined) {
         updateMenu(form.value).then(response => {
-          proxy.$modal.msgSuccess(t('common.message.editSuccess'));
+          proxy.$modal.msgSuccess(td('common.message.editSuccess'));
           open.value = false;
           getList();
         });
       } else {
         addMenu(form.value).then(response => {
-          proxy.$modal.msgSuccess(t('common.message.addSuccess'));
+          proxy.$modal.msgSuccess(td('common.message.addSuccess'));
           open.value = false;
           getList();
         });
@@ -479,11 +479,11 @@ function submitForm() {
 
 /** 删除按钮操作 */
 function handleDelete(row) {
-  proxy.$modal.confirm(t('sys.system.menu.confirmDelete', { name: row.menuName })).then(function() {
+  proxy.$modal.confirm(td('sys.system.menu.confirmDelete', { name: row.menuName })).then(function() {
     return delMenu(row.menuId);
   }).then(() => {
     getList();
-    proxy.$modal.msgSuccess("删除成功");
+    proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
   }).catch(() => {});
 }
 

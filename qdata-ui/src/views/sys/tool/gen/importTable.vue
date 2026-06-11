@@ -17,12 +17,12 @@
 
 <template>
   <!-- 导入表 -->
-  <el-dialog :title="t('sys.tool.genImport.title')" v-model="visible" width="800px" top="5vh" :append-to="$refs['app-container']"  draggable destroy-on-close>
+  <el-dialog :title="td('sys.tool.genImport.title')" v-model="visible" width="800px" top="5vh" :append-to="$refs['app-container']"  draggable destroy-on-close>
     <el-form :model="queryParams" ref="queryRef" :inline="true">
-      <el-form-item :label="t('sys.tool.genImport.tableName')" prop="tableName">
+      <el-form-item :label="td('sys.tool.genImport.tableName')" prop="tableName">
         <el-input
           v-model="queryParams.tableName"
-          :placeholder="t('sys.tool.genImport.tableNamePlaceholder')"
+          :placeholder="td('sys.tool.genImport.tableNamePlaceholder')"
           clearable
           class="el-form-input-width"
           @keyup.enter="handleQuery"
@@ -30,21 +30,21 @@
       </el-form-item>
       <el-form-item>
         <!-- <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
-        <el-button icon="Refresh" @click="resetQuery">{{ t('common.button.reset') }}</el-button> -->
+        <el-button icon="Refresh" @click="resetQuery">{{ td('common.button.reset') }}</el-button> -->
         <el-button plain type="primary" @click="handleQuery">
-            <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
+            <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
         </el-button>
         <el-button @click="resetQuery">
-            <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
+            <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
         </el-button>
       </el-form-item>
     </el-form>
       <el-table @row-click="clickRow" ref="table" :data="dbTableList" @selection-change="handleSelectionChange" height="380px">
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column prop="tableName" :label="t('sys.tool.genImport.tableName')" :show-overflow-tooltip="true"></el-table-column>
-        <el-table-column prop="tableComment" :label="t('sys.tool.genImport.tableDesc')" :show-overflow-tooltip="true"></el-table-column>
-        <el-table-column prop="createTime" :label="t('common.texts.createdTime')"></el-table-column>
-        <el-table-column prop="updateTime" :label="t('common.texts.updatedTime')"></el-table-column>
+        <el-table-column prop="tableName" :label="td('sys.tool.genImport.tableName')" :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column prop="tableComment" :label="td('sys.tool.genImport.tableDesc')" :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column prop="createTime" :label="td('common.texts.createdTime')"></el-table-column>
+        <el-table-column prop="updateTime" :label="td('common.texts.updatedTime')"></el-table-column>
       </el-table>
       <pagination
         v-show="total>0"
@@ -55,18 +55,18 @@
       />
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="visible = false">{{ t('common.button.cancel') }}</el-button>
-        <el-button type="primary" @click="handleImportTable">{{ t('common.button.confirm') }}</el-button>
+        <el-button @click="visible = false">{{ td('common.button.cancel') }}</el-button>
+        <el-button type="primary" @click="handleImportTable">{{ td('common.button.confirm') }}</el-button>
       </div>
     </template>
   </el-dialog>
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang";
 import { listDbTable, importTable } from "@/api/system/tool/gen.js";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const total = ref(0);
 const visible = ref(false);
 const tables = ref([]);
@@ -122,7 +122,7 @@ function resetQuery() {
 function handleImportTable() {
   const tableNames = tables.value.join(",");
   if (tableNames == "") {
-    proxy.$modal.msgError(t('sys.tool.genImport.selectTableToImport'));
+    proxy.$modal.msgError(td('sys.tool.genImport.selectTableToImport'));
     return;
   }
   importTable({ tables: tableNames }).then(res => {

@@ -77,7 +77,6 @@ const usePermissionStore = defineStore('permission', {
             const sidebarRoutes = filterAsyncRouter(sdata);
             const rewriteRoutes = filterAsyncRouter(rdata, false, true);
             const defaultRoutes = filterAsyncRouter(defaultData);
-
             this.setRoutes(rewriteRoutes);
             this.setSidebarRouters(constantRoutes.concat(sidebarRoutes));
             this.setDefaultRoutes(sidebarRoutes);
@@ -104,6 +103,15 @@ function setupRouteLang(route,lastRouter){
 function filterAsyncRouter(asyncRouterMap, lastRouter = false, type = false) {
     return asyncRouterMap.filter((route) => {
         if (type && route.children) {
+            const setLang = function(route, lastRouter) {
+                setupRouteLang(route, lastRouter);
+                if (route.children && route.children.length > 0) {
+                    route.children.forEach(child => {
+                        setLang(child, route);
+                    });
+                }
+            }
+            setLang(route, lastRouter);
             route.children = filterChildren(route.children,lastRouter);
         }
 
@@ -120,7 +128,9 @@ function filterAsyncRouter(asyncRouterMap, lastRouter = false, type = false) {
             }
         }
 
-        setupRouteLang(route,lastRouter);
+        if(!type){
+            setupRouteLang(route,lastRouter);
+        }
 
         if (route.children != null && route.children && route.children.length) {
             route.children = filterAsyncRouter(route.children, route, type);

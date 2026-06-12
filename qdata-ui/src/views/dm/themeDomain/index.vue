@@ -184,7 +184,7 @@
               <el-input
                 v-model="form.description"
                 type="textarea"
-                maxlength="256个字符"
+                maxlength="256"
                 :min-height="256"
                 show-word-limit
                 :placeholder="td('common.form.descriptionPlaceholder', '请输入描述')"
@@ -196,7 +196,7 @@
               <el-input
                 v-model="form.remark"
                 type="textarea"
-                maxlength="500个字符"
+                maxlength="500"
                 show-word-limit
                 :placeholder="td('common.form.remarkPlaceholder', '请输入备注')"
               />
@@ -542,7 +542,7 @@ async function handleUpdate(row) {
       !d.parentId.toString().split(",").includes(row.id.toString())
     );
   });
-  const data = { id: 0, name: "顶级节点", children: [] };
+  const data = { id: 0, name: td('dm.themeDomain.topNode', '顶级节点'), children: [] };
   data.children = proxy.handleTree(filteredDepts, "id", "parentId");
   attDataElemCatOptions.value.push(data);
   if (row != null) {

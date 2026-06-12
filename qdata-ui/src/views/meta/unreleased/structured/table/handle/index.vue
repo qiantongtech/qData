@@ -424,43 +424,43 @@ const DEFAULT_FORM = {
 
 const rules = {
   dbId: [
-    { required: true, message: "请选择所属库名", trigger: ["blur", "change"] },
+    { required: true, message: td('meta.unreleased.structured.table.handle.selectDbName'), trigger: ["blur", "change"] },
   ],
   sourceSystemName: [
-    { required: true, message: "来源系统不能为空", trigger: "change" },
+    { required: true, message: td('meta.unreleased.structured.table.handle.sourceSystemRequired'), trigger: "change" },
   ],
   datasourceId: [
-    { required: true, message: "请选择数据连接名称", trigger: "change" },
+    { required: true, message: td('meta.unreleased.structured.table.handle.selectDatasourceName'), trigger: "change" },
   ],
   tableName: [
-    { required: true, message: "请输入表名称", trigger: ["blur", "change"] },
+    { required: true, message: td('meta.unreleased.structured.table.handle.inputTableName'), trigger: ["blur", "change"] },
   ],
   dbType: [
     {
       required: true,
-      message: "请输入数据库类型",
+      message: td('meta.unreleased.structured.table.handle.inputDbType'),
       trigger: ["blur", "change"],
     },
   ],
   ip: [
-    { required: true, message: "请输入数据库ip", trigger: ["blur", "change"] },
+    { required: true, message: td('meta.unreleased.structured.table.handle.inputIp'), trigger: ["blur", "change"] },
   ],
   port: [
     {
       required: true,
-      message: "请输入数据库端口",
+      message: td('meta.unreleased.structured.table.handle.inputPort'),
       trigger: ["blur", "change"],
     },
   ],
   username: [
     {
       required: true,
-      message: "请输入数据库用户名",
+      message: td('meta.unreleased.structured.table.handle.inputUsername'),
       trigger: ["blur", "change"],
     },
   ],
   updateMsg: [
-    { required: true, message: "请输入变更说明", trigger: ["change", "blur"] },
+    { required: true, message: td('meta.unreleased.structured.table.handle.inputUpdateMsg'), trigger: ["change", "blur"] },
   ],
 };
 

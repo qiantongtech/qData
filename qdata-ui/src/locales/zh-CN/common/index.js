@@ -29,7 +29,8 @@ export default {
     unselectAll: '全不选',
     un_fold: '展开/折叠',
     update: '修改',
-    upload: '上传'
+    upload: '上传',
+    neverShow: '不再展示'
   },
   error: {
     code401: '401错误!',
@@ -71,7 +72,13 @@ export default {
     updatedBy: '更新人',
     updatedTime: '更新时间',
     enable: '启用',
-    disable: '禁用'
+    disable: '禁用',
+    topNode: '顶级节点',
+    metadata: '元数据',
+    detail: '详情',
+    dataItem: '数据项',
+    data: '数据',
+    success: '成功'
   },
   message: {
     addSuccess: '新增成功',
@@ -82,6 +89,11 @@ export default {
     loadingResource: '正在加载系统资源，请耐心等待...',
     msgOpFailed: '操作失败',
     msgOpSuccess: '操作成功',
+    required: '不能为空',
+    confirmDelete: '是否确认删除编号为',
+    confirm: '是否确认',
+    question: '吗？',
+    success: '成功',
     noData: '暂无数据',
     noMatchingData: '无匹配数据',
     noRecord: '暂无记录',

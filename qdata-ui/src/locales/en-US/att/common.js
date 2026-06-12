@@ -16,7 +16,9 @@ export default {
     ruleName: 'Rule Name',
     ruleNameRequired: 'Rule name cannot be empty',
     ruleType: 'Rule Type',
+    ruleTypeRequired: 'Rule type cannot be empty',
     ruleLevel: 'Rule Level',
+    ruleLevelRequired: 'Rule level cannot be empty',
     useCase: 'Use Case',
     example: 'Example',
     projectName: 'Project Name',
@@ -59,6 +61,8 @@ export default {
     deleteTip: 'Are you sure you want to delete the selected data?',
     disable: 'Disable',
     enable: 'Enable',
+    dataDoc: 'Data Document',
+    importResult: 'Import Result',
     // Placeholders
     pleaseEnterName: 'Please enter name',
     pleaseSelectParent: 'Please select parent',
@@ -106,5 +110,19 @@ export default {
     ruleCategoryPlaceholder:'Please enter the category of inspection rules',
     // Message
     confirmDeleteCat: 'Confirm to delete {titleBase} with ID "{id}"?',
-    deleteConfirmCount: '{canDeleteCount} can be deleted, {cannotDeleteCount} cannot be deleted. Delete the deletable items?'
+    deleteConfirmCount: '{canDeleteCount} can be deleted, {cannotDeleteCount} cannot be deleted. Delete the deletable items?',
+    // Top node
+    topNode: 'Root Node',
+    // Title helpers
+    addTitle: 'Add {title}',
+    editTitle: 'Edit {title}',
+    detailTitle: '{title} Detail',
+    importTitle: 'Import {title}',
+    // Status change
+    confirmStatusChangeGeneric: 'Confirm to "{status}" "{name}" {type}?',
+    statusSuccess: '{status} Success',
+    // Code
+    codeRequired: 'Code cannot be empty',
+    // Contact
+    contactWayPlaceholder: 'Please enter contact information'
 }

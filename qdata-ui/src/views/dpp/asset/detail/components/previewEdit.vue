@@ -33,7 +33,7 @@
                             <overflow-tooltip :text="item.cn ? `${item.en} (${item.cn})` : item.en" max-width="200px" />
                         </template>
                         <el-input v-model="dataForm[item.en]" :type="item.dataLength > 200 ? 'textarea' : 'input'"
-                            :placeholder="`请输入 ${formatLabel(item)}`" style="width: 100%;" />
+                            :placeholder="`${td('dpp.asset.detail.preview.enterValue')} ${formatLabel(item)}`" style="width: 100%;" />
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -89,7 +89,7 @@ watch(
             const rulesObj = {};
             requiredFields.forEach((item) => {
                 rulesObj[item.en] = [
-                    { required: true, message: `请输入${item.en}`, trigger: "blur" },
+                    { required: true, message: `${td('dpp.asset.detail.preview.enterValue')}${item.en}`, trigger: "blur" },
                     { validator: noSpecialCharacters, trigger: "blur" },
                 ];
             });

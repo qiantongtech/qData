@@ -29,7 +29,8 @@ export default {
         unselectAll: 'すべて選択解除',
         un_fold: '展開/折りたたむ',
         update: '編集',
-        upload: 'アップロード'
+        upload: 'アップロード',
+        neverShow: '二度と表示しない'
     },
     error: {
         code401: '401エラー！',

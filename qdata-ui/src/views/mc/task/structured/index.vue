@@ -989,7 +989,7 @@ function handleDeleteClick(row) {
       return delTask(row.id);
     })
     .then(() => {
-      ElMessage.success(t("common.message.deleteSuccess"));
+      ElMessage.success(td("common.message.deleteSuccess"));
       tableRef.value.getList();
     });
 }
@@ -1027,14 +1027,14 @@ function handleDeleteColumnClick() {
     )
       .then(() => {
         if (!canDeleteIds.length) {
-          ElMessage.success(t("common.message.deleteSuccess"));
+          ElMessage.success(td("common.message.deleteSuccess"));
           return;
         }
         return delTask(canDeleteIds);
       })
       .then((res) => {
         if (!res) return;
-        ElMessage.success(t("common.message.deleteSuccess"));
+        ElMessage.success(td("common.message.deleteSuccess"));
         tableRef.value.getList();
       });
   });

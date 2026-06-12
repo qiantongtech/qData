@@ -5,7 +5,7 @@ export default {
   taskNamePlaceholder: 'Please enter task name',
   taskStatus: 'Task Status',
   taskStatusPlaceholder: 'Please select task status',
-  belongCat: 'Belongs to Category',
+  belongCat: 'Belonging Category',
   description: 'Description',
   inspectionTargetCount: 'Inspection Target Count',
   inspectionRuleCount: 'Inspection Rule Count',
@@ -13,26 +13,26 @@ export default {
   schedulePeriod: 'Schedule Period',
   lastExecutionTime: 'Last Execution Time',
   statusTooltip: 'Status ON = Task online + Execution schedule. Please set the schedule period reasonably.',
-  config: 'Config',
+  config: 'Configure',
   executeOnce: 'Execute Once',
   executionLog: 'Execution Log',
   schedulePeriodLabel: 'Schedule Period',
   catRootName: 'Data Quality Category',
   offline: 'Offline',
   online: 'Online',
-  confirmStatusChange: 'Are you sure you want to "{text}" the quality task "{name}"?',
-  executeSuccess: 'Execution successful',
+  confirmStatusChange: 'Are you sure to "{text}" the quality task "{name}"?',
+  executeSuccess: 'Executed successfully',
   executeFailed: 'Execution failed',
-  invalidTaskId: 'Invalid task ID, please refresh and try again',
-  confirmDelete: 'Are you sure you want to delete the data quality task item with ID "{id}"?',
-  // Database type labels (used in data.js)
+  invalidTaskId: 'Invalid task ID, please refresh and retry',
+  confirmDelete: 'Are you sure you want to delete the quality task with ID "{id}"?',
+  // Database type labels
   flinkBatch: 'Flink Batch',
   flinkStream: 'Flink Stream',
   // Column visibility
   columnVisibility: {
     id: 'ID',
     taskName: 'Task Name',
-    belongCat: 'Belongs to Category',
+    belongCat: 'Belonging Category',
     description: 'Description',
     inspectionTargetCount: 'Inspection Target Count',
     inspectionRuleCount: 'Inspection Rule Count',
@@ -42,9 +42,9 @@ export default {
     createdBy: 'Created By',
     createdTime: 'Created Time',
     status: 'Status',
-    remark: 'Remark'
+    remark: 'Remarks'
   },
-  // Add/Add page - Step names
+  // Add page - Step names
   stepBasicInfo: 'Basic Info',
   stepTargetInfo: 'Inspection Target Info',
   stepRuleInfo: 'Inspection Rules',
@@ -67,17 +67,17 @@ export default {
   taskPriorityPlaceholder: 'Please select task priority',
   taskPriorityRequired: 'Please select task priority',
   workerGroup: 'Worker Group',
-  workerGroupPlaceholder: 'Please enter Worker group',
-  workerGroupRequired: 'Please enter Worker group',
-  retryCount: 'Failure Retry Count',
-  retryCountPlaceholder: 'Please enter failure retry count',
+  workerGroupPlaceholder: 'Please enter worker group',
+  workerGroupRequired: 'Please enter worker group',
+  retryCount: 'Retry Count on Failure',
+  retryCountPlaceholder: 'Please enter retry count',
   retryCountUnit: 'times',
-  delayTime: 'Delayed Execution Time',
-  delayTimePlaceholder: 'Please enter delayed execution time',
+  delayTime: 'Delay Execution Time',
+  delayTimePlaceholder: 'Please enter delay execution time',
   delayTimeUnit: 'min',
   // Add page - Inspection Target table
   targetName: 'Inspection Target Name',
-  datasourceName: 'Data Connection Name',
+  datasourceName: 'Datasource Name',
   schemaName: 'Schema Name',
   tableName: 'Table Name',
   // Add page - Rule Info
@@ -86,7 +86,7 @@ export default {
   ruleNamePlaceholder: 'Please enter rule name',
   qualityDimension: 'Quality Dimension',
   qualityDimensionPlaceholder: 'Please select quality dimension',
-  ruleTooltip: 'Inspection rules from the associated data elements of the asset will be automatically fetched',
+  ruleTooltip: 'Inspection rules from associated data elements will be automatically retrieved',
   getRules: 'Get Inspection Rules',
   evaluationName: 'Evaluation Name',
   evaluationField: 'Evaluation Field',
@@ -103,30 +103,30 @@ export default {
   low: 'Low',
   // Messages
   ruleParseFailed: 'Rule JSON parsing failed',
-  rulesAdded: 'Added {count} rules from table {tableName}',
+  rulesAdded: 'Appended {count} rules from table {tableName}',
   getRulesFailed: 'Failed to get rules: datasourceId={datasourceId}, tableName={tableName}',
   deleteFailed: 'Delete failed, field not found',
   validationFailed: 'Validation failed, please check required fields',
   targetNameDuplicate: 'Validation failed, inspection target name cannot be duplicated',
   evalNameDuplicate: 'Validation failed, evaluation name cannot be duplicated',
-  submitFailed: 'Submission failed!',
-  getTaskFailed: 'Failed to get quality task info, please try again later',
+  submitFailed: 'Submit failed!',
+  getTaskFailed: 'Failed to get quality task info, please retry later',
   // InspectionTarget component
   targetComponent: {
     targetName: 'Inspection Target Name',
     targetNamePlaceholder: 'Please enter inspection target name',
     sourceDbConnection: 'Source Database Connection',
     sourceDbPlaceholder: 'Please select source database connection',
-    datasourceType: 'Data Connection Type',
-    datasourceTypePlaceholder: 'Data Connection Type',
-    datasourceInstance: 'Data Connection Instance',
-    datasourceInstancePlaceholder: 'Data Connection Instance',
+    datasourceType: 'Datasource Type',
+    datasourceTypePlaceholder: 'Datasource Type',
+    datasourceInstance: 'Datasource Instance',
+    datasourceInstancePlaceholder: 'Datasource Instance',
     selectTable: 'Select Table',
     selectTablePlaceholder: 'Please select table',
     targetNameRequired: 'Please enter inspection target name',
     sourceDbRequired: 'Please select source database connection',
     tableRequired: 'Please select table',
-    getDatasourceFailed: 'Failed to get data source',
+    getDatasourceFailed: 'Failed to get datasource',
     editTitle: 'Edit Inspection Target',
     addTitle: 'Add Inspection Target',
     cronTitle: 'Cron Expression Generator',
@@ -148,7 +148,7 @@ export default {
   ruleBase: {
     ruleTypePlaceholder: 'Please enter rule type',
     qualityDimension: 'Quality Dimension',
-    developing: 'Under Development'
+    developing: 'In Development'
   },
   // RuleSelectorMenu component
   ruleSelectorMenu: {
@@ -186,13 +186,13 @@ export default {
     charLimit500: '500 characters',
     validationIncomplete: 'Validation failed, please complete required fields',
     sampleDataRequired: 'Validation failed, please add sample data',
-    monitorFailed: 'Monitoring failed',
+    monitorFailed: 'Monitor failed',
     addInspectionRule: 'Add Inspection Rule',
     addEvaluationRule: 'Add Evaluation Rule',
     inspectionRule: 'Inspection Rule',
     evaluationRule: 'Evaluation Rule',
-    inspectionRuleDetail: 'Inspection Rule Details',
-    evaluationRuleDetail: 'Evaluation Rule Details',
+    inspectionRuleDetail: 'Inspection Rule Detail',
+    evaluationRuleDetail: 'Evaluation Rule Detail',
     editInspectionRule: 'Edit Inspection Rule',
     editEvaluationRule: 'Edit Evaluation Rule'
   },
@@ -202,7 +202,7 @@ export default {
     problemData: 'Problem Data',
     normalData: 'Normal Data',
     result: 'Result',
-    fail: 'Failed',
-    pass: 'Passed'
+    fail: 'Fail',
+    pass: 'Pass'
   }
 }

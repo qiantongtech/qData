@@ -372,24 +372,24 @@ function handleDeleteColumnClick() {
     const { canDeleteCount, cannotDeleteCount, canDeleteIds } = res.data;
     store.loading = false;
     ElMessageBox.confirm(
-      `可删除${canDeleteCount}个，不可删除${cannotDeleteCount}个，是否删除可删部分`,
-      t("common.message.systemPrompt"),
+      td('meta.unreleased.structured.table.list.confirmBatchDelete').replace('{canDelete}', canDeleteCount).replace('{cannotDelete}', cannotDeleteCount),
+      td("common.message.systemPrompt"),
       {
-        confirmButtonText: t("common.button.confirm"),
-        cancelButtonText: t("common.button.cancel"),
+        confirmButtonText: td("common.button.confirm"),
+        cancelButtonText: td("common.button.cancel"),
         type: "warning",
       }
     )
       .then(() => {
         if (!canDeleteIds.length) {
-          ElMessage.success(t("common.message.deleteSuccess"));
+          ElMessage.success(td("common.message.deleteSuccess"));
           return;
         }
         return delTable(canDeleteIds.toString());
       })
       .then((res) => {
         if (!res) return;
-        ElMessage.success(t("common.message.deleteSuccess"));
+        ElMessage.success(td("common.message.deleteSuccess"));
         tableRef.value.getList();
       });
   });
@@ -398,11 +398,11 @@ function handleDeleteColumnClick() {
 // 删除
 function handleDeleteClick(row) {
   ElMessageBox.confirm(
-    `是否确认删除编号为${row.id}的数据项？`,
-    t("common.message.systemPrompt"),
+    td('meta.unreleased.structured.table.list.confirmDelete').replace('{id}', row.id),
+    td("common.message.systemPrompt"),
     {
-      confirmButtonText: t("common.button.confirm"),
-      cancelButtonText: t("common.button.cancel"),
+      confirmButtonText: td("common.button.confirm"),
+      cancelButtonText: td("common.button.cancel"),
       type: "warning",
     }
   )
@@ -410,7 +410,7 @@ function handleDeleteClick(row) {
       return delTable(row.id);
     })
     .then(() => {
-      ElMessage.success(t("common.message.deleteSuccess"));
+      ElMessage.success(td("common.message.deleteSuccess"));
       tableRef.value.getList();
     });
 }
@@ -429,14 +429,13 @@ function handleDetailClick(row, tab) {
 
 // 切换状态
 function handleStatusChange(row, status) {
+  const action = status == 1 ? td('meta.unreleased.structured.table.list.publish') : td('meta.unreleased.structured.table.list.unpublish');
   ElMessageBox.confirm(
-    `是否确认${status == 1 ? "发布" : "取消发布"}数据编号为${
-      row.id
-    }的表元数据吗？`,
-    t("common.message.systemPrompt"),
+    td('meta.unreleased.structured.table.list.confirmStatusChange').replace('{action}', action).replace('{id}', row.id),
+    td("common.message.systemPrompt"),
     {
-      confirmButtonText: t("common.button.confirm"),
-      cancelButtonText: t("common.button.cancel"),
+      confirmButtonText: td("common.button.confirm"),
+      cancelButtonText: td("common.button.cancel"),
       type: "warning",
     }
   )
@@ -448,7 +447,7 @@ function handleStatusChange(row, status) {
     })
     .then(() => {
       ElMessage.success(
-        `编号为${row.id}的表元数据${status == 1 ? "发布" : "取消发布"}成功!`
+        td('meta.unreleased.structured.table.list.statusChangeSuccess').replace('{id}', row.id).replace('{action}', action)
       );
       row.status = status;
     })

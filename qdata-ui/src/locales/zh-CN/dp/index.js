@@ -35,6 +35,37 @@ export default {
     confirmStatusChange: '确认要"{text}","{name}"数据元吗？',
     importTitle: '数据元导入',
     importTip: '是否更新已经存在的数据元数据',
+    importResult: '导入结果',
+    treeRootName: '数据元类目',
+    previewNotAvailable: '文件路径不存在，无法预览',
+    selectToDeleteWarning: '未选择要删除的数据元数据规则关联信息，请选择后重试',
+    // 代码字典
+    codeValue: '代码值',
+    codeValuePlaceholder: '请输入代码值',
+    codeValueRequired: '代码值不能为空',
+    codeValueDuplicate: '代码值已存在',
+    codeName: '代码名称',
+    codeNamePlaceholder: '请输入代码名称',
+    codeNameRequired: '代码名称不能为空',
+    addCodeTitle: '新增数据元代码',
+    editCodeTitle: '修改数据元代码',
+    confirmDeleteCode: '是否确认删除数据元代码编号为"{id}"的数据项？',
+    // 代码映射
+    originalValue: '原始值',
+    originalValuePlaceholder: '请输入原始值',
+    originalValueRequired: '原始值不能为空',
+    codeNameSelect: '请选择代码名',
+    addCodeMapTitle: '新增数据元代码映射',
+    editCodeMapTitle: '修改数据元代码映射',
+    confirmDeleteCodeMap: '是否确认删除数据元代码映射编号为"{id}"的数据项？',
+    // 资产关联
+    assetName: '资产名称',
+    dataTable: '数据表',
+    relatedField: '关联字段',
+    addAssetRelTitle: '新增数据元数据资产关联信息',
+    editAssetRelTitle: '修改数据元数据资产关联信息',
+    assetRelDetailTitle: '数据元数据资产关联信息详情',
+    confirmDeleteAsset: '是否确认删除数据元数据资产关联信息编号为"{id}"的数据项？',
     // 数据元详情
     detail: {
       cleanRule: '关联清洗规则',
@@ -58,6 +89,7 @@ export default {
   },
   model: {
     // 逻辑模型列表
+    treeRootName: '逻辑模型类目',
     treePlaceholder: '请输入分层/分域/主题名称',
     createTable: '创建表',
     modelInfo: '模型信息',
@@ -78,6 +110,8 @@ export default {
     enableText: '启用',
     disableText: '禁用',
     confirmStatusChange: '确认要"{text}","{name}"逻辑模型吗？',
+    logicMaterialization: '逻辑物化',
+    addFieldWarning2: '添加失败，基本信息填写完整后才能继续操作',
     deleteCount: '可删除{canDelete}个，不可删除{cannotDelete}个，是否删除可删部分？',
     modelNameRequired: '模型编码不能为空',
     modelCommentRequired: '模型名称不能为空',
@@ -212,6 +246,9 @@ export default {
   },
   document: {
     // 标准列表
+    treeRootName: '标准类目',
+    selectStandardCategory: '请输入标准类目',
+    previewNotAvailable: '文件路径不存在，无法预览',
     searchTitle: '标准搜索',
     standardName: '标准名称',
     standardNamePlaceholder: '请输入标准名称',

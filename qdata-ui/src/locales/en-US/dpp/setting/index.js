@@ -20,7 +20,10 @@ export default {
     editDataDevCat: 'Edit Data Development Category',
     dataDevCatDetail: 'Data Development Category Detail',
     nameRequired: 'Data development category name cannot be empty',
-    parentRequired: 'Parent category cannot be empty'
+    parentRequired: 'Parent category cannot be empty',
+    confirmChangeStatus: 'Are you sure to "{status}" the data development category "{name}"?',
+    confirmDelete: 'Are you sure to delete the data development category with ID "{id}"?',
+    dataDevCatImport: 'Data Development Category Import'
   },
   taskCat: {
     title: 'Data Integration Category',
@@ -42,7 +45,10 @@ export default {
     nameRequired: 'Data integration category name cannot be empty',
     parentRequired: 'Parent category cannot be empty',
     updateExistData: 'Update existing data integration category data',
-    downloadTemplate: 'Download Template'
+    downloadTemplate: 'Download Template',
+    confirmChangeStatus: 'Are you sure to "{status}" the data integration category "{name}"?',
+    confirmDelete: 'Are you sure to delete the data integration category with ID "{id}"?',
+    taskCatImport: 'Data Integration Category Import'
   },
   projectUserRel: {
     projectMember: 'Project Member',
@@ -89,6 +95,18 @@ export default {
     customDataScope: 'Custom Data Permission',
     deptDataScope: 'Department Data Permission',
     deptAndBelowDataScope: 'Department and Below Data Permission',
-    onlySelfDataScope: 'Only Self Data Permission'
+    onlySelfDataScope: 'Only Self Data Permission',
+    addMember: 'Add Project Member',
+    editMember: 'Edit Project Member',
+    memberDetail: 'Project Member Detail',
+    noUserSelected: 'No user selected, please select a user and retry',
+    confirmDelete: 'Are you sure to remove the data item with ID "{id}"?',
+    removeSuccess: 'Removed successfully',
+    memberImport: 'Project Member Import',
+    addRole: 'Add Role',
+    editRole: 'Edit Role',
+    assignDataScope: 'Assign Data Permission',
+    confirmDeleteRole: 'Are you sure to delete the role with ID "{id}"?',
+    confirmChangeRoleStatus: 'Are you sure to "{status}" the role "{name}"?'
   }
 }

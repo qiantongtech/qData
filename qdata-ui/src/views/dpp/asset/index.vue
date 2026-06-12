@@ -38,7 +38,7 @@
       <DeptTree
         :deptOptions="deptOptions"
         :leftWidth="leftWidth"
-        :placeholder="'请输入资产类目名称'"
+        :placeholder="td('dpp.asset.searchCategoryName')"
         ref="DeptTreeRef"
         @node-click="handleNodeClick"
       />
@@ -53,20 +53,20 @@
             v-show="showSearch"
             @submit.prevent
           >
-            <el-form-item label="资产名称" prop="name">
+            <el-form-item :label="td('dpp.asset.assetName')" prop="name">
               <el-input
                 style="width: 166px"
                 v-model="queryParams.name"
-                placeholder="请输入资产名称"
+                :placeholder="td('dpp.asset.inputAssetName')"
                 clearable
                 @keyup.enter="handleQuery"
               />
             </el-form-item>
-            <el-form-item label="发布状态" prop="status">
+            <el-form-item :label="td('dpp.asset.publishStatus')" prop="status">
               <el-select
                 style="width: 166px"
                 v-model="queryParams.status"
-                placeholder="请选择发布状态"
+                :placeholder="td('dpp.asset.selectPublishStatus')"
                 clearable
               >
                 <el-option
@@ -77,13 +77,13 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item label="所属主题" prop="themeIdList">
+            <el-form-item :label="td('dpp.asset.belongsToTheme')" prop="themeIdList">
               <el-select
                 style="width: 166px"
                 v-model="queryParams.themeIdList"
                 collapse-tags
                 multiple
-                placeholder="请选择主题名称"
+                :placeholder="td('dpp.asset.selectTheme')"
               >
                 <el-option
                   v-for="dict in themeList"
@@ -93,11 +93,11 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item label="资产类型" prop="status">
+            <el-form-item :label="td('dpp.asset.add.assetType')" prop="status">
               <el-select
                 style="width: 166px"
                 v-model="queryParams.type"
-                placeholder="请选择资产类型"
+                :placeholder="td('dpp.asset.selectAssetType')"
                 clearable
               >
                 <el-option
@@ -115,13 +115,13 @@
                 @click="handleQuery"
                 @mousedown="(e) => e.preventDefault()"
               >
-                <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
               </el-button>
               <el-button
                 @click="resetQuery"
                 @mousedown="(e) => e.preventDefault()"
               >
-                <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
               </el-button>
               <el-button
                 type="primary"
@@ -130,7 +130,7 @@
                 v-hasPermi="['da:asset:add']"
                 @mousedown="(e) => e.preventDefault()"
               >
-                <i class="iconfont-mini icon-xinzeng mr5"></i>新增
+                <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('common.button.add') }}
               </el-button>
             </div>
           </el-form>
@@ -163,10 +163,10 @@
                     >
                   </div>
                   <el-tag v-if="!unregistered(item)" style="margin-right: 10px">
-                    未注册
+                    {{ td('dpp.asset.unregistered') }}
                   </el-tag>
                   <el-tag :type="item.status == 2 ? 'success' : 'warning'">{{
-                    item.status == 2 ? "已发布" : "未发布"
+                    item.status == 2 ? td('dpp.asset.published') : td('dpp.asset.unpublished')
                   }}</el-tag>
                 </div>
                 <div
@@ -174,16 +174,16 @@
                   v-if="item.type == 1 && unregistered(item)"
                 >
                   <div class="li-tab">
-                    <span>{{ item.dataCount }}行</span>
+                    <span>{{ item.dataCount }}{{ td('dpp.asset.rows') }}</span>
                   </div>
                   <div class="li-bar"></div>
                   <div class="li-tab">
-                    <span>{{ item.fieldCount }}列</span>
+                    <span>{{ item.fieldCount }}{{ td('dpp.asset.cols') }}</span>
                   </div>
                   <div class="li-bar"></div>
                   <div class="li-tab">
                     <span>
-                      <overflow-tooltip text="93.33分" />
+                      <overflow-tooltip :text="'93.33' + td('dpp.asset.points')" />
                     </span>
                   </div>
                   <div class="li-bar" v-if="item.datasourceType"></div>
@@ -201,7 +201,7 @@
               <div class="item-con">
                 <div class="item-con-left">
                   <div class="item-form item-form1">
-                    <div class="form-label">表名称:</div>
+                    <div class="form-label">{{ td('dpp.asset.listTableName') }}:</div>
                     <div class="form-value" :title="item.tableName">
                       {{
                         item.tableName && item.tableName != -1
@@ -211,13 +211,13 @@
                     </div>
                   </div>
                   <div class="item-form item-form1">
-                    <div class="form-label">所属类目:</div>
+                    <div class="form-label">{{ td('dpp.asset.belongsToCategory') }}:</div>
                     <div class="form-value" :title="item.catName">
                       {{ item.catName }}
                     </div>
                   </div>
                   <div class="item-form item-form1">
-                    <div class="form-label">所属主题:</div>
+                    <div class="form-label">{{ td('dpp.asset.belongsToTheme') }}:</div>
                     <div
                       class="form-value"
                       :title="
@@ -238,7 +238,7 @@
                     </div>
                   </div>
                   <div class="item-form item-form1">
-                    <div class="form-label">创建时间:</div>
+                    <div class="form-label">{{ td('dpp.asset.createTime') }}:</div>
                     <div class="form-value" :title="item.createTime">
                       {{
                         parseTime(item.createTime, "{y}-{m}-{d} {h}:{i}") || "-"
@@ -246,7 +246,7 @@
                     </div>
                   </div>
                   <div class="item-form item-form">
-                    <div class="form-label">资产描述:</div>
+                    <div class="form-label">{{ td('dpp.asset.assetDescription') }}:</div>
                     <div class="form-value textarea" :title="item.description">
                       {{ item.description || "-" }}
                     </div>
@@ -260,7 +260,7 @@
                         @click="handleUpdate(item, 'register')"
                       >
                         <img src="@/assets/da/asset2/btn (2).svg" alt="" />
-                        <span>注册</span>
+                        <span>{{ td('dpp.asset.register') }}</span>
                       </div>
                       <div
                         class="form-btn"
@@ -268,7 +268,7 @@
                         @click="handleView(item)"
                       >
                         <img src="@/assets/da/asset2/btn (2).svg" alt="" />
-                        <span>详情</span>
+                        <span>{{ td('common.button.details') }}</span>
                       </div>
                       <div
                         class="form-btn"
@@ -290,13 +290,13 @@
                           alt=""
                         />
                         <span>{{
-                          item.status == 2 ? "撤销发布" : "发布"
+                          item.status == 2 ? td('dpp.asset.unpublish') : td('dpp.asset.publish')
                         }}</span>
                       </div>
                       <el-dropdown>
                         <div class="form-btn">
                           <img src="@/assets/da/asset2/btn (3).svg" alt="" />
-                          <span>更多</span>
+                          <span>{{ td('common.button.more') }}</span>
                         </div>
                         <template #dropdown>
                           <el-dropdown-menu>
@@ -305,7 +305,7 @@
                                 type="primary"
                                 @click="handleUpdate(item)"
                               >
-                                <el-icon> <Edit /> </el-icon>修改
+                                <el-icon> <Edit /> </el-icon>{{ td('common.button.update') }}
                               </el-text>
                             </el-dropdown-item>
                             <el-dropdown-item
@@ -315,7 +315,7 @@
                                 type="primary"
                                 @click="handleRefresh(item)"
                               >
-                                <el-icon> <Refresh /> </el-icon>更新数据
+                                <el-icon> <Refresh /> </el-icon>{{ td('dpp.asset.updateData') }}
                               </el-text>
                             </el-dropdown-item>
                             <el-dropdown-item
@@ -325,7 +325,7 @@
                                 type="primary"
                                 @click="handleApply(item)"
                               >
-                                <el-icon> <EditPen /> </el-icon>申请
+                                <el-icon> <EditPen /> </el-icon>{{ td('dpp.asset.apply') }}
                               </el-text>
                             </el-dropdown-item>
                             <el-dropdown-item
@@ -335,7 +335,7 @@
                                 type="danger"
                                 @click="handleDelete(item)"
                               >
-                                <el-icon> <Delete /> </el-icon>删除
+                                <el-icon> <Delete /> </el-icon>{{ td('common.button.delete') }}
                               </el-text>
                             </el-dropdown-item>
                           </el-dropdown-menu>
@@ -378,14 +378,14 @@
       <el-form ref="daAssetRef" :model="form" label-width="80px">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="资产名称" prop="name">
+            <el-form-item :label="td('dpp.asset.assetName')" prop="name">
               <div>
                 {{ form.name }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="类目编码" prop="catCode">
+            <el-form-item :label="td('dpp.asset.detailCategoryCode')" prop="catCode">
               <div>
                 {{ form.catCode }}
               </div>
@@ -394,14 +394,14 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="主题id" prop="themeId">
+            <el-form-item :label="td('dpp.asset.detailThemeId')" prop="themeId">
               <div>
                 {{ form.themeId }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="数据连接id" prop="datasourceId">
+            <el-form-item :label="td('dpp.asset.detailDatasourceId')" prop="datasourceId">
               <div>
                 {{ form.datasourceId }}
               </div>
@@ -410,14 +410,14 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="表名称" prop="tableName">
+            <el-form-item :label="td('dpp.asset.listTableName')" prop="tableName">
               <div>
                 {{ form.tableName }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="表描述" prop="tableComment">
+            <el-form-item :label="td('dpp.asset.detailTableComment')" prop="tableComment">
               <div>
                 {{ form.tableComment }}
               </div>
@@ -426,14 +426,14 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="数据量(条)" prop="dataCount">
+            <el-form-item :label="td('dpp.asset.detailDataCount')" prop="dataCount">
               <div>
                 {{ form.dataCount }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="字段量" prop="fieldCount">
+            <el-form-item :label="td('dpp.asset.detailFieldCount')" prop="fieldCount">
               <div>
                 {{ form.fieldCount }}
               </div>
@@ -442,14 +442,14 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="状态" prop="status">
+            <el-form-item :label="td('common.texts.status')" prop="status">
               <div>
                 {{ form.status }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="描述" prop="description">
+            <el-form-item :label="td('common.texts.description')" prop="description">
               <div>
                 {{ form.description }}
               </div>
@@ -458,7 +458,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="备注" prop="remark">
+            <el-form-item :label="td('common.texts.remark')" prop="remark">
               <div>
                 {{ form.remark }}
               </div>
@@ -468,7 +468,7 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="small" @click="cancel">关 闭</el-button>
+          <el-button size="small" @click="cancel">{{ td('common.button.close') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -509,15 +509,15 @@
               :underline="false"
               style="font-size: 12px; vertical-align: baseline"
               @click="importTemplate"
-              >下载模板</el-link
+              >{{ td('common.upload.downloadTemplate') }}</el-link
             >
           </div>
         </template>
       </el-upload>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="upload.open = false">取 消</el-button>
-          <el-button type="primary" @click="submitFileForm">确 定</el-button>
+          <el-button @click="upload.open = false">{{ td('common.button.cancel') }}</el-button>
+          <el-button type="primary" @click="submitFileForm">{{ td('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -548,43 +548,43 @@
       >
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="资产名称">
+            <el-form-item :label="td('dpp.asset.assetName')">
               <el-input v-model="formApply.name" disabled />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="英文名称">
+            <el-form-item :label="td('dpp.asset.applyEnglishName')">
               <el-input v-model="formApply.tableName" disabled />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="主题名称">
+            <el-form-item :label="td('dpp.asset.applyThemeName')">
               <el-input v-model="formApply.themeName" disabled />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="数据连接">
+            <el-form-item :label="td('dpp.asset.applyDatasource')">
               <el-input v-model="formApply.datasourceName" disabled />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="数据库地址">
+            <el-form-item :label="td('dpp.asset.applyDatabaseAddress')">
               <el-input v-model="formApply.datasourceIp" disabled />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="数据库类型">
+            <el-form-item :label="td('dpp.asset.applyDatabaseType')">
               <el-input v-model="formApply.datasourceType" disabled />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="资产描述">
+            <el-form-item :label="td('dpp.asset.applyAssetDescription')">
               <el-input
                 type="textarea"
                 v-model="formApply.description"
@@ -596,11 +596,11 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="申请项目" prop="projectCode">
+            <el-form-item :label="td('dpp.asset.applyProject')" prop="projectCode">
               <el-select
                 v-model="formApply.projectCode"
                 @change="handleSelectProject"
-                placeholder="请选择申请项目"
+                :placeholder="td('dpp.asset.selectApplyProject')"
               >
                 <el-option
                   v-for="item in projectOptions"
@@ -612,22 +612,22 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="联系电话" prop="phone">
+            <el-form-item :label="td('dpp.asset.applyContactPhone')" prop="phone">
               <el-input
                 v-model="formApply.phone"
-                placeholder="请输入联系电话"
+                :placeholder="td('dpp.asset.inputContactPhone')"
               />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="申请事由" prop="applyReason">
+            <el-form-item :label="td('dpp.asset.applyReason')" prop="applyReason">
               <el-input
                 type="textarea"
                 v-model="formApply.applyReason"
                 :rows="3"
-                placeholder="请输入申请事由"
+                :placeholder="td('dpp.asset.inputApplyReason')"
               />
             </el-form-item>
           </el-col>
@@ -635,8 +635,8 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="openApply = false">取 消</el-button>
-          <el-button type="primary" @click="submitApplyForm">确 定</el-button>
+          <el-button @click="openApply = false">{{ td('common.button.cancel') }}</el-button>
+          <el-button type="primary" @click="submitApplyForm">{{ td('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -683,16 +683,16 @@ const unregistered = (item) => {
 };
 // 列显隐信息
 const columns = ref([
-  { key: 0, label: "编号", visible: true },
-  { key: 1, label: "资产名称", visible: true },
-  { key: 2, label: "资产描述", visible: true },
-  { key: 3, label: "资产类目", visible: true },
-  { key: 9, label: "资产类型", visible: true },
-  { key: 4, label: "主题名称", visible: true },
-  { key: 5, label: "数据量(条)", visible: true },
-  { key: 6, label: "状态", visible: true },
-  { key: 7, label: "创建时间", visible: true },
-  { key: 8, label: "更新时间", visible: true },
+  { key: 0, label: td('common.texts.number'), visible: true },
+  { key: 1, label: td('dpp.asset.assetName'), visible: true },
+  { key: 2, label: td('dpp.asset.assetDescription'), visible: true },
+  { key: 3, label: td('dpp.asset.belongsToCategory'), visible: true },
+  { key: 9, label: td('dpp.asset.add.assetType'), visible: true },
+  { key: 4, label: td('dpp.asset.applyThemeName'), visible: true },
+  { key: 5, label: td('dpp.asset.detailDataCount'), visible: true },
+  { key: 6, label: td('common.texts.status'), visible: true },
+  { key: 7, label: td('dpp.asset.createTime'), visible: true },
+  { key: 8, label: td('common.texts.updatedTime'), visible: true },
 ]);
 let themeList = ref([]);
 async function getAssetThemeList() {
@@ -780,11 +780,11 @@ const upload = reactive({
 const options = [
   {
     value: 0,
-    label: "申请资产",
+    label: td('dpp.asset.applyAsset'),
   },
   {
     value: 1,
-    label: "创建资产",
+    label: td('dpp.asset.createAsset'),
   },
 ];
 const data = reactive({
@@ -815,19 +815,19 @@ const data = reactive({
     },
   },
   rules: {
-    name: [{ required: true, message: "资产名称不能为空", trigger: "blur" }],
-    catCode: [{ required: true, message: "类目编码不能为空", trigger: "blur" }],
-    themeId: [{ required: true, message: "主题id不能为空", trigger: "blur" }],
+    name: [{ required: true, message: td('dpp.asset.assetNameRequired'), trigger: "blur" }],
+    catCode: [{ required: true, message: td('dpp.asset.catCodeRequired'), trigger: "blur" }],
+    themeId: [{ required: true, message: td('dpp.asset.themeIdRequired'), trigger: "blur" }],
     datasourceId: [
-      { required: true, message: "数据连接id不能为空", trigger: "blur" },
+      { required: true, message: td('dpp.asset.datasourceIdRequired'), trigger: "blur" },
     ],
-    tableName: [{ required: true, message: "表名称不能为空", trigger: "blur" }],
+    tableName: [{ required: true, message: td('dpp.asset.tableNameRequired'), trigger: "blur" }],
   },
   rulesApply: {
     projectCode: [
-      { required: true, message: "申请项目不能为空", trigger: "change" },
+      { required: true, message: td('dpp.asset.applyProjectRequired'), trigger: "change" },
     ],
-    phone: [{ required: true, message: "联系电话不能为空", trigger: "blur" }],
+    phone: [{ required: true, message: td('dpp.asset.phoneRequired'), trigger: "blur" }],
   },
 });
 
@@ -851,7 +851,7 @@ function submitApplyForm() {
       formApply.value.validFlag = null;
       formApply.value.delFlag = null;
       addDaAssetApply(formApply.value).then((response) => {
-        proxy.$modal.msgSuccess("申请成功");
+        proxy.$modal.msgSuccess(td('dpp.asset.applySuccess'));
         openApply.value = false;
         getList();
       });
@@ -864,7 +864,7 @@ function handleApply(row) {
   getDaAsset(_id).then((response) => {
     formApply.value = response.data;
     openApply.value = true;
-    titleApply.value = "申请数据资产";
+    titleApply.value = td('dpp.asset.applyDataAsset');
     formApply.value.phone = userStore.phonenumber;
     formApply.value.assetId = _id;
     formApply.value.assetName = response.data.name;
@@ -1002,14 +1002,14 @@ function getAssetCat() {
     deptOptions.value = [
       {
         label: "",
-        name: "我的申请",
+        name: td('dpp.asset.myApplications'),
         value: "",
         id: "wdsq",
         children: [],
       },
       {
         label: "",
-        name: "资产类目",
+        name: td('dpp.asset.assetCategory'),
         value: "",
         id: 0,
         children: deptOptions.value,
@@ -1022,7 +1022,7 @@ function handleAdd() {
   isRegister.value = false;
   reset();
   open.value = true;
-  title.value = "新增数据资产";
+  title.value = td('dpp.asset.addDataAsset');
 }
 
 /** 修改按钮操作 */
@@ -1042,7 +1042,7 @@ function handleUpdate(row, register) {
     }
     form.value = response.data;
     open.value = true;
-    title.value = "修改数据资产";
+    title.value = td('dpp.asset.editDataAsset');
     loading.value = false;
   });
 }
@@ -1051,19 +1051,19 @@ function handleDelete(row) {
   // proxy.$message.error("功能开发中....");
   const _ids = row.id || ids.value;
   proxy.$modal
-    .confirm('是否确认删除数据资产编号为"' + _ids + '"的数据项？')
+    .confirm(td('dpp.asset.confirmDeleteAsset') + _ids + td('dpp.asset.confirmDeleteAssetEnd'))
     .then(function () {
       return delDaAsset(_ids);
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
     })
     .catch(() => {});
 }
 function handleView(row) {
   if (!unregistered(row)) {
-    return proxy.$modal.msgWarning("该资产暂未注册，请注册后重试");
+    return proxy.$modal.msgWarning(td('dpp.asset.unregisteredWarning'));
   }
   console.log("直接跳转数据资产的详情页面");
   routeTo("/dpp/asset/detail", row);
@@ -1080,23 +1080,23 @@ function handleDetail(row) {
   getDaAsset(_id).then((response) => {
     form.value = response.data;
     openDetail.value = true;
-    title.value = "数据资产详情";
+    title.value = td('dpp.asset.dataAssetDetail');
   });
 }
 const titleBtns = [
   {
     id: 2,
-    name: "API",
+    name: td('dpp.asset.assetTypeAPI'),
     icon: "da-api",
   },
   {
     id: 1,
-    name: "库表",
+    name: td('dpp.asset.assetTypeTable'),
     icon: "da-database",
   },
   {
     id: 7,
-    name: "文件",
+    name: td('dpp.asset.assetTypeFile'),
     icon: "da-document",
   },
 ];
@@ -1106,10 +1106,10 @@ function handleRefresh(row) {
   startDaDiscoveryTask({ id: _id })
     .then((res) => {
       if (res.code == 200) {
-        proxy.$modal.msgSuccess("更新成功");
+        proxy.$modal.msgSuccess(td('dpp.asset.updateSuccess'));
         getList();
       } else {
-        proxy.$modal.msgWarning("更新失败，请联系管理员");
+        proxy.$modal.msgWarning(td('dpp.asset.updateFailed'));
       }
     })
     .finally(() => {
@@ -1130,7 +1130,7 @@ function handleExport() {
 /** ---------------- 导入相关操作 -----------------**/
 /** 导入按钮操作 */
 function handleImport() {
-  upload.title = "数据资产导入";
+  upload.title = td('dpp.asset.dataAssetImport');
   upload.open = true;
 }
 
@@ -1172,7 +1172,7 @@ const handleFileSuccess = (response, file, fileList) => {
     "<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +
       response.msg +
       "</div>",
-    "导入结果",
+    td('dpp.asset.importResult'),
     { dangerouslyUseHTMLString: true }
   );
   getList();
@@ -1200,14 +1200,14 @@ function routeTo(link, row) {
 
 /** 启用禁用开关 */
 function handleStatusChange(row) {
-  const text = row.status === "2" ? "撤销发布" : "发布";
+  const text = row.status === "2" ? td('dpp.asset.unpublish') : td('dpp.asset.publish');
   const status = row.status === "2" ? "1" : "2";
   proxy.$modal
-    .confirm("确认要" + text + '"' + row.name + '"资产吗？')
+    .confirm(td('dpp.asset.confirmPublish') + text + '"' + row.name + '"' + td('dpp.asset.confirmPublishEnd'))
     .then(function () {
       updateDaAsset({ id: row.id, status: status }).then((res) => {
         if (res.code == 200) {
-          proxy.$modal.msgSuccess(text + "成功");
+          proxy.$modal.msgSuccess(text + td('dpp.asset.publishSuccess'));
           getList();
         }
       });

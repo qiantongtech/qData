@@ -36,7 +36,7 @@
       <DeptTree
         :deptOptions="deptOptions"
         :leftWidth="leftWidth"
-        :placeholder="'请输入标准类目'"
+        :placeholder="td('dp.document.selectStandardCategory')"
         @node-click="handleNodeClick"
       />
 
@@ -51,29 +51,29 @@
             v-show="showSearch"
             @submit.prevent
           >
-            <el-form-item label="标准号" prop="code">
+            <el-form-item :label="td('dp.document.standardCode')" prop="code">
               <el-input
                 class="el-form-input-width"
                 v-model="queryParams.code"
-                placeholder="请输入标准号"
+                :placeholder="td('dp.document.standardCodePlaceholder')"
                 clearable
                 @keyup.enter="handleQuery"
               />
             </el-form-item>
-            <el-form-item label="标准名称" prop="name">
+            <el-form-item :label="td('dp.document.standardName')" prop="name">
               <el-input
                 class="el-form-input-width"
                 v-model="queryParams.name"
-                placeholder="请输入标准名称"
+                :placeholder="td('dp.document.standardNamePlaceholder')"
                 clearable
                 @keyup.enter="handleQuery"
               />
             </el-form-item>
-            <el-form-item label="标准状态" prop="status">
+            <el-form-item :label="td('dp.document.standardStatus')" prop="status">
               <el-select
                 class="el-form-input-width"
                 v-model="queryParams.status"
-                placeholder="请选择标准状态"
+                :placeholder="td('dp.document.standardStatusPlaceholder')"
               >
                 <el-option
                   v-for="dict in dp_document_status"
@@ -90,13 +90,13 @@
                 @click="handleQuery"
                 @mousedown="(e) => e.preventDefault()"
               >
-                <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('dp.common.query') }}
               </el-button>
               <el-button
                 @click="resetQuery"
                 @mousedown="(e) => e.preventDefault()"
               >
-                <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('dp.common.reset') }}
               </el-button>
             </el-form-item>
           </el-form>
@@ -111,7 +111,7 @@
                   @click="handleAdd"
                   @mousedown="(e) => e.preventDefault()"
                 >
-                  <i class="iconfont-mini icon-xinzeng mr5"></i>新增
+                  <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('dp.common.add') }}
                 </el-button>
               </el-col>
             </el-row>
@@ -133,7 +133,7 @@
           >
             <el-table-column
               v-if="getColumnVisibility(0)"
-              label="编号"
+              :label="td('common.texts.number')"
               align="left"
               prop="id"
               width="60"
@@ -141,7 +141,7 @@
             />
             <el-table-column
               v-if="getColumnVisibility(1)"
-              label="标准号"
+              :label="td('dp.document.standardCode')"
               :show-overflow-tooltip="{ effect: 'light' }"
               align="left"
               prop="code"
@@ -152,7 +152,7 @@
             </el-table-column>
             <el-table-column
               v-if="getColumnVisibility(2)"
-              label="标准名称"
+              :label="td('dp.document.standardName')"
               :show-overflow-tooltip="{ effect: 'light' }"
               align="left"
               prop="name"
@@ -165,7 +165,7 @@
             <el-table-column
               v-if="getColumnVisibility(7)"
               width="240"
-              label="描述"
+              :label="td('common.texts.description')"
               align="left"
               prop="description"
               :show-overflow-tooltip="{ effect: 'light' }"
@@ -176,7 +176,7 @@
             </el-table-column>
             <el-table-column
               v-if="getColumnVisibility(4)"
-              label="标准类目"
+              :label="td('dp.document.standardCategory')"
               :show-overflow-tooltip="{ effect: 'light' }"
               align="left"
               prop="catCode"
@@ -187,7 +187,7 @@
             </el-table-column>
             <el-table-column
               v-if="getColumnVisibility(10)"
-              label="创建人"
+              :label="td('common.texts.createdBy')"
               :show-overflow-tooltip="{ effect: 'light' }"
               align="left"
               prop="createBy"
@@ -199,7 +199,7 @@
             <!--  sortable="custom" column-key="create_time" :sort-orders="['descending', 'ascending']" -->
             <el-table-column
               v-if="getColumnVisibility(11)"
-              label="创建时间"
+              :label="td('common.texts.createdTime')"
               align="left"
               prop="createTime"
               width="150"
@@ -213,7 +213,7 @@
             </el-table-column>
             <el-table-column
               v-if="getColumnVisibility(3)"
-              label="标准状态"
+              :label="td('dp.document.standardStatus')"
               align="left"
               prop="status"
             >
@@ -225,7 +225,7 @@
               </template>
             </el-table-column>
             <el-table-column
-              label="备注"
+              :label="td('common.texts.remark')"
               align="left"
               prop="remark"
               :show-overflow-tooltip="{ effect: 'light' }"
@@ -236,7 +236,7 @@
               </template>
             </el-table-column>
             <el-table-column
-              label="操作"
+              :label="td('common.texts.operation')"
               align="center"
               class-name="small-padding fixed-width"
               fixed="right"
@@ -248,19 +248,19 @@
                   type="primary"
                   icon="Edit"
                   @click="handleUpdate(scope.row)"
-                  >修改
+                  >{{ td('dp.common.edit') }}
                 </el-button>
                 <el-button
                   link
                   type="primary"
                   icon="view"
                   @click="handleDetail(scope.row)"
-                  >详情
+                  >{{ td('dp.common.details') }}
                 </el-button>
                 <el-popover placement="bottom" :width="150" trigger="click">
                   <template #reference>
                     <el-button link type="primary" icon="ArrowDown"
-                      >更多</el-button
+                      >{{ td('dp.document.more') }}</el-button
                     >
                   </template>
                   <div style="width: 100px" class="butgdlist">
@@ -271,7 +271,7 @@
                       icon="View"
                       @click="handleFilePreview(scope.row.fileUrl)"
                       :disabled="!scope.row.fileUrl"
-                      >预览</el-button
+                      >{{ td('dp.document.previewBtn') }}</el-button
                     >
                     <el-button
                       link
@@ -279,7 +279,7 @@
                       icon="Download"
                       :disabled="!scope.row.fileUrl"
                       @click="handleDownload(scope.row)"
-                      >下载</el-button
+                      >{{ td('dp.document.downloadBtn') }}</el-button
                     >
 
                     <el-button
@@ -287,7 +287,7 @@
                       type="danger"
                       icon="Delete"
                       @click="handleDelete(scope.row)"
-                      >删除
+                      >{{ td('dp.common.delete') }}
                     </el-button>
                   </div>
                 </el-popover>
@@ -344,10 +344,6 @@ const deptOptions = ref(undefined);
 const leftWidth = ref(300); // 初始左侧宽度
 const isResizing = ref(false); // 判断是否正在拖拽
 let startX = 0; // 鼠标按下时的初始位置// 初始左侧宽度
-/** 类型字典翻译 */
-// function typeFormat(row) {
-//   return proxy.selectDictLabel(dp_document_status.value, row.type);
-// }
 
 const dpDataElemList = ref([]);
 const dpDataElemRuleRelList = ref([]);
@@ -422,27 +418,27 @@ const data = reactive({
     type: 3,
   },
   rules: {
-    code: [{ required: true, message: "中文不能为空", trigger: "blur" }],
+    code: [{ required: true, message: td('dp.document.standardCodeRequired'), trigger: "blur" }],
     name: [
-      { required: true, message: "英文不能为空", trigger: "blur" },
+      { required: true, message: td('dp.document.standardNameRequired'), trigger: "blur" },
       {
         pattern: /^[a-zA-Z_]+$/,
-        message: "只能包含英文字母和下划线",
+        message: td('dp.document.standardNamePattern'),
         trigger: "blur",
       },
     ],
-    catCode: [{ required: true, message: "类目编码不能为空", trigger: "blur" }],
-    status: [{ required: true, message: "状态不能为空", trigger: "change" }],
-    type: [{ required: true, message: "类型不能为空", trigger: "change" }],
+    catCode: [{ required: true, message: td('dp.document.standardCategoryRequired'), trigger: "blur" }],
+    status: [{ required: true, message: td('dp.document.standardStatusRequired'), trigger: "change" }],
+    type: [{ required: true, message: td('dp.document.typeRequired'), trigger: "change" }],
     columnType: [
-      { required: true, message: "字段类型不能为空", trigger: "change" },
+      { required: true, message: td('dp.document.columnTypeRequired'), trigger: "change" },
     ],
   },
 });
 
 const { queryParams, form, rules } = toRefs(data);
 const managerOptions = ref([]);
-/** 查询国家标准列表 */
+/** 查询地方标准列表 */
 function getList() {
   loading.value = true;
   listDpDocument(queryParams.value).then((response) => {
@@ -556,7 +552,7 @@ function getDeptTree() {
     deptOptions.value = proxy.handleTree(response.data, "id", "parentId");
     deptOptions.value = [
       {
-        name: "标准类目",
+        name: td('dp.document.treeRootName'),
         value: "",
         id: 0,
         children: deptOptions.value,
@@ -576,13 +572,6 @@ function handleAdd() {
 
 /** 修改按钮操作 */
 function handleUpdate(row) {
-  // const _id = row.id || ids.value;
-  // getDpDocument(_id).then((response) => {
-  //     form.value = response.data;
-  //     dpDataElemRuleRelList.value = response.data.dpDataElemRuleRelList;
-  //     open.value = true;
-  //     title.value = "修改国家标准";
-  // });
   standardModalRef.value.openModal(
     row,
     deptOptions.value,
@@ -603,7 +592,7 @@ function submitForm() {
       if (form.value.id != null) {
         updateDpDocument(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("修改成功");
+            proxy.$modal.msgSuccess(td('common.message.editSuccess'));
             open.value = false;
             getList();
           })
@@ -611,7 +600,7 @@ function submitForm() {
       } else {
         addDpDocument(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("新增成功");
+            proxy.$modal.msgSuccess(td('common.message.addSuccess'));
             open.value = false;
             getList();
           })
@@ -625,13 +614,13 @@ function submitForm() {
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
-    .confirm('是否确认删除国家标准编号为"' + _ids + '"的数据项？')
+    .confirm(td('dp.document.confirmDelete').replace('{id}', _ids))
     .then(function () {
       return delDpDocument(_ids);
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
     })
     .catch(() => {});
 }
@@ -654,9 +643,7 @@ function handleaddDpDocumentRuleRel() {
 /** 国家标准数据规则关联信息删除按钮操作 */
 function handleDeleteDpDataElemRuleRel() {
   if (checkedDpDataElemRuleRel.value.length == 0) {
-    proxy.$modal.msgWarning(
-      "未选择要删除的国家标准数据规则关联信息，请选择后重试"
-    );
+    proxy.$modal.msgWarning(td('dp.document.selectToDeleteWarning'));
   } else {
     const dpDataElemRuleRels = dpDataElemRuleRelList.value;
     const checkedDpDataElemRuleRels = checkedDpDataElemRuleRel.value;
@@ -685,7 +672,7 @@ function handleExport() {
 /** ---------------- 导入相关操作 -----------------**/
 /** 导入按钮操作 */
 function handleImport() {
-  upload.title = "国家标准导入";
+  upload.title = td('dp.document.importTitle');
   upload.open = true;
 }
 
@@ -717,7 +704,7 @@ const handleFileSuccess = (response, file, fileList) => {
     "<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +
       response.msg +
       "</div>",
-    "导入结果",
+    td('dp.document.importResult'),
     { dangerouslyUseHTMLString: true }
   );
   getList();
@@ -725,32 +712,18 @@ const handleFileSuccess = (response, file, fileList) => {
 
 /** 启用禁用开关 */
 function handleStatusChange(id, row, e) {
-  const text = e === "1" ? "启用" : "禁用";
+  const text = e === "1" ? td('dp.document.enableText') : td('dp.document.disableText');
   proxy.$modal
-    .confirm('确认要"' + text + '","' + row.name + '"国家标准吗？')
+    .confirm(td('dp.document.confirmStatusChange').replace('{text}', text).replace('{name}', row.name))
     .then(function () {
       updateStatusDpDataElem(id, row.status).then((response) => {
-        proxy.$modal.msgSuccess("操作成功");
+        proxy.$modal.msgSuccess(td('common.message.operationSuccess'));
       });
     })
     .catch(function () {
       row.status = row.status === "1" ? "0" : "1";
     });
 }
-// function handleStatusChange(row) {
-//   let text = row.status === "0" ? "启用" : "停用";
-//   proxy.$modal
-//     .confirm('确认要"' + text + '""' + row.roleName + '"角色吗?')
-//     .then(function () {
-//       return changeRoleStatus(row.roleId, row.status);
-//     })
-//     .then(() => {
-//       proxy.$modal.msgSuccess(text + "成功");
-//     })
-//     .catch(function () {
-//       row.status = row.status === "0" ? "1" : "0";
-//     });
-// }
 /** ---------------------------------**/
 
 function routeTo(link, row) {

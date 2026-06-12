@@ -210,7 +210,7 @@
             :placeholder="td('common.form.descriptionPlaceholder')"
             :min-height="192"
             show-word-limit
-            maxlength="500个字符"
+            :maxlength="500"
           />
         </el-form-item>
         <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full">
@@ -220,7 +220,7 @@
             :placeholder="td('common.form.remarkPlaceholder')"
             :min-height="192"
             show-word-limit
-            maxlength="500个字符"
+            :maxlength="500"
           />
         </el-form-item>
       </el-form>

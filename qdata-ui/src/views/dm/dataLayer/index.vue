@@ -188,7 +188,7 @@
                 :placeholder="td('common.form.descriptionPlaceholder', '请输入描述')"
                 :min-height="192"
                 show-word-limit
-                maxlength="500个字符"
+                maxlength="500"
               />
             </el-form-item>
           </el-col>

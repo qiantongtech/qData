@@ -38,12 +38,12 @@
         <div class="pagecont-top" v-show="showSearch">
             <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="75px"
                 v-show="showSearch" @submit.prevent>
-                <el-form-item label="级别名称" prop="sensitiveLevel">
-                    <el-input class="el-form-input-width" v-model="queryParams.sensitiveLevel" placeholder="请输入敏感级别名称"
+                <el-form-item :label="td('da.security.levelName')" prop="sensitiveLevel">
+                    <el-input class="el-form-input-width" v-model="queryParams.sensitiveLevel" :placeholder="td('da.security.levelNamePlaceholder')"
                         clearable @keyup.enter="handleQuery" />
                 </el-form-item>
-                <el-form-item label="替换规则" prop="sensitiveRule">
-                    <el-select class="el-form-input-width" v-model="queryParams.sensitiveRule" placeholder="请选择替换规则"
+                <el-form-item :label="td('da.security.replaceRule')" prop="sensitiveRule">
+                    <el-select class="el-form-input-width" v-model="queryParams.sensitiveRule" :placeholder="td('da.security.replaceRulePlaceholder')"
                         clearable>
                         <el-option v-for="dict in da_sensitive_level_rule" :key="dict.value" :label="dict.label"
                             :value="dict.value" />
@@ -52,10 +52,10 @@
 
                 <el-form-item>
                     <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                        <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                        <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
                     </el-button>
                     <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-                        <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                        <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
                     </el-button>
                 </el-form-item>
             </el-form>
@@ -67,7 +67,7 @@
                     <el-col :span="1.5">
                         <el-button type="primary" plain @click="handleAdd" v-hasPermi="['da:sensitiveLevel:add']"
                             @mousedown="(e) => e.preventDefault()">
-                            <i class="iconfont-mini icon-xinzeng mr5"></i>新增
+                            <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('common.button.add') }}
                         </el-button>
                     </el-col>
                 </el-row>
@@ -79,39 +79,39 @@
             <el-table stripe v-loading="loading" :data="daSensitiveLevelList" @selection-change="handleSelectionChange"
                 :default-sort="defaultSort" @sort-change="handleSortChange">
                 <!--       <el-table-column type="selection" width="55" align="center" />-->
-                <el-table-column v-if="getColumnVisibility(1)" label="编号" align="center" prop="id" width="80">
+                <el-table-column v-if="getColumnVisibility(1)" :label="td('da.security.columnVisibility.id')" align="center" prop="id" width="80">
                     <template #default="scope">
                         {{ scope.row.id || '-' }}
                     </template>
                 </el-table-column>
-                <el-table-column v-if="getColumnVisibility(2)" label="敏感级别名称" align="center" prop="sensitiveLevel">
+                <el-table-column v-if="getColumnVisibility(2)" :label="td('da.security.columnVisibility.sensitiveLevelName')" align="center" prop="sensitiveLevel">
                     <template #default="scope">
                         {{ scope.row.sensitiveLevel || '-' }}
                     </template>
                 </el-table-column>
-                <el-table-column v-if="getColumnVisibility(3)" width="350" label="描述" align="left" prop="description">
+                <el-table-column v-if="getColumnVisibility(3)" width="350" :label="td('da.security.columnVisibility.description')" align="left" prop="description">
                     <template #default="scope">
                         {{ scope.row.description || '-' }}
                     </template>
                 </el-table-column>
-                <el-table-column v-if="getColumnVisibility(4)" label="替换规则" align="center" prop="sensitiveRule">
+                <el-table-column v-if="getColumnVisibility(4)" :label="td('da.security.columnVisibility.replaceRule')" align="center" prop="sensitiveRule">
                     <template #default="scope">
                         <dict-tag :options="da_sensitive_level_rule" :value="scope.row.sensitiveRule" />
                     </template>
                 </el-table-column>
-                <el-table-column v-if="getColumnVisibility(5)" label="替换内容" align="center" prop="maskCharacter">
+                <el-table-column v-if="getColumnVisibility(5)" :label="td('da.security.columnVisibility.replaceContent')" align="center" prop="maskCharacter">
                     <template #default="scope">
                         {{ scope.row.maskCharacter || '-' }}
                     </template>
                 </el-table-column>
 
-                <el-table-column v-if="getColumnVisibility(6)" label="创建人" width="120" align="center" prop="createBy"
+                <el-table-column v-if="getColumnVisibility(6)" :label="td('da.security.columnVisibility.createdBy')" width="120" align="center" prop="createBy"
                     :show-overflow-tooltip="{ effect: 'light' }">
                     <template #default="scope">
                         {{ scope.row.createBy || '-' }}
                     </template>
                 </el-table-column>
-                <el-table-column v-if="getColumnVisibility(7)" label="创建时间" align="center" prop="createTime" width="160"
+                <el-table-column v-if="getColumnVisibility(7)" :label="td('da.security.columnVisibility.createdTime')" align="center" prop="createTime" width="160"
                     sortable="custom" column-key="create_time" :sort-orders="['descending', 'ascending']">
                     <template #default="scope">
                         <span>{{
@@ -119,26 +119,26 @@
                             }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column v-if="getColumnVisibility(8)" label="在线状态" align="center" prop="onlineFlag"
+                <el-table-column v-if="getColumnVisibility(8)" :label="td('da.security.columnVisibility.onlineStatus')" align="center" prop="onlineFlag"
                     width="100">
                     <template #default="scope">
                         <el-switch v-model="scope.row.onlineFlag" active-color="#13ce66" inactive-color="#ff4949"
                             active-value="1" inactive-value="0" @change="handleStatusChange(scope.row)" />
                     </template>
                 </el-table-column>
-                <el-table-column v-if="getColumnVisibility(9)" label="备注" align="left" prop="remark"
+                <el-table-column v-if="getColumnVisibility(9)" :label="td('da.security.columnVisibility.remark')" align="left" prop="remark"
                     :show-overflow-tooltip="{ effect: 'light' }">
                     <template #default="scope">
                         {{ scope.row.remark || '-' }}
                     </template>
                 </el-table-column>
-                <el-table-column v-if="getColumnVisibility(10)" label="操作" align="center"
+                <el-table-column v-if="getColumnVisibility(10)" :label="td('common.texts.operation')" align="center"
                     class-name="small-padding fixed-width" fixed="right" width="240">
                     <template #default="scope">
                         <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-                            v-hasPermi="['da:sensitiveLevel:edit']">修改</el-button>
+                            v-hasPermi="['da:sensitiveLevel:edit']">{{ td('common.button.update') }}</el-button>
                         <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
-                            v-hasPermi="['da:sensitiveLevel:remove']">删除</el-button>
+                            v-hasPermi="['da:sensitiveLevel:remove']">{{ td('common.button.delete') }}</el-button>
                         <!--           <el-button link type="primary" icon="view" @click="handleDetail(scope.row)"-->
                         <!--                      v-hasPermi="['da:sensitiveLevel:edit']">详情</el-button>-->
                         <!--           <el-button link type="primary" icon="view" @click="routeTo('/da/sensitiveLevel/daSensitiveLevelDetail',scope.row)"-->
@@ -168,13 +168,13 @@
             <el-form ref="daSensitiveLevelRef" :model="form" :rules="rules" label-width="100px" @submit.prevent>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item label="级别名称" prop="sensitiveLevel">
-                            <el-input v-model="form.sensitiveLevel" placeholder="请输入敏感级别名称" />
+                        <el-form-item :label="td('da.security.levelName')" prop="sensitiveLevel">
+                            <el-input v-model="form.sensitiveLevel" :placeholder="td('da.security.levelNamePlaceholder')" />
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="替换规则" prop="sensitiveRule">
-                            <el-select v-model="form.sensitiveRule" placeholder="请选择替换规则">
+                        <el-form-item :label="td('da.security.replaceRule')" prop="sensitiveRule">
+                            <el-select v-model="form.sensitiveRule" :placeholder="td('da.security.replaceRulePlaceholder')">
                                 <el-option v-for="dict in da_sensitive_level_rule" :key="dict.value" :label="dict.label"
                                     :value="dict.value" />
                             </el-select>
@@ -183,33 +183,33 @@
                 </el-row>
                 <el-row :gutter="20" v-if="form.sensitiveRule != '1' && form.sensitiveRule != null">
                     <el-col :span="12">
-                        <el-form-item label="起始字符位置" prop="startCharLoc">
-                            <el-input v-model="form.startCharLoc" placeholder="请输入起始字符位置" />
+                        <el-form-item :label="td('da.security.startCharPos')" prop="startCharLoc">
+                            <el-input v-model="form.startCharLoc" :placeholder="td('da.security.startCharPosPlaceholder')" />
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="截止字符位置" prop="endCharLoc">
-                            <el-input v-model="form.endCharLoc" placeholder="请输入截止字符位置" />
+                        <el-form-item :label="td('da.security.endCharPos')" prop="endCharLoc">
+                            <el-input v-model="form.endCharLoc" :placeholder="td('da.security.endCharPosPlaceholder')" />
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="24">
-                        <el-form-item label="替换内容" prop="maskCharacter">
-                            <el-input v-model="form.maskCharacter" placeholder="请输入替换内容" />
+                        <el-form-item :label="td('da.security.replaceContent')" prop="maskCharacter">
+                            <el-input v-model="form.maskCharacter" :placeholder="td('da.security.replaceContentPlaceholder')" />
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="24">
-                        <el-form-item label="描述" prop="description">
-                            <el-input v-model="form.description" type="textarea" placeholder="请输入描述" />
+                        <el-form-item :label="td('da.security.description')" prop="description">
+                            <el-input v-model="form.description" type="textarea" :placeholder="td('da.security.descriptionPlaceholder')" />
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item label="在线状态" prop="onlineFlag">
+                        <el-form-item :label="td('da.security.onlineStatus')" prop="onlineFlag">
                             <el-radio-group v-model="form.onlineFlag">
                                 <el-radio v-for="dict in da_sensitive_status" :key="dict.value" :value="dict.value">{{
                                     dict.label }}</el-radio>
@@ -219,16 +219,16 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="24">
-                        <el-form-item label="备注" prop="remark">
-                            <el-input v-model="form.remark" type="textarea" placeholder="请输入备注" />
+                        <el-form-item :label="td('common.texts.remark')" prop="remark">
+                            <el-input v-model="form.remark" type="textarea" :placeholder="td('common.form.remarkPlaceholder')" />
                         </el-form-item>
                     </el-col>
                 </el-row>
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button size="mini" @click="cancel">取 消</el-button>
-                    <el-button type="primary" size="mini" @click="submitForm">确 定</el-button>
+                    <el-button size="mini" @click="cancel">{{ td('common.button.cancel') }}</el-button>
+                    <el-button type="primary" size="mini" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
                 </div>
             </template>
         </el-dialog>
@@ -246,28 +246,28 @@
             <el-form ref="daSensitiveLevelRef" :model="form" label-width="80px">
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item label="敏感级别名称" prop="sensitiveLevel">
+                        <el-form-item :label="td('da.security.sensitiveLevelName')" prop="sensitiveLevel">
                             <div>
                                 {{ form.sensitiveLevel }}
                             </div>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="替换规则" prop="sensitiveRule">
+                        <el-form-item :label="td('da.security.replaceRule')" prop="sensitiveRule">
                             <dict-tag :options="da_sensitive_level_rule" :value="form.sensitiveRule" />
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item label="起始字符位置" prop="startCharLoc">
+                        <el-form-item :label="td('da.security.startCharPos')" prop="startCharLoc">
                             <div>
                                 {{ form.startCharLoc }}
                             </div>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="截止字符位置" prop="endCharLoc">
+                        <el-form-item :label="td('da.security.endCharPos')" prop="endCharLoc">
                             <div>
                                 {{ form.endCharLoc }}
                             </div>
@@ -276,14 +276,14 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item label="替换内容" prop="maskCharacter">
+                        <el-form-item :label="td('da.security.replaceContent')" prop="maskCharacter">
                             <div>
                                 {{ form.maskCharacter }}
                             </div>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="上下线标识" prop="onlineFlag">
+                        <el-form-item :label="td('da.security.onlineFlag')" prop="onlineFlag">
                             <div>
                                 {{ form.onlineFlag }}
                             </div>
@@ -292,14 +292,14 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item label="描述" prop="description">
+                        <el-form-item :label="td('da.security.description')" prop="description">
                             <div>
                                 {{ form.description }}
                             </div>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="备注" prop="remark">
+                        <el-form-item :label="td('common.texts.remark')" prop="remark">
                             <div>
                                 {{ form.remark }}
                             </div>
@@ -309,7 +309,7 @@
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button size="mini" @click="cancel">关 闭</el-button>
+                    <el-button size="mini" @click="cancel">{{ td('common.button.close') }}</el-button>
                 </div>
             </template>
         </el-dialog>
@@ -335,8 +335,8 @@
             </el-upload>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button @click="upload.open = false">取 消</el-button>
-                    <el-button type="primary" @click="submitFileForm">确 定</el-button>
+                    <el-button @click="upload.open = false">{{ td('common.button.cancel') }}</el-button>
+                    <el-button type="primary" @click="submitFileForm">{{ td('common.button.confirm') }}</el-button>
                 </div>
             </template>
         </el-dialog>
@@ -431,9 +431,9 @@ const data = reactive({
         createTime: null
     },
     rules: {
-        sensitiveLevel: [{ required: true, message: '敏感级别名称不能为空', trigger: 'blur' }],
-        maskCharacter: [{ required: true, message: '替换内容不能为空', trigger: 'blur' }],
-        sensitiveRule: [{ required: true, message: '替换规则不能为空', trigger: 'blur' }]
+        sensitiveLevel: [{ required: true, message: td('da.security.levelNameRequired'), trigger: 'blur' }],
+        maskCharacter: [{ required: true, message: td('da.security.replaceContentRequired'), trigger: 'blur' }],
+        sensitiveRule: [{ required: true, message: td('da.security.replaceRuleRequired'), trigger: 'blur' }]
     }
 });
 
@@ -510,7 +510,7 @@ function handleSortChange({ column, prop, order }) {
 function handleAdd() {
     reset();
     open.value = true;
-    title.value = '新增敏感等级';
+    title.value = td('da.security.addTitle');
 }
 
 /** 修改按钮操作 */
@@ -520,7 +520,7 @@ function handleUpdate(row) {
     getDaSensitiveLevel(_id).then((response) => {
         form.value = response.data;
         open.value = true;
-        title.value = '修改敏感等级';
+        title.value = td('da.security.editTitle');
     });
 }
 
@@ -531,7 +531,7 @@ function handleDetail(row) {
     getDaSensitiveLevel(_id).then((response) => {
         form.value = response.data;
         openDetail.value = true;
-        title.value = '敏感等级详情';
+        title.value = td('da.security.detailTitle');
     });
 }
 
@@ -542,7 +542,7 @@ function submitForm() {
             if (form.value.id != null) {
                 updateDaSensitiveLevel(form.value)
                     .then((response) => {
-                        proxy.$modal.msgSuccess('修改成功');
+                        proxy.$modal.msgSuccess(td('da.security.editSuccess'));
                         open.value = false;
                         getList();
                     })
@@ -550,7 +550,7 @@ function submitForm() {
             } else {
                 addDaSensitiveLevel(form.value)
                     .then((response) => {
-                        proxy.$modal.msgSuccess('新增成功');
+                        proxy.$modal.msgSuccess(td('da.security.addSuccess'));
                         open.value = false;
                         getList();
                     })
@@ -564,13 +564,13 @@ function submitForm() {
 function handleDelete(row) {
     const _ids = row.id || ids.value;
     proxy.$modal
-        .confirm('是否确认删除敏感等级编号为"' + _ids + '"的数据项？')
+        .confirm(td('da.security.confirmDelete').replace('{id}', _ids))
         .then(function () {
             return delDaSensitiveLevel(_ids);
         })
         .then(() => {
             getList();
-            proxy.$modal.msgSuccess('删除成功');
+            proxy.$modal.msgSuccess(td('da.security.deleteSuccess'));
         })
         .catch(() => { });
 }
@@ -589,7 +589,7 @@ function handleExport() {
 /** ---------------- 导入相关操作 -----------------**/
 /** 导入按钮操作 */
 function handleImport() {
-    upload.title = '敏感等级导入';
+    upload.title = td('da.security.importTitle');
     upload.open = true;
 }
 
@@ -621,7 +621,7 @@ const handleFileSuccess = (response, file, fileList) => {
         "<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +
         response.msg +
         '</div>',
-        '导入结果',
+        td('da.security.importResult'),
         { dangerouslyUseHTMLString: true }
     );
     getList();
@@ -649,13 +649,13 @@ function routeTo(link, row) {
 
 /** 启用禁用开关 */
 function handleStatusChange(row) {
-    const text = row.onlineFlag === '1' ? '上线' : '下线';
+    const text = row.onlineFlag === '1' ? td('da.security.online') : td('da.security.offline');
     proxy.$modal
-        .confirm('确认要' + text + '"' + row.sensitiveLevel + '"敏感等级吗？')
+        .confirm(td('da.security.confirmStatusChange').replace('{text}', text).replace('{name}', row.sensitiveLevel))
         .then(function () {
             updateStatus(row.id, row.onlineFlag)
                 .then((response) => {
-                    proxy.$modal.msgSuccess(text + '成功');
+                    proxy.$modal.msgSuccess(td('da.security.statusSuccess').replace('{text}', text));
                     getList();
                 })
                 .catch((error) => {

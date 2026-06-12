@@ -16,7 +16,9 @@ export default {
     ruleName: '规则名称',
     ruleNameRequired: '规则名称不能为空',
     ruleType: '规则类型',
+    ruleTypeRequired: '规则类型不能为空',
     ruleLevel: '规则级别',
+    ruleLevelRequired: '规则级别不能为空',
     useCase: '使用场景',
     example: '示例',
     projectName: '项目名称',
@@ -59,6 +61,8 @@ export default {
     deleteTip: '确定要删除选中的数据吗？',
     disable: '禁用',
     enable: '启用',
+    dataDoc: '数据文档',
+    importResult: '导入结果',
     // Placeholders
     pleaseEnterName: '请输入名称',
     pleaseSelectParent: '请选择上级',
@@ -106,5 +110,19 @@ export default {
     ruleCategoryPlaceholder:'请输入稽查规则类目',
     // Message
     confirmDeleteCat: '是否确认删除{titleBase}编号为"{id}"的数据项？',
-    deleteConfirmCount: '可删除{canDeleteCount}个，不可删除{cannotDeleteCount}个，是否删除可删部分'
+    deleteConfirmCount: '可删除{canDeleteCount}个，不可删除{cannotDeleteCount}个，是否删除可删部分',
+    // Top node
+    topNode: '顶级节点',
+    // Title helpers
+    addTitle: '新增{title}',
+    editTitle: '修改{title}',
+    detailTitle: '{title}详情',
+    importTitle: '{title}导入',
+    // Status change
+    confirmStatusChangeGeneric: '确认要"{status}""{name}"{type}吗？',
+    statusSuccess: '{status}成功',
+    // Code
+    codeRequired: '编码不能为空',
+    // Contact
+    contactWayPlaceholder: '请输入联系方式'
 }

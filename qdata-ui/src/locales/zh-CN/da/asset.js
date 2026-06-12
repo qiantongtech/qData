@@ -90,6 +90,10 @@ export default {
   rowUnit: '行',
   columnUnit: '列',
   scoreUnit: '分',
+  // Form labels
+  remark: '备注',
+  status: '状态',
+  statusSuccess: '{text}成功',
   // Column visibility
   columnVisibility: {
     id: '编号',

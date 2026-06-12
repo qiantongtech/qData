@@ -29,7 +29,8 @@ export default {
         unselectAll: 'Unselect All',
         un_fold: 'Expand/Collapse',
         update: 'Edit',
-        upload: 'Upload'
+        upload: 'Upload',
+        neverShow: 'Never Show Again'
     },
     error: {
         code401: '401 Error!',
@@ -60,16 +61,19 @@ export default {
         createdBy: 'Created By',
         createdTime: 'Created Time',
         description: 'Description',
+        handle: 'Action',
         name: 'Name',
         number: 'No',
         operation: 'Operation',
         remark: 'Remarks',
+        sortOrder: 'Sort Order',
         status: 'Status',
         time: 'Time',
         updatedBy: 'Updated By',
         updatedTime: 'Updated Time',
         enable: 'Enable',
-        disable: 'Disable'
+        disable: 'Disable',
+        topNode: 'Top Node'
     },
     message: {
         addSuccess: 'Added successfully',

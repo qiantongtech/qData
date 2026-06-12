@@ -65,7 +65,7 @@
           icon="Edit"
           @click="handleUpdate(row)"
           v-hasPermi="['da:assetColumn:edit']"
-          >{{ t('common.button.update') }}</el-button
+          >{{ td('common.button.update') }}</el-button
         >
         <el-button link type="primary" icon="Pointer" @click="openBindTerm(row)">
           {{ td('dpp.column.bindTerm', '绑定术语') }}
@@ -160,13 +160,13 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="t('common.texts.description')" prop="description">
+          <el-form-item :label="td('common.texts.description')" prop="description">
             <el-input
               v-model="form.description"
               type="textarea"
-              maxlength="500个字符"
+              :maxlength="500"
               show-word-limit
-              :placeholder="t('common.form.descriptionPlaceholder')"
+              :placeholder="td('common.form.descriptionPlaceholder')"
             />
           </el-form-item>
         </el-col>
@@ -280,13 +280,13 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="t('common.texts.remark')" prop="remark">
+          <el-form-item :label="td('common.texts.remark')" prop="remark">
             <el-input
               v-model="form.remark"
               type="textarea"
-              maxlength="500个字符"
+              :maxlength="500"
               show-word-limit
-              :placeholder="t('common.form.remarkPlaceholder')"
+              :placeholder="td('common.form.remarkPlaceholder')"
             />
           </el-form-item>
         </el-col>
@@ -294,8 +294,8 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="cancel">{{ t('common.button.cancel') }}</el-button>
-        <el-button type="primary" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
+        <el-button @click="cancel">{{ td('common.button.cancel') }}</el-button>
+        <el-button type="primary" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
       </div>
     </template>
   </el-dialog>
@@ -352,12 +352,12 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="termDialogVisible = false">{{ t('common.button.cancel') }}</el-button>
+        <el-button @click="termDialogVisible = false">{{ td('common.button.cancel') }}</el-button>
         <el-button
             type="primary"
             :loading="termSubmitting"
             @click="submitBindTerm"
-        >{{ t('common.button.confirm') }}</el-button
+        >{{ td('common.button.confirm') }}</el-button
         >
       </div>
     </template>
@@ -409,7 +409,7 @@
           <el-form-item
               :label="td('dpp.column.nearSynonym', '近义词')"
               prop="nearSynonyms"
-              tip="如果有多个请用英文逗号分隔"
+              :tip="td('dpp.column.multipleCommaSep')"
           >
             <el-input
                 v-model="termAddForm.nearSynonyms"
@@ -421,7 +421,7 @@
           <el-form-item
               :label="td('dpp.column.synonym', '同义词')"
               prop="synonyms"
-              tip="如果有多个请用英文逗号分隔"
+              :tip="td('dpp.column.multipleCommaSep')"
           >
             <el-input
                 v-model="termAddForm.synonyms"
@@ -431,7 +431,7 @@
         </el-col>
         <el-col :span="24">
           <qt-form-item
-              :label="t('common.texts.status')"
+              :label="td('common.texts.status')"
               prop="status"
               :tip="{
               content: td('dpp.column.termStatusTip', '启用状态表示该标签可用于打标数据术语；禁用后无法再被使用，但已有标签仍保留。'),
@@ -450,12 +450,12 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="t('common.texts.description')" prop="description">
+          <el-form-item :label="td('common.texts.description')" prop="description">
             <el-input
                 v-model="termAddForm.description"
                 type="textarea"
-                :placeholder="t('common.form.descriptionPlaceholder')"
-                maxlength="500个字符"
+                :placeholder="td('common.form.descriptionPlaceholder')"
+                :maxlength="500"
                 show-word-limit
             />
           </el-form-item>
@@ -463,13 +463,13 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="t('common.texts.remark')" prop="remark">
+          <el-form-item :label="td('common.texts.remark')" prop="remark">
             <el-input
                 v-model="termAddForm.remark"
                 type="textarea"
-                maxlength="500个字符"
+                :maxlength="500"
                 show-word-limit
-                :placeholder="t('common.form.remarkPlaceholder')"
+                :placeholder="td('common.form.remarkPlaceholder')"
             />
           </el-form-item>
         </el-col>
@@ -477,13 +477,13 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="cancelAddTerm">{{ t('common.button.cancel') }}</el-button>
+        <el-button size="mini" @click="cancelAddTerm">{{ td('common.button.cancel') }}</el-button>
         <el-button
             type="primary"
             size="mini"
             :loading="termAddSubmitting"
             @click="submitAddTerm"
-        >{{ t('common.button.confirm') }}</el-button
+        >{{ td('common.button.confirm') }}</el-button
         >
       </div>
     </template>
@@ -576,7 +576,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="t('common.texts.description')" prop="description">
+          <el-form-item :label="td('common.texts.description')" prop="description">
             <div>
               {{ form.description }}
             </div>
@@ -595,7 +595,7 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="small" @click="cancel">{{ t('common.button.close') }}</el-button>
+        <el-button size="small" @click="cancel">{{ td('common.button.close') }}</el-button>
       </div>
     </template>
   </el-dialog>
@@ -706,7 +706,7 @@ const data = reactive({
     //     { required: true, message: '请选择是是否关联清洗规则', trigger: 'blur' }
     // ],
     relAuditFlag: [
-      { required: true, message: "请选择是是否关联稽查规则", trigger: "blur" },
+      { required: true, message: td('dpp.column.selectAuditRule'), trigger: "blur" },
     ],
   },
 });
@@ -802,7 +802,7 @@ function handleSortChange() {}
 function handleAdd() {
   reset();
   open.value = true;
-  title.value = "新增数据资产";
+  title.value = td('dpp.column.addDataAsset');
 }
 
 /** 修改按钮操作 */
@@ -812,7 +812,7 @@ function handleUpdate(row) {
   getDaAssetColumn(_id).then((response) => {
     form.value = response.data;
     open.value = true;
-    title.value = "修改数据资产";
+    title.value = td('dpp.column.editDataAsset');
   });
 }
 
@@ -823,7 +823,7 @@ function handleDetail(row) {
   getDaAsset(_id).then((response) => {
     form.value = response.data;
     openDetail.value = true;
-    title.value = "数据资产详情";
+    title.value = td('dpp.column.dataAssetDetail');
   });
 }
 
@@ -836,7 +836,7 @@ function submitForm() {
 
         updateDaAssetColumn(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess(t('common.message.editSuccess'));
+            proxy.$modal.msgSuccess(td('common.message.editSuccess'));
             open.value = false;
             if (tableRef.value) tableRef.value.getList();
           })
@@ -844,7 +844,7 @@ function submitForm() {
       } else {
         addDaAsset(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess(t('common.message.addSuccess'));
+            proxy.$modal.msgSuccess(td('common.message.addSuccess'));
             open.value = false;
             if (tableRef.value) tableRef.value.getList();
           })
@@ -858,13 +858,13 @@ function submitForm() {
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
-    .confirm('是否确认删除数据资产编号为"' + _ids + '"的数据项？')
+    .confirm(td('dpp.column.confirmDeleteAsset') + '"' + _ids + '"' + td('dpp.column.confirmDeleteAssetEnd'))
     .then(function () {
       return delDaAsset(_ids);
     })
     .then(() => {
       if (tableRef.value) tableRef.value.getList();
-      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+      proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
     })
     .catch(() => {});
 }
@@ -1005,7 +1005,7 @@ function submitAddTerm() {
     termAddSubmitting.value = true;
     addAttTag(termAddForm)
         .then(() => {
-          proxy.$modal.msgSuccess(t('common.message.addSuccess'));
+          proxy.$modal.msgSuccess(td('common.message.addSuccess'));
           termAddOpen.value = false;
           resetAddTerm();
           // 新增后仅刷新术语列表，不自动选择
@@ -1033,7 +1033,7 @@ const tableStore = reactive({
   },
   columns: [
     {
-      label: t('common.texts.number'),
+      label: td('common.texts.number'),
       prop: "id",
       sortable: true,
       width: 60,
@@ -1052,7 +1052,7 @@ const tableStore = reactive({
       showOverflowTooltip: true,
     },
     {
-      label: t('common.texts.description'),
+      label: td('common.texts.description'),
       prop: "description",
       align: "left",
       width: 240,
@@ -1116,12 +1116,12 @@ const tableStore = reactive({
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: t('common.texts.createdBy'),
+      label: td('common.texts.createdBy'),
       prop: "createBy",
       width: 120,
     },
     {
-      label: t('common.texts.createdTime'),
+      label: td('common.texts.createdTime'),
       prop: "createTime",
       width: 150,
       sortable: true,
@@ -1130,7 +1130,7 @@ const tableStore = reactive({
     },
 
     {
-      label: t('common.texts.operation'),
+      label: td('common.texts.operation'),
       width: 180,
       fixed: "right",
       slot: "handle",

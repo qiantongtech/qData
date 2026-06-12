@@ -50,7 +50,58 @@ const props = defineProps({
 const router = useRouter()
 const visible = ref(true)
 
-const config = computed(() => guideTipConfig[props.tipId] || {})
+const tipIdToI18nKey = {
+  'index': 'index',
+  'att/attAuditRule.list': 'attAuditRule',
+  'att/attCleanRule.list': 'attCleanRule',
+  'att/attProject.list': 'attProject',
+  'att/attTheme.list': 'attTheme',
+  'att/client.list': 'attClient',
+  'cat/attQualityCat.list': 'attQualityCat',
+  'cat/attApiCat.list': 'attApiCat',
+  'dp/dpModel.list': 'dpModel',
+  'dp/dpDataElem.list': 'dpDataElem',
+  'da/daDatasource.list': 'daDatasource',
+  'da/daAsset.list': 'daAsset',
+  'da/daAssetApply.list': 'daAssetApply',
+  'da/executeSqlQuery': 'executeSqlQuery',
+  'da/dataQuality/dataQualityTasks.list': 'dataQualityTasks',
+  'da/daSensitiveLevel/daSensitiveLevel.list': 'daSensitiveLevel',
+  'dpp/dppAsset.list': 'dppAsset',
+  'dpp/tasker/dppEtlTask.list': 'dppEtlTask',
+  'dpp/tasker/dpptaskerddv.list': 'dpptaskerddv',
+  'dpp/etltaskinstance/dppEtlTaskInstance.list': 'dppEtlTaskInstance',
+  'dpp/dpp/attTaskCat': 'attTaskCat',
+  'dpp/dpp/AttDataDevCat.list': 'AttDataDevCat',
+  'dpp/dpp/AttProjectUserRel.list': 'AttProjectUserRel',
+  'ds/dsApi.list': 'dsApi',
+  'dp/dpDocument': 'dpDocument',
+  'dm/dataLayer.list': 'dataLayer',
+  'mc/task/structured': 'structured',
+  'meta/unreleased/structured/table': 'unreleasedTable'
+}
+
+const config = computed(() => {
+  const original = guideTipConfig[props.tipId] || {};
+  const i18nKey = tipIdToI18nKey[props.tipId];
+  if (i18nKey) {
+    const titleKey = `guide.${i18nKey}.title`;
+    const contentKey = `guide.${i18nKey}.content`;
+    const typeKey = `guide.${i18nKey}.type`;
+    const versionKey = `guide.${i18nKey}.version`;
+    const title = t(titleKey);
+    const content = t(contentKey);
+    const type = t(typeKey);
+    const version = t(versionKey);
+    return {
+      title: title !== titleKey ? title : original.title,
+      content: content !== contentKey ? content : original.content,
+      type: type !== typeKey ? type : original.type,
+      version: version !== versionKey ? version : original.version
+    };
+  }
+  return original;
+})
 
 // 获取存储对象
 function getGuideTipStorage() {

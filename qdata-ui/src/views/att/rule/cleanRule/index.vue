@@ -189,8 +189,8 @@
                     </el-col>
                     <el-col :span="12">
                         <el-form-item :label="td('common.texts.status')" prop="validFlag">
-                            <el-radio v-model="form.validFlag" :label="true">启用</el-radio>
-                            <el-radio v-model="form.validFlag" :label="false">禁用</el-radio>
+                            <el-radio v-model="form.validFlag" :label="true">{{ td('att.common.enable') }}</el-radio>
+                            <el-radio v-model="form.validFlag" :label="false">{{ td('att.common.disable') }}</el-radio>
                         </el-form-item>
 
                     </el-col>
@@ -225,8 +225,8 @@
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button size="mini" @click="cancel">取 消</el-button>
-                    <el-button type="primary" size="mini" @click="submitForm">确 定</el-button>
+                    <el-button size="mini" @click="cancel">{{ td('common.button.cancel') }}</el-button>
+                    <el-button type="primary" size="mini" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
                 </div>
             </template>
         </el-dialog>
@@ -305,8 +305,8 @@
             </el-upload>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button @click="upload.open = false">取 消</el-button>
-                    <el-button type="primary" @click="submitFileForm">确 定</el-button>
+                    <el-button @click="upload.open = false">{{ td('common.button.cancel') }}</el-button>
+                    <el-button type="primary" @click="submitFileForm">{{ td('common.button.confirm') }}</el-button>
                 </div>
             </template>
         </el-dialog>
@@ -424,10 +424,10 @@ const data = reactive({
         code: null
     },
     rules: {
-        name: [{ required: true, message: '规则名称不能为空', trigger: 'blur' }],
-        type: [{ required: true, message: '规则类型不能为空', trigger: 'change' }],
-        level: [{ required: true, message: '规则级别不能为空', trigger: 'change' }],
-        code: [{ required: true, message: '编号不能为空', trigger: 'change' }],
+        name: [{ required: true, message: td('att.common.ruleNameRequired'), trigger: 'blur' }],
+        type: [{ required: true, message: td('att.common.ruleTypeRequired'), trigger: 'change' }],
+        level: [{ required: true, message: td('att.common.ruleLevelRequired'), trigger: 'change' }],
+        code: [{ required: true, message: td('att.common.codeRequired'), trigger: 'change' }],
     }
 });
 
@@ -495,12 +495,12 @@ function resetQuery() {
 
 /** 改变启用状态值 */
 function handleStatusChange(row) {
-    const text = row.validFlag === true ? '启用' : '禁用';
+    const status = row.validFlag === true ? td('att.common.enable') : td('att.common.disable');
     proxy.$modal
-        .confirm('确认要"' + text + '","' + row.name + '"数据文档吗？')
+        .confirm(td('att.common.confirmStatusChangeGeneric').replace('{status}', status).replace('{name}', row.name).replace('{type}', td('att.common.dataDoc')))
         .then(function () {
             updateAttCleanRule({ id: row.id, validFlag: row.validFlag }).then((response) => {
-                proxy.$modal.msgSuccess(text + '成功');
+                proxy.$modal.msgSuccess(td('att.common.statusSuccess').replace('{status}', status));
                 getList();
             });
         })
@@ -528,7 +528,7 @@ function handleAdd() {
     reset();
     form.value.type = queryParams.value.type;
     open.value = true;
-    title.value = '新增清洗规则';
+    title.value = td('att.cleanRule.title.add');
 }
 
 /** 修改按钮操作 */
@@ -541,7 +541,7 @@ function handleUpdate(row) {
         delete response.data.updateTime;
         form.value = response.data;
         open.value = true;
-        title.value = '修改清洗规则';
+        title.value = td('att.cleanRule.title.edit');
     });
 }
 
@@ -552,7 +552,7 @@ function handleDetail(row) {
     getAttCleanRule(_id).then((response) => {
         form.value = response.data;
         openDetail.value = true;
-        title.value = '清洗规则详情';
+        title.value = td('att.cleanRule.title.detail');
     });
 }
 
@@ -563,7 +563,7 @@ function submitForm() {
             if (form.value.id != null) {
                 updateAttCleanRule(form.value)
                     .then((response) => {
-                        proxy.$modal.msgSuccess('修改成功');
+                        proxy.$modal.msgSuccess(td('common.message.editSuccess'));
                         open.value = false;
                         getList();
                     })
@@ -571,7 +571,7 @@ function submitForm() {
             } else {
                 addAttCleanRule(form.value)
                     .then((response) => {
-                        proxy.$modal.msgSuccess('新增成功');
+                        proxy.$modal.msgSuccess(td('common.message.addSuccess'));
                         open.value = false;
                         getList();
                     })
@@ -588,13 +588,13 @@ function handleDelete(row) {
     const _ids = row.id || ids.value;
     const _name = row.name;
     proxy.$modal
-        .confirm('是否确认删除编号为"' + _ids + '"的数据项？')
+        .confirm(td('att.cleanRule.deleteConfirm').replace('{ids}', _ids))
         .then(function () {
             return delAttCleanRule(_ids);
         })
         .then(() => {
             getList();
-            proxy.$modal.msgSuccess('删除成功');
+            proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
         })
         .catch(() => { });
 }
@@ -613,7 +613,7 @@ function handleExport() {
 /** ---------------- 导入相关操作 -----------------**/
 /** 导入按钮操作 */
 function handleImport() {
-    upload.title = '清洗规则导入';
+    upload.title = td('att.cleanRule.importTitle');
     upload.open = true;
 }
 
@@ -645,7 +645,7 @@ const handleFileSuccess = (response, file, fileList) => {
         "<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +
         response.msg +
         '</div>',
-        '导入结果',
+        td('att.common.importResult'),
         { dangerouslyUseHTMLString: true }
     );
     getList();
@@ -679,7 +679,7 @@ function getDeptTree() {
         processedData.value = proxy.handleTree(response.data, "id", "parentId");
         processedData.value = [
             {
-                name: "清洗规则类目",
+                name: td('att.cleanRule.cleanRuleCategory'),
                 value: "",
                 id: 0,
                 children: processedData.value,

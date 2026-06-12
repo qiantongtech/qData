@@ -41,33 +41,9 @@
           v-hasPermi="['dp:model:add']"
           @mousedown="(e) => e.preventDefault()"
         >
-          <i class="iconfont-mini icon-xinzeng mr5"></i>新增
+          <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('dp.common.add') }}
         </el-button>
       </el-col>
-      <!-- <el-col :span="1.5">
-                        <el-button type="primary" :disabled="single" plain @click="handleMaterialization"
-                            v-hasPermi="['dp:model:edit']" @mousedown="(e) => e.preventDefault()">
-                            <i class="iconfont-mini icon-xiugai--copy mr5"></i>物化
-                        </el-button>
-                    </el-col>
-                    <el-col :span="1.5">
-                        <el-button type="danger" plain :disabled="multiple" @click="handleDelete"
-                            v-hasPermi="['dp:model:remove']" @mousedown="(e) => e.preventDefault()">
-                            <i class="iconfont-mini icon-shanchu-huise mr5"></i>删除
-                        </el-button>
-                    </el-col> -->
-      <!-- <el-col :span="1.5">
-                <el-button type="info" plain @click="handleImport" v-hasPermi="['dp:model:export']"
-                  @mousedown="(e) => e.preventDefault()">
-                  <i class="iconfont-mini icon-upload-cloud-line mr5"></i>导入
-                </el-button>
-              </el-col>
-              <el-col :span="1.5">
-                <el-button type="warning" plain @click="handleExport" v-hasPermi="['dp:model:export']"
-                  @mousedown="(e) => e.preventDefault()">
-                  <i class="iconfont-mini icon-download-line mr5"></i>导出
-                </el-button>
-              </el-col> -->
     </el-row>
     <div class="justify-end top-right-btn">
       <right-toolbar
@@ -88,14 +64,14 @@
   >
     <el-table-column
       v-if="getColumnVisibility(0)"
-      label="编号"
+      :label="td('common.texts.number')"
       width="50"
       align="left"
       prop="id"
     />
     <el-table-column
       v-if="getColumnVisibility(1)"
-      label="英文名称"
+      :label="td('dp.model.englishName')"
       :show-overflow-tooltip="{ effect: 'light' }"
       align="left"
       prop="modelName"
@@ -107,7 +83,7 @@
     </el-table-column>
     <el-table-column
       v-if="getColumnVisibility(2)"
-      label="中文名称"
+      :label="td('dp.model.chineseName')"
       :show-overflow-tooltip="{ effect: 'light' }"
       align="left"
       prop="modelComment"
@@ -119,7 +95,7 @@
     </el-table-column>
     <el-table-column
       v-if="getColumnVisibility(3)"
-      label="逻辑模型类目"
+      :label="td('dp.model.treeRootName')"
       width="100"
       :show-overflow-tooltip="{ effect: 'light' }"
       align="left"
@@ -131,7 +107,7 @@
     </el-table-column>
     <el-table-column
       v-if="getColumnVisibility(10)"
-      label="创建人"
+      :label="td('common.texts.createdBy')"
       align="left"
       prop="createBy"
       width="120"
@@ -141,7 +117,7 @@
       </template>
     </el-table-column>
     <el-table-column
-      label="创建时间"
+      :label="td('common.texts.createdTime')"
       v-if="getColumnVisibility(11)"
       align="left"
       prop="createTime"
@@ -155,14 +131,12 @@
     </el-table-column>
     <el-table-column
       v-if="getColumnVisibility(4)"
-      label="状态"
+      :label="td('common.texts.status')"
       width="120"
       align="left"
       prop="status"
     >
       <template #default="scope">
-        <!-- {{ dp_model_status }}
-                                <dict-tag :options="dp_model_status" :value="scope.row.status" /> -->
         <el-switch
           v-model="scope.row.status"
           active-color="#13ce66"
@@ -174,7 +148,7 @@
       </template>
     </el-table-column>
     <el-table-column
-      label="备注"
+      :label="td('common.texts.remark')"
       v-if="getColumnVisibility(5)"
       align="left"
       prop="remark"
@@ -184,14 +158,8 @@
         {{ scope.row.remark || "-" }}
       </template>
     </el-table-column>
-    <!-- <el-table-column v-if="getColumnVisibility(5)" width="130" label="创建方式" :show-overflow-tooltip="{effect: 'light'}"
-              align="left" prop="createType">
-              <template #default="scope">
-                <dict-tag :options="dp_model_create_type" :value="scope.row.createType" />
-              </template>
-            </el-table-column> -->
     <el-table-column
-      label="操作"
+      :label="td('common.texts.operation')"
       align="center"
       class-name="small-padding fixed-width"
       fixed="right"
@@ -205,7 +173,7 @@
           @click="handleUpdate(scope.row)"
           :disabled="scope.row.status == 1"
           v-hasPermi="['dp:model:edit']"
-          >修改</el-button
+          >{{ td('dp.common.edit') }}</el-button
         >
         <el-button
           link
@@ -214,7 +182,7 @@
           :disabled="scope.row.status == 1"
           @click="handleDelete(scope.row)"
           v-hasPermi="['dp:model:remove']"
-          >删除</el-button
+          >{{ td('dp.common.delete') }}</el-button
         >
         <el-button
           link
@@ -222,10 +190,8 @@
           icon="view"
           @click="handleDetail(scope.row)"
           v-hasPermi="['dp:model:edit']"
-          >详情</el-button
+          >{{ td('dp.common.details') }}</el-button
         >
-        <!-- <el-button link type="primary" icon="view" @click="routeTo('/dp/model/dpModelDetail', scope.row)"
-                  v-hasPermi="['dp:model:edit']">复杂详情</el-button> -->
       </template>
     </el-table-column>
 
@@ -264,14 +230,14 @@
     <el-form ref="dpModelRef" :model="form" label-width="80px">
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="英文名称" prop="modelName">
+          <el-form-item :label="td('dp.model.englishName')" prop="modelName">
             <div>
               {{ form.modelName }}
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="中文名称" prop="modelComment">
+          <el-form-item :label="td('dp.model.chineseName')" prop="modelComment">
             <div>
               {{ form.modelComment }}
             </div>
@@ -280,21 +246,21 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="类目编码" prop="catCode">
+          <el-form-item :label="td('dp.model.detail.catCode')" prop="catCode">
             <div>
               {{ form.catCode }}
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="状态" prop="status">
+          <el-form-item :label="td('common.texts.status')" prop="status">
             <dict-tag :options="dp_model_status" :value="form.status" />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="创建方式" prop="createType">
+          <el-form-item :label="td('dp.model.detail.createType')" prop="createType">
             <dict-tag
               :options="dp_model_create_type"
               :value="form.createType"
@@ -302,7 +268,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="联系人" prop="contact">
+          <el-form-item :label="td('dp.model.detail.contact')" prop="contact">
             <div>
               {{ form.contact }}
             </div>
@@ -311,14 +277,14 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="联系电话" prop="contactNumber">
+          <el-form-item :label="td('dp.model.detail.contactNumber')" prop="contactNumber">
             <div>
               {{ form.contactNumber }}
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="描述" prop="description">
+          <el-form-item :label="td('common.texts.description')" prop="description">
             <div>
               {{ form.description }}
             </div>
@@ -328,7 +294,7 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="cancel">关 闭</el-button>
+        <el-button size="mini" @click="cancel">{{ td('common.button.close') }}</el-button>
       </div>
     </template>
   </el-dialog>
@@ -425,7 +391,7 @@ function getDeptTree() {
     deptOptions.value = proxy.handleTree(response.data, "id", "parentId");
     deptOptions.value = [
       {
-        name: "逻辑模型类目",
+        name: td('dp.model.treeRootName'),
         value: "",
         id: 0,
         children: deptOptions.value,
@@ -491,12 +457,12 @@ const upload = reactive({
 
 /** 启用禁用开关 */
 function handleStatusChange(id, row, e) {
-  const text = e === "1" ? "启用" : "禁用";
+  const text = e === "1" ? td('dp.model.enableText') : td('dp.model.disableText');
   proxy.$modal
-    .confirm('确认要"' + text + '","' + row.modelComment + '"逻辑模型吗？')
+    .confirm(td('dp.model.confirmStatusChange').replace('{text}', text).replace('{name}', row.modelComment))
     .then(function () {
       updateStatusDpDataModel(id, row.status).then((response) => {
-        proxy.$modal.msgSuccess("操作成功");
+        proxy.$modal.msgSuccess(td('common.message.operationSuccess'));
       });
     })
     .catch(function () {
@@ -516,15 +482,15 @@ const data = reactive({
   },
   rules: {
     modelName: [
-      { required: true, message: "模型编码不能为空", trigger: "blur" },
+      { required: true, message: td('dp.model.modelNameRequired'), trigger: "blur" },
     ],
     modelComment: [
-      { required: true, message: "模型名称不能为空", trigger: "blur" },
+      { required: true, message: td('dp.model.modelCommentRequired'), trigger: "blur" },
     ],
-    catCode: [{ required: true, message: "类目编码不能为空", trigger: "blur" }],
-    status: [{ required: true, message: "状态不能为空", trigger: "change" }],
+    catCode: [{ required: true, message: td('dp.model.catCodeRequired'), trigger: "blur" }],
+    status: [{ required: true, message: td('common.form.statusRequired'), trigger: "change" }],
     createType: [
-      { required: true, message: "创建方式不能为空", trigger: "change" },
+      { required: true, message: td('dp.model.createTypeRequired'), trigger: "change" },
     ],
   },
 });
@@ -621,7 +587,7 @@ function handleAdd() {
   dataList.value = {};
   reset();
   open.value = true;
-  title.value = "新增逻辑模型";
+  title.value = td('dp.model.addTitle');
 }
 let dataList = ref({});
 /** 修改按钮操作 */
@@ -632,7 +598,7 @@ function handleUpdate(row) {
   getDpModel(_ID).then((response) => {
     dataList.value = response.data;
     open.value = true;
-    title.value = "修改逻辑模型";
+    title.value = td('dp.model.editTitle');
   });
 }
 
@@ -644,7 +610,7 @@ function handleMaterialization() {
 
   // });
   Materialization.value = true;
-  title.value = "逻辑物化";
+  title.value = td('dp.model.logicMaterialization');
 }
 /** 详情按钮操作 */
 function handleDetail(row) {
@@ -658,7 +624,7 @@ function submitForm(obj) {
     updateDpModel({ ...obj.form, documentId: queryParams.value.documentId })
       .then((response) => {
         updateDpModelColumn(obj.tableData).then((response) => {
-          proxy.$modal.msgSuccess("修改成功");
+          proxy.$modal.msgSuccess(td('common.message.editSuccess'));
           open.value = false;
           getList();
         });
@@ -674,7 +640,7 @@ function submitForm(obj) {
         }));
         dpModelColumn(updatedTableData)
           .then((dpModelColumnResponse) => {
-            proxy.$modal.msgSuccess("新增成功");
+            proxy.$modal.msgSuccess(td('common.message.addSuccess'));
             open.value = false;
             getList();
           })
@@ -690,13 +656,13 @@ function submitForm(obj) {
 function handleDelete(row) {
   const _IDs = row.id || ids.value;
   proxy.$modal
-    .confirm('是否确认删除逻辑模型编号为"' + _IDs + '"的数据项？')
+    .confirm(td('dp.model.confirmDelete').replace('{id}', _IDs))
     .then(function () {
       return delDpModelColumn(_IDs);
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
     })
     .catch(() => {});
 }

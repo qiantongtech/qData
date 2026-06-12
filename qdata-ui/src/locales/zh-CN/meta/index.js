@@ -121,7 +121,17 @@ export default {
                     backToList: '返回列表',
                     confirmAndExit: '确认并退出',
                     tableMetadataSuccess: '表元数据成功！',
-                    draftSuccess: '暂存表元数据成功！'
+                    draftSuccess: '暂存表元数据成功！',
+                    sourceSystemRequired: '来源系统不能为空',
+                    inputUpdateMsg: '请输入变更说明'
+                },
+                list: {
+                    confirmBatchDelete: '可删除{canDelete}个，不可删除{cannotDelete}个，是否删除可删部分',
+                    confirmDelete: '是否确认删除编号为{id}的数据项？',
+                    confirmStatusChange: '是否确认{action}数据编号为{id}的表元数据吗？',
+                    statusChangeSuccess: '编号为{id}的表元数据{action}成功!',
+                    publish: '发布',
+                    unpublish: '取消发布'
                 }
             }
         }

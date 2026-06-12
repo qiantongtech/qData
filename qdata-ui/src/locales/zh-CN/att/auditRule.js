@@ -14,6 +14,16 @@ export default {
     example: '示例'
   },
   form:{
-   
-  }
+    codePlaceholder: '请输入编号',
+    descriptionPlaceholder: '请输入描述'
+  },
+  qualityDimRequired: '质量维度不能为空',
+  title: {
+    add: '新增稽查规则',
+    edit: '修改稽查规则',
+    detail: '稽查规则详情'
+  },
+  importTitle: '稽查规则导入',
+  deleteConfirm: '是否确认删除稽查规则编号为"{ids}"的数据项？',
+  treeRootName: '质量维度'
 }

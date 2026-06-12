@@ -20,7 +20,10 @@ export default {
     editDataDevCat: '修改数据开发类目',
     dataDevCatDetail: '数据开发类目详情',
     nameRequired: '数据开发类目名称不能为空',
-    parentRequired: '上级类目不能为空'
+    parentRequired: '上级类目不能为空',
+    confirmChangeStatus: '确认要"{status}""{name}"数据开发类目吗？',
+    confirmDelete: '是否确认删除数据开发类目管理编号为"{id}"的数据项？',
+    dataDevCatImport: '数据开发类目管理导入'
   },
   taskCat: {
     title: '数据集成类目管理',
@@ -42,7 +45,10 @@ export default {
     nameRequired: '数据集成类目名称不能为空',
     parentRequired: '上级类目不能为空',
     updateExistData: '是否更新已经存在的数据集成类目管理数据',
-    downloadTemplate: '下载模板'
+    downloadTemplate: '下载模板',
+    confirmChangeStatus: '确认要"{status}""{name}"数据集成类目吗？',
+    confirmDelete: '是否确认删除数据集成类目管理编号为"{id}"的数据项？',
+    taskCatImport: '数据集成类目管理导入'
   },
   projectUserRel: {
     projectMember: '项目成员',
@@ -89,6 +95,18 @@ export default {
     customDataScope: '自定数据权限',
     deptDataScope: '本部门数据权限',
     deptAndBelowDataScope: '本部门及以下数据权限',
-    onlySelfDataScope: '仅本人数据权限'
+    onlySelfDataScope: '仅本人数据权限',
+    addMember: '新增项目成员',
+    editMember: '修改项目成员',
+    memberDetail: '项目与用户关联关系详情',
+    noUserSelected: '未选择用户，请选择用户后重试',
+    confirmDelete: '是否确认移除编号为"{id}"的数据项？',
+    removeSuccess: '移除成功',
+    memberImport: '项目与用户关联关系导入',
+    addRole: '新增角色',
+    editRole: '修改角色',
+    assignDataScope: '分配数据权限',
+    confirmDeleteRole: '是否确认删除角色编号为"{id}"的数据项？',
+    confirmChangeRoleStatus: '确认要"{status}""{name}"角色吗？'
   }
 }

@@ -12,6 +12,8 @@ import att from './att'
 import ds from './ds'
 import dg from './dg'
 import ai from './ai'
+import guide from './guide'
+import da from './da'
 
 export default {
   common,
@@ -26,5 +28,7 @@ export default {
   att,
   ds,
   ai,
-  dg
+  dg,
+  guide,
+  da
 }

@@ -69,20 +69,20 @@
         v-show="showSearch"
         @submit.prevent
       >
-        <el-form-item label="分级名称" prop="name">
+        <el-form-item :label="td('dg.dataLevel.levelName')" prop="name">
           <el-input
             class="el-form-input-width"
             v-model="queryParams.name"
-            placeholder="请输入分级名称"
+            :placeholder="td('dg.dataLevel.levelNamePlaceholder')"
             clearable
             @keyup.enter="handleQuery"
           />
         </el-form-item>
-        <el-form-item label="敏感等级" prop="sensitiveLevel">
+        <el-form-item :label="td('dg.dataLevel.sensitiveLevel')" prop="sensitiveLevel">
           <el-input
             class="el-form-input-width"
             v-model="queryParams.sensitiveLevel"
-            placeholder="请输入敏感等级"
+            :placeholder="td('dg.dataLevel.sensitiveLevelPlaceholder')"
             clearable
             @keyup.enter="handleQuery"
             @input="
@@ -93,26 +93,26 @@
             "
           />
         </el-form-item>
-        <el-form-item label="状态" prop="validFlag">
+        <el-form-item :label="td('common.texts.status')" prop="validFlag">
           <el-select
             class="el-form-input-width"
             v-model="queryParams.validFlag"
-            placeholder="请选择状态"
+            :placeholder="td('common.form.statusPlaceholder')"
             clearable
           >
-            <el-option label="启用" :value="true" />
-            <el-option label="禁用" :value="false" />
+            <el-option :label="td('dg.dataLevel.enabledLabel')" :value="true" />
+            <el-option :label="td('dg.dataLevel.disabledLabel')" :value="false" />
           </el-select>
         </el-form-item>
         <el-form-item class="search-btns">
           <el-button type="primary" plain @click="handleQuery">
-            <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+            <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
           </el-button>
           <el-button @click="resetQuery">
-            <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+            <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
           </el-button>
           <el-button type="primary" plain @click="handleAdd">
-            <i class="iconfont-mini icon-xinzeng mr5"></i>新增
+            <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('common.button.add') }}
           </el-button>
         </el-form-item>
       </el-form>
@@ -147,7 +147,7 @@
                     icon="View"
                     @click="handleDetail(item)"
                     v-hasPermi="['dg:dataleve:query']"
-                    >详情</el-button
+                    >{{ td('common.button.details') }}</el-button
                   >
                   <el-button
                     v-if="!item.colors"
@@ -158,7 +158,7 @@
                     :disabled="item.status == 1"
                     v-hasPermi="['dg:dataleve:edit']"
                     style="padding-right: 25px"
-                    >修改</el-button
+                    >{{ td('common.button.update') }}</el-button
                   >
                   <el-button
                     v-if="!item.colors"
@@ -169,18 +169,18 @@
                     @click="handleDelete(item)"
                     style="padding-right: 25px"
                     v-hasPermi="['dg:dataleve:remove']"
-                    >删除</el-button
+                    >{{ td('common.button.delete') }}</el-button
                   >
                 </div>
               </el-popover>
             </div>
             <div class="item-body">
               <div class="info-row">
-                <span class="info-label">敏感等级</span>
+                <span class="info-label">{{ td('dg.dataLevel.sensitiveLevel') }}</span>
                 <span class="info-value">{{ item.sensitiveLevel ?? "-" }}</span>
               </div>
               <div class="info-row">
-                <span class="info-label">更新人</span>
+                <span class="info-label">{{ td('common.texts.updatedBy') }}</span>
                 <span
                   class="info-value ellipsis"
                   :title="item.updateBy || item.updateUser || item.updateName"
@@ -190,7 +190,7 @@
                 >
               </div>
               <div class="info-row">
-                <span class="info-label">更新时间</span>
+                <span class="info-label">{{ td('common.texts.updatedTime') }}</span>
                 <span
                   class="info-value ellipsis"
                   :title="
@@ -205,7 +205,7 @@
                 >
               </div>
               <div class="info-row">
-                <span class="info-label">分级描述</span>
+                <span class="info-label">{{ td('dg.dataLevel.levelDesc') }}</span>
                 <span
                   class="info-value ellipsis"
                   :title="item.description || item.remark || item.levelDesc"
@@ -257,51 +257,51 @@
         label-width="110px"
         class="column-form"
       >
-        <el-form-item label="编号:" prop="id">
+        <el-form-item :label="td('common.texts.number') + ':'" prop="id">
           <div class="form-readonly">{{ form.id ?? "-" }}</div>
         </el-form-item>
-        <el-form-item label="分级名称" prop="name">
+        <el-form-item :label="td('dg.dataLevel.levelName')" prop="name">
           <div class="form-readonly">
             {{ form.name ?? form.levelName ?? "-" }}
           </div>
         </el-form-item>
-        <el-form-item label="分级缩写" prop="shortName">
+        <el-form-item :label="td('dg.dataLevel.levelAbbr')" prop="shortName">
           <div class="form-readonly">
             {{ form.shortName ?? form.levelCode ?? form.code ?? "-" }}
           </div>
         </el-form-item>
-        <el-form-item label="敏感等级" prop="sensitiveLevel">
+        <el-form-item :label="td('dg.dataLevel.sensitiveLevel')" prop="sensitiveLevel">
           <div class="form-readonly">{{ form.sensitiveLevel ?? "-" }}</div>
         </el-form-item>
 
-        <el-form-item label="状态" prop="validFlag">
-          <el-tag v-if="form.validFlag === true" type="primary">启用</el-tag>
+        <el-form-item :label="td('common.texts.status')" prop="validFlag">
+          <el-tag v-if="form.validFlag === true" type="primary">{{ td('dg.dataLevel.enabledLabel') }}</el-tag>
           <el-tag v-else-if="form.validFlag === false" type="danger"
-            >禁用</el-tag
+            >{{ td('dg.dataLevel.disabledLabel') }}</el-tag
           >
         </el-form-item>
-        <el-form-item label="描述" prop="description" class="row-full">
+        <el-form-item :label="td('common.texts.description')" prop="description" class="row-full">
           <div class="form-readonly textarea">
             {{ form.description || form.remark || form.levelDesc || "-" }}
           </div>
         </el-form-item>
-        <el-form-item label="备注" prop="remark" class="row-full">
+        <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full">
           <div class="form-readonly textarea">{{ form.remark ?? "-" }}</div>
         </el-form-item>
-        <el-form-item label="创建人" prop="createBy">
+        <el-form-item :label="td('common.texts.createdBy')" prop="createBy">
           <div class="form-readonly">{{ form.createBy ?? "-" }}</div>
         </el-form-item>
-        <el-form-item label="创建时间" prop="createTime">
+        <el-form-item :label="td('common.texts.createdTime')" prop="createTime">
           <div class="form-readonly">
             {{ parseTime(form.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
         </el-form-item>
-        <el-form-item label="更新人" prop="updateBy">
+        <el-form-item :label="td('common.texts.updatedBy')" prop="updateBy">
           <div class="form-readonly">
             {{ form.updateBy || form.updateUser || form.updateName || "-" }}
           </div>
         </el-form-item>
-        <el-form-item label="更新时间" prop="updateTime">
+        <el-form-item :label="td('common.texts.updatedTime')" prop="updateTime">
           <div class="form-readonly">
             {{
               parseTime(
@@ -314,7 +314,7 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="cancel">关 闭</el-button>
+          <el-button @click="cancel">{{ td('common.button.close') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -418,19 +418,19 @@ function cancel() {
 
 function handleAdd() {
   currentId.value = null;
-  title.value = "新增数据分级";
+  title.value = td('dg.dataLevel.addTitle');
   open.value = true;
 }
 
 function handleUpdate(row) {
   currentId.value = row.id;
-  title.value = "修改数据分级";
+  title.value = td('dg.dataLevel.editTitle');
   open.value = true;
 }
 
 function handleDetail(row) {
   resetForm();
-  title.value = "数据分级详情";
+  title.value = td('dg.dataLevel.detailTitle');
   getDataLevel(row.id).then((res) => {
     const data = res.data || {};
     form.value = {
@@ -448,11 +448,11 @@ function handleDelete(row) {
   if (!row?.id) return;
   proxy.$modal
     .confirm(
-      '是否确认删除数据分级"' + (row.levelName || row.name || row.id) + '"？'
+      td('dg.dataLevel.confirmDelete').replace('{name}', row.levelName || row.name || row.id)
     )
     .then(() => delDataLevel(row.id))
     .then(() => {
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
       getList();
     })
     .catch(() => {});

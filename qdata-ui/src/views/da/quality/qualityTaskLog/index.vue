@@ -35,12 +35,12 @@
         <div class="pagecont-top" v-show="showSearch">
             <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="75px"
                 v-show="showSearch" @submit.prevent>
-                <el-form-item label="任务名称" prop="name">
-                    <el-input class="el-form-input-width" v-model="queryParams.name" placeholder="请输入任务名称" clearable
+                <el-form-item :label="td('da.qualityTaskLog.taskName')" prop="name">
+                    <el-input class="el-form-input-width" v-model="queryParams.name" :placeholder="td('da.qualityTaskLog.taskNamePlaceholder')" clearable
                         @keyup.enter="handleQuery" />
                 </el-form-item>
-                <el-form-item label="执行状态" prop="successFlag">
-                    <el-select v-model="queryParams.successFlag" placeholder="请选择执行状态" clearable
+                <el-form-item :label="td('da.qualityTaskLog.executionStatus')" prop="successFlag">
+                    <el-select v-model="queryParams.successFlag" :placeholder="td('da.qualityTaskLog.executionStatusPlaceholder')" clearable
                         class="el-form-input-width">
                         <el-option v-for="dict in quality_log_success_flag" :key="dict.value" :label="dict.label"
                             :value="dict.value" />
@@ -48,10 +48,10 @@
                 </el-form-item>
                 <el-form-item>
                     <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                        <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                        <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
                     </el-button>
                     <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-                        <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                        <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
                     </el-button>
                 </el-form-item>
             </el-form>
@@ -65,44 +65,44 @@
             </div>
             <el-table stripe v-loading="loading" :data="DppQualityLogList" :default-sort="defaultSort"
                 @sort-change="handleSortChange">
-                <el-table-column v-if="getColumnVisibility(0)" label="编号" align="center" prop="id" width="80" />
-                <el-table-column v-if="getColumnVisibility(1)" label="任务名称" align="center" prop="name">
+                <el-table-column v-if="getColumnVisibility(0)" :label="td('da.qualityTaskLog.columnLabels.id')" align="center" prop="id" width="80" />
+                <el-table-column v-if="getColumnVisibility(1)" :label="td('da.qualityTaskLog.columnLabels.taskName')" align="center" prop="name">
                     <template #default="scope">
                         {{ scope.row.name || '-' }}
                     </template>
                 </el-table-column>
-                <el-table-column v-if="getColumnVisibility(2)" label="质量评分" align="center" prop="score"
+                <el-table-column v-if="getColumnVisibility(2)" :label="td('da.qualityTaskLog.columnLabels.qualityScore')" align="center" prop="score"
                     sortable="custom" column-key="score" :sort-orders="['descending', 'ascending']">
                     <template #default="scope">
                         {{ scope.row.score }}
                     </template>
                 </el-table-column>
-                <el-table-column v-if="getColumnVisibility(3)" label="问题数据" align="center" prop="problemData"
+                <el-table-column v-if="getColumnVisibility(3)" :label="td('da.qualityTaskLog.columnLabels.problemData')" align="center" prop="problemData"
                     :show-overflow-tooltip="{ effect: 'light' }" width="300">
                     <template #default="scope">
                         {{ scope.row.problemData || '-' }}
                     </template>
                 </el-table-column>
-                <el-table-column v-if="getColumnVisibility(4)" label="执行状态" align="center" prop="successFlag">
+                <el-table-column v-if="getColumnVisibility(4)" :label="td('da.qualityTaskLog.columnLabels.executionStatus')" align="center" prop="successFlag">
                     <template #default="scope">
                         <dict-tag :options="quality_log_success_flag" :value="scope.row.successFlag" />
                     </template>
                 </el-table-column>
-                <el-table-column v-if="getColumnVisibility(5)" label="开始时间" align="center" prop="startTime" width="160"
+                <el-table-column v-if="getColumnVisibility(5)" :label="td('da.qualityTaskLog.columnLabels.startTime')" align="center" prop="startTime" width="160"
                     sortable="custom" column-key="start_time" :sort-orders="['descending', 'ascending']"
                     :show-overflow-tooltip="{ effect: 'light' }">
                     <template #default="scope">
                         <span>{{ parseTime(scope.row.startTime, '{y}-{m}-{d} {h}:{i}') }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column v-if="getColumnVisibility(6)" label="结束时间" align="center" prop="endTime" width="160"
+                <el-table-column v-if="getColumnVisibility(6)" :label="td('da.qualityTaskLog.columnLabels.endTime')" align="center" prop="endTime" width="160"
                     sortable="custom" column-key="end_time" :sort-orders="['descending', 'ascending']"
                     :show-overflow-tooltip="{ effect: 'light' }">
                     <template #default="scope">
                         <span>{{ parseTime(scope.row.endTime, '{y}-{m}-{d} {h}:{i}') }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" v-if="getColumnVisibility(7)" align="center"
+                <el-table-column :label="td('common.texts.operation')" v-if="getColumnVisibility(7)" align="center"
                     class-name="small-padding fixed-width" fixed="right" width="240">
                     <template #default="scope">
                         <el-button link type="primary" icon="view" @click="
@@ -110,7 +110,7 @@
                                 ...scope.row,
                                 info: true,
                             })
-                            " v-hasPermi="['dp:qualityLog:edit']">详情</el-button>
+                            " v-hasPermi="['dp:qualityLog:edit']">{{ td('common.button.details') }}</el-button>
                         <!-- <el-button link type="primary" style="padding-left: 14px" @click="sendMessage(scope.row)"
                             v-hasPermi="['dp:qualityLog:edit']" :disabled="scope.row.status == 1">
                             <svg-icon iconClass="damessage" style="margin-right: 6px;" />通知处理
@@ -233,14 +233,14 @@ function routeTo(link, row) {
 
 async function sendMessage(row) {
     if (!row?.id) {
-        proxy.$modal.msgWarning("无效的任务id，请刷新后重试");
+        proxy.$modal.msgWarning(td('da.qualityTaskLog.invalidTaskId'));
         return;
     }
     const res = await doSendMessage(row.id);
     if (Number(res?.code) === 200) {
-        proxy.$modal.msgSuccess("发送成功");
+        proxy.$modal.msgSuccess(td('da.qualityTaskLog.sendSuccess'));
     } else {
-        proxy.$modal.msgWarning(res?.msg || "发送失败");
+        proxy.$modal.msgWarning(res?.msg || td('da.qualityTaskLog.sendFailed'));
     }
 }
 

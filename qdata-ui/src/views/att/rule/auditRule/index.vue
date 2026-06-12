@@ -377,7 +377,7 @@ const updateResize = (event) => {
 const processedData = computed(() => {
   return [
     {
-      name: "质量维度",
+      name: td('att.auditRule.treeRootName'),
       id: "",
       children: Array.isArray(att_rule_audit_q_dimension.value)
         ? att_rule_audit_q_dimension.value.map((item) => ({
@@ -452,12 +452,12 @@ const data = reactive({
     code: "",
   },
   rules: {
-    name: [{ required: true, message: "规则名称不能为空", trigger: "blur" }],
+    name: [{ required: true, message: td('att.common.ruleNameRequired'), trigger: "blur" }],
     qualityDim: [
-      { required: true, message: "质量维度不能为空", trigger: "change" },
+      { required: true, message: td('att.auditRule.qualityDimRequired'), trigger: "change" },
     ],
-    // type: [{ required: true, message: '规则类型不能为空', trigger: 'change' }],
-    code: [{ required: true, message: "编号不能为空", trigger: "change" }],
+    // type: [{ required: true, message: td('att.common.ruleTypeRequired'), trigger: 'change' }],
+    code: [{ required: true, message: td('att.common.codeRequired'), trigger: "change" }],
     // level: [{ required: true, message: '规则级别不能为空', trigger: 'change' }]
   },
 });
@@ -541,7 +541,7 @@ function handleAdd() {
   form.value.type = "5";
   form.value.level = "1";
   open.value = true;
-  title.value = "新增稽查规则";
+  title.value = td('att.auditRule.title.add');
 }
 
 /** 修改按钮操作 */
@@ -554,7 +554,7 @@ function handleUpdate(row) {
     delete response.data.updateTime;
     form.value = response.data;
     open.value = true;
-    title.value = "修改稽查规则";
+    title.value = td('att.auditRule.title.edit');
   });
 }
 
@@ -565,7 +565,7 @@ function handleDetail(row) {
   getAttAuditRule(_id).then((response) => {
     form.value = response.data;
     openDetail.value = true;
-    title.value = "稽查规则详情";
+    title.value = td('att.auditRule.title.detail');
   });
 }
 
@@ -576,7 +576,7 @@ function submitForm() {
       if (form.value.id != null) {
         updateAttAuditRule(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("修改成功");
+            proxy.$modal.msgSuccess(td('common.message.editSuccess'));
             open.value = false;
             getList();
           })
@@ -584,7 +584,7 @@ function submitForm() {
       } else {
         addAttAuditRule(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("新增成功");
+            proxy.$modal.msgSuccess(td('common.message.addSuccess'));
             open.value = false;
             getList();
           })
@@ -598,13 +598,13 @@ function submitForm() {
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
-    .confirm('是否确认删除稽查规则编号为"' + _ids + '"的数据项？')
+    .confirm(td('att.auditRule.deleteConfirm').replace('{ids}', _ids))
     .then(function () {
       return delAttAuditRule(_ids);
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
     })
     .catch(() => {});
 }
@@ -623,7 +623,7 @@ function handleExport() {
 /** ---------------- 导入相关操作 -----------------**/
 /** 导入按钮操作 */
 function handleImport() {
-  upload.title = "稽查规则导入";
+  upload.title = td('att.auditRule.importTitle');
   upload.open = true;
 }
 
@@ -655,7 +655,7 @@ const handleFileSuccess = (response, file, fileList) => {
     "<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +
       response.msg +
       "</div>",
-    "导入结果",
+    td('att.common.importResult'),
     { dangerouslyUseHTMLString: true }
   );
   getList();

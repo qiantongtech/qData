@@ -35,44 +35,44 @@
   <el-dialog v-model="visibleDialog" draggable class="dialog" :title="title" style="width: 1200px" destroy-on-close>
     <el-table stripe height="380px" v-loading="loading" :data="jobLogList" :default-sort="defaultSort"
       @sort-change="handleSortChange">
-      <el-table-column label="编号" align="center" prop="id" width="80" />
-      <el-table-column label="任务名称" align="center" prop="name">
+      <el-table-column :label="td('common.texts.number')" align="center" prop="id" width="80" />
+      <el-table-column :label="td('da.qualityTaskLog.columnLabels.taskName')" align="center" prop="name">
         <template #default="scope">
           {{ scope.row.name || '-' }}
         </template>
       </el-table-column>
-      <el-table-column label="质量评分" align="center" prop="score" width="80">
+      <el-table-column :label="td('da.qualityTaskLog.columnLabels.qualityScore')" align="center" prop="score" width="80">
         <template #default="scope">
           {{ scope.row.score || '-' }}
         </template>
       </el-table-column>
-      <el-table-column label="执行状态" align="center" prop="successFlag">
+      <el-table-column :label="td('da.qualityTaskLog.columnLabels.executionStatus')" align="center" prop="successFlag">
         <template #default="scope">
           <dict-tag :options="quality_log_success_flag" :value="scope.row.successFlag" />
 
         </template>
       </el-table-column>
-      <el-table-column label="问题数据" align="center" prop="problemData">
+      <el-table-column :label="td('da.qualityTaskLog.columnLabels.problemData')" align="center" prop="problemData">
         <template #default="scope">
           {{ scope.row.problemData || '-' }}
         </template>
       </el-table-column>
-      <el-table-column label="开始时间" align="center" prop="startTime" width="160" sortable="custom"
+      <el-table-column :label="td('da.qualityTaskLog.columnLabels.startTime')" align="center" prop="startTime" width="160" sortable="custom"
         column-key="start_time" :sort-orders="['descending', 'ascending']">
         <template #default="scope">
           <span>{{ parseTime(scope.row.startTime, '{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="结束时间" align="center" prop="endTime" width="160" sortable="custom" column-key="end_time"
+      <el-table-column :label="td('da.qualityTaskLog.columnLabels.endTime')" align="center" prop="endTime" width="160" sortable="custom" column-key="end_time"
         :sort-orders="['descending', 'ascending']">
         <template #default="scope">
           <span>{{ parseTime(scope.row.endTime, '{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" width="200">
+      <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="200">
         <template #default="scope">
           <el-button link type="primary" icon="View" @click="logDetailCatList(scope.row)"
-            v-hasPermi="['monitor:job:query']">查看</el-button>
+            v-hasPermi="['monitor:job:query']">{{ td('da.qualityTask.instanceComponent.view') }}</el-button>
           <!-- <el-button link type="warning" @click="handleExport(scope.row)" @mousedown="(e) => e.preventDefault()">
             <i class="iconfont-mini icon-download-line mr5"></i>下载
           </el-button> -->
@@ -81,7 +81,7 @@
               ...scope.row,
               info: true,
             })
-            ">详情</el-button>
+            ">{{ td('common.button.details') }}</el-button>
         </template>
       </el-table-column>
 
@@ -102,7 +102,7 @@
 </template> -->
   </el-dialog>
   <!-- 调度日志详细 -->
-  <el-dialog title="查看日志" v-model="open" width="800px" :append-to="$refs['app-container']" draggable destroy-on-close>
+  <el-dialog :title="td('da.qualityTask.instanceComponent.viewLogTitle')" v-model="open" width="800px" :append-to="$refs['app-container']" draggable destroy-on-close>
     <div v-html="formattedText"></div>
     <!-- <template #footer>
             <div class="dialog-footer">
@@ -131,7 +131,7 @@ import {
 } from "@/api/da/quality/qualityTask";;
 const props = defineProps({
   visible: { type: Boolean, default: true },
-  title: { type: String, default: '表单标题' },
+  title: { type: String, default: td('da.qualityTask.instanceComponent.formTitle') },
   data: { type: Object, default: () => ({}) }
 });
 const open = ref(false);
@@ -178,7 +178,7 @@ function routeTo(link, row) {
 async function logDetailCatList(row) {
   try {
     if (!row.path) {
-      proxy.$message.warning('操作失败，未查询到日志');
+      proxy.$message.warning(td('da.qualityTask.instanceComponent.noLogMsg'));
       return;
     }
     form.value = {};

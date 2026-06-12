@@ -300,11 +300,11 @@
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-form-item :label="t('common.texts.remark')" prop="remark">
+            <el-form-item :label="td('common.texts.remark')" prop="remark">
               <el-input
                 v-model="form.remark"
                 type="textarea"
-                :placeholder="t('common.form.remarkPlaceholder')"
+                :placeholder="td('common.form.remarkPlaceholder')"
               />
             </el-form-item>
           </el-form>

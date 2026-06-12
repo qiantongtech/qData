@@ -36,7 +36,7 @@
       <DeptTree
         :deptOptions="processedData"
         :leftWidth="leftWidth"
-        :placeholder="'请输入规则类型'"
+        :placeholder="td('da.qualityTask.ruleBase.ruleTypePlaceholder')"
         @node-click="handleNodeClick"
         ref="DeptTreeRef"
         :default-expand="true"
@@ -121,7 +121,7 @@ const processedData = ref([]);
 processedData.value = computed(() => {
   return [
     {
-      name: "质量维度",
+      name: td('da.qualityTask.ruleBase.qualityDimension'),
       children: Array.isArray(att_rule_audit_q_dimension.value)
         ? att_rule_audit_q_dimension.value.map((item) => ({
             name: item.label,
@@ -170,7 +170,7 @@ async function fetchRulesByDimension() {
 
 function cardClick(data) {
   if (data.validFlag == false) {
-    return ElMessage.info("开发中");
+    return ElMessage.info(td('da.qualityTask.ruleBase.developing'));
   }
   selectedCard.value = data;
   emit("card-click", data);

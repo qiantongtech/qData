@@ -36,33 +36,33 @@
     <GuideTip tip-id="dp/dpDataElem.list" />
 
     <el-container style="90%">
-      <DeptTree :deptOptions="deptOptions" :leftWidth="leftWidth" :placeholder="'请输入数据元类目'"
+      <DeptTree :deptOptions="deptOptions" :leftWidth="leftWidth" :placeholder="td('dp.dataElem.treePlaceholder')"
         @node-click="handleNodeClick" />
 
       <el-main>
         <div class="pagecont-top" v-show="showSearch">
           <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="75px"
             v-show="showSearch" @submit.prevent>
-            <el-form-item label="中文名称" prop="name">
-              <el-input class="el-form-input-width" v-model="queryParams.name" placeholder="请输入中文名称" clearable
+            <el-form-item :label="td('dp.dataElem.nameZh')" prop="name">
+              <el-input class="el-form-input-width" v-model="queryParams.name" :placeholder="td('dp.dataElem.nameZhPlaceholder')" clearable
                 @keyup.enter="handleQuery" />
             </el-form-item>
-            <el-form-item label="英文名称" prop="engName">
-              <el-input class="el-form-input-width" v-model="queryParams.engName" placeholder="请输入英文名称" clearable
+            <el-form-item :label="td('dp.dataElem.nameEn')" prop="engName">
+              <el-input class="el-form-input-width" v-model="queryParams.engName" :placeholder="td('dp.dataElem.nameEnPlaceholder')" clearable
                 @keyup.enter="handleQuery" />
             </el-form-item>
-            <el-form-item label="类型" prop="type">
-              <el-select class="el-form-input-width" v-model="queryParams.type" placeholder="请选择类型">
+            <el-form-item :label="td('dp.dataElem.type')" prop="type">
+              <el-select class="el-form-input-width" v-model="queryParams.type" :placeholder="td('dp.dataElem.typePlaceholder')">
                 <el-option v-for="dict in dp_data_elem_code_type" :key="dict.value" :label="dict.label"
                   :value="dict.value"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item>
               <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('dp.common.query') }}
               </el-button>
               <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-                <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('dp.common.reset') }}
               </el-button>
             </el-form-item>
           </el-form>
@@ -73,33 +73,9 @@
               <el-col :span="1.5">
                 <el-button type="primary" plain @click="handleAdd" v-hasPermi="['dp:dataElem:add']"
                   @mousedown="(e) => e.preventDefault()">
-                  <i class="iconfont-mini icon-xinzeng mr5"></i>新增
+                  <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('dp.common.add') }}
                 </el-button>
               </el-col>
-              <!-- <el-col :span="1.5">
-                <el-button type="primary" plain :disabled="single" @click="handleUpdate"
-                  v-hasPermi="['dp:dataElem:edit']" @mousedown="(e) => e.preventDefault()">
-                  <i class="iconfont-mini icon-xiugai--copy mr5"></i>修改
-                </el-button>
-              </el-col>
-              <el-col :span="1.5">
-                <el-button type="danger" plain :disabled="multiple" @click="handleDelete"
-                  v-hasPermi="['dp:dataElem:remove']" @mousedown="(e) => e.preventDefault()">
-                  <i class="iconfont-mini icon-shanchu-huise mr5"></i>删除
-                </el-button>
-              </el-col> -->
-              <!--          <el-col :span="1.5">-->
-              <!--            <el-button type="info" plain @click="handleImport" v-hasPermi="['dp:dataElem:export']"-->
-              <!--                       @mousedown="(e) => e.preventDefault()">-->
-              <!--              <i class="iconfont-mini icon-upload-cloud-line mr5"></i>导入-->
-              <!--            </el-button>-->
-              <!--          </el-col>-->
-              <!--          <el-col :span="1.5">-->
-              <!--            <el-button type="warning" plain @click="handleExport" v-hasPermi="['dp:dataElem:export']"-->
-              <!--                       @mousedown="(e) => e.preventDefault()">-->
-              <!--              <i class="iconfont-mini icon-download-line mr5"></i>导出-->
-              <!--            </el-button>-->
-              <!--          </el-col>-->
             </el-row>
             <div class="justify-end top-right-btn">
               <right-toolbar v-model:showSearch="showSearch" @queryTable="getList" :columns="columns"></right-toolbar>
@@ -107,50 +83,50 @@
           </div>
           <el-table stripe v-loading="loading" :data="dpDataElemList" @selection-change="handleSelectionChange"
             :default-sort="defaultSort" @sort-change="handleSortChange">
-            <el-table-column v-if="getColumnVisibility(0)" label="编号" align="left" prop="id" width="50" />
-            <el-table-column v-if="getColumnVisibility(1)" label="中文名称" :show-overflow-tooltip="{ effect: 'light' }"
+            <el-table-column v-if="getColumnVisibility(0)" :label="td('common.texts.number')" align="left" prop="id" width="50" />
+            <el-table-column v-if="getColumnVisibility(1)" :label="td('dp.dataElem.nameZh')" :show-overflow-tooltip="{ effect: 'light' }"
               align="left" prop="name" width="200">
               <template #default="scope">
                 {{ scope.row.name || "-" }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(2)" label="英文名称" :show-overflow-tooltip="{ effect: 'light' }"
+            <el-table-column v-if="getColumnVisibility(2)" :label="td('dp.dataElem.nameEn')" :show-overflow-tooltip="{ effect: 'light' }"
               align="left" prop="engName" width="200">
               <template #default="scope">
                 {{ scope.row.engName || "-" }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(7)" width="240" label="描述" align="left" prop="description"
+            <el-table-column v-if="getColumnVisibility(7)" width="240" :label="td('common.texts.description')" align="left" prop="description"
               :show-overflow-tooltip="{ effect: 'light' }">
               <template #default="scope">
                 {{ scope.row.description || "-" }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(3)" width="100" label="类型" align="center" prop="type">
+            <el-table-column v-if="getColumnVisibility(3)" width="100" :label="td('dp.dataElem.type')" align="center" prop="type">
               <template #default="scope">
                 <dict-tag :options="dp_data_elem_code_type" :value="scope.row.type" />
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(4)" label="数据元类目" width="120"
+            <el-table-column v-if="getColumnVisibility(4)" :label="td('dp.dataElem.catCode')" width="120"
               :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="catCode">
               <template #default="scope">
                 {{ scope.row.catName || "-" }}
               </template>
             </el-table-column>
 
-            <el-table-column v-if="getColumnVisibility(10)" label="创建人" :show-overflow-tooltip="{ effect: 'light' }"
+            <el-table-column v-if="getColumnVisibility(10)" :label="td('common.texts.createdBy')" :show-overflow-tooltip="{ effect: 'light' }"
               align="left" prop="createBy" width="140">
               <template #default="scope">
                 {{ scope.row.createBy || "-" }}
               </template>
             </el-table-column>
             <!--  sortable="custom" column-key="create_time" :sort-orders="['descending', 'ascending']" -->
-            <el-table-column v-if="getColumnVisibility(11)" label="创建时间" align="left" prop="createTime" width="150">
+            <el-table-column v-if="getColumnVisibility(11)" :label="td('common.texts.createdTime')" align="left" prop="createTime" width="150">
               <template #default="scope"> <span>{{ parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}") || "-"
                   }}</span>
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(5)" width="80" label="状态" align="left" prop="status">
+            <el-table-column v-if="getColumnVisibility(5)" width="80" :label="td('common.texts.status')" align="left" prop="status">
               <template #default="scope">
                 <el-switch v-model="scope.row.status" active-color="#13ce66" inactive-color="#ff4949" active-value="1"
                   inactive-value="0" @change="
@@ -158,22 +134,22 @@
                   " />
               </template>
             </el-table-column>
-            <el-table-column label="备注" align="left" prop="remark" :show-overflow-tooltip="{ effect: 'light' }"
+            <el-table-column :label="td('common.texts.remark')" align="left" prop="remark" :show-overflow-tooltip="{ effect: 'light' }"
               v-if="getColumnVisibility(15)">
               <template #default="scope">
                 {{ scope.row.remark || "-" }}
               </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" width="200">
+            <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="200">
               <template #default="scope">
                 <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-                  v-hasPermi="['dp:dataElem:edit']">修改
+                  v-hasPermi="['dp:dataElem:edit']">{{ td('dp.common.edit') }}
                 </el-button>
                 <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)" :disabled="scope.row.status === '1'"
-                  v-hasPermi="['dp:dataElem:remove']">删除
+                  v-hasPermi="['dp:dataElem:remove']">{{ td('dp.common.delete') }}
                 </el-button>
                 <el-button link type="primary" icon="view" @click="handleDetail(scope.row)"
-                  v-hasPermi="['dp:dataElem:edit']">详情
+                  v-hasPermi="['dp:dataElem:edit']">{{ td('dp.common.details') }}
                 </el-button>
               </template>
             </el-table-column>
@@ -202,46 +178,46 @@
       <el-form ref="dpDataElemRef" :model="form" :rules="rules" label-width="100px" @submit.prevent>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="中文名称" prop="name">
-              <el-input v-model="form.name" placeholder="请输入中文名称" />
+            <el-form-item :label="td('dp.dataElem.nameZh')" prop="name">
+              <el-input v-model="form.name" :placeholder="td('dp.dataElem.nameZhPlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="英文名称" prop="engName">
-              <el-input v-model="form.engName" placeholder="请输入英文名称" />
+            <el-form-item :label="td('dp.dataElem.nameEn')" prop="engName">
+              <el-input v-model="form.engName" :placeholder="td('dp.dataElem.nameEnPlaceholder')" />
             </el-form-item>
           </el-col>
         </el-row>
 
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="字段类型" prop="columnType">
-              <el-select v-model="form.columnType" placeholder="请选择字段类型">
+            <el-form-item :label="td('dp.dataElem.columnType')" prop="columnType">
+              <el-select v-model="form.columnType" :placeholder="td('dp.dataElem.columnTypePlaceholder')">
                 <el-option v-for="dict in column_type" :key="dict.value" :label="dict.label"
                   :value="dict.value"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="数据元类目" prop="catCode">
+            <el-form-item :label="td('dp.dataElem.catCode')" prop="catCode">
               <el-tree-select filterable v-model="form.catCode" :data="deptOptions"
-                :props="{ value: 'code', label: 'name', children: 'children' }" value-key="id" placeholder="请选择数据元类目"
+                :props="{ value: 'code', label: 'name', children: 'children' }" value-key="id" :placeholder="td('dp.dataElem.catCodePlaceholder')"
                 check-strictly />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="描述" prop="description">
-              <el-input v-model="form.description" type="textarea" placeholder="请输入描述" />
+            <el-form-item :label="td('common.texts.description')" prop="description">
+              <el-input v-model="form.description" type="textarea" :placeholder="td('common.form.descriptionPlaceholder')" />
             </el-form-item>
           </el-col>
         </el-row>
 
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="标准类型" prop="description">
-              <el-select class="el-form-input-width" v-model="form.documentType" placeholder="请选择类型" clearable
+            <el-form-item :label="td('dp.dataElem.documentType')" prop="description">
+              <el-select class="el-form-input-width" v-model="form.documentType" :placeholder="td('dp.dataElem.documentTypePlaceholder')" clearable
                 @change="fetchSecondLevelDocs" style="width: 100%;">
                 <el-option v-for="dict in dp_document_type" :key="dict.value" :label="dict.label"
                   :value="dict.value"></el-option>
@@ -249,8 +225,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="标准登记" prop="documentId">
-              <el-select class="el-form-input-width" v-model="form.documentId" placeholder="请选择标准进行绑定"
+            <el-form-item :label="td('dp.dataElem.documentId')" prop="documentId">
+              <el-select class="el-form-input-width" v-model="form.documentId" :placeholder="td('dp.dataElem.documentIdPlaceholder')"
                 style="width: 100%;">
                 <el-option v-for="doc in secondLevelDocs" :key="doc.value" :label="doc.label" :value="doc.value">
                 </el-option>
@@ -260,9 +236,9 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="负责人" prop="personCharge">
+            <el-form-item :label="td('dp.dataElem.personCharge')" prop="personCharge">
               <!--                <el-input v-model="form.managerId" placeholder="请选择负责人" />-->
-              <el-select v-model="form.personCharge" @change="handleChange" filterable placeholder="请选择">
+              <el-select v-model="form.personCharge" @change="handleChange" filterable :placeholder="td('dp.dataElem.personChargePlaceholder')">
                 <el-option v-for="item in managerOptions" :key="String(item.userId)" :label="item.nickName"
                   :value="item.userId">
                 </el-option>
@@ -270,14 +246,14 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="联系电话" prop="contactNumber">
-              <el-input disabled v-model="form.contactNumber" placeholder="请输入联系电话" />
+            <el-form-item :label="td('dp.dataElem.contactNumber')" prop="contactNumber">
+              <el-input disabled v-model="form.contactNumber" :placeholder="td('dp.dataElem.contactNumberPlaceholder')" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="类型" prop="type">
+            <el-form-item :label="td('dp.dataElem.type')" prop="type">
               <el-radio-group v-model="form.type" :disabled="form.id">
                 <el-radio v-for="dict in dp_data_elem_code_type" :key="dict.value" :label="dict.value">{{ dict.label }}
                 </el-radio>
@@ -285,7 +261,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="状态" prop="status">
+            <el-form-item :label="td('common.texts.status')" prop="status">
               <el-radio-group v-model="form.status">
                 <el-radio v-for="dict in sys_disable" :key="dict.value" :label="dict.value">{{ dict.label }}
                 </el-radio>
@@ -295,16 +271,16 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="备注">
-              <el-input type="textarea" placeholder="请输入备注" v-model="form.remark" :min-height="192" />
+            <el-form-item :label="td('common.texts.remark')">
+              <el-input type="textarea" :placeholder="td('common.form.remarkPlaceholder')" v-model="form.remark" :min-height="192" />
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="cancel">取 消</el-button>
-          <el-button type="primary" size="mini" @click="submitForm">确 定</el-button>
+          <el-button size="mini" @click="cancel">{{ td('dp.common.cancel') }}</el-button>
+          <el-button type="primary" size="mini" @click="submitForm">{{ td('dp.common.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -333,16 +309,12 @@
       </el-upload>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="upload.open = false">取 消</el-button>
-          <el-button type="primary" @click="submitFileForm">确 定</el-button>
+          <el-button @click="upload.open = false">{{ td('dp.common.cancel') }}</el-button>
+          <el-button type="primary" @click="submitFileForm">{{ td('dp.common.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
 
-    <!--        &lt;!&ndash;数据元字段详情&ndash;&gt;-->
-    <!--        <data-elem-detail-dialog ref="detailDialog" />-->
-    <!--        &lt;!&ndash;数据元代码详情&ndash;&gt;-->
-    <!--        <data-elem-code-detail-dialog ref="detailCodeDialog" />-->
   </div>
 </template>
 
@@ -375,10 +347,6 @@ const deptOptions = ref(undefined);
 const leftWidth = ref(300); // 初始左侧宽度
 const isResizing = ref(false); // 判断是否正在拖拽
 let startX = 0; // 鼠标按下时的初始位置// 初始左侧宽度
-/** 类型字典翻译 */
-// function typeFormat(row) {
-//   return proxy.selectDictLabel(dp_data_elem_code_type.value, row.type);
-// }
 
 const dpDataElemList = ref([]);
 const dpDataElemRuleRelList = ref([]);
@@ -397,7 +365,7 @@ const columns = ref([
   { key: 6, label: "描述", visible: true },
 ]);
 let secondLevelDocs = ref([]);
-const btnloading = ref(false); // 🔹 loading 状态
+const btnloading = ref(false); // loading 状态
 
 const fetchSecondLevelDocs = async (type, preserveSelection = false) => {
   if (!type) {
@@ -479,45 +447,19 @@ const data = reactive({
     description: "",
   },
   rules: {
-    name: [{ required: true, message: "中文名称不能为空", trigger: "blur" }],
+    name: [{ required: true, message: td('dp.dataElem.nameZhRequired'), trigger: "blur" }],
     engName: [
-      { required: true, message: "英文名称不能为空", trigger: "blur" },
+      { required: true, message: td('dp.dataElem.nameEnRequired'), trigger: "blur" },
       {
         pattern: /^[a-zA-Z_]+$/,
-        message: "只能包含英文字母和下划线",
+        message: td('dp.dataElem.nameEnPattern'),
         trigger: "blur",
       },
     ],
-    catCode: [{ required: true, message: "数据元类目不能为空", trigger: "blur" }],
-    // status: [{ required: true, message: "状态不能为空", trigger: "change" }],
-    // type: [{ required: true, message: "类型不能为空", trigger: "change" }],
+    catCode: [{ required: true, message: td('dp.dataElem.catCodeRequired'), trigger: "blur" }],
     columnType: [
-      { required: true, message: "字段类型不能为空", trigger: "change" },
+      { required: true, message: td('dp.dataElem.columnTypeRequired'), trigger: "change" },
     ],
-    // documentType: [
-    //   {
-    //     validator: (rule, value, callback) => {
-    //       if (value && !form.value.documentId) {
-    //         callback(new Error('请选择标准登记'));
-    //       } else {
-    //         callback();
-    //       }
-    //     },
-    //     trigger: 'change'
-    //   }
-    // ],
-    // documentId: [
-    //   {
-    //     validator: (rule, value, callback) => {
-    //       if (form.value.documentType && !value) {
-    //         callback(new Error('请选择标准登记'));
-    //       } else {
-    //         callback();
-    //       }
-    //     },
-    //     trigger: 'change'
-    //   }
-    // ]
   },
 });
 
@@ -634,7 +576,7 @@ function getDeptTree() {
     deptOptions.value = proxy.handleTree(response.data, "id", "parentId");
     deptOptions.value = [
       {
-        name: "数据元类目",
+        name: td('dp.dataElem.treeRootName'),
         value: "",
         id: 0,
         children: deptOptions.value,
@@ -649,7 +591,7 @@ function handleAdd() {
     form.value.catCode = queryParams.value.catCode;
   }
   open.value = true;
-  title.value = "新增数据元";
+  title.value = td('dp.dataElem.addTitle');
 }
 function handleUpdate(row) {
   reset();
@@ -667,7 +609,7 @@ function handleUpdate(row) {
     fetchSecondLevelDocs(form.value.documentType, true);
 
     open.value = true;
-    title.value = "修改数据元";
+    title.value = td('dp.dataElem.editTitle');
   });
 }
 
@@ -688,7 +630,7 @@ function submitForm() {
       if (form.value.id != null) {
         updateDpDataElem({ ...form.value, documentId: form.value.documentId || -1 })
           .then((response) => {
-            proxy.$modal.msgSuccess("修改成功");
+            proxy.$modal.msgSuccess(td('common.message.editSuccess'));
             open.value = false;
             getList();
           })
@@ -696,7 +638,7 @@ function submitForm() {
       } else {
         addDpDataElem({ ...form.value, documentId: form.value.documentId || -1 })
           .then((response) => {
-            proxy.$modal.msgSuccess("新增成功");
+            proxy.$modal.msgSuccess(td('common.message.addSuccess'));
             open.value = false;
             getList();
           })
@@ -710,13 +652,13 @@ function submitForm() {
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
-    .confirm('是否确认删除数据元编号为"' + _ids + '"的数据项？')
+    .confirm(td('dp.dataElem.confirmDelete').replace('{id}', _ids))
     .then(function () {
       return delDpDataElem(_ids);
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
     })
     .catch(() => { });
 }
@@ -739,7 +681,7 @@ function handleAddDpDataElemRuleRel() {
 /** 数据元数据规则关联信息删除按钮操作 */
 function handleDeleteDpDataElemRuleRel() {
   if (checkedDpDataElemRuleRel.value.length == 0) {
-    proxy.$modal.msgWarning("未选择要删除的数据元数据规则关联信息，请选择后重试");
+    proxy.$modal.msgWarning(td('dp.dataElem.selectToDeleteWarning'));
   } else {
     const dpDataElemRuleRels = dpDataElemRuleRelList.value;
     const checkedDpDataElemRuleRels = checkedDpDataElemRuleRel.value;
@@ -768,7 +710,7 @@ function handleExport() {
 /** ---------------- 导入相关操作 -----------------**/
 /** 导入按钮操作 */
 function handleImport() {
-  upload.title = "数据元导入";
+  upload.title = td('dp.dataElem.importTitle');
   upload.open = true;
 }
 
@@ -800,7 +742,7 @@ const handleFileSuccess = (response, file, fileList) => {
     "<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +
     response.msg +
     "</div>",
-    "导入结果",
+    td('dp.dataElem.importResult'),
     { dangerouslyUseHTMLString: true }
   );
   getList();
@@ -808,32 +750,18 @@ const handleFileSuccess = (response, file, fileList) => {
 
 /** 启用禁用开关 */
 function handleStatusChange(id, row, e) {
-  const text = e === "1" ? "启用" : "禁用";
+  const text = e === "1" ? td('dp.dataElem.enableText') : td('dp.dataElem.disableText');
   proxy.$modal
-    .confirm('确认要"' + text + '","' + row.name + '"数据元吗？')
+    .confirm(td('dp.dataElem.confirmStatusChange').replace('{text}', text).replace('{name}', row.name))
     .then(function () {
       updateStatusDpDataElem(id, row.status).then((response) => {
-        proxy.$modal.msgSuccess("操作成功");
+        proxy.$modal.msgSuccess(td('common.message.operationSuccess'));
       });
     })
     .catch(function () {
       row.status = row.status === "1" ? "0" : "1";
     });
 }
-// function handleStatusChange(row) {
-//   let text = row.status === "0" ? "启用" : "停用";
-//   proxy.$modal
-//     .confirm('确认要"' + text + '""' + row.roleName + '"角色吗?')
-//     .then(function () {
-//       return changeRoleStatus(row.roleId, row.status);
-//     })
-//     .then(() => {
-//       proxy.$modal.msgSuccess(text + "成功");
-//     })
-//     .catch(function () {
-//       row.status = row.status === "0" ? "1" : "0";
-//     });
-// }
 /** ---------------------------------**/
 
 function routeTo(link, row) {

@@ -39,7 +39,7 @@
         ref="DeptTreeRef"
         type="asset"
         :deptOptions="deptOptions"
-        :placeholder="'请输入分层/分域/主题名称'"
+        :placeholder="td('da.asset.deptTreePlaceholder')"
         @node-click="handleNodeClick"
       />
 
@@ -54,11 +54,11 @@
             v-show="showSearch"
             @submit.prevent
           >
-            <el-form-item label="资产类型" prop="status">
+            <el-form-item :label="td('da.asset.assetType')" prop="status">
               <el-select
                 style="width: 166px"
                 v-model="queryParams.type"
-                placeholder="请选择资产类型"
+                :placeholder="td('da.asset.assetTypePlaceholder')"
                 clearable
               >
                 <el-option
@@ -69,20 +69,20 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item label="资产名称" prop="name">
+            <el-form-item :label="td('da.asset.assetName')" prop="name">
               <el-input
                 style="width: 166px"
                 v-model="queryParams.name"
-                placeholder="请输入资产名称"
+                :placeholder="td('da.asset.assetNamePlaceholder')"
                 clearable
                 @keyup.enter="handleQuery"
               />
             </el-form-item>
-            <el-form-item label="发布状态" prop="status">
+            <el-form-item :label="td('da.asset.publishStatus')" prop="status">
               <el-select
                 style="width: 166px"
                 v-model="queryParams.status"
-                placeholder="请选择发布状态"
+                :placeholder="td('da.asset.publishStatusPlaceholder')"
                 clearable
               >
                 <el-option
@@ -100,13 +100,13 @@
                 @click="handleQuery"
                 @mousedown="(e) => e.preventDefault()"
               >
-                <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
               </el-button>
               <el-button
                 @click="resetQuery"
                 @mousedown="(e) => e.preventDefault()"
               >
-                <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
               </el-button>
               <el-dropdown
                 @command="handleAdd"
@@ -119,7 +119,7 @@
               >
                 <el-button type="primary" plain>
                   <el-icon><Plus /></el-icon>
-                  <span>注册</span>
+                  <span>{{ td('da.asset.register') }}</span>
                   <div class="divider"></div>
                   <el-icon
                     class="arrow-icon el-icon--right"
@@ -189,13 +189,13 @@
                       <span>{{ btn.name }}</span>
                     </div>
                   </div>
-                  <div class="title-tag" v-if="!unregistered(item)">未注册</div>
+                  <div class="title-tag" v-if="!unregistered(item)">{{ td('da.asset.unregistered') }}</div>
                   <div
                     class="title-tag"
                     :class="{ success: item.status == 2 }"
                     v-else
                   >
-                    {{ item.status == 2 ? "已发布" : "未发布" }}
+                    {{ item.status == 2 ? td('da.asset.published') : td('da.asset.unpublished') }}
                   </div>
                 </div>
                 <div
@@ -204,42 +204,42 @@
                 >
                   <el-tooltip
                     effect="light"
-                    content="该表当前存储的数据记录总数"
+                    :content="td('da.asset.dataCountTooltip')"
                     placement="top"
                   >
                     <div class="li-tab">
                       <img src="@/assets/da/asset2/fen (2).svg" alt="" />
-                      <span>{{ item.dataCount }}行</span>
+                      <span>{{ item.dataCount }}{{ td('da.asset.rowUnit') }}</span>
                     </div>
                   </el-tooltip>
                   <div class="li-bar"></div>
                   <el-tooltip
                     effect="light"
-                    content="该表包含的字段数量"
+                    :content="td('da.asset.fieldCountTooltip')"
                     placement="top"
                   >
                     <div class="li-tab">
                       <img src="@/assets/da/asset2/fen (3).svg" alt="" />
-                      <span>{{ item.fieldCount }}列</span>
+                      <span>{{ item.fieldCount }}{{ td('da.asset.columnUnit') }}</span>
                     </div>
                   </el-tooltip>
                   <div class="li-bar"></div>
                   <el-tooltip
                     effect="light"
-                    content="数据质量综合得分"
+                    :content="td('da.asset.qualityScoreTooltip')"
                     placement="top"
                   >
                     <div class="li-tab">
                       <img src="@/assets/da/asset2/fen (4).svg" alt="" />
                       <span>
-                        <overflow-tooltip text="93.33分" />
+                        <overflow-tooltip :text="'93.33' + td('da.asset.scoreUnit')" />
                       </span>
                     </div>
                   </el-tooltip>
                   <div class="li-bar" v-if="item.datasourceType"></div>
                   <el-tooltip
                     effect="light"
-                    content="该资产来自哪个系统或数据库"
+                    :content="td('da.asset.dataSourceTooltip')"
                     placement="top"
                   >
                     <div class="li-tab" v-if="item.datasourceType">
@@ -260,13 +260,13 @@
                     <!-- 库表类型 -->
                     <template v-if="item.type == 1">
                       <div class="item-form item-form1">
-                        <div class="form-label">表名称:</div>
+                        <div class="form-label">{{ td('da.asset.tableName') }}:</div>
                         <div class="form-value" :title="item.tableName">
                           {{ item.tableName || "-" }}
                         </div>
                       </div>
                       <div class="item-form item-form-type">
-                        <div class="form-label">表类型:</div>
+                        <div class="form-label">{{ td('da.asset.tableType') }}:</div>
                         <div class="form-value">
                           <dict-tag
                             size="small"
@@ -276,7 +276,7 @@
                         </div>
                       </div>
                       <div class="item-form item-form-hierarchy">
-                        <div class="form-label">归属层级:</div>
+                        <div class="form-label">{{ td('da.asset.belongLevel') }}:</div>
                         <div
                           class="form-value"
                           :title="
@@ -287,7 +287,7 @@
                         </div>
                       </div>
                       <div class="item-form item-form1">
-                        <div class="form-label">创建时间:</div>
+                        <div class="form-label">{{ td('da.asset.createdTime') }}:</div>
                         <div class="form-value" :title="item.createTime">
                           {{
                             parseTime(item.createTime, "{y}-{m}-{d} {h}:{i}") ||
@@ -299,25 +299,25 @@
                     <!-- 文件类型 -->
                     <template v-else-if="item.type == 7">
                       <div class="item-form item-form1">
-                        <div class="form-label">文件名称:</div>
+                        <div class="form-label">{{ td('da.asset.fileName') }}:</div>
                         <div class="form-value" :title="item.name">
                           {{ item.name || "-" }}
                         </div>
                       </div>
                       <div class="item-form item-form1">
-                        <div class="form-label">数据分域:</div>
+                        <div class="form-label">{{ td('da.asset.dataDomain') }}:</div>
                         <div class="form-value" :title="item.dataDomainName">
                           {{ item.dataDomainName || "-" }}
                         </div>
                       </div>
                       <div class="item-form item-form1">
-                        <div class="form-label">所属主题:</div>
+                        <div class="form-label">{{ td('da.asset.belongTopic') }}:</div>
                         <div class="form-value" :title="themeNames(item)">
                           {{ themeNames(item) }}
                         </div>
                       </div>
                       <div class="item-form item-form1">
-                        <div class="form-label">创建时间:</div>
+                        <div class="form-label">{{ td('da.asset.createdTime') }}:</div>
                         <div class="form-value" :title="item.createTime">
                           {{
                             parseTime(item.createTime, "{y}-{m}-{d} {h}:{i}") ||
@@ -329,25 +329,25 @@
                     <!-- API类型 -->
                     <template v-else-if="item.type == 2">
                       <div class="item-form item-form1">
-                        <div class="form-label">应用名称:</div>
+                        <div class="form-label">{{ td('da.asset.appName') }}:</div>
                         <div class="form-value" :title="item.appName">
                           {{ item.appName || "-" }}
                         </div>
                       </div>
                       <div class="item-form item-form1">
-                        <div class="form-label">数据分域:</div>
+                        <div class="form-label">{{ td('da.asset.dataDomain') }}:</div>
                         <div class="form-value" :title="item.dataDomainName">
                           {{ item.dataDomainName || "-" }}
                         </div>
                       </div>
                       <div class="item-form item-form1">
-                        <div class="form-label">所属主题:</div>
+                        <div class="form-label">{{ td('da.asset.belongTopic') }}:</div>
                         <div class="form-value" :title="themeNames(item)">
                           {{ themeNames(item) }}
                         </div>
                       </div>
                       <div class="item-form item-form1">
-                        <div class="form-label">创建时间:</div>
+                        <div class="form-label">{{ td('da.asset.createdTime') }}:</div>
                         <div class="form-value" :title="item.createTime">
                           {{
                             parseTime(item.createTime, "{y}-{m}-{d} {h}:{i}") ||
@@ -358,14 +358,14 @@
                     </template>
                   </div>
                   <div class="item-form item-form">
-                    <div class="form-label">资产描述:</div>
+                    <div class="form-label">{{ td('da.asset.assetDesc') }}:</div>
                     <div class="form-value textarea" :title="item.description">
                       {{ item.description || "-" }}
                     </div>
                   </div>
                   <div class="flex-wrap">
                     <div class="item-form">
-                      <div class="form-label">数据标签:</div>
+                      <div class="form-label">{{ td('da.asset.dataTag') }}:</div>
                       <div class="form-value tag-container">
                         <span v-if="!item.tagNames?.length">-</span>
                         <template v-else>
@@ -386,7 +386,7 @@
                         @click="handleUpdate(item, 'register')"
                       >
                         <img src="@/assets/da/asset2/btn (2).svg" alt="" />
-                        <span>注册</span>
+                        <span>{{ td('da.asset.register') }}</span>
                       </div>
                       <div
                         class="form-btn"
@@ -394,7 +394,7 @@
                         @click="handleView(item)"
                       >
                         <img src="@/assets/da/asset2/btn (2).svg" alt="" />
-                        <span>详情</span>
+                        <span>{{ td('common.button.details') }}</span>
                       </div>
                       <!-- danger -->
                       <!--  -->
@@ -418,14 +418,14 @@
                           alt=""
                         />
                         <span
-                          >{{ item.status == 2 ? "撤销发布" : "发布" }}
+                          >{{ item.status == 2 ? td('da.asset.revokePublish') : td('da.asset.publish') }}
                         </span>
                       </div>
 
                       <el-dropdown>
                         <div class="form-btn">
                           <img src="@/assets/da/asset2/btn (3).svg" alt="" />
-                          <span>更多</span>
+                          <span>{{ td('da.asset.more') }}</span>
                         </div>
                         <template #dropdown>
                           <el-dropdown-menu>
@@ -436,7 +436,7 @@
                                 type="primary"
                                 @click="handleUpdate(item)"
                               >
-                                <el-icon> <Edit /> </el-icon>修改
+                                <el-icon> <Edit /> </el-icon>{{ td('common.button.update') }}
                               </el-text>
                             </el-dropdown-item>
                             <el-dropdown-item
@@ -446,7 +446,7 @@
                                 type="primary"
                                 @click="handleRefresh(item)"
                               >
-                                <el-icon> <Refresh /> </el-icon>更新数据
+                                <el-icon> <Refresh /> </el-icon>{{ td('da.asset.updateData') }}
                               </el-text>
                             </el-dropdown-item>
                             <el-dropdown-item v-if="unregistered(item)">
@@ -454,7 +454,7 @@
                                 type="primary"
                                 @click="addAttTagData(item)"
                               >
-                                <el-icon> <Pointer /> </el-icon>打标
+                                <el-icon> <Pointer /> </el-icon>{{ td('da.asset.addTag') }}
                               </el-text>
                             </el-dropdown-item>
                             <!-- <el-dropdown-item
@@ -474,7 +474,7 @@
                                 type="danger"
                                 @click="handleDelete(item)"
                               >
-                                <el-icon> <Delete /> </el-icon>删除
+                                <el-icon> <Delete /> </el-icon>{{ td('common.button.delete') }}
                               </el-text>
                             </el-dropdown-item>
                           </el-dropdown-menu>
@@ -516,14 +516,14 @@
       <el-form ref="daAssetRef" :model="form" label-width="80px">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="资产名称" prop="name">
+            <el-form-item :label="td('da.asset.assetName')" prop="name">
               <div>
                 {{ form.name }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="类目编码" prop="catCode">
+            <el-form-item :label="td('da.asset.catCode')" prop="catCode">
               <div>
                 {{ form.catCode }}
               </div>
@@ -532,14 +532,14 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="主题id" prop="themeId">
+            <el-form-item :label="td('da.asset.topicId')" prop="themeId">
               <div>
                 {{ form.themeId }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="数据连接id" prop="datasourceId">
+            <el-form-item :label="td('da.asset.datasourceId')" prop="datasourceId">
               <div>
                 {{ form.datasourceId }}
               </div>
@@ -548,14 +548,14 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="表名称" prop="tableName">
+            <el-form-item :label="td('da.asset.tableName')" prop="tableName">
               <div>
                 {{ form.tableName }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="表描述" prop="tableComment">
+            <el-form-item :label="td('da.asset.tableDesc')" prop="tableComment">
               <div>
                 {{ form.tableComment }}
               </div>
@@ -564,14 +564,14 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="数据量(条)" prop="dataCount">
+            <el-form-item :label="td('da.asset.dataCount')" prop="dataCount">
               <div>
                 {{ form.dataCount }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="字段量" prop="fieldCount">
+            <el-form-item :label="td('da.asset.fieldCount')" prop="fieldCount">
               <div>
                 {{ form.fieldCount }}
               </div>
@@ -580,14 +580,14 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="状态" prop="status">
+            <el-form-item :label="td('da.asset.status')" prop="status">
               <div>
                 {{ form.status }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="描述" prop="description">
+            <el-form-item :label="td('da.asset.description')" prop="description">
               <div>
                 {{ form.description }}
               </div>
@@ -596,7 +596,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="备注" prop="remark">
+            <el-form-item :label="td('da.asset.remark')" prop="remark">
               <div>
                 {{ form.remark }}
               </div>
@@ -606,7 +606,7 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="cancel">关 闭</el-button>
+          <el-button size="mini" @click="cancel">{{ td('common.button.close') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -622,7 +622,7 @@
     />
     <!-- 用户导入对话框 -->
     <el-dialog
-      title="新增标签"
+      :title="td('da.asset.addTagTitle')"
       class="tag-view"
       v-model="tagMultiple"
       width="600px"
@@ -631,10 +631,10 @@
       destroy-on-close
     >
       <el-col :span="24">
-        <el-form-item label="标签">
+        <el-form-item :label="td('da.asset.tagLabel')">
           <el-select
             v-model="tagIds"
-            placeholder="请选择标签"
+            :placeholder="td('da.asset.tagPlaceholder')"
             filterable
             multiple
             collapse-tags
@@ -656,14 +656,14 @@
             @click="tagOpened = true"
             @mousedown="(e) => e.preventDefault()"
           >
-            <i class="iconfont-mini icon-xinzeng mr5"></i>新增标签
+            <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('da.asset.addTagButton') }}
           </el-button>
         </el-form-item>
       </el-col>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="tagMultiple = false">取 消</el-button>
-          <el-button type="primary" @click="submitTag">确 定</el-button>
+          <el-button @click="tagMultiple = false">{{ td('common.button.cancel') }}</el-button>
+          <el-button type="primary" @click="submitTag">{{ td('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -683,43 +683,43 @@
       >
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="资产名称">
+            <el-form-item :label="td('da.asset.assetName')">
               <el-input v-model="formApply.name" disabled />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="英文名称">
+            <el-form-item :label="td('da.asset.englishName')">
               <el-input v-model="formApply.tableName" disabled />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="主题名称">
+            <el-form-item :label="td('da.asset.topicName')">
               <el-input v-model="formApply.themeName" disabled />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="数据连接">
+            <el-form-item :label="td('da.asset.datasource')">
               <el-input v-model="formApply.datasourceName" disabled />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="数据库地址">
+            <el-form-item :label="td('da.asset.dbAddress')">
               <el-input v-model="formApply.datasourceIp" disabled />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="数据库类型">
+            <el-form-item :label="td('da.asset.dbType')">
               <el-input v-model="formApply.datasourceType" disabled />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="描述">
+            <el-form-item :label="td('da.asset.description')">
               <el-input
                 type="textarea"
                 maxlength="500个字符"
@@ -733,11 +733,11 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="申请项目" prop="projectCode">
+            <el-form-item :label="td('da.asset.applyProject')" prop="projectCode">
               <el-select
                 v-model="formApply.projectCode"
                 @change="handleSelectProject"
-                placeholder="请选择申请项目"
+                :placeholder="td('da.asset.applyProjectPlaceholder')"
               >
                 <el-option
                   v-for="item in projectOptions"
@@ -749,24 +749,24 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="联系电话" prop="phone">
+            <el-form-item :label="td('da.asset.contactPhone')" prop="phone">
               <el-input
                 v-model="formApply.phone"
-                placeholder="请输入联系电话"
+                :placeholder="td('da.asset.contactPhonePlaceholder')"
               />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="申请事由" prop="applyReason">
+            <el-form-item :label="td('da.asset.applyReason')" prop="applyReason">
               <el-input
                 type="textarea"
                 maxlength="500个字符"
                 show-word-limit
                 v-model="formApply.applyReason"
                 :rows="3"
-                placeholder="请输入申请事由"
+                :placeholder="td('da.asset.applyReasonPlaceholder')"
               />
             </el-form-item>
           </el-col>
@@ -774,8 +774,8 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="openApply = false">取 消</el-button>
-          <el-button type="primary" @click="submitApplyForm">确 定</el-button>
+          <el-button @click="openApply = false">{{ td('common.button.cancel') }}</el-button>
+          <el-button type="primary" @click="submitApplyForm">{{ td('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -835,17 +835,17 @@ let tagOpened = ref(false);
 const titleBtns = [
   {
     id: 2,
-    name: "API类型",
+    name: td('da.asset.apiType'),
     icon: "da-api",
   },
   {
     id: 1,
-    name: "数据库表",
+    name: td('da.asset.dbTable'),
     icon: "da-database",
   },
   {
     id: 7,
-    name: "非结构化数据",
+    name: td('da.asset.unstructuredData'),
     icon: "da-document",
   },
 ];
@@ -920,19 +920,19 @@ const data = reactive({
     },
   },
   rules: {
-    name: [{ required: true, message: "资产名称不能为空", trigger: "blur" }],
-    catCode: [{ required: true, message: "类目编码不能为空", trigger: "blur" }],
-    themeId: [{ required: true, message: "主题id不能为空", trigger: "blur" }],
+    name: [{ required: true, message: td('da.asset.assetNameRequired'), trigger: "blur" }],
+    catCode: [{ required: true, message: td('da.asset.catCodeRequired'), trigger: "blur" }],
+    themeId: [{ required: true, message: td('da.asset.topicIdRequired'), trigger: "blur" }],
     datasourceId: [
-      { required: true, message: "数据连接id不能为空", trigger: "blur" },
+      { required: true, message: td('da.asset.datasourceIdRequired'), trigger: "blur" },
     ],
-    tableName: [{ required: true, message: "表名称不能为空", trigger: "blur" }],
+    tableName: [{ required: true, message: td('da.asset.tableNameRequired'), trigger: "blur" }],
   },
   rulesApply: {
     projectCode: [
-      { required: true, message: "申请项目不能为空", trigger: "change" },
+      { required: true, message: td('da.asset.applyProjectRequired'), trigger: "change" },
     ],
-    phone: [{ required: true, message: "联系电话不能为空", trigger: "blur" }],
+    phone: [{ required: true, message: td('da.asset.contactPhoneRequired'), trigger: "blur" }],
   },
 });
 
@@ -951,7 +951,7 @@ function submitApplyForm() {
       const payload = { ...formApply.value };
       delete payload.themeName;
       addDaAssetApply(payload).then((response) => {
-        proxy.$modal.msgSuccess("申请成功");
+        proxy.$modal.msgSuccess(td('da.asset.applySuccess'));
         openApply.value = false;
         getList();
       });
@@ -970,10 +970,10 @@ function handleRefresh(row) {
   startDaDiscoveryTask({ id: _id })
     .then((res) => {
       if (res.code == 200) {
-        proxy.$modal.msgSuccess("更新成功");
+        proxy.$modal.msgSuccess(td('da.asset.updateSuccess'));
         getList();
       } else {
-        proxy.$modal.msgWarning("更新失败，请联系管理员");
+        proxy.$modal.msgWarning(td('da.asset.updateFailed'));
       }
     })
     .finally(() => {
@@ -986,7 +986,7 @@ function handleApply(row) {
   getDaAsset(_id).then((response) => {
     formApply.value = response.data;
     openApply.value = true;
-    titleApply.value = "申请数据资产";
+    titleApply.value = td('da.asset.applyTitle');
     formApply.value.phone = userStore.phonenumber;
     formApply.value.assetId = _id;
     formApply.value.assetName = response.data.name;
@@ -1016,7 +1016,7 @@ function handleSelectProject(value) {
 
 function handleView(row) {
   if (!unregistered(row)) {
-    return proxy.$modal.msgWarning("该资产暂未注册，请注册后重试");
+    return proxy.$modal.msgWarning(td('da.asset.unregisteredTip'));
   }
   routeTo(type == 1 ? "/dpp/asset/detail" : "/da/asset/detail", row);
 }
@@ -1120,7 +1120,7 @@ function handleAdd(command) {
     router.push("/da/asset/addAsset");
     return;
   }
-  return proxy.$modal.msgWarning("功能开发中");
+  return proxy.$modal.msgWarning(td('da.asset.developing'));
 }
 
 /** 修改按钮操作 */
@@ -1135,7 +1135,7 @@ function handleUpdate(row, register) {
   getDaAsset(_id).then((response) => {
     form.value = response.data;
     open.value = true;
-    title.value = "修改数据资产";
+    title.value = td('da.asset.editTitle');
   });
 }
 
@@ -1143,13 +1143,13 @@ function handleUpdate(row, register) {
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
-    .confirm('是否确认删除数据资产编号为"' + _ids + '"的数据项？')
+    .confirm(td('da.asset.confirmDelete').replace('{id}', _ids))
     .then(function () {
       return delDaAsset(_ids);
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(td('da.asset.deleteSuccess'));
     })
     .catch(() => {});
 }
@@ -1214,7 +1214,7 @@ function submitTag() {
 
   addAttTagAssetRel(map).then((res) => {
     tagMultiple.value = false;
-    proxy.$modal.msgSuccess("操作成功");
+    proxy.$modal.msgSuccess(td('da.asset.operationSuccess'));
     getList();
   });
   // proxy.$modal
@@ -1238,14 +1238,14 @@ const themeNames = (item) => {
 };
 /** 启用禁用开关 */
 function handleStatusChange(row) {
-  const text = row.status === "2" ? "撤销发布" : "发布";
+  const text = row.status === "2" ? td('da.asset.revokePublish') : td('da.asset.publish');
   const status = row.status === "2" ? "1" : "2";
   proxy.$modal
-    .confirm("确认要" + text + '"' + row.name + '"资产吗？')
+    .confirm(td('da.asset.confirmStatusChange').replace('{text}', text).replace('{name}', row.name))
     .then(function () {
       updateDaAsset({ id: row.id, status: status }).then((res) => {
         if (res.code == 200) {
-          proxy.$modal.msgSuccess(text + "成功");
+          proxy.$modal.msgSuccess(td('da.asset.statusSuccess').replace('{text}', text));
           getList();
         }
       });

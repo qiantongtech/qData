@@ -145,11 +145,11 @@
                     width="240">
                     <template #default="scope">
                         <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-                            v-hasPermi="['att:theme:edit']">修改</el-button>
+                            v-hasPermi="['att:theme:edit']">{{ td('common.button.update') }}</el-button>
                         <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
-                            v-hasPermi="['att:theme:remove']">删除</el-button>
+                            v-hasPermi="['att:theme:remove']">{{ td('common.button.delete') }}</el-button>
                         <el-button link v-hasPermi="['att:theme:query']" type="primary" icon="view"
-                            @click="handleDetail(scope.row)">详情</el-button>
+                            @click="handleDetail(scope.row)">{{ td('common.button.details') }}</el-button>
 
                     </template>
                 </el-table-column>
@@ -222,8 +222,8 @@
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button size="mini" @click="cancel">取 消</el-button>
-                    <el-button type="primary" size="mini" @click="submitForm">确 定</el-button>
+                    <el-button size="mini" @click="cancel">{{ td('common.button.cancel') }}</el-button>
+                    <el-button type="primary" size="mini" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
                 </div>
             </template>
         </el-dialog>
@@ -233,7 +233,7 @@
             <el-form ref="daAssetApplyRef" :model="form" label-width="90px">
                 <el-row :gutter="20">
                     <el-col :span="24">
-                        <el-form-item label="编号:" prop="id">
+                        <el-form-item :label="td('common.texts.number')+':'" prop="id">
                             <div class="form-readonly">
                                 {{ form.id }}
                             </div>
@@ -251,7 +251,7 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="24">
-                        <el-form-item label="图标:" prop="icon">
+                        <el-form-item :label="td('att.common.icon')+':'" prop="icon">
                             <image-preview :src="form.icon || noDataImg" :width="50" :height="50" />
 
                         </el-form-item>
@@ -268,7 +268,7 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item label="创建人:" prop="createBy">
+                        <el-form-item :label="td('common.texts.createdBy')+':'" prop="createBy">
                             <div class="form-readonly">
                                 {{ form.createBy }}
                             </div>
@@ -285,14 +285,14 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item label="更新人:" prop="createBy">
+                        <el-form-item :label="td('common.texts.updatedBy')+':'" prop="createBy">
                             <div class="form-readonly">
                                 {{ form.updateBy }}
                             </div>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="更新时间:" prop="updateTime">
+                        <el-form-item :label="td('common.texts.updatedTime')+':'" prop="updateTime">
                             <div class="form-readonly">
                                 {{ parseTime(form.updateTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
                             </div>
@@ -320,7 +320,7 @@
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button size="mini" @click="openDetail = false">关闭 </el-button>
+                    <el-button size="mini" @click="openDetail = false">{{ td('common.button.close') }} </el-button>
                 </div>
             </template>
         </el-dialog>
@@ -346,8 +346,8 @@
             </el-upload>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button @click="upload.open = false">取 消</el-button>
-                    <el-button type="primary" @click="submitFileForm">确 定</el-button>
+                    <el-button @click="upload.open = false">{{ td('common.button.cancel') }}</el-button>
+                    <el-button type="primary" @click="submitFileForm">{{ td('common.button.confirm') }}</el-button>
                 </div>
             </template>
         </el-dialog>
@@ -428,11 +428,11 @@ const data = reactive({
         description: null
     },
     rules: {
-        name: [{ required: true, message: '主题名称不能为空', trigger: 'blur' }],
-        // icon: [{ required: true, message: "图标url不能为空", trigger: "blur" }],
-        // sortOrder: [{ required: true, message: '排序不能为空', trigger: 'blur' }],
-        // description: [{ required: true, message: '描述不能为空', trigger: 'blur' }],
-        // validFlag: [{ required: true, message: '是否有效不能为空', trigger: 'blur' }]
+        name: [{ required: true, message: td('att.common.themeNameRequired'), trigger: 'blur' }],
+        // icon: [{ required: true, message: td('att.common.iconRequired'), trigger: "blur" }],
+        // sortOrder: [{ required: true, message: td('att.theme.sortOrderRequired'), trigger: 'blur' }],
+        // description: [{ required: true, message: td('common.form.descriptionRequired'), trigger: 'blur' }],
+        // validFlag: [{ required: true, message: td('common.form.statusRequired'), trigger: 'blur' }]
     }
 });
 
@@ -449,12 +449,12 @@ function getList() {
 }
 /** 改变启用状态值 */
 function handleStatusChange(row) {
-    const text = row.validFlag === true ? '启用' : '禁用';
+    const status = row.validFlag === true ? td('att.common.enable') : td('att.common.disable');
     proxy.$modal
-        .confirm('确认要"' + text + '","' + row.name + '"主题吗？')
+        .confirm(td('att.common.confirmStatusChangeGeneric').replace('{status}', status).replace('{name}', row.name).replace('{type}', td('att.theme.themeWord')))
         .then(function () {
             updateAttTheme({ id: row.id, validFlag: row.validFlag }).then((response) => {
-                proxy.$modal.msgSuccess(text + '成功');
+                proxy.$modal.msgSuccess(td('att.common.statusSuccess').replace('{status}', status));
                 getList();
             });
         })
@@ -521,7 +521,7 @@ function handleSortChange(column, prop, order) {
 function handleAdd() {
     reset();
     open.value = true;
-    title.value = '新增主题';
+    title.value = td('att.theme.title.add');
 }
 
 /** 修改按钮操作 */
@@ -533,7 +533,7 @@ function handleUpdate(row) {
         delete response.data.updateTime;
         form.value = response.data;
         open.value = true;
-        title.value = '修改主题';
+        title.value = td('att.theme.title.edit');
     });
 }
 
@@ -544,7 +544,7 @@ function handleDetail(row) {
     getAttTheme(_id).then((response) => {
         form.value = response.data;
         openDetail.value = true;
-        title.value = '主题详情';
+        title.value = td('att.theme.title.detail');
     });
 }
 
@@ -555,7 +555,7 @@ function submitForm() {
             if (form.value.id != null) {
                 updateAttTheme(form.value)
                     .then((response) => {
-                        proxy.$modal.msgSuccess('修改成功');
+                        proxy.$modal.msgSuccess(td('common.message.editSuccess'));
                         open.value = false;
                         getList();
                     })
@@ -563,7 +563,7 @@ function submitForm() {
             } else {
                 addAttTheme(form.value)
                     .then((response) => {
-                        proxy.$modal.msgSuccess('新增成功');
+                        proxy.$modal.msgSuccess(td('common.message.addSuccess'));
                         open.value = false;
                         getList();
                     })
@@ -577,13 +577,13 @@ function submitForm() {
 function handleDelete(row) {
     const _ids = row.id || ids.value;
     proxy.$modal
-        .confirm('是否确认删除主题编号为"' + _ids + '"的数据项？')
+        .confirm(td('att.theme.deleteConfirm').replace('{ids}', _ids))
         .then(function () {
             return delAttTheme(_ids);
         })
         .then(() => {
             getList();
-            proxy.$modal.msgSuccess('删除成功');
+            proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
         })
         .catch(() => { });
 }
@@ -602,7 +602,7 @@ function handleExport() {
 /** ---------------- 导入相关操作 -----------------**/
 /** 导入按钮操作 */
 function handleImport() {
-    upload.title = '主题导入';
+    upload.title = td('att.theme.importTitle');
     upload.open = true;
 }
 
@@ -634,7 +634,7 @@ const handleFileSuccess = (response, file, fileList) => {
         "<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +
         response.msg +
         '</div>',
-        '导入结果',
+        td('att.common.importResult'),
         { dangerouslyUseHTMLString: true }
     );
     getList();

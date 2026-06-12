@@ -19,24 +19,24 @@
     <div class="app-container" ref="app-container">
         <GuideTip tip-id="cat/attApiCat.list" />
         <div class="pagecont-top" v-show="showSearch">
-            <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="130px"
+            <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true"
                 v-show="showSearch" @submit.prevent>
-                <el-form-item label="数据服务类目" prop="name">
-                    <el-input class="el-form-input-width" v-model="queryParams.name" placeholder="请输入数据服务类目" clearable
+                <el-form-item :label="td('ds.apiCat.title')" prop="name">
+                    <el-input class="el-form-input-width" v-model="queryParams.name" :placeholder="td('ds.apiCat.searchPlaceholder')" clearable
                         @keyup.enter="handleQuery" />
                 </el-form-item>
-                <el-form-item label="上级类目" prop="code">
+                <el-form-item :label="td('ds.apiCat.parentCategory')" prop="code">
                     <el-tree-select filterable class="el-form-input-width" v-model="queryParams.code"
                         :data="attApiCatOptions" :props="{ value: 'code', label: 'name', children: 'children' }"
-                        value-key="id" placeholder="请选择上级" check-strictly />
+                        value-key="id" :placeholder="td('ds.apiCat.parentPlaceholder')" check-strictly />
                 </el-form-item>
                 <el-form-item>
                     <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()"
                         v-hasPermi="['att:apiCat:query']">
-                        <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
+                        <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
                     </el-button>
                     <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-                        <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
+                        <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
                     </el-button>
                 </el-form-item>
             </el-form>
@@ -48,14 +48,14 @@
                     <el-col :span="1.5">
                         <el-button type="primary" plain @click="handleAdd" v-hasPermi="['att:apiCat:add']"
                             @mousedown="(e) => e.preventDefault()">
-                            <i class="iconfont-mini icon-xinzeng mr5"></i>{{ t('common.button.add') }}
+                            <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('common.button.add') }}
                         </el-button>
                     </el-col>
                     <el-col :span="1.5">
                         <el-button class="toggle-expand-all" type="primary" plain @click="toggleExpandAll">
                             <svg-icon v-if="isExpandAll" icon-class="toggle" />
                             <svg-icon v-else icon-class="expand" />
-                            <span>{{ isExpandAll ? t('common.button.collapse') : t('common.button.expand') }}</span>
+                            <span>{{ isExpandAll ? td('common.button.collapse') : td('common.button.expand') }}</span>
                         </el-button>
                     </el-col>
                 </el-row>
@@ -66,38 +66,38 @@
             </div>
             <el-table v-if="refreshTable" v-loading="loading" :data="AttApiCatList" row-key="id"
                 :default-expand-all="isExpandAll" :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
-                <el-table-column label="数据服务类目" align="left" prop="name" width="200"
+                <el-table-column :label="td('ds.apiCat.title')" align="left" prop="name" width="200"
                     :show-overflow-tooltip="{ effect: 'light' }">
                     <template #default="scope">
                         {{ scope.row.name || '-' }}
                     </template>
                 </el-table-column>
 
-                <el-table-column :label="t('common.texts.description')" align="left" prop="description" :show-overflow-tooltip="{ effect: 'light' }"
+                <el-table-column :label="td('common.texts.description')" align="left" prop="description" :show-overflow-tooltip="{ effect: 'light' }"
                     width="300">
                     <template #default="scope">
                         {{ scope.row.description || '-' }}
                     </template>
                 </el-table-column>
-                <el-table-column label="排序" align="left" prop="sortOrder" :show-overflow-tooltip="{ effect: 'light' }"
+                <el-table-column :label="td('ds.apiCat.sortOrder')" align="left" prop="sortOrder" :show-overflow-tooltip="{ effect: 'light' }"
                     width="50">
                     <template #default="scope">
                         {{ scope.row.sortOrder }}
                     </template>
                 </el-table-column>
-                <el-table-column :label="t('common.texts.createdBy')" align="center" prop="createBy">
+                <el-table-column :label="td('common.texts.createdBy')" align="center" prop="createBy">
                     <template #default="scope">
                         {{ scope.row.createBy || "-" }}
                     </template>
                 </el-table-column>
-                <el-table-column :label="t('common.texts.createdTime')" align="center" prop="createTime" width="180">
+                <el-table-column :label="td('common.texts.createdTime')" align="center" prop="createTime" width="180">
                     <template #default="scope">
                         <span>{{
                             parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}")
                         }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column :label="t('common.texts.status')" align="center" prop="validFlag">
+                <el-table-column :label="td('common.texts.status')" align="center" prop="validFlag">
                     <template #default="scope">
                         <!--              <dict-tag :options="sys_valid" :value="scope.row.validFlag"/>-->
 
@@ -107,20 +107,20 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column :label="t('common.texts.remark')" align="left" prop="remark" :show-overflow-tooltip="{ effect: 'light' }">
+                <el-table-column :label="td('common.texts.remark')" align="left" prop="remark" :show-overflow-tooltip="{ effect: 'light' }">
                     <template #default="scope">
                         {{ scope.row.remark || '-' }}
                     </template>
                 </el-table-column>
-                <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right"
+                <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right"
                     width="240">
                     <template #default="scope">
                         <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-                            v-hasPermi="['att:apiCat:edit']">{{ t('common.button.update') }}</el-button>
+                            v-hasPermi="['att:apiCat:edit']">{{ td('common.button.update') }}</el-button>
                         <el-button link type="primary" icon="Plus" @click="handleAdd(scope.row)"
-                            v-hasPermi="['att:apiCat:add']">{{ t('common.button.add') }}</el-button>
+                            v-hasPermi="['att:apiCat:add']">{{ td('common.button.add') }}</el-button>
                         <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
-                            v-hasPermi="['att:apiCat:remove']">{{ t('common.button.delete') }}</el-button>
+                            v-hasPermi="['att:apiCat:remove']">{{ td('common.button.delete') }}</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -134,47 +134,47 @@
             /> -->
         </div>
 
-        <!-- 添加或修改数据服务类目管理对话框 -->
-        <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable>
-            <template #header="{ close, titleId, titleClass }">
+      <!-- 添加或修改数据服务类目管理对话框 -->
+      <el-dialog :title="title" v-model="open" :append-to="$refs['app-container']" draggable>
+        <template #header="{ close, titleId, titleClass }">
                 <span role="heading" aria-level="2" class="el-dialog__title">
                     {{ title }}
                 </span>
-            </template>
-            <el-form ref="AttApiCatRef" :model="form" :rules="rules" label-width="80px" @submit.prevent>
-                <el-row :gutter="20">
-                    <el-col :span="12">
-                        <el-form-item label="类目名称" prop="name">
-                            <el-input v-model="form.name" placeholder="请输入数据服务类目" />
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                        <el-form-item label="上级类目" prop="parentId">
-                            <el-tree-select filterable :disabled="form.id" v-model="form.parentId"
+        </template>
+        <el-form ref="AttApiCatRef" :model="form" :rules="rules" @submit.prevent>
+          <el-row :gutter="20">
+            <el-col :span="12">
+              <el-form-item :label="td('ds.apiCat.categoryName')" prop="name">
+                <el-input v-model="form.name" :placeholder="td('ds.apiCat.categoryNamePlaceholder')"/>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item :label="td('ds.apiCat.parentCategory')" prop="parentId">
+                <el-tree-select filterable :disabled="form.id" v-model="form.parentId"
                                 :data="attApiCatOptions" :props="{ value: 'id', label: 'name', children: 'children' }"
-                                value-key="id" placeholder="请选择上级" check-strictly />
+                                value-key="id" :placeholder="td('ds.apiCat.parentPlaceholder')" check-strictly />
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20"> </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item label="排序" prop="sortOrder">
+                        <el-form-item :label="td('ds.apiCat.sortOrder')" prop="sortOrder">
                             <el-input-number style="width: 100%" v-model="form.sortOrder" controls-position="right"
                                 :min="0" />
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item :label="t('common.texts.status')" prop="validFlag">
-                            <el-radio v-model="form.validFlag" :label="true">启用</el-radio>
-                            <el-radio v-model="form.validFlag" :label="false">禁用</el-radio>
+                        <el-form-item :label="td('common.texts.status')" prop="validFlag">
+                            <el-radio v-model="form.validFlag" :label="true">{{ td('ds.apiCat.enable') }}</el-radio>
+                            <el-radio v-model="form.validFlag" :label="false">{{ td('ds.apiCat.disable') }}</el-radio>
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="24">
-                        <el-form-item :label="t('common.texts.description')">
-                            <el-input type="textarea" v-model="form.description" :placeholder="t('common.form.descriptionPlaceholder')"
+                        <el-form-item :label="td('common.texts.description')">
+                            <el-input type="textarea" v-model="form.description" :placeholder="td('common.form.descriptionPlaceholder')"
                                 :min-height="192" />
                         </el-form-item>
                     </el-col>
@@ -182,16 +182,16 @@
 
                 <el-row :gutter="20">
                     <el-col :span="24">
-                        <el-form-item :label="t('common.texts.remark')">
-                            <el-input type="textarea" :placeholder="t('common.form.remarkPlaceholder')" v-model="form.remark" :min-height="192" />
+                        <el-form-item :label="td('common.texts.remark')">
+                            <el-input type="textarea" :placeholder="td('common.form.remarkPlaceholder')" v-model="form.remark" :min-height="192" />
                         </el-form-item>
                     </el-col>
                 </el-row>
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button size="mini" @click="cancel">{{ t('common.button.cancel') }}</el-button>
-                    <el-button type="primary" size="mini" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
+                    <el-button size="mini" @click="cancel">{{ td('common.button.cancel') }}</el-button>
+                    <el-button type="primary" size="mini" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
                 </div>
             </template>
         </el-dialog>
@@ -206,14 +206,14 @@
             <el-form ref="AttApiCatRef" :model="form" label-width="80px">
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item label="类别名称" prop="name">
+                        <el-form-item :label="td('ds.apiCat.categoryNameInput')" prop="name">
                             <div>
                                 {{ form.name }}
                             </div>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="关联上级ID" prop="parentId">
+                        <el-form-item :label="td('ds.apiCat.relatedParentId')" prop="parentId">
                             <div>
                                 {{ form.parentId }}
                             </div>
@@ -222,14 +222,14 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item label="类别排序" prop="sortOrder">
+                        <el-form-item :label="td('ds.apiCat.categorySort')" prop="sortOrder">
                             <div>
                                 {{ form.sortOrder }}
                             </div>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item :label="t('common.texts.description')" prop="description">
+                        <el-form-item :label="td('common.texts.description')" prop="description">
                             <div>
                                 {{ form.description }}
                             </div>
@@ -238,14 +238,14 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item label="层级编码" prop="code">
+                        <el-form-item :label="td('ds.apiCat.levelCode')" prop="code">
                             <div>
                                 {{ form.code }}
                             </div>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item :label="t('common.texts.remark')" prop="remark">
+                        <el-form-item :label="td('common.texts.remark')" prop="remark">
                             <div>
                                 {{ form.remark }}
                             </div>
@@ -255,7 +255,7 @@
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button size="mini" @click="cancel">{{ t('common.button.close') }}</el-button>
+                    <el-button size="mini" @click="cancel">{{ td('common.button.close') }}</el-button>
                 </div>
             </template>
         </el-dialog>
@@ -267,22 +267,22 @@
                 :action="upload.url + '?updateSupport=' + upload.updateSupport" :disabled="upload.isUploading"
                 :on-progress="handleFileUploadProgress" :on-success="handleFileSuccess" :auto-upload="false" drag>
                 <el-icon class="el-icon--upload"><upload-filled /></el-icon>
-                <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                <div class="el-upload__text" v-html="td('common.upload.dragOrClick')"></div>
                 <template #tip>
                     <div class="el-upload__tip text-center">
-                        <div class="el-upload__tip">
-                            <el-checkbox v-model="upload.updateSupport" />是否更新已经存在的数据服务类目管理数据
-                        </div>
-                        <span>仅允许导入xls、xlsx格式文件。</span>
+                            <div class="el-upload__tip">
+                                <el-checkbox v-model="upload.updateSupport" />{{td('ds.apiCat.importTip')}}
+                            </div>
+                            <span>{{td('ds.apiCat.uploadFormat')}}</span>
                         <el-link type="primary" :underline="false" style="font-size: 12px; vertical-align: baseline"
-                            @click="importTemplate">下载模板</el-link>
+                            @click="importTemplate">{{ td('common.upload.downloadTemplate') }}</el-link>
                     </div>
                 </template>
             </el-upload>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button @click="upload.open = false">{{ t('common.button.cancel') }}</el-button>
-                    <el-button type="primary" @click="submitFileForm">{{ t('common.button.confirm') }}</el-button>
+                    <el-button @click="upload.open = false">{{ td('common.button.cancel') }}</el-button>
+                    <el-button type="primary" @click="submitFileForm">{{ td('common.button.confirm') }}</el-button>
                 </div>
             </template>
         </el-dialog>
@@ -290,7 +290,6 @@
 </template>
 
 <script setup name="ApiCat">
-import { useI18n } from 'vue-i18n'
 import {
     listAttApiCat,
     getAttApiCat,
@@ -299,22 +298,23 @@ import {
     updateAttApiCat
 } from '@/api/ds/apiCat/apiCat';
 import { getToken } from '@/utils/auth.js';
+import useDefaultLang from "@/composables/useDefaultLang";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 
 const AttApiCatList = ref([]);
 
 // 列显隐信息
 const columns = ref([
-    { key: 1, label: '类别名称', visible: true },
-    { key: 2, label: '关联上级ID', visible: true },
-    { key: 3, label: '类别排序', visible: true },
-    { key: 4, label: t('common.texts.description'), visible: true },
-    { key: 5, label: '层级编码', visible: true },
-    { key: 8, label: t('common.texts.createdBy'), visible: true },
-    { key: 10, label: t('common.texts.createdTime'), visible: true },
-    { key: 14, label: t('common.texts.remark'), visible: true }
+    { key: 1, label: td('ds.apiCat.categoryNameInput'), visible: true },
+    { key: 2, label: td('ds.apiCat.relatedParentId'), visible: true },
+    { key: 3, label: td('ds.apiCat.categorySort'), visible: true },
+    { key: 4, label: td('ds.apiCat.description'), visible: true },
+    { key: 5, label: td('ds.apiCat.levelCode'), visible: true },
+    { key: 8, label: td('common.texts.createdBy'), visible: true },
+    { key: 10, label: td('common.texts.createdTime'), visible: true },
+    { key: 14, label: td('common.texts.remark'), visible: true }
 ]);
 
 const getColumnVisibility = (key) => {
@@ -368,8 +368,8 @@ const data = reactive({
         createTime: null
     },
     rules: {
-        name: [{ required: true, message: '数据服务类目不能为空', trigger: 'blur' }],
-        parentId: [{ required: true, message: '上级类目不能为空', trigger: 'blur' }]
+        name: [{ required: true, message: td('ds.apiCat.categoryNameRequired'), trigger: 'blur' }],
+        parentId: [{ required: true, message: td('ds.apiCat.parentCategoryRequired'), trigger: 'blur' }]
     }
 });
 
@@ -393,7 +393,7 @@ function getList() {
         loading.value = false;
 
         attApiCatOptions.value = [];
-        const data = { id: 0, name: '顶级节点', children: [] };
+        const data = { id: 0, name: td('ds.apiCat.topNode'), children: [] };
         data.children = proxy.handleTree(response.data, 'id', 'parentId');
         attApiCatOptions.value.push(data);
     });
@@ -463,7 +463,7 @@ function handleAdd(row) {
         form.value.parentId = 0;
     }
     open.value = true;
-    title.value = '新增数据服务类目';
+    title.value = td('ds.apiCat.addCategory');
 }
 
 /** 修改按钮操作 */
@@ -473,7 +473,7 @@ function handleUpdate(row) {
     getAttApiCat(_id).then((response) => {
         form.value = response.data;
         open.value = true;
-        title.value = '修改数据服务类目';
+        title.value = td('ds.apiCat.editCategory');
     });
 }
 
@@ -484,7 +484,7 @@ function handleDetail(row) {
     getAttApiCat(_id).then((response) => {
         form.value = response.data;
         openDetail.value = true;
-        title.value = '数据服务类目详情';
+        title.value = td('ds.apiCat.detailCategory');
     });
 }
 
@@ -495,7 +495,7 @@ function submitForm() {
             if (form.value.id != null) {
                 updateAttApiCat(form.value)
                     .then((response) => {
-                        proxy.$modal.msgSuccess(t('common.message.editSuccess'));
+                        proxy.$modal.msgSuccess(td('common.message.editSuccess'));
                         open.value = false;
                         getList();
                     })
@@ -503,7 +503,7 @@ function submitForm() {
             } else {
                 addAttApiCat(form.value)
                     .then((response) => {
-                        proxy.$modal.msgSuccess(t('common.message.addSuccess'));
+                        proxy.$modal.msgSuccess(td('common.message.addSuccess'));
                         open.value = false;
                         getList();
                     })
@@ -515,12 +515,12 @@ function submitForm() {
 
 /** 改变启用状态值 */
 function handleStatusChange(row) {
-    const text = row.validFlag === true ? '启用' : '禁用';
+    const text = row.validFlag === true ? td('ds.apiCat.enable') : td('ds.apiCat.disable');
     proxy.$modal
-        .confirm('确认要"' + text + '","' + row.name + '"API类目吗？')
+        .confirm(td('ds.apiCat.confirm' + (row.validFlag === true ? 'Enable' : 'Disable')) + row.name + td('ds.apiCat.confirmSuffix'))
         .then(function () {
             updateAttApiCat({ id: row.id, validFlag: row.validFlag }).then((response) => {
-                proxy.$modal.msgSuccess(text + '成功');
+                proxy.$modal.msgSuccess(text + td('common.message.success'));
                 getList();
             });
         })
@@ -533,13 +533,13 @@ function handleStatusChange(row) {
 function handleDelete(row) {
     const _ids = row.id || ids.value;
     proxy.$modal
-        .confirm('是否确认删除数据服务类目编号为"' + _ids + '"的数据项？')
+        .confirm(td('ds.apiCat.deleteConfirm') + _ids + td('ds.apiCat.deleteConfirmSuffix'))
         .then(function () {
             return delAttApiCat(_ids);
         })
         .then(() => {
             getList();
-            proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+            proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
         })
         .catch(() => { });
 }
@@ -558,7 +558,7 @@ function handleExport() {
 /** ---------------- 导入相关操作 -----------------**/
 /** 导入按钮操作 */
 function handleImport() {
-    upload.title = '数据服务类目导入';
+    upload.title = td('ds.apiCat.importTitle');
     upload.open = true;
 }
 
@@ -590,7 +590,7 @@ const handleFileSuccess = (response, file, fileList) => {
         "<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +
         response.msg +
         '</div>',
-        '导入结果',
+        td('ds.apiCat.importResult'),
         { dangerouslyUseHTMLString: true }
     );
     getList();

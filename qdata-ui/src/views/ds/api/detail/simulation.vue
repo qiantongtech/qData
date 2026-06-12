@@ -27,6 +27,8 @@
 <script setup name="ComponentTwo">
 import Test from '@/views/ds/api/edit/components/simulation.vue';
 import testapi from '@/views/ds/api/edit/components/testApi.vue';
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();
 const components = { Test };
 const { proxy } = getCurrentInstance();
 const detailsList = ref([]);
@@ -53,12 +55,12 @@ const data = reactive({
         createTime: null
     },
     rules: {
-        parentId: [{ required: true, message: '节点不能为空', trigger: 'blur' }],
-        title: [{ required: true, message: '标题不能为空', trigger: 'blur' }],
-        validFlag: [{ required: true, message: '是否有效不能为空', trigger: 'blur' }],
-        delFlag: [{ required: true, message: '删除标志不能为空', trigger: 'blur' }],
-        createTime: [{ required: true, message: '创建时间不能为空', trigger: 'blur' }],
-        updateTime: [{ required: true, message: '更新时间不能为空', trigger: 'blur' }]
+        parentId: [{ required: true, message: td('ds.api.apiDetail.simulation.nodeRequired'), trigger: 'blur' }],
+        title: [{ required: true, message: td('ds.api.apiDetail.simulation.titleRequired'), trigger: 'blur' }],
+        validFlag: [{ required: true, message: td('ds.api.apiDetail.simulation.validFlagRequired'), trigger: 'blur' }],
+        delFlag: [{ required: true, message: td('ds.api.apiDetail.simulation.delFlagRequired'), trigger: 'blur' }],
+        createTime: [{ required: true, message: td('ds.api.apiDetail.simulation.createTimeRequired'), trigger: 'blur' }],
+        updateTime: [{ required: true, message: td('ds.api.apiDetail.simulation.updateTimeRequired'), trigger: 'blur' }]
     }
 });
 
@@ -156,7 +158,7 @@ function handleAdd(row) {
         form.value.parentId = 0;
     }
     open.value = true;
-    title.value = '新增内容';
+    title.value = td('ds.api.apiDetail.simulation.addContent');
 }
 
 /** 展开/折叠操作 */

@@ -44,7 +44,8 @@
           </template>
           <template #actions-data>
             <el-button type="primary" plain @click="openTaskConfigDialog">
-              <i class="iconfont-mini icon-xinzeng mr5"></i>{{ t('common.button.add') }}
+              <i class="iconfont-mini icon-xinzeng mr5"></i
+              >{{ t("common.button.add") }}
             </el-button>
           </template>
 
@@ -210,13 +211,13 @@
                     info: true,
                   })
                 "
-                >{{ t('common.button.details') }}</el-button
+                >{{ t("common.button.details") }}</el-button
               >
               <el-popover placement="bottom" :width="150" trigger="click">
                 <template #reference>
-                  <el-button link type="primary" icon="ArrowDown"
-                    >{{ t('common.button.more') }}</el-button
-                  >
+                  <el-button link type="primary" icon="ArrowDown">{{
+                    t("common.button.more")
+                  }}</el-button>
                 </template>
                 <div style="width: 100px" class="butgdlist">
                   <el-button
@@ -249,7 +250,7 @@
                     icon="Delete"
                     :disabled="row.status == 1"
                     @click="handleDelete(row)"
-                    >{{ t('common.button.delete') }}</el-button
+                    >{{ t("common.button.delete") }}</el-button
                   >
                   <el-button
                     link
@@ -307,7 +308,7 @@
 </template>
 
 <script setup name="DppIntegratioTask">
-import { useI18n } from 'vue-i18n'
+import { useI18n } from "vue-i18n";
 import {
   listDppEtlTask,
   delDppEtlTask,
@@ -374,7 +375,7 @@ const tableStore = reactive({
     },
   },
   columns: [
-    { label: t('common.texts.number'), prop: "id", width: 60, sortable: true },
+    { label: t("common.texts.number"), prop: "id", width: 60, sortable: true },
     {
       label: "任务信息",
       prop: "name",
@@ -410,14 +411,14 @@ const tableStore = reactive({
       align: "left",
     },
     {
-      label: t('common.texts.createdBy'),
+      label: t("common.texts.createdBy"),
       slot: "createBy",
       width: 120,
       align: "left",
       showOverflowTooltip: true,
     },
     {
-      label: t('common.texts.createdTime'),
+      label: t("common.texts.createdTime"),
       prop: "createTime",
       sortable: true,
       sortableKey: "create_time",
@@ -427,7 +428,7 @@ const tableStore = reactive({
     },
 
     {
-      label: t('common.texts.operation'),
+      label: t("common.texts.operation"),
       align: "center",
       fixed: "right",
       slot: "action",
@@ -543,7 +544,7 @@ const handleSave = (form) => {
   };
   createEtlTaskFront(parms).then((res) => {
     if (res.code == 200) {
-      proxy.$modal.msgSuccess(t('common.message.msgOpSuccess'));
+      proxy.$modal.msgSuccess(t("common.message.msgOpSuccess"));
       handleQuery();
     }
   });
@@ -558,7 +559,7 @@ const handleConfirm = (form) => {
   };
   createEtlTaskFront(parms).then((res) => {
     if (res.code == 200) {
-      proxy.$modal.msgSuccess(t('common.message.msgOpSuccess'));
+      proxy.$modal.msgSuccess(t("common.message.msgOpSuccess"));
       handleQuery();
       routeTo("/dpp/task/integratioTask/edit", res.data);
     }
@@ -578,7 +579,7 @@ function handleStatusChange(id, row) {
         projectId: userStore.projectId,
       })
         .then((response) => {
-          proxy.$modal.msgSuccess(t('common.message.msgOpSuccess'));
+          proxy.$modal.msgSuccess(t("common.message.msgOpSuccess"));
           handleQuery();
         })
         .catch((error) => {
@@ -602,7 +603,7 @@ function handleschedulerState(id, row) {
         projectId: userStore.projectId,
       })
         .then((response) => {
-          proxy.$modal.msgSuccess(t('common.message.msgOpSuccess'));
+          proxy.$modal.msgSuccess(t("common.message.msgOpSuccess"));
           handleQuery();
         })
         .catch((error) => {
@@ -653,7 +654,7 @@ function crontabFill(value) {
     projectId: userStore.projectId,
     id: row.value.id,
   }).then((response) => {
-    proxy.$modal.msgSuccess(t('common.message.msgOpSuccess'));
+    proxy.$modal.msgSuccess(t("common.message.msgOpSuccess"));
     handleQuery();
   });
 }
@@ -711,7 +712,7 @@ function handleDelete(row) {
     })
     .then(() => {
       handleQuery();
-      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+      proxy.$modal.msgSuccess(t("common.message.deleteSuccess"));
     })
     .catch(() => {});
 }

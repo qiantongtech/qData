@@ -14,6 +14,8 @@ export default {
         export: 'Export',
         fold: 'Collapse',
         import: 'Import',
+        linkParentChild: 'Link Parent/Child',
+        loading: 'Loading, please wait',
         more: 'More',
         nextStep: 'Next Step',
         previousStep: 'Previous Step',
@@ -23,6 +25,8 @@ export default {
         return: 'Back',
         returnHome: 'Return to Home',
         save: 'Save',
+        selectAll: 'Select All',
+        unselectAll: 'Unselect All',
         un_fold: 'Expand/Collapse',
         update: 'Edit',
         upload: 'Upload'
@@ -48,6 +52,7 @@ export default {
         statusRequired: 'Status cannot be empty'
     },
     texts: {
+        action: 'Action',
         createdBy: 'Created By',
         createdTime: 'Created Time',
         description: 'Description',
@@ -57,7 +62,9 @@ export default {
         remark: 'Remarks',
         status: 'Status',
         updatedBy: 'Updated By',
-        updatedTime: 'Updated Time'
+        updatedTime: 'Updated Time',
+        enable: 'Enable',
+        disable: 'Disable'
     },
     message: {
         addSuccess: 'Added successfully',
@@ -71,8 +78,10 @@ export default {
         noData: 'No data',
         noMatchingData: 'No matching data',
         noRecord: 'No records',
+        operationSuccess: 'Operation successful',
         prompt: 'Prompt',
-        systemPrompt: 'System Prompt'
+        systemPrompt: 'System Prompt',
+        confirmChangeStatus: 'Confirm to {status}"{name}" data connection?'
     },
     html: {
         appTitle: 'qData Open Source Data Middle Platform'

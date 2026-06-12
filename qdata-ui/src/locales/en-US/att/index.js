@@ -1,34 +1,240 @@
-// att 模块翻译入口
-import common from './common'
-import assetCat from './assetCat'
-import attDocCat from './attDocCat'
-import cleanCat from './cleanCat'
-import dataElemCat from './dataElemCat'
-import documentCat from './documentCat'
-import modelCat from './modelCat'
-import qualityCat from './qualityCat'
-import tagCat from './tagCat'
-import project from './project'
-import auditRule from './auditRule'
-import cleanRule from './cleanRule'
-import sourceSystem from './sourceSystem'
-import tag from './tag'
-import theme from './theme'
-
+// att module translations
 export default {
-  common,
-  assetCat,
-  attDocCat,
-  cleanCat,
-  dataElemCat,
-  documentCat,
-  modelCat,
-  qualityCat,
-  tagCat,
-  project,
-  auditRule,
-  cleanRule,
-  sourceSystem,
-  tag,
-  theme
+  common: {
+    dataAssetCatName: 'Data Asset Category Name',
+    dataDocCatName: 'Data Document Name',
+    cleanCatName: 'Cleaning Rule Category Name',
+    dataElemCatName: 'Data Element Category Name',
+    documentCatName: 'Standard Category Name',
+    modelCatName: 'Logical Model Category Name',
+    qualityCatName: 'Data Quality Category Name',
+    tagCatName: 'Tag Management Category Name',
+    parentCat: 'Parent Category',
+    parentCatRequired: 'Parent category cannot be empty',
+    categoryName: 'Category Name',
+    sortOrder: 'Sort Order',
+    upperCat: 'Parent Category',
+    ruleName: 'Rule Name',
+    ruleNameRequired: 'Rule name cannot be empty',
+    ruleType: 'Rule Type',
+    ruleLevel: 'Rule Level',
+    useCase: 'Use Case',
+    example: 'Example',
+    projectName: 'Project Name',
+    projectNameRequired: 'Project name cannot be empty',
+    manager: 'Manager',
+    managerRequired: 'Manager cannot be empty',
+    contactWay: 'Contact Way',
+    systemName: 'System Name',
+    systemType: 'System Type',
+    responsiblePerson: 'Responsible Person',
+    contactPerson: 'Contact Person',
+    tagName: 'Tag Name',
+    tagNameRequired: 'Tag name cannot be empty',
+    nearSynonyms: 'Near Synonyms',
+    synonyms: 'Synonyms',
+    themeName: 'Theme Name',
+    themeNameRequired: 'Theme name cannot be empty',
+    icon: 'Icon',
+    creator: 'Creator',
+    createTime: 'Create Time',
+    status: 'Status',
+    remark: 'Remark',
+    description: 'Description',
+    code: 'Code',
+    codeRequired: 'Code cannot be empty',
+    operation: 'Operation',
+    query: 'Query',
+    reset: 'Reset',
+    add: 'Add',
+    update: 'Update',
+    delete: 'Delete',
+    detail: 'Detail',
+    addSuccess: 'Add Success',
+    updateSuccess: 'Update Success',
+    deleteSuccess: 'Delete Success',
+    noData: 'No Data',
+    pleaseEnter: 'Please Enter',
+    pleaseSelect: 'Please Select',
+    confirmDelete: 'Confirm Delete',
+    deleteTip: 'Are you sure you want to delete the selected data?',
+    disable: 'Disable',
+    enable: 'Enable',
+    // Placeholders
+    pleaseEnterName: 'Please enter name',
+    pleaseSelectParent: 'Please select parent',
+    pleaseSelectManager: 'Please select manager',
+    // Asset related
+    catCode: 'Category Code',
+    assetCount: 'Asset Count',
+    assetInfo: 'Asset Info',
+    detailInfo: 'Detail Info',
+    extendAlias: 'Extend Alias',
+    nearSynonymsTip: 'If multiple, please separate with English comma',
+    synonymsTip: 'If multiple, please separate with English comma',
+    // Placeholders
+    codePlaceholder: 'Please enter code',
+    ruleTypePlaceholder: 'Please select rule type',
+    useCasePlaceholder: 'Please enter use case',
+    examplePlaceholder: 'Please enter example',
+    qualityDimPlaceholder: 'Please select quality dimension',
+    namePlaceholder: 'Please enter name',
+    sortOrderPlaceholder: 'Please enter sort order',
+    statusPlaceholder: 'Please enter status',
+    catCodePlaceholder: 'Please enter category code',
+    assetCountPlaceholder: 'Please enter asset count',
+    extendAliasPlaceholder: 'Please enter extend alias',
+    nearSynonymsPlaceholder: 'Please enter near synonyms',
+    synonymsPlaceholder: 'Please enter synonyms',
+    parentCatPlaceholder: 'Please select parent',
+    tagCatPlaceholder: 'Please select tag category',
+    cleanRuleCatPlaceholder: 'Please enter audit rule category',
+    // Tag related
+    tagManagementCategory: 'Tag Management Category',
+    assetCountTip: 'Total number of data assets currently associated with this tag',
+    statusTip: 'Enabled status means the tag can be used to tag data assets; after disabling, it can no longer be used, but existing tags are still retained.',
+    createdByPlaceholder: 'Please enter creator',
+    confirmStatusChange: 'Confirm to "{status}" "{name}" tag?',
+    confirmDelete: 'Confirm to delete the data item with tag ID "{ids}"?',
+    tagCatRequired: 'Tag category cannot be empty',
+    addTag: 'Add Tag',
+    editTag: 'Edit Tag',
+    tagDetail: 'Tag Detail',
+    ruleCategoryPlaceholder: 'Please enter the category of inspection rules'
+  },
+  assetCat: {
+    table: {
+      name: 'Data Asset Category Name',
+      sortOrder: 'Sort Order'
+    }
+  },
+  attDocCat: {
+    table: {
+      name: 'Data Document Name',
+      sortOrder: 'Sort Order'
+    }
+  },
+  cleanCat: {
+    table: {
+      name: 'Cleaning Rule Category Name',
+      sortOrder: 'Sort Order'
+    }
+  },
+  dataElemCat: {
+    table: {
+      name: 'Data Element Category Name',
+      sortOrder: 'Sort Order'
+    }
+  },
+  documentCat: {
+    table: {
+      name: 'Standard Category Name',
+      sortOrder: 'Sort Order'
+    }
+  },
+  modelCat: {
+    table: {
+      name: 'Logical Model Category Name',
+      sortOrder: 'Sort Order'
+    }
+  },
+  qualityCat: {
+    table: {
+      name: 'Data Quality Category Name',
+      sortOrder: 'Sort Order'
+    }
+  },
+  tagCat: {
+    table: {
+      name: 'Tag Management Category Name'
+    }
+  },
+  project: {
+    table: {
+      name: 'Project Name',
+      manager: 'Manager'
+    }
+  },
+  auditRule: {
+    table: {
+      code: 'Code',
+      name: 'Rule Name',
+      type: 'Rule Type',
+      qualityDim: 'Quality Dimension',
+      useCase: 'Use Case',
+      example: 'Example'
+    },
+    form: {
+
+    }
+  },
+  cleanRule: {
+    table: {
+      code: 'Code',
+      name: 'Rule Name',
+      type: 'Rule Type',
+      useCase: 'Use Case',
+      example: 'Example'
+    }
+  },
+  sourceSystem: {
+    table: {
+      name: 'System Name',
+      type: 'System Type',
+      responsiblePerson: 'Responsible Person',
+      contactPerson: 'Contact Person',
+      sortOrder: 'Sort Order'
+    },
+    form: {
+      name: 'System Name',
+      type: 'System Type',
+      responsiblePerson: 'Responsible Person',
+      contactPerson: 'Contact Person',
+      sortOrder: 'Sort Order',
+      namePlaceholder: 'Please enter system name',
+      typePlaceholder: 'Please select system type',
+      responsiblePersonPlaceholder: 'Please select responsible person',
+      contactPersonPlaceholder: 'Please select contact person',
+      enable: 'Enable',
+      disable: 'Disable'
+    },
+    title: {
+      add: 'Add Source System',
+      edit: 'Edit Source System',
+      detail: 'Source System Detail'
+    },
+    message: {
+      nameRequired: 'System name cannot be empty',
+      typeRequired: 'System type cannot be empty',
+      confirmStatus: 'Confirm to "{status}" "{name}" source system?',
+      statusSuccess: '{status} Success',
+      deleteConfirm: '{deletable} can be deleted, {undeletable} cannot be deleted. Delete the deletable items?'
+    },
+    textareaLimit: '500 characters'
+  },
+  tag: {
+    table: {
+      name: 'Tag Name',
+      catName: 'Tag Management Category',
+      nearSynonyms: 'Near Synonyms',
+      synonyms: 'Synonyms'
+    },
+    detail: {
+      catName: 'Tag Management Category',
+      nearSynonyms: 'Near Synonyms',
+      synonyms: 'Synonyms'
+    }
+  },
+  tagCat: {
+    table: {
+      name: 'Tag Management Category Name'
+    }
+  },
+  theme: {
+    table: {
+      name: 'Theme Name',
+      icon: 'Icon',
+      sortOrder: 'Sort Order'
+    }
+  }
 }

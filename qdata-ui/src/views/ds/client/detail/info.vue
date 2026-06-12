@@ -38,10 +38,10 @@
   </div>
 </template>
 <script setup name="BasicInfo">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang";
 import moment from "moment";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { auth_public, auth_app_type } = proxy.useDict("auth_public", "auth_app_type");
 const props = defineProps({
@@ -61,12 +61,12 @@ const table = ref([
   // },
   {
     key: "type",
-    label: "应用类型",
+    label: td('ds.clientDetail.appType'),
     value: "",
   },
   {
     key: "publicFlag",
-    label: "是否公开",
+    label: td('ds.clientDetail.isPublic'),
     value: "",
   },
 
@@ -77,29 +77,29 @@ const table = ref([
   // },
   {
     key: "createBy",
-    label: t('common.texts.createdBy'),
+    label: td('common.texts.createdBy'),
     value: "",
   },
   {
     key: "createTime",
-    label: t('common.texts.createdTime'),
+    label: td('common.texts.createdTime'),
     value: "",
     type: "time",
   },
   {
     key: "updateBy",
-    label: t('common.texts.updatedBy'),
+    label: td('common.texts.updatedBy'),
     value: "",
   },
   {
     key: "updateTime",
-    label: t('common.texts.updatedTime'),
+    label: td('common.texts.updatedTime'),
     value: "",
     type: "time",
   },
   {
     key: "remark",
-    label: t('common.texts.remark'),
+    label: td('common.texts.remark'),
     value: "",
     span: 24,
   },

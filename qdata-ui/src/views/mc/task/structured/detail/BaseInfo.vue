@@ -46,10 +46,9 @@
 </template>
 
 <script setup name="SynchronizeTaskBaseInfo">
-import { useI18n } from 'vue-i18n'
 import { computed, getCurrentInstance, toValue } from "vue";
-
-const { t } = useI18n();
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const dicts = proxy.useDict(
   "datasource_type",
@@ -58,21 +57,25 @@ const dicts = proxy.useDict(
 );
 
 const fields = [
-  { key: "datasourceName", label: "数据连接名称" },
-  { key: "dbType", label: "数据连接类型", dict: dicts.datasource_type },
-  { key: "ip", label: "IP地址" },
-  { key: "port", label: "端口号" },
-  { key: "username", label: "账号" },
-  { key: "cronExpression", label: "调度周期" },
+  { key: "datasourceName", label: td("mc.task.structured.datasourceName") },
+  {
+    key: "dbType",
+    label: td("mc.task.structured.dbType"),
+    dict: dicts.datasource_type,
+  },
+  { key: "ip", label: td("mc.task.structured.ip") },
+  { key: "port", label: td("mc.task.structured.port") },
+  { key: "username", label: td("mc.task.structured.username") },
+  { key: "cronExpression", label: td("mc.task.structured.cronExpression") },
   {
     key: "collectionScope",
-    label: "采集范围",
+    label: td("mc.task.structured.collectionScope"),
     span: 2,
   },
-  { key: "updateBy", label: t('common.texts.updatedBy') },
-  { key: "updateTime", label: t('common.texts.updatedTime') },
-  { key: "createBy", label: t('common.texts.createdBy') },
-  { key: "createTime", label: t('common.texts.createdTime') },
+  { key: "updateBy", label: td("common.texts.updatedBy") },
+  { key: "updateTime", label: td("common.texts.updatedTime") },
+  { key: "createBy", label: td("common.texts.createdBy") },
+  { key: "createTime", label: td("common.texts.createdTime") },
 ];
 
 const props = defineProps({

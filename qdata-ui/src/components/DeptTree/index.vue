@@ -94,7 +94,7 @@
                 effect="dark"
                 :content="node.label"
                 placement="top-start"
-                :disabled="node.label.length < 10"
+                :disabled="node.label?.length < 10"
               >
                 <span class="treelabel" @click="getNode(node)">
                   {{ node.label }}

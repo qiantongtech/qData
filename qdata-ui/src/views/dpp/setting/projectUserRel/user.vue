@@ -32,28 +32,65 @@
 
 <template>
   <div class="pagecont-top" v-show="showSearch">
-    <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="68" v-show="showSearch"
-      @submit.prevent>
-      <el-form-item label="用户姓名" prop="nickName">
-        <el-input class="el-form-input-width" v-model="queryParams.nickName" placeholder="请输入用户姓名" clearable
-          @keyup.enter="handleQuery" />
+    <el-form
+      class="btn-style"
+      :model="queryParams"
+      ref="queryRef"
+      :inline="true"
+      label-width="68"
+      v-show="showSearch"
+      @submit.prevent
+    >
+      <el-form-item
+        :label="td('dpp.setting.projectUserRel.userName')"
+        prop="nickName"
+      >
+        <el-input
+          class="el-form-input-width"
+          v-model="queryParams.nickName"
+          :placeholder="td('dpp.setting.projectUserRel.inputUserName')"
+          clearable
+          @keyup.enter="handleQuery"
+        />
       </el-form-item>
-      <el-form-item label="手机号码" prop="phoneNumber">
-        <el-input v-model="queryParams.phoneNumber" placeholder="请输入手机号码" clearable class="el-form-input-width"
-          @keyup.enter="handleQuery" />
+      <el-form-item
+        :label="td('dpp.setting.projectUserRel.phoneNumber')"
+        prop="phoneNumber"
+      >
+        <el-input
+          v-model="queryParams.phoneNumber"
+          :placeholder="td('dpp.setting.projectUserRel.inputPhoneNumber')"
+          clearable
+          class="el-form-input-width"
+          @keyup.enter="handleQuery"
+        />
       </el-form-item>
-      <el-form-item label="创建时间">
-        <el-date-picker @change="handleDateChange" class="el-form-input-width" v-model="createTime"
-          value-format="YYYY-MM-DD" type="daterange" range-separator="-" :start-placeholder="td('common.form.startDatePlaceholder')"
-          :end-placeholder="td('common.form.endDatePlaceholder')"></el-date-picker>
+      <el-form-item :label="td('common.texts.createdTime')">
+        <el-date-picker
+          @change="handleDateChange"
+          class="el-form-input-width"
+          v-model="createTime"
+          value-format="YYYY-MM-DD"
+          type="daterange"
+          range-separator="-"
+          :start-placeholder="td('common.form.startDatePlaceholder')"
+          :end-placeholder="td('common.form.endDatePlaceholder')"
+        ></el-date-picker>
       </el-form-item>
 
       <el-form-item>
-        <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-          <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+        <el-button
+          plain
+          type="primary"
+          @click="handleQuery"
+          @mousedown="(e) => e.preventDefault()"
+        >
+          <i class="iconfont-mini icon-a-zu22377 mr5"></i
+          >{{ td("common.button.query") }}
         </el-button>
         <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-          <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+          <i class="iconfont-mini icon-a-zu22378 mr5"></i
+          >{{ td("common.button.reset") }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -63,91 +100,186 @@
     <div class="justify-between mb15">
       <el-row :gutter="15" class="btn-style">
         <el-col :span="1.5">
-          <el-button type="primary" plain @click="handleAdd" v-hasPermi="['att:projectUserRel:add']"
-            @mousedown="(e) => e.preventDefault()">
-            <i class="iconfont-mini icon-xinzeng mr5"></i>新增
+          <el-button
+            type="primary"
+            plain
+            @click="handleAdd"
+            v-hasPermi="['att:projectUserRel:add']"
+            @mousedown="(e) => e.preventDefault()"
+          >
+            <i class="iconfont-mini icon-xinzeng mr5"></i
+            >{{ td("common.button.add") }}
           </el-button>
         </el-col>
         <el-col :span="1.5">
-          <el-button type="danger" plain :disabled="multiple" @click="handleDelete"
-            v-hasPermi="['att:projectUserRel:remove']" @mousedown="(e) => e.preventDefault()">
-            <i class="iconfont-mini icon-shanchu-huise mr5"></i>移除
+          <el-button
+            type="danger"
+            plain
+            :disabled="multiple"
+            @click="handleDelete"
+            v-hasPermi="['att:projectUserRel:remove']"
+            @mousedown="(e) => e.preventDefault()"
+          >
+            <i class="iconfont-mini icon-shanchu-huise mr5"></i
+            >{{ td("dpp.setting.projectUserRel.remove") }}
           </el-button>
         </el-col>
       </el-row>
       <div class="justify-end top-right-btn">
-        <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
+        <right-toolbar
+          v-model:showSearch="showSearch"
+          @queryTable="getList"
+        ></right-toolbar>
       </div>
     </div>
-    <el-table stripe v-loading="loading" :data="AttProjectUserRelList" @selection-change="handleSelectionChange"
-      :default-sort="defaultSort" @sort-change="handleSortChange">
+    <el-table
+      stripe
+      v-loading="loading"
+      :data="AttProjectUserRelList"
+      @selection-change="handleSelectionChange"
+      :default-sort="defaultSort"
+      @sort-change="handleSortChange"
+    >
       <el-table-column type="selection" width="55" align="center" />
       <!--       <el-table-column v-if="getColumnVisibility(0)" label="ID" align="center" prop="id" />-->
-      <el-table-column label="编号" width="80" align="center" prop="userId">
+      <el-table-column
+        :label="td('dpp.setting.projectUserRel.userId')"
+        width="80"
+        align="center"
+        prop="userId"
+      >
         <template #default="scope">
-          {{ scope.row.userId || '-' }}
+          {{ scope.row.userId || "-" }}
         </template>
       </el-table-column>
-      <el-table-column label="用户姓名" align="center" prop="nickName">
+      <el-table-column
+        :label="td('dpp.setting.projectUserRel.userName')"
+        align="center"
+        prop="nickName"
+      >
         <template #default="scope">
-          {{ scope.row.nickName || '-' }}
+          {{ scope.row.nickName || "-" }}
         </template>
       </el-table-column>
-      <el-table-column label="角色" align="center" prop="roleStr" :show-overflow-tooltip="{ effect: 'light' }">
+      <el-table-column
+        :label="td('dpp.setting.projectUserRel.role')"
+        align="center"
+        prop="roleStr"
+        :show-overflow-tooltip="{ effect: 'light' }"
+      >
         <template #default="scope">
-          {{ scope.row.roleStr || '-' }}
+          {{ scope.row.roleStr || "-" }}
         </template>
       </el-table-column>
-      <el-table-column label="部门" align="center" prop="deptName">
+      <el-table-column
+        :label="td('dpp.setting.projectUserRel.dept')"
+        align="center"
+        prop="deptName"
+      >
         <template #default="scope">
-          {{ scope.row.deptName || '-' }}
+          {{ scope.row.deptName || "-" }}
         </template>
       </el-table-column>
-      <el-table-column label="手机号" align="center" prop="phoneNumber">
+      <el-table-column
+        :label="td('dpp.setting.projectUserRel.phoneNumber')"
+        align="center"
+        prop="phoneNumber"
+      >
         <template #default="scope">
-          {{ scope.row.phoneNumber || '-' }}
+          {{ scope.row.phoneNumber || "-" }}
         </template>
       </el-table-column>
-      <el-table-column label="创建人" align="center" prop="createBy">
+      <el-table-column
+        :label="td('common.texts.createdBy')"
+        align="center"
+        prop="createBy"
+      >
         <template #default="scope">
           {{ scope.row.createBy || "-" }}
         </template>
       </el-table-column>
-      <el-table-column v-if="getColumnVisibility(14)" label="创建时间" align="center" prop="create_time" width="150"
-        sortable="custom" column-key="create_time" :sort-orders="['descending', 'ascending']"> <template
-          #default="scope"> <span>{{ parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}</span>
+      <el-table-column
+        v-if="getColumnVisibility(14)"
+        :label="td('common.texts.createdTime')"
+        align="center"
+        prop="create_time"
+        width="150"
+        sortable="custom"
+        column-key="create_time"
+        :sort-orders="['descending', 'ascending']"
+      >
+        <template #default="scope">
+          <span>{{
+            parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}") || "-"
+          }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
+      <el-table-column
+        :label="td('common.texts.operation')"
+        align="center"
+        class-name="small-padding fixed-width"
+        fixed="right"
+        width="240"
+      >
         <template #default="scope">
-          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-            v-hasPermi="['att:projectUserRel:edit']">修改</el-button>
-          <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
-            v-hasPermi="['att:projectUserRel:remove']">移除</el-button>
+          <el-button
+            link
+            type="primary"
+            icon="Edit"
+            @click="handleUpdate(scope.row)"
+            v-hasPermi="['att:projectUserRel:edit']"
+            >修改</el-button
+          >
+          <el-button
+            link
+            type="danger"
+            icon="Delete"
+            @click="handleDelete(scope.row)"
+            v-hasPermi="['att:projectUserRel:remove']"
+            >移除</el-button
+          >
         </template>
       </el-table-column>
 
       <template #empty>
         <div class="emptyBg">
           <img src="@/assets/system/images/no_data/noData.png" alt="" />
-          <p>{{td('common.noData')}}</p>
+          <p>{{ td("common.noData") }}</p>
         </div>
       </template>
     </el-table>
 
-    <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum"
-      v-model:limit="queryParams.pageSize" @pagination="getList" />
+    <pagination
+      v-show="total > 0"
+      :total="total"
+      v-model:page="queryParams.pageNum"
+      v-model:limit="queryParams.pageSize"
+      @pagination="getList"
+    />
   </div>
 
   <!-- 新增或修改项目与用户关联关系对话框 -->
-  <el-dialog :title="title" v-model="open" :append-to-body="false" class="warn-dialog-23012" width="700px"
-    :append-to="$refs['app-container']" draggable>
+  <el-dialog
+    :title="title"
+    v-model="open"
+    :append-to-body="false"
+    class="warn-dialog-23012"
+    width="700px"
+    :append-to="$refs['app-container']"
+    draggable
+  >
     <template #header="{ close, titleId, titleClass }">
       <span role="heading" aria-level="2" class="el-dialog__title">
         {{ title }}
       </span>
     </template>
-    <el-form ref="AttProjectUserRelRef" :model="form" :rules="rules" label-width="80px" @submit.prevent>
+    <el-form
+      ref="AttProjectUserRelRef"
+      :model="form"
+      :rules="rules"
+      label-width="80px"
+      @submit.prevent
+    >
       <el-row :gutter="20">
         <el-col :span="24" v-if="form.id == null">
           <div class="hint-div">
@@ -155,33 +287,77 @@
               <InfoFilled />
             </el-icon>
             <span>
-              如需添加新用户，请先点击‘‘<a href="/system/user" style="color: #2a7bfd">用户管理</a>’’进行添加。
+              {{ td("dpp.setting.projectUserRel.addUserHint")
+              }}<a href="/system/user" style="color: #2a7bfd">{{
+                td("dpp.setting.projectUserRel.userManagement")
+              }}</a
+              >{{ td("dpp.setting.projectUserRel.addUserHintEnd") }}
             </span>
           </div>
         </el-col>
         <el-col :span="24" v-if="form.id == null">
-          <el-form-item label="系统用户" prop="userNameList">
-            <el-input style="width: 76%" v-model="form.userNameList" placeholder="请选择用户" disabled>
+          <el-form-item
+            :label="td('dpp.setting.projectUserRel.systemUser')"
+            prop="userNameList"
+          >
+            <el-input
+              style="width: 76%"
+              v-model="form.userNameList"
+              :placeholder="td('dpp.setting.projectUserRel.selectUser')"
+              disabled
+            >
             </el-input>
-            <el-button style="margin-left: 12px" type="primary" @click="getListUser">选择用户</el-button>
+            <el-button
+              style="margin-left: 12px"
+              type="primary"
+              @click="getListUser"
+              >{{ td("dpp.setting.projectUserRel.selectUser") }}</el-button
+            >
           </el-form-item>
         </el-col>
         <el-col :span="24" v-if="form.id != null">
-          <el-form-item label="系统用户" prop="nickName">
-            <el-input v-model="form.nickName" placeholder="请选择用户" disabled>
+          <el-form-item
+            :label="td('dpp.setting.projectUserRel.systemUser')"
+            prop="nickName"
+          >
+            <el-input
+              v-model="form.nickName"
+              :placeholder="td('dpp.setting.projectUserRel.selectUser')"
+              disabled
+            >
             </el-input>
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="用户角色" prop="roleIdList">
-            <el-checkbox-group v-model="form.roleIdList" class="checkbox-vertical">
-              <div v-for="item in roleList" :key="item.roleId" style="margin-bottom: 15px;height: 40px;">
+          <el-form-item
+            :label="td('dpp.setting.projectUserRel.userRole')"
+            prop="roleIdList"
+          >
+            <el-checkbox-group
+              v-model="form.roleIdList"
+              class="checkbox-vertical"
+            >
+              <div
+                v-for="item in roleList"
+                :key="item.roleId"
+                style="margin-bottom: 15px; height: 40px"
+              >
                 <el-checkbox :label="item.roleId">
                   {{ item.roleName }}
                 </el-checkbox>
                 <p
-                  style="display: flex;align-items: center;line-height:1;font-size: 12px;color: #888;margin-left: 23px;margin-top: 10px;">
-                  {{ item.remark }}</p>
+                  style="
+                    display: flex;
+                    align-items: center;
+                    line-height: 1;
+                    font-size: 12px;
+                    color: #888;
+                    margin-left: 23px;
+                    margin-top: 10px;
+                  "
+                >
+                  {{ item.remark }}
+                </p>
               </div>
             </el-checkbox-group>
           </el-form-item>
@@ -190,69 +366,168 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="cancel">取 消</el-button>
-        <el-button type="primary" size="mini" @click="submitForm">确 定</el-button>
+        <el-button size="mini" @click="cancel">{{
+          td("common.button.cancel")
+        }}</el-button>
+        <el-button type="primary" size="mini" @click="submitForm">{{
+          td("common.button.confirm")
+        }}</el-button>
       </div>
     </template>
   </el-dialog>
 
-  <el-dialog title="用户选择" v-model="openTwo" width="1000px" class="user-select-tatble" draggable>
+  <el-dialog
+    :title="td('dpp.setting.projectUserRel.userSelect')"
+    v-model="openTwo"
+    width="1000px"
+    class="user-select-tatble"
+    draggable
+  >
     <template>
-      <span role="heading" aria-level="2" class="el-dialog__title"> 用户选择 </span>
+      <span role="heading" aria-level="2" class="el-dialog__title">
+        {{ td("dpp.setting.projectUserRel.userSelect") }}
+      </span>
     </template>
     <!--用户数据-->
-    <el-form class="btn-style" :model="queryParamsUser" ref="queryRef" :inline="true" label-width="68px">
-      <el-form-item label="登录账号" prop="userName">
-        <el-input v-model="queryParamsUser.userName" placeholder="请输入登录账号" clearable class="el-form-input-width"
-          @keyup.enter="handleQueryUser" />
+    <el-form
+      class="btn-style"
+      :model="queryParamsUser"
+      ref="queryRef"
+      :inline="true"
+      label-width="68px"
+    >
+      <el-form-item
+        :label="td('dpp.setting.projectUserRel.loginAccount')"
+        prop="userName"
+      >
+        <el-input
+          v-model="queryParamsUser.userName"
+          :placeholder="td('dpp.setting.projectUserRel.inputLoginAccount')"
+          clearable
+          class="el-form-input-width"
+          @keyup.enter="handleQueryUser"
+        />
       </el-form-item>
-      <el-form-item label="手机号码" prop="phonenumber">
-        <el-input v-model="queryParamsUser.phonenumber" placeholder="请输入手机号码" clearable class="el-form-input-width"
-          @keyup.enter="handleQueryUser" />
+      <el-form-item
+        :label="td('dpp.setting.projectUserRel.phoneNumber')"
+        prop="phonenumber"
+      >
+        <el-input
+          v-model="queryParamsUser.phonenumber"
+          :placeholder="td('dpp.setting.projectUserRel.inputPhoneNumber')"
+          clearable
+          class="el-form-input-width"
+          @keyup.enter="handleQueryUser"
+        />
       </el-form-item>
       <el-form-item>
-        <el-button plain type="primary" @click="handleQueryUser" @mousedown="(e) => e.preventDefault()">
-          <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+        <el-button
+          plain
+          type="primary"
+          @click="handleQueryUser"
+          @mousedown="(e) => e.preventDefault()"
+        >
+          <i class="iconfont-mini icon-a-zu22377 mr5"></i
+          >{{ td("common.button.query") }}
         </el-button>
-        <el-button @click="resetQueryUser" @mousedown="(e) => e.preventDefault()">
-          <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+        <el-button
+          @click="resetQueryUser"
+          @mousedown="(e) => e.preventDefault()"
+        >
+          <i class="iconfont-mini icon-a-zu22378 mr5"></i
+          >{{ td("common.button.reset") }}
         </el-button>
       </el-form-item>
     </el-form>
-    <el-table ref="userTableRef" stripe v-loading="loadingUser" :data="userList"
-      @selection-change="handleSelectionChangeUser">
+    <el-table
+      ref="userTableRef"
+      stripe
+      v-loading="loadingUser"
+      :data="userList"
+      @selection-change="handleSelectionChangeUser"
+    >
       <el-table-column type="selection" width="70" align="center" />
-      <el-table-column label="编号" width="80" align="center" key="userId" prop="userId" />
-      <el-table-column label="登录账号" align="center" key="userName" prop="userName"
-        :show-overflow-tooltip="{ effect: 'light' }" />
-      <el-table-column label="用户姓名" align="center" key="nickName" prop="nickName"
-        :show-overflow-tooltip="{ effect: 'light' }" />
-      <el-table-column label="部门" width="180" align="center" key="deptName" prop="dept.deptName"
-        :show-overflow-tooltip="{ effect: 'light' }" />
-      <el-table-column label="手机号码" width="180" align="center" key="phonenumber" prop="phonenumber" />
-      <el-table-column label="创建人" :show-overflow-tooltip="true" align="left" prop="createBy">
+      <el-table-column
+        :label="td('dpp.setting.projectUserRel.userId')"
+        width="80"
+        align="center"
+        key="userId"
+        prop="userId"
+      />
+      <el-table-column
+        :label="td('dpp.setting.projectUserRel.loginAccount')"
+        align="center"
+        key="userName"
+        prop="userName"
+        :show-overflow-tooltip="{ effect: 'light' }"
+      />
+      <el-table-column
+        :label="td('dpp.setting.projectUserRel.userName')"
+        align="center"
+        key="nickName"
+        prop="nickName"
+        :show-overflow-tooltip="{ effect: 'light' }"
+      />
+      <el-table-column
+        :label="td('dpp.setting.projectUserRel.dept')"
+        width="180"
+        align="center"
+        key="deptName"
+        prop="dept.deptName"
+        :show-overflow-tooltip="{ effect: 'light' }"
+      />
+      <el-table-column
+        :label="td('dpp.setting.projectUserRel.phoneNumber')"
+        width="180"
+        align="center"
+        key="phonenumber"
+        prop="phonenumber"
+      />
+      <el-table-column
+        :label="td('common.texts.createdBy')"
+        :show-overflow-tooltip="true"
+        align="left"
+        prop="createBy"
+      >
         <template #default="scope">
           {{ scope.row.createBy || "-" }}
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" align="center" prop="createTime" width="150"> <template #default="scope"> <span>{{
-        parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}</span>
+      <el-table-column
+        :label="td('common.texts.createdTime')"
+        align="center"
+        prop="createTime"
+        width="150"
+      >
+        <template #default="scope">
+          <span>{{
+            parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}") || "-"
+          }}</span>
         </template>
       </el-table-column>
     </el-table>
-    <pagination v-show="totalUser > 0" :total="totalUser" v-model:page="queryParamsUser.pageNum"
-      v-model:limit="queryParamsUser.pageSize" @pagination="getListUser" />
+    <pagination
+      v-show="totalUser > 0"
+      :total="totalUser"
+      v-model:page="queryParamsUser.pageNum"
+      v-model:limit="queryParamsUser.pageSize"
+      @pagination="getListUser"
+    />
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="openTwo = false">取 消</el-button>
-        <el-button type="primary" size="mini" @click="submitFormUser">确 定</el-button>
+        <el-button size="mini" @click="openTwo = false">{{
+          td("common.button.cancel")
+        }}</el-button>
+        <el-button type="primary" size="mini" @click="submitFormUser">{{
+          td("common.button.confirm")
+        }}</el-button>
       </div>
     </template>
   </el-dialog>
 </template>
 
 <script setup name="AttProjectUserRel">
-import { listUser } from '@/api/system/system/user.js';
+import { listUser } from "@/api/system/system/user.js";
 import {
   listAttProjectUserRel,
   getAttProjectUserRel,
@@ -262,29 +537,29 @@ import {
   editUserListAndRoleList,
   listRole,
   getRoleUser,
-  addUserListAndRoleList
-} from '@/api/att/projectUserRel/attProjectUserRel';
-import { getToken } from '@/utils/auth.js';
-import useUserStore from '@/store/system/user';
-import { addUserAndProject, noProjectUser } from '@/api/att/project/project.js';
-import { ref } from 'vue'
+  addUserListAndRoleList,
+} from "@/api/att/projectUserRel/attProjectUserRel";
+import { getToken } from "@/utils/auth.js";
+import useUserStore from "@/store/system/user";
+import { addUserAndProject, noProjectUser } from "@/api/att/project/project.js";
+import { ref } from "vue";
 import useDefaultLang from "@/composables/useDefaultLang";
-const { td } = useDefaultLang();;
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable, sys_user_sex } = proxy.useDict(
-  'sys_normal_disable',
-  'sys_user_sex'
+  "sys_normal_disable",
+  "sys_user_sex"
 );
 const AttProjectUserRelList = ref([]);
-const size = (ref < 'default') | 'large' | ('small' > 'default');
-const value1 = ref('');
-const value2 = ref('');
-const activeName = ref('first');
+const size = (ref < "default") | "large" | ("small" > "default");
+const value1 = ref("");
+const value2 = ref("");
+const activeName = ref("first");
 // 列显隐信息
 const columns = ref([
-  { key: 0, label: 'ID', visible: true },
-  { key: 2, label: '用户ID', visible: true },
-  { key: 7, label: '创建时间', visible: true }
+  { key: 0, label: "ID", visible: true },
+  { key: 2, label: "用户ID", visible: true },
+  { key: 7, label: "创建时间", visible: true },
 ]);
 const userList = ref([]);
 const getColumnVisibility = (key) => {
@@ -308,8 +583,8 @@ const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
 const totalUser = ref(0);
-const title = ref('');
-const defaultSort = ref({ prop: 'createTime', order: 'desc' });
+const title = ref("");
+const defaultSort = ref({ prop: "createTime", order: "desc" });
 const router = useRouter();
 const roleList = ref([]);
 /*** 用户导入参数 */
@@ -317,22 +592,22 @@ const upload = reactive({
   // 是否显示弹出层（用户导入）
   open: false,
   // 弹出层标题（用户导入）
-  title: '',
+  title: "",
   // 是否禁用上传
   isUploading: false,
   // 是否更新已经存在的用户数据
   updateSupport: 0,
   // 设置上传的请求头部
-  headers: { Authorization: 'Bearer ' + getToken() },
+  headers: { Authorization: "Bearer " + getToken() },
   // 上传的地址
-  url: import.meta.env.VITE_APP_BASE_API + '/att/AttProjectUserRel/importData'
+  url: import.meta.env.VITE_APP_BASE_API + "/att/AttProjectUserRel/importData",
 });
 const createTime = ref(null);
 const data = reactive({
   form: {
     userIdList: [],
     userNameList: [],
-    roleIdList: []
+    roleIdList: [],
   },
   queryParams: {
     pageNum: 1,
@@ -341,7 +616,7 @@ const data = reactive({
     userId: null,
     createTime: null,
     endTime: null,
-    startTime: null
+    startTime: null,
   },
   queryParamsUser: {
     pageNum: 1,
@@ -350,12 +625,24 @@ const data = reactive({
     userName: undefined,
     phoneNumber: undefined,
     status: undefined,
-    deptId: undefined
+    deptId: undefined,
   },
   rules: {
-    userNameList: [{ required: true, message: '请选择用户', trigger: 'change' }],
-    roleIdList: [{ required: true, message: '请选择用户角色', trigger: 'change' }]
-  }
+    userNameList: [
+      {
+        required: true,
+        message: td("dpp.setting.projectUserRel.userRequired"),
+        trigger: "change",
+      },
+    ],
+    roleIdList: [
+      {
+        required: true,
+        message: td("dpp.setting.projectUserRel.roleRequired"),
+        trigger: "change",
+      },
+    ],
+  },
 });
 
 const { queryParams, queryParamsUser, form, rules } = toRefs(data);
@@ -365,7 +652,7 @@ watch(
   () => userStore.projectId,
   (newValue, oldValue) => {
     if (newValue !== oldValue) {
-      console.log(userStore.projectCode, 'userStore.projectCode');
+      console.log(userStore.projectCode, "userStore.projectCode");
 
       queryParams.value.projectId = newValue;
       queryParamsUser.value.projectId = newValue;
@@ -400,7 +687,7 @@ function getListUser() {
     openTwo.value = true;
     totalUser.value = response.total;
     loadingUser.value = false;
-    console.log(userList.value, 'userList');
+    console.log(userList.value, "userList");
 
     // 在表格加载完成后，设置之前选中的用户
     nextTick(() => {
@@ -426,7 +713,7 @@ function resetQueryUser() {
     userName: undefined,
     phoneNumber: undefined,
     status: undefined,
-    deptId: undefined
+    deptId: undefined,
   };
   handleQueryUser();
 }
@@ -445,7 +732,7 @@ function getRoleList() {
   if (queryParams.value.projectId) {
     listRole(queryParams.value).then((response) => {
       roleList.value = response.rows;
-      console.log(roleList.value, 'roleList');
+      console.log(roleList.value, "roleList");
     });
   }
 }
@@ -474,9 +761,9 @@ function reset() {
     updateBy: null,
     updaterId: null,
     updateTime: null,
-    remark: null
+    remark: null,
   };
-  proxy.resetForm('AttProjectUserRelRef');
+  proxy.resetForm("AttProjectUserRelRef");
 }
 
 /** 搜索按钮操作 */
@@ -495,7 +782,7 @@ function resetQuery() {
     userId: null,
     createTime: null,
     endTime: null,
-    startTime: null
+    startTime: null,
   };
   // proxy.resetForm('queryRef');
   handleQuery();
@@ -520,7 +807,7 @@ function handleAdd() {
   getRoleList();
   reset();
   open.value = true;
-  title.value = '新增项目成员';
+  title.value = "新增项目成员";
 }
 
 /** 修改按钮操作 */
@@ -530,9 +817,9 @@ function handleUpdate(row) {
   getRoleList();
   getRoleUser(_id).then((response) => {
     form.value = response.data;
-    console.log(form.value, 'form');
+    console.log(form.value, "form");
     open.value = true;
-    title.value = '修改项目成员';
+    title.value = "修改项目成员";
   });
 }
 
@@ -543,36 +830,36 @@ function handleDetail(row) {
   getAttProjectUserRel(_id).then((response) => {
     form.value = response.data;
     openDetail.value = true;
-    title.value = '项目与用户关联关系详情';
+    title.value = "项目与用户关联关系详情";
   });
 }
 
 /** 提交按钮 */
 function submitForm() {
-  proxy.$refs['AttProjectUserRelRef'].validate((valid) => {
+  proxy.$refs["AttProjectUserRelRef"].validate((valid) => {
     if (valid) {
       if (form.value.id != null) {
         editUserListAndRoleList(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess('修改成功');
+            proxy.$modal.msgSuccess("修改成功");
             open.value = false;
             getList();
           })
-          .catch((error) => { });
+          .catch((error) => {});
       } else {
         // 新增时增加额外验证
         if (!form.value.userIdList || form.value.userIdList.length === 0) {
-          proxy.$modal.msgWarning('未选择用户，请选择用户后重试');
+          proxy.$modal.msgWarning("未选择用户，请选择用户后重试");
           return;
         }
         form.value.projectId = userStore.projectId;
         addUserListAndRoleList(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess('新增成功');
+            proxy.$modal.msgSuccess("新增成功");
             open.value = false;
             getList();
           })
-          .catch((error) => { });
+          .catch((error) => {});
       }
     }
   });
@@ -593,17 +880,17 @@ function handleDelete(row) {
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess('移除成功');
+      proxy.$modal.msgSuccess("移除成功");
     })
-    .catch(() => { });
+    .catch(() => {});
 }
 
 /** 导出按钮操作 */
 function handleExport() {
   proxy.download(
-    'att/AttProjectUserRel/export',
+    "att/AttProjectUserRel/export",
     {
-      ...queryParams.value
+      ...queryParams.value,
     },
     `AttProjectUserRel_${new Date().getTime()}.xlsx`
   );
@@ -612,14 +899,14 @@ function handleExport() {
 /** ---------------- 导入相关操作 -----------------**/
 /** 导入按钮操作 */
 function handleImport() {
-  upload.title = '项目与用户关联关系导入';
+  upload.title = "项目与用户关联关系导入";
   upload.open = true;
 }
 
 /** 下载模板操作 */
 function importTemplate() {
   proxy.download(
-    'system/user/importTemplate',
+    "system/user/importTemplate",
     {},
     `AttProjectUserRel_template_${new Date().getTime()}.xlsx`
   );
@@ -627,7 +914,7 @@ function importTemplate() {
 
 /** 提交上传文件 */
 function submitFileForm() {
-  proxy.$refs['uploadRef'].submit();
+  proxy.$refs["uploadRef"].submit();
 }
 
 /**文件上传中处理 */
@@ -639,12 +926,12 @@ const handleFileUploadProgress = (event, file, fileList) => {
 const handleFileSuccess = (response, file, fileList) => {
   upload.open = false;
   upload.isUploading = false;
-  proxy.$refs['uploadRef'].handleRemove(file);
+  proxy.$refs["uploadRef"].handleRemove(file);
   proxy.$alert(
     "<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +
-    response.msg +
-    '</div>',
-    '导入结果',
+      response.msg +
+      "</div>",
+    "导入结果",
     { dangerouslyUseHTMLString: true }
   );
   getList();
@@ -652,19 +939,19 @@ const handleFileSuccess = (response, file, fileList) => {
 /** ---------------------------------**/
 
 function routeTo(link, row) {
-  if (link !== '' && link.indexOf('http') !== -1) {
+  if (link !== "" && link.indexOf("http") !== -1) {
     window.location.href = link;
     return;
   }
-  if (link !== '') {
+  if (link !== "") {
     if (link === router.currentRoute.value.path) {
       window.location.reload();
     } else {
       router.push({
         path: link,
         query: {
-          id: row.id
-        }
+          id: row.id,
+        },
       });
     }
   }

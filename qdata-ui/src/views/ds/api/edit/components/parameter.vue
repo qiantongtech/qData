@@ -21,13 +21,13 @@
       <div class="header-container" style="margin-top: -10px;">
         <div class="header-left">
           <div class="blue-bar"></div>
-          数据源配置
+          {{ td('ds.apiEdit.parameter.dataSourceConfig') }}
         </div>
       </div>
       <el-row :gutter="20">
         <el-col :span="8">
-          <el-form-item label="配置方式" prop="apiServiceType">
-            <el-select v-model="form2.apiServiceType" placeholder="请选择配置方式" @change="configTypeSelectChanged"
+          <el-form-item :label="td('ds.apiEdit.parameter.configMethod')" prop="apiServiceType">
+            <el-select v-model="form2.apiServiceType" :placeholder="td('ds.apiEdit.parameter.configMethodPlaceholder')" @change="configTypeSelectChanged"
               class="select-width">
               <el-option v-for="dict in ds_api_bas_info_api_service_type" :key="dict.id" :label="dict.label"
                 :value="dict.value" />
@@ -35,31 +35,31 @@
           </el-form-item>
         </el-col>
         <el-col :span="8" v-if="form2.apiServiceType != '3'">
-          <el-form-item label="数据源" prop="sourceId">
-            <el-select v-model="form2.sourceId" placeholder="请选择数据源" @change="sourceSelectChanged" class="select-width">
+          <el-form-item :label="td('ds.apiEdit.parameter.dataSource')" prop="sourceId">
+            <el-select v-model="form2.sourceId" :placeholder="td('ds.apiEdit.parameter.dataSourcePlaceholder')" @change="sourceSelectChanged" class="select-width">
               <el-option v-for="source in sourceOptions" :key="source.id" :label="source.datasourceName"
                 :value="source.id" :disabled="source.status === '0'" />
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="8" v-if="form2.apiServiceType == '3'">
-          <el-form-item label="转发类型" prop="transmitType">
-            <el-select v-model="form2.transmitType" placeholder="请选择转发类型" @change="handleTransmitTypeChange">
+          <el-form-item :label="td('ds.apiEdit.parameter.forwardType')" prop="transmitType">
+            <el-select v-model="form2.transmitType" :placeholder="td('ds.apiEdit.parameter.forwardTypePlaceholder')" @change="handleTransmitTypeChange">
               <el-option v-for="dict in ds_api_transmit_type" :key="dict.value" :label="dict.label"
                 :value="dict.value" />
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="8" v-if="form2.apiServiceType == '3'">
-          <el-form-item label="资产列表" prop="categoryAssetList">
-            <el-select v-model="form2.categoryAssetList" placeholder="请选择转发类型" @change="getDaAssetApply">
+          <el-form-item :label="td('ds.apiEdit.parameter.assetList')" prop="categoryAssetList">
+            <el-select v-model="form2.categoryAssetList" :placeholder="td('ds.apiEdit.parameter.forwardTypePlaceholder')" @change="getDaAssetApply">
               <el-option v-for="dict in apiList" :key="dict.id" :label="dict.name" :value="dict.id" />
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="8" v-if="form2.apiServiceType === '1'" :gutter="20">
-          <el-form-item label="数据库表" prop="table">
-            <el-select v-model="form2.table" value-key="tableName" placeholder="请选择数据库表" @change="tableSelectChanged"
+          <el-form-item :label="td('ds.apiEdit.parameter.databaseTable')" prop="table">
+            <el-select v-model="form2.table" value-key="tableName" :placeholder="td('ds.apiEdit.parameter.databaseTablePlaceholder')" @change="tableSelectChanged"
               filterable :filter-method="filterTable" class="select-width">
               <el-option v-for="item in form2.filteredTableOptions" :key="item.tableName"
                 :label="item.tableComment ? item.tableComment : item.tableName" :value="item">
@@ -83,7 +83,7 @@
             @changeTextarea="changeTextarea($event)" />
         </el-col>
         <el-form-item v-if="form2.apiServiceType === '2'" class="sql-parse-btn-container">
-          <el-button size="mini" type="primary" @click="sqlParseFunction" class="sql-parse-btn">SQL解析</el-button>
+          <el-button size="mini" type="primary" @click="sqlParseFunction" class="sql-parse-btn">{{ td('ds.apiEdit.parameter.sqlParse') }}</el-button>
         </el-form-item>
       </el-row>
       <!--      <div class="clearfix header-text">-->
@@ -95,7 +95,7 @@
       <div class="header-container">
         <div class="header-left">
           <div class="blue-bar"></div>
-          参数配置
+          {{td('ds.apiEdit.parameter.paramConfig')}}
         </div>
       </div>
       <div v-if="form2.apiServiceType == '3'">
@@ -103,20 +103,20 @@
         <el-form :model="props.form2.reqParams" :rules="rules" ref="inputForm" label-width="0">
           <el-row :gutter="24" class="mb8" style="margin-left: 0px;!important;margin-right: 0px;!important;">
             <div class="header-text">
-              请求参数
+              {{td('ds.apiEdit.parameter.requestParams')}}
               <el-link type="primary" class="add-link" icon="el-icon-circle-plus-outline" @click="openDialog('four')">
-                新增参数
+                {{td('ds.apiEdit.parameter.addParam')}}
               </el-link>
             </div>
             <el-table :data="props.form2.reqParams" class="tableStyle" row-key="id" stripe default-expand-all
               height="200px" :tree-props="{ children: 'daAssetApiParamList', hasChildren: 'hasChildren' }">
-              <el-table-column label="序号" width="100" align="center" fixed="left">
+              <el-table-column :label="td('ds.apiEdit.parameter.serialNumber')" width="100" align="center" fixed="left">
                 <template #default="{ $index }">
                   {{ $index + 1 }}
                 </template>
               </el-table-column>
 
-              <el-table-column label="参数名称" fixed="left" align="center" prop="name"
+              <el-table-column :label="td('ds.apiEdit.parameter.paramName')" fixed="left" align="center" prop="name"
                 :show-overflow-tooltip="{ effect: 'light' }">
                 <template #default="{ row, $index }">
                   <el-form-item :prop="`props.form2.reqParams[${findPosi(props.form2.reqParams, row.id)}].name`"
@@ -127,18 +127,18 @@
                 </template>
               </el-table-column>
 
-              <el-table-column :label="t('common.texts.description')" fixed="left" align="center" prop="remark"
+              <el-table-column :label="td('common.texts.description')" fixed="left" align="center" prop="remark"
                 :show-overflow-tooltip="{ effect: 'light' }">
                 <template #default="{ row, $index }">
                   <!-- <el-form-item :prop="`props.form2.reqParams[${findPosi(props.form2.reqParams, row.id)}].remark`"
                     :rules="rules.fieldDefault">
-                    <el-input v-model="row.remark" :placeholder="t('common.form.descriptionPlaceholder')" />
+                    <el-input v-model="row.remark" :placeholder="td('common.form.descriptionPlaceholder')" />
                   </el-form-item> -->
                   {{ row.reqParams }}
                 </template>
               </el-table-column>
 
-              <el-table-column label="是否为空" fixed="left" align="center" prop="requestFlag"
+              <el-table-column :label="td('ds.apiEdit.parameter.nullable')" fixed="left" align="center" prop="requestFlag"
                 :show-overflow-tooltip="{ effect: 'light' }">
                 <template #default="{ row, $index }">
                   <el-form-item :prop="`props.form2.reqParams[${findPosi(props.form2.reqParams, row.id)}].requestFlag`"
@@ -148,7 +148,7 @@
                 </template>
               </el-table-column>
 
-              <el-table-column label="参数类型" fixed="left" align="center" prop="columnType"
+              <el-table-column :label="td('ds.apiEdit.parameter.paramType')" fixed="left" align="center" prop="columnType"
                 :show-overflow-tooltip="{ effect: 'light' }">
                 <template #default="{ row, $index }">
                   <!-- <el-form-item :prop="`props.form2.reqParams[${findPosi(props.form2.reqParams, row.id)}].columnType`"
@@ -162,7 +162,7 @@
                 </template>
               </el-table-column>
 
-              <el-table-column label="示例值" fixed="left" align="center" prop="exampleValue"
+              <el-table-column :label="td('ds.apiEdit.parameter.exampleValue')" fixed="left" align="center" prop="exampleValue"
                 :show-overflow-tooltip="{ effect: 'light' }">
                 <template #default="{ row, $index }">
                   <!-- <el-form-item :prop="`props.form2.reqParams[${findPosi(props.form2.reqParams, row.id)}].exampleValue`"
@@ -173,20 +173,20 @@
                 </template>
               </el-table-column>
 
-              <el-table-column label="默认值" fixed="left" align="center" prop="defaultValue"
+              <el-table-column :label="td('ds.apiEdit.parameter.defaultValue')" fixed="left" align="center" prop="defaultValue"
                 :show-overflow-tooltip="{ effect: 'light' }">
                 <template #default="{ row, $index }">
                   <el-form-item :prop="`props.form2.reqParams[${findPosi(props.form2.reqParams, row.id)}].defaultValue`"
                     :rules="rules.defaultValue">
-                    <el-input v-model="row.defaultValue" placeholder="请输入默认值" />
+                    <el-input v-model="row.defaultValue" :placeholder="td('ds.apiEdit.parameter.defaultValue')" />
                   </el-form-item>
                 </template>
               </el-table-column>
 
-              <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width">
+              <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width">
                 <template #default="scope">
                   <el-button type="danger" link v-if="scope.row.parentId == null"
-                    @click="deleteRow(scope.$index, scope.row)">{{ t('common.button.delete') }}</el-button>
+                    @click="deleteRow(scope.$index, scope.row)">{{ td('common.button.delete') }}</el-button>
                 </template>
               </el-table-column>
 
@@ -198,7 +198,7 @@
         <el-form :model="props.form2.resParams" :rules="rules" ref="outputForm" label-width="0">
           <el-row :gutter="24" class="mb8" style="margin-left: 0px;!important;margin-right: 0px;!important;">
             <div class="header-text">
-              返回参数
+              {{ td('ds.apiEdit.parameter.returnParams') }}
               <!-- <el-link type="primary" class="add-link" icon="el-icon-circle-plus-outline" @click="handleAdd(2)">
                 新增参数
               </el-link> -->
@@ -207,13 +207,13 @@
             <el-table :data="props.form2.resParams" row-key="id" border default-expand-all height="200px"
               class="tableStyle" :tree-props="{ children: 'daAssetApiParamList', hasChildren: 'hasChildren' }">
 
-              <el-table-column label="序号" width="100" align="center" fixed="left">
+              <el-table-column :label="td('common.display.index')" width="100" align="center" fixed="left">
                 <template #default="{ $index }">
                   {{ $index + 1 }}
                 </template>
               </el-table-column>
 
-              <el-table-column label="参数名称" fixed="left" align="center" prop="name"
+              <el-table-column :label="td('ds.apiEdit.parameter.paramName')" fixed="left" align="center" prop="name"
                 :show-overflow-tooltip="{ effect: 'light' }">
                 <template #default="{ row, $index }">
                   <!-- <el-form-item :prop="`props.form2.resParams[${findPosi(props.form2.resParams, row.id)}].name`"
@@ -224,17 +224,17 @@
                 </template>
               </el-table-column>
 
-              <el-table-column :label="t('common.texts.description')" fixed="left" align="center" prop="remark"
+              <el-table-column :label="td('common.texts.description')" fixed="left" align="center" prop="remark"
                 :show-overflow-tooltip="{ effect: 'light' }">
                 <template #default="{ row, $index }">
                   <el-form-item :prop="`props.form2.resParams[${findPosi(props.form2.resParams, row.id)}].remark`"
                     :rules="rules.fieldDefault">
-                    <el-input v-model="row.remark" :placeholder="t('common.form.descriptionPlaceholder')" />
+                    <el-input v-model="row.remark" :placeholder="td('common.form.descriptionPlaceholder')" />
                   </el-form-item>
                 </template>
               </el-table-column>
 
-              <el-table-column label="数据类型" fixed="left" align="center" prop="columnType"
+              <el-table-column :label="td('ds.apiEdit.parameter.dataType')" fixed="left" align="center" prop="columnType"
                 :show-overflow-tooltip="{ effect: 'light' }">
                 <template #default="{ row, $index }">
                   <!-- <el-select v-model="row.columnType" placeholder="请选择数据类型">
@@ -245,12 +245,12 @@
                 </template>
               </el-table-column>
 
-              <el-table-column label="示例值" fixed="left" align="center" prop="exampleValue"
+              <el-table-column :label="td('ds.apiEdit.parameter.exampleValue')" fixed="left" align="center" prop="exampleValue"
                 :show-overflow-tooltip="{ effect: 'light' }">
                 <template #default="{ row, $index }">
                   <el-form-item :prop="`props.form2.resParams[${findPosi(props.form2.resParams, row.id)}].exampleValue`"
                     :rules="rules.fieldDefault">
-                    <el-input v-model="row.exampleValue" placeholder="请输入示例值" />
+                    <el-input v-model="row.exampleValue" :placeholder="td('ds.apiEdit.parameter.exampleValuePlaceholder')" />
                   </el-form-item>
                 </template>
               </el-table-column>
@@ -259,48 +259,48 @@
           </el-row>
         </el-form>
       </div>
-      <el-form ref="form2" :model="form2" label-width="100px" label="字段列表：" v-if="form2.apiServiceType != '3'">
+      <el-form ref="form2" :model="form2" label-width="100px" :label="td('ds.apiEdit.parameter.fieldList')" v-if="form2.apiServiceType != '3'">
         <div class="header-text">
-          请求参数
+          {{ td('ds.apiEdit.parameter.requestParams') }}
           <el-link v-if="form2.apiServiceType !== '2'" type="primary" class="add-link"
             icon="el-icon-circle-plus-outline" @click="openDialog('first')">
-            新增参数
+            {{ td('ds.apiEdit.parameter.addParam') }}
           </el-link>
         </div>
         <el-table :data="form2.reqParams" max-height="250" class="tableStyle" stripe>
-          <el-table-column label="序号" width="80" align="center">
+          <el-table-column :label="td('common.display.index')" width="80" align="center">
             <template #default="scope">
               <span>{{ scope.$index + 1 }}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="paramName" label="参数名称" align="center" :show-overflow-tooltip="{ effect: 'light' }" />
-          <el-table-column prop="nullable" label="是否允许为空" align="center" :show-overflow-tooltip="{ effect: 'light' }">
+          <el-table-column prop="paramName" :label="td('ds.apiEdit.parameter.paramName')" align="center" :show-overflow-tooltip="{ effect: 'light' }" />
+          <el-table-column prop="nullable" :label="td('ds.apiEdit.parameter.nullable')" align="center" :show-overflow-tooltip="{ effect: 'light' }">
             <template #default="scope">
               <el-checkbox v-model="scope.row.nullable" true-label="1" false-label="0" />
             </template>
           </el-table-column>
-          <el-table-column prop="paramComment" :label="t('common.texts.description')" align="center">
+          <el-table-column prop="paramComment" :label="td('common.texts.description')" align="center">
             <template #default="scope">
-              <el-input v-model="scope.row.paramComment" :placeholder="t('common.form.descriptionPlaceholder')" />
+              <el-input v-model="scope.row.paramComment" :placeholder="td('common.form.descriptionPlaceholder')" />
             </template>
           </el-table-column>
-          <el-table-column prop="paramType" label="参数类型" align="center">
+          <el-table-column prop="paramType" :label="td('ds.apiEdit.parameter.paramType')" align="center">
             <template #default="scope">
-              <el-select v-model="scope.row.paramType" placeholder="请选择参数类型">
+              <el-select v-model="scope.row.paramType" :placeholder="td('ds.apiEdit.parameter.paramTypePlaceholder')">
                 <el-option v-for="dict in ds_api_param_type" :key="dict.id" :label="dict.label" :value="dict.value" />
               </el-select>
             </template>
           </el-table-column>
           <el-table-column
             prop="whereType"
-            label="操作符"
+            :label="td('ds.apiEdit.parameter.operator')"
             align="center"
             v-if="splReult !== true"
           >
             <template #default="scope">
               <el-select
                 v-model="scope.row.whereType"
-                placeholder="请选择操作符"
+                :placeholder="td('ds.apiEdit.parameter.operatorPlaceholder')"
               >
                 <el-option
                   v-for="dict in da_api_param_operator"
@@ -311,67 +311,67 @@
               </el-select>
             </template>
           </el-table-column>
-          <el-table-column prop="exampleValue" label="示例值" align="center" :show-overflow-tooltip="{ effect: 'light' }">
+          <el-table-column prop="exampleValue" :label="td('ds.apiEdit.parameter.exampleValue')" align="center" :show-overflow-tooltip="{ effect: 'light' }">
             <template #default="scope">
-              <el-input v-model="scope.row.exampleValue" placeholder="请输入示例值" />
+              <el-input v-model="scope.row.exampleValue" :placeholder="td('ds.apiEdit.parameter.exampleValuePlaceholder')" />
             </template>
           </el-table-column>
-          <el-table-column prop="defaultValue" label="默认值" align="center" :show-overflow-tooltip="{ effect: 'light' }">
+          <el-table-column prop="defaultValue" :label="td('ds.apiEdit.parameter.defaultValue')" align="center" :show-overflow-tooltip="{ effect: 'light' }">
             <template #default="scope">
-              <el-input v-model="scope.row.defaultValue" placeholder="请输入默认值" />
+              <el-input v-model="scope.row.defaultValue" :placeholder="td('ds.apiEdit.parameter.defaultValuePlaceholder')" />
             </template>
           </el-table-column>
-          <el-table-column :label="t('common.texts.operation')" align="center" width="150" :show-overflow-tooltip="{ effect: 'light' }"
+          <el-table-column :label="td('common.texts.operation')" align="center" width="150" :show-overflow-tooltip="{ effect: 'light' }"
             v-if="form2.apiServiceType !== '2'">
             <template #default="scope">
               <el-button type="text" size="mini" icon="el-icon-edit" @click="handleDelete(scope.$index)">
-                {{ t('common.button.delete') }}
+                {{ td('common.button.delete') }}
               </el-button>
             </template>
           </el-table-column>
         </el-table>
         <div class="header-text">
-          返回字段
+          {{ td('ds.apiEdit.parameter.returnFields') }}
           <el-link type="primary" v-if="form2.apiServiceType !== '2'" class="add-link"
             icon="el-icon-circle-plus-outline" @click="openDialog('second')">
-            新增参数
+            {{ td('ds.apiEdit.parameter.addParam') }}
           </el-link>
         </div>
         <el-table class="tableStyle" max-height="250" :data="form2.resParams" stripe>
-          <el-table-column label="序号" width="80" align="center">
+          <el-table-column :label="td('common.display.index')" width="80" align="center">
             <template #default="scope">
               <span>{{ scope.$index + 1 }}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="fieldName" label="中文名称" align="center" :show-overflow-tooltip="{ effect: 'light' }" />
-          <el-table-column prop="fieldComment" :label="t('common.texts.description')" align="center" :show-overflow-tooltip="{ effect: 'light' }">
+          <el-table-column prop="fieldName" :label="td('ds.apiEdit.parameter.chineseName')" align="center" :show-overflow-tooltip="{ effect: 'light' }" />
+          <el-table-column prop="fieldComment" :label="td('common.texts.description')" align="center" :show-overflow-tooltip="{ effect: 'light' }">
             <template #default="scope">
-              <el-input v-model="scope.row.fieldComment" :placeholder="t('common.form.descriptionPlaceholder')" />
+              <el-input v-model="scope.row.fieldComment" :placeholder="td('common.form.descriptionPlaceholder')" />
             </template>
           </el-table-column>
-          <el-table-column prop="dataType" label="数据类型" align="center" :show-overflow-tooltip="{ effect: 'light' }">
+          <el-table-column prop="dataType" :label="td('ds.apiEdit.parameter.dataType')" align="center" :show-overflow-tooltip="{ effect: 'light' }">
             <template #default="scope">
-              <el-select v-model="scope.row.dataType" clearable placeholder="请选择数据类型">
+              <el-select v-model="scope.row.dataType" clearable :placeholder="td('ds.apiEdit.parameter.dataTypePlaceholder')">
                 <el-option v-for="dict in ds_api_param_type" :key="dict.id" :label="dict.label" :value="dict.value" />
               </el-select>
             </template>
           </el-table-column>
-          <el-table-column prop="dataType" label="时间格式" align="center" :show-overflow-tooltip="{ effect: 'light' }">
+          <el-table-column prop="dataType" :label="td('ds.apiEdit.parameter.timeFormat')" align="center" :show-overflow-tooltip="{ effect: 'light' }">
             <template #default="scope">
-              <el-input v-if="scope.row.dataType == '4'" v-model="scope.row.dateFormat" placeholder="请输入时间格式" />
+              <el-input v-if="scope.row.dataType == '4'" v-model="scope.row.dateFormat" :placeholder="td('ds.apiEdit.parameter.timeFormatPlaceholder')" />
               <span v-else>-</span>
             </template>
           </el-table-column>
-          <el-table-column prop="exampleValue" label="示例值" align="center" :show-overflow-tooltip="{ effect: 'light' }">
+          <el-table-column prop="exampleValue" :label="td('ds.apiEdit.parameter.exampleValue')" align="center" :show-overflow-tooltip="{ effect: 'light' }">
             <template #default="scope">
-              <el-input v-model="scope.row.exampleValue" placeholder="请输入示例值" />
+              <el-input v-model="scope.row.exampleValue" :placeholder="td('ds.apiEdit.parameter.exampleValuePlaceholder')" />
             </template>
           </el-table-column>
-          <el-table-column :label="t('common.texts.operation')" align="center" width="150" :show-overflow-tooltip="{ effect: 'light' }"
+          <el-table-column :label="td('common.texts.operation')" align="center" width="150" :show-overflow-tooltip="{ effect: 'light' }"
             v-if="form2.apiServiceType !== '2'">
             <template #default="scope">
               <el-button type="text" size="mini" icon="el-icon-edit" @click="handleDelete(scope.$index, true)">
-                {{ t('common.button.delete') }}
+                {{ td('common.button.delete') }}
               </el-button>
             </template>
           </el-table-column>
@@ -379,21 +379,21 @@
 
         <el-table v-if="form2.apiServiceType === '1' && false" row-key="id" max-height="250" ref="dragTable"
           class="tableStyle" :data="form2.sortParams" stripe border>
-          <el-table-column label="序号" width="80" align="center">
+          <el-table-column :label="td('common.display.index')" width="80" align="center">
             <template #default="scope">
               <span>{{ scope.$index + 1 }}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="fieldName" label="中文名称" align="center" :show-overflow-tooltip="{ effect: 'light' }" />
-          <el-table-column :label="t('common.texts.operation')" align="center" :show-overflow-tooltip="{ effect: 'light' }"
+          <el-table-column prop="fieldName" :label="td('ds.apiEdit.parameter.chineseName')" align="center" :show-overflow-tooltip="{ effect: 'light' }" />
+          <el-table-column :label="td('common.texts.operation')" align="center" :show-overflow-tooltip="{ effect: 'light' }"
             v-if="form2.apiServiceType !== '2'">
             <template #default="scope">
               <el-button type="text" size="mini" icon="el-icon-edit" @click="handlesortDelete(scope.$index, true)">
-                {{ t('common.button.delete') }}
+                {{ td('common.button.delete') }}
               </el-button>
             </template>
           </el-table-column>
-          <el-table-column label="拖动" width="75" align="center" class-name="allowDrag">
+          <el-table-column :label="td('ds.apiEdit.parameter.drag')" width="75" align="center" class-name="allowDrag">
             <template #default="scope">
               <el-icon class="el-icon-s-operation" name="d-caret" />
             </template>
@@ -401,22 +401,23 @@
         </el-table>
       </el-form>
     </el-form>
-    <TableDialogapi v-if="fourVisible" :visible="fourVisible" dialog-title="请求参数" :tableData="inputList"
+    <TableDialogapi v-if="fourVisible" :visible="fourVisible" :dialog-title="td('ds.apiEdit.parameter.requestParams')"
+      :tableData="inputList"
       @confirm="handleFirstConfirm" @close="fourVisible = false" :list="form2.reqParams"
       :apiServiceType="form2.apiServiceType" :inputList="inputList" />
-    <tableDialog v-if="firstDialogVisible" :visible="firstDialogVisible" dialog-title="请求参数"
+    <tableDialog v-if="firstDialogVisible" :visible="firstDialogVisible" :dialog-title="td('ds.apiEdit.parameter.requestParams')"
       :tableData="form2.fieldParams" @confirm="handleFirstConfirm" @close="firstDialogVisible = false"
       :list="form2.reqParams" :apiServiceType="form2.apiServiceType" :inputList="inputList" />
-    <tableDialog v-if="secondDialogVisible" :visible="secondDialogVisible" dialog-title="返回字段"
+    <tableDialog v-if="secondDialogVisible" :visible="secondDialogVisible" :dialog-title="td('ds.apiEdit.parameter.returnFields')"
       :tableData="form2.fieldParams" @confirm="handleSecondConfirm" @close="secondDialogVisible = false"
       :list="form2.resParams" />
-    <tableDialog :visible="sortDialogVisible" dialog-title="返回字段" :tableData="form2.fieldParams"
+    <tableDialog :visible="sortDialogVisible" :dialog-title="td('ds.apiEdit.parameter.returnParams')"
+      :tableData="form2.fieldParams"
       @confirm="handlesortConfirm" @close="sortDialogVisible = false" :list="form2.sortParams" />
   </div>
 </template>
 
 <script setup name="parameter">
-import { useI18n } from 'vue-i18n'
 import Sortable from "sortablejs";
 import SqlEditor from "@/components/SqlEditor";
 import tableDialog from "./tableDialog.vue";
@@ -430,8 +431,9 @@ import {
   getDaAssetRespList
 } from "@/api/da/dataSource/dataSource.js";
 import { sqlParse } from "@/api/ds/api/api.js";
+import useDefaultLang from "@/composables/useDefaultLang";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const {
   ds_api_bas_info_api_service_type,
@@ -545,9 +547,9 @@ const hasChildren = (row) => {
   return false;
 };
 const rules = {
-  name: [{ required: true, message: "请输入参数名称", trigger: "blur" }],
+  name: [{ required: true, message: td('ds.apiEdit.parameter.paramNameRequired'), trigger: "blur" }],
   columnType: [
-    { required: true, message: "请选择参数类型", trigger: "change" },
+    { required: true, message: td('ds.apiEdit.parameter.paramTypeRequired'), trigger: "change" },
   ],
 }; const findPosi = (array, targetId, path = "") => {
   for (let i = 0; i < array.length; i++) {
@@ -594,11 +596,11 @@ watch(
 
 function sqlParseFunction() {
   if (!props.form2.sourceId) {
-    props.$message.warning("数据源不能为空");
+    props.$message.warning(td('ds.apiEdit.parameter.dataSourceRequired'));
     return;
   }
   if (!props.form2.sqlText) {
-    props.$message.warning("解析SQL不能为空");
+    props.$message.warning(td('ds.apiEdit.parameter.sqlRequired'));
     return;
   }
   const data = {};
@@ -611,9 +613,9 @@ function sqlParseFunction() {
       props.form2.resParams = data.resParams;
       props.form2.lastSqlText = props.form2.sqlText;
       props.splReult = true;
-      proxy.$modal.msgSuccess("解析成功，请进行下一步");
+      proxy.$modal.msgSuccess(td('ds.apiEdit.parameter.parseSuccess'));
     } else {
-      proxy.$modal.msgWarning(response.msg || "解析失败，请重试");
+      proxy.$modal.msgWarning(response.msg || td('ds.apiEdit.parameter.parseFailed'));
     }
   });
 }
@@ -638,18 +640,18 @@ function validateFormParameter(formName, callback) {
   proxy.$refs[formName].validate((valid) => {
     if (valid) {
       if (props.form2.resParams.length <= 0 && props.form2.apiServiceType != 3) {
-        proxy.$message.warning("验证失败，返回字段不能为空");
+        proxy.$message.warning(td('ds.apiEdit.parameter.returnFieldsRequired'));
       } else if (
         props.form2.apiServiceType !== 1 &&
         props.form2.lastSqlText &&
         props.form2.lastSqlText !== props.form2.sqlText
       ) {
-        proxy.$message.info("SOL变化请重新解析");
+        proxy.$message.info(td('ds.apiEdit.parameter.sqlChangeReParse'));
       } else {
         callback(props.form2);
       }
     } else {
-      proxy.$message.warning("验证失败，请检查后重试");
+      proxy.$message.warning(td('ds.apiEdit.parameter.validationFailed'));
       return false;
     }
   });
@@ -831,7 +833,7 @@ function handleDelete(index, falg) {
   }
   proxy.$message({
     type: "success",
-    message: "删除成功!",
+    message: td('ds.apiEdit.parameter.deleteSuccess'),
   });
 }
 
@@ -839,7 +841,7 @@ function handlesortDelete(index) {
   this.form2.sortParams.splice(index, 1);
   this.$message({
     type: "success",
-    message: "删除成功!",
+    message: td('ds.apiEdit.parameter.deleteSuccess'),
   });
 }
 

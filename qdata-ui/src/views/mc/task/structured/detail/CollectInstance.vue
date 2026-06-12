@@ -39,12 +39,16 @@
     >
       <qt-table v-bind="tableStroe">
         <template #table-count="{ row }">
-          {{ row.totalCount }}（成功 {{ row.successCount }}，失败
+          {{ row.totalCount }}（{{ td("common.texts.success") }}
+          {{ row.successCount }}，{{ td("mc.task.structured.fail") }}
           {{ row.failCount }}）
         </template>
 
         <template #change-count="{ row }">
-          新增 {{ row.addCount }}，删减 {{ row.delCount }}，变更
+          {{ td("mc.task.structured.add") }} {{ row.addCount }}，{{
+            td("mc.task.structured.delete")
+          }}
+          {{ row.delCount }}，{{ td("mc.task.structured.change") }}
           {{ row.updateCount }}
         </template>
 
@@ -60,7 +64,7 @@
             @click="handleViewClick(row)"
             v-hasPermi="['mc:instance:structured:log:view']"
           >
-            查看日志
+            {{ td("mc.task.structured.viewLog") }}
           </el-button>
           <el-button
             link
@@ -69,7 +73,7 @@
             @click="handleDownloadClick(row)"
             v-hasPermi="['mc:instance:structured:log:download']"
           >
-            下载日志
+            {{ td("mc.task.structured.downloadLog") }}
           </el-button>
         </template>
       </qt-table>
@@ -112,18 +116,18 @@ const tableStroe = reactive({
   },
   columns: [
     {
-      label: "编号",
+      label: td("common.texts.number"),
       prop: "id",
       width: 60,
     },
     {
-      label: "采集范围",
+      label: td("mc.task.structured.collectionScope"),
       prop: "collectionScope",
       dict: "mc_collect_scope",
       width: 120,
     },
     {
-      label: "采集表数量",
+      label: td("mc.task.structured.collectTableCount"),
       slot: "table-count",
       minWidth: 240,
       showOverflowTooltip: {
@@ -131,7 +135,7 @@ const tableStroe = reactive({
       },
     },
     {
-      label: "变更数量",
+      label: td("mc.task.structured.changeCount"),
       slot: "change-count",
       minWidth: 240,
       showOverflowTooltip: {
@@ -139,13 +143,13 @@ const tableStroe = reactive({
       },
     },
     {
-      label: "运行状态",
+      label: td("mc.task.structured.runStatus"),
       prop: "status",
       dict: "mc_task_instance_status",
       width: 90,
     },
     {
-      label: "失败原因",
+      label: td("mc.task.structured.failCause"),
       prop: "failCause",
       minWidth: 240,
       showOverflowTooltip: {
@@ -153,12 +157,12 @@ const tableStroe = reactive({
       },
     },
     {
-      label: "采集耗时(s)",
+      label: td("mc.task.structured.collectDuration"),
       prop: "duration",
       width: 120,
     },
     {
-      label: "采集起止时间",
+      label: td("mc.task.structured.collectTimeRange"),
       slot: "date-range",
       width: 340,
       showOverflowTooltip: {
@@ -166,7 +170,7 @@ const tableStroe = reactive({
       },
     },
     {
-      label: "操作",
+      label: td("common.texts.operation"),
       slot: "handle",
       width: 220,
       fixed: "right",
@@ -186,7 +190,7 @@ const dialog = reactive({
 function handleViewClick(row) {
   store.loading = true;
   getTaskInstanceLog(row.id).then((res) => {
-    dialog.content = res.data?.logContent || td('common.noLog');
+    dialog.content = res.data?.logContent || td("common.noLog");
     store.loading = false;
     dialog.open = true;
   });
@@ -196,8 +200,14 @@ function handleViewClick(row) {
 function handleDownloadClick(row) {
   store.loading = true;
   getTaskInstanceLog(row.id).then((res) => {
-    const content = res.data?.logContent || td('common.noLog');
-    proxy.downloadContent(content, `${props.detail.name}_${row.id}_日志.log`);
+    const content = res.data?.logContent || td("common.noLog");
+    const taskName = props.detail.name || "task";
+    const instanceId = String(row.id).replace(/[^\w\-]/g, "_");
+    const fileName = td("mc.instance.structured.logFileName", {
+      name: taskName,
+      id: instanceId,
+    });
+    proxy.downloadContent(content, fileName);
     store.loading = false;
   });
 }

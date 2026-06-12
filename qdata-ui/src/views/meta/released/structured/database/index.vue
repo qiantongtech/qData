@@ -24,7 +24,7 @@
             @click="handleDetailClick(row)"
             v-hasPermi="['md:released:structured:db:detail']"
           >
-            {{ t('common.button.details') }}
+            {{ td("common.button.details") }}
           </el-button>
           <el-button
             link
@@ -36,7 +36,7 @@
               icon-class="meta-table"
               class="handle-svg-icon"
             ></svg-icon>
-            表列表
+            {{ td("meta.released.structured.database.tableList") }}
           </el-button>
           <el-button
             link
@@ -48,7 +48,7 @@
               icon-class="meta-version"
               class="handle-svg-icon"
             ></svg-icon>
-            版本与变更
+            {{ td("meta.released.structured.database.versionManagement") }}
           </el-button>
         </template>
       </qt-table>
@@ -57,14 +57,14 @@
 </template>
 
 <script setup name="ReleasedStructuredDatabase">
-import { useI18n } from 'vue-i18n'
-import { reactive, ref, getCurrentInstance } from "vue";
+import useDefaultLang from "@/composables/useDefaultLang";
+import { reactive, ref, getCurrentInstance, computed } from "vue";
 import { listDomain } from "@/api/att/domain/domain.js";
 import { listDb } from "@/api/mc/unreleased/db.js";
 import { getParentLabelPath } from "@/utils/anivia.js";
 import { useRouter } from "vue-router";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const BASE_URL = "/meta/released/structured/db";
 
 const { proxy } = getCurrentInstance();
@@ -98,13 +98,13 @@ const tableStroe = reactive({
   },
   columns: [
     {
-      label: t('common.texts.number'),
+      label: td("common.texts.number"),
       prop: "id",
       sortable: true,
       width: 60,
     },
     {
-      label: "库名",
+      label: td("meta.released.structured.database.dbName"),
       prop: "dbName",
       showOverflowTooltip: {
         effect: "light",
@@ -116,7 +116,7 @@ const tableStroe = reactive({
       },
     },
     {
-      label: t('common.texts.description'),
+      label: td("common.texts.description"),
       prop: "description",
       width: 240,
       align: "left",
@@ -125,7 +125,7 @@ const tableStroe = reactive({
       },
     },
     {
-      label: "业务域",
+      label: td("meta.released.structured.database.businessDomain"),
       prop: "domainId",
       slot: "domain-name",
       width: 240,
@@ -134,54 +134,54 @@ const tableStroe = reactive({
       },
     },
     {
-      label: "数据库类型",
+      label: td("meta.released.structured.database.dbType"),
       prop: "dbType",
       dict: "datasource_type",
       width: 90,
     },
     {
-      label: "数据质量",
+      label: td("meta.released.structured.database.dataQuality"),
       prop: "dataQuality",
       width: 90,
       sortable: true,
     },
     {
-      label: "表数量",
+      label: td("meta.released.structured.database.tableCount"),
       prop: "tableCount",
       sortable: true,
       width: 90,
     },
     {
-      label: "版本号",
+      label: td("meta.released.structured.database.version"),
       prop: "version",
       width: 90,
     },
     {
-      label: t('common.texts.updatedBy'),
+      label: td("common.texts.updatedBy"),
       prop: "updateBy",
       width: 120,
     },
     {
-      label: t('common.texts.updatedTime'),
+      label: td("common.texts.updatedTime"),
       prop: "updateTime",
       sortable: true,
       width: 160,
       date: true,
     },
     {
-      label: t('common.texts.createdBy'),
+      label: td("common.texts.createdBy"),
       prop: "createBy",
       width: 120,
     },
     {
-      label: t('common.texts.createdTime'),
+      label: td("common.texts.createdTime"),
       prop: "createTime",
       sortable: true,
       width: 160,
       date: true,
     },
     {
-      label: t('common.texts.operation'),
+      label: td("common.texts.operation"),
       width: 280,
       fixed: "right",
       slot: "handle",
@@ -206,14 +206,14 @@ const tableStroe = reactive({
 const searchStore = reactive({
   items: [
     {
-      label: "库名",
+      label: td("meta.released.structured.database.dbName"),
       prop: "dbName",
       component: {
         is: "input",
       },
     },
     {
-      label: "数据库类型",
+      label: td("meta.released.structured.database.dbType"),
       prop: "dbType",
       component: {
         is: "select",
@@ -221,7 +221,7 @@ const searchStore = reactive({
       },
     },
     {
-      label: "业务域",
+      label: td("meta.released.structured.database.businessDomain"),
       prop: "domainCode",
       component: {
         is: "tree-select",

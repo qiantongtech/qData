@@ -24,37 +24,37 @@
             :selectable="checkSelectable" @selection-change="handleSelectionChange">
             <!-- Selection Column with Condition -->
             <el-table-column type="selection" width="55" :reserve-selection="true" :selectable="checkSelectable" />
-            <el-table-column label="序号" width="80" align="center" fixed="left">
+            <el-table-column :label="td('ds.apiEdit.parameter.tableDialog.serialNumber')" width="80" align="center" fixed="left">
                 <template #default="{ $index }">
                     {{ $index + 1 }}
                 </template>
             </el-table-column>
-            <el-table-column prop="name" label="参数名称" align="center" :show-overflow-tooltip="{effect: 'light'}" fixed="left" />
-            <el-table-column prop="remark" :label="t('common.texts.description')" align="center" :show-overflow-tooltip="{effect: 'light'}" fixed="left" />
-            <el-table-column label="数据类型" fixed="left" align="center" prop="columnType" :show-overflow-tooltip="{effect: 'light'}">
+            <el-table-column prop="name" :label="td('ds.apiEdit.parameter.tableDialog.paramName')" align="center" :show-overflow-tooltip="{effect: 'light'}" fixed="left" />
+            <el-table-column prop="remark" :label="td('common.texts.description')" align="center" :show-overflow-tooltip="{effect: 'light'}" fixed="left" />
+            <el-table-column :label="td('ds.apiEdit.parameter.tableDialog.dataType')" fixed="left" align="center" prop="columnType" :show-overflow-tooltip="{effect: 'light'}">
                 <template #default="{ row }">
                     {{ row.columnType || '-' }}
                 </template>
             </el-table-column>
-            <el-table-column prop="exampleValue" label="示例值" width="120" align="center" :show-overflow-tooltip="{effect: 'light'}" fixed="left" />
-            <el-table-column prop="requestFlag" label="是否允许为空" align="center" :show-overflow-tooltip="{effect: 'light'}" fixed="left">
+            <el-table-column prop="exampleValue" :label="td('ds.apiEdit.parameter.tableDialog.exampleValue')" width="120" align="center" :show-overflow-tooltip="{effect: 'light'}" fixed="left" />
+            <el-table-column prop="requestFlag" :label="td('ds.apiEdit.parameter.tableDialog.nullable')" align="center" :show-overflow-tooltip="{effect: 'light'}" fixed="left">
                 <template #default="scope">
-                    <span>{{ scope.row.requestFlag == '1' ? '是' : '否' }}</span>
+                    <span>{{ scope.row.requestFlag == '1' ? td('ds.apiEdit.parameter.tableDialog.nullableYes') : td('ds.apiEdit.parameter.tableDialog.nullableNo') }}</span>
                 </template>
             </el-table-column>
         </el-table>
 
         <span slot="footer" class="dialog-footer">
-            <el-button @click="handleClose">{{ t('common.button.cancel') }}</el-button>
-            <el-button type="primary" @click="confirm">{{ t('common.button.confirm') }}</el-button>
+            <el-button @click="handleClose">{{ td('common.button.cancel') }}</el-button>
+            <el-button type="primary" @click="confirm">{{ td('common.button.confirm') }}</el-button>
         </span>
     </el-dialog>
 </template>
 
 <script setup name="AddList">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 
 const props = defineProps({

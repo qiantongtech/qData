@@ -26,7 +26,7 @@
               :disabled="!store.rows.length"
               @click="handleDeleteColumnClick"
             >
-              {{ t('common.button.delete') }}
+              {{ td("common.button.delete") }}
             </el-button>
           </template>
           <qt-table v-bind="tableStroe" ref="tableRef">
@@ -51,7 +51,7 @@
                 icon="view"
                 @click="handleDetailClick(row)"
               >
-                {{ t('common.button.details') }}
+                {{ td("common.button.details") }}
               </el-button>
               <el-button
                 link
@@ -60,7 +60,7 @@
                 :disabled="row.status == 1"
                 @click="handleEditClick(row)"
               >
-                {{ t('common.button.update') }}
+                {{ td("common.button.update") }}
               </el-button>
               <el-popover
                 placement="bottom"
@@ -70,7 +70,7 @@
               >
                 <template #reference>
                   <el-button link type="primary" icon="ArrowDown">
-                    {{ t('common.button.more') }}
+                    {{ td("common.button.more") }}
                   </el-button>
                 </template>
                 <el-button
@@ -80,7 +80,7 @@
                   :disabled="row.status == 1"
                   @click="handleDeleteClick(row)"
                 >
-                  {{ t('common.button.delete') }}
+                  {{ td("common.button.delete") }}
                 </el-button>
                 <el-button
                   link
@@ -88,7 +88,7 @@
                   @click="handleDetailClick(row, 'VersionManagement')"
                 >
                   <svg-icon icon-class="meta-version" class="handle-svg-icon" />
-                  版本与变更
+                  {{ td("meta.released.structured.table.versionManagement") }}
                 </el-button>
               </el-popover>
             </template>
@@ -100,7 +100,7 @@
 </template>
 
 <script setup name="UnreleasedStructuredTable">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang";
 import { reactive, ref, getCurrentInstance, computed } from "vue";
 import { listDomain } from "@/api/att/domain/domain.js";
 import { getParentLabelPath } from "@/utils/anivia.js";
@@ -114,7 +114,7 @@ import { useRoute, useRouter } from "vue-router";
 import { listDb } from "@/api/mc/unreleased/db";
 import SourceSystemTree from "@/views/mc/task/structured/components/SourceSystemTree.vue";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 
 const router = useRouter();
@@ -151,13 +151,13 @@ const tableStroe = reactive({
       // }
     },
     {
-      label: t('common.texts.number'),
+      label: td("common.texts.number"),
       prop: "id",
       sortable: true,
       width: 60,
     },
     {
-      label: "所属库名",
+      label: td("meta.released.structured.table.dbName"),
       prop: "dbName",
       align: "left",
       showOverflowTooltip: {
@@ -166,7 +166,7 @@ const tableStroe = reactive({
       minWidth: 230,
     },
     {
-      label: "表名称",
+      label: td("meta.released.structured.table.tableName"),
       prop: "tableName",
       align: "left",
       showOverflowTooltip: {
@@ -178,7 +178,7 @@ const tableStroe = reactive({
       },
     },
     {
-      label: "表注释",
+      label: td("meta.released.structured.table.tableComment"),
       prop: "tableComment",
       showOverflowTooltip: {
         effect: "light",
@@ -187,7 +187,7 @@ const tableStroe = reactive({
       align: "left",
     },
     {
-      label: t('common.texts.description'),
+      label: td("common.texts.description"),
       prop: "description",
       align: "left",
       width: 240,
@@ -197,42 +197,42 @@ const tableStroe = reactive({
     },
 
     {
-      label: "版本号",
+      label: td("meta.released.structured.table.version"),
       prop: "version",
       width: 90,
     },
     {
-      label: t('common.texts.status'),
+      label: td("common.texts.status"),
       prop: "status",
       width: 90,
       slot: "status",
     },
     {
-      label: t('common.texts.updatedBy'),
+      label: td("common.texts.updatedBy"),
       prop: "updateBy",
       width: 120,
     },
     {
-      label: t('common.texts.updatedTime'),
+      label: td("common.texts.updatedTime"),
       prop: "updateTime",
       sortable: true,
       width: 160,
       date: true,
     },
     {
-      label: t('common.texts.createdBy'),
+      label: td("common.texts.createdBy"),
       prop: "createBy",
       width: 120,
     },
     {
-      label: t('common.texts.createdTime'),
+      label: td("common.texts.createdTime"),
       prop: "createTime",
       sortable: true,
       width: 160,
       date: true,
     },
     {
-      label: t('common.texts.operation'),
+      label: td("common.texts.operation"),
       width: 220,
       fixed: "right",
       slot: "handle",
@@ -255,21 +255,21 @@ const tableStroe = reactive({
 const searchStore = reactive({
   items: [
     {
-      label: "表名称",
+      label: td("meta.released.structured.table.tableName"),
       prop: "tableName",
       component: {
         is: "input",
       },
     },
     {
-      label: "表注释",
+      label: td("meta.released.structured.table.tableComment"),
       prop: "tableComment",
       component: {
         is: "input",
       },
     },
     {
-      label: "所属库名",
+      label: td("meta.released.structured.table.dbName"),
       prop: "dbId",
       component: {
         is: "select",
@@ -373,23 +373,23 @@ function handleDeleteColumnClick() {
     store.loading = false;
     ElMessageBox.confirm(
       `可删除${canDeleteCount}个，不可删除${cannotDeleteCount}个，是否删除可删部分`,
-      t('common.message.systemPrompt'),
+      t("common.message.systemPrompt"),
       {
-        confirmButtonText: t('common.button.confirm'),
-        cancelButtonText: t('common.button.cancel'),
+        confirmButtonText: t("common.button.confirm"),
+        cancelButtonText: t("common.button.cancel"),
         type: "warning",
       }
     )
       .then(() => {
         if (!canDeleteIds.length) {
-          ElMessage.success(t('common.message.deleteSuccess'));
+          ElMessage.success(t("common.message.deleteSuccess"));
           return;
         }
         return delTable(canDeleteIds.toString());
       })
       .then((res) => {
         if (!res) return;
-        ElMessage.success(t('common.message.deleteSuccess'));
+        ElMessage.success(t("common.message.deleteSuccess"));
         tableRef.value.getList();
       });
   });
@@ -397,16 +397,20 @@ function handleDeleteColumnClick() {
 
 // 删除
 function handleDeleteClick(row) {
-  ElMessageBox.confirm(`是否确认删除编号为${row.id}的数据项？`, t('common.message.systemPrompt'), {
-    confirmButtonText: t('common.button.confirm'),
-    cancelButtonText: t('common.button.cancel'),
-    type: "warning",
-  })
+  ElMessageBox.confirm(
+    `是否确认删除编号为${row.id}的数据项？`,
+    t("common.message.systemPrompt"),
+    {
+      confirmButtonText: t("common.button.confirm"),
+      cancelButtonText: t("common.button.cancel"),
+      type: "warning",
+    }
+  )
     .then(() => {
       return delTable(row.id);
     })
     .then(() => {
-      ElMessage.success(t('common.message.deleteSuccess'));
+      ElMessage.success(t("common.message.deleteSuccess"));
       tableRef.value.getList();
     });
 }
@@ -429,10 +433,10 @@ function handleStatusChange(row, status) {
     `是否确认${status == 1 ? "发布" : "取消发布"}数据编号为${
       row.id
     }的表元数据吗？`,
-    t('common.message.systemPrompt'),
+    t("common.message.systemPrompt"),
     {
-      confirmButtonText: t('common.button.confirm'),
-      cancelButtonText: t('common.button.cancel'),
+      confirmButtonText: t("common.button.confirm"),
+      cancelButtonText: t("common.button.cancel"),
       type: "warning",
     }
   )

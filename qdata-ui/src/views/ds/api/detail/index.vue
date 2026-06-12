@@ -25,13 +25,13 @@
         <el-row :gutter="2">
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ t('common.texts.number') }}</div>
+              <div class="infotop-row-lable">{{ td('common.texts.number') }}</div>
               <div class="infotop-row-value">{{ dsApiDetail.id }}</div>
             </div>
           </el-col>
           <el-col :span="8">
               <div class="infotop-row border-top">
-                  <div class="infotop-row-lable">所属类目</div>
+                  <div class="infotop-row-lable">{{ td('ds.api.apiDetail.belongingCategory') }}</div>
                   <div class="infotop-row-value">
                       {{ dsApiDetail.catName || '-' }}
                   </div>
@@ -39,7 +39,7 @@
           </el-col>
           <el-col :span="8">
               <div class="infotop-row border-top">
-                  <div class="infotop-row-lable">{{ t('common.texts.status') }}</div>
+                  <div class="infotop-row-lable">{{ td('common.texts.status') }}</div>
                   <div class="infotop-row-value">
                       <dict-tag :options="sys_disable" :value="dsApiDetail.status" />
                   </div>
@@ -47,7 +47,7 @@
           </el-col>
           <el-col :span="8" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">API版本</div>
+              <div class="infotop-row-lable">{{ td('ds.api.apiDetail.apiVersion') }}</div>
               <div class="infotop-row-value">
                 {{ dsApiDetail.apiVersion || '-' }}
               </div>
@@ -55,7 +55,7 @@
           </el-col>
           <el-col :span="8" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">请求方式</div>
+              <div class="infotop-row-lable">{{td('ds.api.apiDetail.requestMethod')}}</div>
               <div class="infotop-row-value">
                 <dict-tag :options="ds_api_bas_info_api_method_type" :value="dsApiDetail.reqMethod" />
               </div>
@@ -63,7 +63,7 @@
           </el-col>
           <el-col :span="8" >
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">返回结果类型</div>
+              <div class="infotop-row-lable">{{ td('ds.api.apiDetail.returnResultType') }}</div>
               <div class="infotop-row-value">
                 <dict-tag :options="ds_api_bas_info_res_data_type" :value="dsApiDetail.resDataType" />
               </div>
@@ -71,7 +71,7 @@
           </el-col>
           <el-col :span="24" >
               <div class="infotop-row border-top">
-                  <div class="infotop-row-lable">{{ t('common.texts.description') }}</div>
+                  <div class="infotop-row-lable">{{ td('common.texts.description') }}</div>
                   <div class="infotop-row-value">
                      <span class="ellipsis-2">
                          {{ dsApiDetail.description || '-' }}
@@ -81,20 +81,20 @@
           </el-col>
           <el-col :span="8" style="margin: 2px 0;">
               <div class="infotop-row border-top">
-                  <div class="infotop-row-lable">{{ t('common.texts.createdBy') }}</div>
+                  <div class="infotop-row-lable">{{ td('common.texts.createdBy') }}</div>
                   <div class="infotop-row-value">{{ dsApiDetail.createBy || '-' }}</div>
               </div>
           </el-col>
           <el-col :span="8" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ t('common.texts.createdTime') }}</div>
+              <div class="infotop-row-lable">{{ td('common.texts.createdTime') }}</div>
               <div class="infotop-row-value">{{ parseTime(dsApiDetail.createTime, '{y}-{m}-{d} {h}:{i}') }}</div>
             </div>
           </el-col>
 
           <el-col :span="8" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">API请求地址</div>
+              <div class="infotop-row-lable">{{td('ds.api.apiDetail.apiRequestAddress')}}</div>
               <div class="infotop-row-value">
                 {{ '/services/' + dsApiDetail.apiVersion + dsApiDetail.apiUrl || '-' }}
               </div>
@@ -102,7 +102,7 @@
           </el-col>
           <el-col :span="24" >
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ t('common.texts.remark') }}</div>
+              <div class="infotop-row-lable">{{ td('common.texts.remark') }}</div>
               <div class="infotop-row-value">
                 {{ dsApiDetail.remark || '-' }}
               </div>
@@ -115,10 +115,10 @@
 
     <div class="pagecont-bottom">
       <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
-        <el-tab-pane label="参数信息" name="1">
+        <el-tab-pane :label="td('ds.api.apiDetail.parameterInfo')" name="1">
           <component-one :form2="form2" v-if="activeName === '1'"></component-one>
         </el-tab-pane>
-        <el-tab-pane label="测试信息" name="2">
+        <el-tab-pane :label="td('ds.api.apiDetail.testInfo')" name="2">
           <component-two :form1="form1" v-if="activeName === '2'"></component-two>
         </el-tab-pane>
         <!--        <el-tab-pane label="授权信息" name="2">-->
@@ -131,13 +131,13 @@
 </template>
 
 <script setup name="DsApi">
-import { useI18n } from 'vue-i18n'
 import { getDsApi } from "@/api/ds/api/api.js";
 import { onBeforeRouteLeave, useRoute } from 'vue-router';
 import ComponentOne from "@/views/ds/api/detail/parameter.vue";
 import ComponentTwo from "@/views/ds/api/detail/simulation.vue";
+import useDefaultLang from "@/composables/useDefaultLang";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { ds_api_log_status, ds_api_bas_info_api_service_type,
     ds_api_bas_info_api_method_type, ds_api_bas_info_res_data_type,sys_disable }

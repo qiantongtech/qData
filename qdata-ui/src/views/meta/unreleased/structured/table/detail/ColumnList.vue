@@ -22,7 +22,7 @@
             icon="view"
             @click="handleDetailClick(row)"
           >
-            {{ t('common.button.details') }}
+            {{ td("common.button.details") }}
           </el-button>
           <template v-if="detail.status == '1' && route.query.table_status">
             <el-button
@@ -32,7 +32,7 @@
               icon="Edit"
               @click="handleEditClick(row)"
             >
-              {{ t('common.button.update') }}
+              {{ td("common.button.update") }}
             </el-button>
             <el-button
               link
@@ -41,7 +41,7 @@
               :disabled="row.status == 1"
               @click="handleDeleteClick(row)"
             >
-              {{ t('common.button.delete') }}
+              {{ td("common.button.delete") }}
             </el-button>
           </template>
         </template>
@@ -62,18 +62,34 @@
         label-width="110px"
         :disabled="dialog.type == 'Detail'"
       >
-        <el-form-item label="字段名称" prop="columnName">
+        <el-form-item
+          :label="td('meta.unreleased.structured.table.detail.columnName')"
+          prop="columnName"
+        >
           <el-input
             clearable
             v-model="dialog.form.columnName"
-            placeholder="请输入字段注释"
+            :placeholder="
+              td('common.form.inputPlaceholder', {
+                field: td('meta.unreleased.structured.table.detail.columnName'),
+              })
+            "
           />
         </el-form-item>
-        <el-form-item label="字段注释" prop="columnComment">
+        <el-form-item
+          :label="td('meta.unreleased.structured.table.detail.columnComment')"
+          prop="columnComment"
+        >
           <el-input
             clearable
             v-model="dialog.form.columnComment"
-            placeholder="请输入字段注释"
+            :placeholder="
+              td('common.form.inputPlaceholder', {
+                field: td(
+                  'meta.unreleased.structured.table.detail.columnComment'
+                ),
+              })
+            "
           />
         </el-form-item>
         <!-- <el-form-item label="安全等级" prop="safetyLevelId">
@@ -90,11 +106,18 @@
             />
           </el-select>
         </el-form-item> -->
-        <el-form-item label="标准数据元" prop="dataElemId">
+        <el-form-item
+          :label="td('meta.unreleased.structured.table.detail.dataElem')"
+          prop="dataElemId"
+        >
           <el-select
             clearable
             v-model="dialog.form.dataElemId"
-            placeholder="请选择标准数据元"
+            :placeholder="
+              td('common.form.selectPlaceholder', {
+                field: td('meta.unreleased.structured.table.detail.dataElem'),
+              })
+            "
           >
             <el-option
               v-for="item in store.dataElemList"
@@ -104,11 +127,18 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="字段类型" prop="columnType">
+        <el-form-item
+          :label="td('meta.unreleased.structured.table.detail.columnType')"
+          prop="columnType"
+        >
           <el-select
             clearable
             v-model="dialog.form.columnType"
-            placeholder="请选择字段类型"
+            :placeholder="
+              td('common.form.selectPlaceholder', {
+                field: td('meta.unreleased.structured.table.detail.columnType'),
+              })
+            "
           >
             <el-option
               v-for="dict in toValue(dicts.column_type)"
@@ -118,56 +148,106 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="字段长度" prop="columnLength">
+        <el-form-item
+          :label="td('meta.unreleased.structured.table.detail.columnLength')"
+          prop="columnLength"
+        >
           <el-input-number
             :min="0"
             v-model="dialog.form.columnLength"
-            placeholder="请输入字段长度"
+            :placeholder="
+              td('common.form.inputPlaceholder', {
+                field: td(
+                  'meta.unreleased.structured.table.detail.columnLength'
+                ),
+              })
+            "
             :controls="true"
             class="number-input"
             controls-position="right"
           />
         </el-form-item>
 
-        <el-form-item label="字段精度" prop="columnPrecision">
+        <el-form-item
+          :label="td('meta.unreleased.structured.table.detail.columnPrecision')"
+          prop="columnPrecision"
+        >
           <el-input-number
             :min="0"
             v-model="dialog.form.columnPrecision"
-            placeholder="请输入字段精度"
+            :placeholder="
+              td('common.form.inputPlaceholder', {
+                field: td(
+                  'meta.unreleased.structured.table.detail.columnPrecision'
+                ),
+              })
+            "
             :controls="true"
             class="number-input"
             controls-position="right"
           />
         </el-form-item>
 
-        <el-form-item label="字段小数位" prop="columnScale">
+        <el-form-item
+          :label="td('meta.unreleased.structured.table.detail.columnScale')"
+          prop="columnScale"
+        >
           <el-input-number
             :min="0"
             v-model="dialog.form.columnScale"
-            placeholder="请输入字段小数位"
+            :placeholder="
+              td('common.form.inputPlaceholder', {
+                field: td(
+                  'meta.unreleased.structured.table.detail.columnScale'
+                ),
+              })
+            "
             :controls="true"
             class="number-input"
             controls-position="right"
           />
         </el-form-item>
 
-        <el-form-item label="业务定义" prop="businessDefinition">
+        <el-form-item
+          :label="
+            td('meta.unreleased.structured.table.detail.businessDefinition')
+          "
+          prop="businessDefinition"
+        >
           <el-input
             clearable
             v-model="dialog.form.businessDefinition"
-            placeholder="请输入业务定义"
+            :placeholder="
+              td('common.form.inputPlaceholder', {
+                field: td(
+                  'meta.unreleased.structured.table.detail.businessDefinition'
+                ),
+              })
+            "
           />
         </el-form-item>
 
-        <el-form-item label="度量单位" prop="measuringUnit">
+        <el-form-item
+          :label="td('meta.unreleased.structured.table.detail.measuringUnit')"
+          prop="measuringUnit"
+        >
           <el-input
             clearable
             v-model="dialog.form.measuringUnit"
-            placeholder="请输入度量单位"
+            :placeholder="
+              td('common.form.inputPlaceholder', {
+                field: td(
+                  'meta.unreleased.structured.table.detail.measuringUnit'
+                ),
+              })
+            "
           />
         </el-form-item>
 
-        <el-form-item label="是否必填" prop="nullableFlag">
+        <el-form-item
+          :label="td('meta.unreleased.structured.table.detail.nullableFlag')"
+          prop="nullableFlag"
+        >
           <el-radio-group v-model="dialog.form.nullableFlag">
             <el-radio
               v-for="dict in toValue(dicts.table_yes_no)"
@@ -179,15 +259,27 @@
           </el-radio-group>
         </el-form-item>
 
-        <el-form-item label="默认值" prop="defaultValue">
+        <el-form-item
+          :label="td('meta.unreleased.structured.table.detail.defaultValue')"
+          prop="defaultValue"
+        >
           <el-input
             clearable
             v-model="dialog.form.defaultValue"
-            placeholder="请输入默认值"
+            :placeholder="
+              td('common.form.inputPlaceholder', {
+                field: td(
+                  'meta.unreleased.structured.table.detail.defaultValue'
+                ),
+              })
+            "
           />
         </el-form-item>
 
-        <el-form-item label="是否主键" prop="pkFlag">
+        <el-form-item
+          :label="td('meta.unreleased.structured.table.detail.pkFlag')"
+          prop="pkFlag"
+        >
           <el-radio-group v-model="dialog.form.pkFlag">
             <el-radio
               v-for="dict in toValue(dicts.table_yes_no)"
@@ -199,7 +291,10 @@
           </el-radio-group>
         </el-form-item>
 
-        <el-form-item label="是否外键" prop="fkFlag">
+        <el-form-item
+          :label="td('meta.unreleased.structured.table.detail.fkFlag')"
+          prop="fkFlag"
+        >
           <el-radio-group v-model="dialog.form.fkFlag">
             <el-radio
               v-for="dict in toValue(dicts.table_yes_no)"
@@ -211,7 +306,7 @@
           </el-radio-group>
         </el-form-item>
 
-        <el-form-item :label="t('common.texts.status')" prop="status">
+        <el-form-item :label="td('common.texts.status')" prop="status">
           <el-radio-group v-model="dialog.form.status">
             <el-radio
               v-for="dict in toValue(dicts.meta_task_status)"
@@ -223,30 +318,30 @@
           </el-radio-group>
         </el-form-item>
 
-        <el-form-item :label="t('common.texts.remark')" class="row-full">
+        <el-form-item :label="td('common.texts.remark')" class="row-full">
           <el-input
             v-model="dialog.form.remark"
             type="textarea"
-            :placeholder="t('common.form.remarkPlaceholder')"
+            :placeholder="td('common.form.remarkPlaceholder')"
             :min-height="192"
             show-word-limit
-            maxlength="500个字符"
+            :maxlength="500"
           />
         </el-form-item>
 
-        <el-form-item :label="t('common.texts.description')" class="row-full">
+        <el-form-item :label="td('common.texts.description')" class="row-full">
           <el-input
             v-model="dialog.form.description"
             type="textarea"
-            :placeholder="t('common.form.descriptionPlaceholder')"
+            :placeholder="td('common.form.descriptionPlaceholder')"
             :min-height="192"
             show-word-limit
-            maxlength="500个字符"
+            :maxlength="500"
           />
         </el-form-item>
 
         <el-form-item
-          label="变更说明"
+          :label="td('meta.unreleased.structured.table.detail.updateMsg')"
           class="row-full"
           prop="updateMsg"
           v-if="dialog.type != 'Detail'"
@@ -254,10 +349,14 @@
           <el-input
             v-model="dialog.form.updateMsg"
             type="textarea"
-            placeholder="请输入变更说明"
+            :placeholder="
+              td('common.form.inputPlaceholder', {
+                field: td('meta.unreleased.structured.table.detail.updateMsg'),
+              })
+            "
             :min-height="192"
             show-word-limit
-            maxlength="500个字符"
+            :maxlength="500"
           />
         </el-form-item>
       </el-form>
@@ -265,17 +364,17 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="handleCancelClick" v-if="dialog.type != 'Detail'">
-            {{ t('common.button.cancel') }}
+            {{ td("common.button.cancel") }}
           </el-button>
           <el-button @click="handleCancelClick" v-if="dialog.type == 'Detail'">
-            {{ t('common.button.close') }}
+            {{ td("common.button.close") }}
           </el-button>
           <el-button
             type="primary"
             v-if="dialog.type != 'Detail'"
             @click="handleConfirmClick"
           >
-            {{ t('common.button.confirm') }}
+            {{ td("common.button.confirm") }}
           </el-button>
         </div>
       </template>
@@ -284,7 +383,7 @@
 </template>
 
 <script setup name="ColumnList">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang";
 import { getCurrentInstance, reactive, ref, toValue } from "vue";
 import {
   listColumn,
@@ -296,46 +395,108 @@ import {
 import { useRoute, useRouter } from "vue-router";
 import { listDgSensitiveLevel } from "@/api/dg/compliance/sensitiveLevel";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 // import { getDgDataElemList } from "@/api/dg/standard/dataElem.js";
 
 const BASE_URL = "/meta/unreleased/structured/column";
 
 const rules = {
   columnName: [
-    { required: true, message: "请输入字段名称", trigger: "change" },
+    {
+      required: true,
+      message:
+        td("meta.unreleased.structured.table.detail.columnName") +
+        td("common.message.required"),
+      trigger: "change",
+    },
     {
       pattern: /^[a-zA-Z][a-zA-Z0-9_]*$/,
-      message: "字段名称必须以字母开头，可包含字母、数字和下划线",
+      message:
+        td("meta.unreleased.structured.table.detail.columnName") +
+        "必须以字母开头，可包含字母、数字和下划线",
       trigger: "blur",
     },
   ],
   columnType: [
-    { required: true, message: "请选择字段类型", trigger: "change" },
+    {
+      required: true,
+      message:
+        td("meta.unreleased.structured.table.detail.columnType") +
+        td("common.message.required"),
+      trigger: "change",
+    },
   ],
   columnLength: [
-    { required: true, message: "请输入字段长度", trigger: ["change", "blur"] },
+    {
+      required: true,
+      message:
+        td("meta.unreleased.structured.table.detail.columnLength") +
+        td("common.message.required"),
+      trigger: ["change", "blur"],
+    },
   ],
   columnScale: [
     {
       required: true,
-      message: "请输入字段小数位",
+      message:
+        td("meta.unreleased.structured.table.detail.columnScale") +
+        td("common.message.required"),
       trigger: ["change", "blur"],
     },
   ],
   updateMsg: [
-    { required: true, message: "请输入变更说明", trigger: ["change", "blur"] },
+    {
+      required: true,
+      message:
+        td("meta.unreleased.structured.table.detail.updateMsg") +
+        td("common.message.required"),
+      trigger: ["change", "blur"],
+    },
   ],
   businessDefinition: [
-    { required: true, message: "请输入业务定义", trigger: "blur" },
+    {
+      required: true,
+      message:
+        td("meta.unreleased.structured.table.detail.businessDefinition") +
+        td("common.message.required"),
+      trigger: "blur",
+    },
   ],
   columnPrecision: [
-    { required: true, message: "请输入字段精度", trigger: ["change", "blur"] },
+    {
+      required: true,
+      message:
+        td("meta.unreleased.structured.table.detail.columnPrecision") +
+        td("common.message.required"),
+      trigger: ["change", "blur"],
+    },
   ],
-  pkFlag: [{ required: true, message: "请选择是否主键", trigger: "change" }],
-  fkFlag: [{ required: true, message: "请选择是否外键", trigger: "change" }],
+  pkFlag: [
+    {
+      required: true,
+      message:
+        td("meta.unreleased.structured.table.detail.pkFlag") +
+        td("common.message.required"),
+      trigger: "change",
+    },
+  ],
+  fkFlag: [
+    {
+      required: true,
+      message:
+        td("meta.unreleased.structured.table.detail.fkFlag") +
+        td("common.message.required"),
+      trigger: "change",
+    },
+  ],
   nullableFlag: [
-    { required: true, message: "请选择是否可空", trigger: "change" },
+    {
+      required: true,
+      message:
+        td("meta.unreleased.structured.table.detail.nullableFlag") +
+        td("common.message.required"),
+      trigger: "change",
+    },
   ],
 };
 
@@ -373,13 +534,13 @@ const tableStroe = reactive({
   },
   columns: [
     {
-      label: t('common.texts.number'),
+      label: td("common.texts.number"),
       prop: "id",
       sortable: true,
       width: 70,
     },
     {
-      label: "字段名称",
+      label: td("meta.unreleased.structured.table.detail.columnName"),
       prop: "columnName",
       showOverflowTooltip: {
         effect: "light",
@@ -390,7 +551,7 @@ const tableStroe = reactive({
       },
     },
     {
-      label: "字段注释",
+      label: td("meta.unreleased.structured.table.detail.columnComment"),
       prop: "columnComment",
       showOverflowTooltip: {
         effect: "light",
@@ -399,56 +560,56 @@ const tableStroe = reactive({
     },
 
     {
-      label: "标准数据元",
+      label: td("meta.unreleased.structured.table.detail.dataElem"),
       prop: "dataElemName",
       width: 110,
     },
     {
-      label: "字段类型",
+      label: td("meta.unreleased.structured.table.detail.columnType"),
       prop: "columnType",
       width: 110,
       dict: "column_type",
     },
 
     {
-      label: "字段长度",
+      label: td("meta.unreleased.structured.table.detail.columnLength"),
       prop: "columnLength",
       width: 100,
       sortable: true,
     },
     {
-      label: "字段精度",
+      label: td("meta.unreleased.structured.table.detail.columnPrecision"),
       prop: "columnPrecision",
       width: 100,
       sortable: true,
     },
     {
-      label: "字段小数",
+      label: td("meta.unreleased.structured.table.detail.columnScale"),
       prop: "columnScale",
       width: 100,
       sortable: true,
     },
 
     {
-      label: "是否必填",
+      label: td("meta.unreleased.structured.table.detail.nullableFlag"),
       prop: "nullableFlag",
       width: 90,
       dict: "table_yes_no",
     },
     {
-      label: "是否主键",
+      label: td("meta.unreleased.structured.table.detail.pkFlag"),
       prop: "pkFlag",
       width: 90,
       dict: "table_yes_no",
     },
     {
-      label: "是否外键",
+      label: td("meta.unreleased.structured.table.detail.fkFlag"),
       prop: "fkFlag",
       width: 90,
       dict: "table_yes_no",
     },
     {
-      label: t('common.texts.status'),
+      label: td("common.texts.status"),
       prop: "status",
       width: 90,
       slot: "status",
@@ -456,31 +617,31 @@ const tableStroe = reactive({
     },
 
     {
-      label: t('common.texts.updatedBy'),
+      label: td("common.texts.updatedBy"),
       prop: "updateBy",
       width: 120,
     },
     {
-      label: t('common.texts.updatedTime'),
+      label: td("common.texts.updatedTime"),
       prop: "updateTime",
       sortable: true,
       width: 160,
       date: true,
     },
     {
-      label: t('common.texts.createdBy'),
+      label: td("common.texts.createdBy"),
       prop: "createBy",
       width: 120,
     },
     {
-      label: t('common.texts.createdTime'),
+      label: td("common.texts.createdTime"),
       prop: "createTime",
       sortable: true,
       width: 160,
       date: true,
     },
     {
-      label: t('common.texts.operation'),
+      label: td("common.texts.operation"),
       width: 220,
       fixed: "right",
       slot: "handle",
@@ -516,7 +677,10 @@ function getSensitiveLevel() {
 // 打开修改弹窗
 function handleEditClick(row) {
   dialog.type = "Edit";
-  dialog.title = "修改字段元数据";
+  dialog.title =
+    td("common.button.update") +
+    td("meta.unreleased.structured.table.detail.columnName") +
+    td("common.texts.metadata");
   dialog.open = true;
   getColumn(row.id).then((res) => {
     const {
@@ -554,7 +718,11 @@ async function handleConfirmClick() {
   await updateColumn(dialog.form);
   dialog.loading = false;
   proxy.$modal.msgSuccess(
-    `${dialog.form.id ? t('common.button.update') : t('common.button.add')}字段元数据成功！`
+    `${
+      dialog.form.id ? td("common.button.update") : td("common.button.add")
+    }${td("meta.unreleased.structured.table.detail.columnName")}${td(
+      "common.texts.metadata"
+    )}${td("common.message.success")}`
   );
   handleCancelClick();
   tableRef.value.getList();
@@ -574,21 +742,30 @@ function handleDetailPageClick(row) {
 function handleDetailClick(row) {
   handleEditClick(row);
   dialog.type = "Detail";
-  dialog.title = "字段元数据详情";
+  dialog.title =
+    td("meta.unreleased.structured.table.detail.columnName") +
+    td("common.texts.metadata") +
+    td("common.texts.detail");
 }
 
 // 删除
 function handleDeleteClick(row) {
-  ElMessageBox.confirm(`是否确认删除编号为${row.id}的数据项？`, t('common.message.systemPrompt'), {
-    confirmButtonText: t('common.button.confirm'),
-    cancelButtonText: t('common.button.cancel'),
-    type: "warning",
-  })
+  ElMessageBox.confirm(
+    `${td("common.message.confirmDelete")}${row.id}${td(
+      "common.texts.dataItem"
+    )}？`,
+    td("common.message.systemPrompt"),
+    {
+      confirmButtonText: td("common.button.confirm"),
+      cancelButtonText: td("common.button.cancel"),
+      type: "warning",
+    }
+  )
     .then(() => {
       return delColumn(row.id);
     })
     .then(() => {
-      ElMessage.success(t('common.message.deleteSuccess'));
+      ElMessage.success(td("common.message.deleteSuccess"));
       tableRef.value.getList();
     });
 }
@@ -596,13 +773,17 @@ function handleDeleteClick(row) {
 // 切换状态
 function handleStatusChange(row, status) {
   ElMessageBox.confirm(
-    `是否确认${status == 1 ? "发布" : "取消发布"}数据编号为${
-      row.id
-    }的字段元数据吗？`,
-    t('common.message.systemPrompt'),
+    `${td("common.message.confirm")}${
+      status == 1
+        ? td("common.button.release")
+        : td("common.button.cancelRelease")
+    }${td("common.texts.data")}${td("common.texts.number")}${row.id}${td(
+      "meta.unreleased.structured.table.detail.columnName"
+    )}${td("common.texts.metadata")}${td("common.message.question")}`,
+    td("common.message.systemPrompt"),
     {
-      confirmButtonText: t('common.button.confirm'),
-      cancelButtonText: t('common.button.cancel'),
+      confirmButtonText: td("common.button.confirm"),
+      cancelButtonText: td("common.button.cancel"),
       type: "warning",
     }
   )
@@ -614,7 +795,13 @@ function handleStatusChange(row, status) {
     })
     .then(() => {
       ElMessage.success(
-        `编号为${row.id}的字段元数据${status == 1 ? "发布" : "取消发布"}成功!`
+        `${td("common.texts.number")}${row.id}${td(
+          "meta.unreleased.structured.table.detail.columnName"
+        )}${td("common.texts.metadata")}${
+          status == 1
+            ? td("common.button.release")
+            : td("common.button.cancelRelease")
+        }${td("common.message.success")}`
       );
       row.status = status;
     })

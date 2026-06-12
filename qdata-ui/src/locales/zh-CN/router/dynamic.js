@@ -72,7 +72,7 @@ export default {
     "sysPost": "岗位管理",
     "sysDict": "字典管理",
     "sysConfig": "参数设置",
-    "sysModel": "模型管理",
+    "sysSysModel": "模型管理",
     "sysNotice": "通知公告",
     "sysLog": "日志管理",
     "sysLogOperlog": "操作日志",

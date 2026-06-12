@@ -28,43 +28,43 @@
         <!--        </el-row>-->
         <el-row :gutter="20">
             <el-col :span="12">
-                <el-form-item label="API名称" prop="name">
-                    <el-input v-model="form1.name" placeholder="请输入API名称" />
+                <el-form-item :label="td('ds.apiEdit.base.apiName')" prop="name">
+                    <el-input v-model="form1.name" :placeholder="td('ds.apiEdit.base.apiNamePlaceholder')" />
                 </el-form-item>
             </el-col>
             <el-col :span="12">
-                <el-form-item label="API版本" prop="apiVersion">
-                    <el-input v-model="form1.apiVersion" placeholder="请输入API版本，如v1.0.0" />
+                <el-form-item :label="td('ds.apiEdit.base.apiVersion')" prop="apiVersion">
+                    <el-input v-model="form1.apiVersion" :placeholder="td('ds.apiEdit.base.apiVersionPlaceholder')" />
                 </el-form-item>
             </el-col>
         </el-row>
         <el-row :gutter="20">
             <el-col :span="12">
-                <el-form-item label="API地址" prop="apiUrl">
-                    <el-input v-model="form1.apiUrl" placeholder="请输入API地址，只允许字母、数字、下划线、中划线和斜杠"
+                <el-form-item :label="td('ds.apiEdit.base.apiAddress')" prop="apiUrl">
+                    <el-input v-model="form1.apiUrl" :placeholder="td('ds.apiEdit.base.apiAddressPlaceholder')"
                         @input="handleApiUrlInput" />
                 </el-form-item>
             </el-col>
             <el-col :span="12">
-                <el-form-item label="API类目" prop="catCode">
+                <el-form-item :label="td('ds.apiEdit.base.apiCategory')" prop="catCode">
                     <el-tree-select filterable v-model="form1.catCode" :data="deptOptions"
                         :props="{ value: 'code', label: 'name', children: 'children' }" value-key="id"
-                        placeholder="请选择所属API类目" check-strictly @change="handleCatSelect" />
+                        :placeholder="td('ds.apiEdit.base.apiCategoryPlaceholder')" check-strictly @change="handleCatSelect" />
                 </el-form-item>
             </el-col>
         </el-row>
         <el-row :gutter="20">
             <el-col :span="12">
-                <el-form-item label="请求方式" prop="reqMethod">
-                    <el-select v-model="form1.reqMethod" placeholder="请选择请求方式">
+                <el-form-item :label="td('ds.apiEdit.base.requestMethod')" prop="reqMethod">
+                    <el-select v-model="form1.reqMethod" :placeholder="td('ds.apiEdit.base.requestMethodPlaceholder')">
                         <el-option v-for="dict in ds_api_bas_info_api_method_type" :key="dict.value" :label="dict.label"
                             :value="dict.value" />
                     </el-select>
                 </el-form-item>
             </el-col>
             <el-col :span="12">
-                <el-form-item label="返回格式" prop="resDataType">
-                    <el-select v-model="form1.resDataType" placeholder="请选择返回格式">
+                <el-form-item :label="td('ds.apiEdit.base.returnFormat')" prop="resDataType">
+                    <el-select v-model="form1.resDataType" :placeholder="td('ds.apiEdit.base.returnFormatPlaceholder')">
                         <el-option v-for="dict in ds_api_bas_info_res_data_type" :key="dict.value" :label="dict.label"
                             :value="dict.value" />
                     </el-select>
@@ -73,8 +73,8 @@
         </el-row>
         <el-row :gutter="20">
             <el-col :span="24">
-                <el-form-item :label="t('common.texts.description')" prop="description">
-                    <el-input v-model="form1.description" type="textarea" :placeholder="t('common.form.descriptionPlaceholder')" />
+                <el-form-item :label="td('common.form.description')" prop="description">
+                    <el-input v-model="form1.description" type="textarea" :placeholder="td('common.form.descriptionPlaceholder')" />
                 </el-form-item>
             </el-col>
         </el-row>
@@ -93,15 +93,15 @@
         <!--        </el-form-item>-->
         <el-row :gutter="20">
             <el-col :span="24">
-                <el-form-item label="IP黑名单" prop="deny">
-                    <el-input v-model="form1.deny" type="textarea" placeholder="请输入IP黑名单多个用英文,隔开" />
+                <el-form-item :label="td('ds.apiEdit.base.ipBlacklist')" prop="deny">
+                    <el-input v-model="form1.deny" type="textarea" :placeholder="td('ds.apiEdit.base.ipBlacklistPlaceholder')" />
                 </el-form-item>
             </el-col>
         </el-row>
 
         <el-row :gutter="20">
             <el-col :span="12">
-                <el-form-item label="是否限流" prop="rateLimit">
+                <el-form-item :label="td('ds.apiEdit.base.rateLimit')" prop="rateLimit">
                     <el-radio-group v-model="form1.rateLimit.enable">
                         <el-radio v-for="dict in ds_api_limit_status" :key="dict.value" :value="dict.value">{{
                             dict.label
@@ -110,7 +110,7 @@
                 </el-form-item>
             </el-col>
             <el-col :span="12">
-                <el-form-item :label="t('common.texts.status')" prop="status">
+                <el-form-item :label="td('common.texts.status')" prop="status">
                     <el-radio-group v-model="form1.status">
                         <el-radio v-for="dict in ds_api_status" :key="dict.value" :value="dict.value">{{
                             dict.label
@@ -123,20 +123,20 @@
         <el-row :gutter="20">
             <el-col :span="24" style="color: #333333;">
                 <!-- class="input-number" -->
-                <el-form-item v-if="form1.rateLimit.enable === '1'" label="限流配置">
-                    每&nbsp;
+                <el-form-item v-if="form1.rateLimit.enable === '1'" :label="td('ds.apiEdit.base.rateLimitConfig')">
+                    {{td('ds.apiEdit.base.seconds')}}&nbsp;
                     <el-input-number v-model="form1.rateLimit.seconds" :min="1" />
-                    &nbsp; 秒内限制请求 &nbsp;
+                    &nbsp;{{td('ds.apiEdit.base.withinSeconds')}}&nbsp;
                     <el-input-number v-model="form1.rateLimit.times" :min="1" />
-                    &nbsp; 次
+                    &nbsp;{{td('ds.apiEdit.base.times')}}
                 </el-form-item>
             </el-col>
 
         </el-row>
         <el-row :gutter="20">
             <el-col :span="24">
-                <el-form-item :label="t('common.texts.remark')" prop="remark">
-                    <el-input v-model="form1.remark" type="textarea" placeholder="请输入内容" />
+                <el-form-item :label="td('common.texts.remark')" prop="remark">
+                    <el-input v-model="form1.remark" type="textarea" :placeholder="td('ds.apiEdit.base.remarkPlaceholder')" />
                 </el-form-item>
             </el-col>
         </el-row>
@@ -144,10 +144,10 @@
 </template>
 
 <script setup name="base">
-import { useI18n } from 'vue-i18n'
 import { listAttApiCat } from '@/api/ds/apiCat/apiCat';
+import useDefaultLang from "@/composables/useDefaultLang";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const {
     ds_api_bas_info_res_data_type,
@@ -220,8 +220,8 @@ const data = reactive({
         isLeaf: 'isLeaf' // 指定是否是叶子节点的字段名
     },
     cacheOptions: [
-        { id: 1, itemText: '是', itemValue: 0 },
-        { id: 2, itemText: '否', itemValue: 1 }
+        { id: 1, itemText: td('ds.apiEdit.base.cacheYes'), itemValue: 0 },
+        { id: 2, itemText: td('ds.apiEdit.base.cacheNo'), itemValue: 1 }
     ],
     deptOptions: []
 });
@@ -242,7 +242,7 @@ function getApiCatList() {
         deptOptions.value = proxy.handleTree(response.data, 'id', 'parentId');
         deptOptions.value = [
             {
-                name: 'API服务类目',
+                name: td('ds.api.apiCategory'),
                 value: '',
                 id: 0,
                 children: deptOptions.value

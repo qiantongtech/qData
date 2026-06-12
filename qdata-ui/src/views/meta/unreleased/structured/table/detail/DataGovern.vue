@@ -14,7 +14,7 @@
             :disabled="!row.dataElemId"
             @click="handleDataElemClick(row)"
           >
-            查看标准数据元
+            {{ td("meta.unreleased.structured.table.detail.viewDataElem") }}
           </el-button>
 
           <el-button
@@ -24,72 +24,99 @@
             @click="handleSensitiveLevelClick(row)"
             :disabled="!row.safetyLevelId"
           >
-            查看安全等级
+            {{
+              td("meta.unreleased.structured.table.detail.viewSensitiveLevel")
+            }}
           </el-button>
         </template>
       </qt-table>
     </qt-wrap>
 
     <el-dialog
-      title="安全等级详情"
+      :title="
+        td('meta.unreleased.structured.table.detail.sensitiveLevelDetail')
+      "
       v-model="dialog.open"
       width="800px"
       draggable
     >
       <el-form label-width="100px" class="column-form">
-        <el-form-item :label="t('common.texts.number')" prop="id">
+        <el-form-item :label="td('common.texts.number')" prop="id">
           <div class="form-readonly">
             {{ getFormatValue(dialog.form.id) }}
           </div>
         </el-form-item>
-        <el-form-item label="级别名称" prop="sensitiveLevel">
+        <el-form-item
+          :label="td('meta.unreleased.structured.table.detail.levelName')"
+          prop="sensitiveLevel"
+        >
           <div class="form-readonly">
             {{ getFormatValue(dialog.form.sensitiveLevel) }}
           </div>
         </el-form-item>
-        <el-form-item label="替换规则" prop="sensitiveRule">
+        <el-form-item
+          :label="td('meta.unreleased.structured.table.detail.replaceRule')"
+          prop="sensitiveRule"
+        >
           <dict-tag
             :options="toValue(dicts.da_sensitive_level_rule)"
             :value="dialog.form.sensitiveRule"
           />
         </el-form-item>
-        <el-form-item :label="t('common.texts.status')" prop="onlineFlag">
+        <el-form-item :label="td('common.texts.status')" prop="onlineFlag">
           <dict-tag
             :options="toValue(dicts.da_sensitive_status)"
             :value="dialog.form.onlineFlag"
           />
         </el-form-item>
-        <el-form-item label="起始字符位置" prop="startCharLoc">
+        <el-form-item
+          :label="td('meta.unreleased.structured.table.detail.startCharLoc')"
+          prop="startCharLoc"
+        >
           <div class="form-readonly">
             {{ getFormatValue(dialog.form.startCharLoc) }}
           </div>
         </el-form-item>
-        <el-form-item label="截止字符位置" prop="endCharLoc">
+        <el-form-item
+          :label="td('meta.unreleased.structured.table.detail.endCharLoc')"
+          prop="endCharLoc"
+        >
           <div class="form-readonly">
             {{ getFormatValue(dialog.form.endCharLoc) }}
           </div>
         </el-form-item>
-        <el-form-item label="替换内容" prop="maskCharacter">
+        <el-form-item
+          :label="td('meta.unreleased.structured.table.detail.replaceContent')"
+          prop="maskCharacter"
+        >
           <div class="form-readonly">
             {{ getFormatValue(dialog.form.maskCharacter) }}
           </div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.description')" prop="description" class="row-full">
+        <el-form-item
+          :label="td('common.texts.description')"
+          prop="description"
+          class="row-full"
+        >
           <div class="form-readonly textarea">
             {{ getFormatValue(dialog.form.description) }}
           </div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.remark')" prop="remark" class="row-full">
+        <el-form-item
+          :label="td('common.texts.remark')"
+          prop="remark"
+          class="row-full"
+        >
           <div class="form-readonly textarea">
             {{ getFormatValue(dialog.form.remark) }}
           </div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.createdBy')" prop="createBy">
+        <el-form-item :label="td('common.texts.createdBy')" prop="createBy">
           <div class="form-readonly">
             {{ getFormatValue(dialog.form.createBy) }}
           </div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.createdTime')" prop="createTime">
+        <el-form-item :label="td('common.texts.createdTime')" prop="createTime">
           <div class="form-readonly">
             {{
               getFormatValue(
@@ -98,12 +125,12 @@
             }}
           </div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.updatedBy')" prop="updateBy">
+        <el-form-item :label="td('common.texts.updatedBy')" prop="updateBy">
           <div class="form-readonly">
             {{ getFormatValue(dialog.form.updateBy) }}
           </div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.updatedTime')" prop="updateTime">
+        <el-form-item :label="td('common.texts.updatedTime')" prop="updateTime">
           <div class="form-readonly">
             {{
               getFormatValue(
@@ -115,7 +142,9 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="dialog.open = false">{{ t('common.button.close') }}</el-button>
+          <el-button size="mini" @click="dialog.open = false">{{
+            td("common.button.close")
+          }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -123,7 +152,7 @@
 </template>
 
 <script setup name="DataGovern">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang";
 import { reactive, ref, toValue, getCurrentInstance } from "vue";
 import { listColumn } from "@/api/mc/unreleased/column.js";
 import { useRouter } from "vue-router";
@@ -131,7 +160,7 @@ import { listDgSensitiveLevel } from "@/api/dg/compliance/sensitiveLevel";
 // import { getDgDataElemList } from "@/api/dg/standard/dataElem.js";
 import { getDgSensitiveLevel } from "@/api/dg/compliance/sensitiveLevel";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const BASE_URL = "/meta/unreleased/structured/column";
 
 const props = defineProps({
@@ -166,13 +195,13 @@ const tableStroe = reactive({
   },
   columns: [
     {
-      label: t('common.texts.number'),
+      label: td("common.texts.number"),
       prop: "id",
       sortable: true,
       width: 70,
     },
     {
-      label: "字段名称",
+      label: td("meta.unreleased.structured.table.detail.columnName"),
       prop: "columnName",
       showOverflowTooltip: {
         effect: "light",
@@ -183,7 +212,7 @@ const tableStroe = reactive({
       },
     },
     {
-      label: "字段注释",
+      label: td("meta.unreleased.structured.table.detail.columnComment"),
       prop: "columnComment",
       showOverflowTooltip: {
         effect: "light",
@@ -192,54 +221,54 @@ const tableStroe = reactive({
     },
 
     {
-      label: "标准数据元",
+      label: td("meta.unreleased.structured.table.detail.dataElem"),
       prop: "dataElemName",
       width: 110,
     },
     {
-      label: "字段类型",
+      label: td("meta.unreleased.structured.table.detail.columnType"),
       prop: "columnType",
       width: 110,
       dict: "column_type",
     },
     {
-      label: "字段长度",
+      label: td("meta.unreleased.structured.table.detail.columnLength"),
       prop: "columnLength",
       width: 100,
       sortable: true,
     },
     {
-      label: "是否必填",
+      label: td("meta.unreleased.structured.table.detail.nullableFlag"),
       prop: "nullableFlag",
       width: 90,
       dict: "table_yes_no",
     },
     {
-      label: t('common.texts.updatedBy'),
+      label: td("common.texts.updatedBy"),
       prop: "updateBy",
       width: 120,
     },
     {
-      label: t('common.texts.updatedTime'),
+      label: td("common.texts.updatedTime"),
       prop: "updateTime",
       sortable: true,
       width: 160,
       date: true,
     },
     {
-      label: t('common.texts.createdBy'),
+      label: td("common.texts.createdBy"),
       prop: "createBy",
       width: 120,
     },
     {
-      label: t('common.texts.createdTime'),
+      label: td("common.texts.createdTime"),
       prop: "createTime",
       sortable: true,
       width: 160,
       date: true,
     },
     {
-      label: t('common.texts.operation'),
+      label: td("common.texts.operation"),
       width: 280,
       fixed: "right",
       slot: "handle",

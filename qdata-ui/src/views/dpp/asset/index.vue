@@ -305,9 +305,7 @@
                                 type="primary"
                                 @click="handleUpdate(item)"
                               >
-                                <el-icon>
-                                  <Edit /> </el-icon
-                                >修改
+                                <el-icon> <Edit /> </el-icon>修改
                               </el-text>
                             </el-dropdown-item>
                             <el-dropdown-item
@@ -317,9 +315,7 @@
                                 type="primary"
                                 @click="handleRefresh(item)"
                               >
-                                <el-icon>
-                                  <Refresh /> </el-icon
-                                >更新数据
+                                <el-icon> <Refresh /> </el-icon>更新数据
                               </el-text>
                             </el-dropdown-item>
                             <el-dropdown-item
@@ -329,9 +325,7 @@
                                 type="primary"
                                 @click="handleApply(item)"
                               >
-                                <el-icon>
-                                  <EditPen /> </el-icon
-                                >申请
+                                <el-icon> <EditPen /> </el-icon>申请
                               </el-text>
                             </el-dropdown-item>
                             <el-dropdown-item
@@ -341,9 +335,7 @@
                                 type="danger"
                                 @click="handleDelete(item)"
                               >
-                                <el-icon>
-                                  <Delete /> </el-icon
-                                >删除
+                                <el-icon> <Delete /> </el-icon>删除
                               </el-text>
                             </el-dropdown-item>
                           </el-dropdown-menu>
@@ -357,7 +349,7 @@
           </div>
           <div class="empty" v-else>
             <img src="@/assets/da/asset/empty.png" alt="" />
-            <span>{{ td('common.noSearchResult') }}</span>
+            <span>{{ td("common.noSearchResult") }}</span>
           </div>
           <pagination
             v-show="total > 0"

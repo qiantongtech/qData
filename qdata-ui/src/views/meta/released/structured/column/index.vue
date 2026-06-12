@@ -23,7 +23,7 @@
             @click="handleDetailClick(row)"
             v-hasPermi="['md:released:structured:column:detail']"
           >
-            {{ t('common.button.details') }}
+            {{ td("common.button.details") }}
           </el-button>
           <!-- <el-button
             link
@@ -46,7 +46,7 @@
                 type="primary"
                 icon="ArrowDown"
                 v-hasPermi="['md:released:structured:column:detail']"
-                >{{ t('common.button.more') }}</el-button
+                >{{ td("common.button.more") }}</el-button
               >
             </template>
 
@@ -57,7 +57,7 @@
               v-hasPermi="['md:released:structured:column:detail']"
             >
               <svg-icon icon-class="meta-impact" class="handle-svg-icon" />
-              影响分析
+              {{ td("meta.released.structured.column.impactAnalysis") }}
             </el-button>
             <el-button
               link
@@ -66,7 +66,7 @@
               v-hasPermi="['md:released:structured:column:detail']"
             >
               <svg-icon icon-class="meta-version" class="handle-svg-icon" />
-              版本与变更
+              {{ td("meta.released.structured.column.versionManagement") }}
             </el-button>
           </el-popover>
         </template>
@@ -76,8 +76,8 @@
 </template>
 
 <script setup name="UnreleasedStructuredColumn">
-import { useI18n } from 'vue-i18n'
-import { getCurrentInstance, reactive, ref } from "vue";
+import useDefaultLang from "@/composables/useDefaultLang";
+import { getCurrentInstance, reactive, ref, computed } from "vue";
 import { listDomain } from "@/api/att/domain/domain.js";
 import { getParentLabelPath } from "@/utils/anivia.js";
 import { listColumn } from "@/api/mc/unreleased/column.js";
@@ -85,7 +85,7 @@ import { listDb } from "@/api/mc/unreleased/db";
 import { listTable } from "@/api/mc/unreleased/table";
 import { useRouter } from "vue-router";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const BASE_URL = "/meta/released/structured/column";
 
 const { proxy } = getCurrentInstance();
@@ -116,13 +116,13 @@ const tableStroe = reactive({
   },
   columns: [
     {
-      label: t('common.texts.number'),
+      label: td("common.texts.number"),
       prop: "id",
       sortable: true,
       width: 70,
     },
     {
-      label: "所属库名",
+      label: td("meta.released.structured.column.dbName"),
       prop: "dbName",
       align: "left",
       showOverflowTooltip: {
@@ -131,7 +131,7 @@ const tableStroe = reactive({
       minWidth: 230,
     },
     {
-      label: "所属表名",
+      label: td("meta.released.structured.column.tableName"),
       prop: "tableName",
       align: "left",
       showOverflowTooltip: {
@@ -140,7 +140,7 @@ const tableStroe = reactive({
       minWidth: 230,
     },
     {
-      label: "字段名称",
+      label: td("meta.released.structured.column.columnName"),
       align: "left",
       prop: "columnName",
       showOverflowTooltip: {
@@ -153,7 +153,7 @@ const tableStroe = reactive({
       },
     },
     {
-      label: "字段注释",
+      label: td("meta.released.structured.column.columnComment"),
       prop: "columnComment",
       align: "left",
       showOverflowTooltip: {
@@ -162,7 +162,7 @@ const tableStroe = reactive({
       minWidth: 230,
     },
     {
-      label: t('common.texts.description'),
+      label: td("common.texts.description"),
       prop: "description",
       align: "left",
       width: 240,
@@ -171,7 +171,7 @@ const tableStroe = reactive({
       },
     },
     {
-      label: "业务域",
+      label: td("meta.released.structured.column.businessDomain"),
       prop: "domainId",
       slot: "domain-name",
       width: 240,
@@ -180,83 +180,83 @@ const tableStroe = reactive({
       },
     },
     {
-      label: "数据标准",
+      label: td("meta.released.structured.column.dataStandard"),
       prop: "dataElemName",
       width: 110,
     },
     {
-      label: "数据质量",
+      label: td("meta.released.structured.column.dataQuality"),
       prop: "dataQuality",
       width: 90,
       sortable: true,
     },
     {
-      label: "字段长度",
+      label: td("meta.released.structured.column.columnLength"),
       prop: "columnLength",
       width: 90,
       sortable: true,
     },
     {
-      label: "字段精度",
+      label: td("meta.released.structured.column.columnPrecision"),
       prop: "columnPrecision",
       width: 90,
       sortable: true,
     },
     {
-      label: "字段小数",
+      label: td("meta.released.structured.column.columnScale"),
       prop: "columnScale",
       width: 90,
       sortable: true,
     },
     {
-      label: "默认值",
+      label: td("meta.released.structured.column.defaultValue"),
       prop: "defaultValue",
       width: 110,
     },
     {
-      label: "是否主键",
+      label: td("meta.released.structured.column.pkFlag"),
       prop: "pkFlag",
       width: 90,
       dict: "table_yes_no",
     },
     {
-      label: "是否外键",
+      label: td("meta.released.structured.column.fkFlag"),
       prop: "fkFlag",
       width: 90,
       dict: "table_yes_no",
     },
     {
-      label: "是否可空",
+      label: td("meta.released.structured.column.nullableFlag"),
       prop: "nullableFlag",
       width: 90,
       dict: "table_yes_no",
     },
     {
-      label: t('common.texts.updatedBy'),
+      label: td("common.texts.updatedBy"),
       prop: "updateBy",
       width: 120,
     },
     {
-      label: t('common.texts.updatedTime'),
+      label: td("common.texts.updatedTime"),
       prop: "updateTime",
       sortable: true,
       width: 160,
       date: true,
     },
     {
-      label: t('common.texts.createdBy'),
+      label: td("common.texts.createdBy"),
       prop: "createBy",
       width: 120,
     },
     {
-      label: t('common.texts.createdTime'),
+      label: td("common.texts.createdTime"),
       prop: "createTime",
       sortable: true,
       width: 160,
       date: true,
     },
     {
-      label: t('common.texts.operation'),
+      label: td("common.texts.operation"),
       width: 240,
       fixed: "right",
       slot: "handle",
@@ -272,21 +272,21 @@ const tableStroe = reactive({
 const searchStore = reactive({
   items: [
     {
-      label: "字段名称",
+      label: td("meta.released.structured.column.columnName"),
       prop: "columnName",
       component: {
         is: "input",
       },
     },
     {
-      label: "字段注释",
+      label: td("meta.released.structured.column.columnComment"),
       prop: "columnComment",
       component: {
         is: "input",
       },
     },
     {
-      label: "业务域",
+      label: td("meta.released.structured.column.businessDomain"),
       prop: "domainCode",
       component: {
         is: "tree-select",
@@ -299,7 +299,7 @@ const searchStore = reactive({
       },
     },
     {
-      label: "所属库名",
+      label: td("meta.released.structured.column.dbName"),
       prop: "dbId",
       component: {
         is: "select",
@@ -308,7 +308,7 @@ const searchStore = reactive({
     },
 
     {
-      label: "所属表名",
+      label: td("meta.released.structured.column.tableName"),
       prop: "tableId",
       component: {
         is: "select",

@@ -16,42 +16,42 @@
 -->
 
 <template>
-    <el-form ref="form2" :model="form2" label-width="100px" label="字段列表：">
+    <el-form ref="form2" :model="form2" label-width="100px" :label="td('ds.apiDetail.parameter.fieldList') + '：'">
         <template v-if="form2.apiServiceType != 3">
             <div class="clearfix header-text">
                 <div class="header-left">
                     <div class="blue-bar"></div>
-                    请求参数
+                    {{td('ds.apiDetail.parameter.requestParams')}}
                 </div>
             </div>
 
             <el-table :data="form2.reqParams" max-height="250" stripe>
-                <el-table-column label="序号" width="80" align="center">
+                <el-table-column :label="td('common.display.index')" width="80" align="center">
                     <template #default="scope">
                         <span>{{ scope.$index + 1 }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="paramName" label="参数名称" align="center"
+                <el-table-column prop="paramName" :label="td('ds.apiDetail.parameter.paramName')" align="center"
                     :show-overflow-tooltip="{ effect: 'light' }" />
-                <el-table-column prop="nullable" label="是否允许为空" align="center"
+                <el-table-column prop="nullable" :label="td('ds.apiDetail.parameter.nullable')" align="center"
                     :show-overflow-tooltip="{ effect: 'light' }">
                     <template #default="scope">
                         <el-checkbox disabled v-model="scope.row.nullable" true-label="1" false-label="0" />
                     </template>
                 </el-table-column>
-                <el-table-column prop="paramComment" :label="t('common.texts.description')" align="center">
+                <el-table-column prop="paramComment" :label="td('common.texts.description')" align="center">
                     <template #default="scope">
                         {{ scope.row.paramComment || '-' }}
                     </template>
                 </el-table-column>
-                <el-table-column prop="paramType" label="参数类型" align="center">
+                <el-table-column prop="paramType" :label="td('ds.apiDetail.parameter.paramType')" align="center">
                     <template #default="scope">
                         <dict-tag :options="ds_api_param_type" :value="scope.row.paramType" />
                     </template>
                 </el-table-column>
                 <el-table-column
                   prop="whereType"
-                  label="操作符"
+                  :label="td('ds.apiDetail.parameter.operator')"
                   align="center"
                   v-if="splReult !== true"
                 >
@@ -59,13 +59,13 @@
                     <dict-tag :options="da_api_param_operator" :value="scope.row.whereType" />
                   </template>
                 </el-table-column>
-                <el-table-column prop="exampleValue" label="示例值" align="center"
+                <el-table-column prop="exampleValue" :label="td('ds.apiDetail.parameter.exampleValue')" align="center"
                     :show-overflow-tooltip="{ effect: 'light' }">
                     <template #default="scope">
                         {{ scope.row.exampleValue || '-' }}
                     </template>
                 </el-table-column>
-                <el-table-column prop="defaultValue" label="默认值" align="center"
+                <el-table-column prop="defaultValue" :label="td('ds.apiDetail.parameter.defaultValue')" align="center"
                     :show-overflow-tooltip="{ effect: 'light' }">
                     <template #default="scope">
                         {{ scope.row.defaultValue || '-' }}
@@ -75,29 +75,29 @@
             <div class="clearfix header-text">
                 <div class="header-left">
                     <div class="blue-bar"></div>
-                    返回字段
+                    {{td('ds.apiDetail.parameter.returnFields')}}
                 </div>
             </div>
             <el-table :data="form2.resParams" stripe>
-                <el-table-column label="序号" width="80" align="center">
+                <el-table-column :label="td('common.display.index')" width="80" align="center">
                     <template #default="scope">
                         <span>{{ scope.$index + 1 }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="fieldName" label="中文名称" align="center"
+                <el-table-column prop="fieldName" :label="td('ds.apiDetail.parameter.chineseName')" align="center"
                     :show-overflow-tooltip="{ effect: 'light' }" />
-                <el-table-column prop="fieldComment" :label="t('common.texts.description')" align="center"
+                <el-table-column prop="fieldComment" :label="td('common.texts.description')" align="center"
                     :show-overflow-tooltip="{ effect: 'light' }">
                     <template #default="scope">
                         {{ scope.row.fieldComment || '-' }}
                     </template>
                 </el-table-column>
-                <el-table-column prop="dataType" label="数据类型" align="center" :show-overflow-tooltip="{ effect: 'light' }">
+                <el-table-column prop="dataType" :label="td('ds.apiDetail.parameter.dataType')" align="center" :show-overflow-tooltip="{ effect: 'light' }">
                     <template #default="scope">
                         {{ scope.row.dataType || '-' }}
                     </template>
                 </el-table-column>
-                <el-table-column prop="exampleValue" label="示例值" align="center"
+                <el-table-column prop="exampleValue" :label="td('ds.apiDetail.parameter.exampleValue')" align="center"
                     :show-overflow-tooltip="{ effect: 'light' }">
                     <template #default="scope">
                         {{ scope.row.exampleValue || '-' }}
@@ -109,7 +109,7 @@
             <div class="clearfix header-text">
                 <div class="header-left">
                     <div class="blue-bar"></div>
-                    请求数据
+                    {{td('ds.apiDetail.parameter.requestData')}}
                 </div>
             </div>
             <el-form :model="form2.reqParams" :rules="rules" ref="inputForm" label-width="0">
@@ -117,27 +117,27 @@
                     <el-col :span="24">
                         <el-table :data="form2.reqParams" class="tableStyle" row-key="id" stripe default-expand-all
                             :tree-props="{ children: 'daAssetApiParamList', hasChildren: 'hasChildren' }">
-                            <el-table-column label="序号" width="80" align="center" fixed="left">
+                            <el-table-column :label="td('common.display.index')" width="80" align="center" fixed="left">
                                 <template #default="{ $index }">
                                     {{ $index + 1 }}
                                 </template>
                             </el-table-column>
 
-                            <el-table-column label="参数名称" fixed="left" align="center" prop="name"
+                            <el-table-column :label="td('ds.apiDetail.parameter.paramName')" fixed="left" align="center" prop="name"
                                 :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="{ row }">
                                     {{ row?.name || '' }}
                                 </template>
                             </el-table-column>
 
-                            <el-table-column :label="t('common.texts.description')" fixed="left" align="center" prop="remark"
+                            <el-table-column :label="td('common.texts.description')" fixed="left" align="center" prop="remark"
                                 :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="{ row }">
                                     {{ row?.remark || '' }}
                                 </template>
                             </el-table-column>
 
-                            <el-table-column label="是否为空" width="100" fixed="left" align="center" prop="requestFlag"
+                            <el-table-column :label="td('ds.apiDetail.parameter.nullable')" width="100" fixed="left" align="center" prop="requestFlag"
                                 :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="{ row }">
                                     <el-form-item>
@@ -147,14 +147,14 @@
                                 </template>
                             </el-table-column>
 
-                            <el-table-column label="参数类型" fixed="left" align="center" prop="columnType"
+                            <el-table-column :label="td('ds.apiDetail.parameter.columnType')" fixed="left" align="center" prop="columnType"
                                 :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="{ row }">
                                     {{ row?.columnType || '' }}
                                 </template>
                             </el-table-column>
 
-                            <el-table-column label="示例值" fixed="left" align="center" prop="exampleValue"
+                            <el-table-column :label="td('ds.apiDetail.parameter.exampleValue')" fixed="left" align="center" prop="exampleValue"
                                 :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="{ row }">
                                     <!-- <el-form-item
@@ -167,7 +167,7 @@
                                 </template>
                             </el-table-column>
 
-                            <el-table-column label="默认值" fixed="left" align="center" prop="defaultValue"
+                            <el-table-column :label="td('ds.apiDetail.parameter.defaultValue')" fixed="left" align="center" prop="defaultValue"
                                 :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="{ row }">
                                     <!-- <el-form-item
@@ -186,7 +186,7 @@
             <div class="clearfix header-text">
                 <div class="header-left">
                     <div class="blue-bar"></div>
-                    返回参数
+                    {{td('ds.apiDetail.parameter.returnParams')}}
                 </div>
             </div>
             <el-form :model="form2.resParams" :rules="rules" ref="inputForm" label-width="0">
@@ -194,34 +194,34 @@
                     <el-col :span="24">
                         <el-table :data="form2.resParams" class="tableStyle" row-key="id" stripe default-expand-all
                             :tree-props="{ children: 'daAssetApiParamList', hasChildren: 'hasChildren' }">
-                            <el-table-column label="序号" width="80" align="center" fixed="left">
+                            <el-table-column :label="td('common.display.index')" width="80" align="center" fixed="left">
                                 <template #default="{ $index }">
                                     {{ $index + 1 }}
                                 </template>
                             </el-table-column>
 
-                            <el-table-column label="参数名称" fixed="left" align="center" prop="name"
+                            <el-table-column :label="td('ds.apiDetail.parameter.paramName')" fixed="left" align="center" prop="name"
                                 :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="{ row }">
                                     {{ row?.name || '' }}
                                 </template>
                             </el-table-column>
 
-                            <el-table-column :label="t('common.texts.description')" fixed="left" align="center" prop="remark"
+                            <el-table-column :label="td('common.texts.description')" fixed="left" align="center" prop="remark"
                                 :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="{ row }">
                                     {{ row?.remark || '' }}
                                 </template>
                             </el-table-column>
 
-                            <el-table-column label="参数类型" fixed="left" align="center" prop="columnType"
+                            <el-table-column :label="td('ds.apiDetail.parameter.columnType')" fixed="left" align="center" prop="columnType"
                                 :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="{ row }">
                                     {{ row?.columnType || '' }}
                                 </template>
                             </el-table-column>
 
-                            <el-table-column label="示例值" fixed="left" align="center" prop="exampleValue"
+                            <el-table-column :label="td('ds.apiDetail.parameter.exampleValue')" fixed="left" align="center" prop="exampleValue"
                                 :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="{ row }">
                                     <!-- <el-form-item
@@ -242,10 +242,10 @@
 </template>
 
 <script setup name="ComponentOne">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang";
 import { listDsApi, getDsApi, delDsApi, addDsApi, updateDsApi } from '@/api/ds/api/api.js';
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const {
     ds_api_log_status,
@@ -381,7 +381,7 @@ function handleSortChange(column, prop, order) {
 function handleAdd() {
     reset();
     open.value = true;
-    title.value = '新增API服务';
+    title.value = td('ds.api.addApi');
 }
 
 /** 修改按钮操作 */
@@ -391,7 +391,7 @@ function handleUpdate(row) {
     getDsApi(_ID).then((response) => {
         form.value = response.data;
         open.value = true;
-        title.value = '修改API服务';
+        title.value = td('ds.api.editApi');
     });
 }
 
@@ -402,7 +402,7 @@ function handleDetail(row) {
     getDsApi(_ID).then((response) => {
         form.value = response.data;
         openDetail.value = true;
-        title.value = 'API服务详情';
+        title.value = td('ds.api.detailApi');
     });
 }
 
@@ -413,7 +413,7 @@ function submitForm() {
             if (form.value.ID != null) {
                 updateDsApi(form.value)
                     .then((response) => {
-                        proxy.$modal.msgSuccess(t('common.message.editSuccess'));
+                        proxy.$modal.msgSuccess(td('common.message.editSuccess'));
                         open.value = false;
                         getList();
                     })
@@ -421,7 +421,7 @@ function submitForm() {
             } else {
                 addDsApi(form.value)
                     .then((response) => {
-                        proxy.$modal.msgSuccess(t('common.message.addSuccess'));
+                        proxy.$modal.msgSuccess(td('common.message.addSuccess'));
                         open.value = false;
                         getList();
                     })
@@ -435,13 +435,13 @@ function submitForm() {
 function handleDelete(row) {
     const _IDs = row.ID || ids.value;
     proxy.$modal
-        .confirm('是否确认删除API服务编号为"' + _IDs + '"的数据项？')
+        .confirm(td('ds.api.deleteConfirm') + _IDs + td('ds.api.deleteConfirmSuffix'))
         .then(function () {
             return delDsApi(_IDs);
         })
         .then(() => {
             getList();
-            proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+            proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
         })
         .catch(() => { });
 }

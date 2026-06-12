@@ -489,11 +489,25 @@ const data = reactive({
   },
   rules: {
     roleName: [
-      { required: true, message: "角色名称不能为空", trigger: "blur" },
+      {
+        required: true,
+        message: td("dpp.setting.projectUserRel.roleNameRequired"),
+        trigger: "blur",
+      },
     ],
-    roleKey: [{ required: true, message: "权限字符不能为空", trigger: "blur" }],
+    roleKey: [
+      {
+        required: true,
+        message: td("dpp.setting.projectUserRel.roleKeyRequired"),
+        trigger: "blur",
+      },
+    ],
     roleSort: [
-      { required: true, message: "角色顺序不能为空", trigger: "blur" },
+      {
+        required: true,
+        message: td("dpp.setting.projectUserRel.roleSortRequired"),
+        trigger: "blur",
+      },
     ],
   },
 });
@@ -541,7 +555,16 @@ function resetQuery() {
 function handleDelete(row) {
   const roleIds = row.roleId || ids.value;
   proxy.$modal
-    .confirm('是否确认删除角色编号为"' + roleIds + '"的数据项?')
+    .confirm(
+      td(
+        "dpp.setting.projectUserRel.confirmDeleteRole",
+        "是否确认删除角色编号为"
+      ) +
+        '"' +
+        roleIds +
+        '"' +
+        td("dpp.setting.projectUserRel.dataItem", "的数据项?")
+    )
     .then(function () {
       return delRole(roleIds);
     })
@@ -572,14 +595,27 @@ function handleSelectionChange(selection) {
 
 /** 角色状态修改 */
 function handleStatusChange(row) {
-  let text = row.status === "0" ? "启用" : "停用";
+  let text =
+    row.status === "0"
+      ? td("dpp.setting.projectUserRel.enable", "启用")
+      : td("dpp.setting.projectUserRel.disable", "停用");
   proxy.$modal
-    .confirm('确认要"' + text + '""' + row.roleName + '"角色吗?')
+    .confirm(
+      td("dpp.setting.projectUserRel.confirmStatusChange", "确认要") +
+        '"' +
+        text +
+        '"' +
+        row.roleName +
+        '"' +
+        td("dpp.setting.projectUserRel.role", "角色吗?")
+    )
     .then(function () {
       return changeRoleStatus(row.roleId, row.status);
     })
     .then(() => {
-      proxy.$modal.msgSuccess(text + "成功");
+      proxy.$modal.msgSuccess(
+        text + td("dpp.setting.projectUserRel.success", "成功")
+      );
     })
     .catch(function () {
       row.status = row.status === "0" ? "1" : "0";
@@ -653,7 +689,7 @@ function handleAdd() {
   reset();
   getMenuTreeselect();
   open.value = true;
-  title.value = "新增角色";
+  title.value = td("dpp.setting.projectUserRel.addRole", "新增角色");
 }
 
 /** 修改角色 */
@@ -675,7 +711,7 @@ function handleUpdate(row) {
         });
       });
     });
-    title.value = "修改角色";
+    title.value = td("dpp.setting.projectUserRel.editRole", "修改角色");
   });
 }
 
@@ -794,7 +830,10 @@ function handleDataScope(row) {
         });
       });
     });
-    title.value = "分配数据权限";
+    title.value = td(
+      "dpp.setting.projectUserRel.assignDataScope",
+      "分配数据权限"
+    );
   });
 }
 

@@ -33,38 +33,119 @@
 <template>
   <div class="app-container" ref="app-container">
     <el-container style="90%">
-      <DeptTree ref="DeptTreeRef" :deptOptions="deptOptions" :leftWidth="leftWidth" :placeholder="'请输入数据开发类目名称'"
-        @node-click="handleNodeClick" />
+      <DeptTree
+        ref="DeptTreeRef"
+        :deptOptions="deptOptions"
+        :leftWidth="leftWidth"
+        :placeholder="
+          td(
+            'dpp.instance.developTask.inputCategoryName',
+            '请输入数据开发类目名称'
+          )
+        "
+        @node-click="handleNodeClick"
+      />
 
       <el-main>
         <div class="pagecont-top" v-show="showSearch">
-          <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="100px"
-            v-show="showSearch" @submit.prevent>
-            <el-form-item label="节点实例名称" prop="name">
-              <el-input class="el-form-input-width" v-model="queryParams.name" placeholder="请输入节点实例名称" clearable
-                @keyup.enter="handleQuery" />
+          <el-form
+            class="btn-style"
+            :model="queryParams"
+            ref="queryRef"
+            :inline="true"
+            label-width="100px"
+            v-show="showSearch"
+            @submit.prevent
+          >
+            <el-form-item
+              :label="
+                td('dpp.instance.developTask.nodeInstanceName', '节点实例名称')
+              "
+              prop="name"
+            >
+              <el-input
+                class="el-form-input-width"
+                v-model="queryParams.name"
+                :placeholder="
+                  td(
+                    'dpp.instance.developTask.inputNodeInstanceName',
+                    '请输入节点实例名称'
+                  )
+                "
+                clearable
+                @keyup.enter="handleQuery"
+              />
             </el-form-item>
-            <el-form-item label="任务名称" prop="taskInstanceName">
-              <el-input class="el-form-input-width" v-model="queryParams.taskInstanceName" placeholder="请输入任务名称"
-                clearable @keyup.enter="handleQuery" />
+            <el-form-item
+              :label="td('dpp.instance.developTask.taskName', '任务名称')"
+              prop="taskInstanceName"
+            >
+              <el-input
+                class="el-form-input-width"
+                v-model="queryParams.taskInstanceName"
+                :placeholder="
+                  td('dpp.instance.developTask.inputTaskName', '请输入任务名称')
+                "
+                clearable
+                @keyup.enter="handleQuery"
+              />
             </el-form-item>
-            <el-form-item label="执行状态" prop="status">
-              <el-select v-model="queryParams.status" placeholder="请选择执行状态" clearable class="el-form-input-width">
-                <el-option v-for="dict in dpp_etl_node_instance" :key="dict.value" :label="dict.label"
-                  :value="dict.value" />
+            <el-form-item
+              :label="
+                td('dpp.instance.developTask.executionStatus', '执行状态')
+              "
+              prop="status"
+            >
+              <el-select
+                v-model="queryParams.status"
+                :placeholder="
+                  td(
+                    'dpp.instance.developTask.selectExecutionStatus',
+                    '请选择执行状态'
+                  )
+                "
+                clearable
+                class="el-form-input-width"
+              >
+                <el-option
+                  v-for="dict in dpp_etl_node_instance"
+                  :key="dict.value"
+                  :label="dict.label"
+                  :value="dict.value"
+                />
               </el-select>
             </el-form-item>
-            <el-form-item label="执行时间" prop="time">
-              <el-date-picker class="el-form-input-width" v-model="queryParams.time" @change="handleTimeChange"
-                value-format="YYYY-MM-DD" type="daterange" range-separator="-" :start-placeholder="td('common.form.startDatePlaceholder')"
-                :end-placeholder="td('common.form.endDatePlaceholder')"></el-date-picker>
+            <el-form-item
+              :label="td('dpp.instance.developTask.executionTime')"
+              prop="time"
+            >
+              <el-date-picker
+                class="el-form-input-width"
+                v-model="queryParams.time"
+                @change="handleTimeChange"
+                value-format="YYYY-MM-DD"
+                type="daterange"
+                range-separator="-"
+                :start-placeholder="td('common.form.startDatePlaceholder')"
+                :end-placeholder="td('common.form.endDatePlaceholder')"
+              ></el-date-picker>
             </el-form-item>
             <el-form-item>
-              <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+              <el-button
+                plain
+                type="primary"
+                @click="handleQuery"
+                @mousedown="(e) => e.preventDefault()"
+              >
+                <i class="iconfont-mini icon-a-zu22377 mr5"></i
+                >{{ td("common.button.search", "查询") }}
               </el-button>
-              <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-                <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+              <el-button
+                @click="resetQuery"
+                @mousedown="(e) => e.preventDefault()"
+              >
+                <i class="iconfont-mini icon-a-zu22378 mr5"></i
+                >{{ td("common.button.reset", "重置") }}
               </el-button>
             </el-form-item>
           </el-form>
@@ -73,46 +154,109 @@
         <div class="pagecont-bottom">
           <div class="justify-between mb15">
             <div class="justify-end top-right-btn">
-              <right-toolbar v-model:showSearch="showSearch" @queryTable="getList" :columns="columns"></right-toolbar>
+              <right-toolbar
+                v-model:showSearch="showSearch"
+                @queryTable="getList"
+                :columns="columns"
+              ></right-toolbar>
             </div>
           </div>
-          <el-table stripe height="500px" v-loading="loading" :data="dppEtlTaskLogList"
-            @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
-            <el-table-column v-if="getColumnVisibility(0)" width="150" label="编号" align="left" prop="id" />
-            <el-table-column v-if="getColumnVisibility(1)" :show-overflow-tooltip="{ effect: 'light' }" label="节点实例名称"
-              align="left" prop="name" width="300">
+          <el-table
+            stripe
+            height="500px"
+            v-loading="loading"
+            :data="dppEtlTaskLogList"
+            @selection-change="handleSelectionChange"
+            :default-sort="defaultSort"
+            @sort-change="handleSortChange"
+          >
+            <el-table-column
+              v-if="getColumnVisibility(0)"
+              width="150"
+              :label="td('dpp.instance.developTask.id', '编号')"
+              align="left"
+              prop="id"
+            />
+            <el-table-column
+              v-if="getColumnVisibility(1)"
+              :show-overflow-tooltip="{ effect: 'light' }"
+              :label="
+                td('dpp.instance.developTask.nodeInstanceName', '节点实例名称')
+              "
+              align="left"
+              prop="name"
+              width="300"
+            >
               <template #default="scope">
                 {{ scope.row.name || "-" }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(2)" :show-overflow-tooltip="{ effect: 'light' }" label="任务名称"
-              align="left" prop="taskInstanceName" width="400">
+            <el-table-column
+              v-if="getColumnVisibility(2)"
+              :show-overflow-tooltip="{ effect: 'light' }"
+              :label="td('dpp.instance.developTask.taskName', '任务名称')"
+              align="left"
+              prop="taskInstanceName"
+              width="400"
+            >
               <template #default="scope">
                 {{ scope.row.taskInstanceName || "-" }}
               </template>
             </el-table-column>
 
-            <el-table-column v-if="getColumnVisibility(3)" label="执行类型" width="120"
-              :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="commandType">
+            <el-table-column
+              v-if="getColumnVisibility(3)"
+              :label="td('dpp.instance.developTask.executionType', '执行类型')"
+              width="120"
+              :show-overflow-tooltip="{ effect: 'light' }"
+              align="left"
+              prop="commandType"
+            >
               <template #default="scope">
-                <dict-tag :options="dpp_etl_task_instance_command_type" :value="scope.row.commandType" />
+                <dict-tag
+                  :options="dpp_etl_task_instance_command_type"
+                  :value="scope.row.commandType"
+                />
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(4)" width="100" label="执行状态" align="left" prop="status">
+            <el-table-column
+              v-if="getColumnVisibility(4)"
+              width="100"
+              :label="
+                td('dpp.instance.developTask.executionStatus', '执行状态')
+              "
+              align="left"
+              prop="status"
+            >
               <template #default="scope">
-                <dict-tag :options="dpp_etl_node_instance" :value="scope.row.status.trim()" />
+                <dict-tag
+                  :options="dpp_etl_node_instance"
+                  :value="scope.row.status.trim()"
+                />
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(5)" width="160" label="开始时间" align="left" prop="startTime"
-              :show-overflow-tooltip="{ effect: 'light' }">
+            <el-table-column
+              v-if="getColumnVisibility(5)"
+              width="160"
+              :label="td('dpp.instance.developTask.startTime', '开始时间')"
+              align="left"
+              prop="startTime"
+              :show-overflow-tooltip="{ effect: 'light' }"
+            >
               <template #default="scope">
                 <span>{{
                   parseTime(scope.row.startTime, "{y}-{m}-{d} {h}:{i}") || "-"
                 }}</span>
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(6)" width="160" label="结束时间" align="left" prop="endTime"
-              :show-overflow-tooltip="{ effect: 'light' }">
+            <el-table-column
+              v-if="getColumnVisibility(6)"
+              width="160"
+              :label="td('dpp.instance.developTask.endTime', '结束时间')"
+              align="left"
+              prop="endTime"
+              :show-overflow-tooltip="{ effect: 'light' }"
+            >
               <template #default="scope">
                 <span>{{
                   parseTime(scope.row.endTime, "{y}-{m}-{d} {h}:{i}") || "-"
@@ -142,31 +286,71 @@
             <!--                    {{ '-' }}-->
             <!--                </template>-->
             <!--            </el-table-column>-->
-            <el-table-column v-if="getColumnVisibility(9)" width="100" label="责任人" align="left" prop="createBy">
+            <el-table-column
+              v-if="getColumnVisibility(9)"
+              width="100"
+              :label="
+                td('dpp.instance.developTask.responsiblePerson', '责任人')
+              "
+              align="left"
+              prop="createBy"
+            >
               <template #default="scope">
                 {{ scope.row.personChargeName || "-" }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(10)" label="创建人" :show-overflow-tooltip="true" align="left"
-              prop="createBy">
+            <el-table-column
+              v-if="getColumnVisibility(10)"
+              :label="td('dpp.instance.developTask.createBy', '创建人')"
+              :show-overflow-tooltip="true"
+              align="left"
+              prop="createBy"
+            >
               <template #default="scope">
                 {{ scope.row.createBy || "-" }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(11)" label="创建时间" align="left" prop="create_time" width="150"
-              sortable="custom" column-key="create_time" :sort-orders="['descending', 'ascending']">
+            <el-table-column
+              v-if="getColumnVisibility(11)"
+              :label="td('dpp.instance.developTask.createTime', '创建时间')"
+              align="left"
+              prop="create_time"
+              width="150"
+              sortable="custom"
+              column-key="create_time"
+              :sort-orders="['descending', 'ascending']"
+            >
               <template #default="scope">
                 <span>{{
                   parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}") || "-"
                 }}</span>
               </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" width="200">
+            <el-table-column
+              :label="td('dpp.instance.developTask.operation', '操作')"
+              align="center"
+              class-name="small-padding fixed-width"
+              fixed="right"
+              width="200"
+            >
               <template #default="scope">
-                <el-button link type="primary" icon="View" @click="logDetailCatList(scope.row)">查看日志</el-button>
-                <el-button link type="warning" icon="Download" @click="handleExport(scope.row)"
-                  @mousedown="(e) => e.preventDefault()">
-                  下载日志
+                <el-button
+                  link
+                  type="primary"
+                  icon="View"
+                  @click="logDetailCatList(scope.row)"
+                  >{{
+                    td("dpp.instance.developTask.viewLog", "查看日志")
+                  }}</el-button
+                >
+                <el-button
+                  link
+                  type="warning"
+                  icon="Download"
+                  @click="handleExport(scope.row)"
+                  @mousedown="(e) => e.preventDefault()"
+                >
+                  {{ td("dpp.instance.developTask.downloadLog", "下载日志") }}
                 </el-button>
               </template>
             </el-table-column>
@@ -174,19 +358,32 @@
             <template #empty>
               <div class="emptyBg">
                 <img src="@/assets/system/images/no_data/noData.png" alt="" />
-                <p>{{td('common.noData')}}</p>
+                <p>{{ td("common.noData") }}</p>
               </div>
             </template>
           </el-table>
-          <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum"
-            v-model:limit="queryParams.pageSize" @pagination="getList" />
+          <pagination
+            v-show="total > 0"
+            :total="total"
+            v-model:page="queryParams.pageNum"
+            v-model:limit="queryParams.pageSize"
+            @pagination="getList"
+          />
 
-          <el-dialog title="查看日志" v-model="open" width="1200px" :append-to="$refs['app-container']" draggable
-            destroy-on-close>
+          <el-dialog
+            :title="td('dpp.instance.developTask.viewLog', '查看日志')"
+            v-model="open"
+            width="1200px"
+            :append-to="$refs['app-container']"
+            draggable
+            destroy-on-close
+          >
             <div v-html="formattedText"></div>
             <template #footer>
               <div class="dialog-footer">
-                <el-button @click="cancel">关 闭</el-button>
+                <el-button @click="cancel">{{
+                  td("common.button.close", "关闭")
+                }}</el-button>
               </div>
             </template>
           </el-dialog>
@@ -197,9 +394,9 @@
 </template>
 
 <script setup name="Develop">
-import { defineEmits, defineProps } from "vue"
+import { defineEmits, defineProps } from "vue";
 import useDefaultLang from "@/composables/useDefaultLang";
-const { td } = useDefaultLang();;
+const { td } = useDefaultLang();
 import { listAttDataDevCat } from "@/api/att/cat/dataDevCat/dataDevCat";
 import {
   listDppEtlNodeInstance,
@@ -398,7 +595,7 @@ function getDeptTree() {
     deptOptions.value = proxy.handleTree(response.data, "id", "parentId");
     deptOptions.value = [
       {
-        name: "数据开发类目",
+        name: td("dpp.instance.developTask.dataDevCategory", "数据开发类目"),
         value: "",
         id: 0,
         children: deptOptions.value,
@@ -481,7 +678,7 @@ function submitForm() {
             open.value = false;
             getList();
           })
-          .catch((error) => { });
+          .catch((error) => {});
       } else {
         addDppEtlNodeInstance(form.value)
           .then((response) => {
@@ -489,7 +686,7 @@ function submitForm() {
             open.value = false;
             getList();
           })
-          .catch((error) => { });
+          .catch((error) => {});
       }
     }
   });
@@ -507,7 +704,7 @@ function handleDelete(row) {
       getList();
       proxy.$modal.msgSuccess("删除成功");
     })
-    .catch(() => { });
+    .catch(() => {});
 }
 
 function routeTo(link, row) {

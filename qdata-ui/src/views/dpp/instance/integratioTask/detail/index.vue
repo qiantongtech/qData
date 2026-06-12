@@ -42,7 +42,7 @@
           </el-col> -->
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dpp.instance.taskInstanceName', '任务实例名称') }}</div>
+              <div class="infotop-row-lable">{{ td('dpp.instance.taskInstanceName', '任务实例名称333') }}</div>
               <div class="infotop-row-value">
                 {{ dppEtlTaskDetail?.name || '-' }}
               </div>

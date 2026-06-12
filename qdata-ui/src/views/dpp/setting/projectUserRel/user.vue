@@ -228,7 +228,7 @@
             icon="Edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['att:projectUserRel:edit']"
-            >修改</el-button
+            >{{ td("common.button.update") }}</el-button
           >
           <el-button
             link
@@ -236,7 +236,7 @@
             icon="Delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['att:projectUserRel:remove']"
-            >移除</el-button
+            >{{ td("common.button.delete") }}</el-button
           >
         </template>
       </el-table-column>
@@ -631,14 +631,14 @@ const data = reactive({
     userNameList: [
       {
         required: true,
-        message: td("dpp.setting.projectUserRel.userRequired"),
+        message: td("dpp.setting.projectUserRel.userRequired", "请选择用户"),
         trigger: "change",
       },
     ],
     roleIdList: [
       {
         required: true,
-        message: td("dpp.setting.projectUserRel.roleRequired"),
+        message: td("dpp.setting.projectUserRel.roleRequired", "请选择角色"),
         trigger: "change",
       },
     ],
@@ -807,7 +807,7 @@ function handleAdd() {
   getRoleList();
   reset();
   open.value = true;
-  title.value = "新增项目成员";
+  title.value = td("dpp.setting.projectUserRel.addMember", "新增项目成员");
 }
 
 /** 修改按钮操作 */
@@ -819,7 +819,7 @@ function handleUpdate(row) {
     form.value = response.data;
     console.log(form.value, "form");
     open.value = true;
-    title.value = "修改项目成员";
+    title.value = td("dpp.setting.projectUserRel.editMember", "修改项目成员");
   });
 }
 
@@ -830,7 +830,10 @@ function handleDetail(row) {
   getAttProjectUserRel(_id).then((response) => {
     form.value = response.data;
     openDetail.value = true;
-    title.value = "项目与用户关联关系详情";
+    title.value = td(
+      "dpp.setting.projectUserRel.memberDetail",
+      "项目与用户关联关系详情"
+    );
   });
 }
 
@@ -841,7 +844,7 @@ function submitForm() {
       if (form.value.id != null) {
         editUserListAndRoleList(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("修改成功");
+            proxy.$modal.msgSuccess(td("common.message.editSuccess"));
             open.value = false;
             getList();
           })
@@ -849,13 +852,18 @@ function submitForm() {
       } else {
         // 新增时增加额外验证
         if (!form.value.userIdList || form.value.userIdList.length === 0) {
-          proxy.$modal.msgWarning("未选择用户，请选择用户后重试");
+          proxy.$modal.msgWarning(
+            td(
+              "dpp.setting.projectUserRel.noUserSelected",
+              "未选择用户，请选择用户后重试"
+            )
+          );
           return;
         }
         form.value.projectId = userStore.projectId;
         addUserListAndRoleList(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("新增成功");
+            proxy.$modal.msgSuccess(td("common.message.addSuccess"));
             open.value = false;
             getList();
           })
@@ -874,13 +882,22 @@ function handleDelete(row) {
       .filter((item) => ids.value.includes(item.id))
       .map((item) => item.userId);
   proxy.$modal
-    .confirm('是否确认移除编号为"' + _userId + '"的数据项？')
+    .confirm(
+      td(
+        "dpp.setting.projectUserRel.confirmRemoveMember",
+        "是否确认移除编号为"
+      ) +
+        '"' +
+        _userId +
+        '"' +
+        td("dpp.setting.projectUserRel.dataItem", "的数据项？")
+    )
     .then(function () {
       return delAttProjectUserRel(_ids);
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess("移除成功");
+      proxy.$modal.msgSuccess(td("common.message.deleteSuccess"));
     })
     .catch(() => {});
 }

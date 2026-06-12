@@ -18,18 +18,29 @@
 <template>
   <div class="app-containers" ref="app-container">
     <div class="flex-container">
-
       <!-- 右侧主内容 -->
       <div class="right-pane" v-loading="loading">
         <!-- <el-empty :description="td('common.noTaskProcess')" v-if="!nodeData?.locations || nodeData.locations.length === 0">
         </el-empty> -->
-        <div id="graphContainer" class="graph-container" ref="graphContainer"></div>
+        <div
+          id="graphContainer"
+          class="graph-container"
+          ref="graphContainer"
+        ></div>
         <TeleportContainer />
         <!-- 工具栏 -->
         <div class="toolbar" v-if="nodeData?.locations">
           <template v-for="item in toolbar" :key="item.id">
-            <el-tooltip class="box-item" effect="light" :content="item.tip" placement="bottom"
-              v-if="item.tip !== '重置' && item.tip !== '导出'">
+            <el-tooltip
+              class="box-item"
+              effect="light"
+              :content="item.tip"
+              placement="bottom"
+              v-if="
+                item.tip !== td('common.button.reset', '重置') &&
+                item.tip !== td('common.button.export', '导出')
+              "
+            >
               <div class="toolbar-item" @click="toolbarClick(item)">
                 <img :src="getAssetsFile(item.icon)" alt="" />
               </div>
@@ -39,8 +50,16 @@
       </div>
     </div>
     <!-- 动态表单 -->
-    <component :is="currentFormComponent" :visible="drawer" :key="currentNode?.id || Date.now()" :title="title"
-      @update="closeDialog" :currentNode="currentNode" :info="route.query.info" :graph="graph" />
+    <component
+      :is="currentFormComponent"
+      :visible="drawer"
+      :key="currentNode?.id || Date.now()"
+      :title="title"
+      @update="closeDialog"
+      :currentNode="currentNode"
+      :info="route.query.info"
+      :graph="graph"
+    />
     <!-- 字段预览弹窗 -->
     <FieldPreviewDialog ref="fieldPreviewDialog" />
   </div>
@@ -69,7 +88,7 @@ import { getLogByTaskInstanceId, getTaskInfo } from "@/api/dpp/task/etlTask";
 // import taskConfigDialog from "@/views/dpp/etl/components//task.vue";
 import useUserStore from "@/store/system/user";
 import { toolbar } from "@/utils/graph";
-import { Export } from '@antv/x6-plugin-export'
+import { Export } from "@antv/x6-plugin-export";
 const userStore = useUserStore();
 import { getTeleport } from "@antv/x6-vue-shape";
 const TeleportContainer = defineComponent(getTeleport());
@@ -160,8 +179,8 @@ const currentFormComponent = computed(() => {
 const props = defineProps({
   dppEtlTaskDetail: {
     type: Object,
-    default: () => ({})
-  }
+    default: () => ({}),
+  },
 });
 const undoDisabled = ref(null);
 let loading = ref(false);
@@ -178,9 +197,8 @@ async function updateFlow(data) {
     nodeData.value = res.data;
     renderGraphs(graph, nodeData.value);
   }
-
 }
-useVueNode(graph)
+useVueNode(graph);
 const fieldPreviewDialog = ref();
 // const updateGraphNode = (list) => {
 //   updateGraphNodes(graph, list);
@@ -189,10 +207,10 @@ const updateGraphNode = (nodeInstanceList) => {
   if (!graph || !Array.isArray(nodeInstanceList)) return;
   const codeNodeMap = {};
   graph.getNodes().forEach((node) => {
-    console.log("🚀 ~ updateGraphNode ~ node.getData():", node.getData())
+    console.log("🚀 ~ updateGraphNode ~ node.getData():", node.getData());
 
     const code = node.getData()?.code;
-    console.log("🚀 ~ updateGraphNode ~ code:", code)
+    console.log("🚀 ~ updateGraphNode ~ code:", code);
     if (code) codeNodeMap[String(code)] = node;
   });
   nodeInstanceList.forEach((inst) => {
@@ -200,8 +218,7 @@ const updateGraphNode = (nodeInstanceList) => {
     if (node) {
       const oldData = node.getData() || {};
       node.setData({ ...oldData, status: inst.status });
-      console.log("🚀 ~ updateGraphNode ~ nodeInstanceList:", nodeInstanceList)
-
+      console.log("🚀 ~ updateGraphNode ~ nodeInstanceList:", nodeInstanceList);
     }
   });
 };
@@ -226,7 +243,9 @@ function initializeGraph() {
       nodeMovable: () => false,
       edgeMovable: () => false,
       arrowMovable: () => false,
-    }, interacting: false, mousewheel: {
+    },
+    interacting: false,
+    mousewheel: {
       enabled: true,
       zoomAtMousePosition: true,
       minScale: 0.5,
@@ -261,16 +280,13 @@ const closeDialog = () => {
 };
 // 绑定事件
 function bindGraphEvents() {
-
   graph.on("node:added", handleNodeAdded);
-
 
   graph.on("node:dblclick", handleNodeDblClick);
   if (route.query.info) {
-    graph.getPlugin('keyboard')?.disable();
+    graph.getPlugin("keyboard")?.disable();
   }
 }
-
 
 // / 处理节点添加事件
 async function handleNodeAdded({ node }) {
@@ -317,7 +333,7 @@ function handleNonInputNode(node) {
   });
   // drawer.value = true; // 控制抽屉显示
 }
-function handleNodeDblClick({ node }, type = 'edit') {
+function handleNodeDblClick({ node }, type = "edit") {
   graph.cleanSelection();
   hasUnsavedChanges.value = true;
   currentNode.value = node;
@@ -326,7 +342,12 @@ function handleNodeDblClick({ node }, type = 'edit') {
 // 重置操作逻辑
 const handleCancel = () => {
   proxy.$modal
-    .confirm(`点击重置将清除所有未保存的更改，您确定要继续吗？`)
+    .confirm(
+      td(
+        "dpp.instance.integratioTask.resetConfirm",
+        "点击重置将清除所有未保存的更改，您确定要继续吗？"
+      )
+    )
     .then(() => {
       // 刷新当前页签
       proxy.$tab.refreshPage(route);
@@ -360,7 +381,8 @@ const toolbarClick = (item) => {
       graph.zoomTo(1);
       break;
     case "export": {
-      exportGraphAsPNG(graph,); break;
+      exportGraphAsPNG(graph);
+      break;
     }
     case "reset": {
       handleCancel();
@@ -377,7 +399,7 @@ onMounted(() => {
 const getAssetsFile = (url) => {
   return new URL(`/src/assets/dpp/etl/${url}`, import.meta.url).href;
 };
-defineExpose({ updateFlow, updateGraphNode })
+defineExpose({ updateFlow, updateGraphNode });
 </script>
 
 <style scoped lang="less">

@@ -759,7 +759,7 @@ function handleAdd(row) {
     form.value.parentId = 0;
   }
   open.value = true;
-  title.value = "新增数据开发类目管理";
+  title.value = td("dpp.setting.dataDevCat.addDataDevCat", "新增数据开发类目");
 }
 
 /** 修改按钮操作 */
@@ -769,7 +769,10 @@ function handleUpdate(row) {
   getAttDataDevCat(_id).then((response) => {
     form.value = response.data;
     open.value = true;
-    title.value = "修改数据开发类目管理";
+    title.value = td(
+      "dpp.setting.dataDevCat.editDataDevCat",
+      "修改数据开发类目"
+    );
   });
 }
 
@@ -780,7 +783,10 @@ function handleDetail(row) {
   getAttDataDevCat(_id).then((response) => {
     form.value = response.data;
     openDetail.value = true;
-    title.value = "数据开发类目管理详情";
+    title.value = td(
+      "dpp.setting.dataDevCat.dataDevCatDetail",
+      "数据开发类目管理详情"
+    );
   });
 }
 

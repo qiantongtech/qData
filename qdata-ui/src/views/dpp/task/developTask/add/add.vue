@@ -31,41 +31,106 @@
 -->
 
 <template>
-  <el-dialog v-model="visibleDialog" draggable class="dialog" :title="title" destroy-on-close width="60%"
-    :append-to="$refs['app-container']">
-    <el-form ref="daDiscoveryTaskRef" :model="form" label-width="120px" @submit.prevent :disabled="title == '任务详情'">
+  <el-dialog
+    v-model="visibleDialog"
+    draggable
+    class="dialog"
+    :title="title"
+    destroy-on-close
+    width="60%"
+    :append-to="$refs['app-container']"
+  >
+    <el-form
+      ref="daDiscoveryTaskRef"
+      :model="form"
+      label-width="120px"
+      @submit.prevent
+      :disabled="title == td('dpp.developTask.taskDetail', '任务详情')"
+    >
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="任务名称" prop="name"
-            :rules="[{ required: title != '任务详情', message: '请输入任务名称', trigger: 'blur' }]">
-            <el-input v-if="title != '任务详情'" v-model="form.name" placeholder="请输入任务名称" />
+          <el-form-item
+            :label="td('dpp.developTask.taskName', '任务名称')"
+            prop="name"
+            :rules="[
+              {
+                required: title != td('dpp.developTask.taskDetail', '任务详情'),
+                message: td('dpp.developTask.inputTaskName', '请输入任务名称'),
+                trigger: 'blur',
+              },
+            ]"
+          >
+            <el-input
+              v-if="title != td('dpp.developTask.taskDetail', '任务详情')"
+              v-model="form.name"
+              :placeholder="
+                td('dpp.developTask.inputTaskName', '请输入任务名称')
+              "
+            />
             <div class="form-readonly" v-else>{{ form.name }}</div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="数据开发类目" prop="catCode" :rules="[
-            {
-              required: title != '任务详情',
-              message: '请选择数据开发类目',
-              trigger: 'change',
-            },
-          ]">
-            <el-tree-select filterable v-model="form.catCode" :data="deptOptions"
-              :props="{ value: 'code', label: 'name', children: 'children' }" value-key="id" placeholder="请选择数据开发类目"
-              check-strictly />
+          <el-form-item
+            :label="td('dpp.developTask.dataDevCategory', '数据开发类目')"
+            prop="catCode"
+            :rules="[
+              {
+                required: title != td('dpp.developTask.taskDetail', '任务详情'),
+                message: td(
+                  'dpp.developTask.selectTaskCategory',
+                  '请选择数据开发类目'
+                ),
+                trigger: 'change',
+              },
+            ]"
+          >
+            <el-tree-select
+              filterable
+              v-model="form.catCode"
+              :data="deptOptions"
+              :props="{ value: 'code', label: 'name', children: 'children' }"
+              value-key="id"
+              :placeholder="
+                td('dpp.developTask.selectTaskCategory', '请选择数据开发类目')
+              "
+              check-strictly
+            />
           </el-form-item>
         </el-col>
       </el-row>
 
-
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="调度周期" prop="crontab"
-            :rules="[{ required: title != '任务详情', message: '请输入调度周期', trigger: 'change' }]">
-            <el-input v-if="title != '任务详情'" v-model="form.crontab" placeholder="请输入调度周期" readonly>
+          <el-form-item
+            :label="td('dpp.developTask.scheduleCycle', '调度周期')"
+            prop="crontab"
+            :rules="[
+              {
+                required: title != td('dpp.developTask.taskDetail', '任务详情'),
+                message: td(
+                  'dpp.developTask.selectScheduleCycle',
+                  '请选择调度周期'
+                ),
+                trigger: 'change',
+              },
+            ]"
+          >
+            <el-input
+              v-if="title != td('dpp.developTask.taskDetail', '任务详情')"
+              v-model="form.crontab"
+              :placeholder="
+                td('dpp.developTask.selectScheduleCycle', '请选择调度周期')
+              "
+              readonly
+            >
               <template #append>
-                <el-button type="primary" @click="handleShowCron" style="background-color: #2666fb; color: #fff">
-                  配置
+                <el-button
+                  type="primary"
+                  @click="handleShowCron"
+                  style="background-color: #2666fb; color: #fff"
+                >
+                  {{ td("dpp.developTask.configure", "配置") }}
                   <i class="el-icon-time el-icon--right"></i>
                 </el-button>
               </template>
@@ -74,102 +139,221 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="执行引擎" prop="typaCode"
-            :rules="[{ required: title != '任务详情', message: '请选择执行引擎', trigger: 'change' }]">
-            <el-tree-select filterable :disabled="info" v-model="form.typaCode" :data="treeData"
-              :props="{ value: 'value', label: 'label', children: 'children' }" value-key="label" check-strictly
-              @change="getDaDatasource(true)" />
+          <el-form-item
+            :label="td('dpp.developTask.executionEngine', '执行引擎')"
+            prop="typaCode"
+            :rules="[
+              {
+                required: title != td('dpp.developTask.taskDetail', '任务详情'),
+                message: td(
+                  'dpp.developTask.selectExecutionEngine',
+                  '请选择执行引擎'
+                ),
+                trigger: 'change',
+              },
+            ]"
+          >
+            <el-tree-select
+              filterable
+              :disabled="info"
+              v-model="form.typaCode"
+              :data="treeData"
+              :props="{ value: 'value', label: 'label', children: 'children' }"
+              value-key="label"
+              check-strictly
+              @change="getDaDatasource(true)"
+            />
           </el-form-item>
         </el-col>
       </el-row>
 
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="责任人" prop="personCharge"
-            :rules="[{ required: title != '任务详情', message: '请选择责任人', trigger: 'change' }]">
-            <el-tree-select filterable v-model="form.personCharge" :data="userList" :props="{
-              value: 'userId',
-              label: 'nickName',
-              children: 'children',
-            }" value-key="ID" placeholder="请选择责任人" check-strictly @change="handleContactChange" />
+          <el-form-item
+            :label="td('dpp.developTask.responsiblePerson')"
+            prop="personCharge"
+            :rules="[
+              {
+                required: title != td('dpp.developTask.taskDetail', '任务详情'),
+                message: td('dpp.developTask.selectResponsiblePerson'),
+                trigger: 'change',
+              },
+            ]"
+          >
+            <el-tree-select
+              filterable
+              v-model="form.personCharge"
+              :data="userList"
+              :props="{
+                value: 'userId',
+                label: 'nickName',
+                children: 'children',
+              }"
+              value-key="ID"
+              :placeholder="
+                td('dpp.developTask.selectResponsiblePerson', '请选择责任人')
+              "
+              check-strictly
+              @change="handleContactChange"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="联系电话" prop="contactNumber">
-            <el-input v-if="title != '任务详情'" v-model="form.contactNumber" placeholder="请输入联系电话" disabled />
+          <el-form-item
+            :label="td('dpp.developTask.contactNumber', '联系电话')"
+            prop="contactNumber"
+          >
+            <el-input
+              v-if="title != td('dpp.developTask.taskDetail', '任务详情')"
+              v-model="form.contactNumber"
+              :placeholder="
+                td('dpp.developTask.inputContactNumber', '请输入联系电话')
+              "
+              disabled
+            />
             <div class="form-readonly" v-else>{{ form.contactNumber }}</div>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="描述" prop="description">
-            <el-input v-if="title != '任务详情'" v-model="form.description" type="textarea" placeholder="请输入描述" />
-            <div class="form-readonly" v-else>{{ form.description || '-' }}</div>
+          <el-form-item
+            :label="td('dpp.developTask.description', '描述')"
+            prop="description"
+          >
+            <el-input
+              v-if="title != td('dpp.developTask.taskDetail', '任务详情')"
+              v-model="form.description"
+              type="textarea"
+              :placeholder="
+                td('dpp.developTask.inputDescription', '请输入描述')
+              "
+            />
+            <div class="form-readonly" v-else>
+              {{ form.description || "-" }}
+            </div>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="任务状态" prop="releaseState"><el-radio-group style=" width: 100%"
-              v-model="form.releaseState" class="el-form-input-width" v-if="title != '任务详情'">
-              <el-radio v-for="dict in dpp_etl_task_status" :key="dict.value" :value="dict.value"
-                :disabled="dict.value == 1">
+          <el-form-item
+            :label="td('dpp.developTask.taskStatus', '任务状态')"
+            prop="releaseState"
+            ><el-radio-group
+              style="width: 100%"
+              v-model="form.releaseState"
+              class="el-form-input-width"
+              v-if="title != td('dpp.developTask.taskDetail', '任务详情')"
+            >
+              <el-radio
+                v-for="dict in dpp_etl_task_status"
+                :key="dict.value"
+                :value="dict.value"
+                :disabled="dict.value == 1"
+              >
                 {{ dict.label }}
               </el-radio>
             </el-radio-group>
-            <div class="form-readonly" v-else>{{dpp_etl_task_status.find(item => item.value ==
-              form.releaseState)?.label ||
-              '-'}}</div>
+            <div class="form-readonly" v-else>
+              {{
+                dpp_etl_task_status.find(
+                  (item) => item.value == form.releaseState
+                )?.label || "-"
+              }}
+            </div>
           </el-form-item>
         </el-col>
       </el-row>
       <!-- <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="备注" prop="remark">
-            <el-input v-model="form.remark" type="textarea" placeholder="请输入备注" />
+          <el-form-item :label="td('dpp.developTask.remark', '备注')" prop="remark">
+            <el-input v-model="form.remark" type="textarea" :placeholder="td('dpp.developTask.inputRemark', '请输入备注')" />
           </el-form-item>
         </el-col>
       </el-row> -->
-      <div class="h2" @click="templateShow = !templateShow">> 使用模板</div>
+      <div class="h2" @click="templateShow = !templateShow">
+        {{ td("dpp.developTask.useTemplate", "> 使用模板") }}
+      </div>
       <template v-if="templateAct.id || templateShow">
         <div class="h2-template" v-loading="tempLoading">
-          <div class="h2-item" :class="{ act: templateAct.id == item.id }" v-for="item in templateList" :key="item.id"
-            @click="handleTemplate(item)">
+          <div
+            class="h2-item"
+            :class="{ act: templateAct.id == item.id }"
+            v-for="item in templateList"
+            :key="item.id"
+            @click="handleTemplate(item)"
+          >
             <div class="h2-item-title">{{ item.name }}</div>
             <div class="h2-item-editor">
-              <CodeShow v-model="item.content" :config="{
-                renderSideBySide: false,
-                fontSize: 9,
-                scrollbar: {
-                  vertical: 'hidden',
-                  horizontal: 'hidden',
-                },
-              }" />
+              <CodeShow
+                v-model="item.content"
+                :config="{
+                  renderSideBySide: false,
+                  fontSize: 9,
+                  scrollbar: {
+                    vertical: 'hidden',
+                    horizontal: 'hidden',
+                  },
+                }"
+              />
             </div>
           </div>
-          <el-empty style="width: 100%" v-if="total == 0" :description="td('common.noData')" />
+          <el-empty
+            style="width: 100%"
+            v-if="total == 0"
+            :description="td('common.noData')"
+          />
         </div>
-        <pagination layout="prev, pager, next" v-show="total > 0" :total="total" v-model:page="queryParams.pageNum"
-          v-model:limit="queryParams.pageSize" @pagination="getList" />
+        <pagination
+          layout="prev, pager, next"
+          v-show="total > 0"
+          :total="total"
+          v-model:page="queryParams.pageNum"
+          v-model:limit="queryParams.pageSize"
+          @pagination="getList"
+        />
       </template>
     </el-form>
 
     <template #footer>
       <div style="text-align: right">
         <template v-if="info">
-          <el-button @click="closeDialog">关闭</el-button>
-          <el-button type="primary" @click="saveClose" v-if="!route.query.info">保存</el-button>
+          <el-button @click="closeDialog">{{
+            td("common.button.close", "关闭")
+          }}</el-button>
+          <el-button
+            type="primary"
+            @click="saveClose"
+            v-if="!route.query.info"
+            >{{ td("common.button.save", "保存") }}</el-button
+          >
         </template>
         <template v-else>
-          <el-button @click="saveClose">仅保存</el-button>
-          <el-button type="primary" @click="saveData">保存并配置流程</el-button>
+          <el-button @click="saveClose">{{
+            td("dpp.developTask.saveOnly", "仅保存")
+          }}</el-button>
+          <el-button type="primary" @click="saveData">{{
+            td("dpp.developTask.saveAndConfigure", "保存并配置流程")
+          }}</el-button>
         </template>
       </div>
     </template>
   </el-dialog>
-  <el-dialog title="Cron表达式生成器" v-model="openCron" class="dialog" :append-to="$refs['app-container']" destroy-on-close>
-    <crontab ref="crontabRef" @hide="openCron = false" @fill="crontabFill" :expression="expression"> </crontab>
+  <el-dialog
+    :title="td('dpp.developTask.cronGenerator', 'Cron表达式生成器')"
+    v-model="openCron"
+    class="dialog"
+    :append-to="$refs['app-container']"
+    destroy-on-close
+  >
+    <crontab
+      ref="crontabRef"
+      @hide="openCron = false"
+      @fill="crontabFill"
+      :expression="expression"
+    >
+    </crontab>
     <!--    <crontab-->
     <!--      ref="crontabRef"-->
     <!--      @hide="openCron = false"-->
@@ -232,7 +416,8 @@ const tempLoading = ref(false);
 const getList = async () => {
   tempLoading.value = true;
   try {
-    let type = treeData.filter((item) => item.value == form.value.typaCode)[0].id;
+    let type = treeData.filter((item) => item.value == form.value.typaCode)[0]
+      .id;
     let params = {
       ...queryParams.value,
       type: type,
@@ -291,7 +476,9 @@ watch(
     if (newVal) {
       form.value = { ...form.value, ...props.data };
       // 模版
-      templateAct.value = form.value.draftJson ? JSON.parse(form.value.draftJson) : { ...templateAct.value };
+      templateAct.value = form.value.draftJson
+        ? JSON.parse(form.value.draftJson)
+        : { ...templateAct.value };
       // 获取模版列表
       queryParams.value = templateAct.value.queryParams || queryParams.value;
       // 执行引擎
@@ -301,7 +488,8 @@ watch(
       form.value.personCharge = Number(form.value.personCharge) || "";
       // 任务状态
       if (form.value.status != null && form.value.status != undefined) {
-        form.value.releaseState = form.value.status == "-1" ? "0" : form.value.status;
+        form.value.releaseState =
+          form.value.status == "-1" ? "0" : form.value.status;
       }
     } else {
       proxy.resetForm("daDiscoveryTaskRef");
@@ -389,7 +577,9 @@ function crontabFill(value) {
 }
 
 const handleContactChange = (selectedValue) => {
-  const selectedUser = props.userList.find((user) => user.userId == selectedValue);
+  const selectedUser = props.userList.find(
+    (user) => user.userId == selectedValue
+  );
   console.log("🚀 ~ handleContactChange ~ selectedUser:", selectedUser);
   form.value.contactNumber = selectedUser?.phonenumber || "";
 };
@@ -441,11 +631,11 @@ const handleContactChange = (selectedValue) => {
 
     &:hover {
       border-color: transparent;
-      box-shadow: 0 1px 2px -2px #00000029, 0 3px 6px #0000001f, 0 5px 12px 4px #00000017;
+      box-shadow: 0 1px 2px -2px #00000029, 0 3px 6px #0000001f,
+        0 5px 12px 4px #00000017;
     }
 
     &.act {
-
       .h2-item-title,
       .h2-item-editor {
         background: #e6f7ff;

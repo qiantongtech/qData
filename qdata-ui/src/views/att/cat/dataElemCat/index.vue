@@ -29,7 +29,7 @@
           <el-input
             class="el-form-input-width"
             v-model="queryParams.name"
-            :placeholder="td('common.form.namePlaceholder')"
+            :placeholder="td('att.common.dataElemCatNamePlaceholder')"
             clearable
             @keyup.enter="handleQuery"
           />
@@ -108,7 +108,7 @@
         :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
       >
         <el-table-column
-          :label="td('att.dataElemCat.table.name')"
+          :label="td('att.common.dataElemCatName')"
           align="left"
           prop="name"
           width="200"
@@ -244,7 +244,7 @@
             <el-form-item :label="td('att.common.categoryName')" prop="name">
               <el-input
                 v-model="form.name"
-                :placeholder="td('common.form.namePlaceholder')"
+                :placeholder="td('att.common.dataElemCatNamePlaceholder')"
               />
             </el-form-item>
           </el-col>

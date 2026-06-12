@@ -1,12 +1,17 @@
 // att 模块公共翻译
 export default {
     dataAssetCatName: 'Data Asset Category Name',
+    dataAssetCatNamePlaceholder: 'Please enter data asset category name',
     dataDocCatName: 'Data Document Name',
     cleanCatName: 'Cleaning Rule Category Name',
+    cleanCatNamePlaceholder: 'Please enter cleaning rule category name',
     dataElemCatName: 'Data Element Category Name',
+    dataElemCatNamePlaceholder: 'Please enter data element category name',
     documentCatName: 'Standard Category Name',
     modelCatName: 'Logical Model Category Name',
+    modelCatNamePlaceholder: 'Please enter logical model category name',
     qualityCatName: 'Data Quality Category Name',
+    qualityCatNamePlaceholder: 'Please enter data quality category name',
     tagCatName: 'Tag Management Category Name',
     parentCat: 'Parent Category',
     parentCatRequired: 'Parent category cannot be empty',
@@ -88,6 +93,8 @@ export default {
     parentCatPlaceholder: 'Please select parent',
     tagCatPlaceholder: 'Please select tag category',
     cleanRuleCatPlaceholder: 'Please enter audit rule category',
+    ruleNamePlaceholder: 'Please enter rule name',
+    projectNamePlaceholder: 'Please enter project name',
     // Tag related
     tagManagementCategory: 'Tag Management Category',
     assetCount: 'Asset Count',

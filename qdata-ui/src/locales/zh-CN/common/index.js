@@ -71,7 +71,8 @@ export default {
     updatedBy: '更新人',
     updatedTime: '更新时间',
     enable: '启用',
-    disable: '禁用'
+    disable: '禁用',
+    sortOrder: '排序'
   },
   message: {
     addSuccess: '新增成功',

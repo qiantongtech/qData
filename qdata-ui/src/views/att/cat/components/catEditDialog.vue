@@ -173,7 +173,7 @@ const defaultForm = {
 const form = ref({ ...defaultForm });
 
 const effectiveNameLabel = computed(() => nameLabel.value);
-const effectiveNamePlaceholder = computed(() => td('att.common.namePlaceholder'));
+const effectiveNamePlaceholder = computed(() => td('att.common.tagCatNamePlaceholder'));
 const hideStatusAndSort = computed(() => dialogType.value === "dataCategory");
 
 // 默认校验规则

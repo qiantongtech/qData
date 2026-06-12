@@ -59,7 +59,7 @@
               <el-input
                 class="el-form-input-width"
                 v-model="queryParams.name"
-                :placeholder="td('common.form.namePlaceholder')"
+                :placeholder="td('att.common.ruleNamePlaceholder')"
                 clearable
                 @keyup.enter="handleQuery"
               />

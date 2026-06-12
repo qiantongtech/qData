@@ -69,7 +69,8 @@ export default {
         updatedBy: 'Updated By',
         updatedTime: 'Updated Time',
         enable: 'Enable',
-        disable: 'Disable'
+        disable: 'Disable',
+        sortOrder: 'Sort Order'
     },
     message: {
         addSuccess: 'Added successfully',

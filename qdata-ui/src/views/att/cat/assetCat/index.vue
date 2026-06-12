@@ -20,7 +20,7 @@
         <div class="pagecont-top" v-show="showSearch">
             <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="75px">
                 <el-form-item :label="td('att.common.dataAssetCatName')" prop="name" label-width="130">
-                    <el-input class="el-form-input-width" v-model="queryParams.name" :placeholder="td('att.common.namePlaceholder')" clearable
+                    <el-input class="el-form-input-width" v-model="queryParams.name" :placeholder="td('att.common.dataAssetCatNamePlaceholder')" clearable
                         @keyup.enter="handleQuery" />
                 </el-form-item>
                 <el-form-item :label="td('att.common.parentCat')" prop="code">
@@ -126,7 +126,7 @@
                 <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item :label="td('att.common.categoryName')" prop="name">
-                            <el-input v-model="form.name" :placeholder="td('att.common.namePlaceholder')" />
+                            <el-input v-model="form.name" :placeholder="td('att.common.dataAssetCatNamePlaceholder')" />
                         </el-form-item>
                     </el-col>
                     <!--            <el-form-item label="类别排序" prop="sortOrder">-->

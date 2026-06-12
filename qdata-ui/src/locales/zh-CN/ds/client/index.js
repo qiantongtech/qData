@@ -1,4 +1,4 @@
-import clientDetail from './clientDetail.js'
+import detail from './detail.js'
 
 export default {
     title: '应用管理',
@@ -38,5 +38,5 @@ export default {
     idPlaceholder: '请输入ID',
     addSuccess: '新增成功',
     editSuccess: '修改成功',
-    clientDetail
+    detail
 }

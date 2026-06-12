@@ -55,7 +55,7 @@
                         <el-button class="toggle-expand-all" type="primary" plain @click="toggleExpandAll">
                             <svg-icon v-if="isExpandAll" icon-class="toggle" />
                             <svg-icon v-else icon-class="expand" />
-                            <span>{{ isExpandAll ? td('common.button.collapse') : td('common.button.expand') }}</span>
+                            <span>{{ isExpandAll ? td('common.button.fold') : td('common.button.expand') }}</span>
                         </el-button>
                     </el-col>
                 </el-row>

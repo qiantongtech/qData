@@ -111,7 +111,7 @@
                 {{ scope.row.callerTime / 1000 || "-" }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(8)" :label="td('common.texts.status')" align="center" prop="status" width="120"
+            <el-table-column v-if="getColumnVisibility(8)" :label="td('common.texts.status')" align="center" prop="status" width="130"
               :show-overflow-tooltip="{ effect: 'light' }">
               <template #header>
                 <div class="justify-center">
@@ -143,7 +143,7 @@
                 <!--                <el-button link type="primary" icon="view" @click="routeTo('/ds/logDetail/dsApiLogDetail', scope.row)"-->
                 <!--                  v-hasPermi="['ds:apiLog:edit']">查看日志</el-button>-->
                 <el-button link type="primary" icon="view" @click="handleDetail(scope.row)"
-                  v-hasPermi="['ds:apiLog:query']">{{td('common.button.detail')}}</el-button>
+                  v-hasPermi="['ds:apiLog:query']">{{td('common.button.details')}}</el-button>
                 <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
                   v-hasPermi="['ds:apiLog:remove']">{{td('common.button.delete')}}</el-button>
               </template>
@@ -164,13 +164,13 @@
     </el-container>
 
     <!-- 添加或修改API服务调用日志对话框 -->
-    <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable>
+    <el-dialog :title="title" v-model="open" :append-to="$refs['app-container']" draggable>
       <template #header="{ close, titleId, titleClass }">
         <span role="heading" aria-level="2" class="el-dialog__title">
           {{ title }}
         </span>
       </template>
-      <el-form ref="apiLogRef" :model="form" :rules="rules" label-width="80px" @submit.prevent>
+      <el-form ref="apiLogRef" :model="form" :rules="rules" @submit.prevent>
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item :label="td('ds.apiLog.callerUrlInput')" prop="callerUrl">
@@ -243,13 +243,13 @@
     </el-dialog>
 
     <!-- API服务调用日志详情对话框 -->
-    <el-dialog :title="title" v-model="openDetail" width="1000px" :append-to="$refs['app-container']" draggable>
+    <el-dialog :title="title" v-model="openDetail" :append-to="$refs['app-container']" draggable>
       <template #header="{ close, titleId, titleClass }">
         <span role="heading" aria-level="2" class="el-dialog__title">
           {{ title }}
         </span>
       </template>
-      <el-form ref="apiLogRef" :model="form" label-width="110px">
+      <el-form ref="apiLogRef" :model="form">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item :label="td('ds.apiLog.apiServiceName')">
@@ -336,7 +336,7 @@
     </el-dialog>
 
     <!-- 用户导入对话框 -->
-    <el-dialog :title="upload.title" v-model="upload.open" width="800px" :append-to="$refs['app-container']" draggable
+    <el-dialog :title="upload.title" v-model="upload.open" :append-to="$refs['app-container']" draggable
       destroy-on-close>
       <el-upload ref="uploadRef" :limit="1" accept=".xlsx, .xls" :headers="upload.headers"
         :action="upload.url + '?updateSupport=' + upload.updateSupport" :disabled="upload.isUploading"

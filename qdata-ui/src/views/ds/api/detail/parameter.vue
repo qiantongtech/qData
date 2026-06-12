@@ -16,12 +16,12 @@
 -->
 
 <template>
-    <el-form ref="form2" :model="form2" label-width="100px" :label="td('ds.apiDetail.parameter.fieldList') + '：'">
+    <el-form ref="form2" :model="form2" label-width="100px" :label="td('ds.api.apiDetail.parameter.fieldList') + '：'">
         <template v-if="form2.apiServiceType != 3">
             <div class="clearfix header-text">
                 <div class="header-left">
                     <div class="blue-bar"></div>
-                    {{td('ds.apiDetail.parameter.requestParams')}}
+                    {{td('ds.api.apiDetail.parameter.requestParams')}}
                 </div>
             </div>
 
@@ -31,9 +31,9 @@
                         <span>{{ scope.$index + 1 }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="paramName" :label="td('ds.apiDetail.parameter.paramName')" align="center"
+                <el-table-column prop="paramName" :label="td('ds.api.apiDetail.parameter.paramName')" align="center"
                     :show-overflow-tooltip="{ effect: 'light' }" />
-                <el-table-column prop="nullable" :label="td('ds.apiDetail.parameter.nullable')" align="center"
+                <el-table-column prop="nullable" :label="td('ds.api.apiDetail.parameter.nullable')" align="center"
                     :show-overflow-tooltip="{ effect: 'light' }">
                     <template #default="scope">
                         <el-checkbox disabled v-model="scope.row.nullable" true-label="1" false-label="0" />
@@ -44,14 +44,14 @@
                         {{ scope.row.paramComment || '-' }}
                     </template>
                 </el-table-column>
-                <el-table-column prop="paramType" :label="td('ds.apiDetail.parameter.paramType')" align="center">
+                <el-table-column prop="paramType" :label="td('ds.api.apiDetail.parameter.paramType')" align="center">
                     <template #default="scope">
                         <dict-tag :options="ds_api_param_type" :value="scope.row.paramType" />
                     </template>
                 </el-table-column>
                 <el-table-column
                   prop="whereType"
-                  :label="td('ds.apiDetail.parameter.operator')"
+                  :label="td('ds.api.apiDetail.parameter.operator')"
                   align="center"
                   v-if="splReult !== true"
                 >
@@ -59,13 +59,13 @@
                     <dict-tag :options="da_api_param_operator" :value="scope.row.whereType" />
                   </template>
                 </el-table-column>
-                <el-table-column prop="exampleValue" :label="td('ds.apiDetail.parameter.exampleValue')" align="center"
+                <el-table-column prop="exampleValue" :label="td('ds.api.apiDetail.parameter.exampleValue')" align="center"
                     :show-overflow-tooltip="{ effect: 'light' }">
                     <template #default="scope">
                         {{ scope.row.exampleValue || '-' }}
                     </template>
                 </el-table-column>
-                <el-table-column prop="defaultValue" :label="td('ds.apiDetail.parameter.defaultValue')" align="center"
+                <el-table-column prop="defaultValue" :label="td('ds.api.apiDetail.parameter.defaultValue')" align="center"
                     :show-overflow-tooltip="{ effect: 'light' }">
                     <template #default="scope">
                         {{ scope.row.defaultValue || '-' }}
@@ -75,7 +75,7 @@
             <div class="clearfix header-text">
                 <div class="header-left">
                     <div class="blue-bar"></div>
-                    {{td('ds.apiDetail.parameter.returnFields')}}
+                    {{td('ds.api.apiDetail.parameter.returnFields')}}
                 </div>
             </div>
             <el-table :data="form2.resParams" stripe>
@@ -84,7 +84,7 @@
                         <span>{{ scope.$index + 1 }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="fieldName" :label="td('ds.apiDetail.parameter.chineseName')" align="center"
+                <el-table-column prop="fieldName" :label="td('ds.api.apiDetail.parameter.chineseName')" align="center"
                     :show-overflow-tooltip="{ effect: 'light' }" />
                 <el-table-column prop="fieldComment" :label="td('common.texts.description')" align="center"
                     :show-overflow-tooltip="{ effect: 'light' }">
@@ -92,12 +92,12 @@
                         {{ scope.row.fieldComment || '-' }}
                     </template>
                 </el-table-column>
-                <el-table-column prop="dataType" :label="td('ds.apiDetail.parameter.dataType')" align="center" :show-overflow-tooltip="{ effect: 'light' }">
+                <el-table-column prop="dataType" :label="td('ds.api.apiDetail.parameter.dataType')" align="center" :show-overflow-tooltip="{ effect: 'light' }">
                     <template #default="scope">
                         {{ scope.row.dataType || '-' }}
                     </template>
                 </el-table-column>
-                <el-table-column prop="exampleValue" :label="td('ds.apiDetail.parameter.exampleValue')" align="center"
+                <el-table-column prop="exampleValue" :label="td('ds.api.apiDetail.parameter.exampleValue')" align="center"
                     :show-overflow-tooltip="{ effect: 'light' }">
                     <template #default="scope">
                         {{ scope.row.exampleValue || '-' }}
@@ -109,7 +109,7 @@
             <div class="clearfix header-text">
                 <div class="header-left">
                     <div class="blue-bar"></div>
-                    {{td('ds.apiDetail.parameter.requestData')}}
+                    {{td('ds.api.apiDetail.parameter.requestData')}}
                 </div>
             </div>
             <el-form :model="form2.reqParams" :rules="rules" ref="inputForm" label-width="0">
@@ -123,7 +123,7 @@
                                 </template>
                             </el-table-column>
 
-                            <el-table-column :label="td('ds.apiDetail.parameter.paramName')" fixed="left" align="center" prop="name"
+                            <el-table-column :label="td('ds.api.apiDetail.parameter.paramName')" fixed="left" align="center" prop="name"
                                 :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="{ row }">
                                     {{ row?.name || '' }}
@@ -137,7 +137,7 @@
                                 </template>
                             </el-table-column>
 
-                            <el-table-column :label="td('ds.apiDetail.parameter.nullable')" width="100" fixed="left" align="center" prop="requestFlag"
+                            <el-table-column :label="td('ds.api.apiDetail.parameter.nullable')" width="100" fixed="left" align="center" prop="requestFlag"
                                 :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="{ row }">
                                     <el-form-item>
@@ -147,14 +147,14 @@
                                 </template>
                             </el-table-column>
 
-                            <el-table-column :label="td('ds.apiDetail.parameter.columnType')" fixed="left" align="center" prop="columnType"
+                            <el-table-column :label="td('ds.api.apiDetail.parameter.columnType')" fixed="left" align="center" prop="columnType"
                                 :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="{ row }">
                                     {{ row?.columnType || '' }}
                                 </template>
                             </el-table-column>
 
-                            <el-table-column :label="td('ds.apiDetail.parameter.exampleValue')" fixed="left" align="center" prop="exampleValue"
+                            <el-table-column :label="td('ds.api.apiDetail.parameter.exampleValue')" fixed="left" align="center" prop="exampleValue"
                                 :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="{ row }">
                                     <!-- <el-form-item
@@ -167,7 +167,7 @@
                                 </template>
                             </el-table-column>
 
-                            <el-table-column :label="td('ds.apiDetail.parameter.defaultValue')" fixed="left" align="center" prop="defaultValue"
+                            <el-table-column :label="td('ds.api.apiDetail.parameter.defaultValue')" fixed="left" align="center" prop="defaultValue"
                                 :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="{ row }">
                                     <!-- <el-form-item
@@ -186,7 +186,7 @@
             <div class="clearfix header-text">
                 <div class="header-left">
                     <div class="blue-bar"></div>
-                    {{td('ds.apiDetail.parameter.returnParams')}}
+                    {{td('ds.api.apiDetail.parameter.returnParams')}}
                 </div>
             </div>
             <el-form :model="form2.resParams" :rules="rules" ref="inputForm" label-width="0">
@@ -200,7 +200,7 @@
                                 </template>
                             </el-table-column>
 
-                            <el-table-column :label="td('ds.apiDetail.parameter.paramName')" fixed="left" align="center" prop="name"
+                            <el-table-column :label="td('ds.api.apiDetail.parameter.paramName')" fixed="left" align="center" prop="name"
                                 :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="{ row }">
                                     {{ row?.name || '' }}
@@ -214,14 +214,14 @@
                                 </template>
                             </el-table-column>
 
-                            <el-table-column :label="td('ds.apiDetail.parameter.columnType')" fixed="left" align="center" prop="columnType"
+                            <el-table-column :label="td('ds.api.apiDetail.parameter.columnType')" fixed="left" align="center" prop="columnType"
                                 :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="{ row }">
                                     {{ row?.columnType || '' }}
                                 </template>
                             </el-table-column>
 
-                            <el-table-column :label="td('ds.apiDetail.parameter.exampleValue')" fixed="left" align="center" prop="exampleValue"
+                            <el-table-column :label="td('ds.api.apiDetail.parameter.exampleValue')" fixed="left" align="center" prop="exampleValue"
                                 :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="{ row }">
                                     <!-- <el-form-item

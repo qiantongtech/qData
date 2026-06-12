@@ -31,7 +31,7 @@
           </el-col>
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('ds.clientDetail.appSecret') }}</div>
+              <div class="infotop-row-lable">{{ td('ds.client.detail.appSecret') }}</div>
               <div class="infotop-row-value">
                 {{ clientDetail.secret || '-' }}
               </div>
@@ -68,7 +68,7 @@
 
     <div class="pagecont-bottom">
       <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
-        <el-tab-pane :label="td('ds.clientDetail.apiAuth')" name="1">
+        <el-tab-pane :label="td('ds.client.detail.apiAuth')" name="1">
           <api :clientDetail="clientDetail"></api>
         </el-tab-pane>
         <el-tab-pane :label="td('ds.api.client.detailInfo')" name="2">

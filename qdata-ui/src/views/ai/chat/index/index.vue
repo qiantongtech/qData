@@ -37,7 +37,7 @@
         v-model:factTableName="factTableName"
         v-model:factTableComment="factTableComment"
         v-model:dimensionTableNames="dimensionTableNames"
-        :title="activeConversation?.title || '新对话'"
+        :title="activeConversation?.title || td('ai.chat.newChat')"
         :disabled="!!activeConversationId"
         :initialShowConfig="!activeConversationId"
         :joinConditionMatchFlag="joinConditionMatchFlag"
@@ -54,17 +54,17 @@
               src="@/assets/ai/组 23248.png"
               class="btn"
               @click="handlerMessageClear"
-              alt="清空会话"
+              :alt="td('ai.chat.clearSession')"
             />
             <img
               src="@/assets/ai/组 -1.png"
               class="btn"
               @click="handleGoBottomMessage"
-              alt="下"
+              :alt="td('ai.chat.navDown')"
             />
             <img
               src="@/assets/ai/组 23249.png"
-              alt="上"
+              :alt="td('ai.chat.navUp')"
               class="btn"
               @click="handleGoTopMessage"
             />
@@ -125,13 +125,13 @@
             v-model="prompt"
             @keydown.enter.prevent="handleSendByKeydown"
             @keydown.shift.enter="addNewLine"
-            placeholder="问问 qData 智能问数...（Shift+Enter 换行，按下 Enter 发送）"
+            :placeholder="td('ai.chat.inputPlaceholder')"
           />
           <div class="prompt-btns">
             <div class="footer-left">
               <el-select
                 v-model="selectedModelId"
-                placeholder="选择模型"
+                :placeholder="td('ai.chat.selectModel')"
                 size="default"
                 class="model-select"
                 popper-class="ai-model-select-popper"
@@ -158,7 +158,7 @@
               </el-select>
               <el-select
                 v-model="chatType"
-                placeholder="回答方式"
+                :placeholder="td('ai.chat.answerType')"
                 size="default"
                 class="chat-type-select"
                 popper-class="ai-chat-type-select-popper"
@@ -179,7 +179,7 @@
                   v-for="item in CHAT_TYPES"
                   :key="item.value"
                   :value="item.value"
-                  :label="item.label"
+                  :label="td(item.labelKey, item.label)"
                   :disabled="item.disabled"
                 >
                   <template #default>
@@ -187,7 +187,7 @@
                       <el-icon class="chat-type-option-icon">
                         <component :is="item.icon" />
                       </el-icon>
-                      <span>{{ item.label }}</span>
+                      <span>{{ td(item.labelKey, item.label) }}</span>
                     </div>
                   </template>
                 </el-option>
@@ -200,7 +200,7 @@
                 @click="handleSendByButton"
                 v-if="conversationInProgress == false"
               >
-                发送
+                {{ td('ai.chat.send') }}
               </el-button>
               <el-button
                 type="danger"
@@ -208,13 +208,13 @@
                 @click="stopStream()"
                 v-if="conversationInProgress == true"
               >
-                停止
+                {{ td('ai.chat.stop') }}
               </el-button>
             </div>
           </div>
         </form>
         <div class="ai-disclaimer">
-          本功能由 qData 智能问数生成，其回答未必正确无误。
+          {{ td('ai.chat.disclaimer') }}
         </div>
       </el-footer>
     </el-container>
@@ -245,6 +245,7 @@ import {
 import DatasourceList from "@/components/Datasource/List.vue";
 import { getTablesByDataSourceId } from "@/api/dpp/task/index.js";
 import { Plus } from "@element-plus/icons-vue";
+import useDefaultLang from "@/composables/useDefaultLang";
 
 /** qData 智能问数聊天对话 列表 */
 defineOptions({ name: "AiChat" });
@@ -252,6 +253,7 @@ defineOptions({ name: "AiChat" });
 const route = useRoute(); // 路由
 const { proxy } = getCurrentInstance();
 const message = proxy.$modal; // 消息弹窗
+const { td } = useDefaultLang();
 
 // 聊天对话
 const conversationListRef = ref();
@@ -423,7 +425,7 @@ const getConversation = async (id) => {
 const handleConversationClick = async (conversation) => {
   // 对话进行中，不允许切换
   if (conversationInProgress.value) {
-    message.alert("对话中，不允许切换!");
+    message.alert(td('ai.chat.cannotSwitchDuringConversation'));
     return false;
   }
 
@@ -480,7 +482,7 @@ const handlerConversationDelete = async (delConversation) => {
 const handleConversationClear = async () => {
   // 对话进行中，不允许切换
   if (conversationInProgress.value) {
-    message.alert("对话中，不允许切换!");
+    message.alert(td('ai.chat.cannotSwitchDuringConversation'));
     return false;
   }
   activeConversationId.value = null;
@@ -616,7 +618,7 @@ const messageList = computed(() => {
 /** 处理删除 message 消息 */
 const handleMessageDelete = () => {
   if (conversationInProgress.value) {
-    message.alert("回答中，不能删除!");
+    message.alert(td('ai.chat.cannotDeleteDuringAnswer'));
     return;
   }
   // 刷新 message 列表
@@ -630,7 +632,7 @@ const handlerMessageClear = async () => {
   }
   try {
     // 确认提示
-    await message.confirm("确认清空对话消息？");
+    await message.confirm(td('ai.chat.confirmClearMessages'));
     // 清空对话
     await ChatMessageApi.deleteByConversationId(activeConversationId.value);
     // 刷新 message 列表
@@ -685,7 +687,7 @@ const doSendMessage = async (content, mId, cType) => {
 
   // 校验
   if (rawContent.length < 1) {
-    message.msgError("发送失败，原因：内容为空！");
+    message.msgError(td('ai.chat.sendFailedEmpty'));
     return;
   }
 
@@ -695,14 +697,14 @@ const doSendMessage = async (content, mId, cType) => {
     !factTableName.value ||
     !dimensionTableNames.value?.length
   ) {
-    message.msgError("请先配置当前数据范围！");
+    message.msgError(td('ai.chat.configureDataScopeFirst'));
     return;
   }
 
   // 校验回答方式
   const currentChatType = cType || chatType.value;
   if (!currentChatType) {
-    message.msgError("请先选择回答方式（智能问答或智能图表）！");
+    message.msgError(td('ai.chat.selectAnswerType'));
     return;
   }
 
@@ -797,7 +799,7 @@ const doSendMessageStream = async (userMessage) => {
           // 不再弹窗报错，改为在消息列表中展示错误提示
           const lastMessage =
             activeMessageList.value[activeMessageList.value.length - 1];
-          lastMessage.content = msg || "对话异常";
+          lastMessage.content = msg || td('ai.chat.dialogError');
           lastMessage.isError = true;
           message.msgError(msg);
           // await getMessageList();

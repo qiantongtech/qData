@@ -11,6 +11,7 @@ import dpp from './dpp'
 import att from './att'
 import ds from './ds'
 import dg from './dg'
+import ai from './ai'
 
 export default {
   common,
@@ -24,5 +25,6 @@ export default {
   dpp,
   att,
   ds,
+  ai,
   dg
 }

@@ -4,5 +4,10 @@ export default {
     name: 'Theme Name',
     icon: 'Icon',
     sortOrder: 'Sort Order'
+  },
+  texts: {
+    name: 'Theme Name',
+    icon: 'Icon',
+    sortOrder: 'Sort Order'
   }
 }

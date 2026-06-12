@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright © 2025 Qiantong Technology Co., Ltd.
  * qData Data Middle Platform (Open Source Edition)
  *  *
@@ -29,7 +29,7 @@ export default [
                 path: '',
                 component: () => import('@/views/dpp/asset/detail/index.vue'),
                 name: 'daDaAssetDetail',
-                meta: { title: '资产地图详情', activeMenu: '/da/asset' }
+                meta: { title: '资产地图详情', activeMenu: '/da/asset', lang: 'public.assetMapDetail' }
             }
         ]
     },

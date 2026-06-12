@@ -22,9 +22,9 @@
     <div class="center-container">
       <div class="title">
         <img src="@/assets/ai/gpt-new.svg" width="44px" />
-        <span>Hello，我是 qData 智能问数，很高兴见到你!</span>
+        <span>{{ td('ai.chat.welcomeGreeting') }}</span>
       </div>
-      <div class="subheading">化繁为简，让数据分析更高效。</div>
+      <div class="subheading">{{ td('ai.chat.welcomeSubheading') }}</div>
       <el-footer class="footer-container">
         <form class="prompt-from">
           <el-input
@@ -34,13 +34,13 @@
             v-model="value"
             @keydown.enter.native="handleSendByKeydown"
             @keydown.shift.enter.native="addNewLine"
-            placeholder="问问 qData 智能问数...（Shift+Enter 换行，按下 Enter 发送）"
+            :placeholder="td('ai.chat.inputPlaceholder')"
           />
           <div class="prompt-btns">
             <div class="footer-left">
               <el-select
                 v-model="selectedModelId"
-                placeholder="选择模型"
+                :placeholder="td('ai.chat.selectModel')"
                 size="default"
                 class="model-select"
                 popper-class="ai-model-select-popper"
@@ -67,7 +67,7 @@
               </el-select>
               <el-select
                 v-model="chatType"
-                placeholder="回答方式"
+                :placeholder="td('ai.chat.answerType')"
                 size="default"
                 class="chat-type-select"
                 popper-class="ai-chat-type-select-popper"
@@ -88,7 +88,7 @@
                   v-for="item in CHAT_TYPES"
                   :key="item.value"
                   :value="item.value"
-                  :label="item.label"
+                  :label="td(item.labelKey, item.label)"
                   :disabled="item.disabled"
                 >
                   <template #default>
@@ -96,7 +96,7 @@
                       <el-icon class="chat-type-option-icon">
                         <component :is="item.icon" />
                       </el-icon>
-                      <span>{{ item.label }}</span>
+                      <span>{{ td(item.labelKey, item.label) }}</span>
                     </div>
                   </template>
                 </el-option>
@@ -114,7 +114,7 @@
       </el-footer>
     </div>
     <div class="ai-disclaimer">
-      本功能由 qData 智能问数生成，其回答未必正确无误。
+      {{ td('ai.chat.disclaimer') }}
     </div>
   </div>
 </template>
@@ -125,6 +125,9 @@ import defaultModelIcon from "@/assets/ai/gpt-new.svg";
 import deepseekIcon from "@/assets/ai/deepseek.svg";
 import tongyiIcon from "@/assets/ai/TongYi.svg";
 import { Plus } from "@element-plus/icons-vue";
+import useDefaultLang from "@/composables/useDefaultLang";
+
+const { td } = useDefaultLang();
 
 const emits = defineEmits([
   "onPrompt",
@@ -204,7 +207,7 @@ onMounted(() => {
 /** 选中 prompt 点击 */
 const handlerPromptClick = async () => {
   if (!props.datasourceId || !props.factTableName) {
-    message.msgWarning("请先配置当前数据范围！");
+    message.msgWarning(td('ai.chat.configureDataScopeFirst'));
     return;
   }
   emits("onPrompt", value.value, selectedModelId.value, chatType.value);
@@ -212,7 +215,7 @@ const handlerPromptClick = async () => {
 
 const handleSendByKeydown = async (event) => {
   if (!props.datasourceId || !props.factTableName) {
-    message.msgWarning("请先配置当前数据范围！");
+    message.msgWarning(td('ai.chat.configureDataScopeFirst'));
     return;
   }
   emits("enter", event, selectedModelId.value, chatType.value);

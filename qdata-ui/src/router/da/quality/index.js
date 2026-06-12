@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright © 2025 Qiantong Technology Co., Ltd.
  * qData Data Middle Platform (Open Source Edition)
  *  *
@@ -29,7 +29,7 @@ export default [
                 path: '',
                 component: () => import('@/views/da/quality/qualityTask/add/add.vue'),
                 name: 'qualityTaskAdd',
-                meta: { title: '数据质量新增', activeMenu: '/da/quality/qualityTask' }
+                meta: { title: '数据质量新增', activeMenu: '/da/quality/qualityTask', lang: 'public.dataQualityAdd' }
             }
         ]
     },
@@ -42,7 +42,7 @@ export default [
                 path: '',
                 component: () => import('@/views/da/quality/qualityTask/add/add.vue'),
                 name: 'qualityTaskEdit',
-                meta: { title: '数据质量配置', activeMenu: '/da/quality/qualityTask' }
+                meta: { title: '数据质量配置', activeMenu: '/da/quality/qualityTask', lang: 'public.dataQualityConfig' }
             },
         ]
     },
@@ -55,7 +55,7 @@ export default [
                 path: '',
                 component: () => import('@/views/da/quality/qualityTask/add/add.vue'),
                 name: 'qualityTaskDetail',
-                meta: { title: '数据质量详情', activeMenu: '/da/quality/qualityTask' }
+                meta: { title: '数据质量详情', activeMenu: '/da/quality/qualityTask', lang: 'public.dataQualityDetail' }
             }
         ]
     },
@@ -70,7 +70,7 @@ export default [
                 path: '',
                 component: () => import('@/views/da/quality/qualityTaskLog/detail/index.vue'),
                 name: 'qualityTaskLogDetail',
-                meta: { title: '质量任务日志详情', activeMenu: '/da/quality/qualityTaskLog' }
+                meta: { title: '质量任务日志详情', activeMenu: '/da/quality/qualityTaskLog', lang: 'public.qualityTaskLogDetail' }
             }
         ]
     }

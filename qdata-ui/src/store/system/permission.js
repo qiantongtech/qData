@@ -57,6 +57,7 @@ const usePermissionStore = defineStore('permission', {
                     const sidebarRoutes = filterAsyncRouter(sdata);
                     const rewriteRoutes = filterAsyncRouter(rdata, false, true);
                     const defaultRoutes = filterAsyncRouter(defaultData);
+                    console.log('As------>',sidebarRoutes,rewriteRoutes,defaultRoutes);
                     const asyncRoutes = filterDynamicRoutes(dynamicRoutes);
                     asyncRoutes.forEach((route) => {
                         router.addRoute(route);
@@ -76,7 +77,6 @@ const usePermissionStore = defineStore('permission', {
             const sidebarRoutes = filterAsyncRouter(sdata);
             const rewriteRoutes = filterAsyncRouter(rdata, false, true);
             const defaultRoutes = filterAsyncRouter(defaultData);
-
             this.setRoutes(rewriteRoutes);
             this.setSidebarRouters(constantRoutes.concat(sidebarRoutes));
             this.setDefaultRoutes(sidebarRoutes);
@@ -85,9 +85,36 @@ const usePermissionStore = defineStore('permission', {
     }
 });
 
+function setupRouteLang(route,lastRouter){
+    if(!route.meta){
+        route.meta = {};
+    }
+    if(lastRouter?.meta?.lang){
+        route.meta.lang = lastRouter.meta.lang + route.name;
+    }else{
+        if(route.name){
+            const name = route.name.charAt(0).toLowerCase() + route.name.slice(1);
+            route.meta.lang = 'dynamic.'+name;
+        }
+    }
+}
+
 // 遍历后台传来的路由字符串，转换为组件对象
 function filterAsyncRouter(asyncRouterMap, lastRouter = false, type = false) {
     return asyncRouterMap.filter((route) => {
+        if (type && route.children) {
+            const setLang = function(route, lastRouter) {
+                setupRouteLang(route, lastRouter);
+                if (route.children && route.children.length > 0) {
+                    route.children.forEach(child => {
+                        setLang(child, route);
+                    });
+                }
+            }
+            setLang(route, lastRouter);
+            route.children = filterChildren(route.children,lastRouter);
+        }
+
         if (route.component) {
             // Layout ParentView 组件特殊处理
             if (route.component === 'Layout') {
@@ -101,17 +128,8 @@ function filterAsyncRouter(asyncRouterMap, lastRouter = false, type = false) {
             }
         }
 
-        if(!route.meta){
-            route.meta = {};
-        }
-        
-        if(lastRouter?.meta?.lang){
-            route.meta.lang = lastRouter.meta.lang + route.name;
-        }else{
-            if(route.name){
-                const name = route.name.charAt(0).toLowerCase() + route.name.slice(1);
-                route.meta.lang = 'dynamic.'+name;
-            }
+        if(!type){
+            setupRouteLang(route,lastRouter);
         }
 
         if (route.children != null && route.children && route.children.length) {
@@ -119,10 +137,6 @@ function filterAsyncRouter(asyncRouterMap, lastRouter = false, type = false) {
         } else {
             delete route['children'];
             delete route['redirect'];
-        }
-
-        if (type && route.children) {
-            route.children = filterChildren(route.children);
         }
 
         return true;

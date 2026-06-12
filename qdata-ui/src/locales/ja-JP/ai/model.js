@@ -1,0 +1,26 @@
+// AI モデル管理モジュール言語パック
+export default {
+  modelName: 'モデル名',
+  modelNamePlaceholder: 'モデル名を入力してください',
+  platform: 'プラットフォーム',
+  selectPlatform: 'プラットフォームを選択してください',
+  apiUrl: 'API URL',
+  apiUrlPlaceholder: 'API URLを入力してください',
+  apiKey: 'APIキー',
+  apiKeyPlaceholder: 'APIキーを入力してください',
+  sortOrder: '並び順',
+  maxLengthChars: '500文字',
+  addModel: 'モデルを追加',
+  editModel: 'モデルを編集',
+  modelDetail: 'モデル詳細',
+  modelNameRequired: 'モデル名は必須です',
+  platformRequired: 'プラットフォームは必須です',
+  apiAtLeastOne: 'API URLとAPIキーの少なくとも1つを入力してください',
+  modelImport: 'モデルインポート',
+  importResult: 'インポート結果',
+  clickUpload: 'クリックしてアップロード',
+  updateExistingModels: '既存のモデルデータを更新する',
+  confirmDeleteModel: 'モデルID「{ids}」のデータを削除してもよろしいですか？',
+  confirmStatusChange: '「{name}」モデルを「{status}」にしてもよろしいですか？',
+  statusSuccess: '{status}に成功しました'
+}

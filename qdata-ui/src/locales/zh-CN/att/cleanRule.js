@@ -5,5 +5,10 @@ export default {
     type: '规则类型',
     useCase: '使用场景',
     example: '示例'
+  },
+  texts: {
+    name: '规则名称',
+    type: '规则类型',
+    level: '规则级别'
   }
 }

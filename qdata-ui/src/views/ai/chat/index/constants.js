@@ -20,12 +20,14 @@ import { Histogram, Opportunity } from "@element-plus/icons-vue";
 export const CHAT_TYPES = [
   {
     value: "chart",
+    labelKey: 'ai.chat.smartChart',
     label: "智能图表",
     icon: Histogram,
     disabled: false,
   },
   {
     value: "smart",
+    labelKey: 'ai.chat.smartQA',
     label: "智能问答",
     icon: Opportunity,
     disabled: true,

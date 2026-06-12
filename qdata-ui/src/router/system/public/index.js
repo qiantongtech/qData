@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright © 2025 Qiantong Technology Co., Ltd.
  * qData Data Middle Platform (Open Source Edition)
  *  *
@@ -78,7 +78,7 @@ export default [
                 path: '',
                 component: () => import('@/views/sys/developing/index.vue'),
                 name: 'Developing',
-                meta: { title: '功能开发中' }
+                meta: { title: '功能开发中', lang: 'public.featureDeveloping' }
             }
         ]
     },
@@ -91,7 +91,7 @@ export default [
                 path: '',
                 component: () => import('@/views/sys/system/message/index.vue'),
                 name: 'Message',
-                meta: { title: '我的消息', icon: 'message' },
+                meta: { title: '我的消息', icon: 'message', lang: 'public.myMessages' },
                 hidden: true
             }
         ]
@@ -106,7 +106,7 @@ export default [
                 path: 'profile',
                 component: () => import('@/views/sys/system/user/profile/index.vue'),
                 name: 'Profile',
-                meta: { title: '个人中心', icon: 'user' }
+                meta: { title: '个人中心', icon: 'user', lang: 'public.personalCenter' }
             }
         ]
     },
@@ -120,7 +120,7 @@ export default [
                 path: 'user',
                 component: () => import('@/views/sys/system/user/index.vue'),
                 name: 'User',
-                meta: { title: '用户管理', icon: 'user' }
+                meta: { title: '用户管理', icon: 'user', lang: 'public.userManagement' }
             }
         ]
     },
@@ -134,7 +134,7 @@ export default [
                 path: '',
                 component: () => import('@/views/sys/system/notice/detail.vue'),
                 name: 'noticeDetail',
-                meta: { title: '公告详情', activeMenu: '/system/notice' }
+                meta: { title: '公告详情', activeMenu: '/system/notice', lang: 'public.noticeDetail' }
             }
         ]
     },

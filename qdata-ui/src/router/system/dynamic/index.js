@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright © 2025 Qiantong Technology Co., Ltd.
  * qData Data Middle Platform (Open Source Edition)
  *  *
@@ -30,7 +30,7 @@ export default [
         path: 'role/:userId(\\d+)',
         component: () => import('@/views/sys/system/user/authRole.vue'),
         name: 'AuthRole',
-        meta: { title: '分配角色', activeMenu: '/system/user' }
+        meta: { title: '分配角色', activeMenu: '/system/user', lang: 'public.assignRole' }
       }
     ]
   },
@@ -44,7 +44,7 @@ export default [
         path: 'user/:roleId(\\d+)',
         component: () => import('@/views/sys/system/role/authUser.vue'),
         name: 'AuthUser',
-        meta: { title: '分配用户', activeMenu: '/system/role' }
+        meta: { title: '分配用户', activeMenu: '/system/role', lang: 'public.assignUser' }
       }
     ]
   },
@@ -58,7 +58,7 @@ export default [
         path: 'index/:dictId(\\d+)',
         component: () => import('@/views/sys/system/dict/data.vue'),
         name: 'Data',
-        meta: { title: '字典数据', activeMenu: '/system/dict' }
+        meta: { title: '字典数据', activeMenu: '/system/dict', lang: 'public.dictionaryData' }
       }
     ]
   },
@@ -72,7 +72,7 @@ export default [
         path: 'index/:jobId(\\d+)',
         component: () => import('@/views/sys/monitor/job/log.vue'),
         name: 'JobLog',
-        meta: { title: '调度日志', activeMenu: '/monitor/job' }
+        meta: { title: '调度日志', activeMenu: '/monitor/job', lang: 'public.scheduleLog' }
       }
     ]
   },
@@ -86,7 +86,7 @@ export default [
         path: 'index/:tableId(\\d+)',
         component: () => import('@/views/sys/tool/gen/editTable.vue'),
         name: 'GenEdit',
-        meta: { title: '修改生成配置', activeMenu: '/tool/gen' }
+        meta: { title: '修改生成配置', activeMenu: '/tool/gen', lang: 'public.editGenerationConfig' }
       }
     ]
   }

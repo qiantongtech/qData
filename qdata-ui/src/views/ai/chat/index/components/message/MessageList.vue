@@ -33,10 +33,10 @@
         </div>
         <div class="message">
           <div>
-            <el-text class="time">{{ t('common.message.systemPrompt') }}</el-text>
+            <el-text class="time">{{ td('common.message.systemPrompt') }}</el-text>
           </div>
           <div class="left-text-container">
-            <div class="left-text">关联关系无法自动识别</div>
+            <div class="left-text">{{ td('ai.chat.relationshipNotIdentified') }}</div>
           </div>
         </div>
       </div>
@@ -71,7 +71,7 @@
               />
               <template v-else>
                 <div v-if="!getDisplayContent(item)" class="left-text-loading">
-                  问题分析中...
+                  {{ td('ai.chat.analyzing') }}
                 </div>
                 <MarkdownView
                   v-else
@@ -156,7 +156,7 @@
       content-position="center"
       v-show="suggestedList.length > 0"
       border-style="dotted"
-      >试着问问</el-divider
+      >{{ td('ai.chat.suggestedAsk') }}</el-divider
     >
     <div class="suggested-list" v-show="suggestedList.length > 0">
       <el-check-tag
@@ -173,7 +173,6 @@
   </div>
 </template>
 <script setup>
-import { useI18n } from 'vue-i18n'
 import MarkdownView from "@/components/MarkdownView/index.vue";
 import AssistantReportCard from "./AssistantReportCard.vue";
 import { ChatMessageApi } from "@/api/ai/chat/message";
@@ -181,8 +180,9 @@ import useUserStore from "@/store/system/user";
 import userAvatarDefaultImg from "@/assets/images/defaultAvatar.png";
 import roleAvatarDefaultImg from "@/assets/ai/gpt-new.svg";
 import { useClipboard } from "@vueuse/core";
+import useDefaultLang from "@/composables/useDefaultLang";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const message = proxy.$modal; // 消息弹窗
 const userStore = useUserStore();
@@ -337,8 +337,8 @@ function toReportCard(item) {
   // 如果是错误消息，直接返回错误摘要并停止加载
   if (item.isError) {
     return {
-      header: "智能洞察",
-      summary: getDisplayContent(item) || "对话异常",
+      header: td('ai.chat.insight'),
+      summary: getDisplayContent(item) || td('ai.chat.dialogError'),
       tabs: [],
       isLoading: false,
       code: 500,
@@ -352,12 +352,12 @@ function toReportCard(item) {
     const tabs = [];
     // 如果是智能图表，预设页签
     if (rt === 2) {
-      tabs.push({ key: "viz", label: "可视化" });
-      tabs.push({ key: "detail", label: "明细数据" });
+      tabs.push({ key: "viz", label: td('ai.chat.visualization') });
+      tabs.push({ key: "detail", label: td('ai.chat.detailData') });
     }
     return {
-      header: "智能洞察",
-      summary: rt === 2 ? "正在分析数据并生成报表，请稍候..." : "正在思考中...",
+      header: td('ai.chat.insight'),
+      summary: rt === 2 ? td('ai.chat.analyzingData') : td('ai.chat.thinking'),
       isLoading: true,
       tabs: tabs,
     };
@@ -370,15 +370,15 @@ function toReportCard(item) {
     raw = { msg: content };
   }
 
-  const header = "智能洞察";
-  const summary = raw?.msg || (toNumber(raw?.code) === 500 ? "对话异常" : "");
+  const header = td('ai.chat.insight');
+  const summary = raw?.msg || (toNumber(raw?.code) === 500 ? td('ai.chat.dialogError') : "");
   console.log("🚀 ~ toReportCard ~ raw:", raw);
 
   // 如果返回 code 为 500，则停止加载并显示错误信息
   if (toNumber(raw?.code) === 500) {
     return {
       header,
-      summary: summary || "对话异常",
+      summary: summary || td('ai.chat.dialogError'),
       tabs: [],
       isLoading: false,
       code: 500,
@@ -401,8 +401,8 @@ function toReportCard(item) {
   if (rt === 2 || hasStructuralData) {
     // 如果是图表且还没有结构化数据，显式标记加载中
     if (rt === 2 && !hasStructuralData && isNewMessage) {
-      tabs.push({ key: "viz", label: "可视化" });
-      tabs.push({ key: "detail", label: "明细数据" });
+      tabs.push({ key: "viz", label: td('ai.chat.visualization') });
+      tabs.push({ key: "detail", label: td('ai.chat.detailData') });
       return {
         header,
         summary,
@@ -476,20 +476,20 @@ function toReportCard(item) {
       if (yAxisDataArr.length > 0) {
         yAxisDataArr.forEach((data, index) => {
           series.push({
-            name: `数据${index + 1}`,
+            name: td('ai.chat.dataLabel', { n: index + 1 }),
             data: data,
           });
         });
       } else {
         series.push({
-          name: "数据",
+          name: td('ai.chat.data'),
           data: yAxisData,
         });
       }
 
       tabs.push({
         key: "viz",
-        label: "可视化",
+        label: td('ai.chat.visualization'),
         chart: hasChartData
           ? {
               type: chartType,
@@ -504,7 +504,7 @@ function toReportCard(item) {
     if (rt === 2 || rows.length > 0) {
       tabs.push({
         key: "detail",
-        label: "明细数据",
+        label: td('ai.chat.detailData'),
         table: {
           rows: rows,
           columns: columns,
@@ -535,7 +535,7 @@ function toReportCard(item) {
 const copyContent = (index) => {
   if (isStringRobust(index)) {
     copy(index).then(() => {
-      message.msgSuccess("复制成功！");
+      message.msgSuccess(td('ai.chat.copySuccess'));
     });
     return;
   }
@@ -545,7 +545,7 @@ const copyContent = (index) => {
     const contentToCopy = getDisplayContent(item);
     if (contentToCopy) {
       copy(contentToCopy).then(() => {
-        message.msgSuccess("复制成功！");
+        message.msgSuccess(td('ai.chat.copySuccess'));
       });
     }
     return;
@@ -568,10 +568,10 @@ const copyContent = (index) => {
 /** 删除 */
 const onDelete = async (id) => {
   // 确认
-  proxy.$modal.confirm("是否确认删除？").then(async () => {
+  proxy.$modal.confirm(td('ai.chat.confirmDeleteMessage')).then(async () => {
     // 删除 message
     await ChatMessageApi.deleteChatMessage(id);
-    message.msgSuccess("删除成功！");
+    message.msgSuccess(td('common.message.deleteSuccess'));
     // 回调
     emits("onDeleteSuccess");
   });

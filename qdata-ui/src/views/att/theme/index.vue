@@ -49,10 +49,10 @@
                 <el-form-item>
                     <el-button plain type="primary" v-hasPermi="['att:theme:query']" @click="handleQuery"
                         @mousedown="(e) => e.preventDefault()">
-                        <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                        <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
                     </el-button>
                     <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-                        <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                        <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
                     </el-button>
                 </el-form-item>
             </el-form>
@@ -105,7 +105,7 @@
                         {{ scope.row.description || '-' }}
                     </template>
                 </el-table-column>
-                <el-table-column :show-overflow-tooltip="{ effect: 'light' }" v-if="getColumnVisibility(10)" :label="td('att.theme.table.sortOrder')"
+                <el-table-column :show-overflow-tooltip="{ effect: 'light' }" v-if="getColumnVisibility(10)" :label="td('common.texts.sortOrder')"
                     align="left" prop="sortOrder" width="50">
                     <template #default="scope">
                         {{ scope.row.sortOrder || '-' }}
@@ -371,15 +371,15 @@ const { proxy } = getCurrentInstance();
 const attThemeList = ref([]);
 // 列显隐信息
 const columns = ref([
-    { key: 0, label: '编号', visible: true },
-    { key: 1, label: '主题名称', visible: true },
-    { key: 2, label: '图标', visible: true },
-    { key: 3, label: '描述', visible: true },
-    { key: 10, label: '排序', visible: true },
-    { key: 7, label: '创建人', visible: true },
-    { key: 6, label: '创建时间', visible: true },
-    { key: 4, label: '状态', visible: true },
-    { key: 5, label: '备注', visible: true }
+    { key: 0, label: td('common.texts.number'), visible: true },
+    { key: 1, label: td('att.theme.texts.name'), visible: true },
+    { key: 2, label: td('att.theme.texts.icon'), visible: true },
+    { key: 3, label: td('common.texts.description'), visible: true },
+    { key: 10, label: td('att.theme.texts.sortOrder'), visible: true },
+    { key: 7, label: td('common.texts.createdBy'), visible: true },
+    { key: 6, label: td('common.texts.createdTime'), visible: true },
+    { key: 4, label: td('common.texts.status'), visible: true },
+    { key: 5, label: td('common.texts.remark'), visible: true }
 ]);
 
 const getColumnVisibility = (key) => {

@@ -55,7 +55,7 @@
       >
         <svg-icon v-if="defaultExpandAll" icon-class="toggle" />
         <svg-icon v-else icon-class="expand" />
-        <span>{{ defaultExpandAll ? td('common.button.collapse') : td('common.button.expand') }}</span>
+        <span>{{ defaultExpandAll ? td('common.button.fold') : td('common.button.expand') }}</span>
       </el-button>
     </template>
     <qt-table v-bind="tableStore" :key="tableKey" ref="tableRef">
@@ -97,11 +97,11 @@
     </qt-table>
   </qt-wrap>
 
-  <!-- <CatEditDialog
+  <CatEditDialog
     ref="catEditDialogRef"
     @cancel="onDialogCancel"
     @submit="onDialogSubmit"
-  /> -->
+  />
 </template>
 
 <script setup>
@@ -184,7 +184,7 @@ const tableStore = reactive({
     },
     { label: computed(()=>td('common.texts.status')), prop: "validFlag", slot: "validFlag", align: "center" },
     {
-      label: "排序",
+      label: computed(()=>td('common.texts.sortOrder')),
       prop: "sortOrder",
       sortable: true,
       sortableKey: "sortOrder",
@@ -322,7 +322,7 @@ async function handleUpdate(row) {
   buildTreeOptions(filtered);
   props.getFunc(row.id).then((res) => {
     catEditDialogRef.value.open({
-      title: `修改${props.titleBase}`,
+      title: td('common.message.edit') + props.titleBase,
       nameLabel: props.nameLabel,
       treeOptions: treeOptions.value,
       form: res.data,
@@ -366,7 +366,7 @@ function onDialogCancel() {}
 function handleDelete(row) {
   const id = row.id;
   proxy.$modal
-    .confirm("是否确认删除" + props.titleBase + '编号为"' + id + '"的数据项？')
+    .confirm(td('att.common.message.confirmDeleteCat').replace('{titleBase}', props.titleBase).replace('{id}', id))
     .then(function () {
       return props.delFunc(id);
     })
@@ -393,7 +393,7 @@ function handleDeleteSelected() {
           canDeleteCount = 0,
         } = res?.data || {};
         return ElMessageBox.confirm(
-          `可删除${canDeleteCount}个，不可删除${cannotDeleteCount}个，是否删除可删部分`,
+          td('att.common.message.deleteConfirmCount').replace('{canDeleteCount}', canDeleteCount).replace('{cannotDeleteCount}', cannotDeleteCount),
           td('common.message.systemPrompt'),
           {
             confirmButtonText: td('common.button.confirm'),
@@ -402,7 +402,7 @@ function handleDeleteSelected() {
           }
         ).then(() => {
           if (canDeleteCount === 0) {
-            ElMessage.success("执行成功");
+            ElMessage.success(td('common.message.msgOpSuccess'));
             return;
           } else {
             return props.delFunc(canDeleteIds).then(() => {
@@ -415,7 +415,7 @@ function handleDeleteSelected() {
       .finally(() => {});
   } else {
     ElMessageBox.confirm(
-      `可删除${selection.rows.length}个，不可删除0个，是否删除可删部分`,
+      td('att.common.message.deleteConfirmCount').replace('{canDeleteCount}', selection.rows.length).replace('{cannotDeleteCount}', 0),
       td('common.message.systemPrompt'),
       { confirmButtonText: td('common.button.confirm'), cancelButtonText: td('common.button.cancel'), type: "warning" }
     )

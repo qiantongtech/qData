@@ -33,7 +33,7 @@
           @click="handleAdd"
           v-hasPermi="['ai:model:add']"
         >
-          {{ t('common.button.add') }}
+          {{ td('common.button.add') }}
         </el-button>
         <el-button
           type="danger"
@@ -43,7 +43,7 @@
           @click="handleDelete"
           v-hasPermi="['ai:model:remove']"
         >
-          {{ t('common.button.delete') }}
+          {{ td('common.button.delete') }}
         </el-button>
       </template>
       <qt-table v-bind="tableStore" ref="tableRef">
@@ -68,7 +68,7 @@
             icon="Edit"
             @click="handleUpdate(row)"
             v-hasPermi="['ai:model:edit']"
-            >{{ t('common.button.update') }}</el-button
+            >{{ td('common.button.update') }}</el-button
           >
           <el-button
             link
@@ -76,7 +76,7 @@
             icon="Delete"
             @click="handleDelete(row)"
             v-hasPermi="['ai:model:remove']"
-            >{{ t('common.button.delete') }}</el-button
+            >{{ td('common.button.delete') }}</el-button
           >
           <el-button
             link
@@ -84,7 +84,7 @@
             icon="view"
             @click="handleDetail(row)"
             v-hasPermi="['ai:model:edit']"
-            >{{ t('common.button.details') }}</el-button
+            >{{ td('common.button.details') }}</el-button
           >
         </template>
       </qt-table>
@@ -105,12 +105,12 @@
         label-width="80px"
         @submit.prevent
       >
-        <el-form-item label="模型名称" prop="name">
-          <el-input v-model="form.name" placeholder="请输入模型名称" />
+        <el-form-item :label="td('ai.model.modelName')" prop="name">
+          <el-input v-model="form.name" :placeholder="td('ai.model.modelNamePlaceholder')" />
         </el-form-item>
 
-        <el-form-item label="平台" prop="platform">
-          <el-select v-model="form.platform" placeholder="请选择平台">
+        <el-form-item :label="td('ai.model.platform')" prop="platform">
+          <el-select v-model="form.platform" :placeholder="td('ai.model.selectPlatform')">
             <el-option
               v-for="dict in ai_model_platform"
               :key="dict.value"
@@ -119,21 +119,21 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="API地址" prop="apiUrl">
-          <el-input v-model="form.apiUrl" placeholder="请输入API地址" />
+        <el-form-item :label="td('ai.model.apiUrl')" prop="apiUrl">
+          <el-input v-model="form.apiUrl" :placeholder="td('ai.model.apiUrlPlaceholder')" />
         </el-form-item>
-        <el-form-item label="API秘钥" prop="apiKey">
+        <el-form-item :label="td('ai.model.apiKey')" prop="apiKey">
           <el-input
             v-model="form.apiKey"
-            placeholder="请输入API秘钥"
+            :placeholder="td('ai.model.apiKeyPlaceholder')"
             type="password"
           />
         </el-form-item>
-        <el-form-item :label="t('common.texts.status')" prop="validFlag">
-          <el-radio v-model="form.validFlag" :label="true">启用</el-radio>
-          <el-radio v-model="form.validFlag" :label="false">禁用</el-radio>
+        <el-form-item :label="td('common.texts.status')" prop="validFlag">
+          <el-radio v-model="form.validFlag" :label="true">{{ td('common.texts.enable') }}</el-radio>
+          <el-radio v-model="form.validFlag" :label="false">{{ td('common.texts.disable') }}</el-radio>
         </el-form-item>
-        <el-form-item label="排序" prop="sortOrder">
+        <el-form-item :label="td('ai.model.sortOrder')" prop="sortOrder">
           <el-input-number
             style="width: 100%"
             v-model="form.sortOrder"
@@ -141,31 +141,31 @@
             :min="0"
           />
         </el-form-item>
-        <el-form-item :label="t('common.texts.description')" prop="description" class="row-full">
+        <el-form-item :label="td('common.texts.description')" prop="description" class="row-full">
           <el-input
             type="textarea"
-            maxlength="500个字符"
+            :maxlength="td('ai.model.maxLengthChars')"
             show-word-limit
             v-model="form.description"
-            :placeholder="t('common.form.descriptionPlaceholder')"
+            :placeholder="td('common.form.descriptionPlaceholder')"
           />
         </el-form-item>
 
-        <el-form-item :label="t('common.texts.remark')" prop="remark" class="row-full">
+        <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full">
           <el-input
             type="textarea"
-            maxlength="500个字符"
+            :maxlength="td('ai.model.maxLengthChars')"
             show-word-limit
             v-model="form.remark"
-            :placeholder="t('common.form.remarkPlaceholder')"
+            :placeholder="td('common.form.remarkPlaceholder')"
           />
         </el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="cancel">{{ t('common.button.cancel') }}</el-button>
+          <el-button size="mini" @click="cancel">{{ td('common.button.cancel') }}</el-button>
           <el-button type="primary" size="mini" @click="submitForm"
-            >{{ t('common.button.confirm') }}</el-button
+            >{{ td('common.button.confirm') }}</el-button
           >
         </div>
       </template>
@@ -180,69 +180,69 @@
       draggable
     >
       <el-form ref="modelRef" :model="form" label-width="90px">
-        <el-form-item :label="t('common.texts.number')" prop="id">
+        <el-form-item :label="td('common.texts.number')" prop="id">
           <div class="form-readonly">
             {{ form.id }}
           </div>
         </el-form-item>
-        <el-form-item label="模型名称" prop="name">
+        <el-form-item :label="td('ai.model.modelName')" prop="name">
           <div class="form-readonly">
             {{ form.name }}
           </div>
         </el-form-item>
-        <el-form-item label="平台" prop="platform">
+        <el-form-item :label="td('ai.model.platform')" prop="platform">
           <dict-tag :options="ai_model_platform" :value="form.platform" />
         </el-form-item>
-        <el-form-item label="排序" prop="sortOrder">
+        <el-form-item :label="td('ai.model.sortOrder')" prop="sortOrder">
           <div class="form-readonly">
             {{ form.sortOrder || "-" }}
           </div>
         </el-form-item>
-        <el-form-item label="API地址" prop="apiUrl">
+        <el-form-item :label="td('ai.model.apiUrl')" prop="apiUrl">
           <div class="form-readonly" :title="form.apiUrl || '-'">
             {{ form.apiUrl ?? "-" }}
           </div>
         </el-form-item>
-        <el-form-item label="API秘钥" prop="apiKey">
+        <el-form-item :label="td('ai.model.apiKey')" prop="apiKey">
           <div class="form-readonly">
             {{ form.apiKey ? "**********" : "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.status')" prop="validFlag">
+        <el-form-item :label="td('common.texts.status')" prop="validFlag">
           <div class="form-readonly">
-            {{ form.validFlag ? "启用" : "禁用" }}
+            {{ form.validFlag ? td('common.texts.enable') : td('common.texts.disable') }}
           </div>
         </el-form-item>
 
-        <el-form-item :label="t('common.texts.description')" prop="description">
+        <el-form-item :label="td('common.texts.description')" prop="description">
           <div class="form-readonly textarea">
             {{ form.description ?? "-" }}
           </div>
         </el-form-item>
 
-        <el-form-item :label="t('common.texts.remark')" prop="remark">
+        <el-form-item :label="td('common.texts.remark')" prop="remark">
           <div class="form-readonly textarea">
             {{ form.remark ?? "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.createdBy')" prop="createBy">
+        <el-form-item :label="td('common.texts.createdBy')" prop="createBy">
           <div class="form-readonly">
             {{ form.createBy }}
           </div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.createdTime')" prop="createTime">
+        <el-form-item :label="td('common.texts.createdTime')" prop="createTime">
           <div class="form-readonly">
             {{ parseTime(form.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
         </el-form-item>
 
-        <el-form-item :label="t('common.texts.updatedBy')" prop="updateBy">
+        <el-form-item :label="td('common.texts.updatedBy')" prop="updateBy">
           <div class="form-readonly">
             {{ form.updateBy }}
           </div>
         </el-form-item>
 
-        <el-form-item :label="t('common.texts.updatedTime')" prop="updateTime">
+        <el-form-item :label="td('common.texts.updatedTime')" prop="updateTime">
           <div class="form-readonly">
             {{ parseTime(form.updateTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
@@ -250,7 +250,7 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="cancel">{{ t('common.button.close') }}</el-button>
+          <el-button size="mini" @click="cancel">{{ td('common.button.close') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -277,29 +277,29 @@
         drag
       >
         <el-icon class="el-icon--upload"><upload-filled /></el-icon>
-        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        <div class="el-upload__text">{{ td('common.upload.dragOrClick') }}<em>{{ td('ai.model.clickUpload') }}</em></div>
         <template #tip>
           <div class="el-upload__tip text-center">
             <div class="el-upload__tip">
               <el-checkbox
                 v-model="upload.updateSupport"
-              />是否更新已经存在的模型数据
+              />{{ td('ai.model.updateExistingModels') }}
             </div>
-            <span>仅允许导入xls、xlsx格式文件。</span>
+            <span>{{ td('common.upload.fileFormat') }}</span>
             <el-link
               type="primary"
               :underline="false"
               style="font-size: 12px; vertical-align: baseline"
               @click="importTemplate"
-              >下载模板</el-link
+              >{{ td('common.upload.downloadTemplate') }}</el-link
             >
           </div>
         </template>
       </el-upload>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="upload.open = false">{{ t('common.button.cancel') }}</el-button>
-          <el-button type="primary" @click="submitFileForm">{{ t('common.button.confirm') }}</el-button>
+          <el-button @click="upload.open = false">{{ td('common.button.cancel') }}</el-button>
+          <el-button type="primary" @click="submitFileForm">{{ td('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -311,7 +311,6 @@
 </template>
 
 <script setup name="Model">
-import { useI18n } from 'vue-i18n'
 import {
   listModel,
   getModel,
@@ -325,8 +324,9 @@ import { encrypt, isDecrypted } from "@/utils/aesEncrypt";
 import DeleteConfirmDialog from "@/components/DeleteConfirmDialog";
 import { reactive, ref, toRefs, getCurrentInstance } from "vue";
 import { useRouter } from "vue-router";
+import useDefaultLang from "@/composables/useDefaultLang.js";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { ai_model_platform } = proxy.useDict("ai_model_platform");
 
@@ -355,23 +355,23 @@ const tableStore = reactive({
         return true;
       },
     },
-    { label: t('common.texts.number'), prop: "id", width: 60, sortable: true },
-    { label: "模型名称", prop: "name", align: "left", width: 200 },
+    { label: td('common.texts.number'), prop: "id", width: 60, sortable: true },
+    { label: td('ai.model.modelName'), prop: "name", align: "left", width: 200 },
     {
-      label: t('common.texts.description'),
+      label: td('common.texts.description'),
       prop: "description",
       align: "left",
       width: 200,
       showOverflowTooltip: true,
     },
     {
-      label: "平台",
+      label: td('ai.model.platform'),
       prop: "platform",
       width: 120,
       slot: "platform",
     },
     {
-      label: "API地址",
+      label: td('ai.model.apiUrl'),
       prop: "apiUrl",
       align: "left",
       width: 200,
@@ -384,12 +384,12 @@ const tableStore = reactive({
     //   width: 200,
     //   showOverflowTooltip: true,
     // },
-    { label: "排序", prop: "sortOrder", width: 80, sortable: true },
+    { label: td('ai.model.sortOrder'), prop: "sortOrder", width: 80, sortable: true },
 
-    { label: t('common.texts.status'), prop: "validFlag", slot: "validFlag" },
-    { label: t('common.texts.createdBy'), prop: "createBy", width: 120 },
+    { label: td('common.texts.status'), prop: "validFlag", slot: "validFlag" },
+    { label: td('common.texts.createdBy'), prop: "createBy", width: 120 },
     {
-      label: t('common.texts.createdTime'),
+      label: td('common.texts.createdTime'),
       prop: "createTime",
       width: 150,
       sortable: true,
@@ -397,13 +397,13 @@ const tableStore = reactive({
       date: true,
     },
     // {
-    //   label: t('common.texts.remark'),
+    //   label: td('common.texts.remark'),
     //   prop: "remark",
     //   align: "left",
     //   width: 200,
     //   showOverflowTooltip: true,
     // },
-    { label: t('common.texts.operation'), width: 280, fixed: "right", slot: "handle" },
+    { label: td('common.texts.operation'), width: 280, fixed: "right", slot: "handle" },
   ],
   func: listModel,
   params: {},
@@ -413,29 +413,29 @@ const tableStore = reactive({
 const searchStore = reactive({
   items: [
     {
-      label: "模型名称",
+      label: td('ai.model.modelName'),
       prop: "name",
       align: "left",
-      component: { is: "input", placeholder: "请输入模型名称" },
+      component: { is: "input", placeholder: td('ai.model.modelNamePlaceholder') },
     },
     {
-      label: "平台",
+      label: td('ai.model.platform'),
       prop: "platform",
       component: {
         is: "select",
-        placeholder: "请选择平台",
+        placeholder: td('ai.model.selectPlatform'),
         options: ai_model_platform,
       },
     },
     {
-      label: t('common.texts.status'),
+      label: td('common.texts.status'),
       prop: "validFlag",
       component: {
         is: "select",
-        placeholder: t('common.form.statusPlaceholder'),
+        placeholder: td('common.form.statusPlaceholder'),
         options: [
-          { value: true, label: "启用" },
-          { value: false, label: "禁用" },
+          { value: true, label: td('common.texts.enable') },
+          { value: false, label: td('common.texts.disable') },
         ],
       },
     },
@@ -465,14 +465,14 @@ const upload = reactive({
 const data = reactive({
   form: {},
   rules: {
-    name: [{ required: true, message: "模型名称不能为空", trigger: "blur" }],
-    platform: [{ required: true, message: "平台不能为空", trigger: "change" }],
+    name: [{ required: true, message: td('ai.model.modelNameRequired'), trigger: "blur" }],
+    platform: [{ required: true, message: td('ai.model.platformRequired'), trigger: "change" }],
     apiUrl: [
       {
         validator: (rule, value, callback) => {
           const apiKey = form.value.apiKey;
           if (!value && !apiKey) {
-            callback(new Error("API地址和API秘钥至少填写一个"));
+            callback(new Error(td('ai.model.apiAtLeastOne')));
           } else {
             callback();
           }
@@ -485,7 +485,7 @@ const data = reactive({
         validator: (rule, value, callback) => {
           const apiUrl = form.value.apiUrl;
           if (!value && !apiUrl) {
-            callback(new Error("API地址和API秘钥至少填写一个"));
+            callback(new Error(td('ai.model.apiAtLeastOne')));
           } else {
             callback();
           }
@@ -503,12 +503,12 @@ let old_apiKey = null;
 
 /** 改变启用状态值 */
 function handleStatusChange(row) {
-  const text = row.validFlag === true ? "启用" : "禁用";
+  const text = row.validFlag === true ? td('common.texts.enable') : td('common.texts.disable');
   proxy.$modal
-    .confirm('确认要"' + text + '","' + row.name + '"主题吗？')
+    .confirm(td('ai.model.confirmStatusChange', { status: text, name: row.name }))
     .then(function () {
       updateModel({ id: row.id, validFlag: row.validFlag }).then((response) => {
-        proxy.$modal.msgSuccess(text + "成功");
+        proxy.$modal.msgSuccess(td('ai.model.statusSuccess', { status: text }));
         tableRef.value.getList();
       });
     })
@@ -561,7 +561,7 @@ function reset() {
 function handleAdd() {
   reset();
   open.value = true;
-  title.value = "添加模型";
+  title.value = td('ai.model.addModel');
 }
 
 /** 修改按钮操作 */
@@ -572,7 +572,7 @@ function handleUpdate(row) {
     form.value = response.data;
     old_apiKey = response.data.apiKey; // 保存原始API秘钥
     open.value = true;
-    title.value = "修改模型";
+    title.value = td('ai.model.editModel');
   });
 }
 
@@ -583,7 +583,7 @@ function handleDetail(row) {
   getModel(_id).then((response) => {
     form.value = response.data;
     openDetail.value = true;
-    title.value = "模型详情";
+    title.value = td('ai.model.modelDetail');
   });
 }
 
@@ -612,7 +612,7 @@ function submitForm() {
       if (submitData.id != null) {
         updateModel(submitData)
           .then((response) => {
-            proxy.$modal.msgSuccess(t('common.message.editSuccess'));
+            proxy.$modal.msgSuccess(td('common.message.editSuccess'));
             open.value = false;
             tableRef.value.getList();
           })
@@ -620,7 +620,7 @@ function submitForm() {
       } else {
         addModel(submitData)
           .then((response) => {
-            proxy.$modal.msgSuccess(t('common.message.addSuccess'));
+            proxy.$modal.msgSuccess(td('common.message.addSuccess'));
             open.value = false;
             tableRef.value.getList();
           })
@@ -644,13 +644,13 @@ function handleDelete(row) {
   if (!_ids) return;
 
   proxy.$modal
-    .confirm('是否确认删除模型编号为"' + _ids + '"的数据项？')
+    .confirm(td('ai.model.confirmDeleteModel', { ids: _ids }))
     .then(function () {
       return delModel(_ids);
     })
     .then(() => {
       tableRef.value.getList();
-      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+      proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
     })
     .catch(() => {
       // 用户取消删除操作
@@ -671,7 +671,7 @@ function handleExport() {
 /** ---------------- 导入相关操作 -----------------**/
 /** 导入按钮操作 */
 function handleImport() {
-  upload.title = "模型导入";
+  upload.title = td('ai.model.modelImport');
   upload.open = true;
 }
 
@@ -703,7 +703,7 @@ const handleFileSuccess = (response, file, fileList) => {
     "<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +
       response.msg +
       "</div>",
-    "导入结果",
+    td('ai.model.importResult'),
     { dangerouslyUseHTMLString: true }
   );
   tableRef.value.getList();

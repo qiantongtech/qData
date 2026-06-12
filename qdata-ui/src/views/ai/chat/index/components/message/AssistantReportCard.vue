@@ -35,7 +35,7 @@
     <div class="ai-report-header">
       <div class="ai-report-title">
         <el-icon><Cpu /></el-icon>
-        <span>{{ data?.header || "智能洞察" }}</span>
+        <span>{{ data?.header || td('ai.chat.insight') }}</span>
       </div>
     </div>
     <div class="ai-report-summary" v-if="data?.summary || data?.code == 500">
@@ -62,7 +62,7 @@
         <div
           class="ai-report-tab-content"
           v-loading="data?.isLoading"
-          element-loading-text="加载中..."
+          :element-loading-text="td('common.message.loading')"
         >
           <div v-if="!data?.isLoading" class="ai-report-tab-body">
             <div
@@ -77,7 +77,7 @@
                     :icon="Download"
                     @click="handleDownloadChart"
                   >
-                    下载图表
+                    {{ td('ai.chat.downloadChart') }}
                   </el-button>
                 </div>
               </div>
@@ -93,7 +93,7 @@
                     @click="handleExport"
                     v-if="data?.conversationId && data?.messageId"
                   >
-                    导出
+                    {{ td('common.button.export') }}
                   </el-button>
                 </div>
                 <el-table :data="getCurrentPageData(tab.table)">
@@ -132,8 +132,7 @@
             >
               <div class="ai-report-code-header">
                 <div class="ai-report-code-actions">
-                  <el-button link type="primary" @click="handleCopySql"
-                    >复制</el-button
+                  <el-button link type="primary" @click="handleCopySql">{{ td('common.button.copy') }}</el-button
                   >
                 </div>
               </div>
@@ -162,10 +161,10 @@ import * as echarts from "echarts";
 import { useClipboard } from "@vueuse/core";
 import { ChatMessageApi } from "@/api/ai/chat/message";
 import useDefaultLang from "@/composables/useDefaultLang";
-const { td } = useDefaultLang();
 import { saveAs } from "file-saver";
 import SqlEditor from "@/components/SqlEditor/index2.vue";
 
+const { td } = useDefaultLang();
 const props = defineProps({
   data: {
     type: Object,
@@ -275,7 +274,7 @@ const buildOption = (chartData) => {
       });
 
       series.push({
-        name: seriesList[0].name || "数量",
+        name: seriesList[0].name || td('ai.chat.quantity'),
         type: "bar",
         barWidth: 30,
         barGap: "-100%",
@@ -438,7 +437,7 @@ const handleCopySql = async () => {
   const code = tab?.code;
   if (!code) return;
   await copy(code);
-  message?.msgSuccess?.("复制成功！");
+  message?.msgSuccess?.(td('ai.chat.copySuccess'));
 };
 
 /** 下载图表 */
@@ -451,7 +450,7 @@ const handleDownloadChart = () => {
   });
   const link = document.createElement("a");
   link.href = url;
-  link.download = `图表_${new Date().getTime()}.png`;
+  link.download = td('ai.chat.chartFile', { time: new Date().getTime() }) + '.png';
   link.click();
 };
 
@@ -462,7 +461,7 @@ const handleExport = async () => {
 
   const loading = ElLoading.service({
     lock: true,
-    text: "正在导出，请稍候...",
+    text: td('ai.chat.exporting'),
     background: "rgba(0, 0, 0, 0.7)",
   });
 
@@ -474,11 +473,11 @@ const handleExport = async () => {
     const blob = new Blob([res], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-    saveAs(blob, `明细数据_${new Date().getTime()}.xlsx`);
-    message?.msgSuccess?.("导出成功！");
+    saveAs(blob, td('ai.chat.detailFile', { time: new Date().getTime() }) + '.xlsx');
+    message?.msgSuccess?.(td('ai.chat.exportSuccess'));
   } catch (err) {
     console.error("Export failed:", err);
-    message?.msgError?.("导出失败，请重试！");
+    message?.msgError?.(td('ai.chat.exportFailed'));
   } finally {
     loading.close();
   }

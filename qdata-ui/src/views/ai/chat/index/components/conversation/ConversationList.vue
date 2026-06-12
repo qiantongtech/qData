@@ -26,7 +26,7 @@
         @click="handleNewButtonClick"
       >
         <el-icon class="icon-plus" :size="14"><Plus /></el-icon>
-        <span class="btn-text">新建对话</span>
+        <span class="btn-text">{{ td('ai.chat.newConversation') }}</span>
       </el-button>
 
       <!-- 左顶部：搜索对话 -->
@@ -34,7 +34,7 @@
         v-model="searchName"
         size="large"
         class="mt-10px search-input"
-        placeholder="搜索历史记录"
+        :placeholder="td('ai.chat.searchHistory')"
         @keyup="searchConversation"
       >
         <template #prefix>
@@ -62,7 +62,7 @@
             v-if="conversationMap[conversationKey].length"
           >
             <el-text class="mx-1" size="small" tag="b">{{
-              conversationKey
+              groupLabels[conversationKey] || conversationKey
             }}</el-text>
           </div>
           <div
@@ -103,7 +103,7 @@
                   <img
                     height="14"
                     src="@/assets/ai/topC.png"
-                    alt="置顶"
+                    :alt="td('ai.chat.pinTop')"
                     v-if="
                       !conversation.pinned &&
                       conversation.id === activeConversationId
@@ -112,13 +112,13 @@
                   <img
                     height="14"
                     src="@/assets/ai/top.png"
-                    alt="置顶"
+                    :alt="td('ai.chat.pinTop')"
                     v-else-if="!conversation.pinned"
                   />
                   <img
                     height="14"
                     src="@/assets/ai/bottomC.png"
-                    alt="取消置顶"
+                    :alt="td('ai.chat.unpinTop')"
                     v-if="
                       conversation.pinned &&
                       conversation.id === activeConversationId
@@ -127,7 +127,7 @@
                   <img
                     height="14"
                     src="@/assets/ai/bottom.png"
-                    alt="取消置顶"
+                    :alt="td('ai.chat.unpinTop')"
                     v-else-if="conversation.pinned"
                   />
                 </el-button>
@@ -166,7 +166,7 @@
   </el-aside>
   <el-dialog
     v-model="renameDialogVisible"
-    title="修改标题"
+    :title="td('ai.chat.renameTitle')"
     width="600px"
     :append-to="dialogAppendTo"
     :close-on-click-modal="false"
@@ -180,14 +180,14 @@
         aria-level="2"
         class="el-dialog__title"
       >
-        修改标题
+        {{ td('ai.chat.renameTitle') }}
       </span>
     </template>
     <el-form label-width="60px" v-loading="renameLoading">
-      <el-form-item label="标题">
+      <el-form-item :label="td('ai.chat.titleLabel')">
         <el-input
           v-model="renameTitle"
-          placeholder="请输入标题"
+          :placeholder="td('ai.chat.titlePlaceholder')"
           show-word-limit
           @keyup.enter="handleRenameConfirm"
           :disabled="renameLoading"
@@ -196,30 +196,28 @@
     </el-form>
     <template #footer>
       <el-button @click="renameDialogVisible = false" :disabled="renameLoading"
-        >{{ t('common.button.cancel') }}</el-button
+        >{{ td('common.button.cancel') }}</el-button
       >
       <el-button
         type="primary"
         @click="handleRenameConfirm"
         :loading="renameLoading"
       >
-        {{ t('common.button.confirm') }}
+        {{ td('common.button.confirm') }}
       </el-button>
     </template>
   </el-dialog>
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
 import { ChatConversationApi } from "@/api/ai/chat/conversation";
 import roleAvatarDefaultImg from "@/assets/ai/gpt-new.svg";
 import roleAvatartActiveImg from "@/assets/ai/gpt-new.svg";
 import useUserStore from "@/store/system/user";
 import moment from "moment/moment.js";
 import useDefaultLang from "@/composables/useDefaultLang";
-const { td } = useDefaultLang();
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const message = proxy.$modal; // 消息弹窗
 const userStore = useUserStore();
@@ -237,6 +235,16 @@ const renameConversationId = ref("");
 const renameTitle = ref("");
 const renameLoading = ref(false);
 const dialogAppendTo = ref(document.body);
+
+// 对话时间分组标签
+const groupLabels = {
+  pinned: td('ai.chat.pinned', '置顶'),
+  today: td('ai.chat.today', '今天'),
+  oneDayAgo: td('ai.chat.oneDayAgo', '一天前'),
+  threeDaysAgo: td('ai.chat.threeDaysAgo', '三天前'),
+  sevenDaysAgo: td('ai.chat.sevenDaysAgo', '七天前'),
+  thirtyDaysAgo: td('ai.chat.thirtyDaysAgo', '三十天前'),
+};
 
 // 定义组件 props
 const props = defineProps({
@@ -365,12 +373,12 @@ const getConversationGroupByCreateTime = async (list) => {
   // 排序、指定、时间分组(今天、一天前、三天前、七天前、30天前)
   // noinspection NonAsciiCharacters
   const groupMap = {
-    置顶: [],
-    今天: [],
-    一天前: [],
-    三天前: [],
-    七天前: [],
-    三十天前: [],
+    pinned: [],
+    today: [],
+    oneDayAgo: [],
+    threeDaysAgo: [],
+    sevenDaysAgo: [],
+    thirtyDaysAgo: [],
   };
   // 当前时间的时间戳
   const now = Date.now();
@@ -382,22 +390,22 @@ const getConversationGroupByCreateTime = async (list) => {
   for (const conversation of list) {
     // 置顶
     if (conversation.pinned) {
-      groupMap["置顶"].push(conversation);
+      groupMap.pinned.push(conversation);
       continue;
     }
     // 计算时间差（单位：毫秒）
     const diff = now - Date.parse(conversation.createTime);
     // 根据时间间隔判断
     if (diff < oneDay) {
-      groupMap["今天"].push(conversation);
+      groupMap.today.push(conversation);
     } else if (diff < threeDays) {
-      groupMap["一天前"].push(conversation);
+      groupMap.oneDayAgo.push(conversation);
     } else if (diff < sevenDays) {
-      groupMap["三天前"].push(conversation);
+      groupMap.threeDaysAgo.push(conversation);
     } else if (diff < thirtyDays) {
-      groupMap["七天前"].push(conversation);
+      groupMap.sevenDaysAgo.push(conversation);
     } else {
-      groupMap["三十天前"].push(conversation);
+      groupMap.thirtyDaysAgo.push(conversation);
     }
   }
   return groupMap;
@@ -445,7 +453,7 @@ const handleRenameConfirm = async () => {
   }
   const title = renameTitle.value.trim();
   if (!title.length) {
-    message.msgError("标题不能为空");
+    message.msgError(td('ai.chat.titleRequired'));
     return;
   }
   const id = renameConversationId.value;
@@ -459,7 +467,7 @@ const handleRenameConfirm = async () => {
       id,
       title,
     });
-    message.msgSuccess("重命名成功");
+    message.msgSuccess(td('ai.chat.renameSuccess'));
     await getChatConversationList();
     const updatedConversation = conversationList.value.find(
       (item) => item.id === id
@@ -488,10 +496,10 @@ const deleteChatConversation = async (conversation) => {
   }
   try {
     // 删除的二次确认
-    await message.confirm(`是否确认删除对话 - ${conversation.title}?`);
+    await message.confirm(td('ai.chat.confirmDeleteConversation', { title: conversation.title }));
     // 发起删除
     await ChatConversationApi.deleteChatConversationMy(conversation.id);
-    message.msgSuccess("对话已删除");
+    message.msgSuccess(td('ai.chat.conversationDeleted'));
     // 刷新列表
     await getChatConversationList();
     // 回调

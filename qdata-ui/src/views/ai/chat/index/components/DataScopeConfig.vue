@@ -22,7 +22,7 @@
       <div class="summary-left-col">
         <div class="title-info">
           <img src="@/assets/ai/gpt-new.svg" class="robot-icon" />
-          <span class="title">{{ title || "新对话" }}</span>
+          <span class="title">{{ title || td('ai.chat.newChat') }}</span>
         </div>
       </div>
       <div class="summary-middle-col">
@@ -46,12 +46,12 @@
             </div>
           </template>
           <div class="dim-tag" @click="showConfig = !showConfig">
-            + {{ dimensionTableNames.length }}张维表
+            {{ td('ai.chat.dimensionTablesCount', { count: dimensionTableNames.length }) }}
           </div>
         </el-tooltip>
 
         <el-form inline :disabled="disabled" class="summary-form">
-          <el-form-item label="数据范围" required>
+          <el-form-item :label="td('ai.chat.dataScope')" required>
             <el-input
               :model-value="
                 factTableName
@@ -61,7 +61,7 @@
                   : ''
               "
               readonly
-              placeholder="请配置当前数据范围"
+              :placeholder="td('ai.chat.configureDataScope')"
               class="scope-input"
               :class="{ active: showConfig }"
               @click="showConfig = !showConfig"
@@ -91,11 +91,11 @@
           label-width="auto"
         >
           <!-- Step 1: 数据源 -->
-          <el-form-item label=" 数据源" required>
+          <el-form-item :label="td('ai.chat.dataSource')" required>
             <DatasourceList
               v-model="internalDatasourceId"
               :disabled="disabled"
-              placeholder="请选择数据源"
+              :placeholder="td('ai.chat.selectDataSource')"
               filterable
               @change="onDatasourceChange"
               flag="daQuality"
@@ -104,7 +104,7 @@
           </el-form-item>
 
           <!-- Step 2: 事实表 -->
-          <el-form-item label="事实表" required>
+          <el-form-item :label="td('ai.chat.factTable')" required>
             <el-select
               v-model="internalFactTableName"
               :disabled="disabled"
@@ -114,7 +114,7 @@
               :remote-method="remoteSearchFactTables"
               :loading="factTableLoading"
               @visible-change="handleFactTableSelectVisible"
-              placeholder="请选择事实表"
+              :placeholder="td('ai.chat.selectFactTable')"
               @change="onFactTableChange"
               class="config-select"
             >
@@ -132,7 +132,7 @@
           </el-form-item>
 
           <!-- Step 3: 关联维表 -->
-          <el-form-item label="关联维表" required>
+          <el-form-item :label="td('ai.chat.dimensionTable')" required>
             <el-select
               v-model="internalDimensionTableNames"
               :disabled="disabled"
@@ -145,7 +145,7 @@
               :remote-method="remoteSearchDimensionTables"
               :loading="dimensionTableLoading"
               @visible-change="handleDimensionTableSelectVisible"
-              placeholder="请选择关联维表"
+              :placeholder="td('ai.chat.selectDimensionTable')"
               @change="onDimensionTableChange"
               class="config-select"
             >
@@ -174,7 +174,7 @@
               !internalDimensionTableNames?.length
             "
           >
-            确认范围并开始问答
+            {{ td('ai.chat.confirmScopeAndStart') }}
           </el-button>
           <el-button
             v-if="
@@ -186,7 +186,7 @@
             plain
             @click="openAssociationDialog(conversationId)"
           >
-            设置关联关系
+            {{ td('ai.chat.setAssociation') }}
           </el-button>
         </div>
       </div>
@@ -195,7 +195,7 @@
     <!-- 3. 设置关联关系弹窗 -->
     <el-dialog
       v-model="associationVisible"
-      title="设置关联关系"
+      :title="td('ai.chat.setAssociationTitle')"
       width="1200px"
       :append-to="$refs['app-container']"
       draggable
@@ -206,7 +206,7 @@
         <template #selectedDimensionTable="scope">
           <el-select
             v-model="scope.row.selectedDimensionTable"
-            placeholder="请选择维度表"
+            :placeholder="td('ai.chat.selectDimensionTableName')"
             clearable
             @change="onRowDimensionTableChange(scope.row)"
             style="width: 100%"
@@ -226,7 +226,7 @@
         <template #selectedDimensionColumn="scope">
           <el-select
             v-model="scope.row.selectedDimensionColumn"
-            placeholder="请选择维表字段"
+            :placeholder="td('ai.chat.selectDimensionColumn')"
             clearable
             :disabled="!scope.row.selectedDimensionTable"
             style="width: 100%"
@@ -254,7 +254,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button size="mini" @click="associationVisible = false"
-            >{{ t('common.button.cancel') }}</el-button
+            >{{ td('common.button.cancel') }}</el-button
           >
           <el-button
             type="primary"
@@ -262,7 +262,7 @@
             @click="handleSaveAssociations"
             :loading="savingAssociations"
           >
-            {{ t('common.button.confirm') }}
+            {{ td('common.button.confirm') }}
           </el-button>
         </div>
       </template>
@@ -271,7 +271,6 @@
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
 import { ref, watch, onMounted, computed, nextTick } from "vue";
 import { Coin, ArrowDown, ArrowUp, Setting } from "@element-plus/icons-vue";
 import DatasourceList from "@/components/Datasource/List.vue";
@@ -281,12 +280,13 @@ import {
 } from "@/api/dpp/task/index.js";
 import { ChatConversationApi } from "@/api/ai/chat/conversation/index.js";
 import { ElMessage, ElMessageBox } from "element-plus";
+import useDefaultLang from "@/composables/useDefaultLang.js";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const props = defineProps({
   title: {
     type: String,
-    default: "新对话",
+    default: '',
   },
   datasourceId: {
     type: [String, Number],
@@ -348,11 +348,11 @@ const handleOpenAssociationConfirm = (conversationId) => {
     return;
   }
   ElMessageBox.confirm(
-    "关联关系无法自动识别，是否需要手动设置关联关系？",
-    t('common.message.prompt'),
+    td('ai.chat.cannotIdentifyAssociation'),
+    td('common.message.prompt'),
     {
-      confirmButtonText: t('common.button.confirm'),
-      cancelButtonText: t('common.button.cancel'),
+      confirmButtonText: td('common.button.confirm'),
+      cancelButtonText: td('common.button.cancel'),
       type: "warning",
     }
   )
@@ -623,27 +623,27 @@ const associationTableStore = ref({
     },
   },
   columns: [
-    { type: "index", label: t('common.texts.number'), width: 60, align: "center" },
+    { type: "index", label: td('common.texts.number'), width: 60, align: "center" },
     {
-      label: "字段名称",
+      label: td('ai.chat.fieldName'),
       prop: "columnName",
       minWidth: 150,
       showOverflowTooltip: true,
     },
     {
-      label: "中文名称",
+      label: td('ai.chat.chineseName'),
       prop: "columnComment",
       minWidth: 150,
       showOverflowTooltip: true,
     },
-    { label: "数据类型", prop: "columnType", width: 150, align: "center" },
+    { label: td('ai.chat.dataType'), prop: "columnType", width: 150, align: "center" },
     {
-      label: "维度表",
+      label: td('ai.chat.dimensionTableShort'),
       minWidth: 200,
       slot: "selectedDimensionTable",
     },
     {
-      label: "维表字段",
+      label: td('ai.chat.dimensionColumn'),
       minWidth: 200,
       slot: "selectedDimensionColumn",
     },
@@ -689,7 +689,7 @@ const openAssociationDialog = async (conversationId) => {
       : props.conversationId || currentConversationId.value;
 
   if (!id) {
-    ElMessage.warning("无法确定当前会话 ID，请先保存配置并开始问答。");
+    ElMessage.warning(td('ai.chat.cannotConfirmSession'));
     return;
   }
   currentConversationId.value = id;
@@ -714,7 +714,7 @@ const handleSaveAssociations = async () => {
   );
   if (invalidRow) {
     ElMessage.warning(
-      `字段 [${invalidRow.columnName}] 已选择维度表，请选择对应的维表字段`
+      td('ai.chat.selectDimensionColumnForField', { name: invalidRow.columnName })
     );
     return;
   }
@@ -729,7 +729,7 @@ const handleSaveAssociations = async () => {
     }));
 
   if (associations.length === 0) {
-    ElMessage.warning("请至少设置一个关联关系");
+    ElMessage.warning(td('ai.chat.setAtLeastOneAssociation'));
     return;
   }
 
@@ -739,7 +739,7 @@ const handleSaveAssociations = async () => {
       id: currentConversationId.value,
       associations: JSON.stringify(associations),
     });
-    ElMessage.success("设置关联关系成功");
+    ElMessage.success(td('ai.chat.setAssociationSuccess'));
     associationVisible.value = false;
     // 触发确认，重新开始问答（或者由父组件处理）
     emit("confirm-associations");

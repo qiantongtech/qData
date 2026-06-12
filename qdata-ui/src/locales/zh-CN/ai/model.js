@@ -1,0 +1,26 @@
+// AI 模型管理模块语言包
+export default {
+  modelName: '模型名称',
+  modelNamePlaceholder: '请输入模型名称',
+  platform: '平台',
+  selectPlatform: '请选择平台',
+  apiUrl: 'API地址',
+  apiUrlPlaceholder: '请输入API地址',
+  apiKey: 'API秘钥',
+  apiKeyPlaceholder: '请输入API秘钥',
+  sortOrder: '排序',
+  maxLengthChars: '500个字符',
+  addModel: '添加模型',
+  editModel: '修改模型',
+  modelDetail: '模型详情',
+  modelNameRequired: '模型名称不能为空',
+  platformRequired: '平台不能为空',
+  apiAtLeastOne: 'API地址和API秘钥至少填写一个',
+  modelImport: '模型导入',
+  importResult: '导入结果',
+  clickUpload: '点击上传',
+  updateExistingModels: '是否更新已经存在的模型数据',
+  confirmDeleteModel: '是否确认删除模型编号为"{ids}"的数据项？',
+  confirmStatusChange: '确认要"{status}","{name}"主题吗？',
+  statusSuccess: '{status}成功'
+}

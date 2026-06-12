@@ -20,7 +20,7 @@
   <div class="chat-empty">
     <!-- title -->
     <div class="center-container">
-      <div class="title">灵桐 AI</div>
+      <div class="title">{{ td('ai.chat.lingtongAI') }}</div>
       <div class="role-list">
         <div
           class="role-item"
@@ -32,18 +32,21 @@
         </div>
       </div>
       <div class="ai-disclaimer">
-        本功能由 qData 智能问数生成，其回答未必正确无误。
+        {{ td('ai.chat.disclaimer') }}
       </div>
     </div>
   </div>
 </template>
 <script setup>
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();
+
 const promptList = [
   {
-    prompt: "今天气怎么样?",
+    prompt: td('ai.chat.promptWeather'),
   },
   {
-    prompt: "写一首好听的诗歌?",
+    prompt: td('ai.chat.promptPoem'),
   },
 ]; // prompt 列表
 

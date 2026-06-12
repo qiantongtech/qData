@@ -20,7 +20,7 @@
         <div class="pagecont-top" v-show="showSearch">
             <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="75px">
                 <el-form-item :label="td('att.common.modelCatName')" prop="name" label-width="130">
-                    <el-input class="el-form-input-width" v-model="queryParams.name" :placeholder="td('att.common.namePlaceholder')" clearable
+                    <el-input class="el-form-input-width" v-model="queryParams.name" :placeholder="td('att.common.modelCatNamePlaceholder')" clearable
                         @keyup.enter="handleQuery" />
                 </el-form-item>
                 <el-form-item :label="td('att.common.parentCat')" prop="code">
@@ -64,7 +64,7 @@
                 <!--              {{ scope.row.code || '-' }}-->
                 <!--            </template>-->
                 <!--          </el-table-column>-->
-                <el-table-column :label="td('att.modelCat.table.name')" align="left" prop="name" width="200"
+                <el-table-column :label="td('att.common.modelCatName')" align="left" prop="name" width="200"
                     :show-overflow-tooltip="{ effect: 'light' }">
                     <template #default="scope">
                         {{ scope.row.name || '-' }}
@@ -133,7 +133,7 @@
                 <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item :label="td('att.common.categoryName')" prop="name">
-                            <el-input v-model="form.name" :placeholder="td('att.common.namePlaceholder')" />
+                            <el-input v-model="form.name" :placeholder="td('att.common.modelCatNamePlaceholder')" />
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">

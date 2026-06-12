@@ -43,7 +43,7 @@
             </el-button>
         </div>
         <div class="body-wrapper">
-            <el-form v-if="isChange" ref="form" :model="form" label-width="100px" :disabled="true">
+            <el-form v-if="isChange" ref="form" :model="form" :disabled="true">
                 <el-row>
                     <el-col :span="12">
                         <el-form-item :label="td('ds.apiEdit.simulation.apiName')">
@@ -103,7 +103,7 @@
                                 <el-checkbox v-model="scope.row.nullable" true-label="1" false-label="0" disabled />
                             </template>
                         </el-table-column>
-                        <el-table-column prop="paramComment" :label="td('common.form.description')" align="center" :show-overflow-tooltip="{effect: 'light'}" />
+                        <el-table-column prop="paramComment" :label="td('common.texts.description')" align="center" :show-overflow-tooltip="{effect: 'light'}" />
                         <el-table-column prop="paramType" :label="td('ds.apiEdit.simulation.paramType')" align="center" :show-overflow-tooltip="{effect: 'light'}">
                             <template #default="scope">
                                 <dict-tag :options="ds_api_param_type" :value="scope.row.paramType" />

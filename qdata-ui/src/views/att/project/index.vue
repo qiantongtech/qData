@@ -48,7 +48,7 @@
           <el-input
             class="el-form-input-width"
             v-model="queryParams.name"
-            :placeholder="td('common.form.namePlaceholder')"
+            :placeholder="td('att.common.projectNamePlaceholder')"
             clearable
             @keyup.enter="handleQuery"
           />
@@ -173,7 +173,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          :label="td('att.project.table.manager')"
+          :label="td('att.common.manager')"
           align="center"
           prop="managerId"
           v-if="getColumnVisibility(4)"
@@ -534,7 +534,7 @@ const columns = ref([
   { key: 1, label: td('common.texts.number'), visible: true },
   { key: 2, label: td('att.project.texts.name'), visible: true },
   { key: 3, label: td('att.project.texts.description'), visible: true },
-  { key: 4, label: td('att.project.texts.manager'), visible: true },
+  { key: 4, label: td('att.common.manager'), visible: true },
   { key: 5, label: td('att.project.texts.contact'), visible: true },
   { key: 6, label: td('common.texts.createdTime'), visible: true },
   { key: 7, label: td('common.texts.createdBy'), visible: true },

@@ -44,7 +44,7 @@
                     <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="75px"
                         v-show="showSearch" @submit.prevent>
                         <el-form-item :label="td('att.common.ruleName')" prop="name">
-                            <el-input class="el-form-input-width" v-model="queryParams.name" :placeholder="td('common.form.namePlaceholder')"
+                            <el-input class="el-form-input-width" v-model="queryParams.name" :placeholder="td('att.common.ruleNamePlaceholder')"
                                 clearable @keyup.enter="handleQuery" />
                         </el-form-item>
                         <!-- <el-form-item label="编号" prop="code">

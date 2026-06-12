@@ -78,7 +78,8 @@ export default {
     detail: '详情',
     dataItem: '数据项',
     data: '数据',
-    success: '成功'
+    success: '成功',
+    sortOrder: '排序'
   },
   message: {
     addSuccess: '新增成功',

@@ -1,7 +1,7 @@
-import apiCat from './apiCat/index.js'
-import apiLog from './apiLog/index.js'
+import apiCat from './apiCat'
+import apiLog from './apiLog'
 import api from './api'
-import client from './client/index.js'
+import client from './client'
 import apiEdit from './apiEdit'
 
 export default {

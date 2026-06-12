@@ -106,7 +106,7 @@
                                 </template>
                             </el-table-column>
 
-                            <el-table-column :label="td('common.form.description')" fixed="left" align="center" prop="remark"
+                            <el-table-column :label="td('common.texts.description')" fixed="left" align="center" prop="remark"
                                 :show-overflow-tooltip="{effect: 'light'}">
                                 <template #default="{ row }">
                                     {{ row?.remark || '' }}

@@ -20,7 +20,7 @@
     <div class="pagecont-top" v-show="showSearch">
       <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="75px">
         <el-form-item :label="td('att.common.cleanCatName')" prop="name" label-width="130">
-          <el-input class="el-form-input-width" v-model="queryParams.name" :placeholder="td('att.common.namePlaceholder')" clearable
+          <el-input class="el-form-input-width" v-model="queryParams.name" :placeholder="td('att.common.cleanCatNamePlaceholder')" clearable
             @keyup.enter="handleQuery" />
         </el-form-item>
         <el-form-item :label="td('att.common.parentCat')" prop="code">
@@ -58,7 +58,7 @@
 
       <el-table height="60vh" v-if="refreshTable" v-loading="loading" :data="AttCleanCatList" row-key="id"
         :default-expand-all="isExpandAll" :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
-        <el-table-column :label="td('att.cleanCat.table.name')" align="left" prop="name" width="200"
+        <el-table-column :label="td('att.common.cleanCatName')" align="left" prop="name" width="200"
           :show-overflow-tooltip="{ effect: 'light' }">
           <template #default="scope">
             {{ scope.row.name || '-' }}
@@ -124,7 +124,7 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item :label="td('att.common.categoryName')" prop="name">
-              <el-input v-model="form.name" :placeholder="td('att.common.namePlaceholder')" />
+              <el-input v-model="form.name" :placeholder="td('att.common.cleanCatNamePlaceholder')" />
             </el-form-item>
           </el-col>
           <!--            <el-form-item label="类别排序" prop="sortOrder">-->

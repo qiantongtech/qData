@@ -38,7 +38,7 @@
     <div class="pagecont-top" v-show="showSearch">
       <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true"
         v-show="showSearch" @submit.prevent>
-        <!-- <el-form-item :label="td('ds.clientDetail.id')" prop="id">
+        <!-- <el-form-item :label="td('ds.client.detail.id')" prop="id">
           <el-input class="el-form-input-width" v-model="queryParams.id" placeholder="请输入编号" clearable
             @keyup.enter="handleQuery" />
         </el-form-item> -->
@@ -115,18 +115,18 @@
             {{ scope.row.name || "-" }}
           </template>
         </el-table-column>
-        <el-table-column width="100" v-if="getColumnVisibility(3)" :label="td('ds.client.appType')" align="center" prop="type">
+        <el-table-column v-if="getColumnVisibility(3)" :label="td('ds.client.appType')" align="center" prop="type">
           <template #default="scope">
             <dict-tag :options="auth_app_type" :value="scope.row.type" />
           </template>
         </el-table-column>
-        <el-table-column v-if="getColumnVisibility(2)" :show-overflow-tooltip="{ effect: 'light' }" :label="td('common.form.description')"
+        <el-table-column v-if="getColumnVisibility(2)" :show-overflow-tooltip="{ effect: 'light' }" :label="td('common.texts.description')"
           align="left" prop="description" width="300">
           <template #default="scope">
             {{ scope.row.description || "-" }}
           </template>
         </el-table-column>
-        <el-table-column v-if="getColumnVisibility(16)" width="80" :label="td('ds.client.appIcon')"
+        <el-table-column v-if="getColumnVisibility(16)" :label="td('ds.client.appIcon')"
           :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="name">
           <template #default="scope">
             <div class="clientInfo">
@@ -163,7 +163,7 @@
             {{ scope.row.createBy || "-" }}
           </template>
         </el-table-column>
-        <el-table-column v-if="getColumnVisibility(14)" :label="td('common.form.createTime')" align="center" prop="createTime" width="150"
+        <el-table-column v-if="getColumnVisibility(14)" :label="td('common.texts.createdTime')" align="center" prop="createTime" width="150"
           sortable="custom" column-key="create_time" :sort-orders="['descending', 'ascending']"> <template
             #default="scope"> <span>{{ parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}</span>
           </template>
@@ -290,7 +290,7 @@
       <el-form ref="clientRef" :model="form" label-width="100px">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('ds.clientDetail.id')" prop="id">
+            <el-form-item :label="td('ds.client.detail.id')" prop="id">
               <div>{{ form.id || "-" }}</div>
             </el-form-item>
           </el-col>
@@ -343,7 +343,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item :label="td('common.form.description')" prop="description">
+            <el-form-item :label="td('common.texts.description')" prop="description">
               <div>{{ form.description || "-" }}</div>
             </el-form-item>
           </el-col>
@@ -411,11 +411,11 @@ const columns = ref([
   { key: 0, label: td('common.texts.number'), visible: true },
   { key: 1, label: td('ds.client.appName'), visible: true },
   { key: 3, label: td('ds.client.appType'), visible: true },
-  { key: 2, label: td('common.form.description'), visible: true },
+  { key: 2, label: td('common.texts.description'), visible: true },
   { key: 16, label: td('ds.client.appIcon'), visible: true },
   { key: 4, label: td('ds.client.isPublic'), visible: true },
   { key: 12, label: td('common.texts.createdBy'), visible: true },
-  { key: 14, label: td('common.form.createTime'), visible: true },
+  { key: 14, label: td('common.texts.createdTime'), visible: true },
   { key: 15, label: td('common.texts.remark'), visible: true },
 ]);
 

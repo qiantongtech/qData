@@ -21,11 +21,11 @@
         <div class="quality-header" v-if="taskData.id">
             <div class="quality-info">
                 <div class="quality-item">
-                    <span class="quality-label">质量评估任务：</span>
+                    <span class="quality-label">{{ td('dpp.asset.detail.quality.evaluationName') }}：</span>
                     <span class="quality-value">{{ taskData.taskName }}</span>
                 </div>
                 <div class="quality-item">
-                    <span class="quality-label">上一次评估时间：</span>
+                    <span class="quality-label">{{ td('dpp.asset.detail.quality.lastAssessmentTime') }}：</span>
                     <span class="quality-value"> {{ parseTime(taskData.lastExecuteTime, '{y}-{m}-{d} {h}:{i}') || '-'
                         }}</span>
                 </div>
@@ -33,20 +33,20 @@
             <div class="quality-actions">
                 <el-button type="primary" class="btn-margin-right" icon="Edit" @click="openQualityDialog(taskData)"
                     :disabled="taskData.status != '1'">
-                    修改资产质量任务
+                    {{ td('dpp.asset.detail.quality.editTask') }}
                 </el-button>
                 <el-button type="primary" :disabled="taskData.status != '1'" class="btn-margin-right" icon="Setting"
                     @click="handleJobLog(taskData)">
-                    调度配置
+                    {{ td('dpp.asset.detail.quality.scheduleConfig') }}
                 </el-button>
                 <el-button type="primary" class="btn-margin-right" icon="VideoPlay" @click="handleExecuteOnce(taskData)"
                     :disabled="taskData.status == '1'">
-                    执行一次
+                    {{ td('dpp.asset.detail.quality.executeOnce') }}
                 </el-button>
                 <el-button :type="taskData.status == '0' ? 'danger' : 'primary'"
                     :icon="taskData.status == '0' ? 'CircleClose' : 'VideoPlay'"
                     @click="handleStatusChange(taskData.status == '1' ? 0 : 1, taskData)">
-                    {{ taskData.status == '0' ? '停止任务' : '启动任务' }}
+                    {{ taskData.status == '0' ? td('dpp.asset.detail.quality.stopTask') : td('dpp.asset.detail.quality.startTask') }}
                 </el-button>
             </div>
         </div>
@@ -56,33 +56,33 @@
                 <el-col :xs="24" :sm="24" :md="12" class="stats-panel">
                     <div class="module-8 border-item">
                         <div class="border-item-head">
-                            <span class="head-title">数据质量维度统计 </span>
+                            <span class="head-title">{{ td('dpp.asset.detail.quality.qualityDimensionStats') }}</span>
                         </div>
                         <div class="border-item-body">
                             <div class="overall-score">
-                                <span>整体数据质量评分：</span>
+                                <span>{{ td('dpp.asset.detail.quality.overallQualityScore') }}</span>
                                 <span class="score" :class="getScoreClass(taskData?.score)">
                                     {{ taskData?.score || '0' }}
                                 </span>
                             </div>
                             <el-table :data="summaryList" border size="small" style="margin-top: 12px" height="246">
-                                <el-table-column prop="dimensionType" label="质量维度" align="left">
+                                <el-table-column prop="dimensionType" :label="td('dpp.asset.detail.quality.qualityDimension')" align="left">
                                     <template #default="scope">
                                         <dict-tag :options="att_rule_audit_q_dimension"
                                             :value="scope.row.dimensionType" />
                                     </template>
 
                                 </el-table-column>
-                                <el-table-column prop="succesTotal" label="规则数" align="left">
+                                <el-table-column prop="succesTotal" :label="td('dpp.asset.detail.quality.ruleCount')" align="left">
                                     <template #default="scope">{{ scope.row.succesTotal || '-' }}</template>
                                 </el-table-column>
-                                <el-table-column prop="proportion" label="问题数占比" align="left">
+                                <el-table-column prop="proportion" :label="td('dpp.asset.detail.quality.problemRatio')" align="left">
                                     <template #default="scope">
                                         {{ scope.row.proportion != null ? scope.row.proportion + '%' : '-' }}
                                     </template>
 
                                 </el-table-column>
-                                <el-table-column label="趋势" align="left">
+                                <el-table-column :label="td('dpp.asset.detail.quality.trend')" align="left">
                                     <template #default="{ row }">
                                         <template v-if="row.trendType == '-1'">
                                             -
@@ -109,8 +109,8 @@
                 <el-col :xs="24" :sm="24" :md="12" class="trend-chart-panel">
                     <div class="module-8 border-item">
                         <div class="border-item-head">
-                            <span class="head-title">治理数据量变化趋势</span>
-                            <el-select v-model="selectedRange" size="small" placeholder="选择时间范围" style="width: 120px"
+                            <span class="head-title">{{ td('dpp.asset.detail.quality.dataGovernanceTrend') }}</span>
+                            <el-select v-model="selectedRange" size="small" :placeholder="td('dpp.asset.detail.quality.selectTimeRange')" style="width: 120px"
                                 @change="onRangeChange">
                                 <el-option v-for="item in rangeOptions" :key="item.value" :label="item.label"
                                     :value="item.value" />
@@ -127,53 +127,53 @@
             <el-row>
                 <div class="module-8 border-item" style="width: 100%">
                     <div class="border-item-head">
-                        <span class="head-title">规则列表</span>
+                        <span class="head-title">{{ td('dpp.asset.detail.quality.ruleList') }}</span>
                     </div>
                     <div class="border-item-body" style="height: 320px;">
                         <el-table stripe height="300px" v-loading="loading" :data="ruleList" lazy
                             :show-overflow-tooltip="{ effect: 'light' }">
-                            <el-table-column v-if="getColumnVisibility(8)" label="评测名称" align="left"
+                            <el-table-column v-if="getColumnVisibility(8)" :label="td('dpp.asset.detail.quality.evaluationName')" align="left"
                                 :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="scope">
                                     {{ getEvaluateName(scope.row) }}
                                 </template>
                             </el-table-column>
 
-                            <el-table-column v-if="getColumnVisibility(1)" label="数据库名称" align="left" prop="name"
+                            <el-table-column v-if="getColumnVisibility(1)" :label="td('dpp.asset.detail.quality.dbName')" align="left" prop="name"
                                 :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="scope">{{ scope.row.datasourceName || '-' }}</template>
                             </el-table-column>
-                            <el-table-column v-if="getColumnVisibility(2)" label="字段名/中文名" align="left" prop="name"
+                            <el-table-column v-if="getColumnVisibility(2)" :label="td('dpp.asset.detail.quality.fieldInfo')" align="left" prop="name"
                                 :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="scope"> {{ scope.row.columnLabel || '-' }}</template>
                             </el-table-column>
-                            <el-table-column v-if="getColumnVisibility(3)" label="质量维度" align="left"
+                            <el-table-column v-if="getColumnVisibility(3)" :label="td('dpp.asset.detail.quality.qualityDimension')" align="left"
                                 prop="dimensionType" :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="scope">
                                     <dict-tag :options="att_rule_audit_q_dimension" :value="scope.row.dimensionType" />
 
                                 </template>
                             </el-table-column>
-                            <el-table-column v-if="getColumnVisibility(5)" label="稽查名称" align="left" prop="ruleName"
+                            <el-table-column v-if="getColumnVisibility(5)" :label="td('dpp.asset.detail.quality.inspectionName')" align="left" prop="ruleName"
                                 :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="scope">{{ scope.row.ruleName || '-' }}</template>
                             </el-table-column>
 
-                            <el-table-column v-if="getColumnVisibility(7)" label="问题数据量占比" align="left"
+                            <el-table-column v-if="getColumnVisibility(7)" :label="td('dpp.asset.detail.quality.problemDataRatio')" align="left"
                                 prop="proportion" :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="scope">
                                     {{
                                         (scope.row.problemTotal != -1 && scope.row.problemTotal != null)
-                                            ? `${scope.row.problemTotal} /条 ${scope.row.proportion ?? '-'}%`
+                                            ? `${scope.row.problemTotal} /${td('dpp.asset.detail.quality.problemTotalUnit')} ${scope.row.proportion ?? '-'}%`
                                             : '-'
                                     }}
                                 </template>
 
                             </el-table-column>
-                            <el-table-column :label="t('common.texts.operation')" fixed="right" width="140" align="left">
+                            <el-table-column :label="td('common.texts.operation')" fixed="right" width="140" align="left">
                                 <template #default="scope">
                                     <el-button link type="primary" icon="View"
-                                        @click="openDialog(scope.row)">查看问题数据</el-button>
+                                        @click="openDialog(scope.row)">{{ td('dpp.asset.detail.quality.viewProblemData') }}</el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -184,15 +184,15 @@
         </div>
         <el-empty :description="td('common.noAssetQualityTask')" v-else>
             <el-button type="primary" @click="openQualityDialog(undefined)">
-                <i class="iconfont-mini icon-xinzeng mr5"></i>新增资产质量任务
+                <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('dpp.asset.detail.quality.addTask') }}
             </el-button>
         </el-empty>
         <!-- 问题数据弹窗 -->
         <ProblemDialog ref="problemDialogRef" />
         <qualityTaskDialog ref="qualityDialog" @submit-success="fetchData" />
         <DataViewDialog :visible="DataView" :taskType="3" @update:visible="DataView = $event" :data="form"
-            title="执行记录" />
-        <el-dialog title="调度周期" v-model="openCron" :append-to="$refs['app-container']" destroy-on-close
+            :title="td('dpp.asset.detail.quality.executionRecord')" />
+        <el-dialog :title="td('dpp.asset.detail.quality.schedulePeriod')" v-model="openCron" :append-to="$refs['app-container']" destroy-on-close
             :appendTo="'#app'">
             <crontab ref="crontabRef" @hide="openCron = false" @fill="crontabFill" :expression="expression">
             </crontab>
@@ -212,7 +212,6 @@
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
 import * as echarts from 'echarts';
 import { useRoute } from 'vue-router';
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
@@ -238,7 +237,6 @@ import {
 const route = useRoute();
 import Crontab from "@/components/Crontab/index.vue";
 const { td,locale } = useDefaultLang();
-const { t } = useI18n();
 const id = ref(route.query.id)
 
 const { att_rule_audit_q_dimension, } = proxy.useDict(
@@ -281,15 +279,15 @@ function crontabFill(value) {
         status: '1',
         id: Number(taskData.value?.id),
     }).then((response) => {
-        proxy.$modal.msgSuccess(t('common.message.msgOpSuccess'));
+        proxy.$modal.msgSuccess(td('common.message.msgOpSuccess'));
         fetchData()
     });
 }
 /** 改变启用状态值 */
 function handleStatusChange(status, row, e) {
-    const text = row?.status == "1" ? "上线" : '下线';
+    const text = row?.status == "1" ? td('dpp.asset.detail.quality.online') : td('dpp.asset.detail.quality.offline');
     proxy.$modal
-        .confirm('确认要"' + text + '","' + row.taskName + '"质量任务吗？')
+        .confirm(td('dpp.asset.detail.quality.confirmTaskStatus').replace('{action}', text).replace('{name}', row.taskName))
         .then(function () {
             loading.value = true;
             updateDppQualityTaskStatus({
@@ -298,7 +296,7 @@ function handleStatusChange(status, row, e) {
             })
                 .then((response) => {
                     fetchData()
-                    proxy.$modal.msgSuccess(t('common.message.msgOpSuccess'));
+                    proxy.$modal.msgSuccess(td('common.message.msgOpSuccess'));
                 })
                 .finally(() => {
                     loading.value = false;
@@ -329,9 +327,9 @@ const openDialog = (row) => {
 
 const selectedRange = ref('7');
 const rangeOptions = [
-    { label: '近7天', value: '7' },
-    { label: '近15天', value: '15' },
-    { label: '近30天', value: '30' }
+    { label: td('dpp.asset.detail.quality.last7Days'), value: '7' },
+    { label: td('dpp.asset.detail.quality.last15Days'), value: '15' },
+    { label: td('dpp.asset.detail.quality.last30Days'), value: '30' }
 ];
 
 const ruleList = ref([]);
@@ -341,12 +339,12 @@ const loading = ref(false);
 
 const columns = ref([
 
-    { key: 8, label: "规则名称", visible: true },
-    { key: 1, label: "数据库名称", visible: true },
-    { key: 2, label: "字段名/中文名", visible: true },
-    { key: 3, label: "质量维度", visible: true },
-    { key: 5, label: "规则名称", visible: true },
-    { key: 7, label: "问题数据量占比", visible: true },
+    { key: 8, label: td('dpp.asset.detail.quality.columnLabels.ruleName'), visible: true },
+    { key: 1, label: td('dpp.asset.detail.quality.columnLabels.dbName'), visible: true },
+    { key: 2, label: td('dpp.asset.detail.quality.columnLabels.fieldInfo'), visible: true },
+    { key: 3, label: td('dpp.asset.detail.quality.columnLabels.qualityDimension'), visible: true },
+    { key: 5, label: td('dpp.asset.detail.quality.columnLabels.ruleName'), visible: true },
+    { key: 7, label: td('dpp.asset.detail.quality.columnLabels.problemDataRatio'), visible: true },
 ]);
 function getLabelsByColumnName(row, columnName) {
     if (!row.rule || !columnName) return '-';
@@ -582,7 +580,7 @@ const fetchData = async () => {
 };
 const handleExecuteOnce = async (row) => {
     if (!row?.id) {
-        proxy.$modal.msgError("无效的任务 ID");
+        proxy.$modal.msgError(td('dpp.asset.detail.quality.invalidTaskId'));
         return;
     }
     loading.value = true;

@@ -18,23 +18,23 @@
 <template>
   <!-- // 数据库表 -->
 
-  <el-form-item label="表名" prop="tableName">
-    <el-input v-model="localForm.tableName" placeholder="表名" disabled />
+  <el-form-item :label="td('dpp.asset.add.table.tableName')" prop="tableName">
+    <el-input v-model="localForm.tableName" :placeholder="td('dpp.asset.add.table.tableName')" disabled />
   </el-form-item>
-  <el-form-item label="注释" prop="tableComment">
-    <el-input v-model="localForm.tableComment" placeholder="注释" disabled />
+  <el-form-item :label="td('dpp.asset.add.table.tableComment')" prop="tableComment">
+    <el-input v-model="localForm.tableComment" :placeholder="td('dpp.asset.add.table.tableComment')" disabled />
   </el-form-item>
   <el-form-item
-      label="资产名称"
+      :label="td('dpp.asset.add.table.assetName')"
       prop="name"
-      :rules="[{ required: true, message: '请输入资产名称', trigger: 'blur' }]"
+      :rules="[{ required: true, message: td('dpp.asset.add.table.assetNameRequired'), trigger: 'blur' }]"
   >
-    <el-input v-model="localForm.name" placeholder="请输入资产名称" />
+    <el-input v-model="localForm.name" :placeholder="td('dpp.asset.add.table.assetNamePlaceholder')" />
   </el-form-item>
   <el-form-item
-      label="表类型"
+      :label="td('dpp.asset.add.table.tableType')"
       prop="tableType"
-      :rules="[{ required: true, message: '请选择表类型', trigger: 'change' }]"
+      :rules="[{ required: true, message: td('dpp.asset.add.table.tableTypeRequired'), trigger: 'change' }]"
   >
     <el-select v-model="localForm.tableType" style="width: 100%">
       <el-option
@@ -46,12 +46,12 @@
     </el-select>
   </el-form-item>
   <el-form-item
-      label="数仓分层"
+      :label="td('dpp.asset.add.table.hierarchy')"
       prop="dataLayerId"
       :rules="[
       {
         required: true,
-        message: '请选择数仓分层',
+        message: td('dpp.asset.add.table.dataLayerRequired'),
         trigger: 'change',
       },
     ]"
@@ -67,7 +67,7 @@
       }"
         node-key="id"
         value-key="id"
-        placeholder="请选择数仓分层"
+        :placeholder="td('dpp.asset.add.table.dataLayerPlaceholder')"
         check-strictly
         filterable
         default-expand-all
@@ -78,12 +78,12 @@
 
   <template v-if="localForm.tableType != '4'">
     <el-form-item
-        label="业务分类"
+        :label="td('dpp.asset.add.table.businessCategory')"
         prop="businessDomainId"
         :rules="[
         {
           required: true,
-          message: '请选择业务分类',
+          message: td('dpp.asset.add.table.businessCategoryRequired'),
           trigger: 'change',
         },
       ]"
@@ -99,7 +99,7 @@
         }"
           node-key="id"
           value-key="id"
-          placeholder="请选择业务分类"
+          :placeholder="td('dpp.asset.add.table.businessCategoryPlaceholder')"
           check-strictly
           filterable
           clearable
@@ -107,12 +107,12 @@
       />
     </el-form-item>
     <el-form-item
-        label="数据分域"
+        :label="td('dpp.asset.add.table.dataDomain')"
         prop="dataDomainId"
         :rules="[
         {
           required: true,
-          message: '请选择数据分域',
+          message: td('dpp.asset.add.table.dataDomainRequired'),
           trigger: 'change',
         },
       ]"
@@ -128,7 +128,7 @@
         }"
           node-key="id"
           value-key="id"
-          placeholder="请选择数据分域"
+          :placeholder="td('dpp.asset.add.table.dataDomainPlaceholder')"
           check-strictly
           filterable
           clearable
@@ -139,12 +139,12 @@
 
   <template v-else>
     <el-form-item
-        label="所属主题"
+        :label="td('dpp.asset.add.table.themeDomain')"
         prop="themeDomainId"
         :rules="[
         {
           required: true,
-          message: '请选择所属主题',
+          message: td('dpp.asset.add.table.themeDomainRequired'),
           trigger: 'change',
         },
       ]"
@@ -160,7 +160,7 @@
         }"
           node-key="id"
           value-key="id"
-          placeholder="请选择所属主题"
+          :placeholder="td('dpp.asset.add.table.themeDomainPlaceholder')"
           check-strictly
           filterable
           clearable
@@ -170,19 +170,19 @@
   </template>
 
   <el-form-item
-      label="表命名规范"
+      :label="td('dpp.asset.add.table.tableCase')"
       prop="tableCase"
       :rules="[
       {
         required: true,
-        message: '请选择表命名规范',
+        message: td('dpp.asset.add.table.tableCaseRequired'),
         trigger: 'change',
       },
     ]"
   >
     <el-select
         v-model="localForm.tableCase"
-        placeholder="请选择表命名规范"
+        :placeholder="td('dpp.asset.add.table.tableCasePlaceholder')"
         style="width: 100%"
     >
       <el-option
@@ -194,33 +194,33 @@
     </el-select>
   </el-form-item>
   <el-form-item
-      label="表命名规范"
+      :label="td('dpp.asset.add.table.tableCase')"
       prop="namingSpec"
       :rules="[
       {
         required: true,
-        message: '表命名规范不能为空',
+        message: td('dpp.asset.add.table.namingSpecRequired'),
         trigger: 'change',
       },
     ]"
   >
     <el-input
         v-model="localForm.namingSpec"
-        placeholder="系统生成的命名规范"
+        :placeholder="td('dpp.asset.add.table.namingSpecPlaceholder')"
         disabled
     />
   </el-form-item>
   <qt-form-item
-      label="数据连接名称"
+      :label="td('dpp.asset.add.table.datasourceName')"
       prop="datasourceId"
       :rules="[
-      { required: true, message: '请选择数据连接名称', trigger: 'change' },
+      { required: true, message: td('dpp.asset.add.table.datasourceNameRequired'), trigger: 'change' },
     ]"
-      :tip="{ content: '选择该资产所依赖的数据连接，即数据源实例。' }"
+      :tip="{ content: td('dpp.asset.add.table.datasourceNameTip') }"
   >
     <DatasourceList
         v-model="localForm.datasourceId"
-        placeholder="请选择数据连接名称"
+        :placeholder="td('dpp.asset.add.table.datasourceNamePlaceholder')"
         @change="handleDatasourceChange"
         filterable
         :disabled="
@@ -231,18 +231,18 @@
     />
   </qt-form-item>
 
-  <el-form-item label="数据连接类型" prop="datasourceType">
+  <el-form-item :label="td('dpp.asset.add.table.datasourceType')" prop="datasourceType">
     <el-input
         v-model="localForm.datasourceType"
         disabled
-        placeholder="请选择数据连接类型"
+        :placeholder="td('dpp.asset.add.table.datasourceTypePlaceholder')"
     />
   </el-form-item>
 
   <el-form-item
-      label="选择表"
+      :label="td('dpp.asset.add.table.selectTable')"
       prop="tableName"
-      :rules="[{ required: true, message: '请选择表', trigger: 'change' }]"
+      :rules="[{ required: true, message: td('dpp.asset.add.table.selectTableRequired'), trigger: 'change' }]"
   >
     <el-select
         v-model="localForm.tableName"
@@ -250,7 +250,7 @@
         remote
         :remote-method="remoteSearchTables"
         @visible-change="handleTableSelectVisible"
-        placeholder="请选择表"
+        :placeholder="td('dpp.asset.add.table.selectTablePlaceholder')"
         @change="handleTableChange"
         :loading="loadingList"
         :disabled="
@@ -268,9 +268,12 @@
 </template>
 
 <script setup>
+import useDefaultLang from "@/composables/useDefaultLang"
 import { ref, watch, getCurrentInstance, onMounted } from "vue";
 import { ElMessage } from "element-plus";
 import useUserStore from "@/store/system/user.js";
+
+const { td } = useDefaultLang();
 import {
   getTablesByDataSourceId,
   getColumnByAssetId,

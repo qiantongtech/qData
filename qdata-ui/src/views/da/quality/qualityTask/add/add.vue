@@ -67,35 +67,35 @@
             style="padding-right: 90px"
             :disabled="route.query.info"
           >
-            <div class="h2-titles">基础信息</div>
+            <div class="h2-titles">{{ td('da.qualityTask.stepBasicInfo') }}</div>
             <el-row :gutter="20">
               <el-col :span="11">
                 <el-form-item
-                  label="任务名称"
+                  :label="td('da.qualityTask.taskName')"
                   prop="taskName"
                   :rules="[
                     {
                       required: true,
-                      message: '请输入任务名称',
+                      message: td('da.qualityTask.taskNamePlaceholder'),
                       trigger: 'blur',
                     },
                   ]"
                 >
                   <el-input
                     v-model="form.taskName"
-                    placeholder="请输入任务名称"
+                    :placeholder="td('da.qualityTask.taskNamePlaceholder')"
                   />
                 </el-form-item>
               </el-col>
               <el-col :span="2"> </el-col>
               <el-col :span="11">
                 <el-form-item
-                  label="任务分类"
+                  :label="td('da.qualityTask.taskCategory')"
                   prop="catCode"
                   :rules="[
                     {
                       required: true,
-                      message: '请选择任务分类',
+                      message: td('da.qualityTask.taskCategoryRequired'),
                       trigger: 'change',
                     },
                   ]"
@@ -110,7 +110,7 @@
                       children: 'children',
                     }"
                     value-key="ID"
-                    placeholder="请选择任务分类"
+                    :placeholder="td('da.qualityTask.taskCategoryPlaceholder')"
                     check-strictly
                   />
                 </el-form-item>
@@ -119,12 +119,12 @@
             <el-row :gutter="20">
               <el-col :span="11">
                 <el-form-item
-                  label="执行策略"
+                  :label="td('da.qualityTask.executionStrategy')"
                   prop="strategy"
                   :rules="[
                     {
                       required: true,
-                      message: '请选择执行策略',
+                      message: td('da.qualityTask.executionStrategyRequired'),
                       trigger: 'blur',
                     },
                   ]"
@@ -132,7 +132,7 @@
                   <el-select
                     class="el-form-input-width"
                     v-model="form.strategy"
-                    placeholder="请选择执行策略"
+                    :placeholder="td('da.qualityTask.executionStrategyPlaceholder')"
                     style="width: 100%"
                   >
                     <el-option
@@ -146,7 +146,7 @@
               </el-col>
               <el-col :span="2"> </el-col>
               <el-col :span="11">
-                <el-form-item label="责任人" prop="contactId">
+                <el-form-item :label="td('da.qualityTask.responsiblePerson')" prop="contactId">
                   <el-tree-select
                     filterable
                     v-model="form.contactId"
@@ -157,7 +157,7 @@
                       children: 'children',
                     }"
                     value-key="ID"
-                    placeholder="请选择责任人"
+                    :placeholder="td('da.qualityTask.responsiblePersonPlaceholder')"
                     check-strictly
                     @change="handleContactChange"
                   />
@@ -168,24 +168,24 @@
             <el-row :gutter="20">
               <el-col :span="11">
                 <el-form-item
-                  label="调度周期"
+                  :label="td('da.qualityTask.schedulePeriodLabel')"
                   prop="cycle"
                   :rules="[
                     {
                       required: true,
-                      message: '请选择调度周期',
+                      message: td('da.qualityTask.schedulePeriodRequired'),
                       trigger: 'blur',
                     },
                   ]"
                 >
-                  <el-input v-model="form.cycle" placeholder="请选择调度周期">
+                  <el-input v-model="form.cycle" :placeholder="td('da.qualityTask.schedulePeriodPlaceholder')">
                     <template #append>
                       <el-button
                         type="primary"
                         @click="handleShowCron"
                         style="background-color: #2666fb; color: #fff"
                       >
-                        配置
+                        {{ td('da.qualityTask.config') }}
                         <i class="el-icon-time el-icon--right"></i>
                       </el-button>
                     </template>
@@ -194,7 +194,7 @@
               </el-col>
               <el-col :span="2"> </el-col>
               <el-col :span="11">
-                <el-form-item label="任务状态" prop="status">
+                <el-form-item :label="td('da.qualityTask.taskStatusLabel')" prop="status">
                   <el-radio-group
                     v-model="form.status"
                     class="el-form-input-width"
@@ -212,11 +212,11 @@
             </el-row>
             <el-row :gutter="20">
               <el-col :span="24">
-                <el-form-item label="任务描述" prop="description">
+                <el-form-item :label="td('da.qualityTask.taskDescription')" prop="description">
                   <el-input
                     v-model="form.description"
                     type="textarea"
-                    placeholder="请输入任务描述"
+                    :placeholder="td('da.qualityTask.taskDescriptionPlaceholder')"
                   />
                 </el-form-item>
               </el-col>
@@ -230,23 +230,23 @@
 
                             </div>
                         </div> -->
-            <div class="h2-titles">属性信息</div>
+            <div class="h2-titles">{{ td('da.qualityTask.propertyInfo') }}</div>
             <el-row :gutter="20">
               <el-col :span="11">
                 <el-form-item
-                  label="任务优先级"
+                  :label="td('da.qualityTask.taskPriority')"
                   prop="priority"
                   :rules="[
                     {
                       required: true,
-                      message: '请选择任务优先级',
+                      message: td('da.qualityTask.taskPriorityRequired'),
                       trigger: 'change',
                     },
                   ]"
                 >
                   <el-select
                     v-model="form.priority"
-                    placeholder="请选择任务优先级"
+                    :placeholder="td('da.qualityTask.taskPriorityPlaceholder')"
                   >
                     <el-option
                       v-for="dict in priorityOptions"
@@ -260,42 +260,42 @@
               <el-col :span="2"> </el-col>
               <el-col :span="11">
                 <el-form-item
-                  label="Worker分组"
+                  :label="td('da.qualityTask.workerGroup')"
                   prop="workerGroup"
                   :rules="[
                     {
                       required: true,
-                      message: '请输入Worker分组',
+                      message: td('da.qualityTask.workerGroupRequired'),
                       trigger: 'blur',
                     },
                   ]"
                 >
                   <el-input
                     v-model="form.workerGroup"
-                    placeholder="请输入Worker分组"
+                    :placeholder="td('da.qualityTask.workerGroupPlaceholder')"
                   />
                 </el-form-item>
               </el-col>
               <el-col :span="11">
-                <el-form-item label="失败重试次数" prop="retryTimes">
+                <el-form-item :label="td('da.qualityTask.retryCount')" prop="retryTimes">
                   <el-input
                     type="number"
                     v-model="form.retryTimes"
-                    placeholder="请输入失败重试次数"
+                    :placeholder="td('da.qualityTask.retryCountPlaceholder')"
                   >
-                    <template #append>次</template>
+                    <template #append>{{ td('da.qualityTask.retryCountUnit') }}</template>
                   </el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="2"> </el-col>
               <el-col :span="11">
-                <el-form-item label="延迟执行时间" prop="delayTime">
+                <el-form-item :label="td('da.qualityTask.delayTime')" prop="delayTime">
                   <el-input
                     type="number"
                     v-model="form.delayTime"
-                    placeholder="请输入延迟执行时间"
+                    :placeholder="td('da.qualityTask.delayTimePlaceholder')"
                   >
-                    <template #append>分</template>
+                    <template #append>{{ td('da.qualityTask.delayTimeUnit') }}</template>
                   </el-input>
                 </el-form-item>
               </el-col>
@@ -310,7 +310,7 @@
           </el-form>
 
           <div v-loading="loadingList" v-show="activeReult == 1">
-            <div class="h2-titles">稽查对象信息</div>
+            <div class="h2-titles">{{ td('da.qualityTask.stepTargetInfo') }}</div>
             <div class="justify-between mb15">
               <el-row :gutter="15" class="btn-style">
                 <el-col :span="1.5">
@@ -319,15 +319,15 @@
                     icon="Plus"
                     @click="openDialog(undefined)"
                     v-if="!route.query.info"
-                    >{{ t('common.button.add') }}</el-button
+                    >{{ td('common.button.add') }}</el-button
                   >
                 </el-col>
               </el-row>
             </div>
             <el-table stripe height="500px" :data="dppQualityTaskObjSaveReqVO">
-              <el-table-column label="序号" type="index" align="center" />
+              <el-table-column :label="td('common.display.index')" type="index" align="center" />
               <el-table-column
-                label="稽查对象名称"
+                :label="td('da.qualityTask.targetName')"
                 align="center"
                 prop="name"
                 :show-overflow-tooltip="{ effect: 'light' }"
@@ -337,7 +337,7 @@
                 </template>
               </el-table-column>
               <el-table-column
-                label="数据连接名称"
+                :label="td('da.qualityTask.datasourceName')"
                 align="center"
                 prop="type"
                 :show-overflow-tooltip="{ effect: 'light' }"
@@ -351,7 +351,7 @@
                 </template>
               </el-table-column>
               <el-table-column
-                label="模式名称"
+                :label="td('da.qualityTask.schemaName')"
                 align="center"
                 prop="type"
                 :show-overflow-tooltip="{ effect: 'light' }"
@@ -368,7 +368,7 @@
               </el-table-column>
 
               <el-table-column
-                label="表名称"
+                :label="td('da.qualityTask.tableName')"
                 align="center"
                 prop="tableName"
                 :show-overflow-tooltip="{ effect: 'light' }"
@@ -378,7 +378,7 @@
                 </template>
               </el-table-column>
               <el-table-column
-                :label="t('common.texts.operation')"
+                :label="td('common.texts.operation')"
                 align="center"
                 class-name="small-padding fixed-width"
                 fixed="right"
@@ -391,14 +391,14 @@
                     type="primary"
                     icon="Edit"
                     @click="openDialog(scope.row, scope.$index + 1)"
-                    >{{ t('common.button.update') }}</el-button
+                    >{{ td('common.button.update') }}</el-button
                   >
                   <el-button
                     link
                     type="danger"
                     icon="Delete"
                     @click="handleDelete(scope.row)"
-                    >{{ t('common.button.delete') }}</el-button
+                    >{{ td('common.button.delete') }}</el-button
                   >
                 </template>
               </el-table-column>
@@ -408,7 +408,7 @@
             <div class="clearfix header-text" style="margin-top: 10px">
               <div class="header-left">
                 <div class="blue-bar"></div>
-                稽查规则信息
+                {{ td('da.qualityTask.ruleInfo') }}
               </div>
             </div>
             <el-form
@@ -419,19 +419,19 @@
               label-width="75px"
               @submit.prevent
             >
-              <el-form-item label="规则名称" prop="name">
+              <el-form-item :label="td('da.qualityTask.ruleName')" prop="name">
                 <el-input
                   class="el-form-input-width"
                   v-model="queryParams.name"
-                  placeholder="请输入规则名称"
+                  :placeholder="td('da.qualityTask.ruleNamePlaceholder')"
                   clearable
                   @keyup.enter="handleQuery"
                 />
               </el-form-item>
-              <el-form-item label="质量维度" prop="dimensionType">
+              <el-form-item :label="td('da.qualityTask.qualityDimension')" prop="dimensionType">
                 <el-select
                   v-model="queryParams.dimensionType"
-                  placeholder="请选择质量维度"
+                  :placeholder="td('da.qualityTask.qualityDimensionPlaceholder')"
                   style="width: 210px"
                 >
                   <el-option
@@ -443,15 +443,15 @@
                 </el-select>
               </el-form-item>
 
-              <el-form-item :label="t('common.texts.status')" prop="publishStatus">
+              <el-form-item :label="td('common.texts.status')" prop="publishStatus">
                 <el-select
                   v-model="queryParams.publishStatus"
-                  :placeholder="t('common.form.statusPlaceholder')"
+                  :placeholder="td('common.form.statusPlaceholder')"
                   clearable
                   class="el-form-input-width"
                 >
-                  <el-option label="上线" value="online" />
-                  <el-option label="下线" value="offline" />
+                  <el-option :label="td('da.qualityTask.online')" value="online" />
+                  <el-option :label="td('da.qualityTask.offline')" value="offline" />
                 </el-select>
               </el-form-item>
               <el-form-item>
@@ -461,13 +461,13 @@
                   @click="handleQuery"
                   @mousedown="(e) => e.preventDefault()"
                 >
-                  <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
+                  <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
                 </el-button>
                 <el-button
                   @click="resetQuery"
                   @mousedown="(e) => e.preventDefault()"
                 >
-                  <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
+                  <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
                 </el-button>
               </el-form-item>
             </el-form>
@@ -479,12 +479,12 @@
                     icon="Plus"
                     @click="openRuleSelector(undefined)"
                     v-if="!route.query.info"
-                    >{{ t('common.button.add') }}</el-button
+                    >{{ td('common.button.add') }}</el-button
                   >
                 </el-col>
                 <el-col :span="1.5">
                   <el-tooltip
-                    content="会自动获取资产关联的数据元中的稽查规则"
+                    :content="td('da.qualityTask.ruleTooltip')"
                     placement="top"
                   >
                     <el-button
@@ -495,7 +495,7 @@
                       <el-icon style="margin-right: 4px">
                         <Refresh />
                       </el-icon>
-                      获取稽查规则
+                      {{ td('da.qualityTask.getRules') }}
                     </el-button>
                   </el-tooltip>
                 </el-col>
@@ -506,9 +506,9 @@
               height="450px"
               :data="dppQualityTaskEvaluateSaveReqVO"
             >
-              <el-table-column label="序号" type="index" align="center" />
+              <el-table-column :label="td('common.display.index')" type="index" align="center" />
               <el-table-column
-                label="评测名称"
+                :label="td('da.qualityTask.evaluationName')"
                 align="center"
                 prop="name"
                 :show-overflow-tooltip="{ effect: 'light' }"
@@ -518,7 +518,7 @@
                 </template>
               </el-table-column>
               <el-table-column
-                label="评测字段"
+                :label="td('da.qualityTask.evaluationField')"
                 align="center"
                 prop="evaColumn"
                 :show-overflow-tooltip="{ effect: 'light' }"
@@ -528,7 +528,7 @@
                 </template>
               </el-table-column>
               <el-table-column
-                label="稽查规则"
+                :label="td('da.qualityTask.inspectionRule')"
                 align="center"
                 prop="ruleName"
                 :show-overflow-tooltip="{ effect: 'light' }"
@@ -538,7 +538,7 @@
                 </template>
               </el-table-column>
               <el-table-column
-                label="规则描述"
+                :label="td('da.qualityTask.ruleDescription')"
                 align="center"
                 prop="ruleDescription"
                 :show-overflow-tooltip="{ effect: 'light' }"
@@ -548,7 +548,7 @@
                 </template>
               </el-table-column>
               <el-table-column
-                label="质量维度"
+                :label="td('da.qualityTask.qualityDimension')"
                 align="center"
                 prop="dimensionType"
                 width="120"
@@ -563,17 +563,17 @@
               </el-table-column>
 
               <el-table-column
-                :label="t('common.texts.status')"
+                :label="td('common.texts.status')"
                 align="center"
                 prop="status"
                 width="100"
               >
                 <template #default="scope">
-                  {{ scope.row.status == "1" ? "上线" : "下线" }}
+                  {{ scope.row.status == "1" ? td('da.qualityTask.online') : td('da.qualityTask.offline') }}
                 </template>
               </el-table-column>
               <el-table-column
-                :label="t('common.texts.operation')"
+                :label="td('common.texts.operation')"
                 align="center"
                 class-name="small-padding fixed-width"
                 fixed="right"
@@ -588,14 +588,14 @@
                     type="primary"
                     icon="Edit"
                     @click="openRuleDialog(scope.row, scope.$index + 1)"
-                    >{{ t('common.button.update') }}</el-button
+                    >{{ td('common.button.update') }}</el-button
                   >
                   <el-button
                     link
                     type="danger"
                     icon="Delete"
                     @click="handleRuleDelete(scope.$index + 1)"
-                    >{{ t('common.button.delete') }}</el-button
+                    >{{ td('common.button.delete') }}</el-button
                   >
                 </template>
               </el-table-column>
@@ -603,9 +603,9 @@
           </div>
         </div>
         <div class="button-style">
-          <el-button type="primary" @click="handleSuccess">返回列表</el-button>
+          <el-button type="primary" @click="handleSuccess">{{ td('da.qualityTask.backToList') }}</el-button>
           <el-button v-if="activeReult != 0" @click="handleLastStep"
-            >{{ t('common.button.previousStep') }}</el-button
+            >{{ td('common.button.previousStep') }}</el-button
           >
           <el-button
             type="primary"
@@ -613,15 +613,15 @@
             @click="submitForm"
             :loading="loadingOptions.loading"
           >
-            确定并退出
+            {{ td('da.qualityTask.confirmExit') }}
           </el-button>
           <el-button v-if="activeReult !== 2" @click="handleNextStep"
-            >{{ t('common.button.nextStep') }}</el-button
+            >{{ td('common.button.nextStep') }}</el-button
           >
         </div>
       </div>
     </div>
-    <el-dialog title="Cron表达式生成器" v-model="openCron" destroy-on-close>
+    <el-dialog :title="td('da.qualityTask.cronTitle')" v-model="openCron" destroy-on-close>
       <crontab
         ref="crontabRef"
         @hide="openCron = false"
@@ -643,7 +643,7 @@
 </template>
 
 <script setup name="qualityTask">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { ref, reactive, toRefs, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import InspectionTargetDialog from "../components/inspectionTarget.vue";
@@ -659,7 +659,7 @@ import Crontab from "@/components/Crontab/index.vue";
 import { getColumnByAssetId } from "@/api/dpp/task/index.js";
 import { treeData } from "../data.js";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const route = useRoute();
 const loading = ref(false);
@@ -809,7 +809,7 @@ async function selectInspectionRule() {
 
           if (addedCount > 0) {
             ElMessage.success(
-              `已追加 ${addedCount} 条规则，来自表 ${item.tableName}`
+              td('da.qualityTask.rulesAdded', { count: addedCount, tableName: item.tableName })
             );
           } else {
             // ElMessage.info(`表 ${item.tableName} 没有新规则追加`);
@@ -856,7 +856,7 @@ function getDeptTree() {
     deptOptions.value = proxy.handleTree(response.data, "id", "parentId");
     deptOptions.value = [
       {
-        name: "数据质量类目",
+        name: td('da.qualityTask.catRootName'),
         value: "",
         id: 0,
         children: deptOptions.value,
@@ -892,9 +892,9 @@ const data = reactive({
     publishStatus: "",
   },
   stepsList: [
-    { name: "基础信息", id: 0 },
-    { name: "稽查对象信息", id: 1 },
-    { name: "稽查规则", id: 2 },
+    { name: td('da.qualityTask.stepBasicInfo'), id: 0 },
+    { name: td('da.qualityTask.stepTargetInfo'), id: 1 },
+    { name: td('da.qualityTask.stepRuleInfo'), id: 2 },
   ],
   activeReult: 0,
   active: 0,
@@ -906,9 +906,9 @@ const { form, stepsList, activeReult, loadingOptions, queryParams, active } =
 const formRef = ref();
 
 const priorityOptions = ref([
-  { label: "高", value: "high" },
-  { label: "中", value: "medium" },
-  { label: "低", value: "low" },
+  { label: td('da.qualityTask.high'), value: "high" },
+  { label: td('da.qualityTask.medium'), value: "medium" },
+  { label: td('da.qualityTask.low'), value: "low" },
 ]);
 
 function handleLastStep() {
@@ -925,7 +925,7 @@ function handleDelete(row) {
   if (idxTable !== -1) {
     dppQualityTaskObjSaveReqVO.value.splice(idxTable, 1);
   } else {
-    proxy.$message.warning("删除失败，字段未找到");
+    proxy.$message.warning(td('da.qualityTask.deleteFailed'));
   }
 }
 function handleRuleDelete(index) {
@@ -938,7 +938,7 @@ async function handleNextStep() {
     await formRef.value?.validate();
   } catch (err) {
     console.warn("表单校验未通过：", err);
-    ElMessage.warning("校验未通过，请检查必填项");
+    ElMessage.warning(td('da.qualityTask.validationFailed'));
     loadingInstance.value = false;
     return;
   }
@@ -957,7 +957,7 @@ function Inspectionconfirm(obj, mode) {
   });
 
   if (isDuplicate) {
-    proxy.$message.warning("校验未通过，稽查对象名称不能重复");
+    proxy.$message.warning(td('da.qualityTask.targetNameDuplicate'));
     return;
   }
 
@@ -989,7 +989,7 @@ function RuleSelectorconfirm(obj, mode) {
   });
 
   if (isDuplicate) {
-    proxy.$message.warning("校验未通过，评测名称不能重复");
+    proxy.$message.warning(td('da.qualityTask.evalNameDuplicate'));
     return;
   }
 
@@ -1013,7 +1013,7 @@ async function submitForm() {
     await formRef.value?.validate();
   } catch (err) {
     console.warn("表单校验未通过：", err);
-    ElMessage.warning("校验未通过，请检查必填项");
+    ElMessage.warning(td('da.qualityTask.validationFailed'));
     loadingInstance.value = false;
     return;
   }
@@ -1037,7 +1037,7 @@ async function submitForm() {
       proxy.$modal.msgSuccess(res.msg);
       handleSuccess();
     } else {
-      ElMessage.warning(res.msg || "提交失败！");
+      ElMessage.warning(res.msg || td('da.qualityTask.submitFailed'));
     }
   } catch (err) {
   } finally {
@@ -1067,7 +1067,7 @@ async function getDppQualityTaskinfo() {
     form.value.contactId = Number(form.value.contactId);
   } catch (error) {
     console.error("获取质量任务失败:", error);
-    ElMessage.warning("获取质量任务信息失败，请稍后重试");
+    ElMessage.warning(td('da.qualityTask.getTaskFailed'));
   } finally {
     loadingInstance.value = false;
   }

@@ -19,11 +19,11 @@
   <el-form ref="formRef" :model="form" label-width="130px" :disabled="false">
     <el-row>
       <el-col :span="12">
-        <el-form-item label="小数位数" prop="scale">
+        <el-form-item :label="td('da.qualityTaskRules.ruleCommon.decimalPlaces')" prop="scale">
           <el-input
             v-if="!falg"
             v-model="form.scale"
-            placeholder="请输入小数位数"
+            :placeholder="td('da.qualityTaskRules.ruleCommon.decimalPlaceholder')"
             type="number"
             min="0"
             class="rule-half"
@@ -32,17 +32,17 @@
         </el-form-item>
       </el-col>
       <el-col :span="12">
-        <el-form-item label="忽略整数值" prop="skipInteger">
+        <el-form-item :label="td('da.qualityTaskRules.ruleCommon.ignoreInteger')" prop="skipInteger">
           <el-radio-group v-if="!falg" v-model="form.skipInteger">
-            <el-radio :value="'1'">是</el-radio>
-            <el-radio :value="'0'">否</el-radio>
+            <el-radio :value="'1'">{{ td('da.qualityTaskRules.ruleCommon.yes') }}</el-radio>
+            <el-radio :value="'0'">{{ td('da.qualityTaskRules.ruleCommon.no') }}</el-radio>
           </el-radio-group>
           <div v-else class="form-readonly">
             {{
               form.skipInteger === "1"
-                ? "是"
+                ? td('da.qualityTaskRules.ruleCommon.yes')
                 : form.skipInteger === "0"
-                ? "否"
+                ? td('da.qualityTaskRules.ruleCommon.no')
                 : "-"
             }}
           </div>
@@ -51,17 +51,17 @@
     </el-row>
     <el-row>
       <el-col :span="12">
-        <el-form-item label="忽略空值" prop="ignoreNullValue">
+        <el-form-item :label="td('da.qualityTaskRules.ruleCommon.ignoreNullValue')" prop="ignoreNullValue">
           <el-radio-group v-if="!falg" v-model="form.ignoreNullValue">
-            <el-radio :value="'1'">是</el-radio>
-            <el-radio :value="'0'">否</el-radio>
+            <el-radio :value="'1'">{{ td('da.qualityTaskRules.ruleCommon.yes') }}</el-radio>
+            <el-radio :value="'0'">{{ td('da.qualityTaskRules.ruleCommon.no') }}</el-radio>
           </el-radio-group>
           <div v-else class="form-readonly">
             {{
               form.ignoreNullValue === "1"
-                ? "是"
+                ? td('da.qualityTaskRules.ruleCommon.yes')
                 : form.ignoreNullValue === "0"
-                ? "否"
+                ? td('da.qualityTaskRules.ruleCommon.no')
                 : "-"
             }}
           </div>
@@ -74,6 +74,9 @@
 <script setup>
 import { reactive, ref, watch } from "vue";
 import { getColumnByAssetId } from "@/api/dpp/task/index.js";
+import useDefaultLang from "@/composables/useDefaultLang";
+
+const { td } = useDefaultLang();
 
 const props = defineProps({
   form: Object,

@@ -23,9 +23,9 @@
         :api="api"
         :editable="true"
         :leftWidth="leftWidth"
-        :placeholder="'请输入数据集成类目名称'"
+        :placeholder="td('dpp.integratioTask.inputCategoryName', '请输入数据集成类目名称')"
         ref="DeptTreeRef"
-        title="数据集成类目"
+        :title="td('dpp.integratioTask.dataIntegrationCategory', '数据集成类目')"
         @node-click="handleNodeClick"
         :extraParams="{
           projectCode: userStore.projectCode,
@@ -45,7 +45,7 @@
           <template #actions-data>
             <el-button type="primary" plain @click="openTaskConfigDialog">
               <i class="iconfont-mini icon-xinzeng mr5"></i
-              >{{ t("common.button.add") }}
+              >{{ td("common.button.add", "新增") }}
             </el-button>
           </template>
 
@@ -92,7 +92,7 @@
             <template #releaseState="{ row }">
               <div class="flex-column fz12">
                 <div class="flex-center">
-                  <span class="black-label mr5">任务状态:</span>
+                  <span class="black-label mr5">{{ td('dpp.integratioTask.taskStatus', '任务状态') }}:</span>
                   <el-switch
                     v-model="row.status"
                     active-color="#13ce66"
@@ -104,7 +104,7 @@
                   />
                 </div>
                 <div class="flex-center">
-                  <span class="black-label mr5">调度状态:</span>
+                  <span class="black-label mr5">{{ td('dpp.integratioTask.scheduleStatus', '调度状态') }}:</span>
                   <el-switch
                     v-model="row.schedulerState"
                     active-color="#13ce66"
@@ -129,7 +129,7 @@
                   </span>
                 </div>
                 <div class="flex-center">
-                  <span class="mr5">执行策略:</span>
+                  <span class="mr5">{{ td('dpp.integratioTask.executionStrategy', '执行策略') }}:</span>
                   <dict-tag
                     :options="dpp_etl_task_execution_type"
                     :value="row.executionType"
@@ -159,7 +159,7 @@
                 <template v-else>
                   <div class="mb5">
                     <el-tag type="infos" class="not-executed-tag"
-                      >未执行</el-tag
+                      >{{ td('dpp.integratioTask.notExecuted', '未执行') }}</el-tag
                     >
                   </div>
                   <span>-</span>
@@ -199,7 +199,7 @@
                 icon="Edit"
                 :disabled="row.status == 1"
                 @click="routeTo('/dpp/task/integratioTask/edit', row)"
-                >配置任务</el-button
+                >{{ td('dpp.integratioTask.configureTask', '配置任务') }}</el-button
               >
               <el-button
                 link
@@ -211,12 +211,12 @@
                     info: true,
                   })
                 "
-                >{{ t("common.button.details") }}</el-button
+                >{{ td("common.button.details", "详情") }}</el-button
               >
               <el-popover placement="bottom" :width="150" trigger="click">
                 <template #reference>
                   <el-button link type="primary" icon="ArrowDown">{{
-                    t("common.button.more")
+                    td("common.button.more", "更多")
                   }}</el-button>
                 </template>
                 <div style="width: 100px" class="butgdlist">
@@ -227,14 +227,14 @@
                     icon="Operation"
                     @click="handleJobLog(row)"
                     :disabled="row.schedulerState == '1'"
-                    >调度周期</el-button
+                    >{{ td('dpp.integratioTask.scheduleCycle', '调度周期') }}</el-button
                   >
                   <el-button
                     link
                     type="primary"
                     icon="Stopwatch"
                     @click="handleDataView(row)"
-                    >运行实例</el-button
+                    >{{ td('dpp.integratioTask.runInstance', '运行实例') }}</el-button
                   >
                   <el-button
                     link
@@ -242,7 +242,7 @@
                     icon="VideoPlay"
                     :disabled="row.status != 1"
                     @click="handleExecuteOnce(row)"
-                    >执行一次</el-button
+                    >{{ td('dpp.integratioTask.executeOnce', '执行一次') }}</el-button
                   >
                   <el-button
                     link
@@ -250,7 +250,7 @@
                     icon="Delete"
                     :disabled="row.status == 1"
                     @click="handleDelete(row)"
-                    >{{ t("common.button.delete") }}</el-button
+                    >{{ td("common.button.delete", "删除") }}</el-button
                   >
                   <el-button
                     link
@@ -259,7 +259,7 @@
                     :disabled="row.status == 1"
                     @click="handleClone(row)"
                   >
-                    克隆
+                    {{ td('dpp.cleanRule.clone', '克隆') }}
                   </el-button>
                 </div>
               </el-popover>
@@ -274,10 +274,10 @@
       @update:visible="DataView = $event"
       @confirm="submitForm"
       :data="form"
-      title="运行实例"
+      :title="td('dpp.integratioTask.runInstance', '运行实例')"
     />
     <el-dialog
-      title="调度周期"
+      :title="td('dpp.integratioTask.scheduleCycle', '调度周期')"
       v-model="openCron"
       :append-to="$refs['app-container']"
       destroy-on-close
@@ -294,7 +294,7 @@
     <!-- 新增 -->
     <add
       :visible="taskConfigDialogVisible"
-      title="新增任务"
+      :title="td('dpp.cleanRule.addTask', '新增任务')"
       @update:visible="taskConfigDialogVisible = $event"
       @save="handleSave"
       @confirm="handleConfirm"
@@ -308,7 +308,7 @@
 </template>
 
 <script setup name="DppIntegratioTask">
-import { useI18n } from "vue-i18n";
+import useDefaultLang from "@/composables/useDefaultLang";
 import {
   listDppEtlTask,
   delDppEtlTask,
@@ -340,7 +340,7 @@ import add from "./add/add.vue";
 import { deptUserTree } from "@/api/system/system/user.js";
 import { ref, reactive, getCurrentInstance, watch } from "vue";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 
 const api = {
@@ -375,50 +375,50 @@ const tableStore = reactive({
     },
   },
   columns: [
-    { label: t("common.texts.number"), prop: "id", width: 60, sortable: true },
+    { label: td("common.texts.number", "编号"), prop: "id", width: 60, sortable: true },
     {
-      label: "任务信息",
+      label: td('dpp.integratioTask.taskInfo', '任务信息'),
       prop: "name",
       align: "left",
       slot: "name",
       width: 300,
     },
     {
-      label: "运行控制",
+      label: td('dpp.integratioTask.runControl', '运行控制'),
       prop: "status",
       width: 130,
       slot: "releaseState",
       align: "left",
     },
     {
-      label: "调度周期",
+      label: td('dpp.integratioTask.scheduleCycle', '调度周期'),
       prop: "cronExpression",
       width: 200,
       slot: "cronExpression",
       align: "left",
     },
     {
-      label: "最近执行",
+      label: td('dpp.integratioTask.recentExecution', '最近执行'),
       width: 160,
       slot: "lastExecute",
       align: "left",
     },
 
     {
-      label: "责任人",
+      label: td('dpp.integratioTask.personCharge', '责任人'),
       width: 120,
       slot: "personChargeName",
       align: "left",
     },
     {
-      label: t("common.texts.createdBy"),
+      label: td("common.texts.createdBy", "创建人"),
       slot: "createBy",
       width: 120,
       align: "left",
       showOverflowTooltip: true,
     },
     {
-      label: t("common.texts.createdTime"),
+      label: td("common.texts.createdTime", "创建时间"),
       prop: "createTime",
       sortable: true,
       sortableKey: "create_time",
@@ -428,7 +428,7 @@ const tableStore = reactive({
     },
 
     {
-      label: t("common.texts.operation"),
+      label: td("common.texts.operation", "操作"),
       align: "center",
       fixed: "right",
       slot: "action",
@@ -456,7 +456,7 @@ function getDeptTree() {
     var children = proxy.handleTree(response.data, "id", "parentId");
     deptOptions.value = [
       {
-        name: "数据集成类目",
+        name: td('dpp.integratioTask.dataIntegrationCategory', '数据集成类目'),
         value: "",
         id: 0,
         children: children,
@@ -471,29 +471,29 @@ function getDeptTree() {
 const searchStore = reactive({
   items: [
     {
-      label: "任务名称",
+      label: td('dpp.integratioTask.taskName', '任务名称'),
       prop: "name",
       align: "left",
-      component: { is: "input", placeholder: "请输入任务名称" },
+      component: { is: "input", placeholder: td('dpp.integratioTask.inputTaskName', '请输入任务名称') },
     },
     {
-      label: "任务状态",
+      label: td('dpp.integratioTask.taskStatus', '任务状态'),
       prop: "status",
       component: {
         is: "select",
-        placeholder: "请选择任务状态",
+        placeholder: td('dpp.integratioTask.selectTaskStatus', '请选择任务状态'),
         options: dpp_etl_task_status,
       },
     },
     {
-      label: "责任人",
+      label: td('dpp.integratioTask.personCharge', '责任人'),
       prop: "personCharge",
       component: {
         is: "tree-select",
         data: userList,
         props: { value: "userId", label: "nickName", children: "children" },
         valueKey: "ID",
-        placeholder: "请选择责任人",
+        placeholder: td('dpp.integratioTask.selectPersonCharge', '请选择责任人'),
         checkStrictly: true,
       },
     },
@@ -544,7 +544,7 @@ const handleSave = (form) => {
   };
   createEtlTaskFront(parms).then((res) => {
     if (res.code == 200) {
-      proxy.$modal.msgSuccess(t("common.message.msgOpSuccess"));
+      proxy.$modal.msgSuccess(td("common.message.msgOpSuccess", "操作成功"));
       handleQuery();
     }
   });
@@ -559,7 +559,7 @@ const handleConfirm = (form) => {
   };
   createEtlTaskFront(parms).then((res) => {
     if (res.code == 200) {
-      proxy.$modal.msgSuccess(t("common.message.msgOpSuccess"));
+      proxy.$modal.msgSuccess(td("common.message.msgOpSuccess", "操作成功"));
       handleQuery();
       routeTo("/dpp/task/integratioTask/edit", res.data);
     }
@@ -568,9 +568,9 @@ const handleConfirm = (form) => {
 
 // Actions
 function handleStatusChange(id, row) {
-  const text = row.status == "1" ? "上线" : "下线";
+  const text = row.status == "1" ? td('dpp.integratioTask.online', '上线') : td('dpp.integratioTask.offline', '下线');
   proxy.$modal
-    .confirm('确认要"' + text + '","' + row.name + '"数据集成任务吗？')
+    .confirm(td('dpp.integratioTask.confirmTaskStatus', '确认要"' + text + '","' + row.name + '"数据集成任务吗？', { action: text, name: row.name }))
     .then(function () {
       updateReleaseJobTask({
         id,
@@ -579,7 +579,7 @@ function handleStatusChange(id, row) {
         projectId: userStore.projectId,
       })
         .then((response) => {
-          proxy.$modal.msgSuccess(t("common.message.msgOpSuccess"));
+          proxy.$modal.msgSuccess(td("common.message.msgOpSuccess", "操作成功"));
           handleQuery();
         })
         .catch((error) => {
@@ -592,9 +592,9 @@ function handleStatusChange(id, row) {
 }
 
 function handleschedulerState(id, row) {
-  const text = row.schedulerState == "1" ? "上线" : "下线";
+  const text = row.schedulerState == "1" ? td('dpp.integratioTask.online', '上线') : td('dpp.integratioTask.offline', '下线');
   proxy.$modal
-    .confirm('确认要"' + text + '","' + row.name + '"数据集成调度状态吗？')
+    .confirm(td('dpp.integratioTask.confirmScheduleStatus', '确认要"' + text + '","' + row.name + '"数据集成调度状态吗？', { action: text, name: row.name }))
     .then(function () {
       updateReleaseSchedule({
         id,
@@ -603,7 +603,7 @@ function handleschedulerState(id, row) {
         projectId: userStore.projectId,
       })
         .then((response) => {
-          proxy.$modal.msgSuccess(t("common.message.msgOpSuccess"));
+          proxy.$modal.msgSuccess(td("common.message.msgOpSuccess", "操作成功"));
           handleQuery();
         })
         .catch((error) => {
@@ -654,7 +654,7 @@ function crontabFill(value) {
     projectId: userStore.projectId,
     id: row.value.id,
   }).then((response) => {
-    proxy.$modal.msgSuccess(t("common.message.msgOpSuccess"));
+    proxy.$modal.msgSuccess(td("common.message.msgOpSuccess", "操作成功"));
     handleQuery();
   });
 }
@@ -672,15 +672,15 @@ function submitForm() {
 
 const handleExecuteOnce = async (row) => {
   if (!row?.id) {
-    proxy.$modal.msgWarning("无效的任务id，请刷新后重试");
+    proxy.$modal.msgWarning(td('dpp.integratioTask.invalidTaskId', '无效的任务id，请刷新后重试'));
     return;
   }
   try {
     const res = await startDppEtlTask(row.id);
     if (Number(res?.code) === 200) {
-      proxy.$modal.msgSuccess("执行成功");
+      proxy.$modal.msgSuccess(td('dpp.integratioTask.executeSuccess', '执行成功'));
     } else {
-      proxy.$modal.msgWarning(res?.msg || "执行失败，请联系管理员");
+      proxy.$modal.msgWarning(res?.msg || td('dpp.integratioTask.executeFailed', '执行失败，请联系管理员'));
     }
   } catch (e) {
     //
@@ -689,7 +689,7 @@ const handleExecuteOnce = async (row) => {
 
 const handleClone = (row) => {
   proxy.$modal
-    .confirm(`确定要克隆任务【${row.name}】吗？`)
+    .confirm(td('dpp.integratioTask.confirmClone', `确定要克隆任务【${row.name}】吗？`, { name: row.name }))
     .then(() => {
       return copyCreateEtl({
         id: Number(row.id),
@@ -706,13 +706,13 @@ const handleClone = (row) => {
 function handleDelete(row) {
   const ids = row.id;
   proxy.$modal
-    .confirm('是否确认删除数据集成任务编号为"' + ids + '"的数据项？')
+    .confirm(td('dpp.integratioTask.confirmDelete', '是否确认删除数据集成任务编号为"' + ids + '"的数据项？', { ids }))
     .then(function () {
       return delDppEtlTask(ids);
     })
     .then(() => {
       handleQuery();
-      proxy.$modal.msgSuccess(t("common.message.deleteSuccess"));
+      proxy.$modal.msgSuccess(td("common.message.deleteSuccess", "删除成功"));
     })
     .catch(() => {});
 }

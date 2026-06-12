@@ -24,7 +24,7 @@
             <div class="clearfix header-text" style="margin: 12px 0 0 0">
                 <div class="header-left">
                     <div class="blue-bar"></div>
-                    请求参数
+                    {{ td('dpp.asset.detail.api.requestParams') }}
                 </div>
             </div>
             <el-form :model="{ inputList }" :rules="rules" ref="inputForm" label-width="0">
@@ -38,12 +38,12 @@
                     <el-col :span="24">
                         <el-table :data="inputList" class="tableStyle" row-key="id" stripe default-expand-all
                             :tree-props="{ children: 'daAssetApiParamList', hasChildren: 'hasChildren' }">
-                            <el-table-column label="序号" width="80" align="left" fixed="left">
+                            <el-table-column :label="td('dpp.asset.detail.api.index')" width="80" align="left" fixed="left">
                                 <template #default="{ $index }">
                                     {{ $index + 1 }}
                                 </template>
                             </el-table-column>
-                            <el-table-column label="参数名称" fixed="left" align="left" prop="name"
+                            <el-table-column :label="td('dpp.asset.detail.api.paramName')" fixed="left" align="left" prop="name"
                                 :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="{ row, $index }">
                                     <!-- <el-form-item :prop="`inputList[${findPosi(inputList, row.id)}].name`"
@@ -54,7 +54,7 @@
                                 </template>
                             </el-table-column>
 
-                            <el-table-column :label="t('common.texts.description')" fixed="left" align="left" prop="remark"
+                            <el-table-column :label="td('common.texts.description')" fixed="left" align="left" prop="remark"
                                 :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="{ row, $index }">
                                     <!-- <el-form-item :prop="`inputList[${findPosi(inputList, row.id)}].remark`"
@@ -65,7 +65,7 @@
                                 </template>
                             </el-table-column>
 
-                            <el-table-column label="是否为空" width="70" fixed="left" align="left" prop="requestFlag"
+                            <el-table-column :label="td('dpp.asset.detail.api.isNull')" width="70" fixed="left" align="left" prop="requestFlag"
                                 :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="{ row, $index }">
                                     <el-form-item :prop="`inputList[${findPosi(inputList, row.id)}].requestFlag`"
@@ -76,7 +76,7 @@
                                     </el-form-item>
                                 </template>
                             </el-table-column>
-                            <el-table-column label="参数类型" fixed="left" align="left" prop="columnType"
+                            <el-table-column :label="td('dpp.asset.detail.api.paramType')" fixed="left" align="left" prop="columnType"
                                 :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="{ row, $index }">
                                     <!-- <el-form-item :prop="`inputList[${findPosi(inputList, row.id)}].columnType`"
@@ -90,23 +90,23 @@
                                 </template>
                             </el-table-column>
 
-                            <el-table-column label="示例值" fixed="left" align="left" prop="exampleValue"
+                            <el-table-column :label="td('dpp.asset.detail.api.exampleValue')" fixed="left" align="left" prop="exampleValue"
                                 :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="{ row, $index }">
                                     <el-form-item :prop="`inputList[${findPosi(inputList, row.id)}].exampleValue`"
                                         :rules="hasChildren(row) ? rules.fieldDefault : []">
-                                        <el-input v-model="row.fieldDefault" placeholder="请输入示例值"
+                                        <el-input v-model="row.fieldDefault" :placeholder="td('dpp.asset.detail.api.exampleValuePlaceholder')"
                                             :disabled="hasChildren(row)" />
                                     </el-form-item>
                                 </template>
                             </el-table-column>
 
-                            <el-table-column label="默认值" fixed="left" align="left" prop="defaultValue"
+                            <el-table-column :label="td('dpp.asset.detail.api.defaultValue')" fixed="left" align="left" prop="defaultValue"
                                 :show-overflow-tooltip="{ effect: 'light' }">
                                 <template #default="{ row, $index }">
                                     <el-form-item :prop="`inputList[${findPosi(inputList, row.id)}].defaultValue`"
                                         :rules="hasChildren(row) ? rules.defaultValue : []">
-                                        <el-input v-model="row.defaultValue" placeholder="请输入默认值"
+                                        <el-input v-model="row.defaultValue" :placeholder="td('dpp.asset.detail.api.defaultValuePlaceholder')"
                                             :disabled="hasChildren(row)" />
                                     </el-form-item>
                                 </template>
@@ -130,7 +130,7 @@
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 
 // 引入 Vue 和必要的 API 方法
 import { ref, reactive, onMounted } from 'vue';
@@ -148,12 +148,12 @@ const props = defineProps({
 const { proxy } = getCurrentInstance();
 import request from '@/utils/request';
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const hasChildren = (row) => {
     return Array.isArray(row.daAssetApiParamList) && row.daAssetApiParamList.length > 0;
 };
 // 定义响应式数据
-const title = ref('数据API调用');  // 标题
+const title = ref('');  // 标题
 const form = reactive({});  // 表单数据
 const treeData1 = ref([]);  // 请求头数据
 const treeData2 = ref([]);  // 请求参数数据
@@ -178,8 +178,8 @@ const headerList = computed(() => {
     return props.form1?.daAssetApiParamList?.filter(item => Number(item.type) == 3) || [];
 });
 const rules = {
-    name: [{ required: true, message: "请输入参数名称", trigger: "blur" }],
-    columnType: [{ required: true, message: "请选择参数类型", trigger: "change" }],
+    name: [{ required: true, message: td('dpp.asset.detail.api.paramNameRequired'), trigger: "blur" }],
+    columnType: [{ required: true, message: td('dpp.asset.detail.api.paramTypeRequired'), trigger: "change" }],
 };
 const findPosi = (array, targetId, path = '') => {
     for (let i = 0; i < array.length; i++) {
@@ -206,7 +206,7 @@ const getYApiConfig = (id) => {
             treeData1.value = response.content.fieldHerderList || [];
             treeData1.value.unshift({
                 fieldName: "Authorization",
-                fieldDescribes: `通过分配的账号密码作为参数调用${request.defaults.baseURL}/system/auth/getToken接口得到accessToken`,
+                fieldDescribes: `${td('dpp.asset.detail.api.authDesc')}${request.defaults.baseURL}/system/auth/getToken${td('dpp.asset.detail.api.authDescEnd')}`,
             });
         }
     });
@@ -251,8 +251,8 @@ function buildParamsTree(paramList) {
 }
 const showSuccessNotify = () => {
     ElNotification({
-        title: t('common.message.prompt'),
-        message: '接口调用成功',
+        title: td('common.message.prompt'),
+        message: td('dpp.asset.detail.api.callSuccess'),
         type: 'success',
         duration: 2000,
     });
@@ -260,8 +260,8 @@ const showSuccessNotify = () => {
 
 const showErrorNotify = (msg) => {
     ElNotification({
-        title: t('common.message.prompt'),
-        message: msg || '接口调用失败',
+        title: td('common.message.prompt'),
+        message: msg || td('dpp.asset.detail.api.callFailed'),
         type: 'error',
         duration: 2000,
     });
@@ -280,7 +280,7 @@ const handleCall = () => {
     // 参数校验
     const isNull = inputList.value.some(param => {
         if (isParamInvalid(param)) {
-            proxy.$message.warning(`输入参数‘${param.name}’不能为空`);
+            proxy.$message.warning(`${td('dpp.asset.detail.api.paramRequired')}${param.name}${td('dpp.asset.detail.api.paramRequiredEnd')}`);
             return true;
         }
         return false;

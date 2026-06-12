@@ -24,7 +24,7 @@
         ref="DeptTreeRef"
         type="model"
         :deptOptions="deptOptions"
-        :placeholder="'请输入分层/分域/主题名称'"
+        :placeholder="td('dp.model.treePlaceholder')"
         @node-click="handleNodeClick"
       />
 
@@ -51,7 +51,7 @@
             >
               <el-button type="primary" plain>
                 <el-icon><Plus /></el-icon>
-                <span>创建表</span>
+                <span>{{ td('dp.model.createTable') }}</span>
                 <div class="divider"></div>
                 <el-icon
                   class="arrow-icon el-icon--right"
@@ -101,7 +101,7 @@
               v-hasPermi="['dp:model:remove']"
               @mousedown="(e) => e.preventDefault()"
             >
-              <i class="iconfont-mini icon-shanchu-huise mr5"></i>{{ t('common.button.delete') }}
+              <i class="iconfont-mini icon-shanchu-huise mr5"></i>{{ td('common.button.delete') }}
             </el-button>
           </template>
 
@@ -129,7 +129,7 @@
                 @click="handleUpdate(row)"
                 :disabled="row.status == 1"
                 v-hasPermi="['dp:model:edit']"
-                >{{ t('common.button.update') }}</el-button
+                >{{ td('common.button.update') }}</el-button
               >
               <el-button
                 link
@@ -139,7 +139,7 @@
                 :disabled="row.status == 1"
                 @click="handleDelete(row)"
                 v-hasPermi="['dp:model:remove']"
-                >{{ t('common.button.delete') }}</el-button
+                >{{ td('common.button.delete') }}</el-button
               >
               <el-button
                 link
@@ -147,7 +147,7 @@
                 icon="view"
                 @click="handleDetail(row)"
                 v-hasPermi="['dp:model:edit']"
-                >{{ t('common.button.details') }}</el-button
+                >{{ td('common.button.details') }}</el-button
               >
             </template>
           </qt-table>
@@ -174,14 +174,14 @@
       <el-form ref="dpModelRef" :model="form" label-width="80px">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="中文名称" prop="modelComment">
+            <el-form-item :label="td('dp.model.detail.chineseName')" prop="modelComment">
               <div>
                 {{ form.modelComment }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="英文名称" prop="modelName">
+            <el-form-item :label="td('dp.model.detail.englishName')" prop="modelName">
               <div>
                 {{ form.modelName }}
               </div>
@@ -190,21 +190,21 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="类目编码" prop="catCode">
+            <el-form-item :label="td('dp.model.detail.catCode')" prop="catCode">
               <div>
                 {{ form.catCode }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="t('common.texts.status')" prop="status">
+            <el-form-item :label="td('common.texts.status')" prop="status">
               <dict-tag :options="dp_model_status" :value="form.status" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="创建方式" prop="createType">
+            <el-form-item :label="td('dp.model.detail.createType')" prop="createType">
               <dict-tag
                 :options="dp_model_create_type"
                 :value="form.createType"
@@ -212,7 +212,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="联系人" prop="contact">
+            <el-form-item :label="td('dp.model.detail.contact')" prop="contact">
               <div>
                 {{ form.contact }}
               </div>
@@ -221,14 +221,14 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="联系电话" prop="contactNumber">
+            <el-form-item :label="td('dp.model.detail.contactNumber')" prop="contactNumber">
               <div>
                 {{ form.contactNumber }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="t('common.texts.description')" prop="description">
+            <el-form-item :label="td('common.texts.description')" prop="description">
               <div>
                 {{ form.description }}
               </div>
@@ -238,7 +238,7 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="cancel">{{ t('common.button.close') }}</el-button>
+          <el-button size="mini" @click="cancel">{{ td('common.button.close') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -265,7 +265,7 @@
   </div>
 </template>
 <script setup name="DpModel">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { deptUserTree } from "@/api/system/system/user.js";
 import { deptTreeSelectNoPermi } from "@/api/system/system/user.js";
 import DeptTree from "@/components/DeptTree/index1.vue";
@@ -291,7 +291,7 @@ import { getToken } from "@/utils/auth.js";
 import { formatHierarchyDisplayName } from "../../../utils/dm/utils";
 import { ref, reactive, getCurrentInstance } from "vue";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const projectStore = useProjectStore();
 const {
@@ -388,12 +388,12 @@ const upload = reactive({
 
 /** 启用禁用开关 */
 function handleStatusChange(id, row, e) {
-  const text = e === "1" ? "启用" : "禁用";
+  const text = e === "1" ? td('dp.model.enableText') : td('dp.model.disableText');
   proxy.$modal
-    .confirm('确认要"' + text + '","' + row.modelComment + '"逻辑模型吗？')
+    .confirm(td('dp.model.confirmStatusChange', { text: text, name: row.modelComment }))
     .then(function () {
       updateStatusDpDataModel(id, row.status).then((response) => {
-        proxy.$modal.msgSuccess(t('common.message.msgOpSuccess'));
+        proxy.$modal.msgSuccess(td('common.message.msgOpSuccess'));
       });
     })
     .catch(function () {
@@ -405,15 +405,15 @@ const data = reactive({
   form: { status: "1" },
   rules: {
     modelName: [
-      { required: true, message: "模型编码不能为空", trigger: "blur" },
+      { required: true, message: td('dp.model.modelNameRequired'), trigger: "blur" },
     ],
     modelComment: [
-      { required: true, message: "模型名称不能为空", trigger: "blur" },
+      { required: true, message: td('dp.model.modelCommentRequired'), trigger: "blur" },
     ],
-    catCode: [{ required: true, message: "类目编码不能为空", trigger: "blur" }],
-    status: [{ required: true, message: t('common.form.statusRequired'), trigger: "change" }],
+    catCode: [{ required: true, message: td('dp.model.catCodeRequired'), trigger: "blur" }],
+    status: [{ required: true, message: td('common.form.statusRequired'), trigger: "change" }],
     createType: [
-      { required: true, message: "创建方式不能为空", trigger: "change" },
+      { required: true, message: td('dp.model.createTypeRequired'), trigger: "change" },
     ],
   },
 });
@@ -436,9 +436,9 @@ const tableStore = reactive({
       type: "selection",
       width: 55,
     },
-    { label: t('common.texts.number'), prop: "id", width: 60, sortable: true },
+    { label: td('common.texts.number'), prop: "id", width: 60, sortable: true },
     {
-      label: "模型信息",
+      label: td('dp.model.modelInfo'),
       width: 450,
       align: "left",
       info: {
@@ -449,14 +449,14 @@ const tableStore = reactive({
       },
     },
     {
-      label: "归属层级",
+      label: td('dp.model.hierarchy'),
       align: "left",
       width: 300,
       showOverflowTooltip: { effect: "light" },
       formatter: (row) => formatHierarchyDisplayName(row, row.tableType),
     },
     {
-      label: "表类型",
+      label: td('dp.model.tableType'),
       align: "center",
       width: 130,
       prop: "tableType",
@@ -465,12 +465,12 @@ const tableStore = reactive({
     },
 
     {
-      label: t('common.texts.status'),
+      label: td('common.texts.status'),
       prop: "status",
       slot: "status",
     },
     {
-      label: t('common.texts.createdBy'),
+      label: td('common.texts.createdBy'),
       width: 120,
       align: "left",
       list: [
@@ -479,14 +479,14 @@ const tableStore = reactive({
       ],
     },
     {
-      label: t('common.texts.createdTime'),
+      label: td('common.texts.createdTime'),
       prop: "createTime",
       width: 150,
       sortable: true,
       date: true,
     },
     {
-      label: t('common.texts.operation'),
+      label: td('common.texts.operation'),
       width: 240,
       align: "center",
       fixed: "right",
@@ -511,10 +511,10 @@ const tableStore = reactive({
 
 const searchStore = reactive({
   items: [
-    { label: "中文名称", prop: "modelComment", component: { is: "input" } },
-    { label: "英文名称", prop: "modelName", component: { is: "input" } },
+    { label: td('dp.model.chineseName'), prop: "modelComment", component: { is: "input" } },
+    { label: td('dp.model.englishName'), prop: "modelName", component: { is: "input" } },
     {
-      label: "数仓分层",
+      label: td('dp.model.dataLayer'),
       prop: "dataLayerId",
       type: "select",
       component: {
@@ -532,7 +532,7 @@ const searchStore = reactive({
       },
     },
     {
-      label: "表类型",
+      label: td('dp.model.tableType'),
       prop: "tableType",
       type: "select",
       component: { is: "select", options: table_type },
@@ -544,7 +544,7 @@ const searchStore = reactive({
     //   component: { is: "select", options: dp_model_table_case },
     // },
     // {
-    //   label: t('common.texts.status'),
+    //   label: td('common.texts.status'),
     //   prop: "status",
     //   type: "select",
     //   component: { is: "select", options: dp_model_status },
@@ -641,7 +641,7 @@ function handleAdd(type) {
   dataList.value = {};
   reset();
   open.value = true;
-  title.value = "新增逻辑模型";
+  title.value = td('dp.model.addTitle');
 }
 let dataList = ref({});
 /** 修改按钮操作 */
@@ -653,7 +653,7 @@ function handleUpdate(row) {
     dataList.value = response.data;
     selectedType.value = String(dataList.value.tableType || "");
     open.value = true;
-    title.value = "修改逻辑模型";
+    title.value = td('dp.model.editTitle');
   });
 }
 
@@ -665,7 +665,7 @@ function handleMaterialization() {
   //
   // });
   Materialization.value = true;
-  title.value = "发布模型";
+  title.value = td('dp.model.publishTitle');
 }
 /** 详情按钮操作 */
 function handleDetail(row) {
@@ -679,7 +679,7 @@ function submitForm(obj) {
     updateDpModel(obj.form)
       .then((response) => {
         updateDpModelColumn(obj.tableData).then((response) => {
-          proxy.$modal.msgSuccess(t('common.message.editSuccess'));
+          proxy.$modal.msgSuccess(td('common.message.editSuccess'));
           open.value = false;
           handleQuery();
         });
@@ -695,7 +695,7 @@ function submitForm(obj) {
         }));
         dpModelColumn(updatedTableData)
           .then((dpModelColumnResponse) => {
-            proxy.$modal.msgSuccess(t('common.message.addSuccess'));
+            proxy.$modal.msgSuccess(td('common.message.addSuccess'));
             open.value = false;
             handleQuery();
           })
@@ -714,24 +714,24 @@ function handleDelete(row) {
     const { canDeleteCount, cannotDeleteCount, canDeleteIds } = res.data;
     proxy.$modal
       .confirm(
-        `可删除${canDeleteCount}个，不可删除${cannotDeleteCount}个，是否删除可删部分？`,
-        t('common.message.systemPrompt'),
+        td('dp.model.deleteCount', { canDelete: canDeleteCount, cannotDelete: cannotDeleteCount }),
+        td('common.message.systemPrompt'),
         {
-          confirmButtonText: t('common.button.confirm'),
-          cancelButtonText: t('common.button.cancel'),
+          confirmButtonText: td('common.button.confirm'),
+          cancelButtonText: td('common.button.cancel'),
           type: "warning",
         }
       )
       .then(() => {
         if (!canDeleteIds.length) {
-          proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+          proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
           return;
         }
         return delDpModelColumn(canDeleteIds.toString());
       })
       .then((res) => {
         if (!res) return;
-        proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+        proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
         handleQuery();
       })
       .catch(() => {});

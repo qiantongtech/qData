@@ -17,9 +17,9 @@
 
 <template>
     <!-- 查看抽查结果弹窗 新增修改第三步 稽查规则信息  -->
-    <el-dialog v-model="visible" title="查看抽查结果" width="1200px" :before-close="handleClose">
+    <el-dialog v-model="visible" :title="td('da.qualityTask.spotCheckResult.title')" width="1200px" :before-close="handleClose">
         <el-tabs v-model="activeTab" @tab-click="handleTabClick">
-            <el-tab-pane label="问题数据" name="problem">
+            <el-tab-pane :label="td('da.qualityTask.spotCheckResult.problemData')" name="problem">
                 <el-table :data="problemData" height="600px" stripe v-loading="loading">
                     <el-table-column v-for="col in tableColumns" :key="col.field" :prop="col.field" :min-width="'150px'"
                         :show-overflow-tooltip="{ effect: 'light' }" align="center">
@@ -30,7 +30,7 @@
                             </div>
                         </template>
                     </el-table-column>
-                    <el-table-column label="结果" prop="result" min-width="100px" align="center">
+                    <el-table-column :label="td('da.qualityTask.spotCheckResult.result')" prop="result" min-width="100px" align="center">
                         <template #default="{ row }">
                             <span style="color: red;">{{ row.result }}</span>
                         </template>
@@ -38,7 +38,7 @@
                 </el-table>
             </el-tab-pane>
 
-            <el-tab-pane label="正常数据" name="normal">
+            <el-tab-pane :label="td('da.qualityTask.spotCheckResult.normalData')" name="normal">
                 <el-table :data="normalData" height="600px" stripe v-loading="loading">
                     <el-table-column v-for="col in tableColumns" :key="col.field" :prop="col.field" :min-width="'150px'"
                         :show-overflow-tooltip="{ effect: 'light' }" align="center">
@@ -49,7 +49,7 @@
                             </div>
                         </template>
                     </el-table-column>
-                    <el-table-column label="结果" prop="result" min-width="100px" align="center">
+                    <el-table-column :label="td('da.qualityTask.spotCheckResult.result')" prop="result" min-width="100px" align="center">
                         <template #default="{ row }">
                             <span style="color: green;">{{ row.result }}</span>
                         </template>
@@ -59,18 +59,18 @@
         </el-tabs>
 
         <template #footer>
-            <el-button @click="visible = false">{{ t('common.button.close') }}</el-button>
+            <el-button @click="visible = false">{{ td('common.button.close') }}</el-button>
         </template>
     </el-dialog>
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { validationErrorDataSql, validationValidDataSql } from '@/api/da/quality/qualityTask'
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const visible = ref(false)
 const activeTab = ref('problem')
 const loading = ref(false)
@@ -123,7 +123,7 @@ async function loadData(form, tabName = activeTab.value) {
             }
 
             const dataList = res.data.dataList || []
-            const resultText = tabName == 'problem' ? '不通过' : '通过'
+            const resultText = tabName == 'problem' ? td('da.qualityTask.spotCheckResult.fail') : td('da.qualityTask.spotCheckResult.pass')
 
             if (tabName == 'problem') {
                 problemData.value = convertData(dataList, resultText)

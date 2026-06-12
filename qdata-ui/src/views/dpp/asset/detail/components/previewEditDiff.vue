@@ -20,7 +20,7 @@
     <el-dialog v-model="visible" class="dialog" width="1200px" draggable destroy-on-close>
         <template #header="{ close, titleId, titleClass }">
             <span role="heading" aria-level="2" class="el-dialog__title">
-                前后比对
+                {{ td('dpp.asset.detail.diff.title') }}
             </span>
         </template>
         <div class="center">
@@ -36,8 +36,11 @@
 </template>
 
 <script setup>
+import useDefaultLang from "@/composables/useDefaultLang"
 import { ref } from 'vue'
 import { CodeDiff } from 'v-code-diff'
+
+const { td } = useDefaultLang();
 
 const visible = ref(false)
 const oldStrToCompare = ref('')

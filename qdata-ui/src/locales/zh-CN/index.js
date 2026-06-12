@@ -10,6 +10,7 @@ import meta from './meta'
 import dpp from './dpp'
 import att from './att'
 import ds from './ds'
+import dg from './dg'
 import ai from './ai'
 
 export default {
@@ -24,5 +25,6 @@ export default {
   dpp,
   att,
   ds,
-  ai
+  ai,
+  dg
 }

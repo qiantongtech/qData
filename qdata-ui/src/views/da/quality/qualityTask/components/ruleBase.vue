@@ -40,54 +40,54 @@
       :disabled="dialogStatus == 2"
     >
       <el-form ref="formRef" :model="form" label-width="130px">
-        <div class="h2-title">基础信息</div>
+        <div class="h2-title">{{ td('da.qualityTask.ruleSelectorMenu.basicInfo') }}</div>
         <el-row>
           <el-col :span="8">
             <el-form-item
-              label="评测名称"
+              :label="td('da.qualityTask.ruleSelectorMenu.evaluationName')"
               prop="name"
               v-if="type != 3"
               :rules="[
-                { required: true, message: '请输入评测名称', trigger: 'blur' },
+                { required: true, message: td('da.qualityTask.ruleSelectorMenu.evaluationNameRequired'), trigger: 'blur' },
               ]"
             >
               <template v-if="!falg">
-                <el-input v-model="form.name" placeholder="请输入评测名称" />
+                <el-input v-model="form.name" :placeholder="td('da.qualityTask.ruleSelectorMenu.evaluationNamePlaceholder')" />
               </template>
               <div v-else class="form-readonly">{{ form.name || "-" }}</div>
             </el-form-item>
             <el-form-item
-              label="稽查名称"
+              :label="td('da.qualityTask.ruleSelectorMenu.inspectionName')"
               prop="name"
               v-else
               :rules="[
-                { required: true, message: '请输入稽查名称', trigger: 'blur' },
+                { required: true, message: td('da.qualityTask.ruleSelectorMenu.inspectionNameRequired'), trigger: 'blur' },
               ]"
             >
               <template v-if="!falg">
-                <el-input v-model="form.name" placeholder="请输入稽查名称" />
+                <el-input v-model="form.name" :placeholder="td('da.qualityTask.ruleSelectorMenu.inspectionNamePlaceholder')" />
               </template>
               <div v-else class="form-readonly">{{ form.name || "-" }}</div>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="稽查规则编号" prop="ruleCode">
+            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.inspectionRuleId')" prop="ruleCode">
               <div class="form-readonly">{{ form.ruleCode || "-" }}</div>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="稽查规则名称" prop="ruleName">
+            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.inspectionRuleName')" prop="ruleName">
               <div class="form-readonly">{{ form.ruleName || "-" }}</div>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="8">
-            <el-form-item label="告警等级" prop="warningLevel">
+            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.alarmLevel')" prop="warningLevel">
               <template v-if="!falg">
                 <el-select
                   v-model="form.warningLevel"
-                  placeholder="请选择质量维度"
+                  :placeholder="td('da.qualityTask.ruleSelectorMenu.qualityDimensionPlaceholder')"
                   style="width: 290px"
                 >
                   <el-option
@@ -108,24 +108,24 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item :label="t('common.texts.status')" prop="status">
+            <el-form-item :label="td('common.texts.status')" prop="status">
               <el-radio-group v-model="form.status" :disabled="falg">
-                <el-radio :value="'1'">上线</el-radio>
-                <el-radio :value="'0'">下线</el-radio>
+                <el-radio :value="'1'">{{ td('da.qualityTask.online') }}</el-radio>
+                <el-radio :value="'0'">{{ td('da.qualityTask.offline') }}</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="规则描述" prop="ruleDescription">
+            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.ruleDescription')" prop="ruleDescription">
               <template v-if="!falg">
                 <el-input
                   type="textarea"
-                  maxlength="500个字符"
+                  :maxlength="500"
                   show-word-limit
                   v-model="form.ruleDescription"
-                  placeholder="请输入规则描述"
+                  :placeholder="td('da.qualityTask.ruleSelectorMenu.ruleDescriptionPlaceholder')"
                 />
               </template>
               <div v-else class="form-readonly textarea">
@@ -136,14 +136,14 @@
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="错误示例" prop="errDescription">
+            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.errorExample')" prop="errDescription">
               <template v-if="!falg">
                 <el-input
                   type="textarea"
-                  maxlength="500个字符"
+                  :maxlength="500"
                   show-word-limit
                   v-model="form.errDescription"
-                  placeholder="请输入错误示例"
+                  :placeholder="td('da.qualityTask.ruleSelectorMenu.errorExamplePlaceholder')"
                 />
               </template>
               <div v-else class="form-readonly textarea">
@@ -154,14 +154,14 @@
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="修复建议" prop="suggestion">
+            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.fixSuggestion')" prop="suggestion">
               <template v-if="!falg">
                 <el-input
                   type="textarea"
-                  maxlength="500个字符"
+                  :maxlength="500"
                   show-word-limit
                   v-model="form.suggestion"
-                  placeholder="请输入修复建议"
+                  :placeholder="td('da.qualityTask.ruleSelectorMenu.fixSuggestionPlaceholder')"
                 />
               </template>
               <div v-else class="form-readonly textarea">
@@ -172,14 +172,14 @@
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="Where 条件" prop="whereClause">
+            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.whereCondition')" prop="whereClause">
               <template v-if="!falg">
                 <el-input
                   type="textarea"
-                  maxlength="500个字符"
+                  :maxlength="500"
                   show-word-limit
                   v-model="form.whereClause"
-                  placeholder="请输入 Where 条件"
+                  :placeholder="td('da.qualityTask.ruleSelectorMenu.whereConditionPlaceholder')"
                 />
               </template>
               <div v-else class="form-readonly textarea">
@@ -189,16 +189,16 @@
           </el-col>
         </el-row>
         <!-- 规则配置 -->
-        <div class="h2-title">规则配置</div>
+        <div class="h2-title">{{ td('da.qualityTask.ruleSelectorMenu.ruleConfig') }}</div>
         <el-row>
           <el-col :span="12" class="hasMsg" v-if="type != 3">
             <el-form-item
-              label="评测对象"
+              :label="td('da.qualityTask.ruleSelectorMenu.evaluationTarget')"
               prop="tableName"
               :rules="[
                 {
                   required: true,
-                  message: '请选择评测对象',
+                  message: td('da.qualityTask.ruleSelectorMenu.evaluationTargetRequired'),
                   trigger: 'change',
                 },
               ]"
@@ -206,7 +206,7 @@
               <template v-if="!falg">
                 <el-select
                   v-model="form.tableName"
-                  placeholder="请选择评测对象"
+                  :placeholder="td('da.qualityTask.ruleSelectorMenu.evaluationTargetPlaceholder')"
                   filterable
                   clearable
                   :disabled="type == 2"
@@ -237,12 +237,12 @@
             v-if="form.ruleType != 'TIME_ORDER_VALIDATION' && type != 3"
           >
             <el-form-item
-              label="检查字段"
+              :label="td('da.qualityTask.ruleSelectorMenu.checkField')"
               prop="evaColumn"
               :rules="[
                 {
                   required: true,
-                  message: '请选择检查字段',
+                  message: td('da.qualityTask.ruleSelectorMenu.checkFieldRequired'),
                   trigger: 'change',
                 },
               ]"
@@ -252,7 +252,7 @@
                   v-if="isMultipleRuleType"
                   v-model="form.evaColumn"
                   multiple
-                  placeholder="请选择检查字段"
+                  :placeholder="td('da.qualityTask.ruleSelectorMenu.checkFieldPlaceholder')"
                   filterable
                   clearable
                   :loading="loading"
@@ -268,7 +268,7 @@
                 <el-select
                   v-else
                   v-model="form.evaColumn"
-                  placeholder="请选择检查字段"
+                  :placeholder="td('da.qualityTask.ruleSelectorMenu.checkFieldPlaceholder')"
                   filterable
                   clearable
                   :loading="loading"
@@ -297,12 +297,12 @@
         />
 
         <div class="h2-title" v-if="form.ruleType == 'CHARACTER_VALIDATION'">
-          样例监测
+          {{ td('da.qualityTask.ruleSelectorMenu.sampleCheck') }}
         </div>
         <el-row v-if="form.ruleType == 'CHARACTER_VALIDATION'">
           <el-col :span="12">
-            <el-form-item label="样例数据" prop="sampleData">
-              <el-input v-model="title" placeholder="请输入样例数据" />
+            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.sampleData')" prop="sampleData">
+              <el-input v-model="title" :placeholder="td('da.qualityTask.ruleSelectorMenu.sampleDataPlaceholder')" />
               <!-- <span class="msg">样例必须符合规则，如不符合不能包含特殊字符</span> -->
               <div style="margin-top: 6px; display: inline-block">
                 <el-tag
@@ -318,7 +318,7 @@
           </el-col>
           <el-col :span="11" :offset="1">
             <el-button plain type="primary" @click="handleSampleCheck">
-              <i class="iconfont-mini icon-a-zu22377 mr5"></i>监测
+              <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('da.qualityTask.ruleSelectorMenu.monitor') }}
             </el-button>
           </el-col>
         </el-row>
@@ -328,20 +328,20 @@
     <template #footer>
       <template v-if="dialogStatus == 1">
         <el-button type="warning" v-if="type != 3" @click="handleSpotCheck"
-          >抽查</el-button
+          >{{ td('da.qualityTask.ruleSelectorMenu.spotCheck') }}</el-button
         >
-        <el-button @click="handleBack" v-if="!mode">{{ t('common.button.cancel') }}</el-button>
+        <el-button @click="handleBack" v-if="!mode">{{ td('common.button.cancel') }}</el-button>
         <el-button type="primary" @click="handleSave" v-if="!falg"
-          >{{ t('common.button.confirm') }}</el-button
+          >{{ td('common.button.confirm') }}</el-button
         >
       </template>
-      <el-button @click="closeDialog" v-else>{{ t('common.button.cancel') }}</el-button>
+      <el-button @click="closeDialog" v-else>{{ td('common.button.cancel') }}</el-button>
     </template>
   </el-dialog>
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { ref, reactive, watch, toRefs } from "vue";
 import SideMenu from "./ruleSelectorMenu.vue";
 import SpotCheckDialog from "./spotCheckResult.vue";
@@ -350,7 +350,7 @@ import { getColumnByAssetId } from "@/api/dpp/task/index.js";
 import { getRuleConfig, getRuleComponent } from "./rule/registry.js";
 import { verifyInterfaceValue } from "@/api/da/quality/qualityTask";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 let falg = ref(false);
 const { proxy } = getCurrentInstance();
 const { quality_warning_status } = proxy.useDict("quality_warning_status");
@@ -474,7 +474,7 @@ async function handleSpotCheck() {
   try {
     await formRef?.value?.validate();
   } catch (err) {
-    proxy.$message.warning("校验未通过，请完善必填项");
+    proxy.$message.warning(td('da.qualityTask.ruleSelectorMenu.validationIncomplete'));
     return;
   }
   let res = { valid: true, data: {} };
@@ -591,7 +591,7 @@ async function handleSave() {
   try {
     await formRef?.value?.validate();
   } catch (err) {
-    proxy.$message.warning("校验未通过，请完善必填项");
+    proxy.$message.warning(td('da.qualityTask.ruleSelectorMenu.validationIncomplete'));
     return;
   }
   let res = { valid: true, data: {} };
@@ -625,13 +625,13 @@ async function handleSave() {
 let sampleCheckMsg = ref();
 async function handleSampleCheck() {
   if (!title.value) {
-    return proxy.$message.warning("校验未通过，请添加样例数据");
+    return proxy.$message.warning(td('da.qualityTask.ruleSelectorMenu.sampleDataRequired'));
   }
   await nextTick();
   try {
     await formRef?.value?.validate();
   } catch (err) {
-    proxy.$message.warning("校验未通过，请完善必填项");
+    proxy.$message.warning(td('da.qualityTask.ruleSelectorMenu.validationIncomplete'));
     return;
   }
   let res = { valid: true, data: {} };
@@ -656,7 +656,7 @@ async function handleSampleCheck() {
   if (resw.code === 200) {
     sampleCheckMsg.value = resw.data;
   } else {
-    sampleCheckMsg.value = resw.msg || "检测失败";
+    sampleCheckMsg.value = resw.msg || td('da.qualityTask.ruleSelectorMenu.monitorFailed');
   }
 }
 function handleCardClick(data) {
@@ -671,7 +671,7 @@ function handleCardClick(data) {
   form.ruleCode = data?.code;
   form.ruleType = data?.strategyKey;
   form.dimensionType = data?.qualityDim;
-  const prefix = props?.type == 3 ? "新增稽查规则" : "新增评测规则";
+  const prefix = props?.type == 3 ? td('da.qualityTask.ruleSelectorMenu.addInspectionRule') : td('da.qualityTask.ruleSelectorMenu.addEvaluationRule');
   dialogTitle.value = `${prefix}${data?.name ? "-" + data.name : ""}`;
   if (form.tableName) {
     handleTargetObjectChange(form.tableName);
@@ -683,13 +683,13 @@ async function openDialog(record, index, fg) {
   falg.value = fg;
   mode.value = index;
   resetForm();
-  const prefix = props?.type == 3 ? "稽查规则" : "评测规则";
+  const prefix = props?.type == 3 ? td('da.qualityTask.ruleSelectorMenu.inspectionRule') : td('da.qualityTask.ruleSelectorMenu.evaluationRule');
   if (falg.value) {
-    dialogTitle.value = `${prefix}详情${
+    dialogTitle.value = `${props?.type == 3 ? td('da.qualityTask.ruleSelectorMenu.inspectionRuleDetail') : td('da.qualityTask.ruleSelectorMenu.evaluationRuleDetail')}${
       record?.ruleName ? `-${record.ruleName}` : ""
     }`;
   } else {
-    dialogTitle.value = `${mode.value ? t('common.button.update') : t('common.button.add')}${prefix}${
+    dialogTitle.value = `${mode.value ? td('common.button.update') : td('common.button.add')}${prefix}${
       record?.ruleName ? `-${record.ruleName}` : ""
     }`;
   }
@@ -796,7 +796,7 @@ function closeDialog() {
 
 function handleBack() {
   dialogStatus.value = 0;
-  dialogTitle.value = `新增评测规则`;
+  dialogTitle.value = td('da.qualityTask.ruleSelectorMenu.addEvaluationRule');
   resetForm();
 }
 defineExpose({ openDialog, closeDialog });

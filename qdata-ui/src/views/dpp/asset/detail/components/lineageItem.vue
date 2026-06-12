@@ -29,23 +29,23 @@
           <template #default>
             <template v-if="nodeData.name == currentNode.name && currentNode.type === 'TABLE'">
               <div class="pop-class" @mouseenter="currentNode = nodeData" @mouseleave="currentNode = {}">
-                <div class="li">数据表名称：{{ nodeData.name || '-' }}</div>
-                <div class="li">数据库类型：{{ nodeData.datasourceType || '-' }}</div>
-                <div class="li">数据源名称：{{ nodeData.datasourceName || '-' }}</div>
+                <div class="li">{{ td('dpp.asset.detail.lineage.tableName') }}：{{ nodeData.name || '-' }}</div>
+                <div class="li">{{ td('dpp.asset.detail.lineage.dbType') }}：{{ nodeData.datasourceType || '-' }}</div>
+                <div class="li">{{ td('dpp.asset.detail.lineage.datasourceName') }}：{{ nodeData.datasourceName || '-' }}</div>
               </div>
             </template>
             <template v-if="nodeData.name == currentNode.name && currentNode.type == 'TASK'">
               <div class="pop-class" @mouseenter="currentNode = nodeData" @mouseleave="currentNode = {}">
-                <div class="li">任务名称：{{ nodeData.name }}</div>
-                <div class="li">任务类型：{{ getTaskTypeText(nodeData.type1) }} </div>
-                <div class="li">执行引擎: {{ nodeData.taskType || '-' }} </div>
-                <div class="li">上一次执行时间：{{
+                <div class="li">{{ td('dpp.asset.detail.lineage.taskName') }}：{{ nodeData.name }}</div>
+                <div class="li">{{ td('dpp.asset.detail.lineage.taskType') }}：{{ getTaskTypeText(nodeData.type1) }} </div>
+                <div class="li">{{ td('dpp.asset.detail.lineage.executionEngine') }}: {{ nodeData.taskType || '-' }} </div>
+                <div class="li">{{ td('dpp.asset.detail.lineage.lastExecutionTime') }}：{{
                   parseTime(
                     nodeData.taskTime,
                     "{y}-{m}-{d} {h}:{i}"
                   ) || "-"
                 }}</div>
-                <div class="li">上一次执行状态：{{ getTaskStatusText(nodeData.taskStatus) }}</div>
+                <div class="li">{{ td('dpp.asset.detail.lineage.lastExecutionStatus') }}：{{ getTaskStatusText(nodeData.taskStatus) }}</div>
               </div>
             </template>
           </template>
@@ -101,27 +101,30 @@
   </div>
 </template>
 <script setup name="DataProcessingDagNode">
+import useDefaultLang from "@/composables/useDefaultLang"
 import { StringExt } from "@antv/x6";
+
+const { td } = useDefaultLang();
 // 状态映射表
 const statusMap = {
-  0: '提交成功',
-  1: '正在执行',
-  2: '准备暂停',
-  3: '暂停',
-  4: '准备停止',
-  5: '停止',
-  6: '失败',
-  7: '成功',
-  12: '延时执行',
-  14: '串行等待',
-  15: '准备锁定',
-  16: '锁定',
+  0: td('dpp.asset.detail.lineage.statusSubmitSuccess'),
+  1: td('dpp.asset.detail.lineage.statusExecuting'),
+  2: td('dpp.asset.detail.lineage.statusPreparingPause'),
+  3: td('dpp.asset.detail.lineage.statusPaused'),
+  4: td('dpp.asset.detail.lineage.statusPreparingStop'),
+  5: td('dpp.asset.detail.lineage.statusStopped'),
+  6: td('dpp.asset.detail.lineage.statusFailed'),
+  7: td('dpp.asset.detail.lineage.statusSuccess'),
+  12: td('dpp.asset.detail.lineage.statusDelayed'),
+  14: td('dpp.asset.detail.lineage.statusSerialWait'),
+  15: td('dpp.asset.detail.lineage.statusPreparingLock'),
+  16: td('dpp.asset.detail.lineage.statusLocked'),
 };
 const taskTypeMap = {
-  1: '数据集成',
-  2: "实时任务",
-  3: "数据开发任务",
-  4: "作业任务"
+  1: td('dpp.asset.detail.lineage.taskTypeIntegration'),
+  2: td('dpp.asset.detail.lineage.taskTypeRealtime'),
+  3: td('dpp.asset.detail.lineage.taskTypeDevelopment'),
+  4: td('dpp.asset.detail.lineage.taskTypeJob')
 };
 function getTaskTypeText(type) {
   return taskTypeMap[String(type)] || '-';
@@ -155,24 +158,24 @@ const CellStatus = {
 const PROCESSING_TYPE_LIST = [
   {
     type: "FILTER",
-    name: "数据筛选",
+    name: td('dpp.asset.detail.lineage.dataFilter'),
   },
   {
     type: "JOIN",
-    name: "数据连接",
+    name: td('dpp.asset.detail.lineage.dataJoin'),
   },
   {
     type: "UNION",
-    name: "数据合并",
+    name: td('dpp.asset.detail.lineage.dataUnion'),
   },
   {
     type: "AGG",
-    name: "数据聚合",
+    name: td('dpp.asset.detail.lineage.dataAgg'),
   },
 
   {
     type: "OUTPUT",
-    name: "数据输出",
+    name: td('dpp.asset.detail.lineage.dataOutput'),
   },
 ];
 

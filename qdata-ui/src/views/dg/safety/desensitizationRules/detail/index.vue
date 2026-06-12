@@ -26,18 +26,18 @@
         nameKey: 'name',
         statusKey: 'validFlag',
         statusOptions: [
-          { label: '启用', value: 'true', color: '#13ce66' },
-          { label: '禁用', value: 'false', color: '#ff4949' },
+          { label: td('dg.desensitizationRules.detailStatusEnable'), value: 'true', color: '#13ce66' },
+          { label: td('dg.desensitizationRules.detailStatusDisable'), value: 'false', color: '#ff4949' },
         ],
       }"
     />
 
     <div class="pagecont-bottom">
       <el-tabs v-model="activeName">
-        <el-tab-pane label="敏感清单" name="1">
+        <el-tab-pane :label="td('dg.desensitizationRules.detailTabSensitive')" name="1">
           <asset :ruleDetail="ruleDetail"></asset>
         </el-tab-pane>
-        <el-tab-pane label="详细信息" name="2">
+        <el-tab-pane :label="td('dg.desensitizationRules.detailTabInfo')" name="2">
           <info :ruleDetail="ruleDetail"></info>
         </el-tab-pane>
       </el-tabs>
@@ -46,7 +46,7 @@
 </template>
 
 <script setup name="DesensitizationRuleDetail">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { getDesensitizeRules } from "@/api/dg/safety/desensitizeRules";
 import { useRoute } from "vue-router";
 import {
@@ -62,7 +62,7 @@ import { selectTreeDataCategory } from "@/api/dg/safety/dataCategory/dataCategor
 import asset from "@/views/dg/safety/desensitizationRules/detail/asset.vue";
 import info from "@/views/dg/safety/desensitizationRules/detail/info.vue";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { dp_model_status, dg_application_scene, dg_mask_type } = proxy.useDict(
   "dp_model_status",
@@ -137,17 +137,17 @@ function formatDataCategory(v) {
 
 const detailItems = computed(() => [
   {
-    label: "数据分类",
+    label: td('dg.sensitiveList.dataCategory'),
     key: "dataCategoryName",
   },
   {
-    label: "应用场景",
+    label: td('dg.desensitizationRules.applicationScene'),
     key: "applicationScene",
     dictOptions: unref(dg_application_scene),
   },
-  { label: "脱敏方式", key: "maskType", dictOptions: unref(dg_mask_type) },
+  { label: td('dg.desensitizationRules.maskType'), key: "maskType", dictOptions: unref(dg_mask_type) },
   {
-    label: t('common.texts.description'),
+    label: td('common.texts.description'),
     key: "description",
     span: 24,
     ellipsisClass: "ellipsis-2",

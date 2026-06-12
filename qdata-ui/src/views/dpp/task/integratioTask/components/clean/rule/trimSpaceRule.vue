@@ -19,10 +19,10 @@
   <el-form ref="formRef" :model="form" label-width="130px" :disabled="false">
     <el-row>
       <el-col :span="12">
-        <el-form-item label="去除空格规则" prop="handleType">
+        <el-form-item :label="td('dpp.integration.trimSpaceRule', '去除空格规则')" prop="handleType">
           <el-radio-group v-model="form.handleType" :disabled="falg">
-            <el-radio :value="'1'">去除前后空格</el-radio>
-            <el-radio :value="'2'">去除所有空格</el-radio>
+            <el-radio :value="'1'">{{ td('dpp.integration.trimLeadingTrailing', '去除前后空格') }}</el-radio>
+            <el-radio :value="'2'">{{ td('dpp.integration.trimAll', '去除所有空格') }}</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-col>
@@ -32,6 +32,8 @@
 
 <script setup>
 import { reactive, ref, watch } from "vue";
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();
 
 const props = defineProps({
   form: Object,
@@ -46,9 +48,9 @@ const formRef = ref(null);
 const form = reactive({ ...props.form });
 const handleTypeText = computed(() =>
   form.handleType === "1"
-    ? "去除前后空格"
+    ? td("dpp.integration.trimLeadingTrailing", "去除前后空格")
     : form.handleType === "2"
-    ? "去除所有空格"
+    ? td("dpp.integration.trimAll", "去除所有空格")
     : "-"
 );
 function validate() {

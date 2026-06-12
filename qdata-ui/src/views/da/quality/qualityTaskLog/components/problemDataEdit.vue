@@ -16,7 +16,7 @@
 -->
 
 <template>
-    <el-dialog v-model="visible" title="修改问题数据" class="medium-dialog" @close="handleClose" destroy-on-close>
+    <el-dialog v-model="visible" :title="td('da.qualityTaskLog.problemDataEdit.title')" class="medium-dialog" @close="handleClose" destroy-on-close>
         <el-form :model="formData" label-width="240px">
             <el-form-item v-for="item in parsedFields" :key="item.name" :label="item.name">
                 <el-input v-model="formData[item.name]" :disabled="!item.editable" />
@@ -24,17 +24,17 @@
         </el-form>
 
         <template #footer>
-            <el-button @click="handleClose">{{ t('common.button.close') }}</el-button>
-            <el-button type="primary" @click="handleok">{{ t('common.button.save') }}</el-button>
+            <el-button @click="handleClose">{{ td('common.button.close') }}</el-button>
+            <el-button type="primary" @click="handleok">{{ td('common.button.save') }}</el-button>
         </template>
     </el-dialog>
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { ref, defineExpose, defineEmits } from 'vue'
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const emit = defineEmits(['ok'])
 
 const visible = ref(false)
@@ -111,7 +111,7 @@ function handleok() {
     }
 
     if (Object.keys(keyWordData).length === 0) {
-        ElMessage.warning('未修改任何字段，无法保存')
+        ElMessage.warning(td('da.qualityTaskLog.problemDataEdit.noChanges'))
         return
     }
 

@@ -30,7 +30,7 @@
         <span class="el-dialog__title">{{ currentNode?.data?.name }}</span>
         <el-tooltip
           effect="light"
-          content="根据指定字段判断数据是否重复，并保留第一条出现的记录（即遇到重复时，保留数据集中第一次出现的那条），结合排序节点使用"
+          :content="td('dpp.integration.dedupFilterTooltip', '根据指定字段判断数据是否重复，并保留第一条出现的记录')"
           placement="top"
         >
           <el-icon class="tip-icon">
@@ -50,26 +50,26 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
-            label="节点名称"
+            :label="td('dpp.integration.nodeName', '节点名称')"
             prop="name"
             :rules="[
-              { required: true, message: '请输入节点名称', trigger: 'change' },
+              { required: true, message: td('dpp.integration.nodeNameRequired', '请输入节点名称'), trigger: 'change' },
             ]"
           >
             <el-input
               v-if="!info"
               v-model="form.name"
-              placeholder="请输入节点名称"
+              :placeholder="td('dpp.integration.nodeNamePlaceholder', '请输入节点名称')"
             />
             <div v-else class="form-readonly">{{ form.name }}</div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="类型" prop="typeName">
+          <el-form-item :label="td('dpp.integration.type', '类型')" prop="typeName">
             <el-select
               v-if="!info"
               v-model="form.taskParams.typeName"
-              placeholder="请输入类型"
+              :placeholder="td('dpp.integration.typePlaceholder', '请输入类型')"
               filterable
               disabled
             >
@@ -88,14 +88,14 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="t('common.texts.description')" prop="description">
+          <el-form-item :label="td('common.texts.description')" prop="description">
             <el-input
               v-if="!info"
               v-model="form.description"
               type="textarea"
               maxlength="500个字符"
               show-word-limit
-              :placeholder="t('common.form.descriptionPlaceholder')"
+              :placeholder="td('common.form.descriptionPlaceholder')"
             />
             <div v-else class="form-readonly textarea">
               {{ form.description || "-" }}
@@ -104,13 +104,13 @@
         </el-col>
       </el-row>
       <el-divider content-position="center">
-        <span class="blue-text">字段</span>
+        <span class="blue-text">{{ td('dpp.column.fieldTerm', '字段') }}</span>
       </el-divider>
       <div class="justify-between mb15" v-if="!info">
         <el-row :gutter="15" class="btn-style">
           <el-col :span="1.5">
             <el-button type="primary" plain @click="handleAddField">
-              <i class="iconfont-mini icon-xinzeng mr5"></i>{{ t('common.button.add') }}
+              <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('common.button.add') }}
             </el-button>
           </el-col>
         </el-row>
@@ -123,7 +123,7 @@
         ref="dragTable"
         row-key="columnName"
       >
-        <el-table-column label="序号" width="80" align="left">
+        <el-table-column :label="td('common.display.index', '序号')" width="80" align="left">
           <template #default="{ $index }">
             <div
               class="allowDrag"
@@ -141,11 +141,11 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="字段名称" align="left" prop="columnName">
+        <el-table-column :label="td('dpp.integration.fieldName', '字段名称')" align="left" prop="columnName">
           <template #default="scope">
             <el-select
               v-model="scope.row.columnName"
-              placeholder="请选择字段"
+              :placeholder="td('dpp.integration.selectFieldPlaceholder', '请选择字段')"
               style="flex: 1"
             >
               <el-option
@@ -159,20 +159,20 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="忽略大小写"
+          :label="td('dpp.integration.ignoreCase', '忽略大小写')"
           align="left"
           prop="ignoreCase"
           :show-overflow-tooltip="{ effect: 'light' }"
         >
           <template #default="scope">
-            <el-select v-model="scope.row.ignoreCase" placeholder="请选择">
-              <el-option label="是" :value="0" />
-              <el-option label="否" :value="1" />
+            <el-select v-model="scope.row.ignoreCase" :placeholder="td('common.form.statusPlaceholder', '请选择')">
+              <el-option :label="td('dpp.integration.yes', '是')" :value="0" />
+              <el-option :label="td('dpp.integration.no', '否')" :value="1" />
             </el-select>
           </template>
         </el-table-column>
         <el-table-column
-          :label="t('common.texts.operation')"
+          :label="td('common.texts.operation')"
           align="center"
           class-name="small-padding fixed-width"
           fixed="right"
@@ -186,7 +186,7 @@
               icon="Delete"
               @click="handleDelete(scope.row)"
             >
-              {{ t('common.button.delete') }}
+              {{ td('common.button.delete') }}
             </el-button>
           </template>
         </el-table-column>
@@ -195,9 +195,9 @@
 
     <template #footer>
       <div style="text-align: right">
-        <el-button @click="closeDialog">{{ t('common.button.close') }}</el-button>
+        <el-button @click="closeDialog">{{ td('common.button.close') }}</el-button>
         <el-button type="primary" @click="saveData" v-if="!info"
-          >{{ t('common.button.save') }}</el-button
+          >{{ td('common.button.save') }}</el-button
         >
         <el-button type="warning" @click="handleFetchFields" v-if="!info"
           >获取字段</el-button
@@ -223,7 +223,7 @@
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import CreateEditModal from "../fieldMergeModal.vue";
 import FieldConflictDialog from "../fieldDetection.vue";
 import {
@@ -241,13 +241,13 @@ import { createNodeSelect, getParentNode } from "@/views/dpp/utils/opBase.js";
 import draggable from "vuedraggable";
 import Sortable from "sortablejs";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const userStore = useUserStore();
 
 const props = defineProps({
   visible: { type: Boolean, default: true },
-  title: { type: String, default: "表单标题" },
+  title: { type: String, default: '' },
   currentNode: { type: Object, default: () => ({}) },
   info: { type: Boolean, default: false },
   graph: { type: Object, default: () => ({}) },
@@ -286,7 +286,7 @@ function setSort() {
 
 function handleAddField() {
   if (!Array.isArray(inputFields.value) || inputFields.value.length === 0) {
-    proxy.$message.warning("输入字段为空，无法添加字段");
+    proxy.$message.warning(td("dpp.integration.inputFieldEmptyCannotAdd", "输入字段为空，无法添加字段"));
     return;
   }
   // 已添加的字段名
@@ -298,7 +298,7 @@ function handleAddField() {
   );
 
   if (!nextField) {
-    proxy.$message.warning("新增失败，已无可添加的字段");
+    proxy.$message.warning(td("dpp.integration.noMoreFieldsToAdd", "新增失败，已无可添加的字段"));
     return;
   }
 
@@ -343,7 +343,7 @@ function onResolveFields(payload) {
         tableFields.value
       );
       if (isEqual) {
-        proxy.$message.warning("新增失败，当前已是最新字段");
+        proxy.$message.warning(td("dpp.integration.alreadyLatestFields", "新增失败，当前已是最新字段"));
       }
       console.log("父组件：增加所有字段");
       tableFields.value = [];
@@ -498,7 +498,7 @@ const saveData = async () => {
     if (!valid) return;
     // 判断表格是否为空
     if (!tableFields.value || tableFields.value.length === 0) {
-      proxy.$message.warning("校验未通过，请至少添加一个字段");
+      proxy.$message.warning(td("dpp.integration.validateFailedAddAtLeastOne", "校验未通过，请至少添加一个字段"));
       return;
     }
     if (!form.value.code) {

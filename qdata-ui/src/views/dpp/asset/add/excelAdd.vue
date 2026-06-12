@@ -26,9 +26,9 @@
       "
     >
       <el-form-item
-          label="上传附件"
+          :label="td('dpp.asset.add.excel.uploadAttachment')"
           prop="daAssetFiles.url"
-          :rules="[{ required: true, message: '请上传附件', trigger: 'change' }]"
+          :rules="[{ required: true, message: td('dpp.asset.add.excel.uploadAttachmentRequired'), trigger: 'change' }]"
       >
         <FileUploadbtn
             :limit="1"
@@ -48,7 +48,7 @@
             @click="parseExcel"
             :disabled="isButtonDisabled"
         >
-          解析CSV
+          {{ td('dpp.asset.add.excel.parseCsv') }}
         </el-button>
       </div>
     </template>
@@ -60,9 +60,9 @@
       "
     >
       <el-form-item
-          label="上传附件"
+          :label="td('dpp.asset.add.excel.uploadAttachment')"
           prop="daAssetFiles.url"
-          :rules="[{ required: true, message: '请上传附件', trigger: 'change' }]"
+          :rules="[{ required: true, message: td('dpp.asset.add.excel.uploadAttachmentRequired'), trigger: 'change' }]"
       >
         <FileUploadbtn
             :limit="1"
@@ -75,14 +75,14 @@
         />
       </el-form-item>
       <el-form-item
-          label="起始行"
+          :label="td('dpp.asset.add.excel.startRow')"
           prop="daAssetFiles.startData"
-          :rules="[{ required: true, message: '请输入起始行', trigger: 'change' }]"
+          :rules="[{ required: true, message: td('dpp.asset.add.excel.startRowRequired'), trigger: 'change' }]"
       >
         <el-input-number
             :step="1"
             step-strictly
-            placeholder="请输入起始行"
+            :placeholder="td('dpp.asset.add.excel.startRowPlaceholder')"
             v-model="form.daAssetFiles.startData"
             style="width: 100%"
             controls-position="right"
@@ -99,14 +99,14 @@
       "
     >
       <el-form-item
-          label="起始列"
+          :label="td('dpp.asset.add.excel.startColumn')"
           prop="daAssetFiles.startColumn"
-          :rules="[{ required: true, message: '请输入起始列', trigger: 'change' }]"
+          :rules="[{ required: true, message: td('dpp.asset.add.excel.startColumnRequired'), trigger: 'change' }]"
       >
         <el-input-number
             :step="1"
             step-strictly
-            placeholder="请输入起始列"
+            :placeholder="td('dpp.asset.add.excel.startColumnPlaceholder')"
             v-model="form.daAssetFiles.startColumn"
             style="width: 100%"
             controls-position="right"
@@ -121,7 +121,7 @@
             @click="parseExcel"
             :disabled="isButtonDisabled"
         >
-          解析Excel
+          {{ td('dpp.asset.add.excel.parseExcel') }}
         </el-button>
       </div>
     </template>
@@ -135,7 +135,7 @@
           form.daAssetFiles.url.indexOf('.xlsx') != -1)
       "
     >
-      <span class="blue-text">属性字段</span>
+      <span class="blue-text">{{ td('dpp.asset.add.excel.attributeFields') }}</span>
     </el-divider>
     <el-table
         class="row-full"
@@ -150,13 +150,13 @@
           form.daAssetFiles.url.indexOf('.xlsx') != -1)
       "
     >
-      <el-table-column label="序号" type="index" width="80" align="left">
+      <el-table-column :label="td('dpp.asset.add.excel.index')" type="index" width="80" align="left">
         <template #default="scope">
           <span>{{ scope.$index + 1 }}</span>
         </template>
       </el-table-column>
       <el-table-column
-          label="字段名称"
+          :label="td('dpp.asset.add.excel.fieldName')"
           align="left"
           prop="columnName"
           :show-overflow-tooltip="{ effect: 'light' }"
@@ -165,18 +165,18 @@
           {{ scope.row.columnName || "-" }}
         </template>
       </el-table-column>
-      <el-table-column label="字段类型" align="left" prop="columnType">
+      <el-table-column :label="td('dpp.asset.add.excel.fieldType')" align="left" prop="columnType">
         <template #default="scope">
           {{ scope.row.columnType || "-" }}
         </template>
       </el-table-column>
-      <el-table-column label="日期格式" align="left" prop="format">
+      <el-table-column :label="td('dpp.asset.add.excel.dateFormat')" align="left" prop="format">
         <template #default="scope">
           {{ scope.row.format || "-" }}
         </template>
       </el-table-column>
       <el-table-column
-          :label="t('common.texts.operation')"
+          :label="td('common.texts.operation')"
           align="center"
           class-name="small-padding fixed-width"
           fixed="right"
@@ -184,7 +184,7 @@
       >
         <template #default="scope">
           <el-button link type="primary" icon="Edit" @click="openDialog(scope.row)"
-          >{{ t('common.button.update') }}</el-button
+          >{{ td('common.button.update') }}</el-button
           >
         </template>
       </el-table-column>
@@ -192,17 +192,17 @@
   </div>
 </template>
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { getToken } from '@/utils/auth.js';
 import { typeList } from '@/utils/graph.js';
 import { getNodeUniqueKey, getExcelColumn, getCsvColumn } from '@/api/dpp/task/index.js';
 const { proxy } = getCurrentInstance();
 import useUserStore from '@/store/system/user.js';
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const userStore = useUserStore();
 const props = defineProps({
-  title: { type: String, default: '表单标题' },
+  title: { type: String, default: '' },
   currentNode: { type: Object, default: () => ({}) },
   info: { type: Boolean, default: false },
   objData: { type: Object, default: () => ({}) }
@@ -247,7 +247,7 @@ const isButtonDisabled = computed(() => {
 const parseExcel = async (id) => {
   if (form.value.daAssetFiles.url.indexOf('.csv') != -1) {
     if (!form.value.daAssetFiles.url) {
-      ElMessage.warning('操作失败，请添加附件');
+      ElMessage.warning(td('dpp.asset.add.excel.addAttachment'));
       return;
     }
 
@@ -264,27 +264,27 @@ const parseExcel = async (id) => {
           columnName: item,
           columnType: 'string'
         }));
-        ElMessage.success('CSV 解析成功，请确认属性字段类型！');
+        ElMessage.success(td('dpp.asset.add.excel.csvParseSuccess'));
       } else {
-        ElMessage.warning('CSV 解析失败，未获取到有效数据！');
+        ElMessage.warning(td('dpp.asset.add.excel.csvParseFailed'));
       }
     } catch (error) {
-      ElMessage.warning('解析文件时发生错误，请检查后重试');
+      ElMessage.warning(td('dpp.asset.add.excel.parseError'));
       console.error(error);
     } finally {
       loading.value = false; // Ensure loading is turned off regardless of success or failure
     }
   } else {
     if (!form.value.daAssetFiles.startData) {
-      ElMessage.warning('操作失败，请添加起始行');
+      ElMessage.warning(td('dpp.asset.add.excel.addStartRow'));
       return;
     }
     if (!form.value.daAssetFiles.startColumn) {
-      ElMessage.warning('操作失败，请添加起始列');
+      ElMessage.warning(td('dpp.asset.add.excel.addStartColumn'));
       return;
     }
     if (!form.value.daAssetFiles.url) {
-      ElMessage.warning('操作失败，请添加附件');
+      ElMessage.warning(td('dpp.asset.add.excel.addAttachment'));
       return;
     }
     loadingList.value = true;
@@ -303,12 +303,12 @@ const parseExcel = async (id) => {
           columnType: 'string'
         }));
 
-        ElMessage.success('Excel解析成功，请确认属性字段类型！');
+        ElMessage.success(td('dpp.asset.add.excel.excelParseSuccess'));
       } else {
-        ElMessage.warning('Excel解析失败，未获取到有效数据！');
+        ElMessage.warning(td('dpp.asset.add.excel.excelParseFailed'));
       }
     } catch (error) {
-      if (response.code == 200) ElMessage.warning('Excel解析失败，请检查文件格式或内容！');
+      if (response.code == 200) ElMessage.warning(td('dpp.asset.add.excel.excelParseFailedCheck'));
     } finally {
       loadingList.value = false;
     }
@@ -332,7 +332,7 @@ const saveData = async () => {
         form.value?.daAssetFiles.type == '1' &&
         (!ColumnByAssettab.value || ColumnByAssettab.value.length == 0)
     ) {
-      return proxy.$message.warning('校验未通过，请选择属性字段');
+      return proxy.$message.warning(td('dpp.asset.add.excel.validateSelectFields'));
     }
     // 如果没有 code，就调用接口获取唯一的 code
     if (!form.value.code) {

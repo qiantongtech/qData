@@ -34,7 +34,7 @@
       :drag="dragFlag"
     >
       <el-icon class="el-icon--upload"><upload-filled /></el-icon>
-      <div class="el-upload__text" style="width: 100%;">将文件拖到此处，或<em>点击上传</em></div>
+      <div class="el-upload__text" style="width: 100%;">{{ t('common.upload.dragOrClick') }}</div>
     </el-upload>
     <!-- 上传提示 -->
 <!--    <div class="el-upload__tip" v-if="showTip">-->

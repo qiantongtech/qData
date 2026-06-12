@@ -20,7 +20,7 @@
     v-model="visibleDialog"
     draggable
     class="dialog"
-    :title="title"
+    :title="dialogTitle"
     destroy-on-close
   >
     <el-form
@@ -32,24 +32,24 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
-            label="字段名称"
+            :label="td('dpp.integration.fieldName', '字段名称')"
             prop="columnName"
             :rules="[
-              { required: true, message: '请输入字段名称', trigger: 'blur' },
+              { required: true, message: td('dpp.integration.fieldNameRequired', '请输入字段名称'), trigger: 'blur' },
             ]"
           >
-            <el-input v-model="form.columnName" placeholder="请输入字段名称" />
+            <el-input v-model="form.columnName" :placeholder="td('dpp.integration.fieldNamePlaceholder', '请输入字段名称')" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item
-            label="字段类型"
+            :label="td('dpp.integration.fieldType', '字段类型')"
             prop="columnType"
             :rules="[
-              { required: true, message: '请选择字段类型', trigger: 'change' },
+              { required: true, message: td('dpp.integration.fieldTypeRequired', '请选择字段类型'), trigger: 'change' },
             ]"
           >
-            <el-select v-model="form.columnType" placeholder="请选择字段类型">
+            <el-select v-model="form.columnType" :placeholder="td('dpp.integration.fieldTypePlaceholder', '请选择字段类型')">
               <el-option
                 v-for="dict in columntype"
                 :key="dict.value"
@@ -63,12 +63,12 @@
       <el-row :gutter="20">
         <el-col :span="24">
           <el-form-item
-            label="JSON解析值"
+            :label="td('dpp.integration.jsonParseValue', 'JSON解析值')"
             prop="key"
             :rules="[
               {
                 required: true,
-                message: '请输入JSON解析值',
+                message: td('dpp.integration.jsonParseValueRequired', '请输入JSON解析值'),
                 trigger: 'change',
               },
             ]"
@@ -78,7 +78,7 @@
               type="textarea"
               maxlength="500个字符"
               show-word-limit
-              placeholder="例如:info.aga"
+              :placeholder="td('dpp.integration.jsonParseValuePlaceholder', '例如:info.aga')"
             />
           </el-form-item>
         </el-col>
@@ -88,27 +88,29 @@
     <template #footer>
       <div style="text-align: right">
         <!-- 关闭按钮 -->
-        <el-button @click="closeDialog">{{ t('common.button.close') }}</el-button>
+        <el-button @click="closeDialog">{{ td('common.button.close') }}</el-button>
         <!-- 保存按钮 -->
-        <el-button type="primary" @click="saveData">{{ t('common.button.save') }}</el-button>
+        <el-button type="primary" @click="saveData">{{ td('common.button.save') }}</el-button>
       </div>
     </template>
   </el-dialog>
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { defineProps, defineEmits, ref, computed, watch } from "vue";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { column_type } = proxy.useDict("column_type");
 
 const props = defineProps({
   visible: { type: Boolean, default: true },
-  title: { type: String, default: "表单标题" },
+  title: { type: String, default: '' },
   data: { type: Object, default: () => ({}) },
 });
+
+const dialogTitle = computed(() => props.title || td("common.form.namePlaceholder", "表单标题"));
 
 const emit = defineEmits(["update:visible", "confirm"]);
 // 定义字段类型数组

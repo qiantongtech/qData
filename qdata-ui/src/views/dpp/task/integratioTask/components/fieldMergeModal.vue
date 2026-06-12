@@ -20,7 +20,7 @@
     v-model="dialogVisible"
     draggable
     class="medium-dialog"
-    :title="title"
+    :title="dialogTitle"
       destroy-on-close
   >
     <el-form
@@ -33,12 +33,12 @@
         <!-- 选择字段（单选） -->
         <el-col :span="12">
           <el-form-item
-            label="选择字段"
+            :label="td('dpp.integration.selectField', '选择字段')"
             prop="sourceField"
           >
             <el-select
               v-model="form.ruleConfig.fieldMerge.sourceField"
-              placeholder="请选择字段名称"
+              :placeholder="td('dpp.integration.selectFieldPlaceholder', '请选择字段名称')"
               filterable
               :disabled="row.columnName"
             >
@@ -56,12 +56,12 @@
         <!-- 合并字段（多选） -->
         <el-col :span="12">
           <el-form-item
-            label="合并字段"
+            :label="td('dpp.integration.mergeFields', '合并字段')"
             prop="sourceFields"
           >
             <el-select
               v-model="form.ruleConfig.fieldMerge.sourceFields"
-              placeholder="请选择字段名称"
+              :placeholder="td('dpp.integration.selectFieldPlaceholder', '请选择字段名称')"
               filterable
              collapse-tags multiple
             >
@@ -78,12 +78,12 @@
         <!-- 分隔符 -->
         <el-col :span="12">
           <el-form-item
-            label="分隔符"
+            :label="td('dpp.integration.separator', '分隔符')"
             prop="separator"
           >
             <el-input
               v-model="form.ruleConfig.fieldMerge.separator"
-              placeholder="请输入分隔符（不能包含中文）"
+              :placeholder="td('dpp.integration.separatorPlaceholder', '请输入分隔符（不能包含中文）')"
             />
           </el-form-item>
         </el-col>
@@ -91,17 +91,17 @@
         <!-- 空值处理 -->
         <el-col :span="12">
           <el-form-item
-            label="空值处理"
+            :label="td('dpp.integration.nullHandling', '空值处理')"
             prop="handleNull"
           >
             <el-select
               v-model="form.ruleConfig.fieldMerge.handleNull"
-              placeholder="请选择空值处理方式"
+              :placeholder="td('dpp.integration.nullHandlingPlaceholder', '请选择空值处理方式')"
               filterable
             >
-              <el-option label="保留为空" value="keep" />
-              <el-option label="替换为默认值" value="default" />
-              <el-option label="删除该条记录" value="remove" />
+              <el-option :label="td('dpp.integration.keepAsNull', '保留为空')" value="keep" />
+              <el-option :label="td('dpp.integration.replaceWithDefault', '替换为默认值')" value="default" />
+              <el-option :label="td('dpp.integration.deleteRecord', '删除该条记录')" value="remove" />
             </el-select>
           </el-form-item>
         </el-col>
@@ -109,12 +109,12 @@
         <!-- 默认值（仅在选择 default 时显示） -->
         <el-col :span="12" v-if="form.ruleConfig.fieldMerge.handleNull === 'default'">
           <el-form-item
-            label="默认值"
+            :label="td('dpp.integration.defaultValueLabel', '默认值')"
             prop="defaultValue"
           >
             <el-input
               v-model="form.ruleConfig.fieldMerge.defaultValue"
-              placeholder="请输入默认值"
+              :placeholder="td('dpp.integration.defaultValuePlaceholder', '请输入默认值')"
             />
           </el-form-item>
         </el-col>
@@ -122,12 +122,12 @@
         <!-- 是否去除空格 -->
         <el-col :span="12">
           <el-form-item
-            label="是否去除首尾空格"
+            :label="td('dpp.integration.trimLeadingTrailingSpace', '是否去除首尾空格')"
             prop="trimSpace"
           >
             <el-radio-group v-model="form.ruleConfig.fieldMerge.trimSpace">
-              <el-radio :label="true">是</el-radio>
-              <el-radio :label="false">否</el-radio>
+              <el-radio :label="true">{{ td('dpp.integration.yes', '是') }}</el-radio>
+              <el-radio :label="false">{{ td('dpp.integration.no', '否') }}</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-col>
@@ -136,26 +136,27 @@
 
     <template #footer>
       <div style="text-align: right">
-        <el-button @click="closeDialog">{{ t('common.button.close') }}</el-button>
-        <el-button type="primary" @click="submitForm">{{ t('common.button.save') }}</el-button>
+        <el-button @click="closeDialog">{{ td('common.button.close') }}</el-button>
+        <el-button type="primary" @click="submitForm">{{ td('common.button.save') }}</el-button>
       </div>
     </template>
   </el-dialog>
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { ref, watch, computed } from "vue";
 
-const { t } = useI18n();// props
+const { td } = useDefaultLang();// props
 const props = defineProps({
   visibleDialogs: { type: Boolean, default: true },
-  title: { type: String, default: "字段合并规则配置" },
+  title: { type: String, default: '' },
   row: { type: Object, default: () => ({}) },
   tableFields: { type: Array, default: () => [] },
   fieldFields: { type: Array, default: () => [] },
   id: { type: String, default: "" },
 });
+const dialogTitle = computed(() => props.title || td("dpp.integration.fieldMergeConfig", "字段合并规则配置"));
 const usedFields = computed(() => {
   return props.fieldFields
     ?.map(f => f?.columnName)
@@ -192,22 +193,22 @@ const formRef = ref(null);
 
 // 表单校验规则
 const formRules = {
-  sourceField: [{ required: true, message: "请选择字段", trigger: "change" }],
-  sourceFields: [{ required: true, message: "请选择字段", trigger: "change" }],
+  sourceField: [{ required: true, message: td("dpp.integration.selectFieldRequired", "请选择字段"), trigger: "change" }],
+  sourceFields: [{ required: true, message: td("dpp.integration.selectFieldRequired", "请选择字段"), trigger: "change" }],
   separator: [
-    { required: true, message: "请输入分隔符", trigger: "blur" },
+    { required: true, message: td("dpp.integration.separatorRequired", "请输入分隔符"), trigger: "blur" },
     {
       pattern: /^[^\u4e00-\u9fa5]+$/,
-      message: "分隔符不能包含中文",
+      message: td("dpp.integration.separatorNoChinese", "分隔符不能包含中文"),
       trigger: "blur",
     },
   ],
-  handleNull: [{ required: true, message: "请选择空值处理方式", trigger: "change" }],
+  handleNull: [{ required: true, message: td("dpp.integration.nullHandlingRequired", "请选择空值处理方式"), trigger: "change" }],
   defaultValue: [
     {
       validator: (rule, value, callback) => {
         if (form.value.ruleConfig.fieldMerge.handleNull === "default" && !value) {
-          callback(new Error("请输入默认值"));
+          callback(new Error(td("dpp.integration.defaultValueRequired", "请输入默认值")));
         } else {
           callback();
         }
@@ -215,7 +216,7 @@ const formRules = {
       trigger: "blur",
     },
   ],
-  trimSpace: [{ required: true, message: "请选择是否去除空格", trigger: "change" }],
+  trimSpace: [{ required: true, message: td("dpp.integration.trimSpaceRequired", "请选择是否去除空格"), trigger: "change" }],
 };
 
 // 监听弹窗显示，弹出时初始化数据

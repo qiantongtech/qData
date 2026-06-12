@@ -19,17 +19,17 @@
   <!-- // 视频  -->
   <template v-if="form.type == '5'">
     <el-form-item
-        label="平台"
+        :label="td('dpp.asset.add.video.platform')"
         prop="daAssetVideo.platform"
         :rules="[
         {
           required: true,
-          message: '请选择平台',
+          message: td('dpp.asset.add.video.platformRequired'),
           trigger: 'blur',
         },
       ]"
     >
-      <el-select v-model="form.daAssetVideo.platform" placeholder="请选择平台">
+      <el-select v-model="form.daAssetVideo.platform" :placeholder="td('dpp.asset.add.video.platformPlaceholder')">
         <el-option
             v-for="dict in da_asset_video_platform"
             :key="dict.value"
@@ -39,75 +39,75 @@
       </el-select>
     </el-form-item>
     <el-form-item
-        label="平台ip"
+        :label="td('dpp.asset.add.video.platformIp')"
         prop="daAssetVideo.ip"
         :rules="[
         {
           required: true,
-          message: '请输入平台IP',
+          message: td('dpp.asset.add.video.platformIpRequired'),
           trigger: 'blur',
         },
       ]"
     >
-      <el-input v-model="form.daAssetVideo.ip" placeholder="请输入平台ip" />
+      <el-input v-model="form.daAssetVideo.ip" :placeholder="td('dpp.asset.add.video.platformIpPlaceholder')" />
     </el-form-item>
 
     <el-form-item
-        label="平台端口"
+        :label="td('dpp.asset.add.video.platformPort')"
         prop="daAssetVideo.port"
         :rules="[
         {
           required: true,
-          message: '请输入平台端口',
+          message: td('dpp.asset.add.video.platformPortRequired'),
           trigger: 'blur',
         },
       ]"
     >
       <el-input
           v-model="localForm.daAssetVideo.port"
-          placeholder="请输入平台端口"
+          :placeholder="td('dpp.asset.add.video.platformPortPlaceholder')"
       />
     </el-form-item>
     <el-form-item
-        label="摄像头编码"
+        :label="td('dpp.asset.add.video.cameraCode')"
         prop="daAssetVideo.config.cameraCode"
         :rules="[
         {
           required: true,
-          message: '请输入摄像头编码',
+          message: td('dpp.asset.add.video.cameraCodeRequired'),
           trigger: 'blur',
         },
       ]"
     >
       <el-input
           v-model="localForm.daAssetVideo.config.cameraCode"
-          placeholder="请输入摄像头编码"
+          :placeholder="td('dpp.asset.add.video.cameraCodePlaceholder')"
       />
     </el-form-item>
 
     <el-form-item
-        label="摄像头名称"
+        :label="td('dpp.asset.add.video.cameraName')"
         prop="daAssetVideo.config.cameraName"
         :rules="[
         {
           required: true,
-          message: '请输入摄像头名称',
+          message: td('dpp.asset.add.video.cameraNameRequired'),
           trigger: 'blur',
         },
       ]"
     >
       <el-input
           v-model="localForm.daAssetVideo.config.cameraName"
-          placeholder="请输入摄像头名称"
+          :placeholder="td('dpp.asset.add.video.cameraNamePlaceholder')"
       />
     </el-form-item>
     <el-form-item
-        label="服务上下文"
+        :label="td('dpp.asset.add.video.artemisPath')"
         prop="daAssetVideo.config.artemisPath"
         :rules="[
         {
           required: true,
-          message: '请输入服务上下文',
+          message: td('dpp.asset.add.video.artemisPathRequired'),
           trigger: 'blur',
         },
       ]"
@@ -119,35 +119,35 @@
     </el-form-item>
 
     <el-form-item
-        label="公钥"
+        :label="td('dpp.asset.add.video.appkey')"
         prop="daAssetVideo.config.appkey"
         :rules="[
         {
           required: true,
-          message: '请输入公钥',
+          message: td('dpp.asset.add.video.appkeyRequired'),
           trigger: 'blur',
         },
       ]"
     >
       <el-input
           v-model="localForm.daAssetVideo.config.appkey"
-          placeholder="请输入公钥"
+          :placeholder="td('dpp.asset.add.video.appkeyPlaceholder')"
       />
     </el-form-item>
     <el-form-item
-        label="私钥"
+        :label="td('dpp.asset.add.video.appSecret')"
         prop="daAssetVideo.config.appSecret"
         :rules="[
         {
           required: true,
-          message: '请输入私钥',
+          message: td('dpp.asset.add.video.appSecretRequired'),
           trigger: 'blur',
         },
       ]"
     >
       <el-input
           v-model="localForm.daAssetVideo.config.appSecret"
-          placeholder="请输入私钥"
+          :placeholder="td('dpp.asset.add.video.appSecretPlaceholder')"
       />
     </el-form-item>
   </template>
@@ -155,9 +155,12 @@
 </template>
 
 <script setup>
+import useDefaultLang from "@/composables/useDefaultLang"
 import { ref, watch, getCurrentInstance } from "vue";
 import { ElMessage } from "element-plus";
 import useUserStore from "@/store/system/user.js";
+
+const { td } = useDefaultLang();
 import {
   getTablesByDataSourceId,
   getColumnByAssetId,

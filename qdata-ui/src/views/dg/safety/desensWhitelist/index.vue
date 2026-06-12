@@ -34,7 +34,7 @@
           @click="handleAdd"
           v-hasPermi="['att:tag:add']"
         >
-          {{ t('common.button.add') }}
+          {{ td('common.button.add') }}
         </el-button>
         <el-button
           type="danger"
@@ -44,7 +44,7 @@
           @click="handleDelete"
           v-hasPermi="['att:tag:remove']"
         >
-          {{ t('common.button.delete') }}
+          {{ td('common.button.delete') }}
         </el-button>
       </template>
 
@@ -101,7 +101,7 @@
             @click="handleDetail(row)"
             v-hasPermi="['att:tag:query']"
           >
-            {{ t('common.button.details') }}
+            {{ td('common.button.details') }}
           </el-button>
           <el-button
             link
@@ -111,7 +111,7 @@
             :disabled="row.status == 1"
             v-hasPermi="['att:tag:edit']"
           >
-            {{ t('common.button.update') }}
+            {{ td('common.button.update') }}
           </el-button>
           <el-button
             link
@@ -121,7 +121,7 @@
             @click="handleDelete(row)"
             v-hasPermi="['att:tag:remove']"
           >
-            {{ t('common.button.delete') }}
+            {{ td('common.button.delete') }}
           </el-button>
         </template>
       </qt-table>
@@ -146,32 +146,32 @@
         label-width="110px"
         @submit.prevent
       >
-        <el-form-item label="白名单名称" prop="whitelistName">
+        <el-form-item :label="td('dg.desensWhitelist.whitelistName')" prop="whitelistName">
           <el-input
             v-model="form.whitelistName"
-            placeholder="请输入白名单名称"
+            :placeholder="td('dg.desensWhitelist.whitelistNamePlaceholder')"
           />
         </el-form-item>
-        <el-form-item label="数据分类" prop="dataCategoryCode">
+        <el-form-item :label="td('dg.desensWhitelist.dataCategory')" prop="dataCategoryCode">
           <el-tree-select
             v-model="form.dataCategoryCode"
             filterable
             :data="dataCategoryOptions"
             :props="{ value: 'code', label: 'name', children: 'children' }"
             value-key="code"
-            placeholder="请选择数据分类"
+            :placeholder="td('dg.desensWhitelist.dataCategoryPlaceholder')"
             check-strictly
             class="form-control--compact"
           />
         </el-form-item>
-        <el-form-item label="生效账号" prop="effectiveAccount">
+        <el-form-item :label="td('dg.desensWhitelist.effectiveAccount')" prop="effectiveAccount">
           <el-select
             v-model="form.effectiveAccount"
             multiple
             filterable
             collapse-tags
             collapse-tags-tooltip
-            placeholder="请选择生效账号"
+            :placeholder="td('dg.desensWhitelist.effectiveAccountPlaceholder')"
           >
             <el-option
               v-for="opt in effectiveAccountOptions"
@@ -181,7 +181,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="生效时段" prop="effectiveTimeRange">
+        <el-form-item :label="td('dg.desensWhitelist.effectiveTimeRange')" prop="effectiveTimeRange">
           <el-date-picker
             v-model="form.effectiveTimeRange"
             type="daterange"
@@ -192,7 +192,7 @@
             style="width: 100%"
           />
         </el-form-item>
-        <qt-form-item :label="t('common.texts.status')" prop="status">
+        <qt-form-item :label="td('common.texts.status')" prop="status">
           <el-radio-group v-model="form.status">
             <el-radio
               v-for="dict in dp_model_status"
@@ -203,21 +203,21 @@
             </el-radio>
           </el-radio-group>
         </qt-form-item>
-        <el-form-item :label="t('common.texts.description')" prop="description" class="row-full">
+        <el-form-item :label="td('common.texts.description')" prop="description" class="row-full">
           <el-input
             v-model="form.description"
             type="textarea"
-            :placeholder="t('common.form.descriptionPlaceholder')"
+            :placeholder="td('common.form.descriptionPlaceholder')"
             :min-height="192"
             show-word-limit
             maxlength="500个字符"
           />
         </el-form-item>
-        <el-form-item :label="t('common.texts.remark')" prop="remark" class="row-full">
+        <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full">
           <el-input
             v-model="form.remark"
             type="textarea"
-            :placeholder="t('common.form.remarkPlaceholder')"
+            :placeholder="td('common.form.remarkPlaceholder')"
             :min-height="192"
             show-word-limit
             maxlength="500个字符"
@@ -226,8 +226,8 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="cancel">{{ t('common.button.cancel') }}</el-button>
-          <el-button type="primary" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
+          <el-button @click="cancel">{{ td('common.button.cancel') }}</el-button>
+          <el-button type="primary" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -250,16 +250,16 @@
         label-width="110px"
         class="column-form"
       >
-        <el-form-item label="编号:" prop="id">
+        <el-form-item :label="td('common.texts.number') + ':'" prop="id">
           <div class="form-readonly">{{ form.id ?? "-" }}</div>
         </el-form-item>
-        <el-form-item label="白名单名称" prop="whitelistName">
+        <el-form-item :label="td('dg.desensWhitelist.whitelistName')" prop="whitelistName">
           <div class="form-readonly">{{ form.whitelistName ?? "-" }}</div>
         </el-form-item>
-        <el-form-item label="数据分类" prop="dataCategoryName">
+        <el-form-item :label="td('dg.desensWhitelist.dataCategory')" prop="dataCategoryName">
           <div class="form-readonly">{{ form.dataCategoryName ?? "-" }}</div>
         </el-form-item>
-        <el-form-item label="生效账号" prop="effectiveAccount" class="row-full">
+        <el-form-item :label="td('dg.desensWhitelist.effectiveAccount')" prop="effectiveAccount" class="row-full">
           <div
             class="form-readonly effective-account-readonly"
             :title="formatEffectiveAccount(form.effectiveAccount)"
@@ -267,40 +267,40 @@
             {{ formatEffectiveAccount(form.effectiveAccount) }}
           </div>
         </el-form-item>
-        <el-form-item label="生效时段" prop="effectiveTimeRange">
+        <el-form-item :label="td('dg.desensWhitelist.effectiveTimeRange')" prop="effectiveTimeRange">
           <div class="form-readonly">
             {{ formatEffectiveTimeRange(form.effectiveTimeRange) }}
           </div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.status')" prop="status">
+        <el-form-item :label="td('common.texts.status')" prop="status">
           <div class="form-readonly">
             {{ getStatusLabel(form.status) }}
           </div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.description')" prop="description" class="row-full">
+        <el-form-item :label="td('common.texts.description')" prop="description" class="row-full">
           <div class="form-readonly textarea">
             {{ form.description ?? "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.remark')" prop="remark" class="row-full">
+        <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full">
           <div class="form-readonly textarea">{{ form.remark ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.createdBy')" prop="createBy">
+        <el-form-item :label="td('common.texts.createdBy')" prop="createBy">
           <div class="form-readonly">{{ form.createBy ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.createdTime')" prop="createTime">
+        <el-form-item :label="td('common.texts.createdTime')" prop="createTime">
           <div class="form-readonly">
             {{ parseTime(form.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
         </el-form-item>
 
-        <el-form-item :label="t('common.texts.updatedBy')" prop="updateBy">
+        <el-form-item :label="td('common.texts.updatedBy')" prop="updateBy">
           <div class="form-readonly">
             {{ form.updateBy ?? "-" }}
           </div>
         </el-form-item>
 
-        <el-form-item :label="t('common.texts.updatedTime')" prop="updateTime">
+        <el-form-item :label="td('common.texts.updatedTime')" prop="updateTime">
           <div class="form-readonly">
             {{ parseTime(form.updateTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
@@ -308,7 +308,7 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="cancel">{{ t('common.button.close') }}</el-button>
+          <el-button @click="cancel">{{ td('common.button.close') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -316,7 +316,6 @@
 </template>
 
 <script setup name="DesensWhitelist">
-import { useI18n } from 'vue-i18n'
 import {
   addMockDesensWhitelist,
   deleteMockDesensWhitelist,
@@ -331,7 +330,6 @@ import { getCurrentInstance, onMounted, reactive, ref, toRefs } from "vue";
 import useDefaultLang from "@/composables/useDefaultLang";
 
 const { td } = useDefaultLang();
-const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { dp_model_status } = proxy.useDict("dp_model_status");
 
@@ -381,7 +379,7 @@ async function initDataCategoryOptions() {
     };
     allDataCategoryOptions.value = [
       {
-        name: "数据分类",
+        name: td('dg.desensWhitelist.dataCategory'),
         code: "",
         id: 0,
         children: allTree(rawData),
@@ -403,7 +401,7 @@ async function initDataCategoryOptions() {
     const tree = processTree(rawData);
     dataCategoryOptions.value = [
       {
-        name: "数据分类",
+        name: td('dg.desensWhitelist.dataCategory'),
         code: "",
         id: 0,
         children: tree,
@@ -434,23 +432,23 @@ const tableStore = reactive({
   },
   columns: [
     { type: "selection", width: 55, align: "left" },
-    { label: t('common.texts.number'), prop: "id", width: 60, sortable: true },
+    { label: td('common.texts.number'), prop: "id", width: 60, sortable: true },
     {
-      label: "白名单名称/描述",
+      label: td('dg.desensWhitelist.nameDesc'),
       prop: "whitelistName",
       align: "left",
       width: 260,
       slot: "whitelistNameDesc",
     },
     {
-      label: "数据分类",
+      label: td('dg.desensWhitelist.dataCategory'),
       prop: "dataCategoryName",
       align: "left",
       width: 180,
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: "生效账号",
+      label: td('dg.desensWhitelist.effectiveAccount'),
       prop: "effectiveAccount",
       slot: "effectiveAccount",
       align: "left",
@@ -458,26 +456,26 @@ const tableStore = reactive({
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: "生效时段",
+      label: td('dg.desensWhitelist.effectiveTimeRange'),
       prop: "effectiveTimeRange",
       slot: "effectiveTimeRange",
       width: 190,
       align: "left",
     },
     {
-      label: t('common.texts.status'),
+      label: td('common.texts.status'),
       prop: "status",
       slot: "status",
       width: 120,
     },
     {
-      label: t('common.texts.createdBy'),
+      label: td('common.texts.createdBy'),
       prop: "createBy",
       slot: "createByInfo",
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: t('common.texts.createdTime'),
+      label: td('common.texts.createdTime'),
       prop: "createTime",
       width: 150,
       sortable: true,
@@ -485,7 +483,7 @@ const tableStore = reactive({
       date: true,
     },
     {
-      label: t('common.texts.operation'),
+      label: td('common.texts.operation'),
       width: 220,
       fixed: "right",
       slot: "handle",
@@ -504,29 +502,29 @@ const tableStore = reactive({
 const searchStore = reactive({
   items: [
     {
-      label: "白名单名称",
+      label: td('dg.desensWhitelist.whitelistName'),
       prop: "whitelistName",
       align: "left",
-      component: { is: "input", placeholder: "请输入白名单名称" },
+      component: { is: "input", placeholder: td('dg.desensWhitelist.whitelistNamePlaceholder') },
     },
     {
-      label: "数据分类",
+      label: td('dg.desensWhitelist.dataCategory'),
       prop: "dataCategoryCode",
       component: {
         is: "tree-select",
         data: allDataCategoryOptions,
         props: { value: "code", label: "name", children: "children" },
         valueKey: "code",
-        placeholder: "请选择数据分类",
+        placeholder: td('dg.desensWhitelist.dataCategoryPlaceholder'),
         checkStrictly: true,
       },
     },
     {
-      label: t('common.texts.status'),
+      label: td('common.texts.status'),
       prop: "status",
       component: {
         is: "select",
-        placeholder: t('common.form.statusPlaceholder'),
+        placeholder: td('common.form.statusPlaceholder'),
         options: dp_model_status,
       },
     },
@@ -542,12 +540,12 @@ function handleResetQueryClick() {
 
 /** 启用禁用开关 */
 function handleStatusChange(id, row, e) {
-  const text = e === "1" ? "启用" : "禁用";
+  const text = e === "1" ? td('dg.desensWhitelist.enabled') : td('dg.desensWhitelist.disabled');
   proxy.$modal
-    .confirm('确认要"' + text + '","' + (row.whitelistName || "-") + '"吗？')
+    .confirm(td('dg.desensWhitelist.confirmStatus').replace('{text}', text).replace('{name}', row.whitelistName || "-"))
     .then(function () {
       updateMockDesensWhitelist({ id, status: row.status });
-      proxy.$modal.msgSuccess(t('common.message.msgOpSuccess'));
+      proxy.$modal.msgSuccess(td('common.message.msgOpSuccess'));
       tableRef.value.getList();
     })
     .catch(function () {
@@ -562,16 +560,16 @@ const data = reactive({
   form: {},
   rules: {
     whitelistName: [
-      { required: true, message: "白名单名称不能为空", trigger: "blur" },
+      { required: true, message: td('dg.desensWhitelist.whitelistNameRequired'), trigger: "blur" },
     ],
     dataCategoryCode: [
-      { required: true, message: "数据分类不能为空", trigger: "change" },
+      { required: true, message: td('dg.desensWhitelist.dataCategoryRequired'), trigger: "change" },
     ],
     effectiveAccount: [
-      { required: true, message: "生效账号不能为空", trigger: "blur" },
+      { required: true, message: td('dg.desensWhitelist.effectiveAccountRequired'), trigger: "blur" },
     ],
     effectiveTimeRange: [
-      { required: true, message: "生效时段不能为空", trigger: "change" },
+      { required: true, message: td('dg.desensWhitelist.effectiveTimeRangeRequired'), trigger: "change" },
     ],
   },
 });
@@ -610,7 +608,7 @@ function handleAdd() {
   reset();
   initDataCategoryOptions();
   open.value = true;
-  title.value = "新增脱敏白名单";
+  title.value = td('dg.desensWhitelist.addTitle');
 }
 
 /** 修改按钮操作 */
@@ -620,7 +618,7 @@ function handleUpdate(row) {
   const _id = row?.id;
   form.value = getMockDesensWhitelistById(_id) || row || form.value;
   open.value = true;
-  title.value = "修改脱敏白名单";
+  title.value = td('dg.desensWhitelist.editTitle');
 }
 /** 详情按钮操作 */
 function handleDetail(row) {
@@ -629,7 +627,7 @@ function handleDetail(row) {
   const _id = row?.id;
   form.value = getMockDesensWhitelistById(_id) || row || form.value;
   openDetail.value = true;
-  title.value = "脱敏白名单详情";
+  title.value = td('dg.desensWhitelist.detailTitle');
 }
 
 /** 提交按钮 */
@@ -638,12 +636,12 @@ function submitForm() {
     if (valid) {
       if (form.value.id != null) {
         updateMockDesensWhitelist(form.value);
-        proxy.$modal.msgSuccess(t('common.message.editSuccess'));
+        proxy.$modal.msgSuccess(td('common.message.editSuccess'));
         open.value = false;
         tableRef.value.getList();
       } else {
         addMockDesensWhitelist(form.value);
-        proxy.$modal.msgSuccess(t('common.message.addSuccess'));
+        proxy.$modal.msgSuccess(td('common.message.addSuccess'));
         open.value = false;
         tableRef.value.getList();
       }
@@ -662,11 +660,11 @@ function handleDelete(row) {
   if (!_ids) return;
 
   proxy.$modal
-    .confirm('是否确认删除编号为"' + _ids + '"的数据项？')
+    .confirm(td('dg.desensWhitelist.confirmDeleteId').replace('{id}', _ids))
     .then(() => {
       deleteMockDesensWhitelist(_ids);
       tableRef.value.getList();
-      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+      proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
     })
     .catch(() => {
       // 用户取消删除操作

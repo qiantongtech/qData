@@ -21,7 +21,7 @@
       <DeptTree
         ref="DeptTreeRef"
         :deptOptions="deptOptions"
-        :placeholder="'请输入分层/分域/主题名称'"
+        :placeholder="td('dp.model.treePlaceholder')"
         @node-click="handleNodeClick"
       />
 
@@ -92,15 +92,15 @@
                   'icon-disabled': single,
                   'icon-normal': !single,
                 }"
-              />发布模型
+              />{{ td('dp.materializedModel.publishModel') }}
             </el-button>
           </template>
 
           <qt-table v-bind="tableStore" ref="tableRef">
             <template #releaseStatus="{ row }">
-              <dict-tag v-if="row.releaseStatus == 1" type="info">未发布</dict-tag>
-              <dict-tag v-else-if="row.releaseStatus == 3" type="success">发布成功</dict-tag>
-              <dict-tag v-else-if="row.releaseStatus == 4" type="danger">发布失败</dict-tag>
+              <dict-tag v-if="row.releaseStatus == 1" type="info">{{ td('dp.materializedModel.unpublished') }}</dict-tag>
+              <dict-tag v-else-if="row.releaseStatus == 3" type="success">{{ td('dp.materializedModel.publishSuccess') }}</dict-tag>
+              <dict-tag v-else-if="row.releaseStatus == 4" type="danger">{{ td('dp.materializedModel.publishFailed') }}</dict-tag>
               <span v-else>{{ row.releaseStatus }}</span>
             </template>
             <template #releaseDatabaseList="{ row }">
@@ -132,7 +132,7 @@
                 icon="view"
                 @click="handleDetail(row)"
                 v-hasPermi="['dp:model:edit']"
-                >{{ t('common.button.details') }}</el-button
+                >{{ td('common.button.details') }}</el-button
               >
               <el-button
                 link
@@ -146,7 +146,7 @@
                   "
                   style="margin-right: 4px"
                 />
-                {{ row.releaseStatus == 1 ? "发布" : "重新发布" }}
+                {{ row.releaseStatus == 1 ? td('dp.materializedModel.release') : td('dp.materializedModel.reRelease') }}
               </el-button>
               <!-- <el-button
                 link
@@ -156,7 +156,7 @@
                 :disabled="row.status == 1"
                 @click="handleDelete(row)"
                 v-hasPermi="['dp:model:remove']"
-                >{{ t('common.button.delete') }}</el-button
+                >{{ td('common.button.delete') }}</el-button
               > -->
               <!-- <el-button
                 link
@@ -164,7 +164,7 @@
                 icon="view"
                 @click="handleDetail(row)"
                 v-hasPermi="['dp:model:edit']"
-                >{{ t('common.button.details') }}</el-button
+                >{{ td('common.button.details') }}</el-button
               > -->
             </template>
           </qt-table>
@@ -194,7 +194,7 @@
   </div>
 </template>
 <script setup name="DpModel">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { deptUserTree } from "@/api/system/system/user.js";
 import { deptTreeSelectNoPermi } from "@/api/system/system/user.js";
 import DeptTree from "@/components/DeptTree/index1.vue";
@@ -221,7 +221,7 @@ import { getToken } from "@/utils/auth.js";
 import { formatHierarchyDisplayName } from "../../../utils/dm/utils";
 import { ref, reactive, getCurrentInstance } from "vue";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const projectStore = useProjectStore();
 const {
@@ -312,12 +312,12 @@ const upload = reactive({
 
 /** 启用禁用开关 */
 function handleStatusChange(id, row, e) {
-  const text = e === "1" ? "启用" : "禁用";
+  const text = e === "1" ? td('dp.model.enableText') : td('dp.model.disableText');
   proxy.$modal
-    .confirm('确认要"' + text + '","' + row.modelComment + '"逻辑模型吗？')
+    .confirm(td('dp.model.confirmStatusChange', { text: text, name: row.modelComment }))
     .then(function () {
       updateStatusDpDataModel(id, row.status).then((response) => {
-        proxy.$modal.msgSuccess(t('common.message.msgOpSuccess'));
+        proxy.$modal.msgSuccess(td('common.message.msgOpSuccess'));
       });
     })
     .catch(function () {
@@ -329,15 +329,15 @@ const data = reactive({
   form: { status: "1" },
   rules: {
     modelName: [
-      { required: true, message: "模型编码不能为空", trigger: "blur" },
+      { required: true, message: td('dp.model.modelNameRequired'), trigger: "blur" },
     ],
     modelComment: [
-      { required: true, message: "模型名称不能为空", trigger: "blur" },
+      { required: true, message: td('dp.model.modelCommentRequired'), trigger: "blur" },
     ],
-    catCode: [{ required: true, message: "类目编码不能为空", trigger: "blur" }],
-    status: [{ required: true, message: t('common.form.statusRequired'), trigger: "change" }],
+    catCode: [{ required: true, message: td('dp.model.catCodeRequired'), trigger: "blur" }],
+    status: [{ required: true, message: td('common.form.statusRequired'), trigger: "change" }],
     createType: [
-      { required: true, message: "创建方式不能为空", trigger: "change" },
+      { required: true, message: td('dp.model.createTypeRequired'), trigger: "change" },
     ],
   },
 });
@@ -360,9 +360,9 @@ const tableStore = reactive({
       type: "selection",
       width: 55,
     },
-    { label: t('common.texts.number'), prop: "id", width: 60, sortable: true },
+    { label: td('common.texts.number'), prop: "id", width: 60, sortable: true },
     {
-      label: "模型信息",
+      label: td('dp.model.modelInfo'),
       width: 450,
       align: "left",
       info: {
@@ -373,14 +373,14 @@ const tableStore = reactive({
       },
     },
     {
-      label: "归属层级",
+      label: td('dp.model.hierarchy'),
       align: "left",
       width: 320,
       showOverflowTooltip: { effect: "light" },
       formatter: (row) => formatHierarchyDisplayName(row, row.tableType),
     },
     {
-      label: "表类型",
+      label: td('dp.model.tableType'),
       align: "left",
       width: 150,
       prop: "tableType",
@@ -389,21 +389,21 @@ const tableStore = reactive({
     },
 
     {
-      label: "发布状态",
+      label: td('dp.materializedModel.releaseStatus'),
       prop: "releaseStatus",
       align: "center",
       width: 100,
       slot: "releaseStatus",
     },
     {
-      label: "已发布数据源",
+      label: td('dp.materializedModel.releaseDatabase'),
       prop: "releaseDatabaseList",
       align: "center",
       width: 300,
       slot: "releaseDatabaseList",
     },
     {
-      label: t('common.texts.createdBy'),
+      label: td('common.texts.createdBy'),
       width: 120,
       align: "left",
       list: [
@@ -412,14 +412,14 @@ const tableStore = reactive({
       ],
     },
     {
-      label: t('common.texts.createdTime'),
+      label: td('common.texts.createdTime'),
       prop: "createTime",
       width: 150,
       sortable: true,
       date: true,
     },
     {
-      label: t('common.texts.operation'),
+      label: td('common.texts.operation'),
       width: 175,
       headerAlign: "center",
       align: "left",
@@ -445,10 +445,10 @@ const tableStore = reactive({
 
 const searchStore = reactive({
   items: [
-    { label: "中文名称", prop: "modelComment", component: { is: "input" } },
-    { label: "英文名称", prop: "modelName", component: { is: "input" } },
+    { label: td('dp.model.chineseName'), prop: "modelComment", component: { is: "input" } },
+    { label: td('dp.model.englishName'), prop: "modelName", component: { is: "input" } },
     {
-      label: "数仓分层",
+      label: td('dp.model.dataLayer'),
       prop: "dataLayerId",
       type: "select",
       component: {
@@ -466,7 +466,7 @@ const searchStore = reactive({
       },
     },
     {
-      label: "表类型",
+      label: td('dp.model.tableType'),
       prop: "tableType",
       type: "select",
       component: { is: "select", options: table_type },
@@ -478,7 +478,7 @@ const searchStore = reactive({
     //   component: { is: "select", options: dp_model_table_case },
     // },
     // {
-    //   label: t('common.texts.status'),
+    //   label: td('common.texts.status'),
     //   prop: "status",
     //   type: "select",
     //   component: { is: "select", options: dp_model_status },
@@ -576,7 +576,7 @@ function handleAdd(type) {
   dataList.value = {};
   reset();
   open.value = true;
-  title.value = "新增逻辑模型";
+  title.value = td('dp.model.addTitle');
 }
 let dataList = ref({});
 /** 修改按钮操作 */
@@ -588,7 +588,7 @@ function handleUpdate(row) {
     dataList.value = response.data;
     selectedType.value = String(dataList.value.type || "");
     open.value = true;
-    title.value = "修改逻辑模型";
+    title.value = td('dp.model.editTitle');
   });
 }
 
@@ -596,14 +596,14 @@ function handleUpdate(row) {
 function handleMaterialization() {
   const _ID = ids.value;
   Materialization.value = true;
-  title.value = "发布模型";
+  title.value = td('dp.materializedModel.publishModelTitle');
 }
 
 /** 发布/重新发布按钮操作 */
 function handleRelease(row) {
   ids.value = [row.id];
   Materialization.value = true;
-  title.value = row.releaseStatus == 1 ? "发布模型" : "重新发布模型";
+  title.value = row.releaseStatus == 1 ? td('dp.materializedModel.publishModelTitle') : td('dp.materializedModel.reReleaseModelTitle');
 }
 
 /** 详情按钮操作 */
@@ -618,7 +618,7 @@ function submitForm(obj) {
     updateDpModel(obj.form)
       .then((response) => {
         updateDpModelColumn(obj.tableData).then((response) => {
-          proxy.$modal.msgSuccess(t('common.message.editSuccess'));
+          proxy.$modal.msgSuccess(td('common.message.editSuccess'));
           open.value = false;
           handleQuery();
         });
@@ -634,7 +634,7 @@ function submitForm(obj) {
         }));
         dpModelColumn(updatedTableData)
           .then((dpModelColumnResponse) => {
-            proxy.$modal.msgSuccess(t('common.message.addSuccess'));
+            proxy.$modal.msgSuccess(td('common.message.addSuccess'));
             open.value = false;
             handleQuery();
           })
@@ -650,13 +650,13 @@ function submitForm(obj) {
 function handleDelete(row) {
   const _IDs = row.id || ids.value;
   proxy.$modal
-    .confirm('是否确认删除逻辑模型编号为"' + _IDs + '"的数据项？')
+    .confirm(td('dp.model.confirmDelete', { id: _IDs }))
     .then(function () {
       return delDpModelColumn(_IDs);
     })
     .then(() => {
       handleQuery();
-      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+      proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
     })
     .catch(() => {});
 }

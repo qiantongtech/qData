@@ -81,7 +81,7 @@
           @click="handleAdd"
           v-hasPermi="['dg:desensitizewhitelist:add']"
         >
-          {{ t('common.button.add') }}
+          {{ td('common.button.add') }}
         </el-button>
         <el-button
           type="danger"
@@ -91,7 +91,7 @@
           @click="handleDelete"
           v-hasPermi="['dg:desensitizewhitelist:remove']"
         >
-          {{ t('common.button.delete') }}
+          {{ td('common.button.delete') }}
         </el-button>
       </template>
 
@@ -148,7 +148,7 @@
             @click="handleDetail(row)"
             v-hasPermi="['dg:desensitizewhitelist:query']"
           >
-            {{ t('common.button.details') }}
+            {{ td('common.button.details') }}
           </el-button>
           <el-button
             link
@@ -157,7 +157,7 @@
             @click="handleUpdate(row)"
             v-hasPermi="['dg:desensitizewhitelist:edit']"
           >
-            {{ t('common.button.update') }}
+            {{ td('common.button.update') }}
           </el-button>
           <!-- :disabled="row.validFlag == true" -->
           <!--  -->
@@ -169,7 +169,7 @@
             @click="handleDelete(row)"
             v-hasPermi="['dg:desensitizewhitelist:remove']"
           >
-            {{ t('common.button.delete') }}
+            {{ td('common.button.delete') }}
           </el-button>
         </template>
       </qt-table>
@@ -194,15 +194,15 @@
         label-width="110px"
         @submit.prevent
       >
-        <el-form-item label="白名单名称" prop="name">
-          <el-input v-model="form.name" placeholder="请输入白名单名称" />
+        <el-form-item :label="td('dg.whitelist.whitelistName')" prop="name">
+          <el-input v-model="form.name" :placeholder="td('dg.whitelist.whitelistNamePlaceholder')" />
         </el-form-item>
-        <el-form-item label="数据分类" prop="dataCategoryId">
+        <el-form-item :label="td('dg.whitelist.dataCategory')" prop="dataCategoryId">
           <el-tree-select
             v-if="!form.id"
             v-model="form.dataCategoryId"
             :data="dataCategoryList"
-            placeholder="请选择数据分类"
+            :placeholder="td('dg.whitelist.dataCategoryPlaceholder')"
             filterable
             clearable
             check-strictly
@@ -214,11 +214,11 @@
           <el-input
             v-else
             v-model="form.dataCategoryName"
-            placeholder="请选择数据分类"
+            :placeholder="td('dg.whitelist.dataCategoryPlaceholder')"
             disabled
           />
         </el-form-item>
-        <el-form-item label="生效分类" prop="effectiveCategory">
+        <el-form-item :label="td('dg.whitelist.effectiveCategory')" prop="effectiveCategory">
           <el-radio-group
             v-model="form.effectiveCategory"
             @change="handleEffectiveCategoryChange"
@@ -233,12 +233,12 @@
             </el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="生效账号" prop="effectiveAccount">
+        <el-form-item :label="td('dg.whitelist.effectiveAccount')" prop="effectiveAccount">
           <div class="effective-account__row">
             <el-input
               style="width: 84%"
               v-model="form.effectiveAccountNameList"
-              placeholder="请选择生效账号"
+              :placeholder="td('dg.whitelist.effectiveAccountPlaceholder')"
               disabled
             />
             <el-button
@@ -246,11 +246,11 @@
               type="primary"
               @click="openEffectiveAccountPicker"
             >
-              选择账号
+              {{ td('dg.whitelist.selectAccount') }}
             </el-button>
           </div>
         </el-form-item>
-        <el-form-item label="生效时段" prop="effectiveTimeRange">
+        <el-form-item :label="td('dg.whitelist.effectiveTimeRange')" prop="effectiveTimeRange">
           <el-date-picker
             v-model="form.effectiveTimeRange"
             type="daterange"
@@ -259,7 +259,7 @@
             :end-placeholder="td('common.form.endTimePlaceholder')"
           />
         </el-form-item>
-        <qt-form-item :label="t('common.texts.status')" prop="validFlag">
+        <qt-form-item :label="td('common.texts.status')" prop="validFlag">
           <el-radio-group v-model="form.validFlag">
             <el-radio
               v-for="opt in validFlagOptions"
@@ -270,21 +270,21 @@
             </el-radio>
           </el-radio-group>
         </qt-form-item>
-        <el-form-item :label="t('common.texts.description')" prop="description" class="row-full">
+        <el-form-item :label="td('common.texts.description')" prop="description" class="row-full">
           <el-input
             v-model="form.description"
             type="textarea"
-            :placeholder="t('common.form.descriptionPlaceholder')"
+            :placeholder="td('common.form.descriptionPlaceholder')"
             :min-height="192"
             show-word-limit
             maxlength="500个字符"
           />
         </el-form-item>
-        <el-form-item :label="t('common.texts.remark')" prop="remark" class="row-full">
+        <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full">
           <el-input
             v-model="form.remark"
             type="textarea"
-            :placeholder="t('common.form.remarkPlaceholder')"
+            :placeholder="td('common.form.remarkPlaceholder')"
             :min-height="192"
             show-word-limit
             maxlength="500个字符"
@@ -293,8 +293,8 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="cancel">{{ t('common.button.cancel') }}</el-button>
-          <el-button type="primary" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
+          <el-button @click="cancel">{{ td('common.button.cancel') }}</el-button>
+          <el-button type="primary" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -317,23 +317,23 @@
         label-width="110px"
         class="column-form"
       >
-        <el-form-item label="编号:" prop="id">
+        <el-form-item :label="td('common.texts.number') + ':'" prop="id">
           <div class="form-readonly">{{ form.id ?? "-" }}</div>
         </el-form-item>
-        <el-form-item label="白名单名称" prop="name">
+        <el-form-item :label="td('dg.whitelist.whitelistName')" prop="name">
           <div class="form-readonly">{{ form.name ?? "-" }}</div>
         </el-form-item>
-        <el-form-item label="数据分类" prop="dataCategoryId">
+        <el-form-item :label="td('dg.whitelist.dataCategory')" prop="dataCategoryId">
           <div class="form-readonly">
             {{ formatDataCategory(form.dataCategoryId) }}
           </div>
         </el-form-item>
-        <el-form-item label="生效分类" prop="effectiveCategory">
+        <el-form-item :label="td('dg.whitelist.effectiveCategory')" prop="effectiveCategory">
           <div class="form-readonly">
             {{ formatEffectiveCategory(form.effectiveCategory) }}
           </div>
         </el-form-item>
-        <el-form-item label="生效账号" prop="effectiveAccount" class="row-full">
+        <el-form-item :label="td('dg.whitelist.effectiveAccount')" prop="effectiveAccount" class="row-full">
           <div
             class="form-readonly effective-account-readonly"
             :title="formatEffectiveAccountDetail()"
@@ -341,41 +341,41 @@
             {{ formatEffectiveAccountDetail() }}
           </div>
         </el-form-item>
-        <el-form-item label="生效时段" prop="effectiveTimeRange">
+        <el-form-item :label="td('dg.whitelist.effectiveTimeRange')" prop="effectiveTimeRange">
           <div class="form-readonly">
             {{ formatTimeRange(form.startTime, form.endTime) }}
           </div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.status')" prop="validFlag">
-          <el-tag v-if="form.validFlag === true" type="primary">启用</el-tag>
+        <el-form-item :label="td('common.texts.status')" prop="validFlag">
+          <el-tag v-if="form.validFlag === true" type="primary">{{ td('dg.whitelist.enabled') }}</el-tag>
           <el-tag v-else-if="form.validFlag === false" type="danger"
-            >禁用</el-tag
+            >{{ td('dg.whitelist.disabled') }}</el-tag
           >
         </el-form-item>
-        <el-form-item :label="t('common.texts.description')" prop="description" class="row-full">
+        <el-form-item :label="td('common.texts.description')" prop="description" class="row-full">
           <div class="form-readonly textarea">
             {{ form.description ?? "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.remark')" prop="remark" class="row-full">
+        <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full">
           <div class="form-readonly textarea">{{ form.remark ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.createdBy')" prop="createBy">
+        <el-form-item :label="td('common.texts.createdBy')" prop="createBy">
           <div class="form-readonly">{{ form.createBy ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.createdTime')" prop="createTime">
+        <el-form-item :label="td('common.texts.createdTime')" prop="createTime">
           <div class="form-readonly">
             {{ parseTime(form.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
         </el-form-item>
 
-        <el-form-item :label="t('common.texts.updatedBy')" prop="updateBy">
+        <el-form-item :label="td('common.texts.updatedBy')" prop="updateBy">
           <div class="form-readonly">
             {{ form.updateBy ?? "-" }}
           </div>
         </el-form-item>
 
-        <el-form-item :label="t('common.texts.updatedTime')" prop="updateTime">
+        <el-form-item :label="td('common.texts.updatedTime')" prop="updateTime">
           <div class="form-readonly">
             {{ parseTime(form.updateTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
@@ -383,7 +383,7 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="cancel">{{ t('common.button.close') }}</el-button>
+          <el-button @click="cancel">{{ td('common.button.close') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -410,19 +410,19 @@
           :inline="true"
           label-width="68px"
         >
-          <el-form-item label="登录账号" prop="userName">
+          <el-form-item :label="td('dg.whitelist.loginAccount')" prop="userName">
             <el-input
               v-model="userQueryParams.userName"
-              placeholder="请输入登录账号"
+              :placeholder="td('dg.whitelist.loginAccountPlaceholder')"
               clearable
               class="el-form-input-width"
               @keyup.enter="handleQueryUser"
             />
           </el-form-item>
-          <el-form-item label="手机号码" prop="phonenumber">
+          <el-form-item :label="td('dg.whitelist.phoneNumber')" prop="phonenumber">
             <el-input
               v-model="userQueryParams.phonenumber"
-              placeholder="请输入手机号码"
+              :placeholder="td('dg.whitelist.phoneNumberPlaceholder')"
               clearable
               class="el-form-input-width"
               @keyup.enter="handleQueryUser"
@@ -435,13 +435,13 @@
               @click="handleQueryUser"
               @mousedown="(e) => e.preventDefault()"
             >
-              {{ t('common.button.query') }}
+              {{ td('common.button.query') }}
             </el-button>
             <el-button
               @click="resetQueryUser"
               @mousedown="(e) => e.preventDefault()"
             >
-              {{ t('common.button.reset') }}
+              {{ td('common.button.reset') }}
             </el-button>
           </el-form-item>
         </el-form>
@@ -456,32 +456,32 @@
         >
           <el-table-column type="selection" width="70" align="center" />
           <el-table-column
-            :label="t('common.texts.number')"
+            :label="td('common.texts.number')"
             width="80"
             align="center"
             prop="userId"
           />
           <el-table-column
-            label="登录账号"
+            :label="td('dg.whitelist.loginAccount')"
             align="center"
             prop="userName"
             :show-overflow-tooltip="{ effect: 'light' }"
           />
           <el-table-column
-            label="用户姓名"
+            :label="td('dg.whitelist.userName')"
             align="center"
             prop="nickName"
             :show-overflow-tooltip="{ effect: 'light' }"
           />
           <el-table-column
-            label="部门"
+            :label="td('dg.whitelist.department')"
             width="180"
             align="center"
             prop="dept.deptName"
             :show-overflow-tooltip="{ effect: 'light' }"
           />
           <el-table-column
-            label="手机号码"
+            :label="td('dg.whitelist.phoneNumber')"
             width="180"
             align="center"
             prop="phonenumber"
@@ -504,10 +504,10 @@
           :inline="true"
           label-width="68px"
         >
-          <el-form-item label="角色名称" prop="roleName">
+          <el-form-item :label="td('dg.whitelist.roleName')" prop="roleName">
             <el-input
               v-model="roleQueryParams.roleName"
-              placeholder="请输入角色名称"
+              :placeholder="td('dg.whitelist.roleNamePlaceholder')"
               clearable
               class="el-form-input-width"
               @keyup.enter="handleQueryRole"
@@ -520,13 +520,13 @@
               @click="handleQueryRole"
               @mousedown="(e) => e.preventDefault()"
             >
-              {{ t('common.button.query') }}
+              {{ td('common.button.query') }}
             </el-button>
             <el-button
               @click="resetQueryRole"
               @mousedown="(e) => e.preventDefault()"
             >
-              {{ t('common.button.reset') }}
+              {{ td('common.button.reset') }}
             </el-button>
           </el-form-item>
         </el-form>
@@ -541,25 +541,25 @@
         >
           <el-table-column type="selection" width="70" align="center" />
           <el-table-column
-            :label="t('common.texts.number')"
+            :label="td('common.texts.number')"
             width="80"
             align="center"
             prop="roleId"
           />
           <el-table-column
-            label="角色名称"
+            :label="td('dg.whitelist.roleName')"
             align="center"
             prop="roleName"
             :show-overflow-tooltip="{ effect: 'light' }"
           />
           <el-table-column
-            label="权限字符"
+            :label="td('dg.whitelist.roleKey')"
             align="center"
             prop="roleKey"
             :show-overflow-tooltip="{ effect: 'light' }"
           />
           <el-table-column
-            :label="t('common.texts.remark')"
+            :label="td('common.texts.remark')"
             align="center"
             prop="remark"
             :show-overflow-tooltip="{ effect: 'light' }"
@@ -589,14 +589,14 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button size="mini" @click="effectiveAccountPickerOpen = false">
-            {{ t('common.button.cancel') }}
+            {{ td('common.button.cancel') }}
           </el-button>
           <el-button
             type="primary"
             size="mini"
             @click="confirmEffectiveAccount"
           >
-            {{ t('common.button.confirm') }}
+            {{ td('common.button.confirm') }}
           </el-button>
         </div>
       </template>
@@ -605,7 +605,6 @@
 </template>
 
 <script setup name="Whitelist">
-import { useI18n } from 'vue-i18n'
 import {
   addDesensitizeWhitelist,
   delDesensitizeWhitelist,
@@ -627,7 +626,6 @@ import {
 } from "vue"
 import useDefaultLang from "@/composables/useDefaultLang";
 const { td } = useDefaultLang();
-const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { effective_category_type } = proxy.useDict(
   "dp_model_status",
@@ -635,8 +633,8 @@ const { effective_category_type } = proxy.useDict(
 );
 
 const validFlagOptions = [
-  { label: "禁用", value: false },
-  { label: "启用", value: true },
+  { label: td('dg.whitelist.disabled'), value: false },
+  { label: td('dg.whitelist.enabled'), value: true },
 ];
 
 const store = reactive({
@@ -735,7 +733,7 @@ function formatEffectiveAccountDetail() {
       const isDisabled =
         rawStatus != null && (String(rawStatus) === "1" || rawStatus === false);
       if (!name) return null;
-      return isDisabled ? `${name}(禁用)` : String(name);
+      return isDisabled ? `${name}${td('dg.whitelist.accountDisabled')}` : String(name);
     })
     .filter(Boolean);
   if (fromUsers.length) return fromUsers.join("、");
@@ -754,8 +752,8 @@ function formatEffectiveCategory(v) {
 }
 
 function getStatusLabel(v) {
-  if (v == true) return "有效";
-  if (v == false) return "禁用";
+  if (v == true) return td('dg.whitelist.valid');
+  if (v == false) return td('dg.whitelist.disabled');
   return "-";
 }
 
@@ -784,16 +782,16 @@ const tableStore = reactive({
   },
   columns: [
     { type: "selection", width: 55, align: "left" },
-    { label: t('common.texts.number'), prop: "id", width: 60, sortable: true },
+    { label: td('common.texts.number'), prop: "id", width: 60, sortable: true },
     {
-      label: "白名单名称/描述",
+      label: td('dg.whitelist.nameDesc'),
       prop: "name",
       align: "left",
       width: 260,
       slot: "whitelistNameDesc",
     },
     {
-      label: "数据分类",
+      label: td('dg.whitelist.dataCategory'),
       prop: "dataCategoryId",
       align: "left",
       width: 180,
@@ -801,39 +799,39 @@ const tableStore = reactive({
       formatter: (row) => formatDataCategory(row?.dataCategoryId),
     },
     {
-      label: "生效分类",
+      label: td('dg.whitelist.effectiveCategory'),
       prop: "effectiveCategory",
       align: "left",
       width: 120,
       formatter: (row) => formatEffectiveCategory(row?.effectiveCategory),
     },
     {
-      label: "生效账号",
+      label: td('dg.whitelist.effectiveAccount'),
       slot: "effectiveAccount",
       align: "left",
       width: 180,
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: "生效时段",
+      label: td('dg.whitelist.effectiveTimeRange'),
       prop: "startTime",
       slot: "effectiveTimeRange",
       width: 190,
       align: "left",
     },
     {
-      label: t('common.texts.status'),
+      label: td('common.texts.status'),
       prop: "validFlag",
       slot: "status",
       width: 120,
     },
     {
-      label: t('common.texts.createdBy'),
+      label: td('common.texts.createdBy'),
       prop: "createBy",
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: t('common.texts.createdTime'),
+      label: td('common.texts.createdTime'),
       prop: "createTime",
       width: 150,
       sortable: true,
@@ -841,7 +839,7 @@ const tableStore = reactive({
       date: true,
     },
     {
-      label: t('common.texts.operation'),
+      label: td('common.texts.operation'),
       width: 220,
       fixed: "right",
       slot: "handle",
@@ -858,17 +856,17 @@ const tableStore = reactive({
 const searchStore = reactive({
   items: [
     {
-      label: "白名单名称",
+      label: td('dg.whitelist.whitelistName'),
       prop: "name",
       align: "left",
-      component: { is: "input", placeholder: "请输入白名单名称" },
+      component: { is: "input", placeholder: td('dg.whitelist.whitelistNamePlaceholder') },
     },
     {
-      label: "数据分类",
+      label: td('dg.whitelist.dataCategory'),
       prop: "dataCategoryId",
       component: {
         is: "tree-select",
-        placeholder: "请选择数据分类",
+        placeholder: td('dg.whitelist.dataCategoryPlaceholder'),
         data: allDataCategoryList,
         props: { label: "name", value: "id", children: "children" },
         "check-strictly": true,
@@ -876,11 +874,11 @@ const searchStore = reactive({
       },
     },
     {
-      label: t('common.texts.status'),
+      label: td('common.texts.status'),
       prop: "validFlag",
       component: {
         is: "select",
-        placeholder: t('common.form.statusPlaceholder'),
+        placeholder: td('common.form.statusPlaceholder'),
         options: validFlagOptions,
       },
     },
@@ -899,12 +897,12 @@ function handleResetQueryClick() {
 }
 
 function handleStatusChange(id, row, e) {
-  const text = e ? "有效" : "禁用";
+  const text = e ? td('dg.whitelist.valid') : td('dg.whitelist.disabled');
   proxy.$modal
-    .confirm('确认要"' + text + '","' + (row.name || "-") + '"吗？')
+    .confirm(td('dg.whitelist.confirmStatus').replace('{text}', text).replace('{name}', row.name || "-"))
     .then(async function () {
       await updateDesensitizeWhitelist({ id, validFlag: row.validFlag });
-      proxy.$modal.msgSuccess(t('common.message.msgOpSuccess'));
+      proxy.$modal.msgSuccess(td('common.message.msgOpSuccess'));
       tableRef.value.getList();
     })
     .catch(function () {
@@ -918,27 +916,27 @@ const title = ref("");
 const effectiveAccountPickerOpen = ref(false);
 const effectiveAccountPickerTitle = computed(() => {
   const c = String(form.value?.effectiveCategory || "1");
-  if (c == "2") return "选择角色";
-  if (c == "3") return "选择部门";
-  return "选择用户";
+  if (c == "2") return td('dg.whitelist.selectRole');
+  if (c == "3") return td('dg.whitelist.selectDept');
+  return td('dg.whitelist.selectUser');
 });
 const data = reactive({
   form: {},
   rules: {
-    name: [{ required: true, message: "白名单名称不能为空", trigger: "blur" }],
+    name: [{ required: true, message: td('dg.whitelist.whitelistNameRequired'), trigger: "blur" }],
     dataCategoryId: [
-      { required: true, message: "数据分类不能为空", trigger: "change" },
+      { required: true, message: td('dg.whitelist.dataCategoryRequired'), trigger: "change" },
     ],
     effectiveCategory: [
-      { required: true, message: "生效分类不能为空", trigger: "change" },
+      { required: true, message: td('dg.whitelist.effectiveCategoryRequired'), trigger: "change" },
     ],
     effectiveAccount: [
-      { required: true, message: "生效账号不能为空", trigger: "change" },
+      { required: true, message: td('dg.whitelist.effectiveAccountRequired'), trigger: "change" },
     ],
     effectiveTimeRange: [
-      { required: true, message: "生效时段不能为空", trigger: "change" },
+      { required: true, message: td('dg.whitelist.effectiveTimeRangeRequired'), trigger: "change" },
     ],
-    validFlag: [{ required: true, message: t('common.form.statusRequired'), trigger: "change" }],
+    validFlag: [{ required: true, message: td('common.form.statusRequired'), trigger: "change" }],
   },
 });
 
@@ -1076,7 +1074,7 @@ function handleAdd() {
   reset();
   getDataCategoryList();
   open.value = true;
-  title.value = "新增脱敏白名单";
+  title.value = td('dg.whitelist.addTitle');
 }
 
 async function handleUpdate(row) {
@@ -1090,7 +1088,7 @@ async function handleUpdate(row) {
     applyApiToForm(row || {});
   }
   open.value = true;
-  title.value = "修改脱敏白名单";
+  title.value = td('dg.whitelist.editTitle');
 }
 
 async function handleDetail(row) {
@@ -1104,7 +1102,7 @@ async function handleDetail(row) {
     applyApiToForm(row || {});
   }
   openDetail.value = true;
-  title.value = "脱敏白名单详情";
+  title.value = td('dg.whitelist.detailTitle');
 }
 
 function handleEffectiveCategoryChange() {
@@ -1221,7 +1219,7 @@ function handleSelectionChangeRole(selection) {
 async function openEffectiveAccountPicker() {
   if (!form.value.effectiveCategory) form.value.effectiveCategory = "1";
   if (String(form.value.effectiveCategory) !== "1") {
-    proxy.$modal.msgWarning("当前仅支持选择用户");
+    proxy.$modal.msgWarning(td('dg.whitelist.onlyUserSupported'));
     return;
   }
   effectiveAccountPickerOpen.value = true;
@@ -1305,13 +1303,13 @@ function submitForm() {
     const payload = buildSubmitPayload();
     if (form.value.id != null) {
       await updateDesensitizeWhitelist(payload);
-      proxy.$modal.msgSuccess(t('common.message.editSuccess'));
+      proxy.$modal.msgSuccess(td('common.message.editSuccess'));
       open.value = false;
       tableRef.value.getList();
       return;
     }
     await addDesensitizeWhitelist(payload);
-    proxy.$modal.msgSuccess(t('common.message.addSuccess'));
+    proxy.$modal.msgSuccess(td('common.message.addSuccess'));
     open.value = false;
     tableRef.value.getList();
   });
@@ -1331,17 +1329,17 @@ function submitForm() {
     .then(async () => {
       await delDesensitizeWhitelist(_ids);
       tableRef.value.getList();
-      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+      proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
     })
     .catch(() => {});
 }*/
 
 function handleDelete(row) {
   const invalidIds = [];
-  const message=ref("确定要删除记录吗");
+  const message=ref(td('dg.whitelist.confirmDeleteSimple'));
   if (row?.id) {
     invalidIds.push(row.id);
-    message.value=`是否确认删除编号为${row.id} 的数据项？`
+    message.value=td('dg.whitelist.confirmDeleteId').replace('{id}', row.id)
   }else {
     store.rows.forEach(item => {
       // 当 validFlag 为 false 时，记录 id
@@ -1349,14 +1347,14 @@ function handleDelete(row) {
         invalidIds.push(item.id);
       }
     });
-    message.value=`可删除${invalidIds.length}个，不可删除${store.rows.length-invalidIds.length}个，是否删除可删部分`
+    message.value=td('dg.whitelist.confirmDeleteCount').replace('{canDelete}', invalidIds.length).replace('{cannotDelete}', store.rows.length-invalidIds.length)
   }
   proxy.$modal
       .confirm(message.value)
       .then(async () => {
         await delDesensitizeWhitelist(invalidIds);
         tableRef.value.getList();
-        proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+        proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
       })
       .catch(() => {});
 }

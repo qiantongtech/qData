@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    :title="title"
+    :title="dialogTitle"
     v-model="dialogVisible"
     width="800px"
     draggable
@@ -13,57 +13,57 @@
       label-width="110px"
       @submit.prevent
     >
-      <el-form-item label="分级名称" prop="name">
-        <el-input v-model="form.name" placeholder="请输入分级名称" />
+      <el-form-item :label="td('dg.dataLevel.levelName')" prop="name">
+        <el-input v-model="form.name" :placeholder="td('dg.dataLevel.levelNamePlaceholder')" />
       </el-form-item>
-      <el-form-item label="分级缩写" prop="shortName">
+      <el-form-item :label="td('dg.dataLevel.levelAbbr')" prop="shortName">
         <el-input
           v-model="form.shortName"
-          placeholder="请输入分级缩写，允许英文、数字、下划线"
+          :placeholder="td('dg.dataLevel.levelAbbrPlaceholder')"
         />
       </el-form-item>
-      <el-form-item label="敏感等级" prop="sensitiveLevel">
+      <el-form-item :label="td('dg.dataLevel.sensitiveLevel')" prop="sensitiveLevel">
         <el-input
           v-model="form.sensitiveLevel"
-          placeholder="请输入敏感等级，1-100之间的整数"
+          :placeholder="td('dg.dataLevel.sensitiveLevelInputPlaceholder')"
           @input="form.sensitiveLevel = form.sensitiveLevel.replace(/[^\d]/g, '')"
           @blur="handleSensitiveLevelChange"
         />
       </el-form-item>
 
-      <el-form-item :label="t('common.texts.status')" prop="validFlag">
+      <el-form-item :label="td('common.texts.status')" prop="validFlag">
         <el-radio-group v-model="form.validFlag">
-          <el-radio label="禁用" :value="false" />
-          <el-radio label="启用" :value="true" />
+          <el-radio :label="td('dg.dataLevel.disabledLabel')" :value="false" />
+          <el-radio :label="td('dg.dataLevel.enabledLabel')" :value="true" />
         </el-radio-group>
       </el-form-item>
-      <el-form-item :label="t('common.texts.description')" prop="description">
+      <el-form-item :label="td('common.texts.description')" prop="description">
         <el-input
           v-model="form.description"
           type="textarea"
-          :placeholder="t('common.form.descriptionPlaceholder')"
+          :placeholder="td('common.form.descriptionPlaceholder')"
           :min-height="192"
           show-word-limit
-          maxlength="500个字符"
+          maxlength="500"
         />
       </el-form-item>
-      <el-form-item :label="t('common.texts.remark')" prop="remark">
+      <el-form-item :label="td('common.texts.remark')" prop="remark">
         <el-input
           v-model="form.remark"
           type="textarea"
-          :placeholder="t('common.form.remarkPlaceholder')"
+          :placeholder="td('common.form.remarkPlaceholder')"
           :min-height="192"
           show-word-limit
-          maxlength="500个字符"
+          maxlength="500"
         />
       </el-form-item>
     </el-form>
 
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="handleClose">{{ t('common.button.cancel') }}</el-button>
+        <el-button @click="handleClose">{{ td('common.button.cancel') }}</el-button>
         <el-button type="primary" :loading="submitLoading" @click="submitForm"
-          >确认</el-button
+          >{{ td('common.button.confirm') }}</el-button
         >
       </div>
     </template>
@@ -71,7 +71,7 @@
 </template>
 
 <script setup name="DataLevelDialog">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import {
   addDataLevel,
   getDataLevel,
@@ -80,7 +80,7 @@ import {
 } from "@/api/dg/dataLevel/dataLevel";
 import { ref, watch, computed, getCurrentInstance } from "vue";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const props = defineProps({
   open: {
     type: Boolean,
@@ -92,9 +92,11 @@ const props = defineProps({
   },
   title: {
     type: String,
-    default: "数据分级",
+    default: '',
   },
 });
+
+const dialogTitle = computed(() => props.title || td('dg.dataLevel.detailTitle'));
 
 const emit = defineEmits(["update:open", "success"]);
 
@@ -120,23 +122,23 @@ const form = ref({
 });
 
 const rules = {
-  name: [{ required: true, message: "分级名称不能为空", trigger: "blur" }],
+  name: [{ required: true, message: td('dg.dataLevel.levelNameRequired'), trigger: "blur" }],
   shortName: [
-    { required: true, message: "分级缩写不能为空", trigger: "blur" },
+    { required: true, message: td('dg.dataLevel.levelAbbrRequired'), trigger: "blur" },
     {
       min: 2,
       max: 10,
-      message: "分级缩写长度应在2到10个字符之间",
+      message: td('dg.dataLevel.levelAbbrLength'),
       trigger: "blur",
     },
     {
       pattern: /^[a-zA-Z0-9_]+$/,
-      message: "分级缩写只能包含字母、数字和下划线",
+      message: td('dg.dataLevel.levelAbbrPattern'),
       trigger: "blur",
     },
   ],
   sensitiveLevel: [
-    { required: true, message: "敏感等级不能为空", trigger: "change" },
+    { required: true, message: td('dg.dataLevel.sensitiveLevelRequired'), trigger: "change" },
     {
       validator: (rule, value, callback) => {
         if (value === null || value === undefined || value === "") {
@@ -147,7 +149,7 @@ const rules = {
         const str = raw.replace(/[。．，,·•﹒｡]/g, ".");
         const num = Number(str);
         if (Number.isNaN(num)) {
-          callback(new Error("请输入有效的数字"));
+          callback(new Error(td('dg.dataLevel.sensitiveLevelInvalid')));
           return;
         }
         callback();
@@ -155,7 +157,7 @@ const rules = {
       trigger: "blur",
     },
   ],
-  validFlag: [{ required: true, message: t('common.form.statusRequired'), trigger: "change" }],
+  validFlag: [{ required: true, message: td('common.form.statusRequired'), trigger: "change" }],
 };
 
 watch(
@@ -257,7 +259,7 @@ function submitForm() {
 
     req
       .then(() => {
-        proxy.$modal.msgSuccess(formData.id ? t('common.message.editSuccess') : t('common.message.addSuccess'));
+        proxy.$modal.msgSuccess(formData.id ? td('common.message.editSuccess') : td('common.message.addSuccess'));
         emit("success");
         handleClose();
       })

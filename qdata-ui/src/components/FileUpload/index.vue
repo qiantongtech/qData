@@ -34,14 +34,14 @@
       :drag="dragFlag"
     >
       <!-- 上传按钮 -->
-      <el-button type="primary" size="mini" icon="Upload" plain>上传附件</el-button>
+      <el-button type="primary" size="mini" icon="Upload" plain>{{ t('common.upload.uploadAttachment') }}</el-button>
     </el-upload>
     <!-- 上传提示 -->
     <div class="el-upload__tip" v-if="showTip">
-      请上传
-      <template v-if="fileSize"> 大小不超过 <b style="color: #f56c6c">{{ fileSize }}MB</b> </template>
-      <template v-if="fileType"> 格式为 <b style="color: #f56c6c">{{ fileType.join("/") }}</b> </template>
-      的文件
+      {{ t('common.upload.pleaseUpload') }}
+      <template v-if="fileSize"> {{ t('common.upload.fileSizeLimit') }} <b style="color: #f56c6c">{{ fileSize }}{{ t('common.upload.fileSizeMB') }}</b> </template>
+      <template v-if="fileType"> {{ t('common.upload.fileFormatLabel') }} <b style="color: #f56c6c">{{ fileType.join("/") }}</b> </template>
+      {{ t('common.upload.fileTypes') }}
     </div>
     <!-- 文件列表 -->
     <transition-group class="upload-file-list el-upload-list el-upload-list--text" name="el-fade-in-linear" tag="ul">

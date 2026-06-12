@@ -44,6 +44,7 @@ export default {
   },
   // ============ Desens Whitelist (脱敏白名单-新) ============
   desensWhitelist: {
+    nameDesc: '白名单名称/描述',
     whitelistName: '白名单名称',
     whitelistNamePlaceholder: '请输入白名单名称',
     whitelistNameRequired: '白名单名称不能为空',
@@ -170,6 +171,7 @@ export default {
     intervalNo: '区间号',
     intervalStart: '起始位置',
     intervalEnd: '截止位置',
+    intervalRequired: '脱敏区间不能为空',
   },
   // ============ Sensitive List (脱敏清单) ============
   sensitiveList: {

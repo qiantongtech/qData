@@ -40,7 +40,20 @@ export default {
       cleanRule: '关联清洗规则',
       auditRule: '关联稽查规则',
       relationInfo: '关联信息',
-      detailInfo: '详细信息'
+      detailInfo: '详细信息',
+      codeDict: '代码字典',
+      codeMap: '代码映射',
+      auditName: '稽查名称',
+      auditRuleName: '稽查规则',
+      cleanName: '清洗名称',
+      cleanRuleName: '清洗规则',
+      qualityDimension: '质量维度',
+      dimension: '维度',
+      online: '上线',
+      offline: '下线',
+      confirmDeleteAudit: '是否确认删除关联稽查规则数据？',
+      confirmDeleteClean: '是否确认删除关联的清洗规则数据？',
+      relate: '关联'
     }
   },
   model: {
@@ -77,7 +90,9 @@ export default {
       catCode: '类目编码',
       createType: '创建方式',
       contact: '联系人',
-      contactNumber: '联系电话'
+      contactNumber: '联系电话',
+      caseConvention: '命名大小写',
+      contactInfo: '联系方式'
     }
   },
   modelForm: {
@@ -148,7 +163,17 @@ export default {
     isRequired: '是否必填',
     editColumnTitle: '编辑表字段',
     addColumnTitle: '新增表字段',
-    dataTypeRequired: '数据类型不能为空'
+    dataTypeRequired: '数据类型不能为空',
+    sortOrder: '排序',
+    relatedDataStandard: '关联数据标准',
+    addModelProperty: '新增逻辑模型属性信息',
+    editModelProperty: '修改逻辑模型属性信息',
+    modelPropertyDetail: '逻辑模型属性信息详情',
+    confirmDeleteProperty: '是否确认删除逻辑模型属性信息编号为"{id}"的数据项？',
+    confirmDeleteModel: '是否确认删除逻辑模型编号为"{id}"的数据项？',
+    tableNamePattern: '表名只能包含字母、数字和下划线，且必须以字母开头',
+    maxLength: '500个字符',
+    defaultLengthError: '默认值长度不能超过属性长度{length}'
   },
   materializedModel: {
     // 物化模型列表
@@ -162,18 +187,39 @@ export default {
     release: '发布',
     reRelease: '重新发布',
     publishModelTitle: '发布模型',
-    reReleaseModelTitle: '重新发布模型'
+    reReleaseModelTitle: '重新发布模型',
+    databaseConnection: '数据库连接',
+    selectDatabaseConnection: '请选择数据库连接',
+    releaseMode: '发布模式',
+    selectReleaseMode: '请选择发布模式',
+    deleteAndRecreate: '删除重建',
+    incrementalRelease: '增量发布',
+    publishing: '发布中',
+    confirmDeleteRecreate: '确认选择删除重建吗？将清空原表数据并重新创建物理表结构。此操作不可逆转，请谨慎操作！',
+    confirmIncremental: '确认选择增量发布吗？保留原表数据，仅追加新增的字段列。适用于非破坏性的安全变更。',
+    incrementalSupportedTypes: '增量发布暂只支持oracle、MySqL、DM8这三种类型',
+    modelCode: '模型编码',
+    modelName: '模型名称',
+    modelTableId: '模型表id',
+    executionLog: '执行日志信息',
+    sqlCommand: '执行sql备份',
+    datasourceId: '数据源id',
+    datasourceType: '数据连接类型',
+    assetId: '资产表id',
+    editRecord: '修改发布模型记录',
+    recordDetail: '发布模型记录详情',
+    confirmDeleteRecord: '是否确认删除发布模型记录编号为"{id}"的数据项？'
   },
   document: {
     // 标准列表
     searchTitle: '标准搜索',
     standardName: '标准名称',
     standardNamePlaceholder: '请输入标准名称',
-    standardNameRequired: '英文不能为空',
+    standardNameRequired: '标准名称不能为空',
     standardNamePattern: '只能包含英文字母和下划线',
     standardCode: '标准号',
     standardCodePlaceholder: '请输入标准号',
-    standardCodeRequired: '中文不能为空',
+    standardCodeRequired: '标准号不能为空',
     standardStatus: '标准状态',
     standardStatusPlaceholder: '请选择标准状态',
     standardStatusRequired: '状态不能为空',
@@ -234,7 +280,9 @@ export default {
     dataElement: '数据元',
     codeTable: '代码表',
     detailInfo: '详细信息',
-    releaseLog: '发布日志'
+    releaseLog: '发布日志',
+    virtualAssetCreate: '虚拟资产创建',
+    fullAssetCreate: '完整资产创建'
   },
   common: {
     query: '查询',

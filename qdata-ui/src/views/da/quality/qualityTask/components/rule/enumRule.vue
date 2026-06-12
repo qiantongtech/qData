@@ -19,31 +19,31 @@
   <el-form ref="formRef" :model="form" label-width="130px" :disabled="falg">
     <el-row>
       <el-col :span="8">
-        <el-form-item label="关联代码表" prop="useCodeTable">
+        <el-form-item :label="td('da.qualityTaskRules.ruleCommon.codeTable')" prop="useCodeTable">
           <el-radio-group
             v-model="form.useCodeTable"
             @change="handleUseCodeTableChange"
           >
-            <el-radio :value="'1'">是</el-radio>
-            <el-radio :value="'0'">否</el-radio>
+            <el-radio :value="'1'">{{ td('da.qualityTaskRules.ruleCommon.yes') }}</el-radio>
+            <el-radio :value="'0'">{{ td('da.qualityTaskRules.ruleCommon.no') }}</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-col>
 
       <el-col :span="8">
-        <el-form-item label="忽略空值" prop="ignoreNullValue">
+        <el-form-item :label="td('da.qualityTaskRules.ruleCommon.ignoreNullValue')" prop="ignoreNullValue">
           <el-radio-group v-model="form.ignoreNullValue">
-            <el-radio :value="'1'">是</el-radio>
-            <el-radio :value="'0'">否</el-radio>
+            <el-radio :value="'1'">{{ td('da.qualityTaskRules.ruleCommon.yes') }}</el-radio>
+            <el-radio :value="'0'">{{ td('da.qualityTaskRules.ruleCommon.no') }}</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-col>
 
       <el-col :span="8">
-        <el-form-item label="是否区分大小写" prop="ignoreCase">
+        <el-form-item :label="td('da.qualityTaskRules.ruleCommon.caseSensitive')" prop="ignoreCase">
           <el-radio-group v-model="form.ignoreCase">
-            <el-radio :value="'1'">是</el-radio>
-            <el-radio :value="'0'">否</el-radio>
+            <el-radio :value="'1'">{{ td('da.qualityTaskRules.ruleCommon.yes') }}</el-radio>
+            <el-radio :value="'0'">{{ td('da.qualityTaskRules.ruleCommon.no') }}</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-col>
@@ -53,18 +53,18 @@
     <el-row v-if="form.useCodeTable == '1'">
       <el-col :span="8">
         <el-form-item
-          label="选择代码表"
+          :label="td('da.qualityTaskRules.ruleCommon.selectCodeTable')"
           prop="codeTableId"
           :rules="
             !falg
-              ? [{ required: true, message: '选择代码表', trigger: 'change' }]
+              ? [{ required: true, message: td('da.qualityTaskRules.ruleCommon.selectCodeTableRequired'), trigger: 'change' }]
               : []
           "
         >
           <template v-if="!falg">
             <el-select
               v-model="form.codeTableId"
-              placeholder="请选择代码表"
+              :placeholder="td('da.qualityTaskRules.ruleCommon.codeTablePlaceholder')"
               filterable
               clearable
               @change="handleCodeTableChange"
@@ -96,20 +96,20 @@
                 type="primary"
                 icon="Plus"
                 @click="opencodeDialog(undefined)"
-                >{{ t('common.button.add') }}</el-button
+                >{{ td('common.button.add') }}</el-button
               >
             </el-col>
           </template>
         </el-row>
       </div>
       <el-table stripe height="200px" :data="form.codeList">
-        <el-table-column label="代码值" align="center" prop="codeValue">
+        <el-table-column :label="td('da.qualityTaskRules.ruleCommon.codeValue')" align="center" prop="codeValue">
           <template #default="scope">
             <template v-if="!falg && form.useCodeTable == 0">
               <el-input
                 v-model="scope.row.codeValue"
                 style="width: 100%"
-                placeholder="请输入代码值"
+                :placeholder="td('da.qualityTaskRules.ruleCommon.codeValuePlaceholder')"
               />
             </template>
             <template v-else>
@@ -118,13 +118,13 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="代码名称" align="center" prop="codeName">
+        <el-table-column :label="td('da.qualityTaskRules.ruleCommon.codeName')" align="center" prop="codeName">
           <template #default="scope">
             <template v-if="!falg && form.useCodeTable == 0">
               <el-input
                 v-model="scope.row.codeName"
                 style="width: 100%"
-                placeholder="请输入代码名称"
+                :placeholder="td('da.qualityTaskRules.ruleCommon.codeNamePlaceholder')"
               />
             </template>
             <template v-else>
@@ -134,7 +134,7 @@
         </el-table-column>
         <el-table-column
           v-if="!falg && form.useCodeTable == 0"
-          :label="t('common.texts.operation')"
+          :label="td('common.texts.operation')"
           align="center"
           class-name="small-padding fixed-width"
           fixed="right"
@@ -146,7 +146,7 @@
               type="danger"
               icon="Delete"
               @click="handleDelete(scope.row, scope.$index + 1)"
-              >{{ t('common.button.delete') }}</el-button
+              >{{ td('common.button.delete') }}</el-button
             >
           </template>
         </el-table-column>
@@ -157,12 +157,12 @@
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { reactive, ref, watch } from "vue";
 import { listDpDataElem } from "@/api/dp/dataElem/dataElem";
 import { listDpDataElemCode } from "@/api/dp/dataElem/dataElem";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const props = defineProps({
   form: Object,
   dppQualityTaskObjSaveReqVO: Array,
@@ -245,7 +245,7 @@ function validate() {
 
       if (form.useCodeTable === "0") {
         if (!form.codeList || form.codeList.length === 0) {
-          ElMessage.warning("校验未通过，请至少添加一条代码项");
+          ElMessage.warning(td('da.qualityTaskRules.ruleCommon.codeTableEmpty'));
           resolve({ valid: false });
           return;
         }
@@ -255,7 +255,7 @@ function validate() {
           .filter((v) => v !== "");
         const hasEmpty = values.length !== form.codeList.length;
         if (hasEmpty) {
-          ElMessage.warning("校验未通过，代码值不能为空");
+          ElMessage.warning(td('da.qualityTaskRules.ruleCommon.codeValueEmpty'));
           resolve({ valid: false });
           return;
         }
@@ -264,7 +264,7 @@ function validate() {
           (val, idx) => values.indexOf(val) !== idx
         );
         if (duplicates.length > 0) {
-          ElMessage.warning("校验未通过，代码值不能重复");
+          ElMessage.warning(td('da.qualityTaskRules.ruleCommon.codeValueDuplicate'));
           resolve({ valid: false });
           return;
         }

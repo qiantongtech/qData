@@ -591,13 +591,13 @@
                 drag
             >
                 <el-icon class="el-icon--upload"><upload-filled /></el-icon>
-                <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                <div class="el-upload__text">{{ td('common.upload.dragOrClick') }}</div>
                 <template #tip>
                     <div class="el-upload__tip text-center">
                         <div class="el-upload__tip">
-                            <el-checkbox v-model="upload.updateSupport" />是否更新已经存在的学生数据
+                            <el-checkbox v-model="upload.updateSupport" />{{ td('common.upload.updateExistingData') }}
                         </div>
-                        <span>仅允许导入xls、xlsx格式文件。</span>
+                        <span>{{ td('common.upload.fileFormat') }}</span>
                         <el-link
                             type="primary"
                             :underline="false"

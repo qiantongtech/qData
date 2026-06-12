@@ -41,18 +41,18 @@
       :disabled="dialogStatus == 2"
     >
       <el-form ref="formRef" :model="form" label-width="130px">
-        <div class="h2-title">基础信息</div>
+        <div class="h2-title">{{ td('dpp.cleanRule.basicInfo', '基础信息') }}</div>
         <el-row>
           <el-col :span="8">
             <el-form-item
-              label="清洗名称"
+              :label="td('dpp.cleanRule.cleanName', '清洗名称')"
               prop="name"
               :rules="
                 !falg
                   ? [
                       {
                         required: true,
-                        message: '请输入清洗名称',
+                        message: td('dpp.cleanRule.inputCleanName', '请输入清洗名称'),
                         trigger: 'blur',
                       },
                     ]
@@ -62,28 +62,28 @@
               <el-input
                 v-if="!falg"
                 v-model="form.name"
-                placeholder="请输入清洗名称"
+                :placeholder="td('dpp.cleanRule.inputCleanName', '请输入清洗名称')"
               />
               <div v-else class="form-readonly">{{ form.name || "-" }}</div>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="清洗规则编号" prop="ruleCode">
+            <el-form-item :label="td('dpp.cleanRule.cleanRuleCode', '清洗规则编号')" prop="ruleCode">
               <el-input
                 v-if="!falg"
                 v-model="form.ruleCode"
-                placeholder="请输入清洗规则编号"
+                :placeholder="td('dpp.cleanRule.inputCleanRuleCode', '请输入清洗规则编号')"
                 disabled
               />
               <div v-else class="form-readonly">{{ form.ruleCode || "-" }}</div>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="清洗规则名称" prop="ruleName">
+            <el-form-item :label="td('dpp.cleanRule.cleanRuleName', '清洗规则名称')" prop="ruleName">
               <el-input
                 v-if="!falg"
                 v-model="form.ruleName"
-                placeholder="请输入清洗规则名称"
+                :placeholder="td('dpp.cleanRule.inputCleanRuleName', '请输入清洗规则名称')"
                 disabled
               />
               <div v-else class="form-readonly">{{ form.ruleName || "-" }}</div>
@@ -92,24 +92,24 @@
         </el-row>
         <el-row>
           <el-col :span="8">
-            <el-form-item :label="t('common.texts.status')" prop="status">
+            <el-form-item :label="td('common.texts.status')" prop="status">
               <el-radio-group v-model="form.status" :disabled="falg">
-                <el-radio :value="'1'">上线</el-radio>
-                <el-radio :value="'0'">下线</el-radio>
+                <el-radio :value="'1'">{{ td('dpp.cleanRule.online', '上线') }}</el-radio>
+                <el-radio :value="'0'">{{ td('dpp.cleanRule.offline', '下线') }}</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="规则描述" prop="ruleDesc">
+            <el-form-item :label="td('dpp.cleanRule.ruleDesc', '规则描述')" prop="ruleDesc">
               <el-input
                 v-if="!falg"
                 type="textarea"
                 maxlength="500个字符"
                 show-word-limit
                 v-model="form.ruleDesc"
-                placeholder="请输入规则描述"
+                :placeholder="td('dpp.cleanRule.inputRuleDesc', '请输入规则描述')"
               />
               <div v-else class="form-readonly textarea">
                 {{ form.ruleDesc ?? "-" }}
@@ -119,14 +119,14 @@
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="Where 条件" prop="whereClause">
+            <el-form-item :label="td('dpp.cleanRule.whereConditionLabel', 'Where 条件')" prop="whereClause">
               <el-input
                 v-if="!falg"
                 type="textarea"
                 maxlength="500个字符"
                 show-word-limit
                 v-model="form.whereClause"
-                placeholder="请输入 Where 条件"
+                :placeholder="td('dpp.cleanRule.inputWhereCondition', '请输入 Where 条件')"
               />
               <div v-else class="form-readonly textarea">
                 {{ form?.whereClause ?? "-" }}
@@ -135,18 +135,18 @@
           </el-col>
         </el-row>
         <!-- 规则配置 -->
-        <div class="h2-title">规则配置</div>
+        <div class="h2-title">{{ td('dpp.cleanRule.ruleConfig', '规则配置') }}</div>
         <el-row v-if="type != 3">
           <el-col :span="24">
             <el-form-item
-              label="清洗字段"
+              :label="td('dpp.cleanRule.cleanField', '清洗字段')"
               prop="columns"
               :rules="
                 !falg
                   ? [
                       {
                         required: true,
-                        message: '请选择清洗字段',
+                        message: td('dpp.cleanRule.selectCleanField', '请选择清洗字段'),
                         trigger: 'blur',
                       },
                     ]
@@ -157,7 +157,7 @@
                 <el-select
                   v-if="isMultipleSelect"
                   v-model="form.columns"
-                  placeholder="请选择清洗字段"
+                  :placeholder="td('dpp.cleanRule.selectCleanField', '请选择清洗字段')"
                   multiple
                   clearable
                 >
@@ -171,7 +171,7 @@
                 <el-select
                   v-else
                   v-model="form.columns"
-                  placeholder="请选择清洗字段"
+                  :placeholder="td('dpp.cleanRule.selectCleanField', '请选择清洗字段')"
                   clearable
                 >
                   <el-option
@@ -200,24 +200,24 @@
     <template #footer>
       <template v-if="dialogStatus == 1"
         ><el-button type="primary" @click="handleSave" v-if="!falg"
-          >{{ t('common.button.confirm') }}</el-button
+          >{{ td('common.button.confirm') }}</el-button
         >
-        <el-button @click="handleBack" v-if="!mode">{{ t('common.button.return') }}</el-button>
+        <el-button @click="handleBack" v-if="!mode">{{ td('common.button.return') }}</el-button>
         <!-- <el-button type="warning" @click="handleSpotCheck">预览</el-button> -->
       </template>
-      <el-button @click="closeDialog" v-else>{{ t('common.button.close') }}</el-button>
+      <el-button @click="closeDialog" v-else>{{ td('common.button.close') }}</el-button>
     </template>
   </el-dialog>
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import SideMenu from "./ruleSelectorMenu.vue";
 import { getRuleConfig, getRuleComponent } from "./registry.js";
 
 import moment from "moment";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 let falg = ref(false);
 const { proxy } = getCurrentInstance();
 const { quality_warning_status } = proxy.useDict("quality_warning_status");
@@ -364,7 +364,7 @@ async function handleSave() {
   try {
     await formRef?.value?.validate();
   } catch (err) {
-    proxy.$message.warning("请完善必填项");
+    proxy.$message.warning(td("dpp.cleanRule.completeRequired", "请完善必填项"));
     return;
   }
   let res = { valid: true, data: {} };
@@ -398,7 +398,7 @@ function handleCardClick(data) {
   form.type = data?.type;
   form.parentName = data?.parentName;
   form.dimensionType = data?.qualityDim;
-  dialogTitle.value = `新增清洗规则${data?.name ? "-" + data.name : ""}`;
+  dialogTitle.value = `${td('dpp.cleanRule.addCleanRule', '新增清洗规则')}${data?.name ? "-" + data.name : ""}`;
   dialogStatus.value = 1;
 }
 let mode = ref();
@@ -406,11 +406,11 @@ async function openDialog(record, index, fg) {
   falg.value = fg;
   mode.value = index;
   resetForm();
-  dialogTitle.value = `${mode.value ? t('common.button.update') : t('common.button.add')}清洗规则${
+  dialogTitle.value = `${mode.value ? td('common.button.update') : td('common.button.add')}${td('dpp.cleanRule.cleanRulePrefix', '清洗规则')}${
     record?.ruleName ? `-${record.ruleName}` : ""
   }`;
   if (falg?.value) {
-    dialogTitle.value = `清洗规则${
+    dialogTitle.value = `${td('dpp.cleanRule.cleanRulePrefix', '清洗规则')}${
       record?.ruleName ? `-${record.ruleName}` : ""
     }`;
   }
@@ -513,7 +513,7 @@ function closeDialog() {
 
 function handleBack() {
   dialogStatus.value = 0;
-  dialogTitle.value = `新增清洗规则`;
+  dialogTitle.value = td('dpp.cleanRule.addCleanRule', '新增清洗规则');
   resetForm();
 }
 defineExpose({ openDialog, closeDialog });

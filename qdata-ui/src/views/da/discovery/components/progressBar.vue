@@ -24,13 +24,13 @@
         </div>
         <div class="labels">
             <div class="label ">
-                <span class="dot" :style="{ backgroundColor: '#4CAF50' }"></span> 已提交 {{ completed }}
+                <span class="dot" :style="{ backgroundColor: '#4CAF50' }"></span> {{ td('da.discovery.submitted') }} {{ completed }}
             </div>
             <div class="label ">
-                <span class="dot" :style="{ backgroundColor: '#FFA500' }"></span> 待提交 {{ inProgress }}
+                <span class="dot" :style="{ backgroundColor: '#FFA500' }"></span> {{ td('da.discovery.pending') }} {{ inProgress }}
             </div>
             <div class="label ">
-                <span class="dot" :style="{ backgroundColor: '#B0B0B0' }"></span> 已忽略 {{ notStarted }}
+                <span class="dot" :style="{ backgroundColor: '#B0B0B0' }"></span> {{ td('da.discovery.ignored') }} {{ notStarted }}
             </div>
         </div>
     </div>
@@ -38,6 +38,9 @@
 
 <script setup>
 import { computed } from 'vue';
+import useDefaultLang from "@/composables/useDefaultLang";
+
+const { td } = useDefaultLang();
 
 const props = defineProps({
     completed: {

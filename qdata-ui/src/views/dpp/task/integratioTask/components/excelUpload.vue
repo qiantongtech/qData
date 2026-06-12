@@ -21,17 +21,17 @@
         <el-form ref="daDiscoveryTaskRef" :model="form" label-width="90px" @submit.prevent>
             <el-row :gutter="20">
                 <el-col :span="24">
-                    <el-form-item label="字段名称" prop="columnName"
-                        :rules="[{ required: true, message: '请输入字段名称', trigger: 'blur' }]">
-                        <el-input v-model="form.columnName" placeholder="请输入字段名称" />
+                    <el-form-item :label="td('dpp.integration.fieldName', '字段名称')" prop="columnName"
+                        :rules="[{ required: true, message: td('dpp.integration.fieldNameRequired', '请输入字段名称'), trigger: 'blur' }]">
+                        <el-input v-model="form.columnName" :placeholder="td('dpp.integration.fieldNamePlaceholder', '请输入字段名称')" />
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="24">
-                    <el-form-item label="字段类型" prop="columnType"
-                        :rules="[{ required: true, message: '请选择字段类型', trigger: 'change' }]">
-                        <el-select v-model="form.columnType" placeholder="请选择字段类型">
+                    <el-form-item :label="td('dpp.integration.fieldType', '字段类型')" prop="columnType"
+                        :rules="[{ required: true, message: td('dpp.integration.fieldTypeRequired', '请选择字段类型'), trigger: 'change' }]">
+                        <el-select v-model="form.columnType" :placeholder="td('dpp.integration.fieldTypePlaceholder', '请选择字段类型')">
                             <el-option v-for="dict in columntype" :key="dict.value" :label="dict.label"
                                 :value="dict.value"></el-option>
                         </el-select>
@@ -40,9 +40,9 @@
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="24" v-if="form.columnType == 'date'">
-                    <el-form-item label="日期格式" prop="format"
-                        :rules="[{ required: true, message: '请输入日期格式', trigger: 'change' }]">
-                        <el-input v-model="form.format" placeholder="日期格式如yyyy/MM/dd" />
+                    <el-form-item :label="td('dpp.integration.dateFormat', '日期格式')" prop="format"
+                        :rules="[{ required: true, message: td('dpp.integration.dateFormatRequired', '请输入日期格式'), trigger: 'change' }]">
+                        <el-input v-model="form.format" :placeholder="td('dpp.integration.dateFormatPlaceholder', '日期格式如yyyy/MM/dd')" />
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -50,18 +50,18 @@
 
         <template #footer>
             <div style="text-align: right">
-                <el-button @click="closeDialog">{{ t('common.button.close') }}</el-button>
-                <el-button type="primary" @click="saveData">{{ t('common.button.save') }}</el-button>
+                <el-button @click="closeDialog">{{ td('common.button.close') }}</el-button>
+                <el-button type="primary" @click="saveData">{{ td('common.button.save') }}</el-button>
             </div>
         </template>
     </el-dialog>
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { defineProps, defineEmits, ref, computed, watch } from 'vue';
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { column_type } = proxy.useDict('column_type');
 

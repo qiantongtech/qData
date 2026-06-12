@@ -18,7 +18,7 @@
 <template>
   <!-- 新增或修改数据资产地图任务对话框 -->
   <el-dialog
-      :title="title"
+      :title="dialogTitle"
       v-model="visibleDialog"
       class="medium-dialog"
       draggable
@@ -31,10 +31,10 @@
         @submit.prevent
         class="column-form"
     >
-      <el-form-item label="资产类型" prop="type">
+      <el-form-item :label="td('dpp.asset.add.assetType')" prop="type">
         <el-select
             v-model="form.type"
-            placeholder="请输入类型"
+            :placeholder="td('dpp.asset.add.assetTypePlaceholder')"
             filterable
             disabled
             style="width: 100%"
@@ -57,23 +57,23 @@
       />
 
       <qt-form-item
-          label="资产状态"
+          :label="td('dpp.asset.add.assetStatus')"
           prop="status"
           :rules="[
           {
             required: true,
-            message: '请选择资产状态',
+            message: td('dpp.asset.add.assetStatusRequired'),
             trigger: 'change',
           },
         ]"
           :tip="{
-          content: `未发布：仅在开发或测试环境中使用，不可被下游调用<br/>已发布：已在生产环境上线，可供其他系统或用户访问`,
+          content: td('dpp.asset.add.assetStatusTip'),
           custom: true,
         }"
       >
         <el-radio-group v-model="form.status">
-          <el-radio value="1">未发布</el-radio>
-          <el-radio value="2">已发布</el-radio>
+          <el-radio value="1">{{ td('dpp.asset.add.assetStatusUnpublished') }}</el-radio>
+          <el-radio value="2">{{ td('dpp.asset.add.assetStatusPublished') }}</el-radio>
         </el-radio-group>
       </qt-form-item>
 <!--      <el-form-item-->
@@ -108,15 +108,15 @@
         "
       >
         <el-form-item
-            label="服务类型"
+            :label="td('dpp.asset.add.serviceType')"
             prop="daAssetGis.type"
             :rules="[
-            { required: true, message: '请输入服务类型', trigger: 'blur' },
+            { required: true, message: td('dpp.asset.add.serviceTypeRequired'), trigger: 'blur' },
           ]"
         >
           <el-select
               v-model="form.daAssetGis.type"
-              placeholder="请选择参数类型"
+              :placeholder="td('dpp.asset.add.paramTypePlaceholder')"
           >
             <el-option
                 v-for="dict in da_asset_gis_type"
@@ -127,27 +127,27 @@
           </el-select>
         </el-form-item>
         <el-form-item
-            label="服务地址"
+            :label="td('dpp.asset.add.serviceUrl')"
             prop="daAssetGis.url"
             :rules="[
-            { required: true, message: '请输入服务地址', trigger: 'blur' },
+            { required: true, message: td('dpp.asset.add.serviceUrlRequired'), trigger: 'blur' },
           ]"
         >
           <el-input
               v-model="form.daAssetGis.url"
-              placeholder="请输入服务地址"
+              :placeholder="td('dpp.asset.add.serviceUrlPlaceholder')"
           />
         </el-form-item>
         <el-form-item
-            label="请求类型"
+            :label="td('dpp.asset.add.httpMethod')"
             prop="daAssetGis.type"
             :rules="[
-            { required: true, message: '请选择请求类型', trigger: 'blur' },
+            { required: true, message: td('dpp.asset.add.httpMethodRequired'), trigger: 'blur' },
           ]"
         >
           <el-select
               v-model="form.daAssetGis.httpMethod"
-              placeholder="请选择请求类型"
+              :placeholder="td('dpp.asset.add.httpMethodPlaceholder')"
           >
             <el-option
                 v-for="dict in da_asset_api_method"
@@ -165,15 +165,15 @@
         "
       >
         <el-form-item
-            label="文件类型"
+            :label="td('dpp.asset.add.fileType')"
             prop="daAssetGeo.fileType"
             :rules="[
-            { required: true, message: '请输入文件类型', trigger: 'blur' },
+            { required: true, message: td('dpp.asset.add.fileTypeRequired'), trigger: 'blur' },
           ]"
         >
           <el-select
               v-model="form.daAssetGeo.fileType"
-              placeholder="请选择参数类型"
+              :placeholder="td('dpp.asset.add.paramTypePlaceholder')"
           >
             <el-option
                 v-for="dict in da_asset_geo_file_type"
@@ -184,10 +184,10 @@
           </el-select>
         </el-form-item>
         <el-form-item
-            label="上传文件"
+            :label="td('dpp.asset.add.uploadFile')"
             prop="daAssetGeo.fileUrl"
             :rules="[
-            { required: true, message: '请上传文件', trigger: 'fileUrl' },
+            { required: true, message: td('dpp.asset.add.uploadFileRequired'), trigger: 'fileUrl' },
           ]"
         >
           <FileUploadbtn
@@ -205,34 +205,34 @@
 
       <excelAdd ref="excelAddRef" class="row-full" />
 
-      <el-form-item :label="t('common.texts.description')" prop="description" class="row-full">
+      <el-form-item :label="td('common.texts.description')" prop="description" class="row-full">
         <el-input
             type="textarea"
-            maxlength="500个字符"
+            :maxlength="500"
             show-word-limit
             :min-height="192"
             v-model="form.description"
-            :placeholder="t('common.form.descriptionPlaceholder')"
+            :placeholder="td('common.form.descriptionPlaceholder')"
         />
       </el-form-item>
-      <el-form-item :label="t('common.texts.remark')" prop="remark" class="row-full">
+      <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full">
         <el-input
             type="textarea"
-            maxlength="500个字符"
+            :maxlength="500"
             show-word-limit
             :min-height="192"
             v-model="form.remark"
-            :placeholder="t('common.form.remarkPlaceholder')"
+            :placeholder="td('common.form.remarkPlaceholder')"
         />
       </el-form-item>
     </el-form>
     <template #footer>
       <div class="dialog-footer">
         <!-- 关闭按钮 -->
-        <el-button @click="closeDialog">{{ t('common.button.cancel') }}</el-button>
+        <el-button @click="closeDialog">{{ td('common.button.cancel') }}</el-button>
         <!-- 保存按钮 -->
         <el-button type="primary" @click="saveData" :loading="loading"
-        >{{ t('common.button.confirm') }}</el-button
+        >{{ td('common.button.confirm') }}</el-button
         >
       </div>
     </template>
@@ -240,7 +240,7 @@
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { defineProps, defineEmits, ref, computed, watch } from "vue";
 // import Crontab from "@/components/Crontab/ruleBase.vue";
 // import { getDaDiscoveryTask } from "@/api/da/discovery/discoveryTask";
@@ -271,17 +271,19 @@ const {
 );
 import { addDaAsset, updateDaAsset, bindResources } from "@/api/da/asset/asset";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 // import ExcelUploadDialog from "@/views/dpp/etl/components/formComponents/components/ExcelUploadDialog.vue";
 const props = defineProps({
   visible: { type: Boolean, default: true },
-  title: { type: String, default: "表单标题" },
+  title: { type: String, default: '' },
   data: { type: Object, default: () => ({}) },
   deptOptions: { type: Object, default: () => ({}) },
   type: { type: Boolean, default: false },
   isEdit: { type: Boolean, default: false },
   isRegister: { type: Boolean, default: false },
 });
+
+const dialogTitle = computed(() => props.title || td('dpp.asset.add.formTitle'));
 const excelAddRef = ref(null);
 let loading = ref(false); // 加载状态（全局）
 const isInitializing = ref(false);
@@ -735,7 +737,7 @@ const saveData = async () => {
     if (form.value.type === "2" && form.value.createType == "2") {
       const valid = await ApiConfigRef.value.validateForms();
       if (!valid) {
-        proxy.$message.warning("校验未通过，请完善表格信息");
+        proxy.$message.warning(td('dpp.asset.add.validateIncomplete'));
         return;
       }
     }
@@ -767,10 +769,10 @@ const saveData = async () => {
       if (form.value.id != null) {
         if (form.value.createType == "1") {
           await bindResources(form.value);
-          proxy.$modal.msgSuccess("配置成功");
+          proxy.$modal.msgSuccess(td('common.message.operationSuccess'));
         } else {
           await updateDaAsset(form.value);
-          proxy.$modal.msgSuccess(t('common.message.editSuccess'));
+          proxy.$modal.msgSuccess(td('common.message.editSuccess'));
         }
       } else {
         if (form.value.type == 2) {
@@ -788,12 +790,12 @@ const saveData = async () => {
         await addDaAsset({
           ...payload,
         });
-        proxy.$modal.msgSuccess(t('common.message.addSuccess'));
+        proxy.$modal.msgSuccess(td('common.message.addSuccess'));
       }
       emit("update:visible", false);
       emit("confirm", form.value);
     } else {
-      proxy.$message.warning("验证失败，请检查表单信息");
+      proxy.$message.warning(td('dpp.asset.add.validateFormFailed'));
     }
   } finally {
     loading.value = false; // 结束加载

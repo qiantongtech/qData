@@ -58,7 +58,10 @@
   </div>
 </template>
 <script setup name="DaAsset">
+import useDefaultLang from "@/composables/useDefaultLang"
 import { getDaAsset } from "@/api/da/asset/asset";
+
+const { td } = useDefaultLang();
 import { useRoute } from "vue-router";
 import DetailInfo from "@/components/DetailInfo/index.vue";
 import ComponentOne from "@/views/dpp/asset/detail/table/column.vue";
@@ -99,15 +102,15 @@ const detailItems = computed(() => {
   if (type === "1") {
     // 数据库表
     return [
-      { label: "表名称", key: "tableName", ellipsisClass: "ellipsis" },
+      { label: td('dpp.asset.detail.index.tableName'), key: "tableName", ellipsisClass: "ellipsis" },
       {
-        label: "资产类型",
+        label: td('dpp.asset.detail.index.assetType'),
         key: "type",
         dictOptions: da_asset_type.value,
         ellipsisClass: "ellipsis",
       },
       {
-        label: "归属层级",
+        label: td('dpp.asset.detail.index.hierarchy'),
         formatter: (val, row) => formatHierarchyDisplayName(row, row.tableType),
         ellipsisClass: "ellipsis",
       },
@@ -115,10 +118,10 @@ const detailItems = computed(() => {
   } else if (type === "2") {
     // API
     return [
-      { label: "应用名称", key: "appName", ellipsisClass: "ellipsis" },
-      { label: "数据分域", key: "dataDomainName", ellipsisClass: "ellipsis" },
+      { label: td('dpp.asset.detail.index.appName'), key: "appName", ellipsisClass: "ellipsis" },
+      { label: td('dpp.asset.detail.index.dataDomain'), key: "dataDomainName", ellipsisClass: "ellipsis" },
       {
-        label: "所属主题",
+        label: td('dpp.asset.detail.index.themeDomain'),
         formatter: (_, data) =>
             Array.isArray(data?.daAssetThemeRelList) &&
             data.daAssetThemeRelList.length
@@ -130,10 +133,10 @@ const detailItems = computed(() => {
   } else if (type === "7" || type === "4") {
     // 文件
     return [
-      { label: "文件名称", key: "name", ellipsisClass: "ellipsis" },
-      { label: "数据分域", key: "dataDomainName", ellipsisClass: "ellipsis" },
+      { label: td('dpp.asset.detail.index.fileName'), key: "name", ellipsisClass: "ellipsis" },
+      { label: td('dpp.asset.detail.index.dataDomain'), key: "dataDomainName", ellipsisClass: "ellipsis" },
       {
-        label: "所属主题",
+        label: td('dpp.asset.detail.index.themeDomain'),
         formatter: (_, data) =>
             Array.isArray(data?.daAssetThemeRelList) &&
             data.daAssetThemeRelList.length
@@ -146,15 +149,15 @@ const detailItems = computed(() => {
 
   // 默认展示
   return [
-    { label: "所属类目", key: "catName", ellipsisClass: "ellipsis" },
+    { label: td('dpp.asset.detail.index.category'), key: "catName", ellipsisClass: "ellipsis" },
     {
-      label: "资产类型",
+      label: td('dpp.asset.detail.index.assetType'),
       key: "type",
       dictOptions: da_asset_type.value,
       ellipsisClass: "ellipsis",
     },
     {
-      label: "所属主题",
+      label: td('dpp.asset.detail.index.themeDomain'),
       formatter: (_, data) =>
           Array.isArray(data?.daAssetThemeRelList) &&
           data.daAssetThemeRelList.length
@@ -175,7 +178,7 @@ const tabPanes = computed(() => {
     case "1":
       return [
         {
-          label: "资产字段",
+          label: td('dpp.asset.detail.index.tabColumns'),
           name: "0",
           component: ComponentOne,
           // tip: {
@@ -184,13 +187,13 @@ const tabPanes = computed(() => {
           // },
         },
         {
-          label: "资产预览",
+          label: td('dpp.asset.detail.index.tabPreview'),
           name: "2",
           component: ComponentTwo,
           // tip: { content: "查看该资产的实时数据样例，帮助理解数据内容" },
         },
         {
-          label: "资产质量",
+          label: td('dpp.asset.detail.index.tabQuality'),
           name: "3",
           component: DataQualityControl,
           // tip: {
@@ -204,7 +207,7 @@ const tabPanes = computed(() => {
         //   // tip: { content: "查看该资产的数据来源与去向，了解其上下游依赖关系" },
         // },
         {
-          label: "资产概览",
+          label: td('dpp.asset.detail.index.tabOverview'),
           name: "5",
           component: info,
           // tip: {
@@ -215,63 +218,63 @@ const tabPanes = computed(() => {
     case "2":
       return [
         {
-          label: "鉴权参数",
+          label: td('dpp.asset.detail.index.tabAuthParams'),
           name: "0",
           component: authParams,
           tip: {
             content:
-                "查看调用该接口所需的认证信息，如 Token、AppKey、签名算法等",
+                td('dpp.asset.detail.index.tabAuthParamsTip'),
           },
         },
         {
-          label: "请求参数",
+          label: td('dpp.asset.detail.index.tabRequestParams'),
           name: "1",
           component: RequestParamsForm,
           tip: {
-            content: "查看调用该接口时需要传入的参数，如 key、location 等",
+            content: td('dpp.asset.detail.index.tabRequestParamsTip'),
           },
         },
         {
-          label: "返回格式",
+          label: td('dpp.asset.detail.index.tabResponseFormat'),
           name: "2",
           component: ResponseFormatConfig,
           tip: {
             content:
-                "查看接口返回的数据结构，如 JSON、XML 格式，包含字段名、类型、示例等",
+                td('dpp.asset.detail.index.tabResponseFormatTip'),
           },
         },
         {
-          label: "预览数据",
+          label: td('dpp.asset.detail.index.tabPreviewData'),
           name: "3",
           component: ComponentThree,
-          tip: { content: "查看该接口的实际返回数据样例，帮助理解数据内容" },
+          tip: { content: td('dpp.asset.detail.index.tabPreviewDataTip') },
         },
         {
-          label: "资产概览",
+          label: td('dpp.asset.detail.index.tabOverview'),
           name: "4",
           component: info,
           tip: {
-            content: "查看该资产的整体信息，如创建时间、责任人、访问次数等",
+            content: td('dpp.asset.detail.index.tabOverviewTip'),
           },
         },
       ];
     case "3":
-      return [{ label: "资产概览", name: "0", component: info }];
+      return [{ label: td('dpp.asset.detail.index.tabOverview'), name: "0", component: info }];
     case "4":
       return [
-        { label: "资产概览", name: "0", component: info },
-        { label: "资产预览", name: "1", component: ComponentTwo },
+        { label: td('dpp.asset.detail.index.tabOverview'), name: "0", component: info },
+        { label: td('dpp.asset.detail.index.tabPreview'), name: "1", component: ComponentTwo },
       ];
     case "5":
-      return [{ label: "资产概览", name: "0", component: info }];
+      return [{ label: td('dpp.asset.detail.index.tabOverview'), name: "0", component: info }];
     case "6":
       return [
-        { label: "资产概览", name: "0", component: info },
-        { label: "资产字段", name: "1", component: ComponentOne },
-        { label: "资产预览", name: "2", component: ComponentTwo },
+        { label: td('dpp.asset.detail.index.tabOverview'), name: "0", component: info },
+        { label: td('dpp.asset.detail.index.tabColumns'), name: "1", component: ComponentOne },
+        { label: td('dpp.asset.detail.index.tabPreview'), name: "2", component: ComponentTwo },
       ];
     case "7":
-      return [{ label: "资产概览", name: "0", component: info }];
+      return [{ label: td('dpp.asset.detail.index.tabOverview'), name: "0", component: info }];
     default:
   }
 });

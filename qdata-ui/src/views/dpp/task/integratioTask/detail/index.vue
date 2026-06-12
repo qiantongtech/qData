@@ -39,7 +39,7 @@
         <el-row :gutter="2">
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">责任人</div>
+              <div class="infotop-row-lable">{{ td('dpp.integratioTask.responsiblePerson', '责任人') }}</div>
               <div class="infotop-row-value">
                 {{ dppEtlTaskDetail?.personChargeName || '-' }}
               </div>
@@ -48,7 +48,7 @@
 
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">联系电话</div>
+              <div class="infotop-row-lable">{{ td('dpp.integratioTask.contactNumber', '联系电话') }}</div>
               <div class="infotop-row-value">
                 {{ dppEtlTaskDetail.contactNumber || '-' }}
               </div>
@@ -57,10 +57,10 @@
 
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">任务状态</div>
+              <div class="infotop-row-lable">{{ td('dpp.integratioTask.taskStatus', '任务状态') }}</div>
               <div class="infotop-row-value">
                 <el-tag :type="dppEtlTaskDetail.status == '1' ? 'success' : 'danger'">
-                  {{ dppEtlTaskDetail.status == '1' ? "开启" : "关闭" }}
+                  {{ dppEtlTaskDetail.status == '1' ? td('dpp.integratioTask.on', '开启') : td('dpp.integratioTask.off', '关闭') }}
                 </el-tag>
               </div>
             </div>
@@ -68,7 +68,7 @@
 
           <el-col :span="8" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">数据集成类目</div>
+              <div class="infotop-row-lable">{{ td('dpp.integratioTask.dataIntegrationCategory', '数据集成类目') }}</div>
               <div class="infotop-row-value">
                 {{ dppEtlTaskDetail.catName || '-' }}
               </div>
@@ -77,10 +77,10 @@
 
           <el-col :span="8" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">调度状态</div>
+              <div class="infotop-row-lable">{{ td('dpp.developTask.scheduleStatus', '调度状态') }}</div>
               <div class="infotop-row-value">
                 <el-tag :type="dppEtlTaskDetail.schedulerState == '0' ? 'success' : 'danger'">
-                  {{ dppEtlTaskDetail.schedulerState == '0' ? "开启" : "关闭" }}
+                  {{ dppEtlTaskDetail.schedulerState == '0' ? td('dpp.integratioTask.on', '开启') : td('dpp.integratioTask.off', '关闭') }}
                 </el-tag>
               </div>
             </div>
@@ -88,7 +88,7 @@
 
           <el-col :span="8" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ t('common.texts.createdTime') }}</div>
+              <div class="infotop-row-lable">{{ td('common.texts.createdTime', '创建时间') }}</div>
               <div class="infotop-row-value">
                 {{ parseTime(dppEtlTaskDetail.createTime, '{y}-{m}-{d} {h}:{i}') }}
               </div>
@@ -97,7 +97,7 @@
 
           <el-col :span="24" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ t('common.texts.description') }}</div>
+              <div class="infotop-row-lable">{{ td('common.texts.description', '描述') }}</div>
               <div class="infotop-row-value">
                 {{ dppEtlTaskDetail.description || '-' }}
               </div>
@@ -109,10 +109,10 @@
 
     <div class="pagecont-bottom" v-loading="loading">
       <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
-        <el-tab-pane label="任务流程" name="1" key="1">
+        <el-tab-pane :label="td('dpp.integratioTask.taskFlow', '任务流程')" name="1" key="1">
           <process ref="compRef" :dppEtlTaskDetail="dppEtlTaskDetail" />
         </el-tab-pane>
-        <el-tab-pane label="详细信息" name="2" key="2">
+        <el-tab-pane :label="td('dpp.integratioTask.detailInfo', '详细信息')" name="2" key="2">
           <info :dppEtlTaskDetail="dppEtlTaskDetail" />
         </el-tab-pane>
       </el-tabs>
@@ -121,14 +121,14 @@
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { etlTask } from "@/api/dpp/task/index.js";
 import { useRoute } from "vue-router";
 import process from "@/views/dpp/task/integratioTask/detail/process.vue";
 import info from "@/views/dpp/task/integratioTask/detail/info.vue";
 import { onActivated, reactive, ref, toRefs, watch, getCurrentInstance } from "vue";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const activeName = ref("1");
 const showSearch = ref(true);

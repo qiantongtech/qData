@@ -102,6 +102,37 @@
             </el-form-item>
           </el-form>
         </div>
+        <el-dropdown
+          id="language-select"
+          class="right-menu-item hover-effect"
+          trigger="click"
+          @command="handleLanguageChange"
+        >
+          <div
+            class="language-select-wrapper"
+            style="
+              height: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            "
+          >
+            <svg-icon iconClass="i18n" style="font-size: 22px" />
+          </div>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item command="zh-CN" :disabled="locale === 'zh-CN'">
+                简体中文
+              </el-dropdown-item>
+              <el-dropdown-item command="en-US" :disabled="locale === 'en-US'">
+                English
+              </el-dropdown-item>
+              <el-dropdown-item command="ja-JP" :disabled="locale === 'ja-JP'">
+                日本語
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
         <div class="right-menu-item hover-effect" @click="openDocumentation">
           <svg-icon iconClass="bzzx" style="font-size: 18px" />
         </div>
@@ -319,7 +350,7 @@
 </template>
 
 <script setup name="Navbar">
-import { useI18n } from 'vue-i18n'
+import { useI18n } from "vue-i18n";
 import { useWindowSize } from "@vueuse/core";
 import { ElMessageBox } from "element-plus";
 import Breadcrumb from "@/components/Breadcrumb";
@@ -350,8 +381,12 @@ import { currentUser } from "@/api/att/project/project";
 import { da, id } from "element-plus/es/locale/index.mjs";
 import usePermissionStore from "@/store/system/permission";
 import { getRoutersDpp } from "@/api/system/menu";
+import { useLocale } from "@/composables/useLocale";
+import useLocaleStore from "@/store/system/locale.js";
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
+const { changeLocale } = useLocale();
+const localeStore = useLocaleStore();
 // import { getCurrentAppVersion } from "@/api/system/update/update.js";
 // import {listProject, getProject} from "@/api/project/projectBase/project";
 // import {listReport, getReport, delReport, addReport, updateReport} from "@/api/project/report/report";
@@ -501,7 +536,7 @@ function submitForm() {
         };
         updateReport(req)
           .then((response) => {
-            proxy.$modal.msgSuccess(t('common.message.editSuccess'));
+            proxy.$modal.msgSuccess(t("common.message.editSuccess"));
             open.value = false;
             getList();
           })
@@ -810,6 +845,13 @@ function toggleSideBar() {
   appStore.toggleSideBar();
 }
 
+async function handleLanguageChange(lang) {
+  if (lang === localeStore.getCurrentLocale.lang) return;
+  localeStore.setCurrentLocale({ lang });
+  await changeLocale(lang);
+  window.location.reload();
+}
+
 const activeOpen = ref(false);
 
 function handleAboutUs() {
@@ -839,9 +881,9 @@ function handleCommand(command) {
 }
 
 function logout() {
-  ElMessageBox.confirm("确定注销并退出系统吗？", t('common.message.prompt'), {
-    confirmButtonText: t('common.button.confirm'),
-    cancelButtonText: t('common.button.cancel'),
+  ElMessageBox.confirm("确定注销并退出系统吗？", t("common.message.prompt"), {
+    confirmButtonText: t("common.button.confirm"),
+    cancelButtonText: t("common.button.cancel"),
     type: "warning",
   })
     .then(() => {

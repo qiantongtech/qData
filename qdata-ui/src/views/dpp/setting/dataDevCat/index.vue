@@ -506,7 +506,15 @@
 </template>
 
 <script setup name="DataDevCat">
-import { ref, reactive, watch, nextTick } from "vue";
+import {
+  ref,
+  reactive,
+  watch,
+  nextTick,
+  computed,
+  onMounted,
+  onActivated,
+} from "vue";
 import { useRouter } from "vue-router";
 import { toRefs } from "vue";
 import useDefaultLang from "@/composables/useDefaultLang";
@@ -909,6 +917,10 @@ function routeTo(link, row) {
     }
   }
 }
+
+onMounted(() => {
+  getList();
+});
 
 onActivated(() => {
   getList();

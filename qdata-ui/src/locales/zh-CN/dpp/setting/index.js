@@ -83,6 +83,12 @@ export default {
     roleStatus: '角色状态',
     roleNameRequired: '角色名称不能为空',
     roleKeyRequired: '权限字符不能为空',
-    roleSortRequired: '角色顺序不能为空'
+    roleSortRequired: '角色顺序不能为空',
+    // 数据权限范围
+    allDataScope: '全部数据权限',
+    customDataScope: '自定数据权限',
+    deptDataScope: '本部门数据权限',
+    deptAndBelowDataScope: '本部门及以下数据权限',
+    onlySelfDataScope: '仅本人数据权限'
   }
 }

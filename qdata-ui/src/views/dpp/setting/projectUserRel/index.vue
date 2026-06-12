@@ -16,33 +16,39 @@
 -->
 
 <template>
-    <div class="app-container" ref="app-container">
-        <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
-            <el-tab-pane :label="td('dpp.setting.projectUserRel.projectMember')" name="first">
-                <User ref="userRef"></User>
-            </el-tab-pane>
-            <el-tab-pane :label="td('dpp.setting.projectUserRel.projectRole')" name="second">
-                <Role ref="roleRef"></Role>
-            </el-tab-pane>
-        </el-tabs>
-    </div>
+  <div class="app-container" ref="app-container">
+    <el-tabs v-model="activeName" class="demo-tabs">
+      <el-tab-pane
+        :label="td('dpp.setting.projectUserRel.projectMember')"
+        name="first"
+      >
+        <User ref="userRef"></User>
+      </el-tab-pane>
+      <el-tab-pane
+        :label="td('dpp.setting.projectUserRel.projectRole')"
+        name="second"
+      >
+        <Role ref="roleRef"></Role>
+      </el-tab-pane>
+    </el-tabs>
+  </div>
 </template>
 
 <script setup name="index">
-import { ref } from 'vue';
-import useDefaultLang from '@/composables/useDefaultLang';
-import Role from '@/views/dpp/setting/projectUserRel/role.vue';
-import User from '@/views/dpp/setting/projectUserRel/user.vue';
+import { ref } from "vue";
+import useDefaultLang from "@/composables/useDefaultLang";
+import Role from "@/views/dpp/setting/projectUserRel/role.vue";
+import User from "@/views/dpp/setting/projectUserRel/user.vue";
 
 const { td } = useDefaultLang();
-const activeName = ref('first');
+const activeName = ref("first");
 </script>
 
 <style scoped lang="less">
 ::v-deep(.el-tabs__header) {
-    margin: 0 0 0px;
-    padding: 0px 15px 0px 15px;
-    position: relative;
-    background-color: #fff;
+  margin: 0 0 0px;
+  padding: 0px 15px 0px 15px;
+  position: relative;
+  background-color: #fff;
 }
 </style>

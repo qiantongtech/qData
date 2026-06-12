@@ -83,6 +83,12 @@ export default {
     roleStatus: 'Role Status',
     roleNameRequired: 'Role name cannot be empty',
     roleKeyRequired: 'Permission key cannot be empty',
-    roleSortRequired: 'Role order cannot be empty'
+    roleSortRequired: 'Role order cannot be empty',
+    // Data scope options
+    allDataScope: 'All Data Permission',
+    customDataScope: 'Custom Data Permission',
+    deptDataScope: 'Department Data Permission',
+    deptAndBelowDataScope: 'Department and Below Data Permission',
+    onlySelfDataScope: 'Only Self Data Permission'
   }
 }

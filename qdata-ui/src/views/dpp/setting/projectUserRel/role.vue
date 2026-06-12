@@ -320,7 +320,7 @@
         >
         <el-checkbox
           v-model="form.menuCheckStrictly"
-          @change="handleCheckedTreeConnectd($event, 'menu')"
+          @change="handleCheckedTreeConnect($event, 'menu')"
           >{{ td("common.button.linkParentChild") }}</el-checkbox
         >
         <el-tree
@@ -331,7 +331,7 @@
           node-key="id"
           :default-expanded-keys="expandedKeys"
           :check-strictly="!form.menuCheckStrictly"
-          :empty-text="td('common.loading')"
+          :empty-text="td('common.button.loading')"
           :props="{ label: 'label', children: 'children' }"
         ></el-tree>
       </el-form-item>
@@ -339,7 +339,7 @@
         <el-input
           v-model="form.remark"
           type="textarea"
-          :placeholder="td('dpp.setting.projectUserRel.inputRoleRemark')"
+          placeholder="请输入权限描述"
         ></el-input>
       </el-form-item>
     </el-form>
@@ -372,7 +372,7 @@
           <el-option
             v-for="item in dataScopeOptions"
             :key="item.value"
-            :label="td(item.label)"
+            :label="item.label"
             :value="item.value"
           ></el-option>
         </el-select>
@@ -395,7 +395,7 @@
         >
         <el-checkbox
           v-model="form.deptCheckStrictly"
-          @change="handleCheckedTreeConnectd($event, 'dept')"
+          @change="handleCheckedTreeConnect($event, 'dept')"
           >{{ td("common.button.linkParentChild") }}</el-checkbox
         >
         <el-tree
@@ -407,7 +407,7 @@
           node-key="id"
           :expanded-keys="expandedKeys"
           :check-strictly="!form.deptCheckStrictly"
-          :empty-text="td('common.loading')"
+          :empty-text="td('common.button.loading')"
           :props="{ label: 'label', children: 'children' }"
         ></el-tree>
       </el-form-item>
@@ -426,7 +426,6 @@
 </template>
 
 <script setup name="Role">
-import { useI18n } from "vue-i18n";
 import {
   addRole,
   changeRoleStatus,
@@ -445,10 +444,9 @@ import useUserStore from "@/store/system/user";
 import useDefaultLang from "@/composables/useDefaultLang";
 
 const { td } = useDefaultLang();
-const { t } = useI18n();
 const router = useRouter();
 const { proxy } = getCurrentInstance();
-const { sys_normal_disable } = proxy.useDictd("sys_normal_disable");
+const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
 const userStore = useUserStore();
 const roleList = ref([]);
 const open = ref(false);
@@ -471,12 +469,12 @@ const menuRef = ref(null);
 const deptRef = ref(null);
 const expandedKeys = ref([]);
 /** 数据范围选项*/
-const dataScopeOptions = ref([
-  { value: "1", label: "全部数据权限" },
-  { value: "2", label: "自定数据权限" },
-  { value: "3", label: "本部门数据权限" },
-  { value: "4", label: "本部门及以下数据权限" },
-  { value: "5", label: "仅本人数据权限" },
+const dataScopeOptions = computed(() => [
+  { value: "1", label: td("dpp.setting.projectUserRel.allDataScope") },
+  { value: "2", label: td("dpp.setting.projectUserRel.customDataScope") },
+  { value: "3", label: td("dpp.setting.projectUserRel.deptDataScope") },
+  { value: "4", label: td("dpp.setting.projectUserRel.deptAndBelowDataScope") },
+  { value: "5", label: td("dpp.setting.projectUserRel.onlySelfDataScope") },
 ]);
 
 const data = reactive({
@@ -491,25 +489,11 @@ const data = reactive({
   },
   rules: {
     roleName: [
-      {
-        required: true,
-        message: td("dpp.setting.projectUserRel.roleNameRequired"),
-        trigger: "blur",
-      },
+      { required: true, message: "角色名称不能为空", trigger: "blur" },
     ],
-    roleKey: [
-      {
-        required: true,
-        message: td("dpp.setting.projectUserRel.roleKeyRequired"),
-        trigger: "blur",
-      },
-    ],
+    roleKey: [{ required: true, message: "权限字符不能为空", trigger: "blur" }],
     roleSort: [
-      {
-        required: true,
-        message: td("dpp.setting.projectUserRel.roleSortRequired"),
-        trigger: "blur",
-      },
+      { required: true, message: "角色顺序不能为空", trigger: "blur" },
     ],
   },
 });
@@ -676,7 +660,7 @@ function handleAdd() {
 function handleUpdate(row) {
   reset();
   const roleId = row.roleId || ids.value;
-  const roleMenu = getRoleMenuTreeselectd(roleId);
+  const roleMenu = getRoleMenuTreeselect(roleId);
   getRole(roleId).then((response) => {
     form.value = response.data;
     form.value.roleSort = Number(form.value.roleSort);
@@ -696,7 +680,7 @@ function handleUpdate(row) {
 }
 
 /** 根据角色ID查询菜单树结构 */
-function getRoleMenuTreeselectd(roleId) {
+function getRoleMenuTreeselect(roleId) {
   return roleMenuTreeselectDpp(roleId).then((response) => {
     menuOptions.value = response.menus;
     expandedKeys.value = response.menus.map((item) => item.id);
@@ -707,7 +691,7 @@ function getRoleMenuTreeselectd(roleId) {
 
 /** 根据角色ID查询部门树结构 */
 function getDeptTree(roleId) {
-  return deptTreeSelectd(roleId).then((response) => {
+  return deptTreeSelect(roleId).then((response) => {
     deptOptions.value = response.depts;
     return response;
   });
@@ -738,7 +722,7 @@ function handleCheckedTreeNodeAll(value, type) {
 }
 
 /** 树权限（父子联动） */
-function handleCheckedTreeConnectd(value, type) {
+function handleCheckedTreeConnect(value, type) {
   if (type == "menu") {
     form.value.menuCheckStrictly = value ? true : false;
   } else if (type == "dept") {

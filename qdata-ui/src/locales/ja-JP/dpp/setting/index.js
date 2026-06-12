@@ -83,6 +83,12 @@ export default {
     roleStatus: 'ロール状態',
     roleNameRequired: 'ロール名を入力してください',
     roleKeyRequired: '権限キーを入力してください',
-    roleSortRequired: 'ロール順序を入力してください'
+    roleSortRequired: 'ロール順序を入力してください',
+    // データ権限範囲
+    allDataScope: '全データ権限',
+    customDataScope: 'カスタムデータ権限',
+    deptDataScope: '部門データ権限',
+    deptAndBelowDataScope: '部門および以下データ権限',
+    onlySelfDataScope: '自分のみデータ権限'
   }
 }

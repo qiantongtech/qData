@@ -65,7 +65,7 @@
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item :label="td('common.texts.createTime')">
+      <el-form-item :label="td('common.texts.createdTime')">
         <el-date-picker
           @change="handleDateChange"
           class="el-form-input-width"
@@ -215,7 +215,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        :label="td('common.texts.action')"
+        :label="td('common.texts.operation')"
         align="center"
         class-name="small-padding fixed-width"
         fixed="right"
@@ -228,7 +228,7 @@
             icon="Edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['att:projectUserRel:edit']"
-            >{{ td("common.button.edit") }}</el-button
+            >修改</el-button
           >
           <el-button
             link
@@ -236,7 +236,7 @@
             icon="Delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['att:projectUserRel:remove']"
-            >{{ td("dpp.setting.projectUserRel.remove") }}</el-button
+            >移除</el-button
           >
         </template>
       </el-table-column>

@@ -19,16 +19,18 @@
 <template>
   <div class="new-chat">
     <div class="box-center">
-      <div class="tip">点击下方按钮，开始你的对话吧</div>
+      <div class="tip">{{ td('ai.chat.startConversation') }}</div>
       <div class="btns">
-        <el-button type="primary" round @click="handlerNewChat"
-          >新建对话</el-button
+        <el-button type="primary" round @click="handlerNewChat">{{ td('ai.chat.newConversation') }}</el-button
         >
       </div>
     </div>
   </div>
 </template>
 <script setup>
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();
+
 const emits = defineEmits(["onNewConversation"]);
 
 /** 新建 conversation 聊天对话 */

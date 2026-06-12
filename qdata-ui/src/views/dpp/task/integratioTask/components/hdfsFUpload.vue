@@ -16,7 +16,7 @@
 -->
 
 <template>
-  <el-dialog v-model="visibleDialog" draggable class="dialog" :title="title" destroy-on-close>
+  <el-dialog v-model="visibleDialog" draggable class="dialog" :title="dialogTitle" destroy-on-close>
     <el-form ref="daDiscoveryTaskRef" :model="form" label-width="120px" @submit.prevent>
       <el-row :gutter="20">
         <el-col :span="12">
@@ -84,6 +84,8 @@ const props = defineProps({
   data: { type: Object, default: () => ({}) },
   type: { type: String, default: '0' },
 });
+
+const dialogTitle = computed(() => props.title || td("common.form.namePlaceholder", "表单标题"));
 
 const emit = defineEmits(["update:visible", "confirm"]);
 // 定义字段类型数组

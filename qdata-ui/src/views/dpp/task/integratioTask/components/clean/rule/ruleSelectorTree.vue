@@ -29,7 +29,7 @@
           class="filter-tree"
           size="large"
           v-model="deptName"
-          :placeholder="placeholder"
+          :placeholder="computedPlaceholder"
           clearable
           prefix-icon="Search"
         />
@@ -117,7 +117,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, defineEmits, watch, onMounted } from "vue";
+import { ref, defineProps, defineEmits, watch, onMounted, computed } from "vue";
 import useDefaultLang from "@/composables/useDefaultLang";
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
@@ -129,7 +129,7 @@ const props = defineProps({
   },
   placeholder: {
     type: String,
-    default: td("dpp.integration.inputDeptName", "请输入部门名称"),
+    default: '',
   },
   defaultExpand: {
     type: Boolean,
@@ -144,6 +144,8 @@ const props = defineProps({
     default: true,
   },
 });
+
+const computedPlaceholder = computed(() => props.placeholder || td("dpp.integration.inputDeptName", "请输入部门名称"));
 
 const emit = defineEmits(["node-click", "update:deptName", "update:leftWidth"]);
 

@@ -934,7 +934,6 @@ export default {
     type: '类型',
     inputType: '请输入类型',
     whereCondition: 'where条件',
-    inputWhereCondition: '请输入where条件',
     ruleSetting: '规则设置',
     addRule: '新增规则',
     index: '序号',

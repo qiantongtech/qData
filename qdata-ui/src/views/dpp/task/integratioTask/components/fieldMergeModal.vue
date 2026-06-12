@@ -20,7 +20,7 @@
     v-model="dialogVisible"
     draggable
     class="medium-dialog"
-    :title="title"
+    :title="dialogTitle"
       destroy-on-close
   >
     <el-form
@@ -150,12 +150,13 @@ import { ref, watch, computed } from "vue";
 const { td } = useDefaultLang();// props
 const props = defineProps({
   visibleDialogs: { type: Boolean, default: true },
-  title: { type: String, default: td("dpp.integration.fieldMergeConfig", "字段合并规则配置") },
+  title: { type: String, default: '' },
   row: { type: Object, default: () => ({}) },
   tableFields: { type: Array, default: () => [] },
   fieldFields: { type: Array, default: () => [] },
   id: { type: String, default: "" },
 });
+const dialogTitle = computed(() => props.title || td("dpp.integration.fieldMergeConfig", "字段合并规则配置"));
 const usedFields = computed(() => {
   return props.fieldFields
     ?.map(f => f?.columnName)

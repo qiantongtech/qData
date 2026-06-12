@@ -846,7 +846,6 @@ export default {
     type: 'Type',
     inputType: 'Please enter type',
     whereCondition: 'Where Condition',
-    inputWhereCondition: 'Please enter where condition',
     ruleSetting: 'Rule Setting',
     addRule: 'Add Rule',
     index: 'No.',

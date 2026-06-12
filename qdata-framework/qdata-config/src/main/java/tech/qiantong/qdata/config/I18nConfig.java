@@ -38,11 +38,10 @@ import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
-import org.springframework.web.servlet.i18n.SessionLocaleResolver;
-import tech.qiantong.qdata.common.constant.Constants;
-
 /**
- * 资源文件配置加载
+ * 国际化资源文件配置加载
+ *
+ * 语言解析优先级：lang 参数 > Accept-Language 请求头 > 默认简体中文
  *
  * @author qdata
  */
@@ -52,10 +51,8 @@ public class I18nConfig implements WebMvcConfigurer
     @Bean
     public LocaleResolver localeResolver()
     {
-        SessionLocaleResolver slr = new SessionLocaleResolver();
-        // 默认语言
-        slr.setDefaultLocale(Constants.DEFAULT_LOCALE);
-        return slr;
+        // 自定义解析器：支持 lang 参数 + Accept-Language 请求头，默认简体中文
+        return new HeaderLocaleResolver();
     }
 
     @Bean

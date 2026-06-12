@@ -8,6 +8,12 @@ export default {
     useCase: 'Use Case',
     example: 'Example'
   },
+  texts: {
+    name: 'Rule Name',
+    qualityDim: 'Quality Dimension',
+    scenario: 'Use Case',
+    example: 'Example'
+  },
   form:{
     
   }

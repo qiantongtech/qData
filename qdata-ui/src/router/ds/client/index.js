@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright © 2025 Qiantong Technology Co., Ltd.
  * qData Data Middle Platform (Open Source Edition)
  *  *
@@ -29,7 +29,7 @@ export default [
                 path: '',
                 component: () => import('@/views/ds/client/detail/index.vue'),
                 name: 'clientDetail',
-                meta: { title: '应用管理详情', activeMenu: '/ds/client' }
+                meta: { title: '应用管理详情', activeMenu: '/ds/client', lang: 'public.appManagementDetail' }
             }
         ]
     },

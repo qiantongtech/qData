@@ -143,7 +143,9 @@ import { useI18n } from 'vue-i18n'
  */
 
 import { ref, computed, nextTick } from "vue";
+import useDefaultLang from "@/composables/useDefaultLang";
 
+const { td } = useDefaultLang();
 const { t } = useI18n();
 const emit = defineEmits(["submit", "cancel"]);
 

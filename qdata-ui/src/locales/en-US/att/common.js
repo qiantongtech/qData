@@ -40,7 +40,7 @@ export default {
     status: 'Status',
     remark: 'Remark',
     description: 'Description',
-    code: 'Code',
+    code: 'No',
     codeRequired: 'Code cannot be empty',
     operation: 'Operation',
     query: 'Query',
@@ -103,5 +103,8 @@ export default {
     addTag: 'Add Tag',
     editTag: 'Edit Tag',
     tagDetail: 'Tag Detail',
-    ruleCategoryPlaceholder:'Please enter the category of inspection rules'
+    ruleCategoryPlaceholder:'Please enter the category of inspection rules',
+    // Message
+    confirmDeleteCat: 'Confirm to delete {titleBase} with ID "{id}"?',
+    deleteConfirmCount: '{canDeleteCount} can be deleted, {cannotDeleteCount} cannot be deleted. Delete the deletable items?'
 }

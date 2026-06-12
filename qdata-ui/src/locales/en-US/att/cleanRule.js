@@ -6,5 +6,10 @@ export default {
     type: 'Rule Type',
     useCase: 'Use Case',
     example: 'Example'
+  },
+  texts: {
+    name: 'Rule Name',
+    type: 'Rule Type',
+    level: 'Rule Level'
   }
 }

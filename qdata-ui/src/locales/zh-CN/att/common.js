@@ -1,6 +1,5 @@
 // att 模块公共翻译
 export default {
-  common: {
     dataAssetCatName: '数据资产类目名称',
     dataDocCatName: '数据文档名称',
     cleanCatName: '清洗规则类目名称',
@@ -104,6 +103,8 @@ export default {
     addTag: '新增标签',
     editTag: '修改标签',
     tagDetail: '标签详情',
-    ruleCategoryPlaceholder:'请输入稽查规则类目'
-  }
+    ruleCategoryPlaceholder:'请输入稽查规则类目',
+    // Message
+    confirmDeleteCat: '是否确认删除{titleBase}编号为"{id}"的数据项？',
+    deleteConfirmCount: '可删除{canDeleteCount}个，不可删除{cannotDeleteCount}个，是否删除可删部分'
 }

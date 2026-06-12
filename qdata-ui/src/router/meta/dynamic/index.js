@@ -13,7 +13,7 @@ export default [
                 component: () =>
                     import('@/views/meta/unreleased/structured/database/detail/index.vue'),
                 name: 'UnreleasedStructuredDatabaseDetail',
-                meta: { title: '库元数据详情', activeMenu: '/meta/unreleased/structured/db' }
+                meta: { title: '库元数据详情', activeMenu: '/meta/unreleased/structured/db', lang: 'public.databaseMetadataDetail' }
             }
         ]
     },
@@ -28,7 +28,7 @@ export default [
                 component: () =>
                     import('@/views/meta/unreleased/structured/database/detail/index.vue'),
                 name: 'ReleasedStructuredDatabaseDetail',
-                meta: { title: '库元数据详情', activeMenu: '/meta/released/structured/db' }
+                meta: { title: '库元数据详情', activeMenu: '/meta/released/structured/db', lang: 'public.databaseMetadataDetail' }
             }
         ]
     },
@@ -43,7 +43,7 @@ export default [
                 component: () =>
                     import('@/views/meta/unreleased/structured/table/handle/index.vue'),
                 name: 'UnreleasedStructuredTableAdd',
-                meta: { title: '新增表元数据', activeMenu: '/dg/meta/management' }
+                meta: { title: '新增表元数据', activeMenu: '/dg/meta/management', lang: 'public.addTableMetadata' }
             }
         ]
     },
@@ -58,7 +58,7 @@ export default [
                 component: () =>
                     import('@/views/meta/unreleased/structured/table/handle/index.vue'),
                 name: 'UnreleasedStructuredTableEdit',
-                meta: { title: '修改表元数据', activeMenu: '/dg/meta/management' }
+                meta: { title: '修改表元数据', activeMenu: '/dg/meta/management', lang: 'public.editTableMetadata' }
             }
         ]
     },
@@ -74,7 +74,7 @@ export default [
                 component: () =>
                     import('@/views/meta/unreleased/structured/table/detail/index.vue'),
                 name: 'UnreleasedStructuredTableDetail',
-                meta: { title: '表元数据详情', activeMenu: '/dg/meta/management' }
+                meta: { title: '表元数据详情', activeMenu: '/dg/meta/management', lang: 'public.tableMetadataDetail' }
             }
         ]
     },
@@ -90,7 +90,7 @@ export default [
                 component: () =>
                     import('@/views/meta/unreleased/structured/table/detail/index.vue'),
                 name: 'ReleasedStructuredTableDetail',
-                meta: { title: '表元数据详情', activeMenu: '/dg/meta/comparison' }
+                meta: { title: '表元数据详情', activeMenu: '/dg/meta/comparison', lang: 'public.tableMetadataDetail' }
             }
         ]
     },
@@ -105,7 +105,7 @@ export default [
                 path: '',
                 component: () => import('@/views/meta/unreleased/structured/column/add/index.vue'),
                 name: 'UnreleasedStructuredColumnAdd',
-                meta: { title: '新增字段元数据', activeMenu: '/meta/unreleased/structured/column' }
+                meta: { title: '新增字段元数据', activeMenu: '/meta/unreleased/structured/column', lang: 'public.addColumnMetadata' }
             }
         ]
     },
@@ -121,7 +121,7 @@ export default [
                 component: () =>
                     import('@/views/meta/unreleased/structured/column/detail/index.vue'),
                 name: 'UnreleasedStructuredColumnDetail',
-                meta: { title: '字段元数据详情', activeMenu: '/meta/unreleased/structured/column' }
+                meta: { title: '字段元数据详情', activeMenu: '/meta/unreleased/structured/column', lang: 'public.columnMetadataDetail' }
             }
         ]
     },
@@ -137,7 +137,7 @@ export default [
                 component: () =>
                     import('@/views/meta/unreleased/structured/column/detail/index.vue'),
                 name: 'ReleasedStructuredColumnDetail',
-                meta: { title: '字段元数据详情', activeMenu: '/meta/released/structured/column' }
+                meta: { title: '字段元数据详情', activeMenu: '/meta/released/structured/column', lang: 'public.columnMetadataDetail' }
             }
         ]
     }

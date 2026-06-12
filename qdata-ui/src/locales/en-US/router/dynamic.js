@@ -72,7 +72,7 @@ export default {
     "sysPost": "Position Management",
     "sysDict": "Dictionary Management",
     "sysConfig": "Parameter Settings",
-    "sysModel": "Model Management",
+    "sysSysModel": "Model Management",
     "sysNotice": "Notice",
     "sysLog": "Log Management",
     "sysLogOperlog": "Operation Log",

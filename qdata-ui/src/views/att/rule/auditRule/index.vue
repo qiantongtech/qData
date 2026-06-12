@@ -124,7 +124,7 @@
           >
             <el-table-column
               v-if="getColumnVisibility(6)"
-              :label="td('att.auditRule.table.code')"
+              :label="td('common.texts.number')"
               align="left"
               prop="code"
               width="80"
@@ -397,12 +397,12 @@ function handleNodeClick(data) {
 }
 // 列显隐信息
 const columns = ref([
-  { key: 6, label: "编号", visible: true },
-  { key: 1, label: "规则名称", visible: true },
-  { key: 2, label: "质量维度", visible: true },
-  { key: 5, label: "描述", visible: true },
-  { key: 3, label: "使用场景", visible: true },
-  { key: 4, label: "示例", visible: true },
+  { key: 6, label: td('common.texts.number'), visible: true },
+  { key: 1, label: td('att.auditRule.texts.name'), visible: true },
+  { key: 2, label: td('att.auditRule.texts.qualityDim'), visible: true },
+  { key: 5, label: td('common.texts.description'), visible: true },
+  { key: 3, label: td('att.auditRule.texts.scenario'), visible: true },
+  { key: 4, label: td('att.auditRule.texts.example'), visible: true },
 ]);
 
 const getColumnVisibility = (key) => {

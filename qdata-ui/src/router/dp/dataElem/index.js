@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright © 2025 Qiantong Technology Co., Ltd.
  * qData Data Middle Platform (Open Source Edition)
  *  *
@@ -31,7 +31,8 @@ export default [
                 name: 'DataElemCodeDetail',
                 meta: {
                     title: '数据元详情',
-                    activeMenu: '/dp/dataElem'
+                    activeMenu: '/dp/dataElem',
+                    lang: 'public.dataElementDetail'
                 }
             },
         ]
@@ -47,7 +48,8 @@ export default [
                 name: 'DataElemDetail',
                 meta: {
                     title: '数据元详情',
-                    activeMenu: '/dp/dataElem'
+                    activeMenu: '/dp/dataElem',
+                    lang: 'public.dataElementDetail'
                 }
             }
         ]

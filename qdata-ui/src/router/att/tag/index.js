@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright © 2025 Qiantong Technology Co., Ltd.
  * qData Data Middle Platform (Open Source Edition)
  *  *
@@ -29,7 +29,7 @@ export default [
                 path: 'tag/detail',
                 component: () => import('@/views/att/tag/detail/index.vue'),
                 name: 'tagDetail',
-                meta: { title: '标签详情', activeMenu: '/da/tag' }
+                meta: { title: '标签详情', activeMenu: '/da/tag', lang: 'public.tagDetail' }
             }
         ]
     },

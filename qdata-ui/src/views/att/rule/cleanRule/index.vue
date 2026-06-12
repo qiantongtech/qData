@@ -82,7 +82,7 @@
                         @selection-change="handleSelectionChange" :default-sort="defaultSort"
                         @sort-change="handleSortChange">
                         <!--                        <el-table-column type="selection" width="55" align="center" />-->
-                        <el-table-column v-if="getColumnVisibility(0)" :label="td('att.cleanRule.table.code')" align="left" prop="code" width="80" />
+                        <el-table-column v-if="getColumnVisibility(0)" :label="td('common.texts.number')" align="left" prop="code" width="80" />
                         <el-table-column v-if="getColumnVisibility(1)" :label="td('att.cleanRule.table.name')" width="200" align="left" prop="name"
                             :show-overflow-tooltip="{ effect: 'light' }">
                             <template #default="scope">
@@ -371,11 +371,11 @@ function handleNodeClick(data) {
 }
 // 列显隐信息
 const columns = ref([
-    { key: 1, label: '规则名称', visible: true },
-    { key: 2, label: '规则类型', visible: true },
-    { key: 3, label: '规则级别', visible: true },
-    { key: 4, label: '描述', visible: true },
-    { key: 13, label: '备注', visible: true }
+    { key: 1, label: td('att.cleanRule.texts.name'), visible: true },
+    { key: 2, label: td('att.cleanRule.texts.type'), visible: true },
+    { key: 3, label: td('att.cleanRule.texts.level'), visible: true },
+    { key: 4, label: td('common.texts.description'), visible: true },
+    { key: 13, label: td('common.texts.remark'), visible: true }
 ]);
 
 const getColumnVisibility = (key) => {

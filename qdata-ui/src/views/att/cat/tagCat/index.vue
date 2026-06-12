@@ -24,7 +24,7 @@
       :add-func="addAttTagCat"
       :update-func="updateAttTagCat"
       :name-label="td('att.common.tagCatName')"
-      title-base="标签管理类目"
+      :title-base="td('att.common.tagCatName')"
       perm-base="att:tagCat"
     />
   </div>

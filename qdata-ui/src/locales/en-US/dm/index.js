@@ -71,7 +71,8 @@ export default {
     importTitle: 'Data Domain Import',
     importResult: 'Import Result',
     ownerRequired: 'Owner is required',
-    englishOnly: 'Only English characters are allowed'
+    englishOnly: 'Only English characters are allowed',
+    confirmDeleteByName: 'Are you sure you want to delete the data domain "{name}"?'
   },
   dataLayer: {
     // Data Layer
@@ -114,7 +115,11 @@ export default {
     confirmDeleteSpecification: 'Are you sure you want to delete the specification with ID "{id}"?',
     confirmStatusChangeSpecification: 'Are you sure you want to "{text}" the specification "{id}"?',
     pleaseSelectLayer: 'Please select a data layer from the left panel first',
-    operationDataLayer: 'Operate Data Layer'
+    operationDataLayer: 'Operate Data Layer',
+    englishOnly: 'Only English characters are allowed',
+    businessDefinition: 'Business Definition',
+    namingStandard: 'Naming Standard',
+    tablePrefixFixed: 'Table prefix fixed as'
   },
   themeDomain: {
     // Theme Domain

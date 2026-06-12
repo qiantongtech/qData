@@ -22,16 +22,16 @@
             :data="uploadData" :drag="dragFlag" :file-list="fileList"
             :accept="fileType.map((ext) => '.' + ext).join(',')" :show-file-list="false" :on-remove="handleRemove">
             <el-button type="primary" size="small" icon="Upload" plain>
-                选择文件
+                {{ t('common.upload.selectFile') }}
             </el-button>
         </el-upload>
 
         <!-- 上传提示 -->
         <div class="el-upload__tip" v-if="isShowTip">
-            仅支持上传
+            {{ t('common.upload.supportedFormat') }}
             <b style="color: #f56c6c">{{ fileType.join(', ') }}</b>
-            格式的文件，大小不超过
-            <b style="color: #f56c6c">{{ fileSize }}MB</b>
+            {{ t('common.upload.fileTypes') }}，{{ t('common.upload.fileSizeLimit') }}
+            <b style="color: #f56c6c">{{ fileSize }}{{ t('common.upload.fileSizeMB') }}</b>
         </div>
 
         <!-- 自定义文件展示 -->
@@ -57,9 +57,12 @@
 
 <script setup>
 import { ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { ElMessage } from 'element-plus'
 import { getToken } from '@/utils/auth'
 import { Document, Download, Delete } from '@element-plus/icons-vue'
+
+const { t } = useI18n();
 
 const props = defineProps({
     modelValue: [Array, String],

@@ -111,7 +111,7 @@
             :on-error="handleUploadError"
             :show-file-list="false"
         >
-          <el-button type="primary" size="small">上传文件</el-button>
+          <el-button type="primary" size="small">{{ t('common.upload.uploadFile') }}</el-button>
         </el-upload>
         <div class="back">
           <el-text class="back-btn" type="primary" @click="handleBack">
@@ -156,7 +156,7 @@
       >
         <el-table-column type="selection" width="55" :selectable="selectable" />
         <el-table-column
-            label="文件名"
+            :label="t('common.upload.fileName')"
             prop="name"
             :show-overflow-tooltip="{ effect: 'light' }"
         >
@@ -178,7 +178,7 @@
           </template>
         </el-table-column>
         <el-table-column
-            label="文件大小"
+            :label="t('common.upload.fileSize')"
             prop="size"
             :show-overflow-tooltip="{ effect: 'light' }"
             align="left"
@@ -275,7 +275,7 @@ const handleFileUploadProgress = () => {
 function handleUploadError(err) {
   console.log(err, "err");
   upload.isUploading = false;
-  proxy.$modal.msgWarning("上传文件失败，请联系管理员");
+  proxy.$modal.msgWarning(t('common.upload.uploadFailedAdmin'));
 }
 /** 文件上传成功处理 */
 const handleFileSuccess = (response, file) => {
@@ -283,9 +283,9 @@ const handleFileSuccess = (response, file) => {
   upload.isUploading = false;
   proxy.$refs["uploadRef"].handleRemove(file);
   if (response.code == 200) {
-    proxy.$modal.msgSuccess("上传结果：" + response.msg);
+    proxy.$modal.msgSuccess(t('common.upload.uploadResult') + response.msg);
   } else {
-    proxy.$modal.msgWarning("上传结果：" + response.msg);
+    proxy.$modal.msgWarning(t('common.upload.uploadResult') + response.msg);
   }
   getList();
 };
@@ -347,22 +347,22 @@ const handleDatasourceChange = async (id,selected) => {
 const fileDesc = ref([
   {
     key: "name",
-    label: "文件名",
+    label: t('common.upload.fileName'),
     value: "-",
   },
   {
     key: "type",
-    label: "文件类型",
+    label: t('common.upload.fileType'),
     value: "-",
   },
   {
     key: "size",
-    label: "文件大小",
+    label: t('common.upload.fileSize'),
     value: "-",
   },
   {
     key: "path",
-    label: "文件路径",
+    label: t('common.upload.filePath'),
     value: "-",
   },
   {
@@ -372,7 +372,7 @@ const fileDesc = ref([
   },
   {
     key: "lastModified",
-    label: "修改时间",
+    label: t('common.texts.updatedTime'),
     value: "-",
   },
   {
@@ -462,7 +462,7 @@ const handleSelectionChange = (selection) => {
   } else if (selection.length == 1) {
     single.value = selection[0];
   } else {
-    return proxy.$modal.msgWarning("数量限制，只能选择一个文件");
+    return proxy.$modal.msgWarning(t('common.upload.selectOneFileOnly'));
   }
 };
 const handleRowClick = (row) => {
@@ -479,7 +479,7 @@ const cancel = () => {
 };
 const submitForm = () => {
   if (!single.value.path) {
-    return proxy.$modal.msgWarning(`未选择文件，请选择文件后重试`);
+    return proxy.$modal.msgWarning(t('common.upload.noFileSelected'));
   }
   //   赋值文件路径，文件描述
   Object.assign(localForm.value, {

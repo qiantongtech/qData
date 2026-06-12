@@ -21,22 +21,22 @@
 
     <div class="pagecont-top" v-show="showSearch">
       <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="75px">
-        <el-form-item label="数据质量类目名称" prop="name" label-width="130">
-          <el-input class="el-form-input-width" v-model="queryParams.name" placeholder="请输入数据质量类目名称" clearable
+        <el-form-item :label="td('att.common.qualityCatName')" prop="name" label-width="130">
+          <el-input class="el-form-input-width" v-model="queryParams.name" :placeholder="td('att.common.namePlaceholder')" clearable
             @keyup.enter="handleQuery" />
         </el-form-item>
-        <el-form-item label="上级类目" prop="code">
+        <el-form-item :label="td('att.common.parentCat')" prop="code">
           <el-tree-select filterable class="el-form-input-width" v-model="queryParams.code" :data="attAssetCatOptions"
-            :props="{ value: 'code', label: 'name', children: 'children' }" value-key="id" placeholder="请选择上级"
+            :props="{ value: 'code', label: 'name', children: 'children' }" value-key="id" :placeholder="td('att.common.parentCatPlaceholder')"
             check-strictly />
         </el-form-item>
         <el-form-item>
           <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()"
             v-hasPermi="['att:qualityCat:query']">
-            <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
+            <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
           </el-button>
           <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-            <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
+            <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
           </el-button>
         </el-form-item>
       </el-form>
@@ -46,13 +46,13 @@
         <el-row :gutter="10" class="btn-style">
           <el-col :span="1.5">
             <el-button type="primary" plain icon="Plus" @click="handleAdd"
-              v-hasPermi="['att:qualityCat:add']">{{ t('common.button.add') }}</el-button>
+              v-hasPermi="['att:qualityCat:add']">{{ td('common.button.add') }}</el-button>
           </el-col>
           <el-col :span="1.5">
             <el-button class="toggle-expand-all" type="primary" plain @click="toggleExpandAll">
               <svg-icon v-if="isExpandAll" icon-class="toggle" />
               <svg-icon v-else icon-class="expand" />
-              <span>{{ isExpandAll ? t('common.button.collapse') : t('common.button.expand') }}</span>
+              <span>{{ isExpandAll ? td('common.button.collapse') : td('common.button.expand') }}</span>
             </el-button>
           </el-col>
         </el-row>
@@ -61,43 +61,43 @@
 
       <el-table height="60vh" v-if="refreshTable" v-loading="loading" :data="attAssetCatList" row-key="id"
         :default-expand-all="isExpandAll" :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
-        <!--                      <el-table-column :label="t('common.texts.number')"  prop="id"  width="160">-->
+        <!--                      <el-table-column :label="td('common.texts.number')"  prop="id"  width="160">-->
         <!--                        <template #default="scope">-->
         <!--                          {{ scope.row.id || '-' }}-->
         <!--                        </template>-->
         <!--                      </el-table-column>-->
-        <el-table-column label="数据质量类目名称" align="left" prop="name" width="200"
+        <el-table-column :label="td('att.qualityCat.table.name')" align="left" prop="name" width="200"
           :show-overflow-tooltip="{ effect: 'light' }">
           <template #default="scope">
             {{ scope.row.name || '-' }}
           </template>
         </el-table-column>
 
-        <el-table-column :label="t('common.texts.description')" align="left" prop="description" :show-overflow-tooltip="{ effect: 'light' }"
+        <el-table-column :label="td('common.texts.description')" align="left" prop="description" :show-overflow-tooltip="{ effect: 'light' }"
           width="250">
           <template #default="scope">
             {{ scope.row.description || '-' }}
           </template>
         </el-table-column>
-        <el-table-column label="排序" align="left" prop="sortOrder" :show-overflow-tooltip="{ effect: 'light' }"
+        <el-table-column :label="td('att.qualityCat.table.sortOrder')" align="left" prop="sortOrder" :show-overflow-tooltip="{ effect: 'light' }"
           width="50">
           <template #default="scope">
             {{ scope.row.sortOrder }}
           </template>
         </el-table-column>
-        <el-table-column :label="t('common.texts.createdBy')" align="center" prop="createBy">
+        <el-table-column :label="td('common.texts.createdBy')" align="center" prop="createBy">
           <template #default="scope">
             {{ scope.row.createBy || "-" }}
           </template>
         </el-table-column>
-        <el-table-column :label="t('common.texts.createdTime')" align="center" prop="createTime" width="180">
+        <el-table-column :label="td('common.texts.createdTime')" align="center" prop="createTime" width="180">
           <template #default="scope">
             <span>{{
               parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}")
             }}</span>
           </template>
         </el-table-column>
-        <el-table-column :label="t('common.texts.status')" align="center" prop="validFlag">
+        <el-table-column :label="td('common.texts.status')" align="center" prop="validFlag">
           <template #default="scope">
             <!--              <dict-tag :options="sys_valid" :value="scope.row.validFlag"/>-->
 
@@ -106,19 +106,19 @@
             </el-switch>
           </template>
         </el-table-column>
-        <el-table-column :label="t('common.texts.remark')" align="left" prop="remark" :show-overflow-tooltip="{ effect: 'light' }">
+        <el-table-column :label="td('common.texts.remark')" align="left" prop="remark" :show-overflow-tooltip="{ effect: 'light' }">
           <template #default="scope">
             {{ scope.row.remark || '-' }}
           </template>
         </el-table-column>
-        <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
+        <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
           <template #default="scope">
             <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-              v-hasPermi="['att:qualityCat:edit']">{{ t('common.button.update') }}</el-button>
+              v-hasPermi="['att:qualityCat:edit']">{{ td('common.button.update') }}</el-button>
             <el-button link type="primary" icon="Plus" @click="handleAdd(scope.row)"
-              v-hasPermi="['att:qualityCat:add']">{{ t('common.button.add') }}</el-button>
+              v-hasPermi="['att:qualityCat:add']">{{ td('common.button.add') }}</el-button>
             <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
-              v-hasPermi="['att:qualityCat:remove']">{{ t('common.button.delete') }}</el-button>
+              v-hasPermi="['att:qualityCat:remove']">{{ td('common.button.delete') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -132,8 +132,8 @@
       <el-form ref="attAssetCatRef" :model="form" :rules="rules" label-width="80px">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="类目名称" prop="name">
-              <el-input v-model="form.name" placeholder="请输入数据质量类目名称" />
+            <el-form-item :label="td('att.common.categoryName')" prop="name">
+              <el-input v-model="form.name" :placeholder="td('att.common.namePlaceholder')" />
             </el-form-item>
           </el-col>
           <!--            <el-form-item label="类别排序" prop="sortOrder">-->
@@ -141,29 +141,29 @@
           <!--              <el-input-number v-model="form.sortOrder"  steps="1" :min="0"  placeholder="请输入类别排序" />-->
           <!--            </el-form-item>-->
           <el-col :span="12">
-            <el-form-item label="上级类目" prop="parentId">
+            <el-form-item :label="td('att.common.parentCat')" prop="parentId">
               <el-tree-select filterable :disabled="form.id" v-model="form.parentId" :data="attAssetCatOptions"
-                :props="{ value: 'id', label: 'name', children: 'children' }" value-key="id" placeholder="请选择上级"
+                :props="{ value: 'id', label: 'name', children: 'children' }" value-key="id" :placeholder="td('att.common.parentCatPlaceholder')"
                 check-strictly />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="t('common.texts.description')">
-              <el-input type="textarea" :placeholder="t('common.form.descriptionPlaceholder')" v-model="form.description" :min-height="192" />
+            <el-form-item :label="td('common.texts.description')">
+              <el-input type="textarea" :placeholder="td('common.form.descriptionPlaceholder')" v-model="form.description" :min-height="192" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20"> </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="排序" prop="sortOrder">
+            <el-form-item :label="td('att.common.sortOrder')" prop="sortOrder">
               <el-input-number style="width: 100%" v-model="form.sortOrder" controls-position="right" :min="0" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="t('common.texts.status')" prop="validFlag">
+            <el-form-item :label="td('common.texts.status')" prop="validFlag">
               <el-radio v-model="form.validFlag" :label="true">启用</el-radio>
               <el-radio v-model="form.validFlag" :label="false">禁用</el-radio>
             </el-form-item>
@@ -171,16 +171,16 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="t('common.texts.remark')">
-              <el-input type="textarea" :placeholder="t('common.form.remarkPlaceholder')" v-model="form.remark" :min-height="192" />
+            <el-form-item :label="td('common.texts.remark')">
+              <el-input type="textarea" :placeholder="td('common.form.remarkPlaceholder')" v-model="form.remark" :min-height="192" />
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="cancel">{{ t('common.button.cancel') }}</el-button>
-          <el-button type="primary" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
+          <el-button @click="cancel">{{ td('common.button.cancel') }}</el-button>
+          <el-button type="primary" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -189,6 +189,7 @@
 
 <script setup name="QualityCat">
 import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang";
 import {
   listAttQualityCat,
   getAttQualityCat,
@@ -198,6 +199,7 @@ import {
 } from '@/api/att/cat/qualityCat/qualityCat.js';
 
 const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 
 const attAssetCatList = ref([]);
@@ -362,13 +364,13 @@ function submitForm() {
     if (valid) {
       if (form.value.id != null) {
         updateAttQualityCat(form.value).then((response) => {
-          proxy.$modal.msgSuccess(t('common.message.editSuccess'));
+          proxy.$modal.msgSuccess(td('common.message.editSuccess'));
           open.value = false;
           getList();
         });
       } else {
         addAttQualityCat(form.value).then((response) => {
-          proxy.$modal.msgSuccess(t('common.message.addSuccess'));
+          proxy.$modal.msgSuccess(td('common.message.addSuccess'));
           open.value = false;
           getList();
         });
@@ -386,7 +388,7 @@ function handleDelete(row) {
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+      proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
     })
     .catch(() => { });
 }

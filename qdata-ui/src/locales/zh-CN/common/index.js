@@ -106,6 +106,12 @@ export default {
   noMessage: '暂无消息',
   noHistory: '暂无历史记录',
   noPermission: '暂无权限',
+  upload: {
+    dragOrClick: '将文件拖到此处，或点击上传',
+    updateExistingData: '是否更新已经存在的数据',
+    fileFormat: '仅允许导入xls、xlsx格式文件。',
+    downloadTemplate: '下载模板'
+  },
   noSearchResult: '暂无搜索结果',
   noDescription: '暂无描述',
   noLog: '暂无日志',

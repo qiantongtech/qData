@@ -60,15 +60,12 @@
             plain
             type="primary"
             @click="handleQuery"
-            @mousedown="(e) => e.preventDefaultd()"
+            @mousedown="(e) => e.preventDefault()"
           >
             <i class="iconfont-mini icon-a-zu22377 mr5"></i
             >{{ td("common.button.query") }}
           </el-button>
-          <el-button
-            @click="resetQuery"
-            @mousedown="(e) => e.preventDefaultd()"
-          >
+          <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
             <i class="iconfont-mini icon-a-zu22378 mr5"></i
             >{{ td("common.button.reset") }}
           </el-button>
@@ -85,7 +82,7 @@
               plain
               @click="handleAdd"
               v-hasPermi="['att:dataDevCat:add']"
-              @mousedown="(e) => e.preventDefaultd()"
+              @mousedown="(e) => e.preventDefault()"
             >
               <i class="iconfont-mini icon-xinzeng mr5"></i
               >{{ td("common.button.add") }}
@@ -660,7 +657,7 @@ const { queryParams, form, rules } = toRefs(data);
 watch(
   () => userStore.projectId,
   () => {
-    getListd();
+    getList();
   }
 );
 
@@ -674,11 +671,11 @@ function toggleExpandAll() {
 }
 
 /** 查询数据开发类目管理列表 */
-function getListd() {
+function getList() {
   loading.value = true;
   queryParams.value.projectId = userStore.projectId;
   queryParams.value.projectCode = userStore.projectCode;
-  listAttDataDevCatd(queryParams.value).then((response) => {
+  listAttDataDevCat(queryParams.value).then((response) => {
     AttDataDevCatList.value = proxy.handleTree(response.data, "id", "parentId");
     // total.value = response.data.total;
     loading.value = false;
@@ -694,11 +691,11 @@ function getListd() {
 function cancel() {
   open.value = false;
   openDetail.value = false;
-  resetd();
+  reset();
 }
 
 // 表单重置
-function resetd() {
+function reset() {
   form.value = {
     id: null,
     name: null,
@@ -722,7 +719,7 @@ function resetd() {
 /** 搜索按钮操作 */
 function handleQuery() {
   queryParams.value.pageNum = 1;
-  getListd();
+  getList();
 }
 
 /** 重置按钮操作 */
@@ -742,12 +739,12 @@ function handleSelectionChange(selection) {
 function handleSortChange(column, prop, order) {
   queryParams.value.orderByColumn = column.prop;
   queryParams.value.isAsc = column.order;
-  getListd();
+  getList();
 }
 
 /** 新增按钮操作 */
 function handleAdd(row) {
-  resetd();
+  reset();
   if (row != null && row.id) {
     form.value.parentId = row.id;
   } else {
@@ -759,9 +756,9 @@ function handleAdd(row) {
 
 /** 修改按钮操作 */
 function handleUpdate(row) {
-  resetd();
+  reset();
   const _id = row.id || ids.value;
-  getAttDataDevCatd(_id).then((response) => {
+  getAttDataDevCat(_id).then((response) => {
     form.value = response.data;
     open.value = true;
     title.value = "修改数据开发类目管理";
@@ -770,9 +767,9 @@ function handleUpdate(row) {
 
 /** 详情按钮操作 */
 function handleDetail(row) {
-  resetd();
+  reset();
   const _id = row.id || ids.value;
-  getAttDataDevCatd(_id).then((response) => {
+  getAttDataDevCat(_id).then((response) => {
     form.value = response.data;
     openDetail.value = true;
     title.value = "数据开发类目管理详情";
@@ -788,7 +785,7 @@ function handleStatusChange(row) {
       updateAttDataDevCatd({ id: row.id, validFlag: row.validFlag })
         .then((response) => {
           proxy.$modal.msgSuccess(text + "成功");
-          getListd();
+          getList();
         })
         .catch((err) => {
           row.validFlag = !row.validFlag;
@@ -808,17 +805,17 @@ function submitForm() {
           .then((response) => {
             proxy.$modal.msgSuccess(td("common.message.editSuccess"));
             open.value = false;
-            getListd();
+            getList();
           })
           .catch((error) => {});
       } else {
         form.value.projectId = userStore.projectId;
         form.value.projectCode = userStore.projectCode;
-        addAttDataDevCatd(form.value)
+        addAttDataDevCat(form.value)
           .then((response) => {
             proxy.$modal.msgSuccess(td("common.message.addSuccess"));
             open.value = false;
-            getListd();
+            getList();
           })
           .catch((error) => {});
       }
@@ -832,17 +829,17 @@ function handleDelete(row) {
   proxy.$modal
     .confirm('是否确认删除数据开发类目管理编号为"' + _ids + '"的数据项？')
     .then(function () {
-      return delAttDataDevCatd(_ids);
+      return delAttDataDevCat(_ids);
     })
     .then(() => {
-      getListd();
+      getList();
       proxy.$modal.msgSuccess(td("common.message.deleteSuccess"));
     })
     .catch(() => {});
 }
 
 /** 导出按钮操作 */
-function handleExportd() {
+function handleExport() {
   proxy.download(
     "att/AttDataDevCat/export",
     {
@@ -854,7 +851,7 @@ function handleExportd() {
 
 /** ---------------- 导入相关操作 -----------------**/
 /** 导入按钮操作 */
-function handleImportd() {
+function handleImport() {
   upload.title = "数据开发类目管理导入";
   upload.open = true;
 }
@@ -870,7 +867,7 @@ function importTemplate() {
 
 /** 提交上传文件 */
 function submitFileForm() {
-  proxy.$refs["uploadRef"].submitd();
+  proxy.$refs["uploadRef"].submit();
 }
 
 /**文件上传中处理 */
@@ -883,14 +880,14 @@ const handleFileSuccess = (response, file, fileList) => {
   upload.open = false;
   upload.isUploading = false;
   proxy.$refs["uploadRef"].handleRemove(file);
-  proxy.$alertd(
+  proxy.$alert(
     "<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +
       response.msg +
       "</div>",
     "导入结果",
     { dangerouslyUseHTMLString: true }
   );
-  getListd();
+  getList();
 };
 /** ---------------------------------**/
 
@@ -914,6 +911,6 @@ function routeTo(link, row) {
 }
 
 onActivated(() => {
-  getListd();
+  getList();
 });
 </script>

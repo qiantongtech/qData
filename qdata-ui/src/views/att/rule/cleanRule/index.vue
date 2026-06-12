@@ -36,28 +36,28 @@
         <GuideTip tip-id="att/attCleanRule.list" />
 
         <el-container style="90%">
-            <DeptTree :deptOptions="processedData" ref="DeptTreeRef" :leftWidth="leftWidth" :placeholder="'请输入稽查规则类目'"
+            <DeptTree :deptOptions="processedData" ref="DeptTreeRef" :leftWidth="leftWidth" :placeholder="td('att.common.ruleCategoryPlaceholder')"
                 @node-click="handleNodeClick" />
 
             <el-main>
                 <div class="pagecont-top" v-show="showSearch">
                     <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="75px"
                         v-show="showSearch" @submit.prevent>
-                        <el-form-item label="规则名称" prop="name">
-                            <el-input class="el-form-input-width" v-model="queryParams.name" placeholder="请输入规则名称"
+                        <el-form-item :label="td('att.common.ruleName')" prop="name">
+                            <el-input class="el-form-input-width" v-model="queryParams.name" :placeholder="td('common.form.namePlaceholder')"
                                 clearable @keyup.enter="handleQuery" />
                         </el-form-item>
                         <!-- <el-form-item label="编号" prop="code">
-                            <el-input class="el-form-input-width" v-model="queryParams.code" placeholder="请输入编号"
+                            <el-input class="el-form-input-width" v-model="queryParams.code" :placeholder="td('att.common.codePlaceholder')"
                                 clearable @keyup.enter="handleQuery" />
                         </el-form-item> -->
 
                         <el-form-item>
                             <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                                <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                                <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
                             </el-button>
                             <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-                                <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                                <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
                             </el-button>
                         </el-form-item>
                     </el-form>
@@ -82,8 +82,8 @@
                         @selection-change="handleSelectionChange" :default-sort="defaultSort"
                         @sort-change="handleSortChange">
                         <!--                        <el-table-column type="selection" width="55" align="center" />-->
-                        <el-table-column v-if="getColumnVisibility(0)" label="编号" align="left" prop="code" width="80" />
-                        <el-table-column v-if="getColumnVisibility(1)" label="规则名称" width="200" align="left" prop="name"
+                        <el-table-column v-if="getColumnVisibility(0)" :label="td('att.cleanRule.table.code')" align="left" prop="code" width="80" />
+                        <el-table-column v-if="getColumnVisibility(1)" :label="td('att.cleanRule.table.name')" width="200" align="left" prop="name"
                             :show-overflow-tooltip="{ effect: 'light' }">
                             <template #default="scope">
                                 {{ scope.row.name || '-' }}
@@ -102,13 +102,13 @@
                         <!--                          </el-switch>-->
                         <!--                        </template>-->
                         <!--                      </el-table-column>-->
-                        <el-table-column v-if="getColumnVisibility(2)" label="规则类型" width="180" align="left"
+                        <el-table-column v-if="getColumnVisibility(2)" :label="td('att.cleanRule.table.type')" width="180" align="left"
                             prop="type">
                             <template #default="scope">
                                 {{ scope.row.catName || '-' }}
                             </template>
                         </el-table-column>
-                        <el-table-column v-if="getColumnVisibility(4)" label="描述" width="480" align="left"
+                        <el-table-column v-if="getColumnVisibility(4)" :label="td('common.texts.description')" width="480" align="left"
                             prop="description">
                             <template #default="scope">
                                 {{ scope.row.description || '-' }}
@@ -122,13 +122,13 @@
                         <!--                        </el-table-column>-->
 
 
-                        <el-table-column v-if="getColumnVisibility(6)" label="使用场景" width="500" align="left"
+                        <el-table-column v-if="getColumnVisibility(6)" :label="td('att.cleanRule.table.useCase')" width="500" align="left"
                             prop="level">
                             <template #default="scope">
                                 {{ scope.row.useCase || '-' }}
                             </template>
                         </el-table-column>
-                        <el-table-column v-if="getColumnVisibility(5)" label="示例" width="600" align="left" prop="type">
+                        <el-table-column v-if="getColumnVisibility(5)" :label="td('att.cleanRule.table.example')" width="600" align="left" prop="type">
                             <template #default="scope">
                                 {{ scope.row.example || '-' }}
                             </template>
@@ -167,28 +167,28 @@
             <el-form ref="attCleanRuleRef" :model="form" :rules="rules" label-width="80px" @submit.prevent>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item label="规则名称" prop="name">
-                            <el-input v-model="form.name" placeholder="请输入规则名称" />
+                        <el-form-item :label="td('att.common.ruleName')" prop="name">
+                            <el-input v-model="form.name" :placeholder="td('common.form.namePlaceholder')" />
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="编号" prop="code">
-                            <el-input v-model="form.code" placeholder="请输入编号" />
+                        <el-form-item :label="td('att.common.code')" prop="code">
+                            <el-input v-model="form.code" :placeholder="td('att.common.codePlaceholder')" />
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item label="规则类型" prop="type">
+                        <el-form-item :label="td('att.common.ruleType')" prop="type">
                             <el-tree-select v-model="form.type" :data="processedData"
                                 :props="{ value: 'id', label: 'name', children: 'children' }" value-key="id"
-                                placeholder="请选择规则类型" check-strictly />
+                                :placeholder="td('att.common.ruleTypePlaceholder')" check-strictly />
 
                         </el-form-item>
 
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="状态" prop="validFlag">
+                        <el-form-item :label="td('common.texts.status')" prop="validFlag">
                             <el-radio v-model="form.validFlag" :label="true">启用</el-radio>
                             <el-radio v-model="form.validFlag" :label="false">禁用</el-radio>
                         </el-form-item>
@@ -197,36 +197,28 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="24">
-                        <el-form-item label="场景" prop="useCase">
-                            <el-input type="textarea" v-model="form.useCase" placeholder="请输入场景" />
+                        <el-form-item :label="td('att.common.useCase')" prop="useCase">
+                            <el-input type="textarea" v-model="form.useCase" :placeholder="td('att.common.useCasePlaceholder')" />
                         </el-form-item>
                     </el-col>
-                    <!--                    <el-col :span="12">-->
-                    <!--                        <el-form-item label="规则级别" prop="level">-->
-                    <!--                            <el-select v-model="form.level" placeholder="请选择规则级别">-->
-                    <!--                                <el-option v-for="dict in att_rule_level" :key="dict.value" :label="dict.label"-->
-                    <!--                                    :value="dict.value"></el-option>-->
-                    <!--                            </el-select>-->
-                    <!--                        </el-form-item>-->
-                    <!--                    </el-col>-->
                     <el-col :span="24">
-                        <el-form-item label="示例" prop="example">
-                            <el-input type="textarea" v-model="form.example" placeholder="请输入示例" />
+                        <el-form-item :label="td('att.common.example')" prop="example">
+                            <el-input type="textarea" v-model="form.example" :placeholder="td('att.common.examplePlaceholder')" />
                         </el-form-item>
                     </el-col>
 
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="24">
-                        <el-form-item label="描述" prop="description">
-                            <el-input type="textarea" v-model="form.description" placeholder="请输入规则描述" />
+                        <el-form-item :label="td('common.texts.description')" prop="description">
+                            <el-input type="textarea" v-model="form.description" :placeholder="td('common.form.descriptionPlaceholder')" />
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <!--                <el-row :gutter="20">-->
                 <!--                    <el-col :span="24">-->
-                <!--                        <el-form-item label="备注" prop="remark">-->
-                <!--                            <el-input type="textarea" v-model="form.remark" placeholder="请输入备注" />-->
+                <!--                        <el-form-item :label="td('common.texts.remark')" prop="remark">-->
+                <!--                            <el-input type="textarea" v-model="form.remark" :placeholder="td('common.form.remarkPlaceholder')" />-->
                 <!--                        </el-form-item>-->
                 <!--                    </el-col>-->
                 <!--                </el-row>-->
@@ -249,26 +241,26 @@
             <el-form ref="attCleanRuleRef" :model="form" label-width="80px">
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item label="规则名称" prop="name">
+                        <el-form-item :label="td('att.common.ruleName')" prop="name">
                             <div>
                                 {{ form.name }}
                             </div>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="规则类型" prop="type">
+                        <el-form-item :label="td('att.common.ruleType')" prop="type">
                             <dict-tag :options="processedData" :value="form.type" />
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item label="规则级别" prop="level">
+                        <el-form-item :label="td('att.common.ruleLevel')" prop="level">
                             <dict-tag :options="att_rule_level" :value="form.level" />
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="描述" prop="description">
+                        <el-form-item :label="td('common.texts.description')" prop="description">
                             <div>
                                 {{ form.description }}
                             </div>
@@ -277,7 +269,7 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item label="备注" prop="remark">
+                        <el-form-item :label="td('common.texts.remark')" prop="remark">
                             <div>
                                 {{ form.remark }}
                             </div>
@@ -287,7 +279,7 @@
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button size="mini" @click="cancel">关 闭</el-button>
+                    <el-button size="mini" @click="cancel">{{ td('common.button.close') }}</el-button>
                 </div>
             </template>
         </el-dialog>
@@ -303,7 +295,7 @@
                 <template #tip>
                     <div class="el-upload__tip text-center">
                         <div class="el-upload__tip">
-                            <el-checkbox v-model="upload.updateSupport" />是否更新已经存在的清洗规则数据
+                            <el-checkbox v-model="upload.updateSupport" />{{ td('common.upload.updateExistingData') }}
                         </div>
                         <span>仅允许导入xls、xlsx格式文件。</span>
                         <el-link type="primary" :underline="false" style="font-size: 12px; vertical-align: baseline"

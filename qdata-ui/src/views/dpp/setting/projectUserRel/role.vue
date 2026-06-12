@@ -81,7 +81,7 @@
           plain
           type="primary"
           @click="handleQuery"
-          @mousedown="(e) => e.preventDefaultd()"
+          @mousedown="(e) => e.preventDefault()"
         >
           <i class="iconfont-mini icon-a-zu22377 mr5"></i
           >{{ td("common.button.query") }}
@@ -521,13 +521,13 @@ watch(
   (newValue, oldValue) => {
     if (newValue !== oldValue) {
       queryParams.value.projectId = newValue;
-      getListd();
+      getList();
     }
   },
   { immediate: true }
 );
 /** 查询角色列表 */
-function getListd() {
+function getList() {
   loading.value = true;
   if (queryParams.value.projectId) {
     listRole(proxy.addDateRange(queryParams.value, dateRange.value)).then(
@@ -543,7 +543,7 @@ function getListd() {
 /** 搜索按钮操作 */
 function handleQuery() {
   queryParams.value.pageNum = 1;
-  getListd();
+  getList();
 }
 
 /** 重置按钮操作 */
@@ -562,14 +562,14 @@ function handleDelete(row) {
       return delRole(roleIds);
     })
     .then(() => {
-      getListd();
+      getList();
       proxy.$modal.msgSuccess(td("common.message.deleteSuccess"));
     })
     .catch(() => {});
 }
 
 /** 导出按钮操作 */
-function handleExportd() {
+function handleExport() {
   proxy.download(
     "system/role/export",
     {
@@ -622,8 +622,8 @@ function handleAuthUser(row) {
 }
 
 /** 查询菜单树结构 */
-function getMenuTreeselectd() {
-  menuTreeselectd().then((response) => {
+function getMenuTreeselect() {
+  menuTreeselect().then((response) => {
     menuOptions.value = response.data;
     expandedKeys.value = response.data.map((item) => item.id);
   });
@@ -640,7 +640,7 @@ function getDeptAllCheckedKeys() {
 }
 
 /** 重置新增的表单以及其他数据  */
-function resetd() {
+function reset() {
   if (menuRef.value != undefined) {
     menuRef.value.setCheckedKeys([]);
   }
@@ -666,15 +666,15 @@ function resetd() {
 
 /** 新增角色 */
 function handleAdd() {
-  resetd();
-  getMenuTreeselectd();
+  reset();
+  getMenuTreeselect();
   open.value = true;
   title.value = "新增角色";
 }
 
 /** 修改角色 */
 function handleUpdate(row) {
-  resetd();
+  reset();
   const roleId = row.roleId || ids.value;
   const roleMenu = getRoleMenuTreeselectd(roleId);
   getRole(roleId).then((response) => {
@@ -766,7 +766,7 @@ function submitForm() {
         updateRole(form.value).then((response) => {
           proxy.$modal.msgSuccess(td("common.message.editSuccess"));
           open.value = false;
-          getListd();
+          getList();
         });
       } else {
         form.value.menuIds = getMenuAllCheckedKeys();
@@ -774,7 +774,7 @@ function submitForm() {
         addRole(form.value).then((response) => {
           proxy.$modal.msgSuccess(td("common.message.addSuccess"));
           open.value = false;
-          getListd();
+          getList();
         });
       }
     }
@@ -784,7 +784,7 @@ function submitForm() {
 /** 取消按钮 */
 function cancel() {
   open.value = false;
-  resetd();
+  reset();
 }
 
 /** 选择角色权限范围触发 */
@@ -796,7 +796,7 @@ function dataScopeSelectChange(value) {
 
 /** 分配数据权限操作 */
 function handleDataScope(row) {
-  resetd();
+  reset();
   const deptTreeSelect = getDeptTree(row.roleId);
   getRole(row.roleId).then((response) => {
     form.value = response.data;
@@ -821,7 +821,7 @@ function submitDataScope() {
     dataScope(form.value).then((response) => {
       proxy.$modal.msgSuccess(td("common.message.editSuccess"));
       openDataScope.value = false;
-      getListd();
+      getList();
     });
   }
 }
@@ -829,7 +829,7 @@ function submitDataScope() {
 /** 取消按钮（数据权限）*/
 function cancelDataScope() {
   openDataScope.value = false;
-  resetd();
+  reset();
 }
 </script>
 

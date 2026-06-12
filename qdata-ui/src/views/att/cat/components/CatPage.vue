@@ -35,7 +35,7 @@
         icon="Plus"
         @click="handleAdd()"
         v-hasPermi="[`${permBase}:add`]"
-        >{{ t('common.button.add') }}</el-button
+        >{{ td('common.button.add') }}</el-button
       >
       <el-button
         type="danger"
@@ -45,7 +45,7 @@
         v-hasPermi="[`${permBase}:remove`]"
         @click="handleDeleteSelected"
       >
-        {{ t('common.button.delete') }}
+        {{ td('common.button.delete') }}
       </el-button>
       <el-button
         class="toggle-expand-all"
@@ -55,7 +55,7 @@
       >
         <svg-icon v-if="defaultExpandAll" icon-class="toggle" />
         <svg-icon v-else icon-class="expand" />
-        <span>{{ defaultExpandAll ? t('common.button.collapse') : t('common.button.expand') }}</span>
+        <span>{{ defaultExpandAll ? td('common.button.collapse') : td('common.button.expand') }}</span>
       </el-button>
     </template>
     <qt-table v-bind="tableStore" :key="tableKey" ref="tableRef">
@@ -74,7 +74,7 @@
           icon="Edit"
           @click="handleUpdate(row)"
           v-hasPermi="[`${permBase}:edit`]"
-          >{{ t('common.button.update') }}</el-button
+          >{{ td('common.button.update') }}</el-button
         >
         <el-button
           link
@@ -82,7 +82,7 @@
           icon="Plus"
           @click="handleAdd(row)"
           v-hasPermi="[`${permBase}:add`]"
-          >{{ t('common.button.add') }}</el-button
+          >{{ td('common.button.add') }}</el-button
         >
         <el-button
           link
@@ -91,17 +91,17 @@
           @click="handleDelete(row)"
           v-hasPermi="[`${permBase}:remove`]"
           :disabled="row.validFlag"
-          >{{ t('common.button.delete') }}</el-button
+          >{{ td('common.button.delete') }}</el-button
         >
       </template>
     </qt-table>
   </qt-wrap>
 
-  <CatEditDialog
+  <!-- <CatEditDialog
     ref="catEditDialogRef"
     @cancel="onDialogCancel"
     @submit="onDialogSubmit"
-  />
+  /> -->
 </template>
 
 <script setup>
@@ -130,8 +130,9 @@ import {
 } from "vue";
 import CatEditDialog from "./catEditDialog.vue";
 import useUserStore from "@/store/system/user";
+import useDefaultLang from "@/composables/useDefaultLang";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const userStore = useUserStore();
 const { proxy } = getCurrentInstance();
 const catEditDialogRef = ref();
@@ -175,13 +176,13 @@ const tableStore = reactive({
       align: "left",
     },
     {
-      label: t('common.texts.description'),
+      label: computed(()=>td('common.texts.description')),
       prop: "description",
       align: "left",
       width: 240,
       showOverflowTooltip: { effect: "light" },
     },
-    { label: t('common.texts.status'), prop: "validFlag", slot: "validFlag", align: "center" },
+    { label: computed(()=>td('common.texts.status')), prop: "validFlag", slot: "validFlag", align: "center" },
     {
       label: "排序",
       prop: "sortOrder",
@@ -189,20 +190,20 @@ const tableStore = reactive({
       sortableKey: "sortOrder",
     },
     {
-      label: t('common.texts.remark'),
+      label: computed(()=>td('common.texts.remark')),
       prop: "remark",
       width: 200,
       showOverflowTooltip: { effect: "light" },
     },
-    { label: t('common.texts.createdBy'), prop: "createBy" },
+    { label: computed(()=>td('common.texts.createdBy')), prop: "createBy" },
     {
-      label: t('common.texts.createdTime'),
+      label: computed(()=>td('common.texts.createdTime')),
       prop: "createTime",
       sortable: true,
       sortableKey: "create_time",
       date: true,
     },
-    { label: t('common.texts.operation'), width: 240, slot: "action", align: "center" },
+    { label: computed(()=>td('common.texts.operation')), width: 240, slot: "action", align: "center" },
   ],
   func: props.listFunc,
   params: {},
@@ -339,7 +340,7 @@ function onDialogSubmit(payload) {
     props
       .updateFunc(payload)
       .then(() => {
-        proxy.$modal.msgSuccess(t('common.message.editSuccess'));
+        proxy.$modal.msgSuccess(td('common.message.editSuccess'));
         handleQueryClick();
         catEditDialogRef.value.close();
       })
@@ -350,7 +351,7 @@ function onDialogSubmit(payload) {
     props
       .addFunc(payload)
       .then(() => {
-        proxy.$modal.msgSuccess(t('common.message.addSuccess'));
+        proxy.$modal.msgSuccess(td('common.message.addSuccess'));
         handleQueryClick();
         catEditDialogRef.value.close();
       })
@@ -371,7 +372,7 @@ function handleDelete(row) {
     })
     .then(() => {
       handleQueryClick();
-      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+      proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
     })
     .catch(() => {});
 }
@@ -393,10 +394,10 @@ function handleDeleteSelected() {
         } = res?.data || {};
         return ElMessageBox.confirm(
           `可删除${canDeleteCount}个，不可删除${cannotDeleteCount}个，是否删除可删部分`,
-          t('common.message.systemPrompt'),
+          td('common.message.systemPrompt'),
           {
-            confirmButtonText: t('common.button.confirm'),
-            cancelButtonText: t('common.button.cancel'),
+            confirmButtonText: td('common.button.confirm'),
+            cancelButtonText: td('common.button.cancel'),
             type: "warning",
           }
         ).then(() => {
@@ -405,7 +406,7 @@ function handleDeleteSelected() {
             return;
           } else {
             return props.delFunc(canDeleteIds).then(() => {
-              ElMessage.success(t('common.message.deleteSuccess'));
+              ElMessage.success(td('common.message.deleteSuccess'));
               tableRef.value.getList();
             });
           }
@@ -415,12 +416,12 @@ function handleDeleteSelected() {
   } else {
     ElMessageBox.confirm(
       `可删除${selection.rows.length}个，不可删除0个，是否删除可删部分`,
-      t('common.message.systemPrompt'),
-      { confirmButtonText: t('common.button.confirm'), cancelButtonText: t('common.button.cancel'), type: "warning" }
+      td('common.message.systemPrompt'),
+      { confirmButtonText: td('common.button.confirm'), cancelButtonText: td('common.button.cancel'), type: "warning" }
     )
       .then(() => props.delFunc(ids))
       .then(() => {
-        ElMessage.success(t('common.message.deleteSuccess'));
+        ElMessage.success(td('common.message.deleteSuccess'));
         tableRef.value.getList();
       });
   }

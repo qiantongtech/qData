@@ -6,6 +6,7 @@ import dict from './dict'
 import mc from './mc'
 import meta from './meta'
 import dpp from './dpp'
+import att from './att'
 
 export default {
   common,
@@ -14,5 +15,6 @@ export default {
   dict,
   mc,
   meta,
-  dpp
+  dpp,
+  att
 }

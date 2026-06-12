@@ -44,22 +44,22 @@
         v-show="showSearch"
         @submit.prevent
       >
-        <el-form-item label="项目名称" prop="name">
+        <el-form-item :label="td('att.common.projectName')" prop="name">
           <el-input
             class="el-form-input-width"
             v-model="queryParams.name"
-            placeholder="请输入项目名称"
+            :placeholder="td('common.form.namePlaceholder')"
             clearable
             @keyup.enter="handleQuery"
           />
         </el-form-item>
-        <el-form-item label="负责人" prop="managerId">
+        <el-form-item :label="td('att.common.manager')" prop="managerId">
           <el-select
             v-model="queryParams.managerId"
             class="el-form-input-width"
             @change="handleChange"
             filterable
-            placeholder="请选择负责人"
+            :placeholder="td('att.common.pleaseSelectManager')"
           >
             <el-option
               v-for="item in managerOptions"
@@ -99,7 +99,7 @@
               v-hasPermi="['att:project:add']"
               @mousedown="(e) => e.preventDefault()"
             >
-              <i class="iconfont-mini icon-xinzeng mr5"></i>新增
+              <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('common.button.add') }}
             </el-button>
           </el-col>
           <!-- <el-col :span="1.5">
@@ -139,7 +139,7 @@
         <!-- <el-table-column type="selection" width="55" align="center" /> -->
         <!--       <el-table-column v-if="getColumnVisibility(0)" label="编号" align="center" prop="id" />-->
         <el-table-column
-          label="编号"
+          :label="td('common.texts.number')"
           prop="id"
           width="80"
           align="center"
@@ -150,7 +150,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="项目名称"
+          :label="td('att.common.projectName')"
           align="left"
           prop="name"
           v-if="getColumnVisibility(2)"
@@ -161,7 +161,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="描述"
+          :label="td('common.texts.description')"
           align="left"
           prop="description"
           :show-overflow-tooltip="{ effect: 'light' }"
@@ -173,7 +173,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="负责人"
+          :label="td('att.project.table.manager')"
           align="center"
           prop="managerId"
           v-if="getColumnVisibility(4)"
@@ -183,7 +183,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="联系方式"
+          :label="td('att.common.contactWay')"
           align="center"
           prop="managerPhone"
           v-if="getColumnVisibility(5)"
@@ -194,7 +194,7 @@
         </el-table-column>
         <el-table-column
           v-if="getColumnVisibility(7)"
-          label="创建人"
+          :label="td('att.common.createBy')"
           :show-overflow-tooltip="{ effect: 'light' }"
           align="left"
           prop="createBy"
@@ -206,7 +206,7 @@
         <!--   sortable="custom" column-key="create_time" :sort-orders="['descending', 'ascending']" -->
         <el-table-column
           v-if="getColumnVisibility(6)"
-          label="创建时间"
+          :label="td('att.common.createTime')"
           align="center"
           prop="createTime"
           width="150"
@@ -218,7 +218,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="状态"
+          :label="td('common.texts.status')"
           align="center"
           prop="validFlag"
           v-if="getColumnVisibility(8)"
@@ -234,7 +234,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="备注"
+          :label="td('common.texts.remark')"
           align="left"
           width="200"
           prop="remark"
@@ -246,7 +246,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="操作"
+          :label="td('common.texts.operation')"
           align="center"
           class-name="small-padding fixed-width"
           fixed="right"
@@ -318,20 +318,20 @@
       >
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="项目名称" prop="name">
-              <el-input v-model="form.name" placeholder="请输入项目名称" />
+            <el-form-item :label="td('att.common.projectName')" prop="name">
+              <el-input v-model="form.name" :placeholder="td('common.form.namePlaceholder')" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="负责人" prop="managerId">
+            <el-form-item :label="td('att.common.manager')" prop="managerId">
               <!--                <el-input v-model="form.managerId" placeholder="请选择负责人" />-->
               <el-select
                 v-model="form.managerId"
                 @change="handleChange"
                 filterable
-                placeholder="请选择负责人"
+                :placeholder="td('att.common.pleaseSelectManager')"
               >
                 <el-option
                   v-for="item in managerOptions"
@@ -345,10 +345,10 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="联系方式" prop="managerPhone">
+            <el-form-item :label="td('att.common.contactWay')" prop="managerPhone">
               <el-input
                 v-model="form.managerPhone"
-                placeholder="请输入联系方式"
+                :placeholder="td('att.common.contactWayPlaceholder')"
                 disabled
               />
             </el-form-item>
@@ -356,11 +356,11 @@
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="描述" prop="description">
+            <el-form-item :label="td('common.texts.description')" prop="description">
               <el-input
                 v-model="form.description"
                 type="textarea"
-                placeholder="请输入描述"
+                :placeholder="td('common.form.descriptionPlaceholder')"
                 :min-height="192"
                 show-word-limit
                 maxlength="500个字符"
@@ -370,21 +370,21 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="状态" prop="validFlag">
+            <el-form-item :label="td('common.texts.status')" prop="validFlag">
               <el-radio-group v-model="form.validFlag">
-                <el-radio :label="true">启用</el-radio>
-                <el-radio :label="false">禁用</el-radio>
+                <el-radio :label="true">{{ td('att.common.enable') }}</el-radio>
+                <el-radio :label="false">{{ td('att.common.disable') }}</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="备注" prop="remark">
+            <el-form-item :label="td('common.texts.remark')" prop="remark">
               <el-input
                 type="textarea"
                 v-model="form.remark"
-                placeholder="请输入备注"
+                :placeholder="td('common.form.remarkPlaceholder')"
               />
             </el-form-item>
           </el-col>
@@ -392,10 +392,9 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="cancel">取 消</el-button>
+          <el-button size="mini" @click="cancel">{{ td('common.button.cancel') }}</el-button>
           <el-button type="primary" size="mini" @click="submitForm"
-            >确 定</el-button
-          >
+            >{{ td('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -418,7 +417,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="项目名称:" prop="name">
+            <el-form-item :label="td('att.common.projectName') + ':'" prop="name">
               <div class="form-readonly">
                 {{ form.name }}
               </div>
@@ -443,7 +442,7 @@
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="描述" prop="description">
+            <el-form-item :label="td('common.texts.description')" prop="description">
               <div class="form-readonly textarea">
                 {{ form.description ?? "-" }}
               </div>
@@ -459,7 +458,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="创建时间:" prop="createTime">
+            <el-form-item :label="td('common.texts.createdTime') + ':'" prop="createTime">
               <div class="form-readonly">
                 {{ parseTime(form.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
               </div>
@@ -484,16 +483,16 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="状态:" prop="validFlag">
+            <el-form-item :label="td('common.texts.status') + ':'" prop="validFlag">
               <div class="form-readonly">
-                {{ form.validFlag ? "启用" : "禁用" }}
+                {{ form.validFlag ? td('att.common.enable') : td('att.common.disable') }}
               </div>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="备注" prop="remark">
+            <el-form-item :label="td('common.texts.remark')" prop="remark">
               <div class="form-readonly textarea">
                 {{ form.remark ?? "-" }}
               </div>
@@ -503,7 +502,7 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="openDetail = false">关闭 </el-button>
+          <el-button size="mini" @click="openDetail = false">{{ td('common.button.close') }}</el-button>
         </div>
       </template>
     </el-dialog>

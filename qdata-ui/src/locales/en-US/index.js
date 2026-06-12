@@ -8,6 +8,7 @@ import sys from './sys'
 import mc from './mc'
 import meta from './meta'
 import dpp from './dpp'
+import att from './att'
 
 export default {
   common,
@@ -18,5 +19,6 @@ export default {
   sys,
   mc,
   meta,
-  dpp
+  dpp,
+  att
 }

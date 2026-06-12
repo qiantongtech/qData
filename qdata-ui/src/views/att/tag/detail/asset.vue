@@ -36,7 +36,7 @@
           icon="Delete"
           style="padding-left: 14px"
           @click="handleDelete(row)"
-          >{{ t('common.button.delete') }}</el-button
+          >{{ td('common.button.delete') }}</el-button
         >
       </template>
     </qt-table>
@@ -58,68 +58,68 @@
     <el-form ref="AttTagRef" :model="form" :rules="rules" label-width="80px">
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="编码" prop="code">
-            <el-input v-model="form.code" placeholder="请输入编码" />
+          <el-form-item :label="td('att.common.code')" prop="code">
+            <el-input v-model="form.code" :placeholder="td('att.common.codePlaceholder')" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="t('common.texts.name')" prop="name">
-            <el-input v-model="form.name" :placeholder="t('common.form.namePlaceholder')" />
+          <el-form-item :label="td('common.texts.name')" prop="name">
+            <el-input v-model="form.name" :placeholder="td('common.form.namePlaceholder')" />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="t('common.texts.description')" prop="description">
+          <el-form-item :label="td('common.texts.description')" prop="description">
             <el-input
               v-model="form.description"
-              :placeholder="t('common.form.descriptionPlaceholder')"
+              :placeholder="td('common.form.descriptionPlaceholder')"
               maxlength="500个字符"
               show-word-limit
             />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="类目编码" prop="catCode">
-            <el-input v-model="form.catCode" placeholder="请输入类目编码" />
+          <el-form-item :label="td('att.common.catCode')" prop="catCode">
+            <el-input v-model="form.catCode" :placeholder="td('att.common.catCodePlaceholder')" />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="资产数量" prop="aeestCount">
-            <el-input v-model="form.aeestCount" placeholder="请输入资产数量" />
+          <el-form-item :label="td('att.common.assetCount')" prop="aeestCount">
+            <el-input v-model="form.aeestCount" :placeholder="td('att.common.assetCountPlaceholder')" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="t('common.texts.status')" prop="status">
-            <el-input v-model="form.status" placeholder="请输入状态" />
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col :span="12">
-          <el-form-item label="扩展信息别名" prop="allas">
-            <el-input v-model="form.allas" placeholder="请输入扩展信息别名" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="近义词" prop="nearSynonyms">
-            <el-input v-model="form.nearSynonyms" placeholder="请输入近义词" />
+          <el-form-item :label="td('common.texts.status')" prop="status">
+            <el-input v-model="form.status" :placeholder="td('att.common.statusPlaceholder')" />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="同义词" prop="synonyms">
-            <el-input v-model="form.synonyms" placeholder="请输入同义词" />
+          <el-form-item :label="td('att.common.extendAlias')" prop="allas">
+            <el-input v-model="form.allas" :placeholder="td('att.common.extendAliasPlaceholder')" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="t('common.texts.remark')" prop="remark">
+          <el-form-item :label="td('att.common.nearSynonyms')" prop="nearSynonyms">
+            <el-input v-model="form.nearSynonyms" :placeholder="td('att.common.nearSynonymsPlaceholder')" />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="12">
+          <el-form-item :label="td('att.common.synonyms')" prop="synonyms">
+            <el-input v-model="form.synonyms" :placeholder="td('att.common.synonymsPlaceholder')" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item :label="td('common.texts.remark')" prop="remark">
             <el-input
               v-model="form.remark"
-              :placeholder="t('common.form.remarkPlaceholder')"
+              :placeholder="td('common.form.remarkPlaceholder')"
               maxlength="500个字符"
               show-word-limit
             />
@@ -129,9 +129,9 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="cancel">{{ t('common.button.cancel') }}</el-button>
+        <el-button size="mini" @click="cancel">{{ td('common.button.cancel') }}</el-button>
         <el-button type="primary" size="mini" @click="submitForm"
-          >{{ t('common.button.confirm') }}</el-button
+          >{{ td('common.button.confirm') }}</el-button
         >
       </div>
     </template>
@@ -153,14 +153,14 @@
     <el-form ref="AttTagRef" :model="form" label-width="80px">
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="编码" prop="code">
+          <el-form-item :label="td('att.common.code')" prop="code">
             <div>
               {{ form.code }}
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="t('common.texts.name')" prop="name">
+          <el-form-item :label="td('common.texts.name')" prop="name">
             <div>
               {{ form.name }}
             </div>
@@ -169,14 +169,14 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="t('common.texts.description')" prop="description">
+          <el-form-item :label="td('common.texts.description')" prop="description">
             <div>
               {{ form.description }}
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="类目编码" prop="catCode">
+          <el-form-item :label="td('att.common.catCode')" prop="catCode">
             <div>
               {{ form.catCode }}
             </div>
@@ -185,14 +185,14 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="资产数量" prop="aeestCount">
+          <el-form-item :label="td('att.common.assetCount')" prop="aeestCount">
             <div>
               {{ form.aeestCount }}
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="t('common.texts.status')" prop="status">
+          <el-form-item :label="td('common.texts.status')" prop="status">
             <div>
               {{ form.status }}
             </div>
@@ -201,14 +201,14 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="扩展信息别名" prop="allas">
+          <el-form-item :label="td('att.common.extendAlias')" prop="allas">
             <div>
               {{ form.allas }}
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="近义词" prop="nearSynonyms">
+          <el-form-item :label="td('att.common.nearSynonyms')" prop="nearSynonyms">
             <div>
               {{ form.nearSynonyms }}
             </div>
@@ -217,14 +217,14 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="同义词" prop="synonyms">
+          <el-form-item :label="td('att.common.synonyms')" prop="synonyms">
             <div>
               {{ form.synonyms }}
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="t('common.texts.remark')" prop="remark">
+          <el-form-item :label="td('common.texts.remark')" prop="remark">
             <div>
               {{ form.remark }}
             </div>
@@ -234,7 +234,7 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="cancel">{{ t('common.button.close') }}</el-button>
+        <el-button size="mini" @click="cancel">{{ td('common.button.close') }}</el-button>
       </div>
     </template>
   </el-dialog>
@@ -309,7 +309,7 @@ const tableStore = reactive({
     },
   },
   columns: [
-    { label: t('common.texts.number'), prop: "id", width: 60, sortable: true },
+    { label: td('common.texts.number'), prop: "id", width: 60, sortable: true },
     {
       label: "资产名称",
       prop: "name",
@@ -317,7 +317,7 @@ const tableStore = reactive({
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: t('common.texts.description'),
+      label: td('common.texts.description'),
       prop: "description",
       align: "left",
       showOverflowTooltip: { effect: "light" },
@@ -338,12 +338,12 @@ const tableStore = reactive({
       slot: "themeNames",
     },
     {
-      label: t('common.texts.createdBy'),
+      label: td('common.texts.createdBy'),
       prop: "createBy",
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: t('common.texts.createdTime'),
+      label: td('common.texts.createdTime'),
       prop: "createTime",
       sortable: true,
       sortableKey: "create_time",
@@ -351,7 +351,7 @@ const tableStore = reactive({
       width: 160,
     },
 
-    { label: t('common.texts.operation'), width: 120, fixed: "right", slot: "action" },
+    { label: td('common.texts.operation'), width: 120, fixed: "right", slot: "action" },
   ],
   func: (params) => pageListByIds({ tagIdList: route.query.id, ...params }),
   params: queryParams.value,
@@ -455,7 +455,7 @@ function submitForm() {
       if (form.value.id != null) {
         updateAttTag(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess(t('common.message.editSuccess'));
+            proxy.$modal.msgSuccess(td('common.message.editSuccess'));
             open.value = false;
             handleQueryClick();
           })
@@ -463,7 +463,7 @@ function submitForm() {
       } else {
         addAttTag(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess(t('common.message.addSuccess'));
+            proxy.$modal.msgSuccess(td('common.message.addSuccess'));
             open.value = false;
             handleQueryClick();
           })
@@ -487,7 +487,7 @@ function handleDelete(row) {
     })
     .then(() => {
       handleQueryClick();
-      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+      proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
     })
     .catch(() => {});
 }
@@ -505,7 +505,7 @@ function handleDeleteAll() {
     })
     .then(() => {
       handleQueryClick();
-      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+      proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
     })
     .catch(() => {});
 }

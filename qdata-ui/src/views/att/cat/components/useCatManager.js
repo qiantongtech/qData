@@ -163,13 +163,13 @@ export default function useCatManager({
   function onDialogSubmit(payload) {
     if (payload.id != null) {
       updateFunc && updateFunc(payload).then(() => {
-        proxy.$modal.msgSuccess(t('common.message.editSuccess'));
+        proxy.$modal.msgSuccess(td('common.message.editSuccess'));
         getList();
         open.value = false;
       });
     } else {
       addFunc && addFunc(payload).then(() => {
-        proxy.$modal.msgSuccess(t('common.message.addSuccess'));
+        proxy.$modal.msgSuccess(td('common.message.addSuccess'));
         getList();
         open.value = false;
       });
@@ -185,7 +185,7 @@ export default function useCatManager({
       })
       .then(() => {
         getList();
-        proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+        proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
       })
       .catch(() => { });
   }

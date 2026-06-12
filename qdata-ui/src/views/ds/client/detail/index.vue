@@ -25,13 +25,13 @@
         <el-row :gutter="2">
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ t('common.texts.number') }}</div>
+              <div class="infotop-row-lable">{{ td('common.texts.number') }}</div>
               <div class="infotop-row-value">{{ clientDetail.id }}</div>
             </div>
           </el-col>
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">应用秘钥</div>
+              <div class="infotop-row-lable">{{ td('ds.clientDetail.appSecret') }}</div>
               <div class="infotop-row-value">
                 {{ clientDetail.secret || '-' }}
               </div>
@@ -39,7 +39,7 @@
           </el-col>
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">应用图标</div>
+              <div class="infotop-row-lable">{{td('ds.client.detail.appSecret')}}</div>
               <div class="infotop-row-value">
                 <image-preview :src="clientDetail.logo || noDataImg" :width="50" :height="50" />
               </div>
@@ -47,7 +47,7 @@
           </el-col>
           <el-col :span="24" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ t('common.texts.description') }}</div>
+              <div class="infotop-row-lable">{{ td('common.texts.description') }}</div>
               <div class="infotop-row-value">
                 <span class="ellipsis-2" :title="clientDetail.description">{{ clientDetail.description || '-' }}</span>
               </div>
@@ -55,7 +55,7 @@
           </el-col>
           <el-col :span="24">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ t('common.texts.remark') }}</div>
+              <div class="infotop-row-lable">{{ td('common.texts.remark') }}</div>
               <div class="infotop-row-value">
                 <span class="ellipsis" :title="clientDetail.remark">{{ clientDetail.remark || '-' }}</span>
               </div>
@@ -68,10 +68,10 @@
 
     <div class="pagecont-bottom">
       <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
-        <el-tab-pane label="API授权" name="1">
+        <el-tab-pane :label="td('ds.clientDetail.apiAuth')" name="1">
           <api :clientDetail="clientDetail"></api>
         </el-tab-pane>
-        <el-tab-pane label="详细信息" name="2">
+        <el-tab-pane :label="td('ds.api.client.detailInfo')" name="2">
           <info :clientDetail="clientDetail"></info>
         </el-tab-pane>
       </el-tabs>
@@ -82,13 +82,13 @@
 </template>
 
 <script setup name="Client">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang";
 import { getClient } from "@/api/ds/client/client";
 import { useRoute } from 'vue-router';
 import info from "@/views/ds/client/detail/info.vue";
 import api from "@/views/ds/client/detail/api.vue";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const noDataImg = new URL('@/assets/system/images/D.png', import.meta.url).href
 
 const { proxy } = getCurrentInstance();

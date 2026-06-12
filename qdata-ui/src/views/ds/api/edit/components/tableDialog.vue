@@ -16,56 +16,56 @@
 -->
 
 <template>
-    <el-dialog :title="dialogTitle" v-model="dialogVisible" width="70%" style="min-height:600px;"
+    <el-dialog :title="computedTitle" v-model="dialogVisible" width="70%" style="min-height:600px;"
         :close-on-click-modal="false" append-to-body @close="handleClose">
         <el-table :height="tableHeight" :data="tableData" ref="multipleTable" stripe tooltip-effect="dark"
             style="width: 100%; margin: 15px 0;" @selection-change="handleSelectionChange" show-selection>
             <el-table-column type="selection" width="55" :reserve-selection="true">
             </el-table-column>
-            <el-table-column prop="sortOrder" label="序号" width="80" align="center" />
-            <el-table-column prop="engName" label="列名" align="center" width="200" :show-overflow-tooltip="{effect: 'light'}" />
-            <el-table-column prop="columnType" label="数据类型" align="center" width="120" :show-overflow-tooltip="{effect: 'light'}" />
-            <el-table-column prop="columnLength" label="数据长度" width="90" align="center" :show-overflow-tooltip="{effect: 'light'}" />
+            <el-table-column prop="sortOrder" :label="td('ds.apiEdit.parameter.tableDialogColumn.serialNumber')" width="80" align="center" />
+            <el-table-column prop="engName" :label="td('ds.apiEdit.parameter.tableDialogColumn.columnName')" align="center" width="200" :show-overflow-tooltip="{effect: 'light'}" />
+            <el-table-column prop="columnType" :label="td('ds.apiEdit.parameter.tableDialogColumn.dataType')" align="center" width="120" :show-overflow-tooltip="{effect: 'light'}" />
+            <el-table-column prop="columnLength" :label="td('ds.apiEdit.parameter.tableDialogColumn.dataLength')" width="90" align="center" :show-overflow-tooltip="{effect: 'light'}" />
             <!--            <el-table-column prop="dataPrecision" label="数据精度" align="center" :show-overflow-tooltip="{effect: 'light'}" />-->
-            <el-table-column prop="columnScale" label="数据小数位" width="100" align="center" :show-overflow-tooltip="{effect: 'light'}" />
-            <el-table-column prop="pkFlag" label="主键" align="center" width="100" :show-overflow-tooltip="{effect: 'light'}">
+            <el-table-column prop="columnScale" :label="td('ds.apiEdit.parameter.tableDialogColumn.dataDecimal')" width="100" align="center" :show-overflow-tooltip="{effect: 'light'}" />
+            <el-table-column prop="pkFlag" :label="td('ds.apiEdit.parameter.tableDialogColumn.primaryKey')" align="center" width="100" :show-overflow-tooltip="{effect: 'light'}">
                 <template #default="scope">
-                    <span v-if="scope.row.pkFlag === '1'">是</span>
-                    <span v-if="scope.row.pkFlag === '0'">否</span>
+                    <span v-if="scope.row.pkFlag === '1'">{{td('ds.apiEdit.parameter.tableDialogColumn.yes')}}</span>
+                    <span v-if="scope.row.pkFlag === '0'">{{td('ds.apiEdit.parameter.tableDialogColumn.no')}}</span>
                 </template>
             </el-table-column>
-            <el-table-column prop="nullableFlag" label="允许为空" align="center" width="100" :show-overflow-tooltip="{effect: 'light'}">
+            <el-table-column prop="nullableFlag" :label="td('ds.apiEdit.parameter.tableDialogColumn.allowNull')" align="center" width="100" :show-overflow-tooltip="{effect: 'light'}">
                 <template #default="scope">
-                    <span v-if="scope.row.nullableFlag === '1'">是</span>
-                    <span v-if="scope.row.nullableFlag === '0'">否</span>
+                    <span v-if="scope.row.nullableFlag === '1'">{{td('ds.apiEdit.parameter.tableDialogColumn.yes')}}</span>
+                    <span v-if="scope.row.nullableFlag === '0'">{{td('ds.apiEdit.parameter.tableDialogColumn.no')}}</span>
                 </template>
             </el-table-column>
-            <el-table-column prop="defaultValue" label="列默认值" width="100" align="center" :show-overflow-tooltip="{effect: 'light'}" >
+            <el-table-column prop="defaultValue" :label="td('ds.apiEdit.parameter.tableDialogColumn.columnDefault')" width="100" align="center" :show-overflow-tooltip="{effect: 'light'}" >
                 <template #default="scope">
                     {{scope.row.defaultValue || "-"}}
                 </template>
             </el-table-column>
-            <el-table-column prop="cnName" label="列备注" align="center" :show-overflow-tooltip="{effect: 'light'}" />
+            <el-table-column prop="cnName" :label="td('ds.apiEdit.parameter.tableDialogColumn.columnComment')" align="center" :show-overflow-tooltip="{effect: 'light'}" />
         </el-table>
         <template #footer>
             <div class="dialog-footer">
-                <el-button @click="handleClose">{{ t('common.button.cancel') }}</el-button>
-                <el-button type="primary" @click="confirm">{{ t('common.button.confirm') }}</el-button>
+                <el-button @click="handleClose">{{ td('common.button.cancel') }}</el-button>
+                <el-button type="primary" @click="confirm">{{ td('common.button.confirm') }}</el-button>
             </div>
         </template>
     </el-dialog>
 </template>
 
 <script setup name="AddList">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 
 const props = defineProps({
     dialogTitle: {
         type: String,
-        default: "表格数据",
+        default: '',
     },
     visible: {
         type: Boolean,
@@ -104,6 +104,8 @@ const data = reactive({
 const { queryParams, AddListRows, tableHeight, loading, isInitialized,
     checkedTableColumns, total, firstDialogVisible, secondDialogVisible,
     sortDialogVisible, isShowTooltip, filteredTableOptions } = toRefs(data);
+
+const computedTitle = computed(() => props.dialogTitle || td('ds.apiEdit.tableDialog.tableData'));
 
 //添加计算属性
 const dialogVisible = computed({

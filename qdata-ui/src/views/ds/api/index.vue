@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -36,34 +21,34 @@
     <GuideTip tip-id="ds/dsApi.list" />
 
     <el-container style="90%">
-      <DeptTree :deptOptions="deptOptions" :leftWidth="leftWidth" :placeholder="'请输入API服务类目'" ref="DeptTreeRef"
+      <DeptTree :deptOptions="deptOptions" :leftWidth="leftWidth" :placeholder="td('ds.api.apiCategoryPlaceholder')" ref="DeptTreeRef"
         @node-click="handleNodeClick" />
 
       <el-main>
         <div class="pagecont-top" v-show="showSearch">
-          <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="95px"
+          <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true"
             v-show="showSearch" @submit.prevent>
-            <el-form-item label="API服务名称" prop="name">
-              <el-input class="el-form-input-width" v-model="queryParams.name" placeholder="请输入API服务名称" clearable
+            <el-form-item :label="td('ds.api.apiName')" prop="name">
+              <el-input class="el-form-input-width" v-model="queryParams.name" :placeholder="td('ds.api.apiNamePlaceholder')" clearable
                 @keyup.enter="handleQuery" />
             </el-form-item>
-            <el-form-item label="状态" prop="status">
-              <el-select class="el-form-input-width" v-model="queryParams.status" placeholder="请选择状态" clearable>
+            <el-form-item :label="td('ds.api.status')" prop="status">
+              <el-select class="el-form-input-width" v-model="queryParams.status" :placeholder="td('ds.api.statusPlaceholder')" clearable>
                 <el-option v-for="dict in ds_api_log_status" :key="dict.value" :label="dict.label"
                   :value="dict.value" />
               </el-select>
             </el-form-item>
-            <el-form-item label="创建时间">
+            <el-form-item :label="td('common.form.createTime')">
               <el-date-picker class="el-form-input-width" v-model="daterangeCreateTime" value-format="YYYY-MM-DD"
                 type="daterange" range-separator="-" :start-placeholder="td('common.form.startDatePlaceholder')" :end-placeholder="td('common.form.endDatePlaceholder')"></el-date-picker>
             </el-form-item>
 
             <el-form-item>
               <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+                <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
               </el-button>
               <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-                <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+                <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
               </el-button>
             </el-form-item>
           </el-form>
@@ -75,7 +60,7 @@
               <el-col :span="1.5">
                 <el-button type="primary" plain @click="routeToAdd('/ds/api/add')" v-hasPermi="['ds:api:add']"
                   @mousedown="(e) => e.preventDefault()">
-                  <i class="iconfont-mini icon-xinzeng mr5"></i>新增
+                  <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('common.button.add') }}
                 </el-button>
               </el-col>
             </el-row>
@@ -86,53 +71,53 @@
           <el-table stripe v-loading="loading" :data="dsApiList" @selection-change="handleSelectionChange"
             :default-sort="defaultSort" @sort-change="handleSortChange">
             <!--            <el-table-column type="selection" width="55" align="center" />-->
-            <el-table-column v-if="getColumnVisibility(0)" label="编号" align="center" prop="id" width="80px" />
-            <el-table-column :show-overflow-tooltip="{ effect: 'light' }" v-if="getColumnVisibility(1)" label="API名称"
+            <el-table-column v-if="getColumnVisibility(0)" :label="td('common.texts.number')" align="center" prop="id" width="80px" />
+            <el-table-column :show-overflow-tooltip="{ effect: 'light' }" v-if="getColumnVisibility(1)" :label="td('ds.api.apiName')"
               width="300px" align="left" prop="name">
               <template #default="scope">
                 {{ scope.row.name || "-" }}
               </template>
             </el-table-column>
-            <el-table-column :show-overflow-tooltip="{ effect: 'light' }" v-if="getColumnVisibility(2)" label="API服务类目"
+            <el-table-column :show-overflow-tooltip="{ effect: 'light' }" v-if="getColumnVisibility(2)" :label="td('ds.api.serviceCategory')"
               min-width="160px" align="left" prop="catName">
               <template #default="scope">
                 {{ scope.row.catName || "-" }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(3)" label="描述" width="200" align="left" prop="description"
+            <el-table-column v-if="getColumnVisibility(3)" :label="td('common.form.description')" width="200" align="left" prop="description"
               :show-overflow-tooltip="{ effect: 'light' }">
               <template #default="scope">
                 {{ scope.row.description || '-' }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(4)" width="80" label="API版本" align="center" prop="apiVersion">
+            <el-table-column v-if="getColumnVisibility(4)" width="80" :label="td('ds.api.apiVersion')" align="center" prop="apiVersion">
               <template #default="scope">
                 {{ scope.row.apiVersion || "-" }}
               </template>
             </el-table-column>
-            <el-table-column :show-overflow-tooltip="{ effect: 'light' }" v-if="getColumnVisibility(5)" label="API路径"
+            <el-table-column :show-overflow-tooltip="{ effect: 'light' }" v-if="getColumnVisibility(5)" :label="td('ds.api.apiPath')"
               min-width="200px" align="left" prop="apiUrl">
               <template #default="scope">
                 {{ scope.row.apiUrl || "-" }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(6)" width="80" label="请求类型" align="center" prop="reqMethod">
+            <el-table-column v-if="getColumnVisibility(6)" width="80" :label="td('ds.api.requestType')" align="center" prop="reqMethod">
               <template #default="scope">
                 <dict-tag :options="ds_api_bas_info_api_method_type" :value="scope.row.reqMethod" />
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(7)" width="80" label="返回格式" align="center" prop="resDataType">
+            <el-table-column v-if="getColumnVisibility(7)" width="80" :label="td('ds.api.returnFormat')" align="center" prop="resDataType">
               <template #default="scope">
                 <dict-tag :options="ds_api_bas_info_res_data_type" :value="scope.row.resDataType" />
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(8)" width="120" label="创建人" align="center" prop="createBy"
+            <el-table-column v-if="getColumnVisibility(8)" width="120" :label="td('common.texts.createdBy')" align="center" prop="createBy"
               :show-overflow-tooltip="{ effect: 'light' }">
               <template #default="scope">
                 {{ scope.row.createBy || '-' }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(9)" label="创建时间" align="center" prop="createTime" width="150"
+            <el-table-column v-if="getColumnVisibility(9)" :label="td('common.form.createTime')" align="center" prop="createTime" width="150"
               sortable="custom" column-key="create_time" :sort-orders="['descending', 'ascending']">
               <template #default="scope">
                 <span>{{
@@ -140,11 +125,11 @@
                 }}</span>
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(10)" label="状态" align="center" prop="status" width="70">
+            <el-table-column v-if="getColumnVisibility(10)" :label="td('ds.api.status')" align="center" prop="status" width="70">
               <template #header>
                 <div class="justify-center">
-                  <span style="margin-right: 5px;">状态</span>
-                  <el-tooltip effect="light" content="当状态为开启则可以被调用，并且同步发布到资源门户中" placement="top">
+                  <span style="margin-right: 5px;">{{td('ds.api.status')}}</span>
+                  <el-tooltip effect="light" :content="td('ds.api.statusTip')" placement="top">
                     <el-icon class="tip-icon">
                       <InfoFilled />
                     </el-icon>
@@ -156,21 +141,21 @@
                   inactive-value="0" @change="handleStatusChange(scope.row)" />
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(11)" label="备注" width="200" align="left" prop="remark"
+            <el-table-column v-if="getColumnVisibility(11)" :label="td('common.texts.remark')" width="200" align="left" prop="remark"
               :show-overflow-tooltip="{ effect: 'light' }">
               <template #default="scope">
                 {{ scope.row.remark || '-' }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(12)" label="操作" align="center"
+            <el-table-column v-if="getColumnVisibility(12)" :label="td('common.texts.operation')" align="center"
               class-name="small-padding fixed-width" fixed="right" width="220">
               <template #default="scope">
                 <el-button link type="primary" icon="Edit" @click="routeTo('/ds/api/edit', scope.row)"
-                  v-hasPermi="['ds:api:edit']">修改</el-button>
+                  v-hasPermi="['ds:api:edit']">{{td('common.button.update')}}</el-button>
                 <el-button link type="primary" icon="view" @click="routeTo('/ds/api/detail', scope.row)"
-                  v-hasPermi="['ds:api:edit']">详情</el-button>
+                  v-hasPermi="['ds:api:edit']">{{td('common.button.details')}}</el-button>
                 <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
-                  v-hasPermi="['ds:api:remove']">删除</el-button>
+                  v-hasPermi="['ds:api:remove']">{{td('common.button.delete')}}</el-button>
               </template>
             </el-table-column>
 
@@ -198,24 +183,24 @@
       <el-form ref="dsApiRef" :model="form" :rules="rules" label-width="80px" @submit.prevent>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="API服务名称" prop="name">
-              <el-input v-model="form.name" placeholder="请输入API服务名称" />
+            <el-form-item :label="td('ds.api.apiName')" prop="name">
+              <el-input v-model="form.name" :placeholder="td('ds.api.apiNamePlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="API版本" prop="apiVersion">
-              <el-input v-model="form.apiVersion" placeholder="请输入API版本" />
+            <el-form-item :label="td('ds.api.apiVersion')" prop="apiVersion">
+              <el-input v-model="form.apiVersion" :placeholder="td('ds.api.apiVersionPlaceholder')" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="API路径" prop="apiUrl">
-              <el-input v-model="form.apiUrl" placeholder="请输入API路径" />
+            <el-form-item :label="td('ds.api.apiPath')" prop="apiUrl">
+              <el-input v-model="form.apiUrl" :placeholder="td('ds.api.apiUrlPlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="请求方式" prop="reqMethod">
+            <el-form-item :label="td('ds.api.requestMethod')" prop="reqMethod">
               <el-radio-group v-model="form.reqMethod">
                 <el-radio v-for="dict in ds_api_bas_info_api_method_type" :key="dict.value" :label="dict.value">{{
                   dict.label }}</el-radio>
@@ -225,7 +210,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="服务提供类型" prop="apiServiceType">
+            <el-form-item :label="td('ds.api.apiServiceType')" prop="apiServiceType">
               <el-radio-group v-model="form.apiServiceType">
                 <el-radio v-for="dict in ds_api_bas_info_api_service_type" :key="dict.value" :label="dict.value">{{
                   dict.label }}</el-radio>
@@ -233,8 +218,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="返回结果类型" prop="resDataType">
-              <el-select v-model="form.resDataType" placeholder="请选择返回结果类型">
+            <el-form-item :label="td('ds.api.returnResultType')" prop="resDataType">
+              <el-select v-model="form.resDataType" :placeholder="td('ds.api.returnResultType')">
                 <el-option v-for="dict in ds_api_bas_info_res_data_type" :key="dict.value" :label="dict.label"
                   :value="dict.value"></el-option>
               </el-select>
@@ -243,43 +228,43 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="IP黑名单多个，隔开" prop="denyIp">
-              <el-input v-model="form.denyIp" type="textarea" placeholder="请输入内容" />
+            <el-form-item :label="td('ds.api.ipBlacklist')" prop="denyIp">
+              <el-input v-model="form.denyIp" type="textarea" :placeholder="td('ds.api.ipBlacklistPlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="执行配置JSON" prop="configJson">
-              <el-input v-model="form.configJson" type="textarea" placeholder="请输入内容" />
+            <el-form-item :label="td('ds.api.executeConfig')" prop="configJson">
+              <el-input v-model="form.configJson" type="textarea" :placeholder="td('ds.api.executeConfigPlaceholder')" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="限流配置JSON" prop="limitJson">
-              <el-input v-model="form.limitJson" placeholder="请输入限流配置JSON" />
+            <el-form-item :label="td('ds.api.limitConfig')" prop="limitJson">
+              <el-input v-model="form.limitJson" :placeholder="td('ds.api.limitConfig')" />
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="请求参数" prop="reqParams">
-              <el-input v-model="form.reqParams" type="textarea" placeholder="请输入内容" />
+            <el-form-item :label="td('ds.api.requestParams')" prop="reqParams">
+              <el-input v-model="form.reqParams" type="textarea" :placeholder="td('ds.api.requestParamsPlaceholder')" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="返回参数" prop="resParams">
-              <el-input v-model="form.resParams" type="textarea" placeholder="请输入内容" />
+            <el-form-item :label="td('ds.api.returnParams')" prop="resParams">
+              <el-input v-model="form.resParams" type="textarea" :placeholder="td('ds.api.returnParamsPlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="描述" prop="description">
-              <el-input v-model="form.description" placeholder="请输入描述" />
+            <el-form-item :label="td('common.form.description')" prop="description">
+              <el-input v-model="form.description" :placeholder="td('ds.api.descriptionPlaceholder')" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="状态" prop="status">
+            <el-form-item :label="td('ds.api.status')" prop="status">
               <el-radio-group v-model="form.status">
                 <el-radio v-for="dict in ds_api_log_status" :key="dict.value" :label="dict.value">{{ dict.label
                 }}</el-radio>
@@ -287,16 +272,16 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="备注" prop="remark">
-              <el-input v-model="form.remark" placeholder="请输入备注" />
+            <el-form-item :label="td('common.texts.remark')" prop="remark">
+              <el-input v-model="form.remark" :placeholder="td('ds.api.remarkPlaceholder')" />
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="cancel">取 消</el-button>
-          <el-button type="primary" size="mini" @click="submitForm">确 定</el-button>
+          <el-button size="mini" @click="cancel">{{td('common.button.cancel')}}</el-button>
+          <el-button type="primary" size="mini" @click="submitForm">{{td('common.button.confirm')}}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -311,14 +296,14 @@
       <el-form ref="dsApiRef" :model="form" label-width="80px">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="API服务名称" prop="name">
+            <el-form-item :label="td('ds.api.apiName')" prop="name">
               <div>
                 {{ form.name }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="API版本" prop="apiVersion">
+            <el-form-item :label="td('ds.api.apiVersion')" prop="apiVersion">
               <div>
                 {{ form.apiVersion }}
               </div>
@@ -327,40 +312,40 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="API路径" prop="apiUrl">
+            <el-form-item :label="td('ds.api.apiPath')" prop="apiUrl">
               <div>
                 {{ form.apiUrl }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="请求方式" prop="reqMethod">
+            <el-form-item :label="td('ds.api.requestMethod')" prop="reqMethod">
               <dict-tag :options="ds_api_bas_info_api_method_type" :value="form.reqMethod" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="服务提供类型" prop="apiServiceType">
+            <el-form-item :label="td('ds.api.apiServiceType')" prop="apiServiceType">
               <dict-tag :options="ds_api_bas_info_api_service_type" :value="form.apiServiceType" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="返回结果类型" prop="resDataType">
+            <el-form-item :label="td('ds.api.returnResultType')" prop="resDataType">
               <dict-tag :options="ds_api_bas_info_res_data_type" :value="form.resDataType" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="IP黑名单多个，隔开" prop="denyIp">
+            <el-form-item :label="td('ds.api.ipBlacklist')" prop="denyIp">
               <div>
                 {{ form.denyIp }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="执行配置JSON" prop="configJson">
+            <el-form-item :label="td('ds.api.executeConfig')" prop="configJson">
               <div>
                 {{ form.configJson }}
               </div>
@@ -369,14 +354,14 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="限流配置JSON" prop="limitJson">
+            <el-form-item :label="td('ds.api.limitConfig')" prop="limitJson">
               <div>
                 {{ form.limitJson }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="请求参数" prop="reqParams">
+            <el-form-item :label="td('ds.api.requestParams')" prop="reqParams">
               <div>
                 {{ form.reqParams }}
               </div>
@@ -385,30 +370,30 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="返回参数" prop="resParams">
+            <el-form-item :label="td('ds.api.returnParams')" prop="resParams">
               <div>
                 {{ form.resParams }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="描述" prop="DESCRIPTION">
+            <el-form-item :label="td('common.form.description')" prop="description">
               <div>
-                {{ form.DESCRIPTION }}
+                {{ form.description }}
               </div>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="状态" prop="STATUS">
-              <dict-tag :options="ds_api_log_status" :value="form.STATUS" />
+            <el-form-item :label="td('ds.api.status')" prop="status">
+              <dict-tag :options="ds_api_log_status" :value="form.status" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="备注" prop="REMARK">
+            <el-form-item :label="td('common.texts.remark')" prop="remark">
               <div>
-                {{ form.REMARK }}
+                {{ form.remark }}
               </div>
             </el-form-item>
           </el-col>
@@ -416,7 +401,7 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="cancel">关 闭</el-button>
+          <el-button size="mini" @click="cancel">{{td('common.button.close')}}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -428,22 +413,22 @@
         :action="upload.url + '?updateSupport=' + upload.updateSupport" :disabled="upload.isUploading"
         :on-progress="handleFileUploadProgress" :on-success="handleFileSuccess" :auto-upload="false" drag>
         <el-icon class="el-icon--upload"><upload-filled /></el-icon>
-        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        <div class="el-upload__text" v-html="td('common.upload.dragOrClick')"></div>
         <template #tip>
           <div class="el-upload__tip text-center">
             <div class="el-upload__tip">
-              <el-checkbox v-model="upload.updateSupport" />是否更新已经存在的API服务数据
+              <el-checkbox v-model="upload.updateSupport" />{{td('ds.api.importTip')}}
             </div>
-            <span>仅允许导入xls、xlsx格式文件。</span>
+            <span>{{td('ds.apiCat.uploadFormat')}}</span>
             <el-link type="primary" :underline="false" style="font-size: 12px; vertical-align: baseline"
-              @click="importTemplate">下载模板</el-link>
+              @click="importTemplate">{{ td('common.upload.downloadTemplate') }}</el-link>
           </div>
         </template>
       </el-upload>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="upload.open = false">取 消</el-button>
-          <el-button type="primary" @click="submitFileForm">确 定</el-button>
+          <el-button @click="upload.open = false">{{ td('common.button.cancel') }}</el-button>
+          <el-button type="primary" @click="submitFileForm">{{ td('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -483,19 +468,19 @@ const dsApiList = ref([]);
 
 // 列显隐信息
 const columns = ref([
-  { key: 0, label: "编号", visible: true },
-  { key: 1, label: "API名称", visible: true },
-  { key: 2, label: "API服务类目", visible: true },
-  { key: 3, label: "描述", visible: true },
-  { key: 4, label: "API版本", visible: true },
-  { key: 5, label: "API路径", visible: true },
-  { key: 6, label: "请求类型", visible: true },
-  { key: 7, label: "返回格式", visible: true },
-  { key: 8, label: "创建人", visible: true },
-  { key: 9, label: "创建时间", visible: true },
-  { key: 10, label: "状态", visible: true },
-  { key: 11, label: "备注", visible: true },
-  { key: 12, label: "操作", visible: true },
+  { key: 0, label: td('common.texts.number'), visible: true },
+  { key: 1, label: td('ds.api.apiName'), visible: true },
+  { key: 2, label: td('ds.apiCat.title'), visible: true },
+  { key: 3, label: td('common.form.description'), visible: true },
+  { key: 4, label: td('ds.api.apiVersion'), visible: true },
+  { key: 5, label: td('ds.api.apiPath'), visible: true },
+  { key: 6, label: td('ds.api.requestType'), visible: true },
+  { key: 7, label: td('ds.api.returnFormat'), visible: true },
+  { key: 8, label: td('common.texts.createdBy'), visible: true },
+  { key: 9, label: td('common.form.createTime'), visible: true },
+  { key: 10, label: td('common.texts.status'), visible: true },
+  { key: 11, label: td('common.texts.remark'), visible: true },
+  { key: 12, label: td('common.texts.operation'), visible: true },
 ]);
 
 const getColumnVisibility = (key) => {
@@ -562,7 +547,7 @@ function getApiCatList() {
     deptOptions.value = proxy.handleTree(response.data, "id", "parentId");
     deptOptions.value = [
       {
-        name: "API服务类目",
+        name: td('ds.api.apiCategory'),
         value: "",
         id: 0,
         children: deptOptions.value,
@@ -611,19 +596,19 @@ const updateResize = (event) => {
 
 /** 启用禁用开关 */
 function handleStatusChange(row) {
-  const text = row.status === "1" ? "上线" : "下线";
+  const text = row.status === "1" ? td('ds.api.online') : td('ds.api.offline');
   proxy.$modal
-    .confirm("确认要" + text + '"' + row.name + '"服务吗？')
+    .confirm(td('ds.api.confirm' + (row.status === "1" ? 'Online' : 'Offline')) + '"' + row.name + '"' + td('ds.api.confirmSuffix2'))
     .then(function () {
       loading.value = true;
       if (row.status === "1") {
         releaseDataApi(row.id).then((response) => {
-          proxy.$modal.msgSuccess(text + "成功");
+          proxy.$modal.msgSuccess(text + td('common.message.success'));
           getList();
         });
       } else {
         cancelDataApi(row.id).then((response) => {
-          proxy.$modal.msgSuccess(text + "成功");
+          proxy.$modal.msgSuccess(text + td('common.message.success'));
           getList();
         });
       }
@@ -713,7 +698,7 @@ function handleSortChange({ column, prop, order }) {
 function handleAdd() {
   reset();
   open.value = true;
-  title.value = "新增API服务";
+  title.value = td('ds.api.addApi');
 }
 
 /** 修改按钮操作 */
@@ -723,7 +708,7 @@ function handleUpdate(row) {
   getDsApi(_ID).then((response) => {
     form.value = response.data;
     open.value = true;
-    title.value = "修改API服务";
+    title.value = td('ds.api.editApi');
   });
 }
 
@@ -734,7 +719,7 @@ function handleDetail(row) {
   getDsApi(_ID).then((response) => {
     form.value = response.data;
     openDetail.value = true;
-    title.value = "API服务详情";
+    title.value = td('ds.api.detailApi');
   });
 }
 
@@ -745,7 +730,7 @@ function submitForm() {
       if (form.value.ID != null) {
         updateDsApi(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("修改成功");
+            proxy.$modal.msgSuccess(td('common.message.editSuccess'));
             open.value = false;
             getList();
           })
@@ -753,7 +738,7 @@ function submitForm() {
       } else {
         addDsApi(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("新增成功");
+            proxy.$modal.msgSuccess(td('common.message.addSuccess'));
             open.value = false;
             getList();
           })
@@ -767,13 +752,13 @@ function submitForm() {
 function handleDelete(row) {
   const _IDs = row.id || ids.value;
   proxy.$modal
-    .confirm('是否确认删除API服务编号为"' + _IDs + '"的数据项？')
+    .confirm(td('ds.api.deleteConfirm') + _IDs + td('ds.api.deleteConfirmSuffix'))
     .then(function () {
       return delDsApi(_IDs);
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
     })
     .catch(() => { });
 }
@@ -792,7 +777,7 @@ function handleExport() {
 /** ---------------- 导入相关操作 -----------------**/
 /** 导入按钮操作 */
 function handleImport() {
-  upload.title = "API服务导入";
+  upload.title = td('ds.api.importTitle');
   upload.open = true;
 }
 
@@ -824,7 +809,7 @@ const handleFileSuccess = (response, file, fileList) => {
     "<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +
     response.msg +
     "</div>",
-    "导入结果",
+    td('ds.api.importResult'),
     { dangerouslyUseHTMLString: true }
   );
   getList();

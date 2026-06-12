@@ -36,11 +36,11 @@
         <div slot="header" class="header-container">
             <div class="header-left">
                 <div class="blue-bar"></div>
-                API调用
+              {{ td('ds.apiEdit.testApi.apiCall') }}
             </div>
             <el-button  size="mini" style="border-radius: 30px !important" round
                 @click="handleCall">
-                接口调用
+                {{ td('ds.apiEdit.testApi.interfaceCall') }}
             </el-button>
         </div>
 
@@ -49,33 +49,33 @@
             <el-form v-if="isChange" ref="data" :model="data" label-width="100px" :disabled="true">
                 <el-row>
                     <el-col :span="12">
-                        <el-form-item label="API名称">
+                        <el-form-item :label="td('ds.apiEdit.testApi.apiName')">
                             <el-input v-model="data.name" />
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="API版本">
+                        <el-form-item :label="td('ds.apiEdit.testApi.apiVersion')">
                             <el-input v-model="data.apiVersion" />
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row>
                     <el-col :span="12">
-                        <el-form-item label="请求类型">
+                        <el-form-item :label="td('ds.apiEdit.testApi.requestType')">
                             <!--                            <el-input v-model="form.reqMethod"/>-->
                             <dict-tag :options="ds_api_bas_info_api_method_type" :value="data.reqMethod" />
                         </el-form-item>
 
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="返回格式" prop="resDataType">
+                        <el-form-item :label="td('ds.apiEdit.testApi.returnFormat')" prop="resDataType">
                             <dict-tag :options="ds_api_bas_info_res_data_type" :value="data.resDataType" />
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row>
                     <el-col :span="24">
-                        <el-form-item label="调用地址">
+                        <el-form-item :label="td('ds.apiEdit.testApi.callAddress')">
                             <el-input v-model="data.apiUrl" />
                         </el-form-item>
                     </el-col>
@@ -85,7 +85,7 @@
             <div class="header-container">
                 <div class="header-left">
                     <div class="blue-bar"></div>
-                    请求数据
+                    {{td('ds.apiEdit.testApi.requestData')}}
                 </div>
             </div>
             <el-form :model="data.reqParams" :rules="rules" ref="inputForm" label-width="0">
@@ -93,27 +93,27 @@
                     <el-col :span="24">
                         <el-table :data="data.reqParams" class="tableStyle" row-key="id" stripe default-expand-all
                             :tree-props="{ children: 'daAssetApiParamList', hasChildren: 'hasChildren' }">
-                            <el-table-column label="序号" width="80" align="center" fixed="left">
+                            <el-table-column :label="td('common.display.index')" width="80" align="center" fixed="left">
                                 <template #default="{ $index }">
                                     {{ $index + 1 }}
                                 </template>
                             </el-table-column>
 
-                            <el-table-column label="参数名称" fixed="left" align="center" prop="name"
+                            <el-table-column :label="td('ds.apiEdit.testApi.paramName')" fixed="left" align="center" prop="name"
                                 :show-overflow-tooltip="{effect: 'light'}">
                                 <template #default="{ row }">
                                     {{ row?.name || '' }}
                                 </template>
                             </el-table-column>
 
-                            <el-table-column label="描述" fixed="left" align="center" prop="remark"
+                            <el-table-column :label="td('common.form.description')" fixed="left" align="center" prop="remark"
                                 :show-overflow-tooltip="{effect: 'light'}">
                                 <template #default="{ row }">
                                     {{ row?.remark || '' }}
                                 </template>
                             </el-table-column>
 
-                            <el-table-column label="是否为空" width="70" fixed="left" align="center" prop="requestFlag"
+                            <el-table-column :label="td('ds.apiEdit.testApi.nullable')" width="70" fixed="left" align="center" prop="requestFlag"
                                 :show-overflow-tooltip="{effect: 'light'}">
                                 <template #default="{ row }">
                                     <el-form-item
@@ -125,7 +125,7 @@
                                 </template>
                             </el-table-column>
 
-                            <el-table-column label="参数类型" fixed="left" align="center" prop="columnType"
+                            <el-table-column :label="td('ds.apiEdit.testApi.columnType')" fixed="left" align="center" prop="columnType"
                                 :show-overflow-tooltip="{effect: 'light'}">
                                 <template #default="{ row }">
                                     {{ row?.columnType || '' }}
@@ -133,25 +133,25 @@
                             </el-table-column>
 
 
-                            <el-table-column label="示例值" fixed="left" align="center" prop="exampleValue"
+                            <el-table-column :label="td('ds.apiEdit.testApi.exampleValue')" fixed="left" align="center" prop="exampleValue"
                                 :show-overflow-tooltip="{effect: 'light'}">
                                 <template #default="{ row }">
                                     <el-form-item
                                         :prop="`data.reqParams[${findPosi(data.reqParams, row.id)}].exampleValue`"
                                         :rules="hasChildren(row) ? rules.fieldDefault : []">
-                                        <el-input v-model="row.fieldDefault" placeholder="请输入示例值"
+                                        <el-input v-model="row.fieldDefault" :placeholder="td('ds.apiEdit.testApi.exampleValuePlaceholder')"
                                             :disabled="hasChildren(row)" />
                                     </el-form-item>
                                 </template>
                             </el-table-column>
 
-                            <el-table-column label="默认值" fixed="left" align="center" prop="defaultValue"
+                            <el-table-column :label="td('ds.apiEdit.testApi.defaultValue')" fixed="left" align="center" prop="defaultValue"
                                 :show-overflow-tooltip="{effect: 'light'}">
                                 <template #default="{ row }">
                                     <el-form-item
                                         :prop="`data.reqParams[${findPosi(data.reqParams, row.id)}].defaultValue`"
                                         :rules="hasChildren(row) ? rules.defaultValue : []">
-                                        <el-input v-model="row.defaultValue" placeholder="请输入默认值"
+                                        <el-input v-model="row.defaultValue" :placeholder="td('ds.apiEdit.testApi.defaultValuePlaceholder')"
                                             :disabled="hasChildren(row)" />
                                     </el-form-item>
                                 </template>
@@ -164,7 +164,7 @@
             <div class="header-container">
                 <div class="header-left">
                     <div class="blue-bar"></div>
-                    返回数据
+                    {{td('ds.apiEdit.testApi.returnData')}}
                 </div>
             </div>
             <el-row>
@@ -172,7 +172,7 @@
                     <div v-if="apiExecuting">
                         <el-table :data="callData.dataList" stripe border :max-height="600"
                             style="width: 100%; margin: 15px 0">
-                            <el-table-column label="序号" align="center">
+                            <el-table-column :label="td('common.display.index')" align="center">
                                 <template #default="{ scope }">
                                     <span>{{ scope.$index + 1 }}</span>
                                 </template>
@@ -263,7 +263,7 @@ const aceOptions = ref({
     showGutter: false,
 });
 // 定义响应式数据
-const title = ref('数据API调用');  // 标题
+const title = ref(td('ds.apiEdit.testApi.dataApiCall'));  // 标题
 const form = reactive({});  // 表单数据
 const treeData1 = ref([]);  // 请求头数据
 const treeData2 = ref([]);  // 请求参数数据
@@ -284,8 +284,8 @@ const callData = reactive({
 
 
 const rules = {
-    name: [{ required: true, message: "请输入参数名称", trigger: "blur" }],
-    columnType: [{ required: true, message: "请选择参数类型", trigger: "change" }],
+    name: [{ required: true, message: td('ds.apiEdit.testApi.paramNameRequired'), trigger: "blur" }],
+    columnType: [{ required: true, message: td('ds.apiEdit.testApi.paramTypeRequired'), trigger: "change" }],
 };
 const findPosi = (array, targetId, path = '') => {
     for (let i = 0; i < array.length; i++) {
@@ -312,7 +312,7 @@ const getYApiConfig = (id) => {
             treeData1.value = response.content.fieldHerderList || [];
             treeData1.value.unshift({
                 fieldName: "Authorization",
-                fieldDescribes: `通过分配的账号密码作为参数调用${request.defaults.baseURL}/system/auth/getToken接口得到accessToken`,
+                fieldDescribes: td('ds.apiEdit.testApi.authHelpText') + request.defaults.baseURL + td('ds.apiEdit.testApi.authHelpSuffix'),
             });
         }
     });
@@ -357,8 +357,8 @@ function buildParamsTree(paramList) {
 }
 const showSuccessNotify = () => {
     ElNotification({
-        title: '提示',
-        message: '接口调用成功',
+        title: td('ds.apiEdit.testApi.prompt'),
+        message: td('ds.apiEdit.testApi.callSuccess'),
         type: 'success',
         duration: 2000,
     });
@@ -366,8 +366,8 @@ const showSuccessNotify = () => {
 
 const showErrorNotify = (msg) => {
     ElNotification({
-        title: '提示',
-        message: msg || '接口调用失败',
+        title: td('ds.apiEdit.testApi.prompt'),
+        message: msg || td('ds.apiEdit.testApi.callFailed'),
         type: 'error',
         duration: 2000,
     });
@@ -397,7 +397,7 @@ const handleCall = () => {
     // 参数校验
     const isNull = props.data.reqParams.some(param => {
         if (isParamInvalid(param)) {
-            proxy.$message.warning(`参数校验未通过，输入参数‘${param.name}’不能为空`);
+            proxy.$message.warning(td('ds.apiEdit.testApi.nullableWarning') + `‘${param.name}’` + td('ds.apiEdit.testApi.cannotBeEmpty'));
             return true;
         }
         return false;

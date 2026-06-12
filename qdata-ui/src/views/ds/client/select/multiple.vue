@@ -16,51 +16,51 @@
 -->
 
 <template>
-  <el-dialog title="应用管理-多选" v-model="visible" width="1200px" :append-to="$refs['app-container']" draggable
+  <el-dialog :title="td('ds.client.multipleTitle')" v-model="visible" width="1200px" :append-to="$refs['app-container']" draggable
     destroy-on-close @close="cancel">
     <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch"
       label-width="68px">
       <el-form-item label="ID" prop="id">
-        <el-input style="width:240px" v-model="queryParams.id" placeholder="请输入ID" clearable
+        <el-input style="width:240px" v-model="queryParams.id" :placeholder="td('ds.client.idPlaceholder')" clearable
           @keyup.enter="handleQuery" />
       </el-form-item>
-      <el-form-item label="应用名称" prop="name">
-        <el-input style="width:240px" v-model="queryParams.name" placeholder="请输入应用名称" clearable
+      <el-form-item :label="td('ds.client.appName')" prop="name">
+        <el-input style="width:240px" v-model="queryParams.name" :placeholder="td('ds.client.appNamePlaceholder')" clearable
           @keyup.enter="handleQuery" />
       </el-form-item>
-      <el-form-item label="应用类型" prop="type">
-        <el-select style="width:240px" v-model="queryParams.type" placeholder="请选择应用类型" clearable>
+      <el-form-item :label="td('ds.client.appType')" prop="type">
+        <el-select style="width:240px" v-model="queryParams.type" :placeholder="td('ds.client.appTypePlaceholder')" clearable>
           <el-option v-for="dict in auth_app_type" :key="dict.value" :label="dict.label" :value="dict.value" />
         </el-select>
       </el-form-item>
-      <el-form-item label="应用秘钥" prop="secret">
-        <el-input style="width:240px" v-model="queryParams.secret" placeholder="请输入应用秘钥" clearable
+      <el-form-item :label="td('ds.client.appSecret')" prop="secret">
+        <el-input style="width:240px" v-model="queryParams.secret" :placeholder="td('ds.client.appSecretPlaceholder')" clearable
           @keyup.enter="handleQuery" />
       </el-form-item>
-      <el-form-item label="主页地址" prop="homepageUrl">
-        <el-input style="width:240px" v-model="queryParams.homepageUrl" placeholder="请输入主页地址" clearable
+      <el-form-item :label="td('ds.client.homepageUrl')" prop="homepageUrl">
+        <el-input style="width:240px" v-model="queryParams.homepageUrl" :placeholder="td('ds.client.homepageUrlPlaceholder')" clearable
           @keyup.enter="handleQuery" />
       </el-form-item>
-      <el-form-item label="同步地址" prop="syncUrl">
-        <el-input style="width:240px" v-model="queryParams.syncUrl" placeholder="请输入同步地址" clearable
+      <el-form-item :label="td('ds.client.syncUrl')" prop="syncUrl">
+        <el-input style="width:240px" v-model="queryParams.syncUrl" :placeholder="td('ds.client.syncUrlPlaceholder')" clearable
           @keyup.enter="handleQuery" />
       </el-form-item>
-      <el-form-item label="是否公开" prop="publicFlag">
-        <el-select style="width:240px" v-model="queryParams.publicFlag" placeholder="请选择是否公开" clearable>
+      <el-form-item :label="td('ds.client.isPublic')" prop="publicFlag">
+        <el-select style="width:240px" v-model="queryParams.publicFlag" :placeholder="td('ds.client.isPublicPlaceholder')" clearable>
           <el-option v-for="dict in auth_public" :key="dict.value" :label="dict.label" :value="dict.value" />
         </el-select>
       </el-form-item>
-      <el-form-item :label="t('common.texts.createdTime')" prop="createTime">
+      <el-form-item :label="td('common.texts.createdTime')" prop="createTime">
         <el-date-picker style="width:240px" clearable v-model="queryParams.createTime" type="date"
-          value-format="YYYY-MM-DD" placeholder="请选择创建时间">
+          value-format="YYYY-MM-DD" :placeholder="td('ds.client.createTimePlaceholder')">
         </el-date-picker>
       </el-form-item>
       <el-form-item>
         <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-          <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
+          <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
         </el-button>
         <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-          <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
+          <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -69,52 +69,52 @@
       row-key="id" @selection-change="handleSelectionChange" @row-click="handleRowClick">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="ID" align="center" prop="id" />
-      <el-table-column label="应用名称" align="center" prop="name">
+      <el-table-column :label="td('ds.client.appName')" align="center" prop="name">
         <template #default="scope">
           {{ scope.row.name || '-' }}
         </template>
       </el-table-column>
-      <el-table-column label="应用类型" align="center" prop="type">
+      <el-table-column :label="td('ds.client.appType')" align="center" prop="type">
         <template #default="scope">
           <dict-tag :options="auth_app_type" :value="scope.row.type" />
         </template>
       </el-table-column>
-      <el-table-column label="允许授权的url" align="center" prop="allowUrl">
+      <el-table-column :label="td('ds.client.authPath')" align="center" prop="allowUrl">
         <template #default="scope">
           {{ scope.row.allowUrl || '-' }}
         </template>
       </el-table-column>
-      <el-table-column label="同步地址" align="center" prop="syncUrl">
+      <el-table-column :label="td('ds.client.syncUrl')" align="center" prop="syncUrl">
         <template #default="scope">
           {{ scope.row.syncUrl || '-' }}
         </template>
       </el-table-column>
-      <el-table-column label="应用图标" align="center" prop="logo" width="100">
+      <el-table-column :label="td('ds.client.appIcon')" align="center" prop="logo" width="100">
         <template #default="scope">
           <image-preview :src="scope.row.logo" :width="50" :height="50" />
         </template>
       </el-table-column>
-      <el-table-column :label="t('common.texts.description')" align="center" prop="description">
+      <el-table-column :label="td('common.texts.description')" align="center" prop="description">
         <template #default="scope">
           {{ scope.row.description || '-' }}
         </template>
       </el-table-column>
-      <el-table-column label="是否公开" align="center" prop="publicFlag">
+      <el-table-column :label="td('ds.client.isPublic')" align="center" prop="publicFlag">
         <template #default="scope">
           <dict-tag :options="auth_public" :value="scope.row.publicFlag" />
         </template>
       </el-table-column>
-      <el-table-column :label="t('common.texts.createdBy')" align="center" prop="createBy">
+      <el-table-column :label="td('common.texts.createdBy')" align="center" prop="createBy">
         <template #default="scope">
           {{ scope.row.createBy || '-' }}
         </template>
       </el-table-column>
-      <el-table-column :label="t('common.texts.createdTime')" align="center" prop="createTime" width="180">
+      <el-table-column :label="td('common.texts.createdTime')" align="center" prop="createTime" width="180">
         <template #default="scope">
           <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="t('common.texts.remark')" align="center" prop="remark">
+      <el-table-column :label="td('common.texts.remark')" align="center" prop="remark">
         <template #default="scope">
           {{ scope.row.remark || '-' }}
         </template>
@@ -125,9 +125,9 @@
       v-model:limit="queryParams.pageSize" @pagination="getList" />
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="cancel">{{ t('common.button.cancel') }}</el-button>
+        <el-button size="mini" @click="cancel">{{ td('common.button.cancel') }}</el-button>
         <el-button type="primary" size="mini" @click="confirm">
-          {{ t('common.button.confirm') }}
+          {{ td('common.button.confirm') }}
         </el-button>
       </div>
     </template>
@@ -135,11 +135,11 @@
 </template>
 
 <script setup name="ClientMultiple">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang";
 import { listClient } from "@/api/ds/client/client";
 import { ref } from "vue";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 
 const { auth_public, auth_app_type } = proxy.useDict('auth_public', 'auth_app_type');
@@ -294,7 +294,7 @@ function cancel() {
  */
 function confirm() {
   if (multiple.value.length == 0) {
-    proxy.$modal.msgWarning("未选择数据，请选择完成后重试");
+    proxy.$modal.msgWarning(td('ds.client.noDataSelected'));
     return;
   }
   emit("confirm", [...multiple.value]);

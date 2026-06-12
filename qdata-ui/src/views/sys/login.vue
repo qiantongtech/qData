@@ -389,9 +389,9 @@ function handleLogin() {
             loading.value = true;
             // 勾选了需要记住密码设置在 cookie 中设置记住用户名和密码
             if (loginForm.value.rememberMe) {
-                Cookies.setd('username', loginForm.value.username, { expires: 30 });
-                Cookies.setd('password', encrypt(loginForm.value.password), { expires: 30 });
-                Cookies.setd('rememberMe', loginForm.value.rememberMe, { expires: 30 });
+                Cookies.set('username', loginForm.value.username, { expires: 30 });
+                Cookies.set('password', encrypt(loginForm.value.password), { expires: 30 });
+                Cookies.set('rememberMe', loginForm.value.rememberMe, { expires: 30 });
             } else {
                 // 否则移除
                 Cookies.remove('username');

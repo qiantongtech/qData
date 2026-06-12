@@ -73,13 +73,13 @@
                         :statusOptions="statusOptions" />
                 </div>
                 <div slot="footer" class="button-style">
-                    <el-button type="primary" @click="handleSuccess">返回列表</el-button>
-                    <el-button v-if="activeReult !== 0" @click="handleLastStep">{{ t('common.button.previousStep') }}
+                    <el-button type="primary" @click="handleSuccess">{{ td('ds.apiEdit.returnToList') }}</el-button>
+                    <el-button v-if="activeReult !== 0" @click="handleLastStep">{{ td('common.button.previousStep') }}
                     </el-button>
-                    <el-button v-if="activeReult !== 2" @click="handleNextStep">{{ t('common.button.nextStep') }}
+                    <el-button v-if="activeReult !== 2" @click="handleNextStep">{{ td('common.button.nextStep') }}
                     </el-button>
                     <el-button type="primary" v-if="activeReult === 2" @click="submitForm"
-                        :loading="loadingOptions.loading">确定并退出
+                        :loading="loadingOptions.loading">{{ td('ds.apiEdit.confirmAndExit') }}
                     </el-button>
                 </div>
             </div>
@@ -88,7 +88,6 @@
 </template>
 
 <script setup name="DsApi">
-import { useI18n } from 'vue-i18n'
 import {
     getDsApi,
     updateDataApi,
@@ -106,8 +105,9 @@ import Parameter from '@/views/ds/api/edit/components/parameter.vue';
 import Test from '@/views/ds/api/edit/components/simulation.vue';
 import { getCurrentInstance, reactive, ref, toRefs, watch } from 'vue';
 import testapi from '@/views/ds/api/edit/components/testApi.vue';
+import useDefaultLang from "@/composables/useDefaultLang";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const components = { Base, Parameter, Test };
 const { proxy } = getCurrentInstance();
 const router = useRouter();
@@ -145,246 +145,27 @@ const data = reactive({
     typeOption: [],
     stepsList: [
         {
-            name: '属性配置',
+            name: td('ds.apiEdit.attributeConfig'),
             id: 1
         },
         {
-            name: '参数配置',
+            name: td('ds.apiEdit.parameterConfig'),
             id: 2
         },
         {
-            name: '测试',
+            name: td('ds.apiEdit.test'),
             id: 3
         }
     ],
     rules1: {
-        name: [{ required: true, message: 'API名称不能为空', trigger: 'blur' }],
-        apiVersion: [{ required: true, message: 'API版本不能为空', trigger: 'blur' }],
-        catCode: [{ required: true, message: '类目不能为空', trigger: 'blur' }],
+        name: [{ required: true, message: td('ds.apiEdit.apiNameRequired'), trigger: 'blur' }],
+        apiVersion: [{ required: true, message: td('ds.apiEdit.apiVersionRequired'), trigger: 'blur' }],
+        catCode: [{ required: true, message: td('ds.apiEdit.apiCategoryRequired'), trigger: 'blur' }],
         apiUrl: [
-            { required: true, message: '请输入API路径', trigger: 'input' },
+            { required: true, message: td('ds.apiEdit.apiUrlRequired'), trigger: 'input' },
             {
-                pattern: '^\\/[a-zA-Z0-9_\\-]+(\\/[a-zA-Z0-9_\\-]+)*</script>
-<style lang="scss" scoped>
-.el-card ::v-deep .el-card__body {
-    overflow-y: auto;
-}
-
-.steps-wrap {
-    height: 80px;
-    padding: 20px 20px;
-    step-height: 40px;
-    border-radius: 4px;
-    border: 0px solid #ebeef5;
-    background-color: #fff;
-    margin: 15px 15px -34px 15px;
-}
-
-.custom-card {
-    width: 100%;
-    height: 100px;
-    padding: 34px 177px 26px 189px;
-    background: #fff;
-    box-sizing: border-box;
-    margin-bottom: 15px;
-
-    .steps-inner {
-        padding: 0 10px;
-        padding-left: 20px;
-        display: flex;
-        width: auto;
-        color: #303133;
-        transition: 0.3s;
-        transform: translateZ(0);
-
-        &::-webkit-scrollbar {
-            height: 5px;
-        }
-
-        .zl-step {
-            list-style: none;
-            width: 100%;
-            height: 20px;
-            padding: 0;
-            margin: 20px auto;
-            cursor: pointer;
-            display: flex;
-            align-items: flex-end;
-
-            li {
-                position: relative;
-                flex: 1;
-                height: 40px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                background: #d7d8da;
-                color: #666;
-                font-weight: 500;
-                transition: background 0.3s;
-
-                &:first-child {
-                    z-index: 2;
-                    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 50%, calc(100% - 20px) 100%, 0 100%);
-                }
-
-                &:not(:first-child):not(:last-child) {
-                    margin-left: -10px;
-                    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 50%, calc(100% - 20px) 100%, 0 100%);
-                    z-index: 1;
-
-                    &::before {
-                        content: '';
-                        position: absolute;
-                        left: 0;
-                        top: 0;
-                        width: 20px;
-                        height: 100%;
-                        background: #fff;
-                        clip-path: polygon(0 0, 100% 50%, 0 100%);
-                        z-index: 2;
-                    }
-                }
-
-                &:last-child {
-                    margin-left: -10px;
-                    z-index: 0;
-                    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-
-                    &::before {
-                        content: '';
-                        position: absolute;
-                        left: 0;
-                        top: 0;
-                        width: 20px;
-                        height: 100%;
-                        background: #fff;
-                        clip-path: polygon(0 0, 100% 50%, 0 100%);
-                        z-index: 2;
-                    }
-                }
-
-                &.statusEnd {
-                    background: linear-gradient(270deg, #e9effe 0%, #5589FA 100%);
-                    color: #2666FB !important;
-                }
-
-                &.prevStep {
-                    background: #E9EFFE !important;
-                    font-weight: normal;
-                    font-size: 16px !important;
-                    color: #2666FB !important;
-                }
-
-                &.cur {
-                    background: #F1F1F5;
-                    color: #404040;
-                    font-weight: 500;
-                }
-            }
-        }
-
-        .step-circle {
-            width: 26px;
-            height: 26px;
-            border-radius: 50%;
-            background: #f1f1f5;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            font-weight: bold;
-            margin-right: 11px;
-            border: 1px solid #b2b2b2;
-            flex-shrink: 0;
-            transition: all 0.3s;
-
-            &.active {
-                background: #2666fb;
-                color: #fff;
-                border: 1px solid #fff;
-            }
-
-            &.prev {
-                background: #f1f1f5 !important;
-                border: 1px solid #2666fb !important;
-                color: #2666fb !important;
-            }
-        }
-
-        .step-name {
-            font-family: PingFang SC, PingFang SC;
-            font-weight: 500;
-            font-size: 16px;
-        }
-    }
-}
-
-.button-style {
-    padding: 15px 35px 0px 0px;
-    background: #fff;
-    text-align: right;
-    z-index: 10;
-}
-
-.main {
-    flex: 1;
-    // margin: 15px;
-    background-color: white;
-    padding: 10px 25px 0;
-}
-
-.home {
-    display: flex;
-    flex-direction: column;
-    height: 88vh;
-
-    .clearfix {
-        width: 100%;
-        height: 36px;
-        background-color: #f8f8f9;
-        display: flex;
-        align-items: center;
-        padding-left: 10px;
-        margin-bottom: 10px;
-    }
-
-    .clearfix span {
-        display: flex;
-        align-items: center;
-    }
-
-    // .blue-bar {
-    //     background-color: #2666FB; // 蓝条颜色
-    //     width: 5px; // 宽度5px
-    //     height: 20px; // 高度20px
-    //     margin-right: 10px; // 图片与文字之间的间距
-    // }
-}
-
-.option-item {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-}
-
-.pagecont-top {
-    min-height: 600px;
-    position: relative;
-    padding-bottom: 40px;
-}
-
-.el-textarea__inner::-webkit-resizer {
-    background: transparent;
-    /* 背景透明 */
-    border-width: 3px;
-    /* 线条粗细 */
-    border-style: solid;
-    border-color: transparent #2666FB #2666FB transparent;
-}
-</style>
-,
-                message: '请输入有效的请求路径,例：/user/list',
+                pattern: '^\\/[a-zA-Z0-9_\\-]+(\\/[a-zA-Z0-9_\\-]+)*$',
+                message: td('ds.apiEdit.apiUrlInvalid'),
                 trigger: 'blur'
             }
         ],
@@ -392,14 +173,14 @@ const data = reactive({
         // 以及URL安全的特殊字符如感叹号(!)、美元符号($)、和号(&)、单引号(')、括号(()())、星号(*)、加号(+)、逗号(,)、
         // 分号(;)、等号(=)、at符号(@)，还可以包含百分号后跟两位十六进制数表示的URL编码字符。路径不能以双斜杠(//)开始，
         // 并且可以以斜杠(/)结尾
-        reqMethod: [{ required: true, message: '请求方式不能为空', trigger: 'change' }],
-        resType: [{ required: true, message: '返回格式不能为空', trigger: 'change' }],
-        resDataType: [{ required: true, message: '返回格式不能为空', trigger: 'change' }],
-        cacheSwitch: [{ required: true, message: '返回格式不能为空', trigger: 'change' }]
+        reqMethod: [{ required: true, message: td('ds.apiEdit.requestMethodRequired'), trigger: 'change' }],
+        resType: [{ required: true, message: td('ds.apiEdit.returnFormatRequired'), trigger: 'change' }],
+        resDataType: [{ required: true, message: td('ds.apiEdit.returnFormatRequired'), trigger: 'change' }],
+        cacheSwitch: [{ required: true, message: td('ds.apiEdit.returnFormatRequired'), trigger: 'change' }]
     },
     rules2: {
-        apiServiceType: [{ required: true, message: '配置方式不能为空', trigger: 'change' }],
-        sourceId: [{ required: true, message: '数据源不能为空', trigger: 'change' }]
+        apiServiceType: [{ required: true, message: td('ds.apiEdit.configMethodRequired'), trigger: 'change' }],
+        sourceId: [{ required: true, message: td('ds.apiEdit.dataSourceRequired'), trigger: 'change' }]
     },
     // 请求方式数据字典
     reqMethodOptions: [],
@@ -407,15 +188,15 @@ const data = reactive({
     resTypeOptions: [
         {
             itemValue: '1',
-            itemText: '分页'
+            itemText: td('ds.apiEdit.pagination')
         },
         {
             itemValue: '2',
-            itemText: '列表'
+            itemText: td('ds.apiEdit.list')
         },
         {
             itemValue: '3',
-            itemText: t('common.button.details')
+            itemText: td('common.button.details')
         }
     ],
     active: 0,
@@ -508,7 +289,7 @@ function handleNextStep() {
             if (response.code === 200) {
                 activeReult.value++;
             } else {
-                proxy.$message.warning("操作失败，请检查后重试");
+                proxy.$message.warning(td('ds.apiEdit.opFailedCheck'));
             }
         });
     } else if (activeReult.value === 1) {
@@ -580,9 +361,9 @@ function submitForm() {
                     .then((response) => {
                         if (response.code === 200) {
                             router.push({ path: '/ds/api' });
-                            proxy.$message.success('保存成功');
+                            proxy.$message.success(td('ds.apiEdit.saveSuccess'));
                         } else {
-                            proxy.$message.warning('保存失败，请重试');
+                            proxy.$message.warning(td('ds.apiEdit.saveFailedRetry'));
                         }
                     })
                     .catch(() => {
@@ -592,10 +373,10 @@ function submitForm() {
                 addDataApi(params)
                     .then((response) => {
                         if (response.code === 200) {
-                            proxy.$message.success('保存成功');
+                            proxy.$message.success(td('ds.apiEdit.saveSuccess'));
                             router.push({ path: '/ds/api' });
                         } else {
-                            proxy.$message.warning('保存失败，请重试');
+                            proxy.$message.warning(td('ds.apiEdit.saveFailedRetry'));
                             loadingOptions.value.loading = false;
                         }
                     })
@@ -690,7 +471,7 @@ watch(
     (newId) => {
         id = newId || null;
         getDataApiById(id);
-        let title = id ? 'API服务修改' : 'API服务新增';
+        let title = id ? td('ds.apiEdit.apiEditTitle') : td('ds.apiEdit.apiAddTitle');
         const _route = Object.assign({}, route, { title: title });
         proxy.$tab.updatePage(_route);
     },

@@ -36,35 +36,35 @@
       <el-row :gutter="15" class="btn-style">
         <el-col :span="1.5">
           <el-button type="primary" plain @click="handleAdd" @mousedown="(e) => e.preventDefault()">
-            <i class="iconfont-mini icon-xinzeng mr5"></i>新增
+            <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('common.button.add') }}
           </el-button>
         </el-col>
       </el-row>
     </div>
     <el-table stripe v-loading="loading" :data="clientApiRelList" @selection-change="handleSelectionChange"
       :default-sort="defaultSort" @sort-change="handleSortChange">
-      <el-table-column label="编号" type="index" align="center" width="50" :show-overflow-tooltip="{ effect: 'light' }" />
-      <el-table-column label="API编码" align="center" prop="apiId" :show-overflow-tooltip="{ effect: 'light' }" />
-      <el-table-column label="API名称" align="center" prop="apiName" :show-overflow-tooltip="{ effect: 'light' }"
+      <el-table-column :label="td('common.texts.number')" type="index" align="center" width="50" :show-overflow-tooltip="{ effect: 'light' }" />
+      <el-table-column :label="td('ds.clientDetail.apiCode')" align="center" prop="apiId" :show-overflow-tooltip="{ effect: 'light' }" />
+      <el-table-column :label="td('ds.clientDetail.apiName')" align="center" prop="apiName" :show-overflow-tooltip="{ effect: 'light' }"
         width="150">
         <template #default="scope">
           {{ scope.row.apiName || "-" }}
         </template>
       </el-table-column>
-      <el-table-column label="路径" align="center" prop="apiUrl" :show-overflow-tooltip="{ effect: 'light' }" width="150">
+      <el-table-column :label="td('ds.clientDetail.apiPath')" align="center" prop="apiUrl" :show-overflow-tooltip="{ effect: 'light' }" width="150">
         <template #default="scope">
           {{ scope.row.apiUrl || "-" }}
         </template>
       </el-table-column>
-      <el-table-column label="请求方式" align="center" prop="reqMethod" :show-overflow-tooltip="{ effect: 'light' }">
+      <el-table-column :label="td('ds.clientDetail.requestMethod')" align="center" prop="reqMethod" :show-overflow-tooltip="{ effect: 'light' }">
         <template #default="scope">
           <dict-tag :options="ds_api_bas_info_api_method_type" :value="scope.row.reqMethod" />
         </template>
       </el-table-column>
-      <el-table-column label="有效期" align="center" prop="startTime" width="260"
+      <el-table-column :label="td('ds.clientDetail.validPeriod')" align="center" prop="startTime" width="260"
         :show-overflow-tooltip="{ effect: 'light' }">
         <template #default="scope">
-          <span v-if="scope.row.pvFlag == 1">永久</span>
+          <span v-if="scope.row.pvFlag == 1">{{ td('ds.clientDetail.permanent') }}</span>
           <div v-else>
             <span>{{ parseTime(scope.row.startTime, "{y}-{m}-{d} ") }}</span>
             <span>- </span>
@@ -72,18 +72,18 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="描述" align="left" prop="description" :show-overflow-tooltip="{ effect: 'light' }"
+      <el-table-column :label="td('common.form.description')" align="left" prop="description" :show-overflow-tooltip="{ effect: 'light' }"
         width="250">
         <template #default="scope">
           {{ scope.row.description || '-' }}
         </template>
       </el-table-column>
-      <el-table-column label="创建人" align="center" prop="createBy" :show-overflow-tooltip="{ effect: 'light' }">
+      <el-table-column :label="td('common.texts.createdBy')" align="center" prop="createBy" :show-overflow-tooltip="{ effect: 'light' }">
         <template #default="scope">
           {{ scope.row.createBy || "-" }}
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" align="center" prop="createTime" width="180"
+      <el-table-column :label="td('common.form.createTime')" align="center" prop="createTime" width="180"
         :show-overflow-tooltip="{ effect: 'light' }">
         <template #default="scope">
           <span>{{
@@ -91,21 +91,21 @@
           }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="授权状态" align="center" prop="status" :show-overflow-tooltip="{ effect: 'light' }">
+      <el-table-column :label="td('ds.clientDetail.authStatus')" align="center" prop="status" :show-overflow-tooltip="{ effect: 'light' }">
         <template #default="scope">
           <el-switch v-model="scope.row.status" active-color="#13ce66" inactive-color="#ff4949" active-value="1"
             inactive-value="0" @change="(e) => handleStatusChange(scope.row.id, scope.row, e)" />
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="left" prop="remark" :show-overflow-tooltip="{ effect: 'light' }">
+      <el-table-column :label="td('common.texts.remark')" align="left" prop="remark" :show-overflow-tooltip="{ effect: 'light' }">
         <template #default="scope">
           {{ scope.row.remark || '-' }}
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" width="140">
+      <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="140">
         <template #default="scope">
-          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)">修改</el-button>
-          <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
+          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)">{{ td('common.button.update') }}</el-button>
+          <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)">{{ td('common.button.delete') }}</el-button>
         </template>
       </el-table-column>
 
@@ -131,20 +131,20 @@
     <el-form ref="clientApiRelRef" :model="form" :rules="rules" label-width="110px" @submit.prevent>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="API服务" prop="apiName">
+          <el-form-item :label="td('ds.clientDetail.apiService')" prop="apiName">
             <el-autocomplete :disabled="form.id" v-model="form.apiName" :fetch-suggestions="remoteMethod"
-              placeholder="请输入API服务名称" @select="handleApiIdSelect" />
+              :placeholder="td('ds.clientDetail.apiServicePlaceholder')" @select="handleApiIdSelect" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="是否永久有效" prop="pvFlag">
+          <el-form-item :label="td('ds.clientDetail.permanentValid')" prop="pvFlag">
             <el-radio-group v-model="form.pvFlag" @change="handlePvFlagChange">
               <el-radio v-for="dict in sys_is_or_not" :key="dict.value" :label="dict.value">{{ dict.label }}</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-col>
         <el-col :span="12" v-if="form.pvFlag == 0">
-          <el-form-item label="有效期" prop="dateRange">
+          <el-form-item :label="td('ds.clientDetail.validPeriod')" prop="dateRange">
             <el-date-picker class="el-form-input-width" v-model="form.dateRange" value-format="YYYY-MM-DD"
               type="daterange" range-separator="-" :start-placeholder="td('common.form.startDatePlaceholder')" :end-placeholder="td('common.form.endDatePlaceholder')"></el-date-picker>
           </el-form-item>
@@ -152,23 +152,23 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="描述">
-            <el-input type="textarea" placeholder="请输入描述" v-model="form.description" :min-height="192" />
+          <el-form-item :label="td('common.form.description')">
+            <el-input type="textarea" :placeholder="td('common.form.descriptionPlaceholder')" v-model="form.description" :min-height="192" />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="备注">
-            <el-input type="textarea" placeholder="请输入备注" v-model="form.remark" :min-height="192" />
+          <el-form-item :label="td('common.texts.remark')">
+            <el-input type="textarea" :placeholder="td('common.form.remarkPlaceholder')" v-model="form.remark" :min-height="192" />
           </el-form-item>
         </el-col>
       </el-row>
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="cancel">取 消</el-button>
-        <el-button type="primary" size="mini" @click="submitForm">确 定</el-button>
+        <el-button size="mini" @click="cancel">{{td('common.button.cancel')}}</el-button>
+        <el-button type="primary" size="mini" @click="submitForm">{{td('common.button.confirm')}}</el-button>
       </div>
     </template>
   </el-dialog>
@@ -183,14 +183,14 @@
     <el-form ref="clientApiRelRef" :model="form" label-width="80px">
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="应用ID" prop="clientId">
+          <el-form-item :label="td('ds.clientDetail.appId')" prop="clientId">
             <div>
               {{ form.clientId }}
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="API服务ID" prop="apiId">
+          <el-form-item :label="td('ds.clientDetail.apiServiceId')" prop="apiId">
             <div>
               {{ form.apiId }}
             </div>
@@ -199,26 +199,26 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="是否永久有效" prop="pvFlag">
+          <el-form-item :label="td('ds.clientDetail.permanentValid')" prop="pvFlag">
             <dict-tag :options="sys_is_or_not" :value="form.pvFlag" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="开始时间" prop="startTime">
+          <el-form-item :label="td('ds.clientDetail.startTime')" prop="startTime">
             <el-date-picker clearable style="width: 100%" v-model="form.startTime" type="date" value-format="YYYY-MM-DD"
-              placeholder="请选择开始时间"> </el-date-picker>
+              :placeholder="td('ds.clientDetail.startTimePlaceholder')"> </el-date-picker>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="结束时间" prop="endTime">
+          <el-form-item :label="td('ds.clientDetail.endTime')" prop="endTime">
             <el-date-picker clearable style="width: 100%" v-model="form.endTime" type="date" value-format="YYYY-MM-DD"
-              placeholder="请选择结束时间"> </el-date-picker>
+              :placeholder="td('ds.clientDetail.endTimePlaceholder')"> </el-date-picker>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="授权状态" prop="status">
+          <el-form-item :label="td('ds.clientDetail.authStatus')" prop="status">
             <div>
               {{ form.status }}
             </div>
@@ -229,7 +229,7 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="cancel">关 闭</el-button>
+        <el-button size="mini" @click="cancel">{{ td('common.button.close') }}</el-button>
       </div>
     </template>
   </el-dialog>
@@ -288,9 +288,9 @@ const data = reactive({
     status: null,
   },
   rules: {
-    apiName: [{ required: true, message: "API服务不能为空", trigger: "change" }],
-    pvFlag: [{ required: true, message: "是否永久有效不能为空", trigger: "blur" }],
-    dateRange: [{ required: true, message: "有效期不能为空", trigger: "blur" }],
+    apiName: [{ required: true, message: td('ds.clientDetail.apiServiceRequired'), trigger: "change" }],
+    pvFlag: [{ required: true, message: td('ds.clientDetail.permanentRequired'), trigger: "blur" }],
+    dateRange: [{ required: true, message: td('ds.clientDetail.validPeriodRequired'), trigger: "blur" }],
   },
 });
 
@@ -313,17 +313,17 @@ function getList() {
 /** 改变启用状态值 */
 function handleStatusChange(id, row, e) {
   console.log(e);
-  const text = row.status == "1" ? "授权" : "取消授权";
+  const text = row.status == "1" ? td('ds.clientDetail.authorize') : td('ds.clientDetail.deauthorize');
   // 弹出确认框
   proxy.$modal
-    .confirm('确认要"' + text + '","' + row.apiName + '"吗？')
+    .confirm(td('ds.clientDetail.confirmStatusChange') + text + td('ds.clientDetail.confirmStatusSuffix') + row.apiName + td('ds.clientDetail.confirmStatusSuffix2'))
     .then(function () {
       loading.value = true; // 开始加载
       // 调用后台接口更新发布状态
       updateClientApiRel({ ...row })
         .then((res) => {
           if (res.code == 200) {
-            proxy.$modal.msgSuccess("操作成功");
+            proxy.$modal.msgSuccess(td('common.message.msgOpSuccess'));
           }
         })
         .catch((error) => {
@@ -435,7 +435,7 @@ function handleSortChange(column, prop, order) {
 function handleAdd() {
   reset();
   open.value = true;
-  title.value = "添加API服务授权";
+  title.value = td('ds.clientDetail.addApiAuth');
 }
 
 /** 修改按钮操作 */
@@ -444,7 +444,7 @@ function handleUpdate(row) {
   form.value = JSON.parse(JSON.stringify(row));
   form.value.dateRange = [form.value.startTime, form.value.endTime];
   open.value = true;
-  title.value = "修改API服务授权";
+  title.value = td('ds.clientDetail.editApiAuth');
 }
 
 /** 详情按钮操作 */
@@ -454,7 +454,7 @@ function handleDetail(row) {
   getClientApiRel(_id).then((response) => {
     form.value = response.data;
     openDetail.value = true;
-    title.value = "API服务授权详情";
+    title.value = td('ds.clientDetail.detailApiAuth');
   });
 }
 
@@ -468,7 +468,7 @@ function submitForm() {
       if (form.value.id != null) {
         updateClientApiRel(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("修改成功");
+            proxy.$modal.msgSuccess(td('common.message.editSuccess'));
             open.value = false;
             getList();
           })
@@ -476,7 +476,7 @@ function submitForm() {
       } else {
         addClientApiRel(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("新增成功");
+            proxy.$modal.msgSuccess(td('common.message.addSuccess'));
             open.value = false;
             getList();
           })
@@ -490,13 +490,13 @@ function submitForm() {
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
-    .confirm('是否确认删除API服务关联编号为"' + _ids + '"的数据项？')
+    .confirm(td('ds.clientDetail.deleteApiRelConfirm') + _ids + td('ds.clientDetail.deleteApiRelConfirmSuffix'))
     .then(function () {
       return delClientApiRel(_ids);
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
     })
     .catch(() => { });
 }

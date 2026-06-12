@@ -35,30 +35,30 @@
         <div slot="header" class="header-container">
             <div class="header-left">
                 <div class="blue-bar"></div>
-                API调用
+                {{ td('ds.apiEdit.simulation.apiCall') }}
             </div>
             <el-button  size="mini" style="border-radius: 30px !important" round
                        @click="handleCall">
-                接口调用
+                {{td('ds.apiEdit.simulation.interfaceCall')}}
             </el-button>
         </div>
         <div class="body-wrapper">
             <el-form v-if="isChange" ref="form" :model="form" label-width="100px" :disabled="true">
                 <el-row>
                     <el-col :span="12">
-                        <el-form-item label="API名称">
+                        <el-form-item :label="td('ds.apiEdit.simulation.apiName')">
                             <el-input v-model="form.name" />
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="API版本">
+                        <el-form-item :label="td('ds.apiEdit.simulation.apiVersion')">
                             <el-input v-model="form.apiVersion" />
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row>
                     <el-col :span="12">
-                        <el-form-item label="请求类型">
+                        <el-form-item :label="td('ds.apiEdit.simulation.requestType')">
                             <!--                            <el-input v-model="form.reqMethod"/>-->
                             <dict-tag :options="ds_api_bas_info_api_method_type" :value="form.reqMethod" />
                         </el-form-item>
@@ -69,14 +69,14 @@
                         <!--                        </el-table-column>-->
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="返回格式" prop="resDataType">
+                        <el-form-item :label="td('ds.apiEdit.simulation.returnFormat')" prop="resDataType">
                             <dict-tag :options="ds_api_bas_info_res_data_type" :value="form.resDataType" />
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row>
                     <el-col :span="24">
-                        <el-form-item label="调用地址">
+                        <el-form-item :label="td('ds.apiEdit.simulation.callAddress')">
                             <el-input v-model="form.apiUrl" />
                         </el-form-item>
                     </el-col>
@@ -85,26 +85,26 @@
             <div class="header-container">
                 <div class="header-left">
                     <div class="blue-bar"></div>
-                    请求数据
+                    {{td('ds.apiEdit.simulation.requestData')}}
                 </div>
             </div>
             <el-row>
                 <el-col :span="24">
                     <el-table class="tableStyle" :data="form.reqParams" stripe :max-height="250"
                         style="width: 100%; margin: 15px 0">
-                        <el-table-column label="序号" width="80" align="center">
+                        <el-table-column :label="td('common.display.index')" width="80" align="center">
                             <template #default="scope">
                                 <span>{{ scope.$index + 1 }}</span>
                             </template>
                         </el-table-column>
-                        <el-table-column prop="paramName" label="参数名称" align="center" :show-overflow-tooltip="{effect: 'light'}" />
-                        <el-table-column prop="nullable" label="是否允许为空" align="center" :show-overflow-tooltip="{effect: 'light'}">
+                        <el-table-column prop="paramName" :label="td('ds.apiEdit.simulation.paramName')" align="center" :show-overflow-tooltip="{effect: 'light'}" />
+                        <el-table-column prop="nullable" :label="td('ds.apiEdit.simulation.nullable')" align="center" :show-overflow-tooltip="{effect: 'light'}">
                             <template #default="scope">
                                 <el-checkbox v-model="scope.row.nullable" true-label="1" false-label="0" disabled />
                             </template>
                         </el-table-column>
-                        <el-table-column prop="paramComment" label="描述" align="center" :show-overflow-tooltip="{effect: 'light'}" />
-                        <el-table-column prop="paramType" label="参数类型" align="center" :show-overflow-tooltip="{effect: 'light'}">
+                        <el-table-column prop="paramComment" :label="td('common.form.description')" align="center" :show-overflow-tooltip="{effect: 'light'}" />
+                        <el-table-column prop="paramType" :label="td('ds.apiEdit.simulation.paramType')" align="center" :show-overflow-tooltip="{effect: 'light'}">
                             <template #default="scope">
                                 <dict-tag :options="ds_api_param_type" :value="scope.row.paramType" />
                                 <!--                                <el-select v-model="scope.row.paramType" placeholder="请选择参数类型" disabled>-->
@@ -113,9 +113,9 @@
                                 <!--                                </el-select>-->
                             </template>
                         </el-table-column>
-                        <el-table-column prop="whereType" label="操作符" align="center" :show-overflow-tooltip="{effect: 'light'}">
+                        <el-table-column prop="whereType" :label="td('ds.apiEdit.simulation.operator')" align="center" :show-overflow-tooltip="{effect: 'light'}">
                             <template #default="scope">
-                                <el-select v-model="scope.row.whereType" placeholder="请选择操作符" disabled>
+                                <el-select v-model="scope.row.whereType" :placeholder="td('ds.apiEdit.simulation.operatorPlaceholder')" disabled>
                                   <el-option
                                       v-for="dict in da_api_param_operator"
                                       :key="dict.id"
@@ -125,12 +125,12 @@
                                 </el-select>
                             </template>
                         </el-table-column>
-                        <el-table-column prop="paramValue" label="参数值" align="center" :show-overflow-tooltip="{effect: 'light'}">
+                        <el-table-column prop="paramValue" :label="td('ds.apiEdit.simulation.paramValue')" align="center" :show-overflow-tooltip="{effect: 'light'}">
                             <template #default="scope">
                                 <el-input v-if="scope.row.paramType != '2'" v-model="scope.row.paramValue"
-                                    placeholder="请输入参数值" />
+                                    :placeholder="td('ds.apiEdit.simulation.paramValuePlaceholder')" />
                                 <el-input v-else-if="scope.row.paramType === '2'" v-model="scope.row.paramValue"
-                                    placeholder="请输入参数值" type="number" />
+                                    :placeholder="td('ds.apiEdit.simulation.paramValuePlaceholder')" type="number" />
                             </template>
                         </el-table-column>
                     </el-table>
@@ -139,7 +139,7 @@
             <div class="header-container">
                 <div class="header-left">
                     <div class="blue-bar"></div>
-                    返回数据
+                    {{td('ds.apiEdit.simulation.returnData')}}
                 </div>
             </div>
             <el-row>
@@ -147,7 +147,7 @@
                     <div v-if="apiExecuting">
                         <el-table :data="callData.dataList" stripe border :max-height="250"
                             style="width: 100%; margin: 15px 0">
-                            <el-table-column label="序号" width="80" align="center">
+                            <el-table-column :label="td('common.display.index')" width="80" align="center">
                                 <template #default="scope">
                                     <span>{{ scope.$index + 1 }}</span>
                                 </template>
@@ -221,7 +221,7 @@ const props = defineProps({
     }
 });
 const data = reactive({
-    title: '数据API调用',
+    title: td('ds.apiEdit.simulation.dataApiCall'),
     // 展示切换
     showOptions: {
         data: {},
@@ -286,7 +286,7 @@ function handleCall() {
                 param.paramValue == undefined ||
                 param.paramValue == '')
         ) {
-            proxy.$message.warning('输入参数‘' + param.paramName + '’不能为空');
+            proxy.$message.warning(td('ds.apiEdit.simulation.nullableWarning') + '‘' + param.paramName + '’' + td('ds.apiEdit.simulation.cannotBeEmpty'));
             isNull = true;
             return;
         }
@@ -317,7 +317,7 @@ function handleCall() {
           try {
             param.paramValue = JSON.parse(param.paramValue);
           } catch (error) {
-            proxy.$message.warning('输入参数‘' + param.paramName + '’格式有误，例如为[1,2]或["1","2"]');
+            proxy.$message.warning(td('ds.apiEdit.simulation.nullableWarning') + '‘' + param.paramName + '’' + td('ds.apiEdit.simulation.formatError'));
             return;
           }
         }
@@ -340,7 +340,7 @@ function handleCall() {
         // 使用 serviceTesting 来模拟 GET 请求
         serviceTesting(params).then((response) => {
             if (response.code === 200) {
-                proxy.$message.success('接口调用成功');
+                proxy.$message.success(td('ds.apiEdit.simulation.callSuccess'));
                 const { data } = response;
                 const dataList = [];
 
@@ -371,13 +371,13 @@ function handleCall() {
                 apiExecuting.value = true;
             } else {
                 // 请求失败的处理
-                proxy.$message.warning("操作失败，请联系管理员");
+                proxy.$message.warning(td('ds.apiEdit.simulation.callFailed'));
             }
         });
     } else if (props.form.reqMethod === '2') {
         serviceTesting(params).then((response) => {
             if (response.code === 200) {
-                proxy.$message.success('接口调用成功');
+                proxy.$message.success(td('ds.apiEdit.simulation.callSuccess'));
 
                 const { data } = response;
                 const dataList = [];
@@ -408,7 +408,7 @@ function handleCall() {
                 // 更新 API 执行状态
                 apiExecuting.value = true;
             } else {
-                proxy.$message.warning("操作失败，请联系管理员");
+                proxy.$message.warning(td('ds.apiEdit.simulation.callFailed'));
             }
         });
     }

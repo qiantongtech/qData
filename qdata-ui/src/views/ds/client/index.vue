@@ -36,33 +36,33 @@
     <GuideTip tip-id="att/client.list" />
 
     <div class="pagecont-top" v-show="showSearch">
-      <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="75px"
+      <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true"
         v-show="showSearch" @submit.prevent>
-        <!-- <el-form-item label="编号" prop="id">
+        <!-- <el-form-item :label="td('ds.clientDetail.id')" prop="id">
           <el-input class="el-form-input-width" v-model="queryParams.id" placeholder="请输入编号" clearable
             @keyup.enter="handleQuery" />
         </el-form-item> -->
-        <el-form-item label="应用名称" prop="name">
-          <el-input class="el-form-input-width" v-model="queryParams.name" placeholder="请输入应用名称" clearable
+        <el-form-item :label="td('ds.client.appName')" prop="name">
+          <el-input class="el-form-input-width" v-model="queryParams.name" :placeholder="td('ds.client.appNamePlaceholder')" clearable
             @keyup.enter="handleQuery" />
         </el-form-item>
-        <el-form-item label="应用类型" prop="type">
-          <el-select class="el-form-input-width" v-model="queryParams.type" placeholder="请选择应用类型" clearable>
+        <el-form-item :label="td('ds.client.appType')" prop="type">
+          <el-select class="el-form-input-width" v-model="queryParams.type" :placeholder="td('ds.client.appTypePlaceholder')" clearable>
             <el-option v-for="dict in auth_app_type" :key="dict.value" :label="dict.label" :value="dict.value" />
           </el-select>
         </el-form-item>
-        <el-form-item label="是否公开" prop="publicFlag">
-          <el-select class="el-form-input-width" v-model="queryParams.publicFlag" placeholder="请选择是否公开" clearable>
+        <el-form-item :label="td('ds.client.isPublic')" prop="publicFlag">
+          <el-select class="el-form-input-width" v-model="queryParams.publicFlag" :placeholder="td('ds.client.isPublicPlaceholder')" clearable>
             <el-option v-for="dict in auth_public" :key="dict.value" :label="dict.label" :value="dict.value" />
           </el-select>
         </el-form-item>
         <el-form-item>
           <el-button plain type="primary" v-hasPermi="['att:client:query']" @click="handleQuery"
             @mousedown="(e) => e.preventDefault()">
-            <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+            <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
           </el-button>
           <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-            <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+            <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
           </el-button>
         </el-form-item>
       </el-form>
@@ -74,7 +74,7 @@
           <el-col :span="1.5">
             <el-button type="primary" plain @click="handleAdd" v-hasPermi="['att:client:add']"
               @mousedown="(e) => e.preventDefault()">
-              <i class="iconfont-mini icon-xinzeng mr5"></i>新增
+              <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('common.button.add') }}
             </el-button>
           </el-col>
           <!--         <el-col :span="1.5">
@@ -108,25 +108,25 @@
       </div>
       <el-table stripe v-loading="loading" :data="clientList" @selection-change="handleSelectionChange"
         :default-sort="defaultSort" @sort-change="handleSortChange">
-        <el-table-column v-if="getColumnVisibility(0)" width="50" label="编号" align="center" prop="id" />
-        <el-table-column v-if="getColumnVisibility(1)" width="200" label="应用名称"
+        <el-table-column v-if="getColumnVisibility(0)" width="50" :label="td('common.texts.number')"  align="center" prop="id" />
+        <el-table-column v-if="getColumnVisibility(1)" width="200" :label="td('ds.client.appName')"
           :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="name">
           <template #default="scope">
             {{ scope.row.name || "-" }}
           </template>
         </el-table-column>
-        <el-table-column width="100" v-if="getColumnVisibility(3)" label="应用类型" align="center" prop="type">
+        <el-table-column width="100" v-if="getColumnVisibility(3)" :label="td('ds.client.appType')" align="center" prop="type">
           <template #default="scope">
             <dict-tag :options="auth_app_type" :value="scope.row.type" />
           </template>
         </el-table-column>
-        <el-table-column v-if="getColumnVisibility(2)" :show-overflow-tooltip="{ effect: 'light' }" label="描述"
+        <el-table-column v-if="getColumnVisibility(2)" :show-overflow-tooltip="{ effect: 'light' }" :label="td('common.form.description')"
           align="left" prop="description" width="300">
           <template #default="scope">
             {{ scope.row.description || "-" }}
           </template>
         </el-table-column>
-        <el-table-column v-if="getColumnVisibility(16)" width="80" label="应用图标"
+        <el-table-column v-if="getColumnVisibility(16)" width="80" :label="td('ds.client.appIcon')"
           :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="name">
           <template #default="scope">
             <div class="clientInfo">
@@ -137,7 +137,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column width="100" v-if="getColumnVisibility(4)" label="是否公开" align="center" prop="publicFlag">
+        <el-table-column width="100" v-if="getColumnVisibility(4)" :label="td('ds.client.isPublic')" align="center" prop="publicFlag">
           <template #default="scope">
             <dict-tag :options="auth_public" :value="scope.row.publicFlag" />
           </template>
@@ -158,37 +158,37 @@
          </template>
        </el-table-column>-->
 
-        <el-table-column v-if="getColumnVisibility(12)" label="创建人" align="center" prop="createBy">
+        <el-table-column v-if="getColumnVisibility(12)" :label="td('common.texts.createdBy')" align="center" prop="createBy">
           <template #default="scope">
             {{ scope.row.createBy || "-" }}
           </template>
         </el-table-column>
-        <el-table-column v-if="getColumnVisibility(14)" label="创建时间" align="center" prop="createTime" width="150"
+        <el-table-column v-if="getColumnVisibility(14)" :label="td('common.form.createTime')" align="center" prop="createTime" width="150"
           sortable="custom" column-key="create_time" :sort-orders="['descending', 'ascending']"> <template
             #default="scope"> <span>{{ parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="备注" align="left" prop="remark" :show-overflow-tooltip="{ effect: 'light' }"
+        <el-table-column :label="td('common.texts.remark')" align="left" prop="remark" :show-overflow-tooltip="{ effect: 'light' }"
           v-if="getColumnVisibility(15)">
           <template #default="scope">
             {{ scope.row.remark || '-' }}
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" width="280">
+        <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="280">
           <template #default="scope">
             <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-              v-hasPermi="['att:client:edit']">修改</el-button>
+              v-hasPermi="['att:client:edit']">{{td('common.button.update')}}</el-button>
             <el-button link type="primary" icon="view" @click="handleDetail(scope.row)"
-              v-hasPermi="['att:client:query']">详情</el-button>
+              v-hasPermi="['att:client:query']">{{td('common.button.details')}}</el-button>
             <el-popover placement="bottom" :width="150" trigger="click">
               <template #reference>
-                <el-button link type="primary" icon="ArrowDown">更多</el-button>
+                <el-button link type="primary" icon="ArrowDown">{{td('common.button.more')}}</el-button>
               </template>
               <div style="width: 100px" class="butgdlist">
                 <el-button link style="padding-left: 14px" type="primary" icon="Refresh" @click="handleReset(scope.row)"
-                  v-hasPermi="['att:client:edit']">重置秘钥</el-button>
+                  v-hasPermi="['att:client:edit']">{{ td('ds.client.resetSecret') }}</el-button>
                 <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
-                  v-hasPermi="['att:client:remove']">删除</el-button>
+                  v-hasPermi="['att:client:remove']">{{td('common.button.delete')}}</el-button>
               </div>
             </el-popover>
           </template>
@@ -207,58 +207,58 @@
     </div>
 
     <!-- 新增或修改应用对话框 -->
-    <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable>
+    <el-dialog :title="title" v-model="open" :append-to="$refs['app-container']" draggable>
       <template #header="{ close, titleId, titleClass }">
         <span role="heading" aria-level="2" class="el-dialog__title">
           {{ title }}
         </span>
       </template>
-      <el-form ref="clientRef" :model="form" :rules="rules" label-width="80px" @submit.prevent>
+      <el-form ref="clientRef" :model="form" :rules="rules" @submit.prevent>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="应用名称" prop="name">
-              <el-input v-model="form.name" placeholder="请输入应用名称" />
+            <el-form-item :label="td('ds.client.appName')" prop="name">
+              <el-input v-model="form.name" :placeholder="td('ds.client.appNamePlaceholder')"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="应用类型" prop="type">
-              <el-select v-model="form.type" placeholder="请选择应用类型">
+            <el-form-item :label="td('ds.client.appType')" prop="type">
+              <el-select v-model="form.type" :placeholder="td('ds.client.appTypePlaceholder')">
                 <el-option v-for="dict in auth_app_type" :key="dict.value" :label="dict.label"
-                  :value="dict.value"></el-option>
+                           :value="dict.value"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="描述" prop="description">
-              <el-input v-model="form.description" type="textarea" placeholder="请输入描述" />
+            <el-form-item :label="td('common.texts.description')" prop="description">
+              <el-input v-model="form.description" type="textarea" :placeholder="td('common.form.descriptionPlaceholder')" />
             </el-form-item>
           </el-col>
         </el-row>
 
         <!-- <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="主页地址" prop="homepageUrl">
+            <el-form-item :label="td('ds.client.homepageUrl')" prop="homepageUrl">
               <el-input v-model="form.homepageUrl" placeholder="请输入主页地址" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="同步地址" prop="syncUrl">
+            <el-form-item :label="td('ds.client.syncUrl')" prop="syncUrl">
               <el-input v-model="form.syncUrl" placeholder="请输入同步地址" />
             </el-form-item>
           </el-col>
         </el-row> -->
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="应用图标" prop="logo">
+            <el-form-item :label="td('ds.client.appIcon')" prop="logo">
               <image-upload v-model="form.logo" limit="1" :fileType="pdf" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="是否公开" prop="publicFlag">
+            <el-form-item :label="td('ds.client.isPublic')" prop="publicFlag">
               <el-radio-group v-model="form.publicFlag">
                 <el-radio v-for="dict in auth_public" :key="dict.value" :label="dict.value">{{ dict.label }}</el-radio>
               </el-radio-group>
@@ -267,16 +267,16 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="备注" prop="remark">
-              <el-input v-model="form.remark" type="textarea" placeholder="请输入备注" />
+            <el-form-item :label="td('common.texts.remark')" prop="remark">
+              <el-input v-model="form.remark" type="textarea" :placeholder="td('common.form.remarkPlaceholder')" />
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="cancel">取 消</el-button>
-          <el-button type="primary" size="mini" @click="submitForm">确 定</el-button>
+          <el-button size="mini" @click="cancel">{{td('common.button.cancel')}}</el-button>
+          <el-button type="primary" size="mini" @click="submitForm">{{td('common.button.confirm')}}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -290,60 +290,60 @@
       <el-form ref="clientRef" :model="form" label-width="100px">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="编号" prop="id">
+            <el-form-item :label="td('ds.clientDetail.id')" prop="id">
               <div>{{ form.id || "-" }}</div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="应用秘钥" prop="secret">
+            <el-form-item :label="td('ds.client.appSecret')" prop="secret">
               <div>{{ form.secret || "-" }}</div>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="应用名称" prop="name">
+            <el-form-item :label="td('ds.client.appName')" prop="name">
               <div>{{ form.name || "-" }}</div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="应用图标" prop="logo">
+            <el-form-item :label="td('ds.client.appIcon')" prop="logo">
               <image-preview :src="form.logo || noDataImg" :width="50" :height="50" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="应用类型" prop="type">
+            <el-form-item :label="td('ds.client.appType')" prop="type">
               <dict-tag :options="auth_app_type" :value="form.type" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="是否公开" prop="publicFlag">
+            <el-form-item :label="td('ds.client.isPublic')" prop="publicFlag">
               <dict-tag :options="auth_public" :value="form.publicFlag" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="主页地址" prop="homepageUrl">
+            <el-form-item :label="td('ds.client.homepageUrl')" prop="homepageUrl">
               <div>{{ form.homepageUrl || "-" }}</div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="同步地址" prop="syncUrl">
+            <el-form-item :label="td('ds.client.syncUrl')" prop="syncUrl">
               <div>{{ form.syncUrl || "-" }}</div>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="授权路径" prop="allowUrl">
+            <el-form-item :label="td('ds.client.authPath')" prop="allowUrl">
               <div>{{ form.allowUrl || "-" }}</div>
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="描述" prop="description">
+            <el-form-item :label="td('common.form.description')" prop="description">
               <div>{{ form.description || "-" }}</div>
             </el-form-item>
           </el-col>
@@ -351,7 +351,7 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="cancel">关 闭</el-button>
+          <el-button size="mini" @click="cancel">{{td('common.button.close')}}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -363,22 +363,22 @@
         :action="upload.url + '?updateSupport=' + upload.updateSupport" :disabled="upload.isUploading"
         :on-progress="handleFileUploadProgress" :on-success="handleFileSuccess" :auto-upload="false" drag>
         <el-icon class="el-icon--upload"><upload-filled /></el-icon>
-        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        <div class="el-upload__text" v-html="td('common.upload.dragOrClick')"></div>
         <template #tip>
           <div class="el-upload__tip text-center">
             <div class="el-upload__tip">
-              <el-checkbox v-model="upload.updateSupport" />是否更新已经存在的应用数据
+              <el-checkbox v-model="upload.updateSupport" />{{ td('ds.client.importTip') }}
             </div>
-            <span>仅允许导入xls、xlsx格式文件。</span>
+            <span>{{ td('common.upload.fileFormat') }}</span>
             <el-link type="primary" :underline="false" style="font-size: 12px; vertical-align: baseline"
-              @click="importTemplate">下载模板</el-link>
+              @click="importTemplate">{{ td('common.upload.downloadTemplate') }}</el-link>
           </div>
         </template>
       </el-upload>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="upload.open = false">取 消</el-button>
-          <el-button type="primary" @click="submitFileForm">确 定</el-button>
+          <el-button @click="upload.open = false">{{td('common.button.cancel')}}</el-button>
+          <el-button type="primary" @click="submitFileForm">{{td('common.button.confirm')}}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -408,16 +408,15 @@ const clientList = ref([]);
 
 // 列显隐信息
 const columns = ref([
-  { key: 0, label: "编号", visible: true },
-  { key: 1, label: "应用名称", visible: true },
-  { key: 3, label: "应用类型", visible: true },
-  { key: 2, label: "描述", visible: true },
-  { key: 16, label: "应用图标", visible: true },
-  // { key: 5, label: "允许授权的url", visible: true },
-  { key: 4, label: "是否公开", visible: true },
-  { key: 12, label: "创建人", visible: true },
-  { key: 14, label: "创建时间", visible: true },
-  { key: 15, label: "备注", visible: true },
+  { key: 0, label: td('common.texts.number'), visible: true },
+  { key: 1, label: td('ds.client.appName'), visible: true },
+  { key: 3, label: td('ds.client.appType'), visible: true },
+  { key: 2, label: td('common.form.description'), visible: true },
+  { key: 16, label: td('ds.client.appIcon'), visible: true },
+  { key: 4, label: td('ds.client.isPublic'), visible: true },
+  { key: 12, label: td('common.texts.createdBy'), visible: true },
+  { key: 14, label: td('common.form.createTime'), visible: true },
+  { key: 15, label: td('common.texts.remark'), visible: true },
 ]);
 
 const getColumnVisibility = (key) => {
@@ -474,8 +473,8 @@ const data = reactive({
     createTime: null,
   },
   rules: {
-    name: [{ required: true, message: "应用名称不能为空", trigger: "blur" }],
-    type: [{ required: true, message: "应用类型不能为空", trigger: "change" }],
+    name: [{ required: true, message: td('ds.client.appNameRequired'), trigger: "blur" }],
+    type: [{ required: true, message: td('ds.client.appTypeRequired'), trigger: "change" }],
   },
 });
 
@@ -554,7 +553,7 @@ function handleSortChange(column, prop, order) {
 function handleAdd() {
   reset();
   open.value = true;
-  title.value = "新增应用";
+  title.value = td('ds.client.addApp');
 
   data.form.publicFlag = "1";
 }
@@ -566,7 +565,7 @@ function handleUpdate(row) {
   getClient(_id).then((response) => {
     form.value = response.data;
     open.value = true;
-    title.value = "修改应用";
+    title.value = td('ds.client.editApp');
   });
 }
 
@@ -575,10 +574,10 @@ function handleReset(row) {
   const _id = row.id || ids.value;
 
   proxy.$modal
-    .confirm("是否确认重置秘钥，秘钥重置后请使用新秘钥访问。")
+    .confirm(td('ds.client.resetSecretConfirm'))
     .then(function () {
       resetSecret(_id).then((res) => {
-        proxy.$modal.msgSuccess("新秘钥为：" + res.data);
+        proxy.$modal.msgSuccess(td('ds.client.newSecret') + res.data);
         getList();
       });
     });
@@ -603,7 +602,7 @@ function submitForm() {
       if (form.value.id != null) {
         updateClient(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("修改成功");
+            proxy.$modal.msgSuccess(td('ds.client.editSuccess'));
             open.value = false;
             getList();
           })
@@ -611,7 +610,7 @@ function submitForm() {
       } else {
         addClient(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("新增成功");
+            proxy.$modal.msgSuccess(td('ds.client.addSuccess'));
             open.value = false;
             getList();
           })
@@ -625,13 +624,13 @@ function submitForm() {
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
-    .confirm('是否确认删除编号为"' + _ids + '"的数据项？')
+    .confirm(td('ds.client.deleteConfirm') + _ids + td('ds.client.deleteConfirmSuffix'))
     .then(function () {
       return delClient(_ids);
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
     })
     .catch(() => { });
 }
@@ -650,7 +649,7 @@ function handleExport() {
 /** ---------------- 导入相关操作 -----------------**/
 /** 导入按钮操作 */
 function handleImport() {
-  upload.title = "应用导入";
+  upload.title = td('ds.client.importTitle');
   upload.open = true;
 }
 
@@ -682,7 +681,7 @@ const handleFileSuccess = (response, file, fileList) => {
     "<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +
     response.msg +
     "</div>",
-    "导入结果",
+    td('ds.client.importResult'),
     { dangerouslyUseHTMLString: true }
   );
   getList();

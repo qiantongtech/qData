@@ -32,6 +32,9 @@
 
 <script setup>
 import { inject, ref, onBeforeUnmount, computed } from "vue"
+import useDefaultLang from "@/composables/useDefaultLang"
+
+const { td } = useDefaultLang();
 const emits = defineEmits(["nodeClick"])
 const getNode = inject("getNode")
 const node = getNode ? getNode() : null
@@ -78,11 +81,11 @@ const iconWhite = computed(() => {
 
 // 状态配置
 const toolbar = [
-    { id: "1", icon: "zzzx", tip: "正在执行" },
-    { id: "5", icon: "tz", tip: "停止" },
-    { id: "6", icon: "sb", tip: "失败" },
-    { id: "7", icon: "cg", tip: "成功" },
-    { id: "14", icon: "dd", tip: "等待" },
+    { id: "1", icon: "zzzx", tip: td('dpp.node.statusExecuting', '正在执行') },
+    { id: "5", icon: "tz", tip: td('dpp.node.statusStopped', '停止') },
+    { id: "6", icon: "sb", tip: td('dpp.node.statusFailed', '失败') },
+    { id: "7", icon: "cg", tip: td('dpp.node.statusSuccess', '成功') },
+    { id: "14", icon: "dd", tip: td('dpp.node.statusWaiting', '等待') },
 ]
 
 const statusItem = computed(() => {
@@ -94,7 +97,7 @@ const statusIcon = computed(() => {
     return new URL(`/src/assets/dpp/etl/${iconFile}.svg`, import.meta.url).href
 })
 
-const statusTip = computed(() => statusItem.value?.tip || "未知状态")
+const statusTip = computed(() => statusItem.value?.tip || td('dpp.node.unknownStatus', '未知状态'))
 
 const emitClick = () => {
     emits("nodeClick", nodeData.value)

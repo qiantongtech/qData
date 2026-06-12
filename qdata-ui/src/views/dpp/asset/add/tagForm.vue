@@ -18,7 +18,7 @@
 <template>
   <!-- 打标新增标签弹窗 -->
   <el-dialog
-    title="新增标签"
+    :title="td('dpp.asset.add.tag.addTag')"
     v-model="visible"
     width="800px"
     :append-to="$parent?.$refs['app-container']"
@@ -26,7 +26,7 @@
   >
     <template #header="{ close, titleId, titleClass }">
       <span role="heading" aria-level="2" class="el-dialog__title">
-        新增标签
+        {{ td('dpp.asset.add.tag.addTag') }}
       </span>
     </template>
     <el-form
@@ -38,22 +38,22 @@
     >
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="标签名称" prop="name">
-            <el-input v-model="formData.name" placeholder="请输入标签名称" />
+          <el-form-item :label="td('dpp.asset.add.tag.tagName')" prop="name">
+            <el-input v-model="formData.name" :placeholder="td('dpp.asset.add.tag.tagNamePlaceholder')" />
           </el-form-item>
         </el-col>
       </el-row>
 
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="标签管理类目" prop="catCode">
+          <el-form-item :label="td('dpp.asset.add.tag.tagCategory')" prop="catCode">
             <el-tree-select
               filterable
               v-model="formData.catCode"
               :data="deptOptions"
               :props="{ value: 'code', label: 'name', children: 'children' }"
               value-key="ID"
-              placeholder="请选择标签管理类目"
+              :placeholder="td('dpp.asset.add.tag.tagCategoryPlaceholder')"
               check-strictly
             />
           </el-form-item>
@@ -61,36 +61,36 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="t('common.texts.description')" prop="description">
+          <el-form-item :label="td('common.texts.description')" prop="description">
             <el-input
               v-model="formData.description"
               type="textarea"
-              maxlength="500个字符"
+              :maxlength="500"
               show-word-limit
-              :placeholder="t('common.form.descriptionPlaceholder')"
+              :placeholder="td('common.form.descriptionPlaceholder')"
             />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="近义词" prop="nearSynonyms">
+          <el-form-item :label="td('dpp.asset.add.tag.nearSynonyms')" prop="nearSynonyms">
             <el-input
               v-model="formData.nearSynonyms"
-              placeholder="请输入标签名称的近义词，多个请用逗号分隔"
+              :placeholder="td('dpp.asset.add.tag.nearSynonymsPlaceholder')"
             />
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="同义词" prop="synonyms">
+          <el-form-item :label="td('dpp.asset.add.tag.synonyms')" prop="synonyms">
             <el-input
               v-model="formData.synonyms"
-              placeholder="请输入标签名称的同义词，多个请用逗号分隔"
+              :placeholder="td('dpp.asset.add.tag.synonymsPlaceholder')"
             />
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item :label="t('common.texts.status')" prop="status">
+          <el-form-item :label="td('common.texts.status')" prop="status">
             <el-radio-group v-model="formData.status">
               <el-radio
                 v-for="dict in dp_model_status"
@@ -104,13 +104,13 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="t('common.texts.remark')" prop="remark">
+          <el-form-item :label="td('common.texts.remark')" prop="remark">
             <el-input
               v-model="formData.remark"
               type="textarea"
-              maxlength="500个字符"
+              :maxlength="500"
               show-word-limit
-              :placeholder="t('common.form.remarkPlaceholder')"
+              :placeholder="td('common.form.remarkPlaceholder')"
             />
           </el-form-item>
         </el-col>
@@ -118,9 +118,9 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="cancel">{{ t('common.button.cancel') }}</el-button>
+        <el-button size="mini" @click="cancel">{{ td('common.button.cancel') }}</el-button>
         <el-button type="primary" size="mini" @click="submitForm"
-          >{{ t('common.button.confirm') }}</el-button
+          >{{ td('common.button.confirm') }}</el-button
         >
       </div>
     </template>
@@ -128,7 +128,7 @@
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import {
   ref,
   reactive,
@@ -144,7 +144,7 @@ const { proxy } = getCurrentInstance();
 const { dp_model_status } = proxy.useDict("dp_model_status");
 import { listAttTagCat } from "@/api/att/cat/tagCat/tagCat.js";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 // 定义组件属性
 const props = defineProps({
   modelValue: {
@@ -175,7 +175,7 @@ function getDeptTree() {
     deptOptions.value = proxy.handleTree(response.data, "id", "parentId");
     deptOptions.value = [
       {
-        name: "标签管理类目",
+        name: td('dpp.asset.add.tag.tagCategoryRoot'),
         value: "",
         id: 0,
         children: deptOptions.value,
@@ -185,9 +185,9 @@ function getDeptTree() {
 }
 getDeptTree();
 const rules = {
-  name: [{ required: true, message: "标签名称不能为空", trigger: "blur" }],
+  name: [{ required: true, message: td('dpp.asset.add.tag.tagNameRequired'), trigger: "blur" }],
   catCode: [
-    { required: true, message: "标签管理类目不能为空", trigger: "change" },
+    { required: true, message: td('dpp.asset.add.tag.tagCategoryRequired'), trigger: "change" },
   ],
 };
 
@@ -225,7 +225,7 @@ function submitForm() {
   AttTagRef.value.validate((valid) => {
     if (valid) {
       addAttTag(formData).then((response) => {
-        proxy.$modal.msgSuccess(t('common.message.addSuccess'));
+        proxy.$modal.msgSuccess(td('common.message.addSuccess'));
         visible.value = false;
         resetForm();
         emit("confirm");

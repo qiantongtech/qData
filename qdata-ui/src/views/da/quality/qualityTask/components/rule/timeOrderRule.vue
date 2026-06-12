@@ -25,7 +25,7 @@
         <el-select
           v-if="form.conditions.length > 0"
           v-model="form.conditions[0].leftField"
-          placeholder="字段"
+          :placeholder="td('da.qualityTaskRules.ruleCommon.fieldPlaceholder')"
           style="width: 120px"
           @change="onLeftFieldChange($event, 0)"
         >
@@ -40,7 +40,7 @@
         <template v-for="(cond, index) in form.conditions" :key="index">
           <el-select
             v-model="cond.operator"
-            placeholder="符号"
+            :placeholder="td('da.qualityTaskRules.ruleCommon.operatorPlaceholder')"
             style="width: 50px"
           >
             <el-option label="<" value="<" />
@@ -49,7 +49,7 @@
 
           <el-select
             v-model="cond.rightField"
-            placeholder="字段"
+            :placeholder="td('da.qualityTaskRules.ruleCommon.fieldPlaceholder')"
             style="width: 120px"
           >
             <el-option
@@ -84,6 +84,9 @@
 
 <script setup>
 import { reactive, ref, computed, watch, onMounted } from "vue";
+import useDefaultLang from "@/composables/useDefaultLang";
+
+const { td } = useDefaultLang();
 
 const props = defineProps({
   form: Object,
@@ -171,21 +174,21 @@ watch(
 
 function validateCalculationGroups() {
   if (form.conditions.length === 0) {
-    ElMessage.warning("校验未通过，请至少添加一组计算条件");
+    ElMessage.warning(td('da.qualityTaskRules.ruleCommon.conditionGroupRequired'));
     return false;
   }
   for (let i = 0; i < form.conditions.length; i++) {
     const group = form.conditions[i];
     if (!group.leftField) {
-      ElMessage.warning(`校验未通过，请填写第 ${i + 1} 个计算组的左字段`);
+      ElMessage.warning(td('da.qualityTaskRules.ruleCommon.leftFieldRequired', { i: i + 1 }));
       return false;
     }
     if (!group.operator || !["<", "<="].includes(group.operator)) {
-      ElMessage.warning(`校验未通过，第 ${i + 1} 个计算组的符号无效`);
+      ElMessage.warning(td('da.qualityTaskRules.ruleCommon.operatorInvalid', { i: i + 1 }));
       return false;
     }
     if (!group.rightField) {
-      ElMessage.warning(`校验未通过，请填写第 ${i + 1} 个计算组的右字段`);
+      ElMessage.warning(td('da.qualityTaskRules.ruleCommon.rightFieldRequired', { i: i + 1 }));
       return false;
     }
   }
@@ -196,7 +199,7 @@ function validate() {
   return new Promise((resolve) => {
     formRef.value.validate((valid) => {
       if (!valid) {
-        ElMessage.warning("校验未通过，请完善表单必填项");
+        ElMessage.warning(td('da.qualityTaskRules.ruleCommon.formIncomplete'));
         resolve({ valid: false });
         return;
       }

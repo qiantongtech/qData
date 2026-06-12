@@ -42,7 +42,7 @@
                 <el-row :gutter="20">
                     <el-col :span="8">
                         <div class="infotop-row border-top">
-                            <div class="infotop-row-lable">英文名称</div>
+                            <div class="infotop-row-lable">{{ td('dp.dataElem.nameEn') }}</div>
                             <div class="infotop-row-value">
                                 {{ dpDataElemDetail.engName || '-' }}
                             </div>
@@ -50,7 +50,7 @@
                     </el-col>
                     <el-col :span="8">
                         <div class="infotop-row border-top">
-                            <div class="infotop-row-lable">类目编码</div>
+                            <div class="infotop-row-lable">{{ td('dp.dataElem.catCode') }}</div>
                             <div class="infotop-row-value">
                                 {{ dpDataElemDetail.catName || '-' }}
                             </div>
@@ -58,7 +58,7 @@
                     </el-col>
                     <el-col :span="8">
                         <div class="infotop-row border-top">
-                            <div class="infotop-row-lable">类型</div>
+                            <div class="infotop-row-lable">{{ td('dp.dataElem.type') }}</div>
                             <div class="infotop-row-value">
                                 <dict-tag :options="dp_data_elem_code_type" :value="dpDataElemDetail.type" />
                             </div>
@@ -66,7 +66,7 @@
                     </el-col>
                     <el-col :span="8">
                         <div class="infotop-row border-top">
-                            <div class="infotop-row-lable">责任人</div>
+                            <div class="infotop-row-lable">{{ td('dp.dataElem.personCharge') }}</div>
                             <div class="infotop-row-value">
                                 {{ dpDataElemDetail.personCharge || '-' }}
                             </div>
@@ -74,7 +74,7 @@
                     </el-col>
                     <el-col :span="8">
                         <div class="infotop-row border-top">
-                            <div class="infotop-row-lable">联系电话</div>
+                            <div class="infotop-row-lable">{{ td('dp.dataElem.contactNumber') }}</div>
                             <div class="infotop-row-value">
                                 {{ dpDataElemDetail.contactNumber || '-' }}
                             </div>
@@ -82,7 +82,7 @@
                     </el-col>
                     <el-col :span="8">
                         <div class="infotop-row border-top">
-                            <div class="infotop-row-lable">字段类型</div>
+                            <div class="infotop-row-lable">{{ td('dp.dataElem.columnType') }}</div>
                             <div class="infotop-row-value">
                                 <dict-tag :options="column_type" :value="dpDataElemDetail.columnType" />
                             </div>
@@ -90,7 +90,7 @@
                     </el-col>
                     <el-col :span="8">
                         <div class="infotop-row border-top">
-                            <div class="infotop-row-lable">{{ t('common.texts.status') }}</div>
+                            <div class="infotop-row-lable">{{ td('common.texts.status') }}</div>
                             <div class="infotop-row-value">
                                 <dict-tag :options="sys_disable" :value="dpDataElemDetail.status" />
                             </div>
@@ -98,7 +98,7 @@
                     </el-col>
                     <el-col :span="8">
                         <div class="infotop-row border-top">
-                            <div class="infotop-row-lable">{{ t('common.texts.createdTime') }}</div>
+                            <div class="infotop-row-lable">{{ td('common.texts.createdTime') }}</div>
                             <div class="infotop-row-value">
                                 {{ parseTime(dpDataElemDetail.createTime, '{y}-{m}-{d}') }}
                             </div>
@@ -106,7 +106,7 @@
                     </el-col>
                     <el-col :span="8">
                         <div class="infotop-row border-top">
-                            <div class="infotop-row-lable">{{ t('common.texts.createdBy') }}</div>
+                            <div class="infotop-row-lable">{{ td('common.texts.createdBy') }}</div>
                             <div class="infotop-row-value">
                                 {{ dpDataElemDetail.createBy || '-' }}
                             </div>
@@ -114,7 +114,7 @@
                     </el-col>
                     <el-col :span="24">
                         <div class="infotop-row border-top">
-                            <div class="infotop-row-lable">{{ t('common.texts.description') }}</div>
+                            <div class="infotop-row-lable">{{ td('common.texts.description') }}</div>
                             <div class="infotop-row-value">
                                 {{ dpDataElemDetail.description || '-' }}
                             </div>
@@ -126,13 +126,13 @@
 
         <div class="pagecont-bottom">
             <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
-                <el-tab-pane label="代码字典" name="1">
+                <el-tab-pane :label="td('dp.dataElem.detail.codeDict')" name="1">
                     <codeDict />
                 </el-tab-pane>
-                <el-tab-pane label="代码映射" name="2">
+                <el-tab-pane :label="td('dp.dataElem.detail.codeMap')" name="2">
                     <codeMap />
                 </el-tab-pane>
-                <el-tab-pane label="关联信息" name="3">
+                <el-tab-pane :label="td('dp.dataElem.detail.relationInfo')" name="3">
                     <asset />
                 </el-tab-pane>
             </el-tabs>
@@ -141,14 +141,14 @@
 </template>
 
 <script setup name="DpDataElem">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { getDpDataElem } from '@/api/dp/dataElem/dataElem';
 import { useRoute } from 'vue-router';
 import codeDict from '@/views/dp/dataElem/detail/dict/codeDict.vue';
 import codeMap from '@/views/dp/dataElem/detail/dict/codeMap.vue';
 import asset from "@/views/dp/dataElem/detail/components/asset.vue";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { column_type, sys_disable, dp_data_elem_code_type } = proxy.useDict(
     'column_type',

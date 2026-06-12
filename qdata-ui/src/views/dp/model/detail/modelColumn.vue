@@ -28,7 +28,7 @@
         @click="handleAdd"
         @mousedown="(e) => e.preventDefault()"
       >
-        <i class="iconfont-mini icon-xinzeng mr5"></i>{{ t('common.button.add') }}
+        <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('common.button.add') }}
       </el-button>
     </template>
 
@@ -43,7 +43,7 @@
       </template>
       <template #action="{ row }">
         <el-button link type="primary" icon="View" @click="handleDetail(row)"
-          >{{ t('common.button.details') }}</el-button
+          >{{ td('common.button.details') }}</el-button
         >
         <el-button
           v-if="!isDetail"
@@ -51,7 +51,7 @@
           type="primary"
           icon="Edit"
           @click="handleUpdate(row)"
-          >{{ t('common.button.update') }}</el-button
+          >{{ td('common.button.update') }}</el-button
         >
         <el-button
           v-if="!isDetail"
@@ -59,7 +59,7 @@
           type="danger"
           icon="Delete"
           @click="handleDelete(row)"
-          >{{ t('common.button.delete') }}</el-button
+          >{{ td('common.button.delete') }}</el-button
         >
       </template>
     </qt-table>
@@ -87,10 +87,10 @@
     >
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="关联标准" prop="dataElemId">
+          <el-form-item :label="td('dp.modelForm.relatedStandard')" prop="dataElemId">
             <el-select
               v-model="form.dataElemId"
-              placeholder="请选择关联标准"
+              :placeholder="td('dp.modelForm.relatedStandardPlaceholder')"
               @change="handleDatasourceChange"
               filterable
               clearable
@@ -105,24 +105,24 @@
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="中文名称" prop="cnName">
-            <el-input v-model="form.cnName" placeholder="请输入中文名称" />
+          <el-form-item :label="td('dp.model.chineseName')" prop="cnName">
+            <el-input v-model="form.cnName" :placeholder="td('dp.model.chineseNamePlaceholder')" />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="英文名称" prop="engName">
+          <el-form-item :label="td('dp.model.englishName')" prop="engName">
             <el-input
               v-model="form.engName"
-              placeholder="请输入英文名称"
+              :placeholder="td('dp.model.englishNamePlaceholder')"
               @input="convertToUpperCase('engName', form.engName)"
             />
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="数据类型" prop="columnType">
-            <el-select v-model="form.columnType" placeholder="请选择数据类型">
+          <el-form-item :label="td('dp.modelForm.dataType')" prop="columnType">
+            <el-select v-model="form.columnType" :placeholder="td('dp.modelForm.dataTypePlaceholder')">
               <el-option
                 v-for="dict in column_type"
                 :key="dict.value"
@@ -136,7 +136,7 @@
 
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="属性长度" prop="columnLength">
+          <el-form-item :label="td('dp.modelForm.attributeLength')" prop="columnLength">
             <el-input-number
               :step="1"
               step-strictly
@@ -145,7 +145,7 @@
               controls-position="right"
               :min="1"
               :max="9999999999"
-              placeholder="请输入属性长度"
+              :placeholder="td('dp.modelForm.attributeLengthPlaceholder')"
             />
           </el-form-item>
         </el-col>
@@ -154,7 +154,7 @@
       <el-row :gutter="20">
         <el-col :span="24">
           <!-- decimal、NUMERIC、number -->
-          <el-form-item label="小数位数" prop="columnScale">
+          <el-form-item :label="td('dp.modelForm.decimalPlaces')" prop="columnScale">
             <el-input-number
               :disabled="
                 form.columnType !== 'DECIMAL' &&
@@ -170,38 +170,38 @@
               controls-position="right"
               :min="0"
               :max="9999999999"
-              placeholder="请输入小数长度"
+              :placeholder="td('dp.modelForm.decimalPlacesPlaceholder')"
             />
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="默认值" prop="defaultValue">
-            <el-input v-model="form.defaultValue" placeholder="请输入默认值" />
+          <el-form-item :label="td('dp.modelForm.defaultValue')" prop="defaultValue">
+            <el-input v-model="form.defaultValue" :placeholder="td('dp.modelForm.defaultValuePlaceholder')" />
           </el-form-item>
         </el-col>
       </el-row>
 
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="t('common.texts.description')" prop="modelComment">
+          <el-form-item :label="td('common.texts.description')" prop="modelComment">
             <el-input
               v-model="form.modelComment"
               type="textarea"
               maxlength="500个字符"
               show-word-limit
-              :placeholder="t('common.form.descriptionPlaceholder')"
+              :placeholder="td('common.form.descriptionPlaceholder')"
             />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="t('common.texts.remark')">
+          <el-form-item :label="td('common.texts.remark')">
             <el-input
               type="textarea"
               maxlength="500个字符"
               show-word-limit
-              :placeholder="t('common.form.remarkPlaceholder')"
+              :placeholder="td('common.form.remarkPlaceholder')"
               v-model="form.remark"
               :min-height="192"
             />
@@ -210,7 +210,7 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="是否主键" prop="pkFlag">
+          <el-form-item :label="td('dp.modelForm.isPrimaryKey')" prop="pkFlag">
             <el-radio-group v-model="form.pkFlag" @change="handlePkFlagChange">
               <el-radio
                 v-for="dict in dp_model_column_pk_flag"
@@ -222,7 +222,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="是否必填" prop="nullableFlag">
+          <el-form-item :label="td('dp.modelForm.isRequired')" prop="nullableFlag">
             <el-radio-group
               v-model="form.nullableFlag"
               :disabled="form.pkFlag == 1"
@@ -240,9 +240,9 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="cancel">{{ t('common.button.cancel') }}</el-button>
+        <el-button size="mini" @click="cancel">{{ td('common.button.cancel') }}</el-button>
         <el-button type="primary" size="mini" @click="submitForm"
-          >{{ t('common.button.confirm') }}</el-button
+          >{{ td('common.button.confirm') }}</el-button
         >
       </div>
     </template>
@@ -267,40 +267,40 @@
       label-width="110px"
       class="column-form"
     >
-      <el-form-item label="编号:" prop="id">
+      <el-form-item :label="td('common.texts.number')" prop="id">
         <div class="form-readonly">
           {{ form.id }}
         </div>
       </el-form-item>
-      <el-form-item label="关联数据标准" prop="dataElemId">
+      <el-form-item :label="td('dp.modelForm.relatedDataStandard')" prop="dataElemId">
         <div class="form-readonly">{{ form.dataElemName || "-" }}</div>
       </el-form-item>
-      <el-form-item label="中文名称" prop="cnName">
+      <el-form-item :label="td('dp.model.chineseName')" prop="cnName">
         <div class="form-readonly">{{ form.cnName || "-" }}</div>
       </el-form-item>
-      <el-form-item label="英文名称" prop="engName">
+      <el-form-item :label="td('dp.model.englishName')" prop="engName">
         <div class="form-readonly">{{ form.engName || "-" }}</div>
       </el-form-item>
-      <el-form-item label="数据类型" prop="columnType">
+      <el-form-item :label="td('dp.modelForm.dataType')" prop="columnType">
         <div class="form-readonly">
           <dict-tag :options="column_type" :value="form.columnType" />
         </div>
       </el-form-item>
-      <el-form-item label="属性长度" prop="columnLength">
+      <el-form-item :label="td('dp.modelForm.attributeLength')" prop="columnLength">
         <div class="form-readonly">{{ form.columnLength || "-" }}</div>
       </el-form-item>
-      <el-form-item label="小数长度" prop="columnScale">
+      <el-form-item :label="td('dp.modelForm.decimalPlaces')" prop="columnScale">
         <div class="form-readonly">{{ form.columnScale ?? "-" }}</div>
       </el-form-item>
-      <el-form-item label="默认值" prop="defaultValue">
+      <el-form-item :label="td('dp.modelForm.defaultValue')" prop="defaultValue">
         <div class="form-readonly">{{ form.defaultValue || "-" }}</div>
       </el-form-item>
-      <el-form-item label="是否主键" prop="pkFlag">
+      <el-form-item :label="td('dp.modelForm.isPrimaryKey')" prop="pkFlag">
         <div class="form-readonly">
           <dict-tag :options="dp_model_column_pk_flag" :value="form.pkFlag" />
         </div>
       </el-form-item>
-      <el-form-item label="是否必填" prop="nullableFlag">
+      <el-form-item :label="td('dp.modelForm.isRequired')" prop="nullableFlag">
         <div class="form-readonly">
           <dict-tag
             :options="dp_model_column_nullable_flag"
@@ -308,37 +308,37 @@
           />
         </div>
       </el-form-item>
-      <el-form-item label="排序" prop="sortOrder">
+      <el-form-item :label="td('dp.modelForm.sortOrder')" prop="sortOrder">
         <div class="form-readonly">{{ form.sortOrder || "-" }}</div>
       </el-form-item>
-      <el-form-item :label="t('common.texts.description')" prop="modelComment" class="row-full">
+      <el-form-item :label="td('common.texts.description')" prop="modelComment" class="row-full">
         <div class="form-readonly textarea">
           {{ form.modelComment || "-" }}
         </div>
       </el-form-item>
-      <el-form-item :label="t('common.texts.remark')" prop="remark" class="row-full">
+      <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full">
         <div class="form-readonly textarea">{{ form.remark || "-" }}</div>
       </el-form-item>
 
-      <el-form-item :label="t('common.texts.createdBy')" prop="createBy">
+      <el-form-item :label="td('common.texts.createdBy')" prop="createBy">
         <div class="form-readonly">
           {{ form.createBy }}
         </div>
       </el-form-item>
 
-      <el-form-item :label="t('common.texts.createdTime')" prop="createTime">
+      <el-form-item :label="td('common.texts.createdTime')" prop="createTime">
         <div class="form-readonly">
           {{ parseTime(form.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
         </div>
       </el-form-item>
 
-      <el-form-item :label="t('common.texts.updatedBy')" prop="updateBy">
+      <el-form-item :label="td('common.texts.updatedBy')" prop="updateBy">
         <div class="form-readonly">
           {{ form.updateBy }}
         </div>
       </el-form-item>
 
-      <el-form-item :label="t('common.texts.updatedTime')" prop="updateTime">
+      <el-form-item :label="td('common.texts.updatedTime')" prop="updateTime">
         <div class="form-readonly">
           {{ parseTime(form.updateTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
         </div>
@@ -346,14 +346,14 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="cancel">{{ t('common.button.close') }}</el-button>
+        <el-button @click="cancel">{{ td('common.button.close') }}</el-button>
       </div>
     </template>
   </el-dialog>
 </template>
 
 <script setup name="ComponentOne">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import {
   listDpModelColumn,
   getDpModelColumn,
@@ -364,7 +364,7 @@ import {
 import { getDpDataElemList } from "@/api/dp/dataElem/dataElem";
 import { deptTreeSelectNoPermi } from "@/api/system/system/user.js";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const props = defineProps({
   isDetail: {
@@ -433,15 +433,11 @@ const data = reactive({
     createTime: null,
   },
   rules: {
-    // 示例规则（可以根据需求添加或修改）
-    cnName: [{ required: true, message: "中文名称不能为空", trigger: "blur" }],
-    engName: [{ required: true, message: "英文名称不能为空", trigger: "blur" }],
+    cnName: [{ required: true, message: td('dp.dataElem.nameZhRequired'), trigger: "blur" }],
+    engName: [{ required: true, message: td('dp.dataElem.nameEnRequired'), trigger: "blur" }],
     columnType: [
-      { required: true, message: "数据类型不能为空", trigger: "blur" },
+      { required: true, message: td('dp.modelForm.dataTypeRequired'), trigger: "blur" },
     ],
-
-    // pkFlag: [{ required: true, message: '是否主键不能为空', trigger: 'blur' }],
-    // nullableFlag: [{ required: true, message: '是否必填不能为空', trigger: 'blur' }]
   },
 });
 const { queryParams, form, dpModelColumnDetail, rules } = toRefs(data);
@@ -458,45 +454,45 @@ const tableStore = reactive({
     },
   },
   columns: [
-    { label: t('common.texts.number'), prop: "id", width: 60, sortable: true },
-    { label: "关联标准", prop: "dataElemName", align: "left", width: 240 },
+    { label: td('common.texts.number'), prop: "id", width: 60, sortable: true },
+    { label: td('dp.modelForm.relatedStandard'), prop: "dataElemName", align: "left", width: 240 },
     {
-      label: "中文名称",
+      label: td('dp.model.chineseName'),
       prop: "cnName",
       width: 240,
       align: "left",
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: "英文名称",
+      label: td('dp.model.englishName'),
       prop: "engName",
       width: 240,
       align: "left",
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: t('common.texts.description'),
+      label: td('common.texts.description'),
       prop: "description",
       align: "left",
       width: 250,
       showOverflowTooltip: { effect: "light" },
     },
-    { label: "数据类型", prop: "columnType", width: 120 },
+    { label: td('dp.modelForm.dataType'), prop: "columnType", width: 120 },
 
-    { label: "属性长度", prop: "columnLength", width: 120 },
+    { label: td('dp.modelForm.attributeLength'), prop: "columnLength", width: 120 },
     {
-      label: "是否主键",
+      label: td('dp.modelForm.isPrimaryKey'),
       prop: "pkFlag",
       slot: "pkFlag",
     },
     {
-      label: t('common.texts.createdBy'),
+      label: td('common.texts.createdBy'),
       prop: "createBy",
       width: 160,
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: t('common.texts.createdTime'),
+      label: td('common.texts.createdTime'),
       prop: "createTime",
       sortable: true,
       sortableKey: "create_time",
@@ -504,7 +500,7 @@ const tableStore = reactive({
       date: true,
     },
     {
-      label: t('common.texts.operation'),
+      label: td('common.texts.operation'),
       align: "center",
       fixed: "right",
       width: 240,
@@ -618,7 +614,7 @@ function handleSelectionChange(selection) {
 function handleAdd() {
   reset();
   open.value = true;
-  title.value = "新增逻辑模型属性信息";
+  title.value = td('dp.modelForm.addModelProperty');
 }
 
 /** 修改按钮操作 */
@@ -628,7 +624,7 @@ function handleUpdate(row) {
   getDpModelColumn(_id).then((response) => {
     form.value = response.data;
     open.value = true;
-    title.value = "修改逻辑模型属性信息";
+    title.value = td('dp.modelForm.editModelProperty');
   });
 }
 
@@ -639,7 +635,7 @@ function handleDetail(row) {
   getDpModelColumn(_id).then((response) => {
     form.value = response.data;
     openDetail.value = true;
-    title.value = "逻辑模型属性信息详情";
+    title.value = td('dp.modelForm.modelPropertyDetail');
   });
 }
 
@@ -651,7 +647,7 @@ function submitForm() {
       if (form.value.id != null) {
         updateDpModelColumns(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess(t('common.message.editSuccess'));
+            proxy.$modal.msgSuccess(td('common.message.editSuccess'));
             open.value = false;
             getList();
           })
@@ -659,7 +655,7 @@ function submitForm() {
       } else {
         addDpModelColumn(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess(t('common.message.addSuccess'));
+            proxy.$modal.msgSuccess(td('common.message.addSuccess'));
             open.value = false;
             getList();
           })
@@ -673,13 +669,13 @@ function submitForm() {
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
-    .confirm('是否确认删除逻辑模型属性信息编号为"' + _ids + '"的数据项？')
+    .confirm(td('dp.modelForm.confirmDeleteProperty', { id: _ids }))
     .then(function () {
       return delDpModelColumns(_ids);
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+      proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
     })
     .catch(() => {});
 }

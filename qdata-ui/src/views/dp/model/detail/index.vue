@@ -31,18 +31,18 @@
     <div class="pagecont-bottom">
       <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
         <qt-tab-pane
-          label="属性字段"
+          :label="td('dp.modelForm.attributeFields')"
           name="1"
         >
           <modelColumn :is-detail="isMaterializedDetail" />
         </qt-tab-pane>
-        <el-tab-pane label="发布日志" name="2" v-if="isMaterializedDetail">
+        <el-tab-pane :label="td('dp.document.releaseLog')" name="2" v-if="isMaterializedDetail">
           <modelMaterialized
             :modelId="route.query.id"
             :row="dpModelDetail"
           ></modelMaterialized>
         </el-tab-pane>
-        <el-tab-pane label="详细信息" name="3">
+        <el-tab-pane :label="td('dp.document.detailInfo')" name="3">
           <info :daDiscoveryTaskDetail="dpModelDetail"></info>
         </el-tab-pane>
       </el-tabs>
@@ -51,6 +51,7 @@
 </template>
 
 <script setup name="DpModel">
+import useDefaultLang from "@/composables/useDefaultLang";
 import { getDpModel } from "@/api/dp/model/model";
 import { useRoute, useRouter } from "vue-router";
 import { deptUserTree } from "@/api/system/system/user.js";
@@ -61,6 +62,7 @@ import {
   formatHierarchyDisplayName,
   formatModelName,
 } from "../../../../utils/dm/utils.js";
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { dp_model_status, dp_model_create_type, table_type } = proxy.useDict(
   "dp_model_status",
@@ -109,15 +111,15 @@ const { dpModelDetail, rules } = toRefs(data);
 const detailItems = computed(() => [
   {
     key: "modelName",
-    label: "英文名称",
+    label: td('dp.model.detail.englishName'),
   },
-  { label: "表类型", key: "tableType", dictOptions: table_type.value },
+  { label: td('dp.model.tableType'), key: "tableType", dictOptions: table_type.value },
   {
-    label: "归属层级",
+    label: td('dp.model.hierarchy'),
     formatter: (data) => formatHierarchyDisplayName(data, data.tableType),
   },
   {
-    label: "表命名规范",
+    label: td('dp.model.namingConvention'),
     formatter: (data) =>
       formatModelName({ ...data, modelName: "", modelNameSuffix: "" }),
   },

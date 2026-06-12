@@ -17,43 +17,43 @@
 
 <template>
     <!-- 申请服务弹框 -->
-    <el-dialog title="步骤里的字段和其来源" v-model="open" width="800px" :append-to="$refs['app-container']" draggable
+    <el-dialog :title="td('dpp.integration.fieldSourceTitle', '步骤里的字段和其来源')" v-model="open" width="800px" :append-to="$refs['app-container']" draggable
         destroy-on-close>
         <div class="info-line">
-            <span class="label">步骤名称：</span>
+            <span class="label">{{ td('dpp.integration.stepName', '步骤名称：') }}</span>
             <span class="value">{{ form.name || '-' }}</span>
         </div>
         <el-divider content-position="center">
             <span class="blue-text">{{ title }}</span>
         </el-divider>
         <el-table stripe height="420px" :data="tableFields">
-            <el-table-column label="序号" type="index" width="80" align="left">
+            <el-table-column :label="td('common.display.index', '序号')" type="index" width="80" align="left">
                 <template #default="scope">
                     <span>{{ scope.$index + 1 }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="字段名称" align="left" prop="columnName" :show-overflow-tooltip="{ effect: 'light' }" />
+            <el-table-column :label="td('dpp.integration.fieldName', '字段名称')" align="left" prop="columnName" :show-overflow-tooltip="{ effect: 'light' }" />
             <!-- <el-table-column label="字段注释"  align="left" prop="description" :show-overflow-tooltip="{effect: 'light'}">
                 <template #default="scope">
                     {{ scope.row.description || "-" }}
                 </template>
             </el-table-column> -->
-            <el-table-column label="字段类型" align="left" prop="columnType" :show-overflow-tooltip="{ effect: 'light' }">
+            <el-table-column :label="td('dpp.integration.fieldType', '字段类型')" align="left" prop="columnType" :show-overflow-tooltip="{ effect: 'light' }">
                 <template #default="scope">
                     {{ scope.row.columnType || "-" }}
                 </template>
             </el-table-column>
-            <el-table-column label="字段长度" align="left" prop="length" width="70">
+            <el-table-column :label="td('dpp.column.fieldLength', '字段长度')" align="left" prop="length" width="70">
                 <template #default="scope">
                     {{ scope.row.length || "-" }}
                 </template>
             </el-table-column>
-            <el-table-column label="字段精度" align="left" prop="precision" width="70">
+            <el-table-column :label="td('dpp.integration.fieldPrecision', '字段精度')" align="left" prop="precision" width="70">
                 <template #default="scope">
                     {{ scope.row.precision || "-" }}
                 </template>
             </el-table-column>
-            <el-table-column label="步骤来源" align="left" prop="source" :show-overflow-tooltip="{ effect: 'light' }">
+            <el-table-column :label="td('dpp.integration.stepSource', '步骤来源')" align="left" prop="source" :show-overflow-tooltip="{ effect: 'light' }">
                 <template #default="scope">
                     {{ scope.row.source || "-" }}
                 </template>
@@ -61,17 +61,17 @@
         </el-table>
         <template #footer>
             <div class="dialog-footer">
-                <el-button @click="cancel">{{ t('common.button.close') }}</el-button>
-                <!-- <el-button type="primary" @click="submitForm">{{ t('common.button.confirm') }}</el-button> -->
+                <el-button @click="cancel">{{ td('common.button.close') }}</el-button>
+                <!-- <el-button type="primary" @click="submitForm">{{ td('common.button.confirm') }}</el-button> -->
             </div>
         </template>
     </el-dialog>
 </template>
 
 <script setup name="RpApplyDialog">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const emit = defineEmits(['setLoading']);
 const open = ref(false);
 const cancel = () => {

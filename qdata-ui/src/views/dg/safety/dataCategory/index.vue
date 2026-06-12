@@ -21,9 +21,9 @@
       <DeptTree
         ref="DeptTreeRef"
         :leftWidth="leftWidth"
-        title="数据分类类目"
+        :title="td('dg.dataCategory.treeTitle')"
         type="dataCategory"
-        :placeholder="'请输入数据分类类目'"
+        :placeholder="td('dg.dataCategory.treePlaceholder')"
         editable
         :api="tagCatTreeApi"
         :extraParams="tagCatExtraParams"
@@ -48,7 +48,7 @@
               @click="handleAdd"
               v-hasPermi="['dg:dataCategory:add']"
             >
-              {{ t('common.button.add') }}
+              {{ td('common.button.add') }}
             </el-button>
 
             <el-button
@@ -59,7 +59,7 @@
               @click="handleDelete"
               v-hasPermi="['dg:dataCategory:remove']"
             >
-              {{ t('common.button.delete') }}
+              {{ td('common.button.delete') }}
             </el-button>
 
             <el-button
@@ -69,7 +69,7 @@
               :disabled="!store.rows.length"
               @click="handleBatchLevel"
             >
-              指定分级
+              {{ td('dg.dataCategory.assignLevel') }}
             </el-button>
           </template>
           <qt-table v-bind="tableStore" ref="tableRef">
@@ -110,7 +110,7 @@
                 "
                 @click="handleViewRule(row)"
               >
-                {{ row.desensitizationRulesFlag == 1 ? "已配置" : "未配置" }}
+                {{ row.desensitizationRulesFlag == 1 ? td('dg.dataCategory.configured') : td('dg.dataCategory.notConfigured') }}
               </el-tag>
             </template>
             <template #status="scope">
@@ -131,7 +131,7 @@
                 @click="handleDetail(row)"
                 v-hasPermi="['dg:dataCategory:query']"
               >
-                {{ t('common.button.details') }}
+                {{ td('common.button.details') }}
               </el-button>
               <el-button
                 link
@@ -141,13 +141,13 @@
                 :disabled="row.status == 1"
                 v-hasPermi="['dg:dataCategory:edit']"
               >
-                {{ t('common.button.update') }}
+                {{ td('common.button.update') }}
               </el-button>
 
               <el-popover placement="bottom" :width="150" trigger="click">
                 <template #reference>
                   <el-button link type="primary" icon="ArrowDown">
-                    {{ t('common.button.more') }}
+                    {{ td('common.button.more') }}
                   </el-button>
                 </template>
                 <div style="width: 100px" class="butgdlist">
@@ -159,7 +159,7 @@
                     @click="handleDelete(row)"
                     v-hasPermi="['dg:dataCategory:remove']"
                   >
-                    {{ t('common.button.delete') }}
+                    {{ td('common.button.delete') }}
                   </el-button>
                   <el-button
                     link
@@ -168,7 +168,7 @@
                     @click="handleMapping(row)"
                     style="padding-left: 14px"
                   >
-                    设置脱敏
+                    {{ td('dg.dataCategory.setDesensitization') }}
                   </el-button>
                 </div>
               </el-popover>
@@ -200,14 +200,14 @@
       >
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="所属类目" prop="catCode">
+            <el-form-item :label="td('dg.dataCategory.catCode')" prop="catCode">
               <el-tree-select
                 filterable
                 v-model="form.catCode"
                 :data="deptOptions"
                 :props="{ value: 'code', label: 'name', children: 'children' }"
                 value-key="id"
-                placeholder="请选择所属类目"
+                :placeholder="td('dg.dataCategory.catCodePlaceholder')"
                 check-strictly
                 @change="handleCatChange"
               />
@@ -217,18 +217,18 @@
 
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="分类名称" prop="name">
-              <el-input v-model="form.name" placeholder="请输入分类名称" />
+            <el-form-item :label="td('dg.dataCategory.categoryName')" prop="name">
+              <el-input v-model="form.name" :placeholder="td('dg.dataCategory.categoryNamePlaceholder')" />
             </el-form-item>
           </el-col>
         </el-row>
 
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="数据分级" prop="dataLevelId">
+            <el-form-item :label="td('dg.dataCategory.dataLevel')" prop="dataLevelId">
               <el-select
                 v-model="form.dataLevelId"
-                placeholder="请选择数据分级"
+                :placeholder="td('dg.dataCategory.dataLevelPlaceholder')"
               >
                 <el-option
                   v-for="opt in dataLevelOptions"
@@ -244,11 +244,11 @@
         <el-row :gutter="20">
           <el-col :span="24">
             <qt-form-item
-              label="优先级"
+              :label="td('dg.dataCategory.priority')"
               prop="priority"
-              :tip="{ content: '优先级越高，越优先匹配' }"
+              :tip="{ content: td('dg.dataCategory.priorityTip') }"
             >
-              <el-select v-model="form.priority" placeholder="请选择优先级">
+              <el-select v-model="form.priority" :placeholder="td('dg.dataCategory.priorityPlaceholder')">
                 <el-option
                   v-for="dict in dg_data_priority"
                   :key="dict.value"
@@ -261,8 +261,8 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="分类缩写">
-              <el-input v-model="form.shortName" placeholder="请输入分类缩写" />
+            <el-form-item :label="td('dg.dataCategory.shortName')">
+              <el-input v-model="form.shortName" :placeholder="td('dg.dataCategory.shortNamePlaceholder')" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -270,16 +270,15 @@
         <el-row :gutter="20">
           <el-col :span="24">
             <qt-form-item
-              :label="t('common.texts.status')"
+              :label="td('common.texts.status')"
               prop="validFlag"
               :tip="{
-                content:
-                  '启用状态表示该数据分类可用于打标数据资产；禁用后无法再被使用，但已有数据分类仍保留。',
+                content: td('dg.dataCategory.statusTip'),
               }"
             >
               <el-radio-group v-model="form.validFlag">
-                <el-radio :label="false">禁用</el-radio>
-                <el-radio :label="true">启用</el-radio>
+                <el-radio :label="false">{{ td('dg.dataCategory.disabledLabel') }}</el-radio>
+                <el-radio :label="true">{{ td('dg.dataCategory.enabledLabel') }}</el-radio>
               </el-radio-group>
             </qt-form-item>
           </el-col>
@@ -287,12 +286,12 @@
 
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="t('common.texts.description')" prop="description">
+            <el-form-item :label="td('common.texts.description')" prop="description">
               <el-input
                 v-model="form.description"
                 type="textarea"
-                :placeholder="t('common.form.descriptionPlaceholder')"
-                maxlength="500个字符"
+                :placeholder="td('common.form.descriptionPlaceholder')"
+                maxlength="500"
                 show-word-limit
               />
             </el-form-item>
@@ -301,13 +300,13 @@
 
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="t('common.texts.remark')" prop="remark">
+            <el-form-item :label="td('common.texts.remark')" prop="remark">
               <el-input
                 v-model="form.remark"
                 type="textarea"
-                maxlength="500个字符"
+                maxlength="500"
                 show-word-limit
-                :placeholder="t('common.form.remarkPlaceholder')"
+                :placeholder="td('common.form.remarkPlaceholder')"
               />
             </el-form-item>
           </el-col>
@@ -316,9 +315,9 @@
 
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="cancel">{{ t('common.button.cancel') }}</el-button>
+          <el-button size="mini" @click="cancel">{{ td('common.button.cancel') }}</el-button>
           <el-button type="primary" size="mini" @click="submitForm">
-            {{ t('common.button.confirm') }}
+            {{ td('common.button.confirm') }}
           </el-button>
         </div>
       </template>
@@ -342,65 +341,65 @@
         label-width="110px"
         class="column-form"
       >
-        <el-form-item label="编号:" prop="id">
+        <el-form-item :label="td('common.texts.number') + ':'" prop="id">
           <div class="form-readonly">{{ form.id ?? "-" }}</div>
         </el-form-item>
-        <el-form-item label="分类名称" prop="name">
+        <el-form-item :label="td('dg.dataCategory.categoryName')" prop="name">
           <div class="form-readonly">{{ form.name ?? "-" }}</div>
         </el-form-item>
-        <el-form-item label="所属类目" prop="catName">
+        <el-form-item :label="td('dg.dataCategory.catCode')" prop="catName">
           <div class="form-readonly">
             {{ form.catName ?? form.catCode ?? "-" }}
           </div>
         </el-form-item>
 
-        <el-form-item label="数据分级" prop="dataLevelId">
+        <el-form-item :label="td('dg.dataCategory.dataLevel')" prop="dataLevelId">
           <div v-if="form.dataLevelId">
             <LevelBadge :levelData="form.dataLevelShortName" />
           </div>
           <div class="form-readonly" v-else>-</div>
         </el-form-item>
-        <el-form-item label="优先级" prop="priority">
+        <el-form-item :label="td('dg.dataCategory.priority')" prop="priority">
           <dict-tag :options="dg_data_priority" :value="form.priority" />
         </el-form-item>
-        <el-form-item label="脱敏配置" prop="desensitizationRulesFlag">
+        <el-form-item :label="td('dg.dataCategory.desensitizationConfig')" prop="desensitizationRulesFlag">
           <el-tag
             v-if="form.desensitizationRulesFlag == 1"
             type="primary"
             style="cursor: pointer"
             @click="handleViewRule(form)"
           >
-            已配置
+            {{ td('dg.dataCategory.configured') }}
           </el-tag>
-          <el-tag v-else type="danger">未配置</el-tag>
+          <el-tag v-else type="danger">{{ td('dg.dataCategory.notConfigured') }}</el-tag>
         </el-form-item>
-        <el-form-item :label="t('common.texts.status')" prop="validFlag">
-          <el-tag v-if="form.validFlag === true" type="primary">启用</el-tag>
+        <el-form-item :label="td('common.texts.status')" prop="validFlag">
+          <el-tag v-if="form.validFlag === true" type="primary">{{ td('dg.dataCategory.enabledLabel') }}</el-tag>
           <el-tag v-else-if="form.validFlag === false" type="danger"
-            >禁用</el-tag
+            >{{ td('dg.dataCategory.disabledLabel') }}</el-tag
           >
         </el-form-item>
 
-        <el-form-item :label="t('common.texts.description')" prop="description" class="row-full">
+        <el-form-item :label="td('common.texts.description')" prop="description" class="row-full">
           <div class="form-readonly textarea">
             {{ form.description ?? "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.remark')" prop="remark" class="row-full">
+        <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full">
           <div class="form-readonly textarea">{{ form.remark ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.createdBy')" prop="createBy">
+        <el-form-item :label="td('common.texts.createdBy')" prop="createBy">
           <div class="form-readonly">{{ form.createBy ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.createdTime')" prop="createTime">
+        <el-form-item :label="td('common.texts.createdTime')" prop="createTime">
           <div class="form-readonly">
             {{ parseTime(form.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.updatedBy')" prop="updateBy">
+        <el-form-item :label="td('common.texts.updatedBy')" prop="updateBy">
           <div class="form-readonly">{{ form.updateBy ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.updatedTime')" prop="updateTime">
+        <el-form-item :label="td('common.texts.updatedTime')" prop="updateTime">
           <div class="form-readonly">
             {{ parseTime(form.updateTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
@@ -408,13 +407,13 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="cancel">{{ t('common.button.close') }}</el-button>
+          <el-button @click="cancel">{{ td('common.button.close') }}</el-button>
         </div>
       </template>
     </el-dialog>
 
     <el-dialog
-      title="指定分级"
+      :title="td('dg.dataCategory.assignLevel')"
       class="tag-view"
       v-model="batchLevelOpen"
       width="600px"
@@ -422,10 +421,10 @@
       draggable
       destroy-on-close
     >
-      <el-form-item label="数据分级">
+      <el-form-item :label="td('dg.dataCategory.dataLevel')">
         <el-select
           v-model="batchDataLevel"
-          placeholder="请选择数据分级"
+          :placeholder="td('dg.dataCategory.dataLevelPlaceholder')"
           style="width: calc(100% - 117px)"
         >
           <el-option
@@ -441,14 +440,14 @@
           @click="openDataLevelDialog"
           @mousedown="(e) => e.preventDefault()"
         >
-          <i class="iconfont-mini icon-xinzeng mr5"></i>新增分级
+          <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('dg.dataCategory.addLevel') }}
         </el-button>
       </el-form-item>
 
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="batchLevelOpen = false">{{ t('common.button.cancel') }}</el-button>
-          <el-button type="primary" @click="submitBatchLevel">{{ t('common.button.confirm') }}</el-button>
+          <el-button @click="batchLevelOpen = false">{{ td('common.button.cancel') }}</el-button>
+          <el-button type="primary" @click="submitBatchLevel">{{ td('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -471,7 +470,7 @@
 </template>
 
 <script setup name="DataCategory">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import {
   listDataCategory,
   getDataCategory,
@@ -501,7 +500,7 @@ import {
 import RuleFormDialog from "@/views/dg/safety/desensitizationRules/components/ruleFormDialog.vue";
 import { getCurrentInstance, ref, reactive, toRefs, onMounted } from "vue";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { dg_data_priority, dg_replace_rule } = proxy.useDict(
   "dg_data_priority",
@@ -549,9 +548,9 @@ const tableStore = reactive({
   },
   columns: [
     { type: "selection", width: 45 },
-    { label: t('common.texts.number'), prop: "id", width: 60, sortable: true },
+    { label: td('common.texts.number'), prop: "id", width: 60, sortable: true },
     {
-      label: "分类名称/描述",
+      label: td('dg.dataCategory.nameDesc'),
       prop: "name",
       slot: "nameDesc",
       align: "left",
@@ -559,21 +558,21 @@ const tableStore = reactive({
     },
 
     {
-      label: "分类缩写",
+      label: td('dg.dataCategory.shortName'),
       prop: "shortName",
       align: "left",
       width: 150,
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: "所属类目",
+      label: td('dg.dataCategory.catCode'),
       prop: "catName",
       align: "left",
       width: 150,
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: "数据分级",
+      label: td('dg.dataCategory.dataLevel'),
       prop: "dataLevelId",
       slot: "dataLevel",
       align: "left",
@@ -581,7 +580,7 @@ const tableStore = reactive({
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: "优先级",
+      label: td('dg.dataCategory.priority'),
       prop: "priority",
       slot: "priority",
       align: "left",
@@ -589,7 +588,7 @@ const tableStore = reactive({
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: "脱敏配置",
+      label: td('dg.dataCategory.desensitizationConfig'),
       prop: "desensitizationRulesFlag",
       slot: "desensitizationRulesFlag",
       align: "left",
@@ -597,19 +596,19 @@ const tableStore = reactive({
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: t('common.texts.status'),
+      label: td('common.texts.status'),
       prop: "validFlag",
       slot: "status",
       minWidth: 120,
     },
     {
-      label: t('common.texts.createdBy'),
+      label: td('common.texts.createdBy'),
       prop: "createBy",
       width: 120,
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: t('common.texts.createdTime'),
+      label: td('common.texts.createdTime'),
       prop: "createTime",
       width: 150,
       sortable: true,
@@ -617,7 +616,7 @@ const tableStore = reactive({
       date: true,
     },
     {
-      label: t('common.texts.operation'),
+      label: td('common.texts.operation'),
       width: 220,
       fixed: "right",
       slot: "handle",
@@ -633,17 +632,17 @@ const tableStore = reactive({
 const searchStore = reactive({
   items: [
     {
-      label: "分类名称",
+      label: td('dg.dataCategory.categoryName'),
       prop: "name",
       align: "left",
-      component: { is: "input", placeholder: "请输入分类名称" },
+      component: { is: "input", placeholder: td('dg.dataCategory.categoryNamePlaceholder') },
     },
     {
-      label: "数据分级",
+      label: td('dg.dataCategory.dataLevel'),
       prop: "dataLevelId",
       component: {
         is: "select",
-        placeholder: "请选择数据分级",
+        placeholder: td('dg.dataCategory.dataLevelPlaceholder'),
         options: dataLevelOptions,
       },
     },
@@ -657,14 +656,14 @@ const searchStore = reactive({
     //   },
     // },
     {
-      label: t('common.texts.status'),
+      label: td('common.texts.status'),
       prop: "validFlag",
       component: {
         is: "select",
-        placeholder: t('common.form.statusPlaceholder'),
+        placeholder: td('common.form.statusPlaceholder'),
         options: [
-          { label: "启用", value: true },
-          { label: "禁用", value: false },
+          { label: td('dg.dataCategory.enabledLabel'), value: true },
+          { label: td('dg.dataCategory.disabledLabel'), value: false },
         ],
       },
     },
@@ -696,16 +695,16 @@ function handleResetQueryClick() {
 
 /** 启用禁用开关 */
 function handleStatusChange(id, row, e) {
-  const text = e ? "启用" : "禁用";
+  const text = e ? td('dg.dataCategory.enabledLabel') : td('dg.dataCategory.disabledLabel');
   let dataForm = {
     id: id,
     validFlag: row.validFlag,
   };
   proxy.$modal
-    .confirm('确认要"' + text + '","' + row.name + '"数据分类吗？')
+    .confirm(td('dg.dataCategory.confirmStatus', '确认要"{text}","{name}"数据分类吗？').replace('{text}', text).replace('{name}', row.name))
     .then(function () {
       updateDataCategory(dataForm).then(() => {
-        proxy.$modal.msgSuccess(t('common.message.msgOpSuccess'));
+        proxy.$modal.msgSuccess(td('common.message.msgOpSuccess'));
         tableRef.value.getList();
       });
     })
@@ -721,19 +720,19 @@ const batchLevelOpen = ref(false);
 const batchDataLevel = ref(null);
 const ruleDialogRef = ref(null);
 const dataLevelDialogOpen = ref(false);
-const dataLevelDialogTitle = ref("新增分级");
+const dataLevelDialogTitle = ref(td('dg.dataCategory.addLevel'));
 const data = reactive({
   form: { icon: null },
   rules: {
-    name: [{ required: true, message: "分类名称不能为空", trigger: "blur" }],
+    name: [{ required: true, message: td('dg.dataCategory.categoryNameRequired'), trigger: "blur" }],
     catCode: [
-      { required: true, message: "所属类目不能为空", trigger: "change" },
+      { required: true, message: td('dg.dataCategory.catCodeRequired'), trigger: "change" },
     ],
     dataLevelId: [
-      { required: true, message: "数据分级不能为空", trigger: "change" },
+      { required: true, message: td('dg.dataCategory.dataLevelRequired'), trigger: "change" },
     ],
     priority: [
-      { required: true, message: "优先级不能为空", trigger: "change" },
+      { required: true, message: td('dg.dataCategory.priorityRequired'), trigger: "change" },
     ],
   },
 });
@@ -805,7 +804,7 @@ function handleAdd() {
     }
   }
   open.value = true;
-  title.value = "新增数据分类";
+  title.value = td('dg.dataCategory.addTitle');
 }
 
 /** 修改按钮操作 */
@@ -815,7 +814,7 @@ function handleUpdate(row) {
   getDataCategory(_id).then((response) => {
     form.value = response.data;
     open.value = true;
-    title.value = "修改数据分类";
+    title.value = td('dg.dataCategory.editTitle');
   });
 }
 /** 详情按钮操作 */
@@ -826,7 +825,7 @@ function handleDetail(row) {
   getDataCategory(_id).then((response) => {
     form.value = response.data;
     openDetail.value = true;
-    title.value = "数据分类详情";
+    title.value = td('dg.dataCategory.detailTitle');
   });
 }
 
@@ -836,13 +835,13 @@ function submitForm() {
     if (valid) {
       if (form.value.id != null) {
         updateDataCategory(form.value).then(() => {
-          proxy.$modal.msgSuccess(t('common.message.editSuccess'));
+          proxy.$modal.msgSuccess(td('common.message.editSuccess'));
           open.value = false;
           tableRef.value.getList();
         });
       } else {
         addDataCategory(form.value).then(() => {
-          proxy.$modal.msgSuccess(t('common.message.addSuccess'));
+          proxy.$modal.msgSuccess(td('common.message.addSuccess'));
           open.value = false;
           tableRef.value.getList();
         });
@@ -862,13 +861,13 @@ function handleDelete(row) {
   if (!_ids) return;
 
   proxy.$modal
-    .confirm('是否确认删除编号为"' + _ids + '"的数据项？')
+    .confirm(td('dg.dataCategory.confirmDeleteId', '是否确认删除编号为"{id}"的数据项？').replace('{id}', _ids))
     .then(function () {
       return delDataCategory(_ids);
     })
     .then(() => {
       tableRef.value.getList();
-      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+      proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
     })
     .catch(() => {});
 }
@@ -889,7 +888,7 @@ async function loadDataLevelOptions() {
 }
 
 function openDataLevelDialog() {
-  dataLevelDialogTitle.value = "新增分级";
+  dataLevelDialogTitle.value = td('dg.dataCategory.addLevel');
   dataLevelDialogOpen.value = true;
 }
 
@@ -902,14 +901,14 @@ function handleBatchLevel() {
 
 async function submitBatchLevel() {
   if (!batchDataLevel.value) {
-    proxy.$modal.msgWarning("请选择数据分级");
+    proxy.$modal.msgWarning(td('dg.dataCategory.selectLevelRequired'));
     return;
   }
   await batchDataLevelApi({
     ids: store.rows.map((r) => r.id),
     dataLevelId: batchDataLevel.value,
   });
-  proxy.$modal.msgSuccess("设置成功");
+  proxy.$modal.msgSuccess(td('dg.dataCategory.setSuccess'));
   batchLevelOpen.value = false;
   tableRef.value.getList();
 }
@@ -919,11 +918,11 @@ function handleMapping(row) {
   if (row.desensitizationRulesId) {
     ruleDialogRef.value?.open({
       id: row.desensitizationRulesId,
-      title: "修改脱敏规则",
+      title: td('dg.desensitizationRules.editTitle'),
     });
   } else {
     ruleDialogRef.value?.open({
-      title: "设置脱敏",
+      title: td('dg.dataCategory.setDesensitization'),
       form: { dataCategoryId: row.id },
     });
   }
@@ -933,7 +932,7 @@ function handleViewRule(row) {
   if (row.desensitizationRulesFlag != 1 || !row.desensitizationRulesId) return;
   ruleDialogRef.value?.open({
     id: row.desensitizationRulesId,
-    title: "查看脱敏规则",
+    title: td('dg.dataCategory.viewDesensRule'),
     readonly: true,
   });
 }

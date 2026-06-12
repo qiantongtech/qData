@@ -67,6 +67,7 @@ export default {
     operation: '操作',
     remark: '备注',
     status: '状态',
+    time: '时间',
     updatedBy: '更新人',
     updatedTime: '更新时间',
     enable: '启用',

@@ -20,27 +20,27 @@
   <el-form ref="formRef" :model="form" label-width="130px" :disabled="false">
     <el-row>
       <el-col :span="12">
-        <el-form-item label="时间范围">
+        <el-form-item :label="td('dpp.cleanRule.timeRange', '时间范围')">
           <el-radio-group
             v-model="form.dataRange"
             @change="handleDataRangeChange"
             :disabled="falg"
           >
-            <el-radio label="0">最近时间范围</el-radio>
-            <el-radio label="1">具体日期</el-radio>
+            <el-radio label="0">{{ td('dpp.cleanRule.recentTimeRange', '最近时间范围') }}</el-radio>
+            <el-radio label="1">{{ td('dpp.cleanRule.specificDate', '具体日期') }}</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-col>
       <el-col :span="12">
         <el-form-item
           v-if="form.dataRange == '0'"
-          label="维持时间范围"
+          :label="td('dpp.cleanRule.maintainTimeRange', '维持时间范围')"
           :rules="
             !falg
               ? [
                   {
                     required: true,
-                    message: '请输入维持时间范围',
+                    message: td('dpp.cleanRule.inputMaintainTimeRange', '请输入维持时间范围'),
                     trigger: 'change',
                   },
                 ]
@@ -55,9 +55,9 @@
               class="rule-half"
             />
             <el-select v-model="form.dataRangeType" class="rule-half">
-              <el-option label="天前" value="1" />
-              <el-option label="月前" value="2" />
-              <el-option label="年前" value="3" />
+              <el-option :label="td('dpp.cleanRule.daysAgo', '天前')" value="1" />
+              <el-option :label="td('dpp.cleanRule.monthsAgo', '月前')" value="2" />
+              <el-option :label="td('dpp.cleanRule.yearsAgo', '年前')" value="3" />
             </el-select>
           </template>
           <div v-else class="form-readonly">{{ rangeValueText }}</div>
@@ -65,13 +65,13 @@
 
         <el-form-item
           v-if="form.dataRange == '1'"
-          label="具体日期"
+          :label="td('dpp.cleanRule.specificDate', '具体日期')"
           :rules="
             !falg
               ? [
                   {
                     required: true,
-                    message: '请选择具体日期',
+                    message: td('dpp.cleanRule.specificDate', '请选择具体日期'),
                     trigger: 'change',
                   },
                 ]
@@ -86,11 +86,11 @@
               format="YYYY/MM/DD"
               class="rule-half"
               value-format="YYYY-MM-DD"
-              placeholder="选择日期"
+              :placeholder="td('dpp.cleanRule.selectDate', '选择日期')"
             />
             <el-select v-model="form.dataRangeType" class="rule-half">
-              <el-option label="之前" value="1" />
-              <el-option label="之后" value="2" />
+              <el-option :label="td('dpp.cleanRule.before', '之前')" value="1" />
+              <el-option :label="td('dpp.cleanRule.after', '之后')" value="2" />
             </el-select>
           </template>
           <div v-else class="form-readonly">{{ dateValueText }}</div>
@@ -99,23 +99,23 @@
     </el-row>
     <el-row>
       <el-col :span="12">
-        <el-form-item label="处理方式">
+        <el-form-item :label="td('dpp.cleanRule.handleMethod', '处理方式')">
           <el-radio-group v-model="form.handleType" :disabled="falg">
-            <el-radio label="0">标记为过期</el-radio>
-            <el-radio label="1">删除记录</el-radio>
+            <el-radio label="0">{{ td('dpp.cleanRule.markAsExpired', '标记为过期') }}</el-radio>
+            <el-radio label="1">{{ td('dpp.cleanRule.deleteRecord', '删除记录') }}</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-col>
       <el-col :span="12">
         <el-form-item
-          label="标记字段"
+          :label="td('dpp.cleanRule.markField', '标记字段')"
           v-if="form.handleType == '0'"
           :rules="
             !falg
               ? [
                   {
                     required: true,
-                    message: '请选择标记字段',
+                    message: td('dpp.cleanRule.selectMarkField', '请选择标记字段'),
                     trigger: 'change',
                   },
                 ]
@@ -125,7 +125,7 @@
           <template v-if="!falg">
             <el-select
               v-model="form.handleColumns"
-              placeholder="请选择清洗字段"
+              :placeholder="td('dpp.cleanRule.selectCleanField', '请选择清洗字段')"
               clearable
               class="rule-half"
             >
@@ -144,18 +144,18 @@
     <el-row>
       <el-col :span="12">
         <el-form-item
-          label="标记值"
+          :label="td('dpp.cleanRule.markValue', '标记值')"
           v-if="form.handleType == '0'"
           :rules="
             !falg
-              ? [{ required: true, message: '请输入标记值', trigger: 'change' }]
+              ? [{ required: true, message: td('dpp.cleanRule.inputMarkValue', '请输入标记值'), trigger: 'change' }]
               : []
           "
         >
           <el-input
             v-if="!falg"
             v-model="form.handleValue"
-            placeholder="请输入标记值"
+            :placeholder="td('dpp.cleanRule.inputMarkValue', '请输入标记值')"
             class="rule-half"
           />
           <div v-else class="form-readonly">{{ form.handleValue || "-" }}</div>
@@ -166,8 +166,10 @@
 </template>
 
 <script setup>
+import useDefaultLang from "@/composables/useDefaultLang"
 import { reactive, ref } from "vue";
 import moment from "moment";
+const { td } = useDefaultLang();
 
 const props = defineProps({
   form: Object,
@@ -183,36 +185,36 @@ const dataRange = props.form?.dataRange ?? "0";
 const form = reactive({ ...props.form });
 const dataRangeText = computed(() =>
   form.dataRange === "0"
-    ? "最近时间范围"
+    ? td('dpp.cleanRule.recentTimeRange', '最近时间范围')
     : form.dataRange === "1"
-    ? "具体日期"
+    ? td('dpp.cleanRule.specificDate', '具体日期')
     : "-"
 );
 const rangeValueText = computed(() => {
   const typeText =
     form.dataRangeType === "1"
-      ? "天前"
+      ? td('dpp.cleanRule.daysAgo', '天前')
       : form.dataRangeType === "2"
-      ? "月前"
+      ? td('dpp.cleanRule.monthsAgo', '月前')
       : form.dataRangeType === "3"
-      ? "年前"
+      ? td('dpp.cleanRule.yearsAgo', '年前')
       : "";
   return form.dataRangeValue ? `${form.dataRangeValue} ${typeText}` : "-";
 });
 const dateValueText = computed(() => {
   const typeText =
     form.dataRangeType === "1"
-      ? "之前"
+      ? td('dpp.cleanRule.before', '之前')
       : form.dataRangeType === "2"
-      ? "之后"
+      ? td('dpp.cleanRule.after', '之后')
       : "";
   return form.dataRangeValue ? `${form.dataRangeValue} ${typeText}` : "-";
 });
 const handleTypeText = computed(() =>
   form.handleType === "0"
-    ? "标记为过期"
+    ? td('dpp.cleanRule.markAsExpired', '标记为过期')
     : form.handleType === "1"
-    ? "删除记录"
+    ? td('dpp.cleanRule.deleteRecord', '删除记录')
     : "-"
 );
 const handleColumnsText = computed(() => {

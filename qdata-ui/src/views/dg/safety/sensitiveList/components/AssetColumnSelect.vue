@@ -1,12 +1,12 @@
 <template>
   <div class="asset-column-select">
-    <el-form-item label="资产名称" :prop="assetProp" :rules="rules.assetId">
+    <el-form-item :label="td('dg.sensitiveList.assetName')" :prop="assetProp" :rules="rules.assetId">
       <el-select
         v-model="internalValue.assetId"
         filterable
         remote
         reserve-keyword
-        placeholder="请输入资产名称"
+        :placeholder="td('dg.sensitiveList.assetNamePlaceholder')"
         :remote-method="remoteMethod"
         :loading="loadingAsset"
         @change="handleAssetChange"
@@ -23,14 +23,14 @@
     </el-form-item>
 
     <el-form-item
-      label="字段名"
+      :label="td('dg.sensitiveList.fieldNameLabel')"
       :prop="columnProp"
       :rules="rules.assetcolumnId"
     >
       <el-select
         v-model="internalValue.assetcolumnId"
         filterable
-        placeholder="请选择字段"
+        :placeholder="td('dg.sensitiveList.fieldNamePlaceholder')"
         :disabled="!internalValue.assetId"
         @change="handleColumnChange"
         style="width: 100%"
@@ -45,14 +45,14 @@
     </el-form-item>
 
     <el-form-item
-      label="数据分类"
+      :label="td('dg.sensitiveList.dataCategory')"
       :prop="categoryProp"
       :rules="rules.dataCategoryId"
     >
       <el-tree-select
         v-model="internalValue.dataCategoryId"
         :data="dataCategoryList"
-        placeholder="请选择数据分类"
+        :placeholder="td('dg.sensitiveList.dataCategoryPlaceholder')"
         filterable
         clearable
         check-strictly
@@ -66,7 +66,10 @@
 </template>
 
 <script setup name="AssetColumnSelect">
+import useDefaultLang from "@/composables/useDefaultLang"
 import { ref, watch, onMounted, reactive } from "vue";
+
+const { td } = useDefaultLang();
 import { listDaAsset } from "@/api/da/asset/asset";
 import { listDaAssetColumn } from "@/api/da/asset/assetColumn.js";
 import { selectTreeDataCategory } from "@/api/dg/safety/dataCategory/dataCategory";
@@ -110,12 +113,12 @@ const columnOptions = ref([]);
 const dataCategoryList = ref([]);
 
 const rules = {
-  assetId: [{ required: true, message: "资产名称不能为空", trigger: "change" }],
+  assetId: [{ required: true, message: td('dg.sensitiveList.assetNameRequired'), trigger: "change" }],
   assetcolumnId: [
-    { required: true, message: "字段名不能为空", trigger: "change" },
+    { required: true, message: td('dg.sensitiveList.fieldNameRequired'), trigger: "change" },
   ],
   dataCategoryId: [
-    { required: true, message: "数据分类不能为空", trigger: "change" },
+    { required: true, message: td('dg.sensitiveList.dataCategoryRequired'), trigger: "change" },
   ],
 };
 

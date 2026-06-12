@@ -62,7 +62,7 @@
         </template>
         <template #handle="{ row }">
           <el-button link type="primary" icon="View" @click="handleDetail(row)">
-            {{ t('common.button.details') }}
+            {{ td('common.button.details') }}
           </el-button>
           <!-- <el-button link type="primary" icon="Edit">编辑</el-button> -->
           <el-button
@@ -71,7 +71,7 @@
             icon="Delete"
             @click="handleDelete(row)"
           >
-            {{ t('common.button.delete') }}
+            {{ td('common.button.delete') }}
           </el-button>
         </template>
       </qt-table>
@@ -80,7 +80,7 @@
     <el-dialog v-model="openDetail" width="800px" draggable>
       <template #header>
         <span role="heading" aria-level="2" class="el-dialog__title">
-          敏感清单详情
+          {{ td('dg.sensitiveList.sensitiveListDetail') }}
         </span>
       </template>
 
@@ -90,52 +90,52 @@
         label-width="110px"
         class="column-form"
       >
-        <el-form-item label="编号:" prop="id">
+        <el-form-item :label="td('common.texts.number') + ':'" prop="id">
           <div class="form-readonly">{{ detailData.id ?? "-" }}</div>
         </el-form-item>
-        <el-form-item label="资产名称" prop="assetName">
+        <el-form-item :label="td('dg.sensitiveList.assetName')" prop="assetName">
           <div class="form-readonly">{{ detailData.assetName ?? "-" }}</div>
         </el-form-item>
-        <el-form-item label="表名" prop="assetTableName">
+        <el-form-item :label="td('dg.sensitiveList.tableNameLabel')" prop="assetTableName">
           <div class="form-readonly">
             {{ detailData.assetTableName ?? "-" }}
           </div>
         </el-form-item>
-        <el-form-item label="字段名" prop="assetcolumnName">
+        <el-form-item :label="td('dg.sensitiveList.fieldNameLabel')" prop="assetcolumnName">
           <div class="form-readonly">
             {{ detailData.assetcolumnName ?? "-" }}
           </div>
         </el-form-item>
-        <el-form-item label="数据分级" prop="dataLevelName">
+        <el-form-item :label="td('dg.sensitiveList.dataLevel')" prop="dataLevelName">
           <div class="form-readonly">{{ detailData.dataLevelName ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.status')" prop="validFlag">
+        <el-form-item :label="td('common.texts.status')" prop="validFlag">
           <div class="form-readonly">
             {{ getStatusLabel(detailData.validFlag) }}
           </div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.description')" prop="assetDescription" class="row-full">
+        <el-form-item :label="td('common.texts.description')" prop="assetDescription" class="row-full">
           <div class="form-readonly textarea">
             {{ detailData.assetDescription ?? "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.remark')" prop="remark" class="row-full">
+        <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full">
           <div class="form-readonly textarea">
             {{ detailData.remark ?? "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.createdBy')" prop="createBy">
+        <el-form-item :label="td('common.texts.createdBy')" prop="createBy">
           <div class="form-readonly">{{ detailData.createBy ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.createdTime')" prop="createTime">
+        <el-form-item :label="td('common.texts.createdTime')" prop="createTime">
           <div class="form-readonly">
             {{ parseTime(detailData.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.updatedBy')" prop="updateBy">
+        <el-form-item :label="td('common.texts.updatedBy')" prop="updateBy">
           <div class="form-readonly">{{ detailData.updateBy ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.updatedTime')" prop="updateTime">
+        <el-form-item :label="td('common.texts.updatedTime')" prop="updateTime">
           <div class="form-readonly">
             {{ parseTime(detailData.updateTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
@@ -144,7 +144,7 @@
 
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="openDetail = false">{{ t('common.button.close') }}</el-button>
+          <el-button @click="openDetail = false">{{ td('common.button.close') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -152,7 +152,7 @@
 </template>
 
 <script setup name="DesensitizationRuleAssets">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import {
   listDgDesensitizeListByRuleId,
   getDgDesensitizeList,
@@ -161,7 +161,7 @@ import {
 import LevelBadge from "@/views/dg/safety/dataLevel/components/LevelBadge.vue";
 import { getCurrentInstance, ref, reactive, watch } from "vue";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const props = defineProps({
   ruleDetail: {
     type: Object,
@@ -176,8 +176,8 @@ const openDetail = ref(false);
 const detailData = ref({});
 
 function getStatusLabel(v) {
-  if (v === true) return "启用";
-  if (v === false) return "禁用";
+  if (v === true) return td('dg.desensitizationRules.detailStatusEnable');
+  if (v === false) return td('dg.desensitizationRules.detailStatusDisable');
   const vv = v === 0 || v ? String(v) : "";
   const found = (dp_model_status.value || []).find(
     (d) => String(d.value) === vv
@@ -198,10 +198,10 @@ function handleDelete(row) {
   const ids = row?.id;
   if (!ids) return;
   proxy.$modal
-    .confirm('是否确认删除编号为"' + ids + '"的数据项？')
+    .confirm(td('dg.desensitizationRules.confirmDeleteId', '是否确认删除编号为"{id}"的数据项？').replace('{id}', ids))
     .then(() => delDgDesensitizeList(ids))
     .then(() => {
-      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+      proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
       tableRef.value?.getList();
     })
     .catch(() => {});
@@ -218,9 +218,9 @@ const tableStore = reactive({
     },
   },
   columns: [
-    { label: t('common.texts.number'), prop: "id", width: 60, sortable: true },
+    { label: td('common.texts.number'), prop: "id", width: 60, sortable: true },
     {
-      label: "资产名称/描述",
+      label: td('dg.sensitiveList.nameDesc'),
       prop: "assetName",
       align: "left",
       minWidth: 180,
@@ -228,36 +228,36 @@ const tableStore = reactive({
       slot: "assetNameDesc",
     },
     {
-      label: "表名",
+      label: td('dg.sensitiveList.tableName'),
       prop: "assetTableName",
       align: "left",
       minWidth: 200,
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: "字段名",
+      label: td('dg.sensitiveList.fieldName'),
       prop: "assetcolumnName",
       align: "left",
       minWidth: 150,
       showOverflowTooltip: { effect: "light" },
     },
-    { label: "数据分级", prop: "dataLevelName", slot: "dataLevel", width: 120 },
-    { label: t('common.texts.status'), prop: "validFlag", slot: "validFlag", minWidth: 120 },
+    { label: td('dg.sensitiveList.dataLevel'), prop: "dataLevelName", slot: "dataLevel", width: 120 },
+    { label: td('common.texts.status'), prop: "validFlag", slot: "validFlag", minWidth: 120 },
     {
-      label: t('common.texts.createdBy'),
+      label: td('common.texts.createdBy'),
       prop: "createBy",
       width: 120,
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: t('common.texts.createdTime'),
+      label: td('common.texts.createdTime'),
       prop: "createTime",
       width: 150,
       sortable: true,
       sortableKey: "create_time",
       date: true,
     },
-    { label: t('common.texts.operation'), width: 200, fixed: "right", slot: "handle" },
+    { label: td('common.texts.operation'), width: 200, fixed: "right", slot: "handle" },
   ],
   func: async (params) => {
     if (!props.ruleDetail?.id) {

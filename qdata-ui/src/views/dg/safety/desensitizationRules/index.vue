@@ -34,7 +34,7 @@
           @click="handleAdd"
           v-hasPermi="['dg:desensitizerules:add']"
         >
-          {{ t('common.button.add') }}
+          {{ td('common.button.add') }}
         </el-button>
         <el-button
           type="danger"
@@ -44,7 +44,7 @@
           @click="handleDelete"
           v-hasPermi="['dg:desensitizerules:remove']"
         >
-          {{ t('common.button.delete') }}
+          {{ td('common.button.delete') }}
         </el-button>
       </template>
       <qt-table v-bind="tableStore" ref="tableRef">
@@ -92,7 +92,7 @@
             @click="handleDetail(row)"
             v-hasPermi="['dg:desensitizerules:query']"
           >
-            {{ t('common.button.details') }}
+            {{ td('common.button.details') }}
           </el-button>
           <!-- :disabled="row.validFlag === true" -->
           <el-button
@@ -102,7 +102,7 @@
             @click="handleUpdate(row)"
             v-hasPermi="['dg:desensitizerules:edit']"
           >
-            {{ t('common.button.update') }}
+            {{ td('common.button.update') }}
           </el-button>
           <el-button
             link
@@ -112,7 +112,7 @@
             @click="handleDelete(row)"
             v-hasPermi="['dg:desensitizerules:remove']"
           >
-            {{ t('common.button.delete') }}
+            {{ td('common.button.delete') }}
           </el-button>
         </template>
       </qt-table>
@@ -130,7 +130,7 @@
 </template>
 
 <script setup name="DesensitizationRules">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import {
   listDesensitizeRules,
   getDesensitizeRules,
@@ -144,7 +144,7 @@ import { selectTreeDataCategory } from "@/api/dg/safety/dataCategory/dataCategor
 import RuleFormDialog from "@/views/dg/safety/desensitizationRules/components/ruleFormDialog.vue";
 import {delDesensitizeWhitelist} from "@/api/dg/safety/whitelist/desensitizeWhitelist.js";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { dg_application_scene, dg_mask_type, dg_replace_rule } = proxy.useDict(
   "dg_application_scene",
@@ -186,8 +186,8 @@ const appContainerRef = ref(null);
 const tableRef = ref(null);
 const ruleDialogRef = ref(null);
 const validFlagOptions = [
-  { label: "禁用", value: false },
-  { label: "启用", value: true },
+  { label: td('dg.desensitizationRules.detailStatusDisable'), value: false },
+  { label: td('dg.desensitizationRules.detailStatusEnable'), value: true },
 ];
 
 const tableStore = reactive({
@@ -205,39 +205,39 @@ const tableStore = reactive({
   },
   columns: [
     { type: "selection", width: 45 },
-    { label: t('common.texts.number'), prop: "id", width: 60, sortable: true },
+    { label: td('common.texts.number'), prop: "id", width: 60, sortable: true },
     {
-      label: "脱敏规则名称/描述",
+      label: td('dg.desensitizationRules.nameDesc'),
       prop: "name",
       slot: "nameDesc",
       align: "left",
       minWidth: 240,
     },
     {
-      label: "数据分类",
+      label: td('dg.sensitiveList.dataCategory'),
       prop: "dataCategoryName",
       align: "left",
       minWidth: 180,
       showOverflowTooltip: { effect: "light" },
     },
-    { label: "应用场景", slot: "applicationScene", width: 120 },
-    { label: "脱敏方式", prop: "maskType", slot: "maskType", width: 120 },
-    { label: t('common.texts.status'), prop: "validFlag", slot: "validFlag", minWidth: 120 },
+    { label: td('dg.desensitizationRules.applicationScene'), slot: "applicationScene", width: 120 },
+    { label: td('dg.desensitizationRules.maskType'), prop: "maskType", slot: "maskType", width: 120 },
+    { label: td('common.texts.status'), prop: "validFlag", slot: "validFlag", minWidth: 120 },
     {
-      label: t('common.texts.createdBy'),
+      label: td('common.texts.createdBy'),
       prop: "createBy",
       width: 120,
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: t('common.texts.createdTime'),
+      label: td('common.texts.createdTime'),
       prop: "createTime",
       width: 150,
       sortable: true,
       sortableKey: "create_time",
       date: true,
     },
-    { label: t('common.texts.operation'), width: 220, fixed: "right", slot: "handle" },
+    { label: td('common.texts.operation'), width: 220, fixed: "right", slot: "handle" },
   ],
   func: async (params) => {
     const res = await listDesensitizeRules(params);
@@ -258,16 +258,16 @@ const tableStore = reactive({
 const searchStore = reactive({
   items: [
     {
-      label: "脱敏规则名称",
+      label: td('dg.desensitizationRules.ruleName'),
       prop: "name",
-      component: { is: "input", placeholder: "请输入脱敏规则名称" },
+      component: { is: "input", placeholder: td('dg.desensitizationRules.ruleNamePlaceholder') },
     },
     {
-      label: "数据分类",
+      label: td('dg.sensitiveList.dataCategory'),
       prop: "dataCategoryId",
       component: {
         is: "tree-select",
-        placeholder: "请选择数据分类",
+        placeholder: td('dg.sensitiveList.dataCategoryPlaceholder'),
         data: allDataCategoryList,
         props: { label: "name", value: "id", children: "children" },
         "check-strictly": true,
@@ -275,11 +275,11 @@ const searchStore = reactive({
       },
     },
     {
-      label: t('common.texts.status'),
+      label: td('common.texts.status'),
       prop: "validFlag",
       component: {
         is: "select",
-        placeholder: t('common.form.statusPlaceholder'),
+        placeholder: td('common.form.statusPlaceholder'),
         options: validFlagOptions,
       },
     },
@@ -295,13 +295,13 @@ function handleResetQueryClick() {
 }
 
 function handleStatusChange(id, row, e) {
-  const text = e === true ? "启用" : "禁用";
+  const text = e === true ? td('dg.desensitizationRules.detailStatusEnable') : td('dg.desensitizationRules.detailStatusDisable');
   const dataForm = { id, validFlag: row.validFlag };
   proxy.$modal
-    .confirm('确认要"' + text + '","' + row.name + '"脱敏规则吗？')
+    .confirm(td('dg.desensitizationRules.confirmStatus', '确认要"{text}","{name}"脱敏规则吗？').replace('{text}', text).replace('{name}', row.name))
     .then(function () {
       updateDesensitizeRules(dataForm).then(() => {
-        proxy.$modal.msgSuccess(t('common.message.msgOpSuccess'));
+        proxy.$modal.msgSuccess(td('common.message.msgOpSuccess'));
         tableRef.value.getList();
       });
     })
@@ -312,12 +312,12 @@ function handleStatusChange(id, row, e) {
 
 function handleAdd() {
   getDataCategoryList();
-  ruleDialogRef.value?.open({ title: "新增脱敏规则" });
+  ruleDialogRef.value?.open({ title: td('dg.desensitizationRules.addTitle') });
 }
 
 function handleUpdate(row) {
   getDataCategoryList();
-  ruleDialogRef.value?.open({ id: row?.id, title: "修改脱敏规则" });
+  ruleDialogRef.value?.open({ id: row?.id, title: td('dg.desensitizationRules.editTitle') });
 }
 
 function handleDetail(row) {
@@ -343,17 +343,17 @@ function handleDialogSuccess() {
     })
     .then(() => {
       tableRef.value.getList();
-      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+      proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
     })
     .catch(() => {});
 }*/
 
 function handleDelete(row) {
   const invalidIds = [];
-  const message=ref("确定要删除记录吗");
+  const message=ref(td('dg.desensitizationRules.confirmDeleteSimple'));
   if (row?.id) {
     invalidIds.push(row.id);
-    message.value=`是否确认删除编号为${row.id} 的数据项？`
+    message.value=td('dg.desensitizationRules.confirmDeleteId', '是否确认删除编号为{id}的数据项？').replace('{id}', row.id)
   }else {
     store.rows.forEach(item => {
       // 当 validFlag 为 false 时，记录 id
@@ -361,7 +361,7 @@ function handleDelete(row) {
         invalidIds.push(item.id);
       }
     });
-    message.value=`可删除${invalidIds.length}个，不可删除${store.rows.length-invalidIds.length}个，是否删除可删部分`
+    message.value=td('dg.desensitizationRules.confirmDeleteCount', '可删除{canDelete}个，不可删除{cannotDelete}个，是否删除可删部分').replace('{canDelete}', invalidIds.length).replace('{cannotDelete}', store.rows.length-invalidIds.length)
   }
   proxy.$modal
       .confirm(message.value)
@@ -370,7 +370,7 @@ function handleDelete(row) {
       })
       .then(() => {
         tableRef.value.getList();
-        proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+        proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
       })
       .catch(() => {});
 }

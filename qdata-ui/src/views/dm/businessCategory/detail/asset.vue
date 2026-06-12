@@ -33,7 +33,7 @@
         </template>
         <template #handle="{ row }">
           <el-button link type="primary" icon="View" @click="handleDetail(row)">
-            {{ t('common.button.details') }}
+            {{ td('common.button.details', '详情') }}
           </el-button>
           <el-button
             link
@@ -41,7 +41,7 @@
             icon="Delete"
             @click="handleDelete(row)"
           >
-            {{ t('common.button.delete') }}
+            {{ td('common.button.delete', '删除') }}
           </el-button>
         </template>
       </qt-table>
@@ -67,53 +67,53 @@
         label-width="110px"
         class="column-form"
       >
-        <el-form-item label="编号:" prop="id">
+        <el-form-item :label="td('common.texts.number', '编号') + ':'" prop="id">
           <div class="form-readonly">
             {{ form.id }}
           </div>
         </el-form-item>
-        <el-form-item label="数据域" prop="name">
+        <el-form-item :label="td('dm.dataDomain.dataDomain', '数据域')" prop="name">
           <div class="form-readonly">{{ form.name ?? "-" }}</div>
         </el-form-item>
-        <el-form-item label="英文缩写" prop="engName">
+        <el-form-item :label="td('dm.dataDomain.engName', '英文缩写')" prop="engName">
           <div class="form-readonly">{{ form.engName ?? "-" }}</div>
         </el-form-item>
-        <el-form-item label="负责人" prop="ownerUserId">
+        <el-form-item :label="td('dm.dataDomain.ownerId', '负责人')" prop="ownerUserId">
           <div class="form-readonly">{{ form.ownerUserName || "-" }}</div>
         </el-form-item>
-        <el-form-item label="负责人电话" prop="ownerUserPhoneNumber">
+        <el-form-item :label="td('dm.dataDomain.ownerPhone', '负责人电话')" prop="ownerUserPhoneNumber">
           <div class="form-readonly">
             {{ form.ownerUserPhoneNumber || "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.description')" prop="description" class="row-full">
+        <el-form-item :label="td('common.texts.description', '描述')" prop="description" class="row-full">
           <div class="form-readonly textarea">
             {{ form.description ?? "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.remark')" prop="remark" class="row-full">
+        <el-form-item :label="td('common.texts.remark', '备注')" prop="remark" class="row-full">
           <div class="form-readonly textarea">{{ form.remark ?? "-" }}</div>
         </el-form-item>
 
-        <el-form-item :label="t('common.texts.createdBy')" prop="createBy">
+        <el-form-item :label="td('common.texts.createdBy', '创建人')" prop="createBy">
           <div class="form-readonly">
             {{ form.createBy }}
           </div>
         </el-form-item>
 
-        <el-form-item :label="t('common.texts.createdTime')" prop="createTime">
+        <el-form-item :label="td('common.texts.createdTime', '创建时间')" prop="createTime">
           <div class="form-readonly">
             {{ parseTime(form.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
         </el-form-item>
 
-        <el-form-item :label="t('common.texts.updatedBy')" prop="createBy">
+        <el-form-item :label="td('common.texts.updatedBy', '更新人')" prop="createBy">
           <div class="form-readonly">
             {{ form.updateBy }}
           </div>
         </el-form-item>
 
-        <el-form-item :label="t('common.texts.updatedTime')" prop="updateTime">
+        <el-form-item :label="td('common.texts.updatedTime', '更新时间')" prop="updateTime">
           <div class="form-readonly">
             {{ parseTime(form.updateTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
@@ -122,7 +122,7 @@
 
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="cancel">{{ t('common.button.close') }}</el-button>
+          <el-button @click="cancel">{{ td('common.button.close', '关闭') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -130,7 +130,7 @@
 </template>
 
 <script setup name="BusinessLayerDataDomains">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import {
   ref,
   reactive,
@@ -146,7 +146,7 @@ import {
 } from "@/api/dm/dataDomain/dataDomain.js";
 import { useRouter } from "vue-router";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const props = defineProps({
   businessLayerDetail: {
@@ -202,27 +202,27 @@ const tableStore = reactive({
     },
   },
   columns: [
-    { label: t('common.texts.number'), prop: "id", width: 60, sortable: true },
-    { label: "数据域名称", prop: "name", align: "left", minWidth: 150 },
+    { label: td('common.texts.number', '编号'), prop: "id", width: 60, sortable: true },
+    { label: td('dm.dataDomain.name', '数据域名称'), prop: "name", align: "left", minWidth: 150 },
     {
-      label: t('common.texts.description'),
+      label: td('common.texts.description', '描述'),
       prop: "description",
       align: "left",
       minWidth: 200,
       showOverflowTooltip: { effect: "light" },
     },
-    { label: "英文缩写", prop: "engName", align: "left", minWidth: 120 },
-    { label: "负责人", prop: "ownerUserName", width: 120 },
-    { label: "负责人电话", prop: "ownerUserPhoneNumber", width: 120 },
-    { label: t('common.texts.createdBy'), prop: "createBy", width: 120 },
+    { label: td('dm.dataDomain.engName', '英文缩写'), prop: "engName", align: "left", minWidth: 120 },
+    { label: td('dm.dataDomain.ownerId', '负责人'), prop: "ownerUserName", width: 120 },
+    { label: td('dm.dataDomain.ownerPhone', '负责人电话'), prop: "ownerUserPhoneNumber", width: 120 },
+    { label: td('common.texts.createdBy', '创建人'), prop: "createBy", width: 120 },
     {
-      label: t('common.texts.createdTime'),
+      label: td('common.texts.createdTime', '创建时间'),
       prop: "createTime",
       width: 160,
       date: true,
       sortable: true,
     },
-    { label: t('common.texts.operation'), width: 150, fixed: "right", slot: "handle" },
+    { label: td('common.texts.operation', '操作'), width: 150, fixed: "right", slot: "handle" },
   ],
   func: listDataDomainlist,
   params: {
@@ -251,13 +251,13 @@ function handleDetail(row) {
   getDataDomain(_id).then((response) => {
     form.value = response.data;
     openDetail.value = true;
-    title.value = "数据域详情";
+    title.value = td('dm.dataDomain.detailTitle', '数据域详情');
   });
 }
 
 function handleDelete(row) {
   proxy.$modal
-    .confirm('是否确认删除数据域名称为"' + row.name + '"的数据项？')
+    .confirm(td('dm.dataDomain.confirmDeleteByName', '是否确认删除数据域名称为"{name}"的数据项？').replace('{name}', row.name))
     .then(function () {
       return getDeletebyDomainId({
         businessCategoryId: props.businessLayerDetail.id,
@@ -265,7 +265,7 @@ function handleDelete(row) {
       });
     })
     .then(() => {
-      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+      proxy.$modal.msgSuccess(td('common.message.deleteSuccess', '删除成功'));
       tableRef.value?.getList();
     })
     .catch(() => {});

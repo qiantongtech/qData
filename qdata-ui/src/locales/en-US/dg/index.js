@@ -44,6 +44,7 @@ export default {
   },
   // ============ Desens Whitelist (Desensitization Whitelist - New) ============
   desensWhitelist: {
+    nameDesc: 'Whitelist Name / Description',
     whitelistName: 'Whitelist Name',
     whitelistNamePlaceholder: 'Please enter whitelist name',
     whitelistNameRequired: 'Whitelist name cannot be empty',

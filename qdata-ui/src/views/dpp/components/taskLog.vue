@@ -16,7 +16,7 @@
 -->
 
 <template>
-    <el-dialog v-model="visible" title="任务执行日志" :draggable="true" class="medium-dialog" @close="handleClose">
+    <el-dialog v-model="visible" :title="td('dpp.taskLog.taskExecutionLog', '任务执行日志')" :draggable="true" class="medium-dialog" @close="handleClose">
         <div class="graph-log-container" ref="containerRef" v-loading="loading">
             <!-- 上方 X6 图 -->
             <div class="graph-container" ref="graphRef" :style="{ height: graphHeight + 'px' }"></div>
@@ -32,14 +32,14 @@
         </div>
         <template #footer>
             <div style="text-align: right">
-                <el-button @click="handleClose">{{ t('common.button.close') }}</el-button>
+                <el-button @click="handleClose">{{ td('common.button.close', '关闭') }}</el-button>
             </div>
         </template>
     </el-dialog>
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { ref, onBeforeUnmount, nextTick, defineComponent } from "vue";
 import { Graph } from "@antv/x6";
 import { ElMessage } from "element-plus";
@@ -49,7 +49,7 @@ import { register, getTeleport } from "@antv/x6-vue-shape";
 import { baseConfig, cuPort } from "@/utils/graph";
 import { DagreLayout } from '@antv/layout';
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const TeleportContainer = defineComponent(getTeleport());
 
 // 状态变量

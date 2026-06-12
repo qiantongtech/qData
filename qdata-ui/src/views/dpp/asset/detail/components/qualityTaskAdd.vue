@@ -43,7 +43,7 @@
                                     </el-select>
                                 </el-form-item>
 
-                                <el-form-item :label="t('common.texts.status')" prop="publishStatus">
+                                <el-form-item :label="td('common.texts.status')" prop="publishStatus">
                                     <el-select v-model="queryParams.publishStatus" :placeholder="t('common.form.statusPlaceholder')" clearable
                                         class="el-form-input-width">
                                         <el-option label="上线" value="online" />
@@ -68,12 +68,12 @@
                 icon="Plus"
                 @click="openRuleSelector(undefined)"
                 v-if="!route.query.info"
-                >{{ t('common.button.add') }}</el-button
+                >{{ td('common.button.add') }}</el-button
               >
             </el-col>
             <el-col :span="1.5">
               <el-tooltip
-                content="会自动获取资产关联的数据元中的稽查规则"
+                :content="td('dpp.asset.detail.quality.getRuleTip')"
                 placement="top"
               >
                 <el-button
@@ -84,7 +84,7 @@
                   <el-icon style="margin-right: 4px">
                     <Refresh />
                   </el-icon>
-                  获取稽查规则
+                  {{ td('dpp.asset.detail.quality.getRule') }}
                 </el-button>
               </el-tooltip>
             </el-col>
@@ -92,13 +92,13 @@
         </div>
 
         <el-table stripe height="550px" :data="dppQualityTaskEvaluateSaveReqVO">
-          <el-table-column :label="t('common.texts.number')" type="index" align="left">
+          <el-table-column :label="td('common.texts.number')" type="index" align="left">
             <template #default="scope">
               {{ scope.row.id || "-" }}
             </template>
           </el-table-column>
           <el-table-column
-            label="评测名称"
+            :label="td('dpp.asset.detail.quality.evaluationName')"
             align="left"
             prop="name"
             :show-overflow-tooltip="{ effect: 'light' }"
@@ -108,7 +108,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="评测字段"
+            :label="td('dpp.asset.detail.quality.evaluationField')"
             align="left"
             prop="evaColumn"
             :show-overflow-tooltip="{ effect: 'light' }"
@@ -118,7 +118,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="稽查规则"
+            :label="td('dpp.asset.detail.quality.inspectionRule')"
             align="left"
             width="200"
             prop="ruleName"
@@ -129,7 +129,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="规则描述"
+            :label="td('dpp.asset.detail.quality.ruleDescription')"
             align="left"
             prop="ruleDescription"
             :show-overflow-tooltip="{ effect: 'light' }"
@@ -139,7 +139,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="质量维度"
+            :label="td('dpp.asset.detail.quality.qualityDimension')"
             align="left"
             prop="dimensionType"
             width="100"
@@ -153,13 +153,13 @@
             </template>
           </el-table-column>
 
-          <el-table-column :label="t('common.texts.status')" align="left" prop="status" width="80">
+          <el-table-column :label="td('common.texts.status')" align="left" prop="status" width="80">
             <template #default="scope">
-              {{ scope.row.status == "1" ? "上线" : "下线" }}
+              {{ scope.row.status == "1" ? td('dpp.asset.detail.quality.online') : td('dpp.asset.detail.quality.offline') }}
             </template>
           </el-table-column>
           <el-table-column
-            :label="t('common.texts.operation')"
+            :label="td('common.texts.operation')"
             align="center"
             class-name="small-padding fixed-width"
             fixed="right"
@@ -172,21 +172,21 @@
                 type="primary"
                 icon="view"
                 @click="openRuleDialog(scope.row, scope.$index + 1, true)"
-                >查看</el-button
+                >{{ td('dpp.asset.detail.quality.view') }}</el-button
               >
               <el-button
                 link
                 type="primary"
                 icon="Edit"
                 @click="openRuleDialog(scope.row, scope.$index + 1)"
-                >{{ t('common.button.update') }}</el-button
+                >{{ td('common.button.update') }}</el-button
               >
               <el-button
                 link
                 type="danger"
                 icon="Delete"
                 @click="handleRuleDelete(scope.$index + 1)"
-                >{{ t('common.button.delete') }}</el-button
+                >{{ td('common.button.delete') }}</el-button
               >
             </template>
           </el-table-column>
@@ -205,20 +205,20 @@
       :tableName="formData?.tableName"
     />
     <template #footer>
-      <el-button @click="handleClose">{{ t('common.button.cancel') }}</el-button>
+      <el-button @click="handleClose">{{ td('common.button.cancel') }}</el-button>
       <el-button
         type="primary"
         @click="submitForm"
         :loading="loadingOptions.loading"
       >
-        {{ t('common.button.confirm') }}
+        {{ td('common.button.confirm') }}
       </el-button>
     </template>
   </el-dialog>
 </template>
 
 <script setup name="qualityTask">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { ref, reactive, toRefs, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import RuleSelectorDialog from "@/views/da/quality/qualityTask/components/ruleBase.vue";
@@ -235,7 +235,7 @@ const showSearch = ref(true);
 import moment from "moment";
 import { getColumnByAssetId } from "@/api/dpp/task/index.js";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 let id = route.query.id || "";
 const router = useRouter();
 const {
@@ -317,7 +317,7 @@ function getDeptTree() {
     deptOptions.value = proxy.handleTree(response.data, "id", "parentId");
     deptOptions.value = [
       {
-        name: "数据质量类目",
+        name: td('dpp.asset.detail.quality.qualityCategory'),
         value: "",
         id: 0,
         children: deptOptions.value,
@@ -372,7 +372,7 @@ function open(data, row) {
     "YYYYMMDDHHmmss"
   )}`;
   getDeptTree();
-  title.value = row?.id ? "修改资产质量任务" : "新增资产质量任务";
+  title.value = row?.id ? td('dpp.asset.detail.quality.editTask') : td('dpp.asset.detail.quality.addTask');
   console.log("🚀 ~ open ~ row?.nam:", row);
   formData.value = data;
   visible.value = true;
@@ -460,10 +460,10 @@ async function selectInspectionRule() {
 
           if (addedCount > 0) {
             ElMessage.success(
-              `已追加 ${addedCount} 条规则，来自表 ${item.tableName}`
+              `${td('dpp.asset.detail.quality.rulesAppended', { count: addedCount, table: item.tableName })}`
             );
           } else {
-            ElMessage.info(`表 ${item.tableName} 没有新规则追加`);
+            ElMessage.info(`${td('dpp.asset.detail.quality.noNewRules', { table: item.tableName })}`);
           }
         }
       } catch (err) {
@@ -504,7 +504,7 @@ function RuleSelectorconfirm(obj, mode) {
   });
 
   if (isDuplicate) {
-    proxy.$message.warning("评测名称不能重复！");
+    proxy.$message.warning(td('dpp.asset.detail.quality.nameDuplicate'));
     return;
   }
 
@@ -524,7 +524,7 @@ async function submitForm() {
   try {
     await formRef.value?.validate();
   } catch (err) {
-    ElMessage.warning("表单校验未通过，请检查必填项！");
+    ElMessage.warning(td('dpp.asset.detail.quality.formValidationFailed'));
     loadingInstance.value = false;
     return;
   }
@@ -535,7 +535,7 @@ async function submitForm() {
         name:
           item.name && item.name.trim()
             ? item.name
-            : `资产质量${moment().format("YYYYMMDDHHmmss")}`,
+            : `${td('dpp.asset.detail.quality.qualityAsset')}${moment().format("YYYYMMDDHHmmss")}`,
       })
     );
 
@@ -558,7 +558,7 @@ async function submitForm() {
       handleClose();
       emit("submit-success");
     } else {
-      ElMessage.error(res.msg || "提交失败！");
+      ElMessage.error(res.msg || td('dpp.asset.detail.quality.submitFailed'));
     }
   } catch (err) {
   } finally {

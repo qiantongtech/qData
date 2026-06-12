@@ -21,11 +21,11 @@
     <el-row>
       <el-col :span="12">
         <el-form-item
-          label="字符数量"
+          :label="td('dpp.cleanRule.charCount', '字符数量')"
           prop="maxLength"
           :rules="
             !falg
-              ? [{ required: true, message: '请输入字符数量', trigger: 'blur' }]
+              ? [{ required: true, message: td('dpp.cleanRule.inputCharCount', '请输入字符数量'), trigger: 'blur' }]
               : []
           "
         >
@@ -37,17 +37,17 @@
     <el-row>
       <el-col :span="12" class="hasMsg">
         <el-form-item
-          label="处理方式"
+          :label="td('dpp.cleanRule.handleMethod', '处理方式')"
           prop="direction"
           :rules="
             !falg
-              ? [{ required: true, message: '请选择处理方式', trigger: 'blur' }]
+              ? [{ required: true, message: td('dpp.cleanRule.selectHandleMethod', '请选择处理方式'), trigger: 'blur' }]
               : []
           "
         >
           <el-radio-group v-model="form.direction" :disabled="falg">
-            <el-radio :value="'1'">正向</el-radio>
-            <el-radio :value="'2'">反向</el-radio>
+            <el-radio :value="'1'">{{ td('dpp.cleanRule.forward', '正向') }}</el-radio>
+            <el-radio :value="'2'">{{ td('dpp.cleanRule.backward', '反向') }}</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-col>
@@ -56,7 +56,9 @@
 </template>
 
 <script setup>
+import useDefaultLang from "@/composables/useDefaultLang"
 import { reactive, ref, watch } from "vue";
+const { td } = useDefaultLang();
 const props = defineProps({
   form: Object,
   inputFields: Array,
@@ -71,7 +73,7 @@ const form = reactive({ ...props.form });
 console.log("🚀 ~ form:", form);
 const exposedFields = ["maxLength", "direction"];
 const directionText = computed(() =>
-  form.direction === "1" ? "正向" : form.direction === "2" ? "反向" : "-"
+  form.direction === "1" ? td('dpp.cleanRule.forward', '正向') : form.direction === "2" ? td('dpp.cleanRule.backward', '反向') : "-"
 );
 function validate() {
   return new Promise((resolve) => {

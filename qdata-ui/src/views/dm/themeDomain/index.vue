@@ -34,7 +34,7 @@
           @click="handleAdd"
           v-hasPermi="['dm:themeDomain:add']"
         >
-          {{ t('common.button.add') }}
+          {{ td('common.button.add', '新增') }}
         </el-button>
         <el-button
           class="extend-btn"
@@ -44,7 +44,7 @@
         >
           <svg-icon v-if="defaultExpandAll" icon-class="toggle" />
           <svg-icon v-else icon-class="expand" />
-          <span>{{ defaultExpandAll ? t('common.button.collapse') : t('common.button.expand') }}</span>
+          <span>{{ defaultExpandAll ? td('common.button.fold', '折叠') : td('common.button.expand', '展开') }}</span>
         </el-button>
       </template>
 
@@ -57,7 +57,7 @@
             @click="handleUpdate(row)"
             v-hasPermi="['dm:themeDomain:edit']"
           >
-            {{ t('common.button.update') }}
+            {{ td('common.button.update', '修改') }}
           </el-button>
           <el-button
             link
@@ -66,7 +66,7 @@
             @click="handleAdd(row)"
             v-hasPermi="['dm:themeDomain:add']"
           >
-            {{ t('common.button.add') }}
+            {{ td('common.button.add', '新增') }}
           </el-button>
           <el-button
             link
@@ -75,7 +75,7 @@
             @click="handleDelete(row)"
             v-hasPermi="['dm:themeDomain:remove']"
           >
-            {{ t('common.button.delete') }}
+            {{ td('common.button.delete', '删除') }}
           </el-button>
         </template>
 
@@ -111,19 +111,19 @@
       >
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="主题域名称" prop="name">
-              <el-input v-model="form.name" placeholder="请输入主题域名称" />
+            <el-form-item :label="td('dm.themeDomain.name', '主题域名称')" prop="name">
+              <el-input v-model="form.name" :placeholder="td('dm.themeDomain.namePlaceholder', '请输入主题域名称')" />
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="上级主题域" prop="parentId">
+            <el-form-item :label="td('dm.themeDomain.parentId', '上级主题域')" prop="parentId">
               <el-tree-select
                 filterable
                 v-model="form.parentId"
                 :data="attDataElemCatOptions"
                 :props="{ value: 'id', label: 'name', children: 'children' }"
                 value-key="id"
-                placeholder="请选择上级主题域"
+                :placeholder="td('dm.themeDomain.parentIdPlaceholder', '请选择上级主题域')"
                 check-strictly
               />
             </el-form-item>
@@ -131,7 +131,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="数仓分层" prop="dataLayerId">
+            <el-form-item :label="td('dm.themeDomain.dataLayerId', '数仓分层')" prop="dataLayerId">
               <el-tree-select
                 filterable
                 default-expand-all
@@ -139,24 +139,24 @@
                 :data="dataLayerOptions"
                 :props="{ value: 'id', label: 'name', children: 'children' }"
                 value-key="id"
-                placeholder="请选择数仓分层"
+                :placeholder="td('dm.themeDomain.dataLayerIdPlaceholder', '请选择数仓分层')"
                 check-strictly
               />
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="英文缩写" prop="engName">
-              <el-input v-model="form.engName" placeholder="请输入英文缩写" />
+            <el-form-item :label="td('dm.themeDomain.engName', '英文缩写')" prop="engName">
+              <el-input v-model="form.engName" :placeholder="td('dm.themeDomain.engNamePlaceholder', '请输入英文缩写')" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="负责人" prop="ownerUserId">
+            <el-form-item :label="td('dm.themeDomain.ownerId', '负责人')" prop="ownerUserId">
               <el-select
                 v-model="form.ownerUserId"
                 filterable
-                placeholder="请选择负责人"
+                :placeholder="td('dm.themeDomain.ownerIdPlaceholder', '请选择负责人')"
                 @change="handleOwnerChange"
               >
                 <el-option
@@ -169,10 +169,10 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="负责人电话" prop="ownerUserPhoneNumber">
+            <el-form-item :label="td('dm.themeDomain.ownerPhone', '负责人电话')" prop="ownerUserPhoneNumber">
               <el-input
                 v-model="form.ownerUserPhoneNumber"
-                placeholder="请输入负责人电话"
+                :placeholder="td('dm.themeDomain.ownerPhonePlaceholder', '请输入负责人电话')"
                 disabled
               />
             </el-form-item>
@@ -180,25 +180,25 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="t('common.texts.description')" prop="description">
+            <el-form-item :label="td('common.texts.description', '描述')" prop="description">
               <el-input
                 v-model="form.description"
                 type="textarea"
                 maxlength="256个字符"
                 :min-height="256"
                 show-word-limit
-                :placeholder="t('common.form.descriptionPlaceholder')"
+                :placeholder="td('common.form.descriptionPlaceholder', '请输入描述')"
               />
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item :label="t('common.texts.remark')" prop="remark">
+            <el-form-item :label="td('common.texts.remark', '备注')" prop="remark">
               <el-input
                 v-model="form.remark"
                 type="textarea"
                 maxlength="500个字符"
                 show-word-limit
-                :placeholder="t('common.form.remarkPlaceholder')"
+                :placeholder="td('common.form.remarkPlaceholder', '请输入备注')"
               />
             </el-form-item>
           </el-col>
@@ -206,9 +206,9 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="cancel">{{ t('common.button.cancel') }}</el-button>
+          <el-button size="mini" @click="cancel">{{ td('common.button.cancel', '取消') }}</el-button>
           <el-button type="primary" size="mini" @click="submitForm"
-            >{{ t('common.button.confirm') }}</el-button
+            >{{ td('common.button.confirm', '确定') }}</el-button
           >
         </div>
       </template>
@@ -217,7 +217,7 @@
 </template>
 
 <script setup name="DataElemCat">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import {
   getThemeDomain,
   addThemeDomain,
@@ -231,7 +231,7 @@ import QtWrap from "@/components/QtWrap";
 import QtTable from "@/components/QtTable";
 import QtSearchBar from "@/components/QtSearchBar";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const attDataElemCatOptions = ref([]);
 const managerOptions = ref([]);
@@ -259,19 +259,19 @@ const data = reactive({
     ownerUserId: null,
   },
   rules: {
-    name: [{ required: true, message: "主题域名称不能为空", trigger: "blur" }],
+    name: [{ required: true, message: td('dm.themeDomain.nameRequired', '主题域名称不能为空'), trigger: "blur" }],
     parentId: [
-      { required: true, message: "上级主题域不能为空", trigger: "blur" },
+      { required: true, message: td('dm.themeDomain.parentIdRequired', '上级主题域不能为空'), trigger: "blur" },
     ],
     engName: [
-      { required: true, message: "英文缩写不能为空", trigger: "blur" },
-      { pattern: /^[a-zA-Z]+$/, message: "只能输入英文字符", trigger: "blur" },
+      { required: true, message: td('dm.themeDomain.engNameRequired', '英文缩写不能为空'), trigger: "blur" },
+      { pattern: /^[a-zA-Z]+$/, message: td('dm.themeDomain.englishOnly', '只能输入英文字符'), trigger: "blur" },
     ],
     ownerUserId: [
-      { required: true, message: "负责人不能为空", trigger: "blur" },
+      { required: true, message: td('dm.themeDomain.ownerRequired', '负责人不能为空'), trigger: "blur" },
     ],
     dataLayerId: [
-      { required: true, message: "数仓分层不能为空", trigger: "blur" },
+      { required: true, message: td('dm.themeDomain.dataLayerIdRequired', '数仓分层不能为空'), trigger: "blur" },
     ],
   },
 });
@@ -294,46 +294,46 @@ const tableStore = reactive({
   },
   columns: [
     {
-      label: "主题域名称",
+      label: td('dm.themeDomain.name', '主题域名称'),
       prop: "name",
       width: 200,
       align: "left",
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: t('common.texts.description'),
+      label: td('common.texts.description', '描述'),
       prop: "description",
       width: 250,
       align: "left",
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: "英文缩写",
+      label: td('dm.themeDomain.engName', '英文缩写'),
       prop: "engName",
       width: 200,
       align: "left",
       showOverflowTooltip: { effect: "light" },
     },
-    { label: "数仓分层", prop: "dataLayerName", align: "left", width: 140 },
-    { label: "负责人", prop: "ownerUserName", align: "left" },
+    { label: td('dm.themeDomain.dataLayerId', '数仓分层'), prop: "dataLayerName", align: "left", width: 140 },
+    { label: td('dm.themeDomain.ownerId', '负责人'), prop: "ownerUserName", align: "left" },
     {
-      label: "负责人电话",
+      label: td('dm.themeDomain.ownerPhone', '负责人电话'),
       prop: "ownerUserPhoneNumber",
       width: 140,
       align: "left",
     },
-    { label: t('common.texts.status'), prop: "validFlag", slot: "validFlag", width: 100 },
-    { label: t('common.texts.remark'), prop: "remark", align: "left" },
+    { label: td('common.texts.status', '状态'), prop: "validFlag", slot: "validFlag", width: 100 },
+    { label: td('common.texts.remark', '备注'), prop: "remark", align: "left" },
 
-    { label: t('common.texts.createdBy'), prop: "createBy", align: "left" },
+    { label: td('common.texts.createdBy', '创建人'), prop: "createBy", align: "left" },
     {
-      label: t('common.texts.createdTime'),
+      label: td('common.texts.createdTime', '创建时间'),
       prop: "createTime",
       sortable: true,
       date: true,
       width: 180,
     },
-    { label: t('common.texts.operation'), width: 220, slot: "action", fixed: "right" },
+    { label: td('common.texts.operation', '操作'), width: 220, slot: "action", fixed: "right" },
   ],
   func: listThemeDomain,
   params: queryParams,
@@ -345,36 +345,36 @@ const tableStore = reactive({
 const searchStore = reactive({
   items: [
     {
-      label: "主题域名称",
+      label: td('dm.themeDomain.name', '主题域名称'),
       prop: "name",
-      component: { is: "input", placeholder: "请输入主题域名称" },
+      component: { is: "input", placeholder: td('dm.themeDomain.namePlaceholder', '请输入主题域名称') },
     },
     {
-      label: "上级主题域",
+      label: td('dm.themeDomain.parentId', '上级主题域'),
       prop: "code",
       component: {
         is: "tree-select",
         data: attDataElemCatOptions,
         props: { value: "code", label: "name", children: "children" },
         valueKey: "id",
-        placeholder: "请选择上级主题域",
+        placeholder: td('dm.themeDomain.parentIdPlaceholder', '请选择上级主题域'),
         checkStrictly: true,
       },
     },
     {
-      label: "数仓分层",
+      label: td('dm.themeDomain.dataLayerId', '数仓分层'),
       prop: "dataLayerId",
       component: {
         is: "tree-select",
         data: dataLayerOptions,
         props: { value: "id", label: "name", children: "children" },
         valueKey: "id",
-        placeholder: "请选择数仓分层",
+        placeholder: td('dm.themeDomain.dataLayerIdPlaceholder', '请选择数仓分层'),
         checkStrictly: true,
       },
     },
     {
-      label: "负责人",
+      label: td('dm.themeDomain.ownerId', '负责人'),
       prop: "ownerUserId",
       component: {
         is: "select",
@@ -384,7 +384,7 @@ const searchStore = reactive({
             value: item.userId,
           }))
         ),
-        placeholder: "请选择负责人",
+        placeholder: td('dm.themeDomain.ownerIdPlaceholder', '请选择负责人'),
       },
     },
   ],
@@ -398,7 +398,7 @@ function getList() {
 function getDataTree() {
   listThemeDomain().then((response) => {
     attDataElemCatOptions.value = [];
-    const data = { id: 0, name: "顶级节点", children: [] };
+    const data = { id: 0, name: td('dm.themeDomain.topNode', '顶级节点'), children: [] };
     data.children = proxy.handleTree(response.data, "id", "parentId");
     attDataElemCatOptions.value.push(data);
   });
@@ -465,9 +465,9 @@ function handleQuery() {
 }
 /** 改变启用状态值 */
 function handleStatusChange(row) {
-  const text = row.validFlag === true ? "启用" : "禁用";
+  const text = row.validFlag === true ? td('dm.themeDomain.enableText', '启用') : td('dm.themeDomain.disableText', '禁用');
   proxy.$modal
-    .confirm(`确认要"${text}","${row.name}"主题域吗？`)
+    .confirm(td('dm.themeDomain.confirmStatusChange', '确认要"{text}","{name}"主题域吗？').replace('{text}', text).replace('{name}', row.name))
     .then(() => {
       updateThemeDomain({
         id: row.id,
@@ -475,7 +475,7 @@ function handleStatusChange(row) {
         validFlag: row.validFlag,
       })
         .then((response) => {
-          proxy.$modal.msgSuccess(text + "成功");
+          proxy.$modal.msgSuccess(td('common.message.operationSuccess', '操作成功'));
           getList();
         })
         .catch((err) => {
@@ -509,7 +509,7 @@ function handleAdd(row) {
   // getTreeselect();
   listThemeDomain().then((response) => {
     attDataElemCatOptions.value = [];
-    const data = { id: 0, name: "顶级节点", children: [] };
+    const data = { id: 0, name: td('dm.themeDomain.topNode', '顶级节点'), children: [] };
     data.children = proxy.handleTree(response.data, "id", "parentId");
     attDataElemCatOptions.value.push(data);
   });
@@ -519,7 +519,7 @@ function handleAdd(row) {
     form.value.parentId = 0;
   }
   open.value = true;
-  title.value = "新增主题域";
+  title.value = td('dm.themeDomain.addTitle', '新增主题域');
 }
 
 /** 展开/折叠操作 */
@@ -555,7 +555,7 @@ async function handleUpdate(row) {
     form.value = response.data;
 
     open.value = true;
-    title.value = "修改主题域";
+    title.value = td('dm.themeDomain.editTitle', '修改主题域');
   });
 }
 
@@ -565,13 +565,13 @@ function submitForm() {
     if (valid) {
       if (form.value.id != null) {
         updateThemeDomain(form.value).then((response) => {
-          proxy.$modal.msgSuccess(t('common.message.editSuccess'));
+          proxy.$modal.msgSuccess(td('common.message.editSuccess', '修改成功'));
           open.value = false;
           getList();
         });
       } else {
         addThemeDomain(form.value).then((response) => {
-          proxy.$modal.msgSuccess(t('common.message.addSuccess'));
+          proxy.$modal.msgSuccess(td('common.message.addSuccess', '新增成功'));
           open.value = false;
           getList();
         });
@@ -583,13 +583,13 @@ function submitForm() {
 /** 删除按钮操作 */
 function handleDelete(row) {
   proxy.$modal
-    .confirm('是否确认删除主题域管理编号为"' + row.name + '"的数据项？')
+    .confirm(td('dm.themeDomain.confirmDelete', '是否确认删除主题域管理编号为"{name}"的数据项？').replace('{name}', row.name))
     .then(function () {
       return delThemeDomain(row.id);
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+      proxy.$modal.msgSuccess(td('common.message.deleteSuccess', '删除成功'));
     })
     .catch(() => {});
 }

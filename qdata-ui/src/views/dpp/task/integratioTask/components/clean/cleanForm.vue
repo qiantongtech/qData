@@ -37,24 +37,24 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item
-              label="节点名称"
+              :label="td('dpp.cleanRule.nodeName', '节点名称')"
               prop="name"
               :rules="[
                 {
                   required: true,
-                  message: '请输入节点名称',
+                  message: td('dpp.cleanRule.inputNodeName', '请输入节点名称'),
                   trigger: 'change',
                 },
               ]"
             >
-              <el-input v-model="form.name" placeholder="请输入节点名称" />
+              <el-input v-model="form.name" :placeholder="td('dpp.cleanRule.inputNodeName', '请输入节点名称')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="类型" prop="typeName">
+            <el-form-item :label="td('dpp.cleanRule.type', '类型')" prop="typeName">
               <el-select
                 v-model="form.taskParams.typeName"
-                placeholder="请输入类型"
+                :placeholder="td('dpp.cleanRule.inputType', '请输入类型')"
                 filterable
                 disabled
               >
@@ -70,26 +70,26 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="t('common.texts.description')" prop="description">
+            <el-form-item :label="td('common.texts.description', '描述')" prop="description">
               <el-input
                 v-model="form.description"
                 type="textarea"
                 maxlength="500个字符"
                 show-word-limit
-                :placeholder="t('common.form.descriptionPlaceholder')"
+                :placeholder="td('common.form.descriptionPlaceholder', '请输入描述')"
               />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="where条件" prop="where">
+            <el-form-item :label="td('dpp.cleanRule.whereCondition', 'where条件')" prop="where">
               <el-input
                 v-model="form.taskParams.where"
                 type="textarea"
                 maxlength="500个字符"
                 show-word-limit
-                placeholder="请输入where条件"
+                :placeholder="td('dpp.cleanRule.inputWhereCondition', '请输入where条件')"
               />
             </el-form-item>
           </el-col>
@@ -98,14 +98,14 @@
       <template v-else>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="节点名称:" prop="id">
+            <el-form-item :label="td('dpp.cleanRule.nodeName', '节点名称') + ':'" prop="id">
               <div class="form-readonly">
                 {{ form.name }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="类型" prop="typeName">
+            <el-form-item :label="td('dpp.cleanRule.type', '类型')" prop="typeName">
               <div class="form-readonly">
                 {{ form.taskParams.typeName }}
               </div>
@@ -114,7 +114,7 @@
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item :label="t('common.texts.description')" prop="description">
+            <el-form-item :label="td('common.texts.description', '描述')" prop="description">
               <div class="form-readonly textarea">
                 {{ form.description ?? "-" }}
               </div>
@@ -124,7 +124,7 @@
 
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="where条件" prop="where">
+            <el-form-item :label="td('dpp.cleanRule.whereCondition', 'where条件')" prop="where">
               <div class="form-readonly textarea">
                 {{ form.where ?? "-" }}
               </div>
@@ -132,7 +132,7 @@
           </el-col>
         </el-row>
       </template>
-      <div class="h2-title">规则设置</div>
+      <div class="h2-title">{{ td('dpp.cleanRule.ruleSetting', '规则设置') }}</div>
 
       <div class="justify-between mb15" style="margin-top: 10px" v-if="!info">
         <el-row :gutter="15" class="btn-style">
@@ -141,7 +141,7 @@
               type="primary"
               icon="Plus"
               @click="openRuleSelector(undefined)"
-              >新增规则</el-button
+              >{{ td('dpp.cleanRule.addRule', '新增规则') }}</el-button
             >
           </el-col>
         </el-row>
@@ -154,13 +154,13 @@
         ref="dragTable"
         row-key="name"
       >
-        <el-table-column label="序号" width="80" align="left">
+        <el-table-column :label="td('dpp.cleanRule.index', '序号')" width="80" align="left">
           <template #header>
             <div class="justify-center">
-              <span>序号</span>
+              <span>{{ td('dpp.cleanRule.index', '序号') }}</span>
               <el-tooltip
                 effect="light"
-                content="清洗规则按照下面配置的列表顺序，依次执行"
+                :content="td('dpp.cleanRule.cleanRuleOrderTip', '清洗规则按照下面配置的列表顺序，依次执行')"
                 placement="top"
               >
                 <el-icon class="tip-icon">
@@ -187,7 +187,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="清洗名称"
+          :label="td('dpp.cleanRule.cleanName', '清洗名称')"
           align="left"
           prop="name"
           :show-overflow-tooltip="{ effect: 'light' }"
@@ -198,7 +198,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="清洗字段"
+          :label="td('dpp.cleanRule.cleanField', '清洗字段')"
           align="left"
           prop="columns"
           :show-overflow-tooltip="{ effect: 'light' }"
@@ -213,7 +213,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="清洗规则"
+          :label="td('dpp.cleanRule.cleanRule', '清洗规则')"
           align="left"
           prop="ruleName"
           :show-overflow-tooltip="{ effect: 'light' }"
@@ -224,7 +224,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="规则描述"
+          :label="td('dpp.cleanRule.ruleDescription', '规则描述')"
           align="left"
           prop="ruleDescription"
           :show-overflow-tooltip="{ effect: 'light' }"
@@ -234,7 +234,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="维度"
+          :label="td('dpp.cleanRule.dimension', '维度')"
           align="left"
           prop="parentName"
           :show-overflow-tooltip="{ effect: 'light' }"
@@ -244,13 +244,13 @@
             {{ scope.row.parentName || "-" }}
           </template>
         </el-table-column>
-        <el-table-column :label="t('common.texts.status')" align="left" prop="status">
+        <el-table-column :label="td('common.texts.status', '状态')" align="left" prop="status">
           <template #default="scope">
-            {{ scope.row.status == "1" ? "上线" : "下线" }}
+            {{ scope.row.status == "1" ? td('dpp.cleanRule.online', '上线') : td('dpp.cleanRule.offline', '下线') }}
           </template>
         </el-table-column>
         <el-table-column
-          :label="t('common.texts.operation')"
+          :label="td('common.texts.operation', '操作')"
           align="center"
           class-name="small-padding fixed-width"
           fixed="right"
@@ -265,14 +265,14 @@
               type="primary"
               icon="Edit"
               @click="openRuleDialog(scope.row, scope.$index + 1)"
-              >{{ t('common.button.update') }}</el-button
+              >{{ td('common.button.update', '修改') }}</el-button
             >
             <el-button
               link
               type="danger"
               icon="Delete"
               @click="handleRuleDelete(scope.$index + 1)"
-              >{{ t('common.button.delete') }}</el-button
+              >{{ td('common.button.delete', '删除') }}</el-button
             >
           </template>
         </el-table-column>
@@ -280,12 +280,12 @@
     </el-form>
     <template #footer>
       <div style="text-align: right">
-        <el-button @click="closeDialog">{{ t('common.button.close') }}</el-button>
+        <el-button @click="closeDialog">{{ td('common.button.close', '关闭') }}</el-button>
         <el-button type="primary" @click="saveData" v-if="!info"
-          >{{ t('common.button.save') }}</el-button
+          >{{ td('common.button.save', '保存') }}</el-button
         >
         <el-tooltip
-          content="会自动获取资产关联的数据元中的清洗规则"
+          :content="td('dpp.cleanRule.getCleanRuleTip', '会自动获取资产关联的数据元中的清洗规则')"
           placement="top"
           v-if="!info"
         >
@@ -293,7 +293,7 @@
             <el-icon style="margin-right: 4px">
               <Refresh />
             </el-icon>
-            获取清洗规则
+            {{ td('dpp.cleanRule.getCleanRule', '获取清洗规则') }}
           </el-button>
         </el-tooltip>
       </div>
@@ -306,7 +306,7 @@
   />
 </template>
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { defineProps, defineEmits, ref, computed, watch } from "vue";
 
 import { getNodeUniqueKey } from "@/api/dpp/task/index.js";
@@ -320,7 +320,7 @@ import {
 } from "@/views/dpp/utils/opBase.js";
 import RuleSelectorDialog from "./rule/ruleBase.vue";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const userStore = useUserStore();
 const {
   att_rule_clean_type,
@@ -333,7 +333,7 @@ const {
 );
 const props = defineProps({
   visible: { type: Boolean, default: true },
-  title: { type: String, default: "表单标题" },
+  title: { type: String, default: '' },
   currentNode: { type: Object, default: () => ({}) },
   info: { type: Boolean, default: false },
   graph: { type: Object, default: () => ({}) },
@@ -411,7 +411,7 @@ const renameRuleToRule = () => {
     }
   });
 
-  proxy.$message.success(`覆盖 ${coverCount} 条，追加 ${addCount} 条`);
+  proxy.$message.success(td('dpp.cleanRule.coverAndAdd', `覆盖 ${coverCount} 条，追加 ${addCount} 条`, { coverCount, addCount }));
 };
 
 function RuleSelectorconfirm(obj, mode) {
@@ -427,7 +427,7 @@ function RuleSelectorconfirm(obj, mode) {
   });
 
   if (isDuplicate) {
-    proxy.$message.warning("清洗名称不能重复！");
+    proxy.$message.warning(td('dpp.cleanRule.cleanNameDuplicate', '清洗名称不能重复！'));
     return;
   }
 

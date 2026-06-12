@@ -19,11 +19,11 @@
   <el-form ref="formRef" :model="form" label-width="130px" :disabled="false">
     <el-row>
       <el-col :span="12">
-        <el-form-item label="最小值" prop="minValue">
+        <el-form-item :label="td('da.qualityTaskRules.ruleCommon.minValue')" prop="minValue">
           <el-input
             v-if="!falg"
             v-model="form.minValue"
-            placeholder="不填写表示不限制最小值"
+            :placeholder="td('da.qualityTaskRules.ruleCommon.minValuePlaceholder')"
             type="number"
             class="rule-half"
           />
@@ -31,11 +31,11 @@
         </el-form-item>
       </el-col>
       <el-col :span="12">
-        <el-form-item label="最大值" prop="maxValue">
+        <el-form-item :label="td('da.qualityTaskRules.ruleCommon.maxValue')" prop="maxValue">
           <el-input
             v-if="!falg"
             v-model="form.maxValue"
-            placeholder="不填写表示不限制最大值"
+            :placeholder="td('da.qualityTaskRules.ruleCommon.maxValuePlaceholder')"
             type="number"
             class="rule-half"
           />
@@ -46,10 +46,10 @@
 
     <el-row>
       <el-col :span="12">
-        <el-form-item label="是否包含边界值" prop="includeBoundary">
+        <el-form-item :label="td('da.qualityTaskRules.ruleCommon.includeBoundary')" prop="includeBoundary">
           <el-radio-group v-if="!falg" v-model="form.includeBoundary">
-            <el-radio :value="'1'">包含</el-radio>
-            <el-radio :value="'0'">不包含</el-radio>
+            <el-radio :value="'1'">{{ td('da.qualityTaskRules.ruleCommon.include') }}</el-radio>
+            <el-radio :value="'0'">{{ td('da.qualityTaskRules.ruleCommon.exclude') }}</el-radio>
           </el-radio-group>
           <div v-else class="form-readonly">{{ includeBoundaryText }}</div>
         </el-form-item>
@@ -61,6 +61,9 @@
 <script setup>
 import { reactive, ref, watch } from "vue";
 import { getColumnByAssetId } from "@/api/dpp/task/index.js";
+import useDefaultLang from "@/composables/useDefaultLang";
+
+const { td } = useDefaultLang();
 
 const props = defineProps({
   form: Object,
@@ -75,9 +78,9 @@ const formRef = ref(null);
 const form = reactive({ ...props.form });
 const includeBoundaryText = computed(() =>
   form.includeBoundary === "1"
-    ? "包含"
+    ? td('da.qualityTaskRules.ruleCommon.include')
     : form.includeBoundary === "0"
-    ? "不包含"
+    ? td('da.qualityTaskRules.ruleCommon.exclude')
     : "-"
 );
 const columnList = ref([]);

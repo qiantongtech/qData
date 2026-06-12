@@ -22,15 +22,15 @@
         <el-form ref="formRef" :model="form" :rules="formRules" label-width="120px" @submit.prevent>
             <el-row :gutter="20">
                 <el-col :span="24">
-                    <el-form-item label="稽查对象名称" prop="name">
-                        <el-input v-model="form.name" placeholder="请输入稽查对象名称" />
+                    <el-form-item :label="td('da.qualityTask.targetComponent.targetName')" prop="name">
+                        <el-input v-model="form.name" :placeholder="td('da.qualityTask.targetComponent.targetNamePlaceholder')" />
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="24">
-                    <el-form-item label="源数据库连接" prop="datasourceId">
-                        <el-select v-model="form.datasourceId" placeholder="请选择源数据库连接" filterable
+                    <el-form-item :label="td('da.qualityTask.targetComponent.sourceDbConnection')" prop="datasourceId">
+                        <el-select v-model="form.datasourceId" :placeholder="td('da.qualityTask.targetComponent.sourceDbPlaceholder')" filterable
                             @change="onDatasourceChange">
                             <el-option v-for="ds in datasourceOptions" :key="ds.id" :label="ds.datasourceName"
                                 :value="ds.id" />
@@ -41,22 +41,22 @@
 
             <el-row :gutter="20">
                 <el-col :span="24">
-                    <el-form-item label="数据连接类型">
-                        <el-input v-model="form.datasourceType" disabled placeholder="数据连接类型" />
+                    <el-form-item :label="td('da.qualityTask.targetComponent.datasourceType')">
+                        <el-input v-model="form.datasourceType" disabled :placeholder="td('da.qualityTask.targetComponent.datasourceTypePlaceholder')" />
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="24">
-                    <el-form-item label="数据连接实例">
-                        <el-input v-model="form.dbname" disabled placeholder="数据连接实例" />
+                    <el-form-item :label="td('da.qualityTask.targetComponent.datasourceInstance')">
+                        <el-input v-model="form.dbname" disabled :placeholder="td('da.qualityTask.targetComponent.datasourceInstancePlaceholder')" />
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="24">
 
-                    <el-form-item label="选择表" prop="tableName">
+                    <el-form-item :label="td('da.qualityTask.targetComponent.selectTable')" prop="tableName">
                         <el-select v-model="form.tableName" filterable :loading="tableLoading" @change="onTableChange">
                             <el-option v-for="item in tableOptions" :key="item.tableName" :label="item.tableName"
                                 :value="item.tableName" />
@@ -68,30 +68,30 @@
 
         <template #footer>
             <div class="dialog-footer">
-                <el-button @click="closeDialog">{{ t('common.button.cancel') }}</el-button>
-                <el-button type="primary" @click="saveData">{{ t('common.button.confirm') }}</el-button>
+                <el-button @click="closeDialog">{{ td('common.button.cancel') }}</el-button>
+                <el-button type="primary" @click="saveData">{{ td('common.button.confirm') }}</el-button>
             </div>
         </template>
     </el-dialog>
 
-    <el-dialog title="Cron表达式生成器" v-model="cronDialogVisible" :append-to="$refs['app-container']" destroy-on-close>
+    <el-dialog :title="td('da.qualityTask.targetComponent.cronTitle')" v-model="cronDialogVisible" :append-to="$refs['app-container']" destroy-on-close>
         <crontab ref="crontabRef" :expression="expression" @hide="cronDialogVisible = false" @fill="crontabFill" />
     </el-dialog>
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { ref, defineProps, defineEmits, getCurrentInstance } from 'vue'
 import Crontab from '@/components/Crontab/index.vue'
 import { getTablesByDataSourceId, getColumnByAssetId } from '@/api/dpp/task/index.js'
 import { getDaDatasourceList } from '@/api/dp/model/model'
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const emit = defineEmits(['confirm'])
 const { proxy } = getCurrentInstance()
 
 const props = defineProps({
-    title: { type: String, default: '表单标题' },
+    title: { type: String, default: '' },
 })
 
 const dialogVisible = ref(false)
@@ -119,9 +119,9 @@ const resetForm = () => {
 }
 
 const formRules = {
-    name: [{ required: true, message: '请输入稽查对象名称', trigger: 'change' }],
-    datasourceId: [{ required: true, message: '请选择源数据库连接', trigger: 'change' }],
-    tableName: [{ required: true, message: '请选择表', trigger: 'change' }]
+    name: [{ required: true, message: td('da.qualityTask.targetComponent.targetNameRequired'), trigger: 'change' }],
+    datasourceId: [{ required: true, message: td('da.qualityTask.targetComponent.sourceDbRequired'), trigger: 'change' }],
+    tableName: [{ required: true, message: td('da.qualityTask.targetComponent.tableRequired'), trigger: 'change' }]
 }
 
 function crontabFill(value) {
@@ -184,7 +184,7 @@ const dialogTitle = ref('')
 const openDialog = async (record, index) => {
     mode.value = index
     console.log("🚀 ~ openDialog ~ mode.value:", mode.value)
-    dialogTitle.value = mode.value ? '修改稽查对象' : '新增稽查对象'
+    dialogTitle.value = mode.value ? td('da.qualityTask.targetComponent.editTitle') : td('da.qualityTask.targetComponent.addTitle')
     await loadDatasourceOptions()
     resetForm()
     dialogVisible.value = true

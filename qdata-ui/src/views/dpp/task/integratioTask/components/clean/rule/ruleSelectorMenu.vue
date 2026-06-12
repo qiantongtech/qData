@@ -21,7 +21,7 @@
       <DeptTree
         :deptOptions="processedData"
         :leftWidth="leftWidth"
-        :placeholder="'请输入规则类型'"
+        :placeholder="td('dpp.cleanRule.inputRuleType', '请输入规则类型')"
         @node-click="handleNodeClick"
         ref="DeptTreeRef"
         :showFilter="false"
@@ -68,7 +68,7 @@
                     src="../../../../../../../assets/system/images/no_data/noData.png"
                     alt=""
                   />
-                  <p>无数据</p>
+                  <p>{{ td('dpp.cleanRule.noData', '无数据') }}</p>
                 </div>
               </div>
             </template>
@@ -80,6 +80,7 @@
 </template>
 
 <script setup>
+import useDefaultLang from "@/composables/useDefaultLang"
 import {
   Document,
   Menu,
@@ -89,6 +90,7 @@ import {
 } from "@element-plus/icons-vue";
 import DeptTree from "@/components/DeptTree/tree.vue";
 import { listAll } from "@/api/att/rule/cleanRule.js";
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { att_rule_clean_type } = proxy.useDict("att_rule_clean_type");
 import {
@@ -123,7 +125,7 @@ let attCleanRuleList = ref([]);
 function getDataTree() {
   listAttCleanCat().then((response) => {
     processedData.value = [];
-    const data = { id: "", name: "清洗规则", children: [] };
+    const data = { id: "", name: td('dpp.cleanRule.cleanRuleTree', '清洗规则'), children: [] };
     data.children = proxy.handleTree(response.data, "id", "parentId");
     processedData.value.push(data);
   });
@@ -157,7 +159,7 @@ async function fetchRulesByDimension() {
 
 function cardClick(data) {
   if (data.validFlag == false) {
-    return ElMessage.info("开发中");
+    return ElMessage.info(td('dpp.cleanRule.developing', '开发中'));
   }
   selectedCard.value = data;
   emit("card-click", data);

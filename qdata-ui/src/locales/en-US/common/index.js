@@ -49,7 +49,11 @@ export default {
         remarkPlaceholder: 'Please enter remarks',
         remarkRequired: 'Remarks cannot be empty',
         statusPlaceholder: 'Please select status',
-        statusRequired: 'Status cannot be empty'
+        statusRequired: 'Status cannot be empty',
+        startTimePlaceholder: 'Start Time',
+        endTimePlaceholder: 'End Time',
+        startDatePlaceholder: 'Start Date',
+        endDatePlaceholder: 'End Date'
     },
     texts: {
         action: 'Action',
@@ -61,6 +65,7 @@ export default {
         operation: 'Operation',
         remark: 'Remarks',
         status: 'Status',
+        time: 'Time',
         updatedBy: 'Updated By',
         updatedTime: 'Updated Time',
         enable: 'Enable',

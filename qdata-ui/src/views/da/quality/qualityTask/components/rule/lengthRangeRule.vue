@@ -19,11 +19,11 @@
   <el-form ref="formRef" :model="form" label-width="130px" :disabled="false">
     <el-row>
       <el-col :span="12">
-        <el-form-item label="最小长度" prop="minLength">
+        <el-form-item :label="td('da.qualityTaskRules.ruleCommon.minLength')" prop="minLength">
           <el-input
             v-if="!falg"
             v-model="form.minLength"
-            placeholder="不填写表示不限制最小长度"
+            :placeholder="td('da.qualityTaskRules.ruleCommon.minLengthPlaceholder')"
             type="number"
             min="0"
             class="rule-half"
@@ -32,11 +32,11 @@
         </el-form-item>
       </el-col>
       <el-col :span="12">
-        <el-form-item label="最大长度" prop="maxLength">
+        <el-form-item :label="td('da.qualityTaskRules.ruleCommon.maxLength')" prop="maxLength">
           <el-input
             v-if="!falg"
             v-model="form.maxLength"
-            placeholder="不填写表示不限制最大长度"
+            :placeholder="td('da.qualityTaskRules.ruleCommon.maxLengthPlaceholder')"
             type="number"
             min="0"
             class="rule-half"
@@ -47,17 +47,17 @@
     </el-row>
     <el-row>
       <el-col :span="12">
-        <el-form-item label="忽略空值" prop="ignoreNullValue">
+        <el-form-item :label="td('da.qualityTaskRules.ruleCommon.ignoreNullValue')" prop="ignoreNullValue">
           <el-radio-group v-if="!falg" v-model="form.ignoreNullValue">
-            <el-radio :value="'1'">是</el-radio>
-            <el-radio :value="'0'">否</el-radio>
+            <el-radio :value="'1'">{{ td('da.qualityTaskRules.ruleCommon.yes') }}</el-radio>
+            <el-radio :value="'0'">{{ td('da.qualityTaskRules.ruleCommon.no') }}</el-radio>
           </el-radio-group>
           <div v-else class="form-readonly">
             {{
               form.ignoreNullValue === "1"
-                ? "是"
+                ? td('da.qualityTaskRules.ruleCommon.yes')
                 : form.ignoreNullValue === "0"
-                ? "否"
+                ? td('da.qualityTaskRules.ruleCommon.no')
                 : "-"
             }}
           </div>
@@ -69,6 +69,9 @@
 
 <script setup>
 import { reactive, ref, watch } from "vue";
+import useDefaultLang from "@/composables/useDefaultLang";
+
+const { td } = useDefaultLang();
 const props = defineProps({
   form: Object,
   dppQualityTaskObjSaveReqVO: Array,

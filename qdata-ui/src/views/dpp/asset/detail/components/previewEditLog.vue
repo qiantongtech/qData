@@ -24,28 +24,28 @@
             </span>
         </template>
         <el-form ref="queryForm" :model="queryParams" inline>
-            <el-form-item label="时间" prop="dataTime">
+            <el-form-item :label="td('common.texts.time')" prop="dataTime">
                 <el-date-picker v-model="queryParams.dataTime" style="width: 250px" :clearable="false" type="daterange"
-                    align="right" unlink-panels range-separator="至" :start-placeholder="td('common.form.startDatePlaceholder')" :end-placeholder="td('common.form.endDatePlaceholder')"
+                    align="right" unlink-panels range-separator="~" :start-placeholder="td('common.form.startDatePlaceholder')" :end-placeholder="td('common.form.endDatePlaceholder')"
                     @change="handleDateChange" />
             </el-form-item>
-            <el-form-item :label="t('common.texts.createdBy')" prop="createBy">
-                <el-input v-model="queryParams.createBy" placeholder="请输入创建人" style="width: 180px; margin-right: 10px"
+            <el-form-item :label="td('common.texts.createdBy')" prop="createBy">
+                <el-input v-model="queryParams.createBy" :placeholder="td('dpp.asset.editorPlaceholder')" style="width: 180px; margin-right: 10px"
                     class="filter-item" />
             </el-form-item>
             <el-form-item>
                 <el-button style="margin-left: 7px" plain type="primary" @click="fetchData"
                     @mousedown="(e) => e.preventDefault()">
-                    <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
+                    <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
                 </el-button>
                 <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-                    <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
+                    <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
                 </el-button>
             </el-form-item>
         </el-form>
         <el-table v-loading="loading" :data="list" stripe :default-sort="defaultSort" @sort-change="handleSortChange"
             tooltip-effect="dark" :size="tableSize" :height="tableHeight" style="width: 100%; margin: 15px 0;">
-            <el-table-column v-if="tableColumns.length > 0" :label="t('common.texts.number')" width="75" align="left">
+            <el-table-column v-if="tableColumns.length > 0" :label="td('common.texts.number')" width="75" align="left">
                 <!--                <template #default="{ $index }">-->
                 <!--                    <span>{{ $index + 1 }}</span>-->
                 <!--                </template>-->
@@ -57,39 +57,39 @@
             <!-- <el-table-column v-for="(item, index) in tableColumns" :key="index" :prop="item.prop" :label="item.label"
                 :show-overflow-tooltip="{effect: 'light'}"  align="left" /> -->
 
-            <el-table-column :label="t('common.texts.createdBy')" align="left">
+            <el-table-column :label="td('common.texts.createdBy')" align="left">
                 <template #default="scope">
                     <div>{{ scope.row.createBy || '-' }}</div>
                 </template>
             </el-table-column>
-            <el-table-column :label="t('common.texts.createdTime')" align="left" sortable="custom" column-key="create_time"
+            <el-table-column :label="td('common.texts.createdTime')" align="left" sortable="custom" column-key="create_time"
                 :sort-orders="['descending', 'ascending']">
                 <template #default="scope">
                     <div>{{ parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}") || '-' }}</div>
                 </template>
             </el-table-column>
-            <el-table-column :label="t('common.texts.updatedBy')" align="left">
+            <el-table-column :label="td('common.texts.updatedBy')" align="left">
                 <template #default="scope">
                     <div>{{ scope.row.updateBy || '-' }}</div>
                 </template>
             </el-table-column>
-            <el-table-column :label="t('common.texts.updatedTime')" align="left" sortable="custom" column-key="update_time"
+            <el-table-column :label="td('common.texts.updatedTime')" align="left" sortable="custom" column-key="update_time"
                 :sort-orders="['descending', 'ascending']">
                 <template #default="scope">
                     <div>{{ parseTime(scope.row.updateTime, "{y}-{m}-{d} {h}:{i}") || '-' }}</div>
                 </template>
             </el-table-column>
-            <el-table-column :label="t('common.texts.status')" align="left">
+            <el-table-column :label="td('common.texts.status')" align="left">
                 <template #default="scope">
                     <dict-tag :options="da_asset_operate_status" :value="scope.row.status" />
                 </template>
             </el-table-column>
-            <el-table-column label="查看前后对比" align="left" width="150px">
+            <el-table-column :label="td('dpp.asset.viewDiff')" align="left" width="150px">
                 <template #default="{ row }">
                     <el-button link v-if="row.updateBefore" type="primary" icon="view"
-                        @click="showDataDialog(row.id, row.updateBefore, row.updateAfter)">查看</el-button>
+                        @click="showDataDialog(row.id, row.updateBefore, row.updateAfter)">{{ td('dpp.asset.view') }}</el-button>
                     <el-button link icon="Stopwatch" :disabled="row.status == 5" type="primary"
-                        @click="rollBackrollBack(row)">回滚</el-button>
+                        @click="rollBackrollBack(row)">{{ td('dpp.asset.rollBack') }}</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -102,13 +102,11 @@
 <script setup>
 import { ref, reactive, watch } from "vue"
 import useDefaultLang from "@/composables/useDefaultLang";
-const { td } = useDefaultLang();;
-import { useI18n } from 'vue-i18n'
+const { td } = useDefaultLang();
 // import { page } from "@/api/metadata/contentsTypeTaUp";
 import dataDiffDialog from "./previewEditDiff.vue";
 import { getDaAssetList, rollBack } from '@/api/da/assetchild/operate/daAssetOperateLog.js';
 
-const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 const { da_asset_operate_status, } = proxy.useDict(
     "da_asset_operate_status",
@@ -121,7 +119,7 @@ const props = defineProps({
     },
 });
 
-const title = "修改记录";
+const title = td('dpp.asset.updateRecord');
 const loading = ref(false);
 const visible = ref(false);
 const tableSize = ref("medium");
@@ -131,8 +129,8 @@ const tableHeight = ref(document.body.offsetHeight - 650 + "px");
 const queryForm = ref(null);
 const dataDiff = ref(null);
 const tableColumns = reactive([
-    { prop: "updateTime", label: "修改时间", show: true, width: 150 },
-    { prop: "createBy ", label: "修改人", show: true, width: 150 },
+    { prop: "updateTime", label: td('dpp.asset.editTime'), show: true, width: 150 },
+    { prop: "createBy ", label: td('dpp.asset.editor'), show: true, width: 150 },
 ]);
 const defaultSort = ref({ columnKey: 'create_time', order: 'desc' });
 

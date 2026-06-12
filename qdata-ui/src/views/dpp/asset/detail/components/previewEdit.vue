@@ -40,23 +40,23 @@
         </el-form>
 
         <template #footer>
-            <el-button @click="visible = false">{{ t('common.button.cancel') }}</el-button>
+            <el-button @click="visible = false">{{ td('common.button.cancel') }}</el-button>
             <el-button type="primary" @click="submitForm" :disabled="loading">
-                {{ t('common.button.confirm') }}
+                {{ td('common.button.confirm') }}
             </el-button>
         </template>
     </el-dialog>
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { ref, watch } from "vue";
 import { ElMessage } from "element-plus";
 import { addDaAssetOperateLog } from "@/api/da/assetchild/operate/daAssetOperateLog.js";
 import moment from "moment";
 import OverflowTooltip from "@/components/OverflowTooltip";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const props = defineProps({
     columns: {
@@ -116,7 +116,7 @@ function noSpecialCharacters(rule, value, callback) {
     if (datePattern.test(value)) {
         callback();
     } else if (!value) {
-        callback(new Error("输入不能为空"));
+        callback(new Error(td('dpp.asset.detail.preview.inputRequired')));
     } else if (!isValidInput) {
         callback();
     } else {
@@ -136,7 +136,7 @@ function addRow(row, data) {
         operateType: row ? "2" : "1",
     };
 
-    title.value = row ? t('common.button.update') : t('common.button.add');
+    title.value = row ? td('common.button.update') : td('common.button.add');
     visible.value = true;
     dataForm.value = { ...row };
     oldData.value = { ...row };
@@ -146,7 +146,7 @@ function submitForm() {
     queryFormRef.value.validate((valid) => {
         if (!valid) return;
         if(uniqueKeys.value.length == 0){
-          proxy.$modal.msgWarning("当前表未设置物理主键，无法执行修改操作。");
+          proxy.$modal.msgWarning(td('dpp.asset.detail.preview.noPrimaryKey'));
           return;
         }
         loading.value = true;
@@ -174,7 +174,7 @@ function submitForm() {
             .then((res) => {
                 if (res.code == "200") {
                     close();
-                    ElMessage.success(t('common.message.editSuccess'));
+                    ElMessage.success(td('common.message.editSuccess'));
                     emit("ok");
                 }
             })

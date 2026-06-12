@@ -21,14 +21,14 @@
     <el-row>
       <el-col :span="12">
         <el-form-item
-          label="日期格式"
+          :label="td('dpp.cleanRule.dateFormat', '日期格式')"
           prop="selectedOption"
           :rules="
             !falg
               ? [
                   {
                     required: true,
-                    message: '请选择日期格式',
+                    message: td('dpp.cleanRule.selectDateFormat', '请选择日期格式'),
                     trigger: 'change',
                   },
                 ]
@@ -38,7 +38,7 @@
           <template v-if="!falg">
             <el-select
               v-model="form.selectedOption"
-              placeholder="请选择日期格式"
+              :placeholder="td('dpp.cleanRule.selectDateFormat', '请选择日期格式')"
               class="rule-half"
             >
               <el-option label="yyyy" value="yyyy" />
@@ -58,14 +58,14 @@
     <el-row>
       <el-col :span="12" v-if="form.selectedOption == '1'">
         <el-form-item
-          label="日期格式"
+          :label="td('dpp.cleanRule.dateFormat', '日期格式')"
           prop="targetFormat"
           :rules="
             !falg
               ? [
                   {
                     required: true,
-                    message: '请输入日期格式，例如：YY-MM-DD',
+                    message: td('dpp.cleanRule.inputDateFormat', '请输入日期格式，例如：YY-MM-DD'),
                     trigger: 'blur',
                   },
                 ]
@@ -75,7 +75,7 @@
           <el-input
             v-if="!falg"
             v-model="form.targetFormat"
-            placeholder="请输入日期格式，例如：YY-MM-DD"
+            :placeholder="td('dpp.cleanRule.inputDateFormat', '请输入日期格式，例如：YY-MM-DD')"
             class="rule-half"
           />
           <div v-else class="form-readonly">{{ form.targetFormat || "-" }}</div>
@@ -86,7 +86,9 @@
 </template>
 
 <script setup>
+import useDefaultLang from "@/composables/useDefaultLang"
 import { reactive, ref, watch } from "vue";
+const { td } = useDefaultLang();
 
 const props = defineProps({
   form: Object,
@@ -113,7 +115,7 @@ const form = reactive({
   ...props.form,
 });
 const selectedOptionText = computed(() => {
-  if (form.selectedOption === "1") return "自定义";
+  if (form.selectedOption === "1") return td('dpp.cleanRule.custom', '自定义');
   return form.selectedOption || "-";
 });
 

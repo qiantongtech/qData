@@ -34,7 +34,7 @@
           @click="handleAdd"
           v-hasPermi="['dg:dgdesensitizelist:add']"
         >
-          {{ t('common.button.add') }}
+          {{ td('common.button.add') }}
         </el-button>
         <el-button
           type="danger"
@@ -44,7 +44,7 @@
           @click="handleDelete"
           v-hasPermi="['dg:dgdesensitizelist:remove']"
         >
-          {{ t('common.button.delete') }}
+          {{ td('common.button.delete') }}
         </el-button>
       </template>
 
@@ -97,7 +97,7 @@
             :disabled="row.validFlag === true"
             v-hasPermi="['dg:dgdesensitizelist:edit']"
           >
-            {{ t('common.button.update') }}
+            {{ td('common.button.update') }}
           </el-button>
           <el-button
             link
@@ -107,7 +107,7 @@
             @click="handleDelete(row)"
             v-hasPermi="['dg:dgdesensitizelist:remove']"
           >
-            {{ t('common.button.delete') }}
+            {{ td('common.button.delete') }}
           </el-button>
           <el-button
             link
@@ -116,7 +116,7 @@
             @click="handleDetail(row)"
             v-hasPermi="['dg:dgdesensitizelist:query']"
           >
-            {{ t('common.button.details') }}
+            {{ td('common.button.details') }}
           </el-button>
         </template>
       </qt-table>
@@ -142,7 +142,7 @@
         @submit.prevent
       >
         <AssetColumnSelect v-model="form" />
-        <qt-form-item :label="t('common.texts.status')" prop="validFlag">
+        <qt-form-item :label="td('common.texts.status')" prop="validFlag">
           <el-radio-group v-model="form.validFlag">
             <el-radio
               v-for="opt in validFlagOptions"
@@ -153,31 +153,31 @@
             </el-radio>
           </el-radio-group>
         </qt-form-item>
-        <el-form-item :label="t('common.texts.description')" prop="assetDescription" class="row-full">
+        <el-form-item :label="td('common.texts.description')" prop="assetDescription" class="row-full">
           <el-input
             v-model="form.assetDescription"
             type="textarea"
-            :placeholder="t('common.form.descriptionPlaceholder')"
+            :placeholder="td('common.form.descriptionPlaceholder')"
             :min-height="192"
             show-word-limit
-            maxlength="500个字符"
+            maxlength="500"
           />
         </el-form-item>
-        <el-form-item :label="t('common.texts.remark')" prop="remark" class="row-full">
+        <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full">
           <el-input
             v-model="form.remark"
             type="textarea"
-            :placeholder="t('common.form.remarkPlaceholder')"
+            :placeholder="td('common.form.remarkPlaceholder')"
             :min-height="192"
             show-word-limit
-            maxlength="500个字符"
+            maxlength="500"
           />
         </el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="cancel">{{ t('common.button.cancel') }}</el-button>
-          <el-button type="primary" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
+          <el-button @click="cancel">{{ td('common.button.cancel') }}</el-button>
+          <el-button type="primary" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -200,64 +200,64 @@
         label-width="110px"
         class="column-form"
       >
-        <el-form-item label="编号:" prop="id">
+        <el-form-item :label="td('common.texts.number') + ':'" prop="id">
           <div class="form-readonly">{{ form.id ?? "-" }}</div>
         </el-form-item>
-        <el-form-item label="资产名称" prop="assetName">
+        <el-form-item :label="td('dg.sensitiveList.assetName')" prop="assetName">
           <div class="form-readonly">{{ form.assetName ?? "-" }}</div>
         </el-form-item>
-        <el-form-item label="数据分类" prop="dataCategoryName">
+        <el-form-item :label="td('dg.sensitiveList.dataCategory')" prop="dataCategoryName">
           <div class="form-readonly">
             {{ form.dataCategoryName ?? "-" }}
           </div>
         </el-form-item>
-        <el-form-item label="数据分级" prop="dataLevelName">
+        <el-form-item :label="td('dg.sensitiveList.dataLevel')" prop="dataLevelName">
           <div v-if="form.dataLevelName">
             <LevelBadge :levelData="form.dataLevelName" />
           </div>
           <div v-else class="form-readonly">-</div>
         </el-form-item>
 
-        <el-form-item label="表名" prop="assetTableName">
+        <el-form-item :label="td('dg.sensitiveList.tableNameLabel')" prop="assetTableName">
           <div class="form-readonly">
             {{ form.assetTableName || "-" }}
           </div>
         </el-form-item>
-        <el-form-item label="字段名" prop="assetcolumnName">
+        <el-form-item :label="td('dg.sensitiveList.fieldNameLabel')" prop="assetcolumnName">
           <div class="form-readonly">
             {{ form.assetcolumnName || "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.status')" prop="validFlag">
-          <el-tag v-if="form.validFlag === true" type="primary">启用</el-tag>
+        <el-form-item :label="td('common.texts.status')" prop="validFlag">
+          <el-tag v-if="form.validFlag === true" type="primary">{{ td('dg.sensitiveList.enabled') }}</el-tag>
           <el-tag v-else-if="form.validFlag === false" type="danger"
-            >禁用</el-tag
+            >{{ td('dg.sensitiveList.disabled') }}</el-tag
           >
         </el-form-item>
-        <el-form-item :label="t('common.texts.description')" prop="assetDescription" class="row-full">
+        <el-form-item :label="td('common.texts.description')" prop="assetDescription" class="row-full">
           <div class="form-readonly textarea">
             {{ form.assetDescription ?? "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.remark')" prop="remark" class="row-full">
+        <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full">
           <div class="form-readonly textarea">{{ form.remark ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.createdBy')" prop="createBy">
+        <el-form-item :label="td('common.texts.createdBy')" prop="createBy">
           <div class="form-readonly">{{ form.createBy ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="t('common.texts.createdTime')" prop="createTime">
+        <el-form-item :label="td('common.texts.createdTime')" prop="createTime">
           <div class="form-readonly">
             {{ parseTime(form.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
         </el-form-item>
 
-        <el-form-item :label="t('common.texts.updatedBy')" prop="updateBy">
+        <el-form-item :label="td('common.texts.updatedBy')" prop="updateBy">
           <div class="form-readonly">
             {{ form.updateBy ?? "-" }}
           </div>
         </el-form-item>
 
-        <el-form-item :label="t('common.texts.updatedTime')" prop="updateTime">
+        <el-form-item :label="td('common.texts.updatedTime')" prop="updateTime">
           <div class="form-readonly">
             {{ parseTime(form.updateTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
@@ -265,7 +265,7 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="cancel">{{ t('common.button.close') }}</el-button>
+          <el-button @click="cancel">{{ td('common.button.close') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -273,7 +273,7 @@
 </template>
 
 <script setup name="SensitiveList">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import {
   listDgDesensitizeList,
   getDgDesensitizeList,
@@ -287,7 +287,7 @@ import LevelBadge from "@/views/dg/safety/dataLevel/components/LevelBadge.vue";
 import { getCurrentInstance, onMounted, reactive, ref, toRefs } from "vue";
 import {delDesensitizeWhitelist} from "@/api/dg/safety/whitelist/desensitizeWhitelist.js";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { dp_model_status } = proxy.useDict("dp_model_status");
 
@@ -299,8 +299,8 @@ const dataCategoryList = ref([]);
 const allDataCategoryList = ref([]);
 
 function getStatusLabel(v) {
-  if (v === true) return "启用";
-  if (v === false) return "禁用";
+  if (v === true) return td('dg.sensitiveList.enabled');
+  if (v === false) return td('dg.sensitiveList.disabled');
   const vv = v === 0 || v ? String(v) : "";
   const found = (dp_model_status.value || []).find(
     (d) => String(d.value) === vv
@@ -346,23 +346,23 @@ const tableStore = reactive({
   },
   columns: [
     { type: "selection", width: 55, align: "left" },
-    { label: t('common.texts.number'), prop: "id", width: 60, sortable: true },
+    { label: td('common.texts.number'), prop: "id", width: 60, sortable: true },
     {
-      label: "资产名称/描述",
+      label: td('dg.sensitiveList.nameDesc'),
       prop: "assetName",
       align: "left",
       width: 260,
       slot: "assetNameDesc",
     },
     {
-      label: "数据分类",
+      label: td('dg.sensitiveList.dataCategory'),
       prop: "dataCategoryName",
       align: "left",
       width: 180,
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: "数据分级",
+      label: td('dg.sensitiveList.dataLevel'),
       prop: "dataLevelName",
       slot: "dataLevel",
       align: "left",
@@ -370,31 +370,31 @@ const tableStore = reactive({
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: "表名",
+      label: td('dg.sensitiveList.tableName'),
       prop: "assetTableName",
       align: "left",
       width: 200,
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: "字段名",
+      label: td('dg.sensitiveList.fieldName'),
       prop: "assetcolumnName",
       align: "left",
       width: 180,
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: t('common.texts.status'),
+      label: td('common.texts.status'),
       slot: "validFlag",
     },
     {
-      label: t('common.texts.createdBy'),
+      label: td('common.texts.createdBy'),
       prop: "createBy",
       width: 120,
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: t('common.texts.createdTime'),
+      label: td('common.texts.createdTime'),
       prop: "createTime",
       width: 150,
       sortable: true,
@@ -402,7 +402,7 @@ const tableStore = reactive({
       date: true,
     },
     {
-      label: t('common.texts.operation'),
+      label: td('common.texts.operation'),
       width: 220,
       fixed: "right",
       slot: "handle",
@@ -415,35 +415,35 @@ const tableStore = reactive({
   },
 });
 const validFlagOptions = [
-  { label: "禁用", value: false },
-  { label: "启用", value: true },
+  { label: td('dg.sensitiveList.disabled'), value: false },
+  { label: td('dg.sensitiveList.enabled'), value: true },
 ];
 const searchStore = reactive({
   items: [
     {
-      label: "资产名称",
+      label: td('dg.sensitiveList.assetName'),
       prop: "assetName",
       align: "left",
-      component: { is: "input", placeholder: "请输入资产名称" },
+      component: { is: "input", placeholder: td('dg.sensitiveList.assetNamePlaceholder') },
     },
     {
-      label: "数据分类",
+      label: td('dg.sensitiveList.dataCategory'),
       prop: "dataCategoryId",
       component: {
         is: "tree-select",
         data: allDataCategoryList,
         props: { value: "id", label: "name", children: "children" },
         valueKey: "id",
-        placeholder: "请选择数据分类",
+        placeholder: td('dg.sensitiveList.dataCategoryPlaceholder'),
         checkStrictly: true,
       },
     },
     {
-      label: t('common.texts.status'),
+      label: td('common.texts.status'),
       prop: "validFlag",
       component: {
         is: "select",
-        placeholder: t('common.form.statusPlaceholder'),
+        placeholder: td('common.form.statusPlaceholder'),
         options: validFlagOptions,
       },
     },
@@ -459,12 +459,12 @@ function handleResetQueryClick() {
 
 /** 启用禁用开关 */
 function handleStatusChange(id, row, e) {
-  const text = e === true ? "启用" : "禁用";
+  const text = e === true ? td('dg.sensitiveList.enabled') : td('dg.sensitiveList.disabled');
   proxy.$modal
-    .confirm('确认要"' + text + '","' + (row.assetName || "-") + '"吗？')
+    .confirm(td('dg.sensitiveList.confirmStatus', '确认要"{text}","{name}"吗？').replace('{text}', text).replace('{name}', row.assetName || "-"))
     .then(function () {
       updateDgDesensitizeList({ id, validFlag: row.validFlag }).then(() => {
-        proxy.$modal.msgSuccess(t('common.message.msgOpSuccess'));
+        proxy.$modal.msgSuccess(td('common.message.msgOpSuccess'));
         tableRef.value.getList();
       });
     })
@@ -479,7 +479,7 @@ const title = ref("");
 const data = reactive({
   form: {},
   rules: {
-    validFlag: [{ required: true, message: t('common.form.statusRequired'), trigger: "change" }],
+    validFlag: [{ required: true, message: td('common.form.statusRequired'), trigger: "change" }],
   },
 });
 
@@ -523,7 +523,7 @@ function handleAdd() {
   reset();
   initDataCategoryOptions();
   open.value = true;
-  title.value = "新增脱敏清单";
+  title.value = td('dg.sensitiveList.addTitle');
 }
 
 /** 修改按钮操作 */
@@ -534,7 +534,7 @@ function handleUpdate(row) {
   getDgDesensitizeList(_id).then((response) => {
     form.value = response.data;
     open.value = true;
-    title.value = "修改脱敏清单";
+    title.value = td('dg.sensitiveList.editTitle');
   });
 }
 /** 详情按钮操作 */
@@ -545,7 +545,7 @@ function handleDetail(row) {
   getDgDesensitizeList(_id).then((response) => {
     form.value = response.data;
     openDetail.value = true;
-    title.value = "脱敏清单详情";
+    title.value = td('dg.sensitiveList.detailTitle');
   });
 }
 
@@ -555,13 +555,13 @@ function submitForm() {
     if (valid) {
       if (form.value.id != null) {
         updateDgDesensitizeList(form.value).then(() => {
-          proxy.$modal.msgSuccess(t('common.message.editSuccess'));
+          proxy.$modal.msgSuccess(td('common.message.editSuccess'));
           open.value = false;
           tableRef.value.getList();
         });
       } else {
         addDgDesensitizeList(form.value).then(() => {
-          proxy.$modal.msgSuccess(t('common.message.addSuccess'));
+          proxy.$modal.msgSuccess(td('common.message.addSuccess'));
           open.value = false;
           tableRef.value.getList();
         });
@@ -586,7 +586,7 @@ function submitForm() {
     .then(() => {
       delDgDesensitizeList(_ids).then(() => {
         tableRef.value.getList();
-        proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+        proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
       });
     })
     .catch(() => {
@@ -595,10 +595,10 @@ function submitForm() {
 }*/
 function handleDelete(row) {
   const invalidIds = [];
-  const message=ref("确定要删除记录吗");
+  const message=ref(td('dg.sensitiveList.confirmDeleteSimple'));
   if (row?.id) {
     invalidIds.push(row.id);
-    message.value=`是否确认删除编号为${row.id} 的数据项？`
+    message.value=td('dg.sensitiveList.confirmDeleteId', '是否确认删除编号为{id}的数据项？').replace('{id}', row.id)
   }else {
     store.rows.forEach(item => {
       // 当 validFlag 为 false 时，记录 id
@@ -606,14 +606,14 @@ function handleDelete(row) {
         invalidIds.push(item.id);
       }
     });
-    message.value=`可删除${invalidIds.length}个，不可删除${store.rows.length-invalidIds.length}个，是否删除可删部分`
+    message.value=td('dg.sensitiveList.confirmDeleteCount', '可删除{canDelete}个，不可删除{cannotDelete}个，是否删除可删部分').replace('{canDelete}', invalidIds.length).replace('{cannotDelete}', store.rows.length-invalidIds.length)
   }
   proxy.$modal
       .confirm(message.value)
       .then(() => {
         delDgDesensitizeList(invalidIds).then(() => {
           tableRef.value.getList();
-          proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+          proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
         });
       })
       .catch(() => {

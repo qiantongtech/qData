@@ -2,10 +2,10 @@
   <div class="app-container" ref="app-container">
     <div class="pagecont-top-wrap flex-items-center gap20">
       <el-form :inline="true" label-width="75px" @submit.prevent>
-        <el-form-item label="资产类型" style="margin-bottom: 0">
+        <el-form-item :label="td('dpp.asset.addAsset.assetType')" style="margin-bottom: 0">
           <el-select
             v-model="baseState.assetType"
-            placeholder="请选择资产类型"
+            :placeholder="td('dpp.asset.addAsset.assetTypePlaceholder')"
             style="width: 300px"
           >
             <el-option
@@ -23,19 +23,19 @@
         <div class="main">
           <div class="flex-between-center mb10">
             <div class="flex-items-center title-wrap">
-              <div class="h2-titles">资产信息完善</div>
+              <div class="h2-titles">{{ td('dpp.asset.addAsset.assetInfoComplete') }}</div>
               <div class="asset-hint" style="margin-left: 10px">
-                明细表/汇总表/维度表需关联贴源层或公共层及其子层、业务分类和数据域；应用表自动关联数据应用层，需补充主题域。
+                {{ td('dpp.asset.addAsset.assetInfoHint') }}
               </div>
             </div>
             <div class="flex-items-center">
               <el-button type="primary" @click="handleOpenMetadataSelect()"
-                >选择元数据</el-button
+                >{{ td('dpp.asset.addAsset.selectMetadata') }}</el-button
               >
               <el-button
                 @click="handleOpenBatchSetting"
                 :disabled="!selectedRows.length"
-                >批量设置</el-button
+                >{{ td('dpp.asset.addAsset.batchSetting') }}</el-button
               >
             </div>
           </div>
@@ -53,14 +53,14 @@
                   :rules="[
                     {
                       required: true,
-                      message: '请输入资产名称',
+                      message: td('dpp.asset.addAsset.assetNameRequired'),
                       trigger: 'blur',
                     },
                   ]"
                   label-width="0"
                   style="margin-bottom: 0"
                 >
-                  <el-input v-model="row.name" placeholder="请输入资产名称" />
+                  <el-input v-model="row.name" :placeholder="td('dpp.asset.addAsset.assetNamePlaceholder')" />
                 </el-form-item>
               </template>
               <template #tableType="{ row, $index }">
@@ -69,7 +69,7 @@
                   :rules="[
                     {
                       required: true,
-                      message: '请选择表类型',
+                      message: td('dpp.asset.addAsset.tableTypeRequired'),
                       trigger: 'change',
                     },
                   ]"
@@ -78,7 +78,7 @@
                 >
                   <el-select
                     v-model="row.tableType"
-                    placeholder="表类型"
+                    :placeholder="td('dpp.asset.addAsset.tableTypePlaceholder')"
                     @change="handleTableTypeChange(row)"
                   >
                     <el-option
@@ -96,7 +96,7 @@
                   :rules="[
                     {
                       required: true,
-                      message: '请选择数仓分层',
+                      message: td('dpp.asset.addAsset.dataLayerRequired'),
                       trigger: 'change',
                     },
                   ]"
@@ -113,7 +113,7 @@
                     }"
                     node-key="id"
                     value-key="id"
-                    placeholder="数仓分层"
+                    :placeholder="td('dpp.asset.addAsset.dataLayerPlaceholder')"
                     check-strictly
                     filterable
                     clearable
@@ -128,7 +128,7 @@
                     :rules="[
                       {
                         required: true,
-                        message: '请选择业务分类',
+                        message: td('dpp.asset.addAsset.businessCategoryRequired'),
                         trigger: 'change',
                       },
                     ]"
@@ -145,7 +145,7 @@
                       }"
                       node-key="id"
                       value-key="id"
-                      placeholder="业务分类"
+                      :placeholder="td('dpp.asset.addAsset.businessCategoryPlaceholder')"
                       check-strictly
                       filterable
                       clearable
@@ -163,7 +163,7 @@
                     :rules="[
                       {
                         required: true,
-                        message: '请选择所属主题',
+                        message: td('dpp.asset.addAsset.themeDomainRequired'),
                         trigger: 'change',
                       },
                     ]"
@@ -180,7 +180,7 @@
                       }"
                       node-key="id"
                       value-key="id"
-                      placeholder="所属主题"
+                      :placeholder="td('dpp.asset.addAsset.themeDomainPlaceholder')"
                       check-strictly
                       filterable
                       clearable
@@ -198,7 +198,7 @@
                     :rules="[
                       {
                         required: true,
-                        message: '请选择数据分域',
+                        message: td('dpp.asset.addAsset.dataDomainRequired'),
                         trigger: 'change',
                       },
                     ]"
@@ -215,7 +215,7 @@
                       }"
                       node-key="id"
                       value-key="id"
-                      placeholder="数据分域"
+                      :placeholder="td('dpp.asset.addAsset.dataDomainPlaceholder')"
                       check-strictly
                       filterable
                       clearable
@@ -231,14 +231,14 @@
                   :rules="[
                     {
                       required: true,
-                      message: '请选择表命名规范',
+                      message: td('dpp.asset.addAsset.tableCaseRequired'),
                       trigger: 'change',
                     },
                   ]"
                   label-width="0"
                   style="margin-bottom: 0"
                 >
-                  <el-select v-model="row.tableCase" placeholder="表命名规范">
+                  <el-select v-model="row.tableCase" :placeholder="td('dpp.asset.addAsset.tableCasePlaceholder')">
                     <el-option
                       v-for="item in table_name_case"
                       :key="item.value"
@@ -260,14 +260,14 @@
           </el-form>
         </div>
         <div class="button-style">
-          <el-button @click="goBack" class="action-btn">返回列表</el-button>
+          <el-button @click="goBack" class="action-btn">{{ td('dpp.asset.addAsset.backToList') }}</el-button>
           <el-button
             type="primary"
             :disabled="!baseState.rows.length"
             :loading="uiState.publishLoading"
             @click="confirmPublish"
             class="action-btn"
-            >注册并退出</el-button
+            >{{ td('dpp.asset.addAsset.registerAndExit') }}</el-button
           >
         </div>
       </div>
@@ -280,7 +280,7 @@
     />
     <!-- 批量设置弹窗 -->
     <el-dialog
-      title="批量设置"
+      :title="td('dpp.asset.addAsset.batchSetting')"
       v-model="uiState.batchVisible"
       width="600px"
       append-to-body
@@ -293,19 +293,18 @@
             <InfoFilled />
           </el-icon>
           <span>
-            仅应用您在此处选择的属性，留空的项将保持原资产的配置不变。
-            表类型的改变会自动触发相关属性的重置。
+            {{ td('dpp.asset.addAsset.batchSettingHint') }}
           </span>
         </div>
-        <el-form-item label="表类型">
+        <el-form-item :label="td('dpp.asset.addAsset.tableType')">
           <el-select
             v-model="batchForm.tableType"
-            placeholder="-- 不修改 --"
+            placeholder="{{ td('dpp.asset.addAsset.noChange') }}"
             class="full-width"
             @change="handleBatchTableTypeChange"
             clearable
           >
-            <el-option label="-- 不修改 --" :value="-1" />
+            <el-option label="{{ td('dpp.asset.addAsset.noChange') }}" :value="-1" />
             <el-option
               v-for="item in table_type"
               :key="item.value"
@@ -314,11 +313,11 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="数仓分层">
+        <el-form-item :label="td('dpp.asset.addAsset.dataLayer')">
           <el-tree-select
             v-model="batchForm.dataLayerId"
             :data="[
-              { id: -1, displayName: '-- 不修改 --' },
+              { id: -1, displayName: '{{ td('dpp.asset.addAsset.noChange') }}' },
               ...options.dataLayerList,
             ]"
             :props="{
@@ -328,7 +327,7 @@
             }"
             node-key="id"
             value-key="id"
-            placeholder="-- 不修改 --"
+            placeholder="{{ td('dpp.asset.addAsset.noChange') }}"
             check-strictly
             filterable
             clearable
@@ -342,12 +341,12 @@
             batchForm.tableType == -1 ||
             batchForm.tableType != '4'
           "
-          label="业务分类"
+          :label="td('dpp.asset.addAsset.businessCategory')"
         >
           <el-tree-select
             v-model="batchForm.businessCategoryId"
             :data="[
-              { id: -1, displayName: '-- 不修改 --' },
+              { id: -1, displayName: '{{ td('dpp.asset.addAsset.noChange') }}' },
               ...options.businessCategoryList,
             ]"
             :props="{
@@ -357,7 +356,7 @@
             }"
             node-key="id"
             value-key="id"
-            placeholder="-- 不修改 --"
+            placeholder="{{ td('dpp.asset.addAsset.noChange') }}"
             check-strictly
             filterable
             clearable
@@ -372,12 +371,12 @@
             batchForm.tableType == -1 ||
             batchForm.tableType != '4'
           "
-          label="数据分域"
+          :label="td('dpp.asset.addAsset.dataDomain')"
         >
           <el-tree-select
             v-model="batchForm.dataDomainId"
             :data="[
-              { id: -1, displayName: '-- 不修改 --' },
+              { id: -1, displayName: '{{ td('dpp.asset.addAsset.noChange') }}' },
               ...batchDataDomainList,
             ]"
             :loading="batchDomainLoading"
@@ -388,7 +387,7 @@
             }"
             node-key="id"
             value-key="id"
-            placeholder="-- 不修改 --"
+            placeholder="{{ td('dpp.asset.addAsset.noChange') }}"
             check-strictly
             filterable
             clearable
@@ -402,12 +401,12 @@
             batchForm.tableType == -1 ||
             batchForm.tableType == '4'
           "
-          label="所属主题"
+          :label="td('dpp.asset.addAsset.themeDomain')"
         >
           <el-tree-select
             v-model="batchForm.themeDomainId"
             :data="[
-              { id: -1, displayName: '-- 不修改 --' },
+              { id: -1, displayName: '{{ td('dpp.asset.addAsset.noChange') }}' },
               ...options.themeDomainList,
             ]"
             :props="{
@@ -417,7 +416,7 @@
             }"
             node-key="id"
             value-key="id"
-            placeholder="-- 不修改 --"
+            placeholder="{{ td('dpp.asset.addAsset.noChange') }}"
             check-strictly
             filterable
             clearable
@@ -425,14 +424,14 @@
             class="full-width"
           />
         </el-form-item>
-        <el-form-item label="表命名规范">
+        <el-form-item :label="td('dpp.asset.addAsset.tableCase')">
           <el-select
             v-model="batchForm.tableCase"
-            placeholder="-- 不修改 --"
+            placeholder="{{ td('dpp.asset.addAsset.noChange') }}"
             class="full-width"
             clearable
           >
-            <el-option label="-- 不修改 --" :value="-1" />
+            <el-option label="{{ td('dpp.asset.addAsset.noChange') }}" :value="-1" />
             <el-option
               v-for="item in table_name_case"
               :key="item.value"
@@ -444,9 +443,9 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="uiState.batchVisible = false">{{ t('common.button.cancel') }}</el-button>
+          <el-button @click="uiState.batchVisible = false">{{ td('common.button.cancel') }}</el-button>
           <el-button type="primary" @click="confirmBatchSetting"
-            >{{ t('common.button.confirm') }}</el-button
+            >{{ td('common.button.confirm') }}</el-button
           >
         </div>
       </template>
@@ -455,7 +454,7 @@
 </template>
 
 <script setup name="DaBatchPublish">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import {
   computed,
   getCurrentInstance,
@@ -476,7 +475,7 @@ import { listThemeDomain } from "@/api/dm/themeDomain/themeDomain";
 import { addDaAsset } from "@/api/da/asset/asset.js";
 import { usePageRefresh } from "@/composables/usePageRefresh";
 
-const { t } = useI18n();// --- 基础配置与工具 ---
+const { td } = useDefaultLang();// --- 基础配置与工具 ---
 const { proxy } = getCurrentInstance();
 const router = useRouter();
 const { setRefreshNeeded } = usePageRefresh("da_asset");
@@ -547,9 +546,9 @@ const hideTableIds = computed(() => {
 
 const tableColumns = [
   { type: "selection", width: 55 },
-  { type: "index", label: t('common.texts.number'), width: 60 },
+  { type: "index", label: td('common.texts.number'), width: 60 },
   {
-    label: "来源表名/注释",
+    label: td('dpp.asset.addAsset.sourceTable'),
     width: 200,
     align: "left",
     list: [
@@ -557,14 +556,14 @@ const tableColumns = [
       { prop: "tableComment", class: "color999 fz12" },
     ],
   },
-  { label: "资产名称", width: 200, slot: "name" },
-  { label: "表类型", width: 140, slot: "tableType" },
-  { label: "数仓分层", width: 180, slot: "dataLayerId" },
-  { label: "业务分类", slot: "businessCategoryId" },
-  { label: "数据分域", slot: "dataDomainId" },
-  { label: "所属主题", slot: "themeDomainId" },
-  { label: "表命名规范", width: 140, slot: "tableCase" },
-  { label: t('common.texts.operation'), width: 100, slot: "action" },
+  { label: td('dpp.asset.addAsset.assetName'), width: 200, slot: "name" },
+  { label: td('dpp.asset.addAsset.tableType'), width: 140, slot: "tableType" },
+  { label: td('dpp.asset.addAsset.dataLayer'), width: 180, slot: "dataLayerId" },
+  { label: td('dpp.asset.addAsset.businessCategory'), slot: "businessCategoryId" },
+  { label: td('dpp.asset.addAsset.dataDomain'), slot: "dataDomainId" },
+  { label: td('dpp.asset.addAsset.themeDomain'), slot: "themeDomainId" },
+  { label: td('dpp.asset.addAsset.tableCase'), width: 140, slot: "tableCase" },
+  { label: td('common.texts.operation'), width: 100, slot: "action" },
 ];
 
 const tableConfig = reactive({
@@ -784,7 +783,7 @@ const handleOpenMetadataSelect = (row = null) => {
  * 打开批量设置弹窗
  */
 const handleOpenBatchSetting = () => {
-  // 重置批量设置表单为默认值（-- 不修改 --状态）
+  // 重置批量设置表单为默认值（{{ td('dpp.asset.addAsset.noChange') }}状态）
   batchForm.tableType = -1;
   batchForm.dataLayerId = -1;
   batchForm.tableCase = -1;
@@ -919,14 +918,14 @@ const confirmBatchSetting = async () => {
  */
 async function confirmPublish() {
   if (!baseState.rows.length) {
-    proxy.$modal.msgWarning("请先选择元数据");
+    proxy.$modal.msgWarning(td('dpp.asset.addAsset.selectMetadataFirst'));
     return;
   }
 
   try {
     await tableFormRef.value.validate();
   } catch (error) {
-    proxy.$modal.msgWarning("请检查并完善必填信息");
+    proxy.$modal.msgWarning(td('dpp.asset.addAsset.checkRequired'));
     return;
   }
 
@@ -954,7 +953,7 @@ async function confirmPublish() {
     });
 
     await Promise.all(requests);
-    proxy.$modal.msgSuccess("注册成功");
+    proxy.$modal.msgSuccess(td('dpp.asset.addAsset.registerSuccess'));
     setRefreshNeeded();
     router.push({ path: "/da/asset" });
   } catch (error) {
@@ -995,7 +994,7 @@ const handleMetadataConfirm = (tables) => {
     if (index > -1) {
       baseState.rows.splice(index, 1, ...newRows);
       delete rowUiContext[uiState.activeTableId];
-      ElMessage.success("元数据已更新");
+      ElMessage.success(td('dpp.asset.addAsset.metadataUpdated'));
       uiState.activeTableId = null;
       return;
     }

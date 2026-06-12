@@ -37,14 +37,14 @@
             'icon-disabled': single,
             'icon-normal': !single,
           }"
-        />发布模型
+        />{{ td('dp.materializedModel.publishModel') }}
       </el-button>
     </template>
 
     <qt-table v-bind="tableStore" ref="tableRef">
       <template #releaseMode="{ row }">
-        <el-tag v-if="row.releaseMode == '1'" type="danger">删除重建</el-tag>
-        <el-tag v-else-if="row.releaseMode == '2'" type="success">增量发布</el-tag>
+        <el-tag v-if="row.releaseMode == '1'" type="danger">{{ td('dp.materializedModel.deleteAndRecreate') }}</el-tag>
+        <el-tag v-else-if="row.releaseMode == '2'" type="success">{{ td('dp.materializedModel.incrementalRelease') }}</el-tag>
         <span v-else>{{ row.releaseMode }}</span>
       </template>
     </qt-table>
@@ -66,24 +66,24 @@
     >
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="模型编码" prop="modelName">
-            <el-input v-model="form.modelName" placeholder="请输入模型编码" />
+          <el-form-item :label="td('dp.materializedModel.modelCode')" prop="modelName">
+            <el-input v-model="form.modelName" :placeholder="td('dp.materializedModel.modelCode')" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="模型名称" prop="modelAlias">
-            <el-input v-model="form.modelAlias" placeholder="请输入模型名称" />
+          <el-form-item :label="td('dp.materializedModel.modelName')" prop="modelAlias">
+            <el-input v-model="form.modelAlias" :placeholder="td('dp.materializedModel.modelName')" />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="模型表id" prop="modelId">
-            <el-input v-model="form.modelId" placeholder="请输入模型表id" />
+          <el-form-item :label="td('dp.materializedModel.modelTableId')" prop="modelId">
+            <el-input v-model="form.modelId" :placeholder="td('dp.materializedModel.modelTableId')" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="t('common.texts.status')" prop="status">
+          <el-form-item :label="td('common.texts.status')" prop="status">
             <el-radio-group v-model="form.status">
               <el-radio
                 v-for="dict in dp_template_build_log_build_status"
@@ -97,71 +97,71 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="执行日志信息" prop="message">
+          <el-form-item :label="td('dp.materializedModel.executionLog')" prop="message">
             <el-input
               v-model="form.message"
               type="textarea"
-              maxlength="500个字符"
+              maxlength="500"
               show-word-limit
-              placeholder="请输入内容"
+              :placeholder="td('dp.materializedModel.executionLog')"
             />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="执行sql备份" prop="sqlCommand">
+          <el-form-item :label="td('dp.materializedModel.sqlCommand')" prop="sqlCommand">
             <el-input
               v-model="form.sqlCommand"
-              placeholder="请输入执行sql备份"
+              :placeholder="td('dp.materializedModel.sqlCommand')"
             />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="数据源id" prop="datasourceId">
+          <el-form-item :label="td('dp.materializedModel.datasourceId')" prop="datasourceId">
             <el-input
               v-model="form.datasourceId"
-              placeholder="请输入数据源id"
+              :placeholder="td('dp.materializedModel.datasourceId')"
             />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="数据连接名称" prop="datasourceName">
+          <el-form-item :label="td('dp.modelForm.datasourceName')" prop="datasourceName">
             <el-input
               v-model="form.datasourceName"
-              placeholder="请输入数据连接名称"
+              :placeholder="td('dp.modelForm.datasourceName')"
             />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="发布模式" prop="releaseMode">
+          <el-form-item :label="td('dp.materializedModel.releaseMode')" prop="releaseMode">
             <el-radio-group v-model="form.releaseMode">
-              <el-radio label="1">删除重建</el-radio>
-              <el-radio label="2">增量发布</el-radio>
+              <el-radio label="1">{{ td('dp.materializedModel.deleteAndRecreate') }}</el-radio>
+              <el-radio label="2">{{ td('dp.materializedModel.incrementalRelease') }}</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="资产表id" prop="assetId">
-            <el-input v-model="form.assetId" placeholder="请输入资产表id" />
+          <el-form-item :label="td('dp.materializedModel.assetId')" prop="assetId">
+            <el-input v-model="form.assetId" :placeholder="td('dp.materializedModel.assetId')" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="t('common.texts.remark')" prop="remark">
-            <el-input v-model="form.remark" :placeholder="t('common.form.remarkPlaceholder')" />
+          <el-form-item :label="td('common.texts.remark')" prop="remark">
+            <el-input v-model="form.remark" :placeholder="td('common.form.remarkPlaceholder')" />
           </el-form-item>
         </el-col>
       </el-row>
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="cancel">{{ t('common.button.cancel') }}</el-button>
+        <el-button size="mini" @click="cancel">{{ td('common.button.cancel') }}</el-button>
         <el-button type="primary" size="mini" @click="submitForm"
-          >{{ t('common.button.confirm') }}</el-button
+          >{{ td('common.button.confirm') }}</el-button
         >
       </div>
     </template>
@@ -178,14 +178,14 @@
     <el-form ref="dpModelMaterializedRef" :model="form" label-width="80px">
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="模型编码" prop="modelName">
+          <el-form-item :label="td('dp.materializedModel.modelCode')" prop="modelName">
             <div>
               {{ form.modelName }}
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="模型名称" prop="modelAlias">
+          <el-form-item :label="td('dp.materializedModel.modelName')" prop="modelAlias">
             <div>
               {{ form.modelAlias }}
             </div>
@@ -194,14 +194,14 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="模型表id" prop="modelId">
+          <el-form-item :label="td('dp.materializedModel.modelTableId')" prop="modelId">
             <div>
               {{ form.modelId }}
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="t('common.texts.status')" prop="status">
+          <el-form-item :label="td('common.texts.status')" prop="status">
             <dict-tag
               :options="dp_template_build_log_build_status"
               :value="form.status"
@@ -211,14 +211,14 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="执行日志信息" prop="message">
+          <el-form-item :label="td('dp.materializedModel.executionLog')" prop="message">
             <div>
               {{ form.message }}
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="执行sql备份" prop="sqlCommand">
+          <el-form-item :label="td('dp.materializedModel.sqlCommand')" prop="sqlCommand">
             <div>
               {{ form.sqlCommand }}
             </div>
@@ -227,14 +227,14 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="数据源id" prop="datasourceId">
+          <el-form-item :label="td('dp.materializedModel.datasourceId')" prop="datasourceId">
             <div>
               {{ form.datasourceId }}
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="数据连接类型" prop="datasourceType">
+          <el-form-item :label="td('dp.materializedModel.datasourceType')" prop="datasourceType">
             <div>
               {{ form.datasourceType }}
             </div>
@@ -243,19 +243,19 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="数据连接名称" prop="datasourceName">
+          <el-form-item :label="td('dp.modelForm.datasourceName')" prop="datasourceName">
             <div>
               {{ form.datasourceName }}
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="发布模式" prop="releaseMode">
+          <el-form-item :label="td('dp.materializedModel.releaseMode')" prop="releaseMode">
             <el-tag v-if="form.releaseMode == '1'" type="danger"
-              >删除重建</el-tag
+              >{{ td('dp.materializedModel.deleteAndRecreate') }}</el-tag
             >
             <el-tag v-else-if="form.releaseMode == '2'" type="success"
-              >增量发布</el-tag
+              >{{ td('dp.materializedModel.incrementalRelease') }}</el-tag
             >
             <span v-else>{{ form.releaseMode }}</span>
           </el-form-item>
@@ -263,14 +263,14 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="资产表id" prop="assetId">
+          <el-form-item :label="td('dp.materializedModel.assetId')" prop="assetId">
             <div>
               {{ form.assetId }}
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="t('common.texts.remark')" prop="remark">
+          <el-form-item :label="td('common.texts.remark')" prop="remark">
             <div>
               {{ form.remark }}
             </div>
@@ -280,7 +280,7 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="cancel">{{ t('common.button.close') }}</el-button>
+        <el-button size="mini" @click="cancel">{{ td('common.button.close') }}</el-button>
       </div>
     </template>
   </el-dialog>
@@ -295,7 +295,7 @@
 </template>
 
 <script setup name="ComponentOne">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import {
   listDpModelMaterialized,
   getDpModelMaterialized,
@@ -305,7 +305,7 @@ import {
 } from "@/api/dp/model/model";
 import MaterializationDialog from "./materialization.vue";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { dp_template_build_log_build_status } = proxy.useDict(
   "dp_template_build_log_build_status"
@@ -357,57 +357,57 @@ const tableStore = reactive({
     },
   },
   columns: [
-    { label: t('common.texts.number'), prop: "id", width: 60, sortable: true },
+    { label: td('common.texts.number'), prop: "id", width: 60, sortable: true },
 
-    { label: "模型编码", prop: "modelName", width: 240, align: "left" },
+    { label: td('dp.materializedModel.modelCode'), prop: "modelName", width: 240, align: "left" },
     {
-      label: "模型名称",
+      label: td('dp.materializedModel.modelName'),
       prop: "modelAlias",
       width: 240,
       align: "left",
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: t('common.texts.description'),
+      label: td('common.texts.description'),
       prop: "description",
       align: "left",
       width: 250,
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: "数据连接类型",
+      label: td('dp.materializedModel.datasourceType'),
       prop: "datasourceType",
       width: 160,
     },
     {
-      label: "数据连接名称",
+      label: td('dp.modelForm.datasourceName'),
       prop: "datasourceName",
       align: "left",
       width: 265,
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: "发布模式",
+      label: td('dp.materializedModel.releaseMode'),
       prop: "releaseMode",
       width: 120,
       slot: "releaseMode",
     },
     {
-      label: "执行日志信息",
+      label: td('dp.materializedModel.executionLog'),
       prop: "message",
       align: "left",
       width: 220,
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: t('common.texts.status'),
+      label: td('common.texts.status'),
       prop: "status",
       width: 80,
       dict: "dp_template_build_log_build_status",
     },
-    { label: t('common.texts.createdBy'), prop: "createBy", width: 120, align: "left" },
+    { label: td('common.texts.createdBy'), prop: "createBy", width: 120, align: "left" },
     {
-      label: t('common.texts.createdTime'),
+      label: td('common.texts.createdTime'),
       prop: "createTime",
       sortable: true,
       sortableKey: "create_time",
@@ -498,7 +498,7 @@ let modelIds = [];
 /** 发布按钮操作 */
 function handleMaterialization() {
   Materialization.value = true;
-  title.value = "发布模型";
+  title.value = td('dp.materializedModel.publishModelTitle');
   console.log("🚀 ~ handleMaterialization ~ modelId:", modelId);
 
   modelIds = [modelId.value];
@@ -511,7 +511,7 @@ function handleUpdate(row) {
   getDpModelMaterialized(_id).then((response) => {
     form.value = response.data;
     open.value = true;
-    title.value = "修改发布模型记录";
+    title.value = td('dp.materializedModel.editRecord');
   });
 }
 
@@ -522,7 +522,7 @@ function handleDetail(row) {
   getDpModelMaterialized(_id).then((response) => {
     form.value = response.data;
     openDetail.value = true;
-    title.value = "发布模型记录详情";
+    title.value = td('dp.materializedModel.recordDetail');
   });
 }
 
@@ -533,7 +533,7 @@ function submitForm() {
       if (form.value.id != null) {
         updateDpModelMaterialized(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess(t('common.message.editSuccess'));
+            proxy.$modal.msgSuccess(td('common.message.editSuccess'));
             open.value = false;
             getList();
           })
@@ -541,7 +541,7 @@ function submitForm() {
       } else {
         addDpModelMaterialized(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess(t('common.message.addSuccess'));
+            proxy.$modal.msgSuccess(td('common.message.addSuccess'));
             open.value = false;
             getList();
           })
@@ -555,13 +555,13 @@ function submitForm() {
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
-    .confirm('是否确认删除发布模型记录编号为"' + _ids + '"的数据项？')
+    .confirm(td('dp.materializedModel.confirmDeleteRecord', { id: _ids }))
     .then(function () {
       return delDpModelMaterialized(_ids);
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+      proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
     })
     .catch(() => {});
 }

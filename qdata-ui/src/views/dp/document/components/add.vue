@@ -20,48 +20,48 @@
         <el-form ref="formRef" :model="form" label-width="100px" @submit.prevent>
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item label="标准号" prop="code" :rules="[
-                        { required: true, message: '标准号不能为空', trigger: 'blur' }
+                    <el-form-item :label="td('dp.document.standardCode')" prop="code" :rules="[
+                        { required: true, message: td('dp.document.standardCodeRequired'), trigger: 'blur' }
                     ]">
-                        <el-input v-model="form.code" placeholder="请输入标准号" />
+                        <el-input v-model="form.code" :placeholder="td('dp.document.standardCodePlaceholder')" />
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="标准名称" prop="name" :rules="[
-                        { required: true, message: '标准名称不能为空', trigger: 'blur' }
+                    <el-form-item :label="td('dp.document.standardName')" prop="name" :rules="[
+                        { required: true, message: td('dp.document.standardNameRequired'), trigger: 'blur' }
                     ]">
-                        <el-input v-model="form.name" placeholder="请输入标准名称" />
+                        <el-input v-model="form.name" :placeholder="td('dp.document.standardNamePlaceholder')" />
                     </el-form-item>
                 </el-col>
             </el-row>
 
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item label="标准状态" prop="status" :rules="[
-                        { required: true, message: '标准状态不能为空', trigger: 'blur' }
+                    <el-form-item :label="td('dp.document.standardStatus')" prop="status" :rules="[
+                        { required: true, message: td('dp.document.standardStatusRequired'), trigger: 'blur' }
                     ]">
                         <el-select style="width: 100%;" class="el-form-input-width" v-model="form.status"
-                            placeholder="请选择标准状态">
+                            :placeholder="td('dp.document.standardStatusPlaceholder')">
                             <el-option v-for="dict in dp_document_status" :key="dict.value" :label="dict.label"
                                 :value="dict.value"></el-option>
                         </el-select>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="标准类目" prop="catCode" :rules="[
-                        { required: true, message: '标准类目不能为空', trigger: 'blur' }
+                    <el-form-item :label="td('dp.document.standardCategory')" prop="catCode" :rules="[
+                        { required: true, message: td('dp.document.standardCategoryRequired'), trigger: 'blur' }
                     ]">
                         <el-tree-select filterable v-model="form.catCode" :data="deptOptions"
                             :props="{ value: 'code', label: 'name', children: 'children' }" value-key="code"
-                            placeholder="请选择标准类目" check-strictly />
+                            :placeholder="td('dp.document.standardCategoryPlaceholder')" check-strictly />
                     </el-form-item>
                 </el-col>
             </el-row>
 
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item label="文件" prop="fileUrl" :rules="[
-                        { required: true, message: '文件不能为空', trigger: 'change' }
+                    <el-form-item :label="td('dp.document.file')" prop="fileUrl" :rules="[
+                        { required: true, message: td('dp.document.fileRequired'), trigger: 'change' }
                     ]">
                         <FileUploadbtn :limit="1" v-model:filename="form.fileName" v-model="form.fileUrl"
                             :dragFlag="false" :fileSize="100" @handleRemove="handleRemove" :isShowTip="false" />
@@ -71,53 +71,53 @@
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="24">
-                    <el-form-item :label="t('common.texts.description')" prop="description">
-                        <el-input v-model="form.description" type="textarea" :placeholder="t('common.form.descriptionPlaceholder')" />
+                    <el-form-item :label="td('common.texts.description')" prop="description">
+                        <el-input v-model="form.description" type="textarea" :placeholder="td('common.form.descriptionPlaceholder')" />
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row :gutter="20">
 
                 <el-col :span="12">
-                    <el-form-item label="发布机构名称" prop="issuingAgency">
-                        <el-input v-model="form.issuingAgency" placeholder="请输入发布机构名称" />
+                    <el-form-item :label="td('dp.document.issuingAgency')" prop="issuingAgency">
+                        <el-input v-model="form.issuingAgency" :placeholder="td('dp.document.issuingAgencyPlaceholder')" />
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item label="版本号" prop="version">
-                        <el-input v-model="form.version" placeholder="请输入版本号" />
+                    <el-form-item :label="td('dp.document.version')" prop="version">
+                        <el-input v-model="form.version" :placeholder="td('dp.document.versionPlaceholder')" />
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="发布日期" prop="releaseDate">
+                    <el-form-item :label="td('dp.document.releaseDate')" prop="releaseDate">
                         <el-date-picker clearable style="width: 100%" v-model="form.releaseDate" type="date"
-                            value-format="YYYY-MM-DD" placeholder="请选择发布日期">
+                            value-format="YYYY-MM-DD" :placeholder="td('dp.document.releaseDatePlaceholder')">
                         </el-date-picker>
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item label="实施日期" prop="implementationDate">
+                    <el-form-item :label="td('dp.document.implementationDate')" prop="implementationDate">
                         <el-date-picker clearable style="width: 100%" v-model="form.implementationDate" type="date"
-                            value-format="YYYY-MM-DD" placeholder="请选择实施日期">
+                            value-format="YYYY-MM-DD" :placeholder="td('dp.document.implementationDatePlaceholder')">
                         </el-date-picker>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="废止日期" prop="abolitionDate">
+                    <el-form-item :label="td('dp.document.abolitionDate')" prop="abolitionDate">
                         <el-date-picker clearable style="width: 100%" v-model="form.abolitionDate" type="date"
-                            value-format="YYYY-MM-DD" placeholder="请选择废止日期">
+                            value-format="YYYY-MM-DD" :placeholder="td('dp.document.abolitionDatePlaceholder')">
                         </el-date-picker>
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="24">
-                    <el-form-item :label="t('common.texts.remark')" prop="remark">
-                        <el-input v-model="form.remark" type="textarea" :placeholder="t('common.form.remarkPlaceholder')" />
+                    <el-form-item :label="td('common.texts.remark')" prop="remark">
+                        <el-input v-model="form.remark" type="textarea" :placeholder="td('common.form.remarkPlaceholder')" />
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -125,21 +125,21 @@
 
         <template #footer>
             <div class="dialog-footer">
-                <el-button size="mini" @click="close">{{ t('common.button.cancel') }}</el-button>
-                <el-button type="primary" size="mini" @click="submitForm" :loading="loading">{{ t('common.button.confirm') }}</el-button>
+                <el-button size="mini" @click="close">{{ td('common.button.cancel') }}</el-button>
+                <el-button type="primary" size="mini" @click="submitForm" :loading="loading">{{ td('common.button.confirm') }}</el-button>
             </div>
         </template>
     </el-dialog>
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { ref, reactive, nextTick, getCurrentInstance } from "vue";
 const { proxy } = getCurrentInstance();
 import FileUploadbtn from "@/components/FileUploadbtn/index1.vue";
 import { addDpDocument, updateDpDocument } from "@/api/dp/document/document";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { column_type, sys_disable, dp_document_status } = proxy.useDict(
     "column_type",
     "sys_disable",
@@ -170,14 +170,14 @@ const form = reactive({
 
 const type = ref('1');
 
-const title = ref("标准弹窗");
+const title = ref(td('dp.document.standardModalTitle'));
 const emit = defineEmits(["update-success"]);
 
 const titleMap = {
-    '1': "国家标准",
-    '2': "行业标准",
-    '3': "地方标准",
-    '4': "团体标准",
+    '1': td('dp.document.nationalStandard'),
+    '2': td('dp.document.industryStandard'),
+    '3': td('dp.document.provincialStandard'),
+    '4': td('dp.document.groupStandard'),
 };
 
 /** 打开弹窗 */
@@ -189,10 +189,10 @@ function openModal(formData = {}, options = [], types) {
         Object.assign(form, formData);
         form.catCode = form.catCode != null ? String(form.catCode) : "";
         form.status = form.status != null ? String(form.status) : "";
-        title.value = t('common.button.update') + (titleMap[type.value] || "标准");
+        title.value = td('common.button.update') + (titleMap[type.value] || td('dp.document.standard'));
     } else {
         clearForm();
-        title.value = t('common.button.add') + (titleMap[type.value] || "标准");
+        title.value = td('common.button.add') + (titleMap[type.value] || td('dp.document.standard'));
     }
 
     visible.value = true;
@@ -234,7 +234,7 @@ function submitForm() {
         const apiCall = form.id ? updateDpDocument : addDpDocument;
         apiCall({ ...form, type: type.value })
             .then(() => {
-                proxy.$modal.msgSuccess(form.id ? t('common.message.editSuccess') : t('common.message.addSuccess'));
+                proxy.$modal.msgSuccess(form.id ? td('common.message.editSuccess') : td('common.message.addSuccess'));
                 visible.value = false;
                 clearForm();
                 emit("update-success");

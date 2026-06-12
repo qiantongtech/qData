@@ -39,19 +39,19 @@
       <el-row :gutter="20">
         <el-col :span="24">
           <el-form-item
-            label="数据库连接"
+            :label="td('dp.materializedModel.databaseConnection')"
             prop="datasourceId"
             :rules="[
               {
                 required: true,
-                message: '请选择数据库连接',
+                message: td('dp.materializedModel.selectDatabaseConnection'),
                 trigger: 'change',
               },
             ]"
           >
             <DatasourceList
               v-model="form.datasourceId"
-              placeholder="请选择数据连接"
+              :placeholder="td('dp.materializedModel.selectDatabaseConnection')"
               @change="handleDatasourceChange"
               filterable
               flag="dpModel"
@@ -59,10 +59,10 @@
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="数据库类型" prop="datasourceType">
+          <el-form-item :label="td('dp.modelForm.datasourceType')" prop="datasourceType">
             <el-input
               v-model="form.datasourceType"
-              placeholder="请选择数据库类型"
+              :placeholder="td('dp.modelForm.datasourceTypePlaceholder')"
               disabled
             />
           </el-form-item>
@@ -70,10 +70,10 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="数据库地址" prop="ip">
+          <el-form-item :label="td('dp.modelForm.datasourceAddress')" prop="ip">
             <el-input
               v-model="form.ip"
-              placeholder="请输入数据库地址"
+              :placeholder="td('dp.modelForm.datasourceAddressPlaceholder')"
               disabled
             />
           </el-form-item>
@@ -81,22 +81,22 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="发布模式" prop="releaseMode">
+          <el-form-item :label="td('dp.materializedModel.releaseMode')" prop="releaseMode">
             <el-radio-group v-model="form.releaseMode">
-              <el-radio label="1">删除重建</el-radio>
-              <el-radio label="2">增量发布</el-radio>
+              <el-radio label="1">{{ td('dp.materializedModel.deleteAndRecreate') }}</el-radio>
+              <el-radio label="2">{{ td('dp.materializedModel.incrementalRelease') }}</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="t('common.texts.description')">
+          <el-form-item :label="td('common.texts.description')">
             <el-input
               type="textarea"
               maxlength="500个字符"
               show-word-limit
-              :placeholder="t('common.form.descriptionPlaceholder')"
+              :placeholder="td('common.form.descriptionPlaceholder')"
               v-model="form.description"
               :min-height="192"
             />
@@ -105,12 +105,12 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="t('common.texts.remark')">
+          <el-form-item :label="td('common.texts.remark')">
             <el-input
               type="textarea"
               maxlength="500个字符"
               show-word-limit
-              :placeholder="t('common.form.remarkPlaceholder')"
+              :placeholder="td('common.form.remarkPlaceholder')"
               v-model="form.remark"
               :min-height="192"
             />
@@ -121,9 +121,9 @@
 
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="closeDialog">{{ t('common.button.cancel') }}</el-button>
+        <el-button @click="closeDialog">{{ td('common.button.cancel') }}</el-button>
         <el-button type="primary" :loading="loading" @click="confirmDialog">
-          {{ loading ? "发布中" : "确认" }}
+          {{ loading ? td('dp.materializedModel.publishing') : td('common.button.confirm') }}
         </el-button>
       </div>
     </template>
@@ -131,7 +131,7 @@
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import {
   createMaterializedTable,
   getDaDatasourceList,
@@ -150,7 +150,7 @@ import {
   getAvailableDatasource,
 } from "@/components/Datasource/utils.js";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const props = defineProps({
   visible: { type: Boolean, default: true },
@@ -211,10 +211,10 @@ const form = ref({
 
 const rules = ref({
   datasourceId: [
-    { required: true, message: "请选择数据连接", trigger: "blur" },
+    { required: true, message: td('dp.materializedModel.selectDatabaseConnection'), trigger: "blur" },
   ],
   releaseMode: [
-    { required: true, message: "请选择发布模式", trigger: "change" },
+    { required: true, message: td('dp.materializedModel.selectReleaseMode'), trigger: "change" },
   ],
 });
 
@@ -248,12 +248,12 @@ const confirmDialog = async () => {
     if (isValid) {
       const confirmMessage =
         form.value.releaseMode === "1"
-          ? "确认选择删除重建吗？ 将清空原表数据并重新创建物理表结构。此操作不可逆转，请谨慎操作！"
-          : "确认选择增量发布吗？保留原表数据，仅追加新增的字段列。适用于非破坏性的安全变更。";
+          ? td('dp.materializedModel.confirmDeleteRecreate')
+          : td('dp.materializedModel.confirmIncremental');
 
-      await proxy.$modal.confirm(confirmMessage, t('common.message.systemPrompt'), {
-        confirmButtonText: "确认",
-        cancelButtonText: t('common.button.cancel'),
+      await proxy.$modal.confirm(confirmMessage, td('common.message.systemPrompt'), {
+        confirmButtonText: td('common.button.confirm'),
+        cancelButtonText: td('common.button.cancel'),
         type: "warning",
       });
 
@@ -261,7 +261,7 @@ const confirmDialog = async () => {
         const supportedTypes = ["oracle11", "mysql", "DM8"];
         if (!supportedTypes.includes(form.value.datasourceType)) {
           proxy.$message.warning(
-            "增量发布暂只支持oracle、MySqL、DM8这三种类型"
+            td('dp.materializedModel.incrementalSupportedTypes')
           );
           loading.value = false;
           return;

@@ -25,7 +25,7 @@
         <el-row :gutter="2">
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ t('common.texts.number') }}</div>
+              <div class="infotop-row-lable">{{ td('common.texts.number') }}</div>
               <div class="infotop-row-value">
                 {{ daAssetDetail.id || "-" }}
               </div>
@@ -44,7 +44,7 @@
                   <img v-if="desc.value == 2" src="@/assets/da/asset/api (1).svg" alt="" />
                   <img v-if="desc.value == 1" src="@/assets/da/asset/api (3).svg" alt="" />
                   <img v-if="desc.value == 7" src="@/assets/da/asset/api (5).svg" alt="" />
-                  {{ desc.value == 2 ? "api" : desc.value == 1 ? "库表" : desc.value == 7 ? "文件" : "-" }}
+                  {{ desc.value == 2 ? "api" : desc.value == 1 ? td('da.assetDetail.detail.dbTable') : desc.value == 7 ? td('da.assetDetail.detail.file') : "-" }}
                 </span>
                 <span v-else>{{ desc.value || "-" }}</span>
               </div>
@@ -53,7 +53,7 @@
         </el-row>
         <el-col :span="24">
           <div class="infotop-row border-top">
-            <div class="infotop-row-lable">{{ t('common.texts.description') }}</div>
+            <div class="infotop-row-lable">{{ td('common.texts.description') }}</div>
             <div class="infotop-row-value">
               <span class="ellipsis-2">
                 {{ daAssetDetail.description || "-" }}
@@ -65,7 +65,7 @@
           <template v-if="daAssetDetail.type == 1">
             <el-col :span="8" style="margin: 2px 0;">
               <div class="infotop-row border-top">
-                <div class="infotop-row-lable">数据连接</div>
+                <div class="infotop-row-lable">{{ td('da.assetDetail.detail.datasource') }}</div>
                 <div class="infotop-row-value">
                   {{ daAssetDetail.datasourceName || "-" }}
                 </div>
@@ -73,7 +73,7 @@
             </el-col>
             <el-col :span="8">
               <div class="infotop-row border-top" style="margin: 2px 0;">
-                <div class="infotop-row-lable">表描述</div>
+                <div class="infotop-row-lable">{{ td('da.assetDetail.detail.tableDesc') }}</div>
                 <div class="infotop-row-value">
                   {{ daAssetDetail.tableComment || "-" }}
                 </div>
@@ -82,14 +82,14 @@
           </template>
           <el-col :span="8">
             <div class="infotop-row border-top" style="margin: 2px 0;">
-              <div class="infotop-row-lable">英文名称</div>
+              <div class="infotop-row-lable">{{ td('da.assetDetail.detail.englishName') }}</div>
               <div class="infotop-row-value">{{ daAssetDetail.tableName }}</div>
             </div>
           </el-col>
           <template v-if="daAssetDetail.type == 2">
             <el-col :span="8" style="margin: 2px 0;">
               <div class="infotop-row border-top">
-                <div class="infotop-row-lable">应用名称</div>
+                <div class="infotop-row-lable">{{ td('da.assetDetail.detail.appName') }}</div>
                 <div class="infotop-row-value">
                   {{ daAssetDetail?.daAssetApi?.appName || "-" }}
                 </div>
@@ -97,7 +97,7 @@
             </el-col>
             <el-col :span="8">
               <div class="infotop-row border-top">
-                <div class="infotop-row-lable">开发者</div>
+                <div class="infotop-row-lable">{{ td('da.assetDetail.detail.developer') }}</div>
                 <div class="infotop-row-value">
                   {{ daAssetDetail?.daAssetApi?.developerName || "-" }}
                 </div>
@@ -105,7 +105,7 @@
             </el-col>
             <el-col :span="8">
               <div class="infotop-row border-top">
-                <div class="infotop-row-lable">服务地址</div>
+                <div class="infotop-row-lable">{{ td('da.assetDetail.detail.serviceUrl') }}</div>
                 <div class="infotop-row-value">
                   {{ daAssetDetail?.daAssetApi?.url || "-" }}
                 </div>
@@ -113,7 +113,7 @@
             </el-col>
             <el-col :span="8" style="margin: 2px 0;">
               <div class="infotop-row border-top">
-                <div class="infotop-row-lable">请求类型</div>
+                <div class="infotop-row-lable">{{ td('da.assetDetail.detail.requestType') }}</div>
                 <div class="infotop-row-value">
                   <dict-tag :options="da_asset_api_method" :value="daAssetDetail.daAssetApi.httpMethod" />
                 </div>
@@ -123,7 +123,7 @@
           <template v-if="daAssetDetail.type == 3">
             <el-col :span="8" style="margin: 2px 0;">
               <div class="infotop-row border-top">
-                <div class="infotop-row-lable">服务类型</div>
+                <div class="infotop-row-lable">{{ td('da.assetDetail.detail.serviceType') }}</div>
                 <div class="infotop-row-value">
                   <dict-tag :options="da_asset_gis_type" :value="daAssetDetail?.daAssetGis?.type" />
                 </div>
@@ -131,7 +131,7 @@
             </el-col>
             <el-col :span="8">
               <div class="infotop-row border-top">
-                <div class="infotop-row-lable">服务地址</div>
+                <div class="infotop-row-lable">{{ td('da.assetDetail.detail.serviceUrl') }}</div>
                 <div class="infotop-row-value">
                   {{ daAssetDetail?.daAssetGis?.url || "-" }}
                 </div>
@@ -141,7 +141,7 @@
           <template v-if="daAssetDetail.type == 4">
             <el-col :span="8" style="margin: 2px 0;">
               <div class="infotop-row border-top">
-                <div class="infotop-row-lable">文件类型</div>
+                <div class="infotop-row-lable">{{ td('da.assetDetail.detail.fileType') }}</div>
                 <div class="infotop-row-value">
                   {{ daAssetDetail?.daAssetGeo?.fileType || "-" }}
                 </div>
@@ -149,7 +149,7 @@
             </el-col>
             <el-col :span="8">
               <div class="infotop-row border-top">
-                <div class="infotop-row-lable">上传文件</div>
+                <div class="infotop-row-lable">{{ td('da.assetDetail.detail.uploadFile') }}</div>
                 <div class="infotop-row-value">
                   {{ daAssetDetail.daAssetGeo?.fileUrl || "-" }}
                 </div>
@@ -159,7 +159,7 @@
           <template v-if="daAssetDetail.type == 5">
             <el-col :span="8" style="margin: 2px 0;">
               <div class="infotop-row border-top">
-                <div class="infotop-row-lable">平台</div>
+                <div class="infotop-row-lable">{{ td('da.assetDetail.detail.platform') }}</div>
                 <div class="infotop-row-value">
                   {{ daAssetDetail?.daAssetVideo?.platform || "-" }}
                 </div>
@@ -167,7 +167,7 @@
             </el-col>
             <el-col :span="8">
               <div class="infotop-row border-top">
-                <div class="infotop-row-lable">平台ip</div>
+                <div class="infotop-row-lable">{{ td('da.assetDetail.detail.platformIp') }}</div>
                 <div class="infotop-row-value">
                   {{ daAssetDetail?.daAssetVideo?.ip || "-" }}
                 </div>
@@ -175,7 +175,7 @@
             </el-col>
             <el-col :span="8">
               <div class="infotop-row border-top">
-                <div class="infotop-row-lable">平台端口</div>
+                <div class="infotop-row-lable">{{ td('da.assetDetail.detail.platformPort') }}</div>
                 <div class="infotop-row-value">
                   {{ daAssetDetail?.daAssetVideo?.port || "-" }}
                 </div>
@@ -183,7 +183,7 @@
             </el-col>
             <el-col :span="8" style="margin: 2px 0;">
               <div class="infotop-row border-top">
-                <div class="infotop-row-lable">摄像头编码</div>
+                <div class="infotop-row-lable">{{ td('da.assetDetail.detail.cameraCode') }}</div>
                 <div class="infotop-row-value">
                   {{ daAssetDetail?.daAssetVideo?.config?.cameraCode || "-" }}
                 </div>
@@ -191,7 +191,7 @@
             </el-col>
             <el-col :span="8">
               <div class="infotop-row border-top">
-                <div class="infotop-row-lable">摄像头名称</div>
+                <div class="infotop-row-lable">{{ td('da.assetDetail.detail.cameraName') }}</div>
                 <div class="infotop-row-value">
                   {{ daAssetDetail?.daAssetVideo?.config?.cameraName || "-" }}
                 </div>
@@ -199,7 +199,7 @@
             </el-col>
             <el-col :span="8">
               <div class="infotop-row border-top">
-                <div class="infotop-row-lable">公钥</div>
+                <div class="infotop-row-lable">{{ td('da.assetDetail.detail.publicKey') }}</div>
                 <div class="infotop-row-value">
                   {{ daAssetDetail?.daAssetVideo?.config?.appkey || "-" }}
                 </div>
@@ -207,7 +207,7 @@
             </el-col>
             <el-col :span="8" style="margin: 2px 0;">
               <div class="infotop-row border-top">
-                <div class="infotop-row-lable">私钥</div>
+                <div class="infotop-row-lable">{{ td('da.assetDetail.detail.privateKey') }}</div>
                 <div class="infotop-row-value">
                   {{ daAssetDetail?.daAssetVideo?.config?.appSecret || "-" }}
                 </div>
@@ -228,7 +228,7 @@
   </div>
 </template>
 <script setup name="DaAsset">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { getDaAsset } from "@/api/da/asset/asset";
 import { useRoute } from "vue-router";
 import ComponentOne from "@/views/dpp/asset/detail/table/column.vue";
@@ -241,7 +241,7 @@ import ResponseFormatConfig from "@/views/dpp/asset/detail/api/responseFormatCon
 import lineage from "@/views/dpp/asset/detail/table/lineage.vue";
 import info from "@/views/dpp/asset/detail/info.vue";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { da_assets_status, da_asset_gis_type, da_asset_api_method } = proxy.useDict("da_assets_status", "da_asset_gis_type", "da_asset_api_method");
 const activeName = ref("0");
@@ -253,27 +253,27 @@ function handleClick(tab) {
 const descList = ref([
   {
     key: "catName",
-    label: "所属类目",
+    label: td('da.assetDetail.detail.belongCat'),
     value: "",
   },
   {
     key: "type",
-    label: "类型",
+    label: td('da.assetDetail.detail.type'),
     value: "",
   },
   {
     key: "daAssetThemeRelList",
-    label: "所属主题",
+    label: td('da.assetDetail.detail.belongTopic'),
     value: "",
   },
   {
     key: "tag",
-    label: "数据标签",
+    label: td('da.assetDetail.detail.dataTag'),
     value: "",
   },
   {
     key: "status",
-    label: t('common.texts.status'),
+    label: td('common.texts.status'),
     value: "",
   },
 
@@ -285,38 +285,38 @@ const tabPanes = computed(() => {
   switch (daAssetDetail.value.type) {
     case "1":
       return [
-        { label: "资产字段", name: "0", component: ComponentOne },
-        { label: "资产预览", name: "2", component: ComponentTwo },
-        { label: '资产质量', name: '3', component: DataQualityControl },
+        { label: td('da.assetDetail.detail.assetFields'), name: "0", component: ComponentOne },
+        { label: td('da.assetDetail.detail.assetPreview'), name: "2", component: ComponentTwo },
+        { label: td('da.assetDetail.detail.assetQuality'), name: '3', component: DataQualityControl },
         // { label: '资产血缘', name: '4', component: lineage },
-        { label: "资产概览", name: "5", component: info },
+        { label: td('da.assetDetail.detail.assetOverview'), name: "5", component: info },
       ];
     case "2":
       return [
-        { label: "鉴权参数", name: "0", component: authParams },
-        { label: "请求参数", name: "1", component: RequestParamsForm },
-        { label: "返回格式", name: "2", component: ResponseFormatConfig },
-        { label: "预览数据", name: "3", component: ComponentThree },
-        { label: "资产概览", name: "4", component: info },
+        { label: td('da.assetDetail.detail.authParams'), name: "0", component: authParams },
+        { label: td('da.assetDetail.detail.requestParams'), name: "1", component: RequestParamsForm },
+        { label: td('da.assetDetail.detail.responseFormat'), name: "2", component: ResponseFormatConfig },
+        { label: td('da.assetDetail.detail.previewData'), name: "3", component: ComponentThree },
+        { label: td('da.assetDetail.detail.assetOverview'), name: "4", component: info },
 
       ];
     case "3":
-      return [{ label: "资产概览", name: "0", component: info }];
+      return [{ label: td('da.assetDetail.detail.assetOverview'), name: "0", component: info }];
     case "4":
       return [
-        { label: "资产概览", name: "0", component: info },
-        { label: "资产预览", name: "1", component: ComponentTwo },
+        { label: td('da.assetDetail.detail.assetOverview'), name: "0", component: info },
+        { label: td('da.assetDetail.detail.assetPreview'), name: "1", component: ComponentTwo },
       ];
     case "5":
-      return [{ label: "资产概览", name: "0", component: info }];
+      return [{ label: td('da.assetDetail.detail.assetOverview'), name: "0", component: info }];
     case "6":
       return [
-        { label: "资产概览", name: "0", component: info },
-        { label: "资产字段", name: "1", component: ComponentOne },
-        { label: "资产预览", name: "2", component: ComponentTwo },
+        { label: td('da.assetDetail.detail.assetOverview'), name: "0", component: info },
+        { label: td('da.assetDetail.detail.assetFields'), name: "1", component: ComponentOne },
+        { label: td('da.assetDetail.detail.assetPreview'), name: "2", component: ComponentTwo },
       ];
     case "7":
-      return [{ label: "资产概览", name: "0", component: info }];
+      return [{ label: td('da.assetDetail.detail.assetOverview'), name: "0", component: info }];
     default:
   }
 });

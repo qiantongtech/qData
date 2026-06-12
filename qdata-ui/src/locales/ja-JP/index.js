@@ -13,6 +13,9 @@ import ds from './ds'
 import dg from './dg'
 import ai from './ai'
 import guide from './guide'
+import da from './da'
+import dm from './dm'
+import dp from './dp'
 
 export default {
   common,
@@ -28,5 +31,8 @@ export default {
   ds,
   dg,
   ai,
-  guide
+  guide,
+  da,
+  dm,
+  dp
 }

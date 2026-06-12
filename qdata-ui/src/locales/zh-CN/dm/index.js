@@ -119,7 +119,10 @@ export default {
     confirmStatusChangeSpecification: '确认要"{text}"规范"{id}"吗？',
     pleaseSelectLayer: '请先选择左侧数仓分层',
     operationDataLayer: '操作数据层',
-    englishOnly: '只能输入英文字符'
+    englishOnly: '只能输入英文字符',
+    businessDefinition: '业务定义',
+    namingStandard: '命名核心标准',
+    tablePrefixFixed: '表名前缀固定为'
   },
   themeDomain: {
     // 主题域

@@ -7,7 +7,7 @@
     <div class="layer-info-card-body">
       <div class="layer-info-card-row">
         <span class="layer-info-card-label layer-info-card-label--short">
-          业务定义：
+          {{ td('dm.dataLayer.businessDefinition') }}：
         </span>
         <span
           class="layer-info-card-value text-ellipsis"
@@ -17,9 +17,9 @@
       </div>
       <div v-if="layer.engName" class="layer-info-card-row">
         <span class="layer-info-card-label layer-info-card-label--long">
-          命名核心标准：
+          {{ td('dm.dataLayer.namingStandard') }}：
         </span>
-        <el-tag ype="info"> 表名前缀固定为 {{ layer.engName }}_ </el-tag>
+        <el-tag ype="info"> {{ td('dm.dataLayer.tablePrefixFixed') }} {{ layer.engName }}_ </el-tag>
       </div>
     </div>
   </div>

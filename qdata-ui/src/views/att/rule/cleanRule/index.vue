@@ -497,10 +497,10 @@ function resetQuery() {
 function handleStatusChange(row) {
     const status = row.validFlag === true ? td('att.common.enable') : td('att.common.disable');
     proxy.$modal
-        .confirm(td('att.common.confirmStatusChangeGeneric').replace('{status}', status).replace('{name}', row.name).replace('{type}', td('att.common.dataDoc')))
+        .confirm(td('att.common.confirmStatusChangeGeneric').replace('<status>', status).replace('<name>', row.name).replace('<type>', td('att.common.dataDoc')))
         .then(function () {
             updateAttCleanRule({ id: row.id, validFlag: row.validFlag }).then((response) => {
-                proxy.$modal.msgSuccess(td('att.common.statusSuccess').replace('{status}', status));
+                proxy.$modal.msgSuccess(td('att.common.statusSuccess').replace('<status>', status));
                 getList();
             });
         })
@@ -588,7 +588,7 @@ function handleDelete(row) {
     const _ids = row.id || ids.value;
     const _name = row.name;
     proxy.$modal
-        .confirm(td('att.cleanRule.deleteConfirm').replace('{ids}', _ids))
+        .confirm(td('att.cleanRule.deleteConfirm').replace('<ids>', _ids))
         .then(function () {
             return delAttCleanRule(_ids);
         })

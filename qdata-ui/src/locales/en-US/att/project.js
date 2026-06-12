@@ -15,7 +15,8 @@ export default {
     edit: 'Edit Project',
     detail: 'Project Detail'
   },
+  importTitle: 'Import Project',
   message: {
-    confirmDelete: 'Confirm to delete the data item with project ID "{ids}"?'
+    confirmDelete: 'Confirm to delete the data item with project ID "<ids>"?'
   }
 }

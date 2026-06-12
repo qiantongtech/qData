@@ -155,8 +155,8 @@
 
           <el-col :span="12">
             <el-form-item :label="td('common.texts.status')" prop="validFlag">
-              <el-radio v-model="form.validFlag" :label="true">启用</el-radio>
-              <el-radio v-model="form.validFlag" :label="false">禁用</el-radio>
+              <el-radio v-model="form.validFlag" :label="true">{{ td('att.common.enable') }}</el-radio>
+              <el-radio v-model="form.validFlag" :label="false">{{ td('att.common.disable') }}</el-radio>
             </el-form-item>
           </el-col>
         </el-row>
@@ -319,12 +319,12 @@ function handleSelectionChange(selection) {
 
 /** 改变启用状态值 */
 function handleStatusChange(row) {
-  const text = row.validFlag === true ? '启用' : '禁用';
+  const text = row.validFlag === true ? td('att.common.enable') : td('att.common.disable');
   proxy.$modal
-    .confirm('确认要"' + text + '","' + row.name + '"清洗规则类目吗？')
+    .confirm(td('att.common.confirmStatusChangeGeneric').replace('<status>', text).replace('<name>', row.name).replace('<type>', td('att.common.cleanCatName')))
     .then(function () {
       updateAttCleanCat({ id: row.id, validFlag: row.validFlag }).then((response) => {
-        proxy.$modal.msgSuccess(text + '成功');
+        proxy.$modal.msgSuccess(td('att.common.statusSuccess').replace('<status>', text));
         getList();
       }).catch((err) => {
         row.validFlag = !row.validFlag;
@@ -366,7 +366,7 @@ function handleAdd(row) {
     form.value.parentId = 0;
   }
   open.value = true;
-  title.value = "添加清洗规则类目";
+  title.value = td('att.cleanCat.title.add');
 }
 
 function getDataTree() {
@@ -397,7 +397,7 @@ async function handleUpdate(row) {
   getAttCleanCat(row.id).then(response => {
     form.value = response.data;
     open.value = true;
-    title.value = "修改清洗规则类目";
+    title.value = td('att.cleanCat.title.edit');
   });
 }
 
@@ -408,7 +408,7 @@ function handleDetail(row) {
   getAttCleanCat(_ID).then(response => {
     form.value = response.data;
     openDetail.value = true;
-    title.value = "清洗规则类目详情";
+    title.value = td('att.cleanCat.title.detail');
   });
 }
 
@@ -437,9 +437,9 @@ function submitForm() {
 
 /** 删除按钮操作 */
 function handleDelete(row) {
-  const ids = row.id || ids.value;
-  proxy.$modal.confirm('是否确认删除清洗规则类目编号为"' + ids + '"的数据项？').then(function () {
-    return delAttCleanCat(ids);
+  const _ids = row.id || ids.value;
+  proxy.$modal.confirm(td('att.cleanCat.messages.confirmDelete').replace('<ids>', _ids)).then(function () {
+    return delAttCleanCat(_ids);
   }).then(() => {
     getList();
     proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
@@ -456,7 +456,7 @@ function handleExport() {
 /** ---------------- 导入相关操作 -----------------**/
 /** 导入按钮操作 */
 function handleImport() {
-  upload.title = "清洗规则类目导入";
+  upload.title = td('att.cleanCat.importTitle');
   upload.open = true;
 }
 

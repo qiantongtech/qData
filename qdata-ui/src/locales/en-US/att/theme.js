@@ -16,6 +16,6 @@ export default {
     detail: 'Theme Detail'
   },
   importTitle: 'Import Theme',
-  deleteConfirm: 'Confirm to delete the data item with theme ID "{ids}"?',
+  deleteConfirm: 'Confirm to delete the data item with theme ID "<ids>"?',
   themeWord: 'Theme'
 }

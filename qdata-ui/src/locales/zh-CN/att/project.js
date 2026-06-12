@@ -14,7 +14,8 @@ export default {
     edit: '修改项目',
     detail: '项目详情'
   },
+  importTitle: '项目导入',
   message: {
-    confirmDelete: '是否确认删除项目编号为"{ids}"的数据项？'
+    confirmDelete: '是否确认删除项目编号为"<ids>"的数据项？'
   }
 }

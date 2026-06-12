@@ -221,7 +221,7 @@ const searchStore = reactive({
       component: { is: "input" },
     },
     {
-      label: "上级类目",
+      label: td('att.common.parentCat'),
       prop: "code",
       component: {
         is: "tree-select",
@@ -265,10 +265,10 @@ if (props.checkProjectParams) {
 }
 
 function handleStatusChange(row) {
-  const text = row.validFlag === true ? "启用" : "禁用";
+  const text = row.validFlag === true ? td('att.common.enable') : td('att.common.disable');
   proxy.$modal
     .confirm(
-      '确认要"' + text + '","' + row.name + '"' + props.titleBase + "吗？"
+      td('att.common.confirmStatusChangeGeneric').replace('<status>', text).replace('<name>', row.name).replace('<type>', props.titleBase)
     )
     .then(function () {
       props
@@ -366,7 +366,7 @@ function onDialogCancel() {}
 function handleDelete(row) {
   const id = row.id;
   proxy.$modal
-    .confirm(td('att.common.message.confirmDeleteCat').replace('{titleBase}', props.titleBase).replace('{id}', id))
+    .confirm(td('att.common.confirmDeleteCat').replace('<titleBase>', props.titleBase).replace('<id>', id))
     .then(function () {
       return props.delFunc(id);
     })
@@ -393,7 +393,7 @@ function handleDeleteSelected() {
           canDeleteCount = 0,
         } = res?.data || {};
         return ElMessageBox.confirm(
-          td('att.common.message.deleteConfirmCount').replace('{canDeleteCount}', canDeleteCount).replace('{cannotDeleteCount}', cannotDeleteCount),
+          td('att.common.deleteConfirmCount').replace('<canDeleteCount>', canDeleteCount).replace('<cannotDeleteCount>', cannotDeleteCount),
           td('common.message.systemPrompt'),
           {
             confirmButtonText: td('common.button.confirm'),
@@ -415,7 +415,7 @@ function handleDeleteSelected() {
       .finally(() => {});
   } else {
     ElMessageBox.confirm(
-      td('att.common.message.deleteConfirmCount').replace('{canDeleteCount}', selection.rows.length).replace('{cannotDeleteCount}', 0),
+      td('att.common.deleteConfirmCount').replace('<canDeleteCount>', selection.rows.length).replace('<cannotDeleteCount>', 0),
       td('common.message.systemPrompt'),
       { confirmButtonText: td('common.button.confirm'), cancelButtonText: td('common.button.cancel'), type: "warning" }
     )

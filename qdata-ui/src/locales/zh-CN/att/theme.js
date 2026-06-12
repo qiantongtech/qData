@@ -15,6 +15,6 @@ export default {
     detail: '主题详情'
   },
   importTitle: '主题导入',
-  deleteConfirm: '是否确认删除主题编号为"{ids}"的数据项？',
+  deleteConfirm: '是否确认删除主题编号为"<ids>"的数据项？',
   themeWord: '主题'
 }

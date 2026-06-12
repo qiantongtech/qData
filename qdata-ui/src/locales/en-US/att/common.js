@@ -111,8 +111,8 @@ export default {
     createdByPlaceholder: 'Please enter creator',
     enable: 'Enable',
     disable: 'Disable',
-    confirmStatusChange: 'Confirm to "{status}" "{name}" tag?',
-    confirmDelete: 'Confirm to delete the data item with tag ID "{ids}"?',
+    confirmStatusChange: 'Confirm to "<status>","<name>" tag?',
+    confirmDelete: 'Confirm to delete the data item with tag ID "<ids>"?',
     tagNameRequired: 'Tag name cannot be empty',
     tagCatRequired: 'Tag category cannot be empty',
     addTag: 'Add Tag',
@@ -120,8 +120,8 @@ export default {
     tagDetail: 'Tag Detail',
     ruleCategoryPlaceholder:'Please enter the category of inspection rules',
     // Message
-    confirmDeleteCat: 'Confirm to delete {titleBase} with ID "{id}"?',
-    deleteConfirmCount: '{canDeleteCount} can be deleted, {cannotDeleteCount} cannot be deleted. Delete the deletable items?',
+    confirmDeleteCat: 'Confirm to delete <titleBase> with ID "<id>"?',
+    deleteConfirmCount: '<canDeleteCount> can be deleted, <cannotDeleteCount> cannot be deleted. Delete the deletable items?',
     // Top node
     topNode: 'Root Node',
     // Title helpers
@@ -130,8 +130,8 @@ export default {
     detailTitle: '{title} Detail',
     importTitle: 'Import {title}',
     // Status change
-    confirmStatusChangeGeneric: 'Confirm to "{status}" "{name}" {type}?',
-    statusSuccess: '{status} Success',
+    confirmStatusChangeGeneric: 'Confirm to "<status>","<name>"<type>?',
+    statusSuccess: '<status> Success',
     // Code
     codeRequired: 'Code cannot be empty',
     // Contact

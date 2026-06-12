@@ -84,13 +84,14 @@ export default {
         loadingResource: 'Loading system resources, please wait...',
         msgOpFailed: 'Operation failed',
         msgOpSuccess: 'Operation successful',
+        confirmDelete: 'Confirm to delete the data item with ID ',
         noData: 'No data',
         noMatchingData: 'No matching data',
         noRecord: 'No records',
         operationSuccess: 'Operation successful',
         prompt: 'Prompt',
         systemPrompt: 'System Prompt',
-        confirmChangeStatus: 'Confirm to {status}"{name}" data connection?'
+        selectRecord: 'Please select the data to delete'
     },
     html: {
         appTitle: 'qData Open Source Data Middle Platform'

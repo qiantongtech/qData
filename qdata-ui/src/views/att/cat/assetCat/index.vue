@@ -160,8 +160,8 @@
 
                     <el-col :span="12">
                         <el-form-item :label="td('common.texts.status')" prop="validFlag">
-                            <el-radio v-model="form.validFlag" :label="true">启用</el-radio>
-                            <el-radio v-model="form.validFlag" :label="false">禁用</el-radio>
+                            <el-radio v-model="form.validFlag" :label="true">{{ td('att.common.enable') }}</el-radio>
+                            <el-radio v-model="form.validFlag" :label="false">{{ td('att.common.disable') }}</el-radio>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -215,8 +215,8 @@ const data = reactive({
         parentId: null
     },
     rules: {
-        name: [{ required: true, message: '数据资产类目名称不能为空', trigger: 'blur' }],
-        parentId: [{ required: true, message: '上级类目不能为空', trigger: 'blur' }]
+        name: [{ required: true, message: td('att.assetCat.validations.nameRequired'), trigger: 'blur' }],
+        parentId: [{ required: true, message: td('att.assetCat.validations.parentIdRequired'), trigger: 'blur' }]
     }
 });
 
@@ -269,12 +269,12 @@ function handleQuery() {
 }
 /** 改变启用状态值 */
 function handleStatusChange(row) {
-    const text = row.validFlag === true ? '启用' : '禁用';
+    const text = row.validFlag === true ? td('att.common.enable') : td('att.common.disable');
     proxy.$modal
-        .confirm('确认要"' + text + '","' + row.name + '"数据资产类目吗？')
+        .confirm(td('att.common.confirmStatusChangeGeneric').replace('<status>', text).replace('<name>', row.name).replace('<type>', td('att.common.dataAssetCatName')))
         .then(function () {
             updateAttAssetCat({ id: row.id, validFlag: row.validFlag }).then((response) => {
-                proxy.$modal.msgSuccess(text + '成功');
+                proxy.$modal.msgSuccess(td('att.common.statusSuccess').replace('{status}', text));
                 getList();
             }).catch((err) => {
                 row.validFlag = !row.validFlag;
@@ -307,7 +307,7 @@ function handleAdd(row) {
         form.value.parentId = 0;
     }
     open.value = true;
-    title.value = '新增数据资产类目';
+    title.value = td('att.assetCat.title.add');
 }
 
 /** 展开/折叠操作 */
@@ -350,7 +350,7 @@ async function handleUpdate(row) {
         delete response.data.updateTime;
         form.value = response.data;
         open.value = true;
-        title.value = '修改数据资产类目';
+        title.value = td('att.assetCat.title.edit');
     });
 }
 
@@ -378,7 +378,7 @@ function submitForm() {
 /** 删除按钮操作 */
 function handleDelete(row) {
     proxy.$modal
-        .confirm('是否确认删除数据资产类目管理编号为"' + row.name + '"的数据项？')
+        .confirm(td('att.assetCat.messages.confirmDelete').replace('<name>', row.name))
         .then(function () {
             return delAttAssetCat(row.id);
         })

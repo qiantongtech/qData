@@ -9,5 +9,10 @@ export default {
     catName: '类目名称',
     nearSynonyms: '近义标签',
     synonyms: '同义标签'
+  },
+  title: {
+    add: '添加标签管理',
+    edit: '修改标签管理',
+    detail: '标签管理详情'
   }
 }

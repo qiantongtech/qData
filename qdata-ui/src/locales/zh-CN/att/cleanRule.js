@@ -17,6 +17,6 @@ export default {
     detail: '清洗规则详情'
   },
   importTitle: '清洗规则导入',
-  deleteConfirm: '是否确认删除编号为"{ids}"的数据项？',
+  deleteConfirm: '是否确认删除编号为"<ids>"的数据项？',
   cleanRuleCategory: '清洗规则类目'
 }

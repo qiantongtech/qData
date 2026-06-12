@@ -28,9 +28,9 @@ export default {
   message: {
     nameRequired: 'System name cannot be empty',
     typeRequired: 'System type cannot be empty',
-    confirmStatus: 'Confirm to "{status}" "{name}" source system?',
-    statusSuccess: '{status} Success',
-    deleteConfirm: '{deletable} can be deleted, {undeletable} cannot be deleted. Delete the deletable items?'
+    confirmStatus: 'Confirm to "<status>< "<name>" source system?',
+    statusSuccess: '<status>" Success',
+    deleteConfirm: '<deletable> can be deleted, "<undeletable> cannot be deleted. Delete the deletable items?'
   },
   textareaLimit: '500 characters'
 }

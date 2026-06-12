@@ -55,8 +55,8 @@
       </el-row>
       <el-col :span="24" v-if="!hideStatusAndSort">
         <el-form-item :label="td('common.texts.status')" prop="validFlag">
-          <el-radio v-model="form.validFlag" :label="true">启用</el-radio>
-          <el-radio v-model="form.validFlag" :label="false">禁用</el-radio>
+          <el-radio v-model="form.validFlag" :label="true">{{ td('att.common.enable') }}</el-radio>
+          <el-radio v-model="form.validFlag" :label="false">{{ td('att.common.disable') }}</el-radio>
         </el-form-item>
       </el-col>
       <el-row :gutter="20" v-if="!hideStatusAndSort">

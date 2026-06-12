@@ -10,5 +10,10 @@ export default {
     catName: 'Tag Management Category',
     nearSynonyms: 'Near Synonyms',
     synonyms: 'Synonyms'
+  },
+  title: {
+    add: 'Add Tag',
+    edit: 'Edit Tag',
+    detail: 'Tag Detail'
   }
 }

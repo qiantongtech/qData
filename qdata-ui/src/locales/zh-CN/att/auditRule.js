@@ -24,6 +24,6 @@ export default {
     detail: '稽查规则详情'
   },
   importTitle: '稽查规则导入',
-  deleteConfirm: '是否确认删除稽查规则编号为"{ids}"的数据项？',
+  deleteConfirm: '是否确认删除稽查规则编号为"<ids>"的数据项？',
   treeRootName: '质量维度'
 }

@@ -423,7 +423,7 @@ function handleSortChange(column, prop, order) {
 function handleAdd() {
   reset();
   open.value = true;
-  title.value = "添加标签管理";
+  title.value = td('att.tag.title.add');
 }
 
 /** 修改按钮操作 */
@@ -433,7 +433,7 @@ function handleUpdate(row) {
   getAttTag(_id).then((response) => {
     form.value = response.data;
     open.value = true;
-    title.value = "修改标签管理";
+    title.value = td('att.tag.title.edit');
   });
 }
 
@@ -444,7 +444,7 @@ function handleDetail(row) {
   getAttTag(_id).then((response) => {
     form.value = response.data;
     openDetail.value = true;
-    title.value = "标签管理详情";
+    title.value = td('att.tag.title.detail');
   });
 }
 

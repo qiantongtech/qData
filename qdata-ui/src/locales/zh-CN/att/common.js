@@ -108,8 +108,8 @@ export default {
     createdByPlaceholder: '请输入创建人',
     enable: '启用',
     disable: '禁用',
-    confirmStatusChange: '确认要"{status}""{name}"标签吗？',
-    confirmDelete: '是否确认删除标签编号为"{ids}"的数据项？',
+    confirmStatusChange: '确认要"{status}""<name>"标签吗？',
+    confirmDelete: '是否确认删除标签编号为"<ids>"的数据项？',
     tagNameRequired: '标签名称不能为空',
     tagCatRequired: '标签管理类目不能为空',
     addTag: '新增标签',
@@ -117,8 +117,8 @@ export default {
     tagDetail: '标签详情',
     ruleCategoryPlaceholder:'请输入稽查规则类目',
     // Message
-    confirmDeleteCat: '是否确认删除{titleBase}编号为"{id}"的数据项？',
-    deleteConfirmCount: '可删除{canDeleteCount}个，不可删除{cannotDeleteCount}个，是否删除可删部分',
+    confirmDeleteCat: '是否确认删除<titleBase>编号为"<id>"的数据项？',
+    deleteConfirmCount: '可删除<canDeleteCount>个，不可删除<cannotDeleteCount>个，是否删除可删部分',
     // Top node
     topNode: '顶级节点',
     // Title helpers
@@ -127,7 +127,7 @@ export default {
     detailTitle: '{title}详情',
     importTitle: '{title}导入',
     // Status change
-    confirmStatusChangeGeneric: '确认要"{status}""{name}"{type}吗？',
+    confirmStatusChangeGeneric: '确认要"<status>","<name>"<type>吗？',
     statusSuccess: '{status}成功',
     // Code
     codeRequired: '编码不能为空',

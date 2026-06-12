@@ -32,7 +32,8 @@ export default {
                 versionManagement: '版本与变更',
                 tableName: '表名称',
                 tableComment: '表注释',
-                sourceSystem: '来源系统'
+                sourceSystem: '来源系统',
+                dbName: '所属库名'
             }
         }
     },

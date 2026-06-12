@@ -836,12 +836,8 @@ function handleDelete(row) {
     .confirm(
       td(
         "dpp.setting.taskCat.confirmDelete",
-        "是否确认删除数据集成类目管理编号为"
-      ) +
-        '"' +
-        _ids +
-        '"' +
-        td("dpp.setting.taskCat.dataItem", "的数据项？")
+        '是否确认删除数据集成类目管理编号为"{id}"的数据项？'
+      ).replace("{id}", _ids)
     )
     .then(function () {
       return delAttTaskCatd(_ids);

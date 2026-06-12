@@ -20,7 +20,10 @@ export default {
     editDataDevCat: 'データ開発カテゴリ編集',
     dataDevCatDetail: 'データ開発カテゴリ詳細',
     nameRequired: 'データ開発カテゴリ名を入力してください',
-    parentRequired: '親カテゴリを選択してください'
+    parentRequired: '親カテゴリを選択してください',
+    confirmChangeStatus: 'データ開発カテゴリ "{name}" を"{status}"してもよろしいですか？',
+    confirmDelete: 'ID "{id}" のデータ開発カテゴリを削除してもよろしいですか？',
+    dataDevCatImport: 'データ開発カテゴリ管理インポート'
   },
   taskCat: {
     title: 'データ統合カテゴリ管理',
@@ -42,7 +45,10 @@ export default {
     nameRequired: 'データ統合カテゴリ名を入力してください',
     parentRequired: '親カテゴリを選択してください',
     updateExistData: '既存のデータ統合カテゴリデータを更新する',
-    downloadTemplate: 'テンプレートをダウンロード'
+    downloadTemplate: 'テンプレートをダウンロード',
+    confirmChangeStatus: 'データ統合カテゴリ "{name}" を"{status}"してもよろしいですか？',
+    confirmDelete: 'ID "{id}" のデータ統合カテゴリを削除してもよろしいですか？',
+    taskCatImport: 'データ統合カテゴリ管理インポート'
   },
   projectUserRel: {
     projectMember: 'プロジェクトメンバー',
@@ -89,6 +95,18 @@ export default {
     customDataScope: 'カスタムデータ権限',
     deptDataScope: '部門データ権限',
     deptAndBelowDataScope: '部門および以下データ権限',
-    onlySelfDataScope: '自分のみデータ権限'
+    onlySelfDataScope: '自分のみデータ権限',
+    addMember: 'プロジェクトメンバー追加',
+    editMember: 'プロジェクトメンバー編集',
+    memberDetail: 'プロジェクトメンバー詳細',
+    noUserSelected: 'ユーザーが選択されていません。ユーザーを選択してから再試行してください',
+    confirmDelete: 'ID "{id}" のデータ項目を削除してもよろしいですか？',
+    removeSuccess: '削除成功',
+    memberImport: 'プロジェクトメンバー管理インポート',
+    addRole: 'ロール追加',
+    editRole: 'ロール編集',
+    assignDataScope: 'データ権限を割り当て',
+    confirmDeleteRole: 'ロールID "{id}" を削除してもよろしいですか？',
+    confirmChangeRoleStatus: 'ロール "{name}" を"{status}"してもよろしいですか？'
   }
 }

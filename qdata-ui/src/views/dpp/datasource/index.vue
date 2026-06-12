@@ -1013,7 +1013,7 @@
 </template>
 
 <script setup name="DppDataSource">
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import {
   listDaDatasource,
   getDaDatasource,
@@ -1055,8 +1055,8 @@ const columnVisible = ref({
   9: true,
 });
 
-// 列配置（使用计算属性，确保国际化文本能响应语言切换）
-const columns = computed(() => [
+// 列配置（使用 ref，确保 RightToolbar 修改能持久化）
+const columns = ref([
   {
     key: 1,
     label: td("dpp.datasource.number"),
@@ -1104,12 +1104,23 @@ const columns = computed(() => [
   },
 ]);
 
+// 监听 RightToolbar 对 columns 的修改，同步到 columnVisible
+watch(
+  columns,
+  (newColumns) => {
+    newColumns.forEach((col) => {
+      if (columnVisible.value[col.key] !== undefined) {
+        columnVisible.value[col.key] = col.visible;
+      }
+    });
+  },
+  { deep: true }
+);
+
 const getColumnVisibility = (key) => {
-  const column = columns.value.find((col) => col.key === key);
-  // 如果没有找到对应列配置，默认显示
-  if (!column) return true;
-  // 如果找到对应列配置，根据visible属性来控制显示
-  return column.visible;
+  return columnVisible.value[key] !== undefined
+    ? columnVisible.value[key]
+    : true;
 };
 
 const open = ref(false);

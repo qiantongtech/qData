@@ -12,7 +12,7 @@ export default [
                 path: '',
                 component: () => import('@/views/mc/task/structured/detail/index.vue'),
                 name: 'McTaskStructuredDetail',
-                meta: { title: '元数据采集详情', activeMenu: '/dg/meta/task' }
+                meta: { title: '元数据采集详情', activeMenu: '/dg/meta/task', lang: 'public.metadataCollectionDetail' }
             }
         ]
     }

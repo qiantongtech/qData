@@ -88,7 +88,7 @@
             >
               <svg-icon v-if="isExpandAll" icon-class="toggle" />
               <svg-icon v-else icon-class="expand" />
-              <span>{{ isExpandAll ? td('common.button.collapse') : td('common.button.expand') }}</span>
+              <span>{{ isExpandAll ? td('common.button.fold') : td('common.button.expand') }}</span>
             </el-button>
           </el-col>
         </el-row>
@@ -131,7 +131,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          :label="td('att.dataElemCat.table.sortOrder')"
+          :label="td('common.texts.sortOrder')"
           align="left"
           prop="sortOrder"
           :show-overflow-tooltip="{ effect: 'light' }"

@@ -49,7 +49,7 @@
             <el-button class="toggle-expand-all" type="primary" plain @click="toggleExpandAll">
               <svg-icon v-if="isExpandAll" icon-class="toggle" />
               <svg-icon v-else icon-class="expand" />
-              <span>{{ isExpandAll ? td('common.button.collapse') : td('common.button.expand') }}</span>
+              <span>{{ isExpandAll ? td('common.button.fold') : td('common.button.expand') }}</span>
             </el-button>
           </el-col>
         </el-row>
@@ -71,7 +71,7 @@
             {{ scope.row.description || '-' }}
           </template>
         </el-table-column>
-        <el-table-column :label="td('att.cleanCat.table.sortOrder')" align="left" prop="sortOrder" :show-overflow-tooltip="{ effect: 'light' }">
+        <el-table-column :label="td('common.texts.sortOrder')" align="left" prop="sortOrder" :show-overflow-tooltip="{ effect: 'light' }">
           <template #default="scope">
             {{ scope.row.sortOrder }}
           </template>
@@ -191,11 +191,11 @@ const AttCleanCatList = ref([]);
 const attAssetCatOptions = ref([]);
 // 列显隐信息
 const columns = ref([
-  { key: 1, label: "类别名称", visible: true },
-  { key: 2, label: "关联上级ID", visible: true },
-  { key: 3, label: "类别排序", visible: true },
+  { key: 1, label: td('att.cleanCat.texts.name'), visible: true },
+  { key: 2, label: td('att.cleanCat.texts.parentId'), visible: true },
+  { key: 3, label: td('att.cleanCat.texts.sortOrder'), visible: true },
   { key: 4, label: td('common.texts.description'), visible: true },
-  { key: 5, label: "层级编码", visible: true },
+  { key: 5, label: td('att.cleanCat.texts.hierarchyCode'), visible: true },
   { key: 8, label: td('common.texts.createdBy'), visible: true },
   { key: 10, label: td('common.texts.createdTime'), visible: true },
   { key: 14, label: td('common.texts.remark'), visible: true }

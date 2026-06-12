@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright © 2025 Qiantong Technology Co., Ltd.
  * qData Data Middle Platform (Open Source Edition)
  *  *
@@ -29,7 +29,7 @@ export default [
                 path: '',
                 component: () => import('@/views/dp/document/detail/index.vue'),
                 name: 'national',
-                meta: { title: '国家标准详情', activeMenu: '/dm/document/national' }
+                meta: { title: '国家标准详情', activeMenu: '/dm/document/national', lang: 'public.nationalStandardDetail' }
             },
         ]
     },
@@ -42,7 +42,7 @@ export default [
                 path: '',
                 component: () => import('@/views/dp/document/detail/index.vue'),
                 name: 'industrylocal',
-                meta: { title: '行业标准详情', activeMenu: '/dm/document/industry' }
+                meta: { title: '行业标准详情', activeMenu: '/dm/document/industry', lang: 'public.industryStandardDetail' }
             },
 
         ]
@@ -57,7 +57,7 @@ export default [
                 path: '',
                 component: () => import('@/views/dp/document/detail/index.vue'),
                 name: 'provincial',
-                meta: { title: '地方标准详情', activeMenu: '/dm/document/provincial' }
+                meta: { title: '地方标准详情', activeMenu: '/dm/document/provincial', lang: 'public.localStandardDetail' }
             },
 
         ]
@@ -70,7 +70,7 @@ export default [
                 path: '',
                 component: () => import('@/views/dp/document/detail/index.vue'),
                 name: 'groupDetail',
-                meta: { title: '团体标准详情', activeMenu: '/dm/document/group' }
+                meta: { title: '团体标准详情', activeMenu: '/dm/document/group', lang: 'public.groupStandardDetail' }
             },
 
         ]
@@ -83,7 +83,7 @@ export default [
                 path: '',
                 component: () => import('@/views/dp/document/detail/index.vue'),
                 name: 'search',
-                meta: { title: '标准检索详情', activeMenu: '/dm/document/search' }
+                meta: { title: '标准检索详情', activeMenu: '/dm/document/search', lang: 'public.standardSearchDetail' }
             },
         ]
     },

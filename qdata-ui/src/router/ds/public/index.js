@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright © 2025 Qiantong Technology Co., Ltd.
  * qData Data Middle Platform (Open Source Edition)
  *  *
@@ -30,7 +30,7 @@ export default [
                 path: '',
                 component: () => import('@/views/ds/api/detail/index.vue'),
                 name: 'dsApiDetail',
-                meta: { title: 'API服务详情', activeMenu: '/ds/api' }
+                meta: { title: 'API服务详情', activeMenu: '/ds/api', lang: 'public.apiServiceDetail' }
             }
         ]
     },
@@ -45,7 +45,7 @@ export default [
                 path: '',
                 component: () => import('@/views/ds/api/edit/index.vue'),
                 name: 'dsApiEdit',
-                meta: { title: 'API服务修改', activeMenu: '/ds/api' }
+                meta: { title: 'API服务修改', activeMenu: '/ds/api', lang: 'public.apiServiceEdit' }
             }
         ]
     },
@@ -59,7 +59,7 @@ export default [
                 path: '',
                 component: () => import('@/views/ds/api/edit/index.vue'),
                 name: 'dsApiAdd',
-                meta: { title: 'API服务新增', activeMenu: '/ds/api' }
+                meta: { title: 'API服务新增', activeMenu: '/ds/api', lang: 'public.apiServiceAdd' }
             }
         ]
     },

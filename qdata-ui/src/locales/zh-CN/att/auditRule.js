@@ -7,6 +7,12 @@ export default {
     useCase: '使用场景',
     example: '示例'
   },
+  texts: {
+    name: '规则名称',
+    qualityDim: '质量维度',
+    scenario: '使用场景',
+    example: '示例'
+  },
   form:{
    
   }

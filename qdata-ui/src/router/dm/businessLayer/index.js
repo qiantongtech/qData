@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright © 2025 Qiantong Technology Co., Ltd.
  * qData Data Middle Platform (Open Source Edition)
  *  *
@@ -31,7 +31,8 @@ export default [
                 name: 'BusinessLayerDetail',
                 meta: {
                     title: '业务分类详情',
-                    activeMenu: '/dm/businessCategory'
+                    activeMenu: '/dm/businessCategory',
+                    lang: 'public.businessCategoryDetail'
                 }
             },
         ]

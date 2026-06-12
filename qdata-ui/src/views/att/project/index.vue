@@ -79,10 +79,10 @@
             @mousedown="(e) => e.preventDefault()"
             v-hasPermi="['att:project:query']"
           >
-            <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+            <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
           </el-button>
           <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-            <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+            <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
           </el-button>
         </el-form-item>
       </el-form>
@@ -111,13 +111,13 @@
                             v-hasPermi="['att:project:edit']"
                             @mousedown="(e) => e.preventDefault()"
                         >
-                            <i class="iconfont-mini icon-xiugai--copy mr5"></i>修改
+                            <i class="iconfont-mini icon-xiugai--copy mr5"></i>{{ td('common.button.update') }}
                         </el-button>
                     </el-col>
                     <el-col :span="1.5">
                         <el-button type="danger" plain :disabled="multiple" @click="handleDelete"
                             v-hasPermi="['att:project:remove']" @mousedown="(e) => e.preventDefault()">
-                            <i class="iconfont-mini icon-shanchu-huise mr5"></i>删除
+                            <i class="iconfont-mini icon-shanchu-huise mr5"></i>{{ td('common.button.delete') }}
                         </el-button>
                     </el-col> -->
         </el-row>
@@ -194,7 +194,7 @@
         </el-table-column>
         <el-table-column
           v-if="getColumnVisibility(7)"
-          :label="td('att.common.createBy')"
+          :label="td('common.texts.createdBy')"
           :show-overflow-tooltip="{ effect: 'light' }"
           align="left"
           prop="createBy"
@@ -259,7 +259,7 @@
               icon="Edit"
               @click="handleUpdate(scope.row)"
               v-hasPermi="['att:project:edit']"
-              >修改</el-button
+              >{{ td('common.button.update') }}</el-button
             >
             <el-button
               link
@@ -267,7 +267,7 @@
               icon="Delete"
               @click="handleDelete(scope.row)"
               v-hasPermi="['att:project:remove']"
-              >删除</el-button
+              >{{ td('common.button.delete') }}</el-button
             >
             <el-button
               link
@@ -275,7 +275,7 @@
               icon="view"
               v-hasPermi="['att:project:query']"
               @click="handleDetail(scope.row)"
-              >详情</el-button
+              >{{ td('common.button.details') }}</el-button
             >
           </template>
         </el-table-column>
@@ -531,15 +531,15 @@ const attProjectList = ref([]);
 
 // 列显隐信息
 const columns = ref([
-  { key: 1, label: "编号", visible: true },
-  { key: 2, label: "项目名称", visible: true },
-  { key: 3, label: "项目描述", visible: true },
-  { key: 4, label: "负责人", visible: true },
-  { key: 5, label: "联系方式", visible: true },
-  { key: 6, label: "创建时间", visible: true },
-  { key: 7, label: "创建人", visible: true },
-  { key: 8, label: "状态", visible: true },
-  { key: 9, label: "备注", visible: true },
+  { key: 1, label: td('common.texts.number'), visible: true },
+  { key: 2, label: td('att.project.texts.name'), visible: true },
+  { key: 3, label: td('att.project.texts.description'), visible: true },
+  { key: 4, label: td('att.project.texts.manager'), visible: true },
+  { key: 5, label: td('att.project.texts.contact'), visible: true },
+  { key: 6, label: td('common.texts.createdTime'), visible: true },
+  { key: 7, label: td('common.texts.createdBy'), visible: true },
+  { key: 8, label: td('common.texts.status'), visible: true },
+  { key: 9, label: td('common.texts.remark'), visible: true },
 ]);
 
 const getColumnVisibility = (key) => {
@@ -695,7 +695,7 @@ function handleSortChange(column, prop, order) {
 function handleAdd() {
   reset();
   open.value = true;
-  title.value = "新增项目";
+  title.value = td('att.project.title.add');
 }
 
 /** 修改按钮操作 */
@@ -708,7 +708,7 @@ function handleUpdate(row) {
     delete response.data.updateTime;
     form.value = response.data;
     open.value = true;
-    title.value = "修改项目";
+    title.value = td('att.project.title.edit');
   });
 }
 
@@ -719,7 +719,7 @@ function handleDetail(row) {
   getAttProject(_id).then((response) => {
     form.value = response.data;
     openDetail.value = true;
-    title.value = "项目详情";
+    title.value = td('att.project.title.detail');
   });
 }
 
@@ -730,7 +730,7 @@ function submitForm() {
       if (form.value.id != null) {
         updateAttProject(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("修改成功");
+            proxy.$modal.msgSuccess(td('common.message.editSuccess'));
 
             open.value = false;
             getList();
@@ -740,7 +740,7 @@ function submitForm() {
         addAttProject(form.value)
           .then((response) => {
             if (response.code === 200) {
-              proxy.$modal.msgSuccess("新增成功");
+              proxy.$modal.msgSuccess(td('common.message.addSuccess'));
               open.value = false;
               getList();
             }
@@ -755,13 +755,13 @@ function submitForm() {
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
-    .confirm('是否确认删除项目编号为"' + _ids + '"的数据项？')
+    .confirm(td('att.project.message.confirmDelete').replace('{ids}', _ids))
     .then(function () {
       return delAttProject(_ids);
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
     })
     .catch(() => {});
 }

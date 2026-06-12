@@ -61,12 +61,12 @@ const table = ref([
   // },
   {
     key: "type",
-    label: td('ds.clientDetail.appType'),
+    label: td('ds.client.detail.appType'),
     value: "",
   },
   {
     key: "publicFlag",
-    label: td('ds.clientDetail.isPublic'),
+    label: td('ds.client.detail.isPublic'),
     value: "",
   },
 

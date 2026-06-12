@@ -1,4 +1,4 @@
-import clientDetail from './clientDetail.js'
+import detail from './detail.js'
 
 export default {
     title: 'Application Management',
@@ -38,5 +38,5 @@ export default {
     idPlaceholder: 'Please enter the ID',
     addSuccess: 'Added successfully',
     editSuccess: 'Edited successfully',
-    clientDetail
+    detail
 }

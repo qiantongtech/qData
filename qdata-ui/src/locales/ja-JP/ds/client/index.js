@@ -1,4 +1,4 @@
-import clientDetail from './clientDetail.js'
+import detail from './detail.js'
 
 export default {
     title: 'アプリケーション管理',
@@ -38,5 +38,5 @@ export default {
     idPlaceholder: 'IDを入力してください',
     addSuccess: '追加に成功しました',
     editSuccess: '編集に成功しました',
-    clientDetail
+    detail
 }

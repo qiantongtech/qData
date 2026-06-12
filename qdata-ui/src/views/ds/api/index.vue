@@ -32,13 +32,13 @@
               <el-input class="el-form-input-width" v-model="queryParams.name" :placeholder="td('ds.api.apiNamePlaceholder')" clearable
                 @keyup.enter="handleQuery" />
             </el-form-item>
-            <el-form-item :label="td('ds.api.status')" prop="status">
+            <el-form-item :label="td('common.texts.status')" prop="status">
               <el-select class="el-form-input-width" v-model="queryParams.status" :placeholder="td('ds.api.statusPlaceholder')" clearable>
                 <el-option v-for="dict in ds_api_log_status" :key="dict.value" :label="dict.label"
                   :value="dict.value" />
               </el-select>
             </el-form-item>
-            <el-form-item :label="td('common.form.createTime')">
+            <el-form-item :label="td('common.texts.createdTime')">
               <el-date-picker class="el-form-input-width" v-model="daterangeCreateTime" value-format="YYYY-MM-DD"
                 type="daterange" range-separator="-" :start-placeholder="td('common.form.startDatePlaceholder')" :end-placeholder="td('common.form.endDatePlaceholder')"></el-date-picker>
             </el-form-item>
@@ -84,7 +84,7 @@
                 {{ scope.row.catName || "-" }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(3)" :label="td('common.form.description')" width="200" align="left" prop="description"
+            <el-table-column v-if="getColumnVisibility(3)" :label="td('common.texts.description')" width="200" align="left" prop="description"
               :show-overflow-tooltip="{ effect: 'light' }">
               <template #default="scope">
                 {{ scope.row.description || '-' }}
@@ -117,7 +117,7 @@
                 {{ scope.row.createBy || '-' }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(9)" :label="td('common.form.createTime')" align="center" prop="createTime" width="150"
+            <el-table-column v-if="getColumnVisibility(9)" :label="td('common.texts.createdTime')" align="center" prop="createTime" width="150"
               sortable="custom" column-key="create_time" :sort-orders="['descending', 'ascending']">
               <template #default="scope">
                 <span>{{
@@ -125,10 +125,10 @@
                 }}</span>
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(10)" :label="td('ds.api.status')" align="center" prop="status" width="70">
+            <el-table-column v-if="getColumnVisibility(10)" :label="td('common.texts.status')" align="center" prop="status" width="70">
               <template #header>
                 <div class="justify-center">
-                  <span style="margin-right: 5px;">{{td('ds.api.status')}}</span>
+                  <span style="margin-right: 5px;">{{td('common.texts.status')}}</span>
                   <el-tooltip effect="light" :content="td('ds.api.statusTip')" placement="top">
                     <el-icon class="tip-icon">
                       <InfoFilled />
@@ -257,14 +257,14 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('common.form.description')" prop="description">
+            <el-form-item :label="td('common.texts.description')" prop="description">
               <el-input v-model="form.description" :placeholder="td('ds.api.descriptionPlaceholder')" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('ds.api.status')" prop="status">
+            <el-form-item :label="td('common.texts.status')" prop="status">
               <el-radio-group v-model="form.status">
                 <el-radio v-for="dict in ds_api_log_status" :key="dict.value" :label="dict.value">{{ dict.label
                 }}</el-radio>
@@ -377,7 +377,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('common.form.description')" prop="description">
+            <el-form-item :label="td('common.texts.description')" prop="description">
               <div>
                 {{ form.description }}
               </div>
@@ -386,7 +386,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('ds.api.status')" prop="status">
+            <el-form-item :label="td('common.texts.status')" prop="status">
               <dict-tag :options="ds_api_log_status" :value="form.status" />
             </el-form-item>
           </el-col>
@@ -471,13 +471,13 @@ const columns = ref([
   { key: 0, label: td('common.texts.number'), visible: true },
   { key: 1, label: td('ds.api.apiName'), visible: true },
   { key: 2, label: td('ds.apiCat.title'), visible: true },
-  { key: 3, label: td('common.form.description'), visible: true },
+  { key: 3, label: td('common.texts.description'), visible: true },
   { key: 4, label: td('ds.api.apiVersion'), visible: true },
   { key: 5, label: td('ds.api.apiPath'), visible: true },
   { key: 6, label: td('ds.api.requestType'), visible: true },
   { key: 7, label: td('ds.api.returnFormat'), visible: true },
   { key: 8, label: td('common.texts.createdBy'), visible: true },
-  { key: 9, label: td('common.form.createTime'), visible: true },
+  { key: 9, label: td('common.texts.createdTime'), visible: true },
   { key: 10, label: td('common.texts.status'), visible: true },
   { key: 11, label: td('common.texts.remark'), visible: true },
   { key: 12, label: td('common.texts.operation'), visible: true },

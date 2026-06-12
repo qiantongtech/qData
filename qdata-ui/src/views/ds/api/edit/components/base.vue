@@ -73,7 +73,7 @@
         </el-row>
         <el-row :gutter="20">
             <el-col :span="24">
-                <el-form-item :label="td('common.form.description')" prop="description">
+                <el-form-item :label="td('common.texts.description')" prop="description">
                     <el-input v-model="form1.description" type="textarea" :placeholder="td('common.form.descriptionPlaceholder')" />
                 </el-form-item>
             </el-col>

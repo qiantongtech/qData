@@ -17,7 +17,7 @@
 
 <template>
   <div>
-    <el-form ref="form2" :model="form2" :rules="rules" label-width="120px" v-loading="loading">
+    <el-form ref="form2" :model="form2" :rules="rules" v-loading="loading">
       <div class="header-container" style="margin-top: -10px;">
         <div class="header-left">
           <div class="blue-bar"></div>

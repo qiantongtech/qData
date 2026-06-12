@@ -39,23 +39,37 @@
             :label="td('dpp.integration.nodeName', '节点名称')"
             prop="name"
             :rules="[
-              { required: true, message: td('dpp.integration.nodeNameRequired', '请输入节点名称'), trigger: 'change' },
+              {
+                required: true,
+                message: td(
+                  'dpp.integration.nodeNameRequired',
+                  '请输入节点名称'
+                ),
+                trigger: 'change',
+              },
             ]"
           >
             <el-input
               v-if="!info"
               v-model="form.name"
-              :placeholder="td('dpp.integration.nodeNamePlaceholder', '请输入节点名称')"
+              :placeholder="
+                td('dpp.integration.nodeNamePlaceholder', '请输入节点名称')
+              "
             />
             <div v-else class="form-readonly">{{ form.name }}</div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('dpp.integration.type', '类型')" prop="taskParams.typeName">
+          <el-form-item
+            :label="td('dpp.integration.type', '类型')"
+            prop="taskParams.typeName"
+          >
             <template v-if="!info">
               <el-select
                 v-model="form.taskParams.typeName"
-                :placeholder="td('dpp.integration.typePlaceholder', '请输入类型')"
+                :placeholder="
+                  td('dpp.integration.typePlaceholder', '请输入类型')
+                "
                 filterable
                 disabled
               >
@@ -75,13 +89,16 @@
       </el-row>
 
       <el-divider content-position="center">
-        <span class="blue-text">{{ td('dpp.integration.constantFields', '常量字段') }}</span>
+        <span class="blue-text">{{
+          td("dpp.integration.constantFields", "常量字段")
+        }}</span>
       </el-divider>
       <div class="justify-between mb15">
         <el-row :gutter="15" class="btn-style">
           <el-col :span="1.5">
             <el-button type="primary" plain @click="handleAddField">
-              <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('common.button.add') }}
+              <i class="iconfont-mini icon-xinzeng mr5"></i
+              >{{ td("common.button.add") }}
             </el-button>
           </el-col>
         </el-row>
@@ -92,9 +109,18 @@
         :data="tableFields"
         v-loading="loadingList"
       >
-        <el-table-column :label="td('common.display.index', '序号')" type="index" width="80" align="left" />
+        <el-table-column
+          :label="td('common.display.index', '序号')"
+          type="index"
+          width="80"
+          align="left"
+        />
 
-        <el-table-column :label="td('dpp.integration.fieldName', '字段名称')" align="left" prop="columnName">
+        <el-table-column
+          :label="td('dpp.integration.fieldName', '字段名称')"
+          align="left"
+          prop="columnName"
+        >
           <template #default="scope">
             <el-input
               v-model="scope.row.columnName"
@@ -104,7 +130,12 @@
           </template>
         </el-table-column>
 
-        <el-table-column :label="td('dpp.integration.fieldType', '字段类型')" align="left" prop="type" width="150">
+        <el-table-column
+          :label="td('dpp.integration.fieldType', '字段类型')"
+          align="left"
+          prop="type"
+          width="150"
+        >
           <template #default="scope">
             <el-select
               v-model="scope.row.type"
@@ -121,7 +152,11 @@
           </template>
         </el-table-column>
 
-        <el-table-column :label="td('dpp.integration.defaultValueLabel', '默认值')" align="left" prop="defaultValue">
+        <el-table-column
+          :label="td('dpp.integration.defaultValueLabel', '默认值')"
+          align="left"
+          prop="defaultValue"
+        >
           <template #default="scope">
             <el-input
               v-model="scope.row.defaultValue"
@@ -139,10 +174,12 @@
         >
           <template #header>
             <div class="justify-center">
-              <span>{{ td('dpp.integration.setEmptyString', '设为空串') }}</span>
+              <span>{{
+                td("dpp.integration.setEmptyString", "设为空串")
+              }}</span>
               <el-tooltip
                 effect="dark"
-                :content=”td('dpp.integration.setEmptyStringTooltip', '勾选后，即使默认值字段填写了内容，也会被覆盖为空字符串')”
+                :content="td('dpp.integration.setEmptyStringTooltip')"
                 placement="top"
               >
                 <el-icon>
@@ -157,8 +194,14 @@
               :placeholder="td('common.form.statusPlaceholder', '请选择')"
               style="width: 100%"
             >
-              <el-option :label="td('dpp.integration.yes', '是')" :value="true" />
-              <el-option :label="td('dpp.integration.no', '否')" :value="false" />
+              <el-option
+                :label="td('dpp.integration.yes', '是')"
+                :value="true"
+              />
+              <el-option
+                :label="td('dpp.integration.no', '否')"
+                :value="false"
+              />
             </el-select>
           </template>
         </el-table-column>
@@ -177,7 +220,7 @@
               type="danger"
               icon="Delete"
               @click="handleDelete(scope.row)"
-              >{{ td('common.button.delete') }}</el-button
+              >{{ td("common.button.delete") }}</el-button
             >
           </template>
         </el-table-column>
@@ -185,10 +228,12 @@
     </el-form>
     <template #footer>
       <div style="text-align: right">
-        <el-button @click="closeDialog">{{ td('common.button.close') }}</el-button>
-        <el-button type="primary" @click="saveData" v-if="!info"
-          >{{ td('common.button.save') }}</el-button
-        >
+        <el-button @click="closeDialog">{{
+          td("common.button.close")
+        }}</el-button>
+        <el-button type="primary" @click="saveData" v-if="!info">{{
+          td("common.button.save")
+        }}</el-button>
       </div>
     </template>
   </el-dialog>
@@ -210,7 +255,7 @@
 </template>
 
 <script setup>
-import useDefaultLang from "@/composables/useDefaultLang"
+import useDefaultLang from "@/composables/useDefaultLang";
 import CreateEditModal from "../fieldMergeModal.vue";
 import FieldConflictDialog from "../fieldDetection.vue";
 import {
@@ -243,7 +288,7 @@ const columntype = [
 ];
 const props = defineProps({
   visible: { type: Boolean, default: true },
-  title: { type: String, default: '' },
+  title: { type: String, default: "" },
   currentNode: { type: Object, default: () => ({}) },
   info: { type: Boolean, default: false },
   graph: { type: Object, default: () => ({}) },
@@ -253,13 +298,20 @@ function handleAddField() {
   // 如果有任意一个已有字段 columnName 为空，阻止新增
   const lastEmpty = tableFields.value.find((item) => !item.columnName);
   if (lastEmpty) {
-    proxy.$message.warning(td("dpp.integration.addFieldFailedFillCurrent", "添加失败，请先填写当前字段名称"));
+    proxy.$message.warning(
+      td(
+        "dpp.integration.addFieldFailedFillCurrent",
+        "添加失败，请先填写当前字段名称"
+      )
+    );
     return;
   }
   // 最后一行名称
   let isRepeat = hasDuplicateObjects(tableFields.value, "columnName");
   if (isRepeat) {
-    proxy.$message.warning(td("dpp.integration.noRepeatFieldNames", "请不要填写重复的字段名称"));
+    proxy.$message.warning(
+      td("dpp.integration.noRepeatFieldNames", "请不要填写重复的字段名称")
+    );
     return;
   }
 
@@ -326,7 +378,9 @@ function handleDelete(row) {
   if (idxTable !== -1) {
     tableFields.value.splice(idxTable, 1);
   } else {
-    proxy.$message.warning(td("dpp.integration.deleteFailedFieldNotFound", "删除失败，字段未找到"));
+    proxy.$message.warning(
+      td("dpp.integration.deleteFailedFieldNotFound", "删除失败，字段未找到")
+    );
   }
 
   // 恢复 inputFields 中被删除字段的原始状态（如果有）
@@ -401,7 +455,9 @@ const saveData = async () => {
 
     // 校验 tableFields 不为空
     if (!Array.isArray(tableFields.value) || tableFields.value.length === 0) {
-      proxy.$message.warning(td("dpp.integration.atLeastOneFieldValue", "请至少一个字段值"));
+      proxy.$message.warning(
+        td("dpp.integration.atLeastOneFieldValue", "请至少一个字段值")
+      );
       return;
     }
 
@@ -410,7 +466,12 @@ const saveData = async () => {
         (item) => !item.columnName?.trim()
       );
       if (hasEmptyName) {
-        proxy.$message.warning(td("dpp.integration.fieldNameCannotBeEmpty", "校验未通过，字段名称不能为空"));
+        proxy.$message.warning(
+          td(
+            "dpp.integration.fieldNameCannotBeEmpty",
+            "校验未通过，字段名称不能为空"
+          )
+        );
         return;
       }
     }
@@ -418,7 +479,9 @@ const saveData = async () => {
     // 最后一行名称
     let isRepeat = hasDuplicateObjects(tableFields.value, "columnName");
     if (isRepeat) {
-      proxy.$message.warning(td("dpp.integration.noRepeatFieldNames", "请不要填写重复的字段名称"));
+      proxy.$message.warning(
+        td("dpp.integration.noRepeatFieldNames", "请不要填写重复的字段名称")
+      );
       return;
     }
 

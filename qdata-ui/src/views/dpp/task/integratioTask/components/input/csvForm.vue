@@ -16,50 +16,127 @@
 -->
 
 <template>
-  <el-dialog v-model="visibleDialog" :draggable="true" class="medium-dialog" :title="currentNode?.data?.name"
-    showCancelButton :show-close="false" destroy-on-close :close-on-click-modal="false">
-    <el-form ref="dpModelRefs" :model="form" label-width="110px" @submit.prevent v-loading="loading" :disabled="info">
+  <el-dialog
+    v-model="visibleDialog"
+    :draggable="true"
+    class="medium-dialog"
+    :title="currentNode?.data?.name"
+    showCancelButton
+    :show-close="false"
+    destroy-on-close
+    :close-on-click-modal="false"
+  >
+    <el-form
+      ref="dpModelRefs"
+      :model="form"
+      label-width="110px"
+      @submit.prevent
+      v-loading="loading"
+      :disabled="info"
+    >
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('dpp.integration.nodeName', '节点名称')" prop="name" :rules="[
-            { required: true, message: td('dpp.integration.nodeNameRequired', '请输入节点名称'), trigger: 'change' },
-          ]">
-            <el-input v-model="form.name" :placeholder="td('dpp.integration.nodeNamePlaceholder', '请输入节点名称')" />
+          <el-form-item
+            :label="td('dpp.integration.nodeName', '节点名称')"
+            prop="name"
+            :rules="[
+              {
+                required: true,
+                message: td(
+                  'dpp.integration.nodeNameRequired',
+                  '请输入节点名称'
+                ),
+                trigger: 'change',
+              },
+            ]"
+          >
+            <el-input
+              v-model="form.name"
+              :placeholder="
+                td('dpp.integration.nodeNamePlaceholder', '请输入节点名称')
+              "
+            />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('dpp.integration.type', '类型')" prop="typeName">
-            <el-select v-model="form.taskParams.typeName" :placeholder="td('dpp.integration.typePlaceholder', '请输入类型')" filterable disabled>
-              <el-option v-for="dict in typeList" :key="dict.value" :label="dict.label" :value="dict.value"></el-option>
+          <el-form-item
+            :label="td('dpp.integration.type', '类型')"
+            prop="typeName"
+          >
+            <el-select
+              v-model="form.taskParams.typeName"
+              :placeholder="td('dpp.integration.typePlaceholder', '请输入类型')"
+              filterable
+              disabled
+            >
+              <el-option
+                v-for="dict in typeList"
+                :key="dict.value"
+                :label="dict.label"
+                :value="dict.value"
+              ></el-option>
             </el-select>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('common.texts.description')" prop="description">
-            <el-input v-model="form.description" type="textarea" :placeholder="td('common.form.descriptionPlaceholder')" />
+          <el-form-item
+            :label="td('common.texts.description')"
+            prop="description"
+          >
+            <el-input
+              v-model="form.description"
+              type="textarea"
+              :placeholder="td('common.form.descriptionPlaceholder')"
+            />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('dpp.integration.uploadAttachment', '上传附件')" prop="taskParams.file" :rules="[
-            { required: true, message: td('dpp.integration.uploadAttachmentRequired', '请上传附件'), trigger: 'change' },
-          ]">
-            <FileUploadbtn :limit="1" v-model="form.taskParams.file" :dragFlag="false" :file-type="['csv']"
-              :fileSize="50" @handleRemove="handleRemove" :showDelete="!info" />
+          <el-form-item
+            :label="td('dpp.integration.uploadAttachment', '上传附件')"
+            prop="taskParams.file"
+            :rules="[
+              {
+                required: true,
+                message: td(
+                  'dpp.integration.uploadAttachmentRequired',
+                  '请上传附件'
+                ),
+                trigger: 'change',
+              },
+            ]"
+          >
+            <FileUploadbtn
+              :limit="1"
+              v-model="form.taskParams.file"
+              :dragFlag="false"
+              :file-type="['csv']"
+              :fileSize="50"
+              @handleRemove="handleRemove"
+              :showDelete="!info"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-button type="primary" plain @click="parseExcel" style="margin-left: 60px" :disabled="isButtonDisabled">
-            解析csv
+          <el-button
+            type="primary"
+            plain
+            @click="parseExcel"
+            style="margin-left: 60px"
+            :disabled="isButtonDisabled"
+          >
+            {{ td("dpp.integration.parseCsv", "解析csv") }}
           </el-button>
         </el-col>
       </el-row>
 
       <el-divider content-position="center">
-        <span class="blue-text">{{ td('dpp.integration.attributeFields', '属性字段') }}</span>
+        <span class="blue-text">{{
+          td("dpp.integration.attributeFields", "属性字段")
+        }}</span>
       </el-divider>
       <!-- <div class="justify-between mb15">
         <el-row :gutter="15" class="btn-style">
@@ -75,46 +152,90 @@
           </el-col>
         </el-row>
       </div> -->
-      <el-table stripe height="310px" v-loading="loadingList" :data="ColumnByAssettab">
-        <el-table-column :label="td('common.display.index', '序号')" type="index" width="80" align="left">
+      <el-table
+        stripe
+        height="310px"
+        v-loading="loadingList"
+        :data="ColumnByAssettab"
+      >
+        <el-table-column
+          :label="td('common.display.index', '序号')"
+          type="index"
+          width="80"
+          align="left"
+        >
           <template #default="scope">
             <span>{{ scope.$index + 1 }}</span>
           </template>
         </el-table-column>
-        <el-table-column :label="td('dpp.integration.fieldName', '字段名称')" align="left" prop="columnName" :show-overflow-tooltip="{ effect: 'light' }">
+        <el-table-column
+          :label="td('dpp.integration.fieldName', '字段名称')"
+          align="left"
+          prop="columnName"
+          :show-overflow-tooltip="{ effect: 'light' }"
+        >
           <template #default="scope">
             {{ scope.row.columnName || "-" }}
           </template>
         </el-table-column>
-        <el-table-column :label="td('dpp.integration.fieldType', '字段类型')" align="left" prop="columnType">
+        <el-table-column
+          :label="td('dpp.integration.fieldType', '字段类型')"
+          align="left"
+          prop="columnType"
+        >
           <template #default="scope">
             {{ scope.row.columnType || "-" }}
           </template>
         </el-table-column>
-        <el-table-column :label="td('dpp.integration.dateFormat', '日期格式')" align="left" prop="format">
+        <el-table-column
+          :label="td('dpp.integration.dateFormat', '日期格式')"
+          align="left"
+          prop="format"
+        >
           <template #default="scope">
             {{ scope.row.format || "-" }}
           </template>
         </el-table-column>
-        <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
+        <el-table-column
+          :label="td('common.texts.operation')"
+          align="center"
+          class-name="small-padding fixed-width"
+          fixed="right"
+          width="240"
+        >
           <template #default="scope">
-            <el-button link type="primary" icon="Edit" @click="openDialog(scope.row)">{{ td('common.button.update') }}</el-button>
+            <el-button
+              link
+              type="primary"
+              icon="Edit"
+              @click="openDialog(scope.row)"
+              >{{ td("common.button.update") }}</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
     </el-form>
     <template #footer>
       <div style="text-align: right">
-        <el-button @click="closeDialog">{{ td('common.button.close') }}</el-button>
-        <el-button type="primary" @click="saveData" v-if="!info">{{ td('common.button.save') }}</el-button>
+        <el-button @click="closeDialog">{{
+          td("common.button.close")
+        }}</el-button>
+        <el-button type="primary" @click="saveData" v-if="!info">{{
+          td("common.button.save")
+        }}</el-button>
       </div>
     </template>
   </el-dialog>
-  <excelUploadDialog :visible="open" :title="td('dpp.integration.attributeFieldEdit', '属性字段编辑')" @update:visible="open = $event" @confirm="handletaskConfig"
-    :data="row" />
+  <excelUploadDialog
+    :visible="open"
+    :title="td('dpp.integration.attributeFieldEdit', '属性字段编辑')"
+    @update:visible="open = $event"
+    @confirm="handletaskConfig"
+    :data="row"
+  />
 </template>
 <script setup>
-import useDefaultLang from "@/composables/useDefaultLang"
+import useDefaultLang from "@/composables/useDefaultLang";
 import { getToken } from "@/utils/auth.js";
 import { typeList } from "@/utils/graph.js";
 import {
@@ -123,7 +244,7 @@ import {
   getCsvColumn,
 } from "@/api/dpp/task/index.js";
 import excelUploadDialog from "../excelUpload.vue";
-import FileUploadbtn from '@/components/FileUploadbtn/index1.vue'
+import FileUploadbtn from "@/components/FileUploadbtn/index1.vue";
 const { proxy } = getCurrentInstance();
 import useUserStore from "@/store/system/user.js";
 
@@ -131,7 +252,7 @@ const { td } = useDefaultLang();
 const userStore = useUserStore();
 const props = defineProps({
   visible: { type: Boolean, default: true },
-  title: { type: String, default: '' },
+  title: { type: String, default: "" },
   currentNode: { type: Object, default: () => ({}) },
   info: { type: Boolean, default: false },
 });
@@ -185,7 +306,9 @@ const isButtonDisabled = computed(() => {
 // 获取列数据
 const parseExcel = async (id) => {
   if (!form.value.taskParams.file) {
-    ElMessage.warning(td("dpp.integration.csvParseFailedAddAttachment", "解析失败，请添加附件"));
+    ElMessage.warning(
+      td("dpp.integration.csvParseFailedAddAttachment", "解析失败，请添加附件")
+    );
     return;
   }
 
@@ -202,12 +325,24 @@ const parseExcel = async (id) => {
         columnName: item,
         columnType: "string",
       }));
-      ElMessage.success(td("dpp.integration.csvParseSuccess", "CSV 解析成功，请确认属性字段类型！"));
+      ElMessage.success(
+        td(
+          "dpp.integration.csvParseSuccess",
+          "CSV 解析成功，请确认属性字段类型！"
+        )
+      );
     } else {
-      ElMessage.warning(td("dpp.integration.csvParseFailedNoData", "CSV 解析失败，未获取到有效数据！"));
+      ElMessage.warning(
+        td(
+          "dpp.integration.csvParseFailedNoData",
+          "CSV 解析失败，未获取到有效数据！"
+        )
+      );
     }
   } catch (error) {
-    ElMessage.warning(td("dpp.integration.csvParseError", "解析文件时发生错误，请检查后重试"));
+    ElMessage.warning(
+      td("dpp.integration.csvParseError", "解析文件时发生错误，请检查后重试")
+    );
     console.error(error);
   } finally {
     loading.value = false; // Ensure loading is turned off regardless of success or failure
@@ -231,7 +366,12 @@ const saveData = async () => {
       form.value?.taskParams.type == "1" &&
       (!ColumnByAssettab.value || ColumnByAssettab.value.length == 0)
     ) {
-      return proxy.$message.warning(td("dpp.integration.validateFailedSelectFields", "解析失败，请选择属性字段"));
+      return proxy.$message.warning(
+        td(
+          "dpp.integration.validateFailedSelectFields",
+          "解析失败，请选择属性字段"
+        )
+      );
     }
     // 如果没有 code，就调用接口获取唯一的 code
     if (!form.value.code) {
@@ -245,20 +385,21 @@ const saveData = async () => {
     }
     const taskParams = form.value?.taskParams;
     taskParams.tableFields = ColumnByAssettab.value;
-    taskParams.columnsList = ColumnByAssettab.value.map(({ columnName, columnType }) => ({
-      colName: columnName,
-      dataType: columnType,
-    }));
+    taskParams.columnsList = ColumnByAssettab.value.map(
+      ({ columnName, columnType }) => ({
+        colName: columnName,
+        dataType: columnType,
+      })
+    );
     taskParams.columns = taskParams.tableFields.map((item) => {
       return {
         index: item.id,
         columnName: item.columnName,
         type: item.columnType,
-        format: item.format
+        format: item.format,
       };
     });
     emit("confirm", form.value);
-
   } catch (error) {
     console.error("保存数据失败:", error);
     loading.value = false; // 确保错误发生时也结束加载状态
@@ -299,7 +440,12 @@ function handleBeforeUpload(file) {
   const fileExt = fileName[fileName.length - 1];
   const isTypeOk = fileType.indexOf(fileExt) >= 0;
   if (!isTypeOk) {
-    proxy.$modal.msgWarning(td("dpp.integration.fileFormatIncorrect", "文件格式不正确, 请上传csv格式文件!"));
+    proxy.$modal.msgWarning(
+      td(
+        "dpp.integration.fileFormatIncorrect",
+        "文件格式不正确, 请上传csv格式文件!"
+      )
+    );
     return false;
   }
   // 校验文件大小

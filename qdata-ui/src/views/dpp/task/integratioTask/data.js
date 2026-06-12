@@ -16,15 +16,22 @@
  */
 
 // treeData.js
+import { i18n } from '@/plugins/vueI18n';
+
+const td = (key, def) => {
+    if (!i18n.global.te(key)) return def;
+    return i18n.global.t(key);
+};
+
 export const treeData = [
     {
-        label: '输入',
+        label: td('dpp.integration.input', '输入'),
         level: 1,
         type: 1,
         engine: ['SPARK', 'FLINK'],
         children: [
             {
-                label: '表输入组件',
+                label: td('dpp.integration.inputTable', '表输入组件'),
                 key: 'input-table',
                 type: 1,
                 level: 2,
@@ -35,7 +42,7 @@ export const treeData = [
                 icons: '@/assets/system/images/dpp/sr.png'
             },
             {
-                label: 'Excel文件输入组件',
+                label: td('dpp.integration.inputExcel', 'Excel文件输入组件'),
                 key: 'input-excel',
                 type: 1,
                 level: 2,
@@ -46,7 +53,7 @@ export const treeData = [
                 icons: '@/assets/system/images/dpp/excel.png'
             },
             {
-                label: 'CSV输入组件',
+                label: td('dpp.integration.inputCsv', 'CSV输入组件'),
                 key: 'input-csv',
                 type: 1,
                 level: 2,
@@ -56,17 +63,17 @@ export const treeData = [
                 icon: new URL('@/assets/system/images/dpp/scv.svg', import.meta.url).href, // 动态获取路径
                 icons: '@/assets/system/images/dpp/csv.png'
             },
-          
+
         ]
     },
     {
-        label: '转换',
+        label: td('dpp.integration.transform', '转换'),
         type: 3,
         level: 1,
         engine: ['SPARK'],
         children: [
             {
-                label: '转换组件',
+                label: td('dpp.integration.transformComponent', '转换组件'),
                 key: 'transform-desensitization',
                 type: 3,
                 level: 2,
@@ -77,7 +84,7 @@ export const treeData = [
                 icons: '@/assets/system/images/dpp/zh.png'
             },
             {
-                label: '排序记录',
+                label: td('dpp.integration.sortRecords', '排序记录'),
                 key: 'transform-cleaning',
                 type: 4,
                 level: 2,
@@ -88,7 +95,7 @@ export const treeData = [
                 icons: '@/assets/system/images/dpp/SHELL.png'
             },
             {
-                label: '字段派生器',
+                label: td('dpp.integration.fieldDerivation', '字段派生器'),
                 key: 'transform-cleaning',
                 type: 4,
                 level: 2,
@@ -99,7 +106,7 @@ export const treeData = [
                 icons: '@/assets/system/images/dpp/SHELL.png'
             },
             {
-                label: '去除重复记录',
+                label: td('dpp.integration.removeDuplicates', '去除重复记录'),
                 key: 'transform-cleaning',
                 type: 4,
                 level: 2,
@@ -110,7 +117,7 @@ export const treeData = [
                 form: 'transform/dedupFilter.vue',
             },
             {
-                label: '增加常量',
+                label: td('dpp.integration.addConstant', '增加常量'),
                 key: 'transform-cleaning',
                 type: 48,
                 level: 2,
@@ -121,7 +128,7 @@ export const treeData = [
                 form: 'transform/addConstants.vue',
             },
             {
-                label: '字段选择、修改',
+                label: td('dpp.integration.fieldSelectModify', '字段选择、修改'),
                 key: 'transform-cleaning',
                 type: 3,
                 level: 2,
@@ -132,7 +139,7 @@ export const treeData = [
                 form: 'transform/fieldSelectAndmodificat.vue',
             },
             {
-                label: '值映射',
+                label: td('dpp.integration.valueMapping', '值映射'),
                 key: 'transform-cleaning',
                 type: 6,
                 level: 2,
@@ -145,13 +152,13 @@ export const treeData = [
         ]
     },
     {
-        label: '输出',
+        label: td('dpp.integration.output', '输出'),
         type: 2,
         level: 1,
         engine: ['SPARK', 'FLINK'],
         children: [
             {
-                label: '表输出组件',
+                label: td('dpp.integration.outputTable', '表输出组件'),
                 key: 'output-table',
                 type: 2,
                 level: 2,

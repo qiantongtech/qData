@@ -757,17 +757,17 @@ function handleAdd(row) {
   }
 
   open.value = true;
-  title.value = "新增数据集成类目管理";
+  title.value = td("dpp.setting.taskCat.addTaskCat", "新增数据集成类目");
 }
 
 /** 修改按钮操作 */
 function handleUpdate(row) {
   reset();
   const _id = row.id || ids.value;
-  getAttTaskCatd(_id).then((response) => {
+  getAttTaskCat(_id).then((response) => {
     form.value = response.data;
     open.value = true;
-    title.value = "修改数据集成类目管理";
+    title.value = td("dpp.setting.taskCat.editTaskCat", "修改数据集成类目");
   });
 }
 
@@ -775,10 +775,10 @@ function handleUpdate(row) {
 function handleDetail(row) {
   reset();
   const _id = row.id || ids.value;
-  getAttTaskCatd(_id).then((response) => {
+  getAttTaskCat(_id).then((response) => {
     form.value = response.data;
     openDetail.value = true;
-    title.value = "数据集成类目管理详情";
+    title.value = td("dpp.setting.taskCat.taskCatDetail", "数据集成类目详情");
   });
 }
 
@@ -833,7 +833,16 @@ function handleStatusChange(row) {
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
-    .confirm('是否确认删除数据集成类目管理编号为"' + _ids + '"的数据项？')
+    .confirm(
+      td(
+        "dpp.setting.taskCat.confirmDelete",
+        "是否确认删除数据集成类目管理编号为"
+      ) +
+        '"' +
+        _ids +
+        '"' +
+        td("dpp.setting.taskCat.dataItem", "的数据项？")
+    )
     .then(function () {
       return delAttTaskCatd(_ids);
     })

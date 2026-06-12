@@ -29,7 +29,8 @@
             :loading="loading"
             @mousedown="(e) => e.preventDefault()"
           >
-            <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('common.button.add', '新增') }}
+            <i class="iconfont-mini icon-xinzeng mr5"></i
+            >{{ td("common.button.add", "新增") }}
           </el-button>
         </el-col>
         <el-button
@@ -40,10 +41,12 @@
           @click="handleQuery"
           @mousedown="(e) => e.preventDefault()"
         >
-          <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query', '查询') }}
+          <i class="iconfont-mini icon-a-zu22377 mr5"></i
+          >{{ td("common.button.query", "查询") }}
         </el-button>
         <el-button @click="handleReset" @mousedown="(e) => e.preventDefault()">
-          <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset', '重置') }}
+          <i class="iconfont-mini icon-a-zu22378 mr5"></i
+          >{{ td("common.button.reset", "重置") }}
         </el-button>
       </el-row>
     </div>
@@ -60,7 +63,7 @@
       <el-col :span="7">
         <el-alert
           style="height: 24px"
-          :title=”td('dpp.asset.addFilterTip', '点击”+”以添加筛选准则')”
+          :title="td('dpp.asset.addFilterTip')"
           type="info"
           :closable="false"
         />
@@ -179,7 +182,7 @@
         icon="Edit"
         @click="handleUpdate(row)"
         v-hasPermi="['da:asset:edit']"
-        >{{ td('common.button.update', '修改') }}</el-button
+        >{{ td("common.button.update", "修改") }}</el-button
       >
       <el-button
         link
@@ -187,7 +190,7 @@
         icon="view"
         @click="openHistory(row)"
         v-hasPermi="['da:asset:edit']"
-        >{{ td('dpp.asset.updateRecord', '修改记录') }}</el-button
+        >{{ td("dpp.asset.updateRecord", "修改记录") }}</el-button
       >
     </template>
   </qt-table>
@@ -204,7 +207,7 @@
 </template>
 
 <script setup>
-import useDefaultLang from "@/composables/useDefaultLang"
+import useDefaultLang from "@/composables/useDefaultLang";
 import { ref, reactive, watch } from "vue";
 import { useRoute } from "vue-router";
 import { preview } from "@/api/da/asset/assetColumn.js";
@@ -276,7 +279,9 @@ const handleQuery = () => {
 const validateFields = () => {
   for (let row of formData.value.rows) {
     if (!row.field || !row.operator) {
-      ElMessage.warning(td('dpp.asset.validateIncomplete', '校验未通过，查询条件请输入完整'));
+      ElMessage.warning(
+        td("dpp.asset.validateIncomplete", "校验未通过，查询条件请输入完整")
+      );
       return false;
     }
   }
@@ -326,7 +331,7 @@ function openHistory(row) {
   }
 }
 function handleDelete() {
-  proxy.$message.warning(td('dpp.asset.funcDeveloping', '功能开发中....'));
+  proxy.$message.warning(td("dpp.asset.funcDeveloping", "功能开发中...."));
 }
 
 const handleReset = () => {
@@ -371,7 +376,7 @@ const tableStore = reactive({
           width: 230,
         }));
         const handleCol = {
-          label: td('common.texts.operation', '操作'),
+          label: td("common.texts.operation", "操作"),
           fixed: "right",
           slot: "handle",
           width: 200,

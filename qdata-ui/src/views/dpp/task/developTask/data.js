@@ -15,10 +15,12 @@
  * More information: https://qdata.qiantong.tech/business.html
  */
 
+import { i18n } from '@/plugins/vueI18n';
+
 export const treeData = [
   {
     id: 2,
-    label: "DM8",
+    label: i18n.global.t('dpp.developTask.dm8'),
     value: "DM",
     type: "DM",
     falg: true,
@@ -27,7 +29,7 @@ export const treeData = [
   },
   {
     id: 3,
-    label: "Oracle",
+    label: i18n.global.t('dpp.developTask.oracle'),
     value: "Oracle",
     type: "ORACLE",
     falg: true,
@@ -36,7 +38,7 @@ export const treeData = [
   },
   {
     id: 4,
-    label: "MySQL",
+    label: i18n.global.t('dpp.developTask.mysql'),
     value: "MySql",
     type: "MySql",
     falg: true,
@@ -45,7 +47,7 @@ export const treeData = [
   },
   {
     id: 5,
-    label: "Kingbase",
+    label: i18n.global.t('dpp.developTask.kingbase'),
     value: "Kingbase",
     type: "KINGBASE",
     falg: true,

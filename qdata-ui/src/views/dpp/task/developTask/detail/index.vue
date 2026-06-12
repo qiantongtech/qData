@@ -244,7 +244,7 @@ function getDeptTree() {
       deptOptions.value = [
         {
           id: 0,
-          name: "数据开发类目",
+          name: td('dpp.developTask.dataDevCategory', '数据开发类目'),
           value: "",
           children: proxy.handleTree(taskCatRes.data, "id", "parentId"),
         },

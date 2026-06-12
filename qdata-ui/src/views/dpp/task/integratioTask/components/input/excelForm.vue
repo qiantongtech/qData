@@ -21,15 +21,15 @@
     <el-form ref="dpModelRefs" :model="form" label-width="110px" @submit.prevent v-loading="loading" :disabled="info">
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="节点名称" prop="name" :rules="[
-            { required: true, message: '请输入节点名称', trigger: 'change' },
+          <el-form-item :label="td('dpp.integration.nodeName', '节点名称')" prop="name" :rules="[
+            { required: true, message: td('dpp.integration.nodeNameRequired', '请输入节点名称'), trigger: 'change' },
           ]">
-            <el-input v-model="form.name" placeholder="请输入节点名称" />
+            <el-input v-model="form.name" :placeholder="td('dpp.integration.nodeNamePlaceholder', '请输入节点名称')" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="类型" prop="typeName">
-            <el-select v-model="form.taskParams.typeName" placeholder="请输入类型" filterable disabled>
+          <el-form-item :label="td('dpp.integration.type', '类型')" prop="typeName">
+            <el-select v-model="form.taskParams.typeName" :placeholder="td('dpp.integration.typePlaceholder', '请输入类型')" filterable disabled>
               <el-option v-for="dict in typeList" :key="dict.value" :label="dict.label" :value="dict.value"></el-option>
             </el-select>
           </el-form-item>
@@ -37,15 +37,15 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="t('common.texts.description')" prop="description">
-            <el-input v-model="form.description" type="textarea" :placeholder="t('common.form.descriptionPlaceholder')" />
+          <el-form-item :label="td('common.texts.description')" prop="description">
+            <el-input v-model="form.description" type="textarea" :placeholder="td('common.form.descriptionPlaceholder')" />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="上传附件" prop="taskParams.excelFile" :rules="[
-            { required: true, message: '请上传附件', trigger: 'change' },
+          <el-form-item :label="td('dpp.integration.uploadAttachment', '上传附件')" prop="taskParams.excelFile" :rules="[
+            { required: true, message: td('dpp.integration.uploadAttachmentRequired', '请上传附件'), trigger: 'change' },
           ]">
             <!-- <FileUploadbtn :limit="1" v-model="form.taskParams.excelFile" :dragFlag="false" :file-type="['xlsx', 'xls']"
               :fileSize="50" @handleRemove="handleRemove" /> -->
@@ -54,20 +54,20 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="起始行" prop="taskParams.startData" :rules="[
-            { required: true, message: '请输入起始行', trigger: 'change' },
+          <el-form-item :label="td('dpp.integration.startRow', '起始行')" prop="taskParams.startData" :rules="[
+            { required: true, message: td('dpp.integration.startRowRequired', '请输入起始行'), trigger: 'change' },
           ]">
-            <el-input-number :step="1" step-strictly placeholder="请输入起始行" v-model="form.taskParams.startData"
+            <el-input-number :step="1" step-strictly :placeholder="td('dpp.integration.startRowPlaceholder', '请输入起始行')" v-model="form.taskParams.startData"
               style="width: 100%" controls-position="right" :min="1" value-on-clear="min" />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="起始列" prop="taskParams.startColumn" :rules="[
-            { required: true, message: '请输入起始列', trigger: 'change' },
+          <el-form-item :label="td('dpp.integration.startColumn', '起始列')" prop="taskParams.startColumn" :rules="[
+            { required: true, message: td('dpp.integration.startColumnRequired', '请输入起始列'), trigger: 'change' },
           ]">
-            <el-input-number :step="1" step-strictly placeholder="请输入起始列" v-model="form.taskParams.startColumn"
+            <el-input-number :step="1" step-strictly :placeholder="td('dpp.integration.startColumnPlaceholder', '请输入起始列')" v-model="form.taskParams.startColumn"
               style="width: 100%" controls-position="right" :min="1" value-on-clear="min" />
           </el-form-item>
         </el-col>
@@ -78,48 +78,48 @@
         </el-col>
       </el-row>
       <el-divider content-position="center">
-        <span class="blue-text">属性字段</span>
+        <span class="blue-text">{{ td('dpp.integration.attributeFields', '属性字段') }}</span>
       </el-divider>
       <el-table stripe height="310px" v-loading="loadingList" :data="ColumnByAssettab">
-        <el-table-column label="序号" type="index" width="80" align="left">
+        <el-table-column :label="td('common.display.index', '序号')" type="index" width="80" align="left">
           <template #default="scope">
             <span>{{ scope.$index + 1 }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="字段名称" align="left" prop="columnName" :show-overflow-tooltip="{ effect: 'light' }">
+        <el-table-column :label="td('dpp.integration.fieldName', '字段名称')" align="left" prop="columnName" :show-overflow-tooltip="{ effect: 'light' }">
           <template #default="scope">
             {{ scope.row.columnName || "-" }}
           </template>
         </el-table-column>
-        <el-table-column label="字段类型" align="left" prop="columnType">
+        <el-table-column :label="td('dpp.integration.fieldType', '字段类型')" align="left" prop="columnType">
           <template #default="scope">
             {{ scope.row.columnType || "-" }}
           </template>
         </el-table-column>
-        <el-table-column label="日期格式" align="left" prop="format">
+        <el-table-column :label="td('dpp.integration.dateFormat', '日期格式')" align="left" prop="format">
           <template #default="scope">
             {{ scope.row.format || "-" }}
           </template>
         </el-table-column>
-        <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
+        <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
           <template #default="scope">
-            <el-button link type="primary" icon="Edit" @click="openDialog(scope.row)">{{ t('common.button.update') }}</el-button>
+            <el-button link type="primary" icon="Edit" @click="openDialog(scope.row)">{{ td('common.button.update') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
     </el-form>
     <template #footer>
       <div style="text-align: right">
-        <el-button @click="closeDialog">{{ t('common.button.close') }}</el-button>
-        <el-button type="primary" @click="saveData" v-if="!info">{{ t('common.button.save') }}</el-button>
+        <el-button @click="closeDialog">{{ td('common.button.close') }}</el-button>
+        <el-button type="primary" @click="saveData" v-if="!info">{{ td('common.button.save') }}</el-button>
       </div>
     </template>
   </el-dialog>
-  <excelUploadDialog :visible="open" title="属性字段编辑" @update:visible="open = $event" @confirm="handletaskConfig"
+  <excelUploadDialog :visible="open" :title="td('dpp.integration.attributeFieldEdit', '属性字段编辑')" @update:visible="open = $event" @confirm="handletaskConfig"
     :data="row" />
 </template>
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { getToken } from "@/utils/auth.js";
 import { typeList } from "@/utils/graph.js";
 import { getNodeUniqueKey, getExcelColumn } from "@/api/dpp/task/index.js";
@@ -128,11 +128,11 @@ import FileUploadbtn from '@/components/FileUploadbtn/index1.vue'
 const { proxy } = getCurrentInstance();
 import useUserStore from "@/store/system/user.js";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const userStore = useUserStore();
 const props = defineProps({
   visible: { type: Boolean, default: true },
-  title: { type: String, default: "表单标题" },
+  title: { type: String, default: '' },
   currentNode: { type: Object, default: () => ({}) },
   info: { type: Boolean, default: false },
   graph: {}
@@ -183,15 +183,15 @@ const isButtonDisabled = computed(() => {
 // 获取列数据
 const parseExcel = async (id) => {
   if (!form.value.taskParams.startData) {
-    ElMessage.warning("解析失败，请添加起始行");
+    ElMessage.warning(td("dpp.integration.parseFailedAddStartRow", "解析失败，请添加起始行"));
     return;
   }
   if (!form.value.taskParams.startColumn) {
-    ElMessage.warning("解析失败，请添加起始列");
+    ElMessage.warning(td("dpp.integration.parseFailedAddStartColumn", "解析失败，请添加起始列"));
     return;
   }
   if (!form.value.taskParams.excelFile) {
-    ElMessage.warning("解析失败，请添加附件");
+    ElMessage.warning(td("dpp.integration.parseFailedAddAttachment", "解析失败，请添加附件"));
     return;
   }
   loadingList.value = true;
@@ -210,13 +210,13 @@ const parseExcel = async (id) => {
         columnType: "string",
       }));
 
-      ElMessage.success("Excel解析成功，请确认属性字段类型！");
+      ElMessage.success(td("dpp.integration.excelParseSuccess", "Excel解析成功，请确认属性字段类型！"));
     } else {
-      ElMessage.warning("Excel解析失败，未获取到有效数据！");
+      ElMessage.warning(td("dpp.integration.excelParseFailedNoData", "Excel解析失败，未获取到有效数据！"));
     }
   } catch (error) {
     if (response.code == 200)
-      ElMessage.warning("Excel解析失败，请检查文件格式或内容！");
+      ElMessage.warning(td("dpp.integration.excelParseFailedCheckFile", "Excel解析失败，请检查文件格式或内容！"));
   } finally {
     loadingList.value = false;
   }
@@ -239,7 +239,7 @@ const saveData = async () => {
       form.value?.taskParams.type == "1" &&
       (!ColumnByAssettab.value || ColumnByAssettab.value.length == 0)
     ) {
-      return proxy.$message.warning("校验未通过，请选择属性字段");
+      return proxy.$message.warning(td("dpp.integration.validateFailedSelectFields", "校验未通过，请选择属性字段"));
     }
     // 如果没有 code，就调用接口获取唯一的 code
     if (!form.value.code) {

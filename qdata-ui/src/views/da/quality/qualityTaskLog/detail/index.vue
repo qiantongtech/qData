@@ -23,32 +23,32 @@
             <el-col :xs="24" :sm="24" :md="12" class="stats-panel">
                 <div class="module-8 border-item">
                     <div class="border-item-head">
-                        <span class="head-title">数据质量维度统计 </span>
+                        <span class="head-title">{{ td('da.qualityTaskLog.detail.qualityDimensionStats') }}</span>
                     </div>
                     <div class="border-item-body">
                         <div class="overall-score">
-                            <span>整体数据质量评分：</span>
+                            <span>{{ td('da.qualityTaskLog.detail.overallQualityScore') }}</span>
                             <span class="score" :class="getScoreClass(overallScore)">
                                 {{ overallScore || '-' }}
                             </span>
                         </div>
                         <el-table :data="summaryList" border size="small" style="margin-top: 12px" height="246">
-                            <el-table-column prop="dimensionType" label="质量维度" align="center">
+                            <el-table-column prop="dimensionType" :label="td('da.qualityTaskLog.detail.qualityDimension')" align="center">
                                 <template #default="scope">
                                     <dict-tag :options="att_rule_audit_q_dimension" :value="scope.row.dimensionType" />
                                 </template>
 
                             </el-table-column>
-                            <el-table-column prop="succesTotal" label="规则数" align="center">
+                            <el-table-column prop="succesTotal" :label="td('da.qualityTaskLog.detail.ruleCount')" align="center">
                                 <template #default="scope">{{ scope.row.succesTotal || '-' }}</template>
                             </el-table-column>
-                            <el-table-column prop="proportion" label="问题数占比" align="center">
+                            <el-table-column prop="proportion" :label="td('da.qualityTaskLog.detail.problemRatio')" align="center">
                                 <template #default="scope">
                                     {{ scope.row.proportion != null ? scope.row.proportion + '%' : '-' }}
                                 </template>
 
                             </el-table-column>
-                            <el-table-column label="趋势" align="center">
+                            <el-table-column :label="td('da.qualityTaskLog.detail.trend')" align="center">
                                 <template #default="{ row }">
                                     <template v-if="row.trendType == '-3'">
                                         -
@@ -75,8 +75,8 @@
             <el-col :xs="24" :sm="24" :md="12" class="trend-chart-panel">
                 <div class="module-8 border-item">
                     <div class="border-item-head">
-                        <span class="head-title">治理数据量变化趋势</span>
-                        <el-select v-model="selectedRange" size="small" placeholder="选择时间范围" style="width: 120px"
+                        <span class="head-title">{{ td('da.qualityTaskLog.detail.dataGovernanceTrend') }}</span>
+                        <el-select v-model="selectedRange" size="small" :placeholder="td('da.qualityTaskLog.detail.selectTimeRange')" style="width: 120px"
                             @change="onRangeChange">
                             <el-option v-for="item in rangeOptions" :key="item.value" :label="item.label"
                                 :value="item.value" />
@@ -93,52 +93,52 @@
         <el-row>
             <div class="module-8 border-item" style="width: 100%">
                 <div class="border-item-head">
-                    <span class="head-title">规则列表</span>
+                    <span class="head-title">{{ td('da.qualityTaskLog.detail.ruleList') }}</span>
                 </div>
                 <div class="border-item-body" style="height: 320px;">
                     <el-table stripe height="300px" v-loading="loading" :data="ruleList" lazy :show-overflow-tooltip="{effect: 'light'}">
-                        <el-table-column v-if="getColumnVisibility(8)" label="评测名称" align="center"
+                        <el-table-column v-if="getColumnVisibility(8)" :label="td('da.qualityTaskLog.detail.evaluationName')" align="center"
                             :show-overflow-tooltip="{effect: 'light'}">
                             <template #default="scope">
                                 {{ getEvaluateName(scope.row) }}
                             </template>
                         </el-table-column>
 
-                        <el-table-column v-if="getColumnVisibility(1)" label="数据库名称" align="center" prop="name"
+                        <el-table-column v-if="getColumnVisibility(1)" :label="td('da.qualityTaskLog.detail.dbName')" align="center" prop="name"
                             :show-overflow-tooltip="{effect: 'light'}">
                             <template #default="scope">{{ scope.row.datasourceName || '-' }}</template>
                         </el-table-column>
-                        <el-table-column v-if="getColumnVisibility(2)" label="字段名/中文名" align="center" prop="name"
+                        <el-table-column v-if="getColumnVisibility(2)" :label="td('da.qualityTaskLog.detail.fieldInfo')" align="center" prop="name"
                             :show-overflow-tooltip="{effect: 'light'}">
                             <template #default="scope"> {{ scope.row.columnLabel || '-' }}</template>
                         </el-table-column>
-                        <el-table-column v-if="getColumnVisibility(3)" label="质量维度" align="center" prop="dimensionType"
+                        <el-table-column v-if="getColumnVisibility(3)" :label="td('da.qualityTaskLog.detail.qualityDimension')" align="center" prop="dimensionType"
                             :show-overflow-tooltip="{effect: 'light'}">
                             <template #default="scope">
                                 <dict-tag :options="att_rule_audit_q_dimension" :value="scope.row.dimensionType" />
 
                             </template>
                         </el-table-column>
-                        <el-table-column v-if="getColumnVisibility(5)" label="稽查名称" align="center" prop="ruleName"
+                        <el-table-column v-if="getColumnVisibility(5)" :label="td('da.qualityTaskLog.detail.inspectionName')" align="center" prop="ruleName"
                             :show-overflow-tooltip="{effect: 'light'}">
                             <template #default="scope">{{ scope.row.ruleName || '-' }}</template>
                         </el-table-column>
 
-                        <el-table-column v-if="getColumnVisibility(7)" label="问题数据量占比" align="center" prop="proportion"
+                        <el-table-column v-if="getColumnVisibility(7)" :label="td('da.qualityTaskLog.detail.problemDataRatio')" align="center" prop="proportion"
                             :show-overflow-tooltip="{effect: 'light'}">
                             <template #default="scope">
                                 {{
                                     (scope.row.problemTotal != -1 && scope.row.problemTotal != null)
-                                        ? `${scope.row.problemTotal} /条 ${scope.row.proportion ?? '-'}%`
+                                        ? `${scope.row.problemTotal} /${td('da.qualityTaskLog.detail.problemTotalUnit')} ${scope.row.proportion ?? '-'}%`
                                         : '-'
                                 }}
                             </template>
 
                         </el-table-column>
-                        <el-table-column :label="t('common.texts.operation')" fixed="right" width="140" align="center">
+                        <el-table-column :label="td('common.texts.operation')" fixed="right" width="140" align="center">
                             <template #default="scope">
                                 <el-button link type="primary" icon="View"
-                                    @click="openDialog(scope.row)">查看问题数据</el-button>
+                                    @click="openDialog(scope.row)">{{ td('da.qualityTaskLog.detail.viewProblemData') }}</el-button>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -152,7 +152,6 @@
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
 import * as echarts from 'echarts';
 import { useRoute } from 'vue-router';
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
@@ -168,7 +167,6 @@ import {
     statisticsEvaluateTable
 } from "@/api/da/quality/qualityTaskLog";
 
-const { t } = useI18n();
 const { att_rule_audit_q_dimension, } = proxy.useDict(
 
     'att_rule_audit_q_dimension'
@@ -197,9 +195,9 @@ const openDialog = (row) => {
 
 const selectedRange = ref('7');
 const rangeOptions = [
-    { label: '近7天', value: '7' },
-    { label: '近15天', value: '15' },
-    { label: '近30天', value: '30' }
+    { label: td('da.qualityTaskLog.detail.last7Days'), value: '7' },
+    { label: td('da.qualityTaskLog.detail.last15Days'), value: '15' },
+    { label: td('da.qualityTaskLog.detail.last30Days'), value: '30' }
 ];
 
 const ruleList = ref([]);
@@ -209,12 +207,12 @@ const loading = ref(false);
 
 const columns = ref([
 
-    { key: 8, label: "规则名称", visible: true },
-    { key: 1, label: "数据库名称", visible: true },
-    { key: 2, label: "字段名/中文名", visible: true },
-    { key: 3, label: "质量维度", visible: true },
-    { key: 5, label: "规则名称", visible: true },
-    { key: 7, label: "问题数据量占比", visible: true },
+    { key: 8, label: td('da.qualityTaskLog.detail.columnLabels.ruleName'), visible: true },
+    { key: 1, label: td('da.qualityTaskLog.detail.columnLabels.dbName'), visible: true },
+    { key: 2, label: td('da.qualityTaskLog.detail.columnLabels.fieldInfo'), visible: true },
+    { key: 3, label: td('da.qualityTaskLog.detail.columnLabels.qualityDimension'), visible: true },
+    { key: 5, label: td('da.qualityTaskLog.detail.columnLabels.ruleName'), visible: true },
+    { key: 7, label: td('da.qualityTaskLog.detail.columnLabels.problemDataRatio'), visible: true },
 ]);
 function getLabelsByColumnName(row, columnName) {
     if (!row.rule || !columnName) return '-';

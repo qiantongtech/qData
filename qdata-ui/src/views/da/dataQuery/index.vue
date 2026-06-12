@@ -22,24 +22,24 @@
 
     <div class="head-container">
       <div class="head-title">
-        {{ nodeData.name !== "" ? nodeData.name : "数据查询" }}
+        {{ nodeData.name !== "" ? nodeData.name : td('da.dataQuery.pageTitle') }}
       </div>
       <div class="head-btns">
         <div class="head-select">
           <!-- 标题后附加下拉选择框 -->
-          <el-select v-model="queryParams.id" placeholder="请选择数据源" class="head-select-el" style="width: 300px;">
+          <el-select v-model="queryParams.id" :placeholder="td('da.dataQuery.datasourcePlaceholder')" class="head-select-el" style="width: 300px;">
             <el-option v-for="item in TablesByDataSource" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
         </div>
         <el-button plain type="primary" size="small" @click="handleQuery" :loading="loadings">
-          <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
+          <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
         </el-button>
-        <el-button type="primary" size="small" @click="handleClear">{{ t('common.button.clear') }}</el-button>
+        <el-button type="primary" size="small" @click="handleClear">{{ td('common.button.clear') }}</el-button>
       </div>
     </div>
     <el-container style="90%">
       <!-- 树：数据源->表->字段 -->
-      <DeptTree :deptOptions="TablesByDataSource" :leftWidth="leftWidth" :placeholder="'请输入数据源名称'" ref="DeptTreeRef"
+      <DeptTree :deptOptions="TablesByDataSource" :leftWidth="leftWidth" :placeholder="td('da.dataQuery.datasourceSearchPlaceholder')" ref="DeptTreeRef"
         @node-click="handleTreeNodeClick" @nodeload-click="loadTreeData" :loading="loading" />
       <el-main style="padding: 0;">
         <div class="pagecont-bottom" style="padding: 0;">
@@ -49,13 +49,13 @@
         </div>
       </el-main>
     </el-container>
-    <TableInfoDialog :visible="dialogVisible" title="查询结果" @update:visible="dialogVisible = $event"
+    <TableInfoDialog :visible="dialogVisible" :title="td('da.dataQuery.resultTitle')" @update:visible="dialogVisible = $event"
       :queryParams="queryParams" :spl="spl" />
   </div>
 </template>
 
 <script setup name="DataQuery">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import Editor from "@/components/SqlEditor/editor/index1.vue";
@@ -75,7 +75,7 @@ import {
 import { executeSqlQuery } from "@/api/da/dataSource/dataSource";
 import { encrypt } from "@/utils/aesEncrypt";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const leftWidth = ref(300);
 const loading = ref(false);
 const dialogVisible = ref(false);
@@ -212,12 +212,12 @@ async function handleQuery() {
 
   const errors = [];
   if (!spl.value) {
-    errors.push("请输入 SQL 语句！");
+    errors.push(td('da.dataQuery.sqlRequired'));
   }
 
   // 校验数据源 id
   if (!queryParams.value.id) {
-    errors.push("请选择数据源！");
+    errors.push(td('da.dataQuery.datasourceRequired'));
   }
   if (errors.length) {
     ElMessage.warning(errors.join("，"));
@@ -235,7 +235,7 @@ async function handleQuery() {
     if (res.code === 200) {
       dialogVisible.value = true;
     } else {
-      ElMessage.warning(res.msg || "查询失败");
+      ElMessage.warning(res.msg || td('da.dataQuery.queryFailed'));
     }
   } finally {
     loadings.value = false;

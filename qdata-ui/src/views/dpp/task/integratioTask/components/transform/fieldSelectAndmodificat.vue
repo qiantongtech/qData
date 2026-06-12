@@ -36,26 +36,26 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
-            label="节点名称"
+            :label="td('dpp.integration.nodeName', '节点名称')"
             prop="name"
             :rules="[
-              { required: true, message: '请输入节点名称', trigger: 'change' },
+              { required: true, message: td('dpp.integration.nodeNameRequired', '请输入节点名称'), trigger: 'change' },
             ]"
           >
             <el-input
               v-if="!info"
               v-model="form.name"
-              placeholder="请输入节点名称"
+              :placeholder="td('dpp.integration.nodeNamePlaceholder', '请输入节点名称')"
             />
             <div v-else class="form-readonly">{{ form.name }}</div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="类型" prop="typeName">
+          <el-form-item :label="td('dpp.integration.type', '类型')" prop="typeName">
             <template v-if="!info">
               <el-select
                 v-model="form.taskParams.typeName"
-                placeholder="请输入类型"
+                :placeholder="td('dpp.integration.typePlaceholder', '请输入类型')"
                 filterable
                 disabled
               >
@@ -75,14 +75,14 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="t('common.texts.description')" prop="description">
+          <el-form-item :label="td('common.texts.description')" prop="description">
             <el-input
               v-if="!info"
               v-model="form.description"
               type="textarea"
               maxlength="500个字符"
               show-word-limit
-              :placeholder="t('common.form.descriptionPlaceholder')"
+              :placeholder="td('common.form.descriptionPlaceholder')"
             />
             <div v-else class="form-readonly textarea">
               {{ form.description || "-" }}
@@ -91,13 +91,13 @@
         </el-col>
       </el-row>
       <el-divider content-position="center">
-        <span class="blue-text">需要选择与修改的字段</span>
+        <span class="blue-text">{{ td('dpp.integration.selectAndModifyFields', '需要选择与修改的字段') }}</span>
       </el-divider>
       <div class="justify-between mb15">
         <el-row :gutter="15" class="btn-style">
           <el-col :span="1.5">
             <el-button type="primary" plain @click="handleAddField">
-              <i class="iconfont-mini icon-xinzeng mr5"></i>{{ t('common.button.add') }}
+              <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('common.button.add') }}
             </el-button>
           </el-col>
           <el-col :span="1.5">
@@ -119,16 +119,16 @@
         ref="dragTable"
         row-key="columnName"
       >
-        <el-table-column label="序号" width="80" align="left">
+        <el-table-column :label="td('common.display.index', '序号')" width="80" align="left">
           <template #default="scope">
             <span>{{ scope.$index + 1 }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="字段名称" align="left" prop="columnName">
+        <el-table-column :label="td('dpp.integration.fieldName', '字段名称')" align="left" prop="columnName">
           <template #default="scope">
             <el-select
               v-model="scope.row.columnName"
-              placeholder="请选择字段"
+              :placeholder="td('dpp.integration.selectFieldPlaceholder', '请选择字段')"
               style="flex: 1"
             >
               <el-option
@@ -142,7 +142,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="字段别名"
+          :label="td('dpp.integration.fieldAlias', '字段别名')"
           align="left"
           prop="outputField"
           :show-overflow-tooltip="{ effect: 'light' }"
@@ -150,16 +150,16 @@
           <template #default="scope">
             <el-input
               v-model="scope.row.outputField"
-              placeholder="请输入新的字段名称"
+              :placeholder="td('dpp.integration.fieldAliasPlaceholder', '请输入新的字段名称')"
               style="width: 100%"
             />
           </template>
         </el-table-column>
-        <el-table-column label="字段类型" align="left" prop="type" width="150">
+        <el-table-column :label="td('dpp.integration.fieldType', '字段类型')" align="left" prop="type" width="150">
           <template #default="scope">
             <el-select
               v-model="scope.row.type"
-              placeholder="请选择字段类型"
+              :placeholder="td('dpp.integration.fieldTypePlaceholder', '请选择字段类型')"
               style="width: 100%"
               clearable
             >
@@ -173,14 +173,14 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="字段长度"
+          :label="td('dpp.column.fieldLength', '字段长度')"
           align="left"
           prop="length"
           width="150"
         >
           <template #default="scope">
             <el-input-number
-              placeholder="请输入字段长度"
+              :placeholder="td('dpp.integration.fieldLengthPlaceholder', '请输入字段长度')"
               v-model="scope.row.length"
               :min="0"
               controls-position="right"
@@ -189,14 +189,14 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="字段精度"
+          :label="td('dpp.integration.fieldPrecision', '字段精度')"
           align="left"
           prop="precision"
           width="150"
         >
           <template #default="scope">
             <el-input-number
-              placeholder="请输入字段精度"
+              :placeholder="td('dpp.integration.fieldPrecisionPlaceholder', '请输入字段精度')"
               v-model="scope.row.precision"
               :min="0"
               controls-position="right"
@@ -205,7 +205,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          :label="t('common.texts.operation')"
+          :label="td('common.texts.operation')"
           align="center"
           class-name="small-padding fixed-width"
           fixed="right"
@@ -219,19 +219,19 @@
               icon="Delete"
               @click="handleDelete(scope.row)"
             >
-              {{ t('common.button.delete') }}
+              {{ td('common.button.delete') }}
             </el-button>
           </template>
         </el-table-column>
       </el-table>
       <el-divider content-position="center">
-        <span class="blue-text">需要移除的字段</span>
+        <span class="blue-text">{{ td('dpp.integration.fieldsToRemove', '需要移除的字段') }}</span>
       </el-divider>
       <div class="justify-between mb15">
         <el-row :gutter="15" class="btn-style">
           <el-col :span="1.5">
             <el-button type="primary" plain @click="handleAddField2">
-              <i class="iconfont-mini icon-xinzeng mr5"></i>{{ t('common.button.add') }}
+              <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('common.button.add') }}
             </el-button>
           </el-col>
         </el-row>
@@ -244,16 +244,16 @@
         ref="dragTable"
         row-key="columnName"
       >
-        <el-table-column label="序号" width="80" align="left">
+        <el-table-column :label="td('common.display.index', '序号')" width="80" align="left">
           <template #default="scope">
             <span>{{ scope.$index + 1 }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="字段名称" align="left" prop="columnName">
+        <el-table-column :label="td('dpp.integration.fieldName', '字段名称')" align="left" prop="columnName">
           <template #default="scope">
             <el-select
               v-model="scope.row.columnName"
-              placeholder="请选择字段"
+              :placeholder="td('dpp.integration.selectFieldPlaceholder', '请选择字段')"
               style="flex: 1"
             >
               <el-option
@@ -267,7 +267,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          :label="t('common.texts.operation')"
+          :label="td('common.texts.operation')"
           align="center"
           class-name="small-padding fixed-width"
           fixed="right"
@@ -280,7 +280,7 @@
               icon="Delete"
               @click="handleDelete2(scope.row)"
             >
-              {{ t('common.button.delete') }}
+              {{ td('common.button.delete') }}
             </el-button>
           </template>
         </el-table-column>
@@ -289,9 +289,9 @@
 
     <template #footer>
       <div style="text-align: right">
-        <el-button @click="closeDialog">{{ t('common.button.close') }}</el-button>
+        <el-button @click="closeDialog">{{ td('common.button.close') }}</el-button>
         <el-button type="primary" @click="saveData" v-if="!info"
-          >{{ t('common.button.save') }}</el-button
+          >{{ td('common.button.save') }}</el-button
         >
       </div>
     </template>
@@ -314,7 +314,7 @@
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import CreateEditModal from "../fieldMergeModal.vue";
 import FieldConflictDialog from "../fieldDetection.vue";
 import {
@@ -330,13 +330,13 @@ import { getNodeUniqueKey } from "@/api/dpp/task/index.js";
 import useUserStore from "@/store/system/user.js";
 import { createNodeSelect } from "@/views/dpp/utils/opBase.js";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const userStore = useUserStore();
 
 const props = defineProps({
   visible: { type: Boolean, default: true },
-  title: { type: String, default: "表单标题" },
+  title: { type: String, default: '' },
   currentNode: { type: Object, default: () => ({}) },
   info: { type: Boolean, default: false },
   graph: { type: Object, default: () => ({}) },
@@ -370,7 +370,7 @@ function hasDuplicateObjects(arr, key) {
 }
 function handleAddField() {
   if (!Array.isArray(inputFields.value) || inputFields.value.length === 0) {
-    proxy.$message.warning("输入字段为空，无法添加字段");
+    proxy.$message.warning(td("dpp.integration.inputFieldEmptyCannotAdd", "输入字段为空，无法添加字段"));
     return;
   }
   // 已添加的字段名
@@ -383,13 +383,13 @@ function handleAddField() {
   );
 
   if (!nextField) {
-    proxy.$message.warning("新增失败，已无可添加的字段");
+    proxy.$message.warning(td("dpp.integration.noMoreFieldsToAdd", "新增失败，已无可添加的字段"));
     return;
   }
 
   let isRepeat = hasDuplicateObjects(tableFields.value, "outputField");
   if (isRepeat) {
-    proxy.$message.warning("请不要填写重复输出字段");
+    proxy.$message.warning(td("dpp.integration.noRepeatOutputField", "请不要填写重复输出字段"));
     return;
   }
   let names = inputFields.value.map((item) => item.columnName);
@@ -397,7 +397,7 @@ function handleAddField() {
     tableFields.value.some((row) => row.outputField === item)
   );
   if (isOut) {
-    proxy.$message.warning("输出字段不能与已有字段名称重复");
+    proxy.$message.warning(td("dpp.integration.outputFieldCannotDuplicate", "输出字段不能与已有字段名称重复"));
     return;
   }
 
@@ -414,7 +414,7 @@ function handleAddField() {
 }
 function handleAddField2() {
   if (!Array.isArray(inputFields.value) || inputFields.value.length === 0) {
-    proxy.$message.warning("输入字段为空，无法添加字段");
+    proxy.$message.warning(td("dpp.integration.inputFieldEmptyCannotAdd", "输入字段为空，无法添加字段"));
     return;
   }
   // 已添加的字段名
@@ -427,7 +427,7 @@ function handleAddField2() {
   );
 
   if (!nextField) {
-    proxy.$message.warning("已无可添加的字段");
+    proxy.$message.warning(td("dpp.integration.noMoreFieldsAvailable", "已无可添加的字段"));
     return;
   }
 
@@ -473,7 +473,7 @@ function onResolveFields(payload) {
         tableFields.value
       );
       if (isEqual) {
-        proxy.$message.warning("新增失败，当前已是最新字段");
+        proxy.$message.warning(td("dpp.integration.alreadyLatestFields", "新增失败，当前已是最新字段"));
       }
       console.log("父组件：增加所有字段");
       tableFields.value = [];
@@ -615,12 +615,12 @@ const saveData = async () => {
     if (!valid) return;
     // 判断表格是否为空
     if (!tableFields.value || tableFields.value.length === 0) {
-      proxy.$message.warning("校验未通过，请至少添加一个字段");
+      proxy.$message.warning(td("dpp.integration.validateFailedAddAtLeastOne", "校验未通过，请至少添加一个字段"));
       return;
     }
     let isRepeat = hasDuplicateObjects(tableFields.value, "outputField");
     if (isRepeat) {
-      proxy.$message.warning("请不要填写重复输出字段");
+      proxy.$message.warning(td("dpp.integration.noRepeatOutputField", "请不要填写重复输出字段"));
       return;
     }
 
@@ -629,7 +629,7 @@ const saveData = async () => {
       tableFields.value.some((row) => row.outputField === item)
     );
     if (isOut) {
-      proxy.$message.warning("输出字段不能与已有字段名称重复");
+      proxy.$message.warning(td("dpp.integration.outputFieldCannotDuplicate", "输出字段不能与已有字段名称重复"));
       return;
     }
 

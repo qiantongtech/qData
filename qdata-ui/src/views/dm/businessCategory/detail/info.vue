@@ -22,10 +22,10 @@
 </template>
 
 <script setup name="BusinessLayerInfo">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { computed } from "vue";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const props = defineProps({
   businessLayerDetail: {
     type: Object,
@@ -34,10 +34,10 @@ const props = defineProps({
 });
 
 const items = computed(() => [
-  { key: "createBy", label: t('common.texts.createdBy') },
-  { key: "createTime", label: t('common.texts.createdTime'), type: "time" },
-  { key: "updateBy", label: t('common.texts.updatedBy') },
-  { key: "updateTime", label: t('common.texts.updatedTime'), type: "time" },
-  { key: "remark", label: t('common.texts.remark'), span: 24 },
+  { key: "createBy", label: td('common.texts.createdBy', '创建人') },
+  { key: "createTime", label: td('common.texts.createdTime', '创建时间'), type: "time" },
+  { key: "updateBy", label: td('common.texts.updatedBy', '更新人') },
+  { key: "updateTime", label: td('common.texts.updatedTime', '更新时间'), type: "time" },
+  { key: "remark", label: td('common.texts.remark', '备注'), span: 24 },
 ]);
 </script>

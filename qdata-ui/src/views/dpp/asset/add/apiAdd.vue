@@ -17,41 +17,41 @@
 
 <template>
   <el-form-item
-      label="应用名称"
+      :label="td('dpp.asset.add.api.appName')"
       prop="daAssetApi.appName"
-      :rules="[{ required: true, message: '请输入资产描述', trigger: 'blur' }]"
+      :rules="[{ required: true, message: td('dpp.asset.add.api.appNameRequired'), trigger: 'blur' }]"
   >
     <el-input
         v-model="localForm.daAssetApi.appName"
-        placeholder="请输入应用名称"
+        :placeholder="td('dpp.asset.add.api.appNamePlaceholder')"
     />
   </el-form-item>
   <el-form-item
-      label="开发者"
+      :label="td('dpp.asset.add.api.developerName')"
       prop="daAssetApi.developerName"
-      :rules="[{ required: true, message: '请输入开发者', trigger: 'blur' }]"
+      :rules="[{ required: true, message: td('dpp.asset.add.api.developerNameRequired'), trigger: 'blur' }]"
   >
     <el-input
         v-model="localForm.daAssetApi.developerName"
-        placeholder="请输入开发者"
+        :placeholder="td('dpp.asset.add.api.developerNamePlaceholder')"
     />
   </el-form-item>
 
   <el-form-item
-      label="服务地址"
+      :label="td('dpp.asset.add.api.serviceUrl')"
       prop="daAssetApi.url"
-      :rules="[{ required: true, message: '请输入服务地址', trigger: 'blur' }]"
+      :rules="[{ required: true, message: td('dpp.asset.add.api.serviceUrlRequired'), trigger: 'blur' }]"
   >
-    <el-input v-model="localForm.daAssetApi.url" placeholder="请输入服务地址" />
+    <el-input v-model="localForm.daAssetApi.url" :placeholder="td('dpp.asset.add.api.serviceUrlPlaceholder')" />
   </el-form-item>
   <el-form-item
-      label="请求类型"
+      :label="td('dpp.asset.add.api.httpMethod')"
       prop="daAssetApi.httpMethod"
-      :rules="[{ required: true, message: '请输入请求类型', trigger: 'blur' }]"
+      :rules="[{ required: true, message: td('dpp.asset.add.api.httpMethodRequired'), trigger: 'blur' }]"
   >
     <el-select
         v-model="localForm.daAssetApi.httpMethod"
-        placeholder="请选择请求类型"
+        :placeholder="td('dpp.asset.add.api.httpMethodPlaceholder')"
     >
       <el-option
           v-for="dict in da_asset_api_method"
@@ -71,7 +71,7 @@
         label-width="0"
     >
       <div class="btn-style">
-        Header 字段
+        {{ td('dpp.asset.add.api.headerFields') }}
         <el-button
             plain
             type="primary"
@@ -79,7 +79,7 @@
             @click="handleAdd(3)"
             @mousedown="(e) => e.preventDefault()"
         >
-          <i class="iconfont-mini icon-xinzeng mr5"></i>新增参数
+          <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('dpp.asset.add.api.addParam') }}
         </el-button>
       </div>
       <el-table
@@ -92,13 +92,13 @@
           hasChildren: 'hasChildren',
         }"
       >
-        <el-table-column label="序号" width="100" align="left" fixed="left">
+        <el-table-column :label="td('dpp.asset.add.api.index')" width="100" align="left" fixed="left">
           <template #default="{ $index }">
             {{ $index + 1 }}
           </template>
         </el-table-column>
         <el-table-column
-            label="键"
+            :label="td('dpp.asset.add.api.key')"
             fixed="left"
             align="left"
             prop="name"
@@ -109,12 +109,12 @@
                 :prop="`headerList[${findPosi(headerList, row.id)}].name`"
                 :rules="rules.name"
             >
-              <el-input v-model="row.name" placeholder="请输入键名" />
+              <el-input v-model="row.name" :placeholder="td('dpp.asset.add.api.keyNamePlaceholder')" />
             </el-form-item>
           </template>
         </el-table-column>
         <el-table-column
-            :label="t('common.texts.description')"
+            :label="td('common.texts.description')"
             fixed="left"
             align="left"
             prop="remark"
@@ -125,12 +125,12 @@
                 :prop="`headerList[${findPosi(headerList, row.id)}].remark`"
                 :rules="rules.fieldDefault"
             >
-              <el-input v-model="row.remark" :placeholder="t('common.form.descriptionPlaceholder')" />
+              <el-input v-model="row.remark" :placeholder="td('common.form.descriptionPlaceholder')" />
             </el-form-item>
           </template>
         </el-table-column>
         <el-table-column
-            label="值"
+            :label="td('dpp.asset.add.api.value')"
             fixed="left"
             align="left"
             prop="defaultValue"
@@ -141,12 +141,12 @@
                 :prop="`headerList[${findPosi(headerList, row.dataSculptor)}].defaultValue`"
                 :rules="rules.defaultValue"
             >
-              <el-input v-model="row.defaultValue" placeholder="请输入默认值" />
+              <el-input v-model="row.defaultValue" :placeholder="td('dpp.asset.add.api.defaultValuePlaceholder')" />
             </el-form-item>
           </template>
         </el-table-column>
         <el-table-column
-            :label="t('common.texts.operation')"
+            :label="td('common.texts.operation')"
             align="center"
             class-name="small-padding fixed-width"
         >
@@ -157,7 +157,7 @@
                 type="danger"
                 icon="Delete"
                 @click="handleDelete(3, row)"
-            >{{ t('common.button.delete') }}</el-button
+            >{{ td('common.button.delete') }}</el-button
             >
           </template>
         </el-table-column>
@@ -172,7 +172,7 @@
         label-width="0"
     >
       <div class="btn-style">
-        入参字段
+        {{ td('dpp.asset.add.api.inputFields') }}
         <el-button
             plain
             type="primary"
@@ -180,7 +180,7 @@
             @click="handleAdd(1)"
             @mousedown="(e) => e.preventDefault()"
         >
-          <i class="iconfont-mini icon-xinzeng mr5"></i>新增参数
+          <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('dpp.asset.add.api.addParam') }}
         </el-button>
       </div>
 
@@ -195,14 +195,14 @@
           hasChildren: 'hasChildren',
         }"
       >
-        <el-table-column label="序号" width="100" align="left" fixed="left">
+        <el-table-column :label="td('dpp.asset.add.api.index')" width="100" align="left" fixed="left">
           <template #default="{ $index }">
             {{ $index + 1 }}
           </template>
         </el-table-column>
 
         <el-table-column
-            label="参数名称"
+            :label="td('dpp.asset.add.api.paramName')"
             fixed="left"
             align="left"
             prop="name"
@@ -213,13 +213,13 @@
                 :prop="`inputList[${findPosi(inputList, row.id)}].name`"
                 :rules="rules.name"
             >
-              <el-input v-model="row.name" placeholder="请输入参数名称" />
+              <el-input v-model="row.name" :placeholder="td('dpp.asset.add.api.paramNamePlaceholder')" />
             </el-form-item>
           </template>
         </el-table-column>
 
         <el-table-column
-            :label="t('common.texts.description')"
+            :label="td('common.texts.description')"
             fixed="left"
             align="left"
             prop="remark"
@@ -230,13 +230,13 @@
                 :prop="`inputList[${findPosi(inputList, row.id)}].remark`"
                 :rules="rules.fieldDefault"
             >
-              <el-input v-model="row.remark" :placeholder="t('common.form.descriptionPlaceholder')" />
+              <el-input v-model="row.remark" :placeholder="td('common.form.descriptionPlaceholder')" />
             </el-form-item>
           </template>
         </el-table-column>
 
         <el-table-column
-            label="是否为空"
+            :label="td('dpp.asset.add.api.isNull')"
             fixed="left"
             align="left"
             prop="requestFlag"
@@ -257,7 +257,7 @@
           </template>
         </el-table-column>
         <el-table-column
-            label="参数类型"
+            :label="td('dpp.asset.add.api.paramType')"
             fixed="left"
             align="left"
             prop="columnType"
@@ -268,7 +268,7 @@
                 :prop="`inputList[${findPosi(inputList, row.id)}].columnType`"
                 :rules="rules.columnType"
             >
-              <el-select v-model="row.columnType" placeholder="请选择字段类型">
+              <el-select v-model="row.columnType" :placeholder="td('dpp.asset.add.api.paramTypePlaceholder')">
                 <el-option
                     v-for="dict in da_asset_api_column_type"
                     :key="dict.value"
@@ -285,7 +285,7 @@
         </el-table-column>
 
         <el-table-column
-            label="示例值"
+            :label="td('dpp.asset.add.api.exampleValue')"
             fixed="left"
             align="left"
             prop="exampleValue"
@@ -296,13 +296,13 @@
                 :prop="`inputList[${findPosi(inputList, row.id)}].exampleValue`"
                 :rules="rules.fieldDefault"
             >
-              <el-input v-model="row.fieldDefault" placeholder="请输入示例值" />
+              <el-input v-model="row.fieldDefault" :placeholder="td('dpp.asset.add.api.exampleValuePlaceholder')" />
             </el-form-item>
           </template>
         </el-table-column>
 
         <el-table-column
-            label="默认值"
+            :label="td('dpp.asset.add.api.defaultValue')"
             fixed="left"
             align="left"
             prop="defaultValue"
@@ -313,13 +313,13 @@
                 :prop="`inputList[${findPosi(inputList, row.id)}].defaultValue`"
                 :rules="rules.defaultValue"
             >
-              <el-input v-model="row.defaultValue" placeholder="请输入默认值" />
+              <el-input v-model="row.defaultValue" :placeholder="td('dpp.asset.add.api.defaultValuePlaceholder')" />
             </el-form-item>
           </template>
         </el-table-column>
 
         <el-table-column
-            :label="t('common.texts.operation')"
+            :label="td('common.texts.operation')"
             align="center"
             class-name="small-padding fixed-width"
         >
@@ -329,14 +329,14 @@
                 type="primary"
                 icon="Plus"
                 @click="handleAddRow(1, row)"
-            >{{ t('common.button.add') }}</el-button
+            >{{ td('common.button.add') }}</el-button
             >
             <el-button
                 link
                 type="danger"
                 icon="Delete"
                 @click="handleDelete(1, row)"
-            >{{ t('common.button.delete') }}</el-button
+            >{{ td('common.button.delete') }}</el-button
             >
           </template>
         </el-table-column>
@@ -350,7 +350,7 @@
         label-width="0"
     >
       <div class="btn-style">
-        出参字段
+        {{ td('dpp.asset.add.api.outputFields') }}
         <el-button
             plain
             type="primary"
@@ -358,7 +358,7 @@
             @click="handleAdd(2)"
             @mousedown="(e) => e.preventDefault()"
         >
-          <i class="iconfont-mini icon-xinzeng mr5"></i>新增参数
+          <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('dpp.asset.add.api.addParam') }}
         </el-button>
       </div>
 
@@ -372,13 +372,13 @@
           hasChildren: 'hasChildren',
         }"
       >
-        <el-table-column label="序号" width="100" align="left" fixed="left">
+        <el-table-column :label="td('dpp.asset.add.api.index')" width="100" align="left" fixed="left">
           <template #default="{ $index }">
             {{ $index + 1 }}
           </template>
         </el-table-column>
         <el-table-column
-            label="参数名称"
+            :label="td('dpp.asset.add.api.paramName')"
             fixed="left"
             align="left"
             prop="name"
@@ -389,13 +389,13 @@
                 :prop="`outputList[${findPosi(outputList, row.id)}].name`"
                 :rules="rules.name"
             >
-              <el-input v-model="row.name" placeholder="请输入参数名称" />
+              <el-input v-model="row.name" :placeholder="td('dpp.asset.add.api.paramNamePlaceholder')" />
             </el-form-item>
           </template>
         </el-table-column>
 
         <el-table-column
-            :label="t('common.texts.description')"
+            :label="td('common.texts.description')"
             fixed="left"
             align="left"
             prop="remark"
@@ -406,20 +406,20 @@
                 :prop="`outputList[${findPosi(outputList, row.id)}].remark`"
                 :rules="rules.fieldDefault"
             >
-              <el-input v-model="row.remark" :placeholder="t('common.form.descriptionPlaceholder')" />
+              <el-input v-model="row.remark" :placeholder="td('common.form.descriptionPlaceholder')" />
             </el-form-item>
           </template>
         </el-table-column>
 
         <el-table-column
-            label="数据类型"
+            :label="td('dpp.asset.add.api.dataType')"
             fixed="left"
             align="left"
             prop="columnType"
             :show-overflow-tooltip="{ effect: 'light' }"
         >
           <template #default="{ row, $index }">
-            <el-select v-model="row.columnType" placeholder="请选择字段类型">
+            <el-select v-model="row.columnType" :placeholder="td('dpp.asset.add.api.paramTypePlaceholder')">
               <el-option
                   v-for="dict in da_asset_api_column_type"
                   :key="dict.value"
@@ -434,7 +434,7 @@
         </el-table-column>
 
         <el-table-column
-            label="示例值"
+            :label="td('dpp.asset.add.api.exampleValue')"
             fixed="left"
             align="left"
             prop="exampleValue"
@@ -445,13 +445,13 @@
                 :prop="`outputList[${findPosi(outputList, row.id)}].exampleValue`"
                 :rules="rules.fieldDefault"
             >
-              <el-input v-model="row.exampleValue" placeholder="请输入示例值" />
+              <el-input v-model="row.exampleValue" :placeholder="td('dpp.asset.add.api.exampleValuePlaceholder')" />
             </el-form-item>
           </template>
         </el-table-column>
 
         <el-table-column
-            :label="t('common.texts.operation')"
+            :label="td('common.texts.operation')"
             align="center"
             class-name="small-padding fixed-width"
         >
@@ -461,14 +461,14 @@
                 type="primary"
                 icon="Plus"
                 @click="handleAddRow(2, row)"
-            >{{ t('common.button.add') }}</el-button
+            >{{ td('common.button.add') }}</el-button
             >
             <el-button
                 link
                 type="danger"
                 icon="Delete"
                 @click="handleDelete(2, row)"
-            >{{ t('common.button.delete') }}</el-button
+            >{{ td('common.button.delete') }}</el-button
             >
           </template>
         </el-table-column>
@@ -478,11 +478,11 @@
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { ref, reactive, computed, watch, getCurrentInstance } from "vue";
 import { v4 as uuidv4 } from "uuid";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 // 接收父组件传递的form对象（其中包含 daAssetApiParamList）和其他属性
 const props = defineProps({
   form: Object,
@@ -572,9 +572,9 @@ const handleAdd = (type) => {
 };
 
 const rules = {
-  name: [{ required: true, message: "请输入参数名称", trigger: "blur" }],
+  name: [{ required: true, message: td('dpp.asset.add.api.paramNameRequired'), trigger: "blur" }],
   columnType: [
-    { required: true, message: "请选择参数类型", trigger: "change" },
+    { required: true, message: td('dpp.asset.add.api.paramTypeRequired'), trigger: "change" },
   ],
 };
 // 行新增操作（在已有记录下增加子节点）

@@ -25,13 +25,13 @@
         <el-row :gutter="2">
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ t('common.texts.number') }}</div>
+              <div class="infotop-row-lable">{{ td('common.texts.number') }}</div>
               <div class="infotop-row-value">{{ dpDocumentDetail.id }}</div>
             </div>
           </el-col>
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">标准号</div>
+              <div class="infotop-row-lable">{{ td('dp.document.standardCode') }}</div>
               <div class="infotop-row-value">
                 {{ dpDocumentDetail.code || '-' }}
               </div>
@@ -39,7 +39,7 @@
           </el-col>
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">标准类目</div>
+              <div class="infotop-row-lable">{{ td('dp.document.standardCategory') }}</div>
               <div class="infotop-row-value">
                 {{ dpDocumentDetail.catName || '-' }}
               </div>
@@ -47,7 +47,7 @@
           </el-col>
           <el-col :span="24" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ t('common.texts.description') }}</div>
+              <div class="infotop-row-lable">{{ td('common.texts.description') }}</div>
               <div class="infotop-row-value">
                 {{ dpDocumentDetail.description || "-" }}
               </div>
@@ -56,7 +56,7 @@
 
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">发布机构名称</div>
+              <div class="infotop-row-lable">{{ td('dp.document.issuingAgency') }}</div>
               <div class="infotop-row-value">
                 {{ dpDocumentDetail.issuingAgency || '-' }}
               </div>
@@ -64,7 +64,7 @@
           </el-col>
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">版本号</div>
+              <div class="infotop-row-lable">{{ td('dp.document.version') }}</div>
               <div class="infotop-row-value">
                 {{ dpDocumentDetail.version || '-' }}
               </div>
@@ -72,13 +72,13 @@
           </el-col>
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">标准状态</div>
+              <div class="infotop-row-lable">{{ td('dp.document.standardStatus') }}</div>
               <dict-tag :options="dp_document_status" :value="dpDocumentDetail.status" />
             </div>
           </el-col>
           <!-- <el-col :span="24">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ t('common.texts.remark') }}</div>
+              <div class="infotop-row-lable">{{ td('common.texts.remark') }}</div>
               <div class="infotop-row-value">
                 {{ dpDocumentDetail.remark || "-" }}
               </div>
@@ -108,14 +108,14 @@
 </template>
 
 <script setup name="DpDocument">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { getDpDocument } from "@/api/dp/document/document";
 import { useRoute } from 'vue-router';
 import BasicInfo from "./info.vue";
 import model from "./model.vue";
 import dataElem from "./dataElem.vue";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { column_type, sys_disable, dp_document_status } = proxy.useDict(
   "column_type",
@@ -124,12 +124,12 @@ const { column_type, sys_disable, dp_document_status } = proxy.useDict(
 );
 const activeName = ref('0')
 let tabPanes = ref([
-  { label: "逻辑模型", name: "0", component: model },
+  { label: td('dp.document.logicalModel'), name: "0", component: model },
   {
-    label: "数据元", name: "1", component: dataElem
+    label: td('dp.document.dataElement'), name: "1", component: dataElem
   },
-  { label: '代码表', name: '2', component: dataElem },
-  { label: "详细信息", name: "4", component: BasicInfo },
+  { label: td('dp.document.codeTable'), name: '2', component: dataElem },
+  { label: td('dp.document.detailInfo'), name: "4", component: BasicInfo },
 
 ])
 const handleClick = (tab, event) => {

@@ -25,7 +25,7 @@
         <el-row :gutter="2">
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ t('common.texts.number') }}</div>
+              <div class="infotop-row-lable">{{ td('common.texts.number') }}</div>
               <div class="infotop-row-value">
                 {{ form.id || "-" }}
               </div>
@@ -33,7 +33,7 @@
           </el-col>
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">英文名称</div>
+              <div class="infotop-row-lable">{{ td('dp.dataElem.nameEn') }}</div>
               <div class="infotop-row-value">
                 {{ form.engName || "-" }}
               </div>
@@ -49,7 +49,7 @@
           </el-col> -->
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">类型</div>
+              <div class="infotop-row-lable">{{ td('dp.dataElem.type') }}</div>
               <div class="infotop-row-value">
                 <dict-tag :options="dp_data_elem_code_type" :value="form.type" />
               </div>
@@ -57,7 +57,7 @@
           </el-col>
           <el-col :span="24" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ t('common.texts.description') }}</div>
+              <div class="infotop-row-lable">{{ td('common.texts.description') }}</div>
               <div class="infotop-row-value">
                 {{ form.description || "-" }}
               </div>
@@ -65,7 +65,7 @@
           </el-col>
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">数据元类目</div>
+              <div class="infotop-row-lable">{{ td('dp.dataElem.catCode') }}</div>
               <div class="infotop-row-value">
                 {{ form.catName || "-" }}
               </div>
@@ -73,7 +73,7 @@
           </el-col>
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">字段类型</div>
+              <div class="infotop-row-lable">{{ td('dp.dataElem.columnType') }}</div>
               <div class="infotop-row-value">
                 <dict-tag :options="column_type" :value="form.columnType" />
               </div>
@@ -81,7 +81,7 @@
           </el-col>
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ t('common.texts.status') }}</div>
+              <div class="infotop-row-lable">{{ td('common.texts.status') }}</div>
               <div class="infotop-row-value">
                 <dict-tag :options="sys_disable" :value="form.status" />
               </div>
@@ -94,16 +94,16 @@
     <!-- 标签页部分 -->
     <div class="pagecont-bottom">
       <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
-        <el-tab-pane label="关联清洗规则" name="1" lazy>
+        <el-tab-pane :label="td('dp.dataElem.detail.cleanRule')" name="1" lazy>
           <cleanRule :dataElemId="dataElemId" dataType="2" />
         </el-tab-pane>
-        <el-tab-pane label="关联稽查规则" name="2" lazy>
+        <el-tab-pane :label="td('dp.dataElem.detail.auditRule')" name="2" lazy>
           <auditRule :dataElemId="dataElemId" dataType="1" />
         </el-tab-pane>
-        <el-tab-pane label="关联信息" name="3" lazy>
+        <el-tab-pane :label="td('dp.dataElem.detail.relationInfo')" name="3" lazy>
           <asset />
         </el-tab-pane>
-        <el-tab-pane label="详细信息" name="5" lazy>
+        <el-tab-pane :label="td('dp.dataElem.detail.detailInfo')" name="5" lazy>
           <info :daDiscoveryTaskDetail="form" />
 
         </el-tab-pane>
@@ -113,7 +113,7 @@
 </template>
 
 <script setup name="dataElemDetailDialog">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { onMounted } from "vue";
 
 const { proxy } = getCurrentInstance();
@@ -126,7 +126,7 @@ import asset from "@/views/dp/dataElem/detail/components/asset.vue";
 import info from "@/views/dp/dataElem/detail/column/info.vue";
 import { useRoute } from "vue-router";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { column_type, sys_disable, dp_data_elem_code_type } = proxy.useDict(
   "column_type",
   "sys_disable",

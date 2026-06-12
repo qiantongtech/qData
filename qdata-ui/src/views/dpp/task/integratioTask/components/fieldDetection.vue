@@ -16,25 +16,24 @@
 -->
 
 <template>
-    <el-dialog v-model="visible" :draggable="true" title="字段冲突处理" :show-close="false" destroy-on-close
+    <el-dialog v-model="visible" :draggable="true" :title="td('dpp.integration.fieldConflictTitle', '字段冲突处理')" :show-close="false" destroy-on-close
         class="MessageBox">
         <div style="padding: 10px 0;">
-            已有 {{ existingFields.length }} 个字段，检测到
-            {{ Math.max(0, newFields.length - existingFields.length) }} 个新字段，如何处理？
+            {{ td('dpp.integration.fieldConflictMsg', '已有 {existing} 个字段，检测到 {new} 个新字段，如何处理？').replace('{existing}', existingFields.length).replace('{new}', Math.max(0, newFields.length - existingFields.length)) }}
         </div>
         <template #footer>
-            <el-button type="warning" @click="handleClick('addNewOnly')">增加新的</el-button>
-            <el-button type="primary" @click="handleClick('addAll')">增加所有</el-button>
-            <el-button type="danger" @click="handleClick('clearAndAddAll')">清除并增加所有</el-button>
-            <el-button @click="onCancel">{{ t('common.button.cancel') }}</el-button>
+            <el-button type="warning" @click="handleClick('addNewOnly')">{{ td('dpp.integration.addNewOnly', '增加新的') }}</el-button>
+            <el-button type="primary" @click="handleClick('addAll')">{{ td('dpp.integration.addAll', '增加所有') }}</el-button>
+            <el-button type="danger" @click="handleClick('clearAndAddAll')">{{ td('dpp.integration.clearAndAddAll', '清除并增加所有') }}</el-button>
+            <el-button @click="onCancel">{{ td('common.button.cancel') }}</el-button>
         </template>
     </el-dialog>
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const props = defineProps({
     modelValue: Boolean,
     existingFields: Array,

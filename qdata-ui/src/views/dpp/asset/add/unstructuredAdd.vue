@@ -18,16 +18,16 @@
 <template>
   <!-- 非结构化数据 -->
   <qt-form-item
-      label="数据连接名称"
+      :label="td('dpp.asset.add.table.datasourceName')"
       prop="datasourceId"
       :rules="[
-      { required: true, message: '请选择数据连接名称', trigger: 'change' },
+      { required: true, message: td('dpp.asset.add.table.datasourceNameRequired'), trigger: 'change' },
     ]"
-      :tip="{ content: '选择该资产所依赖的数据连接，即数据源实例。' }"
+      :tip="{ content: td('dpp.asset.add.table.datasourceNameTip') }"
   >
     <DatasourceList
         v-model="localForm.datasourceId"
-        placeholder="请选择数据连接名称"
+        :placeholder="td('dpp.asset.add.table.datasourceNamePlaceholder')"
         @change="handleDatasourceChange"
         filterable
         :loading="loading"
@@ -39,28 +39,28 @@
     />
   </qt-form-item>
 
-  <el-form-item label="数据连接类型" prop="datasourceType">
+  <el-form-item :label="td('dpp.asset.add.table.datasourceType')" prop="datasourceType">
     <el-input
         v-model="localForm.datasourceType"
         disabled
-        placeholder="请选择数据连接类型"
+        :placeholder="td('dpp.asset.add.table.datasourceTypePlaceholder')"
     />
   </el-form-item>
 
   <el-form-item
-      label="文件路径"
+      :label="td('dpp.asset.add.unstructured.filePath')"
       prop="filePath"
       class="row-full"
-      :rules="[{ required: true, message: '请选择文件路径', trigger: 'blur' }]"
+      :rules="[{ required: true, message: td('dpp.asset.add.unstructured.filePathRequired'), trigger: 'blur' }]"
   >
     <el-input
         style="width: 92%"
         v-model="localForm.filePath"
-        placeholder="请输入文件路径"
+        :placeholder="td('dpp.asset.add.unstructured.filePathPlaceholder')"
         disabled
     />
     <el-button type="primary" @click="handleSearch" icon="Search"
-    >搜索</el-button
+    >{{ td('dpp.asset.add.unstructured.search') }}</el-button
     >
   </el-form-item>
 
@@ -89,7 +89,7 @@
 
   <el-dialog
       class="file-dialog"
-      title="选择文件"
+      :title="td('dpp.asset.add.unstructured.selectFile')"
       width="900px"
       v-model="visibleDialog"
       draggable
@@ -111,14 +111,14 @@
             :on-error="handleUploadError"
             :show-file-list="false"
         >
-          <el-button type="primary" size="small">上传文件</el-button>
+          <el-button type="primary" size="small">{{ td('dpp.asset.add.unstructured.uploadFile') }}</el-button>
         </el-upload>
         <div class="back">
           <el-text class="back-btn" type="primary" @click="handleBack">
             <el-icon>
               <Back />
             </el-icon>
-            <span style="margin-left: 5px">{{ t('common.button.return') }}</span>
+            <span style="margin-left: 5px">{{ td('common.button.return') }}</span>
           </el-text>
           <div class="catalogue">
             <!-- 默认展示根目录 -->
@@ -156,7 +156,7 @@
       >
         <el-table-column type="selection" width="55" :selectable="selectable" />
         <el-table-column
-            label="文件名"
+            :label="td('dpp.asset.add.unstructured.fileName')"
             prop="name"
             :show-overflow-tooltip="{ effect: 'light' }"
         >
@@ -178,7 +178,7 @@
           </template>
         </el-table-column>
         <el-table-column
-            label="文件大小"
+            :label="td('dpp.asset.add.unstructured.fileSize')"
             prop="size"
             :show-overflow-tooltip="{ effect: 'light' }"
             align="left"
@@ -192,7 +192,7 @@
           </template>
         </el-table-column>
         <el-table-column
-            :label="t('common.texts.updatedTime')"
+            :label="td('common.texts.updatedTime')"
             prop="lastModified"
             :show-overflow-tooltip="{ effect: 'light' }"
             align="left"
@@ -211,9 +211,9 @@
     </div>
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="cancel">{{ t('common.button.cancel') }}</el-button>
+        <el-button size="mini" @click="cancel">{{ td('common.button.cancel') }}</el-button>
         <el-button type="primary" size="mini" @click="submitForm"
-        >{{ t('common.button.confirm') }}</el-button
+        >{{ td('common.button.confirm') }}</el-button
         >
       </div>
     </template>
@@ -221,14 +221,14 @@
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { listDaDatasource } from "@/api/da/dataSource/dataSource.js";
 import { getFileList } from "@/api/da/asset/asset.js";
 import { getToken } from "@/utils/auth.js";
 import useUserStore from "@/store/system/user.js";
 import DatasourceList from '@/components/Datasource/List.vue'
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const userStore = useUserStore();
 const emit = defineEmits(["update:form"]);
 const { proxy } = getCurrentInstance();
@@ -275,7 +275,7 @@ const handleFileUploadProgress = () => {
 function handleUploadError(err) {
   console.log(err, "err");
   upload.isUploading = false;
-  proxy.$modal.msgWarning("上传文件失败，请联系管理员");
+  proxy.$modal.msgWarning(td('dpp.asset.add.unstructured.uploadFailed'));
 }
 /** 文件上传成功处理 */
 const handleFileSuccess = (response, file) => {
@@ -283,9 +283,9 @@ const handleFileSuccess = (response, file) => {
   upload.isUploading = false;
   proxy.$refs["uploadRef"].handleRemove(file);
   if (response.code == 200) {
-    proxy.$modal.msgSuccess("上传结果：" + response.msg);
+    proxy.$modal.msgSuccess(td('dpp.asset.add.unstructured.uploadResult') + response.msg);
   } else {
-    proxy.$modal.msgWarning("上传结果：" + response.msg);
+    proxy.$modal.msgWarning(td('dpp.asset.add.unstructured.uploadResult') + response.msg);
   }
   getList();
 };
@@ -347,37 +347,37 @@ const handleDatasourceChange = async (id,selected) => {
 const fileDesc = ref([
   {
     key: "name",
-    label: "文件名",
+    label: td('dpp.asset.add.unstructured.fileName'),
     value: "-",
   },
   {
     key: "type",
-    label: "文件类型",
+    label: td('dpp.asset.add.unstructured.fileType'),
     value: "-",
   },
   {
     key: "size",
-    label: "文件大小",
+    label: td('dpp.asset.add.unstructured.fileSize'),
     value: "-",
   },
   {
     key: "path",
-    label: "文件路径",
+    label: td('dpp.asset.add.unstructured.filePath'),
     value: "-",
   },
   {
     key: "createTime",
-    label: t('common.texts.createdTime'),
+    label: td('common.texts.createdTime'),
     value: "-",
   },
   {
     key: "lastModified",
-    label: "修改时间",
+    label: td('dpp.asset.add.unstructured.modifiedTime'),
     value: "-",
   },
   {
     key: "time",
-    label: "访问时间",
+    label: td('dpp.asset.add.unstructured.accessTime'),
     value: "-",
   },
 ]);
@@ -398,7 +398,7 @@ const handleSearch = () => {
     visibleDialog.value = true;
     getList();
   } else {
-    return proxy.$modal.msgWarning("未选择源数据连接名称，请选择完成后重试");
+    return proxy.$modal.msgWarning(td('dpp.asset.add.unstructured.noDatasource'));
   }
 };
 // 返回上级目录
@@ -462,7 +462,7 @@ const handleSelectionChange = (selection) => {
   } else if (selection.length == 1) {
     single.value = selection[0];
   } else {
-    return proxy.$modal.msgWarning("数量限制，只能选择一个文件");
+    return proxy.$modal.msgWarning(td('dpp.asset.add.unstructured.singleFileLimit'));
   }
 };
 const handleRowClick = (row) => {
@@ -479,7 +479,7 @@ const cancel = () => {
 };
 const submitForm = () => {
   if (!single.value.path) {
-    return proxy.$modal.msgWarning(`未选择文件，请选择文件后重试`);
+    return proxy.$modal.msgWarning(td('dpp.asset.add.unstructured.noFileSelected'));
   }
   //   赋值文件路径，文件描述
   Object.assign(localForm.value, {

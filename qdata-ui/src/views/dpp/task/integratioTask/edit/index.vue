@@ -26,7 +26,7 @@
             style="width: 20px; margin-right: 5px; cursor: pointer"
           />
         </el-tooltip>
-        {{ nodeData.name !== null ? nodeData.name : "集成任务" }}
+        {{ nodeData.name !== null ? nodeData.name : td('dpp.integratioTask.integrationTask', '集成任务') }}
       </div>
 
       <div class="head-btns">
@@ -37,7 +37,7 @@
           @click="handleExportData(false)"
           v-if="!route.query.info"
         >
-          <img src="@/assets/dpp/etl/title-act (1).svg" alt="" />任务保存
+          <img src="@/assets/dpp/etl/title-act (1).svg" alt="" />{{ td('dpp.developTaskDetail.taskSave', '任务保存') }}
         </el-button>
         <el-button
           type="primary"
@@ -51,7 +51,7 @@
             class="act"
             src="@/assets/dpp/etl/title-act (3).svg"
             alt=""
-          />任务取消
+          />{{ td('dpp.developTaskDetail.taskCancel', '任务取消') }}
         </el-button>
         <el-button
           type="primary"
@@ -66,7 +66,7 @@
             class="act"
             src="@/assets/dpp/etl/title-act (4).svg"
             alt=""
-          />任务配置
+          />{{ td('dpp.developTaskDetail.taskConfig', '任务配置') }}
         </el-button>
         <el-button
           type="primary"
@@ -81,7 +81,7 @@
             class="act"
             src="@/assets/dpp/etl/title-act (4).svg"
             alt=""
-          />任务详情
+          />{{ td('dpp.developTaskDetail.taskDetail', '任务详情') }}
         </el-button>
         <el-button
           type="primary"
@@ -96,7 +96,7 @@
             class="act"
             src="@/assets/dpp/etl/title-act (2).svg"
             alt=""
-          />任务检查
+          />{{ td('dpp.integratioTask.taskCheck', '任务检查') }}
         </el-button>
         <!-- <el-button type="primary" size="small" @click="selectTab('log')">执行一下</el-button> -->
       </div>
@@ -205,7 +205,7 @@
     />
     <add
       :visible="taskConfigDialogVisible"
-      :title="!route.query.info ? '修改任务配置' : '任务详情'"
+      :title="!route.query.info ? td('dpp.developTaskDetail.editTaskConfig', '修改任务配置') : td('dpp.developTaskDetail.taskDetail', '任务详情')"
       @update:visible="taskConfigDialogVisible = $event"
       @save="handletaskConfig"
       :data="nodeData"
@@ -217,7 +217,7 @@
   </div>
 </template>
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { Graph } from "@antv/x6";
 import { Dnd } from "@antv/x6-plugin-dnd";
 import { baseConfig, cuPort, typeList, toolbar } from "@/utils/graph";
@@ -282,7 +282,7 @@ import {
   renameRuleToRuleConfig,
 } from "@/views/dpp/utils/opBase";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const route = useRoute();
 const router = useRouter();
@@ -437,7 +437,7 @@ function getDeptTree() {
     var children = proxy.handleTree(response.data, "id", "parentId");
     deptOptions.value = [
       {
-        name: "数据集成类目",
+        name: td('dpp.integratioTask.dataIntegrationCategory', '数据集成类目'),
         value: "",
         id: 0,
         children: children,
@@ -479,7 +479,7 @@ const handleFormSubmit = async (nodeData = {}) => {
   if (shouldAbortByName(graph, nodeData)) {
     drawer.value = true;
     proxy.$message.warning(
-      `节点名称“${currentNode.value.data.name}”已存在，请修改后再保存`
+      td('dpp.integratioTask.nodeNameExists', '节点名称') + `”${currentNode.value.data.name}”` + td('dpp.integratioTask.nodeNameExistsSuffix', '已存在，请修改后再保存')
     );
     return;
   }
@@ -550,7 +550,7 @@ const handleFormSubmit = async (nodeData = {}) => {
   if (needConfirm && type == 1) {
     try {
       await ElMessageBox.confirm(
-        "修改字段将会同时清空所有子节点的字段配置，是否确认继续？",
+        td('dpp.integratioTask.clearChildNodesWarning', '修改字段将会同时清空所有子节点的字段配置，是否确认继续？'),
         { type: "warning", distinguishCancelAndClose: true }
       );
     } catch (e) {
@@ -655,7 +655,7 @@ const handleExportData = async (localSave) => {
     if (res.code == "200") {
       handleSuccess();
     } else {
-      proxy.$modal.msgWarning("操作失败，请联系管理员");
+      proxy.$modal.msgWarning(td('dpp.integratioTask.operationFailed', '操作失败，请联系管理员'));
     }
   } finally {
     loading.value = false;
@@ -669,7 +669,7 @@ const hasTaskConfig = (nodeData) => {
 const handleSuccess = () => {
   taskConfigDialogVisible.value = false;
   hasUnsavedChanges.value = false;
-  const message = t('common.message.msgOpSuccess');
+  const message = td('common.message.msgOpSuccess', '操作成功');
   router.push("/dpp/task/integratioTask");
   proxy.$modal.msgSuccess(message);
 };
@@ -687,9 +687,9 @@ const startDrag = (e, treeNode, data) => {
 
   if (treeNode.level === 2) {
     if (route.query?.info)
-      return proxy.$modal.msgWarning("不可编辑，当前页面只能查看");
+      return proxy.$modal.msgWarning(td('dpp.integratioTask.nodeNotEditable', '不可编辑，当前页面只能查看'));
     if (!data.componentType)
-      return proxy.$modal.msgWarning("正在开发中，敬请期待");
+      return proxy.$modal.msgWarning(td('dpp.integratioTask.nodeDeveloping', '正在开发中，敬请期待'));
     const node = createDataNode(graph, data);
     dnd.start(node, e);
   }
@@ -848,9 +848,9 @@ async function handleNodeAdded({ node }) {
 // 处理已有节点的情况
 function handleExistingNode(node) {
   if (node.data.taskParams.type == 2) {
-    proxy.$message.warning(`只能有一个输出组件！`);
+    proxy.$message.warning(td('dpp.integratioTask.onlyOneOutputComponent', '只能有一个输出组件！'));
   } else if (node.data.taskParams.type == "1") {
-    proxy.$message.warning(`只能有一个输入组件！`);
+    proxy.$message.warning(td('dpp.integratioTask.onlyOneInputComponent', '只能有一个输入组件！'));
   }
   graph.removeNode(node.id);
 }
@@ -877,7 +877,7 @@ function togglePortsVisibility(visible) {
  */
 function handleDeleteCells(graph, cells, menuController) {
   if (!cells || cells.length === 0) {
-    ElMessageBox.warning("操作失败，没有选中要删除的节点或连线");
+    ElMessageBox.warning(td('dpp.integratioTask.deleteNothingSelected', '操作失败，没有选中要删除的节点或连线'));
     return;
   }
 
@@ -885,7 +885,7 @@ function handleDeleteCells(graph, cells, menuController) {
   const isEdge = target.isEdge?.();
   const isNode = target.isNode?.();
 
-  let message = "删除该连线将同时清空其所有子节点的字段配置，是否确认继续？";
+  let message = td('dpp.integratioTask.deleteLineWarning', '删除该连线将同时清空其所有子节点的字段配置，是否确认继续？');
 
   let sourceNode = null;
 
@@ -896,17 +896,17 @@ function handleDeleteCells(graph, cells, menuController) {
     const hasChildNodes = childNodes.length > 0;
 
     message = hasChildNodes
-      ? "删除该节点将同时清空其所有子节点的字段配置，是否确认继续？"
-      : "是否确认删除该节点？";
+      ? td('dpp.integratioTask.deleteNodeWarning', '删除该节点将同时清空其所有子节点的字段配置，是否确认继续？')
+      : td('dpp.integratioTask.confirmDeleteNode', '是否确认删除该节点？');
   }
 
   if (isEdge) {
     sourceNode = target.getSourceCell?.();
   }
 
-  ElMessageBox.confirm(message, "确认删除", {
-    confirmButtonText: "确认",
-    cancelButtonText: t('common.button.cancel'),
+  ElMessageBox.confirm(message, td('dpp.integratioTask.confirmDelete', '确认删除'), {
+    confirmButtonText: td('dpp.integratioTask.confirm', '确认'),
+    cancelButtonText: td('common.button.cancel', '取消'),
     type: "warning",
   })
     .then(() => {
@@ -951,14 +951,14 @@ function handleNodeContextMenu({ e, node, edge, type = 0 }) {
 
   const menuItems = [
     {
-      label: "删除节点",
+      label: td('dpp.integratioTask.deleteNode', '删除节点'),
       action: () => {
         // 这里传入单个节点或边的数组，menuController 传进去供关闭菜单用
         handleDeleteCells(graph, [type === 0 ? node : edge], menuController);
       },
     },
     {
-      label: "编辑节点",
+      label: td('dpp.integratioTask.editNode', '编辑节点'),
       action: () => {
         handleNodeDblClick({ node }, "edit");
         menuController?.hide();
@@ -968,13 +968,13 @@ function handleNodeContextMenu({ e, node, edge, type = 0 }) {
 
   if (node.data.taskParams.type != 1) {
     menuItems.push({
-      label: "显示输入字段",
+      label: td('dpp.integratioTask.showInputFields', '显示输入字段'),
       action: () => {
         const input = node.data.taskParams.inputFields;
         if (!Array.isArray(input) || input.length == 0) {
-          ElMessage.warning("无法找到输入字段");
+          ElMessage.warning(td('dpp.integratioTask.cannotFindInputFields', '无法找到输入字段'));
         } else {
-          openDialog(input, node, "输入字段");
+          openDialog(input, node, td('dpp.integratioTask.inputFields', '输入字段'));
         }
         menuController?.hide();
       },
@@ -982,13 +982,13 @@ function handleNodeContextMenu({ e, node, edge, type = 0 }) {
   }
 
   menuItems.push({
-    label: "显示输出字段",
+    label: td('dpp.integratioTask.showOutputFields', '显示输出字段'),
     action: () => {
       const output = node.data.taskParams.outputFields;
       if (!Array.isArray(output) || output.length === 0) {
-        ElMessage.warning("无法找到输出字段");
+        ElMessage.warning(td('dpp.integratioTask.cannotFindOutputFields', '无法找到输出字段'));
       } else {
-        openDialog(output, node, "输出字段");
+        openDialog(output, node, td('dpp.integratioTask.outputFields', '输出字段'));
       }
       menuController?.hide();
     },
@@ -1011,7 +1011,7 @@ function handleEdgeConnected({ edge }) {
     // 检查源节点和目标节点是否相同
     if (source === target) {
       graph.removeEdge(edge); // 移除边
-      proxy.$modal.msgWarning("连接错误，节点不能连接到自己");
+      proxy.$modal.msgWarning(td('dpp.integratioTask.connectionErrorSelf', '连接错误，节点不能连接到自己'));
       return;
     }
 
@@ -1022,14 +1022,14 @@ function handleEdgeConnected({ edge }) {
     // 类型 1 不能作为目标节点
     if (targetType == 1) {
       graph.removeEdge(edge); // 移除边
-      proxy.$modal.msgWarning("连接错误，输入组件不能被连接");
+      proxy.$modal.msgWarning(td('dpp.integratioTask.connectionErrorInput', '连接错误，输入组件不能被连接'));
       return;
     }
 
     // 类型 2 不能作为输入节点（源节点）
     if (sourceType == 2) {
       graph.removeEdge(edge); // 移除边
-      proxy.$modal.msgWarning("连接错误，输出组件不能连接到其他组件");
+      proxy.$modal.msgWarning(td('dpp.integratioTask.connectionErrorOutput', '连接错误，输出组件不能连接到其他组件'));
       return;
     }
 
@@ -1040,7 +1040,7 @@ function handleEdgeConnected({ edge }) {
         .filter((e) => e.getTargetCell() === target);
       if (targetEdges.length > 1) {
         graph.removeEdge(edge); // 移除边
-        proxy.$modal.msgWarning("连接错误，目标节点只能作为输出连接一次");
+        proxy.$modal.msgWarning(td('dpp.integratioTask.connectionErrorOutputOnce', '连接错误，目标节点只能作为输出连接一次'));
         return;
       }
     }
@@ -1072,11 +1072,11 @@ function updateTargetNodeData(source, target, edge) {
 
   if (needBindCleanRule) {
     ElMessageBox.confirm(
-      "是否要给转换组件添加输入组件绑定的清洗规则？",
-      t('common.message.prompt'),
+      td('dpp.integratioTask.addCleanRulePrompt', '是否要给转换组件添加输入组件绑定的清洗规则？'),
+      td('common.message.prompt', '提示'),
       {
-        confirmButtonText: "是",
-        cancelButtonText: "否",
+        confirmButtonText: td('dpp.integratioTask.yes', '是'),
+        cancelButtonText: td('dpp.integratioTask.no', '否'),
         type: "warning",
       }
     )
@@ -1086,7 +1086,7 @@ function updateTargetNodeData(source, target, edge) {
           target.data.taskParams.inputFields
         );
         console.log("🚀 ~ updateTargetNodeData ~ result:", result);
-        proxy.$message.success(`添加清洗规则 ${result?.length || 0} 条`);
+        proxy.$message.success(td('dpp.integratioTask.cleanRuleAdded', '添加清洗规则') + ` ${result?.length || 0} ` + td('dpp.integratioTask.cleanRuleAddedSuffix', '条'));
         // 给目标节点赋值
         if (target.data?.taskParams) {
           target.data.taskParams.tableFields = result;
@@ -1104,7 +1104,7 @@ function handleEdgeContextMenu(event) {
   let menuController = null;
   const menuItems = [
     {
-      label: "删除连接线",
+      label: td('dpp.integratioTask.deleteLine', '删除连接线'),
       action: () => {
         handleDeleteCells(graph, [edge], menuController);
       },
@@ -1129,7 +1129,7 @@ function handleNodeDblClick({ node }, type = "edit") {
 // 重置操作逻辑
 const handleCancel = () => {
   proxy.$modal
-    .confirm(`点击重置将清除所有未保存的更改，您确定要继续吗？`)
+    .confirm(td('dpp.integratioTask.resetWarning', '点击重置将清除所有未保存的更改，您确定要继续吗？'))
     .then(() => {
       // 刷新当前页签
       proxy.$tab.refreshPage(route);
@@ -1188,11 +1188,11 @@ onBeforeRouteLeave((to, from, next) => {
   // 检查是否有未保存的更改
   if (hasUnsavedChanges.value) {
     ElMessageBox.confirm(
-      "您已经编辑部分任务内容，是否放弃已编辑内容？", // 提示信息
-      t('common.message.prompt'), // 标题
+      td('dpp.integratioTask.discardWarning', '您已经编辑部分任务内容，是否放弃已编辑内容？'), // 提示信息
+      td('common.message.prompt', '提示'), // 标题
       {
-        confirmButtonText: t('common.button.save'), // 确认按钮文本
-        cancelButtonText: "放弃", // 取消按钮文本
+        confirmButtonText: td('common.button.save', '保存'), // 确认按钮文本
+        cancelButtonText: td('dpp.integratioTask.discard', '放弃'), // 取消按钮文本
         type: "warning", // 弹窗类型
       }
     )
@@ -1234,7 +1234,7 @@ function routeTo(link, row) {
 // 用于控制当前选中的标签
 const activeTab = ref("checkMessage");
 const tabs = ref([
-  { name: "checkMessage", label: "检查消息", content: "检查消息内容" },
+  { name: "checkMessage", label: td('dpp.integratioTask.checkMessage', '检查消息'), content: td('dpp.integratioTask.checkMessageContent', '检查消息内容') },
   // { name: "log", label: "日志", content: "日志内容" },
 ]);
 // 用于设置标签区域的样式
@@ -1262,15 +1262,15 @@ const isValidClick = (tab) => {
   const { isValid, errorMessages } = validateGraph(graph, true);
   let message = "";
   if (!isValid && errorMessages.length != 0) {
-    message += "检查未通过:<br>" + errorMessages.join("<br>");
+    message += td('dpp.integratioTask.checkFailed', '检查未通过:') + "<br>" + errorMessages.join("<br>");
   } else {
-    message += "检查通过";
+    message += td('dpp.integratioTask.checkPassed', '检查通过');
   }
   if (
     !nodeData.value?.taskConfig ||
     Object.keys(nodeData.value.taskConfig).length === 0
   ) {
-    message += "<br>任务配置未填写";
+    message += "<br>" + td('dpp.integratioTask.taskConfigNotFilled', '任务配置未填写');
   }
 
   tabs.value[0].content = message;

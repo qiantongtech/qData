@@ -21,7 +21,7 @@
             <el-col :span="1.5">
                 <el-button type="primary" plain @click="openRuleSelector(undefined)"
                     @mousedown="(e) => e.preventDefault()">
-                    <i class="iconfont-mini icon-xinzeng mr5"></i>关联
+                    <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('dp.dataElem.detail.relate') }}
                 </el-button>
             </el-col>
         </el-row>
@@ -30,62 +30,62 @@
         </div>
     </div>
     <el-table stripe height="400" v-loading="loading" :data="dataList" :default-sort="defaultSort">
-        <el-table-column :label="t('common.texts.number')" type="index" width="60" align="left">
+        <el-table-column :label="td('common.texts.number')" type="index" width="60" align="left">
             <template #default="scope">
                 <span>{{
                     (queryParams.pageNum - 1) * queryParams.pageSize + scope.$index + 1
                     }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="稽查名称" prop="name" align="left" width="200">
+        <el-table-column :label="td('dp.dataElem.detail.auditName')" prop="name" align="left" width="200">
             <template #default="scope">
                 {{ scope.row.name || '-' }}
             </template>
         </el-table-column>
-        <el-table-column label="稽查规则" prop="ruleName" align="left" width="200">
+        <el-table-column :label="td('dp.dataElem.detail.auditRuleName')" prop="ruleName" align="left" width="200">
             <template #default="scope">
                 {{ scope.row.ruleName || '-' }}
             </template>
         </el-table-column>
-        <el-table-column :label="t('common.texts.description')" prop="ruleDescription" align="left" :show-overflow-tooltip="{ effect: 'light' }">
+        <el-table-column :label="td('common.texts.description')" prop="ruleDescription" align="left" :show-overflow-tooltip="{ effect: 'light' }">
             <template #default="scope">
                 {{ scope.row.ruleDescription || '-' }}
             </template>
         </el-table-column>
-        <el-table-column label="质量维度" prop="qualityDim" align="left" width="100">
+        <el-table-column :label="td('dp.dataElem.detail.qualityDimension')" prop="qualityDim" align="left" width="100">
             <template #default="scope">
                 <dict-tag :options="att_rule_audit_q_dimension" :value="scope.row.dimensionType" />
             </template>
         </el-table-column>
-        <el-table-column :label="t('common.texts.createdBy')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="createBy"
+        <el-table-column :label="td('common.texts.createdBy')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="createBy"
             width="120">
             <template #default="scope">
                 {{ scope.row.createBy || "-" }}
             </template>
         </el-table-column>
         <!--  sortable="custom" column-key="create_time" :sort-orders="['descending', 'ascending']" -->
-        <el-table-column :label="t('common.texts.createdTime')" align="left" prop="createTime" width="150">
+        <el-table-column :label="td('common.texts.createdTime')" align="left" prop="createTime" width="150">
             <template #default="scope"> <span>{{ parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}") || "-"
             }}</span>
             </template>
         </el-table-column>
-        <el-table-column :label="t('common.texts.updatedTime')" align="left" prop="updateTime" width="300">
+        <el-table-column :label="td('common.texts.updatedTime')" align="left" prop="updateTime" width="300">
             <template #default="scope">
                 <span>{{ parseTime(scope.row.updateTime, '{y}-{m}-{d} {h}:{i}') || '-' }}</span>
             </template>
         </el-table-column>
-        <el-table-column :label="t('common.texts.status')" align="left" prop="status">
+        <el-table-column :label="td('common.texts.status')" align="left" prop="status">
             <template #default="scope">
-                {{ scope.row.status == '1' ? '上线' : '下线' }}
+                {{ scope.row.status == '1' ? td('dp.dataElem.detail.online') : td('dp.dataElem.detail.offline') }}
             </template>
         </el-table-column>
-        <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="180">
+        <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="180">
             <template #default="scope">
                 <!-- <el-button link type="primary" icon="view"
                     @click="openRuleDialog(scope.row, scope.$index + 1, true)">查看</el-button> -->
                 <el-button link type="primary" icon="Edit"
-                    @click="openRuleDialog(scope.row, scope.$index + 1)">{{ t('common.button.update') }}</el-button>
-                <el-button link type="danger" icon="Delete" @click="handleRuleDelete(scope.row)">{{ t('common.button.delete') }}</el-button>
+                    @click="openRuleDialog(scope.row, scope.$index + 1)">{{ td('common.button.update') }}</el-button>
+                <el-button link type="danger" icon="Delete" @click="handleRuleDelete(scope.row)">{{ td('common.button.delete') }}</el-button>
 
             </template>
         </el-table-column>
@@ -97,7 +97,7 @@
 </template>
 
 <script setup name="dataElemAudit">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { ref, watch } from 'vue';
 
 ;
@@ -119,7 +119,7 @@ const props = defineProps({
 import { listDpDataElemRuleRel, dpDataElemRuleRel, putDpDataElemRuleRel, DlEPutDpDataElemRuleRel } from '@/api/dp/dataElem/dataElem';
 import RuleSelectorDialog from '@/views/da/quality/qualityTask/components/ruleBase.vue';
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { att_rule_audit_q_dimension, att_rule_audit_type, att_rule_level, } = proxy.useDict(
     'att_rule_audit_q_dimension',
     'att_rule_audit_type',
@@ -203,13 +203,13 @@ function getList() {
 function handleRuleDelete(row) {
     const _ids = row.id;
     proxy.$modal
-        .confirm('是否确认删除关联稽查规则数据？')
+        .confirm(td('dp.dataElem.detail.confirmDeleteAudit'))
         .then(function () {
             return DlEPutDpDataElemRuleRel(_ids);
         })
         .then(() => {
             getList();
-            proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+            proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
         })
         .catch(() => { });
 }

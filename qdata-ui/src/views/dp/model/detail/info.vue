@@ -30,12 +30,12 @@
   </div>
 </template>
 <script setup name="BasicInfo">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import {
   formatModelName,
   formatHierarchyDisplayName,
 } from "../../../../utils/dm/utils";
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { dp_model_create_type, table_name_case, dp_document_type, table_type } =
   proxy.useDict(
@@ -51,34 +51,25 @@ const props = defineProps({
   },
 });
 const items = computed(() => [
-  // {
-  //   label: "表类型",
-  //   key: "tableType",
-  //   slot: "tableType",
-  // },
   {
-    label: "命名大小写",
+    label: td('dp.model.detail.caseConvention'),
     key: "tableCase",
     dictOptions: table_name_case.value,
   },
-  // {
-  //   label: "归属层级",
-  //   formatter: (val, data) => formatHierarchyDisplayName(data, data.tableType),
-  // },
   {
-    label: "表命名规范",
+    label: td('dp.model.namingConvention'),
     formatter: (val, data) =>
       formatModelName({ ...data, modelName: "", modelNameSuffix: "" }),
   },
   {
-    label: "标准类型",
+    label: td('dp.modelForm.documentType'),
     key: "documentType",
     dictOptions: dp_document_type.value,
   },
-  { label: "标准登记", key: "documentName" },
-  { label: t('common.texts.createdBy'), key: "createBy" },
-  { label: "联系方式", key: "createUserPhoneNumber" },
-  { label: t('common.texts.updatedBy'), key: "updateBy" },
-  { label: "联系方式", key: "updateUserPhoneNumber" },
+  { label: td('dp.modelForm.documentId'), key: "documentName" },
+  { label: td('common.texts.createdBy'), key: "createBy" },
+  { label: td('dp.model.detail.contactInfo'), key: "createUserPhoneNumber" },
+  { label: td('common.texts.updatedBy'), key: "updateBy" },
+  { label: td('dp.model.detail.contactInfo'), key: "updateUserPhoneNumber" },
 ]);
 </script>

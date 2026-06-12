@@ -16,23 +16,23 @@
 -->
 
 <template>
-    <el-dialog v-model="visible" title="问题数据详情" class="medium-dialog" @close="handleClose" destroy-on-close>
+    <el-dialog v-model="visible" :title="td('da.qualityTaskLog.problemDataDetail.title')" class="medium-dialog" @close="handleClose" destroy-on-close>
         <el-descriptions v-if="parsedFields.length" :column="1" border label-class-name="desc-label">
             <el-descriptions-item v-for="(item, index) in parsedFields" :key="index" :label="item.name">
                 {{ item.value }}
             </el-descriptions-item>
         </el-descriptions>
         <template #footer>
-            <el-button @click="handleClose">{{ t('common.button.close') }}</el-button>
+            <el-button @click="handleClose">{{ td('common.button.close') }}</el-button>
         </template>
     </el-dialog>
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { ref, defineExpose, watch } from 'vue'
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const visible = ref(false)
 const detailData = ref(null)
 const parsedFields = ref([])

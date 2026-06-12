@@ -26,7 +26,7 @@
                 type="primary"
                 icon="Plus"
                 @click="opencodeDialog(undefined)"
-                >新增规则</el-button
+                >{{ td('dpp.cleanRule.addRule', '新增规则') }}</el-button
               >
             </el-col>
             <el-col :span="1.5">
@@ -34,33 +34,33 @@
                 type="primary"
                 icon="Plus"
                 @click="showDialog(undefined)"
-                >导入规则</el-button
+                >{{ td('dpp.cleanRule.importRule', '导入规则') }}</el-button
               >
             </el-col>
           </template>
         </el-row>
       </div>
       <el-table stripe :data="form.stringValue" v-loading="loading">
-        <el-table-column label="原值" align="left" prop="value">
+        <el-table-column :label="td('dpp.cleanRule.originalValue', '原值')" align="left" prop="value">
           <template #default="scope">
             <template v-if="!falg">
               <el-input
                 v-model="scope.row.value"
                 style="width: 100%"
-                placeholder="请输入原值"
+                :placeholder="td('dpp.cleanRule.inputOriginalValue', '请输入原值')"
               />
             </template>
             <div v-else class="form-readonly">{{ scope.row.value || "-" }}</div>
           </template>
         </el-table-column>
 
-        <el-table-column label="标准值" align="left" prop="name">
+        <el-table-column :label="td('dpp.cleanRule.standardValue', '标准值')" align="left" prop="name">
           <template #default="scope">
             <template v-if="!falg">
               <el-input
                 v-model="scope.row.name"
                 style="width: 100%"
-                placeholder="请输入标准值"
+                :placeholder="td('dpp.cleanRule.inputStandardValue', '请输入标准值')"
               />
             </template>
             <div v-else class="form-readonly">{{ scope.row.name || "-" }}</div>
@@ -69,7 +69,7 @@
 
         <el-table-column
           v-if="!falg"
-          :label="t('common.texts.operation')"
+          :label="td('common.texts.operation', '操作')"
           align="center"
           class-name="small-padding fixed-width"
           fixed="right"
@@ -81,7 +81,7 @@
               type="danger"
               icon="Delete"
               @click="handleDelete(scope.$index + 1)"
-              >{{ t('common.button.delete') }}</el-button
+              >{{ td('common.button.delete', '删除') }}</el-button
             >
           </template>
         </el-table-column>
@@ -93,7 +93,7 @@
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { reactive, ref, watch } from "vue";
 import {
   listDpDataElem,
@@ -101,7 +101,7 @@ import {
 } from "@/api/dp/dataElem/dataElem.js";
 import singleSelectTableDialog from "./dataElem.vue";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const props = defineProps({
   form: Object,
   inputFields: Array,
@@ -119,7 +119,7 @@ let dpDataElemList = ref([]);
 const dialogRef = ref();
 
 function showDialog() {
-  dialogRef.value.openDialog("选择数据元");
+  dialogRef.value.openDialog(td('dpp.cleanRule.selectDataElem', '选择数据元'));
 }
 
 function handleConfirm(row, list) {
@@ -157,7 +157,7 @@ function opencodeDialog() {
   );
 
   if (hasIncomplete) {
-    ElMessage.warning("请先填写完整所有项");
+    ElMessage.warning(td('dpp.cleanRule.fillAllItems', '请先填写完整所有项'));
     return;
   }
 
@@ -203,7 +203,7 @@ onMounted(() => {
 });
 function checkValueAndName(list) {
   if (!list || list.length === 0) {
-    return { formIsValid: false, message: "至少需要添加一条规则数据！" };
+    return { formIsValid: false, message: td('dpp.cleanRule.atLeastOneRule', '至少需要添加一条规则数据！') };
   }
   const values = [];
   const names = [];
@@ -211,7 +211,7 @@ function checkValueAndName(list) {
     const v = item.value?.trim();
     const n = item.name?.trim();
     if (!v || !n) {
-      return { formIsValid: false, message: "原值和标准值不能为空！" };
+      return { formIsValid: false, message: td('dpp.cleanRule.originalAndStandardRequired', '原值和标准值不能为空！') };
     }
     values.push(v);
     names.push(n);
@@ -221,10 +221,10 @@ function checkValueAndName(list) {
     arr.some((val, idx) => arr.indexOf(val) !== idx);
 
   if (hasDuplicate(values)) {
-    return { formIsValid: false, message: "原值不能重复！" };
+    return { formIsValid: false, message: td('dpp.cleanRule.originalValueDuplicate', '原值不能重复！') };
   }
   if (hasDuplicate(names)) {
-    return { formIsValid: false, message: "标准值不能重复！" };
+    return { formIsValid: false, message: td('dpp.cleanRule.standardValueDuplicate', '标准值不能重复！') };
   }
 
   return { formIsValid: true, message: "" };

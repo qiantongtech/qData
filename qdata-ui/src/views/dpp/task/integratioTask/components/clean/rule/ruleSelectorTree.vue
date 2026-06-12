@@ -118,6 +118,8 @@
 
 <script setup>
 import { ref, defineProps, defineEmits, watch, onMounted } from "vue";
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const props = defineProps({
   deptOptions: Array,
@@ -127,7 +129,7 @@ const props = defineProps({
   },
   placeholder: {
     type: String,
-    default: "请输入部门名称",
+    default: td("dpp.integration.inputDeptName", "请输入部门名称"),
   },
   defaultExpand: {
     type: Boolean,

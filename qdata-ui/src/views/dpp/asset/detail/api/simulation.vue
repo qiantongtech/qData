@@ -37,10 +37,10 @@
     <div slot="header" class="header-container">
       <div class="header-left">
         <div class="blue-bar"></div>
-        API调用
+        {{ td('dpp.asset.detail.api.apiCall') }}
       </div>
       <el-button v-hasPerm="['market:api:example']" size="small" style="border-radius: 30px !important ;" round
-        @click="handleCall"> 接口调用 </el-button>
+        @click="handleCall"> {{ td('dpp.asset.detail.api.callApi') }} </el-button>
     </div>
 
     <!-- 正文区域 -->
@@ -49,46 +49,36 @@
       <div class="clearfix header-text" style="margin: 12px 0 0 0">
         <div class="header-left">
           <div class="blue-bar"></div>
-          鉴权参数
+          {{ td('dpp.asset.detail.api.authParams') }}
         </div>
       </div>
       <el-form :model="{ headerList }" :rules="rules" ref="headerForm" label-width="0">
 
         <el-table :data="headerList" class="tableStyle" row-key="id" border default-expand-all
           :tree-props="{ children: 'daAssetApiParamList', hasChildren: 'hasChildren' }">
-          <el-table-column label="序号" width="100" align="left" fixed="left">
+          <el-table-column :label="td('dpp.asset.detail.api.index')" width="100" align="left" fixed="left">
             <template #default="{ $index }">
               {{ $index + 1 }}
             </template>
           </el-table-column>
-          <el-table-column label="键" fixed="left" align="left" prop="name" :show-overflow-tooltip="{ effect: 'light' }">
+          <el-table-column :label="td('dpp.asset.detail.api.key')" fixed="left" align="left" prop="name" :show-overflow-tooltip="{ effect: 'light' }">
             <template #default="{ row, $index }">
-              <!-- <el-form-item :prop="`headerList[${findPosi(headerList, row.id)}].name`"
-                                                    :rules="rules.name">
-                                                    <el-input v-model="row.name" placeholder="请输入键名" />
-                                                </el-form-item> -->
               {{ row.name || "-" }}
             </template>
           </el-table-column>
-          <el-table-column label="描述" fixed="left" align="left" prop="remark"
+          <el-table-column :label="td('common.texts.description')" fixed="left" align="left" prop="remark"
             :show-overflow-tooltip="{ effect: 'light' }">
             <template #default="{ row, $index }">
-              <!-- <el-form-item
-                                                    :prop="`headerList[${findPosi(headerList, row.id)}].remark`"
-                                                    :rules="rules.fieldDefault">
-                                                    <el-input v-model="row.remark" placeholder="请输入描述" />
-                                                </el-form-item> -->
               {{ row.remark || "-" }}
             </template>
           </el-table-column>
-          <el-table-column label="值" fixed="left" align="left" prop="defaultValue"
+          <el-table-column :label="td('dpp.asset.detail.api.value')" fixed="left" align="left" prop="defaultValue"
             :show-overflow-tooltip="{ effect: 'light' }">
             <template #default="{ row, $index }">
               <el-form-item :prop="`headerList[${findPosi(headerList, row.dataSculptor)}].defaultValue`"
                 :rules="rules.defaultValue">
-                <el-input v-model="row.defaultValue" placeholder="请输入默认值" />
+                <el-input v-model="row.defaultValue" :placeholder="td('dpp.asset.detail.api.defaultValuePlaceholder')" />
               </el-form-item>
-              <!-- {{row.defaultValue||"-"}} -->
             </template>
           </el-table-column>
         </el-table>
@@ -96,7 +86,7 @@
       <div class="clearfix header-text" style="margin: 12px 0 0 0">
         <div class="header-left">
           <div class="blue-bar"></div>
-          请求参数
+          {{ td('dpp.asset.detail.api.requestParams') }}
         </div>
       </div>
       <el-form :model="{ inputList }" :rules="rules" ref="inputForm" label-width="0">
@@ -110,34 +100,26 @@
           <el-col :span="24">
             <el-table :data="inputList" class="tableStyle" row-key="id" stripe default-expand-all
               :tree-props="{ children: 'daAssetApiParamList', hasChildren: 'hasChildren' }">
-              <el-table-column label="序号" width="80" align="left" fixed="left">
+              <el-table-column :label="td('dpp.asset.detail.api.index')" width="80" align="left" fixed="left">
                 <template #default="{ $index }">
                   {{ $index + 1 }}
                 </template>
               </el-table-column>
-              <el-table-column label="参数名称" fixed="left" align="left" prop="name"
+              <el-table-column :label="td('dpp.asset.detail.api.paramName')" fixed="left" align="left" prop="name"
                 :show-overflow-tooltip="{ effect: 'light' }">
                 <template #default="{ row, $index }">
-                  <!-- <el-form-item :prop="`inputList[${findPosi(inputList, row.id)}].name`"
-                                        :rules="rules.name">
-                                        <el-input v-model="row.name" placeholder="请输入参数名称" />
-                                    </el-form-item> -->
                   {{ row?.name || "" }}
                 </template>
               </el-table-column>
 
-              <el-table-column label="描述" fixed="left" align="left" prop="remark"
+              <el-table-column :label="td('common.texts.description')" fixed="left" align="left" prop="remark"
                 :show-overflow-tooltip="{ effect: 'light' }">
                 <template #default="{ row, $index }">
-                  <!-- <el-form-item :prop="`inputList[${findPosi(inputList, row.id)}].remark`"
-                                        :rules="rules.fieldDefault">
-                                        <el-input v-model="row.remark" placeholder="请输入描述" />
-                                    </el-form-item> -->
                   {{ row?.remark || "" }}
                 </template>
               </el-table-column>
 
-              <el-table-column label="是否为空" width="70" fixed="left" align="left" prop="requestFlag"
+              <el-table-column :label="td('dpp.asset.detail.api.isNull')" width="70" fixed="left" align="left" prop="requestFlag"
                 :show-overflow-tooltip="{ effect: 'light' }">
                 <template #default="{ row, $index }">
                   <el-form-item :prop="`inputList[${findPosi(inputList, row.id)}].requestFlag`"
@@ -147,36 +129,29 @@
                   </el-form-item>
                 </template>
               </el-table-column>
-              <el-table-column label="参数类型" fixed="left" align="left" prop="columnType"
+              <el-table-column :label="td('dpp.asset.detail.api.paramType')" fixed="left" align="left" prop="columnType"
                 :show-overflow-tooltip="{ effect: 'light' }">
                 <template #default="{ row, $index }">
-                  <!-- <el-form-item :prop="`inputList[${findPosi(inputList, row.id)}].columnType`"
-                                        :rules="rules.columnType">
-                                        <el-select v-model="row.columnType" placeholder="请选择参数类型">
-                                            <el-option v-for="dict in da_asset_api_column_type" :key="dict.value"
-                                                :label="dict.label" :value="dict.value" />
-                                        </el-select>
-                                    </el-form-item> -->
                   {{ row?.columnType || "" }}
                 </template>
               </el-table-column>
 
-              <el-table-column label="示例值" fixed="left" align="left" prop="exampleValue"
+              <el-table-column :label="td('dpp.asset.detail.api.exampleValue')" fixed="left" align="left" prop="exampleValue"
                 :show-overflow-tooltip="{ effect: 'light' }">
                 <template #default="{ row, $index }">
                   <el-form-item :prop="`inputList[${findPosi(inputList, row.id)}].exampleValue`"
                     :rules="hasChildren(row) ? rules.fieldDefault : []">
-                    <el-input v-model="row.fieldDefault" placeholder="请输入示例值" :disabled="hasChildren(row)" />
+                    <el-input v-model="row.fieldDefault" :placeholder="td('dpp.asset.detail.api.exampleValuePlaceholder')" :disabled="hasChildren(row)" />
                   </el-form-item>
                 </template>
               </el-table-column>
 
-              <el-table-column label="默认值" fixed="left" align="left" prop="defaultValue"
+              <el-table-column :label="td('dpp.asset.detail.api.defaultValue')" fixed="left" align="left" prop="defaultValue"
                 :show-overflow-tooltip="{ effect: 'light' }">
                 <template #default="{ row, $index }">
                   <el-form-item :prop="`inputList[${findPosi(inputList, row.id)}].defaultValue`"
                     :rules="hasChildren(row) ? rules.defaultValue : []">
-                    <el-input v-model="row.defaultValue" placeholder="请输入默认值" :disabled="hasChildren(row)" />
+                    <el-input v-model="row.defaultValue" :placeholder="td('dpp.asset.detail.api.defaultValuePlaceholder')" :disabled="hasChildren(row)" />
                   </el-form-item>
                 </template>
               </el-table-column>
@@ -196,14 +171,14 @@
       <div class="clearfix header-text" style=" margin: 12px 0 0 0">
         <div class="header-left">
           <div class="blue-bar"></div>
-          返回结果
+          {{ td('dpp.asset.detail.api.responseResult') }}
         </div>
       </div>
       <el-row>
         <el-col :span="24">
           <div v-if="apiExecuting">
             <el-table :data="callData.dataList" stripe border :max-height="600" style="width: 100%; margin: 15px 0">
-              <el-table-column label="序号" align="left">
+              <el-table-column :label="td('dpp.asset.detail.api.index')" align="left">
                 <template #default="{ scope }">
                   <span>{{ scope.$index + 1 }}</span>
                 </template>
@@ -296,8 +271,8 @@ const headerList = computed(() => {
 });
 
 const rules = {
-  name: [{ required: true, message: "请输入参数名称", trigger: "blur" }],
-  columnType: [{ required: true, message: "请选择参数类型", trigger: "change" }],
+  name: [{ required: true, message: td('dpp.asset.detail.api.paramNameRequired'), trigger: "blur" }],
+  columnType: [{ required: true, message: td('dpp.asset.detail.api.paramTypeRequired'), trigger: "change" }],
 };
 const findPosi = (array, targetId, path = "") => {
   for (let i = 0; i < array.length; i++) {
@@ -324,7 +299,7 @@ const getYApiConfig = (id) => {
       treeData1.value = response.content.fieldHerderList || [];
       treeData1.value.unshift({
         fieldName: "Authorization",
-        fieldDescribes: `通过分配的账号密码作为参数调用${request.defaults.baseURL}/system/auth/getToken接口得到accessToken`,
+        fieldDescribes: `${td('dpp.asset.detail.api.authDesc')}${request.defaults.baseURL}/system/auth/getToken${td('dpp.asset.detail.api.authDescEnd')}`,
       });
     }
   });
@@ -363,8 +338,8 @@ function buildParamsTree(paramList) {
 }
 const showSuccessNotify = () => {
   ElNotification({
-    title: "提示",
-    message: "接口调用成功",
+    title: td('common.message.prompt'),
+    message: td('dpp.asset.detail.api.callSuccess'),
     type: "success",
     duration: 2000,
   });
@@ -372,8 +347,8 @@ const showSuccessNotify = () => {
 
 const showErrorNotify = (msg) => {
   ElNotification({
-    title: "提示",
-    message: msg || "接口调用失败",
+    title: td('common.message.prompt'),
+    message: msg || td('dpp.asset.detail.api.callFailed'),
     type: "error",
     duration: 2000,
   });
@@ -403,7 +378,7 @@ const handleCall = () => {
   // 参数校验
   const isNull = inputList.value.some((param) => {
     if (isParamInvalid(param)) {
-      proxy.$message.warning(`校验未通过，输入参数‘${param.name}’不能为空`);
+      proxy.$message.warning(`${td('dpp.asset.detail.api.paramRequired')}${param.name}${td('dpp.asset.detail.api.paramRequiredEnd')}`);
       return true;
     }
     return false;

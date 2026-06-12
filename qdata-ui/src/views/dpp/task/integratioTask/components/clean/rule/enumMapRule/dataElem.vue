@@ -29,7 +29,7 @@
         <DeptTree
           :deptOptions="deptOptions"
           :leftWidth="leftWidth"
-          placeholder="请输入标准数据元类目"
+          :placeholder="td('dpp.cleanRule.inputStandardDataElemCat', '请输入标准数据元类目')"
           @node-click="handleNodeClick"
           ref="DeptTreeRef"
           :showFilter="false"
@@ -55,14 +55,14 @@
         >
           <el-table-column
             v-if="getColumnVisibility(0)"
-            :label="t('common.texts.number')"
+            :label="td('common.texts.number', '编号')"
             align="left"
             prop="id"
             width="80"
           />
           <el-table-column
             v-if="getColumnVisibility(1)"
-            label="中文名称"
+            :label="td('dpp.cleanRule.chineseName', '中文名称')"
             :show-overflow-tooltip="{ effect: 'light' }"
             width="80"
             align="left"
@@ -72,7 +72,7 @@
           </el-table-column>
           <el-table-column
             v-if="getColumnVisibility(2)"
-            label="英文名称"
+            :label="td('dpp.cleanRule.englishName', '英文名称')"
             :show-overflow-tooltip="{ effect: 'light' }"
             width="80"
             align="left"
@@ -82,7 +82,7 @@
           </el-table-column>
           <el-table-column
             v-if="getColumnVisibility(3)"
-            label="类型"
+            :label="td('dpp.cleanRule.type', '类型')"
             align="left"
             prop="type"
           >
@@ -91,7 +91,7 @@
           <el-table-column
             v-if="getColumnVisibility(6)"
             width="140"
-            label="元描述"
+            :label="td('dpp.cleanRule.metaDescription', '元描述')"
             align="left"
             prop="description"
             :show-overflow-tooltip="{ effect: 'light' }"
@@ -101,7 +101,7 @@
             }}</template>
           </el-table-column>
           <el-table-column
-            :label="t('common.texts.operation')"
+            :label="td('common.texts.operation', '操作')"
             align="center"
             class-name="small-padding fixed-width"
             fixed="right"
@@ -114,7 +114,7 @@
                 icon="view"
                 @click="showDialog(scope.row)"
                 v-hasPermi="['dp:dataElem:dataelem:edit']"
-                >查看
+                >{{ td('dpp.cleanRule.view', '查看') }}
               </el-button>
             </template>
           </el-table-column>
@@ -124,7 +124,7 @@
                 src="../../../../../../../../assets/system/images/no_data/noData.png"
                 alt=""
               />
-              <p>无数据</p>
+              <p>{{ td('dpp.cleanRule.noData', '无数据') }}</p>
             </div>
           </template>
         </el-table>
@@ -146,14 +146,14 @@
     <!-- 底部按钮 -->
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="handleCancel">{{ t('common.button.cancel') }}</el-button>
+        <el-button @click="handleCancel">{{ td('common.button.cancel', '取消') }}</el-button>
         <el-button
           type="primary"
           @click="handleConfirm"
           :disabled="!selectedRow"
           :loading="loading"
         >
-          {{ t('common.button.save') }}
+          {{ td('common.button.save', '保存') }}
         </el-button>
       </div>
     </template>
@@ -162,7 +162,7 @@
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { ref, reactive } from "vue";
 const emit = defineEmits(["confirm"]);
 import DeptTree from "@/components/DeptTree/tree.vue";
@@ -174,7 +174,7 @@ const { proxy } = getCurrentInstance();
 const { dp_data_elem_code_type } = proxy.useDict("dp_data_elem_code_type");
 import CodeValueInput from "./dataElemDetail.vue";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const deptOptions = ref(undefined);
 const leftWidth = ref(240); // 初始左侧宽度
 const isResizing = ref(false); // 判断是否正在拖拽
@@ -189,12 +189,12 @@ const dpDataElemRuleRelList = ref([]);
 
 // 列显隐信息
 const columns = ref([
-  { key: 1, label: "中文名称", visible: true },
-  { key: 2, label: "英文名称", visible: true },
-  { key: 3, label: "类型", visible: true },
-  { key: 4, label: "标准数据元类目", visible: true },
-  { key: 5, label: "当前状态", visible: true },
-  { key: 6, label: "元描述", visible: true },
+  { key: 1, label: td('dpp.cleanRule.chineseName', '中文名称'), visible: true },
+  { key: 2, label: td('dpp.cleanRule.englishName', '英文名称'), visible: true },
+  { key: 3, label: td('dpp.cleanRule.type', '类型'), visible: true },
+  { key: 4, label: td('dpp.cleanRule.standardDataElemCat', '标准数据元类目'), visible: true },
+  { key: 5, label: td('common.texts.status', '状态'), visible: true },
+  { key: 6, label: td('dpp.cleanRule.metaDescription', '元描述'), visible: true },
 ]);
 const dialogRef = ref();
 function handleQuery() {
@@ -298,7 +298,7 @@ function getDeptTree() {
     deptOptions.value = proxy.handleTree(response.data, "id", "parentId");
     deptOptions.value = [
       {
-        name: "标准数据元类目",
+        name: td('dpp.cleanRule.standardDataElemCat', '标准数据元类目'),
         value: "",
         id: 0,
         children: deptOptions.value,
@@ -312,7 +312,7 @@ const visible = ref(false);
  * 打开弹窗
  * @param {String} dialogTitle 弹窗标题
  */
-function openDialog(dialogTitle = "选择数据") {
+function openDialog(dialogTitle = td('dpp.cleanRule.selectData', '选择数据')) {
   title.value = dialogTitle;
   visible.value = true;
   getDeptTree();
@@ -362,7 +362,7 @@ async function ElemCode(id) {
  */
 async function handleConfirm() {
   if (!selectedRow.value) {
-    proxy.$modal.msgWarning("请选择一条记录");
+    proxy.$modal.msgWarning(td('dpp.cleanRule.selectRecord', '请选择一条记录'));
     return;
   }
   // const list = await ElemCode(selectedRow.value.id);

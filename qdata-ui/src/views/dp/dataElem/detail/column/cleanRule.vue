@@ -20,7 +20,7 @@
         <el-row :gutter="15" class="btn-style">
             <el-col :span="1.5">
                 <el-button type="primary" plain @click="openRuleSelector" @mousedown="(e) => e.preventDefault()">
-                    <i class="iconfont-mini icon-xinzeng mr5"></i>关联
+                    <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('dp.dataElem.detail.relate') }}
                 </el-button>
             </el-col>
         </el-row>
@@ -30,38 +30,38 @@
     </div>
 
     <el-table stripe height="400" v-loading="loading" :data="dataList">
-        <el-table-column :label="t('common.texts.number')" type="index" width="60" align="left">
+        <el-table-column :label="td('common.texts.number')" type="index" width="60" align="left">
             <template #default="scope">
                 <span>{{
                     (queryParams.pageNum - 1) * queryParams.pageSize + scope.$index + 1
                     }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="清洗名称" prop="name" align="left" width="200">
+        <el-table-column :label="td('dp.dataElem.detail.cleanName')" prop="name" align="left" width="200">
             <template #default="scope">
                 {{ scope.row.name || '-' }}
             </template>
         </el-table-column>
-        <el-table-column label="清洗规则" align="left" prop="ruleName" :show-overflow-tooltip="{ effect: 'light' }"
+        <el-table-column :label="td('dp.dataElem.detail.cleanRuleName')" align="left" prop="ruleName" :show-overflow-tooltip="{ effect: 'light' }"
             width="200">
             <template #default="scope">
                 {{ scope.row.ruleName || '-' }}
             </template>
         </el-table-column>
-        <el-table-column :label="t('common.texts.description')" prop="description" align="left" :show-overflow-tooltip="{ effect: 'light' }">
+        <el-table-column :label="td('common.texts.description')" prop="description" align="left" :show-overflow-tooltip="{ effect: 'light' }">
             <template #default="scope">
                 {{ scope.row.ruleDescription || '-' }}
             </template>
         </el-table-column>
-        <el-table-column label="维度" align="left" prop="dimensionTypeension" :show-overflow-tooltip="{ effect: 'light' }"
+        <el-table-column :label="td('dp.dataElem.detail.dimension')" align="left" prop="dimensionTypeension" :show-overflow-tooltip="{ effect: 'light' }"
             width="150">
             <template #default="scope">
                 {{ scope.row.dimensionType || '-' }}
             </template>
         </el-table-column>
-        <el-table-column :label="t('common.texts.status')" align="left" prop="status">
+        <el-table-column :label="td('common.texts.status')" align="left" prop="status">
             <template #default="scope">
-                {{ scope.row.status == '1' ? '上线' : '下线' }}
+                {{ scope.row.status == '1' ? td('dp.dataElem.detail.online') : td('dp.dataElem.detail.offline') }}
             </template>
         </el-table-column>
         <!-- <el-table-column label="规则级别" prop="level" align="left" width="100">
@@ -74,30 +74,30 @@
                 {{ formatValue(scope.row.type, att_rule_clean_type) || '-' }}
             </template>
         </el-table-column> -->
-        <el-table-column :label="t('common.texts.createdBy')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="createBy"
+        <el-table-column :label="td('common.texts.createdBy')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="createBy"
             width="120">
             <template #default="scope">
                 {{ scope.row.createBy || "-" }}
             </template>
         </el-table-column>
         <!--  sortable="custom" column-key="create_time" :sort-orders="['descending', 'ascending']" -->
-        <el-table-column :label="t('common.texts.createdTime')" align="left" prop="createTime" width="150">
+        <el-table-column :label="td('common.texts.createdTime')" align="left" prop="createTime" width="150">
             <template #default="scope"> <span>{{ parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}") || "-"
             }}</span>
             </template>
         </el-table-column>
-        <el-table-column :label="t('common.texts.updatedTime')" align="left" prop="updateTime" width="300">
+        <el-table-column :label="td('common.texts.updatedTime')" align="left" prop="updateTime" width="300">
             <template #default="scope">
                 <span>{{ parseTime(scope.row.updateTime, '{y}-{m}-{d} {h}:{i}') || '-' }}</span>
             </template>
         </el-table-column>
-        <el-table-column :label="t('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="180">
+        <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="180">
             <template #default="scope">
                 <!-- <el-button link type="primary" icon="view"
                     @click="openRuleDialog(scope.row, scope.$index + 1, true)">查看</el-button> -->
                 <el-button link type="primary" icon="Edit"
-                    @click="openRuleDialog(scope.row, scope.$index + 1)">{{ t('common.button.update') }}</el-button>
-                <el-button link type="danger" icon="Delete" @click="handleRuleDelete(scope.row)">{{ t('common.button.delete') }}</el-button>
+                    @click="openRuleDialog(scope.row, scope.$index + 1)">{{ td('common.button.update') }}</el-button>
+                <el-button link type="danger" icon="Delete" @click="handleRuleDelete(scope.row)">{{ td('common.button.delete') }}</el-button>
             </template>
         </el-table-column>
     </el-table>
@@ -108,12 +108,12 @@
 </template>
 
 <script setup name="dataElemClean">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { ref, watch } from 'vue';
 import RuleSelectorDialog from '@/views/dpp/task/integratioTask/components/clean/rule/ruleBase.vue';
 import { listDpDataElemRuleRel, dpDataElemRuleRel, putDpDataElemRuleRel, DlEPutDpDataElemRuleRel } from '@/api/dp/dataElem/dataElem';
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 
 const props = defineProps({
@@ -157,13 +157,13 @@ queryParams.value.dataElemId = props.dataElemId;
 function handleRuleDelete(row) {
     const _ids = row.id;
     proxy.$modal
-        .confirm('是否确认删除关联的清洗规则数据？')
+        .confirm(td('dp.dataElem.detail.confirmDeleteClean'))
         .then(function () {
             return DlEPutDpDataElemRuleRel(_ids);
         })
         .then(() => {
             getList();
-            proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+            proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
         })
         .catch(() => { });
 }

@@ -26,49 +26,49 @@
     <el-row>
       <el-col :span="12">
         <!-- 评测对象下拉 -->
-        <el-form-item label="使用正则" prop="useRegexFlag">
+        <el-form-item :label="td('da.qualityTaskRules.ruleCommon.useRegex')" prop="useRegexFlag">
           <el-checkbox
             v-if="!falg"
             v-model="form.useRegexFlag"
             :true-value="1"
             :false-value="0"
-            >使用正则</el-checkbox
+            >{{ td('da.qualityTaskRules.ruleCommon.useRegex') }}</el-checkbox
           >
           <div v-else class="form-readonly">
-            {{ form.useRegexFlag == 1 ? "使用正则" : "不使用正则" }}
+            {{ form.useRegexFlag == 1 ? td('da.qualityTaskRules.ruleCommon.useRegex') : td('da.qualityTaskRules.ruleCommon.noRegex') }}
           </div>
         </el-form-item>
       </el-col>
       <el-col :span="12" v-if="!form.useRegexFlag" class="hasMsg">
-        <el-form-item label="允许字符类型" prop="allowedChars">
+        <el-form-item :label="td('da.qualityTaskRules.ruleCommon.allowedCharType')" prop="allowedChars">
           <template v-if="!falg">
             <el-checkbox-group v-model="form.allowedChars" name="chars">
-              <el-checkbox :value="'1'">数字</el-checkbox>
-              <el-checkbox :value="'2'">字母</el-checkbox>
-              <el-checkbox :value="'3'">空格</el-checkbox>
-              <el-checkbox :value="'4'">特殊符号</el-checkbox>
+              <el-checkbox :value="'1'">{{ td('da.qualityTaskRules.ruleCommon.number') }}</el-checkbox>
+              <el-checkbox :value="'2'">{{ td('da.qualityTaskRules.ruleCommon.letter') }}</el-checkbox>
+              <el-checkbox :value="'3'">{{ td('da.qualityTaskRules.ruleCommon.space') }}</el-checkbox>
+              <el-checkbox :value="'4'">{{ td('da.qualityTaskRules.ruleCommon.specialChar') }}</el-checkbox>
             </el-checkbox-group>
           </template>
           <div v-else class="form-readonly">{{ allowedCharsText }}</div>
-          <span class="msg"
+          <span class=”msg”
             ><el-icon>
               <InfoFilled /> </el-icon
-            >若选中数字和字母，系统自动识别为“仅允许字母与数字的组合</span
+            >{{ td('da.qualityTaskRules.ruleCommon.regexTip') }}</span
           >
         </el-form-item>
       </el-col>
       <el-col :span="12" v-if="!form.useRegexFlag">
-        <el-form-item label="忽略空值" prop="ignoreNullValue">
+        <el-form-item :label="td('da.qualityTaskRules.ruleCommon.ignoreNullValue')" prop="ignoreNullValue">
           <el-radio-group v-if="!falg" v-model="form.ignoreNullValue">
-            <el-radio :value="'1'">是</el-radio>
-            <el-radio :value="'0'">否</el-radio>
+            <el-radio :value="'1'">{{ td('da.qualityTaskRules.ruleCommon.yes') }}</el-radio>
+            <el-radio :value="'0'">{{ td('da.qualityTaskRules.ruleCommon.no') }}</el-radio>
           </el-radio-group>
           <div v-else class="form-readonly">
             {{
               form.ignoreNullValue === "1"
-                ? "是"
+                ? td('da.qualityTaskRules.ruleCommon.yes')
                 : form.ignoreNullValue === "0"
-                ? "否"
+                ? td('da.qualityTaskRules.ruleCommon.no')
                 : "-"
             }}
           </div>
@@ -76,16 +76,16 @@
       </el-col>
       <el-col :span="12" v-if="form.useRegexFlag">
         <el-form-item
-          label="正则表达式"
+          :label="td('da.qualityTaskRules.ruleCommon.regexLabel')"
           prop="regex"
           :rules="[
             {
               required: form.useRegexFlag,
-              message: '请输入正则表达式',
+              message: td('da.qualityTaskRules.ruleCommon.regexRequired'),
               trigger: 'blur',
               validator: (rule, value, callback) => {
                 if (form.useRegexFlag && !value) {
-                  callback(new Error('请输入正则表达式'));
+                  callback(new Error(td('da.qualityTaskRules.ruleCommon.regexRequired')));
                 } else {
                   callback();
                 }
@@ -96,7 +96,7 @@
           <el-input
             v-if="!falg"
             v-model="form.regex"
-            placeholder="请输入正则表达式"
+            :placeholder="td('da.qualityTaskRules.ruleCommon.regexPlaceholder')"
             class="rule-half"
           />
           <div v-else class="form-readonly">{{ form.regex || "-" }}</div>
@@ -107,8 +107,11 @@
 </template>
 
 <script setup>
-import { reactive, ref, watch } from "vue";
+import { reactive, ref, watch, computed } from "vue";
 import { getColumnByAssetId } from "@/api/dpp/task/index.js";
+import useDefaultLang from "@/composables/useDefaultLang";
+
+const { td } = useDefaultLang();
 
 const props = defineProps({
   form: Object,
@@ -122,7 +125,7 @@ const formRef = ref(null);
 const form = reactive({ ...props.form });
 const columnList = ref([]);
 const allowedCharsText = computed(() => {
-  const map = { 1: "数字", 2: "字母", 3: "空格", 4: "特殊符号" };
+  const map = { 1: td('da.qualityTaskRules.ruleCommon.number'), 2: td('da.qualityTaskRules.ruleCommon.letter'), 3: td('da.qualityTaskRules.ruleCommon.space'), 4: td('da.qualityTaskRules.ruleCommon.specialChar') };
   return Array.isArray(form.allowedChars) && form.allowedChars.length
     ? form.allowedChars.map((v) => map[v] || v).join(", ")
     : "-";
@@ -142,7 +145,7 @@ const rules = {
     {
       validator: (rule, value, callback) => {
         if (form.useRegexFlag && !value) {
-          callback(new Error("请输入正则表达式"));
+          callback(new Error(td('da.qualityTaskRules.ruleCommon.regexRequired')));
         } else {
           callback();
         }
@@ -155,12 +158,12 @@ const rules = {
       type: "array",
       required: true,
       min: 1,
-      message: "请选择允许的字符类型",
+      message: td('da.qualityTaskRules.ruleCommon.charTypeRequired'),
       trigger: "change",
     },
   ],
   ignoreNullValue: [
-    { required: true, message: "请选择忽略空值", trigger: "change" },
+    { required: true, message: td('da.qualityTaskRules.ruleCommon.ignoreNullRequired'), trigger: "change" },
   ],
 };
 

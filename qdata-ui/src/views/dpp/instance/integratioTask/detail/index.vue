@@ -42,7 +42,7 @@
           </el-col> -->
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">任务实例名称</div>
+              <div class="infotop-row-lable">{{ td('dpp.instance.taskInstanceName', '任务实例名称') }}</div>
               <div class="infotop-row-value">
                 {{ dppEtlTaskDetail?.name || '-' }}
               </div>
@@ -50,7 +50,7 @@
           </el-col>
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ t('common.texts.createdTime') }}</div>
+              <div class="infotop-row-lable">{{ td('common.texts.createdTime', '创建时间') }}</div>
               <div class="infotop-row-value">
                 {{ parseTime(dppEtlTaskDetail.createTime, '{y}-{m}-{d} {h}:{i}') }}
 
@@ -59,7 +59,7 @@
           </el-col>
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">执行状态</div>
+              <div class="infotop-row-lable">{{ td('dpp.instance.executionStatus', '执行状态') }}</div>
               <div class="infotop-row-value">
                 <dict-tag :options="dpp_etl_node_instance" :value="dppEtlTaskDetail.status" />
               </div>
@@ -67,7 +67,7 @@
           </el-col>
           <el-col :span="8" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ t('common.texts.createdBy') }}</div>
+              <div class="infotop-row-lable">{{ td('common.texts.createdBy', '创建人') }}</div>
               <div class="infotop-row-value">
                 {{ dppEtlTaskDetail?.createBy || '-' }}
               </div>
@@ -75,7 +75,7 @@
           </el-col>
           <el-col :span="8" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">责任人</div>
+              <div class="infotop-row-lable">{{ td('dpp.instance.responsiblePerson', '责任人') }}</div>
               <div class="infotop-row-value">
                 {{ dppEtlTaskDetail?.personChargeName || '-' }}
               </div>
@@ -84,7 +84,7 @@
 
           <el-col :span="8" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">执行类型</div>
+              <div class="infotop-row-lable">{{ td('dpp.instance.executionType', '执行类型') }}</div>
               <div class="infotop-row-value">
 
                 <dict-tag :options="dpp_etl_task_instance_command_type" :value="dppEtlTaskDetail.commandType" />
@@ -95,7 +95,7 @@
 
           <el-col :span="8" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">开始时间</div>
+              <div class="infotop-row-lable">{{ td('dpp.instance.startTime', '开始时间') }}</div>
               <div class="infotop-row-value">
                 {{
                   parseTime(
@@ -109,7 +109,7 @@
 
           <el-col :span="8" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">结束时间</div>
+              <div class="infotop-row-lable">{{ td('dpp.instance.endTime', '结束时间') }}</div>
               <div class="infotop-row-value">
                 {{
                   parseTime(
@@ -126,10 +126,10 @@
 
     <div class="pagecont-bottom" v-loading="loading">
       <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
-        <el-tab-pane label="任务流程" name="1" key="1">
+        <el-tab-pane :label="td('dpp.instance.taskFlow', '任务流程')" name="1" key="1">
           <processNode ref="compRef" />
         </el-tab-pane>
-        <el-tab-pane label="任务日志" name="2" key="2">
+        <el-tab-pane :label="td('dpp.instance.taskLog', '任务日志')" name="2" key="2">
           <instanceLog ref="compReftwo" />
         </el-tab-pane>
       </el-tabs>
@@ -138,14 +138,14 @@
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { useRoute } from "vue-router";
 import processNode from "./processNode.vue";
 import instanceLog from "./instanceLog.vue";
 import { reactive, ref, toRefs, watch, getCurrentInstance } from "vue";
 import { getLogByTaskInstanceId, getTaskInfo } from "@/api/dpp/task/etlTask";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { dpp_etl_node_type, dpp_etl_task_instance_command_type, dpp_etl_node_instance } = proxy.useDict(
   "dpp_etl_node_type",

@@ -26,10 +26,10 @@
     >
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="关联标准" prop="dataElemId">
+          <el-form-item :label="td('dp.modelForm.relatedStandard')" prop="dataElemId">
             <el-select
               v-model="form.dataElemId"
-              placeholder="请选择关联标准"
+              :placeholder="td('dp.modelForm.relatedStandardPlaceholder')"
               @change="handleDatasourceChange"
               filterable
               clearable
@@ -44,24 +44,24 @@
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="中文名称" prop="cnName">
-            <el-input v-model="form.cnName" placeholder="请输入中文名称" />
+          <el-form-item :label="td('dp.model.chineseName')" prop="cnName">
+            <el-input v-model="form.cnName" :placeholder="td('dp.model.chineseNamePlaceholder')" />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="英文名称" prop="engName">
+          <el-form-item :label="td('dp.model.englishName')" prop="engName">
             <el-input
               v-model="form.engName"
-              placeholder="请输入英文名称"
+              :placeholder="td('dp.model.englishNamePlaceholder')"
               @input="convertToUpperCase('engName', form.engName)"
             />
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="数据类型" prop="columnType">
-            <el-select v-model="form.columnType" placeholder="请选择数据类型">
+          <el-form-item :label="td('dp.modelForm.dataType')" prop="columnType">
+            <el-select v-model="form.columnType" :placeholder="td('dp.modelForm.dataTypePlaceholder')">
               <el-option
                 v-for="dict in column_type"
                 :key="dict.value"
@@ -76,7 +76,7 @@
       <el-row :gutter="20">
         <el-col :span="24">
           <el-form-item
-            label="属性长度"
+            :label="td('dp.modelForm.attributeLength')"
             prop="columnLength"
             :rules="
               form.columnType === 'DATE'
@@ -84,7 +84,7 @@
                 : [
                     {
                       required: true,
-                      message: '请输入属性长度',
+                      message: td('dp.modelForm.attributeLengthRequired'),
                       trigger: 'change',
                     },
                   ]
@@ -98,13 +98,13 @@
               controls-position="right"
               :min="1"
               :max="9999999999"
-              placeholder="请输入属性长度"
+              :placeholder="td('dp.modelForm.attributeLengthPlaceholder')"
             />
           </el-form-item>
         </el-col>
         <el-col :span="24">
           <!-- DECIMAL  NUMBER  NUMERIC -->
-          <el-form-item label="小数位数" prop="columnScale">
+          <el-form-item :label="td('dp.modelForm.decimalPlaces')" prop="columnScale">
             <el-input-number
               :step="1"
               :disabled="
@@ -120,27 +120,27 @@
               controls-position="right"
               :min="0"
               :max="9999999999"
-              placeholder="请输入小数长度"
+              :placeholder="td('dp.modelForm.decimalPlacesPlaceholder')"
             />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="默认值" prop="defaultValue">
-            <el-input v-model="form.defaultValue" placeholder="请输入默认值" />
+          <el-form-item :label="td('dp.modelForm.defaultValue')" prop="defaultValue">
+            <el-input v-model="form.defaultValue" :placeholder="td('dp.modelForm.defaultValuePlaceholder')" />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="t('common.texts.description')" prop="modelComment">
+          <el-form-item :label="td('common.texts.description')" prop="modelComment">
             <el-input
               v-model="form.description"
               type="textarea"
               maxlength="500个字符"
               show-word-limit
-              :placeholder="t('common.form.descriptionPlaceholder')"
+              :placeholder="td('common.form.descriptionPlaceholder')"
             />
           </el-form-item>
         </el-col>
@@ -148,7 +148,7 @@
 
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="是否主键" prop="pkFlag">
+          <el-form-item :label="td('dp.modelForm.isPrimaryKey')" prop="pkFlag">
             <el-radio-group v-model="form.pkFlag" @change="handlePkFlagChange">
               <el-radio
                 v-for="dict in dp_model_column_pk_flag"
@@ -160,7 +160,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="是否必填" prop="nullableFlag">
+          <el-form-item :label="td('dp.modelForm.isRequired')" prop="nullableFlag">
             <el-radio-group
               v-model="form.nullableFlag"
               :disabled="form.pkFlag == 1"
@@ -179,20 +179,20 @@
 
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="closeDialog">{{ t('common.button.cancel') }}</el-button>
-        <el-button type="primary" @click="confirmDialog"> 确认 </el-button>
+        <el-button @click="closeDialog">{{ td('common.button.cancel') }}</el-button>
+        <el-button type="primary" @click="confirmDialog"> {{ td('common.button.confirm') }} </el-button>
       </div>
     </template>
   </el-dialog>
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { defineProps, defineEmits, ref, computed, watch } from "vue";
 
 import { getDpDataElemList } from "@/api/dp/dataElem/dataElem";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { column_type, dp_model_column_pk_flag, dp_model_column_nullable_flag } =
   proxy.useDict(
@@ -220,12 +220,12 @@ watch(
       getDpDataElem();
       if (props.row && props.row.index !== undefined) {
         // 编辑状态
-        title.value = "编辑表字段";
+        title.value = td('dp.modelForm.editColumnTitle');
         Object.assign(form.value, props.row);
         form.value.authorityDept = Number(form.value.authorityDept);
       } else {
         // 新增状态
-        title.value = "新增表字段";
+        title.value = td('dp.modelForm.addColumnTitle');
         // 重置表单
         form.value = {
           id: "",
@@ -301,18 +301,17 @@ const form = ref({
 });
 
 const rules = ref({
-  // 示例规则（可以根据需求添加或修改）
-  cnName: [{ required: true, message: "中文名称不能为空", trigger: "blur" }],
+  cnName: [{ required: true, message: td('dp.dataElem.nameZhRequired'), trigger: "blur" }],
   engName: [
-    { required: true, message: "英文名称不能为空", trigger: "blur" },
+    { required: true, message: td('dp.dataElem.nameEnRequired'), trigger: "blur" },
     {
       pattern: /^[A-Za-z][A-Za-z0-9_]*$/,
-      message: "表名只能包含字母、数字和下划线，且必须以字母开头",
+      message: td('dp.modelForm.tableNamePattern'),
       trigger: "blur",
     },
   ],
   columnType: [
-    { required: true, message: "数据类型不能为空", trigger: "blur" },
+    { required: true, message: td('dp.modelForm.dataTypeRequired'), trigger: "blur" },
   ],
   defaultValue: [
     {
@@ -337,7 +336,7 @@ const rules = ref({
           const numStr = actualValue.toString().replace(".", ""); // 移除小数点再计算长度
           if (numStr.length > form.value.columnLength) {
             callback(
-              new Error(`默认值长度不能超过属性长度${form.value.columnLength}`)
+              new Error(td('dp.modelForm.defaultLengthError', { length: form.value.columnLength }))
             );
             return;
           }
@@ -345,7 +344,7 @@ const rules = ref({
         // 对于字符类型，直接检查字符串长度
         else if (actualValue.length > form.value.columnLength) {
           callback(
-            new Error(`默认值长度不能超过属性长度${form.value.columnLength}`)
+            new Error(td('dp.modelForm.defaultLengthError', { length: form.value.columnLength }))
           );
           return;
         }

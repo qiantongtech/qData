@@ -29,7 +29,7 @@
             :loading="loading"
             @mousedown="(e) => e.preventDefault()"
           >
-            <i class="iconfont-mini icon-xinzeng mr5"></i>{{ t('common.button.add') }}
+            <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('common.button.add', '新增') }}
           </el-button>
         </el-col>
         <el-button
@@ -40,10 +40,10 @@
           @click="handleQuery"
           @mousedown="(e) => e.preventDefault()"
         >
-          <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
+          <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query', '查询') }}
         </el-button>
         <el-button @click="handleReset" @mousedown="(e) => e.preventDefault()">
-          <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ t('common.button.reset') }}
+          <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset', '重置') }}
         </el-button>
       </el-row>
     </div>
@@ -60,7 +60,7 @@
       <el-col :span="7">
         <el-alert
           style="height: 24px"
-          title="点击“+”以添加筛选准则"
+          :title=”td('dpp.asset.addFilterTip', '点击”+”以添加筛选准则')”
           type="info"
           :closable="false"
         />
@@ -88,7 +88,7 @@
                 :class="item.checked ? 'select' : ''"
                 style="margin: 0; width: 100px; border: none; color: red"
                 v-model="item.field"
-                placeholder="选择字段"
+                :placeholder="td('dpp.asset.selectField', '选择字段')"
               >
                 <el-option
                   v-for="field in tableColumns"
@@ -120,7 +120,7 @@
                 v-if="item.operator === '='"
                 :disabled="!item.checked"
                 v-model="item.value"
-                placeholder="请输入值"
+                :placeholder="td('dpp.asset.enterValue', '请输入值')"
               ></el-input>
 
               <el-input
@@ -128,7 +128,7 @@
                 :disabled="!item.checked"
                 v-model="item.value"
                 type="number"
-                placeholder="请输入值"
+                :placeholder="td('dpp.asset.enterValue', '请输入值')"
               ></el-input>
             </div>
           </el-form-item>
@@ -141,7 +141,7 @@
               v-if="index < formData.rows.length - 1"
               style="margin: 0; width: 80px; display: block"
               v-model="item.logic"
-              placeholder="选择逻辑"
+              :placeholder="td('dpp.asset.selectLogic', '选择逻辑')"
             >
               <el-option value="AND" style="text-align: center">AND</el-option>
               <el-option value="OR" style="text-align: center">OR</el-option>
@@ -179,7 +179,7 @@
         icon="Edit"
         @click="handleUpdate(row)"
         v-hasPermi="['da:asset:edit']"
-        >{{ t('common.button.update') }}</el-button
+        >{{ td('common.button.update', '修改') }}</el-button
       >
       <el-button
         link
@@ -187,7 +187,7 @@
         icon="view"
         @click="openHistory(row)"
         v-hasPermi="['da:asset:edit']"
-        >修改记录</el-button
+        >{{ td('dpp.asset.updateRecord', '修改记录') }}</el-button
       >
     </template>
   </qt-table>
@@ -204,14 +204,14 @@
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { ref, reactive, watch } from "vue";
 import { useRoute } from "vue-router";
 import { preview } from "@/api/da/asset/assetColumn.js";
 import updateDataDialog from "../components/previewEdit.vue";
 import UpdateHistory from "../components/previewEditLog.vue";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const props = defineProps({
   form1: {
     type: Object,
@@ -276,7 +276,7 @@ const handleQuery = () => {
 const validateFields = () => {
   for (let row of formData.value.rows) {
     if (!row.field || !row.operator) {
-      ElMessage.warning("校验未通过，查询条件请输入完整");
+      ElMessage.warning(td('dpp.asset.validateIncomplete', '校验未通过，查询条件请输入完整'));
       return false;
     }
   }
@@ -326,7 +326,7 @@ function openHistory(row) {
   }
 }
 function handleDelete() {
-  proxy.$message.warning("功能开发中....");
+  proxy.$message.warning(td('dpp.asset.funcDeveloping', '功能开发中....'));
 }
 
 const handleReset = () => {
@@ -370,7 +370,7 @@ const tableStore = reactive({
           width: 230,
         }));
         const handleCol = {
-          label: t('common.texts.operation'),
+          label: td('common.texts.operation', '操作'),
           fixed: "right",
           slot: "handle",
         };

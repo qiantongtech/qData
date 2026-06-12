@@ -21,15 +21,15 @@
         @submit.prevent
         class="column-form"
     >
-      <el-form-item label="脱敏规则名称" prop="name">
-        <el-input v-model="form.name" placeholder="请输入脱敏规则名称" />
+      <el-form-item :label="td('dg.desensitizationRules.ruleName')" prop="name">
+        <el-input v-model="form.name" :placeholder="td('dg.desensitizationRules.ruleNamePlaceholder')" />
       </el-form-item>
-      <el-form-item label="数据分类" prop="dataCategoryId">
+      <el-form-item :label="td('dg.sensitiveList.dataCategory')" prop="dataCategoryId">
         <el-tree-select
             v-if="!form.id"
             v-model="form.dataCategoryId"
             :data="dataCategoryList"
-            placeholder="请选择数据分类"
+            :placeholder="td('dg.sensitiveList.dataCategoryPlaceholder')"
             filterable
             clearable
             check-strictly
@@ -42,16 +42,16 @@
         <el-input
             v-else
             v-model="form.dataCategoryName"
-            placeholder="请选择数据分类"
+            :placeholder="td('dg.sensitiveList.dataCategoryPlaceholder')"
             disabled
         />
       </el-form-item>
 
       <!-- 👇 应用场景：改为复选框组 -->
       <qt-form-item
-          label="应用场景"
+          :label="td('dg.desensitizationRules.applicationScene')"
           prop="applicationScene"
-          :tip="{ content: '用于确定规则应用到资产侧还是服务侧。' }"
+          :tip="{ content: td('dg.desensitizationRules.applicationSceneTip') }"
       >
         <el-checkbox-group v-model="form.applicationScene">
           <el-checkbox
@@ -66,9 +66,9 @@
       </qt-form-item>
 
       <qt-form-item
-          label="脱敏方式"
+          :label="td('dg.desensitizationRules.maskType')"
           prop="maskType"
-          :tip="{ content: '底层脱敏：写入/存储侧；展示脱敏：查询/展示侧。' }"
+          :tip="{ content: td('dg.desensitizationRules.maskTypeTip') }"
       >
         <el-radio-group v-model="form.maskType">
           <el-radio
@@ -81,8 +81,8 @@
           </el-radio>
         </el-radio-group>
       </qt-form-item>
-      <el-form-item label="转换规则" prop="replaceRule">
-        <el-select v-model="form.replaceRule" placeholder="请选择转换规则">
+      <el-form-item :label="td('dg.desensitizationRules.replaceRule')" prop="replaceRule">
+        <el-select v-model="form.replaceRule" :placeholder="td('dg.desensitizationRules.replaceRulePlaceholder')">
           <el-option
               v-for="opt in maskRuleOptions"
               :key="opt.value"
@@ -91,15 +91,14 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="替换内容" prop="replaceContent">
-        <el-input v-model="form.replaceContent" placeholder="请输入替换内容" />
+      <el-form-item :label="td('dg.desensitizationRules.replaceContent')" prop="replaceContent">
+        <el-input v-model="form.replaceContent" :placeholder="td('dg.desensitizationRules.replaceContentPlaceholder')" />
       </el-form-item>
       <qt-form-item
-          label="脱敏区间"
+          :label="td('dg.desensitizationRules.desensInterval')"
           prop="intervalList"
           :tip="{
-          content:
-            '脱敏区间：设置需要脱敏的字符位置范围（从 1 开始计数）。例如：脱敏第 4 到第 10 位，则起始值为 4，末尾值为 10。',
+          content: td('dg.desensitizationRules.desensIntervalTip'),
         }"
           class="row-full"
       >
@@ -109,19 +108,19 @@
               v-for="(it, idx) in form.intervalList"
               :key="idx"
           >
-            <div class="range-label">区间 {{ idx + 1 }}：</div>
+            <div class="range-label">{{ td('dg.desensitizationRules.intervalLabel', '区间 {i}：').replace('{i}', idx + 1) }}</div>
             <el-input-number
                 v-model="it.startNum"
                 :min="1"
                 :controls="false"
-                placeholder="起始位置"
+                :placeholder="td('dg.desensitizationRules.startPosition')"
                 class="range-input"
             />
             <el-input-number
                 v-model="it.endNum"
                 :min="1"
                 :controls="false"
-                placeholder="截止位置"
+                :placeholder="td('dg.desensitizationRules.endPosition')"
                 class="range-input"
             />
             <el-button
@@ -138,40 +137,40 @@
                 icon="Plus"
                 @click="addRange"
             >
-              添加区间
+              {{ td('dg.desensitizationRules.addInterval') }}
             </el-button>
           </div>
         </div>
       </qt-form-item>
-      <el-form-item :label="t('common.texts.status')" prop="validFlag" class="row-full">
+      <el-form-item :label="td('common.texts.status')" prop="validFlag" class="row-full">
         <el-radio-group v-model="form.validFlag">
-          <el-radio :label="false">禁用</el-radio>
-          <el-radio :label="true">启用</el-radio>
+          <el-radio :label="false">{{ td('dg.desensitizationRules.detailStatusDisable') }}</el-radio>
+          <el-radio :label="true">{{ td('dg.desensitizationRules.detailStatusEnable') }}</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item :label="t('common.texts.description')" prop="description" class="row-full">
+      <el-form-item :label="td('common.texts.description')" prop="description" class="row-full">
         <el-input
             v-model="form.description"
             type="textarea"
-            :placeholder="t('common.form.descriptionPlaceholder')"
-            maxlength="500个字符"
+            :placeholder="td('common.form.descriptionPlaceholder')"
+            maxlength="500"
             show-word-limit
         />
       </el-form-item>
-      <el-form-item :label="t('common.texts.remark')" prop="remark" class="row-full">
+      <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full">
         <el-input
             v-model="form.remark"
             type="textarea"
-            maxlength="500个字符"
+            maxlength="500"
             show-word-limit
-            :placeholder="t('common.form.remarkPlaceholder')"
+            :placeholder="td('common.form.remarkPlaceholder')"
         />
       </el-form-item>
     </el-form>
     <template #footer>
       <div class="dialog-footer">
         <el-button size="mini" @click="close">{{
-            isReadonly ? "{{ t('common.button.close') }}" : "{{ t('common.button.cancel') }}"
+            isReadonly ? "{{ td('common.button.close') }}" : "{{ td('common.button.cancel') }}"
           }}</el-button>
         <el-button
             v-if="!isReadonly"
@@ -180,7 +179,7 @@
             :loading="loading"
             @click="submit"
         >
-          {{ t('common.button.confirm') }}
+          {{ td('common.button.confirm') }}
         </el-button>
       </div>
     </template>
@@ -188,11 +187,11 @@
 </template>
 
 <script setup name="RuleFormDialog">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { computed, getCurrentInstance, nextTick, onMounted, ref } from "vue";
 import { selectTreeDataCategory } from "@/api/dg/safety/dataCategory/dataCategory";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const emit = defineEmits(["success"]);
 const props = defineProps({
   appendTo: { type: [String, Object], default: undefined },
@@ -217,39 +216,39 @@ const dataCategoryLoading = ref(false);
 const dataCategoryList = ref([]);
 
 const rules = {
-  name: [{ required: true, message: "脱敏规则名称不能为空", trigger: "blur" }],
+  name: [{ required: true, message: td('dg.desensitizationRules.ruleNameRequired'), trigger: "blur" }],
   dataCategoryId: [
-    { required: true, message: "数据分类不能为空", trigger: "change" },
+    { required: true, message: td('dg.sensitiveList.dataCategoryRequired'), trigger: "change" },
   ],
   // 应用场景复选框校验（必须选一个）
   applicationScene: [
-    { required: true, message: "应用场景不能为空", trigger: "blur" },
-    { type: "array", message: "应用场景格式错误", trigger: "change" },
+    { required: true, message: td('dg.desensitizationRules.applicationSceneRequired'), trigger: "blur" },
+    { type: "array", message: td('dg.desensitizationRules.applicationSceneFormatError'), trigger: "change" },
   ],
   maskType: [
-    { required: true, message: "脱敏方式不能为空", trigger: "change" },
+    { required: true, message: td('dg.desensitizationRules.maskTypeRequired'), trigger: "change" },
   ],
   replaceRule: [
-    { required: true, message: "转换规则不能为空", trigger: "change" },
+    { required: true, message: td('dg.desensitizationRules.replaceRuleRequired'), trigger: "change" },
   ],
   replaceContent: [
-    { required: true, message: "替换内容不能为空", trigger: "blur" },
+    { required: true, message: td('dg.desensitizationRules.replaceContentRequired'), trigger: "blur" },
   ],
   intervalList: [
-    { required: true, message: "脱敏区间不能为空", trigger: "change" },
+    { required: true, message: td('dg.desensitizationRules.desensIntervalRequired'), trigger: "change" },
     {
       validator: (_, value, cb) => {
         const arr = Array.isArray(value) ? value : [];
-        if (!arr.length) return cb(new Error("脱敏区间不能为空"));
+        if (!arr.length) return cb(new Error(td('dg.desensitizationRules.intervalRequired')));
         for (const it of arr) {
           const s = it?.startNum;
           const e = it?.endNum;
           if (s == null || e == null) {
-            return cb(new Error("请填写完整的起始位置与截止位置"));
+            return cb(new Error(td('dg.desensitizationRules.intervalIncomplete')));
           }
           if (s < 1 || e < 1)
-            return cb(new Error("起始位置与截止位置需大于等于 1"));
-          if (e < s) return cb(new Error("截止位置需大于等于起始位置"));
+            return cb(new Error(td('dg.desensitizationRules.intervalMin')));
+          if (e < s) return cb(new Error(td('dg.desensitizationRules.intervalOrder')));
         }
         return cb();
       },
@@ -341,7 +340,7 @@ async function open(options = {}) {
   loading.value = false;
   isReadonly.value = !!options.readonly;
   title.value =
-      options.title || (options.id != null ? "编辑脱敏规则" : "新增脱敏规则");
+      options.title || (options.id != null ? td('dg.desensitizationRules.editTitle') : td('dg.desensitizationRules.addTitle'));
   visible.value = true;
   await getDataCategoryList();
 
@@ -422,10 +421,10 @@ function submit() {
     try {
       if (payload.id != null) {
         await props.update(payload);
-        proxy.$modal.msgSuccess(t('common.message.editSuccess'));
+        proxy.$modal.msgSuccess(td('common.message.editSuccess'));
       } else {
         await props.add(payload);
-        proxy.$modal.msgSuccess(t('common.message.addSuccess'));
+        proxy.$modal.msgSuccess(td('common.message.addSuccess'));
       }
       close();
       emit("success");

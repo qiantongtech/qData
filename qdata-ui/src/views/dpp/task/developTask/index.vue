@@ -27,10 +27,10 @@
         }"
         :editable="true"
         :leftWidth="leftWidth"
-        :placeholder="'请输入数据开发类目名称'"
+        :placeholder="td('dpp.developTask.inputCategoryName', '请输入数据开发类目名称')"
         ref="DeptTreeRef"
         @node-click="handleNodeClick"
-        title="数据开发类目"
+        :title="td('dpp.developTask.dataDevCategory', '数据开发类目')"
       />
       <el-main class="main-content">
         <qt-wrap :columns="tableStore.columns" :tableRef="tableRef">
@@ -45,7 +45,7 @@
           <template #actions-data>
             <el-button type="primary" plain @click="handleAdd">
               <i class="iconfont-mini icon-xinzeng mr5"></i
-              >{{ t("common.button.add") }}
+              >{{ td("common.button.add", "新增") }}
             </el-button>
           </template>
 
@@ -92,7 +92,7 @@
             <template #releaseState="{ row }">
               <div class="flex-column fz12">
                 <div class="flex-center">
-                  <span class="black-label mr5">任务状态:</span>
+                  <span class="black-label mr5">{{ td('dpp.developTask.taskStatus', '任务状态') }}:</span>
                   <el-switch
                     v-model="row.status"
                     active-color="#13ce66"
@@ -104,7 +104,7 @@
                   />
                 </div>
                 <div class="flex-center">
-                  <span class="black-label mr5">调度状态:</span>
+                  <span class="black-label mr5">{{ td('dpp.developTask.scheduleStatus', '调度状态') }}:</span>
                   <el-switch
                     v-model="row.schedulerState"
                     active-color="#13ce66"
@@ -129,7 +129,7 @@
                   </span>
                 </div>
                 <div class="flex-center">
-                  <span class="mr5">执行策略:</span>
+                  <span class="mr5">{{ td('dpp.developTask.executeStrategy', '执行策略') }}:</span>
                   <dict-tag
                     :options="dpp_etl_task_execution_type"
                     :value="row.executionType"
@@ -158,7 +158,7 @@
                 </template>
                 <template v-else>
                   <div class="mb5">
-                    <el-tag type="infos">未执行</el-tag>
+                    <el-tag type="infos">{{ td('dpp.developTask.notExecuted', '未执行') }}</el-tag>
                   </div>
                   <span>-</span>
                 </template>
@@ -197,7 +197,7 @@
                 icon="Edit"
                 :disabled="row.status == 1"
                 @click="routeTo('/dpp/task/developTask/edit', row)"
-                >配置任务</el-button
+                >{{ td('dpp.developTask.configureTask', '配置任务') }}</el-button
               >
               <el-button
                 link
@@ -209,13 +209,13 @@
                     info: true,
                   })
                 "
-                >{{ t("common.button.details") }}</el-button
+                >{{ td("common.button.details", "详情") }}</el-button
               >
 
               <el-popover placement="bottom" :width="150" trigger="click">
                 <template #reference>
                   <el-button link type="primary" icon="ArrowDown">{{
-                    t("common.button.more")
+                    td("common.button.more", "更多")
                   }}</el-button>
                 </template>
                 <div style="width: 100px" class="butgdlist">
@@ -227,7 +227,7 @@
                     @click="handleJobLog(row)"
                     :disabled="row.schedulerState == '1'"
                     v-if="row.processType != 1"
-                    >调度周期</el-button
+                    >{{ td('dpp.developTask.schedulePeriod', '调度周期') }}</el-button
                   >
                   <el-button
                     link
@@ -235,7 +235,7 @@
                     icon="Stopwatch"
                     @click="handleDataView(row)"
                     v-if="row.processType == 1 && row.status == 1"
-                    >停止任务</el-button
+                    >{{ td('dpp.developTask.stopTask', '停止任务') }}</el-button
                   >
                   <el-button
                     link
@@ -243,7 +243,7 @@
                     icon="Stopwatch"
                     @click="handleDataView(row)"
                     v-if="row.processType == 1 && row.status != 1"
-                    >运行实例</el-button
+                    >{{ td('dpp.developTask.runInstance', '运行实例') }}</el-button
                   >
                   <el-button
                     link
@@ -251,7 +251,7 @@
                     icon="VideoPlay"
                     :disabled="row.status != 1"
                     @click="handleExecuteOnce(row)"
-                    >执行一次</el-button
+                    >{{ td('dpp.developTask.executeOnce', '执行一次') }}</el-button
                   >
                   <el-button
                     link
@@ -261,7 +261,7 @@
                       row.datasourceType === 'FlinkStream' && row.taskInstanceId
                     "
                     @click="handleExecuteStop(row)"
-                    >停止</el-button
+                    >{{ td('dpp.developTask.stop', '停止') }}</el-button
                   >
                   <el-button
                     link
@@ -269,7 +269,7 @@
                     icon="Delete"
                     :disabled="row.status == 1"
                     @click="handleDelete(row)"
-                    >{{ t("common.button.delete") }}</el-button
+                    >{{ td("common.button.delete", "删除") }}</el-button
                   >
                 </div>
               </el-popover>
@@ -284,10 +284,10 @@
       @update:visible="DataView = $event"
       @confirm="submitForm"
       :data="form"
-      title="运行实例"
+      :title="td('dpp.developTask.runningInstance', '运行实例')"
     />
     <el-dialog
-      title="调度周期"
+      :title="td('dpp.developTask.schedulePeriod', '调度周期')"
       v-model="openCron"
       :append-to="$refs['app-container']"
       destroy-on-close
@@ -311,7 +311,7 @@
     </el-dialog>
     <add
       :visible="taskConfigDialogVisible"
-      title="新增任务"
+      :title="td('dpp.developTask.addTask', '新增任务')"
       @update:visible="taskConfigDialogVisible = $event"
       @save="handleSave"
       @confirm="handleConfirm"
@@ -324,7 +324,7 @@
 </template>
 
 <script setup name="DppDevelopTask">
-import { useI18n } from "vue-i18n";
+import useDefaultLang from "@/composables/useDefaultLang";
 import { treeData } from "@/views/dpp/task/developTask/data";
 import {
   listDppEtlTask,
@@ -359,7 +359,7 @@ import add from "./add/add.vue";
 import { deptUserTree } from "@/api/system/system/user.js";
 import { ref, reactive, getCurrentInstance, watch, toRefs } from "vue";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 
 const api = {
@@ -426,7 +426,7 @@ const handleSave = (form) => {
   };
   createEtlTaskFront(parms).then((res) => {
     if (res.code == 200) {
-      proxy.$modal.msgSuccess(t("common.message.msgOpSuccess"));
+      proxy.$modal.msgSuccess(td("common.message.msgOpSuccess", "操作成功"));
       handleQuery();
     }
   });
@@ -441,7 +441,7 @@ const handleConfirm = (form) => {
   };
   createEtlTaskFront(parms).then((res) => {
     if (res.code == 200) {
-      proxy.$modal.msgSuccess(t("common.message.msgOpSuccess"));
+      proxy.$modal.msgSuccess(td("common.message.msgOpSuccess", "操作成功"));
       handleQuery();
       routeTo("/dpp/task/developTask/edit", {
         ...res.data,
@@ -506,11 +506,11 @@ function handleJobLog(data) {
   console.log("🚀 ~ handleJobLog ~ expression.value:", expression.value);
 }
 function handleschedulerState(id, row, e) {
-  const text = row.schedulerState == "1" ? "上线" : "下线";
+  const text = row.schedulerState == "1" ? td('dpp.developTask.online', '上线') : td('dpp.developTask.offline', '下线');
 
   // 弹出确认框
   proxy.$modal
-    .confirm('确认要"' + text + '","' + row.name + '"数据开发调度状态吗？')
+    .confirm(td('dpp.developTask.confirmScheduleStatus', '确认要"{action}","{name}"数据开发调度状态吗？').replace('{action}', text).replace('{name}', row.name))
     .then(function () {
       loading.value = true;
       // 调用后台接口更新调度状态
@@ -521,7 +521,7 @@ function handleschedulerState(id, row, e) {
         projectId: userStore.projectId,
       })
         .then((response) => {
-          proxy.$modal.msgSuccess(t("common.message.msgOpSuccess"));
+          proxy.$modal.msgSuccess(td("common.message.msgOpSuccess", "操作成功"));
         })
         .catch((error) => {
           // 处理失败时的恢复操作
@@ -539,11 +539,11 @@ function handleschedulerState(id, row, e) {
 
 /** 改变启用状态值 */
 function handleStatusChange(id, row, e) {
-  const text = row.status == "1" ? "上线" : "下线";
+  const text = row.status == "1" ? td('dpp.developTask.online', '上线') : td('dpp.developTask.offline', '下线');
 
   // 弹出确认框
   proxy.$modal
-    .confirm('确认要"' + text + '","' + row.name + '"数据开发任务吗？')
+    .confirm(td('dpp.developTask.confirmTaskStatus', '确认要"{action}","{name}"数据开发任务吗？').replace('{action}', text).replace('{name}', row.name))
     .then(function () {
       loading.value = true; // 开始加载
       // 调用后台接口更新发布状态
@@ -554,7 +554,7 @@ function handleStatusChange(id, row, e) {
         projectId: userStore.projectId,
       })
         .then((response) => {
-          proxy.$modal.msgSuccess(t("common.message.msgOpSuccess"));
+          proxy.$modal.msgSuccess(td("common.message.msgOpSuccess", "操作成功"));
           handleQuery();
         })
         .catch((error) => {
@@ -579,13 +579,13 @@ function crontabFill(value) {
     projectId: userStore.projectId,
     id: row.value.id,
   }).then((response) => {
-    proxy.$modal.msgSuccess(t("common.message.msgOpSuccess"));
+    proxy.$modal.msgSuccess(td("common.message.msgOpSuccess", "操作成功"));
     handleQuery();
   });
 }
 const handleExecuteOnce = async (row) => {
   if (!row?.id) {
-    proxy.$modal.msgWarning("无效的任务id，请刷新后重试");
+    proxy.$modal.msgWarning(td('dpp.developTask.invalidTaskId', '无效的任务id，请刷新后重试'));
     return;
   }
   loading.value = true;
@@ -593,9 +593,9 @@ const handleExecuteOnce = async (row) => {
     const res = await startDppEtlTask(row.id);
 
     if (Number(res?.code) === 200) {
-      proxy.$modal.msgSuccess("执行成功");
+      proxy.$modal.msgSuccess(td('dpp.developTask.executeSuccess', '执行成功'));
     } else {
-      proxy.$modal.msgWarning(res?.msg || "执行失败，请联系管理员");
+      proxy.$modal.msgWarning(res?.msg || td('dpp.developTask.executeFailed', '执行失败，请联系管理员'));
     }
   } finally {
     setTimeout(() => {
@@ -607,16 +607,16 @@ const handleExecuteOnce = async (row) => {
 
 const handleExecuteStop = async (row) => {
   if (!row?.taskInstanceId) {
-    proxy.$modal.msgWarning("当前任务无法停止，请刷新后重试");
+    proxy.$modal.msgWarning(td('dpp.developTask.cannotStop', '当前任务无法停止，请刷新后重试'));
     return;
   }
   loading.value = true;
   try {
     const res = await execute(row.taskInstanceId, "STOP");
     if (Number(res?.code) === 200) {
-      proxy.$modal.msgSuccess("执行成功");
+      proxy.$modal.msgSuccess(td('dpp.developTask.executeSuccess', '执行成功'));
     } else {
-      proxy.$modal.msgWarning(res?.msg || "执行失败，请联系管理员");
+      proxy.$modal.msgWarning(res?.msg || td('dpp.developTask.executeFailed', '执行失败，请联系管理员'));
     }
   } finally {
     setTimeout(() => {
@@ -680,50 +680,50 @@ const tableStore = reactive({
     },
   },
   columns: [
-    { label: t("common.texts.number"), prop: "id", width: 60, sortable: true },
+    { label: td("common.texts.number", "编号"), prop: "id", width: 60, sortable: true },
     {
-      label: "任务信息",
+      label: td('dpp.developTask.taskInfo', '任务信息'),
       prop: "name",
       align: "left",
       slot: "name",
       width: 300,
     },
     {
-      label: "运行控制",
+      label: td('dpp.developTask.runControl', '运行控制'),
       prop: "status",
       width: 130,
       slot: "releaseState",
       align: "left",
     },
     {
-      label: "调度周期",
+      label: td('dpp.developTask.scheduleCycle', '调度周期'),
       prop: "cronExpression",
       width: 200,
       slot: "cronExpression",
       align: "left",
     },
     {
-      label: "最近执行",
+      label: td('dpp.developTask.recentExecution', '最近执行'),
       width: 160,
       slot: "lastExecute",
       align: "left",
     },
 
     {
-      label: "责任人",
+      label: td('dpp.developTask.responsiblePerson', '责任人'),
       width: 120,
       slot: "personChargeName",
       align: "left",
     },
     {
-      label: t("common.texts.createdBy"),
+      label: td("common.texts.createdBy", "创建人"),
       slot: "createBy",
       width: 120,
       align: "left",
       showOverflowTooltip: true,
     },
     {
-      label: t("common.texts.createdTime"),
+      label: td("common.texts.createdTime", "创建时间"),
       prop: "createTime",
       sortable: true,
       sortableKey: "create_time",
@@ -733,7 +733,7 @@ const tableStore = reactive({
     },
 
     {
-      label: t("common.texts.operation"),
+      label: td("common.texts.operation", "操作"),
       align: "center",
       fixed: "right",
       slot: "action",
@@ -751,38 +751,38 @@ const tableStore = reactive({
 const searchStore = reactive({
   items: [
     {
-      label: "任务名称",
+      label: td('dpp.developTask.taskName', '任务名称'),
       prop: "name",
       align: "left",
-      component: { is: "input", placeholder: "请输入任务名称" },
+      component: { is: "input", placeholder: td('dpp.developTask.inputTaskName', '请输入任务名称') },
     },
     {
-      label: "任务状态",
+      label: td('dpp.developTask.taskStatus', '任务状态'),
       prop: "status",
       component: {
         is: "select",
-        placeholder: "请选择任务状态",
+        placeholder: td('dpp.developTask.selectTaskStatus', '请选择任务状态'),
         options: dpp_etl_task_status,
       },
     },
     {
-      label: "数据连接类型",
+      label: td('dpp.developTask.datasourceType', '数据连接类型'),
       prop: "datasourceType",
       component: {
         is: "select",
-        placeholder: "请选择数据连接类型",
+        placeholder: td('dpp.developTask.selectDatasourceType', '请选择数据连接类型'),
         options: typaOptions,
       },
     },
     {
-      label: "处理类型",
+      label: td('dpp.developTask.processType', '处理类型'),
       prop: "processType",
       component: {
         is: "select",
-        placeholder: "请选择处理类型",
+        placeholder: td('dpp.developTask.selectProcessType', '请选择处理类型'),
         options: [
-          { label: "流处理", value: "1" },
-          { label: "批处理", value: "2" },
+          { label: td('dpp.developTask.streamProcess', '流处理'), value: "1" },
+          { label: td('dpp.developTask.batchProcess', '批处理'), value: "2" },
         ],
       },
     },
@@ -842,7 +842,7 @@ function submitForm() {
       if (form.value.id != null) {
         updateDppEtlTask(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess(t("common.message.editSuccess"));
+            proxy.$modal.msgSuccess(td("common.message.editSuccess", "修改成功"));
             open.value = false;
             getList();
           })
@@ -850,7 +850,7 @@ function submitForm() {
       } else {
         addDppEtlTask(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess(t("common.message.addSuccess"));
+            proxy.$modal.msgSuccess(td("common.message.addSuccess", "新增成功"));
             open.value = false;
             getList();
           })
@@ -864,13 +864,13 @@ function submitForm() {
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
-    .confirm('是否确认删除数据开发任务编号为"' + _ids + '"的数据项？')
+    .confirm(td('dpp.developTask.confirmDelete', '是否确认删除数据开发任务编号为"{id}"的数据项？').replace('{id}', _ids))
     .then(function () {
       return delDppEtlTask(_ids);
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess(t("common.message.deleteSuccess"));
+      proxy.$modal.msgSuccess(td("common.message.deleteSuccess", "删除成功"));
     })
     .catch(() => {});
 }

@@ -36,10 +36,10 @@
 </template>
 
 <script setup name="DesensitizationRuleInfo">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import { computed } from "vue";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { ruleDetail } = defineProps({
   ruleDetail: {
     type: Object,
@@ -48,11 +48,11 @@ const { ruleDetail } = defineProps({
 });
 
 const items = computed(() => [
-  { key: "createBy", label: t('common.texts.createdBy') },
-  { key: "createTime", label: t('common.texts.createdTime'), type: "time" },
-  { key: "updateBy", label: t('common.texts.updatedBy') },
-  { key: "updateTime", label: t('common.texts.updatedTime'), type: "time" },
-  { key: "remark", label: t('common.texts.remark'), span: 24 },
+  { key: "createBy", label: td('common.texts.createdBy') },
+  { key: "createTime", label: td('common.texts.createdTime'), type: "time" },
+  { key: "updateBy", label: td('common.texts.updatedBy') },
+  { key: "updateTime", label: td('common.texts.updatedTime'), type: "time" },
+  { key: "remark", label: td('common.texts.remark'), span: 24 },
 ]);
 </script>
 

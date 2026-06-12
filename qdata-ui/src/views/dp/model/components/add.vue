@@ -36,13 +36,13 @@
       @submit.prevent
       class="column-form"
     >
-      <div class="h2-title row-full">基础信息</div>
+      <div class="h2-title row-full">{{ td('dp.modelForm.basicInfo') }}</div>
       <qt-form-item
         v-if="!form.id"
-        label="创建方式"
+        :label="td('dp.modelForm.createType')"
         prop="createType"
         :tip="{
-          content: `手工录入：手动添加标准数据元，逐步构建一个完整的逻辑数据模型。<br/>发布表生成：系统自动扫描已存在的物理数据库表（如 MySQL、Oracle 中的表），提取其结构信息（列名、类型、主键等），并反向生成对应的逻辑模型。`,
+          content: td('dp.modelForm.createTypeTip'),
           custom: true,
         }"
       >
@@ -55,7 +55,7 @@
           >
         </el-radio-group>
       </qt-form-item>
-      <el-form-item v-else label="表类型" prop="tableType">
+      <el-form-item v-else :label="td('dp.modelForm.tableType')" prop="tableType">
         <el-select v-model="form.tableType" disabled style="width: 100%">
           <el-option
             v-for="item in table_type"
@@ -65,7 +65,7 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="数仓分层" prop="dataLayerId">
+      <el-form-item :label="td('dp.modelForm.dataLayer')" prop="dataLayerId">
         <el-tree-select
           v-model="form.dataLayerId"
           :data="dataLayerList"
@@ -73,7 +73,7 @@
           :props="{ value: 'id', label: 'displayName', children: 'children' }"
           node-key="id"
           value-key="id"
-          placeholder="请选择数仓分层"
+          :placeholder="td('dp.modelForm.dataLayerPlaceholder')"
           check-strictly
           filterable
           default-expand-all
@@ -83,7 +83,7 @@
       </el-form-item>
 
       <template v-if="form.tableType != '4'">
-        <el-form-item label="业务分类" prop="businessDomainId">
+        <el-form-item :label="td('dp.modelForm.businessCategory')" prop="businessDomainId">
           <el-tree-select
             v-model="form.businessDomainId"
             :data="businessCategoryList"
@@ -91,14 +91,14 @@
             :props="{ value: 'id', label: 'displayName', children: 'children' }"
             node-key="id"
             value-key="id"
-            placeholder="请选择业务分类"
+            :placeholder="td('dp.modelForm.businessCategoryPlaceholder')"
             check-strictly
             filterable
             clearable
             style="width: 100%"
           />
         </el-form-item>
-        <el-form-item label="数据分域" prop="dataDomainId">
+        <el-form-item :label="td('dp.modelForm.dataDomain')" prop="dataDomainId">
           <el-tree-select
             v-model="form.dataDomainId"
             :data="dataDomainList"
@@ -106,7 +106,7 @@
             :props="{ value: 'id', label: 'displayName', children: 'children' }"
             node-key="id"
             value-key="id"
-            placeholder="请选择数据分域"
+            :placeholder="td('dp.modelForm.dataDomainPlaceholder')"
             check-strictly
             filterable
             clearable
@@ -116,7 +116,7 @@
       </template>
 
       <template v-else>
-        <el-form-item label="所属主题" prop="themeDomainId">
+        <el-form-item :label="td('dp.modelForm.themeDomain')" prop="themeDomainId">
           <el-tree-select
             v-model="form.themeDomainId"
             :data="themeDomainList"
@@ -124,7 +124,7 @@
             :props="{ value: 'id', label: 'displayName', children: 'children' }"
             node-key="id"
             value-key="id"
-            placeholder="请选择所属主题"
+            :placeholder="td('dp.modelForm.themeDomainPlaceholder')"
             check-strictly
             filterable
             clearable
@@ -132,20 +132,20 @@
           />
         </el-form-item>
       </template>
-      <el-form-item label="表英文名称" prop="modelName">
+      <el-form-item :label="td('dp.modelForm.modelName')" prop="modelName">
         <el-input
           v-model="form.modelName"
-          placeholder="请输入表英文名称"
+          :placeholder="td('dp.modelForm.modelNamePlaceholder')"
           @input="form.modelName = form.modelName.replace(/[^A-Za-z0-9_]/g, '')"
         />
       </el-form-item>
-      <el-form-item label="表中文名称" prop="modelComment">
-        <el-input v-model="form.modelComment" placeholder="请输入表中文名称" />
+      <el-form-item :label="td('dp.modelForm.modelComment')" prop="modelComment">
+        <el-input v-model="form.modelComment" :placeholder="td('dp.modelForm.modelCommentPlaceholder')" />
       </el-form-item>
-      <el-form-item label="完整表名" prop="tableCase">
+      <el-form-item :label="td('dp.modelForm.tableCase')" prop="tableCase">
         <el-select
           v-model="form.tableCase"
-          placeholder="请选择完整表名"
+          :placeholder="td('dp.modelForm.tableCasePlaceholder')"
           style="width: 100%"
         >
           <el-option
@@ -158,11 +158,11 @@
       </el-form-item>
 
       <template v-if="form.tableType != '3'">
-        <el-form-item label="标准类型" prop="description">
+        <el-form-item :label="td('dp.modelForm.documentType')" prop="description">
           <el-select
             class="el-form-input-width"
             v-model="form.documentType"
-            placeholder="请选择标准类型"
+            :placeholder="td('dp.modelForm.documentTypePlaceholder')"
             clearable
             @change="fetchSecondLevelDocs"
             style="width: 100%"
@@ -175,11 +175,11 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="标准登记" prop="documentId">
+        <el-form-item :label="td('dp.modelForm.documentId')" prop="documentId">
           <el-select
             class="el-form-input-width"
             v-model="form.documentId"
-            placeholder="请选择标准登记"
+            :placeholder="td('dp.modelForm.documentIdPlaceholder')"
             style="width: 100%"
             clearable
           >
@@ -193,7 +193,7 @@
           </el-select>
         </el-form-item>
       </template>
-      <el-form-item label="责任人" prop="contact">
+      <el-form-item :label="td('dp.modelForm.contact')" prop="contact">
         <el-tree-select
           filterable
           v-model="form.contact"
@@ -204,25 +204,24 @@
             children: 'children',
           }"
           value-key="ID"
-          placeholder="请选择责任人"
+          :placeholder="td('dp.modelForm.contactPlaceholder')"
           check-strictly
           @change="handleContactChange"
         />
       </el-form-item>
-      <el-form-item label="联系电话" prop="contactNumber">
+      <el-form-item :label="td('dp.modelForm.contactNumber')" prop="contactNumber">
         <el-input
           v-model="form.contactNumber"
-          placeholder="请输入联系电话"
+          :placeholder="td('dp.modelForm.contactNumberPlaceholder')"
           disabled
         />
       </el-form-item>
 
       <qt-form-item
-        :label="t('common.texts.status')"
+        :label="td('common.texts.status')"
         prop="status"
         :tip="{
-          content:
-            '启用状态表示该逻辑模型可用于后续开发、关联标准数据元或生成物理表；禁用后无法被引用。',
+          content: td('dp.modelForm.statusTip'),
         }"
       >
         <el-radio-group v-model="form.status">
@@ -234,66 +233,66 @@
           >
         </el-radio-group>
       </qt-form-item>
-      <el-form-item :label="t('common.texts.description')" prop="description" class="row-full">
+      <el-form-item :label="td('common.texts.description')" prop="description" class="row-full">
         <el-input
           v-model="form.description"
           type="textarea"
           maxlength="500个字符"
           show-word-limit
-          :placeholder="t('common.form.descriptionPlaceholder')"
+          :placeholder="td('common.form.descriptionPlaceholder')"
         />
       </el-form-item>
-      <el-form-item :label="t('common.texts.remark')" prop="remark" class="row-full">
+      <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full">
         <el-input
           v-model="form.remark"
           type="textarea"
           maxlength="500个字符"
           show-word-limit
-          :placeholder="t('common.form.remarkPlaceholder')"
+          :placeholder="td('common.form.remarkPlaceholder')"
         />
       </el-form-item>
 
       <template v-if="form.createType == 2 && !form.id">
-        <div class="h2-title row-full">数据源</div>
+        <div class="h2-title row-full">{{ td('dp.modelForm.dataSource') }}</div>
         <el-form-item
-          label="数据连接名称"
+          :label="td('dp.modelForm.datasourceName')"
           prop="datasourceId"
           :rules="[
             {
               required: true,
-              message: '请选择数据连接名称',
+              message: td('dp.modelForm.datasourceRequired'),
               trigger: 'change',
             },
           ]"
         >
           <DatasourceList
             v-model="form.datasourceId"
-            placeholder="请选择数据连接名称"
+            :placeholder="td('dp.modelForm.datasourceNamePlaceholder')"
             @change="handleDatasourceChange"
             filterable
             flag="dpModel"
           />
         </el-form-item>
-        <el-form-item label="数据库类型" prop="datasourceType">
+        <el-form-item :label="td('dp.modelForm.datasourceType')" prop="datasourceType">
           <el-input
             v-model="form.datasourceType"
-            placeholder="请选择数据库类型"
+            :placeholder="td('dp.modelForm.datasourceTypePlaceholder')"
             disabled
           />
         </el-form-item>
-        <el-form-item label="数据库地址" prop="ip">
-          <el-input v-model="form.ip" placeholder="请选择数据库类型" disabled />
+        <el-form-item :label="td('dp.modelForm.datasourceAddress')" prop="ip">
+          <el-input v-model="form.ip" :placeholder="td('dp.modelForm.datasourceAddressPlaceholder')" disabled />
         </el-form-item>
         <el-form-item
-          label="选择表"
+          :label="td('dp.modelForm.selectTable')"
           prop="tableName"
           :rules="[
-            { required: true, message: '表不能为空', trigger: 'change' },
+            { required: true, message: td('dp.modelForm.tableRequired'), trigger: 'change' },
           ]"
         >
           <el-select
             v-model="form.tableName"
-            placeholder="请选择表"
+            :placeholder="td('dp.modelForm.selectTablePlaceholder')"
             filterable
             remote
             :remote-method="remoteSearchTables"
@@ -311,7 +310,7 @@
       </template>
     </el-form>
 
-    <div class="h2-title">属性字段</div>
+    <div class="h2-title">{{ td('dp.modelForm.attributeFields') }}</div>
     <el-button
       style="margin-bottom: 5px; margin-top: 10px"
       type="primary"
@@ -320,10 +319,10 @@
       size="small"
       @mousedown="(e) => e.preventDefault()"
     >
-      <i class="iconfont-mini icon-xinzeng mr5"></i>{{ t('common.button.add') }}
+      <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('common.button.add') }}
     </el-button>
     <el-table :data="tableData" style="width: 100%" v-loading="loading">
-      <el-table-column :label="t('common.texts.number')" type="index" align="left" width="60" />
+      <el-table-column :label="td('common.texts.number')" type="index" align="left" width="60" />
       <el-table-column
         v-for="column in columns"
         :key="column.prop"
@@ -370,10 +369,10 @@
             type="primary"
             icon="Edit"
             @click="editRow(row, $index)"
-            >编辑</el-button
+            >{{ td('common.button.update') }}</el-button
           >
           <el-button link type="danger" icon="Delete" @click="deleteRow(row)"
-            >{{ t('common.button.delete') }}</el-button
+            >{{ td('common.button.delete') }}</el-button
           >
         </template>
       </el-table-column>
@@ -381,8 +380,8 @@
 
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="closeDialog">{{ t('common.button.cancel') }}</el-button>
-        <el-button type="primary" @click="confirmDialog">确认</el-button>
+        <el-button @click="closeDialog">{{ td('common.button.cancel') }}</el-button>
+        <el-button type="primary" @click="confirmDialog">{{ td('common.button.confirm') }}</el-button>
       </div>
     </template>
   </el-dialog>
@@ -400,7 +399,7 @@
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 
 const { proxy } = getCurrentInstance();
 import { listDpDocument } from "@/api/dp/document/document";
@@ -424,7 +423,7 @@ import { defineProps, defineEmits, ref, computed, watch } from "vue";
 import { getDpModelColumnList } from "@/api/dp/model/model";
 import { findInTree, formatModelName } from "../../../../utils/dm/utils";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const {
   dp_model_status,
   dp_model_create_type,
@@ -909,27 +908,27 @@ const namingOptions = computed(() => {
 const rules = computed(() => {
   const baseRules = {
     modelComment: [
-      { required: true, message: "表中文名称不能为空", trigger: "blur" },
+      { required: true, message: td('dp.modelForm.modelNameRequired'), trigger: "blur" },
     ],
     modelName: [
-      { required: true, message: "表英文名称不能为空", trigger: "blur" },
+      { required: true, message: td('dp.modelForm.modelNameEnRequired'), trigger: "blur" },
       {
         pattern: /^[A-Za-z0-9_]*$/,
-        message: "表名只能包含字母、数字和下划线",
+        message: td('dp.modelForm.modelNamePattern'),
         trigger: "blur",
       },
     ],
     tableCase: [
-      { required: true, message: "完整表名不能为空", trigger: "change" },
+      { required: true, message: td('dp.modelForm.tableCaseRequired'), trigger: "change" },
     ],
     createType: [
-      { required: true, message: "创建方式不能为空", trigger: "change" },
+      { required: true, message: td('dp.modelForm.createTypeRequired'), trigger: "change" },
     ],
     catCode: [
-      { required: true, message: "逻辑模型类目不能为空", trigger: "change" },
+      { required: true, message: td('dp.modelForm.catCodeRequired'), trigger: "change" },
     ],
     dataLayerId: [
-      { required: true, message: "数仓分层不能为空", trigger: "change" },
+      { required: true, message: td('dp.modelForm.dataLayerRequired'), trigger: "change" },
     ],
   };
 
@@ -937,17 +936,17 @@ const rules = computed(() => {
     return {
       ...baseRules,
       themeDomainId: [
-        { required: true, message: "主题域不能为空", trigger: "change" },
+        { required: true, message: td('dp.modelForm.themeDomainRequired'), trigger: "change" },
       ],
     };
   } else {
     return {
       ...baseRules,
       businessDomainId: [
-        { required: true, message: "业务分类不能为空", trigger: "change" },
+        { required: true, message: td('dp.modelForm.businessCategoryRequired'), trigger: "change" },
       ],
       dataDomainId: [
-        { required: true, message: "数据分域不能为空", trigger: "change" },
+        { required: true, message: td('dp.modelForm.dataDomainRequired'), trigger: "change" },
       ],
     };
   }
@@ -956,21 +955,21 @@ const rules = computed(() => {
 const columns = ref([
   {
     prop: "dataElemName",
-    label: "关联标准",
+    label: td('dp.modelForm.relatedStandard'),
     align: "left",
     width: "250",
     showOverflowTooltip: true,
   },
   {
     prop: "cnName",
-    label: "表中文名称",
+    label: td('dp.modelForm.modelComment'),
     align: "left",
     width: "250",
     showOverflowTooltip: true,
   },
   {
     prop: "engName",
-    label: "表英文名称",
+    label: td('dp.modelForm.modelName'),
     align: "left",
     width: "250",
     showOverflowTooltip: true,
@@ -978,21 +977,21 @@ const columns = ref([
   {
     prop: "description",
     align: "left",
-    label: t('common.texts.description'),
+    label: td('common.texts.description'),
     align: "left",
     showOverflowTooltip: true,
     width: "250",
   },
   {
     prop: "columnType",
-    label: "数据类型",
+    label: td('dp.modelForm.dataType'),
     align: "center",
     width: "100",
     showOverflowTooltip: true,
   },
-  { prop: "columnLength", label: "属性长度", width: "80", align: "center" },
-  { prop: "pkFlag", label: "是否主键", width: "80", align: "center" },
-  { type: "button", label: t('common.texts.operation'), width: "150", align: "center" },
+  { prop: "columnLength", label: td('dp.modelForm.attributeLength'), width: "80", align: "center" },
+  { prop: "pkFlag", label: td('dp.modelForm.isPrimaryKey'), width: "80", align: "center" },
+  { type: "button", label: td('common.texts.operation'), width: "150", align: "center" },
 ]);
 const handleContactChange = (selectedValue) => {
   const selectedUser = props.userList.find(
@@ -1114,7 +1113,7 @@ const confirmDialog = () => {
   proxy.$refs["dpModelRef"].validate((valid) => {
     if (valid) {
       if (!tableData.value || tableData.value.length === 0) {
-        proxy.$message.warning("操作失败，请添加属性字段");
+        proxy.$message.warning(td('dp.modelForm.addFieldWarning'));
         return;
       }
 

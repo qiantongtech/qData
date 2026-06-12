@@ -16,7 +16,7 @@
 -->
 
 <template>
-  <el-dialog title="详请" v-model="visible" width="800px" draggable>
+  <el-dialog :title="td('dpp.cleanRule.detail', '详情')" v-model="visible" width="800px" draggable>
     <el-table
       stripe
       height="65vh"
@@ -24,14 +24,14 @@
       :data="dpDataElemCodeList"
       :default-sort="defaultSort"
     >
-      <el-table-column :label="t('common.texts.number')" align="left" prop="id" width="80" />
-      <el-table-column label="代码值" align="left" prop="codeValue" width="160">
+      <el-table-column :label="td('common.texts.number', '编号')" align="left" prop="id" width="80" />
+      <el-table-column :label="td('dpp.cleanRule.codeValue', '代码值')" align="left" prop="codeValue" width="160">
         <template #default="scope">
           {{ scope.row.codeValue || "-" }}
         </template>
       </el-table-column>
       <el-table-column
-        label="代码名称"
+        :label="td('dpp.cleanRule.codeName', '代码名称')"
         align="left"
         prop="codeName"
         width="350"
@@ -40,13 +40,13 @@
           {{ scope.row.codeName || "-" }}
         </template>
       </el-table-column>
-      <el-table-column :label="t('common.texts.createdBy')" align="left" prop="createBy" width="160">
+      <el-table-column :label="td('common.texts.createdBy', '创建人')" align="left" prop="createBy" width="160">
         <template #default="scope">
           {{ scope.row.createBy || "-" }}
         </template>
       </el-table-column>
       <el-table-column
-        :label="t('common.texts.createdTime')"
+        :label="td('common.texts.createdTime', '创建时间')"
         align="left"
         prop="createTime"
         width="220"
@@ -58,7 +58,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        :label="t('common.texts.remark')"
+        :label="td('common.texts.remark', '备注')"
         align="left"
         prop="remark"
         width="360"
@@ -74,7 +74,7 @@
             src="../../../../../../../../assets/system/images/no_data/noData.png"
             alt=""
           />
-          <p>无数据</p>
+          <p>{{ td('dpp.cleanRule.noData', '无数据') }}</p>
         </div>
       </template>
     </el-table>
@@ -88,20 +88,20 @@
     />
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="handleClose">{{ t('common.button.close') }}</el-button>
+        <el-button size="mini" @click="handleClose">{{ td('common.button.close', '关闭') }}</el-button>
       </div>
     </template>
   </el-dialog>
 </template>
 
 <script setup name="ComponentOne">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import {
   listDpDataElemCode,
   validateCodeValue,
 } from "@/api/dp/dataElem/dataElem.js";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const route = useRoute();
 const { proxy } = getCurrentInstance();
 

@@ -19,15 +19,15 @@
   <el-form ref="formRef" :model="form" label-width="130px" :disabled="false">
     <el-row>
       <el-col :span="24">
-        <el-form-item label="字段完整性" prop="fillStrategy">
+        <el-form-item :label="td('da.qualityTaskRules.ruleCommon.fieldCompleteness')" prop="fillStrategy">
           <el-radio-group
             v-if="!falg"
             v-model="form.fillStrategy"
             class="rule-half"
           >
-            <el-radio :value="'1'">必须全部填写（部分为空为异常）</el-radio>
+            <el-radio :value="'1'">{{ td('da.qualityTaskRules.ruleCommon.mustFillAll') }}</el-radio>
             <el-radio :value="'2'"
-              >要么全部为空，要么全部填写（部分填写为异常）</el-radio
+              >{{ td('da.qualityTaskRules.ruleCommon.fillAllOrNone') }}</el-radio
             >
           </el-radio-group>
           <div v-else class="form-readonly">{{ fillStrategyText }}</div>
@@ -39,6 +39,9 @@
 
 <script setup>
 import { reactive, ref, computed } from "vue";
+import useDefaultLang from "@/composables/useDefaultLang";
+
+const { td } = useDefaultLang();
 
 const props = defineProps({
   form: Object,
@@ -53,9 +56,9 @@ const formRef = ref(null);
 const form = reactive({ ...props.form });
 const fillStrategyText = computed(() =>
   form.fillStrategy === "1"
-    ? "必须全部填写（部分为空为异常）"
+    ? td('da.qualityTaskRules.ruleCommon.mustFillAll')
     : form.fillStrategy === "2"
-    ? "要么全部为空，要么全部填写（部分填写为异常）"
+    ? td('da.qualityTaskRules.ruleCommon.fillAllOrNone')
     : "-"
 );
 function validate() {

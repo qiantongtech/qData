@@ -22,10 +22,10 @@
       <el-row>
         <!-- 左侧拖拽列表 -->
         <el-col :span="8" :offset="3">
-          <p>来源表字段：</p>
+          <p>{{ td('dpp.integration.sourceTableFields', '来源表字段：') }}</p>
           <!-- 全选复选框 -->
           <el-checkbox style="margin-top: -20px" v-model="leftSelectAll" :disabled="info"
-            v-if="readerForm.tableFields.length > 0">全选</el-checkbox>
+            v-if="readerForm.tableFields.length > 0">{{ td('dpp.integration.selectAll', '全选') }}</el-checkbox>
           <draggable tag="div" class="draggable-list" :list="readerForm.tableFields" animation="300" item-key="id" :disabled="info">
             <template v-slot:item="{ element, index }">
               <div class="draggable-item fixed-height">
@@ -54,11 +54,11 @@
 
         <!-- 右侧拖拽列表 -->
         <el-col :span="8">
-          <p>目标字段：</p>
+          <p>{{ td('dpp.integration.targetFields', '目标字段：') }}</p>
           <!-- 全选复选框，仅当不是 hdfs 且有字段时显示 -->
           <el-checkbox v-if="readerForm.toColumnsList.length > 0" :disabled="type == 'hdfs' || info"
             v-model="rightSelectAll" style="margin-top: -20px">
-            全选
+            {{ td('dpp.integration.selectAll', '全选') }}
           </el-checkbox>
           <!-- 拖拽区域 -->
           <draggable tag="div" class="draggable-list" :list="readerForm.toColumnsList" animation="300" item-key="id" :disabled="info">
@@ -66,7 +66,7 @@
               <div class="draggable-item fixed-height">
                 <div class="custom-draggable-item">
                   <!-- 使用 tooltip 提示禁用原因 -->
-                  <el-tooltip v-if="type === 'hdfs'" content="HDFS 类型不可勾选" placement="top">
+                  <el-tooltip v-if="type === 'hdfs'" :content="td('dpp.integration.hdfsNoSelect', 'HDFS 类型不可勾选')" placement="top">
                     <el-checkbox class="checkbox" v-model="element.isChecked" :disabled="true">
                       <span class="column-name">{{ element.columnName }}</span>
                     </el-checkbox>
@@ -92,7 +92,9 @@
 
 <script setup>
 import { ref, watch, computed, defineExpose } from "vue";
+import useDefaultLang from "@/composables/useDefaultLang";
 import draggable from "vuedraggable";
+const { td } = useDefaultLang();
 
 // 定义 props
 const props = defineProps({

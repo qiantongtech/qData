@@ -52,11 +52,11 @@
   </div>
 </template>
 <script setup name="BasicInfo">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import moment from "moment";
 import { cronToZh } from "@/utils/cronUtils";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { dp_model_status, dp_model_create_type } = proxy.useDict(
   "dp_model_status",
@@ -74,39 +74,39 @@ const fileDesc = computed(() => {
 const table = ref([
   {
     key: "personChargeName",
-    label: "责任人",
+    label: td('dp.dataElem.personCharge'),
     value: "",
   },
   {
     key: "contactNumber",
-    label: "联系电话",
+    label: td('dp.dataElem.contactNumber'),
     value: "",
   },
 
   {
     key: "createBy",
-    label: t('common.texts.createdBy'),
+    label: td('common.texts.createdBy'),
     value: "",
   },
   {
     key: "createTime",
-    label: t('common.texts.createdTime'),
+    label: td('common.texts.createdTime'),
     value: "",
   },
   {
     key: "updateBy",
-    label: t('common.texts.updatedBy'),
+    label: td('common.texts.updatedBy'),
     value: "",
   },
   {
     key: "updateTime",
-    label: t('common.texts.updatedTime'),
+    label: td('common.texts.updatedTime'),
     value: "",
     type: "time",
   },
   {
     key: "remark",
-    label: t('common.texts.remark'),
+    label: td('common.texts.remark'),
     value: "",
     span: 24,
   },

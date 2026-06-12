@@ -71,7 +71,11 @@ export default {
     importTitle: '数据域导入',
     importResult: '导入结果',
     ownerRequired: '负责人不能为空',
-    englishOnly: '只能输入英文字符'
+    englishOnly: '只能输入英文字符',
+    dataDomain: '数据域',
+    updateExistingData: '是否更新已经存在的数据域数据',
+    confirmDeleteByName: '是否确认删除数据域名称为"{name}"的数据项？',
+    topNode: '顶级节点'
   },
   dataLayer: {
     // 数仓分层
@@ -114,7 +118,8 @@ export default {
     confirmDeleteSpecification: '是否确认删除规范编号为"{id}"的数据项？',
     confirmStatusChangeSpecification: '确认要"{text}"规范"{id}"吗？',
     pleaseSelectLayer: '请先选择左侧数仓分层',
-    operationDataLayer: '操作数据层'
+    operationDataLayer: '操作数据层',
+    englishOnly: '只能输入英文字符'
   },
   themeDomain: {
     // 主题域
@@ -147,7 +152,8 @@ export default {
     confirmStatusChange: '确认要"{text}","{name}"主题域吗？',
     enableText: '启用',
     disableText: '禁用',
-    topNode: '顶级节点'
+    topNode: '顶级节点',
+    englishOnly: '只能输入英文字符'
   },
   common: {
     query: '查询',

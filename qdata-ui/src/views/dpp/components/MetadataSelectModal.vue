@@ -11,14 +11,14 @@
     >
       <template #header>
         <span role="heading" aria-level="2" class="el-dialog__title">
-          选择元数据
+          {{ td('dpp.metadataSelect.selectMetadata', '选择元数据') }}
         </span>
       </template>
       <div class="field-wrap" v-if="visible">
         <div class="search-bar">
           <el-input
             v-model="tableQueryParams.keyWord"
-            placeholder="请输入元数据名称或表注释搜索"
+            :placeholder="td('dpp.metadataSelect.searchPlaceholder', '请输入元数据名称或表注释搜索')"
             class="content-search-input"
             clearable
             :prefix-icon="Search"
@@ -30,7 +30,7 @@
         <div class="module-body infotop technical-info">
           <!-- 左侧：来源系统树 -->
           <div class="column-box">
-            <div class="box-title">来源系统架构</div>
+            <div class="box-title">{{ td('dpp.metadataSelect.sourceSystem', '来源系统架构') }}</div>
             <div class="box-content">
               <SourceSystemTree
                 ref="sourceSystemTreeRef"
@@ -43,7 +43,7 @@
 
           <!-- 中间：表列表 -->
           <div class="column-box">
-            <div class="box-title">表列表</div>
+            <div class="box-title">{{ td('dpp.metadataSelect.tableList', '表列表') }}</div>
             <div class="box-content">
               <qt-table
                 ref="tableRef"
@@ -54,7 +54,7 @@
               >
                 <template #dssetFlag="{ row }">
                   <el-tag :type="row.dssetFlag ? 'success' : 'info'">
-                    {{ row.dssetFlag ? "已注册" : "未注册" }}
+                    {{ row.dssetFlag ? td('dpp.metadataSelect.registered', '已注册') : td('dpp.metadataSelect.notRegistered', '未注册') }}
                   </el-tag>
                 </template>
               </qt-table>
@@ -64,12 +64,12 @@
       </div>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="handleCancel">{{ t('common.button.cancel') }}</el-button>
+          <el-button @click="handleCancel">{{ td('common.button.cancel', '取消') }}</el-button>
           <el-button
             type="primary"
             :disabled="selectedTableList.length === 0"
             @click="handleConfirm"
-            >{{ t('common.button.confirm') }}</el-button
+            >{{ td('common.button.confirm', '确定') }}</el-button
           >
         </div>
       </template>
@@ -78,7 +78,7 @@
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang"
 import {
   ref,
   reactive,
@@ -92,7 +92,7 @@ import { listTable } from "@/api/mc/unreleased/table";
 import { Search } from "@element-plus/icons-vue";
 import { debounce } from "lodash-es";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 
 const props = defineProps({
@@ -124,35 +124,35 @@ const tableColumns = [
     "reserve-selection": true,
   },
   {
-    label: "库名",
+    label: td('dpp.metadataSelect.dbName', '库名'),
     prop: "dbName",
     align: "left",
     minWidth: 100,
     showOverflowTooltip: true,
   },
   {
-    label: "表名称",
+    label: td('dpp.metadataSelect.tableName', '表名称'),
     prop: "tableName",
     align: "left",
     minWidth: 150,
     showOverflowTooltip: true,
   },
   {
-    label: "表注释",
+    label: td('dpp.metadataSelect.tableComment', '表注释'),
     prop: "tableComment",
     align: "left",
     minWidth: 150,
     showOverflowTooltip: true,
   },
   {
-    label: t('common.texts.description'),
+    label: td('common.texts.description', '描述'),
     prop: "description",
     align: "left",
     minWidth: 150,
     showOverflowTooltip: true,
   },
   {
-    label: "注册状态",
+    label: td('dpp.metadataSelect.registerStatus', '注册状态'),
     width: 100,
     slot: "dssetFlag",
   },
@@ -315,7 +315,7 @@ const handleConfirm = () => {
     emit("confirm", results);
     visible.value = false;
   } else {
-    proxy.$modal.msgWarning("请至少选择一张表");
+    proxy.$modal.msgWarning(td('dpp.metadataSelect.selectAtLeastOneTable', '请至少选择一张表'));
   }
 };
 

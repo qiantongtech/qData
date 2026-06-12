@@ -24,7 +24,7 @@
           <div class="cell-item">{{ item.label }}</div>
         </template>
         <div v-if="item.key == 'status'">
-          <el-tag :type="item.status == -1 ? 'warning' : 'success'">{{ item.status == -1 ? "草稿" : "完成"
+          <el-tag :type="item.status == -1 ? 'warning' : 'success'">{{ item.status == -1 ? td('dpp.info.draft', '草稿') : td('dpp.info.completed', '完成')
           }}</el-tag>
         </div>
         <div v-else-if="item.key == 'type'">
@@ -44,6 +44,9 @@
 <script setup name="BasicInfo">
 import moment from "moment";
 import { cronToZh } from "@/utils/cronUtils";
+import useDefaultLang from "@/composables/useDefaultLang"
+
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { auth_public, auth_app_type } = proxy.useDict("auth_public", "auth_app_type");
 
@@ -56,36 +59,36 @@ const props = defineProps({
 
 // 公共字段
 const baseTable = [
-  { key: "status", label: "配置状态", value: "" },
-  { key: "crontab", label: "调度周期", value: "" },
-  { key: "executionType", label: "执行策略", value: "" },
-  { key: "lastExecuteTime", label: "最近运行时间", value: "" },
-  { key: "lastExecuteStatus", label: "最近执行结果", value: "" },
-  { key: "taskPriority", label: "任务优先级", value: "" },
-  { key: "workerGroup", label: "Worker分组", value: "" },
-  { key: "yarnQueue", label: "Yarn队列", value: "" },
-  { key: "failRetryTimes", label: "失败重试次数", value: "" },
-  { key: "failRetryInterval", label: "失败重试间隔", value: "" },
-  { key: "delayTime", label: "延迟执行时间", value: "", type: "time" },
-  { key: "taskType", label: "执行引擎", value: "" },
+  { key: "status", label: td('dpp.info.configStatus', '配置状态'), value: "" },
+  { key: "crontab", label: td('dpp.info.scheduleCycle', '调度周期'), value: "" },
+  { key: "executionType", label: td('dpp.info.executionStrategy', '执行策略'), value: "" },
+  { key: "lastExecuteTime", label: td('dpp.info.recentRunTime', '最近运行时间'), value: "" },
+  { key: "lastExecuteStatus", label: td('dpp.info.recentExecutionResult', '最近执行结果'), value: "" },
+  { key: "taskPriority", label: td('dpp.info.taskPriority', '任务优先级'), value: "" },
+  { key: "workerGroup", label: td('dpp.info.workerGroup', 'Worker分组'), value: "" },
+  { key: "yarnQueue", label: td('dpp.info.yarnQueue', 'Yarn队列'), value: "" },
+  { key: "failRetryTimes", label: td('dpp.info.failRetryTimes', '失败重试次数'), value: "" },
+  { key: "failRetryInterval", label: td('dpp.info.failRetryInterval', '失败重试间隔'), value: "" },
+  { key: "delayTime", label: td('dpp.info.delayExecutionTime', '延迟执行时间'), value: "", type: "time" },
+  { key: "taskType", label: td('dpp.info.executionEngine', '执行引擎'), value: "" },
 ];
 
 // Spark 字段
 const sparkFields = [
-  { key: "driverCores", label: "Driver核心数", value: "" },
-  { key: "driverMemory", label: "Driver内存数", value: "" },
-  { key: "numExecutors", label: "Executor数量", value: "" },
-  { key: "executorMemory", label: "Executor内存数", value: "" },
-  { key: "executorCores", label: "Executor核心数", value: "" },
+  { key: "driverCores", label: td('dpp.info.driverCores', 'Driver核心数'), value: "" },
+  { key: "driverMemory", label: td('dpp.info.driverMemory', 'Driver内存数'), value: "" },
+  { key: "numExecutors", label: td('dpp.info.executorCount', 'Executor数量'), value: "" },
+  { key: "executorMemory", label: td('dpp.info.executorMemory', 'Executor内存数'), value: "" },
+  { key: "executorCores", label: td('dpp.info.executorCores', 'Executor核心数'), value: "" },
 ];
 
 // Flink 字段
 const flinkFields = [
-  { key: "jobManagerMemory", label: "JobManager内存数", value: "" },
-  { key: "taskManagerMemory", label: "TaskManager内存数", value: "" },
-  { key: "slot", label: "Slot数量", value: "" },
-  { key: "taskManager", label: "TaskManager数量", value: "" },
-  { key: "parallelism", label: "并行度", value: "" },
+  { key: "jobManagerMemory", label: td('dpp.info.jobManagerMemory', 'JobManager内存数'), value: "" },
+  { key: "taskManagerMemory", label: td('dpp.info.taskManagerMemory', 'TaskManager内存数'), value: "" },
+  { key: "slot", label: td('dpp.info.slotCount', 'Slot数量'), value: "" },
+  { key: "taskManager", label: td('dpp.info.taskManagerCount', 'TaskManager数量'), value: "" },
+  { key: "parallelism", label: td('dpp.info.parallelism', '并行度'), value: "" },
 ];
 
 // 动态生成 fileDesc

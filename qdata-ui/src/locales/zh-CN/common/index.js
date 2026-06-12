@@ -101,7 +101,7 @@ export default {
     operationSuccess: '操作成功',
     prompt: '提示',
     systemPrompt: '系统提示',
-    confirmChangeStatus: '确认要{status}"{name}"数据连接吗？'
+    selectRecord: '请选择要删除的数据'
   },
   html: {
     appTitle: 'qData开源数据中台'

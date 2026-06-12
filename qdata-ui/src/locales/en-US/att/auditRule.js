@@ -25,6 +25,6 @@ export default {
     detail: 'Audit Rule Detail'
   },
   importTitle: 'Import Audit Rule',
-  deleteConfirm: 'Confirm to delete the data item with audit rule ID "{ids}"?',
+  deleteConfirm: 'Confirm to delete the data item with audit rule ID "<ids>"?',
   treeRootName: 'Quality Dimension'
 }

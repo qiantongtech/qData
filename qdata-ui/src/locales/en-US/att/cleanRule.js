@@ -18,6 +18,6 @@ export default {
     detail: 'Cleaning Rule Detail'
   },
   importTitle: 'Import Cleaning Rule',
-  deleteConfirm: 'Confirm to delete the data item with ID "{ids}"?',
+  deleteConfirm: 'Confirm to delete the data item with ID "<ids>"?',
   cleanRuleCategory: 'Cleaning Rule Category'
 }

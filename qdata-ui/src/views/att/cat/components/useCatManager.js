@@ -134,13 +134,13 @@ export default function useCatManager({
 
   function handleStatusChange(row) {
     if (!updateFunc) return;
-    const text = row.validFlag === true ? "启用" : "禁用";
+    const text = row.validFlag === true ? t('att.common.enable') : t('att.common.disable');
     proxy.$modal
-      .confirm('确认要"' + text + '","' + row.name + `"吗？`)
+      .confirm(t('att.common.confirmStatusChangeGeneric').replace('{status}', text).replace('<name>', row.name).replace('{type}', nameLabel))
       .then(function () {
         updateFunc({ id: row.id, parentId: row.parentId, validFlag: row.validFlag })
           .then(() => {
-            proxy.$modal.msgSuccess(text + "成功");
+            proxy.$modal.msgSuccess(t('att.common.statusSuccess').replace('{status}', text));
             getList();
           })
           .catch(() => {
@@ -179,7 +179,7 @@ export default function useCatManager({
   function handleDelete(row) {
     const ids = row.id;
     proxy.$modal
-      .confirm('是否确认删除编号为"' + ids + '"的数据项？')
+      .confirm(td('common.message.confirmDelete') + '"' + ids + '"的数据项？')
       .then(function () {
         return delFunc && delFunc(ids);
       })

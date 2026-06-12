@@ -387,7 +387,7 @@ function handleStatusChange(id, row, e) {
     status: row.status,
   };
   proxy.$modal
-    .confirm(td('att.common.confirmStatusChange').replace('{status}', text).replace('{name}', row.name))
+    .confirm(td('att.common.confirmStatusChange').replace('{status}', text).replace('<name>', row.name))
     .then(function () {
       updateAttTag(dataForm).then((response) => {
         proxy.$modal.msgSuccess(td('common.message.msgOpSuccess'));
@@ -508,7 +508,7 @@ function handleDelete(row) {
   if (!_ids) return;
 
   proxy.$modal
-    .confirm(td('att.common.confirmDelete').replace('{ids}', _ids))
+    .confirm(td('att.common.confirmDelete').replace('<ids>', _ids))
     .then(function () {
       return Array.isArray(_ids)
         ? Promise.all(_ids.map((id) => delAttTag(id)))

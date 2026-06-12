@@ -408,7 +408,7 @@
       <el-form ref="daAssetApplyRef" :model="form" label-width="90px">
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="编号:" prop="id">
+            <el-form-item :label="td('common.texts.number') + ':'" prop="id">
               <div class="form-readonly">
                 {{ form.id }}
               </div>
@@ -426,14 +426,14 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="负责人:" prop="assetTableName">
+            <el-form-item :label="td('att.project.texts.manager') + ':'" prop="assetTableName">
               <div class="form-readonly">
                 {{ form.nickName }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="联系方式:" prop="managerPhone">
+            <el-form-item :label="td('att.project.texts.contact') + ':'" prop="managerPhone">
               <div class="form-readonly">
                 {{ form.managerPhone ?? "-" }}
               </div>
@@ -451,7 +451,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="创建人:" prop="createBy">
+            <el-form-item :label="td('common.texts.createdBy') + ':'" prop="createBy">
               <div class="form-readonly">
                 {{ form.createBy }}
               </div>
@@ -467,14 +467,14 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="更新人:" prop="createBy">
+            <el-form-item :label="td('common.texts.updatedBy') + ':'" prop="createBy">
               <div class="form-readonly">
                 {{ form.updateBy }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="更新时间:" prop="updateTime">
+            <el-form-item :label="td('common.texts.updatedTime') + ':'" prop="updateTime">
               <div class="form-readonly">
                 {{ parseTime(form.updateTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
               </div>
@@ -629,13 +629,13 @@ function cancel() {
 }
 /** 改变启用状态值 */
 function handleStatusChange(row) {
-  const text = row.validFlag === true ? "启用" : "禁用";
+  const text = row.validFlag === true ? td('att.common.enable') : td('att.common.disable');
   const status = row.validFlag === true ? 1 : 0;
   proxy.$modal
-    .confirm('确认要"' + text + '","' + row.name + '"项目吗？')
+    .confirm(td('att.common.confirmStatusChangeGeneric').replace('<status>', text).replace('<name>', row.name).replace('<type>', td('att.common.projectName')))
     .then(function () {
       editProjectStatus(row.id, status).then((response) => {
-        proxy.$modal.msgSuccess(text + "成功");
+        proxy.$modal.msgSuccess(td('att.common.statusSuccess').replace('<status>', text));
         getList();
       });
     })
@@ -753,9 +753,12 @@ function submitForm() {
 
 /** 删除按钮操作 */
 function handleDelete(row) {
-  const _ids = row.id || ids.value;
+  const _ids = row?.id || ids.value;
+  if (!_ids || (Array.isArray(_ids) && _ids.length === 0)) {
+    return proxy.$modal.msgWarning(td('common.message.selectRecord'));
+  }
   proxy.$modal
-    .confirm(td('att.project.message.confirmDelete').replace('{ids}', _ids))
+    .confirm(td('att.project.message.confirmDelete').replace("<ids>", Array.isArray(_ids) ? _ids.join(',') : _ids))
     .then(function () {
       return delAttProject(_ids);
     })
@@ -780,7 +783,7 @@ function handleExport() {
 /** ---------------- 导入相关操作 -----------------**/
 /** 导入按钮操作 */
 function handleImport() {
-  upload.title = "项目导入";
+  upload.title = td('att.project.importTitle');
   upload.open = true;
 }
 

@@ -150,8 +150,8 @@
           </el-col>
           <el-col :span="12">
             <el-form-item :label="td('common.texts.status')" prop="validFlag">
-              <el-radio v-model="form.validFlag" :label="true">启用</el-radio>
-              <el-radio v-model="form.validFlag" :label="false">禁用</el-radio>
+              <el-radio v-model="form.validFlag" :label="true">{{ td('att.common.enable') }}</el-radio>
+              <el-radio v-model="form.validFlag" :label="false">{{ td('att.common.disable') }}</el-radio>
             </el-form-item>
           </el-col>
         </el-row>
@@ -272,12 +272,12 @@ function handleQuery() {
 }
 /** 改变启用状态值 */
 function handleStatusChange(row) {
-  const text = row.validFlag === true ? '启用' : '禁用';
+  const text = row.validFlag === true ? td('att.common.enable') : td('att.common.disable');
   proxy.$modal
-    .confirm('确认要"' + text + '","' + row.name + '"标准信息分类管理吗？')
+    .confirm(td('att.common.confirmStatusChangeGeneric').replace('{status}', text).replace('<name>', row.name).replace('{type}', td('att.common.documentCatName')))
     .then(function () {
       updateAttDocumentCat({ id: row.id, validFlag: row.validFlag }).then((response) => {
-        proxy.$modal.msgSuccess(text + '成功');
+        proxy.$modal.msgSuccess(td('att.common.statusSuccess').replace('{status}', text));
         getList();
       }).catch((err) => {
         row.validFlag = !row.validFlag;
@@ -310,7 +310,7 @@ function handleAdd(row) {
     form.value.parentId = 0;
   }
   open.value = true;
-  title.value = '新增标准信息分类管理';
+  title.value = td('att.documentCat.title.add');
 }
 
 /** 展开/折叠操作 */
@@ -345,7 +345,7 @@ async function handleUpdate(row) {
     delete response.data.updateTime;
     form.value = response.data;
     open.value = true;
-    title.value = '修改标准信息分类管理';
+    title.value = td('att.documentCat.title.edit');
   });
 }
 
@@ -372,7 +372,7 @@ function submitForm() {
 
 /** 删除按钮操作 */
 function handleDelete(row) {
-  proxy.$modal.confirm('是否确认删除标准信息分类管理编号为"' + row.id + '"的数据项？')
+  proxy.$modal.confirm(td('att.documentCat.messages.confirmDelete').replace('<ids>', row.id))
     .then(function () {
       return delAttDocumentCat(row.id);
     })

@@ -46,6 +46,7 @@ import tech.qiantong.qdata.common.core.domain.entity.SysRole;
 import tech.qiantong.qdata.common.core.domain.entity.SysUser;
 import tech.qiantong.qdata.common.core.page.TableDataInfo;
 import tech.qiantong.qdata.common.enums.BusinessType;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.SecurityUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.poi.ExcelUtil;
@@ -299,4 +300,13 @@ public class SysUserController extends BaseController
     {
         return success(userService.selectDeptUserTreeList());
     }
+
+    @PreAuthorize("@ss.hasPermi('system:user:list')")
+    @GetMapping("/testLang")
+    public AjaxResult testLang(SysDept dept) {
+        String successMsg = MessageUtils.message("user.login.success","test","aaa");
+        return success(successMsg);
+    }
+
+
 }

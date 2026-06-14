@@ -47,6 +47,7 @@ import tech.qiantong.qdata.common.constant.HttpStatus;
 import tech.qiantong.qdata.common.core.domain.AjaxResult;
 import tech.qiantong.qdata.common.exception.DemoModeException;
 import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.html.EscapeUtil;
 
@@ -54,6 +55,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * 全局异常处理器
+ * 系统异常和业务异常统一返回 i18n 消息（根据请求语言 zh_CN / en_US / ja_JP 返回对应文案）
  *
  * @author qdata
  */
@@ -69,8 +71,9 @@ public class GlobalExceptionHandler
     public AjaxResult handleAccessDeniedException(AccessDeniedException e, HttpServletRequest request)
     {
         String requestURI = request.getRequestURI();
-        log.error("请求地址'{}',权限校验失败'{}'", requestURI, e.getMessage());
-        return AjaxResult.error(HttpStatus.FORBIDDEN, "没有权限，请联系管理员授权");
+        log.error("请求地址'{}',权限校验失败,异常:{}", requestURI, e.getMessage());
+        String message = MessageUtils.messageWithFallback("sys.error", "没有权限，请联系管理员授权");
+        return AjaxResult.error(HttpStatus.FORBIDDEN, message);
     }
 
     /**
@@ -82,18 +85,22 @@ public class GlobalExceptionHandler
     {
         String requestURI = request.getRequestURI();
         log.error("请求地址'{}',不支持'{}'请求", requestURI, e.getMethod());
-        return AjaxResult.error(e.getMessage());
+        String message = MessageUtils.messageWithFallback("sys.error.method", e.getMessage());
+        return AjaxResult.error(message);
     }
 
     /**
      * 业务异常
+     * 优先使用 ServiceException 中设置的 i18nCode 获取国际化消息，
+     * 未设置 i18nCode 则直接返回原始 message（向后兼容）
      */
     @ExceptionHandler(ServiceException.class)
     public AjaxResult handleServiceException(ServiceException e, HttpServletRequest request)
     {
         log.error(e.getMessage(), e);
         Integer code = e.getCode();
-        return StringUtils.isNotNull(code) ? AjaxResult.error(code, e.getMessage()) : AjaxResult.error(e.getMessage());
+        String message = e.getMessage();
+        return StringUtils.isNotNull(code) ? AjaxResult.error(code, message) : AjaxResult.error(message);
     }
 
     /**
@@ -104,7 +111,9 @@ public class GlobalExceptionHandler
     {
         String requestURI = request.getRequestURI();
         log.error("请求路径中缺少必需的路径变量'{}',发生系统异常.", requestURI, e);
-        return AjaxResult.error(String.format("请求路径中缺少必需的路径变量[%s]", e.getVariableName()));
+        String message = MessageUtils.messageWithFallback("sys.error.path.missing",
+                String.format("请求路径中缺少必需的路径变量[%s]", e.getVariableName()));
+        return AjaxResult.error(message);
     }
 
     /**
@@ -120,7 +129,9 @@ public class GlobalExceptionHandler
             value = EscapeUtil.clean(value);
         }
         log.error("请求参数类型不匹配'{}',发生系统异常.", requestURI, e);
-        return AjaxResult.error(String.format("请求参数类型不匹配，参数[%s]要求类型为：'%s'，但输入值为：'%s'", e.getName(), e.getRequiredType().getName(), value));
+        String message = MessageUtils.messageWithFallback("sys.error.param.type",
+                String.format("请求参数类型不匹配，参数[%s]要求类型为：'%s'，但输入值为：'%s'", e.getName(), e.getRequiredType().getName(), value));
+        return AjaxResult.error(message);
     }
 
     /**
@@ -131,7 +142,8 @@ public class GlobalExceptionHandler
     {
         String requestURI = request.getRequestURI();
         log.error("请求地址'{}',发生未知异常.", requestURI, e);
-        return AjaxResult.error(e.getMessage());
+        String message = MessageUtils.messageWithFallback("sys.error.unknown", e.getMessage());
+        return AjaxResult.error(message);
     }
 
     /**
@@ -142,7 +154,8 @@ public class GlobalExceptionHandler
     {
         String requestURI = request.getRequestURI();
         log.error("请求地址'{}',发生系统异常.", requestURI, e);
-        return AjaxResult.error(e.getMessage());
+        String message = MessageUtils.messageWithFallback("sys.error", e.getMessage());
+        return AjaxResult.error(message);
     }
 
     /**
@@ -173,6 +186,7 @@ public class GlobalExceptionHandler
     @ExceptionHandler(DemoModeException.class)
     public AjaxResult handleDemoModeException(DemoModeException e)
     {
-        return AjaxResult.error("演示模式，不允许操作");
+        String message = MessageUtils.messageWithFallback("biz.error.demo", "演示模式，不允许操作");
+        return AjaxResult.error(message);
     }
 }

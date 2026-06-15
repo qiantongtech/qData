@@ -759,6 +759,8 @@ export default {
       operation: 'Operation',
       detail: 'Detail',
       downloadLog: 'Download Log',
+      extractionCount: 'Extraction Count',
+      writeCount: 'Write Count',
       inputTaskInstanceName: 'Please enter task instance name',
       selectExecutionStatus: 'Please select execution status',
       inputCategoryName: 'Please enter data integration category name',

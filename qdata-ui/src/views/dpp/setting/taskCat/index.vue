@@ -14,7 +14,6 @@
    *
   More information: https://qdata.qiantong.tech/business.html
 -->
-
 <template>
   <div class="app-container" ref="app-container">
     <div class="pagecont-top" v-show="showSearch">
@@ -97,7 +96,7 @@
               <svg-icon v-else icon-class="expand" />
               <span>{{
                 isExpandAll
-                  ? td("common.button.collapse")
+                  ? td("common.button.fold")
                   : td("common.button.expand")
               }}</span>
             </el-button>

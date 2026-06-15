@@ -32,68 +32,144 @@
 
 <template>
   <!-- 列表的 执行记录 -->
-  <el-dialog v-model="visibleDialog" draggable class="dialog" :title="title" style="width: 1200px" destroy-on-close>
-    <el-table stripe height="380px" v-loading="loading" :data="jobLogList" :default-sort="defaultSort"
-      @sort-change="handleSortChange">
-      <el-table-column :label="td('common.texts.number')" align="center" prop="id" width="80" />
-      <el-table-column :label="td('da.qualityTaskLog.columnLabels.taskName')" align="center" prop="name">
+  <el-dialog
+    v-model="visibleDialog"
+    draggable
+    class="dialog"
+    :title="title"
+    style="width: 1200px"
+    destroy-on-close
+  >
+    <el-table
+      stripe
+      height="380px"
+      v-loading="loading"
+      :data="jobLogList"
+      :default-sort="defaultSort"
+      @sort-change="handleSortChange"
+    >
+      <el-table-column
+        :label="td('common.texts.number')"
+        align="center"
+        prop="id"
+        width="80"
+      />
+      <el-table-column
+        :label="td('da.qualityTaskLog.columnLabels.taskName')"
+        align="center"
+        prop="name"
+      >
         <template #default="scope">
-          {{ scope.row.name || '-' }}
+          {{ scope.row.name || "-" }}
         </template>
       </el-table-column>
-      <el-table-column :label="td('da.qualityTaskLog.columnLabels.qualityScore')" align="center" prop="score" width="80">
+      <el-table-column
+        :label="td('da.qualityTaskLog.columnLabels.qualityScore')"
+        align="center"
+        prop="score"
+        width="80"
+      >
         <template #default="scope">
-          {{ scope.row.score || '-' }}
+          {{ scope.row.score || "-" }}
         </template>
       </el-table-column>
-      <el-table-column :label="td('da.qualityTaskLog.columnLabels.executionStatus')" align="center" prop="successFlag">
+      <el-table-column
+        :label="td('da.qualityTaskLog.columnLabels.executionStatus')"
+        align="center"
+        prop="successFlag"
+      >
         <template #default="scope">
-          <dict-tag :options="quality_log_success_flag" :value="scope.row.successFlag" />
-
+          <dict-tag
+            :options="quality_log_success_flag"
+            :value="scope.row.successFlag"
+          />
         </template>
       </el-table-column>
-      <el-table-column :label="td('da.qualityTaskLog.columnLabels.problemData')" align="center" prop="problemData">
+      <el-table-column
+        :label="td('da.qualityTaskLog.columnLabels.problemData')"
+        align="center"
+        prop="problemData"
+      >
         <template #default="scope">
-          {{ scope.row.problemData || '-' }}
+          {{ scope.row.problemData || "-" }}
         </template>
       </el-table-column>
-      <el-table-column :label="td('da.qualityTaskLog.columnLabels.startTime')" align="center" prop="startTime" width="160" sortable="custom"
-        column-key="start_time" :sort-orders="['descending', 'ascending']">
+      <el-table-column
+        :label="td('da.qualityTaskLog.columnLabels.startTime')"
+        align="center"
+        prop="startTime"
+        width="160"
+        sortable="custom"
+        column-key="start_time"
+        :sort-orders="['descending', 'ascending']"
+      >
         <template #default="scope">
-          <span>{{ parseTime(scope.row.startTime, '{y}-{m}-{d} {h}:{i}') }}</span>
+          <span>{{
+            parseTime(scope.row.startTime, "{y}-{m}-{d} {h}:{i}")
+          }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="td('da.qualityTaskLog.columnLabels.endTime')" align="center" prop="endTime" width="160" sortable="custom" column-key="end_time"
-        :sort-orders="['descending', 'ascending']">
+      <el-table-column
+        :label="td('da.qualityTaskLog.columnLabels.endTime')"
+        align="center"
+        prop="endTime"
+        width="160"
+        sortable="custom"
+        column-key="end_time"
+        :sort-orders="['descending', 'ascending']"
+      >
         <template #default="scope">
-          <span>{{ parseTime(scope.row.endTime, '{y}-{m}-{d} {h}:{i}') }}</span>
+          <span>{{ parseTime(scope.row.endTime, "{y}-{m}-{d} {h}:{i}") }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="200">
+      <el-table-column
+        :label="td('common.texts.operation')"
+        align="center"
+        class-name="small-padding fixed-width"
+        fixed="right"
+        width="200"
+      >
         <template #default="scope">
-          <el-button link type="primary" icon="View" @click="logDetailCatList(scope.row)"
-            v-hasPermi="['monitor:job:query']">{{ td('da.qualityTask.instanceComponent.view') }}</el-button>
+          <el-button
+            link
+            type="primary"
+            icon="View"
+            @click="logDetailCatList(scope.row)"
+            v-hasPermi="['monitor:job:query']"
+            >{{ td("da.qualityTask.instanceComponent.view") }}</el-button
+          >
           <!-- <el-button link type="warning" @click="handleExport(scope.row)" @mousedown="(e) => e.preventDefault()">
             <i class="iconfont-mini icon-download-line mr5"></i>下载
           </el-button> -->
-          <el-button link type="primary" icon="view" @click="
-            routeTo('/da/quality/qualityTaskLog/detail', {
-              ...scope.row,
-              info: true,
-            })
-            ">{{ td('common.button.details') }}</el-button>
+          <el-button
+            link
+            type="primary"
+            icon="view"
+            @click="
+              routeTo('/da/quality/qualityTaskLog/detail', {
+                ...scope.row,
+                info: true,
+              })
+            "
+            >{{ td("common.button.details") }}</el-button
+          >
         </template>
       </el-table-column>
 
       <template #empty>
         <div class="emptyBg">
           <img src="@/assets/system/images/no_data/noData.png" alt="" />
-          <p>{{td('common.noData')}}</p>
+          <p>{{ td("common.noData") }}</p>
         </div>
       </template>
     </el-table>
-    <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum"
-      v-model:limit="queryParams.pageSize" @pagination="getList" />
+    <pagination
+      v-show="total > 0"
+      :total="total"
+      v-model:page="queryParams.pageNum"
+      v-model:limit="queryParams.pageSize"
+      @pagination="getList"
+    />
     <!-- <template #footer>
             <div style="text-align: right">
         <el-button @click="closeDialog">关闭</el-button>
@@ -102,7 +178,14 @@
 </template> -->
   </el-dialog>
   <!-- 调度日志详细 -->
-  <el-dialog :title="td('da.qualityTask.instanceComponent.viewLogTitle')" v-model="open" width="800px" :append-to="$refs['app-container']" draggable destroy-on-close>
+  <el-dialog
+    :title="td('da.qualityTask.instanceComponent.viewLogTitle')"
+    v-model="open"
+    width="800px"
+    :append-to="$refs['app-container']"
+    draggable
+    destroy-on-close
+  >
     <div v-html="formattedText"></div>
     <!-- <template #footer>
             <div class="dialog-footer">
@@ -113,26 +196,31 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits, ref, computed, watch } from 'vue';
+import { defineProps, defineEmits, ref, computed, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import useDefaultLang from "@/composables/useDefaultLang";
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
-const defaultSort = ref({ columnKey: 'start_time', order: 'desc' });
-const { sys_common_status, sys_job_group, quality_log_success_flag } = proxy.useDict(
-  'sys_common_status',
-  'sys_job_group',
-  'quality_log_success_flag'
-);
-import { listDppQualityLog, getDppQualityLog, delDppQualityLog, addDppQualityLog, updateDppQualityLog } from "@/api/da/quality/qualityTaskLog";
+const defaultSort = ref({ columnKey: "start_time", order: "desc" });
+const { sys_common_status, sys_job_group, quality_log_success_flag } =
+  proxy.useDict(
+    "sys_common_status",
+    "sys_job_group",
+    "quality_log_success_flag"
+  );
 import {
-  qualityLogLogDetailCat
-} from "@/api/da/quality/qualityTask";;
+  listDppQualityLog,
+  getDppQualityLog,
+  delDppQualityLog,
+  addDppQualityLog,
+  updateDppQualityLog,
+} from "@/api/da/quality/qualityTaskLog";
+import { qualityLogLogDetailCat } from "@/api/da/quality/qualityTask";
 const props = defineProps({
   visible: { type: Boolean, default: true },
-  title: { type: String, default: td('da.qualityTask.instanceComponent.formTitle') },
-  data: { type: Object, default: () => ({}) }
+  title: { type: String, default: "" },
+  data: { type: Object, default: () => ({}) },
 });
 const open = ref(false);
 let form = ref();
@@ -140,10 +228,10 @@ let queryParams = ref({
   pageNum: 1,
   pageSize: 10,
   nodeId: undefined,
-  taskId: undefined
+  taskId: undefined,
 });
 const formattedText = computed(() => {
-  return form.value.logContent.replace(/\n/g, '<br>');
+  return form.value.logContent.replace(/\n/g, "<br>");
 });
 const router = useRouter();
 
@@ -168,7 +256,7 @@ function routeTo(link, row) {
         query: {
           id: row?.id,
           info: row?.info,
-          score: row.score
+          score: row.score,
         },
       });
     }
@@ -178,7 +266,7 @@ function routeTo(link, row) {
 async function logDetailCatList(row) {
   try {
     if (!row.path) {
-      proxy.$message.warning(td('da.qualityTask.instanceComponent.noLogMsg'));
+      proxy.$message.warning(td("da.qualityTask.instanceComponent.noLogMsg"));
       return;
     }
     form.value = {};
@@ -187,7 +275,7 @@ async function logDetailCatList(row) {
       form.value = response.content;
       open.value = true;
     }
-  } catch (error) { }
+  } catch (error) {}
 }
 
 const total = ref(0);
@@ -199,14 +287,14 @@ function getList() {
   loading.value = true;
   queryParams.value.qualityId = props.data.id;
   listDppQualityLog({
-    ...queryParams.value
+    ...queryParams.value,
   }).then((response) => {
     jobLogList.value = response.data.rows;
     total.value = response.data.total;
     loading.value = false;
   });
 }
-const emit = defineEmits(['update:visible', 'confirm']);
+const emit = defineEmits(["update:visible", "confirm"]);
 
 watch(
   () => props.visible,
@@ -225,18 +313,18 @@ const visibleDialog = computed({
     return props.visible;
   },
   set(newValue) {
-    emit('update:visible', newValue);
-  }
+    emit("update:visible", newValue);
+  },
 });
 
 // 关闭对话框的方法
 const closeDialog = () => {
-  emit('update:visible', false);
+  emit("update:visible", false);
 };
 
 // 保存数据的方法
 const saveData = () => {
-  emit('confirm', localNode.value); // 向父组件提交本地数据
-  emit('update:visible', false);
+  emit("confirm", localNode.value); // 向父组件提交本地数据
+  emit("update:visible", false);
 };
 </script>

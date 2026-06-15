@@ -687,7 +687,7 @@ function handleAuthRole(row) {
 /** 重置密码按钮操作 */
 function handleResetPwd(row) {
   proxy
-    .$promptd(td('sys.system.user.resetPasswordPrompt', { name: row.userName }), td('common.message.prompt'), {
+    .$prompt(td('sys.system.user.resetPasswordPrompt', { name: row.userName }), td('common.message.prompt'), {
       confirmButtonText: td('common.button.confirm'),
       cancelButtonText: td('common.button.cancel'),
       closeOnClickModal: false,

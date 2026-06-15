@@ -24,7 +24,7 @@
                 <span v-html="config.title"></span>
             </span>
             <div class="header-buttons">
-                <el-button v-if="config.type !== 'danger'" class="btn-never-show" @click="neverShow">不再展示</el-button>
+                <el-button v-if="config.type !== 'danger'" class="btn-never-show" @click="neverShow">{{ t('common.button.neverShow') }}</el-button>
                 <el-button :class="['btn-close', config.type]" @click="close">{{ t('common.button.close') }}</el-button>
             </div>
         </div>

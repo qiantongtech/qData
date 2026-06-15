@@ -6,7 +6,21 @@ export default {
   dashboard: {
     admin: '系统管理员',
     personalCenter: '个人中心',
+    layoutSettings: '布局设置',
     logout: '退出登录',
+    projectLabel: '所属项目',
+    projectPlaceholder: '请选择所属项目',
+    messageReminder: '消息提醒',
+    notification: '通知',
+    announcement: '公告',
+    markAllRead: '全部已读',
+    viewMore: '查看更多',
+    aboutUs: '关于我们',
+    version: '版本',
+    isLatestVersion: '已是最新版本。',
+    latestVersion: '最新版本',
+    update: '更新',
+    updateLog: '更新日志',
     weekOverWeek: '周同比：',
     apiCallTrend: 'API数据调用量变化趋势',
     governanceDataTrend: '治理数据量变化趋势',
@@ -69,6 +83,17 @@ export default {
   },
   sso: {
     loadingMsg: '正在登录统一身份认证中心，请耐心等待~~'
+  },
+  report: {
+    newReport: '新增报工',
+    experienceRequired: '工作心得不能为空',
+    confirmLeave: '确认请假了？',
+    onLeave: '我请假了',
+    submitSuccess: '提交成功',
+    experienceEmpty: '工作心得为空',
+    projectEmpty: '报工项目为空',
+    durationEmpty: '报工项目工作时长为空',
+    markAllReadDone: '已全部已读！'
   },
   developing: {
     underDevelopment: '功能开发中'

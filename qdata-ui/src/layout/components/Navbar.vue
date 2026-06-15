@@ -53,12 +53,12 @@
             label-width="93px"
           >
             <el-form-item
-              label="所属项目"
+              :label="t('sys.dashboard.projectLabel')"
               prop="projectId"
               :rules="[
                 {
                   required: true,
-                  message: '请选择所属项目',
+                  message: t('sys.dashboard.projectPlaceholder'),
                   trigger: 'change',
                 },
               ]"
@@ -68,7 +68,7 @@
                 :fit-input-width="true"
                 v-model="userStore.projectId"
                 @change="projectIdChange"
-                placeholder="请选择所属项目"
+                :placeholder="t('sys.dashboard.projectPlaceholder')"
                 clearable
                 popper-class="custom-option-style"
               >
@@ -170,7 +170,7 @@
               class="mag-tabs"
               @tab-click="handleClick"
             >
-              <el-tab-pane label="消息提醒" name="first">
+              <el-tab-pane :label="t('sys.dashboard.messageReminder')" name="first">
                 <div class="message-list">
                   <div
                     class="msg-item"
@@ -200,7 +200,7 @@
                   />
                 </div>
               </el-tab-pane>
-              <el-tab-pane label="通知" name="second">
+              <el-tab-pane :label="t('sys.dashboard.notification')" name="second">
                 <!--                <message-list :msg-category="'first'"></message-list>-->
                 <div class="message-list">
                   <div
@@ -222,7 +222,7 @@
                   </div>
                 </div>
               </el-tab-pane>
-              <el-tab-pane label="公告" name="third">
+              <el-tab-pane :label="t('sys.dashboard.announcement')" name="third">
                 <!--                <message-list :msg-category="'second'"></message-list>-->
                 <div class="message-list">
                   <div
@@ -246,8 +246,8 @@
               </el-tab-pane>
             </el-tabs>
             <div class="msg-btns">
-              <div class="btn-item" @click="clearNotification">全部已读</div>
-              <div class="btn-item" @click="messageDetail">查看更多</div>
+              <div class="btn-item" @click="clearNotification">{{ t('sys.dashboard.markAllRead') }}</div>
+              <div class="btn-item" @click="messageDetail">{{ t('sys.dashboard.viewMore') }}</div>
             </div>
           </template>
         </el-popover>
@@ -282,19 +282,19 @@
           <template #dropdown>
             <el-dropdown-menu>
               <router-link to="/user/profile">
-                <el-dropdown-item>个人中心</el-dropdown-item>
+                <el-dropdown-item>{{ t('sys.dashboard.personalCenter') }}</el-dropdown-item>
               </router-link>
               <el-dropdown-item
                 command="setLayout"
                 v-if="settingsStore.showSettings"
               >
-                <span>布局设置</span>
+                <span>{{ t('sys.dashboard.layoutSettings') }}</span>
               </el-dropdown-item>
               <!-- <el-dropdown-item command="about">
                                 <span>关于我们</span>
                             </el-dropdown-item> -->
               <el-dropdown-item divided command="logout">
-                <span>退出登录</span>
+                <span>{{ t('sys.dashboard.logout') }}</span>
               </el-dropdown-item>
             </el-dropdown-menu>
           </template>
@@ -303,7 +303,7 @@
     </div>
 
     <el-dialog
-      title="关于我们"
+      :title="t('sys.dashboard.aboutUs')"
       class="about-dialog"
       v-model="activeOpen"
       append-to-body
@@ -316,31 +316,31 @@
           class="logo"
         />
         <div class="about-title">
-          版本{{ currentVersion }}
+          {{ t('sys.dashboard.version') }}{{ currentVersion }}
           <!-- <span class="version-badge"></span> -->
         </div>
-        <div class="copyright">©{{ year }}江苏千桐科技有限公司版权所有</div>
+        <div class="copyright">©{{ year }}{{ td('login.info.companyName') }}{{ td('login.info.copyrightOwner') }}</div>
       </div>
 
       <template #footer>
         <div class="about-footer">
           <div v-if="!needUpdate" class="status-text">
-            版本{{ currentVersion }}已是最新版本。
+            {{ t('sys.dashboard.version') }}{{ currentVersion }}{{ t('sys.dashboard.isLatestVersion') }}
           </div>
           <div v-else class="status-text">
-            最新版本{{ latestVersion }}
+            {{ t('sys.dashboard.latestVersion') }}{{ latestVersion }}
             <a
               href="https://gitee.com/qiantongtech/qData"
               target="_blank"
               rel="noopener noreferrer"
               class="update-link"
             >
-              更新
+              {{ t('sys.dashboard.update') }}
             </a>
           </div>
           <div class="head-btns">
             <el-button type="primary" @click="openUpdateLog"
-              >更新日志</el-button
+              >{{ t('sys.dashboard.updateLog') }}</el-button
             >
           </div>
         </div>
@@ -429,7 +429,7 @@ const data = reactive({
   },
   rules: {
     reportExperience: [
-      { required: true, message: "工作心得不能为空", trigger: "blur" },
+      { required: true, message: t("sys.report.experienceRequired"), trigger: "blur" },
     ],
   },
 });
@@ -450,12 +450,12 @@ function resetFromWork() {
 //请假了
 function offFromWork() {
   proxy.$modal
-    .confirm("确认请假了？")
+    .confirm(t("sys.report.confirmLeave"))
     .then(function () {})
     .then(() => {
       const itemList = tableData.value;
       const req = {
-        reportExperience: "我请假了",
+        reportExperience: t("sys.report.onLeave"),
         status: 1,
         reportTime: new Date(),
         detailRespVOList: tableData.value,
@@ -463,7 +463,7 @@ function offFromWork() {
       console.log("---------提交-请假----req-------", req);
       addReport(req)
         .then((response) => {
-          proxy.$modal.msgSuccess("提交成功");
+          proxy.$modal.msgSuccess(t("sys.report.submitSuccess"));
           open.value = false;
           getList();
         })
@@ -484,7 +484,7 @@ function getRouter(data) {
 /** 提交按钮 */
 function submitForm() {
   if (form.value.reportExperience == null) {
-    proxy.$modal.msgWarning("工作心得为空");
+    proxy.$modal.msgWarning(t("sys.report.experienceEmpty"));
     return;
   }
   proxy.$refs["reportRef"].validate((valid) => {
@@ -492,7 +492,7 @@ function submitForm() {
     if (valid) {
       const tempList = tableData.value;
       if (tempList.length == 0) {
-        proxy.$modal.msgError("报工项目为空");
+        proxy.$modal.msgError(t("sys.report.projectEmpty"));
         return;
       }
       let idStatus = false;
@@ -506,11 +506,11 @@ function submitForm() {
         }
       });
       if (idStatus) {
-        proxy.$modal.msgWarning("报工项目为空");
+        proxy.$modal.msgWarning(t("sys.report.projectEmpty"));
         return;
       }
       if (timeStatus) {
-        proxy.$modal.msgWarning("报工项目工作时长为空");
+        proxy.$modal.msgWarning(t("sys.report.durationEmpty"));
         return;
       }
       // 提取所有非空的 projectId 并用逗号连接
@@ -552,7 +552,7 @@ function submitForm() {
         console.log("---------提交-----req-------", req);
         addReport(req)
           .then((response) => {
-            proxy.$modal.msgSuccess("提交成功");
+            proxy.$modal.msgSuccess(t("sys.report.submitSuccess"));
             open.value = false;
             getList();
           })
@@ -593,7 +593,7 @@ const handlePopoverClick = (value) => {
 function openForWork() {
   tableData.value = [{ projectId: null, duration: null }];
   form.value.reportExperience = null;
-  title.value = "新增报工";
+  title.value = t("sys.report.newReport");
   open.value = true;
 }
 
@@ -881,7 +881,7 @@ function handleCommand(command) {
 }
 
 function logout() {
-  ElMessageBox.confirm("确定注销并退出系统吗？", t("common.message.prompt"), {
+  ElMessageBox.confirm(t("sys.dashboard.confirmLogout"), t("common.message.prompt"), {
     confirmButtonText: t("common.button.confirm"),
     cancelButtonText: t("common.button.cancel"),
     type: "warning",
@@ -929,7 +929,7 @@ function clearNotification() {
   readAll().then(() => {
     messages.value = [];
     msgCount.value = 0;
-    ElMessage.success("已全部已读！");
+    ElMessage.success(t("sys.report.markAllReadDone"));
   });
 }
 </script>

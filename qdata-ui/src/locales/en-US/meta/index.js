@@ -32,13 +32,22 @@ export default {
         versionManagement: 'Version Management',
         tableName: 'Table Name',
         tableComment: 'Table Comment',
-        sourceSystem: 'Source System'
+        sourceSystem: 'Source System',
+        dbName: 'Database Name'
       }
     }
   },
   unreleased: {
     structured: {
       table: {
+        list: {
+          confirmDelete: 'Are you sure to delete the data item with ID "{id}"?',
+          confirmBatchDelete: '{canDelete} can be deleted, {cannotDelete} cannot be deleted. Delete the deletable ones?',
+          confirmStatusChange: 'Are you sure to "{action}" the table metadata with ID "{id}"?',
+          publish: 'Publish',
+          unpublish: 'Unpublish',
+          statusChangeSuccess: 'Table metadata with ID "{id}" {action} successful!'
+        },
         detail: {
           baseInfo: 'Basic Info',
           columnList: 'Column List',

@@ -78,7 +78,7 @@
           {{ scope.row.description || '-' }}
         </template>
       </el-table-column>
-      <el-table-column :label="td('common.texts.createdBy')" align="center" prop="createBy" :show-overflow-tooltip="{ effect: 'light' }">
+      <el-table-column :label="td('common.texts.createdBy')" align="center" prop="createBy" :show-overflow-tooltip="{ effect: 'light' }" width="100">
         <template #default="scope">
           {{ scope.row.createBy || "-" }}
         </template>

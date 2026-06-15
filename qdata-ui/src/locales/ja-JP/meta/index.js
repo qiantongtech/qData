@@ -32,7 +32,8 @@ export default {
         versionManagement: 'バージョン管理',
         tableName: 'テーブル名',
         tableComment: 'テーブルコメント',
-        sourceSystem: 'ソースシステム'
+        sourceSystem: 'ソースシステム',
+        dbName: 'データベース名'
       }
     }
   },
@@ -95,6 +96,14 @@ export default {
           createdBy: '作成者',
           createdTime: '作成時間',
           topNode: 'トップノード'
+        },
+        list: {
+          confirmDelete: 'ID "{id}" のデータ項目を削除してもよろしいですか？',
+          confirmBatchDelete: '削除可能{canDelete}個、削除不可{cannotDelete}個、削除可能なものを削除しますか',
+          confirmStatusChange: 'ID "{id}" のテーブルメタデータを"{action}"してもよろしいですか？',
+          statusChangeSuccess: 'ID "{id}" のテーブルメタデータ{action}成功！',
+          publish: '公開',
+          unpublish: '公開取消'
         },
         handle: {
           selectDbName: 'データベースを選択',

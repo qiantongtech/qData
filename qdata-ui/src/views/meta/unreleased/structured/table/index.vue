@@ -113,6 +113,7 @@ import {
 import { useRoute, useRouter } from "vue-router";
 import { listDb } from "@/api/mc/unreleased/db";
 import SourceSystemTree from "@/views/mc/task/structured/components/SourceSystemTree.vue";
+import { ElMessageBox, ElMessage } from "element-plus";
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
@@ -145,16 +146,16 @@ const tableStroe = reactive({
   columns: [
     {
       type: "selection",
+      prop: "selection",
       width: 55,
-      // selectable: function (row) {
-      //     return row.status === '0' ? true : false;
-      // }
+      hide: false,
     },
     {
       label: td("common.texts.number"),
       prop: "id",
       sortable: true,
       width: 60,
+      hide: false,
     },
     {
       label: td("meta.released.structured.table.dbName"),
@@ -164,6 +165,7 @@ const tableStroe = reactive({
         effect: "light",
       },
       minWidth: 230,
+      hide: false,
     },
     {
       label: td("meta.released.structured.table.tableName"),
@@ -176,6 +178,7 @@ const tableStroe = reactive({
       link: {
         external: handleDetailClick,
       },
+      hide: false,
     },
     {
       label: td("meta.released.structured.table.tableComment"),
@@ -185,6 +188,7 @@ const tableStroe = reactive({
       },
       minWidth: 240,
       align: "left",
+      hide: false,
     },
     {
       label: td("common.texts.description"),
@@ -194,23 +198,26 @@ const tableStroe = reactive({
       showOverflowTooltip: {
         effect: "light",
       },
+      hide: false,
     },
-
     {
       label: td("meta.released.structured.table.version"),
       prop: "version",
       width: 90,
+      hide: false,
     },
     {
       label: td("common.texts.status"),
       prop: "status",
       width: 90,
       slot: "status",
+      hide: false,
     },
     {
       label: td("common.texts.updatedBy"),
       prop: "updateBy",
       width: 120,
+      hide: false,
     },
     {
       label: td("common.texts.updatedTime"),
@@ -218,11 +225,13 @@ const tableStroe = reactive({
       sortable: true,
       width: 160,
       date: true,
+      hide: false,
     },
     {
       label: td("common.texts.createdBy"),
       prop: "createBy",
       width: 120,
+      hide: false,
     },
     {
       label: td("common.texts.createdTime"),
@@ -230,12 +239,15 @@ const tableStroe = reactive({
       sortable: true,
       width: 160,
       date: true,
+      hide: false,
     },
     {
       label: td("common.texts.operation"),
+      prop: "handle",
       width: 220,
       fixed: "right",
       slot: "handle",
+      hide: false,
     },
   ],
   func: listTable,
@@ -372,11 +384,16 @@ function handleDeleteColumnClick() {
     const { canDeleteCount, cannotDeleteCount, canDeleteIds } = res.data;
     store.loading = false;
     ElMessageBox.confirm(
-      td('meta.unreleased.structured.table.list.confirmBatchDelete').replace('{canDelete}', canDeleteCount).replace('{cannotDelete}', cannotDeleteCount),
-      td("common.message.systemPrompt"),
+      td(
+        "meta.unreleased.structured.table.list.confirmBatchDelete",
+        "可删除{canDelete}个，不可删除{cannotDelete}个，是否删除可删部分"
+      )
+        .replace("{canDelete}", canDeleteCount)
+        .replace("{cannotDelete}", cannotDeleteCount),
+      td("common.message.systemPrompt", "系统提示"),
       {
-        confirmButtonText: td("common.button.confirm"),
-        cancelButtonText: td("common.button.cancel"),
+        confirmButtonText: td("common.button.confirm", "确定"),
+        cancelButtonText: td("common.button.cancel", "取消"),
         type: "warning",
       }
     )
@@ -398,11 +415,14 @@ function handleDeleteColumnClick() {
 // 删除
 function handleDeleteClick(row) {
   ElMessageBox.confirm(
-    td('meta.unreleased.structured.table.list.confirmDelete').replace('{id}', row.id),
-    td("common.message.systemPrompt"),
+    td(
+      "meta.unreleased.structured.table.list.confirmDelete",
+      "是否确认删除编号为{id}的数据项？"
+    ).replace("{id}", row.id),
+    td("common.message.systemPrompt", "系统提示"),
     {
-      confirmButtonText: td("common.button.confirm"),
-      cancelButtonText: td("common.button.cancel"),
+      confirmButtonText: td("common.button.confirm", "确定"),
+      cancelButtonText: td("common.button.cancel", "取消"),
       type: "warning",
     }
   )
@@ -429,13 +449,21 @@ function handleDetailClick(row, tab) {
 
 // 切换状态
 function handleStatusChange(row, status) {
-  const action = status == 1 ? td('meta.unreleased.structured.table.list.publish') : td('meta.unreleased.structured.table.list.unpublish');
+  const action =
+    status == 1
+      ? td("meta.unreleased.structured.table.list.publish", "发布")
+      : td("meta.unreleased.structured.table.list.unpublish", "取消发布");
   ElMessageBox.confirm(
-    td('meta.unreleased.structured.table.list.confirmStatusChange').replace('{action}', action).replace('{id}', row.id),
-    td("common.message.systemPrompt"),
+    td(
+      "meta.unreleased.structured.table.list.confirmStatusChange",
+      "是否确认{action}数据编号为{id}的表元数据吗？"
+    )
+      .replace("{action}", action)
+      .replace("{id}", row.id),
+    td("common.message.systemPrompt", "系统提示"),
     {
-      confirmButtonText: td("common.button.confirm"),
-      cancelButtonText: td("common.button.cancel"),
+      confirmButtonText: td("common.button.confirm", "确定"),
+      cancelButtonText: td("common.button.cancel", "取消"),
       type: "warning",
     }
   )
@@ -447,7 +475,12 @@ function handleStatusChange(row, status) {
     })
     .then(() => {
       ElMessage.success(
-        td('meta.unreleased.structured.table.list.statusChangeSuccess').replace('{id}', row.id).replace('{action}', action)
+        td(
+          "meta.unreleased.structured.table.list.statusChangeSuccess",
+          "编号为{id}的表元数据{action}成功!"
+        )
+          .replace("{id}", row.id)
+          .replace("{action}", action)
       );
       row.status = status;
     })

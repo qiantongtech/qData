@@ -93,6 +93,7 @@ const tableStroe = reactive({
       prop: "id",
       sortable: true,
       width: 60,
+      hide: false,
     },
     {
       label: td("meta.released.structured.table.dbName"),
@@ -102,6 +103,7 @@ const tableStroe = reactive({
         effect: "light",
       },
       minWidth: 230,
+      hide: false,
     },
     {
       label: td("meta.released.structured.table.tableName"),
@@ -114,6 +116,7 @@ const tableStroe = reactive({
       link: {
         external: handleDetailClick,
       },
+      hide: false,
     },
     {
       label: td("meta.released.structured.table.tableComment"),
@@ -123,6 +126,7 @@ const tableStroe = reactive({
         effect: "light",
       },
       minWidth: 240,
+      hide: false,
     },
     {
       label: td("common.texts.description"),
@@ -132,6 +136,7 @@ const tableStroe = reactive({
       showOverflowTooltip: {
         effect: "light",
       },
+      hide: false,
     },
     {
       label: td("meta.released.structured.table.sourceSystem"),
@@ -140,16 +145,19 @@ const tableStroe = reactive({
       showOverflowTooltip: {
         effect: "light",
       },
+      hide: false,
     },
     {
       label: td("meta.released.structured.table.version"),
       prop: "version",
       width: 90,
+      hide: false,
     },
     {
       label: td("common.texts.updatedBy"),
       prop: "updateBy",
       width: 120,
+      hide: false,
     },
     {
       label: td("common.texts.updatedTime"),
@@ -157,11 +165,13 @@ const tableStroe = reactive({
       sortable: true,
       width: 160,
       date: true,
+      hide: false,
     },
     {
       label: td("common.texts.createdBy"),
       prop: "createBy",
       width: 120,
+      hide: false,
     },
     {
       label: td("common.texts.createdTime"),
@@ -169,12 +179,14 @@ const tableStroe = reactive({
       sortable: true,
       width: 160,
       date: true,
+      hide: false,
     },
     {
       label: td("common.texts.operation"),
       width: 280,
       fixed: "right",
       slot: "handle",
+      hide: false,
     },
   ],
   func: listTable,

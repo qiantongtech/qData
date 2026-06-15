@@ -394,7 +394,14 @@
 </template>
 
 <script setup name="Develop">
-import { defineEmits, defineProps } from "vue";
+import {
+  defineEmits,
+  defineProps,
+  ref,
+  computed,
+  watch,
+  getCurrentInstance,
+} from "vue";
 import useDefaultLang from "@/composables/useDefaultLang";
 const { td } = useDefaultLang();
 import { listAttDataDevCat } from "@/api/att/cat/dataDevCat/dataDevCat";
@@ -417,26 +424,91 @@ const { dpp_etl_node_type, dpp_etl_task_instance_command_type } = proxy.useDict(
   "dpp_etl_task_instance_command_type"
 );
 const dppEtlTaskLogList = ref([]);
-// 列显隐信息
-const columns = ref([
-  { key: 0, label: "编号", visible: true },
-  { key: 1, label: "节点实例名称", visible: true },
-  { key: 2, label: "任务名称", visible: true },
-  { key: 3, label: "执行类型", visible: true },
-  { key: 4, label: "执行状态", visible: true },
-  { key: 5, label: "开始时间", visible: true },
-  { key: 6, label: "结束时间", visible: true },
-  { key: 9, label: "责任人", visible: true },
-  { key: 10, label: "创建人", visible: true },
-  { key: 11, label: "创建时间", visible: true },
+// 列显隐状态
+const columnVisible = ref({
+  0: true,
+  1: true,
+  2: true,
+  3: true,
+  4: true,
+  5: true,
+  6: true,
+  9: true,
+  10: true,
+  11: true,
+});
+
+// 列配置（使用计算属性，确保国际化文本能响应语言切换）
+const columns = computed(() => [
+  {
+    key: 0,
+    label: td("dpp.instance.developTask.id", "编号"),
+    visible: columnVisible.value[0],
+  },
+  {
+    key: 1,
+    label: td("dpp.instance.developTask.nodeInstanceName", "节点实例名称"),
+    visible: columnVisible.value[1],
+  },
+  {
+    key: 2,
+    label: td("dpp.instance.developTask.taskName", "任务名称"),
+    visible: columnVisible.value[2],
+  },
+  {
+    key: 3,
+    label: td("dpp.instance.developTask.executionType", "执行类型"),
+    visible: columnVisible.value[3],
+  },
+  {
+    key: 4,
+    label: td("dpp.instance.developTask.executionStatus", "执行状态"),
+    visible: columnVisible.value[4],
+  },
+  {
+    key: 5,
+    label: td("dpp.instance.developTask.startTime", "开始时间"),
+    visible: columnVisible.value[5],
+  },
+  {
+    key: 6,
+    label: td("dpp.instance.developTask.endTime", "结束时间"),
+    visible: columnVisible.value[6],
+  },
+  {
+    key: 9,
+    label: td("dpp.instance.developTask.responsiblePerson", "责任人"),
+    visible: columnVisible.value[9],
+  },
+  {
+    key: 10,
+    label: td("dpp.instance.developTask.createBy", "创建人"),
+    visible: columnVisible.value[10],
+  },
+  {
+    key: 11,
+    label: td("dpp.instance.developTask.createTime", "创建时间"),
+    visible: columnVisible.value[11],
+  },
 ]);
 
+// 监听 RightToolbar 对 columns 的修改，同步到 columnVisible
+watch(
+  columns,
+  (newColumns) => {
+    newColumns.forEach((col) => {
+      if (columnVisible.value[col.key] !== undefined) {
+        columnVisible.value[col.key] = col.visible;
+      }
+    });
+  },
+  { deep: true }
+);
+
 const getColumnVisibility = (key) => {
-  const column = columns.value.find((col) => col.key === key);
-  // 如果没有找到对应列配置，默认显示
-  if (!column) return true;
-  // 如果找到对应列配置，根据visible属性来控制显示
-  return column.visible;
+  return columnVisible.value[key] !== undefined
+    ? columnVisible.value[key]
+    : true;
 };
 const userStore = useUserStore();
 const open = ref(false);

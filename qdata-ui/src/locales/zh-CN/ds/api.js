@@ -12,6 +12,7 @@ export default {
     apiUrlPlaceholder: '请输入API路径',
     apiServiceType: '服务提供类型',
     requestMethod: '请求方式',
+    requestType: '请求类型',
     returnFormat: '返回格式',
     returnResultType: '返回结果类型',
     ipBlacklist: 'IP黑名单',

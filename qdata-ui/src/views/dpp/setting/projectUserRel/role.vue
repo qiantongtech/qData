@@ -558,12 +558,8 @@ function handleDelete(row) {
     .confirm(
       td(
         "dpp.setting.projectUserRel.confirmDeleteRole",
-        "是否确认删除角色编号为"
-      ) +
-        '"' +
-        roleIds +
-        '"' +
-        td("dpp.setting.projectUserRel.dataItem", "的数据项?")
+        '是否确认删除角色编号为"{id}"的数据项？'
+      ).replace("{id}", roleIds)
     )
     .then(function () {
       return delRole(roleIds);

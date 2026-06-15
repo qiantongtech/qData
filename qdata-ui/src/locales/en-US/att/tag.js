@@ -15,5 +15,9 @@ export default {
     add: 'Add Tag',
     edit: 'Edit Tag',
     detail: 'Tag Detail'
+  },
+  message: {
+    deleteConfirm: 'Are you sure to delete the data item with "<ids>"?',
+    batchDeleteConfirm: 'Are you sure to batch delete the selected data items?'
   }
 }

@@ -74,6 +74,7 @@ const store = reactive({
   domains: [],
   treeDomains: [],
   metaDatabases: [],
+  rows: [],
 });
 
 const tableRef = ref(null);
@@ -84,10 +85,19 @@ const tableStroe = reactive({
       stripe: true,
       rowKey: "id",
       defaultSort: { prop: "createTime", order: "descending" },
+      onSelectionChange: function (rows) {
+        store.rows = rows;
+      },
       onRowDblclick: handleDetailClick,
     },
   },
   columns: [
+    {
+      type: "selection",
+      prop: "selection",
+      width: 55,
+      hide: false,
+    },
     {
       label: td("common.texts.number"),
       prop: "id",

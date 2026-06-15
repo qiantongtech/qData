@@ -99,7 +99,7 @@
               <svg-icon v-else icon-class="expand" />
               <span>{{
                 isExpandAll
-                  ? td("common.button.collapse")
+                  ? td("common.button.fold")
                   : td("common.button.expand")
               }}</span>
             </el-button>

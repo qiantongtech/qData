@@ -207,6 +207,15 @@ const tableStroe = reactive({
       hide: false,
     },
     {
+      label: td("meta.released.structured.table.sourceSystem"),
+      prop: "sourceSystemName",
+      width: 240,
+      showOverflowTooltip: {
+        effect: "light",
+      },
+      hide: false,
+    },
+    {
       label: td("common.texts.status"),
       prop: "status",
       width: 90,
@@ -243,7 +252,6 @@ const tableStroe = reactive({
     },
     {
       label: td("common.texts.operation"),
-      prop: "handle",
       width: 220,
       fixed: "right",
       slot: "handle",

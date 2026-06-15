@@ -33,7 +33,8 @@ export default {
                 tableName: '表名称',
                 tableComment: '表注释',
                 sourceSystem: '来源系统',
-                dbName: '所属库名'
+                dbName: '所属库名',
+                version: '版本号'
             }
         }
     },

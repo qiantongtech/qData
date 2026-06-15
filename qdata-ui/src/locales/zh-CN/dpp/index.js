@@ -544,6 +544,8 @@ export default {
       operation: '操作',
       detail: '详情',
       downloadLog: '下载日志',
+      extractionCount: '抽取量',
+      writeCount: '写入量',
       inputTaskInstanceName: '请输入任务实例名称',
       selectExecutionStatus: '请选择执行状态',
       inputCategoryName: '请输入数据集成类目名称',

@@ -33,7 +33,8 @@ export default {
         tableName: 'Table Name',
         tableComment: 'Table Comment',
         sourceSystem: 'Source System',
-        dbName: 'Database Name'
+        dbName: 'Database Name',
+        version: 'Version'
       }
     }
   },

@@ -392,7 +392,6 @@ const dppEtlTaskLogList = ref([]);
 const columnVisible = ref({
   0: true,
   1: true,
-  2: true,
   3: true,
   4: true,
   5: true,
@@ -411,13 +410,8 @@ const columns = computed(() => [
   },
   {
     key: 1,
-    label: td("dpp.instance.integratioTask.nodeInstanceName", "节点实例名称"),
+    label: td("dpp.instance.integratioTask.taskInstanceName", "任务实例名称"),
     visible: columnVisible.value[1],
-  },
-  {
-    key: 2,
-    label: td("dpp.instance.integratioTask.taskName", "任务名称"),
-    visible: columnVisible.value[2],
   },
   {
     key: 3,

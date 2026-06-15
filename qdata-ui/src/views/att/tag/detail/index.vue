@@ -32,11 +32,11 @@
 
     <div class="pagecont-bottom">
       <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
-        <el-tab-pane :label="td('att.common.assetInfo')" name="1">
-          <asset :ids="AttTagDetail"></asset>
+        <el-tab-pane :label="td('att.common.assetInfo')" name="1" lazy>
+          <asset v-if="activeName === '1'" :ids="AttTagDetail"></asset>
         </el-tab-pane>
-        <el-tab-pane :label="td('att.common.detailInfo')" name="2">
-          <info :AttTagDetail="AttTagDetail"></info>
+        <el-tab-pane :label="td('att.common.detailInfo')" name="2" lazy>
+          <info v-if="activeName === '2'" :AttTagDetail="AttTagDetail"></info>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -44,14 +44,12 @@
 </template>
 
 <script setup name="Tag">
-import { useI18n } from 'vue-i18n'
 import useDefaultLang from "@/composables/useDefaultLang";
 import { getAttTag } from "@/api/att/tag/tag.js";
 import { useRoute } from "vue-router";
 import asset from "@/views/att/tag/detail/asset.vue";
 import info from "@/views/att/tag/detail/info.vue";
 
-const { t } = useI18n();
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { dp_model_status } = proxy.useDict("dp_model_status");

@@ -884,13 +884,9 @@ function handleDelete(row) {
   proxy.$modal
     .confirm(
       td(
-        "dpp.setting.projectUserRel.confirmRemoveMember",
-        "是否确认移除编号为"
-      ) +
-        '"' +
-        _userId +
-        '"' +
-        td("dpp.setting.projectUserRel.dataItem", "的数据项？")
+        "dpp.setting.projectUserRel.confirmDelete",
+        '是否确认移除编号为"{id}"的数据项？'
+      ).replace("{id}", _userId)
     )
     .then(function () {
       return delAttProjectUserRel(_ids);

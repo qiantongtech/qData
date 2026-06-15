@@ -86,7 +86,7 @@ service.interceptors.request.use(config => {
       const s_time = sessionObj.time;              // 请求时间
       const interval = 1000;                       // 间隔时间(ms)，小于此时间视为重复提交
       if (s_data === requestObj.data && requestObj.time - s_time < interval && s_url === requestObj.url) {
-        const message = '数据正在处理，请勿重复提交';
+        const message = i18n.global.t('common.request.repeatSubmit');
         console.warn(`[${s_url}]: ` + message)
         return Promise.reject(new Error(message))
       } else {
@@ -118,7 +118,7 @@ service.interceptors.response.use(res => {
   if (code === 401) {
     if (!isRelogin.show) {
       isRelogin.show = true;
-      ElMessageBox.confirm('登录状态已过期，您可以继续留在该页面，或者重新登录', i18n.global.t('common.message.systemPrompt'), { confirmButtonText: '重新登录', cancelButtonText: i18n.global.t('common.button.cancel'), type: 'warning' }).then(() => {
+      ElMessageBox.confirm(i18n.global.t('common.request.loginExpired'), i18n.global.t('common.message.systemPrompt'), { confirmButtonText: i18n.global.t('common.request.reLogin'), cancelButtonText: i18n.global.t('common.button.cancel'), type: 'warning' }).then(() => {
         isRelogin.show = false;
         useUserStore().logOut().then(() => {
           location.href = '/rp/index';
@@ -127,7 +127,7 @@ service.interceptors.response.use(res => {
         isRelogin.show = false;
       });
     }
-    return Promise.reject('无效的会话，或者会话已过期，请重新登录。')
+    return Promise.reject(i18n.global.t('common.request.expiredSession'))
   } else if (code === 500) {
     ElMessage({ message: msg, type: 'error' })
     return Promise.reject(new Error(msg))
@@ -145,12 +145,12 @@ service.interceptors.response.use(res => {
     console.log('err' + error)
     let { message } = error;
     if (message == "Network Error") {
-      message = "后端接口连接异常";
+      message = i18n.global.t('common.request.networkError');
     } else if (message.includes("timeout")) {
-      message = "系统接口请求超时";
+      message = i18n.global.t('common.request.timeout');
     } else if (message.includes("Request failed with status code")) {
-      message = "系统接口" + message.substr(message.length - 3) + "异常";
-    } else if ((message.includes('Route change: Request canceled'))) {
+      message = i18n.global.t('common.request.interfaceError').replace('{code}', message.substr(message.length - 3));
+    } else if ((message.includes(i18n.global.t('common.request.routeChangeCancel')))) {
       return null
     }
     ElMessage({ message: message, type: 'error', duration: 5 * 1000 })
@@ -160,7 +160,7 @@ service.interceptors.response.use(res => {
 
 // 通用下载方法
 export function download(url, params, filename, config) {
-  downloadLoadingInstance = ElLoading.service({ text: "正在下载数据，请稍候", background: "rgba(0, 0, 0, 0.7)", })
+  downloadLoadingInstance = ElLoading.service({ text: i18n.global.t('common.request.downloading'), background: "rgba(0, 0, 0, 0.7)", })
   return service.post(url, params, {
     transformRequest: [(params) => { return tansParams(params) }],
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -180,12 +180,12 @@ export function download(url, params, filename, config) {
     downloadLoadingInstance.close();
   }).catch((r) => {
     console.error(r)
-    ElMessage.error('下载文件出现错误，请联系管理员！')
+    ElMessage.error(i18n.global.t('common.request.downloadError'))
     downloadLoadingInstance.close();
   })
 }
 export function download2(url, params, filename, config) {
-  downloadLoadingInstance = ElLoading.service({ text: "正在下载数据，请稍候", background: "rgba(0, 0, 0, 0.7)" });
+  downloadLoadingInstance = ElLoading.service({ text: i18n.global.t('common.request.downloading'), background: "rgba(0, 0, 0, 0.7)" });
 
   return service.get(url, {
     params: params, // 使用 GET 请求时，参数作为查询参数传递
@@ -206,8 +206,8 @@ export function download2(url, params, filename, config) {
     downloadLoadingInstance.close();  // 关闭加载动画
   }).catch((r) => {
     console.error(r);
-    ElMessage.error('下载文件出现错误，请联系管理员！');  // 错误提示
-    downloadLoadingInstance.close();  // 关闭加载动画
+    ElMessage.error(i18n.global.t('common.request.downloadError'));
+    downloadLoadingInstance.close();
   });
 }
 

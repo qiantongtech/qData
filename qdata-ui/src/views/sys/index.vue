@@ -27,7 +27,7 @@
           <div class="info-main">
             <img :src="userStore.avatar" alt="" class="avatar" />
             <div class="info-con">
-              <div class="info-con-name">{{ greeting }}，{{ userStore.nickName }} ，{{ message }}</div>
+              <div class="info-con-name">{{ greeting }}，{{ nickName }} ，{{ message }}</div>
               <div class="info-con-desc">
                 <span style="color: var(--el-color-primary)">{{ td('sys.dashboard.admin') }}</span>
                 <el-divider direction="vertical" />
@@ -283,6 +283,15 @@ const statusList = [
 const nextSlide = () => {
   carousel.value.next();
 };
+
+const nickName = computed(() => {
+    const name = userStore.nickName;
+    const userId = userStore.id;
+    if (userId === 1) {
+        return td('common.texts.superAdmin');
+    }
+    return name;
+});
 
 const chartIntances = [];
 // eslint-disable-next-line no-unused-vars
@@ -1438,7 +1447,6 @@ onMounted(() => {
 .userInfo .info-main .info-btns .info-btn-dft {
   font-family: PingFangSC, PingFang SC !important;
   font-weight: 500 !important;
-  width: 100px;
   height: 40px;
   border-radius: 2px !important;
   margin-left: 20px;

@@ -152,5 +152,17 @@ export default {
   noOpinion: '暂无意见',
   noAssetLineage: '暂无资产血缘',
   noAssetQualityTask: '暂无资产质量任务',
-  noTaskProcess: '暂无任务流程'
+  noTaskProcess: '暂无任务流程',
+  request: {
+    expiredSession: '无效的会话，或者会话已过期，请重新登录。',
+    networkError: '后端接口连接异常',
+    timeout: '系统接口请求超时',
+    interfaceError: '系统接口{code}异常',
+    repeatSubmit: '数据正在处理，请勿重复提交',
+    routeChangeCancel: 'Route change: Request canceled',
+    downloadError: '下载文件出现错误，请联系管理员！',
+    downloading: '正在下载数据，请稍候',
+    loginExpired: '登录状态已过期，您可以继续留在该页面，或者重新登录',
+    reLogin: '重新登录'
+  }
 }

@@ -31,7 +31,6 @@
 -->
 
 <template>
-  、
   <div class="app-container" ref="app-container">
     <GuideTip tip-id="da/daDatasource.list" />
 
@@ -41,7 +40,7 @@
         :model="queryParams"
         ref="queryRef"
         :inline="true"
-        
+
         v-show="showSearch"
         @submit.prevent
       >
@@ -894,7 +893,7 @@
         :model="queryParamsProject"
         ref="queryRef"
         :inline="true"
-        
+
       >
         <el-form-item :label="td('dpp.datasource.projectName')" prop="name">
           <el-input

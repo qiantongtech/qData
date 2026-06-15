@@ -1,4 +1,4 @@
-// 日本語言語パック入口
+// 日本語言語パックエントリー
 import common from './common'
 import login from './login'
 import router from './router'
@@ -21,16 +21,16 @@ export default {
   common,
   login,
   router,
-  dict,
   home,
   sys,
+  dict,
   mc,
   meta,
   dpp,
   att,
   ds,
-  dg,
   ai,
+  dg,
   guide,
   da,
   dm,

@@ -1,10 +1,10 @@
 export default {
     echart: {
-        unit: 'unit',
-        times: 'times',
-        tenThousandEntries: 'ten thousand entries'
+        unit: 'Unit',
+        times: 'Times',
+        tenThousandEntries: '10K Entries'
     },
-    dataAggregation: 'DataAggregation',
-    dataCleaning: 'DataCleaning',
-    dataSharing: 'DataSharing'
+    dataAggregation: 'Data Aggregation',
+    dataCleaning: 'Data Cleaning',
+    dataSharing: 'Data Sharing'
 };

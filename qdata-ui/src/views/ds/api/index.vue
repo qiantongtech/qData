@@ -101,12 +101,12 @@
                 {{ scope.row.apiUrl || "-" }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(6)" width="80" :label="td('ds.api.requestType')" align="center" prop="reqMethod">
+            <el-table-column v-if="getColumnVisibility(6)" width="120" :label="td('ds.api.requestType')" align="center" prop="reqMethod">
               <template #default="scope">
                 <dict-tag :options="ds_api_bas_info_api_method_type" :value="scope.row.reqMethod" />
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(7)" width="80" :label="td('ds.api.returnFormat')" align="center" prop="resDataType">
+            <el-table-column v-if="getColumnVisibility(7)" width="120" :label="td('ds.api.returnFormat')" align="center" prop="resDataType">
               <template #default="scope">
                 <dict-tag :options="ds_api_bas_info_res_data_type" :value="scope.row.resDataType" />
               </template>

@@ -66,38 +66,38 @@
             </div>
             <el-table v-if="refreshTable" v-loading="loading" :data="AttApiCatList" row-key="id"
                 :default-expand-all="isExpandAll" :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
-                <el-table-column :label="td('ds.apiCat.title')" align="left" prop="name" width="200"
+                <el-table-column v-if="getColumnVisibility(0)"  :label="td('ds.apiCat.title')" align="left" prop="name" width="200"
                     :show-overflow-tooltip="{ effect: 'light' }">
                     <template #default="scope">
                         {{ scope.row.name || '-' }}
                     </template>
                 </el-table-column>
 
-                <el-table-column :label="td('common.texts.description')" align="left" prop="description" :show-overflow-tooltip="{ effect: 'light' }"
+                <el-table-column v-if="getColumnVisibility(1)"  :label="td('common.texts.description')" align="left" prop="description" :show-overflow-tooltip="{ effect: 'light' }"
                     width="300">
                     <template #default="scope">
                         {{ scope.row.description || '-' }}
                     </template>
                 </el-table-column>
-                <el-table-column :label="td('ds.apiCat.sortOrder')" align="left" prop="sortOrder" :show-overflow-tooltip="{ effect: 'light' }"
-                    width="50">
+                <el-table-column v-if="getColumnVisibility(2)" :label="td('ds.apiCat.sortOrder')" align="left" prop="sortOrder" :show-overflow-tooltip="{ effect: 'light' }"
+                    width="90">
                     <template #default="scope">
                         {{ scope.row.sortOrder }}
                     </template>
                 </el-table-column>
-                <el-table-column :label="td('common.texts.createdBy')" align="center" prop="createBy">
+                <el-table-column v-if="getColumnVisibility(3)" :label="td('common.texts.createdBy')" align="center" prop="createBy">
                     <template #default="scope">
                         {{ scope.row.createBy || "-" }}
                     </template>
                 </el-table-column>
-                <el-table-column :label="td('common.texts.createdTime')" align="center" prop="createTime" width="180">
+                <el-table-column v-if="getColumnVisibility(4)" :label="td('common.texts.createdTime')" align="center" prop="createTime" width="180">
                     <template #default="scope">
                         <span>{{
                             parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}")
                         }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column :label="td('common.texts.status')" align="center" prop="validFlag">
+                <el-table-column v-if="getColumnVisibility(5)" :label="td('common.texts.status')" align="center" prop="validFlag">
                     <template #default="scope">
                         <!--              <dict-tag :options="sys_valid" :value="scope.row.validFlag"/>-->
 
@@ -107,7 +107,7 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column :label="td('common.texts.remark')" align="left" prop="remark" :show-overflow-tooltip="{ effect: 'light' }">
+                <el-table-column v-if="getColumnVisibility(6)" :label="td('common.texts.remark')" align="left" prop="remark" :show-overflow-tooltip="{ effect: 'light' }">
                     <template #default="scope">
                         {{ scope.row.remark || '-' }}
                     </template>
@@ -307,14 +307,13 @@ const AttApiCatList = ref([]);
 
 // 列显隐信息
 const columns = ref([
-    { key: 1, label: td('ds.apiCat.categoryNameInput'), visible: true },
-    { key: 2, label: td('ds.apiCat.relatedParentId'), visible: true },
-    { key: 3, label: td('ds.apiCat.categorySort'), visible: true },
-    { key: 4, label: td('ds.apiCat.description'), visible: true },
-    { key: 5, label: td('ds.apiCat.levelCode'), visible: true },
-    { key: 8, label: td('common.texts.createdBy'), visible: true },
-    { key: 10, label: td('common.texts.createdTime'), visible: true },
-    { key: 14, label: td('common.texts.remark'), visible: true }
+  {key: 0, label: td('ds.apiCat.title'), visible: true},
+  {key: 1, label: td('common.texts.description'), visible: true},
+  {key: 2, label: td('ds.apiCat.sortOrder'), visible: true},
+  {key: 3, label: td('common.texts.createdBy'), visible: true},
+  {key: 4, label: td('common.texts.createdTime'), visible: true},
+  {key: 5, label: td('common.texts.status'), visible: true},
+  {key: 6, label: td('common.texts.remark'), visible: true }
 ]);
 
 const getColumnVisibility = (key) => {

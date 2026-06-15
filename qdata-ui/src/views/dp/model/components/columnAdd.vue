@@ -336,7 +336,7 @@ const rules = ref({
           const numStr = actualValue.toString().replace(".", ""); // 移除小数点再计算长度
           if (numStr.length > form.value.columnLength) {
             callback(
-              new Error(td('dp.modelForm.defaultLengthError', { length: form.value.columnLength }))
+              new Error(td('dp.modelForm.defaultLengthError').replace('<length>', form.value.columnLength))
             );
             return;
           }
@@ -344,7 +344,7 @@ const rules = ref({
         // 对于字符类型，直接检查字符串长度
         else if (actualValue.length > form.value.columnLength) {
           callback(
-            new Error(td('dp.modelForm.defaultLengthError', { length: form.value.columnLength }))
+            new Error(td('dp.modelForm.defaultLengthError').replace('<length>', form.value.columnLength))
           );
           return;
         }

@@ -287,7 +287,7 @@ function handleDetail(row) {
 function handleStatusChange(row) {
   const text = row.validFlag ? td('dm.businessCategory.enableText', '启用') : td('dm.businessCategory.disableText', '禁用');
   proxy.$modal
-    .confirm(td('dm.businessCategory.confirmStatusChange', '确认要"{text}","{name}"业务分类吗？').replace('{text}', text).replace('{name}', row.name))
+    .confirm(td('dm.businessCategory.confirmStatusChange', '确认要"<text>","<name>"业务分类吗？').replace('<text>', text).replace('<name>', row.name))
     .then(() =>
       updateBusinessCategory({
         id: row.id,
@@ -344,7 +344,7 @@ function onDialogSubmit(payload) {
 }
 function handleDelete(row) {
   proxy.$modal
-    .confirm(td('dm.businessCategory.confirmDelete', '是否确认删除业务分类名称为"{name}"的数据项？').replace('{name}', row.name))
+    .confirm(td('dm.businessCategory.confirmDelete', '是否确认删除业务分类名称为"<name>"的数据项？').replace('<name>', row.name))
     .then(() => delBusinessCategory(row.id))
     .then(() => {
       tableRef.value?.getList();

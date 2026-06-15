@@ -350,15 +350,15 @@ const dpDataElemRuleRelList = ref([]);
 
 // 列显隐信息
 const columns = ref([
-  { key: 0, label: "编号", visible: true },
-  { key: 1, label: "标准号", visible: true },
-  { key: 2, label: "标准名称", visible: true },
-  { key: 7, label: "描述", visible: true },
-  { key: 3, label: "标准类目", visible: true },
-  { key: 10, label: "创建人", visible: true },
-  { key: 11, label: "创建时间", visible: true },
-  { key: 3, label: "标准状态", visible: true },
-  { key: 15, label: "备注", visible: true },
+  { key: 0, label: td('common.texts.number'), visible: true },
+  { key: 1, label: td('dp.document.standardCode'), visible: true },
+  { key: 2, label: td('dp.document.standardName'), visible: true },
+  { key: 7, label: td('common.texts.description'), visible: true },
+  { key: 3, label: td('dp.document.standardCategory'), visible: true },
+  { key: 10, label: td('common.texts.createdBy'), visible: true },
+  { key: 11, label: td('common.texts.createdTime'), visible: true },
+  { key: 3, label: td('dp.document.standardStatusColumn'), visible: true },
+  { key: 15, label: td('common.texts.remark'), visible: true },
 ]);
 
 const handleDownload = (row) => {
@@ -614,7 +614,7 @@ function submitForm() {
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
-    .confirm(td('dp.document.confirmDelete').replace('{id}', _ids))
+    .confirm(td('dp.document.confirmDelete').replace('<id>', _ids))
     .then(function () {
       return delDpDocument(_ids);
     })
@@ -714,7 +714,7 @@ const handleFileSuccess = (response, file, fileList) => {
 function handleStatusChange(id, row, e) {
   const text = e === "1" ? td('dp.document.enableText') : td('dp.document.disableText');
   proxy.$modal
-    .confirm(td('dp.document.confirmStatusChange').replace('{text}', text).replace('{name}', row.name))
+    .confirm(td('dp.document.confirmStatusChange').replace('<text>', text).replace('<name>', row.name))
     .then(function () {
       updateStatusDpDataElem(id, row.status).then((response) => {
         proxy.$modal.msgSuccess(td('common.message.operationSuccess'));

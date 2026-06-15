@@ -409,14 +409,14 @@ function getDeptTree() {
 }
 // 列显隐信息
 const columns = ref([
-  { key: 0, label: "编号", visible: true },
-  { key: 1, label: "英文名称", visible: true },
-  { key: 2, label: "中文名称", visible: true },
-  { key: 3, label: "逻辑模型类目", visible: true },
-  { key: 10, label: "创建人", visible: true },
-  { key: 11, label: "创建时间", visible: true },
-  { key: 4, label: "状态", visible: true },
-  { key: 5, label: "备注", visible: true },
+  { key: 0, label: td('common.texts.number'), visible: true },
+  { key: 1, label: td('dp.model.englishName'), visible: true },
+  { key: 2, label: td('dp.model.chineseName'), visible: true },
+  { key: 3, label: td('dp.model.treeRootName'), visible: true },
+  { key: 10, label: td('common.texts.createdBy'), visible: true },
+  { key: 11, label: td('common.texts.createdTime'), visible: true },
+  { key: 4, label: td('common.texts.status'), visible: true },
+  { key: 5, label: td('common.texts.remark'), visible: true },
 ]);
 
 const getColumnVisibility = (key) => {
@@ -459,7 +459,7 @@ const upload = reactive({
 function handleStatusChange(id, row, e) {
   const text = e === "1" ? td('dp.model.enableText') : td('dp.model.disableText');
   proxy.$modal
-    .confirm(td('dp.model.confirmStatusChange').replace('{text}', text).replace('{name}', row.modelComment))
+    .confirm(td('dp.model.confirmStatusChange').replace('<text>', text).replace('<name>', row.modelComment))
     .then(function () {
       updateStatusDpDataModel(id, row.status).then((response) => {
         proxy.$modal.msgSuccess(td('common.message.operationSuccess'));
@@ -656,7 +656,7 @@ function submitForm(obj) {
 function handleDelete(row) {
   const _IDs = row.id || ids.value;
   proxy.$modal
-    .confirm(td('dp.model.confirmDelete').replace('{id}', _IDs))
+    .confirm(td('dp.model.confirmDelete').replace('<id>', _IDs))
     .then(function () {
       return delDpModelColumn(_IDs);
     })

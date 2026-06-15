@@ -467,7 +467,7 @@ function handleQuery() {
 function handleStatusChange(row) {
   const text = row.validFlag === true ? td('dm.themeDomain.enableText', '启用') : td('dm.themeDomain.disableText', '禁用');
   proxy.$modal
-    .confirm(td('dm.themeDomain.confirmStatusChange', '确认要"{text}","{name}"主题域吗？').replace('{text}', text).replace('{name}', row.name))
+    .confirm(td('dm.themeDomain.confirmStatusChange', '确认要"<text>","<name>"主题域吗？').replace('<text>', text).replace('<name>', row.name))
     .then(() => {
       updateThemeDomain({
         id: row.id,
@@ -583,7 +583,7 @@ function submitForm() {
 /** 删除按钮操作 */
 function handleDelete(row) {
   proxy.$modal
-    .confirm(td('dm.themeDomain.confirmDelete', '是否确认删除主题域管理编号为"{name}"的数据项？').replace('{name}', row.name))
+    .confirm(td('dm.themeDomain.confirmDelete', '是否确认删除主题域管理编号为"<name>"的数据项？').replace('<name>', row.name))
     .then(function () {
       return delThemeDomain(row.id);
     })

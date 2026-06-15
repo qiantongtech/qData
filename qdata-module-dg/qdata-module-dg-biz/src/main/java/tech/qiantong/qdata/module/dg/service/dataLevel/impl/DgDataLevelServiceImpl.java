@@ -38,7 +38,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.aliyun.oss.ServiceException;
+import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import javax.annotation.Resource;
@@ -79,7 +80,7 @@ public class DgDataLevelServiceImpl  extends ServiceImpl<DgDataLevelMapper,DgDat
         // 敏感等级不能重复
         if (dgDataLevelMapper.selectCount(new LambdaQueryWrapper<DgDataLevelDO>()
                 .eq(DgDataLevelDO::getSensitiveLevel, dictType.getSensitiveLevel())) > 0) {
-            throw new IllegalArgumentException("敏感等级不能重复");
+            throw new ServiceException("dg.error.duplicate.level", "敏感等级不能重复");
         }
         dgDataLevelMapper.insert(dictType);
         return dictType.getId();
@@ -133,7 +134,7 @@ public class DgDataLevelServiceImpl  extends ServiceImpl<DgDataLevelMapper,DgDat
         @Override
         public String importDgDataLevel(List<DgDataLevelRespVO> importExcelList, boolean isUpdateSupport, String operName) {
             if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-                throw new ServiceException("导入数据不能为空！");
+                throw new ServiceException("dg.error.import.empty", "导入数据不能为空！");
             }
 
             int successNum = 0;
@@ -151,14 +152,17 @@ public class DgDataLevelServiceImpl  extends ServiceImpl<DgDataLevelMapper,DgDat
                             if (existingDgDataLevel != null) {
                                 dgDataLevelMapper.updateById(dgDataLevelDO);
                                 successNum++;
-                                successMessages.add("数据更新成功，ID为 " + dgDataLevelId + " 的数据分级记录。");
+                                successMessages.add(MessageUtils.messageWithFallback("dg.import.update.success",
+                                        "数据更新成功，ID为 " + dgDataLevelId + " 的数据分级记录。", dgDataLevelId, "数据分级"));
                             } else {
                                 failureNum++;
-                                failureMessages.add("数据更新失败，ID为 " + dgDataLevelId + " 的数据分级记录不存在。");
+                                failureMessages.add(MessageUtils.messageWithFallback("dg.import.update.fail",
+                                        "数据更新失败，ID为 " + dgDataLevelId + " 的数据分级记录不存在。", dgDataLevelId, "数据分级"));
                             }
                         } else {
                             failureNum++;
-                            failureMessages.add("数据更新失败，某条记录的ID不存在。");
+                            failureMessages.add(MessageUtils.messageWithFallback("dg.import.update.id.missing",
+                                    "数据更新失败，某条记录的ID不存在。"));
                         }
                     } else {
                         QueryWrapper<DgDataLevelDO> queryWrapper = new QueryWrapper<>();
@@ -167,26 +171,32 @@ public class DgDataLevelServiceImpl  extends ServiceImpl<DgDataLevelMapper,DgDat
                         if (existingDgDataLevel == null) {
                             dgDataLevelMapper.insert(dgDataLevelDO);
                             successNum++;
-                            successMessages.add("数据插入成功，ID为 " + dgDataLevelId + " 的数据分级记录。");
+                            successMessages.add(MessageUtils.messageWithFallback("dg.import.insert.success",
+                                    "数据插入成功，ID为 " + dgDataLevelId + " 的数据分级记录。", dgDataLevelId, "数据分级"));
                         } else {
                             failureNum++;
-                            failureMessages.add("数据插入失败，ID为 " + dgDataLevelId + " 的数据分级记录已存在。");
+                            failureMessages.add(MessageUtils.messageWithFallback("dg.import.insert.fail",
+                                    "数据插入失败，ID为 " + dgDataLevelId + " 的数据分级记录已存在。", dgDataLevelId, "数据分级"));
                         }
                     }
                 } catch (Exception e) {
                     failureNum++;
-                    String errorMsg = "数据导入失败，错误信息：" + e.getMessage();
+                    String errorMsg = MessageUtils.messageWithFallback("dg.import.error.detail",
+                            "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
                     failureMessages.add(errorMsg);
                     log.error(errorMsg, e);
                 }
             }
             StringBuilder resultMsg = new StringBuilder();
             if (failureNum > 0) {
-                resultMsg.append("很抱歉，导入失败！共 ").append(failureNum).append(" 条数据格式不正确，错误如下：");
-                resultMsg.append("<br/>").append(String.join("<br/>", failureMessages));
-                throw new ServiceException(resultMsg.toString());
+                String failureDetails = String.join("<br/>", failureMessages);
+                resultMsg.append(MessageUtils.messageWithFallback("dg.import.result.fail",
+                        "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                        failureNum, failureDetails));
+                throw new ServiceException("dg.error.import.fail", resultMsg.toString(), resultMsg.toString());
             } else {
-                resultMsg.append("恭喜您，数据已全部导入成功！共 ").append(successNum).append(" 条。");
+                resultMsg.append(MessageUtils.messageWithFallback("dg.import.result.success",
+                        "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
             }
             return resultMsg.toString();
         }

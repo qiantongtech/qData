@@ -32,7 +32,8 @@
 
 package tech.qiantong.qdata.module.dm.service.businessCategory.impl;
 
-import com.aliyun.oss.ServiceException;
+import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -129,7 +130,7 @@ public class DmBusinessDomainRelServiceImpl extends ServiceImpl<DmBusinessDomain
         @Override
         public String importDmBusinessDomainRel(List<DmBusinessDomainRelRespVO> importExcelList, boolean isUpdateSupport, String operName) {
             if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-                throw new ServiceException("导入数据不能为空！");
+                throw new ServiceException("dm.error.import.empty", "导入数据不能为空！");
             }
 
             int successNum = 0;
@@ -147,14 +148,17 @@ public class DmBusinessDomainRelServiceImpl extends ServiceImpl<DmBusinessDomain
                             if (existingDmBusinessDomainRel != null) {
                                 dmBusinessDomainRelMapper.updateById(dmBusinessDomainRelDO);
                                 successNum++;
-                                successMessages.add("数据更新成功，ID为 " + dmBusinessDomainRelId + " 的业务分类数据域关联关系记录。");
+                                successMessages.add(MessageUtils.messageWithFallback("dm.import.update.success",
+                                        "数据更新成功，ID为 " + dmBusinessDomainRelId + " 的业务分类数据域关联关系记录。", dmBusinessDomainRelId, "业务分类数据域关联关系"));
                             } else {
                                 failureNum++;
-                                failureMessages.add("数据更新失败，ID为 " + dmBusinessDomainRelId + " 的业务分类数据域关联关系记录不存在。");
+                                failureMessages.add(MessageUtils.messageWithFallback("dm.import.update.fail",
+                                        "数据更新失败，ID为 " + dmBusinessDomainRelId + " 的业务分类数据域关联关系记录不存在。", dmBusinessDomainRelId, "业务分类数据域关联关系"));
                             }
                         } else {
                             failureNum++;
-                            failureMessages.add("数据更新失败，某条记录的ID不存在。");
+                            failureMessages.add(MessageUtils.messageWithFallback("dm.import.update.id.missing",
+                                    "数据更新失败，某条记录的ID不存在。"));
                         }
                     } else {
                         QueryWrapper<DmBusinessDomainRelDO> queryWrapper = new QueryWrapper<>();
@@ -163,26 +167,32 @@ public class DmBusinessDomainRelServiceImpl extends ServiceImpl<DmBusinessDomain
                         if (existingDmBusinessDomainRel == null) {
                             dmBusinessDomainRelMapper.insert(dmBusinessDomainRelDO);
                             successNum++;
-                            successMessages.add("数据插入成功，ID为 " + dmBusinessDomainRelId + " 的业务分类数据域关联关系记录。");
+                            successMessages.add(MessageUtils.messageWithFallback("dm.import.insert.success",
+                                    "数据插入成功，ID为 " + dmBusinessDomainRelId + " 的业务分类数据域关联关系记录。", dmBusinessDomainRelId, "业务分类数据域关联关系"));
                         } else {
                             failureNum++;
-                            failureMessages.add("数据插入失败，ID为 " + dmBusinessDomainRelId + " 的业务分类数据域关联关系记录已存在。");
+                            failureMessages.add(MessageUtils.messageWithFallback("dm.import.insert.fail",
+                                    "数据插入失败，ID为 " + dmBusinessDomainRelId + " 的业务分类数据域关联关系记录已存在。", dmBusinessDomainRelId, "业务分类数据域关联关系"));
                         }
                     }
                 } catch (Exception e) {
                     failureNum++;
-                    String errorMsg = "数据导入失败，错误信息：" + e.getMessage();
+                    String errorMsg = MessageUtils.messageWithFallback("dm.import.error.detail",
+                            "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
                     failureMessages.add(errorMsg);
                     log.error(errorMsg, e);
                 }
             }
             StringBuilder resultMsg = new StringBuilder();
             if (failureNum > 0) {
-                resultMsg.append("很抱歉，导入失败！共 ").append(failureNum).append(" 条数据格式不正确，错误如下：");
-                resultMsg.append("<br/>").append(String.join("<br/>", failureMessages));
-                throw new ServiceException(resultMsg.toString());
+                String failureDetails = String.join("<br/>", failureMessages);
+                resultMsg.append(MessageUtils.messageWithFallback("dm.import.result.fail",
+                        "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                        failureNum, failureDetails));
+                throw new ServiceException("dm.error.import.fail", resultMsg.toString(), resultMsg.toString());
             } else {
-                resultMsg.append("恭喜您，数据已全部导入成功！共 ").append(successNum).append(" 条。");
+                resultMsg.append(MessageUtils.messageWithFallback("dm.import.result.success",
+                        "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
             }
             return resultMsg.toString();
         }
@@ -190,7 +200,7 @@ public class DmBusinessDomainRelServiceImpl extends ServiceImpl<DmBusinessDomain
     @Override
     public Integer removeDmBusinessDomainRelByDomainId(Long domainId, Long businessCategoryId) {
          if (domainId == null || businessCategoryId == null || businessCategoryId == 0) {
-              throw new ServiceException("数据域ID或业务分类ID不能为空！");
+              throw new ServiceException("dm.error.id.empty", "数据域ID或业务分类ID不能为空！");
          }
         //根据数据域ID和业务分类ID删除关联关系
         return dmBusinessDomainRelMapper.delete(new LambdaQueryWrapper<DmBusinessDomainRelDO>()

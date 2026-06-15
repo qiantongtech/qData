@@ -45,6 +45,7 @@ import javax.annotation.Resource;
 
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -109,7 +110,7 @@ public class DgDataCategoryServiceImpl extends ServiceImpl<DgDataCategoryMapper,
         //判断在规则中是否被使用
         Long count = dgDesensitizeRuleService.getCountByCategoryIds(idList);
         if (count > 0) {
-            throw new ServiceException("存在敏感规则，不允许删除");
+            throw new ServiceException("dg.error.delete.sensitive", "存在敏感规则，不允许删除");
         }
         // 批量删除数据分类
         return dgDataCategoryMapper.deleteBatchIds(idList);
@@ -157,7 +158,7 @@ public class DgDataCategoryServiceImpl extends ServiceImpl<DgDataCategoryMapper,
     @Override
     public String importDgDataCategory(List<DgDataCategoryRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("导入数据不能为空！");
+            throw new ServiceException("dg.error.import.empty", "导入数据不能为空！");
         }
 
         int successNum = 0;
@@ -175,14 +176,17 @@ public class DgDataCategoryServiceImpl extends ServiceImpl<DgDataCategoryMapper,
                         if (existingDgDataCategory != null) {
                             dgDataCategoryMapper.updateById(dgDataCategoryDO);
                             successNum++;
-                            successMessages.add("数据更新成功，ID为 " + dgDataCategoryId + " 的数据分类记录。");
+                            successMessages.add(MessageUtils.messageWithFallback("dg.import.update.success",
+                                    "数据更新成功，ID为 " + dgDataCategoryId + " 的数据分类记录。", dgDataCategoryId, "数据分类"));
                         } else {
                             failureNum++;
-                            failureMessages.add("数据更新失败，ID为 " + dgDataCategoryId + " 的数据分类记录不存在。");
+                            failureMessages.add(MessageUtils.messageWithFallback("dg.import.update.fail",
+                                    "数据更新失败，ID为 " + dgDataCategoryId + " 的数据分类记录不存在。", dgDataCategoryId, "数据分类"));
                         }
                     } else {
                         failureNum++;
-                        failureMessages.add("数据更新失败，某条记录的ID不存在。");
+                        failureMessages.add(MessageUtils.messageWithFallback("dg.import.update.id.missing",
+                                "数据更新失败，某条记录的ID不存在。"));
                     }
                 } else {
                     QueryWrapper<DgDataCategoryDO> queryWrapper = new QueryWrapper<>();
@@ -191,26 +195,32 @@ public class DgDataCategoryServiceImpl extends ServiceImpl<DgDataCategoryMapper,
                     if (existingDgDataCategory == null) {
                         dgDataCategoryMapper.insert(dgDataCategoryDO);
                         successNum++;
-                        successMessages.add("数据插入成功，ID为 " + dgDataCategoryId + " 的数据分类记录。");
+                        successMessages.add(MessageUtils.messageWithFallback("dg.import.insert.success",
+                                "数据插入成功，ID为 " + dgDataCategoryId + " 的数据分类记录。", dgDataCategoryId, "数据分类"));
                     } else {
                         failureNum++;
-                        failureMessages.add("数据插入失败，ID为 " + dgDataCategoryId + " 的数据分类记录已存在。");
+                        failureMessages.add(MessageUtils.messageWithFallback("dg.import.insert.fail",
+                                "数据插入失败，ID为 " + dgDataCategoryId + " 的数据分类记录已存在。", dgDataCategoryId, "数据分类"));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
-                String errorMsg = "数据导入失败，错误信息：" + e.getMessage();
+                String errorMsg = MessageUtils.messageWithFallback("dg.import.error.detail",
+                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
         }
         StringBuilder resultMsg = new StringBuilder();
         if (failureNum > 0) {
-            resultMsg.append("很抱歉，导入失败！共 ").append(failureNum).append(" 条数据格式不正确，错误如下：");
-            resultMsg.append("<br/>").append(String.join("<br/>", failureMessages));
-            throw new ServiceException(resultMsg.toString());
+            String failureDetails = String.join("<br/>", failureMessages);
+            resultMsg.append(MessageUtils.messageWithFallback("dg.import.result.fail",
+                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    failureNum, failureDetails));
+            throw new ServiceException("dg.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
-            resultMsg.append("恭喜您，数据已全部导入成功！共 ").append(successNum).append(" 条。");
+            resultMsg.append(MessageUtils.messageWithFallback("dg.import.result.success",
+                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
         }
         return resultMsg.toString();
     }

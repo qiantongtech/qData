@@ -45,6 +45,7 @@ import javax.annotation.Resource;
 import tech.qiantong.qdata.common.core.domain.TreeData;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.YouBianCodeUtil;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
@@ -98,14 +99,14 @@ public class DmThemeDomainServiceImpl extends ServiceImpl<DmThemeDomainMapper, D
         }
         //判断是否选择了他自己
         if (catDO.getId().equals(updateReqVO.getParentId())) {
-            throw new ServiceException("切换上级不能选择自身作为上级类目");
+            throw new ServiceException("dm.error.parent.self", "切换上级不能选择自身作为上级类目");
         }
         if (Boolean.FALSE.equals(updateReqVO.getValidFlag())) {
             baseMapper.updateValidFlag(catDO.getCode(), updateReqVO.getValidFlag());
         } else if (Boolean.TRUE.equals(updateReqVO.getValidFlag())) {
             DmThemeDomainDO parent = baseMapper.selectById(catDO.getParentId());
             if (parent != null && Boolean.FALSE.equals(parent.getValidFlag())) {
-                throw new ServiceException("须先启用父级");
+                throw new ServiceException("dm.error.parent.disabled", "须先启用父级");
             }
         }
         //修改上下级判断
@@ -173,7 +174,7 @@ public class DmThemeDomainServiceImpl extends ServiceImpl<DmThemeDomainMapper, D
     @Override
     public String importDmThemeDomain(List<DmThemeDomainRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("导入数据不能为空！");
+            throw new ServiceException("dm.error.import.empty", "导入数据不能为空！");
         }
 
         int successNum = 0;
@@ -191,14 +192,17 @@ public class DmThemeDomainServiceImpl extends ServiceImpl<DmThemeDomainMapper, D
                         if (existingDmThemeDomain != null) {
                             dmThemeDomainMapper.updateById(dmThemeDomainDO);
                             successNum++;
-                            successMessages.add("数据更新成功，ID为 " + dmThemeDomainId + " 的主题域管理记录。");
+                            successMessages.add(MessageUtils.messageWithFallback("dm.import.update.success",
+                                    "数据更新成功，ID为 " + dmThemeDomainId + " 的主题域管理记录。", dmThemeDomainId, "主题域管理"));
                         } else {
                             failureNum++;
-                            failureMessages.add("数据更新失败，ID为 " + dmThemeDomainId + " 的主题域管理记录不存在。");
+                            failureMessages.add(MessageUtils.messageWithFallback("dm.import.update.fail",
+                                    "数据更新失败，ID为 " + dmThemeDomainId + " 的主题域管理记录不存在。", dmThemeDomainId, "主题域管理"));
                         }
                     } else {
                         failureNum++;
-                        failureMessages.add("数据更新失败，某条记录的ID不存在。");
+                        failureMessages.add(MessageUtils.messageWithFallback("dm.import.update.id.missing",
+                                "数据更新失败，某条记录的ID不存在。"));
                     }
                 } else {
                     QueryWrapper<DmThemeDomainDO> queryWrapper = new QueryWrapper<>();
@@ -207,26 +211,31 @@ public class DmThemeDomainServiceImpl extends ServiceImpl<DmThemeDomainMapper, D
                     if (existingDmThemeDomain == null) {
                         dmThemeDomainMapper.insert(dmThemeDomainDO);
                         successNum++;
-                        successMessages.add("数据插入成功，ID为 " + dmThemeDomainId + " 的主题域管理记录。");
+                        successMessages.add(MessageUtils.messageWithFallback("dm.import.insert.success",
+                                "数据插入成功，ID为 " + dmThemeDomainId + " 的主题域管理记录。", dmThemeDomainId, "主题域管理"));
                     } else {
                         failureNum++;
-                        failureMessages.add("数据插入失败，ID为 " + dmThemeDomainId + " 的主题域管理记录已存在。");
+                        failureMessages.add(MessageUtils.messageWithFallback("dm.import.insert.fail",
+                                "数据插入失败，ID为 " + dmThemeDomainId + " 的主题域管理记录已存在。", dmThemeDomainId, "主题域管理"));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
-                String errorMsg = "数据导入失败，错误信息：" + e.getMessage();
+                String errorMsg = MessageUtils.messageWithFallback("dm.import.error.detail",
+                        "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
         }
         StringBuilder resultMsg = new StringBuilder();
         if (failureNum > 0) {
-            resultMsg.append("很抱歉，导入失败！共 ").append(failureNum).append(" 条数据格式不正确，错误如下：");
-            resultMsg.append("<br/>").append(String.join("<br/>", failureMessages));
-            throw new ServiceException(resultMsg.toString());
+            String failureDetails = String.join("<br/>", failureMessages);
+            resultMsg.append(MessageUtils.messageWithFallback("dm.import.result.fail",
+                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails, failureNum, failureDetails));
+            throw new ServiceException("dm.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
-            resultMsg.append("恭喜您，数据已全部导入成功！共 ").append(successNum).append(" 条。");
+            resultMsg.append(MessageUtils.messageWithFallback("dm.import.result.success",
+                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
         }
         return resultMsg.toString();
     }

@@ -38,7 +38,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.aliyun.oss.ServiceException;
+import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.extern.slf4j.Slf4j;
@@ -93,7 +94,7 @@ public class DgDesensitizeRuleServiceImpl  extends ServiceImpl<DgDesensitizeRule
         //判断数据分类是否在当前规则下已存在
         if (dgDesensitizeRuleMapper.selectCount(new LambdaQueryWrapper<DgDesensitizeRuleDO>()
                 .eq(DgDesensitizeRuleDO::getDataCategoryId, dictType.getDataCategoryId())) > 0) {
-            throw new IllegalArgumentException("数据分类已存在");
+            throw new ServiceException("dg.error.duplicate.category", "数据分类已存在");
         }
 
         dgDesensitizeRuleMapper.insert(dictType);
@@ -194,7 +195,7 @@ public class DgDesensitizeRuleServiceImpl  extends ServiceImpl<DgDesensitizeRule
         @Override
         public String importDgDesensitizeRule(List<DgDesensitizeRuleRespVO> importExcelList, boolean isUpdateSupport, String operName) {
             if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-                throw new ServiceException("导入数据不能为空！");
+                throw new ServiceException("dg.error.import.empty", "导入数据不能为空！");
             }
 
             int successNum = 0;
@@ -212,14 +213,17 @@ public class DgDesensitizeRuleServiceImpl  extends ServiceImpl<DgDesensitizeRule
                             if (existingDgDesensitizeRule != null) {
                                 dgDesensitizeRuleMapper.updateById(dgDesensitizeRuleDO);
                                 successNum++;
-                                successMessages.add("数据更新成功，ID为 " + dgDesensitizeRuleId + " 的脱敏规则记录。");
+                                successMessages.add(MessageUtils.messageWithFallback("dg.import.update.success",
+                                        "数据更新成功，ID为 " + dgDesensitizeRuleId + " 的脱敏规则记录。", dgDesensitizeRuleId, "脱敏规则"));
                             } else {
                                 failureNum++;
-                                failureMessages.add("数据更新失败，ID为 " + dgDesensitizeRuleId + " 的脱敏规则记录不存在。");
+                                failureMessages.add(MessageUtils.messageWithFallback("dg.import.update.fail",
+                                        "数据更新失败，ID为 " + dgDesensitizeRuleId + " 的脱敏规则记录不存在。", dgDesensitizeRuleId, "脱敏规则"));
                             }
                         } else {
                             failureNum++;
-                            failureMessages.add("数据更新失败，某条记录的ID不存在。");
+                            failureMessages.add(MessageUtils.messageWithFallback("dg.import.update.id.missing",
+                                    "数据更新失败，某条记录的ID不存在。"));
                         }
                     } else {
                         QueryWrapper<DgDesensitizeRuleDO> queryWrapper = new QueryWrapper<>();
@@ -228,26 +232,32 @@ public class DgDesensitizeRuleServiceImpl  extends ServiceImpl<DgDesensitizeRule
                         if (existingDgDesensitizeRule == null) {
                             dgDesensitizeRuleMapper.insert(dgDesensitizeRuleDO);
                             successNum++;
-                            successMessages.add("数据插入成功，ID为 " + dgDesensitizeRuleId + " 的脱敏规则记录。");
+                            successMessages.add(MessageUtils.messageWithFallback("dg.import.insert.success",
+                                    "数据插入成功，ID为 " + dgDesensitizeRuleId + " 的脱敏规则记录。", dgDesensitizeRuleId, "脱敏规则"));
                         } else {
                             failureNum++;
-                            failureMessages.add("数据插入失败，ID为 " + dgDesensitizeRuleId + " 的脱敏规则记录已存在。");
+                            failureMessages.add(MessageUtils.messageWithFallback("dg.import.insert.fail",
+                                    "数据插入失败，ID为 " + dgDesensitizeRuleId + " 的脱敏规则记录已存在。", dgDesensitizeRuleId, "脱敏规则"));
                         }
                     }
                 } catch (Exception e) {
                     failureNum++;
-                    String errorMsg = "数据导入失败，错误信息：" + e.getMessage();
+                    String errorMsg = MessageUtils.messageWithFallback("dg.import.error.detail",
+                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
                     failureMessages.add(errorMsg);
                     log.error(errorMsg, e);
                 }
             }
             StringBuilder resultMsg = new StringBuilder();
             if (failureNum > 0) {
-                resultMsg.append("很抱歉，导入失败！共 ").append(failureNum).append(" 条数据格式不正确，错误如下：");
-                resultMsg.append("<br/>").append(String.join("<br/>", failureMessages));
-                throw new ServiceException(resultMsg.toString());
+                String failureDetails = String.join("<br/>", failureMessages);
+                resultMsg.append(MessageUtils.messageWithFallback("dg.import.result.fail",
+                        "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                        failureNum, failureDetails));
+                throw new ServiceException("dg.error.import.fail", resultMsg.toString(), resultMsg.toString());
             } else {
-                resultMsg.append("恭喜您，数据已全部导入成功！共 ").append(successNum).append(" 条。");
+                resultMsg.append(MessageUtils.messageWithFallback("dg.import.result.success",
+                        "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
             }
             return resultMsg.toString();
         }

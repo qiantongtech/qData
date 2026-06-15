@@ -304,7 +304,7 @@ public class SysUserController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:user:list')")
     @GetMapping("/testLang")
     public AjaxResult testLang(SysDept dept) {
-        String successMsg = MessageUtils.message("user.login.success","test","aaa");
+        String successMsg = MessageUtils.message("user.login.success.testA","test","aaa");
         return success(successMsg);
     }
 

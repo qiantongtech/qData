@@ -90,8 +90,13 @@ spring:
     cache: false
   # 资源信息
   messages:
-    # 国际化资源文件路径
-    basename: i18n/messages
+    # 国际化资源文件路径（多模块加载，按顺序查找，先匹配的生效）
+    # messages:        qdata-server 公共消息（系统异常/用户认证/文件上传）
+    # system-messages: System模块专属（数据权限等）
+    # dm-messages:     DM模块专属（数据导入/主题域等）
+    # dg-messages:     DG模块专属（数据治理/脱敏等）
+    basename: i18n/messages,i18n/system-messages,i18n/dm-messages,i18n/dg-messages
+    encoding: UTF-8
   profiles:
     active: dev  # 默认激活的环境，可以在启动时覆盖
   config:

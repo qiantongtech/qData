@@ -18,8 +18,8 @@
 <template>
     <div class="app-container" ref="app-container">
         <div class="pagecont-top" v-show="showSearch">
-            <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="75px">
-                <el-form-item :label="td('att.common.dataAssetCatName')" prop="name" label-width="130">
+            <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true">
+                <el-form-item :label="td('att.common.dataAssetCatName')" prop="name" >
                     <el-input class="el-form-input-width" v-model="queryParams.name" :placeholder="td('att.common.dataAssetCatNamePlaceholder')" clearable
                         @keyup.enter="handleQuery" />
                 </el-form-item>

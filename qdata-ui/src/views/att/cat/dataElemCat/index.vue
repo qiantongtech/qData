@@ -23,9 +23,8 @@
         :model="queryParams"
         ref="queryRef"
         :inline="true"
-        label-width="75px"
       >
-        <el-form-item :label="td('att.common.dataElemCatName')" prop="name" label-width="110">
+        <el-form-item :label="td('att.common.dataElemCatName')" prop="name">
           <el-input
             class="el-form-input-width"
             v-model="queryParams.name"

@@ -41,7 +41,7 @@
 
             <el-main>
                 <div class="pagecont-top" v-show="showSearch">
-                    <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="75px"
+                    <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" 
                         v-show="showSearch" @submit.prevent>
                         <el-form-item :label="td('att.common.ruleName')" prop="name">
                             <el-input class="el-form-input-width" v-model="queryParams.name" :placeholder="td('att.common.ruleNamePlaceholder')"

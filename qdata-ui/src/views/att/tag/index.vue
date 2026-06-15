@@ -387,8 +387,8 @@ function handleStatusChange(id, row, e) {
     status: row.status,
   };
   proxy.$modal
-    .confirm(td('att.common.confirmStatusChange').replace('{status}', text).replace('<name>', row.name))
-    .then(function () {
+      .confirm(td('att.common.confirmStatusChange').replace('<status>', text).replace('<name>', row.name))
+      .then(function () {
       updateAttTag(dataForm).then((response) => {
         proxy.$modal.msgSuccess(td('common.message.msgOpSuccess'));
         tableRef.value.getList();

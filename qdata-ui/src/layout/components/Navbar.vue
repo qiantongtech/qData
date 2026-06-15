@@ -393,7 +393,8 @@ const localeStore = useLocaleStore();
 // 认证模式
 const authType = import.meta.env.VITE_APP_AUTH_TYPE;
 
-
+const route = useRoute();
+const router = useRouter();
 const appStore = useAppStore();
 const userStore = useUserStore();
 const settingsStore = useSettingsStore();

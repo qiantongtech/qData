@@ -69,7 +69,8 @@ export default {
         updatedBy: '更新者',
         updatedTime: '更新日時',
         enable: '有効化',
-        disable: '無効化'
+        disable: '無効化',
+        superAdmin: 'スーパー管理者'
     },
     message: {
         addSuccess: '追加成功',

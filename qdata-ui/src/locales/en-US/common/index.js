@@ -74,7 +74,8 @@ export default {
         updatedTime: 'Updated Time',
         enable: 'Enable',
         disable: 'Disable',
-        topNode: 'Top Node'
+        topNode: 'Top Node',
+        superAdmin: 'Super Administrator'
     },
     message: {
         addSuccess: 'Added successfully',

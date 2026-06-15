@@ -41,8 +41,8 @@
 
       <el-main>
         <div class="pagecont-top" v-show="showSearch">
-          <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="75px"
-            v-show="showSearch" @submit.prevent>
+          <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true"
+                   v-show="showSearch" @submit.prevent>
             <el-form-item :label="td('da.assetApply.assetName')" prop="assetName">
               <el-input class="el-form-input-width" v-model="queryParams.assetName" :placeholder="td('da.assetApply.assetNamePlaceholder')" clearable
                 @keyup.enter="handleQuery" />
@@ -126,7 +126,7 @@
                 {{ scope.row.createBy || "-" }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(7)" :label="td('da.assetApply.auditStatus')" align="center" prop="status" width="80"
+            <el-table-column v-if="getColumnVisibility(7)" :label="td('da.assetApply.auditStatus')" align="center" prop="status" width="150"
               :show-overflow-tooltip="{ effect: 'light' }">
               <template #default="scope">
                 <dict-tag :options="da_asset_apply_status" :value="scope.row.status" />
@@ -163,7 +163,7 @@
           {{ title }}
         </span>
       </template>
-      <el-form ref="daAssetApplyRef" :model="form" :rules="rules" label-width="100px" @submit.prevent>
+      <el-form ref="daAssetApplyRef" :model="form" :rules="rules" @submit.prevent>
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item :label="td('da.assetApply.assetName')">
@@ -266,7 +266,7 @@
 
     <!-- 数据资产申请详情对话框 -->
     <el-dialog :title="title" v-model="openDetail" width="1000px" :append-to="$refs['app-container']" draggable>
-      <el-form :model="form" label-width="90px">
+      <el-form :model="form">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item :label="td('da.assetApply.assetName')" prop="assetName">

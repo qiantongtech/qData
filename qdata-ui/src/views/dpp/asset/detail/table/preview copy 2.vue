@@ -60,7 +60,7 @@
       <el-col :span="7">
         <el-alert
           style="height: 24px"
-          :title=”td('dpp.asset.addFilterTip', '点击”+”以添加筛选准则')”
+          :title="td('dpp.asset.addFilterTip', '点击”+”以添加筛选准则')"
           type="info"
           :closable="false"
         />

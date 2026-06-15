@@ -36,7 +36,7 @@
         <GuideTip tip-id="da/daSensitiveLevel/daSensitiveLevel.list" />
 
         <div class="pagecont-top" v-show="showSearch">
-            <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="75px"
+            <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true"
                 v-show="showSearch" @submit.prevent>
                 <el-form-item :label="td('da.security.levelName')" prop="sensitiveLevel">
                     <el-input class="el-form-input-width" v-model="queryParams.sensitiveLevel" :placeholder="td('da.security.levelNamePlaceholder')"
@@ -84,7 +84,7 @@
                         {{ scope.row.id || '-' }}
                     </template>
                 </el-table-column>
-                <el-table-column v-if="getColumnVisibility(2)" :label="td('da.security.columnVisibility.sensitiveLevelName')" align="center" prop="sensitiveLevel">
+                <el-table-column v-if="getColumnVisibility(2)" :label="td('da.security.columnVisibility.sensitiveLevelName')" align="center" prop="sensitiveLevel"  width="170">
                     <template #default="scope">
                         {{ scope.row.sensitiveLevel || '-' }}
                     </template>
@@ -165,7 +165,7 @@
                     {{ title }}
                 </span>
             </template>
-            <el-form ref="daSensitiveLevelRef" :model="form" :rules="rules" label-width="100px" @submit.prevent>
+            <el-form ref="daSensitiveLevelRef" :model="form" :rules="rules" label-width="132px" @submit.prevent>
                 <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item :label="td('da.security.levelName')" prop="sensitiveLevel">

@@ -50,7 +50,6 @@
             :model="queryParams"
             ref="queryRef"
             :inline="true"
-            label-width="75px"
             v-show="showSearch"
             @submit.prevent
           >
@@ -71,7 +70,6 @@
             </el-form-item>
             <el-form-item :label="td('da.asset.assetName')" prop="name">
               <el-input
-                style="width: 166px"
                 v-model="queryParams.name"
                 :placeholder="td('da.asset.assetNamePlaceholder')"
                 clearable

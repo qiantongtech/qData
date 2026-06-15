@@ -32,7 +32,8 @@
 
 <template>
   <!-- 列表的 执行记录 -->
-  <el-dialog v-model="visibleDialog" draggable class="dialog" :title="title" style="width: 1200px" destroy-on-close>
+  <el-dialog v-model="visibleDialog" draggable class="dialog"
+             :title="title || td('da.qualityTask.instanceComponent.formTitle')" style="width: 1200px" destroy-on-close>
     <el-table stripe height="380px" v-loading="loading" :data="jobLogList" :default-sort="defaultSort"
       @sort-change="handleSortChange">
       <el-table-column :label="td('common.texts.number')" align="center" prop="id" width="80" />
@@ -131,7 +132,7 @@ import {
 } from "@/api/da/quality/qualityTask";;
 const props = defineProps({
   visible: { type: Boolean, default: true },
-  title: { type: String, default: td('da.qualityTask.instanceComponent.formTitle') },
+  title: { type: String, default: '' },
   data: { type: Object, default: () => ({}) }
 });
 const open = ref(false);

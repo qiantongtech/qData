@@ -50,8 +50,8 @@
               @mousedown="(e) => e.preventDefault()"
               @click="handleBack"
             >
-              <svg-icon :iconClass="header.backIcon ?? 'fhs'" />
-              {{ header.backText ?? "返回" }}
+              <svg-icon :iconClass="header.backIcon ?? 'fhs'"/>
+              {{ header.backText ?? td('common.button.return') }}
             </el-button>
           </div>
           <slot name="header-right" />
@@ -153,10 +153,10 @@
 </template>
 
 <script setup name="DetailInfo">
-import { useI18n } from 'vue-i18n'
 import { useRouter } from "vue-router";
+import useDefaultLang from "@/composables/useDefaultLang";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 // 设计说明：
 // - 通用详情页头部展示组件，系统内各模块统一使用；
 // - 默认每行 3 项（span=8），通过 items[i].span 调整为 12（每行 2 项）或 24（独占一行）；
@@ -288,17 +288,17 @@ const displayItems = computed(() => {
     const rows = [
       ...firstRow,
       {
-        label: t('common.texts.description'),
+        label: td('common.texts.description'),
         key: "description",
         span: 24,
         ellipsisClass: "ellipsis",
         className: "mt2 mb2",
       },
-      { label: t('common.texts.createdBy'), key: "createBy", span: 8 },
-      { label: t('common.texts.createdTime'), key: "createTime", type: "time", span: 8 },
-      { label: t('common.texts.updatedTime'), key: "updateTime", type: "time", span: 8 },
+      { label: td('common.texts.createdBy'), key: "createBy", span: 8 },
+      { label: td('common.texts.createdTime'), key: "createTime", type: "time", span: 8 },
+      { label: td('common.texts.updatedTime'), key: "updateTime", type: "time", span: 8 },
       {
-        label: t('common.texts.remark'),
+        label: td('common.texts.remark'),
         key: "remark",
         span: 24,
         ellipsisClass: "ellipsis",

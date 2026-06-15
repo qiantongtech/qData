@@ -17,6 +17,7 @@ export default {
     apiCategory: 'API类目',
     apiCategoryPlaceholder: '请选择所属API类目',
     apiCategoryRequired: '类目不能为空',
+    requestType: '请求类型',
     requestMethod: '请求方式',
     requestMethodRequired: '请求方式不能为空',
     returnFormat: '返回格式',

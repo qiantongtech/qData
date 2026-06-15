@@ -390,7 +390,7 @@ const upload = reactive({
 function handleStatusChange(id, row, e) {
   const text = e === "1" ? td('dp.model.enableText') : td('dp.model.disableText');
   proxy.$modal
-    .confirm(td('dp.model.confirmStatusChange', { text: text, name: row.modelComment }))
+    .confirm(td('dp.model.confirmStatusChange').replace('<text>', text).replace('<name>', row.modelComment))
     .then(function () {
       updateStatusDpDataModel(id, row.status).then((response) => {
         proxy.$modal.msgSuccess(td('common.message.msgOpSuccess'));
@@ -714,7 +714,7 @@ function handleDelete(row) {
     const { canDeleteCount, cannotDeleteCount, canDeleteIds } = res.data;
     proxy.$modal
       .confirm(
-        td('dp.model.deleteCount', { canDelete: canDeleteCount, cannotDelete: cannotDeleteCount }),
+        td('dp.model.deleteCount').replace('<canDelete>', canDeleteCount).replace('<cannotDelete>', cannotDeleteCount),
         td('common.message.systemPrompt'),
         {
           confirmButtonText: td('common.button.confirm'),

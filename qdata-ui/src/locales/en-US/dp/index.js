@@ -30,10 +30,11 @@ export default {
     contactNumberPlaceholder: 'Enter contact number',
     addTitle: 'Add Data Element',
     editTitle: 'Edit Data Element',
-    confirmDelete: 'Are you sure you want to delete the data element with ID "{id}"?',
+    confirmDelete: 'Are you sure you want to delete the data element with ID "<id>"?',
     enableText: 'Enable',
     disableText: 'Disable',
-    confirmStatusChange: 'Are you sure you want to "{text}" the data element "{name}"?',
+    confirmStatusChange: 'Are you sure you want to "<text>" the data element "<name>"?',
+    dataElemCount: 'data elements,',
     importTitle: 'Data Element Import',
     importResult: 'Import Result',
     importTip: 'Whether to update existing data element data',
@@ -49,7 +50,7 @@ export default {
     codeNameRequired: 'Code name is required',
     addCodeTitle: 'Add Data Element Code',
     editCodeTitle: 'Edit Data Element Code',
-    confirmDeleteCode: 'Are you sure you want to delete the data element code with ID "{id}"?',
+    confirmDeleteCode: 'Are you sure you want to delete the data element code with ID "<id>"?',
     // Code Mapping
     originalValue: 'Original Value',
     originalValuePlaceholder: 'Enter original value',
@@ -57,7 +58,7 @@ export default {
     codeNameSelect: 'Select code name',
     addCodeMapTitle: 'Add Data Element Code Mapping',
     editCodeMapTitle: 'Edit Data Element Code Mapping',
-    confirmDeleteCodeMap: 'Are you sure you want to delete the data element code mapping with ID "{id}"?',
+    confirmDeleteCodeMap: 'Are you sure you want to delete the data element code mapping with ID "<id>"?',
     // Asset Association
     assetName: 'Asset Name',
     dataTable: 'Data Table',
@@ -65,7 +66,7 @@ export default {
     addAssetRelTitle: 'Add Data Element Asset Association',
     editAssetRelTitle: 'Edit Data Element Asset Association',
     assetRelDetailTitle: 'Data Element Asset Association Details',
-    confirmDeleteAsset: 'Are you sure you want to delete the data element asset association with ID "{id}"?',
+    confirmDeleteAsset: 'Are you sure you want to delete the data element asset association with ID "<id>"?',
     // Data Element Details
     detail: {
       cleanRule: 'Related Cleaning Rules',
@@ -106,13 +107,14 @@ export default {
     editTitle: 'Edit Logical Model',
     publishTitle: 'Publish Model',
     namingConvention: 'Table Naming Convention',
-    confirmDelete: 'Are you sure you want to delete the logical model with ID "{id}"?',
+    confirmDelete: 'Are you sure you want to delete the logical model with ID "<id>"?',
     enableText: 'Enable',
     disableText: 'Disable',
-    confirmStatusChange: 'Are you sure you want to "{text}" the logical model "{name}"?',
+    confirmStatusChange: 'Are you sure you want to "<text>" the logical model "<name>"?',
     logicMaterialization: 'Logical Materialization',
     addFieldWarning2: 'Add failed, please complete basic information before proceeding',
     deleteCount: '{canDelete} can be deleted, {cannotDelete} cannot be deleted. Delete the deletable ones?',
+    modelCount: 'logical models,',
     modelNameRequired: 'Model code is required',
     modelCommentRequired: 'Model name is required',
     catCodeRequired: 'Category code is required',
@@ -203,11 +205,11 @@ export default {
     addModelProperty: 'Add Logical Model Attribute',
     editModelProperty: 'Edit Logical Model Attribute',
     modelPropertyDetail: 'Logical Model Attribute Details',
-    confirmDeleteProperty: 'Are you sure you want to delete the logical model attribute with ID "{id}"?',
-    confirmDeleteModel: 'Are you sure you want to delete the logical model with ID "{id}"?',
+    confirmDeleteProperty: 'Are you sure you want to delete the logical model attribute with ID "<id>"?',
+    confirmDeleteModel: 'Are you sure you want to delete the logical model with ID "<id>"?',
     tableNamePattern: 'Table name can only contain letters, numbers, and underscores, and must start with a letter',
     maxLength: '500 characters max',
-    defaultLengthError: 'Default value length cannot exceed attribute length {length}'
+    defaultLengthError: 'Default value length cannot exceed attribute length <length>'
   },
   materializedModel: {
     // Materialized Model List
@@ -242,7 +244,7 @@ export default {
     assetId: 'Asset Table ID',
     editRecord: 'Edit Release Model Record',
     recordDetail: 'Release Model Record Details',
-    confirmDeleteRecord: 'Are you sure you want to delete the release model record with ID "{id}"?'
+    confirmDeleteRecord: 'Are you sure you want to delete the release model record with ID "<id>"?'
   },
   document: {
     // Standard List
@@ -271,10 +273,10 @@ export default {
     totalCodeTables: ', {count} code tables',
     addTitle: 'Add Standard',
     editTitle: 'Edit Standard',
-    confirmDelete: 'Are you sure you want to delete the standard with ID "{id}"?',
+    confirmDelete: 'Are you sure you want to delete the standard with ID "<id>"?',
     enableText: 'Enable',
     disableText: 'Disable',
-    confirmStatusChange: 'Are you sure you want to "{text}" the standard "{name}"?',
+    confirmStatusChange: 'Are you sure you want to "<text>" the standard "<name>"?',
     importTitle: 'Standard Import',
     importResult: 'Import Result',
     preview: 'Preview',
@@ -293,6 +295,9 @@ export default {
     modelCode: 'Model Code',
     codeTableName: 'Code Table Name',
     codeTableCode: 'Code Table Code',
+    codeTableCount: 'code tables',
+    standardCount: 'standards,',
+    total: 'Total',
     more: 'More',
     previewBtn: 'Preview',
     downloadBtn: 'Download',

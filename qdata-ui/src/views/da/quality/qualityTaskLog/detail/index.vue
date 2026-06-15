@@ -135,7 +135,7 @@
                             </template>
 
                         </el-table-column>
-                        <el-table-column :label="td('common.texts.operation')" fixed="right" width="140" align="center">
+                        <el-table-column :label="td('common.texts.operation')" fixed="right" width="190" align="center">
                             <template #default="scope">
                                 <el-button link type="primary" icon="View"
                                     @click="openDialog(scope.row)">{{ td('da.qualityTaskLog.detail.viewProblemData') }}</el-button>

@@ -40,7 +40,6 @@
         :model="queryParams"
         ref="queryRef"
         :inline="true"
-        label-width="100px"
         v-show="showSearch"
         @submit.prevent
       >
@@ -253,7 +252,6 @@
           align="center"
           class-name="small-padding fixed-width"
           fixed="right"
-          width="220"
         >
           <template #default="scope">
             <el-button
@@ -262,7 +260,7 @@
               icon="Connection"
               @click="handleTestConnection(scope.row)"
               v-hasPermi="['da:dataSource:edit']"
-              >{{ td('da.datasource.testConnection') }}
+              >{{ td('dpp.datasource.testConnection') }}
             </el-button>
 
             <el-button
@@ -350,7 +348,7 @@
         ref="daDatasourceRef"
         :model="form"
         :rules="rules"
-        label-width="110px"
+        label-width="140px"
         @submit.prevent
         :disabled="title == td('da.datasource.datasourceDetail')"
       >
@@ -630,7 +628,7 @@
         ref="daDatasourceRef"
         :model="form"
         :rules="rules"
-        label-width="110px"
+        label-width="130px"
       >
         <el-row :gutter="20">
           <el-col :span="12">

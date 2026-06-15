@@ -44,11 +44,11 @@
         v-show="showSearch"
         @submit.prevent
       >
-        <el-form-item label="标准名称" prop="search">
+        <el-form-item :label="td('dp.document.standardName')" prop="search">
           <el-input
             class="el-form-input-width"
             v-model="queryParams.search"
-            placeholder="请输入标准名称"
+            :placeholder="td('dp.document.standardNamePlaceholder')"
             clearable
             @keyup.enter="handleQuery"
           />
@@ -60,23 +60,23 @@
             @click="handleQuery"
             @mousedown="(e) => e.preventDefault()"
           >
-            <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+            <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
           </el-button>
           <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-            <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+            <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
           </el-button>
         </el-form-item>
       </el-form>
       <div class="list-title">
-        共
+        {{ td('dp.document.total') }}
         <span style="color: #ff9800"> {{ total }} </span>
-        个标准，
+        {{ td('dp.document.standardCount') }}
         <span style="color: #0091ea">0</span>
-        个逻辑模型，
+        {{ td('dp.model.modelCount') }}
         <span style="color: #0baa84">0</span>
-        个数据元，
+        {{ td('dp.dataElem.dataElemCount') }}
         <span style="color: #8876de">0</span>
-        个代码表
+        {{ td('dp.document.codeTableCount') }}
       </div>
     </div>
 
@@ -105,17 +105,17 @@
                     @click="handleFilePreview(item.fileUrl)"
                   >
                     <!-- <img src="@/assets/dp/standardSearch/icon (2).svg" alt="" /> -->
-                    <span>查看</span>
+                    <span>{{ td('common.button.view') }}</span>
                   </div>
                   <div class="form-btn" @click="handleView(item)">
                     <!-- <img src="@/assets/dp/standardSearch/icon (1).svg" alt="" /> -->
-                    <span>详情</span>
+                    <span>{{ td('common.button.details') }}</span>
                   </div>
                 </div>
               </div>
               <div class="item-con">
                 <div class="item-form">
-                  <div class="form-label">标准分类:</div>
+                  <div class="form-label">{{ td('dp.document.standardClassification') }}:</div>
                   <div class="form-value">
                     <!-- <dict-tag :options="dp_document_type" :value="item.type" /> -->
                     <div :class="['value-tag', 'type' + item.type]">
@@ -124,7 +124,7 @@
                   </div>
                 </div>
                 <div class="item-form">
-                  <div class="form-label">实施状态:</div>
+                  <div class="form-label">{{ td('dp.document.standardStatusColumn') }}:</div>
                   <div class="form-value">
                     <dict-tag
                       :options="dp_document_status"
@@ -133,13 +133,13 @@
                   </div>
                 </div>
                 <div class="item-form">
-                  <div class="form-label">发布日期:</div>
+                  <div class="form-label">{{ td('dp.document.releaseDate') }}:</div>
                   <div class="form-value">
                     <div class="ellipsis">{{ item.releaseDate || "-" }}</div>
                   </div>
                 </div>
                 <div class="item-form">
-                  <div class="form-label">实施日期:</div>
+                  <div class="form-label">{{ td('dp.document.implementationDate') }}:</div>
                   <div class="form-value">
                     <div class="ellipsis">
                       {{ item.implementationDate || "-" }}
@@ -181,82 +181,82 @@ const { dp_document_standard_type, dp_document_type, dp_document_status } =
 const searchList = ref([]);
 const column1 = ref([
   {
-    label: "标准分类",
+    label: td('dp.document.standardClassification'),
     prop: "type",
   },
   {
-    label: "标准状态",
+    label: td('dp.document.standardStatusColumn'),
     prop: "status",
   },
   {
-    label: "发布日期",
+    label: td('dp.document.releaseDate'),
     prop: "releaseDate",
   },
   {
-    label: "实施日期",
+    label: td('dp.document.implementationDate'),
     prop: "implementationDate",
   },
   {
-    label: "标准文件",
+    label: td('dp.document.standardFile'),
     prop: "fileName",
     width: "100%",
   },
 ]);
 const column2 = ref([
   {
-    label: "归属标准",
+    label: td('dp.document.belongStandard'),
     prop: "name",
   },
   {
-    label: "发布日期",
+    label: td('dp.document.releaseDate'),
     prop: "releaseDate",
   },
   {
-    label: "实施日期",
+    label: td('dp.document.implementationDate'),
     prop: "implementationDate",
   },
   {
-    label: "模型名称",
+    label: td('dp.document.modelName'),
     prop: "createTime",
   },
   {
-    label: "模型代号",
+    label: td('dp.document.modelCode'),
     prop: "createTime",
   },
 ]);
 const column3 = ref([
   {
-    label: "归属标准",
+    label: td('dp.document.belongStandard'),
     prop: "createTime",
   },
   {
-    label: "发布日期",
+    label: td('dp.document.releaseDate'),
     prop: "releaseDate",
   },
   {
-    label: "实施日期",
+    label: td('dp.document.implementationDate'),
     prop: "implementationDate",
   },
 ]);
 const column4 = ref([
   {
-    label: "归属标准",
+    label: td('dp.document.belongStandard'),
     prop: "createTime",
   },
   {
-    label: "代码表名称",
+    label: td('dp.document.codeTableName'),
     prop: "createTime",
   },
   {
-    label: "代码表代号",
+    label: td('dp.document.codeTableCode'),
     prop: "createTime",
   },
   {
-    label: "发布日期",
+    label: td('dp.document.releaseDate'),
     prop: "releaseDate",
   },
   {
-    label: "实施日期",
+    label: td('dp.document.implementationDate'),
     prop: "implementationDate",
   },
 ]);

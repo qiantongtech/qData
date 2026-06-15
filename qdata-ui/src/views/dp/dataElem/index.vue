@@ -353,16 +353,16 @@ const dpDataElemRuleRelList = ref([]);
 
 // 列显隐信息
 const columns = ref([
-  { key: 0, label: "编号", visible: true },
-  { key: 1, label: "中文名称", visible: true },
-  { key: 2, label: "英文名称", visible: true },
-  { key: 7, label: "描述", visible: true },
-  { key: 3, label: "类型", visible: true },
-  { key: 4, label: "数据元类目", visible: true },
-  { key: 10, label: "创建人", visible: true },
-  { key: 11, label: "创建时间", visible: true },
-  { key: 5, label: "状态", visible: true },
-  { key: 6, label: "描述", visible: true },
+  { key: 0, label: td('common.texts.number'), visible: true },
+  { key: 1, label: td('dp.dataElem.nameZh'), visible: true },
+  { key: 2, label: td('dp.dataElem.nameEn'), visible: true },
+  { key: 7, label: td('common.texts.description'), visible: true },
+  { key: 3, label: td('dp.dataElem.type'), visible: true },
+  { key: 4, label: td('dp.dataElem.catCode'), visible: true },
+  { key: 10, label: td('common.texts.createdBy'), visible: true },
+  { key: 11, label: td('common.texts.createdTime'), visible: true },
+  { key: 5, label: td('common.texts.status'), visible: true },
+  { key: 6, label: td('common.texts.description'), visible: true },
 ]);
 let secondLevelDocs = ref([]);
 const btnloading = ref(false); // loading 状态
@@ -652,7 +652,7 @@ function submitForm() {
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
-    .confirm(td('dp.dataElem.confirmDelete').replace('{id}', _ids))
+    .confirm(td('dp.dataElem.confirmDelete').replace('<id>', _ids))
     .then(function () {
       return delDpDataElem(_ids);
     })
@@ -752,7 +752,7 @@ const handleFileSuccess = (response, file, fileList) => {
 function handleStatusChange(id, row, e) {
   const text = e === "1" ? td('dp.dataElem.enableText') : td('dp.dataElem.disableText');
   proxy.$modal
-    .confirm(td('dp.dataElem.confirmStatusChange').replace('{text}', text).replace('{name}', row.name))
+    .confirm(td('dp.dataElem.confirmStatusChange').replace('<text>', text).replace('<name>', row.name))
     .then(function () {
       updateStatusDpDataElem(id, row.status).then((response) => {
         proxy.$modal.msgSuccess(td('common.message.operationSuccess'));

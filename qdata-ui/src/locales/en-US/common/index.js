@@ -30,7 +30,8 @@ export default {
         un_fold: 'Expand/Collapse',
         update: 'Edit',
         upload: 'Upload',
-        neverShow: 'Never Show Again'
+        neverShow: 'Never Show Again',
+        view: 'View'
     },
     error: {
         code401: '401 Error!',

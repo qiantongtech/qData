@@ -181,7 +181,7 @@
                     <div class="copy-right" style="cursor: pointer;">
                         <a href="https://qiantong.tech/" target="_blank">
                             Copyright© {{ new Date().getFullYear() }}
-                            <span style="color: #2666fb">江苏千桐科技有限公司</span>
+                            <span style="color: #2666fb">{{ td('login.info.companyName') }}</span>
                             {{ td('login.info.copyrightOwner') }}
                         </a>
                     </div>

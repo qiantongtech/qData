@@ -12,6 +12,7 @@ export default {
     apiUrlPlaceholder: 'Please enter the API path',
     apiServiceType: 'Service Provider Type',
     requestMethod: 'Request Method',
+    requestType: 'Request Type',
     returnFormat: 'Return Format',
     returnResultType: 'Return Result Type',
     ipBlacklist: 'IP Blacklist',

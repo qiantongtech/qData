@@ -49,6 +49,7 @@ export default {
     emailContact: '',
     chromeHint: '',
     chromeHint2: '',
-    copyrightOwner: ''
+    copyrightOwner: '',
+    companyName: '千桐テクノロジー有限会社'
   }
 }

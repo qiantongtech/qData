@@ -6,7 +6,21 @@ export default {
   dashboard: {
     admin: 'System Administrator',
     personalCenter: 'Personal Center',
+    layoutSettings: 'Layout Settings',
     logout: 'Logout',
+    projectLabel: 'Project',
+    projectPlaceholder: 'Please select project',
+    messageReminder: 'Messages',
+    notification: 'Notifications',
+    announcement: 'Announcements',
+    markAllRead: 'Mark all read',
+    viewMore: 'View more',
+    aboutUs: 'About Us',
+    version: 'Version',
+    isLatestVersion: 'is the latest version.',
+    latestVersion: 'Latest version',
+    update: 'Update',
+    updateLog: 'Update Log',
     weekOverWeek: 'Week over Week:',
     apiCallTrend: 'API Data Call Volume Trend',
     governanceDataTrend: 'Governance Data Volume Trend',
@@ -69,6 +83,17 @@ export default {
   },
   sso: {
     loadingMsg: 'Logging in to the unified identity authentication center, please wait...'
+  },
+  report: {
+    newReport: 'New Report',
+    experienceRequired: 'Work experience cannot be empty',
+    confirmLeave: 'Are you sure you are on leave?',
+    onLeave: 'I am on leave',
+    submitSuccess: 'Submitted successfully',
+    experienceEmpty: 'Work experience is empty',
+    projectEmpty: 'Report project is empty',
+    durationEmpty: 'Report project work duration is empty',
+    markAllReadDone: 'All marked as read!'
   },
   developing: {
     underDevelopment: 'Feature Under Development'

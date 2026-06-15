@@ -416,7 +416,6 @@
               :model="queryParams"
               ref="queryRef"
               :inline="true"
-              label-width="75px"
               @submit.prevent
             >
               <el-form-item :label="td('da.qualityTask.ruleName')" prop="name">
@@ -551,7 +550,7 @@
                 :label="td('da.qualityTask.qualityDimension')"
                 align="center"
                 prop="dimensionType"
-                width="120"
+                width="140"
                 :show-overflow-tooltip="{ effect: 'light' }"
               >
                 <template #default="scope">

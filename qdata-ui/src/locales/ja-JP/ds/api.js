@@ -12,6 +12,7 @@ export default {
     apiUrlPlaceholder: 'APIパスを入力してください',
     apiServiceType: 'サービス提供タイプ',
     requestMethod: 'リクエストメソッド',
+    requestType: 'リクエストタイプ',
     returnFormat: '戻り形式',
     returnResultType: '戻り結果タイプ',
     ipBlacklist: 'IPブラックリスト',

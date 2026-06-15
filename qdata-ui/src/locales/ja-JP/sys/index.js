@@ -6,7 +6,21 @@ export default {
   dashboard: {
     admin: 'システム管理者',
     personalCenter: '個人センター',
+    layoutSettings: 'レイアウト設定',
     logout: 'ログアウト',
+    projectLabel: '所属プロジェクト',
+    projectPlaceholder: 'プロジェクトを選択してください',
+    messageReminder: 'メッセージ',
+    notification: '通知',
+    announcement: 'お知らせ',
+    markAllRead: 'すべて既読にする',
+    viewMore: 'もっと見る',
+    aboutUs: '私たちについて',
+    version: 'バージョン',
+    isLatestVersion: 'は最新バージョンです。',
+    latestVersion: '最新バージョン',
+    update: '更新',
+    updateLog: '更新ログ',
     weekOverWeek: '週間前年比：',
     apiCallTrend: 'APIデータ呼び出し量の変動傾向',
     governanceDataTrend: 'ガバナンスデータ量の変動傾向',
@@ -69,6 +83,17 @@ export default {
   },
   sso: {
     loadingMsg: '統合認証センターにログイン中です。しばらくお待ちください~~'
+  },
+  report: {
+    newReport: '新規報告',
+    experienceRequired: '作業報告不能为空にできません',
+    confirmLeave: '休暇を確認しますか？',
+    onLeave: '休暇中です',
+    submitSuccess: '送信成功',
+    experienceEmpty: '作業報告が空です',
+    projectEmpty: '報告プロジェクトが空です',
+    durationEmpty: '報告プロジェクトの作業時間が空です',
+    markAllReadDone: 'すべて既読にしました！'
   },
   developing: {
     underDevelopment: '機能開発中'

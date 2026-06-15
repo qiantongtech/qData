@@ -552,7 +552,7 @@ const handleContactChange = (selectedValue) => {
 function handleDelete(row) {
   const _ids = row?.id || ids.value;
   proxy.$modal
-    .confirm(td('dm.dataDomain.confirmDelete', '是否确认删除数据域编号为"{id}"的数据项？').replace('{id}', _ids))
+    .confirm(td('dm.dataDomain.confirmDelete', '是否确认删除数据域编号为"<id>"的数据项？').replace('<id>', _ids))
     .then(function () {
       return delDataDomain(_ids);
     })

@@ -21,7 +21,7 @@
     :tableRef="tableRef"
     :config="{ fullContent: false, actions: { table: { search: false } } }"
   >
-    <qt-table v-bind="tableStore" ref="tableRef">
+    <qt-table v-bind="tableStore" :params="queryParams" ref="tableRef">
       <template #themeNames="{ row }">
         {{
           row.daAssetThemeRelList?.length
@@ -241,7 +241,6 @@
 </template>
 
 <script setup name="asset">
-import { useI18n } from 'vue-i18n'
 import {
   listAttTag,
   getAttTag,
@@ -254,8 +253,9 @@ import { defineProps } from "vue";
 import { delByTagIdAndAesstId } from "@/api/att/tag/tagAssetRel.js";
 const { proxy } = getCurrentInstance();
 import { useRoute } from "vue-router";
+import useDefaultLang from "@/composables/useDefaultLang.js";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const route = useRoute();
 const { da_assets_status, da_asset_source, da_asset_type } = proxy.useDict(
   "da_assets_status",
@@ -271,7 +271,6 @@ const single = ref(true);
 const multiple = ref(true);
 const title = ref("");
 
-const defaultSort = ref({ prop: "create_time", order: "desc" });
 const props = defineProps({
   ids: { type: Object, default: null },
 });
@@ -305,7 +304,6 @@ const tableStore = reactive({
       stripe: true,
       rowKey: "id",
       height: 374,
-      defaultSort: { prop: "create_time", order: "descending" },
     },
   },
   columns: [
@@ -354,7 +352,6 @@ const tableStore = reactive({
     { label: td('common.texts.operation'), width: 120, fixed: "right", slot: "action" },
   ],
   func: (params) => pageListByIds({ tagIdList: route.query.id, ...params }),
-  params: queryParams.value,
 });
 function handleQueryClick() {
   tableRef.value && tableRef.value.getList();

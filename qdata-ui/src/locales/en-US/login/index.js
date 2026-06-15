@@ -49,6 +49,7 @@ export default {
     emailContact: 'Email: ',
     chromeHint: 'For the best experience, please use',
     chromeHint2: 'browser. Click to download',
-    copyrightOwner: 'All rights reserved'
+    copyrightOwner: 'All rights reserved',
+    companyName: 'Qiantong Technology Co., Ltd.'
   }
 }

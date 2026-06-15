@@ -621,7 +621,7 @@ function submitForm() {
 function handleDelete(row) {
   const _ids = row?.id || ids.value;
   proxy.$modal
-    .confirm(td('dm.dataLayer.confirmDeleteSpecification', '是否确认删除规范编号为"{id}"的数据项？').replace('{id}', _ids))
+    .confirm(td('dm.dataLayer.confirmDeleteSpecification', '是否确认删除规范编号为"<id>"的数据项？').replace('<id>', _ids))
     .then(function () {
       return delDataLayerSpecification(_ids);
     })
@@ -636,7 +636,7 @@ function handleDelete(row) {
 function handleStatusChange(row) {
   let text = row.status === "0" ? td('dm.dataLayer.enableText', '启用') : td('dm.dataLayer.disableText', '禁用');
   proxy.$modal
-    .confirm(td('dm.dataLayer.confirmStatusChangeSpecification', '确认要"{text}"规范"{id}"吗？').replace('{text}', text).replace('{id}', row.id))
+    .confirm(td('dm.dataLayer.confirmStatusChangeSpecification', '确认要"<text>"规范"<id>"吗？').replace('<text>', text).replace('<id>', row.id))
     .then(function () {
       return updateDataLayerSpecification({ id: row.id, status: row.status });
     })

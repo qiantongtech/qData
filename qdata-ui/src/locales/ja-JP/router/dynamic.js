@@ -6,6 +6,7 @@ export default {
     "attRuleCleanRule": "クレンジングルール",
     "attProject": "プロジェクト管理",
     "attSourceSystem": "ソースシステム",
+    "attDocumentCat": "標準分類管理",
     "attCat": "カテゴリ管理",
     "attCatCleanCat": "クレンジングルールカテゴリ",
     "attCatModelCat": "論理モデルカテゴリ",

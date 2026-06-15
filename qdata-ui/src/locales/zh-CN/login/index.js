@@ -49,6 +49,7 @@ export default {
     emailContact: '电子邮箱：',
     chromeHint: '为保证最佳浏览效果，请使用',
     chromeHint2: '浏览器，点击下载安装',
-    copyrightOwner: '版权所有'
+    copyrightOwner: '版权所有',
+    companyName: '江苏千桐科技有限公司'
   }
 }

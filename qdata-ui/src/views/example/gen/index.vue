@@ -23,7 +23,7 @@
         :model="queryParams"
         ref="queryRef"
         :inline="true"
-        label-width="75px"
+        
       >
         <el-form-item label="ID" prop="id">
           <el-input

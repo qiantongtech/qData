@@ -19,7 +19,7 @@
   <el-dialog :title="td('ds.client.singleTitle')" v-model="visible" width="1200px" :append-to="$refs['app-container']" draggable
     destroy-on-close @close="cancel">
     <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch"
-      label-width="68px">
+      >
       <el-form-item label="ID" prop="id">
         <el-input style="width:240px" v-model="queryParams.id" :placeholder="td('ds.client.idPlaceholder')" clearable
           @keyup.enter="handleQuery" />

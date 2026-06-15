@@ -19,7 +19,7 @@
    <div class="app-container" ref="app-container">
       <div class="pagecont-top" v-show="showSearch">
          <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch"
-            label-width="68px">
+            >
             <el-form-item :label="td('sys.monitor.operlog.operAddr')" prop="operIp">
                <el-input v-model="queryParams.operIp" :placeholder="td('sys.monitor.operlog.operAddrPlaceholder')" clearable class="el-form-input-width"
                   @keyup.enter="handleQuery" />

@@ -30,7 +30,7 @@
       <!--                    <div class="main">-->
       <div v-loading="loadingList">
         <!-- <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true"
-                                label-width="75px" @submit.prevent>
+                                 @submit.prevent>
                                 <el-form-item label="规则名称" prop="name">
                                     <el-input class="el-form-input-width" v-model="queryParams.name"
                                         placeholder="请输入规则名称" clearable @keyup.enter="handleQuery" />

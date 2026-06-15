@@ -18,7 +18,7 @@
 <template>
    <div class="app-container" ref="app-container">
       <div class="pagecont-top" v-show="showSearch">
-         <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="68px">
+         <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true">
             <el-form-item :label="td('sys.system.notice.noticeTitle')" prop="noticeTitle">
                <el-input v-model="queryParams.noticeTitle" :placeholder="td('sys.system.notice.noticeTitlePlaceholder')" clearable class="el-form-input-width"
                   @keyup.enter="handleQuery" />

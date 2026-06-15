@@ -31,7 +31,7 @@
         ref="queryRef"
         :inline="true"
         v-show="showSearch"
-        label-width="68px"
+        
     >
       <el-form-item label="姓名" prop="name">
         <el-input

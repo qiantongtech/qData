@@ -19,9 +19,9 @@
 <template>
     <el-dialog v-model="visible" :title="td('da.qualityTaskLog.problemData.title')" class="medium-dialog" destroy-on-close>
         <div class="dialog-header">
-            <el-form :inline="true" label-width="120px" @selection-change="handleSelectionChange"
+            <el-form :inline="true" @selection-change="handleSelectionChange"
                 style="display: inline-block; text-align: left;">
-                <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="100px"
+                <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true"
                     @submit.prevent>
                     <el-form-item v-for="(fieldName, index) in visibleFields" :key="index"
                         :label="getFieldLabel(fieldName)" :prop="'keyWordData.' + fieldName">

@@ -37,7 +37,7 @@
       :model="queryParams"
       ref="queryRef"
       :inline="true"
-      label-width="68"
+      
       v-show="showSearch"
       @submit.prevent
     >
@@ -394,7 +394,7 @@
       :model="queryParamsUser"
       ref="queryRef"
       :inline="true"
-      label-width="68px"
+      
     >
       <el-form-item
         :label="td('dpp.setting.projectUserRel.loginAccount')"

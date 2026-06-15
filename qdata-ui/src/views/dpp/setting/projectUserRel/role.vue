@@ -23,7 +23,7 @@
       ref="queryRef"
       v-show="showSearch"
       :inline="true"
-      label-width="68px"
+      
     >
       <el-form-item
         :label="td('dpp.setting.projectUserRel.roleName')"

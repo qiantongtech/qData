@@ -408,7 +408,7 @@
           :model="userQueryParams"
           ref="userQueryRef"
           :inline="true"
-          label-width="68px"
+          
         >
           <el-form-item :label="td('dg.whitelist.loginAccount')" prop="userName">
             <el-input
@@ -502,7 +502,7 @@
           :model="roleQueryParams"
           ref="roleQueryRef"
           :inline="true"
-          label-width="68px"
+          
         >
           <el-form-item :label="td('dg.whitelist.roleName')" prop="roleName">
             <el-input

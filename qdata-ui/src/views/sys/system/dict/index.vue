@@ -18,7 +18,7 @@
 <template>
    <div class="app-container" ref="app-container">
       <div class="pagecont-top" v-show="showSearch">
-         <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="68px">
+         <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true">
             <el-form-item :label="td('sys.system.dictType.dictName')" prop="dictName">
                <el-input
                   v-model="queryParams.dictName"

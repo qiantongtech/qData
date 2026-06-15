@@ -40,7 +40,7 @@
         @node-click="handleNodeClick" />
       <el-main>
         <div class="pagecont-top" v-show="showSearch">
-          <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="75px"
+          <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true"
             v-show="showSearch" @submit.prevent>
             <el-form-item :label="td('da.qualityTask.taskName')" prop="taskName">
               <el-input class="el-form-input-width" v-model="queryParams.taskName" :placeholder="td('da.qualityTask.taskNamePlaceholder')" clearable

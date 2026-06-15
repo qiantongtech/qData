@@ -18,7 +18,7 @@
 <template>
    <div class="app-container" ref="app-container">
       <div class="pagecont-top">
-         <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="68px">
+         <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true">
             <el-form-item :label="td('sys.monitor.online.loginAddr')" prop="ipaddr">
                <el-input v-model="queryParams.ipaddr" :placeholder="td('sys.monitor.online.loginAddrPlaceholder')" clearable class="el-form-input-width"
                   @keyup.enter="handleQuery" />

@@ -22,14 +22,13 @@
         :model="queryParams"
         ref="queryRef"
         :inline="true"
-        label-width="75px"
+        
         v-show="showSearch"
         @submit.prevent
       >
         <el-form-item
           :label="td('dpp.setting.taskCat.taskCatName')"
           prop="name"
-          label-width="130"
         >
           <el-input
             class="el-form-input-width"

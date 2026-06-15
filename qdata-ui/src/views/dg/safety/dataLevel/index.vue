@@ -65,7 +65,7 @@
         :model="queryParams"
         ref="queryRef"
         :inline="true"
-        label-width="75px"
+        
         v-show="showSearch"
         @submit.prevent
       >

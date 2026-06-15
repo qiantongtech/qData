@@ -18,7 +18,7 @@
 <template>
   <div class="app-container" ref="app-container">
     <div class="pagecont-top" v-show="showSearch">
-      <el-form class="btn-style" :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
+      <el-form class="btn-style" :model="queryParams" ref="queryForm" :inline="true">
         <el-form-item :label="td('common.texts.name')" prop="name">
           <el-input
             v-model="queryParams.name"

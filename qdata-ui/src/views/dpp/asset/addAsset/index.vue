@@ -1,7 +1,7 @@
 <template>
   <div class="app-container" ref="app-container">
     <div class="pagecont-top-wrap flex-items-center gap20">
-      <el-form :inline="true" label-width="75px" @submit.prevent>
+      <el-form :inline="true" @submit.prevent>
         <el-form-item :label="td('dpp.asset.addAsset.assetType')" style="margin-bottom: 0">
           <el-select
             v-model="baseState.assetType"

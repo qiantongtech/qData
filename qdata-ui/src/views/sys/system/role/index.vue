@@ -24,7 +24,7 @@
                 ref="queryRef"
                 v-show="showSearch"
                 :inline="true"
-                label-width="68px"
+                
             >
                 <el-form-item :label="td('sys.system.role.roleName')" prop="roleName">
                     <el-input

@@ -41,7 +41,7 @@
         :model="queryParams"
         ref="queryRef"
         :inline="true"
-        label-width="100px"
+        
         v-show="showSearch"
         @submit.prevent
       >
@@ -894,7 +894,7 @@
         :model="queryParamsProject"
         ref="queryRef"
         :inline="true"
-        label-width="68px"
+        
       >
         <el-form-item :label="td('dpp.datasource.projectName')" prop="name">
           <el-input

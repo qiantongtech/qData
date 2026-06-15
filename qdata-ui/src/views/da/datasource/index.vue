@@ -839,7 +839,7 @@
         :model="queryParamsProject"
         ref="queryRef"
         :inline="true"
-        label-width="68px"
+        
       >
         <el-form-item :label="td('da.datasource.projectName')" prop="name">
           <el-input

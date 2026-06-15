@@ -99,7 +99,7 @@
       <el-main>
         <!--用户数据-->
         <div class="pagecont-top" v-show="showSearch">
-          <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" label-width="68px">
+          <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true">
             <el-form-item :label="td('sys.system.user.userName')" prop="userName">
               <el-input v-model="queryParams.userName" :placeholder="td('sys.system.user.userNamePlaceholder')" clearable class="el-form-input-width"
                 @keyup.enter="handleQuery" />

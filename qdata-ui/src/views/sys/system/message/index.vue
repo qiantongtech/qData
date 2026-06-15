@@ -23,7 +23,7 @@
                 :model="queryParams"
                 ref="queryRef"
                 :inline="true"
-                label-width="68px"
+                
             >
                 <el-form-item :label="td('sys.system.message.msgType')" prop="category">
                     <el-select

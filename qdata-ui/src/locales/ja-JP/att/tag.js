@@ -10,5 +10,10 @@ export default {
     catName: 'タグ管理カテゴリ',
     nearSynonyms: '類義語',
     synonyms: '同義語'
+  },
+  title: {
+    add: 'タグ管理追加',
+    edit: 'タグ管理編集',
+    detail: 'タグ管理詳細'
   }
 }

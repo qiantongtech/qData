@@ -475,8 +475,8 @@ function getTree() {
     nextTick(() => {
       let targetNode = null;
       const findNode = (nodes) => {
-        for (let node of nodes) {
-          if (node.name === td('dm.dataLayer.operationDataLayer', '操作数据层')) {
+         for (let node of nodes) {
+          if (node.name === "操作数据层") {
             targetNode = node;
             return;
           }

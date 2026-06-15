@@ -80,7 +80,8 @@ export default {
     dataItem: '数据项',
     data: '数据',
     success: '成功',
-    sortOrder: '排序'
+    sortOrder: '排序',
+    superAdmin: '超级管理员'
   },
   message: {
     addSuccess: '新增成功',

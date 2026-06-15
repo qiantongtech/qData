@@ -8,7 +8,7 @@ export default {
     "attSourceSystem": "来源系统",
     "attCat": "类目管理",
     "attCatCleanCat": "清洗规则类目",
-    "attDocumentCat": "标准分类管理",
+    "attCatDocumentCat": "标准分类管理",
     "attCatModelCat": "逻辑模型类目",
     "attCatDataElemCat": "标准数据元类目",
     "attCatAssetCat": "数据资产类目",

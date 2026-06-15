@@ -30,7 +30,8 @@ export default {
     un_fold: '展开/折叠',
     update: '修改',
     upload: '上传',
-    neverShow: '不再展示'
+    neverShow: '不再展示',
+    view: '查看'
   },
   error: {
     code401: '401错误!',

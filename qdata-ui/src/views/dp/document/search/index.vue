@@ -60,15 +60,15 @@
             @click="handleQuery"
             @mousedown="(e) => e.preventDefault()"
           >
-            <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.buttons.query') }}
+            <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
           </el-button>
           <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-            <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.buttons.reset') }}
+            <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
           </el-button>
         </el-form-item>
       </el-form>
       <div class="list-title">
-        {{ td('common.texts.total') }}
+        {{ td('dp.document.total') }}
         <span style="color: #ff9800"> {{ total }} </span>
         {{ td('dp.document.standardCount') }}
         <span style="color: #0091ea">0</span>
@@ -105,11 +105,11 @@
                     @click="handleFilePreview(item.fileUrl)"
                   >
                     <!-- <img src="@/assets/dp/standardSearch/icon (2).svg" alt="" /> -->
-                    <span>{{ td('common.buttons.view') }}</span>
+                    <span>{{ td('common.button.view') }}</span>
                   </div>
                   <div class="form-btn" @click="handleView(item)">
                     <!-- <img src="@/assets/dp/standardSearch/icon (1).svg" alt="" /> -->
-                    <span>{{ td('common.buttons.detail') }}</span>
+                    <span>{{ td('common.button.details') }}</span>
                   </div>
                 </div>
               </div>

@@ -175,13 +175,7 @@
           <el-input-number
             :min="0"
             v-model="dialog.form.columnPrecision"
-            :placeholder="
-              td('common.form.inputPlaceholder', {
-                field: td(
-                  'meta.unreleased.structured.table.detail.columnPrecision'
-                ),
-              })
-            "
+            :placeholder="td('meta.unreleased.structured.table.detail.columnPrecisionPlaceholder')"
             :controls="true"
             class="number-input"
             controls-position="right"
@@ -196,11 +190,7 @@
             :min="0"
             v-model="dialog.form.columnScale"
             :placeholder="
-              td('common.form.inputPlaceholder', {
-                field: td(
-                  'meta.unreleased.structured.table.detail.columnScale'
-                ),
-              })
+              td('meta.unreleased.structured.table.detail.columnScalePlaceholder')
             "
             :controls="true"
             class="number-input"
@@ -218,11 +208,7 @@
             clearable
             v-model="dialog.form.businessDefinition"
             :placeholder="
-              td('common.form.inputPlaceholder', {
-                field: td(
-                  'meta.unreleased.structured.table.detail.businessDefinition'
-                ),
-              })
+              td('meta.unreleased.structured.table.detail.businessDefinitionPlaceholder')
             "
           />
         </el-form-item>
@@ -235,11 +221,7 @@
             clearable
             v-model="dialog.form.measuringUnit"
             :placeholder="
-              td('common.form.inputPlaceholder', {
-                field: td(
-                  'meta.unreleased.structured.table.detail.measuringUnit'
-                ),
-              })
+              td('meta.unreleased.structured.table.detail.measuringUnitPlaceholder')
             "
           />
         </el-form-item>
@@ -267,11 +249,7 @@
             clearable
             v-model="dialog.form.defaultValue"
             :placeholder="
-              td('common.form.inputPlaceholder', {
-                field: td(
-                  'meta.unreleased.structured.table.detail.defaultValue'
-                ),
-              })
+              td('meta.unreleased.structured.table.detail.defaultValuePlaceholder')
             "
           />
         </el-form-item>

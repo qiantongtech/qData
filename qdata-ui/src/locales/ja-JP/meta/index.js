@@ -74,11 +74,16 @@ export default {
                     columnType: 'カラムタイプ',
                     columnLength: 'カラム長',
                     columnPrecision: 'カラム精度',
+                    columnPrecisionPlaceholder: 'カラム精度を入力してください',
                     columnScale: 'カラム小数位',
+                    columnScalePlaceholder: 'カラム小数位を入力してください',
                     businessDefinition: 'ビジネス定義',
+                    businessDefinitionPlaceholder: 'ビジネス定義を入力してください',
                     measuringUnit: '計測単位',
+                    measuringUnitPlaceholder: '計測単位を入力してください',
                     nullableFlag: '必須か',
                     defaultValue: 'デフォルト値',
+                    defaultValuePlaceholder: 'デフォルト値を入力してください',
                     pkFlag: '主キーか',
                     fkFlag: '外部キーか',
                     updateMsg: '変更説明',
@@ -96,7 +101,9 @@ export default {
                     activeVersion: '現在バージョン',
                     createdBy: '作成者',
                     createdTime: '作成日時',
-                    topNode: 'トップノード'
+                    topNode: 'トップノード',
+                    createByPlaceholder: '作成者を入力してください',
+                    createTimePlaceholder: '作成日時を入力してください'
                 },
                 handle: {
                     selectDbName: '所属DB名を選択してください',

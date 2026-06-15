@@ -164,5 +164,103 @@ export default {
     downloading: 'データダウンロード中、お待ちください',
     loginExpired: 'ログイン状態の有効期限が切れました。このページに留まるか、再ログインしてください',
     reLogin: '再ログイン'
+  },
+  crontab: {
+    tab: {
+      second: '秒',
+      minute: '分',
+      hour: '時',
+      day: '日',
+      month: '月',
+      week: '週',
+      year: '年'
+    },
+    timeExpression: '時間式',
+    cronExpression: 'Cron式',
+    multiSelect: '複数選択可',
+    specify: '指定',
+    notSpecify: '指定なし',
+    cycleFrom: '周期開始',
+    noSecondConfigurable: '秒レベルのスケジューリング周期は設定できません！',
+    second: {
+      wildcard: '秒、使用可能なワイルドカード [, - * /]',
+      cycleSuffix: '秒',
+      averagePrefix: '',
+      averageMiddle: '秒から、',
+      averageSuffix: '秒ごとに実行'
+    },
+    minute: {
+      wildcard: '分、使用可能なワイルドカード [, - * /]',
+      cycleSuffix: '分',
+      averagePrefix: '',
+      averageMiddle: '分から、',
+      averageSuffix: '分ごとに実行'
+    },
+    hour: {
+      wildcard: '時、使用可能なワイルドカード [, - * /]',
+      cycleSuffix: '時',
+      averagePrefix: '',
+      averageMiddle: '時から、',
+      averageSuffix: '時間ごとに実行'
+    },
+    day: {
+      wildcard: '日、使用可能なワイルドカード [, - * ? / L W]',
+      cycleSuffix: '日',
+      averagePrefix: '',
+      averageMiddle: '日から、',
+      averageSuffix: '日ごとに実行',
+      nearestWorkday: '毎月',
+      nearestWorkdaySuffix: '日に最も近い営業日',
+      lastDay: '月の最終日'
+    },
+    month: {
+      wildcard: '月、使用可能なワイルドカード [, - * /]',
+      cycleSuffix: '月',
+      averagePrefix: '',
+      averageMiddle: '月から、',
+      averageSuffix: 'ヶ月ごとに実行',
+      names: {
+        jan: '1月',
+        feb: '2月',
+        mar: '3月',
+        apr: '4月',
+        may: '5月',
+        jun: '6月',
+        jul: '7月',
+        aug: '8月',
+        sep: '9月',
+        oct: '10月',
+        nov: '11月',
+        dec: '12月'
+      }
+    },
+    week: {
+      wildcard: '週、使用可能なワイルドカード [, - * ? / L #]',
+      nthWeekPrefix: '第',
+      nthWeekSuffix: '週の',
+      lastPrefix: '当月最後の',
+      names: {
+        sun: '日曜日',
+        mon: '月曜日',
+        tue: '火曜日',
+        wed: '水曜日',
+        thu: '木曜日',
+        fri: '金曜日',
+        sat: '土曜日'
+      }
+    },
+    year: {
+      wildcard: '未入力、使用可能なワイルドカード [, - * /]',
+      every: '毎年',
+      averagePrefix: '',
+      averageMiddle: '年から、',
+      averageSuffix: '年ごとに実行'
+    },
+    result: {
+      title: '直近5回の実行時間',
+      calculating: '計算中...',
+      noResult: '条件に一致する結果がありません！',
+      limit: '直近100年以内に{count}件の結果のみ表示されています！'
+    }
   }
 }

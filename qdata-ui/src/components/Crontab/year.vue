@@ -19,17 +19,17 @@
     <el-form>
         <el-form-item>
             <el-radio v-model="radioValue" :value="1" @change="onRadioChange">
-                不填，允许的通配符[, - * /]
+                {{ td('common.crontab.year.wildcard') }}
             </el-radio>
         </el-form-item>
 
         <el-form-item>
-            <el-radio v-model="radioValue" :value="2" @change="onRadioChange"> 每年 </el-radio>
+            <el-radio v-model="radioValue" :value="2" @change="onRadioChange"> {{ td('common.crontab.year.every') }} </el-radio>
         </el-form-item>
 
         <el-form-item>
             <el-radio v-model="radioValue" :value="3" @change="onRadioChange">
-                周期从
+                {{ td('common.crontab.cycleFrom') }}
                 <el-input-number v-model="cycle01" :min="fullYear" :max="2098" /> -
                 <el-input-number
                     v-model="cycle02"
@@ -41,20 +41,20 @@
 
         <el-form-item>
             <el-radio v-model="radioValue" :value="4" @change="onRadioChange">
-                从
-                <el-input-number v-model="average01" :min="fullYear" :max="2098" /> 年开始，每
+                {{ td('common.crontab.year.averagePrefix') }}
+                <el-input-number v-model="average01" :min="fullYear" :max="2098" /> {{ td('common.crontab.year.averageMiddle') }}
                 <el-input-number v-model="average02" :min="1" :max="2099 - average01 || fullYear" />
-                年执行一次
+                {{ td('common.crontab.year.averageSuffix') }}
             </el-radio>
         </el-form-item>
 
         <el-form-item>
             <el-radio v-model="radioValue" :value="5" @change="onRadioChange">
-                指定
+                {{ td('common.crontab.specify') }}
                 <el-select
                     clearable
                     v-model="checkboxList"
-                    placeholder="可多选"
+                    :placeholder="td('common.crontab.multiSelect')"
                     multiple
                     :multiple-limit="8"
                 >
@@ -71,6 +71,8 @@
 </template>
 
 <script setup>
+    import useDefaultLang from "@/composables/useDefaultLang.js";
+    const { td } = useDefaultLang();
     const emit = defineEmits(['update']);
     const props = defineProps({
         cron: {

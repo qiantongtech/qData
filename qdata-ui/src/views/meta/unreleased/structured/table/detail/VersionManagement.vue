@@ -117,24 +117,16 @@
         </el-form-item>
         <el-form-item :label="td('common.texts.createdBy') + '：'">
           <el-input
-            v-model="dialog.row.name"
-            :placeholder="
-              td('common.form.inputPlaceholder', {
-                field: td('common.texts.createdBy'),
-              })
-            "
-            disabled
+              v-model="dialog.row.name"
+              :placeholder="td('meta.unreleased.structured.table.detail.createByPlaceholder')"
+              disabled
           />
         </el-form-item>
         <el-form-item :label="td('common.texts.createdTime') + '：'">
           <el-input
-            v-model="dialog.row.time"
-            :placeholder="
-              td('common.form.inputPlaceholder', {
-                field: td('common.texts.createdTime'),
-              })
-            "
-            disabled
+              v-model="dialog.row.time"
+              :placeholder="td('meta.unreleased.structured.table.detail.createTimePlaceholder')"
+              disabled
           />
         </el-form-item>
       </el-form>

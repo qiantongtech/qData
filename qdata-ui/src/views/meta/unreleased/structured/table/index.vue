@@ -146,7 +146,6 @@ const tableStroe = reactive({
   columns: [
     {
       type: "selection",
-      prop: "selection",
       width: 55,
       hide: false,
     },

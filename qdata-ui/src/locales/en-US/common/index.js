@@ -164,5 +164,103 @@ export default {
     downloading: 'Downloading data, please wait',
     loginExpired: 'Login status has expired, you can continue on this page or log in again',
     reLogin: 'Re-login'
+  },
+  crontab: {
+    tab: {
+      second: 'Second',
+      minute: 'Minute',
+      hour: 'Hour',
+      day: 'Day',
+      month: 'Month',
+      week: 'Week',
+      year: 'Year'
+    },
+    timeExpression: 'Time Expression',
+    cronExpression: 'Cron Expression',
+    multiSelect: 'Multi-select',
+    specify: 'Specify',
+    notSpecify: 'Not specified',
+    cycleFrom: 'Cycle from',
+    noSecondConfigurable: 'Second-level scheduling cycle is not configurable!',
+    second: {
+      wildcard: 'Second, allowed wildcards [, - * /]',
+      cycleSuffix: 'second(s)',
+      averagePrefix: 'Starting at',
+      averageMiddle: 'second(s), every',
+      averageSuffix: 'second(s)'
+    },
+    minute: {
+      wildcard: 'Minute, allowed wildcards [, - * /]',
+      cycleSuffix: 'minute(s)',
+      averagePrefix: 'Starting at',
+      averageMiddle: 'minute(s), every',
+      averageSuffix: 'minute(s)'
+    },
+    hour: {
+      wildcard: 'Hour, allowed wildcards [, - * /]',
+      cycleSuffix: 'hour(s)',
+      averagePrefix: 'Starting at',
+      averageMiddle: 'hour(s), every',
+      averageSuffix: 'hour(s)'
+    },
+    day: {
+      wildcard: 'Day, allowed wildcards [, - * ? / L W]',
+      cycleSuffix: 'day(s)',
+      averagePrefix: 'Starting on day',
+      averageMiddle: ', every',
+      averageSuffix: 'day(s)',
+      nearestWorkday: 'Every month on the',
+      nearestWorkdaySuffix: 'th nearest workday',
+      lastDay: 'Last day of the month'
+    },
+    month: {
+      wildcard: 'Month, allowed wildcards [, - * /]',
+      cycleSuffix: 'month(s)',
+      averagePrefix: 'Starting from',
+      averageMiddle: 'month(s), every',
+      averageSuffix: 'month(s)',
+      names: {
+        jan: 'January',
+        feb: 'February',
+        mar: 'March',
+        apr: 'April',
+        may: 'May',
+        jun: 'June',
+        jul: 'July',
+        aug: 'August',
+        sep: 'September',
+        oct: 'October',
+        nov: 'November',
+        dec: 'December'
+      }
+    },
+    week: {
+      wildcard: 'Week, allowed wildcards [, - * ? / L #]',
+      nthWeekPrefix: 'The',
+      nthWeekSuffix: 'week\'s',
+      lastPrefix: 'Last',
+      names: {
+        sun: 'Sunday',
+        mon: 'Monday',
+        tue: 'Tuesday',
+        wed: 'Wednesday',
+        thu: 'Thursday',
+        fri: 'Friday',
+        sat: 'Saturday'
+      }
+    },
+    year: {
+      wildcard: 'Leave blank, allowed wildcards [, - * /]',
+      every: 'Every year',
+      averagePrefix: 'Starting from',
+      averageMiddle: 'year(s), every',
+      averageSuffix: 'year(s)'
+    },
+    result: {
+      title: 'Last 5 Run Times',
+      calculating: 'Calculating...',
+      noResult: 'No matching results found!',
+      limit: 'Only {count} results within the last 100 years!'
+    }
   }
 }

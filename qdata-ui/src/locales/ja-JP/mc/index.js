@@ -94,6 +94,7 @@ export default {
       collectDuration: '収集所要時間(s)',
       collectDateRange: '収集期間',
       viewLog: 'ログ表示',
+      logDetail: 'ログ詳細',
       downloadLog: 'ログダウンロード',
       logFileName: '{name}_{id}_ログ.log',
       tableCount: '収集テーブル数',

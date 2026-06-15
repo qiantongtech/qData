@@ -18,16 +18,16 @@
 <template>
     <el-form>
         <el-form-item>
-            <el-radio v-model="radioValue" :value="1"> 周，允许的通配符[, - * ? / L #] </el-radio>
+            <el-radio v-model="radioValue" :value="1"> {{ td('common.crontab.week.wildcard') }} </el-radio>
         </el-form-item>
 
         <el-form-item>
-            <el-radio v-model="radioValue" :value="2"> 不指定 </el-radio>
+            <el-radio v-model="radioValue" :value="2"> {{ td('common.crontab.notSpecify') }} </el-radio>
         </el-form-item>
 
         <el-form-item>
             <el-radio v-model="radioValue" :value="3">
-                周期从
+                {{ td('common.crontab.cycleFrom') }}
                 <el-select clearable v-model="cycle01">
                     <el-option
                         v-for="(item, index) of weekList"
@@ -54,8 +54,8 @@
 
         <el-form-item>
             <el-radio v-model="radioValue" :value="4">
-                第
-                <el-input-number v-model="average01" :min="1" :max="4" /> 周的
+                {{ td('common.crontab.week.nthWeekPrefix') }}
+                <el-input-number v-model="average01" :min="1" :max="4" /> {{ td('common.crontab.week.nthWeekSuffix') }}
                 <el-select clearable v-model="average02">
                     <el-option
                         v-for="item in weekList"
@@ -69,7 +69,7 @@
 
         <el-form-item>
             <el-radio v-model="radioValue" :value="5">
-                本月最后一个
+                {{ td('common.crontab.week.lastPrefix') }}
                 <el-select clearable v-model="weekday">
                     <el-option
                         v-for="item in weekList"
@@ -83,12 +83,12 @@
 
         <el-form-item>
             <el-radio v-model="radioValue" :value="6">
-                指定
+                {{ td('common.crontab.specify') }}
                 <el-select
                     class="multiselect"
                     clearable
                     v-model="checkboxList"
-                    placeholder="可多选"
+                    :placeholder="td('common.crontab.multiSelect')"
                     multiple
                     :multiple-limit="6"
                 >
@@ -105,6 +105,8 @@
 </template>
 
 <script setup>
+    import useDefaultLang from "@/composables/useDefaultLang.js";
+    const { td } = useDefaultLang();
     const emit = defineEmits(['update']);
     const props = defineProps({
         cron: {
@@ -132,14 +134,14 @@
     const weekday = ref(2);
     const checkboxList = ref([]);
     const checkCopy = ref([2]);
-    const weekList = ref([
-        { key: 1, value: '星期日' },
-        { key: 2, value: '星期一' },
-        { key: 3, value: '星期二' },
-        { key: 4, value: '星期三' },
-        { key: 5, value: '星期四' },
-        { key: 6, value: '星期五' },
-        { key: 7, value: '星期六' }
+    const weekList = computed(() => [
+        { key: 1, value: td('common.crontab.week.names.sun') },
+        { key: 2, value: td('common.crontab.week.names.mon') },
+        { key: 3, value: td('common.crontab.week.names.tue') },
+        { key: 4, value: td('common.crontab.week.names.wed') },
+        { key: 5, value: td('common.crontab.week.names.thu') },
+        { key: 6, value: td('common.crontab.week.names.fri') },
+        { key: 7, value: td('common.crontab.week.names.sat') }
     ]);
     const cycleTotal = computed(() => {
         cycle01.value = props.check(cycle01.value, 1, 6);

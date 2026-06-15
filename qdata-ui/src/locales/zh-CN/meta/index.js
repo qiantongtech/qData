@@ -74,11 +74,16 @@ export default {
                     columnType: '字段类型',
                     columnLength: '字段长度',
                     columnPrecision: '字段精度',
+                    columnPrecisionPlaceholder: '请输入字段精度',
                     columnScale: '字段小数位',
+                    columnScalePlaceholder: '请输入字段小数',
                     businessDefinition: '业务定义',
+                    businessDefinitionPlaceholder: '请输入业务定义',
                     measuringUnit: '度量单位',
+                    measuringUnitPlaceholder: '请输入度量单位',
                     nullableFlag: '是否必填',
                     defaultValue: '默认值',
+                    defaultValuePlaceholder: '请输入默认值',
                     pkFlag: '是否主键',
                     fkFlag: '是否外键',
                     updateMsg: '变更说明',
@@ -96,7 +101,9 @@ export default {
                     activeVersion: '当前版本',
                     createdBy: '创建人',
                     createdTime: '创建时间',
-                    topNode: '顶级节点'
+                    topNode: '顶级节点',
+                    createByPlaceholder: '请输入创建人',
+                    createTimePlaceholder: '请输入创建时间'
                 },
                 handle: {
                     selectDbName: '请选择所属库名',

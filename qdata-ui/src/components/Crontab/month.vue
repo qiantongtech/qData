@@ -18,32 +18,32 @@
 <template>
     <el-form>
         <el-form-item>
-            <el-radio v-model="radioValue" :value="1"> 月，允许的通配符[, - * /] </el-radio>
+            <el-radio v-model="radioValue" :value="1"> {{ td('common.crontab.month.wildcard') }} </el-radio>
         </el-form-item>
 
         <el-form-item>
             <el-radio v-model="radioValue" :value="2">
-                周期从
+                {{ td('common.crontab.cycleFrom') }}
                 <el-input-number v-model="cycle01" :min="1" :max="11" /> -
-                <el-input-number v-model="cycle02" :min="cycle01 + 1" :max="12" /> 月
+                <el-input-number v-model="cycle02" :min="cycle01 + 1" :max="12" /> {{ td('common.crontab.month.cycleSuffix') }}
             </el-radio>
         </el-form-item>
 
         <el-form-item>
             <el-radio v-model="radioValue" :value="3">
-                从
-                <el-input-number v-model="average01" :min="1" :max="11" /> 月开始，每
-                <el-input-number v-model="average02" :min="1" :max="12 - average01" /> 月月执行一次
+                {{ td('common.crontab.month.averagePrefix') }}
+                <el-input-number v-model="average01" :min="1" :max="11" /> {{ td('common.crontab.month.averageMiddle') }}
+                <el-input-number v-model="average02" :min="1" :max="12 - average01" /> {{ td('common.crontab.month.averageSuffix') }}
             </el-radio>
         </el-form-item>
 
         <el-form-item>
             <el-radio v-model="radioValue" :value="4">
-                指定
+                {{ td('common.crontab.specify') }}
                 <el-select
                     clearable
                     v-model="checkboxList"
-                    placeholder="可多选"
+                    :placeholder="td('common.crontab.multiSelect')"
                     multiple
                     :multiple-limit="8"
                 >
@@ -60,8 +60,11 @@
 </template>
 
 <script setup>
-    const emit = defineEmits(['update']);
-    const props = defineProps({
+import useDefaultLang from "@/composables/useDefaultLang.js";
+
+const { td } = useDefaultLang();
+const emit = defineEmits(['update']);
+const props = defineProps({
         cron: {
             type: Object,
             default: {
@@ -86,19 +89,19 @@
     const average02 = ref(1);
     const checkboxList = ref([]);
     const checkCopy = ref([1]);
-    const monthList = ref([
-        { key: 1, value: '一月' },
-        { key: 2, value: '二月' },
-        { key: 3, value: '三月' },
-        { key: 4, value: '四月' },
-        { key: 5, value: '五月' },
-        { key: 6, value: '六月' },
-        { key: 7, value: '七月' },
-        { key: 8, value: '八月' },
-        { key: 9, value: '九月' },
-        { key: 10, value: '十月' },
-        { key: 11, value: '十一月' },
-        { key: 12, value: '十二月' }
+    const monthList = computed(() => [
+        { key: 1, value: td('common.crontab.month.names.jan') },
+        { key: 2, value: td('common.crontab.month.names.feb') },
+        { key: 3, value: td('common.crontab.month.names.mar') },
+        { key: 4, value: td('common.crontab.month.names.apr') },
+        { key: 5, value: td('common.crontab.month.names.may') },
+        { key: 6, value: td('common.crontab.month.names.jun') },
+        { key: 7, value: td('common.crontab.month.names.jul') },
+        { key: 8, value: td('common.crontab.month.names.aug') },
+        { key: 9, value: td('common.crontab.month.names.sep') },
+        { key: 10, value: td('common.crontab.month.names.oct') },
+        { key: 11, value: td('common.crontab.month.names.nov') },
+        { key: 12, value: td('common.crontab.month.names.dec') }
     ]);
     const cycleTotal = computed(() => {
         cycle01.value = props.check(cycle01.value, 1, 11);

@@ -1111,10 +1111,11 @@ function getAssetCat() {
     deptOptions.value = data;
   });
 }
+
 /** 新增按钮操作 */
 function handleAdd(command) {
   const dict = da_asset_type.value.find((item) => item.value == command);
-  if (dict && dict.label == "数据库表") {
+  if (dict && dict.label == td('dict.da_asset_type.1')) {
     router.push("/da/asset/addAsset");
     return;
   }
@@ -1239,9 +1240,9 @@ function handleStatusChange(row) {
   const text = row.status === "2" ? td('da.asset.revokePublish') : td('da.asset.publish');
   const status = row.status === "2" ? "1" : "2";
   proxy.$modal
-    .confirm(td('da.asset.confirmStatusChange').replace('{text}', text).replace('{name}', row.name))
-    .then(function () {
-      updateDaAsset({ id: row.id, status: status }).then((res) => {
+      .confirm(td('da.asset.confirmStatusChange', '', {text, name: row.name}))
+      .then(function () {
+        updateDaAsset({id: row.id, status: status}).then((res) => {
         if (res.code == 200) {
           proxy.$modal.msgSuccess(td('da.asset.statusSuccess').replace('{text}', text));
           getList();

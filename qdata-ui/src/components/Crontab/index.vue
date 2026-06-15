@@ -18,7 +18,7 @@
 <template>
     <div>
         <el-tabs type="border-card">
-            <el-tab-pane label="秒" v-if="shouldHide('second')">
+            <el-tab-pane :label="td('common.crontab.tab.second')" v-if="shouldHide('second')">
                 <CrontabSecond
                     @update="updateCrontabValue"
                     :check="checkNumber"
@@ -27,7 +27,7 @@
                 />
             </el-tab-pane>
 
-            <el-tab-pane label="分钟" v-if="shouldHide('min')">
+            <el-tab-pane :label="td('common.crontab.tab.minute')" v-if="shouldHide('min')">
                 <CrontabMin
                     @update="updateCrontabValue"
                     :check="checkNumber"
@@ -36,7 +36,7 @@
                 />
             </el-tab-pane>
 
-            <el-tab-pane label="小时" v-if="shouldHide('hour')">
+            <el-tab-pane :label="td('common.crontab.tab.hour')" v-if="shouldHide('hour')">
                 <CrontabHour
                     @update="updateCrontabValue"
                     :check="checkNumber"
@@ -45,7 +45,7 @@
                 />
             </el-tab-pane>
 
-            <el-tab-pane label="日" v-if="shouldHide('day')">
+            <el-tab-pane :label="td('common.crontab.tab.day')" v-if="shouldHide('day')">
                 <CrontabDay
                     @update="updateCrontabValue"
                     :check="checkNumber"
@@ -54,7 +54,7 @@
                 />
             </el-tab-pane>
 
-            <el-tab-pane label="月" v-if="shouldHide('month')">
+            <el-tab-pane :label="td('common.crontab.tab.month')" v-if="shouldHide('month')">
                 <CrontabMonth
                     @update="updateCrontabValue"
                     :check="checkNumber"
@@ -63,7 +63,7 @@
                 />
             </el-tab-pane>
 
-            <el-tab-pane label="周" v-if="shouldHide('week')">
+            <el-tab-pane :label="td('common.crontab.tab.week')" v-if="shouldHide('week')">
                 <CrontabWeek
                     @update="updateCrontabValue"
                     :check="checkNumber"
@@ -72,7 +72,7 @@
                 />
             </el-tab-pane>
 
-            <el-tab-pane label="年" v-if="shouldHide('year')">
+            <el-tab-pane :label="td('common.crontab.tab.year')" v-if="shouldHide('year')">
                 <CrontabYear
                     @update="updateCrontabValue"
                     :check="checkNumber"
@@ -84,11 +84,11 @@
 
         <div class="popup-main">
             <div class="popup-result">
-                <p class="title">时间表达式</p>
+                <p class="title">{{ td('common.crontab.timeExpression') }}</p>
                 <table>
                     <thead>
                         <th v-for="item of tabTitles" :key="item">{{ item }}</th>
-                        <th>Cron 表达式</th>
+                        <th>{{ td('common.crontab.cronExpression') }}</th>
                     </thead>
                     <tbody>
                         <td>
@@ -160,26 +160,26 @@
             </div>
             <CrontabResult :ex="crontabValueString" v-if="Crontab"></CrontabResult>
             <div class="pop_btn" v-if="btn">
-                <el-button type="primary" @click="submitFill">{{ t('common.button.confirm') }}</el-button>
-                <el-button type="warning" plain @click="clearCron">{{ t('common.button.reset') }}</el-button>
-                <el-button @click="hidePopup">{{ t('common.button.cancel') }}</el-button>
+                <el-button type="primary" @click="submitFill">{{ td('common.button.confirm') }}</el-button>
+                <el-button type="warning" plain @click="clearCron">{{ td('common.button.reset') }}</el-button>
+                <el-button @click="hidePopup">{{ td('common.button.cancel') }}</el-button>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang.js";
 import CrontabSecond from './second.vue';
-    import CrontabMin from './min.vue';
-    import CrontabHour from './hour.vue';
-    import CrontabDay from './day.vue';
-    import CrontabMonth from './month.vue';
-    import CrontabWeek from './week.vue';
-    import CrontabYear from './year.vue';
-    import CrontabResult from './result.vue';
+import CrontabMin from './min.vue';
+import CrontabHour from './hour.vue';
+import CrontabDay from './day.vue';
+import CrontabMonth from './month.vue';
+import CrontabWeek from './week.vue';
+import CrontabYear from './year.vue';
+import CrontabResult from './result.vue';
 
-const { t } = useI18n();
+const {td} = useDefaultLang();
     const { proxy } = getCurrentInstance();
     const emit = defineEmits(['hide', 'fill']);
     const props = defineProps({
@@ -200,7 +200,15 @@ const { t } = useI18n();
             default: true
         }
     });
-    const tabTitles = ref(['秒', '分钟', '小时', '日', '月', '周', '年']);
+    const tabTitles = computed(() => [
+        td('common.crontab.tab.second'),
+        td('common.crontab.tab.minute'),
+        td('common.crontab.tab.hour'),
+        td('common.crontab.tab.day'),
+        td('common.crontab.tab.month'),
+        td('common.crontab.tab.week'),
+        td('common.crontab.tab.year')
+    ]);
     const tabActive = ref(0);
     const hideComponent = ref([]);
     const expression = ref('');
@@ -286,7 +294,7 @@ const { t } = useI18n();
     // 填充表达式
     function submitFill() {
         if (crontabValueString.value.split(' ')[0] == '*') {
-            proxy.$message.error('不可配置秒级别调度周期!');
+            proxy.$message.error(td('common.crontab.noSecondConfigurable'));
             return;
         }
         emit('fill', crontabValueString.value);

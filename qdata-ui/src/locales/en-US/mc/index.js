@@ -94,6 +94,7 @@ export default {
       collectDuration: 'Collection Duration (s)',
       collectDateRange: 'Collection Date Range',
       viewLog: 'View Log',
+      logDetail: 'Log Details',
       downloadLog: 'Download Log',
       logFileName: '{name}_{id}_log.log',
       tableCount: 'Collected Table Count',

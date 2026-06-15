@@ -277,7 +277,7 @@
         >
           <div class="avatar-wrapper">
             <img :src="userStore.avatar" class="user-avatar" />
-            <span class="nickName">{{ userStore.nickName }}</span>
+            <span class="nickName">{{ nickName }}</span>
           </div>
           <template #dropdown>
             <el-dropdown-menu>
@@ -393,8 +393,7 @@ const localeStore = useLocaleStore();
 // 认证模式
 const authType = import.meta.env.VITE_APP_AUTH_TYPE;
 
-const route = useRoute();
-const router = useRouter();
+
 const appStore = useAppStore();
 const userStore = useUserStore();
 const settingsStore = useSettingsStore();
@@ -403,6 +402,15 @@ const visitedViews = computed(() => useTagsViewStore().visitedViews);
 const isOnlyLogoRoute = computed(() => {
   const navbarLogoRoutes = defaultSettings.navbarLogoRoutes || [];
   return navbarLogoRoutes.some((logoPath) => route.path.startsWith(logoPath));
+});
+
+const nickName = computed(() => {
+    const name = userStore.nickName;
+    const userId = userStore.id;
+    if (userId === 1) {
+        return td('common.texts.superAdmin');
+    }
+    return name;
 });
 let isFlag = ref(false);
 // 默认选择的消息类型

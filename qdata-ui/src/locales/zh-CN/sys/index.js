@@ -21,7 +21,6 @@ export default {
     apiCallTrend: 'API数据调用量变化趋势',
     governanceDataTrend: '治理数据量变化趋势',
     newsNotice: '新闻公告',
-    viewMore: '查看更多',
     quickEntry: '快捷功能入口',
     monitorStatus: '监控状态',
     normal: '正常',

@@ -317,17 +317,17 @@
           <el-tree-select
             v-model="batchForm.dataLayerId"
             :data="[
-              { id: -1, displayName: '{{ td('dpp.asset.addAsset.noChange') }}' },
+            { id: -1, displayName: td('dpp.asset.addAsset.noChange') },
               ...options.dataLayerList,
             ]"
             :props="{
               value: 'id',
               label: 'displayName',
-              children: 'children',
+              children: 'children'
             }"
             node-key="id"
             value-key="id"
-            placeholder="{{ td('dpp.asset.addAsset.noChange') }}"
+            :placeholder="td('dpp.asset.addAsset.noChange')"
             check-strictly
             filterable
             clearable
@@ -346,13 +346,13 @@
           <el-tree-select
             v-model="batchForm.businessCategoryId"
             :data="[
-              { id: -1, displayName: '{{ td('dpp.asset.addAsset.noChange') }}' },
+              { id: -1, displayName: td('dpp.asset.addAsset.noChange') },
               ...options.businessCategoryList,
             ]"
             :props="{
               value: 'id',
               label: 'displayName',
-              children: 'children',
+              children: 'children'
             }"
             node-key="id"
             value-key="id"
@@ -376,14 +376,14 @@
           <el-tree-select
             v-model="batchForm.dataDomainId"
             :data="[
-              { id: -1, displayName: '{{ td('dpp.asset.addAsset.noChange') }}' },
+              { id: -1, displayName: td('dpp.asset.addAsset.noChange') },
               ...batchDataDomainList,
             ]"
             :loading="batchDomainLoading"
             :props="{
               value: 'id',
               label: 'displayName',
-              children: 'children',
+              children: 'children'
             }"
             node-key="id"
             value-key="id"
@@ -406,13 +406,13 @@
           <el-tree-select
             v-model="batchForm.themeDomainId"
             :data="[
-              { id: -1, displayName: '{{ td('dpp.asset.addAsset.noChange') }}' },
+              { id: -1, displayName: td('dpp.asset.addAsset.noChange') },
               ...options.themeDomainList,
             ]"
             :props="{
               value: 'id',
               label: 'displayName',
-              children: 'children',
+              children: 'children'
             }"
             node-key="id"
             value-key="id"

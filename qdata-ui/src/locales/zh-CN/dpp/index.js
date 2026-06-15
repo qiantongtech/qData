@@ -245,7 +245,6 @@ export default {
     addFilterTip: '点击"+"以添加筛选准则',
     validateIncomplete: '校验未通过，查询条件请输入完整',
     funcDeveloping: '功能开发中....',
-    // 资产列表页
     searchCategoryName: '请输入资产类目名称',
     assetName: '资产名称',
     inputAssetName: '请输入资产名称',
@@ -316,7 +315,6 @@ export default {
     points: '分',
     applyAsset: '申请资产',
     createAsset: '创建资产',
-    // 新增资产
     add: {
       assetType: '资产类型',
       assetTypePlaceholder: '请选择资产类型',
@@ -339,7 +337,6 @@ export default {
       formTitle: '表单标题',
       configSuccess: '配置成功',
       formValidationFailed: '表单校验未通过',
-      // 表资产
       table: {
         tableName: '表名',
         tableNamePlaceholder: '请输入表名',
@@ -370,7 +367,6 @@ export default {
         selectTable: '选择表',
         selectTablePlaceholder: '请选择表',
       },
-      // API资产
       api: {
         appName: '应用名称',
         appNamePlaceholder: '请输入应用名称',
@@ -402,7 +398,6 @@ export default {
         paramNameRequired: '请输入参数名称',
         paramTypeRequired: '请选择参数类型',
       },
-      // Excel资产
       excel: {
         uploadAttachment: '上传附件',
         uploadAttachmentRequired: '请上传附件',
@@ -427,7 +422,6 @@ export default {
         addStartColumn: '请添加起始列',
         validateFields: '请校验属性字段',
       },
-      // 标签表单
       tag: {
         addTag: '新增标签',
         tagName: '标签名称',
@@ -441,7 +435,6 @@ export default {
         synonymPlaceholder: '请输入同义词',
         maxLength: '最大长度',
       },
-      // 非结构化资产
       unstructured: {
         connectionName: '数据连接名称',
         connectionNamePlaceholder: '请选择数据连接名称',
@@ -468,7 +461,6 @@ export default {
         singleFileLimit: '只能上传一个文件',
         noFileSelected: '请先选择文件',
       },
-      // 视频资产
       video: {
         platform: '平台',
         platformPlaceholder: '请输入平台',
@@ -496,9 +488,7 @@ export default {
         privateKeyRequired: '请输入私钥',
       },
     },
-    // 资产详情
     detail: {
-      // 详情主页
       index: {
         tableName: '表名称',
         assetType: '资产类型',
@@ -522,7 +512,6 @@ export default {
         tabPreviewDataTip: '查看该API的实时数据样例，帮助理解数据内容',
         tabOverviewTip: '查看该资产的整体信息，如创建时间、责任人、访问次数等',
       },
-      // API详情
       api: {
         authParams: '鉴权参数',
         requestParams: '请求参数',
@@ -546,10 +535,9 @@ export default {
         authDescEnd: '接口得到accessToken',
         callSuccess: '接口调用成功',
         callFailed: '接口调用失败',
-        paramRequired: '校验未通过，输入参数‘',
-        paramRequiredEnd: '’不能为空',
+        paramRequired: '校验未通过，输入参数',
+        paramRequiredEnd: '不能为空',
       },
-      // 血缘
       lineage: {
         tableName: '数据表名称',
         dbType: '数据库类型',
@@ -581,7 +569,6 @@ export default {
         dataAgg: '数据聚合',
         dataOutput: '数据输出',
       },
-      // 质量
       quality: {
         getRule: '获取稽查规则',
         getRuleTip: '会自动获取资产关联的数据元中的稽查规则',
@@ -638,18 +625,15 @@ export default {
           problemDataRatio: '问题数据量占比'
         }
       },
-      // 预览编辑
       preview: {
         noPrimaryKey: '当前表未设置物理主键',
         inputRequired: '输入不能为空',
       },
-      // 前后比对
       diff: {
         title: '前后比对',
       },
     },
   },
-  // 字段管理
   column: {
     chineseName: '中文名称',
     englishName: '英文名称',
@@ -691,7 +675,6 @@ export default {
     confirmDeleteAsset: '是否确认删除数据资产编号为"',
     confirmDeleteAssetEnd: '"的数据项？',
   },
-  // 节点视图
   node: {
     statusExecuting: '正在执行',
     statusStopped: '停止',
@@ -700,11 +683,9 @@ export default {
     statusWaiting: '等待',
     unknownStatus: '未知状态',
   },
-  // 日志
   taskLog: {
     taskExecutionLog: '任务执行日志',
   },
-  // 任务实例
   instance: {
     taskInstanceName: '任务实例名称',
     executionStatus: '执行状态',
@@ -763,7 +744,6 @@ export default {
       resetConfirm: '点击重置将清除所有未保存的更改，您确定要继续吗？',
     },
   },
-  // 开发任务
   developTask: {
     dataDevCategory: '数据开发类目',
     inputCategoryName: '请输入数据开发类目名称',
@@ -801,7 +781,6 @@ export default {
     online: '上线',
     offline: '下线',
     confirmDelete: '是否确认删除数据开发任务编号为"{id}"的数据项？',
-    // 新增任务表单
     taskDetail: '任务详情',
     selectTaskCategory: '请选择数据开发类目',
     selectScheduleCycle: '请选择调度周期',
@@ -820,13 +799,11 @@ export default {
     cronGenerator: 'Cron表达式生成器',
     remark: '备注',
     inputRemark: '请输入备注',
-    // 数据库类型
     dm8: 'DM8',
     oracle: 'Oracle',
     mysql: 'MySQL',
     kingbase: 'Kingbase',
   },
-  // 开发任务详情
   developTaskDetail: {
     taskSave: '任务保存',
     taskCancel: '任务取消',
@@ -852,7 +829,6 @@ export default {
     discardContent: '您已经编辑部分任务内容，是否放弃已编辑内容？',
     discard: '放弃',
   },
-  // 集成任务
   integratioTask: {
     taskName: '任务名称',
     inputTaskName: '请输入任务名称',
@@ -977,7 +953,6 @@ export default {
     confirmClone: '确定要克隆任务【{name}】吗？',
     confirmDelete: '是否确认删除数据集成任务编号为"{ids}"的数据项？',
   },
-  // 元数据选择
   metadataSelect: {
     selectMetadata: '选择元数据',
     searchPlaceholder: '请输入元数据名称或表注释搜索',
@@ -991,7 +966,6 @@ export default {
     notRegistered: '未注册',
     selectAtLeastOneTable: '请至少选择一张表',
   },
-  // 详情信息 (info)
   info: {
     configStatus: '配置状态',
     draft: '草稿',
@@ -1018,9 +992,7 @@ export default {
     taskManagerCount: 'TaskManager数量',
     parallelism: '并行度',
   },
-  // 集成任务组件
   integration: {
-    // 集成任务组件标签
     input: '输入',
     inputTable: '表输入组件',
     inputExcel: 'Excel文件输入组件',
@@ -1035,7 +1007,6 @@ export default {
     valueMapping: '值映射',
     output: '输出',
     outputTable: '表输出组件',
-    // 通用表单
     nodeName: '节点名称',
     nodeNamePlaceholder: '请输入节点名称',
     nodeNameRequired: '请输入节点名称',
@@ -1071,24 +1042,18 @@ export default {
     jsonParseValuePlaceholder: '例如:info.aga',
     jsonParseValueRequired: '请输入JSON解析值',
     validateFailedSelectFields: '校验未通过，请选择属性字段',
-
-    // CSV解析相关
     csvParseFailedAddAttachment: '解析失败，请添加附件',
     csvParseSuccess: 'CSV 解析成功，请确认属性字段类型！',
     csvParseFailedNoData: 'CSV 解析失败，未获取到有效数据！',
     csvParseError: '解析文件时发生错误，请检查后重试',
     fileFormatIncorrect: '文件格式不正确, 请上传csv格式文件!',
     fileSizeExceeded: '大小超出限制，文件大小不能超过 {maxSize}MB!',
-
-    // Excel解析相关
     parseFailedAddStartRow: '解析失败，请添加起始行',
     parseFailedAddStartColumn: '解析失败，请添加起始列',
     parseFailedAddAttachment: '解析失败，请添加附件',
     excelParseSuccess: 'Excel解析成功，请确认属性字段类型！',
     excelParseFailedNoData: 'Excel解析失败，未获取到有效数据！',
     excelParseFailedCheckFile: 'Excel解析失败，请检查文件格式或内容！',
-
-    // 增量配置 - 基准类型
     benchmarkType: '基准类型',
     benchmarkTypePlaceholder: '请选择基准类型',
     benchmarkTypeRequired: '请选择基准类型',
@@ -1105,8 +1070,6 @@ export default {
     cursorTime: '游标时间',
     cursorTimePlaceholder: '请选择游标时间',
     cursorTimeRequired: '请选择游标时间',
-
-    // 增量配置 - 读取模式
     readMode: '读取模式',
     readModeRequired: '请选择读取模式',
     fullVolume: '全量',
@@ -1122,8 +1085,6 @@ export default {
     invalidNumber: '请输入有效的数字',
     timeFormat: '时间格式',
     timeFormatPlaceholder: '请选择时间格式',
-
-    // 表输入
     connectionMethod: '连接方式',
     assetTable: '资产表',
     assetTableRequired: '请选择资产表',
@@ -1148,8 +1109,6 @@ export default {
     decimalPrecision: '小数经度',
     deleteConfirm: '确定要删除这条数据吗?',
     cancelDelete: '取消删除',
-
-    // 表输出
     fieldMapping: '字段映射',
     outputConfig: '输出配置',
     preSql: '前置SQL',
@@ -1171,26 +1130,18 @@ export default {
     targetDbConnection: '目标数据连接',
     targetDbConnectionPlaceholder: '请选择目标数据连接',
     targetDbConnectionRequired: '请选择目标数据连接',
-
-    // 字段映射组件
     sourceTableFields: '来源表字段：',
     targetFields: '目标字段：',
     selectAll: '全选',
     hdfsNoSelect: 'HDFS 类型不可勾选',
-
-    // 字段冲突处理
     fieldConflictTitle: '字段冲突处理',
     fieldConflictMsg: '已有 {existing} 个字段，检测到 {new} 个新字段，如何处理？',
     addNewOnly: '增加新的',
     addAll: '增加所有',
     clearAndAddAll: '清除并增加所有',
-
-    // 字段预览
     fieldSourceTitle: '步骤里的字段和其来源',
     stepName: '步骤名称：',
     stepSource: '步骤来源',
-
-    // 代码映射
     originalValue: '原始值',
     originalValuePlaceholder: '请输入原始值',
     originalValueRequired: '原始值不能为空',
@@ -1202,13 +1153,9 @@ export default {
     dictValuePlaceholder: '代码值',
     dictValueRequired: '字典值不能为空',
     confirmDeleteData: '是否确认删除该数据项？',
-
-    // 去除空格规则
     trimSpaceRule: '去除空格规则',
     trimLeadingTrailing: '去除前后空格',
     trimAll: '去除所有空格',
-
-    // 字段合并规则
     fieldMergeConfig: '字段合并规则配置',
     selectField: '选择字段',
     selectFieldPlaceholder: '请选择字段名称',
@@ -1231,8 +1178,6 @@ export default {
     trimSpaceRequired: '请选择是否去除空格',
     yes: '是',
     no: '否',
-
-    // 常量字段 (addConstants)
     constantFields: '常量字段',
     setEmptyString: '设为空串',
     setEmptyStringTooltip: '勾选后，即使"默认值"字段填写了内容，也会被覆盖为空字符串',
@@ -1241,13 +1186,9 @@ export default {
     deleteFailedFieldNotFound: '删除失败，字段未找到',
     atLeastOneFieldValue: '请至少一个字段值',
     fieldNameCannotBeEmpty: '校验未通过，字段名称不能为空',
-
-    // 去重过滤 (dedupFilter)
     dedupFilterTooltip: '根据指定字段判断数据是否重复，并保留第一条出现的记录（即遇到重复时，保留数据集中第一次出现的那条），结合排序节点使用',
     ignoreCase: '忽略大小写',
     fetchFields: '获取字段',
-
-    // 字段构建器 (fieldBuilder)
     fieldBuilderTooltip: '用于通过拼接多个字段值生成新字段，支持设置前缀、后缀和连接符，常用于构造唯一标识或业务编码',
     operationType: '操作类型',
     operationTypePlaceholder: '请选择操作类型',
@@ -1271,8 +1212,6 @@ export default {
     hash: '哈希',
     regexExtract: '正则提取',
     constantAssignment: '常量赋值',
-
-    // 字段选择与修改 (fieldSelectAndmodificat)
     selectAndModifyFields: '需要选择与修改的字段',
     fieldAlias: '字段别名',
     fieldAliasPlaceholder: '请输入新的字段名称',
@@ -1287,15 +1226,11 @@ export default {
     outputFieldCannotDuplicate: '输出字段不能与已有字段名称重复',
     alreadyLatestFields: '新增失败，当前已是最新字段',
     validateFailedAddAtLeastOne: '校验未通过，请至少添加一个字段',
-
-    // 排序配置 (orderConfig)
     orderConfigTooltip: '用于配置字段的排序规则，包括字段顺序、排序方式、是否区分大小写等选项',
     sortOrder: '排序规则',
     descending: '降序',
     ascending: '升序',
     sequenceTooltip: '序号越小，字段排序优先级越高',
-
-    // 值映射 (valueMapping)
     inputField: '使用字段',
     inputFieldPlaceholder: '请选择字段名称',
     inputFieldRequired: '请选择使用字段',
@@ -1313,13 +1248,9 @@ export default {
     noRepeatSourceValues: '新增失败，请不要填写重复的原值',
     validateFailedFillFieldValues: '校验未通过，请先填写字段值',
     validateFailedNoRepeatSourceValues: '校验未通过，请不要填写重复的原值',
-
-    // 规则选择器树
     inputDeptName: '请输入部门名称',
   },
-  // 清洗规则
   cleanRule: {
-    // cleanForm.vue - 节点表单
     nodeName: '节点名称',
     inputNodeName: '请输入节点名称',
     type: '类型',
@@ -1343,7 +1274,6 @@ export default {
     addTask: '新增任务',
     online: '上线',
     offline: '下线',
-    // affixEditorRule.vue
     markValue: '标记值',
     inputMarkValue: '请输入标记值',
     inputValue: '请输入添加值',
@@ -1356,7 +1286,6 @@ export default {
     exampleAgeOver150: '示例: 如果年龄 > 150，则设置为 150。',
     exampleIncomeUnder1000: '示例: 如果收入 < 1000，则设置为 1000。',
     exampleBoth: '示例1: 如果年龄 > 150，则设置为 150。如果收入 < 1000，则设置为 1000。',
-    // cleanExpiredDataRule.vue
     timeRange: '时间范围',
     recentTimeRange: '最近时间范围',
     specificDate: '具体日期',
@@ -1373,7 +1302,6 @@ export default {
     selectMarkField: '请选择标记字段',
     selectCleanField: '请选择清洗字段',
     selectDate: '选择日期',
-    // combinerFieldUniqueRule.vue
     addSortField: '新增排序字段',
     fieldName: '字段名称',
     selectSortOrder: '排序顺序',
@@ -1387,16 +1315,13 @@ export default {
     keepLatestDesc: '系统将根据去重条件保留满足去重规则记录中的最新记录。',
     sortFieldNameRequired: '排序字段名称不能为空',
     sortFieldNameDuplicate: '排序字段名称不能重复',
-    // dateFormatter.vue
     dateFormat: '日期格式',
     selectDateFormat: '请选择日期格式',
     custom: '自定义',
     inputDateFormat: '请输入日期格式，例如：YY-MM-DD',
-    // decimalFormatterRule.vue
     decimalPlaces: '小数位数',
     inputDecimalPlaces: '请输入小数位数',
     decimalHint: '如"2"表示保留两位小数',
-    // enumMapRule
     inputStandardDataElemCat: '请输入标准数据元类目',
     chineseName: '中文名称',
     englishName: '英文名称',
@@ -1419,12 +1344,10 @@ export default {
     originalAndStandardRequired: '原值和标准值不能为空！',
     originalValueDuplicate: '原值不能重复！',
     standardValueDuplicate: '标准值不能重复！',
-    // longFieldTruncator.vue
     charCount: '字符数量',
     inputCharCount: '请输入字符数量',
     forward: '正向',
     backward: '反向',
-    // numberBoundaryRule.vue
     minValue: '最小值',
     inputMinValue: '请输入最小值',
     noMinLimit: '不填写表示不限制最小值',
@@ -1434,14 +1357,12 @@ export default {
     adjustToMax: '超出最大值时调整为最大值',
     adjustToMin: '超出最小值时调整为最小值',
     adjustToBoundary: '两种情况都调整到对应的边界值',
-    // regexReplaceRule.vue
     regex: '正则表达式',
     inputRegex: '请输入正则表达式',
     replaceWith: '替换为',
     inputReplacement: '请输入替换内容',
     selectAllowedChars: '请选择允许的字符类型',
     selectIgnoreNull: '请选择忽略空值',
-    // ruleBase.vue
     basicInfo: '基础信息',
     inputCleanName: '请输入清洗名称',
     cleanRuleCode: '清洗规则编号',
@@ -1456,7 +1377,6 @@ export default {
     addCleanRule: '新增清洗规则',
     cleanRulePrefix: '清洗规则',
     completeRequired: '请完善必填项',
-    // ruleSelectorMenu.vue
     inputRuleType: '请输入规则类型',
     cleanRuleTree: '清洗规则',
     developing: '开发中'

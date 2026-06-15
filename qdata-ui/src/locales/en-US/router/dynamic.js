@@ -5,7 +5,7 @@ export default {
     "attRuleAuditRule": "Audit Rule",
     "attRuleCleanRule": "Clean Rule",
     "attProject": "Project Management",
-    "attDocumentCat": "Document Management",
+    "attCatDocumentCat": "Document Management",
     "attSourceSystem": "Source System",
     "attCat": "Category Management",
     "attCatCleanCat": "Clean Rule Category",

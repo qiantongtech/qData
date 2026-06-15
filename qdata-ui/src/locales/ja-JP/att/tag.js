@@ -15,5 +15,9 @@ export default {
     add: 'タグ管理追加',
     edit: 'タグ管理編集',
     detail: 'タグ管理詳細'
+  },
+  message: {
+    deleteConfirm: '「"<ids>"」のデータ項目を削除しますか？',
+    batchDeleteConfirm: '選択したデータ項目を一括削除しますか？'
   }
 }

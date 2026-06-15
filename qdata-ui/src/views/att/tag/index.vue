@@ -280,7 +280,7 @@ const tableStore = reactive({
       label: td('att.tag.table.catName'),
       prop: "catName",
       align: "left",
-      width: 150,
+      width: 200,
       showOverflowTooltip: { effect: "light" },
     },
     {
@@ -295,7 +295,7 @@ const tableStore = reactive({
       prop: "aeestCount",
       sortable: true,
       sortableKey: "aeest_count",
-      width: 120,
+      width: 130,
       showOverflowTooltip: { effect: "light" },
       tip:{
         content: td('att.common.assetCountTip')

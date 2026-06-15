@@ -26,9 +26,9 @@
   </div>
 </template>
 <script setup name="BasicInfo">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang.js";
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
 const { AttTagDetail } = defineProps({
   AttTagDetail: {
     type: Object,

@@ -21,7 +21,7 @@
     :tableRef="tableRef"
     :config="{ fullContent: false, actions: { table: { search: false } } }"
   >
-    <qt-table v-bind="tableStore" :params="queryParams" ref="tableRef">
+    <qt-table v-bind="tableStore" ref="tableRef">
       <template #themeNames="{ row }">
         {{
           row.daAssetThemeRelList?.length
@@ -271,6 +271,7 @@ const single = ref(true);
 const multiple = ref(true);
 const title = ref("");
 
+const defaultSort = ref({ prop: "create_time", order: "desc" });
 const props = defineProps({
   ids: { type: Object, default: null },
 });
@@ -304,12 +305,13 @@ const tableStore = reactive({
       stripe: true,
       rowKey: "id",
       height: 374,
+      defaultSort: { prop: "create_time", order: "descending" },
     },
   },
   columns: [
     { label: td('common.texts.number'), prop: "id", width: 60, sortable: true },
     {
-      label: "资产名称",
+      label: td('dpp.asset.assetName'),
       prop: "name",
       align: "left",
       showOverflowTooltip: { effect: "light" },
@@ -322,15 +324,15 @@ const tableStore = reactive({
       width: 230,
     },
     {
-      label: "资产类目",
+      label: td('dpp.asset.assetCategory'),
       prop: "catName",
       align: "left",
       showOverflowTooltip: { effect: "light" },
     },
 
-    { label: "资产类型", prop: "type", dict: "da_asset_type" },
+    {label: td('dpp.asset.detail.index.assetType'), prop: "type", dict: "da_asset_type"},
     {
-      label: "主题名称",
+      label: td('dpp.asset.applyThemeName'),
       prop: "daAssetThemeRelList",
       showOverflowTooltip: { effect: "light" },
       slot: "themeNames",
@@ -352,6 +354,7 @@ const tableStore = reactive({
     { label: td('common.texts.operation'), width: 120, fixed: "right", slot: "action" },
   ],
   func: (params) => pageListByIds({ tagIdList: route.query.id, ...params }),
+  params: queryParams.value,
 });
 function handleQueryClick() {
   tableRef.value && tableRef.value.getList();
@@ -478,11 +481,11 @@ function handleDelete(row) {
     assetId: row.id,
   };
   proxy.$modal
-    .confirm('是否确认删除为"' + _ids + '"的数据项？')
-    .then(function () {
-      return delByTagIdAndAesstId(map);
-    })
-    .then(() => {
+      .confirm(td('att.tag.message.deleteConfirm').replace('<ids>', _ids))
+      .then(function () {
+        return delByTagIdAndAesstId(map);
+      })
+      .then(() => {
       handleQueryClick();
       proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
     })
@@ -492,7 +495,7 @@ function handleDelete(row) {
 function handleDeleteAll() {
   if (!ids.value.length) return;
   proxy.$modal
-    .confirm("是否确认批量删除选中的数据项？")
+    .confirm(td('att.tag.message.batchDeleteConfirm'))
     .then(function () {
       return Promise.all(
         ids.value.map((id) =>

@@ -18,10 +18,10 @@
 <template>
   <div class="top-right-btn" :style="style">
     <el-row>
-      <el-tooltip class="item" effect="dark" :content="showSearch ? '隐藏搜索' : '显示搜索'" placement="top" v-if="search">
-        <!-- <el-button class="zhankaishouqi" type="primary" :icon="showSearch ? 'ArrowDownBold' : 'ArrowUpBold'" @click="toggleSearch()">{{showSearch ? '收起' : '展开'}}</el-button> -->
+      <el-tooltip class="item" effect="dark" :content="showSearch ? t('components.rightToolbar.hideSearch') : t('components.rightToolbar.showSearch')" placement="top" v-if="search">
+        <!-- <el-button class="zhankaishouqi" type="primary" :icon="showSearch ? 'ArrowDownBold' : 'ArrowUpBold'" @click="toggleSearch()">{{showSearch ? t('components.rightToolbar.collapse') : t('components.rightToolbar.expand')}}</el-button> -->
         <el-button class="zhankaishouqi" type="primary"  @click="toggleSearch()">
-          <span>{{showSearch ? '收起' : '展开'}}</span>
+          <span>{{showSearch ? t('components.rightToolbar.collapse') : t('components.rightToolbar.expand')}}</span>
           <el-icon v-if="showSearch" style="margin-left:5px"><ArrowUpBold /></el-icon>
           <el-icon v-else style="margin-left:5px"><ArrowDownBold /></el-icon>
         </el-button>
@@ -31,6 +31,9 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n();
 const props = defineProps({
   /* 是否显示检索条件 */
   showSearch: {

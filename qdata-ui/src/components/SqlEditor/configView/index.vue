@@ -33,103 +33,103 @@
     <div class="container-content">
       <template v-if="props.currValue.type == 'attrConfig'">
         <el-form ref="configRef" :model="form" :rules="rules" label-width="142px" @submit.prevent :disabled="readOnly">
-          <div class="h2"><img class="icon" src="@/assets/da/asset/h2 (1).svg" alt="" />基础配置</div>
-          <el-form-item label="任务优先级:" prop="taskPriority">
-            <el-select v-model="form.taskPriority" placeholder="请选择任务优先级">
+          <div class="h2"><img class="icon" src="@/assets/da/asset/h2 (1).svg" alt="" />{{ t('components.sqlEditorConfigView.basicConfig') }}</div>
+          <el-form-item :label="t('components.sqlEditorConfigView.taskPriority')" prop="taskPriority">
+            <el-select v-model="form.taskPriority" :placeholder="t('components.sqlEditorConfigView.taskPriorityPlaceholder')">
               <el-option v-for="(item, index) in dpp_etl_task_priority" :key="index" :label="item.label"
                 :value="item.value" />
             </el-select>
           </el-form-item>
-          <el-form-item label="Worker分组:" prop="workerGroup">
-            <el-input v-model="form.workerGroup" placeholder="请输入Worker分组" disabled />
+          <el-form-item :label="t('components.sqlEditorConfigView.workerGroup')" prop="workerGroup">
+            <el-input v-model="form.workerGroup" :placeholder="t('components.sqlEditorConfigView.workerGroupPlaceholder')" disabled />
           </el-form-item>
-          <el-form-item label="失败重试次数:" prop="failRetryTimes">
+          <el-form-item :label="t('components.sqlEditorConfigView.failRetryTimes')" prop="failRetryTimes">
             <el-input-number style="width: 85%; margin-right: 5px" controls-position="right" :min="0"
-              v-model="form.failRetryTimes" placeholder="请输入失败重试次数"> </el-input-number>
-            <span>次</span>
+              v-model="form.failRetryTimes" :placeholder="t('components.sqlEditorConfigView.failRetryTimesPlaceholder')"> </el-input-number>
+            <span>{{ t('components.sqlEditorConfigView.times') }}</span>
           </el-form-item>
-          <el-form-item label="失败重试间隔:" prop="failRetryInterval">
+          <el-form-item :label="t('components.sqlEditorConfigView.failRetryInterval')" prop="failRetryInterval">
             <el-input-number style="width: 85%; margin-right: 5px" controls-position="right" :min="0"
-              v-model="form.failRetryInterval" placeholder="请输入失败重试间隔"> </el-input-number>
-            <span>分</span>
+              v-model="form.failRetryInterval" :placeholder="t('components.sqlEditorConfigView.failRetryIntervalPlaceholder')"> </el-input-number>
+            <span>{{ t('components.sqlEditorConfigView.minutes') }}</span>
           </el-form-item>
-          <el-form-item label="延迟执行时间:" prop="delayTime">
+          <el-form-item :label="t('components.sqlEditorConfigView.delayTime')" prop="delayTime">
             <el-input-number style="width: 85%; margin-right: 5px" controls-position="right"
               :min="isShowWithTypeName('DM,Oracle,MYSQL,Kingbase') ? 1 : 0" v-model="form.delayTime"
-              placeholder="请输入延迟执行时间">
+              :placeholder="t('components.sqlEditorConfigView.delayTimePlaceholder')">
             </el-input-number>
-            <span>分</span>
+            <span>{{ t('components.sqlEditorConfigView.minutes') }}</span>
           </el-form-item>
           <template v-if="isShowWithTypeName('Flink批,Flink流')">
-            <el-form-item label="JobManager内存数" prop="jobManagerMemory">
-              <el-input v-model="form.jobManagerMemory" placeholder="请输入JobManager内存数"> </el-input>
+            <el-form-item :label="t('components.sqlEditorConfigView.jobManagerMemory')" prop="jobManagerMemory">
+              <el-input v-model="form.jobManagerMemory" :placeholder="t('components.sqlEditorConfigView.jobManagerMemoryPlaceholder')"> </el-input>
             </el-form-item>
-            <el-form-item label="TaskManager内存数" prop="taskManagerMemory">
-              <el-input v-model="form.taskManagerMemory" placeholder="请输入TaskManager内存数"> </el-input>
+            <el-form-item :label="t('components.sqlEditorConfigView.taskManagerMemory')" prop="taskManagerMemory">
+              <el-input v-model="form.taskManagerMemory" :placeholder="t('components.sqlEditorConfigView.taskManagerMemoryPlaceholder')"> </el-input>
             </el-form-item>
-            <el-form-item label="Slot数量" prop="slot">
-              <el-input-number placeholder="请输入Slot数量" v-model="form.slot" controls-position="right" :min="0" />
+            <el-form-item :label="t('components.sqlEditorConfigView.slot')" prop="slot">
+              <el-input-number :placeholder="t('components.sqlEditorConfigView.slotPlaceholder')" v-model="form.slot" controls-position="right" :min="0" />
             </el-form-item>
-            <el-form-item label="TaskManager数量" prop="taskManager">
-              <el-input v-model="form.taskManager" placeholder="请输入TaskManager数量"> </el-input>
+            <el-form-item :label="t('components.sqlEditorConfigView.taskManager')" prop="taskManager">
+              <el-input v-model="form.taskManager" :placeholder="t('components.sqlEditorConfigView.taskManagerPlaceholder')"> </el-input>
             </el-form-item>
-            <el-form-item label="并行度" prop="parallelism">
-              <el-input-number placeholder="请输入并行度" v-model="form.parallelism" controls-position="right" :min="0" />
+            <el-form-item :label="t('components.sqlEditorConfigView.parallelism')" prop="parallelism">
+              <el-input-number :placeholder="t('components.sqlEditorConfigView.parallelismPlaceholder')" v-model="form.parallelism" controls-position="right" :min="0" />
             </el-form-item>
-            <el-form-item label="Yarn队列" prop="yarnQueue">
-              <el-input v-model="form.yarnQueue" placeholder="请输入Yarn队列(选填)"> </el-input>
+            <el-form-item :label="t('components.sqlEditorConfigView.yarnQueue')" prop="yarnQueue">
+              <el-input v-model="form.yarnQueue" :placeholder="t('components.sqlEditorConfigView.yarnQueuePlaceholder')"> </el-input>
             </el-form-item>
           </template>
           <template v-if="isShowWithTypeName('SparkSql')">
-            <el-form-item label="Driver核心数" prop="driverCores">
-              <el-input-number placeholder="请输入Driver核心数" v-model="form.driverCores" controls-position="right"
+            <el-form-item :label="t('components.sqlEditorConfigView.driverCores')" prop="driverCores">
+              <el-input-number :placeholder="t('components.sqlEditorConfigView.driverCoresPlaceholder')" v-model="form.driverCores" controls-position="right"
                 :min="0" />
             </el-form-item>
-            <el-form-item label="Driver内存数" prop="driverMemory">
-              <el-input v-model="form.driverMemory" placeholder="请输入Driver内存数"> </el-input>
+            <el-form-item :label="t('components.sqlEditorConfigView.driverMemory')" prop="driverMemory">
+              <el-input v-model="form.driverMemory" :placeholder="t('components.sqlEditorConfigView.driverMemoryPlaceholder')"> </el-input>
             </el-form-item>
-            <el-form-item label="Executor数量" prop="numExecutors">
-              <el-input-number placeholder="请输入Executor数量" v-model="form.numExecutors" controls-position="right"
+            <el-form-item :label="t('components.sqlEditorConfigView.numExecutors')" prop="numExecutors">
+              <el-input-number :placeholder="t('components.sqlEditorConfigView.numExecutorsPlaceholder')" v-model="form.numExecutors" controls-position="right"
                 :min="0" />
             </el-form-item>
-            <el-form-item label="Executor内存数" prop="executorMemory">
-              <el-input v-model="form.executorMemory" placeholder="请输入Executor内存数"> </el-input>
+            <el-form-item :label="t('components.sqlEditorConfigView.executorMemory')" prop="executorMemory">
+              <el-input v-model="form.executorMemory" :placeholder="t('components.sqlEditorConfigView.executorMemoryPlaceholder')"> </el-input>
             </el-form-item>
-            <el-form-item label="Executor核心数" prop="executorCores">
-              <el-input-number placeholder="请输入Executor核心数" v-model="form.executorCores" controls-position="right"
+            <el-form-item :label="t('components.sqlEditorConfigView.executorCores')" prop="executorCores">
+              <el-input-number :placeholder="t('components.sqlEditorConfigView.executorCoresPlaceholder')" v-model="form.executorCores" controls-position="right"
                 :min="0" />
             </el-form-item>
-            <el-form-item label="Yarn队列" prop="yarnQueue">
-              <el-input v-model="form.yarnQueue" placeholder="请输入Yarn队列(选填)"> </el-input>
+            <el-form-item :label="t('components.sqlEditorConfigView.yarnQueue')" prop="yarnQueue">
+              <el-input v-model="form.yarnQueue" :placeholder="t('components.sqlEditorConfigView.yarnQueuePlaceholder')"> </el-input>
             </el-form-item>
           </template>
-          <div class="h2"><img class="icon" src="@/assets/da/asset/h2 (1).svg" alt="" />其他配置</div>
-          <el-form-item label="数据连接类型:" prop="typaCode"> {{ typaName }} </el-form-item>
-          <el-form-item label="数据源连接:" prop="datasourceId" v-if="isShowWithTypeName('SparkSql,Flink批,Flink流', false)">
-            <el-select v-model="form.datasourceId" placeholder="请选择数据源连接" @change="handleDatasourceChange" filterable>
+          <div class="h2"><img class="icon" src="@/assets/da/asset/h2 (1).svg" alt="" />{{ t('components.sqlEditorConfigView.otherConfig') }}</div>
+          <el-form-item :label="t('components.sqlEditorConfigView.dataConnectionType')" prop="typaCode"> {{ typaName }} </el-form-item>
+          <el-form-item :label="t('components.sqlEditorConfigView.datasourceConnection')" prop="datasourceId" v-if="isShowWithTypeName('SparkSql,Flink批,Flink流', false)">
+            <el-select v-model="form.datasourceId" :placeholder="t('components.sqlEditorConfigView.datasourceConnectionPlaceholder')" @change="handleDatasourceChange" filterable>
               <el-option v-for="dict in createTypeList" :key="dict.id" :label="dict.datasourceName"
                 :value="dict.id"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="SQL类型:" prop="sqlType" v-if="isShowWithTypeName('SparkSql,Flink批,Flink流', false)">
+          <el-form-item :label="t('components.sqlEditorConfigView.sqlType')" prop="sqlType" v-if="isShowWithTypeName('SparkSql,Flink批,Flink流', false)">
             <el-radio-group v-model="form.sqlType" inline>
               <el-radio v-for="option in visibleRadioOptions" :key="option.id" :value="option.id">
                 {{ option.label }}
               </el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="分段执行符号:" prop="segm">
-            <el-input v-model="form.segm" placeholder="请输入分段执行符号"></el-input>
+          <el-form-item :label="t('components.sqlEditorConfigView.segmentSymbol')" prop="segm">
+            <el-input v-model="form.segm" :placeholder="t('components.sqlEditorConfigView.segmentSymbolPlaceholder')"></el-input>
           </el-form-item>
-          <div class="h2"><img class="icon" src="@/assets/da/asset/h2 (1).svg" alt="" />参数配置</div>
-          <el-form-item label="自定义参数:" prop="localParams"> </el-form-item>
+          <div class="h2"><img class="icon" src="@/assets/da/asset/h2 (1).svg" alt="" />{{ t('components.sqlEditorConfigView.paramsConfig') }}</div>
+          <el-form-item :label="t('components.sqlEditorConfigView.customParams')" prop="localParams"> </el-form-item>
           <div class="wrap" v-for="(item, index) in form.localParams" :key="index">
-            <el-input style="width: 30%" v-model="item.prop" placeholder="参数名称"></el-input>
-            <el-select style="width: 40%; margin: 0 4px" v-model="item.type" placeholder="请选择参数类型">
+            <el-input style="width: 30%" v-model="item.prop" :placeholder="t('components.sqlEditorConfigView.paramNamePlaceholder')"></el-input>
+            <el-select style="width: 40%; margin: 0 4px" v-model="item.type" :placeholder="t('components.sqlEditorConfigView.paramTypePlaceholder')">
               <el-option v-for="dict in columnType" :key="dict.value" :label="dict.label"
                 :value="dict.value"></el-option>
             </el-select>
-            <el-input style="width: 30%; margin-right: 4px" v-model="item.value" placeholder="值"></el-input>
+            <el-input style="width: 30%; margin-right: 4px" v-model="item.value" :placeholder="t('components.sqlEditorConfigView.paramValuePlaceholder')"></el-input>
             <div class="del-btn" @click="handleDelDiy(index)">
               <el-icon class="icon">
                 <Delete />
@@ -139,7 +139,7 @@
           <div class="add-btn" @click="handleAddDiy">
             <el-icon class="icon">
               <Plus />
-            </el-icon> 添加配置项
+            </el-icon> {{ t('components.sqlEditorConfigView.addConfigItem') }}
           </div>
         </el-form>
       </template>
@@ -255,28 +255,28 @@ const radioOptions = ref([
   { componentType: "51", label: t('common.button.query'), taskType: "SQL", id: "0", show: true },
   {
     componentType: "51",
-    label: "非查询",
+    label: t('components.sqlEditorConfigView.nonQuery'),
     taskType: "SQL",
     id: "1",
     show: true,
   },
   {
     componentType: "52",
-    label: "储存过程",
+    label: t('components.sqlEditorConfigView.storedProcedure'),
     taskType: "PROCEDURE",
     id: "2",
     show: true,
   },
   {
     componentType: "53",
-    label: "SparkSql开发",
+    label: t('components.sqlEditorConfigView.sparkSql'),
     taskType: "SPARK",
     id: "4",
     show: false,
   },
   {
     componentType: "55",
-    label: "FlinkSql开发",
+    label: t('components.sqlEditorConfigView.flinkSql'),
     taskType: "FLINK",
     id: "5",
     show: false,
@@ -354,10 +354,10 @@ const data = reactive({
     localParams: [],
   },
   rules: {
-    taskPriority: [{ required: true, message: "任务优先级不能为空", trigger: "change" }],
-    workerGroup: [{ required: true, message: "Worker分组不能为空", trigger: "change" }],
-    datasourceId: [{ required: true, message: "数据源连接不能为空", trigger: "change" }],
-    sqlType: [{ required: true, message: "SQL类型不能为空", trigger: "change" }],
+    taskPriority: [{ required: true, message: t('components.sqlEditorConfigView.taskPriorityRequired'), trigger: "change" }],
+    workerGroup: [{ required: true, message: t('components.sqlEditorConfigView.workerGroupRequired'), trigger: "change" }],
+    datasourceId: [{ required: true, message: t('components.sqlEditorConfigView.datasourceIdRequired'), trigger: "change" }],
+    sqlType: [{ required: true, message: t('components.sqlEditorConfigView.sqlTypeRequired'), trigger: "change" }],
   },
 });
 const { form, rules } = toRefs(data);

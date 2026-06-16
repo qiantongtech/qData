@@ -17,7 +17,7 @@
           class="filter-tree"
           size="large"
           v-model="deptName"
-          :placeholder="placeholder"
+          :placeholder="effectivePlaceholder"
           clearable
           prefix-icon="Search"
         />
@@ -120,16 +120,16 @@
                 <template #dropdown>
                   <el-dropdown-menu class="dept-tree-dropdown">
                     <el-dropdown-item :icon="Plus" command="add"
-                      >新增子级</el-dropdown-item
+                      >{{ t('components.deptTree.addChild') }}</el-dropdown-item
                     >
                     <template v-if="data.id != '0'">
                       <el-dropdown-item
                         :icon="CopyDocument"
                         command="addSibling"
-                        >新增同级</el-dropdown-item
+                        >{{ t('components.deptTree.addSibling') }}</el-dropdown-item
                       >
                       <el-dropdown-item :icon="Edit" command="edit"
-                        >编辑</el-dropdown-item
+                        >{{ t('components.deptTree.edit') }}</el-dropdown-item
                       >
                       <el-dropdown-item
                         :icon="Delete"
@@ -218,6 +218,10 @@ const props = defineProps({
     type: String,
     default: "类目",
   },
+  titleKey: {
+    type: String,
+    default: 'components.deptTree.defaultTitle',
+  },
   api: {
     type: Object,
     default: () => ({}),
@@ -242,6 +246,8 @@ let resizeObserver = null;
 import CatEditDialog from "@/components/Cat/catEditDialog";
 
 const { t } = useI18n();
+const effectivePlaceholder = computed(() => props.placeholder || t('components.deptTree.searchPlaceholder'));
+const effectiveTitle = computed(() => props.title || t(props.titleKey));
 const catEditDialogRef = ref(null);
 const processedData = ref([]);
 
@@ -311,7 +317,7 @@ function handleNodeEdit(data) {
   if (props.api.get) {
     props.api.get(data.id).then((response) => {
       catEditDialogRef.value.open({
-        title: "编辑" + props.title,
+        title: t('common.button.edit') + effectiveTitle.value,
         nameLabel: props.title + t('common.texts.name'),
         treeOptions: dialogTreeOptions.value,
         form: response.data,
@@ -325,7 +331,7 @@ function handleNodeEdit(data) {
 function handleNodeDelete(data) {
   if (props.api.del) {
     proxy.$modal
-      .confirm('是否确认删除"' + data.name + '"？')
+      .confirm(t('components.deptTree.deleteConfirm', { name: data.name }))
       .then(function () {
         if (props.api.del) {
           return props.api.del(data.id);

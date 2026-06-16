@@ -70,7 +70,7 @@
       </template>
       <template v-if="currItem.type == 'result'">
         <div class="result-view">
-          <el-button class="result-icon" type="primary" @click="handleSearch" icon="Search">获取最新数据</el-button>
+          <el-button class="result-icon" type="primary" @click="handleSearch" icon="Search">{{ td('components.sqlEditorConsole.fetchLatestData', '获取最新数据') }}</el-button>
           <el-empty :description="td('common.noData')" />
         </div>
       </template>
@@ -181,32 +181,33 @@ const currCode = ref({
 const handleNodeClick = () => {
   // currCode.value = e;
 };
-const treeData = ref([
+const treeData = computed(() => ([
   {
     label: "FlinkSubmit",
     value: "1",
-    unit: "秒",
+    unit: td('common.time.second', '秒'),
     children: [
       {
-        label: "检查作业",
+        label: td('components.sqlEditorConsole.checkJob', '检查作业'),
         value: "9",
-        unit: "毫秒",
+        unit: td('common.time.millisecond', '毫秒'),
       },
       {
-        label: "执行作业",
+        label: td('components.sqlEditorConsole.executeJob', '执行作业'),
         value: "1",
-        unit: "秒",
+        unit: td('common.time.second', '秒'),
         children: [
           {
-            label: "构建配置信息",
+            label: td('components.sqlEditorConsole.buildConfig', '构建配置信息'),
             value: "31",
-            unit: "毫秒",
+            unit: td('common.time.millisecond', '毫秒'),
           },
         ],
       },
     ],
   },
-]);
+]));
+
 const instanceId = ref();
 const getInstanceId = (id) => {
   getRunTaskInstance({ taskId: Number(id) }).then((res) => {

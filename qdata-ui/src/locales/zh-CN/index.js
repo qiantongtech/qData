@@ -16,6 +16,7 @@ import guide from './guide'
 import da from './da'
 import dm from './dm'
 import dp from './dp'
+import components from './components'
 
 export default {
   common,
@@ -34,5 +35,6 @@ export default {
   guide,
   da,
   dm,
-  dp
+  dp,
+  components
 }

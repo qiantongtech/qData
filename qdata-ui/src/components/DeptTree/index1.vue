@@ -30,7 +30,7 @@
           class="filter-tree"
           size="large"
           v-model="deptName"
-          :placeholder="placeholder"
+          :placeholder="effectivePlaceholder"
           clearable
           prefix-icon="Search"
         />
@@ -142,6 +142,7 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n';
 import {
   ref,
   defineProps,
@@ -158,6 +159,8 @@ import {
   Tickets,
 } from "@element-plus/icons-vue";
 import { useProjectStore } from "@/store/project/project";
+const { t } = useI18n();
+const effectivePlaceholder = computed(() => props.placeholder || t('components.deptTree.searchPlaceholder'));
 
 const { proxy } = getCurrentInstance();
 const props = defineProps({

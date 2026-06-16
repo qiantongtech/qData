@@ -21,7 +21,7 @@
           v-if="item.component.is == 'input'"
           v-model="props.params[item.prop]"
           clearable
-          :placeholder="`请输入${item.label}`"
+          :placeholder="t('components.qtSearchBar.inputPlaceholder', { label: item.label })"
           v-bind="item.component"
           @keyup.enter="handleQueryClick"
         />
@@ -32,7 +32,7 @@
           v-if="item.component.is == 'select'"
           v-model="props.params[item.prop]"
           clearable
-          :placeholder="`请选择${item.label}`"
+          :placeholder="t('components.qtSearchBar.selectPlaceholder', { label: item.label })"
           v-bind="item.component"
         >
           <el-option
@@ -49,7 +49,7 @@
           v-model="props.params[item.prop]"
           :type="item.component.type || 'date'"
           clearable
-          :placeholder="`请选择${item.label}`"
+          :placeholder="t('components.qtSearchBar.selectPlaceholder', { label: item.label })"
           format="YYYY-MM-DD"
           value-format="YYYY-MM-DD"
           v-bind="item.component"
@@ -61,7 +61,7 @@
           v-if="item.component.is == 'tree-select'"
           v-model="props.params[item.prop]"
           clearable
-          :placeholder="`请选择${item.label}`"
+          :placeholder="t('components.qtSearchBar.selectPlaceholder', { label: item.label })"
           v-bind="item.component"
         />
       </el-form-item>

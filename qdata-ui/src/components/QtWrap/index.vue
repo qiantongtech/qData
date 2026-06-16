@@ -30,7 +30,7 @@
           <slot name="actions-data"></slot>
         </div>
         <div class="table-actions" v-if="config.actions.table.show">
-          <el-tooltip effect="dark" content="隐藏搜索" placement="top">
+          <el-tooltip effect="dark" :content="t('components.qtWrap.hideSearch')" placement="top">
             <el-button
               circle
               @click="store.search = !store.search"
@@ -50,7 +50,7 @@
             </el-button>
           </el-tooltip>
 
-          <el-tooltip effect="dark" content="显隐列" placement="top">
+          <el-tooltip effect="dark" :content="t('components.qtWrap.showHideColumns')" placement="top">
             <el-dropdown
               trigger="click"
               :hide-on-click="false"

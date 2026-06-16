@@ -112,5 +112,14 @@ export default {
     noOpinion: '意見なし',
     noAssetLineage: '資産血統なし',
     noAssetQualityTask: '資産品質タスクなし',
-    noTaskProcess: 'タスクプロセスなし'
+    noTaskProcess: 'タスクプロセスなし',
+    time: {
+      minutesAgo: '分前',
+      hoursAgo: '時間前',
+      daysAgo: '日前',
+      monthsAgo: 'ヶ月前',
+      yearsAgo: '年前',
+      second: '秒',
+      millisecond: 'ミリ秒'
+    }
 }

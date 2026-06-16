@@ -127,7 +127,7 @@
                 <span class="head-title">{{ td('sys.dashboard.quickEntry') }}</span>
                 <router-link to="/"> </router-link>
               </div>
-              <div class="border-item-body" style="padding-top: 10px; padding-left: 5px">
+              <div class="border-item-body" style="padding: 0; display: flex;">
                 <div class="all-entrance">
                   <div class="entrance-item" v-for="item in entranceList" :key="item.name" v-hasPermi="item.perm"
                     @click="routeTo(item.path, item.query)">
@@ -1077,9 +1077,9 @@ onMounted(() => {
     }
 
     .all-entrance {
+        width: 100%;
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-
+      grid-template-columns: repeat(3, 1fr);
       .entrance-item {
         padding: 10px;
         text-align: center;
@@ -1091,6 +1091,7 @@ onMounted(() => {
           font-size: 14px;
           color: rgba(0, 0, 0, 0.85);
           font-style: normal;
+          line-height: 16px;
         }
 
         .image {
@@ -1507,7 +1508,7 @@ onMounted(() => {
 .module-3 .module-item .module-item-t {
   display: flex;
 
-  align-items: center;
+  align-items: flex-end;
 
   justify-content: space-between;
 }
@@ -1757,6 +1758,7 @@ onMounted(() => {
     text-align: right;
     font-size: 14px;
     color: rgba(0, 0, 0, 0.45);
+    white-space: nowrap;
   }
 }
 

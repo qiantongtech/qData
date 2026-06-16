@@ -164,5 +164,14 @@ export default {
     downloading: '正在下载数据，请稍候',
     loginExpired: '登录状态已过期，您可以继续留在该页面，或者重新登录',
     reLogin: '重新登录'
+  },
+  time: {
+    minutesAgo: '分钟前',
+    hoursAgo: '小时前',
+    daysAgo: '天前',
+    monthsAgo: '月前',
+    yearsAgo: '年前',
+    second: '秒',
+    millisecond: '毫秒'
   }
 }

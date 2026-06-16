@@ -19,7 +19,7 @@
   <el-dialog
     v-model="dialogVisible"
     class="deleteConfirmDialog"
-    :title="'删除' + (deleTitle ? deleTitle : '')"
+    :title="t('components.deleteConfirmDialog.delete') + (deleTitle ? deleTitle : '')"
     width="520px"
     :close-on-click-modal="false"
     @close="handleClose"
@@ -28,17 +28,17 @@
     <div class="confirm-content">
       <!-- 警告信息 -->
       <div class="warning-message">
-        <svg-icon iconClass="warning" class="tip-icon" /> 警告：{{
+        <svg-icon iconClass="warning" class="tip-icon" /> {{ t('components.deleteConfirmDialog.warning') }}{{
           deleTitle
-        }}删除无法撤消！请慎重操作！
+        }}{{ t('components.deleteConfirmDialog.cannotUndo') }}
       </div>
 
       <div class="repo-info">
-        该操作将永久删除编号
+        {{ t('components.deleteConfirmDialog.deletePrompt') }}
         <span class="repo-id">{{ deleteId }}</span>
-        的数据项，同时可能取消与之关联的关系。<br />
+        {{ t('components.deleteConfirmDialog.deletePromptSuffix') }}<br />
         <br />
-        为防止意外，确认继续操作请输入以下内容:
+        {{ t('components.deleteConfirmDialog.confirmInputPrompt') }}
         <p>
           <span class="delete-id-display">{{ verificationText }}</span>
         </p>
@@ -47,7 +47,7 @@
       <div class="input-section">
         <el-input
           v-model="inputValue"
-          :placeholder="`请输入${verificationText}以确认继续操作`"
+          :placeholder="t('components.deleteConfirmDialog.inputPlaceholder', { verificationText })"
           clearable
           @input="handleInput"
           class="input-field"
@@ -66,7 +66,7 @@
           @click="confirmDelete"
           :disabled="!isInputValid"
         >
-          确认删除
+          {{ t('components.deleteConfirmDialog.confirmDelete') }}
         </el-button>
       </span>
     </template>
@@ -88,7 +88,7 @@ const repoName = ref(""); // 验证名称
 // 计算验证文本，如果没有传入name则默认为"立即删除"
 // 去除repoName中的空格
 const verificationText = computed(() => {
-  const cleanRepoName = (repoName.value || "立即删除").replace(/\s/g, "");
+  const cleanRepoName = (repoName.value || t('components.deleteConfirmDialog.defaultVerifyText')).replace(/\s/g, "");
   // 如果有deleteId，则在验证文本中加入编号信息
   return deleteId.value
     ? `${cleanRepoName}编号 ${deleteId.value} 的数据项`
@@ -135,7 +135,7 @@ const handleInput = () => {
 // 确认删除
 const confirmDelete = () => {
   if (inputValue.value !== verificationText.value) {
-    inputError.value = `请输入正确的验证文本: ${verificationText.value}`;
+    inputError.value = t('components.deleteConfirmDialog.inputError', { verificationText: verificationText.value });
     return;
   }
 

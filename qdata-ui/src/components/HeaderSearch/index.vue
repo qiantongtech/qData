@@ -20,7 +20,7 @@
     <!--    <svg-icon class-name="search-icon" icon-class="search_new_icon" @click.stop="click" />-->
     <i class="iconfont icon-a-chaxunxianxing" style="font-size: 20px" @click.stop="click"></i>
     <el-select ref="headerSearchSelectRef" v-model="search" :remote-method="querySearch" filterable default-first-option
-      remote placeholder="请输入菜单内容" class="header-search-select" @change="change">
+      remote :placeholder="td('sys.system.menu.menuNamePlaceholder')" class="header-search-select" @change="change">
       <el-option v-for="option in options" :key="option.item.path" :value="option.item"
         :label="option.item.title.join(' > ')" />
     </el-select>
@@ -32,7 +32,9 @@ import Fuse from 'fuse.js'
 import { getNormalPath } from '@/utils/anivia.js'
 import { isHttp } from '@/utils/validate'
 import usePermissionStore from '@/store/system/permission'
+import useDefaultLang from "@/composables/useDefaultLang";
 
+const { td } = useDefaultLang();
 const search = ref('');
 const options = ref([]);
 const searchPool = ref([]);

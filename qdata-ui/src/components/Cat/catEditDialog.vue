@@ -15,14 +15,14 @@
     >
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="上级类目" prop="parentId">
+          <el-form-item :label="t('components.catEditDialog.parentIdLabel')" prop="parentId">
             <el-tree-select
               filterable
               v-model="form.parentId"
               :data="treeOptions"
               :props="{ value: 'id', label: 'name', children: 'children' }"
               value-key="id"
-              placeholder="请选择上级"
+              :placeholder="t('components.catEditDialog.parentIdPlaceholder')"
               check-strictly
             />
           </el-form-item>
@@ -38,13 +38,13 @@
       </el-row>
       <el-col :span="24">
         <el-form-item :label="t('common.texts.status')" prop="validFlag">
-          <el-radio v-model="form.validFlag" :label="true">启用</el-radio>
-          <el-radio v-model="form.validFlag" :label="false">禁用</el-radio>
+          <el-radio v-model="form.validFlag" :label="true">{{ t('components.catEditDialog.enable') }}</el-radio>
+          <el-radio v-model="form.validFlag" :label="false">{{ t('components.catEditDialog.disable') }}</el-radio>
         </el-form-item>
       </el-col>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="排序" prop="sortOrder">
+          <el-form-item :label="t('components.catEditDialog.sortOrder')" prop="sortOrder">
             <el-input-number
               style="width: 100%"
               v-model="form.sortOrder"
@@ -59,7 +59,7 @@
           <el-form-item :label="t('common.texts.description')" prop="description">
             <el-input
               type="textarea"
-              maxlength="500个字符"
+              :maxlength="500"
               show-word-limit
               :placeholder="t('common.form.descriptionPlaceholder')"
               v-model="form.description"
@@ -73,7 +73,7 @@
           <el-form-item :label="t('common.texts.remark')" prop="remark">
             <el-input
               type="textarea"
-              maxlength="500个字符"
+              :maxlength="500"
               show-word-limit
               :placeholder="t('common.form.remarkPlaceholder')"
               v-model="form.remark"
@@ -152,13 +152,13 @@ const defaultForm = {
 const form = ref({ ...defaultForm });
 
 const effectiveNameLabel = computed(() => nameLabel.value);
-const effectiveNamePlaceholder = computed(() => `请输入${nameLabel.value}`);
+const effectiveNamePlaceholder = computed(() => t('components.catEditDialog.namePlaceholder', { nameLabel: nameLabel.value }));
 
 // 默认校验规则
 const defaultRules = {
   name: [{ required: true, message: t('common.form.nameRequired'), trigger: "blur" }],
-  parentId: [{ required: true, message: "上级类目不能为空", trigger: "blur" }],
-  code: [{ required: true, message: "编码不能为空", trigger: "blur" }],
+  parentId: [{ required: true, message: t('components.catEditDialog.parentIdRequired'), trigger: "blur" }],
+  code: [{ required: true, message: t('components.catEditDialog.codeRequired'), trigger: "blur" }],
 };
 
 // 计算最终使用的规则，优先使用传入的 customRules
@@ -179,8 +179,8 @@ const currentRules = computed(() => {
  * @param {Object} options 配置项
  */
 const open = (options = {}) => {
-  title.value = options.title || "编辑";
-  nameLabel.value = "类目名称";
+  title.value = options.title || t('components.catEditDialog.editTitle');
+  nameLabel.value = t('components.catEditDialog.nameLabel');
   treeOptions.value = options.treeOptions || [];
   customRules.value = options.rules || null;
 

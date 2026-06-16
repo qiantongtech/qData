@@ -16,6 +16,8 @@
  */
 
 import moment from "moment";
+import { i18n } from "@/plugins/vueI18n";
+
 export function timeAgo(timeStr) {
   const date = new Date(timeStr);
   const now = new Date();
@@ -24,14 +26,14 @@ export function timeAgo(timeStr) {
   if (diff < 60) {
     return moment(timeStr).format("HH:mm");
   } else if (diff < 3600) {
-    return `${Math.floor(diff / 60)}分钟前`;
+    return `${Math.floor(diff / 60)}${i18n.global.t('common.time.minutesAgo')}`;
   } else if (diff < 86400) {
-    return `${Math.floor(diff / 3600)}小时前`;
+    return `${Math.floor(diff / 3600)}${i18n.global.t('common.time.hoursAgo')}`;
   } else if (diff < 2592000) {
-    return `${Math.floor(diff / 86400)}天前`;
+    return `${Math.floor(diff / 86400)}${i18n.global.t('common.time.daysAgo')}`;
   } else if (diff < 31536000) {
-    return `${Math.floor(diff / 2592000)}月前`;
+    return `${Math.floor(diff / 2592000)}${i18n.global.t('common.time.monthsAgo')}`;
   } else {
-    return `${Math.floor(diff / 31536000)}年前`;
+    return `${Math.floor(diff / 31536000)}${i18n.global.t('common.time.yearsAgo')}`;
   }
 }

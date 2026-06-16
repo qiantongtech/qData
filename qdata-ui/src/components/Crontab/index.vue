@@ -84,7 +84,7 @@
 
         <div class="popup-main">
             <div class="popup-result">
-                <p class="title">时间表达式</p>
+                <p class="title">{{ t('components.crontab.timeExpression') }}</p>
                 <table>
                     <thead>
                         <th v-for="item of tabTitles" :key="item">{{ item }}</th>
@@ -200,7 +200,7 @@ const { t } = useI18n();
             default: true
         }
     });
-    const tabTitles = ref(['秒', '分钟', '小时', '日', '月', '周', '年']);
+    const tabTitles = ref([t('components.crontab.second'), t('components.crontab.minute'), t('components.crontab.hour'), t('components.crontab.day'), t('components.crontab.month'), t('components.crontab.week'), t('components.crontab.year')]);
     const tabActive = ref(0);
     const hideComponent = ref([]);
     const expression = ref('');
@@ -286,7 +286,7 @@ const { t } = useI18n();
     // 填充表达式
     function submitFill() {
         if (crontabValueString.value.split(' ')[0] == '*') {
-            proxy.$message.error('不可配置秒级别调度周期!');
+            proxy.$message.error(t('components.crontab.secondLevelError'));
             return;
         }
         emit('fill', crontabValueString.value);

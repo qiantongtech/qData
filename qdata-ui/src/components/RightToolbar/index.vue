@@ -18,7 +18,7 @@
 <template>
   <div class="top-right-btn" :style="style">
     <el-row>
-      <el-tooltip class="item" effect="dark" :content="showSearch ? '隐藏搜索' : '显示搜索'" placement="top" v-if="search">
+      <el-tooltip class="item" effect="dark" :content="showSearch ? t('components.rightToolbar.hideSearch') : t('components.rightToolbar.showSearch')" placement="top" v-if="search">
         <el-button circle @click="toggleSearch()">
           <i class="iconfont icon-a-chaxunxianxing"></i>
         </el-button>
@@ -28,7 +28,7 @@
           <i class="iconfont icon-a-shuaxinxianxing"></i>
         </el-button>
       </el-tooltip>
-      <el-tooltip class="item" effect="dark" content="显隐列" placement="top" v-if="columns">
+      <el-tooltip class="item" effect="dark" :content="t('components.rightToolbar.showHideColumns')" placement="top" v-if="columns">
         <el-button circle icon="Menu" @click="showColumn()" v-if="showColumnsType == 'transfer'" />
         <el-dropdown trigger="click" :hide-on-click="false" style="padding-left: 12px"
           v-if="showColumnsType == 'checkbox'">
@@ -46,8 +46,8 @@
         </el-dropdown>
       </el-tooltip>
     </el-row>
-    <el-dialog :title="title" v-model="open" append-to-body>
-      <el-transfer :titles="['显示', '隐藏']" v-model="value" :data="columns" @change="dataChange"></el-transfer>
+    <el-dialog :title="t('components.rightToolbar.dialogTitle')" v-model="open" append-to-body>
+      <el-transfer :titles="[t('components.rightToolbar.show'), t('components.rightToolbar.hide')]" v-model="value" :data="columns" @change="dataChange"></el-transfer>
     </el-dialog>
   </div>
 </template>
@@ -87,8 +87,6 @@ const emits = defineEmits(['update:showSearch', 'queryTable']);
 
 // 显隐数据
 const value = ref([]);
-// 弹出层标题
-const title = ref("显示/隐藏");
 // 是否显示弹出层
 const open = ref(false);
 

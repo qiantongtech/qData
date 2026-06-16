@@ -97,8 +97,8 @@ const props = defineProps({
   addFunc: { type: Function, required: true },
   updateFunc: { type: Function, required: true },
   batchDelCheckFunc: { type: Function, required: false },
-  nameLabel: { type: String, default: "类目名称" },
-  titleBase: { type: String, default: "类目" },
+  nameLabel: { type: String, default: t('components.catPage.nameLabel') },
+  titleBase: { type: String, default: t('components.catPage.titleBase') },
   permBase: { type: String, required: true },
 });
 
@@ -140,7 +140,7 @@ const tableStore = reactive({
         return true;
       },
     },
-    { label: `${props.nameLabel}`, prop: "name", width: 200, align: "left" },
+    { label: props.nameLabel, prop: "name", width: 200, align: "left" },
     {
       label: t('common.texts.description'),
       prop: "description",
@@ -150,7 +150,7 @@ const tableStore = reactive({
     },
     { label: t('common.texts.status'), prop: "validFlag", slot: "validFlag", align: "center" },
     {
-      label: "排序",
+      label: t('components.catPage.sortOrder'),
       prop: "sortOrder",
       sortable: true,
       sortableKey: "sortOrder",
@@ -182,7 +182,7 @@ const searchStore = reactive({
   items: [
     { label: props.nameLabel, prop: "name", component: { is: "input" } },
     {
-      label: "上级类目",
+      label: t('components.catPage.parentCat'),
       prop: "code",
       component: {
         is: "tree-select",
@@ -212,10 +212,10 @@ function handleQueryClick() {
 }
 
 function handleStatusChange(row) {
-  const text = row.validFlag === true ? "启用" : "禁用";
+  const text = row.validFlag === true ? t('components.catPage.enable') : t('components.catPage.disable');
   proxy.$modal
     .confirm(
-      '确认要"' + text + '","' + row.name + '"' + props.titleBase + "吗？"
+      t('components.catPage.confirmEnableDisable', { text, name: row.name, titleBase: props.titleBase })
     )
     .then(function () {
       props
@@ -225,7 +225,7 @@ function handleStatusChange(row) {
           validFlag: row.validFlag,
         })
         .then(() => {
-          proxy.$modal.msgSuccess(text + "成功");
+          proxy.$modal.msgSuccess(t('components.catPage.operationSuccess', { text }));
           handleQueryClick();
         })
         .catch(() => {
@@ -239,7 +239,7 @@ function handleStatusChange(row) {
 
 function buildTreeOptions(source) {
   treeOptions.value = [];
-  const root = { id: 0, name: "顶级节点", children: [] };
+  const root = { id: 0, name: t('components.catPage.topNode'), children: [] };
   root.children = proxy.handleTree(source, "id", "parentId");
   treeOptions.value.push(root);
 }
@@ -249,7 +249,7 @@ function handleAdd(row) {
     buildTreeOptions(response.data);
     const parentId = row && row.id ? row.id : 0;
     catEditDialogRef.value.open({
-      title: `添加${props.titleBase}`,
+      title: t('components.catPage.addTitle', { titleBase: props.titleBase }),
       nameLabel: props.nameLabel,
       treeOptions: treeOptions.value,
       form: { parentId },
@@ -272,7 +272,7 @@ async function handleUpdate(row) {
   buildTreeOptions(filtered);
   props.getFunc(row.id).then((res) => {
     catEditDialogRef.value.open({
-      title: `修改${props.titleBase}`,
+      title: t('components.catPage.modifyTitle', { titleBase: props.titleBase }),
       nameLabel: props.nameLabel,
       treeOptions: treeOptions.value,
       form: res.data,
@@ -306,7 +306,7 @@ function onDialogCancel() {}
 function handleDelete(row) {
   const id = row.id;
   proxy.$modal
-    .confirm("是否确认删除" + props.titleBase + '编号为"' + id + '"的数据项？')
+    .confirm(t('components.catPage.deleteConfirm', { titleBase: props.titleBase, id }))
     .then(function () {
       return props.delFunc(id);
     })
@@ -333,7 +333,7 @@ function handleDeleteSelected() {
           canDeleteCount = 0,
         } = res?.data || {};
         return ElMessageBox.confirm(
-          `可删除${canDeleteCount}个，不可删除${cannotDeleteCount}个，是否删除可删部分`,
+          t('components.catPage.batchDeleteConfirm', { canDeleteCount, cannotDeleteCount }),
           t('common.message.systemPrompt'),
           {
             confirmButtonText: t('common.button.confirm'),
@@ -342,7 +342,7 @@ function handleDeleteSelected() {
           }
         ).then(() => {
           if (canDeleteCount === 0) {
-            ElMessage.success("执行成功");
+            ElMessage.success(t('components.catPage.executeSuccess'));
             return;
           } else {
             return props.delFunc(canDeleteIds).then(() => {
@@ -355,7 +355,7 @@ function handleDeleteSelected() {
       .finally(() => {});
   } else {
     ElMessageBox.confirm(
-      `可删除${selection.rows.length}个，不可删除0个，是否删除可删部分`,
+      t('components.catPage.batchDeleteAllConfirm', { count: selection.rows.length }),
       t('common.message.systemPrompt'),
       { confirmButtonText: t('common.button.confirm'), cancelButtonText: t('common.button.cancel'), type: "warning" }
     )
@@ -373,12 +373,12 @@ const data = reactive({
     name: [
       {
         required: true,
-        message: `${props.nameLabel}不能为空`,
+        message: t('components.catEditDialog.nameRequired', { nameLabel: props.nameLabel }),
         trigger: "blur",
       },
     ],
     parentId: [
-      { required: true, message: "上级类目不能为空", trigger: "blur" },
+      { required: true, message: t('components.catEditDialog.parentIdRequired'), trigger: "blur" },
     ],
   },
 });

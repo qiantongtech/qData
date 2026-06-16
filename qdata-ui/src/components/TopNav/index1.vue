@@ -26,7 +26,7 @@
 
         <!-- 顶部菜单超出数量折叠 -->
         <el-sub-menu :style="{ '--theme': theme }" index="more" v-if="topMenus.length > visibleNumber">
-            <template #title>更多菜单</template>
+            <template #title>{{ t('components.topNav.moreMenus') }}</template>
             <template v-for="(item, index) in topMenus">
                 <el-menu-item :index="item.path" :key="index" v-if="index >= visibleNumber">
                     <svg-icon v-if="item.meta && item.meta.icon && item.meta.icon !== '#'"
@@ -39,11 +39,13 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n';
 import { constantRoutes } from '@/router';
 import { isHttp } from '@/utils/validate';
 import useAppStore from '@/store/system/app';
 import useSettingsStore from '@/store/system/settings';
 import usePermissionStore from '@/store/system/permission';
+const { t } = useI18n();
 
 // 顶部栏初始数
 const visibleNumber = ref(null);

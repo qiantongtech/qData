@@ -30,7 +30,7 @@
       class="quote"
       v-if="documentIdList != null && documentIdList.length > 0"
     >
-      <el-divider content-position="left">引用</el-divider>
+      <el-divider content-position="left">{{ t('components.markdownView.reference') }}</el-divider>
       <el-popover
         placement="top"
         :width="400"
@@ -134,7 +134,7 @@ const md = new MarkdownIt({
   highlight: function (str, lang) {
     if (lang && hljs.getLanguage(lang)) {
       try {
-        const copyHtml = `<div id="copy" data-copy='${str}' style="position: absolute; right: 10px; top: 5px; color: #fff;cursor: pointer;">复制</div>`;
+        const copyHtml = `<div id="copy" data-copy='${str}' style="position: absolute; right: 10px; top: 5px; color: #fff;cursor: pointer;">${t('components.markdownView.copy')}</div>`;
         return `<pre style="position: relative;">${copyHtml}<code class="hljs">${
           hljs.highlight(lang, str, true).value
         }</code></pre>`;
@@ -185,7 +185,7 @@ const deepThinking = computed(() => {
     remainingContent = afterStart;
   }
   return (
-    '<span style="font-size: 12px;">思考中……</br></span>' + remainingContent
+    '<span style="font-size: 12px;">' + t('components.markdownView.thinking') + '</br></span>' + remainingContent
   );
 });
 

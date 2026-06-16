@@ -140,5 +140,14 @@ export default {
     noOpinion: 'No opinion available',
     noAssetLineage: 'No asset lineage available',
     noAssetQualityTask: 'No asset quality task available',
-    noTaskProcess: 'No task process available'
+    noTaskProcess: 'No task process available',
+    time: {
+      minutesAgo: ' minutes ago',
+      hoursAgo: ' hours ago',
+      daysAgo: ' days ago',
+      monthsAgo: ' months ago',
+      yearsAgo: ' years ago',
+      second: 'second',
+      millisecond: 'millisecond'
+    }
 }

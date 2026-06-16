@@ -209,7 +209,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
             }
             return dataSource.getConnection();
         } catch (SQLException e) {
-            throw new DataQueryException("获取数据库连接出错");
+            throw new DataQueryException("db.error.connection", "获取数据库连接出错");
         }
     }
 
@@ -242,7 +242,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
         } else if (dataSource instanceof SimpleDataSource) {
             ((SimpleDataSource) dataSource).close();
         } else {
-            throw new DataQueryException("不合法数据源类型");
+            throw new DataQueryException("db.error.invalid.datasource", "不合法数据源类型");
         }
     }
 
@@ -623,7 +623,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
     protected String trainToJdbcUrl(DbQueryProperty property) {
         String url = DbType.getDbType(property.getDbType()).getUrl();
         if (StringUtils.isEmpty(url)) {
-            throw new DataQueryException("无效数据库类型!");
+            throw new DataQueryException("db.error.invalid.dbtype", "无效数据库类型");
         }
         url = url.replace("${host}", property.getHost());
         url = url.replace("${port}", String.valueOf(property.getPort()));
@@ -650,7 +650,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
             }
         }
         if (StringUtils.isEmpty(dbName)) {
-            throw new DataQueryException("无效数据库类型!");
+            throw new DataQueryException("db.error.invalid.dbtype", "无效数据库类型");
         }
         String dataStorageSizeSql = dbDialect.getDataStorageSize(dbName);
         List<Map<String, Object>> dataStorageSizeResult = namedJdbcTemplate.query(dataStorageSizeSql, new MyRowMapper());
@@ -988,7 +988,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            throw new DataQueryException("sql解析失败!");
+            throw new DataQueryException("db.error.sql.parse", "SQL解析失败");
         } finally {
             if (stmt != null) {
                 try {

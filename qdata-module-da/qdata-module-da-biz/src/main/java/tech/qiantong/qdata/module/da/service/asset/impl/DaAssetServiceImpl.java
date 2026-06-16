@@ -64,6 +64,7 @@ import tech.qiantong.qdata.common.database.core.DbColumn;
 import tech.qiantong.qdata.common.database.core.FileInfo;
 import tech.qiantong.qdata.common.database.exception.DataQueryException;
 import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.ExcelToCsvUtil;
 import tech.qiantong.qdata.common.utils.PageUtil;
 import tech.qiantong.qdata.common.utils.StringUtils;
@@ -275,7 +276,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
         //根据模型id查询信息
         DpModelRespDTO dpModelByIdApi = iDpModelApiService.getDpModelByIdApi(daAssetReqDTO.getModelId());
         if (dpModelByIdApi == null) {
-            throw new ServiceException("模型不存在");
+            throw new ServiceException("da.error.model.notfound", "模型不存在");
         }
         DaAssetDO daAssetDO = new DaAssetDO();
         daAssetDO.setName(dpModelByIdApi.getModelComment());
@@ -384,7 +385,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
             if (StringUtils.isNotEmpty(dpDataElemListByIdsApi)) {
                 boolean b = iDpModelApiService.insertElementAssetRelation(dpDataElemAssetRel);
                 if (!b) {
-                    throw new ServiceException("数据元数据资产关联信息保存失败");
+                    throw new ServiceException("da.error.elem.save", "数据元数据资产关联信息保存失败");
                 }
             }
         }
@@ -452,7 +453,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
     @Override
     public List<DaAssetDO> getTablesByDataSourceId(DaAssetPageReqVO pageReqVO) {
         if (StringUtils.isEmpty(pageReqVO.getDatasourceId())) {
-            throw new ServiceException("数据源id不能为空");
+            throw new ServiceException("da.error.datasource.id.empty", "数据源id不能为空");
         }
         return this.lambdaQuery()
                 .eq(DaAssetDO::getDatasourceId, pageReqVO.getDatasourceId())
@@ -698,7 +699,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
         ArrayList<Long> assetIdList = new ArrayList<>(idList);
         int asset = dppEtlTaskService.checkTaskIdInAsset(assetIdList);
         if (asset > 0) {
-            throw new ServiceException("删除失败,资产被项目引用!");
+            throw new ServiceException("da.error.delete.project.ref", "删除失败,资产被项目引用!");
         }
         List<DaAssetDO> daAssetDOList = daAssetMapper.selectList("ID", idList);
         DaAssetDO daAssetDO = daAssetDOList != null ? daAssetDOList.get(0) : null;
@@ -724,7 +725,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
         assetIdList.add(id);
         int asset = dppEtlTaskService.checkTaskIdInAsset(assetIdList);
         if (asset > 0) {
-            throw new ServiceException("删除失败,资产被项目引用!");
+            throw new ServiceException("da.error.delete.project.ref", "删除失败,资产被项目引用!");
         }
         DaAssetDO daAssetDO = daAssetMapper.selectById(id);
         if (daAssetDO == null) {
@@ -781,7 +782,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
     @Override
     public String importDaAsset(List<DaAssetRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("导入数据不能为空！");
+            throw new ServiceException("da.error.import.empty", "导入数据不能为空！");
         }
 
         int successNum = 0;
@@ -799,14 +800,17 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
                         if (existingDaAsset != null) {
                             daAssetMapper.updateById(daAssetDO);
                             successNum++;
-                            successMessages.add("数据更新成功，ID为 " + daAssetId + " 的数据资产记录。");
+                            successMessages.add(MessageUtils.messageWithFallback("da.import.update.success",
+                                    "数据更新成功，ID为 " + daAssetId + " 的数据资产记录。", daAssetId, "数据资产"));
                         } else {
                             failureNum++;
-                            failureMessages.add("数据更新失败，ID为 " + daAssetId + " 的数据资产记录不存在。");
+                            failureMessages.add(MessageUtils.messageWithFallback("da.import.update.fail",
+                                    "数据更新失败，ID为 " + daAssetId + " 的数据资产记录不存在。", daAssetId, "数据资产"));
                         }
                     } else {
                         failureNum++;
-                        failureMessages.add("数据更新失败，某条记录的ID不存在。");
+                        failureMessages.add(MessageUtils.messageWithFallback("da.import.update.id.missing",
+                                "数据更新失败，某条记录的ID不存在。"));
                     }
                 } else {
                     QueryWrapper<DaAssetDO> queryWrapper = new QueryWrapper<>();
@@ -815,26 +819,32 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
                     if (existingDaAsset == null) {
                         daAssetMapper.insert(daAssetDO);
                         successNum++;
-                        successMessages.add("数据插入成功，ID为 " + daAssetId + " 的数据资产记录。");
+                        successMessages.add(MessageUtils.messageWithFallback("da.import.insert.success",
+                                "数据插入成功，ID为 " + daAssetId + " 的数据资产记录。", daAssetId, "数据资产"));
                     } else {
                         failureNum++;
-                        failureMessages.add("数据插入失败，ID为 " + daAssetId + " 的数据资产记录已存在。");
+                        failureMessages.add(MessageUtils.messageWithFallback("da.import.insert.fail",
+                                "数据插入失败，ID为 " + daAssetId + " 的数据资产记录已存在。", daAssetId, "数据资产"));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
-                String errorMsg = "数据导入失败，错误信息：" + e.getMessage();
+                String errorMsg = MessageUtils.messageWithFallback("da.import.error.detail",
+                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
         }
         StringBuilder resultMsg = new StringBuilder();
         if (failureNum > 0) {
-            resultMsg.append("很抱歉，导入失败！共 ").append(failureNum).append(" 条数据格式不正确，错误如下：");
-            resultMsg.append("<br/>").append(String.join("<br/>", failureMessages));
-            throw new ServiceException(resultMsg.toString());
+            String failureDetails = String.join("<br/>", failureMessages);
+            resultMsg.append(MessageUtils.messageWithFallback("da.import.result.fail",
+                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    failureNum, failureDetails));
+            throw new ServiceException("da.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
-            resultMsg.append("恭喜您，数据已全部导入成功！共 ").append(successNum).append(" 条。");
+            resultMsg.append(MessageUtils.messageWithFallback("da.import.result.success",
+                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
         }
         return resultMsg.toString();
     }
@@ -850,7 +860,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
         String tableName = "";
         Long dataSourceId = null;
         if (StringUtils.isEmpty(jsonObject.getStr("pageNum")) || StringUtils.isEmpty(jsonObject.getStr("pageSize"))) {
-            throw new DataQueryException("请携带页码与每页条数！");
+            throw new DataQueryException("db.error.pagination.missing", "请携带页码与每页条数！");
         }
         // 查询数据
         Integer pageNum = Integer.valueOf(jsonObject.getStr("pageNum"));
@@ -886,12 +896,12 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
         DbDialect dbDialect = DialectFactory.getDialect(DbType.getDbType(dbQueryProperty.getDbType()));
         if (!dbQuery.valid()) {
             dbQuery.close();
-            throw new DataQueryException("数据库连接失败");
+            throw new DataQueryException("db.error.connection.fail", "数据库连接失败");
         }
         int existsSQL = dbQuery.generateCheckTableExistsSQL(dbQueryProperty, tableName);
         if (existsSQL == 0) {
             dbQuery.close();
-            throw new DataQueryException("数据库中未获取到该表数据，请确认表是否存在!");
+            throw new DataQueryException("db.error.table.missing", "数据库中未获取到该表数据，请确认表是否存在");
         }
         // 获取字段集合
         List<DbColumn> columns = redisCache.getCacheList(CacheConstants.ASSET_PREVIEW_KEY + daDatasourceDO.getId() + "_" + tableName);
@@ -905,7 +915,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
             columns = dbQuery.getTableColumns(dbQueryProperty, tableName);
             if (columns.size() == 0) {
                 dbQuery.close();
-                throw new DataQueryException("数据库连接失败");
+                throw new DataQueryException("db.error.connection.fail", "数据库连接失败");
             }
             redisCache.setCacheList(CacheConstants.ASSET_PREVIEW_KEY + daDatasourceDO.getId() + "_" + tableName, columns);
             redisCache.expire(CacheConstants.ASSET_PREVIEW_KEY + daDatasourceDO.getId() + "_" + tableName, 5, TimeUnit.MINUTES);
@@ -1283,7 +1293,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
             daAsset.setFieldCount(0L);
             createDaAssetFileNew(daAsset);
         } else {
-            throw new ServiceException("类型暂不支持！");
+            throw new ServiceException("da.error.type.unsupported", "类型暂不支持！");
         }
 
         createDaAssetProjectRel(daAsset);
@@ -1314,7 +1324,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
             setDaAssetDefaultValues(daAsset);
             createDaAssetFilesNew(daAsset);
         } else {
-            throw new ServiceException("类型暂不支持！");
+            throw new ServiceException("da.error.type.unsupported", "类型暂不支持！");
         }
 
 
@@ -1349,7 +1359,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
     }
 
     private void createDaAssetFileNew(DaAssetSaveReqVO daAsset) {
-        Assert.notNull(daAsset.getFileInfo(), () -> new ServiceException("缺少文件路径"));
+        Assert.notNull(daAsset.getFileInfo(), () -> new ServiceException("da.error.file.path.missing", "缺少文件路径"));
         DaDatasourceDO daDatasourceDO = daDatasourceMapper.selectById(daAsset.getDatasourceId());
 
         if (daAsset.getId() == null) {
@@ -1377,7 +1387,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
         List<String> columnList = ExcelToCsvUtil.convertExcelToCsv(excelFile, csvFile, startColumn, startData);
         if (columnList.size() > 0) {
             if (!ExcelToCsvUtil.verifyColumn(columnList)) {
-                throw new ServiceException("附件中列名格式有误，请检查!");
+                throw new ServiceException("da.error.file.column.format", "附件中列名格式有误，请检查!");
             }
         }
         ColumnRespVO columnRespVO = ColumnRespVO.builder().csvFile(csvFile).columnList(columnList).build();
@@ -1399,7 +1409,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
         List<String> columnList = ExcelToCsvUtil.parseCsv(file, csvFile);
         if (columnList.size() > 0) {
             if (!ExcelToCsvUtil.verifyColumn(columnList)) {
-                throw new ServiceException("附件中列名格式有误，请检查!");
+                throw new ServiceException("da.error.file.column.format", "附件中列名格式有误，请检查!");
             }
         }
         ColumnRespVO columnRespVO = ColumnRespVO.builder().csvFile(csvFile).columnList(columnList).build();
@@ -1635,12 +1645,12 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
             DaDatasourceDO daDatasourceById = iDaDatasourceService.getDaDatasourceById(daAssetById.getDatasourceId());
             DbQueryProperty dbQueryProperty = new DbQueryProperty(daDatasourceById.getDatasourceType(), daDatasourceById.getIp(), daDatasourceById.getPort(), daDatasourceById.getDatasourceConfig());
             if (!isCountSupported(dbQueryProperty.getDbType())) {
-                throw new DataQueryException("暂不支持此类型数据源，请联系管理员！");
+                throw new DataQueryException("db.error.datasource.type.unsupported", "暂不支持此类型数据源，请联系管理员！");
             }
 
             DbQuery dbQuery = dataSourceFactory.createDbQuery(dbQueryProperty);
             if (!dbQuery.valid()) {
-                throw new DataQueryException("数据库连接失败");
+                throw new DataQueryException("db.error.connection.fail", "数据库连接失败");
             }
 
             updateAssetFieldAndDataCount(dbQuery, dbQueryProperty, daAssetById);
@@ -1751,13 +1761,13 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
         //获取资产信息
         DaAssetDO daAsset = this.getById(id);
         if (!StringUtils.equals("1", daAsset.getType())) {
-            throw new ServiceException("资产类型错误");
+            throw new ServiceException("da.error.asset.type.wrong", "资产类型错误");
         }
         Long datasourceId = daAsset.getDatasourceId();
         //获取数据源连接信息
         DaDatasourceDO datasource = iDaDatasourceService.getById(datasourceId);
         if (datasource == null) {
-            throw new ServiceException("数据源信息不存在");
+            throw new ServiceException("da.error.datasource.notfound", "数据源信息不存在");
         }
         DbQueryProperty dbProperty = new DbQueryProperty(datasource.getDatasourceType(), datasource.getIp(), datasource.getPort(), datasource.getDatasourceConfig());
         DbDialect dbDialect = DialectFactory.getDialect(DbType.getDbType(dbProperty.getDbType()));
@@ -1826,7 +1836,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
                 .in(DaAssetDO::getTableId, daAssetList.stream()
                         .map(e -> e.getTableId())
                         .collect(Collectors.toList()))) > 0) {
-            throw new ServiceException("当前所选的元数据部分已在资产中存在！");
+            throw new ServiceException("da.error.elem.exists", "当前所选的元数据部分已在资产中存在！");
         }
         for (DaAssetSaveReqVO vo : daAssetList) {
             Long id = this.createDaAssetNew(vo);

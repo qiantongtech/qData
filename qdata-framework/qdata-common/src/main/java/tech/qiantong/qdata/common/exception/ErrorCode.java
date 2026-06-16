@@ -34,14 +34,18 @@ package tech.qiantong.qdata.common.exception;
 
 import lombok.Data;
 import tech.qiantong.qdata.common.exception.enums.GlobalErrorCodeConstants;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 
 /**
  * 错误码对象
  *
- * 全局错误码，占用 [0, 999], 参见 {@link GlobalErrorCodeConstants}
+ * 全局错误码，占用 [0, 999]，参见 {@link GlobalErrorCodeConstants}
  * 业务异常错误码，占用 [1 000 000 000, +∞)，参见 {@link ServiceErrorCodeRange}
  *
- * TODO 错误码设计成对象的原因，为未来的 i18 国际化做准备
+ * i18n 国际化：getMsg() 优先从资源文件读取（key = "error.{code}"），找不到则使用构造函数传入的默认 message
+ * 资源文件：qdata-server/src/main/resources/i18n/messages*.properties
+ *
+ * @author qdata
  */
 @Data
 public class ErrorCode {
@@ -51,13 +55,22 @@ public class ErrorCode {
      */
     private final Integer code;
     /**
-     * 错误提示
+     * 错误提示（默认消息，i18n 获取失败时的兜底）
      */
     private final String msg;
 
     public ErrorCode(Integer code, String message) {
         this.code = code;
         this.msg = message;
+    }
+
+    /**
+     * 获取国际化后的错误提示
+     * 优先从 i18n 资源文件获取 key = "error.{code}" 的文案
+     * 获取不到则使用构造函数传入的 msg 作为兜底
+     */
+    public String getMsg() {
+        return MessageUtils.messageWithFallback("error." + code, msg);
     }
 
 }

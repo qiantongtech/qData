@@ -53,6 +53,7 @@ import tech.qiantong.qdata.common.core.domain.entity.SysUser;
 import tech.qiantong.qdata.common.core.domain.model.LoginUser;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.PageUtils;
 import tech.qiantong.qdata.common.utils.SecurityUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
@@ -288,7 +289,7 @@ public class IAttProjectServiceImpl extends ServiceImpl<AttProjectMapper, AttPro
     @Override
     public String importAttProject(List<AttProjectRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("导入数据不能为空！");
+            throw new ServiceException("att.error.import.empty", "导入数据不能为空！");
         }
 
         int successNum = 0;
@@ -306,14 +307,17 @@ public class IAttProjectServiceImpl extends ServiceImpl<AttProjectMapper, AttPro
                         if (existingAttProject != null) {
                             attProjectMapper.updateById(attProjectDO);
                             successNum++;
-                            successMessages.add("数据更新成功，ID为 " + attProjectId + " 的项目记录。");
+                            successMessages.add(MessageUtils.messageWithFallback("att.import.update.success",
+                                    "数据更新成功，ID为 " + attProjectId + " 的项目记录。", attProjectId, "项目"));
                         } else {
                             failureNum++;
-                            failureMessages.add("数据更新失败，ID为 " + attProjectId + " 的项目记录不存在。");
+                            failureMessages.add(MessageUtils.messageWithFallback("att.import.update.fail",
+                                    "数据更新失败，ID为 " + attProjectId + " 的项目记录不存在。", attProjectId, "项目"));
                         }
                     } else {
                         failureNum++;
-                        failureMessages.add("数据更新失败，某条记录的ID不存在。");
+                        failureMessages.add(MessageUtils.messageWithFallback("att.import.update.id.missing",
+                                "数据更新失败，某条记录的ID不存在。"));
                     }
                 } else {
                     QueryWrapper<AttProjectDO> queryWrapper = new QueryWrapper<>();
@@ -322,26 +326,32 @@ public class IAttProjectServiceImpl extends ServiceImpl<AttProjectMapper, AttPro
                     if (existingAttProject == null) {
                         attProjectMapper.insert(attProjectDO);
                         successNum++;
-                        successMessages.add("数据插入成功，ID为 " + attProjectId + " 的项目记录。");
+                        successMessages.add(MessageUtils.messageWithFallback("att.import.insert.success",
+                                "数据插入成功，ID为 " + attProjectId + " 的项目记录。", attProjectId, "项目"));
                     } else {
                         failureNum++;
-                        failureMessages.add("数据插入失败，ID为 " + attProjectId + " 的项目记录已存在。");
+                        failureMessages.add(MessageUtils.messageWithFallback("att.import.insert.fail",
+                                "数据插入失败，ID为 " + attProjectId + " 的项目记录已存在。", attProjectId, "项目"));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
-                String errorMsg = "数据导入失败，错误信息：" + e.getMessage();
+                String errorMsg = MessageUtils.messageWithFallback("att.import.error.detail",
+                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
         }
         StringBuilder resultMsg = new StringBuilder();
         if (failureNum > 0) {
-            resultMsg.append("很抱歉，导入失败！共 ").append(failureNum).append(" 条数据格式不正确，错误如下：");
-            resultMsg.append("<br/>").append(String.join("<br/>", failureMessages));
-            throw new ServiceException(resultMsg.toString());
+            String failureDetails = String.join("<br/>", failureMessages);
+            resultMsg.append(MessageUtils.messageWithFallback("att.import.result.fail",
+                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    failureNum, failureDetails));
+            throw new ServiceException("att.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
-            resultMsg.append("恭喜您，数据已全部导入成功！共 ").append(successNum).append(" 条。");
+            resultMsg.append(MessageUtils.messageWithFallback("att.import.result.success",
+                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
         }
         return resultMsg.toString();
     }

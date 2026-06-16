@@ -797,7 +797,7 @@ public class OracleDialect extends AbstractDbDialect {
     public String trainToJdbcUrl(DbQueryProperty property) {
         String url = DbType.getDbType(property.getDbType()).getUrl();
         if (org.springframework.util.StringUtils.isEmpty(url)) {
-            throw new DataQueryException("无效数据库类型!");
+            throw new DataQueryException("db.error.invalid.dbtype", "无效数据库类型");
         }
         url = url.replace("${host}", property.getHost());
         url = url.replace("${port}", String.valueOf(property.getPort()));

@@ -41,6 +41,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.module.da.controller.admin.assetchild.theme.vo.DaAssetThemeRelPageReqVO;
@@ -119,7 +120,9 @@ public class DaAssetApplyServiceImpl extends ServiceImpl<DaAssetApplyMapper, DaA
             return daAssetApplyDO.getId();
         }
         if (daAssetApplyDO != null) {
-            throw new ServiceException(createReqVO.getProjectName() + "项目已申请" + createReqVO.getAssetName() + "资产,请等待审批!");
+            throw new ServiceException("da.error.apply.duplicate",
+                    createReqVO.getProjectName() + "项目已申请" + createReqVO.getAssetName() + "资产,请等待审批!",
+                    createReqVO.getProjectName(), createReqVO.getAssetName());
         }
         daAssetApplyMapper.insert(dictType);
         return dictType.getId();
@@ -207,7 +210,7 @@ public class DaAssetApplyServiceImpl extends ServiceImpl<DaAssetApplyMapper, DaA
     @Override
     public String importDaAssetApply(List<DaAssetApplyRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("导入数据不能为空！");
+            throw new ServiceException("da.error.import.empty", "导入数据不能为空！");
         }
 
         int successNum = 0;
@@ -225,14 +228,17 @@ public class DaAssetApplyServiceImpl extends ServiceImpl<DaAssetApplyMapper, DaA
                         if (existingDaAssetApply != null) {
                             daAssetApplyMapper.updateById(daAssetApplyDO);
                             successNum++;
-                            successMessages.add("数据更新成功，ID为 " + daAssetApplyId + " 的数据资产申请记录。");
+                            successMessages.add(MessageUtils.messageWithFallback("da.import.update.success",
+                                    "数据更新成功，ID为 " + daAssetApplyId + " 的数据资产申请记录。", daAssetApplyId, "数据资产申请"));
                         } else {
                             failureNum++;
-                            failureMessages.add("数据更新失败，ID为 " + daAssetApplyId + " 的数据资产申请记录不存在。");
+                            failureMessages.add(MessageUtils.messageWithFallback("da.import.update.fail",
+                                    "数据更新失败，ID为 " + daAssetApplyId + " 的数据资产申请记录不存在。", daAssetApplyId, "数据资产申请"));
                         }
                     } else {
                         failureNum++;
-                        failureMessages.add("数据更新失败，某条记录的ID不存在。");
+                        failureMessages.add(MessageUtils.messageWithFallback("da.import.update.id.missing",
+                                "数据更新失败，某条记录的ID不存在。"));
                     }
                 } else {
                     QueryWrapper<DaAssetApplyDO> queryWrapper = new QueryWrapper<>();
@@ -241,26 +247,32 @@ public class DaAssetApplyServiceImpl extends ServiceImpl<DaAssetApplyMapper, DaA
                     if (existingDaAssetApply == null) {
                         daAssetApplyMapper.insert(daAssetApplyDO);
                         successNum++;
-                        successMessages.add("数据插入成功，ID为 " + daAssetApplyId + " 的数据资产申请记录。");
+                        successMessages.add(MessageUtils.messageWithFallback("da.import.insert.success",
+                                "数据插入成功，ID为 " + daAssetApplyId + " 的数据资产申请记录。", daAssetApplyId, "数据资产申请"));
                     } else {
                         failureNum++;
-                        failureMessages.add("数据插入失败，ID为 " + daAssetApplyId + " 的数据资产申请记录已存在。");
+                        failureMessages.add(MessageUtils.messageWithFallback("da.import.insert.fail",
+                                "数据插入失败，ID为 " + daAssetApplyId + " 的数据资产申请记录已存在。", daAssetApplyId, "数据资产申请"));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
-                String errorMsg = "数据导入失败，错误信息：" + e.getMessage();
+                String errorMsg = MessageUtils.messageWithFallback("da.import.error.detail",
+                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
         }
         StringBuilder resultMsg = new StringBuilder();
         if (failureNum > 0) {
-            resultMsg.append("很抱歉，导入失败！共 ").append(failureNum).append(" 条数据格式不正确，错误如下：");
-            resultMsg.append("<br/>").append(String.join("<br/>", failureMessages));
-            throw new ServiceException(resultMsg.toString());
+            String failureDetails = String.join("<br/>", failureMessages);
+            resultMsg.append(MessageUtils.messageWithFallback("da.import.result.fail",
+                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    failureNum, failureDetails));
+            throw new ServiceException("da.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
-            resultMsg.append("恭喜您，数据已全部导入成功！共 ").append(successNum).append(" 条。");
+            resultMsg.append(MessageUtils.messageWithFallback("da.import.result.success",
+                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
         }
         return resultMsg.toString();
     }

@@ -92,7 +92,7 @@ public class DgDesensitizeWhitelistServiceImpl  extends ServiceImpl<DgDesensitiz
         //判断分类是否已在白名单中存在
         if (dgDesensitizeWhitelistMapper.selectCount(new LambdaQueryWrapper<DgDesensitizeWhitelistDO>()
                 .eq(DgDesensitizeWhitelistDO::getDataCategoryId, dictType.getDataCategoryId())) > 0) {
-            throw new IllegalArgumentException("数据分类已存在");
+            throw new ServiceException("dg.error.duplicate.category", "数据分类已存在");
         }
         dgDesensitizeWhitelistMapper.insert(dictType);
         // 插入用户集合

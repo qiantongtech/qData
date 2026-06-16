@@ -136,12 +136,12 @@ public class KafkaDialect extends AbstractDbDialect {
             admin.deleteTopics(Collections.singleton(topic)).all().get();
             return true;
         } catch (Exception e) {
-            throw new DataQueryException("数据库连接失败,稍后重试");
+            throw new DataQueryException("db.error.connection.retry", "数据库连接失败，请稍后重试");
         } finally {
             try {
                 admin.close();
             } catch (Exception e) {
-                throw new DataQueryException("关闭kafka连接出错");
+                throw new DataQueryException("db.error.close.kafka", "关闭kafka连接出错");
             }
         }
     }

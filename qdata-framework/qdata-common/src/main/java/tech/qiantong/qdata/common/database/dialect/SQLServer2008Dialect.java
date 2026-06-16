@@ -647,13 +647,13 @@ public class SQLServer2008Dialect extends AbstractDbDialect {
             }
         } catch (SQLException e) {
             log.error(e.getMessage());
-            throw new DataQueryException("数据库连接失败,稍后重试");
+            throw new DataQueryException("db.error.connection.retry", "数据库连接失败，请稍后重试");
         } finally {
             if (conn != null) {
                 try {
                     conn.close();
                 } catch (SQLException e) {
-                    throw new DataQueryException("关闭数据库连接出错");
+                    throw new DataQueryException("db.error.close.connection", "关闭数据库连接出错");
                 }
             }
         }

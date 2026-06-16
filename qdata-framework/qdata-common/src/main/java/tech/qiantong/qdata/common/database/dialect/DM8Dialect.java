@@ -417,7 +417,7 @@ public class DM8Dialect extends AbstractDbDialect {
             return conn.isValid(0);
         } catch (SQLException e) {
             log.error("数据库连接失败", e);
-            throw new DataQueryException("数据库连接失败,稍后重试");
+            throw new DataQueryException("db.error.connection.retry", "数据库连接失败，请稍后重试");
         }
     }
 
@@ -554,7 +554,7 @@ public class DM8Dialect extends AbstractDbDialect {
     public String trainToJdbcUrl(DbQueryProperty property) {
         String url = DbType.getDbType(property.getDbType()).getUrl();
         if (org.springframework.util.StringUtils.isEmpty(url)) {
-            throw new DataQueryException("无效数据库类型!");
+            throw new DataQueryException("db.error.invalid.dbtype", "无效数据库类型");
         }
         url = url.replace("${host}", property.getHost());
         url = url.replace("${port}", String.valueOf(property.getPort()));

@@ -421,6 +421,7 @@ defineExpose({
 <style lang="scss">
 .el-menu--horizontal.el-menu {
   padding-top: 10px;
+  border-bottom: 0;
 }
 
 .topmenu-container.el-menu--horizontal > .el-menu-item {

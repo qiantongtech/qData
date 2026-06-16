@@ -25,10 +25,17 @@ function translateLabel(dictType, value, fallback) {
   return translated !== key ? translated : fallback
 }
 
+function translateRemark(dictType, value, fallback) {
+  const key = `dict.${dictType}.remark.${value}`
+  const translated = i18n.global.t(key)
+  return translated !== key ? translated : fallback
+}
+
 function mapAndTranslate(dictType, items) {
   return items.map(p => ({
     ...p,
-    label: translateLabel(dictType, p.value, p.label)
+    label: translateLabel(dictType, p.value, p.label),
+    remark: translateRemark(dictType, p.value, p.label),
   }))
 }
 

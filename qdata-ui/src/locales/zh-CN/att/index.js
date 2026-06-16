@@ -1,5 +1,9 @@
 export default {
   common: {
+    edit: '修改',
+    rootNode: '顶级节点',
+    nameRequired: '{name}不能为空',
+    confirmDeleteItem: '是否确认删除编号为"<ids>"的数据项？',
     dataAssetCatName: '数据资产类目名称',
     dataAssetCatNamePlaceholder: '请输入数据资产类目名称',
     dataDocCatName: '数据文档名称',
@@ -141,6 +145,9 @@ export default {
       name: '文档类目名称',
       sortOrder: '排序'
     },
+    validations: {
+      nameRequired: '文档类目名称不能为空'
+    },
     title: {
       add: '新增数据文档类目',
       edit: '修改数据文档类目'
@@ -189,6 +196,10 @@ export default {
       sortOrder: '类别排序',
       hierarchyCode: '层级编码'
     },
+    validations: {
+      nameRequired: '清洗规则类目名称不能为空',
+      parentIdRequired: '上级类目不能为空'
+    },
     title: {
       add: '添加清洗规则类目',
       edit: '修改清洗规则类目',
@@ -226,6 +237,10 @@ export default {
       name: '数据元类目名称',
       sortOrder: '排序'
     },
+    validations: {
+      nameRequired: '数据元类目名称不能为空',
+      parentIdRequired: '上级类目不能为空'
+    },
     title: {
       add: '新增数据元类目',
       edit: '修改数据元类目'
@@ -239,6 +254,10 @@ export default {
       name: '标准信息分类名称',
       sortOrder: '排序'
     },
+    validations: {
+      nameRequired: '标准信息分类名称不能为空',
+      parentIdRequired: '上级类目不能为空'
+    },
     title: {
       add: '新增标准信息分类管理',
       edit: '修改标准信息分类管理'
@@ -251,6 +270,10 @@ export default {
     table: {
       name: '模型类目名称',
       sortOrder: '排序'
+    },
+    validations: {
+      nameRequired: '逻辑模型类目名称不能为空',
+      parentIdRequired: '上级类目不能为空'
     },
     title: {
       add: '新增逻辑模型类目',
@@ -271,6 +294,10 @@ export default {
       manager: '负责人',
       contact: '联系方式'
     },
+    validations: {
+      nameRequired: '项目名称不能为空',
+      managerRequired: '负责人不能为空'
+    },
     title: {
       add: '新增项目',
       edit: '修改项目',
@@ -279,12 +306,16 @@ export default {
     importTitle: '项目导入',
     message: {
       confirmDelete: '是否确认删除项目编号为"<ids>"的数据项？'
-    }
+    },
+    importResult: '导入结果'
   },
   qualityCat: {
     table: {
       name: '质量类目名称',
       sortOrder: '排序'
+    },
+    validations: {
+      nameRequired: '数据质量类目名称不能为空'
     },
     title: {
       add: '新增数据质量类目',

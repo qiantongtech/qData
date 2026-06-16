@@ -147,7 +147,7 @@ function handleBeforeUpload(file) {
     const fileExt = fileName[fileName.length - 1];
     const isTypeOk = props.fileType.indexOf(fileExt) >= 0;
     if (!isTypeOk) {
-      proxy.$modal.msgError(`文件格式不正确, 请上传${props.fileType.join("/")}格式文件!`);
+      proxy.$modal.msgError(t('components.fileUpload2.fileFormatError', { fileTypes: props.fileType.join("/") }));
       return false;
     }
   }
@@ -159,19 +159,19 @@ function handleBeforeUpload(file) {
   //     return false;
   //   }
   // }
-  proxy.$modal.loading("正在上传文件，请稍候...");
+  proxy.$modal.loading(t('components.fileUpload2.uploading'));
   number.value++;
   return true;
 }
 
 // 文件个数超出
 function handleExceed() {
-  proxy.$modal.msgError(`上传文件数量不能超过 ${props.limit} 个!`);
+  proxy.$modal.msgError(t('components.fileUpload2.exceedLimit', { limit: props.limit }));
 }
 
 // 上传失败
 function handleUploadError(err) {
-  proxy.$modal.msgError("上传文件失败");
+  proxy.$modal.msgError(t('components.fileUpload2.uploadError'));
 }
 
 // 上传成功回调

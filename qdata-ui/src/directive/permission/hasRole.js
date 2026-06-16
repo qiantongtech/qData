@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright © 2025 Qiantong Technology Co., Ltd.
  * qData Data Middle Platform (Open Source Edition)
  *  *
@@ -20,6 +20,7 @@
  * Copyright (c) 2019 qdata
  */
 
+import { i18n } from "@/plugins/vueI18n";
 import useUserStore from '@/store/system/user'
 
 export default {
@@ -39,7 +40,7 @@ export default {
         el.parentNode && el.parentNode.removeChild(el)
       }
     } else {
-      throw new Error(`请设置角色权限标签值`)
+      throw new Error(i18n.global.t('common.error.setRoleValue'))
     }
   }
 }

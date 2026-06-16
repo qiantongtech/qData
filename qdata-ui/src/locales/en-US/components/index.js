@@ -210,5 +210,18 @@ export default {
     imageFormatError: 'Invalid image format!',
     fileSizeError: 'File size cannot exceed {size} MB!',
     imageUploadFailed: 'Image upload failed'
+  },
+  settings: {
+    themeSettings: 'Theme Settings',
+    themeColor: 'Theme Color',
+    layoutSettings: 'Layout Settings',
+    tagsView: 'Enable Tags-Views',
+    fixedHeader: 'Fixed Header',
+    showLogo: 'Show Logo',
+    dynamicTitle: 'Dynamic Title',
+    saveSettings: 'Save Settings',
+    resetSettings: 'Reset Settings',
+    savingLoading: 'Saving to local storage, please wait...',
+    resetLoading: 'Clearing settings cache and refreshing, please wait...'
   }
 }

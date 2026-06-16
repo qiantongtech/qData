@@ -71,7 +71,6 @@ export const guideTipConfig = {
 // 定义文档基础路径
 const DOCS_BASE_URL = 'https://qdata.qiantong.tech';
 
-
 export const guideTipConfig = {
     // 首页
     'index': {

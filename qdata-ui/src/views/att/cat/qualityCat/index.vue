@@ -219,8 +219,8 @@ const data = reactive({
     parentId: null
   },
   rules: {
-    name: [{ required: true, message: '数据质量类目名称不能为空', trigger: 'blur' }],
-    parentId: [{ required: true, message: '上级类目不能为空', trigger: 'blur' }]
+    name: [{ required: true, message: td('att.qualityCat.validations.nameRequired'), trigger: 'blur' }],
+    parentId: [{ required: true, message: td('att.common.parentIdRequired'), trigger: 'blur' }]
   }
 });
 
@@ -301,7 +301,7 @@ function handleAdd(row) {
   // getTreeselect();
   listAttQualityCat().then((response) => {
     attAssetCatOptions.value = [];
-    const data = { id: 0, name: '顶级节点', children: [] };
+    const data = { id: 0, name: td('att.common.rootNode'), children: [] };
     data.children = proxy.handleTree(response.data, 'id', 'parentId');
     attAssetCatOptions.value.push(data);
   });
@@ -325,7 +325,7 @@ function toggleExpandAll() {
 function getDataTree() {
   listAttQualityCat().then((response) => {
     attAssetCatOptions.value = [];
-    const data = { id: 0, name: '顶级节点', children: [] };
+    const data = { id: 0, name: td('att.common.rootNode'), children: [] };
     data.children = proxy.handleTree(response.data, 'id', 'parentId');
     attAssetCatOptions.value.push(data);
   });
@@ -342,7 +342,7 @@ async function handleUpdate(row) {
     // 过滤条件：去掉目标部门ID或者祖先中包含目标部门ID的项
     return d.ID !== row.id && !d.parentId.toString().split(',').includes(row.id.toString());
   });
-  const data = { id: 0, name: '顶级节点', children: [] };
+  const data = { id: 0, name: td('att.common.rootNode'), children: [] };
   data.children = proxy.handleTree(filteredDepts, 'id', 'parentId');
   attAssetCatOptions.value.push(data);
   if (row != null) {

@@ -31,7 +31,8 @@ export default [
                 name: 'DataElemCodeDetail',
                 meta: {
                     title: '脱敏规则详情',
-                    activeMenu: '/dg/safety/desensitizationRules'
+                    activeMenu: '/dg/safety/desensitizationRules',
+                    lang: 'public.desensitizationRuleDetail'
                 }
             },
         ]

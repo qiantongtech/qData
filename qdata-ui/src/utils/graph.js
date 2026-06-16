@@ -185,20 +185,20 @@ export const cuPort = {
 
 // 节点的类型
 export const typeList = [
-  { value: 1, label: '输入组件' },
-  { value: 2, label: '输出组件' },
-  { value: 3, label: '转换组件' }
+  { value: 1, label: () => i18n.global.t('common.graph.inputComponent') },
+  { value: 2, label: () => i18n.global.t('common.graph.outputComponent') },
+  { value: 3, label: () => i18n.global.t('common.graph.transformComponent') }
 ];
 export const toolbar = [
   {
     id: "zoom-out",
     icon: "toolbar (1).png",
-    tip: "缩小",
+    tip: () => i18n.global.t('common.graph.zoomOut'),
   },
   {
     id: "zoom-in",
     icon: "toolbar (8).png",
-    tip: "放大",
+    tip: () => i18n.global.t('common.graph.zoomIn'),
   },
   // {
   //   id: "full-screen",
@@ -219,16 +219,16 @@ export const toolbar = [
   {
     id: "auto-fit",
     icon: "toolbar (4).png",
-    tip: "重置视角",
+    tip: () => i18n.global.t('common.graph.resetView'),
   },
   {
     id: "export",
     icon: "toolbar (2).png",
-    tip: i18n.global.t('common.button.export'),
+    tip: () => i18n.global.t('common.button.export'),
   },
   {
     id: "reset",
     icon: "toolbar (3).png",
-    tip: i18n.global.t('common.button.reset'),
+    tip: () => i18n.global.t('common.button.reset'),
   },
 ];

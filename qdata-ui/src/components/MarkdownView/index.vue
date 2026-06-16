@@ -162,7 +162,7 @@ const getFileType = (name) => {
 /** 复制 */
 const copyContent = async () => {
   await copy(dialogue.value.textContent);
-  message.msgSuccess("复制成功！");
+  message.msgSuccess(t('common.message.copySuccess'));
 };
 
 const deepThinking = computed(() => {
@@ -202,7 +202,7 @@ onMounted(async () => {
   contentRef.value.addEventListener("click", (e) => {
     if (e.target.id === "copy") {
       copy(e.target?.dataset?.copy);
-      message.msgSuccess("复制成功!");
+      message.msgSuccess(t('common.message.copySuccess'));
     }
   });
 });

@@ -112,12 +112,12 @@ watch(
 function handleBeforeUpload(file) {
     const ext = file.name.split('.').pop().toLowerCase()
     if (!props.fileType.includes(ext)) {
-        ElMessage.error(`文件格式不正确，请上传 ${props.fileType.join('/')} 格式文件`)
+        ElMessage.error(t('components.fileUploadbtn.fileFormatError', { fileTypes: props.fileType.join('/') }))
         return false
     }
     const size = file.size / 1024 / 1024
     if (size > props.fileSize) {
-        ElMessage.error(`文件大小不能超过 ${props.fileSize}MB`)
+        ElMessage.error(t('components.fileUploadbtn.fileSizeError', { fileSize: props.fileSize }))
         return false
     }
     return true
@@ -146,11 +146,11 @@ function handleUploadSuccess(res, file) {
     }
 }
 function handleUploadError() {
-    ElMessage.error('上传文件失败')
+    ElMessage.error(t('components.fileUploadbtn.uploadError'))
 }
 
 function handleExceed() {
-    ElMessage.warning(`最多只能上传 ${props.limit} 个文件`)
+    ElMessage.warning(t('components.fileUploadbtn.exceedLimit', { limit: props.limit }))
 }
 
 function handleDelete(index) {

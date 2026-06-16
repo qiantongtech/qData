@@ -210,5 +210,18 @@ export default {
     imageFormatError: '画像形式が無効です！',
     fileSizeError: 'ファイルサイズは{size}MBを超えることはできません！',
     imageUploadFailed: '画像アップロードに失敗しました'
+  },
+  settings: {
+    themeSettings: 'テーマ設定',
+    themeColor: 'テーマカラー',
+    layoutSettings: 'レイアウト設定',
+    tagsView: 'タグビューを有効にする',
+    fixedHeader: 'ヘッダーを固定',
+    showLogo: 'ロゴを表示',
+    dynamicTitle: '動的タイトル',
+    saveSettings: '設定を保存',
+    resetSettings: '設定をリセット',
+    savingLoading: 'ローカルに保存中、しばらくお待ちください...',
+    resetLoading: '設定キャッシュをクリアしてリフレッシュ中、しばらくお待ちください...'
   }
 }

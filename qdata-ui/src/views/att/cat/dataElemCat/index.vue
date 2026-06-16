@@ -351,12 +351,12 @@ const data = reactive({
   },
   rules: {
     name: [
-      { required: true, message: "数据元类目名称不能为空", trigger: "blur" },
+      { required: true, message: td('att.dataElemCat.validations.nameRequired'), trigger: "blur" },
     ],
     parentId: [
-      { required: true, message: "上级类目不能为空", trigger: "blur" },
+      { required: true, message: td('att.dataElemCat.validations.parentIdRequired'), trigger: "blur" },
     ],
-    code: [{ required: true, message: "编码不能为空", trigger: "blur" }],
+    code: [{ required: true, message: td('att.common.codeRequired'), trigger: "blur" }],
   },
 });
 
@@ -378,7 +378,7 @@ function getList() {
 function getDataTree() {
   listAttDataElemCat().then((response) => {
     attDataElemCatOptions.value = [];
-    const data = { id: 0, name: "顶级节点", children: [] };
+    const data = { id: 0, name: td('att.common.rootNode'), children: [] };
     data.children = proxy.handleTree(response.data, "id", "parentId");
     attDataElemCatOptions.value.push(data);
   });
@@ -449,7 +449,7 @@ function handleAdd(row) {
   // getTreeselect();
   listAttDataElemCat().then((response) => {
     attDataElemCatOptions.value = [];
-    const data = { id: 0, name: "顶级节点", children: [] };
+    const data = { id: 0, name: td('att.common.rootNode'), children: [] };
     data.children = proxy.handleTree(response.data, "id", "parentId");
     attDataElemCatOptions.value.push(data);
   });
@@ -485,7 +485,7 @@ async function handleUpdate(row) {
       !d.parentId.toString().split(",").includes(row.id.toString())
     );
   });
-  const data = { id: 0, name: "顶级节点", children: [] };
+  const data = { id: 0, name: td('att.common.rootNode'), children: [] };
   data.children = proxy.handleTree(filteredDepts, "id", "parentId");
   attDataElemCatOptions.value.push(data);
   if (row != null) {

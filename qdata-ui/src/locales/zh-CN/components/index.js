@@ -100,11 +100,47 @@ export default {
     uploadError: '上传文件失败',
     exceedLimit: '最多只能上传 {limit} 个文件'
   },
+  fileUpload: {
+    fileFormatError: '文件格式不正确, 请上传{fileTypes}格式文件!',
+    fileSizeError: '上传文件大小不能超过 {fileSize} MB!',
+    exceedLimit: '上传文件数量不能超过 {limit} 个!',
+    uploadError: '上传文件失败',
+    uploading: '正在上传文件，请稍候...'
+  },
   fileUpload2: {
     fileFormatError: '文件格式不正确, 请上传{fileTypes}格式文件!',
     exceedLimit: '上传文件数量不能超过 {limit} 个!',
     uploadError: '上传文件失败',
     uploading: '正在上传文件，请稍候...'
+  },
+  imageUpload: {
+    fileFormatError: '文件格式不正确, 请上传{fileTypes}图片格式文件!',
+    fileSizeError: '上传头像图片大小不能超过 {fileSize} MB!',
+    exceedLimit: '上传文件数量不能超过 {limit} 个!',
+    uploadError: '上传图片失败',
+    uploading: '正在上传图片，请稍候...'
+  },
+  iconSelect: {
+    searchPlaceholder: '请输入图标名称'
+  },
+  sizeSelect: {
+    large: '较大',
+    default: '默认',
+    small: '稍小',
+    settingSize: '正在设置布局大小，请稍候...'
+  },
+  sqlEditor: {
+    logConsole: '日志控制台',
+    queryResult: '查询结果',
+    executionHistory: '执行历史记录',
+    attrConfig: '属性配置'
+  },
+  rightToolbar: {
+    showHide: '显示/隐藏',
+    showSearch: '显示检索',
+    hideSearch: '隐藏检索',
+    expand: '展开',
+    collapse: '收起'
   },
   sqlEditorConfigView: {
     basicConfig: '基础配置',
@@ -210,5 +246,18 @@ export default {
     imageFormatError: '图片格式错误!',
     fileSizeError: '上传文件大小不能超过 {size} MB!',
     imageUploadFailed: '图片插入失败'
+  },
+  settings: {
+    themeSettings: '主题风格设置',
+    themeColor: '主题颜色',
+    layoutSettings: '系统布局配置',
+    tagsView: '开启 Tags-Views',
+    fixedHeader: '固定 Header',
+    showLogo: '显示 Logo',
+    dynamicTitle: '动态标题',
+    saveSettings: '保存配置',
+    resetSettings: '重置配置',
+    savingLoading: '正在保存到本地，请稍候...',
+    resetLoading: '正在清除设置缓存并刷新，请稍候...'
   }
 }

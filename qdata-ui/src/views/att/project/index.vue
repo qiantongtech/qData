@@ -347,7 +347,7 @@
                 :placeholder="td('common.form.descriptionPlaceholder')"
                 :min-height="192"
                 show-word-limit
-                maxlength="500个字符"
+                maxlength="500"
               />
             </el-form-item>
           </el-col>
@@ -516,10 +516,10 @@ const attProjectList = ref([]);
 // 列显隐信息
 const columns = ref([
   { key: 1, label: td('common.texts.number'), visible: true },
-  { key: 2, label: td('att.project.texts.name'), visible: true },
-  { key: 3, label: td('att.project.texts.description'), visible: true },
+  { key: 2, label: td('att.common.projectName'), visible: true },
+  { key: 3, label: td('common.texts.description'), visible: true },
   { key: 4, label: td('att.common.manager'), visible: true },
-  { key: 5, label: td('att.project.texts.contact'), visible: true },
+  { key: 5, label: td('att.common.contactWay'), visible: true },
   { key: 6, label: td('common.texts.createdTime'), visible: true },
   { key: 7, label: td('common.texts.createdBy'), visible: true },
   { key: 8, label: td('common.texts.status'), visible: true },
@@ -571,8 +571,8 @@ const data = reactive({
     name: null,
   },
   rules: {
-    managerId: [{ required: true, message: "负责人不能为空", trigger: "blur" }],
-    name: [{ required: true, message: "项目名称不能为空", trigger: "blur" }],
+    managerId: [{ required: true, message: td('att.project.validations.managerRequired'), trigger: "blur" }],
+    name: [{ required: true, message: td('att.project.validations.nameRequired'), trigger: "blur" }],
     // managerId: [{ required: true, message: "责任人不能为空", trigger: "blur" }],
     // validFlag: [{ required: true, message: '是否有效不能为空', trigger: 'change' }]
   },
@@ -799,7 +799,7 @@ const handleFileSuccess = (response, file, fileList) => {
     "<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +
       response.msg +
       "</div>",
-    "导入结果",
+    td('att.project.importResult'),
     { dangerouslyUseHTMLString: true }
   );
   getList();

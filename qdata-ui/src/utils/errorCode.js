@@ -15,9 +15,11 @@
  * More information: https://qdata.qiantong.tech/business.html
  */
 
+import { i18n } from "@/plugins/vueI18n";
+
 export default {
-  '401': '认证失败，无法访问系统资源',
-  '403': '当前操作没有权限',
-  '404': '访问资源不存在',
-  'default': '系统未知错误，请反馈给管理员'
+  '401': () => i18n.global.t('common.error.code401'),
+  '403': () => i18n.global.t('common.error.code403'),
+  '404': () => i18n.global.t('common.error.code404'),
+  'default': () => i18n.global.t('common.error.default')
 }

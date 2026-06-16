@@ -16,6 +16,7 @@
  */
 
 import { parseTime } from './anivia.js'
+import { i18n } from "@/plugins/vueI18n";
 
 // 判断数组中是否有重复
 export function hasDuplicateObjects(arr, key) {
@@ -64,14 +65,14 @@ export function formatTime(time, option) {
   const diff = (now - d) / 1000
 
   if (diff < 30) {
-    return '刚刚'
+    return i18n.global.t('common.time.justNow')
   } else if (diff < 3600) {
     // less 1 hour
-    return Math.ceil(diff / 60) + '分钟前'
+    return Math.ceil(diff / 60) + i18n.global.t('common.time.minutesAgo')
   } else if (diff < 3600 * 24) {
-    return Math.ceil(diff / 3600) + '小时前'
+    return Math.ceil(diff / 3600) + i18n.global.t('common.time.hoursAgo')
   } else if (diff < 3600 * 24 * 2) {
-    return '1天前'
+    return i18n.global.t('common.time.oneDayAgo')
   }
   if (option) {
     return parseTime(time, option)
@@ -79,13 +80,13 @@ export function formatTime(time, option) {
     return (
       d.getMonth() +
       1 +
-      '月' +
+      i18n.global.t('common.time.month') +
       d.getDate() +
-      '日' +
+      i18n.global.t('common.time.day') +
       d.getHours() +
-      '时' +
+      i18n.global.t('common.time.hour') +
       d.getMinutes() +
-      '分'
+      i18n.global.t('common.time.minute')
     )
   }
 }

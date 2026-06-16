@@ -87,17 +87,13 @@ const config = computed(() => {
   if (i18nKey) {
     const titleKey = `guide.${i18nKey}.title`;
     const contentKey = `guide.${i18nKey}.content`;
-    const typeKey = `guide.${i18nKey}.type`;
-    const versionKey = `guide.${i18nKey}.version`;
     const title = t(titleKey);
     const content = t(contentKey);
-    const type = t(typeKey);
-    const version = t(versionKey);
     return {
       title: title !== titleKey ? title : original.title,
       content: content !== contentKey ? content : original.content,
-      type: type !== typeKey ? type : original.type,
-      version: version !== versionKey ? version : original.version
+      type: original.type,
+      version: original.version
     };
   }
   return original;

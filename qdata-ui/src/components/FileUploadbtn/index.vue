@@ -119,9 +119,7 @@ function handleBeforeUpload(file) {
     const fileExt = fileName[fileName.length - 1];
     const isTypeOk = props.fileType.indexOf(fileExt) >= 0;
     if (!isTypeOk) {
-      proxy.$modal.msgError(
-        `文件格式不正确, 请上传${props.fileType.join("/")}格式文件!`
-      );
+      proxy.$modal.msgError(t('components.fileUploadbtn.fileFormatError', { fileTypes: props.fileType.join("/") }));
       return false;
     }
   }
@@ -129,7 +127,7 @@ function handleBeforeUpload(file) {
   // 校验文件大小
   const fileSize = file.size / 1024 / 1024;
   if (fileSize > props.fileSize) {
-    proxy.$modal.msgError(`文件大小不能超过 ${props.fileSize}MB!`);
+    proxy.$modal.msgError(t('components.fileUploadbtn.fileSizeError', { fileSize: props.fileSize }));
     return false;
   }
 
@@ -140,12 +138,12 @@ function handleBeforeUpload(file) {
 
 // 文件个数超出
 function handleExceed() {
-  proxy.$modal.msgError(`上传文件数量不能超过 ${props.limit} 个!`);
+  proxy.$modal.msgError(t('components.fileUpload2.exceedLimit', { limit: props.limit }));
 }
 
 // 上传失败
 function handleUploadError(err) {
-  proxy.$modal.msgError("上传文件失败");
+  proxy.$modal.msgError(t('components.fileUploadbtn.uploadError'));
 }
 
 // 上传成功回调

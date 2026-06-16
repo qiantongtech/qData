@@ -19,7 +19,7 @@
     <el-aside :style="{ width: `${leftWidth}px`, marginLeft: leftWidth == 0 ? '-15px' : '0px' }" class="left-pane">
         <div class="left-tree" v-loading="loading">
             <!-- 搜索框 -->
-            <el-input class="filter-tree" size="large" v-model="deptName" :placeholder="placeholder" clearable
+            <el-input class="filter-tree" size="large" v-model="deptName" :placeholder="effectivePlaceholder" clearable
                 prefix-icon="Search" />
 
             <!-- 树 -->
@@ -75,8 +75,9 @@
 
 
 <script setup>
-import { ref, watch, onMounted, onBeforeUnmount, getCurrentInstance } from "vue";
+import { ref, watch, onMounted, onBeforeUnmount, getCurrentInstance, computed } from "vue";
 import { debounce } from "lodash-es";
+import { useI18n } from 'vue-i18n';
 import {
     ArrowLeft,
     ArrowRight,
@@ -85,11 +86,13 @@ import {
 } from "@element-plus/icons-vue";
 
 const { proxy } = getCurrentInstance();
+const { t } = useI18n();
+const effectivePlaceholder = computed(() => props.placeholder || t('components.deptTree.searchPlaceholder'));
 
 const props = defineProps({
     deptOptions: { type: Array, default: () => [] },
     leftWidth: { type: Number, default: 300 },
-    placeholder: { type: String, default: "请输入部门名称" },
+    placeholder: { type: String, default: '' },
     defaultExpand: { type: Boolean, default: false },
     loading: { type: Boolean, default: false },
 });

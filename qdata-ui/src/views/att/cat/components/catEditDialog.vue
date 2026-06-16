@@ -76,7 +76,7 @@
           <el-form-item :label="td('common.texts.description')" prop="description">
             <el-input
               type="textarea"
-              maxlength="500个字符"
+              maxlength="500"
               show-word-limit
               :placeholder="td('common.form.descriptionPlaceholder')"
               v-model="form.description"
@@ -90,7 +90,7 @@
           <el-form-item :label="td('common.texts.remark')" prop="remark">
             <el-input
               type="textarea"
-              maxlength="500个字符"
+              maxlength="500"
               show-word-limit
               :placeholder="td('common.form.remarkPlaceholder')"
               v-model="form.remark"
@@ -155,7 +155,7 @@ const formRef = ref();
 
 // 组件内部状态
 const title = ref("");
-const nameLabel = ref("类目名称");
+const nameLabel = ref(td('att.common.categoryName'));
 const treeOptions = ref([]);
 const customRules = ref(null);
 const dialogType = ref("");
@@ -173,14 +173,14 @@ const defaultForm = {
 const form = ref({ ...defaultForm });
 
 const effectiveNameLabel = computed(() => nameLabel.value);
-const effectiveNamePlaceholder = computed(() => td('att.common.tagCatNamePlaceholder'));
+const effectiveNamePlaceholder = computed(() => td('att.common.namePlaceholder'));
 const hideStatusAndSort = computed(() => dialogType.value === "dataCategory");
 
 // 默认校验规则
 const defaultRules = {
   name: [{ required: true, message: td('common.form.nameRequired'), trigger: "blur" }],
-  parentId: [{ required: true, message: "上级类目不能为空", trigger: "blur" }],
-  code: [{ required: true, message: "编码不能为空", trigger: "blur" }],
+  parentId: [{ required: true, message: td('att.common.parentCatRequired'), trigger: "blur" }],
+  code: [{ required: true, message: td('att.common.codeRequired'), trigger: "blur" }],
 };
 
 // 计算最终使用的规则，优先使用传入的 customRules
@@ -191,7 +191,7 @@ const currentRules = computed(() => {
   // 动态更新默认规则中的 message
   const rules = JSON.parse(JSON.stringify(defaultRules));
   if (rules.name && rules.name[0]) {
-    rules.name[0].message = `${nameLabel.value}不能为空`;
+    rules.name[0].message = td('att.common.nameRequired', { name: nameLabel.value });
   }
   return rules;
 });
@@ -201,8 +201,8 @@ const currentRules = computed(() => {
  * @param {Object} options 配置项
  */
 const open = (options = {}) => {
-  title.value = options.title || "编辑";
-  nameLabel.value = options.nameLabel || "类目名称";
+  title.value = options.title || td('att.common.edit');
+  nameLabel.value = options.nameLabel || td('att.common.categoryName');
   treeOptions.value = options.treeOptions || [];
   customRules.value = options.rules || null;
   dialogType.value = options.type || "";

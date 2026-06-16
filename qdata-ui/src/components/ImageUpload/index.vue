@@ -46,7 +46,10 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n';
 import { getToken } from "@/utils/auth";
+
+const { t } = useI18n();
 
 const props = defineProps({
     modelValue: [String, Object, Array],
@@ -141,25 +144,23 @@ function handleBeforeUpload(file) {
         isImg = file.type.indexOf("image") > -1;
     }
     if (!isImg) {
-        proxy.$modal.msgError(
-            `文件格式不正确, 请上传${props.fileType.join("/")}图片格式文件!`
-        );
+        proxy.$modal.msgError(t('components.imageUpload.fileFormatError', { fileTypes: props.fileType.join("/") }));
         return false;
     }
     if (props.fileSize) {
         const isLt = file.size / 1024 / 1024 < props.fileSize;
         if (!isLt) {
-            proxy.$modal.msgError(`上传头像图片大小不能超过 ${props.fileSize} MB!`);
+            proxy.$modal.msgError(t('components.imageUpload.fileSizeError', { fileSize: props.fileSize }));
             return false;
         }
     }
-    proxy.$modal.loading("正在上传图片，请稍候...");
+    proxy.$modal.loading(t('components.imageUpload.uploading'));
     number.value++;
 }
 
 // 文件个数超出
 function handleExceed() {
-    proxy.$modal.msgError(`上传文件数量不能超过 ${props.limit} 个!`);
+    proxy.$modal.msgError(t('components.imageUpload.exceedLimit', { limit: props.limit }));
 }
 
 // 上传成功回调
@@ -199,7 +200,7 @@ function uploadedSuccessfully() {
 
 // 上传失败
 function handleUploadError() {
-    proxy.$modal.msgError("上传图片失败");
+    proxy.$modal.msgError(t('components.imageUpload.uploadError'));
     proxy.$modal.closeLoading();
 }
 

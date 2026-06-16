@@ -195,7 +195,6 @@ import {
     addAttModelCat,
     updateAttModelCat
 } from '@/api/att/cat/modelCat/modelCat.js';
-import { listAttDataElemCat } from '@/api/att/cat/dataElemCat/dataElemCat.js';
 
 const { t } = useI18n();
 const { td } = useDefaultLang();
@@ -218,9 +217,9 @@ const data = reactive({
         name: null
     },
     rules: {
-        code: [{ required: true, message: '编码不能为空', trigger: 'blur' }],
-        name: [{ required: true, message: '逻辑模型类目名称不能为空', trigger: 'blur' }],
-        parentId: [{ required: true, message: '上级类目不能为空', trigger: 'blur' }]
+        code: [{ required: true, message: td('att.common.codeRequired'), trigger: 'blur' }],
+        name: [{ required: true, message: td('att.modelCat.validations.nameRequired'), trigger: 'blur' }],
+        parentId: [{ required: true, message: td('att.modelCat.validations.parentIdRequired'), trigger: 'blur' }]
     }
 });
 
@@ -239,7 +238,7 @@ function getList() {
 function getDataTree() {
     listAttModelCat().then((response) => {
         attModelCatOptions.value = [];
-        const data = { id: 0, name: '顶级节点', children: [] };
+        const data = { id: 0, name: td('att.common.rootNode'), children: [] };
         data.children = proxy.handleTree(response.data, 'id', 'parentId');
         attModelCatOptions.value.push(data);
     });
@@ -309,7 +308,7 @@ function handleAdd(row) {
     // getTreeselect();
     listAttModelCat().then((response) => {
         attModelCatOptions.value = [];
-        const data = { id: 0, name: '顶级节点', children: [] };
+        const data = { id: 0, name: td('att.common.rootNode'), children: [] };
         data.children = proxy.handleTree(response.data, 'id', 'parentId');
         console.log(data, '子级');
         attModelCatOptions.value.push(data);
@@ -344,7 +343,7 @@ async function handleUpdate(row) {
         return d.ID !== row.id && !d.parentId.toString().split(',').includes(row.id.toString());
     });
     console.log(filteredDepts, '111级');
-    const data = { id: 0, name: '顶级节点', children: [] };
+    const data = { id: 0, name: td('att.common.rootNode'), children: [] };
     data.children = proxy.handleTree(filteredDepts, 'id', 'parentId');
     attModelCatOptions.value.push(data);
     if (row != null) {

@@ -17,15 +17,17 @@
 
 import { useI18n } from 'vue-i18n'
 import { ref, reactive, toRefs, nextTick, getCurrentInstance } from "vue";
+import useDefaultLang from "@/composables/useDefaultLang";
 
 const { t } = useI18n();
+const { td } = useDefaultLang();
 export default function useCatManager({
   listFunc,
   getFunc,
   delFunc,
   addFunc,
   updateFunc,
-  nameLabel = "类目名称",
+  nameLabel = td('att.common.categoryName'),
 } = {}) {
   const { proxy } = getCurrentInstance();
 
@@ -46,8 +48,8 @@ export default function useCatManager({
       parentId: null,
     },
     rules: {
-      name: [{ required: true, message: `${nameLabel}不能为空`, trigger: "blur" }],
-      parentId: [{ required: true, message: "上级类目不能为空", trigger: "blur" }],
+      name: [{ required: true, message: td('att.common.nameRequired', { name: nameLabel }), trigger: "blur" }],
+      parentId: [{ required: true, message: td('att.common.parentCatRequired'), trigger: "blur" }],
     },
   });
 
@@ -66,7 +68,7 @@ export default function useCatManager({
     if (!listFunc) return;
     listFunc().then((response) => {
       options.value = [];
-      const root = { id: 0, name: "顶级节点", children: [] };
+      const root = { id: 0, name: td('att.common.rootNode'), children: [] };
       root.children = proxy.handleTree(response.data, "id", "parentId");
       options.value.push(root);
     });
@@ -106,7 +108,7 @@ export default function useCatManager({
       form.value.parentId = 0;
     }
     open.value = true;
-    title.value = `新增${nameLabel}`;
+    title.value = td('att.common.add') + nameLabel;
   }
 
   async function handleUpdate(row) {
@@ -117,7 +119,7 @@ export default function useCatManager({
     const filtered = responseAll.data.filter((d) => {
       return d.ID !== row.id && !d.parentId.toString().split(",").includes(row.id.toString());
     });
-    const root = { id: 0, name: "顶级节点", children: [] };
+    const root = { id: 0, name: td('att.common.rootNode'), children: [] };
     root.children = proxy.handleTree(filtered, "id", "parentId");
     options.value.push(root);
     if (row != null) {
@@ -128,19 +130,19 @@ export default function useCatManager({
       delete res.data.updateTime;
       form.value = res.data;
       open.value = true;
-      title.value = `修改${nameLabel}`;
+      title.value = td('att.common.edit') + nameLabel;
     });
   }
 
   function handleStatusChange(row) {
     if (!updateFunc) return;
-    const text = row.validFlag === true ? t('att.common.enable') : t('att.common.disable');
+    const text = row.validFlag === true ? td('att.common.enable') : td('att.common.disable');
     proxy.$modal
-      .confirm(t('att.common.confirmStatusChangeGeneric').replace('{status}', text).replace('<name>', row.name).replace('{type}', nameLabel))
+      .confirm(td('att.common.confirmStatusChangeGeneric').replace('{status}', text).replace('<name>', row.name).replace('{type}', nameLabel))
       .then(function () {
         updateFunc({ id: row.id, parentId: row.parentId, validFlag: row.validFlag })
           .then(() => {
-            proxy.$modal.msgSuccess(t('att.common.statusSuccess').replace('{status}', text));
+            proxy.$modal.msgSuccess(td('att.common.statusSuccess').replace('{status}', text));
             getList();
           })
           .catch(() => {
@@ -179,7 +181,7 @@ export default function useCatManager({
   function handleDelete(row) {
     const ids = row.id;
     proxy.$modal
-      .confirm(td('common.message.confirmDelete') + '"' + ids + '"的数据项？')
+      .confirm(td('att.common.confirmDeleteItem').replace('<ids>', ids))
       .then(function () {
         return delFunc && delFunc(ids);
       })

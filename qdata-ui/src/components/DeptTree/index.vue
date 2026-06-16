@@ -247,7 +247,7 @@ import CatEditDialog from "@/components/Cat/catEditDialog";
 
 const { t } = useI18n();
 const effectivePlaceholder = computed(() => props.placeholder || t('components.deptTree.searchPlaceholder'));
-const effectiveTitle = computed(() => props.title || t(props.titleKey));
+const effectiveTitle = computed(() => props.title || t(props.titleKey) || t('components.deptTree.defaultTitle'));
 const catEditDialogRef = ref(null);
 const processedData = ref([]);
 

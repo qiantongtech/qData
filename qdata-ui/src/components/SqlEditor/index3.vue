@@ -47,10 +47,14 @@
   </div>
 </template>
 <script setup>
+import { useI18n } from 'vue-i18n';
 import { useFullscreen } from "@vueuse/core";
 import Console from "./console";
 import Editor from "./editor";
 import ConfigView from "./configView";
+
+const { t } = useI18n();
+
 // editor数据
 const props = defineProps({
   value: {
@@ -67,7 +71,7 @@ const emits = defineEmits(["handleChange"]);
 // 左侧图标
 const iconList = ref([
   {
-    name: "日志控制台",
+    name: t('components.sqlEditor.logConsole'),
     type: "console",
     icon: "FolderChecked",
     data: [
@@ -94,13 +98,13 @@ const iconList = ref([
     ],
   },
   {
-    name: "查询结果",
+    name: t('components.sqlEditor.queryResult'),
     type: "result",
     icon: "Odometer",
     data: [],
   },
   {
-    name: "执行历史记录",
+    name: t('components.sqlEditor.executionHistory'),
     type: "history",
     icon: "Timer",
     data: [],
@@ -120,7 +124,7 @@ const closeConsoleDialog = () => {
 // 右侧图标
 const iconListR = ref([
   {
-    name: "属性配置",
+    name: t('components.sqlEditor.attrConfig'),
     type: "attrConfig",
     icon: "Setting",
     data: {},

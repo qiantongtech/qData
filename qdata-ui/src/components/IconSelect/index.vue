@@ -21,7 +21,7 @@
       v-model="iconName"
       class="icon-search"
       clearable
-      placeholder="请输入图标名称"
+      :placeholder="t('components.iconSelect.searchPlaceholder')"
       @clear="filterIcons"
       @input="filterIcons"
     >
@@ -41,7 +41,10 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n';
 import icons from './requireIcons'
+
+const { t } = useI18n();
 
 const props = defineProps({
   activeIcon: {

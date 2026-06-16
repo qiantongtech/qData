@@ -16,19 +16,20 @@
  */
 
 import { Histogram, Opportunity } from "@element-plus/icons-vue";
+import { i18n } from "@/plugins/vueI18n";
 
 export const CHAT_TYPES = [
   {
     value: "chart",
     labelKey: 'ai.chat.smartChart',
-    label: "智能图表",
+    label: () => i18n.global.t('ai.chat.smartChart'),
     icon: Histogram,
     disabled: false,
   },
   {
     value: "smart",
     labelKey: 'ai.chat.smartQA',
-    label: "智能问答",
+    label: () => i18n.global.t('ai.chat.smartQA'),
     icon: Opportunity,
     disabled: true,
   },

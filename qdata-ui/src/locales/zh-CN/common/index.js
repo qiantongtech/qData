@@ -34,14 +34,18 @@ export default {
     view: '查看'
   },
   error: {
-    code401: '401错误!',
-    code404: '404错误！',
+    code401: '认证失败，无法访问系统资源',
+    code403: '当前操作没有权限',
+    code404: '访问资源不存在',
+    default: '系统未知错误，请反馈给管理员',
     findPage: '找不到网页！',
     notAccessRights: '您没有访问权限！',
     Sorry401: '对不起，您没有访问权限，请不要进行非法操作！您可以返回主页面',
     Sorry404: '对不起，您正在寻找的页面不存在。尝试检查URL的错误，然后按浏览器上的刷新按钮或尝试在我们的应用程序中找到其他内容。',
     network: '后端接口连接异常',
-    timeout: '系统接口超时！'
+    timeout: '系统接口超时！',
+    setPermissionValue: '请设置操作权限标签值',
+    setRoleValue: '请设置角色权限标签值'
   },
   form: {
     descriptionPlaceholder: '请输入描述',
@@ -118,6 +122,35 @@ export default {
     endTime: '结束时间'
   },
   qualityTrends: '质量趋势',
+  shortcut: {
+    title: '快捷键',
+    save: '保存',
+    check: '校验',
+    format: '格式化',
+    formatSelection: '格式化选中内容',
+    notes: '注释/取消注释该行(区域)',
+    upperCase: '转为大写',
+    lowerCase: '转为小写',
+    query: '查询'
+  },
+  graph: {
+    inputComponent: '输入组件',
+    outputComponent: '输出组件',
+    transformComponent: '转换组件',
+    zoomOut: '缩小',
+    zoomIn: '放大',
+    resetView: '重置视角'
+  },
+  time: {
+    justNow: '刚刚',
+    minutesAgo: '分钟前',
+    hoursAgo: '小时前',
+    oneDayAgo: '1天前',
+    month: '月',
+    day: '日',
+    hour: '时',
+    minute: '分'
+  },
   noData: '暂无数据',
   noMessage: '暂无消息',
   noHistory: '暂无历史记录',

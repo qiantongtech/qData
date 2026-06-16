@@ -17,16 +17,17 @@
 
 import { editor, KeyCode, KeyMod } from "monaco-editor";
 import { format } from "sql-formatter";
+import { i18n } from "@/plugins/vueI18n";
 
 const labels = {
-  "shortcut.title": "快捷键",
-  "shortcut.key.save": "保存",
-  "shortcut.key.check": "校验",
-  "shortcut.key.format": "格式化",
-  "shortcut.key.formatSelection": "格式化选中内容",
-  "shortcut.key.notes": "注释/取消注释该行(区域)",
-  "shortcut.key.upperCase": "转为大写",
-  "shortcut.key.lowerCase": "转为小写",
+  "shortcut.title": () => i18n.global.t('common.shortcut.title'),
+  "shortcut.key.save": () => i18n.global.t('common.shortcut.save'),
+  "shortcut.key.check": () => i18n.global.t('common.shortcut.check'),
+  "shortcut.key.format": () => i18n.global.t('common.shortcut.format'),
+  "shortcut.key.formatSelection": () => i18n.global.t('common.shortcut.formatSelection'),
+  "shortcut.key.notes": () => i18n.global.t('common.shortcut.notes'),
+  "shortcut.key.upperCase": () => i18n.global.t('common.shortcut.upperCase'),
+  "shortcut.key.lowerCase": () => i18n.global.t('common.shortcut.lowerCase'),
 };
 
 /**

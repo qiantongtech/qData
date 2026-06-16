@@ -66,7 +66,7 @@ const emits = defineEmits(['update:showSearch', 'queryTable']);
 // 显隐数据
 const value = ref([]);
 // 弹出层标题
-const title = ref("显示/隐藏");
+const title = ref(t('components.rightToolbar.showHide'));
 // 是否显示弹出层
 const open = ref(false);
 

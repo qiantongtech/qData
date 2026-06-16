@@ -1,7 +1,7 @@
-import { useI18n } from 'vue-i18n'
 import { ref, reactive, toRefs, nextTick, getCurrentInstance } from "vue";
+import { i18n } from "@/plugins/vueI18n";
 
-const { t } = useI18n();export default function useCatManager({
+export default function useCatManager({
   listFunc,
   getFunc,
   delFunc,
@@ -28,8 +28,8 @@ const { t } = useI18n();export default function useCatManager({
       parentId: null,
     },
     rules: {
-      name: [{ required: true, message: `${nameLabel}不能为空`, trigger: "blur" }],
-      parentId: [{ required: true, message: "上级类目不能为空", trigger: "blur" }],
+      name: [{ required: true, message: i18n.global.t('components.catEditDialog.nameRequired', { nameLabel }), trigger: "blur" }],
+      parentId: [{ required: true, message: i18n.global.t('components.catEditDialog.parentIdRequired'), trigger: "blur" }],
     },
   });
 
@@ -48,7 +48,7 @@ const { t } = useI18n();export default function useCatManager({
     if (!listFunc) return;
     listFunc().then((response) => {
       options.value = [];
-      const root = { id: 0, name: "顶级节点", children: [] };
+      const root = { id: 0, name: i18n.global.t('common.texts.topNode'), children: [] };
       root.children = proxy.handleTree(response.data, "id", "parentId");
       options.value.push(root);
     });
@@ -105,7 +105,7 @@ const { t } = useI18n();export default function useCatManager({
         )
       );
     });
-    const root = { id: 0, name: "顶级节点", children: [] };
+    const root = { id: 0, name: i18n.global.t('common.texts.topNode'), children: [] };
     root.children = proxy.handleTree(filtered, "id", "parentId");
     options.value.push(root);
     if (row != null) {
@@ -122,13 +122,13 @@ const { t } = useI18n();export default function useCatManager({
 
   function handleStatusChange(row) {
     if (!updateFunc) return;
-    const text = row.validFlag === true ? "启用" : "禁用";
+    const text = row.validFlag === true ? i18n.global.t('common.texts.enable') : i18n.global.t('common.texts.disable');
     proxy.$modal
-      .confirm('确认要"' + text + '","' + row.name + `"吗？`)
+      .confirm(i18n.global.t('components.catPage.confirmEnableDisable', { text, name: row.name, titleBase: nameLabel }))
       .then(function () {
         updateFunc({ id: row.id, parentId: row.parentId, validFlag: row.validFlag })
           .then(() => {
-            proxy.$modal.msgSuccess(text + "成功");
+            proxy.$modal.msgSuccess(i18n.global.t('components.catPage.operationSuccess', { text }));
             getList();
           })
           .catch(() => {
@@ -167,13 +167,13 @@ const { t } = useI18n();export default function useCatManager({
   function handleDelete(row) {
     const ids = row.id;
     proxy.$modal
-      .confirm('是否确认删除编号为"' + ids + '"的数据项？')
+      .confirm(i18n.global.t('components.catPage.deleteConfirm', { titleBase: nameLabel, id: ids }))
       .then(function () {
         return delFunc && delFunc(ids);
       })
       .then(() => {
         getList();
-        proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
+        proxy.$modal.msgSuccess(i18n.global.t('common.message.deleteSuccess'));
       })
       .catch(() => { });
   }

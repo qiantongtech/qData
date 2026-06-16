@@ -134,6 +134,8 @@ export default {
     assignUser: '分配用户',
     dictionaryData: '字典数据',
     scheduleLog: '调度日志',
-    editGenerationConfig: '修改生成配置'
+    editGenerationConfig: '修改生成配置',
+    studentDetail: '学生详情',
+    desensitizationRuleDetail: '脱敏规则详情'
   }
 }

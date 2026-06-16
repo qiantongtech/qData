@@ -114,8 +114,8 @@ const props = defineProps({
   addFunc: { type: Function, required: true },
   updateFunc: { type: Function, required: true },
   batchDelCheckFunc: { type: Function, required: false },
-  nameLabel: { type: String, default: "类目名称" },
-  titleBase: { type: String, default: "类目" },
+  nameLabel: { type: String, default: td('att.common.categoryName') },
+  titleBase: { type: String, default: td('att.common.categoryName') },
   permBase: { type: String, required: true },
   checkProjectParams: { type: Boolean, default: false },
 });
@@ -278,7 +278,7 @@ function handleStatusChange(row) {
           validFlag: row.validFlag,
         })
         .then(() => {
-          proxy.$modal.msgSuccess(text + "成功");
+          proxy.$modal.msgSuccess(td('att.common.statusSuccess').replace('<status>', text));
           handleQueryClick();
         })
         .catch(() => {
@@ -292,7 +292,7 @@ function handleStatusChange(row) {
 
 function buildTreeOptions(source) {
   treeOptions.value = [];
-  const root = { id: 0, name: "顶级节点", children: [] };
+  const root = { id: 0, name: td('att.common.rootNode'), children: [] };
   root.children = proxy.handleTree(source, "id", "parentId");
   treeOptions.value.push(root);
 }
@@ -302,7 +302,7 @@ function handleAdd(row) {
     buildTreeOptions(response.data);
     const parentId = row && row.id ? row.id : 0;
     catEditDialogRef.value.open({
-      title: `添加${props.titleBase}`,
+      title: td('att.common.add') + props.titleBase,
       nameLabel: props.nameLabel,
       treeOptions: treeOptions.value,
       form: { parentId },
@@ -322,7 +322,7 @@ async function handleUpdate(row) {
   buildTreeOptions(filtered);
   props.getFunc(row.id).then((res) => {
     catEditDialogRef.value.open({
-      title: td('common.message.edit') + props.titleBase,
+      title: td('att.common.edit') + props.titleBase,
       nameLabel: props.nameLabel,
       treeOptions: treeOptions.value,
       form: res.data,
@@ -433,12 +433,12 @@ const data = reactive({
     name: [
       {
         required: true,
-        message: `${props.nameLabel}不能为空`,
+        message: td('att.common.nameRequired', { name: props.nameLabel }),
         trigger: "blur",
       },
     ],
     parentId: [
-      { required: true, message: "上级类目不能为空", trigger: "blur" },
+      { required: true, message: td('att.common.parentCatRequired'), trigger: "blur" },
     ],
   },
 });

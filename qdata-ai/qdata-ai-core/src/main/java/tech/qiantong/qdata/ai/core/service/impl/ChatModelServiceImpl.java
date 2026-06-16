@@ -52,6 +52,7 @@ import tech.qiantong.qdata.ai.core.enums.AiPlatformEnum;
 import tech.qiantong.qdata.ai.core.service.IChatModelService;
 import tech.qiantong.qdata.common.database.utils.AesEncryptUtil;
 import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.module.ai.dal.dataobject.model.AiModelDO;
 import tech.qiantong.qdata.module.ai.service.model.IAiModelService;
 
@@ -88,7 +89,7 @@ public class ChatModelServiceImpl implements IChatModelService {
             case TONG_YI -> chatModel = this.getDashScopeChatModel(baseUrl, apiKey, modelName);
             case OLLAMA -> chatModel = this.getOllamaChatModel(baseUrl, modelName);
             case DEEP_SEEK -> chatModel = this.getDeepSeekChatModel(apiKey, modelName);
-            default -> throw new ServiceException("暂时不支持该平台");
+            default -> throw new ServiceException("ai.error.platform.unsupported", "暂时不支持该平台");
         }
         return chatModel;
     }
@@ -112,7 +113,7 @@ public class ChatModelServiceImpl implements IChatModelService {
      */
     private OpenAiChatModel getOpenAiChatModel(String baseUrl, String apiKey, String modelName) {
         if (StrUtil.hasBlank(baseUrl, apiKey, modelName)) {
-            throw new ServiceException("必要字段不能为空");
+            throw new ServiceException("ai.error.field.required", "必要字段不能为空");
         }
         return OpenAiChatModel.builder()
                 .openAiApi(OpenAiApi.builder().baseUrl(baseUrl).apiKey(apiKey).build())
@@ -131,7 +132,7 @@ public class ChatModelServiceImpl implements IChatModelService {
      */
     private DashScopeChatModel getDashScopeChatModel(String baseUrl, String apiKey, String modelName) {
         if (StrUtil.hasBlank(apiKey, modelName)) {
-            throw new ServiceException("必要字段不能为空");
+            throw new ServiceException("ai.error.field.required", "必要字段不能为空");
         }
         return DashScopeChatModel.builder()
                 .dashScopeApi(DashScopeApi.builder().apiKey(apiKey).build())
@@ -148,7 +149,7 @@ public class ChatModelServiceImpl implements IChatModelService {
      */
     private OllamaChatModel getOllamaChatModel(String baseUrl, String modelName) {
         if (StrUtil.hasBlank(baseUrl, modelName)) {
-            throw new ServiceException("必要字段不能为空");
+            throw new ServiceException("ai.error.field.required", "必要字段不能为空");
         }
         return OllamaChatModel.builder()
                 .ollamaApi(OllamaApi.builder().baseUrl(baseUrl).build())
@@ -165,7 +166,7 @@ public class ChatModelServiceImpl implements IChatModelService {
      */
     private DeepSeekChatModel getDeepSeekChatModel(String apiKey, String modelName) {
         if (StrUtil.hasBlank(apiKey, modelName)) {
-            throw new ServiceException("必要字段不能为空");
+            throw new ServiceException("ai.error.field.required", "必要字段不能为空");
         }
         return DeepSeekChatModel.builder()
                 .deepSeekApi(DeepSeekApi.builder().apiKey(apiKey).build())

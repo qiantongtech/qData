@@ -31,6 +31,7 @@
  */
 
 package tech.qiantong.qdata.ai.core.utils;
+import tech.qiantong.qdata.common.exception.ServiceException;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.messages.Message;
@@ -115,7 +116,7 @@ public class LlmUtils {
             return response;
         } catch (Exception e) {
             log.error("同步LLM调用出错", e);
-            throw new RuntimeException("LLM调用失败", e);
+            throw new ServiceException("ai.error.llm.call.fail", "LLM调用失败");
         }
     }
 }

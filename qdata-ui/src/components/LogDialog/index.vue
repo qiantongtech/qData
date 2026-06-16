@@ -13,27 +13,28 @@
                 v-copyText="content"
                 v-copyText:callback="copyTextSuccess"
             >
-                {{ t('common.button.copy') }}
+                {{ td('common.button.copy') }}
             </el-button>
         </div>
         <div class="dialog-content" v-html="content"></div>
         <template #footer>
             <div class="dialog-footer">
-                <el-button @click="handleCancel">{{ t('common.button.close') }}</el-button>
+                <el-button @click="handleCancel">{{ td('common.button.close') }}</el-button>
             </div>
         </template>
     </el-dialog>
 </template>
 
 <script setup name="LogDialog">
-import { useI18n } from 'vue-i18n'
+import useDefaultLang from "@/composables/useDefaultLang";
 import { defineProps, defineEmits, computed } from 'vue';
     import { merge } from 'lodash-es';
     import { ElMessage } from 'element-plus';
 
-const { t } = useI18n();
+const { td } = useDefaultLang();
+
 const DEFAULT_CONFIG = {
-        title: '日志详情',
+        title:  td("mc.instance.structured.logDetail"),
         width: '800',
         draggable: true,
         'destroy-on-close': true,
@@ -80,7 +81,7 @@ const DEFAULT_CONFIG = {
     };
 
     function copyTextSuccess() {
-        ElMessage.success('复制成功！');
+        ElMessage.success(td('common.message.copySuccess'));
     }
 </script>
 

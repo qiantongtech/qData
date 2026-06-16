@@ -165,7 +165,98 @@ export default {
     loginExpired: '登录状态已过期，您可以继续留在该页面，或者重新登录',
     reLogin: '重新登录'
   },
-  time: {
+  crontab: {
+    tab: {
+      second: '秒',
+      minute: '分钟',
+      hour: '小时',
+      day: '日',
+      month: '月',
+      week: '周',
+      year: '年'
+    },
+    timeExpression: '时间表达式',
+    cronExpression: 'Cron 表达式',
+    multiSelect: '可多选',
+    specify: '指定',
+    notSpecify: '不指定',
+    cycleFrom: '周期从',
+    noSecondConfigurable: '不可配置秒级别调度周期!',
+    second: {
+      wildcard: '秒，允许的通配符[, - * /]',
+      cycleSuffix: '秒',
+      averagePrefix: '从',
+      averageMiddle: '秒开始，每',
+      averageSuffix: '秒执行一次'
+    },
+    minute: {
+      wildcard: '分钟，允许的通配符[, - * /]',
+      cycleSuffix: '分钟',
+      averagePrefix: '从',
+      averageMiddle: '分钟开始，每',
+      averageSuffix: '分钟执行一次'
+    },
+    hour: {
+      wildcard: '小时，允许的通配符[, - * /]',
+      cycleSuffix: '时',
+      averagePrefix: '从',
+      averageMiddle: '时开始，每',
+      averageSuffix: '小时执行一次'
+    },
+    day: {
+      wildcard: '日，允许的通配符[, - * ? / L W]',
+      cycleSuffix: '日',
+      averagePrefix: '从',
+      averageMiddle: '号开始，每',
+      averageSuffix: '日执行一次',
+      nearestWorkday: '每月',
+      nearestWorkdaySuffix: '号最近的那个工作日',
+      lastDay: '本月最后一天'
+    },
+    month: {
+      wildcard: '月，允许的通配符[, - * /]',
+      cycleSuffix: '月',
+      averagePrefix: '从',
+      averageMiddle: '月开始，每',
+      averageSuffix: '月执行一次',
+      names: {
+        jan: '一月',
+        feb: '二月',
+        mar: '三月',
+        apr: '四月',
+        may: '五月',
+        jun: '六月',
+        jul: '七月',
+        aug: '八月',
+        sep: '九月',
+        oct: '十月',
+        nov: '十一月',
+        dec: '十二月'
+      }
+    },
+    week: {
+      wildcard: '周，允许的通配符[, - * ? / L #]',
+      nthWeekPrefix: '第',
+      nthWeekSuffix: '周的',
+      lastPrefix: '本月最后一个',
+      names: {
+        sun: '星期日',
+        mon: '星期一',
+        tue: '星期二',
+        wed: '星期三',
+        thu: '星期四',
+        fri: '星期五',
+        sat: '星期六'
+      }
+    },
+    year: {
+      wildcard: '不填，允许的通配符[, - * /]',
+      every: '每年',
+      averagePrefix: '从',
+      averageMiddle: '年开始，每',
+      averageSuffix: '年执行一次'
+    },
+      time: {
     minutesAgo: '分钟前',
     hoursAgo: '小时前',
     daysAgo: '天前',
@@ -173,5 +264,12 @@ export default {
     yearsAgo: '年前',
     second: '秒',
     millisecond: '毫秒'
+    },
+    result: {
+      title: '最近5次运行时间',
+      calculating: '计算结果中...',
+      noResult: '没有达到条件的结果！',
+      limit: '最近100年内只有上面{count}条结果！'
+    }
   }
 }

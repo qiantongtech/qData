@@ -17,19 +17,19 @@
 
 <template>
 	<div class="popup-result">
-		<p class="title">{{ t('components.crontabResult.lastFiveRunTimes') }}</p>
+		<p class="title">{{ td('common.crontab.result.title') }}</p>
 		<ul class="popup-result-scroll">
 			<template v-if='isShow'>
 				<li v-for='item in resultList' :key="item">{{item}}</li>
 			</template>
-			<li v-else>{{ t('components.crontabResult.calculating') }}</li>
+			<li v-else>{{ td('common.crontab.result.calculating') }}</li>
 		</ul>
 	</div>
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
-const { t } = useI18n();
+import useDefaultLang from "@/composables/useDefaultLang.js";
+const { td } = useDefaultLang();
 const props = defineProps({
     ex: {
         type: String,
@@ -337,11 +337,11 @@ function expressionChange() {
     }
     // 判断100年内的结果条数
     if (resultArr.length === 0) {
-        resultList.value = ['没有达到条件的结果！'];
+        resultList.value = [td('common.crontab.result.noResult')];
     } else {
         resultList.value = resultArr;
         if (resultArr.length !== 5) {
-            resultList.value.push('最近100年内只有上面' + resultArr.length + '条结果！')
+            resultList.value.push(td('common.crontab.result.limit', { count: resultArr.length }))
         }
     }
     // 计算完成-显示结果

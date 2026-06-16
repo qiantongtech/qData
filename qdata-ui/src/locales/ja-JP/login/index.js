@@ -9,10 +9,10 @@ export default {
   loginBtn: 'ログイン',
   logining: 'ログイン中...',
   relogin: '再ログイン',
-  remember: 'パスワードを記憶',
+  remember: 'パスワードを記憶する',
   forgetPassword: 'パスワードを忘れた',
-  resetPassword: 'パスワードをリセット',
-  getCode: '認証コードを取得',
+  resetPassword: 'パスワードリセット',
+  getCode: 'コード取得',
   newPassword: '新しいパスワード',
   confirmPassword: 'パスワード確認',
   usernamePlaceholder: 'ユーザー名を入力してください',
@@ -26,30 +26,30 @@ export default {
   codeRequired: '認証コードを入力してください',
   // 時間帯挨拶
   greeting: {
-    greetingHello: '親愛なる友',
+    greetingHello: '親愛なる友人',
     greetingMessage: '🌟 ログインするたびに、データの価値に一歩近づきます！',
-    greetingLateNight: '深夜です',
-    greetingLateNightMsg: '早めに休んで、お体を大切に。',
+    greetingLateNight: '夜も更けてきました',
+    greetingLateNightMsg: '早めに休んで、ご自愛ください。',
     greetingMorning: 'おはようございます',
-    greetingMorningMsg: '朝の光は早起きの人を応援します！',
+    greetingMorningMsg: '朝の光は頑張る人を裏切りません！',
     greetingForenoon: 'こんにちは',
-    greetingForenoonMsg: '素敵な一日をお過ごしください！',
-    greetingNoon: 'こんにちは',
-    greetingNoonMsg: '時間通りに食事をとりましょう〜',
-    greetingAfternoon: 'こんにちは',
-    greetingAfternoonMsg: '集中して頑張りましょう！',
+    greetingForenoonMsg: '楽しい一日をお過ごしください！',
+    greetingNoon: 'お昼の挨拶',
+    greetingNoonMsg: '時間に食事をお忘れなく～',
+    greetingAfternoon: '午後の挨拶',
+    greetingAfternoonMsg: '集中して、引き続き頑張りましょう！',
     greetingEvening: 'こんばんは',
-    greetingEveningMsg: 'リラックスして夜をお楽しみください。'
+    greetingEveningMsg: 'リラックスして、夜を楽しみましょう。'
   },
   // フッター情報
   info: {
-    welcome: 'システムへようこそ',
+    welcome: '本システムへようこそ',
     message: 'すぐに使えるデータミドルプラットフォーム',
-    phoneContact: 'お電話：',
-    emailContact: 'メール：',
-    chromeHint: '最適なブラウジング体験のために、',
-    chromeHint2: 'ブラウザを使用してください。クリックしてダウンロード',
+    phoneContact: '連絡先電話：',
+    emailContact: '連絡先メール：',
+    chromeHint: '最適な閲覧体験のため、',
+    chromeHint2: 'ブラウザをご利用ください。クリックしてダウンロード',
     copyrightOwner: '著作権所有',
-    companyName: '千桐テクノロジー有限会社'
+    companyName: '江蘇千桐科技有限公司'
   }
 }

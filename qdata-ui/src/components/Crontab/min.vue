@@ -18,32 +18,32 @@
 <template>
     <el-form>
         <el-form-item>
-            <el-radio v-model="radioValue" :value="1"> 分钟，允许的通配符[, - * /] </el-radio>
+            <el-radio v-model="radioValue" :value="1"> {{ td('common.crontab.minute.wildcard') }} </el-radio>
         </el-form-item>
 
         <el-form-item>
             <el-radio v-model="radioValue" :value="2">
-                周期从
+                {{ td('common.crontab.cycleFrom') }}
                 <el-input-number v-model="cycle01" :min="0" :max="58" /> -
-                <el-input-number v-model="cycle02" :min="cycle01 + 1" :max="59" /> 分钟
+                <el-input-number v-model="cycle02" :min="cycle01 + 1" :max="59" /> {{ td('common.crontab.minute.cycleSuffix') }}
             </el-radio>
         </el-form-item>
 
         <el-form-item>
             <el-radio v-model="radioValue" :value="3">
-                从
-                <el-input-number v-model="average01" :min="0" :max="58" /> 分钟开始， 每
-                <el-input-number v-model="average02" :min="1" :max="59 - average01" /> 分钟执行一次
+                {{ td('common.crontab.minute.averagePrefix') }}
+                <el-input-number v-model="average01" :min="0" :max="58" /> {{ td('common.crontab.minute.averageMiddle') }}
+                <el-input-number v-model="average02" :min="1" :max="59 - average01" /> {{ td('common.crontab.minute.averageSuffix') }}
             </el-radio>
         </el-form-item>
 
         <el-form-item>
             <el-radio v-model="radioValue" :value="4">
-                指定
+                {{ td('common.crontab.specify') }}
                 <el-select
                     clearable
                     v-model="checkboxList"
-                    placeholder="可多选"
+                    :placeholder="td('common.crontab.multiSelect')"
                     multiple
                     :multiple-limit="10"
                 >
@@ -54,9 +54,12 @@
     </el-form>
 </template>
 <script setup>
-    const emit = defineEmits(['update']);
-    const props = defineProps({
-        cron: {
+import useDefaultLang from "@/composables/useDefaultLang.js";
+
+const {td} = useDefaultLang();
+const emit = defineEmits(['update']);
+const props = defineProps({
+  cron: {
             type: Object,
             default: {
                 second: '0',

@@ -277,7 +277,7 @@ const tableStore = reactive({
       },
     },
     {
-      label: td('att.tag.table.catName'),
+      label: td('dpp.asset.add.tag.tagCategory'),
       prop: "catName",
       align: "left",
       width: 200,
@@ -343,7 +343,7 @@ const searchStore = reactive({
       label: td('att.common.tagName'),
       prop: "name",
       align: "left",
-      component: { is: "input", placeholder: td('att.common.namePlaceholder') },
+      component: { is: "input", placeholder: td('dpp.asset.add.tag.tagNamePlaceholder') },
     },
     {
       label: td('common.texts.createdBy'),

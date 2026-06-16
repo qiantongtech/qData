@@ -13,21 +13,6 @@
   For brand customization, please apply for brand customization authorization via official channels.
    *
   More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
 -->
 
 <template>
@@ -1111,10 +1096,11 @@ function getAssetCat() {
     deptOptions.value = data;
   });
 }
+
 /** 新增按钮操作 */
 function handleAdd(command) {
   const dict = da_asset_type.value.find((item) => item.value == command);
-  if (dict && dict.label == "数据库表") {
+  if (dict && dict.label == td('dict.da_asset_type.1')) {
     router.push("/da/asset/addAsset");
     return;
   }
@@ -1239,9 +1225,9 @@ function handleStatusChange(row) {
   const text = row.status === "2" ? td('da.asset.revokePublish') : td('da.asset.publish');
   const status = row.status === "2" ? "1" : "2";
   proxy.$modal
-    .confirm(td('da.asset.confirmStatusChange').replace('{text}', text).replace('{name}', row.name))
-    .then(function () {
-      updateDaAsset({ id: row.id, status: status }).then((res) => {
+      .confirm(td('da.asset.confirmStatusChange', '', {text, name: row.name}))
+      .then(function () {
+        updateDaAsset({id: row.id, status: status}).then((res) => {
         if (res.code == 200) {
           proxy.$modal.msgSuccess(td('da.asset.statusSuccess').replace('{text}', text));
           getList();

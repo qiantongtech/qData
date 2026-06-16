@@ -19,19 +19,19 @@
    <div class="app-container" ref="app-container">
       <div class="pagecont-top" v-show="showSearch">
          <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true">
-            <el-form-item :label="td('logininfor.loginAddr')" prop="ipaddr">
+            <el-form-item :label="td('sys.monitor.logininfor.loginAddr')" prop="ipaddr">
                <el-input
                   v-model="queryParams.ipaddr"
-                  :placeholder="td('logininfor.loginAddrPlaceholder')"
+                  :placeholder="td('sys.monitor.logininfor.loginAddrPlaceholder')"
                   clearable
                   class="el-form-input-width"
                   @keyup.enter="handleQuery"
                />
             </el-form-item>
-            <el-form-item :label="td('logininfor.userName')" prop="userName">
+            <el-form-item :label="td('sys.monitor.logininfor.userName')" prop="userName">
                <el-input
                   v-model="queryParams.userName"
-                  :placeholder="td('logininfor.userNamePlaceholder')"
+                  :placeholder="td('sys.monitor.logininfor.userNamePlaceholder')"
                   clearable
                   class="el-form-input-width"
                   @keyup.enter="handleQuery"
@@ -40,7 +40,7 @@
             <el-form-item :label="td('common.texts.status')" prop="status">
                <el-select
                   v-model="queryParams.status"
-                  :placeholder="td('logininfor.loginStatus')"
+                  :placeholder="td('sys.monitor.logininfor.loginStatus')"
                   clearable
                   class="el-form-input-width"
                >
@@ -52,7 +52,7 @@
                   />
                </el-select>
             </el-form-item>
-            <el-form-item :label="td('logininfor.loginTime')">
+            <el-form-item :label="td('sys.monitor.logininfor.loginTime')">
                <el-date-picker
                   class="el-form-input-width"
                   v-model="dateRange"
@@ -94,7 +94,7 @@
                   icon="Delete"
                   @click="handleClean"
                   v-hasPermi="['monitor:logininfor:remove']"
-               >{{ td('logininfor.clearAll') }}</el-button>
+               >{{ td('sys.monitor.logininfor.clearAll') }}</el-button>
             </el-col>
             <el-col :span="1.5">
                <el-button
@@ -104,7 +104,7 @@
                   :disabled="single"
                   @click="handleUnlock"
                   v-hasPermi="['monitor:logininfor:unlock']"
-               >{{ td('logininfor.unlock') }}</el-button>
+               >{{ td('sys.monitor.logininfor.unlock') }}</el-button>
             </el-col>
             <el-col :span="1.5">
                <el-button
@@ -121,13 +121,13 @@
 
          <el-table stripe height="60vh" ref="logininforRef" v-loading="loading" :data="logininforList" @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
             <el-table-column type="selection" width="55" align="center" />
-            <el-table-column :label="td('logininfor.accessNo')" align="center" prop="infoId" />
-            <el-table-column :label="td('logininfor.userName')" width="120" align="center" prop="userName" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']" />
-            <el-table-column :label="td('logininfor.address')" align="center" prop="ipaddr" :show-overflow-tooltip="true" />
-            <el-table-column :label="td('logininfor.loginLocation')" align="center" prop="loginLocation" :show-overflow-tooltip="true" />
-            <el-table-column :label="td('logininfor.os')" align="center" prop="os" :show-overflow-tooltip="true" />
-            <el-table-column :label="td('logininfor.browser')" align="center" prop="browser" :show-overflow-tooltip="true" />
-            <el-table-column :label="td('logininfor.loginStatus')" align="center" prop="status">
+            <el-table-column :label="td('sys.monitor.logininfor.accessNo')" align="center" prop="infoId" />
+            <el-table-column :label="td('sys.monitor.logininfor.userName')" width="120" align="center" prop="userName" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']" />
+            <el-table-column :label="td('sys.monitor.logininfor.address')" align="center" prop="ipaddr" :show-overflow-tooltip="true" />
+            <el-table-column :label="td('sys.monitor.logininfor.loginLocation')" align="center" prop="loginLocation" :show-overflow-tooltip="true" />
+            <el-table-column :label="td('sys.monitor.logininfor.os')" align="center" prop="os" :show-overflow-tooltip="true" />
+            <el-table-column :label="td('sys.monitor.logininfor.browser')" align="center" prop="browser" :show-overflow-tooltip="true" />
+            <el-table-column :label="td('sys.monitor.logininfor.loginStatus')" align="center" prop="status">
                <template #default="scope">
                   <dict-tag :options="sys_common_status" :value="scope.row.status" />
                </template>

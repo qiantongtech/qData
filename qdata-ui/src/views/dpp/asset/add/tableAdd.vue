@@ -51,7 +51,7 @@
       :rules="[
       {
         required: true,
-        message: td('dpp.asset.add.table.dataLayerRequired'),
+        message: td('dpp.asset.add.table.hierarchyRequired'),
         trigger: 'change',
       },
     ]"
@@ -67,7 +67,7 @@
       }"
         node-key="id"
         value-key="id"
-        :placeholder="td('dpp.asset.add.table.dataLayerPlaceholder')"
+        :placeholder="td('dpp.asset.add.table.hierarchyPlaceholder')"
         check-strictly
         filterable
         default-expand-all
@@ -170,7 +170,7 @@
   </template>
 
   <el-form-item
-      :label="td('dpp.asset.add.table.tableCase')"
+      :label="td('dpp.asset.add.table.tableNamingRule')"
       prop="tableCase"
       :rules="[
       {
@@ -182,7 +182,7 @@
   >
     <el-select
         v-model="localForm.tableCase"
-        :placeholder="td('dpp.asset.add.table.tableCasePlaceholder')"
+        :placeholder="td('dpp.asset.add.table.tableNamingRulePlaceholder')"
         style="width: 100%"
     >
       <el-option
@@ -194,7 +194,7 @@
     </el-select>
   </el-form-item>
   <el-form-item
-      :label="td('dpp.asset.add.table.tableCase')"
+      :label="td('dpp.asset.add.table.tableNamingRule')"
       prop="namingSpec"
       :rules="[
       {
@@ -211,7 +211,7 @@
     />
   </el-form-item>
   <qt-form-item
-      :label="td('dpp.asset.add.table.datasourceName')"
+      :label="td('dpp.asset.add.table.connectionName')"
       prop="datasourceId"
       :rules="[
       { required: true, message: td('dpp.asset.add.table.datasourceNameRequired'), trigger: 'change' },
@@ -220,7 +220,7 @@
   >
     <DatasourceList
         v-model="localForm.datasourceId"
-        :placeholder="td('dpp.asset.add.table.datasourceNamePlaceholder')"
+        :placeholder="td('dpp.asset.add.table.connectionNamePlaceholder')"
         @change="handleDatasourceChange"
         filterable
         :disabled="
@@ -231,11 +231,11 @@
     />
   </qt-form-item>
 
-  <el-form-item :label="td('dpp.asset.add.table.datasourceType')" prop="datasourceType">
+  <el-form-item :label="td('dpp.asset.add.table.connectionType')" prop="datasourceType">
     <el-input
         v-model="localForm.datasourceType"
         disabled
-        :placeholder="td('dpp.asset.add.table.datasourceTypePlaceholder')"
+        :placeholder="td('dpp.asset.add.table.connectionTypePlaceholder')"
     />
   </el-form-item>
 

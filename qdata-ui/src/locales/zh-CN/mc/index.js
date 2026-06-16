@@ -94,6 +94,7 @@ export default {
       collectDuration: '采集耗时(s)',
       collectDateRange: '采集起止时间',
       viewLog: '查看日志',
+      logDetail: '日志详情',
       downloadLog: '下载日志',
       logFileName: '{name}_{id}_日志.log',
       tableCount: '采集表数量',

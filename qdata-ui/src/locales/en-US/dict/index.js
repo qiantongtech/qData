@@ -631,6 +631,12 @@ export default {
     '2': 'Summary Table',
     '3': 'Dimension Table',
     '4': 'Application Table',
+    'remark': {
+      '1': 'Stores fixed basic archive information, such as "Station Basic Attribute Table", "Reservoir Directory", etc.',
+      '2': 'Records unprocessed raw transaction records, such as "Single Water Level Report", "Device Alarm Log".',
+      '3': 'Periodic statistical results aggregated by conditions, such as "Station Daily Precipitation Table", "Monthly Average Water Level Table".',
+      '4': 'Final data used directly for large screen or report display, such as "Flood Control Large Screen Comprehensive Indicator Table".',
+    }
   },
   'table_yes_no': {
     '0': 'No',

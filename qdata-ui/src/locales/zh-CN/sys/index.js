@@ -55,7 +55,16 @@ export default {
     quote13: '让数据说话，让治理见效；一切都会越来越好。',
     quote14: '数据治理如行云流水，自然而然，功到自成。',
     quote15: '用心治理数据，用数据驱动未来。',
-    confirmLogout: '确定注销并退出系统吗？'
+    confirmLogout: '确定注销并退出系统吗？',
+    chart: {
+      type08: '种类08',
+      type09: '种类09',
+      type10: '种类10',
+      type11: '种类11',
+      type12: '种类12',
+      title: '标题',
+      callCount: '调用次数'
+    }
   },
   register: {
     title: '冰凤后台管理系统',

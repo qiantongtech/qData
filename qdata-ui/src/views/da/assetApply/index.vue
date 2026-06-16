@@ -420,15 +420,15 @@ const daAssetApplyList = ref([]);
 
 // 列显隐信息
 const columns = ref([
-  { key: 1, label: "资产名称", visible: true },
-  { key: 2, label: "英文名称", visible: true },
-  { key: 3, label: "资产类目", visible: true },
-  { key: 4, label: "主题名称", visible: true },
-  { key: 5, label: "申请项目", visible: true },
-  { key: 6, label: "申请时间", visible: true },
-  { key: 7, label: "申请人", visible: true },
-  { key: 8, label: "审核状态", visible: true },
-  { key: 9, label: "操作", visible: true },
+  { key: 1, label: td('da.assetApply.columnVisibility.assetName'), visible: true },
+  { key: 2, label: td('da.assetApply.columnVisibility.assetNameEn'), visible: true },
+  { key: 3, label: td('da.assetApply.columnVisibility.assetCat'), visible: true },
+  { key: 4, label: td('da.assetApply.columnVisibility.topicName'), visible: true },
+  { key: 5, label: td('da.assetApply.columnVisibility.applyProject'), visible: true },
+  { key: 6, label: td('da.assetApply.columnVisibility.applyTime'), visible: true },
+  { key: 7, label: td('da.assetApply.columnVisibility.applicant'), visible: true },
+  { key: 8, label: td('da.assetApply.columnVisibility.auditStatus'), visible: true },
+  { key: 9, label: td('common.texts.operation'), visible: true },
 ]);
 
 const getColumnVisibility = (key) => {

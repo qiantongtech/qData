@@ -324,7 +324,26 @@ export default {
     detailInfo: '详细信息',
     releaseLog: '发布日志',
     virtualAssetCreate: '虚拟资产创建',
-    fullAssetCreate: '完整资产创建'
+    fullAssetCreate: '完整资产创建',
+    // 数据元资产关联
+    asset: {
+      title: '数据元数据资产关联信息',
+      addTitle: '新增数据元数据资产关联信息',
+      editTitle: '修改数据元数据资产关联信息',
+      detailTitle: '数据元数据资产关联信息详情',
+      id: '编号',
+      assetName: '资产名称',
+      description: '描述',
+      tableName: '数据表',
+      columnName: '关联字段',
+      createBy: '创建人',
+      createTime: '创建时间',
+      updateTime: '更新时间',
+      updateSuccess: '修改成功',
+      addSuccess: '新增成功',
+      deleteConfirm: '是否确认删除数据元数据资产关联信息编号为"{id}"的数据项？',
+      deleteSuccess: '删除成功'
+    }
   },
   common: {
     query: '查询',

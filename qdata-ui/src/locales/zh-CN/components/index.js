@@ -259,5 +259,32 @@ export default {
     resetSettings: '重置配置',
     savingLoading: '正在保存到本地，请稍候...',
     resetLoading: '正在清除设置缓存并刷新，请稍候...'
+  },
+  tagsView: {
+    refreshPage: '刷新页面',
+    closeCurrent: '关闭当前',
+    closeOthers: '关闭其他',
+    closeLeft: '关闭左侧',
+    closeRight: '关闭右侧',
+    closeAll: '全部关闭'
+  },
+  fullScreen: {
+    exit: '退出全屏',
+    enter: '全屏'
+  },
+  cleanRule: {
+    numberBoundary: '数值边界值调整',
+    decimalFormatter: '小数位数',
+    affixEditor: '字段前缀/后缀统一',
+    enumMap: '枚举值映射标准化',
+    combinerFieldUnique: '按组合字段去重',
+    regexReplace: '正则表达式替换',
+    cleanExpiredData: '清理过期记录',
+    longFieldTruncator: '超长字段截断',
+    emptyRule: '组合字段为空删除',
+    fieldToLower: '字段转小写',
+    dateFormatter: '日期格式统一',
+    trimSpace: '去除字段空格',
+    placeholder: '占位规则'
   }
 }

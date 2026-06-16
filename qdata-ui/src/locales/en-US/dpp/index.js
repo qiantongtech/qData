@@ -685,6 +685,7 @@ export default {
     editInstanceLog: 'Edit Data Integration Task - Log',
     instanceLogDetail: 'Data Integration Task - Log Details',
     confirmDeleteInstance: 'Are you sure to delete data integration task log with ID "{id}"?',
+    inputTaskName: 'Please enter task name',
     developTask: {
       id: 'No.',
       nodeInstanceName: 'Node Instance Name',
@@ -703,6 +704,7 @@ export default {
       inputNodeInstanceName: 'Please enter node instance name',
       selectExecutionStatus: 'Please select execution status',
       executionTime: 'Execution Time',
+      inputTaskName: 'Please enter task name',
     },
     integratioTask: {
       id: 'No.',
@@ -725,6 +727,7 @@ export default {
       dataIntegrationCategory: 'Data Integration Category',
       executionTime: 'Execution Time',
       resetConfirm: 'Clicking reset will clear all unsaved changes. Are you sure to continue?',
+
     },
   },
   developTask: {

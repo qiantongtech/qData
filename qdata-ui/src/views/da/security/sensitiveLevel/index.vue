@@ -351,16 +351,16 @@ const daSensitiveLevelList = ref([]);
 
 // 列显隐信息
 const columns = ref([
-    { key: 1, label: '编号', visible: true },
-    { key: 2, label: '敏感级别名称', visible: true },
-    { key: 3, label: '描述', visible: true },
-    { key: 4, label: '替换规则', visible: true },
-    { key: 5, label: '替换内容', visible: true },
-    { key: 6, label: '创建人', visible: true },
-    { key: 7, label: '创建时间', visible: true },
-    { key: 8, label: '在线状态', visible: true },
-    { key: 9, label: '备注', visible: true },
-    { key: 10, label: '操作', visible: true }
+    { key: 1, label: td('da.security.columnVisibility.id'), visible: true },
+    { key: 2, label: td('da.security.columnVisibility.sensitiveLevelName'), visible: true },
+    { key: 3, label: td('da.security.columnVisibility.description'), visible: true },
+    { key: 4, label: td('da.security.columnVisibility.replaceRule'), visible: true },
+    { key: 5, label: td('da.security.columnVisibility.replaceContent'), visible: true },
+    { key: 6, label: td('da.security.columnVisibility.createdBy'), visible: true },
+    { key: 7, label: td('da.security.columnVisibility.createdTime'), visible: true },
+    { key: 8, label: td('da.security.columnVisibility.onlineStatus'), visible: true },
+    { key: 9, label: td('da.security.columnVisibility.remark'), visible: true },
+    { key: 10, label: td('common.texts.operation'), visible: true }
 ]);
 
 const getColumnVisibility = (key) => {

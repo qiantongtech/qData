@@ -103,7 +103,13 @@ export default {
                     createdTime: '创建时间',
                     topNode: '顶级节点',
                     createByPlaceholder: '请输入创建人',
-                    createTimePlaceholder: '请输入创建时间'
+                    createTimePlaceholder: '请输入创建时间',
+                    updateMsg1: '新增用户表字段，包括用户姓名、联系方式、注册时间等基础信息，优化数据结构设计',
+                    updateMsg2: '删除冗余字段，移除不再使用的email_backup和phone_backup字段，精简表结构提高性能',
+                    updateMsg3: '添加索引优化，为user_name和create_time字段创建复合索引，提升查询效率约30%',
+                    updateMsg4: '回滚至1.0.1版本，撤销1.0.2版本的索引变更，解决因索引导致的数据插入性能问题',
+                    updateMsg5: '增加用户权限字段，添加role_id和permission_level字段，支持多级权限管理功能',
+                    rollback: '回滚'
                 },
                 handle: {
                     selectDbName: '请选择所属库名',

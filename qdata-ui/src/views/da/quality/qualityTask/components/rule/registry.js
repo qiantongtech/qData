@@ -7,16 +7,18 @@
 // 2) 在 ruleRegistry 中追加键与 componentPath 的映射
 // 3) 规则类型键需与后端/页面使用的 form.ruleType 保持一致
 import { defineAsyncComponent } from "vue"
+import useDefaultLang from "@/composables/useDefaultLang"
+const { td } = useDefaultLang()
 const modules = import.meta.glob("./**/*.vue")
 
 export const ruleRegistry = {
-  DECIMAL_PRECISION_VALIDATION: { label: "数值精度校验", componentPath: "./decimalScaleRule.vue" },
-  CHARACTER_VALIDATION: { label: "字符串类型校验", componentPath: "./characterValidationRule.vue" },
-  LENGTH_VALIDATION: { label: "字段长度范围校验", componentPath: "./lengthRangeRule.vue" },
-  NUMERIC_RANGE_VALIDATION: { label: "数值字段范围校验", componentPath: "./numberRangeRule.vue" },
-  ENUM_VALIDATION: { label: "枚举值校验", componentPath: "./enumRule.vue" },
-  GROUP_FIELD_COMPLETENESS: { label: "字段组完整性校验", componentPath: "./combinerFieldUniqueRule.vue" },
-  TIME_ORDER_VALIDATION: { label: "时间字段先后顺序校验", componentPath: "./timeOrderRule.vue" },
+  DECIMAL_PRECISION_VALIDATION: { label: td('da.qualityTask.ruleRegistry.DECIMAL_PRECISION_VALIDATION'), componentPath: "./decimalScaleRule.vue" },
+  CHARACTER_VALIDATION: { label: td('da.qualityTask.ruleRegistry.CHARACTER_VALIDATION'), componentPath: "./characterValidationRule.vue" },
+  LENGTH_VALIDATION: { label: td('da.qualityTask.ruleRegistry.LENGTH_VALIDATION'), componentPath: "./lengthRangeRule.vue" },
+  NUMERIC_RANGE_VALIDATION: { label: td('da.qualityTask.ruleRegistry.NUMERIC_RANGE_VALIDATION'), componentPath: "./numberRangeRule.vue" },
+  ENUM_VALIDATION: { label: td('da.qualityTask.ruleRegistry.ENUM_VALIDATION'), componentPath: "./enumRule.vue" },
+  GROUP_FIELD_COMPLETENESS: { label: td('da.qualityTask.ruleRegistry.GROUP_FIELD_COMPLETENESS'), componentPath: "./combinerFieldUniqueRule.vue" },
+  TIME_ORDER_VALIDATION: { label: td('da.qualityTask.ruleRegistry.TIME_ORDER_VALIDATION'), componentPath: "./timeOrderRule.vue" },
 }
 
 // 获取规则元信息：用于展示 label 等基础描述

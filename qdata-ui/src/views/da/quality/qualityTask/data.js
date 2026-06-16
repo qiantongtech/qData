@@ -15,6 +15,8 @@
  * More information: https://qdata.qiantong.tech/business.html
  */
 
+import useDefaultLang from "@/composables/useDefaultLang"
+const { td } = useDefaultLang()
 
 
 export const treeData =
@@ -90,7 +92,7 @@ export const treeData =
     },
     {
       id: 10,
-      label: "Flink批",
+      label: td('da.qualityTask.flinkBatch'),
       value: "FlinkBatch",
       type: "FLINKBATCH",
       children: [],
@@ -98,7 +100,7 @@ export const treeData =
     },
     {
       id: 11,
-      label: "Flink流",
+      label: td('da.qualityTask.flinkStream'),
       value: "FlinkStream",
       type: "FLINKSTREAM",
       children: [],

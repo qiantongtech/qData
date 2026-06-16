@@ -432,32 +432,32 @@ function initModule4() {
     // },
     {
       value: 130,
-      legendname: "种类08",
-      name: "种类08",
+      legendname: td('sys.dashboard.chart.type08'),
+      name: td('sys.dashboard.chart.type08'),
       // itemStyle: { color: '#fdb301' }
     },
     {
       value: 150,
-      legendname: "种类09",
-      name: "种类09",
+      legendname: td('sys.dashboard.chart.type09'),
+      name: td('sys.dashboard.chart.type09'),
       // itemStyle: { color: '#57e7ec' }
     },
     {
       value: 100,
-      legendname: "种类10",
-      name: "种类10",
+      legendname: td('sys.dashboard.chart.type10'),
+      name: td('sys.dashboard.chart.type10'),
       // itemStyle: { color: '#cf9ef1' }
     },
     {
       value: 190,
-      legendname: "种类11",
-      name: "种类11",
+      legendname: td('sys.dashboard.chart.type11'),
+      name: td('sys.dashboard.chart.type11'),
       // itemStyle: { color: '#57e7ec' }
     },
     {
       value: 200,
-      legendname: "种类12",
-      name: "种类12",
+      legendname: td('sys.dashboard.chart.type12'),
+      name: td('sys.dashboard.chart.type12'),
       // itemStyle: { color: '#cf9ef1' }
     },
   ];
@@ -568,7 +568,7 @@ function initModule4() {
     },
     series: [
       {
-        name: "标题",
+        name: td('sys.dashboard.chart.title'),
         type: "pie",
         center: ["35%", "50%"],
         radius: ["35%", "55%"],
@@ -720,7 +720,7 @@ function initModule5() {
     series: [
       {
         type: "bar",
-        name: "调用次数",
+        name: td('sys.dashboard.chart.callCount'),
         barWidth: 20,
         itemStyle: {
           borderRadius: [2, 2, 0, 0],

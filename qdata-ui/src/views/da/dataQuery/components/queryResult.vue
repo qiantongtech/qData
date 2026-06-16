@@ -20,11 +20,11 @@
     <div>
       <!-- 导出按钮 -->
       <el-button :disabled="!callData.dataTotal > 0" type="warning" plain icon="Download"
-        @click="downloadMethodNotification" :loading="downloadLoading">导出</el-button>
+        @click="downloadMethodNotification" :loading="downloadLoading">{{ td('da.qualityTask.dataQuery.queryResult.export') }}</el-button>
 
       <el-table :data="callData.dataList" stripe border height="540" v-loading="loading"
         style="width: 100%; margin: 15px 0">
-        <el-table-column label="序号" width="80" align="center" v-if="callData.dataTotal > 0">
+        <el-table-column :label="td('da.qualityTask.dataQuery.queryResult.serialNumber')" width="80" align="center" v-if="callData.dataTotal > 0">
           <template #default="scope">
             <span>{{
               (callData.pageNum - 1) * callData.pageSize + scope.$index + 1
@@ -51,7 +51,7 @@
 
     <template #footer>
       <div style="text-align: right">
-        <el-button @click="closeDialog">关闭</el-button>
+        <el-button @click="closeDialog">{{ td('da.qualityTask.dataQuery.queryResult.close') }}</el-button>
       </div>
     </template>
   </el-dialog>
@@ -67,7 +67,7 @@ const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const props = defineProps({
   visible: { type: Boolean, default: true },
-  title: { type: String, default: "表单标题" },
+  title: { type: String, default: td('da.qualityTask.dataQuery.queryResult.formTitle') },
   queryParams: { type: Object, default: () => ({}) },
   spl: { type: String, default: "" },
 });
@@ -154,8 +154,8 @@ const downloadMethod = () => {
 
   if (total === 0) {
     ElNotification({
-      title: "提示",
-      message: "该表没有数据",
+      title: td('da.qualityTask.dataQuery.queryResult.notification.title'),
+      message: td('da.qualityTask.dataQuery.queryResult.notification.noData'),
       type: "info",
       duration: 2000,
     });
@@ -187,12 +187,12 @@ const downloadMethodNotification = () => {
   const totalFilesCount = totalFiles.value;
 
   ElMessageBox.confirm(
-    `是否导出总数为：<span style="color: rgb(0, 160, 233);">${callData.value.dataTotal}</span>，以每5000数据一份文件进行导出，总共导出 ${totalFilesCount} 份？`,
-    "提示",
+    td('da.qualityTask.dataQuery.queryResult.notification.exportConfirm', '', { total: callData.value.dataTotal, files: totalFilesCount }),
+    td('da.qualityTask.dataQuery.queryResult.notification.title'),
     {
       dangerouslyUseHTMLString: true,
-      confirmButtonText: "确定",
-      cancelButtonText: "取消",
+      confirmButtonText: td('da.qualityTask.dataQuery.queryResult.notification.confirm'),
+      cancelButtonText: td('da.qualityTask.dataQuery.queryResult.notification.cancel'),
       type: "warning",
     }
   ).then(() => {

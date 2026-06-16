@@ -155,6 +155,75 @@ export default {
       status: '状态',
       remark: '备注'
     },
+    // 质量规则注册中心
+    ruleRegistry: {
+      DECIMAL_PRECISION_VALIDATION: '数值精度校验',
+      CHARACTER_VALIDATION: '字符串类型校验',
+      LENGTH_VALIDATION: '字段长度范围校验',
+      NUMERIC_RANGE_VALIDATION: '数值字段范围校验',
+      ENUM_VALIDATION: '枚举值校验',
+      GROUP_FIELD_COMPLETENESS: '字段组完整性校验',
+      TIME_ORDER_VALIDATION: '时间字段先后顺序校验'
+    },
+    // 数据查询结果组件
+    dataQuery: {
+      queryResult: {
+        export: '导出',
+        serialNumber: '序号',
+        close: '关闭',
+        formTitle: '表单标题',
+        notification: {
+          title: '提示',
+          noData: '该表没有数据',
+          exportConfirm: '是否导出总数为：<span style="color: rgb(0, 160, 233);">{total}</span>，以每5000数据一份文件进行导出，总共导出 {files} 份？',
+          confirm: '确定',
+          cancel: '取消'
+        }
+      }
+    },
+    // 数据源管理
+    datasource: {
+      columnVisibility: {
+        id: '编号',
+        dataSourceName: '数据连接名称',
+        description: '描述',
+        dataSourceType: '数据连接类型',
+        createdBy: '创建人',
+        createdTime: '创建时间',
+        status: '状态',
+        remark: '备注'
+      },
+      belongProject: '所属项目'
+    },
+    // 资产申请
+    assetApply: {
+      columnVisibility: {
+        assetName: '资产名称',
+        assetNameEn: '英文名称',
+        assetCat: '资产类目',
+        topicName: '主题名称',
+        applyProject: '申请项目',
+        applyTime: '申请时间',
+        applicant: '申请人',
+        auditStatus: '审核状态'
+      }
+    },
+    // 资产列表
+    asset: {
+      columnVisibility: {
+        id: '编号',
+        assetName: '资产名称',
+        assetDesc: '资产描述',
+        assetCat: '资产类目',
+        assetType: '资产类型',
+        topicName: '主题名称',
+        dataCount: '数据量(条)',
+        status: '状态',
+        createTime: '创建时间',
+        updateTime: '更新时间'
+      },
+      apply: '申请'
+    },
     // Add/Add page - Step names
     stepBasicInfo: '基础信息',
     stepTargetInfo: '稽查对象信息',

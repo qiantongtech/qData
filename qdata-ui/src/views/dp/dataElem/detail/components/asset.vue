@@ -23,41 +23,41 @@
     </div>
     <el-table stripe height="360" v-loading="loading" :data="dpDataElemAssetRelList"
         @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
-        <el-table-column label="编号" align="left" prop="id" width="50" />
-        <el-table-column label="资产名称" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="assetName"
+        <el-table-column :label="td('dp.dataElem.asset.id')" align="left" prop="id" width="50" />
+        <el-table-column :label="td('dp.dataElem.asset.assetName')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="assetName"
             width="300">
             <template #default="scope">
                 {{ scope.row.assetName || '-' }}
             </template>
         </el-table-column>
-        <el-table-column label="描述" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="description"
+        <el-table-column :label="td('dp.dataElem.asset.description')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="description"
             width="380">
             <template #default="scope">
                 {{ scope.row.description || '-' }}
             </template>
         </el-table-column>
-        <el-table-column label="数据表" align="left" prop="tableName" width="290">
+        <el-table-column :label="td('dp.dataElem.asset.tableName')" align="left" prop="tableName" width="290">
             <template #default="scope">
                 {{ scope.row.tableName || '-' }}
             </template>
         </el-table-column>
-        <el-table-column label="关联字段" align="left" prop="columnName" width="300">
+        <el-table-column :label="td('dp.dataElem.asset.columnName')" align="left" prop="columnName" width="300">
             <template #default="scope">
                 {{ scope.row.columnName || '-' }}
             </template>
         </el-table-column>
-        <el-table-column label="创建人" :show-overflow-tooltip="{ effect: 'light' }" align="left" width="120"
+        <el-table-column :label="td('dp.dataElem.asset.createBy')" :show-overflow-tooltip="{ effect: 'light' }" align="left" width="120"
             prop="createBy">
             <template #default="scope">
                 {{ scope.row.createBy || "-" }}
             </template>
         </el-table-column>
-        <el-table-column label="创建时间" align="left" prop="createTime" width="150">
+        <el-table-column :label="td('dp.dataElem.asset.createTime')" align="left" prop="createTime" width="150">
             <template #default="scope"> <span>{{ parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}") || "-"
             }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="更新时间" align="left" prop="updateTime" width="300">
+        <el-table-column :label="td('dp.dataElem.asset.updateTime')" align="left" prop="updateTime" width="300">
             <template #default="scope">
                 <span>{{ parseTime(scope.row.updateTime, '{y}-{m}-{d} {h}:{i}') || '-' }}</span>
             </template>
@@ -201,7 +201,7 @@ function handleSortChange(column, prop, order) {
 function handleAdd() {
     reset();
     open.value = true;
-    title.value = '新增数据元数据资产关联信息';
+    title.value = td('dp.dataElem.asset.addTitle');
 }
 
 /** 修改按钮操作 */
@@ -211,7 +211,7 @@ function handleUpdate(row) {
     getDpDataElemAssetRel(_id).then((response) => {
         form.value = response.data;
         open.value = true;
-        title.value = '修改数据元数据资产关联信息';
+        title.value = td('dp.dataElem.asset.editTitle');
     });
 }
 
@@ -222,7 +222,7 @@ function handleDetail(row) {
     getDpDataElemAssetRel(_id).then((response) => {
         form.value = response.data;
         openDetail.value = true;
-        title.value = '数据元数据资产关联信息详情';
+        title.value = td('dp.dataElem.asset.detailTitle');
     });
 }
 
@@ -233,7 +233,7 @@ function submitForm() {
             if (form.value.id != null) {
                 updateDpDataElemAssetRel(form.value)
                     .then((response) => {
-                        proxy.$modal.msgSuccess('修改成功');
+                        proxy.$modal.msgSuccess(td('dp.dataElem.asset.updateSuccess'));
                         open.value = false;
                         getList();
                     })
@@ -241,7 +241,7 @@ function submitForm() {
             } else {
                 addDpDataElemAssetRel(form.value)
                     .then((response) => {
-                        proxy.$modal.msgSuccess('新增成功');
+                        proxy.$modal.msgSuccess(td('dp.dataElem.asset.addSuccess'));
                         open.value = false;
                         getList();
                     })
@@ -255,13 +255,13 @@ function submitForm() {
 function handleDelete(row) {
     const _ids = row.id || ids.value;
     proxy.$modal
-        .confirm('是否确认删除数据元数据资产关联信息编号为"' + _ids + '"的数据项？')
+        .confirm(td('dp.dataElem.asset.deleteConfirm', '', { id: _ids }))
         .then(function () {
             return delDpDataElemAssetRel(_ids);
         })
         .then(() => {
             getList();
-            proxy.$modal.msgSuccess('删除成功');
+            proxy.$modal.msgSuccess(td('dp.dataElem.asset.deleteSuccess'));
         })
         .catch(() => { });
 }

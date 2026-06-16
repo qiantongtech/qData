@@ -133,14 +133,14 @@ const { quality_log_success_flag } = proxy.useDict(
 const DppQualityLogList = ref([]);
 // 列显隐信息
 const columns = ref([
-    { key: 0, label: "编号", visible: true },
-    { key: 1, label: "任务名称", visible: true },
-    { key: 2, label: "质量评分", visible: true },
-    { key: 3, label: "问题数据", visible: true },
-    { key: 4, label: "执行状态", visible: true },
-    { key: 5, label: "开始时间", visible: true },
-    { key: 6, label: "结束时间", visible: true },
-    { key: 7, label: "操作", visible: true },
+    { key: 0, label: td('da.qualityTaskLog.columnLabels.id'), visible: true },
+    { key: 1, label: td('da.qualityTaskLog.columnLabels.taskName'), visible: true },
+    { key: 2, label: td('da.qualityTaskLog.columnLabels.qualityScore'), visible: true },
+    { key: 3, label: td('da.qualityTaskLog.columnLabels.problemData'), visible: true },
+    { key: 4, label: td('da.qualityTaskLog.columnLabels.executionStatus'), visible: true },
+    { key: 5, label: td('da.qualityTaskLog.columnLabels.startTime'), visible: true },
+    { key: 6, label: td('da.qualityTaskLog.columnLabels.endTime'), visible: true },
+    { key: 7, label: td('common.texts.operation'), visible: true },
 ]);
 const getColumnVisibility = (key) => {
     const column = columns.value.find(col => col.key == key);

@@ -447,7 +447,7 @@
                                 type="primary"
                                 @click="handleApply(item)"
                               >
-                                <el-icon> <EditPen /> </el-icon>申请
+                                <el-icon> <EditPen /> </el-icon>{{ td('da.asset.apply') }}
                               </el-text>
                             </el-dropdown-item> -->
                             <el-dropdown-item
@@ -834,16 +834,16 @@ const titleBtns = [
 ];
 // 列显隐信息
 const columns = ref([
-  { key: 0, label: "编号", visible: true },
-  { key: 1, label: "资产名称", visible: true },
-  { key: 2, label: "资产描述", visible: true },
-  { key: 3, label: "资产类目", visible: true },
-  { key: 8, label: "资产类型", visible: true },
-  { key: 4, label: "主题名称", visible: true },
-  { key: 5, label: "数据量(条)", visible: true },
-  { key: 6, label: "状态", visible: true },
-  { key: 7, label: "创建时间", visible: true },
-  { key: 8, label: "更新时间", visible: true },
+  { key: 0, label: td('da.asset.columnVisibility.id'), visible: true },
+  { key: 1, label: td('da.asset.columnVisibility.assetName'), visible: true },
+  { key: 2, label: td('da.asset.columnVisibility.assetDesc'), visible: true },
+  { key: 3, label: td('da.asset.columnVisibility.assetCat'), visible: true },
+  { key: 8, label: td('da.asset.columnVisibility.assetType'), visible: true },
+  { key: 4, label: td('da.asset.columnVisibility.topicName'), visible: true },
+  { key: 5, label: td('da.asset.columnVisibility.dataCount'), visible: true },
+  { key: 6, label: td('da.asset.columnVisibility.status'), visible: true },
+  { key: 7, label: td('da.asset.columnVisibility.createTime'), visible: true },
+  { key: 8, label: td('da.asset.columnVisibility.updateTime'), visible: true },
 ]);
 let themeList = ref([]);
 async function getAssetThemeList() {

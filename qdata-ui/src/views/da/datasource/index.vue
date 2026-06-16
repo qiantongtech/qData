@@ -166,7 +166,7 @@
         <!-- <el-table-column
             v-if="getColumnVisibility(2) && type == 1"
             width="120"
-            label="所属项目"
+            :label="td('da.datasource.belongProject')"
             align="center"
             prop="projectName"
         >
@@ -953,15 +953,15 @@ const daDatasourceList = ref([]);
 
 // 列显隐信息
 const columns = ref([
-  { key: 1, label: "编号", visible: true },
-  { key: 2, label: "数据连接名称", visible: true },
-  { key: 3, label: "描述", visible: true },
-  { key: 4, label: "数据连接类型", visible: true },
-  { key: 5, label: "创建人", visible: true },
-  { key: 6, label: "创建时间", visible: true },
-  { key: 7, label: "状态", visible: true },
-  { key: 8, label: "备注", visible: true },
-  { key: 9, label: "操作", visible: true },
+  { key: 1, label: td('da.datasource.columnVisibility.id'), visible: true },
+  { key: 2, label: td('da.datasource.columnVisibility.dataSourceName'), visible: true },
+  { key: 3, label: td('da.datasource.columnVisibility.description'), visible: true },
+  { key: 4, label: td('da.datasource.columnVisibility.dataSourceType'), visible: true },
+  { key: 5, label: td('da.datasource.columnVisibility.createdBy'), visible: true },
+  { key: 6, label: td('da.datasource.columnVisibility.createdTime'), visible: true },
+  { key: 7, label: td('da.datasource.columnVisibility.status'), visible: true },
+  { key: 8, label: td('da.datasource.columnVisibility.remark'), visible: true },
+  { key: 9, label: td('common.texts.operation'), visible: true },
 ]);
 
 const getColumnVisibility = (key) => {

@@ -31,6 +31,8 @@ import { ElMessage } from "element-plus";
 import { DagreLayout } from '@antv/layout';
 import { register } from '@antv/x6-vue-shape';
 import NodeView from "@/views/dpp/components/nodeView";
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();
 /**
  * 插件使用
  */
@@ -409,7 +411,7 @@ export const validateGraph = (graph, flag) => {
   let errorMessages = [];
 
   if (nodes.length === 0) {
-    const msg = "当前任务缺少输入、转换、输出组件，请设置相关组件";
+    const msg = td('dpp.utils.missingComponents');
     if (!flag) ElMessage.warning(msg);
     return { isValid: false, errorMessages: [msg] };
   }
@@ -425,12 +427,12 @@ export const validateGraph = (graph, flag) => {
   const validateType2TaskParams = (taskParams, node) => {
     if (!taskParams.tableFields || taskParams.tableFields.length === 0) {
       valid = false;
-      addErrorMessage(`${node.data.name} 表输出组件未进行字段映射，请设置字段映射`);
+      addErrorMessage(`${node.data.name} ${td('dpp.utils.tableOutputFieldMapping')}`);
     } else {
       let { target_columns = [], columns = [] } = handleType2TaskParams(taskParams.tableFields, taskParams.toColumnsList);
       if (target_columns.length === 0 || columns.length === 0) {
         valid = false;
-        addErrorMessage(`${node.data.name} 表输出组件未进行字段映射，请设置字段映射`);
+        addErrorMessage(`${node.data.name} ${td('dpp.utils.tableOutputFieldMapping')}`);
       }
     }
   };
@@ -447,20 +449,20 @@ export const validateGraph = (graph, flag) => {
     if (componentType == 41) {
       if (!taskParams.sequenceFieldName) {
         valid = false;
-        addErrorMessage(`${data.name} 节点信息不完善，请完善`);
+        addErrorMessage(`${data.name} ${td('dpp.utils.nodeInfoIncomplete')}`);
       }
       return;
     }
     if (componentType == 44 || componentType == 45) {
       if (!taskParams.plaintextField) {
         valid = false;
-        addErrorMessage(`${data.name} 节点信息不完善，请完善`);
+        addErrorMessage(`${data.name} ${td('dpp.utils.nodeInfoIncomplete')}`);
       }
       return;
     }
     if (!Array.isArray(taskParams.tableFields) || taskParams.tableFields.length == 0) {
       valid = false;
-      addErrorMessage(`${data.name} 节点信息不完善，请完善`);
+      addErrorMessage(`${data.name} ${td('dpp.utils.nodeInfoIncomplete')}`);
       return;
     }
     // 特定类型组件额外校验
@@ -473,13 +475,13 @@ export const validateGraph = (graph, flag) => {
   });
   if (!inputNodeExists && !outputNodeExists) {
     valid = false;
-    addErrorMessage("当前任务缺少输入、输出组件，请设置输入、输出节点");
+    addErrorMessage(td('dpp.utils.missingInputOutput'));
   } else if (!inputNodeExists) {
     valid = false;
-    addErrorMessage("当前任务缺少输入组件，请设置输入节点");
+    addErrorMessage(td('dpp.utils.missingInput'));
   } else if (!outputNodeExists) {
     valid = false;
-    addErrorMessage("当前任务缺少输出组件，请设置输出节点");
+    addErrorMessage(td('dpp.utils.missingOutput'));
   }
 
 
@@ -545,7 +547,7 @@ export const renderGraph = (graph, savedData, width) => {
     const targetNode = graph.getCellById(postId);
 
     if (!sourceNode || !targetNode) {
-      console.warn(`跳过无效边: source=${preId}, target=${postId}（节点不存在）`);
+      console.warn(td('dpp.utils.invalidEdge').replace('{source}', preId).replace('{target}', postId));
       return;
     }
 
@@ -593,7 +595,7 @@ export const createNodeSelect = (graph, currentNodeId) => {
     .getNodes()
     .filter((node) => node.id !== currentNodeId && node?.data?.taskParams?.type !== 2) // 过滤掉当前节点和 taskParams.type 为 2 的节点
     .map((node) => ({
-      label: node.data.name || "未知节点",
+      label: node.data.name || td('dpp.utils.unknownNode'),
       value: node.id,
     }));
 };

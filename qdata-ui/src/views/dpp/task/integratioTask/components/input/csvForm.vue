@@ -307,7 +307,7 @@ const isButtonDisabled = computed(() => {
 const parseExcel = async (id) => {
   if (!form.value.taskParams.file) {
     ElMessage.warning(
-      td("dpp.integration.csvParseFailedAddAttachment", "解析失败，请添加附件")
+      td("dpp.integration.csvParseFailedAddAttachment")
     );
     return;
   }
@@ -326,22 +326,16 @@ const parseExcel = async (id) => {
         columnType: "string",
       }));
       ElMessage.success(
-        td(
-          "dpp.integration.csvParseSuccess",
-          "CSV 解析成功，请确认属性字段类型！"
-        )
+        td("dpp.integration.csvParseSuccess")
       );
     } else {
       ElMessage.warning(
-        td(
-          "dpp.integration.csvParseFailedNoData",
-          "CSV 解析失败，未获取到有效数据！"
-        )
+        td("dpp.integration.csvParseFailedNoData")
       );
     }
   } catch (error) {
     ElMessage.warning(
-      td("dpp.integration.csvParseError", "解析文件时发生错误，请检查后重试")
+      td("dpp.integration.csvParseError")
     );
     console.error(error);
   } finally {
@@ -367,10 +361,7 @@ const saveData = async () => {
       (!ColumnByAssettab.value || ColumnByAssettab.value.length == 0)
     ) {
       return proxy.$message.warning(
-        td(
-          "dpp.integration.validateFailedSelectFields",
-          "解析失败，请选择属性字段"
-        )
+        td("dpp.integration.validateFailedSelectFields")
       );
     }
     // 如果没有 code，就调用接口获取唯一的 code

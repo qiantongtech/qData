@@ -63,6 +63,8 @@
 */
 
 import { defineAsyncComponent } from "vue"
+import useDefaultLang from "@/composables/useDefaultLang"
+const { td } = useDefaultLang()
 const modules = import.meta.glob("./**/*.vue")
 
 /**
@@ -70,19 +72,19 @@ const modules = import.meta.glob("./**/*.vue")
  * 组件解析通过 import.meta.glob + defineAsyncComponent 按需加载
  */
 export const ruleRegistry = {
-  "001": { label: "数值边界值调整", componentPath: "./numberBoundaryRule.vue" },
-  "008": { label: "小数位数", componentPath: "./decimalFormatterRule.vue" },
-  "010": { label: "字段前缀/后缀统一", componentPath: "./affixEditorRule.vue" },
-  "024": { label: "枚举值映射标准化", componentPath: "./enumMapRule/index.vue" },
-  "029": { label: "按组合字段去重", componentPath: "./combinerFieldUniqueRule.vue" },
-  "011": { label: "正则表达式替换", componentPath: "./regexReplaceRule.vue" },
-  "039": { label: "清理过期记录", componentPath: "./cleanExpiredDataRule.vue" },
-  "012": { label: "超长字段截断", componentPath: "./longFieldTruncator.vue" },
-  "019": { label: "组合字段为空删除", componentPath: "./emptyRule.vue" },
-  "022": { label: "字段转小写", componentPath: "./emptyRule.vue" },
-  "007": { label: "日期格式统一", componentPath: "./dateFormatter.vue" },
-  "009": { label: "去除字段空格", componentPath: "./trimSpaceRule.vue" },
-  EMPTY: { label: "占位规则", componentPath: "./emptyRule.vue" },
+  "001": { label: td('components.cleanRule.numberBoundary'), componentPath: "./numberBoundaryRule.vue" },
+  "008": { label: td('components.cleanRule.decimalFormatter'), componentPath: "./decimalFormatterRule.vue" },
+  "010": { label: td('components.cleanRule.affixEditor'), componentPath: "./affixEditorRule.vue" },
+  "024": { label: td('components.cleanRule.enumMap'), componentPath: "./enumMapRule/index.vue" },
+  "029": { label: td('components.cleanRule.combinerFieldUnique'), componentPath: "./combinerFieldUniqueRule.vue" },
+  "011": { label: td('components.cleanRule.regexReplace'), componentPath: "./regexReplaceRule.vue" },
+  "039": { label: td('components.cleanRule.cleanExpiredData'), componentPath: "./cleanExpiredDataRule.vue" },
+  "012": { label: td('components.cleanRule.longFieldTruncator'), componentPath: "./longFieldTruncator.vue" },
+  "019": { label: td('components.cleanRule.emptyRule'), componentPath: "./emptyRule.vue" },
+  "022": { label: td('components.cleanRule.fieldToLower'), componentPath: "./emptyRule.vue" },
+  "007": { label: td('components.cleanRule.dateFormatter'), componentPath: "./dateFormatter.vue" },
+  "009": { label: td('components.cleanRule.trimSpace'), componentPath: "./trimSpaceRule.vue" },
+  EMPTY: { label: td('components.cleanRule.placeholder'), componentPath: "./emptyRule.vue" },
 
 
 }

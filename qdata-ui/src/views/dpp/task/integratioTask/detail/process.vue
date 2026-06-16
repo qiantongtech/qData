@@ -305,9 +305,9 @@ async function handleNodeAdded({ node }) {
 // 处理已有节点的情况
 function handleExistingNode(node) {
   if (node.data.taskParams.type == 2) {
-    proxy.$message.warning(`只能有一个输出组件！`);
-  } else if (node.data.taskParams.type == "1") {
-    proxy.$message.warning(`只能有一个输入组件！`);
+    proxy.$message.warning(td('dpp.utils.onlyOneOutputComponent'));
+  } else if (node.data.taskParams.type == 1) {
+    proxy.$message.warning(td('dpp.utils.onlyOneInputComponent'));
   }
   graph.removeNode(node.id);
 }
@@ -330,7 +330,7 @@ function handleNodeDblClick({ node }, type = "edit") {
 // 重置操作逻辑
 const handleCancel = () => {
   proxy.$modal
-    .confirm(`点击重置将清除所有未保存的更改，您确定要继续吗？`)
+    .confirm(td('dpp.utils.resetConfirm'))
     .then(() => {
       // 刷新当前页签
       proxy.$tab.refreshPage(route);

@@ -396,20 +396,20 @@ function handleDataView(row) {
 }
 // 列显隐信息
 const columns = ref([
-  { key: 1, label: "编号", visible: true },
-  { key: 2, label: "任务名称", visible: true },
-  { key: 3, label: "所属类目", visible: true },
-  { key: 4, label: "描述", visible: true },
-  { key: 5, label: "稽查对象数", visible: true },
-  { key: 6, label: "稽查规则数", visible: true },
-  { key: 7, label: "执行策略", visible: true },
-  { key: 8, label: "调度周期", visible: true },
-  { key: 9, label: "上次执行时间", visible: true },
-  { key: 10, label: "创建人", visible: true },
-  { key: 11, label: "创建时间", visible: true },
-  { key: 12, label: "状态", visible: true },
-  { key: 13, label: "备注", visible: true },
-  { key: 14, label: "操作", visible: true },
+  { key: 1, label: td('da.qualityTask.columnVisibility.id'), visible: true },
+  { key: 2, label: td('da.qualityTask.columnVisibility.taskName'), visible: true },
+  { key: 3, label: td('da.qualityTask.columnVisibility.belongCat'), visible: true },
+  { key: 4, label: td('da.qualityTask.columnVisibility.description'), visible: true },
+  { key: 5, label: td('da.qualityTask.columnVisibility.inspectionTargetCount'), visible: true },
+  { key: 6, label: td('da.qualityTask.columnVisibility.inspectionRuleCount'), visible: true },
+  { key: 7, label: td('da.qualityTask.columnVisibility.executionStrategy'), visible: true },
+  { key: 8, label: td('da.qualityTask.columnVisibility.schedulePeriod'), visible: true },
+  { key: 9, label: td('da.qualityTask.columnVisibility.lastExecutionTime'), visible: true },
+  { key: 10, label: td('da.qualityTask.columnVisibility.createdBy'), visible: true },
+  { key: 11, label: td('da.qualityTask.columnVisibility.createdTime'), visible: true },
+  { key: 12, label: td('da.qualityTask.columnVisibility.status'), visible: true },
+  { key: 13, label: td('da.qualityTask.columnVisibility.remark'), visible: true },
+  { key: 14, label: td('common.texts.operation'), visible: true },
 ]);
 
 const getColumnVisibility = (key) => {

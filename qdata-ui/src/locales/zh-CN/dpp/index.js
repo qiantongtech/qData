@@ -720,6 +720,7 @@ export default {
       inputNodeInstanceName: '请输入节点实例名称',
       selectExecutionStatus: '请选择执行状态',
       executionTime: '执行时间',
+      inputTaskName: '请输入任务名称',
     },
     integratioTask: {
       id: '编号',
@@ -1380,5 +1381,18 @@ export default {
     inputRuleType: '请输入规则类型',
     cleanRuleTree: '清洗规则',
     developing: '开发中'
+  },
+  utils: {
+    missingComponents: '当前任务缺少输入、转换、输出组件，请设置相关组件',
+    tableOutputFieldMapping: '表输出组件未进行字段映射，请设置字段映射',
+    nodeInfoIncomplete: '节点信息不完善，请完善',
+    missingInputOutput: '当前任务缺少输入、输出组件，请设置输入、输出节点',
+    missingInput: '当前任务缺少输入组件，请设置输入节点',
+    missingOutput: '当前任务缺少输出组件，请设置输出节点',
+    unknownNode: '未知节点',
+    invalidEdge: '跳过无效边: source={source}, target={target}（节点不存在）',
+    onlyOneOutputComponent: '只能有一个输出组件！',
+    onlyOneInputComponent: '只能有一个输入组件！',
+    resetConfirm: '点击重置将清除所有未保存的更改，您确定要继续吗？'
   }
 }

@@ -102,7 +102,7 @@ public class RateLimiterAspect
         }
         catch (Exception e)
         {
-            throw new RuntimeException("服务器限流异常，请稍候再试");
+            throw new ServiceException("sys.error.rate.limit", "服务器限流异常，请稍候再试");
         }
     }
 

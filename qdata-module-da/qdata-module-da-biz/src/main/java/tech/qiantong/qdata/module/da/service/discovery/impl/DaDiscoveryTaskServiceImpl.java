@@ -175,7 +175,7 @@ public class DaDiscoveryTaskServiceImpl extends ServiceImpl<DaDiscoveryTaskMappe
         mpjLambdaWrapper.eq(DaDiscoveryTaskDO::getName, createReqVO.getName());
         Long count = daDiscoveryTaskMapper.selectCount(mpjLambdaWrapper);
         if (count != null && count > 0) {
-            throw new RuntimeException("任务名称重复，创建失败！");
+            throw new ServiceException("da.error.task.name.duplicate", "任务名称重复，创建失败！");
         }
 
 
@@ -218,7 +218,7 @@ public class DaDiscoveryTaskServiceImpl extends ServiceImpl<DaDiscoveryTaskMappe
         mpjLambdaWrapper.ne(DaDiscoveryTaskDO::getId, updateReqVO.getId());
         Long count = daDiscoveryTaskMapper.selectCount(mpjLambdaWrapper);
         if (count != null && count > 0) {
-            throw new RuntimeException("任务名称重复，创建失败！");
+            throw new ServiceException("da.error.task.name.duplicate", "任务名称重复，创建失败！");
         }
 
         // 更新数据发现任务

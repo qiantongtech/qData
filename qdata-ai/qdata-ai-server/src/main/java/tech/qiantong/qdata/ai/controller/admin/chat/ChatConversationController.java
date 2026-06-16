@@ -31,6 +31,7 @@
  */
 
 package tech.qiantong.qdata.ai.controller.admin.chat;
+import tech.qiantong.qdata.common.exception.ServiceException;
 
 import cn.hutool.core.date.DateUtil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -118,7 +119,7 @@ public class ChatConversationController extends BaseController {
     @PostMapping("/setAssociations")
     public CommonResult<Integer> associations(@RequestBody AiChatConversationSaveReqVO appChatConversation) {
         if (StringUtils.isBlank(appChatConversation.getAssociations())) {
-            throw new RuntimeException("请设置关联关系！");
+            throw new ServiceException("ai.error.relation.required", "请设置关联关系！");
         }
         appChatConversation.setUpdatorId(getUserId());
         appChatConversation.setUpdateBy(getNickName());

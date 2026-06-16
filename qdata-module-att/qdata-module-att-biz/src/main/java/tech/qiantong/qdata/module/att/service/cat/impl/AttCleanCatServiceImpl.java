@@ -118,7 +118,7 @@ public class AttCleanCatServiceImpl  extends ServiceImpl<AttCleanCatMapper,AttCl
 
         //判断是否存在数据
         if (attCleanRuleService.getCount(cat.getCode()) > 0) {
-            throw new RuntimeException("存在清洗规则模型，不允许删除");
+            throw new ServiceException("att.error.clean.delete", "存在清洗规则模型，不允许删除");
         }
 
         if (cat != null) {

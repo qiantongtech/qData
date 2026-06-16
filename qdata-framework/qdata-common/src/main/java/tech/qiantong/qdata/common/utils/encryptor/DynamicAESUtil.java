@@ -31,6 +31,7 @@
  */
 
 package tech.qiantong.qdata.common.utils.encryptor;
+import tech.qiantong.qdata.common.exception.ServiceException;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -55,7 +56,7 @@ public class DynamicAESUtil {
             SecretKey secretKey = keyGen.generateKey();
             return Base64.getEncoder().encodeToString(secretKey.getEncoded());
         } catch (Exception e) {
-            throw new RuntimeException("生成随机密钥失败", e);
+            throw new ServiceException("sys.error.encrypt.key", "生成随机密钥失败");
         }
     }
 
@@ -74,7 +75,7 @@ public class DynamicAESUtil {
             byte[] encrypted = cipher.doFinal(data.getBytes());
             return Base64.getEncoder().encodeToString(encrypted);
         } catch (Exception e) {
-            throw new RuntimeException("加密失败", e);
+            throw new ServiceException("sys.error.encrypt.fail", "加密失败");
         }
     }
 
@@ -93,7 +94,7 @@ public class DynamicAESUtil {
             byte[] decrypted = cipher.doFinal(Base64.getDecoder().decode(encryptedData));
             return new String(decrypted);
         } catch (Exception e) {
-            throw new RuntimeException("解密失败", e);
+            throw new ServiceException("sys.error.decrypt.fail", "解密失败");
         }
     }
 

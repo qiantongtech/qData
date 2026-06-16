@@ -775,7 +775,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
 //            sqlText =  encryptedSqlText;
             sqlText = AesEncryptUtil.desEncrypt(encryptedSqlText).trim();
         } catch (Exception e) {
-            throw new RuntimeException("执行语句解密异常，请联系管理员！", e);
+            throw new ServiceException("da.error.decrypt.fail", "执行语句解密异常，请联系管理员！");
         }
 
         if (sqlText == null || sqlText.isEmpty()) {
@@ -867,7 +867,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
     @SneakyThrows
     private static void exportByList(HttpServletResponse response, List<Map<String, Object>> dataList, String tableName) {
         if (dataList == null) {
-            throw new RuntimeException("暂无表单信息");
+            throw new ServiceException("da.error.form.notfound", "暂无表单信息");
         }
 
         // 获取第一行数据的所有列名作为 order
@@ -970,7 +970,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
                 response.setContentLength(aa.length);
             } catch (Exception e) {
                 e.printStackTrace();
-                throw new RuntimeException("系统错误");
+                throw new ServiceException("da.error.system", "系统错误");
             } finally {
                 if (response.getOutputStream() != null) {
                     response.getOutputStream().flush();
@@ -1427,7 +1427,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
         String key = "detectTableSchemaUpdates-" + id;
         String status = redisService.get(key);
         if (StringUtils.isEmpty(status) && StringUtils.equals("1", status)) {
-            throw new RuntimeException("历史任务未执行完毕，请稍后重试");
+            throw new ServiceException("da.error.task.running", "历史任务未执行完毕，请稍后重试");
         }
         DaDiscoveryTaskRespVO daDiscoveryTaskById = iDaDiscoveryTaskService.getDaDiscoveryTaskById(id);
         if (daDiscoveryTaskById == null) {

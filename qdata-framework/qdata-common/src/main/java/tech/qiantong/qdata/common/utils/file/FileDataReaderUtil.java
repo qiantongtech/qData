@@ -31,6 +31,7 @@
  */
 
 package tech.qiantong.qdata.common.utils.file;
+import tech.qiantong.qdata.common.exception.ServiceException;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
@@ -120,7 +121,7 @@ public class FileDataReaderUtil {
      */
     public static Map<String, Object> readFileData(JSONObject jsonObject) {
         if (jsonObject == null) {
-            throw new RuntimeException("参数不能为空");
+            throw new ServiceException("sys.error.param.empty", "参数不能为空");
         }
 
         String filePath = jsonObject.getStr("filePath");
@@ -486,15 +487,15 @@ public class FileDataReaderUtil {
      */
     private static void validateParams(String filePath, Long pageNum, Long pageSize) {
         if (StrUtil.isBlank(filePath)) {
-            throw new RuntimeException("文件路径不能为空");
+            throw new ServiceException("sys.error.file.path.empty", "文件路径不能为空");
         }
 
         if (pageNum == null || pageNum < 1) {
-            throw new RuntimeException("页码不能为空且必须大于0");
+            throw new ServiceException("sys.error.page.num.invalid", "页码不能为空且必须大于0");
         }
 
         if (pageSize == null || pageSize < 1) {
-            throw new RuntimeException("每页条数不能为空且必须大于0");
+            throw new ServiceException("sys.error.page.size.invalid", "每页条数不能为空且必须大于0");
         }
     }
 

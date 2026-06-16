@@ -86,7 +86,7 @@ public class AttCleanRuleServiceImpl extends ServiceImpl<AttCleanRuleMapper, Att
     public Long createAttCleanRule(AttCleanRuleSaveReqVO createReqVO) {
         List<AttCleanRuleDO> code = attCleanRuleMapper.selectList("code", createReqVO.getCode());
         if (code.size() > 0) {
-            throw new RuntimeException("规则编码重复请重新输入");
+            throw new ServiceException("att.error.rule.code.duplicate", "规则编码重复请重新输入");
         }
         AttCleanRuleDO dictType = BeanUtils.toBean(createReqVO, AttCleanRuleDO.class);
         attCleanRuleMapper.insert(dictType);
@@ -98,7 +98,7 @@ public class AttCleanRuleServiceImpl extends ServiceImpl<AttCleanRuleMapper, Att
         // 相关校验
         List<AttCleanRuleDO> code = attCleanRuleMapper.selectList("code", updateReqVO.getCode());
         if (code.size() > 0) {
-            throw new RuntimeException("规则编码重复请重新输入");
+            throw new ServiceException("att.error.rule.code.duplicate", "规则编码重复请重新输入");
         }
         // 更新清洗规则
         AttCleanRuleDO updateObj = BeanUtils.toBean(updateReqVO, AttCleanRuleDO.class);

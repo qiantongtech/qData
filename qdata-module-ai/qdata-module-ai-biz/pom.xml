@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>tech.qiantong</groupId>
-        <artifactId>qdata-mdule-ai</artifactId>
+        <artifactId>qdata-module-ai</artifactId>
         <version>${qdata.version}</version>
     </parent>
 

@@ -9,11 +9,11 @@
         <version>${qdata.version}</version>
     </parent>
 
-    <artifactId>qdata-mdule-ai</artifactId>
+    <artifactId>qdata-module-ai</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>qdata-mdule-ai-api</module>
-        <module>qdata-mdule-ai-biz</module>
+        <module>qdata-module-ai-api</module>
+        <module>qdata-module-ai-biz</module>
     </modules>
 
     <properties>

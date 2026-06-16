@@ -31,6 +31,7 @@
  */
 
 package tech.qiantong.qdata.quality.utils.qualityDB.dialect;
+import tech.qiantong.qdata.common.exception.ServiceException;
 
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -122,7 +123,7 @@ public class SQLServerQuality implements ComponentItem {
         String table = rule.getTableName();
         List<String> columns = rule.getRuleColumns();
         if (columns == null || columns.isEmpty()) {
-            throw new IllegalArgumentException("组合唯一性校验需要至少一个字段");
+            throw new ServiceException("quality.error.unique.fields", "组合唯一性校验需要至少一个字段");
         }
         String baseWhereClause = rule.getWhereClause();
 
@@ -155,7 +156,7 @@ public class SQLServerQuality implements ComponentItem {
         String table = rule.getTableName();
         List<String> columns = rule.getRuleColumns();
         if (columns == null || columns.isEmpty()) {
-            throw new IllegalArgumentException("组合唯一性校验需要至少一个字段");
+            throw new ServiceException("quality.error.unique.fields", "组合唯一性校验需要至少一个字段");
         }
         String baseWhereClause = rule.getWhereClause();
 

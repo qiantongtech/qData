@@ -255,7 +255,7 @@ public class AuthController {
 
         // code不等于200  代表请求失败
         if(so.getInt("code") != 200) {
-            throw new ServiceException("获取用户账号信息失败！");
+            throw new ServiceException("system.error.account.fetch", "获取用户账号信息失败！");
         }
 
         // 返回相关参数 (data=获取到的资源 )

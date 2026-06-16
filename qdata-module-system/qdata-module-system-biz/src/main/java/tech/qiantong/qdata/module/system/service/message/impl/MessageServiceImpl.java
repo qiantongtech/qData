@@ -84,7 +84,7 @@ public class MessageServiceImpl  extends ServiceImpl<MessageMapper, MessageDO> i
     public Boolean send(Long templateId, MessageSaveReqVO messageSaveReqVO, Object entity) {
         MessageTemplateDO messageTemplateDO = messageTemplateMapper.selectById(templateId); // 获取对应的模版
         if (messageTemplateDO == null) {
-            throw new BaseException("消息模版不存在");
+            throw new BaseException("system-messages", "system.error.template.notfound", null, "消息模版不存在");
         }
         Map<?, ?> map = BeanUtils.toBean(entity, Map.class); // 将实体转换为键值对
         // 消息模版更新数值
@@ -118,7 +118,7 @@ public class MessageServiceImpl  extends ServiceImpl<MessageMapper, MessageDO> i
     public Boolean send(Long templateId, MessageSaveReqDTO messageSaveReqDTO, Object entity) {
         MessageTemplateDO messageTemplateDO = messageTemplateMapper.selectById(templateId); // 获取对应的模版
         if (messageTemplateDO == null) {
-            throw new BaseException("消息模版不存在");
+            throw new BaseException("system-messages", "system.error.template.notfound", null, "消息模版不存在");
         }
         Map<?, ?> map = BeanUtils.toBean(entity, Map.class); // 将实体转换为键值对
         // 消息模版更新数值

@@ -31,6 +31,7 @@
  */
 
 package tech.qiantong.qdata.quality.utils.quality;
+import tech.qiantong.qdata.common.exception.ServiceException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -46,7 +47,7 @@ public class QualitySqlGenerateFactory {
     public QualitySqlGenerator getGenerator(String ruleType) {
         QualitySqlGenerator generator = generatorMap.get(ruleType);
         if (generator == null) {
-            throw new IllegalArgumentException("不支持的规则类型：" + ruleType);
+            throw new ServiceException("quality.error.rule.type.unsupported", "不支持的规则类型：" + ruleType, ruleType);
         }
         return generator;
     }

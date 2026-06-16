@@ -31,6 +31,7 @@
  */
 
 package tech.qiantong.qdata.module.ds.utils;
+import tech.qiantong.qdata.common.exception.ServiceException;
 
 
 import cn.hutool.core.collection.CollUtil;
@@ -215,7 +216,7 @@ public class SqlBuilderUtil {
             // 封装该条件代码块中的NamedParameterSql
             ParsedSql parsedSql = getSegmentParsedSql(sql, start, end);
             if (CollUtil.isEmpty(parsedSql.getParamNames())) {
-                throw new IllegalArgumentException("Not key found in segment=" + sql.substring(start, end + MARK_KEY_END.length()));
+                throw new ServiceException("ds.error.sql.key.missing", "Not key found in segment=" + sql.substring(start, end + MARK_KEY_END.length()));
             }
             // 判断输入参数filters中是否存在查询参数
             if (isAcceptedKeys(filters, parsedSql.getParamNames())) {

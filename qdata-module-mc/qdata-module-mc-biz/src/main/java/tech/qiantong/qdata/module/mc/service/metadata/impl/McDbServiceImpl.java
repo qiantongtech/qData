@@ -11,6 +11,7 @@ import org.springframework.util.CollectionUtils;
 import tech.qiantong.qdata.common.core.domain.BatchDeleteCheck;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.module.da.api.datasource.dto.DaDatasourceRespDTO;
@@ -86,7 +87,7 @@ public class McDbServiceImpl  extends ServiceImpl<McDbMapper,McDbDO> implements 
         //return mcDbMapper.deleteBatchIds(idList);
         // 批量删除库元数据
         if (tableMapper.existsByDbIds(idList)) {
-            throw new ServiceException("被表元数据引用，不可删除");
+            throw new ServiceException("mc.error.ref.table", "被表元数据引用，不可删除");
         }
         return mcDbMapper.delete(Wrappers.lambdaQuery(McDbDO.class)
                 .in(McDbDO::getId, idList)

@@ -51,6 +51,7 @@ import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
 import tech.qiantong.qdata.common.database.constants.DbType;
 import tech.qiantong.qdata.common.database.core.PageResult;
 import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.JSONUtils;
 import tech.qiantong.qdata.common.utils.PageUtil;
 import tech.qiantong.qdata.module.da.api.datasource.dto.DaDatasourceRespDTO;
@@ -126,7 +127,7 @@ public class ApiMappingEngine {
 
             sqlFilterResult = SqlBuilderUtil.getInstance().applyFilters(dataApi.getExecuteConfig().getSqlText(), params);
         } catch (Exception e) {
-            throw new ServiceException("API调用动态构造SQL语句出错");
+            throw new ServiceException("ds.error.api.sql.build", "API调用动态构造SQL语句出错");
         }
         Map<String, Object> acceptedFilters = sqlFilterResult.getAcceptedFilters();
 
@@ -156,7 +157,7 @@ public class ApiMappingEngine {
                     break;
             }
         } catch (Exception e) {
-            throw new ServiceException("API调用查询结果集出错");
+            throw new ServiceException("ds.error.api.query.rs", "API调用查询结果集出错");
         }finally {
             dbQuery.close();
         }
@@ -176,7 +177,7 @@ public class ApiMappingEngine {
             //通过数据源id获取
             DaDatasourceRespDTO dataSource = iDaDatasourceApiService.getDatasourceById(Long.valueOf(executeConfig.getSourceId()));
             if (dataSource == null) {
-                throw new ServiceException("数据源不存在");
+                throw new ServiceException("ds.error.datasource.notfound", "数据源不存在");
             }
             executeConfig.setDbType(dataSource.getDatasourceType());
             JSONObject dataSourceConfig = JSONObject.parseObject(dataSource.getDatasourceConfig());
@@ -205,7 +206,7 @@ public class ApiMappingEngine {
 //        try {
 //            metadataDsnRuleLinkList = metadataSourceServiceFeign.getMetadataDsnRuleLinkList(apiId);
 //        } catch (Exception e) {
-//            throw new ServiceException("API调用查询脱敏规则出错");
+//            throw new ServiceException("ds.error.api.desensitize", "API调用查询脱敏规则出错");
 //        }
 //
 //        if (CollectionUtils.isEmpty(metadataDsnRuleLinkList)) {
@@ -243,7 +244,7 @@ public class ApiMappingEngine {
 //        try {
 //            metadataDsnRuleLinkList = metadataSourceServiceFeign.getMetadataDsnRuleLinkList(apiId);
 //        } catch (Exception e) {
-//            throw new ServiceException("API调用查询脱敏规则出错");
+//            throw new ServiceException("ds.error.api.desensitize", "API调用查询脱敏规则出错");
 //        }
 //
 //        if (CollectionUtils.isEmpty(metadataDsnRuleLinkList)) {

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.module.mc.controller.admin.task.vo.McTaskScopePageReqVO;
@@ -98,7 +99,7 @@ public class McTaskScopeServiceImpl extends ServiceImpl<McTaskScopeMapper, McTas
     @Override
     public String importMcTaskScope(List<McTaskScopeRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("导入数据不能为空！");
+            throw new ServiceException("mc.error.import.empty", "导入数据不能为空！");
         }
 
         int successNum = 0;
@@ -116,14 +117,17 @@ public class McTaskScopeServiceImpl extends ServiceImpl<McTaskScopeMapper, McTas
                         if (existingMcTaskScope != null) {
                             mcTaskScopeMapper.updateById(mcTaskScopeDO);
                             successNum++;
-                            successMessages.add("数据更新成功，ID为 " + mcTaskScopeId + " 的采集范围记录。");
+                            successMessages.add(MessageUtils.messageWithFallback("mc.import.update.success",
+                                    "数据更新成功，ID为 " + mcTaskScopeId + " 的采集范围记录。", mcTaskScopeId, "采集范围"));
                         } else {
                             failureNum++;
-                            failureMessages.add("数据更新失败，ID为 " + mcTaskScopeId + " 的采集范围记录不存在。");
+                            failureMessages.add(MessageUtils.messageWithFallback("mc.import.update.fail",
+                                    "数据更新失败，ID为 " + mcTaskScopeId + " 的采集范围记录不存在。", mcTaskScopeId, "采集范围"));
                         }
                     } else {
                         failureNum++;
-                        failureMessages.add("数据更新失败，某条记录的ID不存在。");
+                        failureMessages.add(MessageUtils.messageWithFallback("mc.import.update.id.missing",
+                                "数据更新失败，某条记录的ID不存在。"));
                     }
                 } else {
                     QueryWrapper<McTaskScopeDO> queryWrapper = new QueryWrapper<>();
@@ -132,26 +136,32 @@ public class McTaskScopeServiceImpl extends ServiceImpl<McTaskScopeMapper, McTas
                     if (existingMcTaskScope == null) {
                         mcTaskScopeMapper.insert(mcTaskScopeDO);
                         successNum++;
-                        successMessages.add("数据插入成功，ID为 " + mcTaskScopeId + " 的采集范围记录。");
+                        successMessages.add(MessageUtils.messageWithFallback("mc.import.insert.success",
+                                "数据插入成功，ID为 " + mcTaskScopeId + " 的采集范围记录。", mcTaskScopeId, "采集范围"));
                     } else {
                         failureNum++;
-                        failureMessages.add("数据插入失败，ID为 " + mcTaskScopeId + " 的采集范围记录已存在。");
+                        failureMessages.add(MessageUtils.messageWithFallback("mc.import.insert.fail",
+                                "数据插入失败，ID为 " + mcTaskScopeId + " 的采集范围记录已存在。", mcTaskScopeId, "采集范围"));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
-                String errorMsg = "数据导入失败，错误信息：" + e.getMessage();
+                String errorMsg = MessageUtils.messageWithFallback("mc.import.error.detail",
+                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
         }
         StringBuilder resultMsg = new StringBuilder();
         if (failureNum > 0) {
-            resultMsg.append("很抱歉，导入失败！共 ").append(failureNum).append(" 条数据格式不正确，错误如下：");
-            resultMsg.append("<br/>").append(String.join("<br/>", failureMessages));
-            throw new ServiceException(resultMsg.toString());
+            String failureDetails = String.join("<br/>", failureMessages);
+            resultMsg.append(MessageUtils.messageWithFallback("mc.import.result.fail",
+                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    failureNum, failureDetails));
+            throw new ServiceException("mc.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
-            resultMsg.append("恭喜您，数据已全部导入成功！共 ").append(successNum).append(" 条。");
+            resultMsg.append(MessageUtils.messageWithFallback("mc.import.result.success",
+                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
         }
         return resultMsg.toString();
     }

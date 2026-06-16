@@ -41,6 +41,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.servlet.HandlerInterceptor;
 import tech.qiantong.qdata.common.enums.ParamType;
 import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.IPUtil;
 import tech.qiantong.qdata.module.ds.dal.dataobject.api.DsApiDO;
 
@@ -99,7 +100,7 @@ public class RequestInterceptor implements HandlerInterceptor {
             if (CollUtil.isNotEmpty(denyList)) {
                 for (String ip : denyList) {
                     if (ip.equals(ipAddr)) {
-                        throw new ServiceException(ip + "已被加入IP黑名单");
+                        throw new ServiceException("ds.error.ip.blacklist", ip + "已被加入IP黑名单");
                     }
                 }
             }

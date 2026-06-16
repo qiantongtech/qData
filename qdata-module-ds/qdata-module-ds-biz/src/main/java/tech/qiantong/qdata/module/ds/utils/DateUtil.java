@@ -31,6 +31,7 @@
  */
 
 package tech.qiantong.qdata.module.ds.utils;
+import tech.qiantong.qdata.common.exception.ServiceException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,7 +55,7 @@ public class DateUtil {
     private static final ThreadLocal<Map<String, DateFormat>> dateFormatThreadLocal = new ThreadLocal<Map<String, DateFormat>>();
     private static DateFormat getDateFormat(String pattern) {
         if (pattern==null || pattern.trim().length()==0) {
-            throw new IllegalArgumentException("pattern cannot be empty.");
+            throw new ServiceException("ds.error.pattern.empty", "pattern cannot be empty.");
         }
 
         Map<String, DateFormat> dateFormatMap = dateFormatThreadLocal.get();

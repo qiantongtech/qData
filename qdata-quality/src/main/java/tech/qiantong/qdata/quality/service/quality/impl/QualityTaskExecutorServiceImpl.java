@@ -59,6 +59,7 @@ import tech.qiantong.qdata.common.database.constants.DbType;
 import tech.qiantong.qdata.common.database.core.DbColumn;
 import tech.qiantong.qdata.common.database.exception.DataQueryException;
 import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.httpClient.HttpTaskLogger;
 import tech.qiantong.qdata.common.utils.JSONUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
@@ -158,7 +159,7 @@ public class QualityTaskExecutorServiceImpl implements QualityTaskExecutorServic
         String key = "executeQualityTask-" + taskId;
         String status = redisService.get(key);
         if (StringUtils.isEmpty(status) && StringUtils.equals("1", status)) {
-            throw new RuntimeException("历史任务未执行完毕，请稍后重试");
+            throw new ServiceException("quality.error.task.running", "历史任务未执行完毕，请稍后重试");
         }
         redisService.set(key, "1", 1200);
 
@@ -364,7 +365,7 @@ public class QualityTaskExecutorServiceImpl implements QualityTaskExecutorServic
     public ValidationSqlResult generateValidationValidDataSql(QualityRuleQueryReqDTO queryReqDTO) {
         DaDatasourceDO daDatasourceById = iDaDatasourceQualityService.getDaDatasourceById(JSONUtils.convertToLong(queryReqDTO.getDataId()));
         if (daDatasourceById == null){
-            throw new ServiceException("建立实时数据源链接失败！");
+            throw new ServiceException("db.error.datasource.realtime.fail", "建立实时数据源链接失败！");
         }
         DbQueryProperty dbQueryProperty = new DbQueryProperty(
                 daDatasourceById.getDatasourceType(),
@@ -376,9 +377,9 @@ public class QualityTaskExecutorServiceImpl implements QualityTaskExecutorServic
         try {
             dbQuery = dataSourceFactory.createDbQuery(dbQueryProperty);
             if (!dbQuery.valid()) {
-                throw new DataQueryException("建立实时数据源链接失败！");            }
+                throw new DataQueryException("db.error.datasource.realtime.fail", "建立实时数据源链接失败！");            }
         }catch (Exception e){
-            throw new DataQueryException("建立实时数据源链接异常！");
+            throw new DataQueryException("db.error.datasource.realtime.error", "建立实时数据源链接异常！");
         }
         List<DbColumn> tableColumns = dbQuery.getTableColumns(dbQueryProperty, queryReqDTO.getTableName());
         List<String> showErrorColumns = tableColumns.stream()
@@ -408,7 +409,7 @@ public class QualityTaskExecutorServiceImpl implements QualityTaskExecutorServic
             }
             validationSqlResult.setDataList(errorList);
         }catch (Exception e){
-            throw new DataQueryException("建立实时数据源链接失败！");
+            throw new DataQueryException("db.error.datasource.realtime.fail", "建立实时数据源链接失败！");
         }
 
         validationSqlResult.setLimit(queryReqDTO.getLimit());
@@ -422,7 +423,7 @@ public class QualityTaskExecutorServiceImpl implements QualityTaskExecutorServic
     public ValidationSqlResult generateValidationErrorDataSql(QualityRuleQueryReqDTO queryReqDTO) {
         DaDatasourceDO daDatasourceById = iDaDatasourceQualityService.getDaDatasourceById(JSONUtils.convertToLong(queryReqDTO.getDataId()));
         if (daDatasourceById == null){
-            throw new ServiceException("建立实时数据源链接失败！");
+            throw new ServiceException("db.error.datasource.realtime.fail", "建立实时数据源链接失败！");
         }
         DbQueryProperty dbQueryProperty = new DbQueryProperty(
                 daDatasourceById.getDatasourceType(),
@@ -434,9 +435,9 @@ public class QualityTaskExecutorServiceImpl implements QualityTaskExecutorServic
         try {
             dbQuery = dataSourceFactory.createDbQuery(dbQueryProperty);
             if (!dbQuery.valid()) {
-                throw new DataQueryException("建立实时数据源链接失败！");            }
+                throw new DataQueryException("db.error.datasource.realtime.fail", "建立实时数据源链接失败！");            }
         }catch (Exception e){
-            throw new DataQueryException("建立实时数据源链接异常！");
+            throw new DataQueryException("db.error.datasource.realtime.error", "建立实时数据源链接异常！");
         }
         List<DbColumn> tableColumns = dbQuery.getTableColumns(dbQueryProperty, queryReqDTO.getTableName());
         List<String> showErrorColumns = tableColumns.stream()
@@ -466,7 +467,7 @@ public class QualityTaskExecutorServiceImpl implements QualityTaskExecutorServic
             }
             validationSqlResult.setDataList(errorList);
         }catch (Exception e){
-            throw new DataQueryException("建立实时数据源链接失败！");
+            throw new DataQueryException("db.error.datasource.realtime.fail", "建立实时数据源链接失败！");
         }
         return validationSqlResult;
     }
@@ -822,7 +823,7 @@ public class QualityTaskExecutorServiceImpl implements QualityTaskExecutorServic
     public String generateDataCheck(QualityRuleQueryReqDTO queryReqDTO) {
         DaDatasourceDO daDatasourceById = iDaDatasourceQualityService.getDaDatasourceById(JSONUtils.convertToLong(queryReqDTO.getDataId()));
         if (daDatasourceById == null) {
-            throw new ServiceException("建立实时数据源链接失败！");
+            throw new ServiceException("db.error.datasource.realtime.fail", "建立实时数据源链接失败！");
         }
         DbQueryProperty dbQueryProperty = new DbQueryProperty(
                 daDatasourceById.getDatasourceType(),
@@ -834,10 +835,10 @@ public class QualityTaskExecutorServiceImpl implements QualityTaskExecutorServic
         try {
             dbQuery = dataSourceFactory.createDbQuery(dbQueryProperty);
             if (!dbQuery.valid()) {
-                throw new DataQueryException("建立实时数据源链接失败！");
+                throw new DataQueryException("db.error.datasource.realtime.fail", "建立实时数据源链接失败！");
             }
         } catch (Exception e) {
-            throw new DataQueryException("建立实时数据源链接异常！");
+            throw new DataQueryException("db.error.datasource.realtime.error", "建立实时数据源链接异常！");
         }
 
         CharacterValidationGenerator characterValidationGenerator = new CharacterValidationGenerator();
@@ -860,7 +861,7 @@ public class QualityTaskExecutorServiceImpl implements QualityTaskExecutorServic
             }
             return "0";
         } catch (Exception e) {
-            throw new DataQueryException("建立实时数据源链接失败！");
+            throw new DataQueryException("db.error.datasource.realtime.fail", "建立实时数据源链接失败！");
         }
     }
 }

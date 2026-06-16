@@ -98,7 +98,11 @@ spring:
     # att-messages:    ATT模块专属（资产分类/标签等）
     # da-messages:     DA模块专属（数据资产/发现任务等）
     # dp-messages:     DP模块专属（数据标准/模型/数据元等）
-    basename: i18n/messages,i18n/system-messages,i18n/dm-messages,i18n/dg-messages,i18n/att-messages,i18n/da-messages,i18n/dp-messages
+    # dpp-messages:    DPP模块专属（数据开发/ETL/调度等）
+    # ds-messages:     DS模块专属（数据服务/API等）
+    # mc-messages:     MC模块专属（元数据采集/调度等）
+    # quality-messages: 数据质量模块专属
+    basename: i18n/messages,i18n/system-messages,i18n/dm-messages,i18n/dg-messages,i18n/att-messages,i18n/da-messages,i18n/dp-messages,i18n/dpp-messages,i18n/ds-messages,i18n/mc-messages,i18n/quality-messages
     encoding: UTF-8
   profiles:
     active: dev  # 默认激活的环境，可以在启动时覆盖

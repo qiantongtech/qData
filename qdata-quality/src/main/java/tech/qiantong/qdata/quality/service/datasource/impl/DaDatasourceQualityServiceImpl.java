@@ -48,6 +48,7 @@ import tech.qiantong.qdata.common.database.core.DbColumn;
 import tech.qiantong.qdata.common.database.core.DbTable;
 import tech.qiantong.qdata.common.database.exception.DataQueryException;
 import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.module.da.api.datasource.dto.DaDatasourceRespDTO;
@@ -171,7 +172,7 @@ public class DaDatasourceQualityServiceImpl extends ServiceImpl<DaDatasourceMapp
     @Override
     public String importDaDatasource(List<DaDatasourceRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("导入数据不能为空！");
+            throw new ServiceException("quality.error.import.empty", "导入数据不能为空！");
         }
 
         int successNum = 0;
@@ -189,14 +190,17 @@ public class DaDatasourceQualityServiceImpl extends ServiceImpl<DaDatasourceMapp
                         if (existingDaDatasource != null) {
                             daDatasourceMapper.updateById(daDatasourceDO);
                             successNum++;
-                            successMessages.add("数据更新成功，ID为 " + daDatasourceId + " 的数据源记录。");
+                            successMessages.add(MessageUtils.messageWithFallback("quality.import.update.success",
+                                    "数据更新成功，ID为 " + daDatasourceId + " 的数据源记录。", daDatasourceId, "数据源"));
                         } else {
                             failureNum++;
-                            failureMessages.add("数据更新失败，ID为 " + daDatasourceId + " 的数据源记录不存在。");
+                            failureMessages.add(MessageUtils.messageWithFallback("quality.import.update.fail",
+                                    "数据更新失败，ID为 " + daDatasourceId + " 的数据源记录不存在。", daDatasourceId, "数据源"));
                         }
                     } else {
                         failureNum++;
-                        failureMessages.add("数据更新失败，某条记录的ID不存在。");
+                        failureMessages.add(MessageUtils.messageWithFallback("quality.import.update.id.missing",
+                                "数据更新失败，某条记录的ID不存在。"));
                     }
                 } else {
                     QueryWrapper<DaDatasourceDO> queryWrapper = new QueryWrapper<>();
@@ -205,26 +209,32 @@ public class DaDatasourceQualityServiceImpl extends ServiceImpl<DaDatasourceMapp
                     if (existingDaDatasource == null) {
                         daDatasourceMapper.insert(daDatasourceDO);
                         successNum++;
-                        successMessages.add("数据插入成功，ID为 " + daDatasourceId + " 的数据源记录。");
+                        successMessages.add(MessageUtils.messageWithFallback("quality.import.insert.success",
+                                "数据插入成功，ID为 " + daDatasourceId + " 的数据源记录。", daDatasourceId, "数据源"));
                     } else {
                         failureNum++;
-                        failureMessages.add("数据插入失败，ID为 " + daDatasourceId + " 的数据源记录已存在。");
+                        failureMessages.add(MessageUtils.messageWithFallback("quality.import.insert.fail",
+                                "数据插入失败，ID为 " + daDatasourceId + " 的数据源记录已存在。", daDatasourceId, "数据源"));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
-                String errorMsg = "数据导入失败，错误信息：" + e.getMessage();
+                String errorMsg = MessageUtils.messageWithFallback("quality.import.error.detail",
+                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
         }
         StringBuilder resultMsg = new StringBuilder();
         if (failureNum > 0) {
-            resultMsg.append("很抱歉，导入失败！共 ").append(failureNum).append(" 条数据格式不正确，错误如下：");
-            resultMsg.append("<br/>").append(String.join("<br/>", failureMessages));
-            throw new ServiceException(resultMsg.toString());
+            String failureDetails = String.join("<br/>", failureMessages);
+            resultMsg.append(MessageUtils.messageWithFallback("quality.import.result.fail",
+                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    failureNum, failureDetails));
+            throw new ServiceException("quality.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
-            resultMsg.append("恭喜您，数据已全部导入成功！共 ").append(successNum).append(" 条。");
+            resultMsg.append(MessageUtils.messageWithFallback("quality.import.result.success",
+                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
         }
         return resultMsg.toString();
     }
@@ -245,7 +255,7 @@ public class DaDatasourceQualityServiceImpl extends ServiceImpl<DaDatasourceMapp
     public DbQuery buildDbQuery(Long id) {
         DaDatasourceDO daDatasourceBy = this.getDaDatasourceById(id);
         if (daDatasourceBy == null) {
-            throw new DataQueryException("数据源详情信息查询失败");
+            throw new DataQueryException("db.error.datasource.detail.fail", "数据源详情信息查询失败");
         }
         DbQueryProperty dbQueryProperty = new DbQueryProperty(
                 daDatasourceBy.getDatasourceType(),
@@ -264,14 +274,14 @@ public class DaDatasourceQualityServiceImpl extends ServiceImpl<DaDatasourceMapp
     public List<DbTable> getDbTables(Long id) {
         DaDatasourceDO daDatasourceBy = this.getDaDatasourceById(id);
         if (daDatasourceBy == null) {
-            throw new DataQueryException("数据源详情信息查询失败");
+            throw new DataQueryException("db.error.datasource.detail.fail", "数据源详情信息查询失败");
         }
 
         DbQueryProperty dbQueryProperty = new DbQueryProperty(daDatasourceBy.getDatasourceType()
                 , daDatasourceBy.getIp(), daDatasourceBy.getPort(), daDatasourceBy.getDatasourceConfig());
         DbQuery dbQuery = dataSourceFactory.createDbQuery(dbQueryProperty);
         if (!dbQuery.valid()) {
-            throw new DataQueryException("数据库连接失败");
+            throw new DataQueryException("db.error.connection.fail", "数据库连接失败");
         }
         List<DbTable> tables = dbQuery.getTables(dbQueryProperty);
         dbQuery.close();
@@ -286,19 +296,19 @@ public class DaDatasourceQualityServiceImpl extends ServiceImpl<DaDatasourceMapp
     @Override
     public List<DbColumn> getDbTableColumns(Long id, String tableName) {
         if (StringUtils.isEmpty(tableName)) {
-            throw new DataQueryException("表名不能为空");
+            throw new DataQueryException("db.error.table.empty", "表名不能为空");
         }
 
         DaDatasourceDO daDatasourceBy = this.getDaDatasourceById(id);
         if (daDatasourceBy == null) {
-            throw new DataQueryException("数据源详情信息查询失败");
+            throw new DataQueryException("db.error.datasource.detail.fail", "数据源详情信息查询失败");
         }
 
         DbQueryProperty dbQueryProperty = new DbQueryProperty(daDatasourceBy.getDatasourceType()
                 , daDatasourceBy.getIp(), daDatasourceBy.getPort(), daDatasourceBy.getDatasourceConfig());
         DbQuery dbQuery = dataSourceFactory.createDbQuery(dbQueryProperty);
         if (!dbQuery.valid()) {
-            throw new DataQueryException("数据库连接失败");
+            throw new DataQueryException("db.error.connection.fail", "数据库连接失败");
         }
         List<DbColumn> tableColumns = dbQuery.getTableColumns(dbQueryProperty, tableName);
         dbQuery.close();

@@ -35,6 +35,7 @@ package tech.qiantong.qdata.module.ds.utils;
 
 import org.springframework.util.Assert;
 import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 
 import java.util.*;
 
@@ -155,7 +156,7 @@ public class NamedParameterUtil {
         List<String> paramNames = parsedSql.getParamNames();
         LinkedHashMap<String, Object> acceptedFilters = new LinkedHashMap<>(parsedSql.getTotalParamCount());
         if (parsedSql.getNamedParamCount() > 0 && parsedSql.getUnnamedParamCount() > 0) {
-            throw new ServiceException("parameter方式与？方式不能混合！");
+            throw new ServiceException("ds.error.param.mixed", "parameter方式与？方式不能混合！");
         }
         for (int i = 0; i < paramNames.size(); i++) {
             String keyName = paramNames.get(i);

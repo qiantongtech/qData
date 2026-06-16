@@ -31,6 +31,7 @@
  */
 
 package tech.qiantong.qdata.module.dpp.utils.ds.component;
+import tech.qiantong.qdata.common.exception.ServiceException;
 
 import cn.hutool.core.codec.Base64;
 import com.alibaba.fastjson2.JSON;
@@ -126,7 +127,7 @@ public class FieldDerivationTransitionComponent implements ComponentItem {
                 parameter = handleConstant(taskParams);
                 break;
             default:
-                throw new IllegalArgumentException("未知的字段派生类型: " + fieldDerivationType);
+                throw new ServiceException("dpp.error.field.derivation.unknown", "未知的字段派生类型: " + fieldDerivationType);
         }
 
         reader.put("parameter", parameter);

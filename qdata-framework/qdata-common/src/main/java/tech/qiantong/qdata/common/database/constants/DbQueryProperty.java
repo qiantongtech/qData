@@ -13,6 +13,21 @@
  * For brand customization, please apply for brand customization authorization via official channels.
  *  *
  * More information: https://qdata.qiantong.tech/business.html
+ *  *
+ * ============================================================================
+ *  *
+ * 版权所有 © 2025 江苏千桐科技有限公司
+ * qData 数据中台（开源版）
+ *  *
+ * 许可协议：
+ * 本项目基于 Apache License 2.0 开源协议发布，
+ * 允许在遵守协议的前提下进行商用、修改和分发。
+ *  *
+ * 特别说明：
+ * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
+ * 如需定制品牌，请通过官方渠道申请品牌定制授权。
+ *  *
+ * 更多信息请访问：https://qdata.qiantong.tech/business.html
  */
 
 package tech.qiantong.qdata.common.database.constants;
@@ -97,7 +112,7 @@ public class DbQueryProperty implements Serializable {
      */
     public void viald() {
         if (StringUtils.isBlank(dbType)) {
-            throw new DataQueryException("参数不完整");
+            throw new DataQueryException("db.error.params.incomplete", "参数不完整");
         }
         DbType dbTypeEnum = DbType.getDbType(dbType);
         switch (dbTypeEnum) {
@@ -117,30 +132,30 @@ public class DbQueryProperty implements Serializable {
                         || StringUtils.isBlank(username)
                         || StringUtils.isBlank(password)
                         || port == null) {
-                    throw new DataQueryException("参数不完整");
+                    throw new DataQueryException("db.error.params.incomplete", "参数不完整");
                 }
                 break;
             case REDIS:
                 if (StringUtils.isBlank(host)
                         || port == null) {
-                    throw new DataQueryException("参数不完整");
+                    throw new DataQueryException("db.error.params.incomplete", "参数不完整");
                 }
                 break;
             case HIVE:
                 if (StringUtils.isBlank(host) || port == null) {
-                    throw new DataQueryException("参数不完整");
+                    throw new DataQueryException("db.error.params.incomplete", "参数不完整");
                 }
                 break;
             case HDFS:
             case KAFKA:
             case RABBITMQ:
                 if (StringUtils.isBlank(host) || port == null) {
-                    throw new DataQueryException("参数不完整");
+                    throw new DataQueryException("db.error.params.incomplete", "参数不完整");
                 }
                 break;
             case FTP:
                 if (StringUtils.isAnyBlank(host, username, password) || port == null) {
-                    throw new DataQueryException("参数不完整");
+                    throw new DataQueryException("db.error.params.incomplete", "参数不完整");
                 }
                 break;
             case OSS_ALIYUN:
@@ -149,11 +164,11 @@ public class DbQueryProperty implements Serializable {
                         || datasourceConfig.get("keySecret") == null
                         || datasourceConfig.get("bucket") == null
                         || datasourceConfig.get("endpoint") == null) {
-                    throw new DataQueryException("参数不完整");
+                    throw new DataQueryException("db.error.params.incomplete", "参数不完整");
                 }
                 break;
             case OTHER:
-                throw new DataQueryException("不支持的数据库类型");
+                throw new DataQueryException("db.error.unsupported.dbtype", "不支持的数据库类型");
         }
     }
 
@@ -165,20 +180,20 @@ public class DbQueryProperty implements Serializable {
      */
     public DbQueryProperty(String datasourceType, String ip, Long port, String datasourceConfig) {
         if (org.apache.commons.lang.StringUtils.isEmpty(datasourceType)) {
-            throw new DataQueryException("数据库类型不能为空");
+            throw new DataQueryException("db.error.datasource.type.empty", "数据库类型不能为空");
         }
         if (StringUtils.isEmpty(datasourceConfig)) {
-            throw new DataQueryException("数据源配置不能为空");
+            throw new DataQueryException("db.error.datasource.config.empty", "数据源配置不能为空");
         }
         if (DbType.getDbType(datasourceType) == null) {
-            throw new DataQueryException("不支持的数据库类型");
+            throw new DataQueryException("db.error.unsupported.dbtype", "不支持的数据库类型");
         }
 
         JSONObject configJson;
         try {
             configJson = JSON.parseObject(datasourceConfig);
         } catch (Exception e) {
-            throw new DataQueryException("数据源配置格式错误，应为合法的 JSON");
+            throw new DataQueryException("db.error.datasource.config.json", "数据源配置格式错误，应为合法的JSON");
         }
         this.datasourceConfig = configJson;
 
@@ -217,7 +232,7 @@ public class DbQueryProperty implements Serializable {
                 && !StringUtils.equals(DbType.RABBITMQ.getDb(), dbType)
                 && !StringUtils.equals(DbType.OSS_ALIYUN.getDb(), dbType)) {
             if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
-                throw new DataQueryException("数据源配置中必须包含 username、password");
+                throw new DataQueryException("db.error.datasource.config.auth", "数据源配置中必须包含username、password");
             }
         }
     }
@@ -243,7 +258,7 @@ public class DbQueryProperty implements Serializable {
     public String trainToJdbcUrl() {
         DbType dbType = DbType.getDbType(this.getDbType());
         if (dbType == null) {
-            throw new DataQueryException("无效数据库类型!");
+            throw new DataQueryException("db.error.invalid.dbtype", "无效数据库类型");
         }
         DbDialect dbDialect = DialectFactory.getDialect(dbType);
         return dbDialect.trainToJdbcUrl(this);
@@ -336,7 +351,7 @@ public class DbQueryProperty implements Serializable {
 
         // 校验数据库类型是否存在
         if (dbTypeEnum == null) {
-            throw new DataQueryException("不支持的数据库类型");
+            throw new DataQueryException("db.error.unsupported.dbtype", "不支持的数据库类型");
         }
 
         // 根据数据库类型生成清空表语句
@@ -356,7 +371,7 @@ public class DbQueryProperty implements Serializable {
             case KINGBASE8:
                 return "DELETE FROM " + tableName + ""; // 人大金仓数据库的 TRUNCATE 语句，可能需要加上 RESTART IDENTITY（清空自增字段）
             default:
-                throw new DataQueryException("不支持的数据库类型");
+                throw new DataQueryException("db.error.unsupported.dbtype", "不支持的数据库类型");
         }
     }
 

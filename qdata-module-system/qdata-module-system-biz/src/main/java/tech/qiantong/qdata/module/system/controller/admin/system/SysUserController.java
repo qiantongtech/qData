@@ -13,6 +13,21 @@
  * For brand customization, please apply for brand customization authorization via official channels.
  *  *
  * More information: https://qdata.qiantong.tech/business.html
+ *  *
+ * ============================================================================
+ *  *
+ * 版权所有 © 2025 江苏千桐科技有限公司
+ * qData 数据中台（开源版）
+ *  *
+ * 许可协议：
+ * 本项目基于 Apache License 2.0 开源协议发布，
+ * 允许在遵守协议的前提下进行商用、修改和分发。
+ *  *
+ * 特别说明：
+ * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
+ * 如需定制品牌，请通过官方渠道申请品牌定制授权。
+ *  *
+ * 更多信息请访问：https://qdata.qiantong.tech/business.html
  */
 
 package tech.qiantong.qdata.module.system.controller.admin.system;
@@ -31,6 +46,7 @@ import tech.qiantong.qdata.common.core.domain.entity.SysRole;
 import tech.qiantong.qdata.common.core.domain.entity.SysUser;
 import tech.qiantong.qdata.common.core.page.TableDataInfo;
 import tech.qiantong.qdata.common.enums.BusinessType;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.SecurityUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.poi.ExcelUtil;
@@ -284,4 +300,13 @@ public class SysUserController extends BaseController
     {
         return success(userService.selectDeptUserTreeList());
     }
+
+    @PreAuthorize("@ss.hasPermi('system:user:list')")
+    @GetMapping("/testLang")
+    public AjaxResult testLang(SysDept dept) {
+        String successMsg = MessageUtils.message("user.login.success.testA","test","aaa");
+        return success(successMsg);
+    }
+
+
 }

@@ -13,12 +13,28 @@
  * For brand customization, please apply for brand customization authorization via official channels.
  *  *
  * More information: https://qdata.qiantong.tech/business.html
+ *  *
+ * ============================================================================
+ *  *
+ * 版权所有 © 2025 江苏千桐科技有限公司
+ * qData 数据中台（开源版）
+ *  *
+ * 许可协议：
+ * 本项目基于 Apache License 2.0 开源协议发布，
+ * 允许在遵守协议的前提下进行商用、修改和分发。
+ *  *
+ * 特别说明：
+ * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
+ * 如需定制品牌，请通过官方渠道申请品牌定制授权。
+ *  *
+ * 更多信息请访问：https://qdata.qiantong.tech/business.html
  */
 
 package tech.qiantong.qdata.module.dm.service.businessCategory.impl;
 
 import com.alibaba.fastjson2.JSONObject;
-import com.aliyun.oss.ServiceException;
+import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -226,7 +242,7 @@ public class DmBusinessCategoryServiceImpl extends ServiceImpl<DmBusinessCategor
     @Override
     public String importDmBusinessCategory(List<DmBusinessCategoryRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("导入数据不能为空！");
+            throw new ServiceException("dm.error.import.empty", "导入数据不能为空！");
         }
 
         int successNum = 0;
@@ -244,14 +260,17 @@ public class DmBusinessCategoryServiceImpl extends ServiceImpl<DmBusinessCategor
                         if (existingDmBusinessCategory != null) {
                             dmBusinessCategoryMapper.updateById(dmBusinessCategoryDO);
                             successNum++;
-                            successMessages.add("数据更新成功，ID为 " + dmBusinessCategoryId + " 的业务分类记录。");
+                            successMessages.add(MessageUtils.messageWithFallback("dm.import.update.success",
+                                    "数据更新成功，ID为 " + dmBusinessCategoryId + " 的业务分类记录。", dmBusinessCategoryId, "业务分类"));
                         } else {
                             failureNum++;
-                            failureMessages.add("数据更新失败，ID为 " + dmBusinessCategoryId + " 的业务分类记录不存在。");
+                            failureMessages.add(MessageUtils.messageWithFallback("dm.import.update.fail",
+                                    "数据更新失败，ID为 " + dmBusinessCategoryId + " 的业务分类记录不存在。", dmBusinessCategoryId, "业务分类"));
                         }
                     } else {
                         failureNum++;
-                        failureMessages.add("数据更新失败，某条记录的ID不存在。");
+                        failureMessages.add(MessageUtils.messageWithFallback("dm.import.update.id.missing",
+                                "数据更新失败，某条记录的ID不存在。"));
                     }
                 } else {
                     QueryWrapper<DmBusinessCategoryDO> queryWrapper = new QueryWrapper<>();
@@ -260,26 +279,32 @@ public class DmBusinessCategoryServiceImpl extends ServiceImpl<DmBusinessCategor
                     if (existingDmBusinessCategory == null) {
                         dmBusinessCategoryMapper.insert(dmBusinessCategoryDO);
                         successNum++;
-                        successMessages.add("数据插入成功，ID为 " + dmBusinessCategoryId + " 的业务分类记录。");
+                        successMessages.add(MessageUtils.messageWithFallback("dm.import.insert.success",
+                                "数据插入成功，ID为 " + dmBusinessCategoryId + " 的业务分类记录。", dmBusinessCategoryId, "业务分类"));
                     } else {
                         failureNum++;
-                        failureMessages.add("数据插入失败，ID为 " + dmBusinessCategoryId + " 的业务分类记录已存在。");
+                        failureMessages.add(MessageUtils.messageWithFallback("dm.import.insert.fail",
+                                "数据插入失败，ID为 " + dmBusinessCategoryId + " 的业务分类记录已存在。", dmBusinessCategoryId, "业务分类"));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
-                String errorMsg = "数据导入失败，错误信息：" + e.getMessage();
+                String errorMsg = MessageUtils.messageWithFallback("dm.import.error.detail",
+                        "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
         }
         StringBuilder resultMsg = new StringBuilder();
         if (failureNum > 0) {
-            resultMsg.append("很抱歉，导入失败！共 ").append(failureNum).append(" 条数据格式不正确，错误如下：");
-            resultMsg.append("<br/>").append(String.join("<br/>", failureMessages));
-            throw new ServiceException(resultMsg.toString());
+            String failureDetails = String.join("<br/>", failureMessages);
+            resultMsg.append(MessageUtils.messageWithFallback("dm.import.result.fail",
+                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    failureNum, failureDetails));
+            throw new ServiceException("dm.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
-            resultMsg.append("恭喜您，数据已全部导入成功！共 ").append(successNum).append(" 条。");
+            resultMsg.append(MessageUtils.messageWithFallback("dm.import.result.success",
+                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
         }
         return resultMsg.toString();
     }

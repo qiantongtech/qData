@@ -11,6 +11,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import tech.qiantong.qdata.common.core.domain.BatchDeleteCheck;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.module.mc.api.column.dto.McColumnRespDTO;
@@ -251,12 +252,12 @@ public class McColumnServiceImpl extends ServiceImpl<McColumnMapper, McColumnDO>
         List<McColumnDO> columnDOs = BeanUtils.toBean(createReqVO, McColumnDO.class);
         Set<String> columnNames = columnDOs.stream().map(McColumnDO::getColumnName).collect(Collectors.toSet());
         if (columnNames.size() != columnDOs.size()) {
-            throw new ServiceException("字段名重复");
+            throw new ServiceException("mc.error.column.duplicate", "字段名重复");
         }
         List<McColumnDO> exists = mcColumnMapper.findByTableIdAndColumnNameIn(tableId, columnNames);
         if (!exists.isEmpty()) {
             String ex = exists.stream().map(McColumnDO::getColumnName).collect(Collectors.joining(","));
-            throw new ServiceException("与同表的其他字段名重复, [" + ex + "]");
+            throw new ServiceException("mc.error.column.duplicate.ex", "与同表的其他字段名重复, [" + ex + "]", ex);
         }
         mcColumnMapper.insertBatch(columnDOs);
         return createReqVO.size();

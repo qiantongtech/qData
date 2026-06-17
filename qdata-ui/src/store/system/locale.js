@@ -12,7 +12,7 @@ const elLocaleMap = {
   'ja-JP': ja
 }
 
-const getStoredLang = () => {
+export const getStoredLang = () => {
   const raw = localStorage.getItem(LANG_KEY)
   return SUPPORTED_LANGS.includes(raw) ? raw : 'zh-CN'
 }

@@ -586,17 +586,18 @@ getList();
         display: flex;
         align-items: center;
         margin-top: 10px;
+        gap: 10px;
 
         .form-label {
-          width: 76px;
           font-family: PingFang SC;
           font-weight: 400;
           font-size: 14px;
           color: #717171;
+          white-space: nowrap;
         }
 
         .form-value {
-          width: calc(100% - 76px);
+          flex: 1;
           font-family: PingFang SC;
           font-weight: 400;
           font-size: 14px;
@@ -604,9 +605,8 @@ getList();
         }
 
         .value-tag {
-          width: 67px;
           height: 22px;
-          display: flex;
+          display: inline-flex;
           justify-content: center;
           align-items: center;
           font-family: PingFang SC;
@@ -614,6 +614,7 @@ getList();
           font-size: 13px;
           color: #ffffff;
           border-radius: 10px 10px 10px 0;
+          padding: 0 8px;
 
           &.type1 {
             background: #e23d3d;

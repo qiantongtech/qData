@@ -23,7 +23,7 @@
     <div class="pagecont-top" v-show="showSearch">
       <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true"
         v-show="showSearch" @submit.prevent>
-        <!-- <el-form-item :label="td('ds.client.detail.id')" prop="id" :label-position="labelPosition">
+        <!-- <el-form-item :label="td('ds.client.details.id')" prop="id" :label-position="labelPosition">
           <el-input class="el-form-input-width" v-model="queryParams.id" placeholder="请输入编号" clearable
             @keyup.enter="handleQuery" />
         </el-form-item> -->
@@ -275,7 +275,7 @@
       <el-form ref="clientRef" :model="form" label-width="100px" :label-position="labelPosition">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('ds.client.detail.id')" prop="id">
+            <el-form-item :label="td('ds.client.details.id')" prop="id">
               <div>{{ form.id || "-" }}</div>
             </el-form-item>
           </el-col>

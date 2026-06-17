@@ -114,8 +114,8 @@ const props = defineProps({
   addFunc: { type: Function, required: true },
   updateFunc: { type: Function, required: true },
   batchDelCheckFunc: { type: Function, required: false },
-  nameLabel: { type: String, default: td('att.common.categoryName') },
-  titleBase: { type: String, default: td('att.common.categoryName') },
+  nameLabel: { type: String, default: "Category Name" },
+  titleBase: { type: String, default: "Category" },
   permBase: { type: String, required: true },
   checkProjectParams: { type: Boolean, default: false },
 });
@@ -134,6 +134,9 @@ import useDefaultLang from "@/composables/useDefaultLang";
 
 const { td } = useDefaultLang();
 const userStore = useUserStore();
+
+const effectiveNameLabel = computed(() => props.nameLabel || td('att.common.categoryName'));
+const effectiveTitleBase = computed(() => props.titleBase || td('att.common.category'));
 const { proxy } = getCurrentInstance();
 const catEditDialogRef = ref();
 const appContainerRef = ref();
@@ -169,7 +172,7 @@ const tableStore = reactive({
       },
     },
     {
-      label: `${props.nameLabel}`,
+      label: `${effectiveNameLabel.value}`,
       prop: "name",
       align: "left",
       width: 200,
@@ -215,7 +218,7 @@ const tableStore = reactive({
 const searchStore = reactive({
   items: [
     {
-      label: props.nameLabel,
+      label: effectiveNameLabel.value,
       prop: "name",
       align: "left",
       component: { is: "input" },
@@ -268,7 +271,7 @@ function handleStatusChange(row) {
   const text = row.validFlag === true ? td('att.common.enable') : td('att.common.disable');
   proxy.$modal
     .confirm(
-      td('att.common.confirmStatusChangeGeneric').replace('<status>', text).replace('<name>', row.name).replace('<type>', props.titleBase)
+      td('att.common.confirmStatusChangeGeneric').replace('<status>', text).replace('<name>', row.name).replace('<type>', effectiveTitleBase.value)
     )
     .then(function () {
       props
@@ -302,8 +305,8 @@ function handleAdd(row) {
     buildTreeOptions(response.data);
     const parentId = row && row.id ? row.id : 0;
     catEditDialogRef.value.open({
-      title: td('att.common.add') + props.titleBase,
-      nameLabel: props.nameLabel,
+      title: td('att.common.add') + effectiveTitleBase.value,
+      nameLabel: effectiveNameLabel.value,
       treeOptions: treeOptions.value,
       form: { parentId },
       rules: rules.value,
@@ -322,8 +325,8 @@ async function handleUpdate(row) {
   buildTreeOptions(filtered);
   props.getFunc(row.id).then((res) => {
     catEditDialogRef.value.open({
-      title: td('att.common.edit') + props.titleBase,
-      nameLabel: props.nameLabel,
+      title: td('att.common.edit') + effectiveTitleBase.value,
+      nameLabel: effectiveNameLabel.value,
       treeOptions: treeOptions.value,
       form: res.data,
       rules: rules.value,
@@ -366,7 +369,7 @@ function onDialogCancel() {}
 function handleDelete(row) {
   const id = row.id;
   proxy.$modal
-    .confirm(td('att.common.confirmDeleteCat').replace('<titleBase>', props.titleBase).replace('<id>', id))
+    .confirm(td('att.common.confirmDeleteCat').replace('<titleBase>', effectiveTitleBase.value).replace('<id>', id))
     .then(function () {
       return props.delFunc(id);
     })
@@ -433,7 +436,7 @@ const data = reactive({
     name: [
       {
         required: true,
-        message: td('att.common.nameRequired', { name: props.nameLabel }),
+        message: td('att.common.nameRequired', { name: effectiveNameLabel.value }),
         trigger: "blur",
       },
     ],

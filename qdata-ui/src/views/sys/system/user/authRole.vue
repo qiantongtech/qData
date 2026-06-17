@@ -19,7 +19,7 @@
   <div class="app-container" ref="app-container">
     <div class="pagecont-top">
       <h4 class="form-header h4">{{ td('sys.system.user.basicInfo') }}</h4>
-      <el-form class="btn-style" :model="form" label-width="80px">
+      <el-form class="btn-style" :model="form" >
         <el-row>
           <el-col :span="8" :offset="2">
             <el-form-item :label="td('sys.system.user.userNameLabel')" prop="nickName">

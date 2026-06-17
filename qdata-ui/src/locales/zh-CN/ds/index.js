@@ -257,7 +257,7 @@ export default {
         idPlaceholder: '请输入ID',
         addSuccess: '新增成功',
         editSuccess: '修改成功',
-        detail: {
+        details: {
             id: 'ID',
             appSecret: '应用秘钥',
             appIcon: '应用图标',

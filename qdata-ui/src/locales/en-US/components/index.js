@@ -224,6 +224,14 @@ export default {
     savingLoading: 'Saving to local storage, please wait...',
     resetLoading: 'Clearing settings cache and refreshing, please wait...'
   },
+  tagsView: {
+    refreshPage: 'Refresh Page',
+    closeCurrent: 'Close Current',
+    closeOthers: 'Close Others',
+    closeLeft: 'Close Left',
+    closeRight: 'Close Right',
+    closeAll: 'Close All'
+  },
   cleanRule: {
     numberBoundary: 'Number Boundary Adjustment',
     decimalFormatter: 'Decimal Places',

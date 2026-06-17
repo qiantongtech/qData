@@ -224,6 +224,14 @@ export default {
     savingLoading: 'ローカルに保存中、しばらくお待ちください...',
     resetLoading: '設定キャッシュをクリアしてリフレッシュ中、しばらくお待ちください...'
   },
+  tagsView: {
+    refreshPage: 'ページをリフレッシュ',
+    closeCurrent: '現在を閉じる',
+    closeOthers: '他を閉じる',
+    closeLeft: '左側を閉じる',
+    closeRight: '右側を閉じる',
+    closeAll: 'すべて閉じる'
+  },
   cleanRule: {
     numberBoundary: '数値境界値調整',
     decimalFormatter: '小数位数',

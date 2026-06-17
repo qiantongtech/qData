@@ -542,9 +542,9 @@ const value2 = ref("");
 const activeName = ref("first");
 // 列显隐信息
 const columns = ref([
-  { key: 0, label: "ID", visible: true },
-  { key: 2, label: "用户ID", visible: true },
-  { key: 7, label: "创建时间", visible: true },
+  { key: 0, label: td('dpp.setting.projectUserRel.id'), visible: true },
+  { key: 2, label: td('dpp.setting.projectUserRel.userId'), visible: true },
+  { key: 7, label: td('dpp.setting.projectUserRel.createTime'), visible: true },
 ]);
 const userList = ref([]);
 const getColumnVisibility = (key) => {
@@ -897,7 +897,7 @@ function handleExport() {
 /** ---------------- 导入相关操作 -----------------**/
 /** 导入按钮操作 */
 function handleImport() {
-  upload.title = "项目与用户关联关系导入";
+  upload.title = td('dpp.setting.projectUserRel.memberImport');
   upload.open = true;
 }
 
@@ -925,11 +925,11 @@ const handleFileSuccess = (response, file, fileList) => {
   upload.open = false;
   upload.isUploading = false;
   proxy.$refs["uploadRef"].handleRemove(file);
-  proxy.$alert(
+  proxy.$alertd(
     "<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +
       response.msg +
       "</div>",
-    "导入结果",
+    td('dpp.setting.projectUserRel.importResult'),
     { dangerouslyUseHTMLString: true }
   );
   getList();

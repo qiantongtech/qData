@@ -80,7 +80,7 @@
               v-if="!info"
               v-model="form.description"
               type="textarea"
-              maxlength="500个字符"
+              :maxlength="500"
               show-word-limit
               :placeholder="td('common.form.descriptionPlaceholder')"
             />
@@ -106,7 +106,7 @@
               @click="handleFetchFields"
               :disabled="info"
               v-if="!info"
-              >获取字段</el-button
+              >{{ td('dpp.integration.fetchFields') }}</el-button
             >
           </el-col>
         </el-row>

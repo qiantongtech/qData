@@ -699,7 +699,7 @@ function handleSortChange(column, prop, order) {
 function handleAdd() {
   reset();
   open.value = true;
-  title.value = "新增数据集成任务-日志";
+  title.value = td('dpp.developTask.addLogTitle');
 }
 
 /** 修改按钮操作 */
@@ -709,7 +709,7 @@ function handleUpdate(row) {
   getDppEtlNodeInstance(_id).then((response) => {
     form.value = response.data;
     open.value = true;
-    title.value = "修改数据集成任务-日志";
+    title.value = td('dpp.developTask.editLogTitle');
   });
 }
 
@@ -720,7 +720,7 @@ function handleDetail(row) {
   getDppEtlNodeInstance(_id).then((response) => {
     form.value = response.data;
     openDetail.value = true;
-    title.value = "数据集成任务-日志详情";
+    title.value = td('dpp.developTask.logDetailTitle');
   });
 }
 
@@ -731,7 +731,7 @@ function submitForm() {
       if (form.value.id != null) {
         updateDppEtlNodeInstance(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("修改成功");
+            proxy.$modal.msgSuccess(td('common.message.editSuccess'));
             open.value = false;
             getList();
           })
@@ -739,7 +739,7 @@ function submitForm() {
       } else {
         addDppEtlNodeInstance(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("新增成功");
+            proxy.$modal.msgSuccess(td('common.message.addSuccess'));
             open.value = false;
             getList();
           })
@@ -753,13 +753,13 @@ function submitForm() {
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
-    .confirm('是否确认删除数据集成任务-日志编号为"' + _ids + '"的数据项？')
+    .confirm(td('dpp.developTask.confirmDeleteLog', '', { id: _ids }))
     .then(function () {
       return delDppEtlNodeInstance(_ids);
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
     })
     .catch(() => {});
 }

@@ -1232,6 +1232,7 @@ export default {
     validateFailedFillFieldValues: '検証に失敗しました。まずフィールド値を入力してください',
     validateFailedNoRepeatSourceValues: '検証に失敗しました。重複する元値を入力しないでください',
     inputDeptName: '部門名を入力してください',
+    apiInputComponent: 'API入力コンポーネント',
   },
   cleanRule: {
     nodeName: 'ノード名',
@@ -1363,5 +1364,19 @@ export default {
     inputRuleType: 'ルールタイプを入力してください',
     cleanRuleTree: 'クレンジングルール',
     developing: '開発中'
+  },
+  utils: {
+    missingComponents: '現在のタスクには、入力、変換、出力コンポーネントが不足しています。関連するコンポーネントを設定してください',
+    tableOutputFieldMapping: 'テーブル出力コンポーネントがフィールドマッピングされていません。フィールドマッピングを設定してください',
+    nodeInfoIncomplete: 'ノード情報が不完全です。完了してください',
+    missingInputOutput: '現在のタスクには、入力および出力コンポーネントが不足しています。入力および出力ノードを設定してください',
+    missingInput: '現在のタスクには、入力コンポーネントが不足しています。入力ノードを設定してください',
+    missingOutput: '現在のタスクには、出力コンポーネントが不足しています。出力ノードを設定してください',
+    unknownNode: '不明なノード',
+    invalidEdge: '無効なエッジをスキップ: source={source}, target={target}（ノードが存在しません）',
+    onlyOneOutputComponent: '出力コンポーネントは1つだけ許可されています！',
+    onlyOneInputComponent: '入力コンポーネントは1つだけ許可されています！',
+    resetConfirm: 'リセットをクリックすると、保存されていないすべての変更がクリアされます。続行しますか？',
+    flowChart: 'フローチャート'
   }
 }

@@ -20,7 +20,7 @@
     v-model="visibleDialog"
     draggable
     class="dialog"
-    :title="title"
+    :title="effectiveTitle"
     destroy-on-close
     width="60%"
     :append-to="$refs['app-container']"
@@ -373,6 +373,7 @@ const props = defineProps({
   userList: { type: Object, default: () => ({}) },
   info: { type: Boolean, default: false },
 });
+const effectiveTitle = computed(() => props.title || td('dpp.developTask.formTitle'));
 
 const emit = defineEmits(["update:visible", "confirm"]);
 

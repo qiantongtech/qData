@@ -372,7 +372,7 @@
             placeholder="请输入变更说明"
             :min-height="192"
             show-word-limit
-            maxlength="500个字符"
+            maxlength="500"
           />
         </el-form-item> -->
       </div>

@@ -104,6 +104,12 @@ export default {
                     topNode: 'Top Node',
                     createByPlaceholder: 'Please enter create by',
                     createTimePlaceholder: 'Please enter create time',
+                    updateMsg1: 'Added user table fields, including basic information such as user name, contact information, registration time, optimized data structure design',
+                    updateMsg2: 'Deleted redundant fields, removed unused email_backup and phone_backup fields, streamlined table structure to improve performance',
+                    updateMsg3: 'Added index optimization, created composite index for user_name and create_time fields, improved query efficiency by about 30%',
+                    updateMsg4: 'Rolled back to version 1.0.1, undid the index changes in version 1.0.2, resolved data insertion performance issues caused by indexes',
+                    updateMsg5: 'Added user permission fields, added role_id and permission_level fields to support multi-level permission management',
+                    rollback: 'Rollback',
             },
                 handle: {
                     selectDbName: 'Please select database name',

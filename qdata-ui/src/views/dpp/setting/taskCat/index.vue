@@ -684,7 +684,7 @@ function getList() {
     loading.value = false;
 
     attTaskCatOptions.value = [];
-    const data = { id: 0, name: "顶级节点", children: [] };
+    const data = { id: 0, name: td('dpp.setting.taskCat.topNode'), children: [] };
     data.children = proxy.handleTree(response.data, "id", "parentId");
     attTaskCatOptions.value.push(data);
   });
@@ -809,13 +809,13 @@ function submitForm() {
 
 /** 改变启用状态值 */
 function handleStatusChange(row) {
-  const text = row.validFlag === true ? "启用" : "禁用";
+  const text = row.validFlag === true ? td('dpp.setting.taskCat.enable') : td('dpp.setting.taskCat.disable');
   proxy.$modal
-    .confirm('确认要"' + text + '","' + row.name + '"数据集成类目吗？')
+    .confirm(td('dpp.setting.taskCat.confirmChangeStatus', '', { status: text, name: row.name }))
     .then(function () {
       updateAttTaskCatd({ id: row.id, validFlag: row.validFlag })
         .then((response) => {
-          proxy.$modal.msgSuccess(text + "成功");
+          proxy.$modal.msgSuccess(text + td('common.message.success'));
           getList();
         })
         .catch((err) => {
@@ -861,7 +861,7 @@ function handleExport() {
 /** ---------------- 导入相关操作 -----------------**/
 /** 导入按钮操作 */
 function handleImport() {
-  upload.title = "数据集成类目管理导入";
+  upload.title = td('dpp.setting.taskCat.taskCatImport');
   upload.open = true;
 }
 
@@ -893,7 +893,7 @@ const handleFileSuccess = (response, file, fileList) => {
     "<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +
       response.msg +
       "</div>",
-    "导入结果",
+    td('dpp.setting.taskCat.importResult'),
     { dangerouslyUseHTMLString: true }
   );
   getList();

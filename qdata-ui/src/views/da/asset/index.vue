@@ -705,7 +705,7 @@
             <el-form-item :label="td('da.asset.description')">
               <el-input
                 type="textarea"
-                maxlength="500个字符"
+                maxlength="500"
                 show-word-limit
                 v-model="formApply.description"
                 :rows="3"
@@ -745,7 +745,7 @@
             <el-form-item :label="td('da.asset.applyReason')" prop="applyReason">
               <el-input
                 type="textarea"
-                maxlength="500个字符"
+                maxlength="500"
                 show-word-limit
                 v-model="formApply.applyReason"
                 :rows="3"

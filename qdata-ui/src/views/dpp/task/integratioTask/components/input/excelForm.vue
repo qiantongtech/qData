@@ -73,7 +73,7 @@
         </el-col>
         <el-col :span="12">
           <el-button type="primary" plain @click="parseExcel" style="margin-left: 60px" :disabled="isButtonDisabled">
-            解析Excel
+            {{ td('dpp.integration.parseExcel') }}
           </el-button>
         </el-col>
       </el-row>

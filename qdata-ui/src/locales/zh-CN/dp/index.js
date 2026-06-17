@@ -51,6 +51,20 @@ export default {
     addCodeTitle: '新增数据元代码',
     editCodeTitle: '修改数据元代码',
     confirmDeleteCode: '是否确认删除数据元代码编号为"{id}"的数据项？',
+    codeDict: {
+      serialNumber: '编号',
+      createBy: '创建人',
+      createTime: '创建时间',
+      remark: '备注',
+      operation: '操作',
+      modify: '修改',
+      delete: '删除',
+      cancel: '取消',
+      confirm: '确定',
+      addSuccess: '新增成功',
+      updateSuccess: '修改成功',
+      deleteSuccess: '删除成功'
+    },
     // 代码映射
     originalValue: '原始值',
     originalValuePlaceholder: '请输入原始值',
@@ -59,6 +73,23 @@ export default {
     addCodeMapTitle: '新增数据元代码映射',
     editCodeMapTitle: '修改数据元代码映射',
     confirmDeleteCodeMap: '是否确认删除数据元代码映射编号为"{id}"的数据项？',
+    codeMap: {
+      serialNumber: '编号',
+      codeName: '代码名',
+      codeValue: '代码值',
+      createBy: '创建人',
+      createTime: '创建时间',
+      remark: '备注',
+      operation: '操作',
+      modify: '修改',
+      delete: '删除',
+      cancel: '取消',
+      confirm: '确定',
+      addSuccess: '新增成功',
+      updateSuccess: '修改成功',
+      deleteSuccess: '删除成功',
+      detailTitle: '数据元代码映射详情'
+    },
     // 资产关联
     assetName: '资产名称',
     dataTable: '数据表',
@@ -119,6 +150,9 @@ export default {
     modelCommentRequired: '模型名称不能为空',
     catCodeRequired: '类目编码不能为空',
     createTypeRequired: '创建方式不能为空',
+    materialization: {
+      publishModel: '发布模型'
+    },
     // 模型详情
     detail: {
       chineseName: '中文名称',

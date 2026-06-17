@@ -32,7 +32,7 @@
             v-hasPermi="['md:released:structured:column:detail']"
           >
             <svg-icon icon-class="meta-lineage" class="handle-svg-icon" />
-            血缘分析
+            {{ td('meta.released.structured.column.lineageAnalysis') }}
           </el-button> -->
           <el-popover
             placement="bottom"
@@ -339,7 +339,7 @@ function getDomains() {
     const domains = {
       id: 0,
       code: 0,
-      name: "顶级节点",
+      name: td('meta.released.structured.column.topNode'),
       children: proxy.handleTree(res.data, "id", "parentId"),
     };
     store.treeDomains.push(domains);

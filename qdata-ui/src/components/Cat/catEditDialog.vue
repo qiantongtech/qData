@@ -135,7 +135,7 @@ const formRef = ref();
 
 // 组件内部状态
 const title = ref("");
-const nameLabel = ref("类目名称");
+const nameLabel = ref(t('components.catEditDialog.nameLabel'));
 const treeOptions = ref([]);
 const customRules = ref(null);
 

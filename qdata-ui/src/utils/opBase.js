@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright © 2025 Qiantong Technology Co., Ltd.
  * qData Data Middle Platform (Open Source Edition)
  *  *
@@ -25,6 +25,7 @@ import { Selection } from '@antv/x6-plugin-selection';
 import '@/assets/system/styles/global.scss'
 import { cuPort } from '@/utils/graph';
 import useUserStore from "@/store/system/user";
+
 const userStore = useUserStore();
 import {
   getNodeUniqueKey,

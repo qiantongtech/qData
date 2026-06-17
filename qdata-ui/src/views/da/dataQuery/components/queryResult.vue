@@ -16,7 +16,7 @@
 -->
 
 <template>
-  <el-dialog v-model="visibleDialog" draggable class="medium-dialog" :title="title" destroy-on-close @close="clearData">
+  <el-dialog v-model="visibleDialog" draggable class="medium-dialog" :title="effectiveTitle" destroy-on-close @close="clearData">
     <div>
       <!-- 导出按钮 -->
       <el-button :disabled="!callData.dataTotal > 0" type="warning" plain icon="Download"
@@ -67,10 +67,11 @@ const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const props = defineProps({
   visible: { type: Boolean, default: true },
-  title: { type: String, default: td('da.qualityTask.dataQuery.queryResult.formTitle') },
+  title: { type: String, default: "查询结果" },
   queryParams: { type: Object, default: () => ({}) },
   spl: { type: String, default: "" },
 });
+const effectiveTitle = computed(() => props.title || td('da.qualityTask.dataQuery.queryResult.formTitle'));
 
 let loading = ref(false);
 let downloadLoading = ref(false);

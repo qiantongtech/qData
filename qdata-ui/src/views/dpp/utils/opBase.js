@@ -31,8 +31,6 @@ import { ElMessage } from "element-plus";
 import { DagreLayout } from '@antv/layout';
 import { register } from '@antv/x6-vue-shape';
 import NodeView from "@/views/dpp/components/nodeView";
-import useDefaultLang from "@/composables/useDefaultLang";
-const { td } = useDefaultLang();
 /**
  * 插件使用
  */
@@ -645,8 +643,8 @@ export const createDataNode = (graph, data) => {
       inputFields: "",
       taskParams: {
         ...(data.componentType == 7 && {
-          name: "API输入组件",
-          typeName: "API输入组件",
+          name: td('dpp.integration.apiInputComponent'),
+          typeName: td('dpp.integration.apiInputComponent'),
           apiUrl: window.location.origin + import.meta.env.VITE_APP_BASE_API,
           apiMethod: "GET",
           returnFormat: 1,

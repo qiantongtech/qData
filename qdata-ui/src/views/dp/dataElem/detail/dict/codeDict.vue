@@ -20,7 +20,7 @@
         <el-row :gutter="15" class="btn-style">
             <el-col :span="1.5">
                 <el-button type="primary" plain @click="handleAdd" @mousedown="(e) => e.preventDefault()">
-                    <i class="iconfont-mini icon-xinzeng mr5"></i>新增
+                    <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('common.button.add') }}
                 </el-button>
             </el-col>
         </el-row>
@@ -30,36 +30,36 @@
     </div>
     <el-table stripe height="360" v-loading="loading" :data="dpDataElemCodeList"
         @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
-        <el-table-column label="编号" align="left" prop="id" width="50" />
-        <el-table-column label="代码值" align="left" prop="codeValue" width="160">
+        <el-table-column :label="td('dp.dataElem.codeDict.serialNumber')" align="left" prop="id" width="50" />
+        <el-table-column :label="td('dp.dataElem.codeValue')" align="left" prop="codeValue" width="160">
             <template #default="scope">
                 {{ scope.row.codeValue || '-' }}
             </template>
         </el-table-column>
-        <el-table-column label="代码名称" align="left" prop="codeName" width="220">
+        <el-table-column :label="td('dp.dataElem.codeName')" align="left" prop="codeName" width="220">
             <template #default="scope">
                 {{ scope.row.codeName || '-' }}
             </template>
         </el-table-column>
-        <el-table-column label="创建人" align="left" prop="createBy" width="160">
+        <el-table-column :label="td('dp.dataElem.codeDict.createBy')" align="left" prop="createBy" width="160">
             <template #default="scope">
                 {{ scope.row.createBy || '-' }}
             </template>
         </el-table-column>
-        <el-table-column label="创建时间" align="left" prop="createTime" width="220">
+        <el-table-column :label="td('dp.dataElem.codeDict.createTime')" align="left" prop="createTime" width="220">
             <template #default="scope">
                 <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d} {h}:{i}') }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="备注" align="left" prop="remark" :show-overflow-tooltip="{ effect: 'light' }">
+        <el-table-column :label="td('dp.dataElem.codeDict.remark')" align="left" prop="remark" :show-overflow-tooltip="{ effect: 'light' }">
             <template #default="scope">
                 {{ scope.row.remark || '-' }}
             </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" width="300">
+        <el-table-column :label="td('dp.dataElem.codeDict.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="300">
             <template #default="scope">
-                <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)">修改</el-button>
-                <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
+                <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)">{{ td('dp.dataElem.codeDict.modify') }}</el-button>
+                <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)">{{ td('dp.dataElem.codeDict.delete') }}</el-button>
             </template>
         </el-table-column>
 
@@ -79,28 +79,28 @@
         <el-form ref="dpDataElemCodeRef" :model="form" :rules="rules" label-width="80px">
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item label="代码值" prop="codeValue">
-                        <el-input v-model="form.codeValue" placeholder="请输入代码值" />
+                    <el-form-item :label="td('dp.dataElem.codeValue')" prop="codeValue">
+                        <el-input v-model="form.codeValue" :placeholder="td('dp.dataElem.codeValuePlaceholder')" />
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="代码名称" :show-overflow-tooltip="{ effect: 'light' }" prop="codeName">
-                        <el-input v-model="form.codeName" placeholder="请输入代码名称" />
+                    <el-form-item :label="td('dp.dataElem.codeName')" :show-overflow-tooltip="{ effect: 'light' }" prop="codeName">
+                        <el-input v-model="form.codeName" :placeholder="td('dp.dataElem.codeNamePlaceholder')" />
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="24">
-                    <el-form-item label="备注" :show-overflow-tooltip="{ effect: 'light' }" prop="remark">
-                        <el-input v-model="form.remark" type="textarea" placeholder="请输入备注" />
+                    <el-form-item :label="td('dp.dataElem.codeDict.remark')" :show-overflow-tooltip="{ effect: 'light' }" prop="remark">
+                        <el-input v-model="form.remark" type="textarea" :placeholder="td('common.form.remarkPlaceholder')" />
                     </el-form-item>
                 </el-col>
             </el-row>
         </el-form>
         <template #footer>
             <div class="dialog-footer">
-                <el-button size="mini" @click="cancel">取 消</el-button>
-                <el-button type="primary" size="mini" @click="submitForm">确 定</el-button>
+                <el-button size="mini" @click="cancel">{{ td('common.button.cancel') }}</el-button>
+                <el-button type="primary" size="mini" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
             </div>
         </template>
     </el-dialog>
@@ -147,10 +147,10 @@ const data = reactive({
     },
     rules: {
         codeValue: [
-            { required: true, message: '代码值不能为空', trigger: 'blur' },
+            { required: true, message: td('dp.dataElem.codeValueRequired'), trigger: 'blur' },
             { validator: validatorCodeValue, trigger: 'blur' }
         ],
-        codeName: [{ required: true, message: '代码名称不能为空', trigger: 'blur' }]
+        codeName: [{ required: true, message: td('dp.dataElem.codeNameRequired'), trigger: 'blur' }]
     }
 });
 
@@ -176,7 +176,7 @@ function validatorCodeValue(rule, value, callback) {
         };
         validateCodeValue(params).then((res) => {
             if (res.data == 0) {
-                callback(new Error('代码值已存在'));
+                callback(new Error(td('dp.dataElem.codeValueDuplicate')));
             } else {
                 callback();
             }
@@ -257,7 +257,7 @@ function handleSortChange(column, prop, order) {
 function handleAdd() {
     reset();
     open.value = true;
-    title.value = '新增数据元代码';
+    title.value = td('dp.dataElem.addCodeTitle');
 }
 
 /** 修改按钮操作 */
@@ -267,7 +267,7 @@ function handleUpdate(row) {
     getDpDataElemCode(_id).then((response) => {
         form.value = response.data;
         open.value = true;
-        title.value = '修改数据元代码';
+        title.value = td('dp.dataElem.editCodeTitle');
     });
 }
 
@@ -280,7 +280,7 @@ function submitForm() {
             if (form.value.id != null) {
                 updateDpDataElemCode(form.value)
                     .then((response) => {
-                        proxy.$modal.msgSuccess('修改成功');
+                        proxy.$modal.msgSuccess(td('dp.dataElem.codeDict.updateSuccess'));
                         open.value = false;
                         getList();
                         //事件推送
@@ -290,7 +290,7 @@ function submitForm() {
             } else {
                 addDpDataElemCode(form.value)
                     .then((response) => {
-                        proxy.$modal.msgSuccess('新增成功');
+                        proxy.$modal.msgSuccess(td('dp.dataElem.codeDict.addSuccess'));
                         open.value = false;
                         getList();
                         //事件推送
@@ -306,7 +306,7 @@ function submitForm() {
 function handleDelete(row) {
     const _ids = row.id || ids.value;
     proxy.$modal
-        .confirm('是否确认删除数据元代码编号为"' + _ids + '"的数据项？')
+        .confirm(td('dp.dataElem.confirmDeleteCode', '', { id: _ids }))
         .then(function () {
             return delDpDataElemCode(_ids);
         })
@@ -314,7 +314,7 @@ function handleDelete(row) {
             getList();
             //事件推送
             proxy.$bus.emit('data_elem_code_change');
-            proxy.$modal.msgSuccess('删除成功');
+            proxy.$modal.msgSuccess(td('dp.dataElem.codeDict.deleteSuccess'));
         })
         .catch(() => { });
 }

@@ -260,7 +260,7 @@
             <template #label>
               <span>
                 <el-tooltip
-                  content="控制器中定义的权限字符，如：@PreAuthorize(`@ss.hasRole('admin')`)"
+                  :content="td('dpp.setting.projectUserRel.roleKeyHint')"
                   placement="top"
                 >
                   <!-- <el-icon style="color: #909399;"><InfoFilled /></el-icon> -->

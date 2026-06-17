@@ -103,7 +103,13 @@ export default {
                     createdTime: '作成日時',
                     topNode: 'トップノード',
                     createByPlaceholder: '作成者を入力してください',
-                    createTimePlaceholder: '作成日時を入力してください'
+                    createTimePlaceholder: '作成日時を入力してください',
+                    updateMsg1: 'ユーザーテーブルフィールドを追加し、ユーザー名、連絡先、登録時間などの基本情報を含み、データ構造設計を最適化',
+                    updateMsg2: '冗長なフィールドを削除し、使用されなくなったemail_backupおよびphone_backupフィールドを削除し、テーブル構造を簡素化してパフォーマンスを向上',
+                    updateMsg3: 'インデックス最適化を追加し、user_nameおよびcreate_timeフィールドに複合インデックスを作成し、クエリ効率を約30%向上',
+                    updateMsg4: 'バージョン1.0.1にロールバックし、バージョン1.0.2のインデックス変更を取り消し、インデックスによるデータ挿入パフォーマンスの問題を解決',
+                    updateMsg5: 'ユーザー権限フィールドを追加し、role_idおよびpermission_levelフィールドを追加し、多段階権限管理をサポート',
+                    rollback: 'ロールバック',
                 },
                 handle: {
                     selectDbName: '所属DB名を選択してください',

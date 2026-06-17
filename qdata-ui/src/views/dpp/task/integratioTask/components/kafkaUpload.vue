@@ -76,7 +76,7 @@
             <el-input
               v-model="form.key"
               type="textarea"
-              maxlength="500个字符"
+              maxlength="500"
               show-word-limit
               :placeholder="td('dpp.integration.jsonParseValuePlaceholder', '例如:info.aga')"
             />

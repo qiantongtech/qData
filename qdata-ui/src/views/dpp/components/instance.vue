@@ -20,7 +20,7 @@
     v-model="visibleDialog"
     draggable
     class="medium-dialog"
-    :title="title"
+    :title="effectiveTitle"
     destroy-on-close
   >
     <el-table stripe height="580px" v-loading="loading" :data="jobLogList">
@@ -218,6 +218,7 @@ const props = defineProps({
   taskType: { type: Number, default: 1 },
   data: { type: Object, default: () => ({}) },
 });
+const effectiveTitle = computed(() => props.title || td('dpp.instance.formTitle'));
 const open = ref(false);
 let form = ref();
 let queryParams = ref({

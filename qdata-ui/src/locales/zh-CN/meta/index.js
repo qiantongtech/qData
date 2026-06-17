@@ -4,6 +4,7 @@ export default {
             column: {
                 impactAnalysis: '影响分析',
                 versionManagement: '版本与变更',
+                lineageAnalysis: '血缘分析',
                 dbName: '所属库名',
                 tableName: '所属表名',
                 columnName: '字段名称',
@@ -17,7 +18,8 @@ export default {
                 defaultValue: '默认值',
                 pkFlag: '是否主键',
                 fkFlag: '是否外键',
-                nullableFlag: '是否可空'
+                nullableFlag: '是否可空',
+                topNode: '顶级节点'
             },
             database: {
                 tableList: '表列表',
@@ -25,7 +27,8 @@ export default {
                 dbName: '库名',
                 dbType: '数据库类型',
                 tableCount: '表数量',
-                version: '版本号'
+                version: '版本号',
+                topNode: '顶级节点'
             },
             table: {
                 columnList: '字段列表',

@@ -35,7 +35,9 @@ export default {
   },
   error: {
     code401: '401 Error!',
+    code403: 'No permission for this operation',
     code404: '404 Error!',
+    default: 'System unknown error, please contact administrator',
     findPage: 'Page Not Found!',
     notAccessRights: 'You do not have access rights!',
     Sorry401: 'Sorry, you do not have access rights. Please do not perform unauthorized operations! You can return to the main page.',
@@ -270,6 +272,10 @@ export default {
       calculating: 'Calculating...',
       noResult: 'No matching results found!',
       limit: 'Only {count} results within the last 100 years!'
+    },
+    cronUtils: {
+      execute: 'execute',
+      invalidExpression: 'Invalid Cron expression'
     }
   }
 }

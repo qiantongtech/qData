@@ -1,6 +1,3 @@
-import useDefaultLang from "@/composables/useDefaultLang"
-const { td } = useDefaultLang()
-
 /**
  * 数据源类型
  * key: 数据源类型标识跟config关联 不要改...
@@ -27,17 +24,17 @@ export const DatasourceTypes = {
     PostgreSQL: { key: 'PostgreSQL', label: 'PostgreSQL', value: 'PostgreSQL', type: 'primary' },
     MongoDB: { key: 'MongoDB', label: 'MongoDB', value: 'MongoDB', type: 'primary' },
     FTP: { key: 'FTP', label: 'FTP', value: 'FTP', type: 'success' },
-    OSS_ALIYUN: { key: 'OSS_ALIYUN', label: td('components.datasource.ossAliyun'), value: 'OSS-ALIYUN', type: 'success' },
+    OSS_ALIYUN: { key: 'OSS_ALIYUN', label: '阿里云OSS', value: 'OSS-ALIYUN', type: 'success' },
     ClickHouse: { key: 'ClickHouse', label: 'ClickHouse', value: 'ClickHouse', type: 'primary' },
     Kafka: { key: 'Kafka', label: 'Kafka', value: 'Kafka', type: 'warning' },
     DB2: { key: 'DB2', label: 'DB2', value: 'DB2', type: 'primary' },
     OSCAR: { key: 'OSCAR', label: 'OSCAR', value: 'OSCAR', type: 'primary' },
     Redis: { key: 'Redis', label: 'Redis', value: 'Redis', type: 'primary' },
     RabbitMQ: { key: 'RabbitMQ', label: 'RabbitMQ', value: 'RabbitMQ', type: 'warning' },
-    API: { key: 'API', label: td('components.datasource.api'), value: 'API接口' },
-    File: { key: 'File', label: td('components.datasource.file'), value: 'excel、csv文件' },
-    FlinkP: { key: 'FlinkP', label: td('components.datasource.flinkBatch'), value: 'Flink批' },
-    FlinkL: { key: 'FlinkL', label: td('components.datasource.flinkStream'), value: 'Flink流' },
+    API: { key: 'API', label: 'API接口', value: 'API接口' },
+    File: { key: 'File', label: '文件', value: 'excel、csv文件' },
+    FlinkP: { key: 'FlinkP', label: 'Flink批处理', value: 'Flink批' },
+    FlinkL: { key: 'FlinkL', label: 'Flink流处理', value: 'Flink流' },
     SparkSQL: { key: 'SparkSQL', label: 'SparkSQL', value: 'SparkSQL' }
 };
 

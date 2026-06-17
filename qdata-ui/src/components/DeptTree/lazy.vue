@@ -38,11 +38,11 @@
 
                         <!-- 状态图标 -->
                         <el-icon v-if="data.loadSuccess" style="color: #22c55e; margin-left: 6px" class="iconimg"
-                            title="加载成功">
+                            :title="t('components.deptTree.loadSuccess')">
                             <CircleCheckFilled />
                         </el-icon>
                         <el-icon v-if="data.loadError" style="color: #facc15; margin-left: 6px; cursor: pointer"
-                            class="iconimg" @click.stop="retryLoad(node)" title="加载失败，点击重试">
+                            class="iconimg" @click.stop="retryLoad(node)" :title="t('components.deptTree.loadError')">
                             <WarnTriangleFilled />
                         </el-icon>
                     </span>

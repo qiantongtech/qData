@@ -118,6 +118,8 @@ export default {
       categoryNameDetail: '类别名称',
       enable: '启用',
       disable: '禁用',
+      topNode: '顶级节点',
+      importResult: '导入结果',
       updateExistData: '是否更新已经存在的数据开发类目管理数据',
       downloadTemplate: '下载模板',
       addDataDevCat: '新增数据开发类目',
@@ -143,6 +145,8 @@ export default {
       categoryNameDetail: '类别名称',
       enable: '启用',
       disable: '禁用',
+      topNode: '顶级节点',
+      importResult: '导入结果',
       addTaskCat: '新增数据集成类目',
       editTaskCat: '修改数据集成类目',
       taskCatDetail: '数据集成类目详情',
@@ -168,7 +172,11 @@ export default {
       userSelect: '用户选择',
       loginAccount: '登录账号',
       inputLoginAccount: '请输入登录账号',
-      userId: '编号',
+      userId: '用户ID',
+      id: 'ID',
+      createTime: '创建时间',
+      importResult: '导入结果',
+      roleKeyHint: '控制器中定义的权限字符，如：@PreAuthorize(`@ss.hasRole(\'admin\')`)',
       role: '角色',
       dept: '部门',
       remove: '移除',
@@ -702,6 +710,7 @@ export default {
     editInstanceLog: '修改数据集成任务-日志',
     instanceLogDetail: '数据集成任务-日志详情',
     confirmDeleteInstance: '是否确认删除数据集成任务-日志编号为"{id}"的数据项？',
+    formTitle: '表单标题',
     developTask: {
       id: '编号',
       nodeInstanceName: '节点实例名称',
@@ -743,6 +752,16 @@ export default {
       dataIntegrationCategory: '数据集成类目',
       executionTime: '执行时间',
       resetConfirm: '点击重置将清除所有未保存的更改，您确定要继续吗？',
+      // 日志相关
+      viewLog: '查看日志',
+      close: '关 闭',
+      addLogTitle: '新增数据集成任务-日志',
+      editLogTitle: '修改数据集成任务-日志',
+      logDetailTitle: '数据集成任务-日志详情',
+      confirmDeleteLog: '是否确认删除数据集成任务-日志编号为"{id}"的数据项？',
+      // 流程节点相关
+      onlyOneOutput: '只能有一个输出组件！',
+      onlyOneInput: '只能有一个输入组件！',
     },
   },
   developTask: {
@@ -804,6 +823,11 @@ export default {
     oracle: 'Oracle',
     mysql: 'MySQL',
     kingbase: 'Kingbase',
+    // 日志相关
+    addLogTitle: '新增数据集成任务-日志',
+    editLogTitle: '修改数据集成任务-日志',
+    logDetailTitle: '数据集成任务-日志详情',
+    confirmDeleteLog: '是否确认删除数据集成任务-日志编号为"{id}"的数据项？',
   },
   developTaskDetail: {
     taskSave: '任务保存',
@@ -835,6 +859,7 @@ export default {
     inputTaskName: '请输入任务名称',
     taskCategory: '任务类目',
     selectTaskCategory: '请选择任务类目',
+    taskDetail: '任务详情',
     executionStrategy: '执行策略',
     selectExecutionStrategy: '请选择执行策略',
     scheduleCycle: '调度周期',
@@ -1055,6 +1080,8 @@ export default {
     excelParseSuccess: 'Excel解析成功，请确认属性字段类型！',
     excelParseFailedNoData: 'Excel解析失败，未获取到有效数据！',
     excelParseFailedCheckFile: 'Excel解析失败，请检查文件格式或内容！',
+    reset: '重置',
+    export: '导出',
     benchmarkType: '基准类型',
     benchmarkTypePlaceholder: '请选择基准类型',
     benchmarkTypeRequired: '请选择基准类型',
@@ -1190,6 +1217,7 @@ export default {
     dedupFilterTooltip: '根据指定字段判断数据是否重复，并保留第一条出现的记录（即遇到重复时，保留数据集中第一次出现的那条），结合排序节点使用',
     ignoreCase: '忽略大小写',
     fetchFields: '获取字段',
+    apiInputComponent: 'API输入组件',
     fieldBuilderTooltip: '用于通过拼接多个字段值生成新字段，支持设置前缀、后缀和连接符，常用于构造唯一标识或业务编码',
     operationType: '操作类型',
     operationTypePlaceholder: '请选择操作类型',
@@ -1393,6 +1421,7 @@ export default {
     invalidEdge: '跳过无效边: source={source}, target={target}（节点不存在）',
     onlyOneOutputComponent: '只能有一个输出组件！',
     onlyOneInputComponent: '只能有一个输入组件！',
-    resetConfirm: '点击重置将清除所有未保存的更改，您确定要继续吗？'
+    resetConfirm: '点击重置将清除所有未保存的更改，您确定要继续吗？',
+    flowChart: '流程图'
   }
 }

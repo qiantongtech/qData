@@ -74,7 +74,7 @@
               <el-input
                 v-model="form.description"
                 type="textarea"
-                maxlength="500个字符"
+                maxlength="500"
                 show-word-limit
                 :placeholder="td('common.form.descriptionPlaceholder', '请输入描述')"
               />
@@ -87,7 +87,7 @@
               <el-input
                 v-model="form.taskParams.where"
                 type="textarea"
-                maxlength="500个字符"
+                maxlength="500"
                 show-word-limit
                 :placeholder="td('dpp.cleanRule.inputWhereCondition', '请输入where条件')"
               />

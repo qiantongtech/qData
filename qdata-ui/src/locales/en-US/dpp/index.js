@@ -1235,6 +1235,7 @@ export default {
     validateFailedFillFieldValues: 'Validation failed, please fill field values first',
     validateFailedNoRepeatSourceValues: 'Validation failed, please do not use duplicate source values',
     inputDeptName: 'Please enter department name',
+    apiInputComponent: 'API Input Component',
   },
   cleanRule: {
     nodeName: 'Node Name',
@@ -1366,5 +1367,19 @@ export default {
     inputRuleType: 'Please enter rule type',
     cleanRuleTree: 'Clean Rule',
     developing: 'Under Development'
+  },
+  utils: {
+    missingComponents: 'The current task is missing input, transform, and output components. Please set up relevant components',
+    tableOutputFieldMapping: 'The table output component has not been field mapped. Please set up field mapping',
+    nodeInfoIncomplete: 'Node information is incomplete. Please complete it',
+    missingInputOutput: 'The current task is missing input and output components. Please set up input and output nodes',
+    missingInput: 'The current task is missing input component. Please set up input node',
+    missingOutput: 'The current task is missing output component. Please set up output node',
+    unknownNode: 'Unknown Node',
+    invalidEdge: 'Skip invalid edge: source={source}, target={target} (node does not exist)',
+    onlyOneOutputComponent: 'Only one output component allowed!',
+    onlyOneInputComponent: 'Only one input component allowed!',
+    resetConfirm: 'Clicking reset will clear all unsaved changes. Are you sure you want to continue?',
+    flowChart: 'Flow Chart'
   }
 }

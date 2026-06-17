@@ -106,7 +106,7 @@
               <el-input
                 v-if="!falg"
                 type="textarea"
-                maxlength="500个字符"
+                maxlength="500"
                 show-word-limit
                 v-model="form.ruleDesc"
                 :placeholder="td('dpp.cleanRule.inputRuleDesc', '请输入规则描述')"
@@ -123,7 +123,7 @@
               <el-input
                 v-if="!falg"
                 type="textarea"
-                maxlength="500个字符"
+                maxlength="500"
                 show-word-limit
                 v-model="form.whereClause"
                 :placeholder="td('dpp.cleanRule.inputWhereCondition', '请输入 Where 条件')"

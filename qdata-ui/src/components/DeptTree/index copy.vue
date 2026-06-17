@@ -92,7 +92,7 @@ const props = defineProps({
     },
     placeholder: {
         type: String,
-        default: '请输入部门名称'
+        default: ''
     },
     defaultExpand: {
         type: Boolean,

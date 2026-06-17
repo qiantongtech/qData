@@ -303,6 +303,10 @@ export default {
       calculating: '计算结果中...',
       noResult: '没有达到条件的结果！',
       limit: '最近100年内只有上面{count}条结果！'
+    },
+    cronUtils: {
+      execute: '执行',
+      invalidExpression: '无效的 Cron 表达式'
     }
   }
 }

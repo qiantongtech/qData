@@ -38,7 +38,7 @@
 的文件
 </div> -->
 
-        <el-dialog v-model="dialogVisible" title="预览" width="800px" :append-to="$refs['app-container']" draggable
+        <el-dialog v-model="dialogVisible" :title="t('components.imageUpload.preview')" width="800px" :append-to="$refs['app-container']" draggable
             destroy-on-close>
             <img :src="dialogImageUrl" style="display: block; max-width: 100%; margin: 0 auto" />
         </el-dialog>

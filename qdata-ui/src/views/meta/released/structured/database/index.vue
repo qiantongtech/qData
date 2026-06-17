@@ -257,7 +257,7 @@ function getDomains() {
     const domains = {
       id: 0,
       code: 0,
-      name: "顶级节点",
+      name: td('meta.released.structured.database.topNode'),
       children: proxy.handleTree(res.data, "id", "parentId"),
     };
     store.treeDomains.push(domains);

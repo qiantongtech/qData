@@ -223,5 +223,20 @@ export default {
     resetSettings: '設定をリセット',
     savingLoading: 'ローカルに保存中、しばらくお待ちください...',
     resetLoading: '設定キャッシュをクリアしてリフレッシュ中、しばらくお待ちください...'
+  },
+  cleanRule: {
+    numberBoundary: '数値境界値調整',
+    decimalFormatter: '小数位数',
+    affixEditor: 'フィールド接頭辞/接尾辞の統一',
+    enumMap: '列挙値マッピングの標準化',
+    combinerFieldUnique: '複合フィールドで重複排除',
+    regexReplace: '正規表現置換',
+    cleanExpiredData: '有効期限切れレコードのクリーニング',
+    longFieldTruncator: '長いフィールドの切り捨て',
+    emptyRule: '複合フィールドが空の場合の削除',
+    fieldToLower: 'フィールドを小文字に変換',
+    dateFormatter: '日付フォーマットの統一',
+    trimSpace: 'フィールドの空白を削除',
+    placeholder: 'プレースホルダールール'
   }
 }

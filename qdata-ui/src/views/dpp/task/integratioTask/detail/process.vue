@@ -39,7 +39,7 @@
               effect="light"
               :content="item.tip"
               placement="bottom"
-              v-if="item.tip !== '重置' && item.tip !== '导出'"
+              v-if="item.tip !== td('dpp.integration.reset') && item.tip !== td('dpp.integration.export')"
             >
               <div class="toolbar-item" @click="toolbarClick(item)">
                 <img :src="getAssetsFile(item.icon)" alt="" />

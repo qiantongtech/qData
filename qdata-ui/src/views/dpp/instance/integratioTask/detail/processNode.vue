@@ -317,9 +317,9 @@ async function handleNodeAdded({ node }) {
 // 处理已有节点的情况
 function handleExistingNode(node) {
   if (node.data.taskParams.type == 2) {
-    proxy.$message.warning(`只能有一个输出组件！`);
+    proxy.$message.warning(td('dpp.instance.integratioTask.onlyOneOutput'));
   } else if (node.data.taskParams.type == "1") {
-    proxy.$message.warning(`只能有一个输入组件！`);
+    proxy.$message.warning(td('dpp.instance.integratioTask.onlyOneInput'));
   }
   graph.removeNode(node.id);
 }

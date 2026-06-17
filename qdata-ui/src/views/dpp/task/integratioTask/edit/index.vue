@@ -165,7 +165,7 @@
               effect="light"
               :content="item.tip"
               placement="bottom"
-              v-if="!(route.query.info && item.tip == '重置')"
+              v-if="!(route.query.info && item.tip == td('dpp.integration.reset'))"
             >
               <div class="toolbar-item" @click="toolbarClick(item)">
                 <img :src="getAssetsFile(item.icon)" alt="" />

@@ -11,7 +11,9 @@ export default {
     parentIdRequired: '上级类目不能为空',
     codeRequired: '编码不能为空',
     nameRequired: '{nameLabel}不能为空',
-    editTitle: '编辑'
+    editTitle: '编辑',
+    addTitle: '新增{nameLabel}',
+    modifyTitle: '修改{nameLabel}'
   },
   catPage: {
     nameLabel: '类目名称',
@@ -70,7 +72,9 @@ export default {
     addChild: '新增子级',
     addSibling: '新增同级',
     edit: '编辑',
-    deleteConfirm: '是否确认删除"{name}"？'
+    deleteConfirm: '是否确认删除"{name}"？',
+    loadSuccess: '加载成功',
+    loadError: '加载失败，点击重试'
   },
   logDialog: {
     title: '日志详情',
@@ -118,7 +122,8 @@ export default {
     fileSizeError: '上传头像图片大小不能超过 {fileSize} MB!',
     exceedLimit: '上传文件数量不能超过 {limit} 个!',
     uploadError: '上传图片失败',
-    uploading: '正在上传图片，请稍候...'
+    uploading: '正在上传图片，请稍候...',
+    preview: '预览'
   },
   iconSelect: {
     searchPlaceholder: '请输入图标名称'

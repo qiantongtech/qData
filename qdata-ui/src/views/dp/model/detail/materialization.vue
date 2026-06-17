@@ -19,7 +19,7 @@
   <!--  逻辑发布的弹窗  -->
   <el-dialog
     v-model="localVisible"
-    :title="title"
+    :title="effectiveTitle"
     draggable
     class="warn-dialog"
     destroy-on-close
@@ -94,7 +94,7 @@
           <el-form-item :label="td('common.texts.description')">
             <el-input
               type="textarea"
-              maxlength="500个字符"
+              maxlength="500"
               show-word-limit
               :placeholder="td('common.form.descriptionPlaceholder')"
               v-model="form.description"
@@ -108,7 +108,7 @@
           <el-form-item :label="td('common.texts.remark')">
             <el-input
               type="textarea"
-              maxlength="500个字符"
+              maxlength="500"
               show-word-limit
               :placeholder="td('common.form.remarkPlaceholder')"
               v-model="form.remark"
@@ -157,6 +157,7 @@ const props = defineProps({
   title: { type: String, default: "发布模型" },
   ids: { type: Array, default: () => [] },
 });
+const effectiveTitle = computed(() => props.title || td('dp.model.materialization.publishModel'));
 let createTypeList = ref();
 // 监听 `visible` 的变化
 watch(

@@ -88,7 +88,12 @@
 </template>
 
 <script setup>
+import { ref, reactive, toRefs, getCurrentInstance, computed } from "vue";
 import { useI18n } from 'vue-i18n'
+import CatEditDialog from "./catEditDialog.vue";
+
+const { t } = useI18n();
+const { proxy } = getCurrentInstance();
 
 const props = defineProps({
   listFunc: { type: Function, required: true },
@@ -97,16 +102,13 @@ const props = defineProps({
   addFunc: { type: Function, required: true },
   updateFunc: { type: Function, required: true },
   batchDelCheckFunc: { type: Function, required: false },
-  nameLabel: { type: String, default: t('components.catPage.nameLabel') },
-  titleBase: { type: String, default: t('components.catPage.titleBase') },
+  nameLabel: { type: String, default: "名称" },
+  titleBase: { type: String, default: "管理" },
   permBase: { type: String, required: true },
 });
 
-import { ref, reactive, toRefs, getCurrentInstance } from "vue";
-import CatEditDialog from "./catEditDialog.vue";
-
-const { t } = useI18n();
-const { proxy } = getCurrentInstance();
+const effectiveNameLabel = computed(() => props.nameLabel || t('components.catPage.nameLabel'));
+const effectiveTitleBase = computed(() => props.titleBase || t('components.catPage.titleBase'));
 const catEditDialogRef = ref();
 const appContainerRef = ref();
 const isExpandAll = ref(false);
@@ -140,7 +142,7 @@ const tableStore = reactive({
         return true;
       },
     },
-    { label: props.nameLabel, prop: "name", width: 200, align: "left" },
+    { label: effectiveNameLabel, prop: "name", width: 200, align: "left" },
     {
       label: t('common.texts.description'),
       prop: "description",
@@ -180,7 +182,7 @@ const tableStore = reactive({
 
 const searchStore = reactive({
   items: [
-    { label: props.nameLabel, prop: "name", component: { is: "input" } },
+    { label: effectiveNameLabel, prop: "name", component: { is: "input" } },
     {
       label: t('components.catPage.parentCat'),
       prop: "code",
@@ -215,7 +217,7 @@ function handleStatusChange(row) {
   const text = row.validFlag === true ? t('components.catPage.enable') : t('components.catPage.disable');
   proxy.$modal
     .confirm(
-      t('components.catPage.confirmEnableDisable', { text, name: row.name, titleBase: props.titleBase })
+      t('components.catPage.confirmEnableDisable', { text, name: row.name, titleBase: effectiveTitleBase })
     )
     .then(function () {
       props
@@ -249,8 +251,8 @@ function handleAdd(row) {
     buildTreeOptions(response.data);
     const parentId = row && row.id ? row.id : 0;
     catEditDialogRef.value.open({
-      title: t('components.catPage.addTitle', { titleBase: props.titleBase }),
-      nameLabel: props.nameLabel,
+      title: t('components.catPage.addTitle', { titleBase: effectiveTitleBase }),
+      nameLabel: effectiveNameLabel,
       treeOptions: treeOptions.value,
       form: { parentId },
       rules: rules.value,
@@ -272,8 +274,8 @@ async function handleUpdate(row) {
   buildTreeOptions(filtered);
   props.getFunc(row.id).then((res) => {
     catEditDialogRef.value.open({
-      title: t('components.catPage.modifyTitle', { titleBase: props.titleBase }),
-      nameLabel: props.nameLabel,
+      title: t('components.catPage.modifyTitle', { titleBase: effectiveTitleBase }),
+      nameLabel: effectiveNameLabel,
       treeOptions: treeOptions.value,
       form: res.data,
       rules: rules.value,
@@ -306,7 +308,7 @@ function onDialogCancel() {}
 function handleDelete(row) {
   const id = row.id;
   proxy.$modal
-    .confirm(t('components.catPage.deleteConfirm', { titleBase: props.titleBase, id }))
+    .confirm(t('components.catPage.deleteConfirm', { titleBase: effectiveTitleBase, id }))
     .then(function () {
       return props.delFunc(id);
     })
@@ -373,7 +375,7 @@ const data = reactive({
     name: [
       {
         required: true,
-        message: t('components.catEditDialog.nameRequired', { nameLabel: props.nameLabel }),
+        message: t('components.catEditDialog.nameRequired', { nameLabel: effectiveNameLabel }),
         trigger: "blur",
       },
     ],

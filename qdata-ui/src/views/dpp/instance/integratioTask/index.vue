@@ -319,7 +319,7 @@
           />
 
           <el-dialog
-            title="查看日志"
+            :title="td('dpp.instance.integratioTask.viewLog')"
             v-model="open"
             width="1200px"
             :append-to="$refs['app-container']"
@@ -329,7 +329,7 @@
             <div v-html="formattedText"></div>
             <template #footer>
               <div class="dialog-footer">
-                <el-button size="mini" @click="cancel">关 闭</el-button>
+                <el-button size="mini" @click="cancel">{{ td('dpp.instance.integratioTask.close') }}</el-button>
               </div>
             </template>
           </el-dialog>
@@ -668,7 +668,7 @@ function handleSortChange(column, prop, order) {
 function handleAdd() {
   reset();
   open.value = true;
-  title.value = "新增数据集成任务-日志";
+  title.value = td('dpp.instance.integratioTask.addLogTitle');
 }
 
 /** 修改按钮操作 */
@@ -678,7 +678,7 @@ function handleUpdate(row) {
   getDppEtlNodeInstance(_id).then((response) => {
     form.value = response.data;
     open.value = true;
-    title.value = "修改数据集成任务-日志";
+    title.value = td('dpp.instance.integratioTask.editLogTitle');
   });
 }
 
@@ -689,7 +689,7 @@ function handleDetail(row) {
   getDppEtlNodeInstance(_id).then((response) => {
     form.value = response.data;
     openDetail.value = true;
-    title.value = "数据集成任务-日志详情";
+    title.value = td('dpp.instance.integratioTask.logDetailTitle');
   });
 }
 
@@ -700,7 +700,7 @@ function submitForm() {
       if (form.value.id != null) {
         updateDppEtlNodeInstance(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("修改成功");
+            proxy.$modal.msgSuccess(td('common.message.editSuccess'));
             open.value = false;
             getList();
           })
@@ -708,7 +708,7 @@ function submitForm() {
       } else {
         addDppEtlNodeInstance(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess("新增成功");
+            proxy.$modal.msgSuccess(td('common.message.addSuccess'));
             open.value = false;
             getList();
           })
@@ -722,13 +722,13 @@ function submitForm() {
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
-    .confirm('是否确认删除数据集成任务-日志编号为"' + _ids + '"的数据项？')
+    .confirm(td('dpp.instance.integratioTask.confirmDeleteLog', '', { id: _ids }))
     .then(function () {
       return delDppEtlNodeInstance(_ids);
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess("删除成功");
+      proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
     })
     .catch(() => {});
 }

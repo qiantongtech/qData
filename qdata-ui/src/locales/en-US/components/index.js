@@ -223,5 +223,20 @@ export default {
     resetSettings: 'Reset Settings',
     savingLoading: 'Saving to local storage, please wait...',
     resetLoading: 'Clearing settings cache and refreshing, please wait...'
+  },
+  cleanRule: {
+    numberBoundary: 'Number Boundary Adjustment',
+    decimalFormatter: 'Decimal Places',
+    affixEditor: 'Field Prefix/Suffix Standardization',
+    enumMap: 'Enum Value Mapping Standardization',
+    combinerFieldUnique: 'Deduplication by Combined Fields',
+    regexReplace: 'Regular Expression Replacement',
+    cleanExpiredData: 'Clean Expired Records',
+    longFieldTruncator: 'Long Field Truncation',
+    emptyRule: 'Delete Empty Combined Fields',
+    fieldToLower: 'Convert Field to Lowercase',
+    dateFormatter: 'Date Format Standardization',
+    trimSpace: 'Remove Field Spaces',
+    placeholder: 'Placeholder Rule'
   }
 }

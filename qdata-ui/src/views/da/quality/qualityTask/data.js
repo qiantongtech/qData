@@ -15,9 +15,12 @@
  * More information: https://qdata.qiantong.tech/business.html
  */
 
-import useDefaultLang from "@/composables/useDefaultLang"
-const { td } = useDefaultLang()
+import { i18n } from '@/plugins/vueI18n';
 
+const td = (key, def) => {
+    if (!i18n.global.te(key)) return def;
+    return i18n.global.t(key);
+};
 
 export const treeData =
   [

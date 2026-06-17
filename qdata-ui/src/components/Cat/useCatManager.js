@@ -1,5 +1,6 @@
 import { ref, reactive, toRefs, nextTick, getCurrentInstance } from "vue";
 import { i18n } from "@/plugins/vueI18n";
+import useDefaultLang from "@/composables/useDefaultLang";
 
 export default function useCatManager({
   listFunc,
@@ -7,8 +8,9 @@ export default function useCatManager({
   delFunc,
   addFunc,
   updateFunc,
-  nameLabel = "类目名称",
+  nameLabel = i18n.global.t('components.catEditDialog.nameLabel'),
 } = {}) {
+  const { td } = useDefaultLang();
   const { proxy } = getCurrentInstance();
 
   const list = ref([]);
@@ -88,7 +90,7 @@ export default function useCatManager({
       form.value.parentId = 0;
     }
     open.value = true;
-    title.value = `新增${nameLabel}`;
+    title.value = td('components.catEditDialog.addTitle', '', { nameLabel });
   }
 
   async function handleUpdate(row) {
@@ -116,7 +118,7 @@ export default function useCatManager({
       delete res.data.updateTime;
       form.value = res.data;
       open.value = true;
-      title.value = `修改${nameLabel}`;
+      title.value = td('components.catEditDialog.modifyTitle', '', { nameLabel });
     });
   }
 

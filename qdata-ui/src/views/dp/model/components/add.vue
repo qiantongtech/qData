@@ -237,7 +237,7 @@
         <el-input
           v-model="form.description"
           type="textarea"
-          maxlength="500个字符"
+          maxlength="500"
           show-word-limit
           :placeholder="td('common.form.descriptionPlaceholder')"
         />
@@ -246,7 +246,7 @@
         <el-input
           v-model="form.remark"
           type="textarea"
-          maxlength="500个字符"
+          maxlength="500"
           show-word-limit
           :placeholder="td('common.form.remarkPlaceholder')"
         />

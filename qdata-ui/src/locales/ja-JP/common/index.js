@@ -35,7 +35,9 @@ export default {
   },
   error: {
     code401: '401エラー！',
+    code403: 'この操作の権限がありません',
     code404: '404エラー！',
+    default: 'システム不明のエラーが発生しました。管理者に連絡してください',
     findPage: 'ページが見つかりません！',
     notAccessRights: 'アクセス権限がありません！',
     Sorry401: '申し訳ございません、アクセス権限がありません。不正な操作は行わないでください！メインページに戻ることができます。',
@@ -270,6 +272,10 @@ export default {
       calculating: '計算中...',
       noResult: '条件に一致する結果がありません！',
       limit: '直近100年以内に{count}件の結果のみ表示されています！'
+    },
+    cronUtils: {
+      execute: '実行',
+      invalidExpression: '無効なCron式'
     }
   }
 }

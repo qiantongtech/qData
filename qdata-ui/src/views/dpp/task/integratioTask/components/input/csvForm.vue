@@ -443,7 +443,7 @@ function handleBeforeUpload(file) {
   const maxSize = 50; // 最大文件大小，单位MB
   const fileSize = file.size / 1024 / 1024;
   if (fileSize > maxSize) {
-    proxy.$modal.msgWarning(`大小超出限制，文件大小不能超过 ${maxSize}MB!`);
+    proxy.$modal.msgWarning(td('dpp.integration.fileSizeExceeded', '', { maxSize }));
     return false;
   }
   return true;

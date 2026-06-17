@@ -74,7 +74,7 @@
             <el-input
               v-model="form.description"
               :placeholder="td('common.form.descriptionPlaceholder')"
-              maxlength="500个字符"
+              maxlength="500"
               show-word-limit
             />
           </el-form-item>
@@ -120,7 +120,7 @@
             <el-input
               v-model="form.remark"
               :placeholder="td('common.form.remarkPlaceholder')"
-              maxlength="500个字符"
+              maxlength="500"
               show-word-limit
             />
           </el-form-item>

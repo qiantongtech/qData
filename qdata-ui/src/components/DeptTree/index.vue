@@ -204,7 +204,7 @@ const props = defineProps({
   },
   placeholder: {
     type: String,
-    default: "请输入部门名称",
+    default: "",
   },
   defaultExpand: {
     type: Boolean,
@@ -216,7 +216,7 @@ const props = defineProps({
   },
   title: {
     type: String,
-    default: "类目",
+    default: "",
   },
   titleKey: {
     type: String,
@@ -282,8 +282,8 @@ function handleNodeAddSibling(data) {
   const parentId = data.parentId || "0";
   if (props.api.add) {
     catEditDialogRef.value.open({
-      title: t('common.button.add') + props.title + "同级",
-      nameLabel: props.title + t('common.texts.name'),
+      title: t('common.button.add') + effectiveTitle.value + t('components.deptTree.addSibling'),
+      nameLabel: effectiveTitle.value + t('common.texts.name'),
       treeOptions: dialogTreeOptions.value,
       form: {
         parentId: parentId,

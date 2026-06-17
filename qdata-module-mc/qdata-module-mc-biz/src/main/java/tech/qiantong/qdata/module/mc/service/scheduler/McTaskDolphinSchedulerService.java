@@ -12,6 +12,7 @@ import tech.qiantong.qdata.api.ds.api.service.etl.IDsEtlNodeService;
 import tech.qiantong.qdata.api.ds.api.service.etl.IDsEtlSchedulerService;
 import tech.qiantong.qdata.api.ds.api.service.etl.IDsEtlTaskService;
 import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.JSONUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.module.mc.utils.McTaskConverter;
@@ -98,7 +99,7 @@ public class McTaskDolphinSchedulerService {
                 dsSchedulerSaveReqDTO, String.valueOf(projectCode));
 
         if (dsSchedulerRespDTO == null || !dsSchedulerRespDTO.getSuccess()) {
-            throw new ServiceException("创建调度器失败！");
+            throw new ServiceException("mc.error.scheduler.create", "创建调度器失败！");
         }
 
         Schedule schedule = dsSchedulerRespDTO.getData();
@@ -120,7 +121,7 @@ public class McTaskDolphinSchedulerService {
                 schedulerUpdateRequest, String.valueOf(projectCode));
 
         if (dsSchedulerRespDTO == null || !dsSchedulerRespDTO.getSuccess()) {
-            throw new ServiceException("更新调度器失败！");
+            throw new ServiceException("mc.error.scheduler.update", "更新调度器失败！");
         }
 
         Schedule schedule = dsSchedulerRespDTO.getData();
@@ -136,7 +137,7 @@ public class McTaskDolphinSchedulerService {
         DsStatusRespDTO dsStatusRespDTO = dsEtlTaskService.releaseTask("ONLINE",
                 String.valueOf(projectCode), taskCode);
         if (dsStatusRespDTO == null || !dsStatusRespDTO.getSuccess()) {
-            throw new ServiceException("发布任务失败！");
+            throw new ServiceException("mc.error.task.publish.fail", "发布任务失败！");
         }
     }
 
@@ -149,7 +150,7 @@ public class McTaskDolphinSchedulerService {
         DsStatusRespDTO offlined = iDsEtlSchedulerService.offlineScheduler(
                 String.valueOf(projectCode), Long.parseLong(schedulerId));
         if (!offlined.getData()) {
-            throw new ServiceException("下线调度器失败！");
+            throw new ServiceException("mc.error.scheduler.offline", "下线调度器失败！");
         }
     }
 
@@ -162,7 +163,7 @@ public class McTaskDolphinSchedulerService {
         DsStatusRespDTO dsStatusRespDTO = iDsEtlSchedulerService.onlineScheduler(
                 String.valueOf(projectCode), schedulerId);
         if (!dsStatusRespDTO.getData()) {
-            throw new ServiceException("上线调度器失败！");
+            throw new ServiceException("mc.error.scheduler.online", "上线调度器失败！");
         }
     }
 
@@ -175,7 +176,7 @@ public class McTaskDolphinSchedulerService {
         DsStatusRespDTO offlined = iDsEtlSchedulerService.offlineScheduler(
                 String.valueOf(projectCode), schedulerId);
         if (!offlined.getData()) {
-            throw new ServiceException("下线调度器失败！");
+            throw new ServiceException("mc.error.scheduler.offline", "下线调度器失败！");
         }
     }
 
@@ -190,14 +191,14 @@ public class McTaskDolphinSchedulerService {
         DsStatusRespDTO dsStatusRespDTO = dsEtlTaskService.releaseTask("ONLINE",
                 String.valueOf(projectCode), taskCode);
         if (dsStatusRespDTO == null || !dsStatusRespDTO.getSuccess()) {
-            throw new ServiceException("发布任务失败！");
+            throw new ServiceException("mc.error.task.publish.fail", "发布任务失败！");
         }
 
         // 上线调度器
         DsStatusRespDTO dsStatusRespDTO1 = iDsEtlSchedulerService.onlineScheduler(
                 String.valueOf(projectCode), schedulerId);
         if (!dsStatusRespDTO1.getData()) {
-            throw new ServiceException("上线调度器失败！");
+            throw new ServiceException("mc.error.scheduler.online", "上线调度器失败！");
         }
     }
 
@@ -214,7 +215,7 @@ public class McTaskDolphinSchedulerService {
         if (respDTO == null || !respDTO.getSuccess()) {
             if (respDTO == null) log.error("respDTO is null");
             else log.error("respDTO={}", JSONUtils.toJson(respDTO));
-            throw new ServiceException("下线任务失败！");
+            throw new ServiceException("mc.error.task.offline", "下线任务失败！");
         }
 
         // 额外确保调度器也下线
@@ -222,7 +223,7 @@ public class McTaskDolphinSchedulerService {
             DsStatusRespDTO offlined = iDsEtlSchedulerService.offlineScheduler(
                     String.valueOf(projectCode), schedulerId);
             if (!offlined.getData()) {
-                throw new ServiceException("下线调度器失败！");
+                throw new ServiceException("mc.error.scheduler.offline", "下线调度器失败！");
             }
         }
     }
@@ -236,7 +237,7 @@ public class McTaskDolphinSchedulerService {
         DsStatusRespDTO dsStatusRespDTO = dsEtlTaskService.deleteTask(
                 String.valueOf(projectCode), taskCode);
         if (dsStatusRespDTO == null || !dsStatusRespDTO.getSuccess()) {
-            throw new ServiceException("删除任务失败！");
+            throw new ServiceException("mc.error.task.delete", "删除任务失败！");
         }
     }
 
@@ -251,7 +252,7 @@ public class McTaskDolphinSchedulerService {
                 dsStartTaskReqDTO, String.valueOf(projectCode));
 
         if (dsStatusRespDTO == null || !dsStatusRespDTO.getSuccess()) {
-            throw new ServiceException("启动任务失败：" + (dsStatusRespDTO != null ? dsStatusRespDTO.getMsg() : "未知错误"));
+            throw new ServiceException("mc.error.task.start", "启动任务失败：" + (dsStatusRespDTO != null ? dsStatusRespDTO.getMsg() : "未知错误"), dsStatusRespDTO != null ? dsStatusRespDTO.getMsg() : "未知错误");
         }
     }
 
@@ -269,7 +270,7 @@ public class McTaskDolphinSchedulerService {
                 McTaskConverter.stringToLong(String.valueOf(projectCode)));
 
         if (!task.getSuccess()) {
-            throw new ServiceException("创建任务定义失败，请联系系统管理员");
+            throw new ServiceException("mc.error.task.create", "创建任务定义失败，请联系系统管理员");
         }
         return task.getData();
     }
@@ -287,7 +288,7 @@ public class McTaskDolphinSchedulerService {
                 String.valueOf(projectCode), input.getTaskCode());
 
         if (!task.getSuccess()) {
-            throw new ServiceException("更新任务定义失败，请联系系统管理员");
+            throw new ServiceException("mc.error.task.update", "更新任务定义失败，请联系系统管理员");
         }
         return task.getData();
     }
@@ -301,7 +302,7 @@ public class McTaskDolphinSchedulerService {
             return dsNodeGenCodeRespDTO.getData().get(0);
         } catch (Exception e) {
             log.error("生成节点编码失败", e);
-            throw new ServiceException("生成节点编码失败，请联系系统管理员");
+            throw new ServiceException("mc.error.node.code", "生成节点编码失败，请联系系统管理员");
         }
     }
 }

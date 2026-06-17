@@ -13,6 +13,21 @@
  * For brand customization, please apply for brand customization authorization via official channels.
  *  *
  * More information: https://qdata.qiantong.tech/business.html
+ *  *
+ * ============================================================================
+ *  *
+ * 版权所有 © 2025 江苏千桐科技有限公司
+ * qData 数据中台（开源版）
+ *  *
+ * 许可协议：
+ * 本项目基于 Apache License 2.0 开源协议发布，
+ * 允许在遵守协议的前提下进行商用、修改和分发。
+ *  *
+ * 特别说明：
+ * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
+ * 如需定制品牌，请通过官方渠道申请品牌定制授权。
+ *  *
+ * 更多信息请访问：https://qdata.qiantong.tech/business.html
  */
 
 package tech.qiantong.qdata.ai.core.service.impl;
@@ -55,6 +70,7 @@ import tech.qiantong.qdata.common.database.DbQuery;
 import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
 import tech.qiantong.qdata.common.database.core.DbColumn;
 import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.DateUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.module.ai.controller.admin.chat.vo.AiChatMessageSaveReqVO;
@@ -141,7 +157,7 @@ public class ChatMessageServiceImpl implements IChatMessageService {
         //获取数据源信息
         DaDatasourceRespDTO datasource = daDatasourceApiService.getDatasourceById(conversation.getDatasourceId());
         if (datasource == null) {
-            return Flux.error(new ServiceException("数据源不存在"));
+            return Flux.error(new ServiceException("ai.error.datasource.notfound", "数据源不存在"));
         }
         String datasourceType = datasource.getDatasourceType();
         JSONObject datasourceConfig = JSONObject.parseObject(datasource.getDatasourceConfig());
@@ -315,25 +331,25 @@ public class ChatMessageServiceImpl implements IChatMessageService {
         //获取消息数据
         AiChatMessageDO message = aiChatMessageService.getById(exportDetailDataReqVO.getMessageId());
         if (message == null) {
-            throw new ServiceException("消息不存在");
+            throw new ServiceException("ai.error.message.notfound", "消息不存在");
         }
         if (StringUtils.isBlank(message.getReplyType()) || !ReplyTypeEnum.CHART.getType().equals(message.getReplyType())) {
-            throw new ServiceException("此消息不支持导出");
+            throw new ServiceException("ai.error.message.export.unsupported", "此消息不支持导出");
         }
         if (StringUtils.isBlank(message.getContent())) {
-            throw new ServiceException("消息内容为空");
+            throw new ServiceException("ai.error.message.content.empty", "消息内容为空");
         }
 
         JSONObject content = JSONObject.parseObject(message.getContent());
         JSONObject detailData = content.getJSONObject("detailData");
         if (detailData == null) {
-            throw new ServiceException("消息内容错误");
+            throw new ServiceException("ai.error.message.content.error", "消息内容错误");
         }
 
         List<String> label = detailData.getList("label", String.class);
         List<JSONObject> dataList = detailData.getList("list", JSONObject.class);
         if (dataList == null || dataList.isEmpty()) {
-            throw new ServiceException("消息内容错误");
+            throw new ServiceException("ai.error.message.content.error", "消息内容错误");
         }
 
         //导出
@@ -459,17 +475,17 @@ public class ChatMessageServiceImpl implements IChatMessageService {
             // 获取元数据，如果不是查询语句，某些驱动在此处或执行时会返回 null 或报错
             ResultSetMetaData metaData = ps.getMetaData();
             if (metaData == null) {
-                throw new ServiceException("该 SQL 不是查询语句或语法有误");
+                throw new ServiceException("ai.error.sql.not.query", "该 SQL 不是查询语句或语法有误");
             }
         } catch (SQLException e) {
-            throw new ServiceException("SQL 语法错误: " + e.getMessage());
+            throw new ServiceException("ai.error.sql.syntax", "SQL 语法错误: " + e.getMessage(), e.getMessage());
         }
     }
 
     @SneakyThrows
     private static void exportByList(HttpServletResponse response, List<String> labelList, List<JSONObject> dataList, String sheetName) {
         if (dataList == null || dataList.isEmpty()) {
-            throw new ServiceException("暂无表单信息");
+            throw new ServiceException("ai.error.form.notfound", "暂无表单信息");
         }
 
         // 获取第一行数据的所有列名作为 order

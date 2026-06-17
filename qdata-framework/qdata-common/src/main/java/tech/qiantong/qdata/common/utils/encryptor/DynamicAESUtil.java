@@ -13,9 +13,25 @@
  * For brand customization, please apply for brand customization authorization via official channels.
  *  *
  * More information: https://qdata.qiantong.tech/business.html
+ *  *
+ * ============================================================================
+ *  *
+ * 版权所有 © 2025 江苏千桐科技有限公司
+ * qData 数据中台（开源版）
+ *  *
+ * 许可协议：
+ * 本项目基于 Apache License 2.0 开源协议发布，
+ * 允许在遵守协议的前提下进行商用、修改和分发。
+ *  *
+ * 特别说明：
+ * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
+ * 如需定制品牌，请通过官方渠道申请品牌定制授权。
+ *  *
+ * 更多信息请访问：https://qdata.qiantong.tech/business.html
  */
 
 package tech.qiantong.qdata.common.utils.encryptor;
+import tech.qiantong.qdata.common.exception.ServiceException;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -40,7 +56,7 @@ public class DynamicAESUtil {
             SecretKey secretKey = keyGen.generateKey();
             return Base64.getEncoder().encodeToString(secretKey.getEncoded());
         } catch (Exception e) {
-            throw new RuntimeException("生成随机密钥失败", e);
+            throw new ServiceException("sys.error.encrypt.key", "生成随机密钥失败");
         }
     }
 
@@ -59,7 +75,7 @@ public class DynamicAESUtil {
             byte[] encrypted = cipher.doFinal(data.getBytes());
             return Base64.getEncoder().encodeToString(encrypted);
         } catch (Exception e) {
-            throw new RuntimeException("加密失败", e);
+            throw new ServiceException("sys.error.encrypt.fail", "加密失败");
         }
     }
 
@@ -78,7 +94,7 @@ public class DynamicAESUtil {
             byte[] decrypted = cipher.doFinal(Base64.getDecoder().decode(encryptedData));
             return new String(decrypted);
         } catch (Exception e) {
-            throw new RuntimeException("解密失败", e);
+            throw new ServiceException("sys.error.decrypt.fail", "解密失败");
         }
     }
 

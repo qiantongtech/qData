@@ -50,7 +50,7 @@ service.interceptors.request.use(config => {
   }
 
   // 统一设置请求语言参数，保证后端能识别当前语言
-  config.headers['X-Lang'] = getStoredLang()
+  config.headers['accept-language'] = getStoredLang()
 
   // get请求映射params参数
   if (config.method === 'get' && config.params) {

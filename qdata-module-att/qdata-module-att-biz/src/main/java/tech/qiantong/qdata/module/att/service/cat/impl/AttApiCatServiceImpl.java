@@ -13,6 +13,21 @@
  * For brand customization, please apply for brand customization authorization via official channels.
  *  *
  * More information: https://qdata.qiantong.tech/business.html
+ *  *
+ * ============================================================================
+ *  *
+ * 版权所有 © 2025 江苏千桐科技有限公司
+ * qData 数据中台（开源版）
+ *  *
+ * 许可协议：
+ * 本项目基于 Apache License 2.0 开源协议发布，
+ * 允许在遵守协议的前提下进行商用、修改和分发。
+ *  *
+ * 特别说明：
+ * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
+ * 如需定制品牌，请通过官方渠道申请品牌定制授权。
+ *  *
+ * 更多信息请访问：https://qdata.qiantong.tech/business.html
  */
 
 package tech.qiantong.qdata.module.att.service.cat.impl;
@@ -26,6 +41,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.YouBianCodeUtil;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
@@ -83,13 +99,13 @@ public class AttApiCatServiceImpl extends ServiceImpl<AttApiCatMapper, AttApiCat
         if (Boolean.FALSE.equals(updateReqVO.getValidFlag())) {
             Long countData = dsApiService.getCountByCatCode(catDO.getCode());
             if (countData > 0) {
-                throw new ServiceException("存在API服务，不允许禁用");
+                throw new ServiceException("att.error.disable.api", "存在API服务，不允许禁用");
             }
             baseMapper.updateValidFlag(catDO.getCode(), updateReqVO.getValidFlag());
         } else if (Boolean.TRUE.equals(updateReqVO.getValidFlag())) {
             AttApiCatDO parent = baseMapper.selectById(catDO.getParentId());
             if (parent != null && Boolean.FALSE.equals(parent.getValidFlag())) {
-                throw new ServiceException("须先启用父级");
+                throw new ServiceException("att.error.parent.disabled", "须先启用父级");
             }
         }
         // 更新数据服务类目管理
@@ -103,7 +119,7 @@ public class AttApiCatServiceImpl extends ServiceImpl<AttApiCatMapper, AttApiCat
         for (AttApiCatDO catDO : attApiCatDOS) {
             Long countData = dsApiService.getCountByCatCode(catDO.getCode());
             if (countData > 0) {
-                throw new ServiceException("存在API服务，不允许删除");
+                throw new ServiceException("att.error.delete.api", "存在API服务，不允许删除");
             }
         }
         // 批量删除数据服务类目管理
@@ -190,7 +206,7 @@ public class AttApiCatServiceImpl extends ServiceImpl<AttApiCatMapper, AttApiCat
     @Override
     public String importAttApiCat(List<AttApiCatRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("导入数据不能为空！");
+            throw new ServiceException("att.error.import.empty", "导入数据不能为空！");
         }
 
         int successNum = 0;
@@ -208,14 +224,17 @@ public class AttApiCatServiceImpl extends ServiceImpl<AttApiCatMapper, AttApiCat
                         if (existingAttApiCat != null) {
                             attApiCatMapper.updateById(attApiCatDO);
                             successNum++;
-                            successMessages.add("数据更新成功，ID为 " + attApiCatId + " 的数据服务类目管理记录。");
+                            successMessages.add(MessageUtils.messageWithFallback("att.import.update.success",
+                                    "数据更新成功，ID为 " + attApiCatId + " 的数据服务类目管理记录。", attApiCatId, "数据服务类目管理"));
                         } else {
                             failureNum++;
-                            failureMessages.add("数据更新失败，ID为 " + attApiCatId + " 的数据服务类目管理记录不存在。");
+                            failureMessages.add(MessageUtils.messageWithFallback("att.import.update.fail",
+                                    "数据更新失败，ID为 " + attApiCatId + " 的数据服务类目管理记录不存在。", attApiCatId, "数据服务类目管理"));
                         }
                     } else {
                         failureNum++;
-                        failureMessages.add("数据更新失败，某条记录的ID不存在。");
+                        failureMessages.add(MessageUtils.messageWithFallback("att.import.update.id.missing",
+                                "数据更新失败，某条记录的ID不存在。"));
                     }
                 } else {
                     QueryWrapper<AttApiCatDO> queryWrapper = new QueryWrapper<>();
@@ -224,26 +243,32 @@ public class AttApiCatServiceImpl extends ServiceImpl<AttApiCatMapper, AttApiCat
                     if (existingAttApiCat == null) {
                         attApiCatMapper.insert(attApiCatDO);
                         successNum++;
-                        successMessages.add("数据插入成功，ID为 " + attApiCatId + " 的数据服务类目管理记录。");
+                        successMessages.add(MessageUtils.messageWithFallback("att.import.insert.success",
+                                "数据插入成功，ID为 " + attApiCatId + " 的数据服务类目管理记录。", attApiCatId, "数据服务类目管理"));
                     } else {
                         failureNum++;
-                        failureMessages.add("数据插入失败，ID为 " + attApiCatId + " 的数据服务类目管理记录已存在。");
+                        failureMessages.add(MessageUtils.messageWithFallback("att.import.insert.fail",
+                                "数据插入失败，ID为 " + attApiCatId + " 的数据服务类目管理记录已存在。", attApiCatId, "数据服务类目管理"));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
-                String errorMsg = "数据导入失败，错误信息：" + e.getMessage();
+                String errorMsg = MessageUtils.messageWithFallback("att.import.error.detail",
+                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
         }
         StringBuilder resultMsg = new StringBuilder();
         if (failureNum > 0) {
-            resultMsg.append("很抱歉，导入失败！共 ").append(failureNum).append(" 条数据格式不正确，错误如下：");
-            resultMsg.append("<br/>").append(String.join("<br/>", failureMessages));
-            throw new ServiceException(resultMsg.toString());
+            String failureDetails = String.join("<br/>", failureMessages);
+            resultMsg.append(MessageUtils.messageWithFallback("att.import.result.fail",
+                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    failureNum, failureDetails));
+            throw new ServiceException("att.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
-            resultMsg.append("恭喜您，数据已全部导入成功！共 ").append(successNum).append(" 条。");
+            resultMsg.append(MessageUtils.messageWithFallback("att.import.result.success",
+                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
         }
         return resultMsg.toString();
     }

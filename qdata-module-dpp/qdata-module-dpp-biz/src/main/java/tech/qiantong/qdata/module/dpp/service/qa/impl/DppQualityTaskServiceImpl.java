@@ -13,6 +13,21 @@
  * For brand customization, please apply for brand customization authorization via official channels.
  *  *
  * More information: https://qdata.qiantong.tech/business.html
+ *  *
+ * ============================================================================
+ *  *
+ * 版权所有 © 2025 江苏千桐科技有限公司
+ * qData 数据中台（开源版）
+ *  *
+ * 许可协议：
+ * 本项目基于 Apache License 2.0 开源协议发布，
+ * 允许在遵守协议的前提下进行商用、修改和分发。
+ *  *
+ * 特别说明：
+ * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
+ * 如需定制品牌，请通过官方渠道申请品牌定制授权。
+ *  *
+ * 更多信息请访问：https://qdata.qiantong.tech/business.html
  */
 
 package tech.qiantong.qdata.module.dpp.service.qa.impl;
@@ -39,6 +54,7 @@ import tech.qiantong.qdata.api.ds.api.service.etl.IDsEtlTaskService;
 import tech.qiantong.qdata.common.core.domain.AjaxResult;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.httpClient.HeaderEntity;
 import tech.qiantong.qdata.common.httpClient.HttpUtils;
 import tech.qiantong.qdata.common.utils.JSONUtils;
@@ -208,7 +224,7 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
                     (dppQualityTaskDO.getSystemJobId() != null || !StringUtils.equals("0",dppQualityTaskDO.getTaskCode())) ) {
                 // 提取 systemJobId
                 if(StringUtils.equals("0",dppQualityTaskDO.getStatus())){
-                    throw new ServiceException("上线任务，不允删除，请先下线！");
+                    throw new ServiceException("dpp.error.task.online.delete", "上线任务，不允删除，请先下线！");
                 }
                 DsStatusRespDTO dsStatusRespDTO = dsEtlTaskService.deleteTask(projectCode, dppQualityTaskDO.getTaskCode());
             }
@@ -386,7 +402,7 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
         @Override
         public String importDppQualityTask(List<DppQualityTaskRespVO> importExcelList, boolean isUpdateSupport, String operName) {
             if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-                throw new ServiceException("导入数据不能为空！");
+                throw new ServiceException("dpp.error.import.empty", "导入数据不能为空！");
             }
 
             int successNum = 0;
@@ -404,14 +420,17 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
                             if (existingDppQualityTask != null) {
                                 dppQualityTaskMapper.updateById(dppQualityTaskDO);
                                 successNum++;
-                                successMessages.add("数据更新成功，ID为 " + dppQualityTaskId + " 的数据质量任务记录。");
+                                successMessages.add(MessageUtils.messageWithFallback("dpp.import.update.success",
+                                        "数据更新成功，ID为 " + dppQualityTaskId + " 的数据质量任务记录。", dppQualityTaskId, "数据质量任务"));
                             } else {
                                 failureNum++;
-                                failureMessages.add("数据更新失败，ID为 " + dppQualityTaskId + " 的数据质量任务记录不存在。");
+                                failureMessages.add(MessageUtils.messageWithFallback("dpp.import.update.fail",
+                                        "数据更新失败，ID为 " + dppQualityTaskId + " 的数据质量任务记录不存在。", dppQualityTaskId, "数据质量任务"));
                             }
                         } else {
                             failureNum++;
-                            failureMessages.add("数据更新失败，某条记录的ID不存在。");
+                            failureMessages.add(MessageUtils.messageWithFallback("dpp.import.update.id.missing",
+                                    "数据更新失败，某条记录的ID不存在。"));
                         }
                     } else {
                         QueryWrapper<DppQualityTaskDO> queryWrapper = new QueryWrapper<>();
@@ -420,26 +439,32 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
                         if (existingDppQualityTask == null) {
                             dppQualityTaskMapper.insert(dppQualityTaskDO);
                             successNum++;
-                            successMessages.add("数据插入成功，ID为 " + dppQualityTaskId + " 的数据质量任务记录。");
+                            successMessages.add(MessageUtils.messageWithFallback("dpp.import.insert.success",
+                                    "数据插入成功，ID为 " + dppQualityTaskId + " 的数据质量任务记录。", dppQualityTaskId, "数据质量任务"));
                         } else {
                             failureNum++;
-                            failureMessages.add("数据插入失败，ID为 " + dppQualityTaskId + " 的数据质量任务记录已存在。");
+                            failureMessages.add(MessageUtils.messageWithFallback("dpp.import.insert.fail",
+                                    "数据插入失败，ID为 " + dppQualityTaskId + " 的数据质量任务记录已存在。", dppQualityTaskId, "数据质量任务"));
                         }
                     }
                 } catch (Exception e) {
                     failureNum++;
-                    String errorMsg = "数据导入失败，错误信息：" + e.getMessage();
+                    String errorMsg = MessageUtils.messageWithFallback("dpp.import.error.detail",
+                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
                     failureMessages.add(errorMsg);
                     log.error(errorMsg, e);
                 }
             }
             StringBuilder resultMsg = new StringBuilder();
             if (failureNum > 0) {
-                resultMsg.append("很抱歉，导入失败！共 ").append(failureNum).append(" 条数据格式不正确，错误如下：");
-                resultMsg.append("<br/>").append(String.join("<br/>", failureMessages));
-                throw new ServiceException(resultMsg.toString());
+                String failureDetails = String.join("<br/>", failureMessages);
+                resultMsg.append(MessageUtils.messageWithFallback("dpp.import.result.fail",
+                        "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                        failureNum, failureDetails));
+                throw new ServiceException("dpp.error.import.fail", resultMsg.toString(), resultMsg.toString());
             } else {
-                resultMsg.append("恭喜您，数据已全部导入成功！共 ").append(successNum).append(" 条。");
+                resultMsg.append(MessageUtils.messageWithFallback("dpp.import.result.success",
+                        "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
             }
             return resultMsg.toString();
         }
@@ -579,7 +604,7 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
                     daDiscoveryTask.setSystemJobId(schedule.getId());
                 }
             } catch (Exception e){
-                throw new ServiceException("调度周期修改失败，请联系系统管理员！");
+                throw new ServiceException("dpp.error.schedule.period.update", "调度周期修改失败，请联系系统管理员！");
 
             }
         }
@@ -593,7 +618,7 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
 
     private void validateTaskStatus(DppQualityTaskRespVO daDiscoveryTaskById, String daDiscoveryTaskStatus) {
         if (daDiscoveryTaskById == null || daDiscoveryTaskStatus == null) {
-            throw new ServiceException("任务模版错误，未查询到调度信息！");
+            throw new ServiceException("dpp.error.template.scheduler.missing", "任务模版错误，未查询到调度信息！");
         }
     }
 
@@ -601,12 +626,12 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
         if(daDiscoveryTaskById.getSystemJobId() != null &&  systemJobId > 0){
             DsStatusRespDTO respDTO = dsEtlTaskService.releaseTask("OFFLINE", String.valueOf(projectCode), daDiscoveryTaskById.getTaskCode());
             if (respDTO == null || !respDTO.getSuccess()) {
-                throw new ServiceException("发布或下线任务，失败！");
+                throw new ServiceException("dpp.error.task.publish.fail", "发布或下线任务，失败！");
             }
 
             DsStatusRespDTO offlined = iDsEtlSchedulerService.offlineScheduler(projectCode, systemJobId);
             if (!offlined.getData()) {
-                throw new ServiceException("下线调度器，失败！");
+                throw new ServiceException("dpp.error.scheduler.offline", "下线调度器，失败！");
             }
         }
 
@@ -661,7 +686,7 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
     private void updateTaskStatusAndScheduler(DppQualityTaskSaveReqVO daDiscoveryTask, Long systemJobId) {
         DsStatusRespDTO dsStatusRespDTO = dsEtlTaskService.releaseTask("ONLINE", String.valueOf(projectCode), daDiscoveryTask.getTaskCode());
         if (dsStatusRespDTO == null || !dsStatusRespDTO.getSuccess()) {
-            throw new ServiceException("发布或下线任务，失败！");
+            throw new ServiceException("dpp.error.task.publish.fail", "发布或下线任务，失败！");
         }
 
         if (systemJobId != null && systemJobId > 0) {
@@ -672,7 +697,7 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
 
         DsStatusRespDTO dsStatusRespDTO1 = iDsEtlSchedulerService.onlineScheduler(projectCode, daDiscoveryTask.getSystemJobId());
         if (!dsStatusRespDTO1.getData()) {
-            throw new ServiceException("上线调度器，失败！");
+            throw new ServiceException("dpp.error.scheduler.online", "上线调度器，失败！");
         }
 
         // 更新数据发现任务
@@ -711,7 +736,7 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
             DsSchedulerSaveReqDTO dsSchedulerSaveReqDTO = DppTaskConverter.createSchedulerRequest(daDiscoveryTask.getCycle(),daDiscoveryTask.getTaskCode());
             DsSchedulerRespDTO saveScheduler = iDsEtlSchedulerService.saveScheduler(dsSchedulerSaveReqDTO, String.valueOf(projectCode));
             if(saveScheduler == null || !saveScheduler.getSuccess()){
-                throw new ServiceException("创建调度器，失败！");
+                throw new ServiceException("dpp.error.scheduler.create", "创建调度器，失败！");
             }
             Schedule schedule = saveScheduler.getData();
 
@@ -723,7 +748,7 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
         DsSchedulerUpdateReqDTO schedulerUpdateRequest = DppTaskConverter.createSchedulerUpdateRequest(schedule.getId(), daDiscoveryTask.getCycle(), daDiscoveryTask.getTaskCode());
         DsSchedulerRespDTO updated = iDsEtlSchedulerService.updateScheduler(schedulerUpdateRequest, String.valueOf(projectCode));
         if (updated == null || !updated.getSuccess()) {
-            throw new ServiceException("更新调度器，失败！");
+            throw new ServiceException("dpp.error.scheduler.update", "更新调度器，失败！");
         }
     }
 
@@ -736,7 +761,7 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
         DsTaskSaveRespDTO task = dsEtlTaskService.updateTask(dsTaskSaveReqDTO,projectCode,input.getTaskCode() );
 
         if (!task.getSuccess()) {
-            throw new ServiceException("任务状态修改失败，请联系系统管理员"); // 抛出任务定义创建错误的异常
+            throw new ServiceException("dpp.error.task.status.update", "任务状态修改失败，请联系系统管理员"); // 抛出任务定义创建错误的异常
         }
         ProcessDefinition data = task.getData();
         return data; // 返回创建结果
@@ -751,7 +776,7 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
         DsTaskSaveRespDTO task = dsEtlTaskService.createTask(dsTaskSaveReqDTO,DppTaskConverter.stringToLong(projectCode) );
 
         if (!task.getSuccess()) {
-            throw new ServiceException("任务状态修改失败，请联系系统管理员"); // 抛出任务定义创建错误的异常
+            throw new ServiceException("dpp.error.task.status.update", "任务状态修改失败，请联系系统管理员"); // 抛出任务定义创建错误的异常
         }
         ProcessDefinition data = task.getData();
         return data; // 返回创建结果
@@ -762,7 +787,7 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
             DsNodeGenCodeRespDTO dsNodeGenCodeRespDTO = dsEtlNodeService.genCode(projectCode);
             return dsNodeGenCodeRespDTO.getData().get(0);
         } catch (Exception e){
-            throw new ServiceException("任务状态修改失败，请联系系统管理员"); // 抛出任务定义创建错误的异常
+            throw new ServiceException("dpp.error.task.status.update", "任务状态修改失败，请联系系统管理员"); // 抛出任务定义创建错误的异常
         }
     }
 

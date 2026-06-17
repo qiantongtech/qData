@@ -13,6 +13,21 @@
  * For brand customization, please apply for brand customization authorization via official channels.
  *  *
  * More information: https://qdata.qiantong.tech/business.html
+ *  *
+ * ============================================================================
+ *  *
+ * 版权所有 © 2025 江苏千桐科技有限公司
+ * qData 数据中台（开源版）
+ *  *
+ * 许可协议：
+ * 本项目基于 Apache License 2.0 开源协议发布，
+ * 允许在遵守协议的前提下进行商用、修改和分发。
+ *  *
+ * 特别说明：
+ * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
+ * 如需定制品牌，请通过官方渠道申请品牌定制授权。
+ *  *
+ * 更多信息请访问：https://qdata.qiantong.tech/business.html
  */
 
 package tech.qiantong.qdata.common.database.dialect;
@@ -37,120 +52,120 @@ public class UnknownDialect extends AbstractDbDialect {
 
     @Override
     public String columns(String dbName, String tableName) {
-        throw new DataQueryException("不支持的数据库类型");
+        throw new DataQueryException("db.error.unsupported.dbtype", "不支持的数据库类型");
     }
 
     @Override
     public String columns(DbQueryProperty dbQueryProperty, String tableName) {
-        throw new DataQueryException("不支持的数据库类型");
+        throw new DataQueryException("db.error.unsupported.dbtype", "不支持的数据库类型");
     }
     @Override
     public String getPkColumnNames(DbQueryProperty dbQueryProperty, String tableName) {
-        throw new DataQueryException("不支持的数据库类型");
+        throw new DataQueryException("db.error.unsupported.dbtype", "不支持的数据库类型");
     }
 
     @Override
     public String generateCheckTableExistsSQL(DbQueryProperty dbQueryProperty, String tableName) {
-        throw new DataQueryException("不支持的数据库类型");
+        throw new DataQueryException("db.error.unsupported.dbtype", "不支持的数据库类型");
     }
 
 
     @Override
     public String buildTableNameByDbType(DbQueryProperty dbQueryProperty, String tableName) {
-        throw new DataQueryException("不支持的数据库类型");
+        throw new DataQueryException("db.error.unsupported.dbtype", "不支持的数据库类型");
     }
 
     @Override
     public List<String> someInternalSqlGenerator(DbQueryProperty dbQueryProperty, String tableName, String tableComment, List<DbColumn> dbColumnList) {
-        throw new DataQueryException("不支持的数据库类型");
+        throw new DataQueryException("db.error.unsupported.dbtype", "不支持的数据库类型");
     }
 
     @Override
     public List<String> validateSpecification(String tableName, String tableComment, List<DbColumn> columns) {
-        throw new DataQueryException("不支持的数据库类型");
+        throw new DataQueryException("db.error.unsupported.dbtype", "不支持的数据库类型");
     }
 
     @Override
     public String tables(String dbName) {
-        throw new DataQueryException("不支持的数据库类型");
+        throw new DataQueryException("db.error.unsupported.dbtype", "不支持的数据库类型");
     }
     @Override
     public String tables(DbQueryProperty dbQueryProperty) {
-        throw new DataQueryException("不支持的数据库类型");
+        throw new DataQueryException("db.error.unsupported.dbtype", "不支持的数据库类型");
     }
 
     @Override
     public String buildQuerySqlFields(List<DbColumn> columns, String tableName, DbQueryProperty dbQueryProperty) {
-        throw new DataQueryException("不支持的数据库类型");
+        throw new DataQueryException("db.error.unsupported.dbtype", "不支持的数据库类型");
     }
 
     @Override
     public String buildPaginationSql(String sql, long offset, long count) {
-        throw new DataQueryException("不支持的数据库类型");
+        throw new DataQueryException("db.error.unsupported.dbtype", "不支持的数据库类型");
     }
 
     @Override
     public String count(String sql) {
-        throw new DataQueryException("不支持的数据库类型");
+        throw new DataQueryException("db.error.unsupported.dbtype", "不支持的数据库类型");
     }
 
     @Override
     public String countNew(String sql, Map<String, Object> params) {
-        throw new DataQueryException("不支持的数据库类型");
+        throw new DataQueryException("db.error.unsupported.dbtype", "不支持的数据库类型");
     }
 
     @Override
     public String getDataStorageSize(String dbName) {
-        throw new DataQueryException("不支持的数据库类型");
+        throw new DataQueryException("db.error.unsupported.dbtype", "不支持的数据库类型");
     }
 
     @Override
     public String getDbName() {
-        throw new DataQueryException("不支持的数据库类型");
+        throw new DataQueryException("db.error.unsupported.dbtype", "不支持的数据库类型");
     }
 
     @Override
     public String getDbName(DbName dbName) {
-        throw new DataQueryException("不支持的数据库类型");
+        throw new DataQueryException("db.error.unsupported.dbtype", "不支持的数据库类型");
     }
 
     @Override
     public String getInsertOrUpdateSql(String tableName, String where, String tableFieldName, String tableFieldValue, String setValue) {
-        throw new DataQueryException("不支持的数据库类型");
+        throw new DataQueryException("db.error.unsupported.dbtype", "不支持的数据库类型");
     }
 
     @Override
     public RowMapper<DbColumn> columnMapper() {
-        throw new DataQueryException("不支持的数据库类型");
+        throw new DataQueryException("db.error.unsupported.dbtype", "不支持的数据库类型");
     }
 
     @Override
     public RowMapper<DbTable> tableMapper() {
-        throw new DataQueryException("不支持的数据库类型");
+        throw new DataQueryException("db.error.unsupported.dbtype", "不支持的数据库类型");
     }
 
     @Override
     public String dropColumn(DbQueryProperty dbQueryProperty, String tableName, String colName) {
-        throw new DataQueryException("不支持的数据库类型");
+        throw new DataQueryException("db.error.unsupported.dbtype", "不支持的数据库类型");
     }
 
     @Override
     public List<String> modifyColumn(DbQueryProperty dbQueryProperty, String tableName, DbColumn column) {
-        throw new DataQueryException("不支持的数据库类型");
+        throw new DataQueryException("db.error.unsupported.dbtype", "不支持的数据库类型");
     }
 
     @Override
     public List<String> addColumn(DbQueryProperty dbQueryProperty, String tableName, DbColumn column) {
-        throw new DataQueryException("不支持的数据库类型");
+        throw new DataQueryException("db.error.unsupported.dbtype", "不支持的数据库类型");
     }
 
     @Override
     public List<String> updateColKey(DbQueryProperty dbQueryProperty, String tableName, List<DbColumn> colKeyDbColumnList) {
-        throw new DataQueryException("不支持的数据库类型");
+        throw new DataQueryException("db.error.unsupported.dbtype", "不支持的数据库类型");
     }
 
     @Override
     public String getColumnType(DbColumn column) {
-        throw new DataQueryException("不支持的数据库类型");
+        throw new DataQueryException("db.error.unsupported.dbtype", "不支持的数据库类型");
     }
 }

@@ -24,6 +24,7 @@ import cache from '@/plugins/cache'
 import { saveAs } from 'file-saver'
 import useUserStore from '@/store/system/user'
 import { i18n } from '@/plugins/vueI18n'
+import { getStoredLang } from '@/store/system/locale'
 
 let downloadLoadingInstance;
 // 是否显示重新登录
@@ -47,6 +48,10 @@ service.interceptors.request.use(config => {
   if (getToken() && !isToken) {
     config.headers['Authorization'] = 'Bearer ' + getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
   }
+
+  // 统一设置请求语言参数，保证后端能识别当前语言
+  config.headers['X-Lang'] = getStoredLang()
+
   // get请求映射params参数
   if (config.method === 'get' && config.params) {
     let url = config.url + '?' + tansParams(config.params);

@@ -89,7 +89,7 @@
               <el-input v-model="queryParams.userName" :placeholder="td('sys.system.user.userNamePlaceholder')" clearable class="el-form-input-width"
                 @keyup.enter="handleQuery" />
             </el-form-item>
-            <el-form-item :label="td('sys.system.user.phone')" prop="phonenumber">
+            <el-form-item :label="td('sys.system.user.phone')" prop="phonenumber" :label-position="labelPosition">
               <el-input v-model="queryParams.phonenumber" :placeholder="td('sys.system.user.phonePlaceholder')" clearable class="el-form-input-width"
                 @keyup.enter="handleQuery" />
             </el-form-item>
@@ -211,15 +211,15 @@
     <!-- 添加或修改用户配置对话框 -->
     <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable
       destroy-on-close>
-      <el-form :model="form" :rules="rules" ref="userRef" label-width="80px">
+      <el-form :model="form" :rules="rules" ref="userRef" label-width="80px" :label-position="labelPosition">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('sys.system.user.userNickNameLabel')" prop="nickName">
+            <el-form-item :label="td('sys.system.user.userNickNameLabel')" prop="nickName" :label-position="labelPosition">
               <el-input v-model="form.nickName" :placeholder="td('sys.system.user.userNickNamePlaceholder')" maxlength="30" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('sys.system.user.belongDept')" prop="deptId">
+            <el-form-item :label="td('sys.system.user.belongDept')" prop="deptId" :label-position="labelPosition">
               <el-tree-select v-model="form.deptId" :data="deptOptions"
                 :props="{ value: 'id', label: 'label', children: 'children' }" value-key="id" :placeholder="td('sys.system.user.selectBelongDept')"
                 check-strictly />
@@ -236,26 +236,26 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('sys.system.user.email')" prop="email">
+            <el-form-item :label="td('sys.system.user.email')" prop="email" :label-position="labelPosition">
               <el-input v-model="form.email" :placeholder="td('sys.system.user.emailPlaceholder')" maxlength="50" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item v-if="form.userId == undefined" :label="td('sys.system.user.userNameLabel')" prop="userName">
+            <el-form-item v-if="form.userId == undefined" :label="td('sys.system.user.userNameLabel')" prop="userName" :label-position="labelPosition">
               <el-input v-model="form.userName" :placeholder="td('sys.system.user.userNameLabelPlaceholder')" maxlength="30" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item v-if="form.userId == undefined" :label="td('sys.system.user.userPassword')" prop="password">
+            <el-form-item v-if="form.userId == undefined" :label="td('sys.system.user.userPassword')" prop="password" :label-position="labelPosition">
               <el-input v-model="form.password" :placeholder="td('sys.system.user.userPasswordPlaceholder')" type="password" maxlength="20" show-password />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('sys.system.user.userGender')">
+            <el-form-item :label="td('sys.system.user.userGender')" :label-position="labelPosition">
               <el-select v-model="form.sex" :placeholder="td('sys.system.user.selectPlaceholder')">
                 <el-option v-for="dict in sys_user_sex" :key="dict.value" :label="dict.label"
                   :value="dict.value"></el-option>
@@ -263,7 +263,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('common.texts.status')">
+            <el-form-item :label="td('common.texts.status')" :label-position="labelPosition">
               <el-radio-group v-model="form.status">
                 <el-radio v-for="dict in sys_normal_disable" :key="dict.value" :value="dict.value">{{ dict.label }}
                 </el-radio>
@@ -273,7 +273,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('sys.system.user.post')">
+            <el-form-item :label="td('sys.system.user.post')" :label-position="labelPosition">
               <el-select v-model="form.postIds" multiple :placeholder="td('sys.system.user.selectPlaceholder')" class="selectlist">
                 <el-option v-for="item in postOptions" :key="item.postId" :label="item.postName" :value="item.postId"
                   :disabled="item.status == 1"></el-option>
@@ -281,7 +281,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('sys.system.user.role')" prop="roleIds">
+            <el-form-item :label="td('sys.system.user.role')" prop="roleIds" :label-position="labelPosition">
             <el-select v-model="form.roleIds" multiple :placeholder="td('sys.system.user.selectPlaceholder')" class="selectlist">
                 <el-option v-for="item in roleOptions" :key="item.roleId" :label="item.roleName" :value="item.roleId"
                   :disabled="item.status == 1"></el-option>
@@ -291,7 +291,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.remark')">
+            <el-form-item :label="td('common.texts.remark')" :label-position="labelPosition">
               <el-input v-model="form.remark" type="textarea" :placeholder="td('sys.system.user.inputContent')"></el-input>
             </el-form-item>
           </el-col>

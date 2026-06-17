@@ -39,7 +39,7 @@
       v-show="dialogStatus == 1 || dialogStatus == 2"
       :disabled="dialogStatus == 2"
     >
-      <el-form ref="formRef" :model="form" label-width="130px">
+      <el-form ref="formRef" :model="form" :label-position="labelPosition">
         <div class="h2-title">{{ td('da.qualityTask.ruleSelectorMenu.basicInfo') }}</div>
         <el-row>
           <el-col :span="8">
@@ -50,7 +50,7 @@
               :rules="[
                 { required: true, message: td('da.qualityTask.ruleSelectorMenu.evaluationNameRequired'), trigger: 'blur' },
               ]"
-            >
+             :label-position="labelPosition">
               <template v-if="!falg">
                 <el-input v-model="form.name" :placeholder="td('da.qualityTask.ruleSelectorMenu.evaluationNamePlaceholder')" />
               </template>
@@ -63,7 +63,7 @@
               :rules="[
                 { required: true, message: td('da.qualityTask.ruleSelectorMenu.inspectionNameRequired'), trigger: 'blur' },
               ]"
-            >
+             :label-position="labelPosition">
               <template v-if="!falg">
                 <el-input v-model="form.name" :placeholder="td('da.qualityTask.ruleSelectorMenu.inspectionNamePlaceholder')" />
               </template>
@@ -71,19 +71,19 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.inspectionRuleId')" prop="ruleCode">
+            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.inspectionRuleId')" prop="ruleCode" :label-position="labelPosition">
               <div class="form-readonly">{{ form.ruleCode || "-" }}</div>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.inspectionRuleName')" prop="ruleName">
+            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.inspectionRuleName')" prop="ruleName" :label-position="labelPosition">
               <div class="form-readonly">{{ form.ruleName || "-" }}</div>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="8">
-            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.alarmLevel')" prop="warningLevel">
+            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.alarmLevel')" prop="warningLevel" :label-position="labelPosition">
               <template v-if="!falg">
                 <el-select
                   v-model="form.warningLevel"
@@ -108,7 +108,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item :label="td('common.texts.status')" prop="status">
+            <el-form-item :label="td('common.texts.status')" prop="status" :label-position="labelPosition">
               <el-radio-group v-model="form.status" :disabled="falg">
                 <el-radio :value="'1'">{{ td('da.qualityTask.online') }}</el-radio>
                 <el-radio :value="'0'">{{ td('da.qualityTask.offline') }}</el-radio>
@@ -118,7 +118,7 @@
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.ruleDescription')" prop="ruleDescription">
+            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.ruleDescription')" prop="ruleDescription" :label-position="labelPosition">
               <template v-if="!falg">
                 <el-input
                   type="textarea"
@@ -136,7 +136,7 @@
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.errorExample')" prop="errDescription">
+            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.errorExample')" prop="errDescription" :label-position="labelPosition">
               <template v-if="!falg">
                 <el-input
                   type="textarea"
@@ -154,7 +154,7 @@
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.fixSuggestion')" prop="suggestion">
+            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.fixSuggestion')" prop="suggestion" :label-position="labelPosition">
               <template v-if="!falg">
                 <el-input
                   type="textarea"
@@ -172,7 +172,7 @@
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.whereCondition')" prop="whereClause">
+            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.whereCondition')" prop="whereClause" :label-position="labelPosition">
               <template v-if="!falg">
                 <el-input
                   type="textarea"
@@ -202,7 +202,7 @@
                   trigger: 'change',
                 },
               ]"
-            >
+             :label-position="labelPosition">
               <template v-if="!falg">
                 <el-select
                   v-model="form.tableName"
@@ -246,7 +246,7 @@
                   trigger: 'change',
                 },
               ]"
-            >
+             :label-position="labelPosition">
               <template v-if="!falg">
                 <el-select
                   v-if="isMultipleRuleType"
@@ -301,7 +301,7 @@
         </div>
         <el-row v-if="form.ruleType == 'CHARACTER_VALIDATION'">
           <el-col :span="12">
-            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.sampleData')" prop="sampleData">
+            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.sampleData')" prop="sampleData" :label-position="labelPosition">
               <el-input v-model="title" :placeholder="td('da.qualityTask.ruleSelectorMenu.sampleDataPlaceholder')" />
               <!-- <span class="msg">样例必须符合规则，如不符合不能包含特殊字符</span> -->
               <div style="margin-top: 6px; display: inline-block">

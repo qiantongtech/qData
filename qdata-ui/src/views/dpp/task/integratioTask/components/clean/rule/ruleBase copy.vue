@@ -40,7 +40,7 @@
       v-show="dialogStatus == 1 || dialogStatus == 2"
       :disabled="dialogStatus == 2"
     >
-      <el-form ref="formRef" :model="form" label-width="130px">
+      <el-form ref="formRef" :model="form" label-width="130px" :label-position="labelPosition">
         <div class="h2-title">{{ td('dpp.cleanRule.basicInfo', '基础信息') }}</div>
         <el-row>
           <el-col :span="8">
@@ -58,7 +58,7 @@
                     ]
                   : []
               "
-            >
+             :label-position="labelPosition">
               <el-input
                 v-if="!falg"
                 v-model="form.name"
@@ -68,7 +68,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item :label="td('dpp.cleanRule.cleanRuleCode', '清洗规则编号')" prop="ruleCode">
+            <el-form-item :label="td('dpp.cleanRule.cleanRuleCode', '清洗规则编号')" prop="ruleCode" :label-position="labelPosition">
               <el-input
                 v-if="!falg"
                 v-model="form.ruleCode"
@@ -79,7 +79,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item :label="td('dpp.cleanRule.cleanRuleName', '清洗规则名称')" prop="ruleName">
+            <el-form-item :label="td('dpp.cleanRule.cleanRuleName', '清洗规则名称')" prop="ruleName" :label-position="labelPosition">
               <el-input
                 v-if="!falg"
                 v-model="form.ruleName"
@@ -92,7 +92,7 @@
         </el-row>
         <el-row>
           <el-col :span="8">
-            <el-form-item :label="td('common.texts.status')" prop="status">
+            <el-form-item :label="td('common.texts.status')" prop="status" :label-position="labelPosition">
               <el-radio-group v-model="form.status" :disabled="falg">
                 <el-radio :value="'1'">{{ td('dpp.cleanRule.online', '上线') }}</el-radio>
                 <el-radio :value="'0'">{{ td('dpp.cleanRule.offline', '下线') }}</el-radio>
@@ -102,7 +102,7 @@
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item :label="td('dpp.cleanRule.ruleDesc', '规则描述')" prop="ruleDesc">
+            <el-form-item :label="td('dpp.cleanRule.ruleDesc', '规则描述')" prop="ruleDesc" :label-position="labelPosition">
               <el-input
                 v-if="!falg"
                 type="textarea"
@@ -119,7 +119,7 @@
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item :label="td('dpp.cleanRule.whereConditionLabel', 'Where 条件')" prop="whereClause">
+            <el-form-item :label="td('dpp.cleanRule.whereConditionLabel', 'Where 条件')" prop="whereClause" :label-position="labelPosition">
               <el-input
                 v-if="!falg"
                 type="textarea"
@@ -152,7 +152,7 @@
                     ]
                   : []
               "
-            >
+             :label-position="labelPosition">
               <template v-if="!falg">
                 <el-select
                   v-if="isMultipleSelect"

@@ -17,8 +17,8 @@
 
 <template>
     <el-dialog v-model="visible" :title="td('da.qualityTaskLog.problemDataEdit.title')" class="medium-dialog" @close="handleClose" destroy-on-close>
-        <el-form :model="formData" label-width="240px">
-            <el-form-item v-for="item in parsedFields" :key="item.name" :label="item.name">
+        <el-form :model="formData" label-width="240px" :label-position="labelPosition">
+            <el-form-item v-for="item in parsedFields" :key="item.name" :label="item.name" :label-position="labelPosition">
                 <el-input v-model="formData[item.name]" :disabled="!item.editable" />
             </el-form-item>
         </el-form>

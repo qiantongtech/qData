@@ -44,7 +44,7 @@
     />
     <div class="right-menu">
       <template v-if="appStore.device !== 'mobile'">
-        <div style="width: 250px; margin-top: 10px" v-if="showProjectSelector">
+        <div style="margin-top: 10px" v-if="showProjectSelector">
           <el-form
             class="btn-style"
             :model="userStore"

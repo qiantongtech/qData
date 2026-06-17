@@ -35,7 +35,7 @@
       label-width="110px"
       @submit.prevent
       class="column-form"
-    >
+     :label-position="labelPosition">
       <div class="h2-title row-full">{{ td('dp.modelForm.basicInfo') }}</div>
       <qt-form-item
         v-if="!form.id"
@@ -55,7 +55,7 @@
           >
         </el-radio-group>
       </qt-form-item>
-      <el-form-item v-else :label="td('dp.modelForm.tableType')" prop="tableType">
+      <el-form-item v-else :label="td('dp.modelForm.tableType')" prop="tableType" :label-position="labelPosition">
         <el-select v-model="form.tableType" disabled style="width: 100%">
           <el-option
             v-for="item in table_type"
@@ -65,7 +65,7 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item :label="td('dp.modelForm.dataLayer')" prop="dataLayerId">
+      <el-form-item :label="td('dp.modelForm.dataLayer')" prop="dataLayerId" :label-position="labelPosition">
         <el-tree-select
           v-model="form.dataLayerId"
           :data="dataLayerList"
@@ -83,7 +83,7 @@
       </el-form-item>
 
       <template v-if="form.tableType != '4'">
-        <el-form-item :label="td('dp.modelForm.businessCategory')" prop="businessDomainId">
+        <el-form-item :label="td('dp.modelForm.businessCategory')" prop="businessDomainId" :label-position="labelPosition">
           <el-tree-select
             v-model="form.businessDomainId"
             :data="businessCategoryList"
@@ -98,7 +98,7 @@
             style="width: 100%"
           />
         </el-form-item>
-        <el-form-item :label="td('dp.modelForm.dataDomain')" prop="dataDomainId">
+        <el-form-item :label="td('dp.modelForm.dataDomain')" prop="dataDomainId" :label-position="labelPosition">
           <el-tree-select
             v-model="form.dataDomainId"
             :data="dataDomainList"
@@ -116,7 +116,7 @@
       </template>
 
       <template v-else>
-        <el-form-item :label="td('dp.modelForm.themeDomain')" prop="themeDomainId">
+        <el-form-item :label="td('dp.modelForm.themeDomain')" prop="themeDomainId" :label-position="labelPosition">
           <el-tree-select
             v-model="form.themeDomainId"
             :data="themeDomainList"
@@ -132,17 +132,17 @@
           />
         </el-form-item>
       </template>
-      <el-form-item :label="td('dp.modelForm.modelName')" prop="modelName">
+      <el-form-item :label="td('dp.modelForm.modelName')" prop="modelName" :label-position="labelPosition">
         <el-input
           v-model="form.modelName"
           :placeholder="td('dp.modelForm.modelNamePlaceholder')"
           @input="form.modelName = form.modelName.replace(/[^A-Za-z0-9_]/g, '')"
         />
       </el-form-item>
-      <el-form-item :label="td('dp.modelForm.modelComment')" prop="modelComment">
+      <el-form-item :label="td('dp.modelForm.modelComment')" prop="modelComment" :label-position="labelPosition">
         <el-input v-model="form.modelComment" :placeholder="td('dp.modelForm.modelCommentPlaceholder')" />
       </el-form-item>
-      <el-form-item :label="td('dp.modelForm.tableCase')" prop="tableCase">
+      <el-form-item :label="td('dp.modelForm.tableCase')" prop="tableCase" :label-position="labelPosition">
         <el-select
           v-model="form.tableCase"
           :placeholder="td('dp.modelForm.tableCasePlaceholder')"
@@ -158,7 +158,7 @@
       </el-form-item>
 
       <template v-if="form.tableType != '3'">
-        <el-form-item :label="td('dp.modelForm.documentType')" prop="description">
+        <el-form-item :label="td('dp.modelForm.documentType')" prop="description" :label-position="labelPosition">
           <el-select
             class="el-form-input-width"
             v-model="form.documentType"
@@ -175,7 +175,7 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item :label="td('dp.modelForm.documentId')" prop="documentId">
+        <el-form-item :label="td('dp.modelForm.documentId')" prop="documentId" :label-position="labelPosition">
           <el-select
             class="el-form-input-width"
             v-model="form.documentId"
@@ -193,7 +193,7 @@
           </el-select>
         </el-form-item>
       </template>
-      <el-form-item :label="td('dp.modelForm.contact')" prop="contact">
+      <el-form-item :label="td('dp.modelForm.contact')" prop="contact" :label-position="labelPosition">
         <el-tree-select
           filterable
           v-model="form.contact"
@@ -209,7 +209,7 @@
           @change="handleContactChange"
         />
       </el-form-item>
-      <el-form-item :label="td('dp.modelForm.contactNumber')" prop="contactNumber">
+      <el-form-item :label="td('dp.modelForm.contactNumber')" prop="contactNumber" :label-position="labelPosition">
         <el-input
           v-model="form.contactNumber"
           :placeholder="td('dp.modelForm.contactNumberPlaceholder')"
@@ -233,7 +233,7 @@
           >
         </el-radio-group>
       </qt-form-item>
-      <el-form-item :label="td('common.texts.description')" prop="description" class="row-full">
+      <el-form-item :label="td('common.texts.description')" prop="description" class="row-full" :label-position="labelPosition">
         <el-input
           v-model="form.description"
           type="textarea"
@@ -242,7 +242,7 @@
           :placeholder="td('common.form.descriptionPlaceholder')"
         />
       </el-form-item>
-      <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full">
+      <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full" :label-position="labelPosition">
         <el-input
           v-model="form.remark"
           type="textarea"
@@ -264,7 +264,7 @@
               trigger: 'change',
             },
           ]"
-        >
+         :label-position="labelPosition">
           <DatasourceList
             v-model="form.datasourceId"
             :placeholder="td('dp.modelForm.datasourceNamePlaceholder')"
@@ -273,14 +273,14 @@
             flag="dpModel"
           />
         </el-form-item>
-        <el-form-item :label="td('dp.modelForm.datasourceType')" prop="datasourceType">
+        <el-form-item :label="td('dp.modelForm.datasourceType')" prop="datasourceType" :label-position="labelPosition">
           <el-input
             v-model="form.datasourceType"
             :placeholder="td('dp.modelForm.datasourceTypePlaceholder')"
             disabled
           />
         </el-form-item>
-        <el-form-item :label="td('dp.modelForm.datasourceAddress')" prop="ip">
+        <el-form-item :label="td('dp.modelForm.datasourceAddress')" prop="ip" :label-position="labelPosition">
           <el-input v-model="form.ip" :placeholder="td('dp.modelForm.datasourceAddressPlaceholder')" disabled />
         </el-form-item>
         <el-form-item
@@ -289,7 +289,7 @@
           :rules="[
             { required: true, message: td('dp.modelForm.tableRequired'), trigger: 'change' },
           ]"
-        >
+         :label-position="labelPosition">
           <el-select
             v-model="form.tableName"
             :placeholder="td('dp.modelForm.selectTablePlaceholder')"

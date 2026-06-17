@@ -197,10 +197,10 @@
         :rules="rules"
         label-width="110px"
         @submit.prevent
-      >
+       :label-position="labelPosition">
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('dg.dataCategory.catCode')" prop="catCode">
+            <el-form-item :label="td('dg.dataCategory.catCode')" prop="catCode" :label-position="labelPosition">
               <el-tree-select
                 filterable
                 v-model="form.catCode"
@@ -217,7 +217,7 @@
 
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('dg.dataCategory.categoryName')" prop="name">
+            <el-form-item :label="td('dg.dataCategory.categoryName')" prop="name" :label-position="labelPosition">
               <el-input v-model="form.name" :placeholder="td('dg.dataCategory.categoryNamePlaceholder')" />
             </el-form-item>
           </el-col>
@@ -225,7 +225,7 @@
 
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('dg.dataCategory.dataLevel')" prop="dataLevelId">
+            <el-form-item :label="td('dg.dataCategory.dataLevel')" prop="dataLevelId" :label-position="labelPosition">
               <el-select
                 v-model="form.dataLevelId"
                 :placeholder="td('dg.dataCategory.dataLevelPlaceholder')"
@@ -261,7 +261,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('dg.dataCategory.shortName')">
+            <el-form-item :label="td('dg.dataCategory.shortName')" :label-position="labelPosition">
               <el-input v-model="form.shortName" :placeholder="td('dg.dataCategory.shortNamePlaceholder')" />
             </el-form-item>
           </el-col>
@@ -286,7 +286,7 @@
 
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.description')" prop="description">
+            <el-form-item :label="td('common.texts.description')" prop="description" :label-position="labelPosition">
               <el-input
                 v-model="form.description"
                 type="textarea"
@@ -300,7 +300,7 @@
 
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.remark')" prop="remark">
+            <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
               <el-input
                 v-model="form.remark"
                 type="textarea"
@@ -340,29 +340,29 @@
         :model="form"
         label-width="110px"
         class="column-form"
-      >
-        <el-form-item :label="td('common.texts.number') + ':'" prop="id">
+       :label-position="labelPosition">
+        <el-form-item :label="td('common.texts.number') + ':'" prop="id" :label-position="labelPosition">
           <div class="form-readonly">{{ form.id ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="td('dg.dataCategory.categoryName')" prop="name">
+        <el-form-item :label="td('dg.dataCategory.categoryName')" prop="name" :label-position="labelPosition">
           <div class="form-readonly">{{ form.name ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="td('dg.dataCategory.catCode')" prop="catName">
+        <el-form-item :label="td('dg.dataCategory.catCode')" prop="catName" :label-position="labelPosition">
           <div class="form-readonly">
             {{ form.catName ?? form.catCode ?? "-" }}
           </div>
         </el-form-item>
 
-        <el-form-item :label="td('dg.dataCategory.dataLevel')" prop="dataLevelId">
+        <el-form-item :label="td('dg.dataCategory.dataLevel')" prop="dataLevelId" :label-position="labelPosition">
           <div v-if="form.dataLevelId">
             <LevelBadge :levelData="form.dataLevelShortName" />
           </div>
           <div class="form-readonly" v-else>-</div>
         </el-form-item>
-        <el-form-item :label="td('dg.dataCategory.priority')" prop="priority">
+        <el-form-item :label="td('dg.dataCategory.priority')" prop="priority" :label-position="labelPosition">
           <dict-tag :options="dg_data_priority" :value="form.priority" />
         </el-form-item>
-        <el-form-item :label="td('dg.dataCategory.desensitizationConfig')" prop="desensitizationRulesFlag">
+        <el-form-item :label="td('dg.dataCategory.desensitizationConfig')" prop="desensitizationRulesFlag" :label-position="labelPosition">
           <el-tag
             v-if="form.desensitizationRulesFlag == 1"
             type="primary"
@@ -373,33 +373,33 @@
           </el-tag>
           <el-tag v-else type="danger">{{ td('dg.dataCategory.notConfigured') }}</el-tag>
         </el-form-item>
-        <el-form-item :label="td('common.texts.status')" prop="validFlag">
+        <el-form-item :label="td('common.texts.status')" prop="validFlag" :label-position="labelPosition">
           <el-tag v-if="form.validFlag === true" type="primary">{{ td('dg.dataCategory.enabledLabel') }}</el-tag>
           <el-tag v-else-if="form.validFlag === false" type="danger"
             >{{ td('dg.dataCategory.disabledLabel') }}</el-tag
           >
         </el-form-item>
 
-        <el-form-item :label="td('common.texts.description')" prop="description" class="row-full">
+        <el-form-item :label="td('common.texts.description')" prop="description" class="row-full" :label-position="labelPosition">
           <div class="form-readonly textarea">
             {{ form.description ?? "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full">
+        <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full" :label-position="labelPosition">
           <div class="form-readonly textarea">{{ form.remark ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.createdBy')" prop="createBy">
+        <el-form-item :label="td('common.texts.createdBy')" prop="createBy" :label-position="labelPosition">
           <div class="form-readonly">{{ form.createBy ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.createdTime')" prop="createTime">
+        <el-form-item :label="td('common.texts.createdTime')" prop="createTime" :label-position="labelPosition">
           <div class="form-readonly">
             {{ parseTime(form.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.updatedBy')" prop="updateBy">
+        <el-form-item :label="td('common.texts.updatedBy')" prop="updateBy" :label-position="labelPosition">
           <div class="form-readonly">{{ form.updateBy ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.updatedTime')" prop="updateTime">
+        <el-form-item :label="td('common.texts.updatedTime')" prop="updateTime" :label-position="labelPosition">
           <div class="form-readonly">
             {{ parseTime(form.updateTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
@@ -421,7 +421,7 @@
       draggable
       destroy-on-close
     >
-      <el-form-item :label="td('dg.dataCategory.dataLevel')">
+      <el-form-item :label="td('dg.dataCategory.dataLevel')" :label-position="labelPosition">
         <el-select
           v-model="batchDataLevel"
           :placeholder="td('dg.dataCategory.dataLevelPlaceholder')"

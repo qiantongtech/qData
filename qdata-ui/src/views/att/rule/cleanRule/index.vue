@@ -28,7 +28,7 @@
                 <div class="pagecont-top" v-show="showSearch">
                     <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" 
                         v-show="showSearch" @submit.prevent>
-                        <el-form-item :label="td('att.common.ruleName')" prop="name">
+                        <el-form-item :label="td('att.common.ruleName')" prop="name" :label-position="labelPosition">
                             <el-input class="el-form-input-width" v-model="queryParams.name" :placeholder="td('att.common.ruleNamePlaceholder')"
                                 clearable @keyup.enter="handleQuery" />
                         </el-form-item>
@@ -149,22 +149,22 @@
                     {{ title }}
                 </span>
             </template>
-            <el-form ref="attCleanRuleRef" :model="form" :rules="rules" label-width="80px" @submit.prevent>
+            <el-form ref="attCleanRuleRef" :model="form" :rules="rules" label-width="80px" @submit.prevent :label-position="labelPosition">
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item :label="td('att.common.ruleName')" prop="name">
+                        <el-form-item :label="td('att.common.ruleName')" prop="name" :label-position="labelPosition">
                             <el-input v-model="form.name" :placeholder="td('common.form.namePlaceholder')" />
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item :label="td('att.common.code')" prop="code">
+                        <el-form-item :label="td('att.common.code')" prop="code" :label-position="labelPosition">
                             <el-input v-model="form.code" :placeholder="td('att.common.codePlaceholder')" />
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item :label="td('att.common.ruleType')" prop="type">
+                        <el-form-item :label="td('att.common.ruleType')" prop="type" :label-position="labelPosition">
                             <el-tree-select v-model="form.type" :data="processedData"
                                 :props="{ value: 'id', label: 'name', children: 'children' }" value-key="id"
                                 :placeholder="td('att.common.ruleTypePlaceholder')" check-strictly />
@@ -173,7 +173,7 @@
 
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item :label="td('common.texts.status')" prop="validFlag">
+                        <el-form-item :label="td('common.texts.status')" prop="validFlag" :label-position="labelPosition">
                             <el-radio v-model="form.validFlag" :label="true">{{ td('att.common.enable') }}</el-radio>
                             <el-radio v-model="form.validFlag" :label="false">{{ td('att.common.disable') }}</el-radio>
                         </el-form-item>
@@ -182,12 +182,12 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="24">
-                        <el-form-item :label="td('att.common.useCase')" prop="useCase">
+                        <el-form-item :label="td('att.common.useCase')" prop="useCase" :label-position="labelPosition">
                             <el-input type="textarea" v-model="form.useCase" :placeholder="td('att.common.useCasePlaceholder')" />
                         </el-form-item>
                     </el-col>
                     <el-col :span="24">
-                        <el-form-item :label="td('att.common.example')" prop="example">
+                        <el-form-item :label="td('att.common.example')" prop="example" :label-position="labelPosition">
                             <el-input type="textarea" v-model="form.example" :placeholder="td('att.common.examplePlaceholder')" />
                         </el-form-item>
                     </el-col>
@@ -195,14 +195,14 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="24">
-                        <el-form-item :label="td('common.texts.description')" prop="description">
+                        <el-form-item :label="td('common.texts.description')" prop="description" :label-position="labelPosition">
                             <el-input type="textarea" v-model="form.description" :placeholder="td('common.form.descriptionPlaceholder')" />
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <!--                <el-row :gutter="20">-->
                 <!--                    <el-col :span="24">-->
-                <!--                        <el-form-item :label="td('common.texts.remark')" prop="remark">-->
+                <!--                        <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">-->
                 <!--                            <el-input type="textarea" v-model="form.remark" :placeholder="td('common.form.remarkPlaceholder')" />-->
                 <!--                        </el-form-item>-->
                 <!--                    </el-col>-->
@@ -223,7 +223,7 @@
                     {{ title }}
                 </span>
             </template>
-            <el-form ref="attCleanRuleRef" :model="form" label-width="80px">
+            <el-form ref="attCleanRuleRef" :model="form" label-width="80px" :label-position="labelPosition">
                 <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item :label="td('att.common.ruleName')" prop="name">
@@ -233,19 +233,19 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item :label="td('att.common.ruleType')" prop="type">
+                        <el-form-item :label="td('att.common.ruleType')" prop="type" :label-position="labelPosition">
                             <dict-tag :options="processedData" :value="form.type" />
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item :label="td('att.common.ruleLevel')" prop="level">
+                        <el-form-item :label="td('att.common.ruleLevel')" prop="level" :label-position="labelPosition">
                             <dict-tag :options="att_rule_level" :value="form.level" />
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item :label="td('common.texts.description')" prop="description">
+                        <el-form-item :label="td('common.texts.description')" prop="description" :label-position="labelPosition">
                             <div>
                                 {{ form.description }}
                             </div>
@@ -254,7 +254,7 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item :label="td('common.texts.remark')" prop="remark">
+                        <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
                             <div>
                                 {{ form.remark }}
                             </div>

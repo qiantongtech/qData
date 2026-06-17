@@ -203,15 +203,15 @@
 
     <el-dialog v-model="dialogVisible" :title="td('login.forgetPassword')" class="fp-form-dialog" width="650px"
         :append-to="$refs['app-container']" draggable destroy-on-close>
-        <el-form :model="fpForm" label-width="auto" style="padding: 10px 60px 0">
+        <el-form :model="fpForm" label-width="auto" style="padding: 10px 60px 0" :label-position="labelPosition">
             <el-row :gutter="20">
                 <el-col :span="24">
-                    <el-form-item :label="td('login.username')">
+                    <el-form-item :label="td('login.username')" :label-position="labelPosition">
                         <el-input v-model="fpForm.name" :placeholder="td('login.usernameInputPlaceholder')" />
                     </el-form-item>
                 </el-col>
                 <el-col :span="24">
-                    <el-form-item :label="td('login.code')">
+                    <el-form-item :label="td('login.code')" :label-position="labelPosition">
                         <div class="wrapper">
                             <el-input v-model="fpForm.code" :placeholder="td('login.codePlaceholder')" />
                             <el-button type="primary" :disabled="codeFlag" style="margin-left: 10px"
@@ -220,12 +220,12 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="24">
-                    <el-form-item :label="td('login.newPassword')">
+                    <el-form-item :label="td('login.newPassword')" :label-position="labelPosition">
                         <el-input v-model="fpForm.password" :placeholder="td('login.newPasswordPlaceholder')" />
                     </el-form-item>
                 </el-col>
                 <el-col :span="24">
-                    <el-form-item :label="td('login.confirmPassword')">
+                    <el-form-item :label="td('login.confirmPassword')" :label-position="labelPosition">
                         <el-input v-model="fpForm.password2" :placeholder="td('login.confirmPasswordPlaceholder')" />
                     </el-form-item>
                 </el-col>

@@ -117,6 +117,7 @@ function setLayout() {
 
 .app-wrapper {
   @include clearfix;
+  --base-sidebar-width: 210px;
   position: relative;
   height: 100%;
   width: 100%;
@@ -142,7 +143,7 @@ function setLayout() {
   top: 0;
   right: 0;
   z-index: 9;
-  width: calc(100% - #{$base-sidebar-width});
+  width: calc(100% - var(--base-sidebar-width));
   transition: width 0.28s;
 }
 
@@ -156,5 +157,12 @@ function setLayout() {
 
 .mobile .fixed-header {
   width: 100%;
+}
+</style>
+
+<style>
+html[lang="ja-JP"] .app-wrapper,
+html[lang="en-US"] .app-wrapper {
+  --base-sidebar-width: 280px;
 }
 </style>

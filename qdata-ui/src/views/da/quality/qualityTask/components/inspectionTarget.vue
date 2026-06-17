@@ -19,17 +19,17 @@
     <!-- 稽查对象信息 新增修改弹窗 第二步 -->
     <el-dialog v-model="dialogVisible" draggable class="dialog" :title="dialogTitle" destroy-on-close width="800px"
         :append-to="$refs['app-container']">
-        <el-form ref="formRef" :model="form" :rules="formRules" label-width="120px" @submit.prevent>
+        <el-form ref="formRef" :model="form" :rules="formRules" label-width="120px" @submit.prevent :label-position="labelPosition">
             <el-row :gutter="20">
                 <el-col :span="24">
-                    <el-form-item :label="td('da.qualityTask.targetComponent.targetName')" prop="name">
+                    <el-form-item :label="td('da.qualityTask.targetComponent.targetName')" prop="name" :label-position="labelPosition">
                         <el-input v-model="form.name" :placeholder="td('da.qualityTask.targetComponent.targetNamePlaceholder')" />
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="24">
-                    <el-form-item :label="td('da.qualityTask.targetComponent.sourceDbConnection')" prop="datasourceId">
+                    <el-form-item :label="td('da.qualityTask.targetComponent.sourceDbConnection')" prop="datasourceId" :label-position="labelPosition">
                         <el-select v-model="form.datasourceId" :placeholder="td('da.qualityTask.targetComponent.sourceDbPlaceholder')" filterable
                             @change="onDatasourceChange">
                             <el-option v-for="ds in datasourceOptions" :key="ds.id" :label="ds.datasourceName"
@@ -41,14 +41,14 @@
 
             <el-row :gutter="20">
                 <el-col :span="24">
-                    <el-form-item :label="td('da.qualityTask.targetComponent.datasourceType')">
+                    <el-form-item :label="td('da.qualityTask.targetComponent.datasourceType')" :label-position="labelPosition">
                         <el-input v-model="form.datasourceType" disabled :placeholder="td('da.qualityTask.targetComponent.datasourceTypePlaceholder')" />
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="24">
-                    <el-form-item :label="td('da.qualityTask.targetComponent.datasourceInstance')">
+                    <el-form-item :label="td('da.qualityTask.targetComponent.datasourceInstance')" :label-position="labelPosition">
                         <el-input v-model="form.dbname" disabled :placeholder="td('da.qualityTask.targetComponent.datasourceInstancePlaceholder')" />
                     </el-form-item>
                 </el-col>
@@ -56,7 +56,7 @@
             <el-row :gutter="20">
                 <el-col :span="24">
 
-                    <el-form-item :label="td('da.qualityTask.targetComponent.selectTable')" prop="tableName">
+                    <el-form-item :label="td('da.qualityTask.targetComponent.selectTable')" prop="tableName" :label-position="labelPosition">
                         <el-select v-model="form.tableName" filterable :loading="tableLoading" @change="onTableChange">
                             <el-option v-for="item in tableOptions" :key="item.tableName" :label="item.tableName"
                                 :value="item.tableName" />

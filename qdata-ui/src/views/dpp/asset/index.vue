@@ -38,7 +38,7 @@
             v-show="showSearch"
             @submit.prevent
           >
-            <el-form-item :label="td('dpp.asset.assetName')" prop="name">
+            <el-form-item :label="td('dpp.asset.assetName')" prop="name" :label-position="labelPosition">
               <el-input
                 style="width: 166px"
                 v-model="queryParams.name"
@@ -360,7 +360,7 @@
           {{ title }}
         </span>
       </template>
-      <el-form ref="daAssetRef" :model="form" label-width="80px">
+      <el-form ref="daAssetRef" :model="form" label-width="80px" :label-position="labelPosition">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item :label="td('dpp.asset.assetName')" prop="name">
@@ -370,7 +370,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('dpp.asset.detailCategoryCode')" prop="catCode">
+            <el-form-item :label="td('dpp.asset.detailCategoryCode')" prop="catCode" :label-position="labelPosition">
               <div>
                 {{ form.catCode }}
               </div>
@@ -379,14 +379,14 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('dpp.asset.detailThemeId')" prop="themeId">
+            <el-form-item :label="td('dpp.asset.detailThemeId')" prop="themeId" :label-position="labelPosition">
               <div>
                 {{ form.themeId }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('dpp.asset.detailDatasourceId')" prop="datasourceId">
+            <el-form-item :label="td('dpp.asset.detailDatasourceId')" prop="datasourceId" :label-position="labelPosition">
               <div>
                 {{ form.datasourceId }}
               </div>
@@ -395,14 +395,14 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('dpp.asset.listTableName')" prop="tableName">
+            <el-form-item :label="td('dpp.asset.listTableName')" prop="tableName" :label-position="labelPosition">
               <div>
                 {{ form.tableName }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('dpp.asset.detailTableComment')" prop="tableComment">
+            <el-form-item :label="td('dpp.asset.detailTableComment')" prop="tableComment" :label-position="labelPosition">
               <div>
                 {{ form.tableComment }}
               </div>
@@ -411,14 +411,14 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('dpp.asset.detailDataCount')" prop="dataCount">
+            <el-form-item :label="td('dpp.asset.detailDataCount')" prop="dataCount" :label-position="labelPosition">
               <div>
                 {{ form.dataCount }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('dpp.asset.detailFieldCount')" prop="fieldCount">
+            <el-form-item :label="td('dpp.asset.detailFieldCount')" prop="fieldCount" :label-position="labelPosition">
               <div>
                 {{ form.fieldCount }}
               </div>
@@ -427,14 +427,14 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('common.texts.status')" prop="status">
+            <el-form-item :label="td('common.texts.status')" prop="status" :label-position="labelPosition">
               <div>
                 {{ form.status }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('common.texts.description')" prop="description">
+            <el-form-item :label="td('common.texts.description')" prop="description" :label-position="labelPosition">
               <div>
                 {{ form.description }}
               </div>
@@ -443,7 +443,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('common.texts.remark')" prop="remark">
+            <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
               <div>
                 {{ form.remark }}
               </div>
@@ -530,46 +530,46 @@
         :model="formApply"
         :rules="rulesApply"
         label-width="100px"
-      >
+       :label-position="labelPosition">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('dpp.asset.assetName')">
+            <el-form-item :label="td('dpp.asset.assetName')" :label-position="labelPosition">
               <el-input v-model="formApply.name" disabled />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('dpp.asset.applyEnglishName')">
+            <el-form-item :label="td('dpp.asset.applyEnglishName')" :label-position="labelPosition">
               <el-input v-model="formApply.tableName" disabled />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('dpp.asset.applyThemeName')">
+            <el-form-item :label="td('dpp.asset.applyThemeName')" :label-position="labelPosition">
               <el-input v-model="formApply.themeName" disabled />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('dpp.asset.applyDatasource')">
+            <el-form-item :label="td('dpp.asset.applyDatasource')" :label-position="labelPosition">
               <el-input v-model="formApply.datasourceName" disabled />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('dpp.asset.applyDatabaseAddress')">
+            <el-form-item :label="td('dpp.asset.applyDatabaseAddress')" :label-position="labelPosition">
               <el-input v-model="formApply.datasourceIp" disabled />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('dpp.asset.applyDatabaseType')">
+            <el-form-item :label="td('dpp.asset.applyDatabaseType')" :label-position="labelPosition">
               <el-input v-model="formApply.datasourceType" disabled />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('dpp.asset.applyAssetDescription')">
+            <el-form-item :label="td('dpp.asset.applyAssetDescription')" :label-position="labelPosition">
               <el-input
                 type="textarea"
                 v-model="formApply.description"
@@ -581,7 +581,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('dpp.asset.applyProject')" prop="projectCode">
+            <el-form-item :label="td('dpp.asset.applyProject')" prop="projectCode" :label-position="labelPosition">
               <el-select
                 v-model="formApply.projectCode"
                 @change="handleSelectProject"
@@ -597,7 +597,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('dpp.asset.applyContactPhone')" prop="phone">
+            <el-form-item :label="td('dpp.asset.applyContactPhone')" prop="phone" :label-position="labelPosition">
               <el-input
                 v-model="formApply.phone"
                 :placeholder="td('dpp.asset.inputContactPhone')"
@@ -607,7 +607,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('dpp.asset.applyReason')" prop="applyReason">
+            <el-form-item :label="td('dpp.asset.applyReason')" prop="applyReason" :label-position="labelPosition">
               <el-input
                 type="textarea"
                 v-model="formApply.applyReason"

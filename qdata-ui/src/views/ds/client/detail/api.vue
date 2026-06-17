@@ -113,23 +113,23 @@
         {{ title }}
       </span>
     </template>
-    <el-form ref="clientApiRelRef" :model="form" :rules="rules" @submit.prevent>
+    <el-form ref="clientApiRelRef" :model="form" :rules="rules" @submit.prevent :label-position="labelPosition">
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('ds.client.detail.apiService')" prop="apiName">
+          <el-form-item :label="td('ds.client.detail.apiService')" prop="apiName" :label-position="labelPosition">
             <el-autocomplete :disabled="form.id" v-model="form.apiName" :fetch-suggestions="remoteMethod"
               :placeholder="td('ds.client.detail.apiServicePlaceholder')" @select="handleApiIdSelect" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('ds.client.detail.permanentValid')" prop="pvFlag">
+          <el-form-item :label="td('ds.client.detail.permanentValid')" prop="pvFlag" :label-position="labelPosition">
             <el-radio-group v-model="form.pvFlag" @change="handlePvFlagChange">
               <el-radio v-for="dict in sys_is_or_not" :key="dict.value" :label="dict.value">{{ dict.label }}</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-col>
         <el-col :span="12" v-if="form.pvFlag == 0">
-          <el-form-item :label="td('ds.client.detail.validPeriod')" prop="dateRange">
+          <el-form-item :label="td('ds.client.detail.validPeriod')" prop="dateRange" :label-position="labelPosition">
             <el-date-picker class="el-form-input-width" v-model="form.dateRange" value-format="YYYY-MM-DD"
               type="daterange" range-separator="-" :start-placeholder="td('common.form.startDatePlaceholder')" :end-placeholder="td('common.form.endDatePlaceholder')"></el-date-picker>
           </el-form-item>
@@ -137,14 +137,14 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('common.texts.description')">
+          <el-form-item :label="td('common.texts.description')" :label-position="labelPosition">
             <el-input type="textarea" :placeholder="td('common.form.descriptionPlaceholder')" v-model="form.description" :min-height="192" />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('common.texts.remark')">
+          <el-form-item :label="td('common.texts.remark')" :label-position="labelPosition">
             <el-input type="textarea" :placeholder="td('common.form.remarkPlaceholder')" v-model="form.remark" :min-height="192" />
           </el-form-item>
         </el-col>
@@ -165,17 +165,17 @@
         {{ title }}
       </span>
     </template>
-    <el-form ref="clientApiRelRef" :model="form" label-width="80px">
+    <el-form ref="clientApiRelRef" :model="form" label-width="80px" :label-position="labelPosition">
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('ds.client.detail.appId')" prop="clientId">
+          <el-form-item :label="td('ds.client.detail.appId')" prop="clientId" :label-position="labelPosition">
             <div>
               {{ form.clientId }}
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('ds.client.detail.apiServiceId')" prop="apiId">
+          <el-form-item :label="td('ds.client.detail.apiServiceId')" prop="apiId" :label-position="labelPosition">
             <div>
               {{ form.apiId }}
             </div>
@@ -184,12 +184,12 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('ds.client.detail.permanentValid')" prop="pvFlag">
+          <el-form-item :label="td('ds.client.detail.permanentValid')" prop="pvFlag" :label-position="labelPosition">
             <dict-tag :options="sys_is_or_not" :value="form.pvFlag" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('ds.client.detail.startTime')" prop="startTime">
+          <el-form-item :label="td('ds.client.detail.startTime')" prop="startTime" :label-position="labelPosition">
             <el-date-picker clearable style="width: 100%" v-model="form.startTime" type="date" value-format="YYYY-MM-DD"
               :placeholder="td('ds.client.detail.startTimePlaceholder')"> </el-date-picker>
           </el-form-item>
@@ -197,13 +197,13 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('ds.client.detail.endTime')" prop="endTime">
+          <el-form-item :label="td('ds.client.detail.endTime')" prop="endTime" :label-position="labelPosition">
             <el-date-picker clearable style="width: 100%" v-model="form.endTime" type="date" value-format="YYYY-MM-DD"
               :placeholder="td('ds.client.detail.endTimePlaceholder')"> </el-date-picker>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('ds.client.detail.authStatus')" prop="status">
+          <el-form-item :label="td('ds.client.detail.authStatus')" prop="status" :label-position="labelPosition">
             <div>
               {{ form.status }}
             </div>

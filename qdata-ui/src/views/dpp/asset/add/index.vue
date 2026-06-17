@@ -30,8 +30,8 @@
         label-width="110px"
         @submit.prevent
         class="column-form"
-    >
-      <el-form-item :label="td('dpp.asset.add.assetType')" prop="type">
+     :label-position="labelPosition">
+      <el-form-item :label="td('dpp.asset.add.assetType')" prop="type" :label-position="labelPosition">
         <el-select
             v-model="form.type"
             :placeholder="td('dpp.asset.add.assetTypePlaceholder')"
@@ -76,7 +76,7 @@
           <el-radio value="2">{{ td('dpp.asset.add.assetStatusPublished') }}</el-radio>
         </el-radio-group>
       </qt-form-item>
-<!--      <el-form-item-->
+<!--      <el-form-item-- :label-position="labelPosition">
 <!--          v-if="!props.isRegister"-->
 <!--          label="创建类型"-->
 <!--          prop="status"-->
@@ -113,7 +113,7 @@
             :rules="[
             { required: true, message: td('dpp.asset.add.serviceTypeRequired'), trigger: 'blur' },
           ]"
-        >
+         :label-position="labelPosition">
           <el-select
               v-model="form.daAssetGis.type"
               :placeholder="td('dpp.asset.add.paramTypePlaceholder')"
@@ -132,7 +132,7 @@
             :rules="[
             { required: true, message: td('dpp.asset.add.serviceUrlRequired'), trigger: 'blur' },
           ]"
-        >
+         :label-position="labelPosition">
           <el-input
               v-model="form.daAssetGis.url"
               :placeholder="td('dpp.asset.add.serviceUrlPlaceholder')"
@@ -144,7 +144,7 @@
             :rules="[
             { required: true, message: td('dpp.asset.add.httpMethodRequired'), trigger: 'blur' },
           ]"
-        >
+         :label-position="labelPosition">
           <el-select
               v-model="form.daAssetGis.httpMethod"
               :placeholder="td('dpp.asset.add.httpMethodPlaceholder')"
@@ -170,7 +170,7 @@
             :rules="[
             { required: true, message: td('dpp.asset.add.fileTypeRequired'), trigger: 'blur' },
           ]"
-        >
+         :label-position="labelPosition">
           <el-select
               v-model="form.daAssetGeo.fileType"
               :placeholder="td('dpp.asset.add.paramTypePlaceholder')"
@@ -189,7 +189,7 @@
             :rules="[
             { required: true, message: td('dpp.asset.add.uploadFileRequired'), trigger: 'fileUrl' },
           ]"
-        >
+         :label-position="labelPosition">
           <FileUploadbtn
               :limit="1"
               v-model="form.daAssetGeo.fileUrl"
@@ -205,7 +205,7 @@
 
       <excelAdd ref="excelAddRef" class="row-full" />
 
-      <el-form-item :label="td('common.texts.description')" prop="description" class="row-full">
+      <el-form-item :label="td('common.texts.description')" prop="description" class="row-full" :label-position="labelPosition">
         <el-input
             type="textarea"
             :maxlength="500"
@@ -215,7 +215,7 @@
             :placeholder="td('common.form.descriptionPlaceholder')"
         />
       </el-form-item>
-      <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full">
+      <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full" :label-position="labelPosition">
         <el-input
             type="textarea"
             :maxlength="500"

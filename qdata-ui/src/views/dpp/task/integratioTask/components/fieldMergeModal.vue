@@ -28,14 +28,14 @@
       :model="form.ruleConfig.fieldMerge"
       :rules="formRules"
       label-width="150px"
-    >
+     :label-position="labelPosition">
       <el-row :gutter="20">
         <!-- 选择字段（单选） -->
         <el-col :span="12">
           <el-form-item
             :label="td('dpp.integration.selectField', '选择字段')"
             prop="sourceField"
-          >
+           :label-position="labelPosition">
             <el-select
               v-model="form.ruleConfig.fieldMerge.sourceField"
               :placeholder="td('dpp.integration.selectFieldPlaceholder', '请选择字段名称')"
@@ -58,7 +58,7 @@
           <el-form-item
             :label="td('dpp.integration.mergeFields', '合并字段')"
             prop="sourceFields"
-          >
+           :label-position="labelPosition">
             <el-select
               v-model="form.ruleConfig.fieldMerge.sourceFields"
               :placeholder="td('dpp.integration.selectFieldPlaceholder', '请选择字段名称')"
@@ -80,7 +80,7 @@
           <el-form-item
             :label="td('dpp.integration.separator', '分隔符')"
             prop="separator"
-          >
+           :label-position="labelPosition">
             <el-input
               v-model="form.ruleConfig.fieldMerge.separator"
               :placeholder="td('dpp.integration.separatorPlaceholder', '请输入分隔符（不能包含中文）')"
@@ -93,7 +93,7 @@
           <el-form-item
             :label="td('dpp.integration.nullHandling', '空值处理')"
             prop="handleNull"
-          >
+           :label-position="labelPosition">
             <el-select
               v-model="form.ruleConfig.fieldMerge.handleNull"
               :placeholder="td('dpp.integration.nullHandlingPlaceholder', '请选择空值处理方式')"
@@ -111,7 +111,7 @@
           <el-form-item
             :label="td('dpp.integration.defaultValueLabel', '默认值')"
             prop="defaultValue"
-          >
+           :label-position="labelPosition">
             <el-input
               v-model="form.ruleConfig.fieldMerge.defaultValue"
               :placeholder="td('dpp.integration.defaultValuePlaceholder', '请输入默认值')"
@@ -124,7 +124,7 @@
           <el-form-item
             :label="td('dpp.integration.trimLeadingTrailingSpace', '是否去除首尾空格')"
             prop="trimSpace"
-          >
+           :label-position="labelPosition">
             <el-radio-group v-model="form.ruleConfig.fieldMerge.trimSpace">
               <el-radio :label="true">{{ td('dpp.integration.yes', '是') }}</el-radio>
               <el-radio :label="false">{{ td('dpp.integration.no', '否') }}</el-radio>

@@ -29,10 +29,10 @@
       :rules="currentRules"
       label-width="150px"
       @submit.prevent
-    >
+     :label-position="labelPosition">
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('dm.businessCategory.parentCategory', '上级分类')" prop="parentId">
+          <el-form-item :label="td('dm.businessCategory.parentCategory', '上级分类')" prop="parentId" :label-position="labelPosition">
             <el-tree-select
               filterable
               v-model="form.parentId"
@@ -45,12 +45,12 @@
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item :label="td('dm.businessCategory.name', '业务分类名称')" prop="name">
+          <el-form-item :label="td('dm.businessCategory.name', '业务分类名称')" prop="name" :label-position="labelPosition">
             <el-input v-model="form.name" :placeholder="td('dm.businessCategory.namePlaceholder', '请输入业务分类名称')" />
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item :label="td('dm.businessCategory.engName', '英文缩写')" prop="engName">
+          <el-form-item :label="td('dm.businessCategory.engName', '英文缩写')" prop="engName" :label-position="labelPosition">
             <el-input
               v-model="form.engName"
               :placeholder="td('dm.businessCategory.engNamePlaceholder', '请输入英文缩写')"
@@ -59,7 +59,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item :label="td('dm.businessCategory.dataDomain', '关联数据域')" prop="domainIds">
+          <el-form-item :label="td('dm.businessCategory.dataDomain', '关联数据域')" prop="domainIds" :label-position="labelPosition">
             <el-select
               v-model="form.domainIds"
               :placeholder="td('dm.businessCategory.dataDomainIdsPlaceholder', '请选择关联数据域')"
@@ -80,7 +80,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item :label="td('dm.businessCategory.ownerId', '负责人')" prop="ownerId">
+          <el-form-item :label="td('dm.businessCategory.ownerId', '负责人')" prop="ownerId" :label-position="labelPosition">
             <el-select
               v-model="form.ownerId"
               filterable
@@ -98,7 +98,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item :label="td('dm.businessCategory.ownerPhone', '负责人电话')" prop="ownerPhone">
+          <el-form-item :label="td('dm.businessCategory.ownerPhone', '负责人电话')" prop="ownerPhone" :label-position="labelPosition">
             <el-input
               v-model="form.ownerPhone"
               :placeholder="td('dm.businessCategory.ownerPhonePlaceholder', '请输入负责人电话')"
@@ -109,7 +109,7 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('common.texts.status', '状态')" prop="validFlag">
+          <el-form-item :label="td('common.texts.status', '状态')" prop="validFlag" :label-position="labelPosition">
             <el-radio v-model="form.validFlag" :label="false">{{ td('dm.businessCategory.disableText', '禁用') }}</el-radio>
             <el-radio v-model="form.validFlag" :label="true">{{ td('dm.businessCategory.enableText', '启用') }}</el-radio>
           </el-form-item>
@@ -117,7 +117,7 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('common.texts.description', '描述')" prop="description">
+          <el-form-item :label="td('common.texts.description', '描述')" prop="description" :label-position="labelPosition">
             <el-input
               type="textarea"
               maxlength="500"
@@ -131,7 +131,7 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('common.texts.remark', '备注')" prop="remark">
+          <el-form-item :label="td('common.texts.remark', '备注')" prop="remark" :label-position="labelPosition">
             <el-input
               type="textarea"
               maxlength="500"

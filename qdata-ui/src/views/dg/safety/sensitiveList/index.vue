@@ -140,7 +140,7 @@
         :rules="rules"
         label-width="110px"
         @submit.prevent
-      >
+       :label-position="labelPosition">
         <AssetColumnSelect v-model="form" />
         <qt-form-item :label="td('common.texts.status')" prop="validFlag">
           <el-radio-group v-model="form.validFlag">
@@ -153,7 +153,7 @@
             </el-radio>
           </el-radio-group>
         </qt-form-item>
-        <el-form-item :label="td('common.texts.description')" prop="assetDescription" class="row-full">
+        <el-form-item :label="td('common.texts.description')" prop="assetDescription" class="row-full" :label-position="labelPosition">
           <el-input
             v-model="form.assetDescription"
             type="textarea"
@@ -163,7 +163,7 @@
             maxlength="500"
           />
         </el-form-item>
-        <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full">
+        <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full" :label-position="labelPosition">
           <el-input
             v-model="form.remark"
             type="textarea"
@@ -199,65 +199,65 @@
         :model="form"
         label-width="110px"
         class="column-form"
-      >
-        <el-form-item :label="td('common.texts.number') + ':'" prop="id">
+       :label-position="labelPosition">
+        <el-form-item :label="td('common.texts.number') + ':'" prop="id" :label-position="labelPosition">
           <div class="form-readonly">{{ form.id ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="td('dg.sensitiveList.assetName')" prop="assetName">
+        <el-form-item :label="td('dg.sensitiveList.assetName')" prop="assetName" :label-position="labelPosition">
           <div class="form-readonly">{{ form.assetName ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="td('dg.sensitiveList.dataCategory')" prop="dataCategoryName">
+        <el-form-item :label="td('dg.sensitiveList.dataCategory')" prop="dataCategoryName" :label-position="labelPosition">
           <div class="form-readonly">
             {{ form.dataCategoryName ?? "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('dg.sensitiveList.dataLevel')" prop="dataLevelName">
+        <el-form-item :label="td('dg.sensitiveList.dataLevel')" prop="dataLevelName" :label-position="labelPosition">
           <div v-if="form.dataLevelName">
             <LevelBadge :levelData="form.dataLevelName" />
           </div>
           <div v-else class="form-readonly">-</div>
         </el-form-item>
 
-        <el-form-item :label="td('dg.sensitiveList.tableNameLabel')" prop="assetTableName">
+        <el-form-item :label="td('dg.sensitiveList.tableNameLabel')" prop="assetTableName" :label-position="labelPosition">
           <div class="form-readonly">
             {{ form.assetTableName || "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('dg.sensitiveList.fieldNameLabel')" prop="assetcolumnName">
+        <el-form-item :label="td('dg.sensitiveList.fieldNameLabel')" prop="assetcolumnName" :label-position="labelPosition">
           <div class="form-readonly">
             {{ form.assetcolumnName || "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.status')" prop="validFlag">
+        <el-form-item :label="td('common.texts.status')" prop="validFlag" :label-position="labelPosition">
           <el-tag v-if="form.validFlag === true" type="primary">{{ td('dg.sensitiveList.enabled') }}</el-tag>
           <el-tag v-else-if="form.validFlag === false" type="danger"
             >{{ td('dg.sensitiveList.disabled') }}</el-tag
           >
         </el-form-item>
-        <el-form-item :label="td('common.texts.description')" prop="assetDescription" class="row-full">
+        <el-form-item :label="td('common.texts.description')" prop="assetDescription" class="row-full" :label-position="labelPosition">
           <div class="form-readonly textarea">
             {{ form.assetDescription ?? "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full">
+        <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full" :label-position="labelPosition">
           <div class="form-readonly textarea">{{ form.remark ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.createdBy')" prop="createBy">
+        <el-form-item :label="td('common.texts.createdBy')" prop="createBy" :label-position="labelPosition">
           <div class="form-readonly">{{ form.createBy ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.createdTime')" prop="createTime">
+        <el-form-item :label="td('common.texts.createdTime')" prop="createTime" :label-position="labelPosition">
           <div class="form-readonly">
             {{ parseTime(form.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
         </el-form-item>
 
-        <el-form-item :label="td('common.texts.updatedBy')" prop="updateBy">
+        <el-form-item :label="td('common.texts.updatedBy')" prop="updateBy" :label-position="labelPosition">
           <div class="form-readonly">
             {{ form.updateBy ?? "-" }}
           </div>
         </el-form-item>
 
-        <el-form-item :label="td('common.texts.updatedTime')" prop="updateTime">
+        <el-form-item :label="td('common.texts.updatedTime')" prop="updateTime" :label-position="labelPosition">
           <div class="form-readonly">
             {{ parseTime(form.updateTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>

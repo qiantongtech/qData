@@ -183,8 +183,8 @@
         {{ td('ai.chat.renameTitle') }}
       </span>
     </template>
-    <el-form label-width="60px" v-loading="renameLoading">
-      <el-form-item :label="td('ai.chat.titleLabel')">
+    <el-form label-width="60px" v-loading="renameLoading" :label-position="labelPosition">
+      <el-form-item :label="td('ai.chat.titleLabel')" :label-position="labelPosition">
         <el-input
           v-model="renameTitle"
           :placeholder="td('ai.chat.titlePlaceholder')"

@@ -69,7 +69,7 @@
         v-show="showSearch"
         @submit.prevent
       >
-        <el-form-item :label="td('dg.dataLevel.levelName')" prop="name">
+        <el-form-item :label="td('dg.dataLevel.levelName')" prop="name" :label-position="labelPosition">
           <el-input
             class="el-form-input-width"
             v-model="queryParams.name"
@@ -78,7 +78,7 @@
             @keyup.enter="handleQuery"
           />
         </el-form-item>
-        <el-form-item :label="td('dg.dataLevel.sensitiveLevel')" prop="sensitiveLevel">
+        <el-form-item :label="td('dg.dataLevel.sensitiveLevel')" prop="sensitiveLevel" :label-position="labelPosition">
           <el-input
             class="el-form-input-width"
             v-model="queryParams.sensitiveLevel"
@@ -93,7 +93,7 @@
             "
           />
         </el-form-item>
-        <el-form-item :label="td('common.texts.status')" prop="validFlag">
+        <el-form-item :label="td('common.texts.status')" prop="validFlag" :label-position="labelPosition">
           <el-select
             class="el-form-input-width"
             v-model="queryParams.validFlag"
@@ -256,8 +256,8 @@
         :model="form"
         label-width="110px"
         class="column-form"
-      >
-        <el-form-item :label="td('common.texts.number') + ':'" prop="id">
+       :label-position="labelPosition">
+        <el-form-item :label="td('common.texts.number') + ':'" prop="id" :label-position="labelPosition">
           <div class="form-readonly">{{ form.id ?? "-" }}</div>
         </el-form-item>
         <el-form-item :label="td('dg.dataLevel.levelName')" prop="name">
@@ -265,7 +265,7 @@
             {{ form.name ?? form.levelName ?? "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('dg.dataLevel.levelAbbr')" prop="shortName">
+        <el-form-item :label="td('dg.dataLevel.levelAbbr')" prop="shortName" :label-position="labelPosition">
           <div class="form-readonly">
             {{ form.shortName ?? form.levelCode ?? form.code ?? "-" }}
           </div>
@@ -280,28 +280,28 @@
             >{{ td('dg.dataLevel.disabledLabel') }}</el-tag
           >
         </el-form-item>
-        <el-form-item :label="td('common.texts.description')" prop="description" class="row-full">
+        <el-form-item :label="td('common.texts.description')" prop="description" class="row-full" :label-position="labelPosition">
           <div class="form-readonly textarea">
             {{ form.description || form.remark || form.levelDesc || "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full">
+        <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full" :label-position="labelPosition">
           <div class="form-readonly textarea">{{ form.remark ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.createdBy')" prop="createBy">
+        <el-form-item :label="td('common.texts.createdBy')" prop="createBy" :label-position="labelPosition">
           <div class="form-readonly">{{ form.createBy ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.createdTime')" prop="createTime">
+        <el-form-item :label="td('common.texts.createdTime')" prop="createTime" :label-position="labelPosition">
           <div class="form-readonly">
             {{ parseTime(form.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.updatedBy')" prop="updateBy">
+        <el-form-item :label="td('common.texts.updatedBy')" prop="updateBy" :label-position="labelPosition">
           <div class="form-readonly">
             {{ form.updateBy || form.updateUser || form.updateName || "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.updatedTime')" prop="updateTime">
+        <el-form-item :label="td('common.texts.updatedTime')" prop="updateTime" :label-position="labelPosition">
           <div class="form-readonly">
             {{
               parseTime(

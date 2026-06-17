@@ -12,17 +12,17 @@
       :rules="rules"
       label-width="110px"
       @submit.prevent
-    >
-      <el-form-item :label="td('dg.dataLevel.levelName')" prop="name">
+     :label-position="labelPosition">
+      <el-form-item :label="td('dg.dataLevel.levelName')" prop="name" :label-position="labelPosition">
         <el-input v-model="form.name" :placeholder="td('dg.dataLevel.levelNamePlaceholder')" />
       </el-form-item>
-      <el-form-item :label="td('dg.dataLevel.levelAbbr')" prop="shortName">
+      <el-form-item :label="td('dg.dataLevel.levelAbbr')" prop="shortName" :label-position="labelPosition">
         <el-input
           v-model="form.shortName"
           :placeholder="td('dg.dataLevel.levelAbbrPlaceholder')"
         />
       </el-form-item>
-      <el-form-item :label="td('dg.dataLevel.sensitiveLevel')" prop="sensitiveLevel">
+      <el-form-item :label="td('dg.dataLevel.sensitiveLevel')" prop="sensitiveLevel" :label-position="labelPosition">
         <el-input
           v-model="form.sensitiveLevel"
           :placeholder="td('dg.dataLevel.sensitiveLevelInputPlaceholder')"
@@ -31,13 +31,13 @@
         />
       </el-form-item>
 
-      <el-form-item :label="td('common.texts.status')" prop="validFlag">
+      <el-form-item :label="td('common.texts.status')" prop="validFlag" :label-position="labelPosition">
         <el-radio-group v-model="form.validFlag">
           <el-radio :label="td('dg.dataLevel.disabledLabel')" :value="false" />
           <el-radio :label="td('dg.dataLevel.enabledLabel')" :value="true" />
         </el-radio-group>
       </el-form-item>
-      <el-form-item :label="td('common.texts.description')" prop="description">
+      <el-form-item :label="td('common.texts.description')" prop="description" :label-position="labelPosition">
         <el-input
           v-model="form.description"
           type="textarea"
@@ -47,7 +47,7 @@
           maxlength="500"
         />
       </el-form-item>
-      <el-form-item :label="td('common.texts.remark')" prop="remark">
+      <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
         <el-input
           v-model="form.remark"
           type="textarea"

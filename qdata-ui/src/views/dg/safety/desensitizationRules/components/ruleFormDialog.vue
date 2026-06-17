@@ -20,11 +20,11 @@
         :disabled="isReadonly"
         @submit.prevent
         class="column-form"
-    >
-      <el-form-item :label="td('dg.desensitizationRules.ruleName')" prop="name">
+     :label-position="labelPosition">
+      <el-form-item :label="td('dg.desensitizationRules.ruleName')" prop="name" :label-position="labelPosition">
         <el-input v-model="form.name" :placeholder="td('dg.desensitizationRules.ruleNamePlaceholder')" />
       </el-form-item>
-      <el-form-item :label="td('dg.sensitiveList.dataCategory')" prop="dataCategoryId">
+      <el-form-item :label="td('dg.sensitiveList.dataCategory')" prop="dataCategoryId" :label-position="labelPosition">
         <el-tree-select
             v-if="!form.id"
             v-model="form.dataCategoryId"
@@ -81,7 +81,7 @@
           </el-radio>
         </el-radio-group>
       </qt-form-item>
-      <el-form-item :label="td('dg.desensitizationRules.replaceRule')" prop="replaceRule">
+      <el-form-item :label="td('dg.desensitizationRules.replaceRule')" prop="replaceRule" :label-position="labelPosition">
         <el-select v-model="form.replaceRule" :placeholder="td('dg.desensitizationRules.replaceRulePlaceholder')">
           <el-option
               v-for="opt in maskRuleOptions"
@@ -91,7 +91,7 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item :label="td('dg.desensitizationRules.replaceContent')" prop="replaceContent">
+      <el-form-item :label="td('dg.desensitizationRules.replaceContent')" prop="replaceContent" :label-position="labelPosition">
         <el-input v-model="form.replaceContent" :placeholder="td('dg.desensitizationRules.replaceContentPlaceholder')" />
       </el-form-item>
       <qt-form-item
@@ -142,13 +142,13 @@
           </div>
         </div>
       </qt-form-item>
-      <el-form-item :label="td('common.texts.status')" prop="validFlag" class="row-full">
+      <el-form-item :label="td('common.texts.status')" prop="validFlag" class="row-full" :label-position="labelPosition">
         <el-radio-group v-model="form.validFlag">
           <el-radio :label="false">{{ td('dg.desensitizationRules.detailStatusDisable') }}</el-radio>
           <el-radio :label="true">{{ td('dg.desensitizationRules.detailStatusEnable') }}</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item :label="td('common.texts.description')" prop="description" class="row-full">
+      <el-form-item :label="td('common.texts.description')" prop="description" class="row-full" :label-position="labelPosition">
         <el-input
             v-model="form.description"
             type="textarea"
@@ -157,7 +157,7 @@
             show-word-limit
         />
       </el-form-item>
-      <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full">
+      <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full" :label-position="labelPosition">
         <el-input
             v-model="form.remark"
             type="textarea"

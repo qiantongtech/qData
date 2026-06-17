@@ -19,7 +19,7 @@
    <div class="app-container" ref="app-container">
       <div class="pagecont-top" v-show="showSearch">
          <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true">
-            <el-form-item :label="td('sys.system.notice.noticeTitle')" prop="noticeTitle">
+            <el-form-item :label="td('sys.system.notice.noticeTitle')" prop="noticeTitle" :label-position="labelPosition">
                <el-input v-model="queryParams.noticeTitle" :placeholder="td('sys.system.notice.noticeTitlePlaceholder')" clearable class="el-form-input-width"
                   @keyup.enter="handleQuery" />
             </el-form-item>
@@ -127,7 +127,7 @@
       <!-- 添加或修改公告对话框 -->
       <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable
          destroy-on-close>
-         <el-form ref="noticeRef" :model="form" :rules="rules" label-width="80px">
+         <el-form ref="noticeRef" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
             <el-row :gutter="20">
                <el-col :span="12">
                   <el-form-item :label="td('sys.system.notice.noticeTitle')" prop="noticeTitle">
@@ -135,7 +135,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('sys.system.notice.noticeType')" prop="noticeType">
+                  <el-form-item :label="td('sys.system.notice.noticeType')" prop="noticeType" :label-position="labelPosition">
                      <el-select v-model="form.noticeType" :placeholder="td('sys.system.notice.selectPlaceholder')">
                         <el-option v-for="dict in sys_notice_type" :key="dict.value" :label="dict.label"
                            :value="dict.value"></el-option>
@@ -143,7 +143,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('sys.system.notice.effectTime')">
+                  <el-form-item :label="td('sys.system.notice.effectTime')" :label-position="labelPosition">
                      <el-date-picker class="el-form-input-width" v-model="dateRange" value-format="YYYY-MM-DD HH:mm:ss"
                         type="daterange" range-separator="-" :start-placeholder="td('common.form.startDatePlaceholder')" :end-placeholder="td('common.form.endDatePlaceholder')"
                         :default-time="[new Date(2000, 1, 1, 0, 0, 0),
@@ -163,7 +163,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('sys.system.notice.isTopLabel')" prop="topFlag">
+                  <el-form-item :label="td('sys.system.notice.isTopLabel')" prop="topFlag" :label-position="labelPosition">
                      <el-radio-group v-model="form.topFlag">
                         <el-radio v-for="dict in sys_is_or_not" :key="dict.value" :value="+dict.value">{{ dict.label
                            }}</el-radio>
@@ -171,7 +171,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('sys.system.notice.isPopupLabel')">
+                  <el-form-item :label="td('sys.system.notice.isPopupLabel')" :label-position="labelPosition">
                      <el-radio-group v-model="form.alertFlag">
                         <el-radio v-for="dict in sys_is_or_not" :key="dict.value" :value="+dict.value">{{ dict.label
                            }}</el-radio>
@@ -179,7 +179,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('common.texts.status')">
+                  <el-form-item :label="td('common.texts.status')" :label-position="labelPosition">
                      <el-radio-group v-model="form.status">
                         <el-radio v-for="dict in sys_notice_status" :key="dict.value" :value="dict.value">{{ dict.label
                            }}</el-radio>
@@ -188,7 +188,7 @@
                </el-col>
 
                <el-col :span="24">
-                  <el-form-item :label="td('sys.system.notice.content')">
+                  <el-form-item :label="td('sys.system.notice.content')" :label-position="labelPosition">
                      <editor v-model="form.noticeContentText" :min-height="192" :max-height="300" />
                   </el-form-item>
                </el-col>

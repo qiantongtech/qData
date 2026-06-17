@@ -18,16 +18,16 @@
 <template>
    <!-- 授权用户 -->
    <el-dialog :title="td('sys.system.roleAuth.selectUser')" v-model="visible" width="800px" top="5vh" append-to-body>
-      <el-form :model="queryParams" ref="queryRef" :inline="true">
-         <el-form-item :label="td('sys.system.roleAuth.userName')" prop="userName">
+      <el-form :model="queryParams" ref="queryRef" :inline="true" :label-position="labelPosition">
+         <el-form-item :label="td('sys.system.roleAuth.userName')" prop="userName" :label-position="labelPosition">
             <el-input v-model="queryParams.userName" :placeholder="td('sys.system.roleAuth.userNamePlaceholder')" clearable style="width: 180px"
                @keyup.enter="handleQuery" />
          </el-form-item>
-         <el-form-item :label="td('sys.system.roleAuth.phone')" prop="phonenumber">
+         <el-form-item :label="td('sys.system.roleAuth.phone')" prop="phonenumber" :label-position="labelPosition">
             <el-input v-model="queryParams.phonenumber" :placeholder="td('sys.system.roleAuth.phonePlaceholder')" clearable style="width: 180px"
                @keyup.enter="handleQuery" />
          </el-form-item>
-         <el-form-item>
+         <el-form-item :label-position="labelPosition">
             <el-button type="primary" icon="Search" @click="handleQuery">{{ td('sys.system.roleAuth.searchBtn') }}</el-button>
             <el-button icon="Refresh" @click="resetQuery">{{ td('common.button.reset') }}</el-button>
          </el-form-item>

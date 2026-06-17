@@ -32,8 +32,8 @@
       :inline="true"
       v-show="showSearch"
       
-    >
-      <el-form-item :label="td('sys.tool.chooseCurrent.dictName')" prop="dictName">
+     :label-position="labelPosition">
+      <el-form-item :label="td('sys.tool.chooseCurrent.dictName')" prop="dictName" :label-position="labelPosition">
         <el-input
           v-model="queryParams.dictName"
           :placeholder="td('sys.tool.chooseCurrent.dictNamePlaceholder')"
@@ -42,7 +42,7 @@
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item :label="td('sys.tool.chooseCurrent.dictType')" prop="dictType">
+      <el-form-item :label="td('sys.tool.chooseCurrent.dictType')" prop="dictType" :label-position="labelPosition">
         <el-input
           v-model="queryParams.dictType"
           :placeholder="td('sys.tool.chooseCurrent.dictTypePlaceholder')"
@@ -51,7 +51,7 @@
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item :label="td('common.texts.status')" prop="status">
+      <el-form-item :label="td('common.texts.status')" prop="status" :label-position="labelPosition">
         <el-select
           v-model="queryParams.status"
           :placeholder="td('sys.tool.chooseCurrent.dictStatus')"
@@ -66,7 +66,7 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item :label="td('common.texts.createdTime')">
+      <el-form-item :label="td('common.texts.createdTime')" :label-position="labelPosition">
         <el-date-picker
           class="el-form-input-width"
           v-model="dateRange"
@@ -77,7 +77,7 @@
           :end-placeholder="td('common.form.endDatePlaceholder')"
         ></el-date-picker>
       </el-form-item>
-      <el-form-item>
+      <el-form-item :label-position="labelPosition">
         <el-button
           plain
           type="primary"

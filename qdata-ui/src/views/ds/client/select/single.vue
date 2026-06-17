@@ -19,43 +19,43 @@
   <el-dialog :title="td('ds.client.singleTitle')" v-model="visible" width="1200px" :append-to="$refs['app-container']" draggable
     destroy-on-close @close="cancel">
     <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch"
-      >
-      <el-form-item label="ID" prop="id">
+       :label-position="labelPosition">
+      <el-form-item label="ID" prop="id" :label-position="labelPosition">
         <el-input style="width:240px" v-model="queryParams.id" :placeholder="td('ds.client.idPlaceholder')" clearable
           @keyup.enter="handleQuery" />
       </el-form-item>
-      <el-form-item :label="td('ds.client.appName')" prop="name">
+      <el-form-item :label="td('ds.client.appName')" prop="name" :label-position="labelPosition">
         <el-input style="width:240px" v-model="queryParams.name" :placeholder="td('ds.client.appNamePlaceholder')" clearable
           @keyup.enter="handleQuery" />
       </el-form-item>
-      <el-form-item :label="td('ds.client.appType')" prop="type">
+      <el-form-item :label="td('ds.client.appType')" prop="type" :label-position="labelPosition">
         <el-select style="width:240px" v-model="queryParams.type" :placeholder="td('ds.client.appTypePlaceholder')" clearable>
           <el-option v-for="dict in auth_app_type" :key="dict.value" :label="dict.label" :value="dict.value" />
         </el-select>
       </el-form-item>
-      <el-form-item :label="td('ds.client.appSecret')" prop="secret">
+      <el-form-item :label="td('ds.client.appSecret')" prop="secret" :label-position="labelPosition">
         <el-input style="width:240px" v-model="queryParams.secret" :placeholder="td('ds.client.appSecretPlaceholder')" clearable
           @keyup.enter="handleQuery" />
       </el-form-item>
-      <el-form-item :label="td('ds.client.homepageUrl')" prop="homepageUrl">
+      <el-form-item :label="td('ds.client.homepageUrl')" prop="homepageUrl" :label-position="labelPosition">
         <el-input style="width:240px" v-model="queryParams.homepageUrl" :placeholder="td('ds.client.homepageUrlPlaceholder')" clearable
           @keyup.enter="handleQuery" />
       </el-form-item>
-      <el-form-item :label="td('ds.client.syncUrl')" prop="syncUrl">
+      <el-form-item :label="td('ds.client.syncUrl')" prop="syncUrl" :label-position="labelPosition">
         <el-input style="width:240px" v-model="queryParams.syncUrl" :placeholder="td('ds.client.syncUrlPlaceholder')" clearable
           @keyup.enter="handleQuery" />
       </el-form-item>
-      <el-form-item :label="td('ds.client.isPublic')" prop="publicFlag">
+      <el-form-item :label="td('ds.client.isPublic')" prop="publicFlag" :label-position="labelPosition">
         <el-select style="width:240px" v-model="queryParams.publicFlag" :placeholder="td('ds.client.isPublicPlaceholder')" clearable>
           <el-option v-for="dict in auth_public" :key="dict.value" :label="dict.label" :value="dict.value" />
         </el-select>
       </el-form-item>
-      <el-form-item :label="td('common.texts.createdTime')" prop="createTime">
+      <el-form-item :label="td('common.texts.createdTime')" prop="createTime" :label-position="labelPosition">
         <el-date-picker style="width:240px" clearable v-model="queryParams.createTime" type="date"
           value-format="YYYY-MM-DD" :placeholder="td('ds.client.createTimePlaceholder')">
         </el-date-picker>
       </el-form-item>
-      <el-form-item>
+      <el-form-item :label-position="labelPosition">
         <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
           <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
         </el-button>

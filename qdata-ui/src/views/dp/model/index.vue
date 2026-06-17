@@ -171,17 +171,17 @@
           </el-icon>
         </span>
       </template>
-      <el-form ref="dpModelRef" :model="form" label-width="80px">
+      <el-form ref="dpModelRef" :model="form" label-width="80px" :label-position="labelPosition">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('dp.model.detail.chineseName')" prop="modelComment">
+            <el-form-item :label="td('dp.model.detail.chineseName')" prop="modelComment" :label-position="labelPosition">
               <div>
                 {{ form.modelComment }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('dp.model.detail.englishName')" prop="modelName">
+            <el-form-item :label="td('dp.model.detail.englishName')" prop="modelName" :label-position="labelPosition">
               <div>
                 {{ form.modelName }}
               </div>
@@ -190,21 +190,21 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('dp.model.detail.catCode')" prop="catCode">
+            <el-form-item :label="td('dp.model.detail.catCode')" prop="catCode" :label-position="labelPosition">
               <div>
                 {{ form.catCode }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('common.texts.status')" prop="status">
+            <el-form-item :label="td('common.texts.status')" prop="status" :label-position="labelPosition">
               <dict-tag :options="dp_model_status" :value="form.status" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('dp.model.detail.createType')" prop="createType">
+            <el-form-item :label="td('dp.model.detail.createType')" prop="createType" :label-position="labelPosition">
               <dict-tag
                 :options="dp_model_create_type"
                 :value="form.createType"
@@ -212,7 +212,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('dp.model.detail.contact')" prop="contact">
+            <el-form-item :label="td('dp.model.detail.contact')" prop="contact" :label-position="labelPosition">
               <div>
                 {{ form.contact }}
               </div>
@@ -221,14 +221,14 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('dp.model.detail.contactNumber')" prop="contactNumber">
+            <el-form-item :label="td('dp.model.detail.contactNumber')" prop="contactNumber" :label-position="labelPosition">
               <div>
                 {{ form.contactNumber }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('common.texts.description')" prop="description">
+            <el-form-item :label="td('common.texts.description')" prop="description" :label-position="labelPosition">
               <div>
                 {{ form.description }}
               </div>

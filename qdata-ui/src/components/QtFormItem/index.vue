@@ -8,11 +8,9 @@
     </template>
 
     <template #label="scope">
-      <div class="label-wrap">
         <slot name="label" v-bind="scope">
           {{ scope.label }}
         </slot>
-      </div>
     </template>
   </el-form-item>
 </template>

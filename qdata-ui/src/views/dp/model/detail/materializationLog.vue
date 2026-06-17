@@ -63,27 +63,27 @@
       :model="form"
       :rules="rules"
       label-width="80px"
-    >
+     :label-position="labelPosition">
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('dp.materializedModel.modelCode')" prop="modelName">
+          <el-form-item :label="td('dp.materializedModel.modelCode')" prop="modelName" :label-position="labelPosition">
             <el-input v-model="form.modelName" :placeholder="td('dp.materializedModel.modelCode')" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('dp.materializedModel.modelName')" prop="modelAlias">
+          <el-form-item :label="td('dp.materializedModel.modelName')" prop="modelAlias" :label-position="labelPosition">
             <el-input v-model="form.modelAlias" :placeholder="td('dp.materializedModel.modelName')" />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('dp.materializedModel.modelTableId')" prop="modelId">
+          <el-form-item :label="td('dp.materializedModel.modelTableId')" prop="modelId" :label-position="labelPosition">
             <el-input v-model="form.modelId" :placeholder="td('dp.materializedModel.modelTableId')" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('common.texts.status')" prop="status">
+          <el-form-item :label="td('common.texts.status')" prop="status" :label-position="labelPosition">
             <el-radio-group v-model="form.status">
               <el-radio
                 v-for="dict in dp_template_build_log_build_status"
@@ -97,7 +97,7 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('dp.materializedModel.executionLog')" prop="message">
+          <el-form-item :label="td('dp.materializedModel.executionLog')" prop="message" :label-position="labelPosition">
             <el-input
               v-model="form.message"
               type="textarea"
@@ -108,7 +108,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('dp.materializedModel.sqlCommand')" prop="sqlCommand">
+          <el-form-item :label="td('dp.materializedModel.sqlCommand')" prop="sqlCommand" :label-position="labelPosition">
             <el-input
               v-model="form.sqlCommand"
               :placeholder="td('dp.materializedModel.sqlCommand')"
@@ -118,7 +118,7 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('dp.materializedModel.datasourceId')" prop="datasourceId">
+          <el-form-item :label="td('dp.materializedModel.datasourceId')" prop="datasourceId" :label-position="labelPosition">
             <el-input
               v-model="form.datasourceId"
               :placeholder="td('dp.materializedModel.datasourceId')"
@@ -128,7 +128,7 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('dp.modelForm.datasourceName')" prop="datasourceName">
+          <el-form-item :label="td('dp.modelForm.datasourceName')" prop="datasourceName" :label-position="labelPosition">
             <el-input
               v-model="form.datasourceName"
               :placeholder="td('dp.modelForm.datasourceName')"
@@ -136,7 +136,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('dp.materializedModel.releaseMode')" prop="releaseMode">
+          <el-form-item :label="td('dp.materializedModel.releaseMode')" prop="releaseMode" :label-position="labelPosition">
             <el-radio-group v-model="form.releaseMode">
               <el-radio label="1">{{ td('dp.materializedModel.deleteAndRecreate') }}</el-radio>
               <el-radio label="2">{{ td('dp.materializedModel.incrementalRelease') }}</el-radio>
@@ -146,12 +146,12 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('dp.materializedModel.assetId')" prop="assetId">
+          <el-form-item :label="td('dp.materializedModel.assetId')" prop="assetId" :label-position="labelPosition">
             <el-input v-model="form.assetId" :placeholder="td('dp.materializedModel.assetId')" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('common.texts.remark')" prop="remark">
+          <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
             <el-input v-model="form.remark" :placeholder="td('common.form.remarkPlaceholder')" />
           </el-form-item>
         </el-col>
@@ -175,17 +175,17 @@
     :append-to="$refs['app-container']"
     draggable
   >
-    <el-form ref="dpModelMaterializedRef" :model="form" label-width="80px">
+    <el-form ref="dpModelMaterializedRef" :model="form" label-width="80px" :label-position="labelPosition">
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('dp.materializedModel.modelCode')" prop="modelName">
+          <el-form-item :label="td('dp.materializedModel.modelCode')" prop="modelName" :label-position="labelPosition">
             <div>
               {{ form.modelName }}
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('dp.materializedModel.modelName')" prop="modelAlias">
+          <el-form-item :label="td('dp.materializedModel.modelName')" prop="modelAlias" :label-position="labelPosition">
             <div>
               {{ form.modelAlias }}
             </div>
@@ -194,14 +194,14 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('dp.materializedModel.modelTableId')" prop="modelId">
+          <el-form-item :label="td('dp.materializedModel.modelTableId')" prop="modelId" :label-position="labelPosition">
             <div>
               {{ form.modelId }}
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('common.texts.status')" prop="status">
+          <el-form-item :label="td('common.texts.status')" prop="status" :label-position="labelPosition">
             <dict-tag
               :options="dp_template_build_log_build_status"
               :value="form.status"
@@ -211,14 +211,14 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('dp.materializedModel.executionLog')" prop="message">
+          <el-form-item :label="td('dp.materializedModel.executionLog')" prop="message" :label-position="labelPosition">
             <div>
               {{ form.message }}
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('dp.materializedModel.sqlCommand')" prop="sqlCommand">
+          <el-form-item :label="td('dp.materializedModel.sqlCommand')" prop="sqlCommand" :label-position="labelPosition">
             <div>
               {{ form.sqlCommand }}
             </div>
@@ -227,14 +227,14 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('dp.materializedModel.datasourceId')" prop="datasourceId">
+          <el-form-item :label="td('dp.materializedModel.datasourceId')" prop="datasourceId" :label-position="labelPosition">
             <div>
               {{ form.datasourceId }}
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('dp.materializedModel.datasourceType')" prop="datasourceType">
+          <el-form-item :label="td('dp.materializedModel.datasourceType')" prop="datasourceType" :label-position="labelPosition">
             <div>
               {{ form.datasourceType }}
             </div>
@@ -243,14 +243,14 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('dp.modelForm.datasourceName')" prop="datasourceName">
+          <el-form-item :label="td('dp.modelForm.datasourceName')" prop="datasourceName" :label-position="labelPosition">
             <div>
               {{ form.datasourceName }}
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('dp.materializedModel.releaseMode')" prop="releaseMode">
+          <el-form-item :label="td('dp.materializedModel.releaseMode')" prop="releaseMode" :label-position="labelPosition">
             <el-tag v-if="form.releaseMode == '1'" type="danger"
               >{{ td('dp.materializedModel.deleteAndRecreate') }}</el-tag
             >
@@ -263,14 +263,14 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('dp.materializedModel.assetId')" prop="assetId">
+          <el-form-item :label="td('dp.materializedModel.assetId')" prop="assetId" :label-position="labelPosition">
             <div>
               {{ form.assetId }}
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('common.texts.remark')" prop="remark">
+          <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
             <div>
               {{ form.remark }}
             </div>

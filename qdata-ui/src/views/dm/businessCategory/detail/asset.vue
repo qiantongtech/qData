@@ -66,54 +66,54 @@
         :model="form"
         label-width="110px"
         class="column-form"
-      >
-        <el-form-item :label="td('common.texts.number', '编号') + ':'" prop="id">
+       :label-position="labelPosition">
+        <el-form-item :label="td('common.texts.number', '编号') + ':'" prop="id" :label-position="labelPosition">
           <div class="form-readonly">
             {{ form.id }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('dm.dataDomain.dataDomain', '数据域')" prop="name">
+        <el-form-item :label="td('dm.dataDomain.dataDomain', '数据域')" prop="name" :label-position="labelPosition">
           <div class="form-readonly">{{ form.name ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="td('dm.dataDomain.engName', '英文缩写')" prop="engName">
+        <el-form-item :label="td('dm.dataDomain.engName', '英文缩写')" prop="engName" :label-position="labelPosition">
           <div class="form-readonly">{{ form.engName ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="td('dm.dataDomain.ownerId', '负责人')" prop="ownerUserId">
+        <el-form-item :label="td('dm.dataDomain.ownerId', '负责人')" prop="ownerUserId" :label-position="labelPosition">
           <div class="form-readonly">{{ form.ownerUserName || "-" }}</div>
         </el-form-item>
-        <el-form-item :label="td('dm.dataDomain.ownerPhone', '负责人电话')" prop="ownerUserPhoneNumber">
+        <el-form-item :label="td('dm.dataDomain.ownerPhone', '负责人电话')" prop="ownerUserPhoneNumber" :label-position="labelPosition">
           <div class="form-readonly">
             {{ form.ownerUserPhoneNumber || "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.description', '描述')" prop="description" class="row-full">
+        <el-form-item :label="td('common.texts.description', '描述')" prop="description" class="row-full" :label-position="labelPosition">
           <div class="form-readonly textarea">
             {{ form.description ?? "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.remark', '备注')" prop="remark" class="row-full">
+        <el-form-item :label="td('common.texts.remark', '备注')" prop="remark" class="row-full" :label-position="labelPosition">
           <div class="form-readonly textarea">{{ form.remark ?? "-" }}</div>
         </el-form-item>
 
-        <el-form-item :label="td('common.texts.createdBy', '创建人')" prop="createBy">
+        <el-form-item :label="td('common.texts.createdBy', '创建人')" prop="createBy" :label-position="labelPosition">
           <div class="form-readonly">
             {{ form.createBy }}
           </div>
         </el-form-item>
 
-        <el-form-item :label="td('common.texts.createdTime', '创建时间')" prop="createTime">
+        <el-form-item :label="td('common.texts.createdTime', '创建时间')" prop="createTime" :label-position="labelPosition">
           <div class="form-readonly">
             {{ parseTime(form.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
         </el-form-item>
 
-        <el-form-item :label="td('common.texts.updatedBy', '更新人')" prop="createBy">
+        <el-form-item :label="td('common.texts.updatedBy', '更新人')" prop="createBy" :label-position="labelPosition">
           <div class="form-readonly">
             {{ form.updateBy }}
           </div>
         </el-form-item>
 
-        <el-form-item :label="td('common.texts.updatedTime', '更新时间')" prop="updateTime">
+        <el-form-item :label="td('common.texts.updatedTime', '更新时间')" prop="updateTime" :label-position="labelPosition">
           <div class="form-readonly">
             {{ parseTime(form.updateTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>

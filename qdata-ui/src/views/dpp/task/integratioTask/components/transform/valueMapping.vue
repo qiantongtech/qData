@@ -31,7 +31,7 @@
       label-width="180px"
       @submit.prevent
       v-loading="loading"
-    >
+     :label-position="labelPosition">
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
@@ -40,7 +40,7 @@
             :rules="[
               { required: true, message: td('dpp.integration.nodeNameRequired', '请输入节点名称'), trigger: 'change' },
             ]"
-          >
+           :label-position="labelPosition">
             <el-input
               v-if="!info"
               v-model="form.name"
@@ -50,7 +50,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('dpp.integration.type', '类型')" prop="typeName">
+          <el-form-item :label="td('dpp.integration.type', '类型')" prop="typeName" :label-position="labelPosition">
             <template v-if="!info">
               <el-select
                 v-model="form.taskParams.typeName"
@@ -80,7 +80,7 @@
             :rules="[
               { required: true, message: td('dpp.integration.inputFieldRequired', '请选择使用字段'), trigger: 'blur' },
             ]"
-          >
+           :label-position="labelPosition">
             <template v-if="!info">
               <el-select
                 v-model="form.taskParams.inputField"
@@ -107,7 +107,7 @@
             :rules="[
               { required: true, message: td('dpp.integration.outputFieldRequired', '请输入目标字段'), trigger: 'change' },
             ]"
-          >
+           :label-position="labelPosition">
             <el-input
               v-if="!info"
               v-model="form.taskParams.outputField"
@@ -131,7 +131,7 @@
                 trigger: 'change',
               },
             ]"
-          >
+           :label-position="labelPosition">
             <template #label>
               <div class="justify-center">
                 <span>{{ td('dpp.integration.unmatchedDefaultValue', '不匹配时的默认值') }}</span>

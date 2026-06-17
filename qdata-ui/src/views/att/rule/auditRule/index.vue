@@ -39,7 +39,7 @@
             v-show="showSearch"
             @submit.prevent
           >
-            <el-form-item :label="td('att.common.ruleName')" prop="name">
+            <el-form-item :label="td('att.common.ruleName')" prop="name" :label-position="labelPosition">
               <el-input
                 class="el-form-input-width"
                 v-model="queryParams.name"
@@ -242,7 +242,7 @@
         :rules="rules"
         label-width="80px"
         @submit.prevent
-      >
+       :label-position="labelPosition">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item :label="td('att.common.ruleName')" prop="name">
@@ -250,12 +250,12 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('att.common.code')" prop="code">
+            <el-form-item :label="td('att.common.code')" prop="code" :label-position="labelPosition">
               <el-input v-model="form.code" :placeholder="td('att.auditRule.form.codePlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('att.auditRule.table.qualityDim')" prop="qualityDim">
+            <el-form-item :label="td('att.auditRule.table.qualityDim')" prop="qualityDim" :label-position="labelPosition">
               <el-select v-model="form.qualityDim" :placeholder="td('att.common.qualityDimPlaceholder')">
                 <el-option
                   v-for="dict in att_rule_audit_q_dimension"
@@ -269,7 +269,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('att.common.useCase')" prop="useCase">
+            <el-form-item :label="td('att.common.useCase')" prop="useCase" :label-position="labelPosition">
               <el-input
                 type="textarea"
                 v-model="form.useCase"
@@ -280,7 +280,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('att.common.example')" prop="example">
+            <el-form-item :label="td('att.common.example')" prop="example" :label-position="labelPosition">
               <el-input
                 type="textarea"
                 v-model="form.example"
@@ -291,7 +291,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.description')" prop="description">
+            <el-form-item :label="td('common.texts.description')" prop="description" :label-position="labelPosition">
               <el-input
                 type="textarea"
                 v-model="form.description"

@@ -141,15 +141,15 @@
                     {{ title }}
                 </span>
         </template>
-        <el-form ref="AttApiCatRef" :model="form" :rules="rules" @submit.prevent>
+        <el-form ref="AttApiCatRef" :model="form" :rules="rules" @submit.prevent :label-position="labelPosition">
           <el-row :gutter="20">
             <el-col :span="12">
-              <el-form-item :label="td('ds.apiCat.categoryName')" prop="name">
+              <el-form-item :label="td('ds.apiCat.categoryName')" prop="name" :label-position="labelPosition">
                 <el-input v-model="form.name" :placeholder="td('ds.apiCat.categoryNamePlaceholder')"/>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item :label="td('ds.apiCat.parentCategory')" prop="parentId">
+              <el-form-item :label="td('ds.apiCat.parentCategory')" prop="parentId" :label-position="labelPosition">
                 <el-tree-select filterable :disabled="form.id" v-model="form.parentId"
                                 :data="attApiCatOptions" :props="{ value: 'id', label: 'name', children: 'children' }"
                                 value-key="id" :placeholder="td('ds.apiCat.parentPlaceholder')" check-strictly />
@@ -159,13 +159,13 @@
                 <el-row :gutter="20"> </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item :label="td('ds.apiCat.sortOrder')" prop="sortOrder">
+                        <el-form-item :label="td('ds.apiCat.sortOrder')" prop="sortOrder" :label-position="labelPosition">
                             <el-input-number style="width: 100%" v-model="form.sortOrder" controls-position="right"
                                 :min="0" />
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item :label="td('common.texts.status')" prop="validFlag">
+                        <el-form-item :label="td('common.texts.status')" prop="validFlag" :label-position="labelPosition">
                             <el-radio v-model="form.validFlag" :label="true">{{ td('ds.apiCat.enable') }}</el-radio>
                             <el-radio v-model="form.validFlag" :label="false">{{ td('ds.apiCat.disable') }}</el-radio>
                         </el-form-item>
@@ -173,7 +173,7 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="24">
-                        <el-form-item :label="td('common.texts.description')">
+                        <el-form-item :label="td('common.texts.description')" :label-position="labelPosition">
                             <el-input type="textarea" v-model="form.description" :placeholder="td('common.form.descriptionPlaceholder')"
                                 :min-height="192" />
                         </el-form-item>
@@ -182,7 +182,7 @@
 
                 <el-row :gutter="20">
                     <el-col :span="24">
-                        <el-form-item :label="td('common.texts.remark')">
+                        <el-form-item :label="td('common.texts.remark')" :label-position="labelPosition">
                             <el-input type="textarea" :placeholder="td('common.form.remarkPlaceholder')" v-model="form.remark" :min-height="192" />
                         </el-form-item>
                     </el-col>
@@ -203,17 +203,17 @@
                     {{ title }}
                 </span>
             </template>
-            <el-form ref="AttApiCatRef" :model="form" label-width="80px">
+            <el-form ref="AttApiCatRef" :model="form" label-width="80px" :label-position="labelPosition">
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item :label="td('ds.apiCat.categoryNameInput')" prop="name">
+                        <el-form-item :label="td('ds.apiCat.categoryNameInput')" prop="name" :label-position="labelPosition">
                             <div>
                                 {{ form.name }}
                             </div>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item :label="td('ds.apiCat.relatedParentId')" prop="parentId">
+                        <el-form-item :label="td('ds.apiCat.relatedParentId')" prop="parentId" :label-position="labelPosition">
                             <div>
                                 {{ form.parentId }}
                             </div>
@@ -222,14 +222,14 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item :label="td('ds.apiCat.categorySort')" prop="sortOrder">
+                        <el-form-item :label="td('ds.apiCat.categorySort')" prop="sortOrder" :label-position="labelPosition">
                             <div>
                                 {{ form.sortOrder }}
                             </div>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item :label="td('common.texts.description')" prop="description">
+                        <el-form-item :label="td('common.texts.description')" prop="description" :label-position="labelPosition">
                             <div>
                                 {{ form.description }}
                             </div>
@@ -238,14 +238,14 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item :label="td('ds.apiCat.levelCode')" prop="code">
+                        <el-form-item :label="td('ds.apiCat.levelCode')" prop="code" :label-position="labelPosition">
                             <div>
                                 {{ form.code }}
                             </div>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item :label="td('common.texts.remark')" prop="remark">
+                        <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
                             <div>
                                 {{ form.remark }}
                             </div>

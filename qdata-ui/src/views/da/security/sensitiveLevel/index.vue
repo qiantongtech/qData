@@ -23,11 +23,11 @@
         <div class="pagecont-top" v-show="showSearch">
             <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true"
                 v-show="showSearch" @submit.prevent>
-                <el-form-item :label="td('da.security.levelName')" prop="sensitiveLevel">
+                <el-form-item :label="td('da.security.levelName')" prop="sensitiveLevel" :label-position="labelPosition">
                     <el-input class="el-form-input-width" v-model="queryParams.sensitiveLevel" :placeholder="td('da.security.levelNamePlaceholder')"
                         clearable @keyup.enter="handleQuery" />
                 </el-form-item>
-                <el-form-item :label="td('da.security.replaceRule')" prop="sensitiveRule">
+                <el-form-item :label="td('da.security.replaceRule')" prop="sensitiveRule" :label-position="labelPosition">
                     <el-select class="el-form-input-width" v-model="queryParams.sensitiveRule" :placeholder="td('da.security.replaceRulePlaceholder')"
                         clearable>
                         <el-option v-for="dict in da_sensitive_level_rule" :key="dict.value" :label="dict.label"
@@ -150,7 +150,7 @@
                     {{ title }}
                 </span>
             </template>
-            <el-form ref="daSensitiveLevelRef" :model="form" :rules="rules" label-width="132px" @submit.prevent>
+            <el-form ref="daSensitiveLevelRef" :model="form" :rules="rules" label-width="132px" @submit.prevent :label-position="labelPosition">
                 <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item :label="td('da.security.levelName')" prop="sensitiveLevel">
@@ -158,7 +158,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item :label="td('da.security.replaceRule')" prop="sensitiveRule">
+                        <el-form-item :label="td('da.security.replaceRule')" prop="sensitiveRule" :label-position="labelPosition">
                             <el-select v-model="form.sensitiveRule" :placeholder="td('da.security.replaceRulePlaceholder')">
                                 <el-option v-for="dict in da_sensitive_level_rule" :key="dict.value" :label="dict.label"
                                     :value="dict.value" />
@@ -168,33 +168,33 @@
                 </el-row>
                 <el-row :gutter="20" v-if="form.sensitiveRule != '1' && form.sensitiveRule != null">
                     <el-col :span="12">
-                        <el-form-item :label="td('da.security.startCharPos')" prop="startCharLoc">
+                        <el-form-item :label="td('da.security.startCharPos')" prop="startCharLoc" :label-position="labelPosition">
                             <el-input v-model="form.startCharLoc" :placeholder="td('da.security.startCharPosPlaceholder')" />
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item :label="td('da.security.endCharPos')" prop="endCharLoc">
+                        <el-form-item :label="td('da.security.endCharPos')" prop="endCharLoc" :label-position="labelPosition">
                             <el-input v-model="form.endCharLoc" :placeholder="td('da.security.endCharPosPlaceholder')" />
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="24">
-                        <el-form-item :label="td('da.security.replaceContent')" prop="maskCharacter">
+                        <el-form-item :label="td('da.security.replaceContent')" prop="maskCharacter" :label-position="labelPosition">
                             <el-input v-model="form.maskCharacter" :placeholder="td('da.security.replaceContentPlaceholder')" />
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="24">
-                        <el-form-item :label="td('da.security.description')" prop="description">
+                        <el-form-item :label="td('da.security.description')" prop="description" :label-position="labelPosition">
                             <el-input v-model="form.description" type="textarea" :placeholder="td('da.security.descriptionPlaceholder')" />
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item :label="td('da.security.onlineStatus')" prop="onlineFlag">
+                        <el-form-item :label="td('da.security.onlineStatus')" prop="onlineFlag" :label-position="labelPosition">
                             <el-radio-group v-model="form.onlineFlag">
                                 <el-radio v-for="dict in da_sensitive_status" :key="dict.value" :value="dict.value">{{
                                     dict.label }}</el-radio>
@@ -204,7 +204,7 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="24">
-                        <el-form-item :label="td('common.texts.remark')" prop="remark">
+                        <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
                             <el-input v-model="form.remark" type="textarea" :placeholder="td('common.form.remarkPlaceholder')" />
                         </el-form-item>
                     </el-col>
@@ -228,10 +228,10 @@
                     </el-icon>
                 </span>
             </template>
-            <el-form ref="daSensitiveLevelRef" :model="form" label-width="80px">
+            <el-form ref="daSensitiveLevelRef" :model="form" label-width="80px" :label-position="labelPosition">
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item :label="td('da.security.sensitiveLevelName')" prop="sensitiveLevel">
+                        <el-form-item :label="td('da.security.sensitiveLevelName')" prop="sensitiveLevel" :label-position="labelPosition">
                             <div>
                                 {{ form.sensitiveLevel }}
                             </div>
@@ -245,14 +245,14 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item :label="td('da.security.startCharPos')" prop="startCharLoc">
+                        <el-form-item :label="td('da.security.startCharPos')" prop="startCharLoc" :label-position="labelPosition">
                             <div>
                                 {{ form.startCharLoc }}
                             </div>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item :label="td('da.security.endCharPos')" prop="endCharLoc">
+                        <el-form-item :label="td('da.security.endCharPos')" prop="endCharLoc" :label-position="labelPosition">
                             <div>
                                 {{ form.endCharLoc }}
                             </div>
@@ -261,14 +261,14 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item :label="td('da.security.replaceContent')" prop="maskCharacter">
+                        <el-form-item :label="td('da.security.replaceContent')" prop="maskCharacter" :label-position="labelPosition">
                             <div>
                                 {{ form.maskCharacter }}
                             </div>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item :label="td('da.security.onlineFlag')" prop="onlineFlag">
+                        <el-form-item :label="td('da.security.onlineFlag')" prop="onlineFlag" :label-position="labelPosition">
                             <div>
                                 {{ form.onlineFlag }}
                             </div>
@@ -277,14 +277,14 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item :label="td('da.security.description')" prop="description">
+                        <el-form-item :label="td('da.security.description')" prop="description" :label-position="labelPosition">
                             <div>
                                 {{ form.description }}
                             </div>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item :label="td('common.texts.remark')" prop="remark">
+                        <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
                             <div>
                                 {{ form.remark }}
                             </div>

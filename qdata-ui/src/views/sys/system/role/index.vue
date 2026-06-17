@@ -26,7 +26,7 @@
                 :inline="true"
                 
             >
-                <el-form-item :label="td('sys.system.role.roleName')" prop="roleName">
+                <el-form-item :label="td('sys.system.role.roleName')" prop="roleName" :label-position="labelPosition">
                     <el-input
                         v-model="queryParams.roleName"
                         :placeholder="td('sys.system.role.roleNamePlaceholder')"
@@ -263,7 +263,7 @@
             draggable
             destroy-on-close
         >
-            <el-form ref="roleRef" :model="form" :rules="rules" label-width="100px">
+            <el-form ref="roleRef" :model="form" :rules="rules" label-width="100px" :label-position="labelPosition">
                 <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item :label="td('sys.system.role.roleName')" prop="roleName">
@@ -271,7 +271,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item prop="roleKey">
+                        <el-form-item prop="roleKey" :label-position="labelPosition">
                             <template #label>
                                 <span>
                                     <el-tooltip
@@ -290,7 +290,7 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item :label="td('sys.system.role.roleOrder')" prop="roleSort">
+                        <el-form-item :label="td('sys.system.role.roleOrder')" prop="roleSort" :label-position="labelPosition">
                             <el-input-number
                                 style="width: 100%"
                                 v-model="form.roleSort"
@@ -300,7 +300,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item :label="td('common.texts.status')">
+                        <el-form-item :label="td('common.texts.status')" :label-position="labelPosition">
                             <el-radio-group v-model="form.status">
                                 <el-radio
                                     v-for="dict in sys_normal_disable"
@@ -312,7 +312,7 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-form-item :label="td('sys.system.role.menuPermission')">
+                <el-form-item :label="td('sys.system.role.menuPermission')" :label-position="labelPosition">
                     <el-checkbox
                         v-model="menuExpand"
                         @change="handleCheckedTreeExpand($event, 'menu')"
@@ -339,7 +339,7 @@
                         :props="{ label: 'label', children: 'children' }"
                     ></el-tree>
                 </el-form-item>
-                <el-form-item :label="td('common.texts.remark')">
+                <el-form-item :label="td('common.texts.remark')" :label-position="labelPosition">
                     <el-input
                         v-model="form.remark"
                         type="textarea"
@@ -357,14 +357,14 @@
 
         <!-- 分配角色数据权限对话框 -->
         <el-dialog :title="title" v-model="openDataScope" width="500px" append-to-body>
-            <el-form :model="form" label-width="80px">
-                <el-form-item :label="td('sys.system.role.roleNameDataScope')">
+            <el-form :model="form" label-width="80px" :label-position="labelPosition">
+                <el-form-item :label="td('sys.system.role.roleNameDataScope')" :label-position="labelPosition">
                     <el-input v-model="form.roleName" :disabled="true" />
                 </el-form-item>
-                <el-form-item :label="td('sys.system.role.permissionCharDataScope')">
+                <el-form-item :label="td('sys.system.role.permissionCharDataScope')" :label-position="labelPosition">
                     <el-input v-model="form.roleKey" :disabled="true" />
                 </el-form-item>
-                <el-form-item :label="td('sys.system.role.permissionRange')">
+                <el-form-item :label="td('sys.system.role.permissionRange')" :label-position="labelPosition">
                     <el-select v-model="form.dataScope" @change="dataScopeSelectChange">
                         <el-option
                             v-for="item in dataScopeOptions"
@@ -374,7 +374,7 @@
                         ></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item :label="td('sys.system.role.dataPermission')" v-show="form.dataScope == 2">
+                <el-form-item :label="td('sys.system.role.dataPermission')" v-show="form.dataScope == 2" :label-position="labelPosition">
                     <el-checkbox
                         v-model="deptExpand"
                         @change="handleCheckedTreeExpand($event, 'dept')"

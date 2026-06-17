@@ -79,12 +79,12 @@
         :rules="rules"
         label-width="80px"
         @submit.prevent
-      >
-        <el-form-item :label="td('att.sourceSystem.form.name')" prop="name">
+       :label-position="labelPosition">
+        <el-form-item :label="td('att.sourceSystem.form.name')" prop="name" :label-position="labelPosition">
           <el-input v-model="form.name" :placeholder="td('att.sourceSystem.form.namePlaceholder')" />
         </el-form-item>
 
-        <el-form-item :label="td('att.sourceSystem.form.type')" prop="type">
+        <el-form-item :label="td('att.sourceSystem.form.type')" prop="type" :label-position="labelPosition">
           <el-select v-model="form.type" :placeholder="td('att.sourceSystem.form.typePlaceholder')">
             <el-option
               v-for="dict in sys_source_system_type"
@@ -94,7 +94,7 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item :label="td('att.sourceSystem.form.responsiblePerson')" prop="responsiblePerson">
+        <el-form-item :label="td('att.sourceSystem.form.responsiblePerson')" prop="responsiblePerson" :label-position="labelPosition">
           <el-select
             v-model="form.responsiblePerson"
             filterable
@@ -110,7 +110,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item :label="td('att.sourceSystem.form.contactPerson')" prop="contactPerson">
+        <el-form-item :label="td('att.sourceSystem.form.contactPerson')" prop="contactPerson" :label-position="labelPosition">
           <el-select
             v-model="form.contactPerson"
             filterable
@@ -125,7 +125,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item :label="td('att.sourceSystem.form.sortOrder')" prop="sortOrder">
+        <el-form-item :label="td('att.sourceSystem.form.sortOrder')" prop="sortOrder" :label-position="labelPosition">
           <el-input-number
             style="width: 100%"
             v-model="form.sortOrder"
@@ -133,11 +133,11 @@
             :min="0"
           />
         </el-form-item>
-        <el-form-item :label="td('common.texts.status')" prop="validFlag">
+        <el-form-item :label="td('common.texts.status')" prop="validFlag" :label-position="labelPosition">
           <el-radio v-model="form.validFlag" :label="false">{{ td('att.sourceSystem.form.disable') }}</el-radio>
           <el-radio v-model="form.validFlag" :label="true">{{ td('att.sourceSystem.form.enable') }}</el-radio>
         </el-form-item>
-        <el-form-item :label="td('common.texts.description')" prop="description">
+        <el-form-item :label="td('common.texts.description')" prop="description" :label-position="labelPosition">
           <el-input
             type="textarea"
             :maxlength="500"
@@ -147,7 +147,7 @@
           />
         </el-form-item>
 
-        <el-form-item :label="td('common.texts.remark')" prop="remark">
+        <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
           <el-input
             type="textarea"
             :maxlength="500"
@@ -179,73 +179,73 @@
         :model="form"
         label-width="90px"
         class="column-form"
-      >
-        <el-form-item :label="td('common.texts.number')" prop="id">
+       :label-position="labelPosition">
+        <el-form-item :label="td('common.texts.number')" prop="id" :label-position="labelPosition">
           <div class="form-readonly">
             {{ form.id }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('att.sourceSystem.form.name')" prop="name">
+        <el-form-item :label="td('att.sourceSystem.form.name')" prop="name" :label-position="labelPosition">
           <div class="form-readonly">
             {{ form.name }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('att.sourceSystem.form.type')" prop="type">
+        <el-form-item :label="td('att.sourceSystem.form.type')" prop="type" :label-position="labelPosition">
           <div class="form-readonly">
             {{ getDictLabel(sys_source_system_type, form.type) }}
           </div>
         </el-form-item>
 
-        <el-form-item :label="td('att.sourceSystem.form.responsiblePerson')" prop="responsiblePersonName">
+        <el-form-item :label="td('att.sourceSystem.form.responsiblePerson')" prop="responsiblePersonName" :label-position="labelPosition">
           <div class="form-readonly">
             {{ form.responsiblePersonName }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('att.sourceSystem.form.contactPerson')" prop="contactPersonName">
+        <el-form-item :label="td('att.sourceSystem.form.contactPerson')" prop="contactPersonName" :label-position="labelPosition">
           <div class="form-readonly">
             {{ form.contactPersonName }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('att.sourceSystem.form.sortOrder')" prop="sortOrder">
+        <el-form-item :label="td('att.sourceSystem.form.sortOrder')" prop="sortOrder" :label-position="labelPosition">
           <div class="form-readonly">
             {{ form.sortOrder }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.status')" prop="validFlag">
+        <el-form-item :label="td('common.texts.status')" prop="validFlag" :label-position="labelPosition">
           <div class="form-readonly">
             {{ form.validFlag ? td('att.sourceSystem.form.enable') : td('att.sourceSystem.form.disable') }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.description')" prop="description" class="row-full">
+        <el-form-item :label="td('common.texts.description')" prop="description" class="row-full" :label-position="labelPosition">
           <div class="form-readonly textarea">
             {{ form.description ?? "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full">
+        <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full" :label-position="labelPosition">
           <div class="form-readonly textarea">
             {{ form.remark ?? "-" }}
           </div>
         </el-form-item>
 
-        <el-form-item :label="td('common.texts.createdBy')" prop="createBy">
+        <el-form-item :label="td('common.texts.createdBy')" prop="createBy" :label-position="labelPosition">
           <div class="form-readonly">
             {{ form.createBy }}
           </div>
         </el-form-item>
 
-        <el-form-item :label="td('common.texts.createdTime')" prop="createTime">
+        <el-form-item :label="td('common.texts.createdTime')" prop="createTime" :label-position="labelPosition">
           <div class="form-readonly">
             {{ parseTime(form.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
         </el-form-item>
 
-        <el-form-item :label="td('common.texts.updatedBy')" prop="updateBy">
+        <el-form-item :label="td('common.texts.updatedBy')" prop="updateBy" :label-position="labelPosition">
           <div class="form-readonly">
             {{ form.updateBy }}
           </div>
         </el-form-item>
 
-        <el-form-item :label="td('common.texts.updatedTime')" prop="updateTime">
+        <el-form-item :label="td('common.texts.updatedTime')" prop="updateTime" :label-position="labelPosition">
           <div class="form-readonly">
             {{ parseTime(form.updateTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>

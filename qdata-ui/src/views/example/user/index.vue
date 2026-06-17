@@ -34,7 +34,7 @@
                         @keyup.enter="handleQuery"
                     />
                 </el-form-item>
-                <el-form-item label="类型名称" prop="name">
+                <el-form-item label="类型名称" prop="name" :label-position="labelPosition">
                     <el-input
                         class="el-form-input-width"
                         v-model="queryParams.name"
@@ -43,7 +43,7 @@
                         @keyup.enter="handleQuery"
                     />
                 </el-form-item>
-                <el-form-item label="是否有效" prop="validFlag">
+                <el-form-item label="是否有效" prop="validFlag" :label-position="labelPosition">
                     <el-input
                         class="el-form-input-width"
                         v-model="queryParams.validFlag"
@@ -52,7 +52,7 @@
                         @keyup.enter="handleQuery"
                     />
                 </el-form-item>
-                <el-form-item label="删除标志" prop="delFlag">
+                <el-form-item label="删除标志" prop="delFlag" :label-position="labelPosition">
                     <el-input
                         class="el-form-input-width"
                         v-model="queryParams.delFlag"
@@ -368,7 +368,7 @@
                     {{ title }}
                 </span>
             </template>
-            <el-form ref="userTypeRef" :model="form" :rules="rules" label-width="80px">
+            <el-form ref="userTypeRef" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
                 <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item label="类型名称" prop="name">
@@ -388,7 +388,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="24">
-                        <el-form-item label="备注" prop="remark">
+                        <el-form-item label="备注" prop="remark" :label-position="labelPosition">
                             <el-input
                                 v-model="form.remark"
                                 type="textarea"

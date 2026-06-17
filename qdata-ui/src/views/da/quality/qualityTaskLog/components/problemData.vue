@@ -20,25 +20,25 @@
     <el-dialog v-model="visible" :title="td('da.qualityTaskLog.problemData.title')" class="medium-dialog" destroy-on-close>
         <div class="dialog-header">
             <el-form :inline="true" @selection-change="handleSelectionChange"
-                style="display: inline-block; text-align: left;">
+                style="display: inline-block; text-align: left;" :label-position="labelPosition">
                 <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true"
-                    @submit.prevent>
+                    @submit.prevent :label-position="labelPosition">
                     <el-form-item v-for="(fieldName, index) in visibleFields" :key="index"
-                        :label="getFieldLabel(fieldName)" :prop="'keyWordData.' + fieldName">
+                        :label="getFieldLabel(fieldName)" :prop="'keyWordData.' + fieldName" :label-position="labelPosition">
                         <el-input v-model="queryParams.keyWordData[fieldName]"
                             :placeholder="`${td('da.qualityTaskLog.inputPlaceholder')} ${getFieldLabel(fieldName)}`" clearable class="el-form-input-width" />
                     </el-form-item>
 
                     <template v-if="showMoreFields">
                         <el-form-item v-for="(fieldName, index) in moreFields" :key="'more-' + index"
-                            :label="getFieldLabel(fieldName)" :prop="'keyWordData.' + fieldName">
+                            :label="getFieldLabel(fieldName)" :prop="'keyWordData.' + fieldName" :label-position="labelPosition">
                             <el-input v-model="queryParams.keyWordData[fieldName]"
                                 :placeholder="`${td('da.qualityTaskLog.inputPlaceholder')} ${getFieldLabel(fieldName)}`" clearable
                                 class="el-form-input-width" />
                         </el-form-item>
                     </template>
                     <!-- 更多/收起按钮 -->
-                    <el-form-item v-if="columnFields.length > 3">
+                    <el-form-item v-if="columnFields.length > 3" :label-position="labelPosition">
                         <el-button type="text" @click="toggleMore">
                             {{ showMoreFields ? td('da.qualityTaskLog.problemData.collapse') : td('da.qualityTaskLog.problemData.more') }}
                             <el-icon>
@@ -49,7 +49,7 @@
                     </el-form-item>
 
                     <!-- 查询/重置按钮 -->
-                    <el-form-item>
+                    <el-form-item :label-position="labelPosition">
                         <el-button plain type="primary" @click="handleQuery" @mousedown.prevent>
                             <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
                         </el-button>
@@ -157,8 +157,8 @@
         <ProblemDataDetailDialog ref="detailDialogRef" />
         <updateDataDialog ref="updateDialogRef" @ok="onSave" />
         <el-dialog v-model="commentDialogVisible" :title="td('da.qualityTaskLog.problemData.remarkTitle')" width="800px" @close="resetComment">
-            <el-form :model="commentForm" label-width="80px">
-                <el-form-item :label="td('common.texts.remark')">
+            <el-form :model="commentForm" label-width="80px" :label-position="labelPosition">
+                <el-form-item :label="td('common.texts.remark')" :label-position="labelPosition">
                     <el-input type="textarea" v-model="commentForm.comment" rows="4" :placeholder="td('da.qualityTaskLog.problemData.remarkPlaceholder')" />
                 </el-form-item>
             </el-form>

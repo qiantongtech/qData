@@ -287,7 +287,7 @@
       draggable
       :append-to="$refs['app-container']"
     >
-      <el-form :model="batchForm" label-width="110px">
+      <el-form :model="batchForm" label-width="110px" :label-position="labelPosition">
         <div class="hint-div ml0">
           <el-icon color="#2A7BFD" size="16px">
             <InfoFilled />
@@ -296,7 +296,7 @@
             {{ td('dpp.asset.addAsset.batchSettingHint') }}
           </span>
         </div>
-        <el-form-item :label="td('dpp.asset.addAsset.tableType')">
+        <el-form-item :label="td('dpp.asset.addAsset.tableType')" :label-position="labelPosition">
           <el-select
             v-model="batchForm.tableType"
             placeholder="{{ td('dpp.asset.addAsset.noChange') }}"
@@ -313,7 +313,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item :label="td('dpp.asset.addAsset.dataLayer')">
+        <el-form-item :label="td('dpp.asset.addAsset.dataLayer')" :label-position="labelPosition">
           <el-tree-select
             v-model="batchForm.dataLayerId"
             :data="[
@@ -342,7 +342,7 @@
             batchForm.tableType != '4'
           "
           :label="td('dpp.asset.addAsset.businessCategory')"
-        >
+         :label-position="labelPosition">
           <el-tree-select
             v-model="batchForm.businessCategoryId"
             :data="[
@@ -372,7 +372,7 @@
             batchForm.tableType != '4'
           "
           :label="td('dpp.asset.addAsset.dataDomain')"
-        >
+         :label-position="labelPosition">
           <el-tree-select
             v-model="batchForm.dataDomainId"
             :data="[
@@ -402,7 +402,7 @@
             batchForm.tableType == '4'
           "
           :label="td('dpp.asset.addAsset.themeDomain')"
-        >
+         :label-position="labelPosition">
           <el-tree-select
             v-model="batchForm.themeDomainId"
             :data="[
@@ -424,7 +424,7 @@
             class="full-width"
           />
         </el-form-item>
-        <el-form-item :label="td('dpp.asset.addAsset.tableCase')">
+        <el-form-item :label="td('dpp.asset.addAsset.tableCase')" :label-position="labelPosition">
           <el-select
             v-model="batchForm.tableCase"
             placeholder="{{ td('dpp.asset.addAsset.noChange') }}"

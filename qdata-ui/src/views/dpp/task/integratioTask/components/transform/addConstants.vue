@@ -32,7 +32,7 @@
       @submit.prevent
       v-loading="loading"
       :disabled="info"
-    >
+     :label-position="labelPosition">
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
@@ -48,7 +48,7 @@
                 trigger: 'change',
               },
             ]"
-          >
+           :label-position="labelPosition">
             <el-input
               v-if="!info"
               v-model="form.name"
@@ -63,7 +63,7 @@
           <el-form-item
             :label="td('dpp.integration.type', '类型')"
             prop="taskParams.typeName"
-          >
+           :label-position="labelPosition">
             <template v-if="!info">
               <el-select
                 v-model="form.taskParams.typeName"

@@ -242,13 +242,13 @@
     draggable
     destroy-on-close
   >
-    <el-form ref="roleRef" :model="form" :rules="rules" label-width="100px">
+    <el-form ref="roleRef" :model="form" :rules="rules" label-width="100px" :label-position="labelPosition">
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
             :label="td('dpp.setting.projectUserRel.roleName')"
             prop="roleName"
-          >
+           :label-position="labelPosition">
             <el-input
               v-model="form.roleName"
               :placeholder="td('dpp.setting.projectUserRel.inputRoleName')"
@@ -256,7 +256,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item prop="roleKey">
+          <el-form-item prop="roleKey" :label-position="labelPosition">
             <template #label>
               <span>
                 <el-tooltip
@@ -283,7 +283,7 @@
           <el-form-item
             :label="td('dpp.setting.projectUserRel.roleSort')"
             prop="roleSort"
-          >
+           :label-position="labelPosition">
             <el-input-number
               style="width: 100%"
               v-model="form.roleSort"
@@ -293,7 +293,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('common.texts.status')">
+          <el-form-item :label="td('common.texts.status')" :label-position="labelPosition">
             <el-radio-group v-model="form.status">
               <el-radio
                 v-for="dict in sys_normal_disable"
@@ -305,7 +305,7 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-form-item :label="td('dpp.setting.projectUserRel.menuPermission')">
+      <el-form-item :label="td('dpp.setting.projectUserRel.menuPermission')" :label-position="labelPosition">
         <el-checkbox
           v-model="menuExpand"
           @change="handleCheckedTreeExpand($event, 'menu')"
@@ -335,7 +335,7 @@
           :props="{ label: 'label', children: 'children' }"
         ></el-tree>
       </el-form-item>
-      <el-form-item :label="td('dpp.setting.projectUserRel.roleRemark')">
+      <el-form-item :label="td('dpp.setting.projectUserRel.roleRemark')" :label-position="labelPosition">
         <el-input
           v-model="form.remark"
           type="textarea"
@@ -360,14 +360,14 @@
     width="500px"
     append-to-body
   >
-    <el-form :model="form" label-width="80px">
-      <el-form-item :label="td('dpp.setting.projectUserRel.roleName')">
+    <el-form :model="form" label-width="80px" :label-position="labelPosition">
+      <el-form-item :label="td('dpp.setting.projectUserRel.roleName')" :label-position="labelPosition">
         <el-input v-model="form.roleName" :disabled="true" />
       </el-form-item>
-      <el-form-item :label="td('dpp.setting.projectUserRel.roleKey')">
+      <el-form-item :label="td('dpp.setting.projectUserRel.roleKey')" :label-position="labelPosition">
         <el-input v-model="form.roleKey" :disabled="true" />
       </el-form-item>
-      <el-form-item :label="td('dpp.setting.projectUserRel.dataScope')">
+      <el-form-item :label="td('dpp.setting.projectUserRel.dataScope')" :label-position="labelPosition">
         <el-select v-model="form.dataScope" @change="dataScopeSelectChange">
           <el-option
             v-for="item in dataScopeOptions"
@@ -380,7 +380,7 @@
       <el-form-item
         :label="td('dpp.setting.projectUserRel.dataPermission')"
         v-show="form.dataScope == 2"
-      >
+       :label-position="labelPosition">
         <el-checkbox
           v-model="deptExpand"
           @change="handleCheckedTreeExpand($event, 'dept')"

@@ -29,13 +29,13 @@
               <el-input class="el-form-input-width" v-model="queryParams.apiName" :placeholder="td('ds.apiLog.apiServiceNamePlaceholder')" clearable
                 @keyup.enter="handleQuery" />
             </el-form-item>
-            <el-form-item :label="td('common.texts.status')" prop="status">
+            <el-form-item :label="td('common.texts.status')" prop="status" :label-position="labelPosition">
               <el-select class="el-form-input-width" v-model="queryParams.status" :placeholder="td('common.form.statusPlaceholder')" clearable>
                 <el-option v-for="dict in ds_api_log_res_status" :key="dict.value" :label="dict.label"
                   :value="dict.value" />
               </el-select>
             </el-form-item>
-            <el-form-item :label="td('common.texts.createdTime')">
+            <el-form-item :label="td('common.texts.createdTime')" :label-position="labelPosition">
               <el-date-picker class="el-form-input-width" v-model="daterangeCreateTime" value-format="YYYY-MM-DD"
                 type="daterange" range-separator="-" :start-placeholder="td('common.form.startDatePlaceholder')" :end-placeholder="td('common.form.endDatePlaceholder')"></el-date-picker>
             </el-form-item>
@@ -155,29 +155,29 @@
           {{ title }}
         </span>
       </template>
-      <el-form ref="apiLogRef" :model="form" :rules="rules" @submit.prevent>
+      <el-form ref="apiLogRef" :model="form" :rules="rules" @submit.prevent :label-position="labelPosition">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('ds.apiLog.callerUrlInput')" prop="callerUrl">
+            <el-form-item :label="td('ds.apiLog.callerUrlInput')" prop="callerUrl" :label-position="labelPosition">
               <el-input v-model="form.callerUrl" :placeholder="td('ds.apiLog.callerUrlInputPlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item :label="td('ds.apiLog.callerParamsInput')" prop="callerParams">
+            <el-form-item :label="td('ds.apiLog.callerParamsInput')" prop="callerParams" :label-position="labelPosition">
               <el-input v-model="form.callerParams" type="textarea" :placeholder="td('ds.apiLog.callerParamsInputPlaceholder')" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('ds.apiLog.callerStartDate')" prop="callerStartDate">
+            <el-form-item :label="td('ds.apiLog.callerStartDate')" prop="callerStartDate" :label-position="labelPosition">
               <el-date-picker clearable style="width: 100%" v-model="form.callerStartDate" type="date"
                 value-format="YYYY-MM-DD" :placeholder="td('ds.apiLog.callerStartDatePlaceholder')">
               </el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('ds.apiLog.callerEndDate')" prop="callerEndDate">
+            <el-form-item :label="td('ds.apiLog.callerEndDate')" prop="callerEndDate" :label-position="labelPosition">
               <el-date-picker clearable style="width: 100%" v-model="form.callerEndDate" type="date"
                 value-format="YYYY-MM-DD" :placeholder="td('ds.apiLog.callerEndDatePlaceholder')">
               </el-date-picker>
@@ -186,24 +186,24 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('ds.apiLog.callerSize')" prop="callerSize">
+            <el-form-item :label="td('ds.apiLog.callerSize')" prop="callerSize" :label-position="labelPosition">
               <el-input v-model="form.callerSize" :placeholder="td('ds.apiLog.callerSize')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('ds.apiLog.callerTime') + '(ms)'" prop="callerTime">
+            <el-form-item :label="td('ds.apiLog.callerTime') + '(ms)'" prop="callerTime" :label-position="labelPosition">
               <el-input v-model="form.callerTime" :placeholder="td('ds.apiLog.callerTimePlaceholder')" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('ds.apiLog.infoRecord')" prop="MSG">
+            <el-form-item :label="td('ds.apiLog.infoRecord')" prop="MSG" :label-position="labelPosition">
               <el-input v-model="form.MSG" type="textarea" :placeholder="td('ds.apiLog.contentPlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('common.texts.status')" prop="status">
+            <el-form-item :label="td('common.texts.status')" prop="status" :label-position="labelPosition">
               <el-radio-group v-model="form.status">
                 <el-radio v-for="dict in ds_api_log_res_status" :key="dict.value" :label="dict.value">{{ dict.label
                 }}</el-radio>
@@ -213,7 +213,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('common.texts.remark')" prop="REMARK">
+            <el-form-item :label="td('common.texts.remark')" prop="REMARK" :label-position="labelPosition">
               <el-input v-model="form.REMARK" :placeholder="td('common.form.remarkPlaceholder')" />
             </el-form-item>
           </el-col>
@@ -234,31 +234,31 @@
           {{ title }}
         </span>
       </template>
-      <el-form ref="apiLogRef" :model="form">
+      <el-form ref="apiLogRef" :model="form" :label-position="labelPosition">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('ds.apiLog.apiServiceName')">
+            <el-form-item :label="td('ds.apiLog.apiServiceName')" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.apiName || "-" }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('ds.apiLog.callerIp')">
+            <el-form-item :label="td('ds.apiLog.callerIp')" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.callerIp || "-" }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item :label="td('ds.apiLog.callerUrl')">
+            <el-form-item :label="td('ds.apiLog.callerUrl')" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.callerUrl || "-" }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item :label="td('ds.apiLog.callerParamsInput')">
+            <el-form-item :label="td('ds.apiLog.callerParamsInput')" :label-position="labelPosition">
               <div class="form-readonly textarea">
                 {{ form.callerParams || "-" }}
               </div>
@@ -274,7 +274,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('ds.apiLog.callerTime') + '(s)'">
+            <el-form-item :label="td('ds.apiLog.callerTime') + '(s)'" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.callerTime / 1000 || '-' }}
               </div>
@@ -283,14 +283,14 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('ds.apiLog.requestMethod')">
+            <el-form-item :label="td('ds.apiLog.requestMethod')" :label-position="labelPosition">
               <div>
                 <dict-tag :options="ds_api_bas_info_api_method_type" :value="form.reqMethod" />
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('ds.apiLog.callerSize')">
+            <el-form-item :label="td('ds.apiLog.callerSize')" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.callerSize || "-" }}
               </div>
@@ -300,7 +300,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('ds.apiLog.exceptionRecord')">
+            <el-form-item :label="td('ds.apiLog.exceptionRecord')" :label-position="labelPosition">
               <div class="form-readonly textarea">
                 {{ form.MSG || "-" }}
               </div>

@@ -18,8 +18,8 @@
 <template>
   <!-- 导入表 -->
   <el-dialog :title="td('sys.tool.genImport.title')" v-model="visible" width="800px" top="5vh" :append-to="$refs['app-container']"  draggable destroy-on-close>
-    <el-form :model="queryParams" ref="queryRef" :inline="true">
-      <el-form-item :label="td('sys.tool.genImport.tableName')" prop="tableName">
+    <el-form :model="queryParams" ref="queryRef" :inline="true" :label-position="labelPosition">
+      <el-form-item :label="td('sys.tool.genImport.tableName')" prop="tableName" :label-position="labelPosition">
         <el-input
           v-model="queryParams.tableName"
           :placeholder="td('sys.tool.genImport.tableNamePlaceholder')"
@@ -28,7 +28,7 @@
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item>
+      <el-form-item :label-position="labelPosition">
         <!-- <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
         <el-button icon="Refresh" @click="resetQuery">{{ td('common.button.reset') }}</el-button> -->
         <el-button plain type="primary" @click="handleQuery">

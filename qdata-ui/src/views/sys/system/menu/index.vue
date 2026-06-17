@@ -19,7 +19,7 @@
    <div class="app-container" ref="app-container">
       <div class="pagecont-top" v-show="showSearch">
          <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true">
-            <el-form-item :label="td('sys.system.menu.menuName')" prop="menuName">
+            <el-form-item :label="td('sys.system.menu.menuName')" prop="menuName" :label-position="labelPosition">
                <el-input
                   v-model="queryParams.menuName"
                   :placeholder="td('sys.system.menu.menuNamePlaceholder')"
@@ -38,7 +38,7 @@
                   />
                </el-select>
             </el-form-item>
-            <el-form-item>
+            <el-form-item :label-position="labelPosition">
                <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
                   <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
                </el-button>
@@ -120,10 +120,10 @@
 
       <!-- 添加或修改菜单对话框 -->
       <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable destroy-on-close>
-         <el-form ref="menuRef" :model="form" :rules="rules" label-width="100px">
+         <el-form ref="menuRef" :model="form" :rules="rules" label-width="100px" :label-position="labelPosition">
             <el-row :gutter="20">
                <el-col :span="24">
-                  <el-form-item :label="td('sys.system.menu.parentMenu')">
+                  <el-form-item :label="td('sys.system.menu.parentMenu')" :label-position="labelPosition">
                      <el-tree-select
                         v-model="form.parentId"
                         :data="menuOptions"
@@ -135,7 +135,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('sys.system.menu.menuType')" prop="menuType">
+                  <el-form-item :label="td('sys.system.menu.menuType')" prop="menuType" :label-position="labelPosition">
                      <el-radio-group v-model="form.menuType">
                         <el-radio value="M">{{ td('sys.system.menu.directory') }}</el-radio>
                         <el-radio value="C">{{ td('sys.system.menu.menu') }}</el-radio>
@@ -144,7 +144,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="12" v-if="form.menuType != 'F'">
-                  <el-form-item :label="td('sys.system.menu.menuIcon')" prop="icon">
+                  <el-form-item :label="td('sys.system.menu.menuIcon')" prop="icon" :label-position="labelPosition">
                      <el-popover
                         placement="bottom-start"
                         :width="540"
@@ -168,7 +168,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('sys.system.menu.showSort')" prop="orderNum">
+                  <el-form-item :label="td('sys.system.menu.showSort')" prop="orderNum" :label-position="labelPosition">
                      <el-input-number style="width:100%" v-model="form.orderNum" controls-position="right" :min="0" />
                   </el-form-item>
                </el-col>
@@ -178,7 +178,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="12" v-if="form.menuType == 'C'">
-                  <el-form-item prop="routeName">
+                  <el-form-item prop="routeName" :label-position="labelPosition">
                      <template #label>
                         <span>
                            <el-tooltip :content="td('sys.system.menu.routeNameTooltip')" placement="top">
@@ -191,7 +191,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="12" v-if="form.menuType != 'F'">
-                  <el-form-item prop="path">
+                  <el-form-item prop="path" :label-position="labelPosition">
                      <template #label>
                         <span>
                            <el-tooltip :content="td('sys.system.menu.routePathTooltip')" placement="top">
@@ -204,7 +204,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="12" v-if="form.menuType != 'F'">
-                  <el-form-item>
+                  <el-form-item :label-position="labelPosition">
                      <template #label>
                         <span>
                            <el-tooltip :content="td('sys.system.menu.isExternalLinkTooltip')" placement="top">
@@ -221,7 +221,7 @@
                </el-col>
 
                <el-col :span="12" v-if="form.menuType == 'C'">
-                  <el-form-item prop="component">
+                  <el-form-item prop="component" :label-position="labelPosition">
                      <template #label>
                         <span>
                            <el-tooltip :content="td('sys.system.menu.componentPathTooltip')" placement="top">
@@ -234,7 +234,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="12" v-if="form.menuType != 'M'">
-                  <el-form-item>
+                  <el-form-item :label-position="labelPosition">
                      <el-input v-model="form.perms" :placeholder="td('sys.system.menu.permissionPlaceholder')" maxlength="100" />
                      <template #label>
                         <span>
@@ -247,7 +247,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="12" v-if="form.menuType == 'C'">
-                  <el-form-item>
+                  <el-form-item :label-position="labelPosition">
                      <el-input v-model="form.query" :placeholder="td('sys.system.menu.routeParamPlaceholder')" maxlength="255" />
                      <template #label>
                         <span>
@@ -260,7 +260,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="12" v-if="form.menuType == 'C'">
-                  <el-form-item>
+                  <el-form-item :label-position="labelPosition">
                      <template #label>
                         <span>
                            <el-tooltip :content="td('sys.system.menu.isCacheTooltip')" placement="top">
@@ -276,7 +276,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="12" v-if="form.menuType != 'F'">
-                  <el-form-item>
+                  <el-form-item :label-position="labelPosition">
                      <template #label>
                         <span>
                            <el-tooltip :content="td('sys.system.menu.showStatusTooltip')" placement="top">

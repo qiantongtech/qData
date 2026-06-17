@@ -19,18 +19,18 @@
     <el-dialog v-model="visibleDialog" :draggable="true" class="medium-dialog" :title="currentNode?.data?.name"
         showCancelButton :show-close="false" destroy-on-close :close-on-click-modal="false">
         <el-form ref="dpModelRefs" :model="form" label-width="110px" @submit.prevent v-loading="loading"
-            :disabled="info">
+            :disabled="info" :label-position="labelPosition">
 
             <el-row :gutter="20">
                 <el-col :span="12">
                     <el-form-item :label="td('dpp.integration.nodeName', '节点名称')" prop="name"
-                        :rules="[{ required: true, message: td('dpp.integration.nodeNameRequired', '请输入节点名称'), trigger: 'change' }]">
+                        :rules="[{ required: true, message: td('dpp.integration.nodeNameRequired', '请输入节点名称'), trigger: 'change' }]" :label-position="labelPosition">
                         <el-input v-if="!info" v-model="form.name" :placeholder="td('dpp.integration.nodeNamePlaceholder', '请输入节点名称')" />
                         <div v-else class="form-readonly">{{ form.name }}</div>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item :label="td('dpp.integration.type', '类型')" prop="typeName">
+                    <el-form-item :label="td('dpp.integration.type', '类型')" prop="typeName" :label-position="labelPosition">
                         <el-input v-if="!info" v-model="form.taskParams.typeName" :placeholder="td('dpp.integration.typePlaceholder', '请输入类型')" disabled />
                         <div v-else class="form-readonly">{{ form.taskParams.typeName }}</div>
                     </el-form-item>
@@ -38,7 +38,7 @@
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="24">
-                    <el-form-item :label="td('common.texts.description')" prop="description">
+                    <el-form-item :label="td('common.texts.description')" prop="description" :label-position="labelPosition">
                         <el-input v-if="!info" v-model="form.description" type="textarea" :placeholder="td('common.form.descriptionPlaceholder')" />
                         <div v-else class="form-readonly">{{ form.description || '-' }}</div>
                     </el-form-item>
@@ -46,7 +46,7 @@
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item :label="td('dpp.integration.connectionMethod', '连接方式')" prop="clmt">
+                    <el-form-item :label="td('dpp.integration.connectionMethod', '连接方式')" prop="clmt" :label-position="labelPosition">
                         <el-radio-group v-if="!info" @change="handleReleaseStateChange" v-model="form.taskParams.clmt">
                             <template v-for="dict in dpp_connection" :key="dict.value">
                                 <el-radio :value="dict.value">
@@ -62,7 +62,7 @@
                     <el-col :span="12">
                         <el-form-item :label="td('dpp.integration.assetTable', '资产表')" prop="taskParams.asset_id_cpoy" :rules="[
                             { required: true, message: td('dpp.integration.assetTableRequired', '请选择资产表'), trigger: 'blur' }
-                        ]">
+                        ]" :label-position="labelPosition">
                             <el-select v-if="!info" v-model="form.taskParams.asset_id_cpoy" filterable
                                 @change="handleAssetTableChange" :loading="dppLoading">
                                 <el-option v-for="item in dppNoPageListList" :key="item.id" :label="item.name"
@@ -84,7 +84,7 @@
                                 message: td('dpp.integration.sourceDbConnectionRequired', '请选择源数据库连接'),
                                 trigger: 'change'
                             }
-                        ]">
+                        ]" :label-position="labelPosition">
                             <el-select v-if="!info" v-model="form.taskParams.readerDatasource.datasourceId"
                                 :placeholder="td('dpp.integration.sourceDbConnectionPlaceholder', '请选择源数据库连接')" @change="handleDatasourceChange" filterable>
                                 <el-option v-for="dict in createTypeList" :key="dict.id" :label="dict.datasourceName"
@@ -95,7 +95,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item :label="td('dpp.integration.dbConnectionType', '数据连接类型')" prop="taskParams.readerDatasource.datasourceType">
+                        <el-form-item :label="td('dpp.integration.dbConnectionType', '数据连接类型')" prop="taskParams.readerDatasource.datasourceType" :label-position="labelPosition">
                             <el-input v-if="!info" v-model="form.taskParams.readerDatasource.datasourceType"
                                 :placeholder="td('dpp.integration.dbConnectionTypePlaceholder', '请输入数据连接类型')" disabled />
                             <div class="form-readonly" v-else>{{ form.taskParams.readerDatasource.datasourceType || '-'
@@ -105,7 +105,7 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item :label="td('dpp.integration.dbConnectionInstance', '数据连接实例')" prop="taskParams.readerDatasource.dbname">
+                        <el-form-item :label="td('dpp.integration.dbConnectionInstance', '数据连接实例')" prop="taskParams.readerDatasource.dbname" :label-position="labelPosition">
                             <el-input v-if="!info" v-model="form.taskParams.readerDatasource.dbname"
                                 :placeholder="td('dpp.integration.dbConnectionInstancePlaceholder', '请输入数据连接实例')" disabled />
                             <div class="form-readonly" v-else>{{ form.taskParams.readerDatasource.dbname || '-' }}</div>
@@ -113,7 +113,7 @@
                     </el-col>
                     <el-col :span="12" v-if="form.taskParams.clmt == '0'">
                         <el-form-item :label="td('dpp.integration.selectTable', '选择表')" prop="taskParams.asset_id"
-                            :rules="[{ required: true, message: td('dpp.integration.selectTableRequired', '请选择表'), trigger: 'change' }]">
+                            :rules="[{ required: true, message: td('dpp.integration.selectTableRequired', '请选择表'), trigger: 'change' }]" :label-position="labelPosition">
                             <el-select v-if="!info" v-model="form.taskParams.asset_id" filterable @change="handleChange"
                                 :loading="loadingTables">
                                 <el-option v-for="item in TablesByDataSource" :key="item.tableName"
@@ -123,7 +123,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="12" v-if="form.taskParams.clmt == '2'">
-                        <el-form-item>
+                        <el-form-item :label-position="labelPosition">
                             <div style="text-align: right; width: 100%">
                                 <el-button size="small" type="primary" @click="sqlParseFunction"
                                     class="sql-parse-btn">{{ td('dpp.integration.sqlParse', 'SQL解析') }}</el-button>
@@ -134,7 +134,7 @@
                 <el-row :gutter="20" v-if="form.taskParams.clmt == '2'">
                     <el-col :span="24">
                         <el-form-item :label="td('dpp.integration.sqlStatement', 'SQL语句')" prop="taskParams.querySql"
-                            :rules="[{ required: true, message: td('dpp.integration.sqlStatementRequired', '请输入SQL语句'), trigger: 'blur' }]">
+                            :rules="[{ required: true, message: td('dpp.integration.sqlStatementRequired', '请输入SQL语句'), trigger: 'blur' }]" :label-position="labelPosition">
                             <sql-editor ref="editorRef" :value="form.taskParams.querySql" class="sql-editor"
                                 :height="'140px'" @changeTextarea="changeTextarea($event)" />
                         </el-form-item>
@@ -149,7 +149,7 @@
                             message: td('dpp.integration.readModeRequired', '请选择读取模式'),
                             trigger: 'change'
                         }
-                    ]">
+                    ]" :label-position="labelPosition">
                         <el-radio-group v-if="!info" v-model="form.taskParams.readModeType"
                             @change="handlereadModeTypeChange">
                             <el-radio value="1">{{ td('dpp.integration.fullVolume', '全量') }}</el-radio>
@@ -171,7 +171,7 @@
                                 message: td('dpp.integration.idFieldRequired', '请选择id字段'),
                                 trigger: 'blur'
                             }
-                        ]">
+                        ]" :label-position="labelPosition">
                             <el-select v-if="!info" v-model="form.taskParams.idIncrementConfig.incrementColumn"
                                 collapse-tags collapse-tags-tooltip filterable :placeholder="td('dpp.integration.idFieldPlaceholder', '请选择id字段')">
                                 <el-option v-for="item in ColumnByAssettab" :key="item.columnName"
@@ -186,7 +186,7 @@
                         <el-form-item :label="td('dpp.integration.startValue', '开始值')" prop="taskParams.idIncrementConfig.incrementStart" :rules="[
                             { required: true, message: td('dpp.integration.startValueRequired', '请输入开始值'), trigger: 'change' },
                             { validator: checkInteger, trigger: 'change' }
-                        ]">
+                        ]" :label-position="labelPosition">
                             <el-input v-if="!info" v-model="form.taskParams.idIncrementConfig.incrementStart"
                                 :placeholder="td('dpp.integration.startValuePlaceholder', '请输入开始值')" type="number">
                             </el-input>
@@ -199,7 +199,7 @@
             <template v-if="form.taskParams.readModeType == 3">
                 <el-row :gutter="20">
 <!--                    <el-col :span="12">-->
-<!--                        <el-form-item label="逻辑连接符" prop="taskParams.dateIncrementConfig.logic" :rules="[-->
+<!--                        <el-form-item label="逻辑连接符" prop="taskParams.dateIncrementConfig.logic" :rules="[-- :label-position="labelPosition">
 <!--                            {-->
 <!--                                required: true,-->
 <!--                                message: '请选择逻辑连接符',-->
@@ -215,7 +215,7 @@
 <!--                        </el-form-item>-->
 <!--                    </el-col>-->
                     <el-col :span="12">
-                        <el-form-item :label="td('dpp.integration.timeFormat', '时间格式')" prop="taskParams.dateIncrementConfig.dateFormat">
+                        <el-form-item :label="td('dpp.integration.timeFormat', '时间格式')" prop="taskParams.dateIncrementConfig.dateFormat" :label-position="labelPosition">
                             <el-select v-if="!info" v-model="form.taskParams.dateIncrementConfig.dateFormat"
                                 :placeholder="td('dpp.integration.timeFormatPlaceholder', '请选择时间格式')">
                                 <el-option v-for="item in dateFormatOptions" :key="item.value" :label="item.label"
@@ -281,7 +281,7 @@
                 :dateIncrementConfig_dateFormat="form.taskParams.dateIncrementConfig.dateFormat" />
             <el-row :gutter="20" v-if="form.taskParams.clmt != '2'">
                 <el-col :span="24">
-                    <el-form-item :label="td('dpp.integration.whereCondition', 'where条件')" prop="where">
+                    <el-form-item :label="td('dpp.integration.whereCondition', 'where条件')" prop="where" :label-position="labelPosition">
                         <el-input v-if="!info" v-model="form.taskParams.where" type="textarea"
                             :placeholder="td('dpp.integration.whereConditionPlaceholder', '例如 id > 10 and id < 1000，请不要以分号;结尾')" />
                         <div class="form-readonly" v-else>{{ form.taskParams.where || '-' }}</div>

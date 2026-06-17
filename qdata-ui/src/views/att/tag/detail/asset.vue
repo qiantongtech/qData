@@ -55,22 +55,22 @@
         {{ title }}
       </span>
     </template>
-    <el-form ref="AttTagRef" :model="form" :rules="rules" label-width="80px">
+    <el-form ref="AttTagRef" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('att.common.code')" prop="code">
+          <el-form-item :label="td('att.common.code')" prop="code" :label-position="labelPosition">
             <el-input v-model="form.code" :placeholder="td('att.common.codePlaceholder')" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('common.texts.name')" prop="name">
+          <el-form-item :label="td('common.texts.name')" prop="name" :label-position="labelPosition">
             <el-input v-model="form.name" :placeholder="td('common.form.namePlaceholder')" />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('common.texts.description')" prop="description">
+          <el-form-item :label="td('common.texts.description')" prop="description" :label-position="labelPosition">
             <el-input
               v-model="form.description"
               :placeholder="td('common.form.descriptionPlaceholder')"
@@ -80,43 +80,43 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('att.common.catCode')" prop="catCode">
+          <el-form-item :label="td('att.common.catCode')" prop="catCode" :label-position="labelPosition">
             <el-input v-model="form.catCode" :placeholder="td('att.common.catCodePlaceholder')" />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('att.common.assetCount')" prop="aeestCount">
+          <el-form-item :label="td('att.common.assetCount')" prop="aeestCount" :label-position="labelPosition">
             <el-input v-model="form.aeestCount" :placeholder="td('att.common.assetCountPlaceholder')" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('common.texts.status')" prop="status">
+          <el-form-item :label="td('common.texts.status')" prop="status" :label-position="labelPosition">
             <el-input v-model="form.status" :placeholder="td('att.common.statusPlaceholder')" />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('att.common.extendAlias')" prop="allas">
+          <el-form-item :label="td('att.common.extendAlias')" prop="allas" :label-position="labelPosition">
             <el-input v-model="form.allas" :placeholder="td('att.common.extendAliasPlaceholder')" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('att.common.nearSynonyms')" prop="nearSynonyms">
+          <el-form-item :label="td('att.common.nearSynonyms')" prop="nearSynonyms" :label-position="labelPosition">
             <el-input v-model="form.nearSynonyms" :placeholder="td('att.common.nearSynonymsPlaceholder')" />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('att.common.synonyms')" prop="synonyms">
+          <el-form-item :label="td('att.common.synonyms')" prop="synonyms" :label-position="labelPosition">
             <el-input v-model="form.synonyms" :placeholder="td('att.common.synonymsPlaceholder')" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('common.texts.remark')" prop="remark">
+          <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
             <el-input
               v-model="form.remark"
               :placeholder="td('common.form.remarkPlaceholder')"
@@ -150,17 +150,17 @@
         {{ title }}
       </span>
     </template>
-    <el-form ref="AttTagRef" :model="form" label-width="80px">
+    <el-form ref="AttTagRef" :model="form" label-width="80px" :label-position="labelPosition">
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('att.common.code')" prop="code">
+          <el-form-item :label="td('att.common.code')" prop="code" :label-position="labelPosition">
             <div>
               {{ form.code }}
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('common.texts.name')" prop="name">
+          <el-form-item :label="td('common.texts.name')" prop="name" :label-position="labelPosition">
             <div>
               {{ form.name }}
             </div>
@@ -169,14 +169,14 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('common.texts.description')" prop="description">
+          <el-form-item :label="td('common.texts.description')" prop="description" :label-position="labelPosition">
             <div>
               {{ form.description }}
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('att.common.catCode')" prop="catCode">
+          <el-form-item :label="td('att.common.catCode')" prop="catCode" :label-position="labelPosition">
             <div>
               {{ form.catCode }}
             </div>
@@ -185,14 +185,14 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('att.common.assetCount')" prop="aeestCount">
+          <el-form-item :label="td('att.common.assetCount')" prop="aeestCount" :label-position="labelPosition">
             <div>
               {{ form.aeestCount }}
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('common.texts.status')" prop="status">
+          <el-form-item :label="td('common.texts.status')" prop="status" :label-position="labelPosition">
             <div>
               {{ form.status }}
             </div>
@@ -201,14 +201,14 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('att.common.extendAlias')" prop="allas">
+          <el-form-item :label="td('att.common.extendAlias')" prop="allas" :label-position="labelPosition">
             <div>
               {{ form.allas }}
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('att.common.nearSynonyms')" prop="nearSynonyms">
+          <el-form-item :label="td('att.common.nearSynonyms')" prop="nearSynonyms" :label-position="labelPosition">
             <div>
               {{ form.nearSynonyms }}
             </div>
@@ -217,14 +217,14 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('att.common.synonyms')" prop="synonyms">
+          <el-form-item :label="td('att.common.synonyms')" prop="synonyms" :label-position="labelPosition">
             <div>
               {{ form.synonyms }}
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('common.texts.remark')" prop="remark">
+          <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
             <div>
               {{ form.remark }}
             </div>

@@ -161,46 +161,46 @@
 
       <!-- 调度日志详细 -->
       <el-dialog :title="td('sys.monitor.jobLog.scheduleLogDetail')" v-model="open" width="800px" :append-to="$refs['app-container']" draggable destroy-on-close>
-         <el-form :model="form" label-width="80px">
+         <el-form :model="form" label-width="80px" :label-position="labelPosition">
             <el-row :gutter="20">
                <el-col :span="12">
-                  <el-form-item :label="td('sys.monitor.jobLog.logIndex')">
+                  <el-form-item :label="td('sys.monitor.jobLog.logIndex')" :label-position="labelPosition">
                      <div class="form-value-ifon">{{ form.jobLogId }}</div>
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('sys.monitor.jobLog.taskName')">
+                  <el-form-item :label="td('sys.monitor.jobLog.taskName')" :label-position="labelPosition">
                      <div class="form-value-ifon">{{ form.jobName }}</div>
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('sys.monitor.jobLog.taskGroupLabel')">
+                  <el-form-item :label="td('sys.monitor.jobLog.taskGroupLabel')" :label-position="labelPosition">
                      <div class="form-value-ifon">{{ form.jobGroup }}</div>
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('sys.monitor.jobLog.execTime')">
+                  <el-form-item :label="td('sys.monitor.jobLog.execTime')" :label-position="labelPosition">
                      <div class="form-value-ifon">{{ form.createTime }}</div>
                   </el-form-item>
                </el-col>
                <el-col :span="24">
-                  <el-form-item :label="td('sys.monitor.jobLog.invokeMethod')">
+                  <el-form-item :label="td('sys.monitor.jobLog.invokeMethod')" :label-position="labelPosition">
                      <div class="form-value-ifon">{{ form.invokeTarget }}</div>
                   </el-form-item>
                </el-col>
                <el-col :span="24">
-                  <el-form-item :label="td('sys.monitor.jobLog.logInfo')">
+                  <el-form-item :label="td('sys.monitor.jobLog.logInfo')" :label-position="labelPosition">
                      <div class="form-value-ifon">{{ form.jobMessage }}</div>
                   </el-form-item>
                </el-col>
                <el-col :span="24">
-                  <el-form-item :label="td('sys.monitor.jobLog.execStatus')">
+                  <el-form-item :label="td('sys.monitor.jobLog.execStatus')" :label-position="labelPosition">
                      <div class="form-value-ifon" v-if="form.status == 0">{{ td('sys.monitor.jobLog.normal') }}</div>
                      <div class="form-value-ifon" v-else-if="form.status == 1">{{ td('sys.monitor.jobLog.failed') }}</div>
                   </el-form-item>
                </el-col>
                <el-col :span="24">
-                  <el-form-item :label="td('sys.monitor.jobLog.exceptionInfo')" v-if="form.status == 1">
+                  <el-form-item :label="td('sys.monitor.jobLog.exceptionInfo')" v-if="form.status == 1" :label-position="labelPosition">
                      <div class="form-value-ifon">{{ form.exceptionInfo }}</div>
                   </el-form-item>
                </el-col>

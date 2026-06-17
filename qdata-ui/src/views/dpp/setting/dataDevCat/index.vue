@@ -267,13 +267,13 @@
         :rules="rules"
         label-width="80px"
         @submit.prevent
-      >
+       :label-position="labelPosition">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item
               :label="td('dpp.setting.dataDevCat.categoryName')"
               prop="name"
-            >
+             :label-position="labelPosition">
               <el-input
                 v-model="form.name"
                 :placeholder="td('dpp.setting.dataDevCat.inputDataDevCatName')"
@@ -284,7 +284,7 @@
             <el-form-item
               :label="td('dpp.setting.dataDevCat.parentCat')"
               prop="parentId"
-            >
+             :label-position="labelPosition">
               <el-tree-select
                 filterable
                 :disabled="form.id"
@@ -304,7 +304,7 @@
             <el-form-item
               :label="td('dpp.setting.dataDevCat.sortOrder')"
               prop="sortOrder"
-            >
+             :label-position="labelPosition">
               <el-input-number
                 style="width: 100%"
                 v-model="form.sortOrder"
@@ -314,7 +314,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('common.texts.status')" prop="validFlag">
+            <el-form-item :label="td('common.texts.status')" prop="validFlag" :label-position="labelPosition">
               <el-radio v-model="form.validFlag" :label="true">{{
                 td("dpp.setting.dataDevCat.enable")
               }}</el-radio>
@@ -326,7 +326,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.description')">
+            <el-form-item :label="td('common.texts.description')" :label-position="labelPosition">
               <el-input
                 type="textarea"
                 v-model="form.description"
@@ -339,7 +339,7 @@
 
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.remark')">
+            <el-form-item :label="td('common.texts.remark')" :label-position="labelPosition">
               <el-input
                 type="textarea"
                 :placeholder="td('common.form.remarkPlaceholder')"
@@ -375,13 +375,13 @@
           {{ title }}
         </span>
       </template>
-      <el-form ref="AttDataDevCatRef" :model="form" label-width="80px">
+      <el-form ref="AttDataDevCatRef" :model="form" label-width="80px" :label-position="labelPosition">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item
               :label="td('dpp.setting.dataDevCat.categoryNameDetail')"
               prop="name"
-            >
+             :label-position="labelPosition">
               <div>
                 {{ form.name }}
               </div>
@@ -391,7 +391,7 @@
             <el-form-item
               :label="td('dpp.setting.dataDevCat.parentId')"
               prop="parentId"
-            >
+             :label-position="labelPosition">
               <div>
                 {{ form.parentId }}
               </div>
@@ -403,7 +403,7 @@
             <el-form-item
               :label="td('dpp.setting.dataDevCat.categorySort')"
               prop="sortOrder"
-            >
+             :label-position="labelPosition">
               <div>
                 {{ form.sortOrder }}
               </div>
@@ -413,7 +413,7 @@
             <el-form-item
               :label="td('common.texts.description')"
               prop="description"
-            >
+             :label-position="labelPosition">
               <div>
                 {{ form.description }}
               </div>
@@ -425,14 +425,14 @@
             <el-form-item
               :label="td('dpp.setting.dataDevCat.levelCode')"
               prop="code"
-            >
+             :label-position="labelPosition">
               <div>
                 {{ form.code }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('common.texts.remark')" prop="remark">
+            <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
               <div>
                 {{ form.remark }}
               </div>

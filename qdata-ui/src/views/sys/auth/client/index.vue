@@ -28,7 +28,7 @@
               @keyup.enter="handleQuery"
           />
         </el-form-item>
-        <el-form-item :label="td('sys.client.clientName')" prop="name">
+        <el-form-item :label="td('sys.client.clientName')" prop="name" :label-position="labelPosition">
           <el-input
               class="el-form-input-width"
               v-model="queryParams.name"
@@ -123,15 +123,15 @@
 
     <!-- 添加或修改应用管理对话框 -->
     <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']"  draggable destroy-on-close>
-      <el-form ref="clientRef" :model="form" :rules="rules" label-width="110px">
+      <el-form ref="clientRef" :model="form" :rules="rules" label-width="110px" :label-position="labelPosition">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('sys.client.clientHomepage')" prop="homeUrl">
+            <el-form-item :label="td('sys.client.clientHomepage')" prop="homeUrl" :label-position="labelPosition">
               <el-input v-model="form.homeUrl" :placeholder="td('sys.client.clientHomepagePlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('sys.client.syncUrl')" prop="syncUrl">
+            <el-form-item :label="td('sys.client.syncUrl')" prop="syncUrl" :label-position="labelPosition">
               <el-input v-model="form.syncUrl" :placeholder="td('sys.client.syncUrlPlaceholder')" />
             </el-form-item>
           </el-col>
@@ -143,7 +143,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('sys.client.clientType')" prop="type">
+            <el-form-item :label="td('sys.client.clientType')" prop="type" :label-position="labelPosition">
               <el-select v-model="form.type" :placeholder="td('sys.client.selectClientType')">
                 <el-option
                     v-for="dict in auth_app_type"
@@ -157,7 +157,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('sys.client.isPublic')" prop="publicFlag">
+            <el-form-item :label="td('sys.client.isPublic')" prop="publicFlag" :label-position="labelPosition">
               <el-radio-group v-model="form.publicFlag">
                 <el-radio
                     v-for="dict in auth_public"
@@ -168,7 +168,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('sys.client.isActive')" prop="validFlag">
+            <el-form-item :label="td('sys.client.isActive')" prop="validFlag" :label-position="labelPosition">
               <el-radio-group v-model="form.validFlag">
                 <el-radio
                     v-for="dict in sys_valid"
@@ -181,7 +181,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('sys.client.clientIcon')" prop="icon">
+            <el-form-item :label="td('sys.client.clientIcon')" prop="icon" :label-position="labelPosition">
               <div class="xgtpcont">
                   <ImageUpload class="sctplist" v-model="form.icon">
                   </ImageUpload>
@@ -191,14 +191,14 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('sys.client.authorizedUrl')" prop="redirectUrl">
+            <el-form-item :label="td('sys.client.authorizedUrl')" prop="redirectUrl" :label-position="labelPosition">
               <el-input v-model="form.redirectUrl" type="textarea" :placeholder="td('sys.client.inputContent')" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.remark')" prop="remark">
+            <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
               <el-input v-model="form.remark" type="textarea" :placeholder="td('sys.client.inputContent')" />
             </el-form-item>
           </el-col>

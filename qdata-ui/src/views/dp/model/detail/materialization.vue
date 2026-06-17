@@ -35,7 +35,7 @@
       :rules="rules"
       label-width="100px"
       @submit.prevent
-    >
+     :label-position="labelPosition">
       <el-row :gutter="20">
         <el-col :span="24">
           <el-form-item
@@ -48,7 +48,7 @@
                 trigger: 'change',
               },
             ]"
-          >
+           :label-position="labelPosition">
             <DatasourceList
               v-model="form.datasourceId"
               :placeholder="td('dp.materializedModel.selectDatabaseConnection')"
@@ -59,7 +59,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item :label="td('dp.modelForm.datasourceType')" prop="datasourceType">
+          <el-form-item :label="td('dp.modelForm.datasourceType')" prop="datasourceType" :label-position="labelPosition">
             <el-input
               v-model="form.datasourceType"
               :placeholder="td('dp.modelForm.datasourceTypePlaceholder')"
@@ -70,7 +70,7 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('dp.modelForm.datasourceAddress')" prop="ip">
+          <el-form-item :label="td('dp.modelForm.datasourceAddress')" prop="ip" :label-position="labelPosition">
             <el-input
               v-model="form.ip"
               :placeholder="td('dp.modelForm.datasourceAddressPlaceholder')"
@@ -81,7 +81,7 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('dp.materializedModel.releaseMode')" prop="releaseMode">
+          <el-form-item :label="td('dp.materializedModel.releaseMode')" prop="releaseMode" :label-position="labelPosition">
             <el-radio-group v-model="form.releaseMode">
               <el-radio label="1">{{ td('dp.materializedModel.deleteAndRecreate') }}</el-radio>
               <el-radio label="2">{{ td('dp.materializedModel.incrementalRelease') }}</el-radio>
@@ -91,7 +91,7 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('common.texts.description')">
+          <el-form-item :label="td('common.texts.description')" :label-position="labelPosition">
             <el-input
               type="textarea"
               maxlength="500"
@@ -105,7 +105,7 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('common.texts.remark')">
+          <el-form-item :label="td('common.texts.remark')" :label-position="labelPosition">
             <el-input
               type="textarea"
               maxlength="500"

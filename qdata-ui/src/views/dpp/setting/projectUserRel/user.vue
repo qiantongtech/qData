@@ -63,7 +63,7 @@
         ></el-date-picker>
       </el-form-item>
 
-      <el-form-item>
+      <el-form-item :label-position="labelPosition">
         <el-button
           plain
           type="primary"
@@ -264,7 +264,7 @@
       :rules="rules"
       label-width="80px"
       @submit.prevent
-    >
+     :label-position="labelPosition">
       <el-row :gutter="20">
         <el-col :span="24" v-if="form.id == null">
           <div class="hint-div">
@@ -284,7 +284,7 @@
           <el-form-item
             :label="td('dpp.setting.projectUserRel.systemUser')"
             prop="userNameList"
-          >
+           :label-position="labelPosition">
             <el-input
               style="width: 76%"
               v-model="form.userNameList"
@@ -304,7 +304,7 @@
           <el-form-item
             :label="td('dpp.setting.projectUserRel.systemUser')"
             prop="nickName"
-          >
+           :label-position="labelPosition">
             <el-input
               v-model="form.nickName"
               :placeholder="td('dpp.setting.projectUserRel.selectUser')"
@@ -317,7 +317,7 @@
           <el-form-item
             :label="td('dpp.setting.projectUserRel.userRole')"
             prop="roleIdList"
-          >
+           :label-position="labelPosition">
             <el-checkbox-group
               v-model="form.roleIdList"
               class="checkbox-vertical"
@@ -380,11 +380,11 @@
       ref="queryRef"
       :inline="true"
       
-    >
+     :label-position="labelPosition">
       <el-form-item
         :label="td('dpp.setting.projectUserRel.loginAccount')"
         prop="userName"
-      >
+       :label-position="labelPosition">
         <el-input
           v-model="queryParamsUser.userName"
           :placeholder="td('dpp.setting.projectUserRel.inputLoginAccount')"
@@ -396,7 +396,7 @@
       <el-form-item
         :label="td('dpp.setting.projectUserRel.phoneNumber')"
         prop="phonenumber"
-      >
+       :label-position="labelPosition">
         <el-input
           v-model="queryParamsUser.phonenumber"
           :placeholder="td('dpp.setting.projectUserRel.inputPhoneNumber')"

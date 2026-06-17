@@ -12,10 +12,10 @@
       :rules="currentRules"
       label-width="140px"
       @submit.prevent
-    >
+     :label-position="labelPosition">
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="t('components.catEditDialog.parentIdLabel')" prop="parentId">
+          <el-form-item :label="t('components.catEditDialog.parentIdLabel')" prop="parentId" :label-position="labelPosition">
             <el-tree-select
               filterable
               v-model="form.parentId"
@@ -28,7 +28,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item :label="effectiveNameLabel" prop="name">
+          <el-form-item :label="effectiveNameLabel" prop="name" :label-position="labelPosition">
             <el-input
               v-model="form.name"
               :placeholder="effectiveNamePlaceholder"
@@ -37,14 +37,14 @@
         </el-col>
       </el-row>
       <el-col :span="24">
-        <el-form-item :label="t('common.texts.status')" prop="validFlag">
+        <el-form-item :label="t('common.texts.status')" prop="validFlag" :label-position="labelPosition">
           <el-radio v-model="form.validFlag" :label="true">{{ t('components.catEditDialog.enable') }}</el-radio>
           <el-radio v-model="form.validFlag" :label="false">{{ t('components.catEditDialog.disable') }}</el-radio>
         </el-form-item>
       </el-col>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="t('components.catEditDialog.sortOrder')" prop="sortOrder">
+          <el-form-item :label="t('components.catEditDialog.sortOrder')" prop="sortOrder" :label-position="labelPosition">
             <el-input-number
               style="width: 100%"
               v-model="form.sortOrder"
@@ -56,7 +56,7 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="t('common.texts.description')" prop="description">
+          <el-form-item :label="t('common.texts.description')" prop="description" :label-position="labelPosition">
             <el-input
               type="textarea"
               :maxlength="500"
@@ -70,7 +70,7 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="t('common.texts.remark')" prop="remark">
+          <el-form-item :label="t('common.texts.remark')" prop="remark" :label-position="labelPosition">
             <el-input
               type="textarea"
               :maxlength="500"

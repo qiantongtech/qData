@@ -120,19 +120,19 @@
     <!-- 新增或修改清洗规则类目管理对话框 -->
     <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable
       destroy-on-close>
-      <el-form ref="attCleanCatRef" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="attCleanCatRef" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('att.common.categoryName')" prop="name">
+            <el-form-item :label="td('att.common.categoryName')" prop="name" :label-position="labelPosition">
               <el-input v-model="form.name" :placeholder="td('att.common.cleanCatNamePlaceholder')" />
             </el-form-item>
           </el-col>
-          <!--            <el-form-item label="类别排序" prop="sortOrder">-->
+          <!--            <el-form-item label="类别排序" prop="sortOrder" :label-position="labelPosition">-->
           <!--&lt;!&ndash;              <el-input v-model="form.sortOrder" placeholder="请输入类别排序" />&ndash;&gt;-->
           <!--              <el-input-number v-model="form.sortOrder"  steps="1" :min="0"  placeholder="请输入类别排序" />-->
           <!--            </el-form-item>-->
           <el-col :span="12">
-            <el-form-item :label="td('att.common.parentCat')" prop="parentId">
+            <el-form-item :label="td('att.common.parentCat')" prop="parentId" :label-position="labelPosition">
               <el-tree-select :disabled="form.id" v-model="form.parentId" :data="attAssetCatOptions"
                 :props="{ value: 'id', label: 'name', children: 'children' }" value-key="id" :placeholder="td('att.common.parentCatPlaceholder')"
                 check-strictly />
@@ -141,20 +141,20 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.description')">
+            <el-form-item :label="td('common.texts.description')" :label-position="labelPosition">
               <el-input type="textarea" :placeholder="td('common.form.descriptionPlaceholder')" v-model="form.description" :min-height="192" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('att.common.sortOrder')" prop="sortOrder">
+            <el-form-item :label="td('att.common.sortOrder')" prop="sortOrder" :label-position="labelPosition">
               <el-input-number style="width: 100%" v-model="form.sortOrder" controls-position="right" :min="0" />
             </el-form-item>
           </el-col>
 
           <el-col :span="12">
-            <el-form-item :label="td('common.texts.status')" prop="validFlag">
+            <el-form-item :label="td('common.texts.status')" prop="validFlag" :label-position="labelPosition">
               <el-radio v-model="form.validFlag" :label="true">{{ td('att.common.enable') }}</el-radio>
               <el-radio v-model="form.validFlag" :label="false">{{ td('att.common.disable') }}</el-radio>
             </el-form-item>
@@ -162,7 +162,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.remark')">
+            <el-form-item :label="td('common.texts.remark')" :label-position="labelPosition">
               <el-input type="textarea" :placeholder="td('common.form.remarkPlaceholder')" v-model="form.remark" :min-height="192" />
             </el-form-item>
           </el-col>

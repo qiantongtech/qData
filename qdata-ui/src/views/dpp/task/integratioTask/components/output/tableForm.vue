@@ -33,7 +33,7 @@
       @submit.prevent
       v-loading="loading"
       :disabled="info"
-    >
+     :label-position="labelPosition">
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
@@ -49,7 +49,7 @@
                 trigger: 'change',
               },
             ]"
-          >
+           :label-position="labelPosition">
             <el-input
               v-if="!info"
               v-model="form.name"
@@ -64,7 +64,7 @@
           <el-form-item
             :label="td('dpp.integration.type', '类型')"
             prop="typeName"
-          >
+           :label-position="labelPosition">
             <el-select
               v-if="!info"
               v-model="form.taskParams.typeName"
@@ -90,7 +90,7 @@
           <el-form-item
             :label="td('common.texts.description')"
             prop="description"
-          >
+           :label-position="labelPosition">
             <el-input
               v-if="!info"
               v-model="form.description"
@@ -118,7 +118,7 @@
                 trigger: 'change',
               },
             ]"
-          >
+           :label-position="labelPosition">
             <el-select
               v-if="!info"
               v-model="form.taskParams.writerDatasource.datasourceId"
@@ -152,7 +152,7 @@
           <el-form-item
             :label="td('dpp.integration.dbConnectionType', '数据连接类型')"
             prop="taskParams.writerDatasource.datasourceType"
-          >
+           :label-position="labelPosition">
             <el-input
               v-if="!info"
               v-model="form.taskParams.writerDatasource.datasourceType"
@@ -175,7 +175,7 @@
           <el-form-item
             :label="td('dpp.integration.dbConnectionInstance', '数据连接实例')"
             prop="taskParams.writerDatasource.dbname"
-          >
+           :label-position="labelPosition">
             <el-input
               v-if="!info"
               v-model="form.taskParams.writerDatasource.dbname"
@@ -203,7 +203,7 @@
                 trigger: 'change',
               },
             ]"
-          >
+           :label-position="labelPosition">
             <el-select
               v-if="!info"
               v-model="form.taskParams.target_asset_id"
@@ -233,7 +233,7 @@
           <el-form-item
             :label="td('dpp.integration.whereCondition', 'where条件')"
             prop="where"
-          >
+           :label-position="labelPosition">
             <el-input
               v-if="!info"
               v-model="form.taskParams.where"
@@ -274,7 +274,7 @@
           <el-form-item
             :label="td('dpp.integration.preSql', '前置SQL')"
             prop="preSql"
-          >
+           :label-position="labelPosition">
             <el-input
               v-if="!info"
               v-model="form.preSql"
@@ -308,7 +308,7 @@
                 trigger: 'change',
               },
             ]"
-          >
+           :label-position="labelPosition">
             <el-radio-group
               v-if="!info"
               v-model="form.taskParams.writeModeType"
@@ -338,7 +338,7 @@
           <el-form-item
             :label="td('dpp.integration.singleWriteData', '单次写入数据')"
             prop="taskParams.description"
-          >
+           :label-position="labelPosition">
             <el-input
               v-if="!info"
               v-model="form.taskParams.description"
@@ -392,7 +392,7 @@
                 trigger: 'change',
               },
             ]"
-          >
+           :label-position="labelPosition">
             <el-checkbox-group
               v-if="!info"
               v-model="form.taskParams.selectedColumns"
@@ -417,7 +417,7 @@
           <el-form-item
             :label="td('dpp.integration.postSql', '后置SQL')"
             prop="taskParams.postSql"
-          >
+           :label-position="labelPosition">
             <el-input
               v-if="!info"
               v-model="form.taskParams.postSql"

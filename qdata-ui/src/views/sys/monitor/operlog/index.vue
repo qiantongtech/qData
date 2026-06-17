@@ -43,7 +43,7 @@
                      :value="dict.value" />
                </el-select>
             </el-form-item>
-            <el-form-item :label="td('sys.monitor.operlog.operTime')">
+            <el-form-item :label="td('sys.monitor.operlog.operTime')" :label-position="labelPosition">
                <el-date-picker class="el-form-input-width" v-model="dateRange" value-format="YYYY-MM-DD HH:mm:ss"
                   type="daterange" range-separator="-" :start-placeholder="td('common.form.startDatePlaceholder')" :end-placeholder="td('common.form.endDatePlaceholder')"
                   :default-time="[new Date(2000, 1, 1, 0, 0, 0), new Date(2000, 1, 1, 23, 59, 59)]"></el-date-picker>
@@ -123,65 +123,65 @@
 
       <el-dialog :title="td('sys.monitor.operlog.operLogDetail')" v-model="open" width="800px" :append-to="$refs['app-container']" draggable
          destroy-on-close>
-         <el-form :model="form" label-width="80px">
+         <el-form :model="form" label-width="80px" :label-position="labelPosition">
             <el-row :gutter="20">
                <el-col :span="12">
-                  <el-form-item :label="td('sys.monitor.operlog.operModule')">
+                  <el-form-item :label="td('sys.monitor.operlog.operModule')" :label-position="labelPosition">
                      <div class="form-readonly">
                         {{ form.title }} / {{ typeFormat(form) }}
                      </div>
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('sys.monitor.operlog.loginInfo')">
+                  <el-form-item :label="td('sys.monitor.operlog.loginInfo')" :label-position="labelPosition">
                      <div class="form-readonly">
                         {{ form.operName }} / {{ form.operIp }} / {{ form.operLocation }}
                      </div>
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('sys.monitor.operlog.requestAddr')">
+                  <el-form-item :label="td('sys.monitor.operlog.requestAddr')" :label-position="labelPosition">
                      <div class="form-readonly">
                         {{ form.operUrl }}
                      </div>
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('sys.monitor.operlog.requestMethod')">
+                  <el-form-item :label="td('sys.monitor.operlog.requestMethod')" :label-position="labelPosition">
                      <div class="form-readonly">
                         {{ form.requestMethod }}
                      </div>
                   </el-form-item>
                </el-col>
                <el-col :span="24">
-                  <el-form-item :label="td('sys.monitor.operlog.operMethod')">
+                  <el-form-item :label="td('sys.monitor.operlog.operMethod')" :label-position="labelPosition">
                      <div class="form-readonly">
                         {{ form.method }}
                      </div>
                   </el-form-item>
                </el-col>
                <el-col :span="24">
-                  <el-form-item :label="td('sys.monitor.operlog.requestParam')">
+                  <el-form-item :label="td('sys.monitor.operlog.requestParam')" :label-position="labelPosition">
                      <div class="form-readonly">
                         {{ form.operParam }}
                      </div>
                   </el-form-item>
                </el-col>
                <el-col :span="24">
-                  <el-form-item :label="td('sys.monitor.operlog.returnParam')">
+                  <el-form-item :label="td('sys.monitor.operlog.returnParam')" :label-position="labelPosition">
                      <div class="form-readonly">
                         {{ form.jsonResult }}
                      </div>
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('sys.monitor.operlog.operStatus')">
+                  <el-form-item :label="td('sys.monitor.operlog.operStatus')" :label-position="labelPosition">
                      <div class="form-readonly" v-if="form.status === 0">{{ td('sys.monitor.operlog.normal') }}</div>
                      <div class="form-readonly" v-else-if="form.status === 1">{{ td('sys.monitor.operlog.failed') }}</div>
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('sys.monitor.operlog.costTime')">
+                  <el-form-item :label="td('sys.monitor.operlog.costTime')" :label-position="labelPosition">
                      <div class="form-readonly">{{ form.costTime }}{{ td('sys.monitor.operlog.millisecond') }}</div>
                   </el-form-item>
                </el-col>
@@ -191,7 +191,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="24">
-                  <el-form-item :label="td('sys.monitor.operlog.exceptionInfo')" v-if="form.status === 1">
+                  <el-form-item :label="td('sys.monitor.operlog.exceptionInfo')" v-if="form.status === 1" :label-position="labelPosition">
                      <div class="form-readonly">{{ form.errorMsg }}</div>
                   </el-form-item>
                </el-col>

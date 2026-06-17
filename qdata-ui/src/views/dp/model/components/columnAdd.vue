@@ -23,10 +23,10 @@
       :rules="rules"
       label-width="100px"
       @submit.prevent
-    >
+     :label-position="labelPosition">
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('dp.modelForm.relatedStandard')" prop="dataElemId">
+          <el-form-item :label="td('dp.modelForm.relatedStandard')" prop="dataElemId" :label-position="labelPosition">
             <el-select
               v-model="form.dataElemId"
               :placeholder="td('dp.modelForm.relatedStandardPlaceholder')"
@@ -44,14 +44,14 @@
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item :label="td('dp.model.chineseName')" prop="cnName">
+          <el-form-item :label="td('dp.model.chineseName')" prop="cnName" :label-position="labelPosition">
             <el-input v-model="form.cnName" :placeholder="td('dp.model.chineseNamePlaceholder')" />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('dp.model.englishName')" prop="engName">
+          <el-form-item :label="td('dp.model.englishName')" prop="engName" :label-position="labelPosition">
             <el-input
               v-model="form.engName"
               :placeholder="td('dp.model.englishNamePlaceholder')"
@@ -60,7 +60,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item :label="td('dp.modelForm.dataType')" prop="columnType">
+          <el-form-item :label="td('dp.modelForm.dataType')" prop="columnType" :label-position="labelPosition">
             <el-select v-model="form.columnType" :placeholder="td('dp.modelForm.dataTypePlaceholder')">
               <el-option
                 v-for="dict in column_type"
@@ -89,7 +89,7 @@
                     },
                   ]
             "
-          >
+           :label-position="labelPosition">
             <el-input-number
               :step="1"
               step-strictly
@@ -104,7 +104,7 @@
         </el-col>
         <el-col :span="24">
           <!-- DECIMAL  NUMBER  NUMERIC -->
-          <el-form-item :label="td('dp.modelForm.decimalPlaces')" prop="columnScale">
+          <el-form-item :label="td('dp.modelForm.decimalPlaces')" prop="columnScale" :label-position="labelPosition">
             <el-input-number
               :step="1"
               :disabled="
@@ -127,14 +127,14 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('dp.modelForm.defaultValue')" prop="defaultValue">
+          <el-form-item :label="td('dp.modelForm.defaultValue')" prop="defaultValue" :label-position="labelPosition">
             <el-input v-model="form.defaultValue" :placeholder="td('dp.modelForm.defaultValuePlaceholder')" />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('common.texts.description')" prop="modelComment">
+          <el-form-item :label="td('common.texts.description')" prop="modelComment" :label-position="labelPosition">
             <el-input
               v-model="form.description"
               type="textarea"
@@ -148,7 +148,7 @@
 
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('dp.modelForm.isPrimaryKey')" prop="pkFlag">
+          <el-form-item :label="td('dp.modelForm.isPrimaryKey')" prop="pkFlag" :label-position="labelPosition">
             <el-radio-group v-model="form.pkFlag" @change="handlePkFlagChange">
               <el-radio
                 v-for="dict in dp_model_column_pk_flag"
@@ -160,7 +160,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item :label="td('dp.modelForm.isRequired')" prop="nullableFlag">
+          <el-form-item :label="td('dp.modelForm.isRequired')" prop="nullableFlag" :label-position="labelPosition">
             <el-radio-group
               v-model="form.nullableFlag"
               :disabled="form.pkFlag == 1"

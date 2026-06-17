@@ -24,10 +24,10 @@
             </span>
         </template>
         <el-form ref="queryFormRef" :model="dataForm" :rules="rules" label-width="200px" @submit.prevent
-            v-loading="loading">
+            v-loading="loading" :label-position="labelPosition">
             <el-row v-for="item in columnsTwo" :key="item.en" :gutter="20">
                 <el-col :span="24">
-                    <el-form-item :prop="item.en" style="width: 100%;">
+                    <el-form-item :prop="item.en" style="width: 100%;" :label-position="labelPosition">
                         <!-- label -->
                         <template #label>
                             <overflow-tooltip :text="item.cn ? `${item.en} (${item.cn})` : item.en" max-width="200px" />

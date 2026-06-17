@@ -17,19 +17,19 @@
 
 <template>
   <el-dialog v-model="visibleDialog" draggable class="dialog" :title="dialogTitle" destroy-on-close>
-    <el-form ref="daDiscoveryTaskRef" :model="form" label-width="120px" @submit.prevent>
+    <el-form ref="daDiscoveryTaskRef" :model="form" label-width="120px" @submit.prevent :label-position="labelPosition">
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item :label="td('dpp.integration.fieldName', '字段名称')" prop="columnName" :rules="[
             { required: true, message: td('dpp.integration.fieldNameRequired', '请输入字段名称'), trigger: 'blur' },
-          ]">
+          ]" :label-position="labelPosition">
             <el-input v-model="form.columnName" :placeholder="td('dpp.integration.fieldNamePlaceholder', '请输入字段名称')" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item :label="td('dpp.integration.fieldType', '字段类型')" prop="columnType" :rules="[
             { required: true, message: td('dpp.integration.fieldTypeRequired', '请选择字段类型'), trigger: 'change' },
-          ]">
+          ]" :label-position="labelPosition">
             <el-select v-model="form.columnType" :placeholder="td('dpp.integration.fieldTypePlaceholder', '请选择字段类型')">
               <el-option v-for="dict in columntype" :key="dict.value" :label="dict.label"
                 :value="dict.value"></el-option>
@@ -42,7 +42,7 @@
           <el-form-item :label="td('dpp.integration.index', '索引')" prop="index" :rules="[
             { required: true, message: td('dpp.integration.indexRequired', '请输入索引'), trigger: 'blur' },
             {
-              validator: (_rule, value, callback) => {
+              validator: (_rule, value, callback) = :label-position="labelPosition"> {
                 if (value < 0) {
                   callback(new Error(td('dpp.integration.indexNoNegative', '索引不能为负数')))
                 } else {

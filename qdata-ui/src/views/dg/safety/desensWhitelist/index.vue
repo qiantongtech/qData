@@ -145,14 +145,14 @@
         :rules="rules"
         label-width="110px"
         @submit.prevent
-      >
-        <el-form-item :label="td('dg.desensWhitelist.whitelistName')" prop="whitelistName">
+       :label-position="labelPosition">
+        <el-form-item :label="td('dg.desensWhitelist.whitelistName')" prop="whitelistName" :label-position="labelPosition">
           <el-input
             v-model="form.whitelistName"
             :placeholder="td('dg.desensWhitelist.whitelistNamePlaceholder')"
           />
         </el-form-item>
-        <el-form-item :label="td('dg.desensWhitelist.dataCategory')" prop="dataCategoryCode">
+        <el-form-item :label="td('dg.desensWhitelist.dataCategory')" prop="dataCategoryCode" :label-position="labelPosition">
           <el-tree-select
             v-model="form.dataCategoryCode"
             filterable
@@ -164,7 +164,7 @@
             class="form-control--compact"
           />
         </el-form-item>
-        <el-form-item :label="td('dg.desensWhitelist.effectiveAccount')" prop="effectiveAccount">
+        <el-form-item :label="td('dg.desensWhitelist.effectiveAccount')" prop="effectiveAccount" :label-position="labelPosition">
           <el-select
             v-model="form.effectiveAccount"
             multiple
@@ -181,7 +181,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item :label="td('dg.desensWhitelist.effectiveTimeRange')" prop="effectiveTimeRange">
+        <el-form-item :label="td('dg.desensWhitelist.effectiveTimeRange')" prop="effectiveTimeRange" :label-position="labelPosition">
           <el-date-picker
             v-model="form.effectiveTimeRange"
             type="daterange"
@@ -203,7 +203,7 @@
             </el-radio>
           </el-radio-group>
         </qt-form-item>
-        <el-form-item :label="td('common.texts.description')" prop="description" class="row-full">
+        <el-form-item :label="td('common.texts.description')" prop="description" class="row-full" :label-position="labelPosition">
           <el-input
             v-model="form.description"
             type="textarea"
@@ -213,7 +213,7 @@
             :maxlength="500"
           />
         </el-form-item>
-        <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full">
+        <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full" :label-position="labelPosition">
           <el-input
             v-model="form.remark"
             type="textarea"
@@ -249,17 +249,17 @@
         :model="form"
         label-width="110px"
         class="column-form"
-      >
-        <el-form-item :label="td('common.texts.number') + ':'" prop="id">
+       :label-position="labelPosition">
+        <el-form-item :label="td('common.texts.number') + ':'" prop="id" :label-position="labelPosition">
           <div class="form-readonly">{{ form.id ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="td('dg.desensWhitelist.whitelistName')" prop="whitelistName">
+        <el-form-item :label="td('dg.desensWhitelist.whitelistName')" prop="whitelistName" :label-position="labelPosition">
           <div class="form-readonly">{{ form.whitelistName ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="td('dg.desensWhitelist.dataCategory')" prop="dataCategoryName">
+        <el-form-item :label="td('dg.desensWhitelist.dataCategory')" prop="dataCategoryName" :label-position="labelPosition">
           <div class="form-readonly">{{ form.dataCategoryName ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="td('dg.desensWhitelist.effectiveAccount')" prop="effectiveAccount" class="row-full">
+        <el-form-item :label="td('dg.desensWhitelist.effectiveAccount')" prop="effectiveAccount" class="row-full" :label-position="labelPosition">
           <div
             class="form-readonly effective-account-readonly"
             :title="formatEffectiveAccount(form.effectiveAccount)"
@@ -267,40 +267,40 @@
             {{ formatEffectiveAccount(form.effectiveAccount) }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('dg.desensWhitelist.effectiveTimeRange')" prop="effectiveTimeRange">
+        <el-form-item :label="td('dg.desensWhitelist.effectiveTimeRange')" prop="effectiveTimeRange" :label-position="labelPosition">
           <div class="form-readonly">
             {{ formatEffectiveTimeRange(form.effectiveTimeRange) }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.status')" prop="status">
+        <el-form-item :label="td('common.texts.status')" prop="status" :label-position="labelPosition">
           <div class="form-readonly">
             {{ getStatusLabel(form.status) }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.description')" prop="description" class="row-full">
+        <el-form-item :label="td('common.texts.description')" prop="description" class="row-full" :label-position="labelPosition">
           <div class="form-readonly textarea">
             {{ form.description ?? "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full">
+        <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full" :label-position="labelPosition">
           <div class="form-readonly textarea">{{ form.remark ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.createdBy')" prop="createBy">
+        <el-form-item :label="td('common.texts.createdBy')" prop="createBy" :label-position="labelPosition">
           <div class="form-readonly">{{ form.createBy ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.createdTime')" prop="createTime">
+        <el-form-item :label="td('common.texts.createdTime')" prop="createTime" :label-position="labelPosition">
           <div class="form-readonly">
             {{ parseTime(form.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
         </el-form-item>
 
-        <el-form-item :label="td('common.texts.updatedBy')" prop="updateBy">
+        <el-form-item :label="td('common.texts.updatedBy')" prop="updateBy" :label-position="labelPosition">
           <div class="form-readonly">
             {{ form.updateBy ?? "-" }}
           </div>
         </el-form-item>
 
-        <el-form-item :label="td('common.texts.updatedTime')" prop="updateTime">
+        <el-form-item :label="td('common.texts.updatedTime')" prop="updateTime" :label-position="labelPosition">
           <div class="form-readonly">
             {{ parseTime(form.updateTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>

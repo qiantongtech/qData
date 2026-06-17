@@ -120,15 +120,15 @@
         :rules="rules"
         label-width="140px"
         @submit.prevent
-      >
+       :label-position="labelPosition">
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('dm.dataLayer.prefixName', '表前缀')" prop="prefixName">
+            <el-form-item :label="td('dm.dataLayer.prefixName', '表前缀')" prop="prefixName" :label-position="labelPosition">
               <el-input v-model="form.prefixName" :placeholder="td('dm.dataLayer.prefixNamePlaceholder', '请输入表前缀')" />
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item :label="td('dm.dataLayer.businessEngName', '业务英文缩写')" prop="businessEngName">
+            <el-form-item :label="td('dm.dataLayer.businessEngName', '业务英文缩写')" prop="businessEngName" :label-position="labelPosition">
               <el-input
                 v-model="form.businessEngName"
                 :placeholder="td('dm.dataLayer.businessEngNamePlaceholder', '请输入业务英文缩写')"
@@ -138,7 +138,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('dm.dataLayer.ownerUserId', '负责人')" prop="ownerUserId">
+            <el-form-item :label="td('dm.dataLayer.ownerUserId', '负责人')" prop="ownerUserId" :label-position="labelPosition">
               <el-select
                 v-model="form.ownerUserId"
                 filterable
@@ -155,7 +155,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item :label="td('dm.dataLayer.ownerUserPhoneNumber', '负责人电话')" prop="ownerUserPhoneNumber">
+            <el-form-item :label="td('dm.dataLayer.ownerUserPhoneNumber', '负责人电话')" prop="ownerUserPhoneNumber" :label-position="labelPosition">
               <el-input
                 v-model="form.ownerUserPhoneNumber"
                 :placeholder="td('dm.dataLayer.ownerUserPhoneNumberPlaceholder', '请输入负责人电话')"
@@ -166,7 +166,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.status', '状态')" prop="status">
+            <el-form-item :label="td('common.texts.status', '状态')" prop="status" :label-position="labelPosition">
               <el-radio-group v-model="form.status">
                 <el-radio
                   v-for="dict in sys_normal_disable"
@@ -181,7 +181,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.description', '描述')" prop="description">
+            <el-form-item :label="td('common.texts.description', '描述')" prop="description" :label-position="labelPosition">
               <el-input
                 v-model="form.description"
                 type="textarea"
@@ -210,44 +210,44 @@
       draggable
       width="800px"
     >
-      <el-form ref="specificationDetailRef" :model="form" label-width="140px">
-        <el-form-item :label="td('common.texts.number', '编号') + ':'" prop="id">
+      <el-form ref="specificationDetailRef" :model="form" label-width="140px" :label-position="labelPosition">
+        <el-form-item :label="td('common.texts.number', '编号') + ':'" prop="id" :label-position="labelPosition">
           <div class="form-readonly">
             {{ form.id }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('dm.dataLayer.prefixName', '表前缀')" prop="prefixName">
+        <el-form-item :label="td('dm.dataLayer.prefixName', '表前缀')" prop="prefixName" :label-position="labelPosition">
           <div class="form-readonly">{{ form.prefixName ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="td('dm.dataLayer.businessEngName', '业务英文缩写')" prop="businessEngName">
+        <el-form-item :label="td('dm.dataLayer.businessEngName', '业务英文缩写')" prop="businessEngName" :label-position="labelPosition">
           <div class="form-readonly">{{ form.businessEngName ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="td('dm.dataLayer.ownerUserId', '负责人')" prop="ownerUserName">
+        <el-form-item :label="td('dm.dataLayer.ownerUserId', '负责人')" prop="ownerUserName" :label-position="labelPosition">
           <div class="form-readonly">{{ form.ownerUserName || "-" }}</div>
         </el-form-item>
-        <el-form-item :label="td('dm.dataLayer.ownerUserPhoneNumber', '负责人电话')" prop="ownerUserPhoneNumber">
+        <el-form-item :label="td('dm.dataLayer.ownerUserPhoneNumber', '负责人电话')" prop="ownerUserPhoneNumber" :label-position="labelPosition">
           <div class="form-readonly">
             {{ form.ownerUserPhoneNumber || "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.status', '状态')" prop="status">
+        <el-form-item :label="td('common.texts.status', '状态')" prop="status" :label-position="labelPosition">
           <dict-tag :options="sys_normal_disable" :value="form.status" />
         </el-form-item>
-        <el-form-item :label="td('common.texts.description', '描述')" prop="description">
+        <el-form-item :label="td('common.texts.description', '描述')" prop="description" :label-position="labelPosition">
           <div class="form-readonly textarea">
             {{ form.description ?? "-" }}
           </div>
         </el-form-item>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.createdBy', '创建人')" prop="createBy">
+            <el-form-item :label="td('common.texts.createdBy', '创建人')" prop="createBy" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.createBy }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.createdTime', '创建时间')" prop="createTime">
+            <el-form-item :label="td('common.texts.createdTime', '创建时间')" prop="createTime" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ parseTime(form.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
               </div>
@@ -256,14 +256,14 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.updatedBy', '更新人')" prop="createBy">
+            <el-form-item :label="td('common.texts.updatedBy', '更新人')" prop="createBy" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.updateBy }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.updatedTime', '更新时间')" prop="updateTime">
+            <el-form-item :label="td('common.texts.updatedTime', '更新时间')" prop="updateTime" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ parseTime(form.updateTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
               </div>

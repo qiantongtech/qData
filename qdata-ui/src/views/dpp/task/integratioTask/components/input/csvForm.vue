@@ -33,7 +33,7 @@
       @submit.prevent
       v-loading="loading"
       :disabled="info"
-    >
+     :label-position="labelPosition">
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
@@ -49,7 +49,7 @@
                 trigger: 'change',
               },
             ]"
-          >
+           :label-position="labelPosition">
             <el-input
               v-model="form.name"
               :placeholder="
@@ -62,7 +62,7 @@
           <el-form-item
             :label="td('dpp.integration.type', '类型')"
             prop="typeName"
-          >
+           :label-position="labelPosition">
             <el-select
               v-model="form.taskParams.typeName"
               :placeholder="td('dpp.integration.typePlaceholder', '请输入类型')"
@@ -84,7 +84,7 @@
           <el-form-item
             :label="td('common.texts.description')"
             prop="description"
-          >
+           :label-position="labelPosition">
             <el-input
               v-model="form.description"
               type="textarea"
@@ -108,7 +108,7 @@
                 trigger: 'change',
               },
             ]"
-          >
+           :label-position="labelPosition">
             <FileUploadbtn
               :limit="1"
               v-model="form.taskParams.file"

@@ -59,7 +59,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item>
+        <el-form-item :label-position="labelPosition">
           <el-button
             plain
             type="primary"
@@ -347,13 +347,13 @@
         label-width="110px"
         @submit.prevent
         :disabled="title == td('dpp.datasource.datasourceDetail')"
-      >
+       :label-position="labelPosition">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item
               :label="td('dpp.datasource.datasourceName')"
               prop="datasourceName"
-            >
+             :label-position="labelPosition">
               <el-input
                 v-model="form.datasourceName"
                 :placeholder="td('dpp.datasource.inputDatasourceName')"
@@ -365,7 +365,7 @@
             <el-form-item
               :label="td('dpp.datasource.datasourceType')"
               prop="datasourceType"
-            >
+             :label-position="labelPosition">
               <el-select
                 v-model="form.datasourceType"
                 :placeholder="td('dpp.datasource.selectDatasourceType')"
@@ -384,7 +384,7 @@
         </el-row>
         <el-row :gutter="20" v-if="form.datasourceType !== 'OSS-ALIYUN'">
           <el-col :span="12">
-            <el-form-item :label="td('dpp.datasource.ip')" prop="ip">
+            <el-form-item :label="td('dpp.datasource.ip')" prop="ip" :label-position="labelPosition">
               <el-input
                 v-model="form.ip"
                 :placeholder="td('dpp.datasource.inputIp')"
@@ -392,7 +392,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('dpp.datasource.port')" prop="port">
+            <el-form-item :label="td('dpp.datasource.port')" prop="port" :label-position="labelPosition">
               <el-input
                 v-model="form.port"
                 :placeholder="td('dpp.datasource.inputPort')"
@@ -412,7 +412,7 @@
             <el-form-item
               :label="td('dpp.datasource.username')"
               prop="username"
-            >
+             :label-position="labelPosition">
               <el-input
                 v-model="form.username"
                 :placeholder="td('dpp.datasource.inputUsername')"
@@ -423,7 +423,7 @@
             <el-form-item
               :label="td('dpp.datasource.password')"
               prop="password"
-            >
+             :label-position="labelPosition">
               <el-input
                 type="password"
                 v-model="form.password"
@@ -443,7 +443,7 @@
         <template v-if="form.datasourceType === 'OSS-ALIYUN'">
           <el-row :gutter="20">
             <el-col :span="12">
-              <el-form-item :label="td('dpp.datasource.keyId')" prop="keyId">
+              <el-form-item :label="td('dpp.datasource.keyId')" prop="keyId" :label-position="labelPosition">
                 <el-input
                   v-model="form.keyId"
                   :placeholder="td('dpp.datasource.inputKeyId')"
@@ -454,7 +454,7 @@
               <el-form-item
                 :label="td('dpp.datasource.keySecret')"
                 prop="keySecret"
-              >
+               :label-position="labelPosition">
                 <el-input
                   v-model="form.keySecret"
                   :placeholder="td('dpp.datasource.inputKeySecret')"
@@ -471,7 +471,7 @@
           </el-row>
           <el-row :gutter="20">
             <el-col :span="12">
-              <el-form-item :label="td('dpp.datasource.bucket')" prop="bucket">
+              <el-form-item :label="td('dpp.datasource.bucket')" prop="bucket" :label-position="labelPosition">
                 <el-input
                   v-model="form.bucket"
                   :placeholder="td('dpp.datasource.inputBucket')"
@@ -482,7 +482,7 @@
               <el-form-item
                 :label="td('dpp.datasource.endpoint')"
                 prop="endpoint"
-              >
+               :label-position="labelPosition">
                 <el-input
                   v-model="form.endpoint"
                   :placeholder="td('dpp.datasource.inputEndpoint')"
@@ -492,7 +492,7 @@
           </el-row>
           <el-row :gutter="20">
             <el-col :span="24">
-              <el-form-item :label="td('dpp.datasource.domain')" prop="domain">
+              <el-form-item :label="td('dpp.datasource.domain')" prop="domain" :label-position="labelPosition">
                 <el-input
                   v-model="form.domain"
                   :placeholder="td('dpp.datasource.inputDomain')"
@@ -511,7 +511,7 @@
           "
         >
           <el-col :span="12" v-if="form.datasourceType !== null">
-            <el-form-item :label="td('dpp.datasource.dbname')" prop="dbname">
+            <el-form-item :label="td('dpp.datasource.dbname')" prop="dbname" :label-position="labelPosition">
               <el-input
                 v-model="form.dbname"
                 :placeholder="td('dpp.datasource.inputDbname')"
@@ -531,7 +531,7 @@
                 form.datasourceType == 'PostgreSQL')
             "
           >
-            <el-form-item :label="td('dpp.datasource.sid')" prop="sid">
+            <el-form-item :label="td('dpp.datasource.sid')" prop="sid" :label-position="labelPosition">
               <el-input
                 v-model="form.sid"
                 :placeholder="td('dpp.datasource.inputSid')"
@@ -549,7 +549,7 @@
           "
         >
           <el-col :span="24">
-            <el-form-item :label="td('dpp.datasource.config')" prop="config">
+            <el-form-item :label="td('dpp.datasource.config')" prop="config" :label-position="labelPosition">
               <el-input
                 type="textarea"
                 :autosize="{ minRows: 2, maxRows: 4 }"
@@ -568,7 +568,7 @@
             <el-form-item
               :label="td('dpp.datasource.description')"
               prop="description"
-            >
+             :label-position="labelPosition">
               <el-input
                 type="textarea"
                 :min-height="192"
@@ -583,7 +583,7 @@
             <el-form-item
               :label="td('dpp.datasource.projectNameList')"
               prop="projectNameList"
-            >
+             :label-position="labelPosition">
               <el-input
                 style="width: 83.5%"
                 v-model="form.projectNameList"
@@ -602,7 +602,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('dpp.datasource.status')" prop="validFlag">
+            <el-form-item :label="td('dpp.datasource.status')" prop="validFlag" :label-position="labelPosition">
               <el-radio-group v-model="form.validFlag">
                 <el-radio
                   v-for="dict in sys_disable"
@@ -617,7 +617,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('dpp.datasource.remark')">
+            <el-form-item :label="td('dpp.datasource.remark')" :label-position="labelPosition">
               <el-input
                 type="textarea"
                 v-model="form.remark"
@@ -662,10 +662,10 @@
         :model="form"
         :rules="rules"
         label-width="110px"
-      >
+       :label-position="labelPosition">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('dpp.datasource.datasourceName')">
+            <el-form-item :label="td('dpp.datasource.datasourceName')" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.datasourceName || "-" }}
               </div>
@@ -673,7 +673,7 @@
           </el-col>
 
           <el-col :span="12">
-            <el-form-item :label="td('dpp.datasource.datasourceType')">
+            <el-form-item :label="td('dpp.datasource.datasourceType')" :label-position="labelPosition">
               <div>
                 <dict-tag
                   :options="datasource_type"
@@ -685,14 +685,14 @@
         </el-row>
         <el-row :gutter="20" v-if="form.datasourceType !== 'OSS-ALIYUN'">
           <el-col :span="12">
-            <el-form-item :label="td('dpp.datasource.ip')">
+            <el-form-item :label="td('dpp.datasource.ip')" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.ip || "-" }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('dpp.datasource.port')">
+            <el-form-item :label="td('dpp.datasource.port')" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.port || "-" }}
               </div>
@@ -708,14 +708,14 @@
           "
         >
           <el-col :span="12">
-            <el-form-item :label="td('dpp.datasource.username')">
+            <el-form-item :label="td('dpp.datasource.username')" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.username || "-" }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('dpp.datasource.password')">
+            <el-form-item :label="td('dpp.datasource.password')" :label-position="labelPosition">
               <div class="form-readonly">***********</div>
             </el-form-item>
           </el-col>
@@ -724,14 +724,14 @@
         <template v-if="form.datasourceType === 'OSS-ALIYUN'">
           <el-row :gutter="20">
             <el-col :span="12">
-              <el-form-item :label="td('dpp.datasource.keyId')">
+              <el-form-item :label="td('dpp.datasource.keyId')" :label-position="labelPosition">
                 <div class="form-readonly">
                   {{ form.keyId || "-" }}
                 </div>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item :label="td('dpp.datasource.keySecret')">
+              <el-form-item :label="td('dpp.datasource.keySecret')" :label-position="labelPosition">
                 <div class="form-readonly">
                   {{ form.keySecret || "-" }}
                 </div>
@@ -740,14 +740,14 @@
           </el-row>
           <el-row :gutter="20">
             <el-col :span="12">
-              <el-form-item :label="td('dpp.datasource.bucket')">
+              <el-form-item :label="td('dpp.datasource.bucket')" :label-position="labelPosition">
                 <div class="form-readonly">
                   {{ form.bucket || "-" }}
                 </div>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item :label="td('dpp.datasource.endpoint')">
+              <el-form-item :label="td('dpp.datasource.endpoint')" :label-position="labelPosition">
                 <div class="form-readonly">
                   {{ form.endpoint || "-" }}
                 </div>
@@ -756,7 +756,7 @@
           </el-row>
           <el-row :gutter="20">
             <el-col :span="24">
-              <el-form-item :label="td('dpp.datasource.domain')">
+              <el-form-item :label="td('dpp.datasource.domain')" :label-position="labelPosition">
                 <div class="form-readonly">
                   {{ form.domain || "-" }}
                 </div>
@@ -774,7 +774,7 @@
           "
         >
           <el-col :span="12" v-if="form.datasourceType !== null">
-            <el-form-item :label="td('dpp.datasource.dbname')">
+            <el-form-item :label="td('dpp.datasource.dbname')" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.dbname || "-" }}
               </div>
@@ -792,7 +792,7 @@
                 form.datasourceType == 'PostgreSQL')
             "
           >
-            <el-form-item :label="td('dpp.datasource.sid')">
+            <el-form-item :label="td('dpp.datasource.sid')" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.sid || "-" }}
               </div>
@@ -808,7 +808,7 @@
           "
         >
           <el-col :span="24">
-            <el-form-item :label="td('dpp.datasource.config')">
+            <el-form-item :label="td('dpp.datasource.config')" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.config || "-" }}
               </div>
@@ -817,7 +817,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('dpp.datasource.description')">
+            <el-form-item :label="td('dpp.datasource.description')" :label-position="labelPosition">
               <div class="form-readonly textarea">
                 {{ form.description || "-" }}
               </div>
@@ -826,7 +826,7 @@
         </el-row>
         <el-row :gutter="20" v-if="type == 0">
           <el-col :span="24">
-            <el-form-item :label="td('dpp.datasource.projectNameList')">
+            <el-form-item :label="td('dpp.datasource.projectNameList')" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.projectNameListStr || "-" }}
               </div>
@@ -835,7 +835,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('dpp.datasource.status')">
+            <el-form-item :label="td('dpp.datasource.status')" :label-position="labelPosition">
               <dict-tag
                 :options="sys_disable"
                 :value="form.validFlag ? '1' : '0'"
@@ -845,7 +845,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('dpp.datasource.remark')">
+            <el-form-item :label="td('dpp.datasource.remark')" :label-position="labelPosition">
               <div class="form-readonly textarea">
                 {{ form.remark || "-" }}
               </div>
@@ -879,8 +879,8 @@
         ref="queryRef"
         :inline="true"
 
-      >
-        <el-form-item :label="td('dpp.datasource.projectName')" prop="name">
+       :label-position="labelPosition">
+        <el-form-item :label="td('dpp.datasource.projectName')" prop="name" :label-position="labelPosition">
           <el-input
             class="el-form-input-width"
             v-model="queryParamsProject.name"
@@ -889,7 +889,7 @@
             @keyup.enter="handleQuery"
           />
         </el-form-item>
-        <el-form-item :label="td('dpp.datasource.manager')" prop="managerId">
+        <el-form-item :label="td('dpp.datasource.manager')" prop="managerId" :label-position="labelPosition">
           <el-select
             v-model="queryParamsProject.managerId"
             class="el-form-input-width"

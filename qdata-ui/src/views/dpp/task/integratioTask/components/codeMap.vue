@@ -59,22 +59,22 @@
 
     <!-- 新增/修改对话框 -->
     <el-dialog :title="title" v-model="open" :append-to="$refs['app-container']" draggable destroy-on-close>
-        <el-form ref="dpCodeMapRef" :model="form" :rules="rules" label-width="80px">
+        <el-form ref="dpCodeMapRef" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item :label="td('dpp.integration.originalValue', '原始值')" prop="originalValue">
+                    <el-form-item :label="td('dpp.integration.originalValue', '原始值')" prop="originalValue" :label-position="labelPosition">
                         <el-input v-model="form.originalValue" :placeholder="td('dpp.integration.originalValuePlaceholder', '请输入原始值')" />
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item :label="td('dpp.integration.dictName', '字典名')" prop="dictName">
+                    <el-form-item :label="td('dpp.integration.dictName', '字典名')" prop="dictName" :label-position="labelPosition">
                         <el-input v-model="form.dictName" :placeholder="td('dpp.integration.dictNamePlaceholder', '请输入字典名')" />
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item :label="td('dpp.integration.dictValue', '字典值')" prop="dictValue">
+                    <el-form-item :label="td('dpp.integration.dictValue', '字典值')" prop="dictValue" :label-position="labelPosition">
                         <el-input v-model="form.dictValue" :placeholder="td('dpp.integration.dictValuePlaceholder', '代码值')" />
                     </el-form-item>
                 </el-col>

@@ -32,8 +32,8 @@
         :inline="true"
         v-show="showSearch"
         
-    >
-      <el-form-item label="ID" prop="id">
+     :label-position="labelPosition">
+      <el-form-item label="ID" prop="id" :label-position="labelPosition">
         <el-input
             style="width:240px"
             v-model="queryParams.id"
@@ -42,7 +42,7 @@
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item :label="td('sys.tool.chooseUser.typeName')" prop="name">
+      <el-form-item :label="td('sys.tool.chooseUser.typeName')" prop="name" :label-position="labelPosition">
         <el-input
             style="width:240px"
             v-model="queryParams.name"
@@ -51,7 +51,7 @@
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item :label="td('sys.tool.chooseUser.isActive')" prop="validFlag">
+      <el-form-item :label="td('sys.tool.chooseUser.isActive')" prop="validFlag" :label-position="labelPosition">
         <el-input
             style="width:240px"
             v-model="queryParams.validFlag"
@@ -60,7 +60,7 @@
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item :label="td('sys.tool.chooseUser.deleteFlag')" prop="delFlag">
+      <el-form-item :label="td('sys.tool.chooseUser.deleteFlag')" prop="delFlag" :label-position="labelPosition">
         <el-input
             style="width:240px"
             v-model="queryParams.delFlag"
@@ -69,7 +69,7 @@
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item :label="td('common.texts.createdBy')" prop="createBy">
+      <el-form-item :label="td('common.texts.createdBy')" prop="createBy" :label-position="labelPosition">
         <el-input
             style="width:240px"
             v-model="queryParams.createBy"
@@ -78,7 +78,7 @@
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item :label="td('sys.tool.chooseUser.createById')" prop="creatorId">
+      <el-form-item :label="td('sys.tool.chooseUser.createById')" prop="creatorId" :label-position="labelPosition">
         <el-input
             style="width:240px"
             v-model="queryParams.creatorId"
@@ -87,7 +87,7 @@
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item :label="td('common.texts.createdTime')" style="width: 308px">
+      <el-form-item :label="td('common.texts.createdTime')" style="width: 308px" :label-position="labelPosition">
         <el-date-picker
             style="width:240px"
             v-model="daterangeCreateTime"
@@ -98,7 +98,7 @@
             :end-placeholder="td('common.form.endDatePlaceholder')"
         ></el-date-picker>
       </el-form-item>
-      <el-form-item :label="td('common.texts.updatedBy')" prop="updateBy">
+      <el-form-item :label="td('common.texts.updatedBy')" prop="updateBy" :label-position="labelPosition">
         <el-input
             style="width:240px"
             v-model="queryParams.updateBy"
@@ -107,7 +107,7 @@
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item :label="td('sys.tool.chooseUser.updateById')" prop="updaterId">
+      <el-form-item :label="td('sys.tool.chooseUser.updateById')" prop="updaterId" :label-position="labelPosition">
         <el-input
             style="width:240px"
             v-model="queryParams.updaterId"
@@ -116,7 +116,7 @@
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item :label="td('common.texts.updatedTime')" style="width: 308px">
+      <el-form-item :label="td('common.texts.updatedTime')" style="width: 308px" :label-position="labelPosition">
         <el-date-picker
             style="width:240px"
             v-model="daterangeUpdateTime"
@@ -127,7 +127,7 @@
             :end-placeholder="td('common.form.endDatePlaceholder')"
         ></el-date-picker>
       </el-form-item>
-      <el-form-item>
+      <el-form-item :label-position="labelPosition">
         <el-button
             plain
             type="primary"

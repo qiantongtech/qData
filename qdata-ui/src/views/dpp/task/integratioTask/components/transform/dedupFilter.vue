@@ -46,7 +46,7 @@
       @submit.prevent
       v-loading="loading"
       :disabled="info"
-    >
+     :label-position="labelPosition">
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
@@ -55,7 +55,7 @@
             :rules="[
               { required: true, message: td('dpp.integration.nodeNameRequired', '请输入节点名称'), trigger: 'change' },
             ]"
-          >
+           :label-position="labelPosition">
             <el-input
               v-if="!info"
               v-model="form.name"
@@ -65,7 +65,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('dpp.integration.type', '类型')" prop="typeName">
+          <el-form-item :label="td('dpp.integration.type', '类型')" prop="typeName" :label-position="labelPosition">
             <el-select
               v-if="!info"
               v-model="form.taskParams.typeName"
@@ -88,7 +88,7 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('common.texts.description')" prop="description">
+          <el-form-item :label="td('common.texts.description')" prop="description" :label-position="labelPosition">
             <el-input
               v-if="!info"
               v-model="form.description"

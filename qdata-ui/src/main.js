@@ -25,7 +25,7 @@ import 'anivia-components/style.css'
 import 'element-plus/dist/index.css'
 
 // 初始化多语言
-import { setupI18n } from '@/plugins/vueI18n'
+import { setupI18n, i18n } from '@/plugins/vueI18n'
 import { useLocaleStoreWithOut } from '@/store/system/locale'
 
 import '@/assets/system/styles/index.scss' // global css
@@ -76,7 +76,7 @@ import TreeSelect from '@/components/TreeSelect'
 // 字典标签组件
 import DictTag from '@/components/DictTag'
 // 可视化表单设计器工具
-import FcDesigner from '@form-create/designer';
+// import FcDesigner from '@form-create/designer';
 import '@/assets/iconfont/font_new/iconfont.css' // iconfont css
 // 通用详情页头部组件
 import DetailInfo from "@/components/DetailInfo"
@@ -98,10 +98,11 @@ const setupAll = async () => {
   await setupI18n(app)
 
   app.use(AniviaComponents)
-  app.use(FcDesigner)
-  app.use(FcDesigner.formCreate)
+//   app.use(FcDesigner)
+//   app.use(FcDesigner.formCreate)
 
   // 全局方法挂载
+  app.config.globalProperties.labelPosition = i18n.global.locale.value === 'zh-CN' ? 'right' : 'top';
   app.config.globalProperties.useDict = useDict
   app.config.globalProperties.download = download
   app.config.globalProperties.download2 = download2

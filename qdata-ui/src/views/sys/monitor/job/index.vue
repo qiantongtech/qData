@@ -19,7 +19,7 @@
    <div class="app-container" ref="app-container">
       <div class="pagecont-top" v-show="showSearch">
          <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true">
-            <el-form-item :label="td('sys.monitor.job.taskName')" prop="jobName">
+            <el-form-item :label="td('sys.monitor.job.taskName')" prop="jobName" :label-position="labelPosition">
                <el-input
                   v-model="queryParams.jobName"
                   :placeholder="td('sys.monitor.job.taskNamePlaceholder')"
@@ -178,7 +178,7 @@
 
       <!-- 添加或修改定时任务对话框 -->
       <el-dialog :title="title" v-model="open" width="850px" :append-to="$refs['app-container']" draggable destroy-on-close>
-         <el-form ref="jobRef" :model="form" :rules="rules" label-width="100px">
+         <el-form ref="jobRef" :model="form" :rules="rules" label-width="100px" :label-position="labelPosition">
             <el-row :gutter="20">
                <el-col :span="12">
                   <el-form-item :label="td('sys.monitor.job.taskName')" prop="jobName">
@@ -186,7 +186,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('sys.monitor.job.taskGroupLabel')" prop="jobGroup">
+                  <el-form-item :label="td('sys.monitor.job.taskGroupLabel')" prop="jobGroup" :label-position="labelPosition">
                      <el-select v-model="form.jobGroup" :placeholder="td('sys.monitor.job.selectPlaceholder')">
                         <el-option
                            v-for="dict in sys_job_group"
@@ -198,7 +198,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item prop="invokeTarget">
+                  <el-form-item prop="invokeTarget" :label-position="labelPosition">
                      <template #label>
                         <span>
                            {{ td('sys.monitor.job.invokeMethod') }}
@@ -218,7 +218,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('sys.monitor.job.cronExprLabel')" prop="cronExpression">
+                  <el-form-item :label="td('sys.monitor.job.cronExprLabel')" prop="cronExpression" :label-position="labelPosition">
                      <el-input v-model="form.cronExpression" :placeholder="td('sys.monitor.job.cronExprPlaceholder')">
                         <template #append>
                            <el-button type="primary" @click="handleShowCron">
@@ -230,7 +230,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="12" v-if="form.jobId !== undefined">
-                  <el-form-item :label="td('common.texts.status')">
+                  <el-form-item :label="td('common.texts.status')" :label-position="labelPosition">
                      <el-radio-group v-model="form.status">
                         <el-radio
                            v-for="dict in sys_job_status"
@@ -241,7 +241,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('sys.monitor.job.execStrategy')" prop="misfirePolicy">
+                  <el-form-item :label="td('sys.monitor.job.execStrategy')" prop="misfirePolicy" :label-position="labelPosition">
                      <el-radio-group v-model="form.misfirePolicy">
                         <el-radio-button value="1">{{ td('sys.monitor.job.immediateExec') }}</el-radio-button>
                         <el-radio-button value="2">{{ td('sys.monitor.job.executeOnce') }}</el-radio-button>
@@ -250,7 +250,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('sys.monitor.job.concurrent')" prop="concurrent">
+                  <el-form-item :label="td('sys.monitor.job.concurrent')" prop="concurrent" :label-position="labelPosition">
                      <el-radio-group v-model="form.concurrent">
                         <el-radio-button value="0">{{ td('sys.monitor.job.allow') }}</el-radio-button>
                         <el-radio-button value="1">{{ td('sys.monitor.job.forbid') }}</el-radio-button>
@@ -273,57 +273,57 @@
 
       <!-- 任务日志详细 -->
       <el-dialog :title="td('sys.monitor.job.taskDetail')" v-model="openView" width="800px" :append-to="$refs['app-container']" draggable destroy-on-close>
-         <el-form :model="form" label-width="120px">
+         <el-form :model="form" label-width="120px" :label-position="labelPosition">
             <el-row :gutter="20">
                <el-col :span="12">
-                  <el-form-item :label="td('sys.monitor.job.taskNoLabel')">
+                  <el-form-item :label="td('sys.monitor.job.taskNoLabel')" :label-position="labelPosition">
                      <div class="form-value-ifon">{{ form.jobId }}</div>
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('sys.monitor.job.taskNameLabel')">
+                  <el-form-item :label="td('sys.monitor.job.taskNameLabel')" :label-position="labelPosition">
                      <div class="form-value-ifon">{{ form.jobName }}</div>
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('sys.monitor.job.taskGroupLabel2')">
+                  <el-form-item :label="td('sys.monitor.job.taskGroupLabel2')" :label-position="labelPosition">
                      <div class="form-value-ifon">{{ jobGroupFormat(form) }}</div>
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('common.display.createTime') + '：'">
+                  <el-form-item :label="td('common.display.createTime') + '：'" :label-position="labelPosition">
                      <div class="form-value-ifon">{{ form.createTime }}</div>
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('sys.monitor.job.cronExprLabel2')">
+                  <el-form-item :label="td('sys.monitor.job.cronExprLabel2')" :label-position="labelPosition">
                      <div class="form-value-ifon">{{ form.cronExpression }}</div>
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('sys.monitor.job.nextExecTime')">
+                  <el-form-item :label="td('sys.monitor.job.nextExecTime')" :label-position="labelPosition">
                      <div class="form-value-ifon">{{ parseTime(form.nextValidTime) }}</div>
                   </el-form-item>
                </el-col>
                <el-col :span="24">
-                  <el-form-item :label="td('sys.monitor.job.invokeTargetMethod')">
+                  <el-form-item :label="td('sys.monitor.job.invokeTargetMethod')" :label-position="labelPosition">
                      <div class="form-value-ifon">{{ form.invokeTarget }}</div>
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('sys.monitor.job.taskStatusLabel')">
+                  <el-form-item :label="td('sys.monitor.job.taskStatusLabel')" :label-position="labelPosition">
                      <div class="form-value-ifon" v-if="form.status == 0">{{ td('sys.monitor.job.normal') }}</div>
                      <div class="form-value-ifon" v-else-if="form.status == 1">{{ td('sys.monitor.job.paused') }}</div>
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('sys.monitor.job.concurrentLabel')">
+                  <el-form-item :label="td('sys.monitor.job.concurrentLabel')" :label-position="labelPosition">
                      <div class="form-value-ifon" v-if="form.concurrent == 0">{{ td('sys.monitor.job.allow') }}</div>
                      <div class="form-value-ifon" v-else-if="form.concurrent == 1">{{ td('sys.monitor.job.forbid') }}</div>
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('sys.monitor.job.execStrategy') + '：'">
+                  <el-form-item :label="td('sys.monitor.job.execStrategy') + '：'" :label-position="labelPosition">
                      <div class="form-value-ifon" v-if="form.misfirePolicy == 0">{{ td('sys.monitor.job.defaultStrategy') }}</div>
                      <div class="form-value-ifon" v-else-if="form.misfirePolicy == 1">{{ td('sys.monitor.job.immediateExec') }}</div>
                      <div class="form-value-ifon" v-else-if="form.misfirePolicy == 2">{{ td('sys.monitor.job.executeOnce') }}</div>

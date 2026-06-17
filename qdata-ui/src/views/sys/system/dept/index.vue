@@ -19,7 +19,7 @@
    <div class="app-container" ref="app-container">
       <div class="pagecont-top" v-show="showSearch">
          <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true">
-            <el-form-item :label="td('sys.system.dept.deptName')" prop="deptName">
+            <el-form-item :label="td('sys.system.dept.deptName')" prop="deptName" :label-position="labelPosition">
                <el-input v-model="queryParams.deptName" :placeholder="td('sys.system.dept.deptNamePlaceholder')" clearable class="el-form-input-width"
                   @keyup.enter="handleQuery" />
             </el-form-item>
@@ -83,10 +83,10 @@
       <!-- 添加或修改部门对话框 -->
       <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable
          destroy-on-close>
-         <el-form ref="deptRef" :model="form" :rules="rules" label-width="80px">
+         <el-form ref="deptRef" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
             <el-row :gutter="20">
                <el-col :span="24" v-if="form.parentId !== 0">
-                  <el-form-item :label="td('sys.system.dept.parentDept')" prop="parentId">
+                  <el-form-item :label="td('sys.system.dept.parentDept')" prop="parentId" :label-position="labelPosition">
                      <el-tree-select v-model="form.parentId" :data="deptOptions"
                         :props="{ value: 'deptId', label: 'deptName', children: 'children' }" value-key="deptId"
                         :placeholder="td('sys.system.dept.selectParentDept')" check-strictly />
@@ -98,27 +98,27 @@
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('sys.system.dept.showSort')" prop="orderNum">
+                  <el-form-item :label="td('sys.system.dept.showSort')" prop="orderNum" :label-position="labelPosition">
                      <el-input-number style="width:100%" v-model="form.orderNum" controls-position="right" :min="0" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('sys.system.dept.leader')" prop="leader">
+                  <el-form-item :label="td('sys.system.dept.leader')" prop="leader" :label-position="labelPosition">
                      <el-input v-model="form.leader" :placeholder="td('sys.system.dept.leaderPlaceholder')" maxlength="20" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('sys.system.dept.contactPhone')" prop="phone">
+                  <el-form-item :label="td('sys.system.dept.contactPhone')" prop="phone" :label-position="labelPosition">
                      <el-input v-model="form.phone" :placeholder="td('sys.system.dept.contactPhonePlaceholder')" maxlength="11" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('sys.system.dept.email')" prop="email">
+                  <el-form-item :label="td('sys.system.dept.email')" prop="email" :label-position="labelPosition">
                      <el-input v-model="form.email" :placeholder="td('sys.system.dept.emailPlaceholder')" maxlength="50" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('sys.system.dept.deptStatus')">
+                  <el-form-item :label="td('sys.system.dept.deptStatus')" :label-position="labelPosition">
                      <el-radio-group v-model="form.status">
                         <el-radio v-for="dict in sys_normal_disable" :key="dict.value" :value="dict.value">{{ dict.label
                            }}</el-radio>

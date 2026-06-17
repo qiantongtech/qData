@@ -32,7 +32,7 @@
     </div>
     <div class="container-content">
       <template v-if="props.currValue.type == 'attrConfig'">
-        <el-form ref="configRef" :model="form" :rules="rules" label-width="142px" @submit.prevent :disabled="readOnly">
+        <el-form ref="configRef" :model="form" :rules="rules" label-width="142px" @submit.prevent :disabled="readOnly" :label-position="labelPosition">
           <div class="h2"><img class="icon" src="@/assets/da/asset/h2 (1).svg" alt="" />{{ t('components.sqlEditorConfigView.basicConfig') }}</div>
           <el-form-item :label="t('components.sqlEditorConfigView.taskPriority')" prop="taskPriority">
             <el-select v-model="form.taskPriority" :placeholder="t('components.sqlEditorConfigView.taskPriorityPlaceholder')">

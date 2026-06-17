@@ -19,7 +19,7 @@
   <div class="app-container" ref="app-container">
     <div class="pagecont-top" v-show="showSearch">
       <el-form class="btn-style" :model="queryParams" ref="queryForm" :inline="true">
-        <el-form-item :label="td('common.texts.name')" prop="name">
+        <el-form-item :label="td('common.texts.name')" prop="name" :label-position="labelPosition">
           <el-input
             v-model="queryParams.name"
             :placeholder="td('common.form.namePlaceholder')"
@@ -28,7 +28,7 @@
             @keyup.enter.native="handleQuery"
           />
         </el-form-item>
-        <el-form-item :label="td('sys.cert.issuer')" prop="issuer">
+        <el-form-item :label="td('sys.cert.issuer')" prop="issuer" :label-position="labelPosition">
           <el-input
             v-model="queryParams.issuer"
             :placeholder="td('sys.cert.issuerPlaceholder')"
@@ -37,7 +37,7 @@
             @keyup.enter.native="handleQuery"
           />
         </el-form-item>
-        <el-form-item :label="td('sys.cert.owner')" prop="possessor">
+        <el-form-item :label="td('sys.cert.owner')" prop="possessor" :label-position="labelPosition">
           <el-input
             v-model="queryParams.possessor"
             :placeholder="td('sys.cert.ownerPlaceholder')"
@@ -122,7 +122,7 @@
 
     <!-- 添加或修改证书对话框 -->
     <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable destroy-on-close>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item :label="td('common.texts.name')" prop="name">
@@ -130,7 +130,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('sys.cert.issueSubject')" prop="issuer">
+            <el-form-item :label="td('sys.cert.issueSubject')" prop="issuer" :label-position="labelPosition">
               <el-select v-model="form.subjectId" :placeholder="td('sys.cert.selectIssueSubject')" @change="subjectChange" :style="'width:100%'">
                 <el-option
                   v-for="item in subjectList"
@@ -152,14 +152,14 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('sys.cert.validPeriod')" prop="validTime">
+            <el-form-item :label="td('sys.cert.validPeriod')" prop="validTime" :label-position="labelPosition">
               <el-input v-model="form.validTime" type="number" :max="30" :min="1" :placeholder="td('sys.cert.validPeriodPlaceholder')">
                 <el-button slot="append">{{ td('sys.cert.year') }}</el-button>
               </el-input>
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.remark')" prop="remark">
+            <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
               <el-input v-model="form.remark" type="textarea" :placeholder="td('sys.cert.inputContent')" />
             </el-form-item>
           </el-col>

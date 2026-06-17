@@ -61,11 +61,11 @@
         class="column-form"
         label-width="110px"
         :disabled="dialog.type == 'Detail'"
-      >
+       :label-position="labelPosition">
         <el-form-item
           :label="td('meta.unreleased.structured.table.detail.columnName')"
           prop="columnName"
-        >
+         :label-position="labelPosition">
           <el-input
             clearable
             v-model="dialog.form.columnName"
@@ -79,7 +79,7 @@
         <el-form-item
           :label="td('meta.unreleased.structured.table.detail.columnComment')"
           prop="columnComment"
-        >
+         :label-position="labelPosition">
           <el-input
             clearable
             v-model="dialog.form.columnComment"
@@ -92,7 +92,7 @@
             "
           />
         </el-form-item>
-        <!-- <el-form-item label="安全等级" prop="safetyLevelId">
+        <!-- <el-form-item label="安全等级" prop="safetyLevelId" :label-position="labelPosition">
           <el-select
             clearable
             v-model="dialog.form.safetyLevelId"
@@ -109,7 +109,7 @@
         <el-form-item
           :label="td('meta.unreleased.structured.table.detail.dataElem')"
           prop="dataElemId"
-        >
+         :label-position="labelPosition">
           <el-select
             clearable
             v-model="dialog.form.dataElemId"
@@ -130,7 +130,7 @@
         <el-form-item
           :label="td('meta.unreleased.structured.table.detail.columnType')"
           prop="columnType"
-        >
+         :label-position="labelPosition">
           <el-select
             clearable
             v-model="dialog.form.columnType"
@@ -151,7 +151,7 @@
         <el-form-item
           :label="td('meta.unreleased.structured.table.detail.columnLength')"
           prop="columnLength"
-        >
+         :label-position="labelPosition">
           <el-input-number
             :min="0"
             v-model="dialog.form.columnLength"
@@ -171,7 +171,7 @@
         <el-form-item
           :label="td('meta.unreleased.structured.table.detail.columnPrecision')"
           prop="columnPrecision"
-        >
+         :label-position="labelPosition">
           <el-input-number
             :min="0"
             v-model="dialog.form.columnPrecision"
@@ -185,7 +185,7 @@
         <el-form-item
           :label="td('meta.unreleased.structured.table.detail.columnScale')"
           prop="columnScale"
-        >
+         :label-position="labelPosition">
           <el-input-number
             :min="0"
             v-model="dialog.form.columnScale"
@@ -203,7 +203,7 @@
             td('meta.unreleased.structured.table.detail.businessDefinition')
           "
           prop="businessDefinition"
-        >
+         :label-position="labelPosition">
           <el-input
             clearable
             v-model="dialog.form.businessDefinition"
@@ -216,7 +216,7 @@
         <el-form-item
           :label="td('meta.unreleased.structured.table.detail.measuringUnit')"
           prop="measuringUnit"
-        >
+         :label-position="labelPosition">
           <el-input
             clearable
             v-model="dialog.form.measuringUnit"
@@ -229,7 +229,7 @@
         <el-form-item
           :label="td('meta.unreleased.structured.table.detail.nullableFlag')"
           prop="nullableFlag"
-        >
+         :label-position="labelPosition">
           <el-radio-group v-model="dialog.form.nullableFlag">
             <el-radio
               v-for="dict in toValue(dicts.table_yes_no)"
@@ -244,7 +244,7 @@
         <el-form-item
           :label="td('meta.unreleased.structured.table.detail.defaultValue')"
           prop="defaultValue"
-        >
+         :label-position="labelPosition">
           <el-input
             clearable
             v-model="dialog.form.defaultValue"
@@ -257,7 +257,7 @@
         <el-form-item
           :label="td('meta.unreleased.structured.table.detail.pkFlag')"
           prop="pkFlag"
-        >
+         :label-position="labelPosition">
           <el-radio-group v-model="dialog.form.pkFlag">
             <el-radio
               v-for="dict in toValue(dicts.table_yes_no)"
@@ -272,7 +272,7 @@
         <el-form-item
           :label="td('meta.unreleased.structured.table.detail.fkFlag')"
           prop="fkFlag"
-        >
+         :label-position="labelPosition">
           <el-radio-group v-model="dialog.form.fkFlag">
             <el-radio
               v-for="dict in toValue(dicts.table_yes_no)"
@@ -284,7 +284,7 @@
           </el-radio-group>
         </el-form-item>
 
-        <el-form-item :label="td('common.texts.status')" prop="status">
+        <el-form-item :label="td('common.texts.status')" prop="status" :label-position="labelPosition">
           <el-radio-group v-model="dialog.form.status">
             <el-radio
               v-for="dict in toValue(dicts.meta_task_status)"
@@ -296,7 +296,7 @@
           </el-radio-group>
         </el-form-item>
 
-        <el-form-item :label="td('common.texts.remark')" class="row-full">
+        <el-form-item :label="td('common.texts.remark')" class="row-full" :label-position="labelPosition">
           <el-input
             v-model="dialog.form.remark"
             type="textarea"
@@ -307,7 +307,7 @@
           />
         </el-form-item>
 
-        <el-form-item :label="td('common.texts.description')" class="row-full">
+        <el-form-item :label="td('common.texts.description')" class="row-full" :label-position="labelPosition">
           <el-input
             v-model="dialog.form.description"
             type="textarea"
@@ -323,7 +323,7 @@
           class="row-full"
           prop="updateMsg"
           v-if="dialog.type != 'Detail'"
-        >
+         :label-position="labelPosition">
           <el-input
             v-model="dialog.form.updateMsg"
             type="textarea"

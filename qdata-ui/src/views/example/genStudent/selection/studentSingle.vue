@@ -32,8 +32,8 @@
         :inline="true"
         v-show="showSearch"
         
-    >
-      <el-form-item label="姓名" prop="name">
+     :label-position="labelPosition">
+      <el-form-item label="姓名" prop="name" :label-position="labelPosition">
         <el-input
             style="width:240px"
             v-model="queryParams.name"
@@ -42,7 +42,7 @@
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="性别" prop="sex">
+      <el-form-item label="性别" prop="sex" :label-position="labelPosition">
         <el-select style="width:240px" v-model="queryParams.sex" placeholder="请选择性别" clearable>
           <el-option
               v-for="dict in sys_user_sex"
@@ -52,7 +52,7 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="年龄" prop="age">
+      <el-form-item label="年龄" prop="age" :label-position="labelPosition">
         <el-input
             style="width:240px"
             v-model="queryParams.age"
@@ -61,7 +61,7 @@
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="学号" prop="studentNumber">
+      <el-form-item label="学号" prop="studentNumber" :label-position="labelPosition">
         <el-input
             style="width:240px"
             v-model="queryParams.studentNumber"
@@ -70,7 +70,7 @@
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="班级" prop="grade">
+      <el-form-item label="班级" prop="grade" :label-position="labelPosition">
         <el-input
             style="width:240px"
             v-model="queryParams.grade"
@@ -79,7 +79,7 @@
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item :label="t('common.texts.createdTime')" prop="createTime">
+      <el-form-item :label="t('common.texts.createdTime')" prop="createTime" :label-position="labelPosition">
         <el-date-picker style="width:240px"
                         clearable
                         v-model="queryParams.createTime"
@@ -88,7 +88,7 @@
                         placeholder="请选择创建时间">
         </el-date-picker>
       </el-form-item>
-      <el-form-item>
+      <el-form-item :label-position="labelPosition">
         <el-button
             plain
             type="primary"

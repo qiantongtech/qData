@@ -84,10 +84,10 @@
       :model="form"
       :rules="rules"
       label-width="80px"
-    >
+     :label-position="labelPosition">
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('dp.modelForm.relatedStandard')" prop="dataElemId">
+          <el-form-item :label="td('dp.modelForm.relatedStandard')" prop="dataElemId" :label-position="labelPosition">
             <el-select
               v-model="form.dataElemId"
               :placeholder="td('dp.modelForm.relatedStandardPlaceholder')"
@@ -105,14 +105,14 @@
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item :label="td('dp.model.chineseName')" prop="cnName">
+          <el-form-item :label="td('dp.model.chineseName')" prop="cnName" :label-position="labelPosition">
             <el-input v-model="form.cnName" :placeholder="td('dp.model.chineseNamePlaceholder')" />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('dp.model.englishName')" prop="engName">
+          <el-form-item :label="td('dp.model.englishName')" prop="engName" :label-position="labelPosition">
             <el-input
               v-model="form.engName"
               :placeholder="td('dp.model.englishNamePlaceholder')"
@@ -121,7 +121,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item :label="td('dp.modelForm.dataType')" prop="columnType">
+          <el-form-item :label="td('dp.modelForm.dataType')" prop="columnType" :label-position="labelPosition">
             <el-select v-model="form.columnType" :placeholder="td('dp.modelForm.dataTypePlaceholder')">
               <el-option
                 v-for="dict in column_type"
@@ -136,7 +136,7 @@
 
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('dp.modelForm.attributeLength')" prop="columnLength">
+          <el-form-item :label="td('dp.modelForm.attributeLength')" prop="columnLength" :label-position="labelPosition">
             <el-input-number
               :step="1"
               step-strictly
@@ -154,7 +154,7 @@
       <el-row :gutter="20">
         <el-col :span="24">
           <!-- decimal、NUMERIC、number -->
-          <el-form-item :label="td('dp.modelForm.decimalPlaces')" prop="columnScale">
+          <el-form-item :label="td('dp.modelForm.decimalPlaces')" prop="columnScale" :label-position="labelPosition">
             <el-input-number
               :disabled="
                 form.columnType !== 'DECIMAL' &&
@@ -175,7 +175,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item :label="td('dp.modelForm.defaultValue')" prop="defaultValue">
+          <el-form-item :label="td('dp.modelForm.defaultValue')" prop="defaultValue" :label-position="labelPosition">
             <el-input v-model="form.defaultValue" :placeholder="td('dp.modelForm.defaultValuePlaceholder')" />
           </el-form-item>
         </el-col>
@@ -183,7 +183,7 @@
 
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('common.texts.description')" prop="modelComment">
+          <el-form-item :label="td('common.texts.description')" prop="modelComment" :label-position="labelPosition">
             <el-input
               v-model="form.modelComment"
               type="textarea"
@@ -196,7 +196,7 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('common.texts.remark')">
+          <el-form-item :label="td('common.texts.remark')" :label-position="labelPosition">
             <el-input
               type="textarea"
               maxlength="500"
@@ -210,7 +210,7 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('dp.modelForm.isPrimaryKey')" prop="pkFlag">
+          <el-form-item :label="td('dp.modelForm.isPrimaryKey')" prop="pkFlag" :label-position="labelPosition">
             <el-radio-group v-model="form.pkFlag" @change="handlePkFlagChange">
               <el-radio
                 v-for="dict in dp_model_column_pk_flag"
@@ -222,7 +222,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('dp.modelForm.isRequired')" prop="nullableFlag">
+          <el-form-item :label="td('dp.modelForm.isRequired')" prop="nullableFlag" :label-position="labelPosition">
             <el-radio-group
               v-model="form.nullableFlag"
               :disabled="form.pkFlag == 1"
@@ -266,41 +266,41 @@
       :model="form"
       label-width="110px"
       class="column-form"
-    >
-      <el-form-item :label="td('common.texts.number')" prop="id">
+     :label-position="labelPosition">
+      <el-form-item :label="td('common.texts.number')" prop="id" :label-position="labelPosition">
         <div class="form-readonly">
           {{ form.id }}
         </div>
       </el-form-item>
-      <el-form-item :label="td('dp.modelForm.relatedDataStandard')" prop="dataElemId">
+      <el-form-item :label="td('dp.modelForm.relatedDataStandard')" prop="dataElemId" :label-position="labelPosition">
         <div class="form-readonly">{{ form.dataElemName || "-" }}</div>
       </el-form-item>
-      <el-form-item :label="td('dp.model.chineseName')" prop="cnName">
+      <el-form-item :label="td('dp.model.chineseName')" prop="cnName" :label-position="labelPosition">
         <div class="form-readonly">{{ form.cnName || "-" }}</div>
       </el-form-item>
-      <el-form-item :label="td('dp.model.englishName')" prop="engName">
+      <el-form-item :label="td('dp.model.englishName')" prop="engName" :label-position="labelPosition">
         <div class="form-readonly">{{ form.engName || "-" }}</div>
       </el-form-item>
-      <el-form-item :label="td('dp.modelForm.dataType')" prop="columnType">
+      <el-form-item :label="td('dp.modelForm.dataType')" prop="columnType" :label-position="labelPosition">
         <div class="form-readonly">
           <dict-tag :options="column_type" :value="form.columnType" />
         </div>
       </el-form-item>
-      <el-form-item :label="td('dp.modelForm.attributeLength')" prop="columnLength">
+      <el-form-item :label="td('dp.modelForm.attributeLength')" prop="columnLength" :label-position="labelPosition">
         <div class="form-readonly">{{ form.columnLength || "-" }}</div>
       </el-form-item>
-      <el-form-item :label="td('dp.modelForm.decimalPlaces')" prop="columnScale">
+      <el-form-item :label="td('dp.modelForm.decimalPlaces')" prop="columnScale" :label-position="labelPosition">
         <div class="form-readonly">{{ form.columnScale ?? "-" }}</div>
       </el-form-item>
-      <el-form-item :label="td('dp.modelForm.defaultValue')" prop="defaultValue">
+      <el-form-item :label="td('dp.modelForm.defaultValue')" prop="defaultValue" :label-position="labelPosition">
         <div class="form-readonly">{{ form.defaultValue || "-" }}</div>
       </el-form-item>
-      <el-form-item :label="td('dp.modelForm.isPrimaryKey')" prop="pkFlag">
+      <el-form-item :label="td('dp.modelForm.isPrimaryKey')" prop="pkFlag" :label-position="labelPosition">
         <div class="form-readonly">
           <dict-tag :options="dp_model_column_pk_flag" :value="form.pkFlag" />
         </div>
       </el-form-item>
-      <el-form-item :label="td('dp.modelForm.isRequired')" prop="nullableFlag">
+      <el-form-item :label="td('dp.modelForm.isRequired')" prop="nullableFlag" :label-position="labelPosition">
         <div class="form-readonly">
           <dict-tag
             :options="dp_model_column_nullable_flag"
@@ -308,37 +308,37 @@
           />
         </div>
       </el-form-item>
-      <el-form-item :label="td('dp.modelForm.sortOrder')" prop="sortOrder">
+      <el-form-item :label="td('dp.modelForm.sortOrder')" prop="sortOrder" :label-position="labelPosition">
         <div class="form-readonly">{{ form.sortOrder || "-" }}</div>
       </el-form-item>
-      <el-form-item :label="td('common.texts.description')" prop="modelComment" class="row-full">
+      <el-form-item :label="td('common.texts.description')" prop="modelComment" class="row-full" :label-position="labelPosition">
         <div class="form-readonly textarea">
           {{ form.modelComment || "-" }}
         </div>
       </el-form-item>
-      <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full">
+      <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full" :label-position="labelPosition">
         <div class="form-readonly textarea">{{ form.remark || "-" }}</div>
       </el-form-item>
 
-      <el-form-item :label="td('common.texts.createdBy')" prop="createBy">
+      <el-form-item :label="td('common.texts.createdBy')" prop="createBy" :label-position="labelPosition">
         <div class="form-readonly">
           {{ form.createBy }}
         </div>
       </el-form-item>
 
-      <el-form-item :label="td('common.texts.createdTime')" prop="createTime">
+      <el-form-item :label="td('common.texts.createdTime')" prop="createTime" :label-position="labelPosition">
         <div class="form-readonly">
           {{ parseTime(form.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
         </div>
       </el-form-item>
 
-      <el-form-item :label="td('common.texts.updatedBy')" prop="updateBy">
+      <el-form-item :label="td('common.texts.updatedBy')" prop="updateBy" :label-position="labelPosition">
         <div class="form-readonly">
           {{ form.updateBy }}
         </div>
       </el-form-item>
 
-      <el-form-item :label="td('common.texts.updatedTime')" prop="updateTime">
+      <el-form-item :label="td('common.texts.updatedTime')" prop="updateTime" :label-position="labelPosition">
         <div class="form-readonly">
           {{ parseTime(form.updateTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
         </div>

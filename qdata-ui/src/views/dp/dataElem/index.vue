@@ -28,15 +28,15 @@
         <div class="pagecont-top" v-show="showSearch">
           <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true"
             v-show="showSearch" @submit.prevent>
-            <el-form-item :label="td('dp.dataElem.nameZh')" prop="name">
+            <el-form-item :label="td('dp.dataElem.nameZh')" prop="name" :label-position="labelPosition">
               <el-input class="el-form-input-width" v-model="queryParams.name" :placeholder="td('dp.dataElem.nameZhPlaceholder')" clearable
                 @keyup.enter="handleQuery" />
             </el-form-item>
-            <el-form-item :label="td('dp.dataElem.nameEn')" prop="engName">
+            <el-form-item :label="td('dp.dataElem.nameEn')" prop="engName" :label-position="labelPosition">
               <el-input class="el-form-input-width" v-model="queryParams.engName" :placeholder="td('dp.dataElem.nameEnPlaceholder')" clearable
                 @keyup.enter="handleQuery" />
             </el-form-item>
-            <el-form-item :label="td('dp.dataElem.type')" prop="type">
+            <el-form-item :label="td('dp.dataElem.type')" prop="type" :label-position="labelPosition">
               <el-select class="el-form-input-width" v-model="queryParams.type" :placeholder="td('dp.dataElem.typePlaceholder')">
                 <el-option v-for="dict in dp_data_elem_code_type" :key="dict.value" :label="dict.label"
                   :value="dict.value"></el-option>
@@ -160,7 +160,7 @@
           {{ title }}
         </span>
       </template>
-      <el-form ref="dpDataElemRef" :model="form" :rules="rules" label-width="100px" @submit.prevent>
+      <el-form ref="dpDataElemRef" :model="form" :rules="rules" label-width="100px" @submit.prevent :label-position="labelPosition">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item :label="td('dp.dataElem.nameZh')" prop="name">
@@ -176,7 +176,7 @@
 
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('dp.dataElem.columnType')" prop="columnType">
+            <el-form-item :label="td('dp.dataElem.columnType')" prop="columnType" :label-position="labelPosition">
               <el-select v-model="form.columnType" :placeholder="td('dp.dataElem.columnTypePlaceholder')">
                 <el-option v-for="dict in column_type" :key="dict.value" :label="dict.label"
                   :value="dict.value"></el-option>
@@ -184,7 +184,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('dp.dataElem.catCode')" prop="catCode">
+            <el-form-item :label="td('dp.dataElem.catCode')" prop="catCode" :label-position="labelPosition">
               <el-tree-select filterable v-model="form.catCode" :data="deptOptions"
                 :props="{ value: 'code', label: 'name', children: 'children' }" value-key="id" :placeholder="td('dp.dataElem.catCodePlaceholder')"
                 check-strictly />
@@ -193,7 +193,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.description')" prop="description">
+            <el-form-item :label="td('common.texts.description')" prop="description" :label-position="labelPosition">
               <el-input v-model="form.description" type="textarea" :placeholder="td('common.form.descriptionPlaceholder')" />
             </el-form-item>
           </el-col>
@@ -201,7 +201,7 @@
 
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('dp.dataElem.documentType')" prop="description">
+            <el-form-item :label="td('dp.dataElem.documentType')" prop="description" :label-position="labelPosition">
               <el-select class="el-form-input-width" v-model="form.documentType" :placeholder="td('dp.dataElem.documentTypePlaceholder')" clearable
                 @change="fetchSecondLevelDocs" style="width: 100%;">
                 <el-option v-for="dict in dp_document_type" :key="dict.value" :label="dict.label"
@@ -210,7 +210,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('dp.dataElem.documentId')" prop="documentId">
+            <el-form-item :label="td('dp.dataElem.documentId')" prop="documentId" :label-position="labelPosition">
               <el-select class="el-form-input-width" v-model="form.documentId" :placeholder="td('dp.dataElem.documentIdPlaceholder')"
                 style="width: 100%;">
                 <el-option v-for="doc in secondLevelDocs" :key="doc.value" :label="doc.label" :value="doc.value">
@@ -221,7 +221,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('dp.dataElem.personCharge')" prop="personCharge">
+            <el-form-item :label="td('dp.dataElem.personCharge')" prop="personCharge" :label-position="labelPosition">
               <!--                <el-input v-model="form.managerId" placeholder="请选择负责人" />-->
               <el-select v-model="form.personCharge" @change="handleChange" filterable :placeholder="td('dp.dataElem.personChargePlaceholder')">
                 <el-option v-for="item in managerOptions" :key="String(item.userId)" :label="item.nickName"
@@ -231,7 +231,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('dp.dataElem.contactNumber')" prop="contactNumber">
+            <el-form-item :label="td('dp.dataElem.contactNumber')" prop="contactNumber" :label-position="labelPosition">
               <el-input disabled v-model="form.contactNumber" :placeholder="td('dp.dataElem.contactNumberPlaceholder')" />
             </el-form-item>
           </el-col>
@@ -246,7 +246,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('common.texts.status')" prop="status">
+            <el-form-item :label="td('common.texts.status')" prop="status" :label-position="labelPosition">
               <el-radio-group v-model="form.status">
                 <el-radio v-for="dict in sys_disable" :key="dict.value" :label="dict.value">{{ dict.label }}
                 </el-radio>
@@ -256,7 +256,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.remark')">
+            <el-form-item :label="td('common.texts.remark')" :label-position="labelPosition">
               <el-input type="textarea" :placeholder="td('common.form.remarkPlaceholder')" v-model="form.remark" :min-height="192" />
             </el-form-item>
           </el-col>

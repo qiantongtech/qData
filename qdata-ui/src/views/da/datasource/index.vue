@@ -28,7 +28,7 @@
         v-show="showSearch"
         @submit.prevent
       >
-        <el-form-item :label="td('da.datasource.datasourceName')" prop="datasourceName">
+        <el-form-item :label="td('da.datasource.datasourceName')" prop="datasourceName" >
           <el-input
             class="el-form-input-width"
             v-model="queryParams.datasourceName"
@@ -37,7 +37,7 @@
             @keyup.enter="handleQuery"
           />
         </el-form-item>
-        <el-form-item :label="td('da.datasource.datasourceType')" prop="datasourceType">
+        <el-form-item :label="td('da.datasource.datasourceType')" prop="datasourceType" >
           <el-select
             class="el-form-input-width"
             v-model="queryParams.datasourceType"
@@ -52,7 +52,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item>
+        <el-form-item >
           <el-button
             plain
             type="primary"
@@ -336,7 +336,8 @@
         label-width="140px"
         @submit.prevent
         :disabled="title == td('da.datasource.datasourceDetail')"
-      >
+        :label-position="labelPosition"
+       >
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item :label="td('da.datasource.datasourceName')" prop="datasourceName">
@@ -367,12 +368,12 @@
         </el-row>
         <el-row :gutter="20" v-if="form.datasourceType !== 'OSS-ALIYUN'">
           <el-col :span="12">
-            <el-form-item :label="td('da.datasource.ip')" prop="ip">
+            <el-form-item :label="td('da.datasource.ip')" prop="ip" >
               <el-input v-model="form.ip" :placeholder="td('da.datasource.ipPlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('da.datasource.port')" prop="port">
+            <el-form-item :label="td('da.datasource.port')" prop="port" >
               <el-input v-model="form.port" :placeholder="td('da.datasource.portPlaceholder')" />
             </el-form-item>
           </el-col>
@@ -386,12 +387,12 @@
           "
         >
           <el-col :span="12">
-            <el-form-item :label="td('da.datasource.account')" prop="username">
+            <el-form-item :label="td('da.datasource.account')" prop="username" >
               <el-input v-model="form.username" :placeholder="td('da.datasource.accountPlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('da.datasource.password')" prop="password">
+            <el-form-item :label="td('da.datasource.password')" prop="password" >
               <el-input
                 type="password"
                 v-model="form.password"
@@ -411,12 +412,12 @@
         <template v-if="form.datasourceType === 'OSS-ALIYUN'">
           <el-row :gutter="20">
             <el-col :span="12">
-              <el-form-item :label="td('da.datasource.keyID')" prop="keyId">
+              <el-form-item :label="td('da.datasource.keyID')" prop="keyId" >
                 <el-input v-model="form.keyId" :placeholder="td('da.datasource.keyIDPlaceholder')" />
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item :label="td('da.datasource.keySecret')" prop="keySecret">
+              <el-form-item :label="td('da.datasource.keySecret')" prop="keySecret" >
                 <el-input
                   v-model="form.keySecret"
                   :placeholder="td('da.datasource.keySecretPlaceholder')"
@@ -433,7 +434,7 @@
           </el-row>
           <el-row :gutter="20">
             <el-col :span="12">
-              <el-form-item :label="td('da.datasource.bucket')" prop="bucket">
+              <el-form-item :label="td('da.datasource.bucket')" prop="bucket" >
                 <el-input
                   v-model="form.bucket"
                   :placeholder="td('da.datasource.bucketPlaceholder')"
@@ -441,7 +442,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item :label="td('da.datasource.endpoint')" prop="endpoint">
+              <el-form-item :label="td('da.datasource.endpoint')" prop="endpoint" >
                 <el-input
                   v-model="form.endpoint"
                   :placeholder="td('da.datasource.endpointPlaceholder')"
@@ -451,7 +452,7 @@
           </el-row>
           <el-row :gutter="20">
             <el-col :span="24">
-              <el-form-item :label="td('da.datasource.domain')" prop="domain">
+              <el-form-item :label="td('da.datasource.domain')" prop="domain" >
                 <el-input
                   v-model="form.domain"
                   :placeholder="td('da.datasource.domainPlaceholder')"
@@ -470,7 +471,7 @@
           "
         >
           <el-col :span="12" v-if="form.datasourceType !== null">
-            <el-form-item :label="td('da.datasource.dbName')" prop="dbname">
+            <el-form-item :label="td('da.datasource.dbName')" prop="dbname" >
               <el-input
                 v-model="form.dbname"
                 :placeholder="td('da.datasource.dbNamePlaceholder')"
@@ -491,7 +492,7 @@
                 form.datasourceType == 'PostgreSQL')
             "
           >
-            <el-form-item :label="td('da.datasource.schemaName')" prop="sid">
+            <el-form-item :label="td('da.datasource.schemaName')" prop="sid" >
               <el-input
                 v-model="form.sid"
                 :placeholder="td('da.datasource.schemaNamePlaceholder')"
@@ -509,7 +510,7 @@
           "
         >
           <el-col :span="24">
-            <el-form-item :label="td('da.datasource.configParams')" prop="config">
+            <el-form-item :label="td('da.datasource.configParams')" prop="config" >
               <el-input
                 type="textarea"
                 :autosize="{ minRows: 2, maxRows: 4 }"
@@ -525,7 +526,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.description')" prop="description">
+            <el-form-item :label="td('common.texts.description')" prop="description" >
               <el-input
                 type="textarea"
                 :min-height="192"
@@ -537,7 +538,7 @@
         </el-row>
         <el-row :gutter="20" v-if="type == 0">
           <el-col :span="24">
-            <el-form-item :label="td('da.datasource.belongProject')" prop="projectNameList">
+            <el-form-item :label="td('da.datasource.belongProject')" prop="projectNameList" >
               <el-input
                 style="width: 83.5%"
                 v-model="form.projectNameList"
@@ -556,7 +557,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('common.texts.status')" prop="validFlag">
+            <el-form-item :label="td('common.texts.status')" prop="validFlag" >
               <el-radio-group v-model="form.validFlag">
                 <el-radio
                   v-for="dict in sys_disable"
@@ -571,7 +572,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.remark')">
+            <el-form-item :label="td('common.texts.remark')" >
               <el-input
                 type="textarea"
                 v-model="form.remark"
@@ -614,10 +615,11 @@
         :model="form"
         :rules="rules"
         label-width="130px"
-      >
+        :label-position="labelPosition"
+       >
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('da.datasource.datasourceName')">
+            <el-form-item :label="td('da.datasource.datasourceName')" >
               <div class="form-readonly">
                 {{ form.datasourceName || "-" }}
               </div>
@@ -625,7 +627,7 @@
           </el-col>
 
           <el-col :span="12">
-            <el-form-item :label="td('da.datasource.datasourceType')">
+            <el-form-item :label="td('da.datasource.datasourceType')" >
               <div>
                 <dict-tag
                   :options="datasource_type"
@@ -637,14 +639,14 @@
         </el-row>
         <el-row :gutter="20" v-if="form.datasourceType !== 'OSS-ALIYUN'">
           <el-col :span="12">
-            <el-form-item :label="td('da.datasource.ip')">
+            <el-form-item :label="td('da.datasource.ip')" >
               <div class="form-readonly">
                 {{ form.ip || "-" }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('da.datasource.port')">
+            <el-form-item :label="td('da.datasource.port')" >
               <div class="form-readonly">
                 {{ form.port || "-" }}
               </div>
@@ -660,14 +662,14 @@
           "
         >
           <el-col :span="12">
-            <el-form-item :label="td('da.datasource.account')">
+            <el-form-item :label="td('da.datasource.account')" >
               <div class="form-readonly">
                 {{ form.username || "-" }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('da.datasource.password')">
+            <el-form-item :label="td('da.datasource.password')" >
               <div class="form-readonly">***********</div>
             </el-form-item>
           </el-col>
@@ -676,14 +678,14 @@
         <template v-if="form.datasourceType === 'OSS-ALIYUN'">
           <el-row :gutter="20">
             <el-col :span="12">
-              <el-form-item :label="td('da.datasource.keyID')">
+              <el-form-item :label="td('da.datasource.keyID')" >
                 <div class="form-readonly">
                   {{ form.keyId || "-" }}
                 </div>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item :label="td('da.datasource.keySecret')">
+              <el-form-item :label="td('da.datasource.keySecret')" >
                 <div class="form-readonly">
                   {{ form.keyIkeySecretd || "-" }}
                 </div>
@@ -692,14 +694,14 @@
           </el-row>
           <el-row :gutter="20">
             <el-col :span="12">
-              <el-form-item :label="td('da.datasource.bucket')">
+              <el-form-item :label="td('da.datasource.bucket')" >
                 <div class="form-readonly">
                   {{ form.bucket || "-" }}
                 </div>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item :label="td('da.datasource.endpoint')">
+              <el-form-item :label="td('da.datasource.endpoint')" >
                 <div class="form-readonly">
                   {{ form.endpoint || "-" }}
                 </div>
@@ -708,7 +710,7 @@
           </el-row>
           <el-row :gutter="20">
             <el-col :span="24">
-              <el-form-item :label="td('da.datasource.domain')">
+              <el-form-item :label="td('da.datasource.domain')" >
                 <div class="form-readonly">
                   {{ form.domain || "-" }}
                 </div>
@@ -726,7 +728,7 @@
           "
         >
           <el-col :span="12" v-if="form.datasourceType !== null">
-            <el-form-item :label="td('da.datasource.dbName')">
+            <el-form-item :label="td('da.datasource.dbName')" >
               <div class="form-readonly">
                 {{ form.dbname || "-" }}
               </div>
@@ -745,7 +747,7 @@
                 form.datasourceType == 'PostgreSQL')
             "
           >
-            <el-form-item :label="td('da.datasource.schemaName')">
+            <el-form-item :label="td('da.datasource.schemaName')" >
               <div class="form-readonly">
                 {{ form.sid || "-" }}
               </div>
@@ -761,7 +763,7 @@
           "
         >
           <el-col :span="24">
-            <el-form-item :label="td('da.datasource.configParams')">
+            <el-form-item :label="td('da.datasource.configParams')" >
               <div class="form-readonly">
                 {{ form.config || "-" }}
               </div>
@@ -770,7 +772,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.description')">
+            <el-form-item :label="td('common.texts.description')" >
               <div class="form-readonly textarea">
                 {{ form.description || "-" }}
               </div>
@@ -779,7 +781,7 @@
         </el-row>
         <el-row :gutter="20" v-if="type == 0">
           <el-col :span="24">
-            <el-form-item :label="td('da.datasource.belongProject')">
+            <el-form-item :label="td('da.datasource.belongProject')" >
               <div class="form-readonly">
                 {{ form.projectNameListStr || "-" }}
               </div>
@@ -788,7 +790,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('common.texts.status')">
+            <el-form-item :label="td('common.texts.status')" >
               <dict-tag
                 :options="sys_disable"
                 :value="form.validFlag ? '1' : '0'"
@@ -798,7 +800,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.remark')">
+            <el-form-item :label="td('common.texts.remark')" >
               <div class="form-readonly textarea">
                 {{ form.remark || "-" }}
               </div>
@@ -824,9 +826,8 @@
         :model="queryParamsProject"
         ref="queryRef"
         :inline="true"
-        
-      >
-        <el-form-item :label="td('da.datasource.projectName')" prop="name">
+       >
+        <el-form-item :label="td('da.datasource.projectName')" prop="name" >
           <el-input
             class="el-form-input-width"
             v-model="queryParamsProject.name"
@@ -835,7 +836,7 @@
             @keyup.enter="handleQuery"
           />
         </el-form-item>
-        <el-form-item :label="td('da.datasource.projectLeader')" prop="managerId">
+        <el-form-item :label="td('da.datasource.projectLeader')" prop="managerId" >
           <el-select
             v-model="queryParamsProject.managerId"
             class="el-form-input-width"

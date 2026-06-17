@@ -19,7 +19,7 @@
    <div class="app-container" ref="app-container">
       <div class="pagecont-top" v-show="showSearch">
          <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true">
-            <el-form-item :label="td('sys.system.config.paramName')" prop="configName">
+            <el-form-item :label="td('sys.system.config.paramName')" prop="configName" :label-position="labelPosition">
                <el-input
                   v-model="queryParams.configName"
                   :placeholder="td('sys.system.config.paramNamePlaceholder')"
@@ -28,7 +28,7 @@
                   @keyup.enter="handleQuery"
                />
             </el-form-item>
-            <el-form-item :label="td('sys.system.config.paramKey')" prop="configKey">
+            <el-form-item :label="td('sys.system.config.paramKey')" prop="configKey" :label-position="labelPosition">
                <el-input
                   v-model="queryParams.configKey"
                   :placeholder="td('sys.system.config.paramKeyPlaceholder')"
@@ -37,7 +37,7 @@
                   @keyup.enter="handleQuery"
                />
             </el-form-item>
-            <el-form-item :label="td('sys.system.config.systemBuiltIn')" prop="configType">
+            <el-form-item :label="td('sys.system.config.systemBuiltIn')" prop="configType" :label-position="labelPosition">
                <el-select class="el-form-input-width" v-model="queryParams.configType" :placeholder="td('sys.system.config.systemBuiltIn')" clearable>
                   <el-option
                      v-for="dict in sys_yes_no"
@@ -162,7 +162,7 @@
 
       <!-- 添加或修改参数配置对话框 -->
       <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']"  draggable destroy-on-close>
-         <el-form ref="configRef" :model="form" :rules="rules" label-width="80px">
+         <el-form ref="configRef" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
             <el-row :gutter="20">
                <el-col :span="12">
                   <el-form-item :label="td('sys.system.config.paramName')" prop="configName">
@@ -175,7 +175,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('sys.system.config.paramValue')" prop="configValue">
+                  <el-form-item :label="td('sys.system.config.paramValue')" prop="configValue" :label-position="labelPosition">
                      <el-input v-model="form.configValue" :placeholder="td('sys.system.config.paramValuePlaceholder')" />
                   </el-form-item>
                </el-col>
@@ -191,7 +191,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="24">
-                  <el-form-item :label="td('common.texts.remark')" prop="remark">
+                  <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
                      <el-input v-model="form.remark" type="textarea" :placeholder="td('sys.config.inputContent')" />
                   </el-form-item>
                </el-col>

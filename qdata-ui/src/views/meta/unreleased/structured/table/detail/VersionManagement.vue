@@ -31,10 +31,10 @@
       width="800"
       draggable
     >
-      <el-form label-width="auto">
+      <el-form label-width="auto" :label-position="labelPosition">
         <el-form-item
           :label="td('meta.released.structured.table.tableName') + '：'"
-        >
+         :label-position="labelPosition">
           <el-input
             v-model="dialog.row.tableName"
             :placeholder="
@@ -47,7 +47,7 @@
         </el-form-item>
         <el-form-item
           :label="td('meta.released.structured.table.tableComment') + '：'"
-        >
+         :label-position="labelPosition">
           <el-input
             v-model="dialog.row.tableComment"
             :placeholder="
@@ -60,7 +60,7 @@
         </el-form-item>
         <el-form-item
           :label="td('meta.unreleased.structured.table.detail.version') + '：'"
-        >
+         :label-position="labelPosition">
           <el-input
             v-model="dialog.row.version"
             :placeholder="
@@ -75,7 +75,7 @@
           :label="
             td('meta.unreleased.structured.table.detail.updateType') + '：'
           "
-        >
+         :label-position="labelPosition">
           <el-input
             v-model="dialog.row.updateType"
             :placeholder="
@@ -90,7 +90,7 @@
           :label="
             td('meta.unreleased.structured.table.detail.updateMsg') + '：'
           "
-        >
+         :label-position="labelPosition">
           <el-input
             v-model="dialog.row.updateMsg"
             :placeholder="
@@ -109,20 +109,20 @@
           :label="
             td('meta.unreleased.structured.table.detail.activeVersion') + '：'
           "
-        >
+         :label-position="labelPosition">
           <dict-tag
             :options="toValue(dicts.sys_yes_no)"
             :value="dialog.row.activeVersion"
           />
         </el-form-item>
-        <el-form-item :label="td('common.texts.createdBy') + '：'">
+        <el-form-item :label="td('common.texts.createdBy') + '：'" :label-position="labelPosition">
           <el-input
               v-model="dialog.row.name"
               :placeholder="td('meta.unreleased.structured.table.detail.createByPlaceholder')"
               disabled
           />
         </el-form-item>
-        <el-form-item :label="td('common.texts.createdTime') + '：'">
+        <el-form-item :label="td('common.texts.createdTime') + '：'" :label-position="labelPosition">
           <el-input
               v-model="dialog.row.time"
               :placeholder="td('meta.unreleased.structured.table.detail.createTimePlaceholder')"

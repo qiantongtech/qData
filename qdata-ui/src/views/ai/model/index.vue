@@ -104,12 +104,12 @@
         :rules="rules"
         label-width="80px"
         @submit.prevent
-      >
-        <el-form-item :label="td('ai.model.modelName')" prop="name">
+       :label-position="labelPosition">
+        <el-form-item :label="td('ai.model.modelName')" prop="name" :label-position="labelPosition">
           <el-input v-model="form.name" :placeholder="td('ai.model.modelNamePlaceholder')" />
         </el-form-item>
 
-        <el-form-item :label="td('ai.model.platform')" prop="platform">
+        <el-form-item :label="td('ai.model.platform')" prop="platform" :label-position="labelPosition">
           <el-select v-model="form.platform" :placeholder="td('ai.model.selectPlatform')">
             <el-option
               v-for="dict in ai_model_platform"
@@ -119,21 +119,21 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item :label="td('ai.model.apiUrl')" prop="apiUrl">
+        <el-form-item :label="td('ai.model.apiUrl')" prop="apiUrl" :label-position="labelPosition">
           <el-input v-model="form.apiUrl" :placeholder="td('ai.model.apiUrlPlaceholder')" />
         </el-form-item>
-        <el-form-item :label="td('ai.model.apiKey')" prop="apiKey">
+        <el-form-item :label="td('ai.model.apiKey')" prop="apiKey" :label-position="labelPosition">
           <el-input
             v-model="form.apiKey"
             :placeholder="td('ai.model.apiKeyPlaceholder')"
             type="password"
           />
         </el-form-item>
-        <el-form-item :label="td('common.texts.status')" prop="validFlag">
+        <el-form-item :label="td('common.texts.status')" prop="validFlag" :label-position="labelPosition">
           <el-radio v-model="form.validFlag" :label="true">{{ td('common.texts.enable') }}</el-radio>
           <el-radio v-model="form.validFlag" :label="false">{{ td('common.texts.disable') }}</el-radio>
         </el-form-item>
-        <el-form-item :label="td('ai.model.sortOrder')" prop="sortOrder">
+        <el-form-item :label="td('ai.model.sortOrder')" prop="sortOrder" :label-position="labelPosition">
           <el-input-number
             style="width: 100%"
             v-model="form.sortOrder"
@@ -141,7 +141,7 @@
             :min="0"
           />
         </el-form-item>
-        <el-form-item :label="td('common.texts.description')" prop="description" class="row-full">
+        <el-form-item :label="td('common.texts.description')" prop="description" class="row-full" :label-position="labelPosition">
           <el-input
             type="textarea"
             :maxlength="td('ai.model.maxLengthChars')"
@@ -151,7 +151,7 @@
           />
         </el-form-item>
 
-        <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full">
+        <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full" :label-position="labelPosition">
           <el-input
             type="textarea"
             :maxlength="td('ai.model.maxLengthChars')"
@@ -179,70 +179,70 @@
       :append-to="$refs['app-container']"
       draggable
     >
-      <el-form ref="modelRef" :model="form" label-width="90px">
-        <el-form-item :label="td('common.texts.number')" prop="id">
+      <el-form ref="modelRef" :model="form" label-width="90px" :label-position="labelPosition">
+        <el-form-item :label="td('common.texts.number')" prop="id" :label-position="labelPosition">
           <div class="form-readonly">
             {{ form.id }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('ai.model.modelName')" prop="name">
+        <el-form-item :label="td('ai.model.modelName')" prop="name" :label-position="labelPosition">
           <div class="form-readonly">
             {{ form.name }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('ai.model.platform')" prop="platform">
+        <el-form-item :label="td('ai.model.platform')" prop="platform" :label-position="labelPosition">
           <dict-tag :options="ai_model_platform" :value="form.platform" />
         </el-form-item>
-        <el-form-item :label="td('ai.model.sortOrder')" prop="sortOrder">
+        <el-form-item :label="td('ai.model.sortOrder')" prop="sortOrder" :label-position="labelPosition">
           <div class="form-readonly">
             {{ form.sortOrder || "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('ai.model.apiUrl')" prop="apiUrl">
+        <el-form-item :label="td('ai.model.apiUrl')" prop="apiUrl" :label-position="labelPosition">
           <div class="form-readonly" :title="form.apiUrl || '-'">
             {{ form.apiUrl ?? "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('ai.model.apiKey')" prop="apiKey">
+        <el-form-item :label="td('ai.model.apiKey')" prop="apiKey" :label-position="labelPosition">
           <div class="form-readonly">
             {{ form.apiKey ? "**********" : "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.status')" prop="validFlag">
+        <el-form-item :label="td('common.texts.status')" prop="validFlag" :label-position="labelPosition">
           <div class="form-readonly">
             {{ form.validFlag ? td('common.texts.enable') : td('common.texts.disable') }}
           </div>
         </el-form-item>
 
-        <el-form-item :label="td('common.texts.description')" prop="description">
+        <el-form-item :label="td('common.texts.description')" prop="description" :label-position="labelPosition">
           <div class="form-readonly textarea">
             {{ form.description ?? "-" }}
           </div>
         </el-form-item>
 
-        <el-form-item :label="td('common.texts.remark')" prop="remark">
+        <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
           <div class="form-readonly textarea">
             {{ form.remark ?? "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.createdBy')" prop="createBy">
+        <el-form-item :label="td('common.texts.createdBy')" prop="createBy" :label-position="labelPosition">
           <div class="form-readonly">
             {{ form.createBy }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.createdTime')" prop="createTime">
+        <el-form-item :label="td('common.texts.createdTime')" prop="createTime" :label-position="labelPosition">
           <div class="form-readonly">
             {{ parseTime(form.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
         </el-form-item>
 
-        <el-form-item :label="td('common.texts.updatedBy')" prop="updateBy">
+        <el-form-item :label="td('common.texts.updatedBy')" prop="updateBy" :label-position="labelPosition">
           <div class="form-readonly">
             {{ form.updateBy }}
           </div>
         </el-form-item>
 
-        <el-form-item :label="td('common.texts.updatedTime')" prop="updateTime">
+        <el-form-item :label="td('common.texts.updatedTime')" prop="updateTime" :label-position="labelPosition">
           <div class="form-readonly">
             {{ parseTime(form.updateTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>

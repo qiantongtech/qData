@@ -23,20 +23,20 @@
     <div class="pagecont-top" v-show="showSearch">
       <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true"
         v-show="showSearch" @submit.prevent>
-        <!-- <el-form-item :label="td('ds.client.detail.id')" prop="id">
+        <!-- <el-form-item :label="td('ds.client.detail.id')" prop="id" :label-position="labelPosition">
           <el-input class="el-form-input-width" v-model="queryParams.id" placeholder="请输入编号" clearable
             @keyup.enter="handleQuery" />
         </el-form-item> -->
-        <el-form-item :label="td('ds.client.appName')" prop="name">
+        <el-form-item :label="td('ds.client.appName')" prop="name" :label-position="labelPosition">
           <el-input class="el-form-input-width" v-model="queryParams.name" :placeholder="td('ds.client.appNamePlaceholder')" clearable
             @keyup.enter="handleQuery" />
         </el-form-item>
-        <el-form-item :label="td('ds.client.appType')" prop="type">
+        <el-form-item :label="td('ds.client.appType')" prop="type" :label-position="labelPosition">
           <el-select class="el-form-input-width" v-model="queryParams.type" :placeholder="td('ds.client.appTypePlaceholder')" clearable>
             <el-option v-for="dict in auth_app_type" :key="dict.value" :label="dict.label" :value="dict.value" />
           </el-select>
         </el-form-item>
-        <el-form-item :label="td('ds.client.isPublic')" prop="publicFlag">
+        <el-form-item :label="td('ds.client.isPublic')" prop="publicFlag" :label-position="labelPosition">
           <el-select class="el-form-input-width" v-model="queryParams.publicFlag" :placeholder="td('ds.client.isPublicPlaceholder')" clearable>
             <el-option v-for="dict in auth_public" :key="dict.value" :label="dict.label" :value="dict.value" />
           </el-select>
@@ -198,15 +198,15 @@
           {{ title }}
         </span>
       </template>
-      <el-form ref="clientRef" :model="form" :rules="rules" @submit.prevent>
+      <el-form ref="clientRef" :model="form" :rules="rules" @submit.prevent :label-position="labelPosition">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('ds.client.appName')" prop="name">
+            <el-form-item :label="td('ds.client.appName')" prop="name" :label-position="labelPosition">
               <el-input v-model="form.name" :placeholder="td('ds.client.appNamePlaceholder')"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('ds.client.appType')" prop="type">
+            <el-form-item :label="td('ds.client.appType')" prop="type" :label-position="labelPosition">
               <el-select v-model="form.type" :placeholder="td('ds.client.appTypePlaceholder')">
                 <el-option v-for="dict in auth_app_type" :key="dict.value" :label="dict.label"
                            :value="dict.value"></el-option>
@@ -216,7 +216,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.description')" prop="description">
+            <el-form-item :label="td('common.texts.description')" prop="description" :label-position="labelPosition">
               <el-input v-model="form.description" type="textarea" :placeholder="td('common.form.descriptionPlaceholder')" />
             </el-form-item>
           </el-col>
@@ -224,26 +224,26 @@
 
         <!-- <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('ds.client.homepageUrl')" prop="homepageUrl">
+            <el-form-item :label="td('ds.client.homepageUrl')" prop="homepageUrl" :label-position="labelPosition">
               <el-input v-model="form.homepageUrl" placeholder="请输入主页地址" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('ds.client.syncUrl')" prop="syncUrl">
+            <el-form-item :label="td('ds.client.syncUrl')" prop="syncUrl" :label-position="labelPosition">
               <el-input v-model="form.syncUrl" placeholder="请输入同步地址" />
             </el-form-item>
           </el-col>
         </el-row> -->
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('ds.client.appIcon')" prop="logo">
+            <el-form-item :label="td('ds.client.appIcon')" prop="logo" :label-position="labelPosition">
               <image-upload v-model="form.logo" limit="1" :fileType="pdf" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('ds.client.isPublic')" prop="publicFlag">
+            <el-form-item :label="td('ds.client.isPublic')" prop="publicFlag" :label-position="labelPosition">
               <el-radio-group v-model="form.publicFlag">
                 <el-radio v-for="dict in auth_public" :key="dict.value" :label="dict.value">{{ dict.label }}</el-radio>
               </el-radio-group>
@@ -252,7 +252,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.remark')" prop="remark">
+            <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
               <el-input v-model="form.remark" type="textarea" :placeholder="td('common.form.remarkPlaceholder')" />
             </el-form-item>
           </el-col>
@@ -272,7 +272,7 @@
           {{ title }}
         </span>
       </template>
-      <el-form ref="clientRef" :model="form" label-width="100px">
+      <el-form ref="clientRef" :model="form" label-width="100px" :label-position="labelPosition">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item :label="td('ds.client.detail.id')" prop="id">
@@ -280,7 +280,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('ds.client.appSecret')" prop="secret">
+            <el-form-item :label="td('ds.client.appSecret')" prop="secret" :label-position="labelPosition">
               <div>{{ form.secret || "-" }}</div>
             </el-form-item>
           </el-col>
@@ -292,7 +292,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('ds.client.appIcon')" prop="logo">
+            <el-form-item :label="td('ds.client.appIcon')" prop="logo" :label-position="labelPosition">
               <image-preview :src="form.logo || noDataImg" :width="50" :height="50" />
             </el-form-item>
           </el-col>
@@ -311,24 +311,24 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('ds.client.homepageUrl')" prop="homepageUrl">
+            <el-form-item :label="td('ds.client.homepageUrl')" prop="homepageUrl" :label-position="labelPosition">
               <div>{{ form.homepageUrl || "-" }}</div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('ds.client.syncUrl')" prop="syncUrl">
+            <el-form-item :label="td('ds.client.syncUrl')" prop="syncUrl" :label-position="labelPosition">
               <div>{{ form.syncUrl || "-" }}</div>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('ds.client.authPath')" prop="allowUrl">
+            <el-form-item :label="td('ds.client.authPath')" prop="allowUrl" :label-position="labelPosition">
               <div>{{ form.allowUrl || "-" }}</div>
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.description')" prop="description">
+            <el-form-item :label="td('common.texts.description')" prop="description" :label-position="labelPosition">
               <div>{{ form.description || "-" }}</div>
             </el-form-item>
           </el-col>

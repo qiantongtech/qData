@@ -19,7 +19,7 @@
    <div class="app-container" ref="app-container">
       <div class="pagecont-top" v-show="showSearch">
          <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true">
-            <el-form-item :label="td('sys.system.dictType.dictName')" prop="dictName">
+            <el-form-item :label="td('sys.system.dictType.dictName')" prop="dictName" :label-position="labelPosition">
                <el-input
                   v-model="queryParams.dictName"
                   :placeholder="td('sys.system.dictType.dictNamePlaceholder')"
@@ -28,7 +28,7 @@
                   @keyup.enter="handleQuery"
                />
             </el-form-item>
-            <el-form-item :label="td('sys.system.dictType.dictType')" prop="dictType">
+            <el-form-item :label="td('sys.system.dictType.dictType')" prop="dictType" :label-position="labelPosition">
                <el-input
                   v-model="queryParams.dictType"
                   :placeholder="td('sys.system.dictType.dictTypePlaceholder')"
@@ -37,7 +37,7 @@
                   @keyup.enter="handleQuery"
                />
             </el-form-item>
-            <el-form-item :label="td('common.texts.status')" prop="status">
+            <el-form-item :label="td('common.texts.status')" prop="status" :label-position="labelPosition">
                <el-select
                   v-model="queryParams.status"
                   :placeholder="td('sys.system.dictType.dictStatus')"
@@ -179,7 +179,7 @@
 
       <!-- 添加或修改参数配置对话框 -->
       <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']"  draggable destroy-on-close>
-         <el-form ref="dictRef" :model="form" :rules="rules" label-width="80px">
+         <el-form ref="dictRef" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
             <el-row :gutter="20">
                <el-col :span="12">
                   <el-form-item :label="td('sys.system.dictType.dictName')" prop="dictName">
@@ -203,7 +203,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="24">
-                  <el-form-item :label="td('common.texts.remark')" prop="remark">
+                  <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
                      <el-input v-model="form.remark" type="textarea" :placeholder="td('sys.dictType.inputContent')"></el-input>
                   </el-form-item>
                </el-col>

@@ -30,12 +30,12 @@
       <!--                    <div class="main">-->
       <div v-loading="loadingList">
         <!-- <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true"
-                                 @submit.prevent>
-                                <el-form-item label="规则名称" prop="name">
+                                 @submit.prevent :label-position="labelPosition">
+                                <el-form-item label="规则名称" prop="name" :label-position="labelPosition">
                                     <el-input class="el-form-input-width" v-model="queryParams.name"
                                         placeholder="请输入规则名称" clearable @keyup.enter="handleQuery" />
                                 </el-form-item>
-                                <el-form-item label="质量维度" prop="dimensionType">
+                                <el-form-item label="质量维度" prop="dimensionType" :label-position="labelPosition">
                                     <el-select v-model="queryParams.dimensionType" placeholder="请选择质量维度"
                                         style="width: 210px;">
                                         <el-option v-for="dict in att_rule_audit_q_dimension" :key="dict.value"
@@ -43,14 +43,14 @@
                                     </el-select>
                                 </el-form-item>
 
-                                <el-form-item :label="td('common.texts.status')" prop="publishStatus">
+                                <el-form-item :label="td('common.texts.status')" prop="publishStatus" :label-position="labelPosition">
                                     <el-select v-model="queryParams.publishStatus" :placeholder="t('common.form.statusPlaceholder')" clearable
                                         class="el-form-input-width">
                                         <el-option label="上线" value="online" />
                                         <el-option label="下线" value="offline" />
                                     </el-select>
                                 </el-form-item>
-                                <el-form-item>
+                                <el-form-item :label-position="labelPosition">
                                     <el-button plain type="primary" @click="handleQuery"
                                         @mousedown="(e) => e.preventDefault()">
                                         <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}

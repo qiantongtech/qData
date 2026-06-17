@@ -23,17 +23,17 @@
                 {{ title }}
             </span>
         </template>
-        <el-form ref="queryForm" :model="queryParams" inline>
-            <el-form-item :label="td('common.texts.time')" prop="dataTime">
+        <el-form ref="queryForm" :model="queryParams" inline :label-position="labelPosition">
+            <el-form-item :label="td('common.texts.time')" prop="dataTime" :label-position="labelPosition">
                 <el-date-picker v-model="queryParams.dataTime" style="width: 250px" :clearable="false" type="daterange"
                     align="right" unlink-panels range-separator="~" :start-placeholder="td('common.form.startDatePlaceholder')" :end-placeholder="td('common.form.endDatePlaceholder')"
                     @change="handleDateChange" />
             </el-form-item>
-            <el-form-item :label="td('common.texts.createdBy')" prop="createBy">
+            <el-form-item :label="td('common.texts.createdBy')" prop="createBy" :label-position="labelPosition">
                 <el-input v-model="queryParams.createBy" :placeholder="td('dpp.asset.editorPlaceholder')" style="width: 180px; margin-right: 10px"
                     class="filter-item" />
             </el-form-item>
-            <el-form-item>
+            <el-form-item :label-position="labelPosition">
                 <el-button style="margin-left: 7px" plain type="primary" @click="fetchData"
                     @mousedown="(e) => e.preventDefault()">
                     <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}

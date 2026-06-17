@@ -26,7 +26,7 @@
                 
                 v-show="showSearch"
             >
-                <el-form-item label="姓名" prop="name">
+                <el-form-item label="姓名" prop="name" :label-position="labelPosition">
                     <el-input
                         class="el-form-input-width"
                         v-model="queryParams.name"
@@ -35,7 +35,7 @@
                         @keyup.enter="handleQuery"
                     />
                 </el-form-item>
-                <el-form-item label="性别" prop="sex">
+                <el-form-item label="性别" prop="sex" :label-position="labelPosition">
                     <el-select
                         class="el-form-input-width"
                         v-model="queryParams.sex"
@@ -50,7 +50,7 @@
                         />
                     </el-select>
                 </el-form-item>
-                <el-form-item label="年龄" prop="age">
+                <el-form-item label="年龄" prop="age" :label-position="labelPosition">
                     <el-input
                         class="el-form-input-width"
                         v-model="queryParams.age"
@@ -59,7 +59,7 @@
                         @keyup.enter="handleQuery"
                     />
                 </el-form-item>
-                <el-form-item label="学号" prop="studentNumber">
+                <el-form-item label="学号" prop="studentNumber" :label-position="labelPosition">
                     <el-input
                         class="el-form-input-width"
                         v-model="queryParams.studentNumber"
@@ -68,7 +68,7 @@
                         @keyup.enter="handleQuery"
                     />
                 </el-form-item>
-                <el-form-item label="班级" prop="grade">
+                <el-form-item label="班级" prop="grade" :label-position="labelPosition">
                     <el-input
                         class="el-form-input-width"
                         v-model="queryParams.grade"
@@ -383,27 +383,27 @@
                     </el-icon>
                 </span>
             </template>
-            <el-form ref="studentRef" :model="form" :rules="rules" label-width="80px">
+            <el-form ref="studentRef" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item label="姓名" prop="name">
+                        <el-form-item label="姓名" prop="name" :label-position="labelPosition">
                             <el-input v-model="form.name" placeholder="请输入姓名" />
                         </el-form-item>
                     </el-col>
                     <el-col :span="24">
-                        <el-form-item label="学生照" prop="pictureUrl">
+                        <el-form-item label="学生照" prop="pictureUrl" :label-position="labelPosition">
                             <image-upload v-model="form.pictureUrl" />
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="24">
-                        <el-form-item label="教育经历">
+                        <el-form-item label="教育经历" :label-position="labelPosition">
                             <editor v-model="form.experience" :min-height="192" />
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="性别" prop="sex">
+                        <el-form-item label="性别" prop="sex" :label-position="labelPosition">
                             <el-select v-model="form.sex" placeholder="请选择性别">
                                 <el-option
                                     v-for="dict in sys_user_sex"
@@ -417,24 +417,24 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item label="年龄" prop="age">
+                        <el-form-item label="年龄" prop="age" :label-position="labelPosition">
                             <el-input v-model="form.age" placeholder="请输入年龄" />
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="学号" prop="studentNumber">
+                        <el-form-item label="学号" prop="studentNumber" :label-position="labelPosition">
                             <el-input v-model="form.studentNumber" placeholder="请输入学号" />
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item label="班级" prop="grade">
+                        <el-form-item label="班级" prop="grade" :label-position="labelPosition">
                             <el-input v-model="form.grade" placeholder="请输入班级" />
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="爱好" prop="hobby">
+                        <el-form-item label="爱好" prop="hobby" :label-position="labelPosition">
                             <el-checkbox-group v-model="form.hobby">
                                 <el-checkbox
                                     v-for="dict in message_level"
@@ -449,7 +449,7 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="24">
-                        <el-form-item label="备注" prop="remark">
+                        <el-form-item label="备注" prop="remark" :label-position="labelPosition">
                             <el-input
                                 v-model="form.remark"
                                 type="textarea"
@@ -480,7 +480,7 @@
                     {{ title }}
                 </span>
             </template>
-            <el-form ref="studentRef" :model="form" label-width="80px">
+            <el-form ref="studentRef" :model="form" label-width="80px" :label-position="labelPosition">
                 <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item label="姓名" prop="name">
@@ -490,14 +490,14 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="学生照" prop="pictureUrl">
+                        <el-form-item label="学生照" prop="pictureUrl" :label-position="labelPosition">
                             <image-preview :src="form.pictureUrl" :width="50" :height="50" />
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item label="教育经历">
+                        <el-form-item label="教育经历" :label-position="labelPosition">
                             <div v-html="form.experience"></div>
                         </el-form-item>
                     </el-col>
@@ -532,14 +532,14 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="爱好" prop="hobby">
+                        <el-form-item label="爱好" prop="hobby" :label-position="labelPosition">
                             <dict-tag :options="message_level" :value="form.hobby" />
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="24">
-                        <el-form-item label="备注" prop="remark">
+                        <el-form-item label="备注" prop="remark" :label-position="labelPosition">
                             <div>
                                 {{ form.remark }}
                             </div>

@@ -163,10 +163,10 @@
             destroy-on-close
             class="msg-dialog"
         >
-            <el-form label-width="100px">
+            <el-form label-width="100px" :label-position="labelPosition">
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item :label="td('sys.system.message.msgTitleLabel')">
+                        <el-form-item :label="td('sys.system.message.msgTitleLabel')" :label-position="labelPosition">
                             <div class="form-value-ifon">
                                 {{ viewData.title }}
                             </div>
@@ -174,7 +174,7 @@
                     </el-col>
 
                     <el-col :span="12">
-                        <el-form-item :label="td('sys.system.message.typeLabel')">
+                        <el-form-item :label="td('sys.system.message.typeLabel')" :label-position="labelPosition">
                             <div class="form-value-ifon">
                                 <dict-tag
                                     :options="message_category"
@@ -184,7 +184,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item :label="td('sys.system.message.isReadLabel')">
+                        <el-form-item :label="td('sys.system.message.isReadLabel')" :label-position="labelPosition">
                             <div class="form-value-ifon">
                                 <el-tag
                                     :type="
@@ -197,14 +197,14 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item :label="td('sys.system.message.msgContentLabel')">
+                        <el-form-item :label="td('sys.system.message.msgContentLabel')" :label-position="labelPosition">
                             <div class="form-value-ifon">
                                 {{ viewData.content }}
                             </div>
                         </el-form-item>
                     </el-col>
                     <el-col :span="24">
-                        <el-form-item :label="td('sys.system.message.createTimeLabel')">
+                        <el-form-item :label="td('sys.system.message.createTimeLabel')" :label-position="labelPosition">
                             <div class="form-value-ifon">
                                 {{ viewData.createTime }}
                             </div>

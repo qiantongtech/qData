@@ -108,15 +108,15 @@
         :rules="rules"
         label-width="130px"
         @submit.prevent
-      >
+       :label-position="labelPosition">
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('dm.themeDomain.name', '主题域名称')" prop="name">
+            <el-form-item :label="td('dm.themeDomain.name', '主题域名称')" prop="name" :label-position="labelPosition">
               <el-input v-model="form.name" :placeholder="td('dm.themeDomain.namePlaceholder', '请输入主题域名称')" />
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item :label="td('dm.themeDomain.parentId', '上级主题域')" prop="parentId">
+            <el-form-item :label="td('dm.themeDomain.parentId', '上级主题域')" prop="parentId" :label-position="labelPosition">
               <el-tree-select
                 filterable
                 v-model="form.parentId"
@@ -131,7 +131,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('dm.themeDomain.dataLayerId', '数仓分层')" prop="dataLayerId">
+            <el-form-item :label="td('dm.themeDomain.dataLayerId', '数仓分层')" prop="dataLayerId" :label-position="labelPosition">
               <el-tree-select
                 filterable
                 default-expand-all
@@ -145,14 +145,14 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item :label="td('dm.themeDomain.engName', '英文缩写')" prop="engName">
+            <el-form-item :label="td('dm.themeDomain.engName', '英文缩写')" prop="engName" :label-position="labelPosition">
               <el-input v-model="form.engName" :placeholder="td('dm.themeDomain.engNamePlaceholder', '请输入英文缩写')" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('dm.themeDomain.ownerId', '负责人')" prop="ownerUserId">
+            <el-form-item :label="td('dm.themeDomain.ownerId', '负责人')" prop="ownerUserId" :label-position="labelPosition">
               <el-select
                 v-model="form.ownerUserId"
                 filterable
@@ -169,7 +169,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item :label="td('dm.themeDomain.ownerPhone', '负责人电话')" prop="ownerUserPhoneNumber">
+            <el-form-item :label="td('dm.themeDomain.ownerPhone', '负责人电话')" prop="ownerUserPhoneNumber" :label-position="labelPosition">
               <el-input
                 v-model="form.ownerUserPhoneNumber"
                 :placeholder="td('dm.themeDomain.ownerPhonePlaceholder', '请输入负责人电话')"
@@ -180,7 +180,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.description', '描述')" prop="description">
+            <el-form-item :label="td('common.texts.description', '描述')" prop="description" :label-position="labelPosition">
               <el-input
                 v-model="form.description"
                 type="textarea"
@@ -192,7 +192,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.remark', '备注')" prop="remark">
+            <el-form-item :label="td('common.texts.remark', '备注')" prop="remark" :label-position="labelPosition">
               <el-input
                 v-model="form.remark"
                 type="textarea"

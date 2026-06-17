@@ -33,7 +33,7 @@
       label-width="146px"
       @submit.prevent
       :disabled="title == td('dpp.integratioTask.taskDetail', '任务详情')"
-    >
+     :label-position="labelPosition">
       <div class="h2-title">
         {{ td("dpp.integratioTask.basicInfo", "基本信息") }}
       </div>
@@ -42,7 +42,7 @@
           <el-form-item
             :label="td('dpp.integratioTask.taskName', '任务名称')"
             prop="name"
-          >
+           :label-position="labelPosition">
             <el-input
               v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
               v-model="form.name"
@@ -57,7 +57,7 @@
           <el-form-item
             :label="td('dpp.integratioTask.taskCategory', '任务类目')"
             prop="catCode"
-          >
+           :label-position="labelPosition">
             <el-tree-select
               :default-expanded-keys="defaultExpandedCats"
               filterable
@@ -80,7 +80,7 @@
           <el-form-item
             :label="td('dpp.integratioTask.executionStrategy', '执行策略')"
             prop="executionType"
-          >
+           :label-position="labelPosition">
             <el-select
               v-if="title != td('dpp.integratioTask.taskDetail')"
               class="el-form-input-width"
@@ -113,7 +113,7 @@
           <el-form-item
             :label="td('dpp.integratioTask.scheduleCycle', '调度周期')"
             prop="crontab"
-          >
+           :label-position="labelPosition">
             <el-input
               v-if="title != td('dpp.integratioTask.taskDetail')"
               v-model="form.crontab"
@@ -139,7 +139,7 @@
           <el-form-item
             :label="td('dpp.integratioTask.responsiblePerson', '责任人')"
             prop="personCharge"
-          >
+           :label-position="labelPosition">
             <el-tree-select
               filterable
               v-model="form.personCharge"
@@ -162,7 +162,7 @@
           <el-form-item
             :label="td('dpp.integratioTask.contactNumber', '联系电话')"
             prop="contactNumber"
-          >
+           :label-position="labelPosition">
             <el-input
               v-if="title != td('dpp.integratioTask.taskDetail')"
               v-model="form.contactNumber"
@@ -179,7 +179,7 @@
           <el-form-item
             :label="td('common.texts.description')"
             prop="description"
-          >
+           :label-position="labelPosition">
             <el-input
               v-if="title != td('dpp.integratioTask.taskDetail')"
               v-model="form.description"
@@ -195,7 +195,7 @@
           <el-form-item
             :label="td('dpp.integratioTask.taskStatus', '任务状态')"
             prop="releaseState"
-          >
+           :label-position="labelPosition">
             <el-radio-group
               v-if="title != td('dpp.integratioTask.taskDetail')"
               v-model="form.releaseState"
@@ -228,7 +228,7 @@
           <el-form-item
             :label="td('dpp.integratioTask.taskPriority', '任务优先级')"
             prop="taskPriority"
-          >
+           :label-position="labelPosition">
             <el-select
               v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
               clearable
@@ -257,7 +257,7 @@
           <el-form-item
             :label="td('dpp.integratioTask.workerGroup', 'Worker分组')"
             prop="workerGroup"
-          >
+           :label-position="labelPosition">
             <el-input
               v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
               v-model="form.workerGroup"
@@ -275,7 +275,7 @@
           <el-form-item
             :label="td('dpp.integratioTask.failRetryTimes', '失败重试次数')"
             prop="failRetryTimes"
-          >
+           :label-position="labelPosition">
             <el-input
               v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
               type="number"
@@ -300,7 +300,7 @@
           <el-form-item
             :label="td('dpp.integratioTask.failRetryInterval', '失败重试间隔')"
             prop="failRetryInterval"
-          >
+           :label-position="labelPosition">
             <el-input
               v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
               type="number"
@@ -325,7 +325,7 @@
           <el-form-item
             :label="td('dpp.integratioTask.delayExecutionTime', '延迟执行时间')"
             prop="delayTime"
-          >
+           :label-position="labelPosition">
             <el-input
               v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
               type="number"
@@ -343,7 +343,7 @@
           <el-form-item
             :label="td('dpp.integratioTask.executionEngine', '执行引擎')"
             prop="taskType"
-          >
+           :label-position="labelPosition">
             <el-radio-group
               v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
               v-model="form.taskType"
@@ -363,7 +363,7 @@
             <el-form-item
               :label="td('dpp.integratioTask.driverCores', 'Driver核心数')"
               prop="driverCores"
-            >
+             :label-position="labelPosition">
               <el-input-number
                 v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
                 :placeholder="
@@ -386,7 +386,7 @@
             <el-form-item
               :label="td('dpp.integratioTask.driverMemory', 'Driver内存数')"
               prop="driverMemory"
-            >
+             :label-position="labelPosition">
               <el-input
                 v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
                 v-model="form.driverMemory"
@@ -408,7 +408,7 @@
             <el-form-item
               :label="td('dpp.integratioTask.executorCount', 'Executor数量')"
               prop="numExecutors"
-            >
+             :label-position="labelPosition">
               <el-input-number
                 v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
                 :placeholder="
@@ -431,7 +431,7 @@
             <el-form-item
               :label="td('dpp.integratioTask.executorMemory', 'Executor内存数')"
               prop="executorMemory"
-            >
+             :label-position="labelPosition">
               <el-input
                 v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
                 v-model="form.executorMemory"
@@ -453,7 +453,7 @@
             <el-form-item
               :label="td('dpp.integratioTask.executorCores', 'Executor核心数')"
               prop="executorCores"
-            >
+             :label-position="labelPosition">
               <el-input-number
                 v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
                 :placeholder="
@@ -476,7 +476,7 @@
             <el-form-item
               :label="td('dpp.integratioTask.yarnQueue', 'Yarn队列')"
               prop="yarnQueue"
-            >
+             :label-position="labelPosition">
               <el-input
                 v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
                 v-model="form.yarnQueue"
@@ -497,7 +497,7 @@
       </el-row>
       <!-- <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="t('common.texts.remark')" prop="remark">
+          <el-form-item :label="t('common.texts.remark')" prop="remark" :label-position="labelPosition">
             <el-input v-model="form.remark" type="textarea" :placeholder="td('common.form.remarkPlaceholder')" />
           </el-form-item>
         </el-col>

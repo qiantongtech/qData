@@ -19,7 +19,7 @@
    <div class="app-container" ref="app-container">
       <div class="pagecont-top" v-show="showSearch">
          <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true">
-            <el-form-item :label="td('sys.system.post.postCode')" prop="postCode">
+            <el-form-item :label="td('sys.system.post.postCode')" prop="postCode" :label-position="labelPosition">
                <el-input
                   v-model="queryParams.postCode"
                   :placeholder="td('sys.system.post.postCodePlaceholder')"
@@ -28,7 +28,7 @@
                   @keyup.enter="handleQuery"
                />
             </el-form-item>
-            <el-form-item :label="td('sys.system.post.postName')" prop="postName">
+            <el-form-item :label="td('sys.system.post.postName')" prop="postName" :label-position="labelPosition">
                <el-input
                   v-model="queryParams.postName"
                   :placeholder="td('sys.system.post.postNamePlaceholder')"
@@ -137,7 +137,7 @@
 
       <!-- 添加或修改岗位对话框 -->
       <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']"  draggable destroy-on-close>
-         <el-form ref="postRef" :model="form" :rules="rules" label-width="80px">
+         <el-form ref="postRef" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
             <el-row :gutter="20">
                <el-col :span="12">
                   <el-form-item :label="td('sys.system.post.postName')" prop="postName">
@@ -150,12 +150,12 @@
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('sys.system.post.postOrder')" prop="postSort">
+                  <el-form-item :label="td('sys.system.post.postOrder')" prop="postSort" :label-position="labelPosition">
                      <el-input-number style="width:100%" v-model="form.postSort" controls-position="right" :min="0" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('sys.system.post.postStatus')" prop="status">
+                  <el-form-item :label="td('sys.system.post.postStatus')" prop="status" :label-position="labelPosition">
                      <el-radio-group v-model="form.status">
                         <el-radio
                            v-for="dict in sys_normal_disable"
@@ -166,7 +166,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="24">
-                  <el-form-item :label="td('common.texts.remark')" prop="remark">
+                  <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
                      <el-input v-model="form.remark" type="textarea" :placeholder="td('sys.system.post.inputContent')" />
                   </el-form-item>
                </el-col>

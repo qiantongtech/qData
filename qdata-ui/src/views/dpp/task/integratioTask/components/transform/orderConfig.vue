@@ -29,16 +29,16 @@
             </div>
         </template>
         <el-form ref="dpModelRefs" :model="form" label-width="110px" @submit.prevent v-loading="loading"
-            :disabled="info">
+            :disabled="info" :label-position="labelPosition">
             <el-row :gutter="20">
                 <el-col :span="12">
                     <el-form-item :label="td('dpp.integration.nodeName', '节点名称')" prop="name"
-                        :rules="[{ required: true, message: td('dpp.integration.nodeNameRequired', '请输入节点名称'), trigger: 'change' }]">
+                        :rules="[{ required: true, message: td('dpp.integration.nodeNameRequired', '请输入节点名称'), trigger: 'change' }]" :label-position="labelPosition">
                         <el-input v-model="form.name" :placeholder="td('dpp.integration.nodeNamePlaceholder', '请输入节点名称')" />
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item :label="td('dpp.integration.type', '类型')" prop="typeName">
+                    <el-form-item :label="td('dpp.integration.type', '类型')" prop="typeName" :label-position="labelPosition">
                         <el-select v-model="form.taskParams.typeName" :placeholder="td('dpp.integration.typePlaceholder', '请输入类型')" filterable disabled>
                             <el-option v-for="dict in typeList" :key="dict.value" :label="dict.label"
                                 :value="dict.value" />
@@ -49,7 +49,7 @@
 
             <el-row :gutter="20">
                 <el-col :span="24">
-                    <el-form-item :label="td('common.texts.description')" prop="description">
+                    <el-form-item :label="td('common.texts.description')" prop="description" :label-position="labelPosition">
                         <el-input v-model="form.description" type="textarea" :placeholder="td('common.form.descriptionPlaceholder')" />
                     </el-form-item>
                 </el-col>

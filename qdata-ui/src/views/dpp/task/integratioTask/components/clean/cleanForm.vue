@@ -32,7 +32,7 @@
       @submit.prevent
       v-loading="loading"
       :disabled="info"
-    >
+     :label-position="labelPosition">
       <template v-if="!info">
         <el-row :gutter="20">
           <el-col :span="12">
@@ -46,12 +46,12 @@
                   trigger: 'change',
                 },
               ]"
-            >
+             :label-position="labelPosition">
               <el-input v-model="form.name" :placeholder="td('dpp.cleanRule.inputNodeName', '请输入节点名称')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('dpp.cleanRule.type', '类型')" prop="typeName">
+            <el-form-item :label="td('dpp.cleanRule.type', '类型')" prop="typeName" :label-position="labelPosition">
               <el-select
                 v-model="form.taskParams.typeName"
                 :placeholder="td('dpp.cleanRule.inputType', '请输入类型')"
@@ -70,7 +70,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.description', '描述')" prop="description">
+            <el-form-item :label="td('common.texts.description', '描述')" prop="description" :label-position="labelPosition">
               <el-input
                 v-model="form.description"
                 type="textarea"
@@ -83,7 +83,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('dpp.cleanRule.whereCondition', 'where条件')" prop="where">
+            <el-form-item :label="td('dpp.cleanRule.whereCondition', 'where条件')" prop="where" :label-position="labelPosition">
               <el-input
                 v-model="form.taskParams.where"
                 type="textarea"
@@ -98,14 +98,14 @@
       <template v-else>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('dpp.cleanRule.nodeName', '节点名称') + ':'" prop="id">
+            <el-form-item :label="td('dpp.cleanRule.nodeName', '节点名称') + ':'" prop="id" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.name }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('dpp.cleanRule.type', '类型')" prop="typeName">
+            <el-form-item :label="td('dpp.cleanRule.type', '类型')" prop="typeName" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.taskParams.typeName }}
               </div>
@@ -114,7 +114,7 @@
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.description', '描述')" prop="description">
+            <el-form-item :label="td('common.texts.description', '描述')" prop="description" :label-position="labelPosition">
               <div class="form-readonly textarea">
                 {{ form.description ?? "-" }}
               </div>
@@ -124,7 +124,7 @@
 
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('dpp.cleanRule.whereCondition', 'where条件')" prop="where">
+            <el-form-item :label="td('dpp.cleanRule.whereCondition', 'where条件')" prop="where" :label-position="labelPosition">
               <div class="form-readonly textarea">
                 {{ form.where ?? "-" }}
               </div>

@@ -34,7 +34,7 @@
             @keyup.enter="handleQuery"
           />
         </el-form-item>
-        <el-form-item label="部门名称" prop="name">
+        <el-form-item label="部门名称" prop="name" :label-position="labelPosition">
           <el-input
             class="el-form-input-width"
             v-model="queryParams.name"
@@ -43,7 +43,7 @@
             @keyup.enter="handleQuery"
           />
         </el-form-item>
-        <el-form-item label="负责人" prop="leader">
+        <el-form-item label="负责人" prop="leader" :label-position="labelPosition">
           <el-input
             class="el-form-input-width"
             v-model="queryParams.leader"
@@ -52,7 +52,7 @@
             @keyup.enter="handleQuery"
           />
         </el-form-item>
-        <el-form-item label="联系电话" prop="phone">
+        <el-form-item label="联系电话" prop="phone" :label-position="labelPosition">
           <el-input
             class="el-form-input-width"
             v-model="queryParams.phone"
@@ -61,7 +61,7 @@
             @keyup.enter="handleQuery"
           />
         </el-form-item>
-        <el-form-item label="邮箱" prop="email">
+        <el-form-item label="邮箱" prop="email" :label-position="labelPosition">
           <el-input
             class="el-form-input-width"
             v-model="queryParams.email"
@@ -70,7 +70,7 @@
             @keyup.enter="handleQuery"
           />
         </el-form-item>
-        <el-form-item label="部门状态" prop="status">
+        <el-form-item label="部门状态" prop="status" :label-position="labelPosition">
           <el-select
             v-model="queryParams.status"
             placeholder="请选择部门状态"
@@ -199,10 +199,10 @@
       draggable
       destroy-on-close
     >
-      <el-form ref="deptRef" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="deptRef" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="父部门id" prop="parentId">
+            <el-form-item label="父部门id" prop="parentId" :label-position="labelPosition">
               <el-tree-select
                 v-model="form.parentId"
                 :data="deptOptions"
@@ -252,19 +252,19 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="是否有效" prop="validFlag">
+            <el-form-item label="是否有效" prop="validFlag" :label-position="labelPosition">
               <el-input v-model="form.validFlag" placeholder="请输入是否有效" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="删除标志" prop="delFlag">
+            <el-form-item label="删除标志" prop="delFlag" :label-position="labelPosition">
               <el-input v-model="form.delFlag" placeholder="请输入删除标志" />
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item :label="t('common.texts.remark')" prop="remark">
+            <el-form-item :label="t('common.texts.remark')" prop="remark" :label-position="labelPosition">
               <el-input
                 v-model="form.remark"
                 type="textarea"

@@ -18,7 +18,7 @@
 <template>
 <!-- 输出组件的字段映射   -->
   <div class="container">
-    <el-form label-position="left" label-width="80px" :model="readerForm">
+    <el-form label-width="80px" :model="readerForm">
       <el-row>
         <!-- 左侧拖拽列表 -->
         <el-col :span="8" :offset="3">

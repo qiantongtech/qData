@@ -19,7 +19,7 @@
   <div class="app-container" ref="app-container">
     <div class="pagecont-top" v-show="showSearch">
       <el-form class="btn-style" :model="queryParams" ref="queryForm" :inline="true">
-        <el-form-item :label="td('sys.subject.subjectName')" prop="name">
+        <el-form-item :label="td('sys.subject.subjectName')" prop="name" :label-position="labelPosition">
           <el-input
             v-model="queryParams.name"
             :placeholder="td('sys.subject.subjectNamePlaceholder')"
@@ -104,7 +104,7 @@
 
     <!-- 添加或修改主体管理对话框 -->
     <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']"   draggable destroy-on-close>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item :label="td('sys.subject.subjectName')" prop="name">
@@ -112,32 +112,32 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('sys.subject.commonName')" prop="cn">
+            <el-form-item :label="td('sys.subject.commonName')" prop="cn" :label-position="labelPosition">
               <el-input v-model="form.cn" :placeholder="td('sys.subject.commonNamePlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('sys.subject.deptName')" prop="ou">
+            <el-form-item :label="td('sys.subject.deptName')" prop="ou" :label-position="labelPosition">
               <el-input v-model="form.ou" :placeholder="td('sys.subject.deptNamePlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('sys.subject.orgName')" prop="o">
+            <el-form-item :label="td('sys.subject.orgName')" prop="o" :label-position="labelPosition">
               <el-input v-model="form.o" :placeholder="td('sys.subject.orgNamePlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('sys.subject.cityName')" prop="l">
+            <el-form-item :label="td('sys.subject.cityName')" prop="l" :label-position="labelPosition">
               <el-input v-model="form.l" :placeholder="td('sys.subject.cityNamePlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('sys.subject.province')" prop="st">
+            <el-form-item :label="td('sys.subject.province')" prop="st" :label-position="labelPosition">
               <el-input v-model="form.st" :placeholder="td('sys.subject.provincePlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('sys.subject.countryName')" prop="c">
+            <el-form-item :label="td('sys.subject.countryName')" prop="c" :label-position="labelPosition">
               <el-input v-model="form.c" :placeholder="td('sys.subject.countryPlaceholder')" />
             </el-form-item>
           </el-col>

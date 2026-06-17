@@ -20,7 +20,6 @@
     ref="formRef"
     :model="form"
     :rules="falg ? {} : rules"
-    label-width="130px"
     :disabled="false"
   >
     <el-row>

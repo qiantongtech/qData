@@ -17,13 +17,13 @@
 
 <template>
   <el-dialog v-model="visibleDialog" draggable class="dialog" :title="dialogTitle" destroy-on-close>
-    <el-form ref="daDiscoveryTaskRef" :model="form" label-width="120px" @submit.prevent>
+    <el-form ref="daDiscoveryTaskRef" :model="form" label-width="120px" @submit.prevent :label-position="labelPosition">
 
       <el-row :gutter="20">
         <el-col :span="24">
           <el-form-item :label="td('dpp.integration.benchmarkType', '基准类型')" prop="type" :rules="[
             { required: true, message: td('dpp.integration.benchmarkTypeRequired', '请选择基准类型'), trigger: 'change' },
-          ]">
+          ]" :label-position="labelPosition">
             <el-select v-model="form.type" :placeholder="td('dpp.integration.benchmarkTypePlaceholder', '请选择基准类型')">
               <el-option v-for="benchmark in benchmarkTypes" :key="benchmark.value" :label="benchmark.label"
                          :value="benchmark.value" />
@@ -36,7 +36,7 @@
         <el-col :span="24">
           <el-form-item :label="td('dpp.integration.fieldName', '字段名称')" prop="incrementColumn" :rules="[
             { required: true, message: td('dpp.integration.fieldNameRequired', '请输入字段名称'), trigger: 'blur' },
-          ]">
+          ]" :label-position="labelPosition">
             <el-select v-model="form.incrementColumn" :placeholder="td('dpp.integration.fieldNamePlaceholder', '请输入字段名称')">
               <el-option v-for="item in ColumnByAssettab" :key="item.columnName" :label="item.columnName"
                          :value="item.columnName" />
@@ -46,7 +46,7 @@
         <el-col :span="24" v-if="form.type !== '2'">
           <el-form-item :label="td('dpp.integration.operator', '运算符')" prop="operator" :rules="[
             { required: true, message: td('dpp.integration.operatorRequired', '请选择运算符'), trigger: 'change' },
-          ]">
+          ]" :label-position="labelPosition">
             <el-select v-model="form.operator" :placeholder="td('dpp.integration.operatorPlaceholder', '请选择运算符')">
               <el-option v-for="operator in operators" :key="operator.value" :label="operator.label"
                          :value="operator.value" />
@@ -57,7 +57,7 @@
 
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('dpp.integration.benchmarkValue', '基准值')" prop="data" :rules="dataRules">
+          <el-form-item :label="td('dpp.integration.benchmarkValue', '基准值')" prop="data" :rules="dataRules" :label-position="labelPosition">
             <template v-if="form.type === '1'">
               <el-date-picker clearable
                               v-model="form.data"
@@ -78,7 +78,7 @@
         </el-col>
 
         <el-col :span="24" v-if="form.type === '2'">
-          <el-form-item :label="td('dpp.integration.cursorTime', '游标时间')" prop="cursorTime" :rules="[{ required: true, message: '请选择游标时间', trigger: 'change' }]">
+          <el-form-item :label="td('dpp.integration.cursorTime', '游标时间')" prop="cursorTime" :rules="[{ required: true, message: '请选择游标时间', trigger: 'change' }]" :label-position="labelPosition">
             <el-date-picker clearable
                             v-model="form.cursorTime"
                             :type="pickerType"

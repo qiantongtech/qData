@@ -28,7 +28,7 @@
       :model="form"
       label-width="120px"
       @submit.prevent
-    >
+     :label-position="labelPosition">
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
@@ -37,7 +37,7 @@
             :rules="[
               { required: true, message: td('dpp.integration.fieldNameRequired', '请输入字段名称'), trigger: 'blur' },
             ]"
-          >
+           :label-position="labelPosition">
             <el-input v-model="form.columnName" :placeholder="td('dpp.integration.fieldNamePlaceholder', '请输入字段名称')" />
           </el-form-item>
         </el-col>
@@ -48,7 +48,7 @@
             :rules="[
               { required: true, message: td('dpp.integration.fieldTypeRequired', '请选择字段类型'), trigger: 'change' },
             ]"
-          >
+           :label-position="labelPosition">
             <el-select v-model="form.columnType" :placeholder="td('dpp.integration.fieldTypePlaceholder', '请选择字段类型')">
               <el-option
                 v-for="dict in columntype"
@@ -72,7 +72,7 @@
                 trigger: 'change',
               },
             ]"
-          >
+           :label-position="labelPosition">
             <el-input
               v-model="form.key"
               type="textarea"

@@ -40,8 +40,8 @@
       width="800px"
       draggable
     >
-      <el-form label-width="100px" class="column-form">
-        <el-form-item :label="td('common.texts.number')" prop="id">
+      <el-form label-width="100px" class="column-form" :label-position="labelPosition">
+        <el-form-item :label="td('common.texts.number')" prop="id" :label-position="labelPosition">
           <div class="form-readonly">
             {{ getFormatValue(dialog.form.id) }}
           </div>
@@ -49,7 +49,7 @@
         <el-form-item
           :label="td('meta.unreleased.structured.table.detail.levelName')"
           prop="sensitiveLevel"
-        >
+         :label-position="labelPosition">
           <div class="form-readonly">
             {{ getFormatValue(dialog.form.sensitiveLevel) }}
           </div>
@@ -57,13 +57,13 @@
         <el-form-item
           :label="td('meta.unreleased.structured.table.detail.replaceRule')"
           prop="sensitiveRule"
-        >
+         :label-position="labelPosition">
           <dict-tag
             :options="toValue(dicts.da_sensitive_level_rule)"
             :value="dialog.form.sensitiveRule"
           />
         </el-form-item>
-        <el-form-item :label="td('common.texts.status')" prop="onlineFlag">
+        <el-form-item :label="td('common.texts.status')" prop="onlineFlag" :label-position="labelPosition">
           <dict-tag
             :options="toValue(dicts.da_sensitive_status)"
             :value="dialog.form.onlineFlag"
@@ -72,7 +72,7 @@
         <el-form-item
           :label="td('meta.unreleased.structured.table.detail.startCharLoc')"
           prop="startCharLoc"
-        >
+         :label-position="labelPosition">
           <div class="form-readonly">
             {{ getFormatValue(dialog.form.startCharLoc) }}
           </div>
@@ -80,7 +80,7 @@
         <el-form-item
           :label="td('meta.unreleased.structured.table.detail.endCharLoc')"
           prop="endCharLoc"
-        >
+         :label-position="labelPosition">
           <div class="form-readonly">
             {{ getFormatValue(dialog.form.endCharLoc) }}
           </div>
@@ -88,7 +88,7 @@
         <el-form-item
           :label="td('meta.unreleased.structured.table.detail.replaceContent')"
           prop="maskCharacter"
-        >
+         :label-position="labelPosition">
           <div class="form-readonly">
             {{ getFormatValue(dialog.form.maskCharacter) }}
           </div>
@@ -97,7 +97,7 @@
           :label="td('common.texts.description')"
           prop="description"
           class="row-full"
-        >
+         :label-position="labelPosition">
           <div class="form-readonly textarea">
             {{ getFormatValue(dialog.form.description) }}
           </div>
@@ -106,17 +106,17 @@
           :label="td('common.texts.remark')"
           prop="remark"
           class="row-full"
-        >
+         :label-position="labelPosition">
           <div class="form-readonly textarea">
             {{ getFormatValue(dialog.form.remark) }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.createdBy')" prop="createBy">
+        <el-form-item :label="td('common.texts.createdBy')" prop="createBy" :label-position="labelPosition">
           <div class="form-readonly">
             {{ getFormatValue(dialog.form.createBy) }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.createdTime')" prop="createTime">
+        <el-form-item :label="td('common.texts.createdTime')" prop="createTime" :label-position="labelPosition">
           <div class="form-readonly">
             {{
               getFormatValue(
@@ -125,12 +125,12 @@
             }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.updatedBy')" prop="updateBy">
+        <el-form-item :label="td('common.texts.updatedBy')" prop="updateBy" :label-position="labelPosition">
           <div class="form-readonly">
             {{ getFormatValue(dialog.form.updateBy) }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.updatedTime')" prop="updateTime">
+        <el-form-item :label="td('common.texts.updatedTime')" prop="updateTime" :label-position="labelPosition">
           <div class="form-readonly">
             {{
               getFormatValue(

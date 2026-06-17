@@ -76,22 +76,22 @@
 
     <!-- 新增或修改数据元代码对话框 -->
     <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable>
-        <el-form ref="dpDataElemCodeRef" :model="form" :rules="rules" label-width="80px">
+        <el-form ref="dpDataElemCodeRef" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item :label="td('dp.dataElem.codeValue')" prop="codeValue">
+                    <el-form-item :label="td('dp.dataElem.codeValue')" prop="codeValue" :label-position="labelPosition">
                         <el-input v-model="form.codeValue" :placeholder="td('dp.dataElem.codeValuePlaceholder')" />
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item :label="td('dp.dataElem.codeName')" :show-overflow-tooltip="{ effect: 'light' }" prop="codeName">
+                    <el-form-item :label="td('dp.dataElem.codeName')" :show-overflow-tooltip="{ effect: 'light' }" prop="codeName" :label-position="labelPosition">
                         <el-input v-model="form.codeName" :placeholder="td('dp.dataElem.codeNamePlaceholder')" />
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="24">
-                    <el-form-item :label="td('dp.dataElem.codeDict.remark')" :show-overflow-tooltip="{ effect: 'light' }" prop="remark">
+                    <el-form-item :label="td('dp.dataElem.codeDict.remark')" :show-overflow-tooltip="{ effect: 'light' }" prop="remark" :label-position="labelPosition">
                         <el-input v-model="form.remark" type="textarea" :placeholder="td('common.form.remarkPlaceholder')" />
                     </el-form-item>
                 </el-col>

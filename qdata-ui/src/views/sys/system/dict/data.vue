@@ -38,7 +38,7 @@
                   @keyup.enter="handleQuery"
                />
             </el-form-item>
-            <el-form-item :label="td('common.texts.status')" prop="status">
+            <el-form-item :label="td('common.texts.status')" prop="status" :label-position="labelPosition">
                <el-select v-model="queryParams.status" :placeholder="td('sys.dictData.dataStatus')" clearable class="el-form-input-width">
                   <el-option
                      v-for="dict in sys_normal_disable"
@@ -153,35 +153,35 @@
 
       <!-- 添加或修改参数配置对话框 -->
       <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable destroy-on-close>
-         <el-form ref="dataRef" :model="form" :rules="rules" label-width="80px">
+         <el-form ref="dataRef" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
             <el-row :gutter="20">
                <el-col :span="12">
-                  <el-form-item :label="td('sys.system.dictData.dictType')">
+                  <el-form-item :label="td('sys.system.dictData.dictType')" :label-position="labelPosition">
                      <el-input v-model="form.dictType" :disabled="true" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('sys.system.dictData.dataLabel')" prop="dictLabel">
+                  <el-form-item :label="td('sys.system.dictData.dataLabel')" prop="dictLabel" :label-position="labelPosition">
                      <el-input v-model="form.dictLabel" :placeholder="td('sys.system.dictData.dataLabelPlaceholder')" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('sys.system.dictData.dataValue')" prop="dictValue">
+                  <el-form-item :label="td('sys.system.dictData.dataValue')" prop="dictValue" :label-position="labelPosition">
                      <el-input v-model="form.dictValue" :placeholder="td('sys.system.dictData.dataValuePlaceholder')" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('sys.system.dictData.styleAttr')" prop="cssClass">
+                  <el-form-item :label="td('sys.system.dictData.styleAttr')" prop="cssClass" :label-position="labelPosition">
                      <el-input v-model="form.cssClass" :placeholder="td('sys.system.dictData.styleAttrPlaceholder')" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('sys.system.dictData.showSort')" prop="dictSort">
+                  <el-form-item :label="td('sys.system.dictData.showSort')" prop="dictSort" :label-position="labelPosition">
                      <el-input-number style="width:100%" v-model="form.dictSort" controls-position="right" :min="0" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item :label="td('sys.system.dictData.echoStyle')" prop="listClass">
+                  <el-form-item :label="td('sys.system.dictData.echoStyle')" prop="listClass" :label-position="labelPosition">
                      <el-select v-model="form.listClass">
                         <el-option
                            v-for="item in listClassOptions"
@@ -204,7 +204,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="24">
-                  <el-form-item :label="td('common.texts.remark')" prop="remark">
+                  <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
                      <el-input v-model="form.remark" type="textarea" :placeholder="td('sys.dictData.inputContent')"></el-input>
                   </el-form-item>
                </el-col>

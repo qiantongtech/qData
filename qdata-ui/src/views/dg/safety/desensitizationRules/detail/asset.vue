@@ -89,53 +89,53 @@
         :model="detailData"
         label-width="110px"
         class="column-form"
-      >
-        <el-form-item :label="td('common.texts.number') + ':'" prop="id">
+       :label-position="labelPosition">
+        <el-form-item :label="td('common.texts.number') + ':'" prop="id" :label-position="labelPosition">
           <div class="form-readonly">{{ detailData.id ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="td('dg.sensitiveList.assetName')" prop="assetName">
+        <el-form-item :label="td('dg.sensitiveList.assetName')" prop="assetName" :label-position="labelPosition">
           <div class="form-readonly">{{ detailData.assetName ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="td('dg.sensitiveList.tableNameLabel')" prop="assetTableName">
+        <el-form-item :label="td('dg.sensitiveList.tableNameLabel')" prop="assetTableName" :label-position="labelPosition">
           <div class="form-readonly">
             {{ detailData.assetTableName ?? "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('dg.sensitiveList.fieldNameLabel')" prop="assetcolumnName">
+        <el-form-item :label="td('dg.sensitiveList.fieldNameLabel')" prop="assetcolumnName" :label-position="labelPosition">
           <div class="form-readonly">
             {{ detailData.assetcolumnName ?? "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('dg.sensitiveList.dataLevel')" prop="dataLevelName">
+        <el-form-item :label="td('dg.sensitiveList.dataLevel')" prop="dataLevelName" :label-position="labelPosition">
           <div class="form-readonly">{{ detailData.dataLevelName ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.status')" prop="validFlag">
+        <el-form-item :label="td('common.texts.status')" prop="validFlag" :label-position="labelPosition">
           <div class="form-readonly">
             {{ getStatusLabel(detailData.validFlag) }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.description')" prop="assetDescription" class="row-full">
+        <el-form-item :label="td('common.texts.description')" prop="assetDescription" class="row-full" :label-position="labelPosition">
           <div class="form-readonly textarea">
             {{ detailData.assetDescription ?? "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full">
+        <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full" :label-position="labelPosition">
           <div class="form-readonly textarea">
             {{ detailData.remark ?? "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.createdBy')" prop="createBy">
+        <el-form-item :label="td('common.texts.createdBy')" prop="createBy" :label-position="labelPosition">
           <div class="form-readonly">{{ detailData.createBy ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.createdTime')" prop="createTime">
+        <el-form-item :label="td('common.texts.createdTime')" prop="createTime" :label-position="labelPosition">
           <div class="form-readonly">
             {{ parseTime(detailData.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.updatedBy')" prop="updateBy">
+        <el-form-item :label="td('common.texts.updatedBy')" prop="updateBy" :label-position="labelPosition">
           <div class="form-readonly">{{ detailData.updateBy ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.updatedTime')" prop="updateTime">
+        <el-form-item :label="td('common.texts.updatedTime')" prop="updateTime" :label-position="labelPosition">
           <div class="form-readonly">
             {{ parseTime(detailData.updateTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
           </div>

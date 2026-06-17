@@ -122,10 +122,10 @@
         :rules="rules"
         label-width="110px"
         @submit.prevent
-      >
+       :label-position="labelPosition">
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('att.common.tagCatName')" prop="catCode">
+            <el-form-item :label="td('att.common.tagCatName')" prop="catCode" :label-position="labelPosition">
               <el-tree-select
                 filterable
                 v-model="form.catCode"
@@ -140,14 +140,14 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('att.common.tagName')" prop="name">
+            <el-form-item :label="td('att.common.tagName')" prop="name" :label-position="labelPosition">
               <el-input v-model="form.name" :placeholder="td('att.common.namePlaceholder')" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('att.common.nearSynonyms')" prop="nearSynonyms" :tip="td('att.common.nearSynonymsTip')">
+            <el-form-item :label="td('att.common.nearSynonyms')" prop="nearSynonyms" :tip="td('att.common.nearSynonymsTip')" :label-position="labelPosition">
               <el-input
                 v-model="form.nearSynonyms"
                 :placeholder="td('att.common.nearSynonymsPlaceholder')"
@@ -155,7 +155,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item :label="td('att.common.synonyms')" prop="synonyms" :tip="td('att.common.synonymsTip')">
+            <el-form-item :label="td('att.common.synonyms')" prop="synonyms" :tip="td('att.common.synonymsTip')" :label-position="labelPosition">
               <el-input v-model="form.synonyms" :placeholder="td('att.common.synonymsPlaceholder')" />
             </el-form-item>
           </el-col>
@@ -174,7 +174,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.description')" prop="description">
+            <el-form-item :label="td('common.texts.description')" prop="description" :label-position="labelPosition">
               <el-input
                 v-model="form.description"
                 type="textarea"
@@ -187,7 +187,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.remark')" prop="remark">
+            <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
               <el-input
                 v-model="form.remark"
                 type="textarea"

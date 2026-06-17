@@ -28,7 +28,7 @@
         <div class="pagecont-top" v-show="showSearch">
           <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true"
                    v-show="showSearch" @submit.prevent>
-            <el-form-item :label="td('da.assetApply.assetName')" prop="assetName">
+            <el-form-item :label="td('da.assetApply.assetName')" prop="assetName" :label-position="labelPosition">
               <el-input class="el-form-input-width" v-model="queryParams.assetName" :placeholder="td('da.assetApply.assetNamePlaceholder')" clearable
                 @keyup.enter="handleQuery" />
             </el-form-item>
@@ -36,7 +36,7 @@
               <el-input class="el-form-input-width" v-model="queryParams.themeName" :placeholder="td('da.assetApply.topicNamePlaceholder')" clearable
                 @keyup.enter="handleQuery" />
             </el-form-item>
-            <el-form-item :label="td('da.assetApply.applicant')" prop="createBy">
+            <el-form-item :label="td('da.assetApply.applicant')" prop="createBy" :label-position="labelPosition">
               <el-input class="el-form-input-width" v-model="queryParams.createBy" :placeholder="td('da.assetApply.applicantPlaceholder')" clearable
                 @keyup.enter="handleQuery" />
             </el-form-item>
@@ -148,17 +148,17 @@
           {{ title }}
         </span>
       </template>
-      <el-form ref="daAssetApplyRef" :model="form" :rules="rules" @submit.prevent>
+      <el-form ref="daAssetApplyRef" :model="form" :rules="rules" @submit.prevent :label-position="labelPosition">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('da.assetApply.assetName')">
+            <el-form-item :label="td('da.assetApply.assetName')" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.assetName }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('da.assetApply.englishName')">
+            <el-form-item :label="td('da.assetApply.englishName')" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.assetTableName }}
               </div>
@@ -167,14 +167,14 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('da.assetApply.datasource')">
+            <el-form-item :label="td('da.assetApply.datasource')" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.datasourceName ?? "-" }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('da.assetApply.dbAddress')">
+            <el-form-item :label="td('da.assetApply.dbAddress')" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.datasourceIp ?? "-" }}
               </div>
@@ -184,14 +184,14 @@
         <el-row :gutter="20">
 
           <el-col :span="12">
-            <el-form-item :label="td('da.assetApply.dbTypeLabel')" prop="datasourceType">
+            <el-form-item :label="td('da.assetApply.dbTypeLabel')" prop="datasourceType" :label-position="labelPosition">
               <dict-tag :options="datasource_type" :value="form.datasourceType" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('da.assetApply.assetDesc')">
+            <el-form-item :label="td('da.assetApply.assetDesc')" :label-position="labelPosition">
               <div class="form-readonly textarea">
                 {{ form.description ?? "-" }}
               </div>
@@ -200,14 +200,14 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('da.assetApply.applyProject')" prop="projectCode">
+            <el-form-item :label="td('da.assetApply.applyProject')" prop="projectCode" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.projectName }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('da.assetApply.contactPhone')" prop="phonenumber">
+            <el-form-item :label="td('da.assetApply.contactPhone')" prop="phonenumber" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.phonenumber }}
               </div>
@@ -216,7 +216,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('da.assetApply.applyReason')" prop="applyReason">
+            <el-form-item :label="td('da.assetApply.applyReason')" prop="applyReason" :label-position="labelPosition">
               <div class="form-readonly textarea">
                 {{ form.applyReason ?? "-" }}
               </div>
@@ -225,7 +225,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('da.assetApply.auditResult')" prop="status">
+            <el-form-item :label="td('da.assetApply.auditResult')" prop="status" :label-position="labelPosition">
               <el-radio-group v-model="form.status" @change="handleStatusChange">
                 <el-radio :value="2">{{ td('da.assetApply.reject') }}</el-radio>
                 <el-radio :value="3">{{ td('da.assetApply.approve') }}</el-radio>
@@ -235,7 +235,7 @@
         </el-row>
         <el-row :gutter="20" v-if="form.status == 2">
           <el-col :span="24">
-            <el-form-item :label="td('da.assetApply.rejectReason')" prop="approvalReason">
+            <el-form-item :label="td('da.assetApply.rejectReason')" prop="approvalReason" :label-position="labelPosition">
               <el-input type="textarea" :min-height="192" v-model="form.approvalReason" :placeholder="td('da.assetApply.rejectReasonPlaceholder')" />
             </el-form-item>
           </el-col>
@@ -251,7 +251,7 @@
 
     <!-- 数据资产申请详情对话框 -->
     <el-dialog :title="title" v-model="openDetail" width="1000px" :append-to="$refs['app-container']" draggable>
-      <el-form :model="form">
+      <el-form :model="form" :label-position="labelPosition">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item :label="td('da.assetApply.assetName')" prop="assetName">
@@ -261,7 +261,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('da.assetApply.englishName')" prop="assetTableName">
+            <el-form-item :label="td('da.assetApply.englishName')" prop="assetTableName" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.assetTableName }}
               </div>
@@ -271,14 +271,14 @@
         <el-row :gutter="20">
 
           <el-col :span="12">
-            <el-form-item :label="td('da.assetApply.datasource')" prop="datasourceName">
+            <el-form-item :label="td('da.assetApply.datasource')" prop="datasourceName" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.datasourceName }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('da.assetApply.dbAddress')" prop="datasourceIp">
+            <el-form-item :label="td('da.assetApply.dbAddress')" prop="datasourceIp" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.datasourceIp }}
               </div>
@@ -288,14 +288,14 @@
         <el-row :gutter="20">
 
           <el-col :span="12">
-            <el-form-item :label="td('da.assetApply.dbTypeLabel')" prop="datasourceType">
+            <el-form-item :label="td('da.assetApply.dbTypeLabel')" prop="datasourceType" :label-position="labelPosition">
               <dict-tag :options="datasource_type" :value="form.datasourceType" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('da.assetApply.assetDesc')" prop="description">
+            <el-form-item :label="td('da.assetApply.assetDesc')" prop="description" :label-position="labelPosition">
               <div class="form-readonly textarea">
                 {{ form.description ?? "-" }}
               </div>
@@ -304,14 +304,14 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('da.assetApply.applyProject')" prop="projectName">
+            <el-form-item :label="td('da.assetApply.applyProject')" prop="projectName" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.projectName }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('da.assetApply.applyStatus')" prop="status">
+            <el-form-item :label="td('da.assetApply.applyStatus')" prop="status" :label-position="labelPosition">
               <dict-tag :options="da_asset_apply_status" :value="form.status" />
             </el-form-item>
           </el-col>
@@ -325,7 +325,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('da.assetApply.contactPhone')" prop="phonenumber">
+            <el-form-item :label="td('da.assetApply.contactPhone')" prop="phonenumber" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.phonenumber }}
               </div>
@@ -334,7 +334,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('da.assetApply.applyTime')" prop="createTime">
+            <el-form-item :label="td('da.assetApply.applyTime')" prop="createTime" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.createTime }}
               </div>
@@ -343,7 +343,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('da.assetApply.applyReason')" prop="applyReason">
+            <el-form-item :label="td('da.assetApply.applyReason')" prop="applyReason" :label-position="labelPosition">
               <div class="form-readonly textarea">
                 {{ form.applyReason ?? "-" }}
               </div>
@@ -352,7 +352,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('da.assetApply.approvalReason')" prop="approvalReason">
+            <el-form-item :label="td('da.assetApply.approvalReason')" prop="approvalReason" :label-position="labelPosition">
               <div class="form-readonly textarea">
                 {{ form.approvalReason ?? "-" }}
               </div>

@@ -84,15 +84,15 @@
 
     <!-- 新增或修改数据元代码映射对话框 -->
     <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable>
-        <el-form ref="dpCodeMapRef" :model="form" :rules="rules" label-width="80px">
+        <el-form ref="dpCodeMapRef" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item :label="td('dp.dataElem.originalValue')" prop="originalValue">
+                    <el-form-item :label="td('dp.dataElem.originalValue')" prop="originalValue" :label-position="labelPosition">
                         <el-input v-model="form.originalValue" :placeholder="td('dp.dataElem.originalValuePlaceholder')" />
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item :label="td('dp.dataElem.codeMap.codeName')" prop="codeName">
+                    <el-form-item :label="td('dp.dataElem.codeMap.codeName')" prop="codeName" :label-position="labelPosition">
                         <el-select v-model="form.codeName" :placeholder="td('dp.dataElem.codeNameSelect')" @change="handleCodeNameChange">
                             <el-option v-for="item in dpDataElemCodeList" :key="item.id" :label="item.codeName"
                                 :value="item.codeName" />
@@ -102,14 +102,14 @@
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item :label="td('dp.dataElem.codeMap.codeValue')" prop="codeValue">
+                    <el-form-item :label="td('dp.dataElem.codeMap.codeValue')" prop="codeValue" :label-position="labelPosition">
                         <el-input v-model="form.codeValue" :placeholder="td('dp.dataElem.codeValue')" disabled />
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="24">
-                    <el-form-item :label="td('dp.dataElem.codeMap.remark')" prop="remark">
+                    <el-form-item :label="td('dp.dataElem.codeMap.remark')" prop="remark" :label-position="labelPosition">
                         <el-input v-model="form.remark" type="textarea" :placeholder="td('common.form.remarkPlaceholder')" />
                     </el-form-item>
                 </el-col>

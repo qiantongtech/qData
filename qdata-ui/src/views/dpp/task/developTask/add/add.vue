@@ -31,7 +31,7 @@
       label-width="120px"
       @submit.prevent
       :disabled="title == td('dpp.developTask.taskDetail', '任务详情')"
-    >
+     :label-position="labelPosition">
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
@@ -44,7 +44,7 @@
                 trigger: 'blur',
               },
             ]"
-          >
+           :label-position="labelPosition">
             <el-input
               v-if="title != td('dpp.developTask.taskDetail', '任务详情')"
               v-model="form.name"
@@ -69,7 +69,7 @@
                 trigger: 'change',
               },
             ]"
-          >
+           :label-position="labelPosition">
             <el-tree-select
               filterable
               v-model="form.catCode"
@@ -100,7 +100,7 @@
                 trigger: 'change',
               },
             ]"
-          >
+           :label-position="labelPosition">
             <el-input
               v-if="title != td('dpp.developTask.taskDetail', '任务详情')"
               v-model="form.crontab"
@@ -137,7 +137,7 @@
                 trigger: 'change',
               },
             ]"
-          >
+           :label-position="labelPosition">
             <el-tree-select
               filterable
               :disabled="info"
@@ -164,7 +164,7 @@
                 trigger: 'change',
               },
             ]"
-          >
+           :label-position="labelPosition">
             <el-tree-select
               filterable
               v-model="form.personCharge"
@@ -187,7 +187,7 @@
           <el-form-item
             :label="td('dpp.developTask.contactNumber', '联系电话')"
             prop="contactNumber"
-          >
+           :label-position="labelPosition">
             <el-input
               v-if="title != td('dpp.developTask.taskDetail', '任务详情')"
               v-model="form.contactNumber"
@@ -205,7 +205,7 @@
           <el-form-item
             :label="td('dpp.developTask.description', '描述')"
             prop="description"
-          >
+           :label-position="labelPosition">
             <el-input
               v-if="title != td('dpp.developTask.taskDetail', '任务详情')"
               v-model="form.description"
@@ -225,7 +225,7 @@
           <el-form-item
             :label="td('dpp.developTask.taskStatus', '任务状态')"
             prop="releaseState"
-            ><el-radio-group
+             :label-position="labelPosition"><el-radio-group
               style="width: 100%"
               v-model="form.releaseState"
               class="el-form-input-width"
@@ -252,7 +252,7 @@
       </el-row>
       <!-- <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('dpp.developTask.remark', '备注')" prop="remark">
+          <el-form-item :label="td('dpp.developTask.remark', '备注')" prop="remark" :label-position="labelPosition">
             <el-input v-model="form.remark" type="textarea" :placeholder="td('dpp.developTask.inputRemark', '请输入备注')" />
           </el-form-item>
         </el-col>

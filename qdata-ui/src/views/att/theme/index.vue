@@ -23,7 +23,7 @@
         <div class="pagecont-top" v-show="showSearch">
             <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true"
                 v-show="showSearch" @submit.prevent>
-                <el-form-item :label="td('att.common.themeName')" prop="name">
+                <el-form-item :label="td('att.common.themeName')" prop="name" :label-position="labelPosition">
                     <el-input class="el-form-input-width" v-model="queryParams.name" :placeholder="td('common.form.namePlaceholder')" clearable
                         @keyup.enter="handleQuery" />
                 </el-form-item>
@@ -158,7 +158,7 @@
                     {{ title }}
                 </span>
             </template>
-            <el-form ref="attThemeRef" :model="form" :rules="rules" label-width="80px" @submit.prevent>
+            <el-form ref="attThemeRef" :model="form" :rules="rules" label-width="80px" @submit.prevent :label-position="labelPosition">
                 <el-row :gutter="20">
                     <el-col>
                         <el-form-item :label="td('att.common.themeName')" prop="name">
@@ -168,7 +168,7 @@
                 </el-row>
                 <el-row>
                     <el-col :span="24">
-                        <el-form-item :label="td('common.texts.description')" prop="description">
+                        <el-form-item :label="td('common.texts.description')" prop="description" :label-position="labelPosition">
                             <el-input type="textarea" v-model="form.description" :placeholder="td('common.form.descriptionPlaceholder')" />
                         </el-form-item>
                     </el-col>
@@ -177,7 +177,7 @@
 
                 <el-row>
                     <el-col :span="24">
-                        <el-form-item :label="td('att.common.icon')" prop="icon">
+                        <el-form-item :label="td('att.common.icon')" prop="icon" :label-position="labelPosition">
                             <image-upload :limit="1" v-model="form.icon" :width="50" :height="50" />
 
                         </el-form-item>
@@ -185,13 +185,13 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item :label="td('att.common.sortOrder')" prop="sortOrder">
+                        <el-form-item :label="td('att.common.sortOrder')" prop="sortOrder" :label-position="labelPosition">
                             <el-input-number style="width: 100%" v-model="form.sortOrder" controls-position="right"
                                 :min="0" />
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item :label="td('common.texts.status')" prop="validFlag">
+                        <el-form-item :label="td('common.texts.status')" prop="validFlag" :label-position="labelPosition">
                             <el-radio v-model="form.validFlag" :label="true">{{ td('att.common.enable') }}</el-radio>
                             <el-radio v-model="form.validFlag" :label="false">{{ td('att.common.disable') }}</el-radio>
                         </el-form-item>
@@ -199,7 +199,7 @@
                 </el-row>
                 <el-row>
                     <el-col :span="24">
-                        <el-form-item :label="td('common.texts.remark')" prop="remark">
+                        <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
                             <el-input type="textarea" v-model="form.remark" :placeholder="td('common.form.remarkPlaceholder')" />
                         </el-form-item>
                     </el-col>
@@ -215,10 +215,10 @@
 
         <!-- 主题详情对话框 -->
         <el-dialog :title="title" v-model="openDetail" width="1000px" :append-to="$refs['app-container']" draggable>
-            <el-form ref="daAssetApplyRef" :model="form" label-width="90px">
+            <el-form ref="daAssetApplyRef" :model="form" label-width="90px" :label-position="labelPosition">
                 <el-row :gutter="20">
                     <el-col :span="24">
-                        <el-form-item :label="td('common.texts.number')+':'" prop="id">
+                        <el-form-item :label="td('common.texts.number')+':'" prop="id" :label-position="labelPosition">
                             <div class="form-readonly">
                                 {{ form.id }}
                             </div>
@@ -227,7 +227,7 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="24">
-                        <el-form-item :label="td('att.common.themeName') + ':'" prop="name">
+                        <el-form-item :label="td('att.common.themeName') + ':'" prop="name" :label-position="labelPosition">
                             <div class="form-readonly">
                                 {{ form.name }}
                             </div>
@@ -236,7 +236,7 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="24">
-                        <el-form-item :label="td('att.common.icon')+':'" prop="icon">
+                        <el-form-item :label="td('att.common.icon')+':'" prop="icon" :label-position="labelPosition">
                             <image-preview :src="form.icon || noDataImg" :width="50" :height="50" />
 
                         </el-form-item>
@@ -244,7 +244,7 @@
                 </el-row>
                 <el-row>
                     <el-col :span="24">
-                        <el-form-item :label="td('common.texts.description')" prop="description">
+                        <el-form-item :label="td('common.texts.description')" prop="description" :label-position="labelPosition">
                             <div class="form-readonly textarea">
                                 {{ form.description ?? "-" }}
                             </div>
@@ -253,14 +253,14 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item :label="td('common.texts.createdBy')+':'" prop="createBy">
+                        <el-form-item :label="td('common.texts.createdBy')+':'" prop="createBy" :label-position="labelPosition">
                             <div class="form-readonly">
                                 {{ form.createBy }}
                             </div>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item :label="td('common.texts.createdTime') + ':'" prop="createTime">
+                        <el-form-item :label="td('common.texts.createdTime') + ':'" prop="createTime" :label-position="labelPosition">
                             <div class="form-readonly">
                                 {{ parseTime(form.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
 
@@ -270,14 +270,14 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item :label="td('common.texts.updatedBy')+':'" prop="createBy">
+                        <el-form-item :label="td('common.texts.updatedBy')+':'" prop="createBy" :label-position="labelPosition">
                             <div class="form-readonly">
                                 {{ form.updateBy }}
                             </div>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item :label="td('common.texts.updatedTime')+':'" prop="updateTime">
+                        <el-form-item :label="td('common.texts.updatedTime')+':'" prop="updateTime" :label-position="labelPosition">
                             <div class="form-readonly">
                                 {{ parseTime(form.updateTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
                             </div>
@@ -286,7 +286,7 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item :label="td('common.texts.status') + ':'" prop="validFlag">
+                        <el-form-item :label="td('common.texts.status') + ':'" prop="validFlag" :label-position="labelPosition">
                             <div class="form-readonly">
                                 {{ form.validFlag ? td('att.common.enable') : td('att.common.disable') }}
                             </div>
@@ -295,7 +295,7 @@
                 </el-row>
                 <el-row>
                     <el-col :span="24">
-                        <el-form-item :label="td('common.texts.remark')" prop="remark">
+                        <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
                             <div class="form-readonly textarea">
                                 {{ form.remark ?? "-" }}
                             </div>

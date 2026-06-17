@@ -35,10 +35,10 @@
       :rules="rules"
       label-width="110px"
       @submit.prevent
-    >
+     :label-position="labelPosition">
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('dpp.asset.add.tag.tagName')" prop="name">
+          <el-form-item :label="td('dpp.asset.add.tag.tagName')" prop="name" :label-position="labelPosition">
             <el-input v-model="formData.name" :placeholder="td('dpp.asset.add.tag.tagNamePlaceholder')" />
           </el-form-item>
         </el-col>
@@ -46,7 +46,7 @@
 
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('dpp.asset.add.tag.tagCategory')" prop="catCode">
+          <el-form-item :label="td('dpp.asset.add.tag.tagCategory')" prop="catCode" :label-position="labelPosition">
             <el-tree-select
               filterable
               v-model="formData.catCode"
@@ -61,7 +61,7 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('common.texts.description')" prop="description">
+          <el-form-item :label="td('common.texts.description')" prop="description" :label-position="labelPosition">
             <el-input
               v-model="formData.description"
               type="textarea"
@@ -74,7 +74,7 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('dpp.asset.add.tag.nearSynonyms')" prop="nearSynonyms">
+          <el-form-item :label="td('dpp.asset.add.tag.nearSynonyms')" prop="nearSynonyms" :label-position="labelPosition">
             <el-input
               v-model="formData.nearSynonyms"
               :placeholder="td('dpp.asset.add.tag.nearSynonymsPlaceholder')"
@@ -82,7 +82,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item :label="td('dpp.asset.add.tag.synonyms')" prop="synonyms">
+          <el-form-item :label="td('dpp.asset.add.tag.synonyms')" prop="synonyms" :label-position="labelPosition">
             <el-input
               v-model="formData.synonyms"
               :placeholder="td('dpp.asset.add.tag.synonymsPlaceholder')"
@@ -90,7 +90,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item :label="td('common.texts.status')" prop="status">
+          <el-form-item :label="td('common.texts.status')" prop="status" :label-position="labelPosition">
             <el-radio-group v-model="formData.status">
               <el-radio
                 v-for="dict in dp_model_status"
@@ -104,7 +104,7 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('common.texts.remark')" prop="remark">
+          <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
             <el-input
               v-model="formData.remark"
               type="textarea"

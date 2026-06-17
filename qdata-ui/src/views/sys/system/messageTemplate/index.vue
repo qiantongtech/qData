@@ -19,7 +19,7 @@
   <div class="app-container" ref="app-container">
     <div class="pagecont-top" v-show="showSearch">
       <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true">
-        <el-form-item :label="td('sys.system.messageTemplate.msgTitle')" prop="title">
+        <el-form-item :label="td('sys.system.messageTemplate.msgTitle')" prop="title" :label-position="labelPosition">
           <el-input
               class="el-form-input-width"
               v-model="queryParams.title"
@@ -28,7 +28,7 @@
               @keyup.enter="handleQuery"
           />
         </el-form-item>
-        <el-form-item :label="td('sys.system.messageTemplate.msgCategory')" prop="category">
+        <el-form-item :label="td('sys.system.messageTemplate.msgCategory')" prop="category" :label-position="labelPosition">
           <el-select v-model="queryParams.category" :placeholder="td('sys.system.messageTemplate.selectPlaceholder')" class="el-form-input-width">
             <el-option
                 v-for="dict in message_category"
@@ -172,7 +172,7 @@
             </svg></i>
         </button>
       </template> -->
-      <el-form ref="messageTemplateRef" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="messageTemplateRef" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item :label="td('sys.system.messageTemplate.msgTitle')" prop="title">
@@ -180,7 +180,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('sys.system.messageTemplate.msgCategory')" prop="category">
+            <el-form-item :label="td('sys.system.messageTemplate.msgCategory')" prop="category" :label-position="labelPosition">
               <el-select v-model="form.category" :placeholder="td('sys.system.messageTemplate.selectPlaceholder')">
                 <el-option
                     v-for="dict in message_category"
@@ -208,7 +208,7 @@
         </el-row> -->
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('sys.system.messageTemplate.msgLevel')" prop="level">
+            <el-form-item :label="td('sys.system.messageTemplate.msgLevel')" prop="level" :label-position="labelPosition">
               <el-select v-model="form.msgLevel" :placeholder="td('sys.system.messageTemplate.selectPlaceholder')">
                 <el-option
                     v-for="dict in message_level"
@@ -222,7 +222,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('sys.system.messageTemplate.msgTemplate')" prop="content">
+            <el-form-item :label="td('sys.system.messageTemplate.msgTemplate')" prop="content" :label-position="labelPosition">
               <el-input v-model="form.content" type="textarea" :placeholder="td('sys.system.messageTemplate.inputContent')" />
               <!--          <editor v-model="form.content" :min-height="192"/>-->
             </el-form-item>
@@ -230,7 +230,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.remark')" prop="remark">
+            <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
               <el-input v-model="form.remark" type="textarea" :placeholder="td('sys.system.messageTemplate.inputContent')" />
             </el-form-item>
           </el-col>

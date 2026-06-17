@@ -28,11 +28,11 @@
         <div class="pagecont-top" v-show="showSearch">
           <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true"
             v-show="showSearch" @submit.prevent>
-            <el-form-item :label="td('ds.api.apiName')" prop="name">
+            <el-form-item :label="td('ds.api.apiName')" prop="name" :label-position="labelPosition">
               <el-input class="el-form-input-width" v-model="queryParams.name" :placeholder="td('ds.api.apiNamePlaceholder')" clearable
                 @keyup.enter="handleQuery" />
             </el-form-item>
-            <el-form-item :label="td('common.texts.status')" prop="status">
+            <el-form-item :label="td('common.texts.status')" prop="status" :label-position="labelPosition">
               <el-select class="el-form-input-width" v-model="queryParams.status" :placeholder="td('ds.api.statusPlaceholder')" clearable>
                 <el-option v-for="dict in ds_api_log_status" :key="dict.value" :label="dict.label"
                   :value="dict.value" />
@@ -180,27 +180,27 @@
           {{ title }}
         </span>
       </template>
-      <el-form ref="dsApiRef" :model="form" :rules="rules" label-width="80px" @submit.prevent>
+      <el-form ref="dsApiRef" :model="form" :rules="rules" label-width="80px" @submit.prevent :label-position="labelPosition">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('ds.api.apiName')" prop="name">
+            <el-form-item :label="td('ds.api.apiName')" prop="name" :label-position="labelPosition">
               <el-input v-model="form.name" :placeholder="td('ds.api.apiNamePlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('ds.api.apiVersion')" prop="apiVersion">
+            <el-form-item :label="td('ds.api.apiVersion')" prop="apiVersion" :label-position="labelPosition">
               <el-input v-model="form.apiVersion" :placeholder="td('ds.api.apiVersionPlaceholder')" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('ds.api.apiPath')" prop="apiUrl">
+            <el-form-item :label="td('ds.api.apiPath')" prop="apiUrl" :label-position="labelPosition">
               <el-input v-model="form.apiUrl" :placeholder="td('ds.api.apiUrlPlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('ds.api.requestMethod')" prop="reqMethod">
+            <el-form-item :label="td('ds.api.requestMethod')" prop="reqMethod" :label-position="labelPosition">
               <el-radio-group v-model="form.reqMethod">
                 <el-radio v-for="dict in ds_api_bas_info_api_method_type" :key="dict.value" :label="dict.value">{{
                   dict.label }}</el-radio>
@@ -210,7 +210,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('ds.api.apiServiceType')" prop="apiServiceType">
+            <el-form-item :label="td('ds.api.apiServiceType')" prop="apiServiceType" :label-position="labelPosition">
               <el-radio-group v-model="form.apiServiceType">
                 <el-radio v-for="dict in ds_api_bas_info_api_service_type" :key="dict.value" :label="dict.value">{{
                   dict.label }}</el-radio>
@@ -218,7 +218,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('ds.api.returnResultType')" prop="resDataType">
+            <el-form-item :label="td('ds.api.returnResultType')" prop="resDataType" :label-position="labelPosition">
               <el-select v-model="form.resDataType" :placeholder="td('ds.api.returnResultType')">
                 <el-option v-for="dict in ds_api_bas_info_res_data_type" :key="dict.value" :label="dict.label"
                   :value="dict.value"></el-option>
@@ -228,43 +228,43 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('ds.api.ipBlacklist')" prop="denyIp">
+            <el-form-item :label="td('ds.api.ipBlacklist')" prop="denyIp" :label-position="labelPosition">
               <el-input v-model="form.denyIp" type="textarea" :placeholder="td('ds.api.ipBlacklistPlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item :label="td('ds.api.executeConfig')" prop="configJson">
+            <el-form-item :label="td('ds.api.executeConfig')" prop="configJson" :label-position="labelPosition">
               <el-input v-model="form.configJson" type="textarea" :placeholder="td('ds.api.executeConfigPlaceholder')" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('ds.api.limitConfig')" prop="limitJson">
+            <el-form-item :label="td('ds.api.limitConfig')" prop="limitJson" :label-position="labelPosition">
               <el-input v-model="form.limitJson" :placeholder="td('ds.api.limitConfig')" />
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item :label="td('ds.api.requestParams')" prop="reqParams">
+            <el-form-item :label="td('ds.api.requestParams')" prop="reqParams" :label-position="labelPosition">
               <el-input v-model="form.reqParams" type="textarea" :placeholder="td('ds.api.requestParamsPlaceholder')" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('ds.api.returnParams')" prop="resParams">
+            <el-form-item :label="td('ds.api.returnParams')" prop="resParams" :label-position="labelPosition">
               <el-input v-model="form.resParams" type="textarea" :placeholder="td('ds.api.returnParamsPlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('common.texts.description')" prop="description">
+            <el-form-item :label="td('common.texts.description')" prop="description" :label-position="labelPosition">
               <el-input v-model="form.description" :placeholder="td('ds.api.descriptionPlaceholder')" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('common.texts.status')" prop="status">
+            <el-form-item :label="td('common.texts.status')" prop="status" :label-position="labelPosition">
               <el-radio-group v-model="form.status">
                 <el-radio v-for="dict in ds_api_log_status" :key="dict.value" :label="dict.value">{{ dict.label
                 }}</el-radio>
@@ -272,7 +272,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('common.texts.remark')" prop="remark">
+            <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
               <el-input v-model="form.remark" :placeholder="td('ds.api.remarkPlaceholder')" />
             </el-form-item>
           </el-col>
@@ -293,7 +293,7 @@
           {{ title }}
         </span>
       </template>
-      <el-form ref="dsApiRef" :model="form" label-width="80px">
+      <el-form ref="dsApiRef" :model="form" label-width="80px" :label-position="labelPosition">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item :label="td('ds.api.apiName')" prop="name">
@@ -303,7 +303,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('ds.api.apiVersion')" prop="apiVersion">
+            <el-form-item :label="td('ds.api.apiVersion')" prop="apiVersion" :label-position="labelPosition">
               <div>
                 {{ form.apiVersion }}
               </div>
@@ -312,40 +312,40 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('ds.api.apiPath')" prop="apiUrl">
+            <el-form-item :label="td('ds.api.apiPath')" prop="apiUrl" :label-position="labelPosition">
               <div>
                 {{ form.apiUrl }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('ds.api.requestMethod')" prop="reqMethod">
+            <el-form-item :label="td('ds.api.requestMethod')" prop="reqMethod" :label-position="labelPosition">
               <dict-tag :options="ds_api_bas_info_api_method_type" :value="form.reqMethod" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('ds.api.apiServiceType')" prop="apiServiceType">
+            <el-form-item :label="td('ds.api.apiServiceType')" prop="apiServiceType" :label-position="labelPosition">
               <dict-tag :options="ds_api_bas_info_api_service_type" :value="form.apiServiceType" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('ds.api.returnResultType')" prop="resDataType">
+            <el-form-item :label="td('ds.api.returnResultType')" prop="resDataType" :label-position="labelPosition">
               <dict-tag :options="ds_api_bas_info_res_data_type" :value="form.resDataType" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('ds.api.ipBlacklist')" prop="denyIp">
+            <el-form-item :label="td('ds.api.ipBlacklist')" prop="denyIp" :label-position="labelPosition">
               <div>
                 {{ form.denyIp }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item :label="td('ds.api.executeConfig')" prop="configJson">
+            <el-form-item :label="td('ds.api.executeConfig')" prop="configJson" :label-position="labelPosition">
               <div>
                 {{ form.configJson }}
               </div>
@@ -354,14 +354,14 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('ds.api.limitConfig')" prop="limitJson">
+            <el-form-item :label="td('ds.api.limitConfig')" prop="limitJson" :label-position="labelPosition">
               <div>
                 {{ form.limitJson }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item :label="td('ds.api.requestParams')" prop="reqParams">
+            <el-form-item :label="td('ds.api.requestParams')" prop="reqParams" :label-position="labelPosition">
               <div>
                 {{ form.reqParams }}
               </div>
@@ -370,14 +370,14 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('ds.api.returnParams')" prop="resParams">
+            <el-form-item :label="td('ds.api.returnParams')" prop="resParams" :label-position="labelPosition">
               <div>
                 {{ form.resParams }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('common.texts.description')" prop="description">
+            <el-form-item :label="td('common.texts.description')" prop="description" :label-position="labelPosition">
               <div>
                 {{ form.description }}
               </div>
@@ -391,7 +391,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('common.texts.remark')" prop="remark">
+            <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
               <div>
                 {{ form.remark }}
               </div>

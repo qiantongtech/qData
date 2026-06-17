@@ -17,19 +17,19 @@
 
 <template>
     <el-dialog :title="title" v-model="visible" class="warn-dialog" :append-to="$refs['app-container']" draggable>
-        <el-form ref="formRef" :model="form" label-width="100px" @submit.prevent>
+        <el-form ref="formRef" :model="form" label-width="100px" @submit.prevent :label-position="labelPosition">
             <el-row :gutter="20">
                 <el-col :span="12">
                     <el-form-item :label="td('dp.document.standardCode')" prop="code" :rules="[
                         { required: true, message: td('dp.document.standardCodeRequired'), trigger: 'blur' }
-                    ]">
+                    ]" :label-position="labelPosition">
                         <el-input v-model="form.code" :placeholder="td('dp.document.standardCodePlaceholder')" />
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
                     <el-form-item :label="td('dp.document.standardName')" prop="name" :rules="[
                         { required: true, message: td('dp.document.standardNameRequired'), trigger: 'blur' }
-                    ]">
+                    ]" :label-position="labelPosition">
                         <el-input v-model="form.name" :placeholder="td('dp.document.standardNamePlaceholder')" />
                     </el-form-item>
                 </el-col>
@@ -39,7 +39,7 @@
                 <el-col :span="12">
                     <el-form-item :label="td('dp.document.standardStatus')" prop="status" :rules="[
                         { required: true, message: td('dp.document.standardStatusRequired'), trigger: 'blur' }
-                    ]">
+                    ]" :label-position="labelPosition">
                         <el-select style="width: 100%;" class="el-form-input-width" v-model="form.status"
                             :placeholder="td('dp.document.standardStatusPlaceholder')">
                             <el-option v-for="dict in dp_document_status" :key="dict.value" :label="dict.label"
@@ -50,7 +50,7 @@
                 <el-col :span="12">
                     <el-form-item :label="td('dp.document.standardCategory')" prop="catCode" :rules="[
                         { required: true, message: td('dp.document.standardCategoryRequired'), trigger: 'blur' }
-                    ]">
+                    ]" :label-position="labelPosition">
                         <el-tree-select filterable v-model="form.catCode" :data="deptOptions"
                             :props="{ value: 'code', label: 'name', children: 'children' }" value-key="code"
                             :placeholder="td('dp.document.standardCategoryPlaceholder')" check-strictly />
@@ -62,7 +62,7 @@
                 <el-col :span="12">
                     <el-form-item :label="td('dp.document.file')" prop="fileUrl" :rules="[
                         { required: true, message: td('dp.document.fileRequired'), trigger: 'change' }
-                    ]">
+                    ]" :label-position="labelPosition">
                         <FileUploadbtn :limit="1" v-model:filename="form.fileName" v-model="form.fileUrl"
                             :dragFlag="false" :fileSize="100" @handleRemove="handleRemove" :isShowTip="false" />
                     </el-form-item>
@@ -71,7 +71,7 @@
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="24">
-                    <el-form-item :label="td('common.texts.description')" prop="description">
+                    <el-form-item :label="td('common.texts.description')" prop="description" :label-position="labelPosition">
                         <el-input v-model="form.description" type="textarea" :placeholder="td('common.form.descriptionPlaceholder')" />
                     </el-form-item>
                 </el-col>
@@ -79,19 +79,19 @@
             <el-row :gutter="20">
 
                 <el-col :span="12">
-                    <el-form-item :label="td('dp.document.issuingAgency')" prop="issuingAgency">
+                    <el-form-item :label="td('dp.document.issuingAgency')" prop="issuingAgency" :label-position="labelPosition">
                         <el-input v-model="form.issuingAgency" :placeholder="td('dp.document.issuingAgencyPlaceholder')" />
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item :label="td('dp.document.version')" prop="version">
+                    <el-form-item :label="td('dp.document.version')" prop="version" :label-position="labelPosition">
                         <el-input v-model="form.version" :placeholder="td('dp.document.versionPlaceholder')" />
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item :label="td('dp.document.releaseDate')" prop="releaseDate">
+                    <el-form-item :label="td('dp.document.releaseDate')" prop="releaseDate" :label-position="labelPosition">
                         <el-date-picker clearable style="width: 100%" v-model="form.releaseDate" type="date"
                             value-format="YYYY-MM-DD" :placeholder="td('dp.document.releaseDatePlaceholder')">
                         </el-date-picker>
@@ -100,14 +100,14 @@
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item :label="td('dp.document.implementationDate')" prop="implementationDate">
+                    <el-form-item :label="td('dp.document.implementationDate')" prop="implementationDate" :label-position="labelPosition">
                         <el-date-picker clearable style="width: 100%" v-model="form.implementationDate" type="date"
                             value-format="YYYY-MM-DD" :placeholder="td('dp.document.implementationDatePlaceholder')">
                         </el-date-picker>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item :label="td('dp.document.abolitionDate')" prop="abolitionDate">
+                    <el-form-item :label="td('dp.document.abolitionDate')" prop="abolitionDate" :label-position="labelPosition">
                         <el-date-picker clearable style="width: 100%" v-model="form.abolitionDate" type="date"
                             value-format="YYYY-MM-DD" :placeholder="td('dp.document.abolitionDatePlaceholder')">
                         </el-date-picker>
@@ -116,7 +116,7 @@
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="24">
-                    <el-form-item :label="td('common.texts.remark')" prop="remark">
+                    <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
                         <el-input v-model="form.remark" type="textarea" :placeholder="td('common.form.remarkPlaceholder')" />
                     </el-form-item>
                 </el-col>

@@ -163,11 +163,11 @@
         :rules="rules"
         ref="formRef"
         label-width="110px"
-      >
+       :label-position="labelPosition">
         <el-form-item
           :label="td('mc.task.structured.sourceSystem')"
           prop="sourceSystemId"
-        >
+         :label-position="labelPosition">
           <el-tree-select
             filterable
             v-model="dialog.form.sourceSystemId"
@@ -181,7 +181,7 @@
           />
         </el-form-item>
 
-        <el-form-item :label="td('mc.task.structured.taskName')" prop="name">
+        <el-form-item :label="td('mc.task.structured.taskName')" prop="name" :label-position="labelPosition">
           <el-input
             v-model="dialog.form.name"
             :placeholder="td('mc.task.structured.taskNamePlaceholder')"
@@ -191,7 +191,7 @@
         <el-form-item
           :label="td('mc.task.structured.datasourceName')"
           prop="datasourceId"
-        >
+         :label-position="labelPosition">
           <el-select
             v-model="dialog.form.datasourceId"
             :placeholder="td('mc.task.structured.datasourceNamePlaceholder')"
@@ -212,7 +212,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item :label="td('mc.task.structured.dbType')" prop="dbType">
+        <el-form-item :label="td('mc.task.structured.dbType')" prop="dbType" :label-position="labelPosition">
           <el-input
             v-model="dialog.form.dbType"
             disabled
@@ -220,7 +220,7 @@
           />
         </el-form-item>
 
-        <el-form-item :label="td('mc.task.structured.ip')" prop="ip">
+        <el-form-item :label="td('mc.task.structured.ip')" prop="ip" :label-position="labelPosition">
           <el-input
             v-model="dialog.form.ip"
             disabled
@@ -228,7 +228,7 @@
           />
         </el-form-item>
 
-        <el-form-item :label="td('mc.task.structured.port')" prop="port">
+        <el-form-item :label="td('mc.task.structured.port')" prop="port" :label-position="labelPosition">
           <el-input
             v-model="dialog.form.port"
             disabled
@@ -239,7 +239,7 @@
         <el-form-item
           :label="td('mc.task.structured.username')"
           prop="username"
-        >
+         :label-position="labelPosition">
           <el-input
             v-model="dialog.form.username"
             disabled
@@ -278,7 +278,7 @@
           </el-input>
         </qt-form-item>
 
-        <el-form-item :label="td('mc.task.structured.leader')" prop="leader">
+        <el-form-item :label="td('mc.task.structured.leader')" prop="leader" :label-position="labelPosition">
           <el-tree-select
             filterable
             v-model="dialog.form.leader"
@@ -298,7 +298,7 @@
         <el-form-item
           :label="td('mc.task.structured.leaderPhone')"
           prop="leaderPhone"
-        >
+         :label-position="labelPosition">
           <el-input
             v-model="dialog.form.leaderPhone"
             disabled
@@ -311,7 +311,7 @@
           class="row-full"
           prop="collectionMode"
           v-if="false"
-        >
+         :label-position="labelPosition">
           <el-radio-group v-model="dialog.form.collectionMode">
             <el-radio
               v-for="dict in toValue(dicts.mc_collect_mode)"
@@ -327,7 +327,7 @@
           :label="td('mc.task.structured.collectionScope')"
           class="row-full"
           prop="collectionScope"
-        >
+         :label-position="labelPosition">
           <div class="collection-wrap">
             <el-radio-group v-model="dialog.form.collectionScope">
               <el-radio
@@ -344,7 +344,7 @@
               v-if="dialog.form.collectionScope == 1"
               label-width="0"
               style="margin-bottom: 0"
-            >
+             :label-position="labelPosition">
               <el-transfer
                 v-model="dialog.form.tables"
                 :data="dialog.tableList"
@@ -366,7 +366,7 @@
           :label="td('common.texts.description')"
           class="row-full"
           prop="description"
-        >
+         :label-position="labelPosition">
           <el-input
             v-model="dialog.form.description"
             type="textarea"
@@ -381,7 +381,7 @@
           :label="td('common.texts.remark')"
           class="row-full"
           prop="remark"
-        >
+         :label-position="labelPosition">
           <el-input
             v-model="dialog.form.remark"
             type="textarea"

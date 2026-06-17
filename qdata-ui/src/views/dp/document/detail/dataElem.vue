@@ -120,22 +120,22 @@
                 {{ title }}
             </span>
         </template>
-        <el-form ref="dpDataElemRef" :model="form" :rules="rules" label-width="100px" @submit.prevent>
+        <el-form ref="dpDataElemRef" :model="form" :rules="rules" label-width="100px" @submit.prevent :label-position="labelPosition">
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item :label="td('dp.dataElem.nameZh')" prop="name">
+                    <el-form-item :label="td('dp.dataElem.nameZh')" prop="name" :label-position="labelPosition">
                         <el-input v-model="form.name" :placeholder="td('dp.dataElem.nameZhPlaceholder')" />
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item :label="td('dp.dataElem.nameEn')" prop="engName">
+                    <el-form-item :label="td('dp.dataElem.nameEn')" prop="engName" :label-position="labelPosition">
                         <el-input v-model="form.engName" :placeholder="td('dp.dataElem.nameEnPlaceholder')" />
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item :label="td('dp.dataElem.catCode')" prop="catCode">
+                    <el-form-item :label="td('dp.dataElem.catCode')" prop="catCode" :label-position="labelPosition">
                         <el-tree-select filterable v-model="form.catCode" :data="deptOptions"
                             :props="{ value: 'code', label: 'name', children: 'children' }" value-key="id"
                             :placeholder="td('dp.dataElem.catCodePlaceholder')" check-strictly />
@@ -143,7 +143,7 @@
                 </el-col>
 
                 <el-col :span="12">
-                    <el-form-item :label="td('dp.dataElem.columnType')" prop="columnType">
+                    <el-form-item :label="td('dp.dataElem.columnType')" prop="columnType" :label-position="labelPosition">
                         <el-select v-model="form.columnType" :placeholder="td('dp.dataElem.columnTypePlaceholder')">
                             <el-option v-for="dict in column_type" :key="dict.value" :label="dict.label"
                                 :value="dict.value"></el-option>
@@ -153,7 +153,7 @@
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="24">
-                    <el-form-item :label="td('common.texts.description')" prop="description">
+                    <el-form-item :label="td('common.texts.description')" prop="description" :label-position="labelPosition">
                         <el-input v-model="form.description" type="textarea" :placeholder="td('common.form.descriptionPlaceholder')" />
                     </el-form-item>
                 </el-col>
@@ -161,7 +161,7 @@
 
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item :label="td('dp.dataElem.personCharge')" prop="personCharge">
+                    <el-form-item :label="td('dp.dataElem.personCharge')" prop="personCharge" :label-position="labelPosition">
                         <!--                <el-input v-model="form.managerId" placeholder="请选择负责人" />-->
                         <el-select v-model="form.personCharge" @change="handleChange" filterable :placeholder="td('dp.dataElem.personChargePlaceholder')">
                             <el-option v-for="item in managerOptions" :key="item.userId" :label="item.nickName"
@@ -171,14 +171,14 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item :label="td('dp.dataElem.contactNumber')" prop="contactNumber">
+                    <el-form-item :label="td('dp.dataElem.contactNumber')" prop="contactNumber" :label-position="labelPosition">
                         <el-input disabled v-model="form.contactNumber" :placeholder="td('dp.dataElem.contactNumberPlaceholder')" />
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row :gutter="20">
                 <!-- <el-col :span="12">
-                    <el-form-item label="类型" prop="type">
+                    <el-form-item label="类型" prop="type" :label-position="labelPosition">
                         <el-radio-group v-model="form.type" disabled>
                             <el-radio v-for="dict in dp_data_elem_code_type" :key="dict.value" :label="dict.value">{{
                                 dict.label }}
@@ -187,7 +187,7 @@
                     </el-form-item>
                 </el-col> -->
                 <el-col :span="12">
-                    <el-form-item :label="td('common.texts.status')" prop="status">
+                    <el-form-item :label="td('common.texts.status')" prop="status" :label-position="labelPosition">
                         <el-radio-group v-model="form.status">
                             <el-radio v-for="dict in sys_disable" :key="dict.value" :label="dict.value">{{
                                 dict.label }}
@@ -199,7 +199,7 @@
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="24">
-                    <el-form-item :label="td('common.texts.remark')" prop="remark">
+                    <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
                         <el-input v-model="form.remark" type="textarea" :placeholder="td('common.form.remarkPlaceholder')" />
                     </el-form-item>
                 </el-col>

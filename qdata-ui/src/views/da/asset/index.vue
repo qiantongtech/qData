@@ -53,7 +53,7 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item :label="td('da.asset.assetName')" prop="name">
+            <el-form-item :label="td('da.asset.assetName')" prop="name" :label-position="labelPosition">
               <el-input
                 v-model="queryParams.name"
                 :placeholder="td('da.asset.assetNamePlaceholder')"
@@ -496,7 +496,7 @@
           {{ title }}
         </span>
       </template>
-      <el-form ref="daAssetRef" :model="form" label-width="80px">
+      <el-form ref="daAssetRef" :model="form" label-width="80px" :label-position="labelPosition">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item :label="td('da.asset.assetName')" prop="name">
@@ -506,7 +506,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('da.asset.catCode')" prop="catCode">
+            <el-form-item :label="td('da.asset.catCode')" prop="catCode" :label-position="labelPosition">
               <div>
                 {{ form.catCode }}
               </div>
@@ -515,14 +515,14 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('da.asset.topicId')" prop="themeId">
+            <el-form-item :label="td('da.asset.topicId')" prop="themeId" :label-position="labelPosition">
               <div>
                 {{ form.themeId }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('da.asset.datasourceId')" prop="datasourceId">
+            <el-form-item :label="td('da.asset.datasourceId')" prop="datasourceId" :label-position="labelPosition">
               <div>
                 {{ form.datasourceId }}
               </div>
@@ -531,14 +531,14 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('da.asset.tableName')" prop="tableName">
+            <el-form-item :label="td('da.asset.tableName')" prop="tableName" :label-position="labelPosition">
               <div>
                 {{ form.tableName }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('da.asset.tableDesc')" prop="tableComment">
+            <el-form-item :label="td('da.asset.tableDesc')" prop="tableComment" :label-position="labelPosition">
               <div>
                 {{ form.tableComment }}
               </div>
@@ -547,14 +547,14 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('da.asset.dataCount')" prop="dataCount">
+            <el-form-item :label="td('da.asset.dataCount')" prop="dataCount" :label-position="labelPosition">
               <div>
                 {{ form.dataCount }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('da.asset.fieldCount')" prop="fieldCount">
+            <el-form-item :label="td('da.asset.fieldCount')" prop="fieldCount" :label-position="labelPosition">
               <div>
                 {{ form.fieldCount }}
               </div>
@@ -563,14 +563,14 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('da.asset.status')" prop="status">
+            <el-form-item :label="td('da.asset.status')" prop="status" :label-position="labelPosition">
               <div>
                 {{ form.status }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('da.asset.description')" prop="description">
+            <el-form-item :label="td('da.asset.description')" prop="description" :label-position="labelPosition">
               <div>
                 {{ form.description }}
               </div>
@@ -579,7 +579,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('da.asset.remark')" prop="remark">
+            <el-form-item :label="td('da.asset.remark')" prop="remark" :label-position="labelPosition">
               <div>
                 {{ form.remark }}
               </div>
@@ -614,7 +614,7 @@
       destroy-on-close
     >
       <el-col :span="24">
-        <el-form-item :label="td('da.asset.tagLabel')">
+        <el-form-item :label="td('da.asset.tagLabel')" :label-position="labelPosition">
           <el-select
             v-model="tagIds"
             :placeholder="td('da.asset.tagPlaceholder')"
@@ -663,46 +663,46 @@
         :model="formApply"
         :rules="rulesApply"
         label-width="100px"
-      >
+       :label-position="labelPosition">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('da.asset.assetName')">
+            <el-form-item :label="td('da.asset.assetName')" :label-position="labelPosition">
               <el-input v-model="formApply.name" disabled />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('da.asset.englishName')">
+            <el-form-item :label="td('da.asset.englishName')" :label-position="labelPosition">
               <el-input v-model="formApply.tableName" disabled />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('da.asset.topicName')">
+            <el-form-item :label="td('da.asset.topicName')" :label-position="labelPosition">
               <el-input v-model="formApply.themeName" disabled />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('da.asset.datasource')">
+            <el-form-item :label="td('da.asset.datasource')" :label-position="labelPosition">
               <el-input v-model="formApply.datasourceName" disabled />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('da.asset.dbAddress')">
+            <el-form-item :label="td('da.asset.dbAddress')" :label-position="labelPosition">
               <el-input v-model="formApply.datasourceIp" disabled />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('da.asset.dbType')">
+            <el-form-item :label="td('da.asset.dbType')" :label-position="labelPosition">
               <el-input v-model="formApply.datasourceType" disabled />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('da.asset.description')">
+            <el-form-item :label="td('da.asset.description')" :label-position="labelPosition">
               <el-input
                 type="textarea"
                 maxlength="500"
@@ -716,7 +716,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('da.asset.applyProject')" prop="projectCode">
+            <el-form-item :label="td('da.asset.applyProject')" prop="projectCode" :label-position="labelPosition">
               <el-select
                 v-model="formApply.projectCode"
                 @change="handleSelectProject"
@@ -732,7 +732,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('da.asset.contactPhone')" prop="phone">
+            <el-form-item :label="td('da.asset.contactPhone')" prop="phone" :label-position="labelPosition">
               <el-input
                 v-model="formApply.phone"
                 :placeholder="td('da.asset.contactPhonePlaceholder')"
@@ -742,7 +742,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('da.asset.applyReason')" prop="applyReason">
+            <el-form-item :label="td('da.asset.applyReason')" prop="applyReason" :label-position="labelPosition">
               <el-input
                 type="textarea"
                 maxlength="500"

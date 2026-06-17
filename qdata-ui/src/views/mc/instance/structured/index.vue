@@ -305,7 +305,7 @@ function handleDownloadClick(row) {
 function handleDeleteColumnClick() {
   if (!store.rows.length) return;
   ElMessageBox.confirm(
-    td("mc.task.structured.confirmDeleteSelected", {
+    td("mc.task.structured.confirmDeleteSelected", '', {
       count: store.rows.length,
       notDeleteCount: 0,
     }),

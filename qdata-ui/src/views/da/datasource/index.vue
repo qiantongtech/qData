@@ -1465,7 +1465,7 @@ function submitForm() {
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
-    .confirm(td('da.datasource.confirmDelete').replace('{id}', _ids))
+    .confirm(td('da.datasource.confirmDelete', '', { id: _ids }))
     .then(function () {
       return removeDppOrDa(_ids, type);
     })
@@ -1554,10 +1554,10 @@ function handleStatusChange(row) {
   const text = row.validFlag === true ? td('da.datasource.enable') : td('da.datasource.disable');
   const status = row.validFlag === true ? 1 : 0;
   proxy.$modal
-    .confirm(td('da.datasource.confirmStatusChange').replace('{text}', text).replace('{name}', row.datasourceName))
+    .confirm(td('da.datasource.confirmStatusChange', '', { text: text, name: row.datasourceName }))
     .then(function () {
       editDatasourceStatus(row.id, status).then((response) => {
-        proxy.$modal.msgSuccess(td('da.datasource.statusSuccess').replace('{text}', text));
+        proxy.$modal.msgSuccess(td('da.datasource.statusSuccess', '', { text: text }));
         getList();
       });
     })

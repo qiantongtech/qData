@@ -1746,16 +1746,16 @@ function routeTo(link, row) {
 function handleStatusChange(row) {
   const text =
     row.validFlag === true
-      ? td("common.texts.enable")
-      : td("common.texts.disable");
+        ? td("common.texts.enable")
+        : td("common.texts.disable");
   const status = row.validFlag === true ? 1 : 0;
   proxy.$modal
-    .confirm(
-      td("common.message.confirmChangeStatus", {
-        name: row.datasourceName,
-        status: text,
-      })
-    )
+      .confirm(
+          td("da.datasource.confirmStatusChange", '', {
+            text,
+            name: row.datasourceName,
+          })
+      )
     .then(function () {
       editDatasourceStatus(row.id, status).then((response) => {
         proxy.$modal.msgSuccess(td("common.message.operationSuccess"));

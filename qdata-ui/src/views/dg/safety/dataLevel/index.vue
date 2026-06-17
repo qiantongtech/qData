@@ -448,7 +448,7 @@ function handleDelete(row) {
   if (!row?.id) return;
   proxy.$modal
     .confirm(
-      td('dg.dataLevel.confirmDelete').replace('{name}', row.levelName || row.name || row.id)
+      td('dg.dataLevel.confirmDelete', '', { name: row.levelName || row.name || row.id })
     )
     .then(() => delDataLevel(row.id))
     .then(() => {

@@ -675,7 +675,7 @@ function submitForm() {
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
-    .confirm(td('da.assetApply.confirmDelete').replace('{id}', _ids))
+    .confirm(td('da.assetApply.confirmDelete', '', { id: _ids }))
     .then(function () {
       return delDaAssetApply(_ids);
     })

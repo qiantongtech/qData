@@ -1127,7 +1127,7 @@ function handleUpdate(row, register) {
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
-    .confirm(td('da.asset.confirmDelete').replace('{id}', _ids))
+    .confirm(td('da.asset.confirmDelete', '', { id: _ids }))
     .then(function () {
       return delDaAsset(_ids);
     })
@@ -1229,7 +1229,7 @@ function handleStatusChange(row) {
       .then(function () {
         updateDaAsset({id: row.id, status: status}).then((res) => {
         if (res.code == 200) {
-          proxy.$modal.msgSuccess(td('da.asset.statusSuccess').replace('{text}', text));
+          proxy.$modal.msgSuccess(td('da.asset.statusSuccess', '', { text: text }));
           getList();
         }
       });

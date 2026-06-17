@@ -281,10 +281,10 @@ function handleQuery() {
 function handleStatusChange(row) {
     const text = row.validFlag === true ? td('att.common.enable') : td('att.common.disable');
     proxy.$modal
-        .confirm(td('att.common.confirmStatusChangeGeneric').replace('{status}', text).replace('<name>', row.name).replace('{type}', td('att.common.dataDoc')))
+        .confirm(td('att.common.confirmStatusChangeGeneric', '', { status: text, type: td('att.common.dataDoc') }).replace('<name>', row.name))
         .then(function () {
             updateAttDocCat({ id: row.id, validFlag: row.validFlag }).then((response) => {
-                proxy.$modal.msgSuccess(td('att.common.statusSuccess').replace('{status}', text));
+                proxy.$modal.msgSuccess(td('att.common.statusSuccess', '', { status: text }));
                 getList();
             }).catch((err) => {
                 row.validFlag = !row.validFlag;

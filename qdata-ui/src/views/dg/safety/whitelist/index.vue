@@ -899,7 +899,7 @@ function handleResetQueryClick() {
 function handleStatusChange(id, row, e) {
   const text = e ? td('dg.whitelist.valid') : td('dg.whitelist.disabled');
   proxy.$modal
-    .confirm(td('dg.whitelist.confirmStatus').replace('{text}', text).replace('{name}', row.name || "-"))
+    .confirm(td('dg.whitelist.confirmStatus', '', { text: text, name: row.name || "-" }))
     .then(async function () {
       await updateDesensitizeWhitelist({ id, validFlag: row.validFlag });
       proxy.$modal.msgSuccess(td('common.message.msgOpSuccess'));
@@ -1339,7 +1339,7 @@ function handleDelete(row) {
   const message=ref(td('dg.whitelist.confirmDeleteSimple'));
   if (row?.id) {
     invalidIds.push(row.id);
-    message.value=td('dg.whitelist.confirmDeleteId').replace('{id}', row.id)
+    message.value=td('dg.whitelist.confirmDeleteId', '', { id: row.id })
   }else {
     store.rows.forEach(item => {
       // 当 validFlag 为 false 时，记录 id
@@ -1347,7 +1347,7 @@ function handleDelete(row) {
         invalidIds.push(item.id);
       }
     });
-    message.value=td('dg.whitelist.confirmDeleteCount').replace('{canDelete}', invalidIds.length).replace('{cannotDelete}', store.rows.length-invalidIds.length)
+    message.value=td('dg.whitelist.confirmDeleteCount', '', { canDelete: invalidIds.length, cannotDelete: store.rows.length-invalidIds.length })
   }
   proxy.$modal
       .confirm(message.value)

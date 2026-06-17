@@ -977,7 +977,7 @@ function handleEditClick(row) {
 // 删除
 function handleDeleteClick(row) {
   ElMessageBox.confirm(
-    td("mc.task.structured.confirmDelete", { id: row.id }),
+    td("mc.task.structured.confirmDelete", '', { id: row.id }),
     td("common.message.systemPrompt"),
     {
       confirmButtonText: td("common.button.confirm"),
@@ -1054,7 +1054,7 @@ function handleTaskStatusChange(row, status) {
       ? td("mc.task.structured.publish")
       : td("mc.task.structured.cancelPublish");
   ElMessageBox.confirm(
-    td("mc.task.structured.confirmPublish", {
+    td("mc.task.structured.confirmPublish", '',{
       action,
       name: row.name,
     }),
@@ -1073,7 +1073,7 @@ function handleTaskStatusChange(row, status) {
     })
     .then(() => {
       ElMessage.success(
-        td("mc.task.structured.publishSuccess", {
+        td("mc.task.structured.publishSuccess",'', {
           name: row.name,
           action,
         })
@@ -1092,7 +1092,7 @@ function handleSchedulerStatusChange(row, status) {
       ? td("mc.task.structured.online")
       : td("mc.task.structured.offline");
   ElMessageBox.confirm(
-    td("mc.task.structured.confirmScheduler", {
+    td("mc.task.structured.confirmScheduler", '',{
       action,
       name: row.name,
     }),
@@ -1111,7 +1111,7 @@ function handleSchedulerStatusChange(row, status) {
     })
     .then(() => {
       ElMessage.success(
-        td("mc.task.structured.schedulerSuccess", {
+        td("mc.task.structured.schedulerSuccess",'', {
           name: row.name,
           action,
         })

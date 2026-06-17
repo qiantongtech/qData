@@ -19,7 +19,7 @@
     <el-dialog v-model="visible" :draggable="true" :title="td('dpp.integration.fieldConflictTitle', '字段冲突处理')" :show-close="false" destroy-on-close
         class="MessageBox">
         <div style="padding: 10px 0;">
-            {{ td('dpp.integration.fieldConflictMsg', '已有 {existing} 个字段，检测到 {new} 个新字段，如何处理？').replace('{existing}', existingFields.length).replace('{new}', Math.max(0, newFields.length - existingFields.length)) }}
+            {{ td('dpp.integration.fieldConflictMsg', '已有 {existing} 个字段，检测到 {new} 个新字段，如何处理？', { existing: existingFields.length, new: Math.max(0, newFields.length - existingFields.length) }) }}
         </div>
         <template #footer>
             <el-button type="warning" @click="handleClick('addNewOnly')">{{ td('dpp.integration.addNewOnly', '增加新的') }}</el-button>

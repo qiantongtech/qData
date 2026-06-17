@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 
 import javax.validation.constraints.Size;

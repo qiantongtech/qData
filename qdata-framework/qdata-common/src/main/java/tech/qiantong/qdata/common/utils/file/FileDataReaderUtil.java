@@ -13,9 +13,25 @@
  * For brand customization, please apply for brand customization authorization via official channels.
  *  *
  * More information: https://qdata.qiantong.tech/business.html
+ *  *
+ * ============================================================================
+ *  *
+ * 版权所有 © 2025 江苏千桐科技有限公司
+ * qData 数据中台（开源版）
+ *  *
+ * 许可协议：
+ * 本项目基于 Apache License 2.0 开源协议发布，
+ * 允许在遵守协议的前提下进行商用、修改和分发。
+ *  *
+ * 特别说明：
+ * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
+ * 如需定制品牌，请通过官方渠道申请品牌定制授权。
+ *  *
+ * 更多信息请访问：https://qdata.qiantong.tech/business.html
  */
 
 package tech.qiantong.qdata.common.utils.file;
+import tech.qiantong.qdata.common.exception.ServiceException;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
@@ -105,7 +121,7 @@ public class FileDataReaderUtil {
      */
     public static Map<String, Object> readFileData(JSONObject jsonObject) {
         if (jsonObject == null) {
-            throw new RuntimeException("参数不能为空");
+            throw new ServiceException("sys.error.param.empty", "参数不能为空");
         }
 
         String filePath = jsonObject.getStr("filePath");
@@ -471,15 +487,15 @@ public class FileDataReaderUtil {
      */
     private static void validateParams(String filePath, Long pageNum, Long pageSize) {
         if (StrUtil.isBlank(filePath)) {
-            throw new RuntimeException("文件路径不能为空");
+            throw new ServiceException("sys.error.file.path.empty", "文件路径不能为空");
         }
 
         if (pageNum == null || pageNum < 1) {
-            throw new RuntimeException("页码不能为空且必须大于0");
+            throw new ServiceException("sys.error.page.num.invalid", "页码不能为空且必须大于0");
         }
 
         if (pageSize == null || pageSize < 1) {
-            throw new RuntimeException("每页条数不能为空且必须大于0");
+            throw new ServiceException("sys.error.page.size.invalid", "每页条数不能为空且必须大于0");
         }
     }
 

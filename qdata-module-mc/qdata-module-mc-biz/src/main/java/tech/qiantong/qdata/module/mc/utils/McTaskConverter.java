@@ -10,6 +10,7 @@ import tech.qiantong.qdata.api.ds.api.etl.DsTaskSaveReqDTO;
 import tech.qiantong.qdata.api.ds.api.etl.ds.ProcessDefinition;
 import tech.qiantong.qdata.api.ds.api.etl.ds.TaskDefinition;
 import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.JSONUtils;
 import tech.qiantong.qdata.module.mc.utils.model.TaskSaveReqInput;
 
@@ -165,7 +166,7 @@ public class McTaskConverter {
         }
 
         // 如果列表为空，返回 null 或根据需要返回其他默认值
-        throw new ServiceException("创建调度器，失败！");
+        throw new ServiceException("mc.error.scheduler.create", "创建调度器，失败！");
     }
 
     /**

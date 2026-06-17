@@ -13,6 +13,21 @@
  * For brand customization, please apply for brand customization authorization via official channels.
  *  *
  * More information: https://qdata.qiantong.tech/business.html
+ *  *
+ * ============================================================================
+ *  *
+ * 版权所有 © 2025 江苏千桐科技有限公司
+ * qData 数据中台（开源版）
+ *  *
+ * 许可协议：
+ * 本项目基于 Apache License 2.0 开源协议发布，
+ * 允许在遵守协议的前提下进行商用、修改和分发。
+ *  *
+ * 特别说明：
+ * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
+ * 如需定制品牌，请通过官方渠道申请品牌定制授权。
+ *  *
+ * 更多信息请访问：https://qdata.qiantong.tech/business.html
  */
 
 package tech.qiantong.qdata.config;
@@ -23,11 +38,10 @@ import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
-import org.springframework.web.servlet.i18n.SessionLocaleResolver;
-import tech.qiantong.qdata.common.constant.Constants;
-
 /**
- * 资源文件配置加载
+ * 国际化资源文件配置加载
+ *
+ * 语言解析优先级：lang 参数 > Accept-Language 请求头 > 默认简体中文
  *
  * @author qdata
  */
@@ -37,10 +51,8 @@ public class I18nConfig implements WebMvcConfigurer
     @Bean
     public LocaleResolver localeResolver()
     {
-        SessionLocaleResolver slr = new SessionLocaleResolver();
-        // 默认语言
-        slr.setDefaultLocale(Constants.DEFAULT_LOCALE);
-        return slr;
+        // 自定义解析器：支持 lang 参数 + Accept-Language 请求头，默认简体中文
+        return new HeaderLocaleResolver();
     }
 
     @Bean

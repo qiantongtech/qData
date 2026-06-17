@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tech.qiantong.qdata.common.core.domain.BatchDeleteCheck;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.YouBianCodeUtil;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
@@ -99,7 +100,7 @@ public class McDomainServiceImpl  extends ServiceImpl<McDomainMapper,McDomainDO>
         }
         //判断是否选择了他自己
         if (mcDomainDO.getId().equals(updateReqVO.getParentId())) {
-            throw new ServiceException("切换上级不能选择自身作为上级类目");
+            throw new ServiceException("mc.error.parent.self", "切换上级不能选择自身作为上级类目");
         }
         // 更新业务域管理
         McDomainDO updateObj = BeanUtils.toBean(updateReqVO, McDomainDO.class);
@@ -108,7 +109,7 @@ public class McDomainServiceImpl  extends ServiceImpl<McDomainMapper,McDomainDO>
         } else if (Boolean.TRUE.equals(updateReqVO.getValidFlag())) {
             McDomainDO parent = mcDomainMapper.selectById(mcDomainDO.getParentId());
             if (parent != null && Boolean.FALSE.equals(parent.getValidFlag())) {
-                throw new ServiceException("须先启用父级");
+                throw new ServiceException("mc.error.parent.disabled", "须先启用父级");
             }
         }
         //修改上下级判断
@@ -155,7 +156,7 @@ public class McDomainServiceImpl  extends ServiceImpl<McDomainMapper,McDomainDO>
 //                throw new ServiceException("被元数据采集引用，不可删除");
 //            }
             if (dbMapper.existsBySourceSystemName(one.getCode())) {
-                throw new ServiceException("被库元数据引用，不可删除");
+                throw new ServiceException("mc.error.ref.db", "被库元数据引用，不可删除");
             }
         }
         for (McDomainDO one : list) {

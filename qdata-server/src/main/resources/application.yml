@@ -12,6 +12,21 @@
 # For brand customization, please apply for brand customization authorization via official channels.
 #
 # More information: https://qdata.qiantong.tech/business.html
+#
+# ============================================================================
+#
+# 版权所有 © 2025 江苏千桐科技有限公司
+# qData 数据中台（开源版）
+#
+# 许可协议：
+# 本项目基于 Apache License 2.0 开源协议发布，
+# 允许在遵守协议的前提下进行商用、修改和分发。
+#
+# 特别说明：
+# 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
+# 如需定制品牌，请通过官方渠道申请品牌定制授权。
+#
+# 更多信息请访问：https://qdata.qiantong.tech/business.html
 
 # 项目相关配置
 qdata:
@@ -75,8 +90,20 @@ spring:
     cache: false
   # 资源信息
   messages:
-    # 国际化资源文件路径
-    basename: i18n/messages
+    # 国际化资源文件路径（多模块加载，按顺序查找，先匹配的生效）
+    # messages:        qdata-server 公共消息（系统异常/用户认证/文件上传）
+    # system-messages: System模块专属（数据权限等）
+    # dm-messages:     DM模块专属（数据导入/主题域等）
+    # dg-messages:     DG模块专属（数据治理/脱敏等）
+    # att-messages:    ATT模块专属（资产分类/标签等）
+    # da-messages:     DA模块专属（数据资产/发现任务等）
+    # dp-messages:     DP模块专属（数据标准/模型/数据元等）
+    # dpp-messages:    DPP模块专属（数据开发/ETL/调度等）
+    # ds-messages:     DS模块专属（数据服务/API等）
+    # mc-messages:     MC模块专属（元数据采集/调度等）
+    # quality-messages: 数据质量模块专属
+    basename: i18n/messages,i18n/system-messages,i18n/dm-messages,i18n/dg-messages,i18n/att-messages,i18n/da-messages,i18n/dp-messages,i18n/dpp-messages,i18n/ds-messages,i18n/mc-messages,i18n/quality-messages
+    encoding: UTF-8
   profiles:
     active: dev  # 默认激活的环境，可以在启动时覆盖
   config:

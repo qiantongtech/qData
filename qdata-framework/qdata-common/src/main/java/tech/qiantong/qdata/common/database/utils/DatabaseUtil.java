@@ -107,7 +107,7 @@ public class DatabaseUtil {
 //        try {
 //            configJson = JSON.parseObject(datasourceConfig);
 //        } catch (Exception e) {
-//            throw new DataQueryException("数据源配置格式错误，应为合法的 JSON");
+//            throw new DataQueryException("db.error.datasource.config.json", "数据源配置格式错误，应为合法的JSON");
 //        }
 //        DbQueryProperty dbQueryProperty = new DbQueryProperty(datasourceType, ip,
 //                configJson.getString("username"), configJson.getString("password"), port,

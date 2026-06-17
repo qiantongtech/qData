@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.qiantong.qdata.common.core.domain.BatchDeleteCheck;
 import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.YouBianCodeUtil;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
@@ -54,7 +55,7 @@ public class DgDataElemCatServiceImpl extends ServiceImpl<DgDataElemCatMapper, D
         }
         //判断是否选择了他自己
         if (dgDataElemCatDO.getId().equals(updateReqVO.getParentId())) {
-            throw new ServiceException("切换上级不能选择自身作为上级类目");
+            throw new ServiceException("dg.error.parent.self", "切换上级不能选择自身作为上级类目");
         }
         // 更新数据元类目管理
         DgDataElemCatDO updateObj = BeanUtils.toBean(updateReqVO, DgDataElemCatDO.class);
@@ -63,7 +64,7 @@ public class DgDataElemCatServiceImpl extends ServiceImpl<DgDataElemCatMapper, D
         } else if (Boolean.TRUE.equals(updateReqVO.getValidFlag())) {
             DgDataElemCatDO parent = dgDataElemCatMapper.selectById(dgDataElemCatDO.getParentId());
             if (parent != null && Boolean.FALSE.equals(parent.getValidFlag())) {
-                throw new ServiceException("须先启用父级");
+                throw new ServiceException("dg.error.parent.disabled", "须先启用父级");
             }
         }
 
@@ -106,7 +107,7 @@ public class DgDataElemCatServiceImpl extends ServiceImpl<DgDataElemCatMapper, D
         List<DgDataElemCatDO> list = baseMapper.selectBatchIds(idList);
         for (DgDataElemCatDO cat : list) {
             if (dataElemMapper.existsByCatCode(cat.getCode())) {
-                throw new ServiceException("被标准数据元引用，不可删除");
+                throw new ServiceException("dg.error.delete.ref.elem", "被标准数据元引用，不可删除");
             }
         }
         for (DgDataElemCatDO cat : list) {

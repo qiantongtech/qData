@@ -13,6 +13,21 @@
  * For brand customization, please apply for brand customization authorization via official channels.
  *  *
  * More information: https://qdata.qiantong.tech/business.html
+ *  *
+ * ============================================================================
+ *  *
+ * 版权所有 © 2025 江苏千桐科技有限公司
+ * qData 数据中台（开源版）
+ *  *
+ * 许可协议：
+ * 本项目基于 Apache License 2.0 开源协议发布，
+ * 允许在遵守协议的前提下进行商用、修改和分发。
+ *  *
+ * 特别说明：
+ * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
+ * 如需定制品牌，请通过官方渠道申请品牌定制授权。
+ *  *
+ * 更多信息请访问：https://qdata.qiantong.tech/business.html
  */
 
 package tech.qiantong.qdata.module.dpp.service.etl.impl;
@@ -44,6 +59,7 @@ import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.enums.TaskCatEnum;
 import tech.qiantong.qdata.common.enums.TaskComponentTypeEnum;
 import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.JSONUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
@@ -184,7 +200,7 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
                 dppEtlTaskDO.setCode(taskExt.getEtlTaskCode());
             }
             if (StringUtils.equals("1", dppEtlTaskDO.getStatus())) {
-                throw new ServiceException("上线任务，不允删除，请先下线！");
+                throw new ServiceException("dpp.error.task.online.delete", "上线任务，不允删除，请先下线！");
             }
             if (dppEtlTaskDO.getDsId() != null || (taskExt != null && StringUtils.isNotEmpty(taskExt.getEtlTaskCode()))) {
                 dsEtlTaskService.deleteTask(dppEtlTaskDO.getProjectCode(), dppEtlTaskDO.getCode());
@@ -246,7 +262,7 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
     @Override
     public String importDppEtlTask(List<DppEtlTaskRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("导入数据不能为空！");
+            throw new ServiceException("dpp.error.import.empty", "导入数据不能为空！");
         }
 
         int successNum = 0;
@@ -264,14 +280,17 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
                         if (existingDppEtlTask != null) {
                             dppEtlTaskMapper.updateById(dppEtlTaskDO);
                             successNum++;
-                            successMessages.add("数据更新成功，ID为 " + dppEtlTaskId + " 的数据集成任务记录。");
+                            successMessages.add(MessageUtils.messageWithFallback("dpp.import.update.success",
+                                    "数据更新成功，ID为 " + dppEtlTaskId + " 的数据集成任务记录。", dppEtlTaskId, "数据集成任务"));
                         } else {
                             failureNum++;
-                            failureMessages.add("数据更新失败，ID为 " + dppEtlTaskId + " 的数据集成任务记录不存在。");
+                            failureMessages.add(MessageUtils.messageWithFallback("dpp.import.update.fail",
+                                    "数据更新失败，ID为 " + dppEtlTaskId + " 的数据集成任务记录不存在。", dppEtlTaskId, "数据集成任务"));
                         }
                     } else {
                         failureNum++;
-                        failureMessages.add("数据更新失败，某条记录的ID不存在。");
+                        failureMessages.add(MessageUtils.messageWithFallback("dpp.import.update.id.missing",
+                                "数据更新失败，某条记录的ID不存在。"));
                     }
                 } else {
                     QueryWrapper<DppEtlTaskDO> queryWrapper = new QueryWrapper<>();
@@ -280,26 +299,32 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
                     if (existingDppEtlTask == null) {
                         dppEtlTaskMapper.insert(dppEtlTaskDO);
                         successNum++;
-                        successMessages.add("数据插入成功，ID为 " + dppEtlTaskId + " 的数据集成任务记录。");
+                        successMessages.add(MessageUtils.messageWithFallback("dpp.import.insert.success",
+                                "数据插入成功，ID为 " + dppEtlTaskId + " 的数据集成任务记录。", dppEtlTaskId, "数据集成任务"));
                     } else {
                         failureNum++;
-                        failureMessages.add("数据插入失败，ID为 " + dppEtlTaskId + " 的数据集成任务记录已存在。");
+                        failureMessages.add(MessageUtils.messageWithFallback("dpp.import.insert.fail",
+                                "数据插入失败，ID为 " + dppEtlTaskId + " 的数据集成任务记录已存在。", dppEtlTaskId, "数据集成任务"));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
-                String errorMsg = "数据导入失败，错误信息：" + e.getMessage();
+                String errorMsg = MessageUtils.messageWithFallback("dpp.import.error.detail",
+                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
         }
         StringBuilder resultMsg = new StringBuilder();
         if (failureNum > 0) {
-            resultMsg.append("很抱歉，导入失败！共 ").append(failureNum).append(" 条数据格式不正确，错误如下：");
-            resultMsg.append("<br/>").append(String.join("<br/>", failureMessages));
-            throw new ServiceException(resultMsg.toString());
+            String failureDetails = String.join("<br/>", failureMessages);
+            resultMsg.append(MessageUtils.messageWithFallback("dpp.import.result.fail",
+                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    failureNum, failureDetails));
+            throw new ServiceException("dpp.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
-            resultMsg.append("恭喜您，数据已全部导入成功！共 ").append(successNum).append(" 条。");
+            resultMsg.append(MessageUtils.messageWithFallback("dpp.import.result.success",
+                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
         }
         return resultMsg.toString();
     }
@@ -375,7 +400,7 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
         if (StringUtils.equals("0", dppEtlNewNodeSaveReqVO.getReleaseState())) {
             DsStatusRespDTO dsStatusRespDTO = dsEtlTaskService.releaseTask("OFFLINE", String.valueOf(dppEtlTaskDO.getProjectCode()), dppEtlTaskDO.getCode());
             if (dsStatusRespDTO == null || !dsStatusRespDTO.getSuccess()) {
-                throw new ServiceException("发布或下线任务，失败！");
+                throw new ServiceException("dpp.error.task.publish.fail", "发布或下线任务，失败！");
             }
 
             // 更新任务状态
@@ -447,7 +472,7 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
             if (dppEtlSchedulerById.getDsId() != null && dppEtlSchedulerById.getDsId() > 0) {
                 DsStatusRespDTO dsStatusRespDTO1 = iDsEtlSchedulerService.offlineScheduler(dppEtlTaskDO.getProjectCode(), dppEtlSchedulerById.getDsId());
                 if (!dsStatusRespDTO1.getData()) {
-                    throw new ServiceException("下线调度器，失败！");
+                    throw new ServiceException("dpp.error.scheduler.offline", "下线调度器，失败！");
                 }
             }
 
@@ -474,7 +499,7 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
 
         DsStatusRespDTO dsStatusRespDTO1 = iDsEtlSchedulerService.onlineScheduler(dppEtlTaskDO.getProjectCode(), dppEtlSchedulerSaveReqVO.getDsId());
         if (!dsStatusRespDTO1.getData()) {
-            throw new ServiceException("上线调度器，失败！");
+            throw new ServiceException("dpp.error.scheduler.online", "上线调度器，失败！");
         }
 
         // 更新调度器
@@ -850,7 +875,7 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
         DppEtlSchedulerDO dppEtlSchedulerById = iDppEtlSchedulerService.getDppEtlSchedulerById(dppEtlSchedulerPageReqVO);
 
         if (dppEtlSchedulerById == null) {
-            throw new ServiceException("任务模版错误，未查询到调度信息！");
+            throw new ServiceException("dpp.error.template.scheduler.missing", "任务模版错误，未查询到调度信息！");
         }
 
         // 若任务状态未变化，则直接返回
@@ -891,11 +916,11 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
             if (dppEtlSchedulerById.getDsId() != null && dppEtlSchedulerById.getDsId() > 0) {
                 DsStatusRespDTO dsStatusRespDTO = dsEtlTaskService.releaseTask("OFFLINE", String.valueOf(dppEtlTaskDO.getProjectCode()), dppEtlTaskDO.getCode());
                 if (dsStatusRespDTO == null || !dsStatusRespDTO.getSuccess()) {
-                    throw new ServiceException("发布或下线任务，失败！");
+                    throw new ServiceException("dpp.error.task.publish.fail", "发布或下线任务，失败！");
                 }
                 DsStatusRespDTO dsStatusRespDTO1 = iDsEtlSchedulerService.offlineScheduler(dppEtlTaskDO.getProjectCode(), dppEtlSchedulerById.getDsId());
                 if (!dsStatusRespDTO1.getData()) {
-                    throw new ServiceException("下线调度器，失败！");
+                    throw new ServiceException("dpp.error.scheduler.offline", "下线调度器，失败！");
                 }
             }
             // 更新任务状态
@@ -929,7 +954,7 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
 
         DsStatusRespDTO dsStatusRespDTO1 = iDsEtlSchedulerService.onlineScheduler(dppEtlTaskDO.getProjectCode(), dppEtlSchedulerSaveReqVO.getDsId());
         if (!dsStatusRespDTO1.getData()) {
-            throw new ServiceException("上线调度器，失败！");
+            throw new ServiceException("dpp.error.scheduler.online", "上线调度器，失败！");
         }
 
         // 更新调度器
@@ -990,13 +1015,13 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
         if (dsSchedulerRespDTO == null || !dsSchedulerRespDTO.getSuccess()) {
             DsSchedulerRespDTO byTaskCode = iDsEtlSchedulerService.getByTaskCode(String.valueOf(dppEtlTaskDO.getProjectCode()), dppEtlTaskDO.getCode());
             if (byTaskCode == null || !byTaskCode.getSuccess()) {
-                throw new ServiceException("创建调度器，失败！");
+                throw new ServiceException("dpp.error.scheduler.create", "创建调度器，失败！");
             }
             Schedule data = byTaskCode.getData();
             DsSchedulerUpdateReqDTO schedulerUpdateRequest = TaskConverter.createSchedulerUpdateRequest(data.getId(), dppEtlSchedulerById.getCronExpression(), dppEtlTaskDO.getCode());
             dsSchedulerRespDTO = iDsEtlSchedulerService.updateScheduler(schedulerUpdateRequest, String.valueOf(dppEtlTaskDO.getProjectCode()));
             if (dsSchedulerRespDTO == null || !dsSchedulerRespDTO.getSuccess()) {
-                throw new ServiceException("更新调度器，失败！");
+                throw new ServiceException("dpp.error.scheduler.update", "更新调度器，失败！");
             }
         }
         return dsSchedulerRespDTO;
@@ -1012,7 +1037,7 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
                 DsSchedulerSaveReqDTO dsSchedulerSaveReqDTO = TaskConverter.createSchedulerRequest(dppEtlSchedulerById.getCronExpression(), dppEtlTaskDO.getCode());
                 DsSchedulerRespDTO saveScheduler = iDsEtlSchedulerService.saveScheduler(dsSchedulerSaveReqDTO, String.valueOf(dppEtlTaskDO.getProjectCode()));
                 if (saveScheduler == null || !saveScheduler.getSuccess()) {
-                    throw new ServiceException("创建调度器，失败！");
+                    throw new ServiceException("dpp.error.scheduler.create", "创建调度器，失败！");
                 }
                 return byTaskCode;
             }

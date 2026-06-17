@@ -1,4 +1,5 @@
 package tech.qiantong.qdata.mybatis.core.util;
+import tech.qiantong.qdata.common.exception.ServiceException;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -36,7 +37,7 @@ public class ForceUpdateHelper {
             idField.setAccessible(true);
             id = idField.get(entity);
         } catch (Exception e) {
-            throw new RuntimeException("获取主键失败", e);
+            throw new ServiceException("sys.error.pk.fail", "获取主键失败");
         }
 
         if (id == null) {

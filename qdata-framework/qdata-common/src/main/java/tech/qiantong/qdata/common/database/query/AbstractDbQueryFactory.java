@@ -13,6 +13,21 @@
  * For brand customization, please apply for brand customization authorization via official channels.
  *  *
  * More information: https://qdata.qiantong.tech/business.html
+ *  *
+ * ============================================================================
+ *  *
+ * 版权所有 © 2025 江苏千桐科技有限公司
+ * qData 数据中台（开源版）
+ *  *
+ * 许可协议：
+ * 本项目基于 Apache License 2.0 开源协议发布，
+ * 允许在遵守协议的前提下进行商用、修改和分发。
+ *  *
+ * 特别说明：
+ * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
+ * 如需定制品牌，请通过官方渠道申请品牌定制授权。
+ *  *
+ * 更多信息请访问：https://qdata.qiantong.tech/business.html
  */
 
 package tech.qiantong.qdata.common.database.query;
@@ -194,7 +209,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
             }
             return dataSource.getConnection();
         } catch (SQLException e) {
-            throw new DataQueryException("获取数据库连接出错");
+            throw new DataQueryException("db.error.connection", "获取数据库连接出错");
         }
     }
 
@@ -227,7 +242,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
         } else if (dataSource instanceof SimpleDataSource) {
             ((SimpleDataSource) dataSource).close();
         } else {
-            throw new DataQueryException("不合法数据源类型");
+            throw new DataQueryException("db.error.invalid.datasource", "不合法数据源类型");
         }
     }
 
@@ -608,7 +623,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
     protected String trainToJdbcUrl(DbQueryProperty property) {
         String url = DbType.getDbType(property.getDbType()).getUrl();
         if (StringUtils.isEmpty(url)) {
-            throw new DataQueryException("无效数据库类型!");
+            throw new DataQueryException("db.error.invalid.dbtype", "无效数据库类型");
         }
         url = url.replace("${host}", property.getHost());
         url = url.replace("${port}", String.valueOf(property.getPort()));
@@ -635,7 +650,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
             }
         }
         if (StringUtils.isEmpty(dbName)) {
-            throw new DataQueryException("无效数据库类型!");
+            throw new DataQueryException("db.error.invalid.dbtype", "无效数据库类型");
         }
         String dataStorageSizeSql = dbDialect.getDataStorageSize(dbName);
         List<Map<String, Object>> dataStorageSizeResult = namedJdbcTemplate.query(dataStorageSizeSql, new MyRowMapper());
@@ -973,7 +988,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            throw new DataQueryException("sql解析失败!");
+            throw new DataQueryException("db.error.sql.parse", "SQL解析失败");
         } finally {
             if (stmt != null) {
                 try {

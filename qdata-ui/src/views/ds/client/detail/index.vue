@@ -31,7 +31,7 @@
           </el-col>
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('ds.client.detail.appSecret') }}</div>
+              <div class="infotop-row-lable">{{ td('ds.client.details.appSecret') }}</div>
               <div class="infotop-row-value">
                 {{ clientDetail.secret || '-' }}
               </div>
@@ -39,7 +39,7 @@
           </el-col>
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{td('ds.client.detail.appSecret')}}</div>
+              <div class="infotop-row-lable">{{td('ds.client.details.appSecret')}}</div>
               <div class="infotop-row-value">
                 <image-preview :src="clientDetail.logo || noDataImg" :width="50" :height="50" />
               </div>
@@ -67,15 +67,11 @@
     </div>
 
     <div class="pagecont-bottom">
-      <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
-        <el-tab-pane :label="td('ds.client.detail.apiAuth')" name="1">
-          <api :clientDetail="clientDetail"></api>
-        </el-tab-pane>
-        <el-tab-pane :label="td('ds.api.client.detailInfo')" name="2">
-          <info :clientDetail="clientDetail"></info>
+      <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tab-pane v-for="item in tabList" :key="item.name" :label="item.label" :name="item.name">
+          <component :is="item.component" :clientDetail="clientDetail"></component>
         </el-tab-pane>
       </el-tabs>
-
     </div>
 
   </div>
@@ -93,7 +89,18 @@ const noDataImg = new URL('@/assets/system/images/D.png', import.meta.url).href
 
 const { proxy } = getCurrentInstance();
 const { auth_public, auth_app_type } = proxy.useDict('auth_public', 'auth_app_type');
-
+const tabList = ref([
+    {
+        label: td('ds.client.details.apiAuth'),
+        name: '1',
+        component: api
+    },
+    {
+        label: td('ds.client.details.detailInfo'),
+        name: '2',
+        component: info
+    }
+  ]);
 const activeName = ref('1')
 
 const handleClick = (tab, event) => {

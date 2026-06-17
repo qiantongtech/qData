@@ -1421,16 +1421,17 @@ getAssetThemeList();
           display: flex;
           font-family: PingFang SC;
           line-height: 28px;
+          gap: 10px;
 
           .form-label {
-            width: 70px;
             font-weight: 400;
             font-size: 14px;
             color: #8c8c8c;
+            white-space: nowrap;
           }
 
           .form-value {
-            width: calc(100% - 70px);
+            flex:1;
             font-weight: 500;
             font-size: 14px;
             color: #262626;
@@ -1492,6 +1493,7 @@ getAssetThemeList();
             font-family: PingFang SC;
             font-weight: normal;
             font-size: 12px;
+            white-space: nowrap;
           }
 
           &.warn {

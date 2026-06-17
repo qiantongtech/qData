@@ -257,7 +257,7 @@ export default {
         idPlaceholder: 'Please enter ID',
         addSuccess: 'Added successfully',
         editSuccess: 'Edited successfully',
-        detail: {
+        details: {
             id: 'ID',
             appSecret: 'Application Secret',
             appIcon: 'Application Icon',

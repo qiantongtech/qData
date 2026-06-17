@@ -13,6 +13,21 @@
  * For brand customization, please apply for brand customization authorization via official channels.
  *  *
  * More information: https://qdata.qiantong.tech/business.html
+ *  *
+ * ============================================================================
+ *  *
+ * 版权所有 © 2025 江苏千桐科技有限公司
+ * qData 数据中台（开源版）
+ *  *
+ * 许可协议：
+ * 本项目基于 Apache License 2.0 开源协议发布，
+ * 允许在遵守协议的前提下进行商用、修改和分发。
+ *  *
+ * 特别说明：
+ * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
+ * 如需定制品牌，请通过官方渠道申请品牌定制授权。
+ *  *
+ * 更多信息请访问：https://qdata.qiantong.tech/business.html
  */
 
 package tech.qiantong.qdata.module.ds.service.api.impl;
@@ -36,6 +51,7 @@ import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
 import tech.qiantong.qdata.common.database.constants.DbType;
 import tech.qiantong.qdata.common.database.core.PageResult;
 import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.JSONUtils;
 import tech.qiantong.qdata.common.utils.PageUtil;
 import tech.qiantong.qdata.module.da.api.datasource.dto.DaDatasourceRespDTO;
@@ -111,7 +127,7 @@ public class ApiMappingEngine {
 
             sqlFilterResult = SqlBuilderUtil.getInstance().applyFilters(dataApi.getExecuteConfig().getSqlText(), params);
         } catch (Exception e) {
-            throw new ServiceException("API调用动态构造SQL语句出错");
+            throw new ServiceException("ds.error.api.sql.build", "API调用动态构造SQL语句出错");
         }
         Map<String, Object> acceptedFilters = sqlFilterResult.getAcceptedFilters();
 
@@ -141,7 +157,7 @@ public class ApiMappingEngine {
                     break;
             }
         } catch (Exception e) {
-            throw new ServiceException("API调用查询结果集出错");
+            throw new ServiceException("ds.error.api.query.rs", "API调用查询结果集出错");
         }finally {
             dbQuery.close();
         }
@@ -161,7 +177,7 @@ public class ApiMappingEngine {
             //通过数据源id获取
             DaDatasourceRespDTO dataSource = iDaDatasourceApiService.getDatasourceById(Long.valueOf(executeConfig.getSourceId()));
             if (dataSource == null) {
-                throw new ServiceException("数据源不存在");
+                throw new ServiceException("ds.error.datasource.notfound", "数据源不存在");
             }
             executeConfig.setDbType(dataSource.getDatasourceType());
             JSONObject dataSourceConfig = JSONObject.parseObject(dataSource.getDatasourceConfig());
@@ -190,7 +206,7 @@ public class ApiMappingEngine {
 //        try {
 //            metadataDsnRuleLinkList = metadataSourceServiceFeign.getMetadataDsnRuleLinkList(apiId);
 //        } catch (Exception e) {
-//            throw new ServiceException("API调用查询脱敏规则出错");
+//            throw new ServiceException("ds.error.api.desensitize", "API调用查询脱敏规则出错");
 //        }
 //
 //        if (CollectionUtils.isEmpty(metadataDsnRuleLinkList)) {
@@ -228,7 +244,7 @@ public class ApiMappingEngine {
 //        try {
 //            metadataDsnRuleLinkList = metadataSourceServiceFeign.getMetadataDsnRuleLinkList(apiId);
 //        } catch (Exception e) {
-//            throw new ServiceException("API调用查询脱敏规则出错");
+//            throw new ServiceException("ds.error.api.desensitize", "API调用查询脱敏规则出错");
 //        }
 //
 //        if (CollectionUtils.isEmpty(metadataDsnRuleLinkList)) {

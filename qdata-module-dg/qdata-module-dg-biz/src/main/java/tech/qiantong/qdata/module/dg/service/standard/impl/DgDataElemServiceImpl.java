@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.module.dg.controller.admin.standard.vo.DgDataElemPageReqVO;
 import tech.qiantong.qdata.module.dg.controller.admin.standard.vo.DgDataElemSaveReqVO;
@@ -64,7 +65,7 @@ public class DgDataElemServiceImpl extends ServiceImpl<DgDataElemMapper, DgDataE
         // 批量删除数据元
         boolean exists = columnApiService.existsByDataElemIds(idList);
         if (exists) {
-            throw new ServiceException("被字段元数据引用，不可删除");
+            throw new ServiceException("dg.error.delete.ref.field", "被字段元数据引用，不可删除");
         }
         return mapper.deleteBatchIds(idList);
     }

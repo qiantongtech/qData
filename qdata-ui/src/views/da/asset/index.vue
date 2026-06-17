@@ -1499,16 +1499,17 @@ getAssetThemeList();
           display: flex;
           font-family: PingFang SC;
           line-height: 28px;
+          gap: 10px;
 
           .form-label {
-            width: 70px;
             font-weight: 400;
             font-size: 14px;
             color: #717171;
+            white-space: nowrap;
           }
 
           .form-value {
-            width: calc(100% - 70px);
+            flex:1;
             font-size: 14px;
             color: #333333;
             overflow: hidden;

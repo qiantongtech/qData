@@ -51,7 +51,7 @@ service.interceptors.request.use(config => {
   }
 
   // 统一设置请求语言参数，保证后端能识别当前语言
-  config.headers['X-Lang'] = getStoredLang()
+  config.headers['accept-language'] = getStoredLang()
 
   // 处理生产环境政务内网无法使用put、delete请求
   const env = import.meta.env.VITE_APP_ENV;

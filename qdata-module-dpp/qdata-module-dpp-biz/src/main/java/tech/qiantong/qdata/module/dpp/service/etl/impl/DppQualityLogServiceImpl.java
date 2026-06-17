@@ -13,6 +13,21 @@
  * For brand customization, please apply for brand customization authorization via official channels.
  *  *
  * More information: https://qdata.qiantong.tech/business.html
+ *  *
+ * ============================================================================
+ *  *
+ * 版权所有 © 2025 江苏千桐科技有限公司
+ * qData 数据中台（开源版）
+ *  *
+ * 许可协议：
+ * 本项目基于 Apache License 2.0 开源协议发布，
+ * 允许在遵守协议的前提下进行商用、修改和分发。
+ *  *
+ * 特别说明：
+ * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
+ * 如需定制品牌，请通过官方渠道申请品牌定制授权。
+ *  *
+ * 更多信息请访问：https://qdata.qiantong.tech/business.html
  */
 
 package tech.qiantong.qdata.module.dpp.service.etl.impl;
@@ -28,6 +43,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.DateUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
@@ -167,7 +183,7 @@ public class DppQualityLogServiceImpl  extends ServiceImpl<DppQualityLogMapper,D
     @Override
     public String importDppQualityLog(List<DppQualityLogRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("导入数据不能为空！");
+            throw new ServiceException("dpp.error.import.empty", "导入数据不能为空！");
         }
 
         int successNum = 0;
@@ -185,14 +201,17 @@ public class DppQualityLogServiceImpl  extends ServiceImpl<DppQualityLogMapper,D
                         if (existingDppQualityLog != null) {
                             dppQualityLogMapper.updateById(dppQualityLogDO);
                             successNum++;
-                            successMessages.add("数据更新成功，ID为 " + dppQualityLogId + " 的数据质量日志记录。");
+                            successMessages.add(MessageUtils.messageWithFallback("dpp.import.update.success",
+                                    "数据更新成功，ID为 " + dppQualityLogId + " 的数据质量日志记录。", dppQualityLogId, "数据质量日志"));
                         } else {
                             failureNum++;
-                            failureMessages.add("数据更新失败，ID为 " + dppQualityLogId + " 的数据质量日志记录不存在。");
+                            failureMessages.add(MessageUtils.messageWithFallback("dpp.import.update.fail",
+                                    "数据更新失败，ID为 " + dppQualityLogId + " 的数据质量日志记录不存在。", dppQualityLogId, "数据质量日志"));
                         }
                     } else {
                         failureNum++;
-                        failureMessages.add("数据更新失败，某条记录的ID不存在。");
+                        failureMessages.add(MessageUtils.messageWithFallback("dpp.import.update.id.missing",
+                                "数据更新失败，某条记录的ID不存在。"));
                     }
                 } else {
                     QueryWrapper<DppQualityLogDO> queryWrapper = new QueryWrapper<>();
@@ -201,26 +220,32 @@ public class DppQualityLogServiceImpl  extends ServiceImpl<DppQualityLogMapper,D
                     if (existingDppQualityLog == null) {
                         dppQualityLogMapper.insert(dppQualityLogDO);
                         successNum++;
-                        successMessages.add("数据插入成功，ID为 " + dppQualityLogId + " 的数据质量日志记录。");
+                        successMessages.add(MessageUtils.messageWithFallback("dpp.import.insert.success",
+                                "数据插入成功，ID为 " + dppQualityLogId + " 的数据质量日志记录。", dppQualityLogId, "数据质量日志"));
                     } else {
                         failureNum++;
-                        failureMessages.add("数据插入失败，ID为 " + dppQualityLogId + " 的数据质量日志记录已存在。");
+                        failureMessages.add(MessageUtils.messageWithFallback("dpp.import.insert.fail",
+                                "数据插入失败，ID为 " + dppQualityLogId + " 的数据质量日志记录已存在。", dppQualityLogId, "数据质量日志"));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
-                String errorMsg = "数据导入失败，错误信息：" + e.getMessage();
+                String errorMsg = MessageUtils.messageWithFallback("dpp.import.error.detail",
+                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
         }
         StringBuilder resultMsg = new StringBuilder();
         if (failureNum > 0) {
-            resultMsg.append("很抱歉，导入失败！共 ").append(failureNum).append(" 条数据格式不正确，错误如下：");
-            resultMsg.append("<br/>").append(String.join("<br/>", failureMessages));
-            throw new ServiceException(resultMsg.toString());
+            String failureDetails = String.join("<br/>", failureMessages);
+            resultMsg.append(MessageUtils.messageWithFallback("dpp.import.result.fail",
+                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    failureNum, failureDetails));
+            throw new ServiceException("dpp.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
-            resultMsg.append("恭喜您，数据已全部导入成功！共 ").append(successNum).append(" 条。");
+            resultMsg.append(MessageUtils.messageWithFallback("dpp.import.result.success",
+                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
         }
         return resultMsg.toString();
     }

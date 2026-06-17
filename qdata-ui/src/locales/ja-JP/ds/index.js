@@ -257,7 +257,7 @@ export default {
         idPlaceholder: 'IDを入力してください',
         addSuccess: '追加に成功しました',
         editSuccess: '編集に成功しました',
-        detail: {
+        details: {
             id: 'ID',
             appSecret: 'アプリケーションシークレット',
             appIcon: 'アプリケーションアイコン',

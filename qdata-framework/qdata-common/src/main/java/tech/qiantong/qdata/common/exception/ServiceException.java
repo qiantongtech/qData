@@ -13,9 +13,27 @@
  * For brand customization, please apply for brand customization authorization via official channels.
  *  *
  * More information: https://qdata.qiantong.tech/business.html
+ *  *
+ * ============================================================================
+ *  *
+ * 版权所有 © 2025 江苏千桐科技有限公司
+ * qData 数据中台（开源版）
+ *  *
+ * 许可协议：
+ * 本项目基于 Apache License 2.0 开源协议发布，
+ * 允许在遵守协议的前提下进行商用、修改和分发。
+ *  *
+ * 特别说明：
+ * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
+ * 如需定制品牌，请通过官方渠道申请品牌定制授权。
+ *  *
+ * 更多信息请访问：https://qdata.qiantong.tech/business.html
  */
 
 package tech.qiantong.qdata.common.exception;
+
+import tech.qiantong.qdata.common.utils.MessageUtils;
+import tech.qiantong.qdata.common.utils.StringUtils;
 
 /**
  * 业务异常
@@ -27,12 +45,22 @@ public final class ServiceException extends RuntimeException
     private static final long serialVersionUID = 1L;
 
     /**
-     * 错误码
+     * 错误码（HTTP 状态码，保留向后兼容）
      */
     private Integer code;
 
     /**
-     * 错误提示
+     * i18n 消息键（对应 messages.properties 中的 key）
+     */
+    private String i18nCode;
+
+    /**
+     * 消息格式化参数
+     */
+    private Object[] args;
+
+    /**
+     * 错误提示（兜底消息）
      */
     private String message;
 
@@ -50,15 +78,47 @@ public final class ServiceException extends RuntimeException
     {
     }
 
+    /**
+     * 使用纯文本消息构造（不进行 i18n）
+     */
     public ServiceException(String message)
     {
         this.message = message;
     }
 
+    /**
+     * 使用纯文本消息 + HTTP 状态码构造
+     */
     public ServiceException(String message, Integer code)
     {
         this.message = message;
         this.code = code;
+    }
+
+    /**
+     * 使用 i18n 消息键 + 兜底消息构造
+     * 优先从资源文件按当前语言获取文案，获取不到则使用 defaultMessage
+     *
+     * @param i18nCode 消息键（如 "user.not.exists"）
+     * @param defaultMessage 兜底消息
+     * @param args 格式化参数（可替换 {0}、{1} 等占位符）
+     */
+    public ServiceException(String i18nCode, String defaultMessage, Object... args)
+    {
+        this.i18nCode = i18nCode;
+        this.message = defaultMessage;
+        this.args = args;
+    }
+
+    /**
+     * 使用 i18n 消息键 + 兜底消息 + HTTP 状态码构造
+     */
+    public ServiceException(String i18nCode, String defaultMessage, Integer code, Object... args)
+    {
+        this.i18nCode = i18nCode;
+        this.message = defaultMessage;
+        this.code = code;
+        this.args = args;
     }
 
     public String getDetailMessage()
@@ -66,15 +126,41 @@ public final class ServiceException extends RuntimeException
         return detailMessage;
     }
 
+    /**
+     * 获取国际化后的消息文本
+     * 优先从 i18n 资源文件获取，兜底使用 message 字段
+     */
     @Override
     public String getMessage()
     {
+        if (!StringUtils.isEmpty(i18nCode))
+        {
+            // 通过 MessageUtils 获取当前语言文案，支持兜底链
+            String i18nMessage = MessageUtils.messageWithFallback(i18nCode, message, args);
+            if (i18nMessage != null)
+            {
+                return i18nMessage;
+            }
+        }
         return message;
     }
 
     public Integer getCode()
     {
         return code;
+    }
+
+    /**
+     * 获取 i18n 消息键
+     */
+    public String getI18nCode()
+    {
+        return i18nCode;
+    }
+
+    public Object[] getArgs()
+    {
+        return args;
     }
 
     public ServiceException setMessage(String message)

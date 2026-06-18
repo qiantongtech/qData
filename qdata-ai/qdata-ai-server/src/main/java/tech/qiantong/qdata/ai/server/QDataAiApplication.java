@@ -42,6 +42,7 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
 import tech.qiantong.qdata.common.httpClient.DsRequestUtils;
 import tech.qiantong.qdata.config.FilterConfig;
+import tech.qiantong.qdata.config.I18nConfig;
 import tech.qiantong.qdata.config.RabbitConfig;
 import tech.qiantong.qdata.module.system.controller.admin.auth.AuthController;
 import tech.qiantong.qdata.module.system.controller.admin.common.CommonController;
@@ -61,6 +62,7 @@ import tech.qiantong.qdata.security.filter.JwtAuthenticationTokenFilter;
                         CommonController.class,
                         WebSocketServer.class,
                         RabbitConfig.class,
+                        I18nConfig.class,
                         SecurityConfig.class,
                         JwtAuthenticationTokenFilter.class
                 }),

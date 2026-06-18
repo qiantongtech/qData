@@ -22,7 +22,6 @@ export default {
     disable: '無効',
     confirmEnableDisable: '"{name}"{titleBase}を"{text}"しますか？',
     operationSuccess: '{text}成功',
-    topNode: '最上位ノード',
     addTitle: '{titleBase}を追加',
     modifyTitle: '{titleBase}を変更',
     deleteConfirm: 'ID"{id}"の{titleBase}データ項目を削除してもよろしいですか？',

@@ -392,7 +392,7 @@ function getList() {
         loading.value = false;
 
         attApiCatOptions.value = [];
-        const data = { id: 0, name: td('ds.apiCat.topNode'), children: [] };
+        const data = { id: 0, name: td('common.texts.topNode'), children: [] };
         data.children = proxy.handleTree(response.data, 'id', 'parentId');
         attApiCatOptions.value.push(data);
     });

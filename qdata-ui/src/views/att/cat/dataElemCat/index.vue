@@ -378,7 +378,7 @@ function getList() {
 function getDataTree() {
   listAttDataElemCat().then((response) => {
     attDataElemCatOptions.value = [];
-    const data = { id: 0, name: td('att.common.rootNode'), children: [] };
+    const data = { id: 0, name: td('common.texts.topNode'), children: [] };
     data.children = proxy.handleTree(response.data, "id", "parentId");
     attDataElemCatOptions.value.push(data);
   });
@@ -449,7 +449,7 @@ function handleAdd(row) {
   // getTreeselect();
   listAttDataElemCat().then((response) => {
     attDataElemCatOptions.value = [];
-    const data = { id: 0, name: td('att.common.rootNode'), children: [] };
+    const data = { id: 0, name: td('common.texts.topNode'), children: [] };
     data.children = proxy.handleTree(response.data, "id", "parentId");
     attDataElemCatOptions.value.push(data);
   });
@@ -485,7 +485,7 @@ async function handleUpdate(row) {
       !d.parentId.toString().split(",").includes(row.id.toString())
     );
   });
-  const data = { id: 0, name: td('att.common.rootNode'), children: [] };
+  const data = { id: 0, name: td('common.texts.topNode'), children: [] };
   data.children = proxy.handleTree(filteredDepts, "id", "parentId");
   attDataElemCatOptions.value.push(data);
   if (row != null) {

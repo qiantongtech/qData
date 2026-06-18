@@ -110,7 +110,6 @@ export default {
     ruleCategoryPlaceholder: '監査ルールカテゴリを入力してください',
     confirmDeleteCat: '<titleBase>番号「<id>」を削除してもよろしいですか？',
     deleteConfirmCount: '<canDeleteCount>件削除可能、<cannotDeleteCount>件削除不可。削除可能なものを削除しますか？',
-    topNode: 'トップノード',
     addTitle: '{title}追加',
     editTitle: '{title}編集',
     detailTitle: '{title}詳細',

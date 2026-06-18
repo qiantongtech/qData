@@ -101,7 +101,6 @@ export default {
                     activeVersion: '現在バージョン',
                     createdBy: '作成者',
                     createdTime: '作成日時',
-                    topNode: 'トップノード',
                     createByPlaceholder: '作成者を入力してください',
                     createTimePlaceholder: '作成日時を入力してください',
                     updateMsg1: 'ユーザーテーブルフィールドを追加し、ユーザー名、連絡先、登録時間などの基本情報を含み、データ構造設計を最適化',

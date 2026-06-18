@@ -398,7 +398,7 @@ function getList() {
 function getDataTree() {
   listThemeDomain().then((response) => {
     attDataElemCatOptions.value = [];
-    const data = { id: 0, name: td('dm.themeDomain.topNode', '顶级节点'), children: [] };
+    const data = { id: 0, name: td('common.texts.topNode'), children: [] };
     data.children = proxy.handleTree(response.data, "id", "parentId");
     attDataElemCatOptions.value.push(data);
   });
@@ -509,7 +509,7 @@ function handleAdd(row) {
   // getTreeselect();
   listThemeDomain().then((response) => {
     attDataElemCatOptions.value = [];
-    const data = { id: 0, name: td('dm.themeDomain.topNode', '顶级节点'), children: [] };
+    const data = { id: 0, name: td('common.texts.topNode'), children: [] };
     data.children = proxy.handleTree(response.data, "id", "parentId");
     attDataElemCatOptions.value.push(data);
   });
@@ -542,7 +542,7 @@ async function handleUpdate(row) {
       !d.parentId.toString().split(",").includes(row.id.toString())
     );
   });
-  const data = { id: 0, name: td('dm.themeDomain.topNode', '顶级节点'), children: [] };
+  const data = { id: 0, name: td('common.texts.topNode'), children: [] };
   data.children = proxy.handleTree(filteredDepts, "id", "parentId");
   attDataElemCatOptions.value.push(data);
   if (row != null) {

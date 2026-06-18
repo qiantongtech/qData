@@ -101,7 +101,6 @@ export default {
                     activeVersion: 'Current Version',
                     createdBy: 'Created By',
                     createdTime: 'Created Time',
-                    topNode: 'Top Node',
                     createByPlaceholder: 'Please enter create by',
                     createTimePlaceholder: 'Please enter create time',
                     updateMsg1: 'Added user table fields, including basic information such as user name, contact information, registration time, optimized data structure design',

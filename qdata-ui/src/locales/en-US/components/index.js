@@ -22,7 +22,6 @@ export default {
     disable: 'Disable',
     confirmEnableDisable: 'Confirm to "{text}" "{name}" {titleBase}?',
     operationSuccess: '{text} successful',
-    topNode: 'Top Node',
     addTitle: 'Add {titleBase}',
     modifyTitle: 'Modify {titleBase}',
     deleteConfirm: 'Are you sure to delete the {titleBase} data item with ID "{id}"?',

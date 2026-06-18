@@ -18,8 +18,7 @@ export default {
                 defaultValue: '默认值',
                 pkFlag: '是否主键',
                 fkFlag: '是否外键',
-                nullableFlag: '是否可空',
-                topNode: '顶级节点'
+                nullableFlag: '是否可空'
             },
             database: {
                 tableList: '表列表',
@@ -27,8 +26,7 @@ export default {
                 dbName: '库名',
                 dbType: '数据库类型',
                 tableCount: '表数量',
-                version: '版本号',
-                topNode: '顶级节点'
+                version: '版本号'
             },
             table: {
                 columnList: '字段列表',
@@ -104,7 +102,6 @@ export default {
                     activeVersion: '当前版本',
                     createdBy: '创建人',
                     createdTime: '创建时间',
-                    topNode: '顶级节点',
                     createByPlaceholder: '请输入创建人',
                     createTimePlaceholder: '请输入创建时间',
                     updateMsg1: '新增用户表字段，包括用户姓名、联系方式、注册时间等基础信息，优化数据结构设计',

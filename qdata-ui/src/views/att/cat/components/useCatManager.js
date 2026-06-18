@@ -68,7 +68,7 @@ export default function useCatManager({
     if (!listFunc) return;
     listFunc().then((response) => {
       options.value = [];
-      const root = { id: 0, name: td('att.common.rootNode'), children: [] };
+      const root = { id: 0, name: td('common.texts.topNode'), children: [] };
       root.children = proxy.handleTree(response.data, "id", "parentId");
       options.value.push(root);
     });
@@ -119,7 +119,7 @@ export default function useCatManager({
     const filtered = responseAll.data.filter((d) => {
       return d.ID !== row.id && !d.parentId.toString().split(",").includes(row.id.toString());
     });
-    const root = { id: 0, name: td('att.common.rootNode'), children: [] };
+    const root = { id: 0, name: td('common.texts.topNode'), children: [] };
     root.children = proxy.handleTree(filtered, "id", "parentId");
     options.value.push(root);
     if (row != null) {

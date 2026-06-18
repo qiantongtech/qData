@@ -273,7 +273,7 @@ const processTreeData = (excludeId) => {
   treeOptions.value = [
     {
       id: 0,
-      name: td('dm.businessCategory.topNode', '顶级节点'),
+      name: td('common.texts.topNode', '顶级节点'),
       children: proxy.handleTree(rows, "id", "parentId"),
     },
   ];

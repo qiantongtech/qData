@@ -25,7 +25,6 @@ export default {
         importTitle: 'Data Service Category Import',
         importTip: 'Update existing data service category data?',
         uploadFormat: 'Only xls and xlsx format files are allowed for import.',
-        topNode: 'Top Node',
         detailCategory: 'Data Service Category Details',
         categoryNameRequired: 'Data service category is required',
         parentCategoryRequired: 'Parent category is required',

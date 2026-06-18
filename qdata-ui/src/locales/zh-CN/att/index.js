@@ -1,7 +1,6 @@
 export default {
   common: {
     edit: '修改',
-    rootNode: '顶级节点',
     nameRequired: '{name}不能为空',
     confirmDeleteItem: '是否确认删除编号为"<ids>"的数据项？',
     dataAssetCatName: '数据资产类目名称',
@@ -114,7 +113,6 @@ export default {
     ruleCategoryPlaceholder: '请输入稽查规则类目',
     confirmDeleteCat: '是否确认删除<titleBase>编号为"<id>"的数据项？',
     deleteConfirmCount: '可删除<canDeleteCount>个，不可删除<cannotDeleteCount>个，是否删除可删部分',
-    topNode: '顶级节点',
     addTitle: '新增{title}',
     editTitle: '修改{title}',
     detailTitle: '{title}详情',

@@ -24,7 +24,6 @@ export default {
     disable: '禁用',
     confirmEnableDisable: '确认要"{text}","{name}"{titleBase}吗？',
     operationSuccess: '{text}成功',
-    topNode: '顶级节点',
     addTitle: '添加{titleBase}',
     modifyTitle: '修改{titleBase}',
     deleteConfirm: '是否确认删除{titleBase}编号为"{id}"的数据项？',

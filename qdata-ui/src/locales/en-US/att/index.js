@@ -110,7 +110,6 @@ export default {
     ruleCategoryPlaceholder: 'Please enter audit rule category',
     confirmDeleteCat: 'Are you sure to delete the <titleBase> with code "<id>"?',
     deleteConfirmCount: '{canDeleteCount} can be deleted, {cannotDeleteCount} cannot be deleted. Delete the deletable ones?',
-    topNode: 'Top Node',
     addTitle: 'Add {title}',
     editTitle: 'Edit {title}',
     detailTitle: '{title} Detail',

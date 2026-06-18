@@ -27,7 +27,6 @@ export default {
     enableText: '启用',
     disableText: '禁用',
     ownerPhone: '负责人电话',
-    topNode: '顶级节点',
     parentCategory: '上级分类',
     parentPlaceholder: '请选择上级',
     dataDomainIds: '关联数据域',
@@ -74,8 +73,7 @@ export default {
     englishOnly: '只能输入英文字符',
     dataDomain: '数据域',
     updateExistingData: '是否更新已经存在的数据域数据',
-    confirmDeleteByName: '是否确认删除数据域名称为"<name>"的数据项？',
-    topNode: '顶级节点'
+    confirmDeleteByName: '是否确认删除数据域名称为"<name>"的数据项？'
   },
   dataLayer: {
     // 数仓分层

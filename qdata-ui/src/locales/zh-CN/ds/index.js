@@ -25,7 +25,6 @@ export default {
         importTitle: '数据服务类目导入',
         importTip: '是否更新已经存在的数据服务类目管理数据',
         uploadFormat: '仅允许导入xls、xlsx格式文件。',
-        topNode: '顶级节点',
         detailCategory: '数据服务类目详情',
         categoryNameRequired: '数据服务类目不能为空',
         parentCategoryRequired: '上级类目不能为空',

@@ -688,7 +688,7 @@ function getList() {
     loading.value = false;
 
     attDataDevCatOptions.value = [];
-    const data = { id: 0, name: td('dpp.setting.dataDevCat.topNode'), children: [] };
+    const data = { id: 0, name: td('common.texts.topNode'), children: [] };
     data.children = proxy.handleTree(response.data, "id", "parentId");
     attDataDevCatOptions.value.push(data);
   });

@@ -238,7 +238,7 @@ function getList() {
 function getDataTree() {
     listAttModelCat().then((response) => {
         attModelCatOptions.value = [];
-        const data = { id: 0, name: td('att.common.rootNode'), children: [] };
+        const data = { id: 0, name: td('common.texts.topNode'), children: [] };
         data.children = proxy.handleTree(response.data, 'id', 'parentId');
         attModelCatOptions.value.push(data);
     });
@@ -308,7 +308,7 @@ function handleAdd(row) {
     // getTreeselect();
     listAttModelCat().then((response) => {
         attModelCatOptions.value = [];
-        const data = { id: 0, name: td('att.common.rootNode'), children: [] };
+        const data = { id: 0, name: td('common.texts.topNode'), children: [] };
         data.children = proxy.handleTree(response.data, 'id', 'parentId');
         console.log(data, '子级');
         attModelCatOptions.value.push(data);
@@ -343,7 +343,7 @@ async function handleUpdate(row) {
         return d.ID !== row.id && !d.parentId.toString().split(',').includes(row.id.toString());
     });
     console.log(filteredDepts, '111级');
-    const data = { id: 0, name: td('att.common.rootNode'), children: [] };
+    const data = { id: 0, name: td('common.texts.topNode'), children: [] };
     data.children = proxy.handleTree(filteredDepts, 'id', 'parentId');
     attModelCatOptions.value.push(data);
     if (row != null) {

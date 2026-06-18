@@ -269,7 +269,7 @@ function getTreeData() {
   listBusinessCategory().then((response) => {
     const rows = response?.data || [];
     businessLayerOptions.value = [];
-    const treeData = { id: 0, name: td('dm.businessCategory.topNode', '顶级节点'), children: [] };
+    const treeData = { id: 0, name: td('common.texts.topNode'), children: [] };
     treeData.children = proxy.handleTree(rows, "id", "parentId");
     businessLayerOptions.value.push(treeData);
   });

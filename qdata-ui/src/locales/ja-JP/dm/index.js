@@ -27,7 +27,6 @@ export default {
     enableText: '有効',
     disableText: '無効',
     ownerPhone: '責任者電話番号',
-    topNode: 'トップノード',
     parentCategory: '上位カテゴリ',
     parentPlaceholder: '上位を選択してください',
     dataDomainIds: '関連データドメイン',
@@ -75,7 +74,6 @@ export default {
     dataDomain: 'データドメイン',
     updateExistingData: '既存のデータドメインデータを更新しますか',
     confirmDeleteByName: 'データドメイン「<name>」を削除してもよろしいですか？',
-    topNode: 'トップノード'
   },
   dataLayer: {
     // データウェアハウス階層
@@ -155,7 +153,6 @@ export default {
     confirmStatusChange: 'テーマドメイン「<name>」を「<text>」にしてもよろしいですか？',
     enableText: '有効',
     disableText: '無効',
-    topNode: 'トップノード',
     englishOnly: '英字のみ入力可能です'
   },
   common: {

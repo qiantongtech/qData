@@ -339,7 +339,7 @@ function getDomains() {
     const domains = {
       id: 0,
       code: 0,
-      name: td('meta.released.structured.column.topNode'),
+      name: td('common.texts.topNode'),
       children: proxy.handleTree(res.data, "id", "parentId"),
     };
     store.treeDomains.push(domains);

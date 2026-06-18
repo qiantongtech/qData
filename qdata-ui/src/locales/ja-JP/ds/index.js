@@ -25,7 +25,6 @@ export default {
         importTitle: 'データサービスカテゴリのインポート',
         importTip: '既存のデータサービスカテゴリデータを更新しますか？',
         uploadFormat: 'xls、xlsx形式のファイルのみインポート可能です。',
-        topNode: 'トップノード',
         detailCategory: 'データサービスカテゴリ詳細',
         categoryNameRequired: 'データサービスカテゴリは必須です',
         parentCategoryRequired: '上位カテゴリは必須です',

@@ -27,7 +27,6 @@ export default {
     enableText: 'Enable',
     disableText: 'Disable',
     ownerPhone: 'Responsible Person Phone',
-    topNode: 'Top Node',
     parentCategory: 'Parent Category',
     parentPlaceholder: 'Please select parent',
     dataDomainIds: 'Related Data Domain',
@@ -75,7 +74,6 @@ export default {
     dataDomain: 'Data Domain',
     updateExistingData: 'Update existing data domain data',
     confirmDeleteByName: 'Are you sure to delete data domain "<name>"?',
-    topNode: 'Top Node'
   },
   dataLayer: {
     // Data Warehouse Layer
@@ -155,7 +153,6 @@ export default {
     confirmStatusChange: 'Are you sure to "<text>" theme domain "<name>"?',
     enableText: 'Enable',
     disableText: 'Disable',
-    topNode: 'Top Node',
     englishOnly: 'Only English characters are allowed'
   },
   common: {

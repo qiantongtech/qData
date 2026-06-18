@@ -295,7 +295,7 @@ function handleStatusChange(row) {
 
 function buildTreeOptions(source) {
   treeOptions.value = [];
-  const root = { id: 0, name: td('att.common.rootNode'), children: [] };
+  const root = { id: 0, name: td('common.texts.topNode'), children: [] };
   root.children = proxy.handleTree(source, "id", "parentId");
   treeOptions.value.push(root);
 }

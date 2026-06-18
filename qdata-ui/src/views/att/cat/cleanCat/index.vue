@@ -356,7 +356,7 @@ function handleAdd(row) {
   reset();
   listAttCleanCat().then((response) => {
     attAssetCatOptions.value = [];
-    const data = { id: 0, name: td('att.common.rootNode'), children: [] };
+    const data = { id: 0, name: td('common.texts.topNode'), children: [] };
     data.children = proxy.handleTree(response.data, 'id', 'parentId');
     attAssetCatOptions.value.push(data);
   });
@@ -372,7 +372,7 @@ function handleAdd(row) {
 function getDataTree() {
   listAttCleanCat().then((response) => {
     attAssetCatOptions.value = [];
-    const data = { id: 0, name: td('att.common.rootNode'), children: [] };
+    const data = { id: 0, name: td('common.texts.topNode'), children: [] };
     data.children = proxy.handleTree(response.data, 'id', 'parentId');
     attAssetCatOptions.value.push(data);
   });
@@ -388,7 +388,7 @@ async function handleUpdate(row) {
     // 过滤条件：去掉目标部门ID或者祖先中包含目标部门ID的项
     return d.ID !== row.id && !d.parentId.toString().split(',').includes(row.id.toString());
   });
-  const data = { id: 0, name: td('att.common.rootNode'), children: [] };
+  const data = { id: 0, name: td('common.texts.topNode'), children: [] };
   data.children = proxy.handleTree(filteredDepts, 'id', 'parentId');
   attAssetCatOptions.value.push(data);
   if (row != null) {

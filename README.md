@@ -1,242 +1,242 @@
-![banner.png](images/banner3.png)
+![banner.png](images/en-US/banner.png)
 <p align="center">
   <img src="https://img.shields.io/badge/JDK-1.8+-brightgreen.svg" alt="JDK">
- <img src="https://img.shields.io/badge/Spring%20Boot-2.5.15-blue.svg" alt="Downloads">
- <img src="https://img.shields.io/badge/Vue-3.4.31-blue.svg" alt="Downloads">
- <img src="https://img.shields.io/badge/license-Apache--2.0-green"/>
- <img src="https://img.shields.io/badge/qData-v1.3.0-blue.svg"/>
+ <img src="https://img.shields.io/badge/Spring%20Boot-2.5.15-blue.svg" alt="Spring Boot">
+ <img src="https://img.shields.io/badge/Vue-3.4.31-blue.svg" alt="Vue">
+ <img src="https://img.shields.io/badge/license-Apache--2.0-green" alt="License"/>
+ <img src="https://img.shields.io/badge/qData-v1.5.2-blue.svg"/>
 
- <img src="https://gitee.com/qiantongtech/qData/badge/star.svg"/>
- <img src="https://img.shields.io/github/stars/qiantongtech/qData?label=Github%20Stars"/>
+ <img src="https://gitee.com/qiantongtech/qData/badge/star.svg" alt="Gitee Stars"/>
+ <img src="https://img.shields.io/github/stars/qiantongtech/qData?label=Github%20Stars" alt="GitHub Stars"/>
  <img src="https://atomgit.com/qiantongtech/qData/star/badge.svg"/>
 </p>
 
 <p align="center">
-  📖简体中文 | <a href="README.en.md">📖English</a>
+  <a href="README.zh-CN.md">📖简体中文</a> | 📖English | <a href="README.ja-JP.md">📖日本語</a>
 </p>
 
 
-## 🌈 平台简介
-**qData 数据中台**是一套面向企业数据治理与数据研发场景的开源数据中台，围绕 **ETL 数据集成、数据开发、数据建模、元数据管理、数据质量、数据资产、API 数据服务与 AI 智能问数**等核心能力，支持 MySQL、DM8、Oracle、SQL Server、Kingbase8、Doris 等常用数据库接入，帮助企业快速完成数据接入、清洗转换、资产编目、质量检查、接口开放和 Text2SQL 分析，可作为企业建设数据中台、数据治理平台、ETL 平台和数据服务平台的开源基础底座，也适合开发者进行二次开发与功能扩展。
+## 🌈 Platform Overview
+**qData Data Middle Platform** is an open-source data middle platform designed for enterprise data governance and data development scenarios. Built around core capabilities such as **ETL data integration, data development, data modeling, metadata management, data quality, data assets, API data services, and AI-powered data Q&A**, it supports access to common databases including MySQL、DM8、Oracle、SQL Server、Kingbase8、Doris. qData helps enterprises quickly complete data access, cleansing and transformation, asset cataloging, quality inspection, API publishing, and Text2SQL analysis. It can serve as an open-source foundation for building enterprise data middle platforms, data governance platforms, ETL platforms, and data service platforms, while also supporting secondary development and feature extension by developers.
 
-✨✨✨**在线文档**✨✨✨ <a href="https://community.qdata.tech" target="_blank">https://community.qdata.tech</a> 
+✨✨✨**Online Documentation**✨✨✨ <a href="https://community.qdata.tech" target="_blank">https://community.qdata.tech</a>
 
-✨✨✨**开源版演示地址**✨✨✨ <a href="https://demo.qdata.tech" target="_blank">https://demo.qdata.tech</a> ，账号：qData 密码：qData123
+✨✨✨**Open-Source Demo**✨✨✨ <a href="https://demo.qdata.tech" target="_blank">https://demo.qdata.tech</a>, account: qData, password: qData123
 
-✨✨✨**专业版演示地址**✨✨✨ <a href="https://pro-demo.qdata.tech" target="_blank">https://pro-demo.qdata.tech</a> ，演示账号请 [联系客服获取](https://community.qdata.tech/business/policy.html)
+✨✨✨**Professional Edition Demo**✨✨✨ <a href="https://pro-demo.qdata.tech" target="_blank">https://pro-demo.qdata.tech</a>. Please [contact customer service](https://community.qdata.tech/business/policy.html) to obtain a demo account.
 
-> 如果 qData 对您有帮助，请点个 **Star ⭐️**，这是我们持续更新的最大动力！ 🚀
+> If qData is helpful to you, please give us a **Star ⭐️**. It is the greatest motivation for us to keep improving! 🚀
 
-## 🍱 使用场景
+## 🍱 Use Cases
 
-qData 开源版适用于企业、政府机构、科研院校及开发团队建设数据中台、ETL 数据集成、数据治理、数据资产管理与数据服务能力，也可作为数据治理平台或数据研发平台的二次开发底座。
+The qData open-source edition is suitable for enterprises, government agencies, research institutes, universities, and development teams building data middle platforms, ETL data integration, data governance, data asset management, and data service capabilities. It can also be used as a secondary development foundation for data governance or data development platforms.
 
-| 场景 | 描述 | 典型客户类型 |
+| Scenario | Description | Typical Customer Type |
 | --- | --- | --- |
-| **ETL 数据集成** | 通过可视化方式配置数据接入、清洗转换和输出流程，支撑业务数据汇聚与处理。 | 数据研发团队、软件公司 |
-| **数据治理建设** | 统一管理数据标准、数据模型、元数据、数据质量和数据资产，建立基础治理体系。 | 政府机构、集团企业、科研院校 |
-| **数据资产管理** | 对数据表、字段、标签、类目等资产进行统一编目，提升数据查找和复用效率。 | 数据管理部门、公共服务机构 |
-| **API 数据服务** | 将数据表或 SQL 查询结果封装为 API 服务，支持数据接口开放与系统集成。 | 平台研发团队、集成服务商 |
-| **智能问数分析** | 支持自然语言问数、Text2SQL 查询与结果分析，降低业务人员用数门槛。 | 业务分析团队、运营团队 |
-| **二次开发底座** | 基于开源能力扩展数据集成、数据治理和数据服务功能，降低从零研发成本。 | 开发者、ISV 厂商、项目交付团队 |
+| **ETL Data Integration** | Configure data access, cleansing, transformation, and output workflows visually to support business data aggregation and processing. | Data development teams, software companies |
+| **Data Governance Construction** | Centrally manage data standards, data models, metadata, data quality, and data assets to establish a basic governance system. | Government agencies, group enterprises, research institutes and universities |
+| **Data Asset Management** | Catalog data tables, fields, tags, categories, and other assets in a unified way to improve data discovery and reuse efficiency. | Data management departments, public service organizations |
+| **API Data Services** | Encapsulate data tables or SQL query results as API services to support data interface publishing and system integration. | Platform development teams, integration service providers |
+| **Intelligent Data Q&A Analysis** | Support natural-language data questions, Text2SQL queries, and result analysis to lower the barrier for business users. | Business analysis teams, operations teams |
+| **Secondary Development Foundation** | Extend data integration, data governance, and data service capabilities based on the open-source foundation to reduce development costs from scratch. | Developers, ISVs, project delivery teams |
 
-## 💡 优势
+## 💡 Advantages
 
-| 优势点 | 描述 |
+| Advantage | Description |
 | --- | --- |
-| **开源可二开** | 提供开源数据中台基础能力，适合企业、开发者和项目团队按业务需求进行二次开发与功能扩展。 |
-| **可视化 ETL** | 支持通过可视化方式配置数据接入、清洗转换和输出流程，降低数据集成任务的开发门槛。 |
-| **治理能力完整** | 覆盖数据标准、数据建模、元数据管理、数据质量、数据资产等核心治理能力，帮助企业建立基础数据治理体系。 |
-| **多源数据接入** | 开源版支持 MySQL、Oracle、达梦8 等常用数据库接入，满足常见业务系统数据管理需求。 |
-| **数据服务开放** | 支持将数据表或 SQL 查询结果封装为 API 服务，并提供在线测试、调用日志和应用管理能力。 |
-| **AI 智能问数** | 支持自然语言问数、Text2SQL 和智能图表分析，降低业务人员查询和分析数据的使用门槛。 |
-| **轻量易部署** | 适合快速部署、验证和试用，可作为企业数据中台、ETL 平台或数据治理平台的开源基础底座。 |
-| **专业版平滑升级** | 开源版可用于前期验证和基础场景建设，复杂数据治理、整库同步、主数据、数据安全、BI 可视化等需求可升级专业版。 |
+| **Open Source and Extensible** | Provides foundational open-source data middle platform capabilities, suitable for enterprises, developers, and project teams to customize and extend according to business needs. |
+| **Visual ETL** | Supports visual configuration of data access, cleansing, transformation, and output workflows, lowering the development threshold for data integration tasks. |
+| **Complete Governance Capabilities** | Covers core governance capabilities including data standards, data modeling, metadata management, data quality, and data assets, helping enterprises build a basic data governance system. |
+| **Multi-Source Data Access** | The open-source edition supports access to common databases such as MySQL, Oracle, and DM8, meeting common business system data management requirements. |
+| **Open Data Services** | Supports encapsulating data tables or SQL query results as API services, with online testing, call logs, and application management capabilities. |
+| **AI-Powered Data Q&A** | Supports natural-language data questions, Text2SQL, and intelligent chart analysis, lowering the barrier for business users to query and analyze data. |
+| **Lightweight and Easy to Deploy** | Suitable for quick deployment, validation, and trial use, and can serve as an open-source foundation for enterprise data middle platforms, ETL platforms, or data governance platforms. |
+| **Smooth Upgrade to Professional Edition** | The open-source edition can be used for early validation and basic scenarios. For complex data governance, full-database synchronization, master data, data security, BI visualization, and other needs, users can upgrade to the Professional Edition. |
 
-## ✅ 已有功能一览
+## ✅ Current Features
 
-| 模块 | 描述 |
+| Module | Description |
 | --- | --- |
-| **数据集成（ETL）** | 支持可视化配置数据接入、清洗转换和输出流程，适用于常见业务数据汇聚、加工和同步场景。 |
-| **数据开发** | 支持通过 SQL 脚本方式进行数据处理任务开发，适用于数据加工、统计分析和周期性处理等场景。 |
-| **数据建模** | 支持数据标准、数仓分层、数据分域、主题规划、逻辑模型和标准数据元等能力，帮助企业建立基础数据模型体系。 |
-| **元数据管理** | 支持元数据查看、字段结构查看、版本管理和元数据比对，便于了解数据表结构、字段信息及版本变化。 |
-| **数据质量** | 支持基于稽查规则的数据质量检查与处理，可用于发现数据完整性、唯一性、有效性等问题。 |
-| **数据资产** | 支持数据资产编目、资产标签、资产详情、资产查询等能力，帮助用户统一管理和检索数据资源。 |
-| **数据查询** | 支持通过 SQL 在线查询数据源中的数据，便于进行临时查询、数据验证和结果导出。 |
-| **数据服务** | 支持将数据表或 SQL 查询结果封装为 API 服务，并提供在线测试、调用日志和应用管理能力。 |
-| **AI 智能问数** | 支持自然语言问数、Text2SQL、智能图表和结果明细查看，降低业务人员使用数据的门槛。 |
-| **基础管理** | 支持数据源、项目空间、类目、稽查规则、清洗规则等基础配置，为数据研发和数据治理提供支撑。 |
-| **系统管理** | 支持用户、角色、菜单、部门、岗位、字典、参数、公告和日志等基础系统管理能力。 |
+| **Data Integration (ETL)** | Supports visual configuration of data access, cleansing, transformation, and output workflows for common business data aggregation, processing, and synchronization scenarios. |
+| **Data Development** | Supports data processing task development through SQL scripts, suitable for data processing, statistical analysis, scheduled processing, and similar scenarios. |
+| **Data Modeling** | Supports data standards, warehouse layering, data domains, subject planning, logical models, standard data elements, and other capabilities to help enterprises build a foundational data model system. |
+| **Metadata Management** | Supports metadata viewing, field structure viewing, version management, and metadata comparison, making it easier to understand table structures, field information, and version changes. |
+| **Data Quality** | Supports data quality inspection and processing based on audit rules, helping identify issues such as completeness, uniqueness, and validity. |
+| **Data Assets** | Supports data asset cataloging, asset tags, asset details, asset search, and other capabilities to help users manage and retrieve data resources in a unified way. |
+| **Data Query** | Supports online SQL queries against data sources for temporary queries, data validation, and result export. |
+| **Data Services** | Supports encapsulating data tables or SQL query results as API services, with online testing, call logs, and application management capabilities. |
+| **AI-Powered Data Q&A** | Supports natural-language data questions, Text2SQL, intelligent charts, and result detail viewing, lowering the barrier for business users to work with data. |
+| **Basic Management** | Supports data sources, project workspaces, categories, audit rules, cleansing rules, and other basic configurations to support data development and data governance. |
+| **System Management** | Supports users, roles, menus, departments, positions, dictionaries, parameters, announcements, logs, and other basic system management capabilities. |
 
-👉 qData 数据中台采用模块化设计，当前开源版聚焦数据集成、数据开发、数据建模、元数据、数据质量、数据资产、数据服务和智能问数等核心能力。更多功能可参考：[qData 功能清单总览](https://community.qdata.tech/docs/start/features.html)
+👉 qData Data Middle Platform adopts a modular design. The current open-source edition focuses on core capabilities such as data integration, data development, data modeling, metadata, data quality, data assets, data services, and intelligent data Q&A. For more features, see: [qData Feature Overview](https://community.qdata.tech/docs/start/features.html)
 
-## 🚧 未来开发计划
+## 🚧 Future Roadmap
 
-
-| 功能名称 | 功能描述 |
+| Feature | Description |
 | --- | --- |
-| **元数据采集任务** | 规划支持按数据源配置元数据采集任务，可设置采集范围、采集对象和执行策略，用于自动采集表、字段等元数据信息。 |
-| **元数据采集实例** | 规划记录每次元数据采集的执行实例，展示运行状态、执行时间、采集结果和日志信息，便于追踪采集过程。 |
-| **最新元数据** | 规划展示当前最新采集到的元数据内容，包括表结构、字段信息、数据类型、字段描述等，方便用户查看数据结构现状。 |
-| **定版元数据** | 规划支持将元数据按版本进行固化管理，便于记录关键时间点的数据结构状态，支撑后续版本追溯和变更核查。 |
-| **元数据比对** | 规划支持不同版本元数据之间的结构差异比对，帮助用户识别字段新增、删除、类型变化和描述变化等内容。 |
-| **业务分层** | 规划完善面向数仓规划的业务分层能力，支持按业务场景、数据域或主题对模型进行更清晰的组织和管理。 |
-| **模型发布** | 规划支持将逻辑模型发布为物理模型或数据表结构，打通从模型设计到落地使用的流程。 |
-| **数据资产重构** | 规划重构数据资产模块，优化资产编目、资产详情、资产检索、资产标签和资产维护体验。 |
-| **数据集成增强** | 持续扩展 ETL 组件、转换算子和数据源类型，提升复杂数据接入、清洗转换和输出任务的配置能力。 |
-| **数据质量增强** | 持续扩展稽查规则、清洗规则和质量报告能力，提升数据质量问题发现、分析和处理效率。 |
-| **数据服务增强** | 优化 API 服务发布、接口测试、调用日志、应用授权和限流控制能力，提升数据服务开放体验。 |
-| **AI 能力增强** | 持续优化 Text2SQL、智能图表、问数结果解释和数据洞察能力，提升自然语言分析体验。 |
+| **Metadata Collection Tasks** | Planned support for configuring metadata collection tasks by data source, including collection scope, collection objects, and execution strategies, to automatically collect metadata such as tables and fields. |
+| **Metadata Collection Instances** | Planned recording of each metadata collection execution instance, including runtime status, execution time, collection results, and logs, making the collection process traceable. |
+| **Latest Metadata** | Planned display of the latest collected metadata, including table structures, field information, data types, and field descriptions, helping users view the current state of data structures. |
+| **Versioned Metadata** | Planned support for solidifying metadata by version to record data structure states at key points in time and support later version tracing and change checks. |
+| **Metadata Comparison** | Planned support for comparing structural differences between metadata versions, helping users identify added or deleted fields, type changes, description changes, and more. |
+| **Business Layering** | Planned enhancement of business layering capabilities for data warehouse planning, supporting clearer organization and management of models by business scenario, data domain, or subject. |
+| **Model Publishing** | Planned support for publishing logical models as physical models or data table structures, connecting the process from model design to practical use. |
+| **Data Asset Refactoring** | Planned refactoring of the data asset module to optimize asset cataloging, asset details, asset search, asset tags, and asset maintenance experience. |
+| **Data Integration Enhancements** | Continuously expand ETL components, transformation operators, and data source types to improve configuration capabilities for complex data access, cleansing, transformation, and output tasks. |
+| **Data Quality Enhancements** | Continuously expand audit rules, cleansing rules, and quality report capabilities to improve the efficiency of discovering, analyzing, and handling data quality issues. |
+| **Data Service Enhancements** | Optimize API service publishing, interface testing, call logs, application authorization, and rate limiting capabilities to improve the data service publishing experience. |
+| **AI Capability Enhancements** | Continuously optimize Text2SQL, intelligent charts, data Q&A result explanation, and data insight capabilities to improve the natural-language analysis experience. |
 
-💡 如您有好的建议或功能需求，欢迎 [提交 Issue](https://gitee.com/qiantongtech/qData/issues)，与我们共同完善 qData 数据中台。
-[//]: # (## 🧩 架构图)
+💡 If you have suggestions or feature requests, you are welcome to [submit an Issue](https://gitee.com/qiantongtech/qData/issues) and help us improve qData Data Middle Platform together.
+
+[//]: # (## 🧩 Architecture Diagram)
 
 [//]: # (![framework.png]&#40;images%2Fframework.png&#41;)
 
-## 🛠️ 技术栈
-qData 平台采用前后端分离架构，后端基于 Spring Boot，前端基于 Vue 3，并整合了部分主流中间件与数据工具。
+## 🛠️ Technology Stack
+qData adopts a frontend-backend separated architecture. The backend is based on Spring Boot, the frontend is based on Vue 3, and the platform integrates several mainstream middleware and data tools.
 
 <table>
   <tr>
-    <th>分类</th><th>技术</th><th>描述</th>
+    <th>Category</th><th>Technology</th><th>Description</th>
   </tr>
   <tr>
-    <td rowspan="6">后端技术栈</td><td>Spring Boot</td><td>提供快速开发能力</td>
+    <td rowspan="6">Backend Technology Stack</td><td>Spring Boot</td><td>Provides rapid development capabilities</td>
   </tr>
   <tr>
-    <td>Spring Security</td><td>实现用户权限认证与控制</td>
+    <td>Spring Security</td><td>Implements user authentication and permission control</td>
   </tr>
   <tr>
-    <td>MySQL、PostgreSQL、达梦8、人大金仓</td><td>持久化存储与配置管理</td>
+    <td>MySQL, PostgreSQL, DM8, KingbaseES</td><td>Persistent storage and configuration management</td>
   </tr>
   <tr>
-    <td>MyBatis-Plus</td><td>简化数据库操作</td>
+    <td>MyBatis-Plus</td><td>Simplifies database operations</td>
   </tr>
   <tr>
-    <td>Redis</td><td>支持缓存、分布式锁等</td>
+    <td>Redis</td><td>Supports caching, distributed locks, and more</td>
   </tr>
   <tr>
-    <td>RabbitMQ</td><td>实现异步通信与解耦处理</td>
-  </tr>
-
-  <tr>
-    <td rowspan="3">前端技术栈</td><td>Vue 3</td><td>现代化响应式框架</td>
-  </tr>
-  <tr>
-    <td>Element UI</td><td>常用 UI 组件支持</td>
-  </tr>
-  <tr>
-    <td>Vite</td><td>快速开发与构建工具</td>
+    <td>RabbitMQ</td><td>Enables asynchronous communication and decoupled processing</td>
   </tr>
 
   <tr>
-    <td rowspan="4">第三方依赖</td><td>DolphinScheduler</td><td>提供可视化任务编排、依赖管理及调度能力</td>
+    <td rowspan="3">Frontend Technology Stack</td><td>Vue 3</td><td>Modern reactive framework</td>
   </tr>
   <tr>
-    <td>Spark</td><td>批流一体，支持 ETL 数据处理</td>
+    <td>Element UI</td><td>Common UI component support</td>
   </tr>
   <tr>
-    <td>Hive</td><td>支持数据建模、分区管理及元数据维护</td>
+    <td>Vite</td><td>Fast development and build tool</td>
+  </tr>
+
+  <tr>
+    <td rowspan="4">Third-Party Dependencies</td><td>DolphinScheduler</td><td>Provides visual task orchestration, dependency management, and scheduling capabilities</td>
   </tr>
   <tr>
-    <td>Hive、HBase</td><td>支持海量非结构化与半结构化数据存储</td>
+    <td>Spark</td><td>Unified batch and streaming processing, supporting ETL data processing</td>
+  </tr>
+  <tr>
+    <td>Hive</td><td>Supports data modeling, partition management, and metadata maintenance</td>
+  </tr>
+  <tr>
+    <td>Hive, HBase</td><td>Supports massive unstructured and semi-structured data storage</td>
   </tr>
 </table>
 
 
-## 🏗️ 部署要求
+## 🏗️ Deployment Requirements
 
-在部署 qData 之前，请确保以下环境和工具已正确安装：
+Before deploying qData, make sure the following environments and tools are correctly installed:
 
 <table>
   <tr>
-    <th>环境</th><th>项目</th><th>推荐版本</th><th>说明</th>
+    <th>Environment</th><th>Item</th><th>Recommended Version</th><th>Description</th>
   </tr>
   <tr>
-    <td rowspan="6">后端</td><td>JDK</td><td>1.8 或以上</td><td>建议使用 OpenJDK 8 或 11</td>
+    <td rowspan="6">Backend</td><td>JDK</td><td>1.8 or above</td><td>OpenJDK 8 or 11 is recommended</td>
   </tr>
   <tr>
-    <td>Maven</td><td>3.6+</td><td>项目构建与依赖管理</td>
+    <td>Maven</td><td>3.6+</td><td>Project build and dependency management</td>
   </tr>
   <tr>
-    <td>达梦8</td><td>8.0</td><td>关系型数据库（可切至MySQL）</td>
+    <td>DM8</td><td>8.0</td><td>Relational database; can be switched to MySQL</td>
   </tr>
   <tr>
-    <td>Redis</td><td>5.0+</td><td>缓存与消息功能支持</td>
+    <td>Redis</td><td>5.0+</td><td>Supports caching and messaging functions</td>
   </tr>
   <tr>
-    <td>RabbitMQ</td><td>可选</td><td>用于任务调度、异步通信等功能</td>
+    <td>RabbitMQ</td><td>Optional</td><td>Used for task scheduling, asynchronous communication, and other functions</td>
   </tr>
   <tr>
-    <td>操作系统</td><td>Windows / Linux / Mac</td><td>通用环境均可运行</td>
+    <td>Operating System</td><td>Windows / Linux / Mac</td><td>Common environments are supported</td>
   </tr>
 
   <tr>
-    <td rowspan="3">前端</td><td>Node.js</td><td>16+</td><td>构建工具依赖</td>
-  </tr> 
-  <tr>
-    <td>npm</td><td>10+</td><td>包管理器</td>
+    <td rowspan="3">Frontend</td><td>Node.js</td><td>16+</td><td>Build tool dependency</td>
   </tr>
   <tr>
-    <td>Vite</td><td>最新版</td><td>脚手架工具</td>
+    <td>npm</td><td>10+</td><td>Package manager</td>
+  </tr>
+  <tr>
+    <td>Vite</td><td>Latest</td><td>Scaffolding and build tool</td>
   </tr>
 </table>
 
 
-## 🚨 商用授权
+## 🚨 Commercial Licensing
 
-qData 提供 **专业版** 与 **开源版** 两种形态，满足不同规模与场景下的用户需求。两者既各具特色，又形成互补：开源版更像启蒙老师，帮助低成本起步；专业版更像专家顾问，提供深度与保障。无论选择哪种版本，qData 都将成为可靠的伙伴，帮助企业释放数据价值，加速数字化进程。
+qData provides two editions: **Professional Edition** and **Open-Source Edition**, meeting user needs across different scales and scenarios. Each has its own focus while complementing the other: the Open-Source Edition helps users get started at low cost, while the Professional Edition provides greater depth and support. Whichever edition you choose, qData aims to be a reliable partner that helps enterprises unlock data value and accelerate digital transformation.
 
-👉 如需 **开源版品牌授权** 或 **咨询专业版**，请点击按钮查看详情：[💼 了解授权详情](https://community.qdata.tech/business/policy.html)
+👉 For **Open-Source Edition brand authorization** or **Professional Edition consultation**, please view the details here: [💼 Learn About Licensing](https://community.qdata.tech/business/policy.html)
 
-## 🚀 快速开始
+## 🚀 Quick Start
 
-| 部署方式                    | 说明                                                              | 适用场景               |
-| ----------------------- | --------------------------------------------------------------- | ------------------ |
-| [Docker Compose 部署](https://community.qdata.tech/docs/deploy/docker-compose-deployment.html) | 所有组件（调度器、数据库、消息队列、Spark、Flink 等）以及 qData 数据中台源码都通过 Docker Compose 一键启动 | **初学者快速上手**、功能演示、测试环境  |
-| [使用源代码本地启动](https://community.qdata.tech/docs/deploy/build-from-source.html)  | qData 数据中台源码由开发者本地运行，依赖组件通过 Docker Compose 启动  | **日常开发**、功能联调          |
-| [自主部署（纯手工安装）](https://community.qdata.tech/docs/deploy/manual-deployment/)  | 所有依赖组件及 qData 数据中台服务均需手工安装和配置  | **生产环境**、大规模部署、个性化定制场景 |
+| Deployment Method | Description | Suitable Scenarios |
+| --- | --- | --- |
+| [Docker Compose Deployment](https://community.qdata.tech/docs/deploy/docker-compose-deployment.html) | All components, including the scheduler, database, message queue, Spark, Flink, and qData source code, are started with Docker Compose in one click. | **Quick start for beginners**, feature demos, test environments |
+| [Run Locally from Source Code](https://community.qdata.tech/docs/deploy/build-from-source.html) | Developers run the qData source code locally, while dependency components are started through Docker Compose. | **Daily development**, feature integration testing |
+| [Self-Managed Deployment (Manual Installation)](https://community.qdata.tech/docs/deploy/manual-deployment/) | All dependency components and qData services must be manually installed and configured. | **Production environments**, large-scale deployment, customized scenarios |
 
-👉 查看完整的安装与部署指南：<a href="https://community.qdata.tech/docs/deploy/deploy-open-source.html">🧭 点击查看详细部署步骤</a>
+👉 View the complete installation and deployment guide: <a href="https://community.qdata.tech/docs/deploy/deploy-open-source.html">🧭 View Detailed Deployment Steps</a>
 
-## 👥 QQ交流群
-欢迎加入 qData 官方 QQ 交流群，获取最新动态、技术支持与使用交流。
+## 👥 QQ Community
+Welcome to join the official qData QQ community to get the latest updates, technical support, and usage discussions.
 
-👉 <a href="https://community.qdata.tech/discuss.html">点击加入 QQ 交流群</a>
+👉 <a href="https://community.qdata.tech/discuss.html">Join the QQ Community</a>
 
-<!-- [![加入QQ群](https://img.shields.io/badge/QQ群-814145903（已满）-blue.svg)](https://qm.qq.com/q/Qz5NJut20y)
-[![加入QQ群](https://img.shields.io/badge/QQ群-236734346-blue.svg)](https://qm.qq.com/q/Bpml33lTWK)
-[![加入QQ群](https://img.shields.io/badge/QQ群-675093323-blue.svg)](https://qm.qq.com/q/VIq5vtICo6) -->
+<!-- [![Join QQ Group](https://img.shields.io/badge/QQ Group-814145903（Full）-blue.svg)](https://qm.qq.com/q/Qz5NJut20y)
+[![Join QQ Group](https://img.shields.io/badge/QQ Group-236734346-blue.svg)](https://qm.qq.com/q/Bpml33lTWK)
+[![Join QQ Group](https://img.shields.io/badge/QQ Group-675093323-blue.svg)](https://qm.qq.com/q/VIq5vtICo6) -->
 
-## 🖼️ 系统配图
+## 🖼️ System Screenshots
 <table>
     <tr>
-        <td><img src="./images/system/1登录页.jpg" alt="登录页" width="400"/></td>
-        <td><img src="./images/system/2首页.jpg" alt="首页" width="400"/></td>
+        <td><img src="images/en-US/system/1-login.png" alt="Login page" width="400"/></td>
+        <td><img src="images/en-US/system/2-home.png" alt="Home page" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="./images/system/4数据集成.jpg" alt="数据集成" width="400"/></td>
-        <td><img src="images/system/6数据集成配置.jpg" alt="数据集成配置" width="400"/></td>
+        <td><img src="images/en-US/system/4-data-integration.png" alt="Data integration" width="400"/></td>
+        <td><img src="images/en-US/system/6-data-integration-configuration.png" alt="Data integration configuration" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="./images/system/12数据开发.jpg" alt="数据开发" width="400"/></td>
-        <td><img src="images/system/7数据开发配置.jpg" alt="数据开发配置" width="400"/></td>
+        <td><img src="images/en-US/system/12-data-development.png" alt="Data development" width="400"/></td>
+        <td><img src="images/en-US/system/7-data-development-configuration.png" alt="Data development configuration" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="images/system/10资产管理.jpg" alt="资产管理" width="400"/></td>
-        <td><img src="images/system/11资产详情.jpg" alt="资产详情" width="400"/></td>
+        <td><img src="images/en-US/system/10-asset-management.png" alt="Asset management" width="400"/></td>
+        <td><img src="images/en-US/system/11-asset-details.png" alt="Asset details" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="images/system/8配置质量任务.jpg" alt="配置质量任务" width="400"/></td>
-        <td><img src="./images/system/9质量执行分析.jpg" alt="质量执行分析" width="400"/></td>
+        <td><img src="images/en-US/system/8-configure-quality-task.png" alt="Configure quality task" width="400"/></td>
+        <td><img src="images/en-US/system/9-quality-execution-analysis.png" alt="Quality execution analysis" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="images/system/3api管理.jpg" alt="api管理" width="400"/></td>
-        <td><img src="images/system/13配置api.jpg" alt="配置api" width="400"/></td>
+        <td><img src="images/en-US/system/3-api-management.png" alt="API management" width="400"/></td>
+        <td><img src="images/en-US/system/13-configure-api.png" alt="Configure API" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="images/system/14智能问数.jpg" alt="智能问数" width="400"/></td>
-        <td><img src="images/system/5智能问数-对话.jpg" alt="智能问数-对话" width="400"/></td>
+        <td><img src="images/en-US/system/14-ai-data-qa.png" alt="AI-powered data Q&A" width="400"/></td>
+        <td><img src="images/en-US/system/5-ai-data-qa-conversation.png" alt="AI-powered data Q&A conversation" width="400"/></td>
     </tr>
 </table>

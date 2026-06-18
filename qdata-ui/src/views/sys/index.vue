@@ -174,7 +174,7 @@
     </el-row>
 
     <!-- License 协议弹窗 -->
-    <el-dialog
+<!--    <el-dialog
       v-model="licenseDialogVisible"
       :title="td('common.license.title')"
       :close-on-click-modal="false"
@@ -187,7 +187,7 @@
       <template #footer>
         <el-button type="primary" @click="handleLicenseClose">{{ td('common.button.confirm') }}</el-button>
       </template>
-    </el-dialog>
+    </el-dialog>-->
   </div>
 </template>
 

@@ -16,8 +16,8 @@
 -->
 <template>
   <!-- 枚举值校验 -->
-  <el-form ref="formRef" :model="form" label-width="130px" :disabled="falg">
-    <el-row>
+  <el-form ref="formRef" :model="form" :disabled="falg">
+    <el-row :gutter="20">
       <el-col :span="8">
         <el-form-item :label="td('da.qualityTaskRules.ruleCommon.codeTable')" prop="useCodeTable">
           <el-radio-group
@@ -50,7 +50,7 @@
     </el-row>
 
     <!-- 👇 当选择了“关联代码表”为“是”时展示 -->
-    <el-row v-if="form.useCodeTable == '1'">
+    <el-row v-if="form.useCodeTable == '1'" :gutter="20">
       <el-col :span="8">
         <el-form-item
           :label="td('da.qualityTaskRules.ruleCommon.selectCodeTable')"
@@ -89,7 +89,7 @@
 
     <div v-loading="loadingList">
       <div class="justify-between mb15">
-        <el-row :gutter="15" class="btn-style">
+        <el-row :gutter="20" class="btn-style">
           <template v-if="!falg && form.useCodeTable == 0">
             <el-col :span="1.5">
               <el-button

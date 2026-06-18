@@ -41,7 +41,7 @@
     >
       <el-form ref="formRef" :model="form" :label-position="labelPosition">
         <div class="h2-title">{{ td('da.qualityTask.ruleSelectorMenu.basicInfo') }}</div>
-        <el-row>
+        <el-row :gutter="20">
           <el-col :span="8">
             <el-form-item
               :label="td('da.qualityTask.ruleSelectorMenu.evaluationName')"
@@ -81,7 +81,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row :gutter="20">
           <el-col :span="8">
             <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.alarmLevel')" prop="warningLevel" :label-position="labelPosition">
               <template v-if="!falg">
@@ -116,7 +116,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row :gutter="20">
           <el-col :span="24">
             <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.ruleDescription')" prop="ruleDescription" :label-position="labelPosition">
               <template v-if="!falg">
@@ -134,7 +134,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row :gutter="20">
           <el-col :span="24">
             <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.errorExample')" prop="errDescription" :label-position="labelPosition">
               <template v-if="!falg">
@@ -152,7 +152,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row :gutter="20">
           <el-col :span="24">
             <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.fixSuggestion')" prop="suggestion" :label-position="labelPosition">
               <template v-if="!falg">
@@ -170,7 +170,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row :gutter="20">
           <el-col :span="24">
             <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.whereCondition')" prop="whereClause" :label-position="labelPosition">
               <template v-if="!falg">
@@ -190,7 +190,7 @@
         </el-row>
         <!-- 规则配置 -->
         <div class="h2-title">{{ td('da.qualityTask.ruleSelectorMenu.ruleConfig') }}</div>
-        <el-row>
+        <el-row :gutter="20">
           <el-col :span="12" class="hasMsg" v-if="type != 3">
             <el-form-item
               :label="td('da.qualityTask.ruleSelectorMenu.evaluationTarget')"
@@ -299,7 +299,7 @@
         <div class="h2-title" v-if="form.ruleType == 'CHARACTER_VALIDATION'">
           {{ td('da.qualityTask.ruleSelectorMenu.sampleCheck') }}
         </div>
-        <el-row v-if="form.ruleType == 'CHARACTER_VALIDATION'">
+        <el-row :gutter="20" v-if="form.ruleType == 'CHARACTER_VALIDATION'">
           <el-col :span="12">
             <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.sampleData')" prop="sampleData" :label-position="labelPosition">
               <el-input v-model="title" :placeholder="td('da.qualityTask.ruleSelectorMenu.sampleDataPlaceholder')" />

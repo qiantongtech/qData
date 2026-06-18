@@ -420,14 +420,14 @@ const daAssetApplyList = ref([]);
 
 // 列显隐信息
 const columns = ref([
-  { key: 1, label: td('da.assetApply.columnVisibility.assetName'), visible: true },
-  { key: 2, label: td('da.assetApply.columnVisibility.assetNameEn'), visible: true },
-  { key: 3, label: td('da.assetApply.columnVisibility.assetCat'), visible: true },
-  { key: 4, label: td('da.assetApply.columnVisibility.topicName'), visible: true },
-  { key: 5, label: td('da.assetApply.columnVisibility.applyProject'), visible: true },
-  { key: 6, label: td('da.assetApply.columnVisibility.applyTime'), visible: true },
-  { key: 7, label: td('da.assetApply.columnVisibility.applicant'), visible: true },
-  { key: 8, label: td('da.assetApply.columnVisibility.auditStatus'), visible: true },
+  { key: 1, label: td('da.assetApply.assetName'), visible: true },
+  { key: 2, label: td('da.assetApply.englishName'), visible: true },
+  { key: 3, label: td('da.assetApply.assetCat'), visible: true },
+  { key: 4, label: td('da.assetApply.topicName'), visible: true },
+  { key: 5, label: td('da.assetApply.applyProject'), visible: true },
+  { key: 6, label: td('da.assetApply.applyTime'), visible: true },
+  { key: 7, label: td('da.assetApply.applicant'), visible: true },
+  { key: 8, label: td('da.assetApply.auditStatus'), visible: true },
   { key: 9, label: td('common.texts.operation'), visible: true },
 ]);
 

@@ -108,6 +108,14 @@ export default {
     sortOrder: 'Sort Order',
     superAdmin: 'Super Admin'
   },
+  graph: {
+    inputComponent: 'Input Component',
+    outputComponent: 'Output Component',
+    transformComponent: 'Transform Component',
+    zoomOut: 'Zoom Out',
+    zoomIn: 'Zoom In',
+    resetView: 'Reset View'
+  },
   message: {
     addSuccess: 'Added successfully',
     deleteSuccess: 'Deleted successfully',

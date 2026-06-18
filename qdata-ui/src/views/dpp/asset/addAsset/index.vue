@@ -2,10 +2,10 @@
   <div class="app-container" ref="app-container">
     <div class="pagecont-top-wrap flex-items-center gap20">
       <el-form :inline="true" @submit.prevent>
-        <el-form-item :label="td('dpp.asset.addAsset.assetType')" style="margin-bottom: 0">
+        <el-form-item :label="td('dpp.asset.add.assetType')" style="margin-bottom: 0">
           <el-select
             v-model="baseState.assetType"
-            :placeholder="td('dpp.asset.addAsset.assetTypePlaceholder')"
+            :placeholder="td('dpp.asset.add.assetTypePlaceholder')"
             style="width: 300px"
           >
             <el-option
@@ -23,19 +23,19 @@
         <div class="main">
           <div class="flex-between-center mb10">
             <div class="flex-items-center title-wrap">
-              <div class="h2-titles">{{ td('dpp.asset.addAsset.assetInfoComplete') }}</div>
+              <div class="h2-titles">{{ td('dpp.asset.add.assetInfoComplete') }}</div>
               <div class="asset-hint" style="margin-left: 10px">
-                {{ td('dpp.asset.addAsset.assetInfoHint') }}
+                {{ td('dpp.asset.add.assetInfoHint') }}
               </div>
             </div>
             <div class="flex-items-center">
               <el-button type="primary" @click="handleOpenMetadataSelect()"
-                >{{ td('dpp.asset.addAsset.selectMetadata') }}</el-button
+                >{{ td('dpp.asset.add.selectMetadata') }}</el-button
               >
               <el-button
                 @click="handleOpenBatchSetting"
                 :disabled="!selectedRows.length"
-                >{{ td('dpp.asset.addAsset.batchSetting') }}</el-button
+                >{{ td('dpp.asset.add.batchSet') }}</el-button
               >
             </div>
           </div>
@@ -53,14 +53,14 @@
                   :rules="[
                     {
                       required: true,
-                      message: td('dpp.asset.addAsset.assetNameRequired'),
+                      message: td('dpp.asset.add.assetNameRequired'),
                       trigger: 'blur',
                     },
                   ]"
                   label-width="0"
                   style="margin-bottom: 0"
                 >
-                  <el-input v-model="row.name" :placeholder="td('dpp.asset.addAsset.assetNamePlaceholder')" />
+                  <el-input v-model="row.name" :placeholder="td('dpp.asset.add.assetNamePlaceholder')" />
                 </el-form-item>
               </template>
               <template #tableType="{ row, $index }">
@@ -69,7 +69,7 @@
                   :rules="[
                     {
                       required: true,
-                      message: td('dpp.asset.addAsset.tableTypeRequired'),
+                      message: td('dpp.asset.add.tableTypeRequired'),
                       trigger: 'change',
                     },
                   ]"
@@ -78,7 +78,7 @@
                 >
                   <el-select
                     v-model="row.tableType"
-                    :placeholder="td('dpp.asset.addAsset.tableTypePlaceholder')"
+                    :placeholder="td('dpp.asset.add.tableTypePlaceholder')"
                     @change="handleTableTypeChange(row)"
                   >
                     <el-option
@@ -96,7 +96,7 @@
                   :rules="[
                     {
                       required: true,
-                      message: td('dpp.asset.addAsset.dataLayerRequired'),
+                      message: td('dpp.asset.add.dataLayerRequired'),
                       trigger: 'change',
                     },
                   ]"
@@ -113,7 +113,7 @@
                     }"
                     node-key="id"
                     value-key="id"
-                    :placeholder="td('dpp.asset.addAsset.dataLayerPlaceholder')"
+                    :placeholder="td('dpp.asset.add.dataLayerPlaceholder')"
                     check-strictly
                     filterable
                     clearable
@@ -128,7 +128,7 @@
                     :rules="[
                       {
                         required: true,
-                        message: td('dpp.asset.addAsset.businessCategoryRequired'),
+                        message: td('dpp.asset.add.businessCategoryRequired'),
                         trigger: 'change',
                       },
                     ]"
@@ -145,7 +145,7 @@
                       }"
                       node-key="id"
                       value-key="id"
-                      :placeholder="td('dpp.asset.addAsset.businessCategoryPlaceholder')"
+                      :placeholder="td('dpp.asset.add.businessCategoryPlaceholder')"
                       check-strictly
                       filterable
                       clearable
@@ -163,7 +163,7 @@
                     :rules="[
                       {
                         required: true,
-                        message: td('dpp.asset.addAsset.themeDomainRequired'),
+                        message: td('dpp.asset.add.themeDomainRequired'),
                         trigger: 'change',
                       },
                     ]"
@@ -180,7 +180,7 @@
                       }"
                       node-key="id"
                       value-key="id"
-                      :placeholder="td('dpp.asset.addAsset.themeDomainPlaceholder')"
+                      :placeholder="td('dpp.asset.add.themeDomainPlaceholder')"
                       check-strictly
                       filterable
                       clearable
@@ -198,7 +198,7 @@
                     :rules="[
                       {
                         required: true,
-                        message: td('dpp.asset.addAsset.dataDomainRequired'),
+                        message: td('dpp.asset.add.dataDomainRequired'),
                         trigger: 'change',
                       },
                     ]"
@@ -215,7 +215,7 @@
                       }"
                       node-key="id"
                       value-key="id"
-                      :placeholder="td('dpp.asset.addAsset.dataDomainPlaceholder')"
+                      :placeholder="td('dpp.asset.add.dataDomainPlaceholder')"
                       check-strictly
                       filterable
                       clearable
@@ -231,14 +231,14 @@
                   :rules="[
                     {
                       required: true,
-                      message: td('dpp.asset.addAsset.tableCaseRequired'),
+                      message: td('dpp.asset.add.tableCaseRequired'),
                       trigger: 'change',
                     },
                   ]"
                   label-width="0"
                   style="margin-bottom: 0"
                 >
-                  <el-select v-model="row.tableCase" :placeholder="td('dpp.asset.addAsset.tableCasePlaceholder')">
+                  <el-select v-model="row.tableCase" :placeholder="td('dpp.asset.add.tableCasePlaceholder')">
                     <el-option
                       v-for="item in table_name_case"
                       :key="item.value"
@@ -260,14 +260,14 @@
           </el-form>
         </div>
         <div class="button-style">
-          <el-button @click="goBack" class="action-btn">{{ td('dpp.asset.addAsset.backToList') }}</el-button>
+          <el-button @click="goBack" class="action-btn">{{ td('dpp.asset.add.returnToList') }}</el-button>
           <el-button
             type="primary"
             :disabled="!baseState.rows.length"
             :loading="uiState.publishLoading"
             @click="confirmPublish"
             class="action-btn"
-            >{{ td('dpp.asset.addAsset.registerAndExit') }}</el-button
+            >{{ td('dpp.asset.add.registerAndExit') }}</el-button
           >
         </div>
       </div>
@@ -280,7 +280,7 @@
     />
     <!-- 批量设置弹窗 -->
     <el-dialog
-      :title="td('dpp.asset.addAsset.batchSetting')"
+      :title="td('dpp.asset.add.batchSetting')"
       v-model="uiState.batchVisible"
       width="600px"
       append-to-body
@@ -293,18 +293,18 @@
             <InfoFilled />
           </el-icon>
           <span>
-            {{ td('dpp.asset.addAsset.batchSettingHint') }}
+            {{ td('dpp.asset.add.batchSettingHint') }}
           </span>
         </div>
-        <el-form-item :label="td('dpp.asset.addAsset.tableType')" :label-position="labelPosition">
+        <el-form-item :label="td('dpp.asset.add.tableType')" :label-position="labelPosition">
           <el-select
             v-model="batchForm.tableType"
-            placeholder="{{ td('dpp.asset.addAsset.noChange') }}"
+            placeholder="{{ td('dpp.asset.add.noChange') }}"
             class="full-width"
             @change="handleBatchTableTypeChange"
             clearable
           >
-            <el-option label="{{ td('dpp.asset.addAsset.noChange') }}" :value="-1" />
+            <el-option label="{{ td('dpp.asset.add.noChange') }}" :value="-1" />
             <el-option
               v-for="item in table_type"
               :key="item.value"
@@ -313,11 +313,11 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item :label="td('dpp.asset.addAsset.dataLayer')" :label-position="labelPosition">
+        <el-form-item :label="td('dpp.asset.add.dataLayer')" :label-position="labelPosition">
           <el-tree-select
             v-model="batchForm.dataLayerId"
             :data="[
-            { id: -1, displayName: td('dpp.asset.addAsset.noChange') },
+            { id: -1, displayName: td('dpp.asset.add.noChange') },
               ...options.dataLayerList,
             ]"
             :props="{
@@ -327,7 +327,7 @@
             }"
             node-key="id"
             value-key="id"
-            :placeholder="td('dpp.asset.addAsset.noChange')"
+            :placeholder="td('dpp.asset.add.noChange')"
             check-strictly
             filterable
             clearable
@@ -341,12 +341,12 @@
             batchForm.tableType == -1 ||
             batchForm.tableType != '4'
           "
-          :label="td('dpp.asset.addAsset.businessCategory')"
+          :label="td('dpp.asset.add.businessCategory')"
          :label-position="labelPosition">
           <el-tree-select
             v-model="batchForm.businessCategoryId"
             :data="[
-              { id: -1, displayName: td('dpp.asset.addAsset.noChange') },
+              { id: -1, displayName: td('dpp.asset.add.noChange') },
               ...options.businessCategoryList,
             ]"
             :props="{
@@ -356,7 +356,7 @@
             }"
             node-key="id"
             value-key="id"
-            placeholder="{{ td('dpp.asset.addAsset.noChange') }}"
+            placeholder="{{ td('dpp.asset.add.noChange') }}"
             check-strictly
             filterable
             clearable
@@ -371,12 +371,12 @@
             batchForm.tableType == -1 ||
             batchForm.tableType != '4'
           "
-          :label="td('dpp.asset.addAsset.dataDomain')"
+          :label="td('dpp.asset.add.dataDomain')"
          :label-position="labelPosition">
           <el-tree-select
             v-model="batchForm.dataDomainId"
             :data="[
-              { id: -1, displayName: td('dpp.asset.addAsset.noChange') },
+              { id: -1, displayName: td('dpp.asset.add.noChange') },
               ...batchDataDomainList,
             ]"
             :loading="batchDomainLoading"
@@ -387,7 +387,7 @@
             }"
             node-key="id"
             value-key="id"
-            placeholder="{{ td('dpp.asset.addAsset.noChange') }}"
+            placeholder="{{ td('dpp.asset.add.noChange') }}"
             check-strictly
             filterable
             clearable
@@ -401,12 +401,12 @@
             batchForm.tableType == -1 ||
             batchForm.tableType == '4'
           "
-          :label="td('dpp.asset.addAsset.themeDomain')"
+          :label="td('dpp.asset.add.themeDomain')"
          :label-position="labelPosition">
           <el-tree-select
             v-model="batchForm.themeDomainId"
             :data="[
-              { id: -1, displayName: td('dpp.asset.addAsset.noChange') },
+              { id: -1, displayName: td('dpp.asset.add.noChange') },
               ...options.themeDomainList,
             ]"
             :props="{
@@ -416,7 +416,7 @@
             }"
             node-key="id"
             value-key="id"
-            placeholder="{{ td('dpp.asset.addAsset.noChange') }}"
+            placeholder="{{ td('dpp.asset.add.noChange') }}"
             check-strictly
             filterable
             clearable
@@ -424,14 +424,14 @@
             class="full-width"
           />
         </el-form-item>
-        <el-form-item :label="td('dpp.asset.addAsset.tableCase')" :label-position="labelPosition">
+        <el-form-item :label="td('dpp.asset.add.tableCase')" :label-position="labelPosition">
           <el-select
             v-model="batchForm.tableCase"
-            placeholder="{{ td('dpp.asset.addAsset.noChange') }}"
+            placeholder="{{ td('dpp.asset.add.noChange') }}"
             class="full-width"
             clearable
           >
-            <el-option label="{{ td('dpp.asset.addAsset.noChange') }}" :value="-1" />
+            <el-option label="{{ td('dpp.asset.add.noChange') }}" :value="-1" />
             <el-option
               v-for="item in table_name_case"
               :key="item.value"
@@ -548,7 +548,7 @@ const tableColumns = [
   { type: "selection", width: 55 },
   { type: "index", label: td('common.texts.number'), width: 60 },
   {
-    label: td('dpp.asset.addAsset.sourceTable'),
+    label: td('dpp.asset.add.table.sourceTable')+'/'+td('dpp.asset.add.table.tableComment'),
     width: 200,
     align: "left",
     list: [
@@ -556,13 +556,13 @@ const tableColumns = [
       { prop: "tableComment", class: "color999 fz12" },
     ],
   },
-  { label: td('dpp.asset.addAsset.assetName'), width: 200, slot: "name" },
-  { label: td('dpp.asset.addAsset.tableType'), width: 140, slot: "tableType" },
-  { label: td('dpp.asset.addAsset.dataLayer'), width: 180, slot: "dataLayerId" },
-  { label: td('dpp.asset.addAsset.businessCategory'), slot: "businessCategoryId" },
-  { label: td('dpp.asset.addAsset.dataDomain'), slot: "dataDomainId" },
-  { label: td('dpp.asset.addAsset.themeDomain'), slot: "themeDomainId" },
-  { label: td('dpp.asset.addAsset.tableCase'), width: 140, slot: "tableCase" },
+  { label: td('dpp.asset.add.table.assetName'), width: 200, slot: "name" },
+  { label: td('dpp.asset.add.table.tableType'), width: 140, slot: "tableType" },
+  { label: td('dpp.asset.add.table.hierarchy'), width: 180, slot: "dataLayerId" },
+  { label: td('dpp.asset.add.table.businessCategory'), slot: "businessCategoryId" },
+  { label: td('dpp.asset.add.table.dataDomain'), slot: "dataDomainId" },
+  { label: td('dpp.asset.add.table.theme'), slot: "themeDomainId" },
+  { label: td('dpp.asset.add.table.tableNamingRule'), width: 140, slot: "tableCase" },
   { label: td('common.texts.operation'), width: 100, slot: "action" },
 ];
 
@@ -783,7 +783,7 @@ const handleOpenMetadataSelect = (row = null) => {
  * 打开批量设置弹窗
  */
 const handleOpenBatchSetting = () => {
-  // 重置批量设置表单为默认值（{{ td('dpp.asset.addAsset.noChange') }}状态）
+  // 重置批量设置表单为默认值（{{ td('dpp.asset.add.noChange') }}状态）
   batchForm.tableType = -1;
   batchForm.dataLayerId = -1;
   batchForm.tableCase = -1;
@@ -918,14 +918,14 @@ const confirmBatchSetting = async () => {
  */
 async function confirmPublish() {
   if (!baseState.rows.length) {
-    proxy.$modal.msgWarning(td('dpp.asset.addAsset.selectMetadataFirst'));
+    proxy.$modal.msgWarning(td('dpp.asset.add.selectMetadataFirst'));
     return;
   }
 
   try {
     await tableFormRef.value.validate();
   } catch (error) {
-    proxy.$modal.msgWarning(td('dpp.asset.addAsset.checkRequired'));
+    proxy.$modal.msgWarning(td('dpp.asset.add.checkRequired'));
     return;
   }
 
@@ -953,7 +953,7 @@ async function confirmPublish() {
     });
 
     await Promise.all(requests);
-    proxy.$modal.msgSuccess(td('dpp.asset.addAsset.registerSuccess'));
+    proxy.$modal.msgSuccess(td('dpp.asset.add.registerSuccess'));
     setRefreshNeeded();
     router.push({ path: "/da/asset" });
   } catch (error) {
@@ -994,7 +994,7 @@ const handleMetadataConfirm = (tables) => {
     if (index > -1) {
       baseState.rows.splice(index, 1, ...newRows);
       delete rowUiContext[uiState.activeTableId];
-      ElMessage.success(td('dpp.asset.addAsset.metadataUpdated'));
+      ElMessage.success(td('dpp.asset.add.metadataUpdated'));
       uiState.activeTableId = null;
       return;
     }

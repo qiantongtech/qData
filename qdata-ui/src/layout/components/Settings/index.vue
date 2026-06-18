@@ -89,8 +89,10 @@
 
     <el-divider />
 
-    <el-button type="primary" plain icon="DocumentAdd" @click="saveSetting">{{ t('components.settings.saveSettings') }}</el-button>
-    <el-button plain icon="Refresh" @click="resetSetting">{{ t('components.settings.resetSettings') }}</el-button>
+    <div class="drawer-btns">
+        <el-button type="primary" plain icon="DocumentAdd" @click="saveSetting">{{ t('components.settings.saveSettings') }}</el-button>
+        <el-button plain icon="Refresh" @click="resetSetting">{{ t('components.settings.resetSettings') }}</el-button>
+    </div>
   </el-drawer>
 
 </template>
@@ -223,6 +225,22 @@ defineExpose({
   .comp-style {
     float: right;
     margin: -3px 8px 0px 0px;
+  }
+}
+
+.drawer-btns {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 20px;
+  .el-button {
+    width: 100%;
+  }
+
+  .el-button+.el-button {
+    margin-top: 10px;
+    margin-left: 0;
   }
 }
 </style>

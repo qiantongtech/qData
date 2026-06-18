@@ -22,7 +22,7 @@
     :rules="falg ? {} : rules"
     :disabled="false"
   >
-    <el-row>
+    <el-row :gutter="20">
       <el-col :span="12">
         <!-- 评测对象下拉 -->
         <el-form-item :label="td('da.qualityTaskRules.ruleCommon.useRegex')" prop="useRegexFlag">

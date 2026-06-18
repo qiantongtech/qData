@@ -28,8 +28,8 @@
             </el-button>
         </div>
         <div class="body-wrapper">
-            <el-form v-if="isChange" ref="form" :model="form" :disabled="true">
-                <el-row>
+            <el-form v-if="isChange" ref="form" :model="form" :disabled="true" :label-position="labelPosition">
+                <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item :label="td('ds.apiEdit.simulation.apiName')">
                             <el-input v-model="form.name" />
@@ -41,7 +41,7 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row>
+                <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item :label="td('ds.apiEdit.simulation.requestType')">
                             <!--                            <el-input v-model="form.reqMethod"/>-->

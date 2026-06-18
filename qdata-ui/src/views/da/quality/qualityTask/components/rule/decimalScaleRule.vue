@@ -16,8 +16,8 @@
 -->
 <template>
   <!-- 数值精度校验 -->
-  <el-form ref="formRef" :model="form" label-width="130px" :disabled="false">
-    <el-row>
+  <el-form ref="formRef" :model="form" :disabled="false">
+    <el-row :gutter="20">
       <el-col :span="12">
         <el-form-item :label="td('da.qualityTaskRules.ruleCommon.decimalPlaces')" prop="scale">
           <el-input
@@ -49,7 +49,7 @@
         </el-form-item>
       </el-col>
     </el-row>
-    <el-row>
+    <el-row :gutter="20">
       <el-col :span="12">
         <el-form-item :label="td('da.qualityTaskRules.ruleCommon.ignoreNullValue')" prop="ignoreNullValue">
           <el-radio-group v-if="!falg" v-model="form.ignoreNullValue">

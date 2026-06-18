@@ -73,7 +73,7 @@
             <el-table-column :label="td('common.display.index')" align="center" prop="noticeId" width="80" />
             <el-table-column :label="td('sys.system.notice.noticeTitle')" align="center" prop="noticeTitle"
                :show-overflow-tooltip="{ effect: 'light' }" />
-            <el-table-column :label="td('sys.system.notice.noticeType')" align="center" prop="noticeType" width="100">
+            <el-table-column :label="td('sys.system.notice.noticeType')" align="center" prop="noticeType" width="120">
                <template #default="scope">
                   <dict-tag :options="sys_notice_type" :value="scope.row.noticeType" />
                </template>

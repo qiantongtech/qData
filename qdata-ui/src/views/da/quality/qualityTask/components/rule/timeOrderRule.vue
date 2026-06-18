@@ -16,7 +16,7 @@
 -->
 <template>
   <!-- 时间字段先后顺序校验 -->
-  <el-form ref="formRef" :model="form" label-width="130px" :disabled="falg">
+  <el-form ref="formRef" :model="form" :disabled="falg">
     <el-form-item label="">
       <div
         class="field-line"

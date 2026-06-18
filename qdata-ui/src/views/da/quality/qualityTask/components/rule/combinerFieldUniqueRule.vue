@@ -16,8 +16,8 @@
 -->
 <template>
   <!-- 字段组完整性校验 -->
-  <el-form ref="formRef" :model="form" label-width="130px" :disabled="false">
-    <el-row>
+  <el-form ref="formRef" :model="form" :disabled="false">
+    <el-row :gutter="20">
       <el-col :span="24">
         <el-form-item :label="td('da.qualityTaskRules.ruleCommon.fieldCompleteness')" prop="fillStrategy">
           <el-radio-group

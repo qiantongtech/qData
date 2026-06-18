@@ -16,8 +16,8 @@
 -->
 <template>
   <!-- 数值字段范围校验 -->
-  <el-form ref="formRef" :model="form" label-width="130px" :disabled="false">
-    <el-row>
+  <el-form ref="formRef" :model="form" :disabled="false">
+    <el-row :gutter="20">
       <el-col :span="12">
         <el-form-item :label="td('da.qualityTaskRules.ruleCommon.minValue')" prop="minValue">
           <el-input
@@ -44,7 +44,7 @@
       </el-col>
     </el-row>
 
-    <el-row>
+    <el-row :gutter="20">
       <el-col :span="12">
         <el-form-item :label="td('da.qualityTaskRules.ruleCommon.includeBoundary')" prop="includeBoundary">
           <el-radio-group v-if="!falg" v-model="form.includeBoundary">

@@ -108,6 +108,14 @@ export default {
     sortOrder: '並び順',
     superAdmin: 'スーパー管理者'
   },
+  graph: {
+    inputComponent: '入ポーネント',
+    outputComponent: '出ポーネント',
+    transformComponent: '変換ポーネント',
+    zoomOut: '縮小',
+    zoomIn: '放大',
+    resetView: '重セット'
+  },
   message: {
     addSuccess: '追加成功',
     deleteSuccess: '削除成功',

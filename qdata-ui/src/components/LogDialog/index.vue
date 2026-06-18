@@ -81,7 +81,7 @@ const DEFAULT_CONFIG = {
     };
 
     function copyTextSuccess() {
-        ElMessage.success(td('common.message.copySuccess'));
+        ElMessage.success(td('components.logDialog.copySuccess'));
     }
 </script>
 

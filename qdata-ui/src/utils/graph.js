@@ -185,20 +185,20 @@ export const cuPort = {
 
 // 节点的类型
 export const typeList = [
-  { value: 1, label: () => i18n.global.t('common.graph.inputComponent') },
-  { value: 2, label: () => i18n.global.t('common.graph.outputComponent') },
-  { value: 3, label: () => i18n.global.t('common.graph.transformComponent') }
+  { value: 1, label:  i18n.global.t('common.graph.inputComponent') },
+  { value: 2, label:  i18n.global.t('common.graph.outputComponent') },
+  { value: 3, label:  i18n.global.t('common.graph.transformComponent') }
 ];
 export const toolbar = [
   {
     id: "zoom-out",
     icon: "toolbar (1).png",
-    tip: () => i18n.global.t('common.graph.zoomOut'),
+    tip:  i18n.global.t('common.graph.zoomOut'),
   },
   {
     id: "zoom-in",
     icon: "toolbar (8).png",
-    tip: () => i18n.global.t('common.graph.zoomIn'),
+    tip:  i18n.global.t('common.graph.zoomIn'),
   },
   // {
   //   id: "full-screen",
@@ -219,16 +219,16 @@ export const toolbar = [
   {
     id: "auto-fit",
     icon: "toolbar (4).png",
-    tip: () => i18n.global.t('common.graph.resetView'),
+    tip:  i18n.global.t('common.graph.resetView'),
   },
   {
     id: "export",
     icon: "toolbar (2).png",
-    tip: () => i18n.global.t('common.button.export'),
+    tip:  i18n.global.t('common.button.export'),
   },
   {
     id: "reset",
     icon: "toolbar (3).png",
-    tip: () => i18n.global.t('common.button.reset'),
+    tip:  i18n.global.t('common.button.reset'),
   },
 ];

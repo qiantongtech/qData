@@ -172,6 +172,22 @@
         </div>
       </el-col>
     </el-row>
+
+    <!-- License 协议弹窗 -->
+<!--    <el-dialog
+      v-model="licenseDialogVisible"
+      :title="td('common.license.title')"
+      :close-on-click-modal="false"
+      :show-close="true"
+      @close="handleLicenseClose"
+    >
+      <div class="license-content">
+        <pre>{{ td('common.license.text') }}</pre>
+      </div>
+      <template #footer>
+        <el-button type="primary" @click="handleLicenseClose">{{ td('common.button.confirm') }}</el-button>
+      </template>
+    </el-dialog>-->
   </div>
 </template>
 
@@ -250,6 +266,29 @@ const getAssetsFile = (url) => {
 };
 
 const carousel = ref(null);
+
+// License 弹窗逻辑
+const LICENSE_CACHE_KEY = 'qdata_license_acknowledged';
+const licenseDialogVisible = ref(false);
+
+/**
+ * 检查用户是否已同意 License 协议
+ */
+function checkLicense() {
+  const acknowledged = localStorage.getItem(LICENSE_CACHE_KEY);
+  if (!acknowledged) {
+    licenseDialogVisible.value = true;
+  }
+}
+
+/**
+ * 处理 License 弹窗关闭事件
+ * 记录用户已同意 License 协议
+ */
+function handleLicenseClose() {
+  localStorage.setItem(LICENSE_CACHE_KEY, 'true');
+  licenseDialogVisible.value = false;
+}
 
 const prevSlide = () => {
   carousel.value.prev();
@@ -924,6 +963,7 @@ onMounted(() => {
   initModule6();
   initModule8();
   getxljtcont();
+  checkLicense();
   instance.appContext.config.globalProperties.$bus.on(
     "getsidebarStatus",
     () => {
@@ -1839,6 +1879,23 @@ onMounted(() => {
   .table-column-code {
     font-size: 14px;
     color: #135afb;
+  }
+}
+
+.license-content {
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 4px;
+  border: 1px solid #e8e8e8;
+
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 13px;
+    line-height: 1.6;
+    color: rgba(0, 0, 0, 0.75);
+    margin: 0;
+    font-family: PingFangSC, PingFang SC, sans-serif;
   }
 }
 </style>

@@ -549,7 +549,7 @@ function submitForm() {
 function handleDelete(row) {
     const _ids = row.id || ids.value;
     proxy.$modal
-        .confirm(td('da.security.confirmDelete').replace('{id}', _ids))
+        .confirm(td('da.security.confirmDelete', '', { id: _ids }))
         .then(function () {
             return delDaSensitiveLevel(_ids);
         })
@@ -636,11 +636,11 @@ function routeTo(link, row) {
 function handleStatusChange(row) {
     const text = row.onlineFlag === '1' ? td('da.security.online') : td('da.security.offline');
     proxy.$modal
-        .confirm(td('da.security.confirmStatusChange').replace('{text}', text).replace('{name}', row.sensitiveLevel))
+        .confirm(td('da.security.confirmStatusChange', '', { text: text, name: row.sensitiveLevel }))
         .then(function () {
             updateStatus(row.id, row.onlineFlag)
                 .then((response) => {
-                    proxy.$modal.msgSuccess(td('da.security.statusSuccess').replace('{text}', text));
+                    proxy.$modal.msgSuccess(td('da.security.statusSuccess', '', { text: text }));
                     getList();
                 })
                 .catch((error) => {

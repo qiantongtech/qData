@@ -138,11 +138,11 @@ export default function useCatManager({
     if (!updateFunc) return;
     const text = row.validFlag === true ? td('att.common.enable') : td('att.common.disable');
     proxy.$modal
-      .confirm(td('att.common.confirmStatusChangeGeneric').replace('{status}', text).replace('<name>', row.name).replace('{type}', nameLabel))
+      .confirm(td('att.common.confirmStatusChangeGeneric', '', { status: text, type: nameLabel }).replace('<name>', row.name))
       .then(function () {
         updateFunc({ id: row.id, parentId: row.parentId, validFlag: row.validFlag })
           .then(() => {
-            proxy.$modal.msgSuccess(td('att.common.statusSuccess').replace('{status}', text));
+            proxy.$modal.msgSuccess(td('att.common.statusSuccess', '', { status: text }));
             getList();
           })
           .catch(() => {

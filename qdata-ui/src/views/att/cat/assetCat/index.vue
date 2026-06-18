@@ -274,7 +274,7 @@ function handleStatusChange(row) {
         .confirm(td('att.common.confirmStatusChangeGeneric').replace('<status>', text).replace('<name>', row.name).replace('<type>', td('att.common.dataAssetCatName')))
         .then(function () {
             updateAttAssetCat({ id: row.id, validFlag: row.validFlag }).then((response) => {
-                proxy.$modal.msgSuccess(td('att.common.statusSuccess').replace('{status}', text));
+                proxy.$modal.msgSuccess(td('att.common.statusSuccess', '', { status: text }));
                 getList();
             }).catch((err) => {
                 row.validFlag = !row.validFlag;

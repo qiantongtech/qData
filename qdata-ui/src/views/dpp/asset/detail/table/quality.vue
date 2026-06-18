@@ -287,7 +287,7 @@ function crontabFill(value) {
 function handleStatusChange(status, row, e) {
     const text = row?.status == "1" ? td('dpp.asset.detail.quality.online') : td('dpp.asset.detail.quality.offline');
     proxy.$modal
-        .confirm(td('dpp.asset.detail.quality.confirmTaskStatus').replace('{action}', text).replace('{name}', row.taskName))
+        .confirm(td('dpp.asset.detail.quality.confirmTaskStatus', '', { action: text, name: row.taskName }))
         .then(function () {
             loading.value = true;
             updateDppQualityTaskStatus({

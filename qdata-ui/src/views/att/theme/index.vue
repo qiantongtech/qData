@@ -436,10 +436,10 @@ function getList() {
 function handleStatusChange(row) {
     const status = row.validFlag === true ? td('att.common.enable') : td('att.common.disable');
     proxy.$modal
-        .confirm(td('att.common.confirmStatusChangeGeneric').replace('{status}', status).replace('<name>', row.name).replace('{type}', td('att.theme.themeWord')))
+        .confirm(td('att.common.confirmStatusChangeGeneric', '', { status: status, type: td('att.theme.themeWord') }).replace('<name>', row.name))
         .then(function () {
             updateAttTheme({ id: row.id, validFlag: row.validFlag }).then((response) => {
-                proxy.$modal.msgSuccess(td('att.common.statusSuccess').replace('{status}', status));
+                proxy.$modal.msgSuccess(td('att.common.statusSuccess', '', { status: status }));
                 getList();
             });
         })

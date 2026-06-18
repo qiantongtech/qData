@@ -461,7 +461,7 @@ function handleResetQueryClick() {
 function handleStatusChange(id, row, e) {
   const text = e === true ? td('dg.sensitiveList.enabled') : td('dg.sensitiveList.disabled');
   proxy.$modal
-    .confirm(td('dg.sensitiveList.confirmStatus', '确认要"{text}","{name}"吗？').replace('{text}', text).replace('{name}', row.assetName || "-"))
+    .confirm(td('dg.sensitiveList.confirmStatus', '确认要"{text}","{name}"吗？', { text: text, name: row.assetName || "-" }))
     .then(function () {
       updateDgDesensitizeList({ id, validFlag: row.validFlag }).then(() => {
         proxy.$modal.msgSuccess(td('common.message.msgOpSuccess'));
@@ -598,7 +598,7 @@ function handleDelete(row) {
   const message=ref(td('dg.sensitiveList.confirmDeleteSimple'));
   if (row?.id) {
     invalidIds.push(row.id);
-    message.value=td('dg.sensitiveList.confirmDeleteId', '是否确认删除编号为{id}的数据项？').replace('{id}', row.id)
+    message.value=td('dg.sensitiveList.confirmDeleteId', '是否确认删除编号为{id}的数据项？', { id: row.id })
   }else {
     store.rows.forEach(item => {
       // 当 validFlag 为 false 时，记录 id
@@ -606,7 +606,7 @@ function handleDelete(row) {
         invalidIds.push(item.id);
       }
     });
-    message.value=td('dg.sensitiveList.confirmDeleteCount', '可删除{canDelete}个，不可删除{cannotDelete}个，是否删除可删部分').replace('{canDelete}', invalidIds.length).replace('{cannotDelete}', store.rows.length-invalidIds.length)
+    message.value=td('dg.sensitiveList.confirmDeleteCount', '可删除{canDelete}个，不可删除{cannotDelete}个，是否删除可删部分', { canDelete: invalidIds.length, cannotDelete: store.rows.length-invalidIds.length })
   }
   proxy.$modal
       .confirm(message.value)

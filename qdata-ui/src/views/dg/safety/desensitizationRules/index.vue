@@ -298,7 +298,7 @@ function handleStatusChange(id, row, e) {
   const text = e === true ? td('dg.desensitizationRules.detailStatusEnable') : td('dg.desensitizationRules.detailStatusDisable');
   const dataForm = { id, validFlag: row.validFlag };
   proxy.$modal
-    .confirm(td('dg.desensitizationRules.confirmStatus', '确认要"{text}","{name}"脱敏规则吗？').replace('{text}', text).replace('{name}', row.name))
+    .confirm(td('dg.desensitizationRules.confirmStatus', '确认要"{text}","{name}"脱敏规则吗？', { text: text, name: row.name }))
     .then(function () {
       updateDesensitizeRules(dataForm).then(() => {
         proxy.$modal.msgSuccess(td('common.message.msgOpSuccess'));
@@ -353,7 +353,7 @@ function handleDelete(row) {
   const message=ref(td('dg.desensitizationRules.confirmDeleteSimple'));
   if (row?.id) {
     invalidIds.push(row.id);
-    message.value=td('dg.desensitizationRules.confirmDeleteId', '是否确认删除编号为{id}的数据项？').replace('{id}', row.id)
+    message.value=td('dg.desensitizationRules.confirmDeleteId', '是否确认删除编号为{id}的数据项？', { id: row.id })
   }else {
     store.rows.forEach(item => {
       // 当 validFlag 为 false 时，记录 id
@@ -361,7 +361,7 @@ function handleDelete(row) {
         invalidIds.push(item.id);
       }
     });
-    message.value=td('dg.desensitizationRules.confirmDeleteCount', '可删除{canDelete}个，不可删除{cannotDelete}个，是否删除可删部分').replace('{canDelete}', invalidIds.length).replace('{cannotDelete}', store.rows.length-invalidIds.length)
+    message.value=td('dg.desensitizationRules.confirmDeleteCount', '可删除{canDelete}个，不可删除{cannotDelete}个，是否删除可删部分', { canDelete: invalidIds.length, cannotDelete: store.rows.length-invalidIds.length })
   }
   proxy.$modal
       .confirm(message.value)

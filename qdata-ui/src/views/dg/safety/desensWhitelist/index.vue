@@ -542,7 +542,7 @@ function handleResetQueryClick() {
 function handleStatusChange(id, row, e) {
   const text = e === "1" ? td('dg.desensWhitelist.enabled') : td('dg.desensWhitelist.disabled');
   proxy.$modal
-    .confirm(td('dg.desensWhitelist.confirmStatus').replace('{text}', text).replace('{name}', row.whitelistName || "-"))
+    .confirm(td('dg.desensWhitelist.confirmStatus', '', { text: text, name: row.whitelistName || "-" }))
     .then(function () {
       updateMockDesensWhitelist({ id, status: row.status });
       proxy.$modal.msgSuccess(td('common.message.msgOpSuccess'));
@@ -660,7 +660,7 @@ function handleDelete(row) {
   if (!_ids) return;
 
   proxy.$modal
-    .confirm(td('dg.desensWhitelist.confirmDeleteId').replace('{id}', _ids))
+    .confirm(td('dg.desensWhitelist.confirmDeleteId', '', { id: _ids }))
     .then(() => {
       deleteMockDesensWhitelist(_ids);
       tableRef.value.getList();

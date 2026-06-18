@@ -545,7 +545,7 @@ export const renderGraph = (graph, savedData, width) => {
     const targetNode = graph.getCellById(postId);
 
     if (!sourceNode || !targetNode) {
-      console.warn(td('dpp.utils.invalidEdge').replace('{source}', preId).replace('{target}', postId));
+      console.warn(td('dpp.utils.invalidEdge', '', { source: preId, target: postId }));
       return;
     }
 

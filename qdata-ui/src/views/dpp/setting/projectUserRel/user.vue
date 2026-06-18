@@ -22,7 +22,6 @@
       :model="queryParams"
       ref="queryRef"
       :inline="true"
-      
       v-show="showSearch"
       @submit.prevent
     >
@@ -380,11 +379,11 @@
       ref="queryRef"
       :inline="true"
       
-     :label-position="labelPosition">
+     >
       <el-form-item
         :label="td('dpp.setting.projectUserRel.loginAccount')"
         prop="userName"
-       :label-position="labelPosition">
+       >
         <el-input
           v-model="queryParamsUser.userName"
           :placeholder="td('dpp.setting.projectUserRel.inputLoginAccount')"
@@ -396,7 +395,7 @@
       <el-form-item
         :label="td('dpp.setting.projectUserRel.phoneNumber')"
         prop="phonenumber"
-       :label-position="labelPosition">
+       >
         <el-input
           v-model="queryParamsUser.phonenumber"
           :placeholder="td('dpp.setting.projectUserRel.inputPhoneNumber')"

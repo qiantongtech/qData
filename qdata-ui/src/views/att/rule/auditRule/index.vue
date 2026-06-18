@@ -135,7 +135,7 @@
               align="left"
               prop="qualityDim"
               :show-overflow-tooltip="{ effect: 'light' }"
-              width="80"
+              width="160"
             >
               <template #default="scope">
                 <dict-tag

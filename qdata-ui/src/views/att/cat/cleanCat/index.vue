@@ -58,7 +58,7 @@
 
       <el-table height="60vh" v-if="refreshTable" v-loading="loading" :data="AttCleanCatList" row-key="id"
         :default-expand-all="isExpandAll" :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
-        <el-table-column :label="td('att.common.cleanCatName')" align="left" prop="name" width="200"
+        <el-table-column :label="td('att.common.cleanCatName')" align="left" prop="name" width="240"
           :show-overflow-tooltip="{ effect: 'light' }">
           <template #default="scope">
             {{ scope.row.name || '-' }}

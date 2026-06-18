@@ -380,10 +380,12 @@ const tableStore = reactive({
     {
       label: computed(()=>td('att.sourceSystem.table.responsiblePerson')),
       prop: "responsiblePersonName",
+      width: 160,
     },
     {
       label: computed(()=>td('att.sourceSystem.table.contactPerson')),
       prop: "contactPersonName",
+      width: 160
     },
     { label: computed(()=>td('common.texts.createdBy')), prop: "createBy", width: 120 },
     {

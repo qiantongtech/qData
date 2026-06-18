@@ -96,7 +96,7 @@
                 {{ scope.row.callerTime / 1000 || "-" }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(8)" :label="td('common.texts.status')" align="center" prop="status" width="130"
+            <el-table-column v-if="getColumnVisibility(8)" :label="td('common.texts.status')" align="center" prop="status" width="140"
               :show-overflow-tooltip="{ effect: 'light' }">
               <template #header>
                 <div class="justify-center">

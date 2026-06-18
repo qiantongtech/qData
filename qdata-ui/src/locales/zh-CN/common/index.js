@@ -149,7 +149,12 @@ export default {
     month: '月',
     day: '日',
     hour: '时',
-    minute: '分'
+    minute: '分',
+    daysAgo: '天前',
+    monthsAgo: '月前',
+    yearsAgo: '年前',
+    second: '秒',
+    millisecond: '毫秒'
   },
   noData: '暂无数据',
   noMessage: '暂无消息',

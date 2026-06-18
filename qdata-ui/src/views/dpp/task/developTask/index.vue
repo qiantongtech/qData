@@ -752,14 +752,14 @@ const tableStore = reactive({
     {
       label: td("dpp.developTask.runControl", "运行控制"),
       prop: "status",
-      width: 130,
+      width: 190,
       slot: "releaseState",
       align: "left",
     },
     {
       label: td("dpp.developTask.scheduleCycle", "调度周期"),
       prop: "cronExpression",
-      width: 200,
+      width: 220,
       slot: "cronExpression",
       align: "left",
     },

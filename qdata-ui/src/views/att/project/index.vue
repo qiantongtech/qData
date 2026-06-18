@@ -171,6 +171,7 @@
           align="center"
           prop="managerPhone"
           v-if="getColumnVisibility(5)"
+          width="120"
         >
           <template #default="scope">
             {{ scope.row.managerPhone || "-" }}
@@ -182,6 +183,7 @@
           :show-overflow-tooltip="{ effect: 'light' }"
           align="left"
           prop="createBy"
+          width="120"
         >
           <template #default="scope">
             {{ scope.row.createBy || "-" }}

@@ -121,7 +121,7 @@
           :label="td('dpp.setting.taskCat.taskCatName')"
           align="left"
           prop="name"
-          width="200"
+          width="240"
           :show-overflow-tooltip="{ effect: 'light' }"
         >
           <template #default="scope">
@@ -145,7 +145,7 @@
           align="left"
           prop="sortOrder"
           :show-overflow-tooltip="{ effect: 'light' }"
-          width="50"
+          width="80"
         >
           <template #default="scope">
             {{ scope.row.sortOrder }}

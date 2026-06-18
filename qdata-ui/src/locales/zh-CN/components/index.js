@@ -96,7 +96,8 @@ export default {
     hide: '隐藏',
     dialogTitle: '显示/隐藏',
     collapse: '收起',
-    expand: '展开'
+    expand: '展开',
+    showHide: '显示/隐藏',
   },
   fileUploadbtn: {
     fileFormatError: '文件格式不正确，请上传 {fileTypes} 格式文件',
@@ -139,13 +140,6 @@ export default {
     queryResult: '查询结果',
     executionHistory: '执行历史记录',
     attrConfig: '属性配置'
-  },
-  rightToolbar: {
-    showHide: '显示/隐藏',
-    showSearch: '显示检索',
-    hideSearch: '隐藏检索',
-    expand: '展开',
-    collapse: '收起'
   },
   sqlEditorConfigView: {
     basicConfig: '基础配置',

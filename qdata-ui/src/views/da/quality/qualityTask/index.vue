@@ -89,7 +89,7 @@
               </template>
             </el-table-column>
             <el-table-column v-if="getColumnVisibility(6)" :label="td('da.qualityTask.columnVisibility.inspectionRuleCount')" align="center" prop="taskEvaluateNum"
-              width="90" :show-overflow-tooltip="{ effect: 'light' }">
+              width="160" :show-overflow-tooltip="{ effect: 'light' }">
               <template #default="scope">
                 {{ scope.row.taskEvaluateNum || '-' }}
               </template>

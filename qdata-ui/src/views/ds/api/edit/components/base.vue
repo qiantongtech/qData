@@ -16,7 +16,7 @@
 -->
 
 <template>
-    <el-form ref="form1" :model="form1" :rules="rules1" label-width="170px">
+    <el-form ref="form1" :model="form1" :rules="rules1" label-width="170px" :label-position="labelPosition">
         <!--        <el-row :gutter="20">-->
         <!--            <el-col :span="12">-->
         <!--                <el-form-item label="数据所属目录" prop="typeId" v-if="isChange">-->

@@ -125,7 +125,7 @@
                 }}</span>
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(10)" :label="td('common.texts.status')" align="center" prop="status" width="70">
+            <el-table-column v-if="getColumnVisibility(10)" :label="td('common.texts.status')" align="center" prop="status" width="80">
               <template #header>
                 <div class="justify-center">
                   <span style="margin-right: 5px;">{{td('common.texts.status')}}</span>

@@ -16,7 +16,7 @@
 -->
 
 <template>
-  <el-form ref="userRef" :model="form" :rules="rules" label-width="80px">
+  <el-form ref="userRef" :model="form" :rules="rules" :label-position="labelPosition">
     <el-form-item :label="td('sys.system.userInfo.userNickName')" prop="nickName">
       <el-input v-model="form.nickName" maxlength="30" />
     </el-form-item>

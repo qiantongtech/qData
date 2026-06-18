@@ -80,7 +80,7 @@
           </template>
         </el-table-column>
         <el-table-column :label="td('common.texts.sortOrder')" align="left" prop="sortOrder" :show-overflow-tooltip="{ effect: 'light' }"
-          width="50">
+          width="80">
           <template #default="scope">
             {{ scope.row.sortOrder }}
           </template>

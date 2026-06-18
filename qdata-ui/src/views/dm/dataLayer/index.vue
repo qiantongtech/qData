@@ -372,7 +372,7 @@ const tableStore = reactive({
       label: td('dm.dataLayer.businessEngName', '业务英文缩写'),
       prop: "businessEngName",
       align: "left",
-      width: 100,
+      width: 140,
     },
 
     {

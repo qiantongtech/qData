@@ -92,7 +92,7 @@
                 <dict-tag :options="dp_data_elem_code_type" :value="scope.row.type" />
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(4)" :label="td('dp.dataElem.catCode')" width="120"
+            <el-table-column v-if="getColumnVisibility(4)" :label="td('dp.dataElem.catCode')" width="180"
               :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="catCode">
               <template #default="scope">
                 {{ scope.row.catName || "-" }}

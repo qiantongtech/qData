@@ -105,7 +105,6 @@
         <el-dropdown
           id="language-select"
           class="right-menu-item hover-effect"
-          trigger="click"
           @command="handleLanguageChange"
         >
           <div

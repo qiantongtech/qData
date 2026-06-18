@@ -175,7 +175,7 @@ const tableStore = reactive({
       label: `${effectiveNameLabel.value}`,
       prop: "name",
       align: "left",
-      width: 200,
+      width: 220,
       align: "left",
     },
     {

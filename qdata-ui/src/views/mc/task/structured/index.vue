@@ -661,7 +661,7 @@ const tableStore = reactive({
       label: td("mc.task.structured.dbType"),
       prop: "dbType",
       dict: "datasource_type",
-      width: 100,
+      width: 120,
     },
     {
       label: td("mc.task.structured.datasourceName"),
@@ -688,13 +688,13 @@ const tableStore = reactive({
     {
       label: td("mc.task.structured.schedulerStatus"),
       prop: "schedulerStatus",
-      width: 100,
+      width: 120,
       slot: "scheduler-status",
     },
     {
       label: td("mc.task.structured.personCharge"),
       prop: "personChargeName",
-      width: 120,
+      width: 140,
       align: "left",
       showOverflowTooltip: {
         effect: "light",
@@ -704,7 +704,7 @@ const tableStore = reactive({
       label: td("mc.task.structured.lastExecuteTime"),
       prop: "lastExecuteTime",
       sortable: true,
-      width: 160,
+      width: 180,
       date: true,
     },
     {

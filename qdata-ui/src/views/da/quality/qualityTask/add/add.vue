@@ -66,6 +66,7 @@
             v-show="activeReult == 0"
             style="padding-right: 90px"
             :disabled="route.query.info"
+            :label-position="labelPosition"
           >
             <div class="h2-titles">{{ td('da.qualityTask.stepBasicInfo') }}</div>
             <el-row :gutter="20">
@@ -1097,6 +1098,12 @@ getDeptTree();
   padding-bottom: 20px;
 }
 
+.pagecont-top .infotop{
+    position: relative;
+    height: 100%;
+    overflow: auto;
+}
+
 .steps-wrap {
   //width: 87.5vw;
   height: 80px;
@@ -1262,11 +1269,11 @@ getDeptTree();
 }
 
 .button-style {
-  position: absolute;
+  position: sticky;
   left: 0;
   right: 0;
   bottom: 0;
-  padding: 0px 35px 25px 0px;
+  padding: 25px 35px 25px 0px;
   background: #fff;
   text-align: right;
   z-index: 10;

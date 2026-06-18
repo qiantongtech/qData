@@ -148,7 +148,7 @@ const tableStroe = reactive({
     {
       label: td("mc.task.structured.collectTableCount"),
       prop: "totalCount",
-      width: 140,
+      width: 160,
     },
     {
       label: td("mc.task.structured.collectStatus"),
@@ -159,7 +159,7 @@ const tableStroe = reactive({
     {
       label: td("mc.task.structured.collectDuration"),
       prop: "duration",
-      width: 120,
+      width: 140,
     },
     {
       label: td("mc.task.structured.collectTimeRange"),

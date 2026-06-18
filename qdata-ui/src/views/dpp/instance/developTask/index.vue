@@ -192,7 +192,7 @@
             <el-table-column
               v-if="getColumnVisibility(3)"
               :label="td('dpp.instance.developTask.executionType', '执行类型')"
-              width="120"
+              width="140"
               :show-overflow-tooltip="{ effect: 'light' }"
               align="left"
               prop="commandType"
@@ -206,7 +206,7 @@
             </el-table-column>
             <el-table-column
               v-if="getColumnVisibility(4)"
-              width="100"
+              width="140"
               :label="
                 td('dpp.instance.developTask.executionStatus', '执行状态')
               "
@@ -273,7 +273,7 @@
             <!--            </el-table-column>-->
             <el-table-column
               v-if="getColumnVisibility(9)"
-              width="100"
+              width="160"
               :label="
                 td('dpp.instance.developTask.responsiblePerson', '责任人')
               "
@@ -290,6 +290,7 @@
               :show-overflow-tooltip="true"
               align="left"
               prop="createBy"
+              width="140"
             >
               <template #default="scope">
                 {{ scope.row.createBy || "-" }}

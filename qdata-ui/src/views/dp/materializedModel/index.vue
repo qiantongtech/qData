@@ -392,7 +392,7 @@ const tableStore = reactive({
       label: td('dp.materializedModel.releaseStatus'),
       prop: "releaseStatus",
       align: "center",
-      width: 100,
+      width: 180,
       slot: "releaseStatus",
     },
     {

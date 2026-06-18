@@ -1433,7 +1433,8 @@ getAssetThemeList();
 
         .title-tag {
           min-width: 52px;
-          width: 52px;
+        //   width: 52px;
+          padding: 0 8px;
           height: 24px;
           background: #ff9800;
           color: #ffffff;
@@ -1592,10 +1593,11 @@ getAssetThemeList();
           height: 24px;
           background: #e8f1ff;
           border-radius: 2px;
-          display: flex;
+          display: inline-flex;
           align-items: center;
           justify-content: center;
           color: #3d446e;
+          padding: 0 8px;
 
           &:last-child {
             margin-right: 0;

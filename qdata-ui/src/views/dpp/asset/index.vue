@@ -1479,10 +1479,11 @@ getAssetThemeList();
           height: 24px;
           background: #e8f1ff;
           border-radius: 2px;
-          display: flex;
+          display: inline-flex;
           align-items: center;
           justify-content: center;
           color: #3d446e;
+          padding: 0px 8px;
 
           &:last-child {
             margin-right: 0;

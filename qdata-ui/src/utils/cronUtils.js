@@ -48,9 +48,15 @@ function getTranslation(key, fallback) {
  */
 export function cronToZh(cron) {
   if (!cron) return "";
+  const localeMap = {
+    'zh-CN': 'zh_CN',
+    'ja-JP': 'ja',
+    'en-US': 'en',
+  }
+
   try {
     return (
-      cronstrue.toString(cron, { locale: i18n.global.locale, use24HourTimeFormat: true }) +
+      cronstrue.toString(cron, { locale: localeMap[i18n.global.locale.value], use24HourTimeFormat: true }) +
       " " + getTranslation('common.crontab.cronUtils.execute', '执行')
     );
   } catch (error) {

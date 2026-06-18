@@ -129,6 +129,7 @@
               :show-overflow-tooltip="{ effect: 'light' }"
               align="left"
               prop="name"
+              width="120"
             >
               <template #default="scope">
                 {{ scope.row.code || "-" }}
@@ -140,6 +141,7 @@
               :show-overflow-tooltip="{ effect: 'light' }"
               align="left"
               prop="name"
+              width="120"
             >
               <template #default="scope">
                 {{ scope.row.name || "-" }}
@@ -163,6 +165,7 @@
               :show-overflow-tooltip="{ effect: 'light' }"
               align="left"
               prop="catCode"
+              width="140"
             >
               <template #default="scope">
                 {{ scope.row.catName || "-" }}
@@ -174,6 +177,7 @@
               :show-overflow-tooltip="{ effect: 'light' }"
               align="left"
               prop="createBy"
+              width="100"
             >
               <template #default="scope">
                 {{ scope.row.createBy || "-" }}
@@ -199,6 +203,7 @@
               :label="td('dp.document.standardStatus')"
               align="left"
               prop="status"
+              width="120"
             >
               <template #default="scope">
                 <dict-tag

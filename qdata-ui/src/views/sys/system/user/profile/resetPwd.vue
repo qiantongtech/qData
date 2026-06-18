@@ -16,7 +16,7 @@
 -->
 
 <template>
-   <el-form ref="pwdRef" :model="user" :rules="rules" label-width="80px">
+   <el-form ref="pwdRef" :model="user" :rules="rules" :label-position="labelPosition">
       <el-form-item :label="td('sys.system.resetPwd.oldPassword')" prop="oldPassword">
          <el-input v-model="user.oldPassword" :placeholder="td('sys.system.resetPwd.oldPasswordPlaceholder')" type="password" show-password />
       </el-form-item>

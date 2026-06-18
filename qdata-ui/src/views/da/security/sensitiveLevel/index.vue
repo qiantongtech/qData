@@ -79,12 +79,12 @@
                         {{ scope.row.description || '-' }}
                     </template>
                 </el-table-column>
-                <el-table-column v-if="getColumnVisibility(4)" :label="td('da.security.columnVisibility.replaceRule')" align="center" prop="sensitiveRule">
+                <el-table-column v-if="getColumnVisibility(4)" :label="td('da.security.columnVisibility.replaceRule')" align="center" prop="sensitiveRule" width="140">
                     <template #default="scope">
                         <dict-tag :options="da_sensitive_level_rule" :value="scope.row.sensitiveRule" />
                     </template>
                 </el-table-column>
-                <el-table-column v-if="getColumnVisibility(5)" :label="td('da.security.columnVisibility.replaceContent')" align="center" prop="maskCharacter">
+                <el-table-column v-if="getColumnVisibility(5)" :label="td('da.security.columnVisibility.replaceContent')" align="center" prop="maskCharacter" width="140">
                     <template #default="scope">
                         {{ scope.row.maskCharacter || '-' }}
                     </template>
@@ -105,7 +105,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column v-if="getColumnVisibility(8)" :label="td('da.security.columnVisibility.onlineStatus')" align="center" prop="onlineFlag"
-                    width="100">
+                    width="160">
                     <template #default="scope">
                         <el-switch v-model="scope.row.onlineFlag" active-color="#13ce66" inactive-color="#ff4949"
                             active-value="1" inactive-value="0" @change="handleStatusChange(scope.row)" />

@@ -161,7 +161,7 @@
 
         <el-table-column
           v-if="getColumnVisibility(4)"
-          width="140"
+          width="160"
           :label="td('dpp.datasource.datasourceType')"
           align="center"
           prop="datasourceType"

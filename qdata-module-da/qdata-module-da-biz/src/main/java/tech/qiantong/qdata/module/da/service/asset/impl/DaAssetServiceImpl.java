@@ -64,8 +64,8 @@ import tech.qiantong.qdata.common.database.core.DbColumn;
 import tech.qiantong.qdata.common.database.core.FileInfo;
 import tech.qiantong.qdata.common.database.exception.DataQueryException;
 import tech.qiantong.qdata.common.exception.ServiceException;
-import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.ExcelToCsvUtil;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.PageUtil;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.file.FileDataReaderUtil;
@@ -1699,7 +1699,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
             }
         }
 
-        return AjaxResult.success("任务完成");
+        return AjaxResult.success(MessageUtils.messageWithFallback("da.error.task.complete", "任务完成"));
     }
 
     @Override

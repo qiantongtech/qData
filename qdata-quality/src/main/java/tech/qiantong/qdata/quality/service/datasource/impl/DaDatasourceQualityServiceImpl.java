@@ -36,7 +36,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.qiantong.qdata.common.core.domain.AjaxResult;
@@ -61,7 +60,10 @@ import tech.qiantong.qdata.quality.dal.mapper.datasource.DaDatasourceMapper;
 import tech.qiantong.qdata.quality.service.datasource.IDaDatasourceQualityService;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -245,10 +247,10 @@ public class DaDatasourceQualityServiceImpl extends ServiceImpl<DaDatasourceMapp
         DbQuery dbQuery = this.buildDbQuery(id);
         if (dbQuery.valid()) {
             dbQuery.close();
-            return AjaxResult.success("数据库连接成功");
+            return AjaxResult.success(MessageUtils.messageWithFallback("quality.error.connection.success", "数据库连接成功"));
         }
         dbQuery.close();
-        return AjaxResult.error("数据库连接失败");
+        return AjaxResult.error(MessageUtils.messageWithFallback("quality.error.connection.fail", "数据库连接失败"));
 
     }
 

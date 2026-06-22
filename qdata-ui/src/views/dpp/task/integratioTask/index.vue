@@ -459,7 +459,7 @@ const tableStore = reactive({
       align: "center",
       fixed: "right",
       slot: "action",
-      width: 240,
+      width: 300,
     },
   ],
   func: listWrapper,

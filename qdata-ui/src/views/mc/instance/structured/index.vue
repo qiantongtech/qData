@@ -185,7 +185,7 @@ const tableStroe = reactive({
     {
       label: td("common.texts.operation"),
       slot: "handle",
-      width: 220,
+      width: 260,
       fixed: "right",
     },
   ],

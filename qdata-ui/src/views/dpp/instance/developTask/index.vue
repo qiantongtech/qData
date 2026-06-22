@@ -317,7 +317,7 @@
               align="center"
               class-name="small-padding fixed-width"
               fixed="right"
-              width="200"
+              width="240"
             >
               <template #default="scope">
                 <el-button

@@ -349,7 +349,7 @@ import {
 } from '@/api/att/theme/theme.js';
 import { getToken } from '@/utils/auth.js';
 import useDefaultLang from "@/composables/useDefaultLang";
-const noDataImg = new URL('@/assets/system/images/D.png', import.meta.url).href
+const noDataImg = new URL('@/assets/images/system/images/D.png', import.meta.url).href
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();

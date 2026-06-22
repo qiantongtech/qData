@@ -21,7 +21,7 @@
     <div class="summary-bar">
       <div class="summary-left-col">
         <div class="title-info">
-          <img src="@/assets/ai/gpt-new.svg" class="robot-icon" />
+          <img src="@/assets/images/ai/gpt-new.svg" class="robot-icon" />
           <span class="title">{{ title || td('ai.chat.newChat') }}</span>
         </div>
       </div>

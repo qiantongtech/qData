@@ -59,10 +59,10 @@
 </template>
 
 <script setup>
-import variables from "@/assets/system/styles/variables.module.scss";
-import logo from "@/assets/system/logo/qData-logo.png";
-import logo1 from "@/assets/system/logo/qData-logo1.png";
-import simpLogo from "@/assets/system/logo/qData-simlogo.png"; //千数
+import variables from "@/assets/styles/system/variables.module.scss";
+import logo from "@/assets/images/system/logo/qData-logo.png";
+import logo1 from "@/assets/images/system/logo/qData-logo1.png";
+import simpLogo from "@/assets/images/system/logo/qData-simlogo.png"; //千数
 
 import useSettingsStore from "@/store/system/settings";
 import defaultSettings from "@/settings";

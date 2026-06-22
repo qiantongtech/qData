@@ -22,7 +22,7 @@ import { DataUri, Shape } from '@antv/x6';
 import { History } from '@antv/x6-plugin-history';
 import { Export } from '@antv/x6-plugin-export';
 import { Selection } from '@antv/x6-plugin-selection';
-import '@/assets/system/styles/global.scss'
+import '@/assets/styles/system/global.scss'
 import { cuPort } from '@/utils/graph';
 import useUserStore from "@/store/system/user";
 
@@ -30,8 +30,8 @@ const userStore = useUserStore();
 import {
   getNodeUniqueKey,
 } from "@/api/dpp/task/index.js";
-import sxPng from '@/assets/system/images/dpp/sx.png';
-import xxPng from '@/assets/system/images/dpp/xx.png';
+import sxPng from '@/assets/images/common/dpp/sx.png';
+import xxPng from '@/assets/images/common/dpp/xx.png';
 
 /**
  * 插件使用

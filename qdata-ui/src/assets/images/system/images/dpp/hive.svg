@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16.24" height="16.459" viewBox="0 0 16.24 16.459">
+  <g id="组_23724" data-name="组 23724" transform="translate(16660.77 22181.602)">
+    <g id="组_23719" data-name="组 23719" transform="translate(-16660.77 -22181.602)">
+      <g id="组_23710" data-name="组 23710" transform="translate(0 0)">
+        <g id="组_23668" data-name="组 23668">
+          <path id="路径_22944" data-name="路径 22944" d="M3.624,4.551V17.908H16.617V4.551ZM2.812,3H17.429a.794.794,0,0,1,.812.776V18.684a.794.794,0,0,1-.812.776H2.812A.794.794,0,0,1,2,18.684V3.776A.794.794,0,0,1,2.812,3Z" transform="translate(-2 -3)" fill="#2665fb"/>
+        </g>
+        <text id="hive" transform="translate(1.88 12.936)" fill="#2565fb" font-size="7" font-family="DIN-Bold, DIN" font-weight="700" letter-spacing="-0.02em"><tspan x="0" y="0">hive</tspan></text>
+        <path id="路径_23015" data-name="路径 23015" d="M276.678,299.605v3.174a.737.737,0,0,0,1.461,0v-3.174h.83a.645.645,0,1,0,0-1.28h-3.125a.645.645,0,1,0,0,1.28ZM284,302.3h-3.022a.645.645,0,1,0,0,1.28H284a.645.645,0,1,0,0-1.28Zm0-2.318h-3.022a.645.645,0,1,0,0,1.28H284a.645.645,0,1,0,0-1.28Z" transform="translate(-272.601 -296.08)" fill="#2665fb"/>
+      </g>
+    </g>
+  </g>
+</svg>

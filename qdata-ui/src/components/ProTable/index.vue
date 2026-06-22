@@ -124,7 +124,7 @@
     <template #empty>
       <slot name="empty">
         <div class="emptyBg">
-          <img src="@/assets/system/images/no_data/noData.png" alt="" />
+          <img src="@/assets/images/system/images/no_data/noData.png" alt="" />
           <p>{{td('common.noData')}}</p>
         </div>
       </slot>

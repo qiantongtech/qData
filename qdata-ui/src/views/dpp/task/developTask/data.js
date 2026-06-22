@@ -25,7 +25,7 @@ export const treeData = [
     type: "DM",
     falg: true,
     children: [],
-    icon: new URL('@/assets/system/images/dpp/sr.png', import.meta.url).href,
+    icon: new URL('@/assets/images/common/dpp/sr.png', import.meta.url).href,
   },
   {
     id: 3,
@@ -34,7 +34,7 @@ export const treeData = [
     type: "ORACLE",
     falg: true,
     children: [],
-    icon: new URL('@/assets/system/images/dpp/oracle.png', import.meta.url).href,
+    icon: new URL('@/assets/images/common/dpp/oracle.png', import.meta.url).href,
   },
   {
     id: 4,
@@ -43,7 +43,7 @@ export const treeData = [
     type: "MySql",
     falg: true,
     children: [],
-    icon: new URL('@/assets/system/images/dpp/sr.png', import.meta.url).href,
+    icon: new URL('@/assets/images/common/dpp/sr.png', import.meta.url).href,
   },
   {
     id: 5,
@@ -52,7 +52,7 @@ export const treeData = [
     type: "KINGBASE",
     falg: true,
     children: [],
-    icon: new URL('@/assets/system/images/dpp/sr.png', import.meta.url).href,
+    icon: new URL('@/assets/images/common/dpp/sr.png', import.meta.url).href,
     elTagType: "info", // 紫色
   },
 ];

@@ -21,7 +21,7 @@
     <!-- title -->
     <div class="center-container">
       <div class="title">
-        <img src="@/assets/ai/gpt-new.svg" width="44px" />
+        <img src="@/assets/images/ai/gpt-new.svg" width="44px" />
         <span>{{ td('ai.chat.welcomeGreeting') }}</span>
       </div>
       <div class="subheading">{{ td('ai.chat.welcomeSubheading') }}</div>
@@ -104,7 +104,7 @@
             </div>
             <div class="footer-right">
               <img
-                src="@/assets/ai/send.png"
+                src="@/assets/images/ai/send.png"
                 class="btn-send"
                 @click="handlerPromptClick"
               />
@@ -121,9 +121,9 @@
 <script setup>
 import { ref, computed, onMounted, getCurrentInstance } from "vue";
 import { CHAT_TYPES } from "../../constants";
-import defaultModelIcon from "@/assets/ai/gpt-new.svg";
-import deepseekIcon from "@/assets/ai/deepseek.svg";
-import tongyiIcon from "@/assets/ai/TongYi.svg";
+import defaultModelIcon from "@/assets/images/ai/gpt-new.svg";
+import deepseekIcon from "@/assets/images/ai/deepseek.svg";
+import tongyiIcon from "@/assets/images/ai/TongYi.svg";
 import { Plus } from "@element-plus/icons-vue";
 import useDefaultLang from "@/composables/useDefaultLang";
 

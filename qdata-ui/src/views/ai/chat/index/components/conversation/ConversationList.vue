@@ -102,7 +102,7 @@
                 >
                   <img
                     height="14"
-                    src="@/assets/ai/topC.png"
+                    src="@/assets/images/ai/topC.png"
                     :alt="td('ai.chat.pinTop')"
                     v-if="
                       !conversation.pinned &&
@@ -111,13 +111,13 @@
                   />
                   <img
                     height="14"
-                    src="@/assets/ai/top.png"
+                    src="@/assets/images/ai/top.png"
                     :alt="td('ai.chat.pinTop')"
                     v-else-if="!conversation.pinned"
                   />
                   <img
                     height="14"
-                    src="@/assets/ai/bottomC.png"
+                    src="@/assets/images/ai/bottomC.png"
                     :alt="td('ai.chat.unpinTop')"
                     v-if="
                       conversation.pinned &&
@@ -126,7 +126,7 @@
                   />
                   <img
                     height="14"
-                    src="@/assets/ai/bottom.png"
+                    src="@/assets/images/ai/bottom.png"
                     :alt="td('ai.chat.unpinTop')"
                     v-else-if="conversation.pinned"
                   />
@@ -138,10 +138,10 @@
                 >
                   <img
                     height="14"
-                    src="@/assets/ai/editC.png"
+                    src="@/assets/images/ai/editC.png"
                     v-if="conversation.id === activeConversationId"
                   />
-                  <img height="14" src="@/assets/ai/edit.png" v-else />
+                  <img height="14" src="@/assets/images/ai/edit.png" v-else />
                 </el-button>
                 <el-button
                   class="btn"
@@ -150,10 +150,10 @@
                 >
                   <img
                     height="14"
-                    src="@/assets/ai/deleteC.png"
+                    src="@/assets/images/ai/deleteC.png"
                     v-if="conversation.id === activeConversationId"
                   />
-                  <img height="14" src="@/assets/ai/delete.png" v-else />
+                  <img height="14" src="@/assets/images/ai/delete.png" v-else />
                 </el-button>
               </div>
             </div>
@@ -211,8 +211,8 @@
 
 <script setup>
 import { ChatConversationApi } from "@/api/ai/chat/conversation";
-import roleAvatarDefaultImg from "@/assets/ai/gpt-new.svg";
-import roleAvatartActiveImg from "@/assets/ai/gpt-new.svg";
+import roleAvatarDefaultImg from "@/assets/images/ai/gpt-new.svg";
+import roleAvatartActiveImg from "@/assets/images/ai/gpt-new.svg";
 import useUserStore from "@/store/system/user";
 import moment from "moment/moment.js";
 import useDefaultLang from "@/composables/useDefaultLang";

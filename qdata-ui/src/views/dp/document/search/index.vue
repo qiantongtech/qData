@@ -88,11 +88,11 @@
                     class="form-btn"
                     @click="handleFilePreview(item.fileUrl)"
                   >
-                    <!-- <img src="@/assets/dp/standardSearch/icon (2).svg" alt="" /> -->
+                    <!-- <img src="@/assets/images/dp/standardSearch/icon (2).svg" alt="" /> -->
                     <span>{{ td('common.button.view') }}</span>
                   </div>
                   <div class="form-btn" @click="handleView(item)">
-                    <!-- <img src="@/assets/dp/standardSearch/icon (1).svg" alt="" /> -->
+                    <!-- <img src="@/assets/images/dp/standardSearch/icon (1).svg" alt="" /> -->
                     <span>{{ td('common.button.details') }}</span>
                   </div>
                 </div>
@@ -136,7 +136,7 @@
         </el-row>
       </div>
       <div class="empty" v-else>
-        <img src="@/assets/da/asset/empty.png" alt="" />
+        <img src="@/assets/images/da/asset/empty.png" alt="" />
         <span>{{ td('common.noSearchResult') }}</span>
       </div>
       <pagination
@@ -268,17 +268,17 @@ const getFileIcon = (fileUrl) => {
   let type = fileUrl.split(".")[fileUrl.split(".").length - 1];
   switch (type) {
     case "pdf":
-      return new URL("@/assets/dp/standardSearch/file (2).svg", import.meta.url)
+      return new URL("@/assets/images/dp/standardSearch/file (2).svg", import.meta.url)
         .href;
     case "doc":
     case "docx":
-      return new URL("@/assets/dp/standardSearch/file (1).svg", import.meta.url)
+      return new URL("@/assets/images/dp/standardSearch/file (1).svg", import.meta.url)
         .href;
     case "ppt":
-      return new URL("@/assets/dp/standardSearch/file (3).svg", import.meta.url)
+      return new URL("@/assets/images/dp/standardSearch/file (3).svg", import.meta.url)
         .href;
     default:
-      return new URL("@/assets/dp/standardSearch/file (4).svg", import.meta.url)
+      return new URL("@/assets/images/dp/standardSearch/file (4).svg", import.meta.url)
         .href;
   }
 };

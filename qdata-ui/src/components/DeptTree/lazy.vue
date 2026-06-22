@@ -31,8 +31,8 @@
                     <span class="custom-tree-node" @dblclick.stop="handleNodeClick(data, node, 'node')">
                         <!-- 数据源/层级图标 -->
                         <img v-if="node.level === 1" :src="getDatasourceIcon(data.datasourceType)" class="node-icon" />
-                        <img v-if="node.level === 2" src="@/assets/system/images/dpp/sr.png" class="node-icon" />
-                        <img v-if="node.level === 3" src="@/assets/system/images/dpp/zt.png" class="node-icon" />
+                        <img v-if="node.level === 2" src="@/assets/images/common/dpp/sr.png" class="node-icon" />
+                        <img v-if="node.level === 3" src="@/assets/images/common/dpp/zt.png" class="node-icon" />
                         <!-- label -->
                         <span class="treelable">{{ node.label }}</span>
 
@@ -114,18 +114,18 @@ const contextMenuNode = ref(null);
 // 图标
 const getDatasourceIcon = (type) => {
     switch (type) {
-        case "DM8": return new URL("@/assets/system/images/dpp/DM.png", import.meta.url).href;
-        case "Oracle11": return new URL("@/assets/system/images/dpp/oracle.png", import.meta.url).href;
-        case "MySql": return new URL("@/assets/system/images/dpp/mysql.png", import.meta.url).href;
-        case "Hive": return new URL("@/assets/system/images/dpp/Hive.png", import.meta.url).href;
-        case "Sqlerver": return new URL("@/assets/system/images/dpp/sqlServer.png", import.meta.url).href;
-        case "Kafka": return new URL("@/assets/system/images/dpp/kafka.png", import.meta.url).href;
-        case "HDFS": return new URL("@/assets/system/images/dpp/hdfs.png", import.meta.url).href;
-        case "SHELL": return new URL("@/assets/system/images/dpp/SHELL.png", import.meta.url).href;
-        case "Kingbase8": return new URL("@/assets/system/images/dpp/kingBase.png", import.meta.url).href;
-        case "SQL_Server": return new URL("@/assets/system/images/dpp/SQL_Server.svg", import.meta.url).href;
-        case "SQL_Server2008": return new URL("@/assets/system/images/dpp/SQL_Server.svg", import.meta.url).href;
-        case "Doris": return new URL("@/assets/system/images/dpp/doris.svg", import.meta.url).href;
+        case "DM8": return new URL("@/assets/images/common/dpp/DM.png", import.meta.url).href;
+        case "Oracle11": return new URL("@/assets/images/common/dpp/oracle.png", import.meta.url).href;
+        case "MySql": return new URL("@/assets/images/common/dpp/mysql.png", import.meta.url).href;
+        case "Hive": return new URL("@/assets/images/common/dpp/Hive.png", import.meta.url).href;
+        case "Sqlerver": return new URL("@/assets/images/common/dpp/sqlServer.png", import.meta.url).href;
+        case "Kafka": return new URL("@/assets/images/common/dpp/kafka.png", import.meta.url).href;
+        case "HDFS": return new URL("@/assets/images/common/dpp/hdfs.png", import.meta.url).href;
+        case "SHELL": return new URL("@/assets/images/common/dpp/SHELL.png", import.meta.url).href;
+        case "Kingbase8": return new URL("@/assets/images/common/dpp/kingBase.png", import.meta.url).href;
+        case "SQL_Server": return new URL("@/assets/images/common/dpp/SQL_Server.svg", import.meta.url).href;
+        case "SQL_Server2008": return new URL("@/assets/images/common/dpp/SQL_Server.svg", import.meta.url).href;
+        case "Doris": return new URL("@/assets/images/common/dpp/doris.svg", import.meta.url).href;
         default: return null;
     }
 };

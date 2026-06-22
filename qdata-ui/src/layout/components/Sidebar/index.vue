@@ -44,7 +44,7 @@
 <script setup>
 import Logo from './Logo'
 import SidebarItem from './SidebarItem'
-import variables from '@/assets/system/styles/variables.module.scss'
+import variables from '@/assets/styles/system/variables.module.scss'
 import useAppStore from '@/store/system/app'
 import useSettingsStore from '@/store/system/settings'
 import usePermissionStore from '@/store/system/permission'

@@ -25,7 +25,7 @@
                     :default-expand-all="defaultExpand">
                     <template #default="{ node, data }">
                         <span class="custom-tree-node">
-                            <img class="node-icon" src="@/assets/da/asset/icon (3).png" alt=""
+                            <img class="node-icon" src="@/assets/images/da/asset/icon (3).png" alt=""
                                 v-if="node.childNodes.length" />
                             <el-icon class="zjiconimg colorwxz" v-show="!node.isCurrent && node.childNodes.length == 0">
                                 <Tickets />
@@ -272,7 +272,7 @@ defineExpose({ resetTree });
             color: transparent;
 
             &>svg {
-                background: url("@/assets/da/asset/arrow.png") no-repeat;
+                background: url("@/assets/images/da/asset/arrow.png") no-repeat;
                 background-size: 100% 100%;
             }
         }

@@ -830,4 +830,4 @@ if (userStore.projectId) {
 usePageRefresh("integratioTask", () => handleQuery());
 </script>
 
-<style lang="scss" src="@/assets/system/styles/table-style-optimized.scss"></style>
+<style lang="scss" src="@/assets/styles/system/table-style-optimized.scss"></style>

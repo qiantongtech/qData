@@ -262,7 +262,7 @@ async function routeTo(link, query = {}) {
 }
 
 const getAssetsFile = (url) => {
-  return new URL(`../../assets/system/images/index/${url}`, import.meta.url)
+  return new URL(`../../assets/images/system/images/index/${url}`, import.meta.url)
     .href;
 };
 

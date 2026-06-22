@@ -40,6 +40,7 @@ const route = useRoute();
 const whiteList = ["/login", "/register", "/sso/login", "/sso",];
 // 计算水印文本，动态获取当前路由的名称
 const watermarkText = computed(() => {
+  debugger
   if (localStorage.getItem("username")) {
     if (route.path != "/login" && route.path != "/sso/login") {
       return localStorage.getItem("username") || "默认水印"; //需要水印赋值不需要给空

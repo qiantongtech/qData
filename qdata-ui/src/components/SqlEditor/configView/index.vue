@@ -33,7 +33,7 @@
     <div class="container-content">
       <template v-if="props.currValue.type == 'attrConfig'">
         <el-form ref="configRef" :model="form" :rules="rules" label-width="142px" @submit.prevent :disabled="readOnly" :label-position="labelPosition">
-          <div class="h2"><img class="icon" src="@/assets/images/da/asset/h2 (1).svg" alt="" />{{ t('components.sqlEditorConfigView.basicConfig') }}</div>
+          <div class="h2"><img class="icon" src="../../../assets/images/da/asset/icon-h-one.svg" alt="" />{{ t('components.sqlEditorConfigView.basicConfig') }}</div>
           <el-form-item :label="t('components.sqlEditorConfigView.taskPriority')" prop="taskPriority">
             <el-select v-model="form.taskPriority" :placeholder="t('components.sqlEditorConfigView.taskPriorityPlaceholder')">
               <el-option v-for="(item, index) in dpp_etl_task_priority" :key="index" :label="item.label"
@@ -103,7 +103,7 @@
               <el-input v-model="form.yarnQueue" :placeholder="t('components.sqlEditorConfigView.yarnQueuePlaceholder')"> </el-input>
             </el-form-item>
           </template>
-          <div class="h2"><img class="icon" src="@/assets/images/da/asset/h2 (1).svg" alt="" />{{ t('components.sqlEditorConfigView.otherConfig') }}</div>
+          <div class="h2"><img class="icon" src="../../../assets/images/da/asset/icon-h-one.svg" alt="" />{{ t('components.sqlEditorConfigView.otherConfig') }}</div>
           <el-form-item :label="t('components.sqlEditorConfigView.dataConnectionType')" prop="typaCode"> {{ typaName }} </el-form-item>
           <el-form-item :label="t('components.sqlEditorConfigView.datasourceConnection')" prop="datasourceId" v-if="isShowWithTypeName('SparkSql,Flink批,Flink流', false)">
             <el-select v-model="form.datasourceId" :placeholder="t('components.sqlEditorConfigView.datasourceConnectionPlaceholder')" @change="handleDatasourceChange" filterable>
@@ -121,7 +121,7 @@
           <el-form-item :label="t('components.sqlEditorConfigView.segmentSymbol')" prop="segm">
             <el-input v-model="form.segm" :placeholder="t('components.sqlEditorConfigView.segmentSymbolPlaceholder')"></el-input>
           </el-form-item>
-          <div class="h2"><img class="icon" src="@/assets/images/da/asset/h2 (1).svg" alt="" />{{ t('components.sqlEditorConfigView.paramsConfig') }}</div>
+          <div class="h2"><img class="icon" src="../../../assets/images/da/asset/icon-h-one.svg" alt="" />{{ t('components.sqlEditorConfigView.paramsConfig') }}</div>
           <el-form-item :label="t('components.sqlEditorConfigView.customParams')" prop="localParams"> </el-form-item>
           <div class="wrap" v-for="(item, index) in form.localParams" :key="index">
             <el-input style="width: 30%" v-model="item.prop" :placeholder="t('components.sqlEditorConfigView.paramNamePlaceholder')"></el-input>
@@ -539,7 +539,7 @@ defineExpose({ currWidth, form, configRef });
         width: 20px;
         margin-right: 5px;
         // height: 20px;
-        // background: url("@/assets/images/da/asset/h2 (1).svg") no-repeat;
+        // background: url("@/assets/images/da/asset/icon-h-one.svg") no-repeat;
       }
     }
 

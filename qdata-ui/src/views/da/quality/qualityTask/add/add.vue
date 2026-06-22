@@ -680,32 +680,32 @@ let dppQualityTaskObjSaveReqVO = ref([]);
 const getDatasourceIcon = (type) => {
   switch (type) {
     case "DM8":
-      return new URL("@/assets/images/common/dpp/DM.png", import.meta.url).href;
+      return new URL("@/assets/images/common/dpp/ds-dm.png", import.meta.url).href;
     case "Oracle11":
-      return new URL("@/assets/images/common/dpp/oracle.png", import.meta.url)
+      return new URL("@/assets/images/common/dpp/img-oracle-one.png", import.meta.url)
         .href;
     case "MySql":
-      return new URL("@/assets/images/common/dpp/mysql.png", import.meta.url)
+      return new URL("@/assets/images/common/dpp/ds-mysql.png", import.meta.url)
         .href;
     case "Hive":
-      return new URL("@/assets/images/common/dpp/Hive.png", import.meta.url)
+      return new URL("@/assets/images/common/dpp/ds-hive.png", import.meta.url)
         .href;
     case "Sqlerver":
       return new URL(
-        "@/assets/images/common/dpp/sqlServer.png",
+        "@/assets/images/common/dpp/ds-sqlserver.png",
         import.meta.url
       ).href;
     case "Kafka":
-      return new URL("@/assets/images/common/dpp/kafka.png", import.meta.url)
+      return new URL("@/assets/images/common/dpp/ds-kafka.png", import.meta.url)
         .href;
     case "HDFS":
       return new URL("@/assets/images/common/dpp/hdfs.png", import.meta.url)
         .href;
     case "SHELL":
-      return new URL("@/assets/images/common/dpp/SHELL.png", import.meta.url)
+      return new URL("@/assets/images/common/dpp/img-shell-one.png", import.meta.url)
         .href;
     case "Kingbase8":
-      return new URL("@/assets/images/common/dpp/kingBase.png", import.meta.url)
+      return new URL("@/assets/images/common/dpp/ds-kingbase.png", import.meta.url)
         .href;
     default:
       return null;

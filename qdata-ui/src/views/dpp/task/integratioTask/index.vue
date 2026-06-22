@@ -799,9 +799,9 @@ const getDatasourceIcon = (json) => {
   let type = json && JSON.parse(json).taskType;
   switch (type) {
     case "FLINK":
-      return new URL("@/assets/images/common/flink.svg", import.meta.url).href;
+      return new URL("@/assets/images/common/icon-flink-one.svg", import.meta.url).href;
     case "SPARK":
-      return new URL("@/assets/images/common/spark.svg", import.meta.url).href;
+      return new URL("@/assets/images/common/icon-spark-one.svg", import.meta.url).href;
     default:
       return null;
   }

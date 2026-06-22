@@ -42,7 +42,7 @@
               <div ref="target" :class="['language', langOpen ? 'language-open' : 'language-close']"
                    @click="langOpen = !langOpen"
               >
-                <img class="language-icon" src="@/assets/images/system/images/login/language-icon.svg" alt="" />
+                <img class="language-icon" src="@/assets/images/system/images/login/icon-language.svg" alt="" />
                 <div class="language-name">{{ currentLocaleName }}</div>
                 <el-icon class="language-switch">
                   <ArrowRight />
@@ -112,7 +112,7 @@
             <div>
                 <div class="description">
                     <div class="contact" style="float: left">
-                        <img src="@/assets/images/system/images/login/phone.png" />
+                        <img src="@/assets/images/system/images/login/form-phone.png" />
                         <div>
                             <p>{{ td('login.info.phoneContact') }}</p>
                             <p>
@@ -125,7 +125,7 @@
                         </div>
                     </div>
                     <div class="contact" style="margin-left: 24px">
-                        <img src="@/assets/images/system/images/login/email.png" />
+                        <img src="@/assets/images/system/images/login/form-email.png" />
                         <div>
                             <p>{{ td('login.info.emailContact') }}</p>
                             <p>
@@ -139,7 +139,7 @@
                     </div>
                 </div>
                 <div class="chrome-wrap">
-                    <img src="@/assets/images/system/images/login/goge-icon.png" style="height: 20px" />
+                    <img src="@/assets/images/system/images/login/img-goge-icon.png" style="height: 20px" />
                     <span style="color: #888; font-size: 12px; line-height: 0; margin-left: 10px">{{ td('login.info.chromeHint') }}</span>
                     <span style="color: #ee2223; font-size: 12px; line-height: 0">Chrome</span>
                     <span style="color: #888; font-size: 12px; line-height: 0">{{ td('login.info.chromeHint2') }}</span>
@@ -150,7 +150,7 @@
                                 flex-direction: column;
                                 align-items: center;
                             ">
-                            <img id="window_img" src="@/assets/images/system/images/login/window-icon.svg"
+                            <img id="window_img" src="@/assets/images/system/images/login/icon-window.svg"
                                 style="height: 25px" />
                             <span style="
                                     color: #888;
@@ -167,7 +167,7 @@
                                 flex-direction: column;
                                 align-items: center;
                             ">
-                            <img id="mac_img" src="@/assets/images/system/images/login/mac-icon.svg" style="height: 25px" />
+                            <img id="mac_img" src="@/assets/images/system/images/login/icon-mac.svg" style="height: 25px" />
                             <span style="
                                     color: #888;
                                     font-size: 12px;
@@ -254,7 +254,7 @@ import { useLocale } from '@/composables/useLocale';
 import { useLocaleImage } from '@/composables/useLocaleImage';
 import { useTimeGreeting } from '@/composables/useTimeGreeting';
 import { getContent } from '@/api/system/system/content';
-import defaultLogo from '@/assets/images/system/images/login/qData-logo.png';
+import defaultLogo from '@/assets/images/system/images/login/logo-qdata.png';
 
 const { td } = useDefaultLang();
 const { changeLocale } = useLocale();

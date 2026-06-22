@@ -169,7 +169,7 @@
               />
               <img
                   v-else
-                  src="../../../../assets/da/asset/file.svg"
+                  src="../../../../assets/da/asset/icon-file.svg"
                   alt=""
                   style="width: 12px; height: 12px; margin-right: 5px"
               />

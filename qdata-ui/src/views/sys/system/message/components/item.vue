@@ -18,7 +18,7 @@
 <template>
   <div class="msg-item" v-for="(msg, index) in messages" :key="index">
     <div class="icon">
-      <img src="@/assets/images/system/images/layout/msg/icon1.png" alt="" />
+      <img src="@/assets/images/system/images/layout/msg/toolbar-icon1.png" alt="" />
     </div>
     <div class="content">
       <div class="title">{{ msg.title }}</div>

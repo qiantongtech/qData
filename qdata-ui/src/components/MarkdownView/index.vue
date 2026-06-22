@@ -75,11 +75,11 @@ import "@/assets/images/ai/style/dify_table.css";
 import hljs from "highlight.js";
 import { renderContent, getFileFormat } from "@/utils/app/chat/chat.js";
 import { listByMessage } from "@/api/ai/retriever/resources";
-import word from "@/assets/images/ai/office/WORD.png";
-import excel from "@/assets/images/ai/office/ECEL.png";
-import pdf from "@/assets/images/ai/office/PDF.png";
-import ppt from "@/assets/images/ai/office/PPT.png";
-import tet from "@/assets/images/ai/office/TET.png";
+import word from "@/assets/images/ai/office/img-word.png";
+import excel from "@/assets/images/ai/office/img-ecel.png";
+import pdf from "@/assets/images/ai/office/img-pdf.png";
+import ppt from "@/assets/images/ai/office/img-ppt.png";
+import tet from "@/assets/images/ai/office/img-tet.png";
 
 // 定义组件属性
 const props = defineProps({

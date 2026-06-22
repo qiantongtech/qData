@@ -144,8 +144,8 @@ const NodeType = {
 };
 // 不同节点类型的icon
 const NODE_TYPE_LOGO = {
-  TABLE: new URL("@/assets/images/dpp/asset/icon (1).png", import.meta.url).href, // 表
-  TASK: new URL("@/assets/images/dpp/asset/icon (2).png", import.meta.url).href, // 任务
+  TABLE: new URL("@/assets/images/dpp/asset/img-icon-one-one.png", import.meta.url).href, // 表
+  TASK: new URL("@/assets/images/dpp/asset/img-icon-two-one.png", import.meta.url).href, // 任务
 };
 // 元素校验状态
 const CellStatus = {

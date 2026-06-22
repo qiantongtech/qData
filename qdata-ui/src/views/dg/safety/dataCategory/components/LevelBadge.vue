@@ -1,6 +1,6 @@
 <template>
   <div class="level-badge" :style="{ backgroundColor: badgeColor }">
-    <img src="@/assets/images/dg/safety/dataLevel/anquan.svg" alt="" />
+    <img src="../../../../../assets/images/dg/icon-anquan.svg" alt="" />
     <span>{{ badgeText }}</span>
   </div>
 </template>

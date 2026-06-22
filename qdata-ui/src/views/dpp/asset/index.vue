@@ -129,7 +129,7 @@
             >
               <div class="item-title">
                 <div class="item-title-left">
-                  <!-- <img class="title-icon" src="@/assets/images/da/asset2/tit.svg" alt="" /> -->
+                  <!-- <img class="title-icon" src="@/assets/images/da/assetTwo/icon-title.svg" alt="" /> -->
                   <span
                     class="item-title-name ellipsis"
                     @click="
@@ -173,7 +173,7 @@
                   </div>
                   <div class="li-bar" v-if="item.datasourceType"></div>
                   <div class="li-tab" v-if="item.datasourceType">
-                    <img src="@/assets/images/da/asset2/fen (1).svg" alt="" />
+                    <img src="@/assets/images/da/assetTwo/icon-fen-one.svg" alt="" />
                     <span>
                       <overflow-tooltip
                         :text="item.datasourceName"
@@ -244,7 +244,7 @@
                         v-if="!unregistered(item)"
                         @click="handleUpdate(item, 'register')"
                       >
-                        <img src="@/assets/images/da/asset2/btn (2).svg" alt="" />
+                        <img src="@/assets/images/da/assetTwo/icon-action-button-two.svg" alt="" />
                         <span>{{ td('dpp.asset.register') }}</span>
                       </div>
                       <div
@@ -252,7 +252,7 @@
                         v-if="unregistered(item)"
                         @click="handleView(item)"
                       >
-                        <img src="@/assets/images/da/asset2/btn (2).svg" alt="" />
+                        <img src="@/assets/images/da/assetTwo/icon-action-button-two.svg" alt="" />
                         <span>{{ td('common.button.details') }}</span>
                       </div>
                       <div
@@ -266,12 +266,12 @@
                       >
                         <img
                           v-if="item.status == 2"
-                          src="@/assets/images/da/asset2/btn (1).svg"
+                          src="@/assets/images/da/assetTwo/icon-action-button-one.svg"
                           alt=""
                         />
                         <img
                           v-else
-                          src="@/assets/images/da/asset2/btn (4).svg"
+                          src="@/assets/images/da/assetTwo/icon-action-button-four.svg"
                           alt=""
                         />
                         <span>{{
@@ -280,7 +280,7 @@
                       </div>
                       <el-dropdown>
                         <div class="form-btn">
-                          <img src="@/assets/images/da/asset2/btn (3).svg" alt="" />
+                          <img src="@/assets/images/da/assetTwo/icon-action-button-three.svg" alt="" />
                           <span>{{ td('common.button.more') }}</span>
                         </div>
                         <template #dropdown>
@@ -716,32 +716,32 @@ let type = route.query.type || null;
 const getDatasourceIcon = (type) => {
   switch (type) {
     case "DM8":
-      return new URL("@/assets/images/common/dpp/DM.png", import.meta.url).href;
+      return new URL("@/assets/images/common/dpp/ds-dm.png", import.meta.url).href;
     case "Oracle11":
-      return new URL("@/assets/images/common/dpp/oracle.png", import.meta.url)
+      return new URL("@/assets/images/common/dpp/img-oracle-one.png", import.meta.url)
         .href;
     case "MySql":
-      return new URL("@/assets/images/common/dpp/mysql.png", import.meta.url)
+      return new URL("@/assets/images/common/dpp/ds-mysql.png", import.meta.url)
         .href;
     case "Hive":
-      return new URL("@/assets/images/common/dpp/Hive.png", import.meta.url)
+      return new URL("@/assets/images/common/dpp/ds-hive.png", import.meta.url)
         .href;
     case "Sqlerver":
       return new URL(
-        "@/assets/images/common/dpp/sqlServer.png",
+        "@/assets/images/common/dpp/ds-sqlserver.png",
         import.meta.url
       ).href;
     case "Kafka":
-      return new URL("@/assets/images/common/dpp/kafka.png", import.meta.url)
+      return new URL("@/assets/images/common/dpp/ds-kafka.png", import.meta.url)
         .href;
     case "HDFS":
       return new URL("@/assets/images/common/dpp/hdfs.png", import.meta.url)
         .href;
     case "SHELL":
-      return new URL("@/assets/images/common/dpp/SHELL.png", import.meta.url)
+      return new URL("@/assets/images/common/dpp/img-shell-one.png", import.meta.url)
         .href;
     case "Kingbase8":
-      return new URL("@/assets/images/common/dpp/kingBase.png", import.meta.url)
+      return new URL("@/assets/images/common/dpp/ds-kingbase.png", import.meta.url)
         .href;
     default:
       return null;

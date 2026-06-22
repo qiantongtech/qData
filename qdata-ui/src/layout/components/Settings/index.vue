@@ -22,7 +22,7 @@
     </div>
     <div class="setting-drawer-block-checbox">
       <div class="setting-drawer-block-checbox-item" @click="handleTheme('theme-dark')">
-        <img src="@/assets/images/system/dark.svg" alt="dark" />
+        <img src="@/assets/images/system/icon-theme-dark.svg" alt="dark" />
         <div v-if="sideTheme === 'theme-dark'" class="setting-drawer-block-checbox-selectIcon" style="display: block;">
           <i aria-label="图标: check" class="anticon anticon-check">
             <svg viewBox="64 64 896 896" data-icon="check" width="1em" height="1em" :fill="theme" aria-hidden="true" focusable="false" class>
@@ -32,7 +32,7 @@
         </div>
       </div>
       <div class="setting-drawer-block-checbox-item" @click="handleTheme('theme-light')">
-        <img src="@/assets/images/system/light.svg" alt="light" />
+        <img src="@/assets/images/system/icon-theme-light.svg" alt="light" />
         <div v-if="sideTheme === 'theme-light'" class="setting-drawer-block-checbox-selectIcon" style="display: block;">
           <i aria-label="图标: check" class="anticon anticon-check">
             <svg viewBox="64 64 896 896" data-icon="check" width="1em" height="1em" :fill="theme" aria-hidden="true" focusable="false" class>

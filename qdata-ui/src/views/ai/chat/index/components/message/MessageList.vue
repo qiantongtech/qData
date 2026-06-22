@@ -87,7 +87,7 @@
             <div class="left-btns">
               <template v-if="true">
                 <el-button class="btn-cus" link @click="copyContent(index)">
-                  <img class="btn-image" src="@/assets/images/ai/copy.png" />
+                  <img class="btn-image" src="@/assets/images/ai/action-copy.png" />
                 </el-button>
                 <el-divider direction="vertical" class="btn-divider" />
               </template>
@@ -97,7 +97,7 @@
                 link
                 @click="onDelete(item.id)"
               >
-                <img class="btn-image h-17px" src="@/assets/images/ai/delete.png" />
+                <img class="btn-image h-17px" src="@/assets/images/ai/action-delete.png" />
               </el-button>
             </div>
           </div>
@@ -124,27 +124,27 @@
                 link
                 @click="copyContent(getDisplayContent(item))"
               >
-                <img class="btn-image" src="@/assets/images/ai/copy.png" />
+                <img class="btn-image" src="@/assets/images/ai/action-copy.png" />
               </el-button>
               <el-divider direction="vertical" class="btn-divider" />
               <el-button class="btn-cus" link @click="onDelete(item.id)">
                 <img
                   class="btn-image h-17px mr-12px"
-                  src="@/assets/images/ai/delete.png"
+                  src="@/assets/images/ai/action-delete.png"
                 />
               </el-button>
               <el-divider direction="vertical" class="btn-divider" v-if="isLastUserMessage(index)" />
               <el-button class="btn-cus" link @click="onRefresh(item)" v-if="isLastUserMessage(index)">
                 <img
                   class="btn-image h-17px mr-12px"
-                  src="@/assets/images/ai/refresh.png"
+                  src="@/assets/images/ai/action-refresh.png"
                 />
               </el-button>
               <el-divider direction="vertical" class="btn-divider" v-if="isLastUserMessage(index)" />
               <el-button class="btn-cus" link @click="onEdit(item)" v-if="isLastUserMessage(index)">
                 <img
                   class="btn-image h-17px mr-12px"
-                  src="@/assets/images/ai/edit.png"
+                  src="@/assets/images/ai/action-edit.png"
                 />
               </el-button>
             </div>
@@ -177,8 +177,8 @@ import MarkdownView from "@/components/MarkdownView/index.vue";
 import AssistantReportCard from "./AssistantReportCard.vue";
 import { ChatMessageApi } from "@/api/ai/chat/message";
 import useUserStore from "@/store/system/user";
-import userAvatarDefaultImg from "@/assets/images/defaultAvatar.png";
-import roleAvatarDefaultImg from "@/assets/images/ai/gpt-new.svg";
+import userAvatarDefaultImg from "@/assets/images/avatar-default.png";
+import roleAvatarDefaultImg from "@/assets/images/ai/icon-brand-gpt-new.svg";
 import { useClipboard } from "@vueuse/core";
 import useDefaultLang from "@/composables/useDefaultLang";
 

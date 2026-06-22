@@ -41,9 +41,9 @@
                     :value="desc.value" /></span>
                 <span class="li-type" v-else-if="desc.key == 'type'"
                   :style="{ color: desc.value == 2 ? '#c0d043' : desc.value == 1 ? '#21a3dd' : desc.value == 7 ? '#edce2e' : '' }">
-                  <img v-if="desc.value == 2" src="@/assets/images/da/asset/api (1).svg" alt="" />
-                  <img v-if="desc.value == 1" src="@/assets/images/da/asset/api (3).svg" alt="" />
-                  <img v-if="desc.value == 7" src="@/assets/images/da/asset/api (5).svg" alt="" />
+                  <img v-if="desc.value == 2" src="@/assets/images/da/asset/icon-ds-api-one.svg" alt="" />
+                  <img v-if="desc.value == 1" src="@/assets/images/da/asset/icon-ds-api-three.svg" alt="" />
+                  <img v-if="desc.value == 7" src="@/assets/images/da/asset/icon-ds-api-five.svg" alt="" />
                   {{ desc.value == 2 ? "api" : desc.value == 1 ? td('da.assetDetail.detail.dbTable') : desc.value == 7 ? td('da.assetDetail.detail.file') : "-" }}
                 </span>
                 <span v-else>{{ desc.value || "-" }}</span>

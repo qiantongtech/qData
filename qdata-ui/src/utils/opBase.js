@@ -30,8 +30,8 @@ const userStore = useUserStore();
 import {
   getNodeUniqueKey,
 } from "@/api/dpp/task/index.js";
-import sxPng from '@/assets/images/common/dpp/sx.png';
-import xxPng from '@/assets/images/common/dpp/xx.png';
+import sxPng from '@/assets/images/common/dpp/img-sx.png';
+import xxPng from '@/assets/images/common/dpp/img-xx.png';
 
 /**
  * 插件使用

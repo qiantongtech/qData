@@ -31,7 +31,7 @@ export const treeData =
       type: "DM",
       falg: true,
       children: [],
-      icon: new URL('@/assets/images/common/dpp/sr.png', import.meta.url).href,
+      icon: new URL('@/assets/images/common/dpp/img-sr.png', import.meta.url).href,
     },
     {
       id: 3,
@@ -40,7 +40,7 @@ export const treeData =
       type: "ORACLE",
       falg: true,
       children: [],
-      icon: new URL('@/assets/images/common/dpp/oracle.png', import.meta.url).href,
+      icon: new URL('@/assets/images/common/dpp/img-oracle-one.png', import.meta.url).href,
     },
     {
       id: 4,
@@ -49,7 +49,7 @@ export const treeData =
       type: "MYSQL",
       falg: true,
       children: [],
-      icon: new URL('@/assets/images/common/dpp/sr.png', import.meta.url).href,
+      icon: new URL('@/assets/images/common/dpp/img-sr.png', import.meta.url).href,
     },
     {
       id: 5,
@@ -58,7 +58,7 @@ export const treeData =
       type: "KINGBASE",
       falg: true,
       children: [],
-      icon: new URL('@/assets/images/common/dpp/sr.png', import.meta.url).href,
+      icon: new URL('@/assets/images/common/dpp/img-sr.png', import.meta.url).href,
     },
     // 禁用的节点
     {
@@ -91,7 +91,7 @@ export const treeData =
       value: "SparkSql",
       type: "SPARKSQL",
       children: [],
-      icon: new URL('@/assets/images/common/dpp/sr.png', import.meta.url).href,
+      icon: new URL('@/assets/images/common/dpp/img-sr.png', import.meta.url).href,
     },
     {
       id: 10,
@@ -99,7 +99,7 @@ export const treeData =
       value: "FlinkBatch",
       type: "FLINKBATCH",
       children: [],
-      icon: new URL('@/assets/images/common/dpp/sr.png', import.meta.url).href,
+      icon: new URL('@/assets/images/common/dpp/img-sr.png', import.meta.url).href,
     },
     {
       id: 11,
@@ -107,6 +107,6 @@ export const treeData =
       value: "FlinkStream",
       type: "FLINKSTREAM",
       children: [],
-      icon: new URL('@/assets/images/common/dpp/sr.png', import.meta.url).href,
+      icon: new URL('@/assets/images/common/dpp/img-sr.png', import.meta.url).href,
     },
   ];

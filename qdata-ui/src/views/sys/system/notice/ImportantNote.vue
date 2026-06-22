@@ -31,11 +31,11 @@
     <template #header>
       <div class="header-title">
         <div class="title-text">
-          <img src="@/assets/images/system/images/notice/icon.png" alt="" />
+          <img src="@/assets/images/system/images/notice/img-icon-ten.png" alt="" />
           <span>{{ td('sys.system.notice.platformName') }}</span>
         </div>
         <div class="close">
-          <img src="@/assets/images/system/images/notice/close.png" alt="" @click="close" />
+          <img src="@/assets/images/system/images/notice/action-close.png" alt="" @click="close" />
         </div>
       </div>
     </template>
@@ -94,7 +94,7 @@ defineExpose({
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: url("@/assets/images/system/images/notice/head.png") no-repeat;
+    background: url("@/assets/images/system/images/notice/bg-head.png") no-repeat;
     background-size: 100% 100%;
     color: #ffffff;
     padding: 0 24px 0 35px;

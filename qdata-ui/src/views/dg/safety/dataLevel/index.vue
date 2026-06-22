@@ -330,7 +330,7 @@ import {
   listDataLevel,
   listAllDataLevel,
 } from "@/api/dg/dataLevel/dataLevel";
-import moreIcon from "@/assets/images/dg/safety/dataLevel/more.svg";
+import moreIcon from "@/assets/images/dg/icon-more.svg";
 import LevelBadge from "./components/LevelBadge.vue";
 import DataLevelDialog from "./components/DataLevelDialog.vue";
 

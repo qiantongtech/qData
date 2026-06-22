@@ -111,7 +111,7 @@ const emitClick = () => {
     width: 36px;
     cursor: pointer;
     font-family: Arial, sans-serif;
-    background: url("@/assets/images/dpp/etl/bg.svg");
+    background: url("@/assets/images/dpp/etl/icon-bg-background.svg");
     background-size: 100% 100%;
 }
 

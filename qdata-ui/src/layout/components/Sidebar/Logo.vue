@@ -60,9 +60,9 @@
 
 <script setup>
 import variables from "@/assets/styles/system/variables.module.scss";
-import logo from "@/assets/images/system/logo/qData-logo.png";
-import logo1 from "@/assets/images/system/logo/qData-logo1.png";
-import simpLogo from "@/assets/images/system/logo/qData-simlogo.png"; //千数
+import logo from "@/assets/images/system/logo/logo-qdata-white.png";
+import logo1 from "@/assets/images/system/logo/logo-qdata-grey.png";
+import simpLogo from "@/assets/images/system/logo/logo-qdata-sim.png"; //千数
 
 import useSettingsStore from "@/store/system/settings";
 import defaultSettings from "@/settings";

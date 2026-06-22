@@ -78,13 +78,13 @@
               <!-- 子级 -->
               <img
                 class="child-icon"
-                src="../../../../../../../assets/da/asset/file.svg"
+                src="../../../../../../../assets/da/asset/icon-file.svg"
                 alt=""
                 v-show="!node.isCurrent && node.childNodes.length == 0"
               />
               <img
                 class="child-icon"
-                src="../../../../../../../assets/da/asset/file.svg"
+                src="../../../../../../../assets/da/asset/icon-file.svg"
                 alt=""
                 v-show="node.isCurrent && node.childNodes.length == 0"
               />
@@ -382,7 +382,7 @@ defineExpose({ resetTree });
       height: 11px;
 
       & > svg {
-        background: url("@/assets/images/da/asset/arrow.svg") no-repeat;
+        background: url("@/assets/images/da/asset/icon-arrow.svg") no-repeat;
         background-size: 100% 100%;
         transform: rotate(-90deg);
       }

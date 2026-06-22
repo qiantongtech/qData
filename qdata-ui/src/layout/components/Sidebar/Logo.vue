@@ -34,7 +34,8 @@
         to="/"
       >
         <!--        <img v-if="logo" :src="simpLogo" class="sidebar-logo" />-->
-        <img v-if="logo" :src="displaySimpLogo" class="sidebar-logo" />
+        <img v-if="logo" :src="displaySimpLogo" ref="simpLogoRef" class="sidebar-logo"
+             :class="{ 'logo-animate': simpAnimate, 'logo-hover': simpHover }" @mouseenter="replaySimpHover"/>
         <h1
           v-else
           class="sidebar-title"
@@ -50,7 +51,8 @@
       </router-link>
       <router-link v-else key="expand" class="sidebar-logo-link" to="/">
         <!--        <img v-if="logo" :src="logo" class="sidebar-logo" /> -->
-        <img v-if="logo" :src="displayLogo" class="sidebar-logo" />
+        <img v-if="logo" :src="displayLogo" ref="logoRef" class="sidebar-logo"
+             :class="{ 'logo-animate': logoAnimate, 'logo-hover': logoHover }" @mouseenter="replayHover"/>
       </router-link>
     </transition>
   </div>
@@ -66,11 +68,37 @@ import useSettingsStore from "@/store/system/settings";
 import defaultSettings from "@/settings";
 import { getContent } from "@/api/system/system/content";
 
-import { computed } from "vue";
+import {computed, ref as vueRef, nextTick} from "vue";
 
 // 使用 ref 来创建响应式的 logo
 const refLogo = ref(null); // 初始化 logo 为 simpLogo.png
 const refSimpLogo = ref(null); // 初始化 logo 为 simpLogo.png
+
+// 动画控制
+const logoRef = vueRef(null);
+const simpLogoRef = vueRef(null);
+const logoAnimate = vueRef(true);
+const simpAnimate = vueRef(true);
+const logoHover = vueRef(false);
+const simpHover = vueRef(false);
+
+// 鼠标悬浮触发抖动动画（展开状态）
+const replayHover = () => {
+  logoHover.value = false;
+  nextTick(() => {
+    logoRef.value?.offsetWidth;
+    logoHover.value = true;
+  });
+};
+
+// 鼠标悬浮触发抖动动画（收缩状态）
+const replaySimpHover = () => {
+  simpHover.value = false;
+  nextTick(() => {
+    simpLogoRef.value?.offsetWidth;
+    simpHover.value = true;
+  });
+};
 
 const props = defineProps({
   collapse: {
@@ -154,6 +182,15 @@ const sideTheme = computed(() => settingsStore.sideTheme);
       // margin-right: 12px;
       transform: scale(0.7);
       margin-left: -30px;
+
+      &.logo-animate {
+        will-change: transform;
+        animation: logoEntrance 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+      }
+
+      &.logo-hover {
+        animation: logoWobble 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+      }
     }
 
     & .sidebar-title {
@@ -175,6 +212,40 @@ const sideTheme = computed(() => settingsStore.sideTheme);
       margin-right: 0px;
       margin-left: 0px;
     }
+  }
+}
+
+/* 入场动画：阶段1 淡入滑入+缩放 → 阶段2 缩放到位 → 阶段3 皮球回弹 */
+@keyframes logoEntrance {
+  /* 阶段1：从左淡入滑入，同时从小到大缩放 */
+  0% {
+    transform: translateX(-200px) scale(0.3);
+    opacity: 0;
+  }
+  35% {
+    transform: translateX(0) scale(0.4);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scale(0.7);
+    opacity: 1;
+  }
+}
+
+/* 悬浮抖动动画：右往上左往下抖动三下 */
+@keyframes logoWobble {
+  /* 阶段1：从左淡入滑入，同时从小到大缩放 */
+  0% {
+    transform: translateX(-200px) scale(0.3);
+    opacity: 0;
+  }
+  35% {
+    transform: translateX(0) scale(0.4);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scale(0.7);
+    opacity: 1;
   }
 }
 </style>

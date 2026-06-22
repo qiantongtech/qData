@@ -54,7 +54,8 @@ export default {
     update: '編集',
     upload: 'アップロード',
     neverShow: '今後表示しない',
-    view: '表示'
+    view: '表示',
+    aware:'承知しました'
   },
   error: {
     code401: '401エラー！',

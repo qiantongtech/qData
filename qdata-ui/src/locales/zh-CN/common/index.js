@@ -54,7 +54,8 @@ export default {
     update: '修改',
     upload: '上传',
     neverShow: '不再展示',
-    view: '查看'
+    view: '查看',
+    aware:'我已知晓'
   },
   error: {
     code401: '认证失败，无法访问系统资源',

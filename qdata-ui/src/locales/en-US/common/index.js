@@ -54,7 +54,8 @@ export default {
     update: 'Edit',
     upload: 'Upload',
     neverShow: 'Don\'t Show Again',
-    view: 'View'
+    view: 'View',
+    aware:'I am aware'
   },
   error: {
     code401: '401 Error!',

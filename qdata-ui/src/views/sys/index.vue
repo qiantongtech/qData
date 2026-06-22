@@ -174,7 +174,7 @@
     </el-row>
 
     <!-- License 协议弹窗 -->
-<!--    <el-dialog
+    <el-dialog
       v-model="licenseDialogVisible"
       :title="td('common.license.title')"
       :close-on-click-modal="false"
@@ -185,9 +185,9 @@
         <pre>{{ td('common.license.text') }}</pre>
       </div>
       <template #footer>
-        <el-button type="primary" @click="handleLicenseClose">{{ td('common.button.confirm') }}</el-button>
+        <el-button type="primary" @click="handleLicenseClose">{{ td('common.button.aware') }}</el-button>
       </template>
-    </el-dialog>-->
+    </el-dialog>
   </div>
 </template>
 
@@ -1240,6 +1240,10 @@ onMounted(() => {
       display: none;
     }
   }
+
+  :deep(.el-dialog__body) {
+    padding: 20px !important;
+  }
 }
 
 .module-4,
@@ -1883,10 +1887,8 @@ onMounted(() => {
 }
 
 .license-content {
-  padding: 16px;
-  background: #f8f9fa;
+  background: white;
   border-radius: 4px;
-  border: 1px solid #e8e8e8;
 
   pre {
     white-space: pre-wrap;

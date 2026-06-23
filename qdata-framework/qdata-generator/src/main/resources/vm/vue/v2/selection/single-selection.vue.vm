@@ -63,14 +63,14 @@
         <el-input
             style="width:240px"
             v-model="queryParams.${column.javaField}"
-            placeholder="请输入${comment}"
+            :placeholder="td('${moduleName}.input.${column.javaField}')"
             clearable
             @keyup.enter="handleQuery"
         />
       </el-form-item>
     #elseif(($column.htmlType == "select" || $column.htmlType == "radio") && "" != $dictType)
       <el-form-item label="${comment}" prop="${column.javaField}">
-        <el-select style="width:240px" v-model="queryParams.${column.javaField}" placeholder="请选择${comment}" clearable>
+        <el-select style="width:240px" v-model="queryParams.${column.javaField}" :placeholder="td('${moduleName}.select.${column.javaField}')" clearable>
           <el-option
               v-for="dict in ${dictType}"
               :key="dict.value"
@@ -81,8 +81,8 @@
       </el-form-item>
     #elseif(($column.htmlType == "select" || $column.htmlType == "radio") && $dictType)
       <el-form-item style="width:240px" label="${comment}" prop="${column.javaField}">
-        <el-select v-model="queryParams.${column.javaField}" placeholder="请选择${comment}" clearable>
-          <el-option label="请选择字典生成" value="" />
+        <el-select v-model="queryParams.${column.javaField}" :placeholder="td('${moduleName}.select.${column.javaField}')" clearable>
+          <el-option label="请选择" value="" />
         </el-select>
       </el-form-item>
     #elseif($column.htmlType == "datetime" && $column.queryType != "BETWEEN")
@@ -92,7 +92,7 @@
                         v-model="queryParams.${column.javaField}"
                         type="date"
                         value-format="YYYY-MM-DD"
-                        placeholder="请选择${comment}">
+                        :placeholder="td('${moduleName}.select.${column.javaField}')">
         </el-date-picker>
       </el-form-item>
     #elseif($column.htmlType == "datetime" && $column.queryType == "BETWEEN")
@@ -103,8 +103,8 @@
             value-format="YYYY-MM-DD"
             type="daterange"
             range-separator="-"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
+            start-::placeholder="td('.pleaseSelect') + '开始日期'"
+            end-::placeholder="td('.pleaseSelect') + '结束日期'"
         ></el-date-picker>
       </el-form-item>
         #end
@@ -187,9 +187,9 @@
 
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="cancel">取 消</el-button>
+        <el-button size="mini" @click="cancel">td('button.cancel')</el-button>
         <el-button type="primary" size="mini" @click="confirm">
-          确 定
+          td('button.confirm')
         </el-button>
       </div>
     </template>
@@ -197,6 +197,7 @@
 </template>
 
 <script setup name="${BusinessName}Single">
+import useDefaultLang from "@/composables/useDefaultLang";const { td } = useDefaultLang();
 import {list${BusinessName}} from "@/api/";
 import {ref} from "vue";
     #foreach ($column in $columns)

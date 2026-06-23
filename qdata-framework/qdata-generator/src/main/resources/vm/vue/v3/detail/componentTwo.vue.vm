@@ -38,7 +38,7 @@
             type="primary"
             plain
             icon="Plus"
-        >新增</el-button>
+        >td('button.add')</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -46,7 +46,7 @@
             plain
             icon="Sort"
             @click="toggleExpandAll"
-        >展开/折叠</el-button>
+        >td('button.un_fold')</el-button>
       </el-col>
     </el-row>
     <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
@@ -66,32 +66,32 @@
         {{ scope.row.id || '-' }}
       </template>
     </el-table-column>
-    <el-table-column label="标题" prop="title" />
-    <el-table-column label="内容" align="center" prop="content" >
+    <el-table-column :label=td('display.title') prop="title" />
+    <el-table-column :label=td('display.content') align="center" prop="content" >
       <template #default="scope">
         {{ scope.row.content || '-' }}
       </template>
     </el-table-column>
-    <el-table-column label="创建人" align="center" prop="createBy" >
+    <el-table-column :label=td('display.createBy') align="center" prop="createBy" >
       <template #default="scope">
         {{ scope.row.createBy || '-' }}
       </template>
     </el-table-column>
-    <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+    <el-table-column :label=td('display.createTime') align="center" prop="createTime" width="180">
       <template #default="scope">
         <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
       </template>
     </el-table-column>
-    <el-table-column label="备注" align="center" prop="remark" >
+    <el-table-column :label=td('display.remark') align="center" prop="remark" >
       <template #default="scope">
         {{ scope.row.remark || '-' }}
       </template>
     </el-table-column>
-    <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+    <el-table-column :label="td('texts.operation')" align="center" class-name="small-padding fixed-width">
       <template #default="scope">
-        <el-button link type="primary" icon="Edit"  >修改</el-button>
-        <el-button link type="primary" icon="Plus"  >新增</el-button>
-        <el-button link type="danger" icon="Delete" >删除</el-button>
+        <el-button link type="primary" icon="Edit"  >td('button.update')</el-button>
+        <el-button link type="primary" icon="Plus"  >td('button.add')</el-button>
+        <el-button link type="danger" icon="Delete" >td('button.delete')</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -99,7 +99,8 @@
 </template>
 
 <script setup name="ComponentTwo">
-
+  import useDefaultLang from "@/composables/useDefaultLang";
+  const { td } = useDefaultLang();
   const { proxy } = getCurrentInstance();
 
   const detailsList = ref([]);
@@ -123,22 +124,22 @@
     },
     rules: {
       parentId: [
-        { required: true, message: "节点不能为空", trigger: "blur" }
+        { required: true, message: "td('rules.node')", trigger: "blur" }
       ],
       title: [
-        { required: true, message: "标题不能为空", trigger: "blur" }
+        { required: true, message: "td('rules.title')", trigger: "blur" }
       ],
       validFlag: [
-        { required: true, message: "是否有效不能为空", trigger: "blur" }
+        { required: true, message: "td('rules.validFlag')", trigger: "blur" }
       ],
       delFlag: [
-        { required: true, message: "删除标志不能为空", trigger: "blur" }
+        { required: true, message: "td('rules.delFlag')", trigger: "blur" }
       ],
       createTime: [
-        { required: true, message: "创建时间不能为空", trigger: "blur" }
+        { required: true, message: "td('rules.createTime')", trigger: "blur" }
       ],
       updateTime: [
-        { required: true, message: "更新时间不能为空", trigger: "blur" }
+        { required: true, message: "td('rules.updateTime')", trigger: "blur" }
       ],
     }
   });
@@ -153,7 +154,7 @@
         "id": 1,
         "parentId": 0,
         "bidId": 13,
-        "title": "测试",
+        "title": "",
         "content": "11",
         "validFlag": true,
         "delFlag": false,
@@ -169,7 +170,7 @@
         "id": 2,
         "parentId": 1,
         "bidId": 13,
-        "title": "测试2",
+        "title": "",
         "content": "2",
         "validFlag": true,
         "delFlag": false,
@@ -239,7 +240,7 @@
       form.value.parentId = 0;
     }
     open.value = true;
-    title.value = "添加内容";
+    title.value = td('${moduleName}.title.add');
   }
 
   /** 展开/折叠操作 */

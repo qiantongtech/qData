@@ -142,7 +142,28 @@ export default {
     createTime: '创建时间',
     updateTime: '更新时间',
     startTime: '开始时间',
-    endTime: '结束时间'
+    endTime: '结束时间',
+    info: '信息',
+    context:'请输入内容',
+    title:'标题',
+    createBy:'创建人',
+    content:'内容',
+    remark:'备注',
+    importResult:'导入结果',
+    noselectData:'未选择数据',
+    selectData:'请选择数据',
+    pleaseSelect:'请选择',
+    componentOne:'组件一',
+    componentTwo:'组件二'
+  },
+  //规则
+  rules:{
+    node:'节点不能为空',
+    title:'标题不能为空',
+    validFlag:'是否有效不能为空',
+    delFlag:'删除标志不能为空',
+    createTime:'创建时间不能为空',
+    updateTime:'更新时间不能为空'
   },
   qualityTrends: '质量趋势',
   shortcut: {

@@ -68,7 +68,7 @@ import ${packageName}.service.${moduleName}.I${ClassName}Service;
  * @author ${author}
  * @date ${datetime}
  */
-@Tag(name = "${functionName}")
+@Tag(name = "${controllerPrefix}.${moduleName}.swagger.tag")
 @RestController
 @RequestMapping("/${controllerPrefix}/${businessName}")
 @Validated
@@ -76,7 +76,7 @@ public class ${ClassName}Controller extends BaseController {
     @Resource
     private I${ClassName}Service ${className}Service;
 
-    @Operation(summary = "查询${functionName}列表")
+    @Operation(summary = "${controllerPrefix}.${moduleName}.swagger.get.list")
     @PreAuthorize("@ss.hasPermi('${permissionPrefix}:list')")
     @GetMapping("/list")
     #if($table.crud || $table.sub)
@@ -92,7 +92,7 @@ public class ${ClassName}Controller extends BaseController {
     }
     #end
 
-    @Operation(summary = "导出${functionName}列表")
+    @Operation(summary = "${controllerPrefix}.${moduleName}.swagger.post.export")
     @PreAuthorize("@ss.hasPermi('${permissionPrefix}:export')")
     @Log(title = "${functionName}", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
@@ -100,11 +100,11 @@ public class ${ClassName}Controller extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<${ClassName}DO> list = (List<${ClassName}DO>) ${className}Service.get${ClassName}Page(exportReqVO).getRows();
         ExcelUtil<${ClassName}RespVO> util = new ExcelUtil<>(${ClassName}RespVO.class);
-        util.exportExcel(response, ${ClassName}Convert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, ${ClassName}Convert.INSTANCE.convertToRespVOList(list), "${functionName}");
     }
 
     #if($table.crud || $table.sub)
-    @Operation(summary = "导入${functionName}列表")
+    @Operation(summary = "${controllerPrefix}.${moduleName}.swagger.post.import")
     @PreAuthorize("@ss.hasPermi('${permissionPrefix}:import')")
     @Log(title = "${functionName}", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
@@ -117,7 +117,7 @@ public class ${ClassName}Controller extends BaseController {
     }
     #end
 
-    @Operation(summary = "获取${functionName}详细信息")
+    @Operation(summary = "${controllerPrefix}.${moduleName}.swagger.get.detail")
     @PreAuthorize("@ss.hasPermi('${permissionPrefix}:query')")
     @GetMapping(value = "/{${pkColumn.javaField}}")
     public CommonResult<${ClassName}RespVO> getInfo(@PathVariable("${pkColumn.javaField}") ${pkColumn.javaType} ${pkColumn.javaField}) {
@@ -125,7 +125,7 @@ public class ${ClassName}Controller extends BaseController {
         return CommonResult.success(BeanUtils.toBean(${className}DO, ${ClassName}RespVO.class));
     }
 
-    @Operation(summary = "新增${functionName}")
+    @Operation(summary = "${controllerPrefix}.${moduleName}.swagger.post.create")
     @PreAuthorize("@ss.hasPermi('${permissionPrefix}:add')")
     @Log(title = "${functionName}", businessType = BusinessType.INSERT)
     @PostMapping
@@ -136,7 +136,7 @@ public class ${ClassName}Controller extends BaseController {
         return CommonResult.toAjax(${className}Service.create${ClassName}(${className}));
     }
 
-    @Operation(summary = "修改${functionName}")
+    @Operation(summary = "${controllerPrefix}.${moduleName}.swagger.put.update")
     @PreAuthorize("@ss.hasPermi('${permissionPrefix}:edit')")
     @Log(title = "${functionName}", businessType = BusinessType.UPDATE)
     @PutMapping
@@ -147,7 +147,7 @@ public class ${ClassName}Controller extends BaseController {
         return CommonResult.toAjax(${className}Service.update${ClassName}(${className}));
     }
 
-    @Operation(summary = "删除${functionName}")
+    @Operation(summary = "${controllerPrefix}.${moduleName}.swagger.delete.remove")
     @PreAuthorize("@ss.hasPermi('${permissionPrefix}:remove')")
     @Log(title = "${functionName}", businessType = BusinessType.DELETE)
     #if($table.crud || $table.sub)
@@ -159,7 +159,7 @@ public class ${ClassName}Controller extends BaseController {
     @DeleteMapping("/{${pkColumn.javaField}}")
     public CommonResult<Integer> remove(@PathVariable Long id) {
         if (${className}Service.hasChildBy${ClassName}Id(id)) {
-            return CommonResult.error(GlobalErrorCodeConstants.ERROR.getCode(),"存在子${functionName}，无法删除。");
+            return CommonResult.error(GlobalErrorCodeConstants.ERROR);
         }
         return CommonResult.toAjax(${className}Service.remove${ClassName}(id));
     }

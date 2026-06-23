@@ -109,12 +109,12 @@ export default {
     superAdmin: 'スーパー管理者'
   },
   graph: {
-    inputComponent: '入ポーネント',
-    outputComponent: '出ポーネント',
-    transformComponent: '変換ポーネント',
+    inputComponent: '入力コンポーネント',
+    outputComponent: '出力コンポーネント',
+    transformComponent: '変換コンポーネント',
     zoomOut: '縮小',
-    zoomIn: '放大',
-    resetView: '重セット'
+    zoomIn: '拡大',
+    resetView: 'ビューをリセット'
   },
   message: {
     addSuccess: '追加成功',
@@ -141,6 +141,15 @@ export default {
   html: {
     appTitle: 'qDataオープンソースデータプラットフォーム'
   },
+  // ルール
+  rules: {
+    node: 'ノードは必須です',
+    title: 'タイトルは必須です',
+    validFlag: '有効フラグを指定してください',
+    delFlag: '削除フラグを指定してください',
+    createTime: '作成日時は必須です',
+    updateTime: '更新日時は必須です'
+  },
   // 表示
   display: {
     index: '番号',
@@ -148,9 +157,32 @@ export default {
     createTime: '作成日時',
     updateTime: '更新日時',
     startTime: '開始時間',
-    endTime: '終了時間'
+    endTime: '終了時間',
+    info: '情報',
+    context: '内容を入力してください',
+    title: 'タイトル',
+    createBy: '作成者',
+    content: '内容',
+    remark: '備考',
+    importResult: 'インポート結果',
+    noselectData: 'データが選択されていません',
+    selectData: 'データを選択してください',
+    pleaseSelect: '選択してください',
+    componentOne: 'コンポーネント1',
+    componentTwo: 'コンポーネント2'
   },
   qualityTrends: '品質トレンド',
+  shortcut: {
+    title: 'ショートカット',
+    save: '保存',
+    check: '検証',
+    format: 'フォーマット',
+    formatSelection: '選択範囲をフォーマット',
+    notes: 'コメント/コメント解除',
+    upperCase: '大文字に変換',
+    lowerCase: '小文字に変換',
+    query: '検索'
+  },
   noData: 'データなし',
   noMessage: 'メッセージなし',
   noHistory: '履歴なし',

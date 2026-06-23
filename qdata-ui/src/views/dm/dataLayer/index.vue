@@ -408,7 +408,7 @@ const tableStore = reactive({
     },
     {
       label: td('common.texts.operation', '操作'),
-      width: 220,
+      width: 240,
       slot: "action",
       fixed: "right",
     },

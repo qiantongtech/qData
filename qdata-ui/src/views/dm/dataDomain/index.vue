@@ -373,7 +373,7 @@ const tableStore = reactive({
     // { label: t('common.texts.remark'), prop: "remark", align: "left" },
     {
       label: td('common.texts.operation', '操作'),
-      width: 220,
+      width: 240,
       slot: "action",
       fixed: "right",
     },

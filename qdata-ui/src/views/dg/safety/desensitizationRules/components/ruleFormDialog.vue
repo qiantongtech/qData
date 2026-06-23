@@ -169,9 +169,7 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="close">{{
-            isReadonly ? "{{ td('common.button.close') }}" : "{{ td('common.button.cancel') }}"
-          }}</el-button>
+        <el-button size="mini" @click="close">{{ isReadonly ? td('common.button.close') : td('common.button.cancel') }}</el-button>
         <el-button
             v-if="!isReadonly"
             type="primary"

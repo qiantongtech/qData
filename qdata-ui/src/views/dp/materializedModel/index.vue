@@ -420,7 +420,7 @@ const tableStore = reactive({
     },
     {
       label: td('common.texts.operation'),
-      width: 175,
+      width: 200,
       headerAlign: "center",
       align: "left",
       fixed: "right",

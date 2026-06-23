@@ -42,7 +42,7 @@
           <el-form-item :label="td('dpp.integration.index', '索引')" prop="index" :rules="[
             { required: true, message: td('dpp.integration.indexRequired', '请输入索引'), trigger: 'blur' },
             {
-              validator: (_rule, value, callback) = :label-position="labelPosition"> {
+              validator: (_rule, value, callback) => {
                 if (value < 0) {
                   callback(new Error(td('dpp.integration.indexNoNegative', '索引不能为负数')))
                 } else {

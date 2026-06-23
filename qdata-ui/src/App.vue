@@ -29,6 +29,8 @@ import useSettingsStore from "@/store/system/settings";
 import { handleThemeStyle } from "@/utils/theme";
 import { useRoute } from "vue-router"; // 引入 useRoute 钩子
 import useUserStore from "@/store/system/user";
+import defaultSettings from '@/settings'
+import {i18n} from '@/plugins/vueI18n'
 // import useAppStore from "@/store/system/app";
 // const appStore = useAppStore();
 const userStore = useUserStore();
@@ -37,6 +39,8 @@ const userStore = useUserStore();
 const route = useRoute();
 // const storedUser = useUserStore();
 ;
+const title = () => i18n.global.t('common.html.appTitle') || defaultSettings.title;
+document.title = title();
 const whiteList = ["/login", "/register", "/sso/login", "/sso",];
 // 计算水印文本，动态获取当前路由的名称
 const watermarkText = computed(() => {

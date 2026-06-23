@@ -153,7 +153,7 @@
             </el-table-column>
 
             <el-table-column v-if="getColumnVisibility(14)" :label="td('common.texts.operation')" align="center"
-              class-name="small-padding fixed-width" fixed="right" width="200">
+              class-name="small-padding fixed-width" fixed="right" width="240">
               <template #default="scope">
                 <!--  :disabled="scope.row.status == 1" -->
                 <el-button link type="primary" icon="Edit" @click="routeTo('/da/quality/qualityTask/edit', {

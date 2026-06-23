@@ -726,7 +726,7 @@ const tableStore = reactive({
     },
     {
       label: td("common.texts.operation"),
-      width: 220,
+      width: 260,
       fixed: "right",
       slot: "handle",
     },

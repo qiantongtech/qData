@@ -65,9 +65,9 @@ import tech.qiantong.qdata.common.database.exception.DataQueryException;
 import tech.qiantong.qdata.common.enums.KingbaseColumnTypeEnum;
 import tech.qiantong.qdata.common.enums.MySqlColumnTypeEnum;
 import tech.qiantong.qdata.common.exception.ServiceException;
-import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.AesEncryptUtil;
 import tech.qiantong.qdata.common.utils.DateUtils;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.module.att.api.project.IAttProjectApi;
@@ -470,10 +470,10 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
         DbQuery dbQuery = this.buildDbQuery(id);
         if (dbQuery.valid()) {
             dbQuery.close();
-            return AjaxResult.success("数据库连接成功");
+            return AjaxResult.success(MessageUtils.messageWithFallback("da.error.connection.success", "数据库连接成功"));
         }
         dbQuery.close();
-        return AjaxResult.error("数据库连接失败");
+        return AjaxResult.error(MessageUtils.messageWithFallback("da.error.connection.fail", "数据库连接失败"));
 
     }
 

@@ -34,6 +34,7 @@ package tech.qiantong.qdata.ai.core.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import tech.qiantong.qdata.common.exception.ServiceException;
 
 import java.util.Arrays;
 

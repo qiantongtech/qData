@@ -84,7 +84,7 @@ public class DaAssetColumnServiceImpl extends ServiceImpl<DaAssetColumnMapper, D
     @Override
     public AjaxResult getColumnByAssetId(DaAssetColumnPageReqVO pageReqVO) {
         if (StringUtils.isEmpty(pageReqVO.getAssetId())) {//资产id不能为空
-            return AjaxResult.error("资产id不能为空");
+            return AjaxResult.error(MessageUtils.messageWithFallback("da.error.asset.id.empty", "资产id不能为空"));
         }
         List<DaAssetColumnDO> list = this.lambdaQuery()
                 .eq(DaAssetColumnDO::getAssetId, pageReqVO.getAssetId())

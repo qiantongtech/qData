@@ -185,7 +185,7 @@
         <pre>{{ td('common.license.text') }}</pre>
       </div>
       <template #footer>
-        <el-button @click="toPolicy">{{ td('common.button.commercialLicense') }}</el-button>
+        <el-button @click="toPolicy">{{ td('common.button.commercialAuthorization') }}</el-button>
         <el-button type="primary" @click="handleLicenseClose">{{ td('common.button.aware') }}</el-button>
       </template>
     </el-dialog>

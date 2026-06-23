@@ -297,7 +297,7 @@ const loginimglist = ref([]);
 
 const getBackgroundStyle = (item) => {
     return {
-        background: `url(${item.image}) center center / 100% 100% no-repeat`,
+        background: `url(${item.image}) center center / cover no-repeat`,
     };
 };
 

@@ -56,7 +56,7 @@ export default {
     neverShow: '不再展示',
     view: '查看',
     aware:'我已知晓',
-    commercialLicense:'商业授权'
+    commercialAuthorization:'商用授权'
   },
   error: {
     code401: '认证失败，无法访问系统资源',

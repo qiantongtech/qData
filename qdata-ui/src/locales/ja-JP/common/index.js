@@ -56,7 +56,7 @@ export default {
     neverShow: '今後表示しない',
     view: '表示',
     aware:'承知しました',
-    commercialLicense:'商業ライセンス'
+    commercialAuthorization:'商用ライセンス'
   },
   error: {
     code401: '401エラー！',

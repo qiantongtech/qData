@@ -56,7 +56,7 @@ export default {
     neverShow: 'Don\'t Show Again',
     view: 'View',
     aware:'I am aware',
-    commercialLicense:'Commercial License'
+    commercialAuthorization:'Commercial Authorization'
   },
   error: {
     code401: '401 Error!',

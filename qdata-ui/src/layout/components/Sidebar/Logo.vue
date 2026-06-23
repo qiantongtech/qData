@@ -69,6 +69,7 @@ import defaultSettings from "@/settings";
 import { getContent } from "@/api/system/system/content";
 
 import {computed, ref as vueRef, nextTick} from "vue";
+import { debounce } from 'lodash-es';
 
 // 使用 ref 来创建响应式的 logo
 const refLogo = ref(null); // 初始化 logo 为 simpLogo.png
@@ -82,8 +83,11 @@ const simpAnimate = vueRef(true);
 const logoHover = vueRef(false);
 const simpHover = vueRef(false);
 
-// 鼠标悬浮触发抖动动画（展开状态）
-const replayHover = () => {
+// 防抖延迟时间（毫秒）
+const DEBOUNCE_DELAY = 500;
+
+// 执行实际的悬浮动画逻辑（展开状态）
+const executeHoverAnimation = () => {
   logoHover.value = false;
   nextTick(() => {
     logoRef.value?.offsetWidth;
@@ -91,14 +95,20 @@ const replayHover = () => {
   });
 };
 
-// 鼠标悬浮触发抖动动画（收缩状态）
-const replaySimpHover = () => {
+// 执行实际的悬浮动画逻辑（收缩状态）
+const executeSimpHoverAnimation = () => {
   simpHover.value = false;
   nextTick(() => {
     simpLogoRef.value?.offsetWidth;
     simpHover.value = true;
   });
 };
+
+// 鼠标悬浮触发抖动动画（展开状态）- 带防抖
+const replayHover = debounce(executeHoverAnimation, DEBOUNCE_DELAY);
+
+// 鼠标悬浮触发抖动动画（收缩状态）- 带防抖
+const replaySimpHover = debounce(executeSimpHoverAnimation, DEBOUNCE_DELAY);
 
 const props = defineProps({
   collapse: {

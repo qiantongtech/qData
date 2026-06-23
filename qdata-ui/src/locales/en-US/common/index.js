@@ -55,7 +55,8 @@ export default {
     upload: 'Upload',
     neverShow: 'Don\'t Show Again',
     view: 'View',
-    aware:'I am aware'
+    aware:'I am aware',
+    commercialLicense:'Commercial License'
   },
   error: {
     code401: '401 Error!',

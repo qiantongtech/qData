@@ -55,7 +55,8 @@ export default {
     upload: 'アップロード',
     neverShow: '今後表示しない',
     view: '表示',
-    aware:'承知しました'
+    aware:'承知しました',
+    commercialLicense:'商業ライセンス'
   },
   error: {
     code401: '401エラー！',

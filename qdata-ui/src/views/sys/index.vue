@@ -185,6 +185,7 @@
         <pre>{{ td('common.license.text') }}</pre>
       </div>
       <template #footer>
+        <el-button @click="toPolicy">{{ td('common.button.commercialLicense') }}</el-button>
         <el-button type="primary" @click="handleLicenseClose">{{ td('common.button.aware') }}</el-button>
       </template>
     </el-dialog>
@@ -288,6 +289,13 @@ function checkLicense() {
 function handleLicenseClose() {
   localStorage.setItem(LICENSE_CACHE_KEY, 'true');
   licenseDialogVisible.value = false;
+}
+
+/**
+ * 跳转至 License 协议页面
+ */
+function toPolicy() {
+  window.open("https://community.qdata.tech/business/policy.html");
 }
 
 const prevSlide = () => {

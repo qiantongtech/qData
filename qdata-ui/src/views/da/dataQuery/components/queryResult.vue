@@ -40,7 +40,7 @@
         <!-- 如果没有数据时，显示暂无记录 -->
         <template #empty>
           <div class="emptyBg">
-            <!-- <img src="@/assets/images/system/images/no_data/empty-nodata.png" alt="" /> -->
+            <!-- <img src="@/assets/images/system/no_data/empty-nodata.png" alt="" /> -->
             <p>{{td('common.noData')}}</p>
           </div>
         </template>

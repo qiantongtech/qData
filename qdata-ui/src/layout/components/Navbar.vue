@@ -179,7 +179,7 @@
                   >
                     <img
                       class="icon"
-                      src="@/assets/images/system/images/layout/msg/toolbar-icon1.png"
+                      src="@/assets/images/system/layout/msg/toolbar-icon1.png"
                       alt=""
                     />
                     <div class="content">
@@ -211,7 +211,7 @@
                   >
                     <img
                       class="icon"
-                      src="@/assets/images/system/images/layout/msg/toolbar-icon1.png"
+                      src="@/assets/images/system/layout/msg/toolbar-icon1.png"
                       alt=""
                     />
                     <div class="content">
@@ -233,7 +233,7 @@
                   >
                     <img
                       class="icon"
-                      src="@/assets/images/system/images/layout/msg/toolbar-icon1.png"
+                      src="@/assets/images/system/layout/msg/toolbar-icon1.png"
                       alt=""
                     />
                     <div class="content">
@@ -310,7 +310,7 @@
     >
       <div class="about-content-wrapper">
         <img
-          src="@/assets/images/system/images/login/logo-qdata.png"
+          src="@/assets/images/system/login/logo-qdata.png"
           alt="qData Logo"
           class="logo"
         />

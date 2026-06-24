@@ -50,8 +50,9 @@
       </el-col>
       <el-col :xs="24" :sm="24" :md="6" :lg="6" class="home-gutter">
         <div class="module-2">
-          <iframe width="100%" scrolling="no" height="150" frameborder="0" allowtransparency="true"
-            src="https://i.tianqi.com?c=code&id=21&icon=1&site=12"></iframe>
+<!--          <iframe width="100%" scrolling="no" height="150" frameborder="0" allowtransparency="true"-->
+<!--            src="https://i.tianqi.com?c=code&id=21&icon=1&site=12"></iframe>-->
+          <Weather />
         </div>
       </el-col>
       <el-col :xs="24" :sm="24" :md="18" :lg="18" class="home-gutter">
@@ -178,15 +179,54 @@
       v-model="licenseDialogVisible"
       :title="td('common.license.title')"
       :close-on-click-modal="false"
-      :show-close="true"
+      :show-close="false"
       @close="handleLicenseClose"
     >
       <div class="license-content">
-        <pre>{{ td('common.license.text') }}</pre>
+        <p v-for="item in tm('common.license.text.intro')" :key="item" class="license-paragraph">
+          {{ item }}
+        </p>
+
+        <div
+          v-for="(item, index) in tm('common.license.text.terms')"
+          :key="item.title"
+          class="license-term"
+        >
+          <div class="license-term-title">
+            <span class="license-term-index">{{ index + 1 }}</span>
+            <span>{{ item.title }}</span>
+          </div>
+          <p v-for="desc in item.desc" :key="desc" class="license-term-desc">
+            {{ desc }}
+          </p>
+        </div>
+
+        <div class="license-notice">
+          <span>{{ tm('common.license.text.notice').before }}</span>
+          <a
+            :href="tm('common.license.text.notice').link"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {{ tm('common.license.text.notice').linkText }}
+          </a>
+          <span>{{ tm('common.license.text.notice').after }}</span>
+        </div>
+
+        <p v-for="item in tm('common.license.text.footer')" :key="item" class="license-footer-text">
+          {{ item }}
+        </p>
       </div>
       <template #footer>
         <el-button @click="toPolicy">{{ td('common.button.commercialAuthorization') }}</el-button>
-        <el-button type="primary" @click="handleLicenseClose">{{ td('common.button.aware') }}</el-button>
+        <el-button
+          type="primary"
+          class="license-aware-btn"
+          :disabled="licenseCountdown > 0"
+          @click="handleLicenseClose"
+        >
+          {{ licenseCountdown > 0 ? `${td('common.button.aware')} (${licenseCountdown}s)` : td('common.button.aware') }}
+        </el-button>
       </template>
     </el-dialog>
   </div>
@@ -200,10 +240,11 @@ import * as echarts from "echarts";
 import { timeAgo } from "@/utils/time";
 import { loginOut } from "@/api/system/sso-auth.js";
 import useDefaultLang from "@/composables/useDefaultLang";
+import Weather from '@/components/Weather/index.vue';
 
 import { useTimeGreeting } from '@/composables/useTimeGreeting'
 const { greeting, message } = useTimeGreeting()
-const { td,locale } = useDefaultLang();
+const { td, locale, tm } = useDefaultLang();
 
 // 监听语言变化，重新渲染图表
 watch(locale, () => {
@@ -262,7 +303,7 @@ async function routeTo(link, query = {}) {
 }
 
 const getAssetsFile = (url) => {
-  return new URL(`../../assets/images/system/images/index/${url}`, import.meta.url)
+  return new URL(`../../assets/images/system/index/${url}`, import.meta.url)
     .href;
 };
 
@@ -270,7 +311,31 @@ const carousel = ref(null);
 
 // License 弹窗逻辑
 const LICENSE_CACHE_KEY = 'qdata_license_acknowledged';
+const LICENSE_COUNTDOWN_SECONDS = 10;
 const licenseDialogVisible = ref(false);
+const licenseCountdown = ref(0);
+let licenseCountdownTimer = null;
+
+function clearLicenseCountdown() {
+  if (licenseCountdownTimer) {
+    clearInterval(licenseCountdownTimer);
+    licenseCountdownTimer = null;
+  }
+}
+
+function startLicenseCountdown() {
+  clearLicenseCountdown();
+  licenseCountdown.value = LICENSE_COUNTDOWN_SECONDS;
+  licenseCountdownTimer = setInterval(() => {
+    if (licenseCountdown.value <= 1) {
+      clearLicenseCountdown();
+      licenseCountdown.value = 0;
+      return;
+    }
+
+    licenseCountdown.value -= 1;
+  }, 1000);
+}
 
 /**
  * 检查用户是否已同意 License 协议
@@ -279,6 +344,7 @@ function checkLicense() {
   const acknowledged = localStorage.getItem(LICENSE_CACHE_KEY);
   if (!acknowledged) {
     licenseDialogVisible.value = true;
+    startLicenseCountdown();
   }
 }
 
@@ -287,6 +353,7 @@ function checkLicense() {
  * 记录用户已同意 License 协议
  */
 function handleLicenseClose() {
+  clearLicenseCountdown();
   localStorage.setItem(LICENSE_CACHE_KEY, 'true');
   licenseDialogVisible.value = false;
 }
@@ -304,7 +371,7 @@ const prevSlide = () => {
 const statusList = [
   {
     name: td('sys.dashboard.database'),
-    icon: getAssetsFile("db.svg"),
+    icon: getAssetsFile("icon-db.svg"),
     normal: 0,
     error: 0,
     highlight: true,
@@ -952,6 +1019,7 @@ window.addEventListener("resize", chartIntancesResize);
 
 onBeforeUnmount(() => {
   window.removeEventListener("resize", chartIntancesResize);
+  clearLicenseCountdown();
 });
 
 // 获取当前实例
@@ -1401,16 +1469,12 @@ onMounted(() => {
 
 .userInfo {
   height: 150px;
-  padding: 40px 40px 0 32px;
-  background-image: -webkit-gradient(linear,
-      left top,
-      right top,
-      from(#fff),
-      to(#f3f7fe));
-  background-image: linear-gradient(90deg, #fff, #f3f7fe);
+  padding: 35px 60px 0 32px;
   border-radius: 2px;
   justify-content: space-between;
   align-items: center;
+  background: url(@/assets/images/common/bg-content.png) no-repeat center;
+  background-size: 100% 100%;
   //   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
 }
 
@@ -1895,18 +1959,121 @@ onMounted(() => {
 }
 
 .license-content {
-  background: white;
-  border-radius: 4px;
+  padding: 8px 24px 0;
+  color: rgba(0, 0, 0, 0.82);
+  font-family: PingFang SC, Microsoft YaHei, Helvetica Neue, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.8;
 
-  pre {
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    font-size: 13px;
-    line-height: 1.6;
-    color: rgba(0, 0, 0, 0.75);
+  .license-paragraph,
+  .license-term-desc,
+  .license-footer-text {
     margin: 0;
-    font-family: PingFangSC, PingFang SC, sans-serif;
+    white-space: pre-wrap;
+    word-break: break-word;
   }
+
+  .license-paragraph {
+    margin-bottom: 18px;
+  }
+
+  .license-paragraph:first-child {
+    margin-bottom: 20px;
+    color: rgba(0, 0, 0, 0.9);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.6;
+  }
+
+  .license-term {
+    padding: 18px 18px 17px 16px;
+    background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+    border: 1px solid #d8e0ed;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  }
+
+  .license-term + .license-term {
+    margin-top: 8px;
+  }
+
+  .license-term-title {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    color: rgba(0, 0, 0, 0.9);
+    font-weight: 600;
+    line-height: 1.7;
+  }
+
+  .license-term-index {
+    flex: 0 0 20px;
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    border-radius: 50%;
+    background: #1767ff;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 20px;
+    text-align: center;
+  }
+
+  .license-term-desc {
+    margin-top: 14px;
+    padding-left: 30px;
+    color: rgba(0, 0, 0, 0.78);
+  }
+
+  .license-term-desc + .license-term-desc {
+    margin-top: 2px;
+  }
+
+  .license-notice {
+    position: relative;
+    margin-top: 8px;
+    padding: 12px 16px 12px 44px;
+    color: rgba(0, 0, 0, 0.78);
+    background: #fbfdff;
+    border: 1px solid #cddcff;
+    line-height: 1.8;
+    word-break: break-word;
+
+    a {
+      color: #1767ff;
+      text-decoration: none;
+    }
+  }
+
+  .license-notice::before {
+    content: "i";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    margin-left: -30px;
+    margin-top: 3px;
+    border: 1px solid #1767ff;
+    border-radius: 50%;
+    color: #1767ff;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 17px;
+    text-align: center;
+  }
+
+  .license-footer-text {
+    margin-top: 18px;
+    color: rgba(0, 0, 0, 0.82);
+    font-weight: 600;
+  }
+
+  .license-footer-text:last-child {
+    margin-bottom: 12px;
+  }
+}
+
+.license-aware-btn {
+  min-width: 120px;
 }
 </style>
 <style lang="scss" scoped>

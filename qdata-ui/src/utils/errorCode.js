@@ -17,9 +17,20 @@
 
 import { i18n } from "@/plugins/vueI18n";
 
-export default {
-  '401': () => i18n.global.t('common.error.code401'),
-  '403': () => i18n.global.t('common.error.code403'),
-  '404': () => i18n.global.t('common.error.code404'),
-  'default': () => i18n.global.t('common.error.default')
+const errorCode = {}
+
+const errorCodeMap = {
+  '401': 'common.error.code401',
+  '403': 'common.error.code403',
+  '404': 'common.error.code404',
+  'default': 'common.error.default'
 }
+
+Object.entries(errorCodeMap).forEach(([code, key]) => {
+  Object.defineProperty(errorCode, code, {
+    enumerable: true,
+    get: () => i18n.global.t(key)
+  })
+})
+
+export default errorCode

@@ -50,7 +50,6 @@
             :model="userStore"
             ref="queryRef"
             :inline="true"
-            label-width="93px"
           >
             <el-form-item
               :label="t('sys.dashboard.projectLabel')"

@@ -75,7 +75,7 @@ user:
     # 密码锁定时间（默认10分钟）
     lockTime: 10
     #万能密码 配置为空则不生效
-    universalPassword: gfh78h23789#$gfdy845
+    universalPassword: qData123
 
 # Spring配置
 spring:

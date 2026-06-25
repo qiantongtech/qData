@@ -65,7 +65,7 @@
               <div class="empty-wrapper">
                 <div class="emptyBg">
                   <img
-                    src="../../../../../../../assets/system/images/no_data/noData.png"
+                    src="../../../../../../../assets/images/system/no_data/empty-nodata.png"
                     alt=""
                   />
                   <p>{{ td('dpp.cleanRule.noData', '无数据') }}</p>

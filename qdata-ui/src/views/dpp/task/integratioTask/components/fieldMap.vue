@@ -34,7 +34,7 @@
                     :disabled="info">
                     <span class="column-name">{{ element.columnName }}</span>
                   </el-checkbox>
-                  <img src="../../../../../assets/system/images/dpp/mop.png" class="icon" />
+                  <img src="../../../../../assets/images/common/dpp/img-mop.png" class="icon" />
                 </div>
               </div>
             </template>
@@ -78,7 +78,7 @@
                   </el-checkbox>
 
                   <!-- 图标 -->
-                  <img src="../../../../../assets/system/images/dpp/mop.png" class="icon" />
+                  <img src="../../../../../assets/images/common/dpp/img-mop.png" class="icon" />
                 </div>
               </div>
             </template>

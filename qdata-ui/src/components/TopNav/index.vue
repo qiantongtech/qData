@@ -219,15 +219,15 @@ function calculateVisibleMenus() {
 
   // 动态计算右侧宽度：直接取 RightMenu 的宽度，如果没取到则使用默认值 606
   const rightWidth = rightMenu
-    ? rightMenu.getBoundingClientRect().width + 100
+    ? rightMenu.getBoundingClientRect().width + 110
     : 606;
 
   const bodyWidth = document.body.getBoundingClientRect().width;
   let menuWidth =  124; // 每个菜单项宽度
   if(locale.value === "en-US"){
-    menuWidth = 164;
+    menuWidth = 170;
   }else if(locale.value === "ja-JP"){
-    menuWidth = 158;
+    menuWidth = 166;
   }
 
   const availableWidth = bodyWidth - leftWidth - rightWidth;

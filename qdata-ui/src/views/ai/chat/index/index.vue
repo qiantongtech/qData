@@ -51,19 +51,19 @@
         <template #extra>
           <div v-if="messageList.length !== 0" class="header-btns">
             <img
-              src="@/assets/ai/组 23248.png"
+              src="../../../../assets/images/ai/img-group-23248.png"
               class="btn"
               @click="handlerMessageClear"
               :alt="td('ai.chat.clearSession')"
             />
             <img
-              src="@/assets/ai/组 -1.png"
+              src="../../../../assets/images/ai/img-group-one.png"
               class="btn"
               @click="handleGoBottomMessage"
               :alt="td('ai.chat.navDown')"
             />
             <img
-              src="@/assets/ai/组 23249.png"
+              src="../../../../assets/images/ai/img-group-23249.png"
               :alt="td('ai.chat.navUp')"
               class="btn"
               @click="handleGoTopMessage"
@@ -231,9 +231,9 @@ import MessageListEmpty from "./components/message/MessageListEmpty.vue";
 import MessageLoading from "./components/message/MessageLoading.vue";
 import DataScopeConfig from "./components/DataScopeConfig.vue";
 import { CHAT_TYPES } from "./constants";
-import defaultModelIcon from "@/assets/ai/gpt-new.svg";
-import deepseekIcon from "@/assets/ai/deepseek.svg";
-import tongyiIcon from "@/assets/ai/TongYi.svg";
+import defaultModelIcon from "@/assets/images/ai/icon-brand-gpt-new.svg";
+import deepseekIcon from "@/assets/images/ai/icon-brand-deepseek.svg";
+import tongyiIcon from "@/assets/images/ai/icon-brand-tongyi.svg";
 import {
   ref,
   onMounted,

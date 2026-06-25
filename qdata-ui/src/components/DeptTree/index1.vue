@@ -520,7 +520,7 @@ defineExpose({ resetTree });
       height: 11px;
 
       & > svg {
-        background: url("@/assets/da/asset/arrow.svg") no-repeat;
+        background: url("@/assets/images/da/asset/icon-arrow.svg") no-repeat;
         background-size: 100% 100%;
         transform: rotate(-90deg);
       }

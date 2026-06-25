@@ -799,9 +799,9 @@ const getDatasourceIcon = (json) => {
   let type = json && JSON.parse(json).taskType;
   switch (type) {
     case "FLINK":
-      return new URL("@/assets/images/common/flink.svg", import.meta.url).href;
+      return new URL("@/assets/images/common/icon-flink-one.svg", import.meta.url).href;
     case "SPARK":
-      return new URL("@/assets/images/common/spark.svg", import.meta.url).href;
+      return new URL("@/assets/images/common/icon-spark-one.svg", import.meta.url).href;
     default:
       return null;
   }
@@ -830,4 +830,4 @@ if (userStore.projectId) {
 usePageRefresh("integratioTask", () => handleQuery());
 </script>
 
-<style lang="scss" src="@/assets/system/styles/table-style-optimized.scss"></style>
+<style lang="scss" src="@/assets/styles/system/table-style-optimized.scss"></style>

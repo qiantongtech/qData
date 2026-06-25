@@ -180,7 +180,7 @@ getCode();
   justify-content: center;
   align-items: center;
   height: 100%;
-  background-image: url("../../assets/system/images/login-background.jpg");
+  background-image: url("../../assets/images/system/bg-login.jpg");
   background-size: cover;
 }
 .title {

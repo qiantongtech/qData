@@ -220,7 +220,7 @@
       </div>
 
       <div class="empty" v-else>
-        <img src="@/assets/da/asset/empty.png" alt="" />
+        <img src="@/assets/images/da/asset/empty.png" alt="" />
         <span>{{td('common.noData')}}</span>
       </div>
       <!-- <pagination
@@ -330,7 +330,7 @@ import {
   listDataLevel,
   listAllDataLevel,
 } from "@/api/dg/dataLevel/dataLevel";
-import moreIcon from "@/assets/dg/safety/dataLevel/more.svg";
+import moreIcon from "@/assets/images/dg/icon-more.svg";
 import LevelBadge from "./components/LevelBadge.vue";
 import DataLevelDialog from "./components/DataLevelDialog.vue";
 

@@ -37,7 +37,7 @@
           @click="handleExportData(false)"
           v-if="!route.query.info"
         >
-          <img src="@/assets/dpp/etl/title-act (1).svg" alt="" />{{ td('dpp.developTaskDetail.taskSave', '任务保存') }}
+          <img src="@/assets/images/dpp/etl/icon-title-active-one.svg" alt="" />{{ td('dpp.developTaskDetail.taskSave', '任务保存') }}
         </el-button>
         <el-button
           type="primary"
@@ -46,10 +46,10 @@
           :disabled="loading"
           @click="routeTo('/dpp/task/integratioTask', '')"
         >
-          <img class="currImg" src="@/assets/dpp/etl/title (3).svg" alt="" />
+          <img class="currImg" src="@/assets/images/dpp/etl/icon-title-three.svg" alt="" />
           <img
             class="act"
-            src="@/assets/dpp/etl/title-act (3).svg"
+            src="@/assets/images/dpp/etl/icon-title-active-three.svg"
             alt=""
           />{{ td('dpp.developTaskDetail.taskCancel', '任务取消') }}
         </el-button>
@@ -61,10 +61,10 @@
           @click="openTaskConfigDialog"
           v-if="!route.query.info"
         >
-          <img class="currImg" src="@/assets/dpp/etl/title (4).svg" alt="" />
+          <img class="currImg" src="@/assets/images/dpp/etl/icon-title-four.svg" alt="" />
           <img
             class="act"
-            src="@/assets/dpp/etl/title-act (4).svg"
+            src="@/assets/images/dpp/etl/icon-title-active-four.svg"
             alt=""
           />{{ td('dpp.developTaskDetail.taskConfig', '任务配置') }}
         </el-button>
@@ -76,10 +76,10 @@
           @click="openTaskConfigDialog"
           v-else
         >
-          <img class="currImg" src="@/assets/dpp/etl/title (4).svg" alt="" />
+          <img class="currImg" src="@/assets/images/dpp/etl/icon-title-four.svg" alt="" />
           <img
             class="act"
-            src="@/assets/dpp/etl/title-act (4).svg"
+            src="@/assets/images/dpp/etl/icon-title-active-four.svg"
             alt=""
           />{{ td('dpp.developTaskDetail.taskDetail', '任务详情') }}
         </el-button>
@@ -91,10 +91,10 @@
           size="small"
           @click="selectTab('checkMessage')"
         >
-          <img class="currImg" src="@/assets/dpp/etl/title (2).svg" alt="" />
+          <img class="currImg" src="@/assets/images/dpp/etl/icon-title-two.svg" alt="" />
           <img
             class="act"
-            src="@/assets/dpp/etl/title-act (2).svg"
+            src="@/assets/images/dpp/etl/icon-title-active-two.svg"
             alt=""
           />{{ td('dpp.integratioTask.taskCheck', '任务检查') }}
         </el-button>
@@ -123,19 +123,19 @@
               >
                 <img
                   v-if="node.level === 1 && data.type == '1'"
-                  src="@/assets/system/images/dpp/srz.svg"
+                  src="@/assets/images/common/dpp/icon-srz.svg"
                   alt="icon"
                   class="icon-img"
                 />
                 <img
                   v-if="node.level === 1 && data.type == '3'"
-                  src="@/assets/system/images/dpp/zh1.svg"
+                  src="@/assets/images/common/dpp/icon-zh1.svg"
                   alt="icon"
                   class="icon-img"
                 />
                 <img
                   v-if="node.level === 1 && data.type == '2'"
-                  src="@/assets/system/images/dpp/sc.svg"
+                  src="@/assets/images/common/dpp/icon-sc.svg"
                   alt="icon"
                   class="icon-img"
                 />
@@ -306,10 +306,10 @@ const getDatasourceIcon = (json) => {
   taskType.value = type;
   switch (type) {
     case "FLINK":
-      return new URL("@/assets/system/images/dpp/Flink.svg", import.meta.url)
+      return new URL("@/assets/images/common/dpp/icon-flink.svg", import.meta.url)
         .href;
     case "SPARK":
-      return new URL("@/assets/system/images/dpp/Spark.svg", import.meta.url)
+      return new URL("@/assets/images/common/dpp/icon-spark.svg", import.meta.url)
         .href;
     default:
       return null;

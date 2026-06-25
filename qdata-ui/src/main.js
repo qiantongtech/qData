@@ -28,9 +28,9 @@ import 'element-plus/dist/index.css'
 import { setupI18n, i18n } from '@/plugins/vueI18n'
 import { useLocaleStoreWithOut } from '@/store/system/locale'
 
-import '@/assets/system/styles/index.scss' // global css
-import '@/assets/system/styles/anivia.scss' // 自定义样式 css
-import '@/assets/iconfont/iconfont.css' // iconfont css
+import '@/assets/styles/system/index.scss' // global css
+import '@/assets/styles/system/anivia.scss' // 自定义样式 css
+import '@/assets/icons/iconfont/iconfont.css' // iconfont css
 
 import App from './App'
 import store from './store'
@@ -77,7 +77,7 @@ import TreeSelect from '@/components/TreeSelect'
 import DictTag from '@/components/DictTag'
 // 可视化表单设计器工具
 // import FcDesigner from '@form-create/designer';
-import '@/assets/iconfont/font_new/iconfont.css' // iconfont css
+import '@/assets/icons/iconfont/fontNew/iconfont.css' // iconfont css
 // 通用详情页头部组件
 import DetailInfo from "@/components/DetailInfo"
 // 通用描述信息组件（el-descriptions 封装）

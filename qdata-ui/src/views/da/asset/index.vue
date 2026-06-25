@@ -147,7 +147,7 @@
                 <div class="item-title-left">
                   <img
                     class="title-icon"
-                    src="@/assets/da/asset2/tit.svg"
+                    src="@/assets/images/da/assetTwo/icon-title.svg"
                     alt=""
                   />
                   <el-link
@@ -191,7 +191,7 @@
                     placement="top"
                   >
                     <div class="li-tab">
-                      <img src="@/assets/da/asset2/fen (2).svg" alt="" />
+                      <img src="@/assets/images/da/assetTwo/icon-fen-two.svg" alt="" />
                       <span>{{ item.dataCount }}{{ td('da.asset.rowUnit') }}</span>
                     </div>
                   </el-tooltip>
@@ -202,7 +202,7 @@
                     placement="top"
                   >
                     <div class="li-tab">
-                      <img src="@/assets/da/asset2/fen (3).svg" alt="" />
+                      <img src="@/assets/images/da/assetTwo/icon-fen-three.svg" alt="" />
                       <span>{{ item.fieldCount }}{{ td('da.asset.columnUnit') }}</span>
                     </div>
                   </el-tooltip>
@@ -213,7 +213,7 @@
                     placement="top"
                   >
                     <div class="li-tab">
-                      <img src="@/assets/da/asset2/fen (4).svg" alt="" />
+                      <img src="@/assets/images/da/assetTwo/icon-fen-four.svg" alt="" />
                       <span>
                         <overflow-tooltip :text="'93.33' + td('da.asset.scoreUnit')" />
                       </span>
@@ -226,7 +226,7 @@
                     placement="top"
                   >
                     <div class="li-tab" v-if="item.datasourceType">
-                      <img src="@/assets/da/asset2/fen (1).svg" alt="" />
+                      <img src="@/assets/images/da/assetTwo/icon-fen-one.svg" alt="" />
                       <span>
                         <overflow-tooltip
                           :text="item.datasourceName"
@@ -368,7 +368,7 @@
                         v-if="!unregistered(item)"
                         @click="handleUpdate(item, 'register')"
                       >
-                        <img src="@/assets/da/asset2/btn (2).svg" alt="" />
+                        <img src="@/assets/images/da/assetTwo/icon-action-button-two.svg" alt="" />
                         <span>{{ td('da.asset.register') }}</span>
                       </div>
                       <div
@@ -376,7 +376,7 @@
                         v-if="unregistered(item)"
                         @click="handleView(item)"
                       >
-                        <img src="@/assets/da/asset2/btn (2).svg" alt="" />
+                        <img src="@/assets/images/da/assetTwo/icon-action-button-two.svg" alt="" />
                         <span>{{ td('common.button.details') }}</span>
                       </div>
                       <!-- danger -->
@@ -392,12 +392,12 @@
                       >
                         <img
                           v-if="item.status == 2"
-                          src="@/assets/da/asset2/btn (1).svg"
+                          src="@/assets/images/da/assetTwo/icon-action-button-one.svg"
                           alt=""
                         />
                         <img
                           v-else
-                          src="@/assets/da/asset2/btn (4).svg"
+                          src="@/assets/images/da/assetTwo/icon-action-button-four.svg"
                           alt=""
                         />
                         <span
@@ -407,7 +407,7 @@
 
                       <el-dropdown>
                         <div class="form-btn">
-                          <img src="@/assets/da/asset2/btn (3).svg" alt="" />
+                          <img src="@/assets/images/da/assetTwo/icon-action-button-three.svg" alt="" />
                           <span>{{ td('da.asset.more') }}</span>
                         </div>
                         <template #dropdown>
@@ -470,7 +470,7 @@
             </div>
           </div>
           <div class="empty" v-else>
-            <img src="@/assets/da/asset/empty.png" alt="" />
+            <img src="@/assets/images/da/asset/empty.png" alt="" />
             <span>{{ td('common.noSearchResult') }}</span>
           </div>
           <pagination

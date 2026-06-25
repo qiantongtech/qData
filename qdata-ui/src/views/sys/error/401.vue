@@ -44,7 +44,7 @@
 
 <script setup>
 import useDefaultLang from "@/composables/useDefaultLang";
-import errImage from "@/assets/system/401_images/401.gif";
+import errImage from "@/assets/images/system/img-no-access-permission.gif";
 
 const { td } = useDefaultLang();
 

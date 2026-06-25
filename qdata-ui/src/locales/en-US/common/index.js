@@ -2,26 +2,38 @@
 export default {
   license: {
     title: 'Open Source License',
-    text: 'qData is made available under the Apache License 2.0, subject to the following additional conditions specific to qData:\n' +
-        '\n' +
-        'For the purpose of this License, "qData" refers to the entire software project, including but not limited to its frontend, backend, API, and related documentation in whole or in part.\n' +
-        '\n' +
-        'For the purpose of this License, "Producer" refers to Jiangsu Qiantong Technology Co., Ltd.\n' +
-        '\n' +
-        '1. You may use qData for commercial purposes, provided that you do not remove, hide, or modify the qData logo, copyright notices, license notices, or attribution information displayed in the qData.\n' +
-        '\n' +
-        'If you wish to remove, hide, obscure, replace, or modify such logo, copyright notices, license notices, or attribution information, including but not limited to white-label use, OEM distribution, rebranding, or presenting qData as another product, you must obtain a separate commercial license from the Producer.\n' +
-        '\n' +
-        '2. As a contributor, you should agree that:\n' +
-        '\n' +
-        'a. The Producer can adjust the open-source agreement to be more strict or relaxed as deemed necessary.\n' +
-        'b. Your contributed code may be used for commercial purposes, including but not limited to its cloud business operations.\n' +
-        '\n' +
-        'Apart from the specific conditions mentioned above, all other rights and restrictions follow the Apache License 2.0. Detailed information about the Apache License 2.0 can be found at http://www.apache.org/licenses/LICENSE-2.0.\n' +
-        '\n' +
-        'The interactive design of this product is protected by appearance patent.\n' +
-        '\n' +
-        '© 2025 Jiangsu Qiantong Technology Co., Ltd',
+    text: {
+      intro: [
+        'qData is made available under the Apache License 2.0, subject to the following additional conditions specific to qData:',
+        'For the purpose of this License, "qData" refers to the entire software project, including but not limited to its frontend, backend, API, and related documentation in whole or in part.',
+        'For the purpose of this License, "Producer" refers to Jiangsu Qiantong Technology Co., Ltd.'
+      ],
+      terms: [
+        {
+          title: 'You may use qData for commercial purposes, provided that you do not remove, hide, or modify the qData logo, copyright notices, license notices, or attribution information displayed in the qData.',
+          desc: [
+            'If you wish to remove, hide, obscure, replace, or modify such logo, copyright notices, license notices, or attribution information, including but not limited to white-label use, OEM distribution, rebranding, or presenting qData as another product, you must obtain a separate commercial license from the Producer.'
+          ]
+        },
+        {
+          title: 'As a contributor, you should agree that:',
+          desc: [
+            'a. The Producer can adjust the open-source agreement to be more strict or relaxed as deemed necessary.',
+            'b. Your contributed code may be used for commercial purposes, including but not limited to its cloud business operations.'
+          ]
+        }
+      ],
+      notice: {
+        before: 'Apart from the specific conditions mentioned above, all other rights and restrictions follow the Apache License 2.0. Detailed information about the Apache License 2.0 can be found at ',
+        link: 'http://www.apache.org/licenses/LICENSE-2.0',
+        linkText: 'http://www.apache.org/licenses/LICENSE-2.0',
+        after: '.'
+      },
+      footer: [
+        'The interactive design of this product is protected by appearance patent.',
+        '© 2025 Jiangsu Qiantong Technology Co., Ltd'
+      ]
+    },
   },
   button: {
     add: 'Add',
@@ -54,7 +66,9 @@ export default {
     update: 'Edit',
     upload: 'Upload',
     neverShow: 'Don\'t Show Again',
-    view: 'View'
+    view: 'View',
+    aware:'I am aware',
+    commercialAuthorization:'Commercial Authorization'
   },
   error: {
     code401: '401 Error!',

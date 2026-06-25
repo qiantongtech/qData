@@ -146,7 +146,7 @@ watch(valueId, () => {
 </script>
 
 <style lang='scss' scoped>
-@import "@/assets/system/styles/variables.module.scss";
+@import "@/assets/styles/system/variables.module.scss";
 .el-scrollbar .el-scrollbar__view .el-select-dropdown__item {
   padding: 0;
   background-color: #fff;

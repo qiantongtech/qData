@@ -433,6 +433,7 @@ defineExpose({
   padding: 0 15px !important;
   margin: 0 10px !important;
   border-radius: 5px;
+  font-weight: bold !important;
 }
 
 /* sub-menu item */
@@ -445,6 +446,7 @@ defineExpose({
   padding: 0 15px !important;
   margin: 0 10px !important;
   border-radius: 5px;
+  font-weight: bold !important;
 }
 
 .topmenu-container.el-menu--horizontal > .el-menu-item.is-active,
@@ -478,6 +480,7 @@ defineExpose({
 .el-menu--horizontal .el-menu .el-menu-item {
   height: 40px !important;
   line-height: 40px !important;
+  font-weight: bold !important;
 
   .svg-icon {
     margin-right: 10px;

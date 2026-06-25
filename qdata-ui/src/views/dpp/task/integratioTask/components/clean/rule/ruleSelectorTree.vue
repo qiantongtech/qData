@@ -65,26 +65,26 @@
               </el-icon> -->
               <img
                 class="node-icon"
-                src="../../../../../../../assets/da/asset/folder.svg"
+                src="../../../../../../../assets/images/da/asset/icon-file-folder.svg"
                 alt=""
                 v-if="node.expanded && node.childNodes.length"
               />
               <img
                 class="node-icon"
-                src="../../../../../../../assets/da/asset/folder.svg"
+                src="../../../../../../../assets/images/da/asset/icon-file-folder.svg"
                 alt=""
                 v-if="!node.expanded && node.childNodes.length"
               />
               <!-- 子级 -->
               <img
                 class="child-icon"
-                src="../../../../../../../assets/da/asset/file.svg"
+                src="../../../../../../../assets/images/da/asset/icon-file.svg"
                 alt=""
                 v-show="!node.isCurrent && node.childNodes.length == 0"
               />
               <img
                 class="child-icon"
-                src="../../../../../../../assets/da/asset/file.svg"
+                src="../../../../../../../assets/images/da/asset/icon-file.svg"
                 alt=""
                 v-show="node.isCurrent && node.childNodes.length == 0"
               />
@@ -382,7 +382,7 @@ defineExpose({ resetTree });
       height: 11px;
 
       & > svg {
-        background: url("@/assets/da/asset/arrow.svg") no-repeat;
+        background: url("@/assets/images/da/asset/icon-arrow.svg") no-repeat;
         background-size: 100% 100%;
         transform: rotate(-90deg);
       }

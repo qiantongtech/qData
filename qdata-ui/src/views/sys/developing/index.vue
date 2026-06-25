@@ -2,7 +2,7 @@
   <div :class="['app-container', { 'is-tab': type === 'tab' }]">
     <div class="developing-wrapper">
       <img
-        src="@/assets/images/sys/error/building.png"
+        src="@/assets/images/system/error/illust-building.png"
         :alt="td('sys.developing.underDevelopment')"
         class="developing-img"
       />

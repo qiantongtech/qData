@@ -112,8 +112,8 @@ function setLayout() {
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/system/styles/mixin.scss";
-@import "@/assets/system/styles/variables.module.scss";
+@import "@/assets/styles/system/mixin.scss";
+@import "@/assets/styles/system/variables.module.scss";
 
 .app-wrapper {
   @include clearfix;

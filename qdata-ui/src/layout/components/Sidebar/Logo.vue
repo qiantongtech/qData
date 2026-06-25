@@ -17,9 +17,9 @@
 
 <template>
   <div
-    class="sidebar-logo-container"
-    :class="{ collapse: collapse }"
-    :style="{
+      class="sidebar-logo-container"
+      :class="{ collapse: collapse }"
+      :style="{
       backgroundColor:
         sideTheme === 'theme-dark'
           ? variables.menuBackground
@@ -50,27 +50,31 @@
       </router-link>
       <router-link v-else key="expand" class="sidebar-logo-link" to="/">
         <!--        <img v-if="logo" :src="logo" class="sidebar-logo" /> -->
-        <img v-if="logo" :src="displayLogo" class="sidebar-logo" />
+        <img v-if="logo" :src="displayLogo" ref="logoRef" class="sidebar-logo"
+             :class="{ 'logo-intro': logoIntroActive }" @mouseenter="replayHover"/>
       </router-link>
     </transition>
   </div>
 </template>
 
 <script setup>
-import variables from "@/assets/system/styles/variables.module.scss";
-import logo from "@/assets/system/logo/qData-logo.png";
-import logo1 from "@/assets/system/logo/qData-logo1.png";
-import simpLogo from "@/assets/system/logo/qData-simlogo.png"; //千数
+import variables from "@/assets/styles/system/variables.module.scss";
+import logo from "@/assets/images/system/logo/logo-qdata-white.png";
+import logo1 from "@/assets/images/system/logo/logo-qdata-grey.png";
+import simpLogo from "@/assets/images/system/logo/logo-qdata-sim.png"; //千数
 
 import useSettingsStore from "@/store/system/settings";
 import defaultSettings from "@/settings";
 import { getContent } from "@/api/system/system/content";
 
-import { computed } from "vue";
+import {computed, ref as vueRef, nextTick} from "vue";
 
 // 使用 ref 来创建响应式的 logo
 const refLogo = ref(null); // 初始化 logo 为 simpLogo.png
 const refSimpLogo = ref(null); // 初始化 logo 为 simpLogo.png
+
+// 动画控制
+const logoIntroActive = ref(false);
 
 const props = defineProps({
   collapse: {
@@ -99,6 +103,10 @@ const displaySimpLogo = computed(() => {
   return isSpecialRoute ? logo1 : refSimpLogo.value;
 });
 onMounted(() => {
+  logoIntroActive.value = true;
+  window.setTimeout(() => {
+    logoIntroActive.value = false;
+  }, 1800);
   fetchContent();
 });
 // 使用 getContent 来获取数据，而不是重新定义一个 getContent 函数
@@ -156,6 +164,11 @@ const sideTheme = computed(() => settingsStore.sideTheme);
       margin-left: -30px;
     }
 
+    & .logo-intro,
+    &:hover .sidebar-logo {
+      animation: logoEntrance 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+
     & .sidebar-title {
       display: inline-block;
       margin: 0;
@@ -175,6 +188,23 @@ const sideTheme = computed(() => settingsStore.sideTheme);
       margin-right: 0px;
       margin-left: 0px;
     }
+  }
+}
+
+/* 入场动画：阶段1 淡入滑入+缩放 → 阶段2 缩放到位 → 阶段3 皮球回弹 */
+@keyframes logoEntrance {
+  /* 阶段1：从左淡入滑入，同时从小到大缩放 */
+  0% {
+    transform: translateX(-200px) scale(0.3);
+    opacity: 0;
+  }
+  35% {
+    transform: translateX(0) scale(0.4);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scale(0.7);
+    opacity: 1;
   }
 }
 </style>

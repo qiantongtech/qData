@@ -28,23 +28,23 @@
       </div>
       <div class="head-btns">
         <el-button type="primary" size="small" @click="handleExportData" v-if="!route.query.info">
-          <img src="@/assets/dpp/etl/title-act (1).svg" alt="">{{ td('dpp.developTaskDetail.taskSave', '任务保存') }}
+          <img src="@/assets/images/dpp/etl/icon-title-active-one.svg" alt="">{{ td('dpp.developTaskDetail.taskSave', '任务保存') }}
         </el-button>
         <el-button type="primary" plain size="small" @click="routeTo('/dpp/task/developTask', '')">
-          <img class="currImg" src="@/assets/dpp/etl/title (3).svg" alt="">
-          <img class="act" src="@/assets/dpp/etl/title-act (3).svg" alt="">{{ td('dpp.developTaskDetail.taskCancel', '任务取消') }}
+          <img class="currImg" src="@/assets/images/dpp/etl/icon-title-three.svg" alt="">
+          <img class="act" src="@/assets/images/dpp/etl/icon-title-active-three.svg" alt="">{{ td('dpp.developTaskDetail.taskCancel', '任务取消') }}
         </el-button>
         <el-button type="primary" plain size="small" @click="openTaskConfigDialog" v-if="!route.query.info">
-          <img class="currImg" src="@/assets/dpp/etl/title (4).svg" alt="">
-          <img class="act" src="@/assets/dpp/etl/title-act (4).svg" alt="">{{ td('dpp.developTaskDetail.taskConfig', '任务配置') }}
+          <img class="currImg" src="@/assets/images/dpp/etl/icon-title-four.svg" alt="">
+          <img class="act" src="@/assets/images/dpp/etl/icon-title-active-four.svg" alt="">{{ td('dpp.developTaskDetail.taskConfig', '任务配置') }}
         </el-button>
         <el-button type="primary" plain size="small" @click="openTaskConfigDialog" v-else>
-          <img class="currImg" src="@/assets/dpp/etl/title (4).svg" alt="">
-          <img class="act" src="@/assets/dpp/etl/title-act (4).svg" alt="">{{ td('dpp.developTaskDetail.taskDetail', '任务详情') }}
+          <img class="currImg" src="@/assets/images/dpp/etl/icon-title-four.svg" alt="">
+          <img class="act" src="@/assets/images/dpp/etl/icon-title-active-four.svg" alt="">{{ td('dpp.developTaskDetail.taskDetail', '任务详情') }}
         </el-button>
         <el-button type="primary" plain v-if="formStatus == 1" size="small" @click="handleRun">
-          <img class="currImg" src="@/assets/dpp/etl/title (2).svg" alt="">
-          <img class="act" src="@/assets/dpp/etl/title-act (2).svg" alt="">{{ td('dpp.developTaskDetail.taskRun', '任务运行') }}
+          <img class="currImg" src="@/assets/images/dpp/etl/icon-title-two.svg" alt="">
+          <img class="act" src="@/assets/images/dpp/etl/icon-title-active-two.svg" alt="">{{ td('dpp.developTaskDetail.taskRun', '任务运行') }}
         </el-button>
       </div>
     </div>
@@ -153,25 +153,25 @@ watch(
 const getDatasourceIcon = (type) => {
   switch (type) {
     case "DM":
-      return new URL("@/assets/system/images/dpp/DM.png", import.meta.url).href;
+      return new URL("@/assets/images/common/dpp/ds-dm.png", import.meta.url).href;
     case "Oracle":
-      return new URL("@/assets/system/images/dpp/oracle.png", import.meta.url).href;
+      return new URL("@/assets/images/common/dpp/img-oracle-one.png", import.meta.url).href;
     case "MYSQL":
-      return new URL("@/assets/system/images/dpp/mysql.png", import.meta.url).href;
+      return new URL("@/assets/images/common/dpp/ds-mysql.png", import.meta.url).href;
     case "Kingbase":
-      return new URL("@/assets/system/images/dpp/kingBase.png", import.meta.url).href;
+      return new URL("@/assets/images/common/dpp/ds-kingbase.png", import.meta.url).href;
     case "Sqlerver":
-      return new URL("@/assets/system/images/dpp/sqlServer.png", import.meta.url).href;
+      return new URL("@/assets/images/common/dpp/ds-sqlserver.png", import.meta.url).href;
     case "PostgreSql":
-      return new URL("@/assets/system/images/dpp/kafka.png", import.meta.url).href;
+      return new URL("@/assets/images/common/dpp/ds-kafka.png", import.meta.url).href;
     case "Hive":
-      return new URL("@/assets/system/images/dpp/Hive.png", import.meta.url).href;
+      return new URL("@/assets/images/common/dpp/ds-hive.png", import.meta.url).href;
     case "SparkSql":
-      return new URL("@/assets/system/images/dpp/Spark.svg", import.meta.url).href;
+      return new URL("@/assets/images/common/dpp/icon-spark.svg", import.meta.url).href;
     case "FlinkBatch":
-      return new URL("@/assets/system/images/dpp/Flink.svg", import.meta.url).href;
+      return new URL("@/assets/images/common/dpp/icon-flink.svg", import.meta.url).href;
     case "FlinkStream":
-      return new URL("@/assets/system/images/dpp/Flink.svg", import.meta.url).href;
+      return new URL("@/assets/images/common/dpp/icon-flink.svg", import.meta.url).href;
     default:
       return null;
   }

@@ -355,7 +355,7 @@ defineExpose({ currHeight, getInstanceId });
             font-size: 12px;
 
             &>svg {
-              background: url("@/assets/da/asset/arrow.png") no-repeat;
+              background: url("@/assets/images/da/asset/arrow.png") no-repeat;
               background-size: 100% 100%;
             }
           }

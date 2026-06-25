@@ -85,7 +85,7 @@ import info from "@/views/ds/client/detail/info.vue";
 import api from "@/views/ds/client/detail/api.vue";
 
 const { td } = useDefaultLang();
-const noDataImg = new URL('@/assets/system/images/D.png', import.meta.url).href
+const noDataImg = new URL('@/assets/images/system/D.png', import.meta.url).href
 
 const { proxy } = getCurrentInstance();
 const { auth_public, auth_app_type } = proxy.useDict('auth_public', 'auth_app_type');

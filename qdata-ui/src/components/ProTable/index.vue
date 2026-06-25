@@ -124,7 +124,7 @@
     <template #empty>
       <slot name="empty">
         <div class="emptyBg">
-          <img src="@/assets/system/images/no_data/noData.png" alt="" />
+          <img src="@/assets/images/system/no_data/empty-nodata.png" alt="" />
           <p>{{td('common.noData')}}</p>
         </div>
       </slot>
@@ -149,7 +149,7 @@ import Pagination from "@/views/flyflow/components/pagination.vue";
 import useDefaultLang from "@/composables/useDefaultLang";
 const { td } = useDefaultLang();
 const noDataImg = new URL(
-  "@/assets/images/common/noDataImg.png",
+  "@/assets/images/common/empty-nodataimg.png",
   import.meta.url
 ).href;
 /**

@@ -22,7 +22,7 @@ import { DataUri, Shape } from "@antv/x6";
 import { History } from "@antv/x6-plugin-history";
 import { Export } from "@antv/x6-plugin-export";
 import { Selection } from "@antv/x6-plugin-selection";
-import "@/assets/system/styles/global.scss";
+import "@/assets/styles/system/global.scss";
 import { cuPort } from "@/utils/graph";
 import useUserStore from "@/store/system/user";
 const userStore = useUserStore();

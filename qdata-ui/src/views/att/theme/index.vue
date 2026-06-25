@@ -141,7 +141,7 @@
 
                 <template #empty>
                     <div class="emptyBg">
-                        <img src="../../../assets/system/images/no_data/noData.png" alt="" />
+                        <img src="../../../assets/images/system/no_data/empty-nodata.png" alt="" />
                         <p>{{td('common.noData')}}</p>
                     </div>
                 </template>
@@ -349,7 +349,7 @@ import {
 } from '@/api/att/theme/theme.js';
 import { getToken } from '@/utils/auth.js';
 import useDefaultLang from "@/composables/useDefaultLang";
-const noDataImg = new URL('@/assets/system/images/D.png', import.meta.url).href
+const noDataImg = new URL('@/assets/images/system/D.png', import.meta.url).href
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();

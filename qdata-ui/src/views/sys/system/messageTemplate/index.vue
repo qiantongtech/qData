@@ -123,7 +123,7 @@
 
         <template #empty>
           <div class="emptyBg">
-            <img src="@/assets/system/images/no_data/noData.png" alt="">
+            <img src="@/assets/images/system/no_data/empty-nodata.png" alt="">
             <p>{{ td('sys.system.messageTemplate.noRecord') }}</p>
           </div>
         </template>

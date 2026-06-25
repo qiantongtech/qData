@@ -26,7 +26,7 @@
           <div v-html="notice.noticeContentText"></div>
         </template>
         <div class="empty" v-else>
-          <img src="@/assets/system/images/no_data/noData.png" alt="" />
+          <img src="@/assets/images/system/no_data/empty-nodata.png" alt="" />
           <!-- <span>{{ td('common.noDescription') }}</span> -->
         </div>
       </div>

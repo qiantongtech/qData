@@ -1,0 +1,13 @@
+UPDATE `system_menu` SET `icon` = 'icon-smart-data-query' WHERE `menu_id` = 2733;
+UPDATE `system_menu` SET `icon` = 'icon-data-research-development' WHERE `menu_id` = 2397;
+UPDATE `system_menu` SET `icon` = 'icon-data-service' WHERE `menu_id` = 2427;
+UPDATE `system_menu` SET `icon` = 'icon-data-quality' WHERE `menu_id` = 2555;
+UPDATE `system_menu` SET `icon` = 'icon-asset-tag' WHERE `menu_id` = 2770;
+UPDATE `system_menu` SET `icon` = 'icon-data-query' WHERE `menu_id` = 2554;
+UPDATE `system_menu` SET `icon` = 'icon-call-log' WHERE `menu_id` = 2428;
+UPDATE `system_menu` SET `icon` = 'icon-asset-map' WHERE `menu_id` = 2329;
+UPDATE `system_menu` SET `icon` = 'icon-api-management' WHERE `menu_id` = 2436;
+UPDATE `system_menu` SET `icon` = 'icon-application-management' WHERE `menu_id` = 2457;
+UPDATE `system_menu` SET `icon` = 'icon-category' WHERE `menu_id` = 2352;
+UPDATE `system_menu` SET `icon` = 'icon-category' WHERE `menu_id` = 2494;
+UPDATE `system_menu` SET `icon` = 'icon-bus-class' WHERE `menu_id` = 2750;

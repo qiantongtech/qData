@@ -85,7 +85,8 @@ public class GlobalExceptionHandler
     {
         String requestURI = request.getRequestURI();
         log.error("请求地址'{}',不支持'{}'请求", requestURI, e.getMethod());
-        String message = MessageUtils.messageWithFallback("sys.error.method", e.getMessage());
+        String message = StringUtils.isNotEmpty(e.getMessage()) ? e.getMessage() :
+                MessageUtils.messageWithFallback("sys.error.method", e.getMessage());
         return AjaxResult.error(message);
     }
 
@@ -111,8 +112,8 @@ public class GlobalExceptionHandler
     {
         String requestURI = request.getRequestURI();
         log.error("请求路径中缺少必需的路径变量'{}',发生系统异常.", requestURI, e);
-        String message = MessageUtils.messageWithFallback("sys.error.path.missing",
-                String.format("请求路径中缺少必需的路径变量[%s]", e.getVariableName()));
+        String message = StringUtils.isNotEmpty(e.getVariableName()) ? String.format("请求路径中缺少必需的路径变量[%s]", e.getVariableName())
+                : MessageUtils.messageWithFallback("sys.error.path.missing", String.format("请求路径中缺少必需的路径变量[%s]", e.getVariableName()));
         return AjaxResult.error(message);
     }
 
@@ -129,8 +130,9 @@ public class GlobalExceptionHandler
             value = EscapeUtil.clean(value);
         }
         log.error("请求参数类型不匹配'{}',发生系统异常.", requestURI, e);
-        String message = MessageUtils.messageWithFallback("sys.error.param.type",
-                String.format("请求参数类型不匹配，参数[%s]要求类型为：'%s'，但输入值为：'%s'", e.getName(), e.getRequiredType().getName(), value));
+        String tips = String.format("请求参数类型不匹配，参数[%s]要求类型为：'%s'，但输入值为：'%s'", e.getName(), e.getRequiredType().getName(), value);
+        String message = StringUtils.isNotEmpty(e.getName()) ? tips :
+                MessageUtils.messageWithFallback("sys.error.param.type", tips);
         return AjaxResult.error(message);
     }
 
@@ -142,7 +144,8 @@ public class GlobalExceptionHandler
     {
         String requestURI = request.getRequestURI();
         log.error("请求地址'{}',发生未知异常.", requestURI, e);
-        String message = MessageUtils.messageWithFallback("sys.error.unknown", e.getMessage());
+        String message = StringUtils.isNotEmpty(e.getMessage()) ? e.getMessage() :
+                MessageUtils.messageWithFallback("sys.error.unknown", e.getMessage());
         return AjaxResult.error(message);
     }
 
@@ -154,7 +157,8 @@ public class GlobalExceptionHandler
     {
         String requestURI = request.getRequestURI();
         log.error("请求地址'{}',发生系统异常.", requestURI, e);
-        String message = MessageUtils.messageWithFallback("sys.error", e.getMessage());
+        String message = StringUtils.isNotEmpty(e.getMessage()) ? e.getMessage() :
+                MessageUtils.messageWithFallback("sys.error", e.getMessage());
         return AjaxResult.error(message);
     }
 

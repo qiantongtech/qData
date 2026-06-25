@@ -164,12 +164,12 @@
             <div class="fileName">
               <img
                   v-if="scope.row.directory"
-                  src="../../../../assets/da/asset/folder.svg"
+                  src="../../../../assets/images/da/asset/icon-file.svg"
                   alt=""
               />
               <img
                   v-else
-                  src="../../../../assets/da/asset/icon-file.svg"
+                  src="../../../../assets/images/da/asset/icon-file.svg"
                   alt=""
                   style="width: 12px; height: 12px; margin-right: 5px"
               />

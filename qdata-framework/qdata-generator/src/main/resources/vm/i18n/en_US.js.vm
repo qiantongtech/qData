@@ -34,7 +34,7 @@ export default {
 #end
     },
     message: {
-      confirmDelete: 'Are you sure to delete ${functionName} "<ids>"?',
+      confirmDelete: 'Are you sure to delete _${pkColumn.javaField}s?',
       selectRecord: 'Please select the ${subTable.functionName} data to delete first'
     }
   }

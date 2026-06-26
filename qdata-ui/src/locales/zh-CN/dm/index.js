@@ -211,7 +211,7 @@ export default {
     validations: {
     },
     message: {
-      confirmDelete: '是否确认删除数据分类编号为的数据项？',
+      confirmDelete: '是否确认删除编号为_ids的数据项？',
       selectRecord: '请先选择要删除的${subTable.functionName}数据'
 
     }

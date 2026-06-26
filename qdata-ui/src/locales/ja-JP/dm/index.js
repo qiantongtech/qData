@@ -210,7 +210,7 @@ export default {
     validations: {
     },
     message: {
-      confirmDelete: '数据分类番号"<ids>"を削除しますか？',
+      confirmDelete: '番号_idsを削除しますか？',
       selectRecord: '最初に削除する${subTable.functionName}データを選択してください'
     }
   }

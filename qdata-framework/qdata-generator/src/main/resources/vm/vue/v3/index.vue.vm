@@ -45,18 +45,18 @@
                     #set($comment=$column.columnComment)
                 #end
                 #if($column.htmlType == "input")
-      <el-form-item :label="td('${moduleName}.column.${column.javaField}')" prop="${column.javaField}">
+      <el-form-item :label="td('${controllerPrefix}.${moduleName}.column.${column.javaField}')" prop="${column.javaField}">
         <el-input
             class="el-form-input-width"
             v-model="queryParams.${column.javaField}"
-            :placeholder="td('${moduleName}.placeholder.${column.javaField}')"
+            :placeholder="td('${controllerPrefix}.${moduleName}.placeholder.${column.javaField}')"
             clearable
             @keyup.enter="handleQuery"
         />
       </el-form-item>
 #elseif(($column.htmlType == "select" || $column.htmlType == "radio") && "" != $dictType)
-      <el-form-item :label="td('${moduleName}.column.${column.javaField}')" prop="${column.javaField}">
-        <el-select class="el-form-input-width" v-model="queryParams.${column.javaField}" :placeholder="td('${moduleName}.placeholder.${column.javaField}')" clearable>
+      <el-form-item :label="td('${controllerPrefix}.${moduleName}.column.${column.javaField}')" prop="${column.javaField}">
+        <el-select class="el-form-input-width" v-model="queryParams.${column.javaField}" :placeholder="td('${controllerPrefix}.${moduleName}.placeholder.${column.javaField}')" clearable>
           <el-option
               v-for="dict in ${dictType}"
               :key="dict.value"
@@ -66,31 +66,31 @@
         </el-select>
       </el-form-item>
 #elseif(($column.htmlType == "select" || $column.htmlType == "radio") && $dictType)
-      <el-form-item class="el-form-input-width" :label="td('${moduleName}.column.${column.javaField}')" prop="${column.javaField}">
-        <el-select v-model="queryParams.${column.javaField}" :placeholder="td('${moduleName}.placeholder.${column.javaField}')" clearable>
-          <el-option :label="td('display.pleaseSelect')" value="" />
+      <el-form-item class="el-form-input-width" :label="td('${controllerPrefix}.${moduleName}.column.${column.javaField}')" prop="${column.javaField}">
+        <el-select v-model="queryParams.${column.javaField}" :placeholder="td('${controllerPrefix}.${moduleName}.placeholder.${column.javaField}')" clearable>
+          <el-option :label="td('common.display.pleaseSelect')" value="" />
         </el-select>
       </el-form-item>
 #elseif($column.htmlType == "datetime" && $column.queryType != "BETWEEN")
-      <el-form-item :label="td('${moduleName}.column.${column.javaField}')" prop="${column.javaField}">
+      <el-form-item :label="td('${controllerPrefix}.${moduleName}.column.${column.javaField}')" prop="${column.javaField}">
         <el-date-picker class="el-form-input-width"
             clearable
             v-model="queryParams.${column.javaField}"
             type="date"
             value-format="YYYY-MM-DD"
-            :placeholder="td('${moduleName}.placeholder.${column.javaField}')">
+            :placeholder="td('${controllerPrefix}.${moduleName}.placeholder.${column.javaField}')">
         </el-date-picker>
       </el-form-item>
 #elseif($column.htmlType == "datetime" && $column.queryType == "BETWEEN")
-      <el-form-item :label="td('${moduleName}.column.${column.javaField}')" >
+      <el-form-item :label="td('${controllerPrefix}.${moduleName}.column.${column.javaField}')" >
         <el-date-picker
             class="el-form-input-width"
             v-model="daterange${AttrName}"
             value-format="YYYY-MM-DD"
             type="daterange"
             range-separator="-"
-            start-:placeholder="td('display.startTime')"
-            end-:placeholder="td('display.endTime')"
+            start-:placeholder="td('common.display.startTime')"
+            end-:placeholder="td('common.display.endTime')"
         ></el-date-picker>
       </el-form-item>
         #end
@@ -99,10 +99,10 @@
 
       <el-form-item>
         <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-          <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{td('button.query')}}
+          <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{td('common.button.query')}}
         </el-button>
         <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-          <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{td('button.reset')}}
+          <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{td('common.button.reset')}}
         </el-button>
       </el-form-item>
      </el-form>
@@ -114,31 +114,31 @@
          <el-col :span="1.5">
            <el-button type="primary" plain @click="handleAdd" v-hasPermi="['${permissionPrefix}:add']"
                       @mousedown="(e) => e.preventDefault()">
-             <i class="iconfont-mini icon-xinzeng mr5"></i>{{td('button.add')}}
+             <i class="iconfont-mini icon-xinzeng mr5"></i>{{td('common.button.add')}}
            </el-button>
          </el-col>
          <el-col :span="1.5">
            <el-button type="primary" plain :disabled="single" @click="handleUpdate" v-hasPermi="['${permissionPrefix}:edit']"
                       @mousedown="(e) => e.preventDefault()">
-             <i class="iconfont-mini icon-xiugai--copy mr5"></i>{{td('button.update')}}
+             <i class="iconfont-mini icon-xiugai--copy mr5"></i>{{td('common.button.update')}}
            </el-button>
          </el-col>
          <el-col :span="1.5">
            <el-button type="danger" plain :disabled="multiple" @click="handleDelete" v-hasPermi="['${permissionPrefix}:remove']"
                       @mousedown="(e) => e.preventDefault()">
-             <i class="iconfont-mini icon-shanchu-huise mr5"></i>{{td('button.delete')}}
+             <i class="iconfont-mini icon-shanchu-huise mr5"></i>{{td('common.button.delete')}}
            </el-button>
          </el-col>
          <el-col :span="1.5">
            <el-button type="info" plain  @click="handleImport" v-hasPermi="['${permissionPrefix}:export']"
                       @mousedown="(e) => e.preventDefault()">
-             <i class="iconfont-mini icon-upload-cloud-line mr5"></i>{{td('button.import')}}
+             <i class="iconfont-mini icon-upload-cloud-line mr5"></i>{{td('common.button.import')}}
            </el-button>
          </el-col>
          <el-col :span="1.5">
            <el-button type="warning" plain @click="handleExport" v-hasPermi="['${permissionPrefix}:export']"
                       @mousedown="(e) => e.preventDefault()">
-             <i class="iconfont-mini icon-download-line mr5"></i>{{td('button.export')}}
+             <i class="iconfont-mini icon-download-line mr5"></i>{{td('common.button.export')}}
            </el-button>
          </el-col>
        </el-row>
@@ -157,27 +157,27 @@
                  #set($comment=$column.columnComment)
              #end
              #if($column.pk)
-       <el-table-column v-if="getColumnVisibility($foreach.index)" :label="td('${moduleName}.column.${column.javaField}')" align="center" prop="${javaField}" />
+       <el-table-column v-if="getColumnVisibility($foreach.index)" :label="td('${controllerPrefix}.${moduleName}.column.${column.javaField}')" align="center" prop="${javaField}" />
              #elseif($column.list && $column.htmlType == "datetime" && $column.columnName != "create_time")
-       <el-table-column v-if="getColumnVisibility($foreach.index)" :label="td('${moduleName}.column.${column.javaField}')" align="center" prop="${javaField}" width="180">
+       <el-table-column v-if="getColumnVisibility($foreach.index)" :label="td('${controllerPrefix}.${moduleName}.column.${column.javaField}')" align="center" prop="${javaField}" width="180">
          <template #default="scope">
            <span>{{ parseTime(scope.row.${javaField}, '{y}-{m}-{d}') }}</span>
          </template>
        </el-table-column>
              #elseif($column.list && $column.htmlType == "datetime" && $column.columnName == "create_time")
-       <el-table-column v-if="getColumnVisibility($foreach.index)" :label="td('${moduleName}.column.${column.javaField}')" align="center" prop="${javaField}" width="180" sortable="custom" :sort-orders="['descending', 'ascending']">
+       <el-table-column v-if="getColumnVisibility($foreach.index)" :label="td('${controllerPrefix}.${moduleName}.column.${column.javaField}')" align="center" prop="${javaField}" width="180" sortable="custom" :sort-orders="['descending', 'ascending']">
          <template #default="scope">
            <span>{{ parseTime(scope.row.${javaField}, '{y}-{m}-{d}') }}</span>
          </template>
        </el-table-column>
              #elseif($column.list && $column.htmlType == "imageUpload")
-       <el-table-column v-if="getColumnVisibility($foreach.index)" :label="td('${moduleName}.column.${column.javaField}')" align="center" prop="${javaField}" width="100">
+       <el-table-column v-if="getColumnVisibility($foreach.index)" :label="td('${controllerPrefix}.${moduleName}.column.${column.javaField}')" align="center" prop="${javaField}" width="100">
          <template #default="scope">
            <image-preview :src="scope.row.${javaField}" :width="50" :height="50"/>
          </template>
        </el-table-column>
-             #elseif($column.list && "" != $column.dictType)
-       <el-table-column v-if="getColumnVisibility($foreach.index)" :label="td('${moduleName}.column.${column.javaField}')" align="center" prop="${javaField}">
+             #elseif($column.list && $column.dictType && "" != $column.dictType  )
+       <el-table-column v-if="getColumnVisibility($foreach.index)" :label="td('${controllerPrefix}.${moduleName}.column.${column.javaField}')" align="center" prop="${javaField}">
          <template #default="scope">
              #if($column.htmlType == "checkbox")
                <dict-tag :options="${column.dictType}" :value="scope.row.${javaField} ? scope.row.${javaField}.split(',') : []"/>
@@ -187,30 +187,30 @@
          </template>
        </el-table-column>
              #elseif($column.list && "" != $javaField)
-       <el-table-column v-if="getColumnVisibility($foreach.index)" :label="td('${moduleName}.column.${column.javaField}')" align="center" prop="${javaField}">
+       <el-table-column v-if="getColumnVisibility($foreach.index)" :label="td('${controllerPrefix}.${moduleName}.column.${column.javaField}')" align="center" prop="${javaField}">
          <template #default="scope">
            {{ scope.row.${javaField} || '-' }}
          </template>
        </el-table-column>
              #end
          #end
-       <el-table-column :label="td('texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
+       <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
          <template #default="scope">
            <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-                      v-hasPermi="['${permissionPrefix}:edit']">{{td('button.update')}}</el-button>
+                      v-hasPermi="['${permissionPrefix}:edit']">{{td('common.button.update')}}</el-button>
            <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
-                      v-hasPermi="['${permissionPrefix}:remove']">{{td('button.delete')}}</el-button>
+                      v-hasPermi="['${permissionPrefix}:remove']">{{td('common.button.delete')}}</el-button>
            <el-button link type="primary" icon="view" @click="handleDetail(scope.row)"
-                      v-hasPermi="['${permissionPrefix}:edit']">{{td('button.details')}}</el-button>
+                      v-hasPermi="['${permissionPrefix}:edit']">{{td('common.button.details')}}</el-button>
            <el-button link type="primary" icon="view" @click="routeTo('/${controllerPrefix}/${moduleName}/${businessName}Detail',scope.row)"
-                      v-hasPermi="['${permissionPrefix}:edit']">{{td('button.details')}}</el-button>
+                      v-hasPermi="['${permissionPrefix}:edit']">{{td('common.button.details')}}</el-button>
          </template>
        </el-table-column>
 
        <template #empty>
          <div class="emptyBg">
            <img src="@/assets/system/images/no_data/noData.png" alt="" />
-           <p>{{td('message.noData')}}</p>
+           <p>{{td('common.message.noData')}}</p>
          </div>
        </template>
      </el-table>
@@ -224,7 +224,7 @@
      />
     </div>
 
-    <!-- {{td('display.context') }} -->
+    <!-- {{td('common.display.context') }} -->
     <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable>
       <template #header="{ close, titleId, titleClass }">
         <span role="heading" aria-level="2" class="el-dialog__title">
@@ -249,14 +249,14 @@
 #end
 #if($column.htmlType == "input")
             <el-col :span="12">
-              <el-form-item :label="td('${moduleName}.column.${column.javaField}')" prop="${field}">
-                <el-input v-model="form.${field}" :placeholder="td('${moduleName}.placeholder.${column.javaField}')" />
+              <el-form-item :label="td('${controllerPrefix}.${moduleName}.column.${column.javaField}')" prop="${field}">
+                <el-input v-model="form.${field}" :placeholder="td('${controllerPrefix}.${moduleName}.placeholder.${column.javaField}')" />
               </el-form-item>
             </el-col>
                       #elseif($column.htmlType == "select" && "" != $dictType)
             <el-col :span="12">
-              <el-form-item :label="td('${moduleName}.column.${column.javaField}')" prop="${field}">
-                <el-select v-model="form.${field}" :placeholder="td('${moduleName}.placeholder.${column.javaField}')">
+              <el-form-item :label="td('${controllerPrefix}.${moduleName}.column.${column.javaField}')" prop="${field}">
+                <el-select v-model="form.${field}" :placeholder="td('${controllerPrefix}.${moduleName}.placeholder.${column.javaField}')">
                   <el-option
                       v-for="dict in ${dictType}"
                       :key="dict.value"
@@ -272,15 +272,15 @@
             </el-col>
 #elseif($column.htmlType == "select" && $dictType)
             <el-col :span="12">
-              <el-form-item :label="td('${moduleName}.column.${column.javaField}')" prop="${field}">
-                <el-select v-model="form.${field}" :placeholder="td('${moduleName}.placeholder.${column.javaField}')">
-                  <el-option :label="td('display.pleaseSelect')" value="" />
+              <el-form-item :label="td('${controllerPrefix}.${moduleName}.column.${column.javaField}')" prop="${field}">
+                <el-select v-model="form.${field}" :placeholder="td('${controllerPrefix}.${moduleName}.placeholder.${column.javaField}')">
+                  <el-option :label="td('common.display.pleaseSelect')" value="" />
                 </el-select>
               </el-form-item>
             </el-col>
 #elseif($column.htmlType == "checkbox" && "" != $dictType)
             <el-col :span="12">
-              <el-form-item :label="td('${moduleName}.column.${column.javaField}')" prop="${field}">
+              <el-form-item :label="td('${controllerPrefix}.${moduleName}.column.${column.javaField}')" prop="${field}">
                 <el-checkbox-group v-model="form.${field}">
                   <el-checkbox
                       v-for="dict in ${dictType}"
@@ -293,15 +293,15 @@
             </el-col>
 #elseif($column.htmlType == "checkbox" && $dictType)
             <el-col :span="12">
-              <el-form-item :label="td('${moduleName}.column.${column.javaField}')" prop="${field}">
+              <el-form-item :label="td('${controllerPrefix}.${moduleName}.column.${column.javaField}')" prop="${field}">
                 <el-checkbox-group v-model="form.${field}">
-                  <el-checkbox>{{td('display.pleaseSelect')}}</el-checkbox>
+                  <el-checkbox>{{td('common.display.pleaseSelect')}}</el-checkbox>
                 </el-checkbox-group>
               </el-form-item>
             </el-col>
 #elseif($column.htmlType == "radio" && "" != $dictType)
             <el-col :span="12">
-              <el-form-item :label="td('${moduleName}.column.${column.javaField}')" prop="${field}">
+              <el-form-item :label="td('${controllerPrefix}.${moduleName}.column.${column.javaField}')" prop="${field}">
                 <el-radio-group v-model="form.${field}">
                   <el-radio
                       v-for="dict in ${dictType}"
@@ -317,46 +317,46 @@
             </el-col>
 #elseif($column.htmlType == "radio" && $dictType)
             <el-col :span="12">
-              <el-form-item :label="td('${moduleName}.column.${column.javaField}')" prop="${field}">
+              <el-form-item :label="td('${controllerPrefix}.${moduleName}.column.${column.javaField}')" prop="${field}">
                 <el-radio-group v-model="form.${field}">
-                  <el-radio label="1">{{td('display.pleaseSelect')}}</el-radio>
+                  <el-radio label="1">{{td('common.display.pleaseSelect')}}</el-radio>
                 </el-radio-group>
               </el-form-item>
             </el-col>
 #elseif($column.htmlType == "datetime")
             <el-col :span="12">
-              <el-form-item :label="td('${moduleName}.column.${column.javaField}')" prop="${field}">
+              <el-form-item :label="td('${controllerPrefix}.${moduleName}.column.${column.javaField}')" prop="${field}">
                 <el-date-picker clearable
                                 style="width: 100%"
                                 v-model="form.${field}"
                                 type="date"
                                 value-format="YYYY-MM-DD"
-                                :placeholder="td('${moduleName}.placeholder.${column.javaField}')">
+                                :placeholder="td('${controllerPrefix}.${moduleName}.placeholder.${column.javaField}')">
                 </el-date-picker>
               </el-form-item>
             </el-col>
 #elseif($column.htmlType == "imageUpload")
             <el-col :span="24">
-              <el-form-item :label="td('${moduleName}.column.${column.javaField}')" prop="${field}">
+              <el-form-item :label="td('${controllerPrefix}.${moduleName}.column.${column.javaField}')" prop="${field}">
                 <image-upload v-model="form.${field}" />
               </el-form-item>
             </el-col>
 #elseif($column.htmlType == "fileUpload")
             <el-col :span="24">
-              <el-form-item :label="td('${moduleName}.column.${column.javaField}')" prop="${field}">
+              <el-form-item :label="td('${controllerPrefix}.${moduleName}.column.${column.javaField}')" prop="${field}">
                 <file-upload v-model="form.${field}" />
               </el-form-item>
             </el-col>
 #elseif($column.htmlType == "editor")
             <el-col :span="24">
-              <el-form-item :label="td('${moduleName}.column.${column.javaField}')">
+              <el-form-item :label="td('${controllerPrefix}.${moduleName}.column.${column.javaField}')">
                 <editor v-model="form.${field}" :min-height="192"/>
               </el-form-item>
             </el-col>
 #elseif($column.htmlType == "textarea")
             <el-col :span="24">
-              <el-form-item :label="td('${moduleName}.column.${column.javaField}')" prop="${field}">
-                <el-input v-model="form.${field}" type="textarea" :placeholder="td('display.context')" />
+              <el-form-item :label="td('${controllerPrefix}.${moduleName}.column.${column.javaField}')" prop="${field}">
+                <el-input v-model="form.${field}" type="textarea" :placeholder="td('common.display.context')" />
               </el-form-item>
             </el-col>
 #end
@@ -371,18 +371,18 @@
             </el-row>
           #end
           #if($table.sub)
-            <el-divider content-position="center">{{td('${moduleName}.subTable')}}{{td('display.info')}}</el-divider>
+            <el-divider content-position="center">{{td('${controllerPrefix}.${moduleName}.subTable')}}{{td('common.display.info')}}</el-divider>
             <el-row :gutter="10" class="mb8">
               <el-col :span="1.5">
-                <el-button type="primary" icon="Plus" @click="handleAdd${subClassName}">{{td('button.add')}}</el-button>
+                <el-button type="primary" icon="Plus" @click="handleAdd${subClassName}">{{td('common.button.add')}}</el-button>
               </el-col>
               <el-col :span="1.5">
-                <el-button type="danger" icon="Delete" @click="handleDelete${subClassName}">{{td('button.delete')}}</el-button>
+                <el-button type="danger" icon="Delete" @click="handleDelete${subClassName}">{{td('common.button.delete')}}</el-button>
               </el-col>
             </el-row>
             <el-table :data="${subclassName}List" :row-class-name="row${subClassName}Index" @selection-change="handle${subClassName}SelectionChange" ref="${subclassName}">
               <el-table-column type="selection" width="50" align="center" />
-              <el-table-column :label="td('display.index')" align="center" prop="index" width="50"/>
+              <el-table-column :label="td('common.display.index')" align="center" prop="index" width="50"/>
                 #foreach($column in $subTable.columns)
                     #set($javaField=$column.javaField)
                     #set($parentheseIndex=$column.columnComment.indexOf("（"))
@@ -395,7 +395,7 @@
                     #elseif($column.list && $column.htmlType == "input")
                       <el-table-column label="$comment" prop="${javaField}" width="150">
                         <template #default="scope">
-                          <el-input v-model="scope.row.$javaField" :placeholder="td('${moduleName}.placeholder.${javaField}')" />
+                          <el-input v-model="scope.row.$javaField" :placeholder="td('${controllerPrefix}.${moduleName}.placeholder.${javaField}')" />
                         </template>
                       </el-table-column>
                     #elseif($column.list && $column.htmlType == "datetime")
@@ -406,14 +406,14 @@
                                           v-model="scope.row.$javaField"
                                           type="date"
                                           value-format="YYYY-MM-DD"
-                                          :placeholder="td('${moduleName}.placeholder.${javaField}')">
+                                          :placeholder="td('${controllerPrefix}.${moduleName}.placeholder.${javaField}')">
                           </el-date-picker>
                         </template>
                       </el-table-column>
                     #elseif($column.list && ($column.htmlType == "select" || $column.htmlType == "radio") && "" != $column.dictType)
                       <el-table-column label="$comment" prop="${javaField}" width="150">
                         <template #default="scope">
-                          <el-select v-model="scope.row.$javaField" :placeholder="td('${moduleName}.placeholder.${javaField}')">
+                          <el-select v-model="scope.row.$javaField" :placeholder="td('${controllerPrefix}.${moduleName}.placeholder.${javaField}')">
                             <el-option
                                 v-for="dict in $column.dictType"
                                 :key="dict.value"
@@ -426,8 +426,8 @@
                     #elseif($column.list && ($column.htmlType == "select" || $column.htmlType == "radio") && "" == $column.dictType)
                       <el-table-column label="$comment" prop="${javaField}" width="150">
                         <template #default="scope">
-                          <el-select v-model="scope.row.$javaField" :placeholder="td('${moduleName}.placeholder.${javaField}')">
-                            <el-option :label="td('display.pleaseSelect')" value="" />
+                          <el-select v-model="scope.row.$javaField" :placeholder="td('${controllerPrefix}.${moduleName}.placeholder.${javaField}')">
+                            <el-option :label="td('common.display.pleaseSelect')" value="" />
                           </el-select>
                         </template>
                       </el-table-column>
@@ -438,8 +438,8 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="cancel">{{td('button.cancel')}}</el-button>
-          <el-button type="primary" size="mini" @click="submitForm">{{td('button.confirm')}}</el-button>
+          <el-button size="mini" @click="cancel">{{td('common.button.cancel')}}</el-button>
+          <el-button type="primary" size="mini" @click="submitForm">{{td('common.button.confirm')}}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -469,7 +469,7 @@
 #end
 #if($column.htmlType == "input")
             <el-col :span="12">
-              <el-form-item :label="td('${moduleName}.column.${column.javaField}')" prop="${field}">
+              <el-form-item :label="td('${controllerPrefix}.${moduleName}.column.${column.javaField}')" prop="${field}">
                 <div>
                   {{ form.${field} }}
                 </div>
@@ -477,7 +477,7 @@
             </el-col>
                       #elseif($column.htmlType == "select" && "" == $dictType)
             <el-col :span="12">
-              <el-form-item :label="td('${moduleName}.column.${column.javaField}')" prop="${field}">
+              <el-form-item :label="td('${controllerPrefix}.${moduleName}.column.${column.javaField}')" prop="${field}">
                 <div>
                   {{ form.${field} }}
                 </div>
@@ -485,13 +485,13 @@
             </el-col>
 #elseif($column.htmlType == "select" && $dictType)
             <el-col :span="12">
-              <el-form-item :label="td('${moduleName}.column.${column.javaField}')" prop="${field}">
+              <el-form-item :label="td('${controllerPrefix}.${moduleName}.column.${column.javaField}')" prop="${field}">
                 <dict-tag :options="${dictType}" :value="form.${field}"/>
               </el-form-item>
             </el-col>
 #elseif($column.htmlType == "checkbox" && "" == $dictType)
             <el-col :span="12">
-              <el-form-item :label="td('${moduleName}.column.${column.javaField}')" prop="${field}">
+              <el-form-item :label="td('${controllerPrefix}.${moduleName}.column.${column.javaField}')" prop="${field}">
                 <div>
                   {{ form.${field} }}
                 </div>
@@ -499,14 +499,14 @@
             </el-col>
 #elseif($column.htmlType == "checkbox" && $dictType)
             <el-col :span="12">
-              <el-form-item :label="td('${moduleName}.column.${column.javaField}')" prop="${field}">
+              <el-form-item :label="td('${controllerPrefix}.${moduleName}.column.${column.javaField}')" prop="${field}">
                 <dict-tag :options="${dictType}" :value="form.${field}"/>
 
               </el-form-item>
             </el-col>
 #elseif($column.htmlType == "radio" && "" == $dictType)
             <el-col :span="12">
-              <el-form-item :label="td('${moduleName}.column.${column.javaField}')" prop="${field}">
+              <el-form-item :label="td('${controllerPrefix}.${moduleName}.column.${column.javaField}')" prop="${field}">
                 <div>
                   {{ form.${field} }}
                 </div>
@@ -514,43 +514,43 @@
             </el-col>
 #elseif($column.htmlType == "radio" && $dictType)
             <el-col :span="12">
-              <el-form-item :label="td('${moduleName}.column.${column.javaField}')" prop="${field}">
+              <el-form-item :label="td('${controllerPrefix}.${moduleName}.column.${column.javaField}')" prop="${field}">
                 <dict-tag :options="${dictType}" :value="form.${field}"/>
               </el-form-item>
             </el-col>
 #elseif($column.htmlType == "datetime")
             <el-col :span="12">
-              <el-form-item :label="td('${moduleName}.column.${column.javaField}')" prop="${field}">
+              <el-form-item :label="td('${controllerPrefix}.${moduleName}.column.${column.javaField}')" prop="${field}">
                 <el-date-picker clearable
                                 style="width: 100%"
                                 v-model="form.${field}"
                                 type="date"
                                 value-format="YYYY-MM-DD"
-                                :placeholder="td('${moduleName}.placeholder.${column.javaField}')">
+                                :placeholder="td('${controllerPrefix}.${moduleName}.placeholder.${column.javaField}')">
                 </el-date-picker>
               </el-form-item>
             </el-col>
 #elseif($column.htmlType == "imageUpload")
             <el-col :span="12">
-              <el-form-item :label="td('${moduleName}.column.${column.javaField}')" prop="${field}">
+              <el-form-item :label="td('${controllerPrefix}.${moduleName}.column.${column.javaField}')" prop="${field}">
                 <image-preview :src="form.${field}" :width="50" :height="50"/>
               </el-form-item>
             </el-col>
 #elseif($column.htmlType == "fileUpload")
             <el-col :span="24">
-              <el-form-item :label="td('${moduleName}.column.${column.javaField}')" prop="${field}">
+              <el-form-item :label="td('${controllerPrefix}.${moduleName}.column.${column.javaField}')" prop="${field}">
                 <file-upload v-model="form.${field}" disabled="true"/>
               </el-form-item>
             </el-col>
 #elseif($column.htmlType == "editor")
             <el-col :span="12">
-              <el-form-item :label="td('${moduleName}.column.${column.javaField}')">
+              <el-form-item :label="td('${controllerPrefix}.${moduleName}.column.${column.javaField}')">
                 <div v-html="form.${field}" ></div>
               </el-form-item>
             </el-col>
 #elseif($column.htmlType == "textarea")
             <el-col :span="24">
-              <el-form-item :label="td('${moduleName}.column.${column.javaField}')" prop="${field}">
+              <el-form-item :label="td('${controllerPrefix}.${moduleName}.column.${column.javaField}')" prop="${field}">
                 <div>
                   {{ form.${field} }}
                 </div>
@@ -568,18 +568,18 @@
             </el-row>
           #end
           #if($table.sub)
-            <el-divider content-position="center">{{td('${moduleName}.subTable')}}{{td('display.info')}}</el-divider>
+            <el-divider content-position="center">{{td('${controllerPrefix}.${moduleName}.subTable')}}{{td('common.display.info')}}</el-divider>
             <el-row :gutter="10" class="mb8">
               <el-col :span="1.5">
-                <el-button type="primary" icon="Plus" @click="handleAdd${subClassName}">{{td('button.add')}}</el-button>
+                <el-button type="primary" icon="Plus" @click="handleAdd${subClassName}">{{td('common.button.add')}}</el-button>
               </el-col>
               <el-col :span="1.5">
-                <el-button type="danger" icon="Delete" @click="handleDelete${subClassName}">{{td('button.delete')}}</el-button>
+                <el-button type="danger" icon="Delete" @click="handleDelete${subClassName}">{{td('common.button.delete')}}</el-button>
               </el-col>
             </el-row>
             <el-table :data="${subclassName}List" :row-class-name="row${subClassName}Index" @selection-change="handle${subClassName}SelectionChange" ref="${subclassName}">
               <el-table-column type="selection" width="50" align="center" />
-              <el-table-column :label="td('display.index')" align="center" prop="index" width="50"/>
+              <el-table-column :label="td('common.display.index')" align="center" prop="index" width="50"/>
                 #foreach($column in $subTable.columns)
                     #set($javaField=$column.javaField)
                     #set($parentheseIndex=$column.columnComment.indexOf("（"))
@@ -592,7 +592,7 @@
                     #elseif($column.list && $column.htmlType == "input")
                       <el-table-column label="$comment" prop="${javaField}" width="150">
                         <template #default="scope">
-                          <el-input v-model="scope.row.$javaField" :placeholder="td('${moduleName}.placeholder.${javaField}')" />
+                          <el-input v-model="scope.row.$javaField" :placeholder="td('${controllerPrefix}.${moduleName}.placeholder.${javaField}')" />
                         </template>
                       </el-table-column>
                     #elseif($column.list && $column.htmlType == "datetime")
@@ -603,14 +603,14 @@
                                           v-model="scope.row.$javaField"
                                           type="date"
                                           value-format="YYYY-MM-DD"
-                                          :placeholder="td('${moduleName}.placeholder.${javaField}')">
+                                          :placeholder="td('${controllerPrefix}.${moduleName}.placeholder.${javaField}')">
                           </el-date-picker>
                         </template>
                       </el-table-column>
                     #elseif($column.list && ($column.htmlType == "select" || $column.htmlType == "radio") && "" != $column.dictType)
                       <el-table-column label="$comment" prop="${javaField}" width="150">
                         <template #default="scope">
-                          <el-select v-model="scope.row.$javaField" :placeholder="td('${moduleName}.placeholder.${javaField}')">
+                          <el-select v-model="scope.row.$javaField" :placeholder="td('${controllerPrefix}.${moduleName}.placeholder.${javaField}')">
                             <el-option
                                 v-for="dict in $column.dictType"
                                 :key="dict.value"
@@ -623,8 +623,8 @@
                     #elseif($column.list && ($column.htmlType == "select" || $column.htmlType == "radio") && "" == $column.dictType)
                       <el-table-column label="$comment" prop="${javaField}" width="150">
                         <template #default="scope">
-                          <el-select v-model="scope.row.$javaField" :placeholder="td('${moduleName}.placeholder.${javaField}')">
-                            <el-option :label="td('display.pleaseSelect')" value="" />
+                          <el-select v-model="scope.row.$javaField" :placeholder="td('${controllerPrefix}.${moduleName}.placeholder.${javaField}')">
+                            <el-option :label="td('common.display.pleaseSelect')" value="" />
                           </el-select>
                         </template>
                       </el-table-column>
@@ -635,7 +635,7 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="cancel">{{td('button.cancel')}}</el-button>
+          <el-button size="mini" @click="cancel">{{td('common.button.cancel')}}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -655,21 +655,21 @@
           drag
       >
         <el-icon class="el-icon--upload"><upload-filled /></el-icon>
-        <div class="el-upload__text">{{td('upload.dragOrClick')}}</div>
+        <div class="el-upload__text">{{td('common.upload.dragOrClick')}}</div>
         <template #tip>
           <div class="el-upload__tip text-center">
             <div class="el-upload__tip">
-              <el-checkbox v-model="upload.updateSupport" />{{td('upload.updateExistingData')}}
+              <el-checkbox v-model="upload.updateSupport" />{{td('common.upload.updateExistingData')}}
             </div>
-            <span>{{td('upload.fileFormat')}}</span>
-            <el-link type="primary" :underline="false" style="font-size:12px;vertical-align: baseline;" @click="importTemplate">{{td('upload.downloadTemplate')}}</el-link>
+            <span>{{td('common.upload.fileFormat')}}</span>
+            <el-link type="primary" :underline="false" style="font-size:12px;vertical-align: baseline;" @click="importTemplate">{{td('common.upload.downloadTemplate')}}</el-link>
           </div>
         </template>
       </el-upload>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="upload.open = false">{{td('button.cancel')}}</el-button>
-          <el-button type="primary" @click="submitFileForm">{{td('button.confirm')}}</el-button>
+          <el-button @click="upload.open = false">{{td('common.button.cancel')}}</el-button>
+          <el-button type="primary" @click="submitFileForm">{{td('common.button.confirm')}}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -680,7 +680,7 @@
 <script setup name="${BusinessName}">
 import useDefaultLang from "@/composables/useDefaultLang";
 const { td } = useDefaultLang();
-import {get${BusinessName}, list${BusinessName}} from "@/api/";
+import {get${BusinessName}, list${BusinessName},add${BusinessName},update${BusinessName},del${BusinessName}} from "@/api/${controllerPrefix}/${moduleName}/${businessName}.js";
 import {getToken} from "@/utils/auth.js";
 
 const { proxy } = getCurrentInstance();
@@ -698,7 +698,7 @@ const { proxy } = getCurrentInstance();
   const columns = ref([
       #foreach($column in $columns)
           #if($column.list)
-            { key: $foreach.index, label: "td('${moduleName}.column.${column.javaField}')", visible: true }#if($foreach.hasNext),#end
+            { key: $foreach.index, label: "td('${controllerPrefix}.${moduleName}.column.${column.javaField}')", visible: true }#if($foreach.hasNext),#end
           #end
       #end
   ]);
@@ -768,7 +768,7 @@ const { proxy } = getCurrentInstance();
                 #else
                     #set($comment=$column.columnComment)
                 #end
-        $column.javaField: [{ required: true, message: "td('message.required')", trigger: #if($column.htmlType == "select" || $column.htmlType == "radio")"change"#else"blur"#end }]#if($foreach.count != $columns.size()),#end
+        $column.javaField: [{ required: true, message: "td('common.message.required')", trigger: #if($column.htmlType == "select" || $column.htmlType == "radio")"change"#else"blur"#end }]#if($foreach.count != $columns.size()),#end
             #end
         #end
     }
@@ -862,7 +862,7 @@ const { proxy } = getCurrentInstance();
   function handleAdd() {
     reset();
     open.value = true;
-    title.value = td('${moduleName}.title.add');
+    title.value = td('${controllerPrefix}.${moduleName}.title.add');
   }
 
   /** 修改按钮操作 */
@@ -880,7 +880,7 @@ const { proxy } = getCurrentInstance();
                 ${subclassName}List.value = response.data.${subclassName}List;
         #end
       open.value = true;
-      title.value = td('${moduleName}.title.edit');
+      title.value = td('${controllerPrefix}.${moduleName}.title.edit');
     });
   }
 
@@ -900,7 +900,7 @@ const { proxy } = getCurrentInstance();
                 ${subclassName}List.value = response.data.${subclassName}List;
         #end
       openDetail.value = true;
-      title.value = td('${moduleName}.title.detail');
+      title.value = td('${controllerPrefix}.${moduleName}.title.detail');
     });
   }
 
@@ -918,7 +918,7 @@ const { proxy } = getCurrentInstance();
         #end
         if (form.value.${pkColumn.javaField} != null) {
           update${BusinessName}(form.value).then(response => {
-            proxy.#[[$modal]]#.msgSuccess(td('message.editSuccess'));
+            proxy.#[[$modal]]#.msgSuccess(td('common.message.editSuccess'));
             open.value = false;
             getList();
           }).catch(error => {
@@ -930,7 +930,7 @@ const { proxy } = getCurrentInstance();
           });
         } else {
           add${BusinessName}(form.value).then(response => {
-            proxy.#[[$modal]]#.msgSuccess(td('message.addSuccess'));
+            proxy.#[[$modal]]#.msgSuccess(td('common.message.addSuccess'));
             open.value = false;
             getList();
           }).catch(error => {
@@ -948,11 +948,11 @@ const { proxy } = getCurrentInstance();
   /** 删除按钮操作 */
   function handleDelete(row) {
     const _${pkColumn.javaField}s = row.${pkColumn.javaField} || ids.value;
-    proxy.#[[$modal]]#.confirm(td('${moduleName}.message.confirmDelete') ).then(function() {
+    proxy.#[[$modal]]#.confirm(td('${controllerPrefix}.${moduleName}.message.confirmDelete').replace('_${pkColumn.javaField}s', _${pkColumn.javaField}s) ).then(function() {
       return del${BusinessName}(_${pkColumn.javaField}s);
     }).then(() => {
       getList();
-      proxy.#[[$modal]]#.msgSuccess(td('message.deleteSuccess'));
+      proxy.#[[$modal]]#.msgSuccess(td('common.message.deleteSuccess'));
     }).catch(() => {});
   }
 
@@ -977,7 +977,7 @@ const { proxy } = getCurrentInstance();
   /** ${subTable.functionName}删除按钮操作 */
   function handleDelete${subClassName}() {
     if (checked${subClassName}.value.length == 0) {
-      proxy.#[[$modal]]#.msgError(td('${moduleName}.message.selectRecord'));
+      proxy.#[[$modal]]#.msgError(td('${controllerPrefix}.${moduleName}.message.selectRecord'));
     } else {
       const ${subclassName}s = ${subclassName}List.value;
       const checked${subClassName}s = checked${subClassName}.value;
@@ -1003,7 +1003,7 @@ const { proxy } = getCurrentInstance();
   /** ---------------- 导入相关操作 -----------------**/
   /** 导入按钮操作 */
   function handleImport() {
-    upload.title = td('${moduleName}.title.import');
+    upload.title = td('${controllerPrefix}.${moduleName}.title.import');
     upload.open = true;
   }
 
@@ -1023,12 +1023,12 @@ const { proxy } = getCurrentInstance();
     upload.isUploading = true;
   };
 
-  /** 文件上传td('message.success')处理 */
+  /** 文件上传td('common.message.success')处理 */
   const handleFileSuccess = (response, file, fileList) => {
     upload.open = false;
     upload.isUploading = false;
     proxy.$refs["uploadRef"].handleRemove(file);
-    proxy.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" + response.msg + "</div>", td('display.importResult'), { dangerouslyUseHTMLString: true });
+    proxy.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" + response.msg + "</div>", td('common.display.importResult'), { dangerouslyUseHTMLString: true });
     getList();
   };
   /** ---------------------------------**/

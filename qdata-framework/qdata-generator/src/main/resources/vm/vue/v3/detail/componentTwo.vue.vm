@@ -38,7 +38,7 @@
             type="primary"
             plain
             icon="Plus"
-        >td('button.add')</el-button>
+        >td('common.button.add')</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -46,7 +46,7 @@
             plain
             icon="Sort"
             @click="toggleExpandAll"
-        >td('button.un_fold')</el-button>
+        >td('common.button.un_fold')</el-button>
       </el-col>
     </el-row>
     <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
@@ -66,32 +66,32 @@
         {{ scope.row.id || '-' }}
       </template>
     </el-table-column>
-    <el-table-column :label=td('display.title') prop="title" />
-    <el-table-column :label=td('display.content') align="center" prop="content" >
+    <el-table-column :label=td('common.display.title') prop="title" />
+    <el-table-column :label=td('common.display.content') align="center" prop="content" >
       <template #default="scope">
         {{ scope.row.content || '-' }}
       </template>
     </el-table-column>
-    <el-table-column :label=td('display.createBy') align="center" prop="createBy" >
+    <el-table-column :label=td('common.display.createBy') align="center" prop="createBy" >
       <template #default="scope">
         {{ scope.row.createBy || '-' }}
       </template>
     </el-table-column>
-    <el-table-column :label=td('display.createTime') align="center" prop="createTime" width="180">
+    <el-table-column :label=td('common.display.createTime') align="center" prop="createTime" width="180">
       <template #default="scope">
         <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
       </template>
     </el-table-column>
-    <el-table-column :label=td('display.remark') align="center" prop="remark" >
+    <el-table-column :label=td('common.display.remark') align="center" prop="remark" >
       <template #default="scope">
         {{ scope.row.remark || '-' }}
       </template>
     </el-table-column>
-    <el-table-column :label="td('texts.operation')" align="center" class-name="small-padding fixed-width">
+    <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width">
       <template #default="scope">
-        <el-button link type="primary" icon="Edit"  >td('button.update')</el-button>
-        <el-button link type="primary" icon="Plus"  >td('button.add')</el-button>
-        <el-button link type="danger" icon="Delete" >td('button.delete')</el-button>
+        <el-button link type="primary" icon="Edit"  >td('common.button.update')</el-button>
+        <el-button link type="primary" icon="Plus"  >td('common.button.add')</el-button>
+        <el-button link type="danger" icon="Delete" >td('common.button.delete')</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -124,22 +124,22 @@
     },
     rules: {
       parentId: [
-        { required: true, message: "td('rules.node')", trigger: "blur" }
+        { required: true, message: "td('common.rules.node')", trigger: "blur" }
       ],
       title: [
-        { required: true, message: "td('rules.title')", trigger: "blur" }
+        { required: true, message: "td('common.rules.title')", trigger: "blur" }
       ],
       validFlag: [
-        { required: true, message: "td('rules.validFlag')", trigger: "blur" }
+        { required: true, message: "td('common.rules.validFlag')", trigger: "blur" }
       ],
       delFlag: [
-        { required: true, message: "td('rules.delFlag')", trigger: "blur" }
+        { required: true, message: "td('common.rules.delFlag')", trigger: "blur" }
       ],
       createTime: [
-        { required: true, message: "td('rules.createTime')", trigger: "blur" }
+        { required: true, message: "td('common.rules.createTime')", trigger: "blur" }
       ],
       updateTime: [
-        { required: true, message: "td('rules.updateTime')", trigger: "blur" }
+        { required: true, message: "td('common.rules.updateTime')", trigger: "blur" }
       ],
     }
   });
@@ -240,7 +240,7 @@
       form.value.parentId = 0;
     }
     open.value = true;
-    title.value = td('${moduleName}.title.add');
+    title.value = td('${controllerPrefix}.${moduleName}.title.add');
   }
 
   /** 展开/折叠操作 */

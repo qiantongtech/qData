@@ -34,7 +34,7 @@ export default {
 #end
     },
     message: {
-      confirmDelete: '${functionName}番号"<ids>"を削除しますか？',
+      confirmDelete: '番号_${pkColumn.javaField}sを削除しますか？',
       selectRecord: '最初に削除する${subTable.functionName}データを選択してください'
     }
   }

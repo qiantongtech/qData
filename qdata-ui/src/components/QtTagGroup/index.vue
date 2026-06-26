@@ -1,22 +1,23 @@
 <!--
-  Copyright (c) 2026 Jiangsu Qiantong Technology Co., Ltd.
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
 
-  QtTagGroup 组件说明:
-  用于展示标签组，支持自动折叠和 Tooltip 显示全部内容。
-  常用于展示数据源列表、标签列表等。
+  QtTagGroup Component Notes:
+  This component is used to display tag groups. It supports automatic
+  collapsing and shows the full content in a tooltip.
+  It is commonly used for data source lists, tag lists, and similar cases.
 
-  使用示例:
-  1. 基础用法 (字符串数组):
-     <QtTagGroup :items="['标签1', '标签2', '标签3']" />
+  Usage Examples:
+  1. Basic usage (string array):
+     <QtTagGroup :items="['tag1', 'tag2', 'tag3']" />
 
-  2. 对象数组 (自动映射字段):
-     字段映射: label/DATASOURCE_NAME/name, datasourceType/DATASOURCE_TYPE/type
+  2. Object array (auto-mapped fields):
+     Field mapping: label/DATASOURCE_NAME/name, datasourceType/DATASOURCE_TYPE/type
      <QtTagGroup :items="[{ name: 'MySQL', type: 'MYSQL' }, { name: 'Oracle', type: 'ORACLE' }]" />
 
-  3. 自定义最大显示数量:
+  3. Custom maximum display count:
      <QtTagGroup :items="items" :max-count="3" />
 
-  4. 强制数据源样式:
+  4. Force data source style:
      <QtTagGroup :items="['MySQL', 'Oracle']" is-datasource />
 -->
 

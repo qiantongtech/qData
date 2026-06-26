@@ -1,18 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 /**
@@ -1220,31 +1221,31 @@ export const exportGraphAsPNG = (
 
   const defaultStylesheet = `
 .cu_html_container {
-  display: flex; 
-  flex-direction: row; 
-  align-items: center; 
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   justify-content: flex-start;
   background: white;
-  border: 1px solid #ddd; 
-  border-radius: 2px; 
+  border: 1px solid #ddd;
+  border-radius: 2px;
   padding: 8px;
-  height: 33px !important; 
+  height: 33px !important;
   box-shadow: 0 5px 8px rgba(128, 145, 165, 0.1);
   overflow: hidden;
 }
 
 .cu_html_top {
-  width: 30px; 
+  width: 30px;
   height: 30px;
-  margin-right: 10px; 
+  margin-right: 10px;
 }
 
 .cu_html_text {
   display: flex;
   flex-direction: row;
   align-items: center;
-  flex: 1; 
-  white-space: nowrap; 
+  flex: 1;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }

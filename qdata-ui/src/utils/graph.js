@@ -1,4 +1,3 @@
-import { i18n } from '@/plugins/vueI18n'
 /*
  * Copyright © 2025 Qiantong Technology Co., Ltd.
  * qData Data Middle Platform (Open Source Edition)
@@ -16,6 +15,7 @@ import { i18n } from '@/plugins/vueI18n'
  * More information: https://qdata.qiantong.tech/business.html
  */
 
+import { i18n } from '@/plugins/vueI18n';
 import { Shape } from '@antv/x6';
 import { Keyboard } from '@antv/x6-plugin-keyboard'
 /**
@@ -192,12 +192,12 @@ export const typeList = [
 export const toolbar = [
   {
     id: "zoom-out",
-    icon: "toolbar (1).png",
+    icon: "icon-toolbar.png",
     tip:  i18n.global.t('common.graph.zoomOut'),
   },
   {
     id: "zoom-in",
-    icon: "toolbar (8).png",
+    icon: "icon-toolbar-seven.png",
     tip:  i18n.global.t('common.graph.zoomIn'),
   },
   // {
@@ -218,17 +218,17 @@ export const toolbar = [
   // },
   {
     id: "auto-fit",
-    icon: "toolbar (4).png",
+    icon: "icon-toolbar-three.png",
     tip:  i18n.global.t('common.graph.resetView'),
   },
   {
     id: "export",
-    icon: "toolbar (2).png",
+    icon: "icon-toolbar-one.png",
     tip:  i18n.global.t('common.button.export'),
   },
   {
     id: "reset",
-    icon: "toolbar (3).png",
+    icon: "icon-toolbar-two.png",
     tip:  i18n.global.t('common.button.reset'),
   },
 ];

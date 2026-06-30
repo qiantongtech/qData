@@ -397,15 +397,18 @@ public class VelocityUtils
         }
         else if (template.contains("vm/i18n/zh_CN.js.vm"))
         {
-            fileName = StringUtils.format("{}/src/main/resources/i18n/{}-zh_CN.js", module1, moduleName);
+           // fileName = StringUtils.format("{}/src/main/resources/i18n/{}-zh_CN.js", module1, moduleName);
+            fileName = StringUtils.format("{}/locales/zh-CN/{}/{}-zh_CN.js", vuePath, moduleName,businessName);
         }
         else if (template.contains("vm/i18n/en_US.js.vm"))
         {
-            fileName = StringUtils.format("{}/src/main/resources/i18n/{}-en_US.js", module1, moduleName);
+            //fileName = StringUtils.format("{}/src/main/resources/i18n/{}-en_US.js", module1, moduleName);
+            fileName = StringUtils.format("{}/locales/en-US/{}/{}-en_US.js", vuePath, moduleName,businessName);
         }
         else if (template.contains("vm/i18n/ja_JP.js.vm"))
         {
-            fileName = StringUtils.format("{}/src/main/resources/i18n/{}-ja_JP.js", module1, moduleName);
+            //fileName = StringUtils.format("{}/src/main/resources/i18n/{}-ja_JP.js", module1, moduleName);
+            fileName = StringUtils.format("{}/locales/ja-JP/{}/{}-ja_JP.js", vuePath, moduleName,businessName);
         }
         return fileName;
     }

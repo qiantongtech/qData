@@ -1277,7 +1277,7 @@ const isValidClick = (tab) => {
   tabs.value[0].content = message;
 };
 const getAssetsFile = (url) => {
-  return new URL(`/src/assets/dpp/etl/${url}`, import.meta.url).href;
+  return new URL(`/src/assets/images/dpp/etl/${url}`, import.meta.url).href;
 };
 </script>
 

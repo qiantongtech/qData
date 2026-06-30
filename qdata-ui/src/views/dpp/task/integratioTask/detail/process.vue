@@ -391,7 +391,7 @@ watch(
   { immediate: true, deep: true } // immediate 保证第一次也会触发
 );
 const getAssetsFile = (url) => {
-  return new URL(`/src/assets/dpp/etl/${url}`, import.meta.url).href;
+  return new URL(`/src/assets/images/dpp/etl/${url}`, import.meta.url).href;
 };
 defineExpose({ updateFlow });
 </script>

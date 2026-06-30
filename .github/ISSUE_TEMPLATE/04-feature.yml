@@ -1,0 +1,65 @@
+name: ✨ Feature Request
+description: Suggest a new feature or improvement for evaluation and planning
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please clearly describe the pain point, your desired solution, and optionally any alternatives or supporting materials.
+
+  - type: checkboxes
+    id: precheck
+    attributes:
+      label: Pre-submission checklist
+      options:
+        - label: I have searched existing issues, including closed ones, and found no duplicates
+          required: true
+
+  - type: textarea
+    id: pain
+    attributes:
+      label: Pain point / problem
+      placeholder: |
+        Scenario:
+        Current workflow:
+        Why it is inconvenient or costly:
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Desired solution
+      placeholder: |
+        What should be added or improved:
+        Expected usage or behavior:
+    validations:
+      required: true
+
+  - type: textarea
+    id: alt
+    attributes:
+      label: Alternatives (optional)
+      placeholder: "Is there a temporary workaround? Why is it not good enough?"
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context (optional)
+      description: Screenshots, mockups, links, comparisons, etc.
+      placeholder: "You can drag and drop images here."
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: participation
+    attributes:
+      label: Willingness to participate (optional)
+      options:
+        - label: I am willing to submit a PR
+          required: false
+        - label: I am willing to help test this
+          required: false

@@ -1,0 +1,9 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💼 Business Inquiry
+    url: https://community.qdata.tech/en/business/policy.html
+    about: Open-source license, commercial license, OEM, paid support, custom development, and more
+
+  - name: 🔒 Security Vulnerability
+    url: https://community.qdata.tech/assets/image/wechat-qr.jpg
+    about: Please do not disclose security issues in public issues. Contact us privately instead.

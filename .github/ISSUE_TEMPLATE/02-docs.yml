@@ -1,0 +1,56 @@
+name: 📚 Documentation Issue
+description: Report incorrect, outdated, unclear, or improvable documentation
+title: "[Docs] "
+labels: ["docs"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please provide the documentation URL/path, the current problematic content, and your suggested improvement.
+
+  - type: input
+    id: doc
+    attributes:
+      label: Documentation URL or path
+      placeholder: "Example: https://example.com or docs/example.md"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: Change type
+      options:
+        - Error / typo fix
+        - Content update
+        - New documentation
+        - Translation
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problematic content
+      description: Paste only the relevant problematic section instead of the entire page.
+      placeholder: "What is incorrect, outdated, or unclear in the current documentation?"
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested change
+      description: Provide the replacement text you suggest. The more directly usable, the better.
+      placeholder: "Suggested replacement: ..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Additional context (optional)
+      placeholder: "Reason, screenshots, reference links, etc."
+    validations:
+      required: false

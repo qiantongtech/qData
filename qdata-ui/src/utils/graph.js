@@ -1,23 +1,21 @@
 /*
- * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
- *
- * This file is part of qData Data Middle Platform (Open Source Edition).
- *
- * qData is licensed under Apache License 2.0 with additional qData terms.
- * You may use qData for commercial purposes, but you may not remove, hide,
- * modify, or replace the qData logo, copyright notices, license notices,
- * or attribution information without a separate commercial license.
- *
- * White-label use, OEM distribution, rebranding, or presenting qData as
- * another product requires separate commercial authorization from
- * Jiangsu Qiantong Technology Co., Ltd.
- *
- * Business License: https://community.qdata.tech/business/policy.html
- * See the LICENSE file in the project root for full license information.
+ * Copyright © 2025 Qiantong Technology Co., Ltd.
+ * qData Data Middle Platform (Open Source Edition)
+ *  *
+ * License:
+ * Released under the Apache License, Version 2.0.
+ * You may use, modify, and distribute this software for commercial purposes
+ * under the terms of the License.
+ *  *
+ * Special Notice:
+ * All derivative versions are strictly prohibited from modifying or removing
+ * the default system logo and copyright information.
+ * For brand customization, please apply for brand customization authorization via official channels.
+ *  *
+ * More information: https://qdata.qiantong.tech/business.html
  */
 
-import { i18n } from '@/plugins/vueI18n'
-
+import { i18n } from '@/plugins/vueI18n';
 import { Shape } from '@antv/x6';
 import { Keyboard } from '@antv/x6-plugin-keyboard'
 /**
@@ -194,12 +192,12 @@ export const typeList = [
 export const toolbar = [
   {
     id: "zoom-out",
-    icon: "toolbar (1).png",
+    icon: "icon-toolbar.png",
     tip:  i18n.global.t('common.graph.zoomOut'),
   },
   {
     id: "zoom-in",
-    icon: "toolbar (8).png",
+    icon: "icon-toolbar-seven.png",
     tip:  i18n.global.t('common.graph.zoomIn'),
   },
   // {
@@ -220,17 +218,17 @@ export const toolbar = [
   // },
   {
     id: "auto-fit",
-    icon: "toolbar (4).png",
+    icon: "icon-toolbar-three.png",
     tip:  i18n.global.t('common.graph.resetView'),
   },
   {
     id: "export",
-    icon: "toolbar (2).png",
+    icon: "icon-toolbar-one.png",
     tip:  i18n.global.t('common.button.export'),
   },
   {
     id: "reset",
-    icon: "toolbar (3).png",
+    icon: "icon-toolbar-two.png",
     tip:  i18n.global.t('common.button.reset'),
   },
 ];

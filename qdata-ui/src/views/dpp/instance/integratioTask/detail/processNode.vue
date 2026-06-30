@@ -398,7 +398,7 @@ onMounted(() => {
 });
 
 const getAssetsFile = (url) => {
-  return new URL(`/src/assets/dpp/etl/${url}`, import.meta.url).href;
+  return new URL(`/src/assets/images/dpp/etl/${url}`, import.meta.url).href;
 };
 defineExpose({ updateFlow, updateGraphNode });
 </script>

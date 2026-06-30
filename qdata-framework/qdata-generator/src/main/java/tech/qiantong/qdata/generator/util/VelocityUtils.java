@@ -200,6 +200,13 @@ public class VelocityUtils
         templates.add("vm/xml/mapper.xml.vm");
         templates.add("vm/sql/sql.vm");
         templates.add("vm/js/api.js.vm");
+        templates.add("vm/i18n/messages.properties.vm");
+        templates.add("vm/i18n/messages_zh_CN.properties.vm");
+        templates.add("vm/i18n/messages_en_US.properties.vm");
+        templates.add("vm/i18n/messages_ja_JP.properties.vm");
+        templates.add("vm/i18n/zh_CN.js.vm");
+        templates.add("vm/i18n/en_US.js.vm");
+        templates.add("vm/i18n/ja_JP.js.vm");
         if (GenConstants.TPL_CRUD.equals(tplCategory))
         {
             templates.add(useWebType + "/index.vue.vm");
@@ -263,6 +270,7 @@ public class VelocityUtils
         String javaPathApi = javaPath;
 
         String module = packageName.replaceFirst("^.*?\\.module\\.", "").replaceFirst("^[^.]+\\.", "").replace(".", "/");
+        String module1 = "qdata-module-"+module+"-biz";
         String module0 = "qdata-module-"+module;
         javaPath = module0 + "-biz/src/" + javaPath;
         javaPathApi = module0 + "-api/src/" + javaPathApi;
@@ -356,6 +364,37 @@ public class VelocityUtils
         else if (template.contains("componentTwo.vue.vm"))
         {
             fileName = StringUtils.format("{}/views/{}/{}/detail/componentTwo.vue", vuePath, javaPath.substring(javaPath.lastIndexOf("/") + 1), moduleName);
+        }
+        else if (template.contains("vm/i18n/messages.properties.vm"))
+        {
+            fileName = StringUtils.format("{}/src/main/resources/i18n/{}-messages.properties", module1, moduleName);
+        }
+        else if (template.contains("vm/i18n/messages_zh_CN.properties.vm"))
+        {
+            fileName = StringUtils.format("{}/src/main/resources/i18n/{}-messages_zh_CN.properties", module1, moduleName);
+        }
+        else if (template.contains("vm/i18n/messages_en_US.properties.vm"))
+        {
+            fileName = StringUtils.format("{}/src/main/resources/i18n/{}-messages_en_US.properties", module1, moduleName);
+        }
+        else if (template.contains("vm/i18n/messages_ja_JP.properties.vm"))
+        {
+            fileName = StringUtils.format("{}/src/main/resources/i18n/{}-messages_ja_JP.properties", module1, moduleName);
+        }
+        else if (template.contains("vm/i18n/zh_CN.js.vm"))
+        {
+           // fileName = StringUtils.format("{}/src/main/resources/i18n/{}-zh_CN.js", module1, moduleName);
+            fileName = StringUtils.format("{}/locales/zh-CN/{}/{}-zh_CN.js", vuePath, moduleName,businessName);
+        }
+        else if (template.contains("vm/i18n/en_US.js.vm"))
+        {
+            //fileName = StringUtils.format("{}/src/main/resources/i18n/{}-en_US.js", module1, moduleName);
+            fileName = StringUtils.format("{}/locales/en-US/{}/{}-en_US.js", vuePath, moduleName,businessName);
+        }
+        else if (template.contains("vm/i18n/ja_JP.js.vm"))
+        {
+            //fileName = StringUtils.format("{}/src/main/resources/i18n/{}-ja_JP.js", module1, moduleName);
+            fileName = StringUtils.format("{}/locales/ja-JP/{}/{}-ja_JP.js", vuePath, moduleName,businessName);
         }
         return fileName;
     }

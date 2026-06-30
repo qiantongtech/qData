@@ -68,12 +68,12 @@ public class ${ClassName}SaveReqVO extends BaseEntity {
 #if($column.isRequired == '1')
 #if($column.javaType == 'String' )
     @Schema(description = "${comment}", example = "")
-    @NotBlank(message = "${comment}不能为空")
-    @Size(max = 256, message = "${comment}长度不能超过256个字符")
+    @NotBlank(message = "{not.null}")
+    @Size(max = 256, message = "{length.not.valid}")
     private $column.javaType $column.javaField;
 #elseif($column.javaType == 'Long' || $column.javaType == 'Integer' || $column.javaType == 'Double' || $column.javaType == 'Date' || $column.javaType == 'Boolean')
     @Schema(description = "${comment}", example = "")
-    @NotNull(message = "${comment}不能为空")
+    @NotNull(message = "{not.null}")
     private $column.javaType $column.javaField;
 #else
     @Schema(description = "${comment}", example = "")
@@ -82,7 +82,7 @@ public class ${ClassName}SaveReqVO extends BaseEntity {
 #else
 #if($column.javaType == 'String' )
     @Schema(description = "${comment}", example = "")
-    @Size(max = 256, message = "${comment}长度不能超过256个字符")
+    @Size(max = 256, message = "{length.not.valid}")
     private $column.javaType $column.javaField;
 #else
     @Schema(description = "${comment}", example = "")

@@ -166,5 +166,53 @@ export default {
     cancel: 'キャンセル',
     enable: '有効',
     disable: '無効'
+  },
+  dm: {
+    tag:'数据分类',
+    subTable: '${subTable.functionName}',
+    title: {
+      add: '数据分类追加',
+      edit: '数据分类編集',
+      detail: '数据分类詳細',
+      import: '数据分类インポート'
+    },
+    placeholder: {
+      catId: '类目idを入力してください',
+      catCode: '类目编码を入力してください',
+      name: '分类名称を入力してください',
+      shortName: '分类名称缩写名を入力してください',
+      dataLevelId: '数据分级を入力してください',
+      priority: '任务优先级を入力してください',
+      description: '描述を入力してください',
+      validFlag: '是否有效を入力してください',
+      createTime: '创建时间を選択してください',
+      remark: '备注を入力してください',
+    },
+    column: {
+      id: 'ID',
+      catId: '类目id',
+      catCode: '类目编码',
+      name: '分类名称',
+      shortName: '分类名称缩写名',
+      dataLevelId: '数据分级',
+      priority: '任务优先级',
+      description: '描述',
+      validFlag: '是否有效',
+      delFlag: '删除标志',
+      createBy: '创建人',
+      creatorId: '创建人id',
+      createTime: '创建时间',
+      updateBy: '更新人',
+      updaterId: '更新人id',
+      updateTime: '更新时间',
+      remark: '备注',
+    },
+    validations: {
+    },
+    message: {
+      confirmDelete: '番号_idsを削除しますか？',
+      selectRecord: '最初に削除する${subTable.functionName}データを選択してください'
+    }
   }
+
 }

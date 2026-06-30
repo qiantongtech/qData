@@ -27,7 +27,7 @@
                 path: '${businessName}Detail',
                 component: () => import('@/views/${controllerPrefix}/${moduleName}/detail/index.vue'),
                 name: 'tree',
-                meta: { title: '${functionName}详情', activeMenu: '/${topModule}/${businessName}'  }
+                meta: { title: td('${controllerPrefix}.${moduleName}.title.detail'),  activeMenu: '/${topModule}/${businessName}'  }
             }
         ]
     }
@@ -59,21 +59,21 @@
           #if($column.pk)
             <el-col :span="8">
               <div class="infotop-row border-top">
-                <div class="infotop-row-lable">${comment}</div>
+                <div class="infotop-row-lable">{{td('${controllerPrefix}.${moduleName}.column.${javaField}')}}</div>
                 <div class="infotop-row-value">{{ ${businessName}Detail.${javaField} }}</div>
               </div>
             </el-col>
           #elseif($column.list && $column.htmlType == "datetime" )
             <el-col :span="8">
               <div class="infotop-row border-top">
-                <div class="infotop-row-lable">${comment}</div>
+                <div class="infotop-row-lable">{{td('${controllerPrefix}.${moduleName}.column.${javaField}')}}</div>
                 <div class="infotop-row-value">{{ parseTime(${businessName}Detail.${javaField}, '{y}-{m}-{d}') }}</div>
               </div>
             </el-col>
           #elseif($column.list && $column.htmlType == "imageUpload")
             <el-col :span="8">
               <div class="infotop-row border-top">
-                <div class="infotop-row-lable">${comment}</div>
+                <div class="infotop-row-lable">{{td('${controllerPrefix}.${moduleName}.column.${javaField}')}}</div>
                 <div class="infotop-row-value">
                   <image-preview :src="${businessName}Detail.${javaField}" :width="50" :height="50"/>
                 </div>
@@ -82,7 +82,7 @@
           #elseif($column.list && "" != $column.dictType)
             <el-col :span="8">
               <div class="infotop-row border-top">
-                <div class="infotop-row-lable">${comment}</div>
+                <div class="infotop-row-lable">{{td('${controllerPrefix}.${moduleName}.column.${javaField}')}}</div>
                 <div class="infotop-row-value">
                     <dict-tag :options="${column.dictType}" :value="${businessName}Detail.${javaField} "/>
                 </div>
@@ -91,7 +91,7 @@
           #elseif($column.list && "" != $javaField)
             <el-col :span="8">
               <div class="infotop-row border-top">
-                <div class="infotop-row-lable">${comment}</div>
+                <div class="infotop-row-lable">{{td('${controllerPrefix}.${moduleName}.column.${javaField}')}}</div>
                 <div class="infotop-row-value">
                   {{ ${businessName}Detail.${javaField} || '-' }}
                 </div>
@@ -106,10 +106,10 @@
 
     <div  class="pagecont-bottom">
       <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
-        <el-tab-pane label="组件一" name="1">
+        <el-tab-pane :label="td('common.display.componentOne')" name="1">
           <component-one ></component-one>
         </el-tab-pane>
-        <el-tab-pane label="组件二" name="2">
+        <el-tab-pane :label="td('common.display.componentTwo')" name="2">
           <component-two ></component-two>
         </el-tab-pane>
       </el-tabs>
@@ -120,6 +120,8 @@
 </template>
 
 <script setup name="${BusinessName}">
+import useDefaultLang from "@/composables/useDefaultLang";
+const { td } = useDefaultLang();
 import {get${BusinessName}} from "@/api/";
 import {useRoute} from 'vue-router';
 

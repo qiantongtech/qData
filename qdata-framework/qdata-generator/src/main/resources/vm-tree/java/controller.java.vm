@@ -43,7 +43,7 @@ import tech.qiantong.qdata.common.core.page.TableDataInfo;
 #end
 
 /**
- * ${functionName}Controller
+ * ${functionName} Controller
  *
  * @author ${author}
  * @date ${datetime}
@@ -73,7 +73,7 @@ public class ${ClassName}Controller extends BaseController {
 #end
 
     /**
-     * 导出${functionName}列表
+     * Export ${functionName} List
      */
     @PreAuthorize("@ss.hasPermi('${permissionPrefix}:export')")
     @Log(title = "${functionName}", businessType = BusinessType.EXPORT)

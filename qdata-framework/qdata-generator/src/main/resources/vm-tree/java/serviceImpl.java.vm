@@ -39,7 +39,7 @@ import ${packageName}.service.I${ClassName}Service;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * ${functionName}Service业务层处理
+ * ${functionName} Service
  *
  * @author ${author}
  * @date ${datetime}

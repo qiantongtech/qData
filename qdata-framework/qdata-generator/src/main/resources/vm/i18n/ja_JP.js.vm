@@ -1,0 +1,41 @@
+export default {
+  ${moduleName}: {
+    tag:'${functionName}',
+    subTable: '${subTable.functionName}',
+    title: {
+      add: '${functionName}追加',
+      edit: '${functionName}編集',
+      detail: '${functionName}詳細',
+      import: '${functionName}インポート'
+    },
+    placeholder: {
+#foreach ($column in $columns)
+#set($colComment = $column.columnComment)
+#if($colComment.length() > 0)
+#if($column.isQuery == '1' || $column.isEdit == '1')
+      ${column.javaField}: '#if($column.htmlType == "input" || $column.htmlType == "textarea")${colComment}を入力してください#else${colComment}を選択してください#end',
+#end
+#end
+#end
+    },
+    column: {
+#foreach ($column in $columns)
+#set($colComment = $column.columnComment)
+#if($colComment.length() > 0)
+      ${column.javaField}: '${colComment}',
+#end
+#end
+    },
+    validations: {
+#foreach ($column in $columns)
+#if($column.isRequired == '1')
+      ${column.javaField}Required: '${column.columnComment}は必須です',
+#end
+#end
+    },
+    message: {
+      confirmDelete: '番号_${pkColumn.javaField}sを削除しますか？',
+      selectRecord: '最初に削除する${subTable.functionName}データを選択してください'
+    }
+  }
+}

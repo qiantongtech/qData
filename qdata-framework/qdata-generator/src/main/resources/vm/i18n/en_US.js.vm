@@ -1,0 +1,41 @@
+export default {
+  ${moduleName}: {
+    tag:'${functionName}',
+    subTable: '${subTable.functionName}',
+    title: {
+      add: 'Add ${functionName}',
+      edit: 'Edit ${functionName}',
+      detail: '${functionName} Detail',
+      import: '${functionName} Import'
+    },
+    placeholder: {
+#foreach ($column in $columns)
+#set($colComment = $column.columnComment)
+#if($colComment.length() > 0)
+#if($column.isQuery == '1' || $column.isEdit == '1')
+      ${column.javaField}: '#if($column.htmlType == "input" || $column.htmlType == "textarea")Please enter ${colComment}#elsePlease select ${colComment}#end',
+#end
+#end
+#end
+    },
+    column: {
+#foreach ($column in $columns)
+#set($colComment = $column.columnComment)
+#if($colComment.length() > 0)
+      ${column.javaField}: '${colComment}',
+#end
+#end
+    },
+    validations: {
+#foreach ($column in $columns)
+#if($column.isRequired == '1')
+      ${column.javaField}Required: '${column.columnComment} is required',
+#end
+#end
+    },
+    message: {
+      confirmDelete: 'Are you sure to delete _${pkColumn.javaField}s?',
+      selectRecord: 'Please select the ${subTable.functionName} data to delete first'
+    }
+  }
+}

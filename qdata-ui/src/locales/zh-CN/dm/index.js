@@ -167,5 +167,54 @@ export default {
     cancel: '取消',
     enable: '启用',
     disable: '禁用'
+  },
+  dm: {
+    tag:'数据分类',
+    subTable: '${subTable.functionName}',
+    title: {
+      add: '新增数据分类',
+      edit: '修改数据分类',
+      detail: '数据分类详情',
+      import: '数据分类导入'
+    },
+    placeholder: {
+      catId: '请输入类目id',
+      catCode: '请输入类目编码',
+      name: '请输入分类名称',
+      shortName: '请输入分类名称缩写名',
+      dataLevelId: '请输入数据分级',
+      priority: '请输入任务优先级',
+      description: '请输入描述',
+      validFlag: '请输入是否有效',
+      createTime: '请选择创建时间',
+      remark: '请输入备注',
+    },
+    column: {
+      id: 'ID',
+      catId: '类目id',
+      catCode: '类目编码',
+      name: '分类名称',
+      shortName: '分类名称缩写名',
+      dataLevelId: '数据分级',
+      priority: '任务优先级',
+      description: '描述',
+      validFlag: '是否有效',
+      delFlag: '删除标志',
+      createBy: '创建人',
+      creatorId: '创建人id',
+      createTime: '创建时间',
+      updateBy: '更新人',
+      updaterId: '更新人id',
+      updateTime: '更新时间',
+      remark: '备注',
+    },
+    validations: {
+    },
+    message: {
+      confirmDelete: '是否确认删除编号为_ids的数据项？',
+      selectRecord: '请先选择要删除的${subTable.functionName}数据'
+
+    }
   }
+
 }

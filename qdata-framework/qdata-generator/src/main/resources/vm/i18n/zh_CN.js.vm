@@ -1,0 +1,42 @@
+export default {
+  ${moduleName}: {
+    tag:'${functionName}',
+    subTable: '${subTable.functionName}',
+    title: {
+      add: '新增${functionName}',
+      edit: '修改${functionName}',
+      detail: '${functionName}详情',
+      import: '${functionName}导入'
+    },
+    placeholder: {
+#foreach ($column in $columns)
+#set($colComment = $column.columnComment)
+#if($colComment.length() > 0)
+#if($column.isQuery == '1' || $column.isEdit == '1')
+      ${column.javaField}: '#if($column.htmlType == "input" || $column.htmlType == "textarea")请输入${colComment}#else请选择${colComment}#end',
+#end
+#end
+#end
+    },
+    column: {
+#foreach ($column in $columns)
+#set($colComment = $column.columnComment)
+#if($colComment.length() > 0)
+      ${column.javaField}: '${colComment}',
+#end
+#end
+    },
+    validations: {
+#foreach ($column in $columns)
+#if($column.isRequired == '1')
+      ${column.javaField}Required: '${column.columnComment}不能为空',
+#end
+#end
+    },
+    message: {
+      confirmDelete: '是否确认删除编号为_${pkColumn.javaField}s的数据项？',
+      selectRecord: '请先选择要删除的${subTable.functionName}数据'
+
+    }
+  }
+}

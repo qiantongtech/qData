@@ -33,14 +33,14 @@
       <el-form-item label="${comment}" prop="${column.javaField}">
         <el-input
           v-model="queryParams.${column.javaField}"
-          placeholder="请输入${comment}"
+          :placeholder="td('${moduleName}.input.${column.javaField}')"
           clearable
           @keyup.enter="handleQuery"
         />
       </el-form-item>
 #elseif(($column.htmlType == "select" || $column.htmlType == "radio") && "" != $dictType)
       <el-form-item label="${comment}" prop="${column.javaField}">
-        <el-select v-model="queryParams.${column.javaField}" placeholder="请选择${comment}" clearable>
+        <el-select v-model="queryParams.${column.javaField}" :placeholder="td('${moduleName}.select.${column.javaField}')" clearable>
           <el-option
             v-for="dict in ${dictType}"
             :key="dict.value"
@@ -51,8 +51,8 @@
       </el-form-item>
 #elseif(($column.htmlType == "select" || $column.htmlType == "radio") && $dictType)
       <el-form-item label="${comment}" prop="${column.javaField}">
-        <el-select v-model="queryParams.${column.javaField}" placeholder="请选择${comment}" clearable>
-          <el-option label="请选择字典生成" value="" />
+        <el-select v-model="queryParams.${column.javaField}" :placeholder="td('${moduleName}.select.${column.javaField}')" clearable>
+          <el-option label="请选择" value="" />
         </el-select>
       </el-form-item>
 #elseif($column.htmlType == "datetime" && $column.queryType != "BETWEEN")
@@ -61,7 +61,7 @@
           v-model="queryParams.${column.javaField}"
           type="date"
           value-format="YYYY-MM-DD"
-          placeholder="请选择${comment}">
+          :placeholder="td('${moduleName}.select.${column.javaField}')">
         </el-date-picker>
       </el-form-item>
 #elseif($column.htmlType == "datetime" && $column.queryType == "BETWEEN")
@@ -71,16 +71,16 @@
           value-format="YYYY-MM-DD"
           type="daterange"
           range-separator="-"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          start-::placeholder="td('.pleaseSelect') + '开始日期'"
+          end-::placeholder="td('.pleaseSelect') + '结束日期'"
         ></el-date-picker>
       </el-form-item>
 #end
 #end
 #end
       <el-form-item>
-        <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
-        <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="Search" @click="handleQuery">td('button.query')</el-button>
+        <el-button icon="Refresh" @click="resetQuery">td('button.reset')</el-button>
       </el-form-item>
     </el-form>
 
@@ -92,7 +92,7 @@
           icon="Plus"
           @click="handleAdd"
           v-hasPermi="['${moduleName}:${businessName}:add']"
-        >新增</el-button>
+        >td('button.add')</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -102,7 +102,7 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['${moduleName}:${businessName}:edit']"
-        >修改</el-button>
+        >td('button.update')</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -112,7 +112,7 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['${moduleName}:${businessName}:remove']"
-        >删除</el-button>
+        >td('button.delete')</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -121,7 +121,7 @@
           icon="Download"
           @click="handleExport"
           v-hasPermi="['${moduleName}:${businessName}:export']"
-        >导出</el-button>
+        >td('button.export')</el-button>
       </el-col>
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -164,10 +164,10 @@
       <el-table-column label="${comment}" align="center" prop="${javaField}" />
 #end
 #end
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column :label="td('texts.operation')" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
-          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['${moduleName}:${businessName}:edit']">修改</el-button>
-          <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['${moduleName}:${businessName}:remove']">删除</el-button>
+          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['${moduleName}:${businessName}:edit']">td('button.update')</el-button>
+          <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['${moduleName}:${businessName}:remove']">td('button.delete')</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -180,7 +180,7 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改${functionName}对话框 -->
+    <!-- {{ td('.pleaseEnter') + '内容' }} -->
     <el-dialog :title="title" v-model="open" width="500px" append-to-body>
       <el-form ref="${businessName}Ref" :model="form" :rules="rules" label-width="80px">
 #foreach($column in $columns)
@@ -196,7 +196,7 @@
 #set($dictType=$column.dictType)
 #if($column.htmlType == "input")
         <el-form-item label="${comment}" prop="${field}">
-          <el-input v-model="form.${field}" placeholder="请输入${comment}" />
+          <el-input v-model="form.${field}" :placeholder="td('${moduleName}.input.${column.javaField}')" />
         </el-form-item>
 #elseif($column.htmlType == "imageUpload")
         <el-form-item label="${comment}" prop="${field}">
@@ -212,7 +212,7 @@
         </el-form-item>
 #elseif($column.htmlType == "select" && "" != $dictType)
         <el-form-item label="${comment}" prop="${field}">
-          <el-select v-model="form.${field}" placeholder="请选择${comment}">
+          <el-select v-model="form.${field}" :placeholder="td('${moduleName}.select.${column.javaField}')">
             <el-option
               v-for="dict in ${dictType}"
               :key="dict.value"
@@ -227,8 +227,8 @@
         </el-form-item>
 #elseif($column.htmlType == "select" && $dictType)
         <el-form-item label="${comment}" prop="${field}">
-          <el-select v-model="form.${field}" placeholder="请选择${comment}">
-            <el-option label="请选择字典生成" value="" />
+          <el-select v-model="form.${field}" :placeholder="td('${moduleName}.select.${column.javaField}')">
+            <el-option label="请选择" value="" />
           </el-select>
         </el-form-item>
 #elseif($column.htmlType == "checkbox" && "" != $dictType)
@@ -245,7 +245,7 @@
 #elseif($column.htmlType == "checkbox" && $dictType)
         <el-form-item label="${comment}" prop="${field}">
           <el-checkbox-group v-model="form.${field}">
-            <el-checkbox>请选择字典生成</el-checkbox>
+            <el-checkbox>td('.pleaseSelect')</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
 #elseif($column.htmlType == "radio" && "" != $dictType)
@@ -265,7 +265,7 @@
 #elseif($column.htmlType == "radio" && $dictType)
         <el-form-item label="${comment}" prop="${field}">
           <el-radio-group v-model="form.${field}">
-            <el-radio label="1">请选择字典生成</el-radio>
+            <el-radio label="1">td('.pleaseSelect')</el-radio>
           </el-radio-group>
         </el-form-item>
 #elseif($column.htmlType == "datetime")
@@ -274,12 +274,12 @@
             v-model="form.${field}"
             type="date"
             value-format="YYYY-MM-DD"
-            placeholder="请选择${comment}">
+            :placeholder="td('${moduleName}.select.${column.javaField}')">
           </el-date-picker>
         </el-form-item>
 #elseif($column.htmlType == "textarea")
         <el-form-item label="${comment}" prop="${field}">
-          <el-input v-model="form.${field}" type="textarea" placeholder="请输入内容" />
+          <el-input v-model="form.${field}" type="textarea" ::placeholder="td('.pleaseEnter') + '内容'" />
         </el-form-item>
 #end
 #end
@@ -292,12 +292,12 @@
             <el-button type="primary" icon="Plus" @click="handleAdd${subClassName}">添加</el-button>
           </el-col>
           <el-col :span="1.5">
-            <el-button type="danger" icon="Delete" @click="handleDelete${subClassName}">删除</el-button>
+            <el-button type="danger" icon="Delete" @click="handleDelete${subClassName}">td('button.delete')</el-button>
           </el-col>
         </el-row>
         <el-table :data="${subclassName}List" :row-class-name="row${subClassName}Index" @selection-change="handle${subClassName}SelectionChange" ref="${subclassName}">
           <el-table-column type="selection" width="50" align="center" />
-          <el-table-column label="序号" align="center" prop="index" width="50"/>
+          <el-table-column :label="td('display.index')" align="center" prop="index" width="50"/>
 #foreach($column in $subTable.columns)
 #set($javaField=$column.javaField)
 #set($parentheseIndex=$column.columnComment.indexOf("（"))
@@ -341,7 +341,7 @@
           <el-table-column label="$comment" prop="${javaField}" width="150">
             <template #default="scope">
               <el-select v-model="scope.row.$javaField" placeholder="请选择$comment">
-                <el-option label="请选择字典生成" value="" />
+                <el-option label="请选择" value="" />
               </el-select>
             </template>
           </el-table-column>
@@ -352,8 +352,8 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button type="primary" @click="submitForm">确 定</el-button>
-          <el-button @click="cancel">取 消</el-button>
+          <el-button type="primary" @click="submitForm">td('button.confirm')</el-button>
+          <el-button @click="cancel">td('button.cancel')</el-button>
         </div>
       </template>
     </el-dialog>
@@ -361,6 +361,7 @@
 </template>
 
 <script setup name="${BusinessName}">
+import useDefaultLang from "@/composables/useDefaultLang";const { td } = useDefaultLang();
 import {get${BusinessName}, list${BusinessName}} from "@/api/";
 
 const { proxy } = getCurrentInstance();
@@ -412,7 +413,7 @@ const data = reactive({
 #set($comment=$column.columnComment)
 #end
     $column.javaField: [
-      { required: true, message: "$comment不能为空", trigger: #if($column.htmlType == "select" || $column.htmlType == "radio")"change"#else"blur"#end }
+      { required: true, message: "td('message.required')", trigger: #if($column.htmlType == "select" || $column.htmlType == "radio")"change"#else"blur"#end }
     ]#if($foreach.count != $columns.size()),#end
 #end
 #end
@@ -534,13 +535,13 @@ function submitForm() {
 #end
       if (form.value.${pkColumn.javaField} != null) {
         update${BusinessName}(form.value).then(response => {
-          proxy.#[[$modal]]#.msgSuccess("修改成功");
+          proxy.#[[$modal]]#.msgSuccess(td('message.editSuccess'));
           open.value = false;
           getList();
         });
       } else {
         add${BusinessName}(form.value).then(response => {
-          proxy.#[[$modal]]#.msgSuccess("新增成功");
+          proxy.#[[$modal]]#.msgSuccess(td('message.addSuccess'));
           open.value = false;
           getList();
         });
@@ -556,7 +557,7 @@ function handleDelete(row) {
     return del${BusinessName}(_${pkColumn.javaField}s);
   }).then(() => {
     getList();
-    proxy.#[[$modal]]#.msgSuccess("删除成功");
+    proxy.#[[$modal]]#.msgSuccess(td('message.deleteSuccess'));
   }).catch(() => {});
 }
 

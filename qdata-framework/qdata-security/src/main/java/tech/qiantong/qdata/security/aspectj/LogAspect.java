@@ -39,6 +39,7 @@ import tech.qiantong.qdata.common.enums.HttpMethod;
 import tech.qiantong.qdata.common.filter.PropertyPreExcludeFilter;
 import tech.qiantong.qdata.common.utils.SecurityUtils;
 import tech.qiantong.qdata.common.utils.ServletUtils;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.ip.IpUtils;
 import tech.qiantong.qdata.module.system.domain.SysOperLog;
@@ -144,7 +145,7 @@ public class LogAspect
         catch (Exception exp)
         {
             // 记录本地异常日志
-            log.error("异常信息:{}", exp.getMessage());
+            log.error(MessageUtils.messageEn("log.operation.exception"), exp.getMessage());
             exp.printStackTrace();
         }
         finally
@@ -165,7 +166,7 @@ public class LogAspect
         // 设置action动作
         operLog.setBusinessType(log.businessType().ordinal());
         // 设置标题
-        operLog.setTitle(log.title());
+        operLog.setTitle(log.title().startsWith("log.op.title.") ? MessageUtils.messageEn(log.title()) : log.title());
         // 设置操作人类别
         operLog.setOperatorType(log.operatorType().ordinal());
         // 是否需要保存request，参数和值

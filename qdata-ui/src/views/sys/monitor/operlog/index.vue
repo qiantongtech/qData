@@ -85,7 +85,7 @@
             <el-table-column :label="td('sys.monitor.operlog.systemModule')" align="center" prop="title" :show-overflow-tooltip="{ effect: 'light' }" />
             <el-table-column :label="td('sys.monitor.operlog.operType')" align="center" prop="businessType">
                <template #default="scope">
-                  <dict-tag :options="sys_oper_type" :value="scope.row.businessType" />
+                  <dict-tag :options="enSysOperType" :value="scope.row.businessType" />
                </template>
             </el-table-column>
             <el-table-column :label="td('sys.monitor.operlog.operPerson')" align="center" width="110" prop="operName"
@@ -95,7 +95,7 @@
                :show-overflow-tooltip="{ effect: 'light' }" />
             <el-table-column :label="td('sys.monitor.operlog.operStatus')" align="center" prop="status">
                <template #default="scope">
-                  <dict-tag :options="sys_common_status" :value="scope.row.status" />
+                  <dict-tag :options="enSysCommonStatus" :value="scope.row.status" />
                </template>
             </el-table-column>
             <el-table-column :label="td('sys.monitor.operlog.operDate')" align="center" prop="operTime" width="180" sortable="custom"
@@ -210,10 +210,26 @@
 <script setup name="Operlog">
 import { list, delOperlog, cleanOperlog } from "@/api/system/monitor/operlog.js";
 import useDefaultLang from "@/composables/useDefaultLang";
+import enDict from "@/locales/en-US/dict/index.js";
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { sys_oper_type, sys_common_status } = proxy.useDict("sys_oper_type", "sys_common_status");
+
+/** 始终使用英文的 dict 标签选项 */
+const enSysOperType = computed(() => {
+  return (sys_oper_type.value || []).map(item => ({
+    ...item,
+    label: enDict.sys_oper_type?.[item.value] ?? item.label
+  }));
+});
+
+const enSysCommonStatus = computed(() => {
+  return (sys_common_status.value || []).map(item => ({
+    ...item,
+    label: enDict.sys_common_status?.[item.value] ?? item.label
+  }));
+});
 
 const operlogList = ref([]);
 const open = ref(false);

@@ -57,7 +57,7 @@ public class GlobalExceptionHandler
     public AjaxResult handleAccessDeniedException(AccessDeniedException e, HttpServletRequest request)
     {
         String requestURI = request.getRequestURI();
-        log.error("请求地址'{}',权限校验失败,异常:{}", requestURI, e.getMessage());
+        log.error(MessageUtils.messageEn("log.exception.access.denied"), requestURI, e.getMessage());
         String message = MessageUtils.messageWithFallback("sys.error", "没有权限，请联系管理员授权");
         return AjaxResult.error(HttpStatus.FORBIDDEN, message);
     }
@@ -70,7 +70,7 @@ public class GlobalExceptionHandler
             HttpServletRequest request)
     {
         String requestURI = request.getRequestURI();
-        log.error("请求地址'{}',不支持'{}'请求", requestURI, e.getMethod());
+        log.error(MessageUtils.messageEn("log.exception.method.not.supported"), requestURI, e.getMethod());
         String message = StringUtils.isNotEmpty(e.getMessage()) ? e.getMessage() :
                 MessageUtils.messageWithFallback("sys.error.method", e.getMessage());
         return AjaxResult.error(message);
@@ -97,8 +97,9 @@ public class GlobalExceptionHandler
     public AjaxResult handleMissingPathVariableException(MissingPathVariableException e, HttpServletRequest request)
     {
         String requestURI = request.getRequestURI();
-        log.error("请求路径中缺少必需的路径变量'{}',发生系统异常.", requestURI, e);
-        String message = StringUtils.isNotEmpty(e.getVariableName()) ? String.format("请求路径中缺少必需的路径变量[%s]", e.getVariableName())
+        String variableName = e.getVariableName();
+        log.error(MessageUtils.messageEn("log.exception.path.variable.missing"), requestURI, e);
+        String message = StringUtils.isNotEmpty(variableName) ? MessageUtils.messageWithFallback("sys.error.path.missing", String.format(MessageUtils.message("log.exception.path.variable.missing"), variableName))
                 : MessageUtils.messageWithFallback("sys.error.path.missing", String.format("请求路径中缺少必需的路径变量[%s]", e.getVariableName()));
         return AjaxResult.error(message);
     }
@@ -115,7 +116,7 @@ public class GlobalExceptionHandler
         {
             value = EscapeUtil.clean(value);
         }
-        log.error("请求参数类型不匹配'{}',发生系统异常.", requestURI, e);
+        log.error(MessageUtils.message("log.exception.param.type.mismatch"), requestURI, e);
         String tips = String.format("请求参数类型不匹配，参数[%s]要求类型为：'%s'，但输入值为：'%s'", e.getName(), e.getRequiredType().getName(), value);
         String message = StringUtils.isNotEmpty(e.getName()) ? tips :
                 MessageUtils.messageWithFallback("sys.error.param.type", tips);
@@ -129,7 +130,7 @@ public class GlobalExceptionHandler
     public AjaxResult handleRuntimeException(RuntimeException e, HttpServletRequest request)
     {
         String requestURI = request.getRequestURI();
-        log.error("请求地址'{}',发生未知异常.", requestURI, e);
+        log.error(MessageUtils.message("log.exception.unknown"), requestURI, e);
         String message = StringUtils.isNotEmpty(e.getMessage()) ? e.getMessage() :
                 MessageUtils.messageWithFallback("sys.error.unknown", e.getMessage());
         return AjaxResult.error(message);
@@ -142,7 +143,7 @@ public class GlobalExceptionHandler
     public AjaxResult handleException(Exception e, HttpServletRequest request)
     {
         String requestURI = request.getRequestURI();
-        log.error("请求地址'{}',发生系统异常.", requestURI, e);
+        log.error(MessageUtils.message("log.exception.system"), requestURI, e);
         String message = StringUtils.isNotEmpty(e.getMessage()) ? e.getMessage() :
                 MessageUtils.messageWithFallback("sys.error", e.getMessage());
         return AjaxResult.error(message);

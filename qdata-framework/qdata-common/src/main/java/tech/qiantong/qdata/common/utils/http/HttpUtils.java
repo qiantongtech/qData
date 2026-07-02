@@ -21,6 +21,7 @@ package tech.qiantong.qdata.common.utils.http;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tech.qiantong.qdata.common.constant.Constants;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 
 import javax.net.ssl.*;
@@ -96,19 +97,19 @@ public class HttpUtils
         }
         catch (ConnectException e)
         {
-            log.error("调用HttpUtils.sendGet ConnectException, url=" + url + ",param=" + param, e);
+            log.error(MessageUtils.messageEn("log.http.connect.exception"), url, param, e);
         }
         catch (SocketTimeoutException e)
         {
-            log.error("调用HttpUtils.sendGet SocketTimeoutException, url=" + url + ",param=" + param, e);
+            log.error(MessageUtils.messageEn("log.http.socket.timeout"), url, param, e);
         }
         catch (IOException e)
         {
-            log.error("调用HttpUtils.sendGet IOException, url=" + url + ",param=" + param, e);
+            log.error(MessageUtils.message("log.http.io.exception"), url, param, e);
         }
         catch (Exception e)
         {
-            log.error("调用HttpsUtil.sendGet Exception, url=" + url + ",param=" + param, e);
+            log.error(MessageUtils.message("log.http.unknown.exception"), url, param, e);
         }
         finally
         {
@@ -121,7 +122,7 @@ public class HttpUtils
             }
             catch (Exception ex)
             {
-                log.error("调用in.close Exception, url=" + url + ",param=" + param, ex);
+                log.error(MessageUtils.message("log.http.close.exception"), url, param, ex);
             }
         }
         return result.toString();
@@ -164,19 +165,19 @@ public class HttpUtils
         }
         catch (ConnectException e)
         {
-            log.error("调用HttpUtils.sendPost ConnectException, url=" + url + ",param=" + param, e);
+            log.error(MessageUtils.message("log.http.post.connect.exception"), url, param, e);
         }
         catch (SocketTimeoutException e)
         {
-            log.error("调用HttpUtils.sendPost SocketTimeoutException, url=" + url + ",param=" + param, e);
+            log.error(MessageUtils.message("log.http.post.socket.timeout"), url, param, e);
         }
         catch (IOException e)
         {
-            log.error("调用HttpUtils.sendPost IOException, url=" + url + ",param=" + param, e);
+            log.error(MessageUtils.message("log.http.post.io.exception"), url, param, e);
         }
         catch (Exception e)
         {
-            log.error("调用HttpsUtil.sendPost Exception, url=" + url + ",param=" + param, e);
+            log.error(MessageUtils.message("log.http.post.unknown.exception"), url, param, e);
         }
         finally
         {
@@ -193,7 +194,7 @@ public class HttpUtils
             }
             catch (IOException ex)
             {
-                log.error("调用in.close Exception, url=" + url + ",param=" + param, ex);
+                log.error(MessageUtils.message("log.http.close.exception"), url, param, ex);
             }
         }
         return result.toString();

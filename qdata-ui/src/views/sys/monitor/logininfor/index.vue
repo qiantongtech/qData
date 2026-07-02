@@ -130,7 +130,7 @@
             <el-table-column :label="td('sys.monitor.logininfor.browser')" align="center" prop="browser" :show-overflow-tooltip="true" />
             <el-table-column :label="td('sys.monitor.logininfor.loginStatus')" align="center" prop="status">
                <template #default="scope">
-                  <dict-tag :options="sys_common_status" :value="scope.row.status" />
+                  <dict-tag :options="enSysCommonStatus" :value="scope.row.status" />
                </template>
             </el-table-column>
             <el-table-column :label="td('common.texts.description')" align="center" prop="msg" :show-overflow-tooltip="true" />
@@ -155,10 +155,18 @@
 <script setup name="Logininfor">
 import { list, delLogininfor, cleanLogininfor, unlockLogininfor } from "@/api/system/monitor/logininfor.js";
 import useDefaultLang from "@/composables/useDefaultLang";
+import enDict from "@/locales/en-US/dict/index.js";
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { sys_common_status } = proxy.useDict("sys_common_status");
+
+const enSysCommonStatus = computed(() => {
+  return (sys_common_status.value || []).map(item => ({
+    ...item,
+    label: enDict.sys_common_status?.[item.value] ?? item.label
+  }));
+});
 
 const logininforList = ref([]);
 const loading = ref(true);

@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import tech.qiantong.qdata.common.constant.Constants;
 import tech.qiantong.qdata.common.constant.ScheduleConstants;
 import tech.qiantong.qdata.common.utils.ExceptionUtil;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.bean.BeanUtils;
 import tech.qiantong.qdata.common.utils.spring.SpringUtils;
@@ -65,7 +66,7 @@ public abstract class AbstractQuartzJob implements Job
         }
         catch (Exception e)
         {
-            log.error("任务执行异常  - ：", e);
+            log.error(MessageUtils.messageEn("log.task.execution.error"), e.getMessage());
             after(context, sysJob, e);
         }
     }
@@ -99,7 +100,7 @@ public abstract class AbstractQuartzJob implements Job
         sysJobLog.setStartTime(startTime);
         sysJobLog.setStopTime(new Date());
         long runMs = sysJobLog.getStopTime().getTime() - sysJobLog.getStartTime().getTime();
-        sysJobLog.setJobMessage(sysJobLog.getJobName() + " 总共耗时：" + runMs + "毫秒");
+        sysJobLog.setJobMessage(MessageUtils.messageEn("log.task.duration", sysJobLog.getJobName(), runMs));
         if (e != null)
         {
             sysJobLog.setStatus(Constants.FAIL);

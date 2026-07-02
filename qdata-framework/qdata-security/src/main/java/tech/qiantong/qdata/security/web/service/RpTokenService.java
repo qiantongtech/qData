@@ -31,6 +31,7 @@ import tech.qiantong.qdata.common.constant.CacheConstants;
 import tech.qiantong.qdata.common.constant.Constants;
 import tech.qiantong.qdata.common.core.domain.model.LoginUser;
 import tech.qiantong.qdata.common.core.redis.RedisCache;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.ServletUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.ip.AddressUtils;
@@ -95,7 +96,7 @@ public class RpTokenService
             }
             catch (Exception e)
             {
-                log.error("获取用户信息异常'{}'", e.getMessage());
+                log.error(MessageUtils.messageEn("log.token.user.info.error"), e.getMessage());
             }
         }
         return null;

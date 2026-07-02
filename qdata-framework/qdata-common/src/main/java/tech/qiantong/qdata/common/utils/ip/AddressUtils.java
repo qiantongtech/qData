@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tech.qiantong.qdata.common.config.AniviaConfig;
 import tech.qiantong.qdata.common.constant.Constants;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.http.HttpUtils;
 
@@ -47,7 +48,7 @@ public class AddressUtils
         // 内网不查询
         if (IpUtils.internalIp(ip))
         {
-            return "内网IP";
+            return MessageUtils.messageEn("log.address.internal.ip");
         }
         if (AniviaConfig.isAddressEnabled())
         {
@@ -56,7 +57,7 @@ public class AddressUtils
                 String rspStr = HttpUtils.sendGet(IP_URL, "ip=" + ip + "&json=true", Constants.GBK);
                 if (StringUtils.isEmpty(rspStr))
                 {
-                    log.error("获取地理位置异常 {}", ip);
+                    log.error(MessageUtils.messageEn("log.address.geo.exception"), ip);
                     return UNKNOWN;
                 }
                 JSONObject obj = JSON.parseObject(rspStr);
@@ -66,7 +67,7 @@ public class AddressUtils
             }
             catch (Exception e)
             {
-                log.error("获取地理位置异常 {}", ip);
+                log.error(MessageUtils.messageEn("log.address.geo.exception"), ip);
             }
         }
         return UNKNOWN;

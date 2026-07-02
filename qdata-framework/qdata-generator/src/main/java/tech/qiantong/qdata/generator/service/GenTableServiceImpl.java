@@ -34,6 +34,7 @@ import tech.qiantong.qdata.common.constant.Constants;
 import tech.qiantong.qdata.common.constant.GenConstants;
 import tech.qiantong.qdata.common.core.domain.entity.SysDictType;
 import tech.qiantong.qdata.common.core.text.CharsetKit;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.exception.ServiceException;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.generator.domain.GenTable;
@@ -442,7 +443,7 @@ public class GenTableServiceImpl implements IGenTableService
             }
             catch (IOException e)
             {
-                log.error("渲染模板失败，表名：" + table.getTableName(), e);
+                log.error(MessageUtils.messageEn("log.template.render.error", table.getTableName()), e);
             }
         }
     }
@@ -477,7 +478,7 @@ public class GenTableServiceImpl implements IGenTableService
             }
             catch (IOException e)
             {
-                log.error("渲染模板失败，字典名：" + dictType.getDictType(), e);
+                log.error(MessageUtils.message("log.template.render.dict.error", dictType.getDictType()), e);
             }
         }
     }

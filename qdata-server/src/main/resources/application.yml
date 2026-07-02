@@ -88,7 +88,7 @@ spring:
     # ds-messages:     DS模块专属（数据服务/API等）
     # mc-messages:     MC模块专属（元数据采集/调度等）
     # quality-messages: 数据质量模块专属
-    basename: i18n/messages,i18n/system-messages,i18n/dm-messages,i18n/dg-messages,i18n/att-messages,i18n/da-messages,i18n/dp-messages,i18n/dpp-messages,i18n/ds-messages,i18n/mc-messages,i18n/quality-messages
+    basename: i18n/messages,i18n/system-messages,i18n/dm-messages,i18n/dg-messages,i18n/att-messages,i18n/da-messages,i18n/dp-messages,i18n/dpp-messages,i18n/ds-messages,i18n/mc-messages,i18n/quality-messages,i18n/log-messages
     encoding: UTF-8
   profiles:
     active: dev  # 默认激活的环境，可以在启动时覆盖

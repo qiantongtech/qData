@@ -53,6 +53,19 @@ public class MessageUtils
     }
 
     /**
+     * 根据消息键和参数获取英文消息，忽略当前请求语言设置
+     *
+     * @param code 消息键
+     * @param args 参数
+     * @return 英文翻译值
+     */
+    public static String messageEn(String code, Object... args)
+    {
+        MessageSource messageSource = SpringUtils.getBean(MessageSource.class);
+        return messageSource.getMessage(code, args, Locale.US);
+    }
+
+    /**
      * 根据消息键获取消息，支持兜底链：
      *   当前语言 → 英文 → 简体中文 → defaultMessage → 硬编码兜底
      *
@@ -74,9 +87,9 @@ public class MessageUtils
         }
 
         // 2. 尝试英文
-        if (!Locale.ENGLISH.getLanguage().equals(currentLocale.getLanguage()))
+        if (!Locale.US.getLanguage().equals(currentLocale.getLanguage()))
         {
-            msg = resolveMessage(messageSource, code, args, Locale.ENGLISH);
+            msg = resolveMessage(messageSource, code, args, Locale.US);
             if (msg != null)
             {
                 return msg;

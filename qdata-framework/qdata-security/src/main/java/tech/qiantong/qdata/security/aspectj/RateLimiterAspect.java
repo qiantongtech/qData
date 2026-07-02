@@ -31,6 +31,7 @@ import org.springframework.stereotype.Component;
 import tech.qiantong.qdata.common.annotation.RateLimiter;
 import tech.qiantong.qdata.common.enums.LimitType;
 import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.ip.IpUtils;
 
@@ -80,7 +81,7 @@ public class RateLimiterAspect
             {
                 throw new ServiceException("访问过于频繁，请稍候再试");
             }
-            log.info("限制请求'{}',当前请求'{}',缓存key'{}'", count, number.intValue(), combineKey);
+            log.info(MessageUtils.messageEn("log.rate.limit"), count, number.intValue(), combineKey);
         }
         catch (ServiceException e)
         {

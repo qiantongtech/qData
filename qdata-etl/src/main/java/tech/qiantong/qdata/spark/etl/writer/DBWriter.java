@@ -34,6 +34,7 @@ import tech.qiantong.qdata.common.database.constants.DbType;
 import tech.qiantong.qdata.common.database.datasource.AbstractDataSourceFactory;
 import tech.qiantong.qdata.common.database.datasource.DefaultDataSourceFactoryBean;
 import tech.qiantong.qdata.common.enums.TaskComponentTypeEnum;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.spark.etl.utils.LogUtils;
 import tech.qiantong.qdata.spark.etl.utils.db.DBUtils;
 import tech.qiantong.qdata.spark.etl.utils.db.element.*;
@@ -66,9 +67,9 @@ public class DBWriter implements Writer {
     @Override
     public Boolean writer(JSONObject config, Dataset<Row> dataset, JSONObject writer, LogUtils.Params logParams) {
         LogUtils.writeLog(logParams, "*********************************  Initialize task context  ***********************************");
-        LogUtils.writeLog(logParams, "开始数据库输出节点");
-        LogUtils.writeLog(logParams, "开始任务时间: " + DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"));
-        LogUtils.writeLog(logParams, "任务参数：" + writer.toJSONString(PrettyFormat));
+        LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.writer.db.start"));
+        LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.task.start.time", DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS")));
+        LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.task.parameters", writer.toJSONString(PrettyFormat)));
         JSONObject parameter = writer.getJSONObject("parameter");
         //封装读取信息
         Map<String, String> writerOptions = DBUtils.getDbOptions(parameter);
@@ -93,19 +94,19 @@ public class DBWriter implements Writer {
         String writeMode = null;
         switch (writeModeType) {
             case 1:
-                writeMode = "全量";
+                writeMode = MessageUtils.messageEn("etl.writer.mode.full");
                 break;
             case 2:
-                writeMode = "追加写";
+                writeMode = MessageUtils.messageEn("etl.writer.mode.append");
                 break;
             case 3:
-                writeMode = "增量更新";
+                writeMode = MessageUtils.messageEn("etl.writer.mode.incremental");
                 break;
             default:
                 writeMode = "";
                 break;
         }
-        LogUtils.writeLog(logParams, "写入方式为：" + writeMode);
+        LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.writer.mode.info", writeMode));
         //增量更新主键
         List<Object> selectedColumns = parameter.getJSONArray("selectedColumns");
         //目标表名称
@@ -122,17 +123,17 @@ public class DBWriter implements Writer {
         log.info(JSON.toJSONString(writerProperty));
         if (!dbQuery.valid()) {
             log.info(JSON.toJSONString(writerProperty));
-            LogUtils.writeLog(logParams, "数据库连接失败：" + JSON.toJSONString(writerProperty));
+            LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.writer.connection.failed", JSON.toJSONString(writerProperty)));
             return false;
         }
         Boolean success = true;
         try {
             //创建临时表
             if (StringUtils.isNotBlank(tmpTableName)) {
-                LogUtils.writeLog(logParams, "创建临时表：" + tmpTableName);
+                LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.writer.create.temp.table", tmpTableName));
                 log.info("创建临时表");
                 if (!dbQuery.copyTable(null, writerProperty, tableName, tmpTableName)) {
-                    LogUtils.writeLog(logParams, "创建临时表失败：" + tmpTableName);
+                    LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.writer.create.temp.table.failed", tmpTableName));
                     log.error("创建临时表失败");
                     return false;
                 }
@@ -143,7 +144,7 @@ public class DBWriter implements Writer {
                 preSql.forEach(sql -> {
                     dbQuery.execute(sql.toString());
                 });
-                LogUtils.writeLog(logParams, "执行前置sql：" + JSON.toJSONString(preSql));
+                LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.writer.pre.sql", JSON.toJSONString(preSql)));
             }
 
             //字段设置对应关系
@@ -165,7 +166,7 @@ public class DBWriter implements Writer {
                     flag = true;
                 } catch (Exception e) {
                     log.info("保存失败:{}", e.getMessage());
-                    LogUtils.writeLog(logParams, "保存失败:" + e.getMessage());
+                    LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.writer.save.failed", e.getMessage()));
                     success = false;
                 }
             }
@@ -192,7 +193,7 @@ public class DBWriter implements Writer {
                     //删除目标
                     dbQuery.execute("DROP TABLE " + tableName);
                     log.info("删除目标表:{}", tableName);
-                    LogUtils.writeLog(logParams, "删除目标表:" + tableName);
+                    LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.writer.drop.target.table", tableName));
 
                     //临时表名改为正式表
                     String repTableName = (StringUtils.isNotBlank(writerProperty.getDbName()) ? StringUtils.replace(tableName, writerProperty.getDbName() + ".", "") : tableName);
@@ -205,12 +206,12 @@ public class DBWriter implements Writer {
                         dbQuery.execute("ALTER TABLE " + tmpTableName + " RENAME TO " + repTableName);
                     }
                     log.info("临时表：{}改为目标表:{}", tmpTableName, tableName);
-                    LogUtils.writeLog(logParams, "临时表：" + tmpTableName + "改为目标表:" + tableName);
+                    LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.writer.rename.temp.table", tmpTableName, tableName));
                 } else {
                     //删除临时表
                     dbQuery.execute("DROP TABLE " + tmpTableName);
                     log.info("删除临时表:{}", tableName);
-                    LogUtils.writeLog(logParams, "删除临时表:" + tmpTableName);
+                    LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.writer.drop.temp.table", tmpTableName));
                 }
             }
             //执行后置sql
@@ -221,7 +222,7 @@ public class DBWriter implements Writer {
             }
         } catch (Exception e) {
             log.error("写入失败: ", e);
-            LogUtils.writeLog(logParams, "失败原因:" + e.getMessage());
+            LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.failure.reason", e.getMessage()));
             success = false;
         } finally {
             if (dbQuery != null) {
@@ -274,7 +275,7 @@ public class DBWriter implements Writer {
             }
             return columnMetaData;
         } catch (SQLException throwables) {
-            log.error("获取字段类型失败");
+            log.error(MessageUtils.messageEn("etl.writer.get.column.type.failed"));
         } finally {
             if (rs != null) {
                 try {
@@ -325,7 +326,7 @@ public class DBWriter implements Writer {
         } else if (value instanceof Array) {
             col = new StringDataColumn(JSON.toJSONString(value));
         } else {
-            throw DBException.asDataXException("未知类型type:" + value.getClass().getName());
+            throw DBException.asDataXException(MessageUtils.messageEn("etl.error.unknown.type", value.getClass().getName()));
         }
         return col;
     }
@@ -392,8 +393,7 @@ public class DBWriter implements Writer {
                     try {
                         utilDate = dataColumn.asDate();
                     } catch (DBException e) {
-                        throw new SQLException(String.format(
-                                "Date 类型转换错误：[%s]", dataColumn));
+                        throw new SQLException(MessageUtils.messageEn("etl.error.date.conversion", dataColumn));
                     }
 
                     if (null != utilDate) {
@@ -408,8 +408,7 @@ public class DBWriter implements Writer {
                 try {
                     utilDate = dataColumn.asDate();
                 } catch (DBException e) {
-                    throw new SQLException(String.format(
-                            "TIME 类型转换错误：[%s]", dataColumn));
+                    throw new SQLException(MessageUtils.messageEn("etl.error.time.conversion", dataColumn));
                 }
 
                 if (null != utilDate) {
@@ -423,8 +422,7 @@ public class DBWriter implements Writer {
                 try {
                     utilDate = dataColumn.asDate();
                 } catch (DBException e) {
-                    throw new SQLException(String.format(
-                            "TIMESTAMP 类型转换错误：[%s]", dataColumn));
+                    throw new SQLException(MessageUtils.messageEn("etl.error.timestamp.conversion", dataColumn));
                 }
 
                 if (null != utilDate) {
@@ -519,14 +517,14 @@ public class DBWriter implements Writer {
                 writeBuffer.clear();
             }
         } catch (SQLException e) {
-            log.error("写入失败",e);
+            log.error(MessageUtils.messageEn("etl.writer.write.failed"), e);
             return false;
         } finally {
             if (conn != null) {
                 try {
                     conn.close();
                 } catch (SQLException throwables) {
-                    log.error("关闭数据库连接失败", throwables);
+                    log.error(MessageUtils.messageEn("etl.writer.close.connection.failed"), throwables);
                 }
             }
         }

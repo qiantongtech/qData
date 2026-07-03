@@ -6,6 +6,7 @@ import com.alibaba.fastjson2.JSONObject;
 import org.apache.spark.sql.*;
 import org.apache.spark.sql.types.DataTypes;
 import tech.qiantong.qdata.common.enums.TaskComponentTypeEnum;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.spark.etl.utils.LogUtils;
 import tech.qiantong.qdata.spark.etl.utils.ValueParserUtils;
 
@@ -37,15 +38,15 @@ public class AddConstantTransition implements Transition {
     @Override
     public Dataset<Row> transition(SparkSession spark, Dataset<Row> dataset, JSONObject transition, LogUtils.Params logParams) {
         LogUtils.writeLog(logParams, "*********************************  Initialize task context  ***********************************");
-        LogUtils.writeLog(logParams, "开始增加常量节点");
-        LogUtils.writeLog(logParams, "开始任务时间: " + DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"));
-        LogUtils.writeLog(logParams, "任务参数：" + transition.toJSONString(PrettyFormat));
+        LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.transition.constant.start"));
+        LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.task.start.time", DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS")));
+        LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.task.parameters", transition.toJSONString(PrettyFormat)));
         JSONObject parameter = transition.getJSONObject("parameter");
 
 
         JSONArray tableFields = parameter.getJSONArray("tableFields");
         if (tableFields == null || tableFields.isEmpty()) {
-            throw new IllegalArgumentException("常量字段列表不能为空且必须为非空数组！");
+            throw new IllegalArgumentException(MessageUtils.messageEn("etl.error.fields.empty"));
         }
 
         // 获取已有列名集合，防止重复添加

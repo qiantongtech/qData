@@ -8,6 +8,7 @@ import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 import tech.qiantong.qdata.common.enums.TaskComponentTypeEnum;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.spark.etl.utils.LogUtils;
 
 import java.util.Date;
@@ -40,9 +41,9 @@ public class DataDeduplicationTransition implements Transition {
     @Override
     public Dataset<Row> transition(SparkSession spark, Dataset<Row> dataset, JSONObject transition, LogUtils.Params logParams) {
         LogUtils.writeLog(logParams, "*********************************  Initialize task context  ***********************************");
-        LogUtils.writeLog(logParams, "开始数据去重节点");
-        LogUtils.writeLog(logParams, "开始任务时间: " + DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"));
-        LogUtils.writeLog(logParams, "任务参数：" + transition.toJSONString(PrettyFormat));
+        LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.transition.dedup.start"));
+        LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.task.start.time", DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS")));
+        LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.task.parameters", transition.toJSONString(PrettyFormat)));
         JSONObject parameter = transition.getJSONObject("parameter");
 
         //选择的字段
@@ -50,7 +51,7 @@ public class DataDeduplicationTransition implements Transition {
 
         //检验
         if (CollectionUtils.isEmpty(tableFields)) {
-            throw new IllegalArgumentException("进行计算的字段不能为空！");
+            throw new IllegalArgumentException(MessageUtils.messageEn("etl.error.dedup.fields.empty"));
         }
 
         // 所有字段转小写列 + 添加为临时列

@@ -6,6 +6,7 @@ import com.alibaba.fastjson2.JSONObject;
 import org.apache.spark.sql.*;
 import org.apache.spark.sql.types.DataTypes;
 import tech.qiantong.qdata.common.enums.TaskComponentTypeEnum;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.spark.etl.utils.LogUtils;
 
 import java.util.*;
@@ -33,15 +34,15 @@ public class SelectFieldsTransition implements Transition {
     @Override
     public Dataset<Row> transition(SparkSession spark, Dataset<Row> dataset, JSONObject transition, LogUtils.Params logParams) {
         LogUtils.writeLog(logParams, "*********************************  Initialize task context  ***********************************");
-        LogUtils.writeLog(logParams, "开始设置字段值节点");
-        LogUtils.writeLog(logParams, "开始任务时间: " + DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"));
-        LogUtils.writeLog(logParams, "任务参数：" + transition.toJSONString(PrettyFormat));
+        LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.transition.select.start"));
+        LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.task.start.time", DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS")));
+        LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.task.parameters", transition.toJSONString(PrettyFormat)));
 
         JSONObject parameter = transition.getJSONObject("parameter");
 
         JSONArray tableFields = parameter.getJSONArray("tableFields");
         if (tableFields == null || tableFields.isEmpty()) {
-            throw new IllegalArgumentException("字段设置列表不能为空且必须为非空数组！");
+            throw new IllegalArgumentException(MessageUtils.messageEn("etl.error.select.fields.empty"));
         }
 
         JSONArray removeFields = parameter.getJSONArray("removeFields");
@@ -65,10 +66,10 @@ public class SelectFieldsTransition implements Transition {
             Integer scale = field.getInteger("precision");   // 长度，精度
 
             if (outputField == null || outputField.trim().isEmpty()) {
-                throw new IllegalArgumentException("输出字段不能为空");
+                throw new IllegalArgumentException(MessageUtils.messageEn("etl.error.output.field.empty"));
             }
             if (outputNames.contains(outputField)) {
-                throw new IllegalArgumentException("输出字段重复: " + outputField);
+                throw new IllegalArgumentException(MessageUtils.messageEn("etl.error.output.field.duplicate", outputField));
             }
 
 

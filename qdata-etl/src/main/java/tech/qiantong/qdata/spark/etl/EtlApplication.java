@@ -30,6 +30,7 @@ import org.apache.spark.sql.SparkSession;
 import tech.qiantong.qdata.api.ds.api.etl.ds.ProcessInstance;
 import tech.qiantong.qdata.api.ds.api.etl.ds.TaskInstance;
 import tech.qiantong.qdata.common.enums.*;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.spark.etl.reader.ReaderFactory;
 import tech.qiantong.qdata.spark.etl.transition.TransitionFactory;
 import tech.qiantong.qdata.spark.etl.utils.IDGeneratorUtils;
@@ -102,7 +103,7 @@ public class EtlApplication {
             data = ReaderFactory.getReader(readerComponentType.getCode())
                     .read(spark, reader, readerColumns, readerLogParams);
             if (data == null) {
-                LogUtils.writeLog(readerLogParams, "任务失败");
+                LogUtils.writeLog(readerLogParams, MessageUtils.messageEn("etl.task.failed"));
                 updateProcess(processInstance, WorkflowExecutionStatus.FAILURE, rabbitmq);
                 //更新输入节点实例执行失败
                 updateTask(readerTaskInstance, TaskExecutionStatus.FAILURE, rabbitmq);
@@ -114,8 +115,8 @@ public class EtlApplication {
             updateProcess(processInstance, WorkflowExecutionStatus.FAILURE, rabbitmq);
             //更新输入节点实例执行失败
             updateTask(readerTaskInstance, TaskExecutionStatus.FAILURE, rabbitmq);
-            LogUtils.writeLog(readerLogParams, "失败原因:" + e.getMessage());
-            LogUtils.writeLog(readerLogParams, "任务失败");
+            LogUtils.writeLog(readerLogParams, MessageUtils.messageEn("etl.failure.reason", e.getMessage()));
+            LogUtils.writeLog(readerLogParams, MessageUtils.messageEn("etl.task.failed"));
             LogUtils.writeLog(readerLogParams, "FINALIZE_SESSION");
             spark.stop();
             return;
@@ -123,7 +124,7 @@ public class EtlApplication {
 
         //更新输入节点实例执行成功
         updateTask(readerTaskInstance, TaskExecutionStatus.SUCCESS, rabbitmq);
-        LogUtils.writeLog(readerLogParams, "任务成功");
+        LogUtils.writeLog(readerLogParams, MessageUtils.messageEn("etl.task.success"));
         LogUtils.writeLog(readerLogParams, "FINALIZE_SESSION");
 
 //        if (readParameter.containsKey("batchSize")) {
@@ -151,15 +152,15 @@ public class EtlApplication {
                     updateProcess(processInstance, WorkflowExecutionStatus.FAILURE, rabbitmq);
                     updateTask(transitionTaskInstance, TaskExecutionStatus.FAILURE, rabbitmq);
                     spark.stop();
-                    LogUtils.writeLog(transitionLogParams, "失败原因:" + e.getMessage());
-                    LogUtils.writeLog(transitionLogParams, "任务失败");
+                    LogUtils.writeLog(transitionLogParams, MessageUtils.messageEn("etl.failure.reason", e.getMessage()));
+                    LogUtils.writeLog(transitionLogParams, MessageUtils.messageEn("etl.task.failed"));
                     LogUtils.writeLog(transitionLogParams, "FINALIZE_SESSION");
                     spark.stop();
                     return;
                 }
                 //更新输入节点实例执行成功
                 updateTask(transitionTaskInstance, TaskExecutionStatus.SUCCESS, rabbitmq);
-                LogUtils.writeLog(transitionLogParams, "任务成功");
+                LogUtils.writeLog(transitionLogParams, MessageUtils.messageEn("etl.task.success"));
                 LogUtils.writeLog(transitionLogParams, "FINALIZE_SESSION");
             }
         }
@@ -180,13 +181,13 @@ public class EtlApplication {
                     .writer(config, data, writer, writerLogParams);
         } catch (Exception e) {
             log.error("任务失败", e);
-            LogUtils.writeLog(writerLogParams, "失败原因:" + e.getMessage());
+            LogUtils.writeLog(writerLogParams, MessageUtils.messageEn("etl.failure.reason", e.getMessage()));
         }
 
         if (flag) {
             updateTask(writerTaskInstance, TaskExecutionStatus.SUCCESS, rabbitmq);
             updateProcess(processInstance, WorkflowExecutionStatus.SUCCESS, rabbitmq);
-            LogUtils.writeLog(writerLogParams, "任务成功");
+            LogUtils.writeLog(writerLogParams, MessageUtils.messageEn("etl.task.success"));
             LogUtils.writeLog(writerLogParams, "FINALIZE_SESSION");
             //判断是否存在数据缓存
             if (reader.containsKey("cacheDataMap")) {
@@ -198,7 +199,7 @@ public class EtlApplication {
         } else {
             updateTask(writerTaskInstance, TaskExecutionStatus.FAILURE, rabbitmq);
             updateProcess(processInstance, WorkflowExecutionStatus.FAILURE, rabbitmq);
-            LogUtils.writeLog(writerLogParams, "任务失败");
+            LogUtils.writeLog(writerLogParams, MessageUtils.messageEn("etl.task.failed"));
             LogUtils.writeLog(writerLogParams, "FINALIZE_SESSION");
         }
         spark.stop();

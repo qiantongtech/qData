@@ -30,6 +30,7 @@ import org.apache.spark.sql.types.DataType;
 import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.StructType;
 import tech.qiantong.qdata.common.enums.TaskComponentTypeEnum;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.spark.etl.utils.LogUtils;
 
 import java.time.LocalDate;
@@ -61,9 +62,9 @@ public class CleanTransition implements Transition {
     @Override
     public  Dataset<Row> transition(SparkSession spark,Dataset<Row> dataset, JSONObject transition, LogUtils.Params logParams) {
         LogUtils.writeLog(logParams, "*********************************  Initialize task context  ***********************************");
-        LogUtils.writeLog(logParams, "开始清洗节点");
-        LogUtils.writeLog(logParams, "开始任务时间: " + DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"));
-        LogUtils.writeLog(logParams, "任务参数：" + transition.toJSONString(PrettyFormat));
+        LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.transition.clean.start"));
+        LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.task.start.time", DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS")));
+        LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.task.parameters", transition.toJSONString(PrettyFormat)));
 
         JSONObject parameter = transition.getJSONObject("parameter");
         // 获取需要处理的列名
@@ -74,7 +75,7 @@ public class CleanTransition implements Transition {
         }
 
         if (tableFieldList == null || tableFieldList.isEmpty()) {
-            LogUtils.writeLog(logParams, "未配置任何规则，直接返回数据集。");
+            LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.transition.no.rules"));
             return dataset;
         }
 
@@ -91,7 +92,7 @@ public class CleanTransition implements Transition {
 
             // 执行前检查字段是否存在
             if (!checkColumnsExist(dataset, ruleConfig)) {
-                LogUtils.writeLog(logParams, String.format("跳过规则 %s（字段不存在）", ruleCode));
+                LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.rule.skip", ruleCode));
                 continue;
             }
 
@@ -136,7 +137,7 @@ public class CleanTransition implements Transition {
                     dataset = applyStringSubstr(dataset, ruleConfig);
                     break;
                 default:
-                    LogUtils.writeLog(logParams, "未知规则：" + ruleCode);
+                    LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.unknown.rule", ruleCode));
             }
         }
         return dataset;
@@ -280,7 +281,7 @@ public class CleanTransition implements Transition {
                 .map(a -> a.toJavaList(String.class))
                 .orElse(Collections.emptyList());
         if (allCols.isEmpty()) {
-            throw new IllegalArgumentException("规则029配置缺失：columns 不能为空");
+            throw new IllegalArgumentException(MessageUtils.messageEn("etl.error.rule.config.missing", "029", "columns"));
         }
 
         JSONArray sv = cfg == null ? null : cfg.getJSONArray("stringValue");
@@ -329,7 +330,7 @@ public class CleanTransition implements Transition {
 //        String handleType = cfg.getString("handleType"); // "1-加前缀" / "2-加后缀"
 
         if (StringUtils.isBlank(col) || list == null || list.size() < 1) {
-            throw new IllegalArgumentException("规则024配置缺失：columns/stringValue 不能为空");
+            throw new IllegalArgumentException(MessageUtils.messageEn("etl.error.rule.config.missing", "024", "columns/stringValue"));
         }
         // 构建 when...otherwise 的表达式
         Column mappedColumn = null;
@@ -361,11 +362,11 @@ public class CleanTransition implements Transition {
         String handleType = cfg.getString("handleType"); // "1" 前缀；"2" 后缀；
 
         if (StringUtils.isBlank(colName) || StringUtils.isBlank(stringValue) || StringUtils.isBlank(handleType)) {
-            throw new IllegalArgumentException("规则107配置缺失：columns/stringValue/handleType 不能为空");
+            throw new IllegalArgumentException(MessageUtils.messageEn("etl.error.rule.config.missing", "107", "columns/stringValue/handleType"));
         }
 
         if (!("1".equals(handleType) || "2".equals(handleType) || "3".equals(handleType) || "4".equals(handleType))) {
-            throw new IllegalArgumentException("规则107 handleType 非法：" + handleType);
+            throw new IllegalArgumentException(MessageUtils.messageEn("etl.error.rule.handle.type.invalid", "107", handleType));
         }
 
         Column c = col(colName).cast("string");
@@ -455,7 +456,7 @@ public class CleanTransition implements Transition {
                 .split("\\s+");
         for (String token : tokens) {
             if (token.matches("^[a-zA-Z_][a-zA-Z0-9_]*$") && !columnSet.contains(token.toLowerCase())) {
-                String msg = "过滤条件字段不存在: " + token;
+                String msg = MessageUtils.messageEn("etl.error.filter.field.not.exists", token);
                 LogUtils.writeLog(logParams, msg);
                 throw new IllegalArgumentException(msg);
             }
@@ -464,7 +465,7 @@ public class CleanTransition implements Transition {
         try {
             dataset.selectExpr("*").filter(where).limit(1).count();
         } catch (Exception e) {
-            String msg = "过滤条件解析失败: " + where + "，错误信息：" + e.getMessage();
+            String msg = MessageUtils.messageEn("etl.error.filter.parse.failed", where, e.getMessage());
             LogUtils.writeLog(logParams, msg);
             throw new IllegalArgumentException(msg, e);
         }
@@ -541,7 +542,7 @@ public class CleanTransition implements Transition {
         Set<String> exists = new HashSet<>(Arrays.asList(dataset.columns()));
         List<String> missing = cols.stream().filter(c -> !exists.contains(c)).collect(Collectors.toList());
         if (!missing.isEmpty()) {
-            throw new IllegalArgumentException("组合判空配置包含不存在的列：" + missing);
+            throw new IllegalArgumentException(MessageUtils.messageEn("etl.error.combine.null.columns", missing));
         }
 
         StructType schema = dataset.schema();
@@ -705,7 +706,7 @@ public class CleanTransition implements Transition {
 
     public static Dataset<Row> transitionOld(Dataset<Row> dataset, JSONObject transition, LogUtils.Params logParams) {
         LogUtils.writeLog(logParams, "*********************************  Initialize task context  ***********************************");
-        LogUtils.writeLog(logParams, "版本重构，历史版本不再做支撑，可查看最新逻辑重新配置");
+        LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.transition.old.version"));
         return dataset;
     }
 }

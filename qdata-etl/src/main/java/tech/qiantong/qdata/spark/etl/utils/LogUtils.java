@@ -22,6 +22,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import com.alibaba.fastjson2.JSONObject;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
@@ -53,7 +54,7 @@ public class LogUtils {
                 + nodeJson.getString("nodeCode") + File.separator
                 + nodeJson.getString("nodeVersion") + File.separator
                 + IDGeneratorUtils.getStringId() + ".log";
-        log.info("日志路径: {}", logPath);
+        log.info(MessageUtils.message("log.etl.log.path", logPath));
         FileUtil.touch(logPath);
         return logPath;
     }

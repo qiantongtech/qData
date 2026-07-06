@@ -62,6 +62,7 @@ public class MessageUtils
     public static String messageEn(String code, Object... args)
     {
         MessageSource messageSource = SpringUtils.getBean(MessageSource.class);
+        System.out.println(Locale.US);
         return messageSource.getMessage(code, args, Locale.US);
     }
 
@@ -115,6 +116,44 @@ public class MessageUtils
 
         // 5. 最终硬编码兜底
         log.warn("无法获取消息键'{}'的国际化翻译，使用默认错误消息", code);
+        return DEFAULT_ERROR_MESSAGE;
+    }
+
+
+
+
+
+    /**
+     * 根据消息键获取英文消息，支持兜底链：
+     *   英文 → defaultMessage → 硬编码兜底
+     *
+     * 与 messageEn 的区别：当英文翻译不存在时不抛异常，走兜底逻辑。
+     *
+     * @param code 消息键（对应 messages.properties 中的 key）
+     * @param defaultMessage 兜底消息，英文翻译不存在时返回此值
+     * @param args 格式化参数
+     * @return 英文翻译值，保证不返回 null
+     */
+    public static String messageEnWithFallback(String code, String defaultMessage, Object... args)
+    {
+
+        MessageSource messageSource = SpringUtils.getBean(MessageSource.class);
+
+        // 1. 尝试英文
+        String msg = resolveMessage(messageSource, code, args, Locale.US);
+        if (msg != null)
+        {
+            return msg;
+        }
+
+        // 2. 使用传入的 defaultMessage
+        if (!StringUtils.isEmpty(defaultMessage))
+        {
+            return defaultMessage;
+        }
+
+        // 3. 最终硬编码兜底
+        log.warn("无法获取消息键'{}'的英文翻译，使用默认错误消息", code);
         return DEFAULT_ERROR_MESSAGE;
     }
 

@@ -74,7 +74,7 @@ public class ExcelReader implements Reader {
         dataset = dataset.select(column.stream().map(c -> new Column(((JSONObject) c).getString("columnName"))).toArray(Column[]::new));
         readerColumns.addAll(column.stream().map(c -> ((JSONObject) c).getString("columnName")).collect(Collectors.toList()));
         LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.input.data.count", dataset.count()));
-        log.info("部分数据如下>>>>>>>>>>>>>>");
+        log.info(MessageUtils.message("log.etl.sample.data"));
         dataset.na().fill("Unknown").show(10);
         LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.sample.data", dataset.na().fill("Unknown").showString(10, 0, false)));
         return dataset;

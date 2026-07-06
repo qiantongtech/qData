@@ -149,7 +149,7 @@ public class DBReader implements Reader {
         }
         dataset = dataset.select(column.stream().map(c -> new Column((String) c)).toArray(Column[]::new));
         LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.input.data.count", dataset.count()));
-        log.info("部分数据如下>>>>>>>>>>>>>>");
+        log.info(MessageUtils.message("log.etl.sample.data"));
         dataset.na().fill("Unknown").show(10);
         LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.sample.data", dataset.na().fill("Unknown").showString(10, 0, false)));
         //判断是否需要存储最后的数据

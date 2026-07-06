@@ -131,10 +131,10 @@ public class DBWriter implements Writer {
             //创建临时表
             if (StringUtils.isNotBlank(tmpTableName)) {
                 LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.writer.create.temp.table", tmpTableName));
-                log.info("创建临时表");
+                log.info(MessageUtils.message("etl.writer.create.temp.table", tmpTableName));
                 if (!dbQuery.copyTable(null, writerProperty, tableName, tmpTableName)) {
                     LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.writer.create.temp.table.failed", tmpTableName));
-                    log.error("创建临时表失败");
+                    log.error(MessageUtils.message("etl.writer.create.temp.table.failed", tmpTableName));
                     return false;
                 }
             }
@@ -165,7 +165,7 @@ public class DBWriter implements Writer {
                             .save();
                     flag = true;
                 } catch (Exception e) {
-                    log.info("保存失败:{}", e.getMessage());
+                    log.info(MessageUtils.message("etl.writer.save.failed", e.getMessage()));
                     LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.writer.save.failed", e.getMessage()));
                     success = false;
                 }
@@ -192,7 +192,7 @@ public class DBWriter implements Writer {
 
                     //删除目标
                     dbQuery.execute("DROP TABLE " + tableName);
-                    log.info("删除目标表:{}", tableName);
+                    log.info(MessageUtils.message("etl.writer.drop.target.table", tableName));
                     LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.writer.drop.target.table", tableName));
 
                     //临时表名改为正式表
@@ -205,12 +205,12 @@ public class DBWriter implements Writer {
                     } else {
                         dbQuery.execute("ALTER TABLE " + tmpTableName + " RENAME TO " + repTableName);
                     }
-                    log.info("临时表：{}改为目标表:{}", tmpTableName, tableName);
+                    log.info(MessageUtils.message("etl.writer.rename.temp.table", tmpTableName, tableName));
                     LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.writer.rename.temp.table", tmpTableName, tableName));
                 } else {
                     //删除临时表
                     dbQuery.execute("DROP TABLE " + tmpTableName);
-                    log.info("删除临时表:{}", tableName);
+                    log.info(MessageUtils.message("etl.writer.drop.temp.table", tmpTableName));
                     LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.writer.drop.temp.table", tmpTableName));
                 }
             }
@@ -221,7 +221,7 @@ public class DBWriter implements Writer {
                 });
             }
         } catch (Exception e) {
-            log.error("写入失败: ", e);
+            log.error(MessageUtils.message("etl.writer.write.failed"), e);
             LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.failure.reason", e.getMessage()));
             success = false;
         } finally {

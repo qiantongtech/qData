@@ -111,7 +111,7 @@ public class EtlApplication {
                 return;
             }
         } catch (Exception e) {
-            log.error("任务失败", e);
+            log.error(MessageUtils.message("etl.task.failed"), e);
             updateProcess(processInstance, WorkflowExecutionStatus.FAILURE, rabbitmq);
             //更新输入节点实例执行失败
             updateTask(readerTaskInstance, TaskExecutionStatus.FAILURE, rabbitmq);
@@ -180,7 +180,7 @@ public class EtlApplication {
             flag = WriterFactory.getWriter(writerComponentType.getCode())
                     .writer(config, data, writer, writerLogParams);
         } catch (Exception e) {
-            log.error("任务失败", e);
+            log.error(MessageUtils.message("etl.task.failed"), e);
             LogUtils.writeLog(writerLogParams, MessageUtils.messageEn("etl.failure.reason", e.getMessage()));
         }
 

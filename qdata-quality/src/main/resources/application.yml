@@ -76,7 +76,7 @@ spring:
   # 资源信息
   messages:
     # 国际化资源文件路径
-    basename: i18n/messages,i18n/log-messages
+    basename: i18n/messages,i18n/log-messages,i18n/quality-messages
   profiles:
     active: dev  # 默认激活的环境，可以在启动时覆盖
   config:

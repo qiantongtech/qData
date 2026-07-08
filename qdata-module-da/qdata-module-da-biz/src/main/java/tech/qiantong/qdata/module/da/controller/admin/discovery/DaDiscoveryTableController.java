@@ -83,7 +83,7 @@ public class DaDiscoveryTableController extends BaseController {
 
     @Operation(summary = "导出数据发现库信息列表")
     @PreAuthorize("@ss.hasPermi('da:discoveryTable:export')")
-    @Log(title = "数据发现库信息", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.da.discovery.table", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DaDiscoveryTablePageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -94,7 +94,7 @@ public class DaDiscoveryTableController extends BaseController {
 
     @Operation(summary = "导入数据发现库信息列表")
     @PreAuthorize("@ss.hasPermi('da:discoveryTable:import')")
-    @Log(title = "数据发现库信息", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.da.discovery.table", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DaDiscoveryTableRespVO> util = new ExcelUtil<>(DaDiscoveryTableRespVO.class);
@@ -114,7 +114,7 @@ public class DaDiscoveryTableController extends BaseController {
 
     @Operation(summary = "新增数据发现库信息")
     @PreAuthorize("@ss.hasPermi('da:discoveryTable:add')")
-    @Log(title = "数据发现库信息", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.da.discovery.table", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DaDiscoveryTableSaveReqVO daDiscoveryTable) {
         daDiscoveryTable.setCreatorId(getUserId());
@@ -125,7 +125,7 @@ public class DaDiscoveryTableController extends BaseController {
 
     @Operation(summary = "修改数据发现库信息")
     @PreAuthorize("@ss.hasPermi('da:discoveryTable:edit')")
-    @Log(title = "数据发现库信息", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.da.discovery.table", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DaDiscoveryTableSaveReqVO daDiscoveryTable) {
         daDiscoveryTable.setUpdatorId(getUserId());
@@ -136,7 +136,7 @@ public class DaDiscoveryTableController extends BaseController {
 
     @Operation(summary = "删除数据发现库信息")
     @PreAuthorize("@ss.hasPermi('da:discoveryTable:remove')")
-    @Log(title = "数据发现库信息", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.da.discovery.table", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(daDiscoveryTableService.removeDaDiscoveryTable(Arrays.asList(ids)));

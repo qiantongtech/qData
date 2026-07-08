@@ -71,7 +71,7 @@ public class DaDatasourceProjectRelController extends BaseController {
 
     @Operation(summary = "导出数据源与项目关联关系列表")
     @PreAuthorize("@ss.hasPermi('da:dataSourceProjectRel::export')")
-    @Log(title = "数据源与项目关联关系", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.da.datasource.project.rel", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DaDatasourceProjectRelPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -82,7 +82,7 @@ public class DaDatasourceProjectRelController extends BaseController {
 
     @Operation(summary = "导入数据源与项目关联关系列表")
     @PreAuthorize("@ss.hasPermi('da:dataSourceProjectRel::import')")
-    @Log(title = "数据源与项目关联关系", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.da.datasource.project.rel", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DaDatasourceProjectRelRespVO> util = new ExcelUtil<>(DaDatasourceProjectRelRespVO.class);
@@ -102,7 +102,7 @@ public class DaDatasourceProjectRelController extends BaseController {
 
     @Operation(summary = "新增数据源与项目关联关系")
     @PreAuthorize("@ss.hasPermi('da:dataSourceProjectRel::add')")
-    @Log(title = "数据源与项目关联关系", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.da.datasource.project.rel", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DaDatasourceProjectRelSaveReqVO daDatasourceProjectRel) {
         daDatasourceProjectRel.setCreatorId(getUserId());
@@ -113,7 +113,7 @@ public class DaDatasourceProjectRelController extends BaseController {
 
     @Operation(summary = "修改数据源与项目关联关系")
     @PreAuthorize("@ss.hasPermi('da:dataSourceProjectRel::edit')")
-    @Log(title = "数据源与项目关联关系", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.da.datasource.project.rel", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DaDatasourceProjectRelSaveReqVO daDatasourceProjectRel) {
         daDatasourceProjectRel.setUpdatorId(getUserId());
@@ -124,7 +124,7 @@ public class DaDatasourceProjectRelController extends BaseController {
 
     @Operation(summary = "删除数据源与项目关联关系")
     @PreAuthorize("@ss.hasPermi('da:dataSourceProjectRel::remove')")
-    @Log(title = "数据源与项目关联关系", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.da.datasource.project.rel", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(daDatasourceProjectRelService.removeDaDatasourceProjectRel(Arrays.asList(ids)));

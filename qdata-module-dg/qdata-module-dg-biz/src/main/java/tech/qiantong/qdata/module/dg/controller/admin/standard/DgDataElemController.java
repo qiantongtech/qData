@@ -64,7 +64,7 @@ public class DgDataElemController extends BaseController {
 
     @Operation(summary = "新增数据元")
     @PreAuthorize("@ss.hasPermi('dg:dataElem:add')")
-    @Log(title = "数据元", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dg.data.elem", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DgDataElemSaveReqVO dgDataElem) {
         dgDataElem.setCreatorId(getUserId());
@@ -75,7 +75,7 @@ public class DgDataElemController extends BaseController {
 
     @Operation(summary = "修改数据元")
     @PreAuthorize("@ss.hasPermi('dg:dataElem:edit')")
-    @Log(title = "数据元", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dg.data.elem", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DgDataElemSaveReqVO dgDataElem) {
         dgDataElem.setUpdatorId(getUserId());
@@ -86,7 +86,7 @@ public class DgDataElemController extends BaseController {
 
     @Operation(summary = "删除数据元")
     @PreAuthorize("@ss.hasPermi('dg:dataElem:remove')")
-    @Log(title = "数据元", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dg.data.elem", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(service.removeDgDataElem(Arrays.asList(ids)));
@@ -94,7 +94,7 @@ public class DgDataElemController extends BaseController {
 
     @Operation(summary = "更改数据元状态")
     @PreAuthorize("@ss.hasPermi('dg:dataElem:edit')")
-    @Log(title = "更改数据元状态", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dg.data.elem.status", businessType = BusinessType.UPDATE)
     @PostMapping("/updateStatus/{id}/{status}")
     public CommonResult<Boolean> updateStatus(@PathVariable Long id, @PathVariable Long status) {
         return CommonResult.toAjax(service.updateStatus(id, status));

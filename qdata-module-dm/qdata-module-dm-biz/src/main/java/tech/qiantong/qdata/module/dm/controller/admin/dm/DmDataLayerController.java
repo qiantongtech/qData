@@ -82,7 +82,7 @@ public class DmDataLayerController extends BaseController {
 
     @Operation(summary = "导出数仓分层管理列表")
     @PreAuthorize("@ss.hasPermi('dm:dataLayer:export')")
-    @Log(title = "数仓分层管理", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.dm.data.layer", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DmDataLayerPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -93,7 +93,7 @@ public class DmDataLayerController extends BaseController {
 
     @Operation(summary = "导入数仓分层管理列表")
     @PreAuthorize("@ss.hasPermi('dm:dataLayer:import')")
-    @Log(title = "数仓分层管理", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.dm.data.layer", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DmDataLayerRespVO> util = new ExcelUtil<>(DmDataLayerRespVO.class);
@@ -113,7 +113,7 @@ public class DmDataLayerController extends BaseController {
 
     @Operation(summary = "新增数仓分层管理")
     @PreAuthorize("@ss.hasPermi('dm:dataLayer:add')")
-    @Log(title = "数仓分层管理", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dm.data.layer", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DmDataLayerSaveReqVO dmDataLayer) {
         dmDataLayer.setCreatorId(getUserId());
@@ -124,7 +124,7 @@ public class DmDataLayerController extends BaseController {
 
     @Operation(summary = "修改数仓分层管理")
     @PreAuthorize("@ss.hasPermi('dm:dataLayer:edit')")
-    @Log(title = "数仓分层管理", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dm.data.layer", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DmDataLayerSaveReqVO dmDataLayer) {
         dmDataLayer.setUpdatorId(getUserId());
@@ -135,7 +135,7 @@ public class DmDataLayerController extends BaseController {
 
     @Operation(summary = "删除数仓分层管理")
     @PreAuthorize("@ss.hasPermi('dm:dataLayer:remove')")
-    @Log(title = "数仓分层管理", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dm.data.layer", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dmDataLayerService.removeDmDataLayer(Arrays.asList(ids)));

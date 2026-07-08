@@ -50,7 +50,7 @@ public class McTaskScopeController extends BaseController {
     }
 
     @Operation(summary = "导出采集范围列表")
-    @Log(title = "采集范围", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.mc.task.scope", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, McTaskScopePageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -60,7 +60,7 @@ public class McTaskScopeController extends BaseController {
     }
 
     @Operation(summary = "导入采集范围列表")
-    @Log(title = "采集范围", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.mc.task.scope", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<McTaskScopeRespVO> util = new ExcelUtil<>(McTaskScopeRespVO.class);
@@ -78,7 +78,7 @@ public class McTaskScopeController extends BaseController {
     }
 
     @Operation(summary = "新增采集范围")
-    @Log(title = "采集范围", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.mc.task.scope", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody McTaskScopeSaveReqVO mcTaskScope) {
         mcTaskScope.setCreatorId(getUserId());
@@ -88,7 +88,7 @@ public class McTaskScopeController extends BaseController {
     }
 
     @Operation(summary = "修改采集范围")
-    @Log(title = "采集范围", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.mc.task.scope", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody McTaskScopeSaveReqVO mcTaskScope) {
         mcTaskScope.setUpdatorId(getUserId());
@@ -98,7 +98,7 @@ public class McTaskScopeController extends BaseController {
     }
 
     @Operation(summary = "删除采集范围")
-    @Log(title = "采集范围", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.mc.task.scope", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(mcTaskScopeService.removeMcTaskScope(Arrays.asList(ids)));

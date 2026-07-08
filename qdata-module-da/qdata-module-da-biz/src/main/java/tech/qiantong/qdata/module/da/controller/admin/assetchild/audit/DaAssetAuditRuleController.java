@@ -71,7 +71,7 @@ public class DaAssetAuditRuleController extends BaseController {
 
     @Operation(summary = "导出数据资产质量结果记录列表")
     @PreAuthorize("@ss.hasPermi('da:assetAuditRule:export')")
-    @Log(title = "数据资产质量结果记录", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.da.asset.audit.rule", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DaAssetAuditRulePageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -82,7 +82,7 @@ public class DaAssetAuditRuleController extends BaseController {
 
     @Operation(summary = "导入数据资产质量结果记录列表")
     @PreAuthorize("@ss.hasPermi('da:assetAuditRule:import')")
-    @Log(title = "数据资产质量结果记录", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.da.asset.audit.rule", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DaAssetAuditRuleRespVO> util = new ExcelUtil<>(DaAssetAuditRuleRespVO.class);
@@ -102,7 +102,7 @@ public class DaAssetAuditRuleController extends BaseController {
 
     @Operation(summary = "新增数据资产质量结果记录")
     @PreAuthorize("@ss.hasPermi('da:assetAuditRule:add')")
-    @Log(title = "数据资产质量结果记录", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.da.asset.audit.rule", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DaAssetAuditRuleSaveReqVO daAssetAuditRule) {
         daAssetAuditRule.setCreatorId(getUserId());
@@ -113,7 +113,7 @@ public class DaAssetAuditRuleController extends BaseController {
 
     @Operation(summary = "修改数据资产质量结果记录")
     @PreAuthorize("@ss.hasPermi('da:assetAuditRule:edit')")
-    @Log(title = "数据资产质量结果记录", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.da.asset.audit.rule", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DaAssetAuditRuleSaveReqVO daAssetAuditRule) {
         daAssetAuditRule.setUpdatorId(getUserId());
@@ -124,7 +124,7 @@ public class DaAssetAuditRuleController extends BaseController {
 
     @Operation(summary = "删除数据资产质量结果记录")
     @PreAuthorize("@ss.hasPermi('da:assetAuditRule:remove')")
-    @Log(title = "数据资产质量结果记录", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.da.asset.audit.rule", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(daAssetAuditRuleService.removeDaAssetAuditRule(Arrays.asList(ids)));

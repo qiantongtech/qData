@@ -77,7 +77,7 @@ public class AttDocumentCatController extends BaseController {
 
     @Operation(summary = "导出标准信息分类管理列表")
     @PreAuthorize("@ss.hasPermi('att:documentCat:export')")
-    @Log(title = "标准信息分类管理", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.att.document.cat", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AttDocumentCatPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -97,7 +97,7 @@ public class AttDocumentCatController extends BaseController {
 
     @Operation(summary = "新增标准信息分类管理")
     @PreAuthorize("@ss.hasPermi('att:documentCat:add')")
-    @Log(title = "标准信息分类管理", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.att.document.cat", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AttDocumentCatSaveReqVO attDocumentCat) {
         attDocumentCat.setCreatorId(getUserId());
@@ -108,7 +108,7 @@ public class AttDocumentCatController extends BaseController {
 
     @Operation(summary = "修改标准信息分类管理")
     @PreAuthorize("@ss.hasPermi('att:documentCat:edit')")
-    @Log(title = "标准信息分类管理", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.att.document.cat", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AttDocumentCatSaveReqVO attDocumentCat) {
         attDocumentCat.setUpdatorId(getUserId());
@@ -119,7 +119,7 @@ public class AttDocumentCatController extends BaseController {
 
     @Operation(summary = "删除标准信息分类管理")
     @PreAuthorize("@ss.hasPermi('att:documentCat:remove')")
-    @Log(title = "标准信息分类管理", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.att.document.cat", businessType = BusinessType.DELETE)
     @DeleteMapping("/{id}")
     public CommonResult<Integer> remove(@PathVariable Long id) {
         if (attDocumentCatService.hasChildByAttDocumentCatId(id)) {

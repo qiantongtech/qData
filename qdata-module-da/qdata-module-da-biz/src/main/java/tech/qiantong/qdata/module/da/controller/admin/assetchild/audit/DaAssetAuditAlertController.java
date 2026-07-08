@@ -71,7 +71,7 @@ public class DaAssetAuditAlertController extends BaseController {
 
     @Operation(summary = "导出数据资产-质量预警列表")
     @PreAuthorize("@ss.hasPermi('da:assetAuditAlert:export')")
-    @Log(title = "数据资产-质量预警", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.da.asset.audit.alert", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DaAssetAuditAlertPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -82,7 +82,7 @@ public class DaAssetAuditAlertController extends BaseController {
 
     @Operation(summary = "导入数据资产-质量预警列表")
     @PreAuthorize("@ss.hasPermi('da:assetAuditAlert:import')")
-    @Log(title = "数据资产-质量预警", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.da.asset.audit.alert", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DaAssetAuditAlertRespVO> util = new ExcelUtil<>(DaAssetAuditAlertRespVO.class);
@@ -102,7 +102,7 @@ public class DaAssetAuditAlertController extends BaseController {
 
     @Operation(summary = "新增数据资产-质量预警")
     @PreAuthorize("@ss.hasPermi('da:assetAuditAlert:add')")
-    @Log(title = "数据资产-质量预警", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.da.asset.audit.alert", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DaAssetAuditAlertSaveReqVO daAssetAuditAlert) {
         daAssetAuditAlert.setCreatorId(getUserId());
@@ -113,7 +113,7 @@ public class DaAssetAuditAlertController extends BaseController {
 
     @Operation(summary = "修改数据资产-质量预警")
     @PreAuthorize("@ss.hasPermi('da:assetAuditAlert:edit')")
-    @Log(title = "数据资产-质量预警", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.da.asset.audit.alert", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DaAssetAuditAlertSaveReqVO daAssetAuditAlert) {
         daAssetAuditAlert.setUpdatorId(getUserId());
@@ -124,7 +124,7 @@ public class DaAssetAuditAlertController extends BaseController {
 
     @Operation(summary = "删除数据资产-质量预警")
     @PreAuthorize("@ss.hasPermi('da:assetAuditAlert:remove')")
-    @Log(title = "数据资产-质量预警", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.da.asset.audit.alert", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(daAssetAuditAlertService.removeDaAssetAuditAlert(Arrays.asList(ids)));

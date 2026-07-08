@@ -77,7 +77,7 @@ public class DppEtlTaskInstanceController extends BaseController {
 
     @Operation(summary = "导出数据集成任务实例列表")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlTaskInstance:export')")
-    @Log(title = "数据集成任务实例", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.dpp.task.instance", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DppEtlTaskInstancePageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -88,7 +88,7 @@ public class DppEtlTaskInstanceController extends BaseController {
 
     @Operation(summary = "导入数据集成任务实例列表")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlTaskInstance:import')")
-    @Log(title = "数据集成任务实例", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.dpp.task.instance", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DppEtlTaskInstanceRespVO> util = new ExcelUtil<>(DppEtlTaskInstanceRespVO.class);
@@ -108,7 +108,7 @@ public class DppEtlTaskInstanceController extends BaseController {
 
     @Operation(summary = "新增数据集成任务实例")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlTaskInstance:add')")
-    @Log(title = "数据集成任务实例", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dpp.task.instance", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DppEtlTaskInstanceSaveReqVO dppEtlTaskInstance) {
         dppEtlTaskInstance.setCreatorId(getUserId());
@@ -119,7 +119,7 @@ public class DppEtlTaskInstanceController extends BaseController {
 
     @Operation(summary = "修改数据集成任务实例")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlTaskInstance:edit')")
-    @Log(title = "数据集成任务实例", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dpp.task.instance", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DppEtlTaskInstanceSaveReqVO dppEtlTaskInstance) {
         dppEtlTaskInstance.setUpdatorId(getUserId());
@@ -130,7 +130,7 @@ public class DppEtlTaskInstanceController extends BaseController {
 
     @Operation(summary = "删除数据集成任务实例")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlTaskInstance:remove')")
-    @Log(title = "数据集成任务实例", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dpp.task.instance", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dppEtlTaskInstanceService.removeDppEtlTaskInstance(Arrays.asList(ids)));

@@ -71,7 +71,7 @@ public class DgDesensitizeUserRelController extends BaseController {
 
     @Operation(summary = "导出脱敏白名单与用户关联关系列表")
     @PreAuthorize("@ss.hasPermi('dg:desensitizewhitelist:export')")
-    @Log(title = "脱敏白名单与用户关联关系", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.dg.desensitize.user.rel", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DgDesensitizeUserRelPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -82,7 +82,7 @@ public class DgDesensitizeUserRelController extends BaseController {
 
     @Operation(summary = "导入脱敏白名单与用户关联关系列表")
     @PreAuthorize("@ss.hasPermi('dg:desensitizewhitelist:import')")
-    @Log(title = "脱敏白名单与用户关联关系", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.dg.desensitize.user.rel", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DgDesensitizeUserRelRespVO> util = new ExcelUtil<>(DgDesensitizeUserRelRespVO.class);
@@ -102,7 +102,7 @@ public class DgDesensitizeUserRelController extends BaseController {
 
     @Operation(summary = "新增脱敏白名单与用户关联关系")
     @PreAuthorize("@ss.hasPermi('dg:desensitizewhitelist:add')")
-    @Log(title = "脱敏白名单与用户关联关系", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dg.desensitize.user.rel", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DgDesensitizeUserRelSaveReqVO dgDesensitizeUserRel) {
         dgDesensitizeUserRel.setCreatorId(getUserId());
@@ -113,7 +113,7 @@ public class DgDesensitizeUserRelController extends BaseController {
 
     @Operation(summary = "修改脱敏白名单与用户关联关系")
     @PreAuthorize("@ss.hasPermi('dg:desensitizewhitelist:edit')")
-    @Log(title = "脱敏白名单与用户关联关系", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dg.desensitize.user.rel", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DgDesensitizeUserRelSaveReqVO dgDesensitizeUserRel) {
         dgDesensitizeUserRel.setUpdatorId(getUserId());
@@ -124,7 +124,7 @@ public class DgDesensitizeUserRelController extends BaseController {
 
     @Operation(summary = "删除脱敏白名单与用户关联关系")
     @PreAuthorize("@ss.hasPermi('dg:desensitizewhitelist:remove')")
-    @Log(title = "脱敏白名单与用户关联关系", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dg.desensitize.user.rel", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dgDesensitizeUserRelService.removeDgDesensitizeUserRel(Arrays.asList(ids)));

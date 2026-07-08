@@ -69,7 +69,7 @@ public class AttApiCatController extends BaseController {
 
     @Operation(summary = "导出数据服务类目管理列表")
     @PreAuthorize("@ss.hasPermi('att:apiCat:export')")
-    @Log(title = "数据服务类目管理", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.att.api.cat", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AttApiCatPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -80,7 +80,7 @@ public class AttApiCatController extends BaseController {
 
     @Operation(summary = "导入数据服务类目管理列表")
     @PreAuthorize("@ss.hasPermi('att:apiCat:import')")
-    @Log(title = "数据服务类目管理", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.att.api.cat", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<AttApiCatRespVO> util = new ExcelUtil<>(AttApiCatRespVO.class);
@@ -100,7 +100,7 @@ public class AttApiCatController extends BaseController {
 
     @Operation(summary = "新增数据服务类目管理")
     @PreAuthorize("@ss.hasPermi('att:apiCat:add')")
-    @Log(title = "数据服务类目管理", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.att.api.cat", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AttApiCatSaveReqVO attApiCat) {
         attApiCat.setCreatorId(getUserId());
@@ -111,7 +111,7 @@ public class AttApiCatController extends BaseController {
 
     @Operation(summary = "修改数据服务类目管理")
     @PreAuthorize("@ss.hasPermi('att:apiCat:edit')")
-    @Log(title = "数据服务类目管理", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.att.api.cat", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AttApiCatSaveReqVO attApiCat) {
         attApiCat.setUpdatorId(getUserId());
@@ -122,7 +122,7 @@ public class AttApiCatController extends BaseController {
 
     @Operation(summary = "删除数据服务类目管理")
     @PreAuthorize("@ss.hasPermi('att:apiCat:remove')")
-    @Log(title = "数据服务类目管理", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.att.api.cat", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(attApiCatService.removeAttApiCat(Arrays.asList(ids)));

@@ -81,7 +81,7 @@ public class DppEtlTaskController extends BaseController {
 
     @Operation(summary = "删除数据集成任务")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlTask:remove')")
-    @Log(title = "数据集成任务", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dpp.etl", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dppEtlTaskService.removeDppEtlTask(Arrays.asList(ids)));
@@ -184,7 +184,7 @@ public class DppEtlTaskController extends BaseController {
     }
 
 
-    @Log(title = "触发一次定时任务", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dpp.task.trigger", businessType = BusinessType.UPDATE)
     @PutMapping("/startDppEtlTask/{id}")
     public AjaxResult startDppEtlTask(@PathVariable("id") Long id) {
         return dppEtlTaskService.startDppEtlTask(id);

@@ -124,7 +124,7 @@ public class DaDatasourceController extends BaseController {
 
     @Operation(summary = "导出数据源列表")
     @PreAuthorize("@ss.hasPermi('da:dataSource:export')")
-    @Log(title = "数据源", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.da.datasource", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DaDatasourcePageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -135,7 +135,7 @@ public class DaDatasourceController extends BaseController {
 
     @Operation(summary = "导入数据源列表")
     @PreAuthorize("@ss.hasPermi('da:dataSource:import')")
-    @Log(title = "数据源", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.da.datasource", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DaDatasourceRespVO> util = new ExcelUtil<>(DaDatasourceRespVO.class);
@@ -155,7 +155,7 @@ public class DaDatasourceController extends BaseController {
 
     @Operation(summary = "新增数据源")
     @PreAuthorize("@ss.hasPermi('da:dataSource:add')")
-    @Log(title = "数据源", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.da.datasource", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DaDatasourceSaveReqVO daDatasource) {
         daDatasource.setCreatorId(getUserId());
@@ -166,7 +166,7 @@ public class DaDatasourceController extends BaseController {
 
     @Operation(summary = "修改数据源")
     @PreAuthorize("@ss.hasPermi('da:dataSource:edit')")
-    @Log(title = "数据源", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.da.datasource", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DaDatasourceSaveReqVO daDatasource) {
         daDatasource.setUpdatorId(getUserId());
@@ -177,7 +177,7 @@ public class DaDatasourceController extends BaseController {
 
     @Operation(summary = "删除数据源")
     @PreAuthorize("@ss.hasPermi('da:dataSource:remove')")
-    @Log(title = "数据源", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.da.datasource", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(daDatasourceService.removeDaDatasource(Arrays.asList(ids)));
@@ -197,7 +197,7 @@ public class DaDatasourceController extends BaseController {
 
     @Operation(summary = "删除数据源带类型判断是数据资产还是数据研发")
     @PreAuthorize("@ss.hasPermi('da:dataSource:remove')")
-    @Log(title = "数据源", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.da.datasource", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}/{type}")
     public CommonResult<Integer> removeDppOrDa(@PathVariable("ids") Long[] ids, @PathVariable("type") Long type) {
         return CommonResult.toAjax(daDatasourceService.removeDaDatasourceDppOrDa(Arrays.asList(ids), type));
@@ -205,9 +205,10 @@ public class DaDatasourceController extends BaseController {
 
     @Operation(summary = "测试连接")
     @PreAuthorize("@ss.hasPermi('da:dataSource:remove')")
-    @Log(title = "测试连接", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.da.test.connection", businessType = BusinessType.OTHER)
     @GetMapping("clientsTest/{id}")
     public AjaxResult clientsTest(@PathVariable("id") Long ids) {
+
         return daDatasourceService.clientsTest(ids);
     }
 

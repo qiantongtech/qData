@@ -75,7 +75,7 @@ public class DmDataLayerSpecificationController extends BaseController {
 
     @Operation(summary = "新增数仓分层-规范管理")
     @PreAuthorize("@ss.hasPermi('dm:dataLayer:add')")
-    @Log(title = "数仓分层-规范管理", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dm.data.layer.spec", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DmDataLayerSpecificationSaveReqVO dmDataLayerSpecification) {
         dmDataLayerSpecification.setCreatorId(getUserId());
@@ -86,7 +86,7 @@ public class DmDataLayerSpecificationController extends BaseController {
 
     @Operation(summary = "修改数仓分层-规范管理")
     @PreAuthorize("@ss.hasPermi('dm:dataLayer:edit')")
-    @Log(title = "数仓分层-规范管理", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dm.data.layer.spec", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DmDataLayerSpecificationSaveReqVO dmDataLayerSpecification) {
         dmDataLayerSpecification.setUpdatorId(getUserId());
@@ -97,7 +97,7 @@ public class DmDataLayerSpecificationController extends BaseController {
 
     @Operation(summary = "删除数仓分层-规范管理")
     @PreAuthorize("@ss.hasPermi('dm:dataLayer:remove')")
-    @Log(title = "数仓分层-规范管理", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dm.data.layer.spec", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dmDataLayerSpecificationService.removeDmDataLayerSpecification(Arrays.asList(ids)));

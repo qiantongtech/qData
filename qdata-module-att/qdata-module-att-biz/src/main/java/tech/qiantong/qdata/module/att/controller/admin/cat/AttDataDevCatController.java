@@ -68,7 +68,7 @@ public class AttDataDevCatController extends BaseController {
 
     @Operation(summary = "导出数据开发类目管理列表")
     @PreAuthorize("@ss.hasPermi('att:dataDevCat:export')")
-    @Log(title = "数据开发类目管理", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.att.data.dev.cat", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AttDataDevCatPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -79,7 +79,7 @@ public class AttDataDevCatController extends BaseController {
 
     @Operation(summary = "导入数据开发类目管理列表")
     @PreAuthorize("@ss.hasPermi('att:dataDevCat:import')")
-    @Log(title = "数据开发类目管理", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.att.data.dev.cat", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<AttDataDevCatRespVO> util = new ExcelUtil<>(AttDataDevCatRespVO.class);
@@ -99,7 +99,7 @@ public class AttDataDevCatController extends BaseController {
 
     @Operation(summary = "新增数据开发类目管理")
     @PreAuthorize("@ss.hasPermi('att:dataDevCat:add')")
-    @Log(title = "数据开发类目管理", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.att.data.dev.cat", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AttDataDevCatSaveReqVO attDataDevCat) {
         attDataDevCat.setCreatorId(getUserId());
@@ -110,7 +110,7 @@ public class AttDataDevCatController extends BaseController {
 
     @Operation(summary = "修改数据开发类目管理")
     @PreAuthorize("@ss.hasPermi('att:dataDevCat:edit')")
-    @Log(title = "数据开发类目管理", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.att.data.dev.cat", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AttDataDevCatSaveReqVO attDataDevCat) {
         attDataDevCat.setUpdatorId(getUserId());
@@ -121,7 +121,7 @@ public class AttDataDevCatController extends BaseController {
 
     @Operation(summary = "删除数据开发类目管理")
     @PreAuthorize("@ss.hasPermi('att:dataDevCat:remove')")
-    @Log(title = "数据开发类目管理", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.att.data.dev.cat", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(attDataDevCatService.removeAttDataDevCat(Arrays.asList(ids)));

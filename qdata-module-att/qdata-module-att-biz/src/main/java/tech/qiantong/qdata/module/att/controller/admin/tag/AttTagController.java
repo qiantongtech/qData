@@ -78,7 +78,7 @@ public class AttTagController extends BaseController {
 
     @Operation(summary = "导出标签管理列表")
     @PreAuthorize("@ss.hasPermi('att:tag:export')")
-    @Log(title = "标签管理", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.att.tag", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AttTagPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -89,7 +89,7 @@ public class AttTagController extends BaseController {
 
     @Operation(summary = "导入标签管理列表")
     @PreAuthorize("@ss.hasPermi('att:tag:import')")
-    @Log(title = "标签管理", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.att.tag", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<AttTagRespVO> util = new ExcelUtil<>(AttTagRespVO.class);
@@ -109,7 +109,7 @@ public class AttTagController extends BaseController {
 
     @Operation(summary = "新增标签管理")
     @PreAuthorize("@ss.hasPermi('att:tag:add')")
-    @Log(title = "标签管理", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.att.tag", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AttTagSaveReqVO attTag) {
         attTag.setCreatorId(getUserId());
@@ -120,7 +120,7 @@ public class AttTagController extends BaseController {
 
     @Operation(summary = "修改标签管理")
     @PreAuthorize("@ss.hasPermi('att:tag:edit')")
-    @Log(title = "标签管理", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.att.tag", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AttTagSaveReqVO attTag) {
         attTag.setUpdatorId(getUserId());
@@ -131,7 +131,7 @@ public class AttTagController extends BaseController {
 
     @Operation(summary = "删除标签管理")
     @PreAuthorize("@ss.hasPermi('att:tag:remove')")
-    @Log(title = "标签管理", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.att.tag", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(attTagService.removeAttTag(Arrays.asList(ids)));

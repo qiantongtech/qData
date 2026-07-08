@@ -81,7 +81,7 @@ public class DgDesensitizeAssetcolumnController extends BaseController {
 
     @Operation(summary = "导出脱敏清单关联关系列表")
     @PreAuthorize("@ss.hasPermi('dg:dgdesensitizelist:export')")
-    @Log(title = "脱敏清单关联关系", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.dg.desensitize.asset.column", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DgDesensitizeAssetcolumnPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -92,7 +92,7 @@ public class DgDesensitizeAssetcolumnController extends BaseController {
 
     @Operation(summary = "导入脱敏清单关联关系列表")
     @PreAuthorize("@ss.hasPermi('dg:dgdesensitizelist:import')")
-    @Log(title = "脱敏清单关联关系", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.dg.desensitize.asset.column", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DgDesensitizeAssetcolumnRespVO> util = new ExcelUtil<>(DgDesensitizeAssetcolumnRespVO.class);
@@ -112,7 +112,7 @@ public class DgDesensitizeAssetcolumnController extends BaseController {
 
     @Operation(summary = "新增脱敏清单关联关系")
     @PreAuthorize("@ss.hasPermi('dg:dgdesensitizelist:add')")
-    @Log(title = "脱敏清单关联关系", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dg.desensitize.asset.column", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DgDesensitizeAssetcolumnSaveReqVO dgDesensitizeAssetcolumn) {
         dgDesensitizeAssetcolumn.setCreatorId(getUserId());
@@ -123,7 +123,7 @@ public class DgDesensitizeAssetcolumnController extends BaseController {
 
     @Operation(summary = "修改脱敏清单关联关系")
     @PreAuthorize("@ss.hasPermi('dg:dgdesensitizelist:edit')")
-    @Log(title = "脱敏清单关联关系", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dg.desensitize.asset.column", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DgDesensitizeAssetcolumnSaveReqVO dgDesensitizeAssetcolumn) {
         dgDesensitizeAssetcolumn.setUpdatorId(getUserId());
@@ -134,7 +134,7 @@ public class DgDesensitizeAssetcolumnController extends BaseController {
 
     @Operation(summary = "删除脱敏清单关联关系")
     @PreAuthorize("@ss.hasPermi('dg:dgdesensitizelist:remove')")
-    @Log(title = "脱敏清单关联关系", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dg.desensitize.asset.column", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dgDesensitizeAssetcolumnService.removeDgDesensitizeAssetcolumn(Arrays.asList(ids)));

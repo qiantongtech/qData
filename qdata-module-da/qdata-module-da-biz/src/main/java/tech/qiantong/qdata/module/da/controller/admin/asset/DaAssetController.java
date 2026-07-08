@@ -228,7 +228,7 @@ public class DaAssetController extends BaseController {
 
     @Operation(summary = "导出数据资产列表")
     @PreAuthorize("@ss.hasPermi('da:asset:export')")
-    @Log(title = "数据资产", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.da.asset", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DaAssetPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -239,7 +239,7 @@ public class DaAssetController extends BaseController {
 
     @Operation(summary = "导入数据资产列表")
     @PreAuthorize("@ss.hasPermi('da:asset:import')")
-    @Log(title = "数据资产", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.da.asset", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DaAssetRespVO> util = new ExcelUtil<>(DaAssetRespVO.class);
@@ -282,7 +282,7 @@ public class DaAssetController extends BaseController {
 
     @Operation(summary = "数据资产绑定资源")
     @PreAuthorize("@ss.hasPermi('da:asset:edit')")
-    @Log(title = "数据资产", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.da.asset", businessType = BusinessType.INSERT)
     @PostMapping("/bindResources")
     public CommonResult<Long> bindResources(@Valid @RequestBody DaAssetSaveReqVO daAsset) {
         daAsset.setUpdatorId(getUserId());
@@ -293,7 +293,7 @@ public class DaAssetController extends BaseController {
 
     @Operation(summary = "新增数据资产")
     @PreAuthorize("@ss.hasPermi('da:asset:add')")
-    @Log(title = "数据资产", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.da.asset", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DaAssetSaveReqVO daAsset) {
         daAsset.setCreatorId(getUserId());
@@ -304,7 +304,7 @@ public class DaAssetController extends BaseController {
 
     @Operation(summary = "批量新增数据资产")
     @PreAuthorize("@ss.hasPermi('da:asset:add')") // 也可以单独配 da:asset:batchAdd
-    @Log(title = "数据资产", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.da.asset", businessType = BusinessType.INSERT)
     @PostMapping("/batch")
     public CommonResult<List<Long>> batchAdd(@Valid @RequestBody List<DaAssetSaveReqVO> daAssetList) {
         Long userId = getUserId();
@@ -322,7 +322,7 @@ public class DaAssetController extends BaseController {
 
     @Operation(summary = "修改数据资产")
     @PreAuthorize("@ss.hasPermi('da:asset:edit')")
-    @Log(title = "数据资产", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.da.asset", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DaAssetSaveReqVO daAsset) {
         daAsset.setUpdatorId(getUserId());
@@ -333,13 +333,13 @@ public class DaAssetController extends BaseController {
 
     @Operation(summary = "删除数据资产")
     @PreAuthorize("@ss.hasPermi('da:asset:remove')")
-    @Log(title = "数据资产", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.da.asset", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ID}")
     public CommonResult<Integer> remove(@PathVariable Long ID) {
         return CommonResult.toAjax(daAssetService.removeDaAsset(ID));
     }
 
-    @Log(title = "触发一次定时任务", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.da.discovery.task.trigger", businessType = BusinessType.UPDATE)
     @PutMapping("/startDaDiscoveryTask")
     public AjaxResult startDaDiscoveryTask(@Valid @RequestBody DaAssetSaveReqVO daAsset) {
         return daAssetService.startDaAssetDatasourceTask(daAsset.getId());

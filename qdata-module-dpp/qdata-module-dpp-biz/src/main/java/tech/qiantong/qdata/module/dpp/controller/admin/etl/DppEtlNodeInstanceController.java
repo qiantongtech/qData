@@ -91,7 +91,7 @@ public class DppEtlNodeInstanceController extends BaseController {
 
     @Operation(summary = "导出数据集成节点实例列表")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlNodeInstance:export')")
-    @Log(title = "数据集成节点实例", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.dpp.node.instance", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DppEtlNodeInstancePageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -102,7 +102,7 @@ public class DppEtlNodeInstanceController extends BaseController {
 
     @Operation(summary = "导入数据集成节点实例列表")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlNodeInstance:import')")
-    @Log(title = "数据集成节点实例", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.dpp.node.instance", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DppEtlNodeInstanceRespVO> util = new ExcelUtil<>(DppEtlNodeInstanceRespVO.class);
@@ -122,7 +122,7 @@ public class DppEtlNodeInstanceController extends BaseController {
 
     @Operation(summary = "新增数据集成节点实例")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlNodeInstance:add')")
-    @Log(title = "数据集成节点实例", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dpp.node.instance", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DppEtlNodeInstanceSaveReqVO dppEtlNodeInstance) {
         dppEtlNodeInstance.setCreatorId(getUserId());
@@ -133,7 +133,7 @@ public class DppEtlNodeInstanceController extends BaseController {
 
     @Operation(summary = "修改数据集成节点实例")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlNodeInstance:edit')")
-    @Log(title = "数据集成节点实例", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dpp.node.instance", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DppEtlNodeInstanceSaveReqVO dppEtlNodeInstance) {
         dppEtlNodeInstance.setUpdatorId(getUserId());
@@ -144,7 +144,7 @@ public class DppEtlNodeInstanceController extends BaseController {
 
     @Operation(summary = "删除数据集成节点实例")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlNodeInstance:remove')")
-    @Log(title = "数据集成节点实例", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dpp.node.instance", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dppEtlNodeInstanceService.removeDppEtlNodeInstance(Arrays.asList(ids)));

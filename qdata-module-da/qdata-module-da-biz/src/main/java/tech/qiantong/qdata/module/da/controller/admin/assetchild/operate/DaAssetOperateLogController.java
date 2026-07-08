@@ -72,7 +72,7 @@ public class DaAssetOperateLogController extends BaseController {
 
     @Operation(summary = "导出数据资产操作记录列表")
     @PreAuthorize("@ss.hasPermi('da:assetOperateLog:export')")
-    @Log(title = "数据资产操作记录", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.da.asset.operate.log", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DaAssetOperateLogPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -83,7 +83,7 @@ public class DaAssetOperateLogController extends BaseController {
 
     @Operation(summary = "导入数据资产操作记录列表")
     @PreAuthorize("@ss.hasPermi('da:assetOperateLog:import')")
-    @Log(title = "数据资产操作记录", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.da.asset.operate.log", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DaAssetOperateLogRespVO> util = new ExcelUtil<>(DaAssetOperateLogRespVO.class);
@@ -103,7 +103,7 @@ public class DaAssetOperateLogController extends BaseController {
 
     @Operation(summary = "新增数据资产操作记录")
     @PreAuthorize("@ss.hasPermi('da:assetOperateLog:add')")
-    @Log(title = "数据资产操作记录", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.da.asset.operate.log", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DaAssetOperateLogSaveReqVO daAssetOperateLog) {
         daAssetOperateLog.setCreatorId(getUserId());
@@ -114,7 +114,7 @@ public class DaAssetOperateLogController extends BaseController {
 
     @Operation(summary = "修改数据资产操作记录")
     @PreAuthorize("@ss.hasPermi('da:assetOperateLog:edit')")
-    @Log(title = "数据资产操作记录", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.da.asset.operate.log", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DaAssetOperateLogSaveReqVO daAssetOperateLog) {
         daAssetOperateLog.setUpdatorId(getUserId());
@@ -125,7 +125,7 @@ public class DaAssetOperateLogController extends BaseController {
 
     @Operation(summary = "删除数据资产操作记录")
     @PreAuthorize("@ss.hasPermi('da:assetOperateLog:remove')")
-    @Log(title = "数据资产操作记录", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.da.asset.operate.log", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(daAssetOperateLogService.removeDaAssetOperateLog(Arrays.asList(ids)));

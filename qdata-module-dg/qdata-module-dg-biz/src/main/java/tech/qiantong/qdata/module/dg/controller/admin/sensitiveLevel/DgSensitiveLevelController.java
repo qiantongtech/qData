@@ -55,7 +55,7 @@ public class DgSensitiveLevelController extends BaseController {
 
     @Operation(summary = "新增敏感等级")
     @PreAuthorize("@ss.hasPermi('dg:sensitiveLevel:add')")
-    @Log(title = "敏感等级", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dg.sensitive.level", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DgSensitiveLevelSaveReqVO dgSensitiveLevel) {
         dgSensitiveLevel.setCreatorId(getUserId());
@@ -66,7 +66,7 @@ public class DgSensitiveLevelController extends BaseController {
 
     @Operation(summary = "修改敏感等级")
     @PreAuthorize("@ss.hasPermi('dg:sensitiveLevel:edit')")
-    @Log(title = "敏感等级", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dg.sensitive.level", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DgSensitiveLevelSaveReqVO dgSensitiveLevel) {
         dgSensitiveLevel.setUpdatorId(getUserId());
@@ -77,7 +77,7 @@ public class DgSensitiveLevelController extends BaseController {
 
     @Operation(summary = "修改敏感等级状态")
     @PreAuthorize("@ss.hasPermi('dg:sensitiveLevel:edit')")
-    @Log(title = "敏感等级", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dg.sensitive.level", businessType = BusinessType.UPDATE)
     @PostMapping("/updateStatus/{id}/{status}")
     public AjaxResult updateStatus(@PathVariable Long id, @PathVariable Long status) {
         if (!service.updateStatus(id, status)) {
@@ -88,7 +88,7 @@ public class DgSensitiveLevelController extends BaseController {
 
     @Operation(summary = "删除敏感等级")
     @PreAuthorize("@ss.hasPermi('dg:sensitiveLevel:remove')")
-    @Log(title = "敏感等级", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dg.sensitive.level", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(service.removeDgSensitiveLevel(Arrays.asList(ids)));

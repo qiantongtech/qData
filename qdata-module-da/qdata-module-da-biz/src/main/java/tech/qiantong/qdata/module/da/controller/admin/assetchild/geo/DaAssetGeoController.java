@@ -71,7 +71,7 @@ public class DaAssetGeoController extends BaseController {
 
     @Operation(summary = "导出数据资产-矢量列表")
     @PreAuthorize("@ss.hasPermi('da:assetGeo:export')")
-    @Log(title = "数据资产-矢量", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.da.asset.geo", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DaAssetGeoPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -82,7 +82,7 @@ public class DaAssetGeoController extends BaseController {
 
     @Operation(summary = "导入数据资产-矢量列表")
     @PreAuthorize("@ss.hasPermi('da:assetGeo:import')")
-    @Log(title = "数据资产-矢量", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.da.asset.geo", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DaAssetGeoRespVO> util = new ExcelUtil<>(DaAssetGeoRespVO.class);
@@ -102,7 +102,7 @@ public class DaAssetGeoController extends BaseController {
 
     @Operation(summary = "新增数据资产-矢量")
     @PreAuthorize("@ss.hasPermi('da:assetGeo:add')")
-    @Log(title = "数据资产-矢量", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.da.asset.geo", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DaAssetGeoSaveReqVO daAssetGeo) {
         daAssetGeo.setCreatorId(getUserId());
@@ -113,7 +113,7 @@ public class DaAssetGeoController extends BaseController {
 
     @Operation(summary = "修改数据资产-矢量")
     @PreAuthorize("@ss.hasPermi('da:assetGeo:edit')")
-    @Log(title = "数据资产-矢量", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.da.asset.geo", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DaAssetGeoSaveReqVO daAssetGeo) {
         daAssetGeo.setUpdatorId(getUserId());
@@ -124,7 +124,7 @@ public class DaAssetGeoController extends BaseController {
 
     @Operation(summary = "删除数据资产-矢量")
     @PreAuthorize("@ss.hasPermi('da:assetGeo:remove')")
-    @Log(title = "数据资产-矢量", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.da.asset.geo", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(daAssetGeoService.removeDaAssetGeo(Arrays.asList(ids)));

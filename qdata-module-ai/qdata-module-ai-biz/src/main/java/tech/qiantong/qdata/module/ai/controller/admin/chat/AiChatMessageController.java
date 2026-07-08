@@ -69,7 +69,7 @@ public class AiChatMessageController extends BaseController {
 
     @Operation(summary = "导出ai聊天消息列表")
     @PreAuthorize("@ss.hasPermi('ai:chatmessage:export')")
-    @Log(title = "ai聊天消息", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.ai.chat.message", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AiChatMessagePageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -88,7 +88,7 @@ public class AiChatMessageController extends BaseController {
 
     @Operation(summary = "新增ai聊天消息")
     @PreAuthorize("@ss.hasPermi('ai:chatmessage:add')")
-    @Log(title = "ai聊天消息", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.ai.chat.message", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AiChatMessageSaveReqVO aiChatMessage) {
         aiChatMessage.setCreatorId(getUserId());
@@ -99,7 +99,7 @@ public class AiChatMessageController extends BaseController {
 
     @Operation(summary = "修改ai聊天消息")
     @PreAuthorize("@ss.hasPermi('ai:chatmessage:edit')")
-    @Log(title = "ai聊天消息", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.ai.chat.message", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AiChatMessageSaveReqVO aiChatMessage) {
         aiChatMessage.setUpdatorId(getUserId());
@@ -110,7 +110,7 @@ public class AiChatMessageController extends BaseController {
 
     @Operation(summary = "删除ai聊天消息")
     @PreAuthorize("@ss.hasPermi('ai:chatmessage:remove')")
-    @Log(title = "ai聊天消息", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.ai.chat.message", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(aiChatMessageService.removeAiChatMessage(Arrays.asList(ids)));

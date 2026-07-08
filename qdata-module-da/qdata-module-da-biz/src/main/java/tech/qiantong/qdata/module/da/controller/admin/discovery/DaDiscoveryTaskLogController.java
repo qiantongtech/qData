@@ -74,7 +74,7 @@ public class DaDiscoveryTaskLogController extends BaseController {
 
     @Operation(summary = "导出数据发现任务日志列表")
     @PreAuthorize("@ss.hasPermi('da:discoveryTaskLog:export')")
-    @Log(title = "数据发现任务日志", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.da.discovery.task.log", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DaDiscoveryTaskLogPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -86,7 +86,7 @@ public class DaDiscoveryTaskLogController extends BaseController {
 
     @Operation(summary = "导入数据发现任务日志列表")
     @PreAuthorize("@ss.hasPermi('da:discoveryTaskLog:import')")
-    @Log(title = "数据发现任务日志", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.da.discovery.task.log", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DaDiscoveryTaskLogRespVO> util = new ExcelUtil<>(DaDiscoveryTaskLogRespVO.class);
@@ -106,7 +106,7 @@ public class DaDiscoveryTaskLogController extends BaseController {
 
     @Operation(summary = "新增数据发现任务日志")
     @PreAuthorize("@ss.hasPermi('da:discoveryTaskLog:add')")
-    @Log(title = "数据发现任务日志", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.da.discovery.task.log", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DaDiscoveryTaskLogSaveReqVO daDiscoveryTaskLog) {
         daDiscoveryTaskLog.setCreatorId(getUserId());
@@ -117,7 +117,7 @@ public class DaDiscoveryTaskLogController extends BaseController {
 
     @Operation(summary = "修改数据发现任务日志")
     @PreAuthorize("@ss.hasPermi('da:discoveryTaskLog:edit')")
-    @Log(title = "数据发现任务日志", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.da.discovery.task.log", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DaDiscoveryTaskLogSaveReqVO daDiscoveryTaskLog) {
         daDiscoveryTaskLog.setUpdatorId(getUserId());
@@ -128,7 +128,7 @@ public class DaDiscoveryTaskLogController extends BaseController {
 
     @Operation(summary = "删除数据发现任务日志")
     @PreAuthorize("@ss.hasPermi('da:discoveryTaskLog:remove')")
-    @Log(title = "数据发现任务日志", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.da.discovery.task.log", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(daDiscoveryTaskLogService.removeDaDiscoveryTaskLog(Arrays.asList(ids)));

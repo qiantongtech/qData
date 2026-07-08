@@ -48,7 +48,7 @@ public class McTaskInstanceLogController extends BaseController {
     }
 
     @Operation(summary = "导出采集任务实例-日志列表")
-    @Log(title = "采集任务实例-日志", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.mc.task.instance.log", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, McTaskInstanceLogPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -65,7 +65,7 @@ public class McTaskInstanceLogController extends BaseController {
     }
 
     @Operation(summary = "新增采集任务实例-日志")
-    @Log(title = "采集任务实例-日志", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.mc.task.instance.log", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody McTaskInstanceLogSaveReqVO mcTaskInstanceLog) {
         mcTaskInstanceLog.setCreatorId(getUserId());
@@ -75,7 +75,7 @@ public class McTaskInstanceLogController extends BaseController {
     }
 
     @Operation(summary = "修改采集任务实例-日志")
-    @Log(title = "采集任务实例-日志", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.mc.task.instance.log", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody McTaskInstanceLogSaveReqVO mcTaskInstanceLog) {
         mcTaskInstanceLog.setUpdatorId(getUserId());
@@ -85,7 +85,7 @@ public class McTaskInstanceLogController extends BaseController {
     }
 
     @Operation(summary = "删除采集任务实例-日志")
-    @Log(title = "采集任务实例-日志", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.mc.task.instance.log", businessType = BusinessType.DELETE)
     @DeleteMapping("/{taskInstanceIds}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(mcTaskInstanceLogService.removeMcTaskInstanceLog(Arrays.asList(ids)));

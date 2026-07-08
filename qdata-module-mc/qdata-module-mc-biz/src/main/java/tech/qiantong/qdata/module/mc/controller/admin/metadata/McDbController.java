@@ -59,7 +59,7 @@ public class McDbController extends BaseController {
 
     @Operation(summary = "导出数据库列表")
     @BizDataScope(code = "mc_metadata_list", userField = "businessLeader", deptField = "responsibleDept")
-    @Log(title = "数据库", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.mc.db", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, McDbPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -76,7 +76,7 @@ public class McDbController extends BaseController {
     }
 
     @Operation(summary = "新增数据库")
-    @Log(title = "数据库", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.mc.db", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody McDbSaveReqVO mcDb) {
         mcDb.setCreatorId(getUserId());
@@ -86,7 +86,7 @@ public class McDbController extends BaseController {
     }
 
     @Operation(summary = "修改数据库")
-    @Log(title = "数据库", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.mc.db", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody McDbSaveReqVO mcDb) {
         mcDb.setUpdatorId(getUserId());
@@ -96,7 +96,7 @@ public class McDbController extends BaseController {
     }
 
     @Operation(summary = "停启用库元数据")
-    @Log(title = "库元数据", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.mc.db.toggle", businessType = BusinessType.UPDATE)
     @PostMapping("toggle")
     public CommonResult<Integer> toggle(@Valid @RequestBody ToggleStatusVO param) {
         return CommonResult.toAjax(mcDbService.toggle(param.getId(), param.getStatus()));
@@ -104,7 +104,7 @@ public class McDbController extends BaseController {
 
 
     @Operation(summary = "停启用库元数据")
-    @Log(title = "库元数据", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.mc.db.toggle", businessType = BusinessType.UPDATE)
     @PostMapping("/editPortalVisible")
     public CommonResult<Integer> editPortalVisible(@Valid @RequestBody McDbSaveReqVO param) {
         return CommonResult.toAjax(mcDbService.editPortalVisible(param.getId(), param.getPortalVisible()));
@@ -114,7 +114,7 @@ public class McDbController extends BaseController {
 
 
     @Operation(summary = "删除数据库")
-    @Log(title = "数据库", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.mc.db", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(mcDbService.removeMcDb(Arrays.asList(ids)));

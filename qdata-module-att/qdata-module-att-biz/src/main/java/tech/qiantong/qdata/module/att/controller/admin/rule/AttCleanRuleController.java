@@ -78,7 +78,7 @@ public class AttCleanRuleController extends BaseController {
 
     @Operation(summary = "导出清洗规则列表")
     @PreAuthorize("@ss.hasPermi('att:cleanRule:export')")
-    @Log(title = "清洗规则", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.att.clean.rule", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AttCleanRulePageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -90,7 +90,7 @@ public class AttCleanRuleController extends BaseController {
 
     @Operation(summary = "导入清洗规则列表")
     @PreAuthorize("@ss.hasPermi('att:cleanRule:import')")
-    @Log(title = "清洗规则", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.att.clean.rule", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<AttCleanRuleRespVO> util = new ExcelUtil<>(AttCleanRuleRespVO.class);
@@ -110,7 +110,7 @@ public class AttCleanRuleController extends BaseController {
 
     @Operation(summary = "新增清洗规则")
     @PreAuthorize("@ss.hasPermi('att:cleanRule:add')")
-    @Log(title = "清洗规则", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.att.clean.rule", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AttCleanRuleSaveReqVO attCleanRule) {
         attCleanRule.setCreatorId(getUserId());
@@ -121,7 +121,7 @@ public class AttCleanRuleController extends BaseController {
 
     @Operation(summary = "修改清洗规则")
     @PreAuthorize("@ss.hasPermi('att:cleanRule:edit')")
-    @Log(title = "清洗规则", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.att.clean.rule", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AttCleanRuleSaveReqVO attCleanRule) {
         attCleanRule.setUpdatorId(getUserId());
@@ -132,7 +132,7 @@ public class AttCleanRuleController extends BaseController {
 
     @Operation(summary = "删除清洗规则")
     @PreAuthorize("@ss.hasPermi('att:cleanRule:remove')")
-    @Log(title = "清洗规则", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.att.clean.rule", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(attCleanRuleService.removeAttCleanRule(Arrays.asList(ids)));

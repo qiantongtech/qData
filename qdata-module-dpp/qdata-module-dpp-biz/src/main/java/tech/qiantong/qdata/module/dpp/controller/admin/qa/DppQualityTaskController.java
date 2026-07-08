@@ -69,7 +69,7 @@ public class DppQualityTaskController extends BaseController {
     }
 
     @Operation(summary = "导出数据质量任务列表")
-    @Log(title = "数据质量任务", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.dpp.quality", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DppQualityTaskPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -79,7 +79,7 @@ public class DppQualityTaskController extends BaseController {
     }
 
     @Operation(summary = "导入数据质量任务列表")
-    @Log(title = "数据质量任务", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.dpp.quality", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DppQualityTaskRespVO> util = new ExcelUtil<>(DppQualityTaskRespVO.class);
@@ -104,7 +104,7 @@ public class DppQualityTaskController extends BaseController {
     }
 
     @Operation(summary = "新增数据质量任务")
-    @Log(title = "数据质量任务", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dpp.quality", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DppQualityTaskSaveReqVO dppQualityTask) {
         dppQualityTask.setCreatorId(getUserId());
@@ -114,7 +114,7 @@ public class DppQualityTaskController extends BaseController {
     }
 
     @Operation(summary = "修改数据质量任务")
-    @Log(title = "数据质量任务", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dpp.quality", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DppQualityTaskSaveReqVO dppQualityTask) {
         dppQualityTask.setUpdatorId(getUserId());
@@ -124,7 +124,7 @@ public class DppQualityTaskController extends BaseController {
     }
 
     @Operation(summary = "删除数据质量任务")
-    @Log(title = "数据质量任务", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dpp.quality", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dppQualityTaskService.removeDppQualityTask(Arrays.asList(ids)));
@@ -139,7 +139,7 @@ public class DppQualityTaskController extends BaseController {
         return result ? success() : error("任务不存在或已过期！");
     }
 
-    @Log(title = "触发一次定时任务", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dpp.task.trigger", businessType = BusinessType.UPDATE)
     @PutMapping("/startDppQualityTask/{id}")
     public AjaxResult startDaDiscoveryTask(@PathVariable("id") Long id)
     {
@@ -147,7 +147,7 @@ public class DppQualityTaskController extends BaseController {
     }
 
 
-    @Log(title = "数据质量任务状态修改", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dpp.quality.status", businessType = BusinessType.UPDATE)
     @PostMapping("/updateDaDiscoveryTaskCronExpression")
     public AjaxResult updateDaDiscoveryTaskCronExpression(@RequestBody DppQualityTaskSaveReqVO daDiscoveryTask)
     {

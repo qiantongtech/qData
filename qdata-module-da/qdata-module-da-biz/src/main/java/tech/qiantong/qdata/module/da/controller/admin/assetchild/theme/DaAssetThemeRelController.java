@@ -71,7 +71,7 @@ public class DaAssetThemeRelController extends BaseController {
 
     @Operation(summary = "导出数据资产-主题关联关系列表")
     @PreAuthorize("@ss.hasPermi('da:assetThemeRel:export')")
-    @Log(title = "数据资产-主题关联关系", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.da.asset.theme.rel", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DaAssetThemeRelPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -82,7 +82,7 @@ public class DaAssetThemeRelController extends BaseController {
 
     @Operation(summary = "导入数据资产-主题关联关系列表")
     @PreAuthorize("@ss.hasPermi('da:assetThemeRel:import')")
-    @Log(title = "数据资产-主题关联关系", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.da.asset.theme.rel", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DaAssetThemeRelRespVO> util = new ExcelUtil<>(DaAssetThemeRelRespVO.class);
@@ -102,7 +102,7 @@ public class DaAssetThemeRelController extends BaseController {
 
     @Operation(summary = "新增数据资产-主题关联关系")
     @PreAuthorize("@ss.hasPermi('da:assetThemeRel:add')")
-    @Log(title = "数据资产-主题关联关系", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.da.asset.theme.rel", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DaAssetThemeRelSaveReqVO daAssetThemeRel) {
         daAssetThemeRel.setCreatorId(getUserId());
@@ -113,7 +113,7 @@ public class DaAssetThemeRelController extends BaseController {
 
     @Operation(summary = "修改数据资产-主题关联关系")
     @PreAuthorize("@ss.hasPermi('da:assetThemeRel:edit')")
-    @Log(title = "数据资产-主题关联关系", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.da.asset.theme.rel", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DaAssetThemeRelSaveReqVO daAssetThemeRel) {
         daAssetThemeRel.setUpdatorId(getUserId());
@@ -124,7 +124,7 @@ public class DaAssetThemeRelController extends BaseController {
 
     @Operation(summary = "删除数据资产-主题关联关系")
     @PreAuthorize("@ss.hasPermi('da:assetThemeRel:remove')")
-    @Log(title = "数据资产-主题关联关系", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.da.asset.theme.rel", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(daAssetThemeRelService.removeDaAssetThemeRel(Arrays.asList(ids)));

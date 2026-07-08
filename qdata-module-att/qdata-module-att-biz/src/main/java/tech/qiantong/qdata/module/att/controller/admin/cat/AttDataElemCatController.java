@@ -70,7 +70,7 @@ public class AttDataElemCatController extends BaseController {
 
     @Operation(summary = "导出数据元类目管理列表")
     @PreAuthorize("@ss.hasPermi('att:dataElemCat:export')")
-    @Log(title = "数据元类目管理", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.att.data.elem.cat", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AttDataElemCatPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -81,7 +81,7 @@ public class AttDataElemCatController extends BaseController {
 
     @Operation(summary = "导入数据元类目管理列表")
     @PreAuthorize("@ss.hasPermi('att:dataElemCat:import')")
-    @Log(title = "数据元类目管理", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.att.data.elem.cat", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<AttDataElemCatRespVO> util = new ExcelUtil<>(AttDataElemCatRespVO.class);
@@ -101,7 +101,7 @@ public class AttDataElemCatController extends BaseController {
 
     @Operation(summary = "新增数据元类目管理")
     @PreAuthorize("@ss.hasPermi('att:dataElemCat:add')")
-    @Log(title = "数据元类目管理", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.att.data.elem.cat", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AttDataElemCatSaveReqVO attDataElemCat) {
         attDataElemCat.setCreatorId(getUserId());
@@ -112,7 +112,7 @@ public class AttDataElemCatController extends BaseController {
 
     @Operation(summary = "修改数据元类目管理")
     @PreAuthorize("@ss.hasPermi('att:dataElemCat:edit')")
-    @Log(title = "数据元类目管理", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.att.data.elem.cat", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AttDataElemCatSaveReqVO attDataElemCat) {
         attDataElemCat.setUpdatorId(getUserId());
@@ -123,7 +123,7 @@ public class AttDataElemCatController extends BaseController {
 
     @Operation(summary = "删除数据元类目管理")
     @PreAuthorize("@ss.hasPermi('att:dataElemCat:remove')")
-    @Log(title = "数据元类目管理", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.att.data.elem.cat", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(attDataElemCatService.removeAttDataElemCat(Arrays.asList(ids)));

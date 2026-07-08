@@ -80,7 +80,7 @@ public class DaDiscoveryColumnController extends BaseController {
 
     @Operation(summary = "导出数据发现字段列表")
     @PreAuthorize("@ss.hasPermi('da:discoveryColumn:export')")
-    @Log(title = "数据发现字段", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.da.discovery.column", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DaDiscoveryColumnPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -91,7 +91,7 @@ public class DaDiscoveryColumnController extends BaseController {
 
     @Operation(summary = "导入数据发现字段列表")
     @PreAuthorize("@ss.hasPermi('da:discoveryColumn:import')")
-    @Log(title = "数据发现字段", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.da.discovery.column", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DaDiscoveryColumnRespVO> util = new ExcelUtil<>(DaDiscoveryColumnRespVO.class);
@@ -111,7 +111,7 @@ public class DaDiscoveryColumnController extends BaseController {
 
     @Operation(summary = "新增数据发现字段")
     @PreAuthorize("@ss.hasPermi('da:discoveryColumn:add')")
-    @Log(title = "数据发现字段", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.da.discovery.column", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DaDiscoveryColumnSaveReqVO daDiscoveryColumn) {
         daDiscoveryColumn.setCreatorId(getUserId());
@@ -122,7 +122,7 @@ public class DaDiscoveryColumnController extends BaseController {
 
     @Operation(summary = "修改数据发现字段")
     @PreAuthorize("@ss.hasPermi('da:discoveryColumn:edit')")
-    @Log(title = "数据发现字段", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.da.discovery.column", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DaDiscoveryColumnSaveReqVO daDiscoveryColumn) {
         daDiscoveryColumn.setUpdatorId(getUserId());
@@ -133,7 +133,7 @@ public class DaDiscoveryColumnController extends BaseController {
 
     @Operation(summary = "删除数据发现字段")
     @PreAuthorize("@ss.hasPermi('da:discoveryColumn:remove')")
-    @Log(title = "数据发现字段", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.da.discovery.column", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(daDiscoveryColumnService.removeDaDiscoveryColumn(Arrays.asList(ids)));

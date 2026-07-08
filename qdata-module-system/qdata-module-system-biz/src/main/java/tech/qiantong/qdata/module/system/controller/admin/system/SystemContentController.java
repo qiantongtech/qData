@@ -71,7 +71,7 @@ public class SystemContentController extends BaseController {
 
 //    @Operation(summary = "新增系统配置")
 //    @PreAuthorize("@ss.hasPermi('system:system:content:add')")
-//    @Log(title = "系统配置", businessType = BusinessType.INSERT)
+//    @Log(title = "log.op.title.system.config", businessType = BusinessType.INSERT)
 //    @PostMapping
 //    public CommonResult<Long> add(@Valid @RequestBody SystemContentSaveReqVO systemContent) {
 //        systemContent.setCreatorId(getUserId());
@@ -82,7 +82,7 @@ public class SystemContentController extends BaseController {
 
     @Operation(summary = "修改系统配置")
     @PreAuthorize("@ss.hasPermi('system:system:content:edit')")
-    @Log(title = "系统配置", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.system.config", businessType = BusinessType.UPDATE)
     @PostMapping("/system/content/edit")
     public CommonResult<Integer> edit(@Valid @RequestBody SystemContentSaveReqVO systemContent) {
         systemContent.setUpdatorId(getUserId());
@@ -93,7 +93,7 @@ public class SystemContentController extends BaseController {
 
 //    @Operation(summary = "删除系统配置")
 //    @PreAuthorize("@ss.hasPermi('system:system:content:remove')")
-//    @Log(title = "系统配置", businessType = BusinessType.DELETE)
+//    @Log(title = "log.op.title.system.config", businessType = BusinessType.DELETE)
 //    @DeleteMapping("/{ids}")
 //    public CommonResult<Integer> remove(@PathVariable Long[] ids) {
 //        return CommonResult.toAjax(systemContentService.removeSystemContent(Arrays.asList(ids)));

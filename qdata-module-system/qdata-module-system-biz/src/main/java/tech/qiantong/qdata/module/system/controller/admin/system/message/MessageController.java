@@ -76,7 +76,7 @@ public class MessageController extends BaseController {
 
     @Operation(summary = "导出消息列表")
     @PreAuthorize("@ss.hasPermi('system:message:message:export')")
-    @Log(title = "消息", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.system.message", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, MessagePageReqVO message) {
         List<MessageDO> list = (List<MessageDO>) messageService.getMessagePage(message).getRows();
@@ -94,7 +94,7 @@ public class MessageController extends BaseController {
 
     @Operation(summary = "新增消息")
     @PreAuthorize("@ss.hasPermi('system:message:message:add')")
-    @Log(title = "消息", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.system.message", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Boolean> add(@Valid @RequestBody MessageSaveReqVO message) {
         MessageDO messageDO = BeanUtils.toBean(message, MessageDO.class);
@@ -112,7 +112,7 @@ public class MessageController extends BaseController {
 
     @Operation(summary = "修改消息")
     @PreAuthorize("@ss.hasPermi('system:message:message:edit')")
-    @Log(title = "消息", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.system.message", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Boolean> edit(@Valid @RequestBody MessageSaveReqVO message) {
         MessageDO messageDO = BeanUtils.toBean(message, MessageDO.class);
@@ -131,7 +131,7 @@ public class MessageController extends BaseController {
 
     @Operation(summary = "删除消息")
     @PreAuthorize("@ss.hasPermi('system:message:message:remove')")
-    @Log(title = "消息", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.system.message", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Boolean> remove(@PathVariable Long[] ids) {
         boolean b = messageService.removeByIds(Arrays.asList(ids));

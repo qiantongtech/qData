@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import tech.qiantong.qdata.common.core.controller.BaseController;
 import tech.qiantong.qdata.common.core.domain.CommonResult;
 import tech.qiantong.qdata.common.exception.enums.GlobalErrorCodeConstants;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.module.mc.service.task.IMcTaskService;
 
 import javax.annotation.Resource;
@@ -39,11 +40,11 @@ public class McTaskExecutorController extends BaseController {
     public CommonResult<String> runExecuteTask(@PathVariable("id") Long id) {
         try {
             mcTaskService.runDaDiscoveryTask(id);
-            return CommonResult.success("任务id:" + id + "执行成功");
+            return CommonResult.success(MessageUtils.message("mc.task.execute.success", id));
         } catch (NumberFormatException e) {
-            return CommonResult.error( GlobalErrorCodeConstants.ERROR.getCode(),"任务ID格式错误：" + id);
+            return CommonResult.error( GlobalErrorCodeConstants.ERROR.getCode(), MessageUtils.message("mc.task.execute.id.format.error", id));
         } catch (Exception e) {
-            return CommonResult.error( GlobalErrorCodeConstants.ERROR.getCode(),"任务执行失败：" + e.getMessage());
+            return CommonResult.error( GlobalErrorCodeConstants.ERROR.getCode(), MessageUtils.message("mc.task.execute.fail", e.getMessage()));
         }
     }
 }

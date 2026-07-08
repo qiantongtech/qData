@@ -79,7 +79,7 @@ public class DaAssetColumnController extends BaseController {
 
     @Operation(summary = "导出数据资产字段列表")
     @PreAuthorize("@ss.hasPermi('da:assetColumn:export')")
-    @Log(title = "数据资产字段", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.da.asset.column", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DaAssetColumnPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -90,7 +90,7 @@ public class DaAssetColumnController extends BaseController {
 
     @Operation(summary = "导入数据资产字段列表")
     @PreAuthorize("@ss.hasPermi('da:assetColumn:import')")
-    @Log(title = "数据资产字段", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.da.asset.column", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DaAssetColumnRespVO> util = new ExcelUtil<>(DaAssetColumnRespVO.class);
@@ -110,7 +110,7 @@ public class DaAssetColumnController extends BaseController {
 
     @Operation(summary = "新增数据资产字段")
     @PreAuthorize("@ss.hasPermi('da:assetColumn:add')")
-    @Log(title = "数据资产字段", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.da.asset.column", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DaAssetColumnSaveReqVO daAssetColumn) {
         daAssetColumn.setCreatorId(getUserId());
@@ -121,7 +121,7 @@ public class DaAssetColumnController extends BaseController {
 
     @Operation(summary = "修改数据资产字段")
     @PreAuthorize("@ss.hasPermi('da:assetColumn:edit')")
-    @Log(title = "数据资产字段", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.da.asset.column", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DaAssetColumnSaveReqVO daAssetColumn) {
         daAssetColumn.setUpdatorId(getUserId());
@@ -132,7 +132,7 @@ public class DaAssetColumnController extends BaseController {
 
     @Operation(summary = "删除数据资产字段")
     @PreAuthorize("@ss.hasPermi('da:assetColumn:remove')")
-    @Log(title = "数据资产字段", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.da.asset.column", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(daAssetColumnService.removeDaAssetColumn(Arrays.asList(ids)));

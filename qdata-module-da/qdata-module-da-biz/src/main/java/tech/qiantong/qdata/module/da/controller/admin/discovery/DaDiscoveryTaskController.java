@@ -84,7 +84,7 @@ public class DaDiscoveryTaskController extends BaseController {
 
     @Operation(summary = "导出数据发现任务列表")
     @PreAuthorize("@ss.hasPermi('da:discoveryTask:export')")
-    @Log(title = "数据发现任务", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.da.discovery.task", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DaDiscoveryTaskPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -95,7 +95,7 @@ public class DaDiscoveryTaskController extends BaseController {
 
     @Operation(summary = "导入数据发现任务列表")
     @PreAuthorize("@ss.hasPermi('da:discoveryTask:import')")
-    @Log(title = "数据发现任务", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.da.discovery.task", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DaDiscoveryTaskRespVO> util = new ExcelUtil<>(DaDiscoveryTaskRespVO.class);
@@ -138,7 +138,7 @@ public class DaDiscoveryTaskController extends BaseController {
      * 清空定时任务调度日志
      */
     @PreAuthorize("@ss.hasPermi('da:discoveryTask:remove')")
-    @Log(title = "调度日志", businessType = BusinessType.CLEAN)
+    @Log(title = "log.op.title.da.discovery.task.schedule.log", businessType = BusinessType.CLEAN)
     @DeleteMapping("/jobLog/clean")
     public AjaxResult clean()
     {
@@ -148,7 +148,7 @@ public class DaDiscoveryTaskController extends BaseController {
 
     @Operation(summary = "新增数据发现任务")
     @PreAuthorize("@ss.hasPermi('da:discoveryTask:add')")
-    @Log(title = "数据发现任务", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.da.discovery.task", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DaDiscoveryTaskSaveReqVO daDiscoveryTask) {
         daDiscoveryTask.setCreatorId(getUserId());
@@ -159,7 +159,7 @@ public class DaDiscoveryTaskController extends BaseController {
 
     @Operation(summary = "修改数据发现任务")
     @PreAuthorize("@ss.hasPermi('da:discoveryTask:edit')")
-    @Log(title = "数据发现任务", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.da.discovery.task", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DaDiscoveryTaskSaveReqVO daDiscoveryTask) {
         daDiscoveryTask.setUpdatorId(getUserId());
@@ -170,13 +170,13 @@ public class DaDiscoveryTaskController extends BaseController {
 
     @Operation(summary = "删除数据发现任务")
     @PreAuthorize("@ss.hasPermi('da:discoveryTask:remove')")
-    @Log(title = "数据发现任务", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.da.discovery.task", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(daDiscoveryTaskService.removeDaDiscoveryTask(Arrays.asList(ids)));
     }
 
-    @Log(title = "定时任务", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.da.discovery.task.job", businessType = BusinessType.UPDATE)
     @PutMapping("/runDaDiscoveryTask/{id}")
     public AjaxResult runDaDiscoveryTask(@PathVariable("id") Long id) throws SchedulerException
     {
@@ -185,7 +185,7 @@ public class DaDiscoveryTaskController extends BaseController {
     }
 
 
-    @Log(title = "触发一次定时任务", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.da.discovery.task.trigger", businessType = BusinessType.UPDATE)
     @PutMapping("/startDaDiscoveryTask/{id}")
     public AjaxResult startDaDiscoveryTask(@PathVariable("id") Long id)
     {
@@ -193,7 +193,7 @@ public class DaDiscoveryTaskController extends BaseController {
     }
 
 
-    @Log(title = "数据发现任务状态修改", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.da.discovery.task.status", businessType = BusinessType.UPDATE)
     @PreAuthorize("@ss.hasPermi('da:discoveryTask:edit')")
     @PostMapping("/updateDaDiscoveryTaskStatus")
     public AjaxResult updateDaDiscoveryTaskStatus(@RequestBody DaDiscoveryTaskSaveReqVO daDiscoveryTask) throws SchedulerException
@@ -205,7 +205,7 @@ public class DaDiscoveryTaskController extends BaseController {
 
 
 
-    @Log(title = "数据发现任务状态修改", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.da.discovery.task.status", businessType = BusinessType.UPDATE)
     @PreAuthorize("@ss.hasPermi('da:discoveryTask:edit')")
     @PostMapping("/updateDaDiscoveryTaskCronExpression")
     public AjaxResult updateDaDiscoveryTaskCronExpression(@RequestBody DaDiscoveryTaskSaveReqVO daDiscoveryTask) throws SchedulerException

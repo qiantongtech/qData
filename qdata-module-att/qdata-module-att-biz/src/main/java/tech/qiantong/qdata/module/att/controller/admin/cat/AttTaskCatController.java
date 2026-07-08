@@ -68,7 +68,7 @@ public class AttTaskCatController extends BaseController {
 
     @Operation(summary = "导出数据集成任务类目管理列表")
     @PreAuthorize("@ss.hasPermi('att:taskCat:export')")
-    @Log(title = "数据集成任务类目管理", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.att.task.cat", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AttTaskCatPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -79,7 +79,7 @@ public class AttTaskCatController extends BaseController {
 
     @Operation(summary = "导入数据集成任务类目管理列表")
     @PreAuthorize("@ss.hasPermi('att:taskCat:import')")
-    @Log(title = "数据集成任务类目管理", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.att.task.cat", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<AttTaskCatRespVO> util = new ExcelUtil<>(AttTaskCatRespVO.class);
@@ -99,7 +99,7 @@ public class AttTaskCatController extends BaseController {
 
     @Operation(summary = "新增数据集成任务类目管理")
     @PreAuthorize("@ss.hasPermi('att:taskCat:add')")
-    @Log(title = "数据集成任务类目管理", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.att.task.cat", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AttTaskCatSaveReqVO attTaskCat) {
         attTaskCat.setCreatorId(getUserId());
@@ -110,7 +110,7 @@ public class AttTaskCatController extends BaseController {
 
     @Operation(summary = "修改数据集成任务类目管理")
     @PreAuthorize("@ss.hasPermi('att:taskCat:edit')")
-    @Log(title = "数据集成任务类目管理", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.att.task.cat", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AttTaskCatSaveReqVO attTaskCat) {
         attTaskCat.setUpdatorId(getUserId());
@@ -121,7 +121,7 @@ public class AttTaskCatController extends BaseController {
 
     @Operation(summary = "删除数据集成任务类目管理")
     @PreAuthorize("@ss.hasPermi('att:taskCat:remove')")
-    @Log(title = "数据集成任务类目管理", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.att.task.cat", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(attTaskCatService.removeAttTaskCat(Arrays.asList(ids)));

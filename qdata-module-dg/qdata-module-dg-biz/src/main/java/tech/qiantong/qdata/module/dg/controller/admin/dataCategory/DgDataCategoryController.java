@@ -91,7 +91,7 @@ public class DgDataCategoryController extends BaseController {
 
     @Operation(summary = "新增数据分类")
     //@PreAuthorize("@ss.hasPermi('dg:dataCategory:add')")
-    @Log(title = "数据分类", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dg.data.category", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DgDataCategorySaveReqVO dgDataCategory) {
         dgDataCategory.setCreatorId(getUserId());
@@ -102,7 +102,7 @@ public class DgDataCategoryController extends BaseController {
 
     @Operation(summary = "修改数据分类")
     //@PreAuthorize("@ss.hasPermi('dg:dataCategory:edit')")
-    @Log(title = "数据分类", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dg.data.category", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DgDataCategorySaveReqVO dgDataCategory) {
         dgDataCategory.setUpdatorId(getUserId());
@@ -113,7 +113,7 @@ public class DgDataCategoryController extends BaseController {
 
     @Operation(summary = "批量設置数据分級")
     //@PreAuthorize("@ss.hasPermi('dg:dataCategory:edit')")
-    @Log(title = "批量設置数据分級", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dg.data.category.batch.set", businessType = BusinessType.UPDATE)
     @PutMapping("/batchDataLevel")
     public CommonResult<Boolean> batchDataLevel(@RequestBody DgDataCategoryBatchDataLevelReqVO reqVO) {
         return CommonResult.toAjax(dgDataCategoryService.update(Wrappers.lambdaUpdate(DgDataCategoryDO.class).set(DgDataCategoryDO::getDataLevelId, reqVO.getDataLevelId()).in(DgDataCategoryDO::getId, reqVO.getIds())));
@@ -121,7 +121,7 @@ public class DgDataCategoryController extends BaseController {
 
     @Operation(summary = "删除数据分类")
     //@PreAuthorize("@ss.hasPermi('dg:dataCategory:remove')")
-    @Log(title = "数据分类", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dg.data.category", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dgDataCategoryService.removeDgDataCategory(Arrays.asList(ids)));

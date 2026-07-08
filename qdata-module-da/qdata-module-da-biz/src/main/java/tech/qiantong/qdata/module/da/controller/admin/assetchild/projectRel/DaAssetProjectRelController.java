@@ -71,7 +71,7 @@ public class DaAssetProjectRelController extends BaseController {
 
     @Operation(summary = "导出数据资产与项目关联关系列表")
     @PreAuthorize("@ss.hasPermi('da:assetProjectRel:export')")
-    @Log(title = "数据资产与项目关联关系", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.da.asset.project.rel", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DaAssetProjectRelPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -82,7 +82,7 @@ public class DaAssetProjectRelController extends BaseController {
 
     @Operation(summary = "导入数据资产与项目关联关系列表")
     @PreAuthorize("@ss.hasPermi('da:assetProjectRel:import')")
-    @Log(title = "数据资产与项目关联关系", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.da.asset.project.rel", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DaAssetProjectRelRespVO> util = new ExcelUtil<>(DaAssetProjectRelRespVO.class);
@@ -102,7 +102,7 @@ public class DaAssetProjectRelController extends BaseController {
 
     @Operation(summary = "新增数据资产与项目关联关系")
     @PreAuthorize("@ss.hasPermi('da:assetProjectRel:add')")
-    @Log(title = "数据资产与项目关联关系", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.da.asset.project.rel", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DaAssetProjectRelSaveReqVO daAssetProjectRel) {
         daAssetProjectRel.setCreatorId(getUserId());
@@ -113,7 +113,7 @@ public class DaAssetProjectRelController extends BaseController {
 
     @Operation(summary = "修改数据资产与项目关联关系")
     @PreAuthorize("@ss.hasPermi('da:assetProjectRel:edit')")
-    @Log(title = "数据资产与项目关联关系", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.da.asset.project.rel", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DaAssetProjectRelSaveReqVO daAssetProjectRel) {
         daAssetProjectRel.setUpdatorId(getUserId());
@@ -124,7 +124,7 @@ public class DaAssetProjectRelController extends BaseController {
 
     @Operation(summary = "删除数据资产与项目关联关系")
     @PreAuthorize("@ss.hasPermi('da:assetProjectRel:remove')")
-    @Log(title = "数据资产与项目关联关系", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.da.asset.project.rel", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(daAssetProjectRelService.removeDaAssetProjectRel(Arrays.asList(ids)));

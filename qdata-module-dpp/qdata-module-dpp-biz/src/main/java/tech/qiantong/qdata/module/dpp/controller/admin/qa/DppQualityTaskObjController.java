@@ -69,7 +69,7 @@ public class DppQualityTaskObjController extends BaseController {
     }
 
     @Operation(summary = "导出数据质量任务-稽查对象列表")
-    @Log(title = "数据质量任务-稽查对象", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.dpp.quality.obj", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DppQualityTaskObjPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -79,7 +79,7 @@ public class DppQualityTaskObjController extends BaseController {
     }
 
     @Operation(summary = "导入数据质量任务-稽查对象列表")
-    @Log(title = "数据质量任务-稽查对象", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.dpp.quality.obj", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DppQualityTaskObjRespVO> util = new ExcelUtil<>(DppQualityTaskObjRespVO.class);
@@ -97,7 +97,7 @@ public class DppQualityTaskObjController extends BaseController {
     }
 
     @Operation(summary = "新增数据质量任务-稽查对象")
-    @Log(title = "数据质量任务-稽查对象", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dpp.quality.obj", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DppQualityTaskObjSaveReqVO dppQualityTaskObj) {
         dppQualityTaskObj.setCreatorId(getUserId());
@@ -107,7 +107,7 @@ public class DppQualityTaskObjController extends BaseController {
     }
 
     @Operation(summary = "修改数据质量任务-稽查对象")
-    @Log(title = "数据质量任务-稽查对象", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dpp.quality.obj", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DppQualityTaskObjSaveReqVO dppQualityTaskObj) {
         dppQualityTaskObj.setUpdatorId(getUserId());
@@ -117,7 +117,7 @@ public class DppQualityTaskObjController extends BaseController {
     }
 
     @Operation(summary = "删除数据质量任务-稽查对象")
-    @Log(title = "数据质量任务-稽查对象", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dpp.quality.obj", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dppQualityTaskObjService.removeDppQualityTaskObj(Arrays.asList(ids)));

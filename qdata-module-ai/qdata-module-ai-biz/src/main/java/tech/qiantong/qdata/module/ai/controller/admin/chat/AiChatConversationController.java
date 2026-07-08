@@ -69,7 +69,7 @@ public class AiChatConversationController extends BaseController {
 
     @Operation(summary = "导出ai聊天对话列表")
     @PreAuthorize("@ss.hasPermi('ai:chatConversation:export')")
-    @Log(title = "ai聊天对话", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.ai.chat.conversation", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AiChatConversationPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -88,7 +88,7 @@ public class AiChatConversationController extends BaseController {
 
     @Operation(summary = "新增ai聊天对话")
     @PreAuthorize("@ss.hasPermi('ai:chatConversation:add')")
-    @Log(title = "ai聊天对话", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.ai.chat.conversation", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AiChatConversationSaveReqVO aiChatConversation) {
         aiChatConversation.setCreatorId(getUserId());
@@ -99,7 +99,7 @@ public class AiChatConversationController extends BaseController {
 
     @Operation(summary = "修改ai聊天对话")
     @PreAuthorize("@ss.hasPermi('ai:chatConversation:edit')")
-    @Log(title = "ai聊天对话", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.ai.chat.conversation", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AiChatConversationSaveReqVO aiChatConversation) {
         aiChatConversation.setUpdatorId(getUserId());
@@ -110,7 +110,7 @@ public class AiChatConversationController extends BaseController {
 
     @Operation(summary = "删除ai聊天对话")
     @PreAuthorize("@ss.hasPermi('ai:chatConversation:remove')")
-    @Log(title = "ai聊天对话", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.ai.chat.conversation", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(aiChatConversationService.removeAiChatConversation(Arrays.asList(ids)));

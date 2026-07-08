@@ -69,7 +69,7 @@ public class MessageTemplateController extends BaseController {
 
     @Operation(summary = "导出消息模板列表")
     @PreAuthorize("@ss.hasPermi('system:message:messageTemplate:export')")
-    @Log(title = "消息模板", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.system.message.template", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, MessageTemplatePageReqVO messageTemplate) {
         List<MessageTemplateDO> list = (List<MessageTemplateDO>) messageTemplateService.getMessageTemplatePage(messageTemplate).getRows();
@@ -87,7 +87,7 @@ public class MessageTemplateController extends BaseController {
 
     @Operation(summary = "新增消息模板")
     @PreAuthorize("@ss.hasPermi('system:message:messageTemplate:add')")
-    @Log(title = "消息模板", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.system.message.template", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Boolean> add(@Valid @RequestBody MessageTemplateSaveReqVO messageTemplate) {
         MessageTemplateDO messageTemplateDO = BeanUtils.toBean(messageTemplate, MessageTemplateDO.class);
@@ -98,7 +98,7 @@ public class MessageTemplateController extends BaseController {
 
     @Operation(summary = "修改消息模板")
     @PreAuthorize("@ss.hasPermi('system:message:messageTemplate:edit')")
-    @Log(title = "消息模板", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.system.message.template", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Boolean> edit(@Valid @RequestBody MessageTemplateSaveReqVO messageTemplate) {
         MessageTemplateDO messageTemplateDO = BeanUtils.toBean(messageTemplate, MessageTemplateDO.class);
@@ -110,7 +110,7 @@ public class MessageTemplateController extends BaseController {
 
     @Operation(summary = "删除消息模板")
     @PreAuthorize("@ss.hasPermi('system:message:messageTemplate:remove')")
-    @Log(title = "消息模板", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.system.message.template", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Boolean> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(messageTemplateService.removeByIds(Arrays.asList(ids)));

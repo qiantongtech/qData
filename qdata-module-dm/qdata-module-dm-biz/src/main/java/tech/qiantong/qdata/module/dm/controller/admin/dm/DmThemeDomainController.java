@@ -71,7 +71,7 @@ public class DmThemeDomainController extends BaseController {
 
     @Operation(summary = "导出主题域管理列表")
     @PreAuthorize("@ss.hasPermi('dm:themeDomain:export')")
-    @Log(title = "主题域管理", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.dm.theme.domain", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DmThemeDomainPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -82,7 +82,7 @@ public class DmThemeDomainController extends BaseController {
 
     @Operation(summary = "导入主题域管理列表")
     @PreAuthorize("@ss.hasPermi('dm:themeDomain:import')")
-    @Log(title = "主题域管理", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.dm.theme.domain", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DmThemeDomainRespVO> util = new ExcelUtil<>(DmThemeDomainRespVO.class);
@@ -102,7 +102,7 @@ public class DmThemeDomainController extends BaseController {
 
     @Operation(summary = "新增主题域管理")
     @PreAuthorize("@ss.hasPermi('dm:themeDomain:add')")
-    @Log(title = "主题域管理", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dm.theme.domain", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DmThemeDomainSaveReqVO dmThemeDomain) {
         dmThemeDomain.setCreatorId(getUserId());
@@ -113,7 +113,7 @@ public class DmThemeDomainController extends BaseController {
 
     @Operation(summary = "修改主题域管理")
     @PreAuthorize("@ss.hasPermi('dm:themeDomain:edit')")
-    @Log(title = "主题域管理", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dm.theme.domain", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DmThemeDomainSaveReqVO dmThemeDomain) {
         dmThemeDomain.setUpdatorId(getUserId());
@@ -124,7 +124,7 @@ public class DmThemeDomainController extends BaseController {
 
     @Operation(summary = "删除主题域管理")
     @PreAuthorize("@ss.hasPermi('dm:themeDomain:remove')")
-    @Log(title = "主题域管理", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dm.theme.domain", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dmThemeDomainService.removeDmThemeDomain(Arrays.asList(ids)));

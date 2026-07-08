@@ -58,7 +58,7 @@ public class SysPostController extends BaseController
         return getDataTable(list);
     }
 
-    @Log(title = "岗位管理", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.system.post", businessType = BusinessType.EXPORT)
     @PreAuthorize("@ss.hasPermi('system:post:export')")
     @PostMapping("/export")
     public void export(HttpServletResponse response, SysPost post)
@@ -82,7 +82,7 @@ public class SysPostController extends BaseController
      * 新增岗位
      */
     @PreAuthorize("@ss.hasPermi('system:post:add')")
-    @Log(title = "岗位管理", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.system.post", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@Validated @RequestBody SysPost post)
     {
@@ -102,7 +102,7 @@ public class SysPostController extends BaseController
      * 修改岗位
      */
     @PreAuthorize("@ss.hasPermi('system:post:edit')")
-    @Log(title = "岗位管理", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.system.post", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@Validated @RequestBody SysPost post)
     {
@@ -122,7 +122,7 @@ public class SysPostController extends BaseController
      * 删除岗位
      */
     @PreAuthorize("@ss.hasPermi('system:post:remove')")
-    @Log(title = "岗位管理", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.system.post", businessType = BusinessType.DELETE)
     @DeleteMapping("/{postIds}")
     public AjaxResult remove(@PathVariable Long[] postIds)
     {

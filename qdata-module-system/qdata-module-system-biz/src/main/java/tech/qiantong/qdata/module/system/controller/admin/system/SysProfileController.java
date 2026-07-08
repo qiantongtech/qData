@@ -86,7 +86,7 @@ public class SysProfileController extends BaseController
     /**
      * 修改用户
      */
-    @Log(title = "个人信息", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.system.profile", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult updateProfile(@RequestBody SysUser user)
     {
@@ -116,7 +116,7 @@ public class SysProfileController extends BaseController
     /**
      * 重置密码
      */
-    @Log(title = "个人信息", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.system.profile", businessType = BusinessType.UPDATE)
     @PutMapping("/updatePwd")
     public AjaxResult updatePwd(String oldPassword, String newPassword)
     {
@@ -145,7 +145,7 @@ public class SysProfileController extends BaseController
     /**
      * 头像上传
      */
-    @Log(title = "用户头像", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.system.user.avatar", businessType = BusinessType.UPDATE)
     @PostMapping("/avatar")
     public AjaxResult avatar(@RequestParam("avatarfile") MultipartFile file) throws Exception
     {

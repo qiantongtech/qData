@@ -71,7 +71,7 @@ public class DppEtlNodeController extends BaseController {
 
     @Operation(summary = "导出数据集成节点列表")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlNode:export')")
-    @Log(title = "数据集成节点", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.dpp.node", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DppEtlNodePageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -82,7 +82,7 @@ public class DppEtlNodeController extends BaseController {
 
     @Operation(summary = "导入数据集成节点列表")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlNode:import')")
-    @Log(title = "数据集成节点", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.dpp.node", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DppEtlNodeRespVO> util = new ExcelUtil<>(DppEtlNodeRespVO.class);
@@ -102,7 +102,7 @@ public class DppEtlNodeController extends BaseController {
 
     @Operation(summary = "新增数据集成节点")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlNode:add')")
-    @Log(title = "数据集成节点", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dpp.node", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DppEtlNodeSaveReqVO dppEtlNode) {
         dppEtlNode.setCreatorId(getUserId());
@@ -113,7 +113,7 @@ public class DppEtlNodeController extends BaseController {
 
     @Operation(summary = "修改数据集成节点")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlNode:edit')")
-    @Log(title = "数据集成节点", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dpp.node", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DppEtlNodeSaveReqVO dppEtlNode) {
         dppEtlNode.setUpdatorId(getUserId());
@@ -124,7 +124,7 @@ public class DppEtlNodeController extends BaseController {
 
     @Operation(summary = "删除数据集成节点")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlNode:remove')")
-    @Log(title = "数据集成节点", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dpp.node", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dppEtlNodeService.removeDppEtlNode(Arrays.asList(ids)));

@@ -71,7 +71,7 @@ public class DgDesensitizeIntervalController extends BaseController {
 
     @Operation(summary = "导出脱敏区间列表")
     @PreAuthorize("@ss.hasPermi('dg:desensitizeinterval:export')")
-    @Log(title = "脱敏区间", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.dg.desensitize.interval", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DgDesensitizeIntervalPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -82,7 +82,7 @@ public class DgDesensitizeIntervalController extends BaseController {
 
     @Operation(summary = "导入脱敏区间列表")
     @PreAuthorize("@ss.hasPermi('dg:desensitizeinterval:import')")
-    @Log(title = "脱敏区间", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.dg.desensitize.interval", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DgDesensitizeIntervalRespVO> util = new ExcelUtil<>(DgDesensitizeIntervalRespVO.class);
@@ -102,7 +102,7 @@ public class DgDesensitizeIntervalController extends BaseController {
 
     @Operation(summary = "新增脱敏区间")
     @PreAuthorize("@ss.hasPermi('dg:desensitizeinterval:add')")
-    @Log(title = "脱敏区间", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dg.desensitize.interval", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DgDesensitizeIntervalSaveReqVO dgDesensitizeInterval) {
         dgDesensitizeInterval.setCreatorId(getUserId());
@@ -113,7 +113,7 @@ public class DgDesensitizeIntervalController extends BaseController {
 
     @Operation(summary = "修改脱敏区间")
     @PreAuthorize("@ss.hasPermi('dg:desensitizeinterval:edit')")
-    @Log(title = "脱敏区间", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dg.desensitize.interval", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DgDesensitizeIntervalSaveReqVO dgDesensitizeInterval) {
         dgDesensitizeInterval.setUpdatorId(getUserId());
@@ -124,7 +124,7 @@ public class DgDesensitizeIntervalController extends BaseController {
 
     @Operation(summary = "删除脱敏区间")
     @PreAuthorize("@ss.hasPermi('dg:desensitizeinterval:remove')")
-    @Log(title = "脱敏区间", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dg.desensitize.interval", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dgDesensitizeIntervalService.removeDgDesensitizeInterval(Arrays.asList(ids)));

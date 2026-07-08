@@ -70,7 +70,7 @@ public class DppEtlSqlTempController extends BaseController {
 
 
     @Operation(summary = "新增数据集成SQL模版")
-    @Log(title = "数据集成SQL模版", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dpp.sql.temp", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DppEtlSqlTempSaveReqVO dppEtlSqlTemp) {
         dppEtlSqlTemp.setCreatorId(getUserId());
@@ -80,7 +80,7 @@ public class DppEtlSqlTempController extends BaseController {
     }
 
     @Operation(summary = "修改数据集成SQL模版")
-    @Log(title = "数据集成SQL模版", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dpp.sql.temp", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DppEtlSqlTempSaveReqVO dppEtlSqlTemp) {
         dppEtlSqlTemp.setUpdatorId(getUserId());
@@ -90,7 +90,7 @@ public class DppEtlSqlTempController extends BaseController {
     }
 
     @Operation(summary = "删除数据集成SQL模版")
-    @Log(title = "数据集成SQL模版", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dpp.sql.temp", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dppEtlSqlTempService.removeDppEtlSqlTemp(Arrays.asList(ids)));

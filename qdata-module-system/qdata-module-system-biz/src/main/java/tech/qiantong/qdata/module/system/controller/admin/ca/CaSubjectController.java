@@ -85,7 +85,7 @@ public class CaSubjectController extends BaseController
      * 导出主体管理列表
      */
     @PreAuthorize("@ss.hasPermi('ca:subject:export')")
-    @Log(title = "主体管理", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.system.subject", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, CaSubject caSubject)
     {
@@ -108,7 +108,7 @@ public class CaSubjectController extends BaseController
      * 新增主体管理
      */
     @PreAuthorize("@ss.hasPermi('ca:subject:add')")
-    @Log(title = "主体管理", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.system.subject", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody CaSubject caSubject)
     {
@@ -137,7 +137,7 @@ public class CaSubjectController extends BaseController
      * 修改主体管理
      */
     @PreAuthorize("@ss.hasPermi('ca:subject:edit')")
-    @Log(title = "主体管理", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.system.subject", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody CaSubject caSubject)
     {
@@ -148,7 +148,7 @@ public class CaSubjectController extends BaseController
      * 删除主体管理
      */
     @PreAuthorize("@ss.hasPermi('ca:subject:remove')")
-    @Log(title = "主体管理", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.system.subject", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)
     {

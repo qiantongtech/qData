@@ -79,7 +79,7 @@ public class AttSourceSystemController extends BaseController {
 
     @Operation(summary = "导出来源系统列表")
     @PreAuthorize("@ss.hasPermi('att:sourcesystem:export')")
-    @Log(title = "来源系统", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.att.source.system", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AttSourceSystemPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -90,7 +90,7 @@ public class AttSourceSystemController extends BaseController {
 
     @Operation(summary = "导入来源系统列表")
     @PreAuthorize("@ss.hasPermi('att:sourcesystem:import')")
-    @Log(title = "来源系统", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.att.source.system", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<AttSourceSystemRespVO> util = new ExcelUtil<>(AttSourceSystemRespVO.class);
@@ -110,7 +110,7 @@ public class AttSourceSystemController extends BaseController {
 
     @Operation(summary = "新增来源系统")
     @PreAuthorize("@ss.hasPermi('att:sourcesystem:add')")
-    @Log(title = "来源系统", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.att.source.system", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AttSourceSystemSaveReqVO attSourceSystem) {
         attSourceSystem.setCreatorId(getUserId());
@@ -121,7 +121,7 @@ public class AttSourceSystemController extends BaseController {
 
     @Operation(summary = "修改来源系统")
     @PreAuthorize("@ss.hasPermi('att:sourcesystem:edit')")
-    @Log(title = "来源系统", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.att.source.system", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AttSourceSystemSaveReqVO attSourceSystem) {
         attSourceSystem.setUpdatorId(getUserId());
@@ -132,7 +132,7 @@ public class AttSourceSystemController extends BaseController {
 
     @Operation(summary = "删除来源系统")
     @PreAuthorize("@ss.hasPermi('att:sourcesystem:remove')")
-    @Log(title = "来源系统", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.att.source.system", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(attSourceSystemService.removeAttSourceSystem(Arrays.asList(ids)));

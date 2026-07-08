@@ -63,7 +63,7 @@ public class SysDictTypeController extends BaseController
         return getDataTable(list);
     }
 
-    @Log(title = "字典类型", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.system.dict.type", businessType = BusinessType.EXPORT)
     @PreAuthorize("@ss.hasPermi('system:dict:export')")
     @PostMapping("/export")
     public void export(HttpServletResponse response, SysDictType dictType)
@@ -87,7 +87,7 @@ public class SysDictTypeController extends BaseController
      * 新增字典类型
      */
     @PreAuthorize("@ss.hasPermi('system:dict:add')")
-    @Log(title = "字典类型", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.system.dict.type", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@Validated @RequestBody SysDictType dict)
     {
@@ -103,7 +103,7 @@ public class SysDictTypeController extends BaseController
      * 修改字典类型
      */
     @PreAuthorize("@ss.hasPermi('system:dict:edit')")
-    @Log(title = "字典类型", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.system.dict.type", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@Validated @RequestBody SysDictType dict)
     {
@@ -119,7 +119,7 @@ public class SysDictTypeController extends BaseController
      * 删除字典类型
      */
     @PreAuthorize("@ss.hasPermi('system:dict:remove')")
-    @Log(title = "字典类型", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.system.dict.type", businessType = BusinessType.DELETE)
     @DeleteMapping("/{dictIds}")
     public AjaxResult remove(@PathVariable Long[] dictIds)
     {
@@ -131,7 +131,7 @@ public class SysDictTypeController extends BaseController
      * 刷新字典缓存
      */
     @PreAuthorize("@ss.hasPermi('system:dict:remove')")
-    @Log(title = "字典类型", businessType = BusinessType.CLEAN)
+    @Log(title = "log.op.title.system.dict.type", businessType = BusinessType.CLEAN)
     @DeleteMapping("/refreshCache")
     public AjaxResult refreshCache()
     {

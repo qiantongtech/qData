@@ -90,7 +90,7 @@ public class AiModelController extends BaseController {
 
     @Operation(summary = "新增模型管理")
     @PreAuthorize("@ss.hasPermi('ai:model:add')")
-    @Log(title = "模型管理", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.ai.model", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AiModelSaveReqVO aiModel) {
         aiModel.setCreatorId(getUserId());
@@ -101,7 +101,7 @@ public class AiModelController extends BaseController {
 
     @Operation(summary = "修改模型管理")
     @PreAuthorize("@ss.hasPermi('ai:model:edit')")
-    @Log(title = "模型管理", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.ai.model", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AiModelSaveReqVO aiModel) {
         aiModel.setUpdatorId(getUserId());
@@ -112,7 +112,7 @@ public class AiModelController extends BaseController {
 
     @Operation(summary = "删除模型管理")
     @PreAuthorize("@ss.hasPermi('ai:model:remove')")
-    @Log(title = "模型管理", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.ai.model", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(aiModelService.removeAiModel(Arrays.asList(ids)));

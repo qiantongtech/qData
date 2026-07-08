@@ -80,7 +80,7 @@ public class DmBusinessCategoryController extends BaseController {
 
     @Operation(summary = "导出业务分类列表")
     @PreAuthorize("@ss.hasPermi('dm:businesscategory:export')")
-    @Log(title = "业务分类", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.dm.business.category", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DmBusinessCategoryPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -91,7 +91,7 @@ public class DmBusinessCategoryController extends BaseController {
 
     @Operation(summary = "导入业务分类列表")
     @PreAuthorize("@ss.hasPermi('dm:businesscategory:import')")
-    @Log(title = "业务分类", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.dm.business.category", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DmBusinessCategoryRespVO> util = new ExcelUtil<>(DmBusinessCategoryRespVO.class);
@@ -111,7 +111,7 @@ public class DmBusinessCategoryController extends BaseController {
 
     @Operation(summary = "新增业务分类")
     @PreAuthorize("@ss.hasPermi('dm:businesscategory:add')")
-    @Log(title = "业务分类", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dm.business.category", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DmBusinessCategorySaveReqVO dmBusinessCategory) {
         dmBusinessCategory.setCreatorId(getUserId());
@@ -122,7 +122,7 @@ public class DmBusinessCategoryController extends BaseController {
 
     @Operation(summary = "修改业务分类")
     @PreAuthorize("@ss.hasPermi('dm:businesscategory:edit')")
-    @Log(title = "业务分类", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dm.business.category", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DmBusinessCategorySaveReqVO dmBusinessCategory) {
         dmBusinessCategory.setUpdatorId(getUserId());
@@ -133,7 +133,7 @@ public class DmBusinessCategoryController extends BaseController {
 
     @Operation(summary = "删除业务分类")
     @PreAuthorize("@ss.hasPermi('dm:businesscategory:remove')")
-    @Log(title = "业务分类", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dm.business.category", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dmBusinessCategoryService.removeDmBusinessCategory(Arrays.asList(ids)));

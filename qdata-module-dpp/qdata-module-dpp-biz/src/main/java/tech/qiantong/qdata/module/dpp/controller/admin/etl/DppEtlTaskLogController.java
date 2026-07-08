@@ -71,7 +71,7 @@ public class DppEtlTaskLogController extends BaseController {
 
     @Operation(summary = "导出数据集成任务-日志列表")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlTaskLog:export')")
-    @Log(title = "数据集成任务-日志", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.dpp.task.log", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DppEtlTaskLogPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -82,7 +82,7 @@ public class DppEtlTaskLogController extends BaseController {
 
     @Operation(summary = "导入数据集成任务-日志列表")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlTaskLog:import')")
-    @Log(title = "数据集成任务-日志", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.dpp.task.log", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DppEtlTaskLogRespVO> util = new ExcelUtil<>(DppEtlTaskLogRespVO.class);
@@ -102,7 +102,7 @@ public class DppEtlTaskLogController extends BaseController {
 
     @Operation(summary = "新增数据集成任务-日志")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlTaskLog:add')")
-    @Log(title = "数据集成任务-日志", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dpp.task.log", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DppEtlTaskLogSaveReqVO dppEtlTaskLog) {
         dppEtlTaskLog.setCreatorId(getUserId());
@@ -113,7 +113,7 @@ public class DppEtlTaskLogController extends BaseController {
 
     @Operation(summary = "修改数据集成任务-日志")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlTaskLog:edit')")
-    @Log(title = "数据集成任务-日志", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dpp.task.log", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DppEtlTaskLogSaveReqVO dppEtlTaskLog) {
         dppEtlTaskLog.setUpdatorId(getUserId());
@@ -124,7 +124,7 @@ public class DppEtlTaskLogController extends BaseController {
 
     @Operation(summary = "删除数据集成任务-日志")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlTaskLog:remove')")
-    @Log(title = "数据集成任务-日志", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dpp.task.log", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dppEtlTaskLogService.removeDppEtlTaskLog(Arrays.asList(ids)));

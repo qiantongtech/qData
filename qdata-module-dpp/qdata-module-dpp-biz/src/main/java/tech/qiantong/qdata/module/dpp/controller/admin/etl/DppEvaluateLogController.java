@@ -74,7 +74,7 @@ public class DppEvaluateLogController extends BaseController {
 
     @Operation(summary = "导出评测规则结果列表")
 //    @PreAuthorize("@ss.hasPermi('dpp:evaluateLog:export')")
-    @Log(title = "评测规则结果", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.dpp.evaluate.result", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DppEvaluateLogPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -85,7 +85,7 @@ public class DppEvaluateLogController extends BaseController {
 
     @Operation(summary = "导入评测规则结果列表")
 //    @PreAuthorize("@ss.hasPermi('dpp:evaluateLog:import')")
-    @Log(title = "评测规则结果", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.dpp.evaluate.result", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DppEvaluateLogRespVO> util = new ExcelUtil<>(DppEvaluateLogRespVO.class);
@@ -105,7 +105,7 @@ public class DppEvaluateLogController extends BaseController {
 
     @Operation(summary = "新增评测规则结果")
 //    @PreAuthorize("@ss.hasPermi('dpp:evaluateLog:add')")
-    @Log(title = "评测规则结果", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dpp.evaluate.result", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DppEvaluateLogSaveReqVO dppEvaluateLog) {
         dppEvaluateLog.setCreatorId(getUserId());
@@ -116,7 +116,7 @@ public class DppEvaluateLogController extends BaseController {
 
     @Operation(summary = "修改评测规则结果")
 //    @PreAuthorize("@ss.hasPermi('dpp:evaluateLog:edit')")
-    @Log(title = "评测规则结果", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dpp.evaluate.result", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DppEvaluateLogSaveReqVO dppEvaluateLog) {
         dppEvaluateLog.setUpdatorId(getUserId());
@@ -127,7 +127,7 @@ public class DppEvaluateLogController extends BaseController {
 
     @Operation(summary = "删除评测规则结果")
 //    @PreAuthorize("@ss.hasPermi('dpp:evaluateLog:remove')")
-    @Log(title = "评测规则结果", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dpp.evaluate.result", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dppEvaluateLogService.removeDppEvaluateLog(Arrays.asList(ids)));

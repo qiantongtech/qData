@@ -73,7 +73,7 @@ public class DaAssetGisController extends BaseController {
 
     @Operation(summary = "导出数据资产-地理空间服务列表")
     @PreAuthorize("@ss.hasPermi('da:assetGis:export')")
-    @Log(title = "数据资产-地理空间服务", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.da.asset.gis", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DaAssetGisPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -84,7 +84,7 @@ public class DaAssetGisController extends BaseController {
 
     @Operation(summary = "导入数据资产-地理空间服务列表")
     @PreAuthorize("@ss.hasPermi('da:assetGis:import')")
-    @Log(title = "数据资产-地理空间服务", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.da.asset.gis", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DaAssetGisRespVO> util = new ExcelUtil<>(DaAssetGisRespVO.class);
@@ -104,7 +104,7 @@ public class DaAssetGisController extends BaseController {
 
     @Operation(summary = "新增数据资产-地理空间服务")
     @PreAuthorize("@ss.hasPermi('da:assetGis:add')")
-    @Log(title = "数据资产-地理空间服务", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.da.asset.gis", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DaAssetGisSaveReqVO daAssetGis) {
         daAssetGis.setCreatorId(getUserId());
@@ -115,7 +115,7 @@ public class DaAssetGisController extends BaseController {
 
     @Operation(summary = "修改数据资产-地理空间服务")
     @PreAuthorize("@ss.hasPermi('da:assetGis:edit')")
-    @Log(title = "数据资产-地理空间服务", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.da.asset.gis", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DaAssetGisSaveReqVO daAssetGis) {
         daAssetGis.setUpdatorId(getUserId());
@@ -126,7 +126,7 @@ public class DaAssetGisController extends BaseController {
 
     @Operation(summary = "删除数据资产-地理空间服务")
     @PreAuthorize("@ss.hasPermi('da:assetGis:remove')")
-    @Log(title = "数据资产-地理空间服务", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.da.asset.gis", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(daAssetGisService.removeDaAssetGis(Arrays.asList(ids)));

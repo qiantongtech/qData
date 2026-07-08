@@ -71,7 +71,7 @@ public class DsApiLogController extends BaseController {
 
     @Operation(summary = "导出API服务调用日志列表")
     @PreAuthorize("@ss.hasPermi('ds:apiLog:export')")
-    @Log(title = "API服务调用日志", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.ds.api.log", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DsApiLogPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -82,7 +82,7 @@ public class DsApiLogController extends BaseController {
 
     @Operation(summary = "导入API服务调用日志列表")
     @PreAuthorize("@ss.hasPermi('ds:apiLog:import')")
-    @Log(title = "API服务调用日志", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.ds.api.log", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DsApiLogRespVO> util = new ExcelUtil<>(DsApiLogRespVO.class);
@@ -105,7 +105,7 @@ public class DsApiLogController extends BaseController {
 
     @Operation(summary = "新增API服务调用日志")
     @PreAuthorize("@ss.hasPermi('ds:apiLog:add')")
-    @Log(title = "API服务调用日志", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.ds.api.log", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DsApiLogSaveReqVO dsApiLog) {
         dsApiLog.setCreatorId(getUserId());
@@ -116,7 +116,7 @@ public class DsApiLogController extends BaseController {
 
     @Operation(summary = "修改API服务调用日志")
     @PreAuthorize("@ss.hasPermi('ds:apiLog:edit')")
-    @Log(title = "API服务调用日志", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.ds.api.log", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DsApiLogSaveReqVO dsApiLog) {
         dsApiLog.setUpdatorId(getUserId());
@@ -127,7 +127,7 @@ public class DsApiLogController extends BaseController {
 
     @Operation(summary = "删除API服务调用日志")
     @PreAuthorize("@ss.hasPermi('ds:apiLog:remove')")
-    @Log(title = "API服务调用日志", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.ds.api.log", businessType = BusinessType.DELETE)
     @DeleteMapping("/{id}")
     public CommonResult<Integer> remove(@PathVariable Long[] id) {
         return CommonResult.toAjax(dsApiLogService.removeDsApiLog(Arrays.asList(id)));

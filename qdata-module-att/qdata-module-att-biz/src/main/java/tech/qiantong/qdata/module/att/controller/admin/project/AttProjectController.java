@@ -89,7 +89,7 @@ public class AttProjectController extends BaseController {
 
     @Operation(summary = "导入项目列表")
     @PreAuthorize("@ss.hasPermi('att:project:import')")
-    @Log(title = "项目", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.att.project", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<AttProjectRespVO> util = new ExcelUtil<>(AttProjectRespVO.class);
@@ -116,7 +116,7 @@ public class AttProjectController extends BaseController {
 
     @Operation(summary = "新增项目")
     @PreAuthorize("@ss.hasPermi('att:project:add')")
-    @Log(title = "项目", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.att.project", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AttProjectSaveReqVO attProject) {
         attProject.setCreatorId(getUserId());
@@ -134,7 +134,7 @@ public class AttProjectController extends BaseController {
 
     @Operation(summary = "修改项目")
     @PreAuthorize("@ss.hasPermi('att:project:edit')")
-    @Log(title = "项目", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.att.project", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AttProjectSaveReqVO attProject) {
         attProject.setUpdatorId(getUserId());
@@ -160,7 +160,7 @@ public class AttProjectController extends BaseController {
 
     @Operation(summary = "删除项目")
     @PreAuthorize("@ss.hasPermi('att:project:remove')")
-    @Log(title = "项目", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.att.project", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         int project = attProjectService.removeAttProject(Arrays.asList(ids));

@@ -78,7 +78,7 @@ public class DgDataCategoryCatController extends BaseController {
 
     @Operation(summary = "新增数据分类-类目")
 //    @PreAuthorize("@ss.hasPermi('dg:dataCategoryCat:add')")
-    @Log(title = "数据分类-类目", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dg.data.category.cat", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DgDataCategoryCatSaveReqVO dgDataCategoryCat) {
         dgDataCategoryCat.setCreatorId(getUserId());
@@ -89,7 +89,7 @@ public class DgDataCategoryCatController extends BaseController {
 
     @Operation(summary = "修改数据分类-类目")
 //    @PreAuthorize("@ss.hasPermi('dg:dataCategoryCat:edit')")
-    @Log(title = "数据分类-类目", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dg.data.category.cat", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DgDataCategoryCatSaveReqVO dgDataCategoryCat) {
         dgDataCategoryCat.setUpdatorId(getUserId());
@@ -100,7 +100,7 @@ public class DgDataCategoryCatController extends BaseController {
 
     @Operation(summary = "删除数据分类-类目")
 //    @PreAuthorize("@ss.hasPermi('dg:dataCategoryCat:remove')")
-    @Log(title = "数据分类-类目", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dg.data.category.cat", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dgDataCategoryCatService.removeDgDataCategoryCat(Arrays.asList(ids)));

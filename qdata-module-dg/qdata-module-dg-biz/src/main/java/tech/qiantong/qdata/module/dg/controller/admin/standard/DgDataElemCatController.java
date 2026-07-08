@@ -55,7 +55,7 @@ public class DgDataElemCatController extends BaseController {
 
     @Operation(summary = "新增数据元类目管理")
     @PreAuthorize("@ss.hasPermi('dg:dataElemCat:add')")
-    @Log(title = "数据元类目管理", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dg.data.elem.cat", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DgDataElemCatSaveReqVO dgDataElemCat) {
         return CommonResult.toAjax(service.createDgDataElemCat(dgDataElemCat));
@@ -63,7 +63,7 @@ public class DgDataElemCatController extends BaseController {
 
     @Operation(summary = "修改数据元类目管理")
     @PreAuthorize("@ss.hasPermi('dg:dataElemCat:edit')")
-    @Log(title = "数据元类目管理", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dg.data.elem.cat", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DgDataElemCatSaveReqVO dgDataElemCat) {
         return CommonResult.toAjax(service.updateDgDataElemCat(dgDataElemCat));
@@ -71,7 +71,7 @@ public class DgDataElemCatController extends BaseController {
 
     @Operation(summary = "删除数据元类目管理")
     @PreAuthorize("@ss.hasPermi('dg:dataElemCat:remove')")
-    @Log(title = "数据元类目管理", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dg.data.elem.cat", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(service.removeDgDataElemCat(Arrays.asList(ids)));

@@ -62,7 +62,6 @@ public class MessageUtils
     public static String messageEn(String code, Object... args)
     {
         MessageSource messageSource = SpringUtils.getBean(MessageSource.class);
-        System.out.println(Locale.US);
         return messageSource.getMessage(code, args, Locale.US);
     }
 

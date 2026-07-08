@@ -92,7 +92,7 @@ public class CaCertController extends BaseController
      * 导出证书管理列表
      */
     @PreAuthorize("@ss.hasPermi('ca:cert:export')")
-    @Log(title = "证书管理", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.system.cert", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, CaCert caCert)
     {
@@ -115,7 +115,7 @@ public class CaCertController extends BaseController
      * 新增证书管理
      */
     @PreAuthorize("@ss.hasPermi('ca:cert:add')")
-    @Log(title = "证书管理", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.system.cert", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody CaCert caCert) throws Exception {
         CaSubject subject = caSubjectService.selectCaSubjectById(caCert.getSubjectId());
@@ -148,7 +148,7 @@ public class CaCertController extends BaseController
      * 修改证书管理
      */
     @PreAuthorize("@ss.hasPermi('ca:cert:edit')")
-    @Log(title = "证书管理", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.system.cert", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody CaCert caCert)
     {
@@ -159,7 +159,7 @@ public class CaCertController extends BaseController
      * 删除证书管理
      */
     @PreAuthorize("@ss.hasPermi('ca:cert:remove')")
-    @Log(title = "证书管理", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.system.cert", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)
     {

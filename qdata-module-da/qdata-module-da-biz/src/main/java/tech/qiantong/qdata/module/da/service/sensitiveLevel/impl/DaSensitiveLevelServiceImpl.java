@@ -47,7 +47,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 敏感等级Service业务层处理
+ * Sensitive Level Service business layer implementation
  *
  * @author qdata
  * @date 2025-01-21
@@ -75,16 +75,16 @@ public class DaSensitiveLevelServiceImpl extends ServiceImpl<DaSensitiveLevelMap
 
     @Override
     public int updateDaSensitiveLevel(DaSensitiveLevelSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related validation
 
-        // 更新敏感等级
+        // Update sensitive level
         DaSensitiveLevelDO updateObj = BeanUtils.toBean(updateReqVO, DaSensitiveLevelDO.class);
         return daSensitiveLevelMapper.updateById(updateObj);
     }
 
     @Override
     public int removeDaSensitiveLevel(Collection<Long> idList) {
-        // 批量删除敏感等级
+        // Batch delete sensitive level
         return daSensitiveLevelMapper.deleteBatchIds(idList);
     }
 
@@ -105,19 +105,19 @@ public class DaSensitiveLevelServiceImpl extends ServiceImpl<DaSensitiveLevelMap
                 .collect(Collectors.toMap(
                         DaSensitiveLevelDO::getId,
                         daSensitiveLevelDO -> daSensitiveLevelDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入敏感等级数据
+     * Import sensitive level data
      *
-     * @param importExcelList 敏感等级数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Sensitive level data list
+     * @param isUpdateSupport Whether to support update; if already exists, update the data
+     * @param operName        Operator name
+     * @return Result
      */
     @Override
     public String importDaSensitiveLevel(List<DaSensitiveLevelRespVO> importExcelList, boolean isUpdateSupport, String operName) {

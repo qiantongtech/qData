@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.da.api.assetchild.projectRel.dto;
 import lombok.Data;
 
 /**
- * 数据资产与项目关联关系 DTO 对象 DA_ASSET_PROJECT_REL
+ * Data Asset-Project Relation DTO DA_ASSET_PROJECT_REL
  *
  * @author qdata
  * @date 2025-04-18
@@ -34,19 +34,19 @@ public class DaAssetProjectRelReqDTO {
     /** ID */
     private Long id;
 
-    /** 资产id */
+    /** Asset ID */
     private Long assetId;
 
-    /** 项目id */
+    /** Project ID */
     private Long projectId;
 
-    /** 项目编码 */
+    /** Project Code */
     private String projectCode;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
 

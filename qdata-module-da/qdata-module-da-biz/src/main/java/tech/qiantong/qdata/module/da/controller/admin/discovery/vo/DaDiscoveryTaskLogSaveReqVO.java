@@ -27,7 +27,7 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
- * 数据发现任务日志 创建/修改 Request VO DA_DISCOVERY_TASK_LOG
+ * Data Discovery Task Log Create/Update Request VO DA_DISCOVERY_TASK_LOG
  *
  * @author qdata
  * @date 2025-02-17
@@ -117,7 +117,7 @@ public class DaDiscoveryTaskLogSaveReqVO extends BaseEntity {
         if (daDiscoveryTask == null) {
             return;
         }
-        //TODO 对接海豚调度器会改
+        // TODO Will be changed when integrating DolphinScheduler
         this.name = daDiscoveryTask.getName();
         this.taskName = daDiscoveryTask.getName();
         this.remark = daDiscoveryTask.getRemark();

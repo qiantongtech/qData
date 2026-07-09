@@ -46,7 +46,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 数据资产-视频数据Service业务层处理
+ * Data asset-video data Service business layer processing
  *
  * @author qdata
  * @date 2025-04-14
@@ -80,15 +80,15 @@ public class DaAssetVideoServiceImpl  extends ServiceImpl<DaAssetVideoMapper,DaA
 
     @Override
     public int updateDaAssetVideo(DaAssetVideoSaveReqVO updateReqVO) {
-        // 相关校验
+        // Validation checks
 
-        // 更新数据资产-视频数据
+        // Update data asset-video data
         DaAssetVideoDO updateObj = BeanUtils.toBean(updateReqVO, DaAssetVideoDO.class);
         return daAssetVideoMapper.updateById(updateObj);
     }
     @Override
     public int removeDaAssetVideo(Collection<Long> idList) {
-        // 批量删除数据资产-视频数据
+        // Batch delete data asset-video data
         return daAssetVideoMapper.deleteBatchIds(idList);
     }
 
@@ -109,19 +109,19 @@ public class DaAssetVideoServiceImpl  extends ServiceImpl<DaAssetVideoMapper,DaA
                 .collect(Collectors.toMap(
                         DaAssetVideoDO::getId,
                         daAssetVideoDO -> daAssetVideoDO,
-                        // 保留已存在的值
+                        // Retain existing values
                         (existing, replacement) -> existing
                 ));
     }
 
 
         /**
-         * 导入数据资产-视频数据数据
+         * Import data asset-video data
          *
-         * @param importExcelList 数据资产-视频数据数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
+         * @param importExcelList Data asset-video data list
+         * @param isUpdateSupport Whether to support update, if already exists, update the data
+         * @param operName Operator user
+         * @return Result
          */
         @Override
         public String importDaAssetVideo(List<DaAssetVideoRespVO> importExcelList, boolean isUpdateSupport, String operName) {

@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.da.dal.dataobject.assetchild.api.DaAssetApiPar
 import java.util.List;
 
 /**
- * 数据资产-外部API-参数 Convert
+ * Data Asset - External API - Parameter Convert
  *
  * @author qdata
  * @date 2025-04-14
@@ -38,29 +38,29 @@ public interface DaAssetApiParamConvert {
     DaAssetApiParamConvert INSTANCE = Mappers.getMapper(DaAssetApiParamConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param daAssetApiParamPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param daAssetApiParamPageReqVO request parameters
      * @return DaAssetApiParamDO
      */
      DaAssetApiParamDO convertToDO(DaAssetApiParamPageReqVO daAssetApiParamPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param daAssetApiParamSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param daAssetApiParamSaveReqVO save request parameters
      * @return DaAssetApiParamDO
      */
      DaAssetApiParamDO convertToDO(DaAssetApiParamSaveReqVO daAssetApiParamSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param daAssetApiParamDO 实体对象
+     * Convert DO to RespVO
+     * @param daAssetApiParamDO entity object
      * @return DaAssetApiParamRespVO
      */
      DaAssetApiParamRespVO convertToRespVO(DaAssetApiParamDO daAssetApiParamDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param daAssetApiParamDOList 实体对象列表
+     * Convert DOList to RespVOList
+     * @param daAssetApiParamDOList entity object list
      * @return List<DaAssetApiParamRespVO>
      */
      List<DaAssetApiParamRespVO> convertToRespVOList(List<DaAssetApiParamDO> daAssetApiParamDOList);

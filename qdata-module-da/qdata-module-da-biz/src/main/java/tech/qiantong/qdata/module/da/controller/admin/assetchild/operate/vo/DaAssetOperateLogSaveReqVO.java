@@ -26,7 +26,7 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
- * 数据资产操作记录 创建/修改 Request VO DA_ASSET_OPERATE_LOG
+ * Data Asset Operate Log Create/Update Request VO DA_ASSET_OPERATE_LOG
  *
  * @author qdata
  * @date 2025-05-09
@@ -54,7 +54,7 @@ public class DaAssetOperateLogSaveReqVO extends BaseEntity {
     @Size(max = 256, message = "表注释/表描述长度不能超过256个字符")
     private String tableComment;
 
-    //1: 新增 2:修改 3:删除 4:导入
+    //1: insert 2: update 3: delete 4: import
     @Schema(description = "操作类型", example = "")
     @Size(max = 256, message = "操作类型长度不能超过256个字符")
     private String operateType;
@@ -82,7 +82,7 @@ public class DaAssetOperateLogSaveReqVO extends BaseEntity {
     @Size(max = 256, message = "导入文件名称长度不能超过256个字符")
     private String fileName;
 
-    //状态;1:执行中  2:失败  3:成功   4:回滚失败  5:回滚成功
+    // Status; 1: executing  2: failed  3: success   4: rollback failed  5: rollback success
     @Schema(description = "状态", example = "")
     @Size(max = 256, message = "状态长度不能超过256个字符")
     private String status;

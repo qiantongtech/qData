@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 数据发现任务日志Service接口
+ * Data Discovery Task Log Service Interface
  *
  * @author qdata
  * @date 2025-02-17
@@ -38,65 +38,65 @@ import java.util.Map;
 public interface IDaDiscoveryTaskLogService extends IService<DaDiscoveryTaskLogDO> {
 
     /**
-     * 获得数据发现任务日志分页列表
+     * Get data discovery task log page list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据发现任务日志分页列表
+     * @param pageReqVO page request
+     * @return data discovery task log page list
      */
     PageResult<DaDiscoveryTaskLogDO> getDaDiscoveryTaskLogPage(DaDiscoveryTaskLogPageReqVO pageReqVO);
 
     /**
-     * 创建数据发现任务日志
+     * Create data discovery task log
      *
-     * @param createReqVO 数据发现任务日志信息
-     * @return 数据发现任务日志编号
+     * @param createReqVO data discovery task log info
+     * @return data discovery task log ID
      */
     Long createDaDiscoveryTaskLog(DaDiscoveryTaskLogSaveReqVO createReqVO);
 
     /**
-     * 更新数据发现任务日志
+     * Update data discovery task log
      *
-     * @param updateReqVO 数据发现任务日志信息
+     * @param updateReqVO data discovery task log info
      */
     int updateDaDiscoveryTaskLog(DaDiscoveryTaskLogSaveReqVO updateReqVO);
 
     /**
-     * 删除数据发现任务日志
+     * Delete data discovery task log
      *
-     * @param idList 数据发现任务日志编号
+     * @param idList data discovery task log ID list
      */
     int removeDaDiscoveryTaskLog(Collection<Long> idList);
 
     /**
-     * 获得数据发现任务日志详情
+     * Get data discovery task log details
      *
-     * @param id 数据发现任务日志编号
-     * @return 数据发现任务日志
+     * @param id data discovery task log ID
+     * @return data discovery task log
      */
     DaDiscoveryTaskLogDO getDaDiscoveryTaskLogById(Long id);
 
     /**
-     * 获得全部数据发现任务日志列表
+     * Get all data discovery task log list
      *
-     * @return 数据发现任务日志列表
+     * @return data discovery task log list
      */
     List<DaDiscoveryTaskLogDO> getDaDiscoveryTaskLogList();
 
     /**
-     * 获得全部数据发现任务日志 Map
+     * Get all data discovery task log Map
      *
-     * @return 数据发现任务日志 Map
+     * @return data discovery task log Map
      */
     Map<Long, DaDiscoveryTaskLogDO> getDaDiscoveryTaskLogMap();
 
 
     /**
-     * 导入数据发现任务日志数据
+     * Import data discovery task log data
      *
-     * @param importExcelList 数据发现任务日志数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList data discovery task log data list
+     * @param isUpdateSupport whether to support update; if exists, update the data
+     * @param operName operator user
+     * @return result
      */
     String importDaDiscoveryTaskLog(List<DaDiscoveryTaskLogRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

@@ -48,7 +48,7 @@ import tech.qiantong.qdata.module.da.dal.dataobject.assetchild.api.DaAssetApiPar
 import tech.qiantong.qdata.module.da.service.assetchild.api.IDaAssetApiParamService;
 
 /**
- * 数据资产-外部API-参数Controller
+ * Data Asset - External API - Parameter Controller
  *
  * @author qdata
  * @date 2025-04-14

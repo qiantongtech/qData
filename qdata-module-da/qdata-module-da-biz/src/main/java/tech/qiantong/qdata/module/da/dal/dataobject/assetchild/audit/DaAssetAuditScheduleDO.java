@@ -23,14 +23,14 @@ import lombok.*;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 资产稽查调度 DO 对象 DA_ASSET_AUDIT_SCHEDULE
+ * Asset Audit Schedule DO - DA_ASSET_AUDIT_SCHEDULE
  *
  * @author qdata
  * @date 2025-05-09
  */
 @Data
 @TableName(value = "DA_ASSET_AUDIT_SCHEDULE")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Not needed for MySQL and similar databases.
 // @KeySequence("DA_ASSET_AUDIT_SCHEDULE_seq")
 @Builder
 @NoArgsConstructor
@@ -44,34 +44,34 @@ public class DaAssetAuditScheduleDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 资产ID */
+    /** Asset ID */
     private Long assetId;
 
-    /** 是否开启稽查调度（0否1是） */
+    /** Enable Audit Schedule Flag (0: No, 1: Yes) */
     private String scheduleFlag;
 
-    /** cron执行表达式 */
+    /** Cron Expression */
     private String cronExpression;
 
-    /** 节点id */
+    /** Node ID */
     private Long nodeId;
 
-    /** 节点编码 */
+    /** Node Code */
     private String nodeCode;
 
-    /** 任务id */
+    /** Task ID */
     private Long taskId;
 
-    /** 任务编码 */
+    /** Task Code */
     private String taskCode;
 
-    /** 定时任务调度表id */
+    /** Scheduled Task Scheduler Table ID */
     private Long systemJobId;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     @TableLogic
     private Boolean delFlag;
 

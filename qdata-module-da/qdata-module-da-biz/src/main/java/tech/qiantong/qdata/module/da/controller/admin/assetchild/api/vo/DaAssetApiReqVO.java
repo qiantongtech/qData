@@ -24,7 +24,7 @@ import lombok.Data;
 import java.util.Map;
 
 /**
- * 数据资产-外部API Request VO 对象 DA_ASSET_API
+ * Data Asset - External API Request VO DA_ASSET_API
  *
  * @author qdata
  * @date 2025-04-14

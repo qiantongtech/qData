@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 /**
- * 资产稽查调度Service接口
+ * Asset Audit Schedule Service Interface
  *
  * @author qdata
  * @date 2025-05-09
@@ -37,65 +37,65 @@ import java.util.Map;
 public interface IDaAssetAuditScheduleService extends IService<DaAssetAuditScheduleDO> {
 
     /**
-     * 获得资产稽查调度分页列表
+     * Get asset audit schedule page list
      *
-     * @param pageReqVO 分页请求
-     * @return 资产稽查调度分页列表
+     * @param pageReqVO page request
+     * @return asset audit schedule page list
      */
     PageResult<DaAssetAuditScheduleDO> getDaAssetAuditSchedulePage(DaAssetAuditSchedulePageReqVO pageReqVO);
 
     /**
-     * 创建资产稽查调度
+     * Create asset audit schedule
      *
-     * @param createReqVO 资产稽查调度信息
-     * @return 资产稽查调度编号
+     * @param createReqVO asset audit schedule info
+     * @return asset audit schedule ID
      */
     Long createDaAssetAuditSchedule(DaAssetAuditScheduleSaveReqVO createReqVO);
 
     /**
-     * 更新资产稽查调度
+     * Update asset audit schedule
      *
-     * @param updateReqVO 资产稽查调度信息
+     * @param updateReqVO asset audit schedule info
      */
     int updateDaAssetAuditSchedule(DaAssetAuditScheduleSaveReqVO updateReqVO);
 
     /**
-     * 删除资产稽查调度
+     * Delete asset audit schedule
      *
-     * @param idList 资产稽查调度编号
+     * @param idList asset audit schedule ID list
      */
     int removeDaAssetAuditSchedule(Collection<Long> idList);
 
     /**
-     * 获得资产稽查调度详情
+     * Get asset audit schedule details
      *
-     * @param id 资产稽查调度编号
-     * @return 资产稽查调度
+     * @param id asset audit schedule ID
+     * @return asset audit schedule
      */
     DaAssetAuditScheduleDO getDaAssetAuditScheduleById(Long id);
 
     /**
-     * 获得全部资产稽查调度列表
+     * Get all asset audit schedule list
      *
-     * @return 资产稽查调度列表
+     * @return asset audit schedule list
      */
     List<DaAssetAuditScheduleDO> getDaAssetAuditScheduleList();
 
     /**
-     * 获得全部资产稽查调度 Map
+     * Get all asset audit schedule Map
      *
-     * @return 资产稽查调度 Map
+     * @return asset audit schedule Map
      */
     Map<Long, DaAssetAuditScheduleDO> getDaAssetAuditScheduleMap();
 
 
     /**
-     * 导入资产稽查调度数据
+     * Import asset audit schedule data
      *
-     * @param importExcelList 资产稽查调度数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList asset audit schedule data list
+     * @param isUpdateSupport whether to support update; if exists, update the data
+     * @param operName operator user
+     * @return result
      */
     String importDaAssetAuditSchedule(List<DaAssetAuditScheduleRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

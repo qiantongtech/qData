@@ -48,7 +48,7 @@ import tech.qiantong.qdata.module.da.dal.dataobject.assetchild.audit.DaAssetAudi
 import tech.qiantong.qdata.module.da.service.assetchild.audit.IDaAssetAuditAlertService;
 
 /**
- * 数据资产-质量预警Controller
+ * Data Asset - Quality Alert Controller
  *
  * @author qdata
  * @date 2025-05-09

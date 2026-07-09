@@ -27,7 +27,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 数据资产操作申请 Response VO 对象 DA_ASSET_OPERATE_APPLY
+ * Data Asset Operate Apply Response VO Object DA_ASSET_OPERATE_APPLY
  *
  * @author qdata
  * @date 2025-05-09

@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.da.dal.dataobject.assetchild.projectRel.DaAsse
 import java.util.List;
 
 /**
- * 数据资产与项目关联关系 Convert
+ * Data Asset and Project Relationship Convert
  *
  * @author qdata
  * @date 2025-04-18
@@ -38,29 +38,29 @@ public interface DaAssetProjectRelConvert {
     DaAssetProjectRelConvert INSTANCE = Mappers.getMapper(DaAssetProjectRelConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param daAssetProjectRelPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param daAssetProjectRelPageReqVO request parameters
      * @return DaAssetProjectRelDO
      */
      DaAssetProjectRelDO convertToDO(DaAssetProjectRelPageReqVO daAssetProjectRelPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param daAssetProjectRelSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param daAssetProjectRelSaveReqVO save request parameters
      * @return DaAssetProjectRelDO
      */
      DaAssetProjectRelDO convertToDO(DaAssetProjectRelSaveReqVO daAssetProjectRelSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param daAssetProjectRelDO 实体对象
+     * Convert DO to RespVO
+     * @param daAssetProjectRelDO entity object
      * @return DaAssetProjectRelRespVO
      */
      DaAssetProjectRelRespVO convertToRespVO(DaAssetProjectRelDO daAssetProjectRelDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param daAssetProjectRelDOList 实体对象列表
+     * Convert DOList to RespVOList
+     * @param daAssetProjectRelDOList entity object list
      * @return List<DaAssetProjectRelRespVO>
      */
      List<DaAssetProjectRelRespVO> convertToRespVOList(List<DaAssetProjectRelDO> daAssetProjectRelDOList);

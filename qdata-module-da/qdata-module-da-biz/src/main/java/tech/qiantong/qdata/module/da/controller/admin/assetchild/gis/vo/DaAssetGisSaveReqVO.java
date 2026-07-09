@@ -25,7 +25,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import javax.validation.constraints.Size;
 
 /**
- * 数据资产-地理空间服务 创建/修改 Request VO DA_ASSET_GIS
+ * Data Asset - Geospatial Service Create/Update Request VO DA_ASSET_GIS
  *
  * @author qdata
  * @date 2025-04-14

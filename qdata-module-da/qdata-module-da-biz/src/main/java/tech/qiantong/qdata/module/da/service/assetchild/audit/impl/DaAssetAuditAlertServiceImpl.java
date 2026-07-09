@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 /**
- * 数据资产-质量预警Service业务层处理
+ * Data Asset - Quality Alert Service business layer processing
  *
  * @author qdata
  * @date 2025-05-09
@@ -68,15 +68,15 @@ public class DaAssetAuditAlertServiceImpl  extends ServiceImpl<DaAssetAuditAlert
 
     @Override
     public int updateDaAssetAuditAlert(DaAssetAuditAlertSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related validation
 
-        // 更新数据资产-质量预警
+        // Update Data Asset - Quality Alert
         DaAssetAuditAlertDO updateObj = BeanUtils.toBean(updateReqVO, DaAssetAuditAlertDO.class);
         return daAssetAuditAlertMapper.updateById(updateObj);
     }
     @Override
     public int removeDaAssetAuditAlert(Collection<Long> idList) {
-        // 批量删除数据资产-质量预警
+        // Batch delete Data Asset - Quality Alert
         return daAssetAuditAlertMapper.deleteBatchIds(idList);
     }
 
@@ -97,19 +97,19 @@ public class DaAssetAuditAlertServiceImpl  extends ServiceImpl<DaAssetAuditAlert
                 .collect(Collectors.toMap(
                         DaAssetAuditAlertDO::getId,
                         daAssetAuditAlertDO -> daAssetAuditAlertDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入数据资产-质量预警数据
+     * Import Data Asset - Quality Alert data
      *
-     * @param importExcelList 数据资产-质量预警数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Data Asset - Quality Alert data list
+     * @param isUpdateSupport Whether to support update; if already exists, update the data
+     * @param operName Operator name
+     * @return result
      */
     @Override
     public String importDaAssetAuditAlert(List<DaAssetAuditAlertRespVO> importExcelList, boolean isUpdateSupport, String operName) {

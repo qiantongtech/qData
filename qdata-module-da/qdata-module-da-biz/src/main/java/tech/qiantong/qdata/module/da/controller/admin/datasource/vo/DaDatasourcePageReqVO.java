@@ -26,7 +26,7 @@ import tech.qiantong.qdata.common.core.page.PageParam;
 import java.util.List;
 
 /**
- * 数据源 Request VO 对象 DA_DATASOURCE
+ * Datasource Request VO DA_DATASOURCE
  *
  * @author lhs
  * @date 2025-01-21
@@ -72,7 +72,7 @@ public class DaDatasourcePageReqVO extends PageParam {
     private List<Long> idList;
 
     /**
-     * 解析SQL
+     * SQL Parser
      */
     @TableField(exist = false)
     private String sqlText;

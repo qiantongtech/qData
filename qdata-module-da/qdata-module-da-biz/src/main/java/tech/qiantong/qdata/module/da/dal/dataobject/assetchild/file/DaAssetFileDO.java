@@ -26,14 +26,14 @@ import tech.qiantong.qdata.common.database.core.FileInfo;
 import java.util.Date;
 
 /**
- * 数据资产-非结构化数据 DO 对象 DA_ASSET_FILE
+ * Data Asset - Unstructured Data DO - DA_ASSET_FILE
  *
  * @author Chaos
  * @date 2025-07-16
  */
 @Data
 @TableName(value = "DA_ASSET_FILE")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Not needed for MySQL and similar databases.
 // @KeySequence("DA_ASSET_FILE_seq")
 @Builder
 @NoArgsConstructor
@@ -50,52 +50,52 @@ public class DaAssetFileDO extends BaseEntity {
     private Long id;
 
     /**
-     * 资产id
+     * Asset ID
      */
     private Long assetId;
 
     /**
-     * 文件来源
+     * File Source
      */
     private String fileSource;
 
     /**
-     * 文件名称
+     * File Name
      */
     private String fileName;
 
     /**
-     * 文件路径
+     * File Path
      */
     private String fileUrl;
 
     /**
-     * 文件类型
+     * File Type
      */
     private String fileType;
 
     /**
-     * 文件大小
+     * File Size
      */
     private Long fileSize;
 
     /**
-     * 文件创建时间
+     * File Creation Time
      */
     private Date fileCreateTime;
 
     /**
-     * 文件更新时间
+     * File Update Time
      */
     private Date fileUpdateTime;
 
     /**
-     * 是否有效
+     * Valid Flag
      */
     private Boolean validFlag;
 
     /**
-     * 删除标志
+     * Delete Flag
      */
     @TableLogic
     private Boolean delFlag;

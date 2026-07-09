@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 /**
- * 数据资产操作申请Service接口
+ * Data Asset Operation Application Service Interface
  *
  * @author qdata
  * @date 2025-05-09
@@ -37,65 +37,65 @@ import java.util.Map;
 public interface IDaAssetOperateApplyService extends IService<DaAssetOperateApplyDO> {
 
     /**
-     * 获得数据资产操作申请分页列表
+     * Get data asset operation application page list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据资产操作申请分页列表
+     * @param pageReqVO page request
+     * @return data asset operation application page list
      */
     PageResult<DaAssetOperateApplyDO> getDaAssetOperateApplyPage(DaAssetOperateApplyPageReqVO pageReqVO);
 
     /**
-     * 创建数据资产操作申请
+     * Create data asset operation application
      *
-     * @param createReqVO 数据资产操作申请信息
-     * @return 数据资产操作申请编号
+     * @param createReqVO data asset operation application info
+     * @return data asset operation application ID
      */
     Long createDaAssetOperateApply(DaAssetOperateApplySaveReqVO createReqVO);
 
     /**
-     * 更新数据资产操作申请
+     * Update data asset operation application
      *
-     * @param updateReqVO 数据资产操作申请信息
+     * @param updateReqVO data asset operation application info
      */
     int updateDaAssetOperateApply(DaAssetOperateApplySaveReqVO updateReqVO);
 
     /**
-     * 删除数据资产操作申请
+     * Delete data asset operation application
      *
-     * @param idList 数据资产操作申请编号
+     * @param idList data asset operation application ID list
      */
     int removeDaAssetOperateApply(Collection<Long> idList);
 
     /**
-     * 获得数据资产操作申请详情
+     * Get data asset operation application details
      *
-     * @param id 数据资产操作申请编号
-     * @return 数据资产操作申请
+     * @param id data asset operation application ID
+     * @return data asset operation application
      */
     DaAssetOperateApplyDO getDaAssetOperateApplyById(Long id);
 
     /**
-     * 获得全部数据资产操作申请列表
+     * Get all data asset operation application list
      *
-     * @return 数据资产操作申请列表
+     * @return data asset operation application list
      */
     List<DaAssetOperateApplyDO> getDaAssetOperateApplyList();
 
     /**
-     * 获得全部数据资产操作申请 Map
+     * Get all data asset operation application Map
      *
-     * @return 数据资产操作申请 Map
+     * @return data asset operation application Map
      */
     Map<Long, DaAssetOperateApplyDO> getDaAssetOperateApplyMap();
 
 
     /**
-     * 导入数据资产操作申请数据
+     * Import data asset operation application data
      *
-     * @param importExcelList 数据资产操作申请数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList data asset operation application data list
+     * @param isUpdateSupport whether to support update; if exists, update the data
+     * @param operName operator user
+     * @return result
      */
     String importDaAssetOperateApply(List<DaAssetOperateApplyRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

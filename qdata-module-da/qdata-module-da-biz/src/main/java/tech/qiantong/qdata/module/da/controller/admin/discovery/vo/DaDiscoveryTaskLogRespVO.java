@@ -27,7 +27,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 数据发现任务日志 Response VO 对象 DA_DISCOVERY_TASK_LOG
+ * Data Discovery Task Log Response VO object DA_DISCOVERY_TASK_LOG
  *
  * @author qdata
  * @date 2025-02-17

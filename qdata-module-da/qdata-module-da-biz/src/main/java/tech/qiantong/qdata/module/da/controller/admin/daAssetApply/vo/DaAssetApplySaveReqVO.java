@@ -25,7 +25,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import javax.validation.constraints.Size;
 
 /**
- * 数据资产申请 创建/修改 Request VO DA_ASSET_APPLY
+ * Data Asset Application Create/Update Request VO DA_ASSET_APPLY
  *
  * @author shu
  * @date 2025-03-19

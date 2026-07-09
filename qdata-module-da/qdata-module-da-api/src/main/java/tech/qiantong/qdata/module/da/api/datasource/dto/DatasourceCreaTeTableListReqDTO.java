@@ -25,16 +25,16 @@ import java.util.List;
 @Data
 public class DatasourceCreaTeTableListReqDTO {
 
-    /** 数据源类型 */
+    /** Datasource Type */
     private String datasourceType;
 
-    /** 数据源配置(json字符串) */
+    /** Datasource Config (JSON String) */
     private String datasourceConfig;
 
     /** IP */
     private String ip;
 
-    /** 端口号 */
+    /** Port */
     private Long port;
 
 

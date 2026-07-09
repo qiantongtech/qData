@@ -27,7 +27,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 数据资产-地理空间服务 Response VO 对象 DA_ASSET_GIS
+ * Data Asset - Geospatial Service Response VO Object DA_ASSET_GIS
  *
  * @author qdata
  * @date 2025-04-14

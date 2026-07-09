@@ -26,7 +26,7 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
- * 数据资产-质量预警 创建/修改 Request VO DA_ASSET_AUDIT_ALERT
+ * Data Asset - Quality Alert Create/Update Request VO DA_ASSET_AUDIT_ALERT
  *
  * @author qdata
  * @date 2025-05-09

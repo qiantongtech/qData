@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.da.dal.dataobject.assetColumn.DaAssetColumnDO;
 import java.util.List;
 
 /**
- * 数据资产字段 Convert
+ * Data Asset Column Convert
  *
  * @author lhs
  * @date 2025-01-21
@@ -38,29 +38,29 @@ public interface DaAssetColumnConvert {
     DaAssetColumnConvert INSTANCE = Mappers.getMapper(DaAssetColumnConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param daAssetColumnPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param daAssetColumnPageReqVO request parameters
      * @return DaAssetColumnDO
      */
      DaAssetColumnDO convertToDO(DaAssetColumnPageReqVO daAssetColumnPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param daAssetColumnSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param daAssetColumnSaveReqVO save request parameters
      * @return DaAssetColumnDO
      */
      DaAssetColumnDO convertToDO(DaAssetColumnSaveReqVO daAssetColumnSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param daAssetColumnDO 实体对象
+     * Convert DO to RespVO
+     * @param daAssetColumnDO entity object
      * @return DaAssetColumnRespVO
      */
      DaAssetColumnRespVO convertToRespVO(DaAssetColumnDO daAssetColumnDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param daAssetColumnDOList 实体对象列表
+     * Convert DOList to RespVOList
+     * @param daAssetColumnDOList entity object list
      * @return List<DaAssetColumnRespVO>
      */
      List<DaAssetColumnRespVO> convertToRespVOList(List<DaAssetColumnDO> daAssetColumnDOList);

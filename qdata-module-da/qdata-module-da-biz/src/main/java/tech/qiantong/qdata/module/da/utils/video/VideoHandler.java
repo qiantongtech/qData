@@ -27,7 +27,7 @@ import tech.qiantong.qdata.module.da.dal.dataobject.assetchild.video.DaAssetVide
 public class VideoHandler {
 
     /**
-     * 获取所有站点信息
+     * Get all site information
      *
      * @return
      * @throws Exception
@@ -43,15 +43,19 @@ public class VideoHandler {
 //
 //        /**
 //         * https://ip:port/artemis/api/resource/v1/regions
-//         * 过查阅AI Cloud开放平台文档或网关门户的文档可以看到分页获取区域列表的定义,这是一个POST请求的Rest接口, 入参为JSON字符串，接口协议为https。
-//         * ArtemisHttpUtil工具类提供了doPostStringArtemis调用POST请求的方法，入参可传JSON字符串, 请阅读开发指南了解方法入参，没有的参数可传null
+//         * By consulting the AI Cloud Open Platform documentation or the gateway portal documentation,
+//         * you can see the definition of paginated region list retrieval. This is a POST request REST API,
+//         * with JSON string as input parameter, and the API protocol is https.
+//         * ArtemisHttpUtil provides doPostStringArtemis method for calling POST requests,
+//         * input parameters can pass JSON string. Please read the development guide to understand method parameters,
+//         * pass null for parameters that are not available.
 //         */
 //        ArtemisConfig config = new ArtemisConfig();
-//        config.setHost(host); // 代理API网关nginx服务器ip端口
-//        config.setAppKey(appkey);  // 秘钥appkey
-//        config.setAppSecret(appSecret);// 秘钥appSecret
+//        config.setHost(host); // Proxy API gateway nginx server IP port
+//        config.setAppKey(appkey);  // Secret key appkey
+//        config.setAppSecret(appSecret);// Secret key appSecret
 //        final String getCamsApi = artemisPath + "/api/nms/v1/online/camera/get";
-//        Map<String, String> paramMap = new HashMap<String, String>();// post请求Form表单参数
+//        Map<String, String> paramMap = new HashMap<String, String>();// POST request form parameters
 //        paramMap.put("pageNo", "1");
 //        paramMap.put("pageSize", "999999");
 //        paramMap.put("treeCode", "0");

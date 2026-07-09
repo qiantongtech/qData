@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.da.dal.dataobject.datasource.DaDatasourceProje
 import java.util.List;
 
 /**
- * 数据源与项目关联关系 Convert
+ * Datasource-Project Relation Convert
  *
  * @author qdata
  * @date 2025-03-13
@@ -38,29 +38,29 @@ public interface DaDatasourceProjectRelConvert {
     DaDatasourceProjectRelConvert INSTANCE = Mappers.getMapper(DaDatasourceProjectRelConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param daDatasourceProjectRelPageReqVO 请求参数
+     * PageReqVO to DO
+     * @param daDatasourceProjectRelPageReqVO request parameters
      * @return DaDatasourceProjectRelDO
      */
      DaDatasourceProjectRelDO convertToDO(DaDatasourceProjectRelPageReqVO daDatasourceProjectRelPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param daDatasourceProjectRelSaveReqVO 保存请求参数
+     * SaveReqVO to DO
+     * @param daDatasourceProjectRelSaveReqVO save request parameters
      * @return DaDatasourceProjectRelDO
      */
      DaDatasourceProjectRelDO convertToDO(DaDatasourceProjectRelSaveReqVO daDatasourceProjectRelSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param daDatasourceProjectRelDO 实体对象
+     * DO to RespVO
+     * @param daDatasourceProjectRelDO entity object
      * @return DaDatasourceProjectRelRespVO
      */
      DaDatasourceProjectRelRespVO convertToRespVO(DaDatasourceProjectRelDO daDatasourceProjectRelDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param daDatasourceProjectRelDOList 实体对象列表
+     * DOList to RespVOList
+     * @param daDatasourceProjectRelDOList entity object list
      * @return List<DaDatasourceProjectRelRespVO>
      */
      List<DaDatasourceProjectRelRespVO> convertToRespVOList(List<DaDatasourceProjectRelDO> daDatasourceProjectRelDOList);

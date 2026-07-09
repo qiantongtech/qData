@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 /**
- * 数据资产与项目关联关系Service接口
+ * Data Asset - Project Relation Service Interface
  *
  * @author qdata
  * @date 2025-04-18
@@ -37,72 +37,72 @@ import java.util.Map;
 public interface IDaAssetProjectRelService extends IService<DaAssetProjectRelDO> {
 
     /**
-     * 获得数据资产与项目关联关系分页列表
+     * Get data asset-project relation page list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据资产与项目关联关系分页列表
+     * @param pageReqVO page request
+     * @return data asset-project relation page list
      */
     PageResult<DaAssetProjectRelDO> getDaAssetProjectRelPage(DaAssetProjectRelPageReqVO pageReqVO);
 
     /**
-     * 获得全部数据资产与项目关联关系列表
+     * Get all data asset-project relation list
      *
-     * @return 数据资产与项目关联关系列表
+     * @return data asset-project relation list
      */
     List<DaAssetProjectRelDO> getDaAssetProjectRelList(DaAssetProjectRelPageReqVO pageReqVO);
 
     /**
-     * 创建数据资产与项目关联关系
+     * Create data asset-project relation
      *
-     * @param createReqVO 数据资产与项目关联关系信息
-     * @return 数据资产与项目关联关系编号
+     * @param createReqVO data asset-project relation info
+     * @return data asset-project relation ID
      */
     Long createDaAssetProjectRel(DaAssetProjectRelSaveReqVO createReqVO);
 
     /**
-     * 更新数据资产与项目关联关系
+     * Update data asset-project relation
      *
-     * @param updateReqVO 数据资产与项目关联关系信息
+     * @param updateReqVO data asset-project relation info
      */
     int updateDaAssetProjectRel(DaAssetProjectRelSaveReqVO updateReqVO);
 
     /**
-     * 删除数据资产与项目关联关系
+     * Delete data asset-project relation
      *
-     * @param idList 数据资产与项目关联关系编号
+     * @param idList data asset-project relation ID list
      */
     int removeDaAssetProjectRel(Collection<Long> idList);
 
     /**
-     * 获得数据资产与项目关联关系详情
+     * Get data asset-project relation details
      *
-     * @param id 数据资产与项目关联关系编号
-     * @return 数据资产与项目关联关系
+     * @param id data asset-project relation ID
+     * @return data asset-project relation
      */
     DaAssetProjectRelDO getDaAssetProjectRelById(Long id);
 
     /**
-     * 获得全部数据资产与项目关联关系列表
+     * Get all data asset-project relation list
      *
-     * @return 数据资产与项目关联关系列表
+     * @return data asset-project relation list
      */
     List<DaAssetProjectRelDO> getDaAssetProjectRelList();
 
     /**
-     * 获得全部数据资产与项目关联关系 Map
+     * Get all data asset-project relation Map
      *
-     * @return 数据资产与项目关联关系 Map
+     * @return data asset-project relation Map
      */
     Map<Long, DaAssetProjectRelDO> getDaAssetProjectRelMap();
 
 
     /**
-     * 导入数据资产与项目关联关系数据
+     * Import data asset-project relation data
      *
-     * @param importExcelList 数据资产与项目关联关系数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList data asset-project relation data list
+     * @param isUpdateSupport whether to support update; if exists, update the data
+     * @param operName operator user
+     * @return result
      */
     String importDaAssetProjectRel(List<DaAssetProjectRelRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

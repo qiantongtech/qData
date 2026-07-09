@@ -70,7 +70,7 @@ import static tech.qiantong.qdata.common.core.domain.AjaxResult.error;
 import static tech.qiantong.qdata.common.core.domain.AjaxResult.success;
 
 /**
- * 数据发现任务Service业务层处理
+ * Data Discovery Task Service business layer processing
  *
  * @author qdata
  * @date 2025-02-11
@@ -126,7 +126,7 @@ public class DaDiscoveryTaskServiceImpl extends ServiceImpl<DaDiscoveryTaskMappe
             row.setDatasourceName(daDatasourceById.getDatasourceName());
             row.setDatasourceType(daDatasourceById.getDatasourceType());
 
-            //定时任务封装相关
+            //Scheduling task encapsulation related
 
         }
         pageResult.setRows(rows);
@@ -165,7 +165,7 @@ public class DaDiscoveryTaskServiceImpl extends ServiceImpl<DaDiscoveryTaskMappe
         }
 
 
-        //TODO 存储数据，保证测试，对接任务时删除
+        //TODO Store data, ensure testing, delete when integrating tasks
         dictType.setNodeCode("0");
         dictType.setNodeId(0L);
         dictType.setTaskId(0L);
@@ -188,7 +188,7 @@ public class DaDiscoveryTaskServiceImpl extends ServiceImpl<DaDiscoveryTaskMappe
 
     @Override
     public int updateDaDiscoveryTask(DaDiscoveryTaskSaveReqVO updateReqVO) {
-//        // 相关校验
+//        // Related validation
 //        SysJob sysJob = daDiscoveryTaskDOToSysJob(updateReqVO);
 //
 //        try {
@@ -207,7 +207,7 @@ public class DaDiscoveryTaskServiceImpl extends ServiceImpl<DaDiscoveryTaskMappe
             throw new ServiceException("da.error.task.name.duplicate", "任务名称重复，创建失败！");
         }
 
-        // 更新数据发现任务
+        // Update data discovery task
         DaDiscoveryTaskDO updateObj = BeanUtils.toBean(updateReqVO, DaDiscoveryTaskDO.class);
         DaDiscoveryTaskDO daDiscoveryTaskDO = daDiscoveryTaskMapper.selectById(updateReqVO.getId());
         if (StringUtils.equals(daDiscoveryTaskDO.getCronExpression(), updateReqVO.getCronExpression())) {
@@ -234,22 +234,22 @@ public class DaDiscoveryTaskServiceImpl extends ServiceImpl<DaDiscoveryTaskMappe
 
     @Override
     public int updateDaDiscoveryTask(DaDiscoveryTaskRespVO updateReqVO) {
-        // 相关校验
+        // Related validation
 
-        // 更新数据发现任务
+        // Update data discovery task
         DaDiscoveryTaskDO updateObj = BeanUtils.toBean(updateReqVO, DaDiscoveryTaskDO.class);
         return daDiscoveryTaskMapper.updateById(updateObj);
     }
 
     @Override
     public int removeDaDiscoveryTask(Collection<Long> idList) {
-//        // 遍历 idList 中的每个 id
+//        // Iterate over each id in idList
 //        for (Long id : idList) {
-//            // 查询 DaDiscoveryTaskDO 详情
+//            // Query DaDiscoveryTaskDO detail
 //            DaDiscoveryTaskDO daDiscoveryTaskDO = daDiscoveryTaskMapper.selectById(id);
 //
 //            if (daDiscoveryTaskDO != null && daDiscoveryTaskDO.getSystemJobId() != null) {
-//                // 提取 systemJobId
+//                // Extract systemJobId
 //                Long systemJobId = daDiscoveryTaskDO.getSystemJobId();
 //                SysJob sysJob = iSysJobService.selectJobById(systemJobId);
 //                if(sysJob != null){
@@ -262,21 +262,21 @@ public class DaDiscoveryTaskServiceImpl extends ServiceImpl<DaDiscoveryTaskMappe
 //            }
 //        }
 
-        // 遍历 idList 中的每个 id
+        // Iterate over each id in idList
         for (Long id : idList) {
-            // 查询 DaDiscoveryTaskDO 详情
+            // Query DaDiscoveryTaskDO detail
             DaDiscoveryTaskDO daDiscoveryTaskDO = daDiscoveryTaskMapper.selectById(id);
             if (daDiscoveryTaskDO != null &&
                     (daDiscoveryTaskDO.getSystemJobId() != null || !StringUtils.equals("0", daDiscoveryTaskDO.getTaskCode()))) {
-                // 提取 systemJobId
+                // Extract systemJobId
                 if (StringUtils.equals("0", daDiscoveryTaskDO.getStatus())) {
-                    throw new ServiceException("da.error.task.online.delete", "上线任务，不允删除，请先下线！");
+                    throw new ServiceException("da.error.task.online.delete", "Task is online, deletion not allowed. Please take it offline first!");
                 }
                 DsStatusRespDTO dsStatusRespDTO = dsEtlTaskService.deleteTask(projectCode, daDiscoveryTaskDO.getTaskCode());
             }
         }
 
-        // 批量删除数据发现任务
+        // Batch delete data discovery tasks
         return daDiscoveryTaskMapper.deleteBatchIds(idList);
     }
 
@@ -310,7 +310,7 @@ public class DaDiscoveryTaskServiceImpl extends ServiceImpl<DaDiscoveryTaskMappe
                 .filter(item -> StringUtils.equals("2", item.getStatus()))
                 .count();
 
-        //0:否，1：是
+        //0: No, 1: Yes
         long countIgnoreFlag = daDiscoveryTableDOList.stream()
                 .filter(item -> StringUtils.equals("1", item.getIgnoreFlag()))
                 .count();
@@ -349,19 +349,19 @@ public class DaDiscoveryTaskServiceImpl extends ServiceImpl<DaDiscoveryTaskMappe
                 .collect(Collectors.toMap(
                         DaDiscoveryTaskDO::getId,
                         daDiscoveryTaskDO -> daDiscoveryTaskDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入数据发现任务数据
+     * Import data discovery task data
      *
-     * @param importExcelList 数据发现任务数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Data discovery task data list
+     * @param isUpdateSupport Whether to support update, if already exists, update the data
+     * @param operName        Operating user
+     * @return result
      */
     @Override
     public String importDaDiscoveryTask(List<DaDiscoveryTaskRespVO> importExcelList, boolean isUpdateSupport, String operName) {
@@ -477,7 +477,7 @@ public class DaDiscoveryTaskServiceImpl extends ServiceImpl<DaDiscoveryTaskMappe
             }
         }
 
-        // 更新数据发现任务
+        // Update data discovery task
         DaDiscoveryTaskDO updateObj = BeanUtils.toBean(daDiscoveryTask, DaDiscoveryTaskDO.class);
         daDiscoveryTaskMapper.updateById(updateObj);
     }
@@ -541,7 +541,7 @@ public class DaDiscoveryTaskServiceImpl extends ServiceImpl<DaDiscoveryTaskMappe
             throw new ServiceException("da.error.scheduler.online", "上线调度器，失败！");
         }
 
-        // 更新数据发现任务
+        // Update data discovery task
         DaDiscoveryTaskDO updateObj = BeanUtils.toBean(daDiscoveryTask, DaDiscoveryTaskDO.class);
         daDiscoveryTaskMapper.updateById(updateObj);
     }
@@ -571,7 +571,7 @@ public class DaDiscoveryTaskServiceImpl extends ServiceImpl<DaDiscoveryTaskMappe
     private void createSchedulerIfNeeded(DaDiscoveryTaskSaveReqVO daDiscoveryTask) {
         DsSchedulerRespDTO byTaskCode = iDsEtlSchedulerService.getByTaskCode(String.valueOf(projectCode), daDiscoveryTask.getTaskCode());
         if (byTaskCode == null || !byTaskCode.getSuccess()) {
-            //     * 创建调度器 (只有任务发布了才能调用该接口)
+            // Create scheduler (only available after the task is published)
             DsSchedulerSaveReqDTO dsSchedulerSaveReqDTO = DaTaskConverter.createSchedulerRequest(daDiscoveryTask.getCronExpression(), daDiscoveryTask.getTaskCode());
             DsSchedulerRespDTO saveScheduler = iDsEtlSchedulerService.saveScheduler(dsSchedulerSaveReqDTO, String.valueOf(projectCode));
             if (saveScheduler == null || !saveScheduler.getSuccess()) {
@@ -614,7 +614,7 @@ public class DaDiscoveryTaskServiceImpl extends ServiceImpl<DaDiscoveryTaskMappe
         Long systemJobId = daDiscoveryTaskById.getSystemJobId();
         if (systemJobId != null) {
             try {
-                //     * 创建调度器 (只有任务发布了才能调用该接口)
+                // Create scheduler (only available after the task is published)
                 DsSchedulerUpdateReqDTO schedulerUpdateRequest = DaTaskConverter.createSchedulerUpdateRequest(systemJobId, daDiscoveryTask.getCronExpression(), daDiscoveryTaskById.getTaskCode());
                 DsSchedulerRespDTO dsSchedulerRespDTO = iDsEtlSchedulerService.updateScheduler(schedulerUpdateRequest, String.valueOf(projectCode));
                 if (dsSchedulerRespDTO == null || !dsSchedulerRespDTO.getSuccess()) {
@@ -633,7 +633,7 @@ public class DaDiscoveryTaskServiceImpl extends ServiceImpl<DaDiscoveryTaskMappe
             }
         }
 
-        // 更新数据发现任务
+        // Update data discovery task
         DaDiscoveryTaskDO updateObj = BeanUtils.toBean(daDiscoveryTask, DaDiscoveryTaskDO.class);
         daDiscoveryTaskMapper.updateById(updateObj);
 //        this.updateDaDiscoveryTask(daDiscoveryTask);
@@ -648,10 +648,10 @@ public class DaDiscoveryTaskServiceImpl extends ServiceImpl<DaDiscoveryTaskMappe
         DsTaskSaveRespDTO task = dsEtlTaskService.createTask(dsTaskSaveReqDTO, DaTaskConverter.stringToLong(projectCode));
 
         if (!task.getSuccess()) {
-            throw new ServiceException("da.error.task.status.update", "任务状态修改失败，请联系系统管理员"); // 抛出任务定义创建错误的异常
+            throw new ServiceException("da.error.task.status.update", "Task status update failed. Contact system administrator."); // Throw exception for task definition creation error
         }
         ProcessDefinition data = task.getData();
-        return data; // 返回创建结果
+        return data; // Return creation result
     }
 
 
@@ -663,10 +663,10 @@ public class DaDiscoveryTaskServiceImpl extends ServiceImpl<DaDiscoveryTaskMappe
         DsTaskSaveRespDTO task = dsEtlTaskService.updateTask(dsTaskSaveReqDTO, projectCode, input.getTaskCode());
 
         if (!task.getSuccess()) {
-            throw new ServiceException("da.error.task.status.update", "任务状态修改失败，请联系系统管理员"); // 抛出任务定义创建错误的异常
+            throw new ServiceException("da.error.task.status.update", "Task status update failed. Contact system administrator."); // Throw exception for task definition creation error
         }
         ProcessDefinition data = task.getData();
-        return data; // 返回创建结果
+        return data; // Return creation result
     }
 
     public Long getNodeUniqueKey(Long projectCode) {
@@ -674,7 +674,7 @@ public class DaDiscoveryTaskServiceImpl extends ServiceImpl<DaDiscoveryTaskMappe
             DsNodeGenCodeRespDTO dsNodeGenCodeRespDTO = dsEtlNodeService.genCode(projectCode);
             return dsNodeGenCodeRespDTO.getData().get(0);
         } catch (Exception e) {
-            throw new ServiceException("da.error.task.status.update", "任务状态修改失败，请联系系统管理员"); // 抛出任务定义创建错误的异常
+            throw new ServiceException("da.error.task.status.update", "Task status update failed. Contact system administrator."); // Throw exception for task definition creation error
         }
     }
 

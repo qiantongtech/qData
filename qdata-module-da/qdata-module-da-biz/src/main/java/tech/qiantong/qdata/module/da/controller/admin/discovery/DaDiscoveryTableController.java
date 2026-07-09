@@ -51,7 +51,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 数据发现库信息Controller
+ * Data Discovery Database Table Controller
  *
  * @author qdata
  * @date 2025-02-11
@@ -89,7 +89,7 @@ public class DaDiscoveryTableController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DaDiscoveryTableDO> list = (List<DaDiscoveryTableDO>) daDiscoveryTableService.getDaDiscoveryTablePage(exportReqVO).getRows();
         ExcelUtil<DaDiscoveryTableRespVO> util = new ExcelUtil<>(DaDiscoveryTableRespVO.class);
-        util.exportExcel(response, DaDiscoveryTableConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DaDiscoveryTableConvert.INSTANCE.convertToRespVOList(list), "Data");
     }
 
     @Operation(summary = "导入数据发现库信息列表")
@@ -147,16 +147,16 @@ public class DaDiscoveryTableController extends BaseController {
     @PostMapping(value = "/preview")
     public AjaxResult getPreview(@RequestBody JSONObject jsonObject) {
         if (jsonObject.getStr("taskId") == null){
-            return error("请携带数据发现任务id");
+            return error("taskId is required");
         }
         if (jsonObject.getStr("tableName") == null){
-            return error("请携带数据库表");
+            return error("tableName is required");
         }
         Map<String,Object> columnData = daAssetService.getColumnData(jsonObject);
         return success(columnData);
     }
 
-    @Operation(summary = "数据发现库信息进行提交撤回")
+    @Operation(summary = "Submit or revoke discovery database table info")
     @PreAuthorize("@ss.hasPermi('da:discoveryTable:edit')")
     @PostMapping(value = "/commitOrRevokeDiscoveryInfo")
     public CommonResult<Integer> commitOrRevokeDiscoveryInfo(@RequestBody DaDiscoveryTableSaveReqVO daDiscoveryTable) {

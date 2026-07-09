@@ -48,7 +48,7 @@ import tech.qiantong.qdata.module.da.dal.dataobject.assetchild.geo.DaAssetGeoDO;
 import tech.qiantong.qdata.module.da.service.assetchild.geo.IDaAssetGeoService;
 
 /**
- * 数据资产-矢量Controller
+ * Data Asset - Vector Controller
  *
  * @author qdata
  * @date 2025-04-14

@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.da.dal.dataobject.assetchild.audit.DaAssetAudi
 import java.util.List;
 
 /**
- * 数据资产-质量预警 Convert
+ * Data Asset - Quality Alert Convert
  *
  * @author qdata
  * @date 2025-05-09
@@ -38,29 +38,29 @@ public interface DaAssetAuditAlertConvert {
     DaAssetAuditAlertConvert INSTANCE = Mappers.getMapper(DaAssetAuditAlertConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param daAssetAuditAlertPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param daAssetAuditAlertPageReqVO request parameters
      * @return DaAssetAuditAlertDO
      */
      DaAssetAuditAlertDO convertToDO(DaAssetAuditAlertPageReqVO daAssetAuditAlertPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param daAssetAuditAlertSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param daAssetAuditAlertSaveReqVO save request parameters
      * @return DaAssetAuditAlertDO
      */
      DaAssetAuditAlertDO convertToDO(DaAssetAuditAlertSaveReqVO daAssetAuditAlertSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param daAssetAuditAlertDO 实体对象
+     * Convert DO to RespVO
+     * @param daAssetAuditAlertDO entity object
      * @return DaAssetAuditAlertRespVO
      */
      DaAssetAuditAlertRespVO convertToRespVO(DaAssetAuditAlertDO daAssetAuditAlertDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param daAssetAuditAlertDOList 实体对象列表
+     * Convert DOList to RespVOList
+     * @param daAssetAuditAlertDOList entity object list
      * @return List<DaAssetAuditAlertRespVO>
      */
      List<DaAssetAuditAlertRespVO> convertToRespVOList(List<DaAssetAuditAlertDO> daAssetAuditAlertDOList);

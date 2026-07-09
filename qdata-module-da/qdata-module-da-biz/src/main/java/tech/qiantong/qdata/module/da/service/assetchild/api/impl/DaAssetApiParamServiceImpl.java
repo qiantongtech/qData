@@ -41,7 +41,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 /**
- * 数据资产-外部API-参数Service业务层处理
+ * Data Asset - External API - Parameters Service Business Layer
  *
  * @author qdata
  * @date 2025-04-14
@@ -77,18 +77,18 @@ public class DaAssetApiParamServiceImpl  extends ServiceImpl<DaAssetApiParamMapp
 
 
     /**
-     * 递归处理单个参数及其子参数
+     * Recursively process a single parameter and its sub-parameters
      *
-     * @param vo       当前待插入的参数 VO
-     * @param parentId 父参数 ID（根节点时为 null）
+     * @param vo       The VO to be inserted
+     * @param parentId Parent parameter ID (null for root nodes)
      */
     private void createRecursively(DaAssetApiParamSaveReqVO vo, Long parentId, Long daAssetApiId) {
         vo.setParentId(parentId);
         vo.setApiId(daAssetApiId);
         vo.setId(null);
-        // 插入当前节点，获取生成的主键
+        // Insert current node and get the generated primary key
         Long newId = createDaAssetApiParam(vo);
-        // 处理子节点
+        // Process child nodes
         List<DaAssetApiParamSaveReqVO> children = vo.getDaAssetApiParamList();
         if (children != null && !children.isEmpty()) {
             children.forEach(child -> createRecursively(child, newId,daAssetApiId));
@@ -97,15 +97,15 @@ public class DaAssetApiParamServiceImpl  extends ServiceImpl<DaAssetApiParamMapp
 
     @Override
     public int updateDaAssetApiParam(DaAssetApiParamSaveReqVO updateReqVO) {
-        // 相关校验
+        // Validation
 
-        // 更新数据资产-外部API-参数
+        // Update Data Asset - External API - Parameters
         DaAssetApiParamDO updateObj = BeanUtils.toBean(updateReqVO, DaAssetApiParamDO.class);
         return daAssetApiParamMapper.updateById(updateObj);
     }
     @Override
     public int removeDaAssetApiParam(Collection<Long> idList) {
-        // 批量删除数据资产-外部API-参数
+        // Batch delete Data Asset - External API - Parameters
         return daAssetApiParamMapper.deleteBatchIds(idList);
     }
 
@@ -135,16 +135,16 @@ public class DaAssetApiParamServiceImpl  extends ServiceImpl<DaAssetApiParamMapp
 
 
     /**
-     * 将扁平的参数列表组装成树状结构
+     * Assemble a flat parameter list into a tree structure
      *
-     * @param flatList 从数据库查询并转换得到的 RespVO 列表
-     * @return 树形结构的 RespVO 列表（只有根节点）
+     * @param flatList The RespVO list queried and converted from the database
+     * @return Tree-structured RespVO list (only root nodes)
      */
     public List<DaAssetApiParamRespVO> buildParamTree(List<DaAssetApiParamRespVO> flatList) {
         if (flatList == null || flatList.isEmpty()) {
             return Collections.emptyList();
         }
-        // 用 id->节点 的映射，加速查找
+        // Use id -> node mapping to speed up lookup
         Map<Long, DaAssetApiParamRespVO> idMap = flatList.stream()
                 .collect(Collectors.toMap(DaAssetApiParamRespVO::getId, Function.identity()));
 
@@ -152,7 +152,7 @@ public class DaAssetApiParamServiceImpl  extends ServiceImpl<DaAssetApiParamMapp
         for (DaAssetApiParamRespVO node : flatList) {
             Long parentId = node.getParentId();
             if (parentId == null || parentId == 0) {
-                // 无父节点，视为根
+                // No parent node, treat as root
                 tree.add(node);
             } else {
                 DaAssetApiParamRespVO parent = idMap.get(parentId);
@@ -162,7 +162,7 @@ public class DaAssetApiParamServiceImpl  extends ServiceImpl<DaAssetApiParamMapp
                     }
                     parent.getDaAssetApiParamList().add(node);
                 } else {
-                    // 找不到父节点，也当作根处理
+                    // Parent node not found, also treat as root
                     tree.add(node);
                 }
             }
@@ -177,19 +177,19 @@ public class DaAssetApiParamServiceImpl  extends ServiceImpl<DaAssetApiParamMapp
                 .collect(Collectors.toMap(
                         DaAssetApiParamDO::getId,
                         daAssetApiParamDO -> daAssetApiParamDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入数据资产-外部API-参数数据
+     * Import Data Asset - External API - Parameters data
      *
-     * @param importExcelList 数据资产-外部API-参数数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Data Asset - External API - Parameters data list
+     * @param isUpdateSupport Whether to support update; if already exists, update the data
+     * @param operName Operating user
+     * @return Result
      */
     @Override
     public String importDaAssetApiParam(List<DaAssetApiParamRespVO> importExcelList, boolean isUpdateSupport, String operName) {

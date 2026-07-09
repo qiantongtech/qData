@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.da.api.datasource.dto;
 import lombok.Data;
 
 /**
- * 数据源 DTO 对象 DA_DATASOURCE
+ * Datasource DTO DA_DATASOURCE
  *
  * @author lhs
  * @date 2025-01-21
@@ -34,34 +34,34 @@ public class DaDatasourceReqDTO {
     /** ID */
     private Long id;
 
-    /** 数据源名称 */
+    /** Datasource Name */
     private String datasourceName;
 
-    /** 数据源类型 */
+    /** Datasource Type */
     private String datasourceType;
 
-    /** 数据源配置(json字符串) */
+    /** Datasource Config (JSON String) */
     private String datasourceConfig;
 
     /** IP */
     private String ip;
 
-    /** 端口号 */
+    /** Port */
     private Long port;
 
-    /** 数据库表数（预留） */
+    /** Table Count (Reserved) */
     private Long listCount;
 
-    /** 同步记录数（预留） */
+    /** Sync Record Count (Reserved) */
     private Long syncCount;
 
-    /** 同步数据量大小（预留） */
+    /** Sync Data Size (Reserved) */
     private Long dataSize;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
 

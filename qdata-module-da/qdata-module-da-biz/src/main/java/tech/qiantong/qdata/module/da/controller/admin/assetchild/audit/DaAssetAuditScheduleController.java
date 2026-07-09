@@ -48,7 +48,7 @@ import tech.qiantong.qdata.module.da.dal.dataobject.assetchild.audit.DaAssetAudi
 import tech.qiantong.qdata.module.da.service.assetchild.audit.IDaAssetAuditScheduleService;
 
 /**
- * 资产稽查调度Controller
+ * Asset Audit Schedule Controller
  *
  * @author qdata
  * @date 2025-05-09

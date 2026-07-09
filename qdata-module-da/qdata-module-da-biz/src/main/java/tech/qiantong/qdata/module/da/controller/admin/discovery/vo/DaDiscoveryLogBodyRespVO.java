@@ -27,7 +27,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 数据发现节点实例-日志 Response VO 对象 DA_DISCOVERY_LOG_BODY
+ * Data Discovery Node Instance Log Response VO object DA_DISCOVERY_LOG_BODY
  *
  * @author qdata
  * @date 2025-10-15

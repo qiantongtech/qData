@@ -23,7 +23,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 数据资产-质量预警 DTO 对象 DA_ASSET_AUDIT_ALERT
+ * Data Asset - Quality Alert DTO DA_ASSET_AUDIT_ALERT
  *
  * @author qdata
  * @date 2025-05-09
@@ -36,31 +36,31 @@ public class DaAssetAuditAlertRespDTO {
     /** ID */
     private Long id;
 
-    /** 资产ID */
+    /** Asset ID */
     private Long assetId;
 
-    /** 稽查批次号 */
+    /** Audit Batch No. */
     private String batchNo;
 
-    /** 稽查时间 */
+    /** Audit Time */
     private Date auditTime;
 
-    /** 预警时间 */
+    /** Alert Time */
     private Date alertTime;
 
-    /** 预警信息 */
+    /** Alert Message */
     private String alertMessage;
 
-    /** 预警通道JSON */
+    /** Alert Channel JSON */
     private String alertChannels;
 
-    /** 预警通道结果 */
+    /** Alert Channel Result */
     private String alertChannelResult;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
 

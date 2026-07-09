@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 /**
- * 敏感等级Service接口
+ * Sensitive Level Service Interface
  *
  * @author qdata
  * @date 2025-01-21
@@ -37,72 +37,72 @@ import java.util.Map;
 public interface IDaSensitiveLevelService extends IService<DaSensitiveLevelDO> {
 
     /**
-     * 获得敏感等级分页列表
+     * Get sensitive level page list
      *
-     * @param pageReqVO 分页请求
-     * @return 敏感等级分页列表
+     * @param pageReqVO page request
+     * @return sensitive level page list
      */
     PageResult<DaSensitiveLevelDO> getDaSensitiveLevelPage(DaSensitiveLevelPageReqVO pageReqVO);
 
     /**
-     * 创建敏感等级
+     * Create sensitive level
      *
-     * @param createReqVO 敏感等级信息
-     * @return 敏感等级编号
+     * @param createReqVO sensitive level info
+     * @return sensitive level ID
      */
     Long createDaSensitiveLevel(DaSensitiveLevelSaveReqVO createReqVO);
 
     /**
-     * 更新敏感等级
+     * Update sensitive level
      *
-     * @param updateReqVO 敏感等级信息
+     * @param updateReqVO sensitive level info
      */
     int updateDaSensitiveLevel(DaSensitiveLevelSaveReqVO updateReqVO);
 
     /**
-     * 删除敏感等级
+     * Delete sensitive level
      *
-     * @param idList 敏感等级编号
+     * @param idList sensitive level ID list
      */
     int removeDaSensitiveLevel(Collection<Long> idList);
 
     /**
-     * 获得敏感等级详情
+     * Get sensitive level details
      *
-     * @param id 敏感等级编号
-     * @return 敏感等级
+     * @param id sensitive level ID
+     * @return sensitive level
      */
     DaSensitiveLevelDO getDaSensitiveLevelById(Long id);
 
     /**
-     * 获得全部敏感等级列表
+     * Get all sensitive level list
      *
-     * @return 敏感等级列表
+     * @return sensitive level list
      */
     List<DaSensitiveLevelDO> getDaSensitiveLevelList();
 
     /**
-     * 获得全部敏感等级 Map
+     * Get all sensitive level Map
      *
-     * @return 敏感等级 Map
+     * @return sensitive level Map
      */
     Map<Long, DaSensitiveLevelDO> getDaSensitiveLevelMap();
 
 
     /**
-     * 导入敏感等级数据
+     * Import sensitive level data
      *
-     * @param importExcelList 敏感等级数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList sensitive level data list
+     * @param isUpdateSupport whether to support update; if exists, update the data
+     * @param operName operator user
+     * @return result
      */
     String importDaSensitiveLevel(List<DaSensitiveLevelRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
     /**
-     * 修改状态
-     * @param id 主键
-     * @param status 状态值
+     * Modify status
+     * @param id primary key
+     * @param status status value
      * @return
      */
     Boolean updateStatus(Long id, Long status);

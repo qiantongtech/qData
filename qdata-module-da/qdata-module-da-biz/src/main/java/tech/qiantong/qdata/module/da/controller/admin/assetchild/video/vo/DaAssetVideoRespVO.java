@@ -27,7 +27,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 数据资产-视频数据 Response VO 对象 DA_ASSET_VIDEO
+ * Data Asset-Video Response VO DA_ASSET_VIDEO
  *
  * @author qdata
  * @date 2025-04-14

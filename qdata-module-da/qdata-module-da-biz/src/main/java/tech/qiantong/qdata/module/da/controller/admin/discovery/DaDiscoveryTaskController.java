@@ -52,7 +52,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 数据发现任务Controller
+ * Data Discovery Task Controller
  *
  * @author qdata
  * @date 2025-02-11
@@ -90,7 +90,7 @@ public class DaDiscoveryTaskController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DaDiscoveryTaskDO> list = (List<DaDiscoveryTaskDO>) daDiscoveryTaskService.getDaDiscoveryTaskPage(exportReqVO).getRows();
         ExcelUtil<DaDiscoveryTaskRespVO> util = new ExcelUtil<>(DaDiscoveryTaskRespVO.class);
-        util.exportExcel(response, DaDiscoveryTaskConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DaDiscoveryTaskConvert.INSTANCE.convertToRespVOList(list), "Data");
     }
 
     @Operation(summary = "导入数据发现任务列表")
@@ -113,7 +113,7 @@ public class DaDiscoveryTaskController extends BaseController {
     }
 
     /**
-     * 查询定时任务调度日志列表
+     * Query scheduled task job log list
      */
     @PreAuthorize("@ss.hasPermi('da:discoveryTask:list')")
     @GetMapping("/jobLog/list")
@@ -125,7 +125,7 @@ public class DaDiscoveryTaskController extends BaseController {
     }
 
     /**
-     * 根据调度编号获取详细信息
+     * Get details by schedule ID
      */
     @PreAuthorize("@ss.hasPermi('da:discoveryTask:query')")
     @GetMapping(value = "/jobLog/{jobLogId}")
@@ -135,7 +135,7 @@ public class DaDiscoveryTaskController extends BaseController {
     }
 
     /**
-     * 清空定时任务调度日志
+     * Clean scheduled task job logs
      */
     @PreAuthorize("@ss.hasPermi('da:discoveryTask:remove')")
     @Log(title = "log.op.title.da.discovery.task.schedule.log", businessType = BusinessType.CLEAN)
@@ -181,7 +181,7 @@ public class DaDiscoveryTaskController extends BaseController {
     public AjaxResult runDaDiscoveryTask(@PathVariable("id") Long id) throws SchedulerException
     {
         boolean result = daDiscoveryTaskService.runDaDiscoveryTask(id);
-        return result ? success() : error("任务不存在或已过期！");
+        return result ? success() : error("Task does not exist or has expired!");
     }
 
 
@@ -199,7 +199,7 @@ public class DaDiscoveryTaskController extends BaseController {
     public AjaxResult updateDaDiscoveryTaskStatus(@RequestBody DaDiscoveryTaskSaveReqVO daDiscoveryTask) throws SchedulerException
     {
         boolean result = daDiscoveryTaskService.updateDaDiscoveryTaskStatus(daDiscoveryTask);
-        return result ? success() : error("任务不存在或已过期！");
+        return result ? success() : error("Task does not exist or has expired!");
     }
 
 
@@ -211,7 +211,7 @@ public class DaDiscoveryTaskController extends BaseController {
     public AjaxResult updateDaDiscoveryTaskCronExpression(@RequestBody DaDiscoveryTaskSaveReqVO daDiscoveryTask) throws SchedulerException
     {
         boolean result = daDiscoveryTaskService.updateDaDiscoveryTaskCronExpression(daDiscoveryTask);
-        return result ? success() : error("任务不存在或已过期！");
+        return result ? success() : error("Task does not exist or has expired!");
     }
 
 

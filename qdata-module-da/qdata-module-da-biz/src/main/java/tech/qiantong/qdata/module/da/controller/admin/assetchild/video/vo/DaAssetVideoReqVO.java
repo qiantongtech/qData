@@ -22,7 +22,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
- * 数据资产-视频数据 Request VO 对象 DA_ASSET_VIDEO
+ * Data Asset-Video Request VO DA_ASSET_VIDEO
  *
  * @author qdata
  * @date 2025-04-14

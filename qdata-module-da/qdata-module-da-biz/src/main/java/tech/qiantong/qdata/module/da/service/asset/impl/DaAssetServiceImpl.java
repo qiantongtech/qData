@@ -146,7 +146,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
- * 数据资产Service业务层处理
+ * Data Asset Service - Business Layer Processing
  *
  * @author lhs
  * @date 2025-01-21
@@ -239,14 +239,14 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
     @Resource
     private McColumnApiService mcColumnApiService;
 
-    //引入脱敏清单关联关系
+    // Import desensitization list association relationship
     @Resource
     private IDgDesensitizeAssetcolumnService dgDesensitizeAssetcolumnService;
-    //引入脱敏规则
+    // Import desensitization rules
     @Resource
     private IDgDesensitizeRuleService dgDesensitizeRuleService;
 
-    //引入白名单
+    // Import whitelist
     @Resource
     private IDgDesensitizeWhitelistService whitelistService;
 
@@ -259,10 +259,10 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
     @Override
     @Transactional(rollbackFor = Exception.class)
     public DaAssetRespDTO insertDaAsset(DaAssetReqDTO daAssetReqDTO) {
-        //根据模型id查询信息
+        // Query info by model id
         DpModelRespDTO dpModelByIdApi = iDpModelApiService.getDpModelByIdApi(daAssetReqDTO.getModelId());
         if (dpModelByIdApi == null) {
-            throw new ServiceException("da.error.model.notfound", "模型不存在");
+            throw new ServiceException("da.error.model.notfound", "Model does not exist");
         }
         DaAssetDO daAssetDO = new DaAssetDO();
         daAssetDO.setName(dpModelByIdApi.getModelComment());
@@ -271,9 +271,9 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
         daAssetDO.setSource(daAssetReqDTO.getSource());
         daAssetDO.setTableName(dpModelByIdApi.getTableName());
         daAssetDO.setTableComment(dpModelByIdApi.getModelComment());
-        daAssetDO.setFieldCount(daAssetReqDTO.getFieldCount());//字段量
+        daAssetDO.setFieldCount(daAssetReqDTO.getFieldCount());// Field count
 
-        //读取模型的数据设置进去
+        // Read model data and set it
         daAssetDO.setTableType(dpModelByIdApi.getTableType());
         daAssetDO.setDataLayerId(dpModelByIdApi.getDataLayerId());
         daAssetDO.setBusinessCategoryId(dpModelByIdApi.getBusinessCategoryId());
@@ -283,21 +283,21 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
         daAssetDO.setThemeDomainCode(dpModelByIdApi.getThemeDomainCode());
         daAssetDO.setTableCase(dpModelByIdApi.getTableCase());
 
-        //判断是否存在资产
+        // Check if asset exists
         DaAssetPageReqVO daAssetPageReqVO = new DaAssetPageReqVO();
         daAssetPageReqVO.setTableName(dpModelByIdApi.getTableName());
         daAssetPageReqVO.setDatasourceId(String.valueOf(daAssetReqDTO.getDatasourceId()));
         DaAssetDO assetDO = this.getDaAssetByDaAssetPageReqVO(daAssetPageReqVO);
         if (assetDO != null) {
             daAssetDO.setId(assetDO.getId());
-            daAssetMapper.updateById(daAssetDO);//修改资产数据
-            // 删除字段缓存
+            daAssetMapper.updateById(daAssetDO);// Update asset data
+            // Delete field cache
             redisCache.deleteObject(CacheConstants.ASSET_PREVIEW_KEY + daAssetReqDTO.getId() + "_" + dpModelByIdApi.getTableName());
         } else {
-            daAssetMapper.insert(daAssetDO);//添加资产数据
+            daAssetMapper.insert(daAssetDO);// Add asset data
         }
 
-        //查询逻辑模型属性
+        // Query logical model attributes
         List<DpModelColumnRespDTO> dpModelColumnListByModelIdApi = iDpModelApiService.getDpModelColumnListByModelIdApi(daAssetReqDTO.getModelId());
         List<DaAssetColumnDO> daAssetColumnDOList = new ArrayList<>();
 
@@ -330,7 +330,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
                 daAssetColumnDOList.add(daAssetColumnDO);
             }
         }
-        //批量保存数据资产字段
+        // Batch save data asset fields
 //        iDaAssetColumnService.saveBatch(daAssetColumnDOList);
         for (DaAssetColumnDO daAssetColumnDO : daAssetColumnDOList) {
             if (daAssetColumnDO.getId() == null) {
@@ -344,17 +344,17 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
             iDaAssetColumnService.removeDaAssetColumn(nonExistingIdList);
         }
 
-        //设置数据元数据资产关联信息
+        // Set data element and asset association info
         Set<Long> ids = dpModelColumnListByModelIdApi.stream()
                 .map(DpModelColumnRespDTO::getDataElemId)
                 .collect(Collectors.toSet());
-        //id数据不为空
+        // ID data is not empty
         if (StringUtils.isNotEmpty(ids)) {
             List<DpDataElemRespDTO> dpDataElemListByIdsApi = iDpModelApiService.getDpDataElemListByIdsApi(ids);
             List<DpDataElemAssetRelReqDTO> dpDataElemAssetRel = new ArrayList<>();
             dpDataElemListByIdsApi.forEach(dpDataElemRespDTO -> {
                 DpDataElemAssetRelReqDTO dpDataElemAssetRelReqDTO = new DpDataElemAssetRelReqDTO();
-                //设置资产id
+                // Set asset id
                 dpDataElemAssetRelReqDTO.setAssetId(daAssetDO.getId());
                 dpDataElemAssetRelReqDTO.setDataElemType(dpDataElemRespDTO.getType());
                 dpDataElemAssetRelReqDTO.setTableName(dpModelByIdApi.getModelName());
@@ -371,31 +371,31 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
             if (StringUtils.isNotEmpty(dpDataElemListByIdsApi)) {
                 boolean b = iDpModelApiService.insertElementAssetRelation(dpDataElemAssetRel);
                 if (!b) {
-                    throw new ServiceException("da.error.elem.save", "数据元数据资产关联信息保存失败");
+                    throw new ServiceException("da.error.elem.save", "Data element and asset association info save failed");
                 }
             }
         }
         DaAssetRespDTO result = new DaAssetRespDTO();
-        result.setId(daAssetDO.getId());//资产id
+        result.setId(daAssetDO.getId());// Asset id
         return result;
     }
 
     /**
-     * 使用流处理方式找出 daAssetColumnList 中存在但 daAssetColumnDOList 中不存在的记录，
-     * 匹配规则基于 columnName（采用 StringUtils.equals 比较），返回这些记录的 id 集合。
+     * Use stream processing to find records that exist in daAssetColumnList but not in daAssetColumnDOList.
+     * Matching is based on columnName (using StringUtils.equals comparison), returning the id set of those records.
      *
-     * @param daAssetColumnDOList 已存在的记录列表
-     * @param daAssetColumnList   需要检查的记录列表
-     * @return 匹配到的 id 集合
+     * @param daAssetColumnDOList Existing record list
+     * @param daAssetColumnList   Record list to check
+     * @return Matched id collection
      */
     public static Collection<Long> findNonExistingIdList(List<DaAssetColumnDO> daAssetColumnDOList, List<DaAssetColumnDO> daAssetColumnList) {
-        // 提取已存在列表中所有非空的 columnName 到一个 Set 中
+        // Extract all non-null columnNames from the existing list into a Set
         Set<String> existingNames = daAssetColumnDOList == null ? null : daAssetColumnDOList.stream()
                                                                          .filter(asset -> StringUtils.isNotBlank(asset.getColumnName()))
                                                                          .map(DaAssetColumnDO::getColumnName)
                                                                          .collect(Collectors.toSet());
 
-        // 对待匹配列表进行过滤，保留 columnName 不在 existingNames 中的记录，并收集其 id
+        // Filter the pending match list, keeping records whose columnName is not in existingNames, and collect their ids
         return daAssetColumnList == null ? null : daAssetColumnList.stream()
                                                   .filter(asset -> StringUtils.isNotBlank(asset.getColumnName()))
                                                   .filter(asset -> existingNames == null || existingNames.stream()
@@ -405,18 +405,18 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
     }
 
     /**
-     * 根据 dpModelColumnRespDTO 的 engName 匹配 daAssetColumnList 中对应的 DaAssetColumnDO 对象
+     * Match the corresponding DaAssetColumnDO object in daAssetColumnList based on dpModelColumnRespDTO's engName
      *
-     * @param daAssetColumnList    数据资产字段列表
-     * @param dpModelColumnRespDTO 模型列响应 DTO，包含 engName 属性
-     * @return 匹配到的 DaAssetColumnDO 对象，未匹配到返回 null
+     * @param daAssetColumnList    Data asset field list
+     * @param dpModelColumnRespDTO Model column response DTO, containing engName attribute
+     * @return Matched DaAssetColumnDO object, returns null if no match
      */
     public static DaAssetColumnDO matchColumn(List<DaAssetColumnDO> daAssetColumnList, DpModelColumnRespDTO dpModelColumnRespDTO) {
         if (daAssetColumnList == null || dpModelColumnRespDTO == null || dpModelColumnRespDTO.getEngName() == null) {
             return null;
         }
         for (DaAssetColumnDO daAssetColumnDO : daAssetColumnList) {
-            // 当字段名称匹配时，返回该对象
+            // When field names match, return the object
             if (dpModelColumnRespDTO.getEngName().equals(daAssetColumnDO.getColumnName())) {
                 return daAssetColumnDO;
             }
@@ -439,7 +439,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
     @Override
     public List<DaAssetDO> getTablesByDataSourceId(DaAssetPageReqVO pageReqVO) {
         if (StringUtils.isEmpty(pageReqVO.getDatasourceId())) {
-            throw new ServiceException("da.error.datasource.id.empty", "数据源id不能为空");
+            throw new ServiceException("da.error.datasource.id.empty", "Datasource ID cannot be empty");
         }
         return this.lambdaQuery()
                 .eq(DaAssetDO::getDatasourceId, pageReqVO.getDatasourceId())
@@ -470,20 +470,20 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
     }
 
     /**
-     * 1-数据资产
-     * 2-数据研发
+     * 1-Data Asset
+     * 2-Data Development
      */
     @Override
     public PageResult<DaAssetDO> getDaAssetPage(DaAssetPageReqVO pageReqVO, String daAssetQueryType) {
         PageResult<DaAssetDO> daAssetDOPageResult = daAssetMapper.selectPage(pageReqVO);
         List<DaAssetDO> daAssetDOList = (List<DaAssetDO>) daAssetDOPageResult.getRows();
         for (DaAssetDO daAssetDO : daAssetDOList) {
-            //判断是否是api
+            // Check if it's an API
             if (StringUtils.equals("2", daAssetDO.getType())) {
                 DaAssetApiRespVO daAssetApiByAssetId = iDaAssetApiService.getDaAssetApiByAssetId(daAssetDO.getId());
                 daAssetDO.setDaAssetApi(daAssetApiByAssetId);
             }
-//            //判断是否是数据源
+//            // Check if it's a datasource
 //            if (StringUtils.equals("1", daAssetDO.getType())) {
 //                DaDatasourceDO daDatasourceById = iDaDatasourceService.getDaDatasourceById(daAssetDO.getDatasourceId());
 //                daDatasourceById = daDatasourceById == null ? new DaDatasourceDO() : daDatasourceById;
@@ -550,7 +550,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
                 .leftJoin("DM_THEME_DOMAIN t6 ON t.THEME_DOMAIN_ID = t6.id AND t6.DEL_FLAG = '0'")
                 .eq(DaAssetDO::getId, id);
 
-        //拼接查询标签列表
+        // Concatenate tag list query
         String subSelectSql = "SELECT\n" +
                 "'['|| WM_CONCAT(DISTINCT '{\"tagId\":\"' || d.ID || '\",\"tagName\":\"' || d.name || '\"}' ) ||']'\n" +
                 "FROM \n" +
@@ -628,7 +628,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
 
     private void queryDaAssetchild(DaAssetRespVO daAsset) {
         Long assetId = daAsset.getId();
-        //1:数据库表  2:外部API 3: 地理空间服务 4:矢量数据 5:视频数据
+        //1: database table  2: external API 3: geospatial service 4: vector data 5: video data
         String type = daAsset.getType();
         if (StringUtils.equals("1", type)) {
             return;
@@ -673,9 +673,9 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
 
     @Override
     public int updateDaAsset(DaAssetSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related validation
 
-        // 更新数据资产
+        // Update data asset
         DaAssetDO updateObj = BeanUtils.toBean(updateReqVO, DaAssetDO.class);
         return daAssetMapper.updateById(updateObj);
     }
@@ -685,7 +685,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
         ArrayList<Long> assetIdList = new ArrayList<>(idList);
         int asset = dppEtlTaskService.checkTaskIdInAsset(assetIdList);
         if (asset > 0) {
-            throw new ServiceException("da.error.delete.project.ref", "删除失败,资产被项目引用!");
+            throw new ServiceException("da.error.delete.project.ref", "Delete failed, asset is referenced by a project!");
         }
         List<DaAssetDO> daAssetDOList = daAssetMapper.selectList("ID", idList);
         DaAssetDO daAssetDO = daAssetDOList != null ? daAssetDOList.get(0) : null;
@@ -701,7 +701,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
             daDiscoveryTableSaveReqVO.setStatus("1");
             daDiscoveryTableService.updateByTaskIdListAndTableNameStatus(daDiscoveryTableSaveReqVO);
         }
-        // 批量删除数据资产
+        // Batch delete data assets
         return daAssetMapper.deleteBatchIds(idList);
     }
 
@@ -711,7 +711,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
         assetIdList.add(id);
         int asset = dppEtlTaskService.checkTaskIdInAsset(assetIdList);
         if (asset > 0) {
-            throw new ServiceException("da.error.delete.project.ref", "删除失败,资产被项目引用!");
+            throw new ServiceException("da.error.delete.project.ref", "Delete failed, asset is referenced by a project!");
         }
         DaAssetDO daAssetDO = daAssetMapper.selectById(id);
         if (daAssetDO == null) {
@@ -729,15 +729,15 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
             daDiscoveryTableSaveReqVO.setStatus("1");
             daDiscoveryTableService.updateByTaskIdListAndTableNameStatus(daDiscoveryTableSaveReqVO);
         }
-        //删除项目
+        // Delete project
         iDaAssetProjectRelService.removeProjectRelByAssetId(id);
-        //删除主题
+        // Delete theme
         daAssetThemeRelService.removeThemeRelByAssetId(id);
 
         daAssetMapper.deleteAssetById(id);
-        // 批量删除数据资产
+        // Batch delete data assets
 
-        // 更新标签资产数量
+        // Update tag asset count
         attTagAssetRelApiService.deleteRelByUpdateTag(id);
         return 1;
     }
@@ -752,23 +752,23 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
     public Map<Long, DaAssetDO> getDaAssetMap() {
         List<DaAssetDO> daAssetList = daAssetMapper.selectList();
         return daAssetList.stream().collect(Collectors.toMap(DaAssetDO::getId, daAssetDO -> daAssetDO,
-                // 保留已存在的值
+                // Keep existing values
                 (existing, replacement) -> existing));
     }
 
 
     /**
-     * 导入数据资产数据
+     * Import data asset data
      *
-     * @param importExcelList 数据资产数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Data asset data list
+     * @param isUpdateSupport Whether update is supported. If a record already exists, update it.
+     * @param operName        Operating user
+     * @return Result
      */
     @Override
     public String importDaAsset(List<DaAssetRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("da.error.import.empty", "导入数据不能为空！");
+            throw new ServiceException("da.error.import.empty", "Import data cannot be empty!");
         }
 
         int successNum = 0;
@@ -787,16 +787,16 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
                             daAssetMapper.updateById(daAssetDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("da.import.update.success",
-                                    "数据更新成功，ID为 " + daAssetId + " 的数据资产记录。", daAssetId, "数据资产"));
+                                    "Data updated successfully, data asset record with ID " + daAssetId + ".", daAssetId, "Data Asset"));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("da.import.update.fail",
-                                    "数据更新失败，ID为 " + daAssetId + " 的数据资产记录不存在。", daAssetId, "数据资产"));
+                                    "Data update failed, data asset record with ID " + daAssetId + " does not exist.", daAssetId, "Data Asset"));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("da.import.update.id.missing",
-                                "数据更新失败，某条记录的ID不存在。"));
+                                "Data update failed, the ID of a certain record does not exist."));
                     }
                 } else {
                     QueryWrapper<DaAssetDO> queryWrapper = new QueryWrapper<>();
@@ -806,17 +806,17 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
                         daAssetMapper.insert(daAssetDO);
                         successNum++;
                         successMessages.add(MessageUtils.messageWithFallback("da.import.insert.success",
-                                "数据插入成功，ID为 " + daAssetId + " 的数据资产记录。", daAssetId, "数据资产"));
+                                "Data inserted successfully, data asset record with ID " + daAssetId + ".", daAssetId, "Data Asset"));
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("da.import.insert.fail",
-                                "数据插入失败，ID为 " + daAssetId + " 的数据资产记录已存在。", daAssetId, "数据资产"));
+                                "Data insert failed, data asset record with ID " + daAssetId + " already exists.", daAssetId, "Data Asset"));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
                 String errorMsg = MessageUtils.messageWithFallback("da.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                "Data import failed, error info: " + e.getMessage(), e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
@@ -825,20 +825,20 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
         if (failureNum > 0) {
             String failureDetails = String.join("<br/>", failureMessages);
             resultMsg.append(MessageUtils.messageWithFallback("da.import.result.fail",
-                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    "Sorry, import failed! A total of " + failureNum + " records have incorrect format, errors as follows:<br/>" + failureDetails,
                     failureNum, failureDetails));
             throw new ServiceException("da.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
             resultMsg.append(MessageUtils.messageWithFallback("da.import.result.success",
-                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                    "Congratulations, all data has been imported successfully! A total of " + successNum + " records.", successNum));
         }
         return resultMsg.toString();
     }
 
     /**
-     * 数据资产预览带有脱敏规则后的数据预览
+     * Data asset preview with desensitization rules applied
      *
-     * @param jsonObject 主键id和条件查询的内容
+     * @param jsonObject Primary key id and query condition content
      * @return
      */
     @Override
@@ -846,9 +846,9 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
         String tableName = "";
         Long dataSourceId = null;
         if (StringUtils.isEmpty(jsonObject.getStr("pageNum")) || StringUtils.isEmpty(jsonObject.getStr("pageSize"))) {
-            throw new DataQueryException("db.error.pagination.missing", "请携带页码与每页条数！");
+            throw new DataQueryException("db.error.pagination.missing", "Please include page number and page size!");
         }
-        // 查询数据
+        // Query data
         Integer pageNum = Integer.valueOf(jsonObject.getStr("pageNum"));
         Integer pageSize = Integer.valueOf(jsonObject.getStr("pageSize"));
         if (StringUtils.isNotEmpty(jsonObject.getStr("taskId")) && StringUtils.isNotEmpty(jsonObject.getStr("tableName"))) {
@@ -856,7 +856,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
             tableName = jsonObject.getStr("tableName");
             dataSourceId = discoveryTaskDO.getDatasourceId();
         } else {
-            // 获取资产详情
+            // Get asset details
             DaAssetRespVO daAssetDO = this.getDaAssetById(Long.valueOf(jsonObject.getStr("id")));
             if (StringUtils.equals("6", daAssetDO.getType())) {
                 DaAssetFilesDO filesServiceOne = daAssetFilesService.getOne(new LambdaQueryWrapperX<DaAssetFilesDO>().eq(DaAssetFilesDO::getAssetId, daAssetDO.getId()));
@@ -872,7 +872,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
             tableName = daAssetDO.getTableName();
             dataSourceId = daAssetDO.getDatasourceId();
         }
-        // 获取数据源连接信息
+        // Get datasource connection info
         DaDatasourceDO daDatasourceDO = daDatasourceMapper.selectById(dataSourceId);
         if (daDatasourceDO == null) {
             return null;
@@ -882,31 +882,31 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
         DbDialect dbDialect = DialectFactory.getDialect(DbType.getDbType(dbQueryProperty.getDbType()));
         if (!dbQuery.valid()) {
             dbQuery.close();
-            throw new DataQueryException("db.error.connection.fail", "数据库连接失败");
+            throw new DataQueryException("db.error.connection.fail", "Database connection failed");
         }
         int existsSQL = dbQuery.generateCheckTableExistsSQL(dbQueryProperty, tableName);
         if (existsSQL == 0) {
             dbQuery.close();
-            throw new DataQueryException("db.error.table.missing", "数据库中未获取到该表数据，请确认表是否存在");
+            throw new DataQueryException("db.error.table.missing", "Table data not found in the database. Please confirm if the table exists.");
         }
-        // 获取字段集合
+        // Get field collection
         List<DbColumn> columns = redisCache.getCacheList(CacheConstants.ASSET_PREVIEW_KEY + daDatasourceDO.getId() + "_" + tableName);
-        // 获取资产的字段
+        // Get asset fields
         List<DbColumn> daAssetColumns = daAssetColumnMapper.findByAssetId(Long.parseLong(jsonObject.getStr("id")))
                 .stream()
                 .map(e -> e.toDbColumn())
                 .collect(Collectors.toList());
         if (columns.isEmpty()) {
-            //获取表的字段
+            // Get table fields
             columns = dbQuery.getTableColumns(dbQueryProperty, tableName);
             if (columns.size() == 0) {
                 dbQuery.close();
-                throw new DataQueryException("db.error.connection.fail", "数据库连接失败");
+                throw new DataQueryException("db.error.connection.fail", "Database connection failed");
             }
             redisCache.setCacheList(CacheConstants.ASSET_PREVIEW_KEY + daDatasourceDO.getId() + "_" + tableName, columns);
             redisCache.expire(CacheConstants.ASSET_PREVIEW_KEY + daDatasourceDO.getId() + "_" + tableName, 5, TimeUnit.MINUTES);
         }
-        // 拼接查询sql语句
+        // Concatenate query SQL statement
         List<Map<String, Object>> columnTable = new ArrayList<>();
         for (DbColumn column : daAssetColumns) {
             Map<String, Object> columnMap = new HashMap<>();
@@ -935,12 +935,12 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
 
     @Override
     public List<Map<String, Object>> dataMasking(Long assetId, List<Map<String, Object>> data) {
-        // 1) 字段元数据（按字段名大写匹配）
+        // 1) Field metadata (matched by uppercase field name)
         List<DaAssetColumnDO> cols = daAssetColumnMapper.findByAssetId(assetId);
         Map<String, DaAssetColumnDO> colMap = cols.stream()
                 .collect(Collectors.toMap(c -> c.getColumnName().toUpperCase(), c -> c, (a, b) -> a));
 
-        // 2) 敏感等级（仅在线）
+        // 2) Sensitivity level (online only)
         Map<Long, DaSensitiveLevelDO> levelMap = daSensitiveLevelMapper.selectList(new QueryWrapper<DaSensitiveLevelDO>().eq("online_flag", 1))
                 .stream()
                 .collect(Collectors.toMap(DaSensitiveLevelDO::getId, x -> x, (a, b) -> a));
@@ -948,14 +948,14 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
         List<Map<String, Object>> out = new ArrayList<>(data.size());
 
         for (Map<String, Object> row : data) {
-            // 用 LinkedHashMap 保持字段顺序，且不修改原 map
+            // Use LinkedHashMap to maintain field order, without modifying the original map
             Map<String, Object> masked = new HashMap<>(row.size());
 
             for (Map.Entry<String, Object> e : row.entrySet()) {
                 String key = e.getKey();
                 Object val = e.getValue();
 
-                // 保证 _id 始终是字符串
+                // Ensure _id is always a string
                 if ("_id".equalsIgnoreCase(key) && val != null && "org.bson.types.ObjectId".equals(val.getClass()
                         .getName())) {
                     val = val.toString();
@@ -963,7 +963,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
                     continue;
                 }
 
-                // —— 未匹配到配置 或 无敏感等级 → 原样返回
+                // -- No matching config or no sensitivity level -> return as-is
                 DaAssetColumnDO meta = colMap.get(key.toUpperCase());
                 if (meta == null || meta.getSensitiveLevelId() == null) {
                     masked.put(key, val);
@@ -977,7 +977,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
                 }
 
 
-                // 仅对字符串脱敏；其他类型原样返回
+                // Only desensitize strings; return other types as-is
                 if (!(val instanceof CharSequence)) {
                     masked.put(key, val);
                     continue;
@@ -989,15 +989,15 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
                     continue;
                 }
 
-                // 起止位置：start/end 为 1 基；null 则全覆盖
+                // Start/end positions: start/end is 1-based; null means full coverage
                 int len = s.length();
                 int start = lvl.getStartCharLoc() == null ? 1 : lvl.getStartCharLoc().intValue();
                 int end = lvl.getEndCharLoc() == null ? len : lvl.getEndCharLoc().intValue();
 
-                // 规范边界并保证 start<=end
+                // Normalize boundaries and ensure start<=end
                 start = Math.max(1, start);
                 end = Math.min(len, end);
-                if (start > end) { // 无有效覆盖区间 → 原样
+                if (start > end) { // No valid coverage range -> return as-is
                     masked.put(key, s);
                     continue;
                 }
@@ -1006,7 +1006,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
                 if (maskUnit == null || maskUnit.isEmpty()) maskUnit = "*";
 
                 int coverLen = end - start + 1;
-                String midMask = repeat(maskUnit, coverLen); // 支持多字符掩码，不会位移
+                String midMask = repeat(maskUnit, coverLen); // Support multi-character mask, no displacement
 
                 String res = s.substring(0, start - 1) + midMask + s.substring(end);
                 masked.put(key, res);
@@ -1019,7 +1019,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
     }
 
     /**
-     * 生成指定长度的掩码字符串（maskUnit 可为多字符）
+     * Generates a mask string of specified length (maskUnit can be multi-character)
      */
     private static String repeat(String maskUnit, int targetLen) {
         if (targetLen <= 0) return "";
@@ -1034,20 +1034,20 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
 
 //
 //    /**
-//     * 对数据资产的数据进行脱敏
+//     * Desensitize data of a data asset
 //     *
-//     * @param id   数据资产id
-//     * @param data 数据资产的数据
+//     * @param id   Data asset id
+//     * @param data Data asset data
 //     * @return
 //     */
 //    @Override
 //    public List<Map<String, Object>> dataMasking(Long id, List<Map<String, Object>> data) {
-//        // 根据资产详情进行查询字段属性
+//        // Query field properties based on asset details
 //        List<DaAssetColumnDO> assetColumnDOList = daAssetColumnMapper.findByAssetId(id);
-//        // 将字段名称转成大写然后转成map类型，key为大写的字段名称，value是实体类
+//        // Convert field names to uppercase and transform into map type, key is uppercase field name, value is the entity
 //        Map<String, DaAssetColumnDO> columnDOMap = assetColumnDOList.stream().collect(Collectors.toMap(
 //                daAssetColumnDO -> daAssetColumnDO.getColumnName().toUpperCase(), daAssetColumnDO -> daAssetColumnDO));
-//        // 查询敏感等级并转成map类型，key为脱敏等级id，value是实体类
+//        // Query sensitivity levels and transform into map type, key is desensitization level id, value is the entity
 //        QueryWrapper<DaSensitiveLevelDO> queryWrapper = new QueryWrapper<DaSensitiveLevelDO>().eq("online_flag", 1);
 //        Map<Long, DaSensitiveLevelDO> daSensitiveLevelDOMap = daSensitiveLevelMapper.selectList(queryWrapper).stream()
 //                .collect(Collectors.toMap(DaSensitiveLevelDO::getId, daSensitiveLevelDO -> daSensitiveLevelDO));
@@ -1070,10 +1070,10 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
 //                DaSensitiveLevelDO daSensitiveLevelDO = daSensitiveLevelDOMap.get(sensitiveLevelId);
 //
 //                if (daSensitiveLevelDOMap.get(sensitiveLevelId) != null) {
-//                    // 获取起始位置和结束位置
+//                    // Get start and end positions
 //                    int startCharLoc = daSensitiveLevelDO.getStartCharLoc() == null ? 0 : daSensitiveLevelDO.getStartCharLoc().intValue();
 //                    int endCharLoc = daSensitiveLevelDO.getEndCharLoc() == null ? stringBuilder.length() : daSensitiveLevelDO.getEndCharLoc().intValue();
-//                    // 把字符串进行替换
+//                    // Replace the string
 //                    String maskChar = daSensitiveLevelDO.getMaskCharacter();
 //                    startCharLoc = startCharLoc > 0 ? startCharLoc - 1 : startCharLoc;
 //                    endCharLoc = Math.min(endCharLoc, stringBuilder.length());
@@ -1094,16 +1094,16 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
     public void insertAssetByDiscoveryInfo(DaAssetPageReqVO daAssetReqVO, List<DaAssetColumnSaveReqVO> columnSaveReqVOList) {
 
         DaAssetDO daAssetDO = BeanUtils.toBean(daAssetReqVO, DaAssetDO.class);
-        //判断是否存在资产
+        // Check if asset exists
         DaAssetPageReqVO daAssetPageReqVO = new DaAssetPageReqVO();
         daAssetPageReqVO.setTableName(daAssetDO.getTableName());
         daAssetPageReqVO.setDatasourceId(String.valueOf(daAssetDO.getDatasourceId()));
         DaAssetDO assetDO = this.getDaAssetByDaAssetPageReqVO(daAssetPageReqVO);
         if (assetDO != null) {
             daAssetDO.setId(assetDO.getId());
-            daAssetMapper.updateById(daAssetDO);//添加资产数据
+            daAssetMapper.updateById(daAssetDO);// Add asset data
         } else {
-            daAssetMapper.insert(daAssetDO);//添加资产数据
+            daAssetMapper.insert(daAssetDO);// Add asset data
         }
         List<String> themeIdList = daAssetReqVO.getThemeIdList();
         if (CollectionUtils.isNotEmpty(themeIdList)) {
@@ -1164,7 +1164,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
     @Override
     public void updateAssetByDiscoveryInfo(DaAssetPageReqVO daAssetReqVO) {
         DaAssetDO daAssetDO = BeanUtils.toBean(daAssetReqVO, DaAssetDO.class);
-        //判断是否存在资产
+        // Check if asset exists
         DaAssetPageReqVO daAssetPageReqVO = new DaAssetPageReqVO();
         daAssetPageReqVO.setTableName(daAssetDO.getTableName());
         daAssetPageReqVO.setDatasourceId(String.valueOf(daAssetDO.getDatasourceId()));
@@ -1254,7 +1254,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
             createDaAssetThemeIdList(daAsset);
             return daAsset.getId();
         }
-        //1:数据库表  2:外部API 3: 地理空间服务 4:矢量数据 5:视频数据
+        //1: database table  2: external API 3: geospatial service 4: vector data 5: video data
         String type = daAsset.getType();
         if (StringUtils.equals("1", type)) {
             createDaAssetColumnNew(daAsset);
@@ -1279,7 +1279,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
             daAsset.setFieldCount(0L);
             createDaAssetFileNew(daAsset);
         } else {
-            throw new ServiceException("da.error.type.unsupported", "类型暂不支持！");
+            throw new ServiceException("da.error.type.unsupported", "Type not supported!");
         }
 
         createDaAssetProjectRel(daAsset);
@@ -1290,7 +1290,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
 
     @Override
     public Long createDaAssetBindResources(DaAssetSaveReqVO daAsset) {
-        //1:数据库表  2:外部API 3: 地理空间服务 4:矢量数据 5:视频数据
+        //1: database table  2: external API 3: geospatial service 4: vector data 5: video data
         String type = daAsset.getType();
         if (StringUtils.equals("1", type)) {
             createDaAssetColumnNew(daAsset);
@@ -1310,7 +1310,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
             setDaAssetDefaultValues(daAsset);
             createDaAssetFilesNew(daAsset);
         } else {
-            throw new ServiceException("da.error.type.unsupported", "类型暂不支持！");
+            throw new ServiceException("da.error.type.unsupported", "Type not supported!");
         }
 
 
@@ -1345,7 +1345,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
     }
 
     private void createDaAssetFileNew(DaAssetSaveReqVO daAsset) {
-        Assert.notNull(daAsset.getFileInfo(), () -> new ServiceException("da.error.file.path.missing", "缺少文件路径"));
+        Assert.notNull(daAsset.getFileInfo(), () -> new ServiceException("da.error.file.path.missing", "Missing file path"));
         DaDatasourceDO daDatasourceDO = daDatasourceMapper.selectById(daAsset.getDatasourceId());
 
         if (daAsset.getId() == null) {
@@ -1373,7 +1373,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
         List<String> columnList = ExcelToCsvUtil.convertExcelToCsv(excelFile, csvFile, startColumn, startData);
         if (columnList.size() > 0) {
             if (!ExcelToCsvUtil.verifyColumn(columnList)) {
-                throw new ServiceException("da.error.file.column.format", "附件中列名格式有误，请检查!");
+                throw new ServiceException("da.error.file.column.format", "The column name format in the attachment is incorrect, please check!");
             }
         }
         ColumnRespVO columnRespVO = ColumnRespVO.builder().csvFile(csvFile).columnList(columnList).build();
@@ -1395,7 +1395,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
         List<String> columnList = ExcelToCsvUtil.parseCsv(file, csvFile);
         if (columnList.size() > 0) {
             if (!ExcelToCsvUtil.verifyColumn(columnList)) {
-                throw new ServiceException("da.error.file.column.format", "附件中列名格式有误，请检查!");
+                throw new ServiceException("da.error.file.column.format", "The column name format in the attachment is incorrect, please check!");
             }
         }
         ColumnRespVO columnRespVO = ColumnRespVO.builder().csvFile(csvFile).columnList(columnList).build();
@@ -1479,7 +1479,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
     }
 
     /**
-     * 主题
+     * Theme
      *
      * @param daAsset
      */
@@ -1492,7 +1492,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
     }
 
     /**
-     * 字段
+     * Fields
      *
      * @param daAsset
      */
@@ -1517,7 +1517,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
 
     @Override
     public int updateDaAssetNew(DaAssetSaveReqVO daAsset) {
-        //1:数据库表  2:外部API 3: 地理空间服务 4:矢量数据 5:视频数据
+        //1: database table  2: external API 3: geospatial service 4: vector data 5: video data
         String type = daAsset.getType();
         if (StringUtils.equals("1", type)) {
             DaAssetRespVO daAssetById = getDaAssetById(daAsset.getId());
@@ -1625,18 +1625,18 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
         if (id != null) {
             DaAssetRespVO daAssetById = this.getDaAssetById(id);
             if (StringUtils.equals("1", daAssetById.getType())) {
-                // 如需特殊处理，填写逻辑
+                // For special handling, fill in logic here
             }
 
             DaDatasourceDO daDatasourceById = iDaDatasourceService.getDaDatasourceById(daAssetById.getDatasourceId());
             DbQueryProperty dbQueryProperty = new DbQueryProperty(daDatasourceById.getDatasourceType(), daDatasourceById.getIp(), daDatasourceById.getPort(), daDatasourceById.getDatasourceConfig());
             if (!isCountSupported(dbQueryProperty.getDbType())) {
-                throw new DataQueryException("db.error.datasource.type.unsupported", "暂不支持此类型数据源，请联系管理员！");
+                throw new DataQueryException("db.error.datasource.type.unsupported", "This datasource type is currently not supported, please contact the administrator!");
             }
 
             DbQuery dbQuery = dataSourceFactory.createDbQuery(dbQueryProperty);
             if (!dbQuery.valid()) {
-                throw new DataQueryException("db.error.connection.fail", "数据库连接失败");
+                throw new DataQueryException("db.error.connection.fail", "Database connection failed");
             }
 
             updateAssetFieldAndDataCount(dbQuery, dbQueryProperty, daAssetById);
@@ -1666,7 +1666,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
                 DbQuery dbQuery = dataSourceFactory.createDbQuery(dbQueryProperty);
                 try {
                     if (!dbQuery.valid()) {
-                        // 记录日志并跳过该数据源
+                        // Log and skip this datasource
                         continue;
                     }
                 } catch (Exception e) {
@@ -1677,7 +1677,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
                     try {
                         updateAssetFieldAndDataCount(dbQuery, dbQueryProperty, asset);
                     } catch (Exception e) {
-                        log.error("失败：{} ", asset);
+                        log.error("Failed: {} ", asset);
                     }
                 }
 
@@ -1685,7 +1685,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
             }
         }
 
-        return AjaxResult.success(MessageUtils.messageWithFallback("da.error.task.complete", "任务完成"));
+        return AjaxResult.success(MessageUtils.messageWithFallback("da.error.task.complete", "Task completed"));
     }
 
     @Override
@@ -1744,23 +1744,23 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
 
     @Override
     public LineageDTO dataLineage(Long id) {
-        //获取资产信息
+        // Get asset info
         DaAssetDO daAsset = this.getById(id);
         if (!StringUtils.equals("1", daAsset.getType())) {
-            throw new ServiceException("da.error.asset.type.wrong", "资产类型错误");
+            throw new ServiceException("da.error.asset.type.wrong", "Asset type error");
         }
         Long datasourceId = daAsset.getDatasourceId();
-        //获取数据源连接信息
+        // Get datasource connection info
         DaDatasourceDO datasource = iDaDatasourceService.getById(datasourceId);
         if (datasource == null) {
-            throw new ServiceException("da.error.datasource.notfound", "数据源信息不存在");
+            throw new ServiceException("da.error.datasource.notfound", "Datasource info does not exist");
         }
         DbQueryProperty dbProperty = new DbQueryProperty(datasource.getDatasourceType(), datasource.getIp(), datasource.getPort(), datasource.getDatasourceConfig());
         DbDialect dbDialect = DialectFactory.getDialect(DbType.getDbType(dbProperty.getDbType()));
         String tableName = dbDialect.getTableName(dbProperty,daAsset.getTableName());
 
         LineageDTO lineageDTO = lineageDataService.lineage(dbProperty.trainToHostPort(), tableName);
-        //根据task查询当前任务最新的状态
+        // Query the latest status of the current task based on task
         if (lineageDTO.getTasks() != null && lineageDTO.getTasks().size() > 0) {
             List<Long> ipList = lineageDTO.getTasks().stream().map(TaskNode::getTaskId).collect(Collectors.toList());
             Map<Long, TaskNode> taskNodeMap = lineageDTO.getTasks()
@@ -1788,23 +1788,23 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
         List<TreeData> treeData = new ArrayList<>();
 
         treeData.add(TreeData.builder()
-                .name("按业务分类")
+                .name("By Business Category")
                 .type("0")
-                .otherData(JSON.parseObject("{\"tooltipStr\":\"主要面向业务与分析人员。按实际业务线或部门职能归类，方便快速定位特定业务场景的数据。\"}"))
+                .otherData(JSON.parseObject("{\"tooltipStr\":\"Primarily for business and analytics personnel. Categorized by actual business lines or departmental functions, facilitating quick identification of data for specific business scenarios.\"}"))
                 .children(dmBusinessCategoryApiService.getTreeData("1"))
                 .build());
 
         treeData.add(TreeData.builder()
-                .name("按主题域")
+                .name("By Theme Domain")
                 .type("0")
-                .otherData(JSON.parseObject("{\"tooltipStr\":\"主要面向架构与数据开发人员。按核心业务实体划分全局数据，适用于跨部门的数据探索与模型设计。\"}"))
+                .otherData(JSON.parseObject("{\"tooltipStr\":\"Primarily for architects and data developers. Divides global data by core business entities, suitable for cross-departmental data exploration and model design.\"}"))
                 .children(dmThemeDomainApiService.getTreeData("1"))
                 .build());
 
         treeData.add(TreeData.builder()
-                .name("按数仓分层")
+                .name("By Data Warehouse Layer")
                 .type("0")
-                .otherData(JSON.parseObject("{\"tooltipStr\":\"主要面向底层数据开发人员。按数据加工深度与流转架构划分，方便溯源血缘链路和进行技术排查。\"}"))
+                .otherData(JSON.parseObject("{\"tooltipStr\":\"Primarily for underlying data developers. Divided by data processing depth and flow architecture, facilitating lineage tracing and technical troubleshooting.\"}"))
                 .children(dmDataLayerApiService.getTreeData("1"))
                 .build());
         return treeData;
@@ -1817,12 +1817,12 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
         }
 
         List<Long> ids = new ArrayList<>(daAssetList.size());
-        //判断当前元数据是否存在
+        // Check if current metadata already exists
         if (this.count(Wrappers.lambdaQuery(DaAssetDO.class)
                 .in(DaAssetDO::getTableId, daAssetList.stream()
                         .map(e -> e.getTableId())
                         .collect(Collectors.toList()))) > 0) {
-            throw new ServiceException("da.error.elem.exists", "当前所选的元数据部分已在资产中存在！");
+            throw new ServiceException("da.error.elem.exists", "Some of the selected metadata already exists in assets!");
         }
         for (DaAssetSaveReqVO vo : daAssetList) {
             Long id = this.createDaAssetNew(vo);
@@ -1834,30 +1834,30 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
     @Override
     public List<Map<String, Object>> dataMaskings(Long assetId, List<Map<String, Object>> data, Long userId, String scene) {
 
-        Map<String, Object>  mt  = new HashMap<>();//存放 最终状态 1：不脱敏 2：脱敏
+        Map<String, Object>  mt  = new HashMap<>();// Stores final status: 1: no desensitization 2: desensitize
         List<Map<String, Object>> out = new ArrayList<>(data.size());
-        Map<String, Object>  mk  = new HashMap<>(); //存放 替换内容
+        Map<String, Object>  mk  = new HashMap<>(); // Stores replacement content
         List<DaAssetColumnDO> cols = daAssetColumnMapper.findByAssetId(assetId);
         for (DaAssetColumnDO col : cols) {
-            //通过DaAssetColumnDO的id获取 脱敏规则
+            // Get desensitization rule via DaAssetColumnDO's id
             DgDesensitizeAssetcolumnDO assetcolumnDO = dgDesensitizeAssetcolumnService.getDgDesensitizeAssetcolumnByAid(col.getId());
-            //1.判断是否绑定了分类
+            // 1. Check if a category is bound
             if(assetcolumnDO == null){
                 mt.put(col.getColumnName(),1);
             }else{
-                //获取 关联的规则对象
+                // Get the associated rule object
                 DgDesensitizeRuleDO rule = dgDesensitizeRuleService.getDgDesensitizeRuleByDataCategoryId(assetcolumnDO.getDataCategoryId());
                 DgDesensitizeWhitelistDO white =  whitelistService.getDgDesensitizeWhitelistByCategoryId(assetcolumnDO.getDataCategoryId());
-                //2.判断是否 绑定了 规则
+                // 2. Check if a rule is bound
                 if(rule == null){
                     mt.put(col.getColumnName(),1);
                 }else{
-                    //3.判断规则是否 启用 或者 场景要求符合
+                    // 3. Check if rule is enabled or if scene requirement matches
                     if(!rule.getValidFlag()|| !rule.getApplicationScene().contains(scene)){
                         mt.put(col.getColumnName(),1);
                     }else{
                         mk.put("rp",rule.getReplaceContent());
-                        //4.存在规则区间
+                        // 4. Rule interval exists
                         if (rule.getIntervalList().size()>0){
                             mk.put("gz",rule.getIntervalList());
                             mt.put(col.getColumnName(),2);
@@ -1867,7 +1867,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
                     }
 
                 }
-                //判断是否 有白名单
+                // Check if there is a whitelist
                 if(white != null){
                     Date currtime = new Date();
                     boolean b= (!currtime.before(white.getStartTime()))  && (!currtime.after(white.getEndTime()));
@@ -1883,9 +1883,9 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
 
 
         }
-        //根据 最终状态，封装数据
+        // Based on final status, assemble the data
         for (Map<String, Object> row : data) {
-            // 用 LinkedHashMap 保持字段顺序，且不修改原 map
+            // Use LinkedHashMap to maintain field order, without modifying the original map
             Map<String, Object> masked = new LinkedHashMap<>(row.size());
             for (Map.Entry<String, Object> e : row.entrySet()) {
                 String key = e.getKey();
@@ -1909,26 +1909,26 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
                 .eq(DaAssetDO::getTableName, tableName));
     }
 
-    //字符串替换
+    // String replacement
     public static String desensitizeByInterval(String originalStr,
                                                String replaceStr,
                                                List<DgDesensitizeIntervalDO> intervalList) {
-        // 空值校验
+        // Null value validation
         if (originalStr == null || originalStr.isEmpty()) return originalStr;
         if (replaceStr == null || replaceStr.isEmpty()) return originalStr;
         if (intervalList == null || intervalList.isEmpty()) return originalStr;
 
-        // 取替换字符
+        // Take the replacement character
         char replaceChar = replaceStr.charAt(0);
 
-        // 基于原始字符串创建字符数组（所有操作都在这里，长度不变）
+        // Create a character array based on the original string (all operations happen here, length unchanged)
         char[] chars = originalStr.toCharArray();
         int len = chars.length;
 
-        // 按 intervalNo 排序（保证顺序）
+        // Sort by intervalNo (ensure order)
         intervalList.sort(Comparator.comparing(DgDesensitizeIntervalDO::getIntervalNo));
 
-        // 遍历所有规则，直接替换原始下标
+        // Iterate through all rules, directly replace at original indices
         for (DgDesensitizeIntervalDO interval : intervalList) {
             Long startL = interval.getStartNum();
             Long endL = interval.getEndNum();
@@ -1938,12 +1938,12 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
             int start = startL.intValue()-1;
             int end = endL.intValue()-1;
 
-            // 下标安全处理
+            // Index safety handling
             start = Math.max(start, 0);
             end = Math.min(end, len - 1);
             if (start > end) continue;
 
-            // 逐位替换（所有规则都用原始下标）
+            // Replace character by character (all rules use original indices)
             for (int i = start; i <= end; i++) {
                 chars[i] = replaceChar;
             }
@@ -1958,15 +1958,15 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
         if (replaceStr == null || replaceStr.isEmpty()) return originalStr;
         if (intervalList == null || intervalList.isEmpty()) return originalStr;
 
-        // 1. 按 intervalNo 排序
+        // 1. Sort by intervalNo
         List<DgDesensitizeIntervalDO> sortedList = new ArrayList<>(intervalList);
         sortedList.sort(Comparator.comparing(DgDesensitizeIntervalDO::getIntervalNo));
 
-        // 2. 把所有区间转成 原始字符串的位置
+        // 2. Convert all intervals to original string positions
         StringBuilder sb = new StringBuilder(originalStr);
-        int offset = 0; // 替换后长度变化的偏移量
+        int offset = 0; // Offset of length change after replacement
 
-        // 3. 遍历替换（关键：永远基于原始下标计算！）
+        // 3. Iterate and replace (key: always calculate based on original indices!)
         for (DgDesensitizeIntervalDO interval : sortedList) {
             Long s = interval.getStartNum();
             Long e = interval.getEndNum();
@@ -1975,18 +1975,18 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
             int start = s.intValue()-1;
             int end = e.intValue()-1;
 
-            // 区间长度
+            // Interval length
             int len = end - start + 1;
             if (len <= 0) continue;
 
-            // 开始替换（关键：基于原始位置 + 偏移修正）
+            // Start replacement (key: based on original position + offset correction)
             int replaceStart = start - offset;
             if (replaceStart < 0) replaceStart = 0;
 
-            // 整个区间替换成 1 个替换符
+            // Replace entire interval with a single replacement character
             sb.replace(replaceStart, replaceStart + len, replaceStr);
 
-            // 偏移量 = 总缩短长度
+            // Offset = total shortening length
             offset += (len - 1);
         }
         return sb.toString();
@@ -2059,7 +2059,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
         if (columnMap.isEmpty()) {
             return;
         }
-        //通过mcTableId查询资产
+        // Query asset by mcTableId
         List<DaAssetDO> daAssetDOList = this.list(Wrappers.lambdaQuery(DaAssetDO.class)
                 .in(DaAssetDO::getTableId, columnMap.keySet()));
         for (DaAssetDO daAssetDO : daAssetDOList) {
@@ -2067,9 +2067,9 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
             if (columnList == null || columnList.size() == 0) {
                 continue;
             }
-            //columnList List<McColumnRespDTO> 转为 List<DaAssetColumnDO>
+            // Convert columnList List<McColumnRespDTO> to List<DaAssetColumnDO>
             List<DaAssetColumnDO> newAssetColumns = convertMcColumnToDaAssetColumn(daAssetDO,columnList);
-            //获取原有字段
+            // Get existing fields
             List<DaAssetColumnDO> oldAssetColumns = iDaAssetColumnService.list(Wrappers.lambdaQuery(DaAssetColumnDO.class)
                     .eq(DaAssetColumnDO::getAssetId, daAssetDO.getId()));
             Map<String, List<DaAssetColumnDO>> compareResult = compareAssetColumns(newAssetColumns, oldAssetColumns);
@@ -2077,15 +2077,15 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
             List<DaAssetColumnDO> updateList = compareResult.get("updateList");
             List<DaAssetColumnDO> deleteList = compareResult.get("deleteList");
             if (addList != null && addList.size() > 0) {
-                //添加字段
+                // Add fields
                 iDaAssetColumnService.saveBatch(addList);
             }
             if (updateList != null && updateList.size() > 0) {
-                //修改字段
+                // Modify fields
                 iDaAssetColumnService.updateBatchById(updateList);
             }
             if (deleteList != null && deleteList.size() > 0) {
-                //删除字段
+                // Delete fields
                 iDaAssetColumnService.removeByIds(deleteList
                         .stream()
                         .map(DaAssetColumnDO::getId).collect(Collectors.toList()));
@@ -2095,7 +2095,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
 
     private List<DaAssetColumnDO> convertMcColumnToDaAssetColumn(DaAssetDO daAssetDO,List<McColumnRespDTO> mcColumnList) {
         if (mcColumnList == null || mcColumnList.isEmpty()) {
-            return new ArrayList<>(); // 返回空列表
+            return new ArrayList<>(); // Return empty list
         }
 
         return mcColumnList.stream()
@@ -2103,7 +2103,7 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
                     DaAssetColumnDO assetColumn = new DaAssetColumnDO();
 
                     assetColumn.setAssetId(daAssetDO.getId());
-                    // 映射基本字段
+                    // Map basic fields
                     assetColumn.setColumnName(mcColumn.getColumnName());
                     assetColumn.setColumnComment(mcColumn.getColumnComment());
                     assetColumn.setColumnType(mcColumn.getColumnType());
@@ -2115,62 +2115,62 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
                     assetColumn.setPkFlag(mcColumn.getPkFlag());
                     assetColumn.setDefaultValue(mcColumn.getDefaultValue());
 
-                    // 设置其他可选字段（如果需要可以从元数据中获取或设置默认值）
-                    assetColumn.setDataElemCodeFlag("0"); // 默认不是代码
-                    assetColumn.setRelDataElmeFlag("0"); // 默认不关联数据元
-                    assetColumn.setRelCleanFlag("0"); // 默认不关联清洗规则
-                    assetColumn.setRelAuditFlag("0"); // 默认不关联稽查规则
+                    // Set other optional fields (can be obtained from metadata or set to defaults if needed)
+                    assetColumn.setDataElemCodeFlag("0"); // Default is not a code
+                    assetColumn.setRelDataElmeFlag("0"); // Default: not associated with a data element
+                    assetColumn.setRelCleanFlag("0"); // Default: not associated with a cleansing rule
+                    assetColumn.setRelAuditFlag("0"); // Default: not associated with an audit rule
                     return assetColumn;
                 })
                 .collect(Collectors.toList());
     }
 
     /**
-     * 对比新旧字段列表，返回需要删除、修改和新增的字段
+     * Compare new and old field lists, returning fields to delete, modify, and add
      *
-     * @param newAssetColumns 新的字段列表
-     * @param oldAssetColumns 旧的字段列表
-     * @return Map包含三个列表：deleteList(需删除)、updateList(需修改)、addList(需新增)
+     * @param newAssetColumns New field list
+     * @param oldAssetColumns Old field list
+     * @return Map containing three lists: deleteList (to delete), updateList (to modify), addList (to add)
      */
     public Map<String, List<DaAssetColumnDO>> compareAssetColumns(List<DaAssetColumnDO> newAssetColumns,
                                                                   List<DaAssetColumnDO> oldAssetColumns) {
-        // 初始化结果Map
+        // Initialize result Map
         Map<String, List<DaAssetColumnDO>> result = new HashMap<>();
         List<DaAssetColumnDO> deleteList = new ArrayList<>();
         List<DaAssetColumnDO> updateList = new ArrayList<>();
         List<DaAssetColumnDO> addList = new ArrayList<>();
 
-        // 使用columnName作为唯一标识进行比较
-        // 将旧字段列表转换为以columnName为key的Map，便于查找
+        // Use columnName as the unique identifier for comparison
+        // Convert the old field list to a Map keyed by columnName for easy lookup
         Map<String, DaAssetColumnDO> oldColumnMap = oldAssetColumns.stream()
                 .collect(Collectors.toMap(DaAssetColumnDO::getColumnName, column -> column));
 
-        // 将新字段列表转换为以columnName为key的Map，便于查找
+        // Convert the new field list to a Map keyed by columnName for easy lookup
         Map<String, DaAssetColumnDO> newColumnMap = newAssetColumns.stream()
                 .collect(Collectors.toMap(DaAssetColumnDO::getColumnName, column -> column));
 
-        // 1. 查找需要删除的字段（在old中存在但在new中不存在）
+        // 1. Find fields to delete (present in old but not in new)
         for (DaAssetColumnDO oldColumn : oldAssetColumns) {
             if (!newColumnMap.containsKey(oldColumn.getColumnName())) {
                 deleteList.add(oldColumn);
             }
         }
 
-        // 2. 查找需要新增的字段（在new中存在但在old中不存在）
+        // 2. Find fields to add (present in new but not in old)
         for (DaAssetColumnDO newColumn : newAssetColumns) {
             if (!oldColumnMap.containsKey(newColumn.getColumnName())) {
                 addList.add(newColumn);
             }
         }
 
-        // 3. 查找需要修改的字段（在两边都存在但属性不同）
+        // 3. Find fields to modify (present in both but with different properties)
         for (DaAssetColumnDO newColumn : newAssetColumns) {
             DaAssetColumnDO oldColumn = oldColumnMap.get(newColumn.getColumnName());
             if (oldColumn != null) {
-                // 比较字段的关键属性是否有变化
+                // Compare whether key properties of the field have changed
                 if (isColumnChanged(newColumn, oldColumn)) {
-                    // 如果需要知道具体哪些字段变了，可以将oldColumn也保存起来
-                    // 这里我们添加新版本的字段到更新列表
+                    // If you need to know exactly which fields changed, you can also save oldColumn
+                    // Here we add the new version to the update list
                     updateList.add(newColumn);
                 }
             }
@@ -2183,44 +2183,44 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
     }
 
     /**
-     * 判断字段的属性是否发生变化
+     * Determine whether the properties of a field have changed
      *
-     * @param newColumn 新字段
-     * @param oldColumn 旧字段
-     * @return 是否有变化
+     * @param newColumn New field
+     * @param oldColumn Old field
+     * @return Whether there is a change
      */
     private boolean isColumnChanged(DaAssetColumnDO newColumn, DaAssetColumnDO oldColumn) {
-        // 比较字段类型
+        // Compare column type
         if (!Objects.equals(newColumn.getColumnType(), oldColumn.getColumnType())) {
             return true;
         }
 
-        // 比较字段长度
+        // Compare column length
         if (!Objects.equals(newColumn.getColumnLength(), oldColumn.getColumnLength())) {
             return true;
         }
 
-        // 比较小数位数
+        // Compare decimal places
         if (!Objects.equals(newColumn.getColumnScale(), oldColumn.getColumnScale())) {
             return true;
         }
 
-        // 比较是否主键
+        // Compare primary key
         if (!Objects.equals(newColumn.getPkFlag(), oldColumn.getPkFlag())) {
             return true;
         }
 
-        // 比较是否必填
+        // Compare required flag
         if (!Objects.equals(newColumn.getNullableFlag(), oldColumn.getNullableFlag())) {
             return true;
         }
 
-        // 比较默认值
+        // Compare default value
         if (!Objects.equals(newColumn.getDefaultValue(), oldColumn.getDefaultValue())) {
             return true;
         }
 
-        // 比较字段注释
+        // Compare column comment
         if (!Objects.equals(newColumn.getColumnComment(), oldColumn.getColumnComment())) {
             return true;
         }

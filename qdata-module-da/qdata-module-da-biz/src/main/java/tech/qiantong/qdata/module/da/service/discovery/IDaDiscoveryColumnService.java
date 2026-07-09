@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 数据发现字段Service接口
+ * Data Discovery Column Service Interface
  *
  * @author qdata
  * @date 2025-02-11
@@ -38,74 +38,74 @@ import java.util.Map;
 public interface IDaDiscoveryColumnService extends IService<DaDiscoveryColumnDO> {
 
     /**
-     * 获得数据发现字段分页列表
+     * Get data discovery column page list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据发现字段分页列表
+     * @param pageReqVO page request
+     * @return data discovery column page list
      */
     PageResult<DaDiscoveryColumnDO> getDaDiscoveryColumnPage(DaDiscoveryColumnPageReqVO pageReqVO);
 
     /**
-     * 获得全部数据发现字段列表
+     * Get all data discovery column list
      *
-     * @return 数据发现字段列表
+     * @return data discovery column list
      */
     List<DaDiscoveryColumnDO> getDaDiscoveryColumnList(DaDiscoveryColumnPageReqVO pageReqVO);
 
     /**
-     * 创建数据发现字段
+     * Create data discovery column
      *
-     * @param createReqVO 数据发现字段信息
-     * @return 数据发现字段编号
+     * @param createReqVO data discovery column info
+     * @return data discovery column ID
      */
     Long createDaDiscoveryColumn(DaDiscoveryColumnSaveReqVO createReqVO);
     Long createDaDiscoveryColumn(DaDiscoveryColumnDO createReqVO);
 
     /**
-     * 更新数据发现字段
+     * Update data discovery column
      *
-     * @param updateReqVO 数据发现字段信息
+     * @param updateReqVO data discovery column info
      */
     int updateDaDiscoveryColumn(DaDiscoveryColumnSaveReqVO updateReqVO);
     int updateDaDiscoveryColumn(DaDiscoveryColumnDO updateReqVO);
 
     /**
-     * 删除数据发现字段
+     * Delete data discovery column
      *
-     * @param idList 数据发现字段编号
+     * @param idList data discovery column ID list
      */
     int removeDaDiscoveryColumn(Collection<Long> idList);
 
     /**
-     * 获得数据发现字段详情
+     * Get data discovery column details
      *
-     * @param id 数据发现字段编号
-     * @return 数据发现字段
+     * @param id data discovery column ID
+     * @return data discovery column
      */
     DaDiscoveryColumnDO getDaDiscoveryColumnById(Long id);
 
     /**
-     * 获得全部数据发现字段列表
+     * Get all data discovery column list
      *
-     * @return 数据发现字段列表
+     * @return data discovery column list
      */
     List<DaDiscoveryColumnDO> getDaDiscoveryColumnList();
 
     /**
-     * 获得全部数据发现字段 Map
+     * Get all data discovery column Map
      *
-     * @return 数据发现字段 Map
+     * @return data discovery column Map
      */
     Map<Long, DaDiscoveryColumnDO> getDaDiscoveryColumnMap();
 
 
     /**
-     * 导入数据发现字段数据
+     * Import data discovery column data
      *
-     * @param importExcelList 数据发现字段数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList data discovery column data list
+     * @param isUpdateSupport whether to support update; if exists, update the data
+     * @param operName operator user
+     * @return result
      */
     String importDaDiscoveryColumn(List<DaDiscoveryColumnRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

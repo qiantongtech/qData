@@ -23,14 +23,14 @@ import lombok.*;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 数据资产-文件服务 DO 对象 DA_ASSET_FILES
+ * Data Asset - File Service DO - DA_ASSET_FILES
  *
  * @author qdata
  * @date 2025-06-26
  */
 @Data
 @TableName(value = "DA_ASSET_FILES")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Not needed for MySQL and similar databases.
 // @KeySequence("DA_ASSET_FILES_seq")
 @Builder
 @NoArgsConstructor
@@ -44,28 +44,28 @@ public class DaAssetFilesDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 资产id */
+    /** Asset ID */
     private Long assetId;
 
-    /** 起始列 */
+    /** Start Column */
     private Integer startColumn;
 
-    /** 起始行 */
+    /** Start Row */
     private Integer startData;
 
-    /** 文件名称 */
+    /** File Name */
     private String name;
 
-    /** 文件地址 */
+    /** File URL */
     private String url;
 
-    /** 文件类型 */
+    /** File Type */
     private String type;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     @TableLogic
     private Boolean delFlag;
 

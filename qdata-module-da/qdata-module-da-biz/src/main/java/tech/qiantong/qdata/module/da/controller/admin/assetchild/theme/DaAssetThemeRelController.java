@@ -48,7 +48,7 @@ import tech.qiantong.qdata.module.da.dal.dataobject.assetchild.theme.DaAssetThem
 import tech.qiantong.qdata.module.da.service.assetchild.theme.IDaAssetThemeRelService;
 
 /**
- * 数据资产-主题关联关系Controller
+ * Data Asset-Theme Relationship Controller
  *
  * @author qdata
  * @date 2025-04-14

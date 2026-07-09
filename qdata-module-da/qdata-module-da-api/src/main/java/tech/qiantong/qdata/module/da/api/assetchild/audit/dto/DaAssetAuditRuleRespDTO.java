@@ -23,7 +23,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 数据资产质量结果记录 DTO 对象 DA_ASSET_AUDIT_RULE
+ * Data Asset Quality Result Record DTO DA_ASSET_AUDIT_RULE
  *
  * @author qdata
  * @date 2025-05-09
@@ -36,52 +36,52 @@ public class DaAssetAuditRuleRespDTO {
     /** ID */
     private Long id;
 
-    /** 资产ID */
+    /** Asset ID */
     private Long assetId;
 
-    /** 表名称 */
+    /** Table Name */
     private String tableName;
 
-    /** 字段名称/英文名称 */
+    /** Column Name / English Name */
     private String columnName;
 
-    /** 字段注释/中文名称 */
+    /** Column Comment / Chinese Name */
     private String columnComment;
 
-    /** 规则名称 */
+    /** Rule Name */
     private String ruleName;
 
-    /** 质量维度 */
+    /** Quality Dimension */
     private String qualityDim;
 
-    /** 规则类型 */
+    /** Rule Type */
     private String ruleType;
 
-    /** 规则级别 */
+    /** Rule Level */
     private String ruleLevel;
 
-    /** 规则描述 */
+    /** Rule Description */
     private String ruleDescription;
 
-    /** 规则配置 */
+    /** Rule Configuration */
     private String ruleConfig;
 
-    /** 校验总数 */
+    /** Validation Total */
     private Long totalCount;
 
-    /** 问题数 */
+    /** Issue Count */
     private Long issueCount;
 
-    /** 稽查时间 */
+    /** Audit Time */
     private Date auditTime;
 
-    /** 稽查批次号 */
+    /** Audit Batch No. */
     private String batchNo;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
 

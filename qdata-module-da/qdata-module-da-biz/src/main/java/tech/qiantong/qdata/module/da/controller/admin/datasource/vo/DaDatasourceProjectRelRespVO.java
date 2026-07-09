@@ -27,7 +27,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 数据源与项目关联关系 Response VO 对象 DA_DATASOURCE_PROJECT_REL
+ * Datasource-Project Relation Response VO DA_DATASOURCE_PROJECT_REL
  *
  * @author qdata
  * @date 2025-03-13

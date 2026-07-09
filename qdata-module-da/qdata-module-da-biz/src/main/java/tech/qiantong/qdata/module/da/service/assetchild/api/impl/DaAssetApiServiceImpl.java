@@ -49,7 +49,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * 数据资产-外部APIService业务层处理
+ * Data Asset - External API Service Business Layer
  *
  * @author qdata
  * @date 2025-04-14
@@ -83,15 +83,15 @@ public class DaAssetApiServiceImpl  extends ServiceImpl<DaAssetApiMapper,DaAsset
 
     @Override
     public int updateDaAssetApi(DaAssetApiSaveReqVO updateReqVO) {
-        // 相关校验
+        // Validation
 
-        // 更新数据资产-外部API
+        // Update Data Asset - External API
         DaAssetApiDO updateObj = BeanUtils.toBean(updateReqVO, DaAssetApiDO.class);
         return daAssetApiMapper.updateById(updateObj);
     }
     @Override
     public int removeDaAssetApi(Collection<Long> idList) {
-        // 批量删除数据资产-外部API
+        // Batch delete Data Asset - External API
         return daAssetApiMapper.deleteBatchIds(idList);
     }
 
@@ -112,19 +112,19 @@ public class DaAssetApiServiceImpl  extends ServiceImpl<DaAssetApiMapper,DaAsset
                 .collect(Collectors.toMap(
                         DaAssetApiDO::getId,
                         daAssetApiDO -> daAssetApiDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入数据资产-外部API数据
+     * Import Data Asset - External API data
      *
-     * @param importExcelList 数据资产-外部API数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Data Asset - External API data list
+     * @param isUpdateSupport Whether to support update; if already exists, update the data
+     * @param operName Operating user
+     * @return Result
      */
     @Override
     public String importDaAssetApi(List<DaAssetApiRespVO> importExcelList, boolean isUpdateSupport, String operName) {
@@ -203,29 +203,29 @@ public class DaAssetApiServiceImpl  extends ServiceImpl<DaAssetApiMapper,DaAsset
 
     @Override
     public void executeServiceForwarding(HttpServletResponse response, Long apiId, Map<String, Object> queryParams) {
-        //很具id 获取三方api配置
+        // Get third-party API configuration by ID
         DaAssetApiDO daAssetApiById = this.getDaAssetApiById(apiId);
 
-        //判断api信息，例如是否启用等
+        // Check API info, e.g. whether it is enabled
         chackYapiConfig(daAssetApiById);
 
-        //取出Url
+        // Extract URL
         String url = daAssetApiById.getUrl();
 
-        //封装header
+        // Package headers
         List<HeaderEntity> headerEntities = packHeadersOrYApiField(queryParams);
-        //进行三方api的调取
+        // Call the third-party API
         try {
-            //取出调取方式
+            // Extract the request method
             String reqMethod = daAssetApiById.getHttpMethod();
-            //取出入参数
+            // Extract input parameters
             Map<String, Object> params = ( Map<String, Object>)MapUtils.getMap(queryParams, "params", new HashMap<>());
-            //get
-            if (StringUtils.equals(HttpUtils.GET, reqMethod)) {//封装get请求
+            // GET
+            if (StringUtils.equals(HttpUtils.GET, reqMethod)) {// Package GET request
                 HttpUtils.sendGet(HttpUtils.packGetRequestURL(url, params), response, headerEntities);
-            } else if (StringUtils.equals(HttpUtils.POST, reqMethod)) {//post
+            } else if (StringUtils.equals(HttpUtils.POST, reqMethod)) {// POST
                 HttpUtils.sendPost(url, params, response, headerEntities);
-            } else {//未知
+            } else {// Unknown
                 throw new DataQueryException("db.error.api.type", "API类型错误");
             }
         } catch (Exception e) {
@@ -235,7 +235,7 @@ public class DaAssetApiServiceImpl  extends ServiceImpl<DaAssetApiMapper,DaAsset
     }
 
     private void chackYapiConfig(DaAssetApiDO daAssetApiById) {
-        //判断是否为null
+        // Check if null
         if (daAssetApiById == null) {
             throw new DataQueryException("db.error.api.config.missing", "API调用，未查询到api配置");
         }
@@ -243,7 +243,7 @@ public class DaAssetApiServiceImpl  extends ServiceImpl<DaAssetApiMapper,DaAsset
 
 
     /**
-     * 封装Header
+     * Package Headers
      *
      * @param queryParams
      * @return
@@ -251,7 +251,7 @@ public class DaAssetApiServiceImpl  extends ServiceImpl<DaAssetApiMapper,DaAsset
     public static List<HeaderEntity> packHeadersOrYApiField(Map<String, Object> queryParams) {
         List<Map<String,Object>> fieldHerderList = (List<Map<String,Object>>)MapUtils.getObject(queryParams, "fieldHerderList", new ArrayList<>());
 
-        //封装 headers
+        // Package headers
         List<HeaderEntity> headerEntityList = new ArrayList<>();
         if(CollectionUtils.isEmpty(fieldHerderList)){
             return headerEntityList;

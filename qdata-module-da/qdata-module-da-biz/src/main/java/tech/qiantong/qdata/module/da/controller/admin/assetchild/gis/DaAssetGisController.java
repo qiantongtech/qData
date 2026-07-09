@@ -50,7 +50,7 @@ import tech.qiantong.qdata.module.da.dal.dataobject.assetchild.gis.DaAssetGisDO;
 import tech.qiantong.qdata.module.da.service.assetchild.gis.IDaAssetGisService;
 
 /**
- * 数据资产-地理空间服务Controller
+ * Data Asset - Geospatial Service Controller
  *
  * @author qdata
  * @date 2025-04-14

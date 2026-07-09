@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.da.api.discovery.dto;
 import lombok.Data;
 
 /**
- * 数据发现字段 DTO 对象 DA_DISCOVERY_COLUMN
+ * Data Discovery Column DTO DA_DISCOVERY_COLUMN
  *
  * @author qdata
  * @date 2025-02-11
@@ -34,40 +34,40 @@ public class DaDiscoveryColumnReqDTO {
     /** ID */
     private Long id;
 
-    /** 任务id */
+    /** Task ID */
     private Long taskId;
 
-    /** 数据发现库表id */
+    /** Discovery Table ID */
     private Long tableId;
 
-    /** 字段名称/英文名称 */
+    /** Column Name / English Name */
     private String columnName;
 
-    /** 字段注释/中文名称 */
+    /** Column Comment / Chinese Name */
     private String columnComment;
 
-    /** 数据类型 */
+    /** Data Type */
     private String columnType;
 
-    /** 长度 */
+    /** Length */
     private Long columnLength;
 
-    /** 小数位 */
+    /** Decimal Places */
     private Long columnScale;
 
-    /** 是否必填 */
+    /** Required Flag */
     private String nullableFlag;
 
-    /** 是否主键 */
+    /** Primary Key Flag */
     private String pkFlag;
 
-    /** 默认值 */
+    /** Default Value */
     private String defaultValue;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
 

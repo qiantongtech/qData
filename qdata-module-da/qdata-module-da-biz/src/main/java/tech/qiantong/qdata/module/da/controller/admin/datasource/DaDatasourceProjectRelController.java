@@ -48,7 +48,7 @@ import tech.qiantong.qdata.module.da.dal.dataobject.datasource.DaDatasourceProje
 import tech.qiantong.qdata.module.da.service.datasource.IDaDatasourceProjectRelService;
 
 /**
- * 数据源与项目关联关系Controller
+ * Datasource-Project Relation Controller
  *
  * @author qdata
  * @date 2025-03-13

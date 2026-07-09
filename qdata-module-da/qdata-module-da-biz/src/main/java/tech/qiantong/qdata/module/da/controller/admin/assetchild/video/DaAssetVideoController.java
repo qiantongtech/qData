@@ -50,7 +50,7 @@ import tech.qiantong.qdata.module.da.dal.dataobject.assetchild.video.DaAssetVide
 import tech.qiantong.qdata.module.da.service.assetchild.video.IDaAssetVideoService;
 
 /**
- * 数据资产-视频数据Controller
+ * Data Asset-Video Controller
  *
  * @author qdata
  * @date 2025-04-14

@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 数据资产Service接口
+ * Data Asset Service Interface
  *
  * @author lhs
  * @date 2025-01-21
@@ -37,14 +37,14 @@ public interface IDaAssetApiOutService {
     public DaAssetRespDTO insertDaAsset(DaAssetReqDTO daAssetReqDTO);
 
     /**
-     * 根据类目编码查询数量
+     * Query count by category code
      *
      * @return
      */
     Long getCountByCatCode(String catCode);
 
     /**
-     * 获取资产集合分页
+     * Get paginated asset list
      */
     PageResult<DaAssetRespDTO> daAssetListPage(DaAssetReqDTO daAssetReqDTO);
 
@@ -52,32 +52,32 @@ public interface IDaAssetApiOutService {
 
 
     /**
-     * 将老的 CAT_CODE 批量更新成新的 CAT_CODE
+     * Batch update old CAT_CODE to new CAT_CODE
      *
-     * @param oldCatCode 旧分类编码
-     * @param newCatCode 新分类编码
-     * @return 受影响行数
+     * @param oldCatCode Old Category Code
+     * @param newCatCode New Category Code
+     * @return Rows affected
      */
     int updateCatCode(String oldCatCode, String newCatCode);
 
     /**
-     * 根据mc表id列表，获取在资产中存在的mc表id列表
+     * Get MC table IDs that exist in assets from the given MC table ID list
      * @param mcTableIds
      * @return
      */
     List<Long> getMcTableInDaAsset(List<Long> mcTableIds);
 
     /**
-     * 将mc字段批量更新到到资产中
+     * Batch update MC columns to assets
      * @param columnMap
      */
     void mcTableColumnUpdateToDaAssetColumn(Map<Long, List<McColumnRespDTO>> columnMap);
 
     /**
-     * 检查是否有资产使用了指定的元数据表ID
+     * Check if any asset uses the specified metadata table ID
      *
-     * @param tableId 元数据表ID
-     * @return 是否存在使用该表的资产
+     * @param tableId Metadata Table ID
+     * @return Whether any asset uses this table
      */
     boolean existsByTableId(Long tableId);
 }

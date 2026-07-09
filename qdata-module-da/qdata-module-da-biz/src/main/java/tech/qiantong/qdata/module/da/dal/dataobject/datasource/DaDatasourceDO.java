@@ -32,14 +32,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 数据源 DO 对象 DA_DATASOURCE
+ * Datasource DO - DA_DATASOURCE
  *
  * @author lhs
  * @date 2025-01-21
  */
 @Data
 @TableName(value = "DA_DATASOURCE")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Not needed for MySQL and similar databases.
 // @KeySequence("DA_DATASOURCE_seq")
 @Builder
 @NoArgsConstructor
@@ -54,46 +54,46 @@ public class DaDatasourceDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 数据源名称 */
+    /** Datasource Name */
     private String datasourceName;
 
-    /** 数据源类型 */
+    /** Datasource Type */
     private String datasourceType;
 
-    /** 数据源配置(json字符串) */
+    /** Datasource Configuration (JSON string) */
     private String datasourceConfig;
 
-    /** 项目集合 */
+    /** Project List */
     @TableField(exist = false)
     private List<DaDatasourceProjectRelDO> projectList;
 
-    /** 项目名称 */
+    /** Project Name */
     @TableField(exist = false)
     private String projectName;
 
-    /** 是否是管理员分配给数据研发 */
+    /** Whether assigned to DPP by admin */
     @TableField(exist = false)
     private Boolean isAdminAddTo;
 
     /** IP */
     private String ip;
 
-    /** 端口号 */
+    /** Port */
     private Long port;
 
-    /** 数据库表数（预留） */
+    /** Database Table Count (reserved) */
     private Long listCount;
 
-    /** 同步记录数（预留） */
+    /** Sync Record Count (reserved) */
     private Long syncCount;
 
-    /** 同步数据量大小（预留） */
+    /** Sync Data Size (reserved) */
     private Long dataSize;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
     @TableLogic
@@ -102,7 +102,7 @@ public class DaDatasourceDO extends BaseEntity {
 
     @JSONField(serialize = false)
     public String toJsonString() {
-        // 默认 Fastjson：忽略 null 字段，字段顺序自动
+        // Default Fastjson: ignore null fields, auto field order
         return JSON.toJSONString(this);
     }
 

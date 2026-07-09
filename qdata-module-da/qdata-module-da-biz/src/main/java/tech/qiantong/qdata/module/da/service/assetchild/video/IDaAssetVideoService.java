@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 数据资产-视频数据Service接口
+ * Data Asset - Video Data Service Interface
  *
  * @author qdata
  * @date 2025-04-14
@@ -40,67 +40,67 @@ import java.util.Map;
 public interface IDaAssetVideoService extends IService<DaAssetVideoDO> {
 
     /**
-     * 获得数据资产-视频数据分页列表
+     * Get data asset video data page list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据资产-视频数据分页列表
+     * @param pageReqVO page request
+     * @return data asset video data page list
      */
     PageResult<DaAssetVideoDO> getDaAssetVideoPage(DaAssetVideoPageReqVO pageReqVO);
 
     DaAssetVideoRespVO getDaAssetVideoByAssetId(Long assetId);
 
     /**
-     * 创建数据资产-视频数据
+     * Create data asset video data
      *
-     * @param createReqVO 数据资产-视频数据信息
-     * @return 数据资产-视频数据编号
+     * @param createReqVO data asset video data info
+     * @return data asset video data ID
      */
     Long createDaAssetVideo(DaAssetVideoSaveReqVO createReqVO);
 
     /**
-     * 更新数据资产-视频数据
+     * Update data asset video data
      *
-     * @param updateReqVO 数据资产-视频数据信息
+     * @param updateReqVO data asset video data info
      */
     int updateDaAssetVideo(DaAssetVideoSaveReqVO updateReqVO);
 
     /**
-     * 删除数据资产-视频数据
+     * Delete data asset video data
      *
-     * @param idList 数据资产-视频数据编号
+     * @param idList data asset video data ID list
      */
     int removeDaAssetVideo(Collection<Long> idList);
 
     /**
-     * 获得数据资产-视频数据详情
+     * Get data asset video data details
      *
-     * @param id 数据资产-视频数据编号
-     * @return 数据资产-视频数据
+     * @param id data asset video data ID
+     * @return data asset video data
      */
     DaAssetVideoDO getDaAssetVideoById(Long id);
 
     /**
-     * 获得全部数据资产-视频数据列表
+     * Get all data asset video data list
      *
-     * @return 数据资产-视频数据列表
+     * @return data asset video data list
      */
     List<DaAssetVideoDO> getDaAssetVideoList();
 
     /**
-     * 获得全部数据资产-视频数据 Map
+     * Get all data asset video data Map
      *
-     * @return 数据资产-视频数据 Map
+     * @return data asset video data Map
      */
     Map<Long, DaAssetVideoDO> getDaAssetVideoMap();
 
 
     /**
-     * 导入数据资产-视频数据数据
+     * Import data asset video data
      *
-     * @param importExcelList 数据资产-视频数据数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList data asset video data list
+     * @param isUpdateSupport whether to support update; if exists, update the data
+     * @param operName operator user
+     * @return result
      */
     String importDaAssetVideo(List<DaAssetVideoRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

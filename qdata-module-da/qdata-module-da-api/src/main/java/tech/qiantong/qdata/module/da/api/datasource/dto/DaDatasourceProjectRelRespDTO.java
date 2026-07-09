@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.da.api.datasource.dto;
 import lombok.Data;
 
 /**
- * 数据源与项目关联关系 DTO 对象 DA_DATASOURCE_PROJECT_REL
+ * Datasource-Project Relation DTO DA_DATASOURCE_PROJECT_REL
  *
  * @author qdata
  * @date 2025-03-13
@@ -34,19 +34,19 @@ public class DaDatasourceProjectRelRespDTO {
     /** ID */
     private Long id;
 
-    /** 项目id */
+    /** Project ID */
     private Long projectId;
 
-    /** 项目编码 */
+    /** Project Code */
     private String projectCode;
 
-    /** 数据源id */
+    /** Datasource ID */
     private Long datasourceId;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
 

@@ -48,7 +48,7 @@ import tech.qiantong.qdata.module.da.dal.dataobject.assetchild.projectRel.DaAsse
 import tech.qiantong.qdata.module.da.service.assetchild.projectRel.IDaAssetProjectRelService;
 
 /**
- * 数据资产与项目关联关系Controller
+ * Data Asset and Project Relationship Controller
  *
  * @author qdata
  * @date 2025-04-18

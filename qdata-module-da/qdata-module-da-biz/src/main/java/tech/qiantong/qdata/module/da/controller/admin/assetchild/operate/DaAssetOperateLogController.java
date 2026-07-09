@@ -49,7 +49,7 @@ import tech.qiantong.qdata.module.da.dal.dataobject.assetchild.operate.DaAssetOp
 import tech.qiantong.qdata.module.da.service.assetchild.operate.IDaAssetOperateLogService;
 
 /**
- * 数据资产操作记录Controller
+ * Data Asset Operate Log Controller
  *
  * @author qdata
  * @date 2025-05-09
@@ -133,7 +133,7 @@ public class DaAssetOperateLogController extends BaseController {
 
 
 
-    @Operation(summary = "回滚")
+    @Operation(summary = "Rollback")
     @PreAuthorize("@ss.hasPermi('da:assetOperateLog:add')")
     @PostMapping("/rollBack/{id}")
     public R rollBack(@PathVariable Long id) {

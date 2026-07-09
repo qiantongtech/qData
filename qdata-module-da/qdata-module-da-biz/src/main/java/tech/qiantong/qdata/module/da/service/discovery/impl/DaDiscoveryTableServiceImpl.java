@@ -50,7 +50,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 数据发现库信息Service业务层处理
+ * Data Discovery Table Info Service business layer processing
  *
  * @author qdata
  * @date 2025-02-11
@@ -88,7 +88,7 @@ public class DaDiscoveryTableServiceImpl  extends ServiceImpl<DaDiscoveryTableMa
                 .eq(StringUtils.isNotBlank(reqVO.getStatus()), DaDiscoveryTableDO::getStatus, reqVO.getStatus())
                 .eq(StringUtils.isNotBlank(reqVO.getIgnoreFlag()), DaDiscoveryTableDO::getIgnoreFlag, reqVO.getIgnoreFlag());
         if(StringUtils.isNotBlank(reqVO.getKeyword())){
-            // 新增的 keyword 模糊匹配
+            // Newly added keyword fuzzy matching
             wrapper.and(q -> q.like(DaDiscoveryTableDO::getTableName, reqVO.getKeyword())
                     .or()
                     .like(DaDiscoveryTableDO::getTableComment, reqVO.getKeyword()));
@@ -112,20 +112,20 @@ public class DaDiscoveryTableServiceImpl  extends ServiceImpl<DaDiscoveryTableMa
 
     @Override
     public int updateDaDiscoveryTable(DaDiscoveryTableSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related validation
 
-        // 更新数据发现库信息
+        // Update data discovery table info
         DaDiscoveryTableDO updateObj = BeanUtils.toBean(updateReqVO, DaDiscoveryTableDO.class);
         return daDiscoveryTableMapper.updateById(updateObj);
     }
     @Override
     public int updateDaDiscoveryTable(DaDiscoveryTableDO updateReqVO) {
-        // 更新数据发现库信息
+        // Update data discovery table info
         return daDiscoveryTableMapper.updateById(updateReqVO);
     }
     @Override
     public int removeDaDiscoveryTable(Collection<Long> idList) {
-        // 批量删除数据发现库信息
+        // Batch delete data discovery table info
         return daDiscoveryTableMapper.deleteBatchIds(idList);
     }
 
@@ -146,19 +146,19 @@ public class DaDiscoveryTableServiceImpl  extends ServiceImpl<DaDiscoveryTableMa
                 .collect(Collectors.toMap(
                         DaDiscoveryTableDO::getId,
                         daDiscoveryTableDO -> daDiscoveryTableDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入数据发现库信息数据
+     * Import data discovery table info data
      *
-     * @param importExcelList 数据发现库信息数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Data discovery table info data list
+     * @param isUpdateSupport Whether to support update, if already exists, update the data
+     * @param operName Operating user
+     * @return result
      */
     @Override
     public String importDaDiscoveryTable(List<DaDiscoveryTableRespVO> importExcelList, boolean isUpdateSupport, String operName) {
@@ -232,13 +232,13 @@ public class DaDiscoveryTableServiceImpl  extends ServiceImpl<DaDiscoveryTableMa
 
     @Override
     public Integer commitOrRevokeDiscoveryInfo(DaDiscoveryTableSaveReqVO daDiscoveryTable) {
-        //状态;1:待提交，2:已提交
+        //Status: 1: Pending submit, 2: Submitted
         String status = daDiscoveryTable.getStatus();
-        //是否忽略;0:否，1：是
+        //Ignore flag: 0: No, 1: Yes
         String ignoreFlag = daDiscoveryTable.getIgnoreFlag();
         String themeId = daDiscoveryTable.getThemeId();
 
-        //获取信息
+        //Get info
         DaDiscoveryTableDO daDiscoveryTableById = this.getDaDiscoveryTableById(daDiscoveryTable.getId());
         if(daDiscoveryTableById == null){
             throw new ServiceException("da.error.table.notfound", "未获取到该表信息，请刷新后重试！");
@@ -256,7 +256,7 @@ public class DaDiscoveryTableServiceImpl  extends ServiceImpl<DaDiscoveryTableMa
         List<DaDiscoveryColumnDO> daDiscoveryColumnList = iDaDiscoveryColumnService.getDaDiscoveryColumnList(reqVO);
 
         DaAssetPageReqVO daAssetPageReqVO = new DaAssetPageReqVO(daDiscoveryTableById);
-        //兼容表的备注为空时候，导致的资产地图为空
+        //Supports empty table comments to avoid blank asset map
         daAssetPageReqVO.setName(daDiscoveryTable.getAssetName());
         daAssetPageReqVO.setDatasourceId(String.valueOf(daDiscoveryTaskById.getDatasourceId()));
         daAssetPageReqVO.setCatCode(daDiscoveryTable.getCatCode());

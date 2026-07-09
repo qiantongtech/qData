@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 /**
- * 数据资产操作记录Service接口
+ * Data Asset Operation Record Service Interface
  *
  * @author qdata
  * @date 2025-05-09
@@ -37,65 +37,65 @@ import java.util.Map;
 public interface IDaAssetOperateLogService extends IService<DaAssetOperateLogDO> {
 
     /**
-     * 获得数据资产操作记录分页列表
+     * Get data asset operation record page list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据资产操作记录分页列表
+     * @param pageReqVO page request
+     * @return data asset operation record page list
      */
     PageResult<DaAssetOperateLogDO> getDaAssetOperateLogPage(DaAssetOperateLogPageReqVO pageReqVO);
 
     /**
-     * 创建数据资产操作记录
+     * Create data asset operation record
      *
-     * @param createReqVO 数据资产操作记录信息
-     * @return 数据资产操作记录编号
+     * @param createReqVO data asset operation record info
+     * @return data asset operation record ID
      */
     Long createDaAssetOperateLog(DaAssetOperateLogSaveReqVO createReqVO);
 
     /**
-     * 更新数据资产操作记录
+     * Update data asset operation record
      *
-     * @param updateReqVO 数据资产操作记录信息
+     * @param updateReqVO data asset operation record info
      */
     int updateDaAssetOperateLog(DaAssetOperateLogSaveReqVO updateReqVO);
 
     /**
-     * 删除数据资产操作记录
+     * Delete data asset operation record
      *
-     * @param idList 数据资产操作记录编号
+     * @param idList data asset operation record ID list
      */
     int removeDaAssetOperateLog(Collection<Long> idList);
 
     /**
-     * 获得数据资产操作记录详情
+     * Get data asset operation record details
      *
-     * @param id 数据资产操作记录编号
-     * @return 数据资产操作记录
+     * @param id data asset operation record ID
+     * @return data asset operation record
      */
     DaAssetOperateLogDO getDaAssetOperateLogById(Long id);
 
     /**
-     * 获得全部数据资产操作记录列表
+     * Get all data asset operation record list
      *
-     * @return 数据资产操作记录列表
+     * @return data asset operation record list
      */
     List<DaAssetOperateLogDO> getDaAssetOperateLogList();
 
     /**
-     * 获得全部数据资产操作记录 Map
+     * Get all data asset operation record Map
      *
-     * @return 数据资产操作记录 Map
+     * @return data asset operation record Map
      */
     Map<Long, DaAssetOperateLogDO> getDaAssetOperateLogMap();
 
 
     /**
-     * 导入数据资产操作记录数据
+     * Import data asset operation record data
      *
-     * @param importExcelList 数据资产操作记录数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList data asset operation record data list
+     * @param isUpdateSupport whether to support update; if exists, update the data
+     * @param operName operator user
+     * @return result
      */
     String importDaAssetOperateLog(List<DaAssetOperateLogRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

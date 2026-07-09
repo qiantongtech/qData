@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.da.dal.dataobject.discovery.DaDiscoveryColumnD
 import java.util.List;
 
 /**
- * 数据发现字段 Convert
+ * Data Discovery Column Convert
  *
  * @author qdata
  * @date 2025-02-11
@@ -38,29 +38,29 @@ public interface DaDiscoveryColumnConvert {
     DaDiscoveryColumnConvert INSTANCE = Mappers.getMapper(DaDiscoveryColumnConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param daDiscoveryColumnPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param daDiscoveryColumnPageReqVO request parameters
      * @return DaDiscoveryColumnDO
      */
      DaDiscoveryColumnDO convertToDO(DaDiscoveryColumnPageReqVO daDiscoveryColumnPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param daDiscoveryColumnSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param daDiscoveryColumnSaveReqVO save request parameters
      * @return DaDiscoveryColumnDO
      */
      DaDiscoveryColumnDO convertToDO(DaDiscoveryColumnSaveReqVO daDiscoveryColumnSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param daDiscoveryColumnDO 实体对象
+     * Convert DO to RespVO
+     * @param daDiscoveryColumnDO entity object
      * @return DaDiscoveryColumnRespVO
      */
      DaDiscoveryColumnRespVO convertToRespVO(DaDiscoveryColumnDO daDiscoveryColumnDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param daDiscoveryColumnDOList 实体对象列表
+     * Convert DOList to RespVOList
+     * @param daDiscoveryColumnDOList entity object list
      * @return List<DaDiscoveryColumnRespVO>
      */
      List<DaDiscoveryColumnRespVO> convertToRespVOList(List<DaDiscoveryColumnDO> daDiscoveryColumnDOList);

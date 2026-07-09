@@ -46,7 +46,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 数据资产-主题关联关系Service业务层处理
+ * Data asset-theme relationship Service business layer processing
  *
  * @author qdata
  * @date 2025-04-14
@@ -102,16 +102,16 @@ public class DaAssetThemeRelServiceImpl extends ServiceImpl<DaAssetThemeRelMappe
 
     @Override
     public int updateDaAssetThemeRel(DaAssetThemeRelSaveReqVO updateReqVO) {
-        // 相关校验
+        // Validation checks
 
-        // 更新数据资产-主题关联关系
+        // Update data asset-theme relationship
         DaAssetThemeRelDO updateObj = BeanUtils.toBean(updateReqVO, DaAssetThemeRelDO.class);
         return daAssetThemeRelMapper.updateById(updateObj);
     }
 
     @Override
     public int removeDaAssetThemeRel(Collection<Long> idList) {
-        // 批量删除数据资产-主题关联关系
+        // Batch delete data asset-theme relationship
         return daAssetThemeRelMapper.deleteBatchIds(idList);
     }
 
@@ -138,19 +138,19 @@ public class DaAssetThemeRelServiceImpl extends ServiceImpl<DaAssetThemeRelMappe
                 .collect(Collectors.toMap(
                         DaAssetThemeRelDO::getId,
                         daAssetThemeRelDO -> daAssetThemeRelDO,
-                        // 保留已存在的值
+                        // Retain existing values
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入数据资产-主题关联关系数据
+     * Import data asset-theme relationship data
      *
-     * @param importExcelList 数据资产-主题关联关系数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Data asset-theme relationship data list
+     * @param isUpdateSupport Whether to support update, if already exists, update the data
+     * @param operName        Operator user
+     * @return Result
      */
     @Override
     public String importDaAssetThemeRel(List<DaAssetThemeRelRespVO> importExcelList, boolean isUpdateSupport, String operName) {

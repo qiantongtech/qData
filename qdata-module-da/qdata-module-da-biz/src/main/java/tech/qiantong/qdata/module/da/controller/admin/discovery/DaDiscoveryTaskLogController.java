@@ -51,7 +51,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 数据发现任务日志Controller
+ * Data Discovery Task Log Controller
  *
  * @author qdata
  * @date 2025-02-17
@@ -81,7 +81,7 @@ public class DaDiscoveryTaskLogController extends BaseController {
         List<DaDiscoveryTaskLogDO> list = (List<DaDiscoveryTaskLogDO>) daDiscoveryTaskLogService
                 .getDaDiscoveryTaskLogPage(exportReqVO).getRows();
         ExcelUtil<DaDiscoveryTaskLogRespVO> util = new ExcelUtil<>(DaDiscoveryTaskLogRespVO.class);
-        util.exportExcel(response, DaDiscoveryTaskLogConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DaDiscoveryTaskLogConvert.INSTANCE.convertToRespVOList(list), "Data");
     }
 
     @Operation(summary = "导入数据发现任务日志列表")
@@ -138,7 +138,7 @@ public class DaDiscoveryTaskLogController extends BaseController {
     @RequestMapping(value = "/logDetailCat", method = RequestMethod.GET)
     @Operation(summary = "运行日志详情")
     public ReturnT<LogResult> logDetailCat(String handleMsg) {
-        // 添加日志审计功能
+        // Add log audit functionality
         try {
             InputStream in = new FileInputStream(handleMsg);
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -154,14 +154,14 @@ public class DaDiscoveryTaskLogController extends BaseController {
             if (in != null) {
                 in.close();
             }
-            // @TODO 查看日志
-            ReturnT<LogResult> returnT = new ReturnT<>(ReturnT.SUCCESS_CODE, "查询日志成功");
+            // @TODO View log
+            ReturnT<LogResult> returnT = new ReturnT<>(ReturnT.SUCCESS_CODE, "Log query successful");
             LogResult logResult = new LogResult(0, 0, logContent, true);
             returnT.setContent(logResult);
             return returnT;
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            return new ReturnT<>(ReturnT.FAIL_CODE, "暂未找到日志文件信息");
+            return new ReturnT<>(ReturnT.FAIL_CODE, "Log file not found");
         }
     }
 
@@ -169,42 +169,42 @@ public class DaDiscoveryTaskLogController extends BaseController {
     @RequestMapping(value = "/downloadLog", method = RequestMethod.POST)
     @Operation(summary = "下载日志文件")
     public void downloadLog(HttpServletResponse response, String handleMsg) {
-        // 添加日志审计功能
+        // Add log audit functionality
         try {
-            // 获取文件路径
+            // Get file path
             File logFile = new File(handleMsg);
 
-            // 如果文件存在
+            // If file exists
             if (logFile.exists()) {
-                // 设置响应的内容类型为文件下载
+                // Set response content type for file download
                 response.setContentType("application/octet-stream");
-                // 设置下载文件名
+                // Set download file name
                 String fileName = logFile.getName();
                 response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
 
-                // 创建文件输入流
+                // Create file input stream
                 try (InputStream in = new FileInputStream(logFile);
                         OutputStream out = response.getOutputStream()) {
 
                     byte[] buffer = new byte[1024];
                     int length;
-                    // 将文件内容写入输出流
+                    // Write file content to output stream
                     while ((length = in.read(buffer)) != -1) {
                         out.write(buffer, 0, length);
                     }
                 }
             } else {
-                // 如果文件不存在，返回404或自定义错误
+                // If file does not exist, return 404 or custom error
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                response.getWriter().write("日志文件未找到");
+                response.getWriter().write("Log file not found");
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             try {
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                response.getWriter().write("文件下载失败：" + e.getMessage());
+                response.getWriter().write("File download failed: " + e.getMessage());
             } catch (IOException ioException) {
-                logger.error("写入错误信息失败", ioException);
+                logger.error("Failed to write error message", ioException);
             }
         }
     }

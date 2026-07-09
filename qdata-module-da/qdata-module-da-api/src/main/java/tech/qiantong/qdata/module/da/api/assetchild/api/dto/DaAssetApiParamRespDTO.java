@@ -22,7 +22,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
- * 数据资产-外部API-参数 DTO 对象 DA_ASSET_API_PARAM
+ * Data Asset - External API - Parameter DTO DA_ASSET_API_PARAM
  *
  * @author qdata
  * @date 2025-04-14
@@ -35,19 +35,19 @@ public class DaAssetApiParamRespDTO {
     /** ID */
     private Long id;
 
-    /** API id */
+    /** API ID */
     private Long apiId;
 
-    /** 父级id */
+    /** Parent ID */
     private Long parentId;
 
-    /** 参数名称 */
+    /** Parameter Name */
     private String name;
 
-    /** 参数类型 */
+    /** Parameter Type */
     private String type;
 
-    /** 是否必填 */
+    /** Required Flag */
     private String requestFlag;
 
     @Schema(description = "数据默认值", example = "")
@@ -57,13 +57,13 @@ public class DaAssetApiParamRespDTO {
     @Schema(description = "描述", example = "")
     private String description;
 
-    /** 字段类型 */
+    /** Column Type */
     private String columnType;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
 

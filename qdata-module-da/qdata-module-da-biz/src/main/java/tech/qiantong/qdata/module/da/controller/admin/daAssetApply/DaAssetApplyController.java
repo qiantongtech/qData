@@ -48,7 +48,7 @@ import tech.qiantong.qdata.module.da.dal.dataobject.daAssetApply.DaAssetApplyDO;
 import tech.qiantong.qdata.module.da.service.daAssetApply.IDaAssetApplyService;
 
 /**
- * 数据资产申请Controller
+ * Data Asset Application Controller
  *
  * @author shu
  * @date 2025-03-19

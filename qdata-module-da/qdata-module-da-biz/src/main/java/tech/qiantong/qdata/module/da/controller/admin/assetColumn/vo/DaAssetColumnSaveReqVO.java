@@ -30,7 +30,7 @@ import javax.validation.constraints.Size;
 import java.util.Set;
 
 /**
- * 数据资产字段 创建/修改 Request VO DA_ASSET_COLUMN
+ * Data Asset Column Save/Create/Modify Request VO DA_ASSET_COLUMN
  *
  * @author lhs
  * @date 2025-01-21
@@ -113,20 +113,20 @@ public class DaAssetColumnSaveReqVO extends BaseEntity {
     private String remark;
 
     /**
-     * 数据元id
+     * Data element ID
      */
     @TableField(exist = false)
     private Set<Long> elementId;
 
     /**
-     * 构造函数，根据 DaDiscoveryColumnDO 对象初始化数据资产字段保存 VO
+     * Constructor, initializes data asset column save VO from DaDiscoveryColumnDO
      *
-     * @param discoveryColumnDO 数据发现字段 DO 对象
+     * @param discoveryColumnDO Data discovery column DO object
      */
     public DaAssetColumnSaveReqVO(DaDiscoveryColumnDO discoveryColumnDO) {
         if (discoveryColumnDO != null) {
 //            this.id = discoveryColumnDO.getId();
-            // assetId 的赋值需根据实际业务逻辑处理，此处暂未映射
+            // assetId mapping needs to be handled according to actual business logic, not mapped here
             this.columnName = discoveryColumnDO.getColumnName();
             this.columnComment = discoveryColumnDO.getColumnComment();
             this.columnType = discoveryColumnDO.getColumnType();
@@ -135,8 +135,8 @@ public class DaAssetColumnSaveReqVO extends BaseEntity {
             this.nullableFlag = discoveryColumnDO.getNullableFlag();
             this.pkFlag = discoveryColumnDO.getPkFlag();
             this.defaultValue = discoveryColumnDO.getDefaultValue();
-            // 其他字段，如 dataElemCodeFlag、dataElemCodeId、sensitiveLevelId、relDataElmeFlag、
-            // relCleanFlag、relAuditFlag、description、remark、elementId 等，可根据业务需求补充映射逻辑
+            // Other fields such as dataElemCodeFlag, dataElemCodeId, sensitiveLevelId, relDataElmeFlag,
+            // relCleanFlag, relAuditFlag, description, remark, elementId, etc. can be supplemented with mapping logic as needed
         }
     }
 }

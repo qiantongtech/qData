@@ -31,7 +31,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 数据发现任务Mapper接口
+ * Data Discovery Task Mapper Interface
  *
  * @author qdata
  * @date 2025-02-11
@@ -39,7 +39,7 @@ import java.util.Set;
 public interface DaDiscoveryTaskMapper extends BaseMapperX<DaDiscoveryTaskDO> {
 
     default PageResult<DaDiscoveryTaskDO> selectPage(DaDiscoveryTaskPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define sortable fields (prevent SQL injection, must match database column names)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 
         MPJLambdaWrapper<DaDiscoveryTaskDO> lambdaWrapper = new MPJLambdaWrapper();
@@ -57,11 +57,11 @@ public interface DaDiscoveryTaskMapper extends BaseMapperX<DaDiscoveryTaskDO> {
     }
 
     /**
-     * 将老的 CAT_CODE 批量更新成新的 CAT_CODE
+     * Batch update old CAT_CODE to new CAT_CODE
      *
-     * @param oldCatCode 旧分类编码
-     * @param newCatCode 新分类编码
-     * @return 受影响行数
+     * @param oldCatCode Old category code
+     * @param newCatCode New category code
+     * @return Number of affected rows
      */
     default int updateCatCode(String oldCatCode, String newCatCode) {
         return this.update(

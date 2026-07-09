@@ -25,7 +25,7 @@ import tech.qiantong.qdata.common.core.page.PageParam;
 import java.util.List;
 
 /**
- * 数据资产-主题关联关系 Request VO 对象 DA_ASSET_THEME_REL
+ * Data Asset-Theme Relationship Request VO DA_ASSET_THEME_REL
  *
  * @author qdata
  * @date 2025-04-14

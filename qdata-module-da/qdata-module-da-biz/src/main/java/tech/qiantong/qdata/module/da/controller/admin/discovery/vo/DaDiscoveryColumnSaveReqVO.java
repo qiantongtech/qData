@@ -25,7 +25,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import javax.validation.constraints.Size;
 
 /**
- * 数据发现字段 创建/修改 Request VO DA_DISCOVERY_COLUMN
+ * Data Discovery Column Create/Update Request VO DA_DISCOVERY_COLUMN
  *
  * @author qdata
  * @date 2025-02-11

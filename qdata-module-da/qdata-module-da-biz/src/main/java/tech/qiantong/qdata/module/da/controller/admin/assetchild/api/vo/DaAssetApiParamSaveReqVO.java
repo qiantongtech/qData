@@ -27,7 +27,7 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 /**
- * 数据资产-外部API-参数 创建/修改 Request VO DA_ASSET_API_PARAM
+ * Data Asset - External API - Parameter Create/Update Request VO DA_ASSET_API_PARAM
  *
  * @author qdata
  * @date 2025-04-14

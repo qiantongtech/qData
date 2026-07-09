@@ -29,7 +29,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 数据发现库信息Mapper接口
+ * Data Discovery Table Info Mapper Interface
  *
  * @author qdata
  * @date 2025-02-11
@@ -37,10 +37,10 @@ import java.util.Set;
 public interface DaDiscoveryTableMapper extends BaseMapperX<DaDiscoveryTableDO> {
 
     default PageResult<DaDiscoveryTableDO> selectPage(DaDiscoveryTablePageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define sortable fields (prevent SQL injection, must match database column names)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 
-        // 构造动态查询条件
+        // Build dynamic query conditions
         return selectPage(reqVO, new LambdaQueryWrapperX<DaDiscoveryTableDO>()
                 .eqIfPresent(DaDiscoveryTableDO::getTaskId, reqVO.getTaskId())
                 .likeIfPresent(DaDiscoveryTableDO::getTableName, reqVO.getTableName())
@@ -51,13 +51,13 @@ public interface DaDiscoveryTableMapper extends BaseMapperX<DaDiscoveryTableDO> 
                 .eqIfPresent(DaDiscoveryTableDO::getStatus, reqVO.getStatus())
                 .eqIfPresent(DaDiscoveryTableDO::getIgnoreFlag, reqVO.getIgnoreFlag())
                 .eqIfPresent(DaDiscoveryTableDO::getCreateTime, reqVO.getCreateTime())
-                // 新增的 keyword 模糊匹配
+                // New keyword fuzzy match
                 .likeIfPresent(DaDiscoveryTableDO::getTableName, reqVO.getKeyword())
                 .or()
                 .likeIfPresent(DaDiscoveryTableDO::getTableComment, reqVO.getKeyword())
-                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+                // If reqVO.getName() is not empty, add exact match condition for name (name = '<name>')
                 // .likeIfPresent(DaDiscoveryTableDO::getName, reqVO.getName())
-                // 按照 createTime 字段降序排序
+                // Sort by createTime in descending order
                 .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(), allowedColumns));
     }
 }

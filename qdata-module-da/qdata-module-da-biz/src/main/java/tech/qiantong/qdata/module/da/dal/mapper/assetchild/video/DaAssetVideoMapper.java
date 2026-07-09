@@ -29,7 +29,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 数据资产-视频数据Mapper接口
+ * Data Asset - Video Data Mapper Interface
  *
  * @author qdata
  * @date 2025-04-14
@@ -37,10 +37,10 @@ import java.util.Set;
 public interface DaAssetVideoMapper extends BaseMapperX<DaAssetVideoDO> {
 
     default PageResult<DaAssetVideoDO> selectPage(DaAssetVideoPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define sortable fields (prevent SQL injection, must match database column names)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 
-        // 构造动态查询条件
+        // Build dynamic query conditions
         return selectPage(reqVO, new LambdaQueryWrapperX<DaAssetVideoDO>()
                 .eqIfPresent(DaAssetVideoDO::getAssetId, reqVO.getAssetId())
                 .eqIfPresent(DaAssetVideoDO::getIp, reqVO.getIp())
@@ -49,9 +49,9 @@ public interface DaAssetVideoMapper extends BaseMapperX<DaAssetVideoDO> {
                 .eqIfPresent(DaAssetVideoDO::getPlatform, reqVO.getPlatform())
                 .eqIfPresent(DaAssetVideoDO::getConfig, reqVO.getConfig())
                 .eqIfPresent(DaAssetVideoDO::getCreateTime, reqVO.getCreateTime())
-                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+                // If reqVO.getName() is not empty, add exact match condition for name (name = '<name>')
                 // .likeIfPresent(DaAssetVideoDO::getName, reqVO.getName())
-                // 按照 createTime 字段降序排序
+                // Sort by createTime in descending order
                 .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(), allowedColumns));
     }
 }

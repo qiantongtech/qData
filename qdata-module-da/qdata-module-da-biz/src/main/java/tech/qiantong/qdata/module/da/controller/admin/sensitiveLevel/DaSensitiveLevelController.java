@@ -48,7 +48,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 敏感等级Controller
+ * Sensitive Level Controller
  *
  * @author qdata
  * @date 2025-01-21

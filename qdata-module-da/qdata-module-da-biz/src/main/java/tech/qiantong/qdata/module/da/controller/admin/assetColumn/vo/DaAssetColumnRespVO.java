@@ -29,7 +29,7 @@ import java.util.Date;
 import java.util.Set;
 
 /**
- * 数据资产字段 Response VO 对象 DA_ASSET_COLUMN
+ * Data Asset Column Response VO DA_ASSET_COLUMN
  *
  * @author lhs
  * @date 2025-01-21

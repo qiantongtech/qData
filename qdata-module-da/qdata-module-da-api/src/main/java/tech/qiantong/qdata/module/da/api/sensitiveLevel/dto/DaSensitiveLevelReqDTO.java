@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.da.api.sensitiveLevel.dto;
 import lombok.Data;
 
 /**
- * 敏感等级 DTO 对象 DA_SENSITIVE_LEVEL
+ * Sensitive Level DTO DA_SENSITIVE_LEVEL
  *
  * @author qdata
  * @date 2025-01-21
@@ -34,31 +34,31 @@ public class DaSensitiveLevelReqDTO {
     /** ID */
     private Long id;
 
-    /** 敏感级别 */
+    /** Sensitive Level */
     private String sensitiveLevel;
 
-    /** 敏感规则 */
+    /** Sensitive Rule */
     private String sensitiveRule;
 
-    /** 起始字符位置 */
+    /** Start Char Position */
     private Long startCharLoc;
 
-    /** 截止字符位置 */
+    /** End Char Position */
     private Long endCharLoc;
 
-    /** 遮盖字符 */
+    /** Mask Character */
     private String maskCharacter;
 
-    /** 上下线标识 */
+    /** Online Flag */
     private String onlineFlag;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
 

@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.da.dal.dataobject.assetchild.video.DaAssetVide
 import java.util.List;
 
 /**
- * 数据资产-视频数据 Convert
+ * Data Asset-Video Convert
  *
  * @author qdata
  * @date 2025-04-14
@@ -38,29 +38,29 @@ public interface DaAssetVideoConvert {
     DaAssetVideoConvert INSTANCE = Mappers.getMapper(DaAssetVideoConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param daAssetVideoPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param daAssetVideoPageReqVO request parameters
      * @return DaAssetVideoDO
      */
      DaAssetVideoDO convertToDO(DaAssetVideoPageReqVO daAssetVideoPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param daAssetVideoSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param daAssetVideoSaveReqVO save request parameters
      * @return DaAssetVideoDO
      */
      DaAssetVideoDO convertToDO(DaAssetVideoSaveReqVO daAssetVideoSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param daAssetVideoDO 实体对象
+     * Convert DO to RespVO
+     * @param daAssetVideoDO entity object
      * @return DaAssetVideoRespVO
      */
      DaAssetVideoRespVO convertToRespVO(DaAssetVideoDO daAssetVideoDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param daAssetVideoDOList 实体对象列表
+     * Convert DOList to RespVOList
+     * @param daAssetVideoDOList entity object list
      * @return List<DaAssetVideoRespVO>
      */
      List<DaAssetVideoRespVO> convertToRespVOList(List<DaAssetVideoDO> daAssetVideoDOList);

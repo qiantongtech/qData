@@ -27,7 +27,7 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
- * 数据发现节点实例-日志 创建/修改 Request VO 对象 DA_DISCOVERY_LOG_BODY
+ * Data Discovery Node Instance Log Create/Update Request VO object DA_DISCOVERY_LOG_BODY
  *
  * @author qdata
  * @date 2025-10-15

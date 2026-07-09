@@ -25,7 +25,7 @@ import tech.qiantong.qdata.common.core.page.PageParam;
 import java.util.Date;
 
 /**
- * 数据资产-质量预警 Request VO 对象 DA_ASSET_AUDIT_ALERT
+ * Data Asset - Quality Alert Request VO DA_ASSET_AUDIT_ALERT
  *
  * @author qdata
  * @date 2025-05-09

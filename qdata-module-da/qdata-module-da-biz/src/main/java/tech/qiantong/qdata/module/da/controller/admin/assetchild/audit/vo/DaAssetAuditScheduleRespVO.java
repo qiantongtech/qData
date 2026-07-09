@@ -27,7 +27,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 资产稽查调度 Response VO 对象 DA_ASSET_AUDIT_SCHEDULE
+ * Asset Audit Schedule Response VO DA_ASSET_AUDIT_SCHEDULE
  *
  * @author qdata
  * @date 2025-05-09

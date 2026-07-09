@@ -50,7 +50,7 @@ import tech.qiantong.qdata.module.da.dal.dataobject.assetchild.api.DaAssetApiDO;
 import tech.qiantong.qdata.module.da.service.assetchild.api.IDaAssetApiService;
 
 /**
- * 数据资产-外部APIController
+ * Data Asset - External API Controller
  *
  * @author qdata
  * @date 2025-04-14

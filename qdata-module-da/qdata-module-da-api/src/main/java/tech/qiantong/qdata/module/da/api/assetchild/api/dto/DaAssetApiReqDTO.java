@@ -22,7 +22,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
- * 数据资产-外部API DTO 对象 DA_ASSET_API
+ * Data Asset - External API DTO DA_ASSET_API
  *
  * @author qdata
  * @date 2025-04-14
@@ -35,10 +35,10 @@ public class DaAssetApiReqDTO {
     /** ID */
     private Long id;
 
-    /** 资产id */
+    /** Asset ID */
     private Long assetId;
 
-    /** API路径 */
+    /** API URL */
     private String url;
 
     @Schema(description = "开发者", example = "")
@@ -47,13 +47,13 @@ public class DaAssetApiReqDTO {
     @Schema(description = "应用名称", example = "")
     private String appName;
 
-    /** 请求方式 */
+    /** HTTP Method */
     private String httpMethod;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
 

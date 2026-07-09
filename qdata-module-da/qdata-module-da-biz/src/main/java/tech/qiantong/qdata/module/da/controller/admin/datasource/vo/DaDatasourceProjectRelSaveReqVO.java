@@ -25,7 +25,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import javax.validation.constraints.Size;
 
 /**
- * 数据源与项目关联关系 创建/修改 Request VO DA_DATASOURCE_PROJECT_REL
+ * Datasource-Project Relation Create/Update Request VO DA_DATASOURCE_PROJECT_REL
  *
  * @author qdata
  * @date 2025-03-13

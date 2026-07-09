@@ -30,7 +30,7 @@ import tech.qiantong.qdata.module.da.api.datasource.dto.DatasourceCreaTeTableReq
 import java.util.List;
 
 /**
- * 数据源Service接口
+ * Datasource Service Interface
  *
  * @author lhs
  * @date 2025-01-21
@@ -44,34 +44,34 @@ public interface IDaDatasourceApiService {
     public boolean creaDatasourceTeTableListApi(DatasourceCreaTeTableListReqDTO datasourceCreaTeTableListReqDTO);
 
     /**
-     * 获得字段列表
+     * Get column list
      *
-     * @param datasourceId 数据源id
-     * @param tableName    表名
-     * @return 数据源列表
+     * @param datasourceId Datasource ID
+     * @param tableName    Table Name
+     * @return Datasource List
      */
     List<DbColumn> getDbTableColumns(Long datasourceId, String tableName);
 
 
     /**
-     * 获得表信息
+     * Get table info
      *
-     * @param datasourceId 数据源id
-     * @param tableName    表名
-     * @return 数据源列表
+     * @param datasourceId Datasource ID
+     * @param tableName    Table Name
+     * @return Datasource List
      */
     DbTable getDbTable(Long datasourceId, String tableName);
 
     /**
-     * TODO:获得数据库列表
+     * TODO: Get database list
      *
-     * @param id 数据源id
-     * @return 数据源列表
+     * @param id Datasource ID
+     * @return Datasource List
      */
     public List<DbName> getDatabaseListByDatasourceId(Long id);
 
     /**
-     * 根据ids获取数据源列表
+     * Get datasource list by IDs
      * @param ids
      * @return
      */

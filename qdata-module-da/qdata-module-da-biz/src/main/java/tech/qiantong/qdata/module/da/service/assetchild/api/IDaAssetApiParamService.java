@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 /**
- * 数据资产-外部API-参数Service接口
+ * Data Asset - External API - Parameter Service Interface
  *
  * @author qdata
  * @date 2025-04-14
@@ -37,69 +37,69 @@ import java.util.Map;
 public interface IDaAssetApiParamService extends IService<DaAssetApiParamDO> {
 
     /**
-     * 获得数据资产-外部API-参数分页列表
+     * Get data asset external API parameter page list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据资产-外部API-参数分页列表
+     * @param pageReqVO page request
+     * @return data asset external API parameter page list
      */
     PageResult<DaAssetApiParamDO> getDaAssetApiParamPage(DaAssetApiParamPageReqVO pageReqVO);
 
     /**
-     * 创建数据资产-外部API-参数
+     * Create data asset external API parameter
      *
-     * @param createReqVO 数据资产-外部API-参数信息
-     * @return 数据资产-外部API-参数编号
+     * @param createReqVO data asset external API parameter info
+     * @return data asset external API parameter ID
      */
     Long createDaAssetApiParam(DaAssetApiParamSaveReqVO createReqVO);
 
     void createDaAssetApiParamDeep(List<DaAssetApiParamSaveReqVO> daAssetApiParamList, Long daAssetApiId);
 
     /**
-     * 更新数据资产-外部API-参数
+     * Update data asset external API parameter
      *
-     * @param updateReqVO 数据资产-外部API-参数信息
+     * @param updateReqVO data asset external API parameter info
      */
     int updateDaAssetApiParam(DaAssetApiParamSaveReqVO updateReqVO);
 
     /**
-     * 删除数据资产-外部API-参数
+     * Delete data asset external API parameter
      *
-     * @param idList 数据资产-外部API-参数编号
+     * @param idList data asset external API parameter ID list
      */
     int removeDaAssetApiParam(Collection<Long> idList);
     int removeThemeRelByAssetApiId( Long assetApiId);
 
     /**
-     * 获得数据资产-外部API-参数详情
+     * Get data asset external API parameter details
      *
-     * @param id 数据资产-外部API-参数编号
-     * @return 数据资产-外部API-参数
+     * @param id data asset external API parameter ID
+     * @return data asset external API parameter
      */
     DaAssetApiParamDO getDaAssetApiParamById(Long id);
 
     /**
-     * 获得全部数据资产-外部API-参数列表
+     * Get all data asset external API parameter list
      *
-     * @return 数据资产-外部API-参数列表
+     * @return data asset external API parameter list
      */
     List<DaAssetApiParamDO> getDaAssetApiParamList();
     List<DaAssetApiParamRespVO> getDaAssetApiParamList(Long daAssetApiId);
 
     /**
-     * 获得全部数据资产-外部API-参数 Map
+     * Get all data asset external API parameter Map
      *
-     * @return 数据资产-外部API-参数 Map
+     * @return data asset external API parameter Map
      */
     Map<Long, DaAssetApiParamDO> getDaAssetApiParamMap();
 
 
     /**
-     * 导入数据资产-外部API-参数数据
+     * Import data asset external API parameter data
      *
-     * @param importExcelList 数据资产-外部API-参数数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList data asset external API parameter data list
+     * @param isUpdateSupport whether to support update; if exists, update the data
+     * @param operName operator user
+     * @return result
      */
     String importDaAssetApiParam(List<DaAssetApiParamRespVO> importExcelList, boolean isUpdateSupport, String operName);
 }

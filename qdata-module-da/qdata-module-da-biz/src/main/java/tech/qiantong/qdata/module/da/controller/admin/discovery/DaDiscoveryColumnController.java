@@ -48,7 +48,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 数据发现字段Controller
+ * Data Discovery Column Controller
  *
  * @author qdata
  * @date 2025-02-11
@@ -86,7 +86,7 @@ public class DaDiscoveryColumnController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DaDiscoveryColumnDO> list = (List<DaDiscoveryColumnDO>) daDiscoveryColumnService.getDaDiscoveryColumnPage(exportReqVO).getRows();
         ExcelUtil<DaDiscoveryColumnRespVO> util = new ExcelUtil<>(DaDiscoveryColumnRespVO.class);
-        util.exportExcel(response, DaDiscoveryColumnConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DaDiscoveryColumnConvert.INSTANCE.convertToRespVOList(list), "Data");
     }
 
     @Operation(summary = "导入数据发现字段列表")

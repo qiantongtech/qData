@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.da.dal.dataobject.assetchild.audit.DaAssetAudi
 import java.util.List;
 
 /**
- * 数据资产质量结果记录 Convert
+ * Data Asset Quality Result Record Convert
  *
  * @author qdata
  * @date 2025-05-09
@@ -38,29 +38,29 @@ public interface DaAssetAuditRuleConvert {
     DaAssetAuditRuleConvert INSTANCE = Mappers.getMapper(DaAssetAuditRuleConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param daAssetAuditRulePageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param daAssetAuditRulePageReqVO request parameters
      * @return DaAssetAuditRuleDO
      */
      DaAssetAuditRuleDO convertToDO(DaAssetAuditRulePageReqVO daAssetAuditRulePageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param daAssetAuditRuleSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param daAssetAuditRuleSaveReqVO save request parameters
      * @return DaAssetAuditRuleDO
      */
      DaAssetAuditRuleDO convertToDO(DaAssetAuditRuleSaveReqVO daAssetAuditRuleSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param daAssetAuditRuleDO 实体对象
+     * Convert DO to RespVO
+     * @param daAssetAuditRuleDO entity object
      * @return DaAssetAuditRuleRespVO
      */
      DaAssetAuditRuleRespVO convertToRespVO(DaAssetAuditRuleDO daAssetAuditRuleDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param daAssetAuditRuleDOList 实体对象列表
+     * Convert DOList to RespVOList
+     * @param daAssetAuditRuleDOList entity object list
      * @return List<DaAssetAuditRuleRespVO>
      */
      List<DaAssetAuditRuleRespVO> convertToRespVOList(List<DaAssetAuditRuleDO> daAssetAuditRuleDOList);

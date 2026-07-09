@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.da.dal.dataobject.assetchild.operate.DaAssetOp
 import java.util.List;
 
 /**
- * 数据资产操作记录 Convert
+ * Data Asset Operate Log Convert
  *
  * @author qdata
  * @date 2025-05-09
@@ -38,29 +38,29 @@ public interface DaAssetOperateLogConvert {
     DaAssetOperateLogConvert INSTANCE = Mappers.getMapper(DaAssetOperateLogConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param daAssetOperateLogPageReqVO 请求参数
+     * PageReqVO Convert to DO
+     * @param daAssetOperateLogPageReqVO request parameters
      * @return DaAssetOperateLogDO
      */
      DaAssetOperateLogDO convertToDO(DaAssetOperateLogPageReqVO daAssetOperateLogPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param daAssetOperateLogSaveReqVO 保存请求参数
+     * SaveReqVO Convert to DO
+     * @param daAssetOperateLogSaveReqVO save request parameters
      * @return DaAssetOperateLogDO
      */
      DaAssetOperateLogDO convertToDO(DaAssetOperateLogSaveReqVO daAssetOperateLogSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param daAssetOperateLogDO 实体对象
+     * DO Convert to RespVO
+     * @param daAssetOperateLogDO entity object
      * @return DaAssetOperateLogRespVO
      */
      DaAssetOperateLogRespVO convertToRespVO(DaAssetOperateLogDO daAssetOperateLogDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param daAssetOperateLogDOList 实体对象列表
+     * DOList Convert to RespVOList
+     * @param daAssetOperateLogDOList entity object list
      * @return List<DaAssetOperateLogRespVO>
      */
      List<DaAssetOperateLogRespVO> convertToRespVOList(List<DaAssetOperateLogDO> daAssetOperateLogDOList);

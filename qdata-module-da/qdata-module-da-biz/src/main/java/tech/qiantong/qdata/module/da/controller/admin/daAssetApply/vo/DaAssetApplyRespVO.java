@@ -30,7 +30,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 数据资产申请 Response VO 对象 DA_ASSET_APPLY
+ * Data Asset Application Response VO DA_ASSET_APPLY
  *
  * @author shu
  * @date 2025-03-19

@@ -352,7 +352,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             </when>
         </choose>
         LEFT JOIN DPP_ETL_SCHEDULER t3 ON t.id = t3.task_id AND t3.DEL_FLAG = '0'
-        <!-- 关键改造：关联“每个任务最新一条实例”的子查询 -->
+        <!-- Key modification: subquery joining the latest instance of each task -->
         LEFT JOIN (
             SELECT
                 ti1.TASK_CODE, ti1.CREATE_TIME, ti1.STATUS

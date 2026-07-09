@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 /**
- * 数据资产质量结果记录Service接口
+ * Data Asset Quality Result Record Service Interface
  *
  * @author qdata
  * @date 2025-05-09
@@ -37,65 +37,65 @@ import java.util.Map;
 public interface IDaAssetAuditRuleService extends IService<DaAssetAuditRuleDO> {
 
     /**
-     * 获得数据资产质量结果记录分页列表
+     * Get data asset quality result record page list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据资产质量结果记录分页列表
+     * @param pageReqVO page request
+     * @return data asset quality result record page list
      */
     PageResult<DaAssetAuditRuleDO> getDaAssetAuditRulePage(DaAssetAuditRulePageReqVO pageReqVO);
 
     /**
-     * 创建数据资产质量结果记录
+     * Create data asset quality result record
      *
-     * @param createReqVO 数据资产质量结果记录信息
-     * @return 数据资产质量结果记录编号
+     * @param createReqVO data asset quality result record info
+     * @return data asset quality result record ID
      */
     Long createDaAssetAuditRule(DaAssetAuditRuleSaveReqVO createReqVO);
 
     /**
-     * 更新数据资产质量结果记录
+     * Update data asset quality result record
      *
-     * @param updateReqVO 数据资产质量结果记录信息
+     * @param updateReqVO data asset quality result record info
      */
     int updateDaAssetAuditRule(DaAssetAuditRuleSaveReqVO updateReqVO);
 
     /**
-     * 删除数据资产质量结果记录
+     * Delete data asset quality result record
      *
-     * @param idList 数据资产质量结果记录编号
+     * @param idList data asset quality result record ID list
      */
     int removeDaAssetAuditRule(Collection<Long> idList);
 
     /**
-     * 获得数据资产质量结果记录详情
+     * Get data asset quality result record details
      *
-     * @param id 数据资产质量结果记录编号
-     * @return 数据资产质量结果记录
+     * @param id data asset quality result record ID
+     * @return data asset quality result record
      */
     DaAssetAuditRuleDO getDaAssetAuditRuleById(Long id);
 
     /**
-     * 获得全部数据资产质量结果记录列表
+     * Get all data asset quality result record list
      *
-     * @return 数据资产质量结果记录列表
+     * @return data asset quality result record list
      */
     List<DaAssetAuditRuleDO> getDaAssetAuditRuleList();
 
     /**
-     * 获得全部数据资产质量结果记录 Map
+     * Get all data asset quality result record Map
      *
-     * @return 数据资产质量结果记录 Map
+     * @return data asset quality result record Map
      */
     Map<Long, DaAssetAuditRuleDO> getDaAssetAuditRuleMap();
 
 
     /**
-     * 导入数据资产质量结果记录数据
+     * Import data asset quality result record data
      *
-     * @param importExcelList 数据资产质量结果记录数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList data asset quality result record data list
+     * @param isUpdateSupport whether to support update; if exists, update the data
+     * @param operName operator user
+     * @return result
      */
     String importDaAssetAuditRule(List<DaAssetAuditRuleRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

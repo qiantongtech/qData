@@ -24,14 +24,14 @@ import lombok.*;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 数据资产-矢量 DO 对象 DA_ASSET_GEO
+ * Data Asset - Vector DO - DA_ASSET_GEO
  *
  * @author qdata
  * @date 2025-04-14
  */
 @Data
 @TableName(value = "DA_ASSET_GEO")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Not needed for MySQL and similar databases.
 // @KeySequence("DA_ASSET_GEO_seq")
 @Builder
 @NoArgsConstructor
@@ -45,28 +45,28 @@ public class DaAssetGeoDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 资产id */
+    /** Asset ID */
     private Long assetId;
 
-    /** 文件名称 */
+    /** File Name */
     private String fileName;
 
-    /** 文件路径 */
+    /** File Path */
     private String fileUrl;
 
-    /** 要素类型 */
+    /** Element Type */
     private String elementType;
 
-    /** 坐标系 */
+    /** Coordinate System */
     private String coordinateSystem;
 
     @Schema(description = "文件类型", example = "")
     private String fileType;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     @TableLogic
     private Boolean delFlag;
 

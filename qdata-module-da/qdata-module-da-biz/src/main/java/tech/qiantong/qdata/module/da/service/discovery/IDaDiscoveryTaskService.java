@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 数据发现任务Service接口
+ * Data Discovery Task Service Interface
  *
  * @author qdata
  * @date 2025-02-11
@@ -39,67 +39,67 @@ import java.util.Map;
 public interface IDaDiscoveryTaskService extends IService<DaDiscoveryTaskDO> {
 
     /**
-     * 获得数据发现任务分页列表
+     * Get data discovery task page list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据发现任务分页列表
+     * @param pageReqVO page request
+     * @return data discovery task page list
      */
     PageResult<DaDiscoveryTaskDO> getDaDiscoveryTaskPage(DaDiscoveryTaskPageReqVO pageReqVO);
     PageResult<DaDiscoveryTaskRespVO> getDaDiscoveryTaskListPage(DaDiscoveryTaskPageReqVO pageReqVO);
 
     /**
-     * 创建数据发现任务
+     * Create data discovery task
      *
-     * @param createReqVO 数据发现任务信息
-     * @return 数据发现任务编号
+     * @param createReqVO data discovery task info
+     * @return data discovery task ID
      */
     Long createDaDiscoveryTask(DaDiscoveryTaskSaveReqVO createReqVO);
 
     /**
-     * 更新数据发现任务
+     * Update data discovery task
      *
-     * @param updateReqVO 数据发现任务信息
+     * @param updateReqVO data discovery task info
      */
     int updateDaDiscoveryTask(DaDiscoveryTaskSaveReqVO updateReqVO);
     int updateDaDiscoveryTask(DaDiscoveryTaskRespVO updateReqVO);
 
     /**
-     * 删除数据发现任务
+     * Delete data discovery task
      *
-     * @param idList 数据发现任务编号
+     * @param idList data discovery task ID list
      */
     int removeDaDiscoveryTask(Collection<Long> idList);
 
     /**
-     * 获得数据发现任务详情
+     * Get data discovery task details
      *
-     * @param id 数据发现任务编号
-     * @return 数据发现任务
+     * @param id data discovery task ID
+     * @return data discovery task
      */
     DaDiscoveryTaskRespVO getDaDiscoveryTaskById(Long id);
 
     /**
-     * 获得全部数据发现任务列表
+     * Get all data discovery task list
      *
-     * @return 数据发现任务列表
+     * @return data discovery task list
      */
     List<DaDiscoveryTaskDO> getDaDiscoveryTaskList();
 
     /**
-     * 获得全部数据发现任务 Map
+     * Get all data discovery task Map
      *
-     * @return 数据发现任务 Map
+     * @return data discovery task Map
      */
     Map<Long, DaDiscoveryTaskDO> getDaDiscoveryTaskMap();
 
 
     /**
-     * 导入数据发现任务数据
+     * Import data discovery task data
      *
-     * @param importExcelList 数据发现任务数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList data discovery task data list
+     * @param isUpdateSupport whether to support update; if exists, update the data
+     * @param operName operator user
+     * @return result
      */
     String importDaDiscoveryTask(List<DaDiscoveryTaskRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

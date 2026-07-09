@@ -43,7 +43,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 数据资产-文件服务Service业务层处理
+ * Data Asset - Files Service business layer processing
  *
  * @author qdata
  * @date 2025-06-26
@@ -69,15 +69,15 @@ public class DaAssetFilesServiceImpl  extends ServiceImpl<DaAssetFilesMapper,DaA
 
     @Override
     public int updateDaAssetFiles(DaAssetFilesSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related validation
 
-        // 更新数据资产-文件服务
+        // Update data asset - files service
         DaAssetFilesDO updateObj = BeanUtils.toBean(updateReqVO, DaAssetFilesDO.class);
         return daAssetFilesMapper.updateById(updateObj);
     }
     @Override
     public int removeDaAssetFiles(Collection<Long> idList) {
-        // 批量删除数据资产-文件服务
+        // Batch delete data asset - files service
         return daAssetFilesMapper.deleteBatchIds(idList);
     }
 
@@ -98,24 +98,24 @@ public class DaAssetFilesServiceImpl  extends ServiceImpl<DaAssetFilesMapper,DaA
                 .collect(Collectors.toMap(
                         DaAssetFilesDO::getId,
                         daAssetFilesDO -> daAssetFilesDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
         /**
-         * 导入数据资产-文件服务数据
+         * Import data asset - files service data
          *
-         * @param importExcelList 数据资产-文件服务数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
+         * @param importExcelList Data asset - files service data list
+         * @param isUpdateSupport Whether to support update, if already exists, update the data
+         * @param operName Operator user
+         * @return Result
          */
         @Override
         public String importDaAssetFiles(List<DaAssetFilesRespVO> importExcelList, boolean isUpdateSupport, String operName) {
             if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-                throw new ServiceException("da.error.import.empty", "导入数据不能为空！");
+                throw new ServiceException("da.error.import.empty", "Import data cannot be empty!", "Import data cannot be empty!");
             }
 
             int successNum = 0;
@@ -134,16 +134,16 @@ public class DaAssetFilesServiceImpl  extends ServiceImpl<DaAssetFilesMapper,DaA
                                 daAssetFilesMapper.updateById(daAssetFilesDO);
                                 successNum++;
                                 successMessages.add(MessageUtils.messageWithFallback("da.import.update.success",
-                                        "数据更新成功，ID为 " + daAssetFilesId + " 的数据资产-文件服务记录。", daAssetFilesId, "数据资产-文件服务"));
+                                        "Data updated successfully, data asset - files service record with ID " + daAssetFilesId + ".", daAssetFilesId, "Data Asset - Files Service"));
                             } else {
                                 failureNum++;
                                 failureMessages.add(MessageUtils.messageWithFallback("da.import.update.fail",
-                                        "数据更新失败，ID为 " + daAssetFilesId + " 的数据资产-文件服务记录不存在。", daAssetFilesId, "数据资产-文件服务"));
+                                        "Data update failed, data asset - files service record with ID " + daAssetFilesId + " does not exist.", daAssetFilesId, "Data Asset - Files Service"));
                             }
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("da.import.update.id.missing",
-                                    "数据更新失败，某条记录的ID不存在。"));
+                                    "Data update failed, ID of a record is missing."));
                         }
                     } else {
                         QueryWrapper<DaAssetFilesDO> queryWrapper = new QueryWrapper<>();
@@ -153,17 +153,17 @@ public class DaAssetFilesServiceImpl  extends ServiceImpl<DaAssetFilesMapper,DaA
                             daAssetFilesMapper.insert(daAssetFilesDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("da.import.insert.success",
-                                    "数据插入成功，ID为 " + daAssetFilesId + " 的数据资产-文件服务记录。", daAssetFilesId, "数据资产-文件服务"));
+                                    "Data inserted successfully, data asset - files service record with ID " + daAssetFilesId + ".", daAssetFilesId, "Data Asset - Files Service"));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("da.import.insert.fail",
-                                    "数据插入失败，ID为 " + daAssetFilesId + " 的数据资产-文件服务记录已存在。", daAssetFilesId, "数据资产-文件服务"));
+                                    "Data insert failed, data asset - files service record with ID " + daAssetFilesId + " already exists.", daAssetFilesId, "Data Asset - Files Service"));
                         }
                     }
                 } catch (Exception e) {
                     failureNum++;
                     String errorMsg = MessageUtils.messageWithFallback("da.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                "Data import failed, error message: " + e.getMessage(), e.getMessage());
                     failureMessages.add(errorMsg);
                     log.error(errorMsg, e);
                 }
@@ -172,12 +172,12 @@ public class DaAssetFilesServiceImpl  extends ServiceImpl<DaAssetFilesMapper,DaA
             if (failureNum > 0) {
                 String failureDetails = String.join("<br/>", failureMessages);
                 resultMsg.append(MessageUtils.messageWithFallback("da.import.result.fail",
-                        "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                        "Sorry, import failed! A total of " + failureNum + " records had incorrect format, errors are as follows: <br/>" + failureDetails,
                         failureNum, failureDetails));
                 throw new ServiceException("da.error.import.fail", resultMsg.toString(), resultMsg.toString());
             } else {
                 resultMsg.append(MessageUtils.messageWithFallback("da.import.result.success",
-                        "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                        "Congratulations! All data has been imported successfully! A total of " + successNum + " records.", successNum));
             }
             return resultMsg.toString();
         }

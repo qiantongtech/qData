@@ -23,7 +23,7 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 数据资产字段 Request VO 对象 DA_ASSET_COLUMN
+ * Data Asset Column Request VO DA_ASSET_COLUMN
  *
  * @author lhs
  * @date 2025-01-21

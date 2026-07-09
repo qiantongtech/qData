@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.da.dal.dataobject.assetchild.api.DaAssetApiDO;
 import java.util.List;
 
 /**
- * 数据资产-外部API Convert
+ * Data Asset - External API Convert
  *
  * @author qdata
  * @date 2025-04-14
@@ -38,29 +38,29 @@ public interface DaAssetApiConvert {
     DaAssetApiConvert INSTANCE = Mappers.getMapper(DaAssetApiConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param daAssetApiPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param daAssetApiPageReqVO request parameters
      * @return DaAssetApiDO
      */
      DaAssetApiDO convertToDO(DaAssetApiPageReqVO daAssetApiPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param daAssetApiSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param daAssetApiSaveReqVO save request parameters
      * @return DaAssetApiDO
      */
      DaAssetApiDO convertToDO(DaAssetApiSaveReqVO daAssetApiSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param daAssetApiDO 实体对象
+     * Convert DO to RespVO
+     * @param daAssetApiDO entity object
      * @return DaAssetApiRespVO
      */
      DaAssetApiRespVO convertToRespVO(DaAssetApiDO daAssetApiDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param daAssetApiDOList 实体对象列表
+     * Convert DOList to RespVOList
+     * @param daAssetApiDOList entity object list
      * @return List<DaAssetApiRespVO>
      */
      List<DaAssetApiRespVO> convertToRespVOList(List<DaAssetApiDO> daAssetApiDOList);

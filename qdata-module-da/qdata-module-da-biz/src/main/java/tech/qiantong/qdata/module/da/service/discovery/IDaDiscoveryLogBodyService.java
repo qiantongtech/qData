@@ -22,29 +22,29 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import tech.qiantong.qdata.module.da.dal.dataobject.discovery.DaDiscoveryLogBodyDO;
 
 /**
- * 数据发现节点实例-日志Service接口
+ * Data Discovery Node Instance - Log Service Interface
  *
  * @author qdata
  * @date 2025-10-15
  */
 public interface IDaDiscoveryLogBodyService extends IService<DaDiscoveryLogBodyDO> {
 
-    /** 取任务最新一条日志内容（按 TM 倒序） */
+    /** Get the latest log content for a task (descending by TM) */
     String getLatestLog(Long taskId);
 
-    /** 按复合主键获取日志内容 */
+    /** Get log content by composite primary key */
     String getLog(Long taskId);
 
-    /** 按复合主键 (taskId, tm) 执行保存或更新 */
+    /** Save or update by composite primary key (taskId, tm) */
     int saveOrUpdateByPk(DaDiscoveryLogBodyDO entity);
     void taskLogAppend(Long taskId, String logStr);
 
 
     /**
-     * 按复合主键删除日志
+     * Delete log by composite primary key
      *
-     * @param taskId 任务ID
-     * @return 是否删除成功
+     * @param taskId task ID
+     * @return whether deletion succeeded
      */
     boolean deleteByPk(Long taskId);
 }

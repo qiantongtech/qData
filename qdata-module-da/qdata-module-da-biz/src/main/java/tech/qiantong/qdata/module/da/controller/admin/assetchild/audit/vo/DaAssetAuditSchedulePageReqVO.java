@@ -23,7 +23,7 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 资产稽查调度 Request VO 对象 DA_ASSET_AUDIT_SCHEDULE
+ * Asset Audit Schedule Request VO DA_ASSET_AUDIT_SCHEDULE
  *
  * @author qdata
  * @date 2025-05-09

@@ -23,7 +23,7 @@ import tech.qiantong.qdata.common.database.core.DbColumn;
 
 /**
  * <P>
- * 用途:生成临时表列（非关系型数据库）
+ * Purpose: Generate temporary table columns (non-relational database)
  * </p>
  *
  * @author: FXB

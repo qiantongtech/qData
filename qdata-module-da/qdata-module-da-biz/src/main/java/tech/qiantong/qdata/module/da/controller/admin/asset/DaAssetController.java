@@ -65,7 +65,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 数据资产Controller
+ * Data Asset Controller
  *
  * @author lhs
  * @date 2025-01-21
@@ -118,7 +118,7 @@ public class DaAssetController extends BaseController {
     }
 
     /**
-     * 处理资产标签信息
+     * Process asset tag information
      *
      * @param bean PageResult<DaAssetRespVO>
      * @return PageResult<DaAssetRespVO>
@@ -186,7 +186,7 @@ public class DaAssetController extends BaseController {
     }
 
     /**
-     * 根据id查询
+     * Query by ID
      *
      * @param ids
      * @return
@@ -234,7 +234,7 @@ public class DaAssetController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DaAssetDO> list = (List<DaAssetDO>) daAssetService.getDaAssetPage(exportReqVO, "1").getRows();
         ExcelUtil<DaAssetRespVO> util = new ExcelUtil<>(DaAssetRespVO.class);
-        util.exportExcel(response, DaAssetConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DaAssetConvert.INSTANCE.convertToRespVOList(list), "App Management Data");
     }
 
     @Operation(summary = "导入数据资产列表")
@@ -261,20 +261,20 @@ public class DaAssetController extends BaseController {
     @PostMapping(value = "/preview")
     public AjaxResult getPreview(@RequestBody JSONObject jsonObject) {
         if (StringUtils.isEmpty(jsonObject.getStr("id"))) {
-            return error("请携带资产id");
+            return error("Please provide the asset ID");
         }
         Map<String, Object> columnData = daAssetService.getColumnData(jsonObject);
         if (columnData == null) {
-            return error("数据库中未获取到该表数据，请确认表是否存在!");
+            return error("Unable to retrieve table data from the database, please confirm whether the table exists!");
         }
 
         SysUser sysUser = SecurityUtils.getLoginUser().getUser();
        // List<Map<String, Object>> dataMaskingList = daAssetService.dataMasking(Long.valueOf(jsonObject.getStr("id")), (List<Map<String, Object>>) columnData.get("tableData"));
-        //1.数据资产  2.数据查询
+        //1. Data asset 2. Data query
         List<Map<String, Object>> dataMaskingList = daAssetService.dataMaskings(Long.valueOf(jsonObject.getStr("id")), (List<Map<String, Object>>) columnData.get("tableData"),sysUser.getUserId(),"1");
 
         if (dataMaskingList == null) {
-            return error("请检查资产字段与数据表字段是否一致");
+            return error("Please check whether asset fields and data table fields are consistent");
         }
         columnData.put("tableData", dataMaskingList);
         return success(columnData);
@@ -303,7 +303,7 @@ public class DaAssetController extends BaseController {
     }
 
     @Operation(summary = "批量新增数据资产")
-    @PreAuthorize("@ss.hasPermi('da:asset:add')") // 也可以单独配 da:asset:batchAdd
+    @PreAuthorize("@ss.hasPermi('da:asset:add')") // Can also configure da:asset:batchAdd separately
     @Log(title = "log.op.title.da.asset", businessType = BusinessType.INSERT)
     @PostMapping("/batch")
     public CommonResult<List<Long>> batchAdd(@Valid @RequestBody List<DaAssetSaveReqVO> daAssetList) {

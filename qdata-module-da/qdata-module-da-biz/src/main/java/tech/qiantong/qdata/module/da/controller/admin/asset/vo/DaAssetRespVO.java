@@ -37,7 +37,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 数据资产 Response VO 对象 DA_ASSET
+ * Data Asset Response VO DA_ASSET
  *
  * @author lhs
  * @date 2025-01-21
@@ -67,48 +67,48 @@ public class DaAssetRespVO implements Serializable {
     private String catName;
 
     /**
-     * 表类型;1:明细表 2:汇总表 3:维度表 4:应用表
+     * Table type; 1: Detail table 2: Summary table 3: Dimension table 4: Application table
      */
     @Schema(description = "表类型 1:明细表 2:汇总表 3:维度表 4:应用表")
     private String tableType;
     /**
-     * 数仓分层id
+     * Data warehouse layer ID
      */
     @Schema(description = "数仓分层id ")
     private Long dataLayerId;
     /**
-     * 业务分类id;只有表类型为非应用表是才有值
+     * Business category ID; only has value when table type is not application table
      */
     @Schema(description = "业务分类id 只有表类型为非应用表是才有值")
     private Long businessCategoryId;
     /**
-     * 业务分类层级编码
+     * Business category hierarchy code
      */
     @Schema(description = "业务分类层级编码 ")
     private String businessCategoryCode;
     /**
-     * 数据分域id;只有表类型为非应用表是才有值
+     * Data domain ID; only has value when table type is not application table
      */
     @Schema(description = "数据分域id 只有表类型为非应用表是才有值")
     private Long dataDomainId;
     /**
-     * 所属主题id（主题规划）;只有表类型为应用表是才有值
+     * Theme domain ID (theme planning); only has value when table type is application table
      */
     @Schema(description = "所属主题id（主题规划） 只有表类型为应用表是才有值")
     private Long themeDomainId;
     /**
-     * 所属主题层级编码
+     * Theme domain hierarchy code
      */
     @Schema(description = "所属主题层级编码 ")
     private String themeDomainCode;
     /**
-     * 表名大小写;1：大写 2：小写
+     * Table name casing; 1: Uppercase 2: Lowercase
      */
     @Schema(description = "表名大小写 1：大写 2：小写")
     private String tableCase;
 
     /**
-     * 元数据表id
+     * Metadata table ID
      */
     @Schema(description = "元数据表id")
     private Long tableId;
@@ -150,7 +150,7 @@ public class DaAssetRespVO implements Serializable {
     @Schema(description = "字段量", example = "")
     private Long fieldCount;
 
-    /** 来源;1:数据发现；2:数据模型； */
+    /** Source; 1: Data Discovery; 2: Data Model; */
     @Schema(description = "来源", example = "")
     private String source;
 
@@ -202,33 +202,33 @@ public class DaAssetRespVO implements Serializable {
     @Schema(description = "备注", example = "")
     private String remark;
 
-    //api
+    // API
     @TableField(exist = false)
     private DaAssetApiRespVO daAssetApi;
-    //api
+    // API
     @TableField(exist = false)
     private List<DaAssetApiParamRespVO> daAssetApiParamList;
 
     /**
-     * 矢量
+     * Vector
      */
     @TableField(exist = false)
     private DaAssetGeoRespVO daAssetGeo;
 
     /**
-     * 地理空间服务
+     * Geographic spatial service
      */
     @TableField(exist = false)
     private DaAssetGisRespVO daAssetGis;
 
     /**
-     * 视频数据
+     * Video data
      */
     @TableField(exist = false)
     private DaAssetVideoRespVO daAssetVideo;
 
     /**
-     * 文件数据
+     * File data
      */
     @TableField(exist = false)
     private DaAssetFilesSaveReqVO daAssetFiles;

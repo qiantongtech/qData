@@ -48,7 +48,7 @@ import tech.qiantong.qdata.module.da.dal.dataobject.assetColumn.DaAssetColumnDO;
 import tech.qiantong.qdata.module.da.service.assetColumn.IDaAssetColumnService;
 
 /**
- * 数据资产字段Controller
+ * Data Asset Column Controller
  *
  * @author lhs
  * @date 2025-01-21
@@ -85,7 +85,7 @@ public class DaAssetColumnController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DaAssetColumnDO> list = (List<DaAssetColumnDO>) daAssetColumnService.getDaAssetColumnPage(exportReqVO).getRows();
         ExcelUtil<DaAssetColumnRespVO> util = new ExcelUtil<>(DaAssetColumnRespVO.class);
-        util.exportExcel(response, DaAssetColumnConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DaAssetColumnConvert.INSTANCE.convertToRespVOList(list), "App Management Data");
     }
 
     @Operation(summary = "导入数据资产字段列表")

@@ -27,7 +27,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 数据资产-文件服务 Response VO 对象 DA_ASSET_FILES
+ * Data Asset - File Service Response VO Object DA_ASSET_FILES
  *
  * @author qdata
  * @date 2025-06-26

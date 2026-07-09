@@ -34,12 +34,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * 数据集成任务 Response VO 对象 DPP_ETL_TASK
+ * Data Integration Task Response VO Object DPP_ETL_TASK
  *
  * @author qdata
  * @date 2025-02-13
  */
-@Schema(description = "数据集成任务 Response VO")
+@Schema(description = "Data Integration Task Response VO")
 @Data
 public class DppEtlTaskUpdateQueryRespVO implements Serializable {
 
@@ -49,124 +49,124 @@ public class DppEtlTaskUpdateQueryRespVO implements Serializable {
     @Schema(description = "ID")
     private Long id;
 
-    @Schema(description = "类目id", example = "")
+    @Schema(description = "Category ID", example = "")
     private Long catId;
 
-    @Schema(description = "类目编码", example = "")
-    @Size(max = 256, message = "类目编码长度不能超过256个字符")
+    @Schema(description = "Category Code", example = "")
+    @Size(max = 256, message = "Category Code length cannot exceed 256 characters")
     private String catCode;
 
 
     /**
      * @see DppEtlTaskDO#type
      */
-    @Excel(name = "任务类型")
-    @Schema(description = "任务类型", example = "")
+    @Excel(name = "Task Type")
+    @Schema(description = "Task Type", example = "")
     private String type;
 
-    @Excel(name = "任务名称")
-    @Schema(description = "任务名称", example = "")
+    @Excel(name = "Task Name")
+    @Schema(description = "Task Name", example = "")
     private String name;
 
-    @Excel(name = "任务编码")
-    @Schema(description = "任务编码", example = "")
+    @Excel(name = "Task Code")
+    @Schema(description = "Task Code", example = "")
     private String code;
 
-    @Excel(name = "任务版本")
-    @Schema(description = "任务版本", example = "")
+    @Excel(name = "Task Version")
+    @Schema(description = "Task Version", example = "")
     private Long version;
 
-    @Excel(name = "项目id")
-    @Schema(description = "项目id", example = "")
+    @Excel(name = "Project ID")
+    @Schema(description = "Project ID", example = "")
     private Long projectId;
 
-    @Excel(name = "项目编码")
-    @Schema(description = "项目编码", example = "")
+    @Excel(name = "Project Code")
+    @Schema(description = "Project Code", example = "")
     private String projectCode;
 
-    @Excel(name = "责任人")
-    @Schema(description = "责任人", example = "")
+    @Excel(name = "Person in Charge")
+    @Schema(description = "Person in Charge", example = "")
     private String personCharge;
 
-    @Excel(name = "责任人名称")
-    @Schema(description = "责任人名称", example = "")
+    @Excel(name = "Person in Charge Name")
+    @Schema(description = "Person in Charge Name", example = "")
     private String personChargeName;
 
-    @Excel(name = "联系电话")
-    @Schema(description = "联系电话", example = "")
+    @Excel(name = "Contact Number")
+    @Schema(description = "Contact Number", example = "")
     private String contactNumber;
 
-    @Excel(name = "节点坐标信息")
-    @Schema(description = "节点坐标信息", example = "")
+    @Excel(name = "Node Coordinate Info")
+    @Schema(description = "Node Coordinate Info", example = "")
     private List<Map<String, Object>> locations;
 
-    @Excel(name = "描述")
-    @Schema(description = "描述", example = "")
+    @Excel(name = "Description")
+    @Schema(description = "Description", example = "")
     private String description;
 
-    @Schema(description = "任务的执行策略", example = "")
+    @Schema(description = "Task Execution Strategy", example = "")
     private String executionType;
 
-    @Excel(name = "超时时间")
-    @Schema(description = "超时时间", example = "")
+    @Excel(name = "Timeout")
+    @Schema(description = "Timeout", example = "")
     private Long timeout;
 
-    @Excel(name = "抽取量")
-    @Schema(description = "抽取量", example = "")
+    @Excel(name = "Extraction Count")
+    @Schema(description = "Extraction Count", example = "")
     private Long extractionCount;
 
-    @Excel(name = "写入量")
-    @Schema(description = "写入量", example = "")
+    @Excel(name = "Write Count")
+    @Schema(description = "Write Count", example = "")
     private Long writeCount;
 
-    @Excel(name = "任务状态")
-    @Schema(description = "任务状态", example = "")
+    @Excel(name = "Task Status")
+    @Schema(description = "Task Status", example = "")
     private String status;
 
-    @Excel(name = "DolphinScheduler的id")
-    @Schema(description = "DolphinScheduler的id", example = "")
+    @Excel(name = "DolphinScheduler ID")
+    @Schema(description = "DolphinScheduler ID", example = "")
     private Long dsId;
 
-    @Excel(name = "是否有效")
-    @Schema(description = "是否有效", example = "")
+    @Excel(name = "Valid")
+    @Schema(description = "Valid", example = "")
     private Boolean validFlag;
 
-    @Excel(name = "删除标志")
-    @Schema(description = "删除标志", example = "")
+    @Excel(name = "Delete Flag")
+    @Schema(description = "Delete Flag", example = "")
     private Boolean delFlag;
 
-    @Excel(name = "创建人")
-    @Schema(description = "创建人", example = "")
+    @Excel(name = "Created By")
+    @Schema(description = "Created By", example = "")
     private String createBy;
 
-    @Excel(name = "创建人id")
-    @Schema(description = "创建人id", example = "")
+    @Excel(name = "Creator ID")
+    @Schema(description = "Creator ID", example = "")
     private Long creatorId;
 
-    @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
-    @Schema(description = "创建时间", example = "")
+    @Excel(name = "Create Time", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    @Schema(description = "Create Time", example = "")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
-    @Excel(name = "更新人")
-    @Schema(description = "更新人", example = "")
+    @Excel(name = "Updated By")
+    @Schema(description = "Updated By", example = "")
     private String updateBy;
 
-    @Excel(name = "更新人id")
-    @Schema(description = "更新人id", example = "")
+    @Excel(name = "Updater ID")
+    @Schema(description = "Updater ID", example = "")
     private Long updaterId;
 
-    @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
-    @Schema(description = "更新时间", example = "")
+    @Excel(name = "Update Time", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    @Schema(description = "Update Time", example = "")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
-    @Excel(name = "备注")
-    @Schema(description = "备注", example = "")
+    @Excel(name = "Remark")
+    @Schema(description = "Remark", example = "")
     private String remark;
 
     /**
-     * cron表达式
+     * Cron Expression
      */
     @TableField(exist = false)
     private String crontab;
@@ -181,21 +181,21 @@ public class DppEtlTaskUpdateQueryRespVO implements Serializable {
     @TableField(exist = false)
     List<Map<String, Object>> taskRelationJson;
 
-    @Schema(description = "草稿任务配置信息", example = "")
+    @Schema(description = "Draft Task Config", example = "")
     private String draftJson;
 
-    /** 最后执行时间 */
+    /** Last Execution Time */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date lastExecuteTime;
 
-    /** 最后执行状态 */
+    /** Last Execution Status */
     private String lastExecuteStatus;
 
-    /** 调度上下线状态 */
+    /** Scheduling Online/Offline Status */
     private String schedulerState;
 
     /**
-     * 任务实例
+     * Task Instance
      */
     private DppEtlTaskInstanceDO taskInstance;
 
@@ -242,7 +242,7 @@ public class DppEtlTaskUpdateQueryRespVO implements Serializable {
     }
 
     public void setTaskRelationJsonFromNodeRelList(List<DppEtlTaskNodeRelRespVO> dppEtlTaskNodeRelRespVOList) {
-        // 将 List<DppEtlTaskNodeRelRespVO> 转换为 List<Map<String, Object>>
+        // Convert List<DppEtlTaskNodeRelRespVO> to List<Map<String, Object>>
         List<Map<String, Object>> taskRelationJsonList = new ArrayList<>();
 
         for (DppEtlTaskNodeRelRespVO nodeRel : dppEtlTaskNodeRelRespVOList) {
@@ -272,13 +272,13 @@ public class DppEtlTaskUpdateQueryRespVO implements Serializable {
             taskRelationJsonList.add(nodeRelMap);
         }
 
-        // 存入 taskRelationJson 字段
+        // Store in taskRelationJson field
         this.taskRelationJson = taskRelationJsonList;
     }
 
 
     public void setTaskDefinitionList(List<DppEtlNodeRespVO> dppEtlNodeRespVOList) {
-        // 将 DppEtlNodeRespVO 列表转换为 List<Map<String, Object>>
+        // Convert DppEtlNodeRespVO list to List<Map<String, Object>>
         List<Map<String, Object>> taskDefinitionList = dppEtlNodeRespVOList.stream()
                 .map(node -> {
                     Map<String, Object> stringObjectMap = parseMap(node.getParameters());
@@ -315,25 +315,25 @@ public class DppEtlTaskUpdateQueryRespVO implements Serializable {
                 })
                 .collect(Collectors.toList());
 
-        // 将转换后的列表赋值给 taskDefinitionList
+        // Assign the converted list to taskDefinitionList
         this.taskDefinitionList = taskDefinitionList;
     }
 
 
     public void createTaskConfig() {
-        // 创建 taskConfig Map
+        // Create taskConfig Map
         Map<String, Object> taskConfig = new HashMap<>();
         taskConfig.put("type", this.type);
         taskConfig.put("releaseState", this.status);
-        taskConfig.put("description", this.description); // 从本身获取描述
-        taskConfig.put("name", this.name); // 从本身获取任务名称
-        taskConfig.put("executionType", this.executionType); // 从本身获取执行策略
-        taskConfig.put("crontab", this.crontab); // 固定 crontab 表达式
-        taskConfig.put("personCharge", this.personCharge); // 责任人
-        taskConfig.put("contactNumber", this.contactNumber); // 联系电话
-        taskConfig.put("catCode", this.catCode); // 责任人
+        taskConfig.put("description", this.description); // Get description from itself
+        taskConfig.put("name", this.name); // Get task name from itself
+        taskConfig.put("executionType", this.executionType); // Get execution type from itself
+        taskConfig.put("crontab", this.crontab); // Fixed crontab expression
+        taskConfig.put("personCharge", this.personCharge); // Person in charge
+        taskConfig.put("contactNumber", this.contactNumber); // Contact number
+        taskConfig.put("catCode", this.catCode); // Person in charge
 
-        // 设置 taskConfig
+        // Set taskConfig
         this.setTaskConfig(taskConfig);
     }
 }

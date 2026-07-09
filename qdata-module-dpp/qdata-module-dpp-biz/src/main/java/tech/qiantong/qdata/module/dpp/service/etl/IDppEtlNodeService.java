@@ -1,5 +1,5 @@
 /*
- * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ * Copyright (c) 2025-present Jiangsu Qiantong Technology Co., Ltd.
  *
  * This file is part of qData Data Middle Platform (Open Source Edition).
  *
@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 数据集成节点Service接口
+ * Data Integration Node Service Interface
  *
  * @author qdata
  * @date 2025-02-13
@@ -39,17 +39,17 @@ import java.util.Map;
 public interface IDppEtlNodeService extends IService<DppEtlNodeDO> {
 
     /**
-     * 获得数据集成节点分页列表
+     * Get data integration node pagination list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据集成节点分页列表
+     * @param pageReqVO Pagination request
+     * @return Data integration node pagination list
      */
     PageResult<DppEtlNodeDO> getDppEtlNodePage(DppEtlNodePageReqVO pageReqVO);
 
     List<DppEtlNodeRespVO> getDppEtlNodeRespList(DppEtlNodePageReqVO pageReqVO);
 
     /**
-     * 通过任务id获取节点列表
+     * Get node list by task ID
      *
      * @param taskId
      * @return
@@ -59,66 +59,66 @@ public interface IDppEtlNodeService extends IService<DppEtlNodeDO> {
     DppEtlNodeRespVO getDppEtlNodeRespVOByReqVO(DppEtlNodePageReqVO reqVOPre);
 
     /**
-     * 创建数据集成节点
+     * Create data integration node
      *
-     * @param createReqVO 数据集成节点信息
-     * @return 数据集成节点编号
+     * @param createReqVO Data integration node info
+     * @return Data integration node ID
      */
     Long createDppEtlNode(DppEtlNodeSaveReqVO createReqVO);
 
     List<DppEtlNodeDO> createDppEtlNodeBatch(List<DppEtlNodeSaveReqVO> dppEtlNodeSaveReqVOList);
 
     /**
-     * 更新数据集成节点
+     * Update data integration node
      *
-     * @param updateReqVO 数据集成节点信息
+     * @param updateReqVO Data integration node info
      */
     int updateDppEtlNode(DppEtlNodeSaveReqVO updateReqVO);
 
     /**
-     * 删除数据集成节点
+     * Delete data integration node
      *
-     * @param idList 数据集成节点编号
+     * @param idList Data integration node ID list
      */
     int removeDppEtlNode(Collection<Long> idList);
 
     /**
-     * 获得数据集成节点详情
+     * Get data integration node detail
      *
-     * @param id 数据集成节点编号
-     * @return 数据集成节点
+     * @param id Data integration node ID
+     * @return Data integration node
      */
     DppEtlNodeDO getDppEtlNodeById(Long id);
 
     /**
-     * 获得全部数据集成节点列表
+     * Get all data integration node list
      *
-     * @return 数据集成节点列表
+     * @return Data integration node list
      */
     List<DppEtlNodeDO> getDppEtlNodeList();
 
     /**
-     * 获得全部数据集成节点 Map
+     * Get all data integration node Map
      *
-     * @return 数据集成节点 Map
+     * @return Data integration node Map
      */
     Map<Long, DppEtlNodeDO> getDppEtlNodeMap();
 
 
     /**
-     * 导入数据集成节点数据
+     * Import data integration node data
      *
-     * @param importExcelList 数据集成节点数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Data integration node data list
+     * @param isUpdateSupport Whether to support update. If already exists, update the data
+     * @param operName        Operator
+     * @return Result
      */
     String importDppEtlNode(List<DppEtlNodeRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
     void removeOldDppEtlNode(List<String> code);
 
     /**
-     * 通过节点编码获取节点id
+     * Get node ID by node code
      *
      * @param nodeCode
      * @return
@@ -126,7 +126,7 @@ public interface IDppEtlNodeService extends IService<DppEtlNodeDO> {
     Long getNodeIdByNodeCode(String nodeCode);
 
     /**
-     * 通过节点编码获取节点信息
+     * Get node info by node code
      *
      * @param nodeCode
      * @return

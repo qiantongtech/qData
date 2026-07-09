@@ -28,7 +28,7 @@ import java.util.Date;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 数仓分层管理 创建/修改 Request VO DM_DATA_LAYER
+ * Data Warehouse Layer Create/Update Request VO - DM_DATA_LAYER
  *
  * @author FXB
  * @date 2026-03-24

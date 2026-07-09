@@ -47,7 +47,7 @@ import tech.qiantong.qdata.module.dp.dal.dataobject.codeMap.DpCodeMapDO;
 import tech.qiantong.qdata.module.dp.service.codeMap.IDpCodeMapService;
 
 /**
- * 数据元代码映射Controller
+ * Data Element Code Map Controller
  *
  * @author qdata
  * @date 2025-01-21

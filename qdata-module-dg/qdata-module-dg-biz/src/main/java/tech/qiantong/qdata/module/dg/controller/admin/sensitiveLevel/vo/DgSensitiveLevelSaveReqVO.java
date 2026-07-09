@@ -7,7 +7,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import javax.validation.constraints.Size;
 
 /**
- * 敏感等级 创建/修改 Request VO DA_SENSITIVE_LEVEL
+ * Sensitive Level Create/Update Request VO DA_SENSITIVE_LEVEL
  *
  * @author Chaos
  * @date 2025-01-21

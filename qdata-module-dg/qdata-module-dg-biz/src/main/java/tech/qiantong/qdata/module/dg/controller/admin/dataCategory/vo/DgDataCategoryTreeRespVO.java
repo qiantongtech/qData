@@ -31,7 +31,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 数据分类 Response VO 对象 DG_DATA_CATEGORY
+ * Data Category Response VO - DG_DATA_CATEGORY
  *
  * @author qdata
  * @date 2026-04-07
@@ -61,7 +61,7 @@ public class DgDataCategoryTreeRespVO implements Serializable {
     private String name;
 
     /**
-     * 脱敏配置（0:否 1:是）
+     * Desensitization Config (0:No 1:Yes)
      */
     @Schema(description = "脱敏配置（0:否 1:是）", example = "")
     private String desensitizationRulesFlag;

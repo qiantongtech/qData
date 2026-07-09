@@ -23,14 +23,14 @@ import lombok.*;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 物化模型记录 DO 对象 DP_MODEL_MATERIALIZED
+ * Materialized Model Record DO - DP_MODEL_MATERIALIZED
  *
  * @author qdata
  * @date 2025-01-21
  */
 @Data
 @TableName(value = "DP_MODEL_MATERIALIZED")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Can be omitted for MySQL and similar databases.
 // @KeySequence("DP_MODEL_MATERIALIZED_seq")
 @Builder
 @NoArgsConstructor
@@ -44,50 +44,50 @@ public class DpModelMaterializedDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 模型编码 */
+    /** Model Code */
     private String modelName;
 
-    /** 模型名称 */
+    /** Model Name */
     private String modelAlias;
 
-    /** 模型表id */
+    /** Model Table ID */
     private Long modelId;
 
-    /** 状态
-     * 1未创建，2创建中，3成功，4失败，5已存在。
+    /** Status
+     * 1 Not Created, 2 Creating, 3 Success, 4 Failed, 5 Already Exists.
      *
      * */
     private String status;
 
-    /** 执行日志信息 */
+    /** Execution Log Message */
     private String message;
 
-    /** 执行sql备份 */
+    /** Execution SQL Backup */
     private String sqlCommand;
 
-    /** 数据源id */
+    /** Datasource ID */
     private String datasourceId;
 
-    /** 数据源类型 */
+    /** Datasource Type */
     private String datasourceType;
 
-    /** 数据源名称 */
+    /** Datasource Name */
     private String datasourceName;
 
-    /** 资产表id */
+    /** Asset Table ID */
     private Long assetId;
 
-    /** 发布模式 1：删除重建  2：增量发布 */
+    /** Release Mode 1: Drop and Recreate  2: Incremental Publish */
     private String releaseMode;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     @TableLogic
     private Boolean delFlag;
 
     @TableField(exist = false)
-    /** 字段数量 */
+    /** Field Count */
     private Long fieldCount;
 }

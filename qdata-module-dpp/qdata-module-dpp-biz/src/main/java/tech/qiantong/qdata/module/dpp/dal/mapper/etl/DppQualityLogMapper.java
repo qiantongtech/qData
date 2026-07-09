@@ -30,7 +30,7 @@ import tech.qiantong.qdata.mybatis.core.mapper.BaseMapperX;
 import tech.qiantong.qdata.mybatis.core.query.MPJLambdaWrapperX;
 
 /**
- * 数据质量日志Mapper接口
+ * Data Quality Log Mapper
  *
  * @author qdata
  * @date 2025-07-19
@@ -38,10 +38,10 @@ import tech.qiantong.qdata.mybatis.core.query.MPJLambdaWrapperX;
 public interface DppQualityLogMapper extends BaseMapperX<DppQualityLogDO> {
 
 //    default PageResult<DppQualityLogDO> selectPage(DppQualityLogPageReqVO reqVO) {
-//        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+//        // Define sortable fields (prevent SQL injection, must match database column names)
 //        Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 //
-//        // 构造动态查询条件
+//        // Build dynamic query conditions
 //        return selectPage(reqVO, new LambdaQueryWrapperX<DppQualityLogDO>()
 //                .likeIfPresent(DppQualityLogDO::getName, reqVO.getName())
 //                .eqIfPresent(DppQualityLogDO::getSuccessFlag, reqVO.getSuccessFlag())
@@ -51,9 +51,9 @@ public interface DppQualityLogMapper extends BaseMapperX<DppQualityLogDO> {
 //                .eqIfPresent(DppQualityLogDO::getScore, reqVO.getScore())
 //                .eqIfPresent(DppQualityLogDO::getProblemData, reqVO.getProblemData())
 //                .eqIfPresent(DppQualityLogDO::getCreateTime, reqVO.getCreateTime())
-//                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+//                // If reqVO.getName() is not empty, add exact name match condition (name = '<name>')
 //                // .likeIfPresent(DppQualityLogDO::getName, reqVO.getName())
-//                // 按照 createTime 字段降序排序
+//                // Order by createTime descending
 //                .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(), allowedColumns));
 //    }
 
@@ -71,7 +71,7 @@ public interface DppQualityLogMapper extends BaseMapperX<DppQualityLogDO> {
                 .eqIfExists(DppQualityLogDO::getScore, reqVO.getScore())
                 .eqIfExists(DppQualityLogDO::getProblemData, reqVO.getProblemData())
                 .eqIfExists(DppQualityLogDO::getCreateTime, reqVO.getCreateTime());
-        // 动态排序处理
+        // Dynamic sort handling
         String orderByColumn = reqVO.getOrderByColumn();
         Boolean isAsc = StringUtils.equals("asc", reqVO.getIsAsc());
         if (StringUtils.isNotBlank(orderByColumn) && allowedColumns.contains(orderByColumn)) {
@@ -81,28 +81,28 @@ public interface DppQualityLogMapper extends BaseMapperX<DppQualityLogDO> {
     }
 
     default DppQualityLogDO selectPrevLogByIdWithWrapper(String id) {
-        // 1) 先拿当前记录的关键字段
+        // 1) Get key fields of the current record first
         DppQualityLogDO cur = this.selectById(id);
         if (cur == null || cur.getQualityId() == null || cur.getStartTime() == null) {
             return null;
         }
 
-        // 2) 构造 wrapper：同一 QUALITY_ID，下一个更“早”的一条
+        // 2) Build wrapper: same QUALITY_ID, get the next earlier one
         MPJLambdaWrapperX<DppQualityLogDO> wrapper = new MPJLambdaWrapperX<>();
         wrapper.selectAll(DppQualityLogDO.class)
                 .eq(DppQualityLogDO::getQualityId, cur.getQualityId())
                 .eq(DppQualityLogDO::getDelFlag, "0")
                 .eq(DppQualityLogDO::getValidFlag, "1")
-                // (start_time < 当前) OR (start_time = 当前 AND id <> 当前)
+                // (start_time < current) OR (start_time = current AND id <> current)
                 .and(w -> w.lt(DppQualityLogDO::getStartTime, cur.getStartTime())
                         .or(x -> x.eq(DppQualityLogDO::getStartTime, cur.getStartTime())
                                 .ne(DppQualityLogDO::getId, id)))
-                // 时间倒序，保证“最近的一条早于当前”
+                // Order by time descending to get the latest one before current
                 .orderByDesc(DppQualityLogDO::getStartTime,
                         DppQualityLogDO::getEndTime,
                         DppQualityLogDO::getUpdateTime);
 
-        // 3) 用分页只取一条（与你现有 selectPage(reqVO, wrapper) 兼容）
+        // 3) Use pagination to get only one record (compatible with existing selectPage(reqVO, wrapper))
         DppQualityLogPageReqVO req = new DppQualityLogPageReqVO();
         req.setPageNum(1);
         req.setPageSize(1);

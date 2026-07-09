@@ -26,7 +26,7 @@ import java.util.Date;
 import java.io.Serializable;
 
 /**
- * 脱敏白名单与用户关联关系 Response VO 对象 DG_DESENSITIZE_USER_REL
+ * Desensitize Whitelist User Relationship Response VO Object DG_DESENSITIZE_USER_REL
  *
  * @author qdata
  * @date 2026-04-09

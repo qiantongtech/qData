@@ -23,7 +23,7 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 数据元代码映射 Request VO 对象 DP_CODE_MAP
+ * Data Element Code Map Request VO - DP_CODE_MAP
  *
  * @author qdata
  * @date 2025-01-21

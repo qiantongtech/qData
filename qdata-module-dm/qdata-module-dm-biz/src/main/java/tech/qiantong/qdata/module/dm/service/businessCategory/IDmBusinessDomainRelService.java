@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 业务分类数据域关联关系Service接口
+ * Business Category Data Domain Relation Service Interface
  *
  * @author qdata
  * @date 2026-04-12
@@ -38,65 +38,65 @@ import java.util.Map;
 public interface IDmBusinessDomainRelService extends IService<DmBusinessDomainRelDO> {
 
     /**
-     * 获得业务分类数据域关联关系分页列表
+     * Get business category data domain relation page list
      *
-     * @param pageReqVO 分页请求
-     * @return 业务分类数据域关联关系分页列表
+     * @param pageReqVO Page request
+     * @return Business category data domain relation page list
      */
     PageResult<DmBusinessDomainRelDO> getDmBusinessDomainRelPage(DmBusinessDomainRelPageReqVO pageReqVO);
 
     /**
-     * 创建业务分类数据域关联关系
+     * Create business category data domain relation
      *
-     * @param createReqVO 业务分类数据域关联关系信息
-     * @return 业务分类数据域关联关系编号
+     * @param createReqVO Business category data domain relation information
+     * @return Business category data domain relation ID
      */
     Long createDmBusinessDomainRel(DmBusinessDomainRelSaveReqVO createReqVO);
 
     /**
-     * 更新业务分类数据域关联关系
+     * Update business category data domain relation
      *
-     * @param updateReqVO 业务分类数据域关联关系信息
+     * @param updateReqVO Business category data domain relation information
      */
     int updateDmBusinessDomainRel(DmBusinessDomainRelSaveReqVO updateReqVO);
 
     /**
-     * 删除业务分类数据域关联关系
+     * Delete business category data domain relation
      *
-     * @param idList 业务分类数据域关联关系编号
+     * @param idList Business category data domain relation IDs
      */
     int removeDmBusinessDomainRel(Collection<Long> idList);
 
     /**
-     * 获得业务分类数据域关联关系详情
+     * Get business category data domain relation details
      *
-     * @param id 业务分类数据域关联关系编号
-     * @return 业务分类数据域关联关系
+     * @param id Business category data domain relation ID
+     * @return Business category data domain relation
      */
     DmBusinessDomainRelDO getDmBusinessDomainRelById(Long id);
 
     /**
-     * 获得全部业务分类数据域关联关系列表
+     * Get all business category data domain relations
      *
-     * @return 业务分类数据域关联关系列表
+     * @return Business category data domain relation list
      */
     List<DmBusinessDomainRelDO> getDmBusinessDomainRelList();
 
     /**
-     * 获得全部业务分类数据域关联关系 Map
+     * Get all business category data domain relations as Map
      *
-     * @return 业务分类数据域关联关系 Map
+     * @return Business category data domain relation Map
      */
     Map<Long, DmBusinessDomainRelDO> getDmBusinessDomainRelMap();
 
 
     /**
-     * 导入业务分类数据域关联关系数据
+     * Import business category data domain relation data
      *
-     * @param importExcelList 业务分类数据域关联关系数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Business category data domain relation data list
+     * @param isUpdateSupport Whether to support update, if exists, update the data
+     * @param operName Operation user
+     * @return Result
      */
     String importDmBusinessDomainRel(List<DmBusinessDomainRelRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

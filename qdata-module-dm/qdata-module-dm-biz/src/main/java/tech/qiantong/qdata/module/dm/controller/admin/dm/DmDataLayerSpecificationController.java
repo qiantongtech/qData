@@ -44,7 +44,7 @@ import tech.qiantong.qdata.module.dm.dal.dataobject.dm.DmDataLayerSpecificationD
 import tech.qiantong.qdata.module.dm.service.dm.IDmDataLayerSpecificationService;
 
 /**
- * 数仓分层-规范管理Controller
+ * Data Warehouse Layer Specification Controller
  *
  * @author FXB
  * @date 2026-03-24

@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.dm.dal.dataobject.businessCategory.DmBusinessD
 import java.util.List;
 
 /**
- * 业务分类数据域关联关系 Convert
+ * Business Category Domain Relation Convert
  *
  * @author qdata
  * @date 2026-04-12
@@ -38,29 +38,29 @@ public interface DmBusinessDomainRelConvert {
     DmBusinessDomainRelConvert INSTANCE = Mappers.getMapper(DmBusinessDomainRelConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param dmBusinessDomainRelPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param dmBusinessDomainRelPageReqVO Request params
      * @return DmBusinessDomainRelDO
      */
      DmBusinessDomainRelDO convertToDO(DmBusinessDomainRelPageReqVO dmBusinessDomainRelPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param dmBusinessDomainRelSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param dmBusinessDomainRelSaveReqVO Save request params
      * @return DmBusinessDomainRelDO
      */
      DmBusinessDomainRelDO convertToDO(DmBusinessDomainRelSaveReqVO dmBusinessDomainRelSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param dmBusinessDomainRelDO 实体对象
+     * Convert DO to RespVO
+     * @param dmBusinessDomainRelDO Entity object
      * @return DmBusinessDomainRelRespVO
      */
      DmBusinessDomainRelRespVO convertToRespVO(DmBusinessDomainRelDO dmBusinessDomainRelDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param dmBusinessDomainRelDOList 实体对象列表
+     * Convert DO List to RespVO List
+     * @param dmBusinessDomainRelDOList Entity object list
      * @return List<DmBusinessDomainRelRespVO>
      */
      List<DmBusinessDomainRelRespVO> convertToRespVOList(List<DmBusinessDomainRelDO> dmBusinessDomainRelDOList);

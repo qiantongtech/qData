@@ -28,7 +28,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 数据元数据资产关联信息 Response VO 对象 DP_DATA_ELEM_ASSET_REL
+ * Data Element Asset Relation Response VO - DP_DATA_ELEM_ASSET_REL
  *
  * @author qdata
  * @date 2025-01-21
@@ -105,15 +105,15 @@ public class DpDataElemAssetRelRespVO implements Serializable {
     @Schema(description = "备注", example = "")
     private String remark;
 
-    /** 资产名称 */
+    /** Asset Name */
     @TableField(exist = false)
     private String assetName;
 
-    /** 表描述 */
+    /** Table Description */
     @TableField(exist = false)
     private String tableComment;
 
-    /** 资产描述 */
+    /** Asset Description */
     @TableField(exist = false)
     private String description;
 }

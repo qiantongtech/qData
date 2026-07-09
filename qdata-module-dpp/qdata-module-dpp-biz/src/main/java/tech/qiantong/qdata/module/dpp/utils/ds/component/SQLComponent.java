@@ -30,29 +30,29 @@ import java.util.Map;
 
 /**
  * <P>
- * 用途:SQL-关系数据库 组件
+ * Purpose: SQL - relational database component
  * </p>
  **/
 public class SQLComponent implements ComponentItem {
 
     /**
-     * taskParams SQL (关系数据库)
+     * taskParams SQL (relational database)
      * {
-     * "localParams": [],//默认 []
-     * "resourceList": [],//默认 []
-     * "type":"MYSQL",//数据库类型 目前支持 MYSQL、ORACLE、DM8、KINGBASE
-     * "sql":"",//sql语句
+     * "localParams": [], // Default []
+     * "resourceList": [], // Default []
+     * "type":"MYSQL", // Database type; currently supports MYSQL, ORACLE, DM8, KINGBASE
+     * "sql":"", // SQL statement
      * "sqlType":"",
-     * "preStatements":[],//默认 []
-     * "postStatements":[],//默认 []
-     * "displayRows":10,//默认10
+     * "preStatements":[], // Default []
+     * "postStatements":[], // Default []
+     * "displayRows":10, // Default 10
      * "datasources":{
-     * "type":"MYSQL",//数据库类型 目前支持 MYSQL、ORACLE、DM8、KINGBASE
-     * "host":"",//ip
-     * "port":1521,//端口
-     * "userName":"",//账号
-     * "password":"",//密码
-     * "database":""//数据库名
+     * "type":"MYSQL", // Database type; currently supports MYSQL, ORACLE, DM8, KINGBASE
+     * "host":"", // IP
+     * "port":1521, // Port
+     * "userName":"", // Account
+     * "password":"", // Password
+     * "database":"" // Database name
      * }
      * }
      *
@@ -69,8 +69,8 @@ public class SQLComponent implements ComponentItem {
         taskParams.put("localParams", params.getOrDefault("localParams", new ArrayList<>()));
         taskParams.put("resourceList", params.getOrDefault("resourceList", new ArrayList<>()));
         taskParams.put("type", MD5Util.getNormalizedDbType(dbQueryProperty.getDbType()));
-        taskParams.put("sql", params.getOrDefault("sql", "")); // 默认空字符串
-        taskParams.put("sqlType", params.getOrDefault("sqlType", "")); // 默认空字符串
+        taskParams.put("sql", params.getOrDefault("sql", "")); // Default empty string
+        taskParams.put("sqlType", params.getOrDefault("sqlType", "")); // Default empty string
 
         taskParams.put("preStatements", params.getOrDefault("preStatements", new ArrayList<>()));
         taskParams.put("postStatements", params.getOrDefault("postStatements", new ArrayList<>()));

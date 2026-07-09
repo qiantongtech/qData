@@ -23,14 +23,14 @@ import lombok.*;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 数据集成任务-扩展数据 DO 对象 DPP_ETL_TASK_EXT
+ * Data Integration Task-Extension Data DO - DPP_ETL_TASK_EXT
  *
  * @author qdata
  * @date 2025-04-16
  */
 @Data
 @TableName(value = "DPP_ETL_TASK_EXT")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Can be omitted for MySQL and similar databases.
 // @KeySequence("DPP_ETL_TASK_EXT_seq")
 @Builder
 @NoArgsConstructor
@@ -44,37 +44,37 @@ public class DppEtlTaskExtDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 数据汇聚任务id */
+    /** Data integration task ID */
     private Long taskId;
 
     /**
-     * 数据汇聚任务编码
+     * Data integration task code
      */
     private String etlTaskCode;
     /**
-     * 数据汇聚任务版本
+     * Data integration task version
      */
     private Integer etlTaskVersion;
 
-    /** 数据汇聚节点id */
+    /** Data integration node ID */
     private Long etlNodeId;
 
-    /** 数据汇聚节点名称 */
+    /** Data integration node name */
     private String etlNodeName;
 
-    /** 数据汇聚节点编码 */
+    /** Data integration node code */
     private String etlNodeCode;
 
-    /** 数据汇聚节点版本 */
+    /** Data integration node version */
     private Integer etlNodeVersion;
 
-    /** 数据汇聚节点关系id */
+    /** Data integration node relation ID */
     private Long etlRelationId;
 
-    /** 是否有效 */
+    /** Valid flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete flag */
     @TableLogic
     private Boolean delFlag;
 

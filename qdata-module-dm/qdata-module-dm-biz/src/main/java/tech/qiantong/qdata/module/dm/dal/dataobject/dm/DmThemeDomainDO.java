@@ -27,14 +27,14 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 主题域管理 DO 对象 DM_THEME_DOMAIN
+ * Theme Domain DO - DM_THEME_DOMAIN
  *
  * @author FXB
  * @date 2026-03-24
  */
 @Data
 @TableName(value = "DM_THEME_DOMAIN")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Can be omitted for MySQL and similar databases.
 // @KeySequence("DM_THEME_DOMAIN_seq")
 @Builder
 @NoArgsConstructor
@@ -51,72 +51,72 @@ public class DmThemeDomainDO extends BaseEntity {
     private Long id;
 
     /**
-     * 层级编码
+     * Level Code
      */
     private String code;
 
     /**
-     * 名称
+     * Name
      */
     private String name;
 
     /**
-     * 英文缩写
+     * English Abbreviation
      */
     private String engName;
 
     /**
-     * 关联上级ID
+     * Parent ID
      */
     private Long parentId;
 
     /**
-     * 负责人ID
+     * Owner User ID
      */
     private Long ownerUserId;
 
     /**
-     * 数仓分层ID
+     * Data Warehouse Layer ID
      */
     private Long dataLayerId;
 
     /**
-     * 描述
+     * Description
      */
     private String description;
 
     /**
-     * 是否有效
+     * Valid Flag
      */
     private Boolean validFlag;
 
     /**
-     * 删除标志
+     * Delete Flag
      */
     @TableLogic
     private Boolean delFlag;
 
 
     /**
-     * 负责人名称
+     * Owner Name
      */
     @TableField(exist = false)
     private String ownerUserName;
 
     /**
-     * 数仓分层名称
+     * Data Warehouse Layer Name
      */
     @TableField(exist = false)
     private String dataLayerName;
 
     /**
-     * 负责人联系方式
+     * Owner Contact
      */
     @TableField(exist = false)
     private String ownerUserPhoneNumber;
 
     /**
-     * 统计数量
+     * Count
      */
     @TableField(exist = false)
     private Long num;

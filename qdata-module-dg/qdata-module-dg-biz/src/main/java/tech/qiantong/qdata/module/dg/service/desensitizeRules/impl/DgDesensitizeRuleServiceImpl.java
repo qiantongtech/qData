@@ -50,7 +50,7 @@ import tech.qiantong.qdata.module.dg.dal.mapper.desensitizeRules.DgDesensitizeIn
 import tech.qiantong.qdata.module.dg.dal.mapper.desensitizeRules.DgDesensitizeRuleMapper;
 import tech.qiantong.qdata.module.dg.service.desensitizeRules.IDgDesensitizeRuleService;
 /**
- * 脱敏规则Service业务层处理
+ * Desensitization Rule Service - Business Layer Processing
  *
  * @author qdata
  * @date 2026-04-10
@@ -77,7 +77,7 @@ public class DgDesensitizeRuleServiceImpl  extends ServiceImpl<DgDesensitizeRule
     @Override
     public Long createDgDesensitizeRule(DgDesensitizeRuleSaveReqVO createReqVO) {
         DgDesensitizeRuleDO dictType = BeanUtils.toBean(createReqVO, DgDesensitizeRuleDO.class);
-        //判断数据分类是否在当前规则下已存在
+        // Check if the data category already exists under the current rule
         if (dgDesensitizeRuleMapper.selectCount(new LambdaQueryWrapper<DgDesensitizeRuleDO>()
                 .eq(DgDesensitizeRuleDO::getDataCategoryId, dictType.getDataCategoryId())) > 0) {
             throw new ServiceException("dg.error.duplicate.category", "数据分类已存在");
@@ -96,23 +96,23 @@ public class DgDesensitizeRuleServiceImpl  extends ServiceImpl<DgDesensitizeRule
 
     @Override
     public int updateDgDesensitizeRule(DgDesensitizeRuleSaveReqVO updateReqVO) {
-        // 更新脱敏规则
+        // Update desensitization rule
         DgDesensitizeRuleDO updateObj = BeanUtils.toBean(updateReqVO, DgDesensitizeRuleDO.class);
 
-       //先判断updateObj旧的区间是否存在，存在则删除旧的区间
+       // Check if the old intervals exist, delete them if they do
         if (StringUtils.isNotNull(updateObj.getIntervalList())) {
-            // 先删除旧的区间
+            // First delete the old intervals
             dgDesensitizeIntervalMapper.delete(
                     Wrappers.lambdaQuery(DgDesensitizeIntervalDO.class)
                             .eq(DgDesensitizeIntervalDO::getDesensitizeRuleId, updateObj.getId())
             );
         }
-        // 再插入新的区间
+        // Then insert the new intervals
         List<DgDesensitizeIntervalDO> intervalList = updateReqVO.getIntervalList();
         if (StringUtils.isNotNull(intervalList)) {
             intervalList.forEach(interval -> {
                 interval.setDesensitizeRuleId(updateObj.getId());
-                interval.setId(null);//防止再次插入报错
+                interval.setId(null);// Prevent insertion error if ID already exists
             });
             dgDesensitizeIntervalMapper.insertBatch(intervalList);
         }
@@ -120,7 +120,7 @@ public class DgDesensitizeRuleServiceImpl  extends ServiceImpl<DgDesensitizeRule
     }
     @Override
     public int removeDgDesensitizeRule(Collection<Long> idList) {
-        // 批量删除脱敏规则和区间数据
+        // Batch delete desensitization rules and interval data
         dgDesensitizeIntervalMapper.delete(
                 Wrappers.lambdaQuery(DgDesensitizeIntervalDO.class)
                         .in(DgDesensitizeIntervalDO::getDesensitizeRuleId, idList)
@@ -131,14 +131,14 @@ public class DgDesensitizeRuleServiceImpl  extends ServiceImpl<DgDesensitizeRule
     @Override
     public DgDesensitizeRuleDO getDgDesensitizeRuleById(Long id) {
         DgDesensitizeRuleDO rule = dgDesensitizeRuleMapper.selectById(id);
-        //将rule中的分类ID转换为分类名称
+        // Convert the category ID in the rule to category name
         if(rule.getDataCategoryId() != null){
             DgDataCategoryDO dgDataCategoryDO = dgDataCategoryMapper.selectById(rule.getDataCategoryId());
             if(dgDataCategoryDO!=null) {
                 rule.setDataCategoryName(dgDataCategoryDO.getName());
             }
         }
-        //根据脱敏规则ID 查询区间集合存入DgDesensitizeRuleDO
+        // Query interval list by desensitization rule ID and store in DgDesensitizeRuleDO
         rule.setIntervalList(dgDesensitizeIntervalMapper.selectList(new LambdaQueryWrapper<DgDesensitizeIntervalDO>().eq(DgDesensitizeIntervalDO::getDesensitizeRuleId, id)));
         return rule;
     }
@@ -164,19 +164,19 @@ public class DgDesensitizeRuleServiceImpl  extends ServiceImpl<DgDesensitizeRule
                 .collect(Collectors.toMap(
                         DgDesensitizeRuleDO::getId,
                         dgDesensitizeRuleDO -> dgDesensitizeRuleDO,
-                        // 保留已存在的值
+                        // Keep existing values
                         (existing, replacement) -> existing
                 ));
     }
 
 
         /**
-         * 导入脱敏规则数据
+         * Import desensitize rule data
          *
-         * @param importExcelList 脱敏规则数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
+         * @param importExcelList Desensitize rule data list
+         * @param isUpdateSupport Whether to update support, if already exists, update the data
+         * @param operName        Operator user
+         * @return Result
          */
         @Override
         public String importDgDesensitizeRule(List<DgDesensitizeRuleRespVO> importExcelList, boolean isUpdateSupport, String operName) {

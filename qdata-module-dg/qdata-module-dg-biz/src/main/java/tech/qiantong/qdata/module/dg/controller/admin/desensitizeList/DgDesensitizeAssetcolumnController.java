@@ -48,7 +48,7 @@ import tech.qiantong.qdata.module.dg.dal.dataobject.desensitizeList.DgDesensitiz
 import tech.qiantong.qdata.module.dg.service.desensitizeList.IDgDesensitizeAssetcolumnService;
 
 /**
- * 脱敏清单关联关系Controller
+ * Desensitize List Relationship Controller
  *
  * @author qdata
  * @date 2026-04-12

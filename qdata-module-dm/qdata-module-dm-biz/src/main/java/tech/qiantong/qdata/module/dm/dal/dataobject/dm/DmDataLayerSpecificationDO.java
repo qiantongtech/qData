@@ -27,14 +27,14 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 数仓分层-规范管理 DO 对象 DM_DATA_LAYER_SPECIFICATION
+ * Data Warehouse Layer Specification DO - DM_DATA_LAYER_SPECIFICATION
  *
  * @author FXB
  * @date 2026-03-24
  */
 @Data
 @TableName(value = "DM_DATA_LAYER_SPECIFICATION")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Can be omitted for MySQL and similar databases.
 // @KeySequence("DM_DATA_LAYER_SPECIFICATION_seq")
 @Builder
 @NoArgsConstructor
@@ -48,39 +48,39 @@ public class DmDataLayerSpecificationDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 数仓分层ID */
+    /** Data Warehouse Layer ID */
     private Long dataLayerId;
 
-    /** 表前缀 */
+    /** Table Prefix */
     private String prefixName;
 
-    /** 业务大类英文缩写 */
+    /** Business Category Abbreviation */
     private String businessEngName;
 
-    /** 负责人ID */
+    /** Owner User ID */
     private Long ownerUserId;
 
-    /** 状态 */
+    /** Status */
     private String status;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     @TableLogic
     private Boolean delFlag;
 
 
     /**
-     * 负责人名称
+     * Owner Name
      */
     @TableField(exist = false)
     private String ownerUserName;
     /**
-     * 负责人联系方式
+     * Owner Contact
      */
     @TableField(exist = false)
     private String ownerUserPhoneNumber;

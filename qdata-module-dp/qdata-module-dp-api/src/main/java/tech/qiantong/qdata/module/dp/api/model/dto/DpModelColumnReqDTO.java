@@ -22,7 +22,7 @@ import lombok.Data;
 import tech.qiantong.qdata.common.database.core.DbColumn;
 
 /**
- * 逻辑模型属性信息 DTO 对象 DP_MODEL_COLUMN
+ * Logical Model Column DTO - DP_MODEL_COLUMN
  *
  * @author qdata
  * @date 2025-01-21
@@ -35,49 +35,49 @@ public class DpModelColumnReqDTO {
     /** ID */
     private Long id;
 
-    /** 逻辑模型表ID */
+    /** Logical Model Table ID */
     private Long modelId;
 
-    /** 英文名称 */
+    /** English Name */
     private String engName;
 
-    /** 中文名称 */
+    /** Chinese Name */
     private String cnName;
 
-    /** 数据类型 */
+    /** Data Type */
     private String columnType;
 
-    /** 属性长度 */
+    /** Column Length */
     private Long columnLength;
 
-    /** 小数长度 */
+    /** Decimal Scale */
     private Long columnScale;
 
-    /** 默认值 */
+    /** Default Value */
     private String defaultValue;
 
-    /** 是否主键 */
+    /** Primary Key Flag */
     private String pkFlag;
 
-    /** 是否必填 */
+    /** Nullable Flag */
     private String nullableFlag;
 
-    /** 排序 */
+    /** Sort Order */
     private Long sortOrder;
 
-    /** 权威部门 */
+    /** Authority Department */
     private String authorityDept;
 
-    /** 数据元id */
+    /** Data Element ID */
     private Long dataElemId;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
-    // 构造方法
+    // Constructor
     public DpModelColumnReqDTO(DbColumn column) {
         if (column != null) {
             this.columnLength = (column.getDataLength() != null) ? Long.valueOf(column.getDataLength()) : null;

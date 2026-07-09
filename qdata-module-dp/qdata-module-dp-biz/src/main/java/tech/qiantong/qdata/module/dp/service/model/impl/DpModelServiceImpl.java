@@ -66,7 +66,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * 逻辑模型Service业务层处理
+ * Logical Model Service Business Layer Processing
  *
  * @author qdata
  * @date 2025-01-21
@@ -98,15 +98,15 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
 
 
     /**
-     * 根据资产id和代码表id查询数据元信息
+     * Query data element info by asset ID and code ID
      *
-     * @param assetId 资产id
-     * @param codeId  代码表id
+     * @param assetId Asset ID
+     * @param codeId  Code ID
      * @return
      */
     @Override
     public List<DpDataElemRespDTO> getDpDataElemListByAssetId(Long assetId, Set<Long> codeId) {
-        //查询和资产关联的数据元信息id
+        // Query IDs of data elements associated with the asset
         Set<Long> ids = new HashSet<>();
         List<DpDataElemAssetRelDO> list = iDpDataElemAssetRelService.lambdaQuery()
                 .eq(DpDataElemAssetRelDO::getAssetId, assetId)
@@ -135,9 +135,9 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
     }
 
     /**
-     * 更具模型id查询模型下的字段集合
+     * Get column set under model by model ID
      *
-     * @param modelId 模型id
+     * @param modelId Model ID
      */
     @Override
     public List<DpModelColumnRespDTO> getModelIdColumnList(Long modelId) {
@@ -149,7 +149,7 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
     }
 
     /**
-     * 根据字段id获取数据元id集合
+     * Get data element ID set by column ID
      *
      * @param columnId
      * @return
@@ -198,7 +198,7 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
 
 
     /**
-     * 更新数据元和资产关系数据
+     * Update data element and asset relation data
      *
      * @param dpDataElemAssetRel
      * @return
@@ -213,9 +213,9 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
         if (CollectionUtils.isNotEmpty(elementIds)) {
             dpDataElemAssetRelDOList = elementIds.stream().map(item -> {
                 DpDataElemAssetRelDO dpDataElemAssetRelDO = new DpDataElemAssetRelDO();
-                dpDataElemAssetRelDO.setAssetId(String.valueOf(assetId));//资产id
-                dpDataElemAssetRelDO.setDataElemId(String.valueOf(item));//数据元id
-                dpDataElemAssetRelDO.setDataElemType("1");//是数据元
+                dpDataElemAssetRelDO.setAssetId(String.valueOf(assetId));// Asset ID
+                dpDataElemAssetRelDO.setDataElemId(String.valueOf(item));// Data Element ID
+                dpDataElemAssetRelDO.setDataElemType("1");// Is data element
                 dpDataElemAssetRelDO.setTableName(dpDataElemAssetRel.getTableName());
                 dpDataElemAssetRelDO.setColumnId(String.valueOf(dpDataElemAssetRel.getColumnId()));
                 dpDataElemAssetRelDO.setColumnName(dpDataElemAssetRel.getColumnName());
@@ -229,7 +229,7 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
     }
 
     /**
-     * 插入数据元和资产关系数据
+     * Insert data element and asset relation data
      *
      * @param dpDataElemAssetRel
      * @return
@@ -238,7 +238,7 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
     public boolean insertElementAssetRelation(List<DpDataElemAssetRelReqDTO> dpDataElemAssetRel) {
         boolean result = false;
         if (CollectionUtils.isNotEmpty(dpDataElemAssetRel)) {
-            //DpDataElemAssetRelReqDTO 转换为 DpDataElemAssetRelDO
+            // DpDataElemAssetRelReqDTO Convert to DpDataElemAssetRelDO
             List<DpDataElemAssetRelDO> dpDataElemAssetRelDOList = dpDataElemAssetRel.stream().map(item -> {
                 DpDataElemAssetRelDO dpDataElemAssetRelDO = new DpDataElemAssetRelDO();
                 BeanUtil.copyProperties(item, dpDataElemAssetRelDO);
@@ -258,7 +258,7 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
     }
 
     /**
-     * 根据数据元id查询数据元信息
+     * Query data element info by data element ID
      *
      * @param ids
      * @return
@@ -270,7 +270,7 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
                 .in(DpDataElemDO::getId, ids)
                 .eq(DpDataElemDO::getDelFlag, 0)
                 .list();
-        //将list的类型转换为DpDataElemRespDTO
+        // Convert list type to DpDataElemRespDTO
         return list.stream().map(item -> {
             DpDataElemRespDTO dpModelColumnRespDTO = new DpDataElemRespDTO();
             BeanUtil.copyProperties(item, dpModelColumnRespDTO);
@@ -279,17 +279,17 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
     }
 
     /**
-     * 根据逻辑模型ID获取逻辑模型列信息
+     * Get logical model column info by logical model ID
      *
-     * @param modelId 逻辑模型ID
-     * @return 逻辑模型列信息
+     * @param modelId Logical Model ID
+     * @return Logical model column info
      */
     @Override
     public List<DpModelColumnRespDTO> getDpModelColumnListByModelIdApi(Long modelId) {
         List<DpModelColumnDO> list = iDpModelColumnService.lambdaQuery()
                 .eq(DpModelColumnDO::getModelId, modelId)
                 .list();
-        //将list的类型转换为DpModelColumnRespDTO
+        // Convert list type to DpModelColumnRespDTO
         return list.stream().map(item -> {
             DpModelColumnRespDTO dpModelColumnRespDTO = new DpModelColumnRespDTO();
             BeanUtil.copyProperties(item, dpModelColumnRespDTO);
@@ -305,13 +305,13 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
 //            return dpModelDOPageResult;
 //        }
 //        for (DpModelDO row : rows) {
-//            //字段
+//            // Fields
 //            DpModelColumnSaveReqVO dpModelColumnSaveReqVO = new DpModelColumnSaveReqVO();
 //            dpModelColumnSaveReqVO.setModelId(row.getId());
 //            long count = iDpModelColumnService.countByDpModelColumn(dpModelColumnSaveReqVO);
 //            row.setColumnCount(count);
 //
-//            //资产
+//            // Asset
 //
 //        }
 //        dpModelDOPageResult.setRows(rows);
@@ -327,16 +327,16 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
 
     @Override
     public int updateDpModel(DpModelSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related validation
 
-        // 更新逻辑模型
+        // Update logical model
         DpModelDO updateObj = BeanUtils.toBean(updateReqVO, DpModelDO.class);
         return dpModelMapper.updateById(updateObj);
     }
 
     @Override
     public int removeDpModel(Collection<Long> idList) {
-        // 批量删除逻辑模型
+        // Batch delete logical model
         return dpModelMapper.deleteBatchIds(idList);
     }
 
@@ -389,7 +389,7 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
     }
 
     /**
-     * 根据逻辑模型ID获取逻辑模型信息
+     * Get logical model info by logical model ID
      *
      * @param id
      * @return
@@ -412,18 +412,18 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
     public Map<Long, DpModelDO> getDpModelMap() {
         List<DpModelDO> dpModelList = dpModelMapper.selectList();
         return dpModelList.stream().collect(Collectors.toMap(DpModelDO::getId, dpModelDO -> dpModelDO,
-                // 保留已存在的值
+                // Keep existing value
                 (existing, replacement) -> existing));
     }
 
 
     /**
-     * 导入逻辑模型数据
+     * Import logical model data
      *
-     * @param importExcelList 逻辑模型数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Logical model data list
+     * @param isUpdateSupport Whether to support update, if exists then update the data
+     * @param operName        Operator
+     * @return Result
      */
     @Override
     public String importDpModel(List<DpModelRespVO> importExcelList, boolean isUpdateSupport, String operName) {
@@ -514,15 +514,15 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
         List<TreeData> treeData = new ArrayList<>();
 
         treeData.add(TreeData.builder()
-                .name("公共层")
+                .name("Public Layer")
                 .type("0")
-                .otherData(JSON.parseObject("{\"tooltipStr\":\"主要面向数据开发人员，作为应用层的数据地基，把杂乱的数据建成通用的明细模型，方便大家复用。\"}"))
+                .otherData(JSON.parseObject("{\"tooltipStr\":\"Mainly for data developers, as the data foundation of the application layer, build messy data into common detailed models for easy reuse.\"}"))
                 .children(dmBusinessCategoryApiService.getTreeData(null))
                 .build());
         treeData.add(TreeData.builder()
-                .name("应用层")
+                .name("Application Layer")
                 .type("0")
-                .otherData(JSON.parseObject("{\"tooltipStr\":\"主要面向业务及分析人员，通过加工公共层的基础数据计算而来，直接用来做可视化大屏或业务报表。\"}"))
+                .otherData(JSON.parseObject("{\"tooltipStr\":\"Mainly for business and analysis personnel, computed by processing base data from the public layer, directly used for visualization dashboards or business reports.\"}"))
                 .children(dmThemeDomainApiService.getTreeData(null))
                 .build());
         return treeData;

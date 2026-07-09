@@ -25,12 +25,12 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import javax.validation.constraints.Size;
 
 /**
- * 在线单数据 创建/修改 Request VO DPP_ONL_DESFORM_DATA
+ * Online Form Data Create/Update Request VO DPP_ONL_DESFORM_DATA
  *
  * @author qdata
  * @date 2025-04-09
  */
-@Schema(description = "在线单数据 Response VO")
+@Schema(description = "Online Form Data Response VO")
 @Data
 public class DppOnlDesformDataSaveReqVO extends BaseEntity {
 
@@ -39,24 +39,24 @@ public class DppOnlDesformDataSaveReqVO extends BaseEntity {
     @Schema(description = "ID")
     private Long id;
 
-    @Schema(description = "表单编码", example = "")
-    @Size(max = 256, message = "表单编码长度不能超过256个字符")
+    @Schema(description = "Form Code", example = "")
+    @Size(max = 256, message = "Form code length cannot exceed 256 characters")
     private String desformCode;
 
-    @Schema(description = "表单名称", example = "")
-    @Size(max = 256, message = "表单名称长度不能超过256个字符")
+    @Schema(description = "Form Name", example = "")
+    @Size(max = 256, message = "Form name length cannot exceed 256 characters")
     private String desformName;
 
-    @Schema(description = "表单ID", example = "")
-    @Size(max = 256, message = "表单ID长度不能超过256个字符")
+    @Schema(description = "Form ID", example = "")
+    @Size(max = 256, message = "Form ID length cannot exceed 256 characters")
     private String desformId;
 
-    @Schema(description = "表单数据", example = "")
-//    @Size(max = 256, message = "表单数据长度不能超过256个字符")
+    @Schema(description = "Form Data", example = "")
+//    @Size(max = 256, message = "Form data length cannot exceed 256 characters")
     private String desformData;
 
-    @Schema(description = "备注", example = "")
-//    @Size(max = 256, message = "备注长度不能超过256个字符")
+    @Schema(description = "Remarks", example = "")
+//    @Size(max = 256, message = "Remarks length cannot exceed 256 characters")
     private String remark;
 
 

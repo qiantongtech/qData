@@ -25,7 +25,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import javax.validation.constraints.Size;
 
 /**
- * 物化模型记录 创建/修改 Request VO DP_MODEL_MATERIALIZED
+ * Materialized Model Record Save Request VO - DP_MODEL_MATERIALIZED
  *
  * @author qdata
  * @date 2025-01-21
@@ -82,7 +82,7 @@ public class DpModelMaterializedSaveReqVO extends BaseEntity {
     @Size(max = 256, message = "备注长度不能超过256个字符")
     private String remark;
 
-    /**  发布模式 1：删除重建  2：增量发布 */
+    /** Release mode 1: Drop and recreate 2: Incremental publish */
     @Schema(description = " 发布模式 1：删除重建  2：增量发布", example = "")
     private String releaseMode;
 }

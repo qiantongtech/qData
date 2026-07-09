@@ -25,7 +25,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import javax.validation.constraints.NotNull;
 
 /**
- * 数据元数据规则关联信息 创建/修改 Request VO DP_DATA_ELEM_RULE_REL
+ * Data Element Rule Relation Save Request VO - DP_DATA_ELEM_RULE_REL
  *
  * @author qdata
  * @date 2025-01-21
@@ -43,7 +43,7 @@ public class DpDataElemRuleRelSaveReqVO extends BaseEntity {
     private String name;
 
     /**
-     * 状态;0下线1上线
+     * Status; 0 Offline, 1 Online
      */
     private String status;
 

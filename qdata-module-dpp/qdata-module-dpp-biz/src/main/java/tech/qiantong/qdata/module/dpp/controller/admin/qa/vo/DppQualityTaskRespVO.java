@@ -29,12 +29,12 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 数据质量任务 Response VO 对象 DPP_QUALITY_TASK
+ * Data Quality Task Response VO DPP_QUALITY_TASK
  *
  * @author Chaos
  * @date 2025-07-21
  */
-@Schema(description = "数据质量任务 Response VO")
+@Schema(description = "Data Quality Task Response VO")
 @Data
 public class DppQualityTaskRespVO implements Serializable {
 
@@ -139,10 +139,10 @@ public class DppQualityTaskRespVO implements Serializable {
     private Date updateTime;
 
 
-    // 数据质量任务-稽查对象
+    // Data Quality Task - Audit Object
     private List<DppQualityTaskObjRespVO> dppQualityTaskObjSaveReqVO;
 
-    // 规则对象
+    // Rule object
     private List<DppQualityTaskEvaluateRespVO> dppQualityTaskEvaluateRespVOS;
     @Excel(name = "稽查对象数")
     @Schema(description = "稽查对象数", example = "")
@@ -174,19 +174,19 @@ public class DppQualityTaskRespVO implements Serializable {
     private String ip;
 
 
-    /** 节点id */
+    /** Node ID */
     @Schema(description = "节点id", example = "")
     private Long nodeId;
 
-    /** 节点编码 */
+    /** Node Code */
     @Schema(description = "节点编码", example = "")
     private String nodeCode;
 
-    /** 任务id */
+    /** Task ID */
     @Schema(description = "任务id", example = "")
     private Long taskId;
 
-    /** 任务编码 */
+    /** Task Code */
     @Schema(description = "任务编码", example = "")
     private String taskCode;
 
@@ -203,10 +203,10 @@ public class DppQualityTaskRespVO implements Serializable {
     @Schema(description = "最新一次的执行记录id")
     private Long logId;
 
-    /** 最新一次的执行记录评分 */
+    /** Score of the latest execution record */
     private Long score;
 
-    /** 最新一次的执行记录问题数据 */
+    /** Problem data of the latest execution record */
     private Long problemData;
 
 

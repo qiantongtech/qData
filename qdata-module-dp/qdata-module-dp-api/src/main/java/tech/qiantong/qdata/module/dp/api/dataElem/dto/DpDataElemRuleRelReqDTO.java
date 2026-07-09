@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.dp.api.dataElem.dto;
 import lombok.Data;
 
 /**
- * 数据元数据规则关联信息 DTO 对象 DP_DATA_ELEM_RULE_REL
+ * Data Element Rule Relation DTO - DP_DATA_ELEM_RULE_REL
  *
  * @author qdata
  * @date 2025-01-21
@@ -34,22 +34,22 @@ public class DpDataElemRuleRelReqDTO {
     /** ID */
     private Long id;
 
-    /** 数据元id */
+    /** Data Element ID */
     private String dataElemId;
 
-    /** 规则类型 */
+    /** Rule Type */
     private String ruleType;
 
-    /** 规则id */
+    /** Rule ID */
     private String ruleId;
 
-    /** 规则配置 */
+    /** Rule Config */
     private String ruleConfig;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
 

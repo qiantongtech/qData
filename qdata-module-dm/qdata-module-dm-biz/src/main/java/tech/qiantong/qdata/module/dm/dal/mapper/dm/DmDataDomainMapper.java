@@ -30,7 +30,7 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 /**
- * 数据域管理Mapper接口
+ * Data Domain Mapper Interface
  *
  * @author FXB
  * @date 2026-03-24
@@ -49,9 +49,9 @@ public interface DmDataDomainMapper extends BaseMapperX<DmDataDomainDO> {
                 .eqIfPresent(DmDataDomainDO::getOwnerUserId, reqVO.getOwnerUserId())
                 .eqIfPresent(DmDataDomainDO::getDescription, reqVO.getDescription())
                 .eqIfPresent(DmDataDomainDO::getCreateTime, reqVO.getCreateTime())
-                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+                // If reqVO.getName() is not empty, add an exact match condition for name (name = '<name>')
                 // .likeIfPresent(DmDataDomainDO::getName, reqVO.getName())
-                // 按照 createTime 字段降序排序
+                // Sort by createTime descending
                 .orderByStr(StringUtils.isNotBlank(reqVO.getOrderByColumn()),
                         StringUtils.equals("asc", reqVO.getIsAsc()), StringUtils.isNotBlank(reqVO.getOrderByColumn()) ? Arrays.asList(reqVO.getOrderByColumn().split(","))
                                 .stream().map(e -> "t." + LambdaQueryWrapperX.camelToUnderline(e))

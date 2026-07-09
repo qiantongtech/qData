@@ -24,7 +24,7 @@ import javax.validation.Valid;
 import java.util.Arrays;
 
 /**
- * 敏感等级Controller
+ * Sensitive Level Controller
  *
  * @author Chaos
  * @date 2025-01-21

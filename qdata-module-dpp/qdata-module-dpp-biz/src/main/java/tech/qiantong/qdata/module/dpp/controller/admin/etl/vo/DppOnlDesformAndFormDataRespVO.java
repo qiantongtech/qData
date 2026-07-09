@@ -25,12 +25,12 @@ import tech.qiantong.qdata.common.annotation.Excel;
 import java.io.Serializable;
 
 /**
- * 在线单设计器 Response VO 对象 DPP_ONL_DESFORM
+ * Online Form Designer Response VO Object DPP_ONL_DESFORM
  *
  * @author qdata
  * @date 2025-04-09
  */
-@Schema(description = "在线单设计器 Response VO")
+@Schema(description = "Online Form Designer Response VO")
 @Data
 public class DppOnlDesformAndFormDataRespVO implements Serializable {
 
@@ -41,44 +41,44 @@ public class DppOnlDesformAndFormDataRespVO implements Serializable {
     @Schema(description = "ID", example = "")
     private Long id;
 
-    @Excel(name = "表单名称")
-    @Schema(description = "表单名称", example = "")
+    @Excel(name = "Form Name")
+    @Schema(description = "Form Name", example = "")
     private String desformName;
 
-    @Excel(name = "表单编码")
-    @Schema(description = "表单编码", example = "")
+    @Excel(name = "Form Code")
+    @Schema(description = "Form Code", example = "")
     private String desformCode;
 
-    @Excel(name = "表单JSON")
-    @Schema(description = "表单JSON", example = "")
+    @Excel(name = "Form JSON")
+    @Schema(description = "Form JSON", example = "")
     private String desformJson;
 
-    @Excel(name = "表单数据")
-    @Schema(description = "表单数据", example = "")
+    @Excel(name = "Form Data")
+    @Schema(description = "Form Data", example = "")
     private String desformData;
 
-    @Excel(name = "是否存储到指定表中")
-    @Schema(description = "是否存储到指定表中", example = "")
+    @Excel(name = "Save to Specified Table")
+    @Schema(description = "Save to Specified Table", example = "")
     private String saveTableFlag;
 
-    @Excel(name = "关联数据源id")
-    @Schema(description = "关联数据源id", example = "")
+    @Excel(name = "Datasource ID")
+    @Schema(description = "Datasource ID", example = "")
     private Long datasourceId;
 
-    @Excel(name = "数据库名")
-    @Schema(description = "数据库名", example = "")
+    @Excel(name = "Database Name")
+    @Schema(description = "Database Name", example = "")
     private String databaseName;
 
-    @Excel(name = "表名称")
-    @Schema(description = "表名称", example = "")
+    @Excel(name = "Table Name")
+    @Schema(description = "Table Name", example = "")
     private String tableName;
 
-    @Excel(name = "字段")
-    @Schema(description = "字段", example = "")
+    @Excel(name = "Column")
+    @Schema(description = "Column", example = "")
     private String columnName;
 
-    @Excel(name = "主键字段")
-    @Schema(description = "主键字段", example = "")
+    @Excel(name = "Primary Key Column")
+    @Schema(description = "Primary Key Column", example = "")
     private String pkColumnName;
 
 

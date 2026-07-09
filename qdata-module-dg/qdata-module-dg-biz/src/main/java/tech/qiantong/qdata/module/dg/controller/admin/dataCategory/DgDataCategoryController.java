@@ -41,7 +41,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 数据分类Controller
+ * Data Category Controller
  *
  * @author qdata
  * @date 2026-04-07
@@ -64,6 +64,7 @@ public class DgDataCategoryController extends BaseController {
     }
 
 
+    // Query the data category list with pagination
     @Operation(summary = "查询数据分类列表")
     //@PreAuthorize("@ss.hasPermi('dg:dataCategory:list')")
     @GetMapping("/list")

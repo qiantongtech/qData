@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.dp.api.dataElem.dto;
 import lombok.Data;
 
 /**
- * 数据元数据资产关联信息 DTO 对象 DP_DATA_ELEM_ASSET_REL
+ * Data Element Asset Relation DTO - DP_DATA_ELEM_ASSET_REL
  *
  * @author qdata
  * @date 2025-01-21
@@ -34,28 +34,28 @@ public class DpDataElemAssetRelRespDTO {
     /** ID */
     private Long id;
 
-    /** 数据元类型 */
+    /** Data Element Type */
     private String dataElemType;
 
-    /** 数据元id */
+    /** Data Element ID */
     private String dataElemId;
 
-    /** 资产id(数据表id) */
+    /** Asset ID (Table ID) */
     private String assetId;
 
-    /** 数据表 */
+    /** Table Name */
     private String tableName;
 
-    /** 关联字段id */
+    /** Column ID */
     private String columnId;
 
-    /** 关联字段 */
+    /** Column Name */
     private String columnName;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
 

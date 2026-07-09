@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 /**
- * 数据元代码映射Service接口
+ * Data Element Code Map Service Interface
  *
  * @author qdata
  * @date 2025-01-21
@@ -37,65 +37,65 @@ import java.util.Map;
 public interface IDpCodeMapService extends IService<DpCodeMapDO> {
 
     /**
-     * 获得数据元代码映射分页列表
+     * Get data element code map paginated list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据元代码映射分页列表
+     * @param pageReqVO Pagination request
+     * @return Paginated list of data element code maps
      */
     PageResult<DpCodeMapDO> getDpCodeMapPage(DpCodeMapPageReqVO pageReqVO);
 
     /**
-     * 创建数据元代码映射
+     * Create data element code map
      *
-     * @param createReqVO 数据元代码映射信息
-     * @return 数据元代码映射编号
+     * @param createReqVO Data element code map information
+     * @return Data element code map ID
      */
     Long createDpCodeMap(DpCodeMapSaveReqVO createReqVO);
 
     /**
-     * 更新数据元代码映射
+     * Update data element code map
      *
-     * @param updateReqVO 数据元代码映射信息
+     * @param updateReqVO Data element code map information
      */
     int updateDpCodeMap(DpCodeMapSaveReqVO updateReqVO);
 
     /**
-     * 删除数据元代码映射
+     * Delete data element code map
      *
-     * @param idList 数据元代码映射编号
+     * @param idList Data element code map ID list
      */
     int removeDpCodeMap(Collection<Long> idList);
 
     /**
-     * 获得数据元代码映射详情
+     * Get data element code map details
      *
-     * @param id 数据元代码映射编号
-     * @return 数据元代码映射
+     * @param id Data element code map ID
+     * @return Data element code map
      */
     DpCodeMapDO getDpCodeMapById(Long id);
 
     /**
-     * 获得全部数据元代码映射列表
+     * Get all data element code map list
      *
-     * @return 数据元代码映射列表
+     * @return Data element code map list
      */
     List<DpCodeMapDO> getDpCodeMapList();
 
     /**
-     * 获得全部数据元代码映射 Map
+     * Get all data element code map Map
      *
-     * @return 数据元代码映射 Map
+     * @return Data element code map Map
      */
     Map<Long, DpCodeMapDO> getDpCodeMapMap();
 
 
     /**
-     * 导入数据元代码映射数据
+     * Import data element code map data
      *
-     * @param importExcelList 数据元代码映射数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Data element code map data list
+     * @param isUpdateSupport Whether to support update, if exists then update the data
+     * @param operName Operator
+     * @return Result
      */
     String importDpCodeMap(List<DpCodeMapRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

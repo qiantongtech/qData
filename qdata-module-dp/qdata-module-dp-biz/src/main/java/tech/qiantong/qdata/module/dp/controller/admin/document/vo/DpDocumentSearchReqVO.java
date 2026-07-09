@@ -24,7 +24,7 @@ import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
  * <P>
- * 用途:标准检索响应VO
+ * Purpose: Standard Search Request VO
  * </p>
  *
  * @author: FXB

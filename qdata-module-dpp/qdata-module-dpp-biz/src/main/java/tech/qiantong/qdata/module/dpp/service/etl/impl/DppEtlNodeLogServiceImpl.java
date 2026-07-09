@@ -45,7 +45,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 数据集成节点-日志Service业务层处理
+ * Data Integration Node Log Service Business Layer Processing
  *
  * @author qdata
  * @date 2025-02-13
@@ -103,16 +103,16 @@ public class DppEtlNodeLogServiceImpl extends ServiceImpl<DppEtlNodeLogMapper, D
 
     @Override
     public int updateDppEtlNodeLog(DppEtlNodeLogSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related validation
 
-        // 更新数据集成节点-日志
+        // Update data integration node log
         DppEtlNodeLogDO updateObj = BeanUtils.toBean(updateReqVO, DppEtlNodeLogDO.class);
         return dppEtlNodeLogMapper.updateById(updateObj);
     }
 
     @Override
     public int removeDppEtlNodeLog(Collection<Long> idList) {
-        // 批量删除数据集成节点-日志
+        // Batch delete data integration node log
         return dppEtlNodeLogMapper.deleteBatchIds(idList);
     }
 
@@ -133,19 +133,19 @@ public class DppEtlNodeLogServiceImpl extends ServiceImpl<DppEtlNodeLogMapper, D
                 .collect(Collectors.toMap(
                         DppEtlNodeLogDO::getId,
                         dppEtlNodeLogDO -> dppEtlNodeLogDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入数据集成节点-日志数据
+     * Import data integration node log data
      *
-     * @param importExcelList 数据集成节点-日志数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList data integration node log data list
+     * @param isUpdateSupport whether update is supported, if already exists, update the data
+     * @param operName        operator name
+     * @return result
      */
     @Override
     public String importDppEtlNodeLog(List<DppEtlNodeLogRespVO> importExcelList, boolean isUpdateSupport, String operName) {

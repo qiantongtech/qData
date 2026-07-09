@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.dg.api.dataCategory.dto;
 import lombok.*;
 
 /**
- * 数据分类 DTO 对象 DG_DATA_CATEGORY
+ * Data Category DTO Object DG_DATA_CATEGORY
  *
  * @author qdata
  * @date 2026-04-07
@@ -34,31 +34,31 @@ public class DgDataCategoryReqDTO {
     /** ID */
     private Long id;
 
-    /** 类目id */
+    /** Category ID */
     private Long catId;
 
-    /** 类目编码 */
+    /** Category code */
     private String catCode;
 
-    /** 分类名称 */
+    /** Category name */
     private String name;
 
-    /** 分类名称缩写名 */
+    /** Category short name */
     private String shortName;
 
-    /** 数据分级 */
+    /** Data level */
     private Long dataLevelId;
 
-    /** 任务优先级;HIGHEST,HIGH,MEDIUM,LOW,LOWEST */
+    /** Task priority;HIGHEST,HIGH,MEDIUM,LOW,LOWEST */
     private String priority;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 是否有效;0：无效，1：有效 */
+    /** Valid flag;0: invalid, 1: valid */
     private Boolean validFlag;
 
-    /** 删除标志;1：已删除，0：未删除 */
+    /** Delete flag;1: deleted, 0: not deleted */
     private Boolean delFlag;
 
 

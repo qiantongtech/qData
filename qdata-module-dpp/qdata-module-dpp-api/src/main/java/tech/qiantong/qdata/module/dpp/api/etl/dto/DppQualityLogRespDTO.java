@@ -23,7 +23,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 数据质量日志 DTO 对象 DPP_QUALITY_LOG
+ * Data Quality Log DTO - DPP_QUALITY_LOG
  *
  * @author qdata
  * @date 2025-07-19
@@ -36,31 +36,31 @@ public class DppQualityLogRespDTO {
     /** ID */
     private Long id;
 
-    /** 名称 */
+    /** Name */
     private String name;
 
-    /** 状态 */
+    /** Status */
     private String successFlag;
 
-    /** 开始时间 */
+    /** Start Time */
     private Date startTime;
 
-    /** 结束时间 */
+    /** End Time */
     private Date endTime;
 
-    /** 任务id */
+    /** Task ID */
     private String qualityId;
 
-    /** 评分 */
+    /** Score */
     private Long score;
 
-    /** 问题数据 */
+    /** Problem Data */
     private Long problemData;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
 

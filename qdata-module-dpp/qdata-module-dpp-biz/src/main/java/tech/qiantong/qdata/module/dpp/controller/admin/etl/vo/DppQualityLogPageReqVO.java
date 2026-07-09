@@ -25,37 +25,37 @@ import tech.qiantong.qdata.common.core.page.PageParam;
 import java.util.Date;
 
 /**
- * 数据质量日志 Request VO 对象 DPP_QUALITY_LOG
+ * Data Quality Log Request VO Object DPP_QUALITY_LOG
  *
  * @author qdata
  * @date 2025-07-19
  */
-@Schema(description = "数据质量日志 Request VO")
+@Schema(description = "Data Quality Log Request VO")
 @Data
 public class DppQualityLogPageReqVO extends PageParam {
 
     private static final long serialVersionUID = 1L;
         @Schema(description = "ID", example = "")
         private Long id;
-    @Schema(description = "名称", example = "")
+    @Schema(description = "Name", example = "")
     private String name;
 
-    @Schema(description = "状态", example = "")
+    @Schema(description = "Status", example = "")
     private String successFlag;
 
-    @Schema(description = "开始时间", example = "")
+    @Schema(description = "Start Time", example = "")
     private Date startTime;
 
-    @Schema(description = "结束时间", example = "")
+    @Schema(description = "End Time", example = "")
     private Date endTime;
 
-    @Schema(description = "任务id", example = "")
+    @Schema(description = "Task ID", example = "")
     private String qualityId;
 
-    @Schema(description = "评分", example = "")
+    @Schema(description = "Score", example = "")
     private Long score;
 
-    @Schema(description = "问题数据", example = "")
+    @Schema(description = "Problem Data", example = "")
     private Long problemData;
 
 

@@ -27,7 +27,7 @@ import java.util.List;
 
 /**
  * <P>
- * 用途:实例日志响应数据
+ * Purpose: Instance log status response data
  * </p>
  *
  * @author: FXB
@@ -40,18 +40,18 @@ import java.util.List;
 public class DppEtlTaskInstanceLogStatusRespDTO {
 
     /**
-     * 状态;0：提交成功 1：正在执行 2:准备暂停 3：暂停 4：准备停止 5：停止 6：失败 7：成功 12：延时执行  14：串行等待  15 ：准备锁定 16：锁定
-     * 5：停止 6：失败 7：成功 时停止日志轮询
+     * Status; 0: Submitted Successfully 1: Running 2: Preparing Pause 3: Paused 4: Preparing Stop 5: Stopped 6: Failed 7: Success 12: Delayed Execution 14: Serial Waiting 15: Preparing Lock 16: Locked
+     * 5: Stopped 6: Failed 7: Success stop log polling
      */
     private String status;
 
     /**
-     * 状态 1:进行中 2:已结束
+     * Log Status 1: In Progress 2: Completed
      */
     private String log;
 
     /**
-     * 节点实例列表
+     * Node Instance List
      */
     private List<DppEtlNodeInstanceRespDTO> nodeInstanceList;
 }

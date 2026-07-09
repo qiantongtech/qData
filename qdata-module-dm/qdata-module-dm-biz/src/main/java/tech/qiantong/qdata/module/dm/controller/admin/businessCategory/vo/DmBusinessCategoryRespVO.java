@@ -29,7 +29,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 业务分类 Response VO 对象 DM_BUSINESS_CATEGORY
+ * Business Category Response VO - DM_BUSINESS_CATEGORY
  *
  * @author qdata
  * @date 2026-04-08

@@ -30,7 +30,7 @@ import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlNodeInstanceLogService;
 import javax.annotation.Resource;
 
 /**
- * 数据集成节点实例-日志Service业务层处理
+ * Data integration node instance - Log Service business layer processing
  *
  * @author qdata
  * @date 2025-08-05

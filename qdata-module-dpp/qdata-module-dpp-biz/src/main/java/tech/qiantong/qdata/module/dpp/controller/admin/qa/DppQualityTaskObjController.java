@@ -48,12 +48,12 @@ import tech.qiantong.qdata.module.dpp.dal.dataobject.qa.DppQualityTaskObjDO;
 import tech.qiantong.qdata.module.dpp.service.qa.IDppQualityTaskObjService;
 
 /**
- * 数据质量任务-稽查对象Controller
+ * Data Quality Task - Audit Object Controller
  *
  * @author Chaos
  * @date 2025-07-21
  */
-@Tag(name = "数据质量任务-稽查对象")
+@Tag(name = "Data Quality Task - Audit Object")
 @RestController
 @RequestMapping("/dpp/qualityTaskObj")
 @Validated

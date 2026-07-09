@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 数据元类目管理Controller
+ * Data Element Category Management Controller
  *
  * @author qdata
  * @date 2025-01-20
@@ -78,7 +78,7 @@ public class DgDataElemCatController extends BaseController {
     }
 
     /**
-     * 批量删除检查,查询可删除数和不可删除数
+     * Batch delete check, query the number of deletable and non-deletable items
      */
     @Operation(summary = "批量删除检查数据元类目管理")
     @PreAuthorize("@ss.hasPermi('dg:dataElemCat:remove')")

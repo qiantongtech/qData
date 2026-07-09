@@ -48,12 +48,12 @@ import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlNodeDO;
 import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlNodeService;
 
 /**
- * 数据集成节点Controller
+ * Data Integration Node Controller
  *
  * @author qdata
  * @date 2025-02-13
  */
-@Tag(name = "数据集成节点")
+@Tag(name = "Data Integration Node")
 @RestController
 @RequestMapping("/dpp/etlNode")
 @Validated

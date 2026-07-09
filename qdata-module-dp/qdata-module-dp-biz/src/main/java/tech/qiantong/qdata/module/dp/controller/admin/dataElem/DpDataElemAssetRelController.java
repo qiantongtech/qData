@@ -47,7 +47,7 @@ import tech.qiantong.qdata.module.dp.dal.dataobject.dataElem.DpDataElemAssetRelD
 import tech.qiantong.qdata.module.dp.service.dataElem.IDpDataElemAssetRelService;
 
 /**
- * 数据元数据资产关联信息Controller
+ * Data Element Asset Relation Controller
  *
  * @author qdata
  * @date 2025-01-21

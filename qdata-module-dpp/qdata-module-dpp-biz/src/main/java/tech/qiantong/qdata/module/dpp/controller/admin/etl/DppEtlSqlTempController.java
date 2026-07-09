@@ -48,12 +48,12 @@ import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlSqlTempDO;
 import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlSqlTempService;
 
 /**
- * 数据集成SQL模版Controller
+ * Data Integration SQL Template Controller
  *
  * @author FXB
  * @date 2025-06-25
  */
-@Tag(name = "数据集成SQL模版")
+@Tag(name = "Data Integration SQL Template")
 @RestController
 @RequestMapping("/dpp/etlSqlTemp")
 @Validated

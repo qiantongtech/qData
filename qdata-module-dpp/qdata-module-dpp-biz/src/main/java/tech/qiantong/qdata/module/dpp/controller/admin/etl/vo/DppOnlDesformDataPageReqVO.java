@@ -23,27 +23,27 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 在线单数据 Request VO 对象 DPP_ONL_DESFORM_DATA
+ * Online Form Data Request VO Object DPP_ONL_DESFORM_DATA
  *
  * @author qdata
  * @date 2025-04-09
  */
-@Schema(description = "在线单数据 Request VO")
+@Schema(description = "Online Form Data Request VO")
 @Data
 public class DppOnlDesformDataPageReqVO extends PageParam {
 
     private static final long serialVersionUID = 1L;
 
-    @Schema(description = "表单编码", example = "")
+    @Schema(description = "Form Code", example = "")
     private String desformCode;
 
-    @Schema(description = "表单名称", example = "")
+    @Schema(description = "Form Name", example = "")
     private String desformName;
 
-    @Schema(description = "表单ID", example = "")
+    @Schema(description = "Form ID", example = "")
     private String desformId;
 
-    @Schema(description = "表单数据", example = "")
+    @Schema(description = "Form Data", example = "")
     private String desformData;
 
 

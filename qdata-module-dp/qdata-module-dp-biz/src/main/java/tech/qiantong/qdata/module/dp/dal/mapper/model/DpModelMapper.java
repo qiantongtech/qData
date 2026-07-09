@@ -32,7 +32,7 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 /**
- * 逻辑模型Mapper接口
+ * Logical Model Mapper Interface
  *
  * @author qdata
  * @date 2025-01-21
@@ -123,7 +123,7 @@ public interface DpModelMapper extends BaseMapperX<DpModelDO> {
                 "            WHERE\n" +
                 "                ti1.DEL_FLAG = '0') ti ON ti.MODEL_ID = t.ID";
         lambdaWrapper.leftJoin(joinReleaseStatusStr);
-        //拼接查询发布数据源列表
+        // Build query for published data source list
 
         String subSelectSql = "SELECT\n" +
                 "'['|| WM_CONCAT(DISTINCT '{\"DATASOURCE_NAME\":\"' || d.DATASOURCE_NAME || '\",\"DATASOURCE_TYPE\":\"' || d.DATASOURCE_TYPE || '\"}' ) ||']'\n" +
@@ -190,12 +190,12 @@ public interface DpModelMapper extends BaseMapperX<DpModelDO> {
         return selectJoinPage(reqVO, DpModelDO.class, lambdaWrapper);
     }
 
-    /**
-     * 将老的 CAT_CODE 批量更新成新的 CAT_CODE
+/**
+     * Batch update old CAT_CODE to new CAT_CODE
      *
-     * @param oldCatCode 旧分类编码
-     * @param newCatCode 新分类编码
-     * @return 受影响行数
+     * @param oldCatCode Old category code
+     * @param newCatCode New category code
+     * @return Number of affected rows
      */
     default int updateCatCode(String oldCatCode, String newCatCode) {
         return this.update(

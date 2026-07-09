@@ -24,7 +24,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 数据集成任务实例 DTO 对象 DPP_ETL_TASK_INSTANCE
+ * Data Integration Task Instance DTO - DPP_ETL_TASK_INSTANCE
  *
  * @author qdata
  * @date 2025-02-13
@@ -37,63 +37,63 @@ public class DppEtlTaskInstanceRespDTO {
     /** ID */
     private Long id;
 
-    /** 任务实例名称 */
+    /** Task Instance Name */
     private String name;
 
-    /** 任务id */
+    /** Task ID */
     private Long taskId;
 
-    /** 任务编码 */
+    /** Task Code */
     private String taskCode;
 
-    /** 任务版本 */
+    /** Task Version */
     private Long taskVersion;
 
-    /** 状态历史(json列表) */
+    /** Status History (JSON List) */
     private String statusHistory;
 
-    /** 责任人 */
+    /** Person in Charge */
     private String personCharge;
 
-    /** 项目id */
+    /** Project ID */
     private Long projectId;
 
-    /** 项目编码 */
+    /** Project Code */
     private String projectCode;
 
-    /** 开始时间 */
+    /** Start Time */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
 
-    /** 结束时间 */
+    /** End Time */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
-    /** 运行次数 */
+    /** Run Times */
     private Integer runTimes;
 
-    /** 运行类型 */
+    /** Command Type */
     private String commandType;
 
-    /** 最大重试次数 */
+    /** Max Retry Times */
     private Long maxTryTimes;
 
-    /** 失败策略 */
+    /** Failure Strategy */
     private String failureStrategy;
 
-    /** 是否是子任务 */
+    /** Sub Task Flag */
     private String subTaskFlag;
 
-    /** 状态 */
+    /** Status */
     private String status;
 
-    /** DolphinScheduler的id */
+    /** DolphinScheduler ID */
     private Long dsId;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
 

@@ -26,14 +26,14 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import java.util.Date;
 
 /**
- * 数据集成节点实例 DO 对象 DPP_ETL_NODE_INSTANCE
+ * Data Integration Node Instance DO - DPP_ETL_NODE_INSTANCE
  *
  * @author qdata
  * @date 2025-02-13
  */
 @Data
 @TableName(value = "DPP_ETL_NODE_INSTANCE")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Can be omitted for MySQL and similar databases.
 // @KeySequence("DPP_ETL_NODE_INSTANCE_seq")
 @Builder
 @NoArgsConstructor
@@ -47,98 +47,98 @@ public class DppEtlNodeInstanceDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 任务类型;1：离线任务 2：实时任务 3：数据开发任务 4：作业任务 */
+    /** Task type; 1: Offline task 2: Real-time task 3: Data development task 4: Job task */
     private String taskType;
 
-    /** 节点实例名称 */
+    /** Node instance name */
     private String name;
 
-    /** 节点类型 */
+    /** Node type */
     private String nodeType;
 
-    /** 节点id */
+    /** Node ID */
     private Long nodeId;
 
-    /** 节点编码 */
+    /** Node code */
     private String nodeCode;
 
-    /** 节点版本 */
+    /** Node version */
     private Integer nodeVersion;
 
-    /** 任务实例id */
+    /** Task instance ID */
     private Long taskInstanceId;
 
-    /** 任务实例名称 */
+    /** Task instance name */
     private String taskInstanceName;
 
-    /** 项目id */
+    /** Project ID */
     private Long projectId;
 
-    /** 项目编码 */
+    /** Project code */
     private String projectCode;
 
-    /** 提交时间 */
+    /** Submit time */
     private Date submitTime;
 
-    /** 开始时间 */
+    /** Start time */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
 
-    /** 结束时间 */
+    /** End time */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
-    /** 执行路径 */
+    /** Execute path */
     private String executePath;
 
-    /** 日志路径 */
+    /** Log path */
     private String logPath;
 
-    /** 节点参数 */
+    /** Node parameters */
     private String parameters;
 
-    /** 节点优先级 */
+    /** Node priority */
     private String priority;
 
-    /** 重试次数 */
+    /** Retry times */
     private Integer retryTimes;
 
-    /** 延迟执行时间（分钟） */
+    /** Delay execution time (minutes) */
     private Integer delayTime;
 
-    /** CPU配额 */
+    /** CPU quota */
     private Integer cpuQuota;
 
-    /** 最大内存 */
+    /** Max memory */
     private Integer memoryMax;
 
-    /** 状态 */
+    /** Status */
     private String status;
 
-    /** 组件类型 */
+    /** Component type */
     private String componentType;
 
-    /** DolphinScheduler的id */
+    /** DolphinScheduler ID */
     private Long dsId;
 
-    /** DolphinScheduler的任务实例id */
+    /** DolphinScheduler task instance ID */
     private Long dsTaskInstanceId;
 
-    /** 是否有效 */
+    /** Valid flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete flag */
     @TableLogic
     private Boolean delFlag;
 
     /**
-     * 责任人名称
+     * Person in charge name
      */
     @TableField(exist = false)
     private String personChargeName;
 
     /**
-     * 运行类型
+     * Run type
      */
     @TableField(exist = false)
     private String commandType;

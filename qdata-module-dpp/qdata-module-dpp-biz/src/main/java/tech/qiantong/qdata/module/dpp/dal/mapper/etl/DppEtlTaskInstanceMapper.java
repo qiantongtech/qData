@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 数据集成任务实例Mapper接口
+ * Data Integration Task Instance Mapper
  *
  * @author qdata
  * @date 2025-02-13
@@ -49,7 +49,7 @@ public interface DppEtlTaskInstanceMapper extends BaseMapperX<DppEtlTaskInstance
         MPJLambdaWrapper<DppEtlTaskInstanceDO> lambdaWrapper = new MPJLambdaWrapper();
 
 
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define sortable fields (prevent SQL injection, must match database column names)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 
         lambdaWrapper.selectAll(DppEtlTaskInstanceDO.class)
@@ -77,14 +77,14 @@ public interface DppEtlTaskInstanceMapper extends BaseMapperX<DppEtlTaskInstance
                 .orderByDesc(DppEtlNodeInstanceDO::getStartTime);
 
 
-        // 构造动态查询条件
+        // Build dynamic query conditions
         return selectJoinPage(reqVO, DppEtlTaskInstanceDO.class, lambdaWrapper);
     }
 
     DppEtlTaskInstanceDO selectOneNew(@Param("reqVO") DppEtlTaskInstanceDO reqVO);
 
     /**
-     * 根据任务实例ID查询节点实例列表
+     * Query node instance list by task instance ID
      *
      * @param taskInstanceId
      * @return
@@ -94,7 +94,7 @@ public interface DppEtlTaskInstanceMapper extends BaseMapperX<DppEtlTaskInstance
     IPage<DppEtlTaskInstanceTreeListRespVO> treeList(Page page, @Param("params") DppEtlTaskInstanceTreeListReqVO params);
 
     /**
-     * 获取子任务下所以节点实例
+     * Get all node instances under sub-task
      *
      * @param taskInstanceId
      * @param nodeInstanceId
@@ -103,7 +103,7 @@ public interface DppEtlTaskInstanceMapper extends BaseMapperX<DppEtlTaskInstance
     List<DppEtlTaskInstanceTreeListRespVO> listSubNodeInstance(@Param("taskInstanceId") Long taskInstanceId, @Param("nodeInstanceId") Long nodeInstanceId);
 
     /**
-     * 获取最新的任务实例
+     * Get the latest task instance
      *
      * @param taskIdList
      * @return

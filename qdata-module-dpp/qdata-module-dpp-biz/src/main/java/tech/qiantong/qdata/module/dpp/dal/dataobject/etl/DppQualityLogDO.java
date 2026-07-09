@@ -25,14 +25,14 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import java.util.Date;
 
 /**
- * 数据质量日志 DO 对象 DPP_QUALITY_LOG
+ * Data Quality Log DO - DPP_QUALITY_LOG
  *
  * @author qdata
  * @date 2025-07-19
  */
 @Data
 @TableName(value = "DPP_QUALITY_LOG")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Can be omitted for MySQL and similar databases.
 // @KeySequence("DPP_QUALITY_LOG_seq")
 @Builder
 @NoArgsConstructor
@@ -46,31 +46,31 @@ public class DppQualityLogDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 名称 */
+    /** Name */
     private String name;
 
-    /** 状态 */
+    /** Status */
     private String successFlag;
 
-    /** 开始时间 */
+    /** Start time */
     private Date startTime;
 
-    /** 结束时间 */
+    /** End time */
     private Date endTime;
 
-    /** 任务id */
+    /** Task ID */
     private String qualityId;
 
-    /** 评分 */
+    /** Score */
     private Long score;
 
-    /** 问题数据 */
+    /** Problem data */
     private Long problemData;
 
-    /** 是否有效 */
+    /** Valid flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete flag */
     @TableLogic
     private Boolean delFlag;
 

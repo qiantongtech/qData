@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 /**
- * 数据集成任务Service接口
+ * Data Integration Task Service Interface
  *
  * @author qdata
  * @date 2025-02-13
@@ -37,65 +37,65 @@ import java.util.Map;
 public interface IDppEtlTaskService extends IService<DppEtlTaskDO> {
 
     /**
-     * 获得数据集成任务分页列表
+     * Get data integration task pagination list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据集成任务分页列表
+     * @param pageReqVO Pagination request
+     * @return Data integration task pagination list
      */
     PageResult<DppEtlTaskDO> getDppEtlTaskPage(DppEtlTaskPageReqVO pageReqVO);
 
     /**
-     * 创建数据集成任务
+     * Create data integration task
      *
-     * @param createReqVO 数据集成任务信息
-     * @return 数据集成任务编号
+     * @param createReqVO Data integration task info
+     * @return Data integration task ID
      */
     Long createDppEtlTask(DppEtlTaskSaveReqVO createReqVO);
 
     /**
-     * 更新数据集成任务
+     * Update data integration task
      *
-     * @param updateReqVO 数据集成任务信息
+     * @param updateReqVO Data integration task info
      */
     int updateDppEtlTask(DppEtlTaskSaveReqVO updateReqVO);
 
     /**
-     * 删除数据集成任务
+     * Delete data integration task
      *
-     * @param idList 数据集成任务编号
+     * @param idList Data integration task ID list
      */
     int removeDppEtlTask(Collection<Long> idList);
 
     /**
-     * 获得数据集成任务详情
+     * Get data integration task detail
      *
-     * @param id 数据集成任务编号
-     * @return 数据集成任务
+     * @param id Data integration task ID
+     * @return Data integration task
      */
     DppEtlTaskRespVO getDppEtlTaskById(Long id);
 
     /**
-     * 获得全部数据集成任务列表
+     * Get all data integration task list
      *
-     * @return 数据集成任务列表
+     * @return Data integration task list
      */
     List<DppEtlTaskDO> getDppEtlTaskList();
 
     /**
-     * 获得全部数据集成任务 Map
+     * Get all data integration task Map
      *
-     * @return 数据集成任务 Map
+     * @return Data integration task Map
      */
     Map<Long, DppEtlTaskDO> getDppEtlTaskMap();
 
 
     /**
-     * 导入数据集成任务数据
+     * Import data integration task data
      *
-     * @param importExcelList 数据集成任务数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Data integration task data list
+     * @param isUpdateSupport Whether to support update. If already exists, update the data
+     * @param operName Operator
+     * @return Result
      */
     String importDppEtlTask(List<DppEtlTaskRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
@@ -114,7 +114,7 @@ public interface IDppEtlTaskService extends IService<DppEtlTaskDO> {
     DppEtlTaskUpdateQueryRespVO getuUpdateQueryInfo(Long id);
 
     /**
-     * 通过任务编码获取任务id
+     * Get task ID by task code
      *
      * @param taskCode
      * @return
@@ -122,7 +122,7 @@ public interface IDppEtlTaskService extends IService<DppEtlTaskDO> {
     Long getTaskIdByTaskCode(String taskCode);
 
     /**
-     * 通过任务编码获取任务信息
+     * Get task info by task code
      *
      * @param taskCode
      * @return
@@ -140,14 +140,14 @@ public interface IDppEtlTaskService extends IService<DppEtlTaskDO> {
     Map<String, Object> updateReleaseSchedule(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO);
 
     /**
-     * 新增ETL任务
+     * Create ETL task
      * @param dppEtlNewNodeSaveReqVO
      * @return
      */
     DppEtlTaskSaveReqVO createEtlTask(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO);
 
     /**
-     * 修改ETL任务
+     * Update ETL task
      * @param dppEtlNewNodeSaveReqVO
      * @return
      */

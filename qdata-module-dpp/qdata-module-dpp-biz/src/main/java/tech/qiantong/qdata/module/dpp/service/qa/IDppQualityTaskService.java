@@ -1,5 +1,5 @@
 /*
- * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ * Copyright (c) 2025-present Jiangsu Qiantong Technology Co., Ltd.
  *
  * This file is part of qData Data Middle Platform (Open Source Edition).
  *
@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 /**
- * 数据质量任务Service接口
+ * Data Quality Task Service Interface
  *
  * @author Chaos
  * @date 2025-07-21
@@ -37,72 +37,72 @@ import java.util.Map;
 public interface IDppQualityTaskService extends IService<DppQualityTaskDO> {
 
     /**
-     * 获得数据质量任务分页列表
+     * Get data quality task pagination list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据质量任务分页列表
+     * @param pageReqVO Pagination request
+     * @return Data quality task pagination list
      */
     PageResult<DppQualityTaskDO> getDppQualityTaskPage(DppQualityTaskPageReqVO pageReqVO);
 
     /**
-     * 创建数据质量任务
+     * Create data quality task
      *
-     * @param createReqVO 数据质量任务信息
-     * @return 数据质量任务编号
+     * @param createReqVO Data quality task info
+     * @return Data quality task ID
      */
     Long createDppQualityTask(DppQualityTaskSaveReqVO createReqVO);
 
     /**
-     * 更新数据质量任务
+     * Update data quality task
      *
-     * @param updateReqVO 数据质量任务信息
+     * @param updateReqVO Data quality task info
      */
     int updateDppQualityTask(DppQualityTaskSaveReqVO updateReqVO);
 
     /**
-     * 删除数据质量任务
+     * Delete data quality task
      *
-     * @param idList 数据质量任务编号
+     * @param idList Data quality task ID list
      */
     int removeDppQualityTask(Collection<Long> idList);
 
     /**
-     * 获得数据质量任务详情
+     * Get data quality task detail
      *
-     * @param id 数据质量任务编号
-     * @return 数据质量任务
+     * @param id Data quality task ID
+     * @return Data quality task
      */
     DppQualityTaskRespVO getDppQualityTaskById(Long id);
 
     DppQualityTaskRespVO getQualityTaskAsset(DppQualityTaskAssetReqVO dppQualityTaskAssetReqVO);
 
     /**
-     * 获得全部数据质量任务列表
+     * Get all data quality task list
      *
-     * @return 数据质量任务列表
+     * @return Data quality task list
      */
     List<DppQualityTaskDO> getDppQualityTaskList();
 
     /**
-     * 获得全部数据质量任务 Map
+     * Get all data quality task Map
      *
-     * @return 数据质量任务 Map
+     * @return Data quality task Map
      */
     Map<Long, DppQualityTaskDO> getDppQualityTaskMap();
 
 
     /**
-     * 导入数据质量任务数据
+     * Import data quality task data
      *
-     * @param importExcelList 数据质量任务数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Data quality task data list
+     * @param isUpdateSupport Whether to support update. If already exists, update the data
+     * @param operName Operator
+     * @return Result
      */
     String importDppQualityTask(List<DppQualityTaskRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
     /**
-     * 检验数据格式是否有误
+     * Verify if data format is correct
      * @param dppQualityTaskEvaluate
      */
     String verifyInterfaceValue(DppQualityTaskEvaluateSaveReqVO dppQualityTaskEvaluate);

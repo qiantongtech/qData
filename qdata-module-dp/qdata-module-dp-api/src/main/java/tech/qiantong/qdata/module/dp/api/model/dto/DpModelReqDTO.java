@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.dp.api.model.dto;
 import lombok.Data;
 
 /**
- * 逻辑模型 DTO 对象 DP_MODEL
+ * Logical Model DTO - DP_MODEL
  *
  * @author qdata
  * @date 2025-01-21
@@ -37,92 +37,92 @@ public class DpModelReqDTO {
     private Long ID;
 
     /**
-     * 模型编码
+     * Model Code
      */
     private String modelName;
 
     /**
-     * 模型名称
+     * Model Name
      */
     private String modelComment;
 
     /**
-     * 类目编码
+     * Category Code
      */
     private String catCode;
 
     /**
-     * 表类型;1:明细表 2:汇总表 3:维度表 4:应用表
+     * Table Type; 1: Detail Table 2: Summary Table 3: Dimension Table 4: Application Table
      */
     private String tableType;
     /**
-     * 数仓分层id
+     * Data Warehouse Layer ID
      */
     private Long dataLayerId;
     /**
-     * 业务分类id;只有表类型为非应用表是才有值
+     * Business Category ID; Only available when table type is not Application Table
      */
     private Long businessCategoryId;
     /**
-     * 业务分类层级编码
+     * Business Category Hierarchy Code
      */
     private String businessCategoryCode;
     /**
-     * 数据分域id;只有表类型为非应用表是才有值
+     * Data Domain ID; Only available when table type is not Application Table
      */
     private Long dataDomainId;
     /**
-     * 所属主题id（主题规划）;只有表类型为应用表是才有值
+     * Theme Domain ID (Theme Planning); Only available when table type is Application Table
      */
     private Long themeDomainId;
     /**
-     * 所属主题层级编码
+     * Theme Domain Hierarchy Code
      */
     private String themeDomainCode;
     /**
-     * 表名大小写;1：大写 2：小写
+     * Table Name Case; 1: Uppercase 2: Lowercase
      */
     private String tableCase;
 
     /**
-     * 状态
+     * Status
      */
     private String status;
 
     /**
-     * 创建方式
+     * Creation Type
      */
     private String createType;
 
     /**
-     * 数据源id
+     * Datasource ID
      */
     private Long datasourceId;
 
     private Long documentId;
 
     /**
-     * 联系人
+     * Contact
      */
     private String contact;
 
     /**
-     * 联系电话
+     * Contact Number
      */
     private String contactNumber;
 
     /**
-     * 描述
+     * Description
      */
     private String description;
 
     /**
-     * 是否有效
+     * Valid Flag
      */
     private Boolean validFlag;
 
     /**
-     * 删除标志
+     * Delete Flag
      */
     private Boolean delFlag;
 

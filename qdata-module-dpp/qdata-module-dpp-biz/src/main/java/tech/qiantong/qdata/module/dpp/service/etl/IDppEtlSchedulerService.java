@@ -1,5 +1,5 @@
 /*
- * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ * Copyright (c) 2025-present Jiangsu Qiantong Technology Co., Ltd.
  *
  * This file is part of qData Data Middle Platform (Open Source Edition).
  *
@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 /**
- * 数据集成调度信息Service接口
+ * Data Integration Scheduling Info Service Interface
  *
  * @author qdata
  * @date 2025-02-13
@@ -37,68 +37,68 @@ import java.util.Map;
 public interface IDppEtlSchedulerService extends IService<DppEtlSchedulerDO> {
 
     /**
-     * 获得数据集成调度信息分页列表
+     * Get data integration scheduling info pagination list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据集成调度信息分页列表
+     * @param pageReqVO Pagination request
+     * @return Data integration scheduling info pagination list
      */
     PageResult<DppEtlSchedulerDO> getDppEtlSchedulerPage(DppEtlSchedulerPageReqVO pageReqVO);
 
     /**
-     * 创建数据集成调度信息
+     * Create data integration scheduling info
      *
-     * @param createReqVO 数据集成调度信息信息
-     * @return 数据集成调度信息编号
+     * @param createReqVO Data integration scheduling info
+     * @return Data integration scheduling info ID
      */
     Long createDppEtlScheduler(DppEtlSchedulerSaveReqVO createReqVO);
     DppEtlSchedulerDO createDppEtlSchedulerNew(DppEtlSchedulerSaveReqVO createReqVO);
 
     /**
-     * 更新数据集成调度信息
+     * Update data integration scheduling info
      *
-     * @param updateReqVO 数据集成调度信息信息
+     * @param updateReqVO Data integration scheduling info
      */
     int updateDppEtlScheduler(DppEtlSchedulerSaveReqVO updateReqVO);
 
     /**
-     * 删除数据集成调度信息
+     * Delete data integration scheduling info
      *
-     * @param idList 数据集成调度信息编号
+     * @param idList Data integration scheduling info ID list
      */
     int removeDppEtlScheduler(Collection<Long> idList);
 
     /**
-     * 获得数据集成调度信息详情
+     * Get data integration scheduling info detail
      *
-     * @param id 数据集成调度信息编号
-     * @return 数据集成调度信息
+     * @param id Data integration scheduling info ID
+     * @return Data integration scheduling info
      */
     DppEtlSchedulerDO getDppEtlSchedulerById(Long id);
 
     DppEtlSchedulerDO getDppEtlSchedulerById(DppEtlSchedulerPageReqVO pageReqVO);
 
     /**
-     * 获得全部数据集成调度信息列表
+     * Get all data integration scheduling info list
      *
-     * @return 数据集成调度信息列表
+     * @return Data integration scheduling info list
      */
     List<DppEtlSchedulerDO> getDppEtlSchedulerList();
 
     /**
-     * 获得全部数据集成调度信息 Map
+     * Get all data integration scheduling info Map
      *
-     * @return 数据集成调度信息 Map
+     * @return Data integration scheduling info Map
      */
     Map<Long, DppEtlSchedulerDO> getDppEtlSchedulerMap();
 
 
     /**
-     * 导入数据集成调度信息数据
+     * Import data integration scheduling info data
      *
-     * @param importExcelList 数据集成调度信息数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Data integration scheduling info data list
+     * @param isUpdateSupport Whether to support update. If already exists, update the data
+     * @param operName Operator
+     * @return Result
      */
     String importDppEtlScheduler(List<DppEtlSchedulerRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

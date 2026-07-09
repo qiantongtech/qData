@@ -50,7 +50,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 逻辑模型Controller
+ * Logical Model Controller
  *
  * @author qdata
  * @date 2025-01-21
@@ -158,7 +158,7 @@ public class DpModelController extends BaseController {
 
     @Operation(summary = "更改状态")
     @PreAuthorize("@ss.hasPermi('dp:model:edit')")
-    @Log(title = "更改数据元状态", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dp.model.status", businessType = BusinessType.UPDATE)
     @PostMapping("/updateStatus/{id}/{status}")
     public CommonResult<Boolean> updateStatus(@PathVariable Long id, @PathVariable Long status) {
         return CommonResult.toAjax(dpModelService.updateStatus(id, status));

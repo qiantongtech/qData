@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmDataLayerSpecifica
 import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmDataLayerSpecificationPageReqVO;
 import tech.qiantong.qdata.module.dm.dal.dataobject.dm.DmDataLayerSpecificationDO;
 /**
- * 数仓分层-规范管理Service接口
+ * Data Warehouse Layer Specification Service Interface
  *
  * @author FXB
  * @date 2026-03-24
@@ -36,65 +36,65 @@ import tech.qiantong.qdata.module.dm.dal.dataobject.dm.DmDataLayerSpecificationD
 public interface IDmDataLayerSpecificationService extends IService<DmDataLayerSpecificationDO> {
 
     /**
-     * 获得数仓分层-规范管理分页列表
+     * Get data warehouse layer specification page list
      *
-     * @param pageReqVO 分页请求
-     * @return 数仓分层-规范管理分页列表
+     * @param pageReqVO Page request
+     * @return Data warehouse layer specification page list
      */
     PageResult<DmDataLayerSpecificationDO> getDmDataLayerSpecificationPage(DmDataLayerSpecificationPageReqVO pageReqVO);
 
     /**
-     * 创建数仓分层-规范管理
+     * Create data warehouse layer specification
      *
-     * @param createReqVO 数仓分层-规范管理信息
-     * @return 数仓分层-规范管理编号
+     * @param createReqVO Data warehouse layer specification information
+     * @return Data warehouse layer specification ID
      */
     Long createDmDataLayerSpecification(DmDataLayerSpecificationSaveReqVO createReqVO);
 
     /**
-     * 更新数仓分层-规范管理
+     * Update data warehouse layer specification
      *
-     * @param updateReqVO 数仓分层-规范管理信息
+     * @param updateReqVO Data warehouse layer specification information
      */
     int updateDmDataLayerSpecification(DmDataLayerSpecificationSaveReqVO updateReqVO);
 
     /**
-     * 删除数仓分层-规范管理
+     * Delete data warehouse layer specification
      *
-     * @param idList 数仓分层-规范管理编号
+     * @param idList Data warehouse layer specification IDs
      */
     int removeDmDataLayerSpecification(Collection<Long> idList);
 
     /**
-     * 获得数仓分层-规范管理详情
+     * Get data warehouse layer specification details
      *
-     * @param id 数仓分层-规范管理编号
-     * @return 数仓分层-规范管理
+     * @param id Data warehouse layer specification ID
+     * @return Data warehouse layer specification
      */
     DmDataLayerSpecificationDO getDmDataLayerSpecificationById(Long id);
 
     /**
-     * 获得全部数仓分层-规范管理列表
+     * Get all data warehouse layer specifications
      *
-     * @return 数仓分层-规范管理列表
+     * @return Data warehouse layer specification list
      */
     List<DmDataLayerSpecificationDO> getDmDataLayerSpecificationPage();
 
     /**
-     * 获得全部数仓分层-规范管理 Map
+     * Get all data warehouse layer specifications as Map
      *
-     * @return 数仓分层-规范管理 Map
+     * @return Data warehouse layer specification Map
      */
     Map<Long, DmDataLayerSpecificationDO> getDmDataLayerSpecificationMap();
 
 
     /**
-     * 导入数仓分层-规范管理数据
+     * Import data warehouse layer specification data
      *
-     * @param importExcelList 数仓分层-规范管理数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Data warehouse layer specification data list
+     * @param isUpdateSupport Whether to support update, if exists, update the data
+     * @param operName Operation user
+     * @return Result
      */
     String importDmDataLayerSpecification(List<DmDataLayerSpecificationRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

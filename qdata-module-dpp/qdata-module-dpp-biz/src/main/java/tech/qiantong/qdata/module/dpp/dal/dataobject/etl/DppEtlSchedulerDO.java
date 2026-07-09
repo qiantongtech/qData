@@ -27,14 +27,14 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import java.util.Date;
 
 /**
- * 数据集成调度信息 DO 对象 DPP_ETL_SCHEDULER
+ * Data Integration Scheduler Info DO - DPP_ETL_SCHEDULER
  *
  * @author qdata
  * @date 2025-02-13
  */
 @Data
 @TableName(value = "DPP_ETL_SCHEDULER")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Can be omitted for MySQL and similar databases.
 // @KeySequence("DPP_ETL_SCHEDULER_seq")
 @Builder
 @NoArgsConstructor
@@ -48,39 +48,39 @@ public class DppEtlSchedulerDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 任务id */
+    /** Task ID */
     private Long taskId;
 
-    /** 任务编码 */
+    /** Task code */
     private String taskCode;
 
-    /** 开始时间 */
+    /** Start time */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
 
-    /** 结束时间 */
+    /** End time */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
-    /** 时区 */
+    /** Timezone */
     private String timezoneId;
 
-    @Schema(description = "任务状态", example = "")
+    @Schema(description = "Task status", example = "")
     private String status;
 
-    /** cron表达式 */
+    /** Cron expression */
     private String cronExpression;
 
-    /** 失败策略 */
+    /** Failure strategy */
     private String failureStrategy;
 
-    /** DolphinScheduler的id */
+    /** DolphinScheduler ID */
     private Long dsId;
 
-    /** 是否有效 */
+    /** Valid flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete flag */
     @TableLogic
     private Boolean delFlag;
 

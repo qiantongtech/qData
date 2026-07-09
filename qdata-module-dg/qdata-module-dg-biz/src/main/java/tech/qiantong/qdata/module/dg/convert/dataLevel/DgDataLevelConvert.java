@@ -27,7 +27,7 @@ import tech.qiantong.qdata.module.dg.controller.admin.dataLevel.vo.DgDataLevelSa
 import tech.qiantong.qdata.module.dg.dal.dataobject.dataLevel.DgDataLevelDO;
 
 /**
- * 数据分级 Convert
+ * Data Level Convert
  *
  * @author qdata
  * @date 2026-04-03
@@ -37,29 +37,29 @@ public interface DgDataLevelConvert {
     DgDataLevelConvert INSTANCE = Mappers.getMapper(DgDataLevelConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param dgDataLevelPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param dgDataLevelPageReqVO request params
      * @return DgDataLevelDO
      */
      DgDataLevelDO convertToDO(DgDataLevelPageReqVO dgDataLevelPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param dgDataLevelSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param dgDataLevelSaveReqVO save request params
      * @return DgDataLevelDO
      */
      DgDataLevelDO convertToDO(DgDataLevelSaveReqVO dgDataLevelSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param dgDataLevelDO 实体对象
+     * Convert DO to RespVO
+     * @param dgDataLevelDO entity object
      * @return DgDataLevelRespVO
      */
      DgDataLevelRespVO convertToRespVO(DgDataLevelDO dgDataLevelDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param dgDataLevelDOList 实体对象列表
+     * Convert DO List to RespVO List
+     * @param dgDataLevelDOList entity object list
      * @return List<DgDataLevelRespVO>
      */
      List<DgDataLevelRespVO> convertToRespVOList(List<DgDataLevelDO> dgDataLevelDOList);

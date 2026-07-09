@@ -29,7 +29,7 @@ import tech.qiantong.qdata.mybatis.core.mapper.BaseMapperX;
 import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
 
 /**
- * 数仓分层管理Mapper接口
+ * Data Warehouse Layer Mapper Interface
  *
  * @author FXB
  * @date 2026-03-24
@@ -37,10 +37,10 @@ import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
 public interface DmDataLayerMapper extends BaseMapperX<DmDataLayerDO> {
 
     default PageResult<DmDataLayerDO> selectPage(DmDataLayerPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define sortable fields (prevent SQL injection, must match database column names)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 
-        // 构造动态查询条件
+        // Build dynamic query conditions
         return selectPage(reqVO, new LambdaQueryWrapperX<DmDataLayerDO>()
                 .likeIfPresent(DmDataLayerDO::getName, reqVO.getName())
                 .likeIfPresent(DmDataLayerDO::getEngName, reqVO.getEngName())
@@ -48,9 +48,9 @@ public interface DmDataLayerMapper extends BaseMapperX<DmDataLayerDO> {
                 .eqIfPresent(DmDataLayerDO::getCategory, reqVO.getCategory())
                 .likeIfPresent(DmDataLayerDO::getDescription, reqVO.getDescription())
                 .eqIfPresent(DmDataLayerDO::getCreateTime, reqVO.getCreateTime())
-                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+                // If reqVO.getName() is not empty, add an exact match condition for name (name = '<name>')
                 // .likeIfPresent(DmDataLayerDO::getName, reqVO.getName())
-                // 按照 createTime 字段降序排序
+                // Sort by createTime descending
                 .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(), allowedColumns));
     }
 }

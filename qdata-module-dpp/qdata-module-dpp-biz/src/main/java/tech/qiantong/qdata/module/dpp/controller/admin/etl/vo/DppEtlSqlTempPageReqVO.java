@@ -23,12 +23,12 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 数据集成SQL模版 Request VO 对象 DPP_ETL_SQL_TEMP
+ * Data Integration SQL Template Request VO Object DPP_ETL_SQL_TEMP
  *
  * @author FXB
  * @date 2025-06-25
  */
-@Schema(description = "数据集成SQL模版 Request VO")
+@Schema(description = "Data Integration SQL Template Request VO")
 @Data
 public class DppEtlSqlTempPageReqVO extends PageParam {
 

@@ -48,12 +48,12 @@ import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlNodeLogDO;
 import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlNodeLogService;
 
 /**
- * 数据集成节点-日志Controller
+ * Data Integration Node Log Controller
  *
  * @author qdata
  * @date 2025-02-13
  */
-@Tag(name = "数据集成节点-日志")
+@Tag(name = "Data Integration Node - Log")
 @RestController
 @RequestMapping("/dpp/etlNodeLog")
 @Validated

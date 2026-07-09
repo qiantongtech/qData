@@ -26,7 +26,7 @@ import java.io.Serializable;
 
 /**
  * <P>
- * 用途:
+ * Purpose:
  * </p>
  *
  * @author: FXB

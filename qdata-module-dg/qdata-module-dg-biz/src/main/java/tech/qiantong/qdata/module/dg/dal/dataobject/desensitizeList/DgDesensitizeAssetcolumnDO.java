@@ -27,14 +27,14 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 脱敏清单关联关系 DO 对象 DG_DESENSITIZE_ASSETCOLUMN
+ * Desensitize List - Asset Column Relation DO entity DG_DESENSITIZE_ASSETCOLUMN
  *
  * @author qdata
  * @date 2026-04-12
  */
 @Data
 @TableName(value = "DG_DESENSITIZE_ASSETCOLUMN")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Can be omitted for MySQL and similar databases.
 // @KeySequence("DG_DESENSITIZE_ASSETCOLUMN_seq")
 @Builder
 @NoArgsConstructor
@@ -48,53 +48,53 @@ public class DgDesensitizeAssetcolumnDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 资产ID */
+    /** Asset ID */
     private Long assetId;
 
-    /** 资产名称 */
+    /** Asset Name */
     @TableField(exist = false)
     private String assetName;
-    /** 资产描述 */
+    /** Asset Description */
     @TableField(exist = false)
     private String assetDescription;
-    /** 资产英文表名 */
+    /** Asset English Table Name */
     @TableField(exist = false)
     private String assetTableName;
-    /** 资产表名 */
+    /** Asset Table Comment */
     @TableField(exist = false)
     private String assetTableComment;
 
-    /** 资产字段ID */
+    /** Asset Column ID */
     private Long assetcolumnId;
 
-    /** 资产字段名称*/
+    /** Asset Column Name */
     @TableField(exist = false)
     private String assetcolumnName;
-    /** 资产字段描述 */
+    /** Asset Column Description */
     @TableField(exist = false)
     private String assetcolumnComment;
-    /** 数据分类ID */
+    /** Data Category ID */
     private Long dataCategoryId;
-    /** 数据分类名称 */
+    /** Data Category Name */
     @TableField(exist = false)
     private String dataCategoryName;
-    /** 数据分级名称 */
+    /** Data Level Name */
     @TableField(exist = false)
     private String dataLevelName;
-    /** 脱敏规则名称 */
+    /** Desensitize Rule Name */
     @TableField(exist = false)
     private String desensitizeRuleName;
 
-    /** 排序 */
+    /** Sort Order */
     private Long sortOrder;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 是否有效;0：无效，1：有效 */
+    /** Valid Flag; 0: invalid, 1: valid */
     private Boolean validFlag;
 
-    /** 删除标志;1：已删除，0：未删除 */
+    /** Delete Flag; 1: deleted, 0: not deleted */
     @TableLogic
     private Boolean delFlag;
 

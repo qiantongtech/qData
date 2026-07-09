@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 业务分类Mapper接口
+ * Business Category Mapper Interface
  *
  * @author qdata
  * @date 2026-04-08
@@ -41,7 +41,7 @@ import java.util.Set;
 public interface DmBusinessCategoryMapper extends BaseMapperX<DmBusinessCategoryDO> {
 
     default PageResult<DmBusinessCategoryDO> selectPage(DmBusinessCategoryPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define sortable fields (prevent SQL injection, must match database column names)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
         MPJLambdaWrapperX<DmBusinessCategoryDO> lambdaWrapper = new MPJLambdaWrapperX<>();
         lambdaWrapper.selectAll(DmBusinessCategoryDO.class)
@@ -58,21 +58,21 @@ public interface DmBusinessCategoryMapper extends BaseMapperX<DmBusinessCategory
                 )
                 .eq(reqVO.getDomainId() != null, "t4.ID", reqVO.getDomainId());
 
-        // 按照 createTime 字段降序排序
+        // Sort by createTime descending
 //                .orderByStr(StringUtils.isNotBlank(reqVO.getOrderByColumn()),
 //                        StringUtils.equals("asc", reqVO.getIsAsc()), StringUtils.isNotBlank(reqVO.getOrderByColumn()) ? Arrays.asList(reqVO.getOrderByColumn().split(",")) : null);
 //                .orderByStr(
-//                    StringUtils.isNotBlank(reqVO.getOrderByColumn()), // 条件：排序字段不为空时才排序
-//                    StringUtils.equals("asc", reqVO.getIsAsc()),       // 排序方向：true=ASC，false=DESC
-//                    reqVO.getOrderByColumn(),                           // 排序字段（数据库下划线格式，如 create_time）
-//                    allowedColumns                                      // 允许的字段白名单，防SQL注入
+//                    StringUtils.isNotBlank(reqVO.getOrderByColumn()), // Condition: sort only when sort field is not empty
+//                    StringUtils.equals("asc", reqVO.getIsAsc()),       // Sort direction: true=ASC, false=DESC
+//                    reqVO.getOrderByColumn(),                           // Sort field (database underscore format, e.g. create_time)
+//                    allowedColumns                                      // Allowed field whitelist, prevent SQL injection
 //                );
         lambdaWrapper.orderBy(StringUtils.isNotBlank(reqVO.getOrderByColumn()), !"asc".equals(reqVO.getIsAsc()), DmBusinessCategoryDO::getCreateTime);
-        // 构造动态查询条件
+        // Build dynamic query conditions
         return selectJoinPage(reqVO, DmBusinessCategoryDO.class, lambdaWrapper);
-    /*    // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+    /*    // Define sortable fields (prevent SQL injection, must match database column names)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
-        // 构造动态查询条件
+        // Build dynamic query conditions
         return selectPage(reqVO, new LambdaQueryWrapperX<DmBusinessCategoryDO>()
                 .likeIfPresent(DmBusinessCategoryDO::getName, reqVO.getName())
                 .eqIfPresent(DmBusinessCategoryDO::getParentId, reqVO.getParentId())
@@ -84,15 +84,15 @@ public interface DmBusinessCategoryMapper extends BaseMapperX<DmBusinessCategory
                 .eqIfPresent(DmBusinessCategoryDO::getDomainId, reqVO.getDomainId())
                 .eqIfPresent(DmBusinessCategoryDO::getValidFlag, reqVO.getValidFlag())
                 .eqIfPresent(DmBusinessCategoryDO::getCreateTime, reqVO.getCreateTime())
-                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+                // If reqVO.getName() is not empty, add an exact match condition for name (name = '<name>')
                 // .likeIfPresent(DmBusinessCategoryDO::getName, reqVO.getName())
-                // 按照 createTime 字段降序排序
+                // Sort by createTime descending
                 .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(), allowedColumns));*/
     }
 
 
     default List<DmBusinessCategoryDO> selectAllList(DmBusinessCategoryPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define sortable fields (prevent SQL injection, must match database column names)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
         MPJLambdaWrapperX<DmBusinessCategoryDO> lambdaWrapper = new MPJLambdaWrapperX<>();
         lambdaWrapper.selectAll(DmBusinessCategoryDO.class)
@@ -107,7 +107,7 @@ public interface DmBusinessCategoryMapper extends BaseMapperX<DmBusinessCategory
                 )
                 .eq(reqVO.getOwnerId() != null, DmBusinessCategoryDO::getOwnerId, reqVO.getOwnerId());
         lambdaWrapper.orderBy(StringUtils.isNotBlank(reqVO.getOrderByColumn()), !"asc".equals(reqVO.getIsAsc()), DmBusinessCategoryDO::getCreateTime);
-        // 构造动态查询条件
+        // Build dynamic query conditions
         return selectList(lambdaWrapper);
     }
 

@@ -28,7 +28,7 @@ import java.util.Date;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 脱敏清单关联关系 创建/修改 Request VO DG_DESENSITIZE_ASSETCOLUMN
+ * Desensitize List Relationship Create/Update Request VO DG_DESENSITIZE_ASSETCOLUMN
  *
  * @author qdata
  * @date 2026-04-12
@@ -62,7 +62,7 @@ public class DgDesensitizeAssetcolumnSaveReqVO extends BaseEntity {
     @Size(max = 256, message = "备注长度不能超过256个字符")
     private String remark;
 
-    /** 是否有效;0：无效，1：有效 */
+    /** Whether valid; 0: invalid, 1: valid */
     private Boolean validFlag;
 
 

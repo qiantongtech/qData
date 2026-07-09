@@ -26,7 +26,7 @@ import java.util.Date;
 import java.io.Serializable;
 
 /**
- * 数仓分层管理 Response VO 对象 DM_DATA_LAYER
+ * Data Warehouse Layer Response VO - DM_DATA_LAYER
  *
  * @author FXB
  * @date 2026-03-24

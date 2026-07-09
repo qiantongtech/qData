@@ -28,7 +28,7 @@ import java.util.Date;
 import java.io.Serializable;
 
 /**
- * 主题域管理 Response VO 对象 DM_THEME_DOMAIN
+ * Theme Domain Response VO - DM_THEME_DOMAIN
  *
  * @author FXB
  * @date 2026-03-24
@@ -75,7 +75,7 @@ public class DmThemeDomainRespVO implements Serializable {
     @Schema(description = "数仓分层ID", example = "")
     private Long dataLayerId;
 
-    /** 数仓分层名称 */
+    /** Data warehouse layer name */
     @Excel(name = "数仓分层名称")
     @Schema(description = "数仓分层名称", example = "")
     private String dataLayerName;

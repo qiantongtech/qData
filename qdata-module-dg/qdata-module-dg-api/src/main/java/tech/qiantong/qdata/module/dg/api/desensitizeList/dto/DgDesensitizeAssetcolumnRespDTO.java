@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.dg.api.desensitizeList.dto;
 import lombok.*;
 
 /**
- * 脱敏清单关联关系 DTO 对象 DG_DESENSITIZE_ASSETCOLUMN
+ * Desensitization List Relationship DTO Object DG_DESENSITIZE_ASSETCOLUMN
  *
  * @author qdata
  * @date 2026-04-12

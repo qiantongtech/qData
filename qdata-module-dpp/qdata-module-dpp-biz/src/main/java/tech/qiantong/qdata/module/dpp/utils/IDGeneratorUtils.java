@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * <P>
- * 用途:生成数字id
+ * Purpose: Generate numeric IDs
  * </p>
  *
  * @author: FXB

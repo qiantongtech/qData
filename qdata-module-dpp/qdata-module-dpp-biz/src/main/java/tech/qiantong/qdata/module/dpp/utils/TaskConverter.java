@@ -86,42 +86,42 @@ public class TaskConverter {
         this.dsRedisConfig = dsRedisConfig;
     }
 
-    // 默认配置常量
-    private static final long DEFAULT_ENVIRONMENT_CODE = 133155949418208L; // 默认环境编码
-    private static final String DEFAULT_WORKER_GROUP = "default"; // 默认工作组
-    private static final String DEFAULT_FLAG = "YES"; // 默认标志，表示节点启用
-    private static final String DEFAULT_IS_CACHE = "NO"; // 默认不启用缓存
-    private static final String DEFAULT_TASK_PRIORITY = "MEDIUM"; // 默认任务优先级
-    private static final String DEFAULT_TASK_TYPE = "SPARK"; // 默认任务类型，SPARK或DATAX等
-    private static final String DEFAULT_PROGRAM_TYPE = "JAVA"; // 默认程序类型，JAVA
-    private static final String DEFAULT_MAIN_JAR = "file:/dolphinscheduler/default/resources/spart-demo-1.0.jar"; // 默认主Jar路径
-    private static final String DEFAULT_DEPLOY_MODE = "client"; // 默认部署模式
-    private static final int DEFAULT_DRIVER_CORES = 1; // 默认驱动核心数
-    private static final String DEFAULT_DRIVER_MEMORY = "2G"; // 默认驱动内存
-    private static final int DEFAULT_NUM_EXECUTORS = 1; // 默认执行器数量
-    private static final String DEFAULT_EXECUTOR_MEMORY = "4G"; // 默认执行器内存
-    private static final int DEFAULT_EXECUTOR_CORES = 2; // 默认执行器核心数
-    private static final String DEFAULT_SQL_EXECUTION_TYPE = "SCRIPT"; // 默认SQL执行类型
-    private static final String DEFAULT_CONDITION_TYPE = "NONE"; // 默认条件类型为 "NONE"
+    // Default configuration constants
+    private static final long DEFAULT_ENVIRONMENT_CODE = 133155949418208L; // Default environment code
+    private static final String DEFAULT_WORKER_GROUP = "default"; // Default worker group
+    private static final String DEFAULT_FLAG = "YES"; // Default flag, indicates node is enabled
+    private static final String DEFAULT_IS_CACHE = "NO"; // Default cache disabled
+    private static final String DEFAULT_TASK_PRIORITY = "MEDIUM"; // Default task priority
+    private static final String DEFAULT_TASK_TYPE = "SPARK"; // Default task type, SPARK or DATAX etc.
+    private static final String DEFAULT_PROGRAM_TYPE = "JAVA"; // Default program type, JAVA
+    private static final String DEFAULT_MAIN_JAR = "file:/dolphinscheduler/default/resources/spart-demo-1.0.jar"; // Default main Jar path
+    private static final String DEFAULT_DEPLOY_MODE = "client"; // Default deploy mode
+    private static final int DEFAULT_DRIVER_CORES = 1; // Default driver cores
+    private static final String DEFAULT_DRIVER_MEMORY = "2G"; // Default driver memory
+    private static final int DEFAULT_NUM_EXECUTORS = 1; // Default number of executors
+    private static final String DEFAULT_EXECUTOR_MEMORY = "4G"; // Default executor memory
+    private static final int DEFAULT_EXECUTOR_CORES = 2; // Default executor cores
+    private static final String DEFAULT_SQL_EXECUTION_TYPE = "SCRIPT"; // Default SQL execution type
+    private static final String DEFAULT_CONDITION_TYPE = "NONE"; // Default condition type is "NONE"
 
-    private static final int DEFAULT_TASK_failRetryTimes = 0; // failRetryTimes失败重试次数
-    private static final int DEFAULT_TASK_delayTime = 0; // delayTime延时执行时间
-    private static final int DEFAULT_TASK_failRetryInterval = 1; // failRetryInterval失败重试间隔
+    private static final int DEFAULT_TASK_failRetryTimes = 0; // failRetryTimes: failure retry count
+    private static final int DEFAULT_TASK_delayTime = 0; // delayTime: delayed execution time
+    private static final int DEFAULT_TASK_failRetryInterval = 1; // failRetryInterval: failure retry interval
 
 
 
-    public static final String TASK_INSTANCE_LOG_KEY = "log:taskInstanceLog:";//任务实例日志key
+    public static final String TASK_INSTANCE_LOG_KEY = "log:taskInstanceLog:";// Task instance log key
 
-    public static final String PROCESS_INSTANCE_LOG_KEY = "log:processInstanceLog:";//流程实例日志key
+    public static final String PROCESS_INSTANCE_LOG_KEY = "log:processInstanceLog:";// Process instance log key
 
     public static final String ETL_READER_ID_KEY = "etl:reader:id:";
 
     public static final String ETL_READER_DATE_KEY = "etl:reader:date:";
 
-    public static DsTaskSaveReqDTO buildDsTaskSaveReq(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO) {//名字
-        //创建返回实体
+    public static DsTaskSaveReqDTO buildDsTaskSaveReq(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO) {// name
+        // Create return entity
         DsTaskSaveReqDTO dsTaskSaveReqDTO = new DsTaskSaveReqDTO();
-        //1、封装基础参数
+        // 1. Wrap basic parameters
         dsTaskSaveReqDTO.setName(dppEtlNewNodeSaveReqVO.getName());
         if(StringUtils.isNotEmpty(dppEtlNewNodeSaveReqVO.getCode())){
             dsTaskSaveReqDTO.setProcessDefinitionCode(Long.parseLong(dppEtlNewNodeSaveReqVO.getCode()));
@@ -130,7 +130,7 @@ public class TaskConverter {
         dsTaskSaveReqDTO.setExecutionType(dppEtlNewNodeSaveReqVO.getExecutionType());
 
 
-        //2、封装节点信息 DATAX、SPARK
+        // 2. Wrap node info DATAX, SPARK
         String taskDefinition = buildTaskDefinition(dppEtlNewNodeSaveReqVO.getTaskDefinitionList());
 
         String taskRelation = buildTaskRelationJson(dppEtlNewNodeSaveReqVO.getTaskRelationJson());
@@ -147,105 +147,105 @@ public class TaskConverter {
     }
 
     private static String buildTaskNodeLocations(List<Map<String, Object>> locations) {
-        // 解析输入的 JSON 字符串为 List
+        // Parse the input JSON string into a List
         List<Map<String, Object>> list = locations;
 
         List<Map<String, Object>> result = new ArrayList<>();
 
-        // 遍历每个节点坐标信息
+        // Iterate over each node location info
         for (Map<String, Object> location : list) {
             Map<String, Object> locationMap = new HashMap<>();
 
-            // 填充必要字段
-            locationMap.put("taskCode", Long.parseLong(String.valueOf(location.getOrDefault("taskCode", 0L)))); // 默认 taskCode 为 0
-            locationMap.put("x", location.getOrDefault("x", 0)); // 默认 x 为 0
-            locationMap.put("y", location.getOrDefault("y", 0)); // 默认 y 为 0
+            // Populate required fields
+            locationMap.put("taskCode", Long.parseLong(String.valueOf(location.getOrDefault("taskCode", 0L)))); // Default taskCode is 0
+            locationMap.put("x", location.getOrDefault("x", 0)); // Default x is 0
+            locationMap.put("y", location.getOrDefault("y", 0)); // Default y is 0
 
-            // 将处理后的坐标信息加入结果列表
+            // Add the processed location info to the result list
             result.add(locationMap);
         }
 
-        // 返回处理后的 JSON 字符串
+        // Return the processed JSON string
         return JSON.toJSONString(result);
     }
 
     private static String buildTaskRelationJson(String taskRelationJson) {
-        // 解析输入的 JSON 字符串为 List
+        // Parse the input JSON string into a List
         List<Map<String, Object>> list = JSONUtils.convertTaskDefinitionJson(taskRelationJson);
 
         List<Map<String, Object>> result = new ArrayList<>();
 
-        // 遍历每个关系节点
+        // Iterate over each relation node
         for (Map<String, Object> relation : list) {
             Map<String, Object> relationMap = new HashMap<>();
 
-            // 填充默认值和必要字段
-            relationMap.put("id", relation.getOrDefault("dsId", null)); // 默认 id 为 0
-            relationMap.put("preTaskCode", relation.getOrDefault("preTaskCode", 0L)); // 默认 preTaskCode 为 0
-            relationMap.put("preTaskVersion", relation.getOrDefault("preTaskVersion", 0)); // 默认 preTaskVersion 为 0
-            relationMap.put("postTaskCode", relation.getOrDefault("postTaskCode", 0L)); // 默认 postTaskCode 为 0
-            relationMap.put("postTaskVersion", relation.getOrDefault("postTaskVersion", 0)); // 默认 postTaskVersion 为 0
-            relationMap.put("conditionType", relation.getOrDefault("conditionType", DEFAULT_CONDITION_TYPE)); // 默认条件类型为 "NONE"
+            // Populate default values and required fields
+            relationMap.put("id", relation.getOrDefault("dsId", null)); // Default id is 0
+            relationMap.put("preTaskCode", relation.getOrDefault("preTaskCode", 0L)); // Default preTaskCode is 0
+            relationMap.put("preTaskVersion", relation.getOrDefault("preTaskVersion", 0)); // Default preTaskVersion is 0
+            relationMap.put("postTaskCode", relation.getOrDefault("postTaskCode", 0L)); // Default postTaskCode is 0
+            relationMap.put("postTaskVersion", relation.getOrDefault("postTaskVersion", 0)); // Default postTaskVersion is 0
+            relationMap.put("conditionType", relation.getOrDefault("conditionType", DEFAULT_CONDITION_TYPE)); // Default condition type is "NONE"
 
-            // 将处理后的节点关系加入结果列表
+            // Add the processed node relation to the result list
             result.add(relationMap);
         }
 
-        // 返回处理后的 JSON 字符串
+        // Return the processed JSON string
         return JSON.toJSONString(result);
     }
 
     /**
-     * 构建任务定义
+     * Build task definition
      *
-     * @param taskDefinitionJson 任务定义JSON字符串
-     * @return 构建后的任务定义JSON字符串
+     * @param taskDefinitionJson Task definition JSON string
+     * @return Built task definition JSON string
      */
     public static String buildTaskDefinition(String taskDefinitionJson) {
         List<Map<String, Object>> list = JSONUtils.convertTaskDefinitionJson(taskDefinitionJson);
 
         List<Map<String, Object>> result = new ArrayList<>();
 
-        //自定义参数
+        // Custom parameters
 //        Map<String, Object> definitionJsonMap = JSONUtils.convertTaskDefinitionJsonMap(draftJson);
 
 
-        // 遍历每个任务定义
+        // Iterate over each task definition
         for (Map<String, Object> task : list) {
-            // 处理每个 task 的默认值和必要字段
+            // Process default values and required fields for each task
             Map<String, Object> taskMap = new HashMap<>();
 
-            // 设置基本信息字段
-            taskMap.put("id", task.getOrDefault("dsId", null)); // 默认 id 为 0
-            taskMap.put("name", task.getOrDefault("name", "")); // 默认空字符串
-            taskMap.put("code", task.getOrDefault("code", 0L)); // 默认 code 为 0L
-            taskMap.put("version", task.getOrDefault("version", 0)); // 默认版本号为1
-            taskMap.put("description", task.getOrDefault("description", "")); // 默认描述为空
-            taskMap.put("workerGroup", task.getOrDefault("workerGroup", DEFAULT_WORKER_GROUP)); // 默认 workerGroup 为 "default"
-            taskMap.put("environmentCode", task.getOrDefault("environmentCode", DEFAULT_ENVIRONMENT_CODE)); // 默认环境编码
-            taskMap.put("flag", DEFAULT_FLAG); // 默认 flag 为 "YES"
-            taskMap.put("isCache", task.getOrDefault("isCache", DEFAULT_IS_CACHE)); // 默认 isCache 为 "NO"
-            taskMap.put("taskPriority", task.getOrDefault("taskPriority", DEFAULT_TASK_PRIORITY)); // 默认任务优先级为 "MEDIUM"
-            taskMap.put("taskType", task.getOrDefault("taskType", DEFAULT_TASK_TYPE)); // 默认任务类型为 "SPARK"
+            // Set basic info fields
+            taskMap.put("id", task.getOrDefault("dsId", null)); // Default id is 0
+            taskMap.put("name", task.getOrDefault("name", "")); // Default empty string
+            taskMap.put("code", task.getOrDefault("code", 0L)); // Default code is 0L
+            taskMap.put("version", task.getOrDefault("version", 0)); // Default version is 1
+            taskMap.put("description", task.getOrDefault("description", "")); // Default empty description
+            taskMap.put("workerGroup", task.getOrDefault("workerGroup", DEFAULT_WORKER_GROUP)); // Default workerGroup is "default"
+            taskMap.put("environmentCode", task.getOrDefault("environmentCode", DEFAULT_ENVIRONMENT_CODE)); // Default environment code
+            taskMap.put("flag", DEFAULT_FLAG); // Default flag is "YES"
+            taskMap.put("isCache", task.getOrDefault("isCache", DEFAULT_IS_CACHE)); // Default isCache is "NO"
+            taskMap.put("taskPriority", task.getOrDefault("taskPriority", DEFAULT_TASK_PRIORITY)); // Default task priority is "MEDIUM"
+            taskMap.put("taskType", task.getOrDefault("taskType", DEFAULT_TASK_TYPE)); // Default task type is "SPARK"
             taskMap.put("taskExecuteType", "BATCH");
 
-            //2025-06-25 新增配置项默认值
+            // 2025-06-25 Added new config item defaults
             taskMap.put("failRetryTimes", MapUtils.getObject(task,"failRetryTimes",DEFAULT_TASK_failRetryTimes));
             taskMap.put("delayTime", MapUtils.getObject(task,"delayTime",DEFAULT_TASK_delayTime));
             taskMap.put("failRetryInterval", MapUtils.getObject(task,"failRetryInterval",DEFAULT_TASK_failRetryInterval));
 
-            //组件taskParams的封装
-            String componentType = String.valueOf(task.get("componentType")); //组件类型
+            // Wrap component taskParams
+            String componentType = String.valueOf(task.get("componentType")); // Component type
             Map<String, Object> params = (Map<String, Object>) MapUtils.getObject(task, "taskParams");
 
-            //根据类型存入默认数据
+            // Store default data based on type
             if (StringUtils.equals(TaskComponentTypeEnum.SPARK_CLEAN.getCode(), componentType)
                     || StringUtils.equals(TaskComponentTypeEnum.SPARK_SQL_DEV.getCode(), componentType)) {
                 params.put("mainClass", defaultMainClass);
                 params.put("resourceName", resourceName);
                 params.put("master", defaultMaster);
             }
-            // 提取参数
+            // Extract parameters
 //            params.put("driverCores", MapUtils.getObject(definitionJsonMap, "driverCores", DEFAULT_DRIVER_CORES));
 //            params.put("driverMemory", MapUtils.getObject(definitionJsonMap, "driverMemory", DEFAULT_DRIVER_MEMORY));
 //            params.put("numExecutors", MapUtils.getObject(definitionJsonMap, "numExecutors", DEFAULT_NUM_EXECUTORS));
@@ -253,174 +253,174 @@ public class TaskConverter {
 //            params.put("executorCores", MapUtils.getObject(definitionJsonMap, "executorCores", DEFAULT_EXECUTOR_CORES));
 //            params.put("yarnQueue", MapUtils.getObject(definitionJsonMap, "yarnQueue", ""));
 
-            // 将任务的taskParams加入到taskMap中
+            // Add the task's taskParams to taskMap
             taskMap.put("taskParams", ComponentFactory.getComponentItem(componentType).parse(params));
 
-            // 将填充好的任务加入到结果列表
+            // Add the populated task to the result list
             result.add(taskMap);
         }
 
-        // 返回处理后的JSON字符串
+        // Return the processed JSON string
         return JSON.toJSONString(result);
     }
 
 
     /**
-     * 将 DppEtlNewNodeSaveReqVO 和 ProcessDefinition 转换为 DppEtlTaskSaveReqVO
+     * Convert DppEtlNewNodeSaveReqVO and ProcessDefinition to DppEtlTaskSaveReqVO
      *
-     * @param dppEtlNewNodeSaveReqVO 外部请求的任务数据
-     * @param data                   流程定义数据
-     * @return 转换后的 DppEtlTaskSaveReqVO
+     * @param dppEtlNewNodeSaveReqVO Task data from external request
+     * @param data                   Process definition data
+     * @return Converted DppEtlTaskSaveReqVO
      */
     public static DppEtlTaskSaveReqVO convertToDppEtlTaskSaveReqVO(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO, ProcessDefinition data) {
-        // 创建 DppEtlTaskSaveReqVO 对象
+        // Create DppEtlTaskSaveReqVO object
         DppEtlTaskSaveReqVO createReqVO = new DppEtlTaskSaveReqVO();
 
-        // 填充任务数据
-        createReqVO.setType(dppEtlNewNodeSaveReqVO.getType());//任务类型
-        createReqVO.setName(data.getName()); // 任务名称
-        createReqVO.setCode(String.valueOf(data.getCode())); // 任务编码
-        createReqVO.setVersion(data.getVersion()); // 版本号
-        createReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // 项目ID
-        createReqVO.setProjectCode(String.valueOf(data.getProjectCode())); // 项目编码
-        createReqVO.setDescription(dppEtlNewNodeSaveReqVO.getDescription()); // 描述
-        createReqVO.setLocations(data.getLocations()); // 节点坐标信息
-        createReqVO.setLocations(data.getLocations()); // 节点坐标信息
-        createReqVO.setDsId(data.getId()); // DolphinScheduler的ID
+        // Populate task data
+        createReqVO.setType(dppEtlNewNodeSaveReqVO.getType());// Task type
+        createReqVO.setName(data.getName()); // Task name
+        createReqVO.setCode(String.valueOf(data.getCode())); // Task code
+        createReqVO.setVersion(data.getVersion()); // Version number
+        createReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // Project ID
+        createReqVO.setProjectCode(String.valueOf(data.getProjectCode())); // Project code
+        createReqVO.setDescription(dppEtlNewNodeSaveReqVO.getDescription()); // Description
+        createReqVO.setLocations(data.getLocations()); // Node coordinate info
+        createReqVO.setLocations(data.getLocations()); // Node coordinate info
+        createReqVO.setDsId(data.getId()); // DolphinScheduler ID
 
         String releaseState = dppEtlNewNodeSaveReqVO.getReleaseState();
-        // 根据 releaseState 设置 status（0: 未上线, 1: 已上线）
+        // Set status based on releaseState (0: offline, 1: online)
         if (StringUtils.equals("-2", releaseState) || StringUtils.equals("-3", releaseState)) {
-            createReqVO.setStatus(releaseState); // 已上线
+            createReqVO.setStatus(releaseState); // Online
         } else if ("offline".equalsIgnoreCase(data.getReleaseState())) {
-            createReqVO.setStatus("0"); // 未上线
+            createReqVO.setStatus("0"); // Offline
         } else if ("online".equalsIgnoreCase(data.getReleaseState())) {
-            createReqVO.setStatus("1"); // 已上线
+            createReqVO.setStatus("1"); // Online
         } else {
-            createReqVO.setStatus("0"); // 未上线
+            createReqVO.setStatus("0"); // Offline
         }
-        createReqVO.setRemark(""); // 默认备注（可根据需要调整）
+        createReqVO.setRemark(""); // Default remark (adjustable as needed)
 
-        createReqVO.setExecutionType(data.getExecutionType());//执行执行策略
-        // 填充创建者和更新时间信息
-        createReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // 假设项目ID为创建者ID（根据需求调整）
-        createReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // 假设任务名称为创建者（根据需求调整）
-        createReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // 设置当前时间为创建时间
-        createReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // 假设项目ID为更新者ID（根据需求调整）
-        createReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // 假设任务名称为更新者（根据需求调整）
-        createReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // 设置当前时间为更新时间
+        createReqVO.setExecutionType(data.getExecutionType());// Execution strategy
+        // Populate creator and update time info
+        createReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // Assuming project ID as creator ID (adjust as needed)
+        createReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // Assuming task name as creator (adjust as needed)
+        createReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // Set current time as creation time
+        createReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // Assuming project ID as updater ID (adjust as needed)
+        createReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // Assuming task name as updater (adjust as needed)
+        createReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // Set current time as update time
 
         createReqVO.setPersonCharge(dppEtlNewNodeSaveReqVO.getPersonCharge());
         createReqVO.setContactNumber(dppEtlNewNodeSaveReqVO.getContactNumber());
         createReqVO.setCatCode(dppEtlNewNodeSaveReqVO.getCatCode());
         createReqVO.setType(dppEtlNewNodeSaveReqVO.getType());
 
-        //暂时没意义参数
+        // Temporarily meaningless parameter
         createReqVO.setTimeout(dppEtlNewNodeSaveReqVO.getTimeout());
 
 
-        // 返回生成的 DppEtlTaskSaveReqVO
+        // Return the generated DppEtlTaskSaveReqVO
         return createReqVO;
     }
 
     public static DppEtlTaskLogSaveReqVO fromDppEtlTaskLogSaveReqVO(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO, ProcessDefinition processDefinition) {
-        // 创建 DppEtlTaskSaveReqVO 对象
+        // Create DppEtlTaskSaveReqVO object
         DppEtlTaskLogSaveReqVO createReqVO = new DppEtlTaskLogSaveReqVO();
         ProcessDefinitionLog data = processDefinition.getProcessDefinitionLog();
-        // 填充任务数据
+        // Populate task data
         createReqVO.setType(dppEtlNewNodeSaveReqVO.getType());
-        createReqVO.setName(data.getName()); // 任务名称
-        createReqVO.setCode(String.valueOf(data.getCode())); // 任务编码
-        createReqVO.setVersion(data.getVersion()); // 版本号
-        createReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // 项目ID
-        createReqVO.setProjectCode(String.valueOf(data.getProjectCode())); // 项目编码
-        createReqVO.setDescription(dppEtlNewNodeSaveReqVO.getDescription()); // 描述
-        createReqVO.setLocations(data.getLocations()); // 节点坐标信息
-        createReqVO.setDsId(data.getId()); // DolphinScheduler的ID
+        createReqVO.setName(data.getName()); // Task name
+        createReqVO.setCode(String.valueOf(data.getCode())); // Task code
+        createReqVO.setVersion(data.getVersion()); // Version number
+        createReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // Project ID
+        createReqVO.setProjectCode(String.valueOf(data.getProjectCode())); // Project code
+        createReqVO.setDescription(dppEtlNewNodeSaveReqVO.getDescription()); // Description
+        createReqVO.setLocations(data.getLocations()); // Node coordinate info
+        createReqVO.setDsId(data.getId()); // DolphinScheduler ID
 
-        // 根据 releaseState 设置 status（0: 未上线, 1: 已上线）
+        // Set status based on releaseState (0: offline, 1: online)
         if ("online".equalsIgnoreCase(data.getReleaseState())) {
-            createReqVO.setStatus("1"); // 已上线
+            createReqVO.setStatus("1"); // Online
         } else if ("offline".equalsIgnoreCase(data.getReleaseState())) {
-            createReqVO.setStatus("0"); // 未上线
+            createReqVO.setStatus("0"); // Offline
         } else {
-            createReqVO.setStatus("0"); // 未上线
+            createReqVO.setStatus("0"); // Offline
         }
-        createReqVO.setRemark(""); // 默认备注（可根据需要调整）
+        createReqVO.setRemark(""); // Default remark (adjustable as needed)
 
-        createReqVO.setExecutionType(data.getExecutionType());//执行执行策略
-        // 填充创建者和更新时间信息
-        createReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // 假设项目ID为创建者ID（根据需求调整）
-        createReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // 假设任务名称为创建者（根据需求调整）
-        createReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // 设置当前时间为创建时间
-        createReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // 假设项目ID为更新者ID（根据需求调整）
-        createReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // 假设任务名称为更新者（根据需求调整）
-        createReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // 设置当前时间为更新时间
+        createReqVO.setExecutionType(data.getExecutionType());// Execution strategy
+        // Populate creator and update time info
+        createReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // Assuming project ID as creator ID (adjust as needed)
+        createReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // Assuming task name as creator (adjust as needed)
+        createReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // Set current time as creation time
+        createReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // Assuming project ID as updater ID (adjust as needed)
+        createReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // Assuming task name as updater (adjust as needed)
+        createReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // Set current time as update time
 
-        //暂时没意义参数
+        // Temporarily meaningless parameter
         createReqVO.setPersonCharge(dppEtlNewNodeSaveReqVO.getPersonCharge());
         createReqVO.setType(dppEtlNewNodeSaveReqVO.getType());
         createReqVO.setTimeout(dppEtlNewNodeSaveReqVO.getTimeout());
 
 
-        // 返回生成的 DppEtlTaskSaveReqVO
+        // Return the generated DppEtlTaskSaveReqVO
         return createReqVO;
     }
 
     /**
-     * 将 DppEtlNewNodeSaveReqVO 和 ProcessDefinition 转换为 DppEtlTaskSaveReqVO
+     * Convert DppEtlNewNodeSaveReqVO and DppEtlTaskSaveReqVO to DppEtlTaskLogSaveReqVO
      *
-     * @param dppEtlNewNodeSaveReqVO 外部请求的任务数据
-     * @param task                   流程定义数据
-     * @return 转换后的 DppEtlTaskSaveReqVO
+     * @param dppEtlNewNodeSaveReqVO Task data from external request
+     * @param task                   Process definition data
+     * @return Converted DppEtlTaskSaveReqVO
      */
     public static DppEtlTaskLogSaveReqVO fromDppEtlTaskLogSaveReqVO(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO, DppEtlTaskSaveReqVO task) {
-        // 创建 DppEtlTaskSaveReqVO 对象
+        // Create DppEtlTaskSaveReqVO object
         DppEtlTaskLogSaveReqVO createReqVO = new DppEtlTaskLogSaveReqVO();
-        // 填充任务数据
+        // Populate task data
         createReqVO.setType(dppEtlNewNodeSaveReqVO.getType());
-        createReqVO.setName(task.getName()); // 任务名称
-        createReqVO.setCode(task.getCode()); // 任务编码
-        createReqVO.setVersion(task.getVersion()); // 版本号
-        createReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // 项目ID
-        createReqVO.setProjectCode(task.getProjectCode()); // 项目编码
-        createReqVO.setDescription(dppEtlNewNodeSaveReqVO.getDescription()); // 描述
-        createReqVO.setLocations(task.getLocations()); // 节点坐标信息
-        createReqVO.setDsId(task.getId()); // DolphinScheduler的ID
+        createReqVO.setName(task.getName()); // Task name
+        createReqVO.setCode(task.getCode()); // Task code
+        createReqVO.setVersion(task.getVersion()); // Version number
+        createReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // Project ID
+        createReqVO.setProjectCode(task.getProjectCode()); // Project code
+        createReqVO.setDescription(dppEtlNewNodeSaveReqVO.getDescription()); // Description
+        createReqVO.setLocations(task.getLocations()); // Node coordinate info
+        createReqVO.setDsId(task.getId()); // DolphinScheduler ID
 
-        // 根据 releaseState 设置 status（0: 未上线, 1: 已上线）
+        // Set status based on releaseState (0: offline, 1: online)
         if ("online".equalsIgnoreCase(task.getStatus())) {
-            createReqVO.setStatus("1"); // 已上线
+            createReqVO.setStatus("1"); // Online
         } else if ("offline".equalsIgnoreCase(task.getStatus())) {
-            createReqVO.setStatus("0"); // 未上线
+            createReqVO.setStatus("0"); // Offline
         } else {
-            createReqVO.setStatus("0"); // 未上线
+            createReqVO.setStatus("0"); // Offline
         }
-        createReqVO.setRemark(""); // 默认备注（可根据需要调整）
+        createReqVO.setRemark(""); // Default remark (adjustable as needed)
 
-        createReqVO.setExecutionType(task.getExecutionType());//执行执行策略
-        // 填充创建者和更新时间信息
-        createReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // 假设项目ID为创建者ID（根据需求调整）
-        createReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // 假设任务名称为创建者（根据需求调整）
-        createReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // 设置当前时间为创建时间
-        createReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // 假设项目ID为更新者ID（根据需求调整）
-        createReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // 假设任务名称为更新者（根据需求调整）
-        createReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // 设置当前时间为更新时间
+        createReqVO.setExecutionType(task.getExecutionType());// Execution strategy
+        // Populate creator and update time info
+        createReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // Assuming project ID as creator ID (adjust as needed)
+        createReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // Assuming task name as creator (adjust as needed)
+        createReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // Set current time as creation time
+        createReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // Assuming project ID as updater ID (adjust as needed)
+        createReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // Assuming task name as updater (adjust as needed)
+        createReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // Set current time as update time
 
-        //暂时没意义参数
+        // Temporarily meaningless parameter
         createReqVO.setPersonCharge(dppEtlNewNodeSaveReqVO.getPersonCharge());
         createReqVO.setType(dppEtlNewNodeSaveReqVO.getType());
         createReqVO.setTimeout(dppEtlNewNodeSaveReqVO.getTimeout());
 
 
-        // 返回生成的 DppEtlTaskSaveReqVO
+        // Return the generated DppEtlTaskSaveReqVO
         return createReqVO;
     }
 
     public static DppEtlTaskLogSaveReqVO fromDppEtlTaskSaveReqVO(DppEtlTaskSaveReqVO dppEtlTaskSaveReqVO) {
         DppEtlTaskLogSaveReqVO logSaveReqVO = new DppEtlTaskLogSaveReqVO();
 
-        // 基本字段直接映射
+        // Direct mapping of basic fields
         logSaveReqVO.setType(dppEtlTaskSaveReqVO.getType());
         logSaveReqVO.setName(dppEtlTaskSaveReqVO.getName());
         logSaveReqVO.setCode(dppEtlTaskSaveReqVO.getCode());
@@ -438,13 +438,13 @@ public class TaskConverter {
         logSaveReqVO.setStatus(dppEtlTaskSaveReqVO.getStatus());
 
 
-        // 填充创建者和更新时间信息
-        logSaveReqVO.setCreatorId(dppEtlTaskSaveReqVO.getProjectId()); // 假设项目ID为创建者ID（根据需求调整）
-        logSaveReqVO.setCreateBy(dppEtlTaskSaveReqVO.getName()); // 假设任务名称为创建者（根据需求调整）
-        logSaveReqVO.setCreateTime(dppEtlTaskSaveReqVO.getCreateTime()); // 设置当前时间为创建时间
-        logSaveReqVO.setUpdatorId(dppEtlTaskSaveReqVO.getProjectId()); // 假设项目ID为更新者ID（根据需求调整）
-        logSaveReqVO.setUpdateBy(dppEtlTaskSaveReqVO.getName()); // 假设任务名称为更新者（根据需求调整）
-        logSaveReqVO.setUpdateTime(dppEtlTaskSaveReqVO.getUpdateTime()); // 设置当前时间为更新时间
+        // Populate creator and update time info
+        logSaveReqVO.setCreatorId(dppEtlTaskSaveReqVO.getProjectId()); // Assuming project ID as creator ID (adjust as needed)
+        logSaveReqVO.setCreateBy(dppEtlTaskSaveReqVO.getName()); // Assuming task name as creator (adjust as needed)
+        logSaveReqVO.setCreateTime(dppEtlTaskSaveReqVO.getCreateTime()); // Set current time as creation time
+        logSaveReqVO.setUpdatorId(dppEtlTaskSaveReqVO.getProjectId()); // Assuming project ID as updater ID (adjust as needed)
+        logSaveReqVO.setUpdateBy(dppEtlTaskSaveReqVO.getName()); // Assuming task name as updater (adjust as needed)
+        logSaveReqVO.setUpdateTime(dppEtlTaskSaveReqVO.getUpdateTime()); // Set current time as update time
 
         return logSaveReqVO;
     }
@@ -453,28 +453,28 @@ public class TaskConverter {
     public static List<DppEtlNodeSaveReqVO> convertToDppEtlNodeSaveReqVOList(ProcessDefinition processDefinition, DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO) {
         List<DppEtlNodeSaveReqVO> resultList = new ArrayList<>();
 
-        //取出入参数的信息
+        // Extract input parameter info
         List<Map<String, Object>> list = JSONUtils.convertTaskDefinitionJson(dppEtlNewNodeSaveReqVO.getTaskDefinitionList());
 
-        // 遍历 ProcessDefinition 中的 taskDefinitionList
+        // Iterate over taskDefinitionList in ProcessDefinition
         for (TaskDefinition taskDefinition : processDefinition.getTaskDefinitionList()) {
-            //获取前端前端封装的节点定义数据
+            // Get the node definition data packaged by the frontend
             Map<String, Object> taskDefinitionMap = list.stream().filter(item -> {
                 String code = MapUtils.getString(item, "code", "");
                 return StringUtils.equals(taskDefinition.getCode(), code);
             }).findFirst().get();
             DppEtlNodeSaveReqVO createReqVO = new DppEtlNodeSaveReqVO();
-            // 1. 任务相关信息
-            createReqVO.setTaskType(dppEtlNewNodeSaveReqVO.getType());//任务类型
-            createReqVO.setType(taskDefinition.getTaskType()); // 节点类型
-            createReqVO.setComponentType(String.valueOf(taskDefinitionMap.get("componentType")));//组件类型
-            createReqVO.setName(taskDefinition.getName()); // 任务名称
-            createReqVO.setCode(String.valueOf(taskDefinition.getCode())); // 任务编码
-            createReqVO.setVersion(taskDefinition.getVersion()); // 任务版本
-            createReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // 项目ID
-            createReqVO.setProjectCode(String.valueOf(taskDefinition.getProjectCode())); // 项目编码
+            // 1. Task-related info
+            createReqVO.setTaskType(dppEtlNewNodeSaveReqVO.getType());// Task type
+            createReqVO.setType(taskDefinition.getTaskType()); // Node type
+            createReqVO.setComponentType(String.valueOf(taskDefinitionMap.get("componentType")));// Component type
+            createReqVO.setName(taskDefinition.getName()); // Task name
+            createReqVO.setCode(String.valueOf(taskDefinition.getCode())); // Task code
+            createReqVO.setVersion(taskDefinition.getVersion()); // Task version
+            createReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // Project ID
+            createReqVO.setProjectCode(String.valueOf(taskDefinition.getProjectCode())); // Project code
 
-            createReqVO.setPriority(String.valueOf(taskDefinition.getTaskPriority()));//任务优先级
+            createReqVO.setPriority(String.valueOf(taskDefinition.getTaskPriority()));// Task priority
             createReqVO.setFailRetryTimes((long) taskDefinition.getFailRetryTimes());
             createReqVO.setFailRetryInterval((long) taskDefinition.getFailRetryInterval());
             createReqVO.setTimeout((long) taskDefinition.getTimeout());
@@ -482,64 +482,64 @@ public class TaskConverter {
             createReqVO.setCpuQuota((long) taskDefinition.getCpuQuota());
             createReqVO.setMemoryMax((long) taskDefinition.getMemoryMax());
             createReqVO.setDescription(taskDefinition.getDescription());
-            createReqVO.setDsId(taskDefinition.getId()); // 将任务的 dsId 设置为节点的 dsId
+            createReqVO.setDsId(taskDefinition.getId()); // Set the task's dsId as the node's dsId
 
-            createReqVO.setParameters(getTaskParamsAsJson(list, String.valueOf(taskDefinition.getCode()))); // 节点参数
+            createReqVO.setParameters(getTaskParamsAsJson(list, String.valueOf(taskDefinition.getCode()))); // Node parameters
 
-            // 填充创建者和更新时间信息
-            createReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // 假设项目ID为创建者ID（根据需求调整）
-            createReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // 假设任务名称为创建者（根据需求调整）
-            createReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // 设置当前时间为创建时间
-            createReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // 假设项目ID为更新者ID（根据需求调整）
-            createReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // 假设任务名称为更新者（根据需求调整）
-            createReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // 设置当前时间为更新时间
+            // Populate creator and update time info
+            createReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // Assuming project ID as creator ID (adjust as needed)
+            createReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // Assuming task name as creator (adjust as needed)
+            createReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // Set current time as creation time
+            createReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // Assuming project ID as updater ID (adjust as needed)
+            createReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // Assuming task name as updater (adjust as needed)
+            createReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // Set current time as update time
 
-            // 添加到结果列表
+            // Add to result list
             resultList.add(createReqVO);
         }
         return resultList;
     }
 
     public static String getTaskParamsAsJson(List<Map<String, Object>> list, String code) {
-        // 查找匹配的 taskParams
+        // Find matching taskParams
         Optional<Map<String, Object>> matchingTaskParams = list.stream()
                 .filter(task -> task != null && StringUtils.equals(code, MapUtils.getString(task, "code")))
                 .map(task -> (Map<String, Object>) MapUtils.getObject(task, "taskParams"))
                 .filter(taskParams -> taskParams != null)
                 .findFirst();
 
-        // 如果找到了匹配的 taskParams，转为 JSON 并返回
-        return matchingTaskParams.map(taskParams -> JSONUtils.toJson(taskParams))  // 调用 JSONUtils 转换为 JSON
-                .orElse(null);  // 如果没有找到匹配项，返回 null
+        // If a matching taskParams is found, convert to JSON and return
+        return matchingTaskParams.map(taskParams -> JSONUtils.toJson(taskParams))  // Call JSONUtils to convert to JSON
+                .orElse(null);  // If no match found, return null
     }
 
 
     public static List<DppEtlNodeLogSaveReqVO> convertToDppEtlNodeLogSaveReqVOList(ProcessDefinition processDefinition, DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO) {
         List<DppEtlNodeLogSaveReqVO> resultList = new ArrayList<>();
 
-        //取出入参数的信息
+        // Extract input parameter info
         List<Map<String, Object>> list = JSONUtils.convertTaskDefinitionJson(dppEtlNewNodeSaveReqVO.getTaskDefinitionList());
 
-        // 遍历 ProcessDefinition 中的 taskDefinitionList
+        // Iterate over taskDefinitionList in ProcessDefinition
         for (TaskDefinition taskDefinition : processDefinition.getTaskDefinitionList()) {
-            //获取前端前端封装的节点定义数据
+            // Get the node definition data packaged by the frontend
             Map<String, Object> taskDefinitionMap = list.stream().filter(item -> {
                 String code = MapUtils.getString(item, "code", "");
                 return StringUtils.equals(taskDefinition.getCode(), code);
             }).findFirst().get();
             DppEtlNodeLogSaveReqVO createReqVO = new DppEtlNodeLogSaveReqVO();
 
-            // 1. 任务相关信息
-            createReqVO.setTaskType(dppEtlNewNodeSaveReqVO.getType());//任务类型
-            createReqVO.setType(taskDefinition.getTaskType()); // 节点类型
-            createReqVO.setComponentType(String.valueOf(taskDefinitionMap.get("componentType")));//组件类型
-            createReqVO.setName(taskDefinition.getName()); // 任务名称
-            createReqVO.setCode(String.valueOf(taskDefinition.getCode())); // 任务编码
-            createReqVO.setVersion((long) taskDefinition.getVersion()); // 任务版本
-            createReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // 项目ID
-            createReqVO.setProjectCode(String.valueOf(taskDefinition.getProjectCode())); // 项目编码
+            // 1. Task-related info
+            createReqVO.setTaskType(dppEtlNewNodeSaveReqVO.getType());// Task type
+            createReqVO.setType(taskDefinition.getTaskType()); // Node type
+            createReqVO.setComponentType(String.valueOf(taskDefinitionMap.get("componentType")));// Component type
+            createReqVO.setName(taskDefinition.getName()); // Task name
+            createReqVO.setCode(String.valueOf(taskDefinition.getCode())); // Task code
+            createReqVO.setVersion((long) taskDefinition.getVersion()); // Task version
+            createReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // Project ID
+            createReqVO.setProjectCode(String.valueOf(taskDefinition.getProjectCode())); // Project code
 
-            createReqVO.setPriority(String.valueOf(taskDefinition.getTaskPriority()));//任务优先级
+            createReqVO.setPriority(String.valueOf(taskDefinition.getTaskPriority()));// Task priority
             createReqVO.setFailRetryTimes((long) taskDefinition.getFailRetryTimes());
             createReqVO.setFailRetryInterval((long) taskDefinition.getFailRetryInterval());
             createReqVO.setTimeout((long) taskDefinition.getTimeout());
@@ -547,19 +547,19 @@ public class TaskConverter {
             createReqVO.setCpuQuota((long) taskDefinition.getCpuQuota());
             createReqVO.setMemoryMax((long) taskDefinition.getMemoryMax());
             createReqVO.setDescription(taskDefinition.getDescription());
-            createReqVO.setDsId(taskDefinition.getId()); // 将任务的 dsId 设置为节点的 dsId
+            createReqVO.setDsId(taskDefinition.getId()); // Set the task's dsId as the node's dsId
 
-            createReqVO.setParameters(getTaskParamsAsJson(list, String.valueOf(taskDefinition.getCode()))); // 节点参数
+            createReqVO.setParameters(getTaskParamsAsJson(list, String.valueOf(taskDefinition.getCode()))); // Node parameters
 
-            // 填充创建者和更新时间信息
-            createReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // 假设项目ID为创建者ID（根据需求调整）
-            createReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // 假设任务名称为创建者（根据需求调整）
-            createReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // 设置当前时间为创建时间
-            createReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // 假设项目ID为更新者ID（根据需求调整）
-            createReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // 假设任务名称为更新者（根据需求调整）
-            createReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // 设置当前时间为更新时间
+            // Populate creator and update time info
+            createReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // Assuming project ID as creator ID (adjust as needed)
+            createReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // Assuming task name as creator (adjust as needed)
+            createReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // Set current time as creation time
+            createReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // Assuming project ID as updater ID (adjust as needed)
+            createReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // Assuming task name as updater (adjust as needed)
+            createReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // Set current time as update time
 
-            // 添加到结果列表
+            // Add to result list
             resultList.add(createReqVO);
         }
         return resultList;
@@ -567,50 +567,50 @@ public class TaskConverter {
 
     public static long getIdByCode(List<DppEtlNodeDO> dppEtlNodeDOList, String code, long preTaskVersion) {
         return dppEtlNodeDOList.stream()
-                .filter(task -> StringUtils.equals(task.getCode(), code) && task.getVersion() == preTaskVersion)  // 匹配 code
-                .map(DppEtlNodeDO::getId)  // 获取对应的 id
-                .findFirst()  // 如果找到匹配项，返回第一个
-                .orElse(-1L);  // 如果没有找到，返回默认值 -1
+                .filter(task -> StringUtils.equals(task.getCode(), code) && task.getVersion() == preTaskVersion)  // Match code
+                .map(DppEtlNodeDO::getId)  // Get the corresponding id
+                .findFirst()  // If a match is found, return the first one
+                .orElse(-1L);  // If no match found, return default value -1
     }
 
     public static List<DppEtlTaskNodeRelSaveReqVO> convertToDppEtlTaskNodeRelSaveReqVOList(ProcessDefinition data, DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO, List<DppEtlNodeDO> dppEtlNodeBatch, DppEtlTaskSaveReqVO dppEtlTaskSaveReqVO) {
         List<DppEtlTaskNodeRelSaveReqVO> resultList = new ArrayList<>();
 
-        // 遍历 data 下的 taskRelationList，生成 DppEtlTaskNodeRelSaveReqVO
+        // Iterate over taskRelationList in data, generate DppEtlTaskNodeRelSaveReqVO
         for (ProcessTaskRelation taskRelation : data.getTaskRelationList()) {
             DppEtlTaskNodeRelSaveReqVO taskNodeRelSaveReqVO = new DppEtlTaskNodeRelSaveReqVO();
 
-            // 1. 填充任务节点关系相关字段
-            taskNodeRelSaveReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // 项目ID
-            taskNodeRelSaveReqVO.setProjectCode(String.valueOf(dppEtlNewNodeSaveReqVO.getProjectCode())); // 项目编码
+            // 1. Populate task-node relation fields
+            taskNodeRelSaveReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // Project ID
+            taskNodeRelSaveReqVO.setProjectCode(String.valueOf(dppEtlNewNodeSaveReqVO.getProjectCode())); // Project code
 
-            // 任务相关字段
-            taskNodeRelSaveReqVO.setTaskId(dppEtlTaskSaveReqVO.getId()); // 任务ID
-            taskNodeRelSaveReqVO.setTaskCode(String.valueOf(data.getCode())); // 任务编码
-            taskNodeRelSaveReqVO.setTaskVersion(data.getVersion()); // 任务版本
+            // Task-related fields
+            taskNodeRelSaveReqVO.setTaskId(dppEtlTaskSaveReqVO.getId()); // Task ID
+            taskNodeRelSaveReqVO.setTaskCode(String.valueOf(data.getCode())); // Task code
+            taskNodeRelSaveReqVO.setTaskVersion(data.getVersion()); // Task version
 
-            // 前节点相关字段
-            taskNodeRelSaveReqVO.setPreNodeId(getIdByCode(dppEtlNodeBatch, String.valueOf(taskRelation.getPreTaskCode()), taskRelation.getPreTaskVersion())); // 前节点ID
-            taskNodeRelSaveReqVO.setPreNodeCode(String.valueOf(taskRelation.getPreTaskCode())); // 前节点编码
-            taskNodeRelSaveReqVO.setPreNodeVersion(taskRelation.getPreTaskVersion()); // 前节点版本
+            // Pre-node related fields
+            taskNodeRelSaveReqVO.setPreNodeId(getIdByCode(dppEtlNodeBatch, String.valueOf(taskRelation.getPreTaskCode()), taskRelation.getPreTaskVersion())); // Pre-node ID
+            taskNodeRelSaveReqVO.setPreNodeCode(String.valueOf(taskRelation.getPreTaskCode())); // Pre-node code
+            taskNodeRelSaveReqVO.setPreNodeVersion(taskRelation.getPreTaskVersion()); // Pre-node version
 
-            // 后节点相关字段
-            taskNodeRelSaveReqVO.setPostNodeId(getIdByCode(dppEtlNodeBatch, String.valueOf(data.getCode()), taskRelation.getPreTaskVersion())); // 后节点ID
-            taskNodeRelSaveReqVO.setPostNodeCode(String.valueOf(taskRelation.getPostTaskCode())); // 后节点编码
-            taskNodeRelSaveReqVO.setPostNodeVersion(taskRelation.getPostTaskVersion()); // 后节点版本
+            // Post-node related fields
+            taskNodeRelSaveReqVO.setPostNodeId(getIdByCode(dppEtlNodeBatch, String.valueOf(data.getCode()), taskRelation.getPreTaskVersion())); // Post-node ID
+            taskNodeRelSaveReqVO.setPostNodeCode(String.valueOf(taskRelation.getPostTaskCode())); // Post-node code
+            taskNodeRelSaveReqVO.setPostNodeVersion(taskRelation.getPostTaskVersion()); // Post-node version
 
-            // 可选字段
-            taskNodeRelSaveReqVO.setRemark(null); // 备注
+            // Optional fields
+            taskNodeRelSaveReqVO.setRemark(null); // Remark
 
-            // 2. 填充新增/修改相关信息
-            taskNodeRelSaveReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // 假设项目ID为创建者ID（根据需求调整）
-            taskNodeRelSaveReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // 假设任务名称为创建者（根据需求调整）
-            taskNodeRelSaveReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // 设置当前时间为创建时间
-            taskNodeRelSaveReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // 假设项目ID为更新者ID（根据需求调整）
-            taskNodeRelSaveReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // 假设任务名称为更新者（根据需求调整）
-            taskNodeRelSaveReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // 设置当前时间为更新时间
+            // 2. Populate create/modify info
+            taskNodeRelSaveReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // Assuming project ID as creator ID (adjust as needed)
+            taskNodeRelSaveReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // Assuming task name as creator (adjust as needed)
+            taskNodeRelSaveReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // Set current time as creation time
+            taskNodeRelSaveReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // Assuming project ID as updater ID (adjust as needed)
+            taskNodeRelSaveReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // Assuming task name as updater (adjust as needed)
+            taskNodeRelSaveReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // Set current time as update time
 
-            // 添加到结果列表
+            // Add to result list
             resultList.add(taskNodeRelSaveReqVO);
         }
 
@@ -621,41 +621,41 @@ public class TaskConverter {
     public static List<DppEtlTaskNodeRelLogSaveReqVO> convertToDppEtlTaskNodeRelLogSaveReqVOList(ProcessDefinition data, DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO, List<DppEtlNodeLogDO> dppEtlNodeBatch, DppEtlTaskLogSaveReqVO dppEtlTaskSaveReqVO) {
         List<DppEtlTaskNodeRelLogSaveReqVO> resultList = new ArrayList<>();
 
-        // 遍历 data 下的 taskRelationList，生成 DppEtlTaskNodeRelSaveReqVO
+        // Iterate over taskRelationList in data, generate DppEtlTaskNodeRelSaveReqVO
         for (ProcessTaskRelation taskRelation : data.getTaskRelationList()) {
             DppEtlTaskNodeRelLogSaveReqVO taskNodeRelSaveReqVO = new DppEtlTaskNodeRelLogSaveReqVO();
 
-            // 1. 填充任务节点关系相关字段
-            taskNodeRelSaveReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // 项目ID
-            taskNodeRelSaveReqVO.setProjectCode(String.valueOf(dppEtlNewNodeSaveReqVO.getProjectCode())); // 项目编码
+            // 1. Populate task-node relation fields
+            taskNodeRelSaveReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // Project ID
+            taskNodeRelSaveReqVO.setProjectCode(String.valueOf(dppEtlNewNodeSaveReqVO.getProjectCode())); // Project code
 
-            // 任务相关字段
-            taskNodeRelSaveReqVO.setTaskId(dppEtlTaskSaveReqVO.getId()); // 任务ID
-            taskNodeRelSaveReqVO.setTaskCode(String.valueOf(data.getCode())); // 任务编码
-            taskNodeRelSaveReqVO.setTaskVersion(data.getVersion()); // 任务版本
+            // Task-related fields
+            taskNodeRelSaveReqVO.setTaskId(dppEtlTaskSaveReqVO.getId()); // Task ID
+            taskNodeRelSaveReqVO.setTaskCode(String.valueOf(data.getCode())); // Task code
+            taskNodeRelSaveReqVO.setTaskVersion(data.getVersion()); // Task version
 
-            // 前节点相关字段
-            taskNodeRelSaveReqVO.setPreNodeId(getDppEtlNodeLogDOIdByCode(dppEtlNodeBatch, String.valueOf(taskRelation.getPreTaskCode()), taskRelation.getPreTaskVersion())); // 前节点ID
-            taskNodeRelSaveReqVO.setPreNodeCode(String.valueOf(taskRelation.getPreTaskCode())); // 前节点编码
-            taskNodeRelSaveReqVO.setPreNodeVersion(taskRelation.getPreTaskVersion()); // 前节点版本
+            // Pre-node related fields
+            taskNodeRelSaveReqVO.setPreNodeId(getDppEtlNodeLogDOIdByCode(dppEtlNodeBatch, String.valueOf(taskRelation.getPreTaskCode()), taskRelation.getPreTaskVersion())); // Pre-node ID
+            taskNodeRelSaveReqVO.setPreNodeCode(String.valueOf(taskRelation.getPreTaskCode())); // Pre-node code
+            taskNodeRelSaveReqVO.setPreNodeVersion(taskRelation.getPreTaskVersion()); // Pre-node version
 
-            // 后节点相关字段
-            taskNodeRelSaveReqVO.setPostNodeId(getDppEtlNodeLogDOIdByCode(dppEtlNodeBatch, String.valueOf(data.getCode()), taskRelation.getPreTaskVersion())); // 后节点ID
-            taskNodeRelSaveReqVO.setPostNodeCode(String.valueOf(taskRelation.getPostTaskCode())); // 后节点编码
-            taskNodeRelSaveReqVO.setPostNodeVersion(taskRelation.getPostTaskVersion()); // 后节点版本
+            // Post-node related fields
+            taskNodeRelSaveReqVO.setPostNodeId(getDppEtlNodeLogDOIdByCode(dppEtlNodeBatch, String.valueOf(data.getCode()), taskRelation.getPreTaskVersion())); // Post-node ID
+            taskNodeRelSaveReqVO.setPostNodeCode(String.valueOf(taskRelation.getPostTaskCode())); // Post-node code
+            taskNodeRelSaveReqVO.setPostNodeVersion(taskRelation.getPostTaskVersion()); // Post-node version
 
-            // 可选字段
-            taskNodeRelSaveReqVO.setRemark(null); // 备注
+            // Optional fields
+            taskNodeRelSaveReqVO.setRemark(null); // Remark
 
-            // 2. 填充新增/修改相关信息
-            taskNodeRelSaveReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // 假设项目ID为创建者ID（根据需求调整）
-            taskNodeRelSaveReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // 假设任务名称为创建者（根据需求调整）
-            taskNodeRelSaveReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // 设置当前时间为创建时间
-            taskNodeRelSaveReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // 假设项目ID为更新者ID（根据需求调整）
-            taskNodeRelSaveReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // 假设任务名称为更新者（根据需求调整）
-            taskNodeRelSaveReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // 设置当前时间为更新时间
+            // 2. Populate create/modify info
+            taskNodeRelSaveReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // Assuming project ID as creator ID (adjust as needed)
+            taskNodeRelSaveReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // Assuming task name as creator (adjust as needed)
+            taskNodeRelSaveReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // Set current time as creation time
+            taskNodeRelSaveReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // Assuming project ID as updater ID (adjust as needed)
+            taskNodeRelSaveReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // Assuming task name as updater (adjust as needed)
+            taskNodeRelSaveReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // Set current time as update time
 
-            // 添加到结果列表
+            // Add to result list
             resultList.add(taskNodeRelSaveReqVO);
         }
 
@@ -665,29 +665,29 @@ public class TaskConverter {
 
     public static long getDppEtlNodeLogDOIdByCode(List<DppEtlNodeLogDO> dppEtlNodeDOList, String code, long preTaskVersion) {
         return dppEtlNodeDOList.stream()
-                .filter(task -> StringUtils.equals(task.getCode(), code) && task.getVersion() == preTaskVersion)  // 匹配 code
-                .map(DppEtlNodeLogDO::getId)  // 获取对应的 id
-                .findFirst()  // 如果找到匹配项，返回第一个
-                .orElse(-1L);  // 如果没有找到，返回默认值 -1
+                .filter(task -> StringUtils.equals(task.getCode(), code) && task.getVersion() == preTaskVersion)  // Match code
+                .map(DppEtlNodeLogDO::getId)  // Get the corresponding id
+                .findFirst()  // If a match is found, return the first one
+                .orElse(-1L);  // If no match found, return default value -1
     }
 
 
     /**
-     * 工具方法，生成 DsSchedulerSaveReqDTO。
+     * Utility method to generate DsSchedulerSaveReqDTO.
      *
-     * @param crontab               Cron 表达式
-     * @param processDefinitionCode 任务编码
+     * @param crontab               Cron expression
+     * @param processDefinitionCode Task code
      * @return DsSchedulerSaveReqDTO
      */
     public static DsSchedulerSaveReqDTO createSchedulerRequest(String crontab, String processDefinitionCode) {
-        // 获取当前时间
+        // Get current time
         String startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 
-        // 获取100年后的时间
+        // Get time 100 years later
         long currentTime = System.currentTimeMillis();
         String endTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(currentTime + 100L * 365 * 24 * 60 * 60 * 1000));
 
-        // 创建 DsSchedulerSaveReqDTO 并设置默认值
+        // Create DsSchedulerSaveReqDTO and set default values
         DsSchedulerSaveReqDTO dto = new DsSchedulerSaveReqDTO();
         dto.setSchedule(String.format("{\"startTime\":\"%s\",\"endTime\":\"%s\",\"crontab\":\"%s\",\"timezoneId\":\"Asia/Shanghai\"}",
                 startTime, endTime, crontab));
@@ -701,17 +701,17 @@ public class TaskConverter {
 
 
     /**
-     * 将 DsSchedulerRespDTO 转换为 DppEtlSchedulerSaveReqVO
+     * Convert DsSchedulerRespDTO to DppEtlSchedulerSaveReqVO
      *
      * @param dsSchedulerRespDTO DsSchedulerRespDTO
      * @param dppEtlTaskDO
      * @return DppEtlSchedulerSaveReqVO
      */
     public static DppEtlSchedulerSaveReqVO convertToDppEtlSchedulerSaveReqVO(DsSchedulerRespDTO dsSchedulerRespDTO, DppEtlTaskDO dppEtlTaskDO) {
-        // 创建 DppEtlSchedulerSaveReqVO 对象
+        // Create DppEtlSchedulerSaveReqVO object
         DppEtlSchedulerSaveReqVO reqVO = new DppEtlSchedulerSaveReqVO();
 
-        // 从 dsSchedulerRespDTO 中提取数据并填充 reqVO
+        // Extract data from dsSchedulerRespDTO and populate reqVO
         Schedule schedule = dsSchedulerRespDTO.getData();
 
         reqVO.setStartTime(schedule.getStartTime());
@@ -720,33 +720,33 @@ public class TaskConverter {
         reqVO.setCronExpression(schedule.getCrontab());
         reqVO.setFailureStrategy("1");
 
-        // 可以根据需要填写默认值或处理 dsId 和备注等字段
-        reqVO.setDsId(schedule.getId()); // 假设 dsId 和 id 相同
-        reqVO.setRemark(null); // 备注可以根据实际需求进行修改
+        // You can fill in default values or handle dsId and remark fields as needed
+        reqVO.setDsId(schedule.getId()); // Assume dsId and id are the same
+        reqVO.setRemark(null); // Remark can be modified based on actual requirements
 
         return reqVO;
     }
 
 
     /**
-     * 工具方法，生成 DsSchedulerUpdateReqDTO。
+     * Utility method to generate DsSchedulerUpdateReqDTO.
      *
-     * @param id                    调度ID
-     * @param crontab               Cron 表达式
-     * @param processDefinitionCode 任务编码
+     * @param id                    Schedule ID
+     * @param crontab               Cron expression
+     * @param processDefinitionCode Task code
      * @return DsSchedulerUpdateReqDTO
      */
     public static DsSchedulerUpdateReqDTO createSchedulerUpdateRequest(Long id, String crontab, String processDefinitionCode) {
-        // 获取当前时间
+        // Get current time
         String startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 
-        // 获取100年后的时间
+        // Get time 100 years later
         long currentTime = System.currentTimeMillis();
         String endTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(currentTime + 100L * 365 * 24 * 60 * 60 * 1000));
 
-        // 创建 DsSchedulerUpdateReqDTO 并设置默认值
+        // Create DsSchedulerUpdateReqDTO and set default values
         DsSchedulerUpdateReqDTO dto = new DsSchedulerUpdateReqDTO();
-        dto.setId(id); // 设置调度ID
+        dto.setId(id); // Set schedule ID
         dto.setSchedule(String.format("{\"startTime\":\"%s\",\"endTime\":\"%s\",\"crontab\":\"%s\",\"timezoneId\":\"Asia/Shanghai\"}",
                 startTime, endTime, crontab));
         dto.setProcessDefinitionCode(processDefinitionCode);
@@ -759,71 +759,71 @@ public class TaskConverter {
 
 
     /**
-     * 将 DsSchedulerSaveReqDTO 转换为 DppEtlSchedulerSaveReqVO
+     * Convert DsSchedulerSaveReqDTO to DppEtlSchedulerSaveReqVO
      *
      * @param dppEtlNewNodeSaveReqVO
      * @return DppEtlSchedulerSaveReqVO
      */
     public static DppEtlSchedulerSaveReqVO convertToDppEtlSchedulerSaveReqVO(Long taskId, String taskCode, DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO) {
-        // 创建 DppEtlSchedulerSaveReqVO 对象
+        // Create DppEtlSchedulerSaveReqVO object
         DppEtlSchedulerSaveReqVO reqVO = new DppEtlSchedulerSaveReqVO();
 
-        // 直接从 dsSchedulerSaveReqDTO 中填充字段
+        // Populate fields directly from dsSchedulerSaveReqDTO
         reqVO.setTaskId(taskId);
         reqVO.setTaskCode(taskCode);
 
-        // 获取当前时间
+        // Get current time
         String startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 
-        // 获取100年后的时间
+        // Get time 100 years later
         long currentTime = System.currentTimeMillis();
         Date date = new Date(currentTime + 100L * 365 * 24 * 60 * 60 * 1000);
 
         reqVO.setStartTime(new Date());
         reqVO.setEndTime(date);
-        reqVO.setTimezoneId("Asia/Shanghai"); // 默认时区
+        reqVO.setTimezoneId("Asia/Shanghai"); // Default timezone
 
         reqVO.setCronExpression(dppEtlNewNodeSaveReqVO.getCrontab());
         reqVO.setFailureStrategy("1");
         reqVO.setStatus("0");
 
 
-        // 填充dsId，假设dsId与ID相同
+        // Populate dsId, assuming dsId is the same as ID
         reqVO.setDsId((long) -1);
 
-        // 备注可以根据需求填写
+        // Remark can be filled based on requirements
 
         return reqVO;
     }
 
-    // 方法解析 schedule 字段中的时间部分
+    // Method to parse the time portion from the schedule field
     private static Date parseStartTime(String scheduleJson) {
-        // 提取并解析开始时间 (假设你有方法从 JSON 解析出来)
-        return new Date(); // 示例，实际需要提取出对应的时间
+        // Extract and parse start time (assuming you have a method to parse it from JSON)
+        return new Date(); // Example, actually need to extract the corresponding time
     }
 
     private static Date parseEndTime(String scheduleJson) {
-        // 提取并解析结束时间 (假设你有方法从 JSON 解析出来)
-        return new Date(); // 示例，实际需要提取出对应的时间
+        // Extract and parse end time (assuming you have a method to parse it from JSON)
+        return new Date(); // Example, actually need to extract the corresponding time
     }
 
     public static List<String> getPreAndPostNodeCodeList(List<DppEtlTaskNodeRelRespVO> dppEtlTaskNodeRelRespVOList) {
         List<String> result = new ArrayList<>();
         for (DppEtlTaskNodeRelRespVO vo : dppEtlTaskNodeRelRespVOList) {
-            result.add(vo.getPreNodeCode());  // 添加 preNodeCode
-            result.add(vo.getPostNodeCode()); // 添加 postNodeCode
+            result.add(vo.getPreNodeCode());  // Add preNodeCode
+            result.add(vo.getPostNodeCode()); // Add postNodeCode
         }
-        return result;  // 返回 List<String>
+        return result;  // Return List<String>
     }
 
 
     public static DsStartTaskReqDTO createDsStartTaskReqDTO(String processDefinitionCode) {
-        // 获取当前日期，格式为 "yyyy-MM-dd"
+        // Get current date in "yyyy-MM-dd" format
         String currentDate = DateUtil.today();
-        // 构造 scheduleTime 字段，固定格式 "yyyy-MM-dd 00:00:00"
+        // Construct scheduleTime field, fixed format "yyyy-MM-dd 00:00:00"
         String scheduleTime = String.format("{\"complementStartDate\":\"%s 00:00:00\",\"complementEndDate\":\"%s 00:00:00\"}", currentDate, currentDate);
 
-        // 使用 builder 模式创建 DsStartTaskReqDTO 对象，其他字段均为写死的值
+        // Use builder pattern to create DsStartTaskReqDTO object, other fields are hardcoded values
         return DsStartTaskReqDTO.builder()
                 .processDefinitionCode(JSONUtils.convertToLong(processDefinitionCode))
                 .failureStrategy("CONTINUE")
@@ -835,7 +835,7 @@ public class TaskConverter {
 
 
     /**
-     * 构建etl坐标信息数据
+     * Build ETL location coordinate data
      *
      * @param locations
      * @param code
@@ -846,16 +846,16 @@ public class TaskConverter {
 
         Map<String, Object> location = locations.get(0);
         Map<String, Object> locationMap = new HashMap<>();
-        // 填充必要字段
-        locationMap.put("taskCode", Long.parseLong(code)); // 默认 taskCode 为 0
-        locationMap.put("x", location.getOrDefault("x", 0)); // 默认 x 为 0
-        locationMap.put("y", location.getOrDefault("y", 0)); // 默认 y 为 0
+        // Populate required fields
+        locationMap.put("taskCode", Long.parseLong(code)); // Default taskCode is 0
+        locationMap.put("x", location.getOrDefault("x", 0)); // Default x is 0
+        locationMap.put("y", location.getOrDefault("y", 0)); // Default y is 0
         locationList.add(locationMap);
         return JSON.toJSONString(locationList);
     }
 
     /**
-     * 构建etl节点关系json数据
+     * Build ETL node relation JSON data
      *
      * @param code
      * @return
@@ -875,98 +875,98 @@ public class TaskConverter {
 
 
     /**
-     * 构建etl节点定义json数据
+     * Build ETL node definition JSON data
      *
-     * @param id        etl节点id
-     * @param name      etl节点美年广场
-     * @param code      etl节点编码
-     * @param version   etl节点版本
-     * @param mainArgs  etl节点参数
+     * @param id        ETL node id
+     * @param name      ETL node name
+     * @param code      ETL node code
+     * @param version   ETL node version
+     * @param mainArgs  ETL node parameters
      * @param draftJson
      * @return
      */
     public static String buildEtlTaskDefinitionJson(Long id, String name, String code, Integer version, Map<String, Object> mainArgs, String draftJson) {
         List<Map<String, Object>> result = new ArrayList<>();
-        //自定义参数
+        // Custom parameters
         Map<String, Object> definitionJsonMap = JSONUtils.convertTaskDefinitionJsonMap(draftJson);
 
-        // 处理每个 task 的默认值和必要字段
+        // Process default values and required fields for each task
         Map<String, Object> taskMap = new HashMap<>();
 
-        // 设置基本信息字段
-        taskMap.put("id", id); // 默认 id 为 0
-        taskMap.put("name", name); // 默认空字符串
-        taskMap.put("code", code); // 默认 code 为 0L
-        taskMap.put("version", version); // 默认版本号为1
-        taskMap.put("description", ""); // 默认描述为空
-        taskMap.put("workerGroup", MapUtils.getObject(definitionJsonMap,"workerGroup",DEFAULT_WORKER_GROUP) ); // 默认 workerGroup 为 "default"
-        taskMap.put("environmentCode", DEFAULT_ENVIRONMENT_CODE); // 默认环境编码
-        taskMap.put("flag", DEFAULT_FLAG); // 默认 flag 为 "YES"
-        taskMap.put("isCache", DEFAULT_IS_CACHE); // 默认 isCache 为 "NO"
-        taskMap.put("taskPriority", MapUtils.getObject(definitionJsonMap,"taskPriority",DEFAULT_TASK_PRIORITY)); // 默认任务优先级为 "MEDIUM"
-        taskMap.put("taskType", DEFAULT_TASK_TYPE); // 默认任务类型为 "SPARK"
+        // Set basic info fields
+        taskMap.put("id", id); // Default id is 0
+        taskMap.put("name", name); // Default empty string
+        taskMap.put("code", code); // Default code is 0L
+        taskMap.put("version", version); // Default version is 1
+        taskMap.put("description", ""); // Default empty description
+        taskMap.put("workerGroup", MapUtils.getObject(definitionJsonMap,"workerGroup",DEFAULT_WORKER_GROUP) ); // Default workerGroup is "default"
+        taskMap.put("environmentCode", DEFAULT_ENVIRONMENT_CODE); // Default environment code
+        taskMap.put("flag", DEFAULT_FLAG); // Default flag is "YES"
+        taskMap.put("isCache", DEFAULT_IS_CACHE); // Default isCache is "NO"
+        taskMap.put("taskPriority", MapUtils.getObject(definitionJsonMap,"taskPriority",DEFAULT_TASK_PRIORITY)); // Default task priority is "MEDIUM"
+        taskMap.put("taskType", DEFAULT_TASK_TYPE); // Default task type is "SPARK"
         taskMap.put("taskExecuteType", "BATCH");
 
-        //2025-06-25 新增配置项默认值
+        // 2025-06-25 Added new config item defaults
         taskMap.put("failRetryTimes", MapUtils.getObject(definitionJsonMap,"failRetryTimes",DEFAULT_TASK_failRetryTimes));
         taskMap.put("delayTime", MapUtils.getObject(definitionJsonMap,"delayTime",DEFAULT_TASK_delayTime));
         taskMap.put("failRetryInterval", MapUtils.getObject(definitionJsonMap,"failRetryInterval",DEFAULT_TASK_failRetryInterval));
 
         Map<String, Object> taskParams = new LinkedHashMap<>();
 
-        taskParams.put("localParams", new ArrayList<>()); // 默认空列表
-        taskParams.put("rawScript", ""); // 默认空字符串
-        taskParams.put("resourceList", new ArrayList<>()); // 默认空列表
-        taskParams.put("programType", DEFAULT_PROGRAM_TYPE); // 默认程序类型为 "JAVA"
+        taskParams.put("localParams", new ArrayList<>()); // Default empty list
+        taskParams.put("rawScript", ""); // Default empty string
+        taskParams.put("resourceList", new ArrayList<>()); // Default empty list
+        taskParams.put("programType", DEFAULT_PROGRAM_TYPE); // Default program type is "JAVA"
         taskParams.put("mainClass", defaultMainClass);
 
-        // mainJar是Map，且resourceName字段为默认值
+        // mainJar is a Map, with resourceName field set to default value
         Map<String, Object> mainJar = new HashMap<>();
         mainJar.put("resourceName", resourceName);
         taskParams.put("mainJar", mainJar);
-        taskParams.put("deployMode", DEFAULT_DEPLOY_MODE); // 默认部署模式为 "client"
-        taskParams.put("mainArgs", Base64.encode(JSON.toJSONString(mainArgs))); // 默认空字符串
-        taskParams.put("master", defaultMaster); // 默认Spark master URL
-        taskParams.put("driverCores",MapUtils.getObject(definitionJsonMap,"driverCores",DEFAULT_DRIVER_CORES) ); // 默认驱动核心数
-        taskParams.put("driverMemory",MapUtils.getObject(definitionJsonMap,"driverMemory",DEFAULT_DRIVER_MEMORY) ); // 默认驱动内存
-        taskParams.put("numExecutors", MapUtils.getObject(definitionJsonMap,"numExecutors",DEFAULT_NUM_EXECUTORS)); // 默认执行器数量
-        taskParams.put("executorMemory",MapUtils.getObject(definitionJsonMap,"executorMemory",DEFAULT_EXECUTOR_MEMORY) ); // 默认执行器内存
-        taskParams.put("executorCores",MapUtils.getObject(definitionJsonMap,"executorCores",DEFAULT_EXECUTOR_CORES) ); // 默认执行器核心数
-        taskParams.put("yarnQueue",MapUtils.getObject(definitionJsonMap,"yarnQueue","") ); // 默认执行器核心数
-        taskParams.put("sqlExecutionType", DEFAULT_SQL_EXECUTION_TYPE); // 默认SQL执行类型为 "SCRIPT"
+        taskParams.put("deployMode", DEFAULT_DEPLOY_MODE); // Default deploy mode is "client"
+        taskParams.put("mainArgs", Base64.encode(JSON.toJSONString(mainArgs))); // Default empty string
+        taskParams.put("master", defaultMaster); // Default Spark master URL
+        taskParams.put("driverCores",MapUtils.getObject(definitionJsonMap,"driverCores",DEFAULT_DRIVER_CORES) ); // Default driver cores
+        taskParams.put("driverMemory",MapUtils.getObject(definitionJsonMap,"driverMemory",DEFAULT_DRIVER_MEMORY) ); // Default driver memory
+        taskParams.put("numExecutors", MapUtils.getObject(definitionJsonMap,"numExecutors",DEFAULT_NUM_EXECUTORS)); // Default number of executors
+        taskParams.put("executorMemory",MapUtils.getObject(definitionJsonMap,"executorMemory",DEFAULT_EXECUTOR_MEMORY) ); // Default executor memory
+        taskParams.put("executorCores",MapUtils.getObject(definitionJsonMap,"executorCores",DEFAULT_EXECUTOR_CORES) ); // Default executor cores
+        taskParams.put("yarnQueue",MapUtils.getObject(definitionJsonMap,"yarnQueue","") ); // Default YARN queue
+        taskParams.put("sqlExecutionType", DEFAULT_SQL_EXECUTION_TYPE); // Default SQL execution type is "SCRIPT"
 
-        // 将任务的taskParams加入到taskMap中
+        // Add the task's taskParams to taskMap
         taskMap.put("taskParams", taskParams);
 
-        // 将填充好的任务加入到结果列表
+        // Add the populated task to the result list
         result.add(taskMap);
-        // 返回处理后的JSON字符串
+        // Return the processed JSON string
         return JSON.toJSONString(result);
     }
 
     public static List<DppEtlNodeSaveReqVO> convertToDppEtlNodeSaveReqVOList(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO, String taskDefinitionJson) {
         List<DppEtlNodeSaveReqVO> resultList = new ArrayList<>();
 
-        //取出入参数的信息
+        // Extract input parameter info
         List<DppEtlNodeSaveReqVO> list = JSON.parseArray(taskDefinitionJson, DppEtlNodeSaveReqVO.class);
 
-        // 遍历 ProcessDefinition 中的 taskDefinitionList
+        // Iterate over taskDefinitionList in ProcessDefinition
         for (DppEtlNodeSaveReqVO createReqVO : list) {
-            // 1. 任务相关信息
-            createReqVO.setType(createReqVO.getTaskType());//节点类型
-            createReqVO.setTaskType(dppEtlNewNodeSaveReqVO.getType());//任务类型
-            createReqVO.setVersion(1); // 任务版本
-            createReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // 项目ID
-            createReqVO.setProjectCode(String.valueOf(dppEtlNewNodeSaveReqVO.getProjectCode())); // 项目编码
-            // 填充创建者和更新时间信息
-            createReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // 假设项目ID为创建者ID（根据需求调整）
-            createReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // 假设任务名称为创建者（根据需求调整）
-            createReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // 设置当前时间为创建时间
-            createReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // 假设项目ID为更新者ID（根据需求调整）
-            createReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // 假设任务名称为更新者（根据需求调整）
-            createReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // 设置当前时间为更新时间
+            // 1. Task-related info
+            createReqVO.setType(createReqVO.getTaskType());// Node type
+            createReqVO.setTaskType(dppEtlNewNodeSaveReqVO.getType());// Task type
+            createReqVO.setVersion(1); // Task version
+            createReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // Project ID
+            createReqVO.setProjectCode(String.valueOf(dppEtlNewNodeSaveReqVO.getProjectCode())); // Project code
+            // Populate creator and update time info
+            createReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // Assuming project ID as creator ID (adjust as needed)
+            createReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // Assuming task name as creator (adjust as needed)
+            createReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // Set current time as creation time
+            createReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // Assuming project ID as updater ID (adjust as needed)
+            createReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // Assuming task name as updater (adjust as needed)
+            createReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // Set current time as update time
             createReqVO.setParameters(JSON.toJSONString(createReqVO.getTaskParams()));
-            // 添加到结果列表
+            // Add to result list
             resultList.add(createReqVO);
         }
         return resultList;
@@ -974,25 +974,25 @@ public class TaskConverter {
 
     public static List<DppEtlNodeSaveReqVO> convertToDppEtlNodeSaveReqVOList(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO, Integer nodeVersion) {
         List<DppEtlNodeSaveReqVO> resultList = new ArrayList<>();
-        //取出入参数的信息
+        // Extract input parameter info
         List<DppEtlNodeSaveReqVO> list = JSON.parseArray(dppEtlNewNodeSaveReqVO.getTaskDefinitionList(), DppEtlNodeSaveReqVO.class);
 
-        // 遍历 ProcessDefinition 中的 taskDefinitionList
+        // Iterate over taskDefinitionList in ProcessDefinition
         for (DppEtlNodeSaveReqVO createReqVO : list) {
-            // 1. 任务相关信息
-            createReqVO.setType(createReqVO.getTaskType());//节点类型
-            createReqVO.setTaskType(dppEtlNewNodeSaveReqVO.getType());//任务类型
-            createReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // 项目ID
-            createReqVO.setProjectCode(String.valueOf(dppEtlNewNodeSaveReqVO.getProjectCode())); // 项目编码
-            // 填充创建者和更新时间信息
-            createReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // 假设项目ID为创建者ID（根据需求调整）
-            createReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // 假设任务名称为创建者（根据需求调整）
-            createReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // 设置当前时间为创建时间
-            createReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // 假设项目ID为更新者ID（根据需求调整）
-            createReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // 假设任务名称为更新者（根据需求调整）
-            createReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // 设置当前时间为更新时间
+            // 1. Task-related info
+            createReqVO.setType(createReqVO.getTaskType());// Node type
+            createReqVO.setTaskType(dppEtlNewNodeSaveReqVO.getType());// Task type
+            createReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // Project ID
+            createReqVO.setProjectCode(String.valueOf(dppEtlNewNodeSaveReqVO.getProjectCode())); // Project code
+            // Populate creator and update time info
+            createReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // Assuming project ID as creator ID (adjust as needed)
+            createReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // Assuming task name as creator (adjust as needed)
+            createReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // Set current time as creation time
+            createReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // Assuming project ID as updater ID (adjust as needed)
+            createReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // Assuming task name as updater (adjust as needed)
+            createReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // Set current time as update time
             createReqVO.setParameters(JSON.toJSONString(createReqVO.getTaskParams()));
-            // 添加到结果列表
+            // Add to result list
             resultList.add(createReqVO);
         }
         if (nodeVersion != null) {
@@ -1013,48 +1013,48 @@ public class TaskConverter {
     public static List<DppEtlTaskNodeRelSaveReqVO> convertToDppEtlTaskNodeRelSaveReqVOList(List<DppEtlNodeDO> dppEtlNodeBatch, DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO, DppEtlTaskSaveReqVO dppEtlTaskSaveReqVO) {
         List<DppEtlTaskNodeRelSaveReqVO> resultList = new ArrayList<>();
         List<ProcessTaskRelation> list = JSON.parseArray(dppEtlNewNodeSaveReqVO.getTaskRelationJson(), ProcessTaskRelation.class);
-        // 遍历 data 下的 taskRelationList，生成 DppEtlTaskNodeRelSaveReqVO
+        // Iterate over taskRelationList in data, generate DppEtlTaskNodeRelSaveReqVO
         for (ProcessTaskRelation taskRelation : list) {
 
             DppEtlTaskNodeRelSaveReqVO taskNodeRelSaveReqVO = new DppEtlTaskNodeRelSaveReqVO();
 
-            // 1. 填充任务节点关系相关字段
-            taskNodeRelSaveReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // 项目ID
-            taskNodeRelSaveReqVO.setProjectCode(String.valueOf(dppEtlNewNodeSaveReqVO.getProjectCode())); // 项目编码
+            // 1. Populate task-node relation fields
+            taskNodeRelSaveReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // Project ID
+            taskNodeRelSaveReqVO.setProjectCode(String.valueOf(dppEtlNewNodeSaveReqVO.getProjectCode())); // Project code
 
-            // 任务相关字段
-            taskNodeRelSaveReqVO.setTaskId(dppEtlTaskSaveReqVO.getId()); // 任务ID
-            taskNodeRelSaveReqVO.setTaskCode(dppEtlTaskSaveReqVO.getCode()); // 任务编码
-            taskNodeRelSaveReqVO.setTaskVersion(dppEtlTaskSaveReqVO.getVersion()); // 任务版本
+            // Task-related fields
+            taskNodeRelSaveReqVO.setTaskId(dppEtlTaskSaveReqVO.getId()); // Task ID
+            taskNodeRelSaveReqVO.setTaskCode(dppEtlTaskSaveReqVO.getCode()); // Task code
+            taskNodeRelSaveReqVO.setTaskVersion(dppEtlTaskSaveReqVO.getVersion()); // Task version
 
-            // 前节点相关字段
-            taskNodeRelSaveReqVO.setPreNodeCode(String.valueOf(taskRelation.getPreTaskCode())); // 前节点编码
-            taskNodeRelSaveReqVO.setPreNodeVersion(taskRelation.getPreTaskVersion()); // 前节点版本
+            // Pre-node related fields
+            taskNodeRelSaveReqVO.setPreNodeCode(String.valueOf(taskRelation.getPreTaskCode())); // Pre-node code
+            taskNodeRelSaveReqVO.setPreNodeVersion(taskRelation.getPreTaskVersion()); // Pre-node version
             if (StringUtils.isNotEmpty(taskNodeRelSaveReqVO.getPreNodeCode()) && taskNodeRelSaveReqVO.getPreNodeVersion() == 0) {
                 taskNodeRelSaveReqVO.setPreNodeVersion(1);
             }
-            taskNodeRelSaveReqVO.setPreNodeId(getIdByCode(dppEtlNodeBatch, taskNodeRelSaveReqVO.getPreNodeCode(), taskNodeRelSaveReqVO.getPreNodeVersion())); // 前节点ID
+            taskNodeRelSaveReqVO.setPreNodeId(getIdByCode(dppEtlNodeBatch, taskNodeRelSaveReqVO.getPreNodeCode(), taskNodeRelSaveReqVO.getPreNodeVersion())); // Pre-node ID
 
-            // 后节点相关字段
-            taskNodeRelSaveReqVO.setPostNodeCode(String.valueOf(taskRelation.getPostTaskCode())); // 后节点编码
-            taskNodeRelSaveReqVO.setPostNodeVersion(taskRelation.getPostTaskVersion()); // 后节点版本
+            // Post-node related fields
+            taskNodeRelSaveReqVO.setPostNodeCode(String.valueOf(taskRelation.getPostTaskCode())); // Post-node code
+            taskNodeRelSaveReqVO.setPostNodeVersion(taskRelation.getPostTaskVersion()); // Post-node version
             if (StringUtils.isNotEmpty(taskNodeRelSaveReqVO.getPostNodeCode()) && taskNodeRelSaveReqVO.getPostNodeVersion() == 0) {
                 taskNodeRelSaveReqVO.setPostNodeVersion(1);
             }
-            taskNodeRelSaveReqVO.setPostNodeId(getIdByCode(dppEtlNodeBatch, taskNodeRelSaveReqVO.getPostNodeCode(), taskNodeRelSaveReqVO.getPostNodeVersion())); // 前节点ID
+            taskNodeRelSaveReqVO.setPostNodeId(getIdByCode(dppEtlNodeBatch, taskNodeRelSaveReqVO.getPostNodeCode(), taskNodeRelSaveReqVO.getPostNodeVersion())); // Post-node ID
 
-            // 可选字段
-            taskNodeRelSaveReqVO.setRemark(null); // 备注
+            // Optional fields
+            taskNodeRelSaveReqVO.setRemark(null); // Remark
 
-            // 2. 填充新增/修改相关信息
-            taskNodeRelSaveReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // 假设项目ID为创建者ID（根据需求调整）
-            taskNodeRelSaveReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // 假设任务名称为创建者（根据需求调整）
-            taskNodeRelSaveReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // 设置当前时间为创建时间
-            taskNodeRelSaveReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // 假设项目ID为更新者ID（根据需求调整）
-            taskNodeRelSaveReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // 假设任务名称为更新者（根据需求调整）
-            taskNodeRelSaveReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // 设置当前时间为更新时间
+            // 2. Populate create/modify info
+            taskNodeRelSaveReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // Assuming project ID as creator ID (adjust as needed)
+            taskNodeRelSaveReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // Assuming task name as creator (adjust as needed)
+            taskNodeRelSaveReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // Set current time as creation time
+            taskNodeRelSaveReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // Assuming project ID as updater ID (adjust as needed)
+            taskNodeRelSaveReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // Assuming task name as updater (adjust as needed)
+            taskNodeRelSaveReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // Set current time as update time
 
-            // 添加到结果列表
+            // Add to result list
             resultList.add(taskNodeRelSaveReqVO);
         }
         return resultList;
@@ -1069,7 +1069,7 @@ public class TaskConverter {
     }
 
     /**
-     * 构建etl参数数据
+     * Build ETL parameter data
      *
      * @return
      */
@@ -1082,7 +1082,7 @@ public class TaskConverter {
             if (nodeMap.containsKey(dppEtlNodeSaveReqVO.getCode())) {
                 version = nodeMap.get(dppEtlNodeSaveReqVO.getCode()).getVersion();
             }
-            //组件类型 本方法含有 DB_READER、EXCEL_READER、CSV_READER、SPARK_CLEAN、DB_WRITER
+            // Component types in this method include DB_READER, EXCEL_READER, CSV_READER, SPARK_CLEAN, DB_WRITER
             String componentType = dppEtlNodeSaveReqVO.getComponentType();
             TaskComponentTypeEnum taskComponentTypeEnum = TaskComponentTypeEnum.findEnumByType(componentType);
             Map<String, Object> data = ComponentFactory.getComponentItem(componentType)
@@ -1109,10 +1109,10 @@ public class TaskConverter {
                     break;
             }
         }
-        //配置config
+        // Configure config
         Map<String, Object> config = new HashMap<>();
         config.put("taskInfo", taskInfo);
-        // EtlApplication.java 连接的 Redis 配置信息（用于获取最新数据源信息，保障任务执行）
+        // Redis config info used by EtlApplication.java (to get the latest data source info, ensuring task execution)
         config.put("redis", dsRedisConfig);
         config.put("rabbitmq", rabbitmqConfig);
         config.put("resourceUrl", resourceUrl);

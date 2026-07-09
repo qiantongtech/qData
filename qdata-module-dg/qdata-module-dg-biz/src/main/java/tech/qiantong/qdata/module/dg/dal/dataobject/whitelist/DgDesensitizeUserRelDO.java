@@ -27,14 +27,14 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 脱敏白名单与用户关联关系 DO 对象 DG_DESENSITIZE_USER_REL
+ * Desensitize Whitelist - User Relation DO entity DG_DESENSITIZE_USER_REL
  *
  * @author qdata
  * @date 2026-04-09
  */
 @Data
 @TableName(value = "DG_DESENSITIZE_USER_REL")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Can be omitted for MySQL and similar databases.
 // @KeySequence("DG_DESENSITIZE_USER_REL_seq")
 @Builder
 @NoArgsConstructor
@@ -48,26 +48,26 @@ public class DgDesensitizeUserRelDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 脱敏白名单ID */
+    /** Desensitize Whitelist ID */
     private Long desensitizeId;
 
-    /** 用户ID */
+    /** User ID */
     private Long userId;
 
-    /** 白名单名称 */
+    /** Whitelist Name */
     private String desensitizeName;
 
-    /** 用户名称 */
+    /** User Name */
     private String userName;
 
-    /** 是否有效;0：无效，1：有效 */
+    /** Valid Flag; 0: invalid, 1: valid */
     private Boolean validFlag;
 
-    /** 删除标志;1：已删除，0：未删除 */
+    /** Delete Flag; 1: deleted, 0: not deleted */
     @TableLogic
     private Boolean delFlag;
 
-    /** 生效分类;1：用户 2：角色 3：部门 */
+    /** Effective Category; 1: User 2: Role 3: Department */
     private String effectiveCategory;
 
 

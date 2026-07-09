@@ -27,12 +27,12 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 数据集成任务实例-日志 Response VO 对象 DPP_ETL_TASK_INSTANCE_LOG
+ * Data Integration Task Instance-Log Response VO Object DPP_ETL_TASK_INSTANCE_LOG
  *
  * @author qdata
  * @date 2025-08-05
  */
-@Schema(description = "数据集成任务实例-日志 Response VO")
+@Schema(description = "Data Integration Task Instance-Log Response VO")
 @Data
 public class DppEtlTaskInstanceLogRespVO implements Serializable {
 

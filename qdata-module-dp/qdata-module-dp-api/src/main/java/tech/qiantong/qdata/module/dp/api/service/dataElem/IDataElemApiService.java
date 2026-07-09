@@ -20,7 +20,7 @@ package tech.qiantong.qdata.module.dp.api.service.dataElem;
 
 /**
  * <P>
- * 用途:数据元Service接口
+ * Purpose: Data Element Service Interface
  * </p>
  *
  * @author: FXB
@@ -28,7 +28,7 @@ package tech.qiantong.qdata.module.dp.api.service.dataElem;
  **/
 public interface IDataElemApiService {
     /**
-     * 根据类目编码查询数量
+     * Get count by category code
      *
      * @return
      */

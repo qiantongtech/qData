@@ -52,7 +52,7 @@ import tech.qiantong.qdata.module.dm.dal.dataobject.dm.DmDataLayerDO;
 import tech.qiantong.qdata.module.dm.service.dm.IDmDataLayerService;
 
 /**
- * 数仓分层管理Controller
+ * Data Warehouse Layer Controller
  *
  * @author FXB
  * @date 2026-03-24

@@ -24,7 +24,7 @@ import lombok.Data;
 import java.util.Set;
 
 /**
- * 数据元 DTO 对象 DP_DATA_ELEM
+ * Data Element DTO - DP_DATA_ELEM
  *
  * @author qdata
  * @date 2025-01-21
@@ -37,40 +37,40 @@ public class DpDataElemRespDTO {
     /** ID */
     private Long id;
 
-    /** 编码 */
+    /** Code */
     private String code;
 
-    /** 名称 */
+    /** Name */
     private String name;
 
-    /** 英文名称 */
+    /** English Name */
     private String engName;
 
-    /** 类目编码 */
+    /** Category Code */
     private String catCode;
 
-    /** 类型 */
+    /** Type */
     private String type;
 
-    /** 责任人 */
+    /** Person in Charge */
     private String personCharge;
 
-    /** 联系电话 */
+    /** Contact Number */
     private String contactNumber;
 
-    /** 字段类型 */
+    /** Column Type */
     private String columnType;
 
-    /** 状态 */
+    /** Status */
     private String status;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
     @TableField(exist = false)

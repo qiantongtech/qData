@@ -33,14 +33,14 @@ public class DppQualityTaskAssetRespVO extends PageParam {
     @Schema(description = "ID", example = "")
     private Long id;
 
-    @Schema(description = "资产id")
+    @Schema(description = "Asset ID")
     private Long assetId;
 
 
-    /** 评分 */
+    /** Score */
     private Long score;
 
-    /** 问题数据 */
+    /** Problem Data */
     private Long problemData;
 
     private List<DppEvaluateLogStatisticsVO> voList;

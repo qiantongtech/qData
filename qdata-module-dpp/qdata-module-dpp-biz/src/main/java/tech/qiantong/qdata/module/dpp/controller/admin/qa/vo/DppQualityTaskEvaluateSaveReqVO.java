@@ -25,12 +25,12 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import javax.validation.constraints.Size;
 
 /**
- * 数据质量任务-评测规则 创建/修改 Request VO DPP_QUALITY_TASK_EVALUATE
+ * Data Quality Task - Evaluation Rule Create/Update Request VO DPP_QUALITY_TASK_EVALUATE
  *
  * @author Chaos
  * @date 2025-07-21
  */
-@Schema(description = "数据质量任务-评测规则 Response VO")
+@Schema(description = "Data Quality Task - Evaluation Rule Save Request VO")
 @Data
 public class DppQualityTaskEvaluateSaveReqVO extends BaseEntity {
 
@@ -95,13 +95,13 @@ public class DppQualityTaskEvaluateSaveReqVO extends BaseEntity {
 
     private Long datasourceId;
 
-    // 检测信息
+    // Detection info
     private String title;
 
 
 
     /**
-     * 分页参数（可选）
+     * Paging parameters (optional)
      */
     private Integer pageNum;
 

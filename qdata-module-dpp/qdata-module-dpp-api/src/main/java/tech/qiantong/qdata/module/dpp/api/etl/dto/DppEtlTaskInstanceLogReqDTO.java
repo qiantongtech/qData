@@ -23,7 +23,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 数据集成任务实例-日志 DTO 对象 DPP_ETL_TASK_INSTANCE_LOG
+ * Data Integration Task Instance Log DTO - DPP_ETL_TASK_INSTANCE_LOG
  *
  * @author qdata
  * @date 2025-08-05
@@ -33,28 +33,28 @@ public class DppEtlTaskInstanceLogReqDTO {
 
     private static final long serialVersionUID = 1L;
 
-    /** 任务实例id */
+    /** Task Instance ID */
     private Long taskInstanceId;
 
-    /** 时间 */
+    /** Time */
     private Date tm;
 
-    /** 任务类型 */
+    /** Task Type */
     private String taskType;
 
-    /** 任务id */
+    /** Task ID */
     private Long taskId;
 
-    /** 任务编码 */
+    /** Task Code */
     private String taskCode;
 
-    /** 日志内容 */
+    /** Log Content */
     private String logContent;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
 

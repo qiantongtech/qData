@@ -26,7 +26,7 @@ import java.util.Date;
 import java.io.Serializable;
 
 /**
- * 脱敏区间 Response VO 对象 DG_DESENSITIZE_INTERVAL
+ * Desensitize Interval Response VO DG_DESENSITIZE_INTERVAL
  *
  * @author qdata
  * @date 2026-04-10

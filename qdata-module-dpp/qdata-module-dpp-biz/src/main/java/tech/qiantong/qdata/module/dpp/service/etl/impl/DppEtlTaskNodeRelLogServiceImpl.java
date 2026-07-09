@@ -43,7 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 /**
- * 数据集成任务节点关系-日志Service业务层处理
+ * Data Integration Task-Node Relation - Log Service business layer processing
  *
  * @author qdata
  * @date 2025-02-13
@@ -100,15 +100,15 @@ public class DppEtlTaskNodeRelLogServiceImpl  extends ServiceImpl<DppEtlTaskNode
 
     @Override
     public int updateDppEtlTaskNodeRelLog(DppEtlTaskNodeRelLogSaveReqVO updateReqVO) {
-        // 相关校验
+        // Validate
 
-        // 更新数据集成任务节点关系-日志
+        // Update Data Integration Task-Node Relation - Log
         DppEtlTaskNodeRelLogDO updateObj = BeanUtils.toBean(updateReqVO, DppEtlTaskNodeRelLogDO.class);
         return dppEtlTaskNodeRelLogMapper.updateById(updateObj);
     }
     @Override
     public int removeDppEtlTaskNodeRelLog(Collection<Long> idList) {
-        // 批量删除数据集成任务节点关系-日志
+        // Batch delete Data Integration Task-Node Relation - Log
         return dppEtlTaskNodeRelLogMapper.deleteBatchIds(idList);
     }
 
@@ -129,19 +129,19 @@ public class DppEtlTaskNodeRelLogServiceImpl  extends ServiceImpl<DppEtlTaskNode
                 .collect(Collectors.toMap(
                         DppEtlTaskNodeRelLogDO::getId,
                         dppEtlTaskNodeRelLogDO -> dppEtlTaskNodeRelLogDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
         /**
-         * 导入数据集成任务节点关系-日志数据
+         * Import Data Integration Task-Node Relation - Log data
          *
-         * @param importExcelList 数据集成任务节点关系-日志数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
+         * @param importExcelList Data Integration Task-Node Relation - Log data list
+         * @param isUpdateSupport whether to support update; if already exists, update the data
+         * @param operName operator user
+         * @return result
          */
         @Override
         public String importDppEtlTaskNodeRelLog(List<DppEtlTaskNodeRelLogRespVO> importExcelList, boolean isUpdateSupport, String operName) {

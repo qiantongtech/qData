@@ -6,7 +6,7 @@ import lombok.Data;
 import javax.validation.constraints.Size;
 
 /**
- * 数据元类目管理 创建/修改 Request VO DG_DATA_ELEM_CAT
+ * Data Element Category Management Create/Update Request VO DG_DATA_ELEM_CAT
  *
  * @author qdata
  * @date 2025-01-20

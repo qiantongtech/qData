@@ -1,5 +1,5 @@
 /*
- * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ * Copyright (c) 2025-present Jiangsu Qiantong Technology Co., Ltd.
  *
  * This file is part of qData Data Middle Platform (Open Source Edition).
  *
@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 /**
- * 数据质量任务-评测规则Service接口
+ * Data Quality Task Evaluation Rule Service Interface
  *
  * @author Chaos
  * @date 2025-07-21
@@ -37,65 +37,65 @@ import java.util.Map;
 public interface IDppQualityTaskEvaluateService extends IService<DppQualityTaskEvaluateDO> {
 
     /**
-     * 获得数据质量任务-评测规则分页列表
+     * Get data quality task evaluation rule pagination list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据质量任务-评测规则分页列表
+     * @param pageReqVO Pagination request
+     * @return Data quality task evaluation rule pagination list
      */
     PageResult<DppQualityTaskEvaluateDO> getDppQualityTaskEvaluatePage(DppQualityTaskEvaluatePageReqVO pageReqVO);
 
     /**
-     * 创建数据质量任务-评测规则
+     * Create data quality task evaluation rule
      *
-     * @param createReqVO 数据质量任务-评测规则信息
-     * @return 数据质量任务-评测规则编号
+     * @param createReqVO Data quality task evaluation rule info
+     * @return Data quality task evaluation rule ID
      */
     Long createDppQualityTaskEvaluate(DppQualityTaskEvaluateSaveReqVO createReqVO);
 
     /**
-     * 更新数据质量任务-评测规则
+     * Update data quality task evaluation rule
      *
-     * @param updateReqVO 数据质量任务-评测规则信息
+     * @param updateReqVO Data quality task evaluation rule info
      */
     int updateDppQualityTaskEvaluate(DppQualityTaskEvaluateSaveReqVO updateReqVO);
 
     /**
-     * 删除数据质量任务-评测规则
+     * Delete data quality task evaluation rule
      *
-     * @param idList 数据质量任务-评测规则编号
+     * @param idList Data quality task evaluation rule ID list
      */
     int removeDppQualityTaskEvaluate(Collection<Long> idList);
 
     /**
-     * 获得数据质量任务-评测规则详情
+     * Get data quality task evaluation rule detail
      *
-     * @param id 数据质量任务-评测规则编号
-     * @return 数据质量任务-评测规则
+     * @param id Data quality task evaluation rule ID
+     * @return Data quality task evaluation rule
      */
     DppQualityTaskEvaluateDO getDppQualityTaskEvaluateById(Long id);
 
     /**
-     * 获得全部数据质量任务-评测规则列表
+     * Get all data quality task evaluation rule list
      *
-     * @return 数据质量任务-评测规则列表
+     * @return Data quality task evaluation rule list
      */
     List<DppQualityTaskEvaluateDO> getDppQualityTaskEvaluateList();
 
     /**
-     * 获得全部数据质量任务-评测规则 Map
+     * Get all data quality task evaluation rule Map
      *
-     * @return 数据质量任务-评测规则 Map
+     * @return Data quality task evaluation rule Map
      */
     Map<Long, DppQualityTaskEvaluateDO> getDppQualityTaskEvaluateMap();
 
 
     /**
-     * 导入数据质量任务-评测规则数据
+     * Import data quality task evaluation rule data
      *
-     * @param importExcelList 数据质量任务-评测规则数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Data quality task evaluation rule data list
+     * @param isUpdateSupport Whether to support update. If already exists, update the data
+     * @param operName Operator
+     * @return Result
      */
     String importDppQualityTaskEvaluate(List<DppQualityTaskEvaluateRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

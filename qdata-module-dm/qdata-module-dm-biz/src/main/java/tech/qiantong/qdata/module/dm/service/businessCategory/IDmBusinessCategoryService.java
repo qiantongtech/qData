@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 业务分类Service接口
+ * Business Category Service Interface
  *
  * @author qdata
  * @date 2026-04-08
@@ -38,70 +38,70 @@ import java.util.Map;
 public interface IDmBusinessCategoryService extends IService<DmBusinessCategoryDO> {
 
     /**
-     * 获得业务分类分页列表
+     * Get business category page list
      *
-     * @param pageReqVO 分页请求
-     * @return 业务分类分页列表
+     * @param pageReqVO Page request
+     * @return Business category page list
      */
     PageResult<DmBusinessCategoryDO> getDmBusinessCategoryPage(DmBusinessCategoryPageReqVO pageReqVO);
 
     /**
-     * 创建业务分类
+     * Create business category
      *
-     * @param createReqVO 业务分类信息
-     * @return 业务分类编号
+     * @param createReqVO Business category information
+     * @return Business category ID
      */
     Long createDmBusinessCategory(DmBusinessCategorySaveReqVO createReqVO);
 
     /**
-     * 更新业务分类
+     * Update business category
      *
-     * @param updateReqVO 业务分类信息
+     * @param updateReqVO Business category information
      */
     int updateDmBusinessCategory(DmBusinessCategorySaveReqVO updateReqVO);
 
     /**
-     * 删除业务分类
+     * Delete business category
      *
-     * @param idList 业务分类编号
+     * @param idList Business category IDs
      */
     int removeDmBusinessCategory(Collection<Long> idList);
 
     /**
-     * 获得业务分类详情
+     * Get business category details
      *
-     * @param id 业务分类编号
-     * @return 业务分类
+     * @param id Business category ID
+     * @return Business category
      */
     DmBusinessCategoryDO getDmBusinessCategoryById(Long id);
 
     /**
-     * 获得全部业务分类列表
+     * Get all business categories
      *
-     * @return 业务分类列表
+     * @return Business category list
      */
     List<DmBusinessCategoryDO> getDmBusinessCategoryList(DmBusinessCategoryPageReqVO dmBusinessCategory);
 
     /**
-     * 获得全部业务分类 Map
+     * Get all business categories as Map
      *
-     * @return 业务分类 Map
+     * @return Business category Map
      */
     Map<Long, DmBusinessCategoryDO> getDmBusinessCategoryMap();
 
 
     /**
-     * 导入业务分类数据
+     * Import business category data
      *
-     * @param importExcelList 业务分类数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Business category data list
+     * @param isUpdateSupport Whether to support update, if exists, update the data
+     * @param operName Operation user
+     * @return Result
      */
     String importDmBusinessCategory(List<DmBusinessCategoryRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
     /**
-     * 生成code
+     * Generate code
      *
      * @param parentId
      * @param parentCode
@@ -110,7 +110,7 @@ public interface IDmBusinessCategoryService extends IService<DmBusinessCategoryD
     String createCode(Long parentId, String parentCode);
 
     /**
-     * 更改指定pid下的所有code
+     * Update all codes under the specified parent ID
      *
      * @param pid
      */

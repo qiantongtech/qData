@@ -25,7 +25,7 @@ import java.util.List;
 
 /**
  * <P>
- * 用途:
+ * Purpose: Data Element Rule Relation Service Interface
  * </p>
  *
  * @author: FXB
@@ -33,7 +33,7 @@ import java.util.List;
  **/
 public interface IDataElemRuleRelService {
     /**
-     * 通过数据元id列表查询数据元规则关联信息
+     * Query data element rule relation info by data element ID list
      *
      * @param dataElemIdList
      * @return

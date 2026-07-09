@@ -26,7 +26,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * 数据元类目管理Service业务层处理
+ * Data Element Category Management Service Business Layer Processing
  *
  * @author qdata
  * @date 2025-01-20
@@ -53,11 +53,11 @@ public class DgDataElemCatServiceImpl extends ServiceImpl<DgDataElemCatMapper, D
         if (dgDataElemCatDO == null) {
             return 0;
         }
-        //判断是否选择了他自己
+        // Check if it selected itself
         if (dgDataElemCatDO.getId().equals(updateReqVO.getParentId())) {
             throw new ServiceException("dg.error.parent.self", "切换上级不能选择自身作为上级类目");
         }
-        // 更新数据元类目管理
+        // Update data element category management
         DgDataElemCatDO updateObj = BeanUtils.toBean(updateReqVO, DgDataElemCatDO.class);
         if (Boolean.FALSE.equals(updateReqVO.getValidFlag())) {
             dgDataElemCatMapper.updateValidFlag(dgDataElemCatDO.getCode(), updateReqVO.getValidFlag());
@@ -68,7 +68,7 @@ public class DgDataElemCatServiceImpl extends ServiceImpl<DgDataElemCatMapper, D
             }
         }
 
-        //修改上下级判断
+        // Check if parent-child relationship has changed
         boolean flag = false;
         if (updateReqVO.getParentId() != null && !dgDataElemCatDO.getParentId().equals(updateReqVO.getParentId())) {
             updateReqVO.setCode(createCode(updateReqVO.getParentId(), null));
@@ -77,9 +77,9 @@ public class DgDataElemCatServiceImpl extends ServiceImpl<DgDataElemCatMapper, D
 
         int i = dgDataElemCatMapper.updateById(updateObj);
 
-        //判断上下级是否发生了改变
+        // Check if parent-child relationship has changed
         if (flag) {
-            //更改所有下级
+            // Update all children
             changeCodeByPid(updateObj.getId(), updateObj.getCode());
         }
 
@@ -131,12 +131,12 @@ public class DgDataElemCatServiceImpl extends ServiceImpl<DgDataElemCatMapper, D
     public String createCode(Long parentId, String parentCode) {
         String categoryCode = null;
         /*
-         * 分成三种情况
-         * 1.数据库无数据 调用YouBianCodeUtil.getNextYouBianCode(null);
-         * 2.添加子节点，无兄弟元素 YouBianCodeUtil.getSubYouBianCode(parentCode,null);
-         * 3.添加子节点有兄弟元素 YouBianCodeUtil.getNextYouBianCode(lastCode);
+         * Divided into three cases
+         * 1. No data in database, call YouBianCodeUtil.getNextYouBianCode(null);
+         * 2. Add child node without sibling, YouBianCodeUtil.getSubYouBianCode(parentCode,null);
+         * 3. Add child node with sibling, YouBianCodeUtil.getNextYouBianCode(lastCode);
          * */
-        //找同类 确定上一个最大的code值
+        // Find the largest code value among siblings
         LambdaQueryWrapper<DgDataElemCatDO> query = new LambdaQueryWrapper<DgDataElemCatDO>()
                 .eq(DgDataElemCatDO::getParentId, parentId)
                 .likeRight(StringUtils.isNotBlank(parentCode), DgDataElemCatDO::getCode, parentCode)
@@ -145,15 +145,15 @@ public class DgDataElemCatServiceImpl extends ServiceImpl<DgDataElemCatMapper, D
         List<DgDataElemCatDO> list = baseMapper.selectList(query);
         if (list == null || list.size() == 0) {
             if (parentId == 0) {
-                //情况1
+                // Case 1
                 categoryCode = YouBianCodeUtil.getNextYouBianCode(null);
             } else {
-                //情况2
+                // Case 2
                 DgDataElemCatDO parent = baseMapper.selectById(parentId);
                 categoryCode = YouBianCodeUtil.getSubYouBianCode(parent.getCode(), null);
             }
         } else {
-            //情况3
+            // Case 3
             categoryCode = YouBianCodeUtil.getNextYouBianCode(list.get(0).getCode());
         }
         return categoryCode;

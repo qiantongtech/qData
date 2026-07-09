@@ -25,7 +25,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import javax.validation.constraints.Size;
 
 /**
- * 数据集成节点实例-日志 创建/修改 Request VO DPP_ETL_NODE_INSTANCE_LOG
+ * Data Integration Node Instance-Log Create/Update Request VO DPP_ETL_NODE_INSTANCE_LOG
  *
  * @author qdata
  * @date 2025-08-05

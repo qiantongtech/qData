@@ -29,7 +29,7 @@ import java.util.Date;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 数据元 创建/修改 Request VO DP_DATA_ELEM
+ * Data Element Save Request VO - DP_DATA_ELEM
  *
  * @author qdata
  * @date 2025-01-21

@@ -27,7 +27,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 数据元代码映射 Response VO 对象 DP_CODE_MAP
+ * Data Element Code Map Response VO - DP_CODE_MAP
  *
  * @author qdata
  * @date 2025-01-21

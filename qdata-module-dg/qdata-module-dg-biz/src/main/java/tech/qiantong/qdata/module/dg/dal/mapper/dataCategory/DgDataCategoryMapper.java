@@ -35,7 +35,7 @@ import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
 import tech.qiantong.qdata.mybatis.core.query.MPJLambdaWrapperX;
 
 /**
- * 数据分类Mapper接口
+ * Data Category Mapper Interface
  *
  * @author qdata
  * @date 2026-04-07
@@ -43,7 +43,7 @@ import tech.qiantong.qdata.mybatis.core.query.MPJLambdaWrapperX;
 public interface DgDataCategoryMapper extends BaseMapperX<DgDataCategoryDO> {
 
     default PageResult<DgDataCategoryDO> selectPage(DgDataCategoryPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define sortable fields (prevent SQL injection, must match database column names)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 
         MPJLambdaWrapperX<DgDataCategoryDO> lambdaWrapper = new MPJLambdaWrapperX<>();
@@ -62,10 +62,10 @@ public interface DgDataCategoryMapper extends BaseMapperX<DgDataCategoryDO> {
                 .eqIfPresent(DgDataCategoryDO::getDataLevelId, reqVO.getDataLevelId())
                 .eqIfPresent(DgDataCategoryDO::getPriority, reqVO.getPriority())
                 .eqIfPresent(DgDataCategoryDO::getValidFlag, reqVO.getValidFlag())
-                // 按照 createTime 字段降序排序
+                // Sort by createTime field in descending order
                 .orderByStr(StringUtils.isNotBlank(reqVO.getOrderByColumn()),
                         StringUtils.equals("asc", reqVO.getIsAsc()), StringUtils.isNotBlank(reqVO.getOrderByColumn()) ? Arrays.asList(reqVO.getOrderByColumn().split(",")) : null);
-        // 构造动态查询条件
+        // Build dynamic query conditions
         return selectJoinPage(reqVO, DgDataCategoryDO.class, lambdaWrapper);
     }
 }

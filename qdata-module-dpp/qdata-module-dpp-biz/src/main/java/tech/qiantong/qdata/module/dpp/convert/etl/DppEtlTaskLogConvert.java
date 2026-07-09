@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlTaskLogDO;
 import java.util.List;
 
 /**
- * 数据集成任务-日志 Convert
+ * Data Integration Task Log Convert
  *
  * @author qdata
  * @date 2025-02-13
@@ -38,29 +38,29 @@ public interface DppEtlTaskLogConvert {
     DppEtlTaskLogConvert INSTANCE = Mappers.getMapper(DppEtlTaskLogConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param dppEtlTaskLogPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param dppEtlTaskLogPageReqVO request parameters
      * @return DppEtlTaskLogDO
      */
      DppEtlTaskLogDO convertToDO(DppEtlTaskLogPageReqVO dppEtlTaskLogPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param dppEtlTaskLogSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param dppEtlTaskLogSaveReqVO save request parameters
      * @return DppEtlTaskLogDO
      */
      DppEtlTaskLogDO convertToDO(DppEtlTaskLogSaveReqVO dppEtlTaskLogSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param dppEtlTaskLogDO 实体对象
+     * Convert DO to RespVO
+     * @param dppEtlTaskLogDO entity object
      * @return DppEtlTaskLogRespVO
      */
      DppEtlTaskLogRespVO convertToRespVO(DppEtlTaskLogDO dppEtlTaskLogDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param dppEtlTaskLogDOList 实体对象列表
+     * Convert DO List to RespVO List
+     * @param dppEtlTaskLogDOList entity object list
      * @return List<DppEtlTaskLogRespVO>
      */
      List<DppEtlTaskLogRespVO> convertToRespVOList(List<DppEtlTaskLogDO> dppEtlTaskLogDOList);

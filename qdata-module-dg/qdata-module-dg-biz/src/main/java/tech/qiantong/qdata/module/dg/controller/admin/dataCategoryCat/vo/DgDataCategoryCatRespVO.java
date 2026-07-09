@@ -26,7 +26,7 @@ import java.util.Date;
 import java.io.Serializable;
 
 /**
- * 数据分类-类目 Response VO 对象 DG_DATA_CATEGORY_CAT
+ * Data Category - Cat Response VO - DG_DATA_CATEGORY_CAT
  *
  * @author FXB
  * @date 2026-04-07

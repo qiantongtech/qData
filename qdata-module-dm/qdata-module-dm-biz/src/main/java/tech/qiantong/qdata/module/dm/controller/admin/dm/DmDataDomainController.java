@@ -48,7 +48,7 @@ import tech.qiantong.qdata.module.dm.dal.dataobject.dm.DmDataDomainDO;
 import tech.qiantong.qdata.module.dm.service.dm.IDmDataDomainService;
 
 /**
- * 数据域管理Controller
+ * Data Domain Controller
  *
  * @author FXB
  * @date 2026-03-24

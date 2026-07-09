@@ -27,7 +27,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 逻辑模型属性信息 Response VO 对象 DP_MODEL_COLUMN
+ * Logical Model Column Response VO - DP_MODEL_COLUMN
  *
  * @author qdata
  * @date 2025-01-21

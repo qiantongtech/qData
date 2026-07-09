@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.dg.api.dataCategoryCat.dto;
 import lombok.*;
 
 /**
- * 数据分类-类目 DTO 对象 DG_DATA_CATEGORY_CAT
+ * Data Category-Category DTO Object DG_DATA_CATEGORY_CAT
  *
  * @author FXB
  * @date 2026-04-07

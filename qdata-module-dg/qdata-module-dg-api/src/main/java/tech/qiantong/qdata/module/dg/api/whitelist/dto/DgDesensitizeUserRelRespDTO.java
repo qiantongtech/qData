@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.dg.api.whitelist.dto;
 import lombok.*;
 
 /**
- * 脱敏白名单与用户关联关系 DTO 对象 DG_DESENSITIZE_USER_REL
+ * Desensitization Whitelist-User Relationship DTO Object DG_DESENSITIZE_USER_REL
  *
  * @author qdata
  * @date 2026-04-09

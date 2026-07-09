@@ -23,14 +23,14 @@ import lombok.*;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 数据元数据资产关联信息 DO 对象 DP_DATA_ELEM_ASSET_REL
+ * Data Element Asset Relationship DO - DP_DATA_ELEM_ASSET_REL
  *
  * @author qdata
  * @date 2025-01-21
  */
 @Data
 @TableName(value = "DP_DATA_ELEM_ASSET_REL")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Can be omitted for MySQL and similar databases.
 // @KeySequence("DP_DATA_ELEM_ASSET_REL_seq")
 @Builder
 @NoArgsConstructor
@@ -44,40 +44,40 @@ public class DpDataElemAssetRelDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 数据元类型 */
+    /** Data Element Type */
     private String dataElemType;
 
-    /** 数据元id */
+    /** Data Element ID */
     private String dataElemId;
 
-    /** 资产id(数据表id) */
+    /** Asset ID (Data Table ID) */
     private String assetId;
 
-    /** 资产名称 */
+    /** Asset Name */
     @TableField(exist = false)
     private String assetName;
 
-    /** 表描述 */
+    /** Table Comment */
     @TableField(exist = false)
     private String tableComment;
 
-    /** 资产描述 */
+    /** Description */
     @TableField(exist = false)
     private String description;
 
-    /** 数据表 */
+    /** Data Table */
     private String tableName;
 
-    /** 关联字段id */
+    /** Related Column ID */
     private String columnId;
 
-    /** 关联字段 */
+    /** Related Column */
     private String columnName;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     @TableLogic
     private Boolean delFlag;
 

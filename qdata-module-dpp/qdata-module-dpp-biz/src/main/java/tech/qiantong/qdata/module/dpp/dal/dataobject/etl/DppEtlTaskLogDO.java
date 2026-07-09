@@ -24,14 +24,14 @@ import lombok.*;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 数据集成任务-日志 DO 对象 DPP_ETL_TASK_LOG
+ * Data Integration Task-Log DO - DPP_ETL_TASK_LOG
  *
  * @author qdata
  * @date 2025-02-13
  */
 @Data
 @TableName(value = "DPP_ETL_TASK_LOG")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Can be omitted for MySQL and similar databases.
 // @KeySequence("DPP_ETL_TASK_LOG_seq")
 @Builder
 @NoArgsConstructor
@@ -45,55 +45,55 @@ public class DppEtlTaskLogDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 1：离线任务 2：实时任务 3：数据开发任务 4：作业任务 */
+    /** 1: Offline task 2: Real-time task 3: Data development task 4: Job task */
     private String type;
 
-    /** 任务名称 */
+    /** Task name */
     private String name;
 
-    /** 任务编码 */
+    /** Task code */
     private String code;
 
-    /** 任务版本 */
+    /** Task version */
     private Long version;
 
-    /** 项目id */
+    /** Project ID */
     private Long projectId;
 
-    /** 项目编码 */
+    /** Project code */
     private String projectCode;
 
-    /** 责任人 */
+    /** Person in charge */
     private String personCharge;
 
-    /** 节点坐标信息 */
+    /** Node location info */
     private String locations;
 
-    @Schema(description = "任务的执行策略", example = "")
+    @Schema(description = "Task execution strategy", example = "")
     private String executionType;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 超时时间 */
+    /** Timeout */
     private Long timeout;
 
-    /** 抽取量 */
+    /** Extraction count */
     private Long extractionCount;
 
-    /** 写入量 */
+    /** Write count */
     private Long writeCount;
 
-    /** 任务状态 */
+    /** Task status */
     private String status;
 
-    /** DolphinScheduler的id */
+    /** DolphinScheduler ID */
     private Long dsId;
 
-    /** 是否有效 */
+    /** Valid flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete flag */
     @TableLogic
     private Boolean delFlag;
 

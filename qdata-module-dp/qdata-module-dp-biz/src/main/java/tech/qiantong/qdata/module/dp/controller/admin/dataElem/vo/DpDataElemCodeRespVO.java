@@ -27,7 +27,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 数据元代码 Response VO 对象 DP_DATA_ELEM_CODE
+ * Data Element Code Response VO - DP_DATA_ELEM_CODE
  *
  * @author qdata
  * @date 2025-01-21

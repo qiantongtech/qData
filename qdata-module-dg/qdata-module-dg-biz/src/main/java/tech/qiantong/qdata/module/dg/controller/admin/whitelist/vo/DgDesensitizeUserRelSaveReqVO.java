@@ -28,7 +28,7 @@ import java.util.Date;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 脱敏白名单与用户关联关系 创建/修改 Request VO DG_DESENSITIZE_USER_REL
+ * Desensitize Whitelist User Relationship Create/Update Request VO DG_DESENSITIZE_USER_REL
  *
  * @author qdata
  * @date 2026-04-09
@@ -64,6 +64,6 @@ public class DgDesensitizeUserRelSaveReqVO extends BaseEntity {
     @Size(max = 256, message = "生效分类;1：用户 2：角色 3：部门长度不能超过256个字符")
     private String effectiveCategory;
 
-    /** 是否有效;0：无效，1：有效 */
+    /** Valid flag; 0: invalid, 1: valid */
     private Boolean validFlag;
 }

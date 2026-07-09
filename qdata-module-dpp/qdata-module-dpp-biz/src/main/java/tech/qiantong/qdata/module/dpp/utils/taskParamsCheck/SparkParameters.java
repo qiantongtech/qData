@@ -26,7 +26,7 @@ public class SparkParameters extends AbstractParameters {
 
     @Override
     public boolean checkParameters() {
-        // 假设 sparkJobName 不为空
+        // Assume sparkJobName is not empty
         return StringUtils.isNotEmpty(sparkJobName);
     }
 

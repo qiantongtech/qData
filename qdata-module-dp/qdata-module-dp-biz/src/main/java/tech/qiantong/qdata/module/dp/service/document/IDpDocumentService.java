@@ -27,7 +27,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 /**
- * 标准信息登记Service接口
+ * Standard Document Registration Service Interface
  *
  * @author qdata
  * @date 2025-08-21
@@ -35,77 +35,77 @@ import java.util.Map;
 public interface IDpDocumentService extends IService<DpDocumentDO> {
 
     /**
-     * 获得标准信息登记分页列表
+     * Get Standard Document Registration Paginated List
      *
-     * @param pageReqVO 分页请求
-     * @return 标准信息登记分页列表
+     * @param pageReqVO Pagination Request
+     * @return Standard Document Registration Paginated List
      */
     PageResult<DpDocumentDO> getDpDocumentPage(DpDocumentPageReqVO pageReqVO);
 
     /**
-     * 获得全部标准信息登记列表
+     * Get All Standard Document Registration List
      *
-     * @return 标准信息登记列表
+     * @return Standard Document Registration List
      */
     List<DpDocumentDO> getDpDocumentList(DpDocumentPageReqVO pageReqVO);
 
     /**
-     * 创建标准信息登记
+     * Create Standard Document Registration
      *
-     * @param createReqVO 标准信息登记信息
-     * @return 标准信息登记编号
+     * @param createReqVO Standard Document Registration Information
+     * @return Standard Document Registration ID
      */
     Long createDpDocument(DpDocumentSaveReqVO createReqVO);
 
     /**
-     * 更新标准信息登记
+     * Update Standard Document Registration
      *
-     * @param updateReqVO 标准信息登记信息
+     * @param updateReqVO Standard Document Registration Information
      */
     int updateDpDocument(DpDocumentSaveReqVO updateReqVO);
 
     /**
-     * 删除标准信息登记
+     * Delete Standard Document Registration
      *
-     * @param idList 标准信息登记编号
+     * @param idList Standard Document Registration ID
      */
     int removeDpDocument(Collection<Long> idList);
 
     /**
-     * 获得标准信息登记详情
+     * Get Standard Document Registration Details
      *
-     * @param id 标准信息登记编号
-     * @return 标准信息登记
+     * @param id Standard Document Registration ID
+     * @return Standard Document Registration
      */
     DpDocumentDO getDpDocumentById(Long id);
 
     /**
-     * 获得全部标准信息登记列表
+     * Get All Standard Document Registration List
      *
-     * @return 标准信息登记列表
+     * @return Standard Document Registration List
      */
     List<DpDocumentDO> getDpDocumentList();
 
     /**
-     * 获得全部标准信息登记 Map
+     * Get All Standard Document Registration Map
      *
-     * @return 标准信息登记 Map
+     * @return Standard Document Registration Map
      */
     Map<Long, DpDocumentDO> getDpDocumentMap();
 
 
     /**
-     * 导入标准信息登记数据
+     * Import Standard Document Registration Data
      *
-     * @param importExcelList 标准信息登记数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Standard Document Registration Data List
+     * @param isUpdateSupport Whether to support update, if exists then update the data
+     * @param operName Operator
+     * @return Result
      */
     String importDpDocument(List<DpDocumentRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
     /**
-     * 标准检索分页列表
+     * Standard Search Paginated List
      *
      * @param dpDocument
      * @return

@@ -25,7 +25,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
- * 逻辑模型 DTO 对象 DP_MODEL
+ * Logical Model DTO - DP_MODEL
  *
  * @author qdata
  * @date 2025-01-21
@@ -41,17 +41,17 @@ public class DpModelRespDTO {
     private Long id;
 
     /**
-     * 模型编码
+     * Model Code
      */
     private String modelName;
 
     /**
-     * 模型名称
+     * Model Name
      */
     private String modelComment;
 
     /**
-     * 类目编码
+     * Category Code
      */
     private String catCode;
 
@@ -59,85 +59,85 @@ public class DpModelRespDTO {
     private String catName;
 
     /**
-     * 表类型;1:明细表 2:汇总表 3:维度表 4:应用表
+     * Table Type; 1: Detail Table 2: Summary Table 3: Dimension Table 4: Application Table
      */
-    @Schema(name = "表类型 1:明细表 2:汇总表 3:维度表 4:应用表")
+    @Schema(name = "Table Type 1: Detail Table 2: Summary Table 3: Dimension Table 4: Application Table")
     private String tableType;
     /**
-     * 数仓分层id
+     * Data Warehouse Layer ID
      */
-    @Schema(name = "数仓分层id ")
+    @Schema(name = "Data Warehouse Layer ID ")
     private Long dataLayerId;
     /**
-     * 业务分类id;只有表类型为非应用表是才有值
+     * Business Category ID; Only available when table type is not Application Table
      */
-    @Schema(name = "业务分类id 只有表类型为非应用表是才有值")
+    @Schema(name = "Business Category ID Only available when table type is not Application Table")
     private Long businessCategoryId;
     /**
-     * 业务分类层级编码
+     * Business Category Hierarchy Code
      */
-    @Schema(name = "业务分类层级编码 ")
+    @Schema(name = "Business Category Hierarchy Code ")
     private String businessCategoryCode;
     /**
-     * 数据分域id;只有表类型为非应用表是才有值
+     * Data Domain ID; Only available when table type is not Application Table
      */
-    @Schema(name = "数据分域id 只有表类型为非应用表是才有值")
+    @Schema(name = "Data Domain ID Only available when table type is not Application Table")
     private Long dataDomainId;
     /**
-     * 所属主题id（主题规划）;只有表类型为应用表是才有值
+     * Theme Domain ID (Theme Planning); Only available when table type is Application Table
      */
-    @Schema(name = "所属主题id（主题规划） 只有表类型为应用表是才有值")
+    @Schema(name = "Theme Domain ID (Theme Planning) Only available when table type is Application Table")
     private Long themeDomainId;
     /**
-     * 所属主题层级编码
+     * Theme Domain Hierarchy Code
      */
-    @Schema(name = "所属主题层级编码 ")
+    @Schema(name = "Theme Domain Hierarchy Code ")
     private String themeDomainCode;
     /**
-     * 表名大小写;1：大写 2：小写
+     * Table Name Case; 1: Uppercase 2: Lowercase
      */
-    @Schema(name = "表名大小写 1：大写 2：小写")
+    @Schema(name = "Table Name Case 1: Uppercase 2: Lowercase")
     private String tableCase;
 
     /**
-     * 状态
+     * Status
      */
     private String status;
 
     /**
-     * 创建方式
+     * Creation Type
      */
     private String createType;
 
     /**
-     * 数据源id
+     * Datasource ID
      */
     private Long datasourceId;
 
     private Long documentId;
 
     /**
-     * 联系人
+     * Contact
      */
     private String contact;
 
     /**
-     * 联系电话
+     * Contact Number
      */
     private String contactNumber;
 
     /**
-     * 描述
+     * Description
      */
     private String description;
 
     /**
-     * 是否有效
+     * Valid Flag
      */
     private Boolean validFlag;
 
     /**
-     * 删除标志
+     * Delete Flag
      */
     @TableLogic
     private Boolean delFlag;
@@ -146,19 +146,19 @@ public class DpModelRespDTO {
     private long columnCount;
 
     /**
-     * 数据源名称
+     * Datasource Name
      */
     @TableField(exist = false)
     private String datasourceName;
 
     /**
-     * 数据源类型
+     * Datasource Type
      */
     @TableField(exist = false)
     private String datasourceType;
 
     /**
-     * 数据源配置(json字符串)
+     * Datasource Config (JSON string)
      */
     @TableField(exist = false)
     private String datasourceConfig;
@@ -170,98 +170,98 @@ public class DpModelRespDTO {
     private String ip;
 
     /**
-     * 端口号
+     * Port
      */
     @TableField(exist = false)
     private Long port;
 
     /**
-     * 名称
+     * Name
      */
     @TableField(exist = false)
     private String documentName;
 
     /**
-     * 名称
+     * Code
      */
     @TableField(exist = false)
     private String documentCode;
 
     /**
-     * 文件标准类型字段，
+     * Document Standard Type
      */
     @TableField(exist = false)
     private String documentType;
 
-    @Schema(name = "数仓分层名称")
+    @Schema(name = "Data Warehouse Layer Name")
     @TableField(exist = false)
     private String dataLayerName;
 
-    @Schema(name = "数仓分层英文缩写")
+    @Schema(name = "Data Warehouse Layer English Abbreviation")
     @TableField(exist = false)
     private String dataLayerEngName;
 
-    @Schema(name = "业务名称")
+    @Schema(name = "Business Name")
     @TableField(exist = false)
     private String businessCategoryName;
 
-    @Schema(name = "业务英文缩写")
+    @Schema(name = "Business English Abbreviation")
     @TableField(exist = false)
     private String businessCategoryEngName;
 
-    @Schema(name = "数据分域名称")
+    @Schema(name = "Data Domain Name")
     @TableField(exist = false)
     private String dataDomainName;
 
-    @Schema(name = "数据分域英文缩写")
+    @Schema(name = "Data Domain English Abbreviation")
     @TableField(exist = false)
     private String dataDomainEngName;
 
-    @Schema(name = "所属主题名称")
+    @Schema(name = "Theme Domain Name")
     @TableField(exist = false)
     private String themeDomainName;
 
-    @Schema(name = "所属主题英文缩写")
+    @Schema(name = "Theme Domain English Abbreviation")
     @TableField(exist = false)
     private String themeDomainEngName;
 
-    @Schema(name = "发布状态 1:未发布 3:发布成功 4:发布失败")
+    @Schema(name = "Release Status 1: Not Released 3: Release Success 4: Release Failed")
     @TableField(exist = false)
     private String releaseStatus;
 
-    @Schema(name = "发布发布数据源列表")
+    @Schema(name = "Release Database List")
     @TableField(exist = false, typeHandler = JacksonTypeHandler.class)
     private String releaseDatabaseList;
 
-    @Schema(name = "创建人联系电话")
+    @Schema(name = "Creator Phone Number")
     @TableField(exist = false, typeHandler = JacksonTypeHandler.class)
     private String createUserPhoneNumber;
 
     /**
-     * 获取表名（拼接上表命名规范）
-     * 规则：
-     * 1. 数仓分层 + 业务分类 + 数据分域 + 模型编码（非应用表）
-     * 2. 数仓分层 + 所属主题 + 模型编码（应用表）
-     * 3. 根据 tableCase 转换为大写(1)或小写(2)
+     * Get table name (concatenated with table naming convention)
+     * Rules:
+     * 1. Data Warehouse Layer + Business Category + Data Domain + Model Code (non-Application Table)
+     * 2. Data Warehouse Layer + Theme Domain + Model Code (Application Table)
+     * 3. Convert to Uppercase (1) or Lowercase (2) based on tableCase
      *
-     * @return 拼接后的表名
+     * @return Concatenated table name
      */
     public String getTableName() {
         java.util.List<String> parts = new java.util.ArrayList<>();
 
-        // 1. 数仓分层
+        // 1. Data Warehouse Layer
         if (dataLayerEngName != null && !dataLayerEngName.isEmpty()) {
             parts.add(dataLayerEngName);
         }
 
-        // 2. 根据表类型添加不同的层级
+        // 2. Add different levels based on table type
         if ("4".equals(tableType)) {
-            // 应用表：添加所属主题
+            // Application Table: add theme domain
             if (themeDomainEngName != null && !themeDomainEngName.isEmpty()) {
                 parts.add(themeDomainEngName);
             }
         } else {
-            // 非应用表：添加业务分类和数据分域
+            // Non-Application Table: add business category and data domain
             if (businessCategoryEngName != null && !businessCategoryEngName.isEmpty()) {
                 parts.add(businessCategoryEngName);
             }
@@ -270,15 +270,15 @@ public class DpModelRespDTO {
             }
         }
 
-        // 3. 添加模型编码
+        // 3. Add model code
         if (modelName != null && !modelName.isEmpty()) {
             parts.add(modelName);
         }
 
-        // 4. 拼接并转换大小写
+        // 4. Concatenate and convert case
         String tableName = String.join("_", parts);
         if (tableName != null && !tableName.isEmpty()) {
-            // tableCase: 1-大写, 2-小写
+            // tableCase: 1-Uppercase, 2-Lowercase
             if ("2".equals(tableCase)) {
                 return tableName.toLowerCase();
             } else {

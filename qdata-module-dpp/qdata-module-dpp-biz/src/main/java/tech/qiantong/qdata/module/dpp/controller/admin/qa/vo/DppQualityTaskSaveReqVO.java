@@ -26,12 +26,12 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 /**
- * 数据质量任务 创建/修改 Request VO DPP_QUALITY_TASK
+ * Data Quality Task Create/Update Request VO DPP_QUALITY_TASK
  *
  * @author Chaos
  * @date 2025-07-21
  */
-@Schema(description = "数据质量任务 Response VO")
+@Schema(description = "Data Quality Task Save Request VO")
 @Data
 public class DppQualityTaskSaveReqVO extends BaseEntity {
 
@@ -94,27 +94,27 @@ public class DppQualityTaskSaveReqVO extends BaseEntity {
     private String cycle;
 
 
-    // 数据质量任务-稽查对象
+    // Data Quality Task - Audit Object
     private List<DppQualityTaskObjSaveReqVO> dppQualityTaskObjSaveReqVO;
 
-    // 规则对象
+    // Rule object
     private List<DppQualityTaskEvaluateSaveReqVO> dppQualityTaskEvaluateSaveReqVO;
 
 
 
-    /** 节点id */
+    /** Node ID */
     @Schema(description = "节点id", example = "")
     private Long nodeId;
 
-    /** 节点编码 */
+    /** Node Code */
     @Schema(description = "节点编码", example = "")
     private String nodeCode;
 
-    /** 任务id */
+    /** Task ID */
     @Schema(description = "任务id", example = "")
     private Long taskId;
 
-    /** 任务编码 */
+    /** Task Code */
     @Schema(description = "任务编码", example = "")
     private String taskCode;
 

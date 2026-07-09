@@ -45,7 +45,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 标准信息登记Controller
+ * Document Registration Controller
  *
  * @author qdata
  * @date 2025-08-21

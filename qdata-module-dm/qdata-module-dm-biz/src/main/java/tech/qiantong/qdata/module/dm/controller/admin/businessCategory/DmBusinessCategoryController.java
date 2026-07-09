@@ -48,7 +48,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 业务分类Controller
+ * Business Category Controller
  *
  * @author qdata
  * @date 2026-04-08

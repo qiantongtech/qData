@@ -27,12 +27,12 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 数据质量任务-稽查对象 Response VO 对象 DPP_QUALITY_TASK_OBJ
+ * Data Quality Task - Audit Object Response VO DPP_QUALITY_TASK_OBJ
  *
  * @author Chaos
  * @date 2025-07-21
  */
-@Schema(description = "数据质量任务-稽查对象 Response VO")
+@Schema(description = "Data Quality Task - Audit Object Response VO")
 @Data
 public class DppQualityTaskObjRespVO implements Serializable {
 
@@ -91,7 +91,7 @@ public class DppQualityTaskObjRespVO implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Schema(description = "更新时间", example = "")
     private Date updateTime;
-    /** 数据源名称 */
+    /** Data source name */
     private String datasourceType;
     private String datasourceConfig;
     private String datasourceName;
@@ -99,7 +99,7 @@ public class DppQualityTaskObjRespVO implements Serializable {
 
 
 
-    // 规则对象
+    // Rule object
     private DppQualityTaskEvaluateRespVO dppQualityTaskEvaluateSaveReqVO;
 
 }

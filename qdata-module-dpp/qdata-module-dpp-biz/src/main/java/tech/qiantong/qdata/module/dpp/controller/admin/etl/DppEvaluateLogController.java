@@ -51,12 +51,12 @@ import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEvaluateLogDO;
 import tech.qiantong.qdata.module.dpp.service.etl.IDppEvaluateLogService;
 
 /**
- * 评测规则结果Controller
+ * Evaluation Rule Result Controller
  *
  * @author qdata
  * @date 2025-07-21
  */
-@Tag(name = "评测规则结果")
+@Tag(name = "Evaluation Rule Result")
 @RestController
 @RequestMapping("/dpp/evaluateLog")
 @Validated

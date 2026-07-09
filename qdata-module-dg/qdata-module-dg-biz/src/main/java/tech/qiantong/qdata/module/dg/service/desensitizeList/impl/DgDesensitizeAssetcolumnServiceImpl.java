@@ -44,7 +44,7 @@ import tech.qiantong.qdata.module.dg.dal.dataobject.whitelist.DgDesensitizeUserR
 import tech.qiantong.qdata.module.dg.dal.mapper.desensitizeList.DgDesensitizeAssetcolumnMapper;
 import tech.qiantong.qdata.module.dg.service.desensitizeList.IDgDesensitizeAssetcolumnService;
 /**
- * 脱敏清单关联关系Service业务层处理
+ * Desensitize List Relationship Service Business Layer Processing
  *
  * @author qdata
  * @date 2026-04-12
@@ -70,15 +70,15 @@ public class DgDesensitizeAssetcolumnServiceImpl  extends ServiceImpl<DgDesensit
 
     @Override
     public int updateDgDesensitizeAssetcolumn(DgDesensitizeAssetcolumnSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related validation
 
-        // 更新脱敏清单关联关系
+        // Update desensitize list relationship
         DgDesensitizeAssetcolumnDO updateObj = BeanUtils.toBean(updateReqVO, DgDesensitizeAssetcolumnDO.class);
         return dgDesensitizeAssetcolumnMapper.updateById(updateObj);
     }
     @Override
     public int removeDgDesensitizeAssetcolumn(Collection<Long> idList) {
-        // 批量删除脱敏清单关联关系
+        // Batch delete desensitize list relationships
         return dgDesensitizeAssetcolumnMapper.deleteBatchIds(idList);
     }
 
@@ -89,7 +89,7 @@ public class DgDesensitizeAssetcolumnServiceImpl  extends ServiceImpl<DgDesensit
 
     @Override
     public DgDesensitizeAssetcolumnDO getDgDesensitizeAssetcolumnByAid(Long assetcolumnId) {
-        //通过 assetcolumnId 获取
+        // Query by assetcolumnId
         return dgDesensitizeAssetcolumnMapper.selectOne( new LambdaQueryWrapper<DgDesensitizeAssetcolumnDO>().eq(DgDesensitizeAssetcolumnDO::getAssetcolumnId, assetcolumnId));
     }
 
@@ -105,19 +105,19 @@ public class DgDesensitizeAssetcolumnServiceImpl  extends ServiceImpl<DgDesensit
                 .collect(Collectors.toMap(
                         DgDesensitizeAssetcolumnDO::getId,
                         dgDesensitizeAssetcolumnDO -> dgDesensitizeAssetcolumnDO,
-                        // 保留已存在的值
+                        // Keep existing values
                         (existing, replacement) -> existing
                 ));
     }
 
 
         /**
-         * 导入脱敏清单关联关系数据
+         * Import desensitize list relationship data
          *
-         * @param importExcelList 脱敏清单关联关系数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
+         * @param importExcelList Desensitize list relationship data list
+         * @param isUpdateSupport Whether to update support, if already exists, update the data
+         * @param operName        Operator user
+         * @return Result
          */
         @Override
         public String importDgDesensitizeAssetcolumn(List<DgDesensitizeAssetcolumnRespVO> importExcelList, boolean isUpdateSupport, String operName) {

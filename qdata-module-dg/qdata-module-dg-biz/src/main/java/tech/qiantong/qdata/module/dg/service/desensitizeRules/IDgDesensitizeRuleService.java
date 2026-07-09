@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.dg.controller.admin.desensitizeRules.vo.DgDese
 import tech.qiantong.qdata.module.dg.controller.admin.desensitizeRules.vo.DgDesensitizeRulePageReqVO;
 import tech.qiantong.qdata.module.dg.dal.dataobject.desensitizeRules.DgDesensitizeRuleDO;
 /**
- * 脱敏规则Service接口
+ * Desensitize Rule Service Interface
  *
  * @author qdata
  * @date 2026-04-10
@@ -36,73 +36,73 @@ import tech.qiantong.qdata.module.dg.dal.dataobject.desensitizeRules.DgDesensiti
 public interface IDgDesensitizeRuleService extends IService<DgDesensitizeRuleDO> {
 
     /**
-     * 获得脱敏规则分页列表
+     * Get desensitize rule paginated list
      *
-     * @param pageReqVO 分页请求
-     * @return 脱敏规则分页列表
+     * @param pageReqVO Pagination request
+     * @return Desensitize rule paginated list
      */
     PageResult<DgDesensitizeRuleDO> getDgDesensitizeRulePage(DgDesensitizeRulePageReqVO pageReqVO);
 
     /**
-     * 创建脱敏规则
+     * Create desensitize rule
      *
-     * @param createReqVO 脱敏规则信息
-     * @return 脱敏规则编号
+     * @param createReqVO Desensitize rule information
+     * @return Desensitize rule ID
      */
     Long createDgDesensitizeRule(DgDesensitizeRuleSaveReqVO createReqVO);
 
     /**
-     * 更新脱敏规则
+     * Update desensitize rule
      *
-     * @param updateReqVO 脱敏规则信息
+     * @param updateReqVO Desensitize rule information
      */
     int updateDgDesensitizeRule(DgDesensitizeRuleSaveReqVO updateReqVO);
 
     /**
-     * 删除脱敏规则
+     * Delete desensitize rule
      *
-     * @param idList 脱敏规则编号
+     * @param idList Desensitize rule IDs
      */
     int removeDgDesensitizeRule(Collection<Long> idList);
 
     /**
-     * 获得脱敏规则详情
+     * Get desensitize rule details
      *
-     * @param id 脱敏规则编号
-     * @return 脱敏规则
+     * @param id Desensitize rule ID
+     * @return Desensitize rule
      */
     DgDesensitizeRuleDO getDgDesensitizeRuleById(Long id);
 
     /**
-     * 获得全部脱敏规则列表
+     * Get all desensitize rule list
      *
-     * @return 脱敏规则列表
+     * @return Desensitize rule list
      */
     List<DgDesensitizeRuleDO> getDgDesensitizeRuleList();
 
     /**
-     * 获得全部脱敏规则 Map
+     * Get all desensitize rule Map
      *
-     * @return 脱敏规则 Map
+     * @return Desensitize rule Map
      */
     Map<Long, DgDesensitizeRuleDO> getDgDesensitizeRuleMap();
 
 
     /**
-     * 导入脱敏规则数据
+     * Import desensitize rule data
      *
-     * @param importExcelList 脱敏规则数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Desensitize rule data list
+     * @param isUpdateSupport Whether to update support, if already exists, update the data
+     * @param operName        Operator user
+     * @return Result
      */
     String importDgDesensitizeRule(List<DgDesensitizeRuleRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
     /**
-     * 根据分类id获取规则数量
+     * Get rule count by category IDs
      *
-     * @param idList 分类id数组
-     * @return 规则数量
+     * @param idList Category ID array
+     * @return Rule count
      */
     Long getCountByCategoryIds(Collection<Long> idList);
     DgDesensitizeRuleDO getDgDesensitizeRuleByDataCategoryId(Long dataCategoryId);

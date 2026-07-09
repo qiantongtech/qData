@@ -29,7 +29,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 数据集成任务实例-日志Mapper接口
+ * Data Integration Task Instance-Log Mapper
  *
  * @author qdata
  * @date 2025-08-05
@@ -37,19 +37,19 @@ import java.util.Set;
 public interface DppEtlTaskInstanceLogMapper extends BaseMapperX<DppEtlTaskInstanceLogDO> {
 
     default PageResult<DppEtlTaskInstanceLogDO> selectPage(DppEtlTaskInstanceLogPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define sortable fields (prevent SQL injection, must match database column names)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 
-        // 构造动态查询条件
+        // Build dynamic query conditions
         return selectPage(reqVO, new LambdaQueryWrapperX<DppEtlTaskInstanceLogDO>()
                 .eqIfPresent(DppEtlTaskInstanceLogDO::getTaskType, reqVO.getTaskType())
                 .eqIfPresent(DppEtlTaskInstanceLogDO::getTaskId, reqVO.getTaskId())
                 .eqIfPresent(DppEtlTaskInstanceLogDO::getTaskCode, reqVO.getTaskCode())
                 .eqIfPresent(DppEtlTaskInstanceLogDO::getLogContent, reqVO.getLogContent())
                 .eqIfPresent(DppEtlTaskInstanceLogDO::getCreateTime, reqVO.getCreateTime())
-                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+                // If reqVO.getName() is not empty, add exact name match condition (name = '<name>')
                 // .likeIfPresent(DppEtlTaskInstanceLogDO::getName, reqVO.getName())
-                // 按照 createTime 字段降序排序
+                // Order by createTime descending
                 .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(), allowedColumns));
     }
 }

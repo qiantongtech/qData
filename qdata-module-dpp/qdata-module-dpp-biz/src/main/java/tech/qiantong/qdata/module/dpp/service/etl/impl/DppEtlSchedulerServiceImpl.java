@@ -43,7 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 /**
- * 数据集成调度信息Service业务层处理
+ * Data Integration Schedule Info Service Business Layer Processing
  *
  * @author qdata
  * @date 2025-02-13
@@ -77,15 +77,15 @@ public class DppEtlSchedulerServiceImpl  extends ServiceImpl<DppEtlSchedulerMapp
 
     @Override
     public int updateDppEtlScheduler(DppEtlSchedulerSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related validation
 
-        // 更新数据集成调度信息
+        // Update data integration schedule info
         DppEtlSchedulerDO updateObj = BeanUtils.toBean(updateReqVO, DppEtlSchedulerDO.class);
         return dppEtlSchedulerMapper.updateById(updateObj);
     }
     @Override
     public int removeDppEtlScheduler(Collection<Long> idList) {
-        // 批量删除数据集成调度信息
+        // Batch delete data integration schedule info
         return dppEtlSchedulerMapper.deleteBatchIds(idList);
     }
 
@@ -118,19 +118,19 @@ public class DppEtlSchedulerServiceImpl  extends ServiceImpl<DppEtlSchedulerMapp
                 .collect(Collectors.toMap(
                         DppEtlSchedulerDO::getId,
                         dppEtlSchedulerDO -> dppEtlSchedulerDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
         /**
-         * 导入数据集成调度信息数据
+         * Import data integration schedule info data
          *
-         * @param importExcelList 数据集成调度信息数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
+         * @param importExcelList data integration schedule info data list
+         * @param isUpdateSupport whether update is supported, if already exists, update the data
+         * @param operName operator name
+         * @return result
          */
         @Override
         public String importDppEtlScheduler(List<DppEtlSchedulerRespVO> importExcelList, boolean isUpdateSupport, String operName) {

@@ -47,7 +47,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 逻辑模型属性信息Controller
+ * Logical Model Column Controller
  *
  * @author qdata
  * @date 2025-01-21

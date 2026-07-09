@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.dp.api.dataElem.dto;
 import lombok.Data;
 
 /**
- * 数据元数据规则关联信息 DTO 对象 DP_DATA_ELEM_RULE_REL
+ * Data Element Rule Relation DTO - DP_DATA_ELEM_RULE_REL
  *
  * @author qdata
  * @date 2025-01-21
@@ -40,22 +40,22 @@ public class DpDataElemRuleRelRespDTO {
     private String name;
 
     /**
-     * 状态;0下线1上线
+     * Status; 0: Offline, 1: Online
      */
     private Integer status;
 
     /**
-     * 数据元id
+     * Data Element ID
      */
     private Long dataElemId;
 
     /**
-     * 规则类型 1:稽核规则 2:清洗规则
+     * Rule Type 1: Audit Rule 2: Clean Rule
      */
     private String type;
 
     /**
-     * 规则id
+     * Rule ID
      *
      * @see tech.qiantong.qdata.module.att.dal.dataobject.rule.AttCleanRuleDO#id
      * @see tech.qiantong.qdata.module.att.dal.dataobject.rule.AttAuditRuleDO#id
@@ -85,7 +85,7 @@ public class DpDataElemRuleRelRespDTO {
     private String whereClause;
 
     /**
-     * 规则配置
+     * Rule Config
      */
     private String rule;
 
@@ -95,12 +95,12 @@ public class DpDataElemRuleRelRespDTO {
     private String ruleType;
 
     /**
-     * 是否有效
+     * Valid Flag
      */
     private Boolean validFlag;
 
     /**
-     * 删除标志
+     * Delete Flag
      */
     private Boolean delFlag;
 

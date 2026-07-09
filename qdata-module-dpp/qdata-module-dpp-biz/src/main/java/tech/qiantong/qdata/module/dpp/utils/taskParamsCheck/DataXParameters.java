@@ -26,7 +26,7 @@ public class DataXParameters extends AbstractParameters {
 
     @Override
     public boolean checkParameters() {
-        // 假设某个参数不能为空
+        // Assume a parameter must not be empty
         return StringUtils.isNotEmpty(someDataXParam);
     }
 

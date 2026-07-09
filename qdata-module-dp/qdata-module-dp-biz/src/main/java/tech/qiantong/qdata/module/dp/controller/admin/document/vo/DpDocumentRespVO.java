@@ -28,7 +28,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 标准信息登记 Response VO 对象 DP_DOCUMENT
+ * Document Registration Response VO - DP_DOCUMENT
  *
  * @author qdata
  * @date 2025-08-21

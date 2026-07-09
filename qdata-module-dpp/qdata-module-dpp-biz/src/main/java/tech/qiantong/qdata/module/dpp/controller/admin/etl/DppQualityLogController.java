@@ -52,12 +52,12 @@ import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppQualityLogDO;
 import tech.qiantong.qdata.module.dpp.service.etl.IDppQualityLogService;
 
 /**
- * 数据质量日志Controller
+ * Data Quality Log Controller
  *
  * @author qdata
  * @date 2025-07-19
  */
-@Tag(name = "数据质量日志")
+@Tag(name = "Data Quality Log")
 @RestController
 @RequestMapping("/dpp/qualityLog")
 @Validated
@@ -131,7 +131,7 @@ public class DppQualityLogController extends BaseController {
     @RequestMapping(value = "/logDetailCat", method = RequestMethod.GET)
     @Operation(summary = "运行日志详情")
     public ReturnT<LogResult> logDetailCat(String handleMsg) {
-        // 添加日志审计功能
+        // Add log audit functionality
         try {
             InputStream in = new FileInputStream(handleMsg);
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -147,7 +147,7 @@ public class DppQualityLogController extends BaseController {
             if (in != null) {
                 in.close();
             }
-            // @TODO 查看日志
+            // @TODO View log
             ReturnT<LogResult> returnT = new ReturnT<>(ReturnT.SUCCESS_CODE, "查询日志成功");
             LogResult logResult = new LogResult(0, 0, logContent, true);
             returnT.setContent(logResult);

@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.dm.api.dm.dto;
 import lombok.*;
 
 /**
- * 数据域管理 DTO 对象 DM_DATA_DOMAIN
+ * Data Domain DTO - DM_DATA_DOMAIN
  *
  * @author FXB
  * @date 2026-03-24
@@ -34,22 +34,22 @@ public class DmDataDomainRespDTO {
     /** ID */
     private Long id;
 
-    /** 名称 */
+    /** Name */
     private String name;
 
-    /** 英文缩写 */
+    /** English Abbreviation */
     private String engName;
 
-    /** 负责人ID */
+    /** Owner User ID */
     private Long ownerUserId;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
 

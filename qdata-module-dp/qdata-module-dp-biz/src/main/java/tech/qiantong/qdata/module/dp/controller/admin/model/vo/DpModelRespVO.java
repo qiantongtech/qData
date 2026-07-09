@@ -27,7 +27,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 逻辑模型 Response VO 对象 DP_MODEL
+ * Logical Model Response VO - DP_MODEL
  *
  * @author qdata
  * @date 2025-01-21
@@ -57,42 +57,42 @@ public class DpModelRespVO implements Serializable {
     private String catName;
 
     /**
-     * 表类型;1:明细表 2:汇总表 3:维度表 4:应用表
+     * Table Type; 1: Detail Table 2: Summary Table 3: Dimension Table 4: Application Table
      */
     @Schema(description = "表类型 1:明细表 2:汇总表 3:维度表 4:应用表")
     private String tableType;
     /**
-     * 数仓分层id
+     * Data Warehouse Layer ID
      */
     @Schema(description = "数仓分层id ")
     private Long dataLayerId;
     /**
-     * 业务分类id;只有表类型为非应用表是才有值
+     * Business Category ID; Only has value when table type is not Application Table
      */
     @Schema(description = "业务分类id 只有表类型为非应用表是才有值")
     private Long businessCategoryId;
     /**
-     * 业务分类层级编码
+     * Business Category Hierarchy Code
      */
     @Schema(description = "业务分类层级编码 ")
     private String businessCategoryCode;
     /**
-     * 数据分域id;只有表类型为非应用表是才有值
+     * Data Domain ID; Only has value when table type is not Application Table
      */
     @Schema(description = "数据分域id 只有表类型为非应用表是才有值")
     private Long dataDomainId;
     /**
-     * 所属主题id（主题规划）;只有表类型为应用表是才有值
+     * Theme Domain ID (Theme Planning); Only has value when table type is Application Table
      */
     @Schema(description = "所属主题id（主题规划） 只有表类型为应用表是才有值")
     private Long themeDomainId;
     /**
-     * 所属主题层级编码
+     * Theme Domain Hierarchy Code
      */
     @Schema(description = "所属主题层级编码 ")
     private String themeDomainCode;
     /**
-     * 表名大小写;1：大写 2：小写
+     * Table Name Case; 1: Uppercase 2: Lowercase
      */
     @Schema(description = "表名大小写 1：大写 2：小写")
     private String tableCase;
@@ -182,17 +182,17 @@ public class DpModelRespVO implements Serializable {
     private Long port;
 
     /**
-     * 名称
+     * Name
      */
     private String documentName;
 
     /**
-     * 名称
+     * Name
      */
     private String documentCode;
 
     /**
-     * 文件标准类型字段，
+     * Document standard type field
      */
     private String documentType;
 

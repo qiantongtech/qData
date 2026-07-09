@@ -48,12 +48,12 @@ import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlSchedulerDO;
 import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlSchedulerService;
 
 /**
- * 数据集成调度信息Controller
+ * Data Integration Scheduling Info Controller
  *
  * @author qdata
  * @date 2025-02-13
  */
-@Tag(name = "数据集成调度信息")
+@Tag(name = "Data Integration Scheduling Info")
 @RestController
 @RequestMapping("/dpp/etlScheduler")
 @Validated

@@ -53,7 +53,7 @@ import tech.qiantong.qdata.module.system.service.ISysMessageService;
 import static tech.qiantong.qdata.common.utils.DateUtils.YYYY_MM_DD_HH_MM_SS;
 
 /**
- * 数据质量日志Service业务层处理
+ * Data Quality Log Service business layer processing
  *
  * @author qdata
  * @date 2025-07-19
@@ -76,11 +76,11 @@ public class DppQualityLogServiceImpl  extends ServiceImpl<DppQualityLogMapper,D
         for (DppQualityLogDO row : rows) {
             Map<String, Object> map = dppEvaluateLogService.sumTotalAndProblemTotalByTaskLogId(String.valueOf(row.getId()));
 
-            // 获取总数与问题数（确保 null 安全）
+            // Get total and problem count (ensure null safety)
             Long total = map.get("total") == null ? 0L : (Long) map.get("total");
             Long problemTotal = map.get("problemTotal") == null ? 0L : (Long) map.get("problemTotal");
 
-            // 计算质量评分（百分比，保留两位小数）
+            // Calculate quality score (percentage, two decimal places)
             BigDecimal score = BigDecimal.ZERO;
             if (total > 0) {
                 score = BigDecimal.valueOf(total - problemTotal)
@@ -88,7 +88,7 @@ public class DppQualityLogServiceImpl  extends ServiceImpl<DppQualityLogMapper,D
                         .divide(BigDecimal.valueOf(total), 2, RoundingMode.HALF_UP);
             }
 
-            // 设置评分与问题数
+            // Set score and problem count
             row.setScore(score.longValue());
             row.setProblemData(problemTotal);
             dppQualityLogDOS.add(row);
@@ -106,15 +106,15 @@ public class DppQualityLogServiceImpl  extends ServiceImpl<DppQualityLogMapper,D
 
     @Override
     public int updateDppQualityLog(DppQualityLogSaveReqVO updateReqVO) {
-        // 相关校验
+        // Validate
 
-        // 更新数据质量日志
+        // Update data quality log
         DppQualityLogDO updateObj = BeanUtils.toBean(updateReqVO, DppQualityLogDO.class);
         return dppQualityLogMapper.updateById(updateObj);
     }
     @Override
     public int removeDppQualityLog(Collection<Long> idList) {
-        // 批量删除数据质量日志
+        // Batch delete data quality log
         return dppQualityLogMapper.deleteBatchIds(idList);
     }
 
@@ -152,19 +152,19 @@ public class DppQualityLogServiceImpl  extends ServiceImpl<DppQualityLogMapper,D
                 .collect(Collectors.toMap(
                         DppQualityLogDO::getId,
                         dppQualityLogDO -> dppQualityLogDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入数据质量日志数据
+     * Import data quality log data
      *
-     * @param importExcelList 数据质量日志数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList data quality log data list
+     * @param isUpdateSupport whether to support update; if already exists, update the data
+     * @param operName operator user
+     * @return result
      */
     @Override
     public String importDppQualityLog(List<DppQualityLogRespVO> importExcelList, boolean isUpdateSupport, String operName) {
@@ -241,11 +241,11 @@ public class DppQualityLogServiceImpl  extends ServiceImpl<DppQualityLogMapper,D
         DppQualityLogDO dppQualityLogDO = dppQualityLogMapper.selectById(id);
         DppQualityTaskDO dppQualityTaskDO = qualityTaskMapper.selectById(dppQualityLogDO.getQualityId());
         Map<String, Object> map = dppEvaluateLogService.sumTotalAndProblemTotalByTaskLogId(String.valueOf(dppQualityLogDO.getId()));
-        // 获取总数与问题数（确保 null 安全）
+        // Get total and problem count (ensure null safety)
         Long total = map.get("total") == null ? 0L : (Long) map.get("total");
         Long problemTotal = map.get("problemTotal") == null ? 0L : (Long) map.get("problemTotal");
 
-        // 计算质量评分（百分比，保留两位小数）
+        // Calculate quality score (percentage, two decimal places)
         BigDecimal score = BigDecimal.ZERO;
         if (total > 0) {
             score = BigDecimal.valueOf(total - problemTotal)

@@ -26,7 +26,7 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 /**
- * 数据分类 批量設置数据分級 Request VO DG_DATA_CATEGORY
+ * Data Category Batch Set Data Level Request VO - DG_DATA_CATEGORY
  *
  * @author qdata
  * @date 2026-04-07

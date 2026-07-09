@@ -27,12 +27,12 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 数据集成任务-扩展数据 Response VO 对象 DPP_ETL_TASK_EXT
+ * Data Integration Task-Extension Data Response VO Object DPP_ETL_TASK_EXT
  *
  * @author qdata
  * @date 2025-04-16
  */
-@Schema(description = "数据集成任务-扩展数据 Response VO")
+@Schema(description = "Data Integration Task-Extension Data Response VO")
 @Data
 public class DppEtlTaskExtRespVO implements Serializable {
 

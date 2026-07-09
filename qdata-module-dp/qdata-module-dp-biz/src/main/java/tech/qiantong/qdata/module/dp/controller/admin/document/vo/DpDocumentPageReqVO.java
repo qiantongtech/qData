@@ -26,7 +26,7 @@ import tech.qiantong.qdata.common.core.page.PageParam;
 import java.util.Date;
 
 /**
- * 标准信息登记 Request VO 对象 DP_DOCUMENT
+ * Document Registration Request VO - DP_DOCUMENT
  *
  * @author qdata
  * @date 2025-08-21
@@ -79,7 +79,7 @@ public class DpDocumentPageReqVO extends PageParam {
 
     private String existStandardUrl;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
 

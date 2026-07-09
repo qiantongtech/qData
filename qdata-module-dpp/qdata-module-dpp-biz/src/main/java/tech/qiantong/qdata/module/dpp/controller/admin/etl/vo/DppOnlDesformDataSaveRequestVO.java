@@ -27,7 +27,7 @@ import java.io.Serializable;
 
 /**
  * <P>
- * 用途:
+ * Purpose:
  * </p>
  *
  * @author: FXB
@@ -36,7 +36,7 @@ import java.io.Serializable;
 @Data
 public class DppOnlDesformDataSaveRequestVO extends DppOnlDesformDataBaseRequestVO implements Serializable {
 
-//    @ApiModelProperty(value = "数据")
+//    @ApiModelProperty(value = "Data")
     private JSONObject data;
 
     @Builder(toBuilder = true)

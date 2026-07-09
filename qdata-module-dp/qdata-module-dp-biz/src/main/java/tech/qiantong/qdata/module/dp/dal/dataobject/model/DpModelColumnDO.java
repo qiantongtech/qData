@@ -23,14 +23,14 @@ import lombok.*;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 逻辑模型属性信息 DO 对象 DP_MODEL_COLUMN
+ * Logical Model Column DO - DP_MODEL_COLUMN
  *
  * @author qdata
  * @date 2025-01-21
  */
 @Data
 @TableName(value = "DP_MODEL_COLUMN")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Can be omitted for MySQL and similar databases.
 // @KeySequence("DP_MODEL_COLUMN_seq")
 @Builder
 @NoArgsConstructor

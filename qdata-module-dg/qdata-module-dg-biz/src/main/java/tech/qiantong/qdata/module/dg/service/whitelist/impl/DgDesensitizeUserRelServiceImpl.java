@@ -42,7 +42,7 @@ import tech.qiantong.qdata.module.dg.dal.dataobject.whitelist.DgDesensitizeUserR
 import tech.qiantong.qdata.module.dg.dal.mapper.whitelist.DgDesensitizeUserRelMapper;
 import tech.qiantong.qdata.module.dg.service.whitelist.IDgDesensitizeUserRelService;
 /**
- * 脱敏白名单与用户关联关系Service业务层处理
+ * Desensitize Whitelist User Relationship Service Business Layer Processing
  *
  * @author qdata
  * @date 2026-04-09
@@ -68,15 +68,15 @@ public class DgDesensitizeUserRelServiceImpl  extends ServiceImpl<DgDesensitizeU
 
     @Override
     public int updateDgDesensitizeUserRel(DgDesensitizeUserRelSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related validation
 
-        // 更新脱敏白名单与用户关联关系
+        // Update desensitize whitelist user relationship
         DgDesensitizeUserRelDO updateObj = BeanUtils.toBean(updateReqVO, DgDesensitizeUserRelDO.class);
         return dgDesensitizeUserRelMapper.updateById(updateObj);
     }
     @Override
     public int removeDgDesensitizeUserRel(Collection<Long> idList) {
-        // 批量删除脱敏白名单与用户关联关系
+        // Batch delete desensitize whitelist user relationships
         return dgDesensitizeUserRelMapper.deleteBatchIds(idList);
     }
 
@@ -97,19 +97,19 @@ public class DgDesensitizeUserRelServiceImpl  extends ServiceImpl<DgDesensitizeU
                 .collect(Collectors.toMap(
                         DgDesensitizeUserRelDO::getId,
                         dgDesensitizeUserRelDO -> dgDesensitizeUserRelDO,
-                        // 保留已存在的值
+                        // Keep existing values
                         (existing, replacement) -> existing
                 ));
     }
 
 
         /**
-         * 导入脱敏白名单与用户关联关系数据
+         * Import desensitize whitelist user relationship data
          *
-         * @param importExcelList 脱敏白名单与用户关联关系数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
+         * @param importExcelList Desensitize whitelist user relationship data list
+         * @param isUpdateSupport Whether to update support, if already exists, update the data
+         * @param operName        Operator user
+         * @return Result
          */
         @Override
         public String importDgDesensitizeUserRel(List<DgDesensitizeUserRelRespVO> importExcelList, boolean isUpdateSupport, String operName) {

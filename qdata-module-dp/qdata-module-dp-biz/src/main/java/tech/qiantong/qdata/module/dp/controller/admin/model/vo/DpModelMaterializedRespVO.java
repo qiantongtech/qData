@@ -27,7 +27,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 物化模型记录 Response VO 对象 DP_MODEL_MATERIALIZED
+ * Materialized Model Record Response VO - DP_MODEL_MATERIALIZED
  *
  * @author qdata
  * @date 2025-01-21
@@ -120,7 +120,7 @@ public class DpModelMaterializedRespVO implements Serializable {
     @Schema(description = "备注", example = "")
     private String remark;
 
-    /**  发布模式 1：删除重建  2：增量发布 */
+    /** Release mode 1: Drop and recreate 2: Incremental publish */
     @Schema(description = " 发布模式 1：删除重建  2：增量发布", example = "")
     private String releaseMode;
 }

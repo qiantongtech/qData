@@ -29,7 +29,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 脱敏规则 Response VO 对象 DG_DESENSITIZE_RULE
+ * Desensitize Rule Response VO DG_DESENSITIZE_RULE
  *
  * @author qdata
  * @date 2026-04-10

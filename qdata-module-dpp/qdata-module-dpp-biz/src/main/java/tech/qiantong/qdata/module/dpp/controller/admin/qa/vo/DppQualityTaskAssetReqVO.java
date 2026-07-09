@@ -29,6 +29,6 @@ public class DppQualityTaskAssetReqVO  extends PageParam {
     @Schema(description = "ID", example = "")
     private Long id;
 
-    @Schema(description = "资产id")
+    @Schema(description = "Asset ID")
     private Long assetId;
 }

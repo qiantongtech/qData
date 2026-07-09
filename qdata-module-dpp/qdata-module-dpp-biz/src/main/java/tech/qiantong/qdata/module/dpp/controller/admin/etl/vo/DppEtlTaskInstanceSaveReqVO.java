@@ -27,12 +27,12 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
- * 数据集成任务实例 创建/修改 Request VO DPP_ETL_TASK_INSTANCE
+ * Data Integration Task Instance Create/Update Request VO DPP_ETL_TASK_INSTANCE
  *
  * @author qdata
  * @date 2025-02-13
  */
-@Schema(description = "数据集成任务实例 Response VO")
+@Schema(description = "Data Integration Task Instance Create/Update Request VO")
 @Data
 public class DppEtlTaskInstanceSaveReqVO extends BaseEntity {
 

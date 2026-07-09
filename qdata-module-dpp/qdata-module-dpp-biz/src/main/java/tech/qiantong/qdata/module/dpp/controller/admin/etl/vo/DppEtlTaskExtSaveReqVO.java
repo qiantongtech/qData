@@ -28,7 +28,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import javax.validation.constraints.Size;
 
 /**
- * 数据集成任务-扩展数据 创建/修改 Request VO DPP_ETL_TASK_EXT
+ * Data Integration Task-Extension Data Create/Update Request VO DPP_ETL_TASK_EXT
  *
  * @author qdata
  * @date 2025-04-16
@@ -36,7 +36,7 @@ import javax.validation.constraints.Size;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "数据集成任务-扩展数据 Response VO")
+@Schema(description = "Data Integration Task-Extension Data Create/Update Request VO")
 @Data
 public class DppEtlTaskExtSaveReqVO extends BaseEntity {
 

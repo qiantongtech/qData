@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 数据集成任务-日志 Request VO 对象 DPP_ETL_TASK_LOG
+ * Data Integration Task-Log Request VO Object DPP_ETL_TASK_LOG
  *
  * @author qdata
  * @date 2025-02-13
@@ -34,7 +34,7 @@ import tech.qiantong.qdata.common.core.page.PageParam;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "数据集成任务-日志 Request VO")
+@Schema(description = "Data Integration Task-Log Request VO")
 @Data
 public class DppEtlTaskLogPageReqVO extends PageParam {
 

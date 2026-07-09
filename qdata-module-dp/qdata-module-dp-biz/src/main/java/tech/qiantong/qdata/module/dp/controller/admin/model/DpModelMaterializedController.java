@@ -41,7 +41,7 @@ import javax.validation.Valid;
 import java.util.Arrays;
 
 /**
- * 物化模型记录Controller
+ * Materialized Model Record Controller
  *
  * @author qdata
  * @date 2025-01-21

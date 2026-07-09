@@ -25,7 +25,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import javax.validation.constraints.Size;
 
 /**
- * 在线单设计器 创建/修改 Request VO DPP_ONL_DESFORM
+ * Online Form Designer Create/Update Request VO DPP_ONL_DESFORM
  *
  * @author qdata
  * @date 2025-04-09
@@ -48,7 +48,7 @@ public class DppOnlDesformSaveReqVO extends BaseEntity {
     private String desformCode;
 
     @Schema(description = "表单JSON", example = "")
-//    @Size(max = 256, message = "表单JSON长度不能超过256个字符")
+//    @Size(max = 256, message = "Form JSON length must not exceed 256 characters")
     private String desformJson;
 
     @Schema(description = "是否存储到指定表中", example = "")

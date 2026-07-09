@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 数据集成任务节点关系 Request VO 对象 DPP_ETL_TASK_NODE_REL
+ * Data Integration Task Node Relation Request VO Object DPP_ETL_TASK_NODE_REL
  *
  * @author qdata
  * @date 2025-02-13
@@ -34,7 +34,7 @@ import tech.qiantong.qdata.common.core.page.PageParam;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "数据集成任务节点关系 Request VO")
+@Schema(description = "Data Integration Task Node Relation Page Request VO")
 @Data
 public class DppEtlTaskNodeRelPageReqVO extends PageParam {
 

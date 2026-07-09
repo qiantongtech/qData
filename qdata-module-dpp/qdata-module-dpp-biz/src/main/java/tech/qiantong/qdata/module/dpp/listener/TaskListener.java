@@ -39,7 +39,7 @@ import java.util.Map;
 
 /**
  * <P>
- * 用途:
+ * Purpose:
  * </p>
  *
  * @author: FXB
@@ -58,18 +58,18 @@ public class TaskListener {
             key = {"ds.queue.taskInstance.insert"},
             value = @Queue(value = "ds.queue.taskInstance.insert", durable = "true", exclusive = "false", autoDelete = "false")))
     public void taskInstanceInsert(Map map, Channel channel, Message message) {
-        log.info("任务实例创建消息开始>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        log.info("Task instance creation message started >>>>>>>>>>>>>>>>>>>>>>>>>>>");
         TaskInstance taskInstance = JSON.parseObject(JSON.toJSONString(map), TaskInstance.class);
         try {
             dppEtlNodeInstanceService.createNodeInstance(taskInstance);
         } catch (ServiceException serviceException) {
-            log.error("创建任务实例异常:{}", serviceException.getMessage());
+            log.error("Failed to create task instance: {}", serviceException.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        // 手动确认
+        // Manual acknowledgment
         channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
-        log.info("任务实例创建消息结束>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        log.info("Task instance creation message ended >>>>>>>>>>>>>>>>>>>>>>>>>>>");
     }
 
 
@@ -78,22 +78,22 @@ public class TaskListener {
             key = {"ds.queue.taskInstance.update"},
             value = @Queue(value = "ds.queue.taskInstance.update", durable = "true", exclusive = "false", autoDelete = "false")))
     public void taskInstanceUpdate(Map map, Channel channel, Message message) {
-        log.info("任务实例更新消息开始>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        log.info("Task instance update message started >>>>>>>>>>>>>>>>>>>>>>>>>>>");
         TaskInstance taskInstance = JSON.parseObject(JSON.toJSONString(map), TaskInstance.class);
         Boolean flag = false;
         try {
             flag = dppEtlNodeInstanceService.updateNodeInstance(taskInstance);
         } catch (ServiceException serviceException) {
-            log.error("更新任务实例异常:{}", serviceException.getMessage());
+            log.error("Failed to update task instance: {}", serviceException.getMessage());
         } catch (Exception e) {
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
             e.printStackTrace();
             return;
         }
         if (flag) {
-            // 手动确认
+            // Manual acknowledgment
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         }
-        log.info(taskInstance.getId() + "任务实例更新消息结束>>>>>>>>>>>>>>>>>>>>>>>>>>>" + flag);
+        log.info(taskInstance.getId() + " Task instance update message ended >>>>>>>>>>>>>>>>>>>>>>>>>>>" + flag);
     }
 }

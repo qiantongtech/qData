@@ -48,7 +48,7 @@ import tech.qiantong.qdata.module.dg.dal.dataobject.dataLevel.DgDataLevelDO;
 import tech.qiantong.qdata.module.dg.service.dataLevel.IDgDataLevelService;
 
 /**
- * 数据分级Controller
+ * Data Level Controller
  *
  * @author qdata
  * @date 2026-04-03

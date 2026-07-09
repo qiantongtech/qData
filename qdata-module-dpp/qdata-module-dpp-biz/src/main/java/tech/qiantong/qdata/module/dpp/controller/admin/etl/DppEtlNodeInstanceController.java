@@ -62,12 +62,12 @@ import tech.qiantong.qdata.module.dpp.utils.TaskConverter;
 import tech.qiantong.qdata.redis.service.IRedisService;
 
 /**
- * 数据集成节点实例Controller
+ * Data Integration Node Instance Controller
  *
  * @author qdata
  * @date 2025-02-13
  */
-@Tag(name = "数据集成节点实例")
+@Tag(name = "Data Integration Node Instance")
 @RestController
 @RequestMapping("/dpp/etlNodeInstance")
 @Validated
@@ -160,7 +160,7 @@ public class DppEtlNodeInstanceController extends BaseController {
         if (redisService.hasKey(taskInstanceLogKey)) {
             content += redisService.get(taskInstanceLogKey) + "\n";
         } else {
-            //获取表中的日志
+            // Get log from table
             String logContent = dppEtlNodeInstanceLogService.getLog(dppEtlNodeInstanceDO.getId());
             if (logContent != null) {
                 content += logContent + "\n";
@@ -173,20 +173,20 @@ public class DppEtlNodeInstanceController extends BaseController {
     @Operation(summary = "下载日志文件")
     public void downloadLog(HttpServletResponse response, Long nodeInstanceId,String name) {
         try {
-            // 获取日志
+            // Get log
             String log = dppEtlNodeInstanceService.getLogByNodeInstanceId(nodeInstanceId);
-            // 如果文件存在
-            // 设置响应的内容类型为文件下载
+            // If file exists
+            // Set response content type to file download
             response.setContentType("application/octet-stream");
-            // 设置下载文件名
+            // Set download filename
             response.setHeader("Content-Disposition", "attachment;filename=" + name + ".log");
 
-            // 创建文件输入流
+            // Create file input stream
             try (InputStream in = new ByteArrayInputStream(log.getBytes("UTF-8"));
                  OutputStream out = response.getOutputStream()) {
                 byte[] buffer = new byte[1024];
                 int length;
-                // 将文件内容写入输出流
+                // Write file content to output stream
                 while ((length = in.read(buffer)) != -1) {
                     out.write(buffer, 0, length);
                 }

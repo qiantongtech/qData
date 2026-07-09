@@ -23,7 +23,7 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 数据分类 Request VO 对象 DG_DATA_CATEGORY
+ * Data Category Request VO - DG_DATA_CATEGORY
  *
  * @author qdata
  * @date 2026-04-07
@@ -45,7 +45,7 @@ public class DgDataCategoryPageReqVO extends PageParam {
     private String name;
 
     /**
-     * 分类名称缩写名
+     * Category Name Abbreviation
      */
     @Schema(description = "分类名称缩写名", example = "")
     private String shortName;
@@ -60,7 +60,7 @@ public class DgDataCategoryPageReqVO extends PageParam {
     private String description;
 
     /**
-     * 是否有效
+     * Valid Flag
      */
     private Boolean validFlag;
 

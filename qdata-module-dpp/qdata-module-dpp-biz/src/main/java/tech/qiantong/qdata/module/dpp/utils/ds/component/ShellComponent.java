@@ -26,16 +26,16 @@ import java.util.Map;
 
 /**
  * <P>
- * 用途:SHELL
+ * Purpose: SHELL
  * </p>
  **/
 public class ShellComponent implements ComponentItem {
 
     /**
-     * taskParams PROCEDURE (存储过程)
-     * "localParams": [],//默认 []
-     * "resourceList": [],//默认 []
-     * "rawScript":"脚本"
+     * taskParams PROCEDURE (stored procedure)
+     * "localParams": [],//default []
+     * "resourceList": [],//default []
+     * "rawScript":"script"
      * }
      *
      * @param params

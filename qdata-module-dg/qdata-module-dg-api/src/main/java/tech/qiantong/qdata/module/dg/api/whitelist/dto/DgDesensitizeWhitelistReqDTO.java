@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 /**
- * 脱敏白名单 DTO 对象 DG_DESENSITIZE_WHITELIST
+ * Desensitization Whitelist DTO Object DG_DESENSITIZE_WHITELIST
  *
  * @author qdata
  * @date 2026-04-09

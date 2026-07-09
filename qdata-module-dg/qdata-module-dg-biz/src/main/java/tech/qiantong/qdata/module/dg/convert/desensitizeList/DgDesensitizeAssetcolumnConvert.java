@@ -27,7 +27,7 @@ import tech.qiantong.qdata.module.dg.controller.admin.desensitizeList.vo.DgDesen
 import tech.qiantong.qdata.module.dg.dal.dataobject.desensitizeList.DgDesensitizeAssetcolumnDO;
 
 /**
- * 脱敏清单关联关系 Convert
+ * Desensitization List Association Convert
  *
  * @author qdata
  * @date 2026-04-12
@@ -37,29 +37,29 @@ public interface DgDesensitizeAssetcolumnConvert {
     DgDesensitizeAssetcolumnConvert INSTANCE = Mappers.getMapper(DgDesensitizeAssetcolumnConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param dgDesensitizeAssetcolumnPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param dgDesensitizeAssetcolumnPageReqVO request parameters
      * @return DgDesensitizeAssetcolumnDO
      */
      DgDesensitizeAssetcolumnDO convertToDO(DgDesensitizeAssetcolumnPageReqVO dgDesensitizeAssetcolumnPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param dgDesensitizeAssetcolumnSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param dgDesensitizeAssetcolumnSaveReqVO save request parameters
      * @return DgDesensitizeAssetcolumnDO
      */
      DgDesensitizeAssetcolumnDO convertToDO(DgDesensitizeAssetcolumnSaveReqVO dgDesensitizeAssetcolumnSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param dgDesensitizeAssetcolumnDO 实体对象
+     * Convert DO to RespVO
+     * @param dgDesensitizeAssetcolumnDO entity object
      * @return DgDesensitizeAssetcolumnRespVO
      */
      DgDesensitizeAssetcolumnRespVO convertToRespVO(DgDesensitizeAssetcolumnDO dgDesensitizeAssetcolumnDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param dgDesensitizeAssetcolumnDOList 实体对象列表
+     * Convert DO List to RespVO List
+     * @param dgDesensitizeAssetcolumnDOList entity object list
      * @return List<DgDesensitizeAssetcolumnRespVO>
      */
      List<DgDesensitizeAssetcolumnRespVO> convertToRespVOList(List<DgDesensitizeAssetcolumnDO> dgDesensitizeAssetcolumnDOList);

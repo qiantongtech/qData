@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 数据元数据资产关联信息Service接口
+ * Data Element Asset Relation Information Service Interface
  *
  * @author qdata
  * @date 2025-01-21
@@ -39,65 +39,65 @@ import java.util.Map;
 public interface IDpDataElemAssetRelService extends IService<DpDataElemAssetRelDO> {
 
     /**
-     * 获得数据元数据资产关联信息分页列表
+     * Get data element asset relation information paginated list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据元数据资产关联信息分页列表
+     * @param pageReqVO Pagination request
+     * @return Paginated list of data element asset relation information
      */
     PageResult<DpDataElemAssetRelDO> getDpDataElemAssetRelPage(DpDataElemAssetRelPageReqVO pageReqVO);
 
     /**
-     * 创建数据元数据资产关联信息
+     * Create data element asset relation information
      *
-     * @param createReqVO 数据元数据资产关联信息信息
-     * @return 数据元数据资产关联信息编号
+     * @param createReqVO Data element asset relation information
+     * @return Data element asset relation information ID
      */
     Long createDpDataElemAssetRel(DpDataElemAssetRelSaveReqVO createReqVO);
 
     /**
-     * 更新数据元数据资产关联信息
+     * Update data element asset relation information
      *
-     * @param updateReqVO 数据元数据资产关联信息信息
+     * @param updateReqVO Data element asset relation information
      */
     int updateDpDataElemAssetRel(DpDataElemAssetRelSaveReqVO updateReqVO);
 
     /**
-     * 删除数据元数据资产关联信息
+     * Delete data element asset relation information
      *
-     * @param idList 数据元数据资产关联信息编号
+     * @param idList Data element asset relation information ID list
      */
     int removeDpDataElemAssetRel(Collection<Long> idList);
 
     /**
-     * 获得数据元数据资产关联信息详情
+     * Get data element asset relation information details
      *
-     * @param id 数据元数据资产关联信息编号
-     * @return 数据元数据资产关联信息
+     * @param id Data element asset relation information ID
+     * @return Data element asset relation information
      */
     DpDataElemAssetRelDO getDpDataElemAssetRelById(Long id);
 
     /**
-     * 获得全部数据元数据资产关联信息列表
+     * Get all data element asset relation information list
      *
-     * @return 数据元数据资产关联信息列表
+     * @return Data element asset relation information list
      */
     List<DpDataElemAssetRelDO> getDpDataElemAssetRelList();
 
     /**
-     * 获得全部数据元数据资产关联信息 Map
+     * Get all data element asset relation information Map
      *
-     * @return 数据元数据资产关联信息 Map
+     * @return Data element asset relation information Map
      */
     Map<Long, DpDataElemAssetRelDO> getDpDataElemAssetRelMap();
 
 
     /**
-     * 导入数据元数据资产关联信息数据
+     * Import data element asset relation information data
      *
-     * @param importExcelList 数据元数据资产关联信息数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Data element asset relation information data list
+     * @param isUpdateSupport Whether to support update, if exists then update the data
+     * @param operName Operator
+     * @return Result
      */
     String importDpDataElemAssetRel(List<DpDataElemAssetRelRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

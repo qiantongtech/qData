@@ -48,7 +48,7 @@ import tech.qiantong.qdata.module.dm.dal.dataobject.dm.DmThemeDomainDO;
 import tech.qiantong.qdata.module.dm.service.dm.IDmThemeDomainService;
 
 /**
- * 主题域管理Controller
+ * Theme Domain Controller
  *
  * @author FXB
  * @date 2026-03-24

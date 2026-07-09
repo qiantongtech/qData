@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.dg.controller.admin.desensitizeList.vo.DgDesen
 import tech.qiantong.qdata.module.dg.controller.admin.desensitizeList.vo.DgDesensitizeAssetcolumnPageReqVO;
 import tech.qiantong.qdata.module.dg.dal.dataobject.desensitizeList.DgDesensitizeAssetcolumnDO;
 /**
- * 脱敏清单关联关系Service接口
+ * Desensitize List Relationship Service Interface
  *
  * @author qdata
  * @date 2026-04-12
@@ -36,67 +36,67 @@ import tech.qiantong.qdata.module.dg.dal.dataobject.desensitizeList.DgDesensitiz
 public interface IDgDesensitizeAssetcolumnService extends IService<DgDesensitizeAssetcolumnDO> {
 
     /**
-     * 获得脱敏清单关联关系分页列表
+     * Get Desensitize List Relationship Page
      *
-     * @param pageReqVO 分页请求
-     * @return 脱敏清单关联关系分页列表
+     * @param pageReqVO Page request
+     * @return Desensitize List Relationship Page
      */
     PageResult<DgDesensitizeAssetcolumnDO> getDgDesensitizeAssetcolumnPage(DgDesensitizeAssetcolumnPageReqVO pageReqVO);
 
     /**
-     * 创建脱敏清单关联关系
+     * Create Desensitize List Relationship
      *
-     * @param createReqVO 脱敏清单关联关系信息
-     * @return 脱敏清单关联关系编号
+     * @param createReqVO Desensitize List Relationship info
+     * @return Desensitize List Relationship ID
      */
     Long createDgDesensitizeAssetcolumn(DgDesensitizeAssetcolumnSaveReqVO createReqVO);
 
     /**
-     * 更新脱敏清单关联关系
+     * Update Desensitize List Relationship
      *
-     * @param updateReqVO 脱敏清单关联关系信息
+     * @param updateReqVO Desensitize List Relationship info
      */
     int updateDgDesensitizeAssetcolumn(DgDesensitizeAssetcolumnSaveReqVO updateReqVO);
 
     /**
-     * 删除脱敏清单关联关系
+     * Delete Desensitize List Relationship
      *
-     * @param idList 脱敏清单关联关系编号
+     * @param idList Desensitize List Relationship IDs
      */
     int removeDgDesensitizeAssetcolumn(Collection<Long> idList);
 
     /**
-     * 获得脱敏清单关联关系详情
+     * Get Desensitize List Relationship Detail
      *
-     * @param id 脱敏清单关联关系编号
-     * @return 脱敏清单关联关系
+     * @param id Desensitize List Relationship ID
+     * @return Desensitize List Relationship
      */
     DgDesensitizeAssetcolumnDO getDgDesensitizeAssetcolumnById(Long id);
 
     DgDesensitizeAssetcolumnDO getDgDesensitizeAssetcolumnByAid(Long assetcolumnId);
 
     /**
-     * 获得全部脱敏清单关联关系列表
+     * Get All Desensitize List Relationship List
      *
-     * @return 脱敏清单关联关系列表
+     * @return Desensitize List Relationship list
      */
     List<DgDesensitizeAssetcolumnDO> getDgDesensitizeAssetcolumnList();
 
     /**
-     * 获得全部脱敏清单关联关系 Map
+     * Get All Desensitize List Relationship Map
      *
-     * @return 脱敏清单关联关系 Map
+     * @return Desensitize List Relationship Map
      */
     Map<Long, DgDesensitizeAssetcolumnDO> getDgDesensitizeAssetcolumnMap();
 
 
     /**
-     * 导入脱敏清单关联关系数据
+     * Import Desensitize List Relationship Data
      *
-     * @param importExcelList 脱敏清单关联关系数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Desensitize List Relationship data list
+     * @param isUpdateSupport Whether to support update, if already exists, update the data
+     * @param operName Operator name
+     * @return Result
      */
     String importDgDesensitizeAssetcolumn(List<DgDesensitizeAssetcolumnRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

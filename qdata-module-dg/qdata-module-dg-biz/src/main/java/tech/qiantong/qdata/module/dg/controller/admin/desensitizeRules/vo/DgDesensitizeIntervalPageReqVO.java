@@ -23,7 +23,7 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 脱敏区间 Request VO 对象 DG_DESENSITIZE_INTERVAL
+ * Desensitize Interval Request VO DG_DESENSITIZE_INTERVAL
  *
  * @author qdata
  * @date 2026-04-10

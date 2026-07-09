@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.dp.dal.dataobject.model.DpModelMaterializedDO;
 import java.util.List;
 
 /**
- * 物化模型记录 Convert
+ * Materialized Model Record Convert
  *
  * @author qdata
  * @date 2025-01-21
@@ -38,29 +38,29 @@ public interface DpModelMaterializedConvert {
     DpModelMaterializedConvert INSTANCE = Mappers.getMapper(DpModelMaterializedConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param dpModelMaterializedPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param dpModelMaterializedPageReqVO Request params
      * @return DpModelMaterializedDO
      */
      DpModelMaterializedDO convertToDO(DpModelMaterializedPageReqVO dpModelMaterializedPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param dpModelMaterializedSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param dpModelMaterializedSaveReqVO Save request params
      * @return DpModelMaterializedDO
      */
      DpModelMaterializedDO convertToDO(DpModelMaterializedSaveReqVO dpModelMaterializedSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param dpModelMaterializedDO 实体对象
+     * Convert DO to RespVO
+     * @param dpModelMaterializedDO Entity object
      * @return DpModelMaterializedRespVO
      */
      DpModelMaterializedRespVO convertToRespVO(DpModelMaterializedDO dpModelMaterializedDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param dpModelMaterializedDOList 实体对象列表
+     * Convert DOList to RespVOList
+     * @param dpModelMaterializedDOList Entity object list
      * @return List<DpModelMaterializedRespVO>
      */
      List<DpModelMaterializedRespVO> convertToRespVOList(List<DpModelMaterializedDO> dpModelMaterializedDOList);

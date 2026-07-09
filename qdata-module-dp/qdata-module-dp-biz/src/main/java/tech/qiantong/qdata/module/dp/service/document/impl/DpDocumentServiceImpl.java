@@ -47,7 +47,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 标准信息登记Service业务层处理
+ * Standard Document Registration Service Business Layer Processing
  *
  * @author qdata
  * @date 2025-08-21
@@ -95,15 +95,15 @@ public class DpDocumentServiceImpl  extends ServiceImpl<DpDocumentMapper,DpDocum
 
     @Override
     public int updateDpDocument(DpDocumentSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related validation
 
-        // 更新标准信息登记
+        // Update Standard Document Registration
         DpDocumentDO updateObj = BeanUtils.toBean(updateReqVO, DpDocumentDO.class);
         return dpDocumentMapper.updateById(updateObj);
     }
     @Override
     public int removeDpDocument(Collection<Long> idList) {
-        // 批量删除标准信息登记
+        // Batch Delete Standard Document Registration
         return dpDocumentMapper.deleteBatchIds(idList);
     }
 
@@ -129,19 +129,19 @@ public class DpDocumentServiceImpl  extends ServiceImpl<DpDocumentMapper,DpDocum
                 .collect(Collectors.toMap(
                         DpDocumentDO::getId,
                         dpDocumentDO -> dpDocumentDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
         /**
-         * 导入标准信息登记数据
+         * Import Standard Document Registration Data
          *
-         * @param importExcelList 标准信息登记数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
+         * @param importExcelList Standard Document Registration Data List
+         * @param isUpdateSupport Whether to support update, if exists then update the data
+         * @param operName Operator
+         * @return Result
          */
         @Override
         public String importDpDocument(List<DpDocumentRespVO> importExcelList, boolean isUpdateSupport, String operName) {

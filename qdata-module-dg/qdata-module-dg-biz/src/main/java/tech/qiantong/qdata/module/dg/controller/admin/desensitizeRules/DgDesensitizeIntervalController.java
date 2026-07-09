@@ -48,7 +48,7 @@ import tech.qiantong.qdata.module.dg.dal.dataobject.desensitizeRules.DgDesensiti
 import tech.qiantong.qdata.module.dg.service.desensitizeRules.IDgDesensitizeIntervalService;
 
 /**
- * 脱敏区间Controller
+ * Desensitize Interval Controller
  *
  * @author qdata
  * @date 2026-04-10

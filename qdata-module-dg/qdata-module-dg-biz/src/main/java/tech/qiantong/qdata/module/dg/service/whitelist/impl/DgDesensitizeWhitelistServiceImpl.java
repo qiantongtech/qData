@@ -44,7 +44,7 @@ import tech.qiantong.qdata.module.dg.dal.mapper.whitelist.DgDesensitizeUserRelMa
 import tech.qiantong.qdata.module.dg.dal.mapper.whitelist.DgDesensitizeWhitelistMapper;
 import tech.qiantong.qdata.module.dg.service.whitelist.IDgDesensitizeWhitelistService;
 /**
- * 脱敏白名单Service业务层处理
+ * Desensitize Whitelist Service Business Layer Processing
  *
  * @author qdata
  * @date 2026-04-09
@@ -65,7 +65,7 @@ public class DgDesensitizeWhitelistServiceImpl  extends ServiceImpl<DgDesensitiz
     @Override
     public PageResult<DgDesensitizeWhitelistDO> getDgDesensitizeWhitelistPage(DgDesensitizeWhitelistPageReqVO pageReqVO) {
         PageResult<DgDesensitizeWhitelistDO> pageResult = dgDesensitizeWhitelistMapper.selectPage(pageReqVO);
-        //根据脱敏白名单ID 查询用户集合存入DgDesensitizeWhitelistDO
+        // Query user collection by desensitize whitelist ID and store in DgDesensitizeWhitelistDO
         pageResult.getRows().forEach(item -> {
             item.setUserList(dgDesensitizeUserRelMapper.selectList(new LambdaQueryWrapper<DgDesensitizeUserRelDO>().eq(DgDesensitizeUserRelDO::getDesensitizeId, item.getId())));
         });
@@ -75,13 +75,13 @@ public class DgDesensitizeWhitelistServiceImpl  extends ServiceImpl<DgDesensitiz
     @Override
     public Long createDgDesensitizeWhitelist(DgDesensitizeWhitelistSaveReqVO createReqVO) {
         DgDesensitizeWhitelistDO dictType = BeanUtils.toBean(createReqVO, DgDesensitizeWhitelistDO.class);
-        //判断分类是否已在白名单中存在
+        // Check if category already exists in whitelist
         if (dgDesensitizeWhitelistMapper.selectCount(new LambdaQueryWrapper<DgDesensitizeWhitelistDO>()
                 .eq(DgDesensitizeWhitelistDO::getDataCategoryId, dictType.getDataCategoryId())) > 0) {
             throw new ServiceException("dg.error.duplicate.category", "数据分类已存在");
         }
         dgDesensitizeWhitelistMapper.insert(dictType);
-        // 插入用户集合
+        // Insert user collection
         if (dictType.getUserList() != null && !dictType.getUserList().isEmpty()) {
             dictType.getUserList().forEach(user -> {
                 user.setDesensitizeId(dictType.getId());
@@ -93,13 +93,13 @@ public class DgDesensitizeWhitelistServiceImpl  extends ServiceImpl<DgDesensitiz
     }
     @Override
     public int updateDgDesensitizeWhitelist(DgDesensitizeWhitelistSaveReqVO updateReqVO) {
-        // 相关校验
-        // 更新脱敏白名单
+        // Related validation
+        // Update desensitize whitelist
         DgDesensitizeWhitelistDO updateObj = BeanUtils.toBean(updateReqVO, DgDesensitizeWhitelistDO.class);
         if(updateObj.getUserList() != null && !updateObj.getUserList().isEmpty()){
-            //先删除旧的用户集合
+            // First delete the old user collection
             dgDesensitizeUserRelMapper.delete(new LambdaQueryWrapper<DgDesensitizeUserRelDO>().eq(DgDesensitizeUserRelDO::getDesensitizeId, updateObj.getId()));
-            // 更新用户集合
+            // Update user collection
             if (updateObj.getUserList() != null && !updateObj.getUserList().isEmpty()) {
                 updateObj.getUserList().forEach(user -> {
                     user.setDesensitizeId(updateObj.getId());
@@ -112,24 +112,24 @@ public class DgDesensitizeWhitelistServiceImpl  extends ServiceImpl<DgDesensitiz
     }
     @Override
     public int removeDgDesensitizeWhitelist(Collection<Long> idList) {
-        // 先删除旧的用户集合
+        // First delete the old user collection
         dgDesensitizeUserRelMapper.delete(new LambdaQueryWrapper<DgDesensitizeUserRelDO>().in(DgDesensitizeUserRelDO::getDesensitizeId, idList));
-        // 批量删除脱敏白名单
+        // Batch delete desensitize whitelist
         return dgDesensitizeWhitelistMapper.deleteBatchIds(idList);
     }
 
     @Override
     public DgDesensitizeWhitelistDO getDgDesensitizeWhitelistById(Long id) {
-        //根据脱敏白名单ID 查询用户集合存入DgDesensitizeWhitelistDO
+        // Query user collection by desensitize whitelist ID and store in DgDesensitizeWhitelistDO
         DgDesensitizeWhitelistDO dgDesensitizeWhitelistDO = dgDesensitizeWhitelistMapper.selectById(id);
 
-        //将dgDesensitizeWhitelistDO中分类ID转换为分类名称
+        // Convert category ID in dgDesensitizeWhitelistDO to category name
         if (dgDesensitizeWhitelistDO != null && dgDesensitizeWhitelistDO.getDataCategoryId()!=null) {
             dgDesensitizeWhitelistDO.setDataCategoryName(dgDataCategoryMapper.selectById(dgDesensitizeWhitelistDO.getDataCategoryId()).getName());
         }
 
         if (dgDesensitizeWhitelistDO != null) {
-            //根据脱敏白名单ID 查询用户集合存入DgDesensitizeWhitelistDO
+            // Query user collection by desensitize whitelist ID and store in DgDesensitizeWhitelistDO
             dgDesensitizeWhitelistDO.setUserList(dgDesensitizeUserRelMapper.selectList(new LambdaQueryWrapper<DgDesensitizeUserRelDO>().eq(DgDesensitizeUserRelDO::getDesensitizeId, id)));
         }
         return dgDesensitizeWhitelistDO;
@@ -137,11 +137,11 @@ public class DgDesensitizeWhitelistServiceImpl  extends ServiceImpl<DgDesensitiz
 
     @Override
     public DgDesensitizeWhitelistDO getDgDesensitizeWhitelistByCategoryId(Long categoryId) {
-        //根据脱敏白名单ID 查询用户集合存入DgDesensitizeWhitelistDO
+        // Query user collection by desensitize whitelist ID and store in DgDesensitizeWhitelistDO
         DgDesensitizeWhitelistDO dgDesensitizeWhitelistDO = dgDesensitizeWhitelistMapper.selectOne(new LambdaQueryWrapper<DgDesensitizeWhitelistDO>().eq(DgDesensitizeWhitelistDO::getDataCategoryId, categoryId));
 
         if (dgDesensitizeWhitelistDO != null) {
-            //根据脱敏白名单ID 查询用户集合存入DgDesensitizeWhitelistDO
+            // Query user collection by desensitize whitelist ID and store in DgDesensitizeWhitelistDO
             dgDesensitizeWhitelistDO.setUserList(dgDesensitizeUserRelMapper.selectList(new LambdaQueryWrapper<DgDesensitizeUserRelDO>().eq(DgDesensitizeUserRelDO::getDesensitizeId, dgDesensitizeWhitelistDO.getId())));
         }
         return dgDesensitizeWhitelistDO;
@@ -160,19 +160,19 @@ public class DgDesensitizeWhitelistServiceImpl  extends ServiceImpl<DgDesensitiz
                 .collect(Collectors.toMap(
                         DgDesensitizeWhitelistDO::getId,
                         dgDesensitizeWhitelistDO -> dgDesensitizeWhitelistDO,
-                        // 保留已存在的值
+                        // Keep existing values
                         (existing, replacement) -> existing
                 ));
     }
 
 
         /**
-         * 导入脱敏白名单数据
+         * Import desensitize whitelist data
          *
-         * @param importExcelList 脱敏白名单数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
+         * @param importExcelList Desensitize whitelist data list
+         * @param isUpdateSupport Whether to update support, if already exists, update the data
+         * @param operName        Operator user
+         * @return Result
          */
         @Override
         public String importDgDesensitizeWhitelist(List<DgDesensitizeWhitelistRespVO> importExcelList, boolean isUpdateSupport, String operName) {

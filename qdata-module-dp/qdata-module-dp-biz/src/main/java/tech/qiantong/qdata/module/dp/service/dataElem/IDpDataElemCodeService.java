@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 数据元代码Service接口
+ * Data Element Code Service Interface
  *
  * @author qdata
  * @date 2025-01-21
@@ -39,70 +39,70 @@ import java.util.Map;
 public interface IDpDataElemCodeService extends IService<DpDataElemCodeDO> {
 
     /**
-     * 获得数据元代码分页列表
+     * Get data element code paginated list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据元代码分页列表
+     * @param pageReqVO Pagination request
+     * @return Paginated list of data element codes
      */
     PageResult<DpDataElemCodeDO> getDpDataElemCodePage(DpDataElemCodePageReqVO pageReqVO);
 
     /**
-     * 创建数据元代码
+     * Create data element code
      *
-     * @param createReqVO 数据元代码信息
-     * @return 数据元代码编号
+     * @param createReqVO Data element code information
+     * @return Data element code ID
      */
     Long createDpDataElemCode(DpDataElemCodeSaveReqVO createReqVO);
 
     /**
-     * 更新数据元代码
+     * Update data element code
      *
-     * @param updateReqVO 数据元代码信息
+     * @param updateReqVO Data element code information
      */
     int updateDpDataElemCode(DpDataElemCodeSaveReqVO updateReqVO);
 
     /**
-     * 删除数据元代码
+     * Delete data element code
      *
-     * @param idList 数据元代码编号
+     * @param idList Data element code ID list
      */
     int removeDpDataElemCode(Collection<Long> idList);
 
     /**
-     * 获得数据元代码详情
+     * Get data element code details
      *
-     * @param id 数据元代码编号
-     * @return 数据元代码
+     * @param id Data element code ID
+     * @return Data element code
      */
     DpDataElemCodeDO getDpDataElemCodeById(Long id);
 
     /**
-     * 获得全部数据元代码列表
+     * Get all data element code list
      *
-     * @return 数据元代码列表
+     * @return Data element code list
      */
     List<DpDataElemCodeDO> getDpDataElemCodeList();
 
     /**
-     * 获得全部数据元代码 Map
+     * Get all data element code Map
      *
-     * @return 数据元代码 Map
+     * @return Data element code Map
      */
     Map<Long, DpDataElemCodeDO> getDpDataElemCodeMap();
 
 
     /**
-     * 导入数据元代码数据
+     * Import data element code data
      *
-     * @param importExcelList 数据元代码数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Data element code data list
+     * @param isUpdateSupport Whether to support update, if exists then update the data
+     * @param operName        Operator
+     * @return Result
      */
     String importDpDataElemCode(List<DpDataElemCodeRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
     /**
-     * 校验源代码值
+     * Validate source code value
      *
      * @param dataElemId
      * @param codeValue

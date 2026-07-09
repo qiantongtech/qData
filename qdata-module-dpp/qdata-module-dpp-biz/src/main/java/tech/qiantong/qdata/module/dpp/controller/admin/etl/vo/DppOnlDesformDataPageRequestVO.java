@@ -26,7 +26,7 @@ import java.io.Serializable;
 
 /**
  * <P>
- * 用途:
+ * Purpose:
  * </p>
  *
  * @author: FXB
@@ -35,10 +35,10 @@ import java.io.Serializable;
 @Data
 public class DppOnlDesformDataPageRequestVO extends DppOnlDesformDataBaseRequestVO implements Serializable {
 
-//    @ApiModelProperty(value = "第几页")
+//    @ApiModelProperty(value = "Page number")
     private Integer pageNum;
 
-//    @ApiModelProperty(value = "每页数量")
+//    @ApiModelProperty(value = "Page size")
     private Integer pageSize;
 
     @Builder(toBuilder = true)

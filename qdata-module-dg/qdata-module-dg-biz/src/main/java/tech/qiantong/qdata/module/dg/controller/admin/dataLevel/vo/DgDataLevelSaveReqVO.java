@@ -28,7 +28,7 @@ import java.util.Date;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 数据分级 创建/修改 Request VO DG_DATA_LEVEL
+ * Data Level Create/Update Request VO - DG_DATA_LEVEL
  *
  * @author qdata
  * @date 2026-04-03

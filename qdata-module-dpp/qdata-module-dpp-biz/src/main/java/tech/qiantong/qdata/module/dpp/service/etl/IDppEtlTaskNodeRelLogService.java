@@ -1,5 +1,5 @@
 /*
- * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ * Copyright (c) 2025-present Jiangsu Qiantong Technology Co., Ltd.
  *
  * This file is part of qData Data Middle Platform (Open Source Edition).
  *
@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 /**
- * 数据集成任务节点关系-日志Service接口
+ * Data Integration Task Node Relation Log Service Interface
  *
  * @author qdata
  * @date 2025-02-13
@@ -37,69 +37,69 @@ import java.util.Map;
 public interface IDppEtlTaskNodeRelLogService extends IService<DppEtlTaskNodeRelLogDO> {
 
     /**
-     * 获得数据集成任务节点关系-日志分页列表
+     * Get data integration task node relation log pagination list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据集成任务节点关系-日志分页列表
+     * @param pageReqVO Pagination request
+     * @return Data integration task node relation log pagination list
      */
     PageResult<DppEtlTaskNodeRelLogDO> getDppEtlTaskNodeRelLogPage(DppEtlTaskNodeRelLogPageReqVO pageReqVO);
     List<DppEtlTaskNodeRelLogRespVO> getDppEtlTaskNodeRelLogRespVOList(DppEtlTaskNodeRelLogPageReqVO pageReqVO);
     DppEtlTaskNodeRelLogRespVO getDppEtlTaskNodeRelLogById(DppEtlTaskNodeRelLogPageReqVO pageReqVO);
 
     /**
-     * 创建数据集成任务节点关系-日志
+     * Create data integration task node relation log
      *
-     * @param createReqVO 数据集成任务节点关系-日志信息
-     * @return 数据集成任务节点关系-日志编号
+     * @param createReqVO Data integration task node relation log info
+     * @return Data integration task node relation log ID
      */
     Long createDppEtlTaskNodeRelLog(DppEtlTaskNodeRelLogSaveReqVO createReqVO);
 
     void createDppEtlTaskNodeRelLogBatch(List<DppEtlTaskNodeRelLogSaveReqVO> dppEtlTaskNodeRelLogSaveReqVOS);
 
     /**
-     * 更新数据集成任务节点关系-日志
+     * Update data integration task node relation log
      *
-     * @param updateReqVO 数据集成任务节点关系-日志信息
+     * @param updateReqVO Data integration task node relation log info
      */
     int updateDppEtlTaskNodeRelLog(DppEtlTaskNodeRelLogSaveReqVO updateReqVO);
 
     /**
-     * 删除数据集成任务节点关系-日志
+     * Delete data integration task node relation log
      *
-     * @param idList 数据集成任务节点关系-日志编号
+     * @param idList Data integration task node relation log ID list
      */
     int removeDppEtlTaskNodeRelLog(Collection<Long> idList);
 
     /**
-     * 获得数据集成任务节点关系-日志详情
+     * Get data integration task node relation log detail
      *
-     * @param id 数据集成任务节点关系-日志编号
-     * @return 数据集成任务节点关系-日志
+     * @param id Data integration task node relation log ID
+     * @return Data integration task node relation log
      */
     DppEtlTaskNodeRelLogDO getDppEtlTaskNodeRelLogById(Long id);
 
     /**
-     * 获得全部数据集成任务节点关系-日志列表
+     * Get all data integration task node relation log list
      *
-     * @return 数据集成任务节点关系-日志列表
+     * @return Data integration task node relation log list
      */
     List<DppEtlTaskNodeRelLogDO> getDppEtlTaskNodeRelLogList();
 
     /**
-     * 获得全部数据集成任务节点关系-日志 Map
+     * Get all data integration task node relation log Map
      *
-     * @return 数据集成任务节点关系-日志 Map
+     * @return Data integration task node relation log Map
      */
     Map<Long, DppEtlTaskNodeRelLogDO> getDppEtlTaskNodeRelLogMap();
 
 
     /**
-     * 导入数据集成任务节点关系-日志数据
+     * Import data integration task node relation log data
      *
-     * @param importExcelList 数据集成任务节点关系-日志数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Data integration task node relation log data list
+     * @param isUpdateSupport Whether to support update. If already exists, update the data
+     * @param operName Operator
+     * @return Result
      */
     String importDppEtlTaskNodeRelLog(List<DppEtlTaskNodeRelLogRespVO> importExcelList, boolean isUpdateSupport, String operName);
 }

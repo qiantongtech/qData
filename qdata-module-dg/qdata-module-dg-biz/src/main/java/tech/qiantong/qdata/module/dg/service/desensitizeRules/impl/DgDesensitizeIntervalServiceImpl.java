@@ -42,7 +42,7 @@ import tech.qiantong.qdata.module.dg.dal.dataobject.desensitizeRules.DgDesensiti
 import tech.qiantong.qdata.module.dg.dal.mapper.desensitizeRules.DgDesensitizeIntervalMapper;
 import tech.qiantong.qdata.module.dg.service.desensitizeRules.IDgDesensitizeIntervalService;
 /**
- * 脱敏区间Service业务层处理
+ * Desensitize Interval Service Business Layer Processing
  *
  * @author qdata
  * @date 2026-04-10
@@ -68,15 +68,15 @@ public class DgDesensitizeIntervalServiceImpl  extends ServiceImpl<DgDesensitize
 
     @Override
     public int updateDgDesensitizeInterval(DgDesensitizeIntervalSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related validation
 
-        // 更新脱敏区间
+        // Update desensitize interval
         DgDesensitizeIntervalDO updateObj = BeanUtils.toBean(updateReqVO, DgDesensitizeIntervalDO.class);
         return dgDesensitizeIntervalMapper.updateById(updateObj);
     }
     @Override
     public int removeDgDesensitizeInterval(Collection<Long> idList) {
-        // 批量删除脱敏区间
+        // Batch delete desensitize intervals
         return dgDesensitizeIntervalMapper.deleteBatchIds(idList);
     }
 
@@ -97,19 +97,19 @@ public class DgDesensitizeIntervalServiceImpl  extends ServiceImpl<DgDesensitize
                 .collect(Collectors.toMap(
                         DgDesensitizeIntervalDO::getId,
                         dgDesensitizeIntervalDO -> dgDesensitizeIntervalDO,
-                        // 保留已存在的值
+                        // Keep existing values
                         (existing, replacement) -> existing
                 ));
     }
 
 
         /**
-         * 导入脱敏区间数据
+         * Import desensitize interval data
          *
-         * @param importExcelList 脱敏区间数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
+         * @param importExcelList Desensitize interval data list
+         * @param isUpdateSupport Whether to update support, if already exists, update the data
+         * @param operName        Operator user
+         * @return Result
          */
         @Override
         public String importDgDesensitizeInterval(List<DgDesensitizeIntervalRespVO> importExcelList, boolean isUpdateSupport, String operName) {

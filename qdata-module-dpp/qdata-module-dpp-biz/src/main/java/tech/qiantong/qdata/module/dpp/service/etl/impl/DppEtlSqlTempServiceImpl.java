@@ -43,7 +43,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 数据集成SQL模版Service业务层处理
+ * Data Integration SQL Template Service Business Layer Processing
  *
  * @author FXB
  * @date 2025-06-25
@@ -69,15 +69,15 @@ public class DppEtlSqlTempServiceImpl extends ServiceImpl<DppEtlSqlTempMapper,Dp
 
     @Override
     public int updateDppEtlSqlTemp(DppEtlSqlTempSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related validation
 
-        // 更新数据集成SQL模版
+        // Update data integration SQL template
         DppEtlSqlTempDO updateObj = BeanUtils.toBean(updateReqVO, DppEtlSqlTempDO.class);
         return dppEtlSqlTempMapper.updateById(updateObj);
     }
     @Override
     public int removeDppEtlSqlTemp(Collection<Long> idList) {
-        // 批量删除数据集成SQL模版
+        // Batch delete data integration SQL template
         return dppEtlSqlTempMapper.deleteBatchIds(idList);
     }
 
@@ -98,19 +98,19 @@ public class DppEtlSqlTempServiceImpl extends ServiceImpl<DppEtlSqlTempMapper,Dp
                 .collect(Collectors.toMap(
                         DppEtlSqlTempDO::getId,
                         dppEtlSqlTempDO -> dppEtlSqlTempDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
         /**
-         * 导入数据集成SQL模版数据
+         * Import data integration SQL template data
          *
-         * @param importExcelList 数据集成SQL模版数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
+         * @param importExcelList data integration SQL template data list
+         * @param isUpdateSupport whether update is supported, if already exists, update the data
+         * @param operName operator name
+         * @return result
          */
         @Override
         public String importDppEtlSqlTemp(List<DppEtlSqlTempRespVO> importExcelList, boolean isUpdateSupport, String operName) {

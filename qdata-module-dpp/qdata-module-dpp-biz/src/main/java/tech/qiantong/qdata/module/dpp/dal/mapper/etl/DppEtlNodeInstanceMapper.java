@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlTaskInstanceDO;
 import tech.qiantong.qdata.mybatis.core.mapper.BaseMapperX;
 
 /**
- * 数据集成节点实例Mapper接口
+ * Data Integration Node Instance Mapper
  *
  * @author qdata
  * @date 2025-02-13
@@ -67,7 +67,7 @@ public interface DppEtlNodeInstanceMapper extends BaseMapperX<DppEtlNodeInstance
                 .in(DppEtlNodeInstanceDO::getStatus, "1", "6", "7")
                 .orderByDesc(DppEtlNodeInstanceDO::getStartTime);
 
-        // 构造动态查询条件
+        // Build dynamic query conditions
         return selectJoinPage(reqVO, DppEtlNodeInstanceDO.class, lambdaWrapper);
     }
 }

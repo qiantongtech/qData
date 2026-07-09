@@ -28,12 +28,12 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 评测规则结果 创建/修改 Request VO DPP_EVALUATE_LOG
+ * Evaluate Rule Result Create/Update Request VO DPP_EVALUATE_LOG
  *
  * @author qdata
  * @date 2025-07-21
  */
-@Schema(description = "评测规则结果 Response VO")
+@Schema(description = "Evaluate Rule Result Response VO")
 @Data
 public class DppEvaluateLogSaveReqVO extends BaseEntity {
 
@@ -42,53 +42,53 @@ public class DppEvaluateLogSaveReqVO extends BaseEntity {
     @Schema(description = "ID")
     private Long id;
 
-    @Schema(description = "表名称", example = "")
-    @Size(max = 256, message = "表名称长度不能超过256个字符")
+    @Schema(description = "Table Name", example = "")
+    @Size(max = 256, message = "Table Name length cannot exceed 256 characters")
     private String tableName;
 
-    @Schema(description = "字段名", example = "")
-    @Size(max = 256, message = "字段名长度不能超过256个字符")
+    @Schema(description = "Column Name", example = "")
+    @Size(max = 256, message = "Column Name length cannot exceed 256 characters")
     private String columnName;
 
-    @Schema(description = "稽查规则编号", example = "")
-    @Size(max = 256, message = "稽查规则编号长度不能超过256个字符")
+    @Schema(description = "Audit Rule Code", example = "")
+    @Size(max = 256, message = "Audit Rule Code length cannot exceed 256 characters")
     private String ruleCode;
 
-    @Schema(description = "稽查规则名称", example = "")
-    @Size(max = 256, message = "稽查规则名称长度不能超过256个字符")
+    @Schema(description = "Audit Rule Name", example = "")
+    @Size(max = 256, message = "Audit Rule Name length cannot exceed 256 characters")
     private String ruleName;
 
-    @Schema(description = "质量维度", example = "")
-    @Size(max = 256, message = "质量维度长度不能超过256个字符")
+    @Schema(description = "Quality Dimension", example = "")
+    @Size(max = 256, message = "Quality Dimension length cannot exceed 256 characters")
     private String dimensionType;
 
-    @Schema(description = "规则描述", example = "")
-    @Size(max = 256, message = "规则描述长度不能超过256个字符")
+    @Schema(description = "Rule Description", example = "")
+    @Size(max = 256, message = "Rule Description length cannot exceed 256 characters")
     private String ruleDescription;
 
-    @Schema(description = "数据质量记录id", example = "")
-    @Size(max = 256, message = "数据质量记录id长度不能超过256个字符")
+    @Schema(description = "Data Quality Record ID", example = "")
+    @Size(max = 256, message = "Data Quality Record ID length cannot exceed 256 characters")
     private String taskLogId;
 
-    @Schema(description = "评测id", example = "")
-    @Size(max = 256, message = "评测id长度不能超过256个字符")
+    @Schema(description = "Evaluate ID", example = "")
+    @Size(max = 256, message = "Evaluate ID length cannot exceed 256 characters")
     private String evaluateId;
 
-    @Schema(description = "总数", example = "")
+    @Schema(description = "Total", example = "")
     private Long total;
 
-    @Schema(description = "问题总数", example = "")
+    @Schema(description = "Problem Total", example = "")
     private Long problemTotal;
 
-    @Schema(description = "核查时间", example = "")
+    @Schema(description = "Check Time", example = "")
     private Date checkDate;
 
-    @Schema(description = "备注", example = "")
-    @Size(max = 256, message = "备注长度不能超过256个字符")
+    @Schema(description = "Remark", example = "")
+    @Size(max = 256, message = "Remark length cannot exceed 256 characters")
     private String remark;
 
-    @Excel(name = "不同规则的自定义,JSON形式")
-    @Schema(description = "不同规则的自定义,JSON形式", example = "")
+    @Excel(name = "Rule Custom Config, JSON Format")
+    @Schema(description = "Rule Custom Config, JSON Format", example = "")
     private String rule;
 
 

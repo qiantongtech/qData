@@ -27,7 +27,7 @@ import java.util.Date;
 import java.io.Serializable;
 
 /**
- * 脱敏清单关联关系 Response VO 对象 DG_DESENSITIZE_ASSETCOLUMN
+ * Desensitize List Relationship Response VO DG_DESENSITIZE_ASSETCOLUMN
  *
  * @author qdata
  * @date 2026-04-12

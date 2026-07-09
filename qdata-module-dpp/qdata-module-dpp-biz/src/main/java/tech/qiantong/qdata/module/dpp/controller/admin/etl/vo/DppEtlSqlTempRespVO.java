@@ -27,12 +27,12 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 数据集成SQL模版 Response VO 对象 DPP_ETL_SQL_TEMP
+ * Data Integration SQL Template Response VO Object DPP_ETL_SQL_TEMP
  *
  * @author FXB
  * @date 2025-06-25
  */
-@Schema(description = "数据集成SQL模版 Response VO")
+@Schema(description = "Data Integration SQL Template Response VO")
 @Data
 public class DppEtlSqlTempRespVO implements Serializable {
 

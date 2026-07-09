@@ -23,7 +23,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 评测规则结果 DTO 对象 DPP_EVALUATE_LOG
+ * Evaluate Rule Result DTO - DPP_EVALUATE_LOG
  *
  * @author qdata
  * @date 2025-07-21
@@ -36,43 +36,43 @@ public class DppEvaluateLogReqDTO {
     /** ID */
     private Long id;
 
-    /** 表名称 */
+    /** Table Name */
     private String tableName;
 
-    /** 字段名 */
+    /** Column Name */
     private String columnName;
 
-    /** 稽查规则编号 */
+    /** Audit Rule Code */
     private String ruleCode;
 
-    /** 稽查规则名称 */
+    /** Audit Rule Name */
     private String ruleName;
 
-    /** 质量维度 */
+    /** Quality Dimension */
     private String dimensionType;
 
-    /** 规则描述 */
+    /** Rule Description */
     private String ruleDescription;
 
-    /** 数据质量记录id */
+    /** Data Quality Record ID */
     private String taskLogId;
 
-    /** 评测id */
+    /** Evaluate ID */
     private String evaluateId;
 
-    /** 总数 */
+    /** Total */
     private Long total;
 
-    /** 问题总数 */
+    /** Problem Total */
     private Long problemTotal;
 
-    /** 核查时间 */
+    /** Check Date */
     private Date checkDate;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
 

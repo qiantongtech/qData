@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 /**
- * 数据元代码映射Service业务层处理
+ * Data Element Code Map Service Business Layer Processing
  *
  * @author qdata
  * @date 2025-01-21
@@ -68,15 +68,15 @@ public class DpCodeMapServiceImpl  extends ServiceImpl<DpCodeMapMapper,DpCodeMap
 
     @Override
     public int updateDpCodeMap(DpCodeMapSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related validation
 
-        // 更新数据元代码映射
+        // Update data element code map
         DpCodeMapDO updateObj = BeanUtils.toBean(updateReqVO, DpCodeMapDO.class);
         return dpCodeMapMapper.updateById(updateObj);
     }
     @Override
     public int removeDpCodeMap(Collection<Long> idList) {
-        // 批量删除数据元代码映射
+        // Batch delete data element code map
         return dpCodeMapMapper.deleteBatchIds(idList);
     }
 
@@ -97,19 +97,19 @@ public class DpCodeMapServiceImpl  extends ServiceImpl<DpCodeMapMapper,DpCodeMap
                 .collect(Collectors.toMap(
                         DpCodeMapDO::getId,
                         dpCodeMapDO -> dpCodeMapDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
         /**
-         * 导入数据元代码映射数据
+         * Import data element code map data
          *
-         * @param importExcelList 数据元代码映射数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
+         * @param importExcelList Data element code map data list
+         * @param isUpdateSupport Whether to support update, if exists then update the data
+         * @param operName Operator
+         * @return Result
          */
         @Override
         public String importDpCodeMap(List<DpCodeMapRespVO> importExcelList, boolean isUpdateSupport, String operName) {

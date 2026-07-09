@@ -28,7 +28,7 @@ import java.util.Date;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 数据分类-类目 创建/修改 Request VO DG_DATA_CATEGORY_CAT
+ * Data Category - Cat Create/Update Request VO - DG_DATA_CATEGORY_CAT
  *
  * @author FXB
  * @date 2026-04-07

@@ -5,7 +5,7 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 数据元 Request VO 对象 DG_DATA_ELEM
+ * Data Element Request VO Object DG_DATA_ELEM
  *
  * @author qdata
  * @date 2025-01-21

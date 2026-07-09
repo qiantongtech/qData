@@ -48,7 +48,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 业务分类数据域关联关系Controller
+ * Business Category Domain Relation Controller
  *
  * @author qdata
  * @date 2026-04-12

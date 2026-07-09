@@ -50,7 +50,7 @@ import tech.qiantong.qdata.module.dp.dal.dataobject.dataElem.DpDataElemRuleRelDO
 import tech.qiantong.qdata.module.dp.service.dataElem.IDpDataElemRuleRelService;
 
 /**
- * 数据元数据规则关联信息Controller
+ * Data Element Rule Relation Controller
  *
  * @author qdata
  * @date 2025-01-21

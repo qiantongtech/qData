@@ -29,14 +29,14 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import java.util.List;
 
 /**
- * 脱敏规则 DO 对象 DG_DESENSITIZE_RULE
+ * Desensitize Rule DO entity DG_DESENSITIZE_RULE
  *
  * @author qdata
  * @date 2026-04-10
  */
 @Data
 @TableName(value = "DG_DESENSITIZE_RULE")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Can be omitted for MySQL and similar databases.
 // @KeySequence("DG_DESENSITIZE_RULE_seq")
 @Builder
 @NoArgsConstructor
@@ -50,40 +50,40 @@ public class DgDesensitizeRuleDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 分级名称 */
+    /** Rule Name */
     private String name;
 
-    /** 数据分类ID */
+    /** Data Category ID */
     private Long dataCategoryId;
-    /** 数据分类名称 */
+    /** Data Category Name */
     @TableField(exist = false)
     private String dataCategoryName;
 
-    /** 应用场景;1：数据资产  2：数据查询  3：数据服务 */
+    /** Application Scenario; 1: Data Asset  2: Data Query  3: Data Service */
     private String applicationScene;
 
-    /** 脱敏方式;1：底层脱敏  2：展示脱敏 */
+    /** Mask Type; 1: Underlying Mask  2: Display Mask */
     private String maskType;
 
-    /** 替换规则 */
+    /** Replace Rule */
     private String replaceRule;
 
-    /** 替换内容 */
+    /** Replace Content */
     private String replaceContent;
-    /** 区间集合 */
+    /** Interval List */
     @TableField(exist = false)
     private List<DgDesensitizeIntervalDO> intervalList;
 
-    /** 排序 */
+    /** Sort Order */
     private Long sortOrder;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 是否有效;0：无效，1：有效 */
+    /** Valid Flag; 0: invalid, 1: valid */
     private Boolean validFlag;
 
-    /** 删除标志;1：已删除，0：未删除 */
+    /** Delete Flag; 1: deleted, 0: not deleted */
     @TableLogic
     private Boolean delFlag;
 

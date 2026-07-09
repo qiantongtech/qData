@@ -31,7 +31,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import tech.qiantong.qdata.module.dg.dal.dataobject.desensitizeRules.DgDesensitizeIntervalDO;
 
 /**
- * 脱敏规则 创建/修改 Request VO DG_DESENSITIZE_RULE
+ * Desensitize Rule Create/Update Request VO DG_DESENSITIZE_RULE
  *
  * @author qdata
  * @date 2026-04-10
@@ -82,6 +82,6 @@ public class DgDesensitizeRuleSaveReqVO extends BaseEntity {
     @Size(max = 256, message = "备注长度不能超过256个字符")
     private String remark;
 
-    /** 是否有效;0：无效，1：有效 */
+    /** Whether valid; 0: invalid, 1: valid */
     private Boolean validFlag;
 }

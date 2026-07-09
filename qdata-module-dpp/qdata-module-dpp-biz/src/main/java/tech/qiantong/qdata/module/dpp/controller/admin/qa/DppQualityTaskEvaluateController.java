@@ -55,12 +55,12 @@ import tech.qiantong.qdata.module.dpp.service.qa.IDppQualityTaskEvaluateService;
 import tech.qiantong.qdata.module.dpp.service.qa.IDppQualityTaskService;
 
 /**
- * 数据质量任务-评测规则Controller
+ * Data Quality Task - Evaluation Rule Controller
  *
  * @author Chaos
  * @date 2025-07-21
  */
-@Tag(name = "数据质量任务-评测规则")
+@Tag(name = "Data Quality Task - Evaluation Rule")
 @RestController
 @RequestMapping("/dpp/qualityTaskEvaluate")
 @Validated

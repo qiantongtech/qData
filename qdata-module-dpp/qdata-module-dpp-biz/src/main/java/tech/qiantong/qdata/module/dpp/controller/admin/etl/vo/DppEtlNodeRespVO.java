@@ -27,7 +27,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 数据集成节点 Response VO 对象 DPP_ETL_NODE
+ * Data Integration Node Response VO Object DPP_ETL_NODE
  *
  * @author qdata
  * @date 2025-02-13
@@ -151,7 +151,7 @@ public class DppEtlNodeRespVO implements Serializable {
     private String remark;
 
     /**
-     *     //任务上下限  0:未上线，1:已上线
+     *     //Task online status 0:Offline, 1:Online
      */
     @TableField(exist = false)
     private String releaseState;

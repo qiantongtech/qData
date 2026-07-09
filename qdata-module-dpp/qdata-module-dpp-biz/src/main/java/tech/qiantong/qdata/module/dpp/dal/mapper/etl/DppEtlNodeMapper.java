@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 数据集成节点Mapper接口
+ * Data Integration Node Mapper
  *
  * @author qdata
  * @date 2025-02-13
@@ -38,10 +38,10 @@ import java.util.Set;
 public interface DppEtlNodeMapper extends BaseMapperX<DppEtlNodeDO> {
 
     default PageResult<DppEtlNodeDO> selectPage(DppEtlNodePageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define sortable fields (prevent SQL injection, must match database column names)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 
-        // 构造动态查询条件
+        // Build dynamic query conditions
         return selectPage(reqVO, new LambdaQueryWrapperX<DppEtlNodeDO>()
                 .eqIfPresent(DppEtlNodeDO::getType, reqVO.getType())
                 .likeIfPresent(DppEtlNodeDO::getName, reqVO.getName())
@@ -60,9 +60,9 @@ public interface DppEtlNodeMapper extends BaseMapperX<DppEtlNodeDO> {
                 .eqIfPresent(DppEtlNodeDO::getDescription, reqVO.getDescription())
                 .eqIfPresent(DppEtlNodeDO::getDsId, reqVO.getDsId())
                 .eqIfPresent(DppEtlNodeDO::getCreateTime, reqVO.getCreateTime())
-                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+                // If reqVO.getName() is not empty, add exact name match condition (name = '<name>')
                 // .likeIfPresent(DppEtlNodeDO::getName, reqVO.getName())
-                // 按照 createTime 字段降序排序
+                // Order by createTime descending
                 .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(), allowedColumns));
     }
 

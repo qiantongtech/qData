@@ -48,12 +48,12 @@ import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlTaskNodeRelDO;
 import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlTaskNodeRelService;
 
 /**
- * 数据集成任务节点关系Controller
+ * Data Integration Task Node Relation Controller
  *
  * @author qdata
  * @date 2025-02-13
  */
-@Tag(name = "数据集成任务节点关系")
+@Tag(name = "Data Integration Task Node Relation")
 @RestController
 @RequestMapping("/dpp/etlTaskNodeRel")
 @Validated

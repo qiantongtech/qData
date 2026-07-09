@@ -27,7 +27,7 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
- * 数据集成节点实例 创建/修改 Request VO DPP_ETL_NODE_INSTANCE
+ * Data Integration Node Instance Create/Update Request VO DPP_ETL_NODE_INSTANCE
  *
  * @author qdata
  * @date 2025-02-13

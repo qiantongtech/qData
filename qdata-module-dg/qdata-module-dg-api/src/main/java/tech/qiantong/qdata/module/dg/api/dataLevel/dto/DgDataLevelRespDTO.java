@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.dg.api.dataLevel.dto;
 import lombok.*;
 
 /**
- * 数据分级 DTO 对象 DG_DATA_LEVEL
+ * Data Level DTO Object DG_DATA_LEVEL
  *
  * @author qdata
  * @date 2026-04-03

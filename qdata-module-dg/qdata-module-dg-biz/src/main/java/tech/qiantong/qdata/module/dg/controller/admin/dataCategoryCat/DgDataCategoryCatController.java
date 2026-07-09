@@ -49,7 +49,7 @@ import tech.qiantong.qdata.module.dg.dal.dataobject.dataCategoryCat.DgDataCatego
 import tech.qiantong.qdata.module.dg.service.dataCategoryCat.IDgDataCategoryCatService;
 
 /**
- * 数据分类-类目Controller
+ * Data Category - Category Controller
  *
  * @author FXB
  * @date 2026-04-07

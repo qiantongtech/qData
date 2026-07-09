@@ -43,7 +43,7 @@ import tech.qiantong.qdata.module.dg.dal.dataobject.dataLevel.DgDataLevelDO;
 import tech.qiantong.qdata.module.dg.dal.mapper.dataLevel.DgDataLevelMapper;
 import tech.qiantong.qdata.module.dg.service.dataLevel.IDgDataLevelService;
 /**
- * 数据分级Service业务层处理
+ * Data Level Service Business Layer Processing
  *
  * @author qdata
  * @date 2026-04-03
@@ -63,7 +63,7 @@ public class DgDataLevelServiceImpl  extends ServiceImpl<DgDataLevelMapper,DgDat
     @Override
     public Long createDgDataLevel(DgDataLevelSaveReqVO createReqVO) {
         DgDataLevelDO dictType = BeanUtils.toBean(createReqVO, DgDataLevelDO.class);
-        // 敏感等级不能重复
+        // Sensitive level cannot be duplicated
         if (dgDataLevelMapper.selectCount(new LambdaQueryWrapper<DgDataLevelDO>()
                 .eq(DgDataLevelDO::getSensitiveLevel, dictType.getSensitiveLevel())) > 0) {
             throw new ServiceException("dg.error.duplicate.level", "敏感等级不能重复");
@@ -74,15 +74,15 @@ public class DgDataLevelServiceImpl  extends ServiceImpl<DgDataLevelMapper,DgDat
 
     @Override
     public int updateDgDataLevel(DgDataLevelSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related validation
 
-        // 更新数据分级
+        // Update data level
         DgDataLevelDO updateObj = BeanUtils.toBean(updateReqVO, DgDataLevelDO.class);
         return dgDataLevelMapper.updateById(updateObj);
     }
     @Override
     public int removeDgDataLevel(Collection<Long> idList) {
-        // 批量删除数据分级
+        // Batch delete data levels
         return dgDataLevelMapper.deleteBatchIds(idList);
     }
 
@@ -103,19 +103,19 @@ public class DgDataLevelServiceImpl  extends ServiceImpl<DgDataLevelMapper,DgDat
                 .collect(Collectors.toMap(
                         DgDataLevelDO::getId,
                         dgDataLevelDO -> dgDataLevelDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
         /**
-         * 导入数据分级数据
+         * Import data level data
          *
-         * @param importExcelList 数据分级数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
+         * @param importExcelList Data level data list
+         * @param isUpdateSupport Whether to update support, if exists then update data
+         * @param operName Operator user
+         * @return Result
          */
         @Override
         public String importDgDataLevel(List<DgDataLevelRespVO> importExcelList, boolean isUpdateSupport, String operName) {

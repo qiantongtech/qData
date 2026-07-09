@@ -23,7 +23,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 数据集成节点实例-日志 DTO 对象 DPP_ETL_NODE_INSTANCE_LOG
+ * Data Integration Node Instance Log DTO - DPP_ETL_NODE_INSTANCE_LOG
  *
  * @author qdata
  * @date 2025-08-05
@@ -33,31 +33,31 @@ public class DppEtlNodeInstanceLogRespDTO {
 
     private static final long serialVersionUID = 1L;
 
-    /** ID节点实例id */
+    /** Node Instance ID */
     private Long nodeInstanceId;
 
-    /** 时间 */
+    /** Time */
     private Date tm;
 
-    /** 任务类型 */
+    /** Task Type */
     private String taskType;
 
-    /** 节点id */
+    /** Node ID */
     private Long nodeId;
 
-    /** 节点编码 */
+    /** Node Code */
     private String nodeCode;
 
-    /** 任务实例id */
+    /** Task Instance ID */
     private Long taskInstanceId;
 
-    /** 日志内容 */
+    /** Log Content */
     private String logContent;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
 

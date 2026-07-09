@@ -27,9 +27,9 @@ import tech.qiantong.qdata.common.annotation.Excel;
 import java.io.Serializable;
 import java.util.List;
 
-@Schema(description = "数据集成任务 Response VO")
+@Schema(description = "Data Integration Task Response VO")
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL) // 添加此注解，null 字段将不被序列化返回
+@JsonInclude(JsonInclude.Include.NON_NULL) // Add this annotation, null fields will not be serialized and returned
 public class DppEtlTaskTreeRespVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -37,79 +37,79 @@ public class DppEtlTaskTreeRespVO implements Serializable {
     @Schema(description = "ID")
     private Long id;
 
-    @Schema(description = "树形名称")
+    @Schema(description = "Tree Label")
     private String label;
 
 
-    @Schema(description = "数量")
+    @Schema(description = "Count")
     private int dppEtlTaskCount;
 
-    @Schema(description = "树形下级")
+    @Schema(description = "Tree Children")
     private List<DppEtlTaskTreeRespVO> children;
 
 
 
-    @Excel(name = "任务类型")
-    @Schema(description = "任务类型", example = "")
+    @Excel(name = "Task Type")
+    @Schema(description = "Task Type", example = "")
     private String type;
 
-    @Excel(name = "任务名称")
-    @Schema(description = "任务名称", example = "")
+    @Excel(name = "Task Name")
+    @Schema(description = "Task Name", example = "")
     private String name;
 
-    @Excel(name = "任务编码")
-    @Schema(description = "任务编码", example = "")
+    @Excel(name = "Task Code")
+    @Schema(description = "Task Code", example = "")
     private String code;
 
-    @Excel(name = "扩展任务编码")
-    @Schema(description = "扩展任务编码", example = "")
+    @Excel(name = "Extended Task Code")
+    @Schema(description = "Extended Task Code", example = "")
     private String extCode;
 
-    @Excel(name = "任务版本")
-    @Schema(description = "任务版本", example = "")
+    @Excel(name = "Task Version")
+    @Schema(description = "Task Version", example = "")
     private Long version;
 
-    @Excel(name = "项目id")
-    @Schema(description = "项目id", example = "")
+    @Excel(name = "Project ID")
+    @Schema(description = "Project ID", example = "")
     private Long projectId;
 
-    @Excel(name = "项目编码")
-    @Schema(description = "项目编码", example = "")
+    @Excel(name = "Project Code")
+    @Schema(description = "Project Code", example = "")
     private String projectCode;
 
-    @Excel(name = "责任人")
-    @Schema(description = "责任人", example = "")
+    @Excel(name = "Person in Charge")
+    @Schema(description = "Person in Charge", example = "")
     private String personCharge;
 
-    @Excel(name = "联系电话")
-    @Schema(description = "联系电话", example = "")
+    @Excel(name = "Contact Number")
+    @Schema(description = "Contact Number", example = "")
     private String contactNumber;
 
-    @Excel(name = "节点坐标信息")
-    @Schema(description = "节点坐标信息", example = "")
+    @Excel(name = "Node Coordinate Info")
+    @Schema(description = "Node Coordinate Info", example = "")
     private String locations;
 
-    @Excel(name = "描述")
-    @Schema(description = "描述", example = "")
+    @Excel(name = "Description")
+    @Schema(description = "Description", example = "")
     private String description;
 
-    @Schema(description = "任务的执行策略", example = "")
+    @Schema(description = "Task Execution Strategy", example = "")
     private String executionType;
 
-    @Excel(name = "任务状态")
-    @Schema(description = "任务状态", example = "")
+    @Excel(name = "Task Status")
+    @Schema(description = "Task Status", example = "")
     private String status;
 
     @TableField(exist = false)
     private String releaseState = this.status;
 
-    @Excel(name = "DolphinScheduler的id")
-    @Schema(description = "DolphinScheduler的id", example = "")
+    @Excel(name = "DolphinScheduler ID")
+    @Schema(description = "DolphinScheduler ID", example = "")
     private Long dsId;
 
-    /** 任务id */
+    /** Task ID */
     private Long treeId;
 
-    @Schema(description = "草稿任务配置信息", example = "")
+    @Schema(description = "Draft Task Config", example = "")
     private String draftJson;
 }

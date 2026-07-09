@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.dp.api.model.dto;
 import lombok.Data;
 
 /**
- * 物化模型记录 DTO 对象 DP_MODEL_MATERIALIZED
+ * Materialized Model Record DTO - DP_MODEL_MATERIALIZED
  *
  * @author qdata
  * @date 2025-01-21
@@ -34,40 +34,40 @@ public class DpModelMaterializedRespDTO {
     /** ID */
     private Long id;
 
-    /** 模型编码 */
+    /** Model Code */
     private String modelName;
 
-    /** 模型名称 */
+    /** Model Name */
     private String modelAlias;
 
-    /** 模型表id */
+    /** Model Table ID */
     private Long modelId;
 
-    /** 状态 */
+    /** Status */
     private String status;
 
-    /** 执行日志信息 */
+    /** Execution Log Message */
     private String message;
 
-    /** 执行sql备份 */
+    /** Execution SQL Backup */
     private String sqlCommand;
 
-    /** 数据源id */
+    /** Datasource ID */
     private String datasourceId;
 
-    /** 数据源类型 */
+    /** Datasource Type */
     private String datasourceType;
 
-    /** 数据源名称 */
+    /** Datasource Name */
     private String datasourceName;
 
-    /** 资产表id */
+    /** Asset Table ID */
     private String assetId;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
 

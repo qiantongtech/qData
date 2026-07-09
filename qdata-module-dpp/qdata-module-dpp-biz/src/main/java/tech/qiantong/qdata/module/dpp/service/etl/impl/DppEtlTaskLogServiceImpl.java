@@ -43,7 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 /**
- * 数据集成任务-日志Service业务层处理
+ * Data Integration Task - Log Service business layer processing
  *
  * @author qdata
  * @date 2025-02-13
@@ -79,15 +79,15 @@ public class DppEtlTaskLogServiceImpl  extends ServiceImpl<DppEtlTaskLogMapper,D
 
     @Override
     public int updateDppEtlTaskLog(DppEtlTaskLogSaveReqVO updateReqVO) {
-        // 相关校验
+        // Validate
 
-        // 更新数据集成任务-日志
+        // Update Data Integration Task - Log
         DppEtlTaskLogDO updateObj = BeanUtils.toBean(updateReqVO, DppEtlTaskLogDO.class);
         return dppEtlTaskLogMapper.updateById(updateObj);
     }
     @Override
     public int removeDppEtlTaskLog(Collection<Long> idList) {
-        // 批量删除数据集成任务-日志
+        // Batch delete Data Integration Task - Log
         return dppEtlTaskLogMapper.deleteBatchIds(idList);
     }
 
@@ -108,19 +108,19 @@ public class DppEtlTaskLogServiceImpl  extends ServiceImpl<DppEtlTaskLogMapper,D
                 .collect(Collectors.toMap(
                         DppEtlTaskLogDO::getId,
                         dppEtlTaskLogDO -> dppEtlTaskLogDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
         /**
-         * 导入数据集成任务-日志数据
+         * Import Data Integration Task - Log data
          *
-         * @param importExcelList 数据集成任务-日志数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
+         * @param importExcelList Data Integration Task - Log data list
+         * @param isUpdateSupport whether to support update; if already exists, update the data
+         * @param operName operator user
+         * @return result
          */
         @Override
         public String importDppEtlTaskLog(List<DppEtlTaskLogRespVO> importExcelList, boolean isUpdateSupport, String operName) {

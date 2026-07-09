@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.dm.api.dm.dto;
 import lombok.*;
 
 /**
- * 主题域管理 DTO 对象 DM_THEME_DOMAIN
+ * Theme Domain DTO - DM_THEME_DOMAIN
  *
  * @author FXB
  * @date 2026-03-24
@@ -34,31 +34,31 @@ public class DmThemeDomainReqDTO {
     /** ID */
     private Long id;
 
-    /** 层级编码 */
+    /** Layer Code */
     private String code;
 
-    /** 名称 */
+    /** Name */
     private String name;
 
-    /** 英文缩写 */
+    /** English Abbreviation */
     private String engName;
 
-    /** 关联上级ID */
+    /** Parent ID */
     private Long parentId;
 
-    /** 负责人ID */
+    /** Owner User ID */
     private Long ownerUserId;
 
-    /** 数仓分层ID */
+    /** Data Warehouse Layer ID */
     private Long dataLayerId;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
 

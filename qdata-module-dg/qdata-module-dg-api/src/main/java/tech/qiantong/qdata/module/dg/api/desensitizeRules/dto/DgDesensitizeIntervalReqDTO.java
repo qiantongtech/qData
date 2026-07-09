@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.dg.api.desensitizeRules.dto;
 import lombok.*;
 
 /**
- * 脱敏区间 DTO 对象 DG_DESENSITIZE_INTERVAL
+ * Desensitization Interval DTO Object DG_DESENSITIZE_INTERVAL
  *
  * @author qdata
  * @date 2026-04-10

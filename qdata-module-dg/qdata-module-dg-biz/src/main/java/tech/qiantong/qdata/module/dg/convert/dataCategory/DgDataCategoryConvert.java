@@ -27,7 +27,7 @@ import tech.qiantong.qdata.module.dg.controller.admin.dataCategory.vo.DgDataCate
 import tech.qiantong.qdata.module.dg.dal.dataobject.dataCategory.DgDataCategoryDO;
 
 /**
- * 数据分类 Convert
+ * Data Category Convert
  *
  * @author qdata
  * @date 2026-04-07
@@ -37,29 +37,29 @@ public interface DgDataCategoryConvert {
     DgDataCategoryConvert INSTANCE = Mappers.getMapper(DgDataCategoryConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param dgDataCategoryPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param dgDataCategoryPageReqVO request params
      * @return DgDataCategoryDO
      */
      DgDataCategoryDO convertToDO(DgDataCategoryPageReqVO dgDataCategoryPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param dgDataCategorySaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param dgDataCategorySaveReqVO save request params
      * @return DgDataCategoryDO
      */
      DgDataCategoryDO convertToDO(DgDataCategorySaveReqVO dgDataCategorySaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param dgDataCategoryDO 实体对象
+     * Convert DO to RespVO
+     * @param dgDataCategoryDO entity object
      * @return DgDataCategoryRespVO
      */
      DgDataCategoryRespVO convertToRespVO(DgDataCategoryDO dgDataCategoryDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param dgDataCategoryDOList 实体对象列表
+     * Convert DO List to RespVO List
+     * @param dgDataCategoryDOList entity object list
      * @return List<DgDataCategoryRespVO>
      */
      List<DgDataCategoryRespVO> convertToRespVOList(List<DgDataCategoryDO> dgDataCategoryDOList);

@@ -25,7 +25,7 @@ import java.util.Map;
 
 /**
  * <P>
- * 用途:注册任务组件
+ * Purpose: Register task components
  * </p>
  *
  * @author: FXB

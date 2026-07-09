@@ -50,7 +50,7 @@ import tech.qiantong.qdata.module.dp.dal.dataobject.dataElem.DpDataElemCodeDO;
 import tech.qiantong.qdata.module.dp.service.dataElem.IDpDataElemCodeService;
 
 /**
- * 数据元代码Controller
+ * Data Element Code Controller
  *
  * @author qdata
  * @date 2025-01-21

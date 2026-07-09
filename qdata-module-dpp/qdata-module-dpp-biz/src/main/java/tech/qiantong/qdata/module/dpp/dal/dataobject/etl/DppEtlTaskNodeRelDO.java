@@ -23,14 +23,14 @@ import lombok.*;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 数据集成任务节点关系 DO 对象 DPP_ETL_TASK_NODE_REL
+ * Data Integration Task Node Relation DO - DPP_ETL_TASK_NODE_REL
  *
  * @author qdata
  * @date 2025-02-13
  */
 @Data
 @TableName(value = "DPP_ETL_TASK_NODE_REL")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Can be omitted for MySQL and similar databases.
 // @KeySequence("DPP_ETL_TASK_NODE_REL_seq")
 @Builder
 @NoArgsConstructor
@@ -44,43 +44,43 @@ public class DppEtlTaskNodeRelDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 项目id */
+    /** Project ID */
     private Long projectId;
 
-    /** 项目编码 */
+    /** Project code */
     private String projectCode;
 
-    /** 任务id */
+    /** Task ID */
     private Long taskId;
 
-    /** 任务编码 */
+    /** Task code */
     private String taskCode;
 
-    /** 任务版本 */
+    /** Task version */
     private Long taskVersion;
 
-    /** 前节点id */
+    /** Pre-node ID */
     private Long preNodeId;
 
-    /** 前节点编码 */
+    /** Pre-node code */
     private String preNodeCode;
 
-    /** 前节点版本 */
+    /** Pre-node version */
     private Long preNodeVersion;
 
-    /** 后节点id */
+    /** Post-node ID */
     private Long postNodeId;
 
-    /** 后节点编码 */
+    /** Post-node code */
     private String postNodeCode;
 
-    /** 后节点版本 */
+    /** Post-node version */
     private Long postNodeVersion;
 
-    /** 是否有效 */
+    /** Valid flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete flag */
     @TableLogic
     private Boolean delFlag;
 

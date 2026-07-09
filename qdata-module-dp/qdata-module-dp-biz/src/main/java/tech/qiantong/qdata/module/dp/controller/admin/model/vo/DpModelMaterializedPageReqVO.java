@@ -23,7 +23,7 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 物化模型记录 Request VO 对象 DP_MODEL_MATERIALIZED
+ * Materialized Model Record Request VO - DP_MODEL_MATERIALIZED
  *
  * @author qdata
  * @date 2025-01-21
@@ -65,7 +65,7 @@ public class DpModelMaterializedPageReqVO extends PageParam {
     @Schema(description = "资产表id", example = "")
     private String assetId;
 
-    /**  发布模式 1：删除重建  2：增量发布 */
+    /** Release mode 1: Drop and recreate 2: Incremental publish */
     private String releaseMode;
 
 

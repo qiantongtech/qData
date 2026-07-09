@@ -23,7 +23,7 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 数据集成节点-日志 Request VO 对象 DPP_ETL_NODE_LOG
+ * Data Integration Node-Log Request VO Object DPP_ETL_NODE_LOG
  *
  * @author qdata
  * @date 2025-02-13

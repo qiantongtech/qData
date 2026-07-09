@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.dpp.api.etl.dto;
 import lombok.Data;
 
 /**
- * 数据集成任务-扩展数据 DTO 对象 DPP_ETL_TASK_EXT
+ * Data Integration Task Extension DTO - DPP_ETL_TASK_EXT
  *
  * @author qdata
  * @date 2025-04-16
@@ -34,28 +34,28 @@ public class DppEtlTaskExtRespDTO {
     /** ID */
     private Long id;
 
-    /** 数据汇聚任务id */
+    /** Data Aggregation Task ID */
     private Long taskId;
 
-    /** 数据汇聚节点id */
+    /** Data Aggregation Node ID */
     private Long etlNodeId;
 
-    /** 数据汇聚节点名称 */
+    /** Data Aggregation Node Name */
     private String etlNodeName;
 
-    /** 数据汇聚节点编码 */
+    /** Data Aggregation Node Code */
     private String etlNodeCode;
 
-    /** 数据汇聚节点版本 */
+    /** Data Aggregation Node Version */
     private Long etlNodeVersion;
 
-    /** 数据汇聚节点关系id */
+    /** Data Aggregation Node Relation ID */
     private Long etlRelationId;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
 

@@ -22,7 +22,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
- * 数据集成任务 DTO 对象 DPP_ETL_TASK
+ * Data Integration Task DTO - DPP_ETL_TASK
  *
  * @author qdata
  * @date 2025-02-13
@@ -35,66 +35,66 @@ public class DppEtlTaskRespDTO {
     /** ID */
     private Long id;
 
-    /** 类目Id */
+    /** Category ID */
     private Long catId;
 
-    /** 类目编码 */
+    /** Category Code */
     private String catCode;
 
-    /** 任务类型 */
+    /** Task Type */
     private String type;
 
-    /** 任务名称 */
+    /** Task Name */
     private String name;
 
-    /** 任务编码 */
+    /** Task Code */
     private String code;
 
-    /** 任务版本 */
+    /** Task Version */
     private Long version;
 
-    /** 项目id */
+    /** Project ID */
     private Long projectId;
 
-    /** 项目编码 */
+    /** Project Code */
     private String projectCode;
 
-    /** 责任人 */
+    /** Person in Charge */
     private String personCharge;
 
     /**
-     * 联系电话
+     * Contact Number
      */
     private String contactNumber;
 
-    /** 节点坐标信息 */
+    /** Node Coordinate Information */
     private String locations;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 超时时间 */
+    /** Timeout */
     private Long timeout;
 
-    /** 抽取量 */
+    /** Extraction Count */
     private Long extractionCount;
 
-    @Schema(description = "任务的执行策略", example = "")
+    @Schema(description = "Task Execution Strategy", example = "")
     private String executionType;
 
-    /** 写入量 */
+    /** Write Count */
     private Long writeCount;
 
-    /** 任务状态 */
+    /** Task Status */
     private String status;
 
-    /** DolphinScheduler的id */
+    /** DolphinScheduler ID */
     private Long dsId;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
 

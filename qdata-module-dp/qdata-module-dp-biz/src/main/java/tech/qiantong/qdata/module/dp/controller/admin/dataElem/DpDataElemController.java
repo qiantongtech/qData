@@ -48,7 +48,7 @@ import tech.qiantong.qdata.module.dp.dal.dataobject.dataElem.DpDataElemDO;
 import tech.qiantong.qdata.module.dp.service.dataElem.IDpDataElemService;
 
 /**
- * 数据元Controller
+ * Data Element Controller
  *
  * @author qdata
  * @date 2025-01-21

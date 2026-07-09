@@ -29,6 +29,7 @@ import useUserStore from "@/store/system/user";
 const userStore = useUserStore();
 import { getNodeUniqueKey } from "@/api/dpp/task/etlTask";
 import { ElMessage } from "element-plus";
+import { td } from "@/utils/i18n";
 import { DagreLayout } from '@antv/layout';
 import { register } from '@antv/x6-vue-shape';
 import NodeView from "@/views/dpp/components/nodeView";

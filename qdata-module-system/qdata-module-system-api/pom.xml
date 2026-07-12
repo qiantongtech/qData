@@ -30,18 +30,18 @@
     <artifactId>qdata-module-system-api</artifactId>
 
     <description>
-        system-api系统模块
+        system-api module
     </description>
 
     <dependencies>
 
-        <!-- 代码生成-->
+        <!-- Code generation -->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-generator</artifactId>
         </dependency>
 
-        <!-- 通用工具-->
+        <!-- Common utilities -->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-common</artifactId>

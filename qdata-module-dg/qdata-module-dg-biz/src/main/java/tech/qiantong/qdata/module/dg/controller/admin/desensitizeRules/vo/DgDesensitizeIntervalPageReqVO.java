@@ -28,26 +28,26 @@ import tech.qiantong.qdata.common.core.page.PageParam;
  * @author qdata
  * @date 2026-04-10
  */
-@Schema(description = "脱敏区间 Request VO")
+@Schema(description = "Desensitize Interval Page Request VO")
 @Data
 public class DgDesensitizeIntervalPageReqVO extends PageParam {
 
     private static final long serialVersionUID = 1L;
         @Schema(description = "ID", example = "")
         private Long id;
-    @Schema(description = "脱敏规则ID", example = "")
+    @Schema(description = "Desensitize rule ID", example = "")
     private Long desensitizeRuleId;
 
-    @Schema(description = "区间号", example = "")
+    @Schema(description = "Interval number", example = "")
     private Long intervalNo;
 
-    @Schema(description = "起始值", example = "")
+    @Schema(description = "Start value", example = "")
     private Long startNum;
 
-    @Schema(description = "末尾值", example = "")
+    @Schema(description = "End value", example = "")
     private Long endNum;
 
-    @Schema(description = "是否有效;0：无效，1：有效", example = "")
+    @Schema(description = "Valid flag; 0: Invalid, 1: Valid", example = "")
     private Boolean validFlag;
 
 

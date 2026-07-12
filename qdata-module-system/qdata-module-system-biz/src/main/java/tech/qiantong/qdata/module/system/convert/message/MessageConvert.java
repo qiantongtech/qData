@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.system.dal.dataobject.message.MessageDO;
 import java.util.List;
 
 /**
- * 消息 Convert
+ * Message Convert
  *
  * @author qdata
  * @date 2024-10-31
@@ -38,29 +38,29 @@ public interface MessageConvert {
     MessageConvert INSTANCE = Mappers.getMapper(MessageConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param messagePageReqVO 请求参数
+     * PageReqVO Convert to DO
+     * @param messagePageReqVO request parameters
      * @return MessageDO
      */
      MessageDO convertToDO(MessagePageReqVO messagePageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param messageSaveReqVO 保存请求参数
+     * SaveReqVO Convert to DO
+     * @param messageSaveReqVO save request parameters
      * @return MessageDO
      */
      MessageDO convertToDO(MessageSaveReqVO messageSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param messageDO 实体对象
+     * DO Convert to RespVO
+     * @param messageDO entity object
      * @return MessageRespVO
      */
      MessageRespVO convertToRespVO(MessageDO messageDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param messageDOList 实体对象列表
+     * DOList Convert to RespVOList
+     * @param messageDOList entity object list
      * @return List<MessageRespVO>
      */
      List<MessageRespVO> convertToRespVOList(List<MessageDO> messageDOList);

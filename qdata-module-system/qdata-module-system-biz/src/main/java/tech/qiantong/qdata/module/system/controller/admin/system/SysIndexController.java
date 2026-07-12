@@ -25,23 +25,23 @@ import tech.qiantong.qdata.common.config.AniviaConfig;
 import tech.qiantong.qdata.common.utils.StringUtils;
 
 /**
- * 首页
+ * Home page
  *
  * @author qdata
  */
 @RestController
 public class SysIndexController
 {
-    /** 系统基础配置 */
+    /** System base configuration */
     @Autowired
     private AniviaConfig qdataConfig;
 
     /**
-     * 访问首页，提示语
+     * Access home page, welcome message
      */
     @RequestMapping("/")
     public String index()
     {
-        return StringUtils.format("欢迎使用{}后台管理框架，当前版本：v{}，请通过前端地址访问。", qdataConfig.getName(), qdataConfig.getVersion());
+        return StringUtils.format("Welcome to {} admin management framework, current version: v{}, please access through the frontend URL.", qdataConfig.getName(), qdataConfig.getVersion());
     }
 }

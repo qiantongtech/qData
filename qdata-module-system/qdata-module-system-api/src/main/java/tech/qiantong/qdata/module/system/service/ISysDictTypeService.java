@@ -24,97 +24,97 @@ import tech.qiantong.qdata.common.core.domain.entity.SysDictType;
 import java.util.List;
 
 /**
- * 字典 业务层
+ * Dictionary service layer
  *
  * @author qdata
  */
 public interface ISysDictTypeService
 {
     /**
-     * 根据条件分页查询字典类型
+     * Query dictionary types by conditions with pagination
      *
-     * @param dictType 字典类型信息
-     * @return 字典类型集合信息
+     * @param dictType dictionary type information
+     * @return dictionary type collection
      */
     public List<SysDictType> selectDictTypeList(SysDictType dictType);
 
     /**
-     * 根据所有字典类型
+     * Query all dictionary types
      *
-     * @return 字典类型集合信息
+     * @return dictionary type collection
      */
     public List<SysDictType> selectDictTypeAll();
 
     /**
-     * 根据字典类型查询字典数据
+     * Query dictionary data by dictionary type
      *
-     * @param dictType 字典类型
-     * @return 字典数据集合信息
+     * @param dictType dictionary type
+     * @return dictionary data collection
      */
     public List<SysDictData> selectDictDataByType(String dictType);
 
     /**
-     * 根据字典类型ID查询信息
+     * Query dictionary type information by ID
      *
-     * @param dictId 字典类型ID
-     * @return 字典类型
+     * @param dictId dictionary type ID
+     * @return dictionary type
      */
     public SysDictType selectDictTypeById(Long dictId);
 
     /**
-     * 根据字典类型查询信息
+     * Query dictionary type information by type
      *
-     * @param dictType 字典类型
-     * @return 字典类型
+     * @param dictType dictionary type
+     * @return dictionary type
      */
     public SysDictType selectDictTypeByType(String dictType);
 
     /**
-     * 批量删除字典信息
+     * Batch delete dictionary information
      *
-     * @param dictIds 需要删除的字典ID
+     * @param dictIds dictionary IDs to delete
      */
     public void deleteDictTypeByIds(Long[] dictIds);
 
     /**
-     * 加载字典缓存数据
+     * Load dictionary cache data
      */
     public void loadingDictCache();
 
     /**
-     * 清空字典缓存数据
+     * Clear dictionary cache data
      */
     public void clearDictCache();
 
     /**
-     * 重置字典缓存数据
+     * Reset dictionary cache data
      */
     public void resetDictCache();
 
     /**
-     * 新增保存字典类型信息
+     * Insert and save dictionary type information
      *
-     * @param dictType 字典类型信息
-     * @return 结果
+     * @param dictType dictionary type information
+     * @return result
      */
     public int insertDictType(SysDictType dictType);
 
     /**
-     * 修改保存字典类型信息
+     * Update and save dictionary type information
      *
-     * @param dictType 字典类型信息
-     * @return 结果
+     * @param dictType dictionary type information
+     * @return result
      */
     public int updateDictType(SysDictType dictType);
 
     /**
-     * 校验字典类型称是否唯一
+     * Check if dictionary type name is unique
      *
-     * @param dictType 字典类型
-     * @return 结果
+     * @param dictType dictionary type
+     * @return result
      */
     public boolean checkDictTypeUnique(SysDictType dictType);
 
-    // 获取字典类型及字典数据
+    // Get dictionary type and dictionary data
     List<SysDictType> getDictTypeAndDataList(String[] dictTypesArr);
 }

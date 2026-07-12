@@ -42,7 +42,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 系统配置Service业务层处理
+ * System configuration Service business layer handling
  *
  * @author qdata
  * @date 2024-12-31
@@ -68,15 +68,15 @@ public class SystemContentServiceImpl  extends ServiceImpl<SystemContentMapper, 
 
     @Override
     public int updateSystemContent(SystemContentSaveReqVO updateReqVO) {
-        // 相关校验
+        // Relevant validation
 
-        // 更新系统配置
+        // Update system configuration
         SystemContentDO updateObj = BeanUtils.toBean(updateReqVO, SystemContentDO.class);
         return systemContentMapper.updateById(updateObj);
     }
     @Override
     public int removeSystemContent(Collection<Long> idList) {
-        // 批量删除系统配置
+        // Batch delete system configuration
         return systemContentMapper.deleteBatchIds(idList);
     }
 
@@ -97,24 +97,24 @@ public class SystemContentServiceImpl  extends ServiceImpl<SystemContentMapper, 
                 .collect(Collectors.toMap(
                         SystemContentDO::getId,
                         systemContentDO -> systemContentDO,
-                        // 保留已存在的值
+                        // Keep the existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
         /**
-         * 导入系统配置数据
+         * Import system configuration data
          *
-         * @param importExcelList 系统配置数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
+         * @param importExcelList system configuration data list
+         * @param isUpdateSupport whether to support update, update if already exists
+         * @param operName operator name
+         * @return result
          */
         @Override
         public String importSystemContent(List<SystemContentRespVO> importExcelList, boolean isUpdateSupport, String operName) {
             if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-                throw new ServiceException("导入数据不能为空！");
+                throw new ServiceException("Import data cannot be empty!");
             }
 
             int successNum = 0;
@@ -132,14 +132,14 @@ public class SystemContentServiceImpl  extends ServiceImpl<SystemContentMapper, 
                             if (existingSystemContent != null) {
                                 systemContentMapper.updateById(systemContentDO);
                                 successNum++;
-                                successMessages.add("数据更新成功，ID为 " + systemContentId + " 的系统配置记录。");
+                                successMessages.add("Data updated successfully, system configuration record with ID " + systemContentId + ".");
                             } else {
                                 failureNum++;
-                                failureMessages.add("数据更新失败，ID为 " + systemContentId + " 的系统配置记录不存在。");
+                                failureMessages.add("Data update failed, system configuration record with ID " + systemContentId + " does not exist.");
                             }
                         } else {
                             failureNum++;
-                            failureMessages.add("数据更新失败，某条记录的ID不存在。");
+                            failureMessages.add("Data update failed, the record ID does not exist.");
                         }
                     } else {
                         QueryWrapper<SystemContentDO> queryWrapper = new QueryWrapper<>();
@@ -148,26 +148,26 @@ public class SystemContentServiceImpl  extends ServiceImpl<SystemContentMapper, 
                         if (existingSystemContent == null) {
                             systemContentMapper.insert(systemContentDO);
                             successNum++;
-                            successMessages.add("数据插入成功，ID为 " + systemContentId + " 的系统配置记录。");
+                            successMessages.add("Data inserted successfully, system configuration record with ID " + systemContentId + ".");
                         } else {
                             failureNum++;
-                            failureMessages.add("数据插入失败，ID为 " + systemContentId + " 的系统配置记录已存在。");
+                            failureMessages.add("Data insertion failed, system configuration record with ID " + systemContentId + " already exists.");
                         }
                     }
                 } catch (Exception e) {
                     failureNum++;
-                    String errorMsg = "数据导入失败，错误信息：" + e.getMessage();
+                    String errorMsg = "Data import failed, error message: " + e.getMessage();
                     failureMessages.add(errorMsg);
                     log.error(errorMsg, e);
                 }
             }
             StringBuilder resultMsg = new StringBuilder();
             if (failureNum > 0) {
-                resultMsg.append("很抱歉，导入失败！共 ").append(failureNum).append(" 条数据格式不正确，错误如下：");
+                resultMsg.append("Sorry, import failed! Total " + failureNum + " records have incorrect format, errors as follows:");
                 resultMsg.append("<br/>").append(String.join("<br/>", failureMessages));
                 throw new ServiceException(resultMsg.toString());
             } else {
-                resultMsg.append("恭喜您，数据已全部导入成功！共 ").append(successNum).append(" 条。");
+                resultMsg.append("Congratulations, all data imported successfully! Total " + successNum + " records.");
             }
             return resultMsg.toString();
         }

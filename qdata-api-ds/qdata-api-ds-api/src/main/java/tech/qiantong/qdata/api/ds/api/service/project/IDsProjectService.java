@@ -25,7 +25,7 @@ import tech.qiantong.qdata.api.ds.api.project.DsProjectUpdateReqDTO;
 
 /**
  * <P>
- * 用途:ds项目相关接口
+ * Description: DS project related interfaces
  * </p>
  *
  * @author: FXB
@@ -34,7 +34,7 @@ import tech.qiantong.qdata.api.ds.api.project.DsProjectUpdateReqDTO;
 public interface IDsProjectService {
 
     /**
-     * 新增项目
+     * Create project
      *
      * @param dsProjectCreateReqDTO
      * @return
@@ -42,7 +42,7 @@ public interface IDsProjectService {
     DsProjectRespDTO saveProject(DsProjectCreateReqDTO dsProjectCreateReqDTO);
 
     /**
-     * 修改项目
+     * Update project
      *
      * @param dsProjectUpdateReqDTO
      * @return
@@ -50,9 +50,9 @@ public interface IDsProjectService {
     DsProjectRespDTO updateProject(DsProjectUpdateReqDTO dsProjectUpdateReqDTO);
 
     /**
-     * 删除项目
+     * Delete project
      *
-     * @param projectCode 项目编码
+     * @param projectCode project code
      * @return
      */
     DsProjectDeleteRespDTO deleteProject(Long projectCode);

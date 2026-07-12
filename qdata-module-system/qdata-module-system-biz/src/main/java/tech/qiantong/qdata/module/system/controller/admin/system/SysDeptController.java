@@ -35,7 +35,7 @@ import tech.qiantong.qdata.module.system.service.ISysDeptService;
 import java.util.List;
 
 /**
- * 部门信息
+ * Department Information
  *
  * @author qdata
  */
@@ -52,7 +52,7 @@ public class SysDeptController extends BaseController
     }
 
     /**
-     * 获取部门列表
+     * Get department list
      */
     @PreAuthorize("@ss.hasPermi('system:dept:list')")
     @GetMapping("/list")
@@ -63,7 +63,7 @@ public class SysDeptController extends BaseController
     }
 
     /**
-     * 查询部门列表（排除节点）
+     * Query department list (exclude node)
      */
     @PreAuthorize("@ss.hasPermi('system:dept:list')")
     @GetMapping("/list/exclude/{deptId}")
@@ -76,7 +76,7 @@ public class SysDeptController extends BaseController
     }
 
     /**
-     * 根据部门编号获取详细信息
+     * Get detailed information by department ID
      */
     @PreAuthorize("@ss.hasPermi('system:dept:query')")
     @GetMapping(value = "/{deptId}")
@@ -87,7 +87,7 @@ public class SysDeptController extends BaseController
     }
 
     /**
-     * 新增部门
+     * Add department
      */
     @PreAuthorize("@ss.hasPermi('system:dept:add')")
     @Log(title = "log.op.title.system.dept", businessType = BusinessType.INSERT)
@@ -96,14 +96,14 @@ public class SysDeptController extends BaseController
     {
         if (!deptService.checkDeptNameUnique(dept))
         {
-            return error("新增部门'" + dept.getDeptName() + "'失败，部门名称已存在");
+            return error("Add department '" + dept.getDeptName() + "' failed, department name already exists");
         }
         dept.setCreateBy(getUsername());
         return toAjax(deptService.insertDept(dept));
     }
 
     /**
-     * 修改部门
+     * Modify department
      */
     @PreAuthorize("@ss.hasPermi('system:dept:edit')")
     @Log(title = "log.op.title.system.dept", businessType = BusinessType.UPDATE)
@@ -114,22 +114,22 @@ public class SysDeptController extends BaseController
         deptService.checkDeptDataScope(deptId);
         if (!deptService.checkDeptNameUnique(dept))
         {
-            return error("修改部门'" + dept.getDeptName() + "'失败，部门名称已存在");
+            return error("Modify department '" + dept.getDeptName() + "' failed, department name already exists");
         }
         else if (dept.getParentId().equals(deptId))
         {
-            return error("修改部门'" + dept.getDeptName() + "'失败，上级部门不能是自己");
+            return error("Modify department '" + dept.getDeptName() + "' failed, parent department cannot be itself");
         }
         else if (StringUtils.equals(UserConstants.DEPT_DISABLE, dept.getStatus()) && deptService.selectNormalChildrenDeptById(deptId) > 0)
         {
-            return error("该部门包含未停用的子部门！");
+            return error("This department contains non-disabled sub-departments!");
         }
         dept.setUpdateBy(getUsername());
         return toAjax(deptService.updateDept(dept));
     }
 
     /**
-     * 删除部门
+     * Delete department
      */
     @PreAuthorize("@ss.hasPermi('system:dept:remove')")
     @Log(title = "log.op.title.system.dept", businessType = BusinessType.DELETE)
@@ -138,11 +138,11 @@ public class SysDeptController extends BaseController
     {
         if (deptService.hasChildByDeptId(deptId))
         {
-            return warn("存在下级部门,不允许删除");
+            return warn("Sub-departments exist, deletion is not allowed");
         }
         if (deptService.checkDeptExistUser(deptId))
         {
-            return warn("部门存在用户,不允许删除");
+            return warn("Department has users, deletion is not allowed");
         }
         deptService.checkDeptDataScope(deptId);
         return toAjax(deptService.deleteDeptById(deptId));

@@ -25,10 +25,10 @@ import java.util.List;
 public interface ISystemDictDataService {
 
     /**
-     * 根据字典类型查询字典数据    提供服务资源门户字典值查询
+     * Query dictionary data by dictionary type, providing service resource portal dictionary value query
      *
-     * @param dictType 字典类型
-     * @return 字典数据集合信息
+     * @param dictType dictionary type
+     * @return dictionary data collection
      */
     public List<SysDictData> selectDictDataByType(String dictType);
 }

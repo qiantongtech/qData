@@ -31,7 +31,7 @@ import tech.qiantong.qdata.common.httpClient.constants.QianTongDCApiType;
 
 /**
  * <P>
- * 用途:
+ * Description: DS ETL scheduler service implementation
  * </p>
  *
  * @author: FXB

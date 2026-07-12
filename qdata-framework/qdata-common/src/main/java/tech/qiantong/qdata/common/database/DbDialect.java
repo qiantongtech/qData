@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 表数据查询接口
+ * Table data query interface
  *
  * @author QianTongDC
  * @date 2022-11-14
@@ -43,7 +43,7 @@ public interface DbDialect {
     RowMapper<DbColumn> columnMapper();
 
     /**
-     * 获取指定表的所有列
+     * Get all columns of the specified table
      *
      * @param dbName
      * @param tableName
@@ -54,7 +54,7 @@ public interface DbDialect {
     String columns(DbQueryProperty dbQueryProperty, String tableName);
 
     /**
-     * 获取指定库下所有列
+     * Get all columns under the specified database
      *
      * @param dbQueryProperty
      * @return
@@ -72,17 +72,17 @@ public interface DbDialect {
     List<String> someInternalSqlDorisGenerator(DbQueryProperty dbQueryProperty, String tableName, String tableComment, List<DbColumn> dbColumnList, String partitionRule, String bucketRule, Integer replica);
 
     /**
-     * 校验表及列信息是否符合 DM8 的规范要求.
+     * Validate whether the table and column information conforms to DM8 specification requirements.
      *
-     * @param tableName    表名.
-     * @param tableComment 表注释.
-     * @param columns      列定义列表.
-     * @return 返回错误信息的列表。如果列表为空，则表示所有输入均符合规范.
+     * @param tableName    Table name.
+     * @param tableComment Table comment.
+     * @param columns      Column definition list.
+     * @return Returns a list of error messages. If the list is empty, all inputs conform to the specification.
      */
     List<String> validateSpecification(String tableName, String tableComment, List<DbColumn> columns);
 
     /**
-     * 获取数据库下的 所有表
+     * Get all tables in the database
      *
      * @param dbName
      * @return
@@ -92,7 +92,7 @@ public interface DbDialect {
     String tables(DbQueryProperty dbQueryProperty);
 
     /**
-     * 暂时hive专属
+     * Hive-specific for now
      *
      * @param dbQueryProperty
      * @param tableName
@@ -111,7 +111,7 @@ public interface DbDialect {
     String buildQuerySqlFields(List<DbColumn> columns, String tableName, DbQueryProperty dbQueryProperty);
 
     /**
-     * 构建 分页 sql
+     * Build pagination SQL
      *
      * @param sql
      * @param offset
@@ -121,7 +121,7 @@ public interface DbDialect {
     String buildPaginationSql(String sql, long offset, long count);
 
     /**
-     * 包装 count sql
+     * Wrap count SQL
      *
      * @param sql
      * @return
@@ -131,7 +131,7 @@ public interface DbDialect {
     String countNew(String tableName, Map<String, Object> params);
 
     /**
-     * oracl 读取long 类型会流关闭，是oracle的bug，需要特殊处理
+     * Oracle has a bug where reading long type causes stream closure, requiring special handling
      *
      * @return
      */
@@ -141,21 +141,21 @@ public interface DbDialect {
 
 
     /**
-     * 获取存储量
+     * Get storage size
      *
      * @return
      */
     String getDataStorageSize(String dbName);
 
     /**
-     * 获取数据库名或模式名
+     * Get database name or schema name
      *
      * @return
      */
     String getDbName();
 
     /**
-     * 获取数据库名或模式名
+     * Get database name or schema name
      *
      * @param dbName
      * @return
@@ -163,8 +163,8 @@ public interface DbDialect {
     String getDbName(DbName dbName);
 
     /**
-     * 首次层级 RowMapper：
-     * 把 DBNAME/TOTALLEVELS 映射到 DbName
+     * First-level RowMapper:
+     * Maps DBNAME/TOTALLEVELS to DbName
      */
     default RowMapper<DbName> firstLevelMapper(int level) {
         return (ResultSet rs, int rowNum) -> DbName.builder()
@@ -180,7 +180,7 @@ public interface DbDialect {
 
 
     /**
-     * 验证连接
+     * Validate connection
      *
      * @param dataSource
      * @param dbQueryProperty
@@ -199,7 +199,7 @@ public interface DbDialect {
     String getFlinkSinkSQL(DbQueryProperty dbQueryProperty, JSONObject config, String flinkTableName, String tableName, String tableFieldName);
 
     /**
-     * DbQueryProperty转jdbcUrl
+     * Convert DbQueryProperty to jdbcUrl
      *
      * @param property
      * @return
@@ -208,7 +208,7 @@ public interface DbDialect {
 
 
     /**
-     * 获取表信息sql
+     * Get table information SQL
      * @param dbQueryProperty
      * @param tableName
      * @return
@@ -216,7 +216,7 @@ public interface DbDialect {
     String table(DbQueryProperty dbQueryProperty,String tableName);
 
     /**
-     * 获取更改注释的SQL
+     * Get SQL for updating comments
      * @param dbQueryProperty
      * @param tableName
      * @param tableComment
@@ -225,7 +225,7 @@ public interface DbDialect {
     String updateTableComment(DbQueryProperty dbQueryProperty, String tableName, String tableComment);
 
     /**
-     * 修改列
+     * Modify column
      * @param dbQueryProperty
      * @param tableName
      * @param column
@@ -234,7 +234,7 @@ public interface DbDialect {
     List<String> modifyColumn(DbQueryProperty dbQueryProperty, String tableName, DbColumn column);
 
     /**
-     * 添加列
+     * Add column
      * @param dbQueryProperty
      * @param tableName
      * @param column
@@ -243,7 +243,7 @@ public interface DbDialect {
     List<String> addColumn(DbQueryProperty dbQueryProperty, String tableName, DbColumn column);
 
     /**
-     * 删除列
+     * Drop column
      * @param dbQueryProperty
      * @param tableName
      * @param colName
@@ -252,7 +252,7 @@ public interface DbDialect {
     String dropColumn(DbQueryProperty dbQueryProperty, String tableName, String colName);
 
     /**
-     * 更新主键
+     * Update primary key
      * @param dbQueryProperty
      * @param tableName
      * @param colKeyDbColumnList
@@ -261,7 +261,7 @@ public interface DbDialect {
     List<String> updateColKey(DbQueryProperty dbQueryProperty, String tableName, List<DbColumn> colKeyDbColumnList);
 
     /**
-     * 获取列类型
+     * Get column type
      * @param column
      * @return
      */

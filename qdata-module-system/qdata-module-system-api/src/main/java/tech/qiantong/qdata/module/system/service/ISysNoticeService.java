@@ -23,57 +23,57 @@ import tech.qiantong.qdata.module.system.domain.SysNotice;
 import java.util.List;
 
 /**
- * 公告 服务层
+ * Notice service layer
  *
  * @author qdata
  */
 public interface ISysNoticeService
 {
     /**
-     * 查询公告信息
+     * Query notice information by ID
      *
-     * @param noticeId 公告ID
-     * @return 公告信息
+     * @param noticeId notice ID
+     * @return notice information
      */
     public SysNotice selectNoticeById(Long noticeId);
 
     /**
-     * 查询公告列表
+     * Query notice list
      *
-     * @param notice 公告信息
-     * @return 公告集合
+     * @param notice notice information
+     * @return notice collection
      */
     public List<SysNotice> selectNoticeList(SysNotice notice);
 
     /**
-     * 新增公告
+     * Insert notice
      *
-     * @param notice 公告信息
-     * @return 结果
+     * @param notice notice information
+     * @return result
      */
     public int insertNotice(SysNotice notice);
 
     /**
-     * 修改公告
+     * Update notice
      *
-     * @param notice 公告信息
-     * @return 结果
+     * @param notice notice information
+     * @return result
      */
     public int updateNotice(SysNotice notice);
 
     /**
-     * 删除公告信息
+     * Delete notice information
      *
-     * @param noticeId 公告ID
-     * @return 结果
+     * @param noticeId notice ID
+     * @return result
      */
     public int deleteNoticeById(Long noticeId);
 
     /**
-     * 批量删除公告信息
+     * Batch delete notice information
      *
-     * @param noticeIds 需要删除的公告ID
-     * @return 结果
+     * @param noticeIds notice IDs to delete
+     * @return result
      */
     public int deleteNoticeByIds(Long[] noticeIds);
 }

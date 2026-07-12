@@ -23,7 +23,7 @@ import tech.qiantong.qdata.module.system.ca.domain.CaSubject;
 import java.util.List;
 
 /**
- * 主体管理Mapper接口
+ * Subject management mapper interface
  *
  * @author qdata
  * @date 2024-08-18
@@ -31,50 +31,50 @@ import java.util.List;
 public interface CaSubjectMapper
 {
     /**
-     * 查询主体管理
+     * Query subject
      *
-     * @param id 主体管理主键
-     * @return 主体管理
+     * @param id subject primary key
+     * @return subject
      */
     public CaSubject selectCaSubjectById(Long id);
 
     /**
-     * 查询主体管理列表
+     * Query subject list
      *
-     * @param caSubject 主体管理
-     * @return 主体管理集合
+     * @param caSubject subject
+     * @return subject collection
      */
     public List<CaSubject> selectCaSubjectList(CaSubject caSubject);
 
     /**
-     * 新增主体管理
+     * Insert subject
      *
-     * @param caSubject 主体管理
-     * @return 结果
+     * @param caSubject subject
+     * @return result
      */
     public int insertCaSubject(CaSubject caSubject);
 
     /**
-     * 修改主体管理
+     * Update subject
      *
-     * @param caSubject 主体管理
-     * @return 结果
+     * @param caSubject subject
+     * @return result
      */
     public int updateCaSubject(CaSubject caSubject);
 
     /**
-     * 删除主体管理
+     * Delete subject
      *
-     * @param id 主体管理主键
-     * @return 结果
+     * @param id subject primary key
+     * @return result
      */
     public int deleteCaSubjectById(Long id);
 
     /**
-     * 批量删除主体管理
+     * Batch delete subjects
      *
-     * @param ids 需要删除的数据主键集合
-     * @return 结果
+     * @param ids primary keys to delete
+     * @return result
      */
     public int deleteCaSubjectByIds(Long[] ids);
 }

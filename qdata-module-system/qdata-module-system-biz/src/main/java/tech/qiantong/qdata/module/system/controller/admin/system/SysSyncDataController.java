@@ -32,7 +32,7 @@ import tech.qiantong.qdata.module.system.service.auth.SysSyncDataService;
 import javax.annotation.Resource;
 
 /**
- * 接收认证平台推送的数据
+ * Receive data pushed from authentication platform
  */
 @RestController
 @RequestMapping("/syncData")
@@ -43,14 +43,14 @@ public class SysSyncDataController {
 
 
     /**
-     * 接收认证平台推送过来的数据
+     * Receive data pushed from authentication platform
      *
-     * @return
+     * @return Result
      */
     @PostMapping
     @Transactional
     public AjaxResult syncData(@RequestBody JSONObject jsonObject) {
-        log.info("接收认证平台推送的数据:{}", jsonObject);
+        log.info("Received data from authentication platform: {}", jsonObject);
         return sysSyncDataService.syncData(jsonObject);
     }
 }

@@ -21,22 +21,22 @@ package tech.qiantong.qdata.module.system.domain;
 import tech.qiantong.qdata.common.utils.StringUtils;
 
 /**
- * 缓存信息
+ * Cache information
  *
  * @author qdata
  */
 public class SysCache
 {
-    /** 缓存名称 */
+    /** Cache name */
     private String cacheName = "";
 
-    /** 缓存键名 */
+    /** Cache key */
     private String cacheKey = "";
 
-    /** 缓存内容 */
+    /** Cache value */
     private String cacheValue = "";
 
-    /** 备注 */
+    /** Remark */
     private String remark = "";
 
     public SysCache()

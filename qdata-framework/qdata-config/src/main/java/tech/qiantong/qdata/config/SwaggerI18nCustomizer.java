@@ -71,19 +71,19 @@ public class SwaggerI18nCustomizer implements GlobalOpenApiCustomizer {
         if (paths != null) {
             for (PathItem pathItem : paths.values()) {
                 for (Operation operation : pathItem.readOperations()) {
-                    // 翻译 operation summary
+                    // Translate operation summary
                     if (operation.getSummary() != null) {
                         String i18nSummary = MessageUtils.messageWithFallback(
                                 operation.getSummary(), operation.getSummary());
                         operation.setSummary(i18nSummary);
                     }
-                    // 翻译 operation description
+                    // Translate operation description
                     if (operation.getDescription() != null) {
                         String i18nDesc = MessageUtils.messageWithFallback(
                                 operation.getDescription(), operation.getDescription());
                         operation.setDescription(i18nDesc);
                     }
-                    // 翻译 operation 中的 tags
+                    // Translate tags within the operation
                     if (operation.getTags() != null) {
                         List<String> translatedTags = operation.getTags().stream()
                                 .map(t -> MessageUtils.messageWithFallback(t, t))

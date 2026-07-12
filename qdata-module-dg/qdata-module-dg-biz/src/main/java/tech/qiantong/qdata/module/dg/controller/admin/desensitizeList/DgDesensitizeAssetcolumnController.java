@@ -53,7 +53,7 @@ import tech.qiantong.qdata.module.dg.service.desensitizeList.IDgDesensitizeAsset
  * @author qdata
  * @date 2026-04-12
  */
-@Tag(name = "脱敏清单关联关系")
+@Tag(name = "Desensitize List Association")
 @RestController
 @RequestMapping("/dg/DgDesensitizeList")
 @Validated
@@ -61,7 +61,7 @@ public class DgDesensitizeAssetcolumnController extends BaseController {
     @Resource
     private IDgDesensitizeAssetcolumnService dgDesensitizeAssetcolumnService;
 
-    @Operation(summary = "查询脱敏清单关联关系列表")
+    @Operation(summary = "Query desensitize list association")
     @PreAuthorize("@ss.hasPermi('dg:dgdesensitizelist:list')")
     @GetMapping("/list")
     public CommonResult<PageResult<DgDesensitizeAssetcolumnRespVO>> list(DgDesensitizeAssetcolumnPageReqVO dgDesensitizeAssetcolumn) {
@@ -69,7 +69,7 @@ public class DgDesensitizeAssetcolumnController extends BaseController {
         return CommonResult.success(BeanUtils.toBean(page, DgDesensitizeAssetcolumnRespVO.class));
     }
 
-    @Operation(summary = "查询脱敏清单关联关系列表")
+    @Operation(summary = "Query desensitize list association")
     @PreAuthorize("@ss.hasPermi('dg:dgdesensitizelist:list')")
     @GetMapping("/listByRuleId")
     public CommonResult<PageResult<DgDesensitizeAssetcolumnRespVO>> listByRuleId(DgDesensitizeAssetcolumnPageReqVO dgDesensitizeAssetcolumn) {
@@ -79,7 +79,7 @@ public class DgDesensitizeAssetcolumnController extends BaseController {
 
 
 
-    @Operation(summary = "导出脱敏清单关联关系列表")
+    @Operation(summary = "Export desensitize list association")
     @PreAuthorize("@ss.hasPermi('dg:dgdesensitizelist:export')")
     @Log(title = "log.op.title.dg.desensitize.asset.column", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
@@ -87,10 +87,10 @@ public class DgDesensitizeAssetcolumnController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DgDesensitizeAssetcolumnDO> list = (List<DgDesensitizeAssetcolumnDO>) dgDesensitizeAssetcolumnService.getDgDesensitizeAssetcolumnPage(exportReqVO).getRows();
         ExcelUtil<DgDesensitizeAssetcolumnRespVO> util = new ExcelUtil<>(DgDesensitizeAssetcolumnRespVO.class);
-        util.exportExcel(response, DgDesensitizeAssetcolumnConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DgDesensitizeAssetcolumnConvert.INSTANCE.convertToRespVOList(list), "Desensitize List Data");
     }
 
-    @Operation(summary = "导入脱敏清单关联关系列表")
+    @Operation(summary = "Import desensitize list association")
     @PreAuthorize("@ss.hasPermi('dg:dgdesensitizelist:import')")
     @Log(title = "log.op.title.dg.desensitize.asset.column", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
@@ -102,7 +102,7 @@ public class DgDesensitizeAssetcolumnController extends BaseController {
         return success(message);
     }
 
-    @Operation(summary = "获取脱敏清单关联关系详细信息")
+    @Operation(summary = "Get desensitize list association detail")
     @PreAuthorize("@ss.hasPermi('dg:dgdesensitizelist:query')")
     @GetMapping(value = "/{id}")
     public CommonResult<DgDesensitizeAssetcolumnRespVO> getInfo(@PathVariable("id") Long id) {
@@ -110,7 +110,7 @@ public class DgDesensitizeAssetcolumnController extends BaseController {
         return CommonResult.success(BeanUtils.toBean(dgDesensitizeAssetcolumnDO, DgDesensitizeAssetcolumnRespVO.class));
     }
 
-    @Operation(summary = "新增脱敏清单关联关系")
+    @Operation(summary = "Create desensitize list association")
     @PreAuthorize("@ss.hasPermi('dg:dgdesensitizelist:add')")
     @Log(title = "log.op.title.dg.desensitize.asset.column", businessType = BusinessType.INSERT)
     @PostMapping
@@ -121,7 +121,7 @@ public class DgDesensitizeAssetcolumnController extends BaseController {
         return CommonResult.toAjax(dgDesensitizeAssetcolumnService.createDgDesensitizeAssetcolumn(dgDesensitizeAssetcolumn));
     }
 
-    @Operation(summary = "修改脱敏清单关联关系")
+    @Operation(summary = "Update desensitize list association")
     @PreAuthorize("@ss.hasPermi('dg:dgdesensitizelist:edit')")
     @Log(title = "log.op.title.dg.desensitize.asset.column", businessType = BusinessType.UPDATE)
     @PutMapping
@@ -132,7 +132,7 @@ public class DgDesensitizeAssetcolumnController extends BaseController {
         return CommonResult.toAjax(dgDesensitizeAssetcolumnService.updateDgDesensitizeAssetcolumn(dgDesensitizeAssetcolumn));
     }
 
-    @Operation(summary = "删除脱敏清单关联关系")
+    @Operation(summary = "Delete desensitize list association")
     @PreAuthorize("@ss.hasPermi('dg:dgdesensitizelist:remove')")
     @Log(title = "log.op.title.dg.desensitize.asset.column", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")

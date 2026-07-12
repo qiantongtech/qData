@@ -32,37 +32,37 @@ import java.util.List;
 @AllArgsConstructor
 public class DeptDto {
     /**
-     * 部门id 不能为空
+     * Department ID, required
      */
 
 
     private String id;
     /**
-     * 部门名字 不能为空
+     * Department Name, required
      */
 
 
     private String name;
     /**
-     * 部门上级id 不能为空 若为顶级 则是0
+     * Parent Department ID, required; use 0 for root level
      */
 
 
     private String parentId;
     /**
-     * 部门主管的userId 可以为空
+     * Department Leader User ID, optional
      */
 
 
     private List<String> leaderUserIdList;
     /**
-     * 部门状态 0 禁用 1启用
+     * Department Status: 0 = Disabled, 1 = Enabled
      */
 
 
     private Integer status;
     /**
-     * 排序
+     * Sort Order
      */
 
 

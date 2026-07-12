@@ -28,7 +28,7 @@ import tech.qiantong.qdata.common.core.page.PageParam;
  * @author qdata
  * @date 2026-04-12
  */
-@Schema(description = "脱敏清单关联关系 Request VO")
+@Schema(description = "Desensitize List Association Request VO")
 @Data
 public class DgDesensitizeAssetcolumnPageReqVO extends PageParam {
 

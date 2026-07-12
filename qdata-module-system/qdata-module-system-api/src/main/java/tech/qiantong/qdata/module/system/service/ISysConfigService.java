@@ -23,86 +23,86 @@ import tech.qiantong.qdata.module.system.domain.SysConfig;
 import java.util.List;
 
 /**
- * 参数配置 服务层
+ * Configuration service layer
  *
  * @author qdata
  */
 public interface ISysConfigService
 {
     /**
-     * 查询参数配置信息
+     * Query configuration information by ID
      *
-     * @param configId 参数配置ID
-     * @return 参数配置信息
+     * @param configId configuration ID
+     * @return configuration information
      */
     public SysConfig selectConfigById(Long configId);
 
     /**
-     * 根据键名查询参数配置信息
+     * Query configuration information by key name
      *
-     * @param configKey 参数键名
-     * @return 参数键值
+     * @param configKey configuration key name
+     * @return configuration key value
      */
     public String selectConfigByKey(String configKey);
 
     /**
-     * 获取验证码开关
+     * Get captcha switch status
      *
-     * @return true开启，false关闭
+     * @return true if enabled, false if disabled
      */
     public boolean selectCaptchaEnabled();
 
     /**
-     * 查询参数配置列表
+     * Query configuration list
      *
-     * @param config 参数配置信息
-     * @return 参数配置集合
+     * @param config configuration information
+     * @return configuration collection
      */
     public List<SysConfig> selectConfigList(SysConfig config);
 
     /**
-     * 新增参数配置
+     * Insert configuration
      *
-     * @param config 参数配置信息
-     * @return 结果
+     * @param config configuration information
+     * @return result
      */
     public int insertConfig(SysConfig config);
 
     /**
-     * 修改参数配置
+     * Update configuration
      *
-     * @param config 参数配置信息
-     * @return 结果
+     * @param config configuration information
+     * @return result
      */
     public int updateConfig(SysConfig config);
 
     /**
-     * 批量删除参数信息
+     * Batch delete configuration information
      *
-     * @param configIds 需要删除的参数ID
+     * @param configIds configuration IDs to delete
      */
     public void deleteConfigByIds(Long[] configIds);
 
     /**
-     * 加载参数缓存数据
+     * Load configuration cache data
      */
     public void loadingConfigCache();
 
     /**
-     * 清空参数缓存数据
+     * Clear configuration cache data
      */
     public void clearConfigCache();
 
     /**
-     * 重置参数缓存数据
+     * Reset configuration cache data
      */
     public void resetConfigCache();
 
     /**
-     * 校验参数键名是否唯一
+     * Check if configuration key name is unique
      *
-     * @param config 参数信息
-     * @return 结果
+     * @param config configuration information
+     * @return result
      */
     public boolean checkConfigKeyUnique(SysConfig config);
 }

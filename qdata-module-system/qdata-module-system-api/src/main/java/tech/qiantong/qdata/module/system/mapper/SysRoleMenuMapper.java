@@ -24,57 +24,57 @@ import tech.qiantong.qdata.module.system.domain.SysRoleMenu;
 import java.util.List;
 
 /**
- * 角色与菜单关联表 数据层
+ * Role-menu association table data layer
  *
  * @author qdata
  */
 public interface SysRoleMenuMapper
 {
     /**
-     * 查询菜单使用数量
+     * Query menu usage count
      *
-     * @param menuId 菜单ID
-     * @return 结果
+     * @param menuId menu ID
+     * @return result
      */
     public int checkMenuExistRole(Long menuId);
 
     /**
-     * 根据角色id集合批量查询菜单
+     * Batch query menus by role ID list
      *
-     * @param roleIdList 角色ID
-     * @return 结果
+     * @param roleIdList role ID list
+     * @return result
      */
     public List<SysRoleMenu> getByRoleIdList(@Param("roleIdList") List<Long> roleIdList);
 
     /**
-     * 通过角色ID删除角色和菜单关联
+     * Delete role-menu association by role ID
      *
-     * @param roleId 角色ID
-     * @return 结果
+     * @param roleId role ID
+     * @return result
      */
     public int deleteRoleMenuByRoleId(Long roleId);
 
     /**
-     * 批量删除角色菜单关联信息
+     * Batch delete role-menu association information
      *
-     * @param ids 需要删除的数据ID
-     * @return 结果
+     * @param ids data IDs to delete
+     * @return result
      */
     public int deleteRoleMenu(Long[] ids);
 
     /**
-     * 批量新增角色菜单信息
+     * Batch insert role-menu information
      *
-     * @param roleMenuList 角色菜单列表
-     * @return 结果
+     * @param roleMenuList role-menu list
+     * @return result
      */
     public int batchRoleMenu(List<SysRoleMenu> roleMenuList);
 
     /**
-     * 批量新增角色菜单信息带有项目id
+     * Batch insert role-menu information with project ID
      *
-     * @param roleMenuList 角色菜单列表
-     * @return 结果
+     * @param roleMenuList role-menu list
+     * @return result
      */
     public int batchRoleMenuProjectId(List<SysRoleMenu> roleMenuList);
 }

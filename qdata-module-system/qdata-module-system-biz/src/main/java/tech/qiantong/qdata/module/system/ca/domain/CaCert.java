@@ -24,7 +24,7 @@ import tech.qiantong.qdata.common.annotation.Excel;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 证书管理对象 ca_cert
+ * Certificate management domain object ca_cert
  *
  * @author qdata
  * @date 2024-08-18
@@ -33,50 +33,50 @@ public class CaCert extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** ID;ID */
+    /** ID */
     private Long id;
 
-    /** 证书名称;证书名称 */
-    @Excel(name = "证书名称")
+    /** certificate name */
+    @Excel(name = "certificate name")
     private String name;
 
-    /** 主体id;主体id */
-    @Excel(name = "主体id")
+    /** subject ID */
+    @Excel(name = "subject ID")
     private Long subjectId;
 
-    /** 主体名称;主体名称 */
-    @Excel(name = "主体名称")
+    /** subject name */
+    @Excel(name = "subject name")
     private String subjectName;
 
-    /** 证书;证书 */
-    @Excel(name = "证书")
+    /** certificate */
+    @Excel(name = "certificate")
     private String certificate;
 
-    /** 私钥;私钥 */
-    @Excel(name = "私钥")
+    /** private key */
+    @Excel(name = "private key")
     private String privateKey;
 
-    /** 颁发者;颁发者 */
-    @Excel(name = "颁发者")
+    /** issuer */
+    @Excel(name = "issuer")
     private String issuer;
 
-    /** 所有者;所有者 */
-    @Excel(name = "所有者")
+    /** possessor */
+    @Excel(name = "possessor")
     private String possessor;
 
-    /** 有效期;有效期 */
-    @Excel(name = "有效期")
+    /** validity period */
+    @Excel(name = "validity period")
     private String validTime;
 
-    /** 是否有效;是否有效 0：无效，1：有效 */
-    @Excel(name = "是否有效 0：无效，1：有效")
+    /** validity flag: 0=invalid, 1=valid */
+    @Excel(name = "validity flag")
     private Integer validFlag;
 
-    /** 删除标志;删除标志 1：已删除，0：未删除 */
+    /** deletion flag: 1=deleted, 0=not deleted */
     private Integer delFlag;
 
-    /** 创建人id;创建人id */
-    @Excel(name = "创建人id")
+    /** creator ID */
+    @Excel(name = "creator ID")
     private Long creatorId;
 
     public void setId(Long id)

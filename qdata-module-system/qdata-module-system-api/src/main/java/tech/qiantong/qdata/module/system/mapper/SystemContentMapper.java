@@ -29,7 +29,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 系统配置Mapper接口
+ * System configuration Mapper interface
  *
  * @author qdata
  * @date 2024-12-31
@@ -37,10 +37,10 @@ import java.util.Set;
 public interface SystemContentMapper extends BaseMapperX<SystemContentDO> {
 
     default PageResult<SystemContentDO> selectPage(SystemContentPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define sortable columns (prevent SQL injection, must match database column names)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 
-        // 构造动态查询条件
+        // Construct dynamic query conditions
         return selectPage(reqVO, new LambdaQueryWrapperX<SystemContentDO>()
                 .likeIfPresent(SystemContentDO::getSysName, reqVO.getSysName())
                 .eqIfPresent(SystemContentDO::getLogo, reqVO.getLogo())
@@ -52,9 +52,9 @@ public interface SystemContentMapper extends BaseMapperX<SystemContentDO> {
                 .eqIfPresent(SystemContentDO::getStatus, reqVO.getStatus())
                 .eqIfPresent(SystemContentDO::getCreateTime, reqVO.getCreateTime())
                 .eqIfPresent(SystemContentDO::getRemark, reqVO.getRemark())
-                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+                // If reqVO.getName() is not empty, add an exact match condition for name (name = '<name>')
                 // .likeIfPresent(SystemContentDO::getName, reqVO.getName())
-                // 按照 createTime 字段降序排序
+                // Sort by createTime field in descending order
                 .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(), allowedColumns));
     }
 }

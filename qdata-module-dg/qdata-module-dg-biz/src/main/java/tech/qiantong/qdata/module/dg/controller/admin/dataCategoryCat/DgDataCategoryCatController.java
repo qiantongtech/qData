@@ -54,7 +54,7 @@ import tech.qiantong.qdata.module.dg.service.dataCategoryCat.IDgDataCategoryCatS
  * @author FXB
  * @date 2026-04-07
  */
-@Tag(name = "数据分类-类目")
+@Tag(name = "Data Category - Category")
 @RestController
 @RequestMapping("/dg/dataCategoryCat")
 @Validated
@@ -62,21 +62,21 @@ public class DgDataCategoryCatController extends BaseController {
     @Resource
     private IDgDataCategoryCatService dgDataCategoryCatService;
 
-    @Operation(summary = "查询数据分类-类目列表")
+    @Operation(summary = "Query data category - category list")
     @GetMapping("/list")
     public CommonResult<List<DgDataCategoryCatRespVO>> list() {
         List<DgDataCategoryCatDO> dgDataCategoryCatDOList = dgDataCategoryCatService.getDgDataCategoryCatList();
         return CommonResult.success(BeanUtils.toBean(dgDataCategoryCatDOList, DgDataCategoryCatRespVO.class));
     }
 
-    @Operation(summary = "获取数据分类-类目详细信息")
+    @Operation(summary = "Get data category - category details")
     @GetMapping(value = "/{id}")
     public CommonResult<DgDataCategoryCatRespVO> getInfo(@PathVariable("id") Long id) {
         DgDataCategoryCatDO dgDataCategoryCatDO = dgDataCategoryCatService.getDgDataCategoryCatById(id);
         return CommonResult.success(BeanUtils.toBean(dgDataCategoryCatDO, DgDataCategoryCatRespVO.class));
     }
 
-    @Operation(summary = "新增数据分类-类目")
+    @Operation(summary = "Add data category - category")
 //    @PreAuthorize("@ss.hasPermi('dg:dataCategoryCat:add')")
     @Log(title = "log.op.title.dg.data.category.cat", businessType = BusinessType.INSERT)
     @PostMapping
@@ -87,7 +87,7 @@ public class DgDataCategoryCatController extends BaseController {
         return CommonResult.toAjax(dgDataCategoryCatService.createDgDataCategoryCat(dgDataCategoryCat));
     }
 
-    @Operation(summary = "修改数据分类-类目")
+    @Operation(summary = "Update data category - category")
 //    @PreAuthorize("@ss.hasPermi('dg:dataCategoryCat:edit')")
     @Log(title = "log.op.title.dg.data.category.cat", businessType = BusinessType.UPDATE)
     @PutMapping
@@ -98,7 +98,7 @@ public class DgDataCategoryCatController extends BaseController {
         return CommonResult.toAjax(dgDataCategoryCatService.updateDgDataCategoryCat(dgDataCategoryCat));
     }
 
-    @Operation(summary = "删除数据分类-类目")
+    @Operation(summary = "Delete data category - category")
 //    @PreAuthorize("@ss.hasPermi('dg:dataCategoryCat:remove')")
     @Log(title = "log.op.title.dg.data.category.cat", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")

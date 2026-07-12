@@ -29,7 +29,7 @@ import java.util.List;
  * @author qdata
  * @date 2025-01-20
  */
-@Tag(name = "数据元类目管理")
+@Tag(name = "Data Element Category Management")
 @RestController
 @RequestMapping("/dg/dataElemCat")
 @Validated
@@ -37,7 +37,7 @@ public class DgDataElemCatController extends BaseController {
     @Resource
     private IDgDataElemCatService service;
 
-    @Operation(summary = "查询数据元类目管理列表")
+    @Operation(summary = "Query element category list")
     @PreAuthorize("@ss.hasPermi('dg:dataElemCat:list')")
     @GetMapping("/list")
     public CommonResult<List<DgDataElemCatRespVO>> list(DgDataElemCatPageReqVO dgDataElemCat) {
@@ -45,7 +45,7 @@ public class DgDataElemCatController extends BaseController {
         return CommonResult.success(BeanUtils.toBean(dgDataElemCatList, DgDataElemCatRespVO.class));
     }
 
-    @Operation(summary = "获取数据元类目管理详细信息")
+    @Operation(summary = "Get element category details")
     @PreAuthorize("@ss.hasPermi('dg:dataElemCat:query')")
     @GetMapping(value = "/{id}")
     public CommonResult<DgDataElemCatRespVO> getInfo(@PathVariable("id") Long id) {
@@ -53,7 +53,7 @@ public class DgDataElemCatController extends BaseController {
         return CommonResult.success(BeanUtils.toBean(dgDataElemCatDO, DgDataElemCatRespVO.class));
     }
 
-    @Operation(summary = "新增数据元类目管理")
+    @Operation(summary = "Create element category")
     @PreAuthorize("@ss.hasPermi('dg:dataElemCat:add')")
     @Log(title = "log.op.title.dg.data.elem.cat", businessType = BusinessType.INSERT)
     @PostMapping
@@ -61,7 +61,7 @@ public class DgDataElemCatController extends BaseController {
         return CommonResult.toAjax(service.createDgDataElemCat(dgDataElemCat));
     }
 
-    @Operation(summary = "修改数据元类目管理")
+    @Operation(summary = "Update element category")
     @PreAuthorize("@ss.hasPermi('dg:dataElemCat:edit')")
     @Log(title = "log.op.title.dg.data.elem.cat", businessType = BusinessType.UPDATE)
     @PutMapping
@@ -69,7 +69,7 @@ public class DgDataElemCatController extends BaseController {
         return CommonResult.toAjax(service.updateDgDataElemCat(dgDataElemCat));
     }
 
-    @Operation(summary = "删除数据元类目管理")
+    @Operation(summary = "Delete element category")
     @PreAuthorize("@ss.hasPermi('dg:dataElemCat:remove')")
     @Log(title = "log.op.title.dg.data.elem.cat", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
@@ -80,7 +80,7 @@ public class DgDataElemCatController extends BaseController {
     /**
      * Batch delete check, query the number of deletable and non-deletable items
      */
-    @Operation(summary = "批量删除检查数据元类目管理")
+    @Operation(summary = "Batch delete check element category")
     @PreAuthorize("@ss.hasPermi('dg:dataElemCat:remove')")
     @GetMapping("/batchDeleteCheck/{ids}")
     public CommonResult<BatchDeleteCheck<Long>> batchDeleteCheck(@PathVariable Long[] ids) {

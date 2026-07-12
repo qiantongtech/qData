@@ -24,130 +24,130 @@ import tech.qiantong.qdata.common.core.domain.entity.SysMenu;
 import java.util.List;
 
 /**
- * 菜单表 数据层
+ * Menu table data layer
  *
  * @author qdata
  */
 public interface SysMenuMapper
 {
     /**
-     * 查询系统菜单列表
+     * Query system menu list
      *
-     * @param menu 菜单信息
-     * @return 菜单列表
+     * @param menu menu information
+     * @return menu list
      */
     public List<SysMenu> selectMenuList(SysMenu menu);
 
     /**
-     * 根据用户所有权限
+     * Query all menu permissions
      *
-     * @return 权限列表
+     * @return permission list
      */
     public List<String> selectMenuPerms();
 
     /**
-     * 根据用户查询系统菜单列表
+     * Query system menu list by user
      *
-     * @param menu 菜单信息
-     * @return 菜单列表
+     * @param menu menu information
+     * @return menu list
      */
     public List<SysMenu> selectMenuListByUserId(SysMenu menu);
 
     /**
-     * 根据角色ID查询权限
+     * Query permissions by role ID
      *
-     * @param roleId 角色ID
-     * @return 权限列表
+     * @param roleId role ID
+     * @return permission list
      */
     public List<String> selectMenuPermsByRoleId(Long roleId);
 
     /**
-     * 根据用户ID查询权限
+     * Query permissions by user ID
      *
-     * @param userId 用户ID
-     * @return 权限列表
+     * @param userId user ID
+     * @return permission list
      */
     public List<String> selectMenuPermsByUserId(Long userId);
 
     /**
-     * 根据用户ID查询菜单
+     * Query menu tree by user ID
      *
-     * @return 菜单列表
+     * @return menu list
      */
     public List<SysMenu> selectMenuTreeAll();
 
     /**
-     * 根据用户ID查询菜单
+     * Query menu tree by user ID
      *
-     * @param userId 用户ID
-     * @return 菜单列表
+     * @param userId user ID
+     * @return menu list
      */
     public List<SysMenu> selectMenuTreeByUserId(Long userId);
 
     /**
-     * 根据用户ID和项目id查询菜单
+     * Query menu tree by user ID and project ID
      *
-     * @param userId 用户ID
-     * @param projectId 项目ID
-     * @return 菜单列表
+     * @param userId user ID
+     * @param projectId project ID
+     * @return menu list
      */
     public List<SysMenu> selectMenuTreeByUserIdAndProjectId(@Param("userId") Long userId,@Param("projectId") Long projectId);
 
     /**
-     * 根据角色ID查询菜单树信息
+     * Query menu tree information by role ID
      *
-     * @param roleId 角色ID
-     * @param menuCheckStrictly 菜单树选择项是否关联显示
-     * @return 选中菜单列表
+     * @param roleId role ID
+     * @param menuCheckStrictly whether menu tree selection items are associatively displayed
+     * @return selected menu list
      */
     public List<Long> selectMenuListByRoleId(@Param("roleId") Long roleId, @Param("menuCheckStrictly") boolean menuCheckStrictly);
 
     /**
-     * 根据菜单ID查询信息
+     * Query menu information by menu ID
      *
-     * @param menuId 菜单ID
-     * @return 菜单信息
+     * @param menuId menu ID
+     * @return menu information
      */
     public SysMenu selectMenuById(Long menuId);
 
     /**
-     * 是否存在菜单子节点
+     * Check if menu has child nodes
      *
-     * @param menuId 菜单ID
-     * @return 结果
+     * @param menuId menu ID
+     * @return result
      */
     public int hasChildByMenuId(Long menuId);
 
     /**
-     * 新增菜单信息
+     * Insert menu information
      *
-     * @param menu 菜单信息
-     * @return 结果
+     * @param menu menu information
+     * @return result
      */
     public int insertMenu(SysMenu menu);
 
     /**
-     * 修改菜单信息
+     * Update menu information
      *
-     * @param menu 菜单信息
-     * @return 结果
+     * @param menu menu information
+     * @return result
      */
     public int updateMenu(SysMenu menu);
 
     /**
-     * 删除菜单管理信息
+     * Delete menu management information
      *
-     * @param menuId 菜单ID
-     * @return 结果
+     * @param menuId menu ID
+     * @return result
      */
     public int deleteMenuById(Long menuId);
 
     /**
-     * 校验菜单名称是否唯一
+     * Validate whether menu name is unique
      *
-     * @param menuName 菜单名称
-     * @param parentId 父菜单ID
-     * @return 结果
+     * @param menuName menu name
+     * @param parentId parent menu ID
+     * @return result
      */
     public SysMenu checkMenuNameUnique(@Param("menuName") String menuName, @Param("parentId") Long parentId);
 }

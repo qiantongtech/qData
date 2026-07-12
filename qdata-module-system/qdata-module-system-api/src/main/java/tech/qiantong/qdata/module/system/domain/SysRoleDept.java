@@ -22,16 +22,16 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * 角色和部门关联 system_role_dept
+ * Role-dept association system_role_dept
  *
  * @author qdata
  */
 public class SysRoleDept
 {
-    /** 角色ID */
+    /** Role ID */
     private Long roleId;
 
-    /** 部门ID */
+    /** Dept ID */
     private Long deptId;
 
     public Long getRoleId()

@@ -26,7 +26,7 @@ import tech.qiantong.qdata.common.enums.ExecuteType;
 
 /**
  * <P>
- * 用途:
+ * Description: DS execute DTO
  * </p>
  *
  * @author: FXB
@@ -39,12 +39,12 @@ import tech.qiantong.qdata.common.enums.ExecuteType;
 public class DSExecuteDTO {
 
     /**
-     * 流程id
+     * Process instance id
      */
     private Long processInstanceId;
 
     /**
-     * 执行类型
+     * Execute type
      */
     private ExecuteType executeType;
 }

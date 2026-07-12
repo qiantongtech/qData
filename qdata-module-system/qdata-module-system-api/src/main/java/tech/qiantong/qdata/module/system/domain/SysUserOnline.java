@@ -19,34 +19,34 @@
 package tech.qiantong.qdata.module.system.domain;
 
 /**
- * 当前在线会话
+ * Current online session
  *
  * @author qdata
  */
 public class SysUserOnline
 {
-    /** 会话编号 */
+    /** Session ID */
     private String tokenId;
 
-    /** 部门名称 */
+    /** Department name */
     private String deptName;
 
-    /** 用户名称 */
+    /** User name */
     private String userName;
 
-    /** 登录IP地址 */
+    /** Login IP address */
     private String ipaddr;
 
-    /** 登录地址 */
+    /** Login location */
     private String loginLocation;
 
-    /** 浏览器类型 */
+    /** Browser type */
     private String browser;
 
-    /** 操作系统 */
+    /** Operating system */
     private String os;
 
-    /** 登录时间 */
+    /** Login time */
     private Long loginTime;
 
     public String getTokenId()

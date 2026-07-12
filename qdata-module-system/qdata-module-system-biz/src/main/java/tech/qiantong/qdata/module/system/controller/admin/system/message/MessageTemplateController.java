@@ -45,12 +45,12 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 消息模板Controller
+ * Message Template Controller
  *
  * @author qdata
  * @date 2024-10-31
  */
-@Tag(name = "消息模板")
+@Tag(name = "Message Template")
 @RestController
 @RequestMapping("/system/messageTemplate")
 @Validated
@@ -58,7 +58,7 @@ public class MessageTemplateController extends BaseController {
     @Resource
     private IMessageTemplateService messageTemplateService;
 
-    @Operation(summary = "查询消息模板列表")
+    @Operation(summary = "Query message template list")
     @PreAuthorize("@ss.hasPermi('system:message:messageTemplate:list')")
     @GetMapping("/list")
     public CommonResult<PageResult<MessageTemplateRespVO>> list(MessageTemplatePageReqVO messageTemplate) {
@@ -67,17 +67,17 @@ public class MessageTemplateController extends BaseController {
         return CommonResult.success(BeanUtils.toBean(page, MessageTemplateRespVO.class));
     }
 
-    @Operation(summary = "导出消息模板列表")
+    @Operation(summary = "Export message template list")
     @PreAuthorize("@ss.hasPermi('system:message:messageTemplate:export')")
     @Log(title = "log.op.title.system.message.template", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, MessageTemplatePageReqVO messageTemplate) {
         List<MessageTemplateDO> list = (List<MessageTemplateDO>) messageTemplateService.getMessageTemplatePage(messageTemplate).getRows();
         ExcelUtil<MessageTemplateRespVO> util = new ExcelUtil<>(MessageTemplateRespVO.class);
-        util.exportExcel(response, MessageTemplateConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, MessageTemplateConvert.INSTANCE.convertToRespVOList(list), "Message Template Data");
     }
 
-    @Operation(summary = "获取消息模板详细信息")
+    @Operation(summary = "Get message template details")
     @PreAuthorize("@ss.hasPermi('system:message:messageTemplate:query')")
     @GetMapping(value = "/{id}")
     public CommonResult<MessageTemplateRespVO> getInfo(@PathVariable("id") Long id) {
@@ -85,7 +85,7 @@ public class MessageTemplateController extends BaseController {
         return CommonResult.success(BeanUtils.toBean(messageTemplateDO, MessageTemplateRespVO.class));
     }
 
-    @Operation(summary = "新增消息模板")
+    @Operation(summary = "Add message template")
     @PreAuthorize("@ss.hasPermi('system:message:messageTemplate:add')")
     @Log(title = "log.op.title.system.message.template", businessType = BusinessType.INSERT)
     @PostMapping
@@ -96,7 +96,7 @@ public class MessageTemplateController extends BaseController {
         return CommonResult.toAjax(messageTemplateService.save(messageTemplateDO));
     }
 
-    @Operation(summary = "修改消息模板")
+    @Operation(summary = "Modify message template")
     @PreAuthorize("@ss.hasPermi('system:message:messageTemplate:edit')")
     @Log(title = "log.op.title.system.message.template", businessType = BusinessType.UPDATE)
     @PutMapping
@@ -108,7 +108,7 @@ public class MessageTemplateController extends BaseController {
         return CommonResult.toAjax(messageTemplateService.updateById(messageTemplateDO));
     }
 
-    @Operation(summary = "删除消息模板")
+    @Operation(summary = "Delete message template")
     @PreAuthorize("@ss.hasPermi('system:message:messageTemplate:remove')")
     @Log(title = "log.op.title.system.message.template", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")

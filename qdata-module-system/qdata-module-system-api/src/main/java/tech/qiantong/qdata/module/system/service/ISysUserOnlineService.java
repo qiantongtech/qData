@@ -22,45 +22,45 @@ import tech.qiantong.qdata.common.core.domain.model.LoginUser;
 import tech.qiantong.qdata.module.system.domain.SysUserOnline;
 
 /**
- * 在线用户 服务层
+ * Online user service layer
  *
  * @author qdata
  */
 public interface ISysUserOnlineService
 {
     /**
-     * 通过登录地址查询信息
+     * Query information by login address
      *
-     * @param ipaddr 登录地址
-     * @param user 用户信息
-     * @return 在线用户信息
+     * @param ipaddr login address
+     * @param user user information
+     * @return online user information
      */
     public SysUserOnline selectOnlineByIpaddr(String ipaddr, LoginUser user);
 
     /**
-     * 通过用户名称查询信息
+     * Query information by username
      *
-     * @param userName 用户名称
-     * @param user 用户信息
-     * @return 在线用户信息
+     * @param userName username
+     * @param user user information
+     * @return online user information
      */
     public SysUserOnline selectOnlineByUserName(String userName, LoginUser user);
 
     /**
-     * 通过登录地址/用户名称查询信息
+     * Query information by login address/username
      *
-     * @param ipaddr 登录地址
-     * @param userName 用户名称
-     * @param user 用户信息
-     * @return 在线用户信息
+     * @param ipaddr login address
+     * @param userName username
+     * @param user user information
+     * @return online user information
      */
     public SysUserOnline selectOnlineByInfo(String ipaddr, String userName, LoginUser user);
 
     /**
-     * 设置在线用户信息
+     * Set online user information
      *
-     * @param user 用户信息
-     * @return 在线用户
+     * @param user user information
+     * @return online user
      */
     public SysUserOnline loginUserToUserOnline(LoginUser user);
 }

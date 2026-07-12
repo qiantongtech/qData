@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * <P>
- * 用途:手动启动一次的参数
+ * Description: Manual one-time start parameters
  * </p>
  *
  * @author: FXB
@@ -37,25 +37,25 @@ import lombok.NoArgsConstructor;
 @Data
 public class DsStartTaskReqDTO {
     /**
-     * 流程编码
+     * Process definition code
      */
     private Long processDefinitionCode;
     /**
-     * 失败策略 写死 CONTINUE
-     * CONTINUE 为继续
+     * Failure strategy, hardcoded CONTINUE
+     * CONTINUE means continue
      */
     private String failureStrategy;
     /**
-     * 写死 NONE
+     * Hardcoded NONE
      */
     private String warningType;
     /**
-     * 写死 MEDIUM
+     * Hardcoded MEDIUM
      */
     private String processInstancePriority;
     /**
-     * 写死{"complementStartDate":"当前天 00:00:00","complementEndDate":"当前天 00:00:00"}
-     * 例子{"complementStartDate":"2025-03-26 00:00:00","complementEndDate":"2025-03-26 00:00:00"}
+     * Hardcoded {"complementStartDate":"current day 00:00:00","complementEndDate":"current day 00:00:00"}
+     * Example {"complementStartDate":"2025-03-26 00:00:00","complementEndDate":"2025-03-26 00:00:00"}
      */
     private String scheduleTime;//: {"complementStartDate":"2025-03-26 00:00:00","complementEndDate":"2025-03-26 00:00:00"}
 }

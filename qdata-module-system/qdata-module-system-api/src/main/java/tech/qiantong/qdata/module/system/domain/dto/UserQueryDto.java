@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * @author zhj
  * @version 1.0
- * @description: 查询用户参数
+ * @description: User Query Parameters
  * @date 2024/2/22 17:13
  */
 @Data
@@ -37,25 +37,25 @@ import java.util.List;
 @AllArgsConstructor
 public class UserQueryDto extends PageDto {
     /**
-     * 部门id
+     * Department ID
      */
     private String deptId;
     /**
-     * 搜索词
+     * Search Keywords
      */
     private String keywords;
     /**
-     * 用户状态
+     * User Status
      */
     private Integer status;
 
     private String name;
     /**
-     * 部门id集合
+     * Department ID List
      */
     private List<String> deptIdList;
     /**
-     * 角色key集合
+     * Role ID List
      */
     private List<String> roleIdList;
 }

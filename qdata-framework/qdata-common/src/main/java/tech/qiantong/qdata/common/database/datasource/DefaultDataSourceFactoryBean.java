@@ -23,6 +23,6 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 @Component
-@Primary // 标记为默认使用的 DataSourceFactory
+@Primary // Mark as the default DataSourceFactory to use
 public class DefaultDataSourceFactoryBean extends AbstractDataSourceFactory {
 }

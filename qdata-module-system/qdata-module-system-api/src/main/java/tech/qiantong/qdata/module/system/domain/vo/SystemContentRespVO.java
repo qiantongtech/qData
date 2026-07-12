@@ -27,12 +27,12 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 系统配置 Response VO 对象 system_content
+ * System Config Response VO object system_content
  *
  * @author qdata
  * @date 2024-12-31
  */
-@Schema(description = "系统配置 Response VO")
+@Schema(description = "System Config Response VO")
 @Data
 public class SystemContentRespVO implements Serializable {
 
@@ -42,8 +42,8 @@ public class SystemContentRespVO implements Serializable {
     @Schema(description = "ID")
     private Long id;
 
-    @Excel(name = "系统名称")
-    @Schema(description = "系统名称", example = "")
+    @Excel(name = "System Name")
+    @Schema(description = "System Name", example = "")
     private String sysName;
 
     @Excel(name = "loginLogo")
@@ -54,62 +54,62 @@ public class SystemContentRespVO implements Serializable {
     @Schema(description = "logo", example = "")
     private String logo;
 
-    @Excel(name = "轮播图")
-    @Schema(description = "轮播图", example = "")
+    @Excel(name = "Carousel Image")
+    @Schema(description = "Carousel Image", example = "")
     private String carouselImage;
 
-    @Excel(name = "联系电话")
-    @Schema(description = "联系电话", example = "")
+    @Excel(name = "Contact Number")
+    @Schema(description = "Contact Number", example = "")
     private String contactNumber;
 
-    @Excel(name = "电子邮箱")
-    @Schema(description = "电子邮箱", example = "")
+    @Excel(name = "Email")
+    @Schema(description = "Email", example = "")
     private String email;
 
-    @Excel(name = "版权方")
-    @Schema(description = "版权方", example = "")
+    @Excel(name = "Copyright")
+    @Schema(description = "Copyright", example = "")
     private String copyright;
 
-    @Excel(name = "备案号")
-    @Schema(description = "备案号", example = "")
+    @Excel(name = "Record Number")
+    @Schema(description = "Record Number", example = "")
     private String recordNumber;
 
-    @Excel(name = "删除标记")
-    @Schema(description = "删除标记", example = "")
+    @Excel(name = "Delete Flag")
+    @Schema(description = "Delete Flag", example = "")
     private Boolean delFlag;
 
-    @Excel(name = "状态")
-    @Schema(description = "状态", example = "")
+    @Excel(name = "Status")
+    @Schema(description = "Status", example = "")
     private Integer status;
 
-    @Excel(name = "创建人")
-    @Schema(description = "创建人", example = "")
+    @Excel(name = "Created By")
+    @Schema(description = "Created By", example = "")
     private String createBy;
 
-    @Excel(name = "创建人id")
-    @Schema(description = "创建人id", example = "")
+    @Excel(name = "Creator ID")
+    @Schema(description = "Creator ID", example = "")
     private Long creatorId;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
-    @Schema(description = "创建时间", example = "")
+    @Excel(name = "Created Time", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    @Schema(description = "Created Time", example = "")
     private Date createTime;
 
-    @Excel(name = "修改人")
-    @Schema(description = "修改人", example = "")
+    @Excel(name = "Updated By")
+    @Schema(description = "Updated By", example = "")
     private String updateBy;
 
-    @Excel(name = "修改人id")
-    @Schema(description = "修改人id", example = "")
+    @Excel(name = "Updater ID")
+    @Schema(description = "Updater ID", example = "")
     private Long updaterId;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Excel(name = "修改时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
-    @Schema(description = "修改时间", example = "")
+    @Excel(name = "Updated Time", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    @Schema(description = "Updated Time", example = "")
     private Date updateTime;
 
-    @Excel(name = "备注")
-    @Schema(description = "备注", example = "")
+    @Excel(name = "Remark")
+    @Schema(description = "Remark", example = "")
     private String remarks;
 
 }

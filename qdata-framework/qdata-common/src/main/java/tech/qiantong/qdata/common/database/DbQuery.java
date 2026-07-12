@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 表数据查询接口
+ * Table data query interface
  *
  * @author QianTongDC
  * @date 2022-11-14
@@ -36,22 +36,22 @@ import java.util.Map;
 public interface DbQuery {
 
     /**
-     * 获取数据库连接
+     * Get database connection
      */
     Connection getConnection();
 
     /**
-     * 检测连通性
+     * Check connectivity
      */
     boolean valid();
 
     /**
-     * 关闭数据源
+     * Close data source
      */
     void close();
 
     /**
-     * 获取指定表 具有的所有字段列表
+     * Get all column list of the specified table
      *
      * @param dbName
      * @param tableName
@@ -62,7 +62,7 @@ public interface DbQuery {
     List<DbColumn> getTableColumns(DbQueryProperty dbQueryProperty, String tableName);
 
     /**
-     * 获取库下所有字段信息
+     * Get all column information under the database
      * @param dbQueryProperty
      * @return
      */
@@ -74,7 +74,7 @@ public interface DbQuery {
                                         List<DbColumn> dbColumnList);
 
     /**
-     * doris 创建表 SQL
+     * Doris create table SQL
      *
      * @param dbQueryProperty
      * @param tableName
@@ -95,7 +95,7 @@ public interface DbQuery {
                                    List<DbColumn> dbColumnList);
 
     /**
-     * 获取指定数据库下 所有的表信息
+     * Get all table information in the specified database
      *
      * @param dbName
      * @return
@@ -109,7 +109,7 @@ public interface DbQuery {
     List<FileInfo> getFiles(String path);
 
     /**
-     * 获取总数
+     * Get total count
      *
      * @param sql
      * @return
@@ -117,7 +117,7 @@ public interface DbQuery {
     int count(String sql);
 
     /**
-     * 直接执行sql获取统计数量
+     * Execute SQL directly to get statistics count
      *
      * @param sql
      * @return
@@ -125,7 +125,7 @@ public interface DbQuery {
     int executeCountSql(String sql);
 
     /**
-     * 获取总数带查询参数
+     * Get total count with query parameters
      *
      * @param sql
      * @return
@@ -133,7 +133,7 @@ public interface DbQuery {
     int count(String sql, Object[] args);
 
     /**
-     * 获取总数带查询参数 NamedParameterJdbcTemplate
+     * Get total count with query parameters using NamedParameterJdbcTemplate
      *
      * @param sql
      * @return
@@ -145,7 +145,7 @@ public interface DbQuery {
     int countNew(String tableName, DbQueryProperty dbQueryProperty, String where);
 
     /**
-     * 查询结果列表
+     * Query result list
      *
      * @param sql
      * @return
@@ -165,7 +165,7 @@ public interface DbQuery {
     );
 
     /**
-     * 查询结果列表带查询参数
+     * Query result list with query parameters
      *
      * @param sql
      * @param args
@@ -174,27 +174,27 @@ public interface DbQuery {
     List<Map<String, Object>> queryList(String sql, Object[] args);
 
     /**
-     * 查询结果列表带查询参数
+     * Query result list with query parameters
      *
      * @param sql
      * @param params
-     * @param cache  是否开启缓存 0否 1是
+     * @param cache  Whether to enable cache 0 No 1 Yes
      * @return
      */
     List<Map<String, Object>> queryList(String sql, Map<String, Object> params, Integer cache);
 
     /**
-     * 查询详情结果带查询参数
+     * Query detail result with query parameters
      *
      * @param sql
      * @param params
-     * @param cache  是否开启缓存 0否 1是
+     * @param cache  Whether to enable cache 0 No 1 Yes
      * @return
      */
     Map<String, Object> queryOne(String sql, Map<String, Object> params, Integer cache);
 
     /**
-     * 查询结果分页
+     * Paginated query results
      *
      * @param sql
      * @param offset
@@ -204,7 +204,7 @@ public interface DbQuery {
     PageResult<Map<String, Object>> queryByPage(String sql, long offset, long size);
 
     /**
-     * 查询结果分页带查询参数
+     * Paginated query results with query parameters
      *
      * @param sql
      * @param args
@@ -215,13 +215,13 @@ public interface DbQuery {
     PageResult<Map<String, Object>> queryByPage(String sql, Object[] args, long offset, long size);
 
     /**
-     * 查询结果分页带查询参数 NamedParameterJdbcTemplate
+     * Paginated query results with query parameters using NamedParameterJdbcTemplate
      *
      * @param sql
      * @param params
      * @param offset
      * @param size
-     * @param cache  是否开启缓存 0否 1是
+     * @param cache  Whether to enable cache 0 No 1 Yes
      * @return
      */
     PageResult<Map<String, Object>> queryByPage(String sql, Map<String, Object> params, long offset, long size,
@@ -243,14 +243,14 @@ public interface DbQuery {
     int isTableExists(String sql);
 
     /**
-     * 获取存储量
+     * Get storage size
      *
      * @return
      */
     Integer getDataStorageSize();
 
     /**
-     * 根据一个表创建新表
+     * Create a new table based on an existing table
      *
      * @param dbQueryProperty
      * @param tableName
@@ -260,12 +260,12 @@ public interface DbQuery {
     Boolean copyTable(Connection conn, DbQueryProperty dbQueryProperty, String tableName, String newTableName);
 
     /**
-     * 根据一个表创建表到另一个数据库中
+     * Create a table from one table to another database
      *
      * @param otherDbQueryProperty
      * @param tableName
      * @param newTableName
-     * @param addColumn            追加字段可空
+     * @param addColumn            Additional columns, nullable
      * @return
      */
     Boolean copyTableToOtherDb(DbQueryProperty otherDbQueryProperty, String tableName, String newTableName, String newTableComment, List<JSONObject> addColumn, String partitionRule, String bucketRule, Integer replica);
@@ -274,7 +274,7 @@ public interface DbQuery {
 
 
     /**
-     * 通过sql查询字段
+     * Query columns by SQL
      *
      * @param querySql
      * @return
@@ -284,53 +284,53 @@ public interface DbQuery {
     void uploadFile(String path, MultipartFile file);
 
     /**
-     * 获取flink 字段
+     * Get Flink fields
      *
-     * @param dbQueryProperty 数据库连接信息
-     * @param config          额外的扩展参数
+     * @param dbQueryProperty Database connection information
+     * @param config          Additional extension parameters
      * @param tableName
      * @param column
-     * @param querySql        该数据如果不为空时、tableName无效
+     * @param querySql        When this parameter is not empty, tableName is ignored
      * @return
      */
     String generateFlinkFields(DbQueryProperty dbQueryProperty, JSONObject config, String tableName, List<String> column, String querySql);
 
     /**
-     * 获取flink sql
+     * Get Flink SQL
      *
-     * @param taskExecuteType 执行类型 STREAM：流模式  BATCH：批处理
-     * @param flinkTableName  flink表名
-     * @param tableName       真实表名
-     * @param column          字段
+     * @param taskExecuteType Execution type: STREAM streaming mode, BATCH batch processing
+     * @param flinkTableName  Flink table name
+     * @param tableName       Real table name
+     * @param column          Columns
      * @param querySql
      * @return
      */
     String getFlinkSQL(JSONObject config, String taskExecuteType, String flinkTableName, String tableName, List<String> column, String querySql);
 
     /**
-     * 获取flink cdc sql
+     * Get Flink CDC SQL
      *
-     * @param flinkTableName flink表名
-     * @param tableName      真实表名
-     * @param column         字段
+     * @param flinkTableName Flink table name
+     * @param tableName      Real table name
+     * @param column         Columns
      * @param querySql
      * @return
      */
     String getFlinkCDCSQL(JSONObject config, String flinkTableName, String tableName, List<String> column, String querySql);
 
     /**
-     * 获取flink sink sql
+     * Get Flink sink SQL
      *
-     * @param taskExecuteType 执行类型 STREAM：流模式  BATCH：批处理
-     * @param flinkTableName  flink表名
-     * @param tableName       真实表名
-     * @param column          字段
+     * @param taskExecuteType Execution type: STREAM streaming mode, BATCH batch processing
+     * @param flinkTableName  Flink table name
+     * @param tableName       Real table name
+     * @param column          Columns
      * @return
      */
     String getFlinkSinkSQL(JSONObject config, String taskExecuteType, String flinkTableName, String tableName, List<String> column);
 
     /**
-     * 删除表
+     * Delete table
      *
      * @param dbQueryProperty
      * @param tableName
@@ -339,7 +339,7 @@ public interface DbQuery {
     Boolean deleteTable(DbQueryProperty dbQueryProperty, String tableName);
 
     /**
-     * 更新表 SQL
+     * Update table SQL
      * @param dbQueryProperty
      * @param tableName
      * @param tableComment

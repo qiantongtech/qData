@@ -34,7 +34,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.cert.X509Certificate;
 
 /**
- * 通用http发送方法
+ * General HTTP request utility
  *
  * @author qdata
  */
@@ -43,10 +43,10 @@ public class HttpUtils
     private static final Logger log = LoggerFactory.getLogger(HttpUtils.class);
 
     /**
-     * 向指定 URL 发送GET方法的请求
+     * Send a GET request to the specified URL
      *
-     * @param url 发送请求的 URL
-     * @return 所代表远程资源的响应结果
+     * @param url the URL to send the request to
+     * @return the response result of the remote resource
      */
     public static String sendGet(String url)
     {
@@ -54,11 +54,11 @@ public class HttpUtils
     }
 
     /**
-     * 向指定 URL 发送GET方法的请求
+     * Send a GET request to the specified URL
      *
-     * @param url 发送请求的 URL
-     * @param param 请求参数，请求参数应该是 name1=value1&name2=value2 的形式。
-     * @return 所代表远程资源的响应结果
+     * @param url the URL to send the request to
+     * @param param request parameters, should be in the form of name1=value1&name2=value2
+     * @return the response result of the remote resource
      */
     public static String sendGet(String url, String param)
     {
@@ -66,12 +66,12 @@ public class HttpUtils
     }
 
     /**
-     * 向指定 URL 发送GET方法的请求
+     * Send a GET request to the specified URL
      *
-     * @param url 发送请求的 URL
-     * @param param 请求参数，请求参数应该是 name1=value1&name2=value2 的形式。
-     * @param contentType 编码类型
-     * @return 所代表远程资源的响应结果
+     * @param url the URL to send the request to
+     * @param param request parameters, should be in the form of name1=value1&name2=value2
+     * @param contentType encoding type
+     * @return the response result of the remote resource
      */
     public static String sendGet(String url, String param, String contentType)
     {
@@ -129,11 +129,11 @@ public class HttpUtils
     }
 
     /**
-     * 向指定 URL 发送POST方法的请求
+     * Send a POST request to the specified URL
      *
-     * @param url 发送请求的 URL
-     * @param param 请求参数，请求参数应该是 name1=value1&name2=value2 的形式。
-     * @return 所代表远程资源的响应结果
+     * @param url the URL to send the request to
+     * @param param request parameters, should be in the form of name1=value1&name2=value2
+     * @return the response result of the remote resource
      */
     public static String sendPost(String url, String param)
     {

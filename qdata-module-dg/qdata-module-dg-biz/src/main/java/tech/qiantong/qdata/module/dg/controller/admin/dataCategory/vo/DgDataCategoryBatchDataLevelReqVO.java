@@ -31,7 +31,7 @@ import java.util.List;
  * @author qdata
  * @date 2026-04-07
  */
-@Schema(description = "批量設置数据分級 Response VO")
+@Schema(description = "Batch set data level Request VO")
 @Data
 public class DgDataCategoryBatchDataLevelReqVO extends BaseEntity {
 

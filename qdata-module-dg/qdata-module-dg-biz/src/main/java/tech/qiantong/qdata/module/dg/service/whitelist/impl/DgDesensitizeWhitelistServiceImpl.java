@@ -78,7 +78,7 @@ public class DgDesensitizeWhitelistServiceImpl  extends ServiceImpl<DgDesensitiz
         // Check if category already exists in whitelist
         if (dgDesensitizeWhitelistMapper.selectCount(new LambdaQueryWrapper<DgDesensitizeWhitelistDO>()
                 .eq(DgDesensitizeWhitelistDO::getDataCategoryId, dictType.getDataCategoryId())) > 0) {
-            throw new ServiceException("dg.error.duplicate.category", "数据分类已存在");
+            throw new ServiceException("dg.error.duplicate.category", "Data Category already exists");
         }
         dgDesensitizeWhitelistMapper.insert(dictType);
         // Insert user collection
@@ -177,7 +177,7 @@ public class DgDesensitizeWhitelistServiceImpl  extends ServiceImpl<DgDesensitiz
         @Override
         public String importDgDesensitizeWhitelist(List<DgDesensitizeWhitelistRespVO> importExcelList, boolean isUpdateSupport, String operName) {
             if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-                throw new ServiceException("dg.error.import.empty", "导入数据不能为空！");
+                throw new ServiceException("dg.error.import.empty", "Import data cannot be empty!");
             }
 
             int successNum = 0;
@@ -196,16 +196,16 @@ public class DgDesensitizeWhitelistServiceImpl  extends ServiceImpl<DgDesensitiz
                                 dgDesensitizeWhitelistMapper.updateById(dgDesensitizeWhitelistDO);
                                 successNum++;
                                 successMessages.add(MessageUtils.messageWithFallback("dg.import.update.success",
-                                        "数据更新成功，ID为 " + dgDesensitizeWhitelistId + " 的脱敏白名单记录。", dgDesensitizeWhitelistId, "脱敏白名单"));
+                                        "Data update successful, Desensitize Whitelist record with ID " + dgDesensitizeWhitelistId + ".", dgDesensitizeWhitelistId, "Desensitize Whitelist"));
                             } else {
                                 failureNum++;
                                 failureMessages.add(MessageUtils.messageWithFallback("dg.import.update.fail",
-                                        "数据更新失败，ID为 " + dgDesensitizeWhitelistId + " 的脱敏白名单记录不存在。", dgDesensitizeWhitelistId, "脱敏白名单"));
+                                        "Data update failed, Desensitize Whitelist record with ID " + dgDesensitizeWhitelistId + " does not exist.", dgDesensitizeWhitelistId, "Desensitize Whitelist"));
                             }
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("dg.import.update.id.missing",
-                                    "数据更新失败，某条记录的ID不存在。"));
+                                    "Data update failed, the ID of a record does not exist."));
                         }
                     } else {
                         QueryWrapper<DgDesensitizeWhitelistDO> queryWrapper = new QueryWrapper<>();
@@ -215,17 +215,17 @@ public class DgDesensitizeWhitelistServiceImpl  extends ServiceImpl<DgDesensitiz
                             dgDesensitizeWhitelistMapper.insert(dgDesensitizeWhitelistDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("dg.import.insert.success",
-                                    "数据插入成功，ID为 " + dgDesensitizeWhitelistId + " 的脱敏白名单记录。", dgDesensitizeWhitelistId, "脱敏白名单"));
+                                    "Data insert successful, Desensitize Whitelist record with ID " + dgDesensitizeWhitelistId + ".", dgDesensitizeWhitelistId, "Desensitize Whitelist"));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("dg.import.insert.fail",
-                                    "数据插入失败，ID为 " + dgDesensitizeWhitelistId + " 的脱敏白名单记录已存在。", dgDesensitizeWhitelistId, "脱敏白名单"));
+                                    "Data insert failed, Desensitize Whitelist record with ID " + dgDesensitizeWhitelistId + " already exists.", dgDesensitizeWhitelistId, "Desensitize Whitelist"));
                         }
                     }
                 } catch (Exception e) {
                     failureNum++;
                     String errorMsg = MessageUtils.messageWithFallback("dg.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                "Data import failed, error message: " + e.getMessage(), e.getMessage());
                     failureMessages.add(errorMsg);
                     log.error(errorMsg, e);
                 }
@@ -234,12 +234,12 @@ public class DgDesensitizeWhitelistServiceImpl  extends ServiceImpl<DgDesensitiz
             if (failureNum > 0) {
                 String failureDetails = String.join("<br/>", failureMessages);
                 resultMsg.append(MessageUtils.messageWithFallback("dg.import.result.fail",
-                        "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                        "Sorry, import failed! A total of " + failureNum + " records have incorrect format. Errors as follows:<br/>" + failureDetails,
                         failureNum, failureDetails));
                 throw new ServiceException("dg.error.import.fail", resultMsg.toString(), resultMsg.toString());
             } else {
                 resultMsg.append(MessageUtils.messageWithFallback("dg.import.result.success",
-                        "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                        "Congratulations, all data has been imported successfully! A total of " + successNum + " records.", successNum));
             }
             return resultMsg.toString();
         }

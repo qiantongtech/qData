@@ -48,7 +48,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 任务实例
+ * Task instance
  */
 @Builder
 @NoArgsConstructor
@@ -62,91 +62,91 @@ public class TaskInstance implements Serializable {
     private Long id;
 
     /**
-     * 任务实例名称
+     * Task instance name
      */
     private String name;
 
     /**
-     * 任务类型
+     * Task type
      */
     private String taskType;
 
     /**
-     * 流程实例id
+     * Process instance id
      */
     private Long processInstanceId;
 
     /**
-     * 流程实例名称
+     * Process instance name
      */
     private String processInstanceName;
 
     /**
-     * 项目编码
+     * Project code
      */
     private String projectCode;
 
     /**
-     * 任务编码
+     * Task code
      */
     private String taskCode;
 
     /**
-     * 任务版本号
+     * Task definition version
      */
     private int taskDefinitionVersion;
 
     /**
-     * 状态
+     * State
      */
     private TaskExecutionStatus state;
 
 
     /**
-     * 提交时间
+     * Submit time
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date submitTime;
 
     /**
-     * 任务开始时间
+     * Task start time
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date startTime;
 
     /**
-     * 任务结束时间
+     * Task end time
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date endTime;
 
     /**
-     * 执行路径
+     * Execute path
      */
     private String executePath;
 
     /**
-     * 日志路径
+     * Log path
      */
     private String logPath;
 
     /**
-     * 重试次数
+     * Retry times
      */
     private int retryTimes;
 
     /**
-     * 流程实例
+     * Process instance
      */
     private ProcessInstance processInstance;
 
     /**
-     * 流程定义
+     * Process definition
      */
     private ProcessDefinition processDefine;
 
     /**
-     * 任务定义
+     * Task definition
      */
     private TaskDefinition taskDefine;
 
@@ -156,28 +156,28 @@ public class TaskInstance implements Serializable {
     private Flag flag;
 
     /**
-     * 优先级
+     * Priority
      */
     private Priority taskInstancePriority;
 
 
     /**
-     * 延迟执行时间（分钟）
+     * Delay time (minutes)
      */
     private int delayTime;
 
     /**
-     * 任务参数
+     * Task parameters
      */
     private String taskParams;
 
     /**
-     * CPU配额
+     * CPU quota
      */
     private Integer cpuQuota;
 
     /**
-     * 最大内存
+     * Maximum memory
      */
     private Integer memoryMax;
 }

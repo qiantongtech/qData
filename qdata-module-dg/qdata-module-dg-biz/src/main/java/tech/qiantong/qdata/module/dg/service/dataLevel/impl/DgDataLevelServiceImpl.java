@@ -66,7 +66,7 @@ public class DgDataLevelServiceImpl  extends ServiceImpl<DgDataLevelMapper,DgDat
         // Sensitive level cannot be duplicated
         if (dgDataLevelMapper.selectCount(new LambdaQueryWrapper<DgDataLevelDO>()
                 .eq(DgDataLevelDO::getSensitiveLevel, dictType.getSensitiveLevel())) > 0) {
-            throw new ServiceException("dg.error.duplicate.level", "敏感等级不能重复");
+            throw new ServiceException("dg.error.duplicate.level", "Sensitive level cannot be duplicated");
         }
         dgDataLevelMapper.insert(dictType);
         return dictType.getId();
@@ -120,7 +120,7 @@ public class DgDataLevelServiceImpl  extends ServiceImpl<DgDataLevelMapper,DgDat
         @Override
         public String importDgDataLevel(List<DgDataLevelRespVO> importExcelList, boolean isUpdateSupport, String operName) {
             if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-                throw new ServiceException("dg.error.import.empty", "导入数据不能为空！");
+                throw new ServiceException("dg.error.import.empty", "Import data cannot be empty!");
             }
 
             int successNum = 0;

@@ -30,7 +30,7 @@ import lombok.NoArgsConstructor;
 public class RoleDto {
 
     /**
-     * 角色名字
+     * Role Name
      */
     private String name;
     private String id;

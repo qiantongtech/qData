@@ -24,7 +24,7 @@ import tech.qiantong.qdata.common.annotation.Excel;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 主体管理对象 ca_subject
+ * Subject management domain object ca_subject
  *
  * @author qdata
  * @date 2024-08-18
@@ -33,54 +33,54 @@ public class CaSubject extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** ID;主体ID */
+    /** ID; subject ID */
     private Long id;
 
-    /** 主体名称;主体名称 */
-    @Excel(name = "主体名称;主体名称")
+    /** subject name */
+    @Excel(name = "subject name")
     private String name;
 
-    /** 通用名称;通用名称 */
-    @Excel(name = "通用名称;通用名称")
+    /** common name */
+    @Excel(name = "common name")
     private String cn;
 
-    /** 组织部门;组织单位名称 */
-    @Excel(name = "组织部门;组织单位名称")
+    /** organizational unit */
+    @Excel(name = "organizational unit")
     private String ou;
 
-    /** 组织名称 */
-    @Excel(name = "组织名称")
+    /** organization name */
+    @Excel(name = "organization name")
     private String o;
 
-    /** 城市名称 */
-    @Excel(name = "城市名称")
+    /** locality */
+    @Excel(name = "locality")
     private String l;
 
-    /** 省名称 */
-    @Excel(name = "省名称")
+    /** state or province */
+    @Excel(name = "state or province")
     private String st;
 
-    /** 国家 */
-    @Excel(name = "国家")
+    /** country */
+    @Excel(name = "country")
     private String c;
 
-    /** 证书;证书 */
-    @Excel(name = "证书;证书")
+    /** certificate */
+    @Excel(name = "certificate")
     private String certificate;
 
-    /** 私钥;私钥 */
-    @Excel(name = "私钥;私钥")
+    /** private key */
+    @Excel(name = "private key")
     private String privateKey;
 
-    /** 是否有效;是否有效 0：无效，1：有效 */
-    @Excel(name = "是否有效;是否有效 0：无效，1：有效")
+    /** validity flag: 0=invalid, 1=valid */
+    @Excel(name = "validity flag")
     private Integer validFlag;
 
-    /** 删除标志;删除标志 1：已删除，0：未删除 */
+    /** deletion flag: 1=deleted, 0=not deleted */
     private Integer delFlag;
 
-    /** 创建人id;创建人id */
-    @Excel(name = "创建人id;创建人id")
+    /** creator ID */
+    @Excel(name = "creator ID")
     private Long creatorId;
 
     public void setId(Long id)

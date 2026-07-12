@@ -21,29 +21,29 @@ package tech.qiantong.qdata.module.system.domain.vo;
 import tech.qiantong.qdata.common.utils.StringUtils;
 
 /**
- * 路由显示信息
+ * Router display information
  *
  * @author qdata
  */
 public class MetaVo
 {
     /**
-     * 设置该路由在侧边栏和面包屑中展示的名字
+     * Display name of this route in sidebar and breadcrumb
      */
     private String title;
 
     /**
-     * 设置该路由的图标，对应路径src/assets/icons/svg
+     * Icon for this route, corresponds to path src/assets/icons/svg
      */
     private String icon;
 
     /**
-     * 设置为true，则不会被 <keep-alive>缓存
+     * When set to true, this route will not be cached by keep-alive
      */
     private boolean noCache;
 
     /**
-     * 内链地址（http(s)://开头）
+     * Internal link address (starting with http(s)://)
      */
     private String link;
 

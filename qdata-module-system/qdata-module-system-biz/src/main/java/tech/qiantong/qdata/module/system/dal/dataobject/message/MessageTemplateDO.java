@@ -24,14 +24,14 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 
 /**
- * 消息模板 DO 对象 message_template
+ * Message Template DO object message_template
  *
  * @author qdata
  * @date 2024-10-31
  */
 @Data
 @TableName(value = "message_template")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary key in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. For MySQL etc., this can be omitted.
 // @KeySequence("message_template_seq")
 @EqualsAndHashCode(callSuper = true)
 @Builder
@@ -46,22 +46,22 @@ public class MessageTemplateDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 消息标题 */
+    /** Message title */
     private String title;
 
-    /** 消息模板内容 */
+    /** Message template content */
     private String content;
 
-    /** 消息类别 */
+    /** Message category */
     private Integer category;
 
-    /** 消息等级 */
+    /** Message level */
     private Integer msgLevel;
 
-    /** 是否有效 */
+    /** Whether valid */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete flag */
     @TableLogic
     private Boolean delFlag;
 

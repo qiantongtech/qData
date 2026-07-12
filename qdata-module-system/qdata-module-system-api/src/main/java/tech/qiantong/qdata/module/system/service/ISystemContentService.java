@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 系统配置Service接口
+ * System configuration service interface
  *
  * @author qdata
  * @date 2024-12-31
@@ -38,65 +38,65 @@ import java.util.Map;
 public interface ISystemContentService extends IService<SystemContentDO> {
 
     /**
-     * 获得系统配置分页列表
+     * Get system configuration paginated list
      *
-     * @param pageReqVO 分页请求
-     * @return 系统配置分页列表
+     * @param pageReqVO pagination request
+     * @return system configuration paginated list
      */
     PageResult<SystemContentDO> getSystemContentPage(SystemContentPageReqVO pageReqVO);
 
     /**
-     * 创建系统配置
+     * Create system configuration
      *
-     * @param createReqVO 系统配置信息
-     * @return 系统配置编号
+     * @param createReqVO system configuration information
+     * @return system configuration ID
      */
     Long createSystemContent(SystemContentSaveReqVO createReqVO);
 
     /**
-     * 更新系统配置
+     * Update system configuration
      *
-     * @param updateReqVO 系统配置信息
+     * @param updateReqVO system configuration information
      */
     int updateSystemContent(SystemContentSaveReqVO updateReqVO);
 
     /**
-     * 删除系统配置
+     * Delete system configuration
      *
-     * @param idList 系统配置编号
+     * @param idList system configuration IDs
      */
     int removeSystemContent(Collection<Long> idList);
 
     /**
-     * 获得系统配置详情
+     * Get system configuration details
      *
-     * @param id 系统配置编号
-     * @return 系统配置
+     * @param id system configuration ID
+     * @return system configuration
      */
     SystemContentDO getSystemContentById(Long id);
 
     /**
-     * 获得全部系统配置列表
+     * Get all system configuration list
      *
-     * @return 系统配置列表
+     * @return system configuration list
      */
     List<SystemContentDO> getSystemContentList();
 
     /**
-     * 获得全部系统配置 Map
+     * Get all system configuration as Map
      *
-     * @return 系统配置 Map
+     * @return system configuration Map
      */
     Map<Long, SystemContentDO> getSystemContentMap();
 
 
     /**
-     * 导入系统配置数据
+     * Import system configuration data
      *
-     * @param importExcelList 系统配置数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList system configuration data list
+     * @param isUpdateSupport whether to update existing data if already present
+     * @param operName operator name
+     * @return result
      */
     String importSystemContent(List<SystemContentRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

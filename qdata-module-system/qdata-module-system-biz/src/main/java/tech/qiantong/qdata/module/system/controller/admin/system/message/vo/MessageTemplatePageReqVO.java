@@ -23,12 +23,12 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 消息模板 Request VO 对象 message_template
+ * Message Template Request VO
  *
  * @author qdata
  * @date 2024-10-31
  */
-@Schema(description = "消息模板 Request VO")
+@Schema(description = "Message Template Request VO")
 @Data
 public class MessageTemplatePageReqVO extends BaseEntity {
 
@@ -37,22 +37,22 @@ public class MessageTemplatePageReqVO extends BaseEntity {
     @Schema(description = "ID")
     private Long id;
 
-    @Schema(description = "消息标题", example = "")
+    @Schema(description = "Message Title", example = "")
     private String title;
 
-    @Schema(description = "消息模板内容", example = "")
+    @Schema(description = "Message Template Content", example = "")
     private String content;
 
-    @Schema(description = "消息类别", example = "")
+    @Schema(description = "Message Category", example = "")
     private Integer category;
 
-    @Schema(description = "消息等级", example = "")
+    @Schema(description = "Message Level", example = "")
     private Integer msgLevel;
 
-    @Schema(description = "是否有效", example = "")
+    @Schema(description = "Active Status", example = "")
     private Boolean validFlag;
 
-    @Schema(description = "删除标识")
+    @Schema(description = "Delete Flag")
     private Boolean delFlag;
 
 }

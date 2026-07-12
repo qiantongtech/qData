@@ -47,7 +47,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
- * 证书管理Controller
+ * Certificate Management Controller
  *
  * @author qdata
  * @date 2024-08-18
@@ -77,7 +77,7 @@ public class CaCertController extends BaseController
     }
 
     /**
-     * 查询证书管理列表
+     * Query certificate management list
      */
     @PreAuthorize("@ss.hasPermi('ca:cert:list')")
     @GetMapping("/list")
@@ -89,7 +89,7 @@ public class CaCertController extends BaseController
     }
 
     /**
-     * 导出证书管理列表
+     * Export certificate management list
      */
     @PreAuthorize("@ss.hasPermi('ca:cert:export')")
     @Log(title = "log.op.title.system.cert", businessType = BusinessType.EXPORT)
@@ -98,11 +98,11 @@ public class CaCertController extends BaseController
     {
         List<CaCert> list = caCertService.selectCaCertList(caCert);
         ExcelUtil<CaCert> util = new ExcelUtil<CaCert>(CaCert.class);
-        util.exportExcel(response, list, "证书管理数据");
+        util.exportExcel(response, list, "Certificate Management Data");
     }
 
     /**
-     * 获取证书管理详细信息
+     * Get certificate management detail info
      */
     @PreAuthorize("@ss.hasPermi('ca:cert:query')")
     @GetMapping(value = "/{id}")
@@ -112,31 +112,31 @@ public class CaCertController extends BaseController
     }
 
     /**
-     * 新增证书管理
+     * Add certificate management
      */
     @PreAuthorize("@ss.hasPermi('ca:cert:add')")
     @Log(title = "log.op.title.system.cert", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody CaCert caCert) throws Exception {
         CaSubject subject = caSubjectService.selectCaSubjectById(caCert.getSubjectId());
-        // 构建证书的 DN 名称
+        // Build certificate DN name
         String dnNameStr = StringUtils.format("CN={}, OU={}, O={}, L={}, ST={}, C={}",
                 caCert.getPossessor(), subject.getOu(),
                 subject.getO(), subject.getL(),
                 subject.getSt(), subject.getC());
 
-        // 创建证书
+        // Create certificate
         List<MultipartFile> fileList = CaCertificateIssuer.issueCertificate(
                 dnNameStr,
                 subject.getCertificate(),
                 subject.getPrivateKey(),
                 Convert.toLong(caCert.getValidTime()));
 
-        // 上传并获取证书和私钥的文件信息
+        // Upload and get certificate and private key file info
         FileInfo cert = FileUploadUtil.upload(fileList.get(0), "ca/");
         FileInfo privateKey = FileUploadUtil.upload(fileList.get(1), "ca/");
 
-        // 更新数据信息
+        // Update data info
         caCert.setCertificate(Constants.RESOURCE_PREFIX + "/" + cert.getPath() + cert.getFilename());
         caCert.setPrivateKey(Constants.RESOURCE_PREFIX + "/" + privateKey.getPath() + privateKey.getFilename());
         caCert.setCreatorId(getUserId());
@@ -145,7 +145,7 @@ public class CaCertController extends BaseController
     }
 
     /**
-     * 修改证书管理
+     * Update certificate management
      */
     @PreAuthorize("@ss.hasPermi('ca:cert:edit')")
     @Log(title = "log.op.title.system.cert", businessType = BusinessType.UPDATE)
@@ -156,7 +156,7 @@ public class CaCertController extends BaseController
     }
 
     /**
-     * 删除证书管理
+     * Delete certificate management
      */
     @PreAuthorize("@ss.hasPermi('ca:cert:remove')")
     @Log(title = "log.op.title.system.cert", businessType = BusinessType.DELETE)

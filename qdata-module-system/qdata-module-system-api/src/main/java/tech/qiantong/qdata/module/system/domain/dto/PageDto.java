@@ -21,18 +21,18 @@ package tech.qiantong.qdata.module.system.domain.dto;
 import lombok.Data;
 
 /**
- * 分页对象
+ * Pagination object
  */
 @Data
 public class PageDto {
 
     /**
-     * 页码
+     * Page Number
      */
 
     private Integer pageNum;
     /**
-     * 每页的数量
+     * Page Size
      */
 
     private Integer pageSize;

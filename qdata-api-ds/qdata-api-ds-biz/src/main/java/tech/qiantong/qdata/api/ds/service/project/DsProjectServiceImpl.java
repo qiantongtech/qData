@@ -31,7 +31,7 @@ import tech.qiantong.qdata.common.httpClient.constants.QianTongDCApiType;
 
 /**
  * <P>
- * 用途:ds项目service实现
+ * Description: DS project service implementation
  * </p>
  *
  * @author: FXB

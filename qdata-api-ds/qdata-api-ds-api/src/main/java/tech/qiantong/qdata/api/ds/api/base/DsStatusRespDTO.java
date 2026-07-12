@@ -22,7 +22,7 @@ import lombok.Data;
 
 /**
  * <P>
- * 用途:状态相关接口响应DTO
+ * Description: Status response DTO
  * </p>
  *
  * @author: FXB
@@ -31,7 +31,7 @@ import lombok.Data;
 @Data
 public class DsStatusRespDTO extends DsResultDTO {
     /**
-     * 是否成功
+     * Whether successful
      */
     private Boolean data;
 }

@@ -33,7 +33,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
  * @author qdata
  * @date 2026-04-10
  */
-@Schema(description = "脱敏区间 Response VO")
+@Schema(description = "Desensitize Interval Save Request VO")
 @Data
 public class DgDesensitizeIntervalSaveReqVO extends BaseEntity {
 
@@ -42,20 +42,20 @@ public class DgDesensitizeIntervalSaveReqVO extends BaseEntity {
     @Schema(description = "ID")
     private Long id;
 
-    @Schema(description = "脱敏规则ID", example = "")
+    @Schema(description = "Desensitize rule ID", example = "")
     private Long desensitizeRuleId;
 
-    @Schema(description = "区间号", example = "")
+    @Schema(description = "Interval number", example = "")
     private Long intervalNo;
 
-    @Schema(description = "起始值", example = "")
+    @Schema(description = "Start value", example = "")
     private Long startNum;
 
-    @Schema(description = "末尾值", example = "")
+    @Schema(description = "End value", example = "")
     private Long endNum;
 
-    @Schema(description = "备注", example = "")
-    @Size(max = 256, message = "备注长度不能超过256个字符")
+    @Schema(description = "Remark", example = "")
+    @Size(max = 256, message = "{valid.max.size}")
     private String remark;
 
     /** Whether valid; 0: invalid, 1: valid */

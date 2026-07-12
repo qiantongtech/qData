@@ -10,7 +10,7 @@ import tech.qiantong.qdata.common.core.page.PageParam;
  * @author qdata
  * @date 2025-01-20
  */
-@Schema(description = "数据元类目管理 Request VO")
+@Schema(description = "Data Element Category Request VO")
 @Data
 public class DgDataElemCatPageReqVO extends PageParam {
 

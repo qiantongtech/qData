@@ -25,7 +25,7 @@ import java.io.Serializable;
 
 /**
  * <P>
- * 用途:
+ * Purpose:
  * </p>
  *
  * @author: FXB
@@ -35,12 +35,12 @@ import java.io.Serializable;
 public class ExcelColumnReqVO implements Serializable {
     private static final long serialVersionUID = 5343220360439610872L;
 
-    @Schema(description = "Excel文件路径")
+    @Schema(description = "Excel File Path")
     private String excelFile;
 
-    @Schema(description = "列开始行")
+    @Schema(description = "Start Column")
     private Integer startColumn;
 
-    @Schema(description = "数据开始行")
+    @Schema(description = "Start Data Row")
     private Integer startData;
 }

@@ -22,36 +22,36 @@ import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 
 /**
- * 数据查询异常
- * 支持 i18n 国际化：优先从资源文件获取对应语言文案
+ * Data query exception.
+ * Supports i18n internationalization: prioritizes retrieving localized text from resource files.
  *
  * @author qdata
  */
 public class DataQueryException extends RuntimeException {
 
     /**
-     * i18n 消息键
+     * i18n message key
      */
     private String i18nCode;
 
     /**
-     * 消息格式化参数
+     * Message formatting arguments
      */
     private Object[] args;
 
     /**
-     * 纯文本构造
+     * Plain text constructor
      */
     public DataQueryException(String message) {
         super(message);
     }
 
     /**
-     * 使用 i18n 消息键 + 兜底消息构造
+     * Construct with i18n message key + fallback message
      *
-     * @param i18nCode       消息键（如 "db.error.connection"）
-     * @param defaultMessage 兜底消息
-     * @param args           格式化参数
+     * @param i18nCode       message key (e.g., "db.error.connection")
+     * @param defaultMessage fallback message
+     * @param args           formatting arguments
      */
     public DataQueryException(String i18nCode, String defaultMessage, Object... args) {
         super(defaultMessage);

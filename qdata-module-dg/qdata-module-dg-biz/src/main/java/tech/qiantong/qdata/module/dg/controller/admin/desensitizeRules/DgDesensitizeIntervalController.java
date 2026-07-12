@@ -53,7 +53,7 @@ import tech.qiantong.qdata.module.dg.service.desensitizeRules.IDgDesensitizeInte
  * @author qdata
  * @date 2026-04-10
  */
-@Tag(name = "脱敏区间")
+@Tag(name = "Desensitize Intervals")
 @RestController
 @RequestMapping("/dg/desensitizeInterval")
 @Validated
@@ -61,7 +61,7 @@ public class DgDesensitizeIntervalController extends BaseController {
     @Resource
     private IDgDesensitizeIntervalService dgDesensitizeIntervalService;
 
-    @Operation(summary = "查询脱敏区间列表")
+    @Operation(summary = "Query desensitize interval list")
     @PreAuthorize("@ss.hasPermi('dg:desensitizeinterval:list')")
     @GetMapping("/list")
     public CommonResult<PageResult<DgDesensitizeIntervalRespVO>> list(DgDesensitizeIntervalPageReqVO dgDesensitizeInterval) {
@@ -69,7 +69,7 @@ public class DgDesensitizeIntervalController extends BaseController {
         return CommonResult.success(BeanUtils.toBean(page, DgDesensitizeIntervalRespVO.class));
     }
 
-    @Operation(summary = "导出脱敏区间列表")
+    @Operation(summary = "Export desensitize interval list")
     @PreAuthorize("@ss.hasPermi('dg:desensitizeinterval:export')")
     @Log(title = "log.op.title.dg.desensitize.interval", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
@@ -77,10 +77,10 @@ public class DgDesensitizeIntervalController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DgDesensitizeIntervalDO> list = (List<DgDesensitizeIntervalDO>) dgDesensitizeIntervalService.getDgDesensitizeIntervalPage(exportReqVO).getRows();
         ExcelUtil<DgDesensitizeIntervalRespVO> util = new ExcelUtil<>(DgDesensitizeIntervalRespVO.class);
-        util.exportExcel(response, DgDesensitizeIntervalConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DgDesensitizeIntervalConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
-    @Operation(summary = "导入脱敏区间列表")
+    @Operation(summary = "Import desensitize interval list")
     @PreAuthorize("@ss.hasPermi('dg:desensitizeinterval:import')")
     @Log(title = "log.op.title.dg.desensitize.interval", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
@@ -92,7 +92,7 @@ public class DgDesensitizeIntervalController extends BaseController {
         return success(message);
     }
 
-    @Operation(summary = "获取脱敏区间详细信息")
+    @Operation(summary = "Get desensitize interval detail")
     @PreAuthorize("@ss.hasPermi('dg:desensitizeinterval:query')")
     @GetMapping(value = "/{id}")
     public CommonResult<DgDesensitizeIntervalRespVO> getInfo(@PathVariable("id") Long id) {
@@ -100,7 +100,7 @@ public class DgDesensitizeIntervalController extends BaseController {
         return CommonResult.success(BeanUtils.toBean(dgDesensitizeIntervalDO, DgDesensitizeIntervalRespVO.class));
     }
 
-    @Operation(summary = "新增脱敏区间")
+    @Operation(summary = "Add desensitize interval")
     @PreAuthorize("@ss.hasPermi('dg:desensitizeinterval:add')")
     @Log(title = "log.op.title.dg.desensitize.interval", businessType = BusinessType.INSERT)
     @PostMapping
@@ -111,7 +111,7 @@ public class DgDesensitizeIntervalController extends BaseController {
         return CommonResult.toAjax(dgDesensitizeIntervalService.createDgDesensitizeInterval(dgDesensitizeInterval));
     }
 
-    @Operation(summary = "修改脱敏区间")
+    @Operation(summary = "Update desensitize interval")
     @PreAuthorize("@ss.hasPermi('dg:desensitizeinterval:edit')")
     @Log(title = "log.op.title.dg.desensitize.interval", businessType = BusinessType.UPDATE)
     @PutMapping
@@ -122,7 +122,7 @@ public class DgDesensitizeIntervalController extends BaseController {
         return CommonResult.toAjax(dgDesensitizeIntervalService.updateDgDesensitizeInterval(dgDesensitizeInterval));
     }
 
-    @Operation(summary = "删除脱敏区间")
+    @Operation(summary = "Delete desensitize interval")
     @PreAuthorize("@ss.hasPermi('dg:desensitizeinterval:remove')")
     @Log(title = "log.op.title.dg.desensitize.interval", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")

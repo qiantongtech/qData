@@ -31,7 +31,7 @@ import java.io.Serializable;
  * @author FXB
  * @date 2026-04-07
  */
-@Schema(description = "数据分类-类目 Response VO")
+@Schema(description = "Data Category - Category Response VO")
 @Data
 public class DgDataCategoryCatRespVO implements Serializable {
 
@@ -41,62 +41,62 @@ public class DgDataCategoryCatRespVO implements Serializable {
     @Schema(description = "ID")
     private Long id;
 
-    @Excel(name = "类别名称")
-    @Schema(description = "类别名称", example = "")
+    @Excel(name = "Category name")
+    @Schema(description = "Category name", example = "")
     private String name;
 
-    @Excel(name = "关联上级ID")
-    @Schema(description = "关联上级ID", example = "")
+    @Excel(name = "Parent category ID")
+    @Schema(description = "Parent category ID", example = "")
     private Long parentId;
 
-    @Excel(name = "类别排序")
-    @Schema(description = "类别排序", example = "")
+    @Excel(name = "Sort order")
+    @Schema(description = "Sort order", example = "")
     private Long sortOrder;
 
-    @Excel(name = "层级编码")
-    @Schema(description = "层级编码", example = "")
+    @Excel(name = "Level code")
+    @Schema(description = "Level code", example = "")
     private String code;
 
-    @Excel(name = "描述")
-    @Schema(description = "描述", example = "")
+    @Excel(name = "Description")
+    @Schema(description = "Description", example = "")
     private String description;
 
-    @Excel(name = "是否有效;0：无效，1：有效")
-    @Schema(description = "是否有效;0：无效，1：有效", example = "")
+    @Excel(name = "Effective status; 0: Invalid, 1: Valid")
+    @Schema(description = "Effective status; 0: Invalid, 1: Valid", example = "")
     private Boolean validFlag;
 
-    @Excel(name = "删除标志;1：已删除，0：未删除")
-    @Schema(description = "删除标志;1：已删除，0：未删除", example = "")
+    @Excel(name = "Delete flag; 1: Deleted, 0: Not deleted")
+    @Schema(description = "Delete flag; 1: Deleted, 0: Not deleted", example = "")
     private Boolean delFlag;
 
-    @Excel(name = "创建人")
-    @Schema(description = "创建人", example = "")
+    @Excel(name = "Created by")
+    @Schema(description = "Created by", example = "")
     private String createBy;
 
-    @Excel(name = "创建人id")
-    @Schema(description = "创建人id", example = "")
+    @Excel(name = "Creator ID")
+    @Schema(description = "Creator ID", example = "")
     private Long creatorId;
 
-    @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "Created time", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Schema(description = "创建时间", example = "")
+    @Schema(description = "Created time", example = "")
     private Date createTime;
 
-    @Excel(name = "更新人")
-    @Schema(description = "更新人", example = "")
+    @Excel(name = "Updated by")
+    @Schema(description = "Updated by", example = "")
     private String updateBy;
 
-    @Excel(name = "更新人id")
-    @Schema(description = "更新人id", example = "")
+    @Excel(name = "Updater ID")
+    @Schema(description = "Updater ID", example = "")
     private Long updaterId;
 
-    @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "Updated time", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Schema(description = "更新时间", example = "")
+    @Schema(description = "Updated time", example = "")
     private Date updateTime;
 
-    @Excel(name = "备注")
-    @Schema(description = "备注", example = "")
+    @Excel(name = "Remark")
+    @Schema(description = "Remark", example = "")
     private String remark;
 
 }

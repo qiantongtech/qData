@@ -39,7 +39,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * 在线用户监控
+ * Online User Monitor
  *
  * @author qdata
  */
@@ -85,7 +85,7 @@ public class SysUserOnlineController extends BaseController
     }
 
     /**
-     * 强退用户
+     * Force logout user
      */
     @PreAuthorize("@ss.hasPermi('monitor:online:forceLogout')")
     @Log(title = "log.op.title.system.online", businessType = BusinessType.FORCE)

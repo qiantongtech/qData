@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 数据字典信息
+ * Data Dictionary Data Information
  *
  * @author qdata
  */
@@ -68,11 +68,11 @@ public class SysDictDataController extends BaseController
     {
         List<SysDictData> list = dictDataService.selectDictDataList(dictData);
         ExcelUtil<SysDictData> util = new ExcelUtil<SysDictData>(SysDictData.class);
-        util.exportExcel(response, list, "字典数据");
+        util.exportExcel(response, list, "Dict Data");
     }
 
     /**
-     * 查询字典数据详细
+     * Query dictionary data details
      */
     @PreAuthorize("@ss.hasPermi('system:dict:query')")
     @GetMapping(value = "/{dictCode}")
@@ -82,7 +82,7 @@ public class SysDictDataController extends BaseController
     }
 
     /**
-     * 根据字典类型查询字典数据信息
+     * Query dictionary data information by dictionary type
      */
     @GetMapping(value = "/type/{dictType}")
     public AjaxResult dictType(@PathVariable String dictType)
@@ -96,7 +96,7 @@ public class SysDictDataController extends BaseController
     }
 
     /**
-     * 新增字典类型
+     * Add dictionary type
      */
     @PreAuthorize("@ss.hasPermi('system:dict:add')")
     @Log(title = "log.op.title.system.dict.data", businessType = BusinessType.INSERT)
@@ -108,7 +108,7 @@ public class SysDictDataController extends BaseController
     }
 
     /**
-     * 修改保存字典类型
+     * Update and save dictionary type
      */
     @PreAuthorize("@ss.hasPermi('system:dict:edit')")
     @Log(title = "log.op.title.system.dict.data", businessType = BusinessType.UPDATE)
@@ -120,7 +120,7 @@ public class SysDictDataController extends BaseController
     }
 
     /**
-     * 删除字典类型
+     * Delete dictionary type
      */
     @PreAuthorize("@ss.hasPermi('system:dict:remove')")
     @Log(title = "log.op.title.system.dict.type", businessType = BusinessType.DELETE)

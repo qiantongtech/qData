@@ -21,7 +21,7 @@ package tech.qiantong.qdata.common.database.constants;
 import tech.qiantong.qdata.common.database.exception.DataQueryException;
 
 /**
- * 数据库类型
+ * Database type
  *
  * @author QianTongDC
  * @date 2022-11-14
@@ -74,7 +74,7 @@ public enum DbType {
             "SELECT COUNT(1) FROM {tableName}",
             "SELECT {tableFieldName} FROM {tableName} ORDER BY {orderBy} DESC LIMIT {pageSize} OFFSET ({pageNo}-1)*{pageSize}"),
     /**
-     * SQLServer2008及以下数据库
+     * SQLServer 2008 and below
      */
     SQL_SERVER2008("SQL_Server2008",
             "SQLServer2008及以下数据库",
@@ -101,7 +101,7 @@ public enum DbType {
             "SELECT COUNT(1) FROM {tableName}",
             ""),
     /**
-     * 达梦8
+     * DM8 (Dameng8)
      */
     DM8("DM8",
             "达梦8",
@@ -110,7 +110,7 @@ public enum DbType {
             "SELECT COUNT(1) FROM {tableName}",
             "SELECT {tableFieldName} FROM {tableName} LIMIT ({pageNo}-1)*{pageSize},{pageSize}"),
     /**
-     * 人大金仓数据库
+     * KingbaseES database
      */
     KINGBASE8("Kingbase8",
             "人大金仓数据库",
@@ -119,7 +119,7 @@ public enum DbType {
             "SELECT COUNT(1) FROM {tableName}",
             "SELECT {tableFieldName} FROM {tableName} ORDER BY {orderBy} DESC LIMIT {pageSize} OFFSET ({pageNo}-1)*{pageSize} "),
     /**
-     * 人大金仓数据库
+     * KingbaseES database
      */
     HIVE("Hive",
             "Hive on HBase",
@@ -128,7 +128,7 @@ public enum DbType {
             null,
             null),
     /**
-     * 人大金仓数据库
+     * HDFS database
      */
     HDFS("HDFS",
             "HDFS数据库",
@@ -176,7 +176,7 @@ public enum DbType {
             "SELECT COUNT(1) FROM {tableName}",
             "SELECT {tableFieldName} FROM {tableName} ORDER BY {orderBy} DESC LIMIT {pageSize} OFFSET ({pageNo}-1)*{pageSize}"),
     /**
-     * MongoDB（官方 Java Driver）
+     * MongoDB (official Java Driver)
      */
     MONGODB("MongoDB",
             "MongoDB数据库",
@@ -186,7 +186,7 @@ public enum DbType {
             ""),
 
     /**
-     * 神通数据库（官方 Java Driver）
+     * OSCAR database (official Java Driver)
      */
     OSCAR("OSCAR",
             "神通数据库",
@@ -223,12 +223,12 @@ public enum DbType {
 
 
     /**
-     * 数据库名称
+     * Database name
      */
     private final String db;
 
     /**
-     * 描述
+     * Description
      */
     private final String desc;
 
@@ -243,12 +243,12 @@ public enum DbType {
     private final String lengthFun;
 
     /**
-     * 统计数量
+     * Count query
      */
     private String selectCount;
 
     /**
-     * 分页查询
+     * Pagination query
      */
     private String selectPage;
 
@@ -287,9 +287,9 @@ public enum DbType {
     }
 
     /**
-     * 获取数据库类型
+     * Get database type
      *
-     * @param dbType 数据库类型字符串
+     * @param dbType Database type string
      */
     public static DbType getDbType(String dbType) {
         for (DbType type : DbType.values()) {

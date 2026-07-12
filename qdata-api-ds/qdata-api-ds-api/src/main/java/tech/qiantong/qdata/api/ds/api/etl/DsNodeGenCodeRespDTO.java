@@ -28,7 +28,7 @@ import java.util.List;
 
 /**
  * <P>
- * 用途:ds生成节点编码响应DTO
+ * Description: DS node code generation response DTO
  * </p>
  *
  * @author: FXB
@@ -40,7 +40,7 @@ import java.util.List;
 @Data
 public class DsNodeGenCodeRespDTO extends DsResultDTO {
     /**
-     * 节点编码列表
+     * Node code list
      */
     private List<Long> data;
 }

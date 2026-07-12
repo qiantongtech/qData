@@ -22,19 +22,19 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * 角色和菜单关联 sys_role_menu
+ * Role-menu association sys_role_menu
  *
  * @author qdata
  */
 public class SysRoleMenu
 {
-    /** 角色ID */
+    /** Role ID */
     private Long roleId;
 
-    /** 菜单ID */
+    /** Menu ID */
     private Long menuId;
 
-    /** 项目ID */
+    /** Project ID */
     private Long projectId;
 
     public Long getProjectId() {

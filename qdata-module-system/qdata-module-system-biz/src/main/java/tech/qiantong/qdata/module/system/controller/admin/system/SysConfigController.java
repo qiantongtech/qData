@@ -35,7 +35,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
- * 参数配置 信息操作处理
+ * System Configuration Controller
  *
  * @author qdata
  */
@@ -47,7 +47,7 @@ public class SysConfigController extends BaseController
     private ISysConfigService configService;
 
     /**
-     * 获取参数配置列表
+     * Get parameter configuration list
      */
     @PreAuthorize("@ss.hasPermi('system:config:list')")
     @GetMapping("/list")
@@ -65,11 +65,11 @@ public class SysConfigController extends BaseController
     {
         List<SysConfig> list = configService.selectConfigList(config);
         ExcelUtil<SysConfig> util = new ExcelUtil<SysConfig>(SysConfig.class);
-        util.exportExcel(response, list, "参数数据");
+        util.exportExcel(response, list, "Parameter Data");
     }
 
     /**
-     * 根据参数编号获取详细信息
+     * Get detailed information by parameter ID
      */
     @PreAuthorize("@ss.hasPermi('system:config:query')")
     @GetMapping(value = "/{configId}")
@@ -79,7 +79,7 @@ public class SysConfigController extends BaseController
     }
 
     /**
-     * 根据参数键名查询参数值
+     * Query parameter value by parameter key name
      */
     @GetMapping(value = "/configKey/{configKey}")
     public AjaxResult getConfigKey(@PathVariable String configKey)
@@ -88,7 +88,7 @@ public class SysConfigController extends BaseController
     }
 
     /**
-     * 新增参数配置
+     * Add parameter configuration
      */
     @PreAuthorize("@ss.hasPermi('system:config:add')")
     @Log(title = "log.op.title.system.config", businessType = BusinessType.INSERT)
@@ -97,14 +97,14 @@ public class SysConfigController extends BaseController
     {
         if (!configService.checkConfigKeyUnique(config))
         {
-            return error("新增参数'" + config.getConfigName() + "'失败，参数键名已存在");
+            return error("Add parameter '" + config.getConfigName() + "' failed, parameter key name already exists");
         }
         config.setCreateBy(getUsername());
         return toAjax(configService.insertConfig(config));
     }
 
     /**
-     * 修改参数配置
+     * Modify parameter configuration
      */
     @PreAuthorize("@ss.hasPermi('system:config:edit')")
     @Log(title = "log.op.title.system.config", businessType = BusinessType.UPDATE)
@@ -113,14 +113,14 @@ public class SysConfigController extends BaseController
     {
         if (!configService.checkConfigKeyUnique(config))
         {
-            return error("修改参数'" + config.getConfigName() + "'失败，参数键名已存在");
+            return error("Modify parameter '" + config.getConfigName() + "' failed, parameter key name already exists");
         }
         config.setUpdateBy(getUsername());
         return toAjax(configService.updateConfig(config));
     }
 
     /**
-     * 删除参数配置
+     * Delete parameter configuration
      */
     @PreAuthorize("@ss.hasPermi('system:config:remove')")
     @Log(title = "log.op.title.system.config", businessType = BusinessType.DELETE)
@@ -132,7 +132,7 @@ public class SysConfigController extends BaseController
     }
 
     /**
-     * 刷新参数缓存
+     * Refresh parameter cache
      */
     @PreAuthorize("@ss.hasPermi('system:config:remove')")
     @Log(title = "log.op.title.system.config", businessType = BusinessType.CLEAN)

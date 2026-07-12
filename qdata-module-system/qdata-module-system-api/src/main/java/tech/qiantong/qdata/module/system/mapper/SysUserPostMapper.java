@@ -23,41 +23,41 @@ import tech.qiantong.qdata.module.system.domain.SysUserPost;
 import java.util.List;
 
 /**
- * 用户与岗位关联表 数据层
+ * User-post association table data layer
  *
  * @author qdata
  */
 public interface SysUserPostMapper
 {
     /**
-     * 通过用户ID删除用户和岗位关联
+     * Delete user-post association by user ID
      *
-     * @param userId 用户ID
-     * @return 结果
+     * @param userId user ID
+     * @return result
      */
     public int deleteUserPostByUserId(Long userId);
 
     /**
-     * 通过岗位ID查询岗位使用数量
+     * Count post usage by post ID
      *
-     * @param postId 岗位ID
-     * @return 结果
+     * @param postId post ID
+     * @return result
      */
     public int countUserPostById(Long postId);
 
     /**
-     * 批量删除用户和岗位关联
+     * Batch delete user-post associations
      *
-     * @param ids 需要删除的数据ID
-     * @return 结果
+     * @param ids data IDs to delete
+     * @return result
      */
     public int deleteUserPost(Long[] ids);
 
     /**
-     * 批量新增用户岗位信息
+     * Batch insert user-post information
      *
-     * @param userPostList 用户岗位列表
-     * @return 结果
+     * @param userPostList user-post list
+     * @return result
      */
     public int batchUserPost(List<SysUserPost> userPostList);
 }

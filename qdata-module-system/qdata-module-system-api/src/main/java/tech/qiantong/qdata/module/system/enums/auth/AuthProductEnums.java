@@ -19,14 +19,14 @@
 package tech.qiantong.qdata.module.system.enums.auth;
 
 /**
- * 认证平台类型
+ * Authentication Platform Type
  *
  * @author Ming
  */
 public enum AuthProductEnums {
-    ANIVIA(0, "冰凤框架"),
-    ALIPAY(1,"支付宝"),
-    WECHAT(2,"微信");
+    ANIVIA(0, "Anivia Framework"),
+    ALIPAY(1,"Alipay"),
+    WECHAT(2,"WeChat");
 
     public final Integer code;
     public final String info;
@@ -45,7 +45,7 @@ public enum AuthProductEnums {
         return null;
     }
 
-    // 根据code返回县市名称
+    // Return enum by info name
     public static AuthProductEnums getNme(String info) {
         for (AuthProductEnums v : values()) {
             if (v.like(info)) {

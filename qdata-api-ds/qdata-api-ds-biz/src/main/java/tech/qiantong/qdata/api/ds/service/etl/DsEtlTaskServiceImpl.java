@@ -34,7 +34,7 @@ import java.util.Map;
 
 /**
  * <P>
- * 用途:ds数据集成任务相关接口实现
+ * Description: DS data integration task related interface implementation
  * </p>
  *
  * @author: FXB
@@ -93,15 +93,15 @@ public class DsEtlTaskServiceImpl implements IDsEtlTaskService {
     public DsTaskSaveRespDTO batchCopy(String code, String projectCode) {
         QianTongDCApiType apiType = QianTongDCApiType.BATCH_COPY_PROCESS_DEFINITION;
 
-        // URL 拼接
+        // URL concatenation
         String url = DsRequestUtils.replaceProjectCode(apiType.getUrl(), projectCode);
 
-        // 表单参数
+        // Form parameters
         Map<String, Object> params = new HashMap<>();
         params.put("codes", code);
         params.put("targetProjectCode", projectCode);
 
-        // 调用
+        // Invoke
         return DsRequestUtils.requestForm(url, apiType.getMethod(), params, DsTaskSaveRespDTO.class);
     }
 }

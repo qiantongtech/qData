@@ -24,33 +24,33 @@ import tech.qiantong.qdata.common.database.utils.MD5Util;
 import java.util.Arrays;
 
 /**
- * SQL缓存接口
+ * SQL cache interface
  */
 public interface SqlCache {
 
     /**
-     * 计算key
+     * Compute cache key
      */
     default String buildSqlCacheKey(String sql, Object[] args) {
         return MD5Util.encrypt(sql + ":" + Arrays.toString(args));
     }
 
     /**
-     * 存入缓存
+     * Put into cache
      * @param key   key
-     * @param value 值
+     * @param value value
      */
     void put(String key, Object value, long ttl);
 
     /**
-     * 获取缓存
+     * Get from cache
      * @param key   key
      * @return
      */
     <T> T get(String key);
 
     /**
-     * 删除缓存
+     * Delete from cache
      * @param key  key
      */
     void delete(String key);

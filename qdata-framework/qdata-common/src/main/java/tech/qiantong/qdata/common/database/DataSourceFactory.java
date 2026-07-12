@@ -24,7 +24,7 @@ import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
 public interface DataSourceFactory {
 
     /**
-     * 创建数据源实例
+     * Create data source instance
      *
      * @param property
      * @return

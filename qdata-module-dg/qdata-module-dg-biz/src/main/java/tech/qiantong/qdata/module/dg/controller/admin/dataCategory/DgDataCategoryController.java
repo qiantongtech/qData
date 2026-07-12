@@ -46,7 +46,7 @@ import java.util.List;
  * @author qdata
  * @date 2026-04-07
  */
-@Tag(name = "数据分类")
+@Tag(name = "Data Category")
 @RestController
 @RequestMapping("/dg/dataCategory")
 @Validated
@@ -54,7 +54,7 @@ public class DgDataCategoryController extends BaseController {
     @Resource
     private IDgDataCategoryService dgDataCategoryService;
 
-    @Operation(summary = "查询数据分类树列表")
+    @Operation(summary = "Query data category tree list")
     @GetMapping("/selectTree")
     public CommonResult<List<DgDataCategoryTreeRespVO>> selectTree(@RequestParam(required = false) String type) {
         if (StringUtils.isBlank(type)) {
@@ -65,7 +65,7 @@ public class DgDataCategoryController extends BaseController {
 
 
     // Query the data category list with pagination
-    @Operation(summary = "查询数据分类列表")
+    @Operation(summary = "Query data category list")
     //@PreAuthorize("@ss.hasPermi('dg:dataCategory:list')")
     @GetMapping("/list")
     public CommonResult<PageResult<DgDataCategoryRespVO>> list(DgDataCategoryPageReqVO dgDataCategory) {
@@ -73,7 +73,7 @@ public class DgDataCategoryController extends BaseController {
         return CommonResult.success(BeanUtils.toBean(page, DgDataCategoryRespVO.class));
     }
 
-    @Operation(summary = "查询数据分类列表")
+    @Operation(summary = "Query data category list")
     //@PreAuthorize("@ss.hasPermi('dg:dataCategory:list')")
     @GetMapping("/listAll")
     public CommonResult<List<DgDataCategoryRespVO>> listAll(DgDataCategoryPageReqVO dgDataCategory) {
@@ -82,7 +82,7 @@ public class DgDataCategoryController extends BaseController {
     }
 
 
-    @Operation(summary = "获取数据分类详细信息")
+    @Operation(summary = "Get data category detail info")
     //@PreAuthorize("@ss.hasPermi('dg:dataCategory:query')")
     @GetMapping(value = "/{id}")
     public CommonResult<DgDataCategoryRespVO> getInfo(@PathVariable("id") Long id) {
@@ -90,7 +90,7 @@ public class DgDataCategoryController extends BaseController {
         return CommonResult.success(BeanUtils.toBean(dgDataCategoryDO, DgDataCategoryRespVO.class));
     }
 
-    @Operation(summary = "新增数据分类")
+    @Operation(summary = "Create data category")
     //@PreAuthorize("@ss.hasPermi('dg:dataCategory:add')")
     @Log(title = "log.op.title.dg.data.category", businessType = BusinessType.INSERT)
     @PostMapping
@@ -101,7 +101,7 @@ public class DgDataCategoryController extends BaseController {
         return CommonResult.toAjax(dgDataCategoryService.createDgDataCategory(dgDataCategory));
     }
 
-    @Operation(summary = "修改数据分类")
+    @Operation(summary = "Update data category")
     //@PreAuthorize("@ss.hasPermi('dg:dataCategory:edit')")
     @Log(title = "log.op.title.dg.data.category", businessType = BusinessType.UPDATE)
     @PutMapping
@@ -112,7 +112,7 @@ public class DgDataCategoryController extends BaseController {
         return CommonResult.toAjax(dgDataCategoryService.updateDgDataCategory(dgDataCategory));
     }
 
-    @Operation(summary = "批量設置数据分級")
+    @Operation(summary = "Batch set data level")
     //@PreAuthorize("@ss.hasPermi('dg:dataCategory:edit')")
     @Log(title = "log.op.title.dg.data.category.batch.set", businessType = BusinessType.UPDATE)
     @PutMapping("/batchDataLevel")
@@ -120,7 +120,7 @@ public class DgDataCategoryController extends BaseController {
         return CommonResult.toAjax(dgDataCategoryService.update(Wrappers.lambdaUpdate(DgDataCategoryDO.class).set(DgDataCategoryDO::getDataLevelId, reqVO.getDataLevelId()).in(DgDataCategoryDO::getId, reqVO.getIds())));
     }
 
-    @Operation(summary = "删除数据分类")
+    @Operation(summary = "Delete data category")
     //@PreAuthorize("@ss.hasPermi('dg:dataCategory:remove')")
     @Log(title = "log.op.title.dg.data.category", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")

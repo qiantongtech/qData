@@ -33,7 +33,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
  * @author FXB
  * @date 2026-04-07
  */
-@Schema(description = "数据分类-类目 Response VO")
+@Schema(description = "Data Category - Category Response VO")
 @Data
 public class DgDataCategoryCatSaveReqVO extends BaseEntity {
 
@@ -42,26 +42,26 @@ public class DgDataCategoryCatSaveReqVO extends BaseEntity {
     @Schema(description = "ID")
     private Long id;
 
-    @Schema(description = "类别名称", example = "")
-    @Size(max = 256, message = "类别名称长度不能超过256个字符")
+    @Schema(description = "Category name", example = "")
+    @Size(max = 256, message = "Category name length cannot exceed 256 characters")
     private String name;
 
-    @Schema(description = "关联上级ID", example = "")
+    @Schema(description = "Parent category ID", example = "")
     private Long parentId;
 
-    @Schema(description = "类别排序", example = "")
+    @Schema(description = "Sort order", example = "")
     private Long sortOrder;
 
-    @Schema(description = "层级编码", example = "")
-    @Size(max = 256, message = "层级编码长度不能超过256个字符")
+    @Schema(description = "Level code", example = "")
+    @Size(max = 256, message = "Level code length cannot exceed 256 characters")
     private String code;
 
-    @Schema(description = "描述", example = "")
-    @Size(max = 256, message = "描述长度不能超过256个字符")
+    @Schema(description = "Description", example = "")
+    @Size(max = 256, message = "Description length cannot exceed 256 characters")
     private String description;
 
-    @Schema(description = "备注", example = "")
-    @Size(max = 256, message = "备注长度不能超过256个字符")
+    @Schema(description = "Remark", example = "")
+    @Size(max = 256, message = "Remark length cannot exceed 256 characters")
     private String remark;
 
 

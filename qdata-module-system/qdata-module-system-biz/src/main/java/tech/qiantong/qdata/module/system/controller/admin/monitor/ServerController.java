@@ -26,7 +26,7 @@ import tech.qiantong.qdata.common.core.domain.AjaxResult;
 import tech.qiantong.qdata.config.web.domain.Server;
 
 /**
- * 服务器监控
+ * Server Monitor
  *
  * @author qdata
  */

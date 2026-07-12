@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.system.domain.dto;
 import lombok.Data;
 
 /**
- * 系统配置 DTO 对象 system_content
+ * System Config DTO object system_content
  *
  * @author qdata
  * @date 2024-12-31
@@ -34,34 +34,34 @@ public class SystemContentReqDTO {
     /** id */
     private Integer id;
 
-    /** 系统名称 */
+    /** System Name */
     private String sysName;
 
-    /** logo */
+    /** Logo */
     private String logo;
 
-    /** 轮播图 */
+    /** Carousel Image */
     private String carouselImage;
 
-    /** 联系电话 */
+    /** Contact Number */
     private String contactNumber;
 
-    /** 电子邮箱 */
+    /** Email */
     private String email;
 
-    /** 版权方 */
+    /** Copyright */
     private String copyright;
 
-    /** 备案号 */
+    /** Record Number */
     private String recordNumber;
 
-    /** 删除标记 */
+    /** Delete Flag */
     private Boolean delFlag;
 
-    /** 状态 */
+    /** Status */
     private Integer status;
 
-    /** 备注 */
+    /** Remark */
     private String remarks;
 
 

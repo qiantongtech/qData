@@ -32,7 +32,7 @@ import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
 import tech.qiantong.qdata.mybatis.core.query.MPJLambdaWrapperX;
 
 /**
- * 脱敏规则Mapper接口
+ * Desensitization Rule Mapper Interface
  *
  * @author qdata
  * @date 2026-04-10
@@ -47,12 +47,12 @@ public interface DgDesensitizeRuleMapper extends BaseMapperX<DgDesensitizeRuleDO
                 .leftJoin("DG_DATA_CATEGORY t2 ON t.DATA_CATEGORY_ID =t2.ID  AND t2.DEL_FLAG = '0'")
                 .like(StringUtils.isNotBlank(reqVO.getName()), DgDesensitizeRuleDO::getName, reqVO.getName())
                 .eq(reqVO.getDataCategoryId() != null, DgDesensitizeRuleDO::getDataCategoryId, reqVO.getDataCategoryId())
-                //根据ValidFlag查询
+                // Query by ValidFlag
                 .eq(reqVO.getValidFlag() != null, DgDesensitizeRuleDO::getValidFlag, reqVO.getValidFlag())
-                // 按照 createTime 字段降序排序
+                // Sort by createTime field in descending order
                 .orderByStr(StringUtils.isNotBlank(reqVO.getOrderByColumn()),
                         StringUtils.equals("asc", reqVO.getIsAsc()), StringUtils.isNotBlank(reqVO.getOrderByColumn()) ? Arrays.asList(reqVO.getOrderByColumn().split(",")) : null);
-        // 构造动态查询条件
+        // Build dynamic query conditions
         return selectJoinPage(reqVO, DgDesensitizeRuleDO.class, lambdaWrapper);
 
 

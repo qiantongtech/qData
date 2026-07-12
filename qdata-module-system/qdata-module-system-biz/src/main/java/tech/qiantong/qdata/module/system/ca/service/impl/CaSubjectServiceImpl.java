@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.system.ca.service.ICaSubjectService;
 import java.util.List;
 
 /**
- * 主体管理Service业务层处理
+ * Subject management service implementation
  *
  * @author qdata
  * @date 2024-08-18
@@ -40,10 +40,10 @@ public class CaSubjectServiceImpl implements ICaSubjectService
     private CaSubjectMapper caSubjectMapper;
 
     /**
-     * 查询主体管理
+     * Query subject
      *
-     * @param id 主体管理主键
-     * @return 主体管理
+     * @param id subject primary key
+     * @return subject
      */
     @Override
     public CaSubject selectCaSubjectById(Long id)
@@ -52,10 +52,10 @@ public class CaSubjectServiceImpl implements ICaSubjectService
     }
 
     /**
-     * 查询主体管理列表
+     * Query subject list
      *
-     * @param caSubject 主体管理
-     * @return 主体管理
+     * @param caSubject subject
+     * @return subject collection
      */
     @Override
     public List<CaSubject> selectCaSubjectList(CaSubject caSubject)
@@ -64,10 +64,10 @@ public class CaSubjectServiceImpl implements ICaSubjectService
     }
 
     /**
-     * 新增主体管理
+     * Insert subject
      *
-     * @param caSubject 主体管理
-     * @return 结果
+     * @param caSubject subject
+     * @return result
      */
     @Override
     public int insertCaSubject(CaSubject caSubject)
@@ -77,10 +77,10 @@ public class CaSubjectServiceImpl implements ICaSubjectService
     }
 
     /**
-     * 修改主体管理
+     * Update subject
      *
-     * @param caSubject 主体管理
-     * @return 结果
+     * @param caSubject subject
+     * @return result
      */
     @Override
     public int updateCaSubject(CaSubject caSubject)
@@ -90,10 +90,10 @@ public class CaSubjectServiceImpl implements ICaSubjectService
     }
 
     /**
-     * 批量删除主体管理
+     * Batch delete subjects
      *
-     * @param ids 需要删除的主体管理主键
-     * @return 结果
+     * @param ids primary keys to delete
+     * @return result
      */
     @Override
     public int deleteCaSubjectByIds(Long[] ids)
@@ -102,10 +102,10 @@ public class CaSubjectServiceImpl implements ICaSubjectService
     }
 
     /**
-     * 删除主体管理信息
+     * Delete subject
      *
-     * @param id 主体管理主键
-     * @return 结果
+     * @param id subject primary key
+     * @return result
      */
     @Override
     public int deleteCaSubjectById(Long id)

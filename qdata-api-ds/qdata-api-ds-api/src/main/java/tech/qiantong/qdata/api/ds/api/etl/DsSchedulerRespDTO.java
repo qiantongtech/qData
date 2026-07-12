@@ -24,7 +24,7 @@ import tech.qiantong.qdata.api.ds.api.etl.ds.Schedule;
 
 /**
  * <P>
- * 用途:调度器响应参数DTO
+ * Description: Scheduler response DTO
  * </p>
  *
  * @author: FXB

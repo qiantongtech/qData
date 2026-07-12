@@ -41,7 +41,7 @@ import tech.qiantong.qdata.module.ai.dal.mapper.model.AiModelMapper;
 import tech.qiantong.qdata.module.ai.service.model.IAiModelService;
 
 /**
- * 模型管理Service业务层处理
+ * Model management service implementation
  *
  * @author FXB
  * @date 2026-04-01
@@ -67,16 +67,16 @@ public class AiModelServiceImpl extends ServiceImpl<AiModelMapper, AiModelDO> im
 
     @Override
     public int updateAiModel(AiModelSaveReqVO updateReqVO) {
-        // 相关校验
+        // validation
 
-        // 更新模型管理
+        // Update model management
         AiModelDO updateObj = BeanUtils.toBean(updateReqVO, AiModelDO.class);
         return aiModelMapper.updateById(updateObj);
     }
 
     @Override
     public int removeAiModel(Collection<Long> idList) {
-        // 批量删除模型管理
+        // Batch delete model management
         return aiModelMapper.deleteBatchIds(idList);
     }
 

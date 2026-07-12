@@ -28,7 +28,7 @@ import tech.qiantong.qdata.common.utils.spring.SpringUtils;
 import java.util.Locale;
 
 /**
- * 获取 i18n 资源文件
+ * i18n resource file utility
  *
  * @author qdata
  */
@@ -36,15 +36,15 @@ public class MessageUtils
 {
     private static final Logger log = LoggerFactory.getLogger(MessageUtils.class);
 
-    /** 最终兜底错误消息 */
+    /** Final fallback error message */
     private static final String DEFAULT_ERROR_MESSAGE = "系统异常，请联系管理员";
 
     /**
-     * 根据消息键和参数获取消息，委托给 spring messageSource
+     * Get message by key and parameters, delegating to Spring MessageSource
      *
-     * @param code 消息键
-     * @param args 参数
-     * @return 国际化翻译值
+     * @param code message key
+     * @param args parameters
+     * @return i18n translated value
      */
     public static String message(String code, Object... args)
     {
@@ -53,11 +53,11 @@ public class MessageUtils
     }
 
     /**
-     * 根据消息键和参数获取英文消息，忽略当前请求语言设置
+     * Get English message by key and parameters, ignoring the current request locale
      *
-     * @param code 消息键
-     * @param args 参数
-     * @return 英文翻译值
+     * @param code message key
+     * @param args parameters
+     * @return English translated value
      */
     public static String messageEn(String code, Object... args)
     {
@@ -66,27 +66,27 @@ public class MessageUtils
     }
 
     /**
-     * 根据消息键获取消息，支持兜底链：
-     *   当前语言 → 英文 → 简体中文 → defaultMessage → 硬编码兜底
+     * Get message by key with fallback chain:
+     *   current locale -> English -> Simplified Chinese -> defaultMessage -> hardcoded fallback
      *
-     * @param code 消息键（对应 messages.properties 中的 key）
-     * @param defaultMessage 兜底消息
-     * @param args 格式化参数
-     * @return 国际化翻译值，保证不返回 null
+     * @param code message key (corresponding to key in messages.properties)
+     * @param defaultMessage fallback message
+     * @param args format parameters
+     * @return i18n translated value, guaranteed non-null
      */
     public static String messageWithFallback(String code, String defaultMessage, Object... args)
     {
         MessageSource messageSource = SpringUtils.getBean(MessageSource.class);
         Locale currentLocale = LocaleContextHolder.getLocale();
 
-        // 1. 尝试当前请求语言
+        // 1. Try current request locale
         String msg = resolveMessage(messageSource, code, args, currentLocale);
         if (msg != null)
         {
             return msg;
         }
 
-        // 2. 尝试英文
+        // 2. Try English
         if (!Locale.US.getLanguage().equals(currentLocale.getLanguage()))
         {
             msg = resolveMessage(messageSource, code, args, Locale.US);
@@ -96,7 +96,7 @@ public class MessageUtils
             }
         }
 
-        // 3. 尝试简体中文
+        // 3. Try Simplified Chinese
         if (!Locale.SIMPLIFIED_CHINESE.getLanguage().equals(currentLocale.getLanguage())
                 || !Locale.SIMPLIFIED_CHINESE.equals(currentLocale))
         {
@@ -107,13 +107,13 @@ public class MessageUtils
             }
         }
 
-        // 4. 使用传入的 defaultMessage
+        // 4. Use the provided defaultMessage
         if (!StringUtils.isEmpty(defaultMessage))
         {
             return defaultMessage;
         }
 
-        // 5. 最终硬编码兜底
+        // 5. Final hardcoded fallback
         log.warn("无法获取消息键'{}'的国际化翻译，使用默认错误消息", code);
         return DEFAULT_ERROR_MESSAGE;
     }
@@ -123,43 +123,43 @@ public class MessageUtils
 
 
     /**
-     * 根据消息键获取英文消息，支持兜底链：
-     *   英文 → defaultMessage → 硬编码兜底
+     * Get English message by key with fallback chain:
+     *   English -> defaultMessage -> hardcoded fallback
      *
-     * 与 messageEn 的区别：当英文翻译不存在时不抛异常，走兜底逻辑。
+     * Differs from messageEn: does not throw an exception when English translation is missing, uses fallback logic instead.
      *
-     * @param code 消息键（对应 messages.properties 中的 key）
-     * @param defaultMessage 兜底消息，英文翻译不存在时返回此值
-     * @param args 格式化参数
-     * @return 英文翻译值，保证不返回 null
+     * @param code message key (corresponding to key in messages.properties)
+     * @param defaultMessage fallback message, returned when English translation is not found
+     * @param args format parameters
+     * @return English translated value, guaranteed non-null
      */
     public static String messageEnWithFallback(String code, String defaultMessage, Object... args)
     {
 
         MessageSource messageSource = SpringUtils.getBean(MessageSource.class);
 
-        // 1. 尝试英文
+        // 1. Try English
         String msg = resolveMessage(messageSource, code, args, Locale.US);
         if (msg != null)
         {
             return msg;
         }
 
-        // 2. 使用传入的 defaultMessage
+        // 2. Use the provided defaultMessage
         if (!StringUtils.isEmpty(defaultMessage))
         {
             return defaultMessage;
         }
 
-        // 3. 最终硬编码兜底
+        // 3. Final hardcoded fallback
         log.warn("无法获取消息键'{}'的英文翻译，使用默认错误消息", code);
         return DEFAULT_ERROR_MESSAGE;
     }
 
     /**
-     * 从 MessageSource 解析消息，不抛出异常
+     * Resolve message from MessageSource without throwing exceptions
      *
-     * @return 解析到的消息，未找到返回 null
+     * @return resolved message, or null if not found
      */
     private static String resolveMessage(MessageSource messageSource, String code, Object[] args, Locale locale)
     {

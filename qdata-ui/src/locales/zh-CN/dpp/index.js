@@ -76,7 +76,7 @@ export default {
     datasourceTypeRequired: '数据连接类型不能为空',
     datasourceConfigRequired: '数据源配置(json字符串)不能为空',
     ipRequired: 'IP不能为空',
-    ipNoChinese: 'IP不能包含中文',
+    ipNoChinese: 'IP地址格式不正确，例如192.168.1.1',
     portRequired: '端口号不能为空',
     portPattern: '端口号必须为1-9位数字',
     usernameRequired: '账号不能为空',

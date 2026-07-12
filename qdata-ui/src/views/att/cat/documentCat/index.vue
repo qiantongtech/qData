@@ -116,7 +116,7 @@
               v-hasPermi="['att:documentCat:edit']">{{ td('common.button.update') }}</el-button>
             <el-button link type="primary" icon="Plus" @click="handleAdd(scope.row)"
               v-hasPermi="['att:documentCat:add']">{{ td('common.button.add') }}</el-button>
-            <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
+            <el-button link type="danger" icon="Delete" :disabled="scope.row.validFlag == true" @click="handleDelete(scope.row)"
               v-hasPermi="['att:documentCat:remove']">{{ td('common.button.delete') }}</el-button>
           </template>
         </el-table-column>

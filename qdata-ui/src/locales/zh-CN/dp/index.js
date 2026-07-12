@@ -243,7 +243,16 @@ export default {
     confirmDeleteModel: '是否确认删除逻辑模型编号为"{id}"的数据项？',
     tableNamePattern: '表名只能包含字母、数字和下划线，且必须以字母开头',
     maxLength: '500个字符',
-    defaultLengthError: '默认值长度不能超过属性长度{length}'
+    defaultLengthError: '默认值长度不能超过属性长度{length}',
+    defaultValueNumericOnly: '数值类型的默认值只能为数字',
+    defaultValueIntegerError: '整数类型的默认值不能包含小数点',
+    defaultValueIntPartError: '整数部分长度不能超过<int>位',
+    defaultValueDecPartError: '小数部分长度不能超过<scale>位',
+    defaultStringMaxLengthError: '字符串长度不能超过<length>个字符',
+    defaultValueDateError: '日期格式不正确，请使用YYYY-MM-DD格式',
+    defaultValueDateInvalid: '日期值无效',
+    defaultValueDatetimeError: '日期时间格式不正确，请使用YYYY-MM-DD HH:mm:ss格式',
+    defaultValueDatetimeInvalid: '日期时间值无效'
   },
   materializedModel: {
     // 物化模型列表

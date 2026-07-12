@@ -170,12 +170,12 @@
                 <el-row :gutter="20" v-if="form.sensitiveRule != '1' && form.sensitiveRule != null">
                     <el-col :span="12">
                         <el-form-item :label="td('da.security.startCharPos')" prop="startCharLoc" :label-position="labelPosition">
-                            <el-input v-model="form.startCharLoc" :placeholder="td('da.security.startCharPosPlaceholder')" />
+                            <el-input v-model="form.startCharLoc" :placeholder="td('da.security.startCharPosPlaceholder')" @input="form.startCharLoc = $event.replace(/\D/g, '')" />
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
                         <el-form-item :label="td('da.security.endCharPos')" prop="endCharLoc" :label-position="labelPosition">
-                            <el-input v-model="form.endCharLoc" :placeholder="td('da.security.endCharPosPlaceholder')" />
+                            <el-input v-model="form.endCharLoc" :placeholder="td('da.security.endCharPosPlaceholder')" @input="form.endCharLoc = $event.replace(/\D/g, '')" />
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -420,7 +420,25 @@ const data = reactive({
     rules: {
         sensitiveLevel: [{ required: true, message: td('da.security.levelNameRequired'), trigger: 'blur' }],
         maskCharacter: [{ required: true, message: td('da.security.replaceContentRequired'), trigger: 'blur' }],
-        sensitiveRule: [{ required: true, message: td('da.security.replaceRuleRequired'), trigger: 'blur' }]
+        sensitiveRule: [{ required: true, message: td('da.security.replaceRuleRequired'), trigger: 'blur' }],
+        startCharLoc: [
+            { required: true, message: td('da.security.startCharPosRequired'), trigger: 'blur' },
+            { pattern: /^\d+$/, message: td('da.security.startCharPosPattern'), trigger: 'blur' }
+        ],
+        endCharLoc: [
+            { required: true, message: td('da.security.endCharPosRequired'), trigger: 'blur' },
+            { pattern: /^\d+$/, message: td('da.security.endCharPosPattern'), trigger: 'blur' },
+            {
+                validator: (rule, value, callback) => {
+                    if (value && form.value.startCharLoc && Number(value) <= Number(form.value.startCharLoc)) {
+                        callback(new Error(td('da.security.endCharPosLessThanStart')));
+                    } else {
+                        callback();
+                    }
+                },
+                trigger: 'blur'
+            }
+        ]
     }
 });
 

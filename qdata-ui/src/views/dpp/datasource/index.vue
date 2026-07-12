@@ -389,6 +389,7 @@
               <el-input
                 v-model="form.ip"
                 :placeholder="td('dpp.datasource.inputIp')"
+                @input="form.ip = $event.replace(/[^\d.]/g, '').replace(/\.{2,}/g, '.')"
               />
             </el-form-item>
           </el-col>
@@ -397,6 +398,7 @@
               <el-input
                 v-model="form.port"
                 :placeholder="td('dpp.datasource.inputPort')"
+                @input="form.port = $event.replace(/\D/g, '')"
               />
             </el-form-item>
           </el-col>
@@ -1202,7 +1204,7 @@ const data = reactive({
         trigger: "blur",
       },
       {
-        pattern: /^[^\u4e00-\u9fa5]+$/,
+        pattern: /^\d{1,3}(\.\d{1,3}){3}$/,
         message: td("dpp.datasource.ipNoChinese"),
         trigger: "blur",
       },

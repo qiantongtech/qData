@@ -371,12 +371,12 @@
         <el-row :gutter="20" v-if="form.datasourceType !== 'OSS-ALIYUN'">
           <el-col :span="12">
             <el-form-item :label="td('da.datasource.ip')" prop="ip" >
-              <el-input v-model="form.ip" :placeholder="td('da.datasource.ipPlaceholder')" />
+              <el-input v-model="form.ip" :placeholder="td('da.datasource.ipPlaceholder')" @input="form.ip = $event.replace(/[^\d.]/g, '').replace(/\.{2,}/g, '.')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item :label="td('da.datasource.port')" prop="port" >
-              <el-input v-model="form.port" :placeholder="td('da.datasource.portPlaceholder')" />
+              <el-input v-model="form.port" :placeholder="td('da.datasource.portPlaceholder')" @input="form.port = $event.replace(/\D/g, '')" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -1057,7 +1057,7 @@ const data = reactive({
     ip: [
       { required: true, message: td('da.datasource.ipRequired'), trigger: "blur" },
       {
-        pattern: /^[^\u4e00-\u9fa5]+$/,
+        pattern: /^\d{1,3}(\.\d{1,3}){3}$/,
         message: td('da.datasource.ipInvalid'),
         trigger: "blur",
       },

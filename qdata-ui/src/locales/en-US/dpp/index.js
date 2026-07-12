@@ -67,7 +67,7 @@ export default {
     datasourceTypeRequired: 'Data connection type is required',
     datasourceConfigRequired: 'Data source config (JSON) is required',
     ipRequired: 'IP is required',
-    ipNoChinese: 'IP cannot contain Chinese characters',
+    ipNoChinese: 'IP address format is invalid, e.g. 192.168.1.1',
     portRequired: 'Port is required',
     portPattern: 'Port must be a 1-9 digit number',
     usernameRequired: 'Account is required',

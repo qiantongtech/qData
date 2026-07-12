@@ -129,7 +129,7 @@
       <el-row :gutter="20">
         <el-col :span="24">
           <el-form-item :label="td('dp.modelForm.defaultValue')" prop="defaultValue" :label-position="labelPosition">
-            <el-input v-model="form.defaultValue" :placeholder="td('dp.modelForm.defaultValuePlaceholder')" />
+            <el-input v-model="form.defaultValue" :placeholder="td('dp.modelForm.defaultValuePlaceholder')" @input="handleDefaultValueInput" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -249,6 +249,23 @@ watch(
   { immediate: true } // 新增immediate属性，确保组件挂载时就执行一次
 );
 let DpData = ref([]);
+const intTypes = ['TINYINT', 'INTEGER', 'BIGINT'];
+const decimalTypes = ['DECIMAL', 'NUMERIC', 'FLOAT', 'DOUBLE', 'NUMBER'];
+const stringTypes = ['CHAR', 'VARCHAR', 'VARCHAR2', 'TEXT'];
+const dateTypes = ['DATE'];
+const datetimeTypes = ['TIMESTAMP', 'DATETIME'];
+
+const handleDefaultValueInput = (val) => {
+  if (intTypes.includes(form.value.columnType)) {
+    form.value.defaultValue = val.replace(/[^\d-]/g, '').replace(/(?!^\-)-/g, '');
+  } else if (decimalTypes.includes(form.value.columnType)) {
+    form.value.defaultValue = val.replace(/[^\d.\-]/g, '').replace(/(\..*)\./g, '$1').replace(/(?!^\-)-/g, '');
+  } else if (dateTypes.includes(form.value.columnType)) {
+    form.value.defaultValue = val.replace(/[^\d-]/g, '');
+  } else if (datetimeTypes.includes(form.value.columnType)) {
+    form.value.defaultValue = val.replace(/[^\d: -]/g, '');
+  }
+};
 const handlePkFlagChange = (value) => {
   if (value == 1) {
     form.value.nullableFlag = "1";
@@ -322,32 +339,75 @@ const rules = ref({
           return;
         }
 
-        // 去除首尾的单引号后再计算长度
         let actualValue = value;
         if (value.startsWith("'") && value.endsWith("'")) {
           actualValue = value.slice(1, -1);
         }
 
-        // 对于数值类型，检查数值长度
-        if (
-          ["NUMBER", "DECIMAL", "NUMERIC", "FLOAT", "DOUBLE"].includes(
-            form.value.columnType
-          )
-        ) {
-          const numStr = actualValue.toString().replace(".", ""); // 移除小数点再计算长度
-          if (numStr.length > form.value.columnLength) {
-            callback(
-              new Error(td('dp.modelForm.defaultLengthError').replace('<length>', form.value.columnLength))
-            );
+        // 整数类型
+        if (intTypes.includes(form.value.columnType)) {
+          if (!/^-?\d+$/.test(actualValue)) {
+            callback(new Error(td('dp.modelForm.defaultValueIntegerError')));
             return;
           }
-        }
-        // 对于字符类型，直接检查字符串长度
-        else if (actualValue.length > form.value.columnLength) {
-          callback(
-            new Error(td('dp.modelForm.defaultLengthError').replace('<length>', form.value.columnLength))
-          );
-          return;
+          if (actualValue.length > form.value.columnLength) {
+            callback(new Error(td('dp.modelForm.defaultLengthError').replace('<length>', form.value.columnLength)));
+            return;
+          }
+        // 小数类型
+        } else if (decimalTypes.includes(form.value.columnType)) {
+          if (!/^-?\d+(\.\d+)?$/.test(actualValue)) {
+            callback(new Error(td('dp.modelForm.defaultValueNumericOnly')));
+            return;
+          }
+          const parts = actualValue.split('.');
+          const intPart = parts[0].replace(/^-/, '');
+          const decPart = parts[1] || '';
+          const intLimit = form.value.columnLength - (form.value.columnScale || 0);
+          if (intPart.length > intLimit) {
+            callback(new Error(td('dp.modelForm.defaultValueIntPartError').replace('<int>', intLimit)));
+            return;
+          }
+          if (decPart.length > (form.value.columnScale || 0)) {
+            callback(new Error(td('dp.modelForm.defaultValueDecPartError').replace('<scale>', form.value.columnScale || 0)));
+            return;
+          }
+        // 字符串类型
+        } else if (stringTypes.includes(form.value.columnType)) {
+          if (actualValue.length > form.value.columnLength) {
+            callback(new Error(td('dp.modelForm.defaultStringMaxLengthError').replace('<length>', form.value.columnLength)));
+            return;
+          }
+        // DATE 类型
+        } else if (dateTypes.includes(form.value.columnType)) {
+          if (!/^\d{4}(-\d{2}(-\d{2})?)?$/.test(actualValue)) {
+            callback(new Error(td('dp.modelForm.defaultValueDateError')));
+            return;
+          }
+          const y = parseInt(actualValue.substring(0, 4));
+          const m = parseInt(actualValue.substring(5, 7)) || 1;
+          const d = parseInt(actualValue.substring(8, 10)) || 1;
+          if (m < 1 || m > 12 || d < 1 || d > 31 || y < 1900 || y > 9999) {
+            callback(new Error(td('dp.modelForm.defaultValueDateInvalid')));
+            return;
+          }
+        // TIMESTAMP / DATETIME 类型
+        } else if (datetimeTypes.includes(form.value.columnType)) {
+          if (!/^\d{4}(-\d{2}(-\d{2}( \d{2}(:\d{2}(:\d{2}(\.\d{1,3})?)?)?)?)?)?$/.test(actualValue)) {
+            callback(new Error(td('dp.modelForm.defaultValueDatetimeError')));
+            return;
+          }
+          const y = parseInt(actualValue.substring(0, 4));
+          const mo = parseInt(actualValue.substring(5, 7)) || 1;
+          const d = parseInt(actualValue.substring(8, 10)) || 1;
+          const hh = parseInt(actualValue.substring(11, 13)) || 0;
+          const mi = parseInt(actualValue.substring(14, 16)) || 0;
+          const ss = parseInt(actualValue.substring(17, 19)) || 0;
+          if (mo < 1 || mo > 12 || d < 1 || d > 31 || y < 1900 || y > 9999
+            || hh > 23 || mi > 59 || ss > 59) {
+            callback(new Error(td('dp.modelForm.defaultValueDatetimeInvalid')));
+            return;
+          }
         }
         callback();
       },

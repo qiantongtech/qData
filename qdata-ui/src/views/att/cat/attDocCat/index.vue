@@ -118,7 +118,7 @@
                         <el-button link type="primary" icon="Plus" @click="handleAdd(scope.row)"
                             v-hasPermi="['att:cat:doccat:add']">{{ td('common.button.add') }}</el-button>
                         <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
-                            v-hasPermi="['att:cat:doccat:remove']">{{ td('common.button.delete') }}</el-button>
+                            v-hasPermi="['att:cat:doccat:remove']" :disabled="scope.row.validFlag">{{ td('common.button.delete') }}</el-button>
                     </template>
                 </el-table-column>
             </el-table>

@@ -210,6 +210,7 @@
               icon="Delete"
               @click="handleDelete(scope.row)"
               v-hasPermi="['att:dataElemCat:remove']"
+              :disabled="scope.row.validFlag"
               >{{ td('common.button.delete') }}</el-button
             >
           </template>

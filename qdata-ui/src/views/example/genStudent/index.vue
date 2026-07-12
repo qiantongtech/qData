@@ -463,7 +463,7 @@
             <template #footer>
                 <div class="dialog-footer">
                     <el-button size="mini" @click="cancel">取 消</el-button>
-                    <el-button type="primary" size="mini" @click="submitForm">确 定</el-button>
+                    <el-button type="primary" size="mini" :loading="submitLoading" @click="submitForm">确 定</el-button>
                 </div>
             </template>
         </el-dialog>
@@ -617,6 +617,7 @@
 
     const { td } = useDefaultLang();
     const { proxy } = getCurrentInstance();
+    const submitLoading = ref(false);
     const { sys_user_sex, message_level } = proxy.useDict('sys_user_sex', 'message_level');
 
     const studentList = ref([]);
@@ -800,6 +801,8 @@
 
     /** 提交按钮 */
     function submitForm() {
+        if (submitLoading.value) return;
+        submitLoading.value = true;
         proxy.$refs['studentRef'].validate((valid) => {
             if (valid) {
                 form.value.hobby = form.value.hobby.join(',');
@@ -809,9 +812,11 @@
                             proxy.$modal.msgSuccess('修改成功');
                             open.value = false;
                             getList();
+                            submitLoading.value = false;
                         })
                         .catch((error) => {
                             form.value.hobby = form.value.hobby.split(',').map(String);
+                            submitLoading.value = false;
                         });
                 } else {
                     addStudent(form.value)
@@ -819,11 +824,15 @@
                             proxy.$modal.msgSuccess('新增成功');
                             open.value = false;
                             getList();
+                            submitLoading.value = false;
                         })
                         .catch((error) => {
                             form.value.hobby = form.value.hobby.split(',').map(String);
+                            submitLoading.value = false;
                         });
                 }
+            } else {
+                submitLoading.value = false;
             }
         });
     }

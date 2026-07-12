@@ -277,7 +277,7 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button type="primary" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
+          <el-button type="primary" :loading="submitLoading" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
           <el-button @click="cancel">{{ t('common.button.cancel') }}</el-button>
         </div>
       </template>
@@ -297,6 +297,7 @@ import {
 
 const { t } = useI18n();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 const { sys_notice_status } = proxy.useDict("sys_notice_status");
 
 const deptList = ref([]);
@@ -472,6 +473,8 @@ async function handleUpdate(row) {
 
 /** 提交按钮 */
 function submitForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs["deptRef"].validate((valid) => {
     if (valid) {
       if (form.value.id != null) {
@@ -479,14 +482,22 @@ function submitForm() {
           proxy.$modal.msgSuccess(t('common.message.editSuccess'));
           open.value = false;
           getList();
+          submitLoading.value = false;
+        }).catch(() => {
+          submitLoading.value = false;
         });
       } else {
         addDept(form.value).then((response) => {
           proxy.$modal.msgSuccess(t('common.message.addSuccess'));
           open.value = false;
           getList();
+          submitLoading.value = false;
+        }).catch(() => {
+          submitLoading.value = false;
         });
       }
+    } else {
+      submitLoading.value = false;
     }
   });
 }

@@ -214,7 +214,7 @@
             <template #footer>
                 <div class="dialog-footer">
                     <el-button size="mini" @click="cancel">{{ td('common.button.cancel') }}</el-button>
-                    <el-button type="primary" size="mini" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
+                    <el-button type="primary" size="mini" :loading="submitLoading" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
                 </div>
             </template>
         </el-dialog>
@@ -344,6 +344,7 @@ import useDefaultLang from "@/composables/useDefaultLang";
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 const { da_sensitive_level_rule, da_sensitive_status } = proxy.useDict(
     'da_sensitive_level_rule',
     'da_sensitive_status'
@@ -523,6 +524,8 @@ function handleDetail(row) {
 
 /** 提交按钮 */
 function submitForm() {
+    if (submitLoading.value) return;
+    submitLoading.value = true;
     proxy.$refs['daSensitiveLevelRef'].validate((valid) => {
         if (valid) {
             if (form.value.id != null) {
@@ -531,17 +534,25 @@ function submitForm() {
                         proxy.$modal.msgSuccess(td('da.security.editSuccess'));
                         open.value = false;
                         getList();
+                        submitLoading.value = false;
                     })
-                    .catch((error) => { });
+                    .catch((error) => {
+                        submitLoading.value = false;
+                    });
             } else {
                 addDaSensitiveLevel(form.value)
                     .then((response) => {
                         proxy.$modal.msgSuccess(td('da.security.addSuccess'));
                         open.value = false;
                         getList();
+                        submitLoading.value = false;
                     })
-                    .catch((error) => { });
+                    .catch((error) => {
+                        submitLoading.value = false;
+                    });
             }
+        } else {
+            submitLoading.value = false;
         }
     });
 }

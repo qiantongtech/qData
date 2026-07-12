@@ -294,6 +294,7 @@ import { ref, reactive, getCurrentInstance } from "vue";
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 const projectStore = useProjectStore();
 const {
   dp_model_status,
@@ -675,6 +676,8 @@ function handleDetail(row) {
 
 /** 提交按钮 */
 function submitForm(obj) {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   console.log("obj", obj);
   if (obj.form.id != null) {
     updateDpModel(obj.form)
@@ -683,9 +686,14 @@ function submitForm(obj) {
           proxy.$modal.msgSuccess(td('common.message.editSuccess'));
           open.value = false;
           handleQuery();
+          submitLoading.value = false;
+        }).catch(() => {
+          submitLoading.value = false;
         });
       })
-      .catch((error) => {});
+      .catch((error) => {
+        submitLoading.value = false;
+      });
   } else {
     addDpModel(obj.form)
       .then((response) => {
@@ -699,11 +707,15 @@ function submitForm(obj) {
             proxy.$modal.msgSuccess(td('common.message.addSuccess'));
             open.value = false;
             handleQuery();
+            submitLoading.value = false;
           })
-          .catch((dpModelColumnError) => {});
+          .catch((dpModelColumnError) => {
+            submitLoading.value = false;
+          });
       })
       .catch((error) => {
         console.error("新增失败:", error);
+        submitLoading.value = false;
       });
   }
 }

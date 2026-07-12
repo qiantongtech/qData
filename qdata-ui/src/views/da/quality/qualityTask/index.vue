@@ -174,7 +174,7 @@
                   </template>
                   <div style="width: 100px" class="butgdlist">
                     <el-button link type="primary" icon="VideoPlay" style="padding-left: 14px"
-                      @click="handleExecuteOnce(scope.row)" v-hasPermi="['da:qualityTask:once']"
+                      :loading="executeOnceLoading" @click="handleExecuteOnce(scope.row)" v-hasPermi="['da:qualityTask:once']"
                       :disabled="scope.row.status == 1">{{ td('da.qualityTask.executeOnce') }}</el-button>
                     <el-button link type="primary" icon="Stopwatch" @click="handleDataView(scope.row)"
                       v-hasPermi="['da:qualityTask:edit']">{{ td('da.qualityTask.executionLog') }}</el-button>
@@ -242,6 +242,7 @@ import {
 } from "@/api/da/quality/qualityTask";;
 
 const { proxy } = getCurrentInstance();
+const executeOnceLoading = ref(false);
 const { da_discovery_task_status, dpp_etl_task_execution_type, datasource_type, dpp_etl_task_process_type } =
   proxy.useDict(
     "da_discovery_task_status",
@@ -372,11 +373,12 @@ function crontabFill(value) {
   });
 }
 const handleExecuteOnce = async (row) => {
+  if (executeOnceLoading.value) return;
   if (!row?.id) {
     proxy.$modal.msgWarning(td('da.qualityTask.invalidTaskId'));
     return;
   }
-  loading.value = true;
+  executeOnceLoading.value = true;
   try {
     const res = await startDppQualityTask(row.id);
 
@@ -386,7 +388,7 @@ const handleExecuteOnce = async (row) => {
       proxy.$modal.msgWarning(res?.msg || td('da.qualityTask.executeFailed'));
     }
   } finally {
-    loading.value = false;
+    executeOnceLoading.value = false;
   }
 };
 let DataView = ref(false);

@@ -382,7 +382,7 @@
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="closeDialog">{{ td('common.button.cancel') }}</el-button>
-        <el-button type="primary" @click="confirmDialog">{{ td('common.button.confirm') }}</el-button>
+        <el-button type="primary" :loading="loading" @click="confirmDialog">{{ td('common.button.confirm') }}</el-button>
       </div>
     </template>
   </el-dialog>
@@ -829,19 +829,24 @@ const fetchDpModelColumnList = async () => {
     // 处理返回的数据
   } catch (error) {
     console.error("请求失败:", error);
+    loading.value = false;
   }
 };
 const getColumnByAssetIdList = async (isOld) => {
   loading.value = true;
-  const response = await columnsList({
-    modelId: form.value.id,
-    id: form.value.datasourceId,
-    tableName: form.value.tableName,
-    type: form.value.datasourceType,
-    isOld: isOld,
-  });
-  tableData.value = response.data;
-  loading.value = false;
+  try {
+    const response = await columnsList({
+      modelId: form.value.id,
+      id: form.value.datasourceId,
+      tableName: form.value.tableName,
+      type: form.value.datasourceType,
+      isOld: isOld,
+    });
+    tableData.value = response.data;
+    loading.value = false;
+  } catch (error) {
+    loading.value = false;
+  }
 };
 const handleDatasourceChange = (value, selectedDatasource) => {
   if (selectedDatasource) {
@@ -1110,11 +1115,14 @@ const closeDialog = () => {
 };
 
 const confirmDialog = () => {
+  if (loading.value) return;
   if (!proxy || !proxy.$refs["dpModelRef"]) return;
   proxy.$refs["dpModelRef"].validate((valid) => {
     if (valid) {
+      loading.value = true;
       if (!tableData.value || tableData.value.length === 0) {
         proxy.$message.warning(td('dp.modelForm.addFieldWarning'));
+        loading.value = false;
         return;
       }
 
@@ -1145,6 +1153,7 @@ const confirmDialog = () => {
         });
       }
       closeDialog();
+      loading.value = false;
     }
   });
 };

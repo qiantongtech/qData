@@ -647,7 +647,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="tagMultiple = false">{{ td('common.button.cancel') }}</el-button>
-          <el-button type="primary" @click="submitTag">{{ td('common.button.confirm') }}</el-button>
+          <el-button type="primary" :loading="submitTagLoading" @click="submitTag">{{ td('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -759,7 +759,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="openApply = false">{{ td('common.button.cancel') }}</el-button>
-          <el-button type="primary" @click="submitApplyForm">{{ td('common.button.confirm') }}</el-button>
+          <el-button type="primary" :loading="submitApplyLoading" @click="submitApplyForm">{{ td('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -795,6 +795,8 @@ import { addAttTagAssetRel } from "@/api/att/tag/tagAssetRel.js";
 import { formatHierarchyDisplayName } from "@/utils/dm/utils";
 import { usePageRefresh } from "@/composables/usePageRefresh";
 const { proxy } = getCurrentInstance();
+const submitTagLoading = ref(false);
+const submitApplyLoading = ref(false);
 const { da_assets_status, da_asset_type, table_type } = proxy.useDict(
   "da_assets_status",
   "da_asset_type",
@@ -923,6 +925,8 @@ const data = reactive({
 const { queryParams, form, formApply, rules, rulesApply } = toRefs(data);
 
 function submitApplyForm() {
+  if (submitApplyLoading.value) return;
+  submitApplyLoading.value = true;
   proxy.$refs["daAssetApplyRef"].validate((valid) => {
     if (valid) {
       formApply.value.id = null;
@@ -938,7 +942,12 @@ function submitApplyForm() {
         proxy.$modal.msgSuccess(td('da.asset.applySuccess'));
         openApply.value = false;
         getList();
+        submitApplyLoading.value = false;
+      }).catch(() => {
+        submitApplyLoading.value = false;
       });
+    } else {
+      submitApplyLoading.value = false;
     }
   });
 }
@@ -1192,6 +1201,8 @@ function getListTag() {
 }
 
 function submitTag() {
+  if (submitTagLoading.value) return;
+  submitTagLoading.value = true;
   let map = {
     tagIds: tagIds.value,
     assetId: assetId.value,
@@ -1201,6 +1212,9 @@ function submitTag() {
     tagMultiple.value = false;
     proxy.$modal.msgSuccess(td('da.asset.operationSuccess'));
     getList();
+    submitTagLoading.value = false;
+  }).catch(() => {
+    submitTagLoading.value = false;
   });
   // proxy.$modal
   //   .confirm("是否确定打标该资产？")

@@ -115,6 +115,7 @@
                     type="primary"
                     icon="VideoPlay"
                     :disabled="row.status == '0'"
+                    :loading="runClickLoading"
                     @click="handleRunClick(row)"
                   >
                     {{ td("mc.task.structured.executeOnce") }}
@@ -398,7 +399,7 @@
           <el-button @click="handleCancelClick">{{
             td("common.button.cancel")
           }}</el-button>
-          <el-button type="primary" @click="handleConfirmClick">
+          <el-button type="primary" :loading="dialog.loading" @click="handleConfirmClick">
             {{ td("common.button.confirm") }}
           </el-button>
         </div>
@@ -538,6 +539,7 @@ const rules = {
 const DETAIL_PATH = "/dg/meta/task/detail";
 
 const { proxy } = getCurrentInstance();
+const runClickLoading = ref(false);
 const dicts = proxy.useDict(
   "datasource_type",
   "mc_collect_scope",
@@ -877,11 +879,15 @@ function handleDomainChange(id) {
   }
 }
 function handleRunClick(val) {
+  if (runClickLoading.value) return;
+  runClickLoading.value = true;
   runJobOnce({ id: val.id }).then((res) => {
+    runClickLoading.value = false;
     if (res.code == 200) {
       ElMessage.success(td("mc.task.structured.executeSuccess"));
-    } else {
     }
+  }).catch(() => {
+    runClickLoading.value = false;
   });
 }
 // 打开调度周期弹窗
@@ -932,9 +938,13 @@ function handleCancelClick() {
 
 // 确认新增/修改
 async function handleConfirmClick() {
-  const valid = await formRef.value.validate();
-  if (!valid) return;
+  if (dialog.loading) return;
   dialog.loading = true;
+  const valid = await formRef.value.validate();
+  if (!valid) {
+    dialog.loading = false;
+    return;
+  }
   const { tables, ...params } = dialog.form;
   if (params.collectionScope == "1") {
     params.scopeSaveReqVOS = dialog.tableList.filter((item) =>

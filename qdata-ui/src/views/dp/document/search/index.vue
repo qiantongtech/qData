@@ -157,6 +157,7 @@ import { dpDocumentList } from "@/api/dp/document/search";
 import handleFilePreview from "@/utils/filePreview.js";
 // search
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 const { dp_document_standard_type, dp_document_type, dp_document_status } =
   proxy.useDict(
     "dp_document_standard_type",

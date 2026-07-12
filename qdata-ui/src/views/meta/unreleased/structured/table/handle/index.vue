@@ -379,7 +379,7 @@
     </el-form>
 
     <div class="button-style">
-      <el-button @click="handleDraftClick">{{
+      <el-button :loading="confirmLoading" @click="handleDraftClick">{{
         td("meta.unreleased.structured.table.handle.saveDraft")
       }}</el-button>
       <el-button
@@ -393,7 +393,7 @@
           td("meta.unreleased.structured.table.handle.backToList")
         }}
       </el-button>
-      <el-button type="primary" @click="handleConfirmClick">
+      <el-button type="primary" :loading="confirmLoading" @click="handleConfirmClick">
         {{ td("meta.unreleased.structured.table.handle.confirmAndExit") }}
       </el-button>
     </div>
@@ -416,6 +416,8 @@ import {
 import { useRoute, useRouter } from "vue-router";
 
 const { td } = useDefaultLang();
+const { proxy } = getCurrentInstance();
+const confirmLoading = ref(false);
 const DEFAULT_FORM = {
   status: "0",
   masterFlag: "1",
@@ -553,18 +555,20 @@ function handleMetaDBChange(id) {
 
 // 确认新增/修改
 async function handleConfirmClick() {
-  store.loading = true;
+  if (confirmLoading.value) return;
+  confirmLoading.value = true;
   const valid = await formRef.value.validate();
-  store.loading = false;
-  if (!valid) return;
-  store.loading = true;
+  if (!valid) {
+    confirmLoading.value = false;
+    return;
+  }
   const func = route.query.id ? updateTable : addTable;
   if (store.form.safetyLevelId == undefined) {
     store.form.safetyLevelId = null;
     store.form.safetyLevelName = null;
   }
   await func(store.form);
-  store.loading = false;
+  confirmLoading.value = false;
   proxy.$modal.msgSuccess(
     `${
       route.query.id ? td("common.button.update") : td("common.button.add")
@@ -574,9 +578,10 @@ async function handleConfirmClick() {
 }
 
 async function handleDraftClick() {
-  store.loading = true;
+  if (confirmLoading.value) return;
+  confirmLoading.value = true;
   await draftTable(store.form);
-  store.loading = false;
+  confirmLoading.value = false;
   proxy.$modal.msgSuccess(
     td("meta.unreleased.structured.table.handle.draftSuccess")
   );

@@ -245,7 +245,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button size="mini" @click="cancel">{{ td('common.button.cancel') }}</el-button>
-          <el-button type="primary" size="mini" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
+          <el-button type="primary" size="mini" :loading="submitLoading" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -413,6 +413,7 @@ import useDefaultLang from "@/composables/useDefaultLang";
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 const { da_asset_apply_status, datasource_type } = proxy.useDict(
   "da_asset_apply_status",
   "datasource_type"
@@ -649,6 +650,8 @@ function handleDetail(row) {
 
 /** 提交按钮 */
 function submitForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs["daAssetApplyRef"].validate((valid) => {
     if (valid) {
       if (form.value.id != null) {
@@ -657,17 +660,25 @@ function submitForm() {
             proxy.$modal.msgSuccess(td('da.assetApply.editSuccess'));
             open.value = false;
             getList();
+            submitLoading.value = false;
           })
-          .catch((error) => { });
+          .catch((error) => {
+            submitLoading.value = false;
+          });
       } else {
         addDaAssetApply(form.value)
           .then((response) => {
             proxy.$modal.msgSuccess(td('da.assetApply.addSuccess'));
             open.value = false;
             getList();
+            submitLoading.value = false;
           })
-          .catch((error) => { });
+          .catch((error) => {
+            submitLoading.value = false;
+          });
       }
+    } else {
+      submitLoading.value = false;
     }
   });
 }

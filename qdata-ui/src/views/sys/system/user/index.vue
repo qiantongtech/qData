@@ -301,7 +301,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="cancel">{{ td('common.button.cancel') }}</el-button>
-          <el-button type="primary" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
+          <el-button type="primary" :loading="submitLoading" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -332,7 +332,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="upload.open = false">{{ td('common.button.cancel') }}</el-button>
-          <el-button type="primary" @click="submitFileForm">{{ td('common.button.confirm') }}</el-button>
+          <el-button type="primary" :loading="importLoading" @click="submitFileForm">{{ td('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -357,6 +357,8 @@ import useDefaultLang from "@/composables/useDefaultLang";
 const { td } = useDefaultLang();
 const router = useRouter();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
+const importLoading = ref(false);
 const { sys_normal_disable, sys_user_sex } = proxy.useDict(
   "sys_normal_disable",
   "sys_user_sex"
@@ -748,6 +750,7 @@ const handleFileUploadProgress = (event, file, fileList) => {
 const handleFileSuccess = (response, file, fileList) => {
   upload.open = false;
   upload.isUploading = false;
+  importLoading.value = false;
   proxy.$refs["uploadRef"].handleRemove(file);
   proxy.$alert(
     "<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +
@@ -761,6 +764,8 @@ const handleFileSuccess = (response, file, fileList) => {
 
 /** 提交上传文件 */
 function submitFileForm() {
+  if (importLoading.value) return;
+  importLoading.value = true;
   proxy.$refs["uploadRef"].submit();
 }
 
@@ -819,6 +824,8 @@ function handleUpdate(row) {
 
 /** 提交按钮 */
 function submitForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs["userRef"].validate((valid) => {
     if (valid) {
       if (form.value.userId != undefined) {
@@ -826,14 +833,22 @@ function submitForm() {
           proxy.$modal.msgSuccess(td('common.message.editSuccess'));
           open.value = false;
           getList();
+          submitLoading.value = false;
+        }).catch(() => {
+          submitLoading.value = false;
         });
       } else {
         addUser(form.value).then((response) => {
           proxy.$modal.msgSuccess(td('common.message.addSuccess'));
           open.value = false;
           getList();
+          submitLoading.value = false;
+        }).catch(() => {
+          submitLoading.value = false;
         });
       }
+    } else {
+      submitLoading.value = false;
     }
   });
 }

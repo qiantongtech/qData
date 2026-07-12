@@ -317,7 +317,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button size="mini" @click="cancel">{{ td('common.button.cancel') }}</el-button>
-          <el-button type="primary" size="mini" @click="submitForm">
+          <el-button type="primary" size="mini" :loading="submitLoading" @click="submitForm">
             {{ td('common.button.confirm') }}
           </el-button>
         </div>
@@ -448,7 +448,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="batchLevelOpen = false">{{ td('common.button.cancel') }}</el-button>
-          <el-button type="primary" @click="submitBatchLevel">{{ td('common.button.confirm') }}</el-button>
+          <el-button type="primary" :loading="submitLoading" @click="submitBatchLevel">{{ td('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -503,6 +503,7 @@ import { getCurrentInstance, ref, reactive, toRefs, onMounted } from "vue";
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 const { dg_data_priority, dg_replace_rule } = proxy.useDict(
   "dg_data_priority",
   "dg_replace_rule"
@@ -832,6 +833,8 @@ function handleDetail(row) {
 
 /** 提交按钮 */
 function submitForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs["DataCategoryRef"].validate((valid) => {
     if (valid) {
       if (form.value.id != null) {
@@ -839,14 +842,18 @@ function submitForm() {
           proxy.$modal.msgSuccess(td('common.message.editSuccess'));
           open.value = false;
           tableRef.value.getList();
+          submitLoading.value = false;
         });
       } else {
         addDataCategory(form.value).then(() => {
           proxy.$modal.msgSuccess(td('common.message.addSuccess'));
           open.value = false;
           tableRef.value.getList();
+          submitLoading.value = false;
         });
       }
+    } else {
+      submitLoading.value = false;
     }
   });
 }
@@ -901,17 +908,23 @@ function handleBatchLevel() {
 }
 
 async function submitBatchLevel() {
+  if (submitLoading.value) return;
   if (!batchDataLevel.value) {
     proxy.$modal.msgWarning(td('dg.dataCategory.selectLevelRequired'));
     return;
   }
-  await batchDataLevelApi({
-    ids: store.rows.map((r) => r.id),
-    dataLevelId: batchDataLevel.value,
-  });
-  proxy.$modal.msgSuccess(td('dg.dataCategory.setSuccess'));
-  batchLevelOpen.value = false;
-  tableRef.value.getList();
+  submitLoading.value = true;
+  try {
+    await batchDataLevelApi({
+      ids: store.rows.map((r) => r.id),
+      dataLevelId: batchDataLevel.value,
+    });
+    proxy.$modal.msgSuccess(td('dg.dataCategory.setSuccess'));
+    batchLevelOpen.value = false;
+    tableRef.value.getList();
+  } finally {
+    submitLoading.value = false;
+  }
 }
 
 function handleMapping(row) {

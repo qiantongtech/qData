@@ -198,7 +198,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="cancel">{{ td('common.button.cancel', '取消') }}</el-button>
-          <el-button type="primary" @click="submitForm">{{ td('common.button.confirm', '确定') }}</el-button>
+          <el-button type="primary" :loading="submitLoading" @click="submitForm">{{ td('common.button.confirm', '确定') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -309,6 +309,7 @@ import { FolderOpened, Folder, Tickets } from "@element-plus/icons-vue";
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
 const leftWidth = ref(300); // 初始左侧宽度
 const layerTreeOptions = ref([]);
@@ -599,6 +600,8 @@ function handleDetail(row) {
 
 /** 提交按钮 */
 function submitForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs["specificationRef"].validate((valid) => {
     if (valid) {
       if (form.value.id != null) {
@@ -606,14 +609,22 @@ function submitForm() {
           proxy.$modal.msgSuccess(td('common.message.editSuccess', '修改成功'));
           open.value = false;
           tableRef.value?.getList();
+          submitLoading.value = false;
+        }).catch(() => {
+          submitLoading.value = false;
         });
       } else {
         addDataLayerSpecification(form.value).then(() => {
           proxy.$modal.msgSuccess(td('common.message.addSuccess', '新增成功'));
           open.value = false;
           tableRef.value?.getList();
+          submitLoading.value = false;
+        }).catch(() => {
+          submitLoading.value = false;
         });
       }
+    } else {
+      submitLoading.value = false;
     }
   });
 }

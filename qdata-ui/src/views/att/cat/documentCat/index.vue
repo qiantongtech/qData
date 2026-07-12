@@ -176,7 +176,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="cancel">{{ td('common.button.cancel') }}</el-button>
-          <el-button type="primary" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
+          <el-button type="primary" :loading="submitLoading" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -191,6 +191,7 @@ import { listAttDocumentCat, getAttDocumentCat, delAttDocumentCat, addAttDocumen
 const { t } = useI18n();
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 const AttTagCatList = ref([]);
 const AttTagCatOptions = ref([]);
 const open = ref(false);
@@ -352,6 +353,8 @@ async function handleUpdate(row) {
 
 /** 提交按钮 */
 function submitForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs['AttTagCatRef'].validate((valid) => {
     if (valid) {
       if (form.value.id != null) {
@@ -359,14 +362,22 @@ function submitForm() {
           proxy.$modal.msgSuccess(td('common.message.editSuccess'));
           open.value = false;
           getList();
+          submitLoading.value = false;
+        }).catch(error => {
+          submitLoading.value = false;
         });
       } else {
         addAttDocumentCat(form.value).then((response) => {
           proxy.$modal.msgSuccess(td('common.message.addSuccess'));
           open.value = false;
           getList();
+          submitLoading.value = false;
+        }).catch(error => {
+          submitLoading.value = false;
         });
       }
+    } else {
+      submitLoading.value = false;
     }
   });
 }

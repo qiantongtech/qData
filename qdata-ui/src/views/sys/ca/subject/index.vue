@@ -147,7 +147,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="cancel">{{ td('common.button.cancel') }}</el-button>
-          <el-button type="primary" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
+          <el-button type="primary" :loading="submitLoading" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -186,6 +186,8 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
+      // 提交按钮防重复点击
+      submitLoading: false,
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -325,6 +327,8 @@ export default {
     },
     /** 提交按钮 */
     submitForm() {
+      if (this.submitLoading) return;
+      this.submitLoading = true;
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.id != null) {
@@ -332,14 +336,22 @@ export default {
               this.$modal.msgSuccess(td('common.message.editSuccess'));
               this.open = false;
               this.getList();
+              this.submitLoading = false;
+            }).catch(() => {
+              this.submitLoading = false;
             });
           } else {
             addSubject(this.form).then(response => {
               this.$modal.msgSuccess(td('common.message.addSuccess'));
               this.open = false;
               this.getList();
+              this.submitLoading = false;
+            }).catch(() => {
+              this.submitLoading = false;
             });
           }
+        } else {
+          this.submitLoading = false;
         }
       });
     },

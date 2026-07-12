@@ -91,7 +91,7 @@
             <div style="margin-top: 20px;">
                 <!--                <el-button @click="update" v-show="status">{{ td('common.button.update') }}</el-button>-->
                 <!--                <el-button @click="confirm" v-show="!status">{{ td('common.button.save') }}</el-button>-->
-                <el-button @click="confirm">{{ td('common.button.save') }}</el-button>
+                <el-button :loading="submitLoading" @click="confirm">{{ td('common.button.save') }}</el-button>
             </div>
 
         </el-row>
@@ -107,6 +107,7 @@ import { ref } from 'vue';
 
     const { td } = useDefaultLang();
     const { proxy } = getCurrentInstance();
+    const submitLoading = ref(false);
 
     const loginLogoModelValue = ref([])
     const logoModelValue = ref([])
@@ -208,6 +209,8 @@ import { ref } from 'vue';
 
     // 确认按钮点击事件
     const confirm =  () => {
+        if (submitLoading.value) return;
+        submitLoading.value = true;
         proxy.$modal.confirm(td('sys.system.content.confirmSave')).then(function() {}).then(async () => {
             status.value = !status.value
             try {
@@ -224,8 +227,12 @@ import { ref } from 'vue';
                 // 捕获网络错误或请求失败的情况
                 console.error("请求失败:", error);
                 proxy.$modal.msgError(td('sys.system.content.saveException') + error.message);
+            } finally {
+                submitLoading.value = false;
             }
-        }).catch(() => {});
+        }).catch(() => {
+            submitLoading.value = false;
+        });
     };
 </script>
 

@@ -154,7 +154,7 @@
     <template #footer>
       <div class="dialog-footer">
         <el-button size="mini" @click="cancel">{{td('common.button.cancel')}}</el-button>
-        <el-button type="primary" size="mini" @click="submitForm">{{td('common.button.confirm')}}</el-button>
+        <el-button type="primary" size="mini" :loading="submitLoading" @click="submitForm">{{td('common.button.confirm')}}</el-button>
       </div>
     </template>
   </el-dialog>
@@ -229,6 +229,7 @@ import useDefaultLang from "@/composables/useDefaultLang";
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 const { sys_is_or_not, ds_api_bas_info_api_method_type } = proxy.useDict("sys_is_or_not", "ds_api_bas_info_api_method_type");
 
 const props = defineProps({
@@ -446,6 +447,8 @@ function handleDetail(row) {
 
 /** 提交按钮 */
 function submitForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs["clientApiRelRef"].validate((valid) => {
     if (valid) {
       form.value.clientId = clientId.value;
@@ -457,17 +460,25 @@ function submitForm() {
             proxy.$modal.msgSuccess(td('common.message.editSuccess'));
             open.value = false;
             getList();
+            submitLoading.value = false;
           })
-          .catch((error) => { });
+          .catch((error) => {
+            submitLoading.value = false;
+          });
       } else {
         addClientApiRel(form.value)
           .then((response) => {
             proxy.$modal.msgSuccess(td('common.message.addSuccess'));
             open.value = false;
             getList();
+            submitLoading.value = false;
           })
-          .catch((error) => { });
+          .catch((error) => {
+            submitLoading.value = false;
+          });
       }
+    } else {
+      submitLoading.value = false;
     }
   });
 }

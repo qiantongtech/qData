@@ -402,7 +402,7 @@
             <template #footer>
                 <div class="dialog-footer">
                     <el-button size="mini" @click="cancel">取 消</el-button>
-                    <el-button type="primary" size="mini" @click="submitForm">确 定</el-button>
+                    <el-button type="primary" size="mini" :loading="submitLoading" @click="submitForm">确 定</el-button>
                 </div>
             </template>
         </el-dialog>
@@ -421,6 +421,7 @@
 
     const { td } = useDefaultLang();
     const { proxy } = getCurrentInstance();
+    const submitLoading = ref(false);
 
     const userTypeList = ref([]);
 
@@ -588,6 +589,8 @@
 
     /** 提交按钮 */
     function submitForm() {
+        if (submitLoading.value) return;
+        submitLoading.value = true;
         proxy.$refs['userTypeRef'].validate((valid) => {
             if (valid) {
                 if (form.value.id != null) {
@@ -595,14 +598,22 @@
                         proxy.$modal.msgSuccess('修改成功');
                         open.value = false;
                         getList();
+                        submitLoading.value = false;
+                    }).catch(() => {
+                        submitLoading.value = false;
                     });
                 } else {
                     addUserType(form.value).then((response) => {
                         proxy.$modal.msgSuccess('新增成功');
                         open.value = false;
                         getList();
+                        submitLoading.value = false;
+                    }).catch(() => {
+                        submitLoading.value = false;
                     });
                 }
+            } else {
+                submitLoading.value = false;
             }
         });
     }

@@ -262,6 +262,7 @@
                     type="primary"
                     icon="VideoPlay"
                     :disabled="row.status != 1"
+                    :loading="executeOnceLoading"
                     @click="handleExecuteOnce(row)"
                     >{{
                       td("dpp.integratioTask.executeOnce", "执行一次")
@@ -365,6 +366,7 @@ import { ref, reactive, getCurrentInstance, watch } from "vue";
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const executeOnceLoading = ref(false);
 
 const api = {
   list: listAttTaskCat,
@@ -730,12 +732,14 @@ function submitForm() {
 }
 
 const handleExecuteOnce = async (row) => {
+  if (executeOnceLoading.value) return;
   if (!row?.id) {
     proxy.$modal.msgWarning(
       td("dpp.integratioTask.invalidTaskId", "无效的任务id，请刷新后重试")
     );
     return;
   }
+  executeOnceLoading.value = true;
   try {
     const res = await startDppEtlTask(row.id);
     if (Number(res?.code) === 200) {
@@ -750,6 +754,8 @@ const handleExecuteOnce = async (row) => {
     }
   } catch (e) {
     //
+  } finally {
+    executeOnceLoading.value = false;
   }
 };
 

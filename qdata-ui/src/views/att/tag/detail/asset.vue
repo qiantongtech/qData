@@ -131,7 +131,7 @@
     <template #footer>
       <div class="dialog-footer">
         <el-button size="mini" @click="cancel">{{ td('common.button.cancel') }}</el-button>
-        <el-button type="primary" size="mini" @click="submitForm"
+        <el-button type="primary" size="mini" :loading="submitLoading" @click="submitForm"
           >{{ td('common.button.confirm') }}</el-button
         >
       </div>
@@ -253,6 +253,7 @@ import { pageListByIds } from "@/api/da/asset/asset.js";
 import { defineProps } from "vue";
 import { delByTagIdAndAesstId } from "@/api/att/tag/tagAssetRel.js";
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 import { useRoute } from "vue-router";
 import useDefaultLang from "@/composables/useDefaultLang.js";
 
@@ -451,25 +452,35 @@ function handleDetail(row) {
 
 /** 提交按钮 */
 function submitForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs["AttTagRef"].validate((valid) => {
     if (valid) {
       if (form.value.id != null) {
         updateAttTag(form.value)
           .then((response) => {
+            submitLoading.value = false;
             proxy.$modal.msgSuccess(td('common.message.editSuccess'));
             open.value = false;
             handleQueryClick();
           })
-          .catch((error) => {});
+          .catch((error) => {
+            submitLoading.value = false;
+          });
       } else {
         addAttTag(form.value)
           .then((response) => {
+            submitLoading.value = false;
             proxy.$modal.msgSuccess(td('common.message.addSuccess'));
             open.value = false;
             handleQueryClick();
           })
-          .catch((error) => {});
+          .catch((error) => {
+            submitLoading.value = false;
+          });
       }
+    } else {
+      submitLoading.value = false;
     }
   });
 }

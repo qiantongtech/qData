@@ -351,7 +351,7 @@
             <template #footer>
                 <div class="dialog-footer">
                     <el-button @click="cancel">{{ td('common.button.cancel') }}</el-button>
-                    <el-button type="primary" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
+                    <el-button type="primary" :loading="submitLoading" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
                 </div>
             </template>
         </el-dialog>
@@ -406,7 +406,7 @@
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button type="primary" @click="submitDataScope">{{ td('common.button.confirm') }}</el-button>
+                    <el-button type="primary" :loading="dataScopeLoading" @click="submitDataScope">{{ td('common.button.confirm') }}</el-button>
                     <el-button @click="cancelDataScope">{{ td('common.button.cancel') }}</el-button>
                 </div>
             </template>
@@ -436,6 +436,8 @@
     const { td } = useDefaultLang();
     const router = useRouter();
     const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
+const dataScopeLoading = ref(false);
     const { sys_normal_disable } = proxy.useDict('sys_normal_disable');
 
     const roleList = ref([]);
@@ -711,6 +713,8 @@
 
     /** 提交按钮 */
     function submitForm() {
+        if (submitLoading.value) return;
+        submitLoading.value = true;
         proxy.$refs['roleRef'].validate((valid) => {
             if (valid) {
                 if (form.value.roleId != undefined) {
@@ -719,6 +723,9 @@
                         proxy.$modal.msgSuccess(td('common.message.editSuccess'));
                         open.value = false;
                         getList();
+                        submitLoading.value = false;
+                    }).catch(() => {
+                        submitLoading.value = false;
                     });
                 } else {
                     form.value.menuIds = getMenuAllCheckedKeys();
@@ -726,8 +733,13 @@
                         proxy.$modal.msgSuccess(td('common.message.addSuccess'));
                         open.value = false;
                         getList();
+                        submitLoading.value = false;
+                    }).catch(() => {
+                        submitLoading.value = false;
                     });
                 }
+            } else {
+                submitLoading.value = false;
             }
         });
     }
@@ -767,13 +779,20 @@
 
     /** 提交按钮（数据权限） */
     function submitDataScope() {
+        if (dataScopeLoading.value) return;
+        dataScopeLoading.value = true;
         if (form.value.roleId != undefined) {
             form.value.deptIds = getDeptAllCheckedKeys();
             dataScope(form.value).then((response) => {
                 proxy.$modal.msgSuccess(td('common.message.editSuccess'));
                 openDataScope.value = false;
                 getList();
+                dataScopeLoading.value = false;
+            }).catch(() => {
+                dataScopeLoading.value = false;
             });
+        } else {
+            dataScopeLoading.value = false;
         }
     }
 

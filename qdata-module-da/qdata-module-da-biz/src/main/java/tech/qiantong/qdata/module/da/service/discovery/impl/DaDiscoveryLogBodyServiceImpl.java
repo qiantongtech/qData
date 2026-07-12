@@ -115,13 +115,13 @@ public class DaDiscoveryLogBodyServiceImpl extends ServiceImpl<DaDiscoveryLogBod
         // 2. Read existing Redis log (empty string if none)
         String taskLog = redisService.get(taskLogKey);
         if (taskLog == null) {
-            taskLog = “”;
+            taskLog = "";
         }
-        String time = DateUtil.format(new Date(), “yyyy-MM-dd HH:mm:ss.SSS”);
-        logStr = time + “ - “ + logStr+ “\n”;
+        String time = DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS");
+        logStr = time + " - " + logStr+ "\n";
 
         // 3. Append this chunk (add trailing newline if missing)
-        taskLog += logStr + (logStr.matches(“.*\\r?\\n.*”) ? “” : “\n”);
+        taskLog += logStr + (logStr.matches(".*\\r?\\n.*") ? "" : "\n");
         redisService.set(taskLogKey, taskLog);
 
         // 4. If session end marker detected, write to DB and cache for 5 minutes

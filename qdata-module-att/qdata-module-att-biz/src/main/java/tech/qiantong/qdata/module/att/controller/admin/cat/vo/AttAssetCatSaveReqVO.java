@@ -25,7 +25,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import javax.validation.constraints.Size;
 
 /**
- * 数据资产类目管理 创建/修改 Request VO ATT_ASSET_CAT
+ * Data Asset Category Management Create/Update Request VO ATT_ASSET_CAT
  *
  * @author qdata
  * @date 2025-01-20

@@ -22,7 +22,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 规则类型枚举
+ * Rule Type Enum
  */
 @Getter
 @AllArgsConstructor

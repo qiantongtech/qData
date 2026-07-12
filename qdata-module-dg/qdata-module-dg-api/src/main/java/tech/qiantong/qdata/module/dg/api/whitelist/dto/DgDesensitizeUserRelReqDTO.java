@@ -34,25 +34,25 @@ public class DgDesensitizeUserRelReqDTO {
     /** ID */
     private Long id;
 
-    /** 脱敏白名单ID */
+    /** Desensitize Whitelist ID */
     private Long desensitizeId;
 
-    /** 用户ID */
+    /** User ID */
     private Long userId;
 
-    /** 白名单名称 */
+    /** Whitelist Name */
     private String desensitizeName;
 
-    /** 用户名称 */
+    /** User Name */
     private String userName;
 
-    /** 是否有效;0：无效，1：有效 */
+    /** Valid Flag; 0: Invalid, 1: Valid */
     private Boolean validFlag;
 
-    /** 删除标志;1：已删除，0：未删除 */
+    /** Delete Flag; 1: Deleted, 0: Not Deleted */
     private Boolean delFlag;
 
-    /** 生效分类;1：用户 2：角色 3：部门 */
+    /** Effective Category; 1: User 2: Role 3: Department */
     private String effectiveCategory;
 
 

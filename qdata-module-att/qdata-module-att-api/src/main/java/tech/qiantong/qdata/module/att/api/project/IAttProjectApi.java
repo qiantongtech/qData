@@ -24,7 +24,7 @@ import tech.qiantong.qdata.module.att.api.project.dto.AttProjectRespDTO;
 
 /**
  * <P>
- * 用途:项目相关接口
+ * Purpose: Project-related interfaces
  * </p>
  *
  * @author: FXB
@@ -33,7 +33,7 @@ import tech.qiantong.qdata.module.att.api.project.dto.AttProjectRespDTO;
 public interface IAttProjectApi {
 
     /**
-     * 根据项目编码获取项目id
+     * Get project ID by project code
      *
      * @param projectCode
      * @return
@@ -41,10 +41,10 @@ public interface IAttProjectApi {
     Long getProjectIdByProjectCode(String projectCode);
 
     /**
-     * 获得项目分页列表
+     * Get paginated project list
      *
-     * @param pageReqVO 分页请求
-     * @return 项目分页列表
+     * @param pageReqVO pagination request
+     * @return paginated project list
      */
     PageResult<AttProjectRespDTO> getAttProjectPage(AttProjectReqDTO pageReqVO);
 }

@@ -34,7 +34,7 @@
     </description>
 
     <dependencies>
-        <!-- 通用工具-->
+        <!-- Common utilities-->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-common</artifactId>

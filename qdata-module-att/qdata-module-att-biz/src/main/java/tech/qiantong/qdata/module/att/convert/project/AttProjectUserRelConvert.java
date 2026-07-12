@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.att.dal.dataobject.project.AttProjectUserRelDO
 import java.util.List;
 
 /**
- * 项目与用户关联关系 Convert
+ * Project-User Relationship Convert
  *
  * @author qdata
  * @date 2025-02-11
@@ -38,29 +38,29 @@ public interface AttProjectUserRelConvert {
     AttProjectUserRelConvert INSTANCE = Mappers.getMapper(AttProjectUserRelConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param attProjectUserRelPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param attProjectUserRelPageReqVO Request parameters
      * @return AttProjectUserRelDO
      */
      AttProjectUserRelDO convertToDO(AttProjectUserRelPageReqVO attProjectUserRelPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param attProjectUserRelSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param attProjectUserRelSaveReqVO Save request parameters
      * @return AttProjectUserRelDO
      */
      AttProjectUserRelDO convertToDO(AttProjectUserRelSaveReqVO attProjectUserRelSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param attProjectUserRelDO 实体对象
+     * Convert DO to RespVO
+     * @param attProjectUserRelDO Entity object
      * @return AttProjectUserRelRespVO
      */
      AttProjectUserRelRespVO convertToRespVO(AttProjectUserRelDO attProjectUserRelDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param attProjectUserRelDOList 实体对象列表
+     * Convert DOList to RespVOList
+     * @param attProjectUserRelDOList Entity object list
      * @return List<AttProjectUserRelRespVO>
      */
      List<AttProjectUserRelRespVO> convertToRespVOList(List<AttProjectUserRelDO> attProjectUserRelDOList);

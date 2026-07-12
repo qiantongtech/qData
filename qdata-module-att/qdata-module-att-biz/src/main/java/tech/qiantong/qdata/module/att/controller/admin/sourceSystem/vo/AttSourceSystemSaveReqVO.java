@@ -25,7 +25,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import javax.validation.constraints.Size;
 
 /**
- * 来源系统 创建/修改 Request VO ATT_SOURCE_SYSTEM
+ * Source System Create/Update Request VO ATT_SOURCE_SYSTEM
  *
  * @author qdata
  * @date 2026-04-03

@@ -46,7 +46,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 /**
- * 标签类目管理Controller
+ * Tag Category Management Controller
  *
  * @author qdata
  * @date 2025-07-11
@@ -128,7 +128,7 @@ public class AttTagCatController extends BaseController {
 //        return CommonResult.toAjax(attTagCatService.removeAttTagCat(Arrays.asList(ids)));
 //    }
 
-    //删除
+    // Delete
     @Operation(summary = "删除标签类目管理")
     @PreAuthorize("@ss.hasPermi('att:tagCat:remove')")
     @Log(title = "log.op.title.att.tag.cat", businessType = BusinessType.DELETE)

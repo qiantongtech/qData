@@ -25,7 +25,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import javax.validation.constraints.Size;
 
 /**
- * 标准信息分类管理 创建/修改 Request VO ATT_DOCUMENT_CAT
+ * Standard Information Category Management Create/Update Request VO ATT_DOCUMENT_CAT
  *
  * @author qdata
  * @date 2025-08-21
@@ -60,7 +60,7 @@ public class AttDocumentCatSaveReqVO extends BaseEntity {
     @Schema(description = "备注", example = "")
     @Size(max = 256, message = "备注长度不能超过256个字符")
     private String remark;
-    /** 是否有效 */
+    /** Whether valid */
     private Boolean validFlag;
 
 }

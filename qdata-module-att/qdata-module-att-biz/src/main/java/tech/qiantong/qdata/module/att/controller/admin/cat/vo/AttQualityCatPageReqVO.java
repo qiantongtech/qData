@@ -23,7 +23,7 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 数据质量类目 Request VO 对象 ATT_QUALITY_CAT
+ * Data Quality Category Request VO ATT_QUALITY_CAT
  *
  * @author qdata
  * @date 2025-07-19

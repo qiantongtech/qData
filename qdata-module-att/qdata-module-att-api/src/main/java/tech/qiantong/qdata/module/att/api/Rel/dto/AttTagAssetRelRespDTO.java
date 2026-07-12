@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.att.api.Rel.dto;
 import lombok.Data;
 
 /**
- * 标签与资产关联关系 DTO 对象 ATT_TAG_ASSET_REL
+ * Tag-Asset Relationship DTO ATT_TAG_ASSET_REL
  *
  * @author qdata
  * @date 2025-07-11
@@ -34,16 +34,16 @@ public class AttTagAssetRelRespDTO {
     /** ID */
     private Long ID;
 
-    /** 标签管理id */
+    /** Tag ID */
     private String tagId;
 
-    /** 资产id */
+    /** Asset ID */
     private String assetId;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
 

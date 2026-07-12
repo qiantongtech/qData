@@ -53,7 +53,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * 标签管理Service业务层处理
+ * Tag Management Service business layer processing
  *
  * @author qdata
  * @date 2025-07-11
@@ -71,7 +71,7 @@ public class AttTagServiceImpl extends ServiceImpl<AttTagMapper, AttTagDO> imple
 
     @Override
     public PageResult<AttTagDO> getAttTagPage(AttTagPageReqVO pageReqVO) {
-        // 资产打标过滤该资产已经打过标的信息
+        // Asset tagging - filter out assets already tagged
         if (pageReqVO.getAeestId() != null) {
             LambdaQueryWrapperX<AttTagAssetRelDO> attTagAssetRelDOLambdaQueryWrapperX = new LambdaQueryWrapperX<>();
             attTagAssetRelDOLambdaQueryWrapperX.eqIfPresent(AttTagAssetRelDO::getAssetId, pageReqVO.getAeestId());
@@ -104,9 +104,9 @@ public class AttTagServiceImpl extends ServiceImpl<AttTagMapper, AttTagDO> imple
 
     @Override
     public int updateAttTag(AttTagSaveReqVO updateReqVO) {
-        // 相关校验
+        // Validate
 
-        // 更新标签管理
+        // Update Tag Management
         AttTagDO updateObj = BeanUtils.toBean(updateReqVO, AttTagDO.class);
         String catCode = updateObj.getCatCode();
         if(StringUtils.isNotEmpty(catCode)){
@@ -124,14 +124,14 @@ public class AttTagServiceImpl extends ServiceImpl<AttTagMapper, AttTagDO> imple
 
     @Override
     public int removeAttTag(Collection<Long> idList) {
-        // 批量删除标签管理
+        // Batch Delete Tag Management
         for (Long l : idList) {
             LambdaQueryWrapperX<AttTagAssetRelDO> queryWrapperX = new LambdaQueryWrapperX<>();
             queryWrapperX.eqIfPresent(AttTagAssetRelDO::getTagId, l);
             queryWrapperX.eqIfPresent(AttTagAssetRelDO::getDelFlag, 0);
             List<AttTagAssetRelDO> collect = attTagAssetRelService.list(queryWrapperX);
             if (collect != null && collect.size() > 0) {
-                throw new ServiceException("att.error.tag.asset.exists", "存在资产信息，不允许删除");
+                throw new ServiceException("att.error.tag.asset.exists", "存在资产信息，不允许Delete ");
             }
         }
 
@@ -169,19 +169,19 @@ public class AttTagServiceImpl extends ServiceImpl<AttTagMapper, AttTagDO> imple
                 .collect(Collectors.toMap(
                         AttTagDO::getId,
                         attTagDO -> attTagDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入标签管理数据
+     * Import Tag Management data
      *
-     * @param importExcelList 标签管理数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     *  importExcelList Tag Management data list
+     * @param isUpdateSupport Whether to support update; if already exists, update the data
+     *  operName Operator
+     *  @return Result
      */
     @Override
     public String importAttTag(List<AttTagRespVO> importExcelList, boolean isUpdateSupport, String operName) {
@@ -205,16 +205,16 @@ public class AttTagServiceImpl extends ServiceImpl<AttTagMapper, AttTagDO> imple
                             attTagMapper.updateById(attTagDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("att.import.update.success",
-                                    "数据更新成功，ID为 " + attTagId + " 的标签管理记录。", attTagId, "标签管理"));
+                                    "数据Update 成功，ID为 " + attTagId + " 的标签管理记录。", attTagId, "标签管理"));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("att.import.update.fail",
-                                    "数据更新失败，ID为 " + attTagId + " 的标签管理记录不存在。", attTagId, "标签管理"));
+                                    "数据Update 失败，ID为 " + attTagId + " 的标签管理记录不存在。", attTagId, "标签管理"));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("att.import.update.id.missing",
-                                "数据更新失败，某条记录的ID不存在。"));
+                                "数据Update 失败，某条记录的ID不存在。"));
                     }
                 } else {
                     QueryWrapper<AttTagDO> queryWrapper = new QueryWrapper<>();

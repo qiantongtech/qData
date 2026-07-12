@@ -46,7 +46,7 @@ import tech.qiantong.qdata.module.att.dal.dataobject.cat.AttDataDevCatDO;
 import tech.qiantong.qdata.module.att.service.cat.IAttDataDevCatService;
 
 /**
- * 数据开发类目管理Controller
+ * Data Development Category Management Controller
  *
  * @author qdata
  * @date 2025-03-11

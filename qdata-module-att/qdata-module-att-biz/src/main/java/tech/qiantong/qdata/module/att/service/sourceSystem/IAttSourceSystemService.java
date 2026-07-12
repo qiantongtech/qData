@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 来源系统Service接口
+ * Source System Service Interface
  *
  * @author qdata
  * @date 2026-04-03
@@ -38,72 +38,72 @@ import java.util.Map;
 public interface IAttSourceSystemService extends IService<AttSourceSystemDO> {
 
     /**
-     * 获得来源系统分页列表
+     * Get Source System paginated list
      *
-     * @param pageReqVO 分页请求
-     * @return 来源系统分页列表
+     * @param pageReqVO Page request
+     * @return Source System paginated list
      */
     PageResult<AttSourceSystemDO> getAttSourceSystemPage(AttSourceSystemPageReqVO pageReqVO);
 
     /**
-     * 创建来源系统
+     * Create Source System
      *
-     * @param createReqVO 来源系统信息
-     * @return 来源系统编号
+     * @param createReqVO Source System info
+     * @return Source System ID
      */
     Long createAttSourceSystem(AttSourceSystemSaveReqVO createReqVO);
 
     /**
-     * 更新来源系统
+     * Update Source System
      *
-     * @param updateReqVO 来源系统信息
+     * @param updateReqVO Source System info
      */
     int updateAttSourceSystem(AttSourceSystemSaveReqVO updateReqVO);
 
     /**
-     * 删除来源系统
+     * Delete Source System
      *
-     * @param idList 来源系统编号
+     * @param idList Source System ID list
      */
     int removeAttSourceSystem(Collection<Long> idList);
 
     /**
-     * 获得来源系统详情
+     * Get Source System details
      *
-     * @param id 来源系统编号
-     * @return 来源系统
+     * @param id Source System ID
+     * @return Source System
      */
     AttSourceSystemDO getAttSourceSystemById(Long id);
 
     /**
-     * 获得全部来源系统列表
+     * Get all Source System list
      *
-     * @return 来源系统列表
+     * @return Source System list
      */
     List<AttSourceSystemDO> getAttSourceSystemList();
 
     /**
-     * 获得全部来源系统列表(带状态)
+     * Get all Source System list (with status)
      *
-     * @return 来源系统列表
+     * @return Source System list
      */
     public List<AttSourceSystemDO> getAttSourceSystemListByValidFlag(Boolean validFlag);
 
     /**
-     * 获得全部来源系统 Map
+     * Get all Source System Map
      *
-     * @return 来源系统 Map
+     * @return Source System Map
      */
     Map<Long, AttSourceSystemDO> getAttSourceSystemMap();
 
 
     /**
-     * 导入来源系统数据
+     * Import Source System data
      *
-     * @param importExcelList 来源系统数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Source System data list
+     * @param isUpdateSupport Whether to support update; if already exists, update the data
+     * @param operName Operator
+     * @return Result
      */
     String importAttSourceSystem(List<AttSourceSystemRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

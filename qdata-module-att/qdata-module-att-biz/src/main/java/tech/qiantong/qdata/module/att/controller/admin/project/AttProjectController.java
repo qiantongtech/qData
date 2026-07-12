@@ -49,7 +49,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 项目Controller
+ * Project Controller
  *
  * @author shu
  * @date 2025-01-20
@@ -78,7 +78,7 @@ public class AttProjectController extends BaseController {
     }
 
     /**
-     * 获取用户列表排除当前项目已经存在的用户
+     * Get user list excluding users already in the current project
      */
     @PreAuthorize("@ss.hasPermi('att:project:list')")
     @PostMapping("/noProjectUser/list")

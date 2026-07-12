@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 /**
- * 数据元类目管理Service接口
+ * Data Element Category Management Service Interface
  *
  * @author qdata
  * @date 2025-01-20
@@ -37,77 +37,77 @@ import java.util.Map;
 public interface IAttDataElemCatService extends IService<AttDataElemCatDO> {
 
     /**
-     * 获得数据元类目管理分页列表
+     * Get Data Element Category Management paginated list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据元类目管理分页列表
+     * @param pageReqVO Page request
+     * @return Data Element Category Management paginated list
      */
     PageResult<AttDataElemCatDO> getAttDataElemCatPage(AttDataElemCatPageReqVO pageReqVO);
 
     /**
-     * 创建数据元类目管理
+     * Create Data Element Category Management
      *
-     * @param createReqVO 数据元类目管理信息
-     * @return 数据元类目管理编号
+     * @param createReqVO Data Element Category Management info
+     * @return Data Element Category Management ID
      */
     Long createAttDataElemCat(AttDataElemCatSaveReqVO createReqVO);
 
     /**
-     * 更新数据元类目管理
+     * Update Data Element Category Management
      *
-     * @param updateReqVO 数据元类目管理信息
+     * @param updateReqVO Data Element Category Management info
      */
     int updateAttDataElemCat(AttDataElemCatSaveReqVO updateReqVO);
 
     /**
-     * 删除数据元类目管理
+     * Delete Data Element Category Management
      *
-     * @param idList 数据元类目管理编号
+     * @param idList Data Element Category Management ID list
      */
     int removeAttDataElemCat(Collection<Long> idList);
 
     /**
-     * 获得数据元类目管理详情
+     * Get Data Element Category Management details
      *
-     * @param id 数据元类目管理编号
-     * @return 数据元类目管理
+     * @param id Data Element Category Management ID
+     * @return Data Element Category Management
      */
     AttDataElemCatDO getAttDataElemCatById(Long id);
 
     /**
-     * 获得全部数据元类目管理列表
+     * Get all Data Element Category Management list
      *
-     * @return 数据元类目管理列表
+     * @return Data Element Category Management list
      */
     List<AttDataElemCatDO> getAttDataElemCatList();
 
     /**
-     * 获得全部数据元类目管理列表
+     * Get all Data Element Category Management list
      *
-     * @return 数据元类目管理列表
+     * @return Data Element Category Management list
      */
     List<AttDataElemCatDO> getAttDataElemCatList(AttDataElemCatPageReqVO reqVO);
 
     /**
-     * 获得全部数据元类目管理 Map
+     * Get all Data Element Category Management Map
      *
-     * @return 数据元类目管理 Map
+     * @return Data Element Category Management Map
      */
     Map<Long, AttDataElemCatDO> getAttDataElemCatMap();
 
 
     /**
-     * 导入数据元类目管理数据
+     * Import Data Element Category Management data
      *
-     * @param importExcelList 数据元类目管理数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Data Element Category Management data list
+     * @param isUpdateSupport Whether to support update; if already exists, update the data
+     * @param operName Operator
+     * @return Result
      */
     String importAttDataElemCat(List<AttDataElemCatRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
     /**
-     * 生成code
+     * Generate code
      *
      * @param parentId
      * @param parentCode

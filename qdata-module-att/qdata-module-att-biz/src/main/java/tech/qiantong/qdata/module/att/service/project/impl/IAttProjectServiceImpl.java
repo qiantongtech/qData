@@ -72,7 +72,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 项目Service业务层处理
+ * Project Service business layer processing
  *
  * @author shu
  * @date 2025-01-20
@@ -125,15 +125,15 @@ public class IAttProjectServiceImpl extends ServiceImpl<AttProjectMapper, AttPro
         AttProjectDO dictType = BeanUtils.toBean(createReqVO, AttProjectDO.class);
         dictType.setCode(dsProjectRespDTO.getData().getCode().toString());
         try {
-            // 新增项目管理数据
+            // Create project management data
             attProjectMapper.insert(dictType);
             if (dictType.getManagerId() != null) {
-                // 新增项目与用户关联数据
+                // Create project-user relationship data
                 AttProjectUserRelDO attProjectUserRelDO = new AttProjectUserRelDO();
                 attProjectUserRelDO.setProjectId(dictType.getId());
                 attProjectUserRelDO.setUserId(dictType.getManagerId());
                 attProjectUserRelMapper.insert(attProjectUserRelDO);
-                // 查询内置角色表
+                // Query built-in role table
                 SysRole sysRole = new SysRole();
                 sysRole.setProjectId(-1L);
                 List<SysRole> roleList = sysRoleMapper.selectRoleList(sysRole);
@@ -182,10 +182,10 @@ public class IAttProjectServiceImpl extends ServiceImpl<AttProjectMapper, AttPro
                 }
             }
         }catch (Exception e){
-            // 如果发送报错就删除ds里面的数据
+            // If error occurs, delete data from ds
             dsProjectService.deleteProject(dsProjectRespDTO.getData().getCode());
             e.printStackTrace();
-            // 手动回滚事务
+            // Manual transaction rollback
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return -2L;
         }
@@ -195,7 +195,7 @@ public class IAttProjectServiceImpl extends ServiceImpl<AttProjectMapper, AttPro
 
     @Override
     public int updateAttProject(AttProjectSaveReqVO updateReqVO) {
-        // 相关校验
+        // Validate
         DsProjectUpdateReqDTO dsProjectUpdateReqDTO = new DsProjectUpdateReqDTO();
         dsProjectUpdateReqDTO.setProjectName(updateReqVO.getName());
         dsProjectUpdateReqDTO.setProjectCode(Long.valueOf(updateReqVO.getCode()));
@@ -204,16 +204,16 @@ public class IAttProjectServiceImpl extends ServiceImpl<AttProjectMapper, AttPro
         if (dsProjectRespDTO.getCode() != 0) {
             return -1;
         }
-        // 更新项目
+        // Update project
         AttProjectDO updateObj = BeanUtils.toBean(updateReqVO, AttProjectDO.class);
         int i = -1;
         try {
             i = attProjectMapper.updateById(updateObj);
         }catch (Exception e){
-            // 如果发送报错就删除ds里面的数据
+            // If error occurs, delete data from ds
             dsProjectService.deleteProject(dsProjectRespDTO.getData().getCode());
             e.printStackTrace();
-            // 手动回滚事务
+            // Manual transaction rollback
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         }
         return i;
@@ -232,12 +232,12 @@ public class IAttProjectServiceImpl extends ServiceImpl<AttProjectMapper, AttPro
         for (AttProjectDO attProjectDO : projectDOList) {
             DsProjectDeleteRespDTO dsProjectDeleteRespDTO = dsProjectService.deleteProject(Long.valueOf(attProjectDO.getCode()));
             if (dsProjectDeleteRespDTO.getCode() != 0) {
-                // 手动回滚事务
+                // Manual transaction rollback
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 return -2;
             }
         }
-        // 批量删除项目
+        // Batch delete project
         return i;
     }
 
@@ -260,17 +260,17 @@ public class IAttProjectServiceImpl extends ServiceImpl<AttProjectMapper, AttPro
                 .collect(Collectors.toMap(
                         AttProjectDO::getId,
                         attProjectDO -> attProjectDO,
-                        // 保留已存在的值
+                        // Keep existing values
                         (existing, replacement) -> existing));
     }
 
     /**
-     * 导入项目数据
+     * Import project data
      *
-     * @param importExcelList 项目数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList project data list
+     * @param isUpdateSupport Whether to support update; if already exists, update the data
+     * @param operName Operator
+     * @return Result
      */
     @Override
     public String importAttProject(List<AttProjectRespVO> importExcelList, boolean isUpdateSupport, String operName) {
@@ -294,16 +294,16 @@ public class IAttProjectServiceImpl extends ServiceImpl<AttProjectMapper, AttPro
                             attProjectMapper.updateById(attProjectDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("att.import.update.success",
-                                    "数据更新成功，ID为 " + attProjectId + " 的项目记录。", attProjectId, "项目"));
+                                    "数据Update 成功，ID为 " + attProjectId + " 的项目记录。", attProjectId, "项目"));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("att.import.update.fail",
-                                    "数据更新失败，ID为 " + attProjectId + " 的项目记录不存在。", attProjectId, "项目"));
+                                    "数据Update 失败，ID为 " + attProjectId + " 的项目记录不存在。", attProjectId, "项目"));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("att.import.update.id.missing",
-                                "数据更新失败，某条记录的ID不存在。"));
+                                "数据Update 失败，某条记录的ID不存在。"));
                     }
                 } else {
                     QueryWrapper<AttProjectDO> queryWrapper = new QueryWrapper<>();
@@ -343,9 +343,9 @@ public class IAttProjectServiceImpl extends ServiceImpl<AttProjectMapper, AttPro
     }
 
     /**
-     * 获取当前用户是非具备用户添加和项目管理员
+     * Check if current user has user-add and project-admin permissions
      *
-     * @param userId 用户ID
+     * @param userId User ID
      * @return
      */
     @Override
@@ -370,9 +370,9 @@ public class IAttProjectServiceImpl extends ServiceImpl<AttProjectMapper, AttPro
     }
 
     /**
-     * 查询当前用户所属的项目列表
+     * Query project list belonging to current user
      *
-     * @param userId 用户id
+     * @param userId User ID
      * @return
      */
     @Override
@@ -395,7 +395,7 @@ public class IAttProjectServiceImpl extends ServiceImpl<AttProjectMapper, AttPro
     }
 
     /**
-     * 获取用户列表排除当前项目已经存在的用户
+     * Get user list excluding users already in current project
      */
     @Override
     public List<SysUser> selectNoProjectUserList(AttSysUserReqVO user) {

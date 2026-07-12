@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.att.api.Tag.dto;
 import lombok.Data;
 
 /**
- * 标签管理 DTO 对象 ATT_TAG
+ * Tag Management DTO ATT_TAG
  *
  * @author qdata
  * @date 2025-07-11
@@ -34,37 +34,37 @@ public class AttTagReqDTO {
     /** ID */
     private Long id;
 
-    /** 编码 */
+    /** Code */
     private String code;
 
-    /** 名称 */
+    /** Name */
     private String name;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 类目编码 */
+    /** Category Code */
     private String catCode;
 
-    /** 资产数量 */
+    /** Asset Count */
     private Long aeestCount;
 
-    /** 状态 */
+    /** Status */
     private String status;
 
-    /** 扩展信息别名 */
+    /** Extended Info Alias */
     private String allas;
 
-    /** 近义词 */
+    /** Near Synonyms */
     private String nearSynonyms;
 
-    /** 同义词 */
+    /** Synonyms */
     private String synonyms;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
 

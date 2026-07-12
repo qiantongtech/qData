@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.att.dal.dataobject.client.AttClientDO;
 import java.util.List;
 
 /**
- * 应用管理 Convert
+ * App Management Convert
  *
  * @author qdata
  * @date 2025-02-18
@@ -38,29 +38,29 @@ public interface AttClientConvert {
     AttClientConvert INSTANCE = Mappers.getMapper(AttClientConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param attClientPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param attClientPageReqVO Request parameters
      * @return AttClientDO
      */
      AttClientDO convertToDO(AttClientPageReqVO attClientPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param attClientSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param attClientSaveReqVO Save request parameters
      * @return AttClientDO
      */
      AttClientDO convertToDO(AttClientSaveReqVO attClientSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param attClientDO 实体对象
+     * Convert DO to RespVO
+     * @param attClientDO Entity object
      * @return AttClientRespVO
      */
      AttClientRespVO convertToRespVO(AttClientDO attClientDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param attClientDOList 实体对象列表
+     * Convert DOList to RespVOList
+     * @param attClientDOList Entity object list
      * @return List<AttClientRespVO>
      */
      List<AttClientRespVO> convertToRespVOList(List<AttClientDO> attClientDOList);

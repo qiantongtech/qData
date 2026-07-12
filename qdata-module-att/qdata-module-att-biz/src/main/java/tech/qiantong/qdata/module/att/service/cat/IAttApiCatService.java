@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 /**
- * 数据服务类目管理Service接口
+ * Data Service Category Management Service Interface
  *
  * @author qdata
  * @date 2025-03-11
@@ -37,77 +37,77 @@ import java.util.Map;
 public interface IAttApiCatService extends IService<AttApiCatDO> {
 
     /**
-     * 获得数据服务类目管理分页列表
+     * Get Data Service Category Management paginated list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据服务类目管理分页列表
+     * @param pageReqVO Page request
+     *  Data Service Category Management paginated list
      */
     PageResult<AttApiCatDO> getAttApiCatPage(AttApiCatPageReqVO pageReqVO);
 
     /**
-     * 创建数据服务类目管理
+     * Create Data Service Category Management
      *
-     * @param createReqVO 数据服务类目管理信息
-     * @return 数据服务类目管理编号
+     * @param createReqVO Data Service Category Management info
+     *  Data Service Category Management ID
      */
     Long createAttApiCat(AttApiCatSaveReqVO createReqVO);
 
     /**
-     * 更新数据服务类目管理
+     * Update Data Service Category Management
      *
-     * @param updateReqVO 数据服务类目管理信息
+     * @param updateReqVO Data Service Category Management info
      */
     int updateAttApiCat(AttApiCatSaveReqVO updateReqVO);
 
     /**
-     * 删除数据服务类目管理
+     * Delete Data Service Category Management
      *
-     * @param idList 数据服务类目管理编号
+     * @param idList Data Service Category Management ID list
      */
     int removeAttApiCat(Collection<Long> idList);
 
     /**
-     * 获得数据服务类目管理详情
+     * Get Data Service Category Management details
      *
-     * @param id 数据服务类目管理编号
-     * @return 数据服务类目管理
+     * @param id Data Service Category Management ID
+     *  Data Service Category Management
      */
     AttApiCatDO getAttApiCatById(Long id);
 
     /**
-     * 获得全部数据服务类目管理列表
+     * Get all Data Service Category Management list
      *
-     * @return 数据服务类目管理列表
+     *  Data Service Category Management list
      */
     List<AttApiCatDO> getAttApiCatList();
 
     /**
-     * 获得全部数据服务类目管理列表
+     * Get all Data Service Category Management list
      *
-     * @return 数据服务类目管理列表
+     *  Data Service Category Management list
      */
     List<AttApiCatDO> getAttApiCatList(AttApiCatPageReqVO pageReqVO);
 
     /**
-     * 获得全部数据服务类目管理 Map
+     * Get all Data Service Category Management Map
      *
-     * @return 数据服务类目管理 Map
+     *  Data Service Category Management Map
      */
     Map<Long, AttApiCatDO> getAttApiCatMap();
 
 
     /**
-     * 导入数据服务类目管理数据
+     * Import Data Service Category Management data
      *
-     * @param importExcelList 数据服务类目管理数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Data Service Category Management data list
+     * @param isUpdateSupport Whether to support update; if already exists, update the data
+     * @param operName Operator
+     *  Result
      */
     String importAttApiCat(List<AttApiCatRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
     /**
-     * 生成code
+     * Generate code
      *
      * @param parentId
      * @param parentCode

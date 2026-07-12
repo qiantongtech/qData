@@ -32,14 +32,14 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * Swagger 接口文档国际化
- * 运行时从 messages*.properties 资源文件读取 @Tag name 和 @Operation summary 的翻译
+ * Swagger API documentation internationalization
+ * Reads translations for @Tag name and @Operation summary from messages*.properties resource files at runtime
  *
- * i18n key 约定：直接使用 @Operation(summary) 或 @Tag(name) 的原始值作为 key
+ * i18n key convention: use the original value of @Operation(summary) or @Tag(name) directly as the key
  *
- * 示例：
- *   @Operation(summary = "Query Role List")   ← messages.properties key
- *   @Tag(name = "Role Management")            ← messages.properties key
+ * Example:
+ *   @Operation(summary = "Query Role List")   <-- messages.properties key
+ *   @Tag(name = "Role Management")            <-- messages.properties key
  *
  *   messages_zh_CN.properties:
  *     Query Role List=查询角色列表
@@ -52,7 +52,7 @@ public class SwaggerI18nCustomizer implements GlobalOpenApiCustomizer {
 
     @Override
     public void customise(OpenAPI openApi) {
-        // 翻译 Tags
+        // Translate Tags
         if (openApi.getTags() != null) {
             for (Tag tag : openApi.getTags()) {
                 if (tag.getName() != null) {
@@ -66,7 +66,7 @@ public class SwaggerI18nCustomizer implements GlobalOpenApiCustomizer {
             }
         }
 
-        // 翻译 Operations
+        // Translate Operations
         Map<String, PathItem> paths = openApi.getPaths();
         if (paths != null) {
             for (PathItem pathItem : paths.values()) {

@@ -23,7 +23,7 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 数据资产文档类目管理 Request VO 对象 ATT_DOC_CAT
+ * Data Asset Document Category Management Request VO ATT_DOC_CAT
  *
  * @author qdata
  * @date 2025-04-10

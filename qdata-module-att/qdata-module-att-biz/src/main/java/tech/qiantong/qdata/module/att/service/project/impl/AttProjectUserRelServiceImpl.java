@@ -47,7 +47,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * 项目与用户关联关系Service业务层处理
+ * Project-User Relationship Service business layer processing
  *
  * @author qdata
  * @date 2025-02-11
@@ -79,18 +79,18 @@ public class AttProjectUserRelServiceImpl extends ServiceImpl<AttProjectUserRelM
 
     @Override
     public int updateAttProjectUserRel(AttProjectUserRelSaveReqVO updateReqVO) {
-        // 相关校验
+        // Validate
 
-        // 更新项目与用户关联关系
+        // Update project-user relationship
         AttProjectUserRelDO updateObj = BeanUtils.toBean(updateReqVO, AttProjectUserRelDO.class);
         return attProjectUserRelMapper.updateById(updateObj);
     }
 
     @Override
     public int updateUserListAndRoleList(AttProjectUserRelSaveReqVO updateReqVO) {
-        // 相关校验
+        // Validate
 
-        // 更新项目与用户关联关系
+        // Update project-user relationship
         SysRole sysRole = new SysRole();
         sysRole.setProjectId(updateReqVO.getProjectId());
         List<SysRole> sysRoleList = sysRoleMapper.selectRoleList(sysRole);
@@ -140,7 +140,7 @@ public class AttProjectUserRelServiceImpl extends ServiceImpl<AttProjectUserRelM
         if (!userRoleList.isEmpty()){
             sysUserRoleMapper.deleteUserRoleList(userRoleList);
         }
-        // 批量删除项目与用户关联关系
+        // Batch delete project-user relationship
         return attProjectUserRelMapper.deleteBatchIds(idList);
     }
 
@@ -161,19 +161,19 @@ public class AttProjectUserRelServiceImpl extends ServiceImpl<AttProjectUserRelM
                 .collect(Collectors.toMap(
                         AttProjectUserRelDO::getId,
                         attProjectUserRelDO -> attProjectUserRelDO,
-                        // 保留已存在的值
+                        // Keep existing values
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入项目与用户关联关系数据
+     * Import project-user relationship data
      *
-     * @param importExcelList 项目与用户关联关系数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList project-user relationship data list
+     * @param isUpdateSupport Whether to support update; if already exists, update the data
+     * @param operName Operator
+     * @return Result
      */
     @Override
     public String importAttProjectUserRel(List<AttProjectUserRelRespVO> importExcelList, boolean isUpdateSupport, String operName) {
@@ -197,16 +197,16 @@ public class AttProjectUserRelServiceImpl extends ServiceImpl<AttProjectUserRelM
                             attProjectUserRelMapper.updateById(attProjectUserRelDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("att.import.update.success",
-                                    "数据更新成功，ID为 " + attProjectUserRelId + " 的项目与用户关联关系记录。", attProjectUserRelId, "项目与用户关联关系"));
+                                    "数据Update 成功，ID为 " + attProjectUserRelId + " 的项目与用户关联关系记录。", attProjectUserRelId, "项目与用户关联关系"));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("att.import.update.fail",
-                                    "数据更新失败，ID为 " + attProjectUserRelId + " 的项目与用户关联关系记录不存在。", attProjectUserRelId, "项目与用户关联关系"));
+                                    "数据Update 失败，ID为 " + attProjectUserRelId + " 的项目与用户关联关系记录不存在。", attProjectUserRelId, "项目与用户关联关系"));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("att.import.update.id.missing",
-                                "数据更新失败，某条记录的ID不存在。"));
+                                "数据Update 失败，某条记录的ID不存在。"));
                     }
                 } else {
                     QueryWrapper<AttProjectUserRelDO> queryWrapper = new QueryWrapper<>();
@@ -247,10 +247,9 @@ public class AttProjectUserRelServiceImpl extends ServiceImpl<AttProjectUserRelM
 
 
     /**
-     * 创建项目前端传用户集合和角色集合
+     * Create project-user and role list from frontend
      *
-     * @param attProject 项目信息
-     * @return 项目编号
+     * @param attProject Project info with user and role ID lists
      */
     @Override
     public Boolean createUserListAndRoleList(AttProjectUserRelSaveReqVO attProject) {
@@ -274,7 +273,7 @@ public class AttProjectUserRelServiceImpl extends ServiceImpl<AttProjectUserRelM
     }
 
     /**
-     * 获取项目与用户关联关系详细信息包括角色信息
+     * Get project-user relationship details including role info
      *
      * @param id
      * @return

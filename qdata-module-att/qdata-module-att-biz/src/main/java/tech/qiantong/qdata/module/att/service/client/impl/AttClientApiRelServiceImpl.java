@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 /**
- * 应用API服务关联Service业务层处理
+ * App API Service Relation service layer processing
  *
  * @author FXB
  * @date 2025-08-21
@@ -68,15 +68,15 @@ public class AttClientApiRelServiceImpl  extends ServiceImpl<AttClientApiRelMapp
 
     @Override
     public int updateAttClientApiRel(AttClientApiRelSaveReqVO updateReqVO) {
-        // 相关校验
+        // Validation
 
-        // 更新应用API服务关联
+        // Update App API Service Relation
         AttClientApiRelDO updateObj = BeanUtils.toBean(updateReqVO, AttClientApiRelDO.class);
         return attClientApiRelMapper.updateById(updateObj);
     }
     @Override
     public int removeAttClientApiRel(Collection<Long> idList) {
-        // 批量删除应用API服务关联
+        // Batch delete App API Service Relation
         return attClientApiRelMapper.deleteBatchIds(idList);
     }
 
@@ -97,19 +97,19 @@ public class AttClientApiRelServiceImpl  extends ServiceImpl<AttClientApiRelMapp
                 .collect(Collectors.toMap(
                         AttClientApiRelDO::getId,
                         attClientApiRelDO -> attClientApiRelDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
         /**
-         * 导入应用API服务关联数据
+         * Import App API Service Relation data
          *
-         * @param importExcelList 应用API服务关联数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
+         *  importExcelList App API Service Relation data list
+         * @param isUpdateSupport Whether to support update; if already exists, update the data
+         * @param operName Operator
+         * @return Result
          */
         @Override
         public String importAttClientApiRel(List<AttClientApiRelRespVO> importExcelList, boolean isUpdateSupport, String operName) {
@@ -133,16 +133,16 @@ public class AttClientApiRelServiceImpl  extends ServiceImpl<AttClientApiRelMapp
                                 attClientApiRelMapper.updateById(attClientApiRelDO);
                                 successNum++;
                                 successMessages.add(MessageUtils.messageWithFallback("att.import.update.success",
-                                        "数据更新成功，ID为 " + attClientApiRelId + " 的应用API服务关联记录。", attClientApiRelId, "应用API服务关联"));
+                                        "数据Update 成功，ID为 " + attClientApiRelId + " 的应用API服务关联记录。", attClientApiRelId, "应用API服务关联"));
                             } else {
                                 failureNum++;
                                 failureMessages.add(MessageUtils.messageWithFallback("att.import.update.fail",
-                                        "数据更新失败，ID为 " + attClientApiRelId + " 的应用API服务关联记录不存在。", attClientApiRelId, "应用API服务关联"));
+                                        "数据Update 失败，ID为 " + attClientApiRelId + " 的应用API服务关联记录不存在。", attClientApiRelId, "应用API服务关联"));
                             }
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("att.import.update.id.missing",
-                                    "数据更新失败，某条记录的ID不存在。"));
+                                    "数据Update 失败，某条记录的ID不存在。"));
                         }
                     } else {
                         QueryWrapper<AttClientApiRelDO> queryWrapper = new QueryWrapper<>();

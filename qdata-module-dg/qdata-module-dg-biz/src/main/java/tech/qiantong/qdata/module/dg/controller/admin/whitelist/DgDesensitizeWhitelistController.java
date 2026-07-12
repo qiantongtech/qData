@@ -48,7 +48,7 @@ import tech.qiantong.qdata.module.dg.dal.dataobject.whitelist.DgDesensitizeWhite
 import tech.qiantong.qdata.module.dg.service.whitelist.IDgDesensitizeWhitelistService;
 
 /**
- * 脱敏白名单Controller
+ * Desensitization Whitelist Controller
  *
  * @author qdata
  * @date 2026-04-09

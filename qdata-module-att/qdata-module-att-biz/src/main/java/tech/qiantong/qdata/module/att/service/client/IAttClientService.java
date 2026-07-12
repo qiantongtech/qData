@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 /**
- * 应用管理Service接口
+ * App Management Service Interface
  *
  * @author qdata
  * @date 2025-02-18
@@ -37,65 +37,65 @@ import java.util.Map;
 public interface IAttClientService extends IService<AttClientDO> {
 
     /**
-     * 获得应用管理分页列表
+     * Get App Management paginated list
      *
-     * @param pageReqVO 分页请求
-     * @return 应用管理分页列表
+     *  pageReqVO Page request
+     *  App Management paginated list
      */
     PageResult<AttClientDO> getAttClientPage(AttClientPageReqVO pageReqVO);
 
     /**
-     * 创建应用管理
+     * Create App Management
      *
-     * @param createReqVO 应用管理信息
-     * @return 应用管理编号
+     *  createReqVO App Management info
+     *  App Management ID
      */
     Long createAttClient(AttClientSaveReqVO createReqVO);
 
     /**
-     * 更新应用管理
+     * Update App Management
      *
-     * @param updateReqVO 应用管理信息
+     *  updateReqVO App Management info
      */
     int updateAttClient(AttClientSaveReqVO updateReqVO);
 
     /**
-     * 删除应用管理
+     * Delete App Management
      *
-     * @param idList 应用管理编号
+     *  idList App Management ID list
      */
     int removeAttClient(Collection<Long> idList);
 
     /**
-     * 获得应用管理详情
+     * Get App Management details
      *
-     * @param id 应用管理编号
-     * @return 应用管理
+     *  id App Management ID
+     *  App Management
      */
     AttClientDO getAttClientById(Long id);
 
     /**
-     * 获得全部应用管理列表
+     * Get all App Management list
      *
-     * @return 应用管理列表
+     *  App Management list
      */
     List<AttClientDO> getAttClientList();
 
     /**
-     * 获得全部应用管理 Map
+     * Get all App Management Map
      *
-     * @return 应用管理 Map
+     * @return App Management Map
      */
     Map<Long, AttClientDO> getAttClientMap();
 
 
     /**
-     * 导入应用管理数据
+     * Import App Management data
      *
-     * @param importExcelList 应用管理数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList App Management data list
+     * @param isUpdateSupport Whether to support update; if already exists, update the data
+     * @param operName Operator
+     * @return Result
      */
     String importAttClient(List<AttClientRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

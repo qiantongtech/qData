@@ -23,7 +23,7 @@ import org.springframework.stereotype.Repository;
 
 /**
  * <P>
- * 用途:
+ * Purpose: 
  * </p>
  *
  * @author: FXB

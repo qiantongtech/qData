@@ -44,7 +44,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 来源系统Service业务层处理
+ * Source System Service business layer processing
  *
  * @author qdata
  * @date 2026-04-03
@@ -70,19 +70,19 @@ public class AttSourceSystemServiceImpl  extends ServiceImpl<AttSourceSystemMapp
 
     @Override
     public int updateAttSourceSystem(AttSourceSystemSaveReqVO updateReqVO) {
-        // 相关校验
+        // Validate
 
-        // 更新来源系统
+        // Update Source System
         AttSourceSystemDO updateObj = BeanUtils.toBean(updateReqVO, AttSourceSystemDO.class);
         return attSourceSystemMapper.updateById(updateObj);
     }
     @Override
     public int removeAttSourceSystem(Collection<Long> idList) {
-        //判断validFlag是否为true
+        // Check if validFlag is true
         if (idList.stream().anyMatch(id -> attSourceSystemMapper.selectById(id).getValidFlag() == true)) {
-            throw new ServiceException("att.error.source.system.enabled", "已启用的来源系统，不能删除！");
+            throw new ServiceException("att.error.source.system.enabled", "已启用的来源系统，不能Delete ！");
         }
-        // 批量删除来源系统
+        // Batch Delete Source System
         return attSourceSystemMapper.deleteBatchIds(idList);
     }
 
@@ -108,19 +108,19 @@ public class AttSourceSystemServiceImpl  extends ServiceImpl<AttSourceSystemMapp
                 .collect(Collectors.toMap(
                         AttSourceSystemDO::getId,
                         attSourceSystemDO -> attSourceSystemDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
         /**
-         * 导入来源系统数据
+         * Import Source System data
          *
-         * @param importExcelList 来源系统数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
+         *  importExcelList Source System data list
+         * @param isUpdateSupport Whether to support update; if already exists, update the data
+         *  operName Operator
+         *  @return Result
          */
         @Override
         public String importAttSourceSystem(List<AttSourceSystemRespVO> importExcelList, boolean isUpdateSupport, String operName) {
@@ -144,16 +144,16 @@ public class AttSourceSystemServiceImpl  extends ServiceImpl<AttSourceSystemMapp
                                 attSourceSystemMapper.updateById(attSourceSystemDO);
                                 successNum++;
                                 successMessages.add(MessageUtils.messageWithFallback("att.import.update.success",
-                                        "数据更新成功，ID为 " + attSourceSystemId + " 的来源系统记录。", attSourceSystemId, "来源系统"));
+                                        "数据Update 成功，ID为 " + attSourceSystemId + " 的来源系统记录。", attSourceSystemId, "来源系统"));
                             } else {
                                 failureNum++;
                                 failureMessages.add(MessageUtils.messageWithFallback("att.import.update.fail",
-                                        "数据更新失败，ID为 " + attSourceSystemId + " 的来源系统记录不存在。", attSourceSystemId, "来源系统"));
+                                        "数据Update 失败，ID为 " + attSourceSystemId + " 的来源系统记录不存在。", attSourceSystemId, "来源系统"));
                             }
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("att.import.update.id.missing",
-                                    "数据更新失败，某条记录的ID不存在。"));
+                                    "数据Update 失败，某条记录的ID不存在。"));
                         }
                     } else {
                         QueryWrapper<AttSourceSystemDO> queryWrapper = new QueryWrapper<>();

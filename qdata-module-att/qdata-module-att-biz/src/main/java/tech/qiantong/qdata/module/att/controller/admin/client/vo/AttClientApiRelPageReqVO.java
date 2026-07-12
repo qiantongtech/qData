@@ -25,7 +25,7 @@ import tech.qiantong.qdata.common.core.page.PageParam;
 import java.util.Date;
 
 /**
- * 应用API服务关联 Request VO 对象 ATT_CLIENT_API_REL
+ * App API Service Association Request VO ATT_CLIENT_API_REL
  *
  * @author FXB
  * @date 2025-08-21

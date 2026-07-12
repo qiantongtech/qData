@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 清洗规则Service接口
+ * Cleaning Rule Service Interface
  *
  * @author qdata
  * @date 2025-01-20
@@ -39,72 +39,72 @@ import java.util.Map;
 public interface IAttCleanRuleService extends IService<AttCleanRuleDO> {
 
     /**
-     * 获得清洗规则分页列表
+     * Get Cleaning Rule paginated list
      *
-     * @param pageReqVO 分页请求
-     * @return 清洗规则分页列表
+     * @param pageReqVO Page request
+     * @return Cleaning Rule paginated list
      */
     PageResult<AttCleanRuleDO> getAttCleanRulePage(AttCleanRulePageReqVO pageReqVO);
 
     /**
-     * 创建清洗规则
+     * Create Cleaning Rule
      *
-     * @param createReqVO 清洗规则信息
-     * @return 清洗规则编号
+     * @param createReqVO Cleaning Rule info
+     * @return Cleaning Rule ID
      */
     Long createAttCleanRule(AttCleanRuleSaveReqVO createReqVO);
 
     /**
-     * 更新清洗规则
+     * Update Cleaning Rule
      *
-     * @param updateReqVO 清洗规则信息
+     * @param updateReqVO Cleaning Rule info
      */
     int updateAttCleanRule(AttCleanRuleSaveReqVO updateReqVO);
 
     /**
-     * 删除清洗规则
+     * Delete Cleaning Rule
      *
-     * @param idList 清洗规则编号
+     * @param idList Cleaning Rule ID list
      */
     int removeAttCleanRule(Collection<Long> idList);
 
     /**
-     * 获得清洗规则详情
+     * Get Cleaning Rule details
      *
-     * @param id 清洗规则编号
-     * @return 清洗规则
+     * @param id Cleaning Rule ID
+     * @return Cleaning Rule
      */
     AttCleanRuleDO getAttCleanRuleById(Long id);
 
     /**
-     * 获得全部清洗规则列表
+     * Get all Cleaning Rule list
      *
-     * @return 清洗规则列表
+     * @return Cleaning Rule list
      */
     List<AttCleanRuleDO> getAttCleanRuleList();
     List<AttCleanRuleRespVO> getAttCleanRuleList(AttCleanRulePageReqVO attCleanRule);
 
     /**
-     * 获得全部清洗规则 Map
+     * Get all Cleaning Rule Map
      *
-     * @return 清洗规则 Map
+     * @return Cleaning Rule Map
      */
     Map<Long, AttCleanRuleDO> getAttCleanRuleMap();
 
     /**
-     * 导入清洗规则数据
+     * Import Cleaning Rule data
      *
-     * @param importExcelList 清洗规则数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Cleaning Rule data list
+     * @param isUpdateSupport Whether update is supported; if already exists, update the data
+     * @param operName        Operator
+     * @return Result
      */
     String importAttCleanRule(List<AttCleanRuleRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
     /**
-     * 获取清洗规则树形结构
+     * Get Cleaning Rule tree structure
      *
-     * @return 树形结构列表
+     * @return Tree structure list
      */
     List<AttCleanRuleRespVO> getAttCleanRuleTree(Long dataElemId);
 

@@ -23,7 +23,7 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 标签管理 Request VO 对象 ATT_TAG
+ * Tag Management Request VO ATT_TAG
  *
  * @author qdata
  * @date 2025-07-11

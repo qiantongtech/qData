@@ -25,14 +25,14 @@ import lombok.*;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 数据资产类目管理 DO 对象 ATT_ASSET_CAT
+ * Data Asset Category Management DO ATT_ASSET_CAT
  *
  * @author qdata
  * @date 2025-01-20
  */
 @Data
 @TableName(value = "ATT_ASSET_CAT")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Can be omitted for MySQL and similar databases.
 // @KeySequence("ATT_ASSET_CAT_seq")
 @Builder
 @NoArgsConstructor
@@ -45,25 +45,25 @@ public class AttAssetCatDO extends BaseEntity {
     /** ID */
     private Long id;
 
-    /** 类别名称 */
+    /** Category Name */
     private String name;
 
-    /** 关联上级ID */
+    /** Parent ID */
     private Long parentId;
 
-    /** 类别排序 */
+    /** Sort Order */
     private Long sortOrder;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 层级编码 */
+    /** Level Code */
     private String code;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     @TableLogic
     private Boolean delFlag;
 

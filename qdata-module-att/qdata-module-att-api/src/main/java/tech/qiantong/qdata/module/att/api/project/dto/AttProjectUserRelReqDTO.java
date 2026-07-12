@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.att.api.project.dto;
 import lombok.Data;
 
 /**
- * 项目与用户关联关系 DTO 对象 ATT_PROJECT_USER_REL
+ * Project-User Relation DTO ATT_PROJECT_USER_REL
  *
  * @author qdata
  * @date 2025-02-11
@@ -34,16 +34,16 @@ public class AttProjectUserRelReqDTO {
     /** ID */
     private Long id;
 
-    /** 项目空间ID */
+    /** Project Space ID */
     private Long projectId;
 
-    /** 用户ID */
+    /** User ID */
     private Long userId;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Deletion Flag */
     private Boolean delFlag;
 
 

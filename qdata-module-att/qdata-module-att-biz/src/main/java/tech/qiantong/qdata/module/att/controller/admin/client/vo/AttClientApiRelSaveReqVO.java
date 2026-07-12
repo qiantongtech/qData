@@ -27,7 +27,7 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
- * 应用API服务关联 创建/修改 Request VO ATT_CLIENT_API_REL
+ * App API Service Association Create/Update Request VO ATT_CLIENT_API_REL
  *
  * @author FXB
  * @date 2025-08-21

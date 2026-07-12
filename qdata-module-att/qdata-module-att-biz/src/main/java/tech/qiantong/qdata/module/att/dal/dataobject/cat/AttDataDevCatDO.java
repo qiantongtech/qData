@@ -23,14 +23,14 @@ import lombok.*;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 数据开发类目管理 DO 对象 ATT_DATA_DEV_CAT
+ * Data Development Category Management DO ATT_DATA_DEV_CAT
  *
  * @author qdata
  * @date 2025-03-11
  */
 @Data
 @TableName(value = "ATT_DATA_DEV_CAT")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Can be omitted for MySQL and similar databases.
 // @KeySequence("ATT_DATA_DEV_CAT_seq")
 @Builder
 @NoArgsConstructor
@@ -44,31 +44,31 @@ public class AttDataDevCatDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 项目id */
+    /** Project ID */
     private Long projectId;
 
-    /** 项目code */
+    /** Project Code */
     private String projectCode;
 
-    /** 类别名称 */
+    /** Category Name */
     private String name;
 
-    /** 关联上级ID */
+    /** Parent ID */
     private Long parentId;
 
-    /** 类别排序 */
+    /** Sort Order */
     private Long sortOrder;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 层级编码 */
+    /** Level Code */
     private String code;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     @TableLogic
     private Boolean delFlag;
 

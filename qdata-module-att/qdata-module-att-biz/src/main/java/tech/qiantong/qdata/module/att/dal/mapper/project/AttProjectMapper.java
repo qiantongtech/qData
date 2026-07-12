@@ -31,7 +31,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 项目Mapper接口
+ * Project Mapper Interface
  *
  * @author shu
  * @date 2025-01-20
@@ -39,15 +39,15 @@ import java.util.Set;
 public interface AttProjectMapper extends BaseMapperX<AttProjectDO> {
 
     default PageResult<AttProjectDO> selectPage(AttProjectPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define sortable fields (prevent SQL injection, must match database column names)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 
-        // 构造动态查询条件
+        // Build dynamic query conditions
         return selectPage(reqVO, new LambdaQueryWrapperX<AttProjectDO>()
                 .likeIfPresent(AttProjectDO::getName, reqVO.getName())
-                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+                // If reqVO.getName() is not empty, add exact match condition for name (name = '<name>')
                 // .likeIfPresent(AttProjectDO::getName, reqVO.getName())
-                // 按照 createTime 字段降序排序
+                // Sort by createTime in descending order
 //                .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(), allowedColumns));
                 .orderByDesc(AttProjectDO::getCreateTime));
     }

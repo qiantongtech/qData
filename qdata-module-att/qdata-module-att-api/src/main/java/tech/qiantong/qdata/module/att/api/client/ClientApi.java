@@ -21,17 +21,17 @@ package tech.qiantong.qdata.module.att.api.client;
 import tech.qiantong.qdata.module.att.api.client.dto.AttClientRespDTO;
 
 /**
- * 应用 API 接口
+ * App API Interface
  *
  * @author Ming
  */
 public interface ClientApi {
 
     /**
-     * 获得应用信息
+     * Get app info
      *
-     * @param id 应用编号
-     * @return 应用信息
+     * @param id app ID
+     * @return app info
      */
     AttClientRespDTO getClient(Long id);
 }

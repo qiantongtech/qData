@@ -48,7 +48,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 稽查规则Controller
+ * Audit Rule Controller
  *
  * @author qdata
  * @date 2025-01-20

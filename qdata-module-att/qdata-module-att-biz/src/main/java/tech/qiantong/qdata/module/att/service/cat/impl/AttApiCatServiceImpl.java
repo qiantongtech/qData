@@ -49,7 +49,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * 数据服务类目管理Service业务层处理
+ * Data Service Category Management - Service business layer processing
  *
  * @author qdata
  * @date 2025-03-11
@@ -94,7 +94,7 @@ public class AttApiCatServiceImpl extends ServiceImpl<AttApiCatMapper, AttApiCat
                 throw new ServiceException("att.error.parent.disabled", "须先启用父级");
             }
         }
-        // 更新数据服务类目管理
+        // Update Data Service Category Management
         AttApiCatDO updateObj = BeanUtils.toBean(updateReqVO, AttApiCatDO.class);
         return attApiCatMapper.updateById(updateObj);
     }
@@ -105,10 +105,10 @@ public class AttApiCatServiceImpl extends ServiceImpl<AttApiCatMapper, AttApiCat
         for (AttApiCatDO catDO : attApiCatDOS) {
             Long countData = dsApiService.getCountByCatCode(catDO.getCode());
             if (countData > 0) {
-                throw new ServiceException("att.error.delete.api", "存在API服务，不允许删除");
+                throw new ServiceException("att.error.delete.api", "存在API服务，不允许Delete ");
             }
         }
-        // 批量删除数据服务类目管理
+        // Batch delete Data Service Category Management
         return attApiCatMapper.deleteBatchIds(idList);
     }
 
@@ -144,7 +144,7 @@ public class AttApiCatServiceImpl extends ServiceImpl<AttApiCatMapper, AttApiCat
                 .collect(Collectors.toMap(
                         AttApiCatDO::getId,
                         attApiCatDO -> attApiCatDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
@@ -153,12 +153,12 @@ public class AttApiCatServiceImpl extends ServiceImpl<AttApiCatMapper, AttApiCat
     public String createCode(Long parentId, String parentCode) {
         String categoryCode = null;
         /*
-         * 分成三种情况
-         * 1.数据库无数据 调用YouBianCodeUtil.getNextYouBianCode(null);
-         * 2.添加子节点，无兄弟元素 YouBianCodeUtil.getSubYouBianCode(parentCode,null);
-         * 3.添加子节点有兄弟元素 YouBianCodeUtil.getNextYouBianCode(lastCode);
+         * Three cases
+         * 1. No data in database, call YouBianCodeUtil.getNextYouBianCode(null);
+         * 2. Adding child node with no sibling elements: YouBianCodeUtil.getSubYouBianCode(parentCode, null);
+         * 3. Adding child node with sibling elements: YouBianCodeUtil.getNextYouBianCode(lastCode);
          * */
-        //找同类 确定上一个最大的code值
+        // Find siblings to determine the last largest code value
         LambdaQueryWrapper<AttApiCatDO> query = new LambdaQueryWrapper<AttApiCatDO>()
                 .eq(AttApiCatDO::getParentId, parentId)
                 .likeRight(StringUtils.isNotBlank(parentCode), AttApiCatDO::getCode, parentCode)
@@ -167,27 +167,27 @@ public class AttApiCatServiceImpl extends ServiceImpl<AttApiCatMapper, AttApiCat
         List<AttApiCatDO> list = baseMapper.selectList(query);
         if (list == null || list.size() == 0) {
             if (parentId == 0) {
-                //情况1
+                // Case 1
                 categoryCode = YouBianCodeUtil.getNextYouBianCode(null);
             } else {
-                //情况2
+                // Case 2
                 AttApiCatDO parent = baseMapper.selectById(parentId);
                 categoryCode = YouBianCodeUtil.getSubYouBianCode(parent.getCode(), null);
             }
         } else {
-            //情况3
+            // Case 3
             categoryCode = YouBianCodeUtil.getNextYouBianCode(list.get(0).getCode());
         }
         return categoryCode;
     }
 
     /**
-     * 导入数据服务类目管理数据
+     * Import Data Service Category Management data
      *
-     * @param importExcelList 数据服务类目管理数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     *  importExcelList Data Service Category Management data list
+     * @param isUpdateSupport Whether to support update; if already exists, update the data
+     *  operName Operator
+     *  Result
      */
     @Override
     public String importAttApiCat(List<AttApiCatRespVO> importExcelList, boolean isUpdateSupport, String operName) {
@@ -211,16 +211,16 @@ public class AttApiCatServiceImpl extends ServiceImpl<AttApiCatMapper, AttApiCat
                             attApiCatMapper.updateById(attApiCatDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("att.import.update.success",
-                                    "数据更新成功，ID为 " + attApiCatId + " 的数据服务类目管理记录。", attApiCatId, "数据服务类目管理"));
+                                    "数据Update 成功，ID为 " + attApiCatId + " 的数据服务类目管理记录。", attApiCatId, "数据服务类目管理"));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("att.import.update.fail",
-                                    "数据更新失败，ID为 " + attApiCatId + " 的数据服务类目管理记录不存在。", attApiCatId, "数据服务类目管理"));
+                                    "数据Update 失败，ID为 " + attApiCatId + " 的数据服务类目管理记录不存在。", attApiCatId, "数据服务类目管理"));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("att.import.update.id.missing",
-                                "数据更新失败，某条记录的ID不存在。"));
+                                "数据Update 失败，某条记录的ID不存在。"));
                     }
                 } else {
                     QueryWrapper<AttApiCatDO> queryWrapper = new QueryWrapper<>();

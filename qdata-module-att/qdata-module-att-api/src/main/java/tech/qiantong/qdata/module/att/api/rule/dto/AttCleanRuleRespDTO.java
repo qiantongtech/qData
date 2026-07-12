@@ -22,7 +22,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 
 /**
- * 清洗规则 DTO 对象 ATT_CLEAN_RULE
+ * Cleaning Rule DTO ATT_CLEAN_RULE
  *
  * @author qdata
  * @date 2025-01-20
@@ -32,31 +32,31 @@ public class AttCleanRuleRespDTO {
 
     private static final long serialVersionUID = 1L;
 
-    /** 规则ID */
+    /** Rule ID */
     private Long id;
 
-    /** 规则名称 */
+    /** Rule Name */
     private String name;
 
-    /** 规则类型 */
+    /** Rule Type */
     private String type;
 
-    /** 规则级别 */
+    /** Rule Level */
     private String level;
 
-    /** 示例 */
+    /** Example */
     private String example;
 
-    /** 规则描述 */
+    /** Rule Description */
     private String description;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
-    /** 类目编码 */
+    /** Category Code */
     private String catCode;
 
     @TableField(exist = false)

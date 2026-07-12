@@ -48,7 +48,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 清洗规则Controller
+ * Cleaning Rule Controller
  *
  * @author qdata
  * @date 2025-01-20

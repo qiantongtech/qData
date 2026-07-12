@@ -48,7 +48,7 @@ import tech.qiantong.qdata.module.att.service.rule.IAttCleanRuleService;
 import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
 
 /**
- * 清洗规则类目Service业务层处理
+ * Cleaning Rule Category - Service business layer processing
  *
  * @author qdata
  * @date 2025-08-11
@@ -92,19 +92,19 @@ public class AttCleanCatServiceImpl  extends ServiceImpl<AttCleanCatMapper,AttCl
             if (parent != null && Boolean.FALSE.equals(parent.getValidFlag())) {
                 throw new ServiceException("att.error.parent.disabled", "须先启用父级");
             }
-        }        // 更新清洗规则类目
+        }        // Update Cleaning Rule Category
         AttCleanCatDO updateObj = BeanUtils.toBean(updateReqVO, AttCleanCatDO.class);
         return attCleanCatMapper.updateById(updateObj);
     }
     @Override
     public int removeAttCleanCat(Long idList) {
-        // 批量删除清洗规则类目
+        // Batch delete Cleaning Rule Category
         int count = 0;
         AttCleanCatDO cat = baseMapper.selectById(idList);
 
-        //判断是否存在数据
+        // Check if data exists
         if (attCleanRuleService.getCount(cat.getCode()) > 0) {
-            throw new ServiceException("att.error.clean.delete", "存在清洗规则模型，不允许删除");
+            throw new ServiceException("att.error.clean.delete", "存在清洗规则模型，不允许Delete ");
         }
 
         if (cat != null) {
@@ -141,19 +141,19 @@ public class AttCleanCatServiceImpl  extends ServiceImpl<AttCleanCatMapper,AttCl
                 .collect(Collectors.toMap(
                         AttCleanCatDO::getId,
                         attCleanCatDO -> attCleanCatDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入清洗规则类目数据
+     * Import Cleaning Rule Category data
      *
-     * @param importExcelList 清洗规则类目数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     *  importExcelList Cleaning Rule Category data list
+     * @param isUpdateSupport Whether to support update; if already exists, update the data
+     *  operName Operator
+     *  Result
      */
     @Override
     public String importAttCleanCat(List<AttCleanCatRespVO> importExcelList, boolean isUpdateSupport, String operName) {
@@ -177,16 +177,16 @@ public class AttCleanCatServiceImpl  extends ServiceImpl<AttCleanCatMapper,AttCl
                             attCleanCatMapper.updateById(attCleanCatDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("att.import.update.success",
-                                    "数据更新成功，ID为 " + attCleanCatId + " 的清洗规则类目记录。", attCleanCatId, "清洗规则类目"));
+                                    "数据Update 成功，ID为 " + attCleanCatId + " 的清洗规则类目记录。", attCleanCatId, "清洗规则类目"));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("att.import.update.fail",
-                                    "数据更新失败，ID为 " + attCleanCatId + " 的清洗规则类目记录不存在。", attCleanCatId, "清洗规则类目"));
+                                    "数据Update 失败，ID为 " + attCleanCatId + " 的清洗规则类目记录不存在。", attCleanCatId, "清洗规则类目"));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("att.import.update.id.missing",
-                                "数据更新失败，某条记录的ID不存在。"));
+                                "数据Update 失败，某条记录的ID不存在。"));
                     }
                 } else {
                     QueryWrapper<AttCleanCatDO> queryWrapper = new QueryWrapper<>();
@@ -230,12 +230,12 @@ public class AttCleanCatServiceImpl  extends ServiceImpl<AttCleanCatMapper,AttCl
     public String createCode(Long parentId, String parentCode) {
         String categoryCode = null;
         /*
-         * 分成三种情况
-         * 1.数据库无数据 调用YouBianCodeUtil.getNextYouBianCode(null);
-         * 2.添加子节点，无兄弟元素 YouBianCodeUtil.getSubYouBianCode(parentCode,null);
-         * 3.添加子节点有兄弟元素 YouBianCodeUtil.getNextYouBianCode(lastCode);
+         * Three cases
+         * 1. No data in database, call YouBianCodeUtil.getNextYouBianCode(null);
+         * 2. Adding child node with no sibling elements: YouBianCodeUtil.getSubYouBianCode(parentCode, null);
+         * 3. Adding child node with sibling elements: YouBianCodeUtil.getNextYouBianCode(lastCode);
          * */
-        //找同类 确定上一个最大的code值
+        // Find siblings to determine the last largest code value
         LambdaQueryWrapper<AttCleanCatDO> query = new LambdaQueryWrapper<AttCleanCatDO>()
                 .eq(AttCleanCatDO::getParentId, parentId)
                 .likeRight(StringUtils.isNotBlank(parentCode), AttCleanCatDO::getCode, parentCode)
@@ -244,15 +244,15 @@ public class AttCleanCatServiceImpl  extends ServiceImpl<AttCleanCatMapper,AttCl
         List<AttCleanCatDO> list = baseMapper.selectList(query);
         if (list == null || list.size() == 0) {
             if (parentId == 0) {
-                //情况1
+                // Case 1
                 categoryCode = YouBianCodeUtil.getNextYouBianCode(null);
             } else {
-                //情况2
+                // Case 2
                 AttCleanCatDO parent = baseMapper.selectById(parentId);
                 categoryCode = YouBianCodeUtil.getSubYouBianCode(parent.getCode(), null);
             }
         } else {
-            //情况3
+            // Case 3
             categoryCode = YouBianCodeUtil.getNextYouBianCode(list.get(0).getCode());
         }
         return categoryCode;

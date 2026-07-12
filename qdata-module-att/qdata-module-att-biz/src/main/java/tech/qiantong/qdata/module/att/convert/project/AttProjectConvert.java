@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.att.dal.dataobject.project.AttProjectDO;
 import java.util.List;
 
 /**
- * 项目 Convert
+ * Project Convert
  *
  * @author shu
  * @date 2025-01-20
@@ -38,29 +38,29 @@ public interface AttProjectConvert {
     AttProjectConvert INSTANCE = Mappers.getMapper(AttProjectConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param attProjectPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param attProjectPageReqVO Request parameters
      * @return AttProjectDO
      */
      AttProjectDO convertToDO(AttProjectPageReqVO attProjectPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param attProjectSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param attProjectSaveReqVO Save request parameters
      * @return AttProjectDO
      */
      AttProjectDO convertToDO(AttProjectSaveReqVO attProjectSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param attProjectDO 实体对象
+     * Convert DO to RespVO
+     * @param attProjectDO Entity object
      * @return AttProjectRespVO
      */
      AttProjectRespVO convertToRespVO(AttProjectDO attProjectDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param attProjectDOList 实体对象列表
+     * Convert DOList to RespVOList
+     * @param attProjectDOList Entity object list
      * @return List<AttProjectRespVO>
      */
      List<AttProjectRespVO> convertToRespVOList(List<AttProjectDO> attProjectDOList);

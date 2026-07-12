@@ -81,7 +81,6 @@ public class DaAssetProjectRelServiceImpl  extends ServiceImpl<DaAssetProjectRel
     @Override
     public int updateDaAssetProjectRel(DaAssetProjectRelSaveReqVO updateReqVO) {
         // Validation checks
-        return daAssetVideoMapper.updateById(updateObj);
 
         // Update data asset and project relationship
         DaAssetProjectRelDO updateObj = BeanUtils.toBean(updateReqVO, DaAssetProjectRelDO.class);

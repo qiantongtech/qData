@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.att.dal.dataobject.sourceSystem.AttSourceSyste
 import java.util.List;
 
 /**
- * 来源系统 Convert
+ * Source System Convert
  *
  * @author qdata
  * @date 2026-04-03
@@ -38,29 +38,29 @@ public interface AttSourceSystemConvert {
     AttSourceSystemConvert INSTANCE = Mappers.getMapper(AttSourceSystemConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param attSourceSystemPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param attSourceSystemPageReqVO Request parameters
      * @return AttSourceSystemDO
      */
      AttSourceSystemDO convertToDO(AttSourceSystemPageReqVO attSourceSystemPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param attSourceSystemSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param attSourceSystemSaveReqVO Save request parameters
      * @return AttSourceSystemDO
      */
      AttSourceSystemDO convertToDO(AttSourceSystemSaveReqVO attSourceSystemSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param attSourceSystemDO 实体对象
+     * Convert DO to RespVO
+     * @param attSourceSystemDO Entity object
      * @return AttSourceSystemRespVO
      */
      AttSourceSystemRespVO convertToRespVO(AttSourceSystemDO attSourceSystemDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param attSourceSystemDOList 实体对象列表
+     * Convert DOList to RespVOList
+     * @param attSourceSystemDOList Entity object list
      * @return List<AttSourceSystemRespVO>
      */
      List<AttSourceSystemRespVO> convertToRespVOList(List<AttSourceSystemDO> attSourceSystemDOList);

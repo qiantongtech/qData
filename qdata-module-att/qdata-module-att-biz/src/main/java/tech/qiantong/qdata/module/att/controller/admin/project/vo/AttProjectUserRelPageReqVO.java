@@ -25,7 +25,7 @@ import tech.qiantong.qdata.common.core.page.PageParam;
 import java.util.Date;
 
 /**
- * 项目与用户关联关系 Request VO 对象 ATT_PROJECT_USER_REL
+ * Project-User Relationship Request VO ATT_PROJECT_USER_REL
  *
  * @author qdata
  * @date 2025-02-11

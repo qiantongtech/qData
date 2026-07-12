@@ -23,7 +23,7 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 清洗规则类目 Request VO 对象 ATT_CLEAN_CAT
+ * Cleaning Rule Category Request VO ATT_CLEAN_CAT
  *
  * @author qdata
  * @date 2025-08-11

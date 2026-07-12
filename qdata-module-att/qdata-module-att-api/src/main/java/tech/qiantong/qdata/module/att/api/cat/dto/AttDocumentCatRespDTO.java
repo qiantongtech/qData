@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.att.api.cat.dto;
 import lombok.Data;
 
 /**
- * 标准信息分类管理 DTO 对象 ATT_DOCUMENT_CAT
+ * Standard Information Category Management DTO ATT_DOCUMENT_CAT
  *
  * @author qdata
  * @date 2025-08-21
@@ -34,25 +34,25 @@ public class AttDocumentCatRespDTO {
     /** ID */
     private Long id;
 
-    /** 类别名称 */
+    /** Category Name */
     private String name;
 
-    /** 关联上级ID */
+    /** Parent ID */
     private Long parentId;
 
-    /** 类别排序 */
+    /** Sort Order */
     private Long sortOrder;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 层级编码 */
+    /** Level Code */
     private String code;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
 

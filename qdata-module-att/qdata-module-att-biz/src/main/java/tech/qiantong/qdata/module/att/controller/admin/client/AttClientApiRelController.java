@@ -43,7 +43,7 @@ import tech.qiantong.qdata.module.att.dal.dataobject.client.AttClientApiRelDO;
 import tech.qiantong.qdata.module.att.service.client.IAttClientApiRelService;
 
 /**
- * 应用API服务关联Controller
+ * App API Service Association Controller
  *
  * @author FXB
  * @date 2025-08-21

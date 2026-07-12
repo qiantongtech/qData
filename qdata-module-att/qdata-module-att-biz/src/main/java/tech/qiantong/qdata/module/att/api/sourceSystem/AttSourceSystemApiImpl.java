@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 来源系统 API 实现类
+ * Source System API Implementation
  *
  * @author qdata
  * @date 2026-04-30
@@ -45,10 +45,10 @@ public class AttSourceSystemApiImpl implements IAttSourceSystemApiService {
 
     @Override
     public List<AttSourceSystemRespDTO> getValidSourceSystems() {
-        // 获取所有有效的来源系统
+        // Get all valid source systems
         List<AttSourceSystemDO> validSourceSystems = attSourceSystemService.getAttSourceSystemListByValidFlag(true);
 
-        // 转换为 DTO 对象
+        // Convert to DTO objects
         return validSourceSystems.stream()
                 .map(sourceSystem -> BeanUtils.toBean(sourceSystem, AttSourceSystemRespDTO.class))
                 .collect(Collectors.toList());

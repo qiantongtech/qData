@@ -46,7 +46,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 /**
- * 逻辑模型类目管理Controller
+ * Logical Model Category Management Controller
  *
  * @author qdata
  * @date 2025-01-20
@@ -127,7 +127,7 @@ public class AttModelCatController extends BaseController {
 //    public CommonResult<Integer> remove(@PathVariable Long[] ids) {
 //        return CommonResult.toAjax(attModelCatService.removeAttModelCat(Arrays.asList(ids)));
 //    }
-    //删除
+    // Delete
     @Operation(summary = "删除逻辑模型类目管理")
     @PreAuthorize("@ss.hasPermi('att:modelCat:remove')")
     @Log(title = "log.op.title.att.model.cat", businessType = BusinessType.DELETE)

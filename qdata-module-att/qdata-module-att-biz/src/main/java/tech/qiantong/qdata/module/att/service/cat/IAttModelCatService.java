@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 /**
- * 逻辑模型类目管理Service接口
+ * Logical Model Category Management Service Interface
  *
  * @author qdata
  * @date 2025-01-20
@@ -37,78 +37,79 @@ import java.util.Map;
 public interface IAttModelCatService extends IService<AttModelCatDO> {
 
     /**
-     * 获得逻辑模型类目管理分页列表
+     * Get Logical Model Category Management paginated list
      *
-     * @param pageReqVO 分页请求
-     * @return 逻辑模型类目管理分页列表
+     * @param pageReqVO Pagination request
+     * @return Logical Model Category Management paginated list
      */
     PageResult<AttModelCatDO> getAttModelCatPage(AttModelCatPageReqVO pageReqVO);
 
     /**
-     * 创建逻辑模型类目管理
+     * Create Logical Model Category Management
      *
-     * @param createReqVO 逻辑模型类目管理信息
-     * @return 逻辑模型类目管理编号
+     * @param createReqVO Logical Model Category Management info
+     * @return Logical Model Category Management ID
      */
     Long createAttModelCat(AttModelCatSaveReqVO createReqVO);
 
     /**
-     * 更新逻辑模型类目管理
+     * Update Logical Model Category Management
      *
-     * @param updateReqVO 逻辑模型类目管理信息
+     * @param updateReqVO Logical Model Category Management info
      */
     int updateAttModelCat(AttModelCatSaveReqVO updateReqVO);
 
     /**
-     * 删除逻辑模型类目管理
+     * Delete Logical Model Category Management
      *
-     * @param idList 逻辑模型类目管理编号
+     * @param idList Logical Model Category Management ID list
      */
     int removeAttModelCat(Collection<Long> idList);
     int removeAttModelCat(Long id);
 
     /**
-     * 获得逻辑模型类目管理详情
+     * Get Logical Model Category Management details
      *
-     * @param id 逻辑模型类目管理编号
-     * @return 逻辑模型类目管理
+     * @param id Logical Model Category Management ID
+     * @return Logical Model Category Management
      */
     AttModelCatDO getAttModelCatById(Long id);
 
     /**
-     * 获得全部逻辑模型类目管理列表
+     * Get all Logical Model Category Management list
      *
-     * @return 逻辑模型类目管理列表
+     * @return Logical Model Category Management list
      */
     List<AttModelCatDO> getAttModelCatList();
 
     /**
-     * 获得全部逻辑模型类目管理列表
+     * Get all Logical Model Category Management list
      *
-     * @return 逻辑模型类目管理列表
+     * @param reqVO Page request
+     * @return Logical Model Category Management list
      */
     List<AttModelCatDO> getAttModelCatList(AttModelCatPageReqVO reqVO);
 
     /**
-     * 获得全部逻辑模型类目管理 Map
+     * Get all Logical Model Category Management Map
      *
-     * @return 逻辑模型类目管理 Map
+     * @return Logical Model Category Management Map
      */
     Map<Long, AttModelCatDO> getAttModelCatMap();
 
 
     /**
-     * 导入逻辑模型类目管理数据
+     * Import Logical Model Category Management data
      *
-     * @param importExcelList 逻辑模型类目管理数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Logical Model Category Management data list
+     * @param isUpdateSupport Whether to support update; if already exists, update the data
+     * @param operName Operator
+     * @return Result
      */
     String importAttModelCat(List<AttModelCatRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
     /**
-     * 生成code
+     * Generate code
      *
      * @param parentId
      * @param parentCode

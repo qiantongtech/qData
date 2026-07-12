@@ -46,7 +46,7 @@ import tech.qiantong.qdata.module.att.dal.dataobject.cat.AttQualityCatDO;
 import tech.qiantong.qdata.module.att.service.cat.IAttQualityCatService;
 
 /**
- * 数据质量类目Controller
+ * Data Quality Category Controller
  *
  * @author qdata
  * @date 2025-07-19

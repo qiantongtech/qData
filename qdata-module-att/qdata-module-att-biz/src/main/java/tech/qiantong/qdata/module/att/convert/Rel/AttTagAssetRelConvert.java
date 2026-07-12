@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.att.dal.dataobject.Rel.AttTagAssetRelDO;
 import java.util.List;
 
 /**
- * 标签与资产关联关系 Convert
+ * Tag-Asset Relationship Convert
  *
  * @author qdata
  * @date 2025-07-11
@@ -38,29 +38,29 @@ public interface AttTagAssetRelConvert {
     AttTagAssetRelConvert INSTANCE = Mappers.getMapper(AttTagAssetRelConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param attTagAssetRelPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param attTagAssetRelPageReqVO Request parameters
      * @return AttTagAssetRelDO
      */
      AttTagAssetRelDO convertToDO(AttTagAssetRelPageReqVO attTagAssetRelPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param attTagAssetRelSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param attTagAssetRelSaveReqVO Save request parameters
      * @return AttTagAssetRelDO
      */
      AttTagAssetRelDO convertToDO(AttTagAssetRelSaveReqVO attTagAssetRelSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param attTagAssetRelDO 实体对象
+     * Convert DO to RespVO
+     * @param attTagAssetRelDO Entity object
      * @return AttTagAssetRelRespVO
      */
      AttTagAssetRelRespVO convertToRespVO(AttTagAssetRelDO attTagAssetRelDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param attTagAssetRelDOList 实体对象列表
+     * Convert DOList to RespVOList
+     * @param attTagAssetRelDOList Entity object list
      * @return List<AttTagAssetRelRespVO>
      */
      List<AttTagAssetRelRespVO> convertToRespVOList(List<AttTagAssetRelDO> attTagAssetRelDOList);

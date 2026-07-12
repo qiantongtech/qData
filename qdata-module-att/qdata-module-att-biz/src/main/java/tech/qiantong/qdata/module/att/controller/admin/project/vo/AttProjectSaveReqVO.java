@@ -25,7 +25,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import javax.validation.constraints.Size;
 
 /**
- * 项目 创建/修改 Request VO ATT_PROJECT
+ * Project Create/Update Request VO ATT_PROJECT
  *
  * @author shu
  * @date 2025-01-20

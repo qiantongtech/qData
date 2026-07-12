@@ -48,7 +48,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 应用管理Controller
+ * App Management Controller
  *
  * @author qdata
  * @date 2025-02-18

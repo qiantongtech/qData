@@ -43,7 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 /**
- * 应用管理Service业务层处理
+ * Application management service layer processing
  *
  * @author qdata
  * @date 2025-02-18
@@ -70,15 +70,15 @@ public class AttClientServiceImpl  extends ServiceImpl<AttClientMapper,AttClient
 
     @Override
     public int updateAttClient(AttClientSaveReqVO updateReqVO) {
-        // 相关校验
+        // Validation
 
-        // 更新应用管理
+        // Update application management
         AttClientDO updateObj = BeanUtils.toBean(updateReqVO, AttClientDO.class);
         return attClientMapper.updateById(updateObj);
     }
     @Override
     public int removeAttClient(Collection<Long> idList) {
-        // 批量删除应用管理
+        // Batch delete application management
         return attClientMapper.deleteBatchIds(idList);
     }
 
@@ -99,19 +99,19 @@ public class AttClientServiceImpl  extends ServiceImpl<AttClientMapper,AttClient
                 .collect(Collectors.toMap(
                         AttClientDO::getId,
                         attClientDO -> attClientDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
         /**
-         * 导入应用管理数据
+         * Import application management data
          *
-         * @param importExcelList 应用管理数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
+         *  importExcelList application management data list
+         * @param isUpdateSupport Whether to support update; if already exists, update the data
+         *  operName Operator
+         *  Result
          */
         @Override
         public String importAttClient(List<AttClientRespVO> importExcelList, boolean isUpdateSupport, String operName) {
@@ -135,16 +135,16 @@ public class AttClientServiceImpl  extends ServiceImpl<AttClientMapper,AttClient
                                 attClientMapper.updateById(attClientDO);
                                 successNum++;
                                 successMessages.add(MessageUtils.messageWithFallback("att.import.update.success",
-                                        "数据更新成功，ID为 " + attClientId + " 的应用管理记录。", attClientId, "应用管理"));
+                                        "数据Update 成功，ID为 " + attClientId + " 的应用管理记录。", attClientId, "应用管理"));
                             } else {
                                 failureNum++;
                                 failureMessages.add(MessageUtils.messageWithFallback("att.import.update.fail",
-                                        "数据更新失败，ID为 " + attClientId + " 的应用管理记录不存在。", attClientId, "应用管理"));
+                                        "数据Update 失败，ID为 " + attClientId + " 的应用管理记录不存在。", attClientId, "应用管理"));
                             }
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("att.import.update.id.missing",
-                                    "数据更新失败，某条记录的ID不存在。"));
+                                    "数据Update 失败，某条记录的ID不存在。"));
                         }
                     } else {
                         QueryWrapper<AttClientDO> queryWrapper = new QueryWrapper<>();

@@ -47,7 +47,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 数据资产类目管理Controller
+ * Data Asset Category Management Controller
  *
  * @author qdata
  * @date 2025-01-20

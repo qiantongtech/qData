@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 数据质量类目Service接口
+ * Data Quality Category Service Interface
  *
  * @author qdata
  * @date 2025-07-19
@@ -38,68 +38,68 @@ import java.util.Map;
 public interface IAttQualityCatService extends IService<AttQualityCatDO> {
 
     /**
-     * 获得数据质量类目分页列表
+     * Get Data Quality Category paginated list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据质量类目分页列表
+     * @param pageReqVO Page request
+     * @return Data Quality Category paginated list
      */
     PageResult<AttQualityCatDO> getAttQualityCatPage(AttQualityCatPageReqVO pageReqVO);
 
     /**
-     * 创建数据质量类目
+     * Create Data Quality Category
      *
-     * @param createReqVO 数据质量类目信息
-     * @return 数据质量类目编号
+     * @param createReqVO Data Quality Category info
+     * @return Data Quality Category ID
      */
     Long createAttQualityCat(AttQualityCatSaveReqVO createReqVO);
 
     /**
-     * 更新数据质量类目
+     * Update Data Quality Category
      *
-     * @param updateReqVO 数据质量类目信息
+     * @param updateReqVO Data Quality Category info
      */
     int updateAttQualityCat(AttQualityCatSaveReqVO updateReqVO);
 
     /**
-     * 删除数据质量类目
+     * Delete Data Quality Category
      *
-     * @param idList 数据质量类目编号
+     * @param idList Data Quality Category ID list
      */
     int removeAttQualityCat(Collection<Long> idList);
 
     /**
-     * 获得数据质量类目详情
+     * Get Data Quality Category details
      *
-     * @param id 数据质量类目编号
-     * @return 数据质量类目
+     * @param id Data Quality Category ID
+     * @return Data Quality Category
      */
     AttQualityCatDO getAttQualityCatById(Long id);
 
     /**
-     * 获得全部数据质量类目列表
+     * Get all Data Quality Category list
      *
-     * @return 数据质量类目列表
+     * @return Data Quality Category list
      */
     List<AttQualityCatDO> getAttQualityCatList(AttQualityCatPageReqVO attQualityCat);
 
     /**
-     * 获得全部数据质量类目 Map
+     * Get all Data Quality Category Map
      *
-     * @return 数据质量类目 Map
+     * @return Data Quality Category Map
      */
     Map<Long, AttQualityCatDO> getAttQualityCatMap();
 
 
     /**
-     * 导入数据质量类目数据
+     * Import Data Quality Category data
      *
-     * @param importExcelList 数据质量类目数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Data Quality Category data list
+     * @param isUpdateSupport Whether to update existing data if already present
+     * @param operName Operator
+     * @return Result
      */
     String importAttQualityCat(List<AttQualityCatRespVO> importExcelList, boolean isUpdateSupport, String operName);    /**
-     * 生成code
+     * Generate code
      *
      * @param parentId
      * @param parentCode

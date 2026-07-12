@@ -28,7 +28,7 @@ import javax.annotation.Resource;
 
 /**
  * <P>
- * 用途:
+ * Purpose:
  * </p>
  *
  * @author: FXB

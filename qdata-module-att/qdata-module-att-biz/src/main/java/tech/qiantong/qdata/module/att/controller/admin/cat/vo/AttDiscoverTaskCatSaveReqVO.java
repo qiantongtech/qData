@@ -25,7 +25,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import javax.validation.constraints.Size;
 
 /**
- * 数据发现任务类目管理 创建/修改 Request VO ATT_DISCOVER_TASK_CAT
+ * Data Discovery Task Category Management Create/Update Request VO ATT_DISCOVER_TASK_CAT
  *
  * @author qdata
  * @date 2025-01-20

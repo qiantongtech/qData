@@ -48,7 +48,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 主题Controller
+ * Theme Controller
  *
  * @author qdata
  * @date 2025-01-20

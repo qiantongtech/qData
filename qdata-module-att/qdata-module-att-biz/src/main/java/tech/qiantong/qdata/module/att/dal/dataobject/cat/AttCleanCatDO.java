@@ -27,14 +27,14 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 清洗规则类目 DO 对象 ATT_CLEAN_CAT
+ * Cleaning Rule Category DO ATT_CLEAN_CAT
  *
  * @author qdata
  * @date 2025-08-11
  */
 @Data
 @TableName(value = "ATT_CLEAN_CAT")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Can be omitted for MySQL and similar databases.
 // @KeySequence("ATT_CLEAN_CAT_seq")
 @Builder
 @NoArgsConstructor
@@ -44,28 +44,28 @@ public class AttCleanCatDO extends BaseEntity {
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
-    /** id */
+    /** ID */
     private Long id;
 
-    /** 类别名称 */
+    /** Category Name */
     private String name;
 
-    /** 关联上级ID */
+    /** Parent ID */
     private Long parentId;
 
-    /** 类别排序 */
+    /** Sort Order */
     private Long sortOrder;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 层级编码 */
+    /** Level Code */
     private String code;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     @TableLogic
     private Boolean delFlag;
 

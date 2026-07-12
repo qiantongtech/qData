@@ -26,7 +26,7 @@ import tech.qiantong.qdata.module.att.service.client.IAttClientService;
 import javax.annotation.Resource;
 
 /**
- * 应用 Api 实现类
+ * Client API Implementation
  * @author Ming
  */
 @Service

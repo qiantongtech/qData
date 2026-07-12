@@ -34,22 +34,22 @@ public class DgDesensitizeIntervalReqDTO {
     /** ID */
     private Long id;
 
-    /** 脱敏规则ID */
+    /** Desensitize Rule ID */
     private Long desensitizeRuleId;
 
-    /** 区间号 */
+    /** Interval No. */
     private Long intervalNo;
 
-    /** 起始值 */
+    /** Start Value */
     private Long startNum;
 
-    /** 末尾值 */
+    /** End Value */
     private Long endNum;
 
-    /** 是否有效;0：无效，1：有效 */
+    /** Valid Flag; 0: Invalid, 1: Valid */
     private Boolean validFlag;
 
-    /** 删除标志;1：已删除，0：未删除 */
+    /** Delete Flag; 1: Deleted, 0: Not Deleted */
     private Boolean delFlag;
 
 

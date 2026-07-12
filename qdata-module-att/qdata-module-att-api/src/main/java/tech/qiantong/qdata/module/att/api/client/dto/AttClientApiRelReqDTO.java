@@ -23,7 +23,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 应用API服务关联 DTO 对象 ATT_CLIENT_API_REL
+ * App-API Service Relation DTO ATT_CLIENT_API_REL
  *
  * @author FXB
  * @date 2025-08-21
@@ -36,28 +36,28 @@ public class AttClientApiRelReqDTO {
     /** ID */
     private Long id;
 
-    /** 应用ID */
+    /** App ID */
     private Long clientId;
 
-    /** API服务ID */
+    /** API Service ID */
     private Long apiId;
 
-    /** 是否永久有效 */
+    /** Permanent Valid Flag */
     private String pvFlag;
 
-    /** 开始时间 */
+    /** Start Time */
     private Date startTime;
 
-    /** 结束时间 */
+    /** End Time */
     private Date endTime;
 
-    /** 授权状态 */
+    /** Authorization Status */
     private String status;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
 

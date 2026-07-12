@@ -29,7 +29,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 应用管理Mapper接口
+ * App Management Mapper Interface
  *
  * @author qdata
  * @date 2025-02-18
@@ -37,10 +37,10 @@ import java.util.Set;
 public interface AttClientMapper extends BaseMapperX<AttClientDO> {
 
     default PageResult<AttClientDO> selectPage(AttClientPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define sortable fields (prevent SQL injection, must match database column names)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 
-        // 构造动态查询条件
+        // Build dynamic query conditions
         return selectPage(reqVO, new LambdaQueryWrapperX<AttClientDO>()
                 .eqIfPresent(AttClientDO::getId, reqVO.getId())
                 .likeIfPresent(AttClientDO::getName, reqVO.getName())
@@ -53,9 +53,9 @@ public interface AttClientMapper extends BaseMapperX<AttClientDO> {
                 .eqIfPresent(AttClientDO::getDescription, reqVO.getDescription())
                 .eqIfPresent(AttClientDO::getPublicFlag, reqVO.getPublicFlag())
                 .eqIfPresent(AttClientDO::getCreateTime, reqVO.getCreateTime())
-                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+                // If reqVO.getName() is not empty, add exact match condition for name (name = '<name>')
                 // .likeIfPresent(AttClientDO::getName, reqVO.getName())
-                // 按照 createTime 字段降序排序
+                // Sort by createTime in descending order
                 .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(), allowedColumns));
     }
 }

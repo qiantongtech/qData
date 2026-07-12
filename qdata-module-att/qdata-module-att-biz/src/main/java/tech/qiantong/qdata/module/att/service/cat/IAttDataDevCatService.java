@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 /**
- * 数据开发类目管理Service接口
+ * Data Development Category Management Service Interface
  *
  * @author qdata
  * @date 2025-03-11
@@ -37,77 +37,77 @@ import java.util.Map;
 public interface IAttDataDevCatService extends IService<AttDataDevCatDO> {
 
     /**
-     * 获得数据开发类目管理分页列表
+     * Get data development category management paginated list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据开发类目管理分页列表
+     * @param pageReqVO page request
+     * @return data development category management paginated list
      */
     PageResult<AttDataDevCatDO> getAttDataDevCatPage(AttDataDevCatPageReqVO pageReqVO);
 
     /**
-     * 创建数据开发类目管理
+     * Create data development category management
      *
-     * @param createReqVO 数据开发类目管理信息
-     * @return 数据开发类目管理编号
+     * @param createReqVO data development category management info
+     * @return data development category management ID
      */
     Long createAttDataDevCat(AttDataDevCatSaveReqVO createReqVO);
 
     /**
-     * 更新数据开发类目管理
+     * Update data development category management
      *
-     * @param updateReqVO 数据开发类目管理信息
+     * @param updateReqVO data development category management info
      */
     int updateAttDataDevCat(AttDataDevCatSaveReqVO updateReqVO);
 
     /**
-     * 删除数据开发类目管理
+     * Delete data development category management
      *
-     * @param idList 数据开发类目管理编号
+     * @param idList data development category management ID list
      */
     int removeAttDataDevCat(Collection<Long> idList);
 
     /**
-     * 获得数据开发类目管理详情
+     * Get data development category management details
      *
-     * @param id 数据开发类目管理编号
-     * @return 数据开发类目管理
+     * @param id data development category management ID
+     * @return data development category management
      */
     AttDataDevCatDO getAttDataDevCatById(Long id);
 
     /**
-     * 获得全部数据开发类目管理列表
+     * Get all data development category management list
      *
-     * @return 数据开发类目管理列表
+     * @return data development category management list
      */
     List<AttDataDevCatDO> getAttDataDevCatList();
 
     /**
-     * 获得全部数据开发类目管理列表
+     * Get all data development category management list
      *
-     * @return 数据开发类目管理列表
+     * @return data development category management list
      */
     List<AttDataDevCatDO> getAttDataDevCatList(AttDataDevCatPageReqVO reqVO);
 
     /**
-     * 获得全部数据开发类目管理 Map
+     * Get all data development category management Map
      *
-     * @return 数据开发类目管理 Map
+     * @return data development category management Map
      */
     Map<Long, AttDataDevCatDO> getAttDataDevCatMap();
 
 
     /**
-     * 导入数据开发类目管理数据
+     * Import data development category management data
      *
-     * @param importExcelList 数据开发类目管理数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList data development category management data list
+     * @param isUpdateSupport whether to support update, if already exists, then update the data
+     * @param operName operating user
+     * @return result
      */
     String importAttDataDevCat(List<AttDataDevCatRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
     /**
-     * 生成code
+     * Generate code
      *
      * @param parentId
      * @param parentCode

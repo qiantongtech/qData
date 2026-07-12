@@ -23,7 +23,7 @@ import tech.qiantong.qdata.api.ds.api.base.DsResultDTO;
 
 /**
  * <P>
- * 用途:项目保存修改响应DTO
+ * Description: Project response DTO
  * </p>
  *
  * @author: FXB
@@ -42,17 +42,17 @@ public class DsProjectRespDTO extends DsResultDTO {
         private Long id;
 
         /**
-         * 项目编码
+         * Project code
          */
         private Long code;
 
         /**
-         * 项目名称
+         * Project name
          */
         private String name;
 
         /**
-         * 项目描述
+         * Project description
          */
         private String description;
     }

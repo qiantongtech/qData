@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.att.dal.dataobject.rule.AttCleanRuleDO;
 import java.util.List;
 
 /**
- * 清洗规则 Convert
+ * Cleaning Rule Convert
  *
  * @author qdata
  * @date 2025-01-20
@@ -38,29 +38,29 @@ public interface AttCleanRuleConvert {
     AttCleanRuleConvert INSTANCE = Mappers.getMapper(AttCleanRuleConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param attCleanRulePageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param attCleanRulePageReqVO Request parameters
      * @return AttCleanRuleDO
      */
      AttCleanRuleDO convertToDO(AttCleanRulePageReqVO attCleanRulePageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param attCleanRuleSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param attCleanRuleSaveReqVO Save request parameters
      * @return AttCleanRuleDO
      */
      AttCleanRuleDO convertToDO(AttCleanRuleSaveReqVO attCleanRuleSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param attCleanRuleDO 实体对象
+     * Convert DO to RespVO
+     * @param attCleanRuleDO Entity object
      * @return AttCleanRuleRespVO
      */
      AttCleanRuleRespVO convertToRespVO(AttCleanRuleDO attCleanRuleDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param attCleanRuleDOList 实体对象列表
+     * Convert DOList to RespVOList
+     * @param attCleanRuleDOList Entity object list
      * @return List<AttCleanRuleRespVO>
      */
      List<AttCleanRuleRespVO> convertToRespVOList(List<AttCleanRuleDO> attCleanRuleDOList);

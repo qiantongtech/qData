@@ -60,7 +60,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 项目与用户关联关系Controller
+ * Project-User Relationship Controller
  *
  * @author qdata
  * @date 2025-02-11
@@ -205,7 +205,7 @@ public class AttProjectUserRelController extends BaseController {
     }
 
     /**
-     * 根据角色编号获取详细信息
+     * Get detail info by role ID
      */
     @PreAuthorize("@ss.hasPermi('att:project:role:query')")
     @GetMapping(value = "/role/{roleId}")
@@ -215,7 +215,7 @@ public class AttProjectUserRelController extends BaseController {
     }
 
     /**
-     * 新增角色
+     * Add role
      */
     @PreAuthorize("@ss.hasPermi('att:project:role:add')")
     @Log(title = "log.op.title.att.role", businessType = BusinessType.INSERT)
@@ -232,7 +232,7 @@ public class AttProjectUserRelController extends BaseController {
     }
 
     /**
-     * 修改保存角色
+     * Update and save role
      */
     @PreAuthorize("@ss.hasPermi('att:project:role:edit')")
     @Log(title = "log.op.title.att.role", businessType = BusinessType.UPDATE)
@@ -248,7 +248,7 @@ public class AttProjectUserRelController extends BaseController {
         role.setUpdateBy(getUsername());
 
         if (roleService.updateRole(role) > 0) {
-            // 更新缓存用户权限
+            // Update cached user permissions
             LoginUser loginUser = getLoginUser();
             if (StringUtils.isNotNull(loginUser.getUser()) && !loginUser.getUser().isAdmin()) {
                 loginUser.setPermissions(permissionService.getMenuPermission(loginUser.getUser()));
@@ -261,7 +261,7 @@ public class AttProjectUserRelController extends BaseController {
     }
 
     /**
-     * 修改保存数据权限
+     * Update and save data permissions
      */
     @PreAuthorize("@ss.hasPermi('att:project:role:edit')")
     @Log(title = "log.op.title.att.role", businessType = BusinessType.UPDATE)
@@ -273,7 +273,7 @@ public class AttProjectUserRelController extends BaseController {
     }
 
     /**
-     * 状态修改
+     * Update status
      */
     @PreAuthorize("@ss.hasPermi('att:project:role:edit')")
     @Log(title = "log.op.title.att.role", businessType = BusinessType.UPDATE)
@@ -286,7 +286,7 @@ public class AttProjectUserRelController extends BaseController {
     }
 
     /**
-     * 删除角色
+     * Delete role
      */
     @PreAuthorize("@ss.hasPermi('att:project:role:remove')")
     @Log(title = "log.op.title.att.role", businessType = BusinessType.DELETE)
@@ -296,7 +296,7 @@ public class AttProjectUserRelController extends BaseController {
     }
 
     /**
-     * 获取角色选择框列表
+     * Get role selection list
      */
     @PreAuthorize("@ss.hasPermi('att:project:role:query')")
     @GetMapping("/role/optionselect")
@@ -305,7 +305,7 @@ public class AttProjectUserRelController extends BaseController {
     }
 
     /**
-     * 查询已分配用户角色列表
+     * Query assigned user role list
      */
     @PreAuthorize("@ss.hasPermi('att:project:role:list')")
     @GetMapping("/role/authUser/allocatedList")
@@ -316,7 +316,7 @@ public class AttProjectUserRelController extends BaseController {
     }
 
     /**
-     * 查询未分配用户角色列表
+     * Query unassigned user role list
      */
     @PreAuthorize("@ss.hasPermi('att:project:role:list')")
     @GetMapping("/role/authUser/unallocatedList")
@@ -327,7 +327,7 @@ public class AttProjectUserRelController extends BaseController {
     }
 
     /**
-     * 取消授权用户
+     * Cancel authorized user
      */
     @PreAuthorize("@ss.hasPermi('att:project:role:edit')")
     @Log(title = "log.op.title.att.role", businessType = BusinessType.GRANT)
@@ -337,7 +337,7 @@ public class AttProjectUserRelController extends BaseController {
     }
 
     /**
-     * 批量取消授权用户
+     * Batch cancel authorized users
      */
     @PreAuthorize("@ss.hasPermi('att:project:role:edit')")
     @Log(title = "log.op.title.att.role", businessType = BusinessType.GRANT)
@@ -347,7 +347,7 @@ public class AttProjectUserRelController extends BaseController {
     }
 
     /**
-     * 批量选择用户授权
+     * Batch select users for authorization
      */
     @PreAuthorize("@ss.hasPermi('att:project:role:edit')")
     @Log(title = "log.op.title.att.role", businessType = BusinessType.GRANT)
@@ -358,7 +358,7 @@ public class AttProjectUserRelController extends BaseController {
     }
 
     /**
-     * 获取对应角色部门树列表
+     * Get corresponding role department tree list
      */
     @PreAuthorize("@ss.hasPermi('att:project:role:query')")
     @GetMapping(value = "/role/deptTree/{roleId}")

@@ -47,7 +47,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 数据元类目管理Controller
+ * Data Element Category Management Controller
  *
  * @author qdata
  * @date 2025-01-20

@@ -29,27 +29,27 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * websocket 客户端用户集
+ * WebSocket client user collection
  *
  * @author qdata
  */
 public class WebSocketUsers
 {
     /**
-     * WebSocketUsers 日志控制器
+     * WebSocketUsers logger
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketUsers.class);
 
     /**
-     * 用户集
+     * User collection
      */
     private static Map<String, Session> USERS = new ConcurrentHashMap<String, Session>();
 
     /**
-     * 存储用户
+     * Store user
      *
-     * @param key 唯一键
-     * @param session 用户信息
+     * @param key unique key
+     * @param session user session
      */
     public static void put(String key, Session session)
     {
@@ -57,11 +57,11 @@ public class WebSocketUsers
     }
 
     /**
-     * 移除用户
+     * Remove user
      *
-     * @param session 用户信息
+     * @param session user session
      *
-     * @return 移除结果
+     * @return removal result
      */
     public static boolean remove(Session session)
     {

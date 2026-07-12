@@ -52,7 +52,7 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * 操作日志记录处理
+ * Operation log record handler
  *
  * @author qdata
  */
@@ -62,14 +62,14 @@ public class LogAspect
 {
     private static final Logger log = LoggerFactory.getLogger(LogAspect.class);
 
-    /** 排除敏感属性字段 */
+    /** Exclude sensitive attribute fields */
     public static final String[] EXCLUDE_PROPERTIES = { "password", "oldPassword", "newPassword", "confirmPassword" };
 
-    /** 计算操作消耗时间 */
+    /** Calculate operation cost time */
     private static final ThreadLocal<Long> TIME_THREADLOCAL = new NamedThreadLocal<Long>("Cost Time");
 
     /**
-     * 处理请求前执行
+     * Executed before request processing
      */
     @Before(value = "@annotation(controllerLog)")
     public void boBefore(JoinPoint joinPoint, Log controllerLog)
@@ -78,9 +78,9 @@ public class LogAspect
     }
 
     /**
-     * 处理完请求后执行
+     * Executed after request processing
      *
-     * @param joinPoint 切点
+     * @param joinPoint join point
      */
     @AfterReturning(pointcut = "@annotation(controllerLog)", returning = "jsonResult")
     public void doAfterReturning(JoinPoint joinPoint, Log controllerLog, Object jsonResult)
@@ -89,10 +89,10 @@ public class LogAspect
     }
 
     /**
-     * 拦截异常操作
+     * Intercept exception operations
      *
-     * @param joinPoint 切点
-     * @param e 异常
+     * @param joinPoint join point
+     * @param e exception
      */
     @AfterThrowing(value = "@annotation(controllerLog)", throwing = "e")
     public void doAfterThrowing(JoinPoint joinPoint, Log controllerLog, Exception e)
@@ -104,7 +104,7 @@ public class LogAspect
     {
         try
         {
-            // 获取当前的用户
+            // Get current user
             LoginUser loginUser = SecurityUtils.getLoginUser();
 
             // *========数据库日志=========*//

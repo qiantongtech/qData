@@ -45,7 +45,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 /**
- * 标准信息分类管理Controller
+ * Standard Information Category Management Controller
  *
  * @author qdata
  * @date 2025-08-21

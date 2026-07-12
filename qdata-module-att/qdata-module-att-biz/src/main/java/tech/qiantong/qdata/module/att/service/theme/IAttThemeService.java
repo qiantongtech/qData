@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 /**
- * 主题Service接口
+ * Theme Service Interface
  *
  * @author qdata
  * @date 2025-01-20
@@ -37,65 +37,65 @@ import java.util.Map;
 public interface IAttThemeService extends IService<AttThemeDO> {
 
     /**
-     * 获得主题分页列表
+     * Get Theme paginated list
      *
-     * @param pageReqVO 分页请求
-     * @return 主题分页列表
+     *  pageReqVO Page request
+     *  Theme paginated list
      */
     PageResult<AttThemeDO> getAttThemePage(AttThemePageReqVO pageReqVO);
 
     /**
-     * 创建主题
+     * Create Theme
      *
-     * @param createReqVO 主题信息
-     * @return 主题编号
+     *  createReqVO Theme info
+     *  Theme ID
      */
     Long createAttTheme(AttThemeSaveReqVO createReqVO);
 
     /**
-     * 更新主题
+     * Update Theme
      *
-     * @param updateReqVO 主题信息
+     *  updateReqVO Theme info
      */
     int updateAttTheme(AttThemeSaveReqVO updateReqVO);
 
     /**
-     * 删除主题
+     * Delete Theme
      *
-     * @param idList 主题编号
+     *  idList Theme ID list
      */
     int removeAttTheme(Collection<Long> idList);
 
     /**
-     * 获得主题详情
+     * Get Theme details
      *
-     * @param id 主题编号
-     * @return 主题
+     *  id Theme ID
+     *  Theme
      */
     AttThemeDO getAttThemeById(Long id);
 
     /**
-     * 获得全部主题列表
+     * Get all Theme list
      *
-     * @return 主题列表
+     *  Theme list
      */
     List<AttThemeDO> getAttThemeList();
 
     /**
-     * 获得全部主题 Map
+     * Get all Theme Map
      *
-     * @return 主题 Map
+     *  Theme Map
      */
     Map<Long, AttThemeDO> getAttThemeMap();
 
 
     /**
-     * 导入主题数据
+     * Import Theme data
      *
-     * @param importExcelList 主题数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     *  importExcelList Theme data list
+     * @param isUpdateSupport Whether update is supported; if already exists, update the data
+     *  operName Operator
+     *  Result
      */
     String importAttTheme(List<AttThemeRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

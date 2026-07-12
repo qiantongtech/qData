@@ -27,7 +27,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 来源系统 Response VO 对象 ATT_SOURCE_SYSTEM
+ * Source System Response VO ATT_SOURCE_SYSTEM
  *
  * @author qdata
  * @date 2026-04-03

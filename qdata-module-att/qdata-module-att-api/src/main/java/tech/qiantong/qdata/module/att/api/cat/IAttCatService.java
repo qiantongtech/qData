@@ -20,7 +20,7 @@ package tech.qiantong.qdata.module.att.api.cat;
 
 /**
  * <P>
- * 用途:
+ * Purpose:
  * </p>
  *
  * @author: FXB
@@ -29,7 +29,7 @@ package tech.qiantong.qdata.module.att.api.cat;
 public interface IAttCatService {
 
     /**
-     * 根据类目表及类目编码获取类目id
+     * Get category ID by table name and category code
      *
      * @param tableName
      * @param catCode

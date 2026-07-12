@@ -27,7 +27,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 作业类目管理 Response VO 对象 ATT_JOB_CAT
+ * Job Category Management Response VO ATT_JOB_CAT
  *
  * @author qdata
  * @date 2025-03-11

@@ -25,7 +25,7 @@ import tech.qiantong.qdata.common.annotation.Excel;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 清洗规则 Request VO 对象 ATT_CLEAN_RULE
+ * Cleaning Rule Request VO ATT_CLEAN_RULE
  *
  * @author qdata
  * @date 2025-01-20
@@ -54,7 +54,7 @@ public class AttCleanRulePageReqVO extends PageParam {
 
 
 
-    /** 类目编码 */
+    /** Category code */
     private String catCode;
 
     @TableField(exist = false)

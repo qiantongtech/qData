@@ -23,7 +23,7 @@ import tech.qiantong.qdata.api.ds.api.etl.DSExecuteDTO;
 
 /**
  * <P>
- * 用途:执行相关相关接口
+ * Description: Execution related interfaces
  * </p>
  *
  * @author: FXB
@@ -31,7 +31,7 @@ import tech.qiantong.qdata.api.ds.api.etl.DSExecuteDTO;
  **/
 public interface IDsEtlExecutorService {
     /**
-     * 执行命令
+     * Execute command
      *
      * @param dsExecuteDTO
      * @param projectCode

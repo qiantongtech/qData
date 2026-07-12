@@ -46,7 +46,7 @@ import tech.qiantong.qdata.module.att.dal.dataobject.cat.AttCleanCatDO;
 import tech.qiantong.qdata.module.att.service.cat.IAttCleanCatService;
 
 /**
- * 清洗规则类目Controller
+ * Cleaning Rule Category Controller
  *
  * @author qdata
  * @date 2025-08-11

@@ -46,7 +46,7 @@ import tech.qiantong.qdata.module.att.dal.dataobject.cat.AttTaskCatDO;
 import tech.qiantong.qdata.module.att.service.cat.IAttTaskCatService;
 
 /**
- * 数据集成任务类目管理Controller
+ * Data Integration Task Category Management Controller
  *
  * @author qdata
  * @date 2025-03-11

@@ -26,9 +26,9 @@ import java.util.List;
 public interface IAttDocCatApiService {
 
     /**
-     * 获得全部数据资产文档类目管理列表         服务资源模块使用
+     * Get all data asset document category management list, used by service resource module
      *
-     * @return 数据资产文档类目管理列表
+     * @return Data Asset Document Category Management list
      */
     List<AttDocCatRespDTO> getAttDocCatList(AttDocCatReqDTO reqDTO);
 }

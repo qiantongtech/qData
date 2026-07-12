@@ -25,7 +25,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import javax.validation.constraints.Size;
 
 /**
- * 作业类目管理 创建/修改 Request VO ATT_JOB_CAT
+ * Job Category Management Create/Update Request VO ATT_JOB_CAT
  *
  * @author qdata
  * @date 2025-03-11

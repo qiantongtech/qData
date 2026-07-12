@@ -30,7 +30,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 应用API服务关联Mapper接口
+ * App API Service Association Mapper Interface
  *
  * @author FXB
  * @date 2025-08-21
@@ -38,7 +38,7 @@ import java.util.Set;
 public interface AttClientApiRelMapper extends BaseMapperX<AttClientApiRelDO> {
 
     default PageResult<AttClientApiRelDO> selectPage(AttClientApiRelPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define sortable fields (prevent SQL injection, must match database column names)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 
         MPJLambdaWrapper<AttClientApiRelDO> lambdaWrapper = new MPJLambdaWrapper();
@@ -57,7 +57,7 @@ public interface AttClientApiRelMapper extends BaseMapperX<AttClientApiRelDO> {
                 .eq(StringUtils.isNotBlank(reqVO.getStatus()), AttClientApiRelDO::getStatus, reqVO.getStatus())
                 .orderByStr(StringUtils.isNotBlank(reqVO.getOrderByColumn()), StringUtils.equals("asc", reqVO.getIsAsc()), StringUtils.isNotBlank(reqVO.getOrderByColumn()) ? Arrays.asList(reqVO.getOrderByColumn().split(",")) : null);
 
-        // 构造动态查询条件
+        // Build dynamic query conditions
         return selectJoinPage(reqVO, AttClientApiRelDO.class, lambdaWrapper);
     }
 }

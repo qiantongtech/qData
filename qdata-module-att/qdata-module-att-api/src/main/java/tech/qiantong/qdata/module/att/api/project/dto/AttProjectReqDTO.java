@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.att.api.project.dto;
 import lombok.Data;
 
 /**
- * 项目 DTO 对象 ATT_PROJECT
+ * Project DTO ATT_PROJECT
  *
  * @author shu
  * @date 2025-01-20
@@ -34,25 +34,25 @@ public class AttProjectReqDTO {
     /** ID */
     private Long id;
 
-    /** 项目名称 */
+    /** Project Name */
     private String name;
 
-    /** 项目编码 */
+    /** Project Code */
     private String code;
 
-    /** 数据源id */
+    /** Datasource ID */
     private Long datasourceId;
 
-    /** 项目管理员id */
+    /** Project Manager ID */
     private Long managerId;
 
-    /** 项目描述 */
+    /** Project Description */
     private String description;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Deletion Flag */
     private Boolean delFlag;
 
 
